@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  catkey: MyString
+  callnum: MyString
+
+two:
+  catkey: MyString
+  callnum: MyString

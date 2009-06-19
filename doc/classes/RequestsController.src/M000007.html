@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>get_bib_info (RequestsController)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File app/controllers/requests_controller.rb, line 84</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_bib_info</span>( <span class="ruby-identifier">ckey</span> )
+    <span class="ruby-identifier">require</span> <span class="ruby-value str">'marc'</span>
+    <span class="ruby-identifier">require</span> <span class="ruby-value str">'open-uri'</span>
+    
+    <span class="ruby-comment cmt"># Read the record and change to array</span>
+    <span class="ruby-identifier">reader</span> = <span class="ruby-constant">MARC</span><span class="ruby-operator">::</span><span class="ruby-constant">XMLReader</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">open</span>(<span class="ruby-value str">'http://searchworks-test.stanford.edu/catalog/'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">ckey</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'.xml'</span>) ).<span class="ruby-identifier">to_a</span>
+    
+    <span class="ruby-identifier">record</span> = <span class="ruby-identifier">reader</span>[<span class="ruby-value">0</span>] <span class="ruby-comment cmt"># Should have only record, since we used CKEY</span>
+
+    <span class="ruby-comment cmt"># Set up fields to get and bib_info string</span>
+    <span class="ruby-identifier">fields_to_get</span> = [ <span class="ruby-value str">'100'</span>, <span class="ruby-value str">'110'</span>, <span class="ruby-value str">'245'</span>, <span class="ruby-value str">'260'</span>, <span class="ruby-value str">'300'</span>]
+    <span class="ruby-identifier">bib_info</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
+
+    <span class="ruby-comment cmt"># Iterate over list of fields to get</span>
+    <span class="ruby-identifier">fields_to_get</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">field_num</span><span class="ruby-operator">|</span> 
+ 
+      <span class="ruby-comment cmt"># Put all instances of a field into an array</span>
+      <span class="ruby-identifier">field_instances</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
+
+      <span class="ruby-identifier">record</span>.<span class="ruby-identifier">find_all</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> (<span class="ruby-identifier">field_num</span>) <span class="ruby-operator">===</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">tag</span>}.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">instance</span><span class="ruby-operator">|</span> 
+        <span class="ruby-identifier">field_instances</span>.<span class="ruby-identifier">push</span>( <span class="ruby-identifier">instance</span>.<span class="ruby-identifier">to_s</span> ) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">instance</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">nil?</span>
+      <span class="ruby-keyword kw">end</span>
+
+      <span class="ruby-comment cmt"># Clean up all elements of field array and put into bib_info array</span>
+      <span class="ruby-identifier">bib_info</span>.<span class="ruby-identifier">push</span>( <span class="ruby-identifier">cleanup_field</span>( <span class="ruby-identifier">field_instances</span> ) );
+
+    <span class="ruby-keyword kw">end</span> <span class="ruby-comment cmt"># end fields_to_get</span>
+
+    <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">bib_info</span>
+
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

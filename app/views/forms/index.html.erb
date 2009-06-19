@@ -1,0 +1,8 @@
+<h1>Forms</h1>
+<p>Forms to use for requests:</p>
+
+<% @forms.each do |f| %>
+<li><%= link_to f.title, {:action => 'show', :id => f.id} -%></li>
+<% end %>
+
+
