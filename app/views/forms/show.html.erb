@@ -1,0 +1,23 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>@form.form_id</title>
+	</head>
+	<body>
+		
+		<h1><%= @form.title %></h1>
+<p><strong>ID: </strong> $<%= @form.id %><br />
+<strong>Form_ID:</strong> <%= @form.form_id %><br />
+<strong>Heading:</strong> <%= @form.heading %><br />
+<strong>Title:</strong> <%= @form.title %><br />
+<strong>Before Fields:</strong> <%= @form.before_fields %><br />
+<strong>After Fields:</strong> <%= @form.after_fields %><br />
+
+</p>
+
+<hr />
+<%= link_to 'Back', {:action => 'list'} %>
+
+	</body>
+</html>

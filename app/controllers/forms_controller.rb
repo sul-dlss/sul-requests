@@ -15,7 +15,7 @@ class FormsController < ApplicationController
     @form = Form.new(params[:form])
     # Not sure where to send user after form is saved
     if @form.save
-      redirect_to index
+      redirect_to forms_path
     end
   end
   
