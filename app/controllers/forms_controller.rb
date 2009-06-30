@@ -2,6 +2,7 @@ class FormsController < ApplicationController
   def index
   end
 
+# Method new. Sets up an input form for creating a new request form
   def new
     @form = Form.new 
     @form.form_id = (params[:form_id])
@@ -11,6 +12,7 @@ class FormsController < ApplicationController
     @form.after_fields = (params[:after_fields])
   end
   
+ # Method create. Save form information in database 
   def create
     @form = Form.new(params[:form])
     # Not sure where to send user after form is saved
@@ -19,12 +21,13 @@ class FormsController < ApplicationController
     end
   end
   
+  #Method show. Display a single form
   def show
       @form = Form.find(params[:id])
   end
 
 
-  
+  # Method index. Display info for all forms.
   def index
       @forms = Form.find(:all)
   end
