@@ -1,2 +1,7 @@
-<h1>RequestTypes#index</h1>
-<p>Find me in app/views/request_types/index.html.erb</p>
+
+<h1>Request Types</h1>
+<p>Request types:</p>
+
+<% @request_types.each do |f| %>
+<li><%= link_to f.type, {:action => 'show', :id => f.id} -%></li>
+<% end %>
