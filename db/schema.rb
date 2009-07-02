@@ -20,5 +20,17 @@ ActiveRecord::Schema.define(:version => 20090610000513) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+  
+    create_table "request_types", :force => true do |t|
+    t.string   "type"
+    t.string   "current_loc"
+    t.string   "req_status"
+    t.string   "form"
+    t.string   "text"
+    t.boolean  "enabled"
+    t.boolean  "authenticated"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end
