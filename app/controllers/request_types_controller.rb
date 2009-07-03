@@ -5,7 +5,7 @@ end
 # Method new. Sets up an input form for creating a new request type
   def new
     @request_type = RequestType.new 
-    @request_type.type = (params[:type])
+    @request_type.req_type = (params[:req_type])
     @request_type.current_loc = (params[:current_loc])
     @request_type.req_status = (params[:req_status])
     @request_type.form = (params[:form])
@@ -20,6 +20,7 @@ end
     # Not sure where to send user after form is saved
     if @request_type.save
       redirect_to request_types_path
+      #redirect_to :action => "index"
     end
   end
   

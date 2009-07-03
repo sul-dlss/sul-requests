@@ -1,5 +1,5 @@
 class RequestType < ActiveRecord::Base
   
-  validates_presence_of :type, :current_loc, :req_status
+  validates_presence_of :req_type, :current_loc, :req_status
   
 end

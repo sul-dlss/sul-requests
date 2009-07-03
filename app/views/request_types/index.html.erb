@@ -3,5 +3,5 @@
 <p>Request types:</p>
 
 <% @request_types.each do |f| %>
-<li><%= link_to f.type, {:action => 'show', :id => f.id} -%></li>
+<li><%= link_to f.req_type, {:action => 'show', :id => f.id} -%></li>
 <% end %>
