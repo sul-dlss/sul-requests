@@ -2,7 +2,10 @@
 <p>Forms to use for requests:</p>
 
 <% @forms.each do |f| %>
-<li><%= link_to f.title, {:action => 'show', :id => f.id} -%></li>
+<li><%= link_to f.title, {:action => 'show', :id => f.id} %>
+<%= link_to 'Edit', :action => 'edit', :id => f.id %> 
+<%= link_to 'Delete', :action => 'delete', :id => f.id %> 
+</li>
 <% end %>
 
 

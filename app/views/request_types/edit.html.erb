@@ -6,12 +6,12 @@
 	</head>
 	<body>
 		
-		<h1>Request Type Input Form</h1>
+		<h1>Request Type Update Form</h1>
 		<% unless flash[:notice].blank?%>
 			<div id="notification"><%= flash[:notice] %></div>
 		<% end %>
 		<%= error_messages_for 'request_type' %>
-		<% form_for (@request_type) do |f| %>
+		<% form_for ( @request_type ) do |f| %>
 			<%= f.hidden_field :id %>
 		
 				<table>
@@ -49,7 +49,7 @@
 			</tr>
 						 	
 			<tr>		
-				<td colspan=2><%= submit_tag "Save"  %></td>
+				<td colspan=2><%= f.submit 'Update'  %></td>
 			</tr>
 			 	
 		</table>			
@@ -58,3 +58,4 @@
 		
 	</body>
 </html>
+

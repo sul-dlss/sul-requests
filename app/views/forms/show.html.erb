@@ -7,7 +7,7 @@
 	<body>
 		
 		<h1><%= @form.title %></h1>
-<p><strong>ID: </strong> $<%= @form.id %><br />
+<p><strong>ID: </strong> <%= @form.id %><br />
 <strong>Form_ID:</strong> <%= @form.form_id %><br />
 <strong>Heading:</strong> <%= @form.heading %><br />
 <strong>Title:</strong> <%= @form.title %><br />
@@ -17,7 +17,7 @@
 </p>
 
 <hr />
-<%= link_to 'Back', {:action => 'list'} %>
+<%= link_to 'Back', {:action => 'index'} %>
 
 	</body>
 </html>

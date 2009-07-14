@@ -5,11 +5,11 @@ class FormsController < ApplicationController
 # Method new. Sets up an input form for creating a new request form
   def new
     @form = Form.new 
-    @form.form_id = (params[:form_id])
-    @form.title = (params[:title])
-    @form.heading = (params[:heading])
-    @form.before_fields = (params[:before_fields])
-    @form.after_fields = (params[:after_fields])
+    #@form.form_id = (params[:form_id])
+    #@form.title = (params[:title])
+    #@form.heading = (params[:heading])
+    #@form.before_fields = (params[:before_fields])
+    #@form.after_fields = (params[:after_fields])
   end
   
  # Method create. Save form information in database 
@@ -20,6 +20,27 @@ class FormsController < ApplicationController
       redirect_to forms_path
     end
   end
+  
+    def edit
+    @form = Form.find(params[:id])
+  end
+  
+  # Method update. Saves changes from edit form in database
+  def update
+    @form = Form.find(params[:id])
+    if @form.update_attributes(params[:form])
+      redirect_to :action => 'show', :id => @form
+    else
+      render :action => 'edit'
+    end
+  end  
+  
+  # Method delete. Delete a record from the database.
+   def delete
+      Form.find(params[:id]).destroy
+      redirect_to :action => 'index'
+   end
+
   
   #Method show. Display a single form
   def show
