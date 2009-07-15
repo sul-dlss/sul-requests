@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090610000513) do
+ActiveRecord::Schema.define(:version => 20090715210407) do
 
   create_table "forms", :force => true do |t|
     t.string   "form_id"
@@ -19,10 +19,16 @@ ActiveRecord::Schema.define(:version => 20090610000513) do
     t.string   "after_fields"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "mod_by"
   end
-  
-    create_table "request_types", :force => true do |t|
-    t.string   "type"
+
+  create_table "forms_request_types", :id => false, :force => true do |t|
+    t.integer "form_id"
+    t.integer "request_type_id"
+  end
+
+  create_table "request_types", :force => true do |t|
+    t.string   "req_type"
     t.string   "current_loc"
     t.string   "req_status"
     t.string   "form"

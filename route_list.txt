@@ -1,0 +1,17 @@
+(in C:/ir/rails_apps/symphony_requests)
+            forms GET    /forms(.:format)                   {:action=>"index", :controller=>"forms"}
+                  POST   /forms(.:format)                   {:action=>"create", :controller=>"forms"}
+         new_form GET    /forms/new(.:format)               {:action=>"new", :controller=>"forms"}
+        edit_form GET    /forms/:id/edit(.:format)          {:action=>"edit", :controller=>"forms"}
+             form GET    /forms/:id(.:format)               {:action=>"show", :controller=>"forms"}
+                  PUT    /forms/:id(.:format)               {:action=>"update", :controller=>"forms"}
+                  DELETE /forms/:id(.:format)               {:action=>"destroy", :controller=>"forms"}
+    request_types GET    /request_types(.:format)           {:action=>"index", :controller=>"request_types"}
+                  POST   /request_types(.:format)           {:action=>"create", :controller=>"request_types"}
+ new_request_type GET    /request_types/new(.:format)       {:action=>"new", :controller=>"request_types"}
+edit_request_type GET    /request_types/:id/edit(.:format)  {:action=>"edit", :controller=>"request_types"}
+     request_type GET    /request_types/:id(.:format)       {:action=>"show", :controller=>"request_types"}
+                  PUT    /request_types/:id(.:format)       {:action=>"update", :controller=>"request_types"}
+                  DELETE /request_types/:id(.:format)       {:action=>"destroy", :controller=>"request_types"}
+                         /:controller/:action/:id           
+                         /:controller/:action/:id(.:format) 

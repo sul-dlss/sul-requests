@@ -27,11 +27,13 @@
 				<td nowrap valign="top" align="right">Status:</td>
 			 	<td valign="top"><%= f.text_field :req_status %></td>
 			 </tr>	
-			 
+			 		
 			 <tr>
 				<td nowrap valign="top" align="right">Form:</td>
-			 	<td valign="top"><%= f.text_field :form %></td>
-			</tr>	
+			 	<td valign="top">
+			 		<%= collection_select("request_type", "form", @forms, "id", "form_id")%>
+				</td>
+			</tr>			
 
 			<tr>
 				<td nowrap valign="top" align="right">Text:</td>
