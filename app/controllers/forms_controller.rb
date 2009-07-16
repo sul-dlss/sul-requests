@@ -5,7 +5,7 @@ class FormsController < ApplicationController
 # Method new. Sets up an input form for creating a new request form
   def new
     @form = Form.new 
-    @request_type = Request_type.find(:all)
+    @request_type = RequestType.find(:all)
     #@form.form_id = (params[:form_id])
     #@form.title = (params[:title])
     #@form.heading = (params[:heading])

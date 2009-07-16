@@ -31,11 +31,7 @@ end
   # work with new .erb file
   def edit
     @request_type = RequestType.find(params[:id])
-    #if request.post?
-     #@request_type.update_attributes(params[:request_type])
-     #redirect_to :action=>'edit', :id => @request_type.id and return
-    #end
-    #render :action=> 'new'
+    @forms = Form.find(:all)
   end
   
   # Method update. Saves changes from edit form in database
@@ -49,8 +45,8 @@ end
   end
   
   def delete
-    @Form.find(params[:id]).destroy
-      redirect_to :action => 'index'
+    RequestType.find(params[:id]).destroy
+    redirect_to :action => 'index'
   end
 
   # Method index. Display info for all forms.
