@@ -118,7 +118,7 @@ class RequestsController < ApplicationController
     require 'open-uri'
     
     # Read the record and change to array
-    reader = MARC::XMLReader.new(open('http://searchworks-test.stanford.edu/catalog/' + ckey + '.xml') ).to_a
+    reader = MARC::XMLReader.new(open('http://searchworks-test.stanford.edu/view/' + ckey + '.xml') ).to_a
     
     record = reader[0] # Should have only record, since we used CKEY
 
@@ -149,13 +149,24 @@ class RequestsController < ApplicationController
   # that are fetched from a database where different form types are defined
   def get_form_type ( home_lib, current_lib, req_type )
     
-    form_type = 'test_form'
+    # For the moment just send back the req_type we get in
+    form_type = req_type
    
     # Need quite a lot logic here to figure out which request type we have 
     
  
     
     return form_type   
+    
+  end
+  
+  # Method get_form_elements. Need to think about this. Should we put all information in 
+  # a request_type structure, since we need to take data from what we now have in both request_type
+  # and form structures. Seems like we shouldn't necessary repeat the data structures we have now if
+  # they're not going to make sense. 
+  def get_form_elements( home_lib, current_lib, req_type )
+    
+    
     
   end
    
