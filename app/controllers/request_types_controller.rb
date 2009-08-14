@@ -12,13 +12,13 @@ end
   def create
     @request_type = RequestType.new(params[:request_type])
     # Is following line needed?? I seem to see some examples with 
-    # and some without, but nothing seems to be saved if its missing
+    # and some without, but nothing seems to be saved if it's missing
     @request_type.save
     if @request_type.save
       redirect_to request_types_path
       #redirect_to :action => "index"
     else
-      render action=> 'new'
+      render :action=> 'new'
     end
   end
   
@@ -49,9 +49,9 @@ end
     redirect_to :action => 'index'
   end
 
-  # Method index. Display info for all forms.
+  # Method index. Display request types 
   def index
-      @request_types = RequestType.find(:all)
+    @request_types = RequestType.find(:all,  :order => 'req_type')
   end
 
 end
