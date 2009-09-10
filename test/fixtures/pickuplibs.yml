@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  lib_key: MyString
+  pickup_code: MyString
+  pickup_label: MyString
+
+two:
+  lib_key: MyString
+  pickup_code: MyString
+  pickup_label: MyString

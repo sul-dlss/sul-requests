@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090715210407) do
+ActiveRecord::Schema.define(:version => 20090910003546) do
 
   create_table "forms", :force => true do |t|
     t.string   "form_id"
@@ -25,6 +25,14 @@ ActiveRecord::Schema.define(:version => 20090715210407) do
   create_table "forms_request_types", :id => false, :force => true do |t|
     t.integer "form_id"
     t.integer "request_type_id"
+  end
+
+  create_table "pickuplibs", :force => true do |t|
+    t.string   "lib_key"
+    t.string   "pickup_code"
+    t.string   "pickup_label"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "request_types", :force => true do |t|
