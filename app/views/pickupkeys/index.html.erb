@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>Pickup Keys</title>
+	</head>
+	<body>
+		<h1>Pickup Keys</h1>
+		<%= link_to 'New pickup key',  new_pickupkey_path %>
+
+<table>
+  <tr>
+    <th>Pickup Key</th>
+	<th>Description</th>
+  </tr>
+
+<% for pickupkey in @pickupkeys %>
+  <tr>
+    <td><%=h pickupkey.pickup_key %></td>
+    <td><%=h pickupkey.pickup_descrip %></td>
+    <td><%= link_to 'Show', pickupkey %></td>
+    <td><%= link_to 'Edit', edit_pickupkey_path(pickupkey) %></td>
+    <td><%= link_to 'Destroy', pickupkey, :confirm => 'Are you sure?', 
+         :method => :delete %></td>
+    <td><%= link_to 'Libraries', show_libraries_pickupkey_path(pickupkey) %></td>
+  </tr>
+<% end %>
+</table>
+
+<%= link_to "Libraries", librariess_path %>
+
+	</body>
+</html>

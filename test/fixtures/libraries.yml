@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  lib_code: MyString
+  lib_descrip: MyString
+
+two:
+  lib_code: MyString
+  lib_descrip: MyString

@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  pickup_key: MyString
+  pickup_descrip: MyString
+
+two:
+  pickup_key: MyString
+  pickup_descrip: MyString

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090910003546) do
+ActiveRecord::Schema.define(:version => 20090914225444) do
 
   create_table "forms", :force => true do |t|
     t.string   "form_id"
@@ -27,10 +27,23 @@ ActiveRecord::Schema.define(:version => 20090910003546) do
     t.integer "request_type_id"
   end
 
-  create_table "pickuplibs", :force => true do |t|
-    t.string   "lib_key"
-    t.string   "pickup_code"
-    t.string   "pickup_label"
+  create_table "libraries", :force => true do |t|
+    t.string   "lib_code"
+    t.string   "lib_descrip"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "pickupkeys", :force => true do |t|
+    t.string   "pickup_key"
+    t.string   "pickup_descrip"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "pickupkeys_libraries", :id => false, :force => true do |t|
+    t.string   "pickupkey",  :null => false
+    t.string   "library",    :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

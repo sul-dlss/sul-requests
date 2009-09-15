@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>Librariess</title>
+	</head>
+	<body>
+		<h1>Libraries</h1>
+		<%= link_to 'New Library',  new_library_path %>
+
+<table>
+  <tr>
+    <th>Library</th>
+	<th>Description</th>
+  </tr>
+
+<% for library in @libraries %>
+  <tr>
+    <td><%=h library.lib_code %></td>
+    <td><%=h library.lib_descrip %></td>
+    <td><%= link_to 'Show', library %></td>
+    <td><%= link_to 'Edit', edit_library_path(library) %></td>
+    <td><%= link_to 'Destroy', library, :confirm => 'Are you sure?', 
+         :method => :delete %></td>
+    <td><%= link_to 'Pickup Library Keys', show_libraries_pickupkey_path(library) %></td>
+  </tr>
+<% end %>
+</table>
+
+<%= link_to "Pickup Library Keys", pickupkeys_path %>
+
+	</body>
+</html>
