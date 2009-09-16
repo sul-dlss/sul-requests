@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-		<title>Librariess</title>
+		<title>Libraries</title>
 	</head>
 	<body>
 		<h1>Libraries</h1>
@@ -20,7 +20,7 @@
     <td><%=h library.lib_descrip %></td>
     <td><%= link_to 'Show', library %></td>
     <td><%= link_to 'Edit', edit_library_path(library) %></td>
-    <td><%= link_to 'Destroy', library, :confirm => 'Are you sure?', 
+    <td><%= link_to 'Destroy', library, :confirm => 'Are you sure you want to delete this record?', 
          :method => :delete %></td>
     <td><%= link_to 'Pickup Library Keys', show_libraries_pickupkey_path(library) %></td>
   </tr>

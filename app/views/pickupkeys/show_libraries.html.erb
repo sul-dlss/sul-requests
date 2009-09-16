@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>Untitled Document</title>
+	</head>
+	<body>
+		
+	<h1>Libraries for <%= @pickupkey.pickup_key %></h1>
+
+<table>
+  <tr>
+    <th>Select</th>
+    <th>Library Code</th>
+  </tr>
+
+<% @pickupkey.available_libraries.each do |l| %>
+	<tr>
+	    <td><%=check_box_tag l.id, 1, @pickupkey.selected?(l), :onclick => remote_function(:url => save_pickupkey_path(@pickupkey), 
+	         :with => "'library=#{l.id}&amp;show=' + this.checked", :method => :post) %>
+		</td>	
+		<td><%=h l.lib_key %></ts>
+	</tr>
+<% end %>
+</table>
+
+<%= link_to 'Back', pickupkey_path(@pickupkey) %>	
+		
+	</body>
+</html>

@@ -22,7 +22,7 @@ class FormsController < ApplicationController
     end
   end
   
-    def edit
+  def edit
     @form = Form.find(params[:id])
     @request_type = Request_type.find(:all)
   end

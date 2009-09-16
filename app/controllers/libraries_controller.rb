@@ -13,4 +13,23 @@ class LibrariesController < ApplicationController
     end
   end
   
+  def edit
+    @library = Library.find(params[:id])
+  end
+  
+  # Method update. Saves changes from edit form in database
+  def update
+    @library = Library.find(params[:id])
+    if @library.update_attributes(params[:library])
+      redirect_to :action => 'show', :id => @library
+    else
+      render :action => 'edit'
+    end
+  end  
+  
+  #Method show. Display a single library record
+  def show
+      @library = Library.find(params[:id])
+  end
+  
 end
