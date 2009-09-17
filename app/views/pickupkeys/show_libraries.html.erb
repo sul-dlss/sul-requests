@@ -3,10 +3,11 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 		<title>Untitled Document</title>
+		<%= javascript_include_tag :defaults %>
 	</head>
 	<body>
-		
-	<h1>Libraries for <%= @pickupkey.pickup_key %></h1>
+	<%= render :partial => 'header' %>	
+	<h1>Pickup Libraries for:  <%= @pickupkey.pickup_key %> - <%= @pickupkey.pickup_descrip %></h1>
 
 <table>
   <tr>
@@ -16,10 +17,13 @@
 
 <% @pickupkey.available_libraries.each do |l| %>
 	<tr>
-	    <td><%=check_box_tag l.id, 1, @pickupkey.selected?(l), :onclick => remote_function(:url => save_pickupkey_path(@pickupkey), 
-	         :with => "'library=#{l.id}&amp;show=' + this.checked", :method => :post) %>
+	    <td><%=check_box_tag l.id, 1, @pickupkey.chosen?(l), 
+		:onclick => remote_function(
+		:url => save_pickupkey_path(@pickupkey), 
+	    :with => "'library=#{l.id}&amp;show=' + this.checked", 
+		:method => :post ) %>
 		</td>	
-		<td><%=h l.lib_key %></ts>
+		<td><%=h l.lib_code %></ts>
 	</tr>
 <% end %>
 </table>

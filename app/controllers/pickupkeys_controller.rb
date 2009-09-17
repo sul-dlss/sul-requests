@@ -1,6 +1,6 @@
 class PickupkeysController < ApplicationController
   def index
-    @pickupkeys = Pickupkey.find(:all)
+    @pickupkeys = Pickupkey.find(:all,  :order => "pickup_key")
   end
   
   # Method create. Save pickup key information in database 
@@ -38,7 +38,9 @@ class PickupkeysController < ApplicationController
  
   # Method save. Saves libraries info for a pickupkey using AJAX call  
   def save
-    @pickupkey - Pickupkey.find(params[:id])
+    puts "This is the save function"
+    @pickupkey = Pickupkey.find(params[:id])
+    puts "id is" + params[:id]
     @library = Library.find(params[:library])
     if params[:show] == "true"
       @pickupkey.libraries << @library
@@ -47,6 +49,12 @@ class PickupkeysController < ApplicationController
     end
     @pickupkey.save!
     render :nothing => true
+  end
+  
+  def destroy
+    @pickupkey = Pickupkey.find(params[:id])
+    @pickupkey.destroy
+    redirect_to(pickupkeys_url)
   end
 
 end

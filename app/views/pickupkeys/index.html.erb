@@ -5,8 +5,15 @@
 		<title>Pickup Keys</title>
 	</head>
 	<body>
-		<h1>Pickup Keys</h1>
-		<%= link_to 'New pickup key',  new_pickupkey_path %>
+		<%= render :partial => 'header' %> 
+		<h1>Pickup Library Keys</h1>
+		
+		Listed below are "keys" that are based on various data used in Symphony records to identify 
+		request items that can be picked up only at certain libraries. For example, an item paged from
+		SAL3 for Branner has the request type "SAL3-TO-BR". In this case, "BR" can be used as a key to 
+		identify this class of items and assign one or more pickup libraries to it. Use the "View Pickup
+		Libraries" link to view or change the current assignments. Use the "Edit" link to change the key or
+		its description. 
 
 <table>
   <tr>
@@ -18,16 +25,14 @@
   <tr>
     <td><%=h pickupkey.pickup_key %></td>
     <td><%=h pickupkey.pickup_descrip %></td>
-    <td><%= link_to 'Show', pickupkey %></td>
     <td><%= link_to 'Edit', edit_pickupkey_path(pickupkey) %></td>
-    <td><%= link_to 'Destroy', pickupkey, :confirm => 'Are you sure?', 
+    <td><%= link_to 'Delete', pickupkey, :confirm => 'Are you sure you want to delete this item?', 
          :method => :delete %></td>
-    <td><%= link_to 'Libraries', show_libraries_pickupkey_path(pickupkey) %></td>
+    <td><%= link_to 'View Pickup Libraries', show_libraries_pickupkey_path(pickupkey) %></td>
   </tr>
 <% end %>
 </table>
 
-<%= link_to "Libraries", libraries_path %>
 
 	</body>
 </html>

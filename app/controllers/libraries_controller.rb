@@ -1,7 +1,7 @@
 class LibrariesController < ApplicationController
   
   def index
-    @libraries = Library.find(:all)
+    @libraries = Library.find(:all, :order => "lib_code")
   end
 
  # Method create. Save library information in database 
@@ -30,6 +30,12 @@ class LibrariesController < ApplicationController
   #Method show. Display a single library record
   def show
       @library = Library.find(params[:id])
+  end
+  
+  def destroy
+    @library = Library.find(params[:id])
+    @library.destroy
+    redirect_to(libraries_url)
   end
   
 end

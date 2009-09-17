@@ -5,7 +5,7 @@ class Pickupkey < ActiveRecord::Base
     Library.find(:all, :order => "lib_code ASC")
   end
   
-  def selected?(library)
+  def chosen?(library)
     libraries.include?(library)
   end
 end
