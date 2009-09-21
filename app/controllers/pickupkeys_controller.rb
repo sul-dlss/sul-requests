@@ -20,7 +20,8 @@ class PickupkeysController < ApplicationController
   def update
     @pickupkey = Pickupkey.find(params[:id])
     if @pickupkey.update_attributes(params[:pickupkey])
-      redirect_to :action => 'show', :id => @pickupkey
+      # redirect_to :action => 'show', :id => @pickupkey
+      redirect_to pickupkeys_path
     else
       render :action => 'edit'
     end

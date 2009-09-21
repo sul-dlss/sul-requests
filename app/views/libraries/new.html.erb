@@ -6,6 +6,8 @@
 	</head>
 	<body>
 		
+		<%= render :partial => 'header' %> 
+		
 		<h1>Library Input Form</h1>
 		<% unless flash[:notice].blank?%>
 			<div id="notification"><%= flash[:notice] %></div>

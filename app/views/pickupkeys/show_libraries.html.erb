@@ -2,13 +2,16 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-		<title>Untitled Document</title>
+		<title>Pickup library key: <%= @pickupkey.pickup_key%></title>
 		<%= javascript_include_tag :defaults %>
 	</head>
 	<body>
 	<%= render :partial => 'header' %>	
-	<h1>Pickup Libraries for:  <%= @pickupkey.pickup_key %> - <%= @pickupkey.pickup_descrip %></h1>
+	<h1>Pickup Libraries for key:  <%= @pickupkey.pickup_key %> - <%= @pickupkey.pickup_descrip %></h1>
 
+Listed below are available pickup libraries. Those marked with a check are currently assigned to 
+pickup library key <strong><%= @pickupkey.pickup_key %></strong>. Use the checkboxes to select or unselect libraries assigned to this
+pickup library key. Your selections are saved immediately.
 <table>
   <tr>
     <th>Select</th>
@@ -23,12 +26,13 @@
 	    :with => "'library=#{l.id}&amp;show=' + this.checked", 
 		:method => :post ) %>
 		</td>	
-		<td><%=h l.lib_code %></ts>
+		<td><%=h l.lib_code %></td>
+		<td><%=h l.lib_descrip %></td>
 	</tr>
 <% end %>
 </table>
 
-<%= link_to 'Back', pickupkey_path(@pickupkey) %>	
+
 		
 	</body>
 </html>
