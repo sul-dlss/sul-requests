@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  library: MyString
+  current_loc: MyString
+  req_status: MyString
+  req_type: MyString
+
+two:
+  name: MyString
+  library: MyString
+  current_loc: MyString
+  req_status: MyString
+  req_type: MyString

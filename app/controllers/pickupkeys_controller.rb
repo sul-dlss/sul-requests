@@ -39,9 +39,7 @@ class PickupkeysController < ApplicationController
  
   # Method save. Saves libraries info for a pickupkey using AJAX call  
   def save
-    puts "This is the save function"
     @pickupkey = Pickupkey.find(params[:id])
-    puts "id is" + params[:id]
     @library = Library.find(params[:library])
     if params[:show] == "true"
       @pickupkey.libraries << @library

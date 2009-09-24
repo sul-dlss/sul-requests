@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>Request Definitions</title>
+	</head>
+	<body>
+		<%= render :partial => 'header' %> 
+		<h1>Request Definitions</h1>
+		
+		Listed below are request definitions.
+		
+<p></p>
+<table>
+  <tr>
+    <th>Name</th>
+	<th>Library</th>
+	<th>Current Location</th>
+	<th>Request Status</th>
+	<th>Request Type</th>
+	<th>Enabled</th>
+	<th>Authenticated</th>
+	<th>Unauthenticated</th>
+  </tr>
+
+<% for requestdef in @requestdefs %>
+  <tr>
+    <td><%=h requestdef.name %></td>
+    <td><%=h requestdef.library %></td>
+    <td><%=h requestdef.current_loc %></td>
+    <td><%=h requestdef.req_status %></td>
+    <td><%=h requestdef.req_type %></td>
+    <td><%=h requestdef.enabled %></td>
+    <td><%=h requestdef.authenticated %></td>
+    <td><%=h requestdef.unauthenticated %></td>
+	
+
+
+	
+    <td nowrap><%= button_to 'Edit',{:action => 'edit', :id => requestdef.id }, :method => :get %></td>
+    <td nowrap><%= button_to 'Delete', { :action => 'destroy', :id => requestdef.id }, :confirm => 'Are you sure you want to delete this item?', 
+         :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+
+	</body>
+</html>

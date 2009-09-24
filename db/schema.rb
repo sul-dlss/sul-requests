@@ -9,7 +9,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090916192457) do
+ActiveRecord::Schema.define(:version => 20090924000516) do
+
+  create_table "fields", :force => true do |t|
+    t.string   "name"
+    t.string   "label"
+    t.integer  "order"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "fields_requestdefs", :id => false, :force => true do |t|
+    t.integer  "field_id",      :null => false
+    t.integer  "requestdef_id", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "forms", :force => true do |t|
     t.string   "form_id"
@@ -56,6 +71,22 @@ ActiveRecord::Schema.define(:version => 20090916192457) do
     t.string   "text"
     t.boolean  "enabled"
     t.boolean  "authenticated"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "requestdefs", :force => true do |t|
+    t.string   "name"
+    t.string   "library"
+    t.string   "current_loc"
+    t.string   "req_status"
+    t.string   "req_type"
+    t.boolean  "enabled"
+    t.boolean  "authenticated"
+    t.boolean  "unauthenticated"
+    t.string   "title"
+    t.text     "initial_text"
+    t.text     "final_text"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
