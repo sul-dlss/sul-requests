@@ -44,9 +44,14 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :pickupkeys, :member => { :show_libraries => :get, :save => :post }
   map.resources :libraries
   map.namespace :admin do |admin|
-    admin.resources :requestdefs
+    admin.resources :requestdefs 
     admin.resources :fields
   end
+  # Following extra stuff isn't needed 
+  #map.connect 'admin/:controller/:action/:id'
+  #map.connect 'admin/:controller/:action/:id.:format'
+  #map.connect 'admin/:controller/:id/:action'
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'
+
 end

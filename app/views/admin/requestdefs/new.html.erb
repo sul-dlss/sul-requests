@@ -11,7 +11,7 @@
 			<div id="notification"><%= flash[:notice] %></div>
 		<% end %>
 		<%= error_messages_for 'requestdef' %>
-		<% form_for (:requestdef, @requestdef, :url => { :action => 'create'}) do |f| %>
+		<% form_for ( [:admin, @requestdef ]) do |f| %>
 
 		<table>
 			<tr>

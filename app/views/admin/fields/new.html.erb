@@ -11,20 +11,20 @@
 			<div id="notification"><%= flash[:notice] %></div>
 		<% end %>
 		<%= error_messages_for 'field' %>
-		<% form_for (:field, @field, :url => { :action => 'create'}) do |f| %>
+		<% form_for ( [:admin, @field ]) do |f| %>
 
 		<table>
 			<tr>
 				<td nowrap valign="top" align="right">Field Name:</td>
-			 	<td valign="top"><%= f.text_field :name %></td>
+			 	<td valign="top"><%= f.text_field :field_name %></td>
 			 <tr>
 			 <tr>
 				<td nowrap valign="top" align="right">Field Label:</td>
-				 <td valign="top"><%= f.text_field :label %></td>
+				 <td valign="top"><%= f.text_field :field_label %></td>
 			</tr>			
 			 <tr>
 				<td nowrap valign="top" align="right">Field Order:</td>
-				 <td valign="top"><%= f.text_field :order %></td>
+				 <td valign="top"><%= f.text_field :field_order %></td>
 			</tr>			
 	
 				

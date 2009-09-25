@@ -1,2 +1,83 @@
-<h1>Admin::Requestdefs#edit</h1>
-<p>Find me in app/views/admin/requestdefs/edit.html.erb</p>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>Edit Request Definition</title>
+		<%= javascript_include_tag :defaults %>
+	</head>
+	<body>
+		<%= render :partial => 'header' %> 
+		<h1>Request Definition Edit Form</h1>
+		<% unless flash[:notice].blank?%>
+			<div id="notification"><%= flash[:notice] %></div>
+		<% end %>
+		<%= error_messages_for 'requestdef' %>
+		<% form_for ( [:admin, @requestdef ] ) do |f| %>
+
+		<table>
+			<tr>
+				<td nowrap valign="top" align="right">Definition Name:</td>
+			 	<td valign="top"><%= f.text_field :name %></td>
+			 <tr>
+			 <tr>
+				<td nowrap valign="top" align="right">Library:</td>
+				
+				 <td valign="top"><%= select_tag 'requestdef[library]', options_for_select(@library_list, @requestdef.library ) %></td>
+			</tr>
+			 <tr>
+				<td nowrap valign="top" align="right">Current Location:</td>
+				 <td valign="top"><%= f.text_field :current_loc %></td>
+			</tr>			
+			 <tr>
+				<td nowrap valign="top" align="right">Request Status:</td>
+				 <td valign="top"><%= f.text_field :req_status %></td>
+			</tr>			
+			 <tr>
+				<td nowrap valign="top" align="right">Request Type:</td>
+				 <td valign="top"><%= f.text_field :req_type %></td>
+			</tr>	
+			
+			 <tr>
+				<td nowrap valign="top" align="right">Enabled:</td>
+				 <td valign="top"><%= f.check_box :enabled %></td>
+			</tr>			
+			 <tr>
+				<td nowrap valign="top" align="right">Authenticated:</td>
+				 <td valign="top"><%= f.check_box :authenticated %></td>
+			</tr>			
+			 <tr>
+				<td nowrap valign="top" align="right">Unauthenticated:</td>
+				 <td valign="top"><%= f.check_box :unauthenticated %></td>
+			</tr>		
+			<tr>
+				<td colspan=2><hr></td>
+			</tr>	
+			 <tr>
+				<td nowrap valign="top" align="right">Title:</td>
+				 <td valign="top"><%= f.text_field :title %></td>
+			</tr>
+			</table>			
+			<!--
+			These are separate from the form and are updated dynamically
+			using AJAX 
+			-->
+			<%= render :partial => 'show_fields', :locals => {:requestdef => @requestdef }%>
+			
+			<table>
+			 <tr>
+				<td nowrap valign="top" align="right">Initial Text:</td>
+				 <td valign="top"><%= f.text_area :initial_text %></td>
+			</tr>			
+			 <tr>
+				<td nowrap valign="top" align="right">Final Text:</td>
+				 <td valign="top"><%= f.text_area :final_text %></td>
+			</tr>			
+				
+			<tr>		
+				<td colspan=2><%= f.submit 'Save'  %></td>
+			</tr>
+			</table>
+
+		<% end %>					 
+	</body>
+</html>

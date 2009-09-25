@@ -1,2 +1,37 @@
-<h1>Admin::Fields#index</h1>
-<p>Find me in app/views/admin/fields/index.html.erb</p>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>Fields</title>
+	</head>
+	<body>
+		<%= render :partial => 'header' %> 
+		<h1>Fields</h1>
+		
+		Listed below are fields.
+		
+<p></p>
+<table>
+  <tr>
+    <th>Name</th>
+	<th>Label</th>
+	<th>Order</th>
+  </tr>
+
+<% for field in @fields %>
+  <tr>
+    <td><%=h field.field_name %></td>
+    <td><%=h field.field_label %></td>
+    <td><%=h field.field_order %></td>
+	
+    <td nowrap><%= button_to 'Edit',{:action => 'edit', :id => field.id }, :method => :get %></td>
+    <td nowrap><%= button_to 'Delete', { :action => 'destroy', :id => field.id }, :confirm => 'Are you sure you want to delete this item?', 
+         :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+
+	</body>
+</html>
+
