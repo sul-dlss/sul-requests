@@ -1,19 +1,19 @@
-<table>
-  <tr>
-    <th>Select</th>
-    <th>Field</th>
-  </tr>
+
+<tr>
+	<td align="right">Fields:</td>  
+	<td colspan=2>Select the fields that should appear for this request</td>
 
 <% @requestdef.available_fields.each do |f| %>
 	<tr>
+		<td></td>
 	    <td><%=check_box_tag f.id, 1, @requestdef.chosen?(f), 
 		:onclick => remote_function(
 		:url => { :action => :save, :id => @requestdef.id }, 
 	    :with => "'field=#{f.id}&amp;show=' + this.checked", 
 		:method => :post ) %>
-		</td>	
-		<td><%=h f.field_name %></td>
-		<td><%=h f.field_label %></td>
+		&nbsp;	
+		<%=h f.field_name %> - 
+		<%=h f.field_label %></td>
 	</tr>
 <% end %>
-</table>
+
