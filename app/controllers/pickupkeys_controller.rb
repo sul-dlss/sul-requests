@@ -1,6 +1,9 @@
 class PickupkeysController < ApplicationController
   def index
-    @pickupkeys = Pickupkey.find(:all,  :order => 'pickup_key')
+
+    @pickupkeys = Pickupkey.find(:all,  :order => 'pickup_key', 
+           :include => :libraries )
+    
   end
   
   # Method create. Save pickup key information in database 

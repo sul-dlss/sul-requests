@@ -14,7 +14,7 @@ class Admin::RequestdefsController < ApplicationController
   def show
   end
 
-  # Method new. Set up and input form for creating a new request def
+  # Method new. Set up an input form for creating a new request def
   def new
     @requestdef = Requestdef.new
     # Note should be able to do this without repeating for edit!!
@@ -22,10 +22,13 @@ class Admin::RequestdefsController < ApplicationController
   end
 
   # Method create. Saves data from new input form in database
+  # Note that we need to go immediately to edit screen after saving new record,
+  # since we need a record ID to allow AJAX selection of fields.
   def create
     @requestdef = Requestdef.new(params[:requestdef])
-    if @requestdef.save
-      redirect_to admin_requestdefs_path
+    if @requestdef.save!
+      redirect_to :action => 'edit', :id => @requestdef
+      # redirect_to admin_requestdefs_path
     else
       render :action => 'new'
     end
@@ -64,6 +67,11 @@ class Admin::RequestdefsController < ApplicationController
     @requestdef.save!
     render :nothing => true
   end  
+  
+  #Method show. Shows single requestdef
+  def show
+    @requestdef = Requestdef.find(params[:id])
+  end
   
   # Method show_fields. Display fields associated with a requestdef
   def show_fields

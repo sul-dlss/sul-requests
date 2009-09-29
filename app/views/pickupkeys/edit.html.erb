@@ -12,20 +12,29 @@
 		<% end %>
 		<%= error_messages_for 'pickupkey' %>
 		
+		The first section on this form defines a pickup library key. 
+		The second section lets you choose pickup libraries for 
+		that key. 
+		<p></p>
 		<% form_for ( @pickupkey ) do |f| %>
 						
 		<table>
 			<tr>
 				<td nowrap valign="top" align="right">Pickup Key:</td>
-			 	<td valign="top"><%= f.text_field :pickup_key %></td>
+			 	<td valign="top" colspan=3><%= f.text_field :pickup_key %></td>
 			 <tr>
 			 <tr>
 				<td nowrap valign="top" align="right">Description:</td>
-				 <td valign="top"><%= f.text_field :pickup_descrip %></td>
+				 <td valign="top" colspan=3><%= f.text_field :pickup_descrip %></td>
 			</tr>
-			 
+			<!--
+			These are separate from the form and are updated dynamically
+			using AJAX 
+			-->
+			<%= render :partial => 'show_libraries', :locals => {:pickupkey => @pickupkey }%>
+ 			 
 			 <tr>		
-				<td colspan=2><%= f.submit 'Save'  %></td>
+				<td colspan=4><%= f.submit 'Save'  %></td>
 			</tr>
 
 			 </table>

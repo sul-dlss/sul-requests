@@ -1,0 +1,26 @@
+  <tr>
+  	<td colspan=4><hr></td>
+  
+  </tr>
+	
+  
+  <tr>
+  	<td>Libraries</td>
+    <th>Select</th>
+    <th>Library Code</th>
+	<th>Label</th>
+  </tr>
+
+<% @pickupkey.available_libraries.each do |l| %>
+	<tr>
+		<td></td>
+	    <td><%=check_box_tag l.id, 1, @pickupkey.chosen?(l), 
+		:onclick => remote_function(
+		:url => save_pickupkey_path(@pickupkey), 
+	    :with => "'library=#{l.id}&amp;show=' + this.checked", 
+		:method => :post ) %>
+		</td>	
+		<td><%=h l.lib_code %></td>
+		<td><%=h l.lib_descrip %></td>
+	</tr>
+<% end %>
