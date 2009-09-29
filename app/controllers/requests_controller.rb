@@ -107,7 +107,11 @@ class RequestsController < ApplicationController
   
   # Method get_user. Get user information, normally from the environment and return as a hash
   def get_user 
-    user = { :patron_name => 'Jonathan Lavigne', :library_id => '2000000603' }
+    if request.env('WEBAUTH_USER')
+      user = { :patron_name => request.env('WEBAUTH_USER'), :library_id => '' }
+    else
+      user = { :patron_name => 'Jonathan Lavigne', :library_id => '2000000603' }
+    end
   
     return user
   end
