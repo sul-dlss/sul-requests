@@ -66,10 +66,24 @@
 			to choose fields. 
 			-->
 			
-			<tr>
-				<td align="right">Fields:</td>  
-				<td colspan=2>You can select fields after you save this record.</td>
-			</tr>
+			<!-- Fields -->
+			
+			<tr> <td align="right">Fields:</td><td>Select the fields that should appear for this request.</td>
+			
+			<% for field in @fields %>
+				<tr>
+					<td></td>
+					<td>
+						<input type="checkbox" 
+						id="<%= field.id %>" 
+						name="field_ids[]" 
+						value="<%= field.id %>"
+						<% if @requestdef.fields.include? field %>checked="checked"<%end%>
+						> <%= field.field_name %> - <%= field.field_label %>
+					</td>
+				
+				</tr>	
+			<% end %>
 			
 			 <tr>
 				<td nowrap valign="top" align="right">Final Text:</td>

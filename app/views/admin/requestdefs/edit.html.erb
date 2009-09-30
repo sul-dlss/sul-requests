@@ -70,10 +70,10 @@
 				<tr>
 					<td></td>
 					<td>
-						<input type="checkbox" .
-						id="<%= field.id %>" .
-						name="field.id" .
-						value=<%= field.id %>".
+						<input type="checkbox" 
+						id="<%= field.id %>" 
+						name="field_ids[]" 
+						value="<%= field.id %>"
 						<% if @requestdef.fields.include? field %>checked="checked"<%end%>
 						> <%= field.field_name %> - <%= field.field_label %>
 					</td>
