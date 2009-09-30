@@ -37,6 +37,7 @@ class Admin::RequestdefsController < ApplicationController
 
   def edit
      @requestdef = Requestdef.find(params[:id])
+     @fields = Field.find(:all)
    end
 
   # Method update. Saves data from edit form in database

@@ -61,12 +61,25 @@
 				<td nowrap valign="top" align="right">Initial Text:</td>
 				 <td valign="top" colspan=2><%= f.text_area :initial_text, :cols => 40, :rows => 10 %></td>
 			</tr>	
+					
+			<!-- Fields -->
 			
-			<!--
-			These are separate from the form and are updated dynamically
-			using AJAX 
-			-->
-			<%= render :partial => 'show_fields', :locals => {:requestdef => @requestdef }%>
+			<tr> <td align="right">Fields:</td><td>Select the fields that should appear for this request.</td>
+			
+			<% for field in @fields %>
+				<tr>
+					<td></td>
+					<td>
+						<input type="checkbox" .
+						id="<%= field.id %>" .
+						name="field.id" .
+						value=<%= field.id %>".
+						<% if @requestdef.fields.include? field %>checked="checked"<%end%>
+						> <%= field.field_name %> - <%= field.field_label %>
+					</td>
+				
+				</tr>	
+			<% end %>
 			
 
 			 <tr>
