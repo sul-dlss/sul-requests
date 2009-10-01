@@ -41,8 +41,8 @@ class RequestsController < ApplicationController
     ['Physics', 'PHYSICS']
     ]
     # Get the form type and then the text for the form
-    form_type = get_form_type( params[:home_lib], params[:current_loc], params[:req_type])
-    @form = Form.find_by_form_id( form_type )
+    form_def = get_form_def( params[:home_lib], params[:current_loc], params[:req_type])
+    @form = Form.find_by_form_id( form_def ) # change this when the rest is set up
         
   end
  
@@ -152,7 +152,21 @@ class RequestsController < ApplicationController
   
   # Method get_form_text. Take a key of some sort and return a hash of text elements to use in the form
   # that are fetched from a database where different form types are defined
-  def get_form_type ( home_lib, current_lib, req_type )
+  def get_form_def ( home_lib, current_loc, req_type )
+    
+    # First figure out whether we have a generic SUL library or a special library
+
+    if home_lib.upcase != 'HOOVER' && home_lib.upcase != 'LAW' && home_lib.upcase[0..2] != 'SAL'
+      home_lib = 'SUL'
+    end
+    
+    # Then figure out if the location should be ANY or something special
+    # Need to think more about this. Not sure what locs should fall through here and
+    # whether 'ANY' is what we need
+
+    if current_loc.upcase != 'CHECKEDOUT' && current_loc.upcase != 'STACKS'
+      current_loc = 'ANY'     
+    end
     
     # For the moment just send back the req_type we get in
     form_type = req_type
@@ -161,7 +175,7 @@ class RequestsController < ApplicationController
     
  
     
-    return form_type   
+    return form_def   
     
   end
   
