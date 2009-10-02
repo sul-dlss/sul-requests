@@ -15,6 +15,10 @@ class RequestsController < ApplicationController
     user = get_user
     @request.patron_name = user[:patron_name]
     @request.library_id = user[:library_id]
+    # Get the form type and then the text for the form
+    form_def = get_form_def( params[:home_lib], params[:current_loc], params[:req_type])
+    @form = Form.find_by_form_id( form_def ) # change this when the rest is set up
+    #
     @request.item = get_bib_info(params[:ckey])
     @request.ckey = (params[:ckey])
     @request.req_type = (params[:req_type])
@@ -152,7 +156,7 @@ class RequestsController < ApplicationController
   
   # Method get_form_text. Take a key of some sort and return a hash of text elements to use in the form
   # that are fetched from a database where different form types are defined
-  def get_form_def ( home_lib, current_loc, req_type )
+  def get_form_def( home_lib, current_loc, req_type )
     
     # First figure out whether we have a generic SUL library or a special library
 
@@ -169,7 +173,7 @@ class RequestsController < ApplicationController
     end
     
     # For the moment just send back the req_type we get in
-    form_type = req_type
+    form_def = req_type
    
     # Need quite a lot logic here to figure out which request type we have 
     
