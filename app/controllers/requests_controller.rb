@@ -19,6 +19,10 @@ class RequestsController < ApplicationController
     form_def = get_form_def( params[:home_lib], params[:current_loc], params[:req_type])
     @form = Form.find_by_form_id( form_def ) # change this when the rest is set up
     #
+    pickupkey = get_pickup_key( params[:home_lib], params[:current_loc], params[:req_type])
+        
+    @pickup_libs_arr = get_pickup_libs( pickupkey)
+    
     @request.item = get_bib_info(params[:ckey])
     @request.ckey = (params[:ckey])
     @request.req_type = (params[:req_type])
@@ -29,21 +33,21 @@ class RequestsController < ApplicationController
     @request.home_lib = (params[:home_lib])
     @request.current_loc = (params[:current_loc])
     @request.item_id = (params[:item_id])
-    @pickup_libs_arr =  [['[Select One From List Below]', 'NONE'],
-    ['Art', 'ART'],
-    ['Biology [Falconer]', 'BIOLOGY'],
-    ['Chemistry/Chemical Engineering [Swain]', 'CHEMCHMENG'],
-    ['Earth Sciences [Branner]', 'EARTH-SCI'],
-    ['East Asia Library', 'EAST-ASIA'],
-    ['Education [Cubberley]', 'EDUCATION'],
-    ['Engineering', 'ENG'],
-    ['Green [Humanities, Social Sciences]', 'GREEN'],
-    ['Hopkins Marine Station Library [Miller]', 'HOPKINS'],
-    ['Law [Crown]', 'LAW'],
-    ['Math And Computer Science', 'MATH-CS'],
-    ['Music', 'MUSIC'],
-    ['Physics', 'PHYSICS']
-    ]
+    #@pickup_libs_arr =  [['[Select One From List Below]', 'NONE'],
+    #['Art', 'ART'],
+    #['Biology [Falconer]', 'BIOLOGY'],
+    #['Chemistry/Chemical Engineering [Swain]', 'CHEMCHMENG'],
+    #['Earth Sciences [Branner]', 'EARTH-SCI'],
+    #['East Asia Library', 'EAST-ASIA'],
+    #['Education [Cubberley]', 'EDUCATION'],
+    #['Engineering', 'ENG'],
+    #['Green [Humanities, Social Sciences]', 'GREEN'],
+    #['Hopkins Marine Station Library [Miller]', 'HOPKINS'],
+    #['Law [Crown]', 'LAW'],
+    #['Math And Computer Science', 'MATH-CS'],
+    #['Music', 'MUSIC'],
+    #['Physics', 'PHYSICS']
+    #]
     # Get the form type and then the text for the form
     form_def = get_form_def( params[:home_lib], params[:current_loc], params[:req_type])
     @form = Form.find_by_form_id( form_def ) # change this when the rest is set up
@@ -183,11 +187,63 @@ class RequestsController < ApplicationController
     
   end
   
+  def get_pickup_key( home_lib, current_loc, req_type )
+    
+    pickupkey = ''
+    
+    # Need to check whether this covers every case
+    
+    if home_lib.upcase ==  'HOOVER' || home_lib.upcase == 'LAW'
+      pickupkey = home_lib
+    elsif current_loc[0..4] == 'PAGE-'
+      pickupkey = current_loc[5..current_loc.length]
+    elseif req_type[0..7] == 'SAL3-TO-'
+      pickupkey = req_type[8..req_type.length]      
+    end
+    
+    if pickupkey.blank?
+      pickupkey = 'ALL'
+    end
+    
+    return pickupkey
+    
+  end
+  
+  # Method get_pickup_libs. Take a pickupkey and return an array of one
+  # or more pickuplibs. Should have both lib code and label
+  def get_pickup_libs( pickupkey)
+    
+
+    # Need to work on this. It does not act as an array. Instead, all
+    # I get back is some sort of object reference "#Library:oxABSCE"
+    # None of the commented stuff works either
+
+    #pickuplibs = Array.new
+    #@pickupkey = Pickupkey.find_all_by_pickup_key(pickupkey)
+    #pickuplibs = @pickupkey.libraries = Library.find(params[:library_ids]) if params[:library_ids]
+    
+    # See http://www.3till7.net/2006/11/22/the-many-methods-to-find-things-in-rails/
+    # Seems to generate the correct SQL but I can't get the data to display!!
+
+    @pickuplibs = Pickupkey.find_all_by_pickup_key( pickupkey, 
+          :include => :libraries
+          #:order => libraries.lib_descrip.upcase
+          ).map( &:libraries )
+      
+    #for pickuplib in pickuplibs
+    #  puts pickuplib.libraries.lib_code
+    #end
+    
+    return @pickuplibs
+    #return @pickupkey.libraries
+    
+  end
+  
   # Method get_form_elements. Need to think about this. Should we put all information in 
   # a request_type structure, since we need to take data from what we now have in both request_type
   # and form structures. Seems like we shouldn't necessary repeat the data structures we have now if
   # they're not going to make sense. 
-  def get_form_elements( home_lib, current_lib, req_type )
+  def get_form_elements( home_lib, current_loc, req_type )
     
     
     
