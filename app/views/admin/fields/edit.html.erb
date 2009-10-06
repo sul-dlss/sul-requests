@@ -11,22 +11,25 @@
 			<div id="notification"><%= flash[:notice] %></div>
 		<% end %>
 		<%= error_messages_for 'field' %>
+		
+		Use this form to change the label for a field that appears on request forms. Any change you
+		make here affects all the forms on which the field appears. You cannot change the field
+		name.
+		<p></p>
+		
 		<% form_for ( [:admin, @field ] ) do |f| %>
 
 		<table>
 			<tr>
 				<td nowrap valign="top" align="right">Name:</td>
-			 	<td valign="top"><%= f.text_field :field_name %></td>
+			 	<td valign="top"><%= @field.field_name %></td>
 			 <tr>
 
 			 <tr>
 				<td nowrap valign="top" align="right">Label:</td>
 				 <td valign="top"><%= f.text_field :field_label %></td>
 			</tr>			
-			 <tr>
-				<td nowrap valign="top" align="right">Order:</td>
-				 <td valign="top"><%= f.text_field :field_order %></td>
-			</tr>			
+		
 			<tr>		
 				<td colspan=2><%= f.submit 'Save'  %></td>
 			</tr>

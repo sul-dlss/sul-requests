@@ -12,6 +12,14 @@
 			<div id="notification"><%= flash[:notice] %></div>
 		<% end %>
 		<%= error_messages_for 'requestdef' %>
+		
+		<p>This form lets you define a new type of request.</p> 
+		<strong>Note:</strong> Since request definitions depend on 
+		information used in Symphony and may also require changes to the request application code,
+		you should not add a new definition unless you're sure all the requirements have been
+		met. 
+		
+		<p></p>
 		<% form_for ( [:admin, @requestdef ]) do |f| %>
 
 		<table>

@@ -21,10 +21,8 @@ class RequestsController < ApplicationController
     
     # Get the request definition, form elements, and list of fields
     request_def = get_form_def( params[:home_lib], params[:current_loc], params[:req_type])
-    # @form = Form.find_by_form_id( form_def ) # change this when the rest is set up
     @requestdef = Requestdef.find_by_name( request_def )
-    #@requestdef = Requestdef.find( :all, :conditions => ['requestdefs.name == ?', request_def], :include => :fields )
-    @fields = get_fields_for_requestdef( request_def )
+    @fields = get_fields_for_requestdef( @requestdef )
     
     # Get the pickupkey then the pickup_libs
     pickupkey = get_pickup_key( params[:home_lib], params[:current_loc], params[:req_type])       
@@ -232,16 +230,10 @@ class RequestsController < ApplicationController
 
   def get_fields_for_requestdef( request_def )
     
-    fields = Field.find(:all,
-      :select => 'fields.field_name, fields.field_label',
-      :conditions => ['requestdefs.name == ?', request_def],
-      :joins => [:requestdefs]   
-      )
+    fields_hash = {}
     
-    fields_hash = Hash.new
-    
-    for field in fields
-      fields_hash.merge!({field.field_name => field.field_label})
+    request_def.fields.each do |f|
+      fields_hash.merge!({f.field_name => f.field_label})
     end    
     
     return fields_hash

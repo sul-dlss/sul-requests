@@ -12,6 +12,14 @@
 		<% end %>
 		<%= error_messages_for 'field' %>
 		<% form_for ( [:admin, @field ]) do |f| %>
+		
+		<p>
+		This form is for adding information about fields that appear on request forms.
+		It is not generally for use by staff, since field names must match strings already used
+		in various places in the request application code. You can, however, change field labels,
+		if you wish, by editing the record for 
+		<%= link_to 'an existing field', admin_fields_path %>
+		</p>
 
 		<table>
 			<tr>
@@ -22,11 +30,6 @@
 				<td nowrap valign="top" align="right">Field Label:</td>
 				 <td valign="top"><%= f.text_field :field_label %></td>
 			</tr>			
-			 <tr>
-				<td nowrap valign="top" align="right">Field Order:</td>
-				 <td valign="top"><%= f.text_field :field_order %></td>
-			</tr>			
-	
 				
 			<tr>		
 				<td colspan=2><%= submit_tag "Save"  %></td>

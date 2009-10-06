@@ -26,6 +26,7 @@
   <tr>
     <th>Pickup Key</th>
 	<th>Description</th>
+	<th>Libraries</th>
   </tr>
 
 <% for pickupkey in @pickupkeys %>
@@ -33,7 +34,10 @@
     <td><%=h pickupkey.pickup_key %></td>
     <td><%=h pickupkey.pickup_descrip %></td>
 	
-	<!-- <td><%=h pickupkey.libraries %> </td> -->	
+	
+	
+	<td><%=h get_lib_codes_for_pickupkeys( pickupkey.libraries ) %></td>
+	
 		
 
 	
