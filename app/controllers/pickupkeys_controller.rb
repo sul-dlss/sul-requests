@@ -15,13 +15,18 @@ class PickupkeysController < ApplicationController
     end
   end
   
+  # Method edit. Provide the pickupkey identified by the ID passed in 
+  # and all libraries. Selected libraries are handled by the view
   def edit
     @pickupkey = Pickupkey.find(params[:id])
+    @libraries = Library.find(:all)
   end
   
-  # Method update. Saves changes from edit form in database
+  # Method update. Saves changes from edit form in database. The second line
+  # takes care of updating the linking table for any select libraries
   def update
     @pickupkey = Pickupkey.find(params[:id])
+    @pickupkey.libraries = Library.find(params[:library_ids]) if params[:library_ids]
     if @pickupkey.update_attributes(params[:pickupkey])
       # redirect_to :action => 'show', :id => @pickupkey
       redirect_to pickupkeys_path

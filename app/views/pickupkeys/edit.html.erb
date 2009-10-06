@@ -27,11 +27,27 @@
 				<td nowrap valign="top" align="right">Description:</td>
 				 <td valign="top" colspan=3><%= f.text_field :pickup_descrip %></td>
 			</tr>
-			<!--
-			These are separate from the form and are updated dynamically
-			using AJAX 
-			-->
-			<%= render :partial => 'show_libraries', :locals => {:pickupkey => @pickupkey }%>
+
+ 			<!-- Libraries -->
+			
+			<tr> <td align="right">Libraries:</td><th>Select</th><th>Library Code</th><th>Label</th></tr>
+			
+			<% for library in @libraries %>
+				<tr>
+					<td></td>
+					<td>
+						<input type="checkbox" 
+						id="<%= library.id %>" 
+						name="library_ids[]" 
+						value="<%= library.id %>"
+						<% if @pickupkey.libraries.include? library %>checked="checked"<%end%>
+						></td><td> <%= library.lib_code %></td><td><%= library.lib_descrip %></td>			
+				</tr>	
+			<% end %>
+ 
+ 
+ 
+ 
  			 
 			 <tr>		
 				<td colspan=4><%= f.submit 'Save'  %></td>

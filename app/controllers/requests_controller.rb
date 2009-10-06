@@ -12,17 +12,25 @@ class RequestsController < ApplicationController
     # Do not need session ID
     #@request.session_id = get_symphony_session(params[:library], params[:req_type])
     #@request.session_id = get_symphony_session('GREEN', 'REQ-HOLD')
+    
+    # Get user information
     user = get_user
     @request.patron_name = user[:patron_name]
+    @request.patron_email = user[:patron_email]
     @request.library_id = user[:library_id]
-    # Get the form type and then the text for the form
-    form_def = get_form_def( params[:home_lib], params[:current_loc], params[:req_type])
-    @form = Form.find_by_form_id( form_def ) # change this when the rest is set up
-    #
-    pickupkey = get_pickup_key( params[:home_lib], params[:current_loc], params[:req_type])
-        
-    @pickup_libs_arr = get_pickup_libs( pickupkey)
     
+    # Get the request definition, form elements, and list of fields
+    request_def = get_form_def( params[:home_lib], params[:current_loc], params[:req_type])
+    # @form = Form.find_by_form_id( form_def ) # change this when the rest is set up
+    @requestdef = Requestdef.find_by_name( request_def )
+    #@requestdef = Requestdef.find( :all, :conditions => ['requestdefs.name == ?', request_def], :include => :fields )
+    @fields = get_fields_for_requestdef( request_def )
+    
+    # Get the pickupkey then the pickup_libs
+    pickupkey = get_pickup_key( params[:home_lib], params[:current_loc], params[:req_type])       
+    @pickup_libs_hash = get_pickup_libs( pickupkey)
+    
+    # Get remaining fields from parameters
     @request.item = get_bib_info(params[:ckey])
     @request.ckey = (params[:ckey])
     @request.req_type = (params[:req_type])
@@ -33,25 +41,7 @@ class RequestsController < ApplicationController
     @request.home_lib = (params[:home_lib])
     @request.current_loc = (params[:current_loc])
     @request.item_id = (params[:item_id])
-    #@pickup_libs_arr =  [['[Select One From List Below]', 'NONE'],
-    #['Art', 'ART'],
-    #['Biology [Falconer]', 'BIOLOGY'],
-    #['Chemistry/Chemical Engineering [Swain]', 'CHEMCHMENG'],
-    #['Earth Sciences [Branner]', 'EARTH-SCI'],
-    #['East Asia Library', 'EAST-ASIA'],
-    #['Education [Cubberley]', 'EDUCATION'],
-    #['Engineering', 'ENG'],
-    #['Green [Humanities, Social Sciences]', 'GREEN'],
-    #['Hopkins Marine Station Library [Miller]', 'HOPKINS'],
-    #['Law [Crown]', 'LAW'],
-    #['Math And Computer Science', 'MATH-CS'],
-    #['Music', 'MUSIC'],
-    #['Physics', 'PHYSICS']
-    #]
-    # Get the form type and then the text for the form
-    form_def = get_form_def( params[:home_lib], params[:current_loc], params[:req_type])
-    @form = Form.find_by_form_id( form_def ) # change this when the rest is set up
-        
+         
   end
  
   # Method create. Send user input to Oracle stored procedure that creates
@@ -87,7 +77,7 @@ class RequestsController < ApplicationController
   def confirm
   end
   
-  # Protected methods from here 
+  # ================ Protected methods from here ====================
   protected
  
   # Method get_symphony_session. Take a library name and a request type, send information to 
@@ -117,9 +107,9 @@ class RequestsController < ApplicationController
   def get_user 
     
     if request.env['WEBAUTH_USER'].blank?
-      user = { :patron_name => 'Jonathan Lavigne', :library_id => '2000000603' }
+      user = { :patron_name => 'Jonathan Lavigne', :library_id => '2000000603', :patron_email => 'jlavigne@stanford.edu' }
     else
-      user = { :patron_name => request.env['WEBAUTH_USER'], :library_id => '' }
+      user = { :patron_name => request.env['WEBAUTH_USER'], :library_id => '', :patron_email => '' }
     end
   
     return user
@@ -177,7 +167,7 @@ class RequestsController < ApplicationController
     end
     
     # For the moment just send back the req_type we get in
-    form_def = req_type
+    form_def = 'SAL3'
    
     # Need quite a lot logic here to figure out which request type we have 
     
@@ -197,7 +187,7 @@ class RequestsController < ApplicationController
       pickupkey = home_lib
     elsif current_loc[0..4] == 'PAGE-'
       pickupkey = current_loc[5..current_loc.length]
-    elseif req_type[0..7] == 'SAL3-TO-'
+    elsif req_type[0..7] == 'SAL3-TO-'
       pickupkey = req_type[8..req_type.length]      
     end
     
@@ -209,35 +199,59 @@ class RequestsController < ApplicationController
     
   end
   
-  # Method get_pickup_libs. Take a pickupkey and return an array of one
+  # Method get_pickup_libs. Take a pickupkey and return an hash of one
   # or more pickuplibs. Should have both lib code and label
   def get_pickup_libs( pickupkey)
+       
+    # See http://apidock.com/rails/ActiveRecord/Base/find/class
+    # Example find by associated table
     
-
-    # Need to work on this. It does not act as an array. Instead, all
-    # I get back is some sort of object reference "#Library:oxABSCE"
-    # None of the commented stuff works either
-
-    #pickuplibs = Array.new
-    #@pickupkey = Pickupkey.find_all_by_pickup_key(pickupkey)
-    #pickuplibs = @pickupkey.libraries = Library.find(params[:library_ids]) if params[:library_ids]
-    
-    # See http://www.3till7.net/2006/11/22/the-many-methods-to-find-things-in-rails/
-    # Seems to generate the correct SQL but I can't get the data to display!!
-
-    @pickuplibs = Pickupkey.find_all_by_pickup_key( pickupkey, 
-          :include => :libraries
-          #:order => libraries.lib_descrip.upcase
-          ).map( &:libraries )
+    pickup_libs = Library.find(:all,
+      :select => 'libraries.lib_code, libraries.lib_descrip',
+      :conditions => ['pickupkeys.pickup_key == ?', pickupkey],
+      :joins => [:pickupkeys],
+      :order => 'libraries.lib_code'   
+      )
       
-    #for pickuplib in pickuplibs
-    #  puts pickuplib.libraries.lib_code
-    #end
+    # Now we put into a hash and return it sorted. Seems like there should
+    # be an easier way of getting the list of libraries!! 
+      
+    pickup_libs_hash = Hash.new
     
-    return @pickuplibs
-    #return @pickupkey.libraries
+    for pickuplib in pickup_libs
+      pickup_libs_hash.merge!({pickuplib.lib_descrip => pickuplib.lib_code})  
+    end  
+
+    return pickup_libs_hash.sort
     
   end
+  
+  # Method get_fields_for_requestdef. Take a requestdef name and return a hash
+  # of fields for that requestdef. Again this seems rather complicated but 
+  # couldn't see anyway to get fields when we get @requestdef
+
+  def get_fields_for_requestdef( request_def )
+    
+    fields = Field.find(:all,
+      :select => 'fields.field_name, fields.field_label',
+      :conditions => ['requestdefs.name == ?', request_def],
+      :joins => [:requestdefs]   
+      )
+    
+    fields_hash = Hash.new
+    
+    for field in fields
+      fields_hash.merge!({field.field_name => field.field_label})
+    end    
+    
+    return fields_hash
+    
+  end
+  
+
+
+
+
   
   # Method get_form_elements. Need to think about this. Should we put all information in 
   # a request_type structure, since we need to take data from what we now have in both request_type
@@ -276,6 +290,6 @@ class RequestsController < ApplicationController
     hash.each {|a,b| keys << [a.to_s, b.to_s].join(delim_1)}
     return keys.join(delim_2)
   end
-
+  
 
 end

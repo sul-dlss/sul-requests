@@ -5,6 +5,7 @@ class Request < ActiveRecord::Base
   column :call_num, :string
   column :item, :array
   column :patron_name, :string
+  column :patron_email, :string
   column :library_id, :string
   column :sunet_id, :string
   column :pickup_lib, :array
