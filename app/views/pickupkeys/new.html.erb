@@ -11,6 +11,14 @@
 			<div id="notification"><%= flash[:notice] %></div>
 		<% end %>
 		<%= error_messages_for 'pickupkey' %>
+		
+		Use this form to add a new pickup library key, which can be used to define pickup libraries
+		for various requests. In general, a key should be a library code used in Symphony
+		(e.g., "HOOVER", "LAW"), the string that comes after "PAGE-" in SAL3 "PAGE-XXX" locations 
+		(e.g., "MU" from "PAGE-MU"), or the string that comes after "SAL3-T0-" in request types like
+		"SAL3-TO-BR" (for which the pickup key would be "BR").
+		<P></P>
+		
 		<% form_for (:pickupkey, @pickupkey, :url => { :action => 'create'}) do |f| %>
 					
 		<table>
