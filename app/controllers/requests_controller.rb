@@ -173,11 +173,11 @@ class RequestsController < ApplicationController
       # --------------- HOLD
       if req_type.upcase == 'REQ-HOLD'  
         
-        if library.upcase == 'HOOVER'
+        if home_lib.upcase == 'HOOVER'
           
           req_def = 'HOLD-HOV'
           
-        elsif library.upcase == 'LAW'
+        elsif home_lib.upcase == 'LAW'
           
           req_def = 'HOLD-LAW'
           
@@ -185,24 +185,24 @@ class RequestsController < ApplicationController
           
           reg_def = 'HOLD-SUL'
           
-        end # library choice
+        end # home_lib choice
       
       # --------------- RECALL
       
       elsif req_type.upcase == 'RECALL'  
         
-        if library.upcase == 'HOOVER'
+        if home_lib.upcase == 'HOOVER'
           
           req_def = 'RECALL-HOV'
           
-        elsif library.upcase == 'LAW'
+        elsif home_lib.upcase == 'LAW'
           
           req_def = 'RECALL-LAW'
           
         else 
           req_def = 'RECALL-SUL'
           
-        end # library choice
+        end # home_lib choice
         
       end 
       
@@ -210,33 +210,33 @@ class RequestsController < ApplicationController
   
     elsif current_loc.upcase == 'INPROCESS' || current_loc.upcase == 'UNCAT'
     
-      if library.upcase == 'HOOVER'
+      if home_lib.upcase == 'HOOVER'
           
           req_def = 'INP-HOV'
           
-      elsif library.upcase == 'LAW'
+      elsif home_lib.upcase == 'LAW'
           
           req_def = 'INP-LAW'
           
       else 
           req_def = 'INP-SUL'
           
-      end # library choice  
+      end # home_lib choice  
         
     elsif current_loc.upcase == 'ON-ORDER'
       
-      if library.upcase == 'HOOVER'
+      if home_lib.upcase == 'HOOVER'
           
           req_def = 'ORD-HOV'
           
-      elsif library.upcase == 'LAW'
+      elsif home_lib.upcase == 'LAW'
           
           req_def = 'ORD-LAW'
           
       else 
           req_def = 'ORD-SUL'
           
-      end # library choice        
+      end # home_lib choice        
 
     #=============== STACKS - this is more involved & seems to depend on req_type 
     
