@@ -1,5 +1,7 @@
 class RequestsController < ApplicationController
   
+ 
+
     
   def index
   end
@@ -20,7 +22,7 @@ class RequestsController < ApplicationController
     @request.library_id = user[:library_id]
     
     # Get the request definition, form elements, and list of fields
-    request_def = get_form_def( params[:home_lib], params[:current_loc], params[:req_type])
+    request_def = get_req_def( params[:home_lib], params[:current_loc], params[:req_type])
     @requestdef = Requestdef.find_by_name( request_def )
     @fields = get_fields_for_requestdef( @requestdef )
     
@@ -116,11 +118,12 @@ class RequestsController < ApplicationController
   # Method get_bib_info. Take a ckey and return array of bib info to display on the form. 
   def get_bib_info( ckey )
     require 'marc'
-    require 'open-uri'
+    require 'rubygems'
+    require 'net/http'
     
-    # Read the record and change to array
-    reader = MARC::XMLReader.new(open('http://searchworks-test.stanford.edu/view/' + ckey + '.xml') ).to_a
-    
+    # Read the record and change to array; specify nokogiri as parser
+
+    reader = MARC::XMLReader.new(StringIO.new(Net::HTTP.get(URI.parse('http://searchworks-test.stanford.edu/view/' + ckey + '.xml'))), :parser=>'nokogiri').to_a
     record = reader[0] # Should have only record, since we used CKEY
 
     # Set up fields to get and bib_info string
@@ -148,7 +151,10 @@ class RequestsController < ApplicationController
   
   # Method get_form_text. Take a key of some sort and return a hash of text elements to use in the form
   # that are fetched from a database where different form types are defined
-  def get_form_def( home_lib, current_loc, req_type )
+  # NEEDS WORK, since it's not returning the proper data
+  def get_req_def( home_lib, current_loc, req_type )
+    
+    req_def = ''
     
     # First figure out whether we have a generic SUL library or a special library
 
@@ -156,22 +162,125 @@ class RequestsController < ApplicationController
       home_lib = 'SUL'
     end
     
-    # Then figure out if the location should be ANY or something special
-    # Need to think more about this. Not sure what locs should fall through here and
-    # whether 'ANY' is what we need
+    # Main criterion is current_loc, with everything else depending on that
 
-    if current_loc.upcase != 'CHECKEDOUT' && current_loc.upcase != 'STACKS'
-      current_loc = 'ANY'     
+    # =============== CHECKEDOUT
+    
+    if current_loc.upcase == 'CHECKEDOUT'
+      
+      # Req type can be either REQ-HOLD or REQ-REQ-RECALL
+      
+      # --------------- HOLD
+      if req_type.upcase == 'REQ-HOLD'  
+        
+        if library.upcase == 'HOOVER'
+          
+          req_def = 'HOLD-HOV'
+          
+        elsif library.upcase == 'LAW'
+          
+          req_def = 'HOLD-LAW'
+          
+        else 
+          
+          reg_def = 'HOLD-SUL'
+          
+        end # library choice
+      
+      # --------------- RECALL
+      
+      elsif req_type.upcase == 'RECALL'  
+        
+        if library.upcase == 'HOOVER'
+          
+          req_def = 'RECALL-HOV'
+          
+        elsif library.upcase == 'LAW'
+          
+          req_def = 'RECALL-LAW'
+          
+        else 
+          req_def = 'RECALL-SUL'
+          
+        end # library choice
+        
+      end 
+      
+    # ============= INPROCESS 
+  
+    elsif current_loc.upcase == 'INPROCESS' || current_loc.upcase == 'UNCAT'
+    
+      if library.upcase == 'HOOVER'
+          
+          req_def = 'INP-HOV'
+          
+      elsif library.upcase == 'LAW'
+          
+          req_def = 'INP-LAW'
+          
+      else 
+          req_def = 'INP-SUL'
+          
+      end # library choice  
+        
+    elsif current_loc.upcase == 'ON-ORDER'
+      
+      if library.upcase == 'HOOVER'
+          
+          req_def = 'ORD-HOV'
+          
+      elsif library.upcase == 'LAW'
+          
+          req_def = 'ORD-LAW'
+          
+      else 
+          req_def = 'ORD-SUL'
+          
+      end # library choice        
+
+    #=============== STACKS - this is more involved & seems to depend on req_type 
+    
+    elsif current_loc.upcase == 'STACKS'
+    
+      if req_type.upcase == 'REQ-HOP'
+        
+        req_def = 'REQ-HOPKINS'
+        
+      elsif req_type.upcase == 'REQ-SAL'
+        
+        req_def = 'SAL'
+        
+      elsif req_type.upcase == 'REQ-SAL3'
+      
+        req_def = 'SAL3'
+      
+      elsif req_type.upcase == 'SAL-TO-BR'
+      
+        req_def = 'SAL3-TO-BR'
+        
+      elsif req_type.upcase == 'SAL-TO-HA'
+        
+        req_def = 'SAL3-TO-HA'
+ 
+      elsif req_type.upcase == 'SAL-TO-HL'
+        
+        req_def = 'SAL3-TO-HL' 
+        
+      elsif req_type.upcase == 'SAL-TO-SP'
+        
+        req_def = 'SAL3-TO-SP'
+        
+      end # -- req_type choices
+      
+    end # -- current_loc choices
+    
+    # Temporary - just so we don't get nil
+    if req_def == ''
+      req_def = 'SAL3'
     end
     
-    # For the moment just send back the req_type we get in
-    form_def = 'SAL3'
-   
-    # Need quite a lot logic here to figure out which request type we have 
     
- 
-    
-    return form_def   
+    return req_def   
     
   end
   
