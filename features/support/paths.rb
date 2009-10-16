@@ -10,6 +10,9 @@ module NavigationHelpers
     
     when /the home\s?page/
       '/'
+      
+    when /requests/
+      '/requests'
     
     # Add more mappings here.
     # Here is a more fancy example:
