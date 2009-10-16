@@ -156,6 +156,10 @@ class RequestsController < ApplicationController
     
     req_def = ''
     
+    puts "home_lib is: " + home_lib
+    puts "current_loc is: " + current_loc
+    puts "req_type is: " + req_type
+    
     # First figure out whether we have a generic SUL library or a special library
 
     if home_lib.upcase != 'HOOVER' && home_lib.upcase != 'LAW' && home_lib.upcase[0..2] != 'SAL'
@@ -183,7 +187,7 @@ class RequestsController < ApplicationController
           
         else 
           
-          reg_def = 'HOLD-SUL'
+          req_def = 'HOLD-SUL'
           
         end # home_lib choice
       
@@ -273,12 +277,7 @@ class RequestsController < ApplicationController
       end # -- req_type choices
       
     end # -- current_loc choices
-    
-    # Temporary - just so we don't get nil
-    if req_def == ''
-      req_def = 'SAL3'
-    end
-    
+       
     
     return req_def   
     
