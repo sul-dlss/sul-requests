@@ -18,7 +18,7 @@ class PickupkeysController < ApplicationController
   # and all libraries. Selected libraries are handled by the view
   def edit
     @pickupkey = Pickupkey.find(params[:id])
-    @libraries = Library.find(:all)
+    @libraries = Library.find(:all, :order => 'lib_code')
   end
   
   # Method update. Saves changes from edit form in database. The second line

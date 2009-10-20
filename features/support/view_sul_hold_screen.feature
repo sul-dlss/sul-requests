@@ -6,6 +6,5 @@ with the appropriate parameters
 
 
 Scenario: When location is CHECKEDOUT etc. I should see a Hold screen etc.
-  When I go to requests/new
-  And I fill in current_loc with CHECKEDOUT
+  When I follow request/new?req_type=CHECKEDOUT
   Then I should see "HOLD for SUL"

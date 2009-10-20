@@ -193,7 +193,7 @@ class RequestsController < ApplicationController
       
       # --------------- RECALL
       
-      elsif req_type.upcase == 'RECALL'  
+      elsif req_type.upcase == 'REQ-RECALL'  
         
         if home_lib.upcase == 'HOOVER'
           
@@ -244,7 +244,9 @@ class RequestsController < ApplicationController
 
     #=============== STACKS - this is more involved & seems to depend on req_type 
     
-    elsif current_loc.upcase == 'STACKS'
+    elsif current_loc.upcase == 'STACKS' || current_loc =~ /.*?\-30$/ ||
+
+      current_loc =~ /^PAGE-/ 
     
       if req_type.upcase == 'REQ-HOP'
         
@@ -258,19 +260,19 @@ class RequestsController < ApplicationController
       
         req_def = 'SAL3'
       
-      elsif req_type.upcase == 'SAL-TO-BR'
+      elsif req_type.upcase == 'SAL3-TO-BR'
       
         req_def = 'SAL3-TO-BR'
         
-      elsif req_type.upcase == 'SAL-TO-HA'
+      elsif req_type.upcase == 'SAL3-TO-HA'
         
         req_def = 'SAL3-TO-HA'
  
-      elsif req_type.upcase == 'SAL-TO-HL'
+      elsif req_type.upcase == 'SAL3-TO-HL'
         
         req_def = 'SAL3-TO-HL' 
         
-      elsif req_type.upcase == 'SAL-TO-SP'
+      elsif req_type.upcase == 'SAL3-TO-SP'
         
         req_def = 'SAL3-TO-SP'
         

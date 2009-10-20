@@ -7,6 +7,7 @@ class Request < ActiveRecord::Base
   column :patron_name, :string
   column :patron_email, :string
   column :library_id, :string
+  column :univ_id, :string
   column :sunet_id, :string
   column :pickup_lib, :array
   column :home_lib, :string
