@@ -13,6 +13,9 @@ module NavigationHelpers
       
     when /requests/
       '/requests'
+      
+    when /requests\/(.*)/
+      '/requests/$1'
     
     # Add more mappings here.
     # Here is a more fancy example:
