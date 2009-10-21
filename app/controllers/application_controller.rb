@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   protected 
   
   def is_authenticated?
-    if ! ENV['WEBAUTH_USER'].nil?
+    if ENV['WEBAUTH_USER'] != nil
       return true
     else
       redirect_to '/requests/not_authenticated'
