@@ -1,4 +1,7 @@
 class Admin::FieldsController < ApplicationController
+  
+  before_filter :is_authenticated?
+  
   def index
     @fields = Field.find(:all,  :order => 'field_order')
   end

@@ -5,6 +5,18 @@ class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
+  # ================ Protected methods from here ====================
+  protected 
+  
+  def is_authenticated?
+    if ! ENV['WEBAUTH_USER'].nil?
+      return true
+    else
+      redirect_to '/requests/not_authenticated'
+    end
+  end 
+    
+
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
 end

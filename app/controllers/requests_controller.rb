@@ -1,7 +1,4 @@
 class RequestsController < ApplicationController
-  
- 
-
     
   def index
   end
@@ -76,6 +73,13 @@ class RequestsController < ApplicationController
   # Method confirm. 
   def confirm
   end
+
+   # Method not_authenticated. Just show not_authenticated page
+   def not_authenticated
+     render :template => "requests/not_authenticated"
+   end
+
+
   
   # ================ Protected methods from here ====================
   protected

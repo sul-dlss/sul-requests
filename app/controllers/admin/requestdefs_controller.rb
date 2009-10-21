@@ -1,5 +1,6 @@
 class Admin::RequestdefsController < ApplicationController
   
+  before_filter :is_authenticated?
   before_filter :get_lib_list, :only => [:new, :edit ]
   
    # Class instance variable used for new and edit below
