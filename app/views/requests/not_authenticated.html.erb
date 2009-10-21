@@ -6,6 +6,9 @@
 	</head>
 	<body>
 		<h1>Not Authorized or Authenticated</h1>
+		<% unless flash[:notice].blank?%>
+			<div id="notification"><%= flash[:notice] %></div>
+		<% end %>		
 		Sorry, you are not authorized or authenticated to carry out this action.
 		<br>
 		SUNet ID: <%= request.env['WEBAUTH_USER'] %>
