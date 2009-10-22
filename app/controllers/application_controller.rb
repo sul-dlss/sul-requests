@@ -9,7 +9,8 @@ class ApplicationController < ActionController::Base
   protected 
   
   def is_authenticated?
-    if request.env['WEBAUTH_USER'] != nil
+    auth_users = [ 'ssklar']
+    if request.env['WEBAUTH_USER'] != nil && auth_users.Contains(request.env['WEBAUTH_USER'])
       return true
     else
          flash[:notice] = "webauth_user env var is " + request.env['WEBAUTH_USER']
