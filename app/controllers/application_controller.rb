@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   protected 
   
   def is_authenticated?
-    auth_users = [ 'ssklar']
+    auth_users = [ 'ssklar', 'jlavigne']
     if request.env['WEBAUTH_USER'] != nil && auth_users.include?(request.env['WEBAUTH_USER'])
       return true
     else
