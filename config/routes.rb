@@ -38,8 +38,6 @@ ActionController::Routing::Routes.draw do |map|
   # Install the default routes as the lowest priority.
   # Note: These default routes make all actions in every controller accessible via GET requests. You should
   # consider removing the them or commenting them out if you're using named routes and resources.
-  map.resources :forms
-  map.resources :request_types
   # map.root :controller => "pickupkeys"
   map.resources :pickupkeys, :member => { :show_libraries => :get, :save => :post }
   map.resources :libraries
