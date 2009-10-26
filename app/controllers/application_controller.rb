@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
     if request.env['WEBAUTH_USER'] != nil && auth_users.include?(request.env['WEBAUTH_USER'])
       return true
     else
-         flash[:notice] = "webauth_user env var is " + request.env['WEBAUTH_USER']
+         flash[:notice] = "webauth_user env var is " + request.env['WEBAUTH_USER'] unless request.env['WEBAUTH_USER'].nil?
       redirect_to '/requests/not_authenticated'
     end
   end 

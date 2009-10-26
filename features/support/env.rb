@@ -45,5 +45,13 @@ Webrat.configure do |config|
   config.open_error_files = false # Set to true if you want error pages to pop up in the browser
 end
 
+# Following is from http://blog.jcoglan.com/2009/10/03/getting-started-with-cucumber-rspec-webrat-and-multiruby/ 
+# Webrat.configure do |config|
+#  config.mode = :mechanize
+# end
+
+# World(Webrat::Methods)
+# World(Webrat::Matchers)
+
 # Following is supposedly needed for Windows to display letter 'a'
 $KCODE=''
