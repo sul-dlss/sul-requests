@@ -22,7 +22,7 @@ pickup library key. Your selections are saved immediately.
 	<tr>
 	    <td><%=check_box_tag l.id, 1, @pickupkey.chosen?(l), 
 		:onclick => remote_function(
-		:url => save_pickupkey_path(@pickupkey), 
+		:url => save_admin_pickupkey_path(@pickupkey), 
 	    :with => "'library=#{l.id}&amp;show=' + this.checked", 
 		:method => :post ) %>
 		</td>	

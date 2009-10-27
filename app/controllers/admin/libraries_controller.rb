@@ -1,4 +1,4 @@
-class LibrariesController < ApplicationController
+class Admin::LibrariesController < ApplicationController
   
   def index
     @libraries = Library.find(:all, :order => "lib_code")
@@ -9,7 +9,7 @@ class LibrariesController < ApplicationController
     @library = Library.new(params[:library])
     # Not sure where to send user after form is saved
     if @library.save
-      redirect_to libraries_path
+      redirect_to admin_libraries_path
     end
   end
   
@@ -35,7 +35,7 @@ class LibrariesController < ApplicationController
   def destroy
     @library = Library.find(params[:id])
     @library.destroy
-    redirect_to(libraries_url)
+    redirect_to(admin_libraries_url)
   end
   
 end

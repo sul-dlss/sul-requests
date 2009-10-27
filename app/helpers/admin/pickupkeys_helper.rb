@@ -1,4 +1,4 @@
-module PickupkeysHelper
+module Admin::PickupkeysHelper
   
   def get_lib_codes_for_pickupkeys( pk_libs )
     

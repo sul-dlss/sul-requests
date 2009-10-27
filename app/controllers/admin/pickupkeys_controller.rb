@@ -1,4 +1,4 @@
-class PickupkeysController < ApplicationController
+class Admin::PickupkeysController < ApplicationController
   def index
 
     @pickupkeys = Pickupkey.find(:all,  :order => 'pickup_key', 
@@ -10,7 +10,7 @@ class PickupkeysController < ApplicationController
     @pickupkey = Pickupkey.new(params[:pickupkey])
     # Not sure where to send user after form is saved
     if @pickupkey.save
-      redirect_to pickupkeys_path
+      redirect_to admin_pickupkeys_path
     end
   end
   
@@ -28,7 +28,7 @@ class PickupkeysController < ApplicationController
     @pickupkey.libraries = Library.find(params[:library_ids]) if params[:library_ids]
     if @pickupkey.update_attributes(params[:pickupkey])
       # redirect_to :action => 'show', :id => @pickupkey
-      redirect_to pickupkeys_path
+      redirect_to admin_pickupkeys_path
     else
       render :action => 'edit'
     end
@@ -60,7 +60,7 @@ class PickupkeysController < ApplicationController
   def destroy
     @pickupkey = Pickupkey.find(params[:id])
     @pickupkey.destroy
-    redirect_to(pickupkeys_url)
+    redirect_to(admin_pickupkeys_url)
   end
 
 end
