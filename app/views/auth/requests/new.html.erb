@@ -23,10 +23,6 @@
 		
 		<%= @requestdef[:initial_text]%>
 		
-		
-		
-		<P>Go to <a href="">authenticated version of form</a></P>
-		
 		<% form_for (:request, @request, :url => { :action => 'create'}) do |f| %>			
 			
 			<%= f.hidden_field :req_type %>

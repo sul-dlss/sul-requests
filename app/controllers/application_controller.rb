@@ -10,14 +10,17 @@ class ApplicationController < ActionController::Base
   
   def is_authenticated?
     auth_users = [ 'ssklar', 'jlavigne']
-    if request.env['WEBAUTH_USER'] != nil && auth_users.include?(request.env['WEBAUTH_USER'])
-      return true
-    else
+    #if request.env['WEBAUTH_USER'] != nil && auth_users.include?(request.env['WEBAUTH_USER'])
+    if request.env['HTTP_HOST'] != 'localhost:3000'
+      if request.env['WEBAUTH_USER'] != nil
+        return true
+      else
          flash[:notice] = "webauth_user env var is " + request.env['WEBAUTH_USER'] unless request.env['WEBAUTH_USER'].nil?
-      redirect_to '/requests/not_authenticated'
+        redirect_to '/requests/not_authenticated'
+      end      
     end
   end 
-    
+     
 
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password

@@ -47,6 +47,11 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :libraries
     admin.resources :pickupkeys, :member => { :show_libraries => :get, :save => :post }
   end
+  
+  map.namespace :auth do |auth|
+    auth.resources :requests
+  end
+  
   # Following extra stuff isn't needed 
   #map.connect 'admin/:controller/:action/:id'
   #map.connect 'admin/:controller/:action/:id.:format'
