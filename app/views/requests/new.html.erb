@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title><%= @requestdef[:title] %></title>
 		<style type="text/css">
 <!--
@@ -25,9 +25,10 @@
 		
 		
 		
-		<P>Go to <a href="">authenticated version of form</a></P>
 		
-		<% form_for (:request, @request, :url => { :action => 'create'}) do |f| %>			
+		<% form_for(:request, @request, :url => { :action => 'create'}) do |f| %>			
+
+		<div id="autofill">If you have a SUNet ID,  <a href="<%= link_to_auth_request(@request) %>">login</a>  to auto-fill and enable more options.</div>
 			
 			<%= f.hidden_field :req_type %>
 			<%= f.hidden_field :home_lib %>			
