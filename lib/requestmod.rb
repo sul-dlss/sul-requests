@@ -69,17 +69,23 @@ module Requestmod
        
     flash[:notice] = "Got to create action.<P>Result is: " + res.body + " <br>Param string is: " + parm_list
     # redirect_to requests_path
+    # This needs work. For requests path it's OK. For auth/requests path Rails insists on 
+    # going to show.html.erb. Kludge is to create show.html.erb in views/auth/requests but this
+    # is idiotic. Logged this in Jira as symreq-3
     redirect_to :controller => 'requests', :action => 'confirm'
   end
  
+  # Remove this, which goes to confirmation page and instead make "show.html.erb" the
+  # confirmation page so default rails route for create action (it seems) will
+  # bring up that page
   # Method confirm. 
-  def confirm
+  # def confirm
+  # end
+  
+  # Method not_authenticated. Just show not_authenticated page
+  def not_authenticated
+    render :template => "requests/not_authenticated"
   end
-
-   # Method not_authenticated. Just show not_authenticated page
-   def not_authenticated
-     render :template => "requests/not_authenticated"
-   end
 
 
   
