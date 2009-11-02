@@ -1,0 +1,114 @@
+		<!-- Parameter names need to match what's used in destination proc -->
+		
+		<h1><%= @requestdef[:title] %></h1>
+		<% unless flash[:notice].blank?%>
+			<div id="notification"><%= flash[:notice] %></div>
+		<% end %>
+		<%= error_messages_for 'request' %>
+		
+		<%= @requestdef[:initial_text]%>
+		
+		<% if @is_authenticated %>
+		Feature for authenticated user here
+		<% end %>
+
+		
+		<% form_for(:request, @request, :url => { :action => 'create'}) do |f| %>			
+
+		<% if ! @is_authenticated %>
+		<div id="autofill">If you have a SUNet ID,  <a href="<%= link_to_auth_request(@request) %>">login</a>  to auto-fill and enable more options.</div>
+		<% end %>		
+			<%= f.hidden_field :req_type %>
+			<%= f.hidden_field :home_lib %>			
+			<%= f.hidden_field :item_id %>
+			<%= f.hidden_field :due_date %>
+		<table>
+			
+			<% if @fields.has_key?('ckey') %>
+			<tr>			
+				<td nowrap valign="top" align="right">Catalog Record ID:</td>
+			 	<td valign="top"><%= @request.ckey %></td>
+			 <tr>
+			 <%= f.hidden_field :ckey %>	
+			 <% end %>
+			 
+			 <% if @fields.has_key?('call_num') %>		 
+			 <tr>
+				<td nowrap valign="top" align="right">Call Number:</td>
+				 <td valign="top"><%= @request.call_num %></td>
+			</tr>
+			<%= f.hidden_field :current_loc %>
+			<% end %>
+			
+			<% if @fields.has_key?('date') %>
+			<tr>
+				<td nowrap valign="top" align="right">Date:</td>
+				<td valign="top"> <%= Time::now() %></td>
+			</tr>
+			<% end %>
+			
+			
+			<% if @fields.has_key?('item') %>
+			<tr>
+				<td nowrap valign="top" align="right">Item: </td>
+				<td valign="top"><%= @request.item %></td>
+			</tr>
+			<% end %>
+			
+			<% if @fields.has_key?('user_name') %>
+			<tr>
+				<td nowrap valign="top" align="right">Your name: </td>
+				<td valign="top"><%= f.text_field :patron_name, :value => @request.patron_name %></td>
+			</tr>
+			<% end %>
+			
+			<% if @fields.has_key?('user_email') %>
+			<tr>
+				<td nowrap valign="top" align="right">Your e-mail: </td>
+				<td valign="top"><%= f.text_field :patron_email, :value => @request.patron_email %></td>
+			</tr>	
+			<% end %>		
+			
+			<% if @fields.has_key?('library_id') %>
+			<tr>
+  				<td nowrap valign="top" align="right"> <%= @fields['library_id'] %> </td>
+				<td valign="top"><%= f.text_field :library_id %></td>
+			</tr>
+			<% end %>
+			
+			<% if @fields.has_key?('univ_id') %>
+			<tr>
+  				<td nowrap valign="top" align="right"><%= @fields['univ_id'] %> </td>
+				<td valign="top"><%= f.text_field :univ_id %></td>
+			</tr>
+			<% end %>
+			
+			<!-- Always have pickup lib field -->
+			
+			<tr>
+				<td nowrap valign="top" align="right">Pick-up Library: </td>
+				<td valign="top"><%= select_tag 'request[pickup_lib]', options_for_select( @pickup_libs_hash)  %></td>
+			</tr>
+			
+			<% if @fields.has_key?('not_needed') %>
+			<tr>			
+				<td nowrap valign="top" align="right">Not Needed After: </td>
+				<td valign="top"><%= f.text_field :not_needed_after %></td>
+			</tr>
+			<% end %>
+			
+			<% if @fields.has_key?('vol_num') %>
+			<tr>			
+				<td nowrap valign="top" align="right"><%= @fields['vol_num'] %></td>
+				<td valign="top"><%= f.text_field :vol_num %></td>
+			</tr>
+			<% end %>
+			
+			<tr>		
+				<td colspan=2><%= submit_tag "Submit Request"  %></td>
+			</tr>
+			</table>
+			
+		<% end %>	
+		
+		<%= @requestdef[:final_text]%>

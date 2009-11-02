@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
         return true
       else
         redirect_to '/requests/not_authenticated'
-        @is_authenticated = false
+        # @is_authenticated = false
       end      
     end
   end 
