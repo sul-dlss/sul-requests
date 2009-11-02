@@ -28,8 +28,9 @@
 		
 		<% form_for(:request, @request, :url => { :action => 'create'}) do |f| %>			
 
+		<% if ! @is_authenticated %>
 		<div id="autofill">If you have a SUNet ID,  <a href="<%= link_to_auth_request(@request) %>">login</a>  to auto-fill and enable more options.</div>
-			
+		<% end %>		
 			<%= f.hidden_field :req_type %>
 			<%= f.hidden_field :home_lib %>			
 			<%= f.hidden_field :item_id %>

@@ -9,14 +9,15 @@ class ApplicationController < ActionController::Base
   protected 
   
   def is_authenticated?
-    auth_users = [ 'ssklar', 'jlavigne']
-    #if request.env['WEBAUTH_USER'] != nil && auth_users.include?(request.env['WEBAUTH_USER'])
     if request.env['HTTP_HOST'] != 'localhost:3000'
+      # This should be all we need to check for authentication on a WebAuth'd server
+      # unauth'd users should see server 
       if request.env['WEBAUTH_USER'] != nil
+        @is_authenticated = true
         return true
       else
-         flash[:notice] = "webauth_user env var is " + request.env['WEBAUTH_USER'] unless request.env['WEBAUTH_USER'].nil?
         redirect_to '/requests/not_authenticated'
+        @is_authenticated = false
       end      
     end
   end 

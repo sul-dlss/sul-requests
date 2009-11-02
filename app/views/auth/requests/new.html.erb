@@ -23,6 +23,10 @@
 		
 		<%= @requestdef[:initial_text]%>
 		
+		<% if @is_authenticated %>
+		Additional features here for authentication 
+		<% end %>
+		
 		<% form_for (:request, @request, :url => { :action => 'create'}) do |f| %>			
 			
 			<%= f.hidden_field :req_type %>
