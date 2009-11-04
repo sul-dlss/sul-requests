@@ -366,12 +366,11 @@ module Requestmod
 
   def get_fields_for_requestdef( request_def )
     
-    puts "at start of get_fields for requestdef"
+    # puts "at start of get_fields for requestdef"
     
     fields_hash = {}
     
     request_def.fields.each do |f|
-      puts "field name is: " + f.field_name
       fields_hash.merge!({f.field_name => f.field_label})
     end    
     
