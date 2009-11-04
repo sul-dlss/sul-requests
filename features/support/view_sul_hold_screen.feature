@@ -4,6 +4,9 @@ As a user
 I want to see the hold screen for SUL libraries when I create a new request
 with the appropriate parameters
 
+#Scenario: Go to list of request definitions and see appropriate heading
+#When I go to "admin/requestdefs"
+#Then I should see "Sorry, you are not"
 
 Scenario: When location is CHECKEDOUT etc. I should see a Hold screen etc.
   #Given I am on   "requests/new?ckey=4037627&call_num=PS3573+.O64524+F76+1995&req_type=REQ-HOLD&home_lib=GREEN&current_loc=CHECKEDOUT&item_id=36105021328286&due_date=6/30/2010 request/new?req_type=CHECKEDOUT"
@@ -18,12 +21,13 @@ Scenario: When location is CHECKEDOUT etc. I should see a Hold screen etc.
   # Then I should see "HOLD for SUL"
   
   #Given I have opened "http://localhost:3000/requests/new?ckey=4037627&call_num=PS3573+.O64524+F76+1995&req_type=REQ-HOLD&home_lib=GREEN&current_loc=CHECKEDOUT&item_id=36105021328286&due_date=6/30/2010 request/new?req_type=CHECKEDOUT"
-  Given I have opened "http://www.google.com"
-  Then I should see "Google"
+  #Given I have opened "http://www.google.com"
+  #Then I should see "Google"
   
+When I land on requests/new with ckey="4037627" and req_type="REQ-HOLD" and current_loc="CHECKEDOUT" and item_id="36105021328286" and home_lib="GREEN"
+Then I should see "HOLD for SUL"
 
+#Scenario: testing
+#  When I land on requests/newx with ckey="75842"
+#  Then I should see "75842"
 
-
-#Scenario: Go to list of request definitions and see appropriate heading
-#When I go to "admin/requestdefs"
-#Then I should see "Request Definitions"

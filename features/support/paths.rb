@@ -11,8 +11,15 @@ module NavigationHelpers
     when /the home\s?page/
       '/'
 
-    when /requests\/new(.*)/
-      '/requests/new' + $1
+    #when /requests\/new with ckey="([^\"]*)" and req_type="([^\"]*)" and current_loc="([^\"]*)" and item_id="([^\"]*)" and home_lib="([^\"]*)"$/ 
+    #requests_new_path(:ckey => $1, :req_type => $2, :current_loc => $3, :item_id => $4, :home_lib =>$5 )
+
+    #when /requests\/newx with with ckey="([^\"]*)"/
+    # requests_newx_path(:ckey => $1)
+
+    
+    #when /requests\/newx/
+    # 'requests/newx'
      
     when /requests/
       '/requests'

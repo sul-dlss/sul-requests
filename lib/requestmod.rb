@@ -22,6 +22,7 @@ module Requestmod
     
     # Get the request definition, form elements, and list of fields
     request_def = get_req_def( params[:home_lib], params[:current_loc], params[:req_type])
+    # puts "request_def is:" + request_def
     @requestdef = Requestdef.find_by_name( request_def )
     @fields = get_fields_for_requestdef( @requestdef )
     
@@ -365,9 +366,12 @@ module Requestmod
 
   def get_fields_for_requestdef( request_def )
     
+    puts "at start of get_fields for requestdef"
+    
     fields_hash = {}
     
     request_def.fields.each do |f|
+      puts "field name is: " + f.field_name
       fields_hash.merge!({f.field_name => f.field_label})
     end    
     
