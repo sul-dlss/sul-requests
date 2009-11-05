@@ -26,7 +26,7 @@
 			
 			<% if @fields.has_key?('ckey') %>
 			<tr>			
-				<td nowrap valign="top" align="right">Catalog Record ID:</td>
+				<td nowrap valign="top" align="right"> <%= @fields['ckey'] %></td>
 			 	<td valign="top"><%= @request.ckey %></td>
 			 <tr>
 			 <%= f.hidden_field :ckey %>	

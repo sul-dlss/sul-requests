@@ -1,9 +1,69 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+HVAR-DESK:
+   lib_code: HVAR-DESK
+   lib_descrip: Hoover Archives
 
-one:
-  lib_code: MyString
-  lib_descrip: MyString
+BRANNER:
+   lib_code: BRANNER
+   lib_descrip: Earth Sciences Library & Map Collections [Branner]
 
-two:
-  lib_code: MyString
-  lib_descrip: MyString
+HOOVER:
+   lib_code: HOOVER
+   lib_descrip: Hoover Library
+
+ART:
+   lib_code: ART
+   lib_descrip: Art
+
+BIOLOGY:
+   lib_code: BIOLOGY
+   lib_descrip: Biology [Falconer]
+
+CHEMCHMENG:
+   lib_code: CHEMCHMENG
+   lib_descrip: Chemistry/Chemical Engineering [Swain]
+
+EARTH-SCI:
+   lib_code: EARTH-SCI
+   lib_descrip: Earth Sciences [Branner]
+
+EAST-ASIA:
+   lib_code: EAST-ASIA
+   lib_descrip: East Asia Library
+
+EDUCATION:
+   lib_code: EDUCATION
+   lib_descrip: Education [Cubberley]
+
+ENG:
+   lib_code: ENG
+   lib_descrip: Engineering
+
+GREEN:
+   lib_code: GREEN
+   lib_descrip: Green [Humanities, Social Sciences]
+
+HOPKINS:
+   lib_code: HOPKINS
+   lib_descrip: Hopkins Marine Station Library [Miller]
+
+ARS:
+   lib_code: ARS
+   lib_descrip: Archive of Recorded Sound 
+
+MUSIC:
+   lib_code: MUSIC
+   lib_descrip: Music
+
+PHYSICS:
+   lib_code: PHYSICS
+   lib_descrip: Physics Library
+
+SPEC-COLL:
+   lib_code: SPEC-COLL
+   lib_descrip: Special Collections & University Archives
+
+SPEC-DESK:
+   lib_code: SPEC-DESK
+   lib_descrip: Special Collections Desk
+
+

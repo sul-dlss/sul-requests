@@ -1,11 +1,54 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+ckey:
+   field_name: ckey
+   field_label: Catalog Record ID
+   field_order: 1
 
-one:
-  name: MyString
-  label: MyString
-  order: 1
+call_num:
+   field_name: call_num
+   field_label: Call Number
+   field_order: 2
 
-two:
-  name: MyString
-  label: MyString
-  order: 1
+date:
+   field_name: date
+   field_label: Date
+   field_order: 3
+
+item:
+   field_name: item
+   field_label: Item
+   field_order: 4
+
+user_name:
+   field_name: user_name
+   field_label: Your Name
+   field_order: 5
+
+user_email:
+   field_name: user_email
+   field_label: E-mail
+   field_order: 6
+
+univ_id:
+   field_name: univ_id
+   field_label: University ID
+   field_order: 7
+
+library_id:
+   field_name: library_id
+   field_label: Library ID
+   field_order: 8
+
+vol_num:
+   field_name: vol_num
+   field_label: Vol./No. or Series Box No.
+   field_order: 9
+
+not_needed:
+   field_name: not_needed
+   field_label: Not Needed After
+   field_order: 10
+
+comments:
+   field_name: comments
+   field_label: Comments
+   field_order: 11

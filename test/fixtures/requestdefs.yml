@@ -1,15 +1,279 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+HOLD-HOV:
+   name: HOLD-HOV
+   library: HOOVER
+   current_loc: CHECKEDOUT
+   req_status: NEW-RECALL
+   req_type: REQ-HOLD
+   enabled: t
+   authenticated: f
+   unauthenticated: t
+   title: Request - Hold Charged Item
+   initial_text: Fill out this form if you wish to request a HOLD of the item below which is currently checked out to another user. A hold does not effect the current loan period; it simply puts you in line for the material after it has been returned. When the item has been returned to the library, you will receive email notification of its availability. It will be held for you for 7 days. 
+   final_text: 
+   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
 
-one:
-  name: MyString
-  library: MyString
-  current_loc: MyString
-  req_status: MyString
-  req_type: MyString
+HOLD-LAW:
+   name: HOLD-LAW
+   library: LAW
+   current_loc: CHECKEDOUT
+   req_status: NEW-RECALL
+   req_type: REQ-HOLD
+   enabled: t
+   authenticated: f
+   unauthenticated: t
+   title: Request - Hold Charged Item
+   initial_text: Fill out this form if you wish to request a HOLD of the item below which is currently checked out to another user.  A hold does not effect the current loan period; it simply puts you in line for the material after it has been returned. When the item has been returned to the library, you will receive email notification of its availability. It will be held for you for 7 days
+   final_text: 
+   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
 
-two:
-  name: MyString
-  library: MyString
-  current_loc: MyString
-  req_status: MyString
-  req_type: MyString
+HOLD-SUL:
+   name: HOLD-SUL
+   library: SUL
+   current_loc: CHECKEDOUT
+   req_status: NEW-RECALL
+   req_type: REQ-HOLD
+   enabled: t
+   authenticated: f
+   unauthenticated: t
+   title: Hold for SUL
+   initial_text: Initial text - hold for SUL
+   final_text: Final text - hold for SUL
+   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
+
+INP-HOV:
+   name: INP-HOV
+   library: HOOVER
+   current_loc: INPROCESS
+   req_status: NEW-HVINPR
+   req_type: NOTIF-INP
+   enabled: t
+   authenticated: t
+   unauthenticated: f
+   title: Inprocess - Hoover
+   initial_text: Initial text - In-process Hoover
+   final_text: Final text - In-process Hoover
+   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
+
+INP-LAW:
+   name: INP-LAW
+   library: LAW
+   current_loc: INPROCESS
+   req_status: NEW-LWINPR
+   req_type: NOTIF-INP
+   enabled: t
+   authenticated: t
+   unauthenticated: f
+   title: Title - Law In-process
+   initial_text: Initial text - Law in-process
+   final_text: Final text - Law in-process
+   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
+
+INP-SUL:
+   name: INP-SUL
+   library: SUL
+   current_loc: INPROCESS,UNCAT
+   req_status: NEW-INPRO
+   req_type: NOTIF-INP
+   enabled: t
+   authenticated: t
+   unauthenticated: f
+   title: Title - SUL in-process
+   initial_text: Intitial text - SUL in-process
+   final_text: Final text - SUL in-process
+   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
+
+ORD-HOV:
+   name: ORD-HOV
+   library: HOOVER
+   current_loc: ON-ORDER
+   req_status: NEW-HVORD
+   req_type: NOTIF-ORD
+   enabled: t
+   authenticated: t
+   unauthenticated: f
+   title: Title - Hoover on-order
+   initial_text: Initial text - Hoover on-order
+   final_text: Final text - Hoover on-order
+   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
+
+ORD-LAW:
+   name: ORD-LAW
+   library: LAW
+   current_loc: ON-ORDER
+   req_status: NEW-LAWORD
+   req_type: NOTIF-ORD
+   enabled: t
+   authenticated: t
+   unauthenticated: f
+   title: Title - Law On-Order
+   initial_text: Initial text - Law on-order
+   final_text: Final text - Law on-order
+   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
+
+ORD-SUL:
+   name: ORD-SUL
+   library: SUL
+   current_loc: ON-ORDER
+   req_status: NEW-ONORDM
+   req_type: NOTIF-ORD
+   enabled: t
+   authenticated: t
+   unauthenticated: f
+   title: Title - SUL on-order
+   initial_text: Initial text - SUL on-order
+   final_text: Final text - SUL on-order
+   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
+
+RECALL-HOV:
+   name: RECALL-HOV
+   library: HOOVER
+   current_loc: CHECKEDOUT
+   req_status: NEW-RECALL
+   req_type: RECALL
+   enabled: t
+   authenticated: t
+   unauthenticated: f
+   title: Title - Hoover Recall
+   initial_text: Initial text - Hoover recall
+   final_text: Final text - Hoover recall
+   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
+
+RECALL-LAW:
+   name: RECALL-LAW
+   library: LAW
+   current_loc: CHECKEDOUT
+   req_status: NEW-RECALL
+   req_type: RECALL
+   enabled: t
+   authenticated: t
+   unauthenticated: f
+   title: Title - Law recall
+   initial_text: Initial text - Law recall
+   final_text: Final text - Law recall
+   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
+
+RECALL-SUL:
+   name: RECALL-SUL
+   library: SUL
+   current_loc: CHECKEDOUT
+   req_status: NEW-RECALL
+   req_type: RECALL
+   enabled: t
+   authenticated: t
+   unauthenticated: f
+   title: Title - SUL Recall
+   initial_text: Initial text - SUL recall
+   final_text: Final text - SUL recall
+   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
+
+SAL:
+   name: SAL
+   library: SAL
+   current_loc: STACKS
+   req_status: NEW-SAL
+   req_type: REQ-SAL
+   enabled: t
+   authenticated: f
+   unauthenticated: t
+   title: Title - SAL
+   initial_text: Initial text - SAL
+   final_text: Final text - SAL
+   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
+
+SAL3:
+   name: SAL3
+   library: SAL3
+   current_loc: STACKS
+   req_status: NEW-SAL3
+   req_type: REQ-SAL3
+   enabled: t
+   authenticated: f
+   unauthenticated: t
+   title: Title - SAL3
+   initial_text: Initial text - SAL 3
+   final_text: Final text - SAL 3
+   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
+
+SAL3-TO-BR:
+   name: SAL3-TO-BR
+   library: SAL3
+   current_loc: STACKS
+   req_status: S3-NEW-PG
+   req_type: SAL-TO-BR
+   enabled: t
+   authenticated: f
+   unauthenticated: t
+   title: Title - SAL3-TO-BR
+   initial_text: Initial text - SAL3-TO-BR
+   final_text: Final text - SAL3-TO-BR
+   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
+
+SAL3-TO-HA:
+   name: SAL3-TO-HA
+   library: SAL3
+   current_loc: STACKS
+   req_status: S3-NEW-PG
+   req_type: SAL-TO-HA
+   enabled: t
+   authenticated: f
+   unauthenticated: t
+   title: Title - SAL3-TO-HA
+   initial_text: Initial text - SAL3-TO-HA
+   final_text: Final text - SAL3-TO-HA
+   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
+
+SAL3-TO-HL:
+   name: SAL3-TO-HL
+   library: SAL3
+   current_loc: STACKS
+   req_status: S3-NEW-PG
+   req_type: SAL-TO-HL
+   enabled: t
+   authenticated: f
+   unauthenticated: t
+   title: Titlle - SAL3-TO-HL
+   initial_text: Initial text - SAL3-TO-HL
+   final_text: Final text - SAL3-TO-HL
+   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
+
+SAL3-TO-SP:
+   name: SAL3-TO-SP
+   library: SAL3
+   current_loc: STACKS,MSS-30,UARCH-30
+   req_status: S3-NEW-PG
+   req_type: SAL3-TO-SP
+   enabled: t
+   authenticated: f
+   unauthenticated: t
+   title: Title - SAL3-TO-SP
+   initial_text: Initial text - SAL3-TO-SP
+   final_text: Final text - SAL3-TO-SP
+   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
+
+SALN:
+   name: SALN
+   library: SALNEWARK
+   current_loc: STACKS
+   req_status: NEW-SALNWK
+   req_type: REQ-SAL
+   enabled: t
+   authenticated: f
+   unauthenticated: t
+   title: Test - SALN
+   initial_text: Initial text - SALN
+   final_text: Final text - SALN
+   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
+
+REQ-HOPKINS:
+   name: REQ-HOPKINS
+   library: HOPKINS
+   current_loc: STACKS
+   req_status: NEW-HOP
+   req_type: REQ-HOP
+   enabled: t
+   authenticated: t
+   unauthenticated: f
+   title: Request - Hopkins Item
+   initial_text: Initial text for Hopkins request
+   final_text: Final text for Hopkins request
+   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed

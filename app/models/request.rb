@@ -13,6 +13,7 @@ class Request < ActiveRecord::Base
   column :home_lib, :string
   column :current_loc, :string
   column :item_id, :string
+  column :vol_num, :string
   column :not_needed_after, :string
   column :due_date, :string
   column :req_type, :string

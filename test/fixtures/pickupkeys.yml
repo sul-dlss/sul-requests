@@ -1,9 +1,159 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+BR:
+   pickup_key: BR
+   pickup_descrip: Branner SAL3 Page List
+   libraries: BRANNER
 
-one:
-  pickup_key: MyString
-  pickup_descrip: MyString
+ALL:
+   pickup_key: ALL
+   pickup_descrip: All pickup libraries
+   libraries: ART, BIOLOGY, CHEMCHMENG, EARTH-SCI, EAST-ASIA, EDUCATION, ENG, GREEN
 
-two:
-  pickup_key: MyString
-  pickup_descrip: MyString
+AR:
+   pickup_key: AR
+   pickup_descrip: ART - from PAGE-ART
+   libraries: ART
+
+AS:
+   pickup_key: AS
+   pickup_descrip: ARS
+   libraries: ARS
+
+BI:
+   pickup_key: BI
+   pickup_descrip: BIOLOGY
+   libraries: BIOLOGY
+
+CH:
+   pickup_key: CH
+   pickup_descrip: CHEMCHMENG
+   libraries: CHEMCHENG
+
+CL:
+   pickup_key: CL
+   pickup_descrip: CLASSICS
+   libraries: CLASSICS
+
+EA:
+   pickup_key: EA
+   pickup_descrip: EAST-ASIA
+   libraries: EAST-ASIA
+
+ED:
+   pickup_key: ED
+   pickup_descrip: EDUCATION
+   libraries: EDUCATION
+
+EN:
+   pickup_key: EN
+   pickup_descrip: ENG
+   libraries: ENG
+
+ES:
+   pickup_key: ES
+   pickup_descrip: EARTH-SCI
+   libraries: EARTH-SCI
+
+FED-DOCS:
+   pickup_key: FED-DOCS
+   pickup_descrip: Federal Documents
+   libraries: GREEN
+
+GR:
+   pickup_key: GR
+   pickup_descrip: GREEN
+   libraries: GREEN
+
+HA:
+   pickup_key: HA
+   pickup_descrip: Hoover Archives
+   libraries: HOOV-ARCH
+
+HL:
+   pickup_key: HL
+   pickup_descrip: Hoover Library - SAL3-TO-HL
+   libraries: HOOVER
+
+HP:
+   pickup_key: HP
+   pickup_descrip: HOPKINS
+   libraries: HOPKINS
+
+HV:
+   pickup_key: HV
+   pickup_descrip: HOOVER - PAGE-HV
+   libraries: HOOVER
+
+JA:
+   pickup_key: JA
+   pickup_descrip: JACKSON
+   libraries: JACKCSON
+
+LN:
+   pickup_key: LN
+   pickup_descrip: LANE
+   libraries: LANE
+
+LP:
+   pickup_key: LP
+   pickup_descrip: MUSIC
+   libraries: MUSIC
+
+LW:
+   pickup_key: LW
+   pickup_descrip: LAW
+   libraries: LAW
+
+MA:
+   pickup_key: MA
+   pickup_descrip: MATH-CS
+   libraries: MATH-CS
+
+MD:
+   pickup_key: MD
+   pickup_descrip: MEDIA-MICROTEXT
+   libraries: MEDIA-MTXT
+
+MP:
+   pickup_key: MP
+   pickup_descrip: EARTH-SCI
+   libraries: EARTH-SCI
+
+MU:
+   pickup_key: MU
+   pickup_descrip: MUSIC
+   libraries: MUSIC
+
+MY:
+   pickup_key: MY
+   pickup_descrip: MEYER
+   libraries: MEYER
+
+PH:
+   pickup_key: PH
+   pickup_descrip: PHYSICS
+   libraries: PHYSICS
+
+SL:
+   pickup_key: SL
+   pickup_descrip: SAL
+   libraries: SAL
+
+SP:
+   pickup_key: SP
+   pickup_descrip: Special Collections
+   libraries: SPEC
+
+SPEC:
+   pickup_key: SPEC
+   pickup_descrip: Special Collections
+   libraries: SPEC
+
+TA:
+   pickup_key: TA
+   pickup_descrip: TANNER
+   libraries: TANNER
+
+HOOVER:
+   pickup_key: HOOVER
+   pickup_descrip: Hoover Library - Location HOOVER
+   libraries: HOOVER
