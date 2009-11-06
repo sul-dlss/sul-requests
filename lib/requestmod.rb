@@ -20,20 +20,23 @@ module Requestmod
     @request.patron_email = user[:patron_email]
     @request.library_id = user[:library_id]
     
+    # Get req_type - may not be in parms
+    @request.req_type = get_request_type(params)
+    
     # Get the request definition, form elements, and list of fields
-    request_def = get_req_def( params[:home_lib], params[:current_loc], params[:req_type])
-    # puts "request_def is:" + request_def
+    request_def = get_req_def( params[:home_lib], params[:current_loc], @request.req_type )
+    puts "request_def is:" + request_def
     @requestdef = Requestdef.find_by_name( request_def )
     @fields = get_fields_for_requestdef( @requestdef )
     
     # Get the pickupkey then the pickup_libs
-    pickupkey = get_pickup_key( params[:home_lib], params[:current_loc], params[:req_type])       
+    pickupkey = get_pickup_key( params[:home_lib], params[:current_loc], @request.req_type )       
     @pickup_libs_hash = get_pickup_libs( pickupkey)
     
     # Get remaining fields from parameters
     @request.item = get_bib_info(params[:ckey])
     @request.ckey = (params[:ckey])
-    @request.req_type = (params[:req_type])
+    
     @request.due_date = (params[:due_date])
     @request.not_needed_after = (params[:not_needed_after])
     @request.call_num = (params[:call_num])
@@ -58,8 +61,7 @@ module Requestmod
     symphony_oas = 'http://zaph.stanford.edu:9081'
     path_info = '/pls/sirwebdad/func_request_webservice.make_request?'
     parm_list = URI.escape( join_hash( params[:request], '=', '&' ) )
-
-     
+    
     # Run stored procedure through http (need to check on best way of doing this ).
     # Should we try by running stored proc directly through a db connection defined in .yml file?
     
@@ -129,6 +131,21 @@ module Requestmod
     return user
   end
 
+  # Method get_request_type. Return the request type based on other parameters if we don't have
+  # one included in the parameters.
+  def get_request_type(params)
+    
+    req_type = ''
+    
+    if params[:req_type ] != nil
+      req_type = params[:req_type]  
+    elsif params[:home_lib] == 'HOPKINS' && params[:current_loc] == 'STACKS' 
+      req_type = 'REQ-HOP' 
+    end
+    
+    return req_type
+    
+  end
   
 
   # Method get_form_elements. Need to think about this. Should we put all information in 
