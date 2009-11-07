@@ -132,7 +132,9 @@ module Requestmod
   end
 
   # Method get_request_type. Return the request type based on other parameters if we don't have
-  # one included in the parameters.
+  # one included in the parameters. Need to include more here probably. See display_form
+  # PL/SQL code for lengthy embedded if structure to determine req type - some of what's
+  # there may not be needed for Socrates but might help with SearchWorks
   def get_request_type(params)
     
     req_type = ''
