@@ -34,7 +34,7 @@ module Requestmod
     @pickup_libs_hash = get_pickup_libs( pickupkey)
     
     # Get remaining fields from parameters
-    @request.item = get_bib_info(params[:ckey])
+    @request.item = get_bib_info(params[:ckey]).to_s
     @request.ckey = (params[:ckey])
     
     @request.due_date = (params[:due_date])
@@ -419,8 +419,14 @@ module Requestmod
   # Method join_hash. Take a hash and return its elements joined by two delimiters
   # Used to turn a params hash into a param string: key1=value1&key2=value2
   def join_hash(hash, delim_1, delim_2)
+    
+    require 'cgi'
+    
     keys = Array.new
-    hash.each {|a,b| keys << [a.to_s, b.to_s].join(delim_1)}
+    hash.each {|a,b|
+    # Need to escape strings here
+    bc = CGI.escape(b.strip)
+    keys << [a.to_s, bc.to_s].join(delim_1)}
     return keys.join(delim_2)
   end    
   

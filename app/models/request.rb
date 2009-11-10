@@ -3,7 +3,7 @@ class Request < ActiveRecord::Base
   has_no_table
   column :ckey, :string
   column :call_num, :string
-  column :item, :array
+  column :item, :string
   column :patron_name, :string
   column :patron_email, :string
   column :library_id, :string

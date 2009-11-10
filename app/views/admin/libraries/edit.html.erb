@@ -13,7 +13,7 @@
 		<% end %>
 		<%= error_messages_for 'library' %>
 		
-		<% form_for ( :admin, @library ) do |f| %>
+		<% form_for ( [:admin, @library] ) do |f| %>
 						
 		<table>
 			<tr>
