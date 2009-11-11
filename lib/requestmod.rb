@@ -70,7 +70,7 @@ module Requestmod
       http.get( path_info + parm_list )
     }
        
-    flash[:notice] = "Got to create action.<P>Result is: " + res.body + " <br>Param string is: " + parm_list
+    flash[:notice] = "Got to create action.<P>Result is: " + res.body + " <P>Param string is: " + parm_list
     # redirect_to requests_path
     # This needs work. For requests path it's OK. For auth/requests path Rails insists on 
     # going to show.html.erb. Kludge is to create show.html.erb in views/auth/requests but this
@@ -424,9 +424,12 @@ module Requestmod
     
     keys = Array.new
     hash.each {|a,b|
-    # Need to escape strings here
-    bc = CGI.escape(b.strip)
+    # Need to escape strings here; this gets tricky; seems like we just need to replace
+    # ampersands at this point, otherwise other punctuation gets messed up, such as slashes
+    # bc = CGI.escape(b.strip)
+    bc = b.gsub('&', '%26')
     keys << [a.to_s, bc.to_s].join(delim_1)}
+    # keys << [a.to_s, b.to_s].join(delim_1)}
     return keys.join(delim_2)
   end    
   

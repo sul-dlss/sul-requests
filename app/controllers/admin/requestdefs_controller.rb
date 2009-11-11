@@ -18,7 +18,7 @@ class Admin::RequestdefsController < ApplicationController
   # Method new. Set up an input form for creating a new request def
   def new
     @requestdef = Requestdef.new
-    @fields = Field.find(:all)    
+    @fields = Field.find(:all, :order => 'field_order')    
   end
 
   # Method create. Saves data from new input form in database
@@ -38,7 +38,7 @@ class Admin::RequestdefsController < ApplicationController
 
   def edit
      @requestdef = Requestdef.find(params[:id])
-     @fields = Field.find(:all)
+     @fields = Field.find(:all, :order => 'field_order')
    end
 
   # Method update. Saves data from edit form in database

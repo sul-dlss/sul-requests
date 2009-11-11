@@ -34,9 +34,17 @@
 			 <%= f.hidden_field :ckey %>	
 			 <% end %>
 			 
+			<% if @fields.has_key?('item_id') %>
+			<tr>			
+				<td nowrap valign="top" align="right"> <%= @fields['item_id'] %></td>
+			 	<td valign="top"><%= @request.item_id %></td>
+			 <tr>
+			 <%= f.hidden_field :item_id %>	
+			 <% end %>			 
+			 
 			 <% if @fields.has_key?('call_num') %>		 
 			 <tr>
-				<td nowrap valign="top" align="right">Call Number:</td>
+				<td nowrap valign="top" align="right"><%= @fields['call_num'] %></td>
 				 <td valign="top"><%= @request.call_num %></td>
 			</tr>
 			<%= f.hidden_field :current_loc %>
@@ -44,7 +52,7 @@
 			
 			<% if @fields.has_key?('date') %>
 			<tr>
-				<td nowrap valign="top" align="right">Date:</td>
+				<td nowrap valign="top" align="right"><%= @fields['date'] %></td>
 				<td valign="top"> <%= Time::now() %></td>
 			</tr>
 			<% end %>
@@ -52,21 +60,21 @@
 			
 			<% if @fields.has_key?('item') %>
 			<tr>
-				<td nowrap valign="top" align="right">Item: </td>
+				<td nowrap valign="top" align="right"><%= @fields['item'] %></td>
 				<td valign="top"><%= @request.item %></td>
 			</tr>
 			<% end %>
 			
 			<% if @fields.has_key?('user_name') %>
 			<tr>
-				<td nowrap valign="top" align="right">Your name: </td>
+				<td nowrap valign="top" align="right"><%= @fields['user_name'] %></td>
 				<td valign="top"><%= f.text_field :patron_name, :value => @request.patron_name %></td>
 			</tr>
 			<% end %>
 			
 			<% if @fields.has_key?('user_email') %>
 			<tr>
-				<td nowrap valign="top" align="right">Your e-mail: </td>
+				<td nowrap valign="top" align="right"><%= @fields['user_email'] %></td>
 				<td valign="top"><%= f.text_field :patron_email, :value => @request.patron_email %></td>
 			</tr>	
 			<% end %>		
@@ -88,15 +96,22 @@
 			<!-- Always have pickup lib field -->
 			
 			<tr>
-				<td nowrap valign="top" align="right">Pick-up Library: </td>
+				<td nowrap valign="top" align="right">Pickup Library</td>
 				<td valign="top"><%= select_tag 'request[pickup_lib]', options_for_select( @pickup_libs_hash)  %></td>
 			</tr>
 			
+			<!-- Have either not_needed or planned_use field but not both -->
+			
 			<% if @fields.has_key?('not_needed') %>
 			<tr>			
-				<td nowrap valign="top" align="right">Not Needed After: </td>
+				<td nowrap valign="top" align="right"><%= @fields['not_needed'] %></td>
 				<td valign="top"><%= f.text_field :not_needed_after %></td>
 			</tr>
+			<% elsif @fields.has_key?('planned_use') %>
+			<tr>			
+				<td nowrap valign="top" align="right"><%= @fields['planned_use'] %></td>
+				<td valign="top"><%= f.text_field :planned_use %></td>
+			</tr>			
 			<% end %>
 			
 			<% if @fields.has_key?('vol_num') %>
@@ -105,6 +120,13 @@
 				<td valign="top"><%= f.text_field :vol_num %></td>
 			</tr>
 			<% end %>
+			
+			<% if @fields.has_key?('comments') %>
+			<tr>			
+				<td nowrap valign="top" align="right"><%= @fields['comments'] %></td>
+				<td valign="top"><%= f.text_area :comments %></td>
+			</tr>
+			<% end %>			
 			
 			<tr>		
 				<td colspan=2><%= submit_tag "Submit Request"  %></td>
