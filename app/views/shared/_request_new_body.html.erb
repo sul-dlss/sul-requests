@@ -22,7 +22,7 @@
 			<%= f.hidden_field :home_lib %>			
 			<%= f.hidden_field :item_id %>
 			<%= f.hidden_field :due_date %>
-			<%= f.hidden_field :item %>
+			<%= f.hidden_field :bib_info %>
 			<%= f.hidden_field :call_num %>
 		<table>
 			
@@ -58,10 +58,10 @@
 			<% end %>
 			
 			
-			<% if @fields.has_key?('item') %>
+			<% if @fields.has_key?('bib_info') %>
 			<tr>
-				<td nowrap valign="top" align="right"><%= @fields['item'] %></td>
-				<td valign="top"><%= @request.item %></td>
+				<td nowrap valign="top" align="right"><%= @fields['bib_info'] %></td>
+				<td valign="top"><%= @request.bib_info %></td>
 			</tr>
 			<% end %>
 			

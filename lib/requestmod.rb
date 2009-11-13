@@ -25,7 +25,7 @@ module Requestmod
     
     # Get the request definition, form elements, and list of fields
     request_def = get_req_def( params[:home_lib], params[:current_loc], @request.req_type )
-    puts "request_def is:" + request_def
+    # puts "request_def is:" + request_def
     @requestdef = Requestdef.find_by_name( request_def )
     @fields = get_fields_for_requestdef( @requestdef )
     
@@ -33,8 +33,12 @@ module Requestmod
     pickupkey = get_pickup_key( params[:home_lib], params[:current_loc], @request.req_type )       
     @pickup_libs_hash = get_pickup_libs( pickupkey)
     
+    # Get bib info in 2 arrays, one for 900 fields
+    multi_bib_info = get_bib_info(params[:ckey])
+    @request.bib_info = multi_bib_info[0].to_s
+    
     # Get remaining fields from parameters
-    @request.item = get_bib_info(params[:ckey]).to_s
+    #@request.bib_info = get_bib_info(params[:ckey]).to_s # old
     @request.ckey = (params[:ckey])
     
     @request.due_date = (params[:due_date])
@@ -132,18 +136,107 @@ module Requestmod
   end
 
   # Method get_request_type. Return the request type based on other parameters if we don't have
-  # one included in the parameters. Need to include more here probably. See display_form
-  # PL/SQL code for lengthy embedded if structure to determine req type - some of what's
-  # there may not be needed for Socrates but might help with SearchWorks
+  # one included in the parameters. Logic copied from PL/SQL code for display proc. Not sure whether all of 
+  # this is still needed for Socrates but might help with SearchWorks
   def get_request_type(params)
     
     req_type = ''
     
-    if params[:req_type ] != nil
-      req_type = params[:req_type]  
-    elsif params[:home_lib] == 'HOPKINS' && params[:current_loc] == 'STACKS' 
-      req_type = 'REQ-HOP' 
-    end
+   if params[:req_type] == nil
+
+        if params[:current_loc] == 'INPROCESS' && ( params[:home_lib] != 'HOOVER' || params[:home_lib] != 'LAW' ) 
+        
+            req_type = 'REQ-INPRO'
+
+        elsif params[:current_loc] == 'CHECKEDOUT'
+        
+            req_type = 'REQ-RECALL'
+
+        elsif params[:current_loc] == 'ON-ORDER' && ( params[:home_lib] != 'HOOVER' || params[:home_lib] != 'LAW' ) 
+      
+            # May need to exclude some things here, but how do we get library???
+            req_type = 'REQ-ONORDM'
+                                
+        elsif params[:home_lib] == 'HOOVER'
+        
+            if params[:current_loc] == 'INPROCESS'
+            
+                req_type = 'REQ-HVINPR'
+
+            elsif params[:current_loc] == 'ON-ORDER'
+            
+                req_type = 'REQ-HVORD'
+
+            end
+            
+        elsif params[:home_lib] == 'LAW'
+        
+            if params[:current_loc] == 'INPROCESS'
+            
+                req_type = 'REQ-LWINPR'
+
+            elsif params[:current_loc] == 'ON-ORDER'
+            
+                req_type = 'REQ-LAWORD'
+
+            end
+                           
+        elsif params[:home_lib] == 'HOPKINS' && params[:current_loc] == 'STACKS'
+        
+            req_type = 'REQ-HOP'
+
+        elsif params[:home_lib] == 'SAL'
+        
+            sal_locs_to_test = [ 'STACKS', 'SAL-SERG', 'FED-DOCS', 'SAL-MUSIC' ]
+
+            if sal_locs_to_test.include?( params[:current_loc] ) || params[:current_loc].include?['PAGE-']
+            
+                req_type = 'REQ-SAL'
+
+            elsif params[:current_loc] == 'CHECKEDOUT'
+            
+                req_type = 'RECALL-SL'
+
+            elsif params[:current_loc] == 'UNCAT'
+            
+                req_type = 'REQ-INPRO'
+
+            end
+
+        elsif params[:home_lib] == 'SAL-NEWARK'
+        
+            if params[:current_loc] == 'CHECKEDOUT'
+            
+                req_type = 'RECALL-SN'
+
+            else
+
+                req_type = 'REQ-SALNWK'
+
+            end
+                     
+        elsif params[:home_lib] == 'SAL3'
+        
+            if params[:current_loc] != 'INPROCESS'
+            
+                req_type = 'REQ-RECALL' 
+
+            end
+
+        elsif params[:current_loc] == 'CHECKEDOUT'
+        
+            req_type = 'REQ-RECALL'
+
+        # Do we need a final else here in case anything slips through?
+             
+        end 
+        
+    else
+
+        req_type = params[:req_type]            
+
+    end # check whether params[:req_type] is nil
+
     
     return req_type
     
@@ -172,8 +265,10 @@ module Requestmod
     record = reader[0] # Should have only record, since we used CKEY
 
     # Set up fields to get and bib_info string
-    fields_to_get = [ '100', '110', '245', '260', '300']
+    fields_to_get = [ '100', '110', '245', '260', '300', '999']
+    #fields_to_get = [ '100', '110', '245', '260', '300']
     bib_info = Array.new
+    nine_instances = Array.new
 
     # Iterate over list of fields to get
     fields_to_get.each do |field_num| 
@@ -182,7 +277,12 @@ module Requestmod
       field_instances = Array.new
 
       record.find_all{|f| (field_num) === f.tag}.each do |instance| 
-        field_instances.push( instance.to_s ) unless instance.to_s.nil?
+        if field_num == '999'
+          # Need to do more with this, probably create a hash or array + hash?
+          nine_instances.push(instance.to_s) unless instance.to_s.nil?
+        else
+          field_instances.push( instance.to_s ) unless instance.to_s.nil?
+        end
       end
 
       # Clean up all elements of field array and put into bib_info array
@@ -190,7 +290,10 @@ module Requestmod
 
     end # end fields_to_get
 
-    return bib_info
+    return bib_info, nine_instances
+    
+    # Returning just one array lets me get back text of fields
+    # return bib_info
 
   end # get_bib_info
   

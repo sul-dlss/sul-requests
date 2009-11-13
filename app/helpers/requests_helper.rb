@@ -8,7 +8,7 @@ module RequestsHelper
   # through all the possible request parameters which is a subset of what's in the model
   def link_to_auth_request(request)
        
-    request.inspect
+    # request.inspect
     
     link = '/auth/requests/new?'
     
