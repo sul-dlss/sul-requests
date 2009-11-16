@@ -19,6 +19,7 @@ class Request < ActiveRecord::Base
   column :planned_use, :string
   column :due_date, :string
   column :req_type, :string
+  column :hold_recall, :string
   column :session_id, :string
   column :comments, :string
 
