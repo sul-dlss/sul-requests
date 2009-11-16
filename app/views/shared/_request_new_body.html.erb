@@ -1,3 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+	
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Request - SAL Item</title>
+
+ <script type="text/javascript"> 
+<!--
+
+function CheckAll()
+{
+	for (var i=0;i<document.requestform.elements.length;i++)
+	{
+		var e = document.requestform.elements[i];
+		if (e.name != 'allbox')
+			e.checked = document.requestform.allbox.checked;
+    }
+}
+function UnCheckAll()
+{
+        for (var i=0;i<document.requestform.elements.length;i++)
+        {
+                var e = document.requestform.elements[i];
+                if (e.name != 'allbox')
+                        e.checked = false;
+    }
+}
+
+//-->
+</script>
+   
+    <link href="/stylesheets/request-forms.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<div id="header">
+<a href="#formstart" class="off_screen">Skip to form</a>
+
+<a id="SULAIR" title="SULAIR Home" href="http://www-sul.stanford.edu/index.html">&nbsp;</a>
+<div class="links"><a href="http://library.stanford.edu/socrates">SOCRATES (SU CATALOG)</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://library.stanford.edu/images/main_l2/globals_ejournals.gif">E-JOURNALS</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://library.stanford.edu/search_form_main">SITE SEARCH</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://library.stanford.edu/ask_us/index.html">ASK US</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://www-sul.stanford.edu/index.html">SULAIR HOME</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://www.stanford.edu/">SU HOME</a></div></div>
+
+
+<div id="container">
+
 		<!-- Parameter names need to match what's used in destination proc -->
 		
 		<h1><%= @requestdef[:title] %></h1>
@@ -5,8 +50,13 @@
 			<div id="notification"><%= flash[:notice] %></div>
 		<% end %>
 		<%= error_messages_for 'request' %>
+
+		<div class="opening">
 		
-		<%= @requestdef[:initial_text]%>
+		<p><%= @requestdef[:initial_text]%></p>
+		
+		</div>
+		
 		
 		<% if @is_authenticated %>
 		Feature for authenticated user here
@@ -14,125 +64,132 @@
 
 		
 		<% form_for(:request, @request, :url => { :action => 'create'}) do |f| %>			
-
-		<% if ! @is_authenticated %>
-		<div id="autofill">If you have a SUNet ID,  <a href="<%= link_to_auth_request(@request) %>">login</a>  to auto-fill and enable more options.</div>
-		<% end %>		
+	
 			<%= f.hidden_field :req_type %>
-			<%= f.hidden_field :home_lib %>			
+			<%= f.hidden_field :home_lib %>	
+			<%= f.hidden_field :current_loc %>		
 			<%= f.hidden_field :item_id %>
 			<%= f.hidden_field :due_date %>
 			<%= f.hidden_field :bib_info %>
 			<%= f.hidden_field :call_num %>
-		<table>
+			<%= f.hidden_field :ckey %>
+
+			<!-- Visible fields for record; some may be hidden above -->
+			
+			<dl>
 			
 			<% if @fields.has_key?('ckey') %>
-			<tr>			
-				<td nowrap valign="top" align="right"> <%= @fields['ckey'] %></td>
-			 	<td valign="top"><%= @request.ckey %></td>
-			 <tr>
-			 <%= f.hidden_field :ckey %>	
+			<dt><%= @fields['ckey'] %></dt>
+			 	<dd><%= @request.ckey %></dd>
 			 <% end %>
 			 
 			<% if @fields.has_key?('item_id') %>
-			<tr>			
-				<td nowrap valign="top" align="right"> <%= @fields['item_id'] %></td>
-			 	<td valign="top"><%= @request.item_id %></td>
-			 <tr>
-			 <%= f.hidden_field :item_id %>	
-			 <% end %>			 
+			<dt><%= @fields['item_id'] %></dt>
+			 	<dd><%= @request.item_id %></dd>
+			<% end %>			 
 			 
-			 <% if @fields.has_key?('call_num') %>		 
-			 <tr>
-				<td nowrap valign="top" align="right"><%= @fields['call_num'] %></td>
-				 <td valign="top"><%= @request.call_num %></td>
-			</tr>
-			<%= f.hidden_field :current_loc %>
+			<% if @fields.has_key?('call_num') %>		 
+			<dt><%= @fields['call_num'] %></dt>
+				 <dd><%= @request.call_num %></dd>
 			<% end %>
 			
 			<% if @fields.has_key?('date') %>
-			<tr>
-				<td nowrap valign="top" align="right"><%= @fields['date'] %></td>
-				<td valign="top"> <%= Time::now() %></td>
-			</tr>
+			<dt><%= @fields['date'] %></dt>
+				<dd> <%= Time::now() %></dd>
 			<% end %>
 			
 			
 			<% if @fields.has_key?('bib_info') %>
-			<tr>
-				<td nowrap valign="top" align="right"><%= @fields['bib_info'] %></td>
-				<td valign="top"><%= @request.bib_info %></td>
-			</tr>
+			<dt><%= @fields['bib_info'] %></dt>
+				<dd><%= @request.bib_info %></dd>
+			<% end %>
+			
+			</dl>
+			
+			<!-- User Info -->
+			
+			<a name="formstart"></a>
+			
+			<fieldset> <legend>Your Information</legend>
+			
+			<% if ! @is_authenticated %>
+			<div id="autofill">If you have a SUNet ID, » <a href="<%= link_to_auth_request(@request) %>">login</a> « to auto-fill and enable more options.</div>
 			<% end %>
 			
 			<% if @fields.has_key?('user_name') %>
-			<tr>
-				<td nowrap valign="top" align="right"><%= @fields['user_name'] %></td>
-				<td valign="top"><%= f.text_field :patron_name, :value => @request.patron_name %></td>
-			</tr>
+				<dt><label for="request_patron_name"><%= @fields['user_name'] %></label></dt>
+				<dd><%= f.text_field :patron_name, :value => @request.patron_name %></dd>
 			<% end %>
 			
 			<% if @fields.has_key?('user_email') %>
-			<tr>
-				<td nowrap valign="top" align="right"><%= @fields['user_email'] %></td>
-				<td valign="top"><%= f.text_field :patron_email, :value => @request.patron_email %></td>
-			</tr>	
+				<dt><label for="request_patron_email"><%= @fields['user_email'] %></label></dt>
+				<dd><%= f.text_field :patron_email, :value => @request.patron_email %></dd>
 			<% end %>		
 			
 			<% if @fields.has_key?('library_id') %>
-			<tr>
-  				<td nowrap valign="top" align="right"> <%= @fields['library_id'] %> </td>
-				<td valign="top"><%= f.text_field :library_id %></td>
-			</tr>
+  				<dt><label for="request_library_id"> <%= @fields['library_id'] %> </label></dt>
+				<dd><%= f.text_field :library_id %></dd>
 			<% end %>
 			
 			<% if @fields.has_key?('univ_id') %>
-			<tr>
-  				<td nowrap valign="top" align="right"><%= @fields['univ_id'] %> </td>
-				<td valign="top"><%= f.text_field :univ_id %></td>
-			</tr>
+  				<dt><label for="request_univ_id"></label><%= @fields['univ_id'] %> </label></dd>
+				<dd><%= f.text_field :univ_id %></dd>
 			<% end %>
 			
 			<!-- Always have pickup lib field -->
 			
-			<tr>
-				<td nowrap valign="top" align="right">Pickup Library</td>
-				<td valign="top"><%= select_tag 'request[pickup_lib]', options_for_select( @pickup_libs_hash)  %></td>
+			<dt><label for="request_pickup_lib">Pickup Library</label></dt>
+				<dd><%= select_tag 'request[pickup_lib]', options_for_select( @pickup_libs_hash)  %></dd>
 			</tr>
 			
 			<!-- Have either not_needed or planned_use field but not both -->
 			
 			<% if @fields.has_key?('not_needed') %>
-			<tr>			
-				<td nowrap valign="top" align="right"><%= @fields['not_needed'] %></td>
-				<td valign="top"><%= f.text_field :not_needed_after %></td>
-			</tr>
+			<dt><label for="request_not_needed"><%= @fields['not_needed'] %></label></dt>
+				<dd><%= f.text_field :not_needed_after %></dd>
 			<% elsif @fields.has_key?('planned_use') %>
-			<tr>			
-				<td nowrap valign="top" align="right"><%= @fields['planned_use'] %></td>
-				<td valign="top"><%= f.text_field :planned_use %></td>
+			<dt><label for="request_planned_use"><%= @fields['planned_use'] %></label></dt>
+				<dd><%= f.text_field :planned_use %></dd>
 			</tr>			
 			<% end %>
 			
 			<% if @fields.has_key?('vol_num') %>
-			<tr>			
-				<td nowrap valign="top" align="right"><%= @fields['vol_num'] %></td>
-				<td valign="top"><%= f.text_field :vol_num %></td>
-			</tr>
+			<dt><label for="request_vol_num"><%= @fields['vol_num'] %></label></dt>
+			<dd><%= f.text_field :vol_num %></dd>
 			<% end %>
 			
 			<% if @fields.has_key?('comments') %>
-			<tr>			
-				<td nowrap valign="top" align="right"><%= @fields['comments'] %></td>
-				<td valign="top"><%= f.text_area :comments %></td>
-			</tr>
+			<dt><label for="request_comments"><%= @fields['comments'] %></label></dt>
+				<dd><%= f.text_area :comments %></dd>
 			<% end %>			
 			
-			<tr>		
-				<td colspan=2><%= submit_tag "Submit Request"  %></td>
-			</tr>
-			</table>
+			</fieldset>
 			
-		<% end %>	
+	
 		
-		<%= @requestdef[:final_text]%>
+		<fieldset> <legend>Volumes/Copies Required</legend> 
+		
+		This needs further specification and a fair amount of work.
+		
+		
+		</fieldset>
+		
+		<div class="submit">
+			<%= submit_tag "Submit Request"  %>
+			<a href="javascript:history.go(-1)">Cancel Request</a>
+		</div>
+			
+		<% end %>		
+		
+		<div class="closing">
+		<p><%= @requestdef[:final_text]%></p>
+		</div>
+
+
+</div>
+		
+<div id="footer">
+
+© Stanford University. 450 Serra Mall, Stanford, California 94305. (650) 723-2300. <a href="http://library.stanford.edu/about_sulair/termsofuse.html">Terms of Use</a> | <a href="http://www.stanford.edu/home/atoz/copyright.html">Copyright Complaints</a></div>
+</body>
+</html>		

@@ -1,0 +1,75 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body {font-family: Arial, Helvetica, sans-serif; font-size: 90%; text-align: center; background-color: #EDE8DD; margin: 0px; padding: 0px;}
+#header {background-color: #900; color: #FFF; text-align: right; height: 34px; font-size: .75em; background-image:url(globals_sulair_logo.gif); background-repeat: no-repeat;}
+#header a {color: #fff;}
+#header a#SULAIR {position: absolute; top: 0px; left: 0px; display: block; width: 150px; height: 34px; text-decoration: none;}
+#header .links {position: absolute; top: 0px; right: 0px; padding: 8px; z-index: 99;}
+#container {background-color: #FFF; width: 45em; margin: 0px auto; text-align: left; font-size: .9em; padding: 25px 25px 5px 25px; }
+form {padding: 0px; margin: 0px;}
+h1 {font-size: 1.25em; padding: 0px; margin: 0px; }
+fieldset {display: block; border: 1px dotted  #C2B7A1; margin: 0px auto 20px auto; padding: 1em 2em;}
+h2, legend {font-size: 1em; font-weight: bold; padding: 0px 5px; background-color: #FFF; color: #918873; text-transform: uppercase;}
+p {clear: both;}
+
+dt {float: left; width: 10em; padding: 5px 0px; text-align: right; color: #555;}
+dd {clear: right; margin-left: 10.5em;  padding: 5px 0px; }
+
+fieldset dt {float: left; width: 8em; padding: 5px 0px; text-align: right; color: #555;}
+fieldset dd {clear: right; margin-left: 8.5em;  padding: 5px 0px; }
+
+
+input, select, textarea {width: 23em;}
+input[type=radio], input[type=checkbox] {width: 1em;}
+
+
+#autofill {color: #900;}
+#autofill a {color: #900; font-weight: bold;}
+fieldset.required fieldset legend, fieldset.required label {font-weight: bold;} /* call out required fields */
+div.submit {clear: both; text-align: center;}
+input#commit {width: 8em; display: inline; margin: 0px 20px 0px 0px; font-size: 1em;}
+#footer {clear: both; padding: 25px; font-size: .75em; color: #900;}
+legend span {display:block; width: 200px; padding: 0px; text-align: right; white-space: nowrap; overflow: visible;}
+
+.available {color:green;}
+.checked_out {color:#555555;}
+span.item_available {
+  background-image:url('check-tiny.gif');
+  background-repeat:no-repeat;
+  background-position:left center;
+}
+ol.item_list {
+  padding-left:0 !important;
+}
+ol.item_list span {
+  padding-left:15px;
+}
+.show_availability span.item_available {
+  color:green;
+}
+
+.access_data ul {
+  margin: 1px 0 3px;
+  padding: 0 0 5px;
+}
+.access_data ul li {
+  border-bottom: 1px dotted #E3EBDF;
+  list-style-type:none;
+  padding: 0 3px 15px;
+}
+.access_data ul li ol {
+  margin:5px;
+  padding: 0 0 0 15px;
+}
+.access_data ul li ol li {
+  border-bottom:none;
+  font-weight:normal;
+  list-style-type:none;
+  padding: 5px 0 0;
+}
+.off_screen {
+  position:absolute;
+  left:-1000px;
+}
+
