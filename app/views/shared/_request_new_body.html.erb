@@ -113,7 +113,7 @@ function UnCheckAll()
 			<fieldset> <legend>Your Information</legend>
 			
 			<% if ! @is_authenticated %>
-			<div id="autofill">If you have a SUNet ID, » <a href="<%= link_to_auth_request(@request) %>">login</a> « to auto-fill and enable more options.</div>
+			<div id="autofill">If you have a SUNet ID, &raquo; <a href="<%= link_to_auth_request(@request) %>">login</a> &laquo; to auto-fill and enable more options.</div>
 			<% end %>
 			
 			<%if @fields.has_key?('hold_recall') %>
@@ -124,7 +124,11 @@ function UnCheckAll()
 					checked="checked"
 					<% end %>
 					 >Hold</label>
-					<label id="recallLabel" style="color: #666;">
+					<label id="recallLabel" 
+					<% if ! @is_authenticated %>					
+					style="color: #666;"
+					<% end %>
+					>						
 					<input name="request_type" id="request_type" type="radio" 
 					<% if ! @is_authenticated %>
 					disabled="disabled" 
