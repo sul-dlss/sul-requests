@@ -167,7 +167,6 @@ function UnCheckAll()
 			
 			<dt><label for="request_pickup_lib">Pickup Library</label>:</dt>
 				<dd><%= select_tag 'request[pickup_lib]', options_for_select( @pickup_libs_hash)  %></dd>
-			</tr>
 			
 			<!-- Have either not_needed or planned_use field but not both -->
 			
@@ -176,8 +175,7 @@ function UnCheckAll()
 				<dd><%= f.text_field :not_needed_after %></dd>
 			<% elsif @fields.has_key?('planned_use') %>
 			<dt><label for="request_planned_use"><%= @fields['planned_use'] %></label>:</dt>
-				<dd><%= f.text_field :planned_use %></dd>
-			</tr>			
+				<dd><%= f.text_field :planned_use %></dd>			
 			<% end %>
 			
 			<% if @fields.has_key?('vol_num') %>
