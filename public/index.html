@@ -9,32 +9,20 @@
 <td align="right">
 </td></tr></table>
 		
-		
+<table width="100%">	
+<tr><td width=150></td><td>
 	<h1>Symphony Requests</h1>	
 	
-	<h2>Request Definitions</h2>
-	This part of the application defines various kinds of requests by library, current location, and other criteria. The required information is passed to 
-	the request application from Socrates or SearchWorks.
-	Each request definition can have its own text for
-	request forms and its own selection of fields that will appear on the form.
-	<p>
-	<a href="/admin/requestdefs">View Request Definitions</a>
-	</p>
-	
-	<h2>Pickup Libraries</h2>
-	Requests can be picked up at different sets of libraries, depending on various criteria. This part of the application provides keys 
-	based on data in Symphony records, each of which can be associated with a set of pickup libraries to display on a 
-	request form. The keys are based on various kinds of information found in Symphony records, such a substrings from certain Symphony location strings.
-	<P><a href="/admin/pickupkeys">View Pickup Library Keys</a></P>  
-	
+	<div align="center"><a href="#user">User Requests</a> | <a href="#admin">Admin Features</a></div>
+
+	<a name="user"><h2>User Requests</h2></a>	
 		
-<h2>Sample Request Links</h2>
+<h3>Sample Request Links</h3>
 The links below display two different types of requests forms. At the moment, the text and fields on these sample forms are hard-coded 
 and not controlled by the admin parts of the application. Also, we do not have the server set
 up to get the necessary authentication info to fill in the name and ID fields on the form. For the
 moment, it can provide only your SUNet ID, so that's what's used in the name field.
-Submitting the forms, however, will create requests in the Symphony development system
-on Zaph.
+Submitting the forms, however, will create requests in the Symphony instance on Zaph.
 <p></p>
 <strong>Hold Request</strong>
 <p></p>
@@ -50,15 +38,33 @@ Shakespeare in Italy / by Lacy Collison-Morley. Stratford-upon-Avon : Shakespear
 <!-- Socrates link http://zaph.stanford.edu:9081/pls/sirwebdad/func_request_sal3b.display_form?p_SUNet_key=&p_data=|131450007|/uhtbin/cgisirsi/aDQBlQanzX/GREEN|2253404|SAL|STACKS|822.33+.GC71|36105010275431|REQ-SAL
 -->
 <a href="/requests/new?ckey=2253404&call_num=822.33+.GC71&req_type=REQ-SAL&home_lib=SAL&current_loc=STACKS&item_id=36105010275431">Request without SUNetID (REQ-SAL)</a>
-<p>
-<strong>Form for Generating Rails Request Links from Zaph/Socrates Links</strong>
-</p>		
+
+<h3>Form for Generating Rails Request Links from Zaph/Socrates Links</h3>
+		
 <form action="https://library.stanford.edu/cgi-bin/JPL/cre_req.cgi" method="POST" ENCTYPE="application/x-www-form-urlencoded">
 You can use a <a href="">form for turning Zaph request URLs into URLs that use the new application</a>. 
 If you're already logged in to WebAuth, you can use the form by pasting a Zaph request URL into the box below and clicking 
 <strong>Submit URL</strong>.
  
 <P><INPUT TYPE="text" NAME="url" VALUE="" SIZE=100><P><INPUT TYPE="submit" NAME="submit_url" VALUE="Submit URL"></FORM>		
-			
+
+<hr>
+	<a name="admin"><h2>Admin Features</h2></a>
+	<h3>Request Definitions</h3>
+	This part of the application defines various kinds of requests by library, current location, and other criteria. The required information is passed to 
+	the request application from Socrates or SearchWorks.
+	Each request definition can have its own text for
+	request forms and its own selection of fields that will appear on the form.
+	<p>
+	<a href="/admin/requestdefs">View Request Definitions</a>
+	</p>
+	
+	<h3>Pickup Libraries</h3>
+	Requests can be picked up at different sets of libraries, depending on various criteria. This part of the application provides keys 
+	based on data in Symphony records, each of which can be associated with a set of pickup libraries to display on a 
+	request form. The keys are based on various kinds of information found in Symphony records, such a substrings from certain Symphony location strings.
+	<P><a href="/admin/pickupkeys">View Pickup Library Keys</a></P>  
+</td></tr>	
+</table>			
 	</body>
 </html>
