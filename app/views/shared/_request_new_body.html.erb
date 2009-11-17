@@ -56,13 +56,7 @@ function UnCheckAll()
 		<p><%= @requestdef[:initial_text]%></p>
 		
 		</div>
-		
-		
-		<% if @is_authenticated %>
-		Feature for authenticated user here
-		<% end %>
-
-		
+			
 		<% form_for(:request, @request, :url => { :action => 'create'}) do |f| %>			
 	
 			<%= f.hidden_field :req_type %>
