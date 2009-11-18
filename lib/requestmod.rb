@@ -36,6 +36,7 @@ module Requestmod
     # Get bib info in 2 arrays, one for 900 fields
     multi_bib_info = get_bib_info(params[:ckey])
     @request.bib_info = multi_bib_info[0].to_s
+    @request.items = multi_bib_info[1] # this should be a hash of hashes
     
     # Get remaining fields from parameters
     #@request.bib_info = get_bib_info(params[:ckey]).to_s # old
@@ -268,7 +269,7 @@ module Requestmod
     fields_to_get = [ '100', '110', '245', '260', '300', '999']
     #fields_to_get = [ '100', '110', '245', '260', '300']
     bib_info = Array.new
-    nine_instances = Array.new
+    items_hash = Hash.new
 
     # Iterate over list of fields to get
     fields_to_get.each do |field_num| 
@@ -278,8 +279,8 @@ module Requestmod
 
       record.find_all{|f| (field_num) === f.tag}.each do |instance| 
         if field_num == '999'
-          # Need to do more with this, probably create a hash or array + hash?
-          nine_instances.push(instance.to_s) unless instance.to_s.nil?
+          # items, barcode, call_num, library, home_loc, current_loc
+          items_hash = get_items( items_hash, instance['i'], instance['a'], instance['m'], instance['l'], instance['k'] )
         else
           field_instances.push( instance.to_s ) unless instance.to_s.nil?
         end
@@ -289,13 +290,34 @@ module Requestmod
       bib_info.push( cleanup_field( field_instances ) );
 
     end # end fields_to_get
+    
+    # Now sort the items into an array that contains the items_hash sorted by call number
+    
+    items = items_hash.sort_by {|key, call_num| call_num[:call_num]}
 
-    return bib_info, nine_instances
+    return bib_info, items
     
     # Returning just one array lets me get back text of fields
     # return bib_info
 
   end # get_bib_info
+  
+  # Method to add items to a hash of hashes. Takes hash as input and returns same hash
+  # with new hash added
+  def get_items( items, barcode, call_num, library, home_loc, current_loc )
+
+    items.store( barcode, Hash.new() )
+    items[barcode].store( :call_num, call_num )
+    items[barcode].store( :home_lib, library )
+    items[barcode].store( :home_loc, home_loc )
+    items[barcode].store( :current_loc, current_loc )
+
+    return items # this is the updated hash we got initally
+
+end
+  
+  
+  
   
   # Method get_form_text. Take a key of some sort and return a hash of text elements to use in the form
   # that are fetched from a database where different form types are defined

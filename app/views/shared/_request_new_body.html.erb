@@ -188,7 +188,16 @@ function UnCheckAll()
 		
 		<fieldset> <legend>Volumes/Copies Required</legend> 
 		
-		This needs further specification and a fair amount of work.
+		<% @request.items.each do |a|  %>
+  		<%	puts a[0]					%>
+  		<%		a[1].each{ |k,v|		%>
+		<%      if k == :home_lib       %>
+		<%= v %>                       
+     	<%		elsif  k == :call_num		%>
+       	        Call number: <%= v %> <br>
+     	<% end %>
+     	<%} %>
+		<% end %>
 		
 		
 		</fieldset>

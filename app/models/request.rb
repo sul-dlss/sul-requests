@@ -12,6 +12,7 @@ class Request < ActiveRecord::Base
   column :sunet_id, :string
   column :pickup_lib, :array
   column :home_lib, :string
+  column :home_loc, :string
   column :current_loc, :string
   column :item_id, :string
   column :vol_num, :string
