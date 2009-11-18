@@ -190,13 +190,16 @@ function UnCheckAll()
 		
 		<% @request.items.each do |a|  %>
   		<%	puts a[0]					%>
+		<%  call_num = ''               %>
+		<%  home_lib = ''               %>
   		<%		a[1].each{ |k,v|		%>
 		<%      if k == :home_lib       %>
-		<%= v %>                       
-     	<%		elsif  k == :call_num		%>
-       	        Call number: <%= v %> <br>
-     	<% end %>
+		<%       home_lib = v          %>                       
+     	<%		elsif  k == :call_num	%>
+       	<%        call_num = v          %> 
+     	<%      end                     %>
      	<%} %>
+		<%= home_lib %> <%= call_num    %><br>
 		<% end %>
 		
 		
