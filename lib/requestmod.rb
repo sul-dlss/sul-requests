@@ -23,6 +23,9 @@ module Requestmod
     # Get req_type - may not be in parms
     @request.req_type = get_request_type(params)
     
+    # Need library for to limit items
+    @request.home_lib = (params[:home_lib])
+    
     # Get the request definition, form elements, and list of fields
     request_def = get_req_def( params[:home_lib], params[:current_loc], @request.req_type )
     # puts "request_def is:" + request_def
@@ -34,9 +37,9 @@ module Requestmod
     @pickup_libs_hash = get_pickup_libs( pickupkey)
     
     # Get bib info in 2 arrays, one for 900 fields
-    multi_bib_info = get_bib_info(params[:ckey])
+    multi_bib_info = get_bib_info(params[:ckey], params[:home_lib])
     @request.bib_info = multi_bib_info[0].to_s
-    @request.items = multi_bib_info[1] # this should be a hash of hashes
+    @request.items = multi_bib_info[1] # sorted array of the items hash of hashes
     
     # Get remaining fields from parameters
     #@request.bib_info = get_bib_info(params[:ckey]).to_s # old
@@ -255,7 +258,7 @@ module Requestmod
   end
    
   # Method get_bib_info. Take a ckey and return array of bib info to display on the form. 
-  def get_bib_info( ckey )
+  def get_bib_info( ckey, home_lib )
     require 'marc'
     require 'rubygems'
     require 'net/http'
@@ -276,11 +279,15 @@ module Requestmod
  
       # Put all instances of a field into an array
       field_instances = Array.new
+      counter = 0
 
       record.find_all{|f| (field_num) === f.tag}.each do |instance| 
-        if field_num == '999'
-          # items, barcode, call_num, library, home_loc, current_loc
-          items_hash = get_items( items_hash, instance['i'], instance['a'], instance['m'], instance['l'], instance['k'] )
+        if field_num == '999' 
+          if instance['m'] == home_lib
+            counter = counter +1
+            # items, barcode, call_num, library, home_loc, current_loc
+            items_hash = get_items( items_hash, instance['i'], instance['a'], instance['m'], instance['l'], instance['k'], counter )
+          end
         else
           field_instances.push( instance.to_s ) unless instance.to_s.nil?
         end
@@ -293,7 +300,7 @@ module Requestmod
     
     # Now sort the items into an array that contains the items_hash sorted by call number
     
-    items = items_hash.sort_by {|key, call_num| call_num[:call_num]}
+    items = items_hash.sort_by {|key, counter| counter[:counter]}
 
     return bib_info, items
     
@@ -304,13 +311,14 @@ module Requestmod
   
   # Method to add items to a hash of hashes. Takes hash as input and returns same hash
   # with new hash added
-  def get_items( items, barcode, call_num, library, home_loc, current_loc )
+  def get_items( items, barcode, call_num, library, home_loc, current_loc, counter )
 
     items.store( barcode, Hash.new() )
     items[barcode].store( :call_num, call_num )
     items[barcode].store( :home_lib, library )
     items[barcode].store( :home_loc, home_loc )
     items[barcode].store( :current_loc, current_loc )
+    items[barcode].store( :counter, counter)
 
     return items # this is the updated hash we got initally
 

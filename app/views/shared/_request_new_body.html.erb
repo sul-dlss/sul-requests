@@ -186,22 +186,49 @@ function UnCheckAll()
 			
 	
 		
-		<fieldset> <legend>Volumes/Copies Required</legend> 
+		<fieldset> <legend>Volumes/Copies Required</legend>
+		 
+		<% if @request.items.size <= 10 %>
+		<label>
+			<input name="allbox" id="allbox" type="checkbox" value="Check All" checked="checked" onclick="if (this.checked) {CheckAll()} else {UnCheckAll()}" >
+    	Check all
+		</label>
+		<% else %>
+		<label>Check up to ten items</label>	
+		<% end %>
 		
+		 <div class="access_data">
+    		<ul class="show_availability">
+          	<li>
+
+
+		 <p><span class="library"><%= @request.home_lib %></span></p> 
+
+		<ol class="item_list">
+
 		<% @request.items.each do |a|  %>
-  		<%	puts a[0]					%>
+		<% if a[0] == @request.item_id %>
+		<% 	checked = '<font color="green"><strong> - X </strong></font>'           %>
+		<% else %>
+		<%	checked = '' 				%>
+		<% end %>
 		<%  call_num = ''               %>
 		<%  home_lib = ''               %>
   		<%		a[1].each{ |k,v|		%>
 		<%      if k == :home_lib       %>
-		<%       home_lib = v          %>                       
+		
+		<%      	home_lib = v          %>                       
      	<%		elsif  k == :call_num	%>
-       	<%        call_num = v          %> 
+       	<%      	call_num = v          %> 
      	<%      end                     %>
      	<%} %>
-		<%= home_lib %> <%= call_num    %><br>
+		<li><%= call_num    %> <%= checked %></li>
 		<% end %>
-		
+            </ol>
+          </li>
+        </ul>
+   		</div>
+
 		
 		</fieldset>
 		
