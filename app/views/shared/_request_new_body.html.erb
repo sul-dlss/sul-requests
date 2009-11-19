@@ -209,20 +209,28 @@ function UnCheckAll()
 		<% @request.items.each do |a|  %>
 		<% if a[0] == @request.item_id %>
 		<% 	checked = '<font color="green"><strong> - X </strong></font>'           %>
-		<% else %>
-		<%	checked = '' 				%>
-		<% end %>
-		<%  call_num = ''               %>
-		<%  home_lib = ''               %>
-  		<%		a[1].each{ |k,v|		%>
-		<%      if k == :home_lib       %>
-		
-		<%      	home_lib = v          %>                       
-     	<%		elsif  k == :call_num	%>
-       	<%      	call_num = v          %> 
-     	<%      end                     %>
+		<% else 							%>
+		<%	checked = '' 					%>
+		<% end 								%>
+		<% call_num = ''               		%>
+		<% current_loc = ''               	%>
+		<% home_loc = ''					%>
+		<% loc = '' 						%>
+  		<%		a[1].each{ |k,v|			%>
+		<%      if k == :current_loc       	%>
+		<%      	current_loc = v         %>                       
+     	<%		elsif  k == :call_num		%>
+       	<%      	call_num = v          	%> 
+		<%		elsif k == :home_loc 		%>
+		<%			home_loc = v			%>
+     	<%      end                     	%>
      	<%} %>
-		<li><%= call_num    %> <%= checked %></li>
+		<%		if current_loc == nil 		%>
+		<%			loc = home_loc			%>
+		<%		else 						%>
+		<%			loc = home_loc + ' - ' + current_loc		%>
+		<%		end							%>
+		<li><%= call_num    %> - <%= loc %> <%= checked %></li>
 		<% end %>
             </ol>
           </li>

@@ -284,6 +284,8 @@ module Requestmod
       record.find_all{|f| (field_num) === f.tag}.each do |instance| 
         if field_num == '999' 
           if instance['m'] == home_lib
+            # Counter to keep input order but this doesn't actually help
+            # will need to use "shelfkey" somehow
             counter = counter +1
             # items, barcode, call_num, library, home_loc, current_loc
             items_hash = get_items( items_hash, instance['i'], instance['a'], instance['m'], instance['l'], instance['k'], counter )
