@@ -39,6 +39,7 @@ module Requestmod
     # Get bib info in 2 arrays, one for 900 fields
     multi_bib_info = get_bib_info(params[:ckey], params[:home_lib])
     @request.bib_info = multi_bib_info[0].to_s
+    # Need to change this so it gets new array of simple delimited strings
     @request.items = multi_bib_info[1] # sorted array of the items hash of hashes
     
     # Get remaining fields from parameters
@@ -63,7 +64,7 @@ module Requestmod
     require 'uri'
     @request = Request.new(params[:request])
     
-    # raise params.inspect
+    raise params.inspect
     
     # Set up application server and other vars
     symphony_oas = 'http://zaph.stanford.edu:9081'
@@ -288,7 +289,7 @@ module Requestmod
             # will need to use "shelfkey" somehow
             counter = counter +1
             # items, barcode, call_num, library, home_loc, current_loc
-            items_hash = get_items( items_hash, instance['i'], instance['a'], instance['m'], instance['l'], instance['k'], counter )
+            items_hash = get_items_hash( items_hash, instance['i'], instance['a'], instance['m'], instance['l'], instance['k'], counter )
           end
         else
           field_instances.push( instance.to_s ) unless instance.to_s.nil?
@@ -300,11 +301,15 @@ module Requestmod
 
     end # end fields_to_get
     
-    # Now sort the items into an array that contains the items_hash sorted by call number
-    
-    items = items_hash.sort_by {|key, counter| counter[:counter]}
+    # Now sort the items; returns nested array of hashes - will need to use normalized call number here   
+    items_sorted = items_hash.sort_by {|key, counter| counter[:counter]}
 
-    return bib_info, items
+    # Now make this into a hat + pipe delimited array of strings with name, value, and label for checkboxes
+    # Need to find something less kludgy here
+
+    # items = get_items( items_sorted )
+
+    return bib_info, items_sorted
     
     # Returning just one array lets me get back text of fields
     # return bib_info
@@ -313,7 +318,7 @@ module Requestmod
   
   # Method to add items to a hash of hashes. Takes hash as input and returns same hash
   # with new hash added
-  def get_items( items, barcode, call_num, library, home_loc, current_loc, counter )
+  def get_items_hash( items, barcode, call_num, library, home_loc, current_loc, counter )
 
     items.store( barcode, Hash.new() )
     items[barcode].store( :call_num, call_num )
@@ -324,8 +329,36 @@ module Requestmod
 
     return items # this is the updated hash we got initally
 
-end
-  
+  end
+
+  # Method get_items. Takes sorted items array and makes another array that contains delimited strings
+  # Must be a less kludgy way of doing all this.
+  def get_items( items_sorted )
+    
+    items = Array.new()
+
+    items_sorted.each do |a|  
+      barcode = a[0]  
+      home_lib = ''                 
+      call_num = ''                   
+      home_loc = ''
+      current_loc = ''                          
+      a[1].each{ |k,v|      
+        if k == :call_num         
+          call_num = v                                
+        elsif  k == :current_loc    
+          current_loc = v            
+        elsif k == :home_loc    
+          home_loc = v  
+        elsif k == :home_lib
+          home_lib = v
+        end                      
+      } 
+      # Note problem with possible nil values here. How to guard against?
+      items.push( barcode + '^' + barcode + '|' + home_lib + '|' + call_num + '|' + home_loc + '|' + current_loc + '^' + call_num )             
+    end  
+    
+  end
   
   
   
