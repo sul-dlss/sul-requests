@@ -307,9 +307,9 @@ module Requestmod
     # Now make this into a hat + pipe delimited array of strings with name, value, and label for checkboxes
     # Need to find something less kludgy here
 
-    # items = get_items( items_sorted )
+    items = get_items( items_sorted )
 
-    return bib_info, items_sorted
+    return bib_info, items
     
     # Returning just one array lets me get back text of fields
     # return bib_info
@@ -337,25 +337,26 @@ module Requestmod
     
     items = Array.new()
 
-    items_sorted.each do |a|  
+    items_sorted.each do |a| 
       barcode = a[0]  
       home_lib = ''                 
       call_num = ''                   
       home_loc = ''
-      current_loc = ''                          
+      current_loc = 'XXX'                          
       a[1].each{ |k,v|      
         if k == :call_num         
-          call_num = v                                
+          call_num = v unless v.nil?                               
         elsif  k == :current_loc    
-          current_loc = v            
+          current_loc = v unless v.nil?           
         elsif k == :home_loc    
-          home_loc = v  
+          home_loc = v unless v.nil?
         elsif k == :home_lib
-          home_lib = v
+          home_lib = v unless v.nil?
         end                      
       } 
-      # Note problem with possible nil values here. How to guard against?
+      
       items.push( barcode + '^' + barcode + '|' + home_lib + '|' + call_num + '|' + home_loc + '|' + current_loc + '^' + call_num )             
+
     end  
     
   end
