@@ -5,6 +5,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>Request - SAL Item</title>
 
+ 
  <script type="text/javascript"> 
 <!--
 
@@ -57,7 +58,7 @@ function UnCheckAll()
 		
 		</div>
 			
-		<% form_for(:request, @request, :url => { :action => 'create'}) do |f| %>			
+		<% form_for(:request, @request, :url => { :action => 'create'}, :html => { :name => 'requestform' }) do |f| %>			
 	
 			<%= f.hidden_field :req_type %>
 			<%= f.hidden_field :home_lib %>	
@@ -190,7 +191,7 @@ function UnCheckAll()
 		 
 		<% if @request.items.size <= 10 %>
 		<label>
-			<input name="allbox" id="allbox" type="checkbox" value="Check All" checked="checked" onclick="if (this.checked) {CheckAll()} else {UnCheckAll()}" >
+			<input name="allbox" id="allbox" type="checkbox" value="Check All"  onclick="if (this.checked) {CheckAll()} else {UnCheckAll()}" >
     	Check all
 		</label>
 		<% else %>
@@ -202,39 +203,38 @@ function UnCheckAll()
           	<li>
 
 
-		 <p><span class="library"><%= @request.home_lib %></span></p> 
+		 	<p><span class="library"><%= @request.home_lib %></span></p> 
 
-		<ol class="item_list">
+				<ol class="item_list">
+					
+					<% @request.items.each do |item| %>
+					
+						<% values = item.split('^') %>  
+					   	
+					   	<li><input type="checkbox"
+							name="request[items][]" 							
+							<% if values[0] == @request.item_id %>																				
+								checked="checked" 
+							<% end %>
+							value="<%= values[1] %>"
+							onclick="if (this.checked == false ) {document.requestform.allbox.checked = false;}" 
+							id="check_<%= values[0] %>">
+							<label for="check_<%= values[0] %>"> 
+							<span id="avail_<%= values[0] %>" 
+							class="item_available"><%= values[2]%> - <%= values[3] %> 
+							<% if ! values[4].nil? %>
+								- <%= values[4] %> 
+							<% end %>
+							<span class="off_screen">available</span>
+							</span>
+							</label>
+						</li>
 
-		<% @request.items.each do |a|  %>
-		<% if a[0] == @request.item_id %>
-		<% 	checked = '<font color="green"><strong> - X </strong></font>'           %>
-		<% else 							%>
-		<%	checked = '' 					%>
-		<% end 								%>
-		<% call_num = ''               		%>
-		<% current_loc = ''               	%>
-		<% home_loc = ''					%>
-		<% loc = '' 						%>
-  		<%		a[1].each{ |k,v|			%>
-		<%      if k == :current_loc       	%>
-		<%      	current_loc = v         %>                       
-     	<%		elsif  k == :call_num		%>
-       	<%      	call_num = v          	%> 
-		<%		elsif k == :home_loc 		%>
-		<%			home_loc = v			%>
-     	<%      end                     	%>
-     	<%} %>
-		<%		if current_loc == nil 		%>
-		<%			loc = home_loc			%>
-		<%		else 						%>
-		<%			loc = home_loc + ' - ' + current_loc		%>
-		<%		end							%>
-		<li><%= call_num    %> - <%= loc %> <%= checked %></li>
-		<% end %>
-            </ol>
-          </li>
-        </ul>
+					<% end %>
+
+            	</ol>
+          	</li>
+        	</ul>
    		</div>
 
 		

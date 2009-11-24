@@ -36,11 +36,10 @@ module Requestmod
     pickupkey = get_pickup_key( params[:home_lib], params[:current_loc], @request.req_type )       
     @pickup_libs_hash = get_pickup_libs( pickupkey)
     
-    # Get bib info in 2 arrays, one for 900 fields
+    # Get bib info in 2 arrays, one for 900 fields - this is rather involved
     multi_bib_info = get_bib_info(params[:ckey], params[:home_lib])
     @request.bib_info = multi_bib_info[0].to_s
-    # Need to change this so it gets new array of simple delimited strings
-    @request.items = multi_bib_info[1] # sorted array of the items hash of hashes
+    @request.items = multi_bib_info[1] # delimited array
     
     # Get remaining fields from parameters
     #@request.bib_info = get_bib_info(params[:ckey]).to_s # old
@@ -63,14 +62,15 @@ module Requestmod
     require 'net/http'
     require 'uri'
     @request = Request.new(params[:request])
-    
-    raise params.inspect
-    
+
     # Set up application server and other vars
     symphony_oas = 'http://zaph.stanford.edu:9081'
     path_info = '/pls/sirwebdad/func_request_webservice.make_request?'
-    parm_list = URI.escape( join_hash( params[:request], '=', '&' ) )
-    
+    # First we get the items, then the rest of params withouth items
+    items = params[:request][:items]
+    parm_list = URI.escape( join_params_hash( params[:request], '=', '&' ) )
+    parm_list = add_items( parm_list, items)
+       
     # Run stored procedure through http (need to check on best way of doing this ).
     # Should we try by running stored proc directly through a db connection defined in .yml file?
     
@@ -247,16 +247,6 @@ module Requestmod
     
   end
   
-
-  # Method get_form_elements. Need to think about this. Should we put all information in 
-  # a request_type structure, since we need to take data from what we now have in both request_type
-  # and form structures. Seems like we shouldn't necessary repeat the data structures we have now if
-  # they're not going to make sense. 
-  def get_form_elements( home_lib, current_loc, req_type )
-    
-    
-    
-  end
    
   # Method get_bib_info. Take a ckey and return array of bib info to display on the form. 
   def get_bib_info( ckey, home_lib )
@@ -332,7 +322,12 @@ module Requestmod
   end
 
   # Method get_items. Takes sorted items array and makes another array that contains delimited strings
-  # Must be a less kludgy way of doing all this.
+  # with "^" separating name, value, and label of the checkbox we will create on the form
+  # Note that we need to create a hash, keyed on unique barcode, then sort the hash on a "shelf key", 
+  # which returns an array, then turned that array info another array to get just the pieces of data
+  # we need for the checkboxes. Must be a less kludgy way of doing all this, but we are using rather
+  # unusual data for the checkboxes because each has to provide what amounts to a separate set of
+  # form fields for our multiple requests.
   def get_items( items_sorted )
     
     items = Array.new()
@@ -342,7 +337,7 @@ module Requestmod
       home_lib = ''                 
       call_num = ''                   
       home_loc = ''
-      current_loc = 'XXX'                          
+      current_loc = ''                          
       a[1].each{ |k,v|      
         if k == :call_num         
           call_num = v unless v.nil?                               
@@ -354,10 +349,13 @@ module Requestmod
           home_lib = v unless v.nil?
         end                      
       } 
-      
-      items.push( barcode + '^' + barcode + '|' + home_lib + '|' + call_num + '|' + home_loc + '|' + current_loc + '^' + call_num )             
+      # First level separated by "^" is barcode + all info + call num + home_loc + current_loc
+      # Not sure but we need the last two pulled out separately to determine how we display items
+      items.push( barcode + '^' + barcode + '|' + home_lib + '|' + call_num + '|' + home_loc + '|' + current_loc + '^' + call_num + '^' + home_loc + '^' + current_loc )             
 
     end  
+    
+    return items
     
   end
   
@@ -587,20 +585,46 @@ module Requestmod
   
   # Method join_hash. Take a hash and return its elements joined by two delimiters
   # Used to turn a params hash into a param string: key1=value1&key2=value2
-  def join_hash(hash, delim_1, delim_2)
+  # Note that we are excluding two elements from original params hash
+  def join_params_hash(hash, delim_1, delim_2)
+
+    keys = Array.new
+    hash.each do |a,b|
+    # Need to escape strings here; this gets tricky; seems like we just need to replace
+    # ampersands at this point, otherwise other punctuation gets messed up, such as slashes
+      if a.to_s != 'items' && a.to_s != 'item_id'
+        bc = b.gsub('&', '%26')
+        keys << [a.to_s, bc.to_s].join(delim_1)
+      end
+    end
+    #end      
+    return keys.join(delim_2)
+    
+  end    
+  
+  # Method add_items. Add the items array to the parm_list as a single encoded
+  # string 
+  def add_items( parm_list, items )
     
     require 'cgi'
     
-    keys = Array.new
-    hash.each {|a,b|
-    # Need to escape strings here; this gets tricky; seems like we just need to replace
-    # ampersands at this point, otherwise other punctuation gets messed up, such as slashes
-    # bc = CGI.escape(b.strip)
-    bc = b.gsub('&', '%26')
-    keys << [a.to_s, bc.to_s].join(delim_1)}
-    # keys << [a.to_s, b.to_s].join(delim_1)}
-    return keys.join(delim_2)
-  end    
+    item_string = ''
+    
+    items.each do |item| 
+      item.gsub!(/\n+/, " ")
+      item.gsub!(/\s+/, " ")
+      item.strip!
+      if item_string == ''
+        item_string = item_string + CGI::escape(item)  
+      else
+        item_string = item_string + '%5E' +CGI::escape(item)        
+      end 
+    end
+      
+      
+    return parm_list + '&items=' + item_string  
+    
+  end
   
   
 end
