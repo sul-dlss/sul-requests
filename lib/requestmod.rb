@@ -295,7 +295,7 @@ module Requestmod
     items_sorted = items_hash.sort_by {|key, counter| counter[:counter]}
 
     # Now make this into a hat + pipe delimited array of strings with name, value, and label for checkboxes
-    # Need to find something less kludgy here
+    # Is there a less involved way of doing this?
 
     items = get_items( items_sorted )
 
