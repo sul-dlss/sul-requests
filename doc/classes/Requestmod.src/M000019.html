@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>new (Requestmod)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/requestmod.rb, line 10</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">new</span>
+    <span class="ruby-ivar">@request</span> = <span class="ruby-constant">Request</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-comment cmt"># raise params.inspect</span>
+    <span class="ruby-comment cmt"># Do not need session ID</span>
+    <span class="ruby-comment cmt">#@request.session_id = get_symphony_session(params[:library], params[:req_type])</span>
+    <span class="ruby-comment cmt">#@request.session_id = get_symphony_session('GREEN', 'REQ-HOLD')</span>
+    
+    <span class="ruby-comment cmt"># Get user information</span>
+    <span class="ruby-identifier">user</span> = <span class="ruby-identifier">get_user</span>
+    <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">patron_name</span> = <span class="ruby-identifier">user</span>[<span class="ruby-identifier">:patron_name</span>]
+    <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">patron_email</span> = <span class="ruby-identifier">user</span>[<span class="ruby-identifier">:patron_email</span>]
+    <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">library_id</span> = <span class="ruby-identifier">user</span>[<span class="ruby-identifier">:library_id</span>]
+    
+    <span class="ruby-comment cmt"># Get req_type - may not be in parms</span>
+    <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">req_type</span> = <span class="ruby-identifier">get_request_type</span>(<span class="ruby-identifier">params</span>)
+    
+    <span class="ruby-comment cmt"># Need library for to limit items</span>
+    <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">home_lib</span> = (<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:home_lib</span>])
+    
+    <span class="ruby-comment cmt"># Get the request definition, form elements, and list of fields</span>
+    <span class="ruby-identifier">request_def</span> = <span class="ruby-identifier">get_req_def</span>( <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:home_lib</span>], <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_loc</span>], <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">req_type</span> )
+    <span class="ruby-comment cmt"># puts &quot;request_def is:&quot; + request_def</span>
+    <span class="ruby-ivar">@requestdef</span> = <span class="ruby-constant">Requestdef</span>.<span class="ruby-identifier">find_by_name</span>( <span class="ruby-identifier">request_def</span> )
+    <span class="ruby-ivar">@fields</span> = <span class="ruby-identifier">get_fields_for_requestdef</span>( <span class="ruby-ivar">@requestdef</span> )
+    
+    <span class="ruby-comment cmt"># Get the pickupkey then the pickup_libs</span>
+    <span class="ruby-identifier">pickupkey</span> = <span class="ruby-identifier">get_pickup_key</span>( <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:home_lib</span>], <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_loc</span>], <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">req_type</span> )       
+    <span class="ruby-ivar">@pickup_libs_hash</span> = <span class="ruby-identifier">get_pickup_libs</span>( <span class="ruby-identifier">pickupkey</span>)
+    
+    <span class="ruby-comment cmt"># Get bib info in 2 arrays, one for 900 fields - this is rather involved</span>
+    <span class="ruby-identifier">multi_bib_info</span> = <span class="ruby-identifier">get_bib_info</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:ckey</span>], <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:home_lib</span>])
+    <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">bib_info</span> = <span class="ruby-identifier">multi_bib_info</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_s</span>
+    <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">items</span> = <span class="ruby-identifier">multi_bib_info</span>[<span class="ruby-value">1</span>] <span class="ruby-comment cmt"># delimited array</span>
+    
+    <span class="ruby-comment cmt"># Get remaining fields from parameters</span>
+    <span class="ruby-comment cmt">#@request.bib_info = get_bib_info(params[:ckey]).to_s # old</span>
+    <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">ckey</span> = (<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:ckey</span>])
+    
+    <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">due_date</span> = (<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:due_date</span>])
+    <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">not_needed_after</span> = (<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:not_needed_after</span>])
+    <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">call_num</span> = (<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:call_num</span>])
+    <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">pickup_lib</span> = (<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:pickup_lib</span>])
+    <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">home_lib</span> = (<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:home_lib</span>])
+    <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">current_loc</span> = (<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_loc</span>])
+    <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">item_id</span> = (<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:item_id</span>])
+         
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

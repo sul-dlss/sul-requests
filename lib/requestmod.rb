@@ -20,7 +20,7 @@ module Requestmod
     @request.patron_email = user[:patron_email]
     @request.library_id = user[:library_id]
     
-    # Get req_type - may not be in parms
+    # Get req_type - may not be in parms but need for request_def at the moment
     @request.req_type = get_request_type(params)
     
     # Need library for to limit items
@@ -37,7 +37,7 @@ module Requestmod
     @pickup_libs_hash = get_pickup_libs( pickupkey)
     
     # Get bib info in 2 arrays, one for 900 fields - this is rather involved
-    multi_bib_info = get_bib_info(params[:ckey], params[:home_lib])
+    multi_bib_info = get_bib_info(params, params[:ckey], params[:home_lib])
     @request.bib_info = multi_bib_info[0].to_s
     @request.items = multi_bib_info[1] # delimited array
     
@@ -45,10 +45,13 @@ module Requestmod
     #@request.bib_info = get_bib_info(params[:ckey]).to_s # old
     @request.ckey = (params[:ckey])
     
-    @request.due_date = (params[:due_date])
-    @request.not_needed_after = (params[:not_needed_after])
-    @request.call_num = (params[:call_num])
+    # These apply to all items
     @request.pickup_lib = (params[:pickup_lib])
+    @request.not_needed_after = (params[:not_needed_after])
+    
+    # These are item-specific so apply only at the item level
+    @request.due_date = (params[:due_date])
+    @request.call_num = (params[:call_num])
     @request.home_lib = (params[:home_lib])
     @request.current_loc = (params[:current_loc])
     @request.item_id = (params[:item_id])
@@ -86,14 +89,7 @@ module Requestmod
     # is idiotic. Logged this in Jira as symreq-3
     redirect_to :controller => 'requests', :action => 'confirm'
   end
- 
-  # Remove this, which goes to confirmation page and instead make "show.html.erb" the
-  # confirmation page so default rails route for create action (it seems) will
-  # bring up that page
-  # Method confirm. 
-  # def confirm
-  # end
-  
+   
   # Method not_authenticated. Just show not_authenticated page
   def not_authenticated
     render :template => "requests/not_authenticated"
@@ -249,7 +245,7 @@ module Requestmod
   
    
   # Method get_bib_info. Take a ckey and return array of bib info to display on the form. 
-  def get_bib_info( ckey, home_lib )
+  def get_bib_info( params, ckey, home_lib )
     require 'marc'
     require 'rubygems'
     require 'net/http'
@@ -279,7 +275,7 @@ module Requestmod
             # will need to use "shelfkey" somehow
             counter = counter +1
             # items, barcode, call_num, library, home_loc, current_loc
-            items_hash = get_items_hash( items_hash, instance['i'], instance['a'], instance['m'], instance['l'], instance['k'], counter )
+            items_hash = get_items_hash( params, items_hash, instance['i'], instance['a'], instance['m'], instance['l'], instance['k'], counter )
           end
         else
           field_instances.push( instance.to_s ) unless instance.to_s.nil?
@@ -307,14 +303,21 @@ module Requestmod
   end # get_bib_info
   
   # Method to add items to a hash of hashes. Takes hash as input and returns same hash
-  # with new hash added
-  def get_items_hash( items, barcode, call_num, library, home_loc, current_loc, counter )
+  # with new hash added. May need to add due date here
+  def get_items_hash( params, items, barcode, call_num, library, home_loc, current_loc, counter )
 
+    # If no current loc, make it the same as home_loc
+    
+    if current_loc.nil?
+      current_loc = home_loc
+    end
+  
     items.store( barcode, Hash.new() )
     items[barcode].store( :call_num, call_num )
     items[barcode].store( :home_lib, library )
     items[barcode].store( :home_loc, home_loc )
     items[barcode].store( :current_loc, current_loc )
+    items[barcode].store( :req_type, get_request_type( params ) ) 
     items[barcode].store( :counter, counter)
 
     return items # this is the updated hash we got initally
@@ -337,7 +340,8 @@ module Requestmod
       home_lib = ''                 
       call_num = ''                   
       home_loc = ''
-      current_loc = ''                          
+      current_loc = '' 
+      req_type = ''
       a[1].each{ |k,v|      
         if k == :call_num         
           call_num = v unless v.nil?                               
@@ -347,11 +351,13 @@ module Requestmod
           home_loc = v unless v.nil?
         elsif k == :home_lib
           home_lib = v unless v.nil?
+        elsif k == :req_type
+          req_type = v unless v.nil?
         end                      
       } 
       # First level separated by "^" is barcode + all info + call num + home_loc + current_loc
       # Not sure but we need the last two pulled out separately to determine how we display items
-      items.push( barcode + '^' + barcode + '|' + home_lib + '|' + call_num + '|' + home_loc + '|' + current_loc + '^' + call_num + '^' + home_loc + '^' + current_loc )             
+      items.push( barcode + '^' + barcode + '|' + home_lib + '|' + call_num + '|' + home_loc + '|' + current_loc + '|' + req_type + '^' + call_num + '^' + home_loc + '^' + current_loc )             
 
     end  
     
@@ -363,7 +369,8 @@ module Requestmod
   
   # Method get_form_text. Take a key of some sort and return a hash of text elements to use in the form
   # that are fetched from a database where different form types are defined
-  # NEEDS WORK, since it's not returning the proper data
+  # NEEDS WORK, since it's not returning the proper data. Note also that this is pretty
+  # muuch useless if each item will a separate request type
   def get_req_def( home_lib, current_loc, req_type )
     
     req_def = ''
@@ -456,11 +463,9 @@ module Requestmod
 
     #=============== STACKS - this is more involved & seems to depend on req_type 
     
-    elsif current_loc.upcase == 'STACKS' || current_loc =~ /.*?\-30$/ ||
-
-      current_loc =~ /^PAGE-/ 
+    elsif current_loc.upcase == 'STACKS' || current_loc =~ /.*?\-30$/ || current_loc =~ /^PAGE-/ 
     
-      if req_type.upcase == 'REQ-HOP'
+      if req_type.upcase == 'REQ-HOP' 
         
         req_def = 'REQ-HOPKINS'
         
@@ -471,6 +476,8 @@ module Requestmod
       elsif req_type.upcase == 'REQ-SAL3'
       
         req_def = 'SAL3'
+        
+      # Need to look into the following. Probably irrelevant if we multiple items and fewer forms        
       
       elsif req_type.upcase == 'SAL3-TO-BR'
       

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>get_request_type (Requestmod)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/requestmod.rb, line 146</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_request_type</span>(<span class="ruby-identifier">params</span>)
+    
+    <span class="ruby-identifier">req_type</span> = <span class="ruby-value str">''</span>
+    
+   <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:req_type</span>] <span class="ruby-operator">==</span> <span class="ruby-keyword kw">nil</span>
+
+        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_loc</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'INPROCESS'</span> <span class="ruby-operator">&amp;&amp;</span> ( <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:home_lib</span>] <span class="ruby-operator">!=</span> <span class="ruby-value str">'HOOVER'</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:home_lib</span>] <span class="ruby-operator">!=</span> <span class="ruby-value str">'LAW'</span> ) 
+        
+            <span class="ruby-identifier">req_type</span> = <span class="ruby-value str">'REQ-INPRO'</span>
+
+        <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_loc</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'CHECKEDOUT'</span>
+        
+            <span class="ruby-identifier">req_type</span> = <span class="ruby-value str">'REQ-RECALL'</span>
+
+        <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_loc</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'ON-ORDER'</span> <span class="ruby-operator">&amp;&amp;</span> ( <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:home_lib</span>] <span class="ruby-operator">!=</span> <span class="ruby-value str">'HOOVER'</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:home_lib</span>] <span class="ruby-operator">!=</span> <span class="ruby-value str">'LAW'</span> ) 
+      
+            <span class="ruby-comment cmt"># May need to exclude some things here, but how do we get library???</span>
+            <span class="ruby-identifier">req_type</span> = <span class="ruby-value str">'REQ-ONORDM'</span>
+                                
+        <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:home_lib</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'HOOVER'</span>
+        
+            <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_loc</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'INPROCESS'</span>
+            
+                <span class="ruby-identifier">req_type</span> = <span class="ruby-value str">'REQ-HVINPR'</span>
+
+            <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_loc</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'ON-ORDER'</span>
+            
+                <span class="ruby-identifier">req_type</span> = <span class="ruby-value str">'REQ-HVORD'</span>
+
+            <span class="ruby-keyword kw">end</span>
+            
+        <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:home_lib</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'LAW'</span>
+        
+            <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_loc</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'INPROCESS'</span>
+            
+                <span class="ruby-identifier">req_type</span> = <span class="ruby-value str">'REQ-LWINPR'</span>
+
+            <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_loc</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'ON-ORDER'</span>
+            
+                <span class="ruby-identifier">req_type</span> = <span class="ruby-value str">'REQ-LAWORD'</span>
+
+            <span class="ruby-keyword kw">end</span>
+                           
+        <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:home_lib</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'HOPKINS'</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_loc</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'STACKS'</span>
+        
+            <span class="ruby-identifier">req_type</span> = <span class="ruby-value str">'REQ-HOP'</span>
+
+        <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:home_lib</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'SAL'</span>
+        
+            <span class="ruby-identifier">sal_locs_to_test</span> = [ <span class="ruby-value str">'STACKS'</span>, <span class="ruby-value str">'SAL-SERG'</span>, <span class="ruby-value str">'FED-DOCS'</span>, <span class="ruby-value str">'SAL-MUSIC'</span> ]
+
+            <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">sal_locs_to_test</span>.<span class="ruby-identifier">include?</span>( <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_loc</span>] ) <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_loc</span>].<span class="ruby-identifier">include?</span>[<span class="ruby-value str">'PAGE-'</span>]
+            
+                <span class="ruby-identifier">req_type</span> = <span class="ruby-value str">'REQ-SAL'</span>
+
+            <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_loc</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'CHECKEDOUT'</span>
+            
+                <span class="ruby-identifier">req_type</span> = <span class="ruby-value str">'RECALL-SL'</span>
+
+            <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_loc</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'UNCAT'</span>
+            
+                <span class="ruby-identifier">req_type</span> = <span class="ruby-value str">'REQ-INPRO'</span>
+
+            <span class="ruby-keyword kw">end</span>
+
+        <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:home_lib</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'SAL-NEWARK'</span>
+        
+            <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_loc</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'CHECKEDOUT'</span>
+            
+                <span class="ruby-identifier">req_type</span> = <span class="ruby-value str">'RECALL-SN'</span>
+
+            <span class="ruby-keyword kw">else</span>
+
+                <span class="ruby-identifier">req_type</span> = <span class="ruby-value str">'REQ-SALNWK'</span>
+
+            <span class="ruby-keyword kw">end</span>
+                     
+        <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:home_lib</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'SAL3'</span>
+        
+            <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_loc</span>] <span class="ruby-operator">!=</span> <span class="ruby-value str">'INPROCESS'</span>
+            
+                <span class="ruby-identifier">req_type</span> = <span class="ruby-value str">'REQ-RECALL'</span> 
+
+            <span class="ruby-keyword kw">end</span>
+
+        <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_loc</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'CHECKEDOUT'</span>
+        
+            <span class="ruby-identifier">req_type</span> = <span class="ruby-value str">'REQ-RECALL'</span>
+
+        <span class="ruby-comment cmt"># Do we need a final else here in case anything slips through?</span>
+             
+        <span class="ruby-keyword kw">end</span> 
+        
+    <span class="ruby-keyword kw">else</span>
+
+        <span class="ruby-identifier">req_type</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:req_type</span>]            
+
+    <span class="ruby-keyword kw">end</span> <span class="ruby-comment cmt"># check whether params[:req_type] is nil</span>
+
+    
+    <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">req_type</span>
+    
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

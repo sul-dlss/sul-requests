@@ -76,6 +76,13 @@
 
    </div>
 
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000017">link_to_auth_request</a>&nbsp;&nbsp;
+      </div>
+    </div>
 
   </div>
 
@@ -92,6 +99,36 @@
 
 
     <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000017" class="method-detail">
+        <a name="M000017"></a>
+
+        <div class="method-heading">
+          <a href="RequestsHelper.src/M000017.html" target="Code" class="method-signature"
+            onclick="popupCode('RequestsHelper.src/M000017.html');return false;">
+          <span class="method-name">link_to_auth_request</span><span class="method-args">(request)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Take a request instance variable and create a link to the auth&#8216;d
+version of the new form The various values in the instance var come from
+the parms of the original request Probably a better way to do this but
+could not get at contents of &quot;request&quot; object with .inspect
+.query_params or anything else even though, when I got an error message, it
+seemed to say that &quot;request&quot; was a &quot;<a
+href="Request.html">Request</a>&quot; object. So this method manually goes
+through all the possible request parameters which is a subset of
+what&#8216;s in the model
+</p>
+        </div>
+      </div>
+
+
+    </div>
 
 
   </div>

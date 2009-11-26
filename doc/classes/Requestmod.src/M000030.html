@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>get_pickup_libs (Requestmod)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/requestmod.rb, line 524</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_pickup_libs</span>( <span class="ruby-identifier">pickupkey</span>)
+       
+    <span class="ruby-comment cmt"># See http://apidock.com/rails/ActiveRecord/Base/find/class</span>
+    <span class="ruby-comment cmt"># Example find by associated table</span>
+    
+    <span class="ruby-identifier">pickup_libs</span> = <span class="ruby-constant">Library</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>,
+      <span class="ruby-identifier">:select</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'libraries.lib_code, libraries.lib_descrip'</span>,
+      <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">'pickupkeys.pickup_key == ?'</span>, <span class="ruby-identifier">pickupkey</span>],
+      <span class="ruby-identifier">:joins</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-identifier">:pickupkeys</span>],
+      <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'libraries.lib_code'</span>   
+      )
+      
+    <span class="ruby-comment cmt"># Now we put into a hash and return it sorted. Seems like there should</span>
+    <span class="ruby-comment cmt"># be an easier way of getting the list of libraries!! </span>
+      
+    <span class="ruby-identifier">pickup_libs_hash</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
+    
+    <span class="ruby-keyword kw">for</span> <span class="ruby-identifier">pickuplib</span> <span class="ruby-keyword kw">in</span> <span class="ruby-identifier">pickup_libs</span>
+      <span class="ruby-identifier">pickup_libs_hash</span>.<span class="ruby-identifier">merge!</span>({<span class="ruby-identifier">pickuplib</span>.<span class="ruby-identifier">lib_descrip</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">pickuplib</span>.<span class="ruby-identifier">lib_code</span>})  
+    <span class="ruby-keyword kw">end</span>  
+
+    <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">pickup_libs_hash</span>.<span class="ruby-identifier">sort</span>
+    
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

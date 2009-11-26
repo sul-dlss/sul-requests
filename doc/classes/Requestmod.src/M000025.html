@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>get_bib_info (Requestmod)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/requestmod.rb, line 252</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_bib_info</span>( <span class="ruby-identifier">ckey</span>, <span class="ruby-identifier">home_lib</span> )
+    <span class="ruby-identifier">require</span> <span class="ruby-value str">'marc'</span>
+    <span class="ruby-identifier">require</span> <span class="ruby-value str">'rubygems'</span>
+    <span class="ruby-identifier">require</span> <span class="ruby-value str">'net/http'</span>
+    
+    <span class="ruby-comment cmt"># Read the record and change to array; specify nokogiri as parser</span>
+
+    <span class="ruby-identifier">reader</span> = <span class="ruby-constant">MARC</span><span class="ruby-operator">::</span><span class="ruby-constant">XMLReader</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">StringIO</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">get</span>(<span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-value str">'http://searchworks-test.stanford.edu/view/'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">ckey</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'.xml'</span>))), <span class="ruby-identifier">:parser=</span><span class="ruby-operator">&gt;</span><span class="ruby-value str">'nokogiri'</span>).<span class="ruby-identifier">to_a</span>
+    <span class="ruby-identifier">record</span> = <span class="ruby-identifier">reader</span>[<span class="ruby-value">0</span>] <span class="ruby-comment cmt"># Should have only record, since we used CKEY</span>
+
+    <span class="ruby-comment cmt"># Set up fields to get and bib_info string</span>
+    <span class="ruby-identifier">fields_to_get</span> = [ <span class="ruby-value str">'100'</span>, <span class="ruby-value str">'110'</span>, <span class="ruby-value str">'245'</span>, <span class="ruby-value str">'260'</span>, <span class="ruby-value str">'300'</span>, <span class="ruby-value str">'999'</span>]
+    <span class="ruby-comment cmt">#fields_to_get = [ '100', '110', '245', '260', '300']</span>
+    <span class="ruby-identifier">bib_info</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">items_hash</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
+
+    <span class="ruby-comment cmt"># Iterate over list of fields to get</span>
+    <span class="ruby-identifier">fields_to_get</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">field_num</span><span class="ruby-operator">|</span> 
+ 
+      <span class="ruby-comment cmt"># Put all instances of a field into an array</span>
+      <span class="ruby-identifier">field_instances</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
+      <span class="ruby-identifier">counter</span> = <span class="ruby-value">0</span>
+
+      <span class="ruby-identifier">record</span>.<span class="ruby-identifier">find_all</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> (<span class="ruby-identifier">field_num</span>) <span class="ruby-operator">===</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">tag</span>}.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">instance</span><span class="ruby-operator">|</span> 
+        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">field_num</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'999'</span> 
+          <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">instance</span>[<span class="ruby-value str">'m'</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">home_lib</span>
+            <span class="ruby-comment cmt"># Counter to keep input order but this doesn't actually help</span>
+            <span class="ruby-comment cmt"># will need to use &quot;shelfkey&quot; somehow</span>
+            <span class="ruby-identifier">counter</span> = <span class="ruby-identifier">counter</span> <span class="ruby-value">+1</span>
+            <span class="ruby-comment cmt"># items, barcode, call_num, library, home_loc, current_loc</span>
+            <span class="ruby-identifier">items_hash</span> = <span class="ruby-identifier">get_items_hash</span>( <span class="ruby-identifier">items_hash</span>, <span class="ruby-identifier">instance</span>[<span class="ruby-value str">'i'</span>], <span class="ruby-identifier">instance</span>[<span class="ruby-value str">'a'</span>], <span class="ruby-identifier">instance</span>[<span class="ruby-value str">'m'</span>], <span class="ruby-identifier">instance</span>[<span class="ruby-value str">'l'</span>], <span class="ruby-identifier">instance</span>[<span class="ruby-value str">'k'</span>], <span class="ruby-identifier">counter</span> )
+          <span class="ruby-keyword kw">end</span>
+        <span class="ruby-keyword kw">else</span>
+          <span class="ruby-identifier">field_instances</span>.<span class="ruby-identifier">push</span>( <span class="ruby-identifier">instance</span>.<span class="ruby-identifier">to_s</span> ) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">instance</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">nil?</span>
+        <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">end</span>
+
+      <span class="ruby-comment cmt"># Clean up all elements of field array and put into bib_info array</span>
+      <span class="ruby-identifier">bib_info</span>.<span class="ruby-identifier">push</span>( <span class="ruby-identifier">cleanup_field</span>( <span class="ruby-identifier">field_instances</span> ) );
+
+    <span class="ruby-keyword kw">end</span> <span class="ruby-comment cmt"># end fields_to_get</span>
+    
+    <span class="ruby-comment cmt"># Now sort the items; returns nested array of hashes - will need to use normalized call number here   </span>
+    <span class="ruby-identifier">items_sorted</span> = <span class="ruby-identifier">items_hash</span>.<span class="ruby-identifier">sort_by</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">counter</span><span class="ruby-operator">|</span> <span class="ruby-identifier">counter</span>[<span class="ruby-identifier">:counter</span>]}
+
+    <span class="ruby-comment cmt"># Now make this into a hat + pipe delimited array of strings with name, value, and label for checkboxes</span>
+    <span class="ruby-comment cmt"># Is there a less involved way of doing this?</span>
+
+    <span class="ruby-identifier">items</span> = <span class="ruby-identifier">get_items</span>( <span class="ruby-identifier">items_sorted</span> )
+
+    <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">bib_info</span>, <span class="ruby-identifier">items</span>
+    
+    <span class="ruby-comment cmt"># Returning just one array lets me get back text of fields</span>
+    <span class="ruby-comment cmt"># return bib_info</span>
+
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>create (Requestmod)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/requestmod.rb, line 60</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>
+    
+    <span class="ruby-identifier">require</span> <span class="ruby-value str">'net/http'</span>
+    <span class="ruby-identifier">require</span> <span class="ruby-value str">'uri'</span>
+    <span class="ruby-ivar">@request</span> = <span class="ruby-constant">Request</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:request</span>])
+
+    <span class="ruby-comment cmt"># Set up application server and other vars</span>
+    <span class="ruby-identifier">symphony_oas</span> = <span class="ruby-value str">'http://zaph.stanford.edu:9081'</span>
+    <span class="ruby-identifier">path_info</span> = <span class="ruby-value str">'/pls/sirwebdad/func_request_webservice.make_request?'</span>
+    <span class="ruby-comment cmt"># First we get the items, then the rest of params withouth items</span>
+    <span class="ruby-identifier">items</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:request</span>][<span class="ruby-identifier">:items</span>]
+    <span class="ruby-identifier">parm_list</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">escape</span>( <span class="ruby-identifier">join_params_hash</span>( <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:request</span>], <span class="ruby-value str">'='</span>, <span class="ruby-value str">'&amp;'</span> ) )
+    <span class="ruby-identifier">parm_list</span> = <span class="ruby-identifier">add_items</span>( <span class="ruby-identifier">parm_list</span>, <span class="ruby-identifier">items</span>)
+       
+    <span class="ruby-comment cmt"># Run stored procedure through http (need to check on best way of doing this ).</span>
+    <span class="ruby-comment cmt"># Should we try by running stored proc directly through a db connection defined in .yml file?</span>
+    
+    <span class="ruby-identifier">url</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>( <span class="ruby-identifier">symphony_oas</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">path_info</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">parm_list</span> )
+    <span class="ruby-identifier">res</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">start</span>(<span class="ruby-identifier">url</span>.<span class="ruby-identifier">host</span>, <span class="ruby-identifier">url</span>.<span class="ruby-identifier">port</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">http</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">http</span>.<span class="ruby-identifier">get</span>( <span class="ruby-identifier">path_info</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">parm_list</span> )
+    }
+       
+    <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-value str">&quot;Got to create action.&lt;P&gt;Result is: &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">res</span>.<span class="ruby-identifier">body</span> <span class="ruby-operator">+</span> <span class="ruby-value str">&quot; &lt;P&gt;Param string is: &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">parm_list</span>
+    <span class="ruby-comment cmt"># redirect_to requests_path</span>
+    <span class="ruby-comment cmt"># This needs work. For requests path it's OK. For auth/requests path Rails insists on </span>
+    <span class="ruby-comment cmt"># going to show.html.erb. Kludge is to create show.html.erb in views/auth/requests but this</span>
+    <span class="ruby-comment cmt"># is idiotic. Logged this in Jira as symreq-3</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'requests'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'confirm'</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

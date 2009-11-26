@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>create (Admin::PickupkeysController)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File app/controllers/admin/pickupkeys_controller.rb, line 9</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>
+    <span class="ruby-ivar">@pickupkey</span> = <span class="ruby-constant">Pickupkey</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:pickupkey</span>])
+    <span class="ruby-comment cmt"># Not sure where to send user after form is saved</span>
+    <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@pickupkey</span>.<span class="ruby-identifier">save</span>
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">admin_pickupkeys_path</span>
+    <span class="ruby-keyword kw">end</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

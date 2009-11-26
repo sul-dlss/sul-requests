@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>path_to (NavigationHelpers)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File features/support/paths.rb, line 8</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">path_to</span>(<span class="ruby-identifier">page_name</span>)
+    <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">page_name</span>
+    
+    <span class="ruby-keyword kw">when</span> <span class="ruby-regexp re">/the home\s?page/</span>
+      <span class="ruby-value str">'/'</span>
+
+    <span class="ruby-comment cmt">#when /requests\/new with ckey=&quot;([^\&quot;]*)&quot; and req_type=&quot;([^\&quot;]*)&quot; and current_loc=&quot;([^\&quot;]*)&quot; and item_id=&quot;([^\&quot;]*)&quot; and home_lib=&quot;([^\&quot;]*)&quot;$/ </span>
+    <span class="ruby-comment cmt">#requests_new_path(:ckey =&gt; $1, :req_type =&gt; $2, :current_loc =&gt; $3, :item_id =&gt; $4, :home_lib =&gt;$5 )</span>
+
+    <span class="ruby-comment cmt">#when /requests\/newx with with ckey=&quot;([^\&quot;]*)&quot;/</span>
+    <span class="ruby-comment cmt"># requests_newx_path(:ckey =&gt; $1)</span>
+
+    
+    <span class="ruby-comment cmt">#when /requests\/newx/</span>
+    <span class="ruby-comment cmt"># 'requests/newx'</span>
+     
+    <span class="ruby-keyword kw">when</span> <span class="ruby-regexp re">/requests/</span>
+      <span class="ruby-value str">'/requests'</span>
+      
+
+    
+    <span class="ruby-comment cmt"># Add more mappings here.</span>
+    <span class="ruby-comment cmt"># Here is a more fancy example:</span>
+    <span class="ruby-comment cmt">#</span>
+    <span class="ruby-comment cmt">#   when /^(.*)'s profile page$/i</span>
+    <span class="ruby-comment cmt">#    user_profile_path(User.find_by_login($1))</span>
+    
+    <span class="ruby-keyword kw">when</span> <span class="ruby-regexp re">/admin\/requestdefs/</span>
+      <span class="ruby-identifier">admin_requestdefs_path</span>
+
+    <span class="ruby-keyword kw">else</span>
+      <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;Can't find mapping from \&quot;#{page_name}\&quot; to a path.\n&quot;</span> <span class="ruby-operator">+</span>
+        <span class="ruby-node">&quot;Now, go and add a mapping in #{__FILE__}&quot;</span>
+    <span class="ruby-keyword kw">end</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

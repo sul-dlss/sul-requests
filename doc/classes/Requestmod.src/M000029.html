@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>get_pickup_key (Requestmod)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/requestmod.rb, line 500</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_pickup_key</span>( <span class="ruby-identifier">home_lib</span>, <span class="ruby-identifier">current_loc</span>, <span class="ruby-identifier">req_type</span> )
+    
+    <span class="ruby-identifier">pickupkey</span> = <span class="ruby-value str">''</span>
+    
+    <span class="ruby-comment cmt"># Need to check whether this covers every case</span>
+    
+    <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">home_lib</span>.<span class="ruby-identifier">upcase</span> <span class="ruby-operator">==</span>  <span class="ruby-value str">'HOOVER'</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">home_lib</span>.<span class="ruby-identifier">upcase</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'LAW'</span>
+      <span class="ruby-identifier">pickupkey</span> = <span class="ruby-identifier">home_lib</span>
+    <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">current_loc</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">4</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'PAGE-'</span>
+      <span class="ruby-identifier">pickupkey</span> = <span class="ruby-identifier">current_loc</span>[<span class="ruby-value">5</span><span class="ruby-operator">..</span><span class="ruby-identifier">current_loc</span>.<span class="ruby-identifier">length</span>]
+    <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">req_type</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">7</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'SAL3-TO-'</span>
+      <span class="ruby-identifier">pickupkey</span> = <span class="ruby-identifier">req_type</span>[<span class="ruby-value">8</span><span class="ruby-operator">..</span><span class="ruby-identifier">req_type</span>.<span class="ruby-identifier">length</span>]      
+    <span class="ruby-keyword kw">end</span>
+    
+    <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">pickupkey</span>.<span class="ruby-identifier">blank?</span>
+      <span class="ruby-identifier">pickupkey</span> = <span class="ruby-value str">'ALL'</span>
+    <span class="ruby-keyword kw">end</span>
+    
+    <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">pickupkey</span>
+    
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

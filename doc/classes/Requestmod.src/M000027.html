@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>get_items (Requestmod)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/requestmod.rb, line 331</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_items</span>( <span class="ruby-identifier">items_sorted</span> )
+    
+    <span class="ruby-identifier">items</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>()
+
+    <span class="ruby-identifier">items_sorted</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">a</span><span class="ruby-operator">|</span> 
+      <span class="ruby-identifier">barcode</span> = <span class="ruby-identifier">a</span>[<span class="ruby-value">0</span>]  
+      <span class="ruby-identifier">home_lib</span> = <span class="ruby-value str">''</span>                 
+      <span class="ruby-identifier">call_num</span> = <span class="ruby-value str">''</span>                   
+      <span class="ruby-identifier">home_loc</span> = <span class="ruby-value str">''</span>
+      <span class="ruby-identifier">current_loc</span> = <span class="ruby-value str">''</span>                          
+      <span class="ruby-identifier">a</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">each</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span>      
+        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">k</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">:call_num</span>         
+          <span class="ruby-identifier">call_num</span> = <span class="ruby-identifier">v</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">v</span>.<span class="ruby-identifier">nil?</span>                               
+        <span class="ruby-keyword kw">elsif</span>  <span class="ruby-identifier">k</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">:current_loc</span>    
+          <span class="ruby-identifier">current_loc</span> = <span class="ruby-identifier">v</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">v</span>.<span class="ruby-identifier">nil?</span>           
+        <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">k</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">:home_loc</span>    
+          <span class="ruby-identifier">home_loc</span> = <span class="ruby-identifier">v</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">v</span>.<span class="ruby-identifier">nil?</span>
+        <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">k</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">:home_lib</span>
+          <span class="ruby-identifier">home_lib</span> = <span class="ruby-identifier">v</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">v</span>.<span class="ruby-identifier">nil?</span>
+        <span class="ruby-keyword kw">end</span>                      
+      } 
+      <span class="ruby-comment cmt"># First level separated by &quot;^&quot; is barcode + all info + call num + home_loc + current_loc</span>
+      <span class="ruby-comment cmt"># Not sure but we need the last two pulled out separately to determine how we display items</span>
+      <span class="ruby-identifier">items</span>.<span class="ruby-identifier">push</span>( <span class="ruby-identifier">barcode</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'^'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">barcode</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'|'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">home_lib</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'|'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">call_num</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'|'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">home_loc</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'|'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">current_loc</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'^'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">call_num</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'^'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">home_loc</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'^'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">current_loc</span> )             
+
+    <span class="ruby-keyword kw">end</span>  
+    
+    <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">items</span>
+    
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

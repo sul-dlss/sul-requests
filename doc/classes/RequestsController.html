@@ -84,25 +84,18 @@
 
    </div>
 
-    <div id="method-list">
-      <h3 class="section-bar">Methods</h3>
-
-      <div class="name-list">
-      <a href="#M000008">cleanup_field</a>&nbsp;&nbsp;
-      <a href="#M000004">confirm</a>&nbsp;&nbsp;
-      <a href="#M000003">create</a>&nbsp;&nbsp;
-      <a href="#M000007">get_bib_info</a>&nbsp;&nbsp;
-      <a href="#M000005">get_symphony_session</a>&nbsp;&nbsp;
-      <a href="#M000006">get_user</a>&nbsp;&nbsp;
-      <a href="#M000001">index</a>&nbsp;&nbsp;
-      <a href="#M000002">new</a>&nbsp;&nbsp;
-      </div>
-    </div>
 
   </div>
 
 
     <!-- if includes -->
+    <div id="includes">
+      <h3 class="section-bar">Included Modules</h3>
+
+      <div id="includes-list">
+        <span class="include-name"><a href="Requestmod.html">Requestmod</a></span>
+      </div>
+    </div>
 
     <div id="section">
 
@@ -114,159 +107,6 @@
 
 
     <!-- if method_list -->
-    <div id="methods">
-      <h3 class="section-bar">Public Instance methods</h3>
-
-      <div id="method-M000004" class="method-detail">
-        <a name="M000004"></a>
-
-        <div class="method-heading">
-          <a href="RequestsController.src/M000004.html" target="Code" class="method-signature"
-            onclick="popupCode('RequestsController.src/M000004.html');return false;">
-          <span class="method-name">confirm</span><span class="method-args">()</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <p>
-Method <a href="RequestsController.html#M000004">confirm</a>.
-</p>
-        </div>
-      </div>
-
-      <div id="method-M000003" class="method-detail">
-        <a name="M000003"></a>
-
-        <div class="method-heading">
-          <a href="RequestsController.src/M000003.html" target="Code" class="method-signature"
-            onclick="popupCode('RequestsController.src/M000003.html');return false;">
-          <span class="method-name">create</span><span class="method-args">()</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <p>
-Method <a href="RequestsController.html#M000003">create</a>. Send user
-input to Symphony. Get back message indicating request was placed. Display
-confirmation or error message to user
-</p>
-        </div>
-      </div>
-
-      <div id="method-M000001" class="method-detail">
-        <a name="M000001"></a>
-
-        <div class="method-heading">
-          <a href="RequestsController.src/M000001.html" target="Code" class="method-signature"
-            onclick="popupCode('RequestsController.src/M000001.html');return false;">
-          <span class="method-name">index</span><span class="method-args">()</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-        </div>
-      </div>
-
-      <div id="method-M000002" class="method-detail">
-        <a name="M000002"></a>
-
-        <div class="method-heading">
-          <a href="RequestsController.src/M000002.html" target="Code" class="method-signature"
-            onclick="popupCode('RequestsController.src/M000002.html');return false;">
-          <span class="method-name">new</span><span class="method-args">()</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <p>
-Method <a href="RequestsController.html#M000002">new</a>. Display a request
-form, including data retrieved from an XML lookup, user data from the
-environment, if available, and Symphony session information in a hidden
-field The user fills in this from to <a
-href="RequestsController.html#M000003">create</a> a request
-</p>
-        </div>
-      </div>
-
-      <h3 class="section-bar">Protected Instance methods</h3>
-
-      <div id="method-M000008" class="method-detail">
-        <a name="M000008"></a>
-
-        <div class="method-heading">
-          <a href="RequestsController.src/M000008.html" target="Code" class="method-signature"
-            onclick="popupCode('RequestsController.src/M000008.html');return false;">
-          <span class="method-name">cleanup_field</span><span class="method-args">( field_arr )</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <p>
-Method <a href="RequestsController.html#M000008">cleanup_field</a>. Take an
-array containing one or more instances of a field and return an array of
-elements that strip out tags and delimiters
-</p>
-        </div>
-      </div>
-
-      <div id="method-M000007" class="method-detail">
-        <a name="M000007"></a>
-
-        <div class="method-heading">
-          <a href="RequestsController.src/M000007.html" target="Code" class="method-signature"
-            onclick="popupCode('RequestsController.src/M000007.html');return false;">
-          <span class="method-name">get_bib_info</span><span class="method-args">( ckey )</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <p>
-Method <a href="RequestsController.html#M000007">get_bib_info</a>. Take a
-ckey and return array of bib info to display on the form.
-</p>
-        </div>
-      </div>
-
-      <div id="method-M000005" class="method-detail">
-        <a name="M000005"></a>
-
-        <div class="method-heading">
-          <a href="RequestsController.src/M000005.html" target="Code" class="method-signature"
-            onclick="popupCode('RequestsController.src/M000005.html');return false;">
-          <span class="method-name">get_symphony_session</span><span class="method-args">( library, request_type)</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <p>
-Method <a href="RequestsController.html#M000005">get_symphony_session</a>.
-Take a library name and a request type, send information to Symphony, get
-back a stripped-down request input form, parse out and return the action
-parameter that&#8216;s needed to place the request
-</p>
-        </div>
-      </div>
-
-      <div id="method-M000006" class="method-detail">
-        <a name="M000006"></a>
-
-        <div class="method-heading">
-          <a href="RequestsController.src/M000006.html" target="Code" class="method-signature"
-            onclick="popupCode('RequestsController.src/M000006.html');return false;">
-          <span class="method-name">get_user</span><span class="method-args">()</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <p>
-Method <a href="RequestsController.html#M000006">get_user</a>. Get user
-information, normally from the environment and return as a hash
-</p>
-        </div>
-      </div>
-
-
-    </div>
 
 
   </div>
