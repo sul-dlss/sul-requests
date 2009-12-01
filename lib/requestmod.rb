@@ -82,12 +82,17 @@ module Requestmod
       http.get( path_info + parm_list )
     }
        
+    # Should get results delimted by "^" which we split into array
+
+    @results = res.body.split('^') 
+       
     flash[:notice] = "Got to create action.<P>Result is: " + res.body + " <P>Param string is: " + parm_list
     # redirect_to requests_path
     # This needs work. For requests path it's OK. For auth/requests path Rails insists on 
     # going to show.html.erb. Kludge is to create show.html.erb in views/auth/requests but this
     # is idiotic. Logged this in Jira as symreq-3
-    redirect_to :controller => 'requests', :action => 'confirm'
+    #redirect_to :controller => 'requests', :action => 'confirm'
+    render :template => "requests/confirm"
   end
    
   # Method not_authenticated. Just show not_authenticated page
