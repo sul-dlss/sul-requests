@@ -56,6 +56,12 @@ function UnCheckAll()
 		
 		<p><%= @requestdef[:initial_text]%></p>
 		
+		<%if @fields.has_key?('hold_recall') %>
+		
+		<p><%= @requestdef[:extra_text]%></p>
+		
+		<% end %>
+		
 		</div>
 			
 		<% form_for(:request, @request, :url => { :action => 'create'}, :html => { :name => 'requestform' }) do |f| %>			
@@ -112,7 +118,7 @@ function UnCheckAll()
 			<% end %>
 			
 			<%if @fields.has_key?('hold_recall') %>
-				<dt><label for="request_hold_recall"><%= @fields['hold_recall'] %></label>:</dt>
+				<dt><label for="request_hold_recall">Request Type</label>:</dt>
 				
 				<dd><label><input name="request_type" type="radio" value="Hold" 
 					<% if ! @is_autheticated %>
@@ -213,16 +219,13 @@ function UnCheckAll()
 					   	
 					   	<li><input type="checkbox"
 							name="request[items][]" 							
-							<% if values[0] == @request.item_id %>																				
-								checked="checked" 
-							<% end %>
 							value="<%= values[1] %>"
 							onclick="if (this.checked == false ) {document.requestform.allbox.checked = false;}" 
 							id="check_<%= values[0] %>">
 							<label for="check_<%= values[0] %>"> 
 							<span id="avail_<%= values[0] %>" 
-							class="item_available"><%= values[2]%> - <%= values[3] %> 
-							<% if ! values[4].nil? %>
+							class="item_available"><%= values[2]%> 
+							<% if ! values[4].nil? && ( values[3] != values[4] ) %>
 								- <%= values[4] %> 
 							<% end %>
 							<span class="off_screen">available</span>

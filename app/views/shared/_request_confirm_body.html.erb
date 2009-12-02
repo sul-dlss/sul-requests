@@ -3,18 +3,36 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 		<title>Confirmation Page</title>
-
+    <link href="/stylesheets/request-forms.css" rel="stylesheet" type="text/css">
 	</head>
 	<body>
 		
 		<p>This is the body text showing each result</p>
 		
-		<% @results.each do |result|  %>
-		<% fields = result.split('|') %>
-		<%= fields[1] %> - <%= fields[2] %> <br>
+		<!-- Display successful messaage first -->
 		
+		<% if @results.has_key?('209') %>
+			Your requests have been placed for the following items:
+			<blockquote>
+				<% fields = @results['209'].split('|') %>
+				<%= fields[1] %>			
+			</blockquote>
+			<% @results.delete('209') %>
+		<% end %>			
+		
+		<% if ! @results.empty?  %>
+			Your requests for the following items could not be placed for the reasons shown:
+			<blockquote>
+				<% @results.each do |key, value| %>
+					<%=h "#{key.to_s}" %>
+					<blockquote>
+					<%  call_nums = value.split('^') %>
+					<%=h call_nums[1] %> <br>	
+					</blockquote>	
+				<% end %>	
+			</blockquote>
 		<% end %>
-		
+<hr>		
 		<p>This should be followed by a flash message.</p>
 		<% unless flash[:notice].blank?%>
 			<div id="notification"><%= flash[:notice] %></div>

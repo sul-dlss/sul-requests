@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091116204722) do
+ActiveRecord::Schema.define(:version => 20091201190853) do
 
   create_table "fields", :force => true do |t|
     t.string   "field_name"
@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(:version => 20091116204722) do
     t.integer  "field_order"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "hold_recall"
   end
 
   create_table "fields_requestdefs", :id => false, :force => true do |t|
@@ -61,6 +62,7 @@ ActiveRecord::Schema.define(:version => 20091116204722) do
     t.text     "final_text"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "extra_text"
   end
 
 end

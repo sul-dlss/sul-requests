@@ -30,7 +30,7 @@ module Requestmod
     request_def = get_req_def( params[:home_lib], params[:current_loc], @request.req_type )
     # puts "request_def is:" + request_def
     @requestdef = Requestdef.find_by_name( request_def )
-    @fields = get_fields_for_requestdef( @requestdef )
+    # @fields = get_fields_for_requestdef( @requestdef )
     
     # Get the pickupkey then the pickup_libs
     pickupkey = get_pickup_key( params[:home_lib], params[:current_loc], @request.req_type )       
@@ -40,6 +40,8 @@ module Requestmod
     multi_bib_info = get_bib_info(params, params[:ckey], params[:home_lib])
     @request.bib_info = multi_bib_info[0].to_s
     @request.items = multi_bib_info[1] # delimited array
+    
+    @fields = get_fields_for_requestdef( @requestdef, @request.items )
     
     # Get remaining fields from parameters
     #@request.bib_info = get_bib_info(params[:ckey]).to_s # old
@@ -82,9 +84,8 @@ module Requestmod
       http.get( path_info + parm_list )
     }
        
-    # Should get results delimted by "^" which we split into array
-
-    @results = res.body.split('^') 
+    # Get results hash from delimited string returned from Symphony
+    @results = get_results( res.body ) 
        
     flash[:notice] = "Got to create action.<P>Result is: " + res.body + " <P>Param string is: " + parm_list
     # redirect_to requests_path
@@ -370,6 +371,30 @@ module Requestmod
     
   end
   
+  # Method get_results. Take delimited string returned from Symphony that contains info for each
+  # item and put it into a hash with msg number as key and call nos. etc as values 
+  def get_results( response )
+    
+    items = response.split('^')
+
+    msgs = {}
+
+    items.each { |item|
+      fields = item.split('|')
+      # Assign to vars just to make things easier to read
+      key = fields[2]
+      value = fields[0] + '|' + fields[1]
+      puts key + ' => ' + value
+      if ! msgs.has_key?(key)
+        msgs[key] = value
+      else
+        msgs[key] = msgs[key] + '^' + value
+      end
+      }
+    
+    return msgs    
+    
+  end
   
   
   # Method get_form_text. Take a key of some sort and return a hash of text elements to use in the form
@@ -562,7 +587,7 @@ module Requestmod
   # of fields for that requestdef. Again this seems rather complicated but 
   # couldn't see anyway to get fields when we get @requestdef
 
-  def get_fields_for_requestdef( request_def )
+  def get_fields_for_requestdef( request_def, items )
     
     # puts "at start of get_fields for requestdef"
     
@@ -571,6 +596,12 @@ module Requestmod
     request_def.fields.each do |f|
       fields_hash.merge!({f.field_name => f.field_label})
     end    
+    
+    # Add req/hold field if necessary (need to add more strings to test here)
+    
+    if items.to_s.include?('^CHECKEDOUT') || items.to_s.include?('^INPROCESS') || items.to_s.include?('^ON-ORDER')
+      fields_hash.merge!({'hold_recall' => 'Request Type'})
+    end        
     
     return fields_hash
     
