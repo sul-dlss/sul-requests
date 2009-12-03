@@ -75,6 +75,21 @@ module Requestmod
     #  puts "patron name is blank"
     #end
 
+    if ! @request.valid?
+      # NOTE: Problem seems to be that we don't get any of the ancillary instance 
+      # vars filled in, such as @requestdef. So we get the params passed from the 
+      # form but not other info that's generated in the new method originally.
+      # Get req_type - may not be in parms but need for request_def at the moment
+      #@request.req_type = get_request_type(params)
+      #puts "request type is: " + @request.req_type
+      #request_def = get_req_def( params[:home_lib], params[:current_loc], @request.req_type )
+      # puts "request_def is:" + request_def
+      #@requestdef = Requestdef.find_by_name( request_def )
+      #render :action => 'new'
+      #render :partial => 'shared/request_new_body', :object => @request
+      puts "request is not valid!!!!"
+      puts @request.errors.inspect
+    end
 
     # Set up application server and other vars
     symphony_oas = 'http://zaph.stanford.edu:9081'
