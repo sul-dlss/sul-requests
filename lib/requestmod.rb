@@ -67,6 +67,14 @@ module Requestmod
     require 'net/http'
     require 'uri'
     @request = Request.new(params[:request])
+    
+    # Following doesn't work in various ways depending on how request is defined
+    #if @request[:patron_name].blank?
+      #render :action => 'new'
+    #  #render :template => 'requests/new'
+    #  puts "patron name is blank"
+    #end
+
 
     # Set up application server and other vars
     symphony_oas = 'http://zaph.stanford.edu:9081'
@@ -372,7 +380,7 @@ module Requestmod
   end
   
   # Method get_results. Take delimited string returned from Symphony that contains info for each
-  # item and put it into a hash with msg number as key and call nos. etc as values 
+  # item and put it into a hash with msg number as key and call nos. etc as values. 
   def get_results( response )
     
     items = response.split('^')
@@ -380,8 +388,9 @@ module Requestmod
     msgs = {}
 
     items.each { |item|
-      fields = item.split('|')
+      fields = item.split('|') unless item.nil?
       # Assign to vars just to make things easier to read
+      puts "these are fields" + fields.inspect
       key = fields[2]
       value = fields[0] + '|' + fields[1]
       puts key + ' => ' + value

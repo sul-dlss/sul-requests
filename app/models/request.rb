@@ -1,6 +1,6 @@
-class Request < ActiveRecord::Base
+class Request < Tableless
   
-  has_no_table
+  #has_no_table
   column :ckey, :string
   column :call_num, :string
   column :bib_info, :string
@@ -24,6 +24,6 @@ class Request < ActiveRecord::Base
   column :session_id, :string
   column :comments, :string
 
-  validates_presence_of :patron_name, :univ_id, :pickup_lib
-  
+  validates_presence_of :patron_name, :pickup_lib, :on => :create
+
 end
