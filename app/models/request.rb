@@ -5,6 +5,7 @@ class Request < Tableless
   column :call_num, :string
   column :bib_info, :string
   column :items, :array
+  column :items_checked, :arrary 
   column :patron_name, :string
   column :patron_email, :string
   column :library_id, :string
@@ -23,6 +24,8 @@ class Request < Tableless
   column :hold_recall, :string
   column :session_id, :string
   column :comments, :string
+  column :request_def, :string
+  column :pickupkey, :string
 
   validates_presence_of :patron_name, :pickup_lib, :on => :create
 

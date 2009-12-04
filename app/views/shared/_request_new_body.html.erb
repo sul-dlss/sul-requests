@@ -74,6 +74,8 @@ function UnCheckAll()
 			<%= f.hidden_field :bib_info %>
 			<%= f.hidden_field :call_num %>
 			<%= f.hidden_field :ckey %>
+			<%= f.hidden_field :request_def %>
+			<%= f.hidden_field :pickupkey %>
 
 			<!-- Visible fields for record; some may be hidden above -->
 			
@@ -221,7 +223,11 @@ function UnCheckAll()
 							name="request[items][]" 							
 							value="<%= values[1] %>"
 							onclick="if (this.checked == false ) {document.requestform.allbox.checked = false;}" 
-							id="check_<%= values[0] %>">
+							id="check_<%= values[0] %>"
+							<% if ! @request.items_checked.nil? && @request.items_checked.include?( values[1]  ) %>
+							checked
+							<% end %> >
+							
 							<label for="check_<%= values[0] %>"> 
 							<span id="avail_<%= values[0] %>" 
 							class="item_available"><%= values[2]%> 

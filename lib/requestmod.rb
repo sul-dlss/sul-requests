@@ -6,7 +6,10 @@ module Requestmod
   end
 
   # Method new. Display a request form, including data retrieved from an XML lookup and user data from 
-  # the authentication, if available. The user fills in this from to create a request
+  # the authentication, if available. The user fills in this from to create a request. Note that this
+  # method could be called from create method if validation fails, so we need to check whether we 
+  # already have various pieces of information before we generate it by calling other methods. This 
+  # includes req_type, bib_info, and others. 
   def new
     @request = Request.new
     # raise params.inspect
@@ -21,21 +24,23 @@ module Requestmod
     @request.library_id = user[:library_id]
     
     # Get req_type - may not be in parms but need for request_def at the moment
-    @request.req_type = get_request_type(params)
+    @request.req_type = get_request_type( params )
+    
+    # puts "Request type after get_request_type is: " + @request.req_type 
     
     # Need library for to limit items
-    @request.home_lib = (params[:home_lib])
+    @request.home_lib = params[:home_lib]
     
     # Get the request definition, form elements, and list of fields
-    request_def = get_req_def( params[:home_lib], params[:current_loc], @request.req_type )
+    @request.request_def = get_req_def( params[:home_lib], params[:current_loc], @request.req_type )
     # puts "request_def is:" + request_def
-    @requestdef = Requestdef.find_by_name( request_def )
+    @requestdef = Requestdef.find_by_name( @request.request_def )
     # @fields = get_fields_for_requestdef( @requestdef )
     
     # Get the pickupkey then the pickup_libs
-    pickupkey = get_pickup_key( params[:home_lib], params[:current_loc], @request.req_type )       
-    @pickup_libs_hash = get_pickup_libs( pickupkey)
-    
+    @request.pickupkey = get_pickup_key( params[:home_lib], params[:current_loc], @request.req_type )       
+    @pickup_libs_hash = get_pickup_libs( @request.pickupkey)
+        
     # Get bib info in 2 arrays, one for 900 fields - this is rather involved
     multi_bib_info = get_bib_info(params, params[:ckey], params[:home_lib])
     @request.bib_info = multi_bib_info[0].to_s
@@ -76,47 +81,52 @@ module Requestmod
     #end
 
     if ! @request.valid?
-      # NOTE: Problem seems to be that we don't get any of the ancillary instance 
-      # vars filled in, such as @requestdef. So we get the params passed from the 
-      # form but not other info that's generated in the new method originally.
-      # Get req_type - may not be in parms but need for request_def at the moment
-      #@request.req_type = get_request_type(params)
-      #puts "request type is: " + @request.req_type
-      #request_def = get_req_def( params[:home_lib], params[:current_loc], @request.req_type )
-      # puts "request_def is:" + request_def
-      #@requestdef = Requestdef.find_by_name( request_def )
-      #render :action => 'new'
-      #render :partial => 'shared/request_new_body', :object => @request
-      puts "request is not valid!!!!"
-      puts @request.errors.inspect
+      # Put checked items into new items_checked array
+      @request.items_checked = @request.items
+      #puts "This is the items_checked array before generating items array again"
+      #puts @request.items_checked.inspect
+      #puts "This is the request inside the validation invalid block"
+      #puts @request.inspect
+      # Reset instance vars needed to re-display form
+      @requestdef = Requestdef.find_by_name( @request.request_def )
+      @pickup_libs_hash = get_pickup_libs( @request.pickupkey)
+      # Get bib info in 2 arrays, one for 900 fields. Can't see any way to get around
+      # repeating this here!
+      multi_bib_info = get_bib_info(params['request'], @request.ckey, @request.home_lib)
+      @request.bib_info = multi_bib_info[0].to_s
+      @request.items = multi_bib_info[1] # delimited array
+      @fields = get_fields_for_requestdef( @requestdef, @request.items )
+      render :action => 'new'
+      
+    else
+  
+      # Set up application server and other vars
+      symphony_oas = 'http://zaph.stanford.edu:9081'
+      path_info = '/pls/sirwebdad/func_request_webservice.make_request?'
+      # First we get the items, then the rest of params withouth items
+      items = params[:request][:items]
+      parm_list = URI.escape( join_params_hash( params[:request], '=', '&' ) )
+      parm_list = add_items( parm_list, items)
+         
+      # Run stored procedure through http (need to check on best way of doing this ).
+      # Should we try by running stored proc directly through a db connection defined in .yml file?
+      
+      url = URI.parse( symphony_oas + path_info + parm_list )
+      res = Net::HTTP.start(url.host, url.port) {|http|
+        http.get( path_info + parm_list )
+      }
+         
+      # Get results hash from delimited string returned from Symphony
+      @results = get_results( res.body ) 
+         
+      flash[:notice] = "Got to create action.<P>Result is: " + res.body + " <P>Param string is: " + parm_list
+      # redirect_to requests_path
+      # This needs work. For requests path it's OK. For auth/requests path Rails insists on 
+      # going to show.html.erb. Kludge is to create show.html.erb in views/auth/requests but this
+      # is idiotic. Logged this in Jira as symreq-3
+      #redirect_to :controller => 'requests', :action => 'confirm'
+      render :template => "requests/confirm"
     end
-
-    # Set up application server and other vars
-    symphony_oas = 'http://zaph.stanford.edu:9081'
-    path_info = '/pls/sirwebdad/func_request_webservice.make_request?'
-    # First we get the items, then the rest of params withouth items
-    items = params[:request][:items]
-    parm_list = URI.escape( join_params_hash( params[:request], '=', '&' ) )
-    parm_list = add_items( parm_list, items)
-       
-    # Run stored procedure through http (need to check on best way of doing this ).
-    # Should we try by running stored proc directly through a db connection defined in .yml file?
-    
-    url = URI.parse( symphony_oas + path_info + parm_list )
-    res = Net::HTTP.start(url.host, url.port) {|http|
-      http.get( path_info + parm_list )
-    }
-       
-    # Get results hash from delimited string returned from Symphony
-    @results = get_results( res.body ) 
-       
-    flash[:notice] = "Got to create action.<P>Result is: " + res.body + " <P>Param string is: " + parm_list
-    # redirect_to requests_path
-    # This needs work. For requests path it's OK. For auth/requests path Rails insists on 
-    # going to show.html.erb. Kludge is to create show.html.erb in views/auth/requests but this
-    # is idiotic. Logged this in Jira as symreq-3
-    #redirect_to :controller => 'requests', :action => 'confirm'
-    render :template => "requests/confirm"
   end
    
   # Method not_authenticated. Just show not_authenticated page
@@ -167,7 +177,9 @@ module Requestmod
 
   # Method get_request_type. Return the request type based on other parameters if we don't have
   # one included in the parameters. Logic copied from PL/SQL code for display proc. Not sure whether all of 
-  # this is still needed for Socrates but might help with SearchWorks
+  # this is still needed for Socrates but might help with SearchWorks. Note. Need to make some changes from 
+  # PL/SQL original. So far added REQ-SAL3 if home_lib is SAL3 and we don't have INPROCESS, CHECKEDOUT,
+  # or Hoover or Law stuff. Probably need other SAL3 options for the various special cases of SAL3 locs
   def get_request_type(params)
     
     req_type = ''
@@ -178,7 +190,7 @@ module Requestmod
         
             req_type = 'REQ-INPRO'
 
-        elsif params[:current_loc] == 'CHECKEDOUT'
+        elsif params[:current_loc] == 'CHECKEDOUT' && params[:home_lib] != 'SAL' # covered below
         
             req_type = 'REQ-RECALL'
 
@@ -245,17 +257,11 @@ module Requestmod
 
             end
                      
-        elsif params[:home_lib] == 'SAL3'
-        
-            if params[:current_loc] != 'INPROCESS'
-            
-                req_type = 'REQ-RECALL' 
-
-            end
-
-        elsif params[:current_loc] == 'CHECKEDOUT'
-        
-            req_type = 'REQ-RECALL'
+        # Changed this one, which originally made everything "REQ-RECALL", which really 
+        # makes no sense             
+        elsif params[:home_lib] == 'SAL3' # Do we need more options here??
+                  
+          req_type = 'REQ-SAL3' 
 
         # Do we need a final else here in case anything slips through?
              
@@ -278,6 +284,8 @@ module Requestmod
     require 'marc'
     require 'rubygems'
     require 'net/http'
+    
+    # puts "params at start of get_bib_info is: " + params.inspect
     
     # Read the record and change to array; specify nokogiri as parser
 
@@ -335,6 +343,8 @@ module Requestmod
   # with new hash added. May need to add due date here
   def get_items_hash( params, items, barcode, call_num, library, home_loc, current_loc, counter )
 
+    # puts "params in get_items_hash is: " + params.inspect
+    
     # If no current loc, make it the same as home_loc
     
     if current_loc.nil?
@@ -405,10 +415,8 @@ module Requestmod
     items.each { |item|
       fields = item.split('|') unless item.nil?
       # Assign to vars just to make things easier to read
-      puts "these are fields" + fields.inspect
       key = fields[2]
       value = fields[0] + '|' + fields[1]
-      puts key + ' => ' + value
       if ! msgs.has_key?(key)
         msgs[key] = value
       else
