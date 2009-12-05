@@ -408,22 +408,29 @@ module Requestmod
   # item and put it into a hash with msg number as key and call nos. etc as values. 
   def get_results( response )
     
-    items = response.split('^')
-
     msgs = {}
 
-    items.each { |item|
-      fields = item.split('|') unless item.nil?
-      # Assign to vars just to make things easier to read
-      key = fields[2]
-      value = fields[0] + '|' + fields[1]
-      if ! msgs.has_key?(key)
-        msgs[key] = value
-      else
-        msgs[key] = msgs[key] + '^' + value
-      end
-      }
-    
+    if response.include?('^')
+      
+      items = response.split('^')
+
+      items.each { |item|
+        fields = item.split('|') unless item.nil?
+        # Assign to vars just to make things easier to read
+        key = fields[2]
+        value = fields[0] + '|' + fields[1]
+        if ! msgs.has_key?(key)
+          msgs[key] = value
+        else
+          msgs[key] = msgs[key] + '^' + value
+        end
+        }
+    else
+      
+       msgs['000'] = response
+       
+    end      
+          
     return msgs    
     
   end
@@ -667,7 +674,7 @@ module Requestmod
     hash.each do |a,b|
     # Need to escape strings here; this gets tricky; seems like we just need to replace
     # ampersands at this point, otherwise other punctuation gets messed up, such as slashes
-      if a.to_s != 'items' && a.to_s != 'item_id'
+      if a.to_s != 'items' && a.to_s != 'item_id' && a.to_s != 'request_def' && a.to_s != 'pickupkey'
         bc = b.gsub('&', '%26')
         keys << [a.to_s, bc.to_s].join(delim_1)
       end
