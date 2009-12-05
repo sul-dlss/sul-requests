@@ -27,6 +27,7 @@ class Request < Tableless
   column :request_def, :string
   column :pickupkey, :string
 
-  validates_presence_of :patron_name, :pickup_lib, :on => :create
+  validates_presence_of :patron_name, :pickup_lib 
+  # validates_format_of :not_needed_after, :with => /^[01][0-9]\/[0-9]{2}\/[0-9]{4}$/, :message => 'must be in format "MM/DD/YYY"' 
 
 end
