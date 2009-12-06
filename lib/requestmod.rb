@@ -79,14 +79,19 @@ module Requestmod
     #  #render :template => 'requests/new'
     #  puts "patron name is blank"
     #end
+    
+    error_msgs = check_fields( params['request'])
 
-    if ! @request.valid?
+    #if ! @request.valid?
+    if ! error_msgs.empty?
+      flash[:notice] = "Have some errors to display" 
       # Put checked items into new items_checked array
       @request.items_checked = @request.items
       #puts "This is the items_checked array before generating items array again"
       #puts @request.items_checked.inspect
       #puts "This is the request inside the validation invalid block"
-      #puts @request.inspect
+      puts @request.inspect
+      puts @request.errors.inspect
       # Reset instance vars needed to re-display form
       @requestdef = Requestdef.find_by_name( @request.request_def )
       @pickup_libs_hash = get_pickup_libs( @request.pickupkey)
@@ -708,5 +713,30 @@ module Requestmod
     
   end
   
+  
+  def check_fields(params)
+    
+    error_msgs = []
+    
+    if ! params['univ_id'].nil?
+      
+      if params['univ_id'] == ''
+        error_msgs.push('University ID cannot be blank')
+      end
+      
+    end    
+    
+    if ! params['library_id'].nil?
+      
+      if params['library_id'] == ''
+        error_msgs.push('Library ID cannot be blank')
+      end
+      
+    end        
+    
+    return error_msgs
+      
+  end
+
   
 end
