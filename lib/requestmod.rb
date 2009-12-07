@@ -423,7 +423,9 @@ module Requestmod
     
     msgs = {}
 
-    if response.include?('^')
+    # Single item response won't include '^' but should include > 1 '|'. Not sure this
+    # will be enough to distinguish proper response from system problems
+    if response.include?('^') || response.index('|') > 1
       
       response.strip!
       
