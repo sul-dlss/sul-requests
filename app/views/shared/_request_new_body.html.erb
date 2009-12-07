@@ -47,10 +47,16 @@ function UnCheckAll()
 		<!-- Parameter names need to match what's used in destination proc -->
 		
 		<h1><%= @requestdef[:title] %></h1>
-		<% unless flash[:notice].blank?%>
-			<div id="notification"><%= flash[:notice] %></div>
+		<% unless flash[:invalid_fields].blank?%>
+			<p>
+				<ul type="square">
+				<% msgs = flash[:invalid_fields].split('^') %>
+				<% msgs.each do |msg| %>  
+				<div id="notification"><li><%= msg %></li></div>
+				<% end %>
+				</ul>
+			</p>
 		<% end %>
-		<%= error_messages_for 'request' %>
 
 		<div class="opening">
 		
@@ -78,37 +84,7 @@ function UnCheckAll()
 			<%= f.hidden_field :pickupkey %>
 
 			<!-- Visible fields for record; some may be hidden above -->
-			
-			<dl>
-			
-			<% if @fields.has_key?('ckey') %>
-			<dt><%= @fields['ckey'] %>:</dt>
-			 	<dd><%= @request.ckey %></dd>
-			 <% end %>
-			 
-			<% if @fields.has_key?('item_id') %>
-			<dt><%= @fields['item_id'] %>:</dt>
-			 	<dd><%= @request.item_id %></dd>
-			<% end %>			 
-			 
-			<% if @fields.has_key?('call_num') %>		 
-			<dt><%= @fields['call_num'] %>:</dt>
-				 <dd><%= @request.call_num %></dd>
-			<% end %>
-			
-			<% if @fields.has_key?('date') %>
-			<dt><%= @fields['date'] %>:</dt>
-				<dd> <%= Time::now() %></dd>
-			<% end %>
-			
-			
-			<% if @fields.has_key?('bib_info') %>
-			<dt><%= @fields['bib_info'] %>:</dt>
-				<dd><%= @request.bib_info %></dd>
-			<% end %>
-			
-			</dl>
-			
+					
 			<!-- User Info -->
 			
 			<a name="formstart"></a>
@@ -117,33 +93,6 @@ function UnCheckAll()
 			
 			<% if ! @is_authenticated %>
 			<div id="autofill">If you have a SUNet ID, &raquo; <a href="<%= link_to_auth_request(@request) %>">login</a> &laquo; to auto-fill and enable more options.</div>
-			<% end %>
-			
-			<%if @fields.has_key?('hold_recall') %>
-				<dt><label for="request_hold_recall">Request Type</label>:</dt>
-				
-				<dd><label><input name="request_type" type="radio" value="Hold" 
-					<% if ! @is_autheticated %>
-					checked="checked"
-					<% end %>
-					 >Hold</label>
-					<label id="recallLabel" 
-					<% if ! @is_authenticated %>					
-					style="color: #666;"
-					<% end %>
-					>						
-					<input name="request_type" id="request_type" type="radio" 
-					<% if ! @is_authenticated %>
-					disabled="disabled" 
-					<% end %>
-					value="Recall">
-  					Recall 
-					<% if ! @is_authenticated %>
-					<span id="loginInstruction">(login to enable this option)</span>
-					<% end %>
-					</label></dd>
-
-			
 			<% end %>
 			
 			<% if @fields.has_key?('user_name') %>
@@ -170,6 +119,44 @@ function UnCheckAll()
 			
 			<dt><label for="request_pickup_lib">Pickup Library</label>:</dt>
 				<dd><%= select_tag 'request[pickup_lib]', options_for_select( @pickup_libs_hash)  %></dd>
+		
+			<!-- Hold/Recall - this will be done somewhat differently -->	
+			
+			<% if @fields.has_key?('hold_recall') %>
+				<dt><label for="request_hold_recall">Unavailable Items</label>:</dt>
+				
+				<dd>Some items below are currently checked out to other patrons.
+				If you select those items, they will be:
+				<ul>
+					<li>
+					<label><input name="request_type" type="radio" value="Hold" 
+					<% if ! @is_autheticated %>
+					checked="checked"
+					<% end %>
+					 >held</label>
+					</li>
+					<li> 
+					<label id="recallLabel" 
+					<% if ! @is_authenticated %>					
+					style="color: #666;"
+					<% end %>
+					>						
+					<input name="request_type" id="request_type" type="radio" 
+					<% if ! @is_authenticated %>
+					disabled="disabled" 
+					<% end %>
+					value="Recall">
+  					recalled
+					<% if ! @is_authenticated %>
+					<span id="loginInstruction">(login to enable this option)</span>
+					<% end %>
+					</label></li>
+					</ul>
+					and delivered when they are returned.
+					</dd>
+
+			
+			<% end %>
 			
 			<!-- Have either not_needed or planned_use field but not both -->
 			
@@ -196,6 +183,13 @@ function UnCheckAll()
 	
 		
 		<fieldset> <legend>Volumes/Copies Required</legend>
+		
+
+		<% if @fields.has_key?('bib_info') %>
+
+			<%= @request.bib_info %></dd>
+		<% end %>
+
 		 
 		<% if @request.items.size <= 10 %>
 		<label>
@@ -203,7 +197,7 @@ function UnCheckAll()
     	Check all
 		</label>
 		<% else %>
-		<label>Check up to ten items</label>	
+		<p><label>Select up to ten volumes or copies for this request</label></p>	
 		<% end %>
 		
 		 <div class="access_data">

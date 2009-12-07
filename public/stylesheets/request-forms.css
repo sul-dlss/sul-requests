@@ -1,39 +1,49 @@
 @charset "UTF-8";
 /* CSS Document */
 
-body {font-family: Arial, Helvetica, sans-serif; font-size: 90%; text-align: center; background-color: #EDE8DD; margin: 0px; padding: 0px;}
+body {font-family: Verdana,"Lucida Grande","Lucida Sans Unicode",Arial,sans-serif; font-size: 80%; text-align: center; background-color: #F5F3F2; margin: 0px; padding: 0px;}
+form {margin: 0; padding: 0;}
 #header {background-color: #900; color: #FFF; text-align: right; height: 34px; font-size: .75em; background-image:url(globals_sulair_logo.gif); background-repeat: no-repeat;}
 #header a {color: #fff;}
 #header a#SULAIR {position: absolute; top: 0px; left: 0px; display: block; width: 150px; height: 34px; text-decoration: none;}
 #header .links {position: absolute; top: 0px; right: 0px; padding: 8px; z-index: 99;}
-#container {background-color: #FFF; width: 45em; margin: 0px auto; text-align: left; font-size: .9em; padding: 25px 25px 5px 25px; }
-form {padding: 0px; margin: 0px;}
+#outer {background-color: #999; width: 46em; margin: 0px auto; text-align: left; padding: 0 .5em .5em 0;}
+#container {position: relative; background-color: #FFF; width: 50em; margin: 0px auto; text-align: left; font-size: .9em; padding: 20px; border: 1px solid #DBD7D2;}
+form, label, dl {padding: 0; margin: 0;}
+input {margin: 0;}
+a {color: #2E4F81;}
 h1 {font-size: 1.25em; padding: 0px; margin: 0px; }
-fieldset {display: block; border: 1px dotted  #C2B7A1; margin: 0px auto 20px auto; padding: 1em 2em;}
-h2, legend {font-size: 1em; font-weight: bold; padding: 0px 5px; background-color: #FFF; color: #918873; text-transform: uppercase;}
+h2 {font-size: 1.1em; padding: 0px; margin: 15px 0px; }
+fieldset {display: block; border: 1px dotted  #918873; margin: 0px auto 20px auto; padding: 10px;}
+legend {font-size: 1em; padding: 1px 5px; text-transform: uppercase; background-color: #918873; color: #fff;}
+
 p {clear: both;}
 
-dt {float: left; width: 10em; padding: 5px 0px; text-align: right; color: #555;}
-dd {clear: right; margin-left: 10.5em;  padding: 5px 0px; }
+ul, li {list-style-type: none; margin: 0px; padding: 0px;}
 
-fieldset dt {float: left; width: 8em; padding: 5px 0px; text-align: right; color: #555;}
-fieldset dd {clear: right; margin-left: 8.5em;  padding: 5px 0px; }
+h2.title {margin: 0 0 10px 0; padding: 0px; font-size: 1.25em; font-weight: normal;}
 
 
-input, select, textarea {width: 23em;}
+fieldset dt {clear: left; float: left; width: 10em; padding: 5px 0px; text-align: right; color: #666;}
+fieldset dd {margin-left: 11em;  padding: 5px 0px; }
+
+
+input, select, textarea {width: 23em; margin: 0;}
 input[type=radio], input[type=checkbox] {width: 1em;}
 
-
-#autofill {color: #900;}
-#autofill a {color: #900; font-weight: bold;}
+div.opening {padding: 10px 0;}
+div.opening p {margin: 0; padding: 0 0 10px 0;}
+#autofill {color: #900; text-align: right; padding: 0; margin: -5px 0 5px; font-size: .9em;}
+#autofill a {color: #900; font-weight: bold; text-decoration: underline;}
 fieldset.required fieldset legend, fieldset.required label {font-weight: bold;} /* call out required fields */
 div.submit {clear: both; text-align: center;}
-input#commit {width: 8em; display: inline; margin: 0px 20px 0px 0px; font-size: 1em;}
+div.submit input {width: 10em; display: inline; margin: 0px 20px 0px 0px; font-size: 1em;}
 #footer {clear: both; padding: 25px; font-size: .75em; color: #900;}
 legend span {display:block; width: 200px; padding: 0px; text-align: right; white-space: nowrap; overflow: visible;}
 
 .available {color:green;}
 .checked_out {color:#555555;}
+.instruction {font-size: .9em;}
 span.item_available {
   background-image:url('check-tiny.gif');
   background-repeat:no-repeat;
@@ -42,11 +52,19 @@ span.item_available {
 ol.item_list {
   padding-left:0 !important;
 }
-ol.item_list span {
-  padding-left:15px;
-}
+
+span.library {font-weight: bold;}
+
 .show_availability span.item_available {
   color:green;
+}
+
+div.access_data {
+  max-height: 16em;
+  overflow: auto;
+  padding: 2px;
+  margin: 10px;
+  border: 1px dotted #ccc;
 }
 
 .access_data ul {
@@ -54,9 +72,8 @@ ol.item_list span {
   padding: 0 0 5px;
 }
 .access_data ul li {
-  border-bottom: 1px dotted #E3EBDF;
   list-style-type:none;
-  padding: 0 3px 15px;
+  padding:0 3px 3px 0;
 }
 .access_data ul li ol {
   margin:5px;
@@ -66,10 +83,8 @@ ol.item_list span {
   border-bottom:none;
   font-weight:normal;
   list-style-type:none;
-  padding: 5px 0 0;
 }
 .off_screen {
   position:absolute;
   left:-1000px;
 }
-

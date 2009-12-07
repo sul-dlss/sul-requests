@@ -80,18 +80,26 @@ module Requestmod
     #  puts "patron name is blank"
     #end
     
+    flash[:invalid_fields] = ''
     error_msgs = check_fields( params['request'])
 
     #if ! @request.valid?
     if ! error_msgs.empty?
-      flash[:notice] = "Have some errors to display" 
+      error_msgs.each do |msg|
+        if flash[:invalid_fields].blank?
+          flash[:invalid_fields] = msg 
+        else
+          flash[:invalid_fields] = flash[:invalid_fields] + '^' + msg 
+        end
+     end  
+
       # Put checked items into new items_checked array
       @request.items_checked = @request.items
       #puts "This is the items_checked array before generating items array again"
       #puts @request.items_checked.inspect
       #puts "This is the request inside the validation invalid block"
-      puts @request.inspect
-      puts @request.errors.inspect
+      # puts @request.inspect
+      # puts @request.errors.inspect
       # Reset instance vars needed to re-display form
       @requestdef = Requestdef.find_by_name( @request.request_def )
       @pickup_libs_hash = get_pickup_libs( @request.pickupkey)
@@ -417,10 +425,18 @@ module Requestmod
 
     if response.include?('^')
       
+      response.strip!
+      
+      # 36105129254244|DS793 .H6 Z477 2006 V.57|722^36105129254251|DS793 .H6 Z477 2006 V.56|209 
+      
       items = response.split('^')
+      
+      # 36105129254244|DS793 .H6 Z477 2006 V.57|722
+      # 36105129254251|DS793 .H6 Z477 2006 V.56|209
 
       items.each { |item|
         fields = item.split('|') unless item.nil?
+        
         # Assign to vars just to make things easier to read
         key = fields[2]
         value = fields[0] + '|' + fields[1]
@@ -435,6 +451,11 @@ module Requestmod
        msgs['000'] = response
        
     end      
+    
+    # puts "message hash in get_results is: "
+    # msgs.each do |k,v|
+    #  puts k.to_s + " => " + v.to_s
+    # end
           
     return msgs    
     
@@ -644,7 +665,7 @@ module Requestmod
     # Add req/hold field if necessary (need to add more strings to test here)
     
     if items.to_s.include?('^CHECKEDOUT') || items.to_s.include?('^INPROCESS') || items.to_s.include?('^ON-ORDER')
-      fields_hash.merge!({'hold_recall' => 'Request Type'})
+      fields_hash.merge!({'hold_recall' => 'Unavailable Items'})
     end        
     
     return fields_hash
@@ -713,10 +734,23 @@ module Requestmod
     
   end
   
-  
+  # Method check_fields. Test validity of each required field and add to error_msgs
+  # if there's a problem
   def check_fields(params)
     
     error_msgs = []
+    
+    # ---- Your name
+    
+    if ! params['patron_name'].nil?
+      
+      if params['patron_name'] == ''
+        error_msgs.push('Name field cannot be blank')
+      end
+      
+    end  
+    
+    #------ Library_id or univ_id
     
     if ! params['univ_id'].nil?
       
@@ -733,6 +767,27 @@ module Requestmod
       end
       
     end        
+    
+    # ------- Not Needed After
+    
+    if ! params['not_needed_after'].nil?
+      
+      if params['not_needed_after'] !~  /^[01][0-9]\/[0-9]{2}\/[0-9]{4}$/ 
+        error_msgs.push('Not Needed After field must contain a date in the form MM/DD/YYYY')
+      end
+      
+    end  
+    
+    # -------- Items: should always have an items field so it should never be nil
+    
+    if params['items'].nil? || params['items'].empty?
+        error_msgs.push('You must select at least one item.')    
+    end
+    
+    
+
+    
+    
     
     return error_msgs
       
