@@ -90,17 +90,17 @@ module Requestmod
           flash[:invalid_fields] = msg 
         else
           flash[:invalid_fields] = flash[:invalid_fields] + '^' + msg 
-        end
-     end  
+        end # if flash blank
+      end # do each msg 
 
-      # Put checked items into new items_checked array
+      # ---- Put checked items into new items_checked array
       @request.items_checked = @request.items
       #puts "This is the items_checked array before generating items array again"
       #puts @request.items_checked.inspect
       #puts "This is the request inside the validation invalid block"
       # puts @request.inspect
       # puts @request.errors.inspect
-      # Reset instance vars needed to re-display form
+      # ---- Reset instance vars needed to re-display form
       @requestdef = Requestdef.find_by_name( @request.request_def )
       @pickup_libs_hash = get_pickup_libs( @request.pickupkey)
       # Get bib info in 2 arrays, one for 900 fields. Can't see any way to get around
@@ -138,6 +138,8 @@ module Requestmod
       # going to show.html.erb. Kludge is to create show.html.erb in views/auth/requests but this
       # is idiotic. Logged this in Jira as symreq-3
       #redirect_to :controller => 'requests', :action => 'confirm'
+      @messages = get_msg_hash(Message.find(:all))
+
       render :template => "requests/confirm"
     end
   end
@@ -733,6 +735,19 @@ module Requestmod
       
       
     return parm_list + '&items=' + item_string  
+    
+  end
+  
+  # Method get_msg_hash. Take the messages retrieved from the DB
+  # and put them into a hash with the msg_number as key
+  def get_msg_hash(msgs)
+    
+    msg_hash = {}
+    msgs.each do |msg|
+      msg_hash[msg.msg_number] = msg.msg_text
+    end
+    
+    return msg_hash
     
   end
   
