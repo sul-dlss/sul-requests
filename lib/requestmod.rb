@@ -132,7 +132,7 @@ module Requestmod
       # Get results hash from delimited string returned from Symphony
       @results = get_results( res.body ) 
          
-      flash[:notice] = "Got to create action.<P>Result is: " + res.body + " <P>Param string is: " + parm_list
+      flash[:debug] = "Got to create action.<P>Result is: " + res.body + " <P>Param string is: " + parm_list
       # redirect_to requests_path
       # This needs work. For requests path it's OK. For auth/requests path Rails insists on 
       # going to show.html.erb. Kludge is to create show.html.erb in views/auth/requests but this
