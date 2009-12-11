@@ -7,9 +7,25 @@
 	</head>
 	<body>
 		
-		<p>This is the body text showing each result</p>
+		<!-- Toolbar --> 
 		
-		<!-- Display successful messaage first -->
+		<%= render :partial => "shared/toolbar_links" %>
+		
+		<!-- Message: could be success or failure-->
+		
+		<% if @results.has_key?('2') %>
+		
+		<%=h @messages['2'] %>
+		
+		<% @results.clear %>
+		
+		<% end %>
+		
+		<!-- Request information -->
+		
+		<!-- Bibliographic data -->
+		
+		<!-- Item information --> 
 		
 		<% if @results.has_key?('209') %>
 			
@@ -40,9 +56,11 @@
 			</blockquote>
 		<% end %>
 <hr>		
-		<p>This should be followed by a flash message.</p>
-		<% unless flash[:notice].blank?%>
-			<div id="notification"><%= flash[:notice] %></div>
+		<!-- Extra information that may be useful for debugging. Delete this in prod version -->
+		
+		<p>This is information about the request that may useful for debugging.</p>
+		<% unless flash[:debug].blank?%>
+			<div id="notification"><%= flash[:debug] %></div>
 		<% end %>
 	</body>
 </html>

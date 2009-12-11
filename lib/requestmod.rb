@@ -132,7 +132,7 @@ module Requestmod
       # Get results hash from delimited string returned from Symphony
       @results = get_results( res.body ) 
          
-      flash[:debug] = "Got to create action.<P>Result is: " + res.body + " <P>Param string is: " + parm_list
+      flash[:debug] = "Result is: " + res.body + " <P>Param string is: " + parm_list
       # redirect_to requests_path
       # This needs work. For requests path it's OK. For auth/requests path Rails insists on 
       # going to show.html.erb. Kludge is to create show.html.erb in views/auth/requests but this
@@ -141,6 +141,7 @@ module Requestmod
       @messages = get_msg_hash(Message.find(:all))
 
       render :template => "requests/confirm"
+
     end
   end
    
@@ -427,8 +428,8 @@ module Requestmod
 
     # Single item response won't include '^' but should include > 1 '|'. Not sure this
     # will be enough to distinguish proper response from system problems
-    if response.include?('^') || response.index('|') > 1
-      
+    if response.include?('^') || response.index(/.*?\|.*?\|.*$/) # at least two vertical bars
+
       response.strip!
       
       # 36105129254244|DS793 .H6 Z477 2006 V.57|722^36105129254251|DS793 .H6 Z477 2006 V.56|209 
@@ -450,6 +451,10 @@ module Requestmod
           msgs[key] = msgs[key] + '^' + value
         end
         }
+    elsif response.eql?('2')
+    
+      msgs['2'] = response # This is invalid user reponse
+    
     else
       
        msgs['000'] = response
