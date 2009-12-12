@@ -15,13 +15,31 @@
 		
 		<% if @results.has_key?('2') %>
 		
-		<%=h @messages['2'] %>
+			<div class="request_failed"><p>
+
+			<%=h @messages['2'] %>
 		
-		<% @results.clear %>
+			<% @results.clear %>
+			
+			</p></div>
+
 		
 		<% end %>
 		
-		<!-- Request information -->
+		<!-- Patron information: note variations in field names and parm names 
+			 Need to add logic to figure out which fields to print.
+		-->
+		
+		<div class="patron_info">
+			<dl>
+
+			<dd><%= @field_labels['user_name'] %>: <%= @request['patron_name'] %></dd>
+			<dd><%= @field_labels['library_id'] %>: <%= @request['library_id'] %></dd>
+			
+		</dl>
+		</div> 
+		
+		<!-- end of patron info -->
 		
 		<!-- Bibliographic data -->
 		
@@ -58,7 +76,8 @@
 <hr>		
 		<!-- Extra information that may be useful for debugging. Delete this in prod version -->
 		
-		<p>This is information about the request that may useful for debugging.</p>
+		<p>Information below the horizontal line is not part of the 
+		display but is just shown temporarily to help with debugging.</p>
 		<% unless flash[:debug].blank?%>
 			<div id="notification"><%= flash[:debug] %></div>
 		<% end %>

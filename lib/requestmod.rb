@@ -139,6 +139,11 @@ module Requestmod
       # is idiotic. Logged this in Jira as symreq-3
       #redirect_to :controller => 'requests', :action => 'confirm'
       @messages = get_msg_hash(Message.find(:all))
+      
+      # Get all fields here so we can use labels on confirm page
+      @field_labels = get_field_labels
+      
+      puts "field labels in create method is: " + @field_labels.inspect
 
       render :template => "requests/confirm"
 
@@ -424,13 +429,14 @@ module Requestmod
   # item and put it into a hash with msg number as key and call nos. etc as values. 
   def get_results( response )
     
+    # Remove any trailing CR and leading and trailing spaces
+    response.chomp!.strip!
+    
     msgs = {}
 
     # Single item response won't include '^' but should include > 1 '|'. Not sure this
     # will be enough to distinguish proper response from system problems
     if response.include?('^') || response.index(/.*?\|.*?\|.*$/) # at least two vertical bars
-
-      response.strip!
       
       # 36105129254244|DS793 .H6 Z477 2006 V.57|722^36105129254251|DS793 .H6 Z477 2006 V.56|209 
       
@@ -657,6 +663,24 @@ module Requestmod
     
   end
   
+  # Method get field labels. Make a hash of fields names and labels from 
+  # data stored in fields table
+  def get_field_labels
+    
+    fields = Field.find(:all,
+    :select => 'fields.field_name, fields.field_label'
+    )
+    
+    fields_hash = Hash.new
+    
+    for field in fields
+      fields_hash.merge!({field.field_name => field.field_label} )
+    end
+    
+    return fields_hash
+    
+  end
+  
   # Method get_fields_for_requestdef. Take a requestdef name and return a hash
   # of fields for that requestdef. Again this seems rather complicated but 
   # couldn't see anyway to get fields when we get @requestdef
@@ -673,9 +697,13 @@ module Requestmod
     
     # Add req/hold field if necessary (need to add more strings to test here)
     
-    if items.to_s.include?('^CHECKEDOUT') || items.to_s.include?('^INPROCESS') || items.to_s.include?('^ON-ORDER')
-      fields_hash.merge!({'hold_recall' => 'Unavailable Items'})
-    end        
+    if ! items.nil?
+    
+      if items.to_s.include?('^CHECKEDOUT') || items.to_s.include?('^INPROCESS') || items.to_s.include?('^ON-ORDER')
+        fields_hash.merge!({'hold_recall' => 'Unavailable Items'})
+      end    
+    
+    end
     
     return fields_hash
     

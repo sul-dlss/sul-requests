@@ -21,18 +21,21 @@ p {clear: both;}
 
 ul, li {list-style-type: none; margin: 0px; padding: 0px;}
 
-h2.title {margin: 0 0 10px 0; padding: 0px; font-size: 1.25em; font-weight: normal;}
+dt {clear: left; float: left; width: 10em; padding: 1px 0px; text-align: right; color: #666;}
+dd {margin-left: 11em;  padding: 1px 0px; }
 
-
-fieldset dt {clear: left; float: left; width: 10em; padding: 5px 0px; text-align: right; color: #666;}
-fieldset dd {margin-left: 11em;  padding: 5px 0px; }
+fieldset dt {padding: 5px 0px;}
+fieldset dd {padding: 5px 0px;}
 
 
 input, select, textarea {width: 23em; margin: 0;}
 input[type=radio], input[type=checkbox] {width: 1em;}
 
-div.opening {padding: 10px 0;}
-div.opening p {margin: 0; padding: 0 0 10px 0;}
+div.opening, div.request_successful, div.request_failed {padding: 10px 0;}
+div.request_failed {color: red; font-weight: bold;}
+div.request_failed a {font-weight: normal;}
+div.request_successful {color: green; font-weight: bold;}
+p {margin: 0; padding: 0;}
 #autofill {color: #900; text-align: right; padding: 0; margin: -5px 0 5px; font-size: .9em;}
 #autofill a {color: #900; font-weight: bold; text-decoration: underline;}
 fieldset.required fieldset legend, fieldset.required label {font-weight: bold;} /* call out required fields */
@@ -43,17 +46,18 @@ legend span {display:block; width: 200px; padding: 0px; text-align: right; white
 
 .available {color:green;}
 .checked_out {color:#555555;}
-.instruction {font-size: .9em;}
-span.item_available {
-  background-image:url('check-tiny.gif');
-  background-repeat:no-repeat;
-  background-position:left center;
-}
+
 ol.item_list {
   padding-left:0 !important;
 }
 
-span.library {font-weight: bold;}
+span.title {display: block; margin: 0 0 15px 10px; padding: 0px; font-size: 1.15em; font-weight: normal;}
+
+span.library {font-weight: bold; padding: 0 10px;}
+
+span.instruction {font-size: .9em;}
+
+span.action_varies {font-weight: normal; padding: 0 10px;}
 
 .show_availability span.item_available {
   color:green;
@@ -63,28 +67,27 @@ div.access_data {
   max-height: 16em;
   overflow: auto;
   padding: 2px;
-  margin: 10px;
+  margin: 1px 10px 15px;
   border: 1px dotted #ccc;
 }
 
-.access_data ul {
-  margin: 1px 0 3px;
-  padding: 0 0 5px;
-}
-.access_data ul li {
-  list-style-type:none;
-  padding:0 3px 3px 0;
-}
-.access_data ul li ol {
+.access_data ol {
   margin:5px;
-  padding: 0 0 0 15px;
+  padding: 0;
 }
-.access_data ul li ol li {
+.access_data ol li {
+  list-style-type:none;
+  padding:0 0 3px 0;
   border-bottom:none;
   font-weight:normal;
-  list-style-type:none;
 }
 .off_screen {
   position:absolute;
   left:-1000px;
 }
+
+div.patron_info {margin: 15px 0;}
+
+ul.show_status li {margin: 0 0 10px 10px;}
+ul.show_status ol li {margin: 0;}
+
