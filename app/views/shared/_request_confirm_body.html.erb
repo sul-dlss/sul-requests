@@ -24,6 +24,7 @@
 			</p></div>
 
 		
+		
 		<% end %>
 		
 		<!-- Patron information: note variations in field names and parm names 
@@ -33,8 +34,9 @@
 		<div class="patron_info">
 			<dl>
 
-			<dd><%= @field_labels['user_name'] %>: <%= @request['patron_name'] %></dd>
+			<dd><%= @field_labels['patron_name'] %>: <%= @request['patron_name'] %></dd>
 			<dd><%= @field_labels['library_id'] %>: <%= @request['library_id'] %></dd>
+			<dd><%= @field_labels['pickup_lib'] %>: <%= @request['pickup_lib'] %></dd>
 			
 		</dl>
 		</div> 

@@ -95,13 +95,13 @@ function UnCheckAll()
 			<div id="autofill">If you have a SUNet ID, &raquo; <a href="<%= link_to_auth_request(@request) %>">login</a> &laquo; to auto-fill and enable more options.</div>
 			<% end %>
 			
-			<% if @fields.has_key?('user_name') %>
-				<dt><label for="request_patron_name"><%= @fields['user_name'] %></label>:</dt>
+			<% if @fields.has_key?('patron_name') %>
+				<dt><label for="request_patron_name"><%= @fields['patron_name'] %></label>:</dt>
 				<dd><%= f.text_field :patron_name, :value => @request.patron_name %></dd>
 			<% end %>
 			
-			<% if @fields.has_key?('user_email') %>
-				<dt><label for="request_patron_email"><%= @fields['user_email'] %></label>:</dt>
+			<% if @fields.has_key?('patron_email') %>
+				<dt><label for="request_patron_email"><%= @fields['patron_email'] %></label>:</dt>
 				<dd><%= f.text_field :patron_email, :value => @request.patron_email %></dd>
 			<% end %>		
 			
@@ -129,7 +129,7 @@ function UnCheckAll()
 				If you select those items, they will be:
 				<ul>
 					<li>
-					<label><input name="request_type" type="radio" value="Hold" 
+					<label><input name="request[hold_recall" type="radio" value="HOLD" 
 					<% if ! @is_autheticated %>
 					checked="checked"
 					<% end %>
@@ -141,11 +141,11 @@ function UnCheckAll()
 					style="color: #666;"
 					<% end %>
 					>						
-					<input name="request_type" id="request_type" type="radio" 
+					<input name="request[hold_recall" id="request_type" type="radio" 
 					<% if ! @is_authenticated %>
 					disabled="disabled" 
 					<% end %>
-					value="Recall">
+					value="RECALL">
   					recalled
 					<% if ! @is_authenticated %>
 					<span id="loginInstruction">(login to enable this option)</span>
