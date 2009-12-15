@@ -10,10 +10,12 @@
 		<!-- Toolbar --> 
 		
 		<%= render :partial => "shared/toolbar_links" %>
+				
+		<h1><%= @requestdef[:title] %></h1>
 		
 		<!-- Message: could be success or failure-->
 		
-		<% if @results.has_key?('2') %>
+		<% if @results.has_key?('2') # global failure, but may have more codes here %>
 		
 			<div class="request_failed"><p>
 
@@ -21,22 +23,39 @@
 		
 			<% @results.clear %>
 			
-			</p></div>
-
+			</p>
+			
+			<!-- call return_to_request helper here and pass request object -->
 		
+			</div>
+
+		<% else # global "success" but specific requests may "fail" %>	
+		
+			<div class="request_successful"><p>
+
+			<%=h @messages['001'] %>
+			
+			</p></div>
 		
 		<% end %>
 		
-		<!-- Patron information: note variations in field names and parm names 
-			 Need to add logic to figure out which fields to print.
+		<!-- End of message section -->
+		
+		<!-- Patron information. Need to add logic to figure out which fields to print.
 		-->
 		
 		<div class="patron_info">
 			<dl>
 
-			<dd><%= @field_labels['patron_name'] %>: <%= @request['patron_name'] %></dd>
-			<dd><%= @field_labels['library_id'] %>: <%= @request['library_id'] %></dd>
-			<dd><%= @field_labels['pickup_lib'] %>: <%= @request['pickup_lib'] %></dd>
+			<dt><%= @field_labels['patron_name'] %>:</dt><dd><%= @request['patron_name'] %></dd>
+			<dt><%= @field_labels['library_id'] %>:</dt><dd> <%= @request['library_id'] %></dd>
+			<dt><%= @field_labels['pickup_lib'] %>:</dt><dd> <%= @request['pickup_lib'] %></dd>
+			<% if ! @request['hold_recall'].nil? %>
+				<dt><%= @field_labels['hold_recall'] %>:</dt><dd> <%= @request['hold_recall'] %></dd>
+			<% end %>
+			<% if ! @request['not_needed_after'].nil? %>
+				<dt><%= @field_labels['not_needed_after'] %>:</dt><dd> <%= @request['not_needed_after'] %></dd>		
+			<% end %>
 			
 		</dl>
 		</div> 
@@ -45,24 +64,34 @@
 		
 		<!-- Bibliographic data -->
 		
+		  <h2 class="title"><%= @request['bib_info'] %></h2>
+		  
+		<!-- end of bibliographic data -->
+		
 		<!-- Item information --> 
 		
-		<% if @results.has_key?('209') %>
-			
-			<%=h @messages['209'] %>
-			<blockquote>
-				<% items = @results['209'].split('^') %>
-				<% items.each do |item| %>
-				<%    fields = item.split('|') %>
-				<%=h fields[1] %><br>
-				<% end %>			
-			</blockquote>
-			<% @results.delete('209') %>
-		<% end %>			
+		<ul class="show_status">
+				
+		<% if @results.empty? %>
 		
-		<% if ! @results.empty?  %>
-			Your requests for the following items could not be placed for the reasons shown:
-			<blockquote>
+			<li>No items have been held.</li>	
+			
+		<% else %>
+		
+			<% if @results.has_key?('209') %>
+			
+				<%=h @messages['209'] %>
+				<blockquote>
+					<% items = @results['209'].split('^') %>
+					<% items.each do |item| %>
+					<%    fields = item.split('|') %>
+					<%=h fields[1] %><br>
+					<% end %>			
+				</blockquote>
+				<% @results.delete('209') %>
+			<% end # key 209 successful results %>			
+		
+			<% if ! @results.empty?  %>
 				<% @results.each do |key, value| %>
 					<%=h @messages[key] %>
 					<blockquote>
@@ -73,8 +102,12 @@
 					<% end %>
 					</blockquote>	
 				<% end %>	
-			</blockquote>
-		<% end %>
+
+			<% end # unsuccessful results %>
+			
+		<% end # empty or not empty results %>		
+		
+		<!-- End of item information -->	
 <hr>		
 		<!-- Extra information that may be useful for debugging. Delete this in prod version -->
 		

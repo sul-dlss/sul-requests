@@ -35,7 +35,6 @@ module Requestmod
     @request.request_def = get_req_def( params[:home_lib], params[:current_loc], @request.req_type )
     # puts "request_def is:" + request_def
     @requestdef = Requestdef.find_by_name( @request.request_def )
-    # @fields = get_fields_for_requestdef( @requestdef )
     
     # Get the pickupkey then the pickup_libs
     @request.pickupkey = get_pickup_key( params[:home_lib], params[:current_loc], @request.req_type )       
@@ -49,7 +48,6 @@ module Requestmod
     @fields = get_fields_for_requestdef( @requestdef, @request.items )
     
     # Get remaining fields from parameters
-    #@request.bib_info = get_bib_info(params[:ckey]).to_s # old
     @request.ckey = (params[:ckey])
     
     # These apply to all items
@@ -83,7 +81,6 @@ module Requestmod
     flash[:invalid_fields] = ''
     error_msgs = check_fields( params['request'])
 
-    #if ! @request.valid?
     if ! error_msgs.empty?
       error_msgs.each do |msg|
         if flash[:invalid_fields].blank?
@@ -138,7 +135,13 @@ module Requestmod
       # going to show.html.erb. Kludge is to create show.html.erb in views/auth/requests but this
       # is idiotic. Logged this in Jira as symreq-3
       #redirect_to :controller => 'requests', :action => 'confirm'
+      
+      # Need to keep track of items checked to this point in case we return to new form
+      @request.items_checked = @request.items
+      
+      # Add other info for confirmation page
       @messages = get_msg_hash(Message.find(:all))
+      @requestdef = Requestdef.find_by_name( @request.request_def )
       
       # Get all fields here so we can use labels on confirm page
       @field_labels = get_field_labels

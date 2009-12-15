@@ -64,7 +64,7 @@ function UnCheckAll()
 		
 		<%if @fields.has_key?('hold_recall') %>
 		
-		<p><%= @requestdef[:extra_text]%></p>
+		<!-- <p> No longer displaying extra text </p> -->
 		
 		<% end %>
 		
@@ -160,8 +160,8 @@ function UnCheckAll()
 			
 			<!-- Have either not_needed or planned_use field but not both -->
 			
-			<% if @fields.has_key?('not_needed') %>
-			<dt><label for="request_not_needed"><%= @fields['not_needed'] %></label>:</dt>
+			<% if @fields.has_key?('not_needed_after') %>
+			<dt><label for="request_not_needed_after"><%= @fields['not_needed_after'] %></label>:</dt>
 				<dd><%= f.text_field :not_needed_after %></dd>
 			<% elsif @fields.has_key?('planned_use') %>
 			<dt><label for="request_planned_use"><%= @fields['planned_use'] %></label>:</dt>
@@ -208,6 +208,8 @@ function UnCheckAll()
 		 	<p><span class="library"><%= @request.home_lib %></span></p> 
 
 				<ol class="item_list">
+					
+					<% puts "items checked in new form is" + @request.items_checked.to_s %>
 					
 					<% @request.items.each do |item| %>
 					
