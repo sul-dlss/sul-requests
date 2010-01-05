@@ -32,6 +32,27 @@ function UnCheckAll()
 </script>
    
     <link href="/stylesheets/request-forms.css" rel="stylesheet" type="text/css">
+	
+	
+<!-- Additonal JS and CSS elements for date selector widget -->
+
+	<script type="text/javascript" src="/javascripts/datepicker.packed.js"></script>
+	
+    <!-- Add the datepicker's stylesheet -->
+    <link href="/stylesheets/datepicker.css" rel="stylesheet" type="text/css" />
+	
+	<script type="text/javascript">
+	// <![CDATA[
+
+	// Utility function - used in setting date ranges
+	function pad(value, length) {
+        length = length || 2;
+        return "0000".substr(0,length - Math.min(String(value).length, length)) + value;
+	};
+
+	// ]]>
+	</script>
+	
 </head>
 <body>
 
@@ -162,10 +183,58 @@ function UnCheckAll()
 			
 			<% if @fields.has_key?('not_needed_after') %>
 			<dt><label for="request_not_needed_after"><%= @fields['not_needed_after'] %></label>:</dt>
-				<dd><%= f.text_field :not_needed_after %></dd>
+				<dd><%= f.text_field :not_needed_after, { :class => 'w16em' } %></dd>
+				
+				<script type="text/javascript">
+			      // <![CDATA[
+			
+			        var today     = new Date(),
+			            // low range, 35 days before today's date
+			            rangeLow  = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1),
+			            // high range, one year after today's date
+			            //rangeHigh = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate() )
+			            rangeHigh = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 30 )
+			
+			        var opts = {
+			                formElements:{"request_not_needed_after":"m-sl-d-sl-Y"},
+			                // showWeeks:true,
+			                // statusFormat:"l-cc-sp-d-sp-F-sp-Y",
+			                // Set some dynamically calculated ranges
+			                rangeLow:rangeLow.getFullYear() + "" + pad(rangeLow.getMonth()+1) + pad(rangeLow.getDate()),
+			                rangeHigh:rangeHigh.getFullYear() + "" + pad(rangeHigh.getMonth()+1) + pad(rangeHigh.getDate()) 
+			        };
+			        datePickerController.createDatePicker(opts);
+			      // ]]>
+			      </script>				
+				
 			<% elsif @fields.has_key?('planned_use') %>
 			<dt><label for="request_planned_use"><%= @fields['planned_use'] %></label>:</dt>
-				<dd><%= f.text_field :planned_use %></dd>			
+				<dd><%= f.text_field :planned_use, { :class => 'w16em' } %></dd>	
+
+				<script type="text/javascript">
+			      // <![CDATA[
+			
+			        var today     = new Date(),
+			            // low range, 35 days before today's date
+			            rangeLow  = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1),
+			            // high range, one year after today's date
+			            //rangeHigh = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate() )
+			            rangeHigh = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 30 )
+			
+			        var opts = {
+			                formElements:{"request_planned_use":"m-sl-d-sl-Y"},
+			                // showWeeks:true,
+			                // statusFormat:"l-cc-sp-d-sp-F-sp-Y",
+			                // Set some dynamically calculated ranges
+			                rangeLow:rangeLow.getFullYear() + "" + pad(rangeLow.getMonth()+1) + pad(rangeLow.getDate()),
+			                rangeHigh:rangeHigh.getFullYear() + "" + pad(rangeHigh.getMonth()+1) + pad(rangeHigh.getDate()) 
+			        };
+			        datePickerController.createDatePicker(opts);
+			      // ]]>
+			      </script>					
+
+				
+						
 			<% end %>
 			
 			<% if @fields.has_key?('vol_num') %>
