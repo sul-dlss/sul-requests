@@ -661,6 +661,12 @@ module Requestmod
     for pickuplib in pickup_libs
       pickup_libs_hash.merge!({pickuplib.lib_descrip => pickuplib.lib_code})  
     end  
+    
+    # Add "[Select One From List Below]", "NONE" to the hash if we have more than one item
+    
+    if pickup_libs_hash.length > 1
+      pickup_libs_hash.merge!({' [Select One From List Below] ' => 'NONE'})
+    end
 
     return pickup_libs_hash.sort
     
