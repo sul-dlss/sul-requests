@@ -27,7 +27,20 @@ function UnCheckAll()
                         e.checked = false;
     }
 }
-
+/* Modified from script by: Alan Gruskoff :: http://www.performantsystems.com/
+ */
+function countChecked(form) {
+	var total = 0;
+	var max = form.request_items.length;
+	for (var idx = 0; idx < max; idx++) {
+		if (eval("document.requestform.request_items[" + idx + "].checked") == true) {
+    		total += 1;
+   		}
+	}
+	if ( total > 10  ) {
+  		alert("You have selected more than 10 items. Your request cannot be processed unless you keep the total to 10 or fewer. " );
+	}         
+}   
 //-->
 </script>
    
@@ -281,8 +294,13 @@ function UnCheckAll()
 					   	<li><input type="checkbox"
 							name="request[items][]" 							
 							value="<%= values[1] %>"
-							onclick="if (this.checked == false ) {document.requestform.allbox.checked = false;}" 
-							id="check_<%= values[0] %>"
+							<% if @request.items.size <= 10 %>
+								onclick="if (this.checked == false ) {document.requestform.allbox.checked = false;}" 
+							<% else %>
+								onclick="countChecked(this.form)" 							
+							<% end %>
+							<% # following doesn't work for counting checked items: id="check_<%= values[0] %>" %>
+							id="request_items"
 							<% if ! @request.items_checked.nil? && @request.items_checked.include?( values[1]  ) %>
 							checked
 							<% end %> >
