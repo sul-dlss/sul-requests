@@ -648,7 +648,7 @@ module Requestmod
     
     pickup_libs = Library.find(:all,
       :select => 'libraries.lib_code, libraries.lib_descrip',
-      :conditions => ['pickupkeys.pickup_key == ?', pickupkey],
+      :conditions => ['pickupkeys.pickup_key = ?', pickupkey],
       :joins => [:pickupkeys],
       :order => 'libraries.lib_code'   
       )
