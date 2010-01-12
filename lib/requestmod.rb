@@ -146,7 +146,7 @@ module Requestmod
       # Get all fields here so we can use labels on confirm page
       @field_labels = get_field_labels
       
-      puts "field labels in create method is: " + @field_labels.inspect
+      # puts "field labels in create method is: " + @field_labels.inspect
 
       render :template => "requests/confirm"
 
@@ -466,7 +466,7 @@ module Requestmod
     
     else
       
-       msgs['000'] = response
+       msgs['000'] = response 
        
     end      
     
