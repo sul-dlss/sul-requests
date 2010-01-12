@@ -122,7 +122,7 @@ function countChecked(form) {
 			<fieldset> <legend>Your Information</legend>
 			
 			<% if ! @is_authenticated %>
-			<div id="autofill">If you have a SUNet ID, &raquo; <a href="<%= link_to_auth_request(@request) %>">login</a> &laquo; to auto-fill and enable more options.</div>
+			<div id="autofill">If you have a SUNet ID, <a href="<%= link_to_auth_request(@request) %>">login to auto-fill and enable more options.</a></div>
 			<% end %>
 			
 			<% if @fields.has_key?('patron_name') %>
@@ -263,27 +263,24 @@ function countChecked(form) {
 
 		<% if @fields.has_key?('bib_info') %>
 
-			<%= @request.bib_info %></dd>
+			<span class="title"><%= @request.bib_info %></span>
 		<% end %>
 
+		<span class="library"><%= @request.home_lib %></span>
 		 
 		<% if @request.items.size <= 10 %>
-		<label>
-			<P><input name="allbox" id="allbox" type="checkbox" value="Check All"  onclick="if (this.checked) {CheckAll()} else {UnCheckAll()}" >
-    	Check all</p>
-		</label>
+			<span class="action_varies">
+				<input name="allbox" id="allbox" type="checkbox" value="Check All"  onclick="if (this.checked) {CheckAll()} else {UnCheckAll()}" >
+    			Check all
+			</span>
 		<% else %>
-		<p><label>Select up to ten volumes or copies for this request</label></p>	
-		<% end %>
+			<span class="action_varies">
+				Select up to ten volumes or copies for this request
+			</span>	
+			<% end %>
 		
 		 <div class="access_data">
-    		<ul class="show_availability">
-          	<li>
-
-
-		 	<p><span class="library"><%= @request.home_lib %></span></p> 
-
-				<ol class="item_list">
+    		<ol class="show_availability item_list">
 					
 					<% puts "items checked in new form is" + @request.items_checked.to_s %>
 					
@@ -294,6 +291,7 @@ function countChecked(form) {
 					   	<li><input type="checkbox"
 							name="request[items][]" 							
 							value="<%= values[1] %>"
+							
 							<% if @request.items.size <= 10 %>
 								onclick="if (this.checked == false ) {document.requestform.allbox.checked = false;}" 
 							<% else %>
@@ -302,7 +300,7 @@ function countChecked(form) {
 							<% # following doesn't work for counting checked items: id="check_<%= values[0] %>" %>
 							id="request_items"
 							<% if ! @request.items_checked.nil? && @request.items_checked.include?( values[1]  ) %>
-							checked
+								checked
 							<% end %> >
 							
 							<label for="check_<%= values[0] %>"> 
@@ -319,8 +317,6 @@ function countChecked(form) {
 					<% end %>
 
             	</ol>
-          	</li>
-        	</ul>
    		</div>
 
 		
