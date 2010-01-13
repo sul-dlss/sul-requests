@@ -313,7 +313,7 @@ module Requestmod
     
     # Read the record and change to array; specify nokogiri as parser
 
-    reader = MARC::XMLReader.new(StringIO.new(Net::HTTP.get(URI.parse('http://searchworks-test.stanford.edu/view/' + ckey + '.xml'))), :parser=>'nokogiri').to_a
+    reader = MARC::XMLReader.new(StringIO.new(Net::HTTP.get(URI.parse('http://searchworks.stanford.edu/view/' + ckey + '.xml'))), :parser=>'nokogiri').to_a
     record = reader[0] # Should have only record, since we used CKEY
 
     # Set up fields to get and bib_info string
