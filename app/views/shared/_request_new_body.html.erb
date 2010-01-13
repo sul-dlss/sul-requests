@@ -268,12 +268,12 @@ function countChecked(form) {
 
 		<span class="library"><%= @request.home_lib %></span>
 		 
-		<% if @request.items.size <= 10 %>
+		<% if @request.items.size > 1 && @request.items.size <= 10 %>
 			<span class="action_varies">
 				<input name="allbox" id="allbox" type="checkbox" value="Check All"  onclick="if (this.checked) {CheckAll()} else {UnCheckAll()}" >
     			Check all
 			</span>
-		<% else %>
+		<% elsif @request.items.size > 10 %>
 			<span class="action_varies">
 				Select up to ten volumes or copies for this request
 			</span>	
@@ -292,7 +292,7 @@ function countChecked(form) {
 							name="request[items][]" 							
 							value="<%= values[1] %>"
 							
-							<% if @request.items.size <= 10 %>
+							<% if @request.items.size > 1 && @request.items.size <= 10 %>
 								onclick="if (this.checked == false ) {document.requestform.allbox.checked = false;}" 
 							<% else %>
 								onclick="countChecked(this.form)" 							
@@ -301,6 +301,8 @@ function countChecked(form) {
 							id="request_items"
 							<% if ! @request.items_checked.nil? && @request.items_checked.include?( values[1]  ) %>
 								checked
+							<% elsif @request.items.size == 1 %>
+								checked								
 							<% end %> >
 							
 							<label for="check_<%= values[0] %>"> 
