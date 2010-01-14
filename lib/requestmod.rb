@@ -82,6 +82,7 @@ module Requestmod
     error_msgs = check_fields( params['request'])
 
     if ! error_msgs.empty?
+      
       error_msgs.each do |msg|
         if flash[:invalid_fields].blank?
           flash[:invalid_fields] = msg 
@@ -92,14 +93,11 @@ module Requestmod
 
       # ---- Put checked items into new items_checked array
       @request.items_checked = @request.items
-      #puts "This is the items_checked array before generating items array again"
-      #puts @request.items_checked.inspect
-      #puts "This is the request inside the validation invalid block"
-      # puts @request.inspect
-      # puts @request.errors.inspect
+
       # ---- Reset instance vars needed to re-display form
       @requestdef = Requestdef.find_by_name( @request.request_def )
       @pickup_libs_hash = get_pickup_libs( @request.pickupkey)
+      
       # Get bib info in 2 arrays, one for 900 fields. Can't see any way to get around
       # repeating this here!
       multi_bib_info = get_bib_info(params['request'], @request.ckey, @request.home_lib)
