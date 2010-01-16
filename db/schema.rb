@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091207204615) do
+ActiveRecord::Schema.define(:version => 20100115224018) do
 
   create_table "fields", :force => true do |t|
     t.string   "field_name"
@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(:version => 20091207204615) do
 
   create_table "messages", :force => true do |t|
     t.string   "msg_number"
-    t.text     "msg_text",   :limit => 255
+    t.text     "msg_text"
     t.text     "comments"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -52,6 +52,16 @@ ActiveRecord::Schema.define(:version => 20091207204615) do
   create_table "pickupkeys", :force => true do |t|
     t.string   "pickup_key"
     t.string   "pickup_descrip"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "reqtests", :force => true do |t|
+    t.string   "req_def"
+    t.string   "socrates_link"
+    t.string   "form_status"
+    t.string   "request_status"
+    t.text     "comments"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

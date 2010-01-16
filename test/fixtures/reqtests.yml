@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  req_def: MyString
+  socrates_link: MyString
+  form_status: MyString
+  request_status: MyString
+  comments: MyText
+
+two:
+  req_def: MyString
+  socrates_link: MyString
+  form_status: MyString
+  request_status: MyString
+  comments: MyText

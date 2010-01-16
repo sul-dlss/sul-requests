@@ -43,6 +43,7 @@ ActionController::Routing::Routes.draw do |map|
   # map.resources :libraries
   map.namespace :admin do |admin|
     admin.resources :requestdefs 
+    admin.resources :reqtests
     admin.resources :fields
     admin.resources :messages
     admin.resources :libraries

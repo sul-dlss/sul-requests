@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>Request Tests</title>
+	</head>
+	<body>
+		<%= render :partial => 'header' %> 
+		<h1>Request Test</h1>
+		
+		
+		
+<p></p>
+
+<table>
+	<tr><td width = 150></td><td>
+<P>Listed below are request tests. 
+</P>
+<% for reqtest in @reqtests %>
+	
+	<% data_ckey = parse_url(reqtest.socrates_link, 2) %>
+	<% data_lib = parse_url(reqtest.socrates_link, 3) %>
+	<% data_cur_loc = parse_url(reqtest.socrates_link, 4) %>
+	<% data_call_num = parse_url(reqtest.socrates_link, 5) %>
+	<% data_item_id = parse_url(reqtest.socrates_link, 6) %>
+	<% data_req_type = parse_url(reqtest.socrates_link, 7) %>
+	<% data_date = parse_url(reqtest.socrates_link, 8) %>
+	<% soc_url = "http://library.stanford.edu/seaz=" + data_ckey %>
+	<% rails_server_url = "http://rd-requests.stanford.edu/requests/new?ckey=" + data_ckey + "&call_num=" + data_call_num + "&req_type=" + data_req_type + "&home_lib=" + data_lib + "&current_loc=" + data_cur_loc + "&item_id=" + data_item_id + "&due_date=" + data_date  %>
+
+	<table>
+    	<tr><td colspan = 5>Request Definition: <%=h reqtest.req_def %></td></tr>
+		<tr><td colspan = 5>CKEY: <%=h data_ckey %></td></tr>
+		<tr>
+    		<td>Library: <%= data_lib %></td>
+			<td width= 20>&nbsp;</td>				
+    		<td>Home Location:</td>
+			<td width= 20>&nbsp;</td>				
+    		<td>Current Location: <%=h data_cur_loc %> </td>
+		</tr>		
+		<tr>	
+    		<td colspan=5>Request Type: <%=h data_req_type %></td>
+		</tr>	
+		<tr>			
+    		<td><a href="<%= soc_url %>">Zaph Record</a></td>
+			<td width= 20>&nbsp;</td>				
+    		<td><a href="<%= rails_server_url %>">Rails Server Form</a></td>
+			<td width= 20>&nbsp;</td>				
+			<td>Rails Localhost Form</td>
+		</tr>
+		<tr>
+			<td colspan=5>Form Display Status: <%=h reqtest.form_status %></td>
+		</tr>
+		<tr>
+			<td colspan=5>Request Placed Status: <%=h reqtest.request_status %></td>
+		</tr>	
+		<tr>			
+    		<td colspan =5><%=h reqtest.comments %></td>
+		</tr>
+		<tr><td colspan=5><hr></td></tr>
+	</table>			
+
+
+<% end %>
+</td></tr>
+</table>
+
+
+	</body>
+</html>
