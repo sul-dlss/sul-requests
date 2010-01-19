@@ -25,7 +25,7 @@ indicates which request definitions are represented by at least one test record.
 </P> 
 </P>
 <% for reqtest in @reqtests %>
-	
+ 
 	<% data_ckey = parse_url(reqtest.socrates_link, 2) %>
 	<% data_lib = parse_url(reqtest.socrates_link, 3) %>
 	<% data_cur_loc = parse_url(reqtest.socrates_link, 4) %>
@@ -33,12 +33,19 @@ indicates which request definitions are represented by at least one test record.
 	<% data_item_id = parse_url(reqtest.socrates_link, 6) %>
 	<% data_req_type = parse_url(reqtest.socrates_link, 7) %>
 	<% data_date = parse_url(reqtest.socrates_link, 8) %>
+	<% data_req_def = get_req_def( data_lib, data_cur_loc, data_req_type ) %>
 	<% soc_url = "http://library.stanford.edu/seaz=" + data_ckey %>
 	<% rails_server_url = "http://rd-requests.stanford.edu/requests/new?ckey=" + data_ckey + "&call_num=" + data_call_num + "&req_type=" + data_req_type + "&home_lib=" + data_lib + "&current_loc=" + data_cur_loc + "&item_id=" + data_item_id + "&due_date=" + data_date  %>
 	<% localhost_url = "http://localhost:3000/requests/new?ckey=" + data_ckey + "&call_num=" + data_call_num + "&req_type=" + data_req_type + "&home_lib=" + data_lib + "&current_loc=" + data_cur_loc + "&item_id=" + data_item_id + "&due_date=" + data_date  %>
 
 	<table border=0>
-    	<tr><td colspan = 5>Request Definition: <strong><%=h reqtest.req_def %></strong></td>
+    	<tr><td colspan = 5>Request Definition: 
+    		<% if data_req_def == 'UNDEFINED' %>
+    			<font color="red"><%= data_req_def %></font>
+			<% else %>	
+				<font color="green"><%= data_req_def %></font>
+			<% end %>
+			</td>
 			<td nowrap width><%= button_to 'Edit',{:action => 'edit', :id => reqtest.id }, :method => :get %></td> 
     		<td nowrap><%= button_to 'Delete', { :action => 'destroy', :id => reqtest.id }, :confirm => 'Are you sure you want to delete this item?', 
          :method => :delete %></td>

@@ -78,46 +78,5 @@ class Admin::ReqtestsController < ApplicationController
     
   end
 
-  # Method parse_url. Take a Socrates request URL and pull out the pieces we want to use
-  # in constructing URLs to Rails forms. Return an array of data in this order
-  #   1. Session number of some sort??
-  #   2. Webcat "ACTION" string used to send form to Webcat server
-  #   3. catalog key, which will be used to get citation data
-  #   4. library
-  #   5. location
-  #   6. call number
-  #   7. item ID
-  #   8. request type
-  #   9. current return date
-  def parse_url( url)
-
-    # Get rid of any %20 strings
-    url['%20'] = ''
-
-    # Get rid of trailing "')"
-    if ( url =~ /^(.*?)'\)$/ )
-      url = $1
-    end
-    
-    # Pull out string after p_data=
-
-    if ( url =~ /.*?p_data=(.*)/ )
-      url = $1
-    end
-
-    # Get rid of leading "|" if any
-
-    if ( url =~ /^\|(.*$)/ )
-      url = $1
-    end
-
-    # Split into array on |
-    parms = Array.new()
-
-    parms = url.split(/\|/)
-
-    return parms
-
-  end
 
 end
