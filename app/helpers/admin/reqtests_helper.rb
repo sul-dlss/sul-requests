@@ -2,13 +2,11 @@ module Admin::ReqtestsHelper
   
   def parse_url( url, item )
 
-    # Get rid of any %20 strings
-    url.gsub("%20", "")
+    # Get rid of any '%20') string; may be more trailing crud
+    url.gsub!("'%20)'", "")
+    url.gsub!("%20')", "")
+    url.gsub!("%20", "")
 
-    # Get rid of trailing "')"
-    if ( url =~ /^(.*?)'\)$/ )
-      url = $1
-    end
     
     # Pull out string after p_data=
 
@@ -26,8 +24,12 @@ module Admin::ReqtestsHelper
     parms = Array.new()
 
     parms = url.split(/\|/)
-
-    return parms[item]
+    
+    if parms[item].nil?
+      return ''
+    else
+      return parms[item]
+    end
 
   end
 
