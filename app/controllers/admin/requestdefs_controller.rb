@@ -1,7 +1,7 @@
 class Admin::RequestdefsController < ApplicationController
   
   before_filter :is_authenticated?
-  before_filter :get_lib_list, :only => [:new, :edit ]
+  before_filter :get_lib_list, :only => [:new, :edit, :create ]
   
    # Class instance variable used for new and edit below
 
@@ -26,8 +26,9 @@ class Admin::RequestdefsController < ApplicationController
   # since we need a record ID to allow AJAX selection of fields.
   def create
     @requestdef = Requestdef.new(params[:requestdef])
+    @fields = Field.find(:all, :order => 'field_order')
     @requestdef.fields = Field.find(params[:field_ids]) if params[:field_ids]
-    if @requestdef.save!
+    if @requestdef.save
       #redirect_to :action => 'edit', :id => @requestdef
       redirect_to admin_requestdefs_path
     else
