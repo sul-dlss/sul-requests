@@ -64,10 +64,25 @@ indicates which request definitions are represented by at least one test record.
 			<td></td>
 		</tr>
 		<tr>
-			<td colspan=6>Form Display Status: <%=h reqtest.form_status %></td>
+			<td colspan=6>Form Display Status: 
+			<% if reqtest.form_status == 'OK' %>
+				<font color ="green"><%=h reqtest.form_status %></font>
+			<% elsif reqtest.form_status == 'NOT OK' %>
+				<font color ="red"><%=h reqtest.form_status %></font>
+			<% else %>	
+				<%=h reqtest.form_status %>
+			<% end %>
+			</td>
 		</tr>
 		<tr>
-			<td colspan=6>Request Placed Status: <%=h reqtest.request_status %></td>
+			<td colspan=6>Request Placed Status:
+						<% if reqtest.request_status == 'OK' %>
+				<font color ="green"><%=h reqtest.request_status %></font>
+			<% elsif reqtest.request_status == 'NOT OK' %>
+				<font color ="red"><%=h reqtest.request_status %></font>
+			<% else %>	
+				<%=h reqtest.request_status %>
+			<% end %>	 
 		</tr>	
 		<tr>			
     		<td colspan =4>Comments: <%=h reqtest.comments %></td>

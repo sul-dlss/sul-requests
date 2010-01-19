@@ -27,11 +27,11 @@
 			 	<td valign="top" colspan=2><%= f.text_field :socrates_link, :size => 53 %></td>			</tr>
 			 <tr>
 				<td nowrap valign="top" align="right">Form Status:</td>
-				 <td valign="top" colspan=2><%= f.text_field :form_status, :size => 53  %></td>
+				<td colspan=2><%= select_tag('reqtest[form_status]', options_for_select([['UNDETERMINED', 'UNDETERMINED'], ['OK', 'OK'], ['NOT OK', 'NOT OK']], :selected => @reqtest.form_status) ) %></td>	 	
 			</tr>			
 			 <tr>
 				<td nowrap valign="top" align="right">Request Status:</td>
-				 <td valign="top" colspan=2><%= f.text_field :request_status, :size => 53  %></td>
+				 <td valign="top" colspan=2><%= select_tag('reqtest[request_status]', options_for_select([['UNDETERMINED', 'UNDETERMINED'], ['OK', 'OK'], ['NOT OK', 'NOT OK']], :selected => @reqtest.request_status) ) %></td>
 			</tr>			
 			 <tr>
 				<td nowrap valign="top" align="right">Comments:</td>
