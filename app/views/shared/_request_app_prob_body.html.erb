@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>System Problem</title>
+    <link href="/stylesheets/request-forms.css" rel="stylesheet" type="text/css">
+	</head>
+	<body>
+		
+		<!-- Toolbar --> 
+		
+		<%= render :partial => "shared/toolbar_links" %>
+				
+		<h1>System Problem</h1>
+		
+		<div class="request_failed"><p>
+		There was a problem with your request. Please send mail 
+		to [some address] and paste the following information into 
+		your message:
+		</div>
+		
+		<% @params.each_pair do |name, value| %>
+			<% if name != 'controller'%>
+				<%= name %>: <%= value%><br>	
+			<% end %>
+		<% end %>
+	
+		
+		<!-- End of message section -->
+		
+
+		
+
+
+	</body>
+</html>

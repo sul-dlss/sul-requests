@@ -11,6 +11,7 @@ module Requestmod
   # already have various pieces of information before we generate it by calling other methods. This 
   # includes req_type, bib_info, and others. 
   def new
+    
     @request = Request.new
     # raise params.inspect
     # Do not need session ID
@@ -31,35 +32,45 @@ module Requestmod
     # Need library for to limit items
     @request.home_lib = params[:home_lib]
     
-    # Get the request definition, form elements, and list of fields
+    # Get the request definition, which is the key to everything else
     @request.request_def = get_req_def( params[:home_lib], params[:current_loc], @request.req_type )
     # puts "request_def is:" + request_def
-    @requestdef = Requestdef.find_by_name( @request.request_def )
     
-    # Get the pickupkey then the pickup_libs
-    @request.pickupkey = get_pickup_key( params[:home_lib], params[:current_loc], @request.req_type )       
-    @pickup_libs_hash = get_pickup_libs( @request.pickupkey)
-        
-    # Get bib info in 2 arrays, one for 900 fields - this is rather involved
-    multi_bib_info = get_bib_info(params, params[:ckey], params[:home_lib])
-    @request.bib_info = multi_bib_info[0].to_s
-    @request.items = multi_bib_info[1] # delimited array
-    
-    @fields = get_fields_for_requestdef( @requestdef, @request.items )
-    
-    # Get remaining fields from parameters
-    @request.ckey = (params[:ckey])
-    
-    # These apply to all items
-    @request.pickup_lib = (params[:pickup_lib])
-    @request.not_needed_after = (params[:not_needed_after])
-    
-    # These are item-specific so apply only at the item level
-    @request.due_date = (params[:due_date])
-    @request.call_num = (params[:call_num])
-    @request.home_lib = (params[:home_lib])
-    @request.current_loc = (params[:current_loc])
-    @request.item_id = (params[:item_id])
+    if @request.request_def == 'UNDEFINED'
+      
+      @params = params
+      render :template => 'requests/app_problem'
+      
+    else
+      
+      @requestdef = Requestdef.find_by_name( @request.request_def )
+      
+      # Get the pickupkey then the pickup_libs
+      @request.pickupkey = get_pickup_key( params[:home_lib], params[:current_loc], @request.req_type )       
+      @pickup_libs_hash = get_pickup_libs( @request.pickupkey)
+          
+      # Get bib info in 2 arrays, one for 900 fields - this is rather involved
+      multi_bib_info = get_bib_info(params, params[:ckey], params[:home_lib])
+      @request.bib_info = multi_bib_info[0].to_s
+      @request.items = multi_bib_info[1] # delimited array
+      
+      @fields = get_fields_for_requestdef( @requestdef, @request.items )
+      
+      # Get remaining fields from parameters
+      @request.ckey = (params[:ckey])
+      
+      # These apply to all items
+      @request.pickup_lib = (params[:pickup_lib])
+      @request.not_needed_after = (params[:not_needed_after])
+      
+      # These are item-specific so apply only at the item level
+      @request.due_date = (params[:due_date])
+      @request.call_num = (params[:call_num])
+      @request.home_lib = (params[:home_lib])
+      @request.current_loc = (params[:current_loc])
+      @request.item_id = (params[:item_id])
+      
+    end # test for requestdef
          
   end
  
@@ -484,7 +495,7 @@ module Requestmod
   # muuch useless if each item will a separate request type
   def get_req_def( home_lib, current_loc, req_type )
     
-    req_def = ''
+    req_def = 'UNDEFINED'
     
     # puts "home_lib is: " + home_lib
     # puts "current_loc is: " + current_loc
@@ -505,39 +516,22 @@ module Requestmod
       # Req type can be either REQ-HOLD or REQ-REQ-RECALL
       
       # --------------- HOLD
-      if req_type.upcase == 'REQ-HOLD'  
+      if req_type.upcase == 'REQ-HOLD' || req_type.upcase == 'REQ-RECALL' 
         
         if home_lib.upcase == 'HOOVER'
           
-          req_def = 'HOLD-HOV'
+          req_def = 'HOLDREC-HOV'
           
         elsif home_lib.upcase == 'LAW'
           
-          req_def = 'HOLD-LAW'
+          req_def = 'HOLDREC-LAW'
           
         else 
           
-          req_def = 'HOLD-SUL'
+          req_def = 'HOLDREC-SUL'
           
         end # home_lib choice
-      
-      # --------------- RECALL
-      
-      elsif req_type.upcase == 'REQ-RECALL'  
-        
-        if home_lib.upcase == 'HOOVER'
-          
-          req_def = 'RECALL-HOV'
-          
-        elsif home_lib.upcase == 'LAW'
-          
-          req_def = 'RECALL-LAW'
-          
-        else 
-          req_def = 'RECALL-SUL'
-          
-        end # home_lib choice
-        
+              
       end 
       
     # ============= INPROCESS 
