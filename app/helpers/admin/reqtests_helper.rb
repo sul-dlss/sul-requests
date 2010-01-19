@@ -5,8 +5,8 @@ module Admin::ReqtestsHelper
     # Get rid of any '%20') string; may be more trailing crud
     url.gsub!("'%20)'", "")
     url.gsub!("%20')", "")
-    url.gsub!("%20", "")
-
+    url.gsub!("'%20)", "")
+    url.gsub!("%20", "") # always last
     
     # Pull out string after p_data=
 
