@@ -27,15 +27,12 @@ module Requestmod
     # Get req_type - may not be in parms but need for request_def at the moment
     @request.req_type = get_request_type( params )
     
-    # puts "Request type after get_request_type is: " + @request.req_type 
-    
     # Need library for to limit items
     @request.home_lib = params[:home_lib]
     
     # Get the request definition, which is the key to everything else
     @request.request_def = get_req_def( params[:home_lib], params[:current_loc], @request.req_type )
-    # puts "request_def is:" + request_def
-    
+        
     if @request.request_def == 'UNDEFINED'
       
       @params = params
@@ -44,7 +41,7 @@ module Requestmod
     else
       
       @requestdef = Requestdef.find_by_name( @request.request_def )
-      
+        
       # Get the pickupkey then the pickup_libs
       @request.pickupkey = get_pickup_key( params[:home_lib], params[:current_loc], @request.req_type )       
       @pickup_libs_hash = get_pickup_libs( @request.pickupkey)
@@ -177,10 +174,6 @@ module Requestmod
     
     req_def = 'UNDEFINED'
     
-    # puts "home_lib is: " + home_lib
-    # puts "current_loc is: " + current_loc
-    # puts "req_type is: " + req_type
-    
     # First figure out whether we have a generic SUL library or a special library
 
     if home_lib.upcase != 'HOOVER' && home_lib.upcase != 'LAW' && home_lib.upcase[0..2] != 'SAL'
@@ -283,7 +276,6 @@ module Requestmod
       end # -- req_type choices
       
     end # -- current_loc choices
-       
     
     return req_def   
     
@@ -356,10 +348,10 @@ module Requestmod
   # PL/SQL original. So far added REQ-SAL3 if home_lib is SAL3 and we don't have INPROCESS, CHECKEDOUT,
   # or Hoover or Law stuff. Probably need other SAL3 options for the various special cases of SAL3 locs
   def get_request_type(params)
-    
+        
     req_type = ''
     
-   if params[:req_type] == nil
+    if params[:req_type] == nil
 
         if params[:current_loc] == 'INPROCESS' && ( params[:home_lib] != 'HOOVER' || params[:home_lib] != 'LAW' ) 
         
@@ -447,8 +439,7 @@ module Requestmod
         req_type = params[:req_type]            
 
     end # check whether params[:req_type] is nil
-
-    
+   
     return req_type
     
   end

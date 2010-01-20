@@ -3,7 +3,7 @@ class Admin::ReqtestsController < ApplicationController
   before_filter :is_authenticated?
   
   include Requestmod
-  helper_method :get_req_def
+  helper_method :get_req_def, :parse_url
     
   def index
     @reqtests = Reqtest.find(:all,  :order => "id")
@@ -18,7 +18,7 @@ class Admin::ReqtestsController < ApplicationController
   def new
     @reqtest = Reqtest.new
     #find(:all, :select => "name").map(&:name)
-    @req_defs = Requestdef.find(:all, :select => 'name', :order => 'name').map(&:name).insert(0, "NONE")
+    #@req_defs = Requestdef.find(:all, :select => 'name', :order => 'name').map(&:name).insert(0, "NONE")
     
   end
   
@@ -54,6 +54,45 @@ class Admin::ReqtestsController < ApplicationController
   def destroy
     Reqtest.find(params[:id]).destroy
     redirect_to :action => 'index'
+  end
+  
+  def parse_url( url )
+
+    # Get rid of any '%20') string; may be more trailing crud
+    url.gsub!("'%20)'", "")
+    url.gsub!("%20')", "")
+    url.gsub!("'%20)", "")
+    url.gsub!("%20", "") # always last
+
+    # Pull out string after p_data=
+
+    if ( url =~ /.*?p_data=(.*)/ )
+      url = $1
+    end
+
+    # Get rid of leading "|" if any
+
+    if ( url =~ /^\|(.*$)/ )
+      url = $1
+    end
+
+    # Split into array on |
+    parms = Array.new()
+
+    parms = url.split(/\|/)
+
+    # Add a ninth element if we have only 8
+    if parms.length == 8
+      parms.push("")
+    end
+
+    # Set up keys and create a hash of keys and parms as values
+    keys = [:session_id, :action_string, :ckey, :home_lib, :cur_loc, :call_num, :item_id, :req_type, :date]
+
+    parms_hash = Hash[*keys.zip(parms).flatten]
+
+    return parms_hash
+
   end
   
   #========== Protected methods ===========================

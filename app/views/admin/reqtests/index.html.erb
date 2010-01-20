@@ -26,17 +26,11 @@ indicates which request definitions are represented by at least one test record.
 </P>
 <% for reqtest in @reqtests %>
  
-	<% data_ckey = parse_url(reqtest.socrates_link, 2) %>
-	<% data_lib = parse_url(reqtest.socrates_link, 3) %>
-	<% data_cur_loc = parse_url(reqtest.socrates_link, 4) %>
-	<% data_call_num = parse_url(reqtest.socrates_link, 5) %>
-	<% data_item_id = parse_url(reqtest.socrates_link, 6) %>
-	<% data_req_type = parse_url(reqtest.socrates_link, 7) %>
-	<% data_date = parse_url(reqtest.socrates_link, 8) %>
-	<% data_req_def = get_req_def( data_lib, data_cur_loc, data_req_type ) %>
-	<% soc_url = "http://library.stanford.edu/seaz=" + data_ckey %>
-	<% rails_server_url = "http://rd-requests.stanford.edu/requests/new?ckey=" + data_ckey + "&call_num=" + data_call_num + "&req_type=" + data_req_type + "&home_lib=" + data_lib + "&current_loc=" + data_cur_loc + "&item_id=" + data_item_id + "&due_date=" + data_date  %>
-	<% localhost_url = "http://localhost:3000/requests/new?ckey=" + data_ckey + "&call_num=" + data_call_num + "&req_type=" + data_req_type + "&home_lib=" + data_lib + "&current_loc=" + data_cur_loc + "&item_id=" + data_item_id + "&due_date=" + data_date  %>
+	<% url_data = parse_url(reqtest.socrates_link ) %>
+	<% data_req_def = get_req_def( url_data[:home_lib], url_data[:cur_loc], url_data[:req_type] ) %>
+	<% soc_url = "http://library.stanford.edu/seaz=" + url_data[:ckey] %>
+	<% rails_server_url = "http://rd-requests.stanford.edu/requests/new?ckey=" + url_data[:ckey] + "&call_num=" + url_data[:call_num] + "&req_type=" + url_data[:req_type] + "&home_lib=" + url_data[:home_lib] + "&current_loc=" + url_data[:cur_loc] + "&item_id=" + url_data[:item_id] + "&due_date=" + url_data[:date]  %>
+	<% localhost_url = "http://localhost:3000/requests/new?ckey=" + url_data[:ckey] + "&call_num=" + url_data[:call_num] + "&req_type=" + url_data[:req_type] + "&home_lib=" + url_data[:home_lib] + "&current_loc=" + url_data[:cur_loc] + "&item_id=" + url_data[:item_id] + "&due_date=" + url_data[:date]  %>
 
 	<table border=0>
     	<tr><td colspan = 5>Request Definition: 
@@ -50,17 +44,17 @@ indicates which request definitions are represented by at least one test record.
     		<td nowrap><%= button_to 'Delete', { :action => 'destroy', :id => reqtest.id }, :confirm => 'Are you sure you want to delete this item?', 
          :method => :delete %></td>
 		</tr>
-		<tr><td colspan = 6>CKEY: <%=h data_ckey %></td></tr>
+		<tr><td colspan = 6>CKEY: <%=h url_data[:ckey] %></td></tr>
 		<tr>
-    		<td width=150>Library: <%= data_lib %></td>
+    		<td width=150>Library: <%= url_data[:home_lib] %></td>
 			<td width= 20>&nbsp;</td>				
     		<td width=250>Home Location:</td>
 			<td width= 20>&nbsp;</td>				
-    		<td width=250 colspan=3>Current Location: <%=h data_cur_loc %> </td>
+    		<td width=250 colspan=3>Current Location: <%=h url_data[:cur_loc] %> </td>
 			<td></td>
 		</tr>		
 		<tr>	
-    		<td colspan=6>Request Type: <%=h data_req_type %></td>
+    		<td colspan=6>Request Type: <%=h url_data[:req_type] %></td>
 		</tr>	
 		<tr>			
     		<td><a href="<%= soc_url %>">Zaph Record</a></td>
