@@ -1,6 +1,9 @@
 class Admin::ReqtestsController < ApplicationController
   
   before_filter :is_authenticated?
+  
+  include Requestmod
+  helper_method :get_req_def
     
   def index
     @reqtests = Reqtest.find(:all,  :order => "req_def")
