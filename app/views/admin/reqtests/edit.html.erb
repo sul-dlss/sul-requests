@@ -16,12 +16,6 @@
 		<% form_for ( [:admin, @reqtest ]) do |f| %>
 
 		<table>
-			<tr>
-				<td nowrap valign="top" align="right">Request Definition:</td>
-
-				<td valign="top" colspan=2><%= select_tag 'reqtest[req_def]', options_for_select(@req_defs, :selected => @reqtest.req_def ) %></td>
-
-			 <tr>
 			 <tr>
 				<td nowrap valign="top" align="right">Socrates Link:</td>
 			 	<td valign="top" colspan=2><%= f.text_field :socrates_link, :size => 53 %></td>			</tr>

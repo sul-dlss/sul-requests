@@ -6,7 +6,7 @@ class Admin::ReqtestsController < ApplicationController
   helper_method :get_req_def
     
   def index
-    @reqtests = Reqtest.find(:all,  :order => "req_def")
+    @reqtests = Reqtest.find(:all,  :order => "id")
     @coverage = get_coverage
   end
 
