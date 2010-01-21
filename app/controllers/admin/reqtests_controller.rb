@@ -62,7 +62,6 @@ class Admin::ReqtestsController < ApplicationController
     url.gsub!("'%20)'", "")
     url.gsub!("%20')", "")
     url.gsub!("'%20)", "")
-    url.gsub!("%20", "") # always last
 
     # Pull out string after p_data=
 
@@ -75,7 +74,12 @@ class Admin::ReqtestsController < ApplicationController
     if ( url =~ /^\|(.*$)/ )
       url = $1
     end
-
+    
+    # Get rid of any remaining stuff; not sure why we still have anything here!!
+    url.gsub!("')", "")
+    url.gsub!("%27", "")
+    url.gsub!("'", "")
+    
     # Split into array on |
     parms = Array.new()
 
