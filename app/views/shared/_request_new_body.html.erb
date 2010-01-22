@@ -98,6 +98,9 @@ function countChecked(form) {
 		
 		<% end %>
 		
+		SUNet ID: <%= request.env['WEBAUTH_USER'] %><br>
+		Display Name <%= request.env['WEBAUTH_LDAP_DISPLAYNAME'] %>
+		
 		</div>
 			
 		<% form_for(:request, @request, :url => { :action => 'create'}, :html => { :name => 'requestform' }) do |f| %>			
