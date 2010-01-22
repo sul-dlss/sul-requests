@@ -333,10 +333,10 @@ module Requestmod
   def get_user 
     
     if request.env['WEBAUTH_USER'].blank?
-       user = { :patron_name => '', :library_id => '', :patron_email => '' }     
+       user = { :patron_name => '', :univ_id => '', :patron_email => '' }     
        #user = { :patron_name => 'Jonathan Lavigne', :library_id => '2000000603', :patron_email => 'jlavigne@stanford.edu' }     
     else
-      user = { :patron_name => request.env['WEBAUTH_USER'], :library_id => '', :patron_email => '' }
+      user = { :patron_name => request.env['WEBAUTH_LDAP_DISPLAYNAME'], :univ_id => request.env['WEBAUTH_LDAP_SUUNIVID'], :patron_email => request.env['WEBAUTH_LDAP_MAIL'] }
     end
   
     return user

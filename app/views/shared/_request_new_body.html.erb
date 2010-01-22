@@ -135,14 +135,14 @@ function countChecked(form) {
 				<dd><%= f.text_field :patron_email, :value => @request.patron_email %></dd>
 			<% end %>		
 			
-			<% if @fields.has_key?('library_id') %>
-  				<dt><label for="request_library_id"> <%= @fields['library_id'] %> </label>:</dt>
-				<dd><%= f.text_field :library_id %></dd>
-			<% end %>
+			<!-- univ ID or library ID depending on authentication; no need to check fields array -->
 			
-			<% if @fields.has_key?('univ_id') %>
-  				<dt><label for="request_univ_id"></label><%= @fields['univ_id'] %> </label>:</dd>
-				<dd><%= f.text_field :univ_id %></dd>
+			<% if @is_authenticated %>
+	  				<dt><label for="request_univ_id"></label><%= @fields['univ_id'] %> </label>:</dd>
+					<dd><%= f.text_field :univ_id %></dd>
+			<% else %>
+	  				<dt><label for="request_library_id"> <%= @fields['library_id'] %> </label>:</dt>
+					<dd><%= f.text_field :library_id %></dd>
 			<% end %>
 			
 			<!-- Always have pickup lib field -->
