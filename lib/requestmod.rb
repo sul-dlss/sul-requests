@@ -1,6 +1,7 @@
 module Requestmod
   
-  # Module for both authenticated and unauthenticated requests
+  # Module for both authenticated and unauthenticated requests; also at least one method used in 
+  # reqtests controller
   
   def index
   end
@@ -17,6 +18,16 @@ module Requestmod
     # Do not need session ID
     #@request.session_id = get_symphony_session(params[:library], params[:req_type])
     #@request.session_id = get_symphony_session('GREEN', 'REQ-HOLD')
+
+    # See whether we have a p_data key, which means we have a Socrates URL. If it's
+    # there, change the pipe-delimited values to a hash, remove the p_data element,
+    # and add the new hash of key/value pairs
+    if params.has_key?(:p_data)     
+      new_params = parse_soc_url( 'p_data=' + params[:p_data])  
+      params.delete(:p_data)
+      params.merge!(new_params)     
+    end
+
     
     # Get user information
     user = get_user
@@ -302,6 +313,52 @@ module Requestmod
     return pickupkey
     
   end
+  
+  # Method parse_soc_url. Take a pipe delimited Socrates URL and return a hash of names and values
+  # used in a corresponding Rails URL. Note that the input string should start with "p_data="
+  def parse_soc_url( url )
+
+    # Get rid of any '%20') string; may be more trailing crud
+    url.gsub!("'%20)'", "")
+    url.gsub!("%20')", "")
+    url.gsub!("'%20)", "")
+
+    # Pull out string after p_data=
+
+    if ( url =~ /.*?p_data=(.*)/ )
+      url = $1
+    end
+
+    # Get rid of leading "|" if any
+
+    if ( url =~ /^\|(.*$)/ )
+      url = $1
+    end
+    
+    # Get rid of any remaining stuff; not sure why we still have anything here!!
+    url.gsub!("')", "")
+    url.gsub!("%27", "")
+    url.gsub!("'", "")
+    
+    # Split into array on |
+    parms = Array.new()
+
+    parms = url.split(/\|/)
+
+    # Add a ninth element if we have only 8
+    if parms.length == 8
+      parms.push("")
+    end
+
+    # Set up keys and create a hash of keys and parms as values
+    keys = [:session_id, :action_string, :ckey, :home_lib, :current_loc, :call_num, :item_id, :req_type, :due_date]
+
+    parms_hash = Hash[*keys.zip(parms).flatten]
+
+    return parms_hash
+
+  end
+  
   
   # ================ Protected methods from here ====================
   protected

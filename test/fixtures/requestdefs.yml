@@ -1,5 +1,5 @@
-HOLD-HOV:
-   name: HOLD-HOV
+HOLDREC-HOV:
+   name: HOLDREC-HOV
    library: HOOVER
    current_loc: CHECKEDOUT
    req_status: NEW-RECALL
@@ -12,8 +12,8 @@ HOLD-HOV:
    final_text: 
    fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
 
-HOLD-LAW:
-   name: HOLD-LAW
+HOLDREC-LAW:
+   name: HOLDREC-LAW
    library: LAW
    current_loc: CHECKEDOUT
    req_status: NEW-RECALL
@@ -26,8 +26,8 @@ HOLD-LAW:
    final_text: 
    fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
 
-HOLD-SUL:
-   name: HOLD-SUL
+HOLDREC-SUL:
+   name: HOLDREC-SUL
    library: SUL
    current_loc: CHECKEDOUT
    req_status: NEW-RECALL
@@ -122,48 +122,6 @@ ORD-SUL:
    title: Title - SUL on-order
    initial_text: Initial text - SUL on-order
    final_text: Final text - SUL on-order
-   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
-
-RECALL-HOV:
-   name: RECALL-HOV
-   library: HOOVER
-   current_loc: CHECKEDOUT
-   req_status: NEW-RECALL
-   req_type: RECALL
-   enabled: t
-   authenticated: t
-   unauthenticated: f
-   title: Title - Hoover Recall
-   initial_text: Initial text - Hoover recall
-   final_text: Final text - Hoover recall
-   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
-
-RECALL-LAW:
-   name: RECALL-LAW
-   library: LAW
-   current_loc: CHECKEDOUT
-   req_status: NEW-RECALL
-   req_type: RECALL
-   enabled: t
-   authenticated: t
-   unauthenticated: f
-   title: Title - Law recall
-   initial_text: Initial text - Law recall
-   final_text: Final text - Law recall
-   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
-
-RECALL-SUL:
-   name: RECALL-SUL
-   library: SUL
-   current_loc: CHECKEDOUT
-   req_status: NEW-RECALL
-   req_type: RECALL
-   enabled: t
-   authenticated: t
-   unauthenticated: f
-   title: Title - SUL Recall
-   initial_text: Initial text - SUL recall
-   final_text: Final text - SUL recall
    fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
 
 SAL:

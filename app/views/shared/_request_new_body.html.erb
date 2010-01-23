@@ -177,6 +177,8 @@ function countChecked(form) {
 					<input name="request[hold_recall" id="request_type" type="radio" 
 					<% if ! @is_authenticated %>
 					disabled="disabled" 
+					<% else %>
+					checked="checked"
 					<% end %>
 					value="RECALL">
   					recalled
