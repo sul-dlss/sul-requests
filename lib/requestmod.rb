@@ -19,13 +19,28 @@ module Requestmod
     #@request.session_id = get_symphony_session(params[:library], params[:req_type])
     #@request.session_id = get_symphony_session('GREEN', 'REQ-HOLD')
 
-    # See whether we have a p_data key, which means we have a Socrates URL. If it's
-    # there, change the pipe-delimited values to a hash, remove the p_data element,
-    # and add the new hash of key/value pairs
-    if params.has_key?(:p_data)     
+    # Process a Socrates URL, which will have always have a p_data key. Several possibilities 
+    # here, since we have to redirect some Soc links to the auth path
+    if params.has_key?(:p_data) && ! params.has_key?(:redir_done)     
+      # Auth redirect, if needed, unless we already are coming through auth path
+      if params.has_key?(:p_auth) || ( params.has_key?(:p_data) && params[:p_data].include?( 'REQ-RECALL' ) )
+        params.merge!(:redir_done => 'y')
+        #redirect_to :controller => 'auth/requests', :action => 'new'
+        redirect_to "/auth/requests/new?" +  join_params_hash(params, '=', '&')
+      end    
+    end
+    
+    if params.has_key?(:p_data)
       new_params = parse_soc_url( 'p_data=' + params[:p_data])  
       params.delete(:p_data)
-      params.merge!(new_params)     
+      # Also want to get rid of p_auth & redir_done at this point, since we've already done the redirect
+      if params.has_key?(:p_auth)
+        params.delete(:p_auth)
+      end
+      if params.has_key?(:redir_done)
+        params.delete(:redir_done)
+      end
+      params.merge!(new_params)
     end
 
     
