@@ -23,7 +23,8 @@ module Requestmod
     # here, since we have to redirect some Soc links to the auth path
     if params.has_key?(:p_data) && ! params.has_key?(:redir_done)     
       # Auth redirect, if needed, unless we already are coming through auth path
-      if params.has_key?(:p_auth) || ( params.has_key?(:p_data) && params[:p_data].include?( 'REQ-RECALL' ) )
+      auth_locs_to_test = [ 'REQ-RECALL', 'INPROCESS', 'ON-ORDER' ]
+      if params.has_key?(:p_auth) || ( params.has_key?(:p_data) && auth_locs_to_test.include?(params(:current_loc)) )
         params.merge!(:redir_done => 'y')
         #redirect_to :controller => 'auth/requests', :action => 'new'
         redirect_to "/auth/requests/new?" +  join_params_hash(params, '=', '&')
@@ -897,10 +898,14 @@ module Requestmod
     # -------- Items: should always have an items field so it should never be nil
     
     if params['items'].nil? || params['items'].empty?
-        error_msgs.push('You must select at least one item.')    
+        error_msgs.push('Please select at least one item.')    
     end
     
+    # -------- Pickup library should not be NONE 
     
+    if params['pickup_lib'].eql?('NONE')
+      error_msgs.push( 'Please select a pickup library.' )
+    end
 
     
     
