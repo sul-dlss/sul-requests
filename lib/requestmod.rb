@@ -773,6 +773,18 @@ module Requestmod
       end    
     
     end
+  
+    # Always in include both univ ID and library ID. We display these depending on authentication
+    # status not on presence in the hash and we need labels for both. Note that we have to hard-code
+    # labels here because we don't want to do db lookups for them.
+    
+    if ! fields_hash.has_key?('univ_id')
+      fields_hash.merge!({'univ_id' => 'University ID'})
+    end
+  
+    if ! fields_hash.has_key?('library_id')
+      fields_hash.merge!({'library_id' => 'Library ID'})
+    end  
     
     return fields_hash
     

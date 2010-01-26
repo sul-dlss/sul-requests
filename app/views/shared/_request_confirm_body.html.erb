@@ -13,7 +13,7 @@
 				
 		<h1><%= @requestdef[:title] %></h1>
 		
-		<!-- Message: could be success or failure-->
+		<!-- Display failure messages only -->
 		
 		<% if @results.has_key?('2') # global failure, but may have more codes here %>
 		
@@ -42,14 +42,6 @@
 			<!-- call return_to_request helper here and pass request object -->
 		
 			</div>
-
-		<% else # global "success" but specific requests may "fail" %>	
-		
-			<div class="request_successful"><p>
-
-			<%=h @messages['001'] %>
-			
-			</p></div>
 		
 		<% end %>
 		
