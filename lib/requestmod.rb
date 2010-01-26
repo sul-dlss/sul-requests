@@ -23,7 +23,7 @@ module Requestmod
     # here, since we have to redirect some Soc links to the auth path
     if params.has_key?(:p_data) && ! params.has_key?(:redir_done)     
       # Auth redirect, if needed, unless we already are coming through auth path
-      auth_locs_to_test = [ 'REQ-RECALL', 'INPROCESS', 'ON-ORDER' ] 
+      auth_locs_to_test = [ 'REQ-RECALL', 'INPROCESS', 'ON-ORDER'] 
       if params.has_key?(:p_auth) || ( params.has_key?(:p_data) && auth_locs_to_test.include?(params[:current_loc] ) )
         params.merge!(:redir_done => 'y')
         #redirect_to :controller => 'auth/requests', :action => 'new'
@@ -206,6 +206,8 @@ module Requestmod
     if home_lib.upcase != 'HOOVER' && home_lib.upcase != 'LAW' && home_lib.upcase[0..2] != 'SAL'
       home_lib = 'SUL'
     end
+    
+    # We also need some sets of locations that we need to test for
     
     # Main criterion is current_loc, with everything else depending on that
 
