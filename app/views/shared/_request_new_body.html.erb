@@ -78,14 +78,16 @@ function countChecked(form) {
 		
 		<h1><%= @requestdef[:title] %></h1>
 		<% unless flash[:invalid_fields].blank?%>
-			<p>
-				<ul type="square">
+			
+				<div id="notification">
+				<ul>
 				<% msgs = flash[:invalid_fields].split('^') %>
 				<% msgs.each do |msg| %>  
-				<div id="notification"><li><%= msg %></li></div>
+				<li><%= msg %></li>
 				<% end %>
 				</ul>
-			</p>
+				</div>
+			
 		<% end %>
 
 		<div class="opening">
