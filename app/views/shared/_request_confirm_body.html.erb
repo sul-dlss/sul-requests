@@ -70,43 +70,42 @@
 		
 		<!-- Bibliographic data -->
 		
-		  <h2 class="title"><%= @request['bib_info'] %></h2>
+		  <span class="title"><%= @request['bib_info'] %></span>
 		  
 		<!-- end of bibliographic data -->
 		
 		<!-- Item information --> 
 		
-		<ul class="show_status">
 				
 		<% if @results.empty? %>
 		
-			<li>No items have been held.</li>	
+			<h2 class="fail">No items have been held.</h2>	
 			
 		<% else %>
 		
 			<% if @results.has_key?('209') %>
 			
-				<%=h @messages['209'] %>
-				<blockquote>
+				<h2 class="success"><%=h @messages['209'] %></h2>
+				<ul>
 					<% items = @results['209'].split('^') %>
 					<% items.each do |item| %>
 					<%    fields = item.split('|') %>
-					<%=h fields[1] %><br>
+					<li><%=h fields[1] %></li>
 					<% end %>			
-				</blockquote>
+				</ul>
 				<% @results.delete('209') %>
 			<% end # key 209 successful results %>			
 		
 			<% if ! @results.empty?  %>
 				<% @results.each do |key, value| %>
-					<%=h @messages[key] %>
-					<blockquote>
+					<h2 class="fail"><%=h @messages[key] %></h2>
+					<ul>
 					<% items = value.split('^') %>
 					<% items.each do |item| %>
 					<%    fields = item.split('|') %>
-					<%=h fields[1] %> <br>	
+					<li><%=h fields[1] %> </li>	
 					<% end %>
-					</blockquote>	
+					</ul>	
 				<% end %>	
 
 			<% end # unsuccessful results %>
@@ -122,5 +121,9 @@
 		<% unless flash[:debug].blank?%>
 			<div id="notification"><%= flash[:debug] %></div>
 		<% end %>
+		
+		<div id="footer">
+
+&copy; <a href="http://www.stanford.edu">Stanford University</a>. Stanford, California 94305. (650) 725-1064. <a href="http://library.stanford.edu/about_sulair/termsofuse.html">Terms of Use</a> | <a href="http://stanford.edu/site/copyright.html">Copyright Complaints</a></div>
 	</body>
 </html>

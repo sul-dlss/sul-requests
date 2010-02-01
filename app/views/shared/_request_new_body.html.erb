@@ -77,18 +77,7 @@ function countChecked(form) {
 		<!-- Parameter names need to match what's used in destination proc -->
 		
 		<h1><%= @requestdef[:title] %></h1>
-		<% unless flash[:invalid_fields].blank?%>
-			
-				<div id="notification">
-				<ul>
-				<% msgs = flash[:invalid_fields].split('^') %>
-				<% msgs.each do |msg| %>  
-				<li><%= msg %></li>
-				<% end %>
-				</ul>
-				</div>
-			
-		<% end %>
+
 
 		<div class="opening">
 		
@@ -104,6 +93,20 @@ function countChecked(form) {
 		Display Name <%= request.env['WEBAUTH_LDAP_DISPLAYNAME'] %>
 		
 		</div>
+			
+		<% unless flash[:invalid_fields].blank?%>
+			
+				<div id="notification">
+				<ul>
+				<% msgs = flash[:invalid_fields].split('^') %>
+				<% msgs.each do |msg| %>  
+				<li><%= msg %></li>
+				<% end %>
+				</ul>
+				</div>
+			
+		<% end %>
+			
 			
 		<% form_for(:request, @request, :url => { :action => 'create'}, :html => { :name => 'requestform' }) do |f| %>			
 	
@@ -124,43 +127,43 @@ function countChecked(form) {
 			
 			<a name="formstart"></a>
 			
-			<fieldset> <legend>Your Information</legend>
+			<fieldset><legend>Your Information</legend>
 			
 			<% if ! @is_authenticated %>
 			<div id="autofill">If you have a SUNet ID, <a href="<%= link_to_auth_request(@request) %>">login to auto-fill and enable more options.</a></div>
 			<% end %>
 			
 			<% if @fields.has_key?('patron_name') %>
-				<dt><label for="request_patron_name"><%= @fields['patron_name'] %></label>:</dt>
+				<dt><label for="request_patron_name"><%= @fields['patron_name'] %></label></dt>
 				<dd><%= f.text_field :patron_name, :value => @request.patron_name %></dd>
 			<% end %>
 			
 			<% if @fields.has_key?('patron_email') %>
-				<dt><label for="request_patron_email"><%= @fields['patron_email'] %></label>:</dt>
+				<dt><label for="request_patron_email"><%= @fields['patron_email'] %></label></dt>
 				<dd><%= f.text_field :patron_email, :value => @request.patron_email %></dd>
 			<% end %>		
 			
 			<!-- univ ID or library ID depending on authentication; no need to check fields array -->
 			
 			<% if @is_authenticated %>
-	  				<dt><label for="request_univ_id"></label><%= @fields['univ_id'] %> </label>:</dd>
+	  				<dt><label for="request_univ_id"></label><%= @fields['univ_id'] %></label></dd>
 					<dd><%= f.text_field :univ_id %></dd>
 			<% else %>
-	  				<dt><label for="request_library_id"> <%= @fields['library_id'] %> </label>:</dt>
+	  				<dt><label for="request_library_id"><%= @fields['library_id'] %></label></dt>
 					<dd><%= f.text_field :library_id %></dd>
 			<% end %>
 			
 			<!-- Always have pickup lib field -->
 			
-			<dt><label for="request_pickup_lib">Pickup Library</label>:</dt>
+			<dt><label for="request_pickup_lib">Will pick up at</label></dt>
 				<dd><%= select_tag 'request[pickup_lib]', options_for_select( @pickup_libs_hash, :selected => @request.pickup_lib ) %></dd>
 		
 			<!-- Hold/Recall - this will be done somewhat differently -->	
 			
 			<% if @fields.has_key?('hold_recall') %>
-				<dt><label for="request_hold_recall">Unavailable Items</label>:</dt>
+				<dt><label for="request_hold_recall">Unavailable items</label></dt>
 				
-				<dd>Some items below are currently checked out to other patrons.
+				<dd class="unavail_items">Some items below are currently checked out to other patrons.
 				If you select those items, they will be:
 				<ul>
 					<li>
@@ -173,7 +176,7 @@ function countChecked(form) {
 					<li> 
 					<label id="recallLabel" 
 					<% if ! @is_authenticated %>					
-					style="color: #666;"
+					class="disabled"
 					<% end %>
 					>						
 					<input name="request[hold_recall" id="request_type" type="radio" 
@@ -199,7 +202,7 @@ function countChecked(form) {
 			<!-- Have either not_needed or planned_use field but not both -->
 			
 			<% if @fields.has_key?('not_needed_after') %>
-			<dt><label for="request_not_needed_after"><%= @fields['not_needed_after'] %></label>:</dt>
+			<dt><label for="request_not_needed_after"><%= @fields['not_needed_after'] %></label></dt>
 				<dd><%= f.text_field :not_needed_after, { :class => 'w16em' } %></dd>
 				
 				<script type="text/javascript">
@@ -224,7 +227,7 @@ function countChecked(form) {
 			      </script>				
 				
 			<% elsif @fields.has_key?('planned_use') %>
-			<dt><label for="request_planned_use"><%= @fields['planned_use'] %></label>:</dt>
+			<dt><label for="request_planned_use"><%= @fields['planned_use'] %></label></dt>
 				<dd><%= f.text_field :planned_use, { :class => 'w16em' } %></dd>	
 
 				<script type="text/javascript">
@@ -253,12 +256,12 @@ function countChecked(form) {
 			<% end %>
 			
 			<% if @fields.has_key?('vol_num') %>
-			<dt><label for="request_vol_num"><%= @fields['vol_num'] %></label>:</dt>
+			<dt><label for="request_vol_num"><%= @fields['vol_num'] %></label></dt>
 			<dd><%= f.text_field :vol_num %></dd>
 			<% end %>
 			
 			<% if @fields.has_key?('comments') %>
-			<dt><label for="request_comments"><%= @fields['comments'] %></label>:</dt>
+			<dt><label for="request_comments"><%= @fields['comments'] %></label></dt>
 				<dd><%= f.text_area :comments %></dd>
 			<% end %>			
 			
@@ -266,7 +269,7 @@ function countChecked(form) {
 			
 	
 		
-		<fieldset> <legend>Volumes/Copies Required</legend>
+		<fieldset><legend>Volumes/Copies Required</legend>
 		
 
 		<% if @fields.has_key?('bib_info') %>
@@ -274,16 +277,16 @@ function countChecked(form) {
 			<span class="title"><%= @request.bib_info %></span>
 		<% end %>
 
-		<span class="library"><%= @request.home_lib %></span>
+		<span class="library"><%= @request.home_lib %>: </span>
 		 
 		<% if @request.items.size > 1 && @request.items.size <= 10 %>
 			<span class="action_varies">
 				<input name="allbox" id="allbox" type="checkbox" value="Check All"  onclick="if (this.checked) {CheckAll()} else {UnCheckAll()}" >
-    			Check all
+    			Select all
 			</span>
 		<% elsif @request.items.size > 10 %>
 			<span class="action_varies">
-				Select up to ten volumes or copies for this request
+				Select up to 10 volumes or copies for this request
 			</span>	
 			<% end %>
 		
@@ -319,7 +322,7 @@ function countChecked(form) {
 							<% if ! values[4].nil? && ( values[3] != values[4] ) %>
 								- <%= values[4] %> 
 							<% end %>
-							<span class="off_screen">available</span>
+							<span class="off_screen"> (available)</span>
 							</span>
 							</label>
 						</li>
@@ -334,7 +337,7 @@ function countChecked(form) {
 		
 		<div class="submit">
 			<%= submit_tag "Submit Request"  %>
-			<a href="javascript:history.go(-1)">Cancel Request</a>
+			<a href="javascript:history.go(-1)">Cancel</a>
 		</div>
 			
 		<% end %>		
@@ -348,6 +351,6 @@ function countChecked(form) {
 		
 <div id="footer">
 
-© Stanford University. 450 Serra Mall, Stanford, California 94305. (650) 723-2300. <a href="http://library.stanford.edu/about_sulair/termsofuse.html">Terms of Use</a> | <a href="http://www.stanford.edu/home/atoz/copyright.html">Copyright Complaints</a></div>
+&copy; <a href="http://www.stanford.edu">Stanford University</a>. Stanford, California 94305. (650) 725-1064. <a href="http://library.stanford.edu/about_sulair/termsofuse.html">Terms of Use</a> | <a href="http://stanford.edu/site/copyright.html">Copyright Complaints</a></div>
 </body>
 </html>		
