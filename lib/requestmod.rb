@@ -1,7 +1,13 @@
 module Requestmod
   
   # Module for both authenticated and unauthenticated requests; also at least one method used in 
-  # reqtests controller
+  # requests controller
+  
+  # Constants for this module
+  Soc_script = 'http://zaph.stanford.edu/cgi-bin/vufind.pl?search=holding&id='
+  Solr_lookup_pre = 'http://searchworks-test.stanford.edu:8983/solr/select?id='
+  Solr_lookup_suf = '&qt=document&fl=id,item_display,ckey'
+
   
   def index
   end
@@ -74,9 +80,9 @@ module Requestmod
       @pickup_libs_hash = get_pickup_libs( @request.pickupkey)
           
       # Get bib info in 2 arrays, one for 900 fields - this is rather involved
-      multi_bib_info = get_bib_info(params, params[:ckey], params[:home_lib])
-      @request.bib_info = multi_bib_info[0].to_s
-      @request.items = multi_bib_info[1] # delimited array
+      multi_soc_info = get_soc_info(params, params[:ckey], params[:home_lib])
+      @request.bib_info = multi_soc_info[0].to_s
+      @request.items = multi_soc_info[1] # delimited array
       
       @fields = get_fields_for_requestdef( @requestdef, @request.items )
       
@@ -135,9 +141,9 @@ module Requestmod
       
       # Get bib info in 2 arrays, one for 900 fields. Can't see any way to get around
       # repeating this here!
-      multi_bib_info = get_bib_info(params['request'], @request.ckey, @request.home_lib)
-      @request.bib_info = multi_bib_info[0].to_s
-      @request.items = multi_bib_info[1] # delimited array
+      multi_soc_info = get_soc_info(params['request'], @request.ckey, @request.home_lib)
+      @request.bib_info = multi_soc_info[0].to_s
+      @request.items = multi_soc_info[1] # delimited array
       @fields = get_fields_for_requestdef( @requestdef, @request.items )
       render :action => 'new'
       
@@ -519,70 +525,120 @@ module Requestmod
     
   end
   
-   
-  # Method get_bib_info. Take a ckey and return array of bib info to display on the form. 
-  def get_bib_info( params, ckey, home_lib )
-    require 'marc'
-    require 'rubygems'
-    require 'net/http'
-    
-    # puts "params at start of get_bib_info is: " + params.inspect
-    
-    # Read the record and change to array; specify nokogiri as parser
-
-    reader = MARC::XMLReader.new(StringIO.new(Net::HTTP.get(URI.parse('http://searchworks.stanford.edu/view/' + ckey + '.xml'))), :parser=>'nokogiri').to_a
-    record = reader[0] # Should have only record, since we used CKEY
-
-    # Set up fields to get and bib_info string
-    fields_to_get = [ '100', '110', '245', '260', '300', '999']
-    #fields_to_get = [ '100', '110', '245', '260', '300']
-    bib_info = Array.new
-    items_hash = Hash.new
-
-    # Iterate over list of fields to get
-    fields_to_get.each do |field_num| 
- 
-      # Put all instances of a field into an array
-      field_instances = Array.new
-      counter = 0
-
-      record.find_all{|f| (field_num) === f.tag}.each do |instance| 
-        if field_num == '999' 
-          if instance['m'] == home_lib
-            # Counter to keep input order but this doesn't actually help
-            # will need to use "shelfkey" somehow
-            counter = counter +1
-            # items, barcode, call_num, library, home_loc, current_loc
-            items_hash = get_items_hash( params, items_hash, instance['i'], instance['a'], instance['m'], instance['l'], instance['k'], counter )
-          end
-        else
-          field_instances.push( instance.to_s ) unless instance.to_s.nil?
+  # Method get_solr_items. Take a ckey, lookup item info from Solr, and return
+  # a two-dimensional hash that includes item_id[:item_id], item_id[:home_loc], item_id[shelf_key]
+  # We want to insert the home_loc and shelf_key into the hash we construct for items. 
+  def get_solr_items(ckey, home_lib )
+  
+     url = Solr_lookup_pre + ckey + Solr_lookup_suf
+  
+     solr_item_info = Hash.new { |hash, key| hash[key] = {} } 
+  
+     # get the XML data as a string
+     xml_data = Net::HTTP.get_response(URI.parse(url)).body
+  
+     # extract event information
+     doc = REXML::Document.new(xml_data)
+  
+     # Get items_ids, home locations, and shelf keys and put info into 2-dim hash 
+     doc.elements.each('response/result/doc/arr/str') do |ele|
+        entry_arr = ele.text.split(/ \-\|\- /)
+        if entry_arr[1] == home_lib
+           solr_item_info[entry_arr[0]][:item_id] = entry_arr[0]
+           solr_item_info[entry_arr[0]][:home_loc] = entry_arr[2]
+           solr_item_info[entry_arr[0]][:shelf_key] = entry_arr[9]
         end
-      end
+     end
+  
+     return solr_item_info
+  
+  end
 
-      # Clean up all elements of field array and put into bib_info array
-      bib_info.push( cleanup_field( field_instances ) );
-
-    end # end fields_to_get
-    
-    # Now sort the items; returns nested array of hashes - will need to use normalized call number here   
-    items_sorted = items_hash.sort_by {|key, counter| counter[:counter]}
-
+  # Method get_soc_info. Take a ckey and call the vufind.pl script on the Symphony
+  # server, which returns bib + items info for each item. We need bib info from only
+  # the first record, but item info from every record that matches the home_lib passed in.
+  def get_soc_info(params, ckey, home_lib)
+  
+    url = Soc_script + ckey
+  
+    # Vars to hold data we want
+    bib_info = ''
+    libraries = []
+    call_nums = []
+    item_ids = []
+    locations = []
+    soc_item_info = Hash.new { |hash, key| hash[key] = {} }
+  
+    items_hash = Hash.new
+  
+    # get the XML data as a string
+    xml_data = Net::HTTP.get_response(URI.parse(url)).body
+  
+    # extract event information
+    doc = REXML::Document.new(xml_data)
+  
+    # Get MARC fields - we want only the first instance of all fields
+    if doc.elements['titles/record/catalog/marc']
+       doc.elements['titles/record/catalog/marc'].each do |ele|
+          bib_info = bib_info + " " + ele.text
+       end
+    end
+      
+    # Get library info, call_nums, items_ids and locations arrays, then put info 
+    # into a hash
+    doc.elements.each('titles/record/catalog/callnum_records/library') do |ele|
+      libraries << ele.text
+    end
+  
+    doc.elements.each('titles/record/catalog/callnum_records/item_number') do |ele|
+       call_nums << ele.text
+    end
+  
+    doc.elements.each('titles/record/catalog/item_record/item_id') do |ele|
+       item_ids << ele.text
+    end
+  
+    doc.elements.each('titles/record/catalog/item_record/location') do |ele|
+       locations << ele.text
+    end
+  
+    # We only want info for the relevant home_lib
+    item_ids.each_with_index do |item_id, idx|
+       if libraries[idx] ==  home_lib
+          #item_info[item_id] = locations[idx] + '|' + call_nums[idx]
+          soc_item_info[item_id][:item_id] = item_id
+          soc_item_info[item_id][:cur_loc] = locations[idx]
+          soc_item_info[item_id][:call_num] = call_nums[idx]         
+       end
+    end
+  
+    # Get the solr_items_hash 
+    solr_item_info = get_solr_items( ckey, home_lib)
+  
+    # Set up the items hash using data from solr & soc items hashes 
+  
+    soc_item_info.each{ |key, value| items_hash = get_items_hash( params, 
+           items_hash, soc_item_info[key][:item_id], soc_item_info[key][:call_num], home_lib, 
+           solr_item_info[key][:home_loc], 
+           soc_item_info[key][:cur_loc], solr_item_info[key][:shelf_key] )
+       }
+  
+    puts "items hash is: " + items_hash.inspect
+  
+    items_sorted = items_hash.sort_by {|key, shelf_key| shelf_key[:shelf_key]}
+     
     # Now make this into a hat + pipe delimited array of strings with name, value, and label for checkboxes
     # Is there a less involved way of doing this?
-
-    items = get_items( items_sorted )
-
-    return bib_info, items
-    
-    # Returning just one array lets me get back text of fields
-    # return bib_info
-
-  end # get_bib_info
   
+    items = get_items( items_sorted )
+  
+    return bib_info, items
+  
+  end # get_soc_info
+    
   # Method to add items to a hash of hashes. Takes hash as input and returns same hash
   # with new hash added. May need to add due date here
-  def get_items_hash( params, items, barcode, call_num, library, home_loc, current_loc, counter )
+  def get_items_hash( params, items, barcode, call_num, library, home_loc, current_loc, shelf_key )
 
     # puts "params in get_items_hash is: " + params.inspect
     
@@ -598,7 +654,7 @@ module Requestmod
     items[barcode].store( :home_loc, home_loc )
     items[barcode].store( :current_loc, current_loc )
     items[barcode].store( :req_type, get_request_type( params ) ) 
-    items[barcode].store( :counter, counter)
+    items[barcode].store( :shelf_key, shelf_key)
 
     return items # this is the updated hash we got initally
 
