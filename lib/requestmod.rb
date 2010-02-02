@@ -5,7 +5,7 @@ module Requestmod
   
   # Constants for this module
   Soc_script = 'http://zaph.stanford.edu/cgi-bin/vufind.pl?search=holding&id='
-  Solr_lookup_pre = 'http://searchworks-test.stanford.edu:8983/solr/select?id='
+  Solr_lookup_pre = 'http://searchworks-dev.stanford.edu:8983/solr/select?id='
   Solr_lookup_suf = '&qt=document&fl=id,item_display,ckey'
 
   
