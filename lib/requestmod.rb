@@ -622,9 +622,7 @@ module Requestmod
            solr_item_info[key][:home_loc], 
            soc_item_info[key][:cur_loc], solr_item_info[key][:shelf_key] )
        }
-  
-    puts "items hash is: " + items_hash.inspect
-  
+   
     items_sorted = items_hash.sort_by {|key, shelf_key| shelf_key[:shelf_key]}
      
     # Now make this into a hat + pipe delimited array of strings with name, value, and label for checkboxes
