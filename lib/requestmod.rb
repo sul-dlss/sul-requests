@@ -28,15 +28,15 @@ module Requestmod
     # Process a Socrates URL, which will have always have a p_data key. Several possibilities 
     # here, since we have to redirect some Soc links to the auth path
     if params.has_key?(:p_data) && ! params.has_key?(:redir_done)     
-      # Auth redirect, if needed, unless we already are coming through auth path
-      auth_locs_to_test = [ 'REQ-RECALL', 'INPROCESS', 'ON-ORDER'] 
-      if params.has_key?(:p_auth) || ( params.has_key?(:p_data) && auth_locs_to_test.include?(params[:current_loc] ) )
+      # Figure out whether an auth redirect is needed
+      if params.has_key?(:p_auth) || ( params.has_key?(:p_data) && params[:p_data] =~ /REQ-RECALL||INPROCESS||ON-ORDER/ )
         params.merge!(:redir_done => 'y')
         #redirect_to :controller => 'auth/requests', :action => 'new'
         redirect_to "/auth/requests/new?" +  join_params_hash(params, '=', '&')
       end    
     end
     
+    # At this point we've either already gone through the auth redirect or we don't need to
     if params.has_key?(:p_data)
       new_params = parse_soc_url( 'p_data=' + params[:p_data])  
       params.delete(:p_data)
