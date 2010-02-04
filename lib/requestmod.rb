@@ -242,6 +242,8 @@ module Requestmod
           req_def = 'HOLDREC-SUL'
           
         end # home_lib choice
+        
+        # Note that there's no else here so SAL requests, and maybe others, will fall through.
               
       end 
       
