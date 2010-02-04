@@ -20,8 +20,8 @@
 
 <% for library in @libraries %>
   <tr>
-    <td><%=h library.lib_code %></td>
-    <td><%=h library.lib_descrip %></td>
+    <td valign="top"><%=h library.lib_code %></td>
+    <td valign="top"><%=h library.lib_descrip %></td>
 	<td nowrap><%= button_to 'Edit',{:action => 'edit', :id => library.id }, :method => :get %></td>
 	<td nowrap><%= button_to 'Delete', { :action => 'destroy', :id => library.id }, :confirm => 'Are you sure you want to delete this item?', 
          :method => :delete %></td>
