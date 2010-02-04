@@ -222,7 +222,7 @@ module Requestmod
     holdrec_locs = ['CHECKEDOUT', 'CHKD-OUT-D', 'BINDERY',  'NEWBOOKS', 'B&FHOLD', 'ENDPROCESS', 
                    'INTRANSIT', 'MISSING', 'MISS-INPRO', 'REPAIR' ]
   
-    if holdrec_locs.include?(current_loc.upcase ) || current_loc.upcase =~ /*.?\-LOAN/
+    if holdrec_locs.include?(current_loc.upcase ) || current_loc.upcase =~ /.*?\-LOAN/
       
       # Req type can be either REQ-HOLD or REQ-REQ-RECALL
       
