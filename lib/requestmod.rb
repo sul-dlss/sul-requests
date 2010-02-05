@@ -25,8 +25,9 @@ module Requestmod
     #@request.session_id = get_symphony_session(params[:library], params[:req_type])
     #@request.session_id = get_symphony_session('GREEN', 'REQ-HOLD')
 
-    # Process a Socrates URL, which will have always have a p_data key. Several possibilities 
-    # here, since we have to redirect some Soc links to the auth path
+    # ===== Process a Socrates URL, which will have always have a p_data key. Several possibilities 
+    # ===== here, since we have to redirect some Soc links to the auth path
+    
     if params.has_key?(:p_data) && ! params.has_key?(:redir_done)     
       # Figure out whether an auth redirect is needed
       if params.has_key?(:p_auth) || ( params.has_key?(:p_data) && params[:p_data] =~ /REQ-RECALL||INPROCESS||ON-ORDER/ )
@@ -49,21 +50,24 @@ module Requestmod
       end
       params.merge!(new_params)
     end
-
     
-    # Get user information
+    #===== Get user information
+    
     user = get_user
     @request.patron_name = user[:patron_name]
     @request.patron_email = user[:patron_email]
     @request.library_id = user[:library_id]
     
-    # Get req_type - may not be in parms but need for request_def at the moment
+    #===== Get req_type - may not be in parms but need for request_def at the moment
+    
     @request.req_type = get_request_type( params )
     
-    # Need library for to limit items
+    #===== Get library, which we need to limit items
+    
     @request.home_lib = params[:home_lib]
     
-    # Get the request definition, which is the key to everything else
+    #===== Get the request definition, which is the key to everything else
+    
     @request.request_def = get_req_def( params[:home_lib], params[:current_loc], @request.req_type )
         
     if @request.request_def == 'UNDEFINED'
@@ -75,18 +79,21 @@ module Requestmod
       
       @requestdef = Requestdef.find_by_name( @request.request_def )
         
-      # Get the pickupkey then the pickup_libs
+      #===== Get the pickupkey then the pickup_libs
+      
       @request.pickupkey = get_pickup_key( params[:home_lib], params[:current_loc], @request.req_type )       
       @pickup_libs_hash = get_pickup_libs( @request.pickupkey)
           
-      # Get bib info in 2 arrays, one for 900 fields - this is rather involved
+      #===== Get bib info in 2 arrays, one for 900 fields - this is rather involved
+      
       multi_soc_info = get_soc_info(params, params[:ckey], params[:home_lib])
       @request.bib_info = multi_soc_info[0].to_s
       @request.items = multi_soc_info[1] # delimited array
       
       @fields = get_fields_for_requestdef( @requestdef, @request.items )
       
-      # Get remaining fields from parameters
+      #===== Get remaining fields from parameters
+      
       @request.ckey = (params[:ckey])
       
       # These apply to all items
