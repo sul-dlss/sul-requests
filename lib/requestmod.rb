@@ -118,7 +118,7 @@ module Requestmod
     end
     
     # Don't redirect for these libs if coming from SearchWorks
-    if !params.has_key?(:p_auth) && params.has_key?(:home_lib) && ['SAL', 'SAL3', 'SAL-NEWARK', 'HOPKINS'].include?(params[:home_lib])
+    if !params.has_key?(:p_data) && params.has_key?(:home_lib) && ['SAL', 'SAL3', 'SAL-NEWARK', 'HOPKINS'].include?(params[:home_lib])
       return false 
     end
     
