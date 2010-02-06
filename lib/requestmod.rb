@@ -21,30 +21,12 @@ module Requestmod
   def new
     
     @request = Request.new
+    
+    #===== Get params from Socrates URL if necessary
 
-    # ===== Process a Socrates URL, which will have always have a p_data key. Several possibilities 
-    # ===== here, since we have to redirect some Soc links to the auth path
-    
-    if params.has_key?(:p_data) && ! params.has_key?(:redir_done)     
-      # Figure out whether an auth redirect is needed
-      if params.has_key?(:p_auth) || ( params.has_key?(:p_data) && params[:p_data] =~ /REQ-RECALL||INPROCESS||ON-ORDER/ )
-        params.merge!(:redir_done => 'y')
-        #redirect_to :controller => 'auth/requests', :action => 'new'
-        redirect_to "/auth/requests/new?" +  join_params_hash(params, '=', '&')
-      end    
-    end
-    
-    # At this point we've either already gone through the auth redirect or we don't need to
     if params.has_key?(:p_data)
-      new_params = parse_soc_url( 'p_data=' + params[:p_data])  
+      new_params = parse_soc_url('p_data=' + params[:p_data])
       params.delete(:p_data)
-      # Also want to get rid of p_auth & redir_done at this point, since we've already done the redirect
-      if params.has_key?(:p_auth)
-        params.delete(:p_auth)
-      end
-      if params.has_key?(:redir_done)
-        params.delete(:redir_done)
-      end
       params.merge!(new_params)
     end
     
@@ -72,8 +54,26 @@ module Requestmod
       @params = params
       render :template => 'requests/app_problem'
       
-    else
+    else    
       
+      #===== Check whether we need to redirect to the auth path and do the redirect if so
+      if check_auth_redir( params )
+        params.merge!(:redir_done => 'y')
+        redirect_to "/auth/requests/new?" +  join_params_hash(params, '=', '&')
+      end
+      
+      #====== Clean out any unnecessary params at this point
+
+      if params.has_key?(:p_auth)
+        params.delete(:p_auth)
+      end
+      
+      if params.has_key?(:redir_done)
+        params.delete(:redir_done)
+      end
+      
+      #====== Get info for request def -- form text, etc.
+
       @requestdef = Requestdef.find_by_name( @request.request_def )
         
       #===== Get the pickupkey then the pickup_libs
@@ -107,6 +107,34 @@ module Requestmod
     end # test for requestdef
          
   end
+  
+  # Method check_auth_redir. Take params and return true or false depending 
+  # on whether we need to redirect to the auth path. Various conditions for redirecting
+  def check_auth_redir(params)
+    
+    # Redir done so return false
+    if params.has_key?(:redir_done)
+      return false
+    end
+    
+    # Never redirect for these libraries
+    if params.has_key?(:home_lib) && ['SAL', 'SAL3', 'SAL-NEWARK', 'HOPKINS'].include?(params[:home_lib])
+      return false 
+    end
+    
+    # Check for locs requiring redirect    
+    if params.has_key?(:p_auth)
+      return true # Soc auth with auth requirement noted as a param
+    elsif params.has_key?(:p_data) && params[:p_data] =~ /REQ-RECALL||INPROCESS||ON-ORDER/
+      return true # Soc URL with locs requiring auth     
+    elsif params.has_key?(:current_loc) && ['REQ-RECALL', 'INPROCESS', 'ON-ORDER'].include?(params[:current_loc])
+      return true # SearchWorks URL with locs requiring auth
+    end
+    
+    # If we get this far, just return false
+    return false
+
+  end # check auth redir
  
   # Method create. Send user input to Oracle stored procedure that creates
   # a request and sends back either a confirmation or error message
@@ -142,7 +170,7 @@ module Requestmod
       @pickup_libs_hash = get_pickup_libs( @request.pickupkey)
       
       # Get bib info and item info
-      multi_soc_info = get_soc_info(params['request'], @request.ckey, @request.home_lib)
+      multi_soc_info = get_sw_info(params['request'], @request.ckey, @request.home_lib)
       @request.bib_info = multi_soc_info[0].to_s
       @request.items = multi_soc_info[1] # delimited array
       @fields = get_fields_for_requestdef( @requestdef, @request.items )
@@ -384,6 +412,11 @@ module Requestmod
     keys = [:session_id, :action_string, :ckey, :home_lib, :current_loc, :call_num, :item_id, :req_type, :due_date]
 
     parms_hash = Hash[*keys.zip(parms).flatten]
+    
+    # Get rid of session_id and action_string, which we don't need
+    
+    parms_hash.delete(:session_id)
+    parms_hash.delete(:action_string)
 
     return parms_hash
 
