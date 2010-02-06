@@ -21,10 +21,6 @@ module Requestmod
   def new
     
     @request = Request.new
-    # raise params.inspect
-    # Do not need session ID
-    #@request.session_id = get_symphony_session(params[:library], params[:req_type])
-    #@request.session_id = get_symphony_session('GREEN', 'REQ-HOLD')
 
     # ===== Process a Socrates URL, which will have always have a p_data key. Several possibilities 
     # ===== here, since we have to redirect some Soc links to the auth path
@@ -115,9 +111,7 @@ module Requestmod
   # Method create. Send user input to Oracle stored procedure that creates
   # a request and sends back either a confirmation or error message
   def create
-    
-    #require 'net/http'
-    #require 'uri'
+
     @request = Request.new(params[:request])
     
     # Following doesn't work in various ways depending on how request is defined
@@ -147,8 +141,7 @@ module Requestmod
       @requestdef = Requestdef.find_by_name( @request.request_def )
       @pickup_libs_hash = get_pickup_libs( @request.pickupkey)
       
-      # Get bib info in 2 arrays, one for 900 fields. Can't see any way to get around
-      # repeating this here!
+      # Get bib info and item info
       multi_soc_info = get_soc_info(params['request'], @request.ckey, @request.home_lib)
       @request.bib_info = multi_soc_info[0].to_s
       @request.items = multi_soc_info[1] # delimited array
@@ -207,10 +200,8 @@ module Requestmod
   
   # Make public so we can call it from reqtest controller
 
-  # Method get_form_text. Take a key of some sort and return a hash of text elements to use in the form
-  # that are fetched from a database where different form types are defined
-  # NEEDS WORK, since it's not returning the proper data. Note also that this is pretty
-  # muuch useless if each item will a separate request type
+  # Method get_req_def. Determine request definition from home_lib, current_loc and req_type
+  # Make UNDEFINED the default if nothing else turns up.
   def get_req_def( home_lib, current_loc, req_type )
     
     req_def = 'UNDEFINED'
@@ -327,8 +318,10 @@ module Requestmod
     
     return req_def   
     
-  end
+  end # get_req_def
   
+  # Method get_pickup_key. Determine the pickup_key, which indicates the pickup libraries to display
+  # from the home_lib, current_loc, and req_type
   def get_pickup_key( home_lib, current_loc, req_type )
     
     pickupkey = ''
@@ -349,7 +342,7 @@ module Requestmod
     
     return pickupkey
     
-  end
+  end # get_pickup_key
   
   # Method parse_soc_url. Take a pipe delimited Socrates URL and return a hash of names and values
   # used in a corresponding Rails URL. Note that the input string should start with "p_data="
@@ -394,34 +387,11 @@ module Requestmod
 
     return parms_hash
 
-  end
+  end # parse_soc_url
   
   
   # ================ Protected methods from here ====================
   protected
- 
-  # Method get_symphony_session. Take a library name and a request type, send information to 
-  # Symphony, get back a stripped-down request input form, parse out and return the action parameter
-  # that's needed to place the request
-  # Note: we don't need this anymore since everything will go through apiserver with no http to Symphony
-  def get_symphony_session( library, request_type)
-    
-    #require 'net/http'
-    #require 'uri'
-   
-    url = URI.parse('http://zaph.stanford.edu/uhtbin/cgisirsi/0/' + library + '/0/64/' + request_type )
-    res = Net::HTTP.start(url.host, url.port) {|http|
-      http.get('/uhtbin/cgisirsi/0/' + library + '/0/64/' + request_type )
-    }
-   
-    action_parm = ''
-    if res.body =~ /^.*?ACTION=(.*?)>.*$/
-      action_parm = $1
-    end
-   
-    return action_parm
-    
-  end
   
   # Method get_user. Get user information, normally from the environment and return as a hash
   def get_user 
@@ -739,7 +709,7 @@ module Requestmod
           
     return msgs    
     
-  end
+  end # get_results
   
   
 
@@ -775,7 +745,7 @@ module Requestmod
 
     return pickup_libs_hash.sort
     
-  end
+  end # get_pickup_libs
   
   # Method get field labels. Make a hash of fields names and labels from 
   # data stored in fields table
@@ -793,12 +763,11 @@ module Requestmod
     
     return fields_hash
     
-  end
+  end # get_field_lables
   
   # Method get_fields_for_requestdef. Take a requestdef name and return a hash
   # of fields for that requestdef. Again this seems rather complicated but 
   # couldn't see anyway to get fields when we get @requestdef
-
   def get_fields_for_requestdef( request_def, items )
     
     # puts "at start of get_fields for requestdef"
@@ -833,27 +802,8 @@ module Requestmod
     
     return fields_hash
     
-  end
-  
-  # Method cleanup_field. Take an array containing one or more instances of a field
-  # and return an array of elements that strip out tags and delimiters 
-  def cleanup_field( field_arr ) 
-  
-    bib_info = Array.new
+  end # get_fields
 
-    # Iterate over instances, clean up and add to bib_info array
-    field_arr.each do |instance|
-      # Data starts at col 11
-      new_instance = instance.slice(10, instance.length)
-      new_instance = new_instance.gsub( /\$.*? /, '')
-      bib_info.push(new_instance)
-
-    end
-
-    return bib_info
-
-  end  # cleanup_field
-  
   # Method join_hash. Take a hash and return its elements joined by two delimiters
   # Used to turn a params hash into a param string: key1=value1&key2=value2
   # Note that we are excluding two elements from original params hash
@@ -871,7 +821,7 @@ module Requestmod
     #end      
     return keys.join(delim_2)
     
-  end    
+  end # join_params_hash    
   
   # Method add_items. Add the items array to the parm_list as a single encoded
   # string 
@@ -895,7 +845,7 @@ module Requestmod
       
     return parm_list + '&items=' + item_string  
     
-  end
+  end # add_items
   
   # Method get_msg_hash. Take the messages retrieved from the DB
   # and put them into a hash with the msg_number as key
@@ -908,7 +858,7 @@ module Requestmod
     
     return msg_hash
     
-  end
+  end # get_msg_hash
   
   # Method check_fields. Test validity of each required field and add to error_msgs
   # if there's a problem
@@ -971,7 +921,7 @@ module Requestmod
     
     return error_msgs
       
-  end
+  end # check_fields
 
   
 end
