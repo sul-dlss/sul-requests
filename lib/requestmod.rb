@@ -513,9 +513,6 @@ module Requestmod
   # Output: bib_info string and sorted array of item entries to use in view
   def get_sw_info(params, ckey, home_lib)
     
-    ckey = params[:ckey]
-    home_lib = params[:home_lib]
-  
     url = Sw_lookup_pre + ckey + Sw_lookup_suf
   
     # Method scope vars to hold data we want
