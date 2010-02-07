@@ -110,6 +110,7 @@ module Requestmod
   
   # Method check_auth_redir. Take params and return true or false depending 
   # on whether we need to redirect to the auth path. Various conditions for redirecting
+  # but note that we've already changed p_data parms into regular parms
   def check_auth_redir(params)
     
     # Redir done so return false
@@ -124,11 +125,9 @@ module Requestmod
     
     # Check for locs requiring redirect    
     if params.has_key?(:p_auth)
-      return true # Soc auth with auth requirement noted as a param
-    elsif params.has_key?(:p_data) && params[:p_data] =~ /REQ-RECALL||INPROCESS||ON-ORDER/
-      return true # Soc URL with locs requiring auth     
-    elsif params.has_key?(:current_loc) && ['REQ-RECALL', 'INPROCESS', 'ON-ORDER'].include?(params[:current_loc])
-      return true # SearchWorks URL with locs requiring auth
+      return true # Soc auth with auth requirement noted as a param    
+    elsif params.has_key?(:req_type) && ['REQ-RECALL', 'INPROCESS', 'ON-ORDER'].include?(params[:req_type])
+      return true # SearchWorks URL with req_types requiring auth
     end
     
     # If we get this far, just return false
