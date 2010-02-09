@@ -90,9 +90,9 @@ module Requestmod
           
       #===== Get bib info and item info
       
-      multi_soc_info = get_sw_info(params, params[:ckey], params[:home_lib])
-      @request.bib_info = multi_soc_info[0].to_s
-      @request.items = multi_soc_info[1] # delimited array
+      multi_info = get_sw_info(params, params[:ckey], params[:home_lib])
+      @request.bib_info = multi_info[0].to_s
+      @request.items = multi_info[1] # delimited array
       
       @fields = get_fields_for_requestdef( @requestdef, @request.items )
       
@@ -127,15 +127,21 @@ module Requestmod
     end
     
     # Don't redirect for these libs if coming from SearchWorks
-    if ! params.has_key?(:p_data) && params.has_key?(:home_lib) && ['SAL', 'SAL3', 'SAL-NEWARK', 'HOPKINS'].include?(params[:home_lib])
-      return false 
+    if params.has_key?(:source) && params[:source] == 'SW' 
+      if params.has_key?(:home_lib) && ['SAL', 'SAL3', 'SAL-NEWARK', 'HOPKINS'].include?(params[:home_lib])
+        return false 
+      end
     end
     
-    # Check for locs requiring redirect    
+    # Check for current locs requiring redirect. Should hold for both SW and SOC  
     if params.has_key?(:p_auth)
       return true # Soc auth with auth requirement noted as a param    
-    elsif params.has_key?(:req_type) && ['REQ-RECALL', 'INPROCESS', 'ON-ORDER'].include?(params[:req_type])
-      return true # SearchWorks URL with req_types requiring auth
+    elsif params.has_key?(:source) && params[:source] == 'SO' # Only for Socrates, not SW
+      if params.has_key?(:req_type) && ['REQ-RECALL'].include?(params[:req_type])
+        return true
+      end
+    elsif params.has_key?(:current_loc) && ['INPROCESS', 'ON-ORDER'].include?(params[:current_loc])
+      return true
     end
     
     # If we get this far, just return false
@@ -177,9 +183,9 @@ module Requestmod
       @pickup_libs_hash = get_pickup_libs( @request.pickupkey)
       
       # Get bib info and item info
-      multi_soc_info = get_sw_info(params['request'], @request.ckey, @request.home_lib)
-      @request.bib_info = multi_soc_info[0].to_s
-      @request.items = multi_soc_info[1] # delimited array
+      multi_info = get_sw_info(params['request'], @request.ckey, @request.home_lib)
+      @request.bib_info = multi_info[0].to_s
+      @request.items = multi_info[1] # delimited array
       @fields = get_fields_for_requestdef( @requestdef, @request.items )
       render :action => 'new'
       
