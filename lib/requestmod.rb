@@ -557,8 +557,8 @@ module Requestmod
     if ['SAL', 'SAL3', 'SAL-NEWARK', 'HOPKINS'].include?(home_lib)
       return true
     # Now test for certain SPEC-COLL combinations (may be more to add)
-    #elsif home_lib == 'SPEC-COLL' && home_loc =~ /.*\-30/
-    #  return true   
+    elsif home_lib == 'SPEC-COLL' && home_loc =~ /.*\-30/
+      return true   
     # For all others return false if home and current locs match  
     elsif home_loc == current_loc
       return false
