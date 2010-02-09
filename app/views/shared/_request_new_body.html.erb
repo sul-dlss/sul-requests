@@ -77,38 +77,42 @@ function countChecked(form) {
 		<!-- Parameter names need to match what's used in destination proc -->
 		
 		<h1><%= @requestdef[:title] %></h1>
-
-
-		<div class="opening">
 		
-		<p><%= @requestdef[:initial_text]%></p>
-		
-		<%if @fields.has_key?('hold_recall') %>
-		
-		<!-- <p> No longer displaying extra text </p> -->
-		
-		<% end %>
-		
-		SUNet ID: <%= request.env['WEBAUTH_USER'] %><br>
-		Display Name <%= request.env['WEBAUTH_LDAP_DISPLAYNAME'] %>
-		
-		</div>
+		<% if @request.items.size > 0 %>
+	
+			<div class="opening">
 			
-		<% unless flash[:invalid_fields].blank?%>
+			<p><%= @requestdef[:initial_text]%></p>
 			
-				<div id="notification">
-				<ul>
-				<% msgs = flash[:invalid_fields].split('^') %>
-				<% msgs.each do |msg| %>  
-				<li><%= msg %></li>
-				<% end %>
-				</ul>
-				</div>
+			<%if @fields.has_key?('hold_recall') %>
 			
-		<% end %>
+			<!-- <p> No longer displaying extra text </p> -->
 			
+			<% end %>
+			
+			SUNet ID: <%= request.env['WEBAUTH_USER'] %><br>
+			Display Name <%= request.env['WEBAUTH_LDAP_DISPLAYNAME'] %>
+			
+			</div>
+				
+			<% unless flash[:invalid_fields].blank?%>
+				
+					<div id="notification">
+					<ul>
+					<% msgs = flash[:invalid_fields].split('^') %>
+					<% msgs.each do |msg| %>  
+					<li><%= msg %></li>
+					<% end %>
+					</ul>
+					</div>
+				
+			<% end %>
+		
+		<% end # if items.size > 0 - part 1 %>	
 			
 		<% form_for(:request, @request, :url => { :action => 'create'}, :html => { :name => 'requestform' }) do |f| %>			
+	
+		<% if @request.items.size > 0 # part 2 %>
 	
 			<%= f.hidden_field :req_type %>
 			<%= f.hidden_field :home_lib %>	
@@ -262,12 +266,16 @@ function countChecked(form) {
 			
 			<% if @fields.has_key?('comments') %>
 			<dt><label for="request_comments"><%= @fields['comments'] %></label></dt>
-				<dd><%= f.text_area :comments %></dd>
+				<dd><%= f.text_area :comments, {:size => "40x10"} %></dd>
 			<% end %>			
 			
 			</fieldset>
-			
-	
+		
+		<% end # items > 0 - part 2 %>
+		
+		<% if @request.items.size == 0 # Add extra <p> to make spacing right %>
+			<p>&nbsp;</p>
+		<% end %>
 		
 		<fieldset><legend>Volumes/Copies Required</legend>
 		
@@ -292,9 +300,9 @@ function countChecked(form) {
 		
 		 <div class="access_data">
     		<ol class="show_availability item_list">
-					
-					<% puts "items checked in new form is" + @request.items_checked.to_s %>
-					
+				
+				<% if @request.items.size > 0 %>		
+												
 					<% @request.items.each do |item| %>
 					
 						<% values = item.split('^') %>  
@@ -326,7 +334,13 @@ function countChecked(form) {
 							</label>
 						</li>
 
-					<% end %>
+					<% end # items_each %>
+				
+				<% else %>
+					
+					All items should be available on the shelf, so they can no longer be requested through this form.
+					
+				<% end # items > 0 %>
 
             	</ol>
    		</div>
@@ -334,17 +348,20 @@ function countChecked(form) {
 		
 		</fieldset>
 		
-		<div class="submit">
-			<%= submit_tag "Submit Request"  %>
-			<a href="javascript:history.go(-1)">Cancel</a>
-		</div>
+		<% if @request.items.size > 0 # part 3%>
+			<div class="submit">
+				<%= submit_tag "Submit Request"  %>
+				<a href="javascript:history.go(-1)">Cancel</a>
+			</div>
+		<% end # items.size > 0 - part 3 %>
+		
 			
-		<% end %>		
+		<% end  # of form_for  %>		
 		
 		<div class="closing">
 		<p><%= @requestdef[:final_text]%></p>
 		</div>
-
+		
 
 </div>
 		

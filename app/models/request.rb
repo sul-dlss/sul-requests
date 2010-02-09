@@ -26,6 +26,7 @@ class Request < Tableless
   column :comments, :string
   column :request_def, :string
   column :pickupkey, :string
+  column :source, :string
 
   validates_presence_of :patron_name, :pickup_lib 
   # Following does not work -- nil and blank seem to be the same

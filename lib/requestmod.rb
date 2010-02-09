@@ -6,8 +6,11 @@ module Requestmod
   # Module for both authenticated and unauthenticated requests; also at least one method used in 
   # requests controller
   
-  # Constants for this module
-  Sw_lookup_pre = 'http://searchworks-dev.stanford.edu:3000/view/'
+  # Constants for this module - note that -dev and -test both have unpredictable 
+  # availability at the moment and this application is unusable if the server 
+  # selected here is down.
+  Sw_lookup_pre = 'http://searchworks-test.stanford.edu/view/'
+  #Sw_lookup_pre = 'http://searchworks-dev.stanford.edu:3000/view/'
   Sw_lookup_suf = '.request'
   
   def index
@@ -22,12 +25,15 @@ module Requestmod
     
     @request = Request.new
     
-    #===== Get params from Socrates URL if necessary
+    #===== Get params from Socrates URL if necessary and add appropriate source param
 
     if params.has_key?(:p_data)
       new_params = parse_soc_url('p_data=' + params[:p_data])
       params.delete(:p_data)
       params.merge!(new_params)
+      params.merge!(:source => 'SO')
+    else
+      params.merge!(:source => 'SW')
     end
     
     #===== Get user information
@@ -57,6 +63,7 @@ module Requestmod
     else    
       
       #===== Check whether we need to redirect to the auth path and do the redirect if so
+        
       if check_auth_redir( params )
         params.merge!(:redir_done => 'y')
         redirect_to "/auth/requests/new?" +  join_params_hash(params, '=', '&')
@@ -81,7 +88,7 @@ module Requestmod
       @request.pickupkey = get_pickup_key( params[:home_lib], params[:current_loc], @request.req_type )       
       @pickup_libs_hash = get_pickup_libs( @request.pickupkey)
           
-      #===== Get bib info in 2 arrays, one for 900 fields - this is rather involved
+      #===== Get bib info and item info
       
       multi_soc_info = get_sw_info(params, params[:ckey], params[:home_lib])
       @request.bib_info = multi_soc_info[0].to_s
@@ -96,6 +103,7 @@ module Requestmod
       # These apply to all items
       @request.pickup_lib = (params[:pickup_lib])
       @request.not_needed_after = (params[:not_needed_after])
+      @request.source = (params[:source])
       
       # These are item-specific so apply only at the item level
       @request.due_date = (params[:due_date])
@@ -538,7 +546,28 @@ module Requestmod
    
     return req_type
     
-  end
+  end # get_request_type
+  
+  # Method item_include. Take home library, home location and current location
+  # Return true or false depending on whether item should be included in item array.
+  # This may get very elaborate
+  def item_include?( home_lib, home_loc, current_loc )
+    
+    # First test for certain libs and return true if we have them
+    if ['SAL', 'SAL3', 'SAL-NEWARK', 'HOPKINS'].include?(home_lib)
+      return true
+    # Now test for certain SPEC-COLL combinations (may be more to add)
+    #elsif home_lib == 'SPEC-COLL' && home_loc =~ /.*\-30/
+    #  return true   
+    # For all others return false if home and current locs match  
+    elsif home_loc == current_loc
+      return false
+    # Return true if we get this far without deciding  
+    else
+      return true
+    end
+    
+  end # item_include
   
   # Method get_sw_info. Gets and parses all info from SearchWorks .request call
   # Inputs: params from request, ckey, home_lib
@@ -562,15 +591,15 @@ module Requestmod
        bib_info = bib_info + ' ' + doc.xpath("//record/author").text
     end
   
-    if doc.xpath("/record/title")
+    if doc.xpath("//record/title")
        bib_info = bib_info + ' ' + doc.xpath("//record/title").text
     end
      
-    if doc.xpath("/record/pub_info")
+    if doc.xpath("//record/pub_info")
        bib_info = bib_info + ' ' + doc.xpath("//record/pub_info").text
     end
   
-    if doc.xpath("/record/physical_description")
+    if doc.xpath("//record/physical_description")
        bib_info = bib_info + ' ' + doc.xpath("//record/physical_description").text
     end
   
@@ -595,17 +624,19 @@ module Requestmod
     # Iterate over sw item entries and add appropriate info to items_hash
   
     items_from_sw.each do |item|
-  
-       item_string = item.to_s
-       item_string.gsub!(/\<.*?\>/, '')
-       
-       entry_arr = item_string.split(/ \-\|\- /)
-  
-       if entry_arr[1] == home_lib # add only if an item for home lib we want
+        
+      item_string = item.to_s
+      item_string.gsub!(/\<.*?\>/, '')
+      
+      # 0 - item_id | 1 - home_lib | 2 - home_loc | 3 - current_loc | 4 - shelving rule? | 5 - base call num? | 6 - ? | 7 - 008? | 8 - call num | 9 - shelfkey
+      entry_arr = item_string.split(/ \-\|\- /)
+      
+      # Add only items for home lib and only if they pass item inclusion test        
+      if entry_arr[1] == home_lib && item_include?(entry_arr[1], entry_arr[2], sym_cur_locs[entry_arr[0]])
           items_hash = get_items_hash( params,
             items_hash, entry_arr[0], entry_arr[8], home_lib,
             entry_arr[2], sym_cur_locs[entry_arr[0]], entry_arr[9] )
-       end
+      end
   
     end # do each item from sw
   
