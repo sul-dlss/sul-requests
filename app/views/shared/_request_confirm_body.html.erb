@@ -52,15 +52,28 @@
 		
 		<div class="patron_info">
 			<dl>
-
-			<dt><%= @field_labels['patron_name'] %>:</dt><dd><%= @request['patron_name'] %></dd>
-			<dt><%= @field_labels['library_id'] %>:</dt><dd> <%= @request['library_id'] %></dd>
-			<dt><%= @field_labels['pickup_lib'] %>:</dt><dd> <%= @request['pickup_lib'] %></dd>
+			<% if ! @request['patron_name'].nil? %>
+				<dt><%= @field_labels['patron_name'] %>:</dt><dd><%= @request['patron_name'] %></dd>
+			<% end %>		
+			
+			<% if ! @request['library_id'].nil? %>	
+				<dt><%= @field_labels['library_id'] %>:</dt><dd> <%= @request['library_id'] %></dd>
+			<% elsif ! @request['univ_id'].nil? %>	
+				<dt><%= @field_labels['univ_id'] %>:</dt><dd> <%= @request['univ_id'] %></dd>				
+			<% end %>
+			
+			<% if ! @request['pickup_lib'].nil? %>	
+				<dt><%= @field_labels['pickup_lib'] %>:</dt><dd> <%= @request['pickup_lib'] %></dd>		
+			<% end %>
+			
 			<% if ! @request['hold_recall'].nil? %>
 				<dt><%= @field_labels['hold_recall'] %>:</dt><dd> <%= @request['hold_recall'] %></dd>
 			<% end %>
 			<% if ! @request['not_needed_after'].nil? %>
 				<dt><%= @field_labels['not_needed_after'] %>:</dt><dd> <%= @request['not_needed_after'] %></dd>		
+			<% elsif ! @request['planned_use'].nil? %>
+				<dt><%= @field_labels['planned_use'] %>:</dt><dd> <%= @request['planned_use'] %></dd>		
+
 			<% end %>
 			
 		</dl>
