@@ -133,13 +133,12 @@ module Requestmod
       end
     end
     
-    # Check for current locs requiring redirect. Should hold for both SW and SOC  
+    # Check for current locs, etc. requiring redirect.  
     if params.has_key?(:p_auth)
       return true # Soc auth with auth requirement noted as a param    
-    elsif params.has_key?(:source) && params[:source] == 'SO' # Only for Socrates, not SW
-      if params.has_key?(:req_type) && ['REQ-RECALL'].include?(params[:req_type])
-        return true
-      end
+    elsif ( params.has_key?(:source) && params[:source] == 'SO' ) && 
+          (params.has_key?(:req_type) && ['REQ-RECALL'].include?(params[:req_type]) )
+      return true
     elsif params.has_key?(:current_loc) && ['INPROCESS', 'ON-ORDER'].include?(params[:current_loc])
       return true
     end
@@ -877,9 +876,15 @@ module Requestmod
 
     keys = Array.new
     hash.each do |a,b|
-    # Need to escape strings here; this gets tricky; seems like we just need to replace
-    # ampersands at this point, otherwise other punctuation gets messed up, such as slashes
-      if a.to_s != 'items' && a.to_s != 'item_id' && a.to_s != 'request_def' && a.to_s != 'pickupkey'
+      # First, we need to eliminate parms that should not be passed along in a redirect URL
+      # because they were not in the original URL
+      # Need to escape strings here; this gets tricky; seems like we just need to replace
+      # ampersands at this point, otherwise other punctuation gets messed up, such as slashes
+      # if a.to_s != 'items' && a.to_s != 'item_id' && a.to_s != 'request_def' && a.to_s != 'pickupkey'
+      if a.to_s != 'items' && a.to_s && a.to_s != 'request_def' && a.to_s != 'pickupkey'
+        if b.nil? # deal with nil values!
+          b = ""
+        end
         bc = b.gsub('&', '%26')
         keys << [a.to_s, bc.to_s].join(delim_1)
       end
