@@ -25,6 +25,10 @@ class Admin::ReqtestsController < ApplicationController
   # Method create. Saves data from new input form in database
   def create
     @reqtest = Reqtest.new(params[:reqtest])
+    soc_link_params = parse_soc_url(params[:reqtest][:socrates_link])
+    req_type = get_request_type(soc_link_params)
+    req_def = get_req_def( soc_link_params[:home_lib], soc_link_params[:current_loc], req_type)
+    @reqtest.req_def = req_def
     @req_defs = Requestdef.find(:all, :select => 'name', :order => 'name').map(&:name).insert(0, "NONE")
     if @reqtest.save
       #redirect_to :action => 'edit', :id => @requestdef
