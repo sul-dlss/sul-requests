@@ -558,6 +558,9 @@ module Requestmod
   # This may get very elaborate
   def item_include?( home_lib, home_loc, current_loc )
     
+    puts "==================== home loc and current loc in item include: " + home_loc + " " + current_loc + "\n"
+    
+    
     # First test for certain libs and return true if we have them
     if ['SAL', 'SAL3', 'SAL-NEWARK', 'HOPKINS'].include?(home_lib)
       return true
@@ -611,6 +614,8 @@ module Requestmod
     #===== Get all symphony item entries ( item_details/item )
   
     items_from_sym = doc.xpath("//item_details/item")
+    
+    
   
     # Put sym item info into hash with item_id as key and current loc as value
   
