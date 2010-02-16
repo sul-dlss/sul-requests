@@ -13,9 +13,6 @@ module Requestmod
   #Sw_lookup_pre = 'http://searchworks-dev.stanford.edu:3000/view/'
   Sw_lookup_suf = '.request'
   
-  def index
-  end
-
   # Method new. Display a request form, including data retrieved from an XML lookup and user data from 
   # the authentication, if available. The user fills in this from to create a request. Note that this
   # method could be called from create method if validation fails, so we need to check whether we 
