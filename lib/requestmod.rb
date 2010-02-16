@@ -219,7 +219,7 @@ module Requestmod
       @field_labels = get_field_labels
       
       # puts "field labels in create method is: " + @field_labels.inspect
-      if is_authenticated
+      if @is_authenticated
         render :template => "auth/requests/confirm"
       else 
         render :template => "requests/confirm"
