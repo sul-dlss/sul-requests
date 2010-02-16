@@ -91,7 +91,7 @@ module Requestmod
       @request.bib_info = multi_info[0].to_s
       @request.items = multi_info[1] # delimited array
       
-      # puts "================= request items is: " + @request.items.inspect + "\n"
+      puts "================= request items is: " + @request.items.inspect + "\n"
       
       @fields = get_fields_for_requestdef( @requestdef, @request.items )
       
@@ -152,13 +152,6 @@ module Requestmod
   def create
 
     @request = Request.new(params[:request])
-    
-    # Following doesn't work in various ways depending on how request is defined
-    #if @request[:patron_name].blank?
-      #render :action => 'new'
-    #  #render :template => 'requests/new'
-    #  puts "patron name is blank"
-    #end
     
     flash[:invalid_fields] = ''
     error_msgs = check_fields( params['request'])
@@ -459,6 +452,8 @@ module Requestmod
         
     req_type = ''
     
+    # puts "======================== params in get_request_type is: " + params.inspect + "\n"
+    
     if params[:req_type] == nil
 
         if params[:current_loc] == 'INPROCESS' && ( params[:home_lib] != 'HOOVER' || params[:home_lib] != 'LAW' ) 
@@ -504,9 +499,9 @@ module Requestmod
 
         elsif params[:home_lib] == 'SAL'
         
-            sal_locs_to_test = [ 'STACKS', 'SAL-SERG', 'FED-DOCS', 'SAL-MUSIC' ]
+            sal_locs_to_test = [ 'STACKS', 'SAL-SERG', 'FED-DOCS', 'SAL-MUSIC', 'SAL-PAGE' ]
 
-            if sal_locs_to_test.include?( params[:current_loc] ) || params[:current_loc].include?['PAGE-']
+            if sal_locs_to_test.include?( params[:current_loc] ) || params[:current_loc].include?('PAGE-')
             
                 req_type = 'REQ-SAL'
 
@@ -547,6 +542,8 @@ module Requestmod
         req_type = params[:req_type]            
 
     end # check whether params[:req_type] is nil
+    
+    # puts "==================== request type at end of get_req_type is: " + req_type + "\n"
    
     return req_type
     
