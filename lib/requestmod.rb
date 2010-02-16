@@ -219,8 +219,11 @@ module Requestmod
       @field_labels = get_field_labels
       
       # puts "field labels in create method is: " + @field_labels.inspect
-
-      render :template => "requests/confirm"
+      if is_authenticated
+        render :template => "auth/requests/confirm"
+      else 
+        render :template => "requests/confirm"
+      end
 
     end
   end
@@ -326,7 +329,7 @@ module Requestmod
       
         req_def = 'SAL3'
         
-      # Need to look into the following. Probably irrelevant if we multiple items and fewer forms        
+      # Need to look into the following. Probably irrelevant if we have multiple items and fewer forms        
       
       elsif req_type.upcase == 'SAL3-TO-BR'
       
@@ -499,7 +502,7 @@ module Requestmod
 
         elsif params[:home_lib] == 'SAL'
         
-            sal_locs_to_test = [ 'STACKS', 'SAL-SERG', 'FED-DOCS', 'SAL-MUSIC', 'SAL-PAGE' ]
+            sal_locs_to_test = [ 'STACKS', 'SAL-SERG', 'FED-DOCS', 'SAL-MUSIC' ]
 
             if sal_locs_to_test.include?( params[:current_loc] ) || params[:current_loc].include?('PAGE-')
             
