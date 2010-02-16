@@ -91,6 +91,8 @@ module Requestmod
       @request.bib_info = multi_info[0].to_s
       @request.items = multi_info[1] # delimited array
       
+      # puts "================= request items is: " + @request.items.inspect + "\n"
+      
       @fields = get_fields_for_requestdef( @requestdef, @request.items )
       
       #===== Get remaining fields from parameters
@@ -111,7 +113,7 @@ module Requestmod
       
     end # test for requestdef
          
-  end
+  end # new method
   
   # Method check_auth_redir. Take params and return true or false depending 
   # on whether we need to redirect to the auth path. Various conditions for redirecting
@@ -555,7 +557,7 @@ module Requestmod
   # This may get very elaborate
   def item_include?( home_lib, home_loc, current_loc )
     
-    puts "==================== home loc and current loc in item include: " + home_loc + " " + current_loc + "\n"
+    # puts "==================== home loc and current loc in item include: " + home_loc + " " + current_loc + "\n"
     
     
     # First test for certain libs and return true if we have them
@@ -608,27 +610,33 @@ module Requestmod
        bib_info = bib_info + ' ' + doc.xpath("//record/physical_description").text
     end
   
-    #===== Get all symphony item entries ( item_details/item )
+    #===== Get array of all symphony item entries ( item_details/item )
   
     items_from_sym = doc.xpath("//item_details/item")
     
-    
+    # puts "======== items from sym: " + items_from_sym.inspect + "\n"
   
-    # Put sym item info into hash with item_id as key and current loc as value
+    # Put Symphony item info into hash with item_id as key and current loc as value
   
     sym_cur_locs = {}
   
+    # Iterate over Symphony item array and put info in hash with item_id as key and 
+    # current loc as value
+    
     items_from_sym.each do |item|
        if item.to_s =~ /.*?<id>(.*?)<\/id>.*?\<location\>(.*?)\<\/location\>.*$/m
           sym_cur_locs[$1] = $2
        end
     end
   
-    #===== Get all sw item entries (item_display_fields/item_display)
+    #===== Get array of all sw item entries (item_display_fields/item_display)
   
     items_from_sw = doc.xpath("//item_display_fields/item_display")
-  
-    # Iterate over sw item entries and add appropriate info to items_hash
+
+    # puts "======== items from sw: " + items_from_sw.inspect + "\n"
+
+    # Iterate over SW item entries array and add appropriate info to items_hash
+    # that combines current loc info from Symphony with other item info from SW
   
     items_from_sw.each do |item|
         
@@ -644,12 +652,16 @@ module Requestmod
             items_hash, entry_arr[0], entry_arr[8], home_lib,
             entry_arr[2], sym_cur_locs[entry_arr[0]], entry_arr[9] )
       end
-  
+
     end # do each item from sw
+      
+    # puts "======== items hash: " + items_hash.inspect + "\n"  
   
     #===== Sort the items
   
     items_sorted = items_hash.sort_by {|key, shelf_key| shelf_key[:shelf_key]}
+    
+    # puts "======== items sorted: " + items_sorted.inspect + "\n"  
     
     #===== Make hat + pipe delimited array of strings with name, value, and label for checkboxes
   
@@ -689,7 +701,7 @@ module Requestmod
   # Method get_items. Takes sorted items array and makes another array that contains delimited strings
   # with "^" separating name, value, and label of the checkbox we will create on the form
   # Note that we need to create a hash, keyed on unique barcode, then sort the hash on a "shelf key", 
-  # which returns an array, then turned that array info another array to get just the pieces of data
+  # which returns an array, then turn that array info another array to get just the pieces of data
   # we need for the checkboxes. Must be a less kludgy way of doing all this, but we are using rather
   # unusual data for the checkboxes because each has to provide what amounts to a separate set of
   # form fields for our multiple requests.
