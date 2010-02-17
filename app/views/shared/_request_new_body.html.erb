@@ -84,9 +84,9 @@ function countChecked(form) {
 			
 			<p><%= @requestdef[:initial_text]%></p>
 			
-			<%if @fields.has_key?('hold_recall') %>
-			
-			<!-- <p> No longer displaying extra text </p> -->
+			<% if @request.items.to_s =~ /CHECKEDOUT/ %>
+
+			      <%= @messages['CHECKEDOUT'] %>
 			
 			<% end %>
 			

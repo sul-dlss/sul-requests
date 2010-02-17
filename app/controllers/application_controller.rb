@@ -23,8 +23,6 @@ class ApplicationController < ActionController::Base
       end      
     end
   end 
-  
-
      
 
   # Scrub sensitive parameters from your log

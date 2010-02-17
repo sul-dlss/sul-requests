@@ -8,8 +8,12 @@
 		<%= render :partial => 'header' %> 
 		<h1>Messages</h1>
 		
-		Listed below are messages that can appear on the confirmation page after 
-		requests are submitted. Since they are used as headings above a lists of request
+		Listed below are messages that can appear in two places:
+		<ul type="square">
+		<li>On the request form to provide information about various status types, "checkedout", etc.	
+		<li>On the confirmation page after 
+		requests are submitted</li>
+		</ul>Since they are used as headings above a lists of request
 		call number, you should make the phrasing appropriate to the context.
 		You can change message text
 		using the Edit button for the message. 
@@ -18,7 +22,7 @@
 <p></p>
 <table>
   <tr>
-    <th nowrap valign="top">Message No.</th>
+    <th nowrap valign="top">Message Key</th>
 	<th>Message Text</th>
 	<th>Comments</th>
   </tr>

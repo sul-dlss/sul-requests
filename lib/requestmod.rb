@@ -1,5 +1,5 @@
 module Requestmod
-  
+    
   require 'nokogiri'
   require 'open-uri'
   
@@ -76,6 +76,9 @@ module Requestmod
         params.delete(:redir_done)
       end
       
+      #====== Add msgs because we need some for request screen
+      @messages = get_msg_hash(Message.find(:all))
+      
       #====== Get info for request def -- form text, etc.
 
       @requestdef = Requestdef.find_by_name( @request.request_def )
@@ -91,7 +94,7 @@ module Requestmod
       @request.bib_info = multi_info[0].to_s
       @request.items = multi_info[1] # delimited array
       
-      puts "================= request items is: " + @request.items.inspect + "\n"
+      # puts "================= request items is: " + @request.items.inspect + "\n"
       
       @fields = get_fields_for_requestdef( @requestdef, @request.items )
       
@@ -156,7 +159,7 @@ module Requestmod
     flash[:invalid_fields] = ''
     error_msgs = check_fields( params['request'])
 
-    if ! error_msgs.empty?
+    if ! error_msgs.empty? # Go back to form and display errors
       
       error_msgs.each do |msg|
         if flash[:invalid_fields].blank?
@@ -180,9 +183,9 @@ module Requestmod
       @fields = get_fields_for_requestdef( @requestdef, @request.items )
       render :action => 'new'
       
-    else
+    else # Send info to Symphony and display returned message
   
-      # Set up application server and other vars
+      # Set up application server and other vars (move to constants?)
       symphony_oas = 'http://zaph.stanford.edu:9081'
       path_info = '/pls/sirwebdad/func_request_webservice.make_request?'
       # First we get the items, then the rest of params withouth items
@@ -200,13 +203,10 @@ module Requestmod
          
       # Get results hash from delimited string returned from Symphony
       @results = get_results( res.body ) 
+      
+      # Following is just temporary for debugging
          
       flash[:debug] = "Result is: " + res.body + " <P>Param string is: " + parm_list
-      # redirect_to requests_path
-      # This needs work. For requests path it's OK. For auth/requests path Rails insists on 
-      # going to show.html.erb. Kludge is to create show.html.erb in views/auth/requests but this
-      # is idiotic. Logged this in Jira as symreq-3
-      #redirect_to :controller => 'requests', :action => 'confirm'
       
       # Need to keep track of items checked to this point in case we return to new form
       @request.items_checked = @request.items
@@ -218,7 +218,7 @@ module Requestmod
       # Get all fields here so we can use labels on confirm page
       @field_labels = get_field_labels
       
-      # puts "field labels in create method is: " + @field_labels.inspect
+      # Render auth or unauth confirm page
       if @is_authenticated
         render :template => "auth/requests/confirm"
       else 
@@ -428,6 +428,20 @@ module Requestmod
     return parms_hash
 
   end # parse_soc_url
+
+  
+  # Method get_msg_hash. Take the messages retrieved from the DB
+  # and put them into a hash with the msg_number as key
+  def get_msg_hash(msgs)
+    
+    msg_hash = {}
+    msgs.each do |msg|
+      msg_hash[msg.msg_number] = msg.msg_text
+    end
+    
+    return msg_hash
+    
+  end # get_msg_hash
   
   
   # ================ Protected methods from here ====================
