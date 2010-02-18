@@ -5,7 +5,7 @@ class Request < Tableless
   column :call_num, :string
   column :bib_info, :string
   column :items, :array
-  column :items_checked, :arrary 
+  column :items_checked, :array 
   column :patron_name, :string
   column :patron_email, :string
   column :library_id, :string
@@ -28,7 +28,8 @@ class Request < Tableless
   column :pickupkey, :string
   column :source, :string
 
-  validates_presence_of :patron_name, :pickup_lib 
+  # Using custom validations
+  # validates_presence_of :patron_name, :pickup_lib 
   # Following does not work -- nil and blank seem to be the same
   # validates_presence_of :library_id, :allow_blank => :true
   # validates_format_of :not_needed_after, :with => /^[01][0-9]\/[0-9]{2}\/[0-9]{4}$/, :message => 'must be in format "MM/DD/YYY"' 

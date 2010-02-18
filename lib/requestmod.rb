@@ -1,7 +1,7 @@
 module Requestmod
     
   require 'nokogiri'
-  require 'open-uri'
+  require 'open-uri' 
   
   # Module for both authenticated and unauthenticated requests; also at least one method used in 
   # requests controller
@@ -88,13 +88,14 @@ module Requestmod
       @request.pickupkey = get_pickup_key( params[:home_lib], params[:current_loc], @request.req_type )       
       @pickup_libs_hash = get_pickup_libs( @request.pickupkey)
           
-      #===== Get bib info and item info
+      #===== Get bib info, item info, and current locs info
       
       multi_info = get_sw_info(params, params[:ckey], params[:home_lib])
       @request.bib_info = multi_info[0].to_s
-      @request.items = multi_info[1] # delimited array
-      
-      # puts "================= request items is: " + @request.items.inspect + "\n"
+      @request.items = multi_info[1] # delimited items array
+      cur_locs = multi_info[2] # current locs array
+      @msg_keys = get_msg_keys(cur_locs)      
+      puts "================= msg keys is: " + @msg_keys.inspect + "\n"
       
       @fields = get_fields_for_requestdef( @requestdef, @request.items )
       
@@ -155,6 +156,7 @@ module Requestmod
   def create
 
     @request = Request.new(params[:request])
+    @messages = get_msg_hash(Message.find(:all))
     
     flash[:invalid_fields] = ''
     error_msgs = check_fields( params['request'])
@@ -180,6 +182,8 @@ module Requestmod
       multi_info = get_sw_info(params['request'], @request.ckey, @request.home_lib)
       @request.bib_info = multi_info[0].to_s
       @request.items = multi_info[1] # delimited array
+      cur_locs = multi_info[2] # current locs array
+      @msg_keys = get_msg_keys(cur_locs)  
       @fields = get_fields_for_requestdef( @requestdef, @request.items )
       render :action => 'new'
       
@@ -193,6 +197,7 @@ module Requestmod
       parm_list = URI.escape( join_params_hash( params[:request], '=', '&' ) )
       parm_list = add_items( parm_list, items)
          
+      # puts "=============== parm list for PL/SQL is: " + parm_list + "\n"   
       # Run stored procedure through http (need to check on best way of doing this ).
       # Should we try by running stored proc directly through a db connection defined in .yml file?
       
@@ -212,7 +217,7 @@ module Requestmod
       @request.items_checked = @request.items
       
       # Add other info for confirmation page
-      @messages = get_msg_hash(Message.find(:all))
+
       @requestdef = Requestdef.find_by_name( @request.request_def )
       
       # Get all fields here so we can use labels on confirm page
@@ -416,7 +421,8 @@ module Requestmod
     end
 
     # Set up keys and create a hash of keys and parms as values
-    keys = [:session_id, :action_string, :ckey, :home_lib, :current_loc, :call_num, :item_id, :req_type, :due_date]
+    keys = [:session_id, :action_string, :ckey, :home_lib, :current_loc, 
+      :call_num, :item_id, :req_type, :due_date]
 
     parms_hash = Hash[*keys.zip(parms).flatten]
     
@@ -428,20 +434,6 @@ module Requestmod
     return parms_hash
 
   end # parse_soc_url
-
-  
-  # Method get_msg_hash. Take the messages retrieved from the DB
-  # and put them into a hash with the msg_number as key
-  def get_msg_hash(msgs)
-    
-    msg_hash = {}
-    msgs.each do |msg|
-      msg_hash[msg.msg_number] = msg.msg_text
-    end
-    
-    return msg_hash
-    
-  end # get_msg_hash
   
   
   # ================ Protected methods from here ====================
@@ -454,7 +446,9 @@ module Requestmod
        user = { :patron_name => '', :univ_id => '', :patron_email => '' }     
        #user = { :patron_name => 'Jonathan Lavigne', :library_id => '2000000603', :patron_email => 'jlavigne@stanford.edu' }     
     else
-      user = { :patron_name => request.env['WEBAUTH_LDAP_DISPLAYNAME'], :univ_id => request.env['WEBAUTH_LDAP_SUUNIVID'], :patron_email => request.env['WEBAUTH_LDAP_MAIL'] }
+      user = { :patron_name => request.env['WEBAUTH_LDAP_DISPLAYNAME'], 
+                :univ_id => request.env['WEBAUTH_LDAP_SUUNIVID'], 
+                :patron_email => request.env['WEBAUTH_LDAP_MAIL'] }
     end
   
     return user
@@ -473,7 +467,8 @@ module Requestmod
     
     if params[:req_type] == nil
 
-        if params[:current_loc] == 'INPROCESS' && ( params[:home_lib] != 'HOOVER' || params[:home_lib] != 'LAW' ) 
+        if params[:current_loc] == 'INPROCESS' && ( params[:home_lib] != 'HOOVER' || 
+          params[:home_lib] != 'LAW' ) 
         
             req_type = 'REQ-INPRO'
 
@@ -481,7 +476,8 @@ module Requestmod
         
             req_type = 'REQ-RECALL'
 
-        elsif params[:current_loc] == 'ON-ORDER' && ( params[:home_lib] != 'HOOVER' || params[:home_lib] != 'LAW' ) 
+        elsif params[:current_loc] == 'ON-ORDER' && ( params[:home_lib] != 'HOOVER' || 
+          params[:home_lib] != 'LAW' ) 
       
             # May need to exclude some things here, but how do we get library???
             req_type = 'REQ-ONORDM'
@@ -518,7 +514,8 @@ module Requestmod
         
             sal_locs_to_test = [ 'STACKS', 'SAL-SERG', 'FED-DOCS', 'SAL-MUSIC' ]
 
-            if sal_locs_to_test.include?( params[:current_loc] ) || params[:current_loc].include?('PAGE-')
+            if sal_locs_to_test.include?( params[:current_loc] ) || 
+              params[:current_loc].include?('PAGE-')
             
                 req_type = 'REQ-SAL'
 
@@ -565,6 +562,32 @@ module Requestmod
     return req_type
     
   end # get_request_type
+  
+  # Method get_msg_keys. Take an array of current locations, test to see whether
+  # they should cause the display of optional messages on the request form, and return
+  # an array of keys for any that should be displayed 
+  def get_msg_keys( cur_locs )
+    
+    msg_keys = []   
+    ck = 'CHECKEDOUT'
+    checked_out = ['CHECKEDOUT', 'B&FHOLD', 'ENDPROCESS', 'INTRANSIT', 
+                   'MISSING', 'MISS-INPRO', 'REPAIR']
+    
+    # See if we need CHECKEDOUT key
+    
+    if ( cur_locs & checked_out ).any?
+      msg_keys.push(ck)
+    end 
+    
+    if (cur_locs.to_s =~ /-LOAN/)
+      msg_keys.push(ck) unless msg_keys.include?(ck)
+    end
+    
+    # Add other keys - In-process, On-order, anything else?
+    
+    return msg_keys
+    
+  end # get_msg_keys
   
   # Method item_include. Take home library, home location and current location
   # Return true or false depending on whether item should be included in item array.
@@ -631,15 +654,13 @@ module Requestmod
     # puts "======== items from sym: " + items_from_sym.inspect + "\n"
   
     # Put Symphony item info into hash with item_id as key and current loc as value
+    # and also create separate cur_locs array with just loc values
   
-    sym_cur_locs = {}
-  
-    # Iterate over Symphony item array and put info in hash with item_id as key and 
-    # current loc as value
+    sym_locs_hash = {}
     
     items_from_sym.each do |item|
        if item.to_s =~ /.*?<id>(.*?)<\/id>.*?\<location\>(.*?)\<\/location\>.*$/m
-          sym_cur_locs[$1] = $2
+          sym_locs_hash[$1] = $2
        end
     end
   
@@ -651,7 +672,10 @@ module Requestmod
 
     # Iterate over SW item entries array and add appropriate info to items_hash
     # that combines current loc info from Symphony with other item info from SW
+    # also update cur_locs_arr
   
+    cur_locs_arr = []
+    
     items_from_sw.each do |item|
         
       item_string = item.to_s
@@ -661,10 +685,14 @@ module Requestmod
       entry_arr = item_string.split(/ \-\|\- /)
       
       # Add only items for home lib and only if they pass item inclusion test        
-      if entry_arr[1] == home_lib && item_include?(entry_arr[1], entry_arr[2], sym_cur_locs[entry_arr[0]])
+      if entry_arr[1] == home_lib && item_include?(entry_arr[1], entry_arr[2], sym_locs_hash[entry_arr[0]])
           items_hash = get_items_hash( params,
             items_hash, entry_arr[0], entry_arr[8], home_lib,
-            entry_arr[2], sym_cur_locs[entry_arr[0]], entry_arr[9] )
+            entry_arr[2], sym_locs_hash[entry_arr[0]], entry_arr[9] )
+          # Also add to cur_locs_arr if home loc doesn't match cur loc
+          if entry_arr[2] != sym_locs_hash[entry_arr[0]]
+            cur_locs_arr.push( sym_locs_hash[entry_arr[0]])
+          end
       end
 
     end # do each item from sw
@@ -681,9 +709,9 @@ module Requestmod
   
     items = get_items( items_sorted )
   
-    #===== Return bib_info string and items array
+    #===== Return bib_info string, items array, and sym_locs_arr
   
-    return bib_info, items
+    return bib_info, items, cur_locs_arr
   
   end # get_sw_info
 
@@ -875,7 +903,8 @@ module Requestmod
     
     if ! items.nil?
     
-      if items.to_s.include?('^CHECKEDOUT') || items.to_s.include?('^INPROCESS') || items.to_s.include?('^ON-ORDER')
+      if items.to_s.include?('^CHECKEDOUT') || items.to_s.include?('^INPROCESS') || 
+          items.to_s.include?('^ON-ORDER') 
         fields_hash.merge!({'hold_recall' => 'Unavailable Items'})
       end    
     
@@ -909,7 +938,8 @@ module Requestmod
       # Need to escape strings here; this gets tricky; seems like we just need to replace
       # ampersands at this point, otherwise other punctuation gets messed up, such as slashes
       # if a.to_s != 'items' && a.to_s != 'item_id' && a.to_s != 'request_def' && a.to_s != 'pickupkey'
-      if a.to_s != 'items' && a.to_s && a.to_s != 'request_def' && a.to_s != 'pickupkey'
+      if a.to_s != 'items' && a.to_s && a.to_s != 'request_def' && a.to_s != 'pickupkey' &&
+        a.to_s != 'source' && a.to_s != 'msg_keys' && a.to_s != 'item_id'
         if b.nil? # deal with nil values!
           b = ""
         end
