@@ -31,9 +31,23 @@
 			
 		<% elsif @results.has_key?('000')  %>	
 		
-						<div class="request_failed"><p>
+			<div class="request_failed"><p>
 
 			<%=h @messages['000'] %>
+		
+			<% @results.clear %>
+			
+			</p>
+			
+			<!-- call return_to_request helper here and pass request object -->
+		
+			</div>
+		
+		<% elsif @results.has_key?('29') %>
+			
+			<div class="request_failed"><p>
+
+			<%=h @messages['29'] %>
 		
 			<% @results.clear %>
 			

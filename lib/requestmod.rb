@@ -95,7 +95,7 @@ module Requestmod
       @request.items = multi_info[1] # delimited items array
       cur_locs = multi_info[2] # current locs array
       @msg_keys = get_msg_keys(cur_locs)      
-      puts "================= msg keys is: " + @msg_keys.inspect + "\n"
+      # puts "================= msg keys is: " + @msg_keys.inspect + "\n"
       
       @fields = get_fields_for_requestdef( @requestdef, @request.items )
       
