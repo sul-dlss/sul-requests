@@ -167,14 +167,8 @@ module Requestmod
     error_msgs = check_fields( params['request'], @request.items_checked)
 
     if ! error_msgs.empty? # Go back to form and display errors
-      
-      error_msgs.each do |msg|
-        if flash[:invalid_fields].blank?
-          flash[:invalid_fields] = msg 
-        else
-          flash[:invalid_fields] = flash[:invalid_fields] + '^' + msg 
-        end # if flash blank
-      end # do each msg 
+
+      flash[:invalid_fields] = error_msgs 
 
       # ---- Reset instance vars needed to re-display form
       @requestdef = Requestdef.find_by_name( @request.request_def )
