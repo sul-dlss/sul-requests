@@ -10,6 +10,7 @@ module Requestmod
   # availability at the moment and this application is unusable if the server 
   # selected here is down.
   Sw_lookup_pre = 'http://searchworks-test.stanford.edu/view/'
+  
   #Sw_lookup_pre = 'http://searchworks-dev.stanford.edu:3000/view/'
   Sw_lookup_suf = '.request'
   
@@ -158,8 +159,12 @@ module Requestmod
     @request = Request.new(params[:request])
     @messages = get_msg_hash(Message.find(:all))
     
+    # ---- Put checked items currently checked into new items_checked array
+    # ---- so we have a record of them if we have to return to the form
+    @request.items_checked = @request.items
+    
     flash[:invalid_fields] = ''
-    error_msgs = check_fields( params['request'])
+    error_msgs = check_fields( params['request'], @request.items_checked)
 
     if ! error_msgs.empty? # Go back to form and display errors
       
@@ -170,9 +175,6 @@ module Requestmod
           flash[:invalid_fields] = flash[:invalid_fields] + '^' + msg 
         end # if flash blank
       end # do each msg 
-
-      # ---- Put checked items into new items_checked array
-      @request.items_checked = @request.items
 
       # ---- Reset instance vars needed to re-display form
       @requestdef = Requestdef.find_by_name( @request.request_def )
@@ -214,7 +216,8 @@ module Requestmod
       flash[:debug] = "Result is: " + res.body + " <P>Param string is: " + parm_list
       
       # Need to keep track of items checked to this point in case we return to new form
-      @request.items_checked = @request.items
+      # Now doing this ahead of the if block
+      #@request.items_checked = @request.items
       
       # Add other info for confirmation page
 
@@ -991,8 +994,8 @@ module Requestmod
   
   # Method check_fields. Test validity of each required field and add to error_msgs
   # if there's a problem
-  def check_fields(params)
-    
+  def check_fields(params, items_checked)
+      
     error_msgs = []
     
     # ---- Your name
@@ -1005,23 +1008,45 @@ module Requestmod
       
     end  
     
-    #------ Library_id or univ_id
+    #------ Library_id or univ_id; This is quite complicated because, if the user has
+    #------ any item that requires a recall etc. then an ID is, presumably, required!
     
-    if ! params['univ_id'].nil?
+    cur_locs = get_cur_locs(items_checked)
+    
+    if ! ['SAL', 'SAL-NEWARK', 'SAL3'].include?(params[:home_lib])
+
+      if ! params['univ_id'].nil?
+        
+        if params['univ_id'] == ''
+          error_msgs.push('University ID cannot be blank')
+        end
+        
+      end    
       
-      if params['univ_id'] == ''
-        error_msgs.push('University ID cannot be blank')
+      if ! params['library_id'].nil?
+        
+        if params['library_id'] == ''
+          error_msgs.push('Library ID cannot be blank')
+        end
+        
       end
       
-    end    
-    
-    if ! params['library_id'].nil?
-      
-      if params['library_id'] == ''
-        error_msgs.push('Library ID cannot be blank')
+    else # we do have a SAL lib so now we need to check cur locs
+
+      if ( cur_locs & ["CHECKEDOUT"]).any? # for now, but need an array of all possible locs
+        
+        if params['univ_id'].nil? # must be WebAuth'd presumably
+          error_msgs.push('You selected an item that is checked out or otherwise available
+                          only to Stanford University users. Please unselect the item
+                          or login with your SUNet ID to select it.')
+                                   
+        end
+        
       end
       
-    end        
+    
+    end # check for SAL* home_lib
+      
     
     # ------- Not Needed After
     
@@ -1051,6 +1076,21 @@ module Requestmod
     return error_msgs
       
   end # check_fields
-
+  
+  # Method get_cur_locs. Take an array of delimited item strings and return an
+  # array of current locations only. The item strings take the form:
+  # "36105129253584|SAL3|DS793 .H6 Z477 2006 V.3|PAGE-EA|PAGE-EA|REQ-SAL3"
+  def get_cur_locs(items_checked)
+    
+    cur_locs = []
+    
+    items_checked.each do |item|
+      entry_arr = item.split(/\|/)
+      cur_locs.push(entry_arr[4])
+    end
+    
+    return cur_locs
+    
+  end
   
 end
