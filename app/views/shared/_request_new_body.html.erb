@@ -100,8 +100,7 @@ function countChecked(form) {
 				
 					<div id="notification">
 					<ul>
-					<% msgs = flash[:invalid_fields].split('^') %>
-					<% msgs.each do |msg| %>  
+					<% flash[:invalid_fields].each do |msg| %>  
 					<li><%= msg %></li>
 					<% end %>
 					</ul>
