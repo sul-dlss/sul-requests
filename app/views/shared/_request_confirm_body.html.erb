@@ -15,13 +15,13 @@
 		
 		<!-- Display failure messages only -->
 		
-		<% if @results.has_key?('2') # global failure, but may have more codes here %>
+		<% if @symresult.msgs.has_key?('2') # global failure, but may have more codes here %>
 		
 			<div class="request_failed"><p>
 
 			<%=h @messages['2'] %>
 		
-			<% @results.clear %>
+			<% @symresult.msgs.clear %>
 			
 			</p>
 			
@@ -29,27 +29,13 @@
 		
 			</div>
 			
-		<% elsif @results.has_key?('000')  %>	
+		<% elsif @symresult.msgs.has_key?('000')  %>	
 		
-			<div class="request_failed"><p>
+						<div class="request_failed"><p>
 
 			<%=h @messages['000'] %>
 		
-			<% @results.clear %>
-			
-			</p>
-			
-			<!-- call return_to_request helper here and pass request object -->
-		
-			</div>
-		
-		<% elsif @results.has_key?('23') %>
-			
-			<div class="request_failed"><p>
-
-			<%=h @messages['23'] %>
-		
-			<% @results.clear %>
+			<% @symresult.msgs.clear %>
 			
 			</p>
 			
@@ -64,29 +50,35 @@
 		<!-- Patron information. Need to add logic to figure out which fields to print.
 		-->
 		
+		<% puts "=================  request in confirm html is: " + @request.inspect + "\n" %>
+		<% puts "================= request params in confirm html is: " + @request.params.inspect + "\n" %>
+		<% puts "================= request.patron_name in confirm html is: " + @request.patron_name + "\n" %>
+
+
+		
 		<div class="patron_info">
 			<dl>
-			<% if ! @request['patron_name'].nil? %>
-				<dt><%= @field_labels['patron_name'] %>:</dt><dd><%= @request['patron_name'] %></dd>
+			<% if ! @request.patron_name.nil? %>
+				<dt><%= @field_labels['patron_name'] %>:</dt><dd><%= @request.patron_name %></dd>
 			<% end %>		
 			
-			<% if ! @request['library_id'].nil? %>	
-				<dt><%= @field_labels['library_id'] %>:</dt><dd> <%= @request['library_id'] %></dd>
-			<% elsif ! @request['univ_id'].nil? %>	
-				<dt><%= @field_labels['univ_id'] %>:</dt><dd> <%= @request['univ_id'] %></dd>				
+			<% if ! @request.library_id.nil? %>	
+				<dt><%= @field_labels['library_id'] %>:</dt><dd> <%= @request.library_id %></dd>
+			<% elsif ! @request.univ_id.nil? %>	
+				<dt><%= @field_labels['univ_id'] %>:</dt><dd> <%= @request.univ_id %></dd>				
 			<% end %>
 			
-			<% if ! @request['pickup_lib'].nil? %>	
-				<dt><%= @field_labels['pickup_lib'] %>:</dt><dd> <%= @request['pickup_lib'] %></dd>		
+			<% if ! @request.pickup_lib.nil? %>	
+				<dt><%= @field_labels['pickup_lib'] %>:</dt><dd> <%= @request.pickup_lib %></dd>		
 			<% end %>
 			
-			<% if ! @request['hold_recall'].nil? %>
-				<dt><%= @field_labels['hold_recall'] %>:</dt><dd> <%= @request['hold_recall'] %></dd>
+			<% if ! @request.hold_recall.nil? %>
+				<dt><%= @field_labels['hold_recall'] %>:</dt><dd> <%= @request.hold_recall %></dd>
 			<% end %>
-			<% if ! @request['not_needed_after'].nil? %>
-				<dt><%= @field_labels['not_needed_after'] %>:</dt><dd> <%= @request['not_needed_after'] %></dd>		
-			<% elsif ! @request['planned_use'].nil? %>
-				<dt><%= @field_labels['planned_use'] %>:</dt><dd> <%= @request['planned_use'] %></dd>		
+			<% if ! @request.not_needed_after.nil? %>
+				<dt><%= @field_labels['not_needed_after'] %>:</dt><dd> <%= @request.not_needed_after %></dd>		
+			<% elsif ! @request.planned_use.nil? %>
+				<dt><%= @field_labels['planned_use'] %>:</dt><dd> <%= @request.planned_use %></dd>		
 
 			<% end %>
 			
@@ -97,34 +89,34 @@
 		
 		<!-- Bibliographic data -->
 		
-		  <span class="title"><%= @request['bib_info'] %></span>
+		  <span class="title"><%= @request.params[:bib_info] %></span>
 		  
 		<!-- end of bibliographic data -->
 		
 		<!-- Item information --> 
 		
 				
-		<% if @results.empty? %>
+		<% if @symresult.msgs.empty? %>
 		
 			<h2 class="fail">No items have been held.</h2>	
 			
 		<% else %>
 		
-			<% if @results.has_key?('209') %>
+			<% if @symresult.msgs.has_key?('209') %>
 			
 				<h2 class="success"><%=h @messages['209'] %></h2>
 				<ul>
-					<% items = @results['209'].split('^') %>
+					<% items = @symresult.msgs['209'].split('^') %>
 					<% items.each do |item| %>
 					<%    fields = item.split('|') %>
 					<li><%=h fields[1] %></li>
 					<% end %>			
 				</ul>
-				<% @results.delete('209') %>
+				<% @symresult.msgs.delete('209') %>
 			<% end # key 209 successful results %>			
 		
-			<% if ! @results.empty?  %>
-				<% @results.each do |key, value| %>
+			<% if ! @symresult.msgs.empty?  %>
+				<% @symresult.msgs.each do |key, value| %>
 					<h2 class="fail"><%=h @messages[key] %></h2>
 					<ul>
 					<% items = value.split('^') %>

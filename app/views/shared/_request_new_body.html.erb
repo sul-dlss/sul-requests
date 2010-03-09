@@ -3,7 +3,7 @@
 
 	
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title><%= @requestdef[:title] %></title>
+		<title><%= @requestdef_info[:title] %></title>
 
  
  <script type="text/javascript"> 
@@ -76,13 +76,13 @@ function countChecked(form) {
 
 		<!-- Parameter names need to match what's used in destination proc -->
 		
-		<h1><%= @requestdef[:title] %></h1>
+		<h1><%= @requestdef_info[:title] %></h1>
 		
-		<% if @request.items.size > 0 %>
+		<% if @sym_info.items.size > 0 %>
 	
 			<div class="opening">
 			
-			<p><%= @requestdef[:initial_text]%></p>
+			<p><%= @requestdef_info[:initial_text]%></p>
 			
 			<p><% if @msg_keys.include?('CHECKEDOUT') %>
 		
@@ -112,18 +112,20 @@ function countChecked(form) {
 			
 		<% form_for(:request, @request, :url => { :action => 'create'}, :html => { :name => 'requestform' }) do |f| %>			
 	
-		<% if @request.items.size > 0 # part 2 %>
+		<% if @sym_info.items.size > 0 # part 2 %>
 	
 			<%= f.hidden_field :req_type %>
 			<%= f.hidden_field :home_lib %>	
 			<%= f.hidden_field :current_loc %>		
 			<%= f.hidden_field :item_id %>
 			<%= f.hidden_field :due_date %>
-			<%= f.hidden_field :bib_info %>
+			<%= f.hidden_field :bib_info, :value => @sym_info.bib_info %>
 			<%= f.hidden_field :call_num %>
 			<%= f.hidden_field :ckey %>
 			<%= f.hidden_field :request_def %>
-			<%= f.hidden_field :pickupkey %>
+			<%= f.hidden_field :pickupkey %>		
+			<%= f.hidden_field :items, :value => @sym_info.items.collect {|x| x + "-!-" } %>
+			<%= f.hidden_field :cur_locs, :value => @sym_info.cur_locs %>
 
 			<!-- Visible fields for record; some may be hidden above -->
 					
@@ -136,15 +138,15 @@ function countChecked(form) {
 			<% if ! @is_authenticated %>
 			<div id="autofill">If you have a SUNet ID, <a href="<%= link_to_auth_request(@request) %>">login to auto-fill and enable more options.</a></div>
 			<% end %>
-			
+
 			<% if @fields.has_key?('patron_name') %>
 				<dt><label for="request_patron_name"><%= @fields['patron_name'] %></label></dt>
-				<dd><%= f.text_field :patron_name, :value => @request.patron_name %></dd>
+				<dd><%= f.text_field :patron_name %></dd>
 			<% end %>
 			
 			<% if @fields.has_key?('patron_email') %>
 				<dt><label for="request_patron_email"><%= @fields['patron_email'] %></label></dt>
-				<dd><%= f.text_field :patron_email, :value => @request.patron_email %></dd>
+				<dd><%= f.text_field :patron_email %></dd>
 			<% end %>		
 			
 			<!-- univ ID or library ID depending on authentication; no need to check fields array -->
@@ -273,7 +275,7 @@ function countChecked(form) {
 		
 		<% end # items > 0 - part 2 %>
 		
-		<% if @request.items.size == 0 # Add extra <p> to make spacing right %>
+		<% if @sym_info.items.size == 0 # Add extra <p> to make spacing right %>
 			<p>&nbsp;</p>
 		<% end %>
 		
@@ -282,17 +284,17 @@ function countChecked(form) {
 
 		<% if @fields.has_key?('bib_info') %>
 
-			<span class="title"><%= @request.bib_info %></span>
+			<span class="title"><%= @sym_info.bib_info %></span>
 		<% end %>
 
 		<span class="library"><%= @request.home_lib %>: </span>
 		 
-		<% if @request.items.size > 1 && @request.items.size <= 10 %>
+		<% if @sym_info.items.size > 1 && @sym_info.items.size <= 10 %>
 			<span class="action_varies">
 				<input name="allbox" id="allbox" type="checkbox" value="Check All"  onclick="if (this.checked) {CheckAll()} else {UnCheckAll()}" >
     			Select all
 			</span>
-		<% elsif @request.items.size > 10 %>
+		<% elsif @sym_info.items.size > 10 %>
 			<span class="action_varies">
 				Select up to 10 volumes or copies for this request
 			</span>	
@@ -301,17 +303,17 @@ function countChecked(form) {
 		 <div class="access_data">
     		<ol class="show_availability item_list">
 				
-				<% if @request.items.size > 0 %>		
+				<% if @sym_info.items.size > 0 %>		
 												
-					<% @request.items.each do |item| %>
+					<% @sym_info.items.each do |item| %>
 					
 						<% values = item.split('^') %>  
 					   	
 					   	<li><input type="checkbox"
-							name="request[items][]" 							
+							name="request[items_checked][]" 							
 							value="<%= values[1] %>"
 							
-							<% if @request.items.size > 1 && @request.items.size <= 10 %>
+							<% if @sym_info.items.size > 1 && @sym_info.items.size <= 10 %>
 								onclick="if (this.checked == false ) {document.requestform.allbox.checked = false;}" 
 							<% else %>
 								onclick="countChecked(this.form)" 							
@@ -320,7 +322,7 @@ function countChecked(form) {
 							id="request_items"
 							<% if ! @request.items_checked.nil? && @request.items_checked.include?( values[1]  ) %>
 								checked
-							<% elsif @request.items.size == 1 %>
+							<% elsif @sym_info.items.size == 1 %>
 								checked								
 							<% end %> >
 							
@@ -348,7 +350,7 @@ function countChecked(form) {
 		
 		</fieldset>
 		
-		<% if @request.items.size > 0 # part 3%>
+		<% if @sym_info.items.size > 0 # part 3%>
 			<div class="submit">
 				<%= submit_tag "Submit Request"  %>
 				<a href="javascript:history.go(-1)">Cancel</a>
@@ -359,7 +361,7 @@ function countChecked(form) {
 		<% end  # of form_for  %>		
 		
 		<div class="closing">
-		<p><%= @requestdef[:final_text]%></p>
+		<p><%= @requestdef_info[:final_text]%></p>
 		</div>
 		
 

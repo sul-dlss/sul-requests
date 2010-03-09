@@ -2,7 +2,7 @@ class Admin::ReqtestsController < ApplicationController
   
   before_filter :is_authenticated?
   
-  include Requestmod
+  include Requestutils
   helper_method :get_req_def, :parse_soc_url
     
   def index
