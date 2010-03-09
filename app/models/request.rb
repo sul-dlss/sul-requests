@@ -4,7 +4,7 @@ class Request < Tableless
   
   attr_reader :params, :ckey, :item_id, :items, :home_lib, :current_loc, :req_type, :request_def, 
               :redir_check, :pickupkey, :patron_name, :patron_email, :univ_id, :library_id, 
-              :pickup_lib, :not_needed_after, :due_date, :hold_recall, :call_num, :source
+              :pickup_lib, :not_needed_after, :due_date, :hold_recall, :vol_num, :call_num, :source
               
   attr_accessor :library_id, :items_checked
   
@@ -24,17 +24,14 @@ class Request < Tableless
     @req_type = get_request_type( @params )
     @request_def = get_req_def(@home_lib, @current_loc, @req_type )
     @redir_check = check_auth_redir(@params)
-    #puts "======================== redir check is: " + @redir_check.inspect + "\n"
     @pickupkey = get_pickup_key( @home_lib, @current_loc, @req_type ) 
-    #puts "================== params is: " + @params.inspect    
     @pickup_lib = @params[:pickup_lib]
     @not_needed_after = @params[:not_needed_after]
     @due_date = @params[:due_date]
     @hold_recall = @params[:hold_recall]
+    @vol_num = @params[:vol_num]
     @call_num = @params[:call_num]
     @source = @params[:source]
-    #@msg_keys = get_msg_keys(cur_locs)      
-    #puts "================= msg keys is: " + @msg_keys.inspect + "\n"
   end
   
   # Take params passed to this object and parse p_data string from Socrates into
