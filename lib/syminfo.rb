@@ -6,7 +6,7 @@ class Syminfo
       
   require 'nokogiri'
   require 'open-uri'
-  require 'Requestmod'
+  #require 'Requestmod'
   
   attr_reader :items, :bib_info, :cur_locs
   
