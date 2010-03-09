@@ -100,12 +100,12 @@ class Request < Tableless
     if ! parm_univ_id.blank?
       univ_id = parm_univ_id
     elsif ! request_env['WEBAUTH_LDAP_SUUNIVID'].blank?
-      univ_id =  request_env['WEBAUTH_LDAP_SUUNIVID']    
+      univ_id =  request_env['WEBAUTH_LDAP_SUUNIVID']
     end
     
     return univ_id
         
-  end # get_patron_email
+  end # get_univ_id
     
   
   # Method get_request_type. Take parameters and analyse them to figure out
