@@ -90,10 +90,7 @@ function countChecked(form) {
 			
 			<% end %>
 			</P>
-			
-			SUNet ID: <%= request.env['WEBAUTH_USER'] %><br>
-			Display Name <%= request.env['WEBAUTH_LDAP_DISPLAYNAME'] %>
-			
+		
 			</div>
 				
 			<% unless flash[:invalid_fields].blank?%>
