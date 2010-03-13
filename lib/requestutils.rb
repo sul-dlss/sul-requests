@@ -1,5 +1,7 @@
 module Requestutils
   
+  include Constants
+  
   # Take a Socrates URL and parse the delimited string in the p_data parameter
   # to return a set of key/value pairs 
   def parse_soc_url( url )
