@@ -57,115 +57,46 @@ module Requestutils
     
     req_def = 'UNDEFINED'
     
-    # First figure out whether we have a generic SUL library or a special library
-
-    if home_lib.upcase != 'HOOVER' && home_lib.upcase != 'LAW' && home_lib.upcase[0..2] != 'SAL'
-      home_lib = 'SUL'
-    end
+    #========= First check for requests that depend on library 
+   
+    #----- SAL
+    if home_lib == 'SAL'
+      req_def = 'PAGE-SAL'
     
-    # We also need some sets of locations that we need to test for
-    
-    # Main criterion is current_loc, with everything else depending on that
-
-    # =============== CHECKEDOUT
-    
-    holdrec_locs = ['CHECKEDOUT', 'CHKD-OUT-D', 'BINDERY',  'NEWBOOKS', 'B&FHOLD', 'ENDPROCESS', 
-                   'INTRANSIT', 'MISSING', 'MISS-INPRO', 'REPAIR' ]
-  
-    if holdrec_locs.include?(current_loc.upcase ) || current_loc.upcase =~ /.*?\-LOAN/
+    #----- SAL3 - multiple possibilities here  
+    elsif home_lib == 'SAL3'
       
-      # Req type can be either REQ-HOLD or REQ-REQ-RECALL
-      
-      # --------------- HOLD
-      if req_type.upcase == 'REQ-HOLD' || req_type.upcase == 'REQ-RECALL' 
-        
-        if home_lib.upcase == 'HOOVER'
-          
-          req_def = 'HOLDREC-HOV'
-          
-        elsif home_lib.upcase == 'LAW'
-          
-          req_def = 'HOLDREC-LAW'
-          
-        else 
-          
-          req_def = 'HOLDREC-SUL'
-          
-        end # home_lib choice
-        
-        # Note that there's no else here so SAL requests, and maybe others, will fall through.
-              
-      end 
-      
-    # ============= INPROCESS 
-  
-    elsif current_loc.upcase == 'INPROCESS' || current_loc.upcase == 'UNCAT'
-    
-      if home_lib.upcase == 'HOOVER'
-          
-          req_def = 'INP-HOV'
-          
-      elsif home_lib.upcase == 'LAW'
-          
-          req_def = 'INP-LAW'
-          
+      if current_loc == 'PAGE-MP'
+        req_def = 'PAGE-BRANNER'
       else 
-          req_def = 'INP-SUL'
-          
-      end # home_lib choice  
-        
-    elsif current_loc.upcase == 'ON-ORDER'
-      
-      if home_lib.upcase == 'HOOVER'
-          
-          req_def = 'ORD-HOV'
-          
-      elsif home_lib.upcase == 'LAW'
-          
-          req_def = 'ORD-LAW'
-          
-      else 
-          req_def = 'ORD-SUL'
-          
-      end # home_lib choice        
-
-    #=============== STACKS - this is more involved & seems to depend on req_type 
+        req_def = 'PAGE-SAL3'
+      end
     
-    elsif current_loc.upcase == 'STACKS' || current_loc =~ /.*?\-30$/ || current_loc =~ /^PAGE-/ 
+    #----- SAL-NEWARK  
+    elsif home_lib == 'SAL-NEWARK'
+      req_def = 'PAGE-SALNEWARK'
+   
+   #----- HOPKINS   
+    elsif home_lib == 'HOPKINS'
+      req_def = 'PAGE-HOPKINS'
+      
+    #----- SPEC-COLL
+    elsif home_lib == 'SPEC-COLL'
+      req_def = 'PAGE-SPECCOLL'
+      
+    #----- HV-ARCHIVE
+    elsif home_lib == 'HV-ARCHIVE'
+      req_def = 'PAGE-HVARCHIVE'
     
-      if req_type.upcase == 'REQ-HOP' 
-        
-        req_def = 'REQ-HOPKINS'
-        
-      elsif req_type.upcase == 'REQ-SAL'
-        
-        req_def = 'SAL'
-        
-      elsif req_type.upcase == 'REQ-SAL3'
+    #----- HOOVER
+    elsif home_lib == 'HOOVER'
+      req_def = 'PAGE-HOOVER'
       
-        req_def = 'SAL3'
-        
-      # Need to look into the following. Probably irrelevant if we have multiple items and fewer forms        
+    #----- Location at other libs that should get NON-PAGE form
+    elsif NON_PAGE_LOCS.include?(current_loc)  
+      req_def = 'NON-PAGE'
       
-      elsif req_type.upcase == 'SAL3-TO-BR'
-      
-        req_def = 'SAL3-TO-BR'
-        
-      elsif req_type.upcase == 'SAL3-TO-HA'
-        
-        req_def = 'SAL3-TO-HA'
- 
-      elsif req_type.upcase == 'SAL3-TO-HL'
-        
-        req_def = 'SAL3-TO-HL' 
-        
-      elsif req_type.upcase == 'SAL3-TO-SP'
-        
-        req_def = 'SAL3-TO-SP'
-        
-      end # -- req_type choices
-      
-    end # -- current_loc choices
+    end # check for library or locations 
     
     return req_def   
     
