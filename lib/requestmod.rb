@@ -183,6 +183,8 @@ module Requestmod
   # couldn't see anyway to get fields when we get @requestdef
   def get_fields_for_requestdef( request_def, items )
     
+    # puts "========== request def fields starting get_fields_for_requestdef: " + request_def.fields.inspect
+    
     fields_hash = {}
     
     request_def.fields.each do |f|
