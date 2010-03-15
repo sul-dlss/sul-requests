@@ -28,7 +28,7 @@ PAGE-SAL:
    final_text: 
    created_at: 2010-03-12 23:39:27
    updated_at: 2010-03-12 23:39:27
-   extra_text: <strong>SAL Paging Schedule</strong><p>Delivery to <em>Green Library</em></p><p>Monday-Friday: Requests submitted before 1:00 p.m. will usually be available after 4:30 p.m. of the same day. Requests submitted after 1:00 p.m. will be available on the NEXT business day. Currently there is no delivery on Saturday or Sunday.</p><p>Delivery to all <em>other participating libraries</em></p><p>Monday-Wednesday: Requests submitted before 1:00 p.m. will usually be available for pick up on the NEXT business day, after 4:30 p.m.</p><p>Thursday: Requests placed after 1:00 p.m. will be available for pick up the following Monday after 4:30 p.m.</p><p>Friday-Sunday: Requests submitted after 1:00 p.m. will be available the following Tuesday after 4:30 p.m.</p>
+   extra_text: <strong>SAL Paging Schedule</strong><p>Delivery to <em>Green Library</em></p><p>Monday-Friday: Requests submitted before 1:00 p.m. ...
    fields: ckey, call_num, date, patron_name, patron_email, univ_id, library_id, pickup_lib, hold_recall, not_needed_after, bib_info
 
 PAGE-SAL3:
@@ -45,7 +45,7 @@ PAGE-SAL3:
    final_text: 
    created_at: 2010-03-12 23:57:50
    updated_at: 2010-03-13 00:34:25
-   extra_text: <strong>SAL 3 Paging Schedule</strong><p>Delivery to <em>Green Library.</em> Requests submitted before 12:00 p.m. Monday through Friday, will usually be available after 10:00 a.m., on the NEXT business day.</p><p>Delivery to all <em>other participating libraries.</em> Requests submitted before 12:00 p.m., Monday through Friday, will usually be available for pick up after 4:00 p.m. on the NEXT business day.</p>
+   extra_text: <strong>SAL 3 Paging Schedule</strong><p>Delivery to <em>Green Library.</em> Requests submitted before 12:00 p.m. Monday through Friday, ...
    fields: ckey, call_num, date, patron_name, patron_email, univ_id, library_id, pickup_lib, hold_recall, not_needed_after, planned_use, bib_info, comments
 
 
@@ -63,7 +63,7 @@ PAGE-SALNEWARK:
    final_text: 
    created_at: 2010-03-13 00:02:57
    updated_at: 2010-03-13 00:03:12
-   extra_text: <strong>SAL-NEWARK Paging Schedule</strong><p>Delivery to <em>Green Library.</em> Monday-Friday: Requests submitted before 10:00 a.m. will usually be available after 4:30 p.m., on the NEXT business day. Currently there is no delivery on Saturday or Sunday.</p><p>Delivery to all <em>other participating libraries.</em> Monday-Friday: Requests submitted before 10:00 a.m. will usually be available for pickup TWO business days later, after 4:30 p.m.</em>
+   extra_text: <strong>SAL-NEWARK Paging Schedule</strong><p>Delivery to <em>Green Library.</em> Monday-Friday: Requests submitted before 10:00 a.m. ...
    fields: ckey, call_num, date, patron_name, patron_email, univ_id, library_id, pickup_lib, hold_recall, not_needed_after, bib_info, comments
 
 
@@ -77,7 +77,7 @@ PAGE-HOPKINS:
    authenticated: 1
    unauthenticated: 0
    title: Request Form
-   initial_text: <p>Fill out this form if you want to page an item from the Miller Library, at Stanford's Hopkins Marine Station in Pacific Grove, and have it delivered on the main campus.</p><p>When the item has arrived on campus, you will be notified via email.  Turnaround time will normally be 48 hours or less; there is no delivery on weekends.  If the material is not available, Hopkins library staff will notify you via email.</p>
+   initial_text: <p>Fill out this form if you want to page an item from the Miller Library, at Stanford's Hopkins Marine Station in Pacific Grove, ...
    final_text: 
    created_at: 2010-03-13 00:06:04
    updated_at: 2010-03-13 00:06:04
@@ -95,7 +95,7 @@ PAGE-BRANNER:
    authenticated: 1
    unauthenticated: 1
    title: Paging Maps
-   initial_text: <p>Fill out this form if you would like the map(s) below paged to Branner Earth Sciences Library.</p><p>Your request will be forwarded to a Map Librarian for verification. Once s/he places the order, it will usually be available at Branner Library after 4pm the NEXT business day. You will be notified when the item(s) arrives at the library.</p> 
+   initial_text: <p>Fill out this form if you would like the map(s) below paged to Branner Earth Sciences Library.</p><p>Your request will be forwarded to ... 
    final_text: 
    created_at: 2010-03-13 00:08:00
    updated_at: 2010-03-13 00:08:00
@@ -113,7 +113,7 @@ PAGE-SPECCOLL:
    authenticated: 1
    unauthenticated: 1
    title: Paging from Special Collections and University Archives
-   initial_text: <p><strong>Fill out this form if you would like the item below paged from Special Collections and University Archives.</strong></p><p><strong>PLEASE READ BEFORE PROCEEDING WITH YOUR REQUEST</strong></p> <p><strong>Only a total of 5 items will be paged per patron per day;</strong> this includes any combination of boxes, volumes, or other items. Materials are available for use only in the Special Collections and University Archives reading room All requests will be reviewed by staff prior to paging Patrons will be notified via email if request cannot be filled <a href=\"http://library.stanford.edu/depts/spc/\">For more information or help visit Department of Special Collections and University Archives</a></p><p>Requests submitted by 10am M-F will usually be available in the Special Collections and University Archives reading room after 11am the NEXT business day.</p> 
+   initial_text: <p><strong>Fill out this form if you would like the item below paged from Special Collections and University Archives.</strong></p>... 
    final_text: 
    created_at: 2010-03-13 00:15:40
    updated_at: 2010-03-13 00:15:40
@@ -131,7 +131,7 @@ PAGE-HVARCHIVE:
    authenticated: 1
    unauthenticated: 1
    title: Paging from Hoover Archives
-   initial_text: <p><strong>Fill out this form if you would like the item below paged from the Hoover Archives.</strong></p><p><strong>PLEASE READ BEFORE PROCEEDING WITH YOUR REQUEST</strong></p> <p><strong>The number of items paged per patron per day may be limited. Request materials in advance of visiting the Hoover Archives.</strong></p> Materials are available for use only in the Hoover Archives reading room All requests will be reviewed by staff prior to paging Patrons will be notified via email if request cannot be filled <a href=\"http://www.hoover.org/hila/\">For more information or help visit http://www.hoover.org/hila/</a><p>Requests submitted by 10am M-F will usually be available in the Hoover Archives Reading Room after 11am the NEXT business day.</p> 
+   initial_text: <p><strong>Fill out this form if you would like the item below paged from the Hoover Archives.</strong></p>...
    final_text: 
    created_at: 2010-03-13 00:22:15
    updated_at: 2010-03-13 00:22:15
@@ -149,7 +149,7 @@ PAGE-HOOVER:
    authenticated: 1
    unauthenticated: 1
    title: Paging from Hoover Library
-   initial_text: <p><strong>Fill out this form if you would like the item below paged from the Hoover Library.</strong></p><p><strong>PLEASE READ BEFORE PROCEEDING WITH YOUR REQUEST</strong></p><p><strong>Only a total of 5 titles will be paged per patron per day.</strong> Materials are generally available for use only in the Hoover Library reading room All requests will be reviewed by staff prior to paging Patrons will be notified via email if request cannot be filled <a href=\"http://www.hoover.org/hila/\">For more information or help visit http://www.hoover.org/hila/</a></p><p>Requests submitted by 10am M-F will usually be available in the Hoover Library reading room after 11am the NEXT business day.</p> 
+   initial_text: <p><strong>Fill out this form if you would like the item below paged from the Hoover Library.</strong></p>...
    final_text: 
    created_at: 2010-03-13 00:25:52
    updated_at: 2010-03-13 00:25:52
