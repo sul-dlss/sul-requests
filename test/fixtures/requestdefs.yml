@@ -28,7 +28,7 @@ PAGE-SAL:
    final_text: 
    created_at: 2010-03-12 23:39:27
    updated_at: 2010-03-12 23:39:27
-   extra_text: <strong>SAL Paging Schedule</strong><p>Delivery to <em>Green Library</em></p><p>Monday-Friday: Requests submitted before 1:00 p.m. ...
+   extra_text: <strong>SAL Paging Schedule</strong><p>Delivery to <em>Green Library</em></p> ...
    fields: ckey, call_num, date, patron_name, patron_email, univ_id, library_id, pickup_lib, hold_recall, not_needed_after, bib_info
 
 PAGE-SAL3:
