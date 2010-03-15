@@ -63,7 +63,7 @@ PAGE-SALNEWARK:
    final_text: 
    created_at: 2010-03-13 00:02:57
    updated_at: 2010-03-13 00:03:12
-   extra_text: <strong>SAL-NEWARK Paging Schedule</strong><p>Delivery to <em>Green Library.</em> Monday-Friday: Requests submitted before 10:00 a.m. ...
+   extra_text: <strong>SAL-NEWARK Paging Schedule</strong><p>Delivery to <em>Green Library.</em> Monday-Friday ...
    fields: ckey, call_num, date, patron_name, patron_email, univ_id, library_id, pickup_lib, hold_recall, not_needed_after, bib_info, comments
 
 
