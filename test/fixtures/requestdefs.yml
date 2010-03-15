@@ -1,237 +1,157 @@
-HOLDREC-HOV:
-   name: HOLDREC-HOV
-   library: HOOVER
-   current_loc: CHECKEDOUT
-   req_status: NEW-RECALL
-   req_type: REQ-HOLD
-   enabled: t
-   authenticated: f
-   unauthenticated: t
-   title: Request - Hold Charged Item
-   initial_text: Fill out this form if you wish to request a HOLD of the item below which is currently checked out to another user. A hold does not effect the current loan period; it simply puts you in line for the material after it has been returned. When the item has been returned to the library, you will receive email notification of its availability. It will be held for you for 7 days. 
+NON-PAGE:
+   name: SUL
+   current_loc: CHECKEDOUT, CHKD-OUT-D, BINDERY, XXX-LOAN, NEWBOOKS, B&FHOLD, ENDPROCESS, INTRANSIT, MISSING, MISS-INPRO, REPAIR, ON-ORDER, INPROCESS
+   req_status: 
+   req_type:
+   enabled: 1
+   authenticated: 1
+   unauthenticated: 1
+   title: Request Form
+   initial_text: Please verify your user information. Select any items you need from list below.  You will be notified when the items are available. 
    final_text: 
-   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
+   created_at: 2010-03-12 23:33:16
+   updated_at: 2010-03-12 23:33:16
+   extra_text:
+   fields: ckey, call_num, date, patron_name, patron_email, univ_id, library_id, pickup_lib, hold_recall, not_needed_after, bib_info
 
-HOLDREC-LAW:
-   name: HOLDREC-LAW
-   library: LAW
-   current_loc: CHECKEDOUT
-   req_status: NEW-RECALL
-   req_type: REQ-HOLD
-   enabled: t
-   authenticated: f
-   unauthenticated: t
-   title: Request - Hold Charged Item
-   initial_text: Fill out this form if you wish to request a HOLD of the item below which is currently checked out to another user.  A hold does not effect the current loan period; it simply puts you in line for the material after it has been returned. When the item has been returned to the library, you will receive email notification of its availability. It will be held for you for 7 days
-   final_text: 
-   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
-
-HOLDREC-SUL:
-   name: HOLDREC-SUL
-   library: SUL
-   current_loc: CHECKEDOUT
-   req_status: NEW-RECALL
-   req_type: REQ-HOLD
-   enabled: t
-   authenticated: f
-   unauthenticated: t
-   title: Hold for SUL
-   initial_text: Initial text - hold for SUL
-   final_text: Final text - hold for SUL
-   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
-
-INP-HOV:
-   name: INP-HOV
-   library: HOOVER
-   current_loc: INPROCESS
-   req_status: NEW-HVINPR
-   req_type: NOTIF-INP
-   enabled: t
-   authenticated: t
-   unauthenticated: f
-   title: Inprocess - Hoover
-   initial_text: Initial text - In-process Hoover
-   final_text: Final text - In-process Hoover
-   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
-
-INP-LAW:
-   name: INP-LAW
-   library: LAW
-   current_loc: INPROCESS
-   req_status: NEW-LWINPR
-   req_type: NOTIF-INP
-   enabled: t
-   authenticated: t
-   unauthenticated: f
-   title: Title - Law In-process
-   initial_text: Initial text - Law in-process
-   final_text: Final text - Law in-process
-   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
-
-INP-SUL:
-   name: INP-SUL
-   library: SUL
-   current_loc: INPROCESS,UNCAT
-   req_status: NEW-INPRO
-   req_type: NOTIF-INP
-   enabled: t
-   authenticated: t
-   unauthenticated: f
-   title: Title - SUL in-process
-   initial_text: Intitial text - SUL in-process
-   final_text: Final text - SUL in-process
-   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
-
-ORD-HOV:
-   name: ORD-HOV
-   library: HOOVER
-   current_loc: ON-ORDER
-   req_status: NEW-HVORD
-   req_type: NOTIF-ORD
-   enabled: t
-   authenticated: t
-   unauthenticated: f
-   title: Title - Hoover on-order
-   initial_text: Initial text - Hoover on-order
-   final_text: Final text - Hoover on-order
-   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
-
-ORD-LAW:
-   name: ORD-LAW
-   library: LAW
-   current_loc: ON-ORDER
-   req_status: NEW-LAWORD
-   req_type: NOTIF-ORD
-   enabled: t
-   authenticated: t
-   unauthenticated: f
-   title: Title - Law On-Order
-   initial_text: Initial text - Law on-order
-   final_text: Final text - Law on-order
-   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
-
-ORD-SUL:
-   name: ORD-SUL
-   library: SUL
-   current_loc: ON-ORDER
-   req_status: NEW-ONORDM
-   req_type: NOTIF-ORD
-   enabled: t
-   authenticated: t
-   unauthenticated: f
-   title: Title - SUL on-order
-   initial_text: Initial text - SUL on-order
-   final_text: Final text - SUL on-order
-   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
-
-SAL:
-   name: SAL
+PAGE-SAL:
+   name: PAGE-SAL
    library: SAL
-   current_loc: STACKS
-   req_status: NEW-SAL
-   req_type: REQ-SAL
-   enabled: t
-   authenticated: f
-   unauthenticated: t
-   title: Title - SAL
-   initial_text: Initial text - SAL
-   final_text: Final text - SAL
-   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
+   current_loc: STACKS, PAGE-xx
+   req_status: 
+   req_type: 
+   enabled: 1
+   authenticated: 1
+   unauthenticated: 1
+   title: Paging from Auxiliary Library
+   initial_text: Fill out this form if you would like the item below paged and sent to a campus library for pickup.
+   final_text: 
+   created_at: 2010-03-12 23:39:27
+   updated_at: 2010-03-12 23:39:27
+   extra_text: <strong>SAL Paging Schedule</strong><p>Delivery to <em>Green Library</em></p><p>Monday-Friday: Requests submitted before 1:00 p.m. will usually be available after 4:30 p.m. of the same day. Requests submitted after 1:00 p.m. will be available on the NEXT business day. Currently there is no delivery on Saturday or Sunday.</p><p>Delivery to all <em>other participating libraries</em></p><p>Monday-Wednesday: Requests submitted before 1:00 p.m. will usually be available for pick up on the NEXT business day, after 4:30 p.m.</p><p>Thursday: Requests placed after 1:00 p.m. will be available for pick up the following Monday after 4:30 p.m.</p><p>Friday-Sunday: Requests submitted after 1:00 p.m. will be available the following Tuesday after 4:30 p.m.</p>
+   fields: ckey, call_num, date, patron_name, patron_email, univ_id, library_id, pickup_lib, hold_recall, not_needed_after, bib_info
 
-SAL3:
-   name: SAL3
+PAGE-SAL3:
+   name: PAGE-SAL3
    library: SAL3
-   current_loc: STACKS
-   req_status: NEW-SAL3
-   req_type: REQ-SAL3
-   enabled: t
-   authenticated: f
-   unauthenticated: t
-   title: Title - SAL3
-   initial_text: Initial text - SAL 3
-   final_text: Final text - SAL 3
-   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
+   current_loc: STACKS, PAGE-xx
+   req_status: 
+   req_type: 
+   enabled: 1
+   authenticated: 1
+   unauthenticated: 1
+   title: Paging from Auxiliary Library
+   initial_text: Fill out this form if you would like the item below paged and set to a campus library for pickup.
+   final_text: 
+   created_at: 2010-03-12 23:57:50
+   updated_at: 2010-03-13 00:34:25
+   extra_text: <strong>SAL 3 Paging Schedule</strong><p>Delivery to <em>Green Library.</em> Requests submitted before 12:00 p.m. Monday through Friday, will usually be available after 10:00 a.m., on the NEXT business day.</p><p>Delivery to all <em>other participating libraries.</em> Requests submitted before 12:00 p.m., Monday through Friday, will usually be available for pick up after 4:00 p.m. on the NEXT business day.</p>
+   fields: ckey, call_num, date, patron_name, patron_email, univ_id, library_id, pickup_lib, hold_recall, not_needed_after, planned_use, bib_info, comments
 
-SAL3-TO-BR:
-   name: SAL3-TO-BR
-   library: SAL3
-   current_loc: STACKS
-   req_status: S3-NEW-PG
-   req_type: SAL-TO-BR
-   enabled: t
-   authenticated: f
-   unauthenticated: t
-   title: Title - SAL3-TO-BR
-   initial_text: Initial text - SAL3-TO-BR
-   final_text: Final text - SAL3-TO-BR
-   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
 
-SAL3-TO-HA:
-   name: SAL3-TO-HA
-   library: SAL3
-   current_loc: STACKS
-   req_status: S3-NEW-PG
-   req_type: SAL-TO-HA
-   enabled: t
-   authenticated: f
-   unauthenticated: t
-   title: Title - SAL3-TO-HA
-   initial_text: Initial text - SAL3-TO-HA
-   final_text: Final text - SAL3-TO-HA
-   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
-
-SAL3-TO-HL:
-   name: SAL3-TO-HL
-   library: SAL3
-   current_loc: STACKS
-   req_status: S3-NEW-PG
-   req_type: SAL-TO-HL
-   enabled: t
-   authenticated: f
-   unauthenticated: t
-   title: Titlle - SAL3-TO-HL
-   initial_text: Initial text - SAL3-TO-HL
-   final_text: Final text - SAL3-TO-HL
-   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
-
-SAL3-TO-SP:
-   name: SAL3-TO-SP
-   library: SAL3
-   current_loc: STACKS,MSS-30,UARCH-30
-   req_status: S3-NEW-PG
-   req_type: SAL3-TO-SP
-   enabled: t
-   authenticated: f
-   unauthenticated: t
-   title: Title - SAL3-TO-SP
-   initial_text: Initial text - SAL3-TO-SP
-   final_text: Final text - SAL3-TO-SP
-   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
-
-SALN:
-   name: SALN
+PAGE-SALNEWARK:
+   name: PAGE-SALNEWARK
    library: SALNEWARK
-   current_loc: STACKS
-   req_status: NEW-SALNWK
-   req_type: REQ-SAL
-   enabled: t
-   authenticated: f
-   unauthenticated: t
-   title: Test - SALN
-   initial_text: Initial text - SALN
-   final_text: Final text - SALN
-   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
+   current_loc: STACKS, PAGE-EA, PAGE-GR
+   req_status: 
+   req_type: 
+   enabled: 1
+   authenticated: 1
+   unauthenticated: 1
+   title: Paging from Auxiliary Library
+   initial_text: Fill out this form if you would like the item below paged and sent to a campus library for pickup.
+   final_text: 
+   created_at: 2010-03-13 00:02:57
+   updated_at: 2010-03-13 00:03:12
+   extra_text: <strong>SAL-NEWARK Paging Schedule</strong><p>Delivery to <em>Green Library.</em> Monday-Friday: Requests submitted before 10:00 a.m. will usually be available after 4:30 p.m., on the NEXT business day. Currently there is no delivery on Saturday or Sunday.</p><p>Delivery to all <em>other participating libraries.</em> Monday-Friday: Requests submitted before 10:00 a.m. will usually be available for pickup TWO business days later, after 4:30 p.m.</em>
+   fields: ckey, call_num, date, patron_name, patron_email, univ_id, library_id, pickup_lib, hold_recall, not_needed_after, bib_info, comments
 
-REQ-HOPKINS:
-   name: REQ-HOPKINS
+
+PAGE-HOPKINS:
+   name: PAGE-HOPKINS
    library: HOPKINS
    current_loc: STACKS
-   req_status: NEW-HOP
-   req_type: REQ-HOP
-   enabled: t
-   authenticated: t
-   unauthenticated: f
-   title: Request - Hopkins Item
-   initial_text: Initial text for Hopkins request
-   final_text: Final text for Hopkins request
-   fields: ckey, call_num, date, item, user_name, library_id, vol_num, not_needed
+   req_status: 
+   req_type: 
+   enabled: 1
+   authenticated: 1
+   unauthenticated: 0
+   title: Request Form
+   initial_text: <p>Fill out this form if you want to page an item from the Miller Library, at Stanford's Hopkins Marine Station in Pacific Grove, and have it delivered on the main campus.</p><p>When the item has arrived on campus, you will be notified via email.  Turnaround time will normally be 48 hours or less; there is no delivery on weekends.  If the material is not available, Hopkins library staff will notify you via email.</p>
+   final_text: 
+   created_at: 2010-03-13 00:06:04
+   updated_at: 2010-03-13 00:06:04
+   extra_text: 
+   fields: ckey, call_num, date, patron_name, patron_email, univ_id, library_id, pickup_lib, hold_recall, not_needed_after, bib_info, comments
+
+
+PAGE-BRANNER:
+   name: PAGE-BRANNER
+   library: SAL3
+   current_loc: PAGE-MP
+   req_status: 
+   req_type: 
+   enabled: 1
+   authenticated: 1
+   unauthenticated: 1
+   title: Paging Maps
+   initial_text: <p>Fill out this form if you would like the map(s) below paged to Branner Earth Sciences Library.</p><p>Your request will be forwarded to a Map Librarian for verification. Once s/he places the order, it will usually be available at Branner Library after 4pm the NEXT business day. You will be notified when the item(s) arrives at the library.</p> 
+   final_text: 
+   created_at: 2010-03-13 00:08:00
+   updated_at: 2010-03-13 00:08:00
+   extra_text: 
+   fields: ckey, call_num, date, patron_name, patron_email, univ_id, library_id, pickup_lib, hold_recall, not_needed_after, planned_use, bib_info, comments
+
+
+PAGE-SPECCOLL:
+   name: PAGE-SPECCOLL
+   library: SPECCOLL
+   current_loc: \*-30
+   req_status: 
+   req_type: 
+   enabled: 1
+   authenticated: 1
+   unauthenticated: 1
+   title: Paging from Special Collections and University Archives
+   initial_text: <p><strong>Fill out this form if you would like the item below paged from Special Collections and University Archives.</strong></p><p><strong>PLEASE READ BEFORE PROCEEDING WITH YOUR REQUEST</strong></p> <p><strong>Only a total of 5 items will be paged per patron per day;</strong> this includes any combination of boxes, volumes, or other items. Materials are available for use only in the Special Collections and University Archives reading room All requests will be reviewed by staff prior to paging Patrons will be notified via email if request cannot be filled <a href=\"http://library.stanford.edu/depts/spc/\">For more information or help visit Department of Special Collections and University Archives</a></p><p>Requests submitted by 10am M-F will usually be available in the Special Collections and University Archives reading room after 11am the NEXT business day.</p> 
+   final_text: 
+   created_at: 2010-03-13 00:15:40
+   updated_at: 2010-03-13 00:15:40
+   extra_text: 
+   fields: ckey, call_num, date, patron_name, patron_email, univ_id, library_id, pickup_lib, hold_recall, not_needed_after, planned_use, bib_info, comments
+
+
+PAGE-HVARCHIVE:
+   name: PAGE-HVARCHIVE
+   library: HV-ARCHIVE
+   current_loc: \*-30
+   req_status: 
+   req_type: 
+   enabled: 1
+   authenticated: 1
+   unauthenticated: 1
+   title: Paging from Hoover Archives
+   initial_text: <p><strong>Fill out this form if you would like the item below paged from the Hoover Archives.</strong></p><p><strong>PLEASE READ BEFORE PROCEEDING WITH YOUR REQUEST</strong></p> <p><strong>The number of items paged per patron per day may be limited. Request materials in advance of visiting the Hoover Archives.</strong></p> Materials are available for use only in the Hoover Archives reading room All requests will be reviewed by staff prior to paging Patrons will be notified via email if request cannot be filled <a href=\"http://www.hoover.org/hila/\">For more information or help visit http://www.hoover.org/hila/</a><p>Requests submitted by 10am M-F will usually be available in the Hoover Archives Reading Room after 11am the NEXT business day.</p> 
+   final_text: 
+   created_at: 2010-03-13 00:22:15
+   updated_at: 2010-03-13 00:22:15
+   extra_text: 
+   fields: ckey, call_num, date, patron_name, patron_email, univ_id, library_id, pickup_lib, hold_recall, not_needed_after, planned_use, bib_info, comments
+
+
+PAGE-HOOVER:
+   name: PAGE-HOOVER
+   library: HOOVER
+   current_loc: \*-30
+   req_status: 
+   req_type: 
+   enabled: 1
+   authenticated: 1
+   unauthenticated: 1
+   title: Paging from Hoover Library
+   initial_text: <p><strong>Fill out this form if you would like the item below paged from the Hoover Library.</strong></p><p><strong>PLEASE READ BEFORE PROCEEDING WITH YOUR REQUEST</strong></p><p><strong>Only a total of 5 titles will be paged per patron per day.</strong> Materials are generally available for use only in the Hoover Library reading room All requests will be reviewed by staff prior to paging Patrons will be notified via email if request cannot be filled <a href=\"http://www.hoover.org/hila/\">For more information or help visit http://www.hoover.org/hila/</a></p><p>Requests submitted by 10am M-F will usually be available in the Hoover Library reading room after 11am the NEXT business day.</p> 
+   final_text: 
+   created_at: 2010-03-13 00:25:52
+   updated_at: 2010-03-13 00:25:52
+   extra_text: 
+   fields: ckey, call_num, date, patron_name, patron_email, univ_id, library_id, pickup_lib, hold_recall, not_needed_after, planned_use, bib_info, comments

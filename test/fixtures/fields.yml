@@ -1,6 +1,6 @@
 ckey:
    field_name: ckey
-   field_label: Catalog Record ID
+   field_label: CKEY
    field_order: 1
 
 call_num:
@@ -13,42 +13,53 @@ date:
    field_label: Date
    field_order: 3
 
-item:
-   field_name: item
+bib_info:
+   field_name: bib_info
    field_label: Item
+   field_order: 12
+
+patron_name:
+   field_name: patron_name
+   field_label: Your Name
    field_order: 4
 
-user_name:
-   field_name: user_name
-   field_label: Your Name
-   field_order: 5
-
-user_email:
-   field_name: user_email
+patron_email:
+   field_name: patron_email
    field_label: E-mail
-   field_order: 6
+   field_order: 5
 
 univ_id:
    field_name: univ_id
    field_label: University ID
-   field_order: 7
+   field_order: 6
 
 library_id:
    field_name: library_id
    field_label: Library ID
-   field_order: 8
+   field_order: 7
 
-vol_num:
-   field_name: vol_num
-   field_label: Vol./No. or Series Box No.
-   field_order: 9
-
-not_needed:
-   field_name: not_needed
+not_needed_after:
+   field_name: not_needed_after
    field_label: Not Needed After
    field_order: 10
 
 comments:
    field_name: comments
    field_label: Comments
+   field_order: 13
+
+planned_use:
+   field_name: planned_use
+   field_label: Planned Date of Use
    field_order: 11
+
+pickup_lib:
+   field_name: pickup_lib
+   field_label: Pickup Library
+   field_order: 8
+
+hold_recall:
+   field_name: hold_recall
+   field_label: Unavailable Items
+   field_order: 9
+
