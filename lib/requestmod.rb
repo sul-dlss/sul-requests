@@ -11,7 +11,7 @@ module Requestmod
   # already have various pieces of information before we generate it by calling other methods. This 
   # includes req_type, bib_info, and others. 
   def new
-    
+        
     #===== Instantiate request from params passed in + request.env   
     @request = Request.new(params, request.env)
     
@@ -182,8 +182,6 @@ module Requestmod
   # of fields for that requestdef. Again this seems rather complicated but 
   # couldn't see anyway to get fields when we get @requestdef
   def get_fields_for_requestdef( request_def, items )
-    
-    # puts "at start of get_fields for requestdef"
     
     fields_hash = {}
     
