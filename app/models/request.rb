@@ -85,7 +85,7 @@ class Request < Tableless
     if ! parm_email.blank?
       patron_email = parm_email
     elsif ! request_env['WEBAUTH_LDAP_MAIL'].blank?
-      patron_name =  request_env['WEBAUTH_LDAP_MAIL']    
+      patron_email =  request_env['WEBAUTH_LDAP_MAIL']   
     end
     
     return patron_email
