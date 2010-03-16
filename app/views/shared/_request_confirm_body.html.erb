@@ -50,12 +50,6 @@
 		<!-- Patron information. Need to add logic to figure out which fields to print.
 		-->
 		
-		<% puts "=================  request in confirm html is: " + @request.inspect + "\n" %>
-		<% puts "================= request params in confirm html is: " + @request.params.inspect + "\n" %>
-		<% puts "================= request.patron_name in confirm html is: " + @request.patron_name + "\n" %>
-
-
-		
 		<div class="patron_info">
 			<dl>
 			<% if ! @request.patron_name.nil? %>

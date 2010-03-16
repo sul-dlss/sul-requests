@@ -172,7 +172,7 @@ function countChecked(form) {
 				If you select those items, they will be:
 				<ul>
 					<li>
-					<label><input name="request[hold_recall" type="radio" value="HOLD" 
+					<label><input name="request[hold_recall]" type="radio" value="HOLD" 
 					<% if ! @is_authenticated || ( @is_authenticated && @request.hold_recall.eql?('HOLD') ) %>
 					checked="checked"
 					<% end %>
@@ -184,7 +184,7 @@ function countChecked(form) {
 					class="disabled"
 					<% end %>
 					>						
-					<input name="request[hold_recall" id="request_type" type="radio" 
+					<input name="request[hold_recall]" id="request_type" type="radio" 
 					<% if ! @is_authenticated %>
 					disabled="disabled" 
 					<% end %>
