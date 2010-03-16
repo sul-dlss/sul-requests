@@ -14,7 +14,7 @@ function CheckAll()
 	for (var i=0;i<document.requestform.elements.length;i++)
 	{
 		var e = document.requestform.elements[i];
-		if (e.name != 'allbox')
+		if (e.name != 'allbox' && e.name != 'request[hold_recall]')
 			e.checked = document.requestform.allbox.checked;
     }
 }
@@ -23,7 +23,7 @@ function UnCheckAll()
         for (var i=0;i<document.requestform.elements.length;i++)
         {
                 var e = document.requestform.elements[i];
-                if (e.name != 'allbox')
+                if (e.name != 'allbox' && e.name != 'request[hold_recall]')
                         e.checked = false;
     }
 }
