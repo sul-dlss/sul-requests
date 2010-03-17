@@ -55,7 +55,7 @@ module Requestutils
 
   # Method get_req_def. Determine request definition from home_lib, current_loc and req_type
   # Make UNDEFINED the default if nothing else turns up.
-  def get_req_def( home_lib, current_loc, req_type )
+  def get_req_def( home_lib, current_loc )
     
     req_def = 'UNDEFINED'
     

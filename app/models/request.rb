@@ -2,7 +2,7 @@ class Request < Tableless
   
   include Requestutils
   
-  attr_reader :params, :ckey, :item_id, :items, :home_lib, :current_loc, :req_type, :request_def, 
+  attr_reader :params, :ckey, :item_id, :items, :home_lib, :current_loc, :home_loc, :req_type, :request_def, 
               :redir_check, :pickupkey, :patron_name, :patron_email, :univ_id, :library_id, 
               :pickup_lib, :not_needed_after, :due_date, :hold_recall, :vol_num, :call_num, 
               :source, :comments
@@ -22,10 +22,11 @@ class Request < Tableless
     @items_checked = @params[:items_checked]
     @home_lib = @params[:home_lib]
     @current_loc = @params[:current_loc]
-    @req_type = get_request_type( @params )
-    @request_def = get_req_def(@home_lib, @current_loc, @req_type )
+    @home_loc = @params[:home_loc]
+    @req_type = @params[:req_type]
+    @request_def = get_req_def(@home_lib, @current_loc )
     @redir_check = check_auth_redir(@params)
-    @pickupkey = get_pickup_key( @home_lib, @current_loc, @req_type ) 
+    @pickupkey = get_pickup_key( @home_lib, @current_loc, @home_loc, @req_type ) 
     @pickup_lib = @params[:pickup_lib]
     @not_needed_after = @params[:not_needed_after]
     @due_date = @params[:due_date]
@@ -110,115 +111,6 @@ class Request < Tableless
   end # get_univ_id
     
   
-  # Method get_request_type. Take parameters and analyse them to figure out
-  # a request type
-  def get_request_type(params)
-        
-    req_type = ''
-    
-    # puts "======================== params in get_request_type is: " + params.inspect + "\n"
-    
-    if params[:req_type] == nil
-
-        if params[:current_loc] == 'INPROCESS' && ( params[:home_lib] != 'HOOVER' || 
-          params[:home_lib] != 'LAW' ) 
-        
-            req_type = 'REQ-INPRO'
-
-        elsif params[:current_loc] == 'CHECKEDOUT' && params[:home_lib] != 'SAL' # covered below
-        
-            req_type = 'REQ-RECALL'
-
-        elsif params[:current_loc] == 'ON-ORDER' && ( params[:home_lib] != 'HOOVER' || 
-          params[:home_lib] != 'LAW' ) 
-      
-            # May need to exclude some things here, but how do we get library???
-            req_type = 'REQ-ONORDM'
-                                
-        elsif params[:home_lib] == 'HOOVER'
-        
-            if params[:current_loc] == 'INPROCESS'
-            
-                req_type = 'REQ-HVINPR'
-
-            elsif params[:current_loc] == 'ON-ORDER'
-            
-                req_type = 'REQ-HVORD'
-
-            end
-            
-        elsif params[:home_lib] == 'LAW'
-        
-            if params[:current_loc] == 'INPROCESS'
-            
-                req_type = 'REQ-LWINPR'
-
-            elsif params[:current_loc] == 'ON-ORDER'
-            
-                req_type = 'REQ-LAWORD'
-
-            end
-                           
-        elsif params[:home_lib] == 'HOPKINS' && params[:current_loc] == 'STACKS'
-        
-            req_type = 'REQ-HOP'
-
-        elsif params[:home_lib] == 'SAL'
-        
-            sal_locs_to_test = [ 'STACKS', 'SAL-SERG', 'FED-DOCS', 'SAL-MUSIC' ]
-
-            if sal_locs_to_test.include?( params[:current_loc] ) || 
-              params[:current_loc].include?('PAGE-')
-            
-                req_type = 'REQ-SAL'
-
-            elsif params[:current_loc] == 'CHECKEDOUT'
-            
-                req_type = 'RECALL-SL'
-
-            elsif params[:current_loc] == 'UNCAT'
-            
-                req_type = 'REQ-INPRO'
-
-            end
-
-        elsif params[:home_lib] == 'SAL-NEWARK'
-        
-            if params[:current_loc] == 'CHECKEDOUT'
-            
-                req_type = 'RECALL-SN'
-
-            else
-
-                req_type = 'REQ-SALNWK'
-
-            end
-                     
-        # Changed this one, which originally made everything "REQ-RECALL", which really 
-        # makes no sense             
-        elsif params[:home_lib] == 'SAL3' # Do we need more options here??
-                  
-          req_type = 'REQ-SAL3' 
-
-        # Do we need a final else here in case anything slips through?
-             
-        end 
-        
-    else
-
-        req_type = params[:req_type]            
-
-    end # check whether params[:req_type] is nil
-    
-    # puts "==================== request type at end of get_req_type is: " + req_type + "\n"
-   
-    return req_type
-    
-  end # get_request_type  
-
-  
-  
-
   # Take params and determine whether or not a redirect to the auth path 
   # is needed. Logic here is a bit complicated.
   def check_auth_redir(params)
@@ -252,7 +144,7 @@ class Request < Tableless
   
   # Method get_pickup_key. Determine the pickup_key, which indicates the pickup libraries to display
   # from the home_lib, current_loc, and req_type
-  def get_pickup_key( home_lib, current_loc, req_type )
+  def get_pickup_key( home_lib, current_loc, home_loc, req_type )
     
     pickupkey = ''
     
@@ -262,7 +154,10 @@ class Request < Tableless
       pickupkey = home_lib
     elsif current_loc[0..4] == 'PAGE-'
       pickupkey = current_loc[5..current_loc.length]
-    elsif req_type[0..7] == 'SAL3-TO-'
+    # TODO: SAL3-TO- req_types should always be passed in as parms, but what about SW??  
+    elsif ! home_loc.blank? && home_loc =~ /^(.*)\-30$/
+      pickupkey = $1  
+    elsif ! req_type.blank? && req_type[0..7] == 'SAL3-TO-'
       pickupkey = req_type[8..req_type.length]      
     end
     
