@@ -223,7 +223,7 @@ module Requestmod
   # an array of keys for any that should be displayed 
   def get_msg_keys( cur_locs )
     
-    puts "========= cur_locs in get_msg_keys: " + cur_locs.inspect + "\n"
+    # puts "========= cur_locs in get_msg_keys: " + cur_locs.inspect + "\n"
     
     msg_keys = []   
     ck = 'CHECKEDOUT'

@@ -3,7 +3,7 @@ class Admin::MessagesController < ApplicationController
   before_filter :is_authenticated?
   
   def index
-    @messages = Message.find(:all,  :order => 'msg_number')
+    @messages = Message.find(:all,  :order => 'msg_number asc')
   end
   
   def show
