@@ -163,9 +163,10 @@ function countChecked(form) {
 			<dt><label for="request_pickup_lib">Will pick up at</label></dt>
 				<dd><%= select_tag 'request[pickup_lib]', options_for_select( @pickup_libs_hash, :selected => @request.pickup_lib ) %></dd>
 		
-			<!-- Hold/Recall - this will be done somewhat differently -->	
+			<!-- Hold/Recall - display only if we have "checked out" items -->	
 			
-			<% if @fields.has_key?('hold_recall') %>
+			<% if @msg_keys.include?('CHECKEDOUT') %>
+			
 				<dt><label for="request_hold_recall">Unavailable items</label></dt>
 				
 				<dd class="unavail_items">Some items below are currently checked out to other patrons.

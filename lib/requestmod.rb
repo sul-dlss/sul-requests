@@ -223,6 +223,8 @@ module Requestmod
   # an array of keys for any that should be displayed 
   def get_msg_keys( cur_locs )
     
+    puts "========= cur_locs in get_msg_keys: " + cur_locs.inspect + "\n"
+    
     msg_keys = []   
     ck = 'CHECKEDOUT'
     checked_out = ['CHECKEDOUT', 'B&FHOLD', 'ENDPROCESS', 'INTRANSIT', 
@@ -230,10 +232,10 @@ module Requestmod
     
     # See if we need CHECKEDOUT key
     
-    if ( cur_locs && checked_out ).any?
+    if ( cur_locs & checked_out ).any?
       msg_keys.push(ck)
     end 
-    
+       
     if (cur_locs.to_s =~ /-LOAN/)
       msg_keys.push(ck) unless msg_keys.include?(ck)
     end
