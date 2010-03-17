@@ -470,13 +470,14 @@ class Syminfo
   
   # Method get_request_type. Take parameters and analyse them to figure out
   # a request type
+  # TODO: Need to rexamine logic for get_request_type completely
   def get_request_type(params)
         
     req_type = ''
     
     # puts "======================== params in get_request_type is: " + params.inspect + "\n"
     
-    # We need to provide a request type only if we don't already have one in the parameters
+    # We need to provide a request type only if we don't already have one in the parameters - No, probably not true
     
     if params[:req_type] == nil
 
