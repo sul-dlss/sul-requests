@@ -111,7 +111,9 @@ class Symresult
 
     # Single item response won't include '^' but should include > 1 '|'. Not sure this
     # will be enough to distinguish proper response from system problems
-    if response.include?('^') || response.index(/.*?\|.*?\|.*$/) # at least two vertical bars
+    #if response.include?('^') || response.index(/.*?\|.*?\|.*$/) # at least two vertical bars
+    if response.include?('RESPONSE') && (response.include?('^') ||
+                                       response.index(/.*?\|.*?\|.*$/) ) # at least two vertical bars  
       
       # 36105129254244|DS793 .H6 Z477 2006 V.57|722^36105129254251|DS793 .H6 Z477 2006 V.56|209 
       
@@ -124,8 +126,8 @@ class Symresult
         fields = item.split('|') unless item.nil?
         
         # Assign to vars just to make things easier to read
-        key = fields[2]
-        value = fields[0] + '|' + fields[1]
+        key = fields[3]
+        value = fields[1] + '|' + fields[2]
         if ! msgs.has_key?(key)
           msgs[key] = value
         else
