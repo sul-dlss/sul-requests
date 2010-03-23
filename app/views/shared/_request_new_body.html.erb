@@ -124,7 +124,7 @@ function countChecked(form) {
 			<%= f.hidden_field :request_def %>
 			<%= f.hidden_field :pickupkey %>		
 			<%= f.hidden_field :items, :value => @sym_info.items.collect {|x| x + "-!-" } %>
-			<%= f.hidden_field :cur_locs, :value => @sym_info.cur_locs %>
+			<%= f.hidden_field :cur_locs, :value => @sym_info.cur_locs.collect {|x| x + "-!-" } %>
 
 			<!-- Visible fields for record; some may be hidden above -->
 					

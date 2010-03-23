@@ -27,7 +27,7 @@ class Syminfo
     else  
       @bib_info = params[:bib_info]
       @items = get_items_from_params(params[:items])
-      @cur_locs = params[:cur_locs]
+      @cur_locs = get_cur_locs_from_params(params[:cur_locs])
     end  
     
   end
@@ -43,6 +43,15 @@ class Syminfo
     return items_array
 
   end # get_items from_params_array
+  
+  # Method to take a string of current_locs delimited by "-!-" and return and array
+  def get_cur_locs_from_params(cur_locs_string)
+    
+    cur_locs_array = cur_locs_string.split(/-!-/)
+    
+    return cur_locs_array
+    
+  end
   
   
   # Method to add items to a hash of hashes. Takes hash as input and returns same hash
