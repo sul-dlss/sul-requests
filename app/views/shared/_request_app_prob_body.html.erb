@@ -19,11 +19,25 @@
 		your message:
 		</div>
 		
-		<% @params.each_pair do |name, value| %>
-			<% if name != 'controller'%>
-				<%= name %>: <%= value%><br>	
+		<% if ! @params.nil? %>
+			<% @params.each_pair do |name, value| %>
+				<% if name != 'controller'%>
+					<%= name %>: <%= value%><br>	
+				<% end %>
 			<% end %>
 		<% end %>
+		
+		<% unless flash[:system_problem].blank?%>
+				
+					<div id="notification">
+					<ul>
+					<% flash[:system_problem].each do |msg| %>  
+					<li><%= msg %></li>
+					<% end %>
+					</ul>
+					</div>
+				
+			<% end %>
 
 		 
 		<!-- End of message section -->
