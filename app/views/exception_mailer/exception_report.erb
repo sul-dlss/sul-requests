@@ -1,0 +1,27 @@
+
+	Symphony Requests Exception Report
+
+	Time: <%= Time.now %>
+	Message: <%= @exception.message %>
+	Location: <%= @env['REQUEST_URI'] %>
+	Action: <%= @params.delete('action') %></td></tr>
+	Controller: <%= @params.delete('controller') %></td></tr>
+	Query: <%= @env['QUERY_STRING'] %></td></tr>
+	Method: <%= @env['REQUEST_METHOD'] %></td></tr>
+	SSL: <%= @env['SERVER_PORT'].to_i == 443 ? "true" : "false" %>
+	Agent: <%= @env['HTTP_USER_AGENT'] %>
+
+	Backtrace
+	<%= @trace.to_a.join("</p>\n<p>") %>
+
+	Params
+	<% @params.each do |key, val| -%>
+	* <%= key %>: <%= val.to_yaml %>
+	<% end -%>
+
+	Environment
+	<% @env.each do |key, val| -%>
+	* <%= key %>: <%= val %>
+	<% end -%>
+
+

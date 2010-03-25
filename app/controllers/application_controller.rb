@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
   
   #TODO: Set up rescue_from for various exceptions
-  #rescue_from Exception, :with => :handle_exception
+  rescue_from Exception, :with => :handle_exception
   # See http://m.onkey.org/2008/7/20/rescue-from-dispatching for info about rescue_from
   #rescue_from ActionController::RoutingError, :with => :route_not_found
   
@@ -39,14 +39,31 @@ class ApplicationController < ActionController::Base
   #end
   
   #TODO: Implement method to handle Exception
-  #def handle_exception(exception)
-  #  flash[:system_problem] = 'General application problem ' + exception
-  #  #Following gives a lot of useless info
-  #  logger.info exception.backtrace.join('\n')
-  #  render :template => 'requests/app_problem', :status => :not_found
-  #end
+  # Note that the exception statement here may give too much info for users
+  # so just provide a general message and let the email/log give details
+  def handle_exception(exception)
+    flash[:system_problem] = 'There was an application problem that makes it impossible to process 
+                              your request. We have sent a report about this problem.'
+    #ExceptionMailer.exception_report('message')
+    ExceptionMailer.deliver_exception_report(exception,
+          clean_backtrace(exception),
+          session.instance_variable_get("@data"),
+          params,
+          request.env)
+    render :template => 'requests/app_problem', :status => :not_found
+  end
 
-     
+  private
+     def log_error(exception)
+        super
+        ExceptionMailer.deliver_exception_report(exception,
+          clean_backtrace(exception),
+          session.instance_variable_get("@data"),
+          params,
+          request.env
+        )
+     end
+  
 
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
