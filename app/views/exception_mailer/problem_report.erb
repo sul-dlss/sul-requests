@@ -1,0 +1,15 @@
+
+	Symphony Requests Problem Report
+
+	Time: <%= Time.now %>
+	Action: <%= @params.delete('action') %></td></tr>
+	Controller: <%= @params.delete('controller') %></td></tr>
+
+
+	Symphony Response
+	<%= @response %>
+	
+	Params
+	<% @params.each do |key, val| -%>
+	* <%= key %>: <%= val.to_yaml %>
+	<% end -%>

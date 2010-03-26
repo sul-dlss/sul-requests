@@ -41,7 +41,7 @@ class Symresult
       }
          
       # Get results hash from delimited string returned from Symphony
-      msgs = get_msgs( res.body ) 
+      msgs = get_msgs( params[:request], res.body ) 
       
       return msgs, parm_list, res.body
     
@@ -102,7 +102,7 @@ class Symresult
   # the requests, split the returned string into various pieces, and return a msgs
   # hash with the msg number as key and a delimited string as value, containing 
   # item ID and call number. Note that we group items under each msg number key 
-  def get_msgs( response )
+  def get_msgs( params, response )
     
     # Remove any trailing CR and leading and trailing spaces
     response.chomp!.strip!
@@ -140,7 +140,11 @@ class Symresult
     
     else
       
+       # Indicates unexpected problem, so mail a report 
+      
        msgs['000'] = response 
+
+       ExceptionMailer.deliver_problem_report(params, response )
        
     end      
     

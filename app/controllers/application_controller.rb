@@ -53,16 +53,6 @@ class ApplicationController < ActionController::Base
     render :template => 'requests/app_problem', :status => :not_found
   end
 
-  private
-     def log_error(exception)
-        super
-        ExceptionMailer.deliver_exception_report(exception,
-          clean_backtrace(exception),
-          session.instance_variable_get("@data"),
-          params,
-          request.env
-        )
-     end
   
 
   # Scrub sensitive parameters from your log
