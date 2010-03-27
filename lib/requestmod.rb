@@ -17,10 +17,18 @@ module Requestmod
     
     #===== Get the params back from the object, since they may have changed
     @params = @request.params
+    
+    #====== Add msgs because we need some for various screens
+    @messages = get_msg_hash(Message.find(:all))    
         
-    #===== Check whether we have a request definition & redirect if we do not 
+    #===== Check whether we have req_def and req_type & redirect if we do not 
         
-    if @request.request_def == 'UNDEFINED'
+    if @request.request_def == 'UNDEFINED' || @request.req_type.blank?
+      
+      ExceptionMailer.deliver_problem_report(@request.params, 
+                                   'request_def undefined or req_type missing')
+      flash[:system_problem] = @messages['000']
+                                   
       
       render :template => 'requests/app_problem'
       
@@ -42,8 +50,7 @@ module Requestmod
         params.delete(:redir_done)
       end
       
-      #====== Add msgs because we need some for request screen
-      @messages = get_msg_hash(Message.find(:all))
+
       
       #======= Get Symphony bib, item, and cur locs info
       @sym_info = Syminfo.new( @request.params, @request.home_lib )

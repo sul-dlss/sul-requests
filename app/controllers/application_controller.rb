@@ -42,9 +42,9 @@ class ApplicationController < ActionController::Base
   # Note that the exception statement here may give too much info for users
   # so just provide a general message and let the email/log give details
   def handle_exception(exception)
+    #TODO: Find a way to make the msg here reference msg 000. Just do a lookup??
     flash[:system_problem] = 'There was an application problem that makes it impossible to process 
                               your request. We have sent a report about this problem.'
-    #ExceptionMailer.exception_report('message')
     ExceptionMailer.deliver_exception_report(exception,
           clean_backtrace(exception),
           session.instance_variable_get("@data"),

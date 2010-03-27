@@ -22,7 +22,7 @@ class ExceptionMailer < ActionMailer::Base
   def problem_report(params, response, sent_on = Time.now)
       @recipients = MAILTO
       @from = MAILFROM
-      @subject = "**** Symphony Requests Application Problem Report}"
+      @subject = "**** Symphony Requests Application Problem Report"
       @sent_on = sent_on
       @body = {
         :params => params,

@@ -6,20 +6,15 @@ class Syminfo
       
   require 'nokogiri'
   require 'open-uri'
-  #require 'Requestutils' # note can't use these require statements here
-  #require 'Requestmod'
+
+  include Requestutils
   
   attr_reader :items, :bib_info, :cur_locs
-  
-  # Constants for this module - note that -dev and -test both have unpredictable 
-  # availability at the moment and this application is unusable if the server 
-  # selected here is down.
-  Sw_lookup_pre = 'http://searchworks-test.stanford.edu/view/'
-  #Sw_lookup_pre = 'http://searchworks-dev.stanford.edu:3000/view/'
-  Sw_lookup_suf = '.request'
- 
+   
   # Method to take parameters and return bib_info string, items array, and 
-  # cur_locs array to include on the request form. 
+  # cur_locs array to include on the request form. We get these either by doing 
+  # a SearchWorks lookup or by parsing the data we already if we are just
+  # redisplaying the input screen, e.g., because of failed validations
   def initialize(params, home_lib )
     
     if params[:bib_info].nil? && params[:items].nil? && params[:cur_locs].nil?   
@@ -44,7 +39,7 @@ class Syminfo
 
   end # get_items from_params_array
   
-  # Method to take a string of current_locs delimited by "-!-" and return and array
+  # Method to take a string of current_locs delimited by "-!-" and return an array
   def get_cur_locs_from_params(cur_locs_string)
     
     cur_locs_array = cur_locs_string.split(/-!-/)
@@ -52,7 +47,6 @@ class Syminfo
     return cur_locs_array
     
   end
-  
   
   # Method to add items to a hash of hashes. Takes hash as input and returns same hash
   # with new hash added. May need to add due date here
@@ -149,7 +143,7 @@ class Syminfo
   # Output: bib_info string and sorted array of item entries to use in view
   def get_sw_info(params, ckey, home_lib )
     
-    url = Sw_lookup_pre + ckey + Sw_lookup_suf
+    url = SW_LOOKUP_PRE + ckey + SW_LOOKUP_SUF
   
     # Method scope vars to hold data we want
   
@@ -248,120 +242,4 @@ class Syminfo
   
   end # get_sw_info
 
-  # Method get_request_type. Take parameters and analyse them to figure out
-  # a request type
-  def get_request_type(params)
-        
-    req_type = ''
-    
-    # puts "======================== params in get_request_type is: " + params.inspect + "\n"
-    
-    if params[:req_type] == nil
-
-        if params[:current_loc] == 'INPROCESS' && ( params[:home_lib] != 'HOOVER' || 
-          params[:home_lib] != 'LAW' ) 
-        
-            req_type = 'REQ-INPRO'
-
-        elsif params[:current_loc] == 'CHECKEDOUT' && params[:home_lib] != 'SAL' # covered below
-        
-            req_type = 'REQ-RECALL'
-
-        elsif params[:current_loc] == 'ON-ORDER' && ( params[:home_lib] != 'HOOVER' || 
-          params[:home_lib] != 'LAW' ) 
-      
-            # May need to exclude some things here, but how do we get library???
-            req_type = 'REQ-ONORDM'
-                                
-        elsif params[:home_lib] == 'HOOVER'
-        
-            if params[:current_loc] == 'INPROCESS'
-            
-                req_type = 'REQ-HVINPR'
-
-            elsif params[:current_loc] == 'ON-ORDER'
-            
-                req_type = 'REQ-HVORD'
-
-            end
-            
-        elsif params[:home_lib] == 'LAW'
-        
-            if params[:current_loc] == 'INPROCESS'
-            
-                req_type = 'REQ-LWINPR'
-
-            elsif params[:current_loc] == 'ON-ORDER'
-            
-                req_type = 'REQ-LAWORD'
-
-            end
-                           
-        elsif params[:home_lib] == 'HOPKINS' && params[:current_loc] == 'STACKS'
-        
-            req_type = 'REQ-HOP'
-
-        elsif params[:home_lib] == 'SAL'
-        
-            sal_locs_to_test = [ 'STACKS', 'SAL-SERG', 'FED-DOCS', 'SAL-MUSIC' ]
-
-            if sal_locs_to_test.include?( params[:current_loc] ) || 
-              params[:current_loc].include?('PAGE-')
-            
-                req_type = 'REQ-SAL'
-
-            elsif params[:current_loc] == 'CHECKEDOUT'
-            
-                req_type = 'RECALL-SL'
-
-            elsif params[:current_loc] == 'UNCAT'
-            
-                req_type = 'REQ-INPRO'
-
-            end
-
-        elsif params[:home_lib] == 'SAL-NEWARK'
-        
-            if params[:current_loc] == 'CHECKEDOUT'
-            
-                req_type = 'RECALL-SN'
-
-            else
-
-                req_type = 'REQ-SALNWK'
-
-            end
-                     
-        # Changed this one, which originally made everything "REQ-RECALL", which really 
-        # makes no sense             
-        elsif params[:home_lib] == 'SAL3' # Do we need more options here??
-                  
-          req_type = 'REQ-SAL3' 
-
-        # Do we need a final else here in case anything slips through?
-             
-        end 
-        
-    else
-
-        req_type = params[:req_type]            
-
-    end # check whether params[:req_type] is nil
-    
-    # puts "==================== request type at end of get_req_type is: " + req_type + "\n"
-   
-    return req_type
-    
-  end # get_request_type  
-
-  
-  
-  # Make public so we can call it from reqtest controller
-
-  # get_req_def now in Requestutils
-
-   
-
-  
-  
 end

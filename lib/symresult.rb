@@ -1,5 +1,7 @@
 class Symresult
   
+  include Requestutils
+  
   # Take parameters from request form, call program running on Symphony machine
   # that makes requests, parse returned response, and set up msgs for confirm page
   # along with raw result to use for debugging
@@ -8,9 +10,7 @@ class Symresult
  
   # Take parameters submitted from a request form and set the msgs hash from the
   # response returned by Symphony, along with the original parameter list, and
-  # the raw response string. The latter two are used for debugging and should
-  # be written to a log at some point
-  # TODO: Write parm list and raw result string to a log
+  # the raw response string. 
   def initialize(params)
     
     @msgs, @parm_list, @result = get_results(params)
@@ -21,23 +21,19 @@ class Symresult
   
   # Take params submitted by request form, put them into a string that can be sent
   # to the program running on the Symphony server that makes the request, get back
-  # the reponse, call other functions that parse the response, and return a msg hash
+  # the response, call other functions that parse the response, and return a msg hash
   # along with the original raw response, which we need temporarily for debugging
   def get_results(params)
     
-      # Set up application server and other vars (move to constants?)
-      symphony_oas = 'http://zaph.stanford.edu:9081'
-      path_info = '/pls/sirwebdad/func_request_webservice.make_request?'
       # First we get the items, then the rest of params without items
       items_checked = params[:request][:items_checked]
       parm_list = URI.escape( get_symphony_params( params[:request], '=', '&' ) )
       parm_list = add_items( parm_list, items_checked)
-         
-      # puts "=============== parm list for PL/SQL is: " + parm_list + "\n"   
-      
-      url = URI.parse( symphony_oas + path_info + parm_list )
+ 
+      # Call program on Symphony server and get result 
+      url = URI.parse( SYMPHONY_OAS + SYMPHONY_PATH_INFO + parm_list )
       res = Net::HTTP.start(url.host, url.port) {|http|
-        http.get( path_info + parm_list )
+        http.get( SYMPHONY_PATH_INFO + parm_list )
       }
          
       # Get results hash from delimited string returned from Symphony
@@ -109,11 +105,8 @@ class Symresult
     
     msgs = {}
 
-    # Single item response won't include '^' but should include > 1 '|'. Not sure this
-    # will be enough to distinguish proper response from system problems
-    #if response.include?('^') || response.index(/.*?\|.*?\|.*$/) # at least two vertical bars
-    if response.include?('RESPONSE') && (response.include?('^') ||
-                                       response.index(/.*?\|.*?\|.*$/) ) # at least two vertical bars  
+    # Valid response should begin with string "RESPONSE"
+    if response =~ /^RESPONSE/ 
       
       # 36105129254244|DS793 .H6 Z477 2006 V.57|722^36105129254251|DS793 .H6 Z477 2006 V.56|209 
       
@@ -136,7 +129,7 @@ class Symresult
         }
     elsif response.eql?('2')
     
-      msgs['2'] = response # This is invalid user reponse
+      msgs['2'] = response # This is invalid user response
     
     else
       
@@ -147,11 +140,6 @@ class Symresult
        ExceptionMailer.deliver_problem_report(params, response )
        
     end      
-    
-    # puts "message hash in get_results is: "
-    # msgs.each do |k,v|
-    #  puts k.to_s + " => " + v.to_s
-    # end
           
     return msgs    
     
