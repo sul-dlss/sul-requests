@@ -101,8 +101,8 @@ module Requestutils
     elsif home_lib == 'HOOVER'
       req_def = 'PAGE-HOOVER'
       
-    #----- Location at other libs that should get NON-PAGE form
-    elsif NON_PAGE_LOCS.include?(current_loc)  
+    #----- Locations at other libs that should get NON-PAGE form
+    elsif NON_PAGE_LOCS.include?(current_loc)  || current_loc =~ /-LOAN/.
       req_def = 'NON-PAGE'
       
     end # check for library or locations 
@@ -111,114 +111,115 @@ module Requestutils
     
   end # get_req_def    
   
-  # Method get_request_type. Take parameters and analyse them to figure out
-  # a request type
-  # TODO: Need to rexamine logic for get_request_type completely
+  # Method get_request_type. Take parameters and analyze them to figure out
+  # a request type. Note that we need to call this method for every item and the
+  # req_type differ for each item and may not match the req_type parm passed in
   def get_request_type(params)
-        
-    req_type = ''
-    
-    # puts "======================== params in get_request_type is: " + params.inspect + "\n"
-    
-    # We need to provide a request type only if we don't already have one in the parameters - No, probably not true
-    
-    if params[:req_type] == nil
 
-        if params[:current_loc] == 'INPROCESS' && ( params[:home_lib] != 'HOOVER' || 
-          params[:home_lib] != 'LAW' ) 
-        
+    req_type = ''
+
+    # puts "======================== params in get_request_type is: " + params.inspect + "\n"
+
+    # First cover items where the current location is the determining factor
+
+    if params[:current_loc] == 'INPROCESS' && ! ['HOOVER', 'LAW'].include?( params[:home_lib] )
+
+        req_type = 'REQ-INPRO'
+
+    # Should cover all except SAL and SAL-NEWARKL
+    elsif ( CHECKED_OUT_LOCS.include?(params[:current_loc]) ||
+          params[:current_loc] =~ /-LOAN/ ) &&
+          ! ['SAL', 'SAL-NEWARK'].include?(params[:home_lib]) # covered below
+
+        req_type = 'REQ-RECALL'
+
+    elsif params[:current_loc] == 'ON-ORDER' && ! ['HOOVER', 'LAW'].include?( params[:home_lib] )
+
+        # May need to exclude some things here, but how do we get library???
+        req_type = 'REQ-ONORDM'
+
+    # Then cover Hoover
+
+    elsif params[:home_lib] == 'HOOVER'
+
+        if params[:current_loc] == 'INPROCESS'
+
+            req_type = 'REQ-HVINPR'
+
+        elsif params[:current_loc] == 'ON-ORDER'
+
+            req_type = 'REQ-HVORD'
+
+        end
+
+    # Then cover LAW
+
+    elsif params[:home_lib] == 'LAW'
+
+        if params[:current_loc] == 'INPROCESS'
+
+            req_type = 'REQ-LWINPR'
+
+        elsif params[:current_loc] == 'ON-ORDER'
+
+            req_type = 'REQ-LAWORD'
+
+        end
+
+    # Then cover HOPKINS/STACKS
+
+    elsif params[:home_lib] == 'HOPKINS' && params[:current_loc] == 'STACKS'
+
+        req_type = 'REQ-HOP'
+
+    # SAL
+
+    elsif params[:home_lib] == 'SAL'
+
+        if SAL_ON_SHELF_LOCS.include?( params[:current_loc] ) ||
+          params[:current_loc].include?('PAGE-')
+
+            req_type = 'REQ-SAL'
+
+        elsif CHECKED_OUT_LOCS.include?(params[:current_loc]) ||
+          params[:current_loc] =~ /-LOAN/
+
+            req_type = 'RECALL-SL'
+
+        elsif params[:current_loc] == 'UNCAT'
+
             req_type = 'REQ-INPRO'
 
-        elsif params[:current_loc] == 'CHECKEDOUT' && params[:home_lib] != 'SAL' # covered below
-        
-            req_type = 'REQ-RECALL'
+        end
 
-        elsif params[:current_loc] == 'ON-ORDER' && ( params[:home_lib] != 'HOOVER' || 
-          params[:home_lib] != 'LAW' ) 
-      
-            # May need to exclude some things here, but how do we get library???
-            req_type = 'REQ-ONORDM'
-                                
-        elsif params[:home_lib] == 'HOOVER'
-        
-            if params[:current_loc] == 'INPROCESS'
-            
-                req_type = 'REQ-HVINPR'
+    # SAL-NEWARK
 
-            elsif params[:current_loc] == 'ON-ORDER'
-            
-                req_type = 'REQ-HVORD'
+    elsif params[:home_lib] == 'SAL-NEWARK'
 
-            end
-            
-        elsif params[:home_lib] == 'LAW'
-        
-            if params[:current_loc] == 'INPROCESS'
-            
-                req_type = 'REQ-LWINPR'
+        if CHECKED_OUT_LOCS.include?(params[:current_loc]) ||
+          params[:current_loc] =~ /-LOAN/
 
-            elsif params[:current_loc] == 'ON-ORDER'
-            
-                req_type = 'REQ-LAWORD'
+            req_type = 'RECALL-SN'
 
-            end
-                           
-        elsif params[:home_lib] == 'HOPKINS' && params[:current_loc] == 'STACKS'
-        
-            req_type = 'REQ-HOP'
+        else
 
-        elsif params[:home_lib] == 'SAL'
-        
-            sal_locs_to_test = [ 'STACKS', 'SAL-SERG', 'FED-DOCS', 'SAL-MUSIC' ]
+            req_type = 'REQ-SALNWK'
 
-            if sal_locs_to_test.include?( params[:current_loc] ) || 
-              params[:current_loc].include?('PAGE-')
-            
-                req_type = 'REQ-SAL'
+        end
 
-            elsif params[:current_loc] == 'CHECKEDOUT'
-            
-                req_type = 'RECALL-SL'
+    # SAL3
 
-            elsif params[:current_loc] == 'UNCAT'
-            
-                req_type = 'REQ-INPRO'
+    elsif params[:home_lib] == 'SAL3' # Do we need more options here??
 
-            end
+      req_type = 'REQ-SAL3'
 
-        elsif params[:home_lib] == 'SAL-NEWARK'
-        
-            if params[:current_loc] == 'CHECKEDOUT'
-            
-                req_type = 'RECALL-SN'
+    end
 
-            else
 
-                req_type = 'REQ-SALNWK'
-
-            end
-                     
-        # Changed this one, which originally made everything "REQ-RECALL", which really 
-        # makes no sense             
-        elsif params[:home_lib] == 'SAL3' # Do we need more options here??
-                  
-          req_type = 'REQ-SAL3' 
-
-        # Do we need a final else here in case anything slips through?
-             
-        end 
-        
-    else
-
-        req_type = params[:req_type]            
-
-    end # check whether params[:req_type] is nil
-    
     # puts "==================== request type at end of get_req_type is: " + req_type + "\n"
-   
+
     return req_type
-    
-  end # get_request_type  
-    
+
+  end # get_request_type
   
 end

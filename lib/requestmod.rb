@@ -25,8 +25,12 @@ module Requestmod
         
     if @request.request_def == 'UNDEFINED' || @request.req_type.blank?
       
+      problem_message = 
+      
       ExceptionMailer.deliver_problem_report(@request.params, 
-                                   'request_def undefined or req_type missing')
+                                   "request_def undefined or req_type missing.\n" +
+                                    "        Request def is: " + @request.request_def.to_s + "\n" +
+                                    "        Request type is: " + @request.req_type.to_s + "\n" )
       flash[:system_problem] = @messages['000']
                                    
       

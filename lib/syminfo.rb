@@ -52,7 +52,7 @@ class Syminfo
   # with new hash added. May need to add due date here
   def get_items_hash( params, items, barcode, call_num, library, home_loc, current_loc, shelf_key )
 
-    # puts "params in get_items_hash is: " + params.inspect
+    # puts " ================== params in get_items_hash is: " + params.inspect
     
     # If no current loc, make it the same as home_loc
     
