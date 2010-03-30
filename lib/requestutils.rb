@@ -150,6 +150,10 @@ module Requestutils
 
             req_type = 'REQ-HVORD'
 
+        elsif params[:current_loc] =~ /.*?-30/
+          
+            req_type = 'SAL3-TO-HL'
+
         end
 
     # Then cover LAW
@@ -172,6 +176,12 @@ module Requestutils
 
         req_type = 'REQ-HOP'
 
+    # Then SPEC-COLL as home lib with -30 location or SAL3-TO-SP req_type (from Socrates)
+
+    elsif params[:home_lib] == 'SPEC-COLL' && ( params[:home_loc].to_s =~ /.*?-30$/ ||
+                                                params[:req_type].to_s == 'SAL3-TO-SP' )
+        req_type = 'SAL3-TO-SP'                                                
+    
     # SAL
 
     elsif params[:home_lib] == 'SAL'
