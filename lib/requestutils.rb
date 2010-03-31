@@ -238,15 +238,14 @@ module Requestutils
     
     pickupkey = ''
     
-    #puts "================ home loc in get_pickup_key is: " + home_loc.inspect
-    
-    # Need to check whether this covers every case
+    # TODO: Make sure logic covers every case & that order is correct
     
     if home_lib.upcase ==  'HOOVER' || home_lib.upcase == 'LAW'
       pickupkey = home_lib
     elsif current_loc[0..4] == 'PAGE-'
       pickupkey = current_loc[5..current_loc.length]
-    # TODO: SAL3-TO- req_types should always be passed in as parms, but what about SW??  
+    elsif ! home_loc.blank? && home_loc[0..4] == 'PAGE-'
+      pickupkey = home_loc[5..home_loc.length]
     elsif ! home_loc.blank? && home_loc =~ /^(.*)\-30$/
       pickupkey = $1  
     elsif ! req_type.blank? && req_type[0..7] == 'SAL3-TO-'

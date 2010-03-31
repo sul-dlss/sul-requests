@@ -38,7 +38,7 @@ module Requestmod
       
     else    
        
-      #===== Check whether we need to redirect to the auth path and do the redirect if so
+      #===== Check whether we need to redirect to the auth path and redirect if so
  
       if @request.redir_check
         redirect_to "/auth/requests/new?" + params.to_query + "&redir_done=y"
