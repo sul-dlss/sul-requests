@@ -7,7 +7,7 @@ class Request < Tableless
               :pickup_lib, :not_needed_after, :due_date, :hold_recall, :vol_num, :call_num, 
               :source, :comments
               
-  attr_accessor :library_id, :items_checked
+  attr_accessor :library_id, :items_checked, :home_loc, :pickupkey
   
   def initialize(params, request_env )
     
@@ -26,7 +26,8 @@ class Request < Tableless
     @req_type = get_request_type(@params)
     @request_def = get_req_def(@home_lib, @current_loc )
     @redir_check = check_auth_redir(@params)
-    @pickupkey = get_pickup_key( @home_lib, @current_loc, @home_loc, @req_type ) 
+    #@pickupkey = get_pickup_key( @home_lib, @current_loc, @home_loc, @req_type )
+    @pickupkey = @params[:pickupkey] 
     @pickup_lib = @params[:pickup_lib]
     @not_needed_after = @params[:not_needed_after]
     @due_date = @params[:due_date]
@@ -142,31 +143,5 @@ class Request < Tableless
 
   end # check auth redir  
   
-  # Method get_pickup_key. Determine the pickup_key, which indicates the pickup libraries to display
-  # from the home_lib, current_loc, and req_type
-  def get_pickup_key( home_lib, current_loc, home_loc, req_type )
-    
-    pickupkey = ''
-    
-    # Need to check whether this covers every case
-    
-    if home_lib.upcase ==  'HOOVER' || home_lib.upcase == 'LAW'
-      pickupkey = home_lib
-    elsif current_loc[0..4] == 'PAGE-'
-      pickupkey = current_loc[5..current_loc.length]
-    # TODO: SAL3-TO- req_types should always be passed in as parms, but what about SW??  
-    elsif ! home_loc.blank? && home_loc =~ /^(.*)\-30$/
-      pickupkey = $1  
-    elsif ! req_type.blank? && req_type[0..7] == 'SAL3-TO-'
-      pickupkey = req_type[8..req_type.length]      
-    end
-    
-    if pickupkey.blank?
-      pickupkey = 'ALL'
-    end
-    
-    return pickupkey
-    
-  end # get_pickup_key  
 
 end

@@ -232,4 +232,33 @@ module Requestutils
 
   end # get_request_type
   
+  # Method get_pickup_key. Determine the pickup_key, which indicates the pickup libraries to display
+  # from the home_lib, current_loc, and req_type
+  def get_pickup_key( home_lib, home_loc, current_loc, req_type )
+    
+    pickupkey = ''
+    
+    #puts "================ home loc in get_pickup_key is: " + home_loc.inspect
+    
+    # Need to check whether this covers every case
+    
+    if home_lib.upcase ==  'HOOVER' || home_lib.upcase == 'LAW'
+      pickupkey = home_lib
+    elsif current_loc[0..4] == 'PAGE-'
+      pickupkey = current_loc[5..current_loc.length]
+    # TODO: SAL3-TO- req_types should always be passed in as parms, but what about SW??  
+    elsif ! home_loc.blank? && home_loc =~ /^(.*)\-30$/
+      pickupkey = $1  
+    elsif ! req_type.blank? && req_type[0..7] == 'SAL3-TO-'
+      pickupkey = req_type[8..req_type.length]      
+    end
+    
+    if pickupkey.blank?
+      pickupkey = 'ALL'
+    end
+    
+    return pickupkey
+    
+  end # get_pickup_key  
+  
 end

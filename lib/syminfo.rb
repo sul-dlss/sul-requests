@@ -9,20 +9,21 @@ class Syminfo
 
   include Requestutils
   
-  attr_reader :items, :bib_info, :cur_locs
+  attr_reader :items, :bib_info, :cur_locs, :home_loc
    
   # Method to take parameters and return bib_info string, items array, and 
   # cur_locs array to include on the request form. We get these either by doing 
   # a SearchWorks lookup or by parsing the data we already if we are just
   # redisplaying the input screen, e.g., because of failed validations
-  def initialize(params, home_lib )
+  def initialize(params, home_lib, home_loc )
     
     if params[:bib_info].nil? && params[:items].nil? && params[:cur_locs].nil?   
-      @bib_info, @items, @cur_locs  = get_sw_info(params, params[:ckey], home_lib )     
+      @bib_info, @items, @cur_locs, @home_loc  = get_sw_info(params, params[:ckey], home_lib, home_loc )     
     else  
       @bib_info = params[:bib_info]
       @items = get_items_from_params(params[:items])
       @cur_locs = get_cur_locs_from_params(params[:cur_locs])
+      @home_loc = params[:home_loc]
     end  
     
   end
@@ -141,7 +142,7 @@ class Syminfo
   # Method get_sw_info. Gets and parses all info from SearchWorks .request call
   # Inputs: params from request, ckey, home_lib
   # Output: bib_info string and sorted array of item entries to use in view
-  def get_sw_info(params, ckey, home_lib )
+  def get_sw_info(params, ckey, home_lib, home_loc )
     
     url = SW_LOOKUP_PRE + ckey + SW_LOOKUP_SUF
   
@@ -200,14 +201,19 @@ class Syminfo
     # also update cur_locs_arr
   
     cur_locs_arr = []
+    home_loc = ''
     
-    items_from_sw.each do |item|
+    items_from_sw.each_with_index do |item, index|
         
       item_string = item.to_s
       item_string.gsub!(/\<.*?\>/, '')
       
       # 0 - item_id | 1 - home_lib | 2 - home_loc | 3 - current_loc | 4 - shelving rule? | 5 - base call num? | 6 - ? | 7 - 008? | 8 - call num | 9 - shelfkey
       entry_arr = item_string.split(/ \-\|\- /)
+      
+      if index == 0 
+        home_loc = entry_arr[2]
+      end
       
       # Add only items for home lib and only if they pass item inclusion test        
       if entry_arr[1] == home_lib && item_include?(entry_arr[1], entry_arr[2], sym_locs_hash[entry_arr[0]])
@@ -238,7 +244,7 @@ class Syminfo
     
     # puts "=============== cur_locs at end of get_sw_info in model is: " + cur_locs_arr.inspect + "\n"
   
-    return bib_info, items, cur_locs_arr
+    return bib_info, items, cur_locs_arr, home_loc
   
   end # get_sw_info
 

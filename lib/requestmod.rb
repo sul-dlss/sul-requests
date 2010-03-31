@@ -3,7 +3,7 @@ module Requestmod
   # Module for both authenticated and unauthenticated requests; also at least 
   # one method used in requests controller
 
-  include Constants
+  include Requestutils
   
   # Method new. Display a request form, including data retrieved from an XML lookup and user data from 
   # the authentication, if available. The user fills in this from to create a request. Note that this
@@ -25,7 +25,7 @@ module Requestmod
         
     if @request.request_def == 'UNDEFINED' || @request.req_type.blank?
       
-      problem_message = 
+      #problem_message = 
       
       ExceptionMailer.deliver_problem_report(@request.params, 
                                    "request_def undefined or req_type missing.\n" +
@@ -53,16 +53,19 @@ module Requestmod
       if params.has_key?(:redir_done)
         params.delete(:redir_done)
       end
-      
 
+      #======= Get Symphony bib, item, and cur locs info, and make sure home_loc is set
+      @sym_info = Syminfo.new( @request.params, @request.home_lib, @request.home_loc )
       
-      #======= Get Symphony bib, item, and cur locs info
-      @sym_info = Syminfo.new( @request.params, @request.home_lib )
-      
+      if @request.home_loc.blank? && ! @sym_info.home_loc.blank?
+        @request.home_loc = @sym_info.home_loc
+      end
+     
       #====== Get info for request def -- form text, etc.
       @requestdef_info = Requestdef.find_by_name( @request.request_def )
         
-      #===== Get pickup_libs list           
+      #===== Get pickup_libs list    
+      @request.pickupkey = get_pickup_key( @request.home_lib, @request.home_loc, @request.current_loc, @request.req_type )   
       @pickup_libs_hash = get_pickup_libs( @request.pickupkey)
           
       #===== Get message keys to display on request screen and list of fields to display           
@@ -94,10 +97,15 @@ module Requestmod
       # ---- Reset instance vars needed to re-display form
       @requestdef_info = Requestdef.find_by_name( @request.request_def )
       #@requestdef = @request.request_def
+      @request.pickupkey = get_pickup_key( @request.home_lib, @request.home_loc, @request.current_loc, @request.req_type )       
       @pickup_libs_hash = get_pickup_libs( @request.pickupkey)
       
       #====== Get symphony info needed to return to request screen
-      @sym_info = Syminfo.new( @request.params, @request.home_lib )
+      @sym_info = Syminfo.new( @request.params, @request.home_lib, @request.home_loc )
+      
+      if @request.home_loc.blank? && ! @sym_info.home_loc.blank?
+        @request.home_loc = @sym_info.home_loc
+      end
       
       #====== Get msg keys and fields
       @msg_keys = get_msg_keys(@sym_info.cur_locs)  
