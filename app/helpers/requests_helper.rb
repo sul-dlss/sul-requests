@@ -30,6 +30,10 @@ module RequestsHelper
       link = link + 'current_loc=' + request.current_loc + '&' 
     end
     
+    if request.current_loc != nil
+      link = link + 'home_loc=' + request.home_loc + '&' 
+    end
+    
     if request.item_id != nil
       link = link + 'item_id=' + request.item_id + '&'
     end
