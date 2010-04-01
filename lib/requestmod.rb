@@ -57,9 +57,14 @@ module Requestmod
       #======= Get Symphony bib, item, and cur locs info, and make sure home_loc is set
       @sym_info = Syminfo.new( @request.params, @request.home_lib, @request.home_loc )
       
+      # puts "============== request.home_loc: " + @request.home_loc.inspect 
+      
       if @request.home_loc.blank? && ! @sym_info.home_loc.blank?
         @request.home_loc = @sym_info.home_loc
       end
+      
+      # puts "============== request.home_loc after check is: " + @request.home_loc.inspect 
+      
      
       #====== Get info for request def -- form text, etc.
       @requestdef_info = Requestdef.find_by_name( @request.request_def )

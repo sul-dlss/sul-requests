@@ -187,7 +187,7 @@ module Requestutils
     elsif params[:home_lib] == 'SAL'
 
         if SAL_ON_SHELF_LOCS.include?( params[:current_loc] ) ||
-          params[:current_loc].include?('PAGE-')
+          params[:current_loc].include?('PAGE-') 
 
             req_type = 'REQ-SAL'
 

@@ -16,7 +16,7 @@ class Syminfo
   # a SearchWorks lookup or by parsing the data we already if we are just
   # redisplaying the input screen, e.g., because of failed validations
   def initialize(params, home_lib, home_loc )
-    
+        
     if params[:bib_info].nil? && params[:items].nil? && params[:cur_locs].nil?   
       @bib_info, @items, @cur_locs, @home_loc  = get_sw_info(params, params[:ckey], home_lib, home_loc )     
     else  
@@ -121,8 +121,7 @@ class Syminfo
   def item_include?( home_lib, home_loc, current_loc )
     
     # puts "==================== home loc and current loc in item include: " + home_loc + " " + current_loc + "\n"
-    
-    
+
     # First test for certain libs and return true if we have them
     if ['SAL', 'SAL3', 'SAL-NEWARK', 'HOPKINS'].include?(home_lib)
       return true
@@ -143,7 +142,7 @@ class Syminfo
   # Inputs: params from request, ckey, home_lib
   # Output: bib_info string and sorted array of item entries to use in view
   def get_sw_info(params, ckey, home_lib, home_loc )
-    
+        
     url = SW_LOOKUP_PRE + ckey + SW_LOOKUP_SUF
   
     # Method scope vars to hold data we want
@@ -177,7 +176,7 @@ class Syminfo
   
     items_from_sym = doc.xpath("//item_details/item")
     
-    # puts "======== items from sym: " + items_from_sym.inspect + "\n"
+    #puts "======== items from sym: " + items_from_sym.inspect + "\n"
   
     # Put Symphony item info into hash with item_id as key and current loc as value
     # and also create separate cur_locs array with just loc values
@@ -201,7 +200,6 @@ class Syminfo
     # also update cur_locs_arr
   
     cur_locs_arr = []
-    home_loc = ''
     
     items_from_sw.each_with_index do |item, index|
         
@@ -211,25 +209,32 @@ class Syminfo
       # 0 - item_id | 1 - home_lib | 2 - home_loc | 3 - current_loc | 4 - shelving rule? | 5 - base call num? | 6 - ? | 7 - 008? | 8 - call num | 9 - shelfkey
       entry_arr = item_string.split(/ \-\|\- /)
       
-      if index == 0 
+      # puts "======== Entry array in get_sw_info is: " + entry_arr.inspect
+      
+      # Set the home loc to the first in the array if we didn't get a home_loc parm
+      # TODO: Need to add home loc as a parm in Socrates or logic here won't work
+      # TODO: for some Socrates records
+      if index == 0 && home_loc.nil?
         home_loc = entry_arr[2]
       end
       
-      # Add only items for home lib and only if they pass item inclusion test        
-      if entry_arr[1] == home_lib && item_include?(entry_arr[1], entry_arr[2], sym_locs_hash[entry_arr[0]])
+      # Add only items where home lib + home_loc match what we have
+      # from the parms passed in and only if they pass item inclusion test  
+
+      # puts "=========== lib values / home_locs: " + entry_arr[1] + " = " + home_lib + " / " + entry_arr[2] + " = " + home_loc
+      if ( entry_arr[1] == home_lib && entry_arr[2] == home_loc ) && 
+             item_include?(entry_arr[1], entry_arr[2], sym_locs_hash[entry_arr[0]])
           items_hash = get_items_hash( params,
             items_hash, entry_arr[0], entry_arr[8], home_lib,
             entry_arr[2], sym_locs_hash[entry_arr[0]], entry_arr[9] )
           # Also add to cur_locs_arr if home loc doesn't match cur loc
-          if entry_arr[2] != sym_locs_hash[entry_arr[0]]
-            cur_locs_arr.push( sym_locs_hash[entry_arr[0]])
+          if entry_arr[2] != sym_locs_hash[entry_arr[0]] && ! sym_locs_hash[entry_arr[0]].nil?
+            cur_locs_arr.push( sym_locs_hash[entry_arr[0]]) 
           end
       end
 
     end # do each item from sw
-      
-    # puts "======== items hash: " + items_hash.inspect + "\n"  
-  
+        
     #===== Sort the items
   
     items_sorted = items_hash.sort_by {|key, shelf_key| shelf_key[:shelf_key]}
@@ -241,8 +246,6 @@ class Syminfo
     items = get_items( items_sorted )
   
     #===== Return bib_info string, items array, and sym_locs_arr
-    
-    # puts "=============== cur_locs at end of get_sw_info in model is: " + cur_locs_arr.inspect + "\n"
   
     return bib_info, items, cur_locs_arr, home_loc
   
