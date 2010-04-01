@@ -49,6 +49,12 @@ module Requestutils
     parms_hash.delete(:session_id)
     parms_hash.delete(:action_string)
     
+    # Add home loc for certain current locs - this is a kludge
+    if SOC_CUR_LOCS_AS_HOME_LOCS.include?(parms_hash[:current_loc]) &&
+      parms_hash[:home_loc].blank?
+      parms_hash[:home_loc] = parms_hash[:current_loc]
+    end
+
     # Change nil to empty string - must be a better way to do this!
     parms_hash.each_pair { |key, value|
       if value.nil?
