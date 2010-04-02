@@ -138,6 +138,32 @@ class Syminfo
     
   end # item_include  
   
+  # Take an item from an array of items returned from a SearchWorks request lookup
+  # and return an array of the delimited elements in that item
+  def get_sw_entry_array(item)
+    
+      item_string = item.to_s
+      item_string.gsub!(/\<.*?\>/, '')
+      
+      # 0 - item_id | 1 - home_lib | 2 - home_loc | 3 - current_loc | 4 - shelving rule? | 5 - base call num? | 6 - ? | 7 - 008? | 8 - call num | 9 - shelfkey
+      entry_arr = item_string.split(/ \-\|\- /)
+      
+      return entry_arr    
+      
+  end
+  
+  # Take an array of SearchWorks item elements and an item ID and return
+  # the home_loc from the array entry that matches the item ID
+  def get_soc_home_loc(items, item_id)
+    
+    item_id_match = items.detect { |item| /#{item_id}/ =~ item }
+    entry_arr = get_sw_entry_array(item_id_match)
+    home_loc = entry_arr[2]
+    
+    return home_loc
+    
+  end
+  
   # Method get_sw_info. Gets and parses all info from SearchWorks .request call
   # Inputs: params from request, ckey, home_lib
   # Output: bib_info string and sorted array of item entries to use in view
@@ -193,31 +219,27 @@ class Syminfo
   
     items_from_sw = doc.xpath("//item_display_fields/item_display")
 
-    # puts "======== items from sw: " + items_from_sw.inspect + "\n"
+    #puts "======== items from sw: " + items_from_sw.inspect + "\n"
+
+    #====== Set the home loc for soc records if we need to
+    if home_loc.nil? && params[:source] == 'SO' 
+      home_loc = get_soc_home_loc(items_from_sw, params[:item_id])
+    end
 
     # Iterate over SW item entries array and add appropriate info to items_hash
     # that combines current loc info from Symphony with other item info from SW
     # also update cur_locs_arr
-  
+    
     cur_locs_arr = []
     
     items_from_sw.each_with_index do |item, index|
-        
-      item_string = item.to_s
-      item_string.gsub!(/\<.*?\>/, '')
       
       # 0 - item_id | 1 - home_lib | 2 - home_loc | 3 - current_loc | 4 - shelving rule? | 5 - base call num? | 6 - ? | 7 - 008? | 8 - call num | 9 - shelfkey
-      entry_arr = item_string.split(/ \-\|\- /)
+      entry_arr = get_sw_entry_array(item)
       
-      # puts "======== Entry array in get_sw_info is: " + entry_arr.inspect
-      
-      # Set the home loc to the first in the array if we didn't get a home_loc parm
-      # TODO: Need to add home loc as a parm in Socrates or logic here won't work
-      # TODO: for some Socrates records
-      if index == 0 && home_loc.nil?
-        home_loc = entry_arr[2]
-      end
-      
+      #puts "======== Entry array in get_sw_info is: " + entry_arr.inspect
+      #puts "============== params in get_sw_info is: " + params.inspect
+ 
       # Add only items where home lib + home_loc match what we have
       # from the parms passed in and only if they pass item inclusion test  
 
@@ -245,7 +267,7 @@ class Syminfo
   
     items = get_items( items_sorted )
   
-    #===== Return bib_info string, items array, and sym_locs_arr
+    #===== Return bib_info string, items array, sym_locs_arr, and home_loc
   
     return bib_info, items, cur_locs_arr, home_loc
   
