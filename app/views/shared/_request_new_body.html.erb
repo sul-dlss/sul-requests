@@ -84,14 +84,17 @@ function countChecked(form) {
 			
 			<p><%= @requestdef_info[:initial_text]%></p>
 			
-			<p><% if @msg_keys.include?('CHECKEDOUT') %>
+
+			<p><%= @requestdef_info[:extra_text] %></p>
+			
+			<p><% if @msg_keys.include?('DELAYED') %>
 		
-				<%= @messages['CHECKEDOUT'] %>
+				<%= render :partial => "shared/delayed_text" %> 
+
 			
 			<% end %>
 			</P>
-			
-			<p><%= @requestdef_info[:extra_text] %></p>
+						
 		
 			</div>
 				
@@ -330,8 +333,8 @@ function countChecked(form) {
 							<label for="check_<%= values[0] %>"> 
 							<span id="avail_<%= values[0] %>" 
 							class="item_available"><%= values[2]%> 
-							<% if ! values[4].nil? && ( values[3] != values[4] ) %>
-								- <%= values[4] %> 
+							<% if ! values[3].nil?  %>
+								- <%= values[3] %> 
 							<% end %>
 							</span>
 							</label>
@@ -369,7 +372,10 @@ function countChecked(form) {
 </div>
 		
 <div id="footer">
+&copy; <a href="http://www.stanford.edu">Stanford University</a>. Stanford, California 94305. (650) 725-1064. <a href="http://library.stanford.edu/about_sulair/termsofuse.html">Terms of Use</a> | <a href="http://stanford.edu/site/copyright.html">Copyright Complaints</a>
+</div>
 
-&copy; <a href="http://www.stanford.edu">Stanford University</a>. Stanford, California 94305. (650) 725-1064. <a href="http://library.stanford.edu/about_sulair/termsofuse.html">Terms of Use</a> | <a href="http://stanford.edu/site/copyright.html">Copyright Complaints</a></div>
+<%= render :partial => "shared/delayed_messages", :locals => { :checkedout => @messages['CHECKEDOUT'] }   %>
+
 </body>
 </html>		

@@ -74,7 +74,8 @@ module Requestmod
       @pickup_libs_hash = get_pickup_libs( @request.pickupkey)
           
       #===== Get message keys to display on request screen and list of fields to display           
-      @msg_keys = get_msg_keys(@sym_info.cur_locs)      
+      @msg_keys = get_msg_keys(@request.home_lib, @sym_info.cur_locs)  
+      puts "=========== msg keys is: " + @msg_keys.inspect
       @fields = get_fields_for_requestdef( @requestdef_info, @sym_info.items )
       
     end # test for requestdef
@@ -113,7 +114,7 @@ module Requestmod
       end
       
       #====== Get msg keys and fields
-      @msg_keys = get_msg_keys(@sym_info.cur_locs)  
+      @msg_keys = get_msg_keys(@request.home_lib, @sym_info.cur_locs)  
       @fields = get_fields_for_requestdef( @requestdef_info, @sym_info.items )
       
       #====== Return to request screen
@@ -245,27 +246,21 @@ module Requestmod
   # Method get_msg_keys. Take an array of current locations, test to see whether
   # they should cause the display of optional messages on the request form, and return
   # an array of keys for any that should be displayed 
-  def get_msg_keys( cur_locs )
+  def get_msg_keys( home_lib, cur_locs )
     
     # puts "========= cur_locs in get_msg_keys: " + cur_locs.inspect + "\n"
     
     msg_keys = []   
-    ck = 'CHECKEDOUT'
-    checked_out = ['CHECKEDOUT', 'B&FHOLD', 'ENDPROCESS', 'INTRANSIT', 
-                   'MISSING', 'MISS-INPRO', 'REPAIR']
-    
-    # See if we need CHECKEDOUT key
-    
-    if ( cur_locs & checked_out ).any?
-      msg_keys.push(ck)
+    da = 'DELAYED'
+       
+    if ( cur_locs & NON_PAGE_LOCS ).any?
+      msg_keys.push(da)
     end 
        
     if (cur_locs.to_s =~ /-LOAN/)
-      msg_keys.push(ck) unless msg_keys.include?(ck)
+      msg_keys.push(da) unless msg_keys.include?(ds)
     end
-    
-    # Add other keys - In-process, On-order, anything else?
-    
+  
     return msg_keys
     
   end # get_msg_keys

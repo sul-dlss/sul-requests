@@ -23,7 +23,7 @@ class Request < Tableless
     @home_lib = @params[:home_lib]
     @current_loc = @params[:current_loc]
     @home_loc = @params[:home_loc]
-    @req_type = get_request_type(@params)
+    @req_type = get_request_type(@params[:home_lib], @params[:current_loc], @params[:req_type])
     @request_def = get_req_def(@home_lib, @current_loc )
     @redir_check = check_auth_redir(@params)
     #@pickupkey = get_pickup_key( @home_lib, @current_loc, @home_loc, @req_type )

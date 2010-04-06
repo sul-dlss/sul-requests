@@ -49,11 +49,12 @@ module Requestutils
     parms_hash.delete(:session_id)
     parms_hash.delete(:action_string)
     
+    # Did this another way in syminfo.get_soc_home_loc
     # Add home loc for certain current locs - this is a kludge
-    if SOC_CUR_LOCS_AS_HOME_LOCS.include?(parms_hash[:current_loc]) &&
-      parms_hash[:home_loc].blank?
-      parms_hash[:home_loc] = parms_hash[:current_loc]
-    end
+    #if SOC_CUR_LOCS_AS_HOME_LOCS.include?(parms_hash[:current_loc]) &&
+    #  parms_hash[:home_loc].blank?
+    #  parms_hash[:home_loc] = parms_hash[:current_loc]
+    #end
 
     # Change nil to empty string - must be a better way to do this!
     parms_hash.each_pair { |key, value|
@@ -120,43 +121,46 @@ module Requestutils
   # Method get_request_type. Take parameters and analyze them to figure out
   # a request type. Note that we need to call this method for every item and the
   # req_type differ for each item and may not match the req_type parm passed in
-  def get_request_type(params)
+  #def get_request_type(params)
+  def get_request_type(home_lib, current_loc, req_type_parm)
 
     req_type = ''
 
-    # puts "======================== params in get_request_type is: " + params.inspect + "\n"
+    # puts "======================== home_lib in get_request_type is: " + home_lib.inspect + "\n"
+    # puts "======================== current_loc in get_request_type is: " + current_loc.inspect + "\n"
+    # puts "======================== home_lib in get_request_type is: " + req_type_parm.inspect + "\n"
 
     # First cover items where the current location is the determining factor
 
-    if params[:current_loc] == 'INPROCESS' && ! ['HOOVER', 'LAW'].include?( params[:home_lib] )
+    if current_loc == 'INPROCESS' && ! ['HOOVER', 'LAW'].include?( home_lib )
 
         req_type = 'REQ-INPRO'
 
     # Should cover all except SAL and SAL-NEWARKL
-    elsif ( CHECKED_OUT_LOCS.include?(params[:current_loc]) ||
-          params[:current_loc] =~ /-LOAN/ ) &&
-          ! ['SAL', 'SAL-NEWARK'].include?(params[:home_lib]) # covered below
+    elsif ( CHECKED_OUT_LOCS.include?(current_loc) ||
+          current_loc =~ /-LOAN/ ) &&
+          ! ['SAL', 'SAL-NEWARK'].include?(home_lib) # covered below
 
         req_type = 'REQ-RECALL'
 
-    elsif params[:current_loc] == 'ON-ORDER' && ! ['HOOVER', 'LAW'].include?( params[:home_lib] )
+    elsif current_loc == 'ON-ORDER' && ! ['HOOVER', 'LAW'].include?( home_lib )
 
         # May need to exclude some things here, but how do we get library???
         req_type = 'REQ-ONORDM'
 
     # Then cover Hoover
 
-    elsif params[:home_lib] == 'HOOVER'
+    elsif home_lib == 'HOOVER'
 
-        if params[:current_loc] == 'INPROCESS'
+        if current_loc == 'INPROCESS'
 
             req_type = 'REQ-HVINPR'
 
-        elsif params[:current_loc] == 'ON-ORDER'
+        elsif current_loc == 'ON-ORDER'
 
             req_type = 'REQ-HVORD'
 
-        elsif params[:current_loc] =~ /.*?-30/
+        elsif current_loc =~ /.*?-30/
           
             req_type = 'SAL3-TO-HL'
 
@@ -164,13 +168,13 @@ module Requestutils
 
     # Then cover LAW
 
-    elsif params[:home_lib] == 'LAW'
+    elsif home_lib == 'LAW'
 
-        if params[:current_loc] == 'INPROCESS'
+        if current_loc == 'INPROCESS'
 
             req_type = 'REQ-LWINPR'
 
-        elsif params[:current_loc] == 'ON-ORDER'
+        elsif current_loc == 'ON-ORDER'
 
             req_type = 'REQ-LAWORD'
 
@@ -178,31 +182,31 @@ module Requestutils
 
     # Then cover HOPKINS/STACKS
 
-    elsif params[:home_lib] == 'HOPKINS' && params[:current_loc] == 'STACKS'
+    elsif home_lib == 'HOPKINS' && current_loc == 'STACKS'
 
         req_type = 'REQ-HOP'
 
     # Then SPEC-COLL as home lib with -30 location or SAL3-TO-SP req_type (from Socrates)
 
-    elsif params[:home_lib] == 'SPEC-COLL' && ( params[:home_loc].to_s =~ /.*?-30$/ ||
-                                                params[:req_type].to_s == 'SAL3-TO-SP' )
+    elsif home_lib == 'SPEC-COLL' && ( home_loc.to_s =~ /.*?-30$/ ||
+                                                req_type_parm.to_s == 'SAL3-TO-SP' )
         req_type = 'SAL3-TO-SP'                                                
     
     # SAL
 
-    elsif params[:home_lib] == 'SAL'
+    elsif home_lib == 'SAL'
 
-        if SAL_ON_SHELF_LOCS.include?( params[:current_loc] ) ||
-          params[:current_loc].include?('PAGE-') 
+        if SAL_ON_SHELF_LOCS.include?( current_loc ) ||
+          current_loc =~ /PAGE-/ 
 
             req_type = 'REQ-SAL'
 
-        elsif CHECKED_OUT_LOCS.include?(params[:current_loc]) ||
-          params[:current_loc] =~ /-LOAN/
+        elsif CHECKED_OUT_LOCS.include?(current_loc) ||
+          current_loc =~ /-LOAN/
 
             req_type = 'RECALL-SL'
 
-        elsif params[:current_loc] == 'UNCAT'
+        elsif current_loc == 'UNCAT'
 
             req_type = 'REQ-INPRO'
 
@@ -210,10 +214,10 @@ module Requestutils
 
     # SAL-NEWARK
 
-    elsif params[:home_lib] == 'SAL-NEWARK'
+    elsif home_lib == 'SAL-NEWARK'
 
-        if CHECKED_OUT_LOCS.include?(params[:current_loc]) ||
-          params[:current_loc] =~ /-LOAN/
+        if CHECKED_OUT_LOCS.include?(current_loc) ||
+          current_loc =~ /-LOAN/
 
             req_type = 'RECALL-SN'
 
@@ -225,7 +229,7 @@ module Requestutils
 
     # SAL3
 
-    elsif params[:home_lib] == 'SAL3' # Do we need more options here??
+    elsif home_lib == 'SAL3' # Do we need more options here??
 
       req_type = 'REQ-SAL3'
 

@@ -26,7 +26,7 @@ class Admin::ReqtestsController < ApplicationController
   def create
     @reqtest = Reqtest.new(params[:reqtest])
     soc_link_params = parse_soc_url(params[:reqtest][:socrates_link])
-    req_type = get_request_type(soc_link_params)
+    req_type = get_request_type(soc_link_params[:home_lib], soc_link_params[:current_loc], soc_link_params[:req_type])
     req_def = get_req_def( soc_link_params[:home_lib], soc_link_params[:current_loc] )
     @reqtest.req_def = req_def
     @req_defs = Requestdef.find(:all, :select => 'name', :order => 'name').map(&:name).insert(0, "NONE")
