@@ -5,45 +5,10 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title><%= @requestdef_info[:title] %></title>
 
- 
- <script type="text/javascript"> 
-<!--
 
-function CheckAll()
-{
-	for (var i=0;i<document.requestform.elements.length;i++)
-	{
-		var e = document.requestform.elements[i];
-		if (e.name != 'allbox' && e.name != 'request[hold_recall]')
-			e.checked = document.requestform.allbox.checked;
-    }
-}
-function UnCheckAll()
-{
-        for (var i=0;i<document.requestform.elements.length;i++)
-        {
-                var e = document.requestform.elements[i];
-                if (e.name != 'allbox' && e.name != 'request[hold_recall]')
-                        e.checked = false;
-    }
-}
-/* Modified from script by: Alan Gruskoff :: http://www.performantsystems.com/
- */
-function countChecked(form) {
-	var total = 0;
-	var max = form.request_items.length;
-	for (var idx = 0; idx < max; idx++) {
-		if (eval("document.requestform.request_items[" + idx + "].checked") == true) {
-    		total += 1;
-   		}
-	}
-	if ( total > 10  ) {
-  		alert("You have selected more than 10 items. Your request cannot be processed unless you keep the total to 10 or fewer. " );
-	}         
-}   
-//-->
-</script>
-   
+<script type="text/javascript" src="/javascripts/requests.js"></script>
+
+
     <link href="/stylesheets/request-forms.css" rel="stylesheet" type="text/css">
 	
 	
@@ -68,9 +33,10 @@ function countChecked(form) {
 <div id="header">
 <a href="#formstart" class="off_screen">Skip to form</a>
 
-<a id="SULAIR" title="SULAIR Home" href="http://www-sul.stanford.edu/index.html">&nbsp;</a>
-<div class="links"><a href="http://library.stanford.edu/socrates">SOCRATES (SU CATALOG)</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://library.stanford.edu/images/main_l2/globals_ejournals.gif">E-JOURNALS</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://library.stanford.edu/search_form_main">SITE SEARCH</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://library.stanford.edu/ask_us/index.html">ASK US</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://www-sul.stanford.edu/index.html">SULAIR HOME</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://www.stanford.edu/">SU HOME</a></div></div>
-
+		<!-- Toolbar --> 
+		
+		<%= render :partial => "shared/toolbar_links" %>
+</div>
 
 <div id="container">
 
@@ -84,17 +50,10 @@ function countChecked(form) {
 			
 			<p><%= @requestdef_info[:initial_text]%></p>
 			
-
-			<p><%= @requestdef_info[:extra_text] %></p>
-			
-			<p><% if @msg_keys.include?('DELAYED') %>
-		
-				<%= render :partial => "shared/delayed_text" %> 
-
-			
-			<% end %>
-			</P>
-						
+			<% if ! @requestdef_info[:extra_text].blank? %>
+				<p><%= @requestdef_info[:extra_text] %></p>
+			<% end %>				
+								
 		
 			</div>
 				
@@ -169,19 +128,19 @@ function countChecked(form) {
 		
 			<!-- Hold/Recall - display only if we have "checked out" items -->	
 			
-			<% if @msg_keys.include?('CHECKEDOUT') %>
+			<% if @msg_keys.include?('DELAYED') %>
 			
-				<dt><label for="request_hold_recall">Unavailable items</label></dt>
+				<dt><label for="request_hold_recall">Hold/Recall</label></dt>
 				
-				<dd class="unavail_items">Some items below are currently checked out to other patrons.
-				If you select those items, they will be:
+				<dd class="unavail_items">If you select items below marked "(Hold/Recall)", do you want them:
 				<ul>
 					<li>
 					<label><input name="request[hold_recall]" type="radio" value="HOLD" 
 					<% if ! @is_authenticated || ( @is_authenticated && @request.hold_recall.eql?('HOLD') ) %>
 					checked="checked"
 					<% end %>
-					 >held</label>
+					 >
+					 held until they are returned?</label>
 					</li>
 					<li> 
 					<label id="recallLabel" 
@@ -197,13 +156,12 @@ function countChecked(form) {
 					checked="checked"
 					<% end %>
 					value="RECALL">
-  					recalled
+  					recalled immediately? 
 					<% if ! @is_authenticated %>
-					<span id="loginInstruction">(login to enable this option)</span>
+					<span id="loginInstruction">(requires login)</span>
 					<% end %>
 					</label></li>
 					</ul>
-					and delivered when they are returned.
 					</dd>
 
 			
@@ -334,7 +292,8 @@ function countChecked(form) {
 							<span id="avail_<%= values[0] %>" 
 							class="item_available"><%= values[2]%> 
 							<% if ! values[3].nil?  %>
-								- <%= values[3] %> 
+							<% msg_key = values[3].gsub(/\s/, "_").downcase %>
+							<span class="hold-recall"> - <%= values[3] %> <span class="hold-recall-msg"><%= @msg[msg_key.to_key] %></span></span> 
 							<% end %>
 							</span>
 							</label>
@@ -370,10 +329,8 @@ function countChecked(form) {
 		
 
 </div>
-		
-<div id="footer">
-&copy; <a href="http://www.stanford.edu">Stanford University</a>. Stanford, California 94305. (650) 725-1064. <a href="http://library.stanford.edu/about_sulair/termsofuse.html">Terms of Use</a> | <a href="http://stanford.edu/site/copyright.html">Copyright Complaints</a>
-</div>
+
+<!-- Following is for lightbox code  -->		
 
 <%= render :partial => "shared/delayed_messages", :locals => { :checkedout => @messages['CHECKEDOUT'] }   %>
 

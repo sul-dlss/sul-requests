@@ -11,12 +11,15 @@ form {margin: 0; padding: 0;}
 form, label, dl {padding: 0; margin: 0;}
 input {margin: 0;}
 a {color: #2E4F81;}
-h1 {font-size: 1.3em; padding: 0px; margin: 0px; color: #545454; font-weight: normal;}
-h2 { font-size: 1.15em; font-weight: normal; padding: 0px; margin: 1em 0; }
+h1 {font-size: 1.3em; padding: 0px; margin: 0px; color: #555; font-weight: normal;}
+h2 { font-size: 1em; font-weight: bold; color: #555; padding: 0px; margin: 1em 0; }
 fieldset {display: block; background-color: #fff; border: 1px solid  #ccc; margin: 0px auto 20px auto; padding: 10px 20px 20px;}
-legend {font-size: 1em; padding: 1px 5px; text-transform: uppercase; background-color: #F5F3F2; color: #555555;}
+legend {font-size: 1em; padding: 1px 5px; text-transform: uppercase; background-color: #FFFFFF; color: #555555; border-left: 1px solid #ccc; border-top: 1px solid #ccc; border-right: 1px solid #ccc;}
 
 ul, li {list-style-type: none; margin: 0px; padding: 0px;}
+
+.opening ul, .opening li {list-style-type: circle; margin: 10px; padding: 0px;}
+
 
 dt {clear: both; float: left; width: 12.5em; padding: 1px 0; text-align: right; color: #555;}
 dd {margin-left: 13em; padding: 1px 0px; }
@@ -24,13 +27,14 @@ dd {margin-left: 13em; padding: 1px 0px; }
 fieldset dt {padding: 5px 0px 1px;}
 fieldset dd {padding: 2px 0px;}
 
-input, select, textarea {width: 20em; margin: 0;}
+input, select, textarea {width: 20em; margin: 0; font-size: 1em;}
 input[type=radio], input[type=checkbox] {width: 2em;}
+input#request_not_needed_after {width: 8em !important;}
 
-div.opening, div.request_successful, div.request_failed {padding: 10px 0;}
-div.request_failed {color: red; font-weight: bold;}
+div.opening, div.request_successful, div.request_failed {padding: 10px 0 0 0;}
+div.request_failed {color: #cc0000; font-weight: bold;}
 div.request_failed a {font-weight: normal;}
-div.request_successful {color: green; font-weight: bold;}
+div.request_successful {color: #009900; font-weight: bold;}
 p {clear: both; margin: 0 0 1em 0}
 #autofill {color: #900; text-align: right; padding: 0; margin: -10px -10px 15px; /*font-size: .9em;*/}
 #autofill a {color: #900; font-weight: bold; text-decoration: underline;}
@@ -41,7 +45,7 @@ div.submit input {width: 10em; display: inline; margin: 0px 20px 0px 0px; font-s
 
 ol.item_list {padding-left:0 !important;}
 
-span.title {display: block; margin-bottom: 15px; padding: 0px; font-size: 1.1em; font-weight: normal;}
+span.title {display: block; margin-bottom: 15px; padding: 0px; font-size: 1.1em; font-weight: normal; font-style: italic;}
 
 span.instruction {font-size: .9em;}
 span.action_varies {font-weight: normal; padding: 0;}
@@ -66,8 +70,8 @@ ul.show_status ol li {margin: 0;}
 #notification ul {margin: 0 25px;}
 #notification ul li {list-style-type: none; list-style-image: url(http://www.stanford.edu/~jvine/alert.png);}
 
-h2.success {color: green;}
-h2.fail {color: #900;}
+h2.success {color: #009900;}
+h2.fail {color: #cc0000;}
 
 .disabled {color: #666;}
 dd.unavail_items {padding-top: 5px;}

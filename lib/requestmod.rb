@@ -57,6 +57,22 @@ module Requestmod
       #======= Get Symphony bib, item, and cur locs info, and make sure home_loc is set
       @sym_info = Syminfo.new( @request.params, @request.home_lib, @request.home_loc )
       
+      #====== Check that we have either a request or sym_info home loc or inclusion test in sym_info will fail
+  
+      if @request.home_loc.nil? && @sym_info.home_loc.nil?
+      
+        ExceptionMailer.deliver_problem_report(params, 
+                                   "home_loc or home_lib is missing.\n" +
+                                    "        Request home_loc is: " + @request.home_loc.to_s + "\n" +
+                                    "        Request home_lib is: " + @request.home_lib.to_s + "\n" + 
+                                    "        Sym_info home_loc is: " + @sym_info.home_loc.to_s + "\n"
+                                    )
+        flash[:system_problem] = @messages['000']
+ 
+        render :template => 'requests/app_problem'
+      
+      end      
+      
       # puts "============== request.home_loc: " + @request.home_loc.inspect 
       
       if @request.home_loc.blank? && ! @sym_info.home_loc.blank?
@@ -75,7 +91,6 @@ module Requestmod
           
       #===== Get message keys to display on request screen and list of fields to display           
       @msg_keys = get_msg_keys(@request.home_lib, @sym_info.cur_locs)  
-      puts "=========== msg keys is: " + @msg_keys.inspect
       @fields = get_fields_for_requestdef( @requestdef_info, @sym_info.items )
       
     end # test for requestdef
@@ -178,7 +193,7 @@ module Requestmod
     # Add "[Select One From List Below]", "NONE" to the hash if we have more than one item
     
     if pickup_libs_hash.length > 1
-      pickup_libs_hash.merge!({' [Select One From List Below] ' => 'NONE'})
+      pickup_libs_hash.merge!({' (Select a library) ' => 'NONE'})
     end
 
     return pickup_libs_hash.sort

@@ -18,7 +18,7 @@ class Syminfo
   def initialize(params, home_lib, home_loc )
         
     if params[:bib_info].nil? && params[:items].nil? && params[:cur_locs].nil?   
-      @bib_info, @items, @cur_locs, @home_loc  = get_sw_info(params, params[:ckey], home_lib, home_loc )     
+      @bib_info, @items, @cur_locs, @home_loc = get_sw_info(params, params[:ckey], home_lib, home_loc )  
     else  
       @bib_info = params[:bib_info]
       @items = get_items_from_params(params[:items])
@@ -198,9 +198,10 @@ class Syminfo
   def get_soc_home_loc(items, item_id)
     
     item_id_match = items.detect { |item| /#{item_id}/ =~ item }
-    entry_arr = get_sw_entry_array(item_id_match)
-    home_loc = entry_arr[2]
     
+    entry_hash = get_sw_entry_hash(item_id_match)
+    home_loc = entry_hash[:home_loc]
+
     return home_loc
     
   end
@@ -208,7 +209,7 @@ class Syminfo
   # Method get_sw_info. Gets and parses all info from SearchWorks .request call
   # Inputs: params from request, ckey, home_lib
   # Output: bib_info string and sorted array of item entries to use in view
-  def get_sw_info(params, ckey, home_lib, home_loc )
+  def get_sw_info(params, ckey, home_lib, home_loc)
         
     url = SW_LOOKUP_PRE + ckey + SW_LOOKUP_SUF
   
@@ -220,7 +221,7 @@ class Syminfo
   
     # Open URL document
     doc = Nokogiri::XML(open(url))
-  
+      
     #===== Get all bib info fields that are present
   
     if doc.xpath("//record/author")
@@ -263,24 +264,10 @@ class Syminfo
     #puts "======== items from sw: " + items_from_sw.inspect + "\n"
 
     #====== Set the home loc for soc records if we need to
-    if home_loc.nil? && params[:source] == 'SO' 
+    if home_loc.nil? #  && params[:source] == 'SO' 
       home_loc = get_soc_home_loc(items_from_sw, params[:item_id])
     end
     
-    #====== Check for both a home_lib and home loc or inclusion test below will fail
-  
-    if home_lib.nil? || home_loc.nil?
-      
-      ExceptionMailer.deliver_problem_report(params, 
-                                   "home_loc or home_lib is missing.\n" +
-                                    "        Home_loc is: " + home_loc.to_s + "\n" +
-                                    "        Home_lib is: " + home_lib.to_s + "\n" )
-      flash[:system_problem] = @messages['000']
- 
-      render :template => 'requests/app_problem'
-      
-    end
-
     #====== Fill in items hash and cur_locs_arr
     
     cur_locs_arr = []
