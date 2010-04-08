@@ -155,7 +155,7 @@ class Syminfo
   # This may get very elaborate
   def item_include?( home_lib, home_loc, current_loc )
     
-    # puts "==================== home loc and current loc in item include: " + home_loc + " " + current_loc + "\n"
+    # puts "==================== home loc and current loc in item include: " + home_loc.inspect + " " + current_loc.inspect + "\n"
 
     # First test for certain libs and return true if we have them
     if ['SAL', 'SAL3', 'SAL-NEWARK', 'HOPKINS'].include?(home_lib)
@@ -163,8 +163,8 @@ class Syminfo
     # Now test for certain SPEC-COLL combinations (may be more to add)
     elsif home_lib == 'SPEC-COLL' && home_loc =~ /.*\-30/
       return true   
-    # For all others return false if home and current locs match  
-    elsif home_loc == current_loc
+    # For all others return false if home and current locs match or if current_loc nil  
+    elsif home_loc == current_loc || current_loc.nil?
       return false
     # Return true if we get this far without deciding  
     else
@@ -282,7 +282,7 @@ class Syminfo
  
       # Check that home lib + home_loc match params & pass inclusion test
 
-      #puts "=========== lib values / home_locs: " + entry_arr[1].inspect + " = " + home_lib.inspect + " / " + entry_arr[2].inspect + " = " + home_loc.inspect
+      # puts "=========== lib values / home_locs: " + sw_entry[:home_lib].inspect + " = " + home_lib.inspect + " / " + sw_entry[:home_loc].inspect + " = " + home_loc.inspect
       if ( sw_entry[:home_lib] == home_lib && sw_entry[:home_loc] == home_loc ) &&
              item_include?(sw_entry[:home_lib], sw_entry[:home_loc], sym_locs_hash[sw_entry[:item_id]])
     

@@ -2,30 +2,15 @@
 <html><head>
 
 	
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title><%= @requestdef_info[:title] %></title>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title><%= @requestdef_info[:title] %></title>
 
 <script type="text/javascript" src="/javascripts/requests.js"></script>
+<script type="text/javascript" src="/javascripts/datepicker.packed.js"></script>
 
+<link href="/stylesheets/request-forms.css" rel="stylesheet" type="text/css">
+<link href="/stylesheets/datepicker.css" rel="stylesheet" type="text/css" />
 
-    <link href="/stylesheets/request-forms.css" rel="stylesheet" type="text/css">
-	
-	
-<!-- Additonal JS and CSS elements for date selector widget -->
-
-	<script type="text/javascript" src="/javascripts/datepicker.packed.js"></script>
-	
-    <!-- Add the datepicker's stylesheet -->
-    <link href="/stylesheets/datepicker.css" rel="stylesheet" type="text/css" />
-	
-	<script type="text/javascript">
-	// Utility function - used in setting date
-	function pad(value, length) {
-        length = length || 2;
-        return "0000".substr(0,length - Math.min(String(value).length, length)) + value;
-	};
-	</script>
 	
 </head>
 <body>
@@ -292,8 +277,8 @@
 							<span id="avail_<%= values[0] %>" 
 							class="item_available"><%= values[2]%> 
 							<% if ! values[3].nil?  %>
-							<% msg_key = values[3].gsub(/\s/, "_").downcase %>
-							<span class="hold-recall"> - <%= values[3] %> <span class="hold-recall-msg"><%= @msg[msg_key.to_key] %></span></span> 
+							<% msg_key = values[3].gsub(/\s/, "").upcase %>
+							<span class="hold-recall"> - <%= values[3] %> (Hold/Recall) <span class="hold-recall-msg"><%= @messages[msg_key.to_s] %></span></span> 
 							<% end %>
 							</span>
 							</label>
@@ -330,9 +315,10 @@
 
 </div>
 
-<!-- Following is for lightbox code  -->		
 
-<%= render :partial => "shared/delayed_messages", :locals => { :checkedout => @messages['CHECKEDOUT'] }   %>
+
+
+<!-- See if we get a request URL:   --> <%= @request.return_url%>		
 
 </body>
 </html>		

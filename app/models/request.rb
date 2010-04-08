@@ -5,7 +5,7 @@ class Request < Tableless
   attr_reader :params, :ckey, :item_id, :items, :home_lib, :current_loc, :home_loc, :req_type, :request_def, 
               :redir_check, :pickupkey, :patron_name, :patron_email, :univ_id, :library_id, 
               :pickup_lib, :not_needed_after, :due_date, :hold_recall, :vol_num, :call_num, 
-              :source, :comments
+              :source, :return_url, :comments
               
   attr_accessor :library_id, :items_checked, :home_loc, :pickupkey
   
@@ -36,6 +36,7 @@ class Request < Tableless
     @call_num = @params[:call_num]
     @comments = @params[:comments]
     @source = @params[:source]
+    @return_url = get_return_url(request_env, @ckey, @source)
   end
   
   # Take params passed to this object and parse p_data string from Socrates into
@@ -110,6 +111,21 @@ class Request < Tableless
     return univ_id
         
   end # get_univ_id
+  
+  # Get URL needed to return to SW record
+  def get_return_url(env, ckey, source)
+    
+    return_url = ''
+    
+    if source = 'SW'
+    
+      return_url = env['HTTP_REFERER']
+      
+    end
+    
+    return return_url
+    
+  end
     
   
   # Take params and determine whether or not a redirect to the auth path 

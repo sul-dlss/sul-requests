@@ -15,6 +15,8 @@ module Requestmod
     #===== Instantiate request from params passed in + request.env   
     @request = Request.new(params, request.env)
     
+    puts '================ request.referer is: ' + request.env["HTTP_REFERER"].inspect
+    
     #===== Get the params back from the object, since they may have changed
     @params = @request.params
     
@@ -151,6 +153,8 @@ module Requestmod
       # Get all fields here so we can use labels on confirm page
       @field_labels = get_field_labels
       
+      @return_url = @request.return_url
+      
       # Render auth or unauth confirm page
       if @is_authenticated
         render :template => "auth/requests/confirm"
@@ -159,6 +163,14 @@ module Requestmod
       end
 
     end
+  end
+  
+  # Get information needed to return to Searchworks or Socrates session
+  # from confirmation screen
+  def get_return_info( env, source)
+    
+    puts "=========== env in get_return_info is: " + env.inspect
+    
   end
    
   # Method not_authenticated. Just show not_authenticated page
