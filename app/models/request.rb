@@ -118,7 +118,7 @@ class Request < Tableless
   # TODO: This probably needs work to cover all cases
   def get_return_url(return_url, source, env)
 
-    if ! return_url.blank?
+    if return_url.blank?
       if source = 'SW' && 
         ( ! env['HTTP_REFERER'].nil? && env['HTTP_REFERER'] =~ /^.*?searchworks.*$/ )
         return_url = env['HTTP_REFERER']     
