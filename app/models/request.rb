@@ -116,7 +116,7 @@ class Request < Tableless
   # case just return. If not passed in, check that we are coming from SW and set it
   # from the http_referer.
   # TODO: This probably needs work to cover all cases
-  def get_return_url(return_url, source, env)
+  def get_return_url(source, return_url, env)
 
     if return_url.blank?
       if source = 'SW' && 
