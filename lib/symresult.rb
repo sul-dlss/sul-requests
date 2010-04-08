@@ -80,7 +80,7 @@ class Symresult
       # ampersands at this point, otherwise other punctuation gets messed up, such as slashes
        if a.to_s != 'items_checked' && a.to_s != 'request_def' && a.to_s != 'pickupkey' &&
          a.to_s != 'source' && a.to_s != 'msg_keys' && a.to_s != 'item_id' && 
-         a.to_s != 'items' && a.to_s != 'cur_locs'
+         a.to_s != 'items' && a.to_s != 'cur_locs' && a.to_s != 'return_url'
          if b.nil? # deal with nil values!
            b = ""
          end
