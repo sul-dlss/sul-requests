@@ -74,6 +74,7 @@
 			<%= f.hidden_field :items, :value => @sym_info.items.collect {|x| x + "-!-" } %>
 			<%= f.hidden_field :cur_locs, :value => @sym_info.cur_locs.collect {|x| x + "-!-" } %>
 			<%= f.hidden_field :return_url %>
+			<%= f.hidden_field :source %>
 
 			<!-- Visible fields for record; some may be hidden above -->
 					

@@ -129,8 +129,15 @@
 			
 		<% end # empty or not empty results %>		
 		
+		<!-- Link to return to SW or Soc -->
+		
 		<% if ! @request.return_url.blank? %>
 			<a href="<%= @request.return_url %>">Return to SearchWorks</a>
+		
+		<% elsif @request.source == 'SO' %>
+		
+			<a href="javascript:self.close()">Close Window and Return to Socrates</a>
+			
 		<% end %>
 		
 		<!-- End of item information -->	
