@@ -36,7 +36,7 @@ class Request < Tableless
     @call_num = @params[:call_num]
     @comments = @params[:comments]
     @source = @params[:source]
-    @return_url = get_return_url(request_env, @ckey, @source)
+    @return_url = get_return_url(request_env)
   end
   
   # Take params passed to this object and parse p_data string from Socrates into
@@ -112,15 +112,15 @@ class Request < Tableless
         
   end # get_univ_id
   
-  # Get URL needed to return to SW record
-  def get_return_url(env, ckey, source)
+  # Get URL needed to return to SW record or return an empty string
+  # if not from SW. Seems that http_referer will be enough
+  def get_return_url(env)
     
     return_url = ''
     
-    if source = 'SW'
-    
-      return_url = env['HTTP_REFERER']
-      
+    if source = 'SW' && 
+      ( ! env['HTTP_REFERER'].nil? && env['HTTP_REFERER'] =~ /^.*?searchworks.*$/ )
+      return_url = env['HTTP_REFERER']     
     end
     
     return return_url

@@ -129,6 +129,10 @@
 			
 		<% end # empty or not empty results %>		
 		
+		<% if ! @request.return_url.blank? %>
+			<a href="<%= @request.return_url %>">Return to SearchWorks</a>
+		<% end %>
+		
 		<!-- End of item information -->	
         <hr>		
 		<!-- Extra information that may be useful for debugging. Delete this in prod version -->
