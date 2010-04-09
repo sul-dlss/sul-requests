@@ -66,7 +66,7 @@ class Syminfo
     items[barcode].store( :home_lib, library )
     items[barcode].store( :home_loc, home_loc )
     items[barcode].store( :current_loc, current_loc )
-    items[barcode].store( :req_type, get_request_type( library, current_loc, params[:req_type] ) )
+    items[barcode].store( :req_type, get_request_type( library, current_loc, params[:req_type], { :home_loc => home_loc })  )
     items[barcode].store( :shelf_key, shelf_key)
 
     return items # this is the updated hash we got initally
@@ -219,6 +219,7 @@ class Syminfo
   
     items_hash = Hash.new
   
+    # puts " ================ url to call in get_sw_info: " + url.inspect
     # Open URL document
     doc = Nokogiri::XML(open(url))
       

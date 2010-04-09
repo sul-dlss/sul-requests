@@ -121,14 +121,14 @@ module Requestutils
   # Method get_request_type. Take parameters and analyze them to figure out
   # a request type. Note that we need to call this method for every item and the
   # req_type differ for each item and may not match the req_type parm passed in
-  #def get_request_type(params)
-  def get_request_type(home_lib, current_loc, req_type_parm)
+  def get_request_type(home_lib, current_loc, req_type_parm, extras = {} )
 
     req_type = ''
 
-    # puts "======================== home_lib in get_request_type is: " + home_lib.inspect + "\n"
-    # puts "======================== current_loc in get_request_type is: " + current_loc.inspect + "\n"
-    # puts "======================== home_lib in get_request_type is: " + req_type_parm.inspect + "\n"
+     # puts "======================== home_lib in get_request_type is: " + home_lib.inspect + "\n"
+     # puts "======================== current_loc in get_request_type is: " + current_loc.inspect + "\n"
+     # puts "======================== req_type_param in get_request_type is: " + req_type_parm.inspect + "\n"
+     # puts "============ home_loc is: " + extras[:home_loc].inspect
 
     # First cover items where the current location is the determining factor
 
@@ -188,9 +188,15 @@ module Requestutils
 
     # Then SPEC-COLL as home lib with -30 location or SAL3-TO-SP req_type (from Socrates)
 
-    elsif home_lib == 'SPEC-COLL' && ( home_loc.to_s =~ /.*?-30$/ ||
-                                                req_type_parm.to_s == 'SAL3-TO-SP' )
-        req_type = 'SAL3-TO-SP'                                                
+    elsif home_lib == 'SPEC-COLL' 
+        
+        if ( extras.has_key?(:home_loc) && extras[:home_loc] =~ /.*?-30$/ ) ||
+          req_type_parm.to_s == 'SAL3-TO-SP'
+          
+          req_type = 'SAL3-TO-SP' 
+          
+        end
+                                               
     
     # SAL
 
