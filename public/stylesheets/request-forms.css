@@ -1,34 +1,91 @@
 @charset "UTF-8";
 /* CSS Document */
 
-body {font-family: Verdana,"Lucida Grande","Lucida Sans Unicode",Arial,sans-serif; font-size: 80%; text-align: center; background-color: #424242; margin: 0px; padding: 0px;}
-form {margin: 0; padding: 0;}
-#header {background-color: #900; color: #FFF; text-align: right; height: 34px; font-size: .75em; background-image:url(http://library.stanford.edu/images/main_l2/globals_sulair_logo.gif); background-repeat: no-repeat; border-bottom: 1px solid #660000;}
+/* http://meyerweb.com/eric/tools/css/reset/ */
+/* v1.0 | 20080212 */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+
+/* remember to define focus styles! */
+:focus {
+	outline: 0;
+}
+
+/* remember to highlight inserts somehow! */
+ins {
+	text-decoration: none;
+}
+del {
+	text-decoration: line-through;
+}
+
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+
+
+body {font-family: "Lucida Grande","Lucida Sans Unicode",Verdana, Arial,sans-serif; font-size: 75%; text-align: center; background-color: #424242; margin: 0px; padding: 0px;}
+#header {background-color: #900; color: #FFF; text-align: right; height: 34px; font-size: .75em; background-image:url(http://library.stanford.edu/images/main_l2/globals_sulair_logo.gif); background-repeat: no-repeat; border-bottom: 1px solid #d11d02;}
 #header a {color: #fff;}
 #header a#SULAIR {position: absolute; top: 0px; left: 0px; display: block; width: 150px; height: 34px; text-decoration: none;}
 #header .links {position: absolute; top: 0px; right: 0px; padding: 8px; z-index: 99;}
-#container {position: relative; background-color: #F5F3F2; width: 50em; margin: 0px auto; text-align: left; font-size: .9em; padding: 20px; border-left: 1px solid #ccc; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc}
-form, label, dl {padding: 0; margin: 0;}
-input {margin: 0;}
+#container {position: relative; background-color: #f6f6f6; width: 50em; margin: -15px auto 15px auto; text-align: left; padding: 20px; border-left: 1px solid #ccc; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc}
 a {color: #2E4F81;}
 h1 {font-size: 1.3em; padding: 0px; margin: 0px; color: #555; font-weight: normal;}
 h2 { font-size: 1em; font-weight: bold; color: #555; padding: 0px; margin: 1em 0; }
 fieldset {display: block; background-color: #fff; border: 1px solid  #ccc; margin: 0px auto 20px auto; padding: 10px 20px 20px;}
-legend {font-size: 1em; padding: 1px 5px; text-transform: uppercase; background-color: #FFFFFF; color: #555555; border-left: 1px solid #ccc; border-top: 1px solid #ccc; border-right: 1px solid #ccc;}
+legend {font-size: .9em; padding: 5px; background-color: #424242; color: #f6f6f6; background-image:url("bg-legend.png");}
 
 ul, li {list-style-type: none; margin: 0px; padding: 0px;}
 
 .opening ul, .opening li {list-style-type: circle; margin: 10px; padding: 0px;}
 
-
 dt {clear: both; float: left; width: 12.5em; padding: 1px 0; text-align: right; color: #555;}
 dd {margin-left: 13em; padding: 1px 0px; }
 
-fieldset dt {padding: 5px 0px 1px;}
+fieldset dt {padding: 7px 0px 1px;}
 fieldset dd {padding: 2px 0px;}
 
-input, select, textarea {width: 20em; margin: 0; font-size: 1em;}
-input[type=radio], input[type=checkbox] {width: 2em;}
+input {font-family: "Lucida Grande","Lucida Sans Unicode",Verdana, Arial,sans-serif; width: 20em; margin: 0; font-size: 1em;}
+select {font-family: "Lucida Grande","Lucida Sans Unicode",Verdana, Arial,sans-serif; width: 20em; margin: 0; font-size: 1em; padding: 2px 0;}
+textarea  {font-family: "Lucida Grande","Lucida Sans Unicode",Verdana, Arial,sans-serif; width: 20em; margin: 0; font-size: 1em; height: 10em;}
+
+input[type=checkbox] {width: 2em; margin: 1px 0;}
+input[type=radio] {width: 2em; margin: 2px 0;}
 input#request_not_needed_after {width: 8em !important;}
 
 div.opening, div.request_successful, div.request_failed {padding: 10px 0 0 0;}
@@ -55,7 +112,7 @@ dd {margin-left: 13em; padding: 1px 0px; }
 
 span.library {font-weight: bold; padding: 0 20px 5px 0; text-align: right; color: #555;}
 
-div.access_data {padding: 2px; max-height: 16em; overflow: auto; margin: 2px 0; border:1px solid #CCCCCC;}
+div.access_data {padding: 2px; max-height: 16em; overflow: auto; margin: 2px 0; border:1px dotted #CCCCCC;}
 
 .access_data ol {margin:5px; padding: 0;}
 .access_data ol li {list-style-type:none; padding:0 0 3px 0; border-bottom:none; font-weight:normal;}
@@ -68,14 +125,25 @@ ul.show_status ol li {margin: 0;}
 
 #notification {margin: 15px 0px 5px; border: 1px solid #990000; padding: 5px; background-color: #ffffe0; }
 #notification ul {margin: 0 25px;}
-#notification ul li {list-style-type: none; list-style-image: url(http://www.stanford.edu/~jvine/alert.png);}
+#notification ul li {list-style-type: none; list-style-image: url("alert.png");}
 
-h2.success {color: #009900;}
-h2.fail {color: #cc0000;}
+h2.success {color: #009900; background-image: url("check.png"); background-position:left center;
+	background-repeat:no-repeat; padding-left:20px;}
+
+h2.fail {color: #cc0000; background-image: url("x.png"); background-position:left center;
+	background-repeat:no-repeat; padding-left:20px;}
 
 .disabled {color: #666;}
-dd.unavail_items {padding-top: 5px;}
+dd.unavail_items {padding-top: 7px;}
 dd.unavail_items ul {padding: 5px 0;}
+
+div.access_data li {position: relative;}
+span.hold-recall-msg {position: absolute; left: -9999px;}
+div.access_data li:hover span.item_available span.hold-recall span.hold-recall-msg {position: absolute; top: 1em; left: 20em; 
+	width: 20em; z-index: 9999; background-color: #ffffe0; border: 1px solid #ccc; padding: 3px; overflow: visible;}
+span.hold-recall {background-image: url("help.png"); background-position:right center;
+	background-repeat:no-repeat; padding-right:20px;}
+
 
 @media mobile {
 	dt {clear: both; float: none; width: auto; padding: 1px 0; text-align: left; color: #555;}
