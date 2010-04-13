@@ -86,7 +86,7 @@ class Syminfo
         current_loc =~ /-LOAN/     
       item_text = TEXT_FOR_LOC_CODES[:NOTONSHELF]
     elsif ["NEWBOOKS", "ONORDER"].include?(current_loc)      
-      item_text = TEXT_FOR_LOC_CODES[current_loc.to_s]
+      item_text = TEXT_FOR_LOC_CODES[current_loc.to_sym]
     elseif current_loc = 'IN-PROCESS'
       item_text = TEXT_FOF_LOC_CODES[:INPROCESS]     
     end
