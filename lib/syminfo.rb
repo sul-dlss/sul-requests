@@ -92,8 +92,7 @@ class Syminfo
     end
      
   end
-  
-  
+   
 
   # Method get_items. Takes sorted items array and makes another array that contains delimited strings
   # with "^" separating name, value, and label of the checkbox we will create on the form
@@ -153,6 +152,7 @@ class Syminfo
   # Method item_include. Take home library, home location and current location
   # Return true or false depending on whether item should be included in item array.
   # This may get very elaborate
+  # TODO: Decide whether we need anything like this any longer. Not being called currently
   def item_include?( home_lib, home_loc, current_loc )
     
     # puts "==================== home loc and current loc in item include: " + home_loc.inspect + " " + current_loc.inspect + "\n"
@@ -172,46 +172,52 @@ class Syminfo
     end
     
   end # item_include  
-
   
-  # Take an item from an array of items returned from a SearchWorks request lookup
-  # and return an hash of the delimited elements in that item
-  def get_sw_entry_hash(item)
-    
-      item_string = item.to_s
-      item_string.gsub!(/\<.*?\>/, '')
 
-      # 0 - item_id | 1 - home_lib | 2 - home_loc | 3 - current_loc | 4 - shelving rule? | 5 - base call num? | 6 - ? | 7 - 008? | 8 - call num | 9 - shelfkey
-      entry_arr = item_string.split(/ \-\|\- /)
+  # Take all items from SW and return a hash with ID as key and shelfkey as value
+  def get_sw_shelf_keys(items)
 
-      keys = [:item_id, :home_lib, :home_loc, :curr_loc, :shelve_rule, :base_cal_num, :extra_1, :extra_2,
-             :call_num, :shelf_key]
+    sw_shelf_keys = {}
 
-      entry_hash = Hash[*keys.zip(entry_arr).flatten]
+    items.each do |item|
+
+       item_string = item.to_s
+       item_string.gsub!(/\<.*?\>/, '')
+
+       entry_arr = item_string.split(/ \-\|\- /)
+
+       # 0 - item_id | 1 - home_lib | 2 - home_loc | 3 - current_loc | 4 - shelving rule? |
+       # 5 - base call num? | 6 - ? | 7 - 008? | 8 - call num | 9 - shelfkey
+
+       sw_shelf_keys[entry_arr[0]] = entry_arr[9]
+
+    end
+
+    return sw_shelf_keys
+
+end
+
+  # Take an item node from a set of item nodes returned from a Symphony request lookup
+  # and return a hash of the delimited elements for that item
+  def get_sym_entry_hash(item)
+
+
+      entry_hash = { :item_id => item.xpath('./id').text,
+                     :home_loc => item.xpath('./home_location').text,
+                     :current_loc => item.xpath('./current_location').text,
+                     :call_num => item.xpath('./item_number').text
+                   }
 
       return entry_hash
 
   end
-  
-  # Take an array of SearchWorks item elements and an item ID and return
-  # the home_loc from the array entry that matches the item ID
-  def get_soc_home_loc(items, item_id)
-    
-    item_id_match = items.detect { |item| /#{item_id}/ =~ item }
-    
-    entry_hash = get_sw_entry_hash(item_id_match)
-    home_loc = entry_hash[:home_loc]
-
-    return home_loc
-    
-  end
-  
+   
   # Method get_sw_info. Gets and parses all info from SearchWorks .request call
   # Inputs: params from request, ckey, home_lib
   # Output: bib_info string and sorted array of item entries to use in view
   def get_sw_info(params, ckey, home_lib, home_loc)
         
-    url = SW_LOOKUP_PRE + ckey + SW_LOOKUP_SUF
+    url = SW_LOOKUP_PRE + ckey + SW_LOOKUP_SUF + '?lib=' + home_lib
   
     # Method scope vars to hold data we want
   
@@ -241,66 +247,64 @@ class Syminfo
        bib_info = bib_info + ' ' + doc.xpath("//record/physical_description").text
     end
   
+
     #===== Get array of all symphony item entries ( item_details/item )
-  
+
     items_from_sym = doc.xpath("//item_details/item")
-    
-    #puts "======== items from sym: " + items_from_sym.inspect + "\n"
-  
-    # Put Symphony item info into hash with item_id as key and current loc as value
-    # and also create separate cur_locs array with just loc values
-  
-    sym_locs_hash = {}
-    
+
+    # puts "======== items from sym: " + items_from_sym.inspect + "\n"
+
     items_from_sym.each do |item|
-       if item.to_s =~ /.*?<id>(.*?)<\/id>.*?\<location\>(.*?)\<\/location\>.*$/m
-          sym_locs_hash[$1] = $2
-       end
+
+       get_sym_entry_hash( item )
+
     end
-  
-    #===== Get array of all sw item entries (item_display_fields/item_display)
-  
+
     items_from_sw = doc.xpath("//item_display_fields/item_display")
+   
+    sw_shelf_keys = get_sw_shelf_keys( items_from_sw )
 
-    #puts "======== items from sw: " + items_from_sw.inspect + "\n"
+    #puts "========== sw_shelf_keys: " + sw_shelf_keys.inspect + "\n"
 
-    #====== Set the home loc for soc records if we need to
-    if home_loc.nil? #  && params[:source] == 'SO' 
-      home_loc = get_soc_home_loc(items_from_sw, params[:item_id])
-    end
-    
     #====== Fill in items hash and cur_locs_arr
-    
+
     cur_locs_arr = []
-       
-    items_from_sw.each_with_index do |item, index|
 
-      # 0 - item_id | 1 - home_lib | 2 - home_loc | 3 - current_loc | 4 - shelving rule? | 5 - base call num? | 6 - ? | 7 - 008? | 8 - call num | 9 - shelfkey
-      sw_entry = get_sw_entry_hash(item)
+    items_from_sym.each do |item|
 
-      #puts "======== Entry array in get_sw_info is: " + entry_arr.inspect
-      #puts "============== params in get_sw_info is: " + params.inspect
- 
-      # Check that home lib + home_loc match params & pass inclusion test
+      sym_entry = get_sym_entry_hash(item)
 
-      # puts "=========== lib values / home_locs: " + sw_entry[:home_lib].inspect + " = " + home_lib.inspect + " / " + sw_entry[:home_loc].inspect + " = " + home_loc.inspect
-      if ( sw_entry[:home_lib] == home_lib && sw_entry[:home_loc] == home_loc ) &&
-             item_include?(sw_entry[:home_lib], sw_entry[:home_loc], sym_locs_hash[sw_entry[:item_id]])
-    
-          # Add to items hash
-          items_hash = get_items_hash( params,
-            items_hash, sw_entry[:item_id], sw_entry[:call_num], home_lib,
-            sw_entry[:home_loc], sym_locs_hash[sw_entry[:item_id]], sw_entry[:shelf_key] )
+      #puts "========== sym entry is: " + sym_entry.inspect + "\n"
 
-          # Also add to cur_locs_arr if home loc doesn't match cur loc
-          if sw_entry[:home_loc] != sym_locs_hash[sw_entry[:item_id]] && ! sym_locs_hash[sw_entry[:item_id]].nil?
-            cur_locs_arr.push( sym_locs_hash[sw_entry[:item_id]])
-          end
+      shelf_key = sw_shelf_keys[sym_entry[:item_id]]
+
+      if shelf_key.nil?
+         shelf_key = 'XXXX ' + sym_entry[:call_num]
       end
 
-    end # do each item from sw
-    
-            
+      #puts "======= to be added to items: id => " + sym_entry[:item_id] +
+      #                                  " call_num => " + sym_entry[:call_num] +
+      #                                  " home_loc => " + sym_entry[:home_loc] +
+      #                                  " current_loc => " + sym_entry[:current_loc] +
+      #                                  " shelfkey => " + shelf_key
+
+      # Add to items hash
+      items_hash = get_items_hash( params,
+        items_hash, sym_entry[:item_id], sym_entry[:call_num], home_lib,
+        sym_entry[:home_loc], sym_entry[:current_loc], shelf_key )
+
+      # Also add to cur_locs_arr if home loc doesn't match cur loc
+      if sym_entry[:home_loc] != sym_entry[:current_loc] && ! sym_entry[:item_id].nil?
+        cur_locs_arr.push( sym_entry[:current_loc])
+      end
+      
+      # And set the Soc home loc if we need to      
+      if home_loc.nil? && ( sym_entry[:item_id] == params[:item_id] )
+        home_loc = sym_entry[:home_loc]
+      end
+
+    end # do each item from sym
+              
     #===== Sort the items
   
     items_sorted = items_hash.sort_by {|key, shelf_key| shelf_key[:shelf_key]}
