@@ -112,7 +112,9 @@ dd {margin-left: 13em; padding: 1px 0px; }
 
 span.library {font-weight: bold; padding: 0 20px 5px 0; text-align: right; color: #555;}
 
-div.access_data {padding: 2px; max-height: 16em; overflow: auto; margin: 2px 0; border:1px dotted #CCCCCC;}
+div.access_data {padding: 2px; margin: 2px 0; border:1px dotted #CCCCCC;}
+
+div.access_data_scroll {padding: 2px; max-height: 16em; overflow: auto; margin: 2px 0; border:1px dotted #CCCCCC;}
 
 .access_data ol {margin:5px; padding: 0;}
 .access_data ol li {list-style-type:none; padding:0 0 3px 0; border-bottom:none; font-weight:normal;}
