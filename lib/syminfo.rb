@@ -254,11 +254,11 @@ end
 
     # puts "======== items from sym: " + items_from_sym.inspect + "\n"
 
-    items_from_sym.each do |item|
+    #items_from_sym.each do |item|
 
-       get_sym_entry_hash( item )
+    #   get_sym_entry_hash( item )
 
-    end
+    #end
 
     items_from_sw = doc.xpath("//item_display_fields/item_display")
    
@@ -274,7 +274,7 @@ end
 
       sym_entry = get_sym_entry_hash(item)
 
-      #puts "========== sym entry is: " + sym_entry.inspect + "\n"
+      # puts "========== sym entry is: " + sym_entry.inspect + "\n"
 
       shelf_key = sw_shelf_keys[sym_entry[:item_id]]
 
@@ -298,6 +298,7 @@ end
         cur_locs_arr.push( sym_entry[:current_loc])
       end
       
+      # puts "========= items ids are: " + sym_entry[:item_id].inspect + ' / ' + params[:items_id].inspect
       # And set the Soc home loc if we need to      
       if home_loc.nil? && ( sym_entry[:item_id] == params[:item_id] )
         home_loc = sym_entry[:home_loc]
@@ -316,6 +317,7 @@ end
     items = get_items( items_sorted )
   
     #===== Return bib_info string, items array, sym_locs_arr, and home_loc
+    
   
     return bib_info, items, cur_locs_arr, home_loc
   
