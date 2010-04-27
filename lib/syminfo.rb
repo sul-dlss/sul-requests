@@ -205,7 +205,8 @@ end
       entry_hash = { :item_id => item.xpath('./id').text,
                      :home_loc => item.xpath('./home_location').text,
                      :current_loc => item.xpath('./current_location').text,
-                     :call_num => item.xpath('./item_number').text
+                     :call_num => item.xpath('./item_number').text,
+                     :shelf_key => item.xpath('./shelfkey').text
                    }
 
       return entry_hash
@@ -260,9 +261,11 @@ end
 
     #end
 
-    items_from_sw = doc.xpath("//item_display_fields/item_display")
+    # Eliminate the following because shelfkey will be part of item_details/item
+    
+    # items_from_sw = doc.xpath("//item_display_fields/item_display")
    
-    sw_shelf_keys = get_sw_shelf_keys( items_from_sw )
+    # sw_shelf_keys = get_sw_shelf_keys( items_from_sw )
 
     #puts "========== sw_shelf_keys: " + sw_shelf_keys.inspect + "\n"
 
@@ -276,11 +279,11 @@ end
 
       # puts "========== sym entry is: " + sym_entry.inspect + "\n"
 
-      shelf_key = sw_shelf_keys[sym_entry[:item_id]]
+      # shelf_key = sw_shelf_keys[sym_entry[:item_id]]
 
-      if shelf_key.nil?
-         shelf_key = 'XXXX ' + sym_entry[:call_num]
-      end
+      # if shelf_key.nil?
+      #   shelf_key = 'XXXX ' + sym_entry[:call_num]
+      #end
 
       #puts "======= to be added to items: id => " + sym_entry[:item_id] +
       #                                  " call_num => " + sym_entry[:call_num] +
@@ -291,7 +294,7 @@ end
       # Add to items hash
       items_hash = get_items_hash( params,
         items_hash, sym_entry[:item_id], sym_entry[:call_num], home_lib,
-        sym_entry[:home_loc], sym_entry[:current_loc], shelf_key )
+        sym_entry[:home_loc], sym_entry[:current_loc], sym_entry[:shelf_key] )
 
       # Also add to cur_locs_arr if home loc doesn't match cur loc
       if sym_entry[:home_loc] != sym_entry[:current_loc] && ! sym_entry[:item_id].nil?
