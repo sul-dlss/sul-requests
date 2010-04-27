@@ -152,7 +152,7 @@ class Syminfo
   # Method item_include. Take home library, home location and current location
   # Return true or false depending on whether item should be included in item array.
   # This may get very elaborate
-  # TODO: Decide whether we need anything like this any longer. Not being called currently
+  # TODO: Needed any longer? Selection logic now in request.pl script on server.
   def item_include?( home_lib, home_loc, current_loc )
     
     # puts "==================== home loc and current loc in item include: " + home_loc.inspect + " " + current_loc.inspect + "\n"

@@ -120,7 +120,11 @@ module Requestutils
   
   # Method get_request_type. Take parameters and analyze them to figure out
   # a request type. Note that we need to call this method for every item and the
-  # req_type differ for each item and may not match the req_type parm passed in
+  # req_type differ for each item and may not match the req_type parm passed in. 
+  # We also need to set the req_type for the form as a whole, however, so we know
+  # how the initial form ought to display. Or is that necessary? Yes, it seems, because
+  # req_type might be used in get_pickup_lib.
+  # TODO: Add logic for get_request_type that accounts for authentication
   def get_request_type(home_lib, current_loc, req_type_parm, extras = {} )
 
     req_type = ''
@@ -136,7 +140,8 @@ module Requestutils
 
         req_type = 'REQ-INPRO'
 
-    # Should cover all except SAL and SAL-NEWARKL
+    # Should cover all except SAL and SAL-NEWARK
+    # TODO: In get_request_type this needs to be REQ-HOLD or REQ-RECALL
     elsif ( CHECKED_OUT_LOCS.include?(current_loc) ||
           current_loc =~ /-LOAN/ ) &&
           ! ['SAL', 'SAL-NEWARK'].include?(home_lib) # covered below
