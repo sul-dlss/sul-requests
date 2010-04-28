@@ -64,6 +64,8 @@ module Requestutils
     }  
 
     return parms_hash
+    
+    # puts "=========== Socrates parms hash is: " + parms_hash.inspect 
 
   end # parse_soc_url
 
@@ -118,6 +120,35 @@ module Requestutils
     
   end # get_req_def    
   
+  
+  # Take current_loc and other info (?) and return req_hold or req_recall
+  def get_rec_hold_type ( current_loc, req_hold_parm )
+    
+    req_type = 'REQ-HOLD' # make this the default
+    
+    # ---- NOT_ON_SHELF automatically RECALL if authenticated
+    
+    if NOT_ON_SHELF_LOCS.include?( current_loc ) || current_loc =~ /\-LOAN/
+      if @is_authenticated       
+        req_type = 'REQ-RECALL'     
+      end   
+    elsif MISSING_LOCS.include( current_loc ) || current_loc == 'NEWBOOKS'
+      if @is_authenticated       
+        req_type = 'REQ-RECALL'     
+      end       
+    elsif CHECKED_OUT_LOCS.include( current_loc)
+      if ! req_hold_parm.blank?
+        req_type = 'REQ-' + req_hold_parm
+      end
+        
+    end
+     
+    return req_type
+    
+  end
+  
+  
+  
   # Method get_request_type. Take parameters and analyze them to figure out
   # a request type. Note that we need to call this method for every item and the
   # req_type differ for each item and may not match the req_type parm passed in. 
@@ -141,12 +172,11 @@ module Requestutils
         req_type = 'REQ-INPRO'
 
     # Should cover all except SAL and SAL-NEWARK
-    # TODO: In get_request_type this needs to be REQ-HOLD or REQ-RECALL
-    elsif ( CHECKED_OUT_LOCS.include?(current_loc) ||
+    elsif ( REC_HOLD_LOCS.include?(current_loc) ||
           current_loc =~ /-LOAN/ ) &&
           ! ['SAL', 'SAL-NEWARK'].include?(home_lib) # covered below
 
-        req_type = 'REQ-RECALL'
+        req_type = get_rec_hold_type( current_loc, req_type_parm )
 
     elsif current_loc == 'ON-ORDER' && ! ['HOOVER', 'LAW'].include?( home_lib )
 

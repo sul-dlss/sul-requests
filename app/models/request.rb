@@ -59,6 +59,8 @@ class Request < Tableless
       end        
     end
 
+    # puts "=========== params_final ins request.get_params is: " + params_final.inspect
+    
     return params_final
     
   end
