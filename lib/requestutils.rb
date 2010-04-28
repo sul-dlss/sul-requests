@@ -132,11 +132,11 @@ module Requestutils
       if @is_authenticated       
         req_type = 'REQ-RECALL'     
       end   
-    elsif MISSING_LOCS.include( current_loc ) || current_loc == 'NEWBOOKS'
+    elsif MISSING_LOCS.include?( current_loc ) || current_loc == 'NEWBOOKS'
       if @is_authenticated       
         req_type = 'REQ-RECALL'     
       end       
-    elsif CHECKED_OUT_LOCS.include( current_loc)
+    elsif CHECKED_OUT_LOCS.include?( current_loc)
       if ! req_hold_parm.blank?
         req_type = 'REQ-' + req_hold_parm
       end
