@@ -138,7 +138,7 @@ module Requestutils
       end       
     elsif CHECKED_OUT_LOCS.include?( current_loc)
       if ! req_hold_parm.blank?
-        req_type = 'REQ-' + req_hold_parm
+        req_type = req_hold_parm
       end
         
     end
@@ -154,7 +154,10 @@ module Requestutils
   # req_type differ for each item and may not match the req_type parm passed in. 
   # We also need to set the req_type for the form as a whole, however, so we know
   # how the initial form ought to display. Or is that necessary? Yes, it seems, because
-  # req_type might be used in get_pickup_lib.
+  # req_type might be used in get_pickup_lib. This gets very complicated because it's 
+  # for multiple purposes. In particular, when we set the req_type for items, we need
+  # to pick up a completely separate hold_recall parameter from the form in some
+  # cases
   # TODO: Add logic for get_request_type that accounts for authentication
   def get_request_type(home_lib, current_loc, req_type_parm, extras = {} )
 
