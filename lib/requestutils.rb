@@ -122,6 +122,10 @@ module Requestutils
   
   
   # Take current_loc and other info (?) and return req_hold or req_recall
+  # Note that this is going to happen before user fills out form. In the case
+  # of checked-out items we need to override with user's choice in PL/SQL.
+  # This is ridiculously complicated but there seems to be no alternative because
+  # we are using a single form for multiple items
   def get_rec_hold_type ( current_loc, req_hold_parm )
     
     req_type = 'REQ-HOLD' # make this the default
@@ -137,8 +141,10 @@ module Requestutils
         req_type = 'REQ-RECALL'     
       end       
     elsif CHECKED_OUT_LOCS.include?( current_loc)
+      # This applies only for Socrates records where authentication will 
+      # provide a "REQ-RECALL" parameter.
       if ! req_hold_parm.blank?
-        req_type = req_hold_parm
+        req_type = req_hold_parm  
       end
         
     end
