@@ -134,10 +134,10 @@ class Request < Tableless
   
   # Take params and determine whether or not a redirect to the auth path 
   # is needed. Logic here is a bit complicated.
-  def check_auth_redir(params)
+  def check_auth_redir(params) 
       
     # Redir already done so return false
-    if params.has_key?(:redir_done)
+    if params.has_key?(:redir_done) 
       return false
     end
     
@@ -153,9 +153,10 @@ class Request < Tableless
       return true # Soc auth with auth requirement noted as a param    
     elsif ( params.has_key?(:source) && params[:source] == 'SO' ) && 
           (params.has_key?(:req_type) && ['REQ-RECALL'].include?(params[:req_type]) )
-      return true
-    elsif params.has_key?(:current_loc) && ['INPROCESS', 'ON-ORDER'].include?(params[:current_loc])
-      return true
+      return true      
+    elsif params.has_key?(:current_loc) && 
+      ['INPROCESS', 'ON-ORDER'].include?(params[:current_loc])  
+        return true   
     end
     
     # If we get this far, just return false

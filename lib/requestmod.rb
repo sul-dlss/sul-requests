@@ -25,24 +25,21 @@ module Requestmod
         
     #===== Check whether we have req_def and req_type & redirect if we do not 
         
-    if @request.request_def == 'UNDEFINED' || @request.req_type.blank?
-      
-      #problem_message = 
-      
+    if @request.request_def == 'UNDEFINED' || @request.req_type == 'UNDEFINED'
+            
       ExceptionMailer.deliver_problem_report(@request.params, 
                                    "request_def undefined or req_type missing.\n" +
                                     "        Request def is: " + @request.request_def.to_s + "\n" +
                                     "        Request type is: " + @request.req_type.to_s + "\n" )
-      flash[:system_problem] = @messages['000']
-                                   
+      flash[:system_problem] = @messages['000']                                  
       
-      render :template => 'requests/app_problem'
+      render :template => 'requests/app_problem' and return false
       
     else    
        
       #===== Check whether we need to redirect to the auth path and redirect if so
- 
-      if @request.redir_check
+       
+      if @request.redir_check 
         redirect_to "/auth/requests/new?" + @request.params.to_query + "&redir_done=y"
       end
       
@@ -61,7 +58,7 @@ module Requestmod
       
       #====== Check that we have either a request or sym_info home loc or inclusion test in sym_info will fail
   
-      if @request.home_loc.nil? && @sym_info.home_loc.nil?
+      if @request.home_loc.nil? && ( @sym_info.home_loc.nil? || @sym_info.home_loc == 'UNDEFINED' ) 
       
         ExceptionMailer.deliver_problem_report(params, 
                                    "home_loc or home_lib is missing.\n" +
@@ -71,7 +68,7 @@ module Requestmod
                                     )
         flash[:system_problem] = @messages['000']
  
-        render :template => 'requests/app_problem'
+        render :template => 'requests/app_problem' and return false
       
       end      
       
@@ -79,10 +76,7 @@ module Requestmod
       
       if @request.home_loc.blank? && ! @sym_info.home_loc.blank?
         @request.home_loc = @sym_info.home_loc
-      end
-      
-      # puts "============== request.home_loc after check is: " + @request.home_loc.inspect 
-      
+      end    
      
       #====== Get info for request def -- form text, etc.
       @requestdef_info = Requestdef.find_by_name( @request.request_def )

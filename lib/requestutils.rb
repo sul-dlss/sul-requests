@@ -167,7 +167,7 @@ module Requestutils
   # TODO: Add logic for get_request_type that accounts for authentication
   def get_request_type(home_lib, current_loc, req_type_parm, extras = {} )
 
-    req_type = ''
+    req_type = 'UNDEFINED'
 
      # puts "======================== home_lib in get_request_type is: " + home_lib.inspect + "\n"
      # puts "======================== current_loc in get_request_type is: " + current_loc.inspect + "\n"

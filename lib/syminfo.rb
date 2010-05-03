@@ -250,76 +250,91 @@ end
   
 
     #===== Get array of all symphony item entries ( item_details/item )
+    
 
     items_from_sym = doc.xpath("//item_details/item")
 
-    # puts "======== items from sym: " + items_from_sym.inspect + "\n"
-
-    #items_from_sym.each do |item|
-
-    #   get_sym_entry_hash( item )
-
-    #end
-
-    # Eliminate the following because shelfkey will be part of item_details/item
+    puts "======== items from sym: " + items_from_sym.inspect + "\n"
     
-    # items_from_sw = doc.xpath("//item_display_fields/item_display")
-   
-    # sw_shelf_keys = get_sw_shelf_keys( items_from_sw )
-
-    #puts "========== sw_shelf_keys: " + sw_shelf_keys.inspect + "\n"
-
-    #====== Fill in items hash and cur_locs_arr
-
-    cur_locs_arr = []
-
-    items_from_sym.each do |item|
-
-      sym_entry = get_sym_entry_hash(item)
-
-      # puts "========== sym entry is: " + sym_entry.inspect + "\n"
-
-      # shelf_key = sw_shelf_keys[sym_entry[:item_id]]
-
-      # if shelf_key.nil?
-      #   shelf_key = 'XXXX ' + sym_entry[:call_num]
+    if ! items_from_sym.blank?
+  
+      #items_from_sym.each do |item|
+  
+      #   get_sym_entry_hash( item )
+  
       #end
-
-      #puts "======= to be added to items: id => " + sym_entry[:item_id] +
-      #                                  " call_num => " + sym_entry[:call_num] +
-      #                                  " home_loc => " + sym_entry[:home_loc] +
-      #                                  " current_loc => " + sym_entry[:current_loc] +
-      #                                  " shelfkey => " + shelf_key
-
-      # Add to items hash
-      items_hash = get_items_hash( params,
-        items_hash, sym_entry[:item_id], sym_entry[:call_num], home_lib,
-        sym_entry[:home_loc], sym_entry[:current_loc], sym_entry[:shelf_key] )
-
-      # Also add to cur_locs_arr if home loc doesn't match cur loc
-      if sym_entry[:home_loc] != sym_entry[:current_loc] && ! sym_entry[:item_id].nil?
-        cur_locs_arr.push( sym_entry[:current_loc])
-      end
+  
+      # Eliminate the following because shelfkey will be part of item_details/item
       
-      # puts "========= items ids are: " + sym_entry[:item_id].inspect + ' / ' + params[:items_id].inspect
-      # And set the Soc home loc if we need to      
-      if home_loc.nil? && ( sym_entry[:item_id] == params[:item_id] )
-        home_loc = sym_entry[:home_loc]
-      end
-
-    end # do each item from sym
-              
-    #===== Sort the items
+      # items_from_sw = doc.xpath("//item_display_fields/item_display")
+     
+      # sw_shelf_keys = get_sw_shelf_keys( items_from_sw )
   
-    items_sorted = items_hash.sort_by {|key, shelf_key| shelf_key[:shelf_key]}
+      #puts "========== sw_shelf_keys: " + sw_shelf_keys.inspect + "\n"
+  
+      #====== Fill in items hash and cur_locs_arr
+  
+      cur_locs_arr = []
+  
+      items_from_sym.each do |item|
+  
+        sym_entry = get_sym_entry_hash(item)
+  
+        # puts "========== sym entry is: " + sym_entry.inspect + "\n"
+  
+        # shelf_key = sw_shelf_keys[sym_entry[:item_id]]
+  
+        # if shelf_key.nil?
+        #   shelf_key = 'XXXX ' + sym_entry[:call_num]
+        #end
+  
+        #puts "======= to be added to items: id => " + sym_entry[:item_id] +
+        #                                  " call_num => " + sym_entry[:call_num] +
+        #                                  " home_loc => " + sym_entry[:home_loc] +
+        #                                  " current_loc => " + sym_entry[:current_loc] +
+        #                                  " shelfkey => " + shelf_key
+  
+        # Add to items hash
+        items_hash = get_items_hash( params,
+          items_hash, sym_entry[:item_id], sym_entry[:call_num], home_lib,
+          sym_entry[:home_loc], sym_entry[:current_loc], sym_entry[:shelf_key] )
+  
+        # Also add to cur_locs_arr if home loc doesn't match cur loc
+        if sym_entry[:home_loc] != sym_entry[:current_loc] && ! sym_entry[:item_id].nil?
+          cur_locs_arr.push( sym_entry[:current_loc])
+        end
+        
+        # puts "========= items ids are: " + sym_entry[:item_id].inspect + ' / ' + params[:items_id].inspect
+        # And set the Soc home loc if we need to      
+        if home_loc.nil? && ( sym_entry[:item_id] == params[:item_id] )
+          home_loc = sym_entry[:home_loc]
+        end
+  
+      end # do each item from sym
+                
+      #===== Sort the items
     
-    # puts "======== items sorted: " + items_sorted.inspect + "\n"  
+      items_sorted = items_hash.sort_by {|key, shelf_key| shelf_key[:shelf_key]}
+      
+      # puts "======== items sorted: " + items_sorted.inspect + "\n"  
+      
+      #===== Make hat + pipe delimited array of strings with name, value, and label for checkboxes
     
-    #===== Make hat + pipe delimited array of strings with name, value, and label for checkboxes
-  
-    items = get_items( items_sorted )
-  
-    #===== Return bib_info string, items array, sym_locs_arr, and home_loc
+      items = get_items( items_sorted )
+    
+      #===== Return bib_info string, items array, sym_locs_arr, and home_loc
+      
+    else
+      
+      items = ["NO_ITEMS"]
+    
+    end # check for blank items_from_sym
+    
+    # Temporarily set pseudo home loc
+      
+    if home_loc.blank?
+      home_loc = 'UNDEFINED'
+    end
     
   
     return bib_info, items, cur_locs_arr, home_loc
