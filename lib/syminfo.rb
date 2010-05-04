@@ -87,9 +87,11 @@ class Syminfo
       item_text = TEXT_FOR_LOC_CODES[:NOTONSHELF]
     elsif ["NEWBOOKS", "ONORDER"].include?(current_loc)      
       item_text = TEXT_FOR_LOC_CODES[current_loc.to_sym]
-    elseif current_loc = 'IN-PROCESS'
-      item_text = TEXT_FOF_LOC_CODES[:INPROCESS]     
+    elsif current_loc == 'INPROCESS'
+      item_text = TEXT_FOR_LOC_CODES[:INPROCESS]     
     end
+    
+    return item_text
      
   end
    
@@ -250,32 +252,13 @@ end
   
 
     #===== Get array of all symphony item entries ( item_details/item )
-    
 
     items_from_sym = doc.xpath("//item_details/item")
-
-    puts "======== items from sym: " + items_from_sym.inspect + "\n"
     
-    if ! items_from_sym.blank?
-  
-      #items_from_sym.each do |item|
-  
-      #   get_sym_entry_hash( item )
-  
-      #end
-  
-      # Eliminate the following because shelfkey will be part of item_details/item
+    cur_locs_arr = []   
       
-      # items_from_sw = doc.xpath("//item_display_fields/item_display")
-     
-      # sw_shelf_keys = get_sw_shelf_keys( items_from_sw )
-  
-      #puts "========== sw_shelf_keys: " + sw_shelf_keys.inspect + "\n"
-  
-      #====== Fill in items hash and cur_locs_arr
-  
-      cur_locs_arr = []
-  
+    if ! items_from_sym.blank?
+
       items_from_sym.each do |item|
   
         sym_entry = get_sym_entry_hash(item)
@@ -321,22 +304,41 @@ end
       #===== Make hat + pipe delimited array of strings with name, value, and label for checkboxes
     
       items = get_items( items_sorted )
-    
-      #===== Return bib_info string, items array, sym_locs_arr, and home_loc
       
+      # puts "====== items array is: " + items.inspect
+
     else
+  
+      # If this is a title_level location, create an items array here 
       
-      items = ["NO_ITEMS"]
+      if TITLE_LEVEL_LOCS.include?(params[:current_loc])
+        
+        if home_loc.blank?
+          home_loc = params[:current_loc]
+        end
+        
+        req_type = get_request_type( home_lib, params[:current_loc], params[:req_type], { :home_loc => home_loc })
+          
+        keys = [:item_id, :call_num, :home_lib, :req_type, :current_loc, :home_loc, :req_type, :shelf_key ]    
+        values = ["NO_ITEMS", params[:current_loc], home_lib, params[:req_type], params[:current_loc], home_loc , req_type, "00000"]        
+        no_items_hash = Hash[*keys.zip(values).flatten] 
+        
+        no_items_array = [["NO_ITEMS", no_items_hash]]
+
+        items = get_items( no_items_array )
+        
+        # puts "====== items array is: " + items.inspect
+        
+      else
+        
+        items = [""] 
+        
+      end 
     
     end # check for blank items_from_sym
     
-    # Temporarily set pseudo home loc
-      
-    if home_loc.blank?
-      home_loc = 'UNDEFINED'
-    end
+    #===== Return bib_info string, items array, sym_locs_arr, and home_loc
     
-  
     return bib_info, items, cur_locs_arr, home_loc
   
   end # get_sw_info

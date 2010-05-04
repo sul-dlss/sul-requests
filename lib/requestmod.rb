@@ -39,8 +39,9 @@ module Requestmod
        
       #===== Check whether we need to redirect to the auth path and redirect if so
        
-      if @request.redir_check 
-        redirect_to "/auth/requests/new?" + @request.params.to_query + "&redir_done=y"
+      if @request.redir_check        
+        redirect_to "/auth/requests/new?" + 
+        @request.params.to_query + "&redir_done=y" and return false
       end
       
       #====== Clean out any unnecessary params at this point
@@ -271,7 +272,7 @@ module Requestmod
     end 
        
     if (cur_locs.to_s =~ /-LOAN/)
-      msg_keys.push(da) unless msg_keys.include?(ds)
+      msg_keys.push(da) unless msg_keys.include?(da)
     end
   
     return msg_keys
