@@ -65,7 +65,7 @@ class Request < Tableless
     
     params_final = {}
     
-    puts "============ params in get_params is: " + params.inspect
+    # puts "============ params in get_params is: " + params.inspect
     
     if params.has_key?(:p_data)
       params_final = params
