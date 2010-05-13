@@ -46,7 +46,11 @@ class Request < Tableless
     esc_params = {}
     
     params.each_pair do |k,v|
-      esc_params[k.to_sym] = CGI::unescape(v)
+      if v.is_a? String
+        esc_params[k.to_sym] = CGI::unescape(v)
+      else
+        esc_params[k.to_sym] = v
+      end
     end
         
     return esc_params
@@ -60,6 +64,8 @@ class Request < Tableless
   def get_params(params)
     
     params_final = {}
+    
+    puts "============ params in get_params is: " + params.inspect
     
     if params.has_key?(:p_data)
       params_final = params
