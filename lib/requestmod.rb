@@ -15,7 +15,7 @@ module Requestmod
     #===== Instantiate request from params passed in + request.env   
     @request = Request.new(params, request.env)
     
-    # puts '================ request.referer is: ' + request.env["HTTP_REFERER"].inspect
+    # puts '================ @request.params in Request.new is: ' + @request.params.inspect
     
     #===== Get the params back from the object, since they may have changed
     @params = @request.params

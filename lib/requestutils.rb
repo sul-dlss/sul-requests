@@ -115,7 +115,7 @@ module Requestutils
       req_def = 'NON-PAGE'
       
     end # check for library or locations 
-    
+        
     return req_def   
     
   end # get_req_def    

@@ -1,6 +1,7 @@
 class Request < Tableless
   
   include Requestutils
+  require 'cgi'
   
   attr_reader :params, :ckey, :item_id, :items, :home_lib, :current_loc, :home_loc, :req_type, :request_def, 
               :redir_check, :pickupkey, :patron_name, :patron_email, :univ_id, :library_id, 
@@ -39,6 +40,20 @@ class Request < Tableless
     @return_url = get_return_url(@source, @params[:return_url], request_env)
   end
   
+  # Take params hash and unescape each of the values, return a hash
+  def unescape_params(params)
+    
+    esc_params = {}
+    
+    params.each_pair do |k,v|
+      esc_params[k.to_sym] = CGI::unescape(v)
+    end
+        
+    return esc_params
+    
+  end
+
+  
   # Take params passed to this object and parse p_data string from Socrates into
   # separate key/value pairs. Also add param to indicate source of GET request. Other
   # methods for defining elements of the object depend on this method. 
@@ -61,7 +76,7 @@ class Request < Tableless
 
     # puts "=========== params_final ins request.get_params is: " + params_final.inspect
     
-    return params_final
+    return unescape_params(params_final)
     
   end
   
