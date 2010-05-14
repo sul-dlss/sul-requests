@@ -134,7 +134,7 @@ module Requestmod
       
     else # Send info to Symphony and display returned message
   
-      @symresult = Symresult.new(params)
+      @symresult = Symresult.new(params, @messages)
               
       # Following is just temporary for debugging
          

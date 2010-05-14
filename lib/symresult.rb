@@ -11,9 +11,9 @@ class Symresult
   # Take parameters submitted from a request form and set the msgs hash from the
   # response returned by Symphony, along with the original parameter list, and
   # the raw response string. 
-  def initialize(params)
+  def initialize(params, messages)
     
-    @msgs, @parm_list, @result = get_results(params)
+    @msgs, @parm_list, @result = get_results(params, messages)
     
   end
   
@@ -23,7 +23,7 @@ class Symresult
   # to the program running on the Symphony server that makes the request, get back
   # the response, call other functions that parse the response, and return a msg hash
   # along with the original raw response, which we need temporarily for debugging
-  def get_results(params)
+  def get_results(params, messages)
     
       # First we get the items, then the rest of params without items
       items_checked = params[:request][:items_checked]
@@ -37,7 +37,7 @@ class Symresult
       }
          
       # Get results hash from delimited string returned from Symphony
-      msgs = get_msgs( params[:request], res.body ) 
+      msgs = get_msgs( params[:request], res.body, messages ) 
       
       return msgs, parm_list, res.body
     
@@ -98,7 +98,7 @@ class Symresult
   # the requests, split the returned string into various pieces, and return a msgs
   # hash with the msg number as key and a delimited string as value, containing 
   # item ID and call number. Note that we group items under each msg number key 
-  def get_msgs( params, response )
+  def get_msgs( params, response, messages )
     
     # Remove any trailing CR and leading and trailing spaces
     response.chomp!.strip!
@@ -115,29 +115,39 @@ class Symresult
       # 36105129254244|DS793 .H6 Z477 2006 V.57|722
       # 36105129254251|DS793 .H6 Z477 2006 V.56|209
 
+      # Go through each item and set up appropriate response info
       items.each { |item|
         fields = item.split('|') unless item.nil?
         
         # Assign to vars just to make things easier to read
         key = fields[3]
         value = fields[1] + '|' + fields[2]
+        
+        # If msg key gets nothing, add info about problem   
+        if messages[key].blank?
+           value = value + ' - System Message Number: ' + key   
+           key = '003' 
+        end
+
+        # Add the keys and values to the response
         if ! msgs.has_key?(key)
           msgs[key] = value
         else
           msgs[key] = msgs[key] + '^' + value
         end
-        }
+      } # end items.each
+        
     elsif response.eql?('2')
     
-      msgs['2'] = response # This is invalid user response
+        msgs['2'] = response # This is invalid user response
     
     else
       
-       # Indicates unexpected problem, so mail a report 
+      # Indicates unexpected problem, so mail a report 
       
-       msgs['000'] = response 
+      msgs['000'] = response 
 
-       ExceptionMailer.deliver_problem_report(params, response )
+      ExceptionMailer.deliver_problem_report(params, response )
        
     end      
           
