@@ -164,7 +164,7 @@ class Request < Tableless
     
     # Don't redirect for these libs if coming from SearchWorks
     if params.has_key?(:source) && params[:source] == 'SW' 
-      if params.has_key?(:home_lib) && ['SAL', 'SAL3', 'SAL-NEWARK', 'HOPKINS'].include?(params[:home_lib])
+      if params.has_key?(:home_lib) && ['SAL', 'SAL3', 'SAL-NEWARK'].include?(params[:home_lib])
         return false 
       end
     end
@@ -172,6 +172,8 @@ class Request < Tableless
     # Check for current locs, etc. requiring redirect.  
     if params.has_key?(:p_auth)
       return true # Soc auth with auth requirement noted as a param    
+    elsif params.has_key?(:home_lib) && ['HOPKINS'].include?(params[:home_lib]) 
+      return true # Always enforce auth for HOPKINS items
     elsif ( params.has_key?(:source) && params[:source] == 'SO' ) && 
           (params.has_key?(:req_type) && ['REQ-RECALL'].include?(params[:req_type]) )
       return true      
