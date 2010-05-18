@@ -63,4 +63,17 @@ module RequestsHelper
     
   end
   
+  def link_for_cancel(source, referer)
+    
+    # puts "====== referer is: " + referer
+    # puts "====== request remote host in: " + request.remote_host.inspect
+    
+    if source == 'SO'
+      link = 'javascript:self.close()'
+    else
+      link = 'javascript:history.go(-1)'
+    end
+    
+  end
+  
 end
