@@ -52,6 +52,10 @@ module RequestsHelper
       link = link + 'req_type=' + CGI::escape(request.req_type) + '&'
     end
     
+    if request.source != nil
+      link = link + 'source=' + request.source + '&'
+    end
+    
     # Strip out the final &
     
     if link =~ /.*?\&$/
