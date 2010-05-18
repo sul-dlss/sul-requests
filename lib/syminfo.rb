@@ -317,10 +317,16 @@ end
           home_loc = params[:current_loc]
         end
         
+        if params[:call_num].blank?
+          call_num = "No call number"
+        else
+           call_num = params[:call_num]
+        end
+        
         req_type = get_request_type( home_lib, params[:current_loc], params[:req_type], { :home_loc => home_loc })
           
         keys = [:item_id, :call_num, :home_lib, :req_type, :current_loc, :home_loc, :req_type, :shelf_key ]    
-        values = ["NO_ITEMS", params[:call_num], home_lib, params[:req_type], params[:current_loc], home_loc , req_type, "00000"]        
+        values = ["NO_ITEMS", call_num, home_lib, params[:req_type], params[:current_loc], home_loc , req_type, "00000"]        
         no_items_hash = Hash[*keys.zip(values).flatten] 
         
         no_items_array = [["NO_ITEMS", no_items_hash]]
