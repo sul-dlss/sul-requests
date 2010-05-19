@@ -10,7 +10,7 @@ class Request < Tableless
               
   attr_accessor :library_id, :items_checked, :home_loc, :pickupkey
   
-  def initialize(params, request_env )
+  def initialize(params, request_env, referrer )
     
     @params = get_params(params)
     @patron_name = get_patron_name( @params[:patron_name], request_env )
@@ -37,7 +37,7 @@ class Request < Tableless
     @call_num = @params[:call_num]
     @comments = @params[:comments]
     @source = @params[:source]
-    @return_url = get_return_url(@source, @params[:return_url], request_env)
+    @return_url = get_return_url(@source, @params[:return_url], referrer)
   end
    
   # Take params hash and unescape each of the values, return a hash
@@ -139,12 +139,14 @@ class Request < Tableless
   # case just return. If not passed in, check that we are coming from SW and set it
   # from the http_referer.
   # TODO: This probably needs work to cover all cases
-  def get_return_url(source, return_url, env)
+  def get_return_url(source, return_url, referrer)
+    
+    # puts "======== referer is: " + referrer.inspect
 
     if return_url.blank?
       if source = 'SW' && 
-        ( ! env['HTTP_REFERER'].nil? && env['HTTP_REFERER'] =~ /^.*?searchworks.*$/ )
-        return_url = env['HTTP_REFERER']     
+        ( ! referrer.nil? && referrer =~ /^.*?searchworks.*$/ )
+        return_url = referrer     
       end
     end 
     

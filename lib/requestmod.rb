@@ -13,7 +13,9 @@ module Requestmod
   def new
         
     #===== Instantiate request from params passed in + request.env   
-    @request = Request.new(params, request.env)
+    @request = Request.new(params, request.env, request.referrer)
+    
+    # puts "========== request.referrer in requestmod is: " + request.referrer.inspect
     
     # puts '================ @request.params in Request.new is: ' + @request.params.inspect
     
