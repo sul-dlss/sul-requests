@@ -5,7 +5,7 @@ class Request < Tableless
   
   attr_reader :params, :ckey, :item_id, :items, :home_lib, :current_loc, :home_loc, :req_type, :request_def, 
               :redir_check, :pickupkey, :patron_name, :patron_email, :univ_id, :library_id, 
-              :pickup_lib, :not_needed_after, :due_date, :hold_recall, :vol_num, :call_num, 
+              :pickup_lib, :not_needed_after, :planned_use, :due_date, :hold_recall, :vol_num, :call_num, 
               :source, :return_url, :comments
               
   attr_accessor :library_id, :items_checked, :home_loc, :pickupkey
@@ -31,6 +31,7 @@ class Request < Tableless
     @pickupkey = @params[:pickupkey] 
     @pickup_lib = @params[:pickup_lib]
     @not_needed_after = @params[:not_needed_after]
+    @planned_use = @params[:planned_use]
     @due_date = @params[:due_date]
     @hold_recall = @params[:hold_recall]
     @vol_num = @params[:vol_num]
