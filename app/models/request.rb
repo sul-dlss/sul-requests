@@ -39,7 +39,7 @@ class Request < Tableless
     @source = @params[:source]
     @return_url = get_return_url(@source, @params[:return_url], request_env)
   end
-  
+   
   # Take params hash and unescape each of the values, return a hash
   def unescape_params(params)
     
