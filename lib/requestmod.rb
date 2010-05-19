@@ -103,7 +103,7 @@ module Requestmod
     
     # puts "===================== params requests at start of create: " + params[:request].inspect + "\n"
     
-    @request = Request.new(params[:request], request.env)
+    @request = Request.new(params[:request], request.env, request.referrer)
 
     @messages = get_msg_hash(Message.find(:all))
    

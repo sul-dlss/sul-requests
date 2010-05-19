@@ -56,6 +56,10 @@ module RequestsHelper
       link = link + 'source=' + request.source + '&'
     end
     
+    if request.return_url != nil
+      link = link + 'return_url=' + CGI::escape(request.return_url) + '&'
+    end
+    
     # Strip out the final &
     
     if link =~ /.*?\&$/
@@ -67,7 +71,7 @@ module RequestsHelper
     
   end
   
-  def link_for_cancel(source, referrer)
+  def link_for_cancel(source, return_url)
     
     # puts "====== request.referer is: " + request.referrer
     # puts "====== request remote host in: " + request.remote_host.inspect
@@ -75,8 +79,8 @@ module RequestsHelper
     
     if source == 'SO'
       link = 'javascript:self.close()'
-    elsif source == 'SW' && ! referrer.blank? && request.referrer =~ /^http/
-      link = request.referrer
+    elsif source == 'SW' && ! return_url.blank? && return_url =~ /^http/
+      link = return_url
     else
       link = 'javascript:history.go(-1)'
     end

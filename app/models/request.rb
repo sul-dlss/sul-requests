@@ -142,14 +142,17 @@ class Request < Tableless
   def get_return_url(source, return_url, referrer)
     
     # puts "======== referer is: " + referrer.inspect
+    # puts "======== return_url is: " + return_url.inspect
 
     if return_url.blank?
       if source = 'SW' && 
-        ( ! referrer.nil? && referrer =~ /^.*?searchworks.*$/ )
-        return_url = referrer     
+        #( ! referrer.nil? && referrer =~ /^.*?library.*?\/(.*?)\.html$/ )
+        ( ! referrer.nil? && referrer =~ /^.*?searchworks.*?view\/(.*$)/ )
+        return_url = referrer    
       end
     end 
     
+    # puts "========= return_url at end is: " + return_url.inspect
     return return_url
     
   end
