@@ -71,11 +71,12 @@ module RequestsHelper
     
     # puts "====== request.referer is: " + request.referrer
     # puts "====== request remote host in: " + request.remote_host.inspect
+    # need to set referrer when we first call app and then not change it if it's set
     
     if source == 'SO'
       link = 'javascript:self.close()'
-    elsif source == 'SW' && ! request.referrer.blank? && request.referrer =~ /^http/
-      link = request.referrer
+    # elsif source == 'SW' && ! request.referrer.blank? && request.referrer =~ /^http/
+    #   link = request.referrer
     else
       link = 'javascript:history.go(-1)'
     end
