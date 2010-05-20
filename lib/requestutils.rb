@@ -241,7 +241,19 @@ module Requestutils
           
         end
                                                
+    # Then HV-ARCHIVE as home lib with -30 location or SAL3-TO-SP req_type (from Socrates)
+
+    elsif home_lib == 'HV-ARCHIVE' 
+        
+        if ( extras.has_key?(:home_loc) && extras[:home_loc] =~ /.*?-30$/ ) ||
+          req_type_parm.to_s == 'SAL3-TO-HA'
+          
+          req_type = 'SAL3-TO-HA' 
+          
+        end
+                                               
     
+   
     # SAL
 
     elsif home_lib == 'SAL'
@@ -306,10 +318,12 @@ module Requestutils
       pickupkey = current_loc[5..current_loc.length]
     elsif ! home_loc.blank? && home_loc[0..4] == 'PAGE-'
       pickupkey = home_loc[5..home_loc.length]
+    # Following apparently needs to precede -30 check   
+    elsif ! req_type.blank? && req_type[0..7] == 'SAL3-TO-'
+      pickupkey = req_type[8..req_type.length] 
     elsif ! home_loc.blank? && home_loc =~ /^(.*)\-30$/
       pickupkey = $1  
-    elsif ! req_type.blank? && req_type[0..7] == 'SAL3-TO-'
-      pickupkey = req_type[8..req_type.length]      
+     
     end
     
     if pickupkey.blank?
