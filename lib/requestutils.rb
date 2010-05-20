@@ -292,8 +292,17 @@ module Requestutils
     # SAL3
 
     elsif home_lib == 'SAL3' # Do we need more options here??
+  
+      if ( extras.has_key?(:home_loc) && extras[:home_loc] == 'PAGE-MP' ) ||
+          req_type_parm.to_s == 'SAL3-TO-BR'
+          
+          req_type = 'SAL3-TO-BR' 
+          
+      else          
 
-      req_type = 'REQ-SAL3'
+        req_type = 'REQ-SAL3'
+
+      end
 
     end
 
