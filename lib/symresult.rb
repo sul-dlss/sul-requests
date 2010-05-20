@@ -29,6 +29,8 @@ class Symresult
       items_checked = params[:request][:items_checked]
       parm_list = URI.escape( get_symphony_params( params[:request], '=', '&' ) )
       parm_list = add_items( parm_list, items_checked)
+      
+      # puts "========== parm list is: " + parm_list
  
       # Call program on Symphony server and get result 
       url = URI.parse( SYMPHONY_OAS + SYMPHONY_PATH_INFO + parm_list )

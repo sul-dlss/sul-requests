@@ -137,7 +137,7 @@ class Syminfo
       end
 
       # ======= Add items to items array
-      
+      #TODO: Add due date after req_type
       # First level separated by "^" is barcode + all info + call_num + item_text
       # Not sure but we need the last two pulled out separately to determine how we display items
       items.push( barcode + '^' + barcode + '|' + home_lib + '|' + call_num + 
@@ -344,6 +344,9 @@ end
     end # check for blank items_from_sym
     
     #===== Return bib_info string, items array, sym_locs_arr, and home_loc
+    
+    
+    # puts " =========== items at end of get_sw_info: " + items.inspect
     
     return bib_info, items, cur_locs_arr, home_loc
   
