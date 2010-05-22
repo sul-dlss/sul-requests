@@ -51,7 +51,8 @@ class Syminfo
   
   # Method to add items to a hash of hashes. Takes hash as input and returns same hash
   # with new hash added. May need to add due date here
-  def get_items_hash( params, items, barcode, call_num, library, home_loc, current_loc, shelf_key )
+  def get_items_hash( params, items, barcode, call_num, 
+    library, home_loc, current_loc, shelf_key, due_date )
 
     # puts " ================== params in get_items_hash is: " + params.inspect
     
@@ -68,6 +69,7 @@ class Syminfo
     items[barcode].store( :current_loc, current_loc )
     items[barcode].store( :req_type, get_request_type( library, current_loc, params[:req_type], { :home_loc => home_loc })  )
     items[barcode].store( :shelf_key, shelf_key)
+    items[barcode].store( :due_date, due_date)
 
     return items # this is the updated hash we got initally
 
@@ -114,6 +116,7 @@ class Syminfo
       home_loc = ''
       current_loc = '' 
       req_type = ''
+      due_date = ''
       a[1].each{ |k,v|      
         if k == :call_num         
           call_num = v unless v.nil?                               
@@ -125,6 +128,8 @@ class Syminfo
           home_lib = v unless v.nil?
         elsif k == :req_type
           req_type = v unless v.nil?
+        elsif k == :due_date
+          due_date = v unless v.nil?          
         end                      
       } 
       
@@ -141,7 +146,7 @@ class Syminfo
       # First level separated by "^" is barcode + all info + call_num + item_text
       # Not sure but we need the last two pulled out separately to determine how we display items
       items.push( barcode + '^' + barcode + '|' + home_lib + '|' + call_num + 
-                 '|' + home_loc + '|' + current_loc + '|' + req_type + '^' + 
+                 '|' + home_loc + '|' + current_loc + '|' + req_type + '|' + due_date + '^' + 
                  call_num + '^' + item_text )             
 
     end  
@@ -208,7 +213,8 @@ end
                      :home_loc => item.xpath('./home_location').text,
                      :current_loc => item.xpath('./current_location').text,
                      :call_num => item.xpath('./item_number').text,
-                     :shelf_key => item.xpath('./shelfkey').text
+                     :shelf_key => item.xpath('./shelfkey').text,
+                     :due_date => item.xpath('./date_item_due').text
                    }
 
       return entry_hash
@@ -280,7 +286,8 @@ end
         # Add to items hash
         items_hash = get_items_hash( params,
           items_hash, sym_entry[:item_id], sym_entry[:call_num], home_lib,
-          sym_entry[:home_loc], sym_entry[:current_loc], sym_entry[:shelf_key] )
+          sym_entry[:home_loc], sym_entry[:current_loc], sym_entry[:shelf_key], 
+          sym_entry[:due_date] )
   
         # Also add to cur_locs_arr if home loc doesn't match cur loc
         if sym_entry[:home_loc] != sym_entry[:current_loc] && ! sym_entry[:item_id].nil?
