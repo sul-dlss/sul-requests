@@ -47,6 +47,10 @@ class Admin::ReqtestsController < ApplicationController
   # Method update. Saves data from edit form in database
   def update
     @reqtest = Reqtest.find(params[:id])
+    soc_link_params = parse_soc_url(params[:reqtest][:socrates_link])
+    req_type = get_request_type(soc_link_params[:home_lib], soc_link_params[:current_loc], soc_link_params[:req_type])
+    req_def = get_req_def( soc_link_params[:home_lib], soc_link_params[:current_loc] )
+    @reqtest.req_def = req_def
     @req_defs = Requestdef.find(:all, :select => 'name', :order => 'name').map(&:name).insert(0, "NONE")    
     if @reqtest.update_attributes(params[:reqtest])
       redirect_to admin_reqtests_path
@@ -69,16 +73,18 @@ class Admin::ReqtestsController < ApplicationController
     
     # Find all names in requestdefs table
     request_defs = Requestdef.find(:all, :select => 'name', :order => 'name').map(&:name)
-    # puts "========== requestdefs is: " + request_defs.inspect
+    #puts "========== requestdefs is: " + request_defs.inspect
     # Find all distinct req_defs in reqtests table
     req_test_defs = Reqtest.find( :all, :select => 'DISTINCT req_def').map(&:req_def)
-    # puts "========== req_tests is: " + request_defs.inspect
+    #puts "========== req_test_defs is: " + req_test_defs.inspect
     # Get intersection and difference of the two arrays
-    covered = request_defs & req_test_defs
+    covered = (request_defs & req_test_defs)
+    #puts "======== covered is: " + covered.inspect
     if covered.length == 0
       covered.push('NONE')
     end
-    not_covered = request_defs - req_test_defs
+    not_covered = (request_defs - req_test_defs)
+    #puts "======== not covered is: " + not_covered.inspect
     
     # Return result as space-separated strings
     return covered.join(" "), not_covered.join(" ")
