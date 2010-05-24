@@ -86,7 +86,9 @@
 			<fieldset><legend>Your Information</legend>
 			
 			<% if ! @is_authenticated %>
-			<div id="autofill">If you have a SUNet ID, <a href="<%= link_to_auth_request(@request) %>">login to auto-fill and enable more options.</a></div>
+			<div id="autofill">If you have a SUNet ID, <a href="<%= link_to_auth_request(@request) %>" 
+			title="Your request may be delayed if you have a SUNet ID and don't login!">login</a> 
+			to auto-fill, enable recall, and prevent processing delays.</div>
 			<% end %>
 
 			<% if @fields.has_key?('patron_name') %>

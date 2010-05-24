@@ -36,11 +36,6 @@ q:before, q:after {
 	content: none;
 }
 
-/* remember to define focus styles! */
-:focus {
-	outline: 0;
-}
-
 /* remember to highlight inserts somehow! */
 ins {
 	text-decoration: none;
@@ -93,8 +88,8 @@ div.request_failed {color: #cc0000; font-weight: bold;}
 div.request_failed a {font-weight: normal;}
 div.request_successful {color: #009900; font-weight: bold;}
 p {clear: both; margin: 0 0 1em 0}
-#autofill {color: #900; text-align: right; padding: 0; margin: -10px -10px 15px; /*font-size: .9em;*/}
-#autofill a {color: #900; font-weight: bold; text-decoration: underline;}
+#autofill {color: #900; text-align: center; padding: 0; margin: 0 0 10px;}
+#autofill a {color: #900; font-weight: bold; font-size:1.5em; text-decoration: underline;}
 div.submit {clear: both; text-align: center;}
 div.submit input {width: 10em; display: inline; margin: 0px 20px 0px 0px; font-size: 1em;}
 #footer {clear: both; padding: 25px; font-size: .75em; color: #999;}
@@ -115,6 +110,8 @@ span.library {font-weight: bold; padding: 0 20px 5px 0; text-align: right; color
 div.access_data {padding: 2px; margin: 2px 0; border:1px dotted #CCCCCC;}
 
 div.access_data_scroll {padding: 2px; max-height: 16em; overflow: auto; margin: 2px 0; border:1px dotted #CCCCCC;}
+
+div.access_data_scroll ol {margin-bottom: 25px;}
 
 .access_data ol {margin:5px; padding: 0;}
 .access_data ol li {list-style-type:none; padding:0 0 3px 0; border-bottom:none; font-weight:normal;}
@@ -139,12 +136,17 @@ h2.fail {color: #cc0000; background-image: url("x.png"); background-position:lef
 dd.unavail_items {padding-top: 7px;}
 dd.unavail_items ul {padding: 5px 0;}
 
-div.access_data li {position: relative;}
+div.access_data li, div.access_data_scroll li {position: relative;}
 span.hold-recall-msg {position: absolute; left: -9999px;}
-div.access_data li:hover span.item_available span.hold-recall span.hold-recall-msg {position: absolute; top: 1em; left: 20em; 
-	width: 20em; z-index: 9999; background-color: #ffffe0; border: 1px solid #ccc; padding: 3px; overflow: visible;}
+
 span.hold-recall {background-image: url("help.png"); background-position:right center;
 	background-repeat:no-repeat; padding-right:20px;}
+
+div.access_data li:hover span.item_available span.hold-recall span.hold-recall-msg {position: absolute; top: 1em; left: 20em; 
+	width: 20em; z-index: 9999; background-color: #ffffe0; border: 1px solid #ccc; padding: 3px; overflow: visible;}
+
+div.access_data_scroll li:hover span.item_available span.hold-recall span.hold-recall-msg {position: absolute; top: 1em; left: 20em; 
+	width: 20em; z-index: 9999; background-color: #ffffe0; border: 1px solid #ccc; padding: 3px; overflow: visible;}
 
 
 @media mobile {
