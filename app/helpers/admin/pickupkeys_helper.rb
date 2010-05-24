@@ -4,7 +4,9 @@ module Admin::PickupkeysHelper
     
     lib_list = ''
     
-    pk_libs.each do |l|
+    pk_libs_sorted = pk_libs.sort_by { |c| c['lib_code'] }
+    
+    pk_libs_sorted.each do |l|
       lib_list = lib_list + l.lib_code + ' '
     end
     
