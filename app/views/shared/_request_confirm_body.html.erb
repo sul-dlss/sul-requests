@@ -56,26 +56,26 @@
 		
 		<div class="patron_info">
 			<dl>
-			<% if ! @request.patron_name.nil? %>
+			<% if ! @request.patron_name.blank? %>
 				<dt><%= @field_labels['patron_name'] %>:</dt><dd><%= @request.patron_name %></dd>
 			<% end %>		
 			
-			<% if ! @request.library_id.nil? %>	
+			<% if ! @request.library_id.blank? %>	
 				<dt><%= @field_labels['library_id'] %>:</dt><dd> <%= @request.library_id %></dd>
-			<% elsif ! @request.univ_id.nil? %>	
+			<% elsif ! @request.univ_id.blank? %>	
 				<dt><%= @field_labels['univ_id'] %>:</dt><dd> <%= @request.univ_id %></dd>				
 			<% end %>
 			
-			<% if ! @request.pickup_lib.nil? %>	
+			<% if ! @request.pickup_lib.blank? %>	
 				<dt><%= @field_labels['pickup_lib'] %>:</dt><dd> <%= @request.pickup_lib %></dd>		
 			<% end %>
 			
-			<% if ! @request.hold_recall.nil? %>
+			<% if ! @request.hold_recall.blank? %>
 				<dt><%= @field_labels['hold_recall'] %>:</dt><dd> <%= @request.hold_recall %></dd>
 			<% end %>
-			<% if ! @request.not_needed_after.nil? %>
+			<% if ! @request.not_needed_after.blank? %>
 				<dt><%= @field_labels['not_needed_after'] %>:</dt><dd> <%= @request.not_needed_after %></dd>		
-			<% elsif ! @request.planned_use.nil? %>
+			<% elsif ! @request.planned_use.blank? %>
 				<dt><%= @field_labels['planned_use'] %>:</dt><dd> <%= @request.planned_use %></dd>		
 
 			<% end %>
