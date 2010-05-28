@@ -153,18 +153,16 @@ module Requestutils
     
   end
   
-  
-  
+
   # Method get_request_type. Take parameters and analyze them to figure out
   # a request type. Note that we need to call this method for every item and the
-  # req_type differ for each item and may not match the req_type parm passed in. 
+  # req_type can differ for each item and may not match the req_type parm passed in. 
   # We also need to set the req_type for the form as a whole, however, so we know
   # how the initial form ought to display. Or is that necessary? Yes, it seems, because
   # req_type might be used in get_pickup_lib. This gets very complicated because it's 
   # for multiple purposes. In particular, when we set the req_type for items, we need
   # to pick up a completely separate hold_recall parameter from the form in some
   # cases
-  # TODO: Add logic for get_request_type that accounts for authentication
   def get_request_type(home_lib, current_loc, req_type_parm, extras = {} )
 
     req_type = 'UNDEFINED'
@@ -174,28 +172,32 @@ module Requestutils
      # puts "======================== req_type_param in get_request_type is: " + req_type_parm.inspect + "\n"
      # puts "============ home_loc is: " + extras[:home_loc].inspect
 
-    # First cover items where the current location is the determining factor
+    # A. In-process items except Hoover and Law
 
     if current_loc == 'INPROCESS' && ! ['HOOVER', 'LAW'].include?( home_lib )
 
         req_type = 'REQ-INPRO'
 
-    # Should cover all except SAL and SAL-NEWARK
+    # B. HOLD/RECALL items except SAL and SAL-NEWARK
+    
     elsif ( REC_HOLD_LOCS.include?(current_loc) ||
           current_loc =~ /-LOAN/ ) &&
           ! ['SAL', 'SAL-NEWARK'].include?(home_lib) # covered below
 
         req_type = get_rec_hold_type( current_loc, req_type_parm )
+        
+    # C. On-order items except Hoover and Law        
 
     elsif current_loc == 'ON-ORDER' && ! ['HOOVER', 'LAW'].include?( home_lib )
 
         # May need to exclude some things here, but how do we get library???
         req_type = 'REQ-ONORDM'
 
-    # Then cover Hoover
+    # D. Hoover items
 
     elsif home_lib == 'HOOVER'
 
+        # Only these Hoover items can be requested
         if current_loc == 'INPROCESS'
 
             req_type = 'REQ-HVINPR'
@@ -210,10 +212,11 @@ module Requestutils
 
         end
 
-    # Then cover LAW
+    # E. LAW items
 
     elsif home_lib == 'LAW'
 
+        # Only these Law items can be requested
         if current_loc == 'INPROCESS'
 
             req_type = 'REQ-LWINPR'
@@ -224,13 +227,13 @@ module Requestutils
 
         end
 
-    # Then cover HOPKINS/STACKS
+    # F. Hopkins / STACKS items
 
     elsif home_lib == 'HOPKINS' && current_loc == 'STACKS'
 
         req_type = 'REQ-HOP'
 
-    # Then SPEC-COLL as home lib with -30 location or SAL3-TO-SP req_type (from Socrates)
+    # G. SPEC-COLL as home lib with -30 location or SAL3-TO-SP req_type (from Socrates)
 
     elsif home_lib == 'SPEC-COLL' 
         
@@ -241,7 +244,7 @@ module Requestutils
           
         end
                                                
-    # Then HV-ARCHIVE as home lib with -30 location or SAL3-TO-SP req_type (from Socrates)
+    # H. HV-ARCHIVE as home lib with -30 location or SAL3-TO-SP req_type (from Socrates)
 
     elsif home_lib == 'HV-ARCHIVE' 
         
@@ -251,19 +254,12 @@ module Requestutils
           req_type = 'SAL3-TO-HA' 
           
         end
-                                               
-    
-   
-    # SAL
+
+    # I. SAL
 
     elsif home_lib == 'SAL'
 
-        if SAL_ON_SHELF_LOCS.include?( current_loc ) ||
-          current_loc =~ /PAGE-/ 
-
-            req_type = 'REQ-SAL'
-
-        elsif CHECKED_OUT_LOCS.include?(current_loc) ||
+        if CHECKED_OUT_LOCS.include?(current_loc) ||
           current_loc =~ /-LOAN/
 
             req_type = 'RECALL-SL'
@@ -271,10 +267,14 @@ module Requestutils
         elsif current_loc == 'UNCAT'
 
             req_type = 'REQ-INPRO'
+            
+        else
+          
+            req_type = 'REQ-SAL'
 
         end
 
-    # SAL-NEWARK
+    # J. SAL-NEWARK
 
     elsif home_lib == 'SAL-NEWARK'
 
@@ -289,9 +289,9 @@ module Requestutils
 
         end
 
-    # SAL3
+    # K. SAL3
 
-    elsif home_lib == 'SAL3' # Do we need more options here??
+    elsif home_lib == 'SAL3' # Already covered checked out items in B. above
   
       if ( extras.has_key?(:home_loc) && extras[:home_loc] == 'PAGE-MP' ) ||
           req_type_parm.to_s == 'SAL3-TO-BR'
