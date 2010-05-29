@@ -6,7 +6,7 @@ class Request < Tableless
   attr_reader :params, :ckey, :item_id, :items, :home_lib, :current_loc, :home_loc, :req_type, :request_def, 
               :redir_check, :pickupkey, :patron_name, :patron_email, :univ_id, :library_id, 
               :pickup_lib, :not_needed_after, :planned_use, :due_date, :hold_recall, :vol_num, :call_num, 
-              :source, :return_url, :comments
+              :source, :return_url, :max_checked, :comments
               
   attr_accessor :library_id, :items_checked, :home_loc, :pickupkey
   
@@ -39,6 +39,7 @@ class Request < Tableless
     @comments = @params[:comments]
     @source = @params[:source]
     @return_url = get_return_url(@source, @params[:return_url], referrer)
+    @max_checked = get_max_checked(@params[:home_lib])
   end
    
   # Take params hash and unescape each of the values, return a hash
@@ -192,6 +193,20 @@ class Request < Tableless
     return false
 
   end # check auth redir  
+  
+  # Determine the maximum number of items to check; usually the default set in
+  # Constants.rb but may differ for SPEC-COLL and maybe others
+  def get_max_checked(home_lib)
+    
+    max_checked = MAX_CHECKED_ITEMS
+    
+    if ['SPEC-COLL'].include?(home_lib)
+      max_checked = 5
+    end
+    
+    return max_checked
+    
+  end
   
 
 end

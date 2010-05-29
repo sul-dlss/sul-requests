@@ -108,7 +108,7 @@ module Requestmod
     @messages = get_msg_hash(Message.find(:all))
    
     flash[:invalid_fields] = ''
-    error_msgs = check_fields( params['request'])
+    error_msgs = check_fields( params['request'], @request.max_checked)
 
     if ! error_msgs.empty? # Go back to form and display errors
       
@@ -296,7 +296,7 @@ module Requestmod
   
   # Method check_fields. Test validity of each required field and add to error_msgs
   # if there's a problem
-  def check_fields(params)
+  def check_fields(params, max_checked)
     
     error_msgs = []
     
@@ -305,7 +305,7 @@ module Requestmod
     if ! params['patron_name'].nil?
       
       if params['patron_name'] == ''
-        error_msgs.push('Name field cannot be blank')
+        error_msgs.push('Name field cannot be blank.')
       end
       
     end  
@@ -317,7 +317,7 @@ module Requestmod
       if ! params['univ_id'].nil?
         
         if params['univ_id'] == ''
-          error_msgs.push('University ID cannot be blank')
+          error_msgs.push('University ID cannot be blank.')
         end
         
       end    
@@ -325,7 +325,7 @@ module Requestmod
       if ! params['library_id'].nil?
         
         if params['library_id'] == ''
-          error_msgs.push('Library ID cannot be blank')
+          error_msgs.push('Library ID cannot be blank.')
         end
         
       end
@@ -339,7 +339,7 @@ module Requestmod
       params['library_id'].blank? &&
       params['patron_email'].blank?
       
-      error_msgs.push('Please either fill in your Library ID or enter your e-mail address or phone number in the E-mail field')
+      error_msgs.push('Please either fill in your Library ID or enter your e-mail address or phone number in the E-mail field.')
     end
     
     # ------- Not Needed After or planned use
@@ -347,7 +347,7 @@ module Requestmod
     if ! params['not_needed_after'].nil?
       
       if params['not_needed_after'] !~  /^[01][0-9]\/[0-9]{2}\/[0-9]{4}$/ 
-        error_msgs.push('Not needed after field must contain a date in the form MM/DD/YYYY')
+        error_msgs.push('Not needed after field must contain a date in the form MM/DD/YYYY.')
       end
       
     end  
@@ -355,7 +355,7 @@ module Requestmod
     if ! params['planned_use'].nil?
       
       if params['planned_use'] !~  /^[01][0-9]\/[0-9]{2}\/[0-9]{4}$/ 
-        error_msgs.push('Planned date of use field must contain a date in the form MM/DD/YYYY')
+        error_msgs.push('Planned date of use field must contain a date in the form MM/DD/YYYY.')
       end
       
     end  
@@ -364,6 +364,10 @@ module Requestmod
     
     if params['items_checked'].nil? || params['items_checked'].empty?
         error_msgs.push('Please select at least one item.')    
+    end
+    
+    if ! params['items_checked'].nil? && params['items_checked'].size > max_checked
+      error_msgs.push('Please select no more than ' + max_checked.to_s + ' items.')      
     end
     
     # -------- Pickup library should not be NONE 

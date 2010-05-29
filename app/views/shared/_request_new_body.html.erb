@@ -237,18 +237,18 @@
 
 		<span class="library"><%= @request.home_lib %>: </span>
 		 
-		<% if @sym_info.items.size > 1 && @sym_info.items.size <= 10 %>
+		<% if @sym_info.items.size > 1 && @sym_info.items.size <= @request.max_checked %>
 			<span class="action_varies">
 				<input name="allbox" id="allbox" type="checkbox" value="Check All"  onclick="if (this.checked) {CheckAll()} else {UnCheckAll()}" >
     			Select all
 			</span>
-		<% elsif @sym_info.items.size > 10 %>
+		<% elsif @sym_info.items.size > @request.max_checked %>
 			<span class="action_varies">
-				Select up to 10 volumes or copies for this request
+				Select up to <%= @request.max_checked %> volumes or copies for this request
 			</span>	
 		<% end %>
 		
-		<% if ! @sym_info.items.to_s.blank? && @sym_info.items.size <= 10 %>
+		<% if ! @sym_info.items.to_s.blank? && @sym_info.items.size <= @request.max_checked %>
 		 <div class="access_data">
 		<% else %>		
 			<div class="access_data_scroll">
@@ -265,7 +265,7 @@
 							name="request[items_checked][]" 							
 							value="<%= values[1] %>"
 							
-							<% if @sym_info.items.size > 1 && @sym_info.items.size <= 10 %>
+							<% if @sym_info.items.size > 1 && @sym_info.items.size <= @request.max_checked %>
 								onclick="if (this.checked == false ) {document.requestform.allbox.checked = false;}" 
 							<% else %>
 								onclick="countChecked(this.form)" 							
