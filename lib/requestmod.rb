@@ -332,12 +332,30 @@ module Requestmod
     
     end # check for SAL* home_lib
     
-    # ------- Not Needed After
+    # ------- Require something in e-mail if we don't have univ_id or library_id
+
+    if ['SAL', 'SAL-NEWARK', 'SAL3'].include?(params[:home_lib]) &&
+      params['univ_id'].blank? && 
+      params['library_id'].blank? &&
+      params['patron_email'].blank?
+      
+      error_msgs.push('Please either fill in your Library ID or enter your e-mail address or phone number in the E-mail field')
+    end
+    
+    # ------- Not Needed After or planned use
     
     if ! params['not_needed_after'].nil?
       
       if params['not_needed_after'] !~  /^[01][0-9]\/[0-9]{2}\/[0-9]{4}$/ 
-        error_msgs.push('Not Needed After field must contain a date in the form MM/DD/YYYY')
+        error_msgs.push('Not needed after field must contain a date in the form MM/DD/YYYY')
+      end
+      
+    end  
+    
+    if ! params['planned_use'].nil?
+      
+      if params['planned_use'] !~  /^[01][0-9]\/[0-9]{2}\/[0-9]{4}$/ 
+        error_msgs.push('Planned date of use field must contain a date in the form MM/DD/YYYY')
       end
       
     end  
