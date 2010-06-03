@@ -4,6 +4,7 @@ module Requestmod
   # one method used in requests controller
 
   include Requestutils
+  require 'date'
   
   # Method new. Display a request form, including data retrieved from an XML lookup and user data from 
   # the authentication, if available. The user fills in this from to create a request. Note that this
@@ -294,6 +295,21 @@ module Requestmod
     
   end # get_msg_hash
   
+  # Check whether a date string in the form "mm/dd/yyy" is
+  # in a range starting from x days before today and
+  # ending x days after today. Return true or false
+  def check_valid_date?( date_str, days_before, days_after )
+
+    date_to_check = Date.strptime(date_str, "%m/%d/%Y")
+
+    if date_to_check >= Date.today + days_before && date_to_check <= Date.today + days_after
+      return true
+    else
+     return false
+    end
+
+  end
+  
   # Method check_fields. Test validity of each required field and add to error_msgs
   # if there's a problem
   def check_fields(params, max_checked)
@@ -346,16 +362,28 @@ module Requestmod
     
     if ! params['not_needed_after'].nil?
       
-      if params['not_needed_after'] !~  /^[01][0-9]\/[0-9]{2}\/[0-9]{4}$/ 
-        error_msgs.push('Not needed after field must contain a date in the form MM/DD/YYYY.')
+      if params['not_needed_after'] !~  /^[01][0-9]\/[0-9]{2}\/[0-9]{4}$/ ||
+        ! check_valid_date?( params['not_needed_after'], NOT_NEEDED_AFTER_START, 
+          NOT_NEEDED_AFTER_END)
+        start_date = Date.today + NOT_NEEDED_AFTER_START
+        end_date = Date.today + NOT_NEEDED_AFTER_END
+        error_msgs.push('Not needed after field must contain a date between ' +
+        start_date.strftime("%m/%d/%Y") + ' and ' + end_date.strftime("%m/%d/%Y") +
+        ' in the form MM/DD/YYYY.')
       end
       
     end  
     
     if ! params['planned_use'].nil?
       
-      if params['planned_use'] !~  /^[01][0-9]\/[0-9]{2}\/[0-9]{4}$/ 
-        error_msgs.push('Planned date of use field must contain a date in the form MM/DD/YYYY.')
+      if params['planned_use'] !~  /^[01][0-9]\/[0-9]{2}\/[0-9]{4}$/ ||
+        ! check_valid_date?( params['not_needed_after'], PLANNED_USE_START, 
+          PLANNED_USE_END )
+        start_date = Date.today + PLANNED_USE_START
+        end_date = Date.today + PLANNED_USE_END 
+        error_msgs.push('Planned use field must contain a date between ' +
+        start_date.strftime("%m/%d/%Y") + ' and ' + end_date.strftime("%m/%d/%Y") +
+        ' in the form MM/DD/YYYY.')      
       end
       
     end  

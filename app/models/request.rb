@@ -185,7 +185,7 @@ class Request < Tableless
           (params.has_key?(:req_type) && ['REQ-RECALL'].include?(params[:req_type]) )
       return true      
     elsif params.has_key?(:current_loc) && 
-      ['INPROCESS', 'ON-ORDER'].include?(params[:current_loc])  
+      ['ON-ORDER'].include?(params[:current_loc])  
         return true   
     end
     
