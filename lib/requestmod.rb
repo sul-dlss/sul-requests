@@ -4,7 +4,7 @@ module Requestmod
   # one method used in requests controller
 
   include Requestutils
-  require 'date'
+  #require 'date'
   
   # Method new. Display a request form, including data retrieved from an XML lookup and user data from 
   # the authentication, if available. The user fills in this from to create a request. Note that this
