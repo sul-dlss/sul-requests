@@ -326,9 +326,12 @@ module Requestmod
       
     end  
     
-    #------ Library_id or univ_id; only needed if lib not SAL, SAL-NEWARK, or SAL3
+    puts " ================== Current loc parameter is: " + params[:current_loc]
     
-    if ! ['SAL', 'SAL-NEWARK', 'SAL3'].include?(params[:home_lib])
+    #------ Library_id or univ_id; only needed if lib not SAL, SAL-NEWARK, or SAL3 OR current loc not INPROCESS
+    
+    if ! ['SAL', 'SAL-NEWARK', 'SAL3'].include?(params[:home_lib]) &&
+      ! ['INPROCESS'].include?(params[:current_loc])
     
       if ! params['univ_id'].nil?
         
@@ -346,11 +349,12 @@ module Requestmod
         
       end
     
-    end # check for SAL* home_lib
+    end # check that we do NOT have SAL* home_lib and do NOT have INPROCESS current_loc
     
     # ------- Require something in e-mail if we don't have univ_id or library_id
 
-    if ['SAL', 'SAL-NEWARK', 'SAL3'].include?(params[:home_lib]) &&
+    if ( ['SAL', 'SAL-NEWARK', 'SAL3'].include?(params[:home_lib]) || 
+      ['INPROCESS'].include?(params[:current_loc])  ) &&     
       params['univ_id'].blank? && 
       params['library_id'].blank? &&
       params['patron_email'].blank?

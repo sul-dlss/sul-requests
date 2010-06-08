@@ -106,6 +106,8 @@ class Symresult
     response.chomp!.strip!
     
     msgs = {}
+    
+    # puts "============== response is: " + response.inspect
 
     # Valid response should begin with string "RESPONSE"
     if response =~ /^RESPONSE/ 
