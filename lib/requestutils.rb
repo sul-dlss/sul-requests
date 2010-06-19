@@ -111,7 +111,9 @@ module Requestutils
       req_def = 'PAGE-HOOVER'
       
     #----- Locations at other libs that should get NON-PAGE form
-    elsif NON_PAGE_LOCS.include?(current_loc)  || current_loc =~ /-LOAN/
+    # Remove the location check because SW does not provide current loc
+    # elsif NON_PAGE_LOCS.include?(current_loc)  || current_loc =~ /-LOAN/
+    else
       req_def = 'NON-PAGE'
       
     end # check for library or locations 
