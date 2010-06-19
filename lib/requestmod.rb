@@ -28,7 +28,8 @@ module Requestmod
         
     #===== Check whether we have req_def and req_type & redirect if we do not 
         
-    if @request.request_def == 'UNDEFINED' || @request.req_type == 'UNDEFINED'
+    if @request.request_def == 'UNDEFINED' || 
+        (! @request.source == 'SW' && @request.req_type == 'UNDEFINED' )
             
       ExceptionMailer.deliver_problem_report(@request.params, 
                                    "request_def undefined or req_type missing.\n" +
