@@ -28,7 +28,10 @@ module Requestmod
         
     #===== Check whether we have req_def and req_type & redirect if we do not 
         
-    if @request.request_def == 'UNDEFINED' || @request.req_type == 'UNDEFINED' 
+    # if @request.request_def == 'UNDEFINED' || @request.req_type == 'UNDEFINED' 
+    # Try checking just for request_def; some SW records don't supply proper
+    # current loc to determine request type here 
+    if @request.request_def == 'UNDEFINED'  
             
       ExceptionMailer.deliver_problem_report(@request.params, 
                                    "request_def undefined or req_type missing.\n" +
@@ -326,7 +329,7 @@ module Requestmod
       
     end  
     
-    puts " ================== Current loc parameter is: " + params[:current_loc]
+    # puts " ================== Current loc parameter is: " + params[:current_loc]
     
     #------ Library_id or univ_id; only needed if lib not SAL, SAL-NEWARK, or SAL3 OR current loc not INPROCESS
     
