@@ -130,7 +130,7 @@
 					checked="checked"
 					<% end %>
 					 >
-					 held until they are returned?</label>
+					   held for you after return by current borrower?</label>
 					</li>
 					<li> 
 					<label id="recallLabel" 
@@ -146,9 +146,9 @@
 					checked="checked"
 					<% end %>
 					value="RECALL">
-  					recalled immediately? 
+  					 recalled from current borrower 
 					<% if ! @is_authenticated %>
-					<span id="loginInstruction">(requires login)</span>
+					<span id="loginInstruction">(quicker, requires login)?</span>
 					<% end %>
 					</label></li>
 					</ul>
@@ -227,7 +227,7 @@
 		
 		<% end # items > 0 - part 2 %>
 		
-		<fieldset><legend>Volumes/Copies Required</legend>
+		<fieldset><legend>Volumes/Copies Requested</legend>
 		
 
 		<% if @fields.has_key?('bib_info') %>
