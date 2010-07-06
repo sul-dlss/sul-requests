@@ -139,15 +139,16 @@
 			<a href="javascript:self.close()">Close Window and Return to Socrates</a>
 			
 		<% end %>
-		
-		<!-- End of item information -->	
-        <hr>		
-		<!-- Extra information that may be useful for debugging. Delete this in prod version -->
-		
-		<p>Information below the horizontal line is not part of the 
-		display but is just shown temporarily to help with debugging.</p>
-		<% unless flash[:debug].blank?%>
-			<div id="notification"><%= flash[:debug] %></div>
+		<% if  RailsEnv == 'development' %>
+			<!-- End of item information -->	
+	        <hr>		
+			<!-- Extra information that may be useful for debugging. Delete this in prod version -->
+			
+			<p>Information below the horizontal line is not part of the 
+			display but is just shown temporarily to help with debugging.</p>
+			<% unless flash[:debug].blank?%>
+				<div id="notification"><%= flash[:debug] %></div>
+			<% end %>
 		<% end %>
 	</body>
 </html>
