@@ -67,6 +67,8 @@ class Request < Tableless
     
     params_final = {}
     
+    puts "=============== RAILS_ENV constant is " + RAILS_ENV
+    
     # puts "============ params in get_params is: " + params.inspect
     
     if params.has_key?(:p_data)
