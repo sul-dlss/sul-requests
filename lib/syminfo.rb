@@ -283,22 +283,31 @@ end
         #                                  " current_loc => " + sym_entry[:current_loc] +
         #                                  " shelfkey => " + shelf_key
   
-        # Add to items hash
-        items_hash = get_items_hash( params,
-          items_hash, sym_entry[:item_id], sym_entry[:call_num], home_lib,
-          sym_entry[:home_loc], sym_entry[:current_loc], sym_entry[:shelf_key], 
-          sym_entry[:due_date] )
-  
-        # Also add to cur_locs_arr if home loc doesn't match cur loc
-        if sym_entry[:home_loc] != sym_entry[:current_loc] && ! sym_entry[:item_id].nil?
-          cur_locs_arr.push( sym_entry[:current_loc])
-        end
         
-        # puts "========= items ids are: " + sym_entry[:item_id].inspect + ' / ' + params[:items_id].inspect
-        # And set the Soc home loc if we need to      
-        if home_loc.nil? && ( sym_entry[:item_id] == params[:item_id] )
-          home_loc = sym_entry[:home_loc]
-        end
+        # puts " ============= home loc is: " + sym_entry[:home_loc]
+        
+        # Add items to hash unless home_loc is SEE-OTHER ( = child bound-with )
+        
+        if ! sym_entry[:home_loc ].nil? && sym_entry[:home_loc] != 'SEE-OTHER'
+          
+          # Add to items hash
+          items_hash = get_items_hash( params,
+            items_hash, sym_entry[:item_id], sym_entry[:call_num], home_lib,
+            sym_entry[:home_loc], sym_entry[:current_loc], sym_entry[:shelf_key], 
+            sym_entry[:due_date] )
+    
+          # Also add to cur_locs_arr if home loc doesn't match cur loc
+          if sym_entry[:home_loc] != sym_entry[:current_loc] && ! sym_entry[:item_id].nil?
+            cur_locs_arr.push( sym_entry[:current_loc])
+          end
+          
+          # puts "========= items ids are: " + sym_entry[:item_id].inspect + ' / ' + params[:items_id].inspect
+          # And set the Soc home loc if we need to      
+          if home_loc.nil? && ( sym_entry[:item_id] == params[:item_id] )
+            home_loc = sym_entry[:home_loc]
+          end
+          
+        end # check for home_loc != SEE-OTHER
   
       end # do each item from sym
                 
