@@ -116,20 +116,21 @@ class Symresult
       
       items = response.split('^')
       
-      # 36105129254244|DS793 .H6 Z477 2006 V.57|722
-      # 36105129254251|DS793 .H6 Z477 2006 V.56|209
+      # 36105129254244|DS793 .H6 Z477 2006 V.57|722|<default msg txt>
+      # 36105129254251|DS793 .H6 Z477 2006 V.56|209|<default msg txt>
 
       # Go through each item and set up appropriate response info
       items.each { |item|
         fields = item.split('|') unless item.nil?
         
         # Assign to vars just to make things easier to read
+        default_text = fields[4]
         key = fields[3]
         value = fields[1] + '|' + fields[2]
         
-        # If msg key gets nothing, add info about problem   
+        # If msg key gets nothing, add default text from Symphony   
         if messages[key].blank?
-           value = value + ' - System Message Number: ' + key   
+           value = value + ' - ' + default_text   
            key = '003' 
         end
 
