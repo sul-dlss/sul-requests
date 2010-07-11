@@ -384,7 +384,7 @@ module Requestmod
     if ! params['planned_use'].nil?
       
       if params['planned_use'] !~  /^[01][0-9]\/[0-9]{2}\/[0-9]{4}$/ ||
-        ! check_valid_date?( params['not_needed_after'], PLANNED_USE_START, 
+        ! check_valid_date?( params['planned_use'], PLANNED_USE_START, 
           PLANNED_USE_END )
         start_date = Date.today + PLANNED_USE_START
         end_date = Date.today + PLANNED_USE_END 
