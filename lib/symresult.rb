@@ -130,8 +130,8 @@ class Symresult
         
         # If msg key gets nothing, add default text from Symphony   
         if messages[key].blank?
-           value = value + ' - ' + default_text   
-           key = '003' 
+           value = value + '|' + default_text   
+           #key = '003' 
         end
 
         # Add the keys and values to the response

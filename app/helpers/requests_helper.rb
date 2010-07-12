@@ -87,4 +87,39 @@ module RequestsHelper
     
   end
   
+  # Take a message from the messages table, which may be blank, and a string of items
+  # and return the appropriate text for the header that precedes the list of items.
+  # If there's no message in the messages table we need to get the text from the first
+  # entry in the list. We also need to have a default if we can't find the text from
+  # the item.
+  def failed_item_header( msg_from_table, item_list, default_msg )
+    
+    # Default msg is 003. Should be 'Your request was not completed.'
+    heading_to_return = default_msg
+    
+    if msg_from_table.blank?
+      
+      # 36105073409570|D410 .I752 V.16 1998| User already has a hold on this 
+      # material^36105070716209|D410 .I752 V.14(1996)| User already has a hold on
+      # this material^36105070716191|D410 .I752 V.13(1995)| User already has a hold on
+      # this material
+      
+      items = item_list.split( /\^/)
+    
+      fields = items[0].split(/\|/)
+
+      if ! fields[2].nil?
+        heading_to_return = heading_to_return + ' System message is: ' + fields[2]
+      end
+      
+    else
+      
+      heading_to_return = msg_from_table
+      
+    end
+    
+    return heading_to_return
+    
+  end
+  
 end

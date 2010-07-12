@@ -115,7 +115,7 @@
 		
 			<% if ! @symresult.msgs.empty?  %>
 				<% @symresult.msgs.each do |key, value| %>
-					<h2 class="fail"><%=h @messages[key] %></h2>
+					<h2 class="fail"><%=h failed_item_header(@messages[key], value, @messages['003']) %></h2>
 					<ul>
 					<% items = value.split('^') %>
 					<% items.each do |item| %>
