@@ -323,7 +323,8 @@ module Requestutils
     
     # TODO: Make sure logic covers every case & that order is correct
     
-    if home_lib.upcase ==  'HOOVER' || home_lib.upcase == 'LAW'
+    if home_lib.upcase ==  'HOOVER' || home_lib.upcase == 'LAW' || 
+        home_lib.upcase == 'HV-ARCHIVE'
       pickupkey = home_lib
     elsif current_loc[0..4] == 'PAGE-'
       pickupkey = current_loc[5..current_loc.length]
