@@ -410,6 +410,12 @@ module Requestmod
     if params['pickup_lib'].eql?('NONE')
       error_msgs.push( 'Please select a pickup library.' )
     end
+    
+    # ------- Check that the lenght of comments is 2000 or less
+    
+    if params['comments'].length > 2000
+      error_msgs.push( 'Please include no more than 2000 characters in the comments field. It currently includes ' + params['comments'].length.to_s + ' characters.')
+    end
 
     return error_msgs
       
