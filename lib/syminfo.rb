@@ -87,8 +87,11 @@ class Syminfo
     elsif NOT_ON_SHELF_LOCS.include?(current_loc)  ||
         current_loc =~ /-LOAN/     
       item_text = TEXT_FOR_LOC_CODES[:NOTONSHELF]
-    elsif ["NEWBOOKS", "ONORDER"].include?(current_loc)      
+    elsif ["NEWBOOKS"].include?(current_loc)      
       item_text = TEXT_FOR_LOC_CODES[current_loc.to_sym]
+    # Do on-order this way because symbols can't include hyphen  
+    elsif current_loc == 'ON-ORDER'  
+      item_text = TEXT_FOR_LOC_CODES[:ONORDER]
     elsif current_loc == 'INPROCESS'
       item_text = TEXT_FOR_LOC_CODES[:INPROCESS]     
     end
