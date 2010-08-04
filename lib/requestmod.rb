@@ -399,7 +399,7 @@ end
    
     # puts "============= items checked before is_id_needed? is: " + params[:items_checked].inspect
     
-    if is_id_needed?(params[:home_lib], params[:current_loc], params[:items_checked]) 
+    if ! params[:items_checked].nil? &&  is_id_needed?(params[:home_lib], params[:current_loc], params[:items_checked]) 
     
       if ! params['univ_id'].nil?
         
