@@ -1,4 +1,4 @@
-module Requestmod
+    module Requestmod
      
   # Module for both authenticated and unauthenticated requests; also at least 
   # one method used in requests controller
@@ -114,9 +114,9 @@ module Requestmod
     flash[:invalid_fields] = ''
     error_msgs = check_fields( params['request'], @request.max_checked)
 
-    if ! error_msgs.empty? # Go back to form and display errors
+    if ! error_msgs.empty? # Go back to form and display errors; used flash.now so errors don't persist
       
-      flash[:invalid_fields] = error_msgs
+      flash.now[:invalid_fields] = error_msgs
       
       # ---- Reset instance vars needed to re-display form
       @requestdef_info = Requestdef.find_by_name( @request.request_def )
@@ -311,7 +311,61 @@ module Requestmod
      return false
     end
 
+end
+
+  # Take items cheked strings and return an array of all locations they contain, including both 
+  # current and home locations
+  def get_items_checked_locs(items_checked)
+    
+    # 36105005424713|GREEN|PR6003 .E282 1969 V.16|STACKS|CHECKEDOUT|REQ-HOLD|6/30/2011,23:59
+    
+    locs_array = []
+    
+    items_checked.each do |item|
+      item_strings = item.split('|')
+      locs_array.push(item_strings[3], item_strings[4])
+    end
+    
+    # print "=========== locs array is: " + locs_array.inspect
+    
+    return locs_array
+    
   end
+
+  # Check whether we need to require an ID for this request. Retur true or false. 
+  # Result will depend on various combinations of home_lib, current_loc and presence
+  # of certain current loc strings in items_checked array
+  def is_id_needed?(home_lib, current_loc, items_checked)
+    
+    # puts "============== items checked in is_id_needed is: " + items_checked.inspect
+    
+    id_decision = true # Make this the default
+    
+    items_checked_locs = get_items_checked_locs(items_checked)
+    
+    # First checked out or inprocess locations since this overrides all else
+    if  ( CHECKED_OUT_LOCS & items_check_locs ).any? ||
+      checked_out_locs.include?('ON-ORDER')
+      
+      id_decision = true
+    
+    # Then any SAL items that didn't have the above locations 
+    elsif ['SAL', 'SAL-NEWARK', 'SAL3'].include?[home_lib] 
+     
+     id_decision = false 
+   
+    # Then any SPEC-COLL, Hoover, Hoover Archives items with -30 current loc     
+    elsif ['SPEC-COLL', 'HOOVER', 'HV-ARCHIVE'].include?[home_lib]  &&
+     current_loc =~ /.*?-30$/
+     
+     id_decision = false
+
+    end
+       
+    return id_decision
+    
+  end
+
   
   # Method check_fields. Test validity of each required field and add to error_msgs
   # if there's a problem
@@ -331,10 +385,11 @@ module Requestmod
     
     # puts " ================== Current loc parameter is: " + params[:current_loc]
     
-    #------ Library_id or univ_id; only needed if lib not SAL, SAL-NEWARK, or SAL3 OR current loc not INPROCESS
+    #------ Library_id or univ_id; only needed if is_id_needed = true
+   
+    puts "============= items checked before is_id_needed? is: " + params[:items_checked].inspect
     
-    if ! ['SAL', 'SAL-NEWARK', 'SAL3'].include?(params[:home_lib]) &&
-      ! ['INPROCESS'].include?(params[:current_loc])
+    if is_id_needed?(params[:home_lib], params[:current_loc], params[:items_checked]) 
     
       if ! params['univ_id'].nil?
         
@@ -352,7 +407,7 @@ module Requestmod
         
       end
     
-    end # check that we do NOT have SAL* home_lib and do NOT have INPROCESS current_loc
+    end # if ID is needed 
     
     # ------- Require something in e-mail if we don't have univ_id or library_id
 
