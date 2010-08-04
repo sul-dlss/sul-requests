@@ -1,8 +1,7 @@
 class ExceptionMailer < ActionMailer::Base
 
-  MAILTO = ERROR_MAIL
-  MAILFROM = ERROR_MAIL
-
+  MAILTO = 'jlavigne@stanford.edu'
+  MAILFROM = 'jlavigne@stanford.edu'
   # Mail a report about an exception
   def exception_report(exception, trace, session, params, env, sent_on = Time.now)
       @recipients = MAILTO
