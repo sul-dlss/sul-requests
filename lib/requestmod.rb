@@ -313,9 +313,8 @@
 
 end
 
-  # Take items cheked strings and return an array of all locations they contain, including both 
-  # current and home locations
-  def get_items_checked_locs(items_checked)
+  # Take items checked strings and return an array of all current locations they contain
+  def get_items_cur_locs_checked(items_checked)
     
     # 36105005424713|GREEN|PR6003 .E282 1969 V.16|STACKS|CHECKEDOUT|REQ-HOLD|6/30/2011,23:59
     
@@ -323,7 +322,7 @@ end
     
     items_checked.each do |item|
       item_strings = item.split('|')
-      locs_array.push(item_strings[3], item_strings[4])
+      locs_array.push( item_strings[4] )
     end
     
     # print "=========== locs array is: " + locs_array.inspect
@@ -332,7 +331,7 @@ end
     
   end
 
-  # Check whether we need to require an ID for this request. Retur true or false. 
+  # Check whether we need to require an ID for this request. Return true or false. 
   # Result will depend on various combinations of home_lib, current_loc and presence
   # of certain current loc strings in items_checked array
   def is_id_needed?(home_lib, current_loc, items_checked)
@@ -341,26 +340,37 @@ end
     
     id_decision = true # Make this the default
     
-    items_checked_locs = get_items_checked_locs(items_checked)
+    cur_locs_checked = get_items_cur_locs_checked(items_checked)
     
-    # First checked out or inprocess locations since this overrides all else
-    if  ( CHECKED_OUT_LOCS & items_check_locs ).any? ||
-      checked_out_locs.include?('ON-ORDER')
+    # First check that cur_locs don't include checked out locs or on-order, which always
+    # require and ID. Do we need to add other sets of locations from Constants?
+    if ( CHECKED_OUT_LOCS & cur_locs_checked ).any? ||
+      cur_locs_checked.include?('ON-ORDER')
       
       id_decision = true
     
-    # Then any SAL items that didn't have the above locations 
-    elsif ['SAL', 'SAL-NEWARK', 'SAL3'].include?[home_lib] 
+    # Now we check for other conditions that remove the requirement for an ID  
+    else  
+      
+      # Cur locs include inprocess
+      if cur_locs_checked.include?('INPROCESS')
+        
+        id_decision = false
+    
+      # Then any SAL items that didn't have the above locations 
+      elsif ['SAL', 'SAL-NEWARK', 'SAL3'].include?(home_lib) 
      
-     id_decision = false 
+        id_decision = false 
    
-    # Then any SPEC-COLL, Hoover, Hoover Archives items with -30 current loc     
-    elsif ['SPEC-COLL', 'HOOVER', 'HV-ARCHIVE'].include?[home_lib]  &&
-     current_loc =~ /.*?-30$/
+      # Then any SPEC-COLL, Hoover, Hoover Archives items with -30 current loc     
+      elsif ['SPEC-COLL', 'HOOVER', 'HV-ARCHIVE'].include?(home_lib)  &&
+      current_loc =~ /.*?-30$/
      
-     id_decision = false
+        id_decision = false
 
-    end
+      end # SAL etc. check
+
+    end # checked out + on-order check
        
     return id_decision
     
@@ -387,7 +397,7 @@ end
     
     #------ Library_id or univ_id; only needed if is_id_needed = true
    
-    puts "============= items checked before is_id_needed? is: " + params[:items_checked].inspect
+    # puts "============= items checked before is_id_needed? is: " + params[:items_checked].inspect
     
     if is_id_needed?(params[:home_lib], params[:current_loc], params[:items_checked]) 
     
