@@ -393,13 +393,20 @@ end
       
     end  
     
+    # If we have checked items, find out whether ID is needed
+
+    if ! params[:item_checked].nil?
+      is_id_needed = is_id_needed?(params[:home_lib], params[:current_loc], params[:items_checked])
+    end
+    
+    
     # puts " ================== Current loc parameter is: " + params[:current_loc]
     
     #------ Library_id or univ_id; only needed if is_id_needed = true
    
     # puts "============= items checked before is_id_needed? is: " + params[:items_checked].inspect
     
-    if ! params[:items_checked].nil? &&  is_id_needed?(params[:home_lib], params[:current_loc], params[:items_checked]) 
+    if ! params[:items_checked].nil? &&  is_id_needed 
     
       if ! params['univ_id'].nil?
         
@@ -421,8 +428,7 @@ end
     
     # ------- Require something in e-mail if we don't have univ_id or library_id
 
-    if ( ['SAL', 'SAL-NEWARK', 'SAL3'].include?(params[:home_lib]) || 
-      ['INPROCESS'].include?(params[:current_loc])  ) &&     
+    if ( ! params[:items_checked].nil? &&  ! is_id_needed  ) &&     
       params['univ_id'].blank? && 
       params['library_id'].blank? &&
       params['patron_email'].blank?
