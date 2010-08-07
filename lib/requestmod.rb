@@ -345,7 +345,8 @@ end
     # First check that cur_locs don't include checked out locs or on-order, which always
     # require and ID. Do we need to add other sets of locations from Constants?
     if ( CHECKED_OUT_LOCS & cur_locs_checked ).any? ||
-      cur_locs_checked.include?('ON-ORDER')
+      ( MISSING_LOCS & cur_locs_checked ).any? ||
+      ( ['ON-ORDER', 'NEWBOOKS'] & cur_locs_checked).any?
       
       id_decision = true
     
@@ -395,7 +396,7 @@ end
     
     # If we have checked items, find out whether ID is needed
 
-    if ! params[:item_checked].nil?
+    if ! params[:items_checked].nil?
       is_id_needed = is_id_needed?(params[:home_lib], params[:current_loc], params[:items_checked])
     end
     
