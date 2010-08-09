@@ -271,6 +271,16 @@ end
       items_from_sym.each do |item|
   
         sym_entry = get_sym_entry_hash(item)
+        
+        # Set home_loc_to_select
+        if ! home_loc.nil?
+          home_loc_to_select = home_loc
+        elsif ! params[:current_loc].nil?
+          # To cover Socrates URLs, but wont' work for all
+          home_loc_to_select = params[:current_loc]
+        else
+          home_loc_to_select = ''
+        end
   
         # puts "========== sym entry is: " + sym_entry.inspect + "\n"
   
@@ -289,9 +299,14 @@ end
         
         # puts " ============= home loc is: " + sym_entry[:home_loc]
         
-        # Add items to hash unless home_loc is SEE-OTHER ( = child bound-with )
+        # Add items to hash if these conditions apply:
+        # 1. sym_entry[:home_loc] is not nil (which should always be the case) 
+        # 2. sym_entry[:home_loc] != SEE-OTHER ( = child bound-with )   
+        # 3. sym_entry[:home_loc] = home_loc_to_select (set above)           
         
-        if ! sym_entry[:home_loc ].nil? && sym_entry[:home_loc] != 'SEE-OTHER'
+        if ! sym_entry[:home_loc ].nil? && 
+          sym_entry[:home_loc] != 'SEE-OTHER' &&
+          sym_entry[:home_loc] == home_loc_to_select
           
           # Add to items hash
           items_hash = get_items_hash( params,
