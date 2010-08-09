@@ -134,7 +134,7 @@ module Requestutils
     
     # ---- NOT_ON_SHELF automatically RECALL if authenticated
     
-    if NOT_ON_SHELF_LOCS.include?( current_loc ) || current_loc =~ /\-LOAN/
+    if NOT_ON_SHELF_LOCS.include?( current_loc ) || current_loc =~ /-LOAN/
       if @is_authenticated       
         req_type = 'REQ-RECALL'     
       end   

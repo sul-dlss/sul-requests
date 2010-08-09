@@ -31,6 +31,7 @@ indicates which request definitions are represented by at least one test record.
 	<% soc_url = "http://library.stanford.edu/seaz=" + url_data[:ckey] %>
 	<% rails_server_url = "http://rd-requests-dev.stanford.edu/requests/new?ckey=" + url_data[:ckey] + "&call_num=" + url_data[:call_num] + "&req_type=" + url_data[:req_type] + "&home_lib=" + url_data[:home_lib] + "&current_loc=" + url_data[:current_loc] + "&item_id=" + url_data[:item_id] + "&due_date=" + url_data[:due_date]  %>
 	<% localhost_url = "http://localhost:3000/requests/new?ckey=" + url_data[:ckey] + "&call_num=" + url_data[:call_num] + "&req_type=" + url_data[:req_type] + "&home_lib=" + url_data[:home_lib] + "&current_loc=" + url_data[:current_loc] + "&item_id=" + url_data[:item_id] + "&due_date=" + url_data[:due_date]  %>
+	<% searchworks_test_url = "http://searchworks-test.stanford.edu/view/" + url_data[:ckey] %>
 
 	<table border=0>
     	<tr><td colspan = 5>Request Definition: 
@@ -44,7 +45,7 @@ indicates which request definitions are represented by at least one test record.
     		<td nowrap><%= button_to 'Delete', { :action => 'destroy', :id => reqtest.id }, :confirm => 'Are you sure you want to delete this item?', 
          :method => :delete %></td>
 		</tr>
-		<tr><td colspan = 6>CKEY: <%=h url_data[:ckey] %></td></tr>
+		<tr><td colspan = 6>CKEY: <%=h url_data[:ckey] %> <a href="<%= searchworks_test_url %>">Searchworks Test Record</a></td></tr>
 		<tr>
     		<td width=150>Library: <%= url_data[:home_lib] %></td>
 			<td width= 20>&nbsp;</td>				

@@ -273,14 +273,22 @@ end
         sym_entry = get_sym_entry_hash(item)
         
         # Set home_loc_to_select
+        
+        # puts "=========== params in get_sw_info is: " + params.inspect
+        
         if ! home_loc.nil?
           home_loc_to_select = home_loc
-        elsif ! params[:current_loc].nil?
-          # To cover Socrates URLs, but wont' work for all
+        # To cover Socrates URLs, but wont' work for all          
+        elsif ! params[:current_loc].nil? &&          
+          ! REC_HOLD_LOCS.include?(params[:current_loc]) &&
+          params[:current_loc] !~ /-LOAN/
+          
           home_loc_to_select = params[:current_loc]
         else
-          home_loc_to_select = ''
+          home_loc_to_select = 'STACKS'
         end
+        
+        # puts "================ home_loc_to_select: " + home_loc_to_select
   
         # puts "========== sym entry is: " + sym_entry.inspect + "\n"
   
