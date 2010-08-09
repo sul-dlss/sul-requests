@@ -67,7 +67,7 @@
 			<% end %>
 			
 			<% if ! @request.pickup_lib.blank? %>	
-				<dt><%= @field_labels['pickup_lib'] %>:</dt><dd> <%= @request.pickup_lib %></dd>		
+				<dt><%= @field_labels['pickup_lib'] %>:</dt><dd> <%= @library_names[@request.pickup_lib] %></dd>		
 			<% end %>
 			
 			<% if ! @request.hold_recall.blank? %>

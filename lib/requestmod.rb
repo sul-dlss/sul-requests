@@ -153,6 +153,7 @@
       
       # Get all fields here so we can use labels on confirm page
       @field_labels = get_field_labels
+      @library_names = get_library_names
       
       @return_url = @request.return_url
       
@@ -222,6 +223,22 @@
     return fields_hash
     
   end # get_field_lables
+  
+  # Make a hash of library codes and library descriptions so we can show
+  # the description (display name) on the confirmation page that corresponds to the code
+  def get_library_names
+  
+    libraries = Library.find(:all, :select => 'libraries.lib_code, libraries.lib_descrip' )
+  
+    libraries_hash = Hash.new
+    
+    for library in libraries
+      libraries_hash.merge!(library.lib_code => library.lib_descrip)
+    end
+  
+    return libraries_hash
+  
+  end # get_library_names
   
   # Method get_fields_for_requestdef. Take a requestdef name and return a hash
   # of fields for that requestdef. Again this seems rather complicated but 
