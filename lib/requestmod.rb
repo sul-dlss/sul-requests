@@ -371,7 +371,7 @@ end
     else  
       
       # Cur locs include inprocess
-      if cur_locs_checked.include?('INPROCESS')
+      if (['INPROCESS', 'INTRANSIT'] & cur_locs_checked).any?
         
         id_decision = false
     
