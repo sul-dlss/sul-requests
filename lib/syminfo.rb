@@ -258,7 +258,19 @@ end
     if doc.xpath("//record/physical_description")
        bib_info = bib_info + ' ' + doc.xpath("//record/physical_description").text
     end
-  
+    
+    # If the home loc is missing, get it from sym info based on item_id passed in
+    # This is for Socrates items, where the home loc is not passed in
+    
+    home_loc_from_sym = ''
+    
+    if home_loc.nil? && ! params[:item_id].nil?   
+      # doc.xpath("//item_details/item[id = '36105073222163']")     
+      # Is there a single xpath expr that could return the "home_location" attr based on the id?
+      sym_entry_with_loc = get_sym_entry_hash(doc.xpath("//item_details/item[id = #{params[:item_id]}]"))      
+      home_loc_from_sym = sym_entry_with_loc[:home_loc]
+      
+    end
 
     #===== Get array of all symphony item entries ( item_details/item )
 
@@ -276,16 +288,11 @@ end
         
         # puts "=========== params in get_sw_info is: " + params.inspect
         
-        if ! home_loc.nil?
+        if ! home_loc.blank?
           home_loc_to_select = home_loc
         # To cover Socrates URLs, but wont' work for all          
-        elsif ! params[:current_loc].nil? &&          
-          ! REC_HOLD_LOCS.include?(params[:current_loc]) &&
-          params[:current_loc] !~ /-LOAN/
-          
-          home_loc_to_select = params[:current_loc]
-        else
-          home_loc_to_select = 'STACKS'
+        elsif ! home_loc_from_sym.blank?
+          home_loc_to_select = home_loc_from_sym
         end
         
         # puts "================ home_loc_to_select: " + home_loc_to_select
@@ -329,8 +336,8 @@ end
           
           # puts "========= items ids are: " + sym_entry[:item_id].inspect + ' / ' + params[:items_id].inspect
           # And set the Soc home loc if we need to      
-          if home_loc.nil? && ( sym_entry[:item_id] == params[:item_id] )
-            home_loc = sym_entry[:home_loc]
+          if home_loc.blank? && ! home_loc_from_sym.blank?
+            home_loc = home_loc_from_sym
           end
           
         end # check for home_loc != SEE-OTHER
