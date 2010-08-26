@@ -267,10 +267,13 @@ end
     if home_loc.nil? && ! params[:item_id].nil?   
       # doc.xpath("//item_details/item[id = '36105073222163']")     
       # Is there a single xpath expr that could return the "home_location" attr based on the id?
-      sym_entry_with_loc = get_sym_entry_hash(doc.xpath("//item_details/item[id = #{params[:item_id]}]"))      
+      sym_entry_with_loc = get_sym_entry_hash(doc.xpath("//item_details/item[id = '#{params[:item_id]}']"))      
       home_loc_from_sym = sym_entry_with_loc[:home_loc]
       
     end
+   
+    #puts "============ params item_id is: " + params[:item_id].inspect
+    #puts "============ home_loc_from_sym is: " + home_loc_from_sym.inspect
 
     #===== Get array of all symphony item entries ( item_details/item )
 
