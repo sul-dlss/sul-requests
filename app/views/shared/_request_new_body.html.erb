@@ -91,7 +91,7 @@
 			title="Your request may be delayed if you have a SUNet ID and don't login!">login</a> 
 			to auto-fill, enable recall, and prevent processing delays.</div>
 			<% end %>
-
+			<dl>
 			<% if @fields.has_key?('patron_name') %>
 				<dt><label for="request_patron_name"><%= @fields['patron_name'] %></label></dt>
 				<dd><%= f.text_field :patron_name %></dd>
@@ -224,6 +224,7 @@
 				<dd><%= f.text_area :comments, {:size => "40x10"} %></dd>
 			<% end %>			
 			
+			</dl>
 			</fieldset>
 		
 		<% end # items > 0 - part 2 %>
