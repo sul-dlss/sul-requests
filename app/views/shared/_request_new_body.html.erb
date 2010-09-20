@@ -85,21 +85,23 @@
 			<a name="formstart"></a>
 			
 			<fieldset><legend>Your Information</legend>
-			
-			<% if ! @is_authenticated %>
-			<div id="autofill">If you have a SUNet ID, <a href="<%= link_to_auth_request(@request) %>" 
-			title="Your request may be delayed if you have a SUNet ID and don't login!">login</a> 
-			to auto-fill, enable recall, and prevent processing delays.</div>
-			<% end %>
 			<dl>
+			<% if ! @is_authenticated %>
+				<dt>Do you have a SUNet ID?</dt>
+				<dd id="loginlink"><a href="<%= link_to_auth_request(@request) %>">Login for faster service!</a></dd>
+				<dt>Otherwise, enter:</dt>
+				<dd>
+					<dl>
+			<% end %>
+			
 			<% if @fields.has_key?('patron_name') %>
-				<dt><label for="request_patron_name"><%= @fields['patron_name'] %></label></dt>
-				<dd><%= f.text_field :patron_name %></dd>
+					<dt><label for="request_patron_name"><%= @fields['patron_name'] %></label></dt>
+					<dd><%= f.text_field :patron_name %></dd>
 			<% end %>
 			
 			<% if @fields.has_key?('patron_email') %>
-				<dt><label for="request_patron_email"><%= @fields['patron_email'] %></label></dt>
-				<dd><%= f.text_field :patron_email %></dd>
+					<dt><label for="request_patron_email"><%= @fields['patron_email'] %></label></dt>
+					<dd><%= f.text_field :patron_email %></dd>
 			<% end %>		
 			
 			<!-- univ ID or library ID depending on authentication; no need to check fields array -->
@@ -109,12 +111,24 @@
 					<dd><%= f.text_field :univ_id %></dd>
 			<% else %>
 	  				<dt><label for="request_library_id"><%= @fields['library_id'] %></label></dt>
-					<dd><%= f.text_field :library_id %></dd>
+					<dd><%= f.text_field :library_id %>
+						<img src="http://searchworks.stanford.edu/images/icons/help.png" title="What's this?" 
+						onclick="getElementById('libID_help').style.display = 'block'; return false;" />
+							<div id="libID_help" style="display: none;"><img src="../images/libraryid.png" 
+							title="Your library ID is the underlined number above the barcode on your Stanford ID card." 
+							onClick="getElementById('libID_help').style.display = 'none'; return false;"></div>
+					</dd>
 			<% end %>
+			
+			<% if ! @is_authenticated %>
+					</dl>
+				</dd>
+			<% end %>
+			
 			
 			<!-- Always have pickup lib field -->
 			
-			<dt><label for="request_pickup_lib">Will pick up at</label></dt>
+				<dt><label for="request_pickup_lib">Will pick up at</label></dt>
 				<dd><%= select_tag 'request[pickup_lib]', options_for_select( @pickup_libs_hash, :selected => @request.pickup_lib ) %></dd>
 		
 			<!-- Hold/Recall - display only if we have "checked out" items -->	
@@ -312,6 +326,7 @@
 			</div>
 		<% else %>		
 			<div class="submit">
+			    No items can be requested. 
 				<a href="<%= link_for_cancel(@request.source, @request.return_url ) %>">Cancel</a>
 			</div>	
 		<% end # items.size > 0 - part 3 %>
