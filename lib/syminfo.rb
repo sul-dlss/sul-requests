@@ -13,12 +13,12 @@ class Syminfo
    
   # Method to take parameters and return bib_info string, items array, and 
   # cur_locs array to include on the request form. We get these either by doing 
-  # a SearchWorks lookup or by parsing the data we already if we are just
+  # a SearchWorks lookup or by parsing the data we already have if we are just
   # redisplaying the input screen, e.g., because of failed validations
   def initialize(params, home_lib, home_loc )
         
     if params[:bib_info].nil? && params[:items].nil? && params[:cur_locs].nil?   
-      @bib_info, @items, @cur_locs, @home_loc = get_sw_info(params, params[:ckey], home_lib, home_loc )  
+      @bib_info, @items, @cur_locs, @home_loc, @home_lib, @call_num = get_sw_info(params, params[:ckey], home_lib, home_loc )  
     else  
       @bib_info = params[:bib_info]
       @items = get_items_from_params(params[:items])
@@ -228,6 +228,11 @@ end
   # Inputs: params from request, ckey, home_lib
   # Output: bib_info string and sorted array of item entries to use in view
   def get_sw_info(params, ckey, home_lib, home_loc)
+    
+    # Remove ON-ORDER if it is the home_lib string
+    #if home_lib.eql?('ON-ORDER')
+    #  home_lib = ''
+    #end
         
     url = SW_LOOKUP_PRE + ckey + SW_LOOKUP_SUF + '?lib=' + home_lib
   
@@ -259,6 +264,20 @@ end
        bib_info = bib_info + ' ' + doc.xpath("//record/physical_description").text
     end
     
+    # If home_lib has been set to blank above get home_lib and "item_number" here
+
+    #home_lib_from_sym = ''
+    #call_num_from_sym = ''
+    
+    #if doc.xpath("//item_details/item/library")
+    #  home_lib_from_sym = doc.xpath("//item_details/item/library").text
+    #end
+    
+    #if doc.xpath("//item_details/item/item_number")
+    #  call_num_from_sym = doc.xpath("//item_details/item/item_number").text
+    #end
+    
+    
     # If the home loc is missing, get it from sym info based on item_id passed in
     # This is for Socrates items, where the home loc is not passed in
     
@@ -278,6 +297,9 @@ end
     #===== Get array of all symphony item entries ( item_details/item )
 
     items_from_sym = doc.xpath("//item_details/item")
+    
+    puts "=========== items_from_sym is: " + items_from_sym.inspect
+    puts "=========== current_loc here is: " + params[:current_loc]
     
     cur_locs_arr = []   
       
