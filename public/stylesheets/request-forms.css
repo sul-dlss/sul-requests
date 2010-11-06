@@ -99,7 +99,7 @@ textarea#request_comments {width: 30em;}
 select#request_pickup_lib {width: auto;}
 
 div.opening, div.request_successful, div.request_failed {padding: 10px 0 0 0;}
-div.request_failed {color: #cc0000; font-weight: bold;}
+div.request_failed {color: #cc0000; font-size:1.1em; font-weight: bold;}
 div.request_failed a {font-weight: normal;}
 div.request_successful {color: #009900; font-weight: bold;}
 p {clear: both; margin: 0 0 1em 0}

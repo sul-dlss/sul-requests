@@ -298,8 +298,8 @@ end
 
     items_from_sym = doc.xpath("//item_details/item")
     
-    puts "=========== items_from_sym is: " + items_from_sym.inspect
-    puts "=========== current_loc here is: " + params[:current_loc]
+    # puts "=========== items_from_sym is: " + items_from_sym.inspect
+    # puts "=========== current_loc here is: " + params[:current_loc]
     
     cur_locs_arr = []   
       
@@ -411,7 +411,7 @@ end
         
       else
         
-        items = [""] 
+        items = [] 
         
       end 
     
