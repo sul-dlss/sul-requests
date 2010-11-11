@@ -9,7 +9,7 @@ class Syminfo
 
   include Requestutils
   
-  attr_reader :items, :bib_info, :cur_locs, :home_loc
+  attr_reader :items, :bib_info, :cur_locs, :home_loc, :home_lib
    
   # Method to take parameters and return bib_info string, items array, and 
   # cur_locs array to include on the request form. We get these either by doing 
@@ -18,7 +18,7 @@ class Syminfo
   def initialize(params, home_lib, home_loc )
         
     if params[:bib_info].nil? && params[:items].nil? && params[:cur_locs].nil?   
-      @bib_info, @items, @cur_locs, @home_loc, @home_lib, @call_num = get_sw_info(params, params[:ckey], home_lib, home_loc )  
+      @bib_info, @items, @cur_locs, @home_loc, @home_lib = get_sw_info(params, params[:ckey], home_lib, home_loc )  
     else  
       @bib_info = params[:bib_info]
       @items = get_items_from_params(params[:items])
@@ -230,11 +230,11 @@ end
   def get_sw_info(params, ckey, home_lib, home_loc)
     
     # Remove ON-ORDER if it is the home_lib string
-    #if home_lib.eql?('ON-ORDER')
-    #  home_lib = ''
-    #end
+    if home_lib.eql?('ON-ORDER')
+      home_lib = ''
+    end
         
-    url = SW_LOOKUP_PRE + ckey + SW_LOOKUP_SUF + '?lib=' + home_lib
+    url = SW_LOOKUP_PRE + ckey + SW_LOOKUP_SUF + '?lib=' + home_lib.to_s
   
     # Method scope vars to hold data we want
   
@@ -266,16 +266,16 @@ end
     
     # If home_lib has been set to blank above get home_lib and "item_number" here
 
-    #home_lib_from_sym = ''
-    #call_num_from_sym = ''
+    home_lib_from_sym = ''
+    call_num_from_sym = ''
     
-    #if doc.xpath("//item_details/item/library")
-    #  home_lib_from_sym = doc.xpath("//item_details/item/library").text
-    #end
+    if doc.xpath("//callnum_records/library")
+      home_lib_from_sym = doc.xpath("//callnum_records/library").text
+    end
     
-    #if doc.xpath("//item_details/item/item_number")
-    #  call_num_from_sym = doc.xpath("//item_details/item/item_number").text
-    #end
+    if doc.xpath("//callnum_records/item_number")
+      call_num_from_sym = doc.xpath("//callnum_records/item_number").text
+    end
     
     
     # If the home loc is missing, get it from sym info based on item_id passed in
@@ -289,6 +289,12 @@ end
       sym_entry_with_loc = get_sym_entry_hash(doc.xpath("//item_details/item[id = '#{params[:item_id]}']"))      
       home_loc_from_sym = sym_entry_with_loc[:home_loc]
       
+    end
+    
+    # Set the home lib from sym info if it is blank at this point
+
+    if home_lib.blank? && ! home_lib_from_sym.blank?
+      home_lib = home_lib_from_sym
     end
    
     #puts "============ params item_id is: " + params[:item_id].inspect
@@ -392,7 +398,12 @@ end
         end
         
         if params[:call_num].blank?
-          call_num = "No call number"
+          if ! call_num_from_sym.blank?
+            call_num = call_num_from_sym
+          else  
+            call_num = "No call number"
+          end
+          
         else
            call_num = params[:call_num]
         end
@@ -422,7 +433,7 @@ end
     
     # puts " =========== items at end of get_sw_info: " + items.inspect
     
-    return bib_info, items, cur_locs_arr, home_loc
+    return bib_info, items, cur_locs_arr, home_loc, home_lib
   
   end # get_sw_info
 

@@ -28,7 +28,6 @@
         
     #===== Check whether we have req_def and req_type & redirect if we do not 
         
-    # if @request.request_def == 'UNDEFINED' || @request.req_type == 'UNDEFINED' 
     # Try checking just for request_def; some SW records don't supply proper
     # current loc to determine request type here 
     if @request.request_def == 'UNDEFINED'  
@@ -81,9 +80,15 @@
       
       # puts "============== request.home_loc: " + @request.home_loc.inspect 
       
+      #======= Set request home_loc and home_lib from sym_info if necessary
+      
       if @request.home_loc.blank? && ! @sym_info.home_loc.blank?
         @request.home_loc = @sym_info.home_loc
       end    
+      
+      if ( @request.home_lib.blank? || @request.home_lib = 'ON-ORDER' ) && ! @sym_info.home_lib.blank?
+        @request.home_lib = @sym_info.home_lib
+      end
      
       #====== Get info for request def -- form text, etc.
       @requestdef_info = Requestdef.find_by_name( @request.request_def )

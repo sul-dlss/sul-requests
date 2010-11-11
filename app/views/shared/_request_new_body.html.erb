@@ -338,7 +338,14 @@
 			</div>
 		<% else %>		
 			<div class="submit"> 
+				<% if ! @request.return_url.blank? %>
+					<a href="<%= @request.return_url %>">Return to SearchWorks</a>
+				<% elsif @request.source == 'SO' %>
+					<a href="javascript:self.close()">Close Window and Return to Socrates</a>	
+				<% end %>
+				<!--
 				<a href="<%= link_for_cancel(@request.source, @request.return_url ) %>">Cancel</a>
+				-->
 			</div>	
 		<% end # items.size > 0 - part 5 %>
 		

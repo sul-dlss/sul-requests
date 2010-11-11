@@ -3,12 +3,12 @@ class Request < Tableless
   include Requestutils
   require 'cgi'
   
-  attr_reader :params, :ckey, :item_id, :items, :home_lib, :current_loc, :home_loc, :req_type, :request_def, 
-              :redir_check, :pickupkey, :patron_name, :patron_email, :univ_id, :library_id, 
+  attr_reader :params, :ckey, :item_id, :items, :current_loc, :req_type, :request_def, 
+              :redir_check, :patron_name, :patron_email, :univ_id, 
               :pickup_lib, :not_needed_after, :planned_use, :due_date, :hold_recall, :vol_num, :call_num, 
               :source, :return_url, :max_checked, :comments
               
-  attr_accessor :library_id, :items_checked, :home_loc, :pickupkey
+  attr_accessor :library_id, :items_checked, :home_loc, :pickupkey, :home_lib
   
   def initialize(params, request_env, referrer )
     
