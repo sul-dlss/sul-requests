@@ -28,6 +28,14 @@ class ApplicationController < ActionController::Base
     end
   end 
   
+  # See http://maintainablesoftware.com/articles/rails_logging_tips#reducing-log-file-size
+  EXCEPTIONS_NOT_LOGGED = ['ActionController::UnknownAction',
+                         'ActionController::RoutingError']
+  def log_error(exc)
+    super unless EXCEPTIONS_NOT_LOGGED.include?(exc.class.name)
+  end
+
+  
   #TODO: Set up exception handling for various exceptions 
   #TODO: Write exception text to a log
   #def route_not_found(exception)

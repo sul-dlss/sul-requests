@@ -422,7 +422,9 @@ end
         
       else
         
-        items = [] 
+        items = []
+        
+        Rails.logger.warn '****** No items to request: ckey ' + params[:ckey] + ' - ' + Time.new.strftime("%Y/%m/%d %H:%M:%S")
         
       end 
     
