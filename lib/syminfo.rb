@@ -17,12 +17,12 @@ class Syminfo
   # cur_locs array to include on the request form. We get these either by doing 
   # a SearchWorks lookup or by parsing the data we already have if we are just
   # redisplaying the input screen, e.g., because of failed validations
-  def initialize(params, home_lib, home_loc )
+  def initialize(params, home_lib, home_loc, env )
         
     if params[:bib_info].nil? && params[:items].nil? && params[:cur_locs].nil?   
       # Revert for ON-ORDER with no home_lib
       #@bib_info, @items, @cur_locs, @home_loc, @home_lib = get_sw_info(params, params[:ckey], home_lib, home_loc )  
-      @bib_info, @items, @cur_locs, @home_loc = get_sw_info(params, params[:ckey], home_lib, home_loc )  
+      @bib_info, @items, @cur_locs, @home_loc = get_sw_info(params, params[:ckey], home_lib, home_loc, env )  
     else  
       @bib_info = params[:bib_info]
       @items = get_items_from_params(params[:items])
@@ -231,7 +231,7 @@ end
   # Method get_sw_info. Gets and parses all info from SearchWorks .request call
   # Inputs: params from request, ckey, home_lib
   # Output: bib_info string and sorted array of item entries to use in view
-  def get_sw_info(params, ckey, home_lib, home_loc)
+  def get_sw_info(params, ckey, home_lib, home_loc, env)
     
     # Revert for ON-ORDER with no home_lib
     # Remove ON-ORDER if it is the home_lib string
@@ -434,7 +434,10 @@ end
         
         items = []
         
-        Rails.logger.warn '****** No items to request: ckey ' + params[:ckey] + ' - ' + Time.new.strftime("%Y/%m/%d %H:%M:%S")
+        Rails.logger.warn '****** No items to request: ckey ' + params[:ckey] + 
+        ' - ' + Time.new.strftime("%Y/%m/%d %H:%M:%S") + 
+        ' - ' + env['HTTP_USER_AGENT'].to_s +
+        ' - ' + env['REMOTE_ADDR'].to_s
         
       end 
     

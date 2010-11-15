@@ -60,7 +60,7 @@
       end
 
       #======= Get Symphony bib, item, and cur locs info, and make sure home_loc is set
-      @sym_info = Syminfo.new( @request.params, @request.home_lib, @request.home_loc )
+      @sym_info = Syminfo.new( @request.params, @request.home_lib, @request.home_loc, request.env )
       
       #====== Check that we have either a request or sym_info home loc or inclusion test in sym_info will fail
   
@@ -131,7 +131,7 @@
       @pickup_libs_hash = get_pickup_libs( @request.pickupkey)
       
       #====== Get symphony info needed to return to request screen
-      @sym_info = Syminfo.new( @request.params, @request.home_lib, @request.home_loc )
+      @sym_info = Syminfo.new( @request.params, @request.home_lib, @request.home_loc, request.env )
       
       if @request.home_loc.blank? && ! @sym_info.home_loc.blank?
         @request.home_loc = @sym_info.home_loc
