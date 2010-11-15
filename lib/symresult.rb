@@ -140,6 +140,12 @@ class Symresult
         else
           msgs[key] = msgs[key] + '^' + value
         end
+        
+        # If msg key is item not found log this
+        if ! key.blank? && key.eql?('7')    
+          Rails.logger.warn '****** Item not found from Symphony. Message is: ' + value + ' - ' + Time.new.strftime("%Y/%m/%d %H:%M:%S")
+        end
+        
       } # end items.each
         
     elsif response.eql?('2')

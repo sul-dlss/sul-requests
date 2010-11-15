@@ -86,9 +86,10 @@
         @request.home_loc = @sym_info.home_loc
       end    
       
-      if ( @request.home_lib.blank? || @request.home_lib = 'ON-ORDER' ) && ! @sym_info.home_lib.blank?
-        @request.home_lib = @sym_info.home_lib
-      end
+      # Revert for ON-ORDER with no home_lib
+      #if ( @request.home_lib.blank? || @request.home_lib = 'ON-ORDER' ) && ! @sym_info.home_lib.blank?
+      #  @request.home_lib = @sym_info.home_lib
+      #end
      
       #====== Get info for request def -- form text, etc.
       @requestdef_info = Requestdef.find_by_name( @request.request_def )
