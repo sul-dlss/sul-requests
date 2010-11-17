@@ -10,8 +10,8 @@ class Syminfo
   include Requestutils
   
   # Revert for ON-ORDER with no home_lib
-  # attr_reader :items, :bib_info, :cur_locs, :home_loc, :home_lib
-  attr_reader :items, :bib_info, :cur_locs, :home_loc
+  attr_reader :items, :bib_info, :cur_locs, :home_loc, :home_lib
+  #attr_reader :items, :bib_info, :cur_locs, :home_loc
    
   # Method to take parameters and return bib_info string, items array, and 
   # cur_locs array to include on the request form. We get these either by doing 
@@ -21,8 +21,8 @@ class Syminfo
         
     if params[:bib_info].nil? && params[:items].nil? && params[:cur_locs].nil?   
       # Revert for ON-ORDER with no home_lib
-      #@bib_info, @items, @cur_locs, @home_loc, @home_lib = get_sw_info(params, params[:ckey], home_lib, home_loc )  
-      @bib_info, @items, @cur_locs, @home_loc = get_sw_info(params, params[:ckey], home_lib, home_loc, env )  
+      @bib_info, @items, @cur_locs, @home_loc, @home_lib = get_sw_info(params, params[:ckey], home_lib, home_loc, env )  
+      #@bib_info, @items, @cur_locs, @home_loc = get_sw_info(params, params[:ckey], home_lib, home_loc, env )  
     else  
       @bib_info = params[:bib_info]
       @items = get_items_from_params(params[:items])
@@ -144,7 +144,7 @@ class Syminfo
 
       item_text = ''
       
-      if home_loc != current_loc
+      if home_loc != current_loc || ["INPROCESS", "ON-ORDER"].include?(current_loc)
         item_text = get_item_text( current_loc )
       end
 
@@ -235,9 +235,9 @@ end
     
     # Revert for ON-ORDER with no home_lib
     # Remove ON-ORDER if it is the home_lib string
-    #if home_lib.eql?('ON-ORDER')
-    #  home_lib = ''
-    #end
+    if home_lib.eql?('ON-ORDER')
+      home_lib = ''
+    end
         
     url = SW_LOOKUP_PRE + ckey + SW_LOOKUP_SUF + '?lib=' + home_lib.to_s
   
@@ -272,16 +272,16 @@ end
     # Revert for ON-ORDER with no home_lib
     # If home_lib has been set to blank above get home_lib and "item_number" here
 
-    #home_lib_from_sym = ''
-    #call_num_from_sym = ''
+    home_lib_from_sym = ''
+    call_num_from_sym = ''
     
-    #if doc.xpath("//callnum_records/library")
-    #  home_lib_from_sym = doc.xpath("//callnum_records/library").text
-    #end
+    if doc.xpath("//callnum_records/library")
+      home_lib_from_sym = doc.xpath("//callnum_records/library").text
+    end
     
-    #if doc.xpath("//callnum_records/item_number")
-    #  call_num_from_sym = doc.xpath("//callnum_records/item_number").text
-    #end
+    if doc.xpath("//callnum_records/item_number")
+      call_num_from_sym = doc.xpath("//callnum_records/item_number").text
+    end
     
     
     # If the home loc is missing, get it from sym info based on item_id passed in
@@ -300,9 +300,9 @@ end
     # Revert for ON-ORDER with no home_lib
     # Set the home lib from sym info if it is blank at this point
 
-    #if home_lib.blank? && ! home_lib_from_sym.blank?
-    #  home_lib = home_lib_from_sym
-    #end
+    if home_lib.blank? && ! home_lib_from_sym.blank?
+      home_lib = home_lib_from_sym
+    end
    
     #puts "============ params item_id is: " + params[:item_id].inspect
     #puts "============ home_loc_from_sym is: " + home_loc_from_sym.inspect
@@ -405,15 +405,14 @@ end
         end
         
         # Revert for ON-ORDER with no home_lib
-        #if params[:call_num].blank?
-        #  if ! call_num_from_sym.blank?
-        #    call_num = call_num_from_sym
-        #  else  
-        #    call_num = "No call number"
-        #  end
-        
         if params[:call_num].blank?
-          call_num = "No call number"         
+          if ! call_num_from_sym.blank?
+            call_num = call_num_from_sym
+          else  
+            call_num = "No call number"
+          end        
+        # if params[:call_num].blank?
+        #  call_num = "No call number"         
         else
            call_num = params[:call_num]
         end
@@ -449,8 +448,8 @@ end
     # puts " =========== items at end of get_sw_info: " + items.inspect
    
     # Revert for ON-ORDER with no home_lib
-    #return bib_info, items, cur_locs_arr, home_loc, home_lib
-    return bib_info, items, cur_locs_arr, home_loc
+    return bib_info, items, cur_locs_arr, home_loc, home_lib
+    #return bib_info, items, cur_locs_arr, home_loc
   
   end # get_sw_info
 

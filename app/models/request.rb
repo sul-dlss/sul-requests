@@ -4,15 +4,15 @@ class Request < Tableless
   require 'cgi'
   
   # Revert for ON-ORDER with no home_lib
-  # attr_reader :params, :ckey, :item_id, :items, :current_loc, :req_type, :request_def,
-  attr_reader :params, :ckey, :item_id, :items, :home_lib, :current_loc, :req_type, :request_def,
+  attr_reader :params, :ckey, :item_id, :items, :current_loc, :req_type, :request_def,
+  #attr_reader :params, :ckey, :item_id, :items, :home_lib, :current_loc, :req_type, :request_def,
               :redir_check, :patron_name, :patron_email, :univ_id, 
               :pickup_lib, :not_needed_after, :planned_use, :due_date, :hold_recall, :vol_num, :call_num, 
               :source, :return_url, :max_checked, :comments
   
   # Revert for ON-ORDER with no home_lib
-  #attr_accessor :library_id, :items_checked, :home_loc, :pickupkey, :home_lib
-  attr_accessor :library_id, :items_checked, :home_loc, :pickupkey
+  attr_accessor :library_id, :items_checked, :home_loc, :pickupkey, :home_lib
+  #attr_accessor :library_id, :items_checked, :home_loc, :pickupkey
   
   def initialize(params, request_env, referrer )
     

@@ -87,9 +87,9 @@
       end    
       
       # Revert for ON-ORDER with no home_lib
-      #if ( @request.home_lib.blank? || @request.home_lib = 'ON-ORDER' ) && ! @sym_info.home_lib.blank?
-      #  @request.home_lib = @sym_info.home_lib
-      #end
+      if ( @request.home_lib.blank? || @request.home_lib = 'ON-ORDER' ) && ! @sym_info.home_lib.blank?
+        @request.home_lib = @sym_info.home_lib
+      end
      
       #====== Get info for request def -- form text, etc.
       @requestdef_info = Requestdef.find_by_name( @request.request_def )
@@ -464,28 +464,44 @@ end
     
     if ! params['not_needed_after'].nil?
       
-      if params['not_needed_after'] !~  /^[01][0-9]\/[0-9]{2}\/[0-9]{4}$/ ||
-        ! check_valid_date?( params['not_needed_after'], NOT_NEEDED_AFTER_START, 
-          NOT_NEEDED_AFTER_END)
-        start_date = Date.today + NOT_NEEDED_AFTER_START
-        end_date = Date.today + NOT_NEEDED_AFTER_END
-        error_msgs.push('Not needed after field must contain a date between ' +
-        start_date.strftime("%m/%d/%Y") + ' and ' + end_date.strftime("%m/%d/%Y") +
-        ' in the form MM/DD/YYYY.')
-      end
+      begin
+          
+        if params['not_needed_after'] !~  /^[01][0-9]\/[0-9]{2}\/[0-9]{4}$/ ||
+          ! check_valid_date?( params['not_needed_after'], NOT_NEEDED_AFTER_START, 
+            NOT_NEEDED_AFTER_END)
+          start_date = Date.today + NOT_NEEDED_AFTER_START
+          end_date = Date.today + NOT_NEEDED_AFTER_END
+          error_msgs.push('Not needed after field must contain a date between ' +
+          start_date.strftime("%m/%d/%Y") + ' and ' + end_date.strftime("%m/%d/%Y") +
+          ' in the form MM/DD/YYYY.')
+        end
+        
+      rescue ArgumentError # this is invalid_date?
+        
+        error_msgs.push('You entered an invalid date. Please enter the month followed by the day followed by the year: (MM/DD/YYYY)')
+        
+      end # rescue structure
       
     end  
     
     if ! params['planned_use'].nil?
       
-      if params['planned_use'] !~  /^[01][0-9]\/[0-9]{2}\/[0-9]{4}$/ ||
-        ! check_valid_date?( params['planned_use'], PLANNED_USE_START, 
-          PLANNED_USE_END )
-        start_date = Date.today + PLANNED_USE_START
-        end_date = Date.today + PLANNED_USE_END 
-        error_msgs.push('Planned use field must contain a date between ' +
-        start_date.strftime("%m/%d/%Y") + ' and ' + end_date.strftime("%m/%d/%Y") +
-        ' in the form MM/DD/YYYY.')      
+      begin
+           
+        if params['planned_use'] !~  /^[01][0-9]\/[0-9]{2}\/[0-9]{4}$/ ||
+          ! check_valid_date?( params['planned_use'], PLANNED_USE_START, 
+            PLANNED_USE_END )
+          start_date = Date.today + PLANNED_USE_START
+          end_date = Date.today + PLANNED_USE_END 
+          error_msgs.push('Planned use field must contain a date between ' +
+          start_date.strftime("%m/%d/%Y") + ' and ' + end_date.strftime("%m/%d/%Y") +
+          ' in the form MM/DD/YYYY.')      
+        end
+      
+      rescue ArgumentError # this is invalid_date?
+        
+        error_msgs.push('You entered an invalid date. Please enter the month followed by the day followed by the year: (MM/DD/YYYY)')
+         
       end
       
     end  
