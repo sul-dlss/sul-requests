@@ -250,10 +250,15 @@ end
     # puts " ================ url to call in get_sw_info: " + url.inspect
     # Open URL document
     doc = Nokogiri::XML(open(url))
+    
+    #puts "================= doc object from sw is: " + doc.inspect
       
     #===== Get all bib info fields that are present
+    
+    puts "============== bib_info at start is: |" + bib_info + '|'
   
     if doc.xpath("//record/author")
+      puts "=============== adding author info:  |" + doc.xpath("//record/title").text + "|"
        bib_info = bib_info + ' ' + doc.xpath("//record/author").text
     end
     
@@ -267,6 +272,12 @@ end
   
     if doc.xpath("//record/physical_description")
        bib_info = bib_info + ' ' + doc.xpath("//record/physical_description").text
+    end
+    
+    # puts "============== bib_info at end is: |" + bib_info + '|'
+    
+    if bib_info =~ /^\s+$/ # bib_info is only spaces so try to get from Sirsi WS
+      bib_info = get_sws_bib_info( ckey )
     end
     
     # Revert for ON-ORDER with no home_lib
@@ -452,5 +463,29 @@ end
     #return bib_info, items, cur_locs_arr, home_loc
   
   end # get_sw_info
+  
+  # Take ckey and call Sirsi Web Serviced to get bib info if we 
+  # cannot get it from Searchworks (This is for Socrates records
+  # that are not yet in Searchworks
+  def get_sws_bib_info(ckey)
+    
+    url = WS_LOOKUP_SERVER + WS_LOOKUP_PATH_INFO + "&term1=" + ckey + '%7Bckey%7D'
+    
+    # puts "================ url in get_sws_bib_info is: " + url
+    
+    # Open URL document
+    doc = Nokogiri::XML(open(url))
+    
+    title = doc.xpath("//xmlns:title").text
+    author = doc.xpath("//xmlns:author").text
+    
+    if ! author.blank?
+      return author + " / " + title
+    else 
+      return title
+    end
+      
+  end # get_sws_bib_info
+  
 
 end
