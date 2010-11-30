@@ -255,10 +255,10 @@ end
       
     #===== Get all bib info fields that are present
     
-    puts "============== bib_info at start is: |" + bib_info + '|'
+    # puts "============== bib_info at start is: |" + bib_info + '|'
   
     if doc.xpath("//record/author")
-      puts "=============== adding author info:  |" + doc.xpath("//record/title").text + "|"
+      #puts "=============== adding author info:  |" + doc.xpath("//record/title").text + "|"
        bib_info = bib_info + ' ' + doc.xpath("//record/author").text
     end
     
