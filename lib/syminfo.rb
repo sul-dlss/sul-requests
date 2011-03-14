@@ -96,6 +96,9 @@ class Syminfo
     # Do on-order this way because symbols can't include hyphen  
     elsif current_loc == 'ON-ORDER'  
       item_text = TEXT_FOR_LOC_CODES[:ONORDER]
+    # New code as of 3/11; treated like CHECKEDOUT  
+    elsif current_loc == 'LOST-ASSUM'
+      item_text = TEXT_FOR_LOC_CODES[:CHECKEDOUT]
     elsif current_loc == 'INPROCESS'
       item_text = TEXT_FOR_LOC_CODES[:INPROCESS]     
     end
