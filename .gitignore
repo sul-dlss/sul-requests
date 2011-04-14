@@ -1,0 +1,13 @@
+# See http://gitready.com/beginner/2009/01/19/ignoring-files.html for suggestions
+# Can ignore specific files
+.DS_Store
+*~
+*.swp
+
+# From old .cvsignore files
+coverage/*
+database.yml
+environment.rb
+yaml_db
+
+.cvsignore
