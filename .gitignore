@@ -6,8 +6,8 @@
 
 # From old .cvsignore files
 coverage/*
-database.yml
-environment.rb
+config/database.yml
+config/environment.rb
 yaml_db
 
 .cvsignore
