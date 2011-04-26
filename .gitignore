@@ -12,3 +12,6 @@ config/environment.rb
 yaml_db
 
 .cvsignore
+
+.idea
+db/test.sqlite3
