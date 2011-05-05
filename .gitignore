@@ -14,3 +14,5 @@ yaml_db
 
 .idea
 db/test.sqlite3
+.bundle*
+.project

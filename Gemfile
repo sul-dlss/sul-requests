@@ -1,6 +1,7 @@
 # Optionally add local gem server here as another source.
 source "http://rubygems.org"
 
+gem "builder", ">= 2.1.2"
 gem "bundler", ">= 1.0.0"
 gem "marc", ">= 0.3.0"
 gem "mysql", ">= 2.8.1"
