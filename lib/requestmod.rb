@@ -44,9 +44,12 @@
        
       #===== Check whether we need to redirect to the auth path and redirect if so
        
-      if @request.redir_check        
+      if @request.redir_check
+        # RubyMine complains that to_query needs an arg but this works as is; may need to revisit at some point
+        # cf http://apidock.com/rails/ActiveSupport/CoreExtensions/Hash/to_query for 3 apparently
         redirect_to "/auth/requests/new?" + 
         @request.params.to_query + "&redir_done=y" and return false
+
       end
       
       #====== Clean out any unnecessary params at this point
