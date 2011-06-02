@@ -18,8 +18,8 @@ group :test do
    gem "cucumber-rails", ">= 0.3.2"
    gem "gherkin",  ">= 2.1.5"
    gem "rcov", ">= 0.9.8"
-   gem "rspec", "< 2.0"
-   gem "rspec-rails"
+   gem "rspec", "1.3.0"
+   gem "rspec-rails", "1.3.2"
    gem "sqlite3-ruby", ">= 1.2.5"
    gem "webrat", ">=0.7.1"
 end
