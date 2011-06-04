@@ -18,16 +18,21 @@ function UnCheckAll()
 }
 /* Modified from script by: Alan Gruskoff :: http://www.performantsystems.com/
  */
-function countChecked(form) {
+function countChecked(form, max_allowed) {
 	var total = 0;
 	var max = form.request_items.length;
+    // var max_allowed = form.request_max_checked
+    // var max_allowed = eval("document.requestform.request_max_checked");
+    // var max_allowed = 10
+
+
 	for (var idx = 0; idx < max; idx++) {
 		if (eval("document.requestform.request_items[" + idx + "].checked") == true) {
     		total += 1;
    		}
 	}
-	if ( total > 10  ) {
-  		alert("You have selected more than 10 items. Your request cannot be processed unless you keep the total to 10 or fewer. " );
+	if ( total > max_allowed  ) {
+  		alert("You have selected more than " + max_allowed  + " items. Your request cannot be processed unless you keep the total to " + max_allowed + " or fewer. " );
 	}         
 }   
 
