@@ -4,9 +4,30 @@ include Requestutils
 
 describe Requestutils do
 
-  describe "getPickupKey PAGE-EA" do
+  describe "getPickupKey current_loc PAGE-MP" do
 
-    describe "when PAGE-EA" do
+    describe "when PAGE-MP" do
+
+      before(:each) do
+        @home_lib = 'SAL'
+        @home_loc = 'PAGE-MP'
+        @current_loc = 'PAGE-MP'
+        @req_type = nil
+        @result = get_pickup_key( @home_lib, @home_loc, @current_loc, @req_type )
+      end
+
+      it "should return the correct pickupkey" do
+        #To change this template use File | Settings | File Templates.
+        @result.should eql("MP")
+      end
+
+    end
+
+  end
+
+  describe "getPickupKey home_loc HY-PAGE-EA" do
+
+    describe "when HY-PAGE-EA" do
 
       before(:each) do
         @home_lib = 'SAL'
@@ -25,7 +46,28 @@ describe Requestutils do
 
   end
 
-    describe "getPickupKey UARCH-30" do
+  describe "getPickupKey home_loc PAGE-MP" do
+
+    describe "when PAGE-MP" do
+
+      before(:each) do
+        @home_lib = 'SAL'
+        @home_loc = 'PAGE-MP'
+        @current_loc = 'PAGE-MP'
+        @req_type = nil
+        @result = get_pickup_key( @home_lib, @home_loc, @current_loc, @req_type )
+      end
+
+      it "should return the correct pickupkey" do
+        #To change this template use File | Settings | File Templates.
+        @result.should eql("MP")
+      end
+
+    end
+
+  end
+
+  describe "getPickupKey UARCH-30" do
 
     describe "when PAGE-EA" do
 
