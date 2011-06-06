@@ -326,8 +326,10 @@ module Requestutils
     if home_lib.upcase ==  'HOOVER' || home_lib.upcase == 'LAW' || 
         home_lib.upcase == 'HV-ARCHIVE' || home_lib.upcase == 'SPEC-COLL'
       pickupkey = home_lib
-    elsif current_loc[0..4] == 'PAGE-'
-      pickupkey = current_loc[5..current_loc.length]
+    #elsif current_loc[0..4] == 'PAGE-'
+    #  pickupkey = current_loc[5..current_loc.length]
+    elsif ! home_loc.blank? && home_loc =~ /PAGE\-(.*)/
+      pickupkey = $1
     elsif ! home_loc.blank? && home_loc[0..4] == 'PAGE-'
       pickupkey = home_loc[5..home_loc.length]
     # Following apparently needs to precede -30 check   
