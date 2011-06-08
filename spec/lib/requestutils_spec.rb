@@ -170,6 +170,28 @@ describe Requestutils do
   #============ get_pickup_key
 
 
+  describe "getPickupKey home_lib SPEC-COLL" do
+
+    describe "when home lib SPEC-COLL" do
+
+      before(:each) do
+        @home_lib = 'SPEC-COLL'
+        @home_loc = 'STACKS'
+        @current_loc = 'STACKS'
+        @req_type = nil
+        @result = get_pickup_key( @home_lib, @home_loc, @current_loc, @req_type )
+      end
+
+      it "should return the correct pickupkey" do
+        #To change this template use File | Settings | File Templates.
+        @result.should eql("SPEC-COLL")
+      end
+
+    end
+
+  end
+
+
   describe "getPickupKey current_loc PAGE-MP" do
 
     describe "when PAGE-MP" do
