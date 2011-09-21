@@ -175,7 +175,7 @@
 					value="RECALL">
   					 recalled from current borrower 
 					<% if ! @is_authenticated %>
-					<span id="loginInstruction">(quicker, requires login)</span>
+					<span id="loginInstruction">(quicker, <a href="<%= link_to_auth_request(@request) %>">requires login</a>)</span>
 					<% end %>?
 					</label></li>
 					</ul>
