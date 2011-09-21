@@ -56,18 +56,19 @@ table {
 body {font-family:"Lucida Grande","Lucida Sans Unicode","Arial Unicode MS",Helvetica,sans-serif;
 font-size:11px;
 line-height:1.5em; text-align: center; background-color: #424242; margin: 0px; padding: 0px;}
-#header {background-color: #900; color: #FFF; text-align: right; height: 34px; font-size: .75em; background-image:url(http://library.stanford.edu/images/main_l2/globals_sulair_logo.gif); background-repeat: no-repeat; border-bottom: 1px solid #d11d02;}
+#header {background-color: #900; color: #FFF; text-align: right; height: 38px; background-image:url(http://searchworks.stanford.edu/images/sulair_logo.png); background-repeat: no-repeat; background-position: 33px 4px; border-bottom: 1px solid #d11d02;}
 #header a {color: #A2DDE1; text-decoration: none;}
 #header a#SULAIR {position: absolute; top: 0px; left: 0px; display: block; width: 150px; height: 34px; text-decoration: none;}
-#header .links {position: absolute; top: 0px; right: 0px; padding: 11px; z-index: 99;}
+#header .links {position: absolute; top: 0px; right: 0px; padding: 7px 33px; z-index: 99; font-weight: bold;}
 #container {position: relative; background-color: #f6f6f6; max-width: 800px; margin: -10px auto 15px auto; text-align: left; padding: 20px; border-left: 1px solid #ccc; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc}
 a {color: #2E4F81;}
+header a:hover {border-bottom: 1px dotted;}
 h1 {font-size: 1.5em; padding: 0px; margin: 0px; font-weight: normal;}
 h2 { font-size: 1.1em; font-weight: bold; padding: 0px; margin: 1em 0; }
 fieldset {display: block; background-color: #fff; border: 1px solid  #ccc; margin: 10px auto; padding: 10px 20px 20px;}
 legend {font-size: .9em; padding: 5px; background-color: #424242; color: #f6f6f6; background-image:url("bg-legend.png");}
 
-ul, li {list-style-type: none; margin: 0 0 10px; padding: 0px;}
+ul, li {list-style-type: none; margin: 0; padding: 0px;}
 
 .opening ul, .opening li {list-style-type: circle; margin: 10px; padding: 0px;}
 
@@ -83,7 +84,7 @@ fieldset dl dd dl dt {clear: both; float: left; width: 6.5em; padding: 5px 0; te
 fieldset dl dd dl dd {margin-left: 7em; padding: 1px 0px;}
 
 dd#loginlink {height: 2em;}
-dd#loginlink a {font-size: 1.2em; color: #090; text-shadow: 1px 1px 1px #ccc; display:inline-block; margin-top:2px;}
+dd#loginlink a {font-size: 1.5em; color: #090; text-shadow: 1px 1px 1px #ccc; display:inline-block; margin-top:2px;}
 
 img#helpimg {cursor: help;}
 div#libID_help {display:none; position:absolute; right:-245px; top:-100px;}
@@ -103,8 +104,7 @@ div.request_failed {color: #cc0000; font-size:1.1em; font-weight: bold;}
 div.request_failed a {font-weight: normal;}
 div.request_successful {color: #009900; font-weight: bold;}
 p {clear: both; margin: 0 0 1em 0}
-#autofill {color: #900; text-align: center; padding: 0; margin: 0 0 10px;}
-#autofill a {color: #900; font-weight: bold; font-size:1.5em; text-decoration: underline;}
+
 div.submit {clear: both; text-align: center;}
 div.submit input {width: 10em; display: inline; margin: 0px 20px 0px 0px; font-size: 1em;}
 #footer {clear: both; padding: 25px; font-size: .75em; color: #999;}
@@ -147,14 +147,16 @@ h2.success {color: #009900; background-image: url("check.png"); background-posit
 h2.fail {color: #cc0000; background-image: url("x.png"); background-position:left center;
 	background-repeat:no-repeat; padding-left:20px;}
 
-.disabled {color: #666;}
+.disabled {}
+#loginInstruction {color: #007900; font-size: 1.1em}
+#loginInstruction a {color: #007900;}
 dd.unavail_items {padding-top: 7px;}
 dd.unavail_items ul {padding: 5px 0;}
 
 div.access_data li, div.access_data_scroll li {position: relative;}
 span.hold-recall-msg {position: absolute; left: -9999px;}
 
-span.hold-recall {background-image: url("help.png"); background-position:right center;
+span.hold-recall {background-image: url("http://searchworks.stanford.edu/images/icons/help.png"); background-position:right center;
 	background-repeat:no-repeat; padding-right:20px;}
 
 div.access_data li:hover span.item_available span.hold-recall span.hold-recall-msg {position: absolute; top: 1em; left: 20em; 
