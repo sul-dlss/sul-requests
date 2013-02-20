@@ -5,7 +5,7 @@ I want to see the correct screen when I create a new request with the appropriat
 
 Scenario: When location is CHECKEDOUT I should see a Hold screen.  
   
-When I land on requests/new with ckey="4037627" and req_type="REQ-HOLD" and current_loc="CHECKEDOUT" and item_id="36105021328286" and home_lib="GREEN"
+When I land on requests/new with ckey="8117184" and req_type="REQ-HOLD" and current_loc="CHECKEDOUT" and item_id="36105124117008" and home_lib="GREEN"
 Then I should see "Request Form"
 
 # Looks like there are no on-order or in-process items in Searchworks
