@@ -110,6 +110,10 @@ module Requestutils
     elsif home_lib == 'HOOVER'
       req_def = 'PAGE-HOOVER'
       
+    #---- BUSINESS with cur_loc PAGE-IRON
+    elsif home_lib == 'BUSINESS' and current_loc == 'PAGE-IRON'
+      req_def = 'PAGE-BUSINESS'
+      
     #----- Locations at other libs that should get NON-PAGE form
     # Remove the location check because SW does not provide current loc
     # elsif NON_PAGE_LOCS.include?(current_loc)  || current_loc =~ /-LOAN/

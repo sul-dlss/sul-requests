@@ -85,7 +85,7 @@ class Admin::RequestdefsController < ApplicationController
   protected
   
   def get_lib_list
-     @library_list =  [['SUL', 'SUL'], ['Hoover', 'HOOVER'], 
+     @library_list =  [['SUL', 'SUL'], ['Business', 'BUSINESS'], ['Hoover', 'HOOVER'], 
                     ['Hoover Archives', 'HV-ARCHIVE'],
                     ['Hopkins', 'HOPKINS'], ['Law', 'LAW'], ['SAL 1 & 2', 'SAL'],
                     ['SAL Newark', 'SALNEWARK'], ['SAL 3', 'SAL3'], 

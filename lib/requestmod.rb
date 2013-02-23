@@ -195,7 +195,7 @@
       :joins => [:pickupkeys],
       :order => 'libraries.lib_code'   
       )
-      
+       
     # Now we put into a hash and return it sorted. Seems like there should
     # be an easier way of getting the list of libraries!! 
       

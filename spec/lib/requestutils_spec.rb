@@ -5,6 +5,56 @@ include Requestutils
 describe Requestutils do
 
   #========== get_req_def ====================
+  
+  describe "get_req_def lib BUSINESS and various curr_locs " do
+    
+    describe "when lib is BUSINESS and cur loc is PAGE-IRON" do
+      
+      before(:each) do
+        @home_lib = 'BUSINESS'
+        @current_loc = 'PAGE-IRON'
+        @result = get_req_def( @home_lib, @current_loc )
+      end
+      
+      it "should return the correct request definition" do
+        #To change this template use File | Settings | File Templates.
+        @result.should eql("PAGE-BUSINESS")
+      end
+      
+    end
+    
+    describe "when lib is BUSINESS and cur loc is STACKS" do
+      
+      before(:each) do
+        @home_lib = 'BUSINESS'
+        @current_loc = 'STACKS'
+        @result = get_req_def( @home_lib, @current_loc )
+      end
+      
+      it "should return the correct request definition" do
+        #To change this template use File | Settings | File Templates.
+        @result.should eql("NON-PAGE")
+      end
+      
+    end
+    
+    describe "when lib is BUSINESS and cur loc is IN-PROCESS" do
+      
+      before(:each) do
+        @home_lib = 'BUSINESS'
+        @current_loc = 'IN-PROCESS'
+        @result = get_req_def( @home_lib, @current_loc )
+      end
+      
+      it "should return the correct request definition" do
+        #To change this template use File | Settings | File Templates.
+        @result.should eql("NON-PAGE")
+      end
+      
+    end
+    
+  end
+
 
   describe "get_req_def lib SAL cur_loc STACKS" do
 
@@ -169,8 +219,7 @@ describe Requestutils do
 
   #============ get_pickup_key
 
-
-  describe "getPickupKey home_lib SPEC-COLL" do
+  describe "getPickupKey should get correct key for various situations" do
 
     describe "when home lib SPEC-COLL" do
 
@@ -189,10 +238,22 @@ describe Requestutils do
 
     end
 
-  end
+    describe "when PAGE-IRON" do
 
+      before(:each) do
+        @home_lib = 'BUSINESS'
+        @home_loc = 'PAGE-IRON'
+        @current_loc = 'PAGE-IRON'
+        @req_type = nil
+        @result = get_pickup_key( @home_lib, @home_loc, @current_loc, @req_type )
+      end
 
-  describe "getPickupKey current_loc PAGE-MP" do
+      it "should return the correct pickupkey" do
+        #To change this template use File | Settings | File Templates.
+        @result.should eql("IRON")
+      end
+
+    end
 
     describe "when PAGE-MP" do
 
@@ -210,10 +271,6 @@ describe Requestutils do
       end
 
     end
-
-  end
-
-  describe "getPickupKey home_loc HY-PAGE-EA" do
 
     describe "when HY-PAGE-EA" do
 
@@ -232,10 +289,6 @@ describe Requestutils do
 
     end
 
-  end
-
-  describe "getPickupKey home_loc PAGE-MP" do
-
     describe "when PAGE-MP" do
 
       before(:each) do
@@ -252,10 +305,6 @@ describe Requestutils do
       end
 
     end
-
-  end
-
-  describe "getPickupKey UARCH-30" do
 
     describe "when PAGE-EA" do
 
