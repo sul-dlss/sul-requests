@@ -23,6 +23,21 @@ describe Requestutils do
       
     end
     
+    describe "when lib is BUSINESS and cur loc is PAGE-BU" do
+      
+      before(:each) do
+        @home_lib = 'BUSINESS'
+        @current_loc = 'PAGE-BU'
+        @result = get_req_def( @home_lib, @current_loc )
+      end
+      
+      it "should return the correct request definition" do
+        #To change this template use File | Settings | File Templates.
+        @result.should eql("PAGE-BUSINESS")
+      end
+      
+    end
+    
     describe "when lib is BUSINESS and cur loc is STACKS" do
       
       before(:each) do
@@ -251,6 +266,40 @@ describe Requestutils do
       it "should return the correct pickupkey" do
         #To change this template use File | Settings | File Templates.
         @result.should eql("IRON")
+      end
+
+    end
+    
+    describe "when PAGE-BU" do
+
+      before(:each) do
+        @home_lib = 'BUSINESS'
+        @home_loc = 'PAGE-BU'
+        @current_loc = 'PAGE-BU'
+        @req_type = nil
+        @result = get_pickup_key( @home_lib, @home_loc, @current_loc, @req_type )
+      end
+
+      it "should return the correct pickupkey" do
+        #To change this template use File | Settings | File Templates.
+        @result.should eql("BU")
+      end
+
+    end
+    
+    describe "when PAGE-BU" do
+
+      before(:each) do
+        @home_lib = 'BUSINESS'
+        @home_loc = 'PAGE-BU'
+        @current_loc = 'CHECKEOUT'
+        @req_type = nil
+        @result = get_pickup_key( @home_lib, @home_loc, @current_loc, @req_type )
+      end
+
+      it "should return the correct pickupkey" do
+        #To change this template use File | Settings | File Templates.
+        @result.should eql("BU")
       end
 
     end

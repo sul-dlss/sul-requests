@@ -110,8 +110,8 @@ module Requestutils
     elsif home_lib == 'HOOVER'
       req_def = 'PAGE-HOOVER'
       
-    #---- BUSINESS with cur_loc PAGE-IRON
-    elsif home_lib == 'BUSINESS' and current_loc == 'PAGE-IRON'
+    #---- BUSINESS with cur_loc PAGE-IRON or PAGE-BU
+    elsif home_lib == 'BUSINESS' and ( current_loc == 'PAGE-IRON' or current_loc == 'PAGE-BU' )
       req_def = 'PAGE-BUSINESS'
       
     #----- Locations at other libs that should get NON-PAGE form
