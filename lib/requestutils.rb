@@ -309,7 +309,11 @@ module Requestutils
         req_type = 'REQ-SAL3'
 
       end
-
+      
+    elsif home_lib == 'BUSINESS' # If a BUSINESS req gets this far
+      
+      req_type = 'REQ-PAGE'
+    
     end
 
 
