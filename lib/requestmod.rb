@@ -395,6 +395,10 @@ end
      
         id_decision = false
 
+      elsif home_lib == 'BUSINESS' && current_loc == 'PAGE-IRON'
+        
+        id_decision = false
+        
       end # SAL etc. check
 
     end # checked out + on-order check
