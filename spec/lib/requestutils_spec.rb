@@ -187,6 +187,64 @@ describe Requestutils do
 
   #============ get_request_type
 
+
+  describe "get_request_type lib BUSINESS various cur locs" do
+
+    describe "when lib is BUSINESS and cur loc is STACKS" do
+
+      before(:each) do
+        home_lib, current_loc, req_type_parm, extras = {}
+        @home_lib = 'BUSINESS'
+        @current_loc = 'STACKS'
+        @req_type_parm = ''
+        @extras = { }
+        @result = get_request_type( @home_lib, @current_loc, @req_type_parm, @extras )
+      end
+
+      it "should return the correct request definition" do
+        #To change this template use File | Settings | File Templates.
+        @result.should eql("REQ-PAGE")
+      end
+
+    end
+    
+    describe "when lib is BUSINESS and cur loc is PAGE-BU" do
+
+      before(:each) do
+        home_lib, current_loc, req_type_parm, extras = {}
+        @home_lib = 'BUSINESS'
+        @current_loc = 'PAGE-BU'
+        @req_type_parm = ''
+        @extras = { }
+        @result = get_request_type( @home_lib, @current_loc, @req_type_parm, @extras )
+      end
+
+      it "should return the correct request definition" do
+        #To change this template use File | Settings | File Templates.
+        @result.should eql("REQ-PAGE")
+      end
+
+    end
+    
+    describe "when lib is BUSINESS and cur loc is ON-ORDER" do
+
+      before(:each) do
+        home_lib, current_loc, req_type_parm, extras = {}
+        @home_lib = 'BUSINESS'
+        @current_loc = 'ON-ORDER'
+        @req_type_parm = ''
+        @extras = { }
+        @result = get_request_type( @home_lib, @current_loc, @req_type_parm, @extras )
+      end
+
+      it "should return the correct request definition" do
+        #To change this template use File | Settings | File Templates.
+        @result.should eql("REQ-ONORDM")
+      end
+
+    end
+
+  end
   describe "get_request_type lib GREEN and cur loc INPROCESS" do
 
     describe "when lib is GREEN and cur loc is INPROCESS" do
