@@ -86,6 +86,8 @@ module Requestutils
       
       if current_loc == 'PAGE-MP'
         req_def = 'PAGE-BRANNER'
+      elsif current_loc == 'PAGE-AR'
+        req_def = 'PAGE-ARTLCK'
       else 
         req_def = 'PAGE-SAL3'
       end

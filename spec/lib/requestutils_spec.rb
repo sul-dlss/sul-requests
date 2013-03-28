@@ -6,6 +6,25 @@ describe Requestutils do
 
   #========== get_req_def ====================
   
+  describe "get_req_def for lib = SAL3 and current loc PAGE-ARTLCK" do
+    
+    describe "when lib is SAL3 and current loc is PAGE-ARTLCK" do 
+      
+      before(:each) do
+        @home_lib = 'SAL3'
+        @current_loc = 'PAGE-AR'
+        @result = get_req_def( @home_lib, @current_loc )
+      end
+      
+      it "should return the correct request definition" do
+        #To change this template use File | Settings | File Templates.
+        @result.should eql("PAGE-ARTLCK")
+      end
+      
+    end
+    
+  end
+  
   describe "get_req_def lib BUSINESS and various curr_locs " do
     
     describe "when lib is BUSINESS and cur loc is PAGE-IRON" do
