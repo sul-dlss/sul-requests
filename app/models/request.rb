@@ -20,7 +20,7 @@ class Request < Tableless
     @params = get_params(params)
     @patron_name = get_patron_name( @params[:patron_name], request_env )
     @patron_email = get_patron_email( @params[:patron_email], request_env )
-    @library_id = @params[:library_id]
+    @library_id = get_library_id( @params[:library_id], request_env )
     @univ_id = get_univ_id( @params[:univ_id], request_env )
     @ckey = @params[:ckey]
     @item_id = @params[:item_id]
@@ -164,17 +164,21 @@ class Request < Tableless
   end # get_library_id
   
   # Look up proxy status if user is authenticated and return either an empty string
-  # or a delimited string with proxy group and proxy status, which should always be SPONSOR at this point
+  # or a delimited string with proxy group and proxy status, which should always be SPONSOR at this point,
+  # viz, SOME_GROUP|sunetid
   def get_proxy_status(request_env)
     
-    proxy_info = ''
-      
-    if @is_authenticated && ! request_env['WEBAUTH_LDAP_SUCARDNUMBER'].blank?
+    proxy_status = ''
+
+    #Rails.logger.info "===== Before call to get proxy info"
+    #Rails.logger.info "=========== card number is #{request_env['WEBAUTH_LDAP_SUCARDNUMBER']}"
+    
+    if ! request_env['WEBAUTH_LDAP_SUCARDNUMBER'].blank?
       proxy_url = PROXY_LOOKUP + request_env['WEBAUTH_LDAP_SUCARDNUMBER'][5..-1]
-      proxy_info = open( proxy_url ) {|f| f.read }.chomp.gsub(/\|$/, '')
+      proxy_status = open( proxy_url ) {|f| f.read }.chomp.gsub(/\|$/, '')
     end
     
-    return proxy_info
+    return proxy_status
     
   end
   
