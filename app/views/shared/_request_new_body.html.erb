@@ -113,11 +113,11 @@
 					<dd><%= f.text_field :patron_email %></dd>
 			<% end %>		
 			
-			<!-- univ ID or library ID depending on authentication; no need to check fields array -->
+			<!-- Changed to show library id both for authenticated and unauthenticated users, but no explanation if authenticated -->
 			
 			<% if @is_authenticated %>
-	  				<dt><label for="request_univ_id"><%= @fields['univ_id'] %></label></dt>
-					<dd><%= f.text_field :univ_id %></dd>
+	  				<dt><label for="request_library_id"><%= @fields['library_id'] %></label></dt>
+					<dd><%= f.text_field :library_id %></dd>
 			<% else %>
 	  				<dt><label for="request_library_id"><%= @fields['library_id'] %></label></dt>
 					<dd><%= f.text_field :library_id %>
@@ -132,6 +132,8 @@
 					</dd>
 			<% end %>
 			
+
+			
 			<% if ! @is_authenticated %>
 					</dl>
 				</dd>
@@ -143,6 +145,15 @@
 				<dt><label for="request_pickup_lib">Will pick up at</label></dt>
 				<dd><%= select_tag 'request[pickup_lib]', options_for_select( @pickup_libs_hash, :selected => @request.pickup_lib ) %></dd>
 		
+			
+				<!-- Prompt to make this a proxy request if user is authenticated and is a proxy sponsor -->
+
+				<% if @is_authenticated and ! @proxy_status.blank? %>
+					<dt><label for="request_proxy_prompt">Proxy request?</dt>
+						<dd><%= f.check_box :proxy_request %>Make this a proxy request</dd>			
+				<% end %>
+			
+			
 			<!-- Hold/Recall - display only if we have "checked out" items -->	
 			
 			<% if @msg_keys.include?('DELAYED') %>

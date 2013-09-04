@@ -2,6 +2,7 @@ class Request < Tableless
   
   include Requestutils
   require 'cgi'
+  require 'open-uri'
   
   # Revert for ON-ORDER with no home_lib
   attr_reader :params, :ckey, :item_id, :items, :current_loc, :req_type, :request_def,
@@ -11,7 +12,7 @@ class Request < Tableless
               :source, :return_url, :max_checked, :comments
   
   # Revert for ON-ORDER with no home_lib
-  attr_accessor :library_id, :items_checked, :home_loc, :pickupkey, :home_lib
+  attr_accessor :library_id, :items_checked, :home_loc, :pickupkey, :home_lib, :proxy_status, :proxy_request
   #attr_accessor :library_id, :items_checked, :home_loc, :pickupkey
   
   def initialize(params, request_env, referrer )
@@ -44,6 +45,8 @@ class Request < Tableless
     @source = @params[:source]
     @return_url = get_return_url(@source, @params[:return_url], referrer)
     @max_checked = get_max_checked(@params[:home_lib])
+    @proxy_status = get_proxy_status(request_env)
+    @proxy_request = @params[:proxy_request]
   end
    
   # Take params hash and unescape each of the values, return a hash
@@ -142,6 +145,38 @@ class Request < Tableless
     return univ_id
         
   end # get_univ_id
+  
+  # Take the library ID parameter and the request env and return the first
+  # if it's not nil or the library ID from the other if the first is nil
+  # Note that we allow users to change the library ID
+  def get_library_id( parm_library_id, request_env )
+    
+    library_id = ''
+    
+    if ! parm_library_id.blank?
+      library_id = parm_library_id
+    elsif ! request_env['WEBAUTH_LDAP_SUCARDNUMBER'].blank?
+      library_id =  request_env['WEBAUTH_LDAP_SUCARDNUMBER'][5..-1]
+    end
+    
+    return library_id
+        
+  end # get_library_id
+  
+  # Look up proxy status if user is authenticated and return either an empty string
+  # or a delimited string with proxy group and proxy status, which should always be SPONSOR at this point
+  def get_proxy_status(request_env)
+    
+    proxy_info = ''
+      
+    if @is_authenticated && ! request_env['WEBAUTH_LDAP_SUCARDNUMBER'].blank?
+      proxy_url = PROXY_LOOKUP + request_env['WEBAUTH_LDAP_SUCARDNUMBER'][5..-1]
+      proxy_info = open( proxy_url ) {|f| f.read }.chomp.gsub(/\|$/, '')
+    end
+    
+    return proxy_info
+    
+  end
   
   # Get URL needed to return to SW record. It may be passed in as a param, in which 
   # case just return. If not passed in, check that we are coming from SW and set it
