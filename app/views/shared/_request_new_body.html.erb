@@ -149,7 +149,7 @@
 			
 				<!-- Prompt to make this a proxy request if user is authenticated and is a proxy sponsor -->
 
-				<% if @is_authenticated and ! @proxy_status.blank? %>
+				<% if @is_authenticated and ! @request.proxy_status.blank? %>
 					<dt><label for="request_proxy_prompt">Proxy request?</dt>
 						<dd><%= f.check_box :proxy_request %>Make this a proxy request</dd>			
 				<% end %>
