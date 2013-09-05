@@ -360,4 +360,28 @@ module Requestutils
     
   end # get_pickup_key  
   
+  # Look up proxy status if user is authenticated and return either empty strings or the proxy group and 
+  # proxy status, e.g., SOME_GROUP|SPONSOR
+  def get_proxy_group_status(library_id)
+    
+    proxy_string = ''
+    proxy_group = ''
+    proxy_status = ''
+
+    #Rails.logger.info "===== Before call to get proxy info"
+    #Rails.logger.info "=========== card number is #{request_env['WEBAUTH_LDAP_SUCARDNUMBER']}"
+    
+    if ! library_id.blank?
+      proxy_url = PROXY_LOOKUP + library_id
+      proxy_string = open( proxy_url ) {|f| f.read }.chomp.gsub(/\|$/, '')
+    end
+    
+    if ! proxy_string.blank?
+      proxy_group, proxy_status = proxy_string.split(/\|/)
+    end
+    
+    return proxy_group, proxy_status
+    
+  end
+  
 end

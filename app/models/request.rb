@@ -12,7 +12,7 @@ class Request < Tableless
               :source, :return_url, :max_checked, :comments
   
   # Revert for ON-ORDER with no home_lib
-  attr_accessor :library_id, :items_checked, :home_loc, :pickupkey, :home_lib, :proxy_status, :proxy_request
+  attr_accessor :library_id, :items_checked, :home_loc, :pickupkey, :home_lib, :proxy_status, :proxy_group, :proxy_request
   #attr_accessor :library_id, :items_checked, :home_loc, :pickupkey
   
   def initialize(params, request_env, referrer )
@@ -45,7 +45,7 @@ class Request < Tableless
     @source = @params[:source]
     @return_url = get_return_url(@source, @params[:return_url], referrer)
     @max_checked = get_max_checked(@params[:home_lib])
-    @proxy_status = get_proxy_status(request_env)
+    @proxy_group, @proxy_status = get_proxy_group_status(@library_id) 
     @proxy_request = @params[:proxy_request]
   end
    
@@ -162,25 +162,6 @@ class Request < Tableless
     return library_id
         
   end # get_library_id
-  
-  # Look up proxy status if user is authenticated and return either an empty string
-  # or a delimited string with proxy group and proxy status, which should always be SPONSOR at this point,
-  # viz, SOME_GROUP|sunetid
-  def get_proxy_status(request_env)
-    
-    proxy_status = ''
-
-    #Rails.logger.info "===== Before call to get proxy info"
-    #Rails.logger.info "=========== card number is #{request_env['WEBAUTH_LDAP_SUCARDNUMBER']}"
-    
-    if ! request_env['WEBAUTH_LDAP_SUCARDNUMBER'].blank?
-      proxy_url = PROXY_LOOKUP + request_env['WEBAUTH_LDAP_SUCARDNUMBER'][5..-1]
-      proxy_status = open( proxy_url ) {|f| f.read }.chomp.gsub(/\|$/, '')
-    end
-    
-    return proxy_status
-    
-  end
   
   # Get URL needed to return to SW record. It may be passed in as a param, in which 
   # case just return. If not passed in, check that we are coming from SW and set it

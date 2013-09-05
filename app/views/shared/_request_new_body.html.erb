@@ -86,6 +86,7 @@
 			<%= f.hidden_field :return_url %>
 			<%= f.hidden_field :source %>
 			<%= f.hidden_field :proxy_status %>
+			<%= f.hidden_field :proxy_group %>
             
 
 			<!-- Visible fields for record; some may be hidden above -->
@@ -149,7 +150,7 @@
 			
 				<!-- Prompt to make this a proxy request if user is authenticated and is a proxy sponsor -->
 
-				<% if @is_authenticated and ! @request.proxy_status.blank? and @request.proxy_status.include?('SPONSOR')%>
+				<% if @is_authenticated and @request.proxy_group == 'SPONSOR' %>
 					<dt><label for="request_proxy_prompt">Proxy request?</dt>
 						<dd><%= f.check_box :proxy_request %>Make this a proxy request</dd>			
 				<% end %>

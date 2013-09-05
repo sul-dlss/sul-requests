@@ -148,6 +148,18 @@
       render :action => 'new'
       
     else # Send info to Symphony and display returned message
+      
+      puts '========= params in create is ' + params.inspect
+      
+      # ======== check for proxy requests here if user is not authenticated
+      if ! @is_authenticated
+        proxy_group, proxy_status = get_proxy_group_status(params['request']['library_id'])
+        if proxy_status.eql?('SPONSOR')
+          params['request']['proxy_group'] = proxy_group
+          params['request']['proxy_status'] = proxy_status
+        end
+        puts "======== params now are " + params.inspect
+      end
   
       @symresult = Symresult.new(params, @messages)
               
