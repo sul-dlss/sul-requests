@@ -149,12 +149,13 @@
       
     else # Send info to Symphony and display returned message
       
-      # ======== Check for proxy requests here if user is not authenticated & add info to params if necessary
+      # ======== If user is not authenticated do proxy check here & set params to place proxy req automatically if status is PROXY
       if ! @is_authenticated
         proxy_group, proxy_status = get_proxy_group_status(params['request']['library_id'])
         if proxy_status.eql?('PROXY')
           params['request']['proxy_group'] = proxy_group
           params['request']['proxy_status'] = proxy_status
+          params['request']['proxy_request'] = 1
         end
       end
   
