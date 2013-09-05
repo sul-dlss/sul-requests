@@ -155,7 +155,7 @@
         if proxy_status.eql?('PROXY')
           params['request']['proxy_group'] = proxy_group
           params['request']['proxy_status'] = proxy_status
-          params['request']['proxy_request'] = 1
+          params['request']['proxy_request'] = '1'
         end
       end
   
