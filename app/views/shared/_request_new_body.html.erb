@@ -151,7 +151,7 @@
 				<!-- Prompt to make this a proxy request if user is authenticated and is a proxy sponsor -->
 
 				<% if @is_authenticated and @request.proxy_status == 'SPONSOR' %>
-					<dt><label for="request_pickup_lib"><%= @fields['proxy_request'] %></dt>
+					<dt><label for="request_pickup_lib"><%= @fields['proxy_request'] %></label></dt>
 						<dd><%= f.check_box :proxy_request %>Allow my library proxy to pick up this item</dd>			
 				<% end %>
 			
