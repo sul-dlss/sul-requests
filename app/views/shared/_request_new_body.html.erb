@@ -134,6 +134,7 @@
 					</dd>
 			<% end %>
 			
+			<% puts "========== " + @fields.inspect %>
 
 			
 			<% if ! @is_authenticated %>
@@ -148,9 +149,9 @@
 				<dd><%= select_tag 'request[pickup_lib]', options_for_select( @pickup_libs_hash, :selected => @request.pickup_lib ) %></dd>
 		
 			
-				<!-- Prompt to make this a proxy request if user is authenticated and is a proxy sponsor -->
+				<!-- Prompt for proxy request if user is authenticated and is a proxy sponsor and proxy_req is in fields array -->
 
-				<% if @is_authenticated and @request.proxy_status == 'SPONSOR' %>
+				<% if @is_authenticated and @request.proxy_status == 'SPONSOR' and ! @fields['proxy_request'].empty? %>
 					<dt><label for="request_pickup_lib"><%= @fields['proxy_request'] %></label></dt>
 						<dd><%= f.check_box :proxy_request %>Allow my library proxy to pick up this item</dd>			
 				<% end %>
