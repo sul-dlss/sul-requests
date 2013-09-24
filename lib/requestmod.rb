@@ -149,8 +149,11 @@
       
     else # Send info to Symphony and display returned message
       
-      # ======== If user is not authenticated do proxy check here & set params to place proxy req automatically if status is PROXY
-      if ! @is_authenticated
+      # ======== If user is not authenticated or is authenticated and lib id does not match what we get
+      # ======== from the environment do proxy check here & set params to place proxy req automatically if status is PROXY
+      if ! @is_authenticated or 
+        ( ! request.env['WEBAUTH_LDAP_SUCARDNUMBER'].blank? and
+        ! request.env['WEBAUTH_LDAP_SUCARDNUMBER'].eql?( params['request']['library_id'] ) )
         proxy_group, proxy_status = get_proxy_group_status(params['request']['library_id'])
         if proxy_status.eql?('PROXY')
           params['request']['proxy_group'] = proxy_group
