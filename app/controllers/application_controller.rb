@@ -73,11 +73,13 @@ class ApplicationController < ActionController::Base
         flash[:system_problem] = 'There was an application problem that makes it impossible to process 
                               your request. We have sent a report about this problem.'
     
-        ExceptionMailer.deliver_exception_report(exception,
-          clean_backtrace(exception),
-          session.instance_variable_get("@data"),
-          params,
-          request.env)
+        if request.env['HTTP_USER_AGENT'] !~ /bot/i or request.env['HTTP_USER_AGENT'] !~ /spider/i or request.env['HTTP_USER_AGENT'] !~ /crawl/i or request.env['HTTP_USER_AGENT'] !~ /teoma/i
+            ExceptionMailer.deliver_exception_report(exception,
+            clean_backtrace(exception),
+            session.instance_variable_get("@data"),
+            params,
+            request.env)
+        end
           
         render :template => 'requests/app_problem', :status => :not_found
     
