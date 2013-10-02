@@ -87,6 +87,11 @@
 			<%= f.hidden_field :source %>
 			<%= f.hidden_field :proxy_status %>
 			<%= f.hidden_field :proxy_group %>
+			
+			<!-- Need to send univ id if user is authenticated -->
+			<% if @is_authenticated %>
+				<%= f.hidden_field :univ_id %>
+			<% end %>
             
 
 			<!-- Visible fields for record; some may be hidden above -->
