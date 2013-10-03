@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+source 'http://sul-gems.stanford.edu'
 
 gem 'rails', '3.2.14'
 
@@ -67,7 +68,13 @@ end
 # gem 'unicorn'
 
 # Deploy with Capistrano
-gem 'capistrano'
+group :deployment do
+  gem 'lyberteam-capistrano-devel'
+  gem 'net-ssh-krb'
+  gem 'gssapi', :github => 'cbeer/gssapi'
+end
+
+
 
 # To use debugger
 # gem 'debugger'
