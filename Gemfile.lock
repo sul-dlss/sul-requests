@@ -200,6 +200,8 @@ GEM
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
       rspec-mocks (~> 2.14.0)
+    rvm-capistrano (1.5.0)
+      capistrano (>= 2.15.4)
     sass (3.2.10)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
@@ -262,6 +264,7 @@ DEPENDENCIES
   request-log-analyzer
   rspec
   rspec-rails
+  rvm-capistrano
   sass-rails (~> 3.2.3)
   simplecov
   sqlite3

@@ -1,10 +1,13 @@
 require 'bundler/setup'
 require 'bundler/capistrano'
 require 'dlss/capistrano'
+require 'rvm/capistrano'
 
 set :stages, %W(development production)
 set :default_stage, "development"
 set :bundle_flags, "--quiet"
+set :rvm_ruby_string, "1.9.3"
+set :rvm_type, :system
 
 require 'capistrano/ext/multistage'
 
