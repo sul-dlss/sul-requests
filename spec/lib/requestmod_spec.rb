@@ -4,6 +4,26 @@ include Requestmod
 
 describe Requestmod do
   
+  describe "get field labels " do
+    fixtures :fields
+    
+    it "should get field labels" do
+      @result = get_field_labels
+      @result.should include( { "ckey" => "CKEY", "patron_email" => "E-mail"})
+    end
+    
+  end
+  
+  describe "get library names" do
+    fixtures :libraries
+    
+    it "should get library names" do
+      @result = get_library_names
+      #@result.should =~ /.*?Hopkins Marine Station Library [Miller].*?SPEC-DESK.*$/
+      @result.should include( {"ARS" => "Archive of Recorded Sound", "MUSIC" => "Music"})
+    end
+  end
+  
   describe "get_pickup_libs for various pickupkyes" do
     fixtures :libraries, :pickupkeys
     

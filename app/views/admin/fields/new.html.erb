@@ -10,8 +10,14 @@
 		<% unless flash[:notice].blank?%>
 			<div id="notification"><%= flash[:notice] %></div>
 		<% end %>
-		<%= error_messages_for 'field' %>
-		<% form_for ( [:admin, @field ]) do |f| %>
+		<% if @field.errors.any? %>
+		  <ul>
+		    <% @field.errors.full_messages.each do |msg| %>
+		      <li><%= msg %></li>
+		    <% end %>
+		  </ul>
+		<% end %>
+		<%= form_for ( [:admin, @field ]) do |f| %>
 		
 		<p>
 		This form is for adding information about fields that appear on request forms.

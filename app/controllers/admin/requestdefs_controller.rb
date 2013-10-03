@@ -8,7 +8,8 @@ class Admin::RequestdefsController < ApplicationController
   
   # Method index. Shows all requestdefs
   def index
-    @requestdefs = Requestdef.find(:all,  :order => "name")
+    #@requestdefs = Requestdef.find(:all,  :order => "name")
+    @requestdefs = Requestdef.order('name').all
   end
 
   # Method show. Display a single requestdef
@@ -18,7 +19,8 @@ class Admin::RequestdefsController < ApplicationController
   # Method new. Set up an input form for creating a new request def
   def new
     @requestdef = Requestdef.new
-    @fields = Field.find(:all, :order => 'field_order')    
+    #@fields = Field.find(:all, :order => 'field_order') 
+    @fields = Field.order('field_order').all   
   end
 
   # Method create. Saves data from new input form in database
@@ -26,7 +28,8 @@ class Admin::RequestdefsController < ApplicationController
   # since we need a record ID to allow AJAX selection of fields.
   def create
     @requestdef = Requestdef.new(params[:requestdef])
-    @fields = Field.find(:all, :order => 'field_order')
+    #@fields = Field.find(:all, :order => 'field_order')
+    @fields = Field.order('field_order').all
     @requestdef.fields = Field.find(params[:field_ids]) if params[:field_ids]
     if @requestdef.save
       #redirect_to :action => 'edit', :id => @requestdef
@@ -39,7 +42,8 @@ class Admin::RequestdefsController < ApplicationController
 
   def edit
      @requestdef = Requestdef.find(params[:id])
-     @fields = Field.find(:all, :order => 'field_order')
+     #@fields = Field.find(:all, :order => 'field_order')
+     @fields = Field.order('field_order').all
    end
 
   # Method update. Saves data from edit form in database

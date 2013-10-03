@@ -10,13 +10,19 @@
 		<% unless flash[:notice].blank?%>
 			<div id="notification"><%= flash[:notice] %></div>
 		<% end %>
-		<%= error_messages_for 'reqtest' %>
+		<% if @reqtest.errors.any? %>
+		  <ul>
+		    <% @reqtest.errors.full_messages.each do |msg| %>
+		      <li><%= msg %></li>
+		    <% end %>
+		  </ul>
+		<% end %>
 		
 		<p>To create a new record for a request test, copy a request string from a Zaph record and
 		paste it into the Socrates Request field. </p> 
 
 		<p></p>
-		<% form_for ( [:admin, @reqtest ]) do |f| %>
+		<%= form_for ( [:admin, @reqtest ]) do |f| %>
 
 		<table>
 			 <tr>

@@ -10,13 +10,19 @@
 		<% unless flash[:notice].blank?%>
 			<div id="notification"><%= flash[:notice] %></div>
 		<% end %>
-		<%= error_messages_for 'pickupkey' %>
+		<% if @pickupkey.errors.any? %>
+		  <ul>
+		    <% @pickupkey.errors.full_messages.each do |msg| %>
+		      <li><%= msg %></li>
+		    <% end %>
+		  </ul>
+		<% end %>
 		
 		The first section on this form defines a pickup library key. 
 		The second section lets you choose pickup libraries for 
 		that key. 
 		<p></p>
-		<% form_for ( [:admin, @pickupkey] ) do |f| %>
+		<%= form_for ( [:admin, @pickupkey] ) do |f| %>
 						
 		<table>
 			<tr>

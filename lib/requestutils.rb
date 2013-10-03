@@ -381,7 +381,7 @@ module Requestutils
     end
     
     return proxy_group, proxy_status
-    
+
   end
   
 end

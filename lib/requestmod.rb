@@ -16,6 +16,11 @@
     #===== Instantiate request from params passed in + request.env   
     @request = Request.new(params, request.env, request.referrer)
     
+    #puts "====== request.env is: " + request.env.inspect
+    #puts "====== request.referrer is: " + request.referrer.inspect
+    
+   # puts "======= request object near start of new method is " + @request.inspect
+    
     # puts "========== request.referrer in requestmod is: " + request.referrer.inspect
     
     # puts '================ @request.params in Request.new is: ' + @request.params.inspect
@@ -24,18 +29,30 @@
     @params = @request.params
     
     #====== Add msgs because we need some for various screens
-    @messages = get_msg_hash(Message.find(:all))    
+    #@messages = get_msg_hash(Message.find(:all))  
+    @messages = get_msg_hash(Message.all)  
         
     #===== Check whether we have req_def and req_type & redirect if we do not 
+    
+    # puts "******** Just before if request.request_def block, request_def is: " + @request.request_def.inspect
+    # Rails.logger.warn "****** Just before if request.request_def block, request_def is: " + @request.request_def.inspect
         
     # Try checking just for request_def; some SW records don't supply proper
     # current loc to determine request type here 
     if @request.request_def == 'UNDEFINED'  
+      
+      #puts "******** Inside if request.request_def block"
+      #Rails.logger.warn '****** Inside if request.request_def block '
             
-      ExceptionMailer.deliver_problem_report(@request.params, 
-                                   "request_def undefined or req_type missing.\n" +
-                                    "        Request def is: " + @request.request_def.to_s + "\n" +
-                                    "        Request type is: " + @request.req_type.to_s + "\n" )
+      #ExceptionMailer.deliver_problem_report(@request.params, 
+      #                             "request_def undefined or req_type missing.\n" +
+      #                              "        Request def is: " + @request.request_def.to_s + "\n" +
+      #                              "        Request type is: " + @request.req_type.to_s + "\n" )
+      ExceptionMailer.problem_report(@request.params, 
+                      "request_def undefined or req_type missing.\n" +
+                      "        Request def is: " + @request.request_def.to_s + "\n" +
+                      "        Request type is: " + @request.req_type.to_s + "\n" ).deliver                              
+                                    
       flash[:system_problem] = @messages['000']                                  
       
       render :template => 'requests/app_problem' and return false
@@ -69,12 +86,12 @@
   
       if @request.home_loc.nil? && ( @sym_info.home_loc.nil? || @sym_info.home_loc == 'UNDEFINED' ) 
       
-        ExceptionMailer.deliver_problem_report(params, 
-                                   "home_loc or home_lib is missing.\n" +
-                                    "        Request home_loc is: " + @request.home_loc.to_s + "\n" +
-                                    "        Request home_lib is: " + @request.home_lib.to_s + "\n" + 
-                                    "        Sym_info home_loc is: " + @sym_info.home_loc.to_s + "\n"
-                                    )
+        ExceptionMailer.problem_report(params, 
+                             "home_loc or home_lib is missing.\n" +
+                             "        Request home_loc is: " + @request.home_loc.to_s + "\n" +
+                             "        Request home_lib is: " + @request.home_lib.to_s + "\n" + 
+                             "        Sym_info home_loc is: " + @sym_info.home_loc.to_s + "\n"
+                                    ).deliver
         flash[:system_problem] = @messages['000']
  
         render :template => 'requests/app_problem' and return false
@@ -104,6 +121,8 @@
       #===== Get message keys to display on request screen and list of fields to display           
       @msg_keys = get_msg_keys(@request.home_lib, @sym_info.cur_locs)  
       @fields = get_fields_for_requestdef( @requestdef_info, @sym_info.items )
+      #puts "====== fields at end is " + @fields.inspect
+      # puts "======= request object at end of new method is " + @request.inspect
       
     end # test for requestdef
          
@@ -118,7 +137,8 @@
     
     @request = Request.new(params[:request], request.env, request.referrer)
 
-    @messages = get_msg_hash(Message.find(:all))
+    #@messages = get_msg_hash(Message.find(:all))
+    @messages = get_msg_hash(Message.all)
    
     flash[:invalid_fields] = ''
     error_msgs = check_fields( params['request'], @request.max_checked)
@@ -202,12 +222,17 @@
     # See http://apidock.com/rails/ActiveRecord/Base/find/class
     # Example find by associated table
     
-    pickup_libs = Library.find(:all,
-      :select => 'libraries.lib_code, libraries.lib_descrip',
-      :conditions => ['pickupkeys.pickup_key = ?', pickupkey],
-      :joins => [:pickupkeys],
-      :order => 'libraries.lib_code'   
-      )
+    #pickup_libs = Library.find(:all,
+    #  :select => 'libraries.lib_code, libraries.lib_descrip',
+    #  :conditions => ['pickupkeys.pickup_key = ?', pickupkey],
+    #  :joins => [:pickupkeys],
+    #  :order => 'libraries.lib_code'   
+    #  )
+      
+    pickup_libs = Library.select('libraries.lib_code, libraries.lib_descrip')
+    .where("pickupkeys.pickup_key = ?", pickupkey)
+    .joins(:pickupkeys)
+    .order('libraries.lib_code').all
        
     # Now we put into a hash and return it sorted. Seems like there should
     # be an easier way of getting the list of libraries!! 
@@ -232,9 +257,8 @@
   # data stored in fields table
   def get_field_labels
     
-    fields = Field.find(:all,
-    :select => 'fields.field_name, fields.field_label'
-    )
+    #fields = Field.find(:all, :select => 'fields.field_name, fields.field_label')
+    fields = Field.select('fields.field_name, fields.field_label').all
     
     fields_hash = Hash.new
     
@@ -244,13 +268,14 @@
     
     return fields_hash
     
-  end # get_field_lables
+  end # get_field_labels
   
   # Make a hash of library codes and library descriptions so we can show
   # the description (display name) on the confirmation page that corresponds to the code
   def get_library_names
   
     libraries = Library.find(:all, :select => 'libraries.lib_code, libraries.lib_descrip' )
+    #libraries = Library.find.select('libraries.lib_code, libraries.lib_descrip').all
   
     libraries_hash = Hash.new
     
@@ -267,7 +292,7 @@
   # couldn't see anyway to get fields when we get @requestdef
   def get_fields_for_requestdef( request_def, items )
     
-    # puts "========== request def fields starting get_fields_for_requestdef: " + request_def.fields.inspect
+    #puts "========== request def fields starting get_fields_for_requestdef: " + request_def.fields.inspect
     
     fields_hash = {}
     

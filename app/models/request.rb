@@ -17,6 +17,8 @@ class Request < Tableless
   
   def initialize(params, request_env, referrer )
     
+    #puts "=======params is " + params.inspect
+    
     @params = get_params(params)
     @patron_name = get_patron_name( @params[:patron_name], request_env )
     @patron_email = get_patron_email( @params[:patron_email], request_env )
@@ -162,7 +164,7 @@ class Request < Tableless
     return library_id
         
   end # get_library_id
-  
+
   # Get URL needed to return to SW record. It may be passed in as a param, in which 
   # case just return. If not passed in, check that we are coming from SW and set it
   # from the http_referer.

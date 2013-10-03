@@ -11,8 +11,14 @@
 		<% unless flash[:notice].blank?%>
 			<div id="notification"><%= flash[:notice] %></div>
 		<% end %>
-		<%= error_messages_for 'requestdef' %>
-		<% form_for ( [:admin, @requestdef ] ) do |f| %>
+		<% if @requestdef.errors.any? %>
+		  <ul>
+		    <% @requestdef.errors.full_messages.each do |msg| %>
+		      <li><%= msg %></li>
+		    <% end %>
+		  </ul>
+		<% end %>
+		<%= form_for ( [:admin, @requestdef ] ) do |f| %>
 
 		<table>
 			<tr>

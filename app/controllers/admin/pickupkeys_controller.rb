@@ -1,8 +1,8 @@
 class Admin::PickupkeysController < ApplicationController
   def index
 
-    @pickupkeys = Pickupkey.find(:all,  :order => 'pickup_key', 
-           :include => :libraries )           
+    #@pickupkeys = Pickupkey.find(:all,  :order => 'pickup_key', :include => :libraries )   
+    @pickupkeys = Pickupkey.order('pickup_key').includes(:libraries).all        
   end
   
   # Method create. Save pickup key information in database 
@@ -18,7 +18,8 @@ class Admin::PickupkeysController < ApplicationController
   # and all libraries. Selected libraries are handled by the view
   def edit
     @pickupkey = Pickupkey.find(params[:id])
-    @libraries = Library.find(:all, :order => 'lib_code')
+    #@libraries = Library.find(:all, :order => 'lib_code')
+    @libraries = Library.order('lib_code').all
   end
   
   # Method update. Saves changes from edit form in database. The second line

@@ -11,7 +11,13 @@
 		<% unless flash[:notice].blank?%>
 			<div id="notification"><%= flash[:notice] %></div>
 		<% end %>
-		<%= error_messages_for 'requestdef' %>
+		<% if @requestdef.errors.any? %>
+		  <ul>
+		    <% @requestdev.errors.full_messages.each do |msg| %>
+		      <li><%= msg %></li>
+		    <% end %>
+		  </ul>
+		<% end %>
 		
 		<p>This form lets you define a new type of request.</p> 
 		<strong>Note:</strong> Since request definitions depend on 
@@ -20,7 +26,7 @@
 		met. 
 		
 		<p></p>
-		<% form_for ( [:admin, @requestdef ]) do |f| %>
+		<%= form_for ( [:admin, @requestdef ]) do |f| %>
 
 		<table>
 			<tr>

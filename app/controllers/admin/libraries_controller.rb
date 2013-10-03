@@ -1,7 +1,8 @@
 class Admin::LibrariesController < ApplicationController
   
   def index
-    @libraries = Library.find(:all, :order => "lib_code")
+    #@libraries = Library.find(:all, :order => "lib_code")
+    @libraries = Library.order("lib_code").all
   end
 
  # Method create. Save library information in database 

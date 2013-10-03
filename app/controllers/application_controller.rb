@@ -1,12 +1,12 @@
-# Filters added to this controller apply to all controllers in the application.
-# Likewise, all the methods added will be available for all controllers.
-
 class ApplicationController < ActionController::Base
+  protect_from_forgery
+  
   helper :all # include all helpers, all the time
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
   
   #TODO: Set up rescue_from for various exceptions
   rescue_from Exception, :with => :handle_exception
+  #rescue_from Exception with: :handle_exception
   # See http://m.onkey.org/2008/7/20/rescue-from-dispatching for info about rescue_from
   #rescue_from ActionController::RoutingError, :with => :route_not_found
 
@@ -50,9 +50,9 @@ class ApplicationController < ActionController::Base
     
     case exception
       when ActionController::RoutingError, ActionController::UnknownController, 
-        ActionController::UnknownAction
-      #when ActionController::NotImplemented
-      
+        #ActionController::UnknownAction
+        ::AbstractController::ActionNotFound
+            
         proto = 'http://'
         
         if request.env['SSL']
@@ -64,7 +64,7 @@ class ApplicationController < ActionController::Base
           'The page you requested was not found. If you entered this URL into your browser, ' +
           'please check that it is correct. If you found the URL on a Web page, ' +
           'notify the owner of the page about the problem.'
-        
+                
         render :template => 'requests/app_problem', :status => :not_found
         
       else  
@@ -73,12 +73,20 @@ class ApplicationController < ActionController::Base
         flash[:system_problem] = 'There was an application problem that makes it impossible to process 
                               your request. We have sent a report about this problem.'
     
+        #ExceptionMailer.deliver_exception_report(exception,
+        #  clean_backtrace(exception),
+        #  session.instance_variable_get("@data"),
+        #  params,
+        #  request.env)
+        #puts "========== Exception is " + exception.inspect
+        #puts "======== exception methods are " + exception.methods.to_s
+        # puts "======== HTTP_USER_AGENT is " + request.env['HTTP_USER_AGENT']
         if request.env['HTTP_USER_AGENT'] !~ /bot/i or request.env['HTTP_USER_AGENT'] !~ /squider/i or request.env['HTTP_USER_AGENT'] !~ /spider/i or request.env['HTTP_USER_AGENT'] !~ /crawl/i or request.env['HTTP_USER_AGENT'] !~ /teoma/i
-            ExceptionMailer.deliver_exception_report(exception,
-            clean_backtrace(exception),
+          ExceptionMailer.exception_report(exception,
+            exception.backtrace.slice(0,50),
             session.instance_variable_get("@data"),
             params,
-            request.env)
+            request.env).deliver
         end
           
         render :template => 'requests/app_problem', :status => :not_found
@@ -87,8 +95,4 @@ class ApplicationController < ActionController::Base
     
   end
 
-  
-
-  # Scrub sensitive parameters from your log
-  # filter_parameter_logging :password
 end

@@ -6,7 +6,8 @@ class Admin::ReqtestsController < ApplicationController
   helper_method :get_req_def, :parse_soc_url
     
   def index
-    @reqtests = Reqtest.find(:all,  :order => "id")
+    #@reqtests = Reqtest.find(:all,  :order => "id")
+    @reqtests = Reqtest.order("id").all
     @coverage = get_coverage
   end
 
@@ -29,7 +30,8 @@ class Admin::ReqtestsController < ApplicationController
     req_type = get_request_type(soc_link_params[:home_lib], soc_link_params[:current_loc], soc_link_params[:req_type])
     req_def = get_req_def( soc_link_params[:home_lib], soc_link_params[:current_loc] )
     @reqtest.req_def = req_def
-    @req_defs = Requestdef.find(:all, :select => 'name', :order => 'name').map(&:name).insert(0, "NONE")
+    #@req_defs = Requestdef.find(:all, :select => 'name', :order => 'name').map(&:name).insert(0, "NONE")
+    @req_defs = Requestdef.select('name').order('name').all.map(&:name).insert(0, "NONE")
     if @reqtest.save
       #redirect_to :action => 'edit', :id => @requestdef
       redirect_to admin_reqtests_path
@@ -41,7 +43,8 @@ class Admin::ReqtestsController < ApplicationController
   
   def edit
      @reqtest = Reqtest.find(params[:id])
-     @req_defs = Requestdef.find(:all, :select => 'name', :order => 'name').map(&:name).insert(0, "NONE")
+     #req_defs = Requestdef.find(:all, :select => 'name', :order => 'name').map(&:name).insert(0, "NONE")
+     @req_defs = Requestdef.select('name').order('name').all.map(&:name).insert(0, "NONE")
    end
 
   # Method update. Saves data from edit form in database
@@ -51,7 +54,8 @@ class Admin::ReqtestsController < ApplicationController
     req_type = get_request_type(soc_link_params[:home_lib], soc_link_params[:current_loc], soc_link_params[:req_type])
     req_def = get_req_def( soc_link_params[:home_lib], soc_link_params[:current_loc] )
     @reqtest.req_def = req_def
-    @req_defs = Requestdef.find(:all, :select => 'name', :order => 'name').map(&:name).insert(0, "NONE")    
+    #@req_defs = Requestdef.find(:all, :select => 'name', :order => 'name').map(&:name).insert(0, "NONE") 
+    @req_defs = Requestdef.select('name').order('name').all.map(&:name).insert(0, "NONE")   
     if @reqtest.update_attributes(params[:reqtest])
       redirect_to admin_reqtests_path
     else
@@ -72,10 +76,12 @@ class Admin::ReqtestsController < ApplicationController
   def get_coverage
     
     # Find all names in requestdefs table
-    request_defs = Requestdef.find(:all, :select => 'name', :order => 'name').map(&:name)
+    #request_defs = Requestdef.find(:all, :select => 'name', :order => 'name').map(&:name)
+    request_defs = Requestdef.select('name').order('name').all.map(&:name)
     #puts "========== requestdefs is: " + request_defs.inspect
     # Find all distinct req_defs in reqtests table
-    req_test_defs = Reqtest.find( :all, :select => 'DISTINCT req_def').map(&:req_def)
+    #req_test_defs = Reqtest.find( :all, :select => 'DISTINCT req_def').map(&:req_def)
+    req_test_defs = Reqtest.select('DISTINCT req_def').all.map(&:req_def)
     #puts "========== req_test_defs is: " + req_test_defs.inspect
     # Get intersection and difference of the two arrays
     covered = (request_defs & req_test_defs)

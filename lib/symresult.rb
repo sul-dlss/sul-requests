@@ -158,7 +158,7 @@ class Symresult
       
       msgs['000'] = response 
 
-      ExceptionMailer.deliver_problem_report(params, response )
+      ExceptionMailer.problem_report(params, response ).deliver
        
     end      
           

@@ -1,1 +1,1 @@
-rvm 1.8.7@symphony_requests
+rvm 1.9.3@symphony_requests --create

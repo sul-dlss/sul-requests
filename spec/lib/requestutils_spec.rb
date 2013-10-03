@@ -3,6 +3,28 @@ require "spec_helper"
 include Requestutils
 
 describe Requestutils do
+  
+  describe "parse Socrates URL" do
+    
+    it "should return a hash of elements from the URL" do
+      url = "javascript:open_win('http://jenson.stanford.edu:9081/pls/sirwebdad/func_request_sal3b.display_form?p_SUNet_key=&p_data=|146360102|/uhtbin/cgisirsi/?ps=QDpIfPEmFT/GREEN|2504272|SAL3|STACKS|PQ2631+.R63+Z468+1931|36105002581994|REQ-SAL3'%20)"
+      result = parse_soc_url( url )
+      result.should include({:item_id=>"36105002581994", :req_type=>"REQ-SAL3"})
+    end
+    
+  end
+  
+  #=========== get_rec_hold_type ==============
+    
+  describe "get hold or req type" do
+    
+    it "should get REQ_HOLD for current_loc = CHECKEDOUT and no req_hold_parm" do
+      result = get_rec_hold_type( 'CHECKEDOUT', '')
+      result.should eql('REQ-HOLD')
+    end
+    
+  end
+  
 
   #========== get_req_def ====================
   

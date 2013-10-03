@@ -10,14 +10,21 @@
 		<% unless flash[:notice].blank?%>
 			<div id="notification"><%= flash[:notice] %></div>
 		<% end %>
-		<%= error_messages_for 'field' %>
+		
+		<% if @field.errors.any? %>
+		  <ul>
+		    <% @field.errors.full_messages.each do |msg| %>
+		      <li><%= msg %></li>
+		    <% end %>
+		  </ul>
+		<% end %>
 		
 		Use this form to change the label for a field that appears on request forms. Any change you
 		make here affects all the forms on which the field appears. You cannot change the field
 		name.
 		<p></p>
 		
-		<% form_for ( [:admin, @field ] ) do |f| %>
+		<%= form_for ( [:admin, @field ] ) do |f| %>
 
 		<table>
 			<tr>

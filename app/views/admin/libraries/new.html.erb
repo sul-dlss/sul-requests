@@ -12,8 +12,15 @@
 		<% unless flash[:notice].blank?%>
 			<div id="notification"><%= flash[:notice] %></div>
 		<% end %>
-		<%= error_messages_for 'library' %>
-		<% form_for (:library, @library, :url => { :action => 'create'}) do |f| %>
+		<% if !@library.nil? and @library.errors.any? %>
+		  <ul>
+		    <% @library.errors.full_messages.each do |msg| %>
+		      <li><%= msg %></li>
+		    <% end %>
+		  </ul>
+		<% end %>
+		
+		<%= form_for( @library, as: :library, :url => { :action => 'create'}) do |f| %>
 					
 		<table>
 			<tr>

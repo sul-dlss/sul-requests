@@ -10,8 +10,14 @@
 		<% unless flash[:notice].blank?%>
 			<div id="notification"><%= flash[:notice] %></div>
 		<% end %>
-		<%= error_messages_for 'message' %>
-		<% form_for ( [:admin, @message ]) do |f| %>
+		<% if @message.errors.any? %>
+		  <ul>
+		    <% @message.errors.full_messages.each do |msg| %>
+		      <li><%= msg %></li>
+		    <% end %>
+		  </ul>
+		<% end %>
+		<%= form_for ( [:admin, @message ]) do |f| %>
 		
 		<p>
 		This form is for adding messages that appear on the confirmation page 

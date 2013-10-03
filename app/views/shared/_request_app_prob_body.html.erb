@@ -32,11 +32,7 @@
 		<% unless flash[:system_problem].blank?%>
 				
 					<div id="notification">
-					<ul>
-					<% flash[:system_problem].each do |msg| %>  
-					<li><%= msg %></li>
-					<% end %>
-					</ul>
+					<%= flash[:system_problem] %>
 					</div>
 				
 			<% end %>

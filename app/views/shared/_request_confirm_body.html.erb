@@ -19,6 +19,7 @@
 		
 		<!-- Display failure messages only -->
 		
+		
 		<% if @symresult.msgs.has_key?('2') # global failure, but may have more codes here %>
 		
 			<div class="request_failed"><p>
@@ -139,7 +140,8 @@
 			<a href="javascript:self.close()">Close Window and Return to Socrates</a>
 			
 		<% end %>
-		<% if  RAILS_ENV == 'development' %>
+		
+		<% if  Rails.env.development? %>
 			<!-- End of item information -->	
 	        <hr>		
 			<!-- Extra information that may be useful for debugging. Delete this in prod version -->

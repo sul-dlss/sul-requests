@@ -10,7 +10,13 @@
 		<% unless flash[:notice].blank?%>
 			<div id="notification"><%= flash[:notice] %></div>
 		<% end %>
-		<%= error_messages_for 'pickupkey' %>
+		<% if ! @pickupkey.nil? and @pickupkey.errors.any?  %>
+		  <ul>
+		    <% @pickupkey.errors.full_messages.each do |msg| %>
+		      <li><%= msg %></li>
+		    <% end %>
+		  </ul>
+		<% end %>
 		
 		Use this form to add a new pickup library key, which can be used to define pickup libraries
 		for various requests. In general, a key should be a library code used in Symphony
@@ -19,7 +25,7 @@
 		"SAL3-TO-BR" (for which the pickup key would be "BR").
 		<P></P>
 		
-		<% form_for (:pickupkey, @pickupkey, :url => { :action => 'create'}) do |f| %>
+		<%= form_for(@pickupkey, as: :pickupkey,  :url => { :action => 'create'}) do |f| %>
 					
 		<table>
 			<tr>

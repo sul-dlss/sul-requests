@@ -3,7 +3,9 @@ class Admin::FieldsController < ApplicationController
   before_filter :is_authenticated?
   
   def index
-    @fields = Field.find(:all,  :order => 'field_order')
+    #@fields = Field.find(:all,  :order => 'field_order')
+    @fields = Field.order('field_order').all
+    #puts "====== fields is " + @fields.inspect
   end
 
   def show

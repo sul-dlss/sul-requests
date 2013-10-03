@@ -10,12 +10,18 @@
 		<% unless flash[:notice].blank?%>
 			<div id="notification"><%= flash[:notice] %></div>
 		<% end %>
-		<%= error_messages_for 'message' %>
+		<% if @message.errors.any? %>
+		  <ul>
+		    <% @message.errors.full_messages.each do |msg| %>
+		      <li><%= msg %></li>
+		    <% end %>
+		  </ul>
+		<% end %>
 		
 		Use this form to edit the text of a message.
 		<p></p>
 		
-		<% form_for ( [:admin, @message ] ) do |f| %>
+		<%= form_for ( [:admin, @message ] ) do |f| %>
 
 		<table>
 			<tr>
