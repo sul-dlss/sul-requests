@@ -1,10 +1,12 @@
-# This file is auto-generated from the current state of the database. Instead of editing this file, 
-# please use the migrations feature of Active Record to incrementally modify your database, and
-# then regenerate this schema definition.
+# encoding: UTF-8
+# This file is auto-generated from the current state of the database. Instead
+# of editing this file, please use the migrations feature of Active Record to
+# incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your database schema. If you need
-# to create the application database on another system, you should be using db:schema:load, not running
-# all the migrations from scratch. The latter is a flawed and unsustainable approach (the more migrations
+# Note that this schema.rb definition is the authoritative source for your
+# database schema. If you need to create the application database on another
+# system, you should be using db:schema:load, not running all the migrations
+# from scratch. The latter is a flawed and unsustainable approach (the more migrations
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
 # It's strongly recommended to check this file into your version control system.
@@ -15,45 +17,37 @@ ActiveRecord::Schema.define(:version => 20100115224018) do
     t.string   "field_name"
     t.string   "field_label"
     t.integer  "field_order"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "hold_recall"
-  end
-
-  create_table "fields_requestdefs", :id => false, :force => true do |t|
-    t.integer  "field_id",      :null => false
-    t.integer  "requestdef_id", :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "libraries", :force => true do |t|
     t.string   "lib_code"
     t.string   "lib_descrip"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "libraries_pickupkeys", :id => false, :force => true do |t|
     t.integer  "library_id",   :null => false
     t.integer  "pickupkey_id", :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "messages", :force => true do |t|
     t.string   "msg_number"
-    t.text     "msg_text"
+    t.text     "msg_text",   :limit => 255
     t.text     "comments"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
 
   create_table "pickupkeys", :force => true do |t|
     t.string   "pickup_key"
     t.string   "pickup_descrip"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "reqtests", :force => true do |t|
@@ -62,8 +56,8 @@ ActiveRecord::Schema.define(:version => 20100115224018) do
     t.string   "form_status"
     t.string   "request_status"
     t.text     "comments"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "requestdefs", :force => true do |t|
@@ -78,8 +72,8 @@ ActiveRecord::Schema.define(:version => 20100115224018) do
     t.string   "title"
     t.text     "initial_text"
     t.text     "final_text"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
     t.text     "extra_text"
   end
 

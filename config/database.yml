@@ -4,14 +4,9 @@
 #   Ensure the SQLite 3 gem is defined in your Gemfile
 #   gem 'sqlite3'
 development:
-  adapter: mysql
-  encoding: utf8
-  reconnect: false
-  database: sym_requests
+  adapter: sqlite3
+  database: db/development.sqlite3
   pool: 5
-  username: requests
-  password: requests!4SULAIR
-  host: localhost
   timeout: 5000
 
 # Warning: The database defined as "test" will be erased and
