@@ -1,7 +1,7 @@
 class ExceptionMailer < ActionMailer::Base
   
   # Defaults which will be the same for both types of reports
-  default :to => 'jlavigne@stanford.edu', :from => 'jlavigne@stanford.edu'
+  default :to => 'jkeck@stanford.edu', :from => 'jkeck@stanford.edu'
 
   # Mail a report about an exception
   def exception_report(exception, trace, session, params, env, sent_on = Time.now)
