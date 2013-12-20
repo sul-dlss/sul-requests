@@ -65,6 +65,8 @@ SymphonyRequests::Application.routes.draw do
   #  admin.resources :pickupkeys, :member => { :show_libraries => :get, :save => :post }
   #end
 
+  root :to => 'requests#home'
+
   namespace :admin do
     resources :requestdefs, :reqtests, :fields, :messages, :libraries
     resources :pickupkeys do
