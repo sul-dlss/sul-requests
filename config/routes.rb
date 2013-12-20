@@ -65,6 +65,10 @@ SymphonyRequests::Application.routes.draw do
   #  admin.resources :pickupkeys, :member => { :show_libraries => :get, :save => :post }
   #end
 
+  # Uncommented this to put the app in maintenance mode.
+  # All requets will render the downtime page.
+  # match '(*all)' => 'requests#downtime'
+
   root :to => 'requests#home'
 
   namespace :admin do
