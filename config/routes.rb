@@ -67,7 +67,7 @@ SymphonyRequests::Application.routes.draw do
 
   # Uncommented this to put the app in maintenance mode.
   # All requets will render the downtime page.
-  # match '(*all)' => 'requests#downtime'
+  match '(*all)' => 'requests#downtime'
 
   root :to => 'requests#home'
 
