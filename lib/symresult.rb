@@ -35,6 +35,7 @@ class Symresult
       # Call program on Symphony server and get result 
       url = URI.parse( SYMPHONY_OAS + SYMPHONY_PATH_INFO + parm_list )
       res = Net::HTTP.start(url.host, url.port) {|http|
+        http.read_timeout = 120
         http.get( SYMPHONY_PATH_INFO + parm_list )
       }
          
