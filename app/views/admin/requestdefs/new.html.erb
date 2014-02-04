@@ -13,7 +13,7 @@
 		<% end %>
 		<% if @requestdef.errors.any? %>
 		  <ul>
-		    <% @requestdev.errors.full_messages.each do |msg| %>
+		    <% @requestdef.errors.full_messages.each do |msg| %>
 		      <li><%= msg %></li>
 		    <% end %>
 		  </ul>
