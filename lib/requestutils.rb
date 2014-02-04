@@ -116,6 +116,8 @@ module Requestutils
     elsif home_lib == 'BUSINESS' and ( current_loc == 'PAGE-IRON' or current_loc == 'PAGE-BU' )
       req_def = 'PAGE-BUSINESS'
       
+    elsif home_lib == "EAST-ASIA"
+      req_def = 'PAGE-EASTASIA'
     #----- Locations at other libs that should get NON-PAGE form
     # Remove the location check because SW does not provide current loc
     # elsif NON_PAGE_LOCS.include?(current_loc)  || current_loc =~ /-LOAN/
