@@ -336,7 +336,7 @@ module Requestutils
     # TODO: Make sure logic covers every case & that order is correct
     
     if home_lib.upcase ==  'HOOVER' || home_lib.upcase == 'LAW' || 
-        home_lib.upcase == 'HV-ARCHIVE' || home_lib.upcase == 'SPEC-COLL'
+        home_lib.upcase == 'HV-ARCHIVE' || home_lib.upcase == 'SPEC-COLL' || home_lib.upcase == "EAST-ASIA"
       pickupkey = home_lib
     # Not sure why this looks for current_loc, since home loc would be the same
     # but leave in for now just in case
