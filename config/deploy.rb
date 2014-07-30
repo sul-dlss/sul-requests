@@ -23,7 +23,7 @@ set :deploy_to, '/home/requests/requests-app'
 # set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, %w{config/database.yml config/solr.yml config/initializers/squash_exceptions.rb}
+set :linked_files, %w{config/secrets.yml config/database.yml config/solr.yml config/initializers/squash_exceptions.rb}
 
 # Default value for linked_dirs is []
 set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}

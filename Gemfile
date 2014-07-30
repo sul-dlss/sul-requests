@@ -1,9 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.19'
-
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
+gem 'rails', '4.1.4'
 
 gem 'sqlite3'
 
@@ -11,8 +8,8 @@ gem 'sqlite3'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
+  gem 'sass-rails',   '~> 4.0.2'
+  gem 'coffee-rails', '~> 4.0.0'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   gem "therubyracer", "~> 0.10"
@@ -33,14 +30,11 @@ gem "rake"
 gem "request-log-analyzer"
 
 group :test do
-   gem "cucumber"
-   gem "cucumber-rails", :require => false
-   gem "gherkin"
    gem "rdoc"
    gem "simplecov", :require => false
    gem "rspec"
    gem "rspec-rails"
-   gem "webrat"
+   #gem "webrat"
 end
 
 group :development, :test do 
@@ -48,10 +42,10 @@ group :development, :test do
 end 
   
 group :test do 
-  gem 'faker' 
+#  gem 'faker' 
   gem 'capybara' 
-  gem 'guard-rspec' 
-  gem 'launchy' 
+#  gem 'guard-rspec' 
+#  gem 'launchy' 
 end 
 
 gem 'squash_ruby', require: 'squash/ruby'

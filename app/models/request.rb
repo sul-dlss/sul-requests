@@ -11,10 +11,6 @@ class Request < Tableless
               :pickup_lib, :not_needed_after, :planned_use, :due_date, :hold_recall, :vol_num, :call_num, 
               :source, :return_url, :max_checked, :comments
   
-  # Revert for ON-ORDER with no home_lib
-  attr_accessor :library_id, :items_checked, :home_loc, :pickupkey, :home_lib, :proxy_status, :proxy_group, :proxy_request
-  #attr_accessor :library_id, :items_checked, :home_loc, :pickupkey
-  
   def initialize(params, request_env, referrer )
     
     #puts "=======params is " + params.inspect

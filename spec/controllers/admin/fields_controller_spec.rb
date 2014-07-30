@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Admin::FieldsController do
+describe Admin::FieldsController, type: :controller do
    
   describe "GET #index" do 
     

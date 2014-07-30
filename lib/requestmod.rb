@@ -279,7 +279,7 @@
   # the description (display name) on the confirmation page that corresponds to the code
   def get_library_names
   
-    libraries = Library.find(:all, :select => 'libraries.lib_code, libraries.lib_descrip' )
+    libraries = Library.select(:lib_code, :lib_descrip).all
     #libraries = Library.find.select('libraries.lib_code, libraries.lib_descrip').all
   
     libraries_hash = Hash.new
