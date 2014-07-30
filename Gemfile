@@ -35,7 +35,6 @@ gem "request-log-analyzer"
 group :test do
    gem "cucumber"
    gem "cucumber-rails", :require => false
-   gem "test-unit"   # seems to be referenced in rspec task file
    gem "gherkin"
    gem "rdoc"
    gem "simplecov", :require => false
@@ -45,7 +44,6 @@ group :test do
 end
 
 group :development, :test do 
-  gem 'rspec-rails' 
   gem 'factory_girl_rails' 
 end 
   
