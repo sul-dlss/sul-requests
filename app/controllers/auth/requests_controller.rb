@@ -1,4 +1,4 @@
-class Auth::RequestsController < ApplicationController
+class Auth::RequestsController < ::RequestsController
   
   before_filter :is_authenticated?
   
