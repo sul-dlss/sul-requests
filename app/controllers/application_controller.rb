@@ -2,8 +2,9 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   
   helper :all # include all helpers, all the time
-  protect_from_forgery # See ActionController::RequestForgeryProtection for details
   
+  include Squash::Ruby::ControllerMethods
+
   #TODO: Set up rescue_from for various exceptions
   rescue_from Exception, :with => :handle_exception
   #rescue_from Exception with: :handle_exception
@@ -47,7 +48,8 @@ class ApplicationController < ActionController::Base
   # Note that the exception statement here may give too much info for users
   # so just provide a general message and let the email/log give details
   def handle_exception(exception)
-    
+    notify_squash exception
+
     case exception
       when ActionController::RoutingError, ActionController::UnknownController, 
         #ActionController::UnknownAction
@@ -72,22 +74,6 @@ class ApplicationController < ActionController::Base
         #TODO: Find a way to make the msg here reference msg 000. Just do a lookup??
         flash[:system_problem] = 'There was an application problem that makes it impossible to process 
                               your request. We have sent a report about this problem.'
-    
-        #ExceptionMailer.deliver_exception_report(exception,
-        #  clean_backtrace(exception),
-        #  session.instance_variable_get("@data"),
-        #  params,
-        #  request.env)
-        #puts "========== Exception is " + exception.inspect
-        #puts "======== exception methods are " + exception.methods.to_s
-        # puts "======== HTTP_USER_AGENT is " + request.env['HTTP_USER_AGENT']
-        if request.env['HTTP_USER_AGENT'] !~ /bot/i or request.env['HTTP_USER_AGENT'] !~ /squider/i or request.env['HTTP_USER_AGENT'] !~ /spider/i or request.env['HTTP_USER_AGENT'] !~ /crawl/i or request.env['HTTP_USER_AGENT'] !~ /teoma/i
-          ExceptionMailer.exception_report(exception,
-            exception.backtrace.slice(0,50),
-            session.instance_variable_get("@data"),
-            params,
-            request.env).deliver
-        end
           
         render :template => 'requests/app_problem', :status => :not_found
     
