@@ -16,17 +16,17 @@ class ApplicationController < ActionController::Base
   protected 
   
   def is_authenticated?
-    if request.env['HTTP_HOST'] != 'localhost:3000'
-      # This should be all we need to check for authentication on a WebAuth'd server
-      # unauth'd users should see server 
-      if request.env['WEBAUTH_USER'] != nil
-        @is_authenticated = true
-        return true
-      else
-        redirect_to '/requests/not_authenticated'
-        # @is_authenticated = false
-      end      
-    end
+    return true if Rails.env.development?
+
+    # This should be all we need to check for authentication on a WebAuth'd server
+    # unauth'd users should see server 
+    if request.env['REMOTE_USER'] != nil
+      @is_authenticated = true
+      return true
+    else
+      redirect_to '/requests/not_authenticated'
+      # @is_authenticated = false
+    end    
   end 
   
   # See http://maintainablesoftware.com/articles/rails_logging_tips#reducing-log-file-size
@@ -50,7 +50,7 @@ class ApplicationController < ActionController::Base
   def handle_exception(exception)
     notify_squash exception
 
-    case exception
+    flash[:system_problem] = case exception
       when ActionController::RoutingError, ActionController::UnknownController, 
         #ActionController::UnknownAction
         ::AbstractController::ActionNotFound
@@ -61,23 +61,20 @@ class ApplicationController < ActionController::Base
           proto = 'https://'
         end
         
-        flash[:system_problem] = "<p>Requested page: " + proto + request.env['HTTP_HOST'].to_str +
+        "<p>Requested page: " + proto + request.env['HTTP_HOST'].to_str +
           request.env['REQUEST_URI'].to_str + '</p>' +
           'The page you requested was not found. If you entered this URL into your browser, ' +
           'please check that it is correct. If you found the URL on a Web page, ' +
           'notify the owner of the page about the problem.'
-                
-        render :template => 'requests/app_problem', :status => :not_found
-        
+
       else  
     
         #TODO: Find a way to make the msg here reference msg 000. Just do a lookup??
-        flash[:system_problem] = 'There was an application problem that makes it impossible to process 
-                              your request. We have sent a report about this problem.'
-          
-        render :template => 'requests/app_problem', :status => :not_found
-    
+        'There was an application problem that makes it impossible to process 
+                              your request. We have sent a report about this problem.'    
     end # case
+    
+    render :template => 'requests/app_problem', :status => :not_found
     
   end
 

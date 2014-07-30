@@ -11,7 +11,7 @@ describe Admin::FieldsController, type: :controller do
     end
     
     it "renders the :index view" do 
-       controller.request.env['WEBAUTH_USER'] = 'foo' # requires authentication
+       controller.request.env['REMOTE_USER'] = 'foo' # requires authentication
        get :index 
        response.should render_template :index 
     end 
