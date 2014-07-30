@@ -1,8 +1,4 @@
-set :rails_env, "production"
-set :deployment_host, "sulwebapp5"
-set :repository,  "."
-set :bundle_without, [:deployment]
+server 'sulwebapp5.stanford.edu', user: 'requests', roles: %w{web db app}
 
-role :web, deployment_host
-role :app, deployment_host
-role :db,  deployment_host, :primary => true
+Capistrano::OneTimeKey.generate_one_time_key!
+set :rails_env, "production"

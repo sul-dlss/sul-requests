@@ -1,49 +1,49 @@
-require 'bundler/setup'
-require 'bundler/capistrano'
-require 'dlss/capistrano'
-require 'rvm/capistrano'
+# config valid only for Capistrano 3.1
+lock '3.2.1'
 
-set :stages, %W(development production)
-set :default_stage, "development"
-set :bundle_flags, "--quiet"
-set :rvm_ruby_string, "1.9.3"
-set :rvm_type, :system
+set :application, 'symphony_requests'
+set :repo_url, 'https://github.com/sul-dlss/symphony_requests.git'
 
-require 'capistrano/ext/multistage'
+# Default branch is :master
+# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
 
-before "deploy:restart", "deploy:migrate"
+# Default deploy_to directory is /var/www/my_app
+set :deploy_to, '/home/requests/requests-app'
 
-set :shared_children, %w(log tmp config/database.yml config/solr.yml)
+# Default value for :scm is :git
+# set :scm, :git
 
-set :user, "requests" 
-set :runner, "requests"
+# Default value for :format is :pretty
+# set :format, :pretty
 
-set :branch do
-  DEFAULT_TAG = 'master'
-  tag = Capistrano::CLI.ui.ask "Tag or branch to deploy (make sure to push the tag or branch first): [#{DEFAULT_TAG}] "
-  tag = DEFAULT_TAG if tag.empty?
-  tag
-end
+# Default value for :log_level is :debug
+# set :log_level, :debug
 
-set :destination, "/home/requests"
-set :application, "requests-app"
-set :deploy_to, "#{destination}/#{application}"
+# Default value for :pty is false
+# set :pty, true
 
-set :ssh_options, {:auth_methods => %w(gssapi-with-mic publickey hostbased), :forward_agent => true}
+# Default value for :linked_files is []
+set :linked_files, %w{config/database.yml config/solr.yml}
 
+# Default value for linked_dirs is []
+set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
-set :scm, :git
-set :deploy_via, :copy # I got 99 problems, but AFS ain't one
-set :copy_cache, true
-set :copy_exclude, [".git"]
-set :use_sudo, false
-set :keep_releases, 3
+# Default value for default_env is {}
+# set :default_env, { path: "/opt/ruby/bin:$PATH" }
 
+# Default value for keep_releases is 5
+# set :keep_releases, 5
 
 namespace :deploy do
-  task :start do ; end
-  task :stop do ; end
-  task :restart, :roles => :app, :except => { :no_release => true } do
-    run "touch #{File.join(current_path,'tmp','restart.txt')}"
+
+  desc 'Restart application'
+  task :restart do
+    on roles(:app), in: :sequence, wait: 5 do
+      # Your restart mechanism here, for example:
+      execute :touch, release_path.join('tmp/restart.txt')
+    end
   end
+
+  after :publishing, :restart
+
 end

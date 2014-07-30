@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
-source 'http://sul-gems.stanford.edu'
 
 gem 'rails', '3.2.16'
 
@@ -16,7 +15,7 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  gem "therubyracer", "~> 0.10.2"
+  gem "therubyracer", "~> 0.10"
 
   gem 'uglifier', '>= 1.0.3'
 end
@@ -69,13 +68,10 @@ end
 
 # Deploy with Capistrano
 group :deployment do
-  gem 'lyberteam-capistrano-devel'
-  gem 'net-ssh-krb'
-  gem 'gssapi', :github => 'cbeer/gssapi'
-  gem 'rvm-capistrano'
+  gem 'capistrano', '~> 3.0'
+  gem 'lyberteam-capistrano-devel', '~> 3.0'
+  gem 'capistrano-rvm'
 end
-
-
 
 # To use debugger
 # gem 'debugger'
