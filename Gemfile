@@ -66,6 +66,7 @@ group :deployment do
   gem 'capistrano', '~> 3.0'
   gem 'lyberteam-capistrano-devel', '~> 3.0'
   gem 'capistrano-rvm'
+  gem 'capistrano-rails'
 end
 
 # To use debugger
