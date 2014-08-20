@@ -428,7 +428,7 @@ class RequestsController < ApplicationController
      id_decision = false
 
    # Then any SAL items that didn't have the above locations 
-   elsif ['SAL', 'SAL-NEWARK', 'SAL3', 'EAST-ASIA'].include?(home_lib)
+   elsif ['SAL', 'SAL-NEWARK', 'SAL3'].include?(home_lib)
 
      id_decision = false 
 

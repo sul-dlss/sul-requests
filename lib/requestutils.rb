@@ -115,9 +115,6 @@ module Requestutils
     #---- BUSINESS with cur_loc PAGE-IRON or PAGE-BU
     elsif home_lib == 'BUSINESS' and ( current_loc == 'PAGE-IRON' or current_loc == 'PAGE-BU' )
       req_def = 'PAGE-BUSINESS'
-      
-    elsif home_lib == "EAST-ASIA"
-      req_def = 'PAGE-EASTASIA'
     #----- Locations at other libs that should get NON-PAGE form
     # Remove the location check because SW does not provide current loc
     # elsif NON_PAGE_LOCS.include?(current_loc)  || current_loc =~ /-LOAN/
@@ -336,7 +333,7 @@ module Requestutils
     # TODO: Make sure logic covers every case & that order is correct
     
     if home_lib.upcase ==  'HOOVER' || home_lib.upcase == 'LAW' || 
-        home_lib.upcase == 'HV-ARCHIVE' || home_lib.upcase == 'SPEC-COLL' || home_lib.upcase == "EAST-ASIA"
+        home_lib.upcase == 'HV-ARCHIVE' || home_lib.upcase == 'SPEC-COLL'
       pickupkey = home_lib
     # Not sure why this looks for current_loc, since home loc would be the same
     # but leave in for now just in case

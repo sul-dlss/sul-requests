@@ -3,7 +3,7 @@ module Constants
   # Defines constants that may be used in various places
  
  # Libraries from which all items can be requested
-  PAGE_LIBS = ["SAL", "SAL3", "SAL-NEWARK", "HOPKINS", "EAST-ASIA"]
+  PAGE_LIBS = ["SAL", "SAL3", "SAL-NEWARK", "HOPKINS"]
 
   # Locs that are equivalent to checked out
   CHECKED_OUT_LOCS = ["CHECKEDOUT", "CHKD-OUT-D", "BINDERY", "SUL-BIND", 
