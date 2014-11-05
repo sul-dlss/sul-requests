@@ -330,11 +330,11 @@
 								<% elsif @sym_info.items.size == 1 %>
 									checked								
 								<% end %> >
-								
+                <% lib_code = values[1].split('|')[1].try(:strip) %>
 								<label for="check_<%= values[0] %>"> 
 								<span id="avail_<%= values[0] %>" 
 								class="item_available"><%= values[2]%> 
-								<% if ! values[3].nil?  %>
+								<% if values[3].present? && lib_code != "SPEC-COLL" %>
 								<% msg_key = values[3].gsub(/\s/, "").upcase %>
 								<span class="hold-recall"> - <%= values[3] %> (Hold/Recall) <span class="hold-recall-msg"><%= @messages[msg_key.to_s] %></span></span> 
 								<% end %>
@@ -390,6 +390,6 @@
 
 </div>
 
-
+<%= render 'shared/mouseflow' %>
 </body>
 </html>		
