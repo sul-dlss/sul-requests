@@ -50,7 +50,8 @@ class Admin::RequestdefsController < ApplicationController
   def update
     @requestdef = Requestdef.find(params[:id])
     @requestdef.fields = Field.find(params[:field_ids]) if params[:field_ids]
-    if @requestdef.update_attributes(params[:requestdef])
+
+    if @requestdef.update_attributes(update_requestdef_params)
       # redirect_to :action => 'show', :id => @pickupkey
       redirect_to admin_requestdefs_path
     else
@@ -87,7 +88,10 @@ class Admin::RequestdefsController < ApplicationController
   end  
   
   protected
-  
+
+  def update_requestdef_params
+    params.require(:requestdef).permit(:name, :library, :current_loc, :req_status, :req_type, :enabled, :authenticated, :unauthenticated, :title, :initial_text, :extra_text, :final_text)
+  end
   def get_lib_list
      @library_list =  [['SUL', 'SUL'], ['Business', 'BUSINESS'],
                        ["East Asia", "EAST-ASIA"],
