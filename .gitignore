@@ -15,3 +15,6 @@
 /tmp
 /doc
 /coverage
+
+# Ignore rbenv config
+/.ruby-version
