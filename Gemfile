@@ -1,73 +1,45 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.1.5'
 
+# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'rails', '4.2.1'
+# Use sqlite3 as the database for Active Record
 gem 'sqlite3'
+# Use SCSS for stylesheets
+gem 'sass-rails', '~> 5.0'
+# Use Uglifier as compressor for JavaScript assets
+gem 'uglifier', '>= 1.3.0'
+# Use CoffeeScript for .coffee assets and views
+gem 'coffee-rails', '~> 4.1.0'
+# See https://github.com/rails/execjs#readme for more supported runtimes
+# gem 'therubyracer', platforms: :ruby
 
-
-# Gems used only for assets and not required
-# in production environments by default.
-group :assets do
-  gem 'sass-rails',   '~> 4.0.2'
-  gem 'coffee-rails', '~> 4.0.0'
-
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  gem "therubyracer", "~> 0.10"
-
-  gem 'uglifier', '>= 1.0.3'
-end
-
+# Use jquery as the JavaScript library
 gem 'jquery-rails'
+# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
+gem 'turbolinks'
+# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+gem 'jbuilder', '~> 2.0'
+# bundle exec rake doc:rails generates the API under doc/api.
+gem 'sdoc', '~> 0.4.0', group: :doc
 
-# From Rails 2 Gemfile
-gem "builder"
-gem "bundler"
-gem "marc"
-gem "mysql"
-gem "nokogiri"
-gem "rack"
-gem "rake"
-gem "request-log-analyzer"
+# Use ActiveModel has_secure_password
+# gem 'bcrypt', '~> 3.1.7'
 
-group :test do
-   gem "rdoc"
-   gem "simplecov", :require => false
-   gem "rspec"
-   gem "rspec-rails"
-   #gem "webrat"
-end
-
-group :development, :test do 
-  gem 'factory_girl_rails' 
-end 
-  
-group :test do 
-#  gem 'faker' 
-  gem 'capybara' 
-#  gem 'guard-rspec' 
-#  gem 'launchy' 
-end 
-
-gem 'squash_ruby', require: 'squash/ruby'
-gem 'squash_rails', require: 'squash/rails'
-
-
-# To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
-
-# To use Jbuilder templates for JSON
-# gem 'jbuilder'
-
-# Use unicorn as the app server
+# Use Unicorn as the app server
 # gem 'unicorn'
 
-# Deploy with Capistrano
-group :deployment do
-  gem 'capistrano', '~> 3.0'
-  gem 'lyberteam-capistrano-devel', '~> 3.0'
-  gem 'capistrano-rvm'
-  gem 'capistrano-rails'
+# Use Capistrano for deployment
+# gem 'capistrano-rails', group: :development
+
+group :development, :test do
+  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'byebug'
+
+  # Access an IRB console on exception pages or by using <%= console %> in views
+  gem 'web-console', '~> 2.0'
+
+  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  gem 'spring'
 end
 
-# To use debugger
-# gem 'debugger'
