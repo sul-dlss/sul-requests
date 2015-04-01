@@ -1,4 +1,4 @@
-[![Stories in Ready](https://badge.waffle.io/sul-dlss/sul-requests.png?label=ready&title=Ready)](https://waffle.io/sul-dlss/sul-requests)
+[![Stories in Ready](https://badge.waffle.io/sul-dlss/sul-requests.png?milestone=Sprint+1&title=Sprint+1)](https://waffle.io/sul-dlss/sul-requests)
 # SUL Requests
 
 SUL Requests in a rails application that allows users to request materials from the Stanford University Library.  This application aims to:
