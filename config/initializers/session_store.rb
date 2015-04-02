@@ -1,3 +1,3 @@
 # Be sure to restart your server when you modify this file.
 
-Rails.application.config.session_store :cookie_store, key: '_symphony_requests_session'
+Rails.application.config.session_store :cookie_store, key: '_sul_requests_session'

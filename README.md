@@ -19,7 +19,7 @@ SUL Requests in a rails application that allows users to request materials from 
 
 Clone the repository
 
-    $ git clone git@github.com:sul-dlss/symphony_requests.git
+    $ git clone git@github.com:sul-dlss/sul-requests.git
 
 Change directories into the app and install dependencies
 
