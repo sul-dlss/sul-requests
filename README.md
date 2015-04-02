@@ -13,7 +13,7 @@ SUL Requests in a rails application that allows users to request materials from 
 
 1. Ruby (2.2.1 or greater)
 2. Rails (4.2.0 or greater)
-3. A database 
+3. A database
 
 ## Installation
 
@@ -33,3 +33,16 @@ Start the development server
 
     $ rails s
 
+## Testing
+
+The test suite (with RuboCop style inforcement) will be run with the default rake task (also run on travis)
+
+    $ rake
+
+The specs can be run without RuboCop enforcement
+
+    $ rake spec
+
+The RuboCop style enforcement can be run without running the tests
+
+    $ rake rubocop
