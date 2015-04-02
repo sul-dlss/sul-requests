@@ -1,5 +1,13 @@
-language: ruby
+notifications:
+  email: false
+
 rvm:
-  - 1.9.3
-script: "bundle exec rake db:migrate spec"
-env: "RAILS_ENV=test"
+  - 2.2.1
+
+env:
+  global:
+    - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+
+sudo: false
+language: ruby
+cache: bundler
