@@ -44,4 +44,7 @@ group :development, :test do
 
   # Rubocop is a static code analyzer to enforce style.
   gem 'rubocop', require: false
+
+  # Coveralls for code coverage metrics
+  gem 'coveralls', require: false
 end
