@@ -6,3 +6,9 @@ AllCops:
     - 'config/**/*'
     - 'spec/spec_helper.rb'
     - 'vendor/**/*'
+
+Metrics/LineLength:
+  Max: 120
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes

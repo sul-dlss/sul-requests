@@ -1,10 +1,13 @@
 // Colors
 $beige-10-percent: #f2f1eb;
 $beige-30-percent: #e3dfd5;
+$black: #000000;
 $cardinal-red: #8c1515;
 $gray: #3f3c30;
+$gray-ccc: #ccc;
 $gray-41-percent: #696969;
-$pantone-401: #B6B1A9;
+$pantone-401: #b6b1a9;
+$white: #fff;
 
 // Mappings
 $sul-footer-bg-color: $beige-10-percent;
@@ -12,5 +15,9 @@ $sul-h1-font-color: $gray;
 $sul-h2-border-color: $beige-30-percent;
 $sul-link-color: $gray;
 $sul-link-color-border: $pantone-401;
+$sul-navbar-brand-color: $cardinal-red;
+$sul-topnav-bg-color: $cardinal-red;
+$sul-topnavbar-link-color: $cardinal-red;
 
 // Sizes
+$font-size-base: 12px;

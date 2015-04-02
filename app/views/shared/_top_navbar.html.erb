@@ -1,0 +1,18 @@
+<div id="topnav-container">
+  <header id="topnav" class="header-logo" role="banner">
+    <%= link_to 'http://library.stanford.edu' do %>
+      <%= content_tag :span, "Stanford University Libraries", class: "sr-only" %>
+      <%= image_tag "sul-logo.png", class: "hidden-xs", alt: "", height: 25 %>
+      <%= image_tag "sul-logo-small.png", class: "visible-xs", alt: "", height: 25 %>
+    <% end %>
+
+    <div class="header-links">
+      <%= link_to "My Account", "http://library.stanford.edu/myaccount", class: 'first' %>
+      <%= link_to "Feedback", "#"  %>
+    </div>
+
+  </header>
+</div>
+
+<div class="topnav-divider">
+</div>

@@ -1,15 +1,23 @@
-#outer-container, #topnav-container, #search-navbar-container, #sul-footer-container {
-  width: 100%;
+#outer-container,
+#topnav-container,
+#search-navbar-container,
+#sul-footer-container {
+  border: none;
   margin: 0;
   padding: 0;
-  border: none;
+  width: 100%;
 }
 
-.header-logo > a, h3.panel-title a {
+.header-logo > a,
+h3.panel-title a {
   border-bottom: none;
 }
 
-#topnav, #search-navbar, #main-container, #sul-footer, #masthead-container {
+#topnav,
+#search-navbar,
+#main-container,
+#sul-footer,
+#masthead-container {
   margin: 0 auto;
   text-align: left;
 }
@@ -25,31 +33,44 @@
 }
 
 a#sul-logo {
-  float: left;
   border-bottom: none;
+  float: left;
 }
 
 @media (min-width: 768px) {
-  #topnav, #search-navbar, #main-container, #sul-footer, #masthead-container {
+  #topnav,
+  #search-navbar,
+  #main-container,
+  #sul-footer,
+  #masthead-container {
     width: 750px;
   }
 }
 
 @media (min-width: 980px) {
-  #topnav, #search-navbar, #main-container, #sul-footer, #masthead-container {
+  #topnav,
+  #search-navbar,
+  #main-container,
+  #sul-footer,
+  #masthead-container {
     width: 970px;
   }
 }
 
 @media (min-width: 1200px) {
-  #topnav, #search-navbar, #main-container, #sul-footer, #masthead-container {
+  #topnav,
+  #search-navbar,
+  #main-container,
+  #sul-footer,
+  #masthead-container {
     width: 1170px;
   }
 }
 
 
 @media only screen and (max-width : 768px) {
-  #main-container, #search-navbar {
+  #main-container,
+  #search-navbar {
     padding: 0 15px;
   }
 
