@@ -3,3 +3,6 @@ coffee_script:
 
 ruby:
   config_file: .rubocop.yml
+
+scss:
+  config_file: .scss-style.yml
