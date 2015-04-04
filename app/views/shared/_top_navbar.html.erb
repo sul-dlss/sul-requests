@@ -7,7 +7,12 @@
     <% end %>
 
     <div class="header-links">
-      <%= link_to "My Account", "http://library.stanford.edu/myaccount", class: 'first' %>
+      <% if current_user && current_user.webauth_user? %>
+        <%= link_to "#{current_user.webauth}: Logout", "#" %>
+      <% else %>
+        <%= link_to "Login", "#" %>
+      <% end %>
+      <%= link_to "My Account", "http://library.stanford.edu/myaccount" %>
       <%= link_to "Feedback", "http://searchworks.stanford.edu/feedback"  %>
     </div>
 
