@@ -114,5 +114,33 @@ module SULRequests
       'PAGE-SL' => ['SAL'],
       'PAGE-SP' => ['SPEC-COLL']
     }
+
+    config.hours_api_location_map = {
+      'ARS' => { library_slug: 'ars', location_slug: 'archive-recorded-sound' },
+      'ART' => { library_slug: 'art', location_slug: 'library-circulation' },
+      'BIOLOGY' => { library_slug: 'falconer', location_slug: 'library-circulation' },
+      'BUSINESS' => { library_slug: 'business', location_slug: 'library-i-desk' },
+      'CHEMCHMENG' => { library_slug: 'swain', location_slug: 'library-circulation' },
+      'CLASSICS' => { library_slug: 'classics-library', location_slug: 'library-circulation' },
+      'EARTH-SCI' => { library_slug: 'branner', location_slug: 'library-circulation' },
+      'EAST-ASIA' => { library_slug: 'eal', location_slug: 'library-circulation' },
+      'EDUCATION' => { library_slug: 'cubberley', location_slug: 'library-circulation' },
+      'ENG' => { library_slug: 'englib', location_slug: 'library-circulation' },
+      'GREEN' => { library_slug: 'green', location_slug: 'library-circulation' },
+      'HOOVER' => { library_slug: 'hoover', location_slug: 'library-circulation' },
+      'HOPKINS' => { library_slug: 'hopkins', location_slug: 'library-circulation' },
+      'HV-ARCHIVE' => { library_slug: 'hila', location_slug: 'reference' },
+      'LANE-MED' => { library_slug: 'lane', location_slug: 'library-circulation' },
+      'LATHROP' => { library_slug: 'lathrop', location_slug: 'tech-lounge' },
+      'LAW' => { library_slug: 'law', location_slug: 'library-circulation' },
+      'MATH-CS' => { library_slug: 'mathstat', location_slug: 'library-circulation' },
+      'MEDIA-MTXT' => { library_slug: 'green', location_slug: 'media-microtext-center' },
+      'MUSIC' => { library_slug: 'music', location_slug: 'library-circulation' },
+      'SAL' => { library_slug: 'sal12', location_slug: 'sal12-circulation' },
+      'SAL3' => {},
+      'SAL-NEWARK' => {},
+      'SPEC-COLL' => { library_slug: 'spc', location_slug: 'field-reading-room' },
+      'TANNER' => { library_slug: 'philosophy', location_slug: 'library-circulation' }
+    }
   end
 end

@@ -18,6 +18,7 @@ token_encrypt:
 
 mailer_host: 'example.com'
 searchworks_api: 'http://searchworks-test.stanford.edu/api-test'
+hours_api: 'https://sul-library-hours-prod.stanford.edu'
 searchworks_link: 'http://searchworks.stanford.edu/view'
 sul_illiad: 'https://sulils-test.stanford.edu/illiad.dll?'
 sul_proxy_api_url: ''
