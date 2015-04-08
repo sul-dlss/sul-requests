@@ -1,0 +1,12 @@
+<h1>Request management</h1>
+
+<div>
+  <h4>Administration and mediation tasks for page, scan, and hold/recall requests from SearchWorks.</h4>
+  Contact <%= mail_to 'someone@stanford.edu' %> if you questions about your access to these options.
+</div>
+
+<!-- TODO: Check for user's priv group -->
+<%= render :partial => 'home/administration' %>
+
+<!-- TODO: Check for user's priv group -->
+<%= render :partial => 'home/mediation' %>
