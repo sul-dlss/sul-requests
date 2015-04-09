@@ -1,0 +1,8 @@
+super_admin_groups: ['FAKE-TEST-SUPER-ADMIN-GROUP']
+site_admin_groups: ['FAKE-TEST-SITE-ADMIN-GROUP']
+
+origin_admin_groups:
+  FAKE-ORIGIN-LIBRARY: ['FAKE-ORIGIN-LIBRARY-TEST-LDAP-GROUP']
+
+destination_admin_groups:
+  FAKE-DESTINATION-LIBRARY: ['FAKE-DESTINATION-LIBRARY-TEST-LDAP-GROUP']

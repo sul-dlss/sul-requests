@@ -1,12 +1,11 @@
 # LDAP Workgroups for site-adminstrators
-super_admin_groups = []
-site_admin_groups = []
+super_admin_groups: []
+site_admin_groups: []
 
-# LDAP Workgroups for location specific mediation
-location_admin_groups = {
-  SPEC: [],
-  BRANNER: [],
-  MILLER: [],
-  "HOOVER-ARCHIVE" => [],
-  "HOOVER-LIBRARY" => []
-}
+# LDAP Workgroups for origin specific mediation
+origin_admin_groups:
+  SAL-NEWARK: []
+
+# LDAP Workgroups for destination specific mediation
+destination_admin_groups:
+  SPEC: []
