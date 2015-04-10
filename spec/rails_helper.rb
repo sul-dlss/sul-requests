@@ -49,3 +49,7 @@ RSpec.configure do |config|
   # https://relishapp.com/rspec/rspec-rails/docs
   config.infer_spec_type_from_file_location!
 end
+
+def stub_current_user(user = 'some-user')
+  allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(User.new(webauth: user))
+end

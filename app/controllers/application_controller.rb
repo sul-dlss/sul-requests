@@ -13,6 +13,6 @@ class ApplicationController < ActionController::Base
   private
 
   def user_id
-    ENV['REMOTE_USER']
+    request.env['REMOTE_USER'] || ENV['REMOTE_USER']
   end
 end
