@@ -21,6 +21,22 @@ class ApplicationController < ActionController::Base
   end
 
   def request_ldap
-    request.env['WEBAUTH_LDAPPRIVGROUP']
+    request_env_ldap || fake_work_group
+  end
+
+  def request_env_ldap
+    request.env['WEBAUTH_LDAPPRIVGROUP'] if user_id && request.env['WEBAUTH_LDAPPRIVGROUP']
+  end
+
+  def fake_work_group
+    Settings.fake_work_groups[user_id] if user_id && use_fake_workgroups?
+  end
+
+  # Only allow fake work groups in development
+  # TODO: Remove this once we have ldap integration
+  def use_fake_workgroups?
+    Settings.fake_work_groups &&
+      Settings.fake_work_groups[user_id] &&
+      Rails.env.development?
   end
 end
