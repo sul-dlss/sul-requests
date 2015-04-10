@@ -6,7 +6,11 @@ class ApplicationController < ActionController::Base
 
   def current_user
     return unless user_id.present?
-    @current_user ||= User.find_or_create_by(webauth: user_id)
+    @current_user ||= begin
+      user = User.find_or_create_by(webauth: user_id)
+      user.ldap_group_string = request_ldap if request_ldap
+      user
+    end
   end
   helper_method :current_user
 
@@ -14,5 +18,9 @@ class ApplicationController < ActionController::Base
 
   def user_id
     request.env['REMOTE_USER'] || ENV['REMOTE_USER']
+  end
+
+  def request_ldap
+    request.env['WEBAUTH_LDAPPRIVGROUP']
   end
 end
