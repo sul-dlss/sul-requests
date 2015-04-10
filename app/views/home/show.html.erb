@@ -2,11 +2,12 @@
 
 <div>
   <h4>Administration and mediation tasks for page, scan, and hold/recall requests from SearchWorks.</h4>
-  Contact <%= mail_to 'someone@stanford.edu' %> if you have questions about your access to these options.
+  Contact <%= mail_to Settings.contact_email %> if you have questions about your access to these options.
 </div>
 
-<!-- TODO: Check for user's priv group -->
-<%= render :partial => 'home/administration' %>
-
-<!-- TODO: Check for user's priv group -->
-<%= render :partial => 'home/mediation' %>
+<% if can? :manage, Request.new %>
+  <%= render 'administration' %>
+  <%= render 'mediation' %>
+<% else %>
+  <h4 class="access-error">You do not have access</h4>
+<% end %>

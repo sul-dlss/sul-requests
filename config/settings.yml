@@ -9,3 +9,5 @@ origin_admin_groups:
 # LDAP Workgroups for destination specific mediation
 destination_admin_groups:
   SPEC: []
+
+contact_email: 'someone@stanford.edu'
