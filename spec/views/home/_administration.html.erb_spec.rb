@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'home/show' do
+describe 'home/_administration.html.erb' do
   before do
     render
   end

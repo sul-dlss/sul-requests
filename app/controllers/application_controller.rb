@@ -6,13 +6,37 @@ class ApplicationController < ActionController::Base
 
   def current_user
     return unless user_id.present?
-    @current_user ||= User.find_or_create_by(webauth: user_id)
+    @current_user ||= begin
+      user = User.find_or_create_by(webauth: user_id)
+      user.ldap_group_string = request_ldap if request_ldap
+      user
+    end
   end
   helper_method :current_user
 
   private
 
   def user_id
-    ENV['REMOTE_USER']
+    request.env['REMOTE_USER'] || ENV['REMOTE_USER']
+  end
+
+  def request_ldap
+    request_env_ldap || fake_work_group
+  end
+
+  def request_env_ldap
+    request.env['WEBAUTH_LDAPPRIVGROUP'] if user_id && request.env['WEBAUTH_LDAPPRIVGROUP']
+  end
+
+  def fake_work_group
+    Settings.fake_work_groups[user_id] if user_id && use_fake_workgroups?
+  end
+
+  # Only allow fake work groups in development
+  # TODO: Remove this once we have ldap integration
+  def use_fake_workgroups?
+    Settings.fake_work_groups &&
+      Settings.fake_work_groups[user_id] &&
+      Rails.env.development?
   end
 end

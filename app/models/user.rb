@@ -2,6 +2,7 @@
 #  User class for authenticating via WebAuth
 ###
 class User < ActiveRecord::Base
+  attr_writer :ldap_group_string
   def webauth_user?
     webauth.present?
   end
@@ -27,6 +28,6 @@ class User < ActiveRecord::Base
   end
 
   def ldap_groups
-    (ENV['WEBAUTH_LDAPPRIVGROUP'] || '').split('|')
+    (@ldap_group_string || '').split('|')
   end
 end
