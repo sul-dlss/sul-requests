@@ -6,4 +6,8 @@ class Request < ActiveRecord::Base
   def new_request?
     status.present?
   end
+
+  def scannable?
+    origin == 'SAL3' && origin_location == 'STACKS'
+  end
 end

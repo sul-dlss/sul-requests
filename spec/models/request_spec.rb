@@ -10,4 +10,14 @@ describe Request do
       expect(subject).to be_new_request
     end
   end
+  describe '#scannable?' do
+    it 'should be scannable if it is a SAL3 item in the STACKS location' do
+      subject.origin = 'SAL3'
+      subject.origin_location = 'STACKS'
+      expect(subject).to be_scannable
+    end
+    it 'should not be scannable if it is not in the corect location and library' do
+      expect(subject).to_not be_scannable
+    end
+  end
 end
