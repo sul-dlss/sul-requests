@@ -8,6 +8,8 @@ gem 'sqlite3'
 gem 'mysql2'
 # Use sass-powered bootstrap
 gem 'bootstrap-sass', "~> 3.3.4"
+# Use bootstrap_form for easy form building
+gem 'bootstrap_form'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
