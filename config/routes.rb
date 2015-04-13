@@ -9,6 +9,10 @@ Rails.application.routes.draw do
   get 'webauth/login' => 'authorization#login', as: :login
   get 'webauth/logout' => 'authorization#logout', as: :logout
 
+  resources :requests, only: :new
+  resources :pages
+  resources :scans
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
