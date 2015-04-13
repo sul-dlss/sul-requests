@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  rescue_from CanCan::AccessDenied, with: :rescue_can_can
+
   def current_user
     return unless user_id.present?
     @current_user ||= begin
@@ -15,6 +17,10 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
 
   private
+
+  def rescue_can_can(exception)
+    fail exception
+  end
 
   def user_id
     request.env['REMOTE_USER'] || ENV['REMOTE_USER']
