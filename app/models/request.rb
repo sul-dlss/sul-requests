@@ -3,6 +3,7 @@
 #  STI and sub-class this main request class.
 ###
 class Request < ActiveRecord::Base
+  validates :item_id, :origin, :origin_location, presence: true
   def new_request?
     status.present?
   end

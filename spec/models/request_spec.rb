@@ -1,6 +1,14 @@
 require 'rails_helper'
 
 describe Request do
+  describe 'validations' do
+    it 'should require the basic set of information to be present' do
+      expect(-> { Request.create! }).to raise_error(ActiveRecord::RecordInvalid)
+      expect(-> { Request.create!(item_id: '1234', origin: 'GREEN') }).to raise_error(ActiveRecord::RecordInvalid)
+      expect(-> { Request.create! }).to raise_error(ActiveRecord::RecordInvalid)
+      expect(-> { Request.create! }).to raise_error(ActiveRecord::RecordInvalid)
+    end
+  end
   describe '#new_request?' do
     it 'should return false if the status is not present' do
       expect(subject).to_not be_new_request
