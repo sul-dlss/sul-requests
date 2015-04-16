@@ -2,7 +2,10 @@
 #  User class for authenticating via WebAuth
 ###
 class User < ActiveRecord::Base
+  validates :webauth, uniqueness: true
+
   attr_writer :ldap_group_string
+
   def webauth_user?
     webauth.present?
   end
