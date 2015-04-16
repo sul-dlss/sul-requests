@@ -48,6 +48,7 @@ GEM
     bootstrap-sass (3.3.4.1)
       autoprefixer-rails (>= 5.0.0.1)
       sass (>= 3.2.19)
+    bootstrap_form (2.3.0)
     builder (3.2.2)
     bundler-audit (0.3.1)
       bundler (~> 1.2)
@@ -266,6 +267,7 @@ PLATFORMS
 
 DEPENDENCIES
   bootstrap-sass (~> 3.3.4)
+  bootstrap_form
   byebug
   cancancan (~> 1.10)
   capistrano (~> 3.0)

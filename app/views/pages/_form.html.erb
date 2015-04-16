@@ -1,0 +1,8 @@
+<%= bootstrap_form_for(@page, layout: :horizontal) do |f| %>
+  <%= render  partial: 'hidden_form_fields', locals: { f: f } %>
+  <%= f.text_field :origin %>
+  <%= f.text_field :destination %>
+  <%= f.date_field :needed_date %>
+
+  <%= f.submit %>
+<% end %>

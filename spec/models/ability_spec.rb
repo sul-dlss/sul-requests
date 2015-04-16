@@ -12,31 +12,56 @@ describe Ability do
   describe 'an anonymous user' do
     let(:user) { nil }
 
-    # Can create Page request.  Nothing else yet.
-    it { is_expected.to be_able_to(:create, page) }
-    it { is_expected.not_to be_able_to(:read, page) }
-    it { is_expected.not_to be_able_to(:update, page) }
-    it { is_expected.not_to be_able_to(:delete, page) }
-
+    it { is_expected.to be_able_to(:new, custom) }
     it { is_expected.not_to be_able_to(:create, custom) }
     it { is_expected.not_to be_able_to(:read, custom) }
     it { is_expected.not_to be_able_to(:update, custom) }
     it { is_expected.not_to be_able_to(:delete, custom) }
 
+    it { is_expected.to be_able_to(:new, hold_recall) }
     it { is_expected.not_to be_able_to(:create, hold_recall) }
     it { is_expected.not_to be_able_to(:read, hold_recall) }
     it { is_expected.not_to be_able_to(:update, hold_recall) }
     it { is_expected.not_to be_able_to(:delete, hold_recall) }
 
+    it { is_expected.to be_able_to(:new, mediated_page) }
     it { is_expected.not_to be_able_to(:create, mediated_page) }
     it { is_expected.not_to be_able_to(:read, mediated_page) }
     it { is_expected.not_to be_able_to(:update, mediated_page) }
     it { is_expected.not_to be_able_to(:delete, mediated_page) }
 
+    it { is_expected.to be_able_to(:new, page) }
+    it { is_expected.not_to be_able_to(:create, page) }
+    it { is_expected.not_to be_able_to(:read, page) }
+    it { is_expected.not_to be_able_to(:update, page) }
+    it { is_expected.not_to be_able_to(:delete, page) }
+
+    it { is_expected.to be_able_to(:new, scan) }
     it { is_expected.not_to be_able_to(:create, scan) }
     it { is_expected.not_to be_able_to(:read, scan) }
     it { is_expected.not_to be_able_to(:update, scan) }
     it { is_expected.not_to be_able_to(:delete, scan) }
+  end
+
+  describe 'a webauth user' do
+    let(:user) { User.new }
+    before { allow(user).to receive_messages(webauth_user?: true) }
+
+    it { is_expected.to be_able_to(:create, custom) }
+    it { is_expected.to be_able_to(:create, hold_recall) }
+    it { is_expected.to be_able_to(:create, mediated_page) }
+    it { is_expected.to be_able_to(:create, page) }
+    it { is_expected.to be_able_to(:create, scan) }
+  end
+
+  pending 'a user with an email and name' do
+    let(:user) { User.new(email: 'email@example.com', name: 'Jane Stanford') }
+
+    it { is_expected.to be_able_to(:create, custom) }
+    it { is_expected.to be_able_to(:create, hold_recall) }
+    it { is_expected.to be_able_to(:create, mediated_page) }
+    it { is_expected.to be_able_to(:create, page) }
+    it { is_expected.not_to be_able_to(:create, scan) }
   end
 
   describe 'a super admin' do
