@@ -1,7 +1,8 @@
 <%= bootstrap_form_for(@page, layout: :horizontal) do |f| %>
   <%= render  partial: 'hidden_form_fields', locals: { f: f } %>
+
   <%= f.text_field :origin, value: (f.object.origin || params[:origin]) %>
-  <%= f.text_field :destination, value: (f.object.destination || params[:destination]) %>
+  <%= select_for_pickup_libraries(f).html_safe %>
   <%= f.date_field :needed_date, value: (f.object.needed_date || params[:needed_date]) %>
 
   <div class='form-group' data-no-sunet-target='true'>
