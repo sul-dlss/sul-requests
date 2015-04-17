@@ -24,11 +24,18 @@ describe PagesController do
   describe 'create' do
     describe 'by anonymous users' do
       let(:user) { User.new }
-      it 'should raise an error' do
+      it 'should redirect to login if no user information is filled out' do
         put :create, page: { origin: 'GREEN' }
         expect(response).to redirect_to(
           login_path(referrer: new_page_path(origin: 'GREEN'))
         )
+      end
+      it 'should be allowed if user name and email is filled out' do
+        put :create, page: {
+          origin: 'GREEN',
+          user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }
+        }
+        expect(response).to be_success
       end
     end
     describe 'by webauth users' do
@@ -53,10 +60,7 @@ describe PagesController do
     describe 'by anonymous users' do
       let(:user) { User.new }
       it 'should raise an error' do
-        put :update, id: page[:id], page: { origin: 'GREEN' }
-        expect(response).to redirect_to(
-          login_path(referrer: new_page_path(origin: 'GREEN'))
-        )
+        expect(-> { put :update, id: page[:id], page: { origin: 'GREEN' } }).to raise_error(CanCan::AccessDenied)
       end
     end
     describe 'invalid requests' do

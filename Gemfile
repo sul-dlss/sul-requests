@@ -57,6 +57,12 @@ group :development, :test do
   # Capybara for feature/integration tests
   gem 'capybara'
 
+  # Poltergeist is a capybara driver to run integration tests using PhantomJS
+  gem 'poltergeist'
+
+  # Database cleaner allows us to clean the entire database after certain tests
+  gem 'database_cleaner'
+
   # Rubocop is a static code analyzer to enforce style.
   gem 'rubocop', require: false
 

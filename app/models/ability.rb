@@ -34,9 +34,12 @@ class Ability
 
     can :new, Request
 
-    # Webauth users or users who provide a Name and Email can create requests
     can :create, Request do |_|
-      user.webauth_user? # || (user.name.present? && user.email.present?)
+      user.webauth_user?
+    end
+
+    can :create, Page do |page|
+      page.user && page.user.non_webauth_user?
     end
 
     # Only Webauth users can create scan requests (for now).
