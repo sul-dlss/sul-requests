@@ -2,17 +2,17 @@ require 'rails_helper'
 
 describe RequestsController do
   let(:scannable_params) do
-    { item_id: '12345', origin: 'SAL3', location: 'STACKS' }
+    { item_id: '12345', origin: 'SAL3', origin_location: 'STACKS' }
   end
   let(:unscannable_params) do
-    { item_id: '12345', origin: 'SAL1/2', location: 'STACKS' }
+    { item_id: '12345', origin: 'SAL1/2', origin_location: 'STACKS' }
   end
   describe '#new' do
     describe 'required parameters' do
       it 'should require an item id, library, and location' do
         expect(-> { get(:new, item_id: '1234') }).to raise_error(ActionController::ParameterMissing)
         expect(-> { get(:new, origin: 'GREEN') }).to raise_error(ActionController::ParameterMissing)
-        expect(-> { get(:new, location: 'STACKS') }).to raise_error(ActionController::ParameterMissing)
+        expect(-> { get(:new, origin_location: 'STACKS') }).to raise_error(ActionController::ParameterMissing)
       end
     end
     describe 'defaults' do
