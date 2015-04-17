@@ -18,6 +18,19 @@ describe User do
       expect(subject).to be_webauth_user
     end
   end
+  describe '#non_webauth_user?' do
+    before do
+      subject.name = 'Jane Stanford'
+      subject.email = 'jstanford@stanford.edu'
+    end
+    it 'should return true when the user has a name and email address but not a webauth ID' do
+      expect(subject).to be_non_webauth_user
+    end
+    it 'should return false when the user has a webauth ID' do
+      subject.webauth = 'jstanford'
+      expect(subject).to_not be_non_webauth_user
+    end
+  end
   describe '#superadmin?' do
     it 'should return false when the user is not a super admin' do
       expect(subject).to_not be_superadmin
