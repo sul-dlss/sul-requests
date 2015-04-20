@@ -1,0 +1,7 @@
+<div data-no-sunet-content='true' style='display:none;'>
+  <%= f.fields_for :user, User.new do |uf| %>
+    <%= uf.text_field :name %>
+    <%= uf.email_field :email %>
+  <% end %>
+  <%= f.submit 'Send request' %>
+</div>

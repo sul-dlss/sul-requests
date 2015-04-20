@@ -21,12 +21,12 @@ class RequestsController < ApplicationController
   def validate_new_params
     params.require(:origin)
     params.require(:item_id)
-    params.require(:location)
+    params.require(:origin_location)
   end
 
   def request_defaults(request)
     request.origin = params[:origin]
     request.item_id = params[:item_id]
-    request.origin_location = params[:location]
+    request.origin_location = params[:origin_location]
   end
 end

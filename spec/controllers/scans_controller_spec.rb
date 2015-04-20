@@ -3,7 +3,7 @@ require 'rails_helper'
 describe ScansController do
   let(:scan) { Scan.create(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS') }
   let(:scannable_params) do
-    { item_id: '1234', origin: 'SAL3', location: 'STACKS' }
+    { item_id: '1234', origin: 'SAL3', origin_location: 'STACKS' }
   end
   before do
     allow(controller).to receive_messages(current_user: user)
@@ -22,7 +22,7 @@ describe ScansController do
     end
     it 'should raise an error when an unscannable item is requested' do
       expect(
-        -> { get :new, item_id: '1234', origin: 'SAL1/2', location: 'STACKS' }
+        -> { get :new, item_id: '1234', origin: 'SAL1/2', origin_location: 'STACKS' }
       ).to raise_error(ScansController::UnscannableItemError)
     end
   end

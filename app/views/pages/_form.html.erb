@@ -1,8 +1,20 @@
 <%= bootstrap_form_for(@page, layout: :horizontal) do |f| %>
   <%= render  partial: 'hidden_form_fields', locals: { f: f } %>
-  <%= f.text_field :origin %>
-  <%= f.text_field :destination %>
-  <%= f.date_field :needed_date %>
+  <%= f.text_field :origin, value: (f.object.origin || params[:origin]) %>
+  <%= f.text_field :destination, value: (f.object.destination || params[:destination]) %>
+  <%= f.date_field :needed_date, value: (f.object.needed_date || params[:needed_date]) %>
 
-  <%= f.submit %>
+  <div class='form-group' data-no-sunet-target='true'>
+    <div class='col-xs-10 col-xs-offset-2'>
+      <% if current_user.webauth_user? %>
+        <%= render 'shared/webauth_not_you' %>
+        <%= f.submit 'Send request', class: 'btn btn-default col-xs-12' %>
+      <% else %>
+        <%= render partial: 'no_sunet_form', locals: { f: f } %>
+        <%= f.submit "Send request login with SUNet ID".html_safe %>
+        <p>- or -</p>
+        <%= link_to 'I don\'t have a SUNet ID', 'javascript:;', class: 'btn btn-default', data: { no_sunet: true, target: '[data-no-sunet-target]', content_target: '[data-no-sunet-content]' } %>
+      <% end %>
+    </div>
+  </div>
 <% end %>

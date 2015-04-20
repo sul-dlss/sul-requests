@@ -28,4 +28,36 @@ describe Request do
       expect(subject).to_not be_scannable
     end
   end
+  describe 'nested attributes for' do
+    describe 'users' do
+      it 'should create new users' do
+        expect(User.find_by_email('jstanford@stanford.edu')).to be_nil
+        Request.create(
+          item_id: '1234',
+          origin: 'GREEN',
+          origin_location: 'STACKS',
+          user_attributes: {
+            name: 'Jane Stanford',
+            email: 'jstanford@stanford.edu'
+          }
+        )
+        expect(User.find_by_email('jstanford@stanford.edu')).to be_present
+      end
+      it 'should not duplicate users email addresses' do
+        expect(User.where(email: 'jstanford@stanford.edu').length).to eq 0
+        User.create(email: 'jstanford@stanford.edu')
+        expect(User.where(email: 'jstanford@stanford.edu').length).to eq 1
+        Request.create!(
+          item_id: '1234',
+          origin: 'GREEN',
+          origin_location: 'STACKS',
+          user_attributes: {
+            name: 'Jane Stanford',
+            email: 'jstanford@stanford.edu'
+          }
+        )
+        expect(User.where(email: 'jstanford@stanford.edu').length).to eq 1
+      end
+    end
+  end
 end

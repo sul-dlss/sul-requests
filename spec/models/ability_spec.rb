@@ -41,6 +41,11 @@ describe Ability do
     it { is_expected.not_to be_able_to(:read, scan) }
     it { is_expected.not_to be_able_to(:update, scan) }
     it { is_expected.not_to be_able_to(:delete, scan) }
+
+    describe 'who fills out a name and email' do
+      let(:page) { Page.new(user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }) }
+      it { is_expected.to be_able_to(:create, page) }
+    end
   end
 
   describe 'a webauth user' do
@@ -52,16 +57,6 @@ describe Ability do
     it { is_expected.to be_able_to(:create, mediated_page) }
     it { is_expected.to be_able_to(:create, page) }
     it { is_expected.to be_able_to(:create, scan) }
-  end
-
-  pending 'a user with an email and name' do
-    let(:user) { User.new(email: 'email@example.com', name: 'Jane Stanford') }
-
-    it { is_expected.to be_able_to(:create, custom) }
-    it { is_expected.to be_able_to(:create, hold_recall) }
-    it { is_expected.to be_able_to(:create, mediated_page) }
-    it { is_expected.to be_able_to(:create, page) }
-    it { is_expected.not_to be_able_to(:create, scan) }
   end
 
   describe 'a super admin' do

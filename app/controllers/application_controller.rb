@@ -7,11 +7,14 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied, with: :rescue_can_can
 
   def current_user
-    return unless user_id.present?
     @current_user ||= begin
-      user = User.find_or_create_by(webauth: user_id)
-      user.ldap_group_string = request_ldap if request_ldap
-      user
+      if user_id.present?
+        user = User.find_or_create_by(webauth: user_id)
+        user.ldap_group_string = request_ldap if request_ldap
+        user
+      else
+        User.new
+      end
     end
   end
   helper_method :current_user

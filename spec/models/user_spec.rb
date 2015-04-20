@@ -1,6 +1,14 @@
 require 'rails_helper'
 
 describe User do
+  describe 'validations' do
+    it 'should only allow unique webauth ids' do
+      User.create!(webauth: 'some-user')
+      expect(
+        -> { User.create!(webauth: 'some-user') }
+      ).to raise_error(ActiveRecord::RecordInvalid)
+    end
+  end
   describe '#webauth_user?' do
     it 'should return false when the user has no WebAuth attribute' do
       expect(subject).to_not be_webauth_user
@@ -8,6 +16,19 @@ describe User do
     it 'should return true when the user has a WebAuth attribute' do
       subject.webauth = 'WebAuth User'
       expect(subject).to be_webauth_user
+    end
+  end
+  describe '#non_webauth_user?' do
+    before do
+      subject.name = 'Jane Stanford'
+      subject.email = 'jstanford@stanford.edu'
+    end
+    it 'should return true when the user has a name and email address but not a webauth ID' do
+      expect(subject).to be_non_webauth_user
+    end
+    it 'should return false when the user has a webauth ID' do
+      subject.webauth = 'jstanford'
+      expect(subject).to_not be_non_webauth_user
     end
   end
   describe '#superadmin?' do

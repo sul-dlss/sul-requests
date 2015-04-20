@@ -3,13 +3,13 @@ require 'rails_helper'
 describe PagesController do
   let(:page) { Page.create(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS') }
   let(:normal_params) do
-    { item_id: '1234', origin: 'GREEN', location: 'STACKS' }
+    { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS' }
   end
   before do
     allow(controller).to receive_messages(current_user: user)
   end
   describe 'new' do
-    let(:user) { nil }
+    let(:user) { User.new }
     it 'should be accessible by anonymous users' do
       get :new, normal_params
       expect(response).to be_success
@@ -23,9 +23,19 @@ describe PagesController do
   end
   describe 'create' do
     describe 'by anonymous users' do
-      let(:user) { nil }
-      it 'should raise an error' do
-        expect(-> { put(:create, page: { origin: 'GREEN' }) }).to raise_error(CanCan::AccessDenied)
+      let(:user) { User.new }
+      it 'should redirect to login if no user information is filled out' do
+        put :create, page: { origin: 'GREEN' }
+        expect(response).to redirect_to(
+          login_path(referrer: new_page_path(origin: 'GREEN'))
+        )
+      end
+      it 'should be allowed if user name and email is filled out' do
+        put :create, page: {
+          origin: 'GREEN',
+          user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }
+        }
+        expect(response).to be_success
       end
     end
     describe 'by webauth users' do
@@ -48,9 +58,9 @@ describe PagesController do
   end
   describe 'update' do
     describe 'by anonymous users' do
-      let(:user) { nil }
+      let(:user) { User.new }
       it 'should raise an error' do
-        expect(-> { put(:update, id: page[:id]) }).to raise_error(CanCan::AccessDenied)
+        expect(-> { put :update, id: page[:id], page: { origin: 'GREEN' } }).to raise_error(CanCan::AccessDenied)
       end
     end
     describe 'invalid requests' do
