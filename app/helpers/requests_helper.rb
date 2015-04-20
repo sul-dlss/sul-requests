@@ -20,8 +20,8 @@ module RequestsHelper
   def single_library_markup(form, library)
     <<-HTML
       <div class='form-group'>
-        <div class='col-sm-2 control-label'>Must be used in</div>
-        <div class='col-sm-10 input-like-text'>#{library.last}</div>
+        <div class='#{label_column_class} control-label'>Must be used in</div>
+        <div class='#{content_column_class} input-like-text'>#{library.last}</div>
         #{form.hidden_field :destination, value: library.first}
       </div>
     HTML

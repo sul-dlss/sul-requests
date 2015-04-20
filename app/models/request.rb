@@ -5,6 +5,8 @@
 class Request < ActiveRecord::Base
   validates :item_id, :origin, :origin_location, presence: true
 
+  serialize :data, Hash
+
   belongs_to :user, autosave: true
   accepts_nested_attributes_for :user
 
