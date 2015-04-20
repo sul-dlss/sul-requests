@@ -16,6 +16,10 @@ class Request < ActiveRecord::Base
     origin == 'SAL3' && origin_location == 'STACKS'
   end
 
+  def library_location
+    @library_location ||= LibraryLocation.new(self)
+  end
+
   # This method gets called when saving the user assocation
   # and allows us to make sure we assign the user object if
   # there already is one associated with that email address

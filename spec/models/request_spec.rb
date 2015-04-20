@@ -28,6 +28,11 @@ describe Request do
       expect(subject).to_not be_scannable
     end
   end
+  describe '#library_location' do
+    it 'should return a library_location object' do
+      expect(subject.library_location).to be_a LibraryLocation
+    end
+  end
   describe 'nested attributes for' do
     describe 'users' do
       it 'should create new users' do

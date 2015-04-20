@@ -26,5 +26,84 @@ module SULRequests
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    config.libraries = {
+      'ARS' => 'Archive of Recorded Sound',
+      'ART' => 'Art & Architecture Library',
+      'BIOLOGY' => 'Biology Library (Falconer)',
+      'BUSINESS' => 'Business Library',
+      'CHEMCHMENG' => 'Chemistry & ChemEng Library (Swain)',
+      'CLASSICS' => 'Classics Library',
+      'EARTH-SCI' => 'Earth Sciences Library (Branner)',
+      'EAST-ASIA' => 'East Asia Library',
+      'EDUCATION' => 'Education Library (Cubberley)',
+      'ENG' => 'Engineering Library (Terman)',
+      'GREEN' => 'Green Library',
+      'HOOVER' => 'Hoover Library',
+      'HOPKINS' => 'Marine Biology Library (Miller)',
+      'HV-ARCHIVE' => 'Hoover Archives',
+      'LANE-MED' => 'Medical Library (Lane)',
+      'LATHROP' => 'Lathrop Library',
+      'LAW' => 'Law Library (Crown)',
+      'MATH-CS' => 'Math & Statistics Library',
+      'MEDIA-MTXT' => 'Media Microtext',
+      'MUSIC' => 'Music Library',
+      'SAL' => 'SAL1&2 (on-campus shelving)',
+      'SAL3' => 'SAL3 (off-campus storage)',
+      'SAL-NEWARK' => 'SAL Newark (off-campus storage)',
+      'SPEC-COLL' => 'Special Collections',
+      'TANNER' => 'Philosophy Library (Tanner)'
+    }
+    config.pickup_libraries = [
+      'ART',
+      'BIOLOGY',
+      'BUSINESS',
+      'CHEMCHMENG',
+      'EARTH-SCI',
+      'EAST-ASIA',
+      'EDUCATION',
+      'ENG',
+      'GREEN',
+      'HOOVER',
+      'HOPKINS',
+      'LAW',
+      'MATH-CS',
+      'MUSIC',
+      'SAL'
+    ]
+
+    config.library_specific_pickup_libraries = {
+      'ARS' => ['ARS'],
+      'HOOVER' => ['HOOVER'],
+      'HV-ARCHIVE' => ['HV-ARCHIVE'],
+      'SPEC-COLL' => ['SPEC-COLL']
+    }
+
+    config.location_specific_pickup_libraries = {
+      'PAGE-AR' => ['ART', 'SPEC-COLL'],
+      'PAGE-AS' => ['ARS'],
+      'PAGE-BI' => ['BIOLOGY'],
+      'PAGE-BU' => ['BUSINESS'],
+      'PAGE-CH' => ['CHEMCHMENG'],
+      'PAGE-EA' => ['EAST-ASIA'],
+      'PAGE-ED' => ['EDUCATION'],
+      'PAGE-EN' => ['ENG'],
+      'PAGE-ES' => ['EARTH-SCI'],
+      'PAGE-GR' => ['GREEN'],
+      'PAGE-HA' => ['HV-ARCHIVE'],
+      'PAGE-HL' => ['HOOVER'],
+      'PAGE-HP' => ['GREEN', 'HOPKINS'],
+      'PAGE-HV' => ['HOOVER'],
+      'PAGE-IRON' => ['BUSINESS'],
+      'PAGE-LAW' => ['LAW'],
+      'PAGE-LP' => ['MUSIC', 'MEDIA-MTXT'],
+      'PAGE-MA' => ['MATH-CS'],
+      'PAGE-MD' => ['MUSIC', 'MEDIA-MTXT'],
+      'PAGE-MP' => ['EARTH-SCI'],
+      'PAGE-MSS' => ['SPEC-COLL'],
+      'PAGE-MU' => ['MUSIC'],
+      'PAGE-SL' => ['SAL'],
+      'PAGE-SP' => ['SPEC-COLL']
+    }
   end
 end
