@@ -9,15 +9,15 @@ module ApplicationHelper
   end
 
   def label_column_class
-    'col-xs-2'
+    'col-sm-3'
   end
 
   def label_column_offset_class
-    'col-xs-offset-2'
+    'col-sm-offset-3'
   end
 
   def content_column_class
-    'col-xs-10'
+    'col-sm-9'
   end
 
   def send_request_via_login_button
