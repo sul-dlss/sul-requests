@@ -15,7 +15,7 @@ describe 'Create Scan Request' do
       authors = 'Stanford, Jane'
       fill_in 'Author(s)', with: authors
 
-      click_button 'Create Scan'
+      click_button 'Send request'
 
       expect(page).to have_css('.alert-success', text: 'Scan request was successfully created.')
 
@@ -26,6 +26,18 @@ describe 'Create Scan Request' do
       expect(scan.data['page_range']).to eq page_range
       expect(scan.data['section_title']).to eq article_title
       expect(scan.data['authors']).to eq authors
+    end
+  end
+  describe 'by non webauth user' do
+    it 'should provide a link to page the item' do
+      visit new_scan_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
+
+      expect(page).to have_link 'Request the physical item'
+
+      click_link 'Request the physical item'
+
+      expect(page).to have_css('h1#dialogTitle', 'Request delivery to campus library')
+      expect(current_url).to eq new_page_url(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
     end
   end
 end

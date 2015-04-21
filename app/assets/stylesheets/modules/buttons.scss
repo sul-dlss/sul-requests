@@ -1,0 +1,23 @@
+.btn-beige {
+  @include button-variant(
+    $btn-beige-color,
+    $btn-beige-bg,
+    $btn-beige-border
+  );
+}
+
+.btn-cardinal {
+  @include button-variant(
+    $btn-cardinal-color,
+    $btn-cardinal-bg,
+    $btn-cardinal-border
+  );
+}
+
+.btn-scan {
+  @include button-variant(
+    $btn-scan-color,
+    $btn-scan-bg,
+    $btn-scan-border
+  );
+}

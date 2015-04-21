@@ -8,6 +8,7 @@ $gray-ccc: #ccc;
 $gray-41-percent: #696969;
 $pantone-401: #b6b1a9;
 $white: #fff;
+$dark-cyan: #009b76;
 
 // Mappings
 $sul-footer-bg-color: $beige-10-percent;
@@ -22,3 +23,16 @@ $sul-topnavbar-link-color: $cardinal-red;
 
 // Sizes
 $font-size-base: 12px;
+
+// Buttons
+$btn-cardinal-color: $white;
+$btn-cardinal-bg: $cardinal-red;
+$btn-cardinal-border: darken($btn-cardinal-bg, 9.8%);
+
+$btn-beige-color: $black;
+$btn-beige-bg: $beige-30-percent;
+$btn-beige-border: darken($btn-beige-bg, 9.8%);
+
+$btn-scan-color: $white;
+$btn-scan-bg: $dark-cyan;
+$btn-scan-border: darken($btn-scan-bg, 9.8%);

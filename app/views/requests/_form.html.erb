@@ -1,7 +1,7 @@
 <div id="scan-or-deliver">
   <div class="row">
     <div class="col-xs-6 buttons">
-      <%= link_to('Deliver to campus library', new_page_path(@request, params.except(:controller, :action)), class: 'btn btn-default', 'aria-describedby' => 'deliveryDescription') %>
+      <%= link_to('Deliver to campus library', new_page_path(@request, params.except(:controller, :action)), class: 'btn btn-beige', 'aria-describedby' => 'deliveryDescription') %>
     </div>
     <div class="col-xs-6 content">
       <dl id="deliveryDescription">
@@ -13,7 +13,7 @@
   <p class='separator'>Just need a chapter or article?</p>
   <div class="row">
     <div class="col-xs-6 buttons">
-      <%= link_to('￼Scan to PDF<br/>requires SUNet login'.html_safe, new_scan_path(@request, params.except(:controller, :action)), class: 'btn btn-default', 'aria-describedby' => 'scanDescription') %>
+      <%= link_to('￼Scan to PDF<br/>requires SUNet login'.html_safe, new_scan_path(@request, params.except(:controller, :action)), class: 'btn btn-scan', 'aria-describedby' => 'scanDescription') %>
     </div>
     <div class="col-xs-6 content">
       <dl id="scanDescription">

@@ -10,12 +10,12 @@
     <div class='<%= content_column_class %> col-xs-offset-2'>
       <% if current_user.webauth_user? %>
         <%= render 'shared/webauth_not_you' %>
-        <%= f.submit 'Send request', class: 'btn btn-default col-xs-12' %>
+        <%= f.submit 'Send request', class: 'btn btn-cardinal col-xs-12' %>
       <% else %>
         <%= render partial: 'no_sunet_form', locals: { f: f } %>
-        <%= f.submit "Send request login with SUNet ID".html_safe %>
-        <p>- or -</p>
-        <%= link_to 'I don\'t have a SUNet ID', 'javascript:;', class: 'btn btn-default', data: { no_sunet: true, target: '[data-no-sunet-target]', content_target: '[data-no-sunet-content]' } %>
+        <%= send_request_via_login_button %>
+        <p class='or-divider'>- or -</p>
+        <%= link_to 'I don\'t have a SUNet ID', 'javascript:;', class: 'btn btn-beige col-xs-12', data: { no_sunet: true, target: '[data-no-sunet-target]', content_target: '[data-no-sunet-content]' } %>
       <% end %>
     </div>
   </div>
