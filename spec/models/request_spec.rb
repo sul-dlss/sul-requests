@@ -65,4 +65,12 @@ describe Request do
       end
     end
   end
+  describe '#data' do
+    it 'should be a serialized hash' do
+      data_hash = { a: :a, b: :b }
+      expect(subject.data).to eq({})
+      subject.data = data_hash
+      expect(subject.data).to eq data_hash
+    end
+  end
 end

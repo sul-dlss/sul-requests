@@ -1,12 +1,13 @@
-<%= bootstrap_form_for(@page, layout: :horizontal) do |f| %>
-  <%= render  partial: 'hidden_form_fields', locals: { f: f } %>
+<%= bootstrap_form_for(@page, bootstrap_form_layout_options) do |f| %>
+  <% unless @page.persisted? %>
+    <%= render partial: 'hidden_form_fields', locals: { f: f } %>
+  <% end %>
 
-  <%= f.text_field :origin, value: (f.object.origin || params[:origin]) %>
   <%= select_for_pickup_libraries(f).html_safe %>
   <%= f.date_field :needed_date, value: (f.object.needed_date || params[:needed_date]) %>
 
   <div class='form-group' data-no-sunet-target='true'>
-    <div class='col-xs-10 col-xs-offset-2'>
+    <div class='<%= content_column_class %> col-xs-offset-2'>
       <% if current_user.webauth_user? %>
         <%= render 'shared/webauth_not_you' %>
         <%= f.submit 'Send request', class: 'btn btn-default col-xs-12' %>

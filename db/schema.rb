@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150416225135) do
+ActiveRecord::Schema.define(version: 20150420165058) do
 
   create_table "requests", force: :cascade do |t|
     t.string   "type"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 20150416225135) do
     t.string   "destination"
     t.string   "origin_location"
     t.string   "item_id"
+    t.text     "data"
     t.integer  "user_id"
   end
 

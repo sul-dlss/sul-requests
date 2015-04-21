@@ -35,9 +35,9 @@ class ScansController < RequestsController
 
   def create_params
     params.require(:scan).permit(:item_id,
-                                 :needed_date,
                                  :origin,
-                                 :origin_location)
+                                 :origin_location,
+                                 data: [:authors, :page_range, :section_title])
   end
 
   def update_params

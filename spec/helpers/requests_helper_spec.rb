@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 describe RequestsHelper do
+  include ApplicationHelper
   describe '#select_for_pickup_libraries' do
     let(:form) { double('form') }
     before do
