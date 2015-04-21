@@ -12,7 +12,19 @@ module ApplicationHelper
     'col-xs-2'
   end
 
+  def label_column_offset_class
+    'col-xs-offset-2'
+  end
+
   def content_column_class
     'col-xs-10'
+  end
+
+  def send_request_via_login_button
+    button_tag(
+      'Send request<br/>login with SUNet ID'.html_safe,
+      id: 'send_request_via_sunet',
+      class: 'btn btn-cardinal col-xs-12'
+    )
   end
 end
