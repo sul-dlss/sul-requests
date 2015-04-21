@@ -9,7 +9,7 @@
   <% end %>
 
   <div class='form-group'>
-    <div class='<%= content_column_class %> col-xs-offset-2'>
+    <div class='<%= content_column_class %> <%= label_column_offset_class %>'>
       <% if current_user.webauth_user? %>
         <%= render 'shared/webauth_not_you' %>
         <%= f.submit 'Send request', class: 'btn btn-cardinal col-xs-12' %>

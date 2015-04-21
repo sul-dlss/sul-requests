@@ -20,6 +20,11 @@ describe ApplicationHelper do
       expect(options[:control_col]).to eq content_column_class
     end
   end
+  describe '#label_column_offset_class' do
+    it 'should be defined to help when offseting non-labeled form elements (e.g. buttons)' do
+      expect(label_column_offset_class).to eq 'col-xs-offset-2'
+    end
+  end
   describe '#send_request_via_login_button' do
     let(:button) { Capybara.string(send_request_via_login_button) }
     it 'should return a button tag' do

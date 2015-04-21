@@ -7,7 +7,7 @@
   <%= f.date_field :needed_date, value: (f.object.needed_date || params[:needed_date]) %>
 
   <div class='form-group' data-no-sunet-target='true'>
-    <div class='<%= content_column_class %> col-xs-offset-2'>
+    <div class='<%= content_column_class %> <%= label_column_offset_class %>'>
       <% if current_user.webauth_user? %>
         <%= render 'shared/webauth_not_you' %>
         <%= f.submit 'Send request', class: 'btn btn-cardinal col-xs-12' %>
