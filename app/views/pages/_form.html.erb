@@ -4,7 +4,11 @@
   <% end %>
 
   <%= select_for_pickup_libraries(f).html_safe %>
-  <%= f.date_field :needed_date, value: (f.object.needed_date || params[:needed_date]) %>
+  <% if @page.commentable? %>
+    <%= f.fields_for :data do |d| %>
+      <%= d.text_area :comments, rows: 3 %>
+    <% end %>
+  <% end %>
 
   <div class='form-group' data-no-sunet-target='true'>
     <div class='<%= content_column_class %> col-xs-offset-2'>

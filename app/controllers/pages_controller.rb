@@ -48,9 +48,9 @@ class PagesController < RequestsController
   def create_params
     params.require(:page).permit(:destination,
                                  :item_id,
-                                 :needed_date,
                                  :origin,
                                  :origin_location,
+                                 data: [:comments],
                                  user_attributes: [:name, :email])
   end
 

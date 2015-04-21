@@ -28,6 +28,11 @@ describe Request do
       expect(subject).to_not be_scannable
     end
   end
+  describe '#commentable?' do
+    it 'should be false' do
+      expect(subject).to_not be_commentable
+    end
+  end
   describe '#library_location' do
     it 'should return a library_location object' do
       expect(subject.library_location).to be_a LibraryLocation

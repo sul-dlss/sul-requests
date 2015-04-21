@@ -23,4 +23,19 @@ describe 'Creating a page request' do
       expect(page).to have_css('.alert-success', text: /Request was successfully created/)
     end
   end
+  describe 'comments' do
+    before { stub_current_user }
+    it 'should have a comments field for commentable libraries' do
+      visit new_page_path(item_id: '1234', origin: 'SAL-NEWARK', origin_location: 'STACKS')
+
+      comment = '1989, Mar: Le Monde'
+      fill_in 'Comments', with: comment
+
+      click_button 'Send request'
+
+      expect(page).to have_css('.alert-success', text: /Request was successfully created/)
+
+      expect(Page.last.data['comments']).to eq comment
+    end
+  end
 end

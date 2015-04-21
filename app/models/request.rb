@@ -22,6 +22,10 @@ class Request < ActiveRecord::Base
     @library_location ||= LibraryLocation.new(self)
   end
 
+  def commentable?
+    false
+  end
+
   # This method gets called when saving the user assocation
   # and allows us to make sure we assign the user object if
   # there already is one associated with that email address
