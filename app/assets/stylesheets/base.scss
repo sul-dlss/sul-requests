@@ -4,18 +4,21 @@ a {
     cursor: not-allowed;
     text-decoration: none;
   }
+
+  &:focus {
+    @include focus-outline;
+  }
+
+  &:focus,
+  &:hover {
+    border-bottom: 1px dotted $sul-link-color-border;
+    color: $black;
+    text-decoration: none;
+  }
 }
 
 body {
   font-family: 'Source Sans Pro', 'Arial Unicode MS', Helvetica, sans-serif;
-}
-
-a,
-a:hover,
-a:focus {
-  border-bottom: 1px dotted $sul-link-color-border;
-  color: $black;
-  text-decoration: none;
 }
 
 h1 {
@@ -61,4 +64,13 @@ dd {
 
 label {
   font-weight: normal;
+}
+
+button:focus,
+embed:focus,
+input:focus,
+object:focus,
+select:focus,
+textarea:focus {
+  @include focus-outline;
 }
