@@ -37,4 +37,9 @@ describe RequestsHelper do
       expect(label_for_pickup_libraries_dropdown(['GREEN'])).to eq 'Must be used in'
     end
   end
+  describe 'format date' do
+    it 'should format a date' do
+      expect(format_date('2015-04-23 10:12:14 UTC')).to eq '2015-04-23 10:12am'
+    end
+  end
 end
