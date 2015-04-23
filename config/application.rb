@@ -13,6 +13,7 @@ module SULRequests
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
+    require 'token_encryptor'
     # Load all request types automatically
     config.autoload_paths += %W( #{config.root}/app/models/requests )
 

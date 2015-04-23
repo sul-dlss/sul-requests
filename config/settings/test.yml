@@ -6,3 +6,7 @@ origin_admin_groups:
 
 destination_admin_groups:
   FAKE-DESTINATION-LIBRARY: ['FAKE-DESTINATION-LIBRARY-TEST-LDAP-GROUP']
+
+token_encrypt:
+  secret: 'cphNKBJUCUlDeekeQGTmPkinkxAkJKxDsfHailJrKKIzxkSRFHbarXxjYRMdkyKW'
+  salt: 'dGcTBhXrQjsvQkbDQCkAIdogYjzOiIQpjToNLjqyzslKShfTvxIJHmMZhzdNjOqtDZKtxutyHBZmNHKOcGMfHzxwCFeOTBeEHYHNedtrmdfLzHMTRSDJCRMURaAjRrDq'

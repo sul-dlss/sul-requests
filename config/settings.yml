@@ -11,3 +11,7 @@ destination_admin_groups:
   SPEC: []
 
 contact_email: 'someone@stanford.edu'
+
+token_encrypt:
+  secret: ''
+  salt: ''
