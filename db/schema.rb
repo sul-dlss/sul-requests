@@ -23,8 +23,8 @@ ActiveRecord::Schema.define(version: 20150420165058) do
     t.string   "destination"
     t.string   "origin_location"
     t.string   "item_id"
-    t.text     "data"
     t.integer  "user_id"
+    t.text     "data"
   end
 
   add_index "requests", ["user_id"], name: "index_requests_on_user_id"
