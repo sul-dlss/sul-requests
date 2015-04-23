@@ -1,6 +1,16 @@
 require 'rails_helper'
 
 describe Page do
+  describe 'TokenEncryptable' do
+    it 'should mixin TokenEncryptable' do
+      expect(subject).to be_kind_of TokenEncryptable
+    end
+    it 'should add the user email address to the token' do
+      subject.user = User.new(email: 'jstanford@stanford.edu')
+      expect(subject.to_token).to match(/jstanford@stanford.edu$/)
+    end
+  end
+
   describe '#commentable?' do
     it 'should be false if the library is not a commentable library' do
       expect(subject).to_not be_commentable
