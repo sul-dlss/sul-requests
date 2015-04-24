@@ -15,3 +15,5 @@ contact_email: 'someone@stanford.edu'
 token_encrypt:
   secret: ''
   salt: ''
+
+searchworks_api: 'http://searchworks.stanford.edu'

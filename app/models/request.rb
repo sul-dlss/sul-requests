@@ -22,6 +22,10 @@ class Request < ActiveRecord::Base
     @library_location ||= LibraryLocation.new(self)
   end
 
+  def searchworks_item
+    @searchworks_item ||= SearchworksItem.new(item_id)
+  end
+
   def commentable?
     false
   end
