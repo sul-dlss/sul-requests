@@ -8,8 +8,11 @@ class PagesController < RequestsController
 
   def create
     if @page.update(create_params_with_current_user)
-      flash[:success] = 'Request was successfully created.'
-      redirect_to root_path
+      if current_user.webauth_user?
+        redirect_to successfull_page_path(@page)
+      else
+        redirect_to successfull_page_path(@page, token: @page.encrypted_token)
+      end
     else
       flash[:error] = 'There was a problem creating your request.'
       render 'new'

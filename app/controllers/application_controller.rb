@@ -19,6 +19,10 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_user
 
+  def current_ability
+    @current_ability ||= Ability.new(current_user, params[:token])
+  end
+
   private
 
   def rescue_can_can(exception)

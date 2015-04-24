@@ -72,5 +72,7 @@ RSpec.configure do |config|
 end
 
 def stub_current_user(user = 'some-user')
-  allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(User.new(webauth: user))
+  allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(
+    User.find_or_create_by(webauth: user)
+  )
 end

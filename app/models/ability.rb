@@ -8,9 +8,9 @@ class Ability
 
   # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
   # The CanCan DSL requires a complex initialization method
-  def initialize(user)
+  def initialize(user, token = nil)
     user ||= User.new
-
+    @user = user
     # Claering CanCan's default aliased actions
     # because we don't want to alias new to create
     # CanCan's defaults are
@@ -38,12 +38,28 @@ class Ability
       user.webauth_user?
     end
 
+    can :success, Request do |request|
+      current_user_owns_request?(request)
+    end
+
+    can :success, Page do |page|
+      page.valid_token?(token) if token
+    end
+
     can :create, Page do |page|
-      page.user && page.user.non_webauth_user?
+      request_is_by_anonymous_user?(page)
     end
 
     # Only Webauth users can create scan requests (for now).
     cannot :create, Scan unless user.webauth_user?
   end
+  # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
+
+  def current_user_owns_request?(request)
+    request.user_id == @user.id && @user.webauth_user?
+  end
+
+  def request_is_by_anonymous_user?(request)
+    request.user && request.user.non_webauth_user?
+  end
 end
-# rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength

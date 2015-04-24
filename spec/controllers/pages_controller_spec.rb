@@ -30,21 +30,25 @@ describe PagesController do
           login_path(referrer: new_page_path(origin: 'GREEN'))
         )
       end
-      it 'should be allowed if user name and email is filled out' do
+      it 'should be allowed if user name and email is filled out (via token)' do
         put :create, page: {
+          item_id: '1234',
           origin: 'GREEN',
+          origin_location: 'STACKS',
           user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }
         }
-        expect(response).to be_success
+
+        expect(response.location).to match(/#{successfull_page_url(Page.last)}\?token=/)
+        expect(Page.last.user).to eq User.last
       end
     end
     describe 'by webauth users' do
-      let(:user) { User.new(webauth: 'some-user') }
+      let(:user) { User.create(webauth: 'some-user') }
       it 'should be allowed' do
         put :create, page: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS' }
-        expect(flash[:success]).to eq 'Request was successfully created.'
-        expect(response).to redirect_to root_url
+        expect(response).to redirect_to successfull_page_path(Page.last)
         expect(Page.last.origin).to eq 'GREEN'
+        expect(Page.last.user).to eq user
       end
     end
     describe 'invalid requests' do
