@@ -32,8 +32,8 @@ class PagesController < RequestsController
   protected
 
   def rescue_can_can(*)
-    if params[:action].to_sym == :create && !current_user.webauth_user?
-      redirect_to login_path(referrer: new_page_path(params[:page].except(:user_attributes)))
+    if !current_user.webauth_user? && create_via_post?
+      redirect_to login_path(referrer: create_pages_path(page: params[:page].except(:user_attributes)))
     else
       super
     end

@@ -40,6 +40,17 @@ describe Request do
   end
   describe 'nested attributes for' do
     describe 'users' do
+      it 'should handle webauth users (w/o emails) correctly' do
+        User.create!(webauth: 'a-webauth-user')
+        webauth_user = User.new(webauth: 'current-webauth-user')
+        allow_any_instance_of(Request).to receive_messages(user: webauth_user)
+        Request.create!(
+          item_id: '1234',
+          origin: 'GREEN',
+          origin_location: 'STACKS'
+        )
+        expect(Request.last.user).to eq User.last
+      end
       it 'should create new users' do
         expect(User.find_by_email('jstanford@stanford.edu')).to be_nil
         Request.create(

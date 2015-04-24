@@ -9,6 +9,12 @@ Rails.application.routes.draw do
   get 'webauth/login' => 'authorization#login', as: :login
   get 'webauth/logout' => 'authorization#logout', as: :logout
 
+  concern :creatable_via_get_redirect do
+    collection do
+      get 'create', as: :create
+    end
+  end
+
   concern :successable do
     member do
       get :success, as: :successfull
@@ -16,8 +22,8 @@ Rails.application.routes.draw do
   end
 
   resources :requests, only: :new
-  resources :pages, concerns: :successable
-  resources :scans, concerns: :successable
+  resources :pages, concerns: [:creatable_via_get_redirect, :successable]
+  resources :scans, concerns: [:creatable_via_get_redirect, :successable]
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

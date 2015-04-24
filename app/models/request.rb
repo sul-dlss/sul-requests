@@ -31,11 +31,20 @@ class Request < ActiveRecord::Base
   # there already is one associated with that email address
   def autosave_associated_records_for_user
     return unless user
-    if (existing_user = User.find_by_email(user.email))
+    if (existing_user = find_existing_user)
       self.user = existing_user
     else
       user.save!
       self.user = user
+    end
+  end
+
+  def find_existing_user
+    return unless user
+    if user.webauth_user?
+      User.find_by_webauth(user.webauth)
+    elsif user.non_webauth_user?
+      User.find_by_email(user.email)
     end
   end
 end
