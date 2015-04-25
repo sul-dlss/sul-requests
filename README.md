@@ -38,6 +38,35 @@ Start the development server
 
     $ rails s
 
+## Configuring
+
+Configuration is handled through the [RailsConfig](/railsconfig/rails_config) settings.yml files.
+
+### WorkGroups
+
+* `super_admin_groups` is an array of LDAP workgroups that get all privileges in the application.
+* `site_admin_groups` is an array of LDAP workgroups that have the ability to manage all requests and related objects in the application.
+* `origin_admin_groups` has library codes configured with an array of LDAP workgroups that can manage requests originating from that library.
+* `destination_admin_groups` has library codes configured with an array of LDAP workgroups that can manage requests being sent to that library.
+
+
+    origin_admin_groups:
+      SAL-NEWARK: ['worgroup1', 'workgroup2']
+
+#### Faking WorkGroups in Development
+
+In order to develop the application it may be necessary to fake workgroups so that we don't need a local LDAP service.
+
+* `fake_work_groups` has SUNet IDs configured with a fake LDAP WorkGroup string
+
+
+    fake_work_groups:
+      user_sunet: 'some-set|of-workgroup-strings'
+
+### Token Encryption
+
+There is a token encryption library that handles encrypting and decrypting tokens given to users who only submit a Name/Email or Library ID for identification purposes. To keep these tokens secure we require a secret and a salt configured of moderate complexity and randomness (`SecureRandom.hex(128)` can be useful).  Once configured, these keys (or the tokens generated in the app) **MUST NOT** change, otherwise the tokens that users have been given will no longer be valid.
+
 ## Testing
 
 The test suite (with RuboCop style inforcement) will be run with the default rake task (also run on travis)
