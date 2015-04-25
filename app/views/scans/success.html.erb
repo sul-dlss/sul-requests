@@ -1,0 +1,22 @@
+<div class='<%= dialog_column_class %> success-page'>
+  <h1 id='dialogTitle'><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Request complete</h1>
+  <dl class='dl-horizontal'>
+    <% if @scan.data.present? %>
+      <% if (page_range = @scan.data['page_range']).present? %>
+        <dt>Page range</dt>
+        <dd><%= page_range %></dd>
+      <% end %>
+      <% if (section_title = @scan.data['section_title']).present? %>
+        <dt>Article title</dt>
+        <dd><%= section_title %></dd>
+      <% end %>
+      <% if (authors = @scan.data['authors']).present? %>
+        <dt>Author(s)</dt>
+        <dd><%= authors %></dd>
+      <% end %>
+    <% end %>
+
+    <dt><span class='sr-only'>User</span></dt>
+    <dd><%= @scan.user.to_email_string %></dd>
+  </dl>
+</div>

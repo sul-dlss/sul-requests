@@ -8,9 +8,8 @@ class ScansController < RequestsController
   end
 
   def create
-    if @scan.update(create_params)
-      flash[:success] = 'Scan request was successfully created.'
-      redirect_to root_url
+    if @scan.update(create_params.merge(user_id: current_user.id))
+      redirect_to successfull_scan_path(@scan)
     else
       flash[:error] = 'There was a problem creating your scan request.'
       render 'new'

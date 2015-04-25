@@ -17,7 +17,7 @@ describe 'Create Scan Request' do
 
       click_button 'Send request'
 
-      expect(page).to have_css('.alert-success', text: 'Scan request was successfully created.')
+      expect(page).to have_css('h1#dialogTitle', 'Request complete')
 
       scan = Scan.last
       expect(scan.item_id).to eq '1234'

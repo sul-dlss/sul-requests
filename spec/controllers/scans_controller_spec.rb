@@ -35,14 +35,17 @@ describe ScansController do
     end
     describe 'by non-webauth users' do
       let(:user) { User.new(name: 'Jane Stanford', email: 'jstanford@stanford.edu') }
+      it 'should raise an error' do
+        expect(-> { put(:create, scan: { origin: 'SAL3' }) }).to raise_error(CanCan::AccessDenied)
+      end
     end
     describe 'by webauth users' do
-      let(:user) { User.new(webauth: 'some-user') }
+      let(:user) { User.create(webauth: 'some-user') }
       it 'should be allowed' do
         put :create, scan: { item_id: '1234', origin: 'SAL3', origin_location: 'STACKS' }
-        expect(flash[:success]).to eq 'Scan request was successfully created.'
-        expect(response).to redirect_to root_url
+        expect(response).to redirect_to successfull_scan_path(Scan.last)
         expect(Scan.last.origin).to eq 'SAL3'
+        expect(Scan.last.user).to eq user
       end
     end
     describe 'invalid requests' do

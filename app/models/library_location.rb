@@ -18,6 +18,12 @@ class LibraryLocation
     end
   end
 
+  class << self
+    def library_name_by_code(code)
+      SULRequests::Application.config.libraries[code]
+    end
+  end
+
   private
 
   def all_libraries

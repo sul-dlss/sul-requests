@@ -29,4 +29,12 @@ describe RequestsHelper do
       end
     end
   end
+  describe '#label_for_pickup_libraries_dropdown' do
+    it 'should be "Deliver to" when if there are mutliple possiblities' do
+      expect(label_for_pickup_libraries_dropdown(%w(GREEN MUSIC))).to eq 'Deliver to'
+    end
+    it 'should be "Must be used in" when there is only one possibility' do
+      expect(label_for_pickup_libraries_dropdown(['GREEN'])).to eq 'Must be used in'
+    end
+  end
 end

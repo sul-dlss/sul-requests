@@ -9,6 +9,21 @@ describe User do
       ).to raise_error(ActiveRecord::RecordInvalid)
     end
   end
+  describe '#to_email_string' do
+    describe 'for webauth users' do
+      it 'should be their Stanford email address' do
+        subject.webauth = 'jstanford'
+        expect(subject.to_email_string).to eq 'jstanford@stanford.edu'
+      end
+    end
+    describe 'for non-webauth users' do
+      it 'should be their name plus their email in parenthesis' do
+        subject.name = 'Jane Stanford'
+        subject.email = 'jstanford@stanford.edu'
+        expect(subject.to_email_string).to eq 'Jane Stanford (jstanford@stanford.edu)'
+      end
+    end
+  end
   describe '#webauth_user?' do
     it 'should return false when the user has no WebAuth attribute' do
       expect(subject).to_not be_webauth_user

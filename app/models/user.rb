@@ -8,6 +8,14 @@ class User < ActiveRecord::Base
 
   attr_writer :ldap_group_string
 
+  def to_email_string
+    if webauth_user?
+      "#{webauth}@stanford.edu"
+    else
+      "#{name} (#{email})"
+    end
+  end
+
   def webauth_user?
     webauth.present?
   end

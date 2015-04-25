@@ -1,0 +1,4 @@
+# This is different on any server running under development
+token_encrypt:
+  secret: 'OpCeOjbiQUwyyzoMzjtHnGbgfOthajiUqwbQuXNZRitkkQpvMPHILfcmkvikFcaN'
+  salt: 'dcVNcekAYNIFtggdJXQpSkWHBpBVsVsPiRzCFpWbZGLrQtHKSdMBKIWKmYYIZnkbXuMisFlSkHbUmIimKMbjFMVDpfzyIRLvmLYBUparuPAaxYjPzdmFfRGBGgxfvwOR'
