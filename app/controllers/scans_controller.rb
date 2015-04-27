@@ -32,6 +32,14 @@ class ScansController < RequestsController
     fail UnscannableItemError unless @scan.scannable?
   end
 
+  def rescue_can_can(*)
+    if !current_user.webauth_user? && create_via_post?
+      redirect_to login_path(referrer: create_scans_path(scan: params[:scan].except(:user_attributes)))
+    else
+      super
+    end
+  end
+
   def create_params
     params.require(:scan).permit(:item_id,
                                  :origin,

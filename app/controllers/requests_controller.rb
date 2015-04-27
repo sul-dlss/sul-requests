@@ -29,4 +29,8 @@ class RequestsController < ApplicationController
     request.item_id = params[:item_id]
     request.origin_location = params[:origin_location]
   end
+
+  def create_via_post?
+    params[:action].to_sym == :create && request.post?
+  end
 end
