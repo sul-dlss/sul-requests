@@ -38,6 +38,11 @@ describe Request do
       expect(subject.library_location).to be_a LibraryLocation
     end
   end
+  describe '#searchworks_item' do
+    it 'should return a searchworks_item object' do
+      expect(subject.searchworks_item).to be_a SearchworksItem
+    end
+  end
   describe 'nested attributes for' do
     describe 'users' do
       it 'should handle webauth users (w/o emails) correctly' do
