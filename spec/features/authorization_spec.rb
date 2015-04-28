@@ -11,13 +11,12 @@ describe 'User Authorization' do
     end
   end
   describe 'logout' do
-    let(:current_user) { User.new(webauth: 'some-user') }
     before do
-      stub_current_user
+      stub_current_user(create(:webauth_user))
     end
     it 'is present in the home page and redirects with message' do
       visit root_path
-      click_link 'some-user: Logout'
+      click_link 'some-webauth-user: Logout'
       within('.flashes') do
         expect(page).to have_css('.alert-info', text: 'You have been successfully logged out.')
       end

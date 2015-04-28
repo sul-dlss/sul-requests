@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe ScansController do
-  let(:scan) { Scan.create(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS') }
+  let(:scan) { create(:scan, origin: 'SAL3', origin_location: 'STACKS') }
   let(:scannable_params) do
     { item_id: '1234', origin: 'SAL3', origin_location: 'STACKS' }
   end
@@ -9,7 +9,7 @@ describe ScansController do
     allow(controller).to receive_messages(current_user: user)
   end
   describe 'new' do
-    let(:user) { nil }
+    let(:user) { create(:anon_user) }
     it 'should be accessible by anonymous users' do
       get :new, scannable_params
       expect(response).to be_success
@@ -28,7 +28,7 @@ describe ScansController do
   end
   describe 'create' do
     describe 'by anonymous users' do
-      let(:user) { User.new }
+      let(:user) { create(:anon_user) }
       it 'should redirect to the login page passing a refferrer param to continue creating the scan request' do
         post :create, scan: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS' }
         expect(response).to redirect_to(
@@ -48,13 +48,13 @@ describe ScansController do
       end
     end
     describe 'by non-webauth users' do
-      let(:user) { User.new(name: 'Jane Stanford', email: 'jstanford@stanford.edu') }
+      let(:user) { create(:non_webauth_user) }
       it 'should raise an error' do
         expect(-> { put(:create, scan: { origin: 'SAL3' }) }).to raise_error(CanCan::AccessDenied)
       end
     end
     describe 'by webauth users' do
-      let(:user) { User.create(webauth: 'some-user') }
+      let(:user) { create(:webauth_user) }
       it 'should be allowed' do
         post :create, scan: { item_id: '1234', origin: 'SAL3', origin_location: 'STACKS' }
         expect(response).to redirect_to successfull_scan_path(Scan.last)
@@ -63,7 +63,7 @@ describe ScansController do
       end
     end
     describe 'invalid requests' do
-      let(:user) { User.new(webauth: 'some-user') }
+      let(:user) { create(:webauth_user) }
       it 'should return an error message to the user' do
         post :create, scan: { item_id: '1234' }
         expect(flash[:error]).to eq 'There was a problem creating your scan request.'
@@ -73,15 +73,14 @@ describe ScansController do
   end
   describe 'update' do
     describe 'by anonymous users' do
-      let(:user) { User.new }
+      let(:user) { create(:anon_user) }
       it 'should raise an error' do
         expect(-> { put(:update, id: scan[:id]) }).to raise_error(CanCan::AccessDenied)
       end
     end
     describe 'invalid requests' do
-      let(:user) { User.new }
+      let(:user) { create(:superadmin_user) }
       before do
-        allow(user).to receive_messages(superadmin?: true)
         allow_any_instance_of(scan.class).to receive(:update).with({}).and_return(false)
       end
       it 'should return an error message to the user' do
@@ -91,16 +90,13 @@ describe ScansController do
       end
     end
     describe 'by webauth users' do
-      let(:user) { User.new(webauth: 'some-user') }
+      let(:user) { create(:webauth_user) }
       it 'should raise an error' do
         expect(-> { put(:update, id: scan[:id]) }).to raise_error(CanCan::AccessDenied)
       end
     end
     describe 'by superadmins' do
-      let(:user) { User.new }
-      before do
-        allow(user).to receive_messages(superadmin?: true)
-      end
+      let(:user) { create(:superadmin_user) }
       it 'should be allowed to modify page rqeuests' do
         put :update, id: scan[:id], scan: { needed_date: '2015-04-14' }
         expect(flash[:success]).to eq 'Scan request was successfully updated.'

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe PagesController do
-  let(:page) { Page.create(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS') }
+  let(:page) { create(:page, item_id: '1234', origin: 'GREEN', origin_location: 'STACKS') }
   let(:normal_params) do
     { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS' }
   end
@@ -23,7 +23,7 @@ describe PagesController do
   end
   describe 'create' do
     describe 'by anonymous users' do
-      let(:user) { User.new }
+      let(:user) { create(:anon_user) }
       it 'should redirect to the login page passing a refferrer param to continue creating the page request' do
         post :create, page: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS' }
         expect(response).to redirect_to(
@@ -54,7 +54,7 @@ describe PagesController do
       end
     end
     describe 'by webauth users' do
-      let(:user) { User.create(webauth: 'some-user') }
+      let(:user) { create(:webauth_user) }
       it 'should be allowed' do
         post :create, page: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS' }
         expect(response).to redirect_to successfull_page_path(Page.last)
@@ -63,7 +63,7 @@ describe PagesController do
       end
     end
     describe 'invalid requests' do
-      let(:user) { User.new(webauth: 'some-user') }
+      let(:user) { create(:webauth_user) }
       it 'should return an error message to the user' do
         post :create, page: { item_id: '1234' }
         expect(flash[:error]).to eq 'There was a problem creating your request.'
@@ -73,15 +73,14 @@ describe PagesController do
   end
   describe 'update' do
     describe 'by anonymous users' do
-      let(:user) { User.new }
+      let(:user) { create(:anon_user) }
       it 'should raise an error' do
         expect(-> { put :update, id: page[:id], page: { origin: 'GREEN' } }).to raise_error(CanCan::AccessDenied)
       end
     end
     describe 'invalid requests' do
-      let(:user) { User.new }
+      let(:user) { create(:superadmin_user) }
       before do
-        allow(user).to receive_messages(superadmin?: true)
         allow_any_instance_of(page.class).to receive(:update).with({}).and_return(false)
       end
       it 'should return an error message to the user' do
@@ -91,16 +90,13 @@ describe PagesController do
       end
     end
     describe 'by webauth users' do
-      let(:user) { User.new(webauth: 'some-user') }
+      let(:user) { create(:webauth_user) }
       it 'should raise an error' do
         expect(-> { put(:update, id: page[:id]) }).to raise_error(CanCan::AccessDenied)
       end
     end
     describe 'by superadmins' do
-      let(:user) { User.new }
-      before do
-        allow(user).to receive_messages(superadmin?: true)
-      end
+      let(:user) { create(:superadmin_user) }
       it 'should be allowed to modify page rqeuests' do
         put :update, id: page[:id], page: { needed_date: '2015-04-14' }
         expect(flash[:success]).to eq 'Request was successfully updated.'

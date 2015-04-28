@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 describe 'scans/success.html.erb' do
-  let(:scan) { Scan.new }
-  let(:user) { User.new }
+  let(:user) { create(:webauth_user) }
+  let(:scan) { create(:scan, user: user) }
   before do
     assign(:scan, scan)
-    allow(scan).to receive_messages(user: user)
     allow(view).to receive_messages(current_user: user)
   end
   it 'should have an icon and h1 heading' do
@@ -15,8 +14,13 @@ describe 'scans/success.html.erb' do
   end
   describe 'metadata' do
     let(:scan) do
-      Scan.new(
-        data: { 'page_range' => 'Range-123', 'section_title' => 'Section-123', 'authors' => 'Author-123' }
+      create(
+        :scan,
+        user: user,
+        data: { 'page_range' => 'Range-123',
+                'section_title' => 'Section-123',
+                'authors' => 'Author-123'
+              }
       )
     end
     before { render }
@@ -35,14 +39,14 @@ describe 'scans/success.html.erb' do
   end
   describe 'user information' do
     describe 'for webauth users' do
-      let(:user) { User.new(webauth: 'somebody') }
+      let(:user) { create(:webauth_user) }
       it 'should give their stanford-email address' do
         render
-        expect(rendered).to have_css('dd', text: 'somebody@stanford.edu')
+        expect(rendered).to have_css('dd', text: 'some-webauth-user@stanford.edu')
       end
     end
     describe 'for non-webauth useres' do
-      let(:user) { User.new(name: 'Jane Stanford', email: 'jstanford@stanford.edu') }
+      let(:user) { create(:non_webauth_user) }
       it 'should give their name and email (in parens)' do
         render
         expect(rendered).to have_css('dd', text: 'Jane Stanford (jstanford@stanford.edu)')

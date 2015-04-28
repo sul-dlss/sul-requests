@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 describe 'Creating a page request' do
+  let(:user) { create(:webauth_user) }
   describe 'by an anonmyous user' do
     it 'should be possible if a name and email is filled out', js: true do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
@@ -15,7 +16,7 @@ describe 'Creating a page request' do
     end
   end
   describe 'by a webauth user' do
-    before { stub_current_user }
+    before { stub_current_user(user) }
     it 'should be possible without filling in any user information' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
       click_button 'Send request'
@@ -25,7 +26,7 @@ describe 'Creating a page request' do
     end
   end
   describe 'comments' do
-    before { stub_current_user }
+    before { stub_current_user(user) }
     it 'should have a comments field for commentable libraries' do
       visit new_page_path(item_id: '1234', origin: 'SAL-NEWARK', origin_location: 'STACKS')
 

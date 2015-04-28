@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 describe 'pages/success.html.erb' do
-  let(:page) { Page.new }
-  let(:user) { User.new }
+  let(:user) { create(:webauth_user) }
+  let(:page) { create(:page, user: user) }
   before do
     assign(:page, page)
-    allow(page).to receive_messages(user: user)
     allow(view).to receive_messages(current_user: user)
   end
   it 'should have an icon and h1 heading' do
@@ -14,7 +13,17 @@ describe 'pages/success.html.erb' do
     expect(rendered).to have_css('h1', text: 'Request complete')
   end
   describe 'metadata' do
-    let(:page) { Page.new(origin: 'SAL-NEWARK', destination: 'GREEN', data: { 'comments' => 'I want this item!' }) }
+    let(:page) do
+      create(
+        :page,
+        origin: 'SAL-NEWARK',
+        destination: 'GREEN',
+        user: user,
+        data: {
+          'comments' => 'I want this item!'
+        }
+      )
+    end
     before { render }
     it 'should have the destination library' do
       expect(rendered).to have_css('dt', text: 'Deliver to')
@@ -27,14 +36,14 @@ describe 'pages/success.html.erb' do
   end
   describe 'user information' do
     describe 'for webauth users' do
-      let(:user) { User.new(webauth: 'somebody') }
+      let(:user) { create(:webauth_user) }
       it 'should give their stanford-email address' do
         render
-        expect(rendered).to have_css('dd', text: 'somebody@stanford.edu')
+        expect(rendered).to have_css('dd', text: 'some-webauth-user@stanford.edu')
       end
     end
     describe 'for non-webauth useres' do
-      let(:user) { User.new(name: 'Jane Stanford', email: 'jstanford@stanford.edu') }
+      let(:user) { create(:non_webauth_user) }
       it 'should give their name and email (in parens)' do
         render
         expect(rendered).to have_css('dd', text: 'Jane Stanford (jstanford@stanford.edu)')

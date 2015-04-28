@@ -1,9 +1,8 @@
 require 'rails_helper'
 
 describe 'home/show' do
-  let(:current_user) { User.new }
   before do
-    allow(controller).to receive(:current_user).and_return(current_user)
+    allow(controller).to receive_messages(current_user: create(:anon_user))
   end
   it 'should have title and links' do
     render
@@ -12,7 +11,7 @@ describe 'home/show' do
   end
   describe 'superadmin' do
     before do
-      allow(current_user).to receive_messages(superadmin?: true)
+      allow(controller).to receive_messages(current_user: create(:superadmin_user))
       render
     end
     it 'should display page sections' do

@@ -6,6 +6,10 @@ require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'capybara/rails'
 require 'capybara/poltergeist'
+
+# Auto require all files in spec/support.
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+
 Capybara.javascript_driver = :poltergeist
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -71,8 +75,6 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 end
 
-def stub_current_user(user = 'some-user')
-  allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(
-    User.find_or_create_by(webauth: user)
-  )
+def stub_current_user(user = create(:anon_user))
+  allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
 end
