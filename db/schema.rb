@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150420165058) do
+ActiveRecord::Schema.define(version: 20150428230734) do
 
   create_table "requests", force: :cascade do |t|
     t.string   "type"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20150420165058) do
     t.string   "item_id"
     t.integer  "user_id"
     t.text     "data"
+    t.string   "item_title"
   end
 
   add_index "requests", ["user_id"], name: "index_requests_on_user_id"
