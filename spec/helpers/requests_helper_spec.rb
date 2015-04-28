@@ -8,7 +8,7 @@ describe RequestsHelper do
       allow(form).to receive_messages(object: request)
     end
     describe 'single library' do
-      let(:request) { Request.new(origin: 'SAL3', origin_location: 'PAGE-MU') }
+      let(:request) { create(:request, origin: 'SAL3', origin_location: 'PAGE-MU') }
       it 'should return library text and a hidden input w/ the destination library' do
         expect(form).to receive(:hidden_field).with(:destination, value: 'MUSIC').and_return('<hidden_field>')
         markup = Capybara.string(select_for_pickup_libraries(form))
@@ -18,7 +18,7 @@ describe RequestsHelper do
       end
     end
     describe 'multiple libraries' do
-      let(:request) { Request.new(origin: 'SAL3', origin_location: 'PAGE-HP') }
+      let(:request) { create(:request, origin: 'SAL3', origin_location: 'PAGE-HP') }
       it 'should attempt to create a select list' do
         expect(form).to receive(:select).with(
           :destination,

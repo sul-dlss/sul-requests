@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'Create Scan Request' do
   describe 'by a webauth user' do
-    before { stub_current_user }
+    before { stub_current_user(create(:webauth_user)) }
     it 'should be possible' do
       visit new_scan_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
 
