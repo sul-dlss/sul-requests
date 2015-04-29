@@ -40,4 +40,8 @@ module RequestsHelper
       [v, k]
     end
   end
+
+  def format_date(date)
+    Time.parse(date.to_s).strftime('%Y-%m-%d %I:%M%P')
+  end
 end

@@ -1,0 +1,26 @@
+.admin-requests {
+  h3 {
+    color: $sul-admin-h3-color;
+    font-size: 28px;
+  }
+
+  h4 {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 16px;
+    font-style: italic;
+  }
+
+  table {
+    margin: 10px 0 40px;
+
+    tbody {
+      tr:nth-child(odd) {
+        background-color: $sul-admin-table-row-odd-color;
+      }
+
+      tr:nth-child(even) {
+        background-color: $sul-admin-table-row-even-color;
+      }
+    }
+  }
+}
