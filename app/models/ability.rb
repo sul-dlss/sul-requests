@@ -45,8 +45,14 @@ class Ability
     can :success, Page do |page|
       page.valid_token?(token) if token
     end
+    can :success, MediatedPage do |page|
+      page.valid_token?(token) if token
+    end
 
     can :create, Page do |page|
+      request_is_by_anonymous_user?(page)
+    end
+    can :create, MediatedPage do |page|
       request_is_by_anonymous_user?(page)
     end
 

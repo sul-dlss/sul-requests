@@ -7,6 +7,9 @@ describe RequestsController do
   let(:unscannable_params) do
     { item_id: '12345', origin: 'SAL1/2', origin_location: 'STACKS' }
   end
+  let(:mediated_page_params) do
+    { item_id: '12345', origin: 'SPEC-COLL', origin_location: 'STACKS' }
+  end
   describe '#new' do
     describe 'required parameters' do
       it 'should require an item id, library, and location' do
@@ -31,8 +34,8 @@ describe RequestsController do
     end
     describe 'unscannable item' do
       it 'should redirect to the new page request form' do
-        get :new, unscannable_params
-        expect(response).to redirect_to new_page_path(unscannable_params)
+        get :new, mediated_page_params
+        expect(response).to redirect_to new_mediated_page_path(mediated_page_params)
       end
     end
   end

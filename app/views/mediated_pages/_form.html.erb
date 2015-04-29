@@ -1,10 +1,10 @@
-<%= bootstrap_form_for(@page, bootstrap_form_layout_options) do |f| %>
-  <% unless @page.persisted? %>
+<%= bootstrap_form_for(@mediated_page, bootstrap_form_layout_options) do |f| %>
+  <% unless @mediated_page.persisted? %>
     <%= render partial: 'hidden_form_fields', locals: { f: f } %>
   <% end %>
 
   <%= select_for_pickup_libraries(f).html_safe %>
-  <% if @page.commentable? %>
+  <% if @mediated_page.commentable? %>
     <%= f.fields_for :data do |d| %>
       <%= d.text_area :comments, rows: 3 %>
     <% end %>

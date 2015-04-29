@@ -3,6 +3,8 @@
 #  STI and sub-class this main request class.
 ###
 class Request < ActiveRecord::Base
+  delegate :scannable?, :mediateable?, :pageable?, to: :library_location
+
   validates :item_id, :origin, :origin_location, presence: true
 
   serialize :data, Hash
@@ -12,14 +14,6 @@ class Request < ActiveRecord::Base
 
   before_create do
     self.item_title ||= searchworks_item.title
-  end
-
-  def new_request?
-    status.present?
-  end
-
-  def scannable?
-    origin == 'SAL3' && origin_location == 'STACKS'
   end
 
   def library_location
@@ -32,6 +26,14 @@ class Request < ActiveRecord::Base
 
   def commentable?
     false
+  end
+
+  def delegate_request!
+    if mediateable?
+      self.becomes!(MediatedPage)
+    else
+      self.becomes!(Page)
+    end
   end
 
   # This method gets called when saving the user assocation
