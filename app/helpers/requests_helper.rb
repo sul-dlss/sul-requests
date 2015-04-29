@@ -22,7 +22,8 @@ module RequestsHelper
     return unless pickup_libraries.keys.length > 1
     form.select :destination,
                 pickup_libraries_array(pickup_libraries),
-                label: label_for_pickup_libraries_dropdown(pickup_libraries)
+                label: label_for_pickup_libraries_dropdown(pickup_libraries),
+                selected: 'GREEN'
   end
 
   def single_library_markup(form, library)
