@@ -5,27 +5,26 @@ task :display_coveralls_coverage do
   if File.exist?(coverage_file_path) && File.exist?(coverage_result_path)
     coverage_file = File.read(coverage_file_path)
     coverage_result_file = File.read(coverage_result_path)
-    begin
-      coverage = JSON.parse(coverage_file)
-      results = JSON.parse(coverage_result_file)
-      if coverage['result'] && coverage['result']['covered_percent']
-        puts "#{coverage['result']['covered_percent']}% code coverage"
-      end
-      if results['RSpec'] && results['RSpec']['coverage']
-        untested_files = results['RSpec']['coverage'].select do |_, values|
-          values.any? { |v| v == 0 }
-        end
-        if untested_files.present?
-          puts "#{untested_files.keys.length} untested files:"
-          untested_files.each do |key, lines|
-            untested_lines = list_of_untested_lines(lines)
-            puts "\t#{key}: #{lines.select { |v| v == 0 }.length} untested lines: #{untested_lines.inspect}"
-          end
-        end
-      end
-    rescue
-      puts 'Unable to read coverage metric'
+    coverage = JSON.parse(coverage_file)
+    results = JSON.parse(coverage_result_file)
+    if coverage['result'] && coverage['result']['covered_percent']
+      puts "#{coverage['result']['covered_percent']}% code coverage"
     end
+    if results['RSpec'] && results['RSpec']['coverage']
+      untested_files = results['RSpec']['coverage'].select do |_, values|
+        values.any? { |v| v == 0 }
+      end
+      if untested_files.present?
+        puts "#{untested_files.keys.length} untested files:"
+        untested_files.each do |key, lines|
+          untested_lines = list_of_untested_lines(lines)
+          puts "\t#{key}: #{lines.select { |v| v == 0 }.length} untested lines: #{untested_lines.inspect}"
+        end
+        fail 'Untested files!'
+      end
+    end
+  else
+    puts 'Unable to read coverage metrics'
   end
 end
 
