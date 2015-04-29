@@ -23,7 +23,8 @@ describe RequestsHelper do
         expect(form).to receive(:select).with(
           :destination,
           [['Green Library', 'GREEN'], ['Marine Biology Library (Miller)', 'HOPKINS']],
-          label: 'Deliver to'
+          label: 'Deliver to',
+          selected: 'GREEN'
         ).and_return('<select>')
         expect(select_for_pickup_libraries(form)).to eq '<select>'
       end
