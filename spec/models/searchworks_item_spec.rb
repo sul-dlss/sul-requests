@@ -3,90 +3,66 @@ require 'rails_helper'
 describe SearchworksItem do
   let(:subject) { SearchworksItem.new('123') }
 
-  describe '#uri' do
+  describe 'api urls' do
     it 'should return the base uri from the settings.yml file' do
-      expect(subject.send(:uri)).to eq('http://searchworks.stanford.edu')
+      expect(subject.send(:base_uri)).to eq(Settings.searchworks_api)
     end
-  end
-  describe '#url' do
     it 'should return a url for the searchworks api' do
-      expect(subject.send(:url)).to eq('http://searchworks.stanford.edu/view/123.mobile?covers=false')
+      expect(subject.send(:url)).to eq("#{Settings.searchworks_api}/view/123/availability")
     end
   end
-  describe '#xml' do
-    it 'should return xml as the body of the response object' do
-      expect(subject.send(:xml)).to start_with('<?xml version="1.0" encoding="utf-8"?>')
+  describe '#json' do
+    let(:json) { subject.send(:json) }
+    it 'should return json as the body of the response object' do
+      expect(json).to be_a Hash
+      expect(json).to have_key 'title'
+      expect(json).to have_key 'holdings'
     end
   end
   describe '#response' do
-    before do
-      allow(subject).to receive_messages(xml: standard_searchworks_response)
+    let(:standard_json) do
+      {
+        'title' => 'The title of the object',
+        'holdings' => [
+          { 'code' => 'GREEN',
+            'name' => 'Green Library',
+            'locations' => [
+              'code' => 'STACKS',
+              'name' => 'Stacks'
+            ]
+          }
+        ]
+      }
     end
-    describe '#response_xml?' do
-      it 'should have a <response> tag in the xml' do
-        expect(subject.send(:response_xml)).to have_key('LBItem')
+    let(:empty_json) { {} }
+    describe 'for a standard response' do
+      before do
+        allow(subject).to receive_messages(json: standard_json)
       end
-    end
-    describe '#item_xml?' do
-      it 'should have a <response>/<LBItem> tag in the xml' do
-        expect(subject.send(:item_xml)).to have_key('title')
-      end
-    end
-    describe '#title' do
       it 'should have a title string' do
-        expect(subject.title).to eq('A la francaise')
+        expect(subject.title).to eq('The title of the object')
+      end
+      it 'should have an array of nested OpenStruct objects describing the holdings' do
+        expect(subject.holdings).to be_a Array
+        expect(subject.holdings.length).to eq 1
+        expect(subject.holdings.first).to be_a OpenStruct
+        expect(subject.holdings.first.code).to eq 'GREEN'
+
+        expect(subject.holdings.first.locations).to be_a Array
+        expect(subject.holdings.first.locations.first).to be_a OpenStruct
+        expect(subject.holdings.first.locations.first.code).to eq 'STACKS'
+      end
+      describe 'for an empty response' do
+        before do
+          allow(subject).to receive_messages(json: empty_json)
+        end
+        it 'should have an empty title string' do
+          expect(subject.title).to eq ''
+        end
+        it 'should be an empty array' do
+          expect(subject.holdings).to eq []
+        end
       end
     end
-  end
-  describe '#response' do
-    before do
-      allow(subject).to receive_messages(xml: empty_item_response)
-    end
-    describe '#title' do
-      it 'should have an empty title string' do
-        expect(subject.title).to be_empty
-      end
-    end
-  end
-
-  let(:empty_item_response) do
-    "<?xml version=\"1.0\" encoding=\"utf-8\"?>
-    <response>
-    <LBItem>
-    </LBItem>
-    </response>"
-  end
-
-  let(:standard_searchworks_response) do
-    "<?xml version=\"1.0\" encoding=\"utf-8\"?>
-    <response>
-      <LBItem>
-        <item_id>123</item_id>
-        <full_title>A la francaise; 3 pieces pour quintette a vent.</full_title>
-        <title>A la francaise</title>
-        <authors>
-          <author>Amell\xC3\xA9r, Andr\xC3\xA9, 1912-1990</author>
-        </authors>
-        <formats>
-          <format>Music - Score</format>
-        </formats>
-        <contents>
-          <content>1.Prelude, Fughetto.- 2.Grave.- 3.Rondo.</content>
-        </contents>
-        <imprint>Paris, Editions Musicales Transatlantiques, c1973.</imprint>
-        <record_url label=\"View Item in SearchWorks\">
-          <![CDATA[http://searchworks.stanford.edu/view/123]]>
-        </record_url>
-        <holdings>
-          <library name=\"Music Library\">
-            <location name=\"Scores\">
-              <item>
-                <callnumber>M557 .A498 A1 PTS</callnumber>
-                </item>
-            </location>
-          </library>
-        </holdings>
-      </LBItem>
-    </response>"
   end
 end
