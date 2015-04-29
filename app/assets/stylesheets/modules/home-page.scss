@@ -3,6 +3,10 @@ h1 {
   padding-bottom: 15px;
 }
 
+.sub-title {
+  font-size: 1.25em;
+}
+
 .home-page-section {
   padding: 15px 0 0;
 
@@ -22,4 +26,5 @@ h1 {
 
 .access-error {
   color: $cardinal-red;
+  font-size: 1.25em;
 }

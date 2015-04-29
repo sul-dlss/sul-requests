@@ -7,7 +7,7 @@ describe 'home/show' do
   it 'should have title and links' do
     render
     expect(rendered).to have_css('h1', text: 'Request management')
-    expect(rendered).to have_css('h4', text: /^Administration and mediation tasks for page/)
+    expect(rendered).to have_css('p.sub-title', text: /Administration and mediation tasks for page/)
   end
   describe 'superadmin' do
     before do
@@ -26,7 +26,7 @@ describe 'home/show' do
       expect(rendered).to_not have_css('h2', text: 'Mediation')
     end
     it 'should display the access error message' do
-      expect(rendered).to have_css('h4.access-error', text: 'You do not have access')
+      expect(rendered).to have_css('p.access-error', text: 'You do not have access')
     end
   end
 end
