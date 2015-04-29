@@ -2,6 +2,11 @@ require 'rails_helper'
 
 describe 'Creating a page request' do
   let(:user) { create(:webauth_user) }
+  describe 'item information' do
+    it 'should display the items title' do
+      visit new_page_path(item_id: '2824966', origin: 'GREEN', origin_location: 'STACKS')
+    end
+  end
   describe 'by an anonmyous user' do
     it 'should be possible if a name and email is filled out', js: true do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')

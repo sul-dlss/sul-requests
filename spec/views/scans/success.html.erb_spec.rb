@@ -12,6 +12,10 @@ describe 'scans/success.html.erb' do
     expect(rendered).to have_css('.glyphicon.glyphicon-ok[aria-hidden="true"]')
     expect(rendered).to have_css('h1', text: 'Request complete')
   end
+  it 'should have the title in an h2 heading' do
+    render
+    expect(rendered).to have_css('h2', text: 'Title for Scan 1234')
+  end
   describe 'metadata' do
     let(:scan) do
       create(
