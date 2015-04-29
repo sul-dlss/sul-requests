@@ -1,0 +1,7 @@
+<h2>
+  <% if @scan.persisted? %>
+    <%= @scan.item_title %>
+  <% else %>
+    <%= @scan.searchworks_item.title %>
+  <% end %>
+</h2>

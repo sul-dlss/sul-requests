@@ -1,0 +1,7 @@
+<h2>
+  <% if @page.persisted? %>
+    <%= @page.item_title %>
+  <% else %>
+    <%= @page.searchworks_item.title %>
+  <% end %>
+</h2>

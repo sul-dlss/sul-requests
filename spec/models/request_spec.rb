@@ -86,6 +86,16 @@ describe Request do
       end
     end
   end
+  describe 'item_title' do
+    it 'should fetch the item title on object creation' do
+      Request.create!(item_id: '2824966', origin: 'GREEN', origin_location: 'STACKS')
+      expect(Request.last.item_title).to eq 'When do you need an antacid? : a burning question'
+    end
+    it 'should not fetch the title when it is already present' do
+      Request.create!(item_id: '2824966', origin: 'GREEN', origin_location: 'STACKS', item_title: 'This title')
+      expect(Request.last.item_title).to eq 'This title'
+    end
+  end
   describe '#data' do
     it 'should be a serialized hash' do
       data_hash = { a: :a, b: :b }

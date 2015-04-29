@@ -10,6 +10,10 @@ class Request < ActiveRecord::Base
   belongs_to :user, autosave: true
   accepts_nested_attributes_for :user
 
+  before_create do
+    self.item_title ||= searchworks_item.title
+  end
+
   def new_request?
     status.present?
   end
