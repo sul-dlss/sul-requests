@@ -2,6 +2,24 @@ require 'rails_helper'
 
 describe LibraryLocation do
   let(:request) { Request.new }
+  it 'should include the mediateable mixin' do
+    expect(request.library_location).to be_a Mediateable
+  end
+  it 'should include the scannable mixin' do
+    expect(request.library_location).to be_a Scannable
+  end
+  describe '#pageable?' do
+    it 'should be true if the LibraryLocation is not mediatable' do
+      request.origin = 'GREEN'
+      request.origin_location = 'STACKS'
+      expect(request.library_location).to be_pageable
+    end
+    it 'should be false if the LibraryLocation is mediatable' do
+      request.origin = 'SPEC-COLL'
+      request.origin_location = 'STACKS'
+      expect(request.library_location).to_not be_pageable
+    end
+  end
   describe '#pickup_libraries' do
     it 'should return all pickup libraries when the given library and location are not configured' do
       request.origin = 'GREEN'

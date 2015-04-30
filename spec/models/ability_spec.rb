@@ -50,11 +50,20 @@ describe Ability do
     it { is_expected.not_to be_able_to(:success, scan) }
 
     describe 'who fills out a name and email' do
-      let(:page) { Page.new(user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }) }
+      let(:user) { build(:non_webauth_user) }
+      let(:page) { build(:page, user: user) }
+      let(:mediated_page) { build(:mediated_page, user: user) }
       it { is_expected.to be_able_to(:create, page) }
+      it { is_expected.to be_able_to(:create, mediated_page) }
       describe 'and views a success page with a token' do
-        let(:token) { page.encrypted_token }
-        it { is_expected.to be_able_to(:success, page) }
+        describe 'for a page' do
+          let(:token) { page.encrypted_token }
+          it { is_expected.to be_able_to(:success, page) }
+        end
+        describe 'for a mediated page' do
+          let(:token) { mediated_page.encrypted_token }
+          it { is_expected.to be_able_to(:success, mediated_page) }
+        end
       end
     end
   end

@@ -11,8 +11,8 @@ class RequestsController < ApplicationController
     if @request.scannable?
       render
     else
-      @request.becomes!(Page)
-      redirect_to new_polymorphic_path(@request.type.downcase, params.except(:controller, :action))
+      @request.delegate_request!
+      redirect_to new_polymorphic_path(@request.type.underscore, params.except(:controller, :action))
     end
   end
 
@@ -32,5 +32,14 @@ class RequestsController < ApplicationController
 
   def create_via_post?
     params[:action].to_sym == :create && request.post?
+  end
+
+  def create_params_with_current_user
+    p = create_params
+    return p if p[:user_attributes] &&
+                p[:user_attributes][:name] &&
+                p[:user_attributes][:email]
+    p[:user_id] = current_user.id if current_user.webauth_user?
+    p
   end
 end

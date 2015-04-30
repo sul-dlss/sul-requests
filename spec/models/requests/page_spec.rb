@@ -6,8 +6,16 @@ describe Page do
       expect(subject).to be_kind_of TokenEncryptable
     end
     it 'should add the user email address to the token' do
-      subject.user = User.new(email: 'jstanford@stanford.edu')
+      subject.user = build(:non_webauth_user)
       expect(subject.to_token).to match(/jstanford@stanford.edu$/)
+    end
+  end
+
+  describe 'validation' do
+    it 'should not allow mediated pages to be created' do
+      expect(
+        -> { Page.create!(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS') }
+      ).to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: This item is not pageable')
     end
   end
 

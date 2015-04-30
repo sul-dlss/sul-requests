@@ -2,9 +2,16 @@
 #  Class to handle configuration and logic around library codes and labels
 ###
 class LibraryLocation
+  include Scannable
+  include Mediateable
+
   def initialize(request)
     @library = request.origin
     @location = request.origin_location
+  end
+
+  def pageable?
+    !mediateable?
   end
 
   def pickup_libraries

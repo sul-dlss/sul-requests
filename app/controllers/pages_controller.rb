@@ -39,15 +39,6 @@ class PagesController < RequestsController
     end
   end
 
-  def create_params_with_current_user
-    p = create_params
-    return p if p[:user_attributes] &&
-                p[:user_attributes][:name] &&
-                p[:user_attributes][:email]
-    p[:user_id] = current_user.id if current_user.webauth_user?
-    p
-  end
-
   def create_params
     params.require(:page).permit(:destination,
                                  :item_id,
