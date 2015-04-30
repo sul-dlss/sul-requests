@@ -45,4 +45,18 @@ module RequestsHelper
   def format_date(date)
     Time.parse(date.to_s).strftime('%Y-%m-%d %I:%M%P')
   end
+
+  def searchworks_link(item_id, item_title)
+    link_to item_title, "#{Settings.searchworks_link}/#{item_id}"
+  end
+
+  def requester_info(user)
+    return unless user
+
+    if user.webauth_user?
+      mail_to user.to_email_string
+    elsif user.email.present?
+      mail_to user.email, user.to_email_string
+    end
+  end
 end

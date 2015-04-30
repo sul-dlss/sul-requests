@@ -13,6 +13,12 @@
   table {
     margin: 10px 0 40px;
 
+    thead {
+      th {
+        white-space: nowrap;
+      }
+    }
+
     tbody {
       tr:nth-child(odd) {
         background-color: $sul-admin-table-row-odd-color;

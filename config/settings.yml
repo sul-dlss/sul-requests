@@ -17,3 +17,4 @@ token_encrypt:
   salt: ''
 
 searchworks_api: 'http://searchworks-test.stanford.edu/api-test'
+searchworks_link: 'http://searchworks.stanford.edu/view'

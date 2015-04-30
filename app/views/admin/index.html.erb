@@ -21,7 +21,8 @@
             <td><%= request.origin_location %></td>
             <td><%= request.destination %></td>
             <td><%= request.item_id %></td>
-            <td><%= request.item_title %></td>
+            <td><%= searchworks_link(request.item_id, request.item_title) %></td>
+            <td><%= requester_info(request.user) %></td>
             <td><%= format_date(request.created_at) %></td>
           </tr>
         <% end %>
