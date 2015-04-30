@@ -43,4 +43,19 @@ describe RequestsHelper do
       expect(format_date('2015-04-23 10:12:14 UTC')).to eq '2015-04-23 10:12am'
     end
   end
+  describe 'searchworks link' do
+    it 'should construct a searchworks link' do
+      expect(searchworks_link('234', 'A title')).to eq '<a href="http://searchworks.stanford.edu/view/234">A title</a>'
+    end
+  end
+  describe 'requester info' do
+    let(:webauth_user) { User.create(webauth: 'jstanford') }
+    let(:non_webauth_user) { User.create(name: 'Joe', email: 'joe@xyz.com') }
+    it 'should construct requester info for webauth user' do
+      expect(requester_info(webauth_user)).to eq '<a href="mailto:jstanford@stanford.edu">jstanford@stanford.edu</a>'
+    end
+    it 'should construct requester info for non-webauth user' do
+      expect(requester_info(non_webauth_user)).to eq '<a href="mailto:joe@xyz.com">Joe (joe@xyz.com)</a>'
+    end
+  end
 end
