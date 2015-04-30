@@ -2,6 +2,8 @@
 #  Class to handle configuration and logic around library codes and labels
 ###
 class LibraryLocation
+  attr_reader :library, :location
+
   include Scannable
   include Mediateable
 

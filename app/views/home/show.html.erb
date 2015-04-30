@@ -11,7 +11,14 @@
 
 <% if can? :manage, Request.new %>
   <%= render 'administration' %>
-  <%= render 'mediation' %>
-<% else %>
+<% end %>
+
+<% origins = mediated_locations_for(Request.mediateable_origins) %>
+
+<% if origins.present? %>
+    <%= render partial: 'mediation', locals: { locations: origins } %>
+<% end %>
+
+<% if cannot?(:manage, Request.new) && origins.blank? %>
   <p class="access-error">You do not have access</p>
 <% end %>

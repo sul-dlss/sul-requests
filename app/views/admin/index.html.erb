@@ -1,33 +1,25 @@
-<h1>Requests</h1>
+<h1>Requests dashboard</h1>
 
-<div class="admin-requests">
-  <% @requests.each do |origin, collection| %>
-    <% uniq_locations = collection.map { |h| h['origin_location'] }.uniq %>
-
-    <h3><%= LibraryLocation.library_name_by_code(origin) %></h3>
-    <h4>
-      Library=<%= origin %>
-      <% if uniq_locations.one? %>
-        &amp; location=<%= uniq_locations.first %>
+<table class='table dashboard-table'>
+  <tr>
+    <% @dashboard.metrics.each do |metric| %>
+      <td class='col-sm-<%= 12 / @dashboard.metrics.length %>'>
+        <h3><%= @dashboard.send(metric) %></h3>
+      </td>
+    <% end %>
+  </tr>
+  <tfoot>
+    <tr>
+      <% @dashboard.metrics.each do |metric| %>
+        <td><span class='text-muted'><%= t(".#{metric}") %></span></td>
       <% end %>
-    </h4>
+    </tr>
+  </tfoot>
+</table>
 
-    <table class="table table-striped">
-      <%= render 'table_header' %>
-      <tbody>
-        <% collection.each do |request| %>
-          <tr>
-            <td><%= request.type %></td>
-            <td><%= request.origin_location %></td>
-            <td><%= request.destination %></td>
-            <td><%= request.item_id %></td>
-            <td><%= searchworks_link(request.item_id, request.item_title) %></td>
-            <td><%= requester_info(request.user) %></td>
-            <td><%= format_date(request.created_at) %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-
+<div class='admin-requests'>
+  <h2>Last 100 Requests</h2>
+  <% @dashboard.recent_requests.each do |origin, collection| %>
+    <%= render partial: 'library_table', locals: { origin: origin, collection: collection } %>
   <% end %>
 </div>

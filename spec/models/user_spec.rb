@@ -73,13 +73,4 @@ describe User do
       expect(subject).to be_admin_for_origin('FAKE-ORIGIN-LIBRARY')
     end
   end
-  describe '#admin_for_destination?' do
-    it 'should return false when the user is not in an destination library admin group' do
-      expect(subject).to_not be_admin_for_origin('FAKE-DESTINATION-LIBRARY')
-    end
-    it 'should return true when the user is in a site admin group' do
-      allow(subject).to receive_messages(ldap_groups: ['FAKE-DESTINATION-LIBRARY-TEST-LDAP-GROUP'])
-      expect(subject).to be_admin_for_destination('FAKE-DESTINATION-LIBRARY')
-    end
-  end
 end

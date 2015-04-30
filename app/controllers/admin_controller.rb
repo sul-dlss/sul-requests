@@ -1,10 +1,12 @@
 # Controller to handle mediations for admins
 class AdminController < ApplicationController
-  before_filter do
+  def index
     authorize! :manage, Request.new
+    @dashboard = Dashboard.new
   end
 
-  def index
-    @requests = Request.order(:origin).group_by(&:origin)
+  def show
+    authorize! :manage, Request.new(origin: params[:id]).library_location
+    @mediated_pages = MediatedPage.where(origin: params[:id])
   end
 end

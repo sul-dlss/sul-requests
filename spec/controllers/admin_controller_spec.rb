@@ -5,7 +5,7 @@ describe AdminController do
     allow(controller).to receive_messages(current_user: user)
   end
 
-  describe '/admin' do
+  describe 'index' do
     describe 'for super admin' do
       let(:user) { create(:superadmin_user) }
       it 'should be accessible' do
@@ -13,6 +13,7 @@ describe AdminController do
         expect(response).to be_successful
       end
     end
+
     describe 'for site admin' do
       let(:user) { create(:site_admin_user) }
       it 'should be accessible' do
@@ -20,22 +21,69 @@ describe AdminController do
         expect(response).to be_successful
       end
     end
+
     describe 'for webauth user' do
       let(:user) { create(:webauth_user) }
       it 'should not be accessible' do
         expect(-> { get :index }).to raise_error(CanCan::AccessDenied)
       end
     end
+
     describe 'for non-webauth user' do
       let(:user) { create(:non_webauth_user) }
       it 'should not be accessible' do
         expect(-> { get :index }).to raise_error(CanCan::AccessDenied)
       end
     end
+
     describe 'for anon user' do
       let(:user) { create(:anon_user) }
       it 'should not be accessible' do
         expect(-> { get :index }).to raise_error(CanCan::AccessDenied)
+      end
+    end
+  end
+
+  describe 'show' do
+    describe 'for super admin' do
+      let(:user) { create(:superadmin_user) }
+      it 'should be accessible' do
+        get :show, id: 'SAL3'
+        expect(response).to be_successful
+      end
+    end
+
+    describe 'for site admin' do
+      let(:user) { create(:site_admin_user) }
+      it 'should be accessible' do
+        get :show, id: 'SAL3'
+        expect(response).to be_successful
+      end
+    end
+
+    describe 'for origin admin' do
+      let(:user) { create(:sal3_origin_admin_user) }
+      it 'should be accessible when the user is an admin for the location' do
+        get :show, id: 'SAL3'
+        expect(response).to be_successful
+      end
+
+      it 'should not be accessible when the user is not an admin for the location' do
+        expect(-> { get :show, id: 'SPEC-COLL' }).to raise_error(CanCan::AccessDenied)
+      end
+    end
+
+    describe 'for normal webuath user' do
+      let(:user) { create(:webauth_user) }
+      it 'should not be accessible' do
+        expect(-> { get :show, id: 'SPEC-COLL' }).to raise_error(CanCan::AccessDenied)
+      end
+    end
+
+    describe 'for anonymouse users' do
+      let(:user) { create(:anon_user) }
+      it 'should not be accessible' do
+        expect(-> { get :show, id: 'SPEC-COLL' }).to raise_error(CanCan::AccessDenied)
       end
     end
   end

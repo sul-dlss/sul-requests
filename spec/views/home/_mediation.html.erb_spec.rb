@@ -2,6 +2,9 @@ require 'rails_helper'
 
 describe 'home/_mediation.html.erb' do
   before do
+    allow(view).to receive_messages(
+      locations: ['SPEC-COLL', 'HOOVER', 'HV-ARCHIVE']
+    )
     render
   end
   it 'should have title and description' do
@@ -9,7 +12,5 @@ describe 'home/_mediation.html.erb' do
     expect(rendered).to have_css('a', text: 'Special Collections')
     expect(rendered).to have_css('a', text: 'Hoover Library')
     expect(rendered).to have_css('a', text: 'Hoover Archives')
-    expect(rendered).to have_css('a', text: 'Earth Sciences Library (Branner)')
-    expect(rendered).to have_css('a', text: 'Marine Biology Library (Miller)')
   end
 end
