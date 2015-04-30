@@ -20,6 +20,13 @@ describe MediatedPagesController do
       expect(assigns[:mediated_page].origin_location).to eq 'STACKS'
       expect(assigns[:mediated_page].item_id).to eq '1234'
     end
+    it 'should raise an error if the item is unmediateable' do
+      expect(
+        lambda do
+          get :new, item_id: '1234', origin: 'GREEN', origin_location: 'STACKS'
+        end
+      ).to raise_error(MediatedPagesController::UnmediateableItemError)
+    end
   end
   describe 'create' do
     describe 'by anonymous users' do

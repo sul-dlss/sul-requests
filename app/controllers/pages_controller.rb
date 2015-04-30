@@ -4,6 +4,7 @@
 class PagesController < RequestsController
   def new
     request_defaults(@page)
+    validate_pageable
   end
 
   def create
@@ -31,6 +32,10 @@ class PagesController < RequestsController
 
   protected
 
+  def validate_pageable
+    fail UnpageableItemError unless @page.pageable?
+  end
+
   def rescue_can_can(*)
     if !current_user.webauth_user? && create_via_post?
       redirect_to login_path(referrer: create_pages_path(page: params[:page].except(:user_attributes)))
@@ -50,5 +55,8 @@ class PagesController < RequestsController
 
   def update_params
     params.require(:page).permit(:needed_date)
+  end
+
+  class UnpageableItemError < StandardError
   end
 end

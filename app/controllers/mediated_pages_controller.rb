@@ -4,6 +4,7 @@
 class MediatedPagesController < RequestsController
   def new
     request_defaults(@mediated_page)
+    validate_mediated_pageable
   end
 
   def create
@@ -20,6 +21,10 @@ class MediatedPagesController < RequestsController
   end
 
   protected
+
+  def validate_mediated_pageable
+    fail UnmediateableItemError unless @mediated_page.mediateable?
+  end
 
   def rescue_can_can(*)
     if !current_user.webauth_user? && create_via_post?
@@ -41,5 +46,8 @@ class MediatedPagesController < RequestsController
                                           :needed_date,
                                           data: [:comments],
                                           user_attributes: [:name, :email])
+  end
+
+  class UnmediateableItemError < StandardError
   end
 end
