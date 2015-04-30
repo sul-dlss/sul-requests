@@ -17,9 +17,9 @@ describe 'shared/_webauth_not_you.html.erb' do
     let(:user) { create(:webauth_user, name: 'Jane Stanford') }
     it 'should see their name, email, and a logout link' do
       render
-      expect(rendered).to have_css('h3', text: 'You are logged in as')
-      expect(rendered).to have_css('h3', text: 'Jane Stanford')
-      expect(rendered).to have_css('h3', text: '(some-webauth-user@stanford.edu)')
+      expect(rendered).to have_css('h2', text: 'You are logged in as')
+      expect(rendered).to have_css('h2', text: 'Jane Stanford')
+      expect(rendered).to have_css('h2', text: 'some-webauth-user@stanford.edu')
       expect(rendered).to have_css('a', text: 'Not you?')
     end
   end

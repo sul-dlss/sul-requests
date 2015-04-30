@@ -1,3 +1,7 @@
+.btn {
+  font-size: 1.1em;
+}
+
 .btn-beige {
   @include button-variant(
     $btn-beige-color,
@@ -20,4 +24,9 @@
     $btn-scan-bg,
     $btn-scan-border
   );
+}
+
+.btn-sub-text {
+  display: block;
+  font-size: 0.9em;
 }

@@ -1,8 +1,8 @@
 <% if current_user.webauth_user? %>
-  <h3 class='not-you pull-left'>
+  <h2 class='not-you pull-left'>
     <span class='sr-only'>You are logged in as </span>
     <%= current_user.name if current_user.name.present? %>
-    (<%= current_user.webauth %>@stanford.edu)
-  </h3>
+    <%= current_user.webauth %>@stanford.edu
+  </h2>
   <%= link_to('Not you?', logout_path, class: 'pull-right') %>
 <% end %>
