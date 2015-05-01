@@ -5,9 +5,10 @@
       <%= f.submit 'Send request', class: 'btn btn-cardinal col-xs-12' %>
     <% else %>
       <%= render partial: 'no_sunet_form', locals: { f: f } %>
+      <%= render partial: 'shared/back_to_login' %>
       <%= send_request_via_login_button %>
       <p class='or-divider'>- or -</p>
-      <%= link_to 'I don\'t have a SUNet ID', 'javascript:;', class: 'btn btn-beige col-xs-12', data: { no_sunet: true, target: '[data-no-sunet-target]', content_target: '[data-no-sunet-content]' } %>
+      <%= link_to 'I don\'t have a SUNet ID', 'javascript:;', class: 'btn btn-beige col-xs-12', data: { no_sunet: true, target: '[data-no-sunet-target]', content_target: '[data-no-sunet-content]', link: '[data-go-back-link]' } %>
     <% end %>
   </div>
 </div>
