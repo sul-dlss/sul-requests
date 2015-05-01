@@ -22,7 +22,7 @@ module ApplicationHelper
 
   def send_request_via_login_button
     button_tag(
-      'Send request<br/>login with SUNet ID'.html_safe,
+      'Send request<span class="btn-sub-text">login with SUNet ID</span>'.html_safe,
       id: 'send_request_via_sunet',
       class: 'btn btn-cardinal col-xs-12'
     )
