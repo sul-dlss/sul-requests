@@ -12,7 +12,7 @@ describe Ability do
   let(:token) { nil }
   subject { Ability.new(user, token) }
   describe 'an anonymous user' do
-    let(:user) { nil }
+    let(:user) { create(:anon_user) }
 
     it { is_expected.to be_able_to(:new, custom) }
     it { is_expected.not_to be_able_to(:create, custom) }
@@ -69,7 +69,7 @@ describe Ability do
   end
 
   describe 'a webauth user' do
-    let(:user) { User.create(webauth: 'some-user') }
+    let(:user) { create(:webauth_user) }
 
     it { is_expected.to be_able_to(:create, custom) }
     it { is_expected.to be_able_to(:create, hold_recall) }
@@ -109,8 +109,7 @@ describe Ability do
   end
 
   describe 'a super admin' do
-    let(:user) { User.new }
-    before { allow(user).to receive_messages(superadmin?: true) }
+    let(:user) { create(:superadmin_user) }
 
     # can manage anything
     it { is_expected.to be_able_to(:manage, request) }
@@ -122,8 +121,7 @@ describe Ability do
   end
 
   describe 'a site admin' do
-    let(:user) { User.new }
-    before { allow(user).to receive_messages(site_admin?: true) }
+    let(:user) { create(:site_admin_user) }
 
     # can manage anything
     it { is_expected.to be_able_to(:manage, request) }
@@ -135,7 +133,7 @@ describe Ability do
   end
 
   describe 'an origin admin' do
-    let(:user) { User.new }
+    let(:user) { create(:webauth_user) }
 
     before do
       allow(user).to receive_messages(ldap_groups: ['FAKE-ORIGIN-LIBRARY-TEST-LDAP-GROUP'])
