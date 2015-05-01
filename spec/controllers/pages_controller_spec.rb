@@ -20,6 +20,13 @@ describe PagesController do
       expect(assigns[:page].origin_location).to eq 'STACKS'
       expect(assigns[:page].item_id).to eq '1234'
     end
+    it 'should raise an error when the item is not pageable' do
+      expect(
+        lambda do
+          get :new, item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS'
+        end
+      ).to raise_error(PagesController::UnpageableItemError)
+    end
   end
   describe 'create' do
     describe 'by anonymous users' do
