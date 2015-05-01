@@ -28,6 +28,9 @@ describe 'scans/success.html.erb' do
       )
     end
     before { render }
+    it 'should have item title information' do
+      expect(rendered).to have_css('h2', text: 'Title for Scan 1234')
+    end
     it 'should have the page range' do
       expect(rendered).to have_css('dt', text: 'Page range')
       expect(rendered).to have_css('dd', text: 'Range-123')

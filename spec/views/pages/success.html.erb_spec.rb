@@ -29,6 +29,9 @@ describe 'pages/success.html.erb' do
       )
     end
     before { render }
+    it 'should have item title information' do
+      expect(rendered).to have_css('h2', text: 'Title for Page 1234')
+    end
     it 'should have the destination library' do
       expect(rendered).to have_css('dt', text: 'Deliver to')
       expect(rendered).to have_css('dd', text: 'Green Library')
