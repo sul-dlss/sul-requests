@@ -1,7 +1,1 @@
-<h2 class="searchworks-item">
-  <% if @page.persisted? %>
-    <%= @page.item_title %>
-  <% else %>
-    <%= @page.searchworks_item.title %>
-  <% end %>
-</h2>
+<%= render partial: 'shared/searchworks_item_information', locals: { request: @page } %>

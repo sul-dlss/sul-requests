@@ -1,7 +1,1 @@
-<h2>
-  <% if @mediated_page.persisted? %>
-    <%= @mediated_page.item_title %>
-  <% else %>
-    <%= @mediated_page.searchworks_item.title %>
-  <% end %>
-</h2>
+<%= render partial: 'shared/searchworks_item_information', locals: { request: @mediated_page } %>

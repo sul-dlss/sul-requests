@@ -106,6 +106,16 @@ describe Request do
     end
   end
 
+  describe 'stored_or_fetched_item_title' do
+    it 'should return the stored item title for persisted objects' do
+      expect(create(:request).stored_or_fetched_item_title).to eq 'Title for Request 12345'
+    end
+    it 'should return the item title from the fetched searchworks record for non persisted objects' do
+      allow_any_instance_of(Request).to receive(:searchworks_item).and_return(OpenStruct.new(title: 'A fetched title'))
+      expect(Request.new.stored_or_fetched_item_title).to eq 'A fetched title'
+    end
+  end
+
   describe '#delegate_request!' do
     it 'should delegate to a mediated page if it is mediateable' do
       allow(subject).to receive_messages(mediateable?: true)

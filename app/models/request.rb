@@ -38,6 +38,14 @@ class Request < ActiveRecord::Base
     end
   end
 
+  def stored_or_fetched_item_title
+    if persisted?
+      item_title
+    else
+      searchworks_item.title
+    end
+  end
+
   # This method gets called when saving the user assocation
   # and allows us to make sure we assign the user object if
   # there already is one associated with that email address

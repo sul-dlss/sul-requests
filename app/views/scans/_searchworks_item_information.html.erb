@@ -1,7 +1,1 @@
-<h2 class="searchworks-item">
-  <% if @scan.persisted? %>
-    <%= @scan.item_title %>
-  <% else %>
-    <%= @scan.searchworks_item.title %>
-  <% end %>
-</h2>
+<%= render partial: 'shared/searchworks_item_information', locals: { request: @scan } %>
