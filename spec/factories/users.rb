@@ -23,6 +23,18 @@ FactoryGirl.define do
     end
   end
 
+  factory :sal3_origin_admin_user, class: User do
+    webauth 'sal3-admin'
+
+    after(:build) do |user|
+      class << user
+        def admin_for_origin?(location)
+          location == 'SAL3'
+        end
+      end
+    end
+  end
+
   factory :webauth_user, class: User do
     webauth 'some-webauth-user'
   end

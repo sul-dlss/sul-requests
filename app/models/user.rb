@@ -39,11 +39,6 @@ class User < ActiveRecord::Base
     (ldap_groups & admin_groups).present?
   end
 
-  def admin_for_destination?(destination)
-    admin_groups = Settings.destination_admin_groups[destination] || []
-    (ldap_groups & admin_groups).present?
-  end
-
   def ldap_groups
     (@ldap_group_string || '').split('|')
   end

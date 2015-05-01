@@ -1,0 +1,7 @@
+<h2>
+  <% if @mediated_page.persisted? %>
+    <%= @mediated_page.item_title %>
+  <% else %>
+    <%= @mediated_page.searchworks_item.title %>
+  <% end %>
+</h2>

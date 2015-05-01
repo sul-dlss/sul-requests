@@ -6,7 +6,7 @@
 class Ability
   include CanCan::Ability
 
-  # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
+  # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
   # The CanCan DSL requires a complex initialization method
   def initialize(user, token = nil)
     user ||= User.new
@@ -25,11 +25,15 @@ class Ability
     can :manage, :all if user.superadmin?
 
     can :manage, Request if user.site_admin?
+    can :manage, LibraryLocation if user.site_admin?
     # Adminstrators for origins or destinations should be able to
     # manage requests originating or arriving to their library.
     can :manage, Request do |request|
-      user.admin_for_origin?(request.origin) ||
-        user.admin_for_destination?(request.destination)
+      user.admin_for_origin?(request.origin)
+    end
+
+    can :manage, LibraryLocation do |library|
+      user.admin_for_origin?(library.library)
     end
 
     can :new, Request
@@ -59,7 +63,7 @@ class Ability
     # Only Webauth users can create scan requests (for now).
     cannot :create, Scan unless user.webauth_user?
   end
-  # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
+  # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
 
   def current_user_owns_request?(request)
     request.user_id == @user.id && @user.webauth_user?

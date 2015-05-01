@@ -1,10 +1,10 @@
 <section class="home-page-section">
   <h2>Mediation</h2>
   <ul>
-    <li><%= link_to "Special Collections", "#"%> </li>
-    <li><%= link_to "Hoover Library", "#"%> </li>
-    <li><%= link_to "Hoover Archives", "#"%> </li>
-    <li><%= link_to "Earth Sciences Library (Branner)", "#"%> </li>
-    <li><%= link_to "Marine Biology Library (Miller)", "#"%> </li>
+    <% locations.each do |location| %>
+      <li>
+        <%= link_to(LibraryLocation.library_name_by_code(location), admin_path(location)) %>
+      </li>
+    <% end %>
   </ul>
 </section>

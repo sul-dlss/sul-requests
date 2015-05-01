@@ -12,10 +12,13 @@ describe 'home/show' do
   describe 'superadmin' do
     before do
       allow(controller).to receive_messages(current_user: create(:superadmin_user))
+      allow(Request).to receive_messages(mediateable_origins: ['SAL3'])
       render
     end
-    it 'should display page sections' do
+    it 'should display page an administration section' do
       expect(rendered).to have_css('h2', text: 'Administration')
+    end
+    it 'should show a medation section if there are mediateable libraries' do
       expect(rendered).to have_css('h2', text: 'Mediation')
     end
   end

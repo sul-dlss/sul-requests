@@ -4,11 +4,11 @@ site_admin_groups: []
 
 # LDAP Workgroups for origin specific mediation
 origin_admin_groups:
-  SAL-NEWARK: []
-
-# LDAP Workgroups for destination specific mediation
-destination_admin_groups:
-  SPEC: []
+  HOPKINS: []
+  HV-ARCHIVE: []
+  HOOVER: []
+  SPEC-COLL: []
+  SAL3: []
 
 contact_email: 'someone@stanford.edu'
 

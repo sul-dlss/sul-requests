@@ -155,26 +155,4 @@ describe Ability do
     it { is_expected.to be_able_to(:manage, page) }
     it { is_expected.to be_able_to(:manage, scan) }
   end
-
-  describe 'a destination admin' do
-    let(:user) { User.new }
-
-    before do
-      allow(user).to receive_messages(ldap_groups: ['FAKE-DESTINATION-LIBRARY-TEST-LDAP-GROUP'])
-      request.destination = 'FAKE-DESTINATION-LIBRARY'
-      custom.destination = 'FAKE-DESTINATION-LIBRARY'
-      hold_recall.destination = 'FAKE-DESTINATION-LIBRARY'
-      mediated_page.destination = 'FAKE-DESTINATION-LIBRARY'
-      page.destination = 'FAKE-DESTINATION-LIBRARY'
-      scan.destination = 'FAKE-DESTINATION-LIBRARY'
-    end
-
-    # can manage locations that they are an admin of
-    it { is_expected.to be_able_to(:manage, request) }
-    it { is_expected.to be_able_to(:manage, custom) }
-    it { is_expected.to be_able_to(:manage, hold_recall) }
-    it { is_expected.to be_able_to(:manage, mediated_page) }
-    it { is_expected.to be_able_to(:manage, page) }
-    it { is_expected.to be_able_to(:manage, scan) }
-  end
 end

@@ -10,6 +10,14 @@ describe Request do
     end
   end
 
+  describe 'scopes' do
+    it 'should default to be sorted by the origin' do
+      create(:request, origin: 'SAL3')
+      create(:request, origin: 'GREEN')
+      expect(Request.all.map(&:origin)).to eq %w(GREEN SAL3)
+    end
+  end
+
   describe '#scannable?' do
     it 'should be scannable if it is a SAL3 item in the STACKS location' do
       subject.origin = 'SAL3'
@@ -119,6 +127,17 @@ describe Request do
       expect(subject.data).to eq({})
       subject.data = data_hash
       expect(subject.data).to eq data_hash
+    end
+  end
+
+  describe 'mediateable_origins' do
+    before do
+      create(:mediated_page)
+      create(:hoover_mediated_page)
+      create(:hopkins_mediated_page)
+    end
+    it 'should return the subset of origin codes that are configured and mediated pages that exist in the database' do
+      expect(Request.mediateable_origins).to eq %w(HOPKINS HOOVER SPEC-COLL)
     end
   end
 end
