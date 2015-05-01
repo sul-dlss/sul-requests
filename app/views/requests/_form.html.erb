@@ -1,21 +1,23 @@
 <div id="scan-or-deliver">
   <div class="row">
-    <div class="col-xs-6 buttons">
+    <div class="col-xs-12 col-sm-6 buttons">
       <%= link_to('Deliver to campus library', new_page_path(@request, params.except(:controller, :action)), class: 'btn btn-beige', 'aria-describedby' => 'deliveryDescription') %>
     </div>
-    <div class="col-xs-6 content">
+    <div class="col-xs-12 col-sm-6 content">
       <dl id="deliveryDescription">
         <dt>Earliest delivery</dt>
         <dd>Unknown</dd>
       </dl>
     </div>
   </div>
-  <p class='separator'>Just need a chapter or article?</p>
-  <div class="row">
-    <div class="col-xs-6 buttons">
+  <div class="separator">
+    <h2>Just need a chapter or article?</h2>
+  </div>
+  <div class="row scan-to-pdf">
+    <div class="col-xs-12 col-sm-6 buttons">
       <%= link_to('Scan to PDF<span class="btn-sub-text">requires SUNet login</span>'.html_safe, new_scan_path(@request, params.except(:controller, :action)), class: 'btn btn-scan', 'aria-describedby' => 'scanDescription') %>
     </div>
-    <div class="col-xs-6 content">
+    <div class="col-xs-12 col-sm-6 content">
       <dl id="scanDescription">
         <dt>Earliest delivery</dt>
         <dd>Unknown</dd>
