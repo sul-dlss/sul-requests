@@ -25,6 +25,9 @@ describe 'mediated_pages/success.html.erb' do
       )
     end
     before { render }
+    it 'should have item title information' do
+      expect(rendered).to have_css('h2', text: 'Title of MediatedPage 1234')
+    end
     it 'should have the destination library' do
       expect(rendered).to have_css('dt', text: 'Must be used in')
       expect(rendered).to have_css('dd', text: 'Special Collections')
