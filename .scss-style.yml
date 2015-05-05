@@ -1,4 +1,6 @@
-scss_files: "**/*.scss"
+scss_files: 'app/assets/**/*.scss'
+
+exclude: 'vendor/**'
 
 linters:
   IdSelector:
