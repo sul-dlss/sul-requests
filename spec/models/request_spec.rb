@@ -156,11 +156,20 @@ describe Request do
   end
 
   describe '#data' do
+    let(:data_hash) { { a: :a, b: :b } }
     it 'should be a serialized hash' do
-      data_hash = { a: :a, b: :b }
       expect(subject.data).to eq({})
       subject.data = data_hash
       expect(subject.data).to eq data_hash
+    end
+  end
+
+  describe 'barcodes' do
+    let(:array) { %w(a b c) }
+    it 'should be a serialized array' do
+      expect(subject.barcodes).to eq([])
+      subject.barcodes = array
+      expect(subject.barcodes).to eq(array)
     end
   end
 
