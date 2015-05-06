@@ -8,6 +8,17 @@ describe 'Creating a page request' do
     end
   end
   describe 'by an anonmyous user' do
+    it 'should be possible to toggle between login and name-email form', js: true do
+      visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
+      click_link "I don't have a SUNet ID"
+
+      expect(page).to have_field('Name', type: 'text')
+      expect(page).to have_field('Email', type: 'email')
+      expect(page).to have_css('a', text: '‹ Go back (show the login option)')
+
+      click_link '‹ Go back (show the login option)'
+      expect(page).to have_css('a', text: "I don't have a SUNet ID")
+    end
     it 'should be possible if a name and email is filled out', js: true do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
       click_link "I don't have a SUNet ID"
