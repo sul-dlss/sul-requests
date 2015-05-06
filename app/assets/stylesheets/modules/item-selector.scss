@@ -1,3 +1,43 @@
+.search {
+  &.form-control {
+    margin-right: 10px;
+  }
+}
+
+.sort-headings {
+  display: block;
+  margin-left: 38px;
+  margin-right: 10px;
+
+  .sort {
+    i {
+      @extend .glyphicon;
+    }
+
+    &.asc {
+      i {
+        @extend .glyphicon-chevron-down;
+      }
+    }
+
+    &.desc {
+      i {
+        @extend .glyphicon-chevron-up;
+      }
+    }
+  }
+
+  .sort-callnumber {
+    text-align: left;
+    width: 80%;
+  }
+
+  .sort-status {
+    text-align: left;
+    width: 20%;
+  }
+}
+
 .item-selector {
   border: 1px solid $item-selector-border-color;
   max-height: 300px;
@@ -6,7 +46,6 @@
 
   .input-group {
     .form-control {
-      border-bottsom-right-radius: 4px !important;
       border-top-right-radius: 4px !important;
     }
   }

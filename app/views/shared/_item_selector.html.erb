@@ -3,23 +3,39 @@
     <% if f.object.holdings.one? %>
       <%= barcode.hidden_field nil, value: f.object.holdings.first.barcode %>
     <% elsif f.object.holdings.many? %>
-      <div class="item-selector" data-limit-selected-items="true" data-counter-target="[data-items-counter='true']">
-        <% f.object.holdings.each do |holding| %>
-          <div class='input-group'>
-            <span class='input-group-addon'>
-              <%= barcode.check_box_without_bootstrap holding.barcode %>
-            </span>
-            <%= barcode.label holding.barcode, class: 'form-control' do %>
-              <%= holding.callnumber %>
-              <span class='pull-right <%= holding.status.availability_class %>'><%= holding.status.status_text %></span>
-            <% end %>
-            <% if holding.public_note.present? %>
-              <div class='public-note'>
-                <%= holding.public_note %>
+      <div id='selected-items-filter' data-filter-selected-items="true">
+        <% if f.object.holdings.length >= 10 %>
+          <div class='form-group'>
+            <label class='control-label <%= label_column_class %>' for='item-selector-search'>Search item list</label>
+            <div class='<%= content_column_class %>'>
+              <input id='item-selector-search' type='text' class='pull-right search form-control' />
+            </div>
+          </div>
+        <% end %>
+        <div class='btn-group btn-group-xs sort-headings clearfix'>
+          <a href="javascript:;" class="sort sort-callnumber btn btn-default pull-left" data-sort="callnumber">Call number <i></i></a>
+          <a href="javascript:;" class="sort sort-status btn btn-default pull-right" data-sort="status">Status <i></i></a>
+        </div>
+        <div id="item-selector" class="item-selector" data-limit-selected-items="true" data-counter-target="[data-items-counter='true']">
+          <div class='list'>
+            <% f.object.holdings.each do |holding| %>
+              <div class='input-group'>
+                <span class='input-group-addon'>
+                  <%= barcode.check_box_without_bootstrap holding.barcode %>
+                </span>
+                <%= barcode.label holding.barcode, class: 'form-control' do %>
+                  <span class='callnumber'><%= holding.callnumber %></span>
+                  <span class='status pull-right <%= holding.status.availability_class %>'><%= holding.status.status_text %></span>
+                <% end %>
+                <% if holding.public_note.present? %>
+                  <div class='public-note'>
+                    <%= holding.public_note %>
+                  </div>
+                <% end %>
               </div>
             <% end %>
           </div>
-        <% end %>
+        </div>
       </div>
       <p data-items-counter='true'>0 items selected</p>
     <% end %>
