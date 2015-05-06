@@ -27,10 +27,26 @@ class SearchworksItem
   end
 
   def response
-    @response ||= Faraday.get(url)
+    @response ||= begin
+      Faraday.get(url)
+    rescue Faraday::Error::ConnectionFailed
+      NullResponse.new
+    end
   end
 
   def json
-    @json ||= JSON.parse(response.body) || {}
+    return {} unless response.success?
+    @json ||= begin
+      JSON.parse(response.body)
+    rescue JSON::ParserError
+      {}
+    end
+  end
+
+  # Response class to return when the API connection fails
+  class NullResponse
+    def success?
+      false
+    end
   end
 end

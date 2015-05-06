@@ -18,6 +18,16 @@ describe SearchworksItem do
       expect(json).to have_key 'title'
       expect(json).to have_key 'holdings'
     end
+    it 'should handle JSON Parser Errors by returning an empty hash' do
+      response = double('response', body: 'not-json', success?: true)
+      allow(subject).to receive_messages(response: response)
+      expect(json).to eq({})
+    end
+    it 'should return an empty hash when the response is not a success' do
+      response = double('response', success?: false)
+      allow(subject).to receive_messages(response: response)
+      expect(json).to eq({})
+    end
   end
   describe '#response' do
     let(:standard_json) do
@@ -35,6 +45,21 @@ describe SearchworksItem do
       }
     end
     let(:empty_json) { {} }
+    describe 'for a connection failure' do
+      before do
+        allow(subject).to receive_messages(url: Settings.searchworks_api.gsub('searchworks', 'searchwroks'))
+      end
+      it 'should return an NullResponse when there is a connection error' do
+        expect(subject.send(:response)).to be_a SearchworksItem::NullResponse
+      end
+      it 'should return blank json' do
+        expect(subject.send(:json)).to eq({})
+      end
+      it 'should handle title and holdings correctly' do
+        expect(subject.title).to eq('')
+        expect(subject.holdings).to eq([])
+      end
+    end
     describe 'for a standard response' do
       before do
         allow(subject).to receive_messages(json: standard_json)
