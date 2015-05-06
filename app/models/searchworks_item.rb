@@ -3,8 +3,9 @@
 #  The API URI is configured using rails_config: Settings.searchworks_api
 ###
 class SearchworksItem
-  def initialize(item_id)
-    @item_id = item_id
+  attr_reader :request
+  def initialize(request)
+    @request = request
   end
 
   def title
@@ -16,6 +17,10 @@ class SearchworksItem
     @holdings ||= JSON.parse(json['holdings'].to_json, object_class: OpenStruct)
   end
 
+  def requested_holdings
+    @requested_holdings ||= RequestedHoldings.new(self)
+  end
+
   private
 
   def base_uri
@@ -23,7 +28,7 @@ class SearchworksItem
   end
 
   def url
-    [base_uri, 'view', @item_id, 'availability'].join('/')
+    [base_uri, 'view', request.item_id, 'availability'].join('/')
   end
 
   def response
@@ -47,6 +52,44 @@ class SearchworksItem
   class NullResponse
     def success?
       false
+    end
+  end
+
+  ###
+  #  ReqestedHoldings winnows down the entire
+  #  holdings to just what was requested by the user
+  ###
+  class RequestedHoldings
+    def initialize(searchworks_item)
+      @searchworks_item = searchworks_item
+    end
+
+    def by_barcodes(barcodes)
+      barcodes = Array(barcodes)
+      items.select do |item|
+        barcodes.include?(item.barcode)
+      end
+    end
+
+    def items
+      return [] unless location.present?
+      location.items
+    end
+
+    private
+
+    def library
+      return unless @searchworks_item.holdings.present?
+      @searchworks_item.holdings.find do |library|
+        library.code == @searchworks_item.request.origin
+      end
+    end
+
+    def location
+      return unless library.present?
+      library.locations.find do |location|
+        location.code == @searchworks_item.request.origin_location
+      end
     end
   end
 end

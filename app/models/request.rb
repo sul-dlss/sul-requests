@@ -23,7 +23,7 @@ class Request < ActiveRecord::Base
   end
 
   def searchworks_item
-    @searchworks_item ||= SearchworksItem.new(item_id)
+    @searchworks_item ||= SearchworksItem.new(self)
   end
 
   def commentable?
@@ -65,6 +65,16 @@ class Request < ActiveRecord::Base
       User.find_by_webauth(user.webauth)
     elsif user.non_webauth_user?
       User.find_by_email(user.email)
+    end
+  end
+
+  def holdings
+    @holdings ||= begin
+      if persisted?
+        searchworks_item.requested_holdings.by_barcodes(barcodes)
+      else
+        searchworks_item.requested_holdings.items
+      end
     end
   end
 
