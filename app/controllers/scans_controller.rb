@@ -44,7 +44,12 @@ class ScansController < RequestsController
     params.require(:scan).permit(:item_id,
                                  :origin,
                                  :origin_location,
+                                 barcodes: [],
                                  data: [:authors, :page_range, :section_title])
+  end
+
+  def local_object_param
+    params[:scan]
   end
 
   def update_params

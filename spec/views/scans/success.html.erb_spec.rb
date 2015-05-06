@@ -16,6 +16,16 @@ describe 'scans/success.html.erb' do
     render
     expect(rendered).to have_css('h2', text: 'Title for Scan 1234')
   end
+  describe 'selected items' do
+    let(:user) { create(:webauth_user) }
+    let(:scan) { create(:scan_with_holdings, user: user, barcodes: %w(12345678 87654321)) }
+    before { render }
+    it 'are displayed when there are multiple selected' do
+      expect(rendered).to have_css('dt', text: 'Item(s) requested')
+      expect(rendered).to have_css('dd', text: 'ABC 123')
+      expect(rendered).to have_css('dd', text: 'ABC 321')
+    end
+  end
   describe 'metadata' do
     let(:scan) do
       create(

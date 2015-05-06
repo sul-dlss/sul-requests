@@ -1,0 +1,27 @@
+<% if f.object.present? %>
+  <%= f.fields_for :barcodes do |barcode| %>
+    <% if f.object.holdings.one? %>
+      <%= barcode.hidden_field nil, value: f.object.holdings.first.barcode %>
+    <% elsif f.object.holdings.many? %>
+      <div class="item-selector" data-limit-selected-items="true" data-counter-target="[data-items-counter='true']">
+        <% f.object.holdings.each do |holding| %>
+          <div class='input-group'>
+            <span class='input-group-addon'>
+              <%= barcode.check_box_without_bootstrap holding.barcode %>
+            </span>
+            <%= barcode.label holding.barcode, class: 'form-control' do %>
+              <%= holding.callnumber %>
+              <span class='pull-right <%= holding.status.availability_class %>'><%= holding.status.status_text %></span>
+            <% end %>
+            <% if holding.public_note.present? %>
+              <div class='public-note'>
+                <%= holding.public_note %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+      <p data-items-counter='true'>0 items selected</p>
+    <% end %>
+  <% end %>
+<% end %>

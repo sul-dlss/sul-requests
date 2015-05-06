@@ -3,6 +3,7 @@
 #  Other request type specific controllers will handle behaviors for their particular types.
 ###
 class RequestsController < ApplicationController
+  before_filter :modify_item_selector_checkboxes, only: :create
   load_and_authorize_resource
   before_filter :validate_new_params, only: :new
 
@@ -41,5 +42,17 @@ class RequestsController < ApplicationController
                 p[:user_attributes][:email]
     p[:user_id] = current_user.id if current_user.webauth_user?
     p
+  end
+
+  def modify_item_selector_checkboxes
+    return unless local_object_param[:barcodes]
+    return unless local_object_param[:barcodes].is_a?(Hash)
+    local_object_param[:barcodes] = local_object_param[:barcodes].map do |barcode, checked|
+      barcode if checked == '1'
+    end.compact
+  end
+
+  def local_object_param
+    fail NotImplementedError
   end
 end

@@ -22,4 +22,16 @@ FactoryGirl.define do
       end
     end
   end
+
+  factory :sal3_stacks_multi_holdings_searchworks_item, class: SearchworksItem do
+    initialize_with { new(create(:request, origin: 'SAL3', origin_location: 'STACKS')) }
+
+    after(:build) do |item|
+      class << item
+        def json
+          FactoryGirl.build(:sal3_holdings)
+        end
+      end
+    end
+  end
 end

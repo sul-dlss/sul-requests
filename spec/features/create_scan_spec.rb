@@ -40,4 +40,24 @@ describe 'Create Scan Request' do
       expect(current_url).to eq new_page_url(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
     end
   end
+
+  describe 'selecting barcodes' do
+    before do
+      stub_current_user(create(:webauth_user))
+      stub_searchworks_api_json(build(:sal3_holdings))
+    end
+    it 'should persist to the database' do
+      visit new_scan_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
+
+      within('#item-selector') do
+        check('ABC 123')
+      end
+
+      click_button 'Send request'
+
+      expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
+
+      expect(Scan.last.barcodes).to eq(%w(12345678))
+    end
+  end
 end

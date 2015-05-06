@@ -39,4 +39,9 @@ describe RequestsController do
       end
     end
   end
+  describe 'modify_item_selector_checkboxes' do
+    it 'should raise an error of the subclassing controller does not implement the local_object_param method' do
+      expect(-> { controller.send(:modify_item_selector_checkboxes) }).to raise_error(NotImplementedError)
+    end
+  end
 end

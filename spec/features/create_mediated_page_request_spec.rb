@@ -56,4 +56,24 @@ describe 'Creating a mediated page request' do
       expect(page).to_not have_field('Comments')
     end
   end
+
+  describe 'selecting barcodes' do
+    before do
+      stub_current_user(user)
+      stub_searchworks_api_json(build(:special_collections_holdings))
+    end
+    it 'should persist to the database' do
+      visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+
+      within('#item-selector') do
+        check('ABC 123')
+      end
+
+      click_button 'Send request'
+
+      expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
+
+      expect(MediatedPage.last.barcodes).to eq(%w(12345678))
+    end
+  end
 end

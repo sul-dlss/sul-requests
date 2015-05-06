@@ -33,4 +33,18 @@ FactoryGirl.define do
     origin_location 'SOMEWHERE-30'
     item_title 'Title of MediatedPage 1234'
   end
+
+  factory :mediated_page_with_holdings, class: MediatedPage do
+    item_id '1234'
+    origin 'SPEC-COLL'
+    origin_location 'STACKS'
+
+    after(:build) do |request|
+      class << request
+        def searchworks_item
+          FactoryGirl.build(:sal3_stacks_multi_holdings_searchworks_item)
+        end
+      end
+    end
+  end
 end
