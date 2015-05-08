@@ -18,7 +18,7 @@ task :display_coveralls_coverage do
         puts "#{untested_files.keys.length} untested files:"
         untested_files.each do |key, lines|
           untested_lines = list_of_untested_lines(lines)
-          puts "\t#{key}: #{lines.select { |v| v == 0 }.length} untested lines: #{untested_lines.inspect}"
+          puts "\t#{key}: #{lines.count { |v| v == 0 }} untested lines: #{untested_lines.inspect}"
         end
         fail 'Untested files!'
       end
