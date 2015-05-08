@@ -11,17 +11,5 @@
     <%= d.text_field :authors, label: 'Author(s)' %>
   <% end %>
 
-  <div class='form-group'>
-    <div class='<%= content_column_class %> <%= label_column_offset_class %>'>
-      <% if current_user.webauth_user? %>
-        <%= render 'shared/webauth_not_you' %>
-        <%= f.submit 'Send request', class: 'btn btn-cardinal col-xs-12' %>
-      <% else %>
-        <%= send_request_via_login_button %>
-        <p>Don’t have a SUNet ID?</p>
-        <p>If you don’t have a SUNet ID, we can’t scan this item for you, but we can deliver the physical volume to a campus library for you to pick up.</p>
-        <%= link_to('Request the physical item', new_page_path(params.except(:action, :controller)), class: 'btn btn-beige col-xs-12') %>
-      <% end %>
-    </div>
-  </div>
+  <%= render partial: 'shared/send_request_buttons', locals: { f: f } %>
 <% end %>

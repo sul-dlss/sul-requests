@@ -15,6 +15,10 @@ class Page < Request
     true
   end
 
+  def requestable_by_all?
+    true
+  end
+
   private
 
   def page_validator

@@ -49,15 +49,19 @@ class Ability
     can :success, Page do |page|
       page.valid_token?(token) if token
     end
+
     can :success, MediatedPage do |page|
       page.valid_token?(token) if token
     end
 
     can :create, Page do |page|
-      request_is_by_anonymous_user?(page)
+      request_is_by_anonymous_user?(page) &&
+        page.requestable_by_all?
     end
-    can :create, MediatedPage do |page|
-      request_is_by_anonymous_user?(page)
+
+    can :create, MediatedPage do |mediated_page|
+      request_is_by_anonymous_user?(mediated_page) &&
+        mediated_page.requestable_by_all?
     end
 
     # Only Webauth users can create scan requests (for now).

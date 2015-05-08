@@ -65,6 +65,10 @@ describe Ability do
           it { is_expected.to be_able_to(:success, mediated_page) }
         end
       end
+      describe 'when the library is HOPKINS' do
+        let(:mediated_page) { build(:mediated_page, user: user, origin: 'HOPKINS') }
+        it { is_expected.not_to be_able_to(:create, mediated_page) }
+      end
     end
   end
 

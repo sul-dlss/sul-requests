@@ -79,6 +79,18 @@ class Request < ActiveRecord::Base
     end
   end
 
+  def requestable_by_all?
+    false
+  end
+
+  def requestable_with_library_id?
+    requestable_by_all? || false
+  end
+
+  def requestable_with_sunet_only?
+    false
+  end
+
   class << self
     # The mediateable_oirgins will make multiple (efficient) database requests
     # in order to return the array of locations that are both configured as mediateable and have existing requests.

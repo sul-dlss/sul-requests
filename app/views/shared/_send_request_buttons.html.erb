@@ -1,14 +1,11 @@
-<div class='form-group' data-no-sunet-target='true'>
-  <div class='<%= content_column_class %> <%= label_column_offset_class %>'>
-    <% if current_user.webauth_user? %>
-      <%= render 'shared/webauth_not_you' %>
-      <%= f.submit 'Send request', class: 'btn btn-cardinal col-xs-12' %>
-    <% else %>
-      <%= render partial: 'no_sunet_form', locals: { f: f } %>
-      <%= render partial: 'shared/back_to_login' %>
-      <%= send_request_via_login_button %>
-      <p class='or-divider'>- or -</p>
-      <%= link_to 'I don\'t have a SUNet ID', 'javascript:;', class: 'btn btn-beige col-xs-12', data: { no_sunet: true, target: '[data-no-sunet-target]', content_target: '[data-no-sunet-content]', link: '[data-go-back-link]' } %>
-    <% end %>
+<% if [f.object.requestable_by_all?, f.object.requestable_with_library_id?, f.object.requestable_with_sunet_only?].any? %>
+  <div class='form-group' data-no-sunet-target='true'>
+    <div class='<%= content_column_class %> <%= label_column_offset_class %>'>
+      <% if current_user.webauth_user? %>
+        <%= render partial: 'request_buttons_for_webauth', locals: { f: f } %>
+      <% else %>
+        <%= render partial: 'request_buttons_for_anon', locals: { f: f } %>
+      <% end %>
+    </div>
   </div>
-</div>
+<% end %>

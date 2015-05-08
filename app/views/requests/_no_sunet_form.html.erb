@@ -1,7 +1,13 @@
-<div data-no-sunet-content='true' style='display:none;'>
-  <%= f.fields_for :user, User.new do |uf| %>
-    <%= uf.text_field :name %>
-    <%= uf.email_field :email %>
-  <% end %>
-  <%= f.submit 'Send request', class: "btn btn-cardinal #{content_column_class} #{label_column_offset_class}" %>
-</div>
+<% unless f.object.requestable_with_sunet_only?  %>
+  <div data-no-sunet-content='true' style='display:none;'>
+    <% if f.object.requestable_with_library_id? %>
+      <% # put library id field here when we have it %>
+    <% end  %>
+    <%= f.fields_for :user, User.new do |uf| %>
+      <%= uf.text_field :name %>
+      <%= uf.email_field :email %>
+    <% end %>
+    <%= f.submit 'Send request', class: "btn btn-cardinal #{content_column_class} #{label_column_offset_class}" %>
+  </div>
+  <%= render partial: 'shared/back_to_login' %>
+<% end %>
