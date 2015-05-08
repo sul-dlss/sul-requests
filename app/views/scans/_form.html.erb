@@ -2,6 +2,9 @@
   <% unless @scan.persisted? %>
     <%= render partial: 'hidden_form_fields', locals: { f: f } %>
   <% end %>
+
+  <%= render partial: 'shared/item_selector', locals: { f: f } %>
+
   <%= f.fields_for :data do |d| %>
     <%= d.text_field :page_range, help: 'Example: 1-5, 8, 7-13' %>
     <%= d.text_area :section_title, rows: '3', label: 'Article title' %>

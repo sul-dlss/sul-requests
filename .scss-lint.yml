@@ -17,6 +17,11 @@ linters:
     enabled: true
     max_depth: 5
 
+  # We sometimes need to extend bootstrap classes
+  # but we don't have placeholder classes for them
+  PlaceholderInExtend:
+    enabled: false
+
   SelectorDepth:
     enabled: true
     max_depth: 5

@@ -48,6 +48,30 @@ describe Request do
     end
   end
 
+  describe '#holdings' do
+    describe 'when persisted' do
+      let(:subject) { create(:request_with_multiple_holdings, barcodes: ['12345678']) }
+      it 'should get the holdings from the requested location by the persisted barcodes' do
+        holdings = subject.holdings
+        expect(holdings).to be_a Array
+        expect(holdings.length).to eq 1
+        expect(holdings.first.barcode).to eq '12345678'
+        expect(holdings.first.callnumber).to eq 'ABC 123'
+      end
+    end
+
+    describe 'when not persisted' do
+      let(:subject) { build(:request_with_multiple_holdings) }
+      it 'should get all the holdings for the requested location' do
+        holdings = subject.holdings
+        expect(holdings).to be_a Array
+        expect(holdings.length).to eq 3
+        expect(holdings.first.barcode).to eq '12345678'
+        expect(holdings.last.barcode).to eq '12345679'
+      end
+    end
+  end
+
   describe 'nested attributes for' do
     describe 'users' do
       it 'should handle webauth users (w/o emails) correctly' do
@@ -132,11 +156,20 @@ describe Request do
   end
 
   describe '#data' do
+    let(:data_hash) { { a: :a, b: :b } }
     it 'should be a serialized hash' do
-      data_hash = { a: :a, b: :b }
       expect(subject.data).to eq({})
       subject.data = data_hash
       expect(subject.data).to eq data_hash
+    end
+  end
+
+  describe 'barcodes' do
+    let(:array) { %w(a b c) }
+    it 'should be a serialized array' do
+      expect(subject.barcodes).to eq([])
+      subject.barcodes = array
+      expect(subject.barcodes).to eq(array)
     end
   end
 

@@ -78,3 +78,7 @@ end
 def stub_current_user(user = create(:anon_user))
   allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
 end
+
+def stub_searchworks_api_json(json)
+  allow_any_instance_of(SearchworksItem).to receive(:json).and_return(json)
+end

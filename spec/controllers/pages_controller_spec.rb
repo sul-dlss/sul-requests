@@ -68,6 +68,16 @@ describe PagesController do
         expect(Page.last.origin).to eq 'GREEN'
         expect(Page.last.user).to eq user
       end
+      it 'should map checkbox style barcodes correctly' do
+        put :create, page: {
+          item_id: '1234',
+          origin: 'GREEN',
+          origin_location: 'STACKS',
+          barcodes: { '12345678' => '1', '87654321' => '0', '12345679' => '1' }
+        }
+        expect(response).to redirect_to successfull_page_path(Page.last)
+        expect(Page.last.barcodes).to eq(%w(12345678 12345679))
+      end
     end
     describe 'invalid requests' do
       let(:user) { create(:webauth_user) }

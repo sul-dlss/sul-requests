@@ -2,6 +2,13 @@
   <h1 id='dialogTitle'><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Request complete</h1>
   <%= render 'searchworks_item_information' %>
   <dl class='dl-horizontal'>
+    <% if @mediated_page.holdings.many? %>
+      <dt>Item(s) requested</dt>
+      <% @mediated_page.holdings.each do |holding| %>
+        <dd><%= holding.callnumber %></dd>
+      <% end  %>
+    <% end %>
+
     <% if @mediated_page.commentable? && @mediated_page.data['comments'].present? %>
       <dt>Item(s) requested</dt>
       <dd><%= @mediated_page.data['comments'] %></dd>

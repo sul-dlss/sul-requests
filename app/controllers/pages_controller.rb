@@ -49,12 +49,17 @@ class PagesController < RequestsController
                                  :item_id,
                                  :origin,
                                  :origin_location,
+                                 barcodes: [],
                                  data: [:comments],
                                  user_attributes: [:name, :email])
   end
 
   def update_params
     params.require(:page).permit(:needed_date)
+  end
+
+  def local_object_param
+    params[:page]
   end
 
   class UnpageableItemError < StandardError

@@ -44,8 +44,13 @@ class MediatedPagesController < RequestsController
                                           :origin,
                                           :origin_location,
                                           :needed_date,
+                                          barcodes: [],
                                           data: [:comments],
                                           user_attributes: [:name, :email])
+  end
+
+  def local_object_param
+    params[:mediated_page]
   end
 
   class UnmediateableItemError < StandardError
