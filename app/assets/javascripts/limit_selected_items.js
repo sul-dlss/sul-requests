@@ -2,7 +2,7 @@
   $.fn.limitSelectedItems = function() {
     this.each(function(){
       var itemSelector = $(this);
-      var limit = 5;
+      var limit = parseInt(itemSelector.data('limit-selected-items'), 10);
       var counter = $(itemSelector.data('counter-target'));
       var checkboxSelector = 'input[type="checkbox"]';
       var checkboxes = $(checkboxSelector, itemSelector);
@@ -17,7 +17,7 @@
           numberOfSelectedCheckboxes -= 1;
         }
 
-        if ( numberOfSelectedCheckboxes > limit ) {
+        if ( limit && numberOfSelectedCheckboxes > limit ) {
           e.preventDefault();
           $(this).prop('checked', false);
           numberOfSelectedCheckboxes -= 1;
@@ -32,5 +32,5 @@
 })(jQuery);
 
 $(document).on('ready page:load', function(){
-  $('[data-limit-selected-items="true"]').limitSelectedItems();
+  $('[data-limit-selected-items]').limitSelectedItems();
 });

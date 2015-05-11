@@ -16,7 +16,7 @@
           <a href="javascript:;" class="sort sort-callnumber btn btn-default pull-left" data-sort="callnumber">Call number <i></i></a>
           <a href="javascript:;" class="sort sort-status btn btn-default pull-right" data-sort="status">Status <i></i></a>
         </div>
-        <div id="item-selector" class="item-selector" data-limit-selected-items="true" data-counter-target="[data-items-counter='true']">
+        <div id="item-selector" class="item-selector" data-limit-selected-items="<%= f.object.item_limit %>" data-counter-target="[data-items-counter='true']">
           <div class='list'>
             <% f.object.holdings.each do |holding| %>
               <div class='input-group'>

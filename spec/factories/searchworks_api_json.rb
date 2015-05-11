@@ -139,11 +139,74 @@ FactoryGirl.define do
     end
   end
 
+  factory :many_holdings, class: Hash do
+    title 'Item title'
+
+    holdings [
+      { 'code' => 'GREEN',
+        'locations' => [
+          { 'code' => 'STACKS',
+            'items' => [
+              { 'barcode' => '12345678',
+                'callnumber' => 'ABC 123',
+                'status' => {
+                  'availability_class' => 'available',
+                  'status_text' => 'Available'
+                }
+              },
+              { 'barcode' => '23456789',
+                'callnumber' => 'ABC 456',
+                'status' => {
+                  'availability_class' => 'available',
+                  'status_text' => 'Available'
+                }
+              },
+              { 'barcode' => '34567890',
+                'callnumber' => 'ABC 789',
+                'status' => {
+                  'availability_class' => 'available',
+                  'status_text' => 'Available'
+                }
+              },
+              { 'barcode' => '45678901',
+                'callnumber' => 'ABC 012',
+                'status' => {
+                  'availability_class' => 'available',
+                  'status_text' => 'Available'
+                }
+              },
+              { 'barcode' => '56789012',
+                'callnumber' => 'ABC 345',
+                'status' => {
+                  'availability_class' => 'available',
+                  'status_text' => 'Available'
+                }
+              },
+              { 'barcode' => '67890123',
+                'callnumber' => 'ABC 678',
+                'status' => {
+                  'availability_class' => 'available',
+                  'status_text' => 'Available'
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+
+    initialize_with do
+      attributes.map do |k, h|
+        [k.to_s, h]
+      end.to_h
+    end
+  end
+
   factory :searchable_holdings, class: Hash do
     title 'Item Title'
 
     holdings [
-      { 'code' => 'GREEN',
+      { 'code' => 'SPEC-COLL',
         'locations' => [
           { 'code' => 'STACKS',
             'items' => [
