@@ -19,6 +19,19 @@ describe 'Creating a page request' do
 
       expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
     end
+
+    it 'should be possible if a library ID is filled out', js: true do
+      visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
+      click_link "I don't have a SUNet ID"
+
+      fill_in 'Library ID', with: '123456'
+
+      click_button 'Send request'
+
+      expect(Page.last.user).to eq User.last
+      expect(User.last.library_id).to eq '123456'
+      expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
+    end
   end
   describe 'by a webauth user' do
     before { stub_current_user(user) }

@@ -51,7 +51,7 @@ class PagesController < RequestsController
                                  :origin_location,
                                  barcodes: [],
                                  data: [:comments],
-                                 user_attributes: [:name, :email])
+                                 user_attributes: [:name, :email, :library_id])
   end
 
   def update_params

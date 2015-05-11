@@ -34,16 +34,29 @@ describe User do
     end
   end
   describe '#non_webauth_user?' do
-    before do
-      subject.name = 'Jane Stanford'
-      subject.email = 'jstanford@stanford.edu'
+    describe 'with name and email' do
+      before do
+        subject.name = 'Jane Stanford'
+        subject.email = 'jstanford@stanford.edu'
+      end
+      it 'should return true when the user has a name and email address but not a webauth ID' do
+        expect(subject).to be_non_webauth_user
+      end
+      it 'should return false when the user has a webauth ID' do
+        subject.webauth = 'jstanford'
+        expect(subject).to_not be_non_webauth_user
+      end
     end
-    it 'should return true when the user has a name and email address but not a webauth ID' do
-      expect(subject).to be_non_webauth_user
+  end
+  describe '#library_id_user?' do
+    it 'is true when the user has supplied a library ID' do
+      subject.library_id = '12345'
+      expect(subject).to be_library_id_user
     end
-    it 'should return false when the user has a webauth ID' do
+    it 'is false when the user has a webauth ID' do
       subject.webauth = 'jstanford'
-      expect(subject).to_not be_non_webauth_user
+      subject.library_id = '12345'
+      expect(subject).not_to be_library_id_user
     end
   end
   describe '#superadmin?' do

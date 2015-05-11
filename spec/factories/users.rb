@@ -44,6 +44,10 @@ FactoryGirl.define do
     email 'jstanford@stanford.edu'
   end
 
+  factory :library_id_user, class: User do
+    library_id '12345678'
+  end
+
   factory :anon_user, class: User do
   end
 end

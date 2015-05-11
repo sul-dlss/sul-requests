@@ -52,6 +52,44 @@ describe MediatedPagesController do
         expect(response.location).to match(/#{successfull_mediated_page_url(MediatedPage.last)}\?token=/)
         expect(MediatedPage.last.user).to eq User.last
       end
+      it 'should be allowed if the library ID field is filled out' do
+        put :create, mediated_page: {
+          item_id: '1234',
+          origin: 'SPEC-COLL',
+          origin_location: 'STACKS',
+          user_attributes: { library_id: '12345' }
+        }
+
+        expect(response.location).to match(/#{successfull_mediated_page_url(MediatedPage.last)}\?token=/)
+        expect(User.last.library_id).to eq '12345'
+        expect(MediatedPage.last.user).to eq User.last
+      end
+      describe 'for HOPKINS' do
+        it 'should not be by library ID' do
+          expect(
+            lambda do
+              put :create, mediated_page: {
+                item_id: '1234',
+                origin: 'HOPKINS',
+                origin_location: 'STACKS',
+                user_attributes: { library_id: '12345' }
+              }
+            end
+          ).to raise_error(CanCan::AccessDenied)
+        end
+        it 'should not be by name and email' do
+          expect(
+            lambda do
+              put :create, mediated_page: {
+                item_id: '1234',
+                origin: 'HOPKINS',
+                origin_location: 'STACKS',
+                user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }
+              }
+            end
+          ).to raise_error(CanCan::AccessDenied)
+        end
+      end
       describe 'via get' do
         it 'should raise an error' do
           expect(

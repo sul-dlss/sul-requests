@@ -66,7 +66,22 @@ describe Ability do
         end
       end
       describe 'when the library is HOPKINS' do
-        let(:mediated_page) { build(:mediated_page, user: user, origin: 'HOPKINS') }
+        before { mediated_page.origin = 'HOPKINS' }
+        it { is_expected.not_to be_able_to(:create, mediated_page) }
+      end
+    end
+
+    describe 'who fills out the library ID field' do
+      let(:user) { build(:library_id_user) }
+      let(:page) { build(:page, user: user) }
+      let(:mediated_page) { build(:mediated_page, user: user) }
+      let(:scan) { build(:scan, user: user) }
+      it { is_expected.to be_able_to(:create, page) }
+      it { is_expected.to be_able_to(:create, mediated_page) }
+      it { is_expected.to be_able_to(:create, mediated_page) }
+
+      describe 'when the library is HOPKINS' do
+        before { mediated_page.origin = 'HOPKINS' }
         it { is_expected.not_to be_able_to(:create, mediated_page) }
       end
     end

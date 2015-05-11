@@ -52,6 +52,18 @@ describe PagesController do
         expect(response.location).to match(/#{successfull_page_url(Page.last)}\?token=/)
         expect(Page.last.user).to eq User.last
       end
+      it 'should be allowed if the library ID field is filled out' do
+        put :create, page: {
+          item_id: '1234',
+          origin: 'GREEN',
+          origin_location: 'STACKS',
+          user_attributes: { library_id: '12345' }
+        }
+
+        expect(response.location).to match(/#{successfull_page_url(Page.last)}\?token=/)
+        expect(User.last.library_id).to eq '12345'
+        expect(Page.last.user).to eq User.last
+      end
       describe 'via get' do
         it 'should raise an error' do
           expect(

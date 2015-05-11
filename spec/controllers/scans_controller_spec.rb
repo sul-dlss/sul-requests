@@ -39,6 +39,30 @@ describe ScansController do
           )
         )
       end
+      it 'should not be allowed by users that only supply name and email' do
+        expect(
+          lambda do
+            put :create, scan: {
+              item_id: '1234',
+              origin: 'SAL3',
+              origin_location: 'STACKS',
+              user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }
+            }
+          end
+        ).to raise_error(CanCan::AccessDenied)
+      end
+      it 'should not be allowed by users that only supply a library id' do
+        expect(
+          lambda do
+            put :create, scan: {
+              item_id: '1234',
+              origin: 'SAL3',
+              origin_location: 'STACKS',
+              user_attributes: { library_id: '12345' }
+            }
+          end
+        ).to raise_error(CanCan::AccessDenied)
+      end
       describe 'via get' do
         it 'should raise an error' do
           expect(

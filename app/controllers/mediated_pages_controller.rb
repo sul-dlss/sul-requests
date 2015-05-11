@@ -46,7 +46,7 @@ class MediatedPagesController < RequestsController
                                           :needed_date,
                                           barcodes: [],
                                           data: [:comments],
-                                          user_attributes: [:name, :email])
+                                          user_attributes: [:name, :email, :library_id])
   end
 
   def local_object_param
