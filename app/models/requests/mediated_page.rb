@@ -24,6 +24,11 @@ class MediatedPage < Request
     false
   end
 
+  def item_limit
+    return 5 if origin == 'SPEC-COLL'
+    super
+  end
+
   private
 
   def commentable_library_whitelist

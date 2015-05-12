@@ -36,4 +36,15 @@ describe MediatedPage do
       it { is_expected.to be_requestable_with_sunet_only }
     end
   end
+
+  describe '#item_limit' do
+    it 'should be nil for normal libraries' do
+      expect(subject.item_limit).to be_nil
+    end
+
+    it 'should be 5 for items from SPEC-COLL' do
+      subject.origin = 'SPEC-COLL'
+      expect(subject.item_limit).to eq 5
+    end
+  end
 end

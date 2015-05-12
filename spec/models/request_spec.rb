@@ -78,6 +78,12 @@ describe Request do
     end
   end
 
+  describe '#item_limit' do
+    it 'is nil for the base request class' do
+      expect(subject.item_limit).to be_nil
+    end
+  end
+
   describe 'nested attributes for' do
     describe 'users' do
       it 'should handle webauth users (w/o emails) correctly' do

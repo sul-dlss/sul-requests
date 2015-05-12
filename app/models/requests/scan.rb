@@ -8,6 +8,10 @@ class Scan < Request
     true
   end
 
+  def item_limit
+    1
+  end
+
   private
 
   def scannable_validator
