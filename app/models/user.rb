@@ -9,13 +9,21 @@ class User < ActiveRecord::Base
   attr_writer :ldap_group_string
 
   def to_email_string
+    if non_webauth_user?
+      "#{name} (#{email_address})"
+    else
+      email_address
+    end
+  end
+
+  def email_address
     case
     when library_id_user?
       ''
     when webauth_user?
       "#{webauth}@stanford.edu"
     else
-      "#{name} (#{email})"
+      email
     end
   end
 

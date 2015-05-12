@@ -2,3 +2,5 @@
 token_encrypt:
   secret: 'OpCeOjbiQUwyyzoMzjtHnGbgfOthajiUqwbQuXNZRitkkQpvMPHILfcmkvikFcaN'
   salt: 'dcVNcekAYNIFtggdJXQpSkWHBpBVsVsPiRzCFpWbZGLrQtHKSdMBKIWKmYYIZnkbXuMisFlSkHbUmIimKMbjFMVDpfzyIRLvmLYBUparuPAaxYjPzdmFfRGBGgxfvwOR'
+
+mailer_host: 'localhost:3000'

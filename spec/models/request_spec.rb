@@ -10,14 +10,6 @@ describe Request do
     end
   end
 
-  describe 'scopes' do
-    it 'should default to be sorted by the origin' do
-      create(:request, origin: 'SAL3')
-      create(:request, origin: 'GREEN')
-      expect(Request.all.map(&:origin)).to eq %w(GREEN SAL3)
-    end
-  end
-
   describe '#scannable?' do
     it 'should be scannable if it is a SAL3 item in the STACKS location' do
       subject.origin = 'SAL3'
@@ -75,6 +67,17 @@ describe Request do
         expect(holdings.first.barcode).to eq '12345678'
         expect(holdings.last.barcode).to eq '12345679'
       end
+    end
+  end
+
+  describe '#data_to_email_s' do
+    it 'turns the serialized data hash into a string' do
+      subject.data = { 'page_range' => 'Range', 'authors' => 'Authors' }
+      expect(subject.data_to_email_s).to include('Page range:')
+      expect(subject.data_to_email_s).to include('Range')
+
+      expect(subject.data_to_email_s).to include('Author(s):')
+      expect(subject.data_to_email_s).to include('Authors')
     end
   end
 

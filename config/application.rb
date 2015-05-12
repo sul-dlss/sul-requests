@@ -13,6 +13,8 @@ module SULRequests
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
+    config.action_mailer.default_url_options = { host: Settings.mailer_host }
+
     require 'token_encryptor'
     # Load all request types automatically
     config.autoload_paths += %W( #{config.root}/app/models/requests )

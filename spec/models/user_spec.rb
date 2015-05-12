@@ -9,6 +9,31 @@ describe User do
       ).to raise_error(ActiveRecord::RecordInvalid)
     end
   end
+
+  describe '#email_address' do
+    describe 'for webauth users' do
+      it 'returns the Stanford email address' do
+        subject.webauth = 'jstanford'
+        expect(subject.email_address).to eq 'jstanford@stanford.edu'
+      end
+    end
+
+    describe 'for non-webauth users' do
+      it 'returns the user email address' do
+        subject.name = 'Jane Stanford'
+        subject.email = 'jstanford@example.com'
+        expect(subject.email_address).to eq 'jstanford@example.com'
+      end
+    end
+
+    describe 'for library ID users' do
+      it 'is blank' do
+        subject.library_id = '123456'
+        expect(subject.email_address).to be_blank
+      end
+    end
+  end
+
   describe '#to_email_string' do
     describe 'for webauth users' do
       it 'should be their Stanford email address' do
@@ -16,11 +41,19 @@ describe User do
         expect(subject.to_email_string).to eq 'jstanford@stanford.edu'
       end
     end
+
     describe 'for non-webauth users' do
       it 'should be their name plus their email in parenthesis' do
         subject.name = 'Jane Stanford'
         subject.email = 'jstanford@stanford.edu'
         expect(subject.to_email_string).to eq 'Jane Stanford (jstanford@stanford.edu)'
+      end
+    end
+
+    describe 'for library id users' do
+      it 'is blank' do
+        subject.library_id = '123456'
+        expect(subject.to_email_string).to be_blank
       end
     end
   end

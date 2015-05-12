@@ -9,11 +9,8 @@ class MediatedPagesController < RequestsController
 
   def create
     if @mediated_page.update(create_params_with_current_user)
-      if current_user.webauth_user?
-        redirect_to successfull_mediated_page_path(@mediated_page)
-      else
-        redirect_to successfull_mediated_page_path(@mediated_page, token: @mediated_page.encrypted_token)
-      end
+      @mediated_page.send_confirmation! unless @mediated_page.user.library_id_user?
+      redirect_to_success_with_token(@mediated_page)
     else
       flash[:error] = 'There was a problem creating your request.'
       render 'new'

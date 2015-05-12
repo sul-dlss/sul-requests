@@ -8,7 +8,7 @@
   <%= select_for_pickup_libraries(f).html_safe %>
   <% if @mediated_page.commentable? %>
     <%= f.fields_for :data do |d| %>
-      <%= d.text_area :comments, rows: 3 %>
+      <%= d.text_area :comments, rows: 3, label: t('forms.labels.comments') %>
     <% end %>
   <% end %>
 

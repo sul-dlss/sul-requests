@@ -32,7 +32,7 @@ describe Dashboard do
       create(:page, origin: 'SAL3')
     end
     it 'should return a grouped hash of requests' do
-      expect(subject.recent_requests.keys).to eq %w(GREEN SAL3 SPEC-COLL)
+      expect(subject.recent_requests.keys).to eq %w(SPEC-COLL GREEN SAL3 )
     end
   end
 end

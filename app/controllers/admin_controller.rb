@@ -7,6 +7,6 @@ class AdminController < ApplicationController
 
   def show
     authorize! :manage, Request.new(origin: params[:id]).library_location
-    @mediated_pages = MediatedPage.where(origin: params[:id])
+    @mediated_pages = MediatedPage.where(origin: params[:id]).order(:origin)
   end
 end

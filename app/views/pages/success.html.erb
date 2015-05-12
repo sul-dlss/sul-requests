@@ -10,14 +10,19 @@
     <% end %>
 
     <% if @page.commentable? && @page.data['comments'].present? %>
-      <dt>Item(s) requested</dt>
+      <dt><%= t('forms.page.labels.comments') %></dt>
       <dd><%= @page.data['comments'] %></dd>
     <% end %>
 
     <dt><%= label_for_pickup_libraries_dropdown(@page.library_location.pickup_libraries) %></dt>
     <dd><%= LibraryLocation.library_name_by_code(@page.destination) %></dd>
 
-    <dt><span class='sr-only'>User</span></dt>
-    <dd><%= @page.user.to_email_string %></dd>
+    <% unless @page.user.library_id_user? %>
+      <dt><span class='sr-only'>User</span></dt>
+      <dd>
+        <%= @page.user.to_email_string %>
+        <p class='help-block'>(We've sent a copy of this request to your email.)</p>
+      </dd>
+    <% end %>
   </dl>
 </div>
