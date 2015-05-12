@@ -4,6 +4,10 @@
 class Scan < Request
   validate :scannable_validator
 
+  def requestable_with_sunet_only?
+    true
+  end
+
   private
 
   def scannable_validator

@@ -14,6 +14,16 @@ class MediatedPage < Request
     commentable_library_whitelist.include?(origin)
   end
 
+  def requestable_by_all?
+    return false if origin == 'HOPKINS'
+    true
+  end
+
+  def requestable_with_sunet_only?
+    return true if origin == 'HOPKINS'
+    false
+  end
+
   private
 
   def commentable_library_whitelist
