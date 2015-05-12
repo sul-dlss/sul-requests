@@ -1,9 +1,15 @@
 <% unless f.object.requestable_with_sunet_only?  %>
   <div data-no-sunet-content='true' style='display:none;'>
-    <% if f.object.requestable_with_library_id? %>
-      <% # put library id field here when we have it %>
-    <% end  %>
     <%= f.fields_for :user, User.new do |uf| %>
+      <% if f.object.requestable_with_library_id? %>
+        <%= uf.text_field :library_id %>
+        <div class='form-group'>
+          <div class='<%= "#{label_column_offset_class} #{content_column_class}" %>'>
+            <h3>Don’t have a Library ID?</h3>
+            <p>Just let us know your name and email.</p>
+          </div>
+        </div>
+      <% end  %>
       <%= uf.text_field :name %>
       <%= uf.email_field :email %>
     <% end %>

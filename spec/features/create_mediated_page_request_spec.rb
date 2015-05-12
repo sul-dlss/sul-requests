@@ -25,6 +25,28 @@ describe 'Creating a mediated page request' do
 
       expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
     end
+
+    it 'should be possible if a library id is filled out', js: true do
+      visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+      click_link "I don't have a SUNet ID"
+
+      fill_in 'Library ID', with: '123456'
+
+      click_button 'Send request'
+
+      expect(MediatedPage.last.user).to eq User.last
+      expect(User.last.library_id).to eq '123456'
+      expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
+    end
+
+    it 'should not have library ID/name/email fields if the request is from HOPKINS' do
+      visit new_mediated_page_path(item_id: '1234', origin: 'HOPKINS', origin_location: 'STACKS')
+
+      expect(page).to_not have_link('I don\'t have a SUNet ID')
+      expect(page).to_not have_field('Library ID')
+      expect(page).to_not have_field('Name')
+      expect(page).to_not have_field('Email')
+    end
   end
   describe 'by a webauth user' do
     before { stub_current_user(user) }

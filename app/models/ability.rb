@@ -55,13 +55,19 @@ class Ability
     end
 
     can :create, Page do |page|
-      request_is_by_anonymous_user?(page) &&
-        page.requestable_by_all?
+      request_is_by_anonymous_user?(page) && page.requestable_by_all?
+    end
+
+    can :create, Page do |page|
+      request_is_by_library_id_user?(page) && page.requestable_with_library_id?
     end
 
     can :create, MediatedPage do |mediated_page|
-      request_is_by_anonymous_user?(mediated_page) &&
-        mediated_page.requestable_by_all?
+      request_is_by_anonymous_user?(mediated_page) && mediated_page.requestable_by_all?
+    end
+
+    can :create, MediatedPage do |mediated_page|
+      request_is_by_library_id_user?(mediated_page) && mediated_page.requestable_with_library_id?
     end
 
     # Only Webauth users can create scan requests (for now).
@@ -75,5 +81,9 @@ class Ability
 
   def request_is_by_anonymous_user?(request)
     request.user && request.user.non_webauth_user?
+  end
+
+  def request_is_by_library_id_user?(request)
+    request.user && request.user.library_id_user?
   end
 end
