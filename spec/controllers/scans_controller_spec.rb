@@ -81,7 +81,7 @@ describe ScansController do
       let(:user) { create(:webauth_user) }
       it 'should be allowed' do
         post :create, scan: { item_id: '1234', origin: 'SAL3', origin_location: 'STACKS' }
-        expect(response).to redirect_to successfull_scan_path(Scan.last)
+        expect(response).to redirect_to successful_scan_path(Scan.last)
         expect(Scan.last.origin).to eq 'SAL3'
         expect(Scan.last.user).to eq user
       end

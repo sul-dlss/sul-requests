@@ -58,9 +58,9 @@ class RequestsController < ApplicationController
 
   def redirect_to_success_with_token(request)
     if current_user.webauth_user?
-      redirect_to polymorphic_path([:successfull, request])
+      redirect_to polymorphic_path([:successful, request])
     else
-      redirect_to polymorphic_path([:successfull, request], token: request.encrypted_token)
+      redirect_to polymorphic_path([:successful, request], token: request.encrypted_token)
     end
   end
 end

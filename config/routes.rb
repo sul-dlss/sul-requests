@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 
   concern :successable do
     member do
-      get :success, as: :successfull
+      get :success, as: :successful
     end
   end
 

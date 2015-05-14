@@ -49,7 +49,7 @@ describe PagesController do
           user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }
         }
 
-        expect(response.location).to match(/#{successfull_page_url(Page.last)}\?token=/)
+        expect(response.location).to match(/#{successful_page_url(Page.last)}\?token=/)
         expect(Page.last.user).to eq User.last
       end
       it 'should be allowed if the library ID field is filled out' do
@@ -60,7 +60,7 @@ describe PagesController do
           user_attributes: { library_id: '12345' }
         }
 
-        expect(response.location).to match(/#{successfull_page_url(Page.last)}\?token=/)
+        expect(response.location).to match(/#{successful_page_url(Page.last)}\?token=/)
         expect(User.last.library_id).to eq '12345'
         expect(Page.last.user).to eq User.last
       end
@@ -76,7 +76,7 @@ describe PagesController do
       let(:user) { create(:webauth_user) }
       it 'should be allowed' do
         post :create, page: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS' }
-        expect(response).to redirect_to successfull_page_path(Page.last)
+        expect(response).to redirect_to successful_page_path(Page.last)
         expect(Page.last.origin).to eq 'GREEN'
         expect(Page.last.user).to eq user
       end
@@ -87,7 +87,7 @@ describe PagesController do
           origin_location: 'STACKS',
           barcodes: { '12345678' => '1', '87654321' => '0', '12345679' => '1' }
         }
-        expect(response).to redirect_to successfull_page_path(Page.last)
+        expect(response).to redirect_to successful_page_path(Page.last)
         expect(Page.last.barcodes).to eq(%w(12345678 12345679))
       end
       it 'sends an confirmation email' do

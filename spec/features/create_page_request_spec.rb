@@ -39,7 +39,7 @@ describe 'Creating a page request' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
       click_button 'Send request'
 
-      expect(current_url).to eq successfull_page_url(Page.last)
+      expect(current_url).to eq successful_page_url(Page.last)
       expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
     end
   end
