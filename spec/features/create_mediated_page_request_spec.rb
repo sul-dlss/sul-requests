@@ -54,7 +54,7 @@ describe 'Creating a mediated page request' do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
       click_button 'Send request'
 
-      expect(current_url).to eq successfull_mediated_page_url(MediatedPage.last)
+      expect(current_url).to eq successful_mediated_page_url(MediatedPage.last)
       expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
     end
   end

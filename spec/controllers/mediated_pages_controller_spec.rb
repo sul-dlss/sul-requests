@@ -49,7 +49,7 @@ describe MediatedPagesController do
           user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }
         }
 
-        expect(response.location).to match(/#{successfull_mediated_page_url(MediatedPage.last)}\?token=/)
+        expect(response.location).to match(/#{successful_mediated_page_url(MediatedPage.last)}\?token=/)
         expect(MediatedPage.last.user).to eq User.last
       end
       it 'should be allowed if the library ID field is filled out' do
@@ -60,7 +60,7 @@ describe MediatedPagesController do
           user_attributes: { library_id: '12345' }
         }
 
-        expect(response.location).to match(/#{successfull_mediated_page_url(MediatedPage.last)}\?token=/)
+        expect(response.location).to match(/#{successful_mediated_page_url(MediatedPage.last)}\?token=/)
         expect(User.last.library_id).to eq '12345'
         expect(MediatedPage.last.user).to eq User.last
       end
@@ -102,7 +102,7 @@ describe MediatedPagesController do
       let(:user) { create(:webauth_user) }
       it 'should be allowed' do
         post :create, mediated_page: { item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS' }
-        expect(response).to redirect_to successfull_mediated_page_path(MediatedPage.last)
+        expect(response).to redirect_to successful_mediated_page_path(MediatedPage.last)
         expect(MediatedPage.last.origin).to eq 'SPEC-COLL'
         expect(MediatedPage.last.user).to eq user
       end
