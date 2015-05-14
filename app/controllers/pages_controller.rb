@@ -9,7 +9,7 @@ class PagesController < RequestsController
 
   def create
     if @page.update(create_params_with_current_user)
-      @page.send_confirmation! unless @page.user.library_id_user?
+      @page.send_confirmation!
       redirect_to_success_with_token(@page)
     else
       flash[:error] = 'There was a problem creating your request.'

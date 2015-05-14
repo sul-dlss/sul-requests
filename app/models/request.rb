@@ -26,6 +26,7 @@ class Request < ActiveRecord::Base
   end
 
   def send_confirmation!
+    return nil if user.library_id_user?
     ConfirmationMailer.request_confirmation(self).deliver_later
   end
 

@@ -188,6 +188,26 @@ describe Request do
     end
   end
 
+  describe 'send_confirmation!' do
+    describe 'for library id users' do
+      it 'does not send a confirmation email' do
+        subject.user = create(:library_id_user)
+        expect(
+          -> { subject.send_confirmation! }
+        ).to_not change { ConfirmationMailer.deliveries.count }
+      end
+    end
+
+    describe 'for everybody else' do
+      let(:subject) { create(:page, user: create(:webauth_user)) }
+      it 'sends a confirmation email' do
+        expect(
+          -> { subject.send_confirmation! }
+        ).to change { ConfirmationMailer.deliveries.count }.by(1)
+      end
+    end
+  end
+
   describe 'mediateable_origins' do
     before do
       create(:mediated_page)
