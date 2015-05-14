@@ -6,6 +6,7 @@ AllCops:
     - 'config/**/*'
     - 'spec/spec_helper.rb'
     - 'vendor/**/*'
+  RunRailsCops: true
 
 Metrics/LineLength:
   Max: 120

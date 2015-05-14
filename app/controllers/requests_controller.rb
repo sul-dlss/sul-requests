@@ -3,9 +3,9 @@
 #  Other request type specific controllers will handle behaviors for their particular types.
 ###
 class RequestsController < ApplicationController
-  before_filter :modify_item_selector_checkboxes, only: :create
+  before_action :modify_item_selector_checkboxes, only: :create
   load_and_authorize_resource
-  before_filter :validate_new_params, only: :new
+  before_action :validate_new_params, only: :new
 
   def new
     request_defaults(@request)
