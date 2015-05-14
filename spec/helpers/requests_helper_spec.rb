@@ -40,7 +40,7 @@ describe RequestsHelper do
   end
   describe 'format date' do
     it 'should format a date' do
-      expect(format_date('2015-04-23 10:12:14 UTC')).to eq '2015-04-23 10:12am'
+      expect(format_date('2015-04-23 10:12:14')).to eq '2015-04-23 10:12am'
     end
   end
   describe 'searchworks link' do

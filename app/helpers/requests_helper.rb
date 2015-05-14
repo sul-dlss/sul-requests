@@ -43,7 +43,7 @@ module RequestsHelper
   end
 
   def format_date(date)
-    Time.parse(date.to_s).strftime('%Y-%m-%d %I:%M%P')
+    Time.zone.parse(date.to_s).strftime('%Y-%m-%d %I:%M%P')
   end
 
   def searchworks_link(item_id, item_title)
