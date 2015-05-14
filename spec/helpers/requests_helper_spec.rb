@@ -43,6 +43,12 @@ describe RequestsHelper do
       expect(format_date('2015-04-23 10:12:14')).to eq '2015-04-23 10:12am'
     end
   end
+  describe 'todays date' do
+    it 'should return todays date' do
+      allow(Time).to receive(:now).and_return(Time.parse('2015-12-31'))
+      expect(todays_date()).to eq '2015-12-31'
+    end
+  end
   describe 'searchworks link' do
     it 'should construct a searchworks link' do
       expect(searchworks_link('234', 'A title')).to eq '<a href="http://searchworks.stanford.edu/view/234">A title</a>'

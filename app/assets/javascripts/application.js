@@ -13,6 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require wet-boew/wet-boew
+//= require wet-boew/polyfills/datepicker
 //= require bootstrap/alert
 //= require list.min.js
 //= require_tree .

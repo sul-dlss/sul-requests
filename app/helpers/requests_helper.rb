@@ -16,6 +16,10 @@ module RequestsHelper
     end
   end
 
+  def label_for_needed_date()
+    'Planned date of use'
+  end
+
   private
 
   def select_for_multiple_libraries(form, pickup_libraries)
@@ -44,6 +48,10 @@ module RequestsHelper
 
   def format_date(date)
     Time.zone.parse(date.to_s).strftime('%Y-%m-%d %I:%M%P')
+  end
+
+  def todays_date()
+    Time.parse(Time.now.to_s).strftime('%Y-%m-%d')
   end
 
   def searchworks_link(item_id, item_title)
