@@ -3,8 +3,6 @@
 #  STI and sub-class this main request class.
 ###
 class Request < ActiveRecord::Base
-  default_scope { order(:origin) }
-
   delegate :scannable?, :mediateable?, :pageable?, to: :library_location
 
   validates :item_id, :origin, :origin_location, presence: true
@@ -25,6 +23,10 @@ class Request < ActiveRecord::Base
 
   def searchworks_item
     @searchworks_item ||= SearchworksItem.new(self)
+  end
+
+  def send_confirmation!
+    ConfirmationMailer.request_confirmation(self).deliver_later
   end
 
   def commentable?
@@ -93,6 +95,15 @@ class Request < ActiveRecord::Base
 
   def item_limit
     nil
+  end
+
+  def data_to_email_s
+    %w(comments page_range section_title authors).map do |field|
+      if (data_field = data[field]).present?
+        "#{I18n.t("forms.#{self.class.name}.labels.#{field}",
+                  default: I18n.t("forms.labels.#{field}"))}:\n  #{data_field}"
+      end
+    end.compact.join("\n")
   end
 
   class << self

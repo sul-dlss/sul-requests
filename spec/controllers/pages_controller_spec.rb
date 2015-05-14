@@ -90,6 +90,17 @@ describe PagesController do
         expect(response).to redirect_to successfull_page_path(Page.last)
         expect(Page.last.barcodes).to eq(%w(12345678 12345679))
       end
+      it 'sends an confirmation email' do
+        expect(
+          lambda do
+            put :create, page: {
+              item_id: '1234',
+              origin: 'GREEN',
+              origin_location: 'STACKS'
+            }
+          end
+        ).to change { ConfirmationMailer.deliveries.count }.by(1)
+      end
     end
     describe 'invalid requests' do
       let(:user) { create(:webauth_user) }

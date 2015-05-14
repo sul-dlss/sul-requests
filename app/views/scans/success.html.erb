@@ -11,20 +11,25 @@
 
     <% if @scan.data.present? %>
       <% if (page_range = @scan.data['page_range']).present? %>
-        <dt>Page range</dt>
+        <dt><%= t('forms.labels.page_range') %></dt>
         <dd><%= page_range %></dd>
       <% end %>
       <% if (section_title = @scan.data['section_title']).present? %>
-        <dt>Article title</dt>
+        <dt><%= t('forms.labels.section_title') %></dt>
         <dd><%= section_title %></dd>
       <% end %>
       <% if (authors = @scan.data['authors']).present? %>
-        <dt>Author(s)</dt>
+        <dt><%= t('forms.labels.authors') %></dt>
         <dd><%= authors %></dd>
       <% end %>
     <% end %>
 
-    <dt><span class='sr-only'>User</span></dt>
-    <dd><%= @scan.user.to_email_string %></dd>
+    <% unless @scan.user.library_id_user? %>
+      <dt><span class='sr-only'>User</span></dt>
+      <dd>
+        <%= @scan.user.to_email_string %>
+        <p class='help-block'>(We've sent a copy of this request to your email.)</p>
+      </dd>
+    <% end %>
   </dl>
 </div>

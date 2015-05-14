@@ -64,7 +64,7 @@ describe 'Creating a mediated page request' do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
 
       comment = '1989, Mar: Le Monde'
-      fill_in 'Comments', with: comment
+      fill_in 'Comment', with: comment
 
       click_button 'Send request'
 

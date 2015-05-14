@@ -106,6 +106,18 @@ describe MediatedPagesController do
         expect(MediatedPage.last.origin).to eq 'SPEC-COLL'
         expect(MediatedPage.last.user).to eq user
       end
+
+      it 'sends an confirmation email' do
+        expect(
+          lambda do
+            put :create, mediated_page: {
+              item_id: '1234',
+              origin: 'SPEC-COLL',
+              origin_location: 'STACKS'
+            }
+          end
+        ).to change { ConfirmationMailer.deliveries.count }.by(1)
+      end
     end
     describe 'invalid requests' do
       let(:user) { create(:webauth_user) }

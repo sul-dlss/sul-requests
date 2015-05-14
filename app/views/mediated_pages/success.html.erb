@@ -10,14 +10,19 @@
     <% end %>
 
     <% if @mediated_page.commentable? && @mediated_page.data['comments'].present? %>
-      <dt>Item(s) requested</dt>
+      <dt><dt><%= t("forms.mediated_page.labels.comments") %></dt>
       <dd><%= @mediated_page.data['comments'] %></dd>
     <% end %>
 
     <dt><%= label_for_pickup_libraries_dropdown(@mediated_page.library_location.pickup_libraries) %></dt>
     <dd><%= LibraryLocation.library_name_by_code(@mediated_page.destination) %></dd>
 
-    <dt><span class='sr-only'>User</span></dt>
-    <dd><%= @mediated_page.user.to_email_string %></dd>
+    <% unless @mediated_page.user.library_id_user? %>
+      <dt><span class='sr-only'>User</span></dt>
+      <dd>
+        <%= @mediated_page.user.to_email_string %>
+        <p class='help-block'>(We've sent a copy of this request to your email.)</p>
+      </dd>
+    <% end %>
   </dl>
 </div>

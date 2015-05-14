@@ -85,6 +85,18 @@ describe ScansController do
         expect(Scan.last.origin).to eq 'SAL3'
         expect(Scan.last.user).to eq user
       end
+
+      it 'sends an confirmation email' do
+        expect(
+          lambda do
+            put :create, scan: {
+              item_id: '1234',
+              origin: 'SAL3',
+              origin_location: 'STACKS'
+            }
+          end
+        ).to change { ConfirmationMailer.deliveries.count }.by(1)
+      end
     end
     describe 'invalid requests' do
       let(:user) { create(:webauth_user) }

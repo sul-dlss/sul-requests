@@ -55,4 +55,12 @@ class RequestsController < ApplicationController
   def local_object_param
     fail NotImplementedError
   end
+
+  def redirect_to_success_with_token(request)
+    if current_user.webauth_user?
+      redirect_to polymorphic_path([:successfull, request])
+    else
+      redirect_to polymorphic_path([:successfull, request], token: request.encrypted_token)
+    end
+  end
 end
