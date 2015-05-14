@@ -10,6 +10,9 @@
     <dt><%= label_for_pickup_libraries_dropdown(@mediated_page.library_location.pickup_libraries) %></dt>
     <dd><%= LibraryLocation.library_name_by_code(@mediated_page.destination) %></dd>
 
+    <dt><%= label_for_needed_date %></dt>
+    <dd><%= @mediated_page.needed_date %></dd>
+
     <dt><span class='sr-only'>User</span></dt>
     <dd><%= @mediated_page.user.to_email_string %></dd>
   </dl>

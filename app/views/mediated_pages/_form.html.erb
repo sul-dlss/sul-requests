@@ -4,6 +4,9 @@
   <% end %>
 
   <%= select_for_pickup_libraries(f).html_safe %>
+
+  <%= render partial: 'shared/needed_date', locals: { f: f } %>
+
   <% if @mediated_page.commentable? %>
     <%= f.fields_for :data do |d| %>
       <%= d.text_area :comments, rows: 3 %>

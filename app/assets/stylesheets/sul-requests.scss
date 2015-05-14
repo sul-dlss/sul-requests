@@ -4,6 +4,9 @@
 @import 'base';
 @import 'layout';
 
+// vendor assets
+@import 'wet-boew/polyfills/datepicker.min';
+
 @import 'modules/admin';
 @import 'modules/buttons';
 @import 'modules/flashes';
