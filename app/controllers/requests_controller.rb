@@ -12,12 +12,17 @@ class RequestsController < ApplicationController
     if @request.scannable?
       render
     else
-      @request.delegate_request!
-      redirect_to new_polymorphic_path(@request.type.underscore, params.except(:controller, :action))
+      redirect_to delegated_new_request_path(@request)
     end
   end
 
   protected
+
+  def delegated_new_request_path(request)
+    request.delegate_request!
+    new_polymorphic_path(request.type.underscore, params.except(:controller, :action))
+  end
+  helper_method :delegated_new_request_path
 
   def validate_new_params
     params.require(:origin)
