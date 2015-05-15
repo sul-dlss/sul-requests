@@ -9,7 +9,7 @@ class ScansController < RequestsController
 
   def create
     if @scan.update(create_params.merge(user_id: current_user.id))
-      @scan.send_confirmation! unless @scan.user.library_id_user?
+      @scan.send_confirmation!
       redirect_to successful_scan_path(@scan)
     else
       flash[:error] = 'There was a problem creating your scan request.'

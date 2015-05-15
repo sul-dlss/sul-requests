@@ -9,7 +9,7 @@ class MediatedPagesController < RequestsController
 
   def create
     if @mediated_page.update(create_params_with_current_user)
-      @mediated_page.send_confirmation! unless @mediated_page.user.library_id_user?
+      @mediated_page.send_confirmation!
       redirect_to_success_with_token(@mediated_page)
     else
       flash[:error] = 'There was a problem creating your request.'
