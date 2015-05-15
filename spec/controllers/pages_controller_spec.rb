@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 describe PagesController do
-  let(:page) { create(:page, item_id: '1234', origin: 'GREEN', origin_location: 'STACKS') }
+  let(:page) { create(:page) }
   let(:normal_params) do
-    { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS' }
+    { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'BIOLOGY' }
   end
   before do
     allow(controller).to receive_messages(current_user: user)
@@ -23,7 +23,7 @@ describe PagesController do
     it 'should raise an error when the item is not pageable' do
       expect(
         lambda do
-          get :new, item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS'
+          get :new, item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'BIOLOGY'
         end
       ).to raise_error(PagesController::UnpageableItemError)
     end
@@ -32,11 +32,11 @@ describe PagesController do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
       it 'should redirect to the login page passing a refferrer param to continue creating the page request' do
-        post :create, page: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS' }
+        post :create, page: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'BIOLOGY' }
         expect(response).to redirect_to(
           login_path(
             referrer: create_pages_path(
-              page: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS' }
+              page: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'BIOLOGY' }
             )
           )
         )
@@ -46,6 +46,7 @@ describe PagesController do
           item_id: '1234',
           origin: 'GREEN',
           origin_location: 'STACKS',
+          destination: 'BIOLOGY',
           user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }
         }
 
@@ -57,6 +58,7 @@ describe PagesController do
           item_id: '1234',
           origin: 'GREEN',
           origin_location: 'STACKS',
+          destination: 'BIOLOGY',
           user_attributes: { library_id: '12345' }
         }
 
@@ -67,7 +69,11 @@ describe PagesController do
       describe 'via get' do
         it 'should raise an error' do
           expect(
-            -> { get :create, page: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS' } }
+            lambda do
+              get :create, page: {
+                item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'BIOLOGY'
+              }
+            end
           ).to raise_error(CanCan::AccessDenied)
         end
       end
@@ -75,7 +81,7 @@ describe PagesController do
     describe 'by webauth users' do
       let(:user) { create(:webauth_user) }
       it 'should be allowed' do
-        post :create, page: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS' }
+        post :create, page: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'BIOLOGY' }
         expect(response).to redirect_to successful_page_path(Page.last)
         expect(Page.last.origin).to eq 'GREEN'
         expect(Page.last.user).to eq user
@@ -85,6 +91,7 @@ describe PagesController do
           item_id: '1234',
           origin: 'GREEN',
           origin_location: 'STACKS',
+          destination: 'BIOLOGY',
           barcodes: { '12345678' => '1', '87654321' => '0', '12345679' => '1' }
         }
         expect(response).to redirect_to successful_page_path(Page.last)
@@ -96,7 +103,8 @@ describe PagesController do
             put :create, page: {
               item_id: '1234',
               origin: 'GREEN',
-              origin_location: 'STACKS'
+              origin_location: 'STACKS',
+              destination: 'BIOLOGY'
             }
           end
         ).to change { ConfirmationMailer.deliveries.count }.by(1)

@@ -3,6 +3,8 @@
 ###
 class Page < Request
   validate :page_validator
+  validates :destination, presence: true
+  validate :destination_is_a_pickup_library
 
   include TokenEncryptable
 

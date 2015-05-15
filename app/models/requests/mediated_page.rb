@@ -3,6 +3,8 @@
 ###
 class MediatedPage < Request
   validate :mediated_page_validator
+  validates :destination, presence: true
+  validate :destination_is_a_pickup_library
 
   include TokenEncryptable
 
