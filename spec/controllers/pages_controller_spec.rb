@@ -87,6 +87,7 @@ describe PagesController do
         expect(Page.last.user).to eq user
       end
       it 'should map checkbox style barcodes correctly' do
+        stub_searchworks_api_json(build(:multiple_holdings))
         put :create, page: {
           item_id: '1234',
           origin: 'GREEN',

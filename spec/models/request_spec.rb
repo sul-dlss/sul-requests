@@ -8,6 +8,29 @@ describe Request do
       expect(-> { Request.create! }).to raise_error(ActiveRecord::RecordInvalid)
       expect(-> { Request.create! }).to raise_error(ActiveRecord::RecordInvalid)
     end
+
+    it 'requires that the requested barcodes exist in the holdings of the requested location' do
+      stub_searchworks_api_json(build(:multiple_holdings))
+      expect(
+        lambda do
+          Request.create!(
+            item_id: '1234',
+            origin: 'GREEN',
+            origin_location: 'STACKS',
+            barcodes: %w(9999999 12345678)
+          )
+        end
+      ).to raise_error(
+        ActiveRecord::RecordInvalid, 'Validation failed: A selected item is not located in the requested location'
+      )
+      Request.create!(
+        item_id: '1234',
+        origin: 'GREEN',
+        origin_location: 'STACKS',
+        barcodes: %w(12345678)
+      )
+      expect(Request.last.barcodes).to eq %w(12345678)
+    end
   end
 
   describe '#scannable?' do
