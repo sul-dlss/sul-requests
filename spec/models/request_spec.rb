@@ -134,7 +134,7 @@ describe Request do
   end
 
   describe 'item_title' do
-    it 'should fetch the item title on object creation' do
+    it 'should fetch the item title on object creation', allow_apis: true do
       Request.create!(item_id: '2824966', origin: 'GREEN', origin_location: 'STACKS')
       expect(Request.last.item_title).to eq 'When do you need an antacid? : a burning question'
     end
