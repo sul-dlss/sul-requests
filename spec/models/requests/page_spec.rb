@@ -14,8 +14,14 @@ describe Page do
   describe 'validation' do
     it 'should not allow mediated pages to be created' do
       expect(
-        -> { Page.create!(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS') }
+        -> { Page.create!(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'SPEC-COLL') }
       ).to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: This item is not pageable')
+    end
+
+    it 'does not not allow pages to be created with destinations that are not valid pickup libraries of their origin' do
+      expect(
+        -> { Page.create!(item_id: '1234', origin: 'ARS', origin_location: 'STACKS', destination: 'GREEN') }
+      ).to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Destination is not a valid pickup library')
     end
   end
 

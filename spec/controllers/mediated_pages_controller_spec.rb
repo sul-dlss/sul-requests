@@ -3,7 +3,7 @@ require 'rails_helper'
 describe MediatedPagesController do
   let(:mediated_page) { create(:mediated_page) }
   let(:normal_params) do
-    { item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS' }
+    { item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'SPEC-COLL' }
   end
   before do
     allow(controller).to receive_messages(current_user: user)
@@ -23,7 +23,7 @@ describe MediatedPagesController do
     it 'should raise an error if the item is unmediateable' do
       expect(
         lambda do
-          get :new, item_id: '1234', origin: 'GREEN', origin_location: 'STACKS'
+          get :new, item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'BIOLOGY'
         end
       ).to raise_error(MediatedPagesController::UnmediateableItemError)
     end
@@ -32,11 +32,13 @@ describe MediatedPagesController do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
       it 'should redirect to the login page passing a refferrer param to continue creating the mediated page request' do
-        post :create, mediated_page: { item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS' }
+        post :create, mediated_page: {
+          item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'SPEC-COLL'
+        }
         expect(response).to redirect_to(
           login_path(
             referrer: create_mediated_pages_path(
-              page: { item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS' }
+              page: { item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'SPEC-COLL' }
             )
           )
         )
@@ -46,6 +48,7 @@ describe MediatedPagesController do
           item_id: '1234',
           origin: 'SPEC-COLL',
           origin_location: 'STACKS',
+          destination: 'SPEC-COLL',
           user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }
         }
 
@@ -57,6 +60,7 @@ describe MediatedPagesController do
           item_id: '1234',
           origin: 'SPEC-COLL',
           origin_location: 'STACKS',
+          destination: 'SPEC-COLL',
           user_attributes: { library_id: '12345' }
         }
 
@@ -72,6 +76,7 @@ describe MediatedPagesController do
                 item_id: '1234',
                 origin: 'HOPKINS',
                 origin_location: 'STACKS',
+                destination: 'GREEN',
                 user_attributes: { library_id: '12345' }
               }
             end
@@ -84,6 +89,7 @@ describe MediatedPagesController do
                 item_id: '1234',
                 origin: 'HOPKINS',
                 origin_location: 'STACKS',
+                destination: 'GREEN',
                 user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }
               }
             end
@@ -93,7 +99,11 @@ describe MediatedPagesController do
       describe 'via get' do
         it 'should raise an error' do
           expect(
-            -> { get :create, mediated_page: { item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS' } }
+            lambda do
+              get :create, mediated_page: {
+                item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'SPEC-COLL'
+              }
+            end
           ).to raise_error(CanCan::AccessDenied)
         end
       end
@@ -101,7 +111,9 @@ describe MediatedPagesController do
     describe 'by webauth users' do
       let(:user) { create(:webauth_user) }
       it 'should be allowed' do
-        post :create, mediated_page: { item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS' }
+        post :create, mediated_page: {
+          item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'SPEC-COLL'
+        }
         expect(response).to redirect_to successful_mediated_page_path(MediatedPage.last)
         expect(MediatedPage.last.origin).to eq 'SPEC-COLL'
         expect(MediatedPage.last.user).to eq user
@@ -113,7 +125,8 @@ describe MediatedPagesController do
             put :create, mediated_page: {
               item_id: '1234',
               origin: 'SPEC-COLL',
-              origin_location: 'STACKS'
+              origin_location: 'STACKS',
+              destination: 'SPEC-COLL'
             }
           end
         ).to change { ConfirmationMailer.deliveries.count }.by(1)

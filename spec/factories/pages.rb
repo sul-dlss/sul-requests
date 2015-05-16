@@ -3,6 +3,7 @@ FactoryGirl.define do
     item_id '1234'
     origin 'GREEN'
     origin_location 'STACKS'
+    destination 'BIOLOGY'
     item_title 'Title for Page 1234'
   end
 
@@ -10,6 +11,7 @@ FactoryGirl.define do
     item_id '1234'
     origin 'GREEN'
     origin_location 'STACKS'
+    destination 'BIOLOGY'
 
     after(:build) do |page|
       class << page
