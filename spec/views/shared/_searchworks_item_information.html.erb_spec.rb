@@ -13,7 +13,7 @@ describe 'shared/_searchworks_item_information.html.erb' do
   end
   describe 'non-persisted scans' do
     let(:request) { Scan.new(item_id: '2824966') }
-    it 'should display the API fetched item title in an h2' do
+    it 'should display the API fetched item title in an h2', allow_apis: true do
       expect(rendered).to have_css('h2', text: /When do you need an antacid\? : a burning question/)
     end
   end

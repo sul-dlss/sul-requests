@@ -12,9 +12,9 @@ describe SearchworksItem do
       expect(subject.send(:url)).to eq("#{Settings.searchworks_api}/view/123/availability")
     end
   end
-  describe '#json' do
+  describe '#json', allow_apis: true do
     let(:json) { subject.send(:json) }
-    it 'should return json as the body of the response object' do
+    it 'should return json as the body of the response object', allow_apis: true do
       expect(json).to be_a Hash
       expect(json).to have_key 'title'
       expect(json).to have_key 'holdings'
@@ -46,7 +46,7 @@ describe SearchworksItem do
       }
     end
     let(:empty_json) { {} }
-    describe 'for a connection failure' do
+    describe 'for a connection failure', allow_apis: true do
       before do
         allow(subject).to receive_messages(url: Settings.searchworks_api.gsub('searchworks', 'searchwroks'))
       end

@@ -30,6 +30,16 @@ Capybara.javascript_driver = :poltergeist
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.maintain_test_schema!
 
+# Module that when included causes RSpec to
+# stup our API requests. We can then explicitly
+# allow them in tests that need them by adding
+# allow_apis: true to the tests themselves
+module DisallowAPIs
+  def self.included(host)
+    host.metadata[:allow_apis] = false
+  end
+end
+
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -45,6 +55,11 @@ RSpec.configure do |config|
 
   config.before(:each) do
     DatabaseCleaner.strategy = :transaction
+  end
+
+  config.include DisallowAPIs
+  config.before(:each, allow_apis: false) do
+    stub_searchworks_api_json({})
   end
 
   config.before(:each, js: true) do
