@@ -1,4 +1,6 @@
 a {
+  border-bottom: 1px dotted $sul-link-border-color;
+
   &.disabled {
     color: $gray-ccc;
     cursor: not-allowed;

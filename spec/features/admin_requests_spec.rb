@@ -61,6 +61,16 @@ describe 'Viewing all requests' do
 
         expect(page).to have_css('table tbody tr', count: 1)
       end
+
+      it 'paginates the data' do
+        visit admin_path('SPEC-COLL', per_page: 1)
+
+        expect(page).to have_css('.pagination')
+
+        click_on 'Next ›'
+
+        expect(page).to have_selector('.pagination .disabled', text: 'Next ›')
+      end
     end
   end
 
