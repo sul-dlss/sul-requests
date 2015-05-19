@@ -2,6 +2,8 @@ FactoryGirl.define do
   factory :multiple_holdings, class: Hash do
     title 'Item Title'
 
+    format ['Book']
+
     holdings [
       { 'code' => 'GREEN',
         'locations' => [
@@ -9,6 +11,7 @@ FactoryGirl.define do
             'items' => [
               { 'barcode' => '12345678',
                 'callnumber' => 'ABC 123',
+                'type' => 'STKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -16,6 +19,7 @@ FactoryGirl.define do
               },
               { 'barcode' => '87654321',
                 'callnumber' => 'ABC 321',
+                'type' => 'STKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -23,6 +27,7 @@ FactoryGirl.define do
               },
               { 'barcode' => '12345679',
                 'callnumber' => 'ABC 456',
+                'type' => 'STKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -44,6 +49,8 @@ FactoryGirl.define do
   factory :single_holding, class: Hash do
     title 'Item Title'
 
+    format ['Book']
+
     holdings [
       { 'code' => 'GREEN',
         'locations' => [
@@ -51,6 +58,7 @@ FactoryGirl.define do
             'items' => [
               { 'barcode' => '12345678',
                 'callnumber' => 'ABC 123',
+                'type' => 'STKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -72,6 +80,8 @@ FactoryGirl.define do
   factory :special_collections_holdings, class: Hash do
     title 'Special Collections Item Title'
 
+    format ['Book']
+
     holdings [
       { 'code' => 'SPEC-COLL',
         'locations' => [
@@ -79,6 +89,7 @@ FactoryGirl.define do
             'items' => [
               { 'barcode' => '12345678',
                 'callnumber' => 'ABC 123',
+                'type' => 'STKS',
                 'status' => {
                   'availability_class' => 'page',
                   'status_text' => 'Page'
@@ -86,6 +97,7 @@ FactoryGirl.define do
               },
               { 'barcode' => '87654321',
                 'callnumber' => 'ABC 321',
+                'type' => 'STKS',
                 'status' => {
                   'availability_class' => 'page',
                   'status_text' => 'Page'
@@ -107,6 +119,8 @@ FactoryGirl.define do
   factory :sal3_holdings, class: Hash do
     title 'SAL3 Item Title'
 
+    format ['Book']
+
     holdings [
       { 'code' => 'SAL3',
         'locations' => [
@@ -114,6 +128,7 @@ FactoryGirl.define do
             'items' => [
               { 'barcode' => '12345678',
                 'callnumber' => 'ABC 123',
+                'type' => 'STKS',
                 'status' => {
                   'availability_class' => 'page',
                   'status_text' => 'Page'
@@ -121,6 +136,7 @@ FactoryGirl.define do
               },
               { 'barcode' => '87654321',
                 'callnumber' => 'ABC 321',
+                'type' => 'STKS',
                 'status' => {
                   'availability_class' => 'page',
                   'status_text' => 'Page'
@@ -142,6 +158,8 @@ FactoryGirl.define do
   factory :many_holdings, class: Hash do
     title 'Item title'
 
+    format ['Book']
+
     holdings [
       { 'code' => 'GREEN',
         'locations' => [
@@ -149,6 +167,7 @@ FactoryGirl.define do
             'items' => [
               { 'barcode' => '12345678',
                 'callnumber' => 'ABC 123',
+                'type' => 'STKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -156,6 +175,7 @@ FactoryGirl.define do
               },
               { 'barcode' => '23456789',
                 'callnumber' => 'ABC 456',
+                'type' => 'SOMETHING-ELSE',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -163,6 +183,7 @@ FactoryGirl.define do
               },
               { 'barcode' => '34567890',
                 'callnumber' => 'ABC 789',
+                'type' => 'STKS-MONO',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -170,6 +191,7 @@ FactoryGirl.define do
               },
               { 'barcode' => '45678901',
                 'callnumber' => 'ABC 012',
+                'type' => 'STKS-PERI',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -177,6 +199,7 @@ FactoryGirl.define do
               },
               { 'barcode' => '56789012',
                 'callnumber' => 'ABC 345',
+                'type' => 'STKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -184,6 +207,7 @@ FactoryGirl.define do
               },
               { 'barcode' => '67890123',
                 'callnumber' => 'ABC 678',
+                'type' => 'STKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -205,6 +229,8 @@ FactoryGirl.define do
   factory :searchable_holdings, class: Hash do
     title 'Item Title'
 
+    format ['Book']
+
     holdings [
       { 'code' => 'SPEC-COLL',
         'locations' => [
@@ -212,6 +238,7 @@ FactoryGirl.define do
             'items' => [
               { 'barcode' => '12345678',
                 'callnumber' => 'ABC 123',
+                'type' => 'STKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -219,6 +246,7 @@ FactoryGirl.define do
               },
               { 'barcode' => '23456789',
                 'callnumber' => 'ABC 456',
+                'type' => 'STKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -226,6 +254,7 @@ FactoryGirl.define do
               },
               { 'barcode' => '34567890',
                 'callnumber' => 'ABC 789',
+                'type' => 'STKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -233,6 +262,7 @@ FactoryGirl.define do
               },
               { 'barcode' => '45678901',
                 'callnumber' => 'ABC 012',
+                'type' => 'STKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -240,6 +270,7 @@ FactoryGirl.define do
               },
               { 'barcode' => '56789012',
                 'callnumber' => 'ABC 345',
+                'type' => 'STKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -247,6 +278,7 @@ FactoryGirl.define do
               },
               { 'barcode' => '67890123',
                 'callnumber' => 'ABC 678',
+                'type' => 'STKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -254,6 +286,7 @@ FactoryGirl.define do
               },
               { 'barcode' => '78901234',
                 'callnumber' => 'ABC 901',
+                'type' => 'STKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -261,6 +294,7 @@ FactoryGirl.define do
               },
               { 'barcode' => '89012345',
                 'callnumber' => 'ABC 234',
+                'type' => 'STKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -268,6 +302,7 @@ FactoryGirl.define do
               },
               { 'barcode' => '90123456',
                 'callnumber' => 'ABC 567',
+                'type' => 'STKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -275,6 +310,7 @@ FactoryGirl.define do
               },
               { 'barcode' => '01234567',
                 'callnumber' => 'ABC 890',
+                'type' => 'STKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'

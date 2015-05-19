@@ -34,6 +34,7 @@ describe SearchworksItem do
     let(:standard_json) do
       {
         'title' => 'The title of the object',
+        'format' => %w(Format1 Format2),
         'holdings' => [
           { 'code' => 'GREEN',
             'name' => 'Green Library',
@@ -56,9 +57,10 @@ describe SearchworksItem do
       it 'should return blank json' do
         expect(subject.send(:json)).to eq({})
       end
-      it 'should handle title and holdings correctly' do
+      it 'should handle title, format, and holdings correctly' do
         expect(subject.title).to eq('')
         expect(subject.holdings).to eq([])
+        expect(subject.format).to eq([])
       end
     end
     describe 'for a standard response' do
@@ -67,6 +69,9 @@ describe SearchworksItem do
       end
       it 'should have a title string' do
         expect(subject.title).to eq('The title of the object')
+      end
+      it 'should have a format array' do
+        expect(subject.format).to eq %w(Format1 Format2)
       end
       it 'should have an array of nested OpenStruct objects describing the holdings' do
         expect(subject.holdings).to be_a Array

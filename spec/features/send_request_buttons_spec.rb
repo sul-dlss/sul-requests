@@ -18,7 +18,8 @@ describe 'Send Request Buttons' do
 
   describe 'Scans' do
     before do
-      visit new_scan_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
+      stub_searchworks_api_json(build(:sal3_holdings))
+      visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
     end
     it 'only allows to send request via WebAuth login' do
       expect(page).to have_css('button', text: /Send request.*login with SUNet ID/)

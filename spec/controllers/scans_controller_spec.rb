@@ -1,7 +1,10 @@
 require 'rails_helper'
 
 describe ScansController do
-  let(:scan) { create(:scan, origin: 'SAL3', origin_location: 'STACKS') }
+  before do
+    stub_searchworks_api_json(build(:sal3_holdings))
+  end
+  let(:scan) { create(:scan_with_holdings, origin: 'SAL3', origin_location: 'STACKS', barcodes: ['12345678']) }
   let(:scannable_params) do
     { item_id: '12345', origin: 'SAL3', origin_location: 'STACKS' }
   end
@@ -147,8 +150,8 @@ describe ScansController do
       let(:user) { create(:superadmin_user) }
       it 'should be allowed to modify page rqeuests' do
         put :update, id: scan[:id], scan: { needed_date: '2015-04-14' }
-        expect(flash[:success]).to eq 'Scan request was successfully updated.'
         expect(response).to redirect_to root_url
+        expect(flash[:success]).to eq 'Scan request was successfully updated.'
         expect(Scan.find(scan.id).needed_date.to_s).to eq '2015-04-14'
       end
     end

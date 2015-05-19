@@ -18,6 +18,9 @@ describe 'Requests Delegation' do
     end
   end
   describe 'scannable materials' do
+    before do
+      stub_searchworks_api_json(build(:sal3_holdings))
+    end
     it 'should be given the opportunity to request a scan or delivery' do
       visit new_request_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
 

@@ -12,6 +12,10 @@ class SearchworksItem
     json['title'] || ''
   end
 
+  def format
+    json['format'] || []
+  end
+
   def holdings
     return [] unless json['holdings'].present?
     @holdings ||= JSON.parse(json['holdings'].to_json, object_class: OpenStruct)

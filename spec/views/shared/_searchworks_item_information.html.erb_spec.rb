@@ -6,9 +6,9 @@ describe 'shared/_searchworks_item_information.html.erb' do
     render
   end
   describe 'persisted objects' do
-    let(:request) { create(:scan) }
+    let(:request) { create(:scan_with_holdings) }
     it 'should display the stored item title in an h2' do
-      expect(rendered).to have_css('h2', text: 'Title for Scan 1234')
+      expect(rendered).to have_css('h2', text: 'SAL3 Item Title')
     end
   end
   describe 'non-persisted scans' do
