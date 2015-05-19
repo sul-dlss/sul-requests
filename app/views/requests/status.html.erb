@@ -1,0 +1,11 @@
+<div class="<%= dialog_column_class %>">
+  <h1>Status of your request</h1>
+  <hr />
+  <dl class='dl-horizontal dl-invert'>
+    <dt>Requested on</dt>
+    <dd><%= current_request.created_at.to_formatted_s(:long_ordinal) %></dd>
+  </dl>
+  <hr />
+  <%= render partial: 'shared/searchworks_item_information' %>
+  <%= render partial: 'shared/request_status_information' %>
+</div>

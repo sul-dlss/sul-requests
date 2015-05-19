@@ -17,6 +17,10 @@ class MediatedPagesController < RequestsController
     end
   end
 
+  def current_request
+    @mediated_page ||= MediatedPage.new
+  end
+
   protected
 
   def validate_mediated_pageable

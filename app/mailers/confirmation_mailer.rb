@@ -31,9 +31,9 @@ class ConfirmationMailer < ApplicationMailer
 
   def success_url
     if !@request.user.webauth_user? && @request.is_a?(TokenEncryptable)
-      polymorphic_url([:successful, @request], token: @request.encrypted_token)
+      polymorphic_url([:status, @request], token: @request.encrypted_token)
     else
-      polymorphic_url([:successful, @request])
+      polymorphic_url([:status, @request])
     end
   end
 end

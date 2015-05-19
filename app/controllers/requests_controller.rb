@@ -16,6 +16,11 @@ class RequestsController < ApplicationController
     end
   end
 
+  def current_request
+    fail NotImplementedError
+  end
+  helper_method :current_request
+
   protected
 
   def delegated_new_request_path(request)

@@ -141,4 +141,11 @@ describe ScansController do
       end
     end
   end
+
+  describe '#current_request' do
+    let(:user) { create(:anon_user) }
+    it 'returns a Page object' do
+      expect(controller.send(:current_request)).to be_a(Scan)
+    end
+  end
 end

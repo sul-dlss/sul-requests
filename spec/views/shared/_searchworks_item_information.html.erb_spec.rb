@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'shared/_searchworks_item_information.html.erb' do
   before do
-    allow(view).to receive_messages(request: request)
+    allow(view).to receive_messages(current_request: request)
     render
   end
   describe 'persisted objects' do

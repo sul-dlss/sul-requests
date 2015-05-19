@@ -21,10 +21,16 @@ Rails.application.routes.draw do
     end
   end
 
+  concern :statusable do
+    member do
+      get :status, as: :status
+    end
+  end
+
   resources :requests, only: :new
-  resources :pages, concerns: [:creatable_via_get_redirect, :successable]
-  resources :scans, concerns: [:creatable_via_get_redirect, :successable]
-  resources :mediated_pages, concerns: [:creatable_via_get_redirect, :successable]
+  resources :pages, concerns: [:creatable_via_get_redirect, :successable, :statusable]
+  resources :scans, concerns: [:creatable_via_get_redirect, :successable, :statusable]
+  resources :mediated_pages, concerns: [:creatable_via_get_redirect, :successable, :statusable]
 
   resources :admin, only: [:index, :show]
 
