@@ -20,6 +20,7 @@ describe Ability do
     it { is_expected.not_to be_able_to(:update, custom) }
     it { is_expected.not_to be_able_to(:delete, custom) }
     it { is_expected.not_to be_able_to(:success, custom) }
+    it { is_expected.not_to be_able_to(:status, custom) }
 
     it { is_expected.to be_able_to(:new, hold_recall) }
     it { is_expected.not_to be_able_to(:create, hold_recall) }
@@ -27,6 +28,7 @@ describe Ability do
     it { is_expected.not_to be_able_to(:update, hold_recall) }
     it { is_expected.not_to be_able_to(:delete, hold_recall) }
     it { is_expected.not_to be_able_to(:success, hold_recall) }
+    it { is_expected.not_to be_able_to(:status, hold_recall) }
 
     it { is_expected.to be_able_to(:new, mediated_page) }
     it { is_expected.not_to be_able_to(:create, mediated_page) }
@@ -34,6 +36,7 @@ describe Ability do
     it { is_expected.not_to be_able_to(:update, mediated_page) }
     it { is_expected.not_to be_able_to(:delete, mediated_page) }
     it { is_expected.not_to be_able_to(:success, mediated_page) }
+    it { is_expected.not_to be_able_to(:status, mediated_page) }
 
     it { is_expected.to be_able_to(:new, page) }
     it { is_expected.not_to be_able_to(:create, page) }
@@ -41,6 +44,8 @@ describe Ability do
     it { is_expected.not_to be_able_to(:update, page) }
     it { is_expected.not_to be_able_to(:delete, page) }
     it { is_expected.not_to be_able_to(:success, page) }
+    it { is_expected.not_to be_able_to(:success, page) }
+    it { is_expected.not_to be_able_to(:status, page) }
 
     it { is_expected.to be_able_to(:new, scan) }
     it { is_expected.not_to be_able_to(:create, scan) }
@@ -48,6 +53,7 @@ describe Ability do
     it { is_expected.not_to be_able_to(:update, scan) }
     it { is_expected.not_to be_able_to(:delete, scan) }
     it { is_expected.not_to be_able_to(:success, scan) }
+    it { is_expected.not_to be_able_to(:status, scan) }
 
     describe 'who fills out a name and email' do
       let(:user) { build(:non_webauth_user) }
@@ -109,6 +115,13 @@ describe Ability do
       it { is_expected.to be_able_to(:success, mediated_page) }
       it { is_expected.to be_able_to(:success, page) }
       it { is_expected.to be_able_to(:success, scan) }
+
+      # Can see the status page for their request
+      it { is_expected.to be_able_to(:status, custom) }
+      it { is_expected.to be_able_to(:status, hold_recall) }
+      it { is_expected.to be_able_to(:status, mediated_page) }
+      it { is_expected.to be_able_to(:status, page) }
+      it { is_expected.to be_able_to(:status, scan) }
     end
 
     describe 'who did not create the requst' do
@@ -124,6 +137,13 @@ describe Ability do
       it { is_expected.not_to be_able_to(:success, mediated_page) }
       it { is_expected.not_to be_able_to(:success, page) }
       it { is_expected.not_to be_able_to(:success, scan) }
+
+      # Can't see the status page for other user's requests
+      it { is_expected.not_to be_able_to(:status, custom) }
+      it { is_expected.not_to be_able_to(:status, hold_recall) }
+      it { is_expected.not_to be_able_to(:status, mediated_page) }
+      it { is_expected.not_to be_able_to(:status, page) }
+      it { is_expected.not_to be_able_to(:status, scan) }
     end
   end
 

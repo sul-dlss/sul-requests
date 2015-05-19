@@ -21,6 +21,9 @@ class Ability
     clear_aliased_actions
     alias_action :index, :show, to: :read
     alias_action :edit, to: :update
+    # Adding new aliased action because
+    # success has the same rules as status
+    alias_action :status, to: :success
 
     can :manage, :all if user.superadmin?
 
