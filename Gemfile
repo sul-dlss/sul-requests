@@ -32,6 +32,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'faraday'
 # Use kaminari for pagination
 gem 'kaminari'
+gem 'kaminari_bootstrap_paginator'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
