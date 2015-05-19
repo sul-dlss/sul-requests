@@ -25,16 +25,6 @@ describe Page do
     end
   end
 
-  describe '#commentable?' do
-    it 'should be false if the library is not a commentable library' do
-      expect(subject).to_not be_commentable
-    end
-    it 'should be true if the library is a commentable library' do
-      subject.origin = 'SAL-NEWARK'
-      expect(subject).to be_commentable
-    end
-  end
-
   describe 'requestable' do
     it { is_expected.to be_requestable_by_all }
     it { is_expected.to be_requestable_with_library_id }

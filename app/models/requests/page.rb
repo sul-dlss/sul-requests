@@ -12,11 +12,6 @@ class Page < Request
     super << user.email
   end
 
-  def commentable?
-    return super unless origin == 'SAL-NEWARK'
-    true
-  end
-
   def requestable_by_all?
     true
   end

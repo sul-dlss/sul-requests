@@ -46,11 +46,6 @@ en:
       comments: 'Comment'
       page_range: 'Page range'
       section_title: 'Article title'
-    mediated_page:
-      labels:
-        comments: 'Item(s) requested'
-    page:
-      labels:
-        comments: 'Item(s) requested'
+      holdings: 'Item(s) requested'
   sul_requests:
     scan_pilot_error_html: '<h4>Scan-to-PDF not available</h4> This pilot service is currently available only to faculty, grad students, postdocs, academic staff, fellows, and visiting scholars. Your feedback will help us refine and expand the service!'
