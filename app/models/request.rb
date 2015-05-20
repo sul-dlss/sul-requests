@@ -3,6 +3,8 @@
 #  STI and sub-class this main request class.
 ###
 class Request < ActiveRecord::Base
+  include Requestable
+
   delegate :scannable?, :mediateable?, :pageable?, to: :library_location
 
   validates :item_id, :origin, :origin_location, presence: true
@@ -79,18 +81,6 @@ class Request < ActiveRecord::Base
     else
       searchworks_item.requested_holdings.items
     end
-  end
-
-  def requestable_by_all?
-    false
-  end
-
-  def requestable_with_library_id?
-    requestable_by_all? || false
-  end
-
-  def requestable_with_sunet_only?
-    false
   end
 
   def item_limit
