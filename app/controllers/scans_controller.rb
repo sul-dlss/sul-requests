@@ -27,6 +27,10 @@ class ScansController < RequestsController
     end
   end
 
+  def current_request
+    @scan ||= Scan.new
+  end
+
   protected
 
   def validate_scannable

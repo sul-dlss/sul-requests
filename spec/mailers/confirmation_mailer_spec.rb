@@ -50,7 +50,7 @@ describe ConfirmationMailer do
       end
 
       it 'has a link to the status page' do
-        expect(body).to match(%r{Check the status of your request at .*\/pages\/#{request.id}\/success\?token})
+        expect(body).to match(%r{Check the status of your request at .*\/pages\/#{request.id}\/status\?token})
       end
 
       it 'has contact information' do

@@ -27,6 +27,10 @@ class PagesController < RequestsController
     end
   end
 
+  def current_request
+    @page ||= Page.new
+  end
+
   protected
 
   def validate_pageable

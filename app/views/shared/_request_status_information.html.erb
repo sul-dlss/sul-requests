@@ -1,0 +1,37 @@
+<dl class='dl-horizontal dl-invert'>
+  <% if current_request.holdings.many? %>
+    <dt><%= t('forms.labels.holdings') %></dt>
+    <% current_request.holdings.each do |holding| %>
+      <dd><%= holding.callnumber %></dd>
+    <% end  %>
+  <% end %>
+
+  <% if current_request.destination.present? %>
+    <dt>
+      <%= label_for_pickup_libraries_dropdown(current_request.library_location.pickup_libraries) %>
+    </dt>
+    <dd>
+      <%= LibraryLocation.library_name_by_code(current_request.destination) %>
+    </dd>
+  <% end %>
+
+  <% if current_request.commentable? && current_request.data['comments'].present? %>
+    <dt><%= t("forms.labels.comments") %></dt>
+    <dd><%= current_request.data['comments'] %></dd>
+  <% end %>
+
+  <% if current_request.data.present? %>
+    <% if (page_range = current_request.data['page_range']).present? %>
+      <dt><%= t('forms.labels.page_range') %></dt>
+      <dd><%= page_range %></dd>
+    <% end %>
+    <% if (section_title = current_request.data['section_title']).present? %>
+      <dt><%= t('forms.labels.section_title') %></dt>
+      <dd><%= section_title %></dd>
+    <% end %>
+    <% if (authors = current_request.data['authors']).present? %>
+      <dt><%= t('forms.labels.authors') %></dt>
+      <dd><%= authors %></dd>
+    <% end %>
+  <% end %>
+</dl>

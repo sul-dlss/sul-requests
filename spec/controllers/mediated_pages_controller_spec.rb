@@ -141,4 +141,11 @@ describe MediatedPagesController do
       end
     end
   end
+
+  describe '#current_request' do
+    let(:user) { create(:anon_user) }
+    it 'returns a MediatedPage object' do
+      expect(controller.send(:current_request)).to be_a(MediatedPage)
+    end
+  end
 end

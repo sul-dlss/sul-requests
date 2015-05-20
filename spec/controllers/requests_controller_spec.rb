@@ -82,4 +82,10 @@ describe RequestsController do
       expect(-> { controller.send(:modify_item_selector_checkboxes) }).to raise_error(NotImplementedError)
     end
   end
+
+  describe '#current_request' do
+    it 'raises a NotImplementedError' do
+      expect(-> { controller.send(:current_request) }).to raise_error(NotImplementedError)
+    end
+  end
 end
