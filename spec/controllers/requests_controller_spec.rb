@@ -84,8 +84,9 @@ describe RequestsController do
   end
 
   describe '#current_request' do
-    it 'raises a NotImplementedError' do
-      expect(-> { controller.send(:current_request) }).to raise_error(NotImplementedError)
+    it 'returns a request object' do
+      get :new, scannable_params
+      expect(controller.send(:current_request)).to be_a(Request)
     end
   end
 end

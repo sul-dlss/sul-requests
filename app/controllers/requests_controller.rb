@@ -17,7 +17,7 @@ class RequestsController < ApplicationController
   end
 
   def current_request
-    fail NotImplementedError
+    @request
   end
   helper_method :current_request
 
