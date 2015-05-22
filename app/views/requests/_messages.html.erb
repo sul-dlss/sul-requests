@@ -1,0 +1,5 @@
+<% if current_request.active_messages.any? %>
+  <div class="alert alert-warning alert-dismissible" role="alert">
+    <%= render current_request.active_messages %>
+  </div>
+<% end %>

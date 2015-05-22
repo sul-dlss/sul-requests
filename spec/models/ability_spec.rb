@@ -9,6 +9,7 @@ describe Ability do
   let(:page) { Page.new }
   let(:scan) { Scan.new }
   let(:request_objects) { [custom, hold_recall, mediated_page, page, scan] }
+  let(:message) { Message.new }
   let(:token) { nil }
   subject { Ability.new(user, token) }
   describe 'an anonymous user' do
@@ -54,6 +55,12 @@ describe Ability do
     it { is_expected.not_to be_able_to(:delete, scan) }
     it { is_expected.not_to be_able_to(:success, scan) }
     it { is_expected.not_to be_able_to(:status, scan) }
+
+    it { is_expected.not_to be_able_to(:new, message) }
+    it { is_expected.not_to be_able_to(:create, message) }
+    it { is_expected.not_to be_able_to(:read, message) }
+    it { is_expected.not_to be_able_to(:update, message) }
+    it { is_expected.not_to be_able_to(:delete, message) }
 
     describe 'who fills out a name and email' do
       let(:user) { build(:non_webauth_user) }
@@ -169,6 +176,12 @@ describe Ability do
     it { is_expected.to be_able_to(:manage, mediated_page) }
     it { is_expected.to be_able_to(:manage, page) }
     it { is_expected.to be_able_to(:manage, scan) }
+
+    it { is_expected.to be_able_to(:new, message) }
+    it { is_expected.to be_able_to(:create, message) }
+    it { is_expected.to be_able_to(:read, message) }
+    it { is_expected.to be_able_to(:update, message) }
+    it { is_expected.to be_able_to(:delete, message) }
   end
 
   describe 'an origin admin' do
@@ -191,5 +204,11 @@ describe Ability do
     it { is_expected.to be_able_to(:manage, mediated_page) }
     it { is_expected.to be_able_to(:manage, page) }
     it { is_expected.to be_able_to(:manage, scan) }
+
+    it { is_expected.not_to be_able_to(:new, message) }
+    it { is_expected.not_to be_able_to(:create, message) }
+    it { is_expected.not_to be_able_to(:read, message) }
+    it { is_expected.not_to be_able_to(:update, message) }
+    it { is_expected.not_to be_able_to(:delete, message) }
   end
 end

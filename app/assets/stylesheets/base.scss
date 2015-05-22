@@ -85,3 +85,7 @@ select:focus,
 textarea:focus {
   @include focus-outline;
 }
+
+#main-container {
+  padding-bottom: $form-group-margin-bottom;
+}

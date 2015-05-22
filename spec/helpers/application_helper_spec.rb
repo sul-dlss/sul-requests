@@ -40,4 +40,10 @@ describe ApplicationHelper do
       expect(button).to have_text(/Send request.*login with SUNet ID/)
     end
   end
+
+  describe '#render_markdown' do
+    it 'renders markup to markdown' do
+      expect(helper.render_markdown('**abc**')).to include content_tag(:strong, 'abc')
+    end
+  end
 end

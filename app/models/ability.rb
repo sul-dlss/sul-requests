@@ -27,6 +27,7 @@ class Ability
 
     can :manage, :all if user.superadmin?
 
+    can :manage, Message if user.site_admin?
     can :manage, Request if user.site_admin?
     can :manage, LibraryLocation if user.site_admin?
     # Adminstrators for origins or destinations should be able to

@@ -27,16 +27,32 @@ class LibraryLocation
     end
   end
 
+  def active_messages
+    @active_messages ||= Message.where(library: [library, 'anywhere']).active
+  end
+
   class << self
     def library_name_by_code(code)
-      SULRequests::Application.config.libraries[code]
+      config.libraries[code]
+    end
+
+    def config
+      SULRequests::Application.config
+    end
+
+    def all_libraries
+      config.libraries
     end
   end
 
   private
 
   def all_libraries
-    config.libraries
+    self.class.all_libraries
+  end
+
+  def config
+    self.class.config
   end
 
   def pickup_libraries_for(collection)
@@ -59,9 +75,5 @@ class LibraryLocation
 
   def location_specific_pickup_libraries?
     config.location_specific_pickup_libraries.keys.include?(@location)
-  end
-
-  def config
-    SULRequests::Application.config
   end
 end

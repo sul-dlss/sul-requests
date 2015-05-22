@@ -1,0 +1,18 @@
+<h1>Broadcast messages for request forms</h1>
+
+<div>
+  <h2>Page from anywhere</h2>
+  <%= render partial: 'messages_for_library', locals: { library_code: 'anywhere', request_type: 'page'} %>
+</div>
+
+<% LibraryLocation.all_libraries.each do |library_code, library_name| %>
+  <div class="library-page-<%= library_code %>">
+    <h2>Page from <%= library_name %></h2>
+    <%= render partial: 'messages_for_library', locals: { library_code: library_code, request_type: 'page'} %>
+  </div>
+<% end %>
+
+<div>
+  <h2>Scan from anywhere</h2>
+  <%= render partial: 'messages_for_library', locals: { library_code: 'anywhere', request_type: 'scan' } %>
+</div>
