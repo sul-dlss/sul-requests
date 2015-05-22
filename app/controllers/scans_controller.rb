@@ -10,7 +10,7 @@ class ScansController < RequestsController
   def create
     if @scan.update(create_params.merge(user_id: current_user.id))
       @scan.send_confirmation!
-      redirect_to successful_scan_path(@scan)
+      redirect_to illiad_query(@scan)
     else
       flash[:error] = 'There was a problem creating your scan request.'
       render 'new'
@@ -32,6 +32,19 @@ class ScansController < RequestsController
   end
 
   protected
+
+  def illiad_query(scan)
+    illiad_params = {
+      'rft.genre': 'scananddeliverArticle',
+      'rft.jtitle': scan.item_title,
+      'rft.au': scan.data[:authors],
+      'rft.pages': scan.data[:page_range],
+      'rft.atitle': scan.data[:section_title],
+      'rft.volume': scan.holdings.first.callnumber,
+      'scan_referrer': successful_scan_url(scan)
+    }
+    Settings.sul_illiad + "#{illiad_params.to_query}"
+  end
 
   def validate_scannable
     fail UnscannableItemError unless @scan.scannable?
