@@ -27,4 +27,14 @@ module ApplicationHelper
       class: 'btn btn-cardinal col-xs-12'
     )
   end
+
+  def render_markdown(markup)
+    markdown_renderer.render(markup).html_safe
+  end
+
+  private
+
+  def markdown_renderer
+    Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true)
+  end
 end

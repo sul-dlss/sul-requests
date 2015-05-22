@@ -24,6 +24,10 @@ class Request < ActiveRecord::Base
     @library_location ||= LibraryLocation.new(self)
   end
 
+  def active_messages
+    library_location.active_messages.for_type(Message.notification_type(self))
+  end
+
   def searchworks_item
     @searchworks_item ||= SearchworksItem.new(self)
   end
