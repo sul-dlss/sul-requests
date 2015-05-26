@@ -7,9 +7,12 @@ describe 'Creating a mediated page request' do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
       click_link "I don't have a SUNet ID"
 
+      expect(page).to have_field('Library ID', type: 'text')
       expect(page).to have_field('Name', type: 'text')
       expect(page).to have_field('Email', type: 'email')
       expect(page).to have_css('a', text: '‹ Go back (show the login option)')
+      expect(page).to have_css('input#mediated_page_user_attributes_library_id')
+      expect(page.evaluate_script('document.activeElement.id')).to eq 'mediated_page_user_attributes_library_id'
 
       click_link '‹ Go back (show the login option)'
       expect(page).to have_css('a', text: "I don't have a SUNet ID")
@@ -29,6 +32,9 @@ describe 'Creating a mediated page request' do
     it 'should be possible if a library id is filled out', js: true do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
       click_link "I don't have a SUNet ID"
+
+      expect(page).to have_css('input#mediated_page_user_attributes_library_id')
+      expect(page.evaluate_script('document.activeElement.id')).to eq 'mediated_page_user_attributes_library_id'
 
       fill_in 'Library ID', with: '123456'
 

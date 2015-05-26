@@ -12,6 +12,9 @@ describe 'Creating a page request' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
       click_link "I don't have a SUNet ID"
 
+      expect(page).to have_css('input#page_user_attributes_library_id')
+      expect(page.evaluate_script('document.activeElement.id')).to eq 'page_user_attributes_library_id'
+
       fill_in 'Name', with: 'Jane Stanford'
       fill_in 'Email', with: 'jstanford@stanford.edu'
 
@@ -23,6 +26,9 @@ describe 'Creating a page request' do
     it 'should be possible if a library ID is filled out', js: true do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
       click_link "I don't have a SUNet ID"
+
+      expect(page).to have_css('input#page_user_attributes_library_id')
+      expect(page.evaluate_script('document.activeElement.id')).to eq 'page_user_attributes_library_id'
 
       fill_in 'Library ID', with: '123456'
 
