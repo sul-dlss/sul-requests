@@ -1,21 +1,17 @@
 <% uniq_locations = collection.map { |h| h['origin_location'] }.uniq %>
 
 <h3><%= LibraryLocation.library_name_by_code(origin) %></h3>
-<h4>
-  Library=<%= origin %>
-  <% if uniq_locations.one? %>
-    &amp; location=<%= uniq_locations.first %>
-  <% end %>
-</h4>
 
-<table class="table table-striped">
+<table class="table table-striped mediation-table">
   <%= render 'table_header' %>
   <tbody>
     <% collection.each do |request| %>
-      <tr>
-        <td><%= request.type %></td>
-        <td><%= request.origin_location %></td>
-        <td><%= request.destination %></td>
+      <tr data-mediate-request='<%= holdings_admin_path(request) %>'>
+        <td>
+          <a class="mediate-toggle" data-behavior='mediate-toggle' href='javascript:;'>
+            <i class="glyphicon"></i>
+          </a>
+        </td>
         <td><%= searchworks_link(request.item_id, request.item_title) %></td>
         <td><%= requester_info(request.user) %></td>
         <td><%= format_date(request.created_at) %></td>

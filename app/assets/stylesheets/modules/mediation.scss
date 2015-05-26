@@ -1,0 +1,19 @@
+.mediation-table {
+  .mediate-toggle {
+    border-bottom: 0;
+
+    i {
+      @extend .glyphicon-plus-sign;
+      color: $dark-cyan;
+    }
+  }
+
+  .expanded {
+    .mediate-toggle {
+      i {
+        @extend .glyphicon-minus-sign;
+        color: $cardinal-red;
+      }
+    }
+  }
+}

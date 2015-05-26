@@ -33,7 +33,11 @@ Rails.application.routes.draw do
   resources :scans, concerns: [:creatable_via_get_redirect, :successable, :statusable]
   resources :mediated_pages, concerns: [:creatable_via_get_redirect, :successable, :statusable]
 
-  resources :admin, only: [:index, :show]
+  resources :admin, only: [:index, :show] do
+    member do
+      get :holdings, as: :holdings
+    end
+  end
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

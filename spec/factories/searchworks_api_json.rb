@@ -239,6 +239,10 @@ FactoryGirl.define do
               { 'barcode' => '12345678',
                 'callnumber' => 'ABC 123',
                 'type' => 'STKS',
+                'current_location' => {
+                  'code' => ''
+                },
+                'home_location' => 'STACKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -247,6 +251,10 @@ FactoryGirl.define do
               { 'barcode' => '23456789',
                 'callnumber' => 'ABC 456',
                 'type' => 'STKS',
+                'current_location' => {
+                  'code' => ''
+                },
+                'home_location' => 'STACKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -255,6 +263,10 @@ FactoryGirl.define do
               { 'barcode' => '34567890',
                 'callnumber' => 'ABC 789',
                 'type' => 'STKS',
+                'current_location' => {
+                  'code' => ''
+                },
+                'home_location' => 'STACKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -263,6 +275,10 @@ FactoryGirl.define do
               { 'barcode' => '45678901',
                 'callnumber' => 'ABC 012',
                 'type' => 'STKS',
+                'current_location' => {
+                  'code' => ''
+                },
+                'home_location' => 'STACKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -271,6 +287,10 @@ FactoryGirl.define do
               { 'barcode' => '56789012',
                 'callnumber' => 'ABC 345',
                 'type' => 'STKS',
+                'current_location' => {
+                  'code' => ''
+                },
+                'home_location' => 'STACKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -279,6 +299,10 @@ FactoryGirl.define do
               { 'barcode' => '67890123',
                 'callnumber' => 'ABC 678',
                 'type' => 'STKS',
+                'current_location' => {
+                  'code' => ''
+                },
+                'home_location' => 'STACKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -287,6 +311,10 @@ FactoryGirl.define do
               { 'barcode' => '78901234',
                 'callnumber' => 'ABC 901',
                 'type' => 'STKS',
+                'current_location' => {
+                  'code' => ''
+                },
+                'home_location' => 'STACKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -295,6 +323,10 @@ FactoryGirl.define do
               { 'barcode' => '89012345',
                 'callnumber' => 'ABC 234',
                 'type' => 'STKS',
+                'current_location' => {
+                  'code' => ''
+                },
+                'home_location' => 'STACKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -303,6 +335,10 @@ FactoryGirl.define do
               { 'barcode' => '90123456',
                 'callnumber' => 'ABC 567',
                 'type' => 'STKS',
+                'current_location' => {
+                  'code' => ''
+                },
+                'home_location' => 'STACKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'
@@ -311,6 +347,10 @@ FactoryGirl.define do
               { 'barcode' => '01234567',
                 'callnumber' => 'ABC 890',
                 'type' => 'STKS',
+                'current_location' => {
+                  'code' => ''
+                },
+                'home_location' => 'STACKS',
                 'status' => {
                   'availability_class' => 'available',
                   'status_text' => 'Available'

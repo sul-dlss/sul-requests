@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe AdminController do
   before do
-    allow(controller).to receive_messages(current_user: user)
+    stub_current_user(user)
   end
 
   describe 'index' do
@@ -84,6 +84,21 @@ describe AdminController do
       let(:user) { create(:anon_user) }
       it 'should not be accessible' do
         expect(-> { get :show, id: 'SPEC-COLL' }).to raise_error(CanCan::AccessDenied)
+      end
+    end
+  end
+
+  describe 'holdings' do
+    describe 'for super admins' do
+      let(:user) { create(:superadmin_user) }
+      let(:mediated_page) do
+        create(:mediated_page_with_holdings, user: create(:non_webauth_user), barcodes: %w(12345678 23456789))
+      end
+
+      it 'should return the holdings table markup' do
+        get :holdings, id: mediated_page.id
+        expect(response).to be_successful
+        expect(assigns(:request)).to be_a(MediatedPage)
       end
     end
   end

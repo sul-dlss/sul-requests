@@ -1,0 +1,25 @@
+<% if @request.data['comments'].present? %>
+  <p><%= @request.data['comments'] %></p>
+<% end %>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class='col-xs-1'>Yes</th>
+      <th class='col-xs-1'>No</th>
+      <th class='col-xs-1'>Location</th>
+      <th class='col-xs-1'>Current</th>
+      <th>Call number / Container</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @request.holdings.each do |item| %>
+      <tr>
+        <td class='col-xs-1'><button class="disabled btn btn-xs btn-success">Approve</button></td>
+        <td class='col-xs-1'><button class="disabled btn btn-xs btn-danger">Deny</button></td>
+        <td class='col-xs-1'><%= item.home_location %></td>
+        <td class='col-xs-1'><%= item.current_location.code %></td>
+        <td><%= item.callnumber %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -57,12 +57,12 @@ describe 'requests/status.html.erb' do
 
   describe 'for medidated pages' do
     describe 'selected items' do
-      let(:request) { create(:mediated_page_with_holdings, user: user, barcodes: %w(12345678 87654321)) }
+      let(:request) { create(:mediated_page_with_holdings, user: user, barcodes: %w(12345678 23456789)) }
       before { render }
       it 'are displayed when there are multiple selected' do
         expect(rendered).to have_css('dt', text: 'Item(s) requested')
         expect(rendered).to have_css('dd', text: 'ABC 123')
-        expect(rendered).to have_css('dd', text: 'ABC 321')
+        expect(rendered).to have_css('dd', text: 'ABC 456')
       end
     end
   end
