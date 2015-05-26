@@ -130,4 +130,37 @@ describe 'Item Selector' do
       end
     end
   end
+
+  describe 'when viewed under Back-Forward Cache', js: true do
+    before do
+      stub_current_user(create(:webauth_user))
+      stub_searchworks_api_json(build(:searchable_holdings))
+    end
+    it 'still limits selections' do
+      visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+
+      within('#item-selector') do
+        check('ABC 123')
+        check('ABC 456')
+        check('ABC 789')
+        check('ABC 012')
+        check('ABC 345')
+      end
+
+      expect(page).to have_content('5 items selected')
+
+      click_button 'Send request'
+
+      expect(page).to have_content('Request complete')
+
+      page.evaluate_script('window.history.back()') # Mimics back-button click
+
+      expect(page).to have_content('5 items selected')
+
+      within('#item-selector') do
+        check('ABC 901')
+        expect(field_labeled('ABC 901')).to_not be_checked
+      end
+    end
+  end
 end
