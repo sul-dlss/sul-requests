@@ -6,8 +6,14 @@
       var counter = $(itemSelector.data('counter-target'));
       var checkboxSelector = 'input[type="checkbox"]';
       var checkboxes = $(checkboxSelector, itemSelector);
+      var initSelected = $(checkboxSelector + ':checked', itemSelector).length;
+
+      // Set initial states to handle Back-Forward Cache
+      updateSelectedItemsData(itemSelector, initSelected);
+      updateCounterText(counter, initSelected);
+
       checkboxes.on('change', function(e){
-        var numberOfSelectedCheckboxes = (itemSelector.data('selected-items') || 0);
+        var numberOfSelectedCheckboxes = itemSelector.data('selected-items');
         // We need to track if the check box is being checked or unchecked
         // individually since we can't depend on simply querying all
         // checked check boxes (search removes them from the DOM)
@@ -23,12 +29,21 @@
           numberOfSelectedCheckboxes -= 1;
         }
 
-        itemSelector.data('selected-items', numberOfSelectedCheckboxes);
-        counter.text(numberOfSelectedCheckboxes + ' items selected');
-
+        updateSelectedItemsData(itemSelector, numberOfSelectedCheckboxes);
+        updateCounterText(counter, numberOfSelectedCheckboxes);
       });
     });
   };
+
+  function updateSelectedItemsData(selector, number) {
+    selector.data('selected-items', number);
+  }
+
+  function updateCounterText(counter, number) {
+    counter.text(number + ' items selected');
+  }
+
+  return this;
 })(jQuery);
 
 $(document).on('ready page:load', function(){
