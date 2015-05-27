@@ -57,6 +57,9 @@ module SULRequests
       'SPEC-COLL' => 'Special Collections',
       'TANNER' => 'Philosophy Library (Tanner)'
     }
+
+    config.default_pickup_library = 'GREEN'
+
     config.pickup_libraries = [
       'ART',
       'BIOLOGY',

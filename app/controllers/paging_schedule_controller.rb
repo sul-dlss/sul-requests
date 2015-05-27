@@ -3,10 +3,11 @@
 ###
 class PagingScheduleController < ApplicationController
   def show
-    estimate = PagingSchedule.for(request_for_schedule).estimate
+    schedule = PagingSchedule.for(request_for_schedule)
+    return unless schedule.present?
     respond_to do |format|
-      format.json { render json: estimate }
-      format.html { render text: estimate.to_s, layout: false }
+      format.json { render json: schedule.estimate }
+      format.html { render text: schedule.estimate.to_s, layout: false }
     end
   end
 
