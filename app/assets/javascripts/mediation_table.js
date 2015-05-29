@@ -30,42 +30,56 @@ var mediationTable = (function() {
       var _this = this;
       var toggle = _this.toggleHandle(row);
       toggle.on('click', function() {
-        if(_this.rowIsProcessed(row)) {
-          _this.toggleRow(row);
-        } else {
-          _this.addHoldings(row);
-          _this.setRowProcessed(row);
-        }
+        _this.toggleHoldings(row);
       });
     },
 
-    toggleRow: function(row) {
+    toggleHoldings: function(row) {
       if ( row.hasClass('expanded') ) {
-        row.removeClass('expanded');
-        row.next('tr').hide();
+        this.hideRow(row);
       } else {
-        row.addClass('expanded');
-        row.next('tr').show();
+        this.showRow(row);
       }
     },
 
+    showRow: function(row) {
+      this.addHoldings(row);
+      row.addClass('expanded');
+      this.holdingsRow(row).show();
+    },
+
+    hideRow: function(row) {
+      row.removeClass('expanded');
+      this.holdingsRow(row).hide();
+    },
+
     addHoldings: function(row) {
-      $.ajax(row.data('mediate-request')).done(function(data){
-        row.after('<tr><td colspan="5">' + data + '</td></tr>');
-        row.addClass('expanded');
-      });
+      var _this = this;
+      if ( !_this.rowIsProcessed(row) ) {
+        var holdingsRow = _this.createHoldingsRow(row);
+        $.ajax(row.data('mediate-request')).done(function(data){
+          holdingsRow.find('td').html(data);
+          row.addClass('expanded');
+        });
+      }
+    },
+
+    createHoldingsRow: function(row) {
+      var holdingsRow = $('<tr class="holdings"><td colspan="5"></td></tr>');
+      row.after(holdingsRow);
+      return holdingsRow;
     },
 
     toggleHandle: function(row) {
       return row.find('[data-behavior="mediate-toggle"]');
     },
 
-    setRowProcessed: function(row) {
-      row.data('holdings-processed', 'true');
+    holdingsRow: function(row) {
+      return row.next('tr.holdings');
     },
 
     rowIsProcessed: function(row) {
-      return row.data('holdings-processed') == 'true';
+      return this.holdingsRow(row).find('table').length > 0;
     }
   };
 

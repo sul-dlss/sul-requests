@@ -5,6 +5,7 @@ AllCops:
     - 'db/**/*'
     - 'config/**/*'
     - 'spec/spec_helper.rb'
+    - 'spec/teaspoon_env.rb'
     - 'vendor/**/*'
   RunRailsCops: true
 
