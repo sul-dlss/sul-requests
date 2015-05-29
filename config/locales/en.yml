@@ -44,6 +44,7 @@ en:
     labels:
       authors: 'Author(s)'
       comments: 'Comment'
+      needed_date: 'Needed on'
       page_range: 'Page range'
       section_title: 'Article title'
       holdings: 'Item(s) requested'

@@ -24,6 +24,13 @@ describe 'requests/success.html.erb' do
     expect(rendered).to have_css('dd', text: 'Green Library')
   end
 
+  it 'has the needed date' do
+    request.needed_date = Time.zone.today
+    render
+    expect(rendered).to have_css('dt', text: 'Needed on')
+    expect(rendered).to have_css('dd', text: Time.zone.today)
+  end
+
   describe 'user information' do
     describe 'for webauth users' do
       let(:user) { create(:webauth_user) }

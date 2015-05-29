@@ -34,4 +34,9 @@
       <dd><%= authors %></dd>
     <% end %>
   <% end %>
+
+  <% if current_request.needed_date.present? %>
+    <dt><%= t('forms.labels.needed_date') %></dt>
+    <dd><%= current_request.needed_date %></dd>
+  <% end %>
 </dl>

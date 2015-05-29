@@ -12,5 +12,7 @@
     <% end %>
   <% end %>
 
+  <%= f.date_field :needed_date, label: t('forms.labels.needed_date') %>
+
   <%= render partial: 'shared/send_request_buttons', locals: { f: f } %>
 <% end %>

@@ -12,6 +12,7 @@
             <i class="glyphicon"></i>
           </a>
         </td>
+        <td><%= request.needed_date %></td>
         <td><%= searchworks_link(request.item_id, request.item_title) %></td>
         <td><%= requester_info(request.user) %></td>
         <td><%= format_date(request.created_at) %></td>

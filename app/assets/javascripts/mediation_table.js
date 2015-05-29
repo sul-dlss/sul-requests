@@ -51,7 +51,7 @@ var mediationTable = (function() {
 
     addHoldings: function(row) {
       $.ajax(row.data('mediate-request')).done(function(data){
-        row.after('<tr><td colspan="4">' + data + '</td></tr>');
+        row.after('<tr><td colspan="5">' + data + '</td></tr>');
         row.addClass('expanded');
       });
     },

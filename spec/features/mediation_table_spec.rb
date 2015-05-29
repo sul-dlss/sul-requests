@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'Mediation table' do
-  let(:top_level_columns) { 4 }
+  let(:top_level_columns) { 5 }
   before do
     stub_current_user(create(:superadmin_user))
     stub_searchworks_api_json(build(:searchable_holdings))
