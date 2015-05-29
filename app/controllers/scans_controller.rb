@@ -35,7 +35,7 @@ class ScansController < RequestsController
 
   def illiad_query(scan)
     illiad_params = {
-      'rft.genre': 'scananddeliverArticle',
+      'Action': '10', 'Form': '30', 'rft.genre': 'scananddeliverArticle',
       'rft.jtitle': scan.item_title,
       'rft.au': scan.data[:authors],
       'rft.pages': scan.data[:page_range],

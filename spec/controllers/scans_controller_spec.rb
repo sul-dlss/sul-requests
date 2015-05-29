@@ -91,6 +91,7 @@ describe ScansController do
       it 'should construct an illiad query url' do
         illiad_response = controller.send(:illiad_query, create(:scan_with_holdings, barcodes: ['12345678']))
         expect(illiad_response).to include('illiad.dll/OpenURL?')
+        expect(illiad_response).to include('Action=10&Form=30')
         expect(illiad_response).to include('&rft.genre=scananddeliverArticle')
         expect(illiad_response).to include('&rft.jtitle=SAL3+Item+Title')
         expect(illiad_response).to include('&rft.volume=ABC+123')
