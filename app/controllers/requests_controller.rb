@@ -39,6 +39,7 @@ class RequestsController < ApplicationController
     request.origin = params[:origin]
     request.item_id = params[:item_id]
     request.origin_location = params[:origin_location]
+    request.requested_barcode = params[:barcode] if params[:barcode]
   end
 
   def create_via_post?

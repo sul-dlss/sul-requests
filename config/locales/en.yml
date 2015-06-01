@@ -58,6 +58,14 @@ en:
       page_range: 'Page range'
       section_title: 'Article title'
       holdings: 'Item(s) requested'
+      hold_recall:
+        needed_date: 'Cancel request after'
+  headers:
+    mediated_page:
+      CHECKEDOUT: 'Request checked-out item'
+      default: 'Request item'
+      INPROCESS: 'Request in-process item'
+      ON-ORDER: 'Request on-order item'
   helpers:
     submit:
       message:

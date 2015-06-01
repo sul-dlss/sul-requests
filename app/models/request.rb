@@ -5,7 +5,9 @@
 class Request < ActiveRecord::Base
   include Requestable
 
-  delegate :scannable?, :mediateable?, :pageable?, to: :library_location
+  attr_accessor :requested_barcode
+
+  delegate :hold_recallable?, :mediateable?, :pageable?, :scannable?, to: :library_location
 
   validates :item_id, :origin, :origin_location, presence: true
   validate :requested_holdings_exist
@@ -42,10 +44,10 @@ class Request < ActiveRecord::Base
   end
 
   def delegate_request!
-    if mediateable?
-      self.becomes!(MediatedPage)
-    else
-      self.becomes!(Page)
+    case
+    when mediateable? then self.becomes!(MediatedPage)
+    when hold_recallable? then self.becomes!(HoldRecall)
+    else self.becomes!(Page)
     end
   end
 
@@ -80,11 +82,8 @@ class Request < ActiveRecord::Base
   end
 
   def holdings
-    if persisted?
-      @holdings ||= searchworks_item.requested_holdings.by_barcodes(barcodes)
-    else
-      searchworks_item.requested_holdings.items
-    end
+    return requested_holdings if requested_holdings.present?
+    searchworks_item.requested_holdings.all
   end
 
   def item_limit
@@ -113,6 +112,11 @@ class Request < ActiveRecord::Base
   end
 
   protected
+
+  def requested_holdings
+    return unless requested_barcode.present? || barcodes.present?
+    searchworks_item.requested_holdings.where(barcodes: requested_barcode || barcodes)
+  end
 
   def destination_is_a_pickup_library
     return if library_location.pickup_libraries.include?(destination)

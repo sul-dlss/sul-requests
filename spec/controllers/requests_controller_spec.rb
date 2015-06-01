@@ -10,6 +10,9 @@ describe RequestsController do
   let(:mediated_page_params) do
     { item_id: '12345', origin: 'SPEC-COLL', origin_location: 'STACKS' }
   end
+  let(:hold_recall_params) do
+    { item_id: '12345', barcode: '3610512345', origin: 'GREEN', origin_location: 'STACKS' }
+  end
   describe '#new' do
     describe 'required parameters' do
       it 'should require an item id, library, and location' do
@@ -21,10 +24,11 @@ describe RequestsController do
 
     describe 'defaults' do
       it 'should be set' do
-        get :new, scannable_params
-        expect(assigns[:request].origin).to eq 'SAL3'
+        get :new, hold_recall_params
+        expect(assigns[:request].origin).to eq 'GREEN'
         expect(assigns[:request].origin_location).to eq 'STACKS'
         expect(assigns[:request].item_id).to eq '12345'
+        expect(assigns[:request].requested_barcode).to eq '3610512345'
       end
     end
 

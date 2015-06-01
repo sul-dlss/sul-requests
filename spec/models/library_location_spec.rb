@@ -8,6 +8,9 @@ describe LibraryLocation do
   it 'should include the scannable mixin' do
     expect(request.library_location).to be_a Scannable
   end
+  it 'should include the hold recallable mixin' do
+    expect(request.library_location).to be_a HoldRecallable
+  end
   describe '#pageable?' do
     it 'should be true if the LibraryLocation is not mediatable' do
       request.origin = 'GREEN'

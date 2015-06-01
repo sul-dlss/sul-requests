@@ -32,6 +32,7 @@ Rails.application.routes.draw do
   resources :pages, concerns: [:creatable_via_get_redirect, :successable, :statusable]
   resources :scans, concerns: [:creatable_via_get_redirect, :successable, :statusable]
   resources :mediated_pages, concerns: [:creatable_via_get_redirect, :successable, :statusable]
+  resources :hold_recalls, concerns: [:creatable_via_get_redirect, :successable, :statusable]
 
   resources :admin, only: [:index, :show] do
     member do

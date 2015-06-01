@@ -4,8 +4,9 @@
 class LibraryLocation
   attr_reader :request, :library, :location
 
-  include Scannable
+  include HoldRecallable
   include Mediateable
+  include Scannable
 
   def initialize(request)
     @request = request

@@ -68,14 +68,15 @@ class SearchworksItem
       @searchworks_item = searchworks_item
     end
 
-    def by_barcodes(barcodes)
+    def where(barcodes: [])
+      fail ArgumentError unless barcodes.present?
       barcodes = Array(barcodes)
-      items.select do |item|
+      all.select do |item|
         barcodes.include?(item.barcode)
       end
     end
 
-    def items
+    def all
       return [] unless location.present?
       location.items
     end

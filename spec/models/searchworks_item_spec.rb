@@ -105,14 +105,14 @@ describe SearchworksItem do
       end
     end
     let(:subject) { SearchworksItem::RequestedHoldings.new(item) }
-    describe 'items' do
+    describe 'all' do
       describe 'items that exist' do
         let(:item) { build(:green_stacks_searchworks_item) }
         it 'are present for the requested location' do
-          expect(subject.items).to be_a Array
-          expect(subject.items.length).to eq 1
-          expect(subject.items.first.barcode).to eq '12345678'
-          expect(subject.items.first.callnumber).to eq 'ABC 123'
+          expect(subject.all).to be_a Array
+          expect(subject.all.length).to eq 1
+          expect(subject.all.first.barcode).to eq '12345678'
+          expect(subject.all.first.callnumber).to eq 'ABC 123'
         end
       end
 
@@ -122,7 +122,7 @@ describe SearchworksItem do
           allow(item).to receive_messages(request: build(:request, origin: 'SAL3', origin_location: 'STACKS'))
         end
         it 'are not present for the requested location' do
-          expect(subject.items).to eq([])
+          expect(subject.all).to eq([])
         end
       end
     end
@@ -130,20 +130,20 @@ describe SearchworksItem do
     describe 'by_barcode' do
       let(:item) { build(:green_stacks_multi_holdings_searchworks_item) }
       it 'should return the items given an array of barcodes' do
-        by_barcodes = subject.by_barcodes(%w(12345678 87654321))
+        by_barcodes = subject.where(barcodes: %w(12345678 87654321))
         expect(by_barcodes).to be_a Array
         expect(by_barcodes.length).to eq 2
         expect(by_barcodes.first.barcode).to eq '12345678'
         expect(by_barcodes.last.barcode).to eq '87654321'
       end
       it 'should return the item given a single barcode' do
-        by_barcodes = subject.by_barcodes('12345679')
+        by_barcodes = subject.where(barcodes: '12345679')
         expect(by_barcodes).to be_a Array
         expect(by_barcodes.length).to eq 1
         expect(by_barcodes.first.barcode).to eq '12345679'
       end
       it 'should return an empty array if the given barcode does not exist' do
-        expect(subject.by_barcodes('not-a-barcode')).to eq([])
+        expect(subject.where(barcodes: 'not-a-barcode')).to eq([])
       end
     end
   end
