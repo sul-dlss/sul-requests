@@ -11,7 +11,7 @@
     </div>
   <% end %>
 
-  <%= f.text_area :text, hide_label: true, control_col: "col-sm-12" %>
+  <%= f.text_area :text, hide_label: true, control_col: "col-sm-12", rows: 5 %>
   <div class="display-dates">
     <div class="start-at">
       <%= f.label :start_at, "Display from", class: 'control-label' %>
@@ -26,7 +26,7 @@
   <%= f.hidden_field :request_type %>
 
   <div class="actions">
+    <%= f.primary %>
     <%= link_to "Cancel", messages_path %>
-    <%= f.submit class: 'btn btn-primary' %>
   </div>
 <% end %>

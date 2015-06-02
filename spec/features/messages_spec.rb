@@ -41,7 +41,7 @@ describe 'Viewing all requests' do
         fill_in 'Display from', with: '01/01/2000'
         fill_in 'through', with: '01/01/2100'
 
-        click_on 'Create Message'
+        click_on 'Save'
 
         within '.library-page-ARS' do
           expect(page).to have_content 'This is an important message'
@@ -80,7 +80,7 @@ describe 'Viewing all requests' do
         fill_in 'Display from', with: '01/01/2000'
         fill_in 'through', with: '01/01/2100'
 
-        click_on 'Update Message'
+        click_on 'Save'
 
         within '.library-page-SPEC-COLL' do
           expect(page).to have_content 'This is an important message'
