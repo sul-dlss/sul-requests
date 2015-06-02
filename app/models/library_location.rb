@@ -2,12 +2,13 @@
 #  Class to handle configuration and logic around library codes and labels
 ###
 class LibraryLocation
-  attr_reader :library, :location
+  attr_reader :request, :library, :location
 
   include Scannable
   include Mediateable
 
   def initialize(request)
+    @request = request
     @library = request.origin
     @location = request.origin_location
   end

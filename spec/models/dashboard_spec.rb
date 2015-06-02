@@ -20,7 +20,7 @@ describe Dashboard do
   describe 'metrics' do
     it 'should return an array of metrics whose count is over 0' do
       expect(subject.metrics).to eq [:mediated_pages, :pages]
-      create(:scan)
+      create(:scan_with_holdings)
       expect(subject.class.new.metrics).to eq [:mediated_pages, :pages, :scans]
     end
   end

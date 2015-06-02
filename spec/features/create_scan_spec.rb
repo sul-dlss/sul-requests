@@ -3,6 +3,7 @@ require 'rails_helper'
 describe 'Create Scan Request' do
   before do
     allow_any_instance_of(ScansController).to receive(:illiad_query).and_return('http://illiad.ill')
+    stub_searchworks_api_json(build(:sal3_holdings))
   end
   describe 'by a webauth user' do
     before do
@@ -49,6 +50,7 @@ describe 'Create Scan Request' do
       stub_current_user(create(:webauth_user))
       stub_searchworks_api_json(build(:sal3_holdings))
     end
+
     it 'should persist to the database and offer up an illiad url' do
       visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
 

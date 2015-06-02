@@ -29,6 +29,9 @@ describe RequestsController do
     end
 
     describe 'scannable item' do
+      before do
+        stub_searchworks_api_json(build(:sal3_holdings))
+      end
       it 'should display a page to choose to have an item scanned or delivered' do
         get :new, scannable_params
         expect(response).to render_template('new')
