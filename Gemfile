@@ -70,6 +70,12 @@ group :development, :test do
   # Poltergeist is a capybara driver to run integration tests using PhantomJS
   gem 'poltergeist'
 
+  # Teaspoon-jasmine is a wrapper for the Jasmine javascript testing library
+  gem 'teaspoon-jasmine'
+
+  # Allows jQuery integration into the Jasmine javascript testing framework
+  gem 'jasmine-jquery-rails'
+
   # Database cleaner allows us to clean the entire database after certain tests
   gem 'database_cleaner'
 

@@ -48,7 +48,7 @@ FactoryGirl.define do
     after(:build) do |request|
       class << request
         def searchworks_item
-          FactoryGirl.build(:sal3_stacks_multi_holdings_searchworks_item)
+          FactoryGirl.build(:spec_coll_stacks_multi_holdings_searchworks_item)
         end
       end
     end

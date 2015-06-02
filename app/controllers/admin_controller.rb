@@ -10,6 +10,11 @@ class AdminController < ApplicationController
     @mediated_pages = MediatedPage.where(origin: params[:id]).order(:origin).page(page).per(per)
   end
 
+  def holdings
+    authorize! :manage, (@request = MediatedPage.find(params[:id]))
+    render layout: false
+  end
+
   private
 
   def page

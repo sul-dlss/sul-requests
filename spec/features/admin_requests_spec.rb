@@ -14,16 +14,13 @@ describe 'Viewing all requests' do
         visit admin_index_path
 
         expect(page).to have_css('h3', text: /Green Library/)
-        expect(page).to have_css('h4', text: /Library=GREEN & location=STACKS/)
         expect(page).to have_css('td a', text: 'Fourth symphony. [Op. 51].')
         expect(page).to have_css('td a[href="mailto:jstanford@stanford.edu"]', text: /jstanford@stanford.edu/)
 
         expect(page).to have_css('h3', text: /SAL Newark/)
-        expect(page).to have_css('h4', text: /Library=SAL-NEWARK & location=STACKS/)
         expect(page).to have_css('td a', text: 'An American in Paris')
         expect(page).to have_css('td a[href="mailto:joe@xyz.com"]', text: /Joe \(joe@xyz.com\)/)
 
-        expect(page).to have_selector('td', text: /^Page$/, count: 2)
         expect(page).to have_selector('table.table-striped', count: 2)
       end
     end

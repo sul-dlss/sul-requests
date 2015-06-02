@@ -34,4 +34,16 @@ FactoryGirl.define do
       end
     end
   end
+
+  factory :spec_coll_stacks_multi_holdings_searchworks_item, class: SearchworksItem do
+    initialize_with { new(create(:request, origin: 'SPEC-COLL', origin_location: 'STACKS')) }
+
+    after(:build) do |item|
+      class << item
+        def json
+          FactoryGirl.build(:searchable_holdings)
+        end
+      end
+    end
+  end
 end
