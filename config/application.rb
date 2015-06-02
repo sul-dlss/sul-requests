@@ -82,6 +82,12 @@ module SULRequests
       'SPEC-COLL' => ['SPEC-COLL']
     }
 
+    config.pageable_libraries = [
+      'SAL',
+      'SAL3',
+      'SAL-NEWARK'
+    ]
+
     config.location_specific_pickup_libraries = {
       'PAGE-AR' => ['ART', 'SPEC-COLL'],
       'PAGE-AS' => ['ARS'],
