@@ -11,8 +11,10 @@ describe 'Viewing all requests' do
 
         expect(page).to have_css('h1', text: 'Broadcast messages for request forms')
         expect(page).to have_css('h2', text: /Page from anywhere/)
-        expect(page).to have_css('h2', text: /Page from Archive of Recorded Sound/)
-        expect(page).to have_css('h2', text: /Page from Green Library/)
+        expect(page).to have_css('h2', text: /Page from SAL1&2/)
+        expect(page).to have_css('h2', text: /Page from SAL3/)
+        expect(page).to have_css('h2', text: /Page from SAL Newark/)
+        expect(page).not_to have_css('h2', text: /Page from Green Library/)
       end
     end
 
@@ -33,9 +35,9 @@ describe 'Viewing all requests' do
         stub_current_user(create(:superadmin_user))
       end
       it 'should list data in tables' do
-        visit new_message_path(library: 'ARS', request_type: 'page')
+        visit new_message_path(library: 'SAL3', request_type: 'page')
 
-        expect(page).to have_css('h1', text: /Page from Archive of Recorded Sound/)
+        expect(page).to have_css('h1', text: /Page from SAL3/)
 
         fill_in 'Text', with: 'This is an important message'
         fill_in 'Display from', with: '01/01/2000'
@@ -43,7 +45,7 @@ describe 'Viewing all requests' do
 
         click_on 'Save'
 
-        within '.library-page-ARS' do
+        within '.library-page-SAL3' do
           expect(page).to have_content 'This is an important message'
           expect(page).to have_content 'Active 2000-01-01 through 2100-01-01'
         end
@@ -62,7 +64,7 @@ describe 'Viewing all requests' do
   end
 
   describe 'update' do
-    let(:message) { create(:message) }
+    let(:message) { create(:message, library: 'SAL3') }
 
     describe 'by a superadmin user' do
       before do
@@ -72,7 +74,7 @@ describe 'Viewing all requests' do
       it 'should list data in tables' do
         visit edit_message_path(message)
 
-        expect(page).to have_css('h1', text: /Page from Special Collections/)
+        expect(page).to have_css('h1', text: /Page from SAL3/)
 
         expect(page).to have_css('textarea', text: 'MyText')
 
@@ -82,7 +84,7 @@ describe 'Viewing all requests' do
 
         click_on 'Save'
 
-        within '.library-page-SPEC-COLL' do
+        within '.library-page-SAL3' do
           expect(page).to have_content 'This is an important message'
           expect(page).to have_content 'Active 2000-01-01 through 2100-01-01'
         end

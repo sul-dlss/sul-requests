@@ -5,7 +5,7 @@
   <%= render partial: 'messages_for_library', locals: { library_code: 'anywhere', request_type: 'page'} %>
 </div>
 
-<% LibraryLocation.all_libraries.each do |library_code, library_name| %>
+<% LibraryLocation.pageable_libraries.each do |library_code, library_name| %>
   <div class="library-page-<%= library_code %>">
     <h2>Page from <%= library_name %></h2>
     <%= render partial: 'messages_for_library', locals: { library_code: library_code, request_type: 'page'} %>

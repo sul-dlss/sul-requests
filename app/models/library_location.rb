@@ -44,6 +44,10 @@ class LibraryLocation
     def all_libraries
       config.libraries
     end
+
+    def pageable_libraries
+      all_libraries.select { |k, _| config.pageable_libraries.include? k }
+    end
   end
 
   private
