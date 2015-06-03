@@ -9,6 +9,17 @@ describe 'Create Scan Request' do
     before do
       stub_current_user(create(:webauth_user))
     end
+
+    it 'should display a copyright restrictions notice in a collapse' do
+      visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
+
+      expect(page).to have_content 'Warning concerning copyright restrictions'
+
+      click_on 'Warning concerning copyright restrictions'
+
+      expect(page).to have_content 'The copyright law of the United States'
+    end
+
     it 'should be possible' do
       visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
 

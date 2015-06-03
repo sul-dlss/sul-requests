@@ -1,9 +1,12 @@
 @import 'sul-variables';
+@import 'bootstrap/variables';
 
-$gray-base: #000;
-$gray-dark: lighten($gray-base, 20%);
 $link-color: $gray-dark;
 
 $brand-primary: $cardinal-red;
 $pagination-active-bg: #696969;
 $pagination-active-border: #696969;
+
+// Panels
+$panel-danger-text: $black;
+$panel-danger-bg: $panel-danger-heading-bg;
