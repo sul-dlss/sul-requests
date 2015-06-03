@@ -30,6 +30,26 @@ describe 'Send Request Buttons' do
     end
   end
 
+  describe 'HoldRecall', js: true do
+    before do
+      visit new_hold_recall_path(item_id: '1234', barcode: '3610512345', origin: 'GREEN', origin_location: 'STACKS')
+    end
+    it 'allows to send requests via SUNet ID' do
+      expect(page).to have_css('button', text: /Send request.*login with SUNet ID/)
+    end
+
+    it 'allows to send requests via LibraryID' do
+      click_link 'I don\'t have a SUNet ID'
+      expect(page).to have_field('Library ID', type: 'text')
+    end
+
+    it 'does not allow to send requests via Name and Email' do
+      click_link 'I don\'t have a SUNet ID'
+      expect(page).to_not have_field('Name', type: 'text')
+      expect(page).to_not have_field('Email', type: 'email')
+    end
+  end
+
   describe 'Mediated Pages' do
     describe 'for non-HOPKINS libraries' do
       it 'allows users to submit without a SUNet ID' do
