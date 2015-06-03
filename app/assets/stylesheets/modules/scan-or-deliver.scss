@@ -41,3 +41,40 @@
     }
   }
 }
+
+.panel-danger {
+  .panel-heading {
+    border-bottom: 0;
+    font-size: 1.3em;
+
+    a {
+      border-bottom: 0;
+    }
+
+    .glyphicon {
+      line-height: 1.3em;
+    }
+
+    .glyphicon-chevron-down {
+      display: inline;
+    }
+
+    .glyphicon-chevron-right {
+      display: none;
+    }
+
+    .collapsed {
+      .glyphicon-chevron-down {
+        display: none;
+      }
+
+      .glyphicon-chevron-right {
+        display: inline;
+      }
+    }
+  }
+
+  .panel-body {
+    background: $panel-danger-bg;
+  }
+}

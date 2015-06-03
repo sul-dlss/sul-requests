@@ -10,6 +10,6 @@
     <%= d.text_area :section_title, rows: '3', label: t('forms.labels.section_title') %>
     <%= d.text_field :authors, label: t('forms.labels.authors') %>
   <% end %>
-
+  <%= render partial: 'copyright_restrictions' %>
   <%= render partial: 'shared/send_request_buttons', locals: { f: f } %>
 <% end %>
