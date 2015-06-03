@@ -1,1 +1,15 @@
-On <%= @request.created_at.to_formatted_s(:long_ordinal) %>, you requested the following:<%= @request.item_title %>Item(s) requested:  <%= @request.holdings.map(&:callnumber).join("\n  ") %><%= @request.data_to_email_s %>Check the status of your request at <%= @status_url %><% if @request.user.webauth_user? %>You can also see the status at http://library.stanford.edu/myaccount<% end %>Questions about your request?Contact:<%= t("confirmation_email.contact.#{@request.origin.underscore}", default: t('confirmation_email.contact.default')) %>
+On <%= l @request.created_at.to_date, format: :long %>, you requested the following:
+
+<%= @request.item_title %>
+
+Item(s) requested:
+  <%= @request.holdings.map(&:callnumber).join("\n  ") %>
+
+<%= @request.data_to_email_s %>
+
+Check the status of your request at <%= @status_url %>
+<% if @request.user.webauth_user? %>You can also see the status at http://library.stanford.edu/myaccount<% end %>
+
+Questions about your request?
+Contact:
+<%= t("confirmation_email.contact.#{@request.origin.underscore}", default: t('confirmation_email.contact.default')) %>

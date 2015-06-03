@@ -37,7 +37,7 @@ describe ConfirmationMailer do
       let(:request) { create(:page_with_holdings, barcodes: ['12345678'], user: user) }
       let(:body) { mail.body.to_s }
       it 'has the date' do
-        expect(body).to match(/On #{request.created_at.to_formatted_s(:long_ordinal)}, you requested the following:/)
+        expect(body).to match(/On #{request.created_at.strftime('%A, %b %-d %Y')}, you requested the following:/)
       end
 
       it 'has the title' do

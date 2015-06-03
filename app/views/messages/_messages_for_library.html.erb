@@ -5,9 +5,9 @@
       <% if message.scheduled? %>
       <div class="status <%= 'active' if message.active? %>">
         <% if message.active? %>
-          Active <%= l message.start_at.to_date %> through <%= l message.end_at.to_date %>
+          Active <%= time_tag message.start_at.to_date, :short %> through <%= time_tag message.end_at.to_date, :short %>
         <% else %>
-          Inactive (was <%= l message.start_at.to_date %> through <%= l message.end_at.to_date %>)
+          Inactive (was <%= time_tag message.start_at.to_date, :short %> through <%= time_tag message.end_at.to_date, :short %>)
         <% end %>
       </div>
       <% end %>

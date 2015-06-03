@@ -40,6 +40,16 @@ en:
       subject: 'Item(s) requested (%{title})'
     scan:
       subject: "Scan to PDF requested (%{title})"
+  date:
+    formats:
+      quick: '%a %b %-d'
+      short: '%b %-d %Y'
+      long: '%A, %b %-d %Y'
+  time:
+    am: a
+    pm: p
+    formats:
+      short: '%Y-%m-%d %l.%M%P'
   forms:
     labels:
       authors: 'Author(s)'

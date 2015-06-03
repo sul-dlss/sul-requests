@@ -32,6 +32,10 @@ module ApplicationHelper
     markdown_renderer.render(markup).html_safe
   end
 
+  def time_tag(dt, format = :default, attr: {})
+    content_tag :time, l(dt, format: format), attr.merge(datetime: dt) if dt
+  end
+
   private
 
   def markdown_renderer

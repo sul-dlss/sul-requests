@@ -47,7 +47,7 @@ describe 'Viewing all requests' do
 
         within '.library-page-SAL3' do
           expect(page).to have_content 'This is an important message'
-          expect(page).to have_content 'Active 2000-01-01 through 2100-01-01'
+          expect(page).to have_content 'Active Jan 1 2000 through Jan 1 2100'
         end
       end
     end
@@ -86,7 +86,7 @@ describe 'Viewing all requests' do
 
         within '.library-page-SAL3' do
           expect(page).to have_content 'This is an important message'
-          expect(page).to have_content 'Active 2000-01-01 through 2100-01-01'
+          expect(page).to have_content 'Active Jan 1 2000 through Jan 1 2100'
         end
       end
     end
