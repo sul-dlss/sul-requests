@@ -38,7 +38,9 @@ describe MediatedPagesController do
         expect(response).to redirect_to(
           login_path(
             referrer: create_mediated_pages_path(
-              page: { item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'SPEC-COLL' }
+              mediated_page: {
+                item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'SPEC-COLL'
+              }
             )
           )
         )

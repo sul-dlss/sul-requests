@@ -31,7 +31,7 @@ class MediatedPagesController < RequestsController
     if !current_user.webauth_user? && create_via_post?
       redirect_to login_path(
         referrer: create_mediated_pages_path(
-          page: params[:mediated_page].except(:user_attributes)
+          mediated_page: local_object_param.except(:user_attributes)
         )
       )
     else
