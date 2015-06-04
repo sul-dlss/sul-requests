@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'rails_helper'
 
 describe 'requests/status.html.erb' do
   let(:user) { create(:webauth_user) }
