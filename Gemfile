@@ -51,6 +51,15 @@ group :deployment do
   gem 'lyberteam-capistrano-devel'
 end
 
+# Use Squash for exception reporting
+gem 'squash_ruby', require: 'squash/ruby'
+
+# Pinned to 1.3.3 until https://github.com/SquareSquash/rails/pull/15
+gem 'squash_rails', '1.3.3', require: 'squash/rails'
+
+# Use is_it_working to monitor the application
+gem 'is_it_working'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
