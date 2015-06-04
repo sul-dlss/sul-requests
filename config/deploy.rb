@@ -25,7 +25,7 @@ set :deploy_to, "/opt/app/#{fetch(:user)}/#{fetch(:user)}"
 # set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, fetch(:linked_files, []).push('config/database.yml')
+set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/initializers/squash.rb')
 
 # Default value for linked_dirs is []
 set :linked_dirs, fetch(:linked_dirs, []).push('config/settings',
@@ -41,6 +41,8 @@ set :linked_dirs, fetch(:linked_dirs, []).push('config/settings',
 
 # Default value for keep_releases is 5
 # set :keep_releases, 5
+
+before 'deploy:publishing', 'squash:write_revision'
 
 namespace :deploy do
   desc 'Restart application'
