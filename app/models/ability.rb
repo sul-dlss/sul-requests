@@ -50,28 +50,18 @@ class Ability
       current_user_owns_request?(request)
     end
 
-    can :success, Page do |page|
-      page.valid_token?(token) if token
-    end
+    [HoldRecall, MediatedPage, Page].each do |request_type|
+      can :success, request_type do |request|
+        request.valid_token?(token) if token
+      end
 
-    can :success, MediatedPage do |page|
-      page.valid_token?(token) if token
-    end
+      can :create, request_type do |request|
+        request_is_by_anonymous_user?(request) && request.requestable_by_all?
+      end
 
-    can :create, Page do |page|
-      request_is_by_anonymous_user?(page) && page.requestable_by_all?
-    end
-
-    can :create, Page do |page|
-      request_is_by_library_id_user?(page) && page.requestable_with_library_id?
-    end
-
-    can :create, MediatedPage do |mediated_page|
-      request_is_by_anonymous_user?(mediated_page) && mediated_page.requestable_by_all?
-    end
-
-    can :create, MediatedPage do |mediated_page|
-      request_is_by_library_id_user?(mediated_page) && mediated_page.requestable_with_library_id?
+      can :create, request_type do |request|
+        request_is_by_library_id_user?(request) && request.requestable_with_library_id?
+      end
     end
 
     # Only Webauth users can create scan requests (for now).

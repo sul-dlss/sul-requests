@@ -174,6 +174,13 @@ describe Request do
       expect(subject.type).to eq 'MediatedPage'
     end
 
+    it 'should delegate to a hold recall if it is hold recallable' do
+      allow(subject).to receive_messages(hold_recallable?: true)
+      expect(subject.type).to be_nil
+      subject.delegate_request!
+      expect(subject.type).to eq 'HoldRecall'
+    end
+
     it 'should delegate to a page request otherwise' do
       expect(subject.type).to be_nil
       subject.delegate_request!
