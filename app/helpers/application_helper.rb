@@ -36,6 +36,12 @@ module ApplicationHelper
     content_tag :time, l(dt, format: format), attr.merge(datetime: dt) if dt
   end
 
+  def render_user_information
+    '<span class="sr-only">You are logged in as </span>'.html_safe +
+      (current_user.name if current_user.name.present?) +
+      current_user.email_address
+  end
+
   private
 
   def markdown_renderer
