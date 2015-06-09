@@ -52,7 +52,7 @@ describe SearchworksItem do
         allow(subject).to receive_messages(url: Settings.searchworks_api.gsub('searchworks', 'searchwroks'))
       end
       it 'should return an NullResponse when there is a connection error' do
-        expect(subject.send(:response)).to be_a SearchworksItem::NullResponse
+        expect(subject.send(:response)).to be_a NullResponse
       end
       it 'should return blank json' do
         expect(subject.send(:json)).to eq({})
