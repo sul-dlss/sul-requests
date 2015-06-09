@@ -36,16 +36,15 @@ class HoldRecallsController < RequestsController
   end
 
   def create_params
-    params.require(:hold_recall).permit(
-      :destination,
-      :item_id,
-      :origin,
-      :origin_location,
-      :needed_date,
-      barcodes: [],
-      data: [:comments],
-      user_attributes: [:name, :email, :library_id]
-    )
+    params.require(:hold_recall).permit(:destination,
+                                        :item_id,
+                                        :origin,
+                                        :origin_location,
+                                        :needed_date,
+                                        :item_comment,
+                                        :request_comment,
+                                        barcodes: [],
+                                        user_attributes: [:name, :email, :library_id])
   end
 
   def local_object_param

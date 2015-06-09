@@ -9,7 +9,7 @@ FactoryGirl.define do
         'locations' => [
           { 'code' => 'STACKS',
             'items' => [
-              { 'barcode' => '12345678',
+              { 'barcode' => '3610512345678',
                 'callnumber' => 'ABC 123',
                 'type' => 'STKS',
                 'status' => {
@@ -17,7 +17,7 @@ FactoryGirl.define do
                   'status_text' => 'Available'
                 }
               },
-              { 'barcode' => '87654321',
+              { 'barcode' => '3610587654321',
                 'callnumber' => 'ABC 321',
                 'type' => 'STKS',
                 'status' => {
@@ -55,6 +55,72 @@ FactoryGirl.define do
       { 'code' => 'GREEN',
         'locations' => [
           { 'code' => 'STACKS',
+            'items' => [
+              { 'barcode' => '12345678',
+                'callnumber' => 'ABC 123',
+                'type' => 'STKS',
+                'status' => {
+                  'availability_class' => 'available',
+                  'status_text' => 'Available'
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+
+    initialize_with do
+      attributes.map do |k, h|
+        [k.to_s, h]
+      end.to_h
+    end
+  end
+
+  factory :sal_newark_holding, class: Hash do
+    title 'Item Title'
+
+    format ['Book']
+
+    holdings [
+      { 'code' => 'SAL-NEWARK',
+        'locations' => [
+          { 'code' => 'STACKS',
+            'mhld' => {},
+            'items' => [
+              { 'barcode' => '12345678',
+                'callnumber' => 'ABC 123',
+                'type' => 'STKS',
+                'status' => {
+                  'availability_class' => 'available',
+                  'status_text' => 'Available'
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+
+    initialize_with do
+      attributes.map do |k, h|
+        [k.to_s, h]
+      end.to_h
+    end
+  end
+
+  factory :mhld_summary_holdings, class: Hash do
+    title 'Item Title'
+
+    format ['Book']
+
+    holdings [
+      { 'code' => 'GREEN',
+        'locations' => [
+          { 'code' => 'STACKS',
+            'mhld' => {
+              'library_has' => 'This is the library has holdings summary'
+            },
             'items' => [
               { 'barcode' => '12345678',
                 'callnumber' => 'ABC 123',

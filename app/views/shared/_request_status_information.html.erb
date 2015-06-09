@@ -15,9 +15,14 @@
     </dd>
   <% end %>
 
-  <% if current_request.commentable? && current_request.data['comments'].present? %>
+  <% if current_request.item_commentable? && current_request.item_comment.present? %>
+    <dt><%= t("forms.labels.holdings") %></dt>
+    <dd><%= current_request.item_comment %></dd>
+  <% end %>
+
+  <% if current_request.request_commentable? && current_request.request_comment.present? %>
     <dt><%= t("forms.labels.comments") %></dt>
-    <dd><%= current_request.data['comments'] %></dd>
+    <dd><%= current_request.request_comment %></dd>
   <% end %>
 
   <% if current_request.data.present? %>

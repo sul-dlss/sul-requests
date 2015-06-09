@@ -17,7 +17,7 @@ describe Request do
             item_id: '1234',
             origin: 'GREEN',
             origin_location: 'STACKS',
-            barcodes: %w(9999999 12345678)
+            barcodes: %w(9999999 3610512345678)
           )
         end
       ).to raise_error(
@@ -27,15 +27,15 @@ describe Request do
         item_id: '1234',
         origin: 'GREEN',
         origin_location: 'STACKS',
-        barcodes: %w(12345678)
+        barcodes: %w(3610512345678)
       )
-      expect(Request.last.barcodes).to eq %w(12345678)
+      expect(Request.last.barcodes).to eq %w(3610512345678)
     end
   end
 
-  describe '#commentable?' do
-    it 'should be false' do
-      expect(subject).to_not be_commentable
+  describe 'commentable' do
+    it 'mixin should be included' do
+      expect(subject).to be_kind_of Commentable
     end
   end
 
@@ -59,12 +59,12 @@ describe Request do
 
   describe '#holdings' do
     describe 'when persisted' do
-      let(:subject) { create(:request_with_multiple_holdings, barcodes: ['12345678']) }
+      let(:subject) { create(:request_with_multiple_holdings, barcodes: ['3610512345678']) }
       it 'should get the holdings from the requested location by the persisted barcodes' do
         holdings = subject.holdings
         expect(holdings).to be_a Array
         expect(holdings.length).to eq 1
-        expect(holdings.first.barcode).to eq '12345678'
+        expect(holdings.first.barcode).to eq '3610512345678'
         expect(holdings.first.callnumber).to eq 'ABC 123'
       end
     end
@@ -75,7 +75,7 @@ describe Request do
         holdings = subject.holdings
         expect(holdings).to be_a Array
         expect(holdings.length).to eq 3
-        expect(holdings.first.barcode).to eq '12345678'
+        expect(holdings.first.barcode).to eq '3610512345678'
         expect(holdings.last.barcode).to eq '12345679'
       end
     end
@@ -189,7 +189,7 @@ describe Request do
   end
 
   describe '#data' do
-    let(:data_hash) { { a: :a, b: :b } }
+    let(:data_hash) { { 'a' => 'a', 'b' => 'b' } }
     it 'should be a serialized hash' do
       expect(subject.data).to eq({})
       subject.data = data_hash

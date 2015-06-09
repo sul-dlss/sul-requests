@@ -50,8 +50,9 @@ class PagesController < RequestsController
                                  :item_id,
                                  :origin,
                                  :origin_location,
+                                 :item_comment,
+                                 :request_comment,
                                  barcodes: [],
-                                 data: [:comments],
                                  user_attributes: [:name, :email, :library_id])
   end
 

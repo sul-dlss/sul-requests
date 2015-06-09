@@ -60,6 +60,8 @@ en:
       holdings: 'Item(s) requested'
       hold_recall:
         needed_date: 'Cancel request after'
+      SAL-NEWARK:
+        comments: 'List the volumes/issues you need'
   headers:
     mediated_page:
       CHECKEDOUT: 'Request checked-out item'

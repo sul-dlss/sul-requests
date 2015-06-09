@@ -16,6 +16,14 @@ module RequestsHelper
     end
   end
 
+  def label_for_comments_field
+    t("forms.labels.#{current_request.origin}.comments",
+      default: t("forms.labels.#{current_request.class.name.underscore}.comments",
+                 default: t('forms.labels.comments')
+                )
+     )
+  end
+
   private
 
   def select_for_multiple_libraries(form, pickup_libraries)

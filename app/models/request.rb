@@ -3,6 +3,8 @@
 #  STI and sub-class this main request class.
 ###
 class Request < ActiveRecord::Base
+  include Commentable
+  include Holdings
   include Requestable
 
   attr_accessor :requested_barcode
@@ -12,7 +14,8 @@ class Request < ActiveRecord::Base
   validates :item_id, :origin, :origin_location, presence: true
   validate :requested_holdings_exist
 
-  serialize :data, Hash
+  # Serialzed data hash
+  store :data, accessors: [:item_comment, :request_comment, :authors, :page_range, :section_title], coder: JSON
   serialize :barcodes, Array
 
   belongs_to :user, autosave: true
@@ -37,10 +40,6 @@ class Request < ActiveRecord::Base
   def send_confirmation!
     return nil if user.library_id_user?
     ConfirmationMailer.request_confirmation(self).deliver_later
-  end
-
-  def commentable?
-    false
   end
 
   def delegate_request!
@@ -81,11 +80,6 @@ class Request < ActiveRecord::Base
     end
   end
 
-  def holdings
-    return requested_holdings if requested_holdings.present?
-    searchworks_item.requested_holdings.all
-  end
-
   def item_limit
     nil
   end
@@ -112,11 +106,6 @@ class Request < ActiveRecord::Base
   end
 
   protected
-
-  def requested_holdings
-    return unless requested_barcode.present? || barcodes.present?
-    searchworks_item.requested_holdings.where(barcodes: requested_barcode || barcodes)
-  end
 
   def destination_is_a_pickup_library
     return if library_location.pickup_libraries.include?(destination)

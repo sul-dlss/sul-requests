@@ -76,7 +76,7 @@ describe 'Creating a mediated page request' do
 
       expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
 
-      expect(MediatedPage.last.data['comments']).to eq comment
+      expect(MediatedPage.last.request_comment).to eq comment
     end
     it 'should not include a comments for requests that do not get them' do
       visit new_mediated_page_path(item_id: '1234', origin: 'HOOVER', origin_location: 'STACKS-30')

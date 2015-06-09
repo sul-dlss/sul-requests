@@ -33,6 +33,10 @@ class LibraryLocation
     @active_messages ||= Message.where(library: [library, 'anywhere']).active
   end
 
+  def mhld
+    request.holdings_object.mhld
+  end
+
   class << self
     def library_name_by_code(code)
       config.libraries[code]
