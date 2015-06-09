@@ -25,6 +25,26 @@ describe Page do
     end
   end
 
+  describe 'item_commentable?' do
+    it 'is false when the library is not SAL-NEWARK' do
+      expect(subject).to_not be_item_commentable
+    end
+
+    describe 'for SAL-NEWARK' do
+      before do
+        subject.origin = 'SAL-NEWARK'
+      end
+      it 'is false when there are barcoded holdings ' do
+        allow(subject).to receive_messages(searchworks_item: build(:green_stacks_multi_holdings_searchworks_item))
+        expect(subject).to_not be_item_commentable
+      end
+
+      it 'is true when the there are no barcoded items' do
+        expect(subject).to be_item_commentable
+      end
+    end
+  end
+
   describe 'requestable' do
     it { is_expected.to be_requestable_by_all }
     it { is_expected.to be_requestable_with_library_id }

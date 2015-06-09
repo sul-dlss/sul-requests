@@ -64,6 +64,8 @@ class SearchworksItem
   #  holdings to just what was requested by the user
   ###
   class RequestedHoldings
+    delegate :mhld, to: :location
+
     def initialize(searchworks_item)
       @searchworks_item = searchworks_item
     end
@@ -81,7 +83,17 @@ class SearchworksItem
       location.items
     end
 
+    def barcoded_holdings
+      @barcoded_holdings ||= all.select do |item|
+        item.barcode.match(barcode_pattern)
+      end
+    end
+
     private
+
+    def barcode_pattern
+      /^36105/
+    end
 
     def library
       return unless @searchworks_item.holdings.present?

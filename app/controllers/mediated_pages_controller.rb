@@ -45,8 +45,9 @@ class MediatedPagesController < RequestsController
                                           :origin,
                                           :origin_location,
                                           :needed_date,
+                                          :item_comment,
+                                          :request_comment,
                                           barcodes: [],
-                                          data: [:comments],
                                           user_attributes: [:name, :email, :library_id])
   end
 

@@ -21,14 +21,14 @@ describe MediatedPage do
     end
   end
 
-  describe '#commentable?' do
-    it 'should return true if the library is SPEC-COLL' do
+  describe '#request_commentable?' do
+    it 'is true when the library is SPEC-COLL' do
       subject.origin = 'SPEC-COLL'
-      expect(subject).to be_commentable
+      expect(subject).to be_request_commentable
     end
-    it 'should return false if the library is not SPEC-COLL' do
+    it 'is false when the library is not SPEC-COLL' do
       subject.origin = 'HOOVER'
-      expect(subject).to_not be_commentable
+      expect(subject).to_not be_request_commentable
     end
   end
   describe 'TokenEncryptable' do

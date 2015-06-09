@@ -127,14 +127,22 @@ describe SearchworksItem do
       end
     end
 
+    describe 'barcoded holdings' do
+      let(:item) { build(:green_stacks_multi_holdings_searchworks_item) }
+      it 'should only return holdings that have the properly formatted barcode' do
+        expect(subject.all.length).to eq 3
+        expect(subject.barcoded_holdings.length).to eq 2
+      end
+    end
+
     describe 'by_barcode' do
       let(:item) { build(:green_stacks_multi_holdings_searchworks_item) }
       it 'should return the items given an array of barcodes' do
-        by_barcodes = subject.where(barcodes: %w(12345678 87654321))
+        by_barcodes = subject.where(barcodes: %w(3610512345678 3610587654321))
         expect(by_barcodes).to be_a Array
         expect(by_barcodes.length).to eq 2
-        expect(by_barcodes.first.barcode).to eq '12345678'
-        expect(by_barcodes.last.barcode).to eq '87654321'
+        expect(by_barcodes.first.barcode).to eq '3610512345678'
+        expect(by_barcodes.last.barcode).to eq '3610587654321'
       end
       it 'should return the item given a single barcode' do
         by_barcodes = subject.where(barcodes: '12345679')

@@ -93,10 +93,10 @@ describe PagesController do
           origin: 'GREEN',
           origin_location: 'STACKS',
           destination: 'BIOLOGY',
-          barcodes: { '12345678' => '1', '87654321' => '0', '12345679' => '1' }
+          barcodes: { '3610512345678' => '1', '3610587654321' => '0', '12345679' => '1' }
         }
         expect(response).to redirect_to successful_page_path(Page.last)
-        expect(Page.last.barcodes).to eq(%w(12345678 12345679))
+        expect(Page.last.barcodes).to eq(%w(3610512345678 12345679))
       end
       it 'sends an confirmation email' do
         expect(

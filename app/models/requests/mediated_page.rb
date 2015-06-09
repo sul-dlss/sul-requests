@@ -12,7 +12,7 @@ class MediatedPage < Request
     super << user.email
   end
 
-  def commentable?
+  def request_commentable?
     commentable_library_whitelist.include?(origin)
   end
 

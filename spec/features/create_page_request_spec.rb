@@ -66,7 +66,26 @@ describe 'Creating a page request' do
 
       expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
 
-      expect(Page.last.barcodes).to eq(%w(12345678 87654321))
+      expect(Page.last.barcodes).to eq(%w(3610512345678 3610587654321))
+    end
+  end
+
+  describe 'item commentable' do
+    before do
+      stub_current_user(user)
+      stub_searchworks_api_json(build(:sal_newark_holding))
+    end
+
+    it 'displays the comment field and stores the data' do
+      visit new_page_path(item_id: '1234', origin: 'SAL-NEWARK', origin_location: 'STACKS')
+
+      expect(page).to have_css('textarea#page_item_comment')
+
+      fill_in 'page_item_comment', with: 'Volume 1-3'
+
+      click_button 'Send request'
+
+      expect(Page.last.item_comment).to eq 'Volume 1-3'
     end
   end
 end

@@ -46,4 +46,16 @@ FactoryGirl.define do
       end
     end
   end
+
+  factory :mhld_searchworks_item, class: SearchworksItem do
+    initialize_with { new(create(:request, origin: 'GREEN', origin_location: 'STACKS')) }
+
+    after(:build) do |item|
+      class << item
+        def json
+          FactoryGirl.build(:mhld_summary_holdings)
+        end
+      end
+    end
+  end
 end
