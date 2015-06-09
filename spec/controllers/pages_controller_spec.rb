@@ -31,7 +31,7 @@ describe PagesController do
   describe 'create' do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
-      it 'should redirect to the login page passing a refferrer param to continue creating the page request' do
+      it 'should redirect to the login page passing a referrer param to continue creating the page request' do
         post :create, page: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'BIOLOGY' }
         expect(response).to redirect_to(
           login_path(
