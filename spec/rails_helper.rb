@@ -97,3 +97,7 @@ end
 def stub_searchworks_api_json(json)
   allow_any_instance_of(SearchworksItem).to receive(:json).and_return(json)
 end
+
+def stub_proxy_api_output(data)
+  allow_any_instance_of(ProxyAccess).to receive(:response).and_return(double(body: data))
+end

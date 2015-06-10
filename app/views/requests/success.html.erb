@@ -8,6 +8,11 @@
       <dt><span class='sr-only'>User</span></dt>
       <dd>
         <%= current_request.user.to_email_string %>
+        <% if current_request.proxy? %>
+          <p>Shared with your proxy group</p>
+        <% elsif current_user.sponsor? %>
+          <p>Individual Request</p>
+        <% end %>
         <p class='help-block'>(We've sent a copy of this request to your email.)</p>
       </dd>
     </dl>

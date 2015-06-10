@@ -46,6 +46,10 @@ module ApplicationHelper
       current_user.email_address
   end
 
+  def request_params
+    params.except(:controller, :action)
+  end
+
   private
 
   def markdown_renderer

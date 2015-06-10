@@ -49,6 +49,38 @@ describe 'Creating a page request' do
       expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
     end
   end
+
+  describe 'by a user who sponsors a proxy group' do
+    before do
+      stub_current_user(user)
+      stub_proxy_api_output('MY_PROXY_GROUP|SPONSOR|')
+    end
+
+    it 'allows the user to share with their proxy group' do
+      visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
+      click_button 'Send request'
+
+      expect(page).to have_css('h1#dialogTitle', text: 'Share with your proxy group?')
+      click_button 'Yes, share with my group.'
+
+      expect(current_url).to eq successful_page_url(Page.last)
+      expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
+      expect(page).to have_content 'Shared with your proxy group'
+    end
+
+    it 'allows the user to keep the request private' do
+      visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
+      click_button 'Send request'
+
+      expect(page).to have_css('h1#dialogTitle', text: 'Share with your proxy group?')
+      click_button 'No, just me.'
+
+      expect(current_url).to eq successful_page_url(Page.last)
+      expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
+      expect(page).to have_content 'Individual Request'
+    end
+  end
+
   describe 'selecting barcodes' do
     before do
       stub_current_user(user)

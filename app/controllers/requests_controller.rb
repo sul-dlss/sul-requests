@@ -4,11 +4,15 @@
 ###
 class RequestsController < ApplicationController
   before_action :modify_item_selector_checkboxes, only: :create
+  before_action :modify_item_proxy_status, only: :create
+
   load_and_authorize_resource instance_name: 'request'
+
   before_action :set_current_request_defaults, only: :new
   before_action :validate_request_type, only: :new
   before_action :redirect_delegatable_requests, only: :new
   before_action :set_current_user_for_request, only: :create, if: :webauth_user?
+  before_action :check_if_proxy_sponsor, only: :create
 
   helper_method :current_request, :delegated_request?
 
@@ -81,11 +85,11 @@ class RequestsController < ApplicationController
 
   def create_params
     params.require(:request).permit(:destination,
-                                    :item_id,
-                                    :origin, :origin_location,
+                                    :item_id, :origin, :origin_location,
                                     :needed_date,
                                     :item_comment, :request_comment,
                                     :authors, :page_range, :section_title, # scans
+                                    :proxy,
                                     barcodes: [],
                                     user_attributes: [:name, :email, :library_id])
   end
@@ -96,6 +100,12 @@ class RequestsController < ApplicationController
 
   def local_object_param
     params[:request]
+  end
+
+  def check_if_proxy_sponsor
+    return unless current_request.user.sponsor? && params[:request][:proxy].nil?
+
+    render 'sponsor_request'
   end
 
   def delegated_new_request_path(request)
@@ -115,6 +125,12 @@ class RequestsController < ApplicationController
     return unless local_object_param[:barcodes]
     return unless local_object_param[:barcodes].is_a?(Hash)
     local_object_param[:barcodes] = local_object_param[:barcodes].select { |_, checked| checked == '1' }.keys
+  end
+
+  def modify_item_proxy_status
+    return unless local_object_param
+
+    local_object_param[:proxy] &&= local_object_param[:proxy] == 'true'
   end
 
   def redirect_to_success_with_token
