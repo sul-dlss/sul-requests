@@ -97,7 +97,9 @@ describe ScansController do
         expect(illiad_response).to include('Action=10&Form=30')
         expect(illiad_response).to include('&rft.genre=scananddeliverArticle')
         expect(illiad_response).to include('&rft.jtitle=SAL3+Item+Title')
-        expect(illiad_response).to include('&rft.volume=ABC+123')
+        expect(illiad_response).to include('&rft.callnum=ABC+123')
+        expect(illiad_response).to include('&rft.item=12345678')
+        expect(illiad_response).to include('&rft.location=SAL3')
       end
 
       it 'sends an confirmation email' do
