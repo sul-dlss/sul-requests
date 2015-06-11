@@ -19,9 +19,9 @@ describe ScansController do
     end
     it 'should set defaults' do
       get :new, scannable_params
-      expect(assigns[:scan].origin).to eq 'SAL3'
-      expect(assigns[:scan].origin_location).to eq 'STACKS'
-      expect(assigns[:scan].item_id).to eq '12345'
+      expect(assigns[:request].origin).to eq 'SAL3'
+      expect(assigns[:request].origin_location).to eq 'STACKS'
+      expect(assigns[:request].item_id).to eq '12345'
     end
     it 'should raise an error when an unscannable item is requested' do
       expect(
@@ -160,7 +160,8 @@ describe ScansController do
 
   describe '#current_request' do
     let(:user) { create(:anon_user) }
-    it 'returns a Page object' do
+    it 'returns a Scan object' do
+      get :new, scannable_params
       expect(controller.send(:current_request)).to be_a(Scan)
     end
   end

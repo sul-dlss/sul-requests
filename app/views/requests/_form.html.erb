@@ -14,7 +14,7 @@
   <% end %>
 
   <% if current_request.requires_needed_date? %>
-    <%= f.date_field :needed_date, label: t('forms.labels.needed_date') %>
+    <%= f.date_field :needed_date %>
   <% end %>
 
   <%= render partial: 'form_additional', locals: { f: f } %>

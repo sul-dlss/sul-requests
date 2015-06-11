@@ -4,7 +4,7 @@
 ###
 class RequestsController < ApplicationController
   before_action :modify_item_selector_checkboxes, only: :create
-  load_and_authorize_resource
+  load_and_authorize_resource instance_name: 'request'
   before_action :set_current_request_defaults, only: :new
   before_action :validate_request_type, only: :new
   before_action :redirect_delegatable_requests, only: :new

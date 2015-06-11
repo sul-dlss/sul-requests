@@ -16,9 +16,9 @@ describe HoldRecallsController do
     end
     it 'should set defaults' do
       get :new, normal_params
-      expect(assigns[:hold_recall].origin).to eq 'GREEN'
-      expect(assigns[:hold_recall].origin_location).to eq 'STACKS'
-      expect(assigns[:hold_recall].item_id).to eq '1234'
+      expect(assigns[:request].origin).to eq 'GREEN'
+      expect(assigns[:request].origin_location).to eq 'STACKS'
+      expect(assigns[:request].item_id).to eq '1234'
     end
     it 'should raise an error if the item is unmediateable' do
       expect(
@@ -105,7 +105,8 @@ describe HoldRecallsController do
 
   describe '#current_request' do
     let(:user) { create(:anon_user) }
-    it 'returns a MediatedPage object' do
+    it 'returns a HoldRecall object' do
+      get :new, normal_params
       expect(controller.send(:current_request)).to be_a(HoldRecall)
     end
   end

@@ -2,10 +2,6 @@
 #  Controller to handle particular behaviors for Scan type requests
 ###
 class ScansController < RequestsController
-  def current_request
-    @scan ||= Scan.new
-  end
-
   protected
 
   def redirect_to_success_with_token
@@ -26,7 +22,7 @@ class ScansController < RequestsController
   end
 
   def validate_request_type
-    fail UnscannableItemError unless @scan.scannable?
+    fail UnscannableItemError unless current_request.scannable?
   end
 
   class UnscannableItemError < StandardError

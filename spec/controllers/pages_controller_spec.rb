@@ -16,9 +16,9 @@ describe PagesController do
     end
     it 'should set defaults' do
       get :new, normal_params
-      expect(assigns[:page].origin).to eq 'GREEN'
-      expect(assigns[:page].origin_location).to eq 'STACKS'
-      expect(assigns[:page].item_id).to eq '1234'
+      expect(assigns[:request].origin).to eq 'GREEN'
+      expect(assigns[:request].origin_location).to eq 'STACKS'
+      expect(assigns[:request].item_id).to eq '1234'
     end
     it 'should raise an error when the item is not pageable' do
       expect(
@@ -158,6 +158,7 @@ describe PagesController do
   describe '#current_request' do
     let(:user) { create(:anon_user) }
     it 'returns a Page object' do
+      get :new, normal_params
       expect(controller.send(:current_request)).to be_a(Page)
     end
   end

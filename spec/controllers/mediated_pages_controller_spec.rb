@@ -16,9 +16,9 @@ describe MediatedPagesController do
     end
     it 'should set defaults' do
       get :new, normal_params
-      expect(assigns[:mediated_page].origin).to eq 'SPEC-COLL'
-      expect(assigns[:mediated_page].origin_location).to eq 'STACKS'
-      expect(assigns[:mediated_page].item_id).to eq '1234'
+      expect(assigns[:request].origin).to eq 'SPEC-COLL'
+      expect(assigns[:request].origin_location).to eq 'STACKS'
+      expect(assigns[:request].item_id).to eq '1234'
     end
     it 'should raise an error if the item is unmediateable' do
       expect(
@@ -147,6 +147,7 @@ describe MediatedPagesController do
   describe '#current_request' do
     let(:user) { create(:anon_user) }
     it 'returns a MediatedPage object' do
+      get :new, normal_params
       expect(controller.send(:current_request)).to be_a(MediatedPage)
     end
   end
