@@ -2,36 +2,15 @@
 #  Controller to handle particular behaviors for Scan type requests
 ###
 class ScansController < RequestsController
-  def new
-    request_defaults(@scan)
-    validate_scannable
-  end
-
-  def create
-    if @scan.update(create_params.merge(user_id: current_user.id))
-      @scan.send_confirmation!
-      redirect_to illiad_query(@scan)
-    else
-      flash[:error] = 'There was a problem creating your scan request.'
-      render 'new'
-    end
-  end
-
-  def update
-    if @scan.update(update_params)
-      flash[:success] = 'Scan request was successfully updated.'
-      redirect_to root_url
-    else
-      flash[:error] = 'There was a problem updating your scan request.'
-      render 'edit'
-    end
-  end
-
   def current_request
     @scan ||= Scan.new
   end
 
   protected
+
+  def redirect_to_success_with_token
+    redirect_to illiad_query(current_request)
+  end
 
   def illiad_query(scan)
     illiad_params = {
@@ -46,16 +25,8 @@ class ScansController < RequestsController
     Settings.sul_illiad + "#{illiad_params.to_query}"
   end
 
-  def validate_scannable
+  def validate_request_type
     fail UnscannableItemError unless @scan.scannable?
-  end
-
-  def rescue_can_can(*)
-    if !current_user.webauth_user? && create_via_post?
-      redirect_to login_path(referrer: create_scans_path(request: local_object_param.except(:user_attributes)))
-    else
-      super
-    end
   end
 
   class UnscannableItemError < StandardError

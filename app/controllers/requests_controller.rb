@@ -5,23 +5,78 @@
 class RequestsController < ApplicationController
   before_action :modify_item_selector_checkboxes, only: :create
   load_and_authorize_resource
-  before_action :validate_new_params, only: :new
+  before_action :set_current_request_defaults, only: :new
+  before_action :validate_request_type, only: :new
+  before_action :redirect_delegatable_requests, only: :new
+  before_action :set_current_user_for_request, only: :create, if: :webauth_user?
+
+  helper_method :current_request
+
+  def redirect_delegatable_requests
+    return if self.class < RequestsController
+    return if current_request.scannable?
+
+    redirect_to delegated_new_request_path(current_request)
+  end
 
   def new
-    request_defaults(@request)
-    if @request.scannable?
-      render
+  end
+
+  def create
+    if current_request.save
+      current_request.send_confirmation!
+      redirect_to_success_with_token
     else
-      redirect_to delegated_new_request_path(@request)
+      flash[:error] = 'There was a problem creating your request.'
+      render 'new'
     end
   end
+
+  def update
+    if current_request.update(update_params)
+      flash[:success] = 'Request was successfully updated.'
+      redirect_to root_url
+    else
+      flash[:error] = 'There was a problem updating your request.'
+      render 'edit'
+    end
+  end
+
+  protected
 
   def current_request
     @request
   end
-  helper_method :current_request
 
-  protected
+  def set_current_user_for_request
+    return if current_request.user && (current_request.user.library_id_user? || current_request.user.non_webauth_user?)
+
+    current_request.user = current_user if current_user.webauth_user?
+  end
+
+  def set_current_request_defaults
+    current_request.assign_attributes(new_params)
+  end
+
+  def validate_request_type
+  end
+
+  def rescue_can_can(exception)
+    if !current_user.webauth_user? && create_via_post? && current_request.new_record?
+      redirect_to login_path(
+        referrer: polymorphic_path([:create, current_request],
+                                   request: local_object_param.except(:user_attributes))
+      )
+    else
+      super
+    end
+  end
+
+  def new_params
+    validate_new_params
+
+    params.permit(:origin, :item_id, :origin_location, :barcode)
+  end
 
   def create_params
     params.require(:request).permit(:destination,
@@ -54,26 +109,6 @@ class RequestsController < ApplicationController
     params.require(:origin_location)
   end
 
-  def request_defaults(request)
-    request.origin = params[:origin]
-    request.item_id = params[:item_id]
-    request.origin_location = params[:origin_location]
-    request.requested_barcode = params[:barcode] if params[:barcode]
-  end
-
-  def create_via_post?
-    params[:action].to_sym == :create && request.post?
-  end
-
-  def create_params_with_current_user
-    p = create_params
-    return p if p[:user_attributes] &&
-                p[:user_attributes][:name] &&
-                p[:user_attributes][:email]
-    p[:user_id] = current_user.id if current_user.webauth_user?
-    p
-  end
-
   def modify_item_selector_checkboxes
     return unless local_object_param
     return unless local_object_param[:barcodes]
@@ -83,11 +118,11 @@ class RequestsController < ApplicationController
     end.compact
   end
 
-  def redirect_to_success_with_token(request)
+  def redirect_to_success_with_token
     if current_user.webauth_user?
-      redirect_to polymorphic_path([:successful, request])
+      redirect_to polymorphic_path([:successful, current_request])
     else
-      redirect_to polymorphic_path([:successful, request], token: request.encrypted_token)
+      redirect_to polymorphic_path([:successful, current_request], token: current_request.encrypted_token)
     end
   end
 end

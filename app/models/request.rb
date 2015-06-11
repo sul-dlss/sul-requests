@@ -8,6 +8,7 @@ class Request < ActiveRecord::Base
   include Requestable
 
   attr_accessor :requested_barcode
+  alias_method :barcode=, :requested_barcode=
 
   delegate :hold_recallable?, :mediateable?, :pageable?, :scannable?, to: :library_location
 

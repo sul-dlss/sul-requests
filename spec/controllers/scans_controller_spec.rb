@@ -32,7 +32,7 @@ describe ScansController do
   describe 'create' do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
-      it 'should redirect to the login page passing a refferrer param to continue creating the scan request' do
+      it 'should redirect to the login page passing a refferrer param to continue creating your request' do
         post :create, request: { item_id: '12345', origin: 'GREEN', origin_location: 'STACKS' }
         expect(response).to redirect_to(
           login_path(
@@ -118,7 +118,7 @@ describe ScansController do
       let(:user) { create(:webauth_user) }
       it 'should return an error message to the user' do
         post :create, request: { item_id: '12345' }
-        expect(flash[:error]).to eq 'There was a problem creating your scan request.'
+        expect(flash[:error]).to eq 'There was a problem creating your request.'
         expect(response).to render_template 'new'
       end
     end
@@ -137,7 +137,7 @@ describe ScansController do
       end
       it 'should return an error message to the user' do
         put :update, id: scan[:id], request: { item_id: nil }
-        expect(flash[:error]).to eq 'There was a problem updating your scan request.'
+        expect(flash[:error]).to eq 'There was a problem updating your request.'
         expect(response).to render_template 'edit'
       end
     end
@@ -152,7 +152,7 @@ describe ScansController do
       it 'should be allowed to modify page rqeuests' do
         put :update, id: scan[:id], request: { needed_date: '2015-04-14' }
         expect(response).to redirect_to root_url
-        expect(flash[:success]).to eq 'Scan request was successfully updated.'
+        expect(flash[:success]).to eq 'Request was successfully updated.'
         expect(Scan.find(scan.id).needed_date.to_s).to eq '2015-04-14'
       end
     end
