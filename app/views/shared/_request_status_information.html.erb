@@ -1,6 +1,6 @@
 <dl class='dl-horizontal dl-invert'>
   <% if current_request.holdings.many? %>
-    <dt><%= t('forms.labels.holdings') %></dt>
+    <dt><%= current_request.class.human_attribute_name(:holdings) %></dt>
     <% current_request.holdings.each do |holding| %>
       <dd><%= holding.callnumber %></dd>
     <% end  %>
@@ -16,32 +16,32 @@
   <% end %>
 
   <% if current_request.item_commentable? && current_request.item_comment.present? %>
-    <dt><%= t("forms.labels.holdings") %></dt>
+    <dt><%= current_request.class.human_attribute_name(:item_comment) %></dt>
     <dd><%= current_request.item_comment %></dd>
   <% end %>
 
   <% if current_request.request_commentable? && current_request.request_comment.present? %>
-    <dt><%= t("forms.labels.comments") %></dt>
+    <dt><%= current_request.class.human_attribute_name(:request_comment) %></dt>
     <dd><%= current_request.request_comment %></dd>
   <% end %>
 
   <% if current_request.data.present? %>
     <% if (page_range = current_request.data['page_range']).present? %>
-      <dt><%= t('forms.labels.page_range') %></dt>
+      <dt><%= current_request.class.human_attribute_name(:page_range) %></dt>
       <dd><%= page_range %></dd>
     <% end %>
     <% if (section_title = current_request.data['section_title']).present? %>
-      <dt><%= t('forms.labels.section_title') %></dt>
+      <dt><%= current_request.class.human_attribute_name(:section_title) %></dt>
       <dd><%= section_title %></dd>
     <% end %>
     <% if (authors = current_request.data['authors']).present? %>
-      <dt><%= t('forms.labels.authors') %></dt>
+      <dt><%= current_request.class.human_attribute_name(:authors) %></dt>
       <dd><%= authors %></dd>
     <% end %>
   <% end %>
 
   <% if current_request.needed_date.present? %>
-    <dt><%= t('forms.labels.needed_date') %></dt>
+    <dt><%= current_request.class.human_attribute_name(:needed_date) %></dt>
     <dd><%= current_request.needed_date %></dd>
   <% end %>
 </dl>

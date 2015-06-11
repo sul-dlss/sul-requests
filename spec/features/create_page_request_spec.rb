@@ -81,7 +81,7 @@ describe 'Creating a page request' do
 
       expect(page).to have_css('textarea#request_item_comment')
 
-      fill_in 'request_item_comment', with: 'Volume 1-3'
+      fill_in 'List the volumes/issues you need', with: 'Volume 1-3'
 
       click_button 'Send request'
 

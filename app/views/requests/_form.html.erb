@@ -10,7 +10,7 @@
   <%= select_for_pickup_libraries(f).html_safe %>
 
   <% if current_request.request_commentable? %>
-    <%= f.text_area :request_comment, rows: 3, label: label_for_comments_field %>
+    <%= f.text_area :request_comment, rows: 3 %>
   <% end %>
 
   <% if current_request.requires_needed_date? %>
