@@ -33,17 +33,30 @@ class ScansController < RequestsController
 
   protected
 
+  def illiad_page
+    @illiad_page = { 'Action': '10', 'Form': '30', 'rft.genre': 'scananddeliverArticle' }
+  end
+
+  def illiad_item_data(scan)
+    @illiad_item_data = { 'rft.location': scan.origin,
+                          'rft.callnum': scan.holdings.first.callnumber,
+                          'rft.item': scan.holdings.first.barcode }
+  end
+
+  def illiad_citation(scan)
+    @illiad_params = { 'rft.jtitle': scan.item_title,
+                       'rft.au': scan.data[:authors],
+                       'rft.pages': scan.data[:page_range],
+                       'rft.atitle': scan.data[:section_title] }
+  end
+
+  def illiad_callback(scan)
+    @illiad_callback = { 'scan_referrer': successful_scan_url(scan) }
+  end
+
   def illiad_query(scan)
-    illiad_params = {
-      'Action': '10', 'Form': '30', 'rft.genre': 'scananddeliverArticle',
-      'rft.jtitle': scan.item_title,
-      'rft.au': scan.data[:authors],
-      'rft.pages': scan.data[:page_range],
-      'rft.atitle': scan.data[:section_title],
-      'rft.volume': scan.holdings.first.callnumber,
-      'scan_referrer': successful_scan_url(scan)
-    }
-    Settings.sul_illiad + "#{illiad_params.to_query}"
+    illiad_qy = [illiad_page, illiad_item_data(scan), illiad_citation(scan), illiad_callback(scan)].reduce(:merge)
+    Settings.sul_illiad + "#{illiad_qy.to_query}"
   end
 
   def validate_scannable
