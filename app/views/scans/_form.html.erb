@@ -1,4 +1,4 @@
-<%= bootstrap_form_for(@scan, bootstrap_form_layout_options) do |f| %>
+<%= bootstrap_form_for(@scan, request_form_options) do |f| %>
   <% unless @scan.persisted? %>
     <%= render partial: 'hidden_form_fields', locals: { f: f } %>
   <% end %>

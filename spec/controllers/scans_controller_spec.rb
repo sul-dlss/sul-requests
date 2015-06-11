@@ -33,11 +33,11 @@ describe ScansController do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
       it 'should redirect to the login page passing a refferrer param to continue creating the scan request' do
-        post :create, scan: { item_id: '12345', origin: 'GREEN', origin_location: 'STACKS' }
+        post :create, request: { item_id: '12345', origin: 'GREEN', origin_location: 'STACKS' }
         expect(response).to redirect_to(
           login_path(
             referrer: create_scans_path(
-              scan: { item_id: '12345', origin: 'GREEN', origin_location: 'STACKS' }
+              request: { item_id: '12345', origin: 'GREEN', origin_location: 'STACKS' }
             )
           )
         )
@@ -45,7 +45,7 @@ describe ScansController do
       it 'should not be allowed by users that only supply name and email' do
         expect(
           lambda do
-            put :create, scan: {
+            put :create, request: {
               item_id: '12345',
               origin: 'SAL3',
               origin_location: 'STACKS',
@@ -57,7 +57,7 @@ describe ScansController do
       it 'should not be allowed by users that only supply a library id' do
         expect(
           lambda do
-            put :create, scan: {
+            put :create, request: {
               item_id: '12345',
               origin: 'SAL3',
               origin_location: 'STACKS',
@@ -69,7 +69,7 @@ describe ScansController do
       describe 'via get' do
         it 'should raise an error' do
           expect(
-            -> { get :create, scan: { item_id: '12345', origin: 'GREEN', origin_location: 'STACKS' } }
+            -> { get :create, request: { item_id: '12345', origin: 'GREEN', origin_location: 'STACKS' } }
           ).to raise_error(CanCan::AccessDenied)
         end
       end
@@ -77,7 +77,7 @@ describe ScansController do
     describe 'by non-webauth users' do
       let(:user) { create(:non_webauth_user) }
       it 'should raise an error' do
-        expect(-> { put(:create, scan: { origin: 'SAL3' }) }).to raise_error(CanCan::AccessDenied)
+        expect(-> { put(:create, request: { origin: 'SAL3' }) }).to raise_error(CanCan::AccessDenied)
       end
     end
     describe 'by webauth users' do
@@ -86,7 +86,7 @@ describe ScansController do
         stub_searchworks_api_json(build(:sal3_holdings))
       end
       it 'should be allowed' do
-        post :create, scan: { item_id: '12345', origin: 'SAL3', origin_location: 'STACKS', barcodes: ['12345678'] }
+        post :create, request: { item_id: '12345', origin: 'SAL3', origin_location: 'STACKS', barcodes: ['12345678'] }
         expect(Scan.last.origin).to eq 'SAL3'
         expect(Scan.last.user).to eq user
       end
@@ -104,7 +104,7 @@ describe ScansController do
         stub_searchworks_api_json(build(:sal3_holdings))
         expect(
           lambda do
-            put :create, scan: {
+            put :create, request: {
               item_id: '12345',
               origin: 'SAL3',
               origin_location: 'STACKS',
@@ -117,7 +117,7 @@ describe ScansController do
     describe 'invalid requests' do
       let(:user) { create(:webauth_user) }
       it 'should return an error message to the user' do
-        post :create, scan: { item_id: '12345' }
+        post :create, request: { item_id: '12345' }
         expect(flash[:error]).to eq 'There was a problem creating your scan request.'
         expect(response).to render_template 'new'
       end
@@ -136,7 +136,7 @@ describe ScansController do
         allow_any_instance_of(scan.class).to receive(:update).with({}).and_return(false)
       end
       it 'should return an error message to the user' do
-        put :update, id: scan[:id], scan: { item_id: nil }
+        put :update, id: scan[:id], request: { item_id: nil }
         expect(flash[:error]).to eq 'There was a problem updating your scan request.'
         expect(response).to render_template 'edit'
       end
@@ -150,7 +150,7 @@ describe ScansController do
     describe 'by superadmins' do
       let(:user) { create(:superadmin_user) }
       it 'should be allowed to modify page rqeuests' do
-        put :update, id: scan[:id], scan: { needed_date: '2015-04-14' }
+        put :update, id: scan[:id], request: { needed_date: '2015-04-14' }
         expect(response).to redirect_to root_url
         expect(flash[:success]).to eq 'Scan request was successfully updated.'
         expect(Scan.find(scan.id).needed_date.to_s).to eq '2015-04-14'

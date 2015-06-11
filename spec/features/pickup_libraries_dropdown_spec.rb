@@ -7,7 +7,7 @@ describe 'Pickup Libraries Dropdown' do
 
       expect(page).to have_select('Deliver to')
 
-      expect(page).to have_css('#page_destination option', count: 15)
+      expect(page).to have_css('#request_destination option', count: 15)
     end
 
     it 'should simply display the text of the destination library if there is only one possible' do

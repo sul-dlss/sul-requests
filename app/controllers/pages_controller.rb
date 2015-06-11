@@ -39,29 +39,10 @@ class PagesController < RequestsController
 
   def rescue_can_can(*)
     if !current_user.webauth_user? && create_via_post?
-      redirect_to login_path(referrer: create_pages_path(page: params[:page].except(:user_attributes)))
+      redirect_to login_path(referrer: create_pages_path(request: local_object_param.except(:user_attributes)))
     else
       super
     end
-  end
-
-  def create_params
-    params.require(:page).permit(:destination,
-                                 :item_id,
-                                 :origin,
-                                 :origin_location,
-                                 :item_comment,
-                                 :request_comment,
-                                 barcodes: [],
-                                 user_attributes: [:name, :email, :library_id])
-  end
-
-  def update_params
-    params.require(:page).permit(:needed_date)
-  end
-
-  def local_object_param
-    params[:page]
   end
 
   class UnpageableItemError < StandardError

@@ -32,11 +32,11 @@ describe HoldRecallsController do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
       it 'should redirect to the login page passing a refferrer param to continue creating the hold recall request' do
-        post :create, hold_recall: normal_params
+        post :create, request: normal_params
         expect(response).to redirect_to(
           login_path(
             referrer: create_hold_recalls_path(
-              hold_recall: normal_params
+              request: normal_params
             )
           )
         )
@@ -44,7 +44,7 @@ describe HoldRecallsController do
       it 'should not be allowed if user name and email is filled out' do
         expect(
           lambda do
-            put :create, hold_recall: normal_params.merge(
+            put :create, request: normal_params.merge(
               user_attributes: {
                 name: 'Jane Stanford',
                 email: 'jstanford@stanford.edu'
@@ -54,7 +54,7 @@ describe HoldRecallsController do
         ).to raise_error(CanCan::AccessDenied)
       end
       it 'should be allowed if the library ID field is filled out' do
-        put :create, hold_recall: {
+        put :create, request: {
           item_id: '1234',
           origin: 'SPEC-COLL',
           origin_location: 'STACKS',
@@ -70,7 +70,7 @@ describe HoldRecallsController do
         it 'should raise an error' do
           expect(
             lambda do
-              get :create, hold_recall: normal_params
+              get :create, request: normal_params
             end
           ).to raise_error(CanCan::AccessDenied)
         end
@@ -79,7 +79,7 @@ describe HoldRecallsController do
     describe 'by webauth users' do
       let(:user) { create(:webauth_user) }
       it 'should be allowed' do
-        post :create, hold_recall: normal_params
+        post :create, request: normal_params
         expect(response).to redirect_to successful_hold_recall_path(HoldRecall.last)
         expect(HoldRecall.last.origin).to eq 'GREEN'
         expect(HoldRecall.last.user).to eq user
@@ -88,7 +88,7 @@ describe HoldRecallsController do
       it 'sends an confirmation email' do
         expect(
           lambda do
-            put :create, hold_recall: normal_params
+            put :create, request: normal_params
           end
         ).to change { ConfirmationMailer.deliveries.count }.by(1)
       end
@@ -96,7 +96,7 @@ describe HoldRecallsController do
     describe 'invalid requests' do
       let(:user) { create(:webauth_user) }
       it 'should return an error message to the user' do
-        post :create, hold_recall: { item_id: '1234' }
+        post :create, request: { item_id: '1234' }
         expect(flash[:error]).to eq 'There was a problem creating your request.'
         expect(response).to render_template 'new'
       end

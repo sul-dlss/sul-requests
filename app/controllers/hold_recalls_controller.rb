@@ -27,28 +27,12 @@ class HoldRecallsController < RequestsController
     if !current_user.webauth_user? && create_via_post?
       redirect_to login_path(
         referrer: create_hold_recalls_path(
-          hold_recall: local_object_param.except(:user_attributes)
+          request: local_object_param.except(:user_attributes)
         )
       )
     else
       super
     end
-  end
-
-  def create_params
-    params.require(:hold_recall).permit(:destination,
-                                        :item_id,
-                                        :origin,
-                                        :origin_location,
-                                        :needed_date,
-                                        :item_comment,
-                                        :request_comment,
-                                        barcodes: [],
-                                        user_attributes: [:name, :email, :library_id])
-  end
-
-  def local_object_param
-    params[:hold_recall]
   end
 
   def validate_hold_recallable

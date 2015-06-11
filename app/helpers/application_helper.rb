@@ -4,6 +4,10 @@ module ApplicationHelper
     'col-md-6 col-md-offset-3'
   end
 
+  def request_form_options
+    { as: :request }.merge(bootstrap_form_layout_options)
+  end
+
   def bootstrap_form_layout_options
     { layout: :horizontal, label_col: label_column_class, control_col: content_column_class }
   end

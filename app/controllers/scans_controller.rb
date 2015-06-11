@@ -52,28 +52,10 @@ class ScansController < RequestsController
 
   def rescue_can_can(*)
     if !current_user.webauth_user? && create_via_post?
-      redirect_to login_path(referrer: create_scans_path(scan: params[:scan].except(:user_attributes)))
+      redirect_to login_path(referrer: create_scans_path(request: local_object_param.except(:user_attributes)))
     else
       super
     end
-  end
-
-  def create_params
-    params.require(:scan).permit(:item_id,
-                                 :origin,
-                                 :origin_location,
-                                 :authors,
-                                 :page_range,
-                                 :section_title,
-                                 barcodes: [])
-  end
-
-  def local_object_param
-    params[:scan]
-  end
-
-  def update_params
-    params.require(:scan).permit(:needed_date)
   end
 
   class UnscannableItemError < StandardError

@@ -31,28 +31,12 @@ class MediatedPagesController < RequestsController
     if !current_user.webauth_user? && create_via_post?
       redirect_to login_path(
         referrer: create_mediated_pages_path(
-          mediated_page: local_object_param.except(:user_attributes)
+          request: local_object_param.except(:user_attributes)
         )
       )
     else
       super
     end
-  end
-
-  def create_params
-    params.require(:mediated_page).permit(:destination,
-                                          :item_id,
-                                          :origin,
-                                          :origin_location,
-                                          :needed_date,
-                                          :item_comment,
-                                          :request_comment,
-                                          barcodes: [],
-                                          user_attributes: [:name, :email, :library_id])
-  end
-
-  def local_object_param
-    params[:mediated_page]
   end
 
   class UnmediateableItemError < StandardError

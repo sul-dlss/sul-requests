@@ -23,6 +23,25 @@ class RequestsController < ApplicationController
 
   protected
 
+  def create_params
+    params.require(:request).permit(:destination,
+                                    :item_id,
+                                    :origin, :origin_location,
+                                    :needed_date,
+                                    :item_comment, :request_comment,
+                                    :authors, :page_range, :section_title, # scans
+                                    barcodes: [],
+                                    user_attributes: [:name, :email, :library_id])
+  end
+
+  def update_params
+    params.require(:request).permit(:needed_date)
+  end
+
+  def local_object_param
+    params[:request]
+  end
+
   def delegated_new_request_path(request)
     request.delegate_request!
     new_polymorphic_path(request.type.underscore, params.except(:controller, :action))
@@ -56,15 +75,12 @@ class RequestsController < ApplicationController
   end
 
   def modify_item_selector_checkboxes
+    return unless local_object_param
     return unless local_object_param[:barcodes]
     return unless local_object_param[:barcodes].is_a?(Hash)
     local_object_param[:barcodes] = local_object_param[:barcodes].map do |barcode, checked|
       barcode if checked == '1'
     end.compact
-  end
-
-  def local_object_param
-    fail NotImplementedError
   end
 
   def redirect_to_success_with_token(request)

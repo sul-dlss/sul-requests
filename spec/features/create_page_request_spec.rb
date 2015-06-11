@@ -12,8 +12,8 @@ describe 'Creating a page request' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
       click_link "I don't have a SUNet ID"
 
-      expect(page).to have_css('input#page_user_attributes_library_id')
-      expect(page.evaluate_script('document.activeElement.id')).to eq 'page_user_attributes_library_id'
+      expect(page).to have_css('input#request_user_attributes_library_id')
+      expect(page.evaluate_script('document.activeElement.id')).to eq 'request_user_attributes_library_id'
 
       fill_in 'Name', with: 'Jane Stanford'
       fill_in 'Email', with: 'jstanford@stanford.edu'
@@ -27,8 +27,8 @@ describe 'Creating a page request' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
       click_link "I don't have a SUNet ID"
 
-      expect(page).to have_css('input#page_user_attributes_library_id')
-      expect(page.evaluate_script('document.activeElement.id')).to eq 'page_user_attributes_library_id'
+      expect(page).to have_css('input#request_user_attributes_library_id')
+      expect(page.evaluate_script('document.activeElement.id')).to eq 'request_user_attributes_library_id'
 
       fill_in 'Library ID', with: '123456'
 
@@ -79,9 +79,9 @@ describe 'Creating a page request' do
     it 'displays the comment field and stores the data' do
       visit new_page_path(item_id: '1234', origin: 'SAL-NEWARK', origin_location: 'STACKS')
 
-      expect(page).to have_css('textarea#page_item_comment')
+      expect(page).to have_css('textarea#request_item_comment')
 
-      fill_in 'page_item_comment', with: 'Volume 1-3'
+      fill_in 'request_item_comment', with: 'Volume 1-3'
 
       click_button 'Send request'
 
