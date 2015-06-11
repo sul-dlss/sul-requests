@@ -94,6 +94,10 @@ class Request < ActiveRecord::Base
     end.compact.join("\n")
   end
 
+  def requires_needed_date?
+    false
+  end
+
   class << self
     # The mediateable_oirgins will make multiple (efficient) database requests
     # in order to return the array of locations that are both configured as mediateable and have existing requests.

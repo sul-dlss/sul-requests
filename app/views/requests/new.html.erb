@@ -2,5 +2,9 @@
   <%= render 'header' %>
   <%= render 'form_flashes' %>
   <%= render 'searchworks_item_information' %>
-  <%= render 'form' %>
+  <% if delegated_request? %>
+    <%= render 'form' %>
+  <% else %>
+    <%= render 'form_choice' %>
+  <% end %>
 </div>

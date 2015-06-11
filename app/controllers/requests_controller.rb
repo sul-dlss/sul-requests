@@ -10,14 +10,7 @@ class RequestsController < ApplicationController
   before_action :redirect_delegatable_requests, only: :new
   before_action :set_current_user_for_request, only: :create, if: :webauth_user?
 
-  helper_method :current_request
-
-  def redirect_delegatable_requests
-    return if self.class < RequestsController
-    return if current_request.scannable?
-
-    redirect_to delegated_new_request_path(current_request)
-  end
+  helper_method :current_request, :delegated_request?
 
   def new
   end
@@ -44,6 +37,16 @@ class RequestsController < ApplicationController
 
   protected
 
+  def redirect_delegatable_requests
+    return if delegated_request? || current_request.scannable?
+
+    redirect_to delegated_new_request_path(current_request)
+  end
+
+  def delegated_request?
+    self.class < RequestsController
+  end
+
   def current_request
     @request
   end
@@ -63,10 +66,8 @@ class RequestsController < ApplicationController
 
   def rescue_can_can(exception)
     if !current_user.webauth_user? && create_via_post? && current_request.new_record?
-      redirect_to login_path(
-        referrer: polymorphic_path([:create, current_request],
-                                   request: local_object_param.except(:user_attributes))
-      )
+      request_params = local_object_param.except(:user_attributes)
+      redirect_to login_path(referrer: polymorphic_path([:create, current_request], request: request_params))
     else
       super
     end
@@ -113,9 +114,7 @@ class RequestsController < ApplicationController
     return unless local_object_param
     return unless local_object_param[:barcodes]
     return unless local_object_param[:barcodes].is_a?(Hash)
-    local_object_param[:barcodes] = local_object_param[:barcodes].map do |barcode, checked|
-      barcode if checked == '1'
-    end.compact
+    local_object_param[:barcodes] = local_object_param[:barcodes].select { |_, checked| checked == '1' }.keys
   end
 
   def redirect_to_success_with_token

@@ -31,6 +31,10 @@ class MediatedPage < Request
     super
   end
 
+  def requires_needed_date?
+    true
+  end
+
   private
 
   def commentable_library_whitelist
