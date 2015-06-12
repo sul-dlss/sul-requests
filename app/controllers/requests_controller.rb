@@ -70,7 +70,7 @@ class RequestsController < ApplicationController
 
   def rescue_can_can(exception)
     if !current_user.webauth_user? && create_via_post? && current_request.new_record?
-      request_params = local_object_param.except(:user_attributes)
+      request_params = params[:request].except(:user_attributes)
       redirect_to login_path(referrer: polymorphic_path([:create, current_request], request: request_params))
     else
       super
@@ -78,7 +78,9 @@ class RequestsController < ApplicationController
   end
 
   def new_params
-    validate_new_params
+    params.require(:origin)
+    params.require(:item_id)
+    params.require(:origin_location)
 
     params.permit(:origin, :item_id, :origin_location, :barcode)
   end
@@ -98,10 +100,6 @@ class RequestsController < ApplicationController
     params.require(:request).permit(:needed_date)
   end
 
-  def local_object_param
-    params[:request]
-  end
-
   def check_if_proxy_sponsor
     return unless current_request.user.sponsor? && params[:request][:proxy].nil?
 
@@ -114,30 +112,23 @@ class RequestsController < ApplicationController
   end
   helper_method :delegated_new_request_path
 
-  def validate_new_params
-    params.require(:origin)
-    params.require(:item_id)
-    params.require(:origin_location)
-  end
-
   def modify_item_selector_checkboxes
-    return unless local_object_param
-    return unless local_object_param[:barcodes]
-    return unless local_object_param[:barcodes].is_a?(Hash)
-    local_object_param[:barcodes] = local_object_param[:barcodes].select { |_, checked| checked == '1' }.keys
+    request_params = params[:request]
+    return unless request_params && request_params[:barcodes].is_a?(Hash)
+
+    request_params[:barcodes] = request_params[:barcodes].select { |_, checked| checked == '1' }.keys
   end
 
   def modify_item_proxy_status
-    return unless local_object_param
+    return unless params[:request]
 
-    local_object_param[:proxy] &&= local_object_param[:proxy] == 'true'
+    params[:request][:proxy] &&= params[:request][:proxy] == 'true'
   end
 
   def redirect_to_success_with_token
-    if current_user.webauth_user?
-      redirect_to polymorphic_path([:successful, current_request])
-    else
-      redirect_to polymorphic_path([:successful, current_request], token: current_request.encrypted_token)
-    end
+    options = {}
+    options[:token] = current_request.encrypted_token unless current_user.webauth_user?
+
+    redirect_to polymorphic_path([:successful, current_request], options)
   end
 end
