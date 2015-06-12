@@ -8,6 +8,7 @@ class Request < ActiveRecord::Base
   include Requestable
 
   attr_accessor :requested_barcode
+  alias_method :barcode=, :requested_barcode=
 
   delegate :hold_recallable?, :mediateable?, :pageable?, :scannable?, to: :library_location
 
@@ -87,10 +88,13 @@ class Request < ActiveRecord::Base
   def data_to_email_s
     %w(comments page_range section_title authors).map do |field|
       if (data_field = data[field]).present?
-        "#{I18n.t("forms.#{self.class.name}.labels.#{field}",
-                  default: I18n.t("forms.labels.#{field}"))}:\n  #{data_field}"
+        "#{self.class.human_attribute_name(field)}:\n  #{data_field}"
       end
     end.compact.join("\n")
+  end
+
+  def requires_needed_date?
+    false
   end
 
   class << self

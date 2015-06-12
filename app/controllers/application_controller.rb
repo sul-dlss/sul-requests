@@ -25,7 +25,17 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def create_via_post?
+    params[:action].to_sym == :create && request.post?
+  end
+
+  def webauth_user?
+    current_user.webauth_user?
+  end
+
   def rescue_can_can(exception)
+    Rails.logger.debug "Access denied on #{exception.action} #{exception.subject.inspect}"
+
     fail exception
   end
 

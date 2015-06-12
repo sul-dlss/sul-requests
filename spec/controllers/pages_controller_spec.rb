@@ -16,9 +16,9 @@ describe PagesController do
     end
     it 'should set defaults' do
       get :new, normal_params
-      expect(assigns[:page].origin).to eq 'GREEN'
-      expect(assigns[:page].origin_location).to eq 'STACKS'
-      expect(assigns[:page].item_id).to eq '1234'
+      expect(assigns[:request].origin).to eq 'GREEN'
+      expect(assigns[:request].origin_location).to eq 'STACKS'
+      expect(assigns[:request].item_id).to eq '1234'
     end
     it 'should raise an error when the item is not pageable' do
       expect(
@@ -31,18 +31,18 @@ describe PagesController do
   describe 'create' do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
-      it 'should redirect to the login page passing a refferrer param to continue creating the page request' do
-        post :create, page: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'BIOLOGY' }
+      it 'should redirect to the login page passing a referrer param to continue creating the page request' do
+        post :create, request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'BIOLOGY' }
         expect(response).to redirect_to(
           login_path(
             referrer: create_pages_path(
-              page: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'BIOLOGY' }
+              request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'BIOLOGY' }
             )
           )
         )
       end
       it 'should be allowed if user name and email is filled out (via token)' do
-        put :create, page: {
+        put :create, request: {
           item_id: '1234',
           origin: 'GREEN',
           origin_location: 'STACKS',
@@ -54,7 +54,7 @@ describe PagesController do
         expect(Page.last.user).to eq User.last
       end
       it 'should be allowed if the library ID field is filled out' do
-        put :create, page: {
+        put :create, request: {
           item_id: '1234',
           origin: 'GREEN',
           origin_location: 'STACKS',
@@ -70,7 +70,7 @@ describe PagesController do
         it 'should raise an error' do
           expect(
             lambda do
-              get :create, page: {
+              get :create, request: {
                 item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'BIOLOGY'
               }
             end
@@ -81,14 +81,14 @@ describe PagesController do
     describe 'by webauth users' do
       let(:user) { create(:webauth_user) }
       it 'should be allowed' do
-        post :create, page: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'BIOLOGY' }
+        post :create, request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'BIOLOGY' }
         expect(response).to redirect_to successful_page_path(Page.last)
         expect(Page.last.origin).to eq 'GREEN'
         expect(Page.last.user).to eq user
       end
       it 'should map checkbox style barcodes correctly' do
         stub_searchworks_api_json(build(:multiple_holdings))
-        put :create, page: {
+        put :create, request: {
           item_id: '1234',
           origin: 'GREEN',
           origin_location: 'STACKS',
@@ -101,7 +101,7 @@ describe PagesController do
       it 'sends an confirmation email' do
         expect(
           lambda do
-            put :create, page: {
+            put :create, request: {
               item_id: '1234',
               origin: 'GREEN',
               origin_location: 'STACKS',
@@ -114,7 +114,7 @@ describe PagesController do
     describe 'invalid requests' do
       let(:user) { create(:webauth_user) }
       it 'should return an error message to the user' do
-        post :create, page: { item_id: '1234' }
+        post :create, request: { item_id: '1234' }
         expect(flash[:error]).to eq 'There was a problem creating your request.'
         expect(response).to render_template 'new'
       end
@@ -124,7 +124,7 @@ describe PagesController do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
       it 'should raise an error' do
-        expect(-> { put :update, id: page[:id], page: { origin: 'GREEN' } }).to raise_error(CanCan::AccessDenied)
+        expect(-> { put :update, id: page[:id], request: { origin: 'GREEN' } }).to raise_error(CanCan::AccessDenied)
       end
     end
     describe 'invalid requests' do
@@ -133,7 +133,7 @@ describe PagesController do
         allow_any_instance_of(page.class).to receive(:update).with({}).and_return(false)
       end
       it 'should return an error message to the user' do
-        put :update, id: page[:id], page: { item_id: nil }
+        put :update, id: page[:id], request: { item_id: nil }
         expect(flash[:error]).to eq 'There was a problem updating your request.'
         expect(response).to render_template 'edit'
       end
@@ -147,7 +147,7 @@ describe PagesController do
     describe 'by superadmins' do
       let(:user) { create(:superadmin_user) }
       it 'should be allowed to modify page rqeuests' do
-        put :update, id: page[:id], page: { needed_date: '2015-04-14' }
+        put :update, id: page[:id], request: { needed_date: '2015-04-14' }
         expect(flash[:success]).to eq 'Request was successfully updated.'
         expect(response).to redirect_to root_url
         expect(Page.find(page.id).needed_date.to_s).to eq '2015-04-14'
@@ -158,6 +158,7 @@ describe PagesController do
   describe '#current_request' do
     let(:user) { create(:anon_user) }
     it 'returns a Page object' do
+      get :new, normal_params
       expect(controller.send(:current_request)).to be_a(Page)
     end
   end

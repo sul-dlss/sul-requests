@@ -52,13 +52,6 @@ class SearchworksItem
     end
   end
 
-  # Response class to return when the API connection fails
-  class NullResponse
-    def success?
-      false
-    end
-  end
-
   ###
   #  ReqestedHoldings winnows down the entire
   #  holdings to just what was requested by the user

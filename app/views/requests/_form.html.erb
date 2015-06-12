@@ -1,31 +1,25 @@
-<div id="scan-or-deliver">
-  <div class="row">
-    <div class="col-xs-12 col-sm-6 buttons">
-      <%= link_to('Deliver to campus library', delegated_new_request_path(@request), class: 'btn btn-beige', 'aria-describedby' => 'deliveryDescription') %>
-    </div>
-    <div class="col-xs-12 col-sm-6 content">
-      <dl id="deliveryDescription">
-        <dt>Earliest delivery</dt>
-        <dd>Unknown</dd>
-      </dl>
-    </div>
-  </div>
-  <div class="separator">
-    <h2>Just need a chapter or article?</h2>
-  </div>
-  <div class="row scan-to-pdf">
-    <div class="col-xs-12 col-sm-6 buttons">
-      <%= link_to('Scan to PDF<span class="btn-sub-text">requires SUNet login</span>'.html_safe, new_scan_path(@request, params.except(:controller, :action)), class: 'btn btn-scan', 'aria-describedby' => 'scanDescription') %>
-    </div>
-    <div class="col-xs-12 col-sm-6 content">
-      <dl id="scanDescription">
-        <dt>Earliest delivery</dt>
-        <dd>Unknown</dd>
-        <dt>Limited service</dt>
-        <dd>
-          <p>50-page maximum</p>
-        </dd>
-      </dl>
-    </div>
-  </div>
-</div>
+<%= render 'searchworks_item_information' %>
+
+<%= bootstrap_form_for(current_request, request_form_options) do |f| %>
+  <% unless current_request.persisted? %>
+    <%= render partial: 'hidden_form_fields', locals: { f: f } %>
+  <% end %>
+
+  <%= render partial: 'shared/item_selector', locals: { f: f } %>
+
+  <%= render partial: 'shared/item_comment', locals: { f: f } %>
+
+  <%= select_for_pickup_libraries(f).html_safe %>
+
+  <% if current_request.request_commentable? %>
+    <%= f.text_area :request_comment, rows: 3 %>
+  <% end %>
+
+  <% if current_request.requires_needed_date? %>
+    <%= f.date_field :needed_date %>
+  <% end %>
+
+  <%= render partial: 'form_additional', locals: { f: f } %>
+
+  <%= render partial: 'shared/send_request_buttons', locals: { f: f } %>
+<% end %>

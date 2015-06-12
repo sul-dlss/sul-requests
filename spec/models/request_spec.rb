@@ -82,6 +82,7 @@ describe Request do
   end
 
   describe '#data_to_email_s' do
+    subject { Scan.new }
     it 'turns the serialized data hash into a string' do
       subject.data = { 'page_range' => 'Range', 'authors' => 'Authors' }
       expect(subject.data_to_email_s).to include('Page range:')

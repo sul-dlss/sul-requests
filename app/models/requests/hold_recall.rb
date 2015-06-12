@@ -8,4 +8,8 @@ class HoldRecall < Request
   def requestable_with_library_id?
     true
   end
+
+  def requires_needed_date?
+    true
+  end
 end

@@ -16,9 +16,9 @@ describe MediatedPagesController do
     end
     it 'should set defaults' do
       get :new, normal_params
-      expect(assigns[:mediated_page].origin).to eq 'SPEC-COLL'
-      expect(assigns[:mediated_page].origin_location).to eq 'STACKS'
-      expect(assigns[:mediated_page].item_id).to eq '1234'
+      expect(assigns[:request].origin).to eq 'SPEC-COLL'
+      expect(assigns[:request].origin_location).to eq 'STACKS'
+      expect(assigns[:request].item_id).to eq '1234'
     end
     it 'should raise an error if the item is unmediateable' do
       expect(
@@ -32,13 +32,13 @@ describe MediatedPagesController do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
       it 'should redirect to the login page passing a refferrer param to continue creating the mediated page request' do
-        post :create, mediated_page: {
+        post :create, request: {
           item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'SPEC-COLL'
         }
         expect(response).to redirect_to(
           login_path(
             referrer: create_mediated_pages_path(
-              mediated_page: {
+              request: {
                 item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'SPEC-COLL'
               }
             )
@@ -46,7 +46,7 @@ describe MediatedPagesController do
         )
       end
       it 'should be allowed if user name and email is filled out (via token)' do
-        put :create, mediated_page: {
+        put :create, request: {
           item_id: '1234',
           origin: 'SPEC-COLL',
           origin_location: 'STACKS',
@@ -58,7 +58,7 @@ describe MediatedPagesController do
         expect(MediatedPage.last.user).to eq User.last
       end
       it 'should be allowed if the library ID field is filled out' do
-        put :create, mediated_page: {
+        put :create, request: {
           item_id: '1234',
           origin: 'SPEC-COLL',
           origin_location: 'STACKS',
@@ -74,7 +74,7 @@ describe MediatedPagesController do
         it 'should not be by library ID' do
           expect(
             lambda do
-              put :create, mediated_page: {
+              put :create, request: {
                 item_id: '1234',
                 origin: 'HOPKINS',
                 origin_location: 'STACKS',
@@ -87,7 +87,7 @@ describe MediatedPagesController do
         it 'should not be by name and email' do
           expect(
             lambda do
-              put :create, mediated_page: {
+              put :create, request: {
                 item_id: '1234',
                 origin: 'HOPKINS',
                 origin_location: 'STACKS',
@@ -102,7 +102,7 @@ describe MediatedPagesController do
         it 'should raise an error' do
           expect(
             lambda do
-              get :create, mediated_page: {
+              get :create, request: {
                 item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'SPEC-COLL'
               }
             end
@@ -113,7 +113,7 @@ describe MediatedPagesController do
     describe 'by webauth users' do
       let(:user) { create(:webauth_user) }
       it 'should be allowed' do
-        post :create, mediated_page: {
+        post :create, request: {
           item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'SPEC-COLL'
         }
         expect(response).to redirect_to successful_mediated_page_path(MediatedPage.last)
@@ -124,7 +124,7 @@ describe MediatedPagesController do
       it 'sends an confirmation email' do
         expect(
           lambda do
-            put :create, mediated_page: {
+            put :create, request: {
               item_id: '1234',
               origin: 'SPEC-COLL',
               origin_location: 'STACKS',
@@ -137,7 +137,7 @@ describe MediatedPagesController do
     describe 'invalid requests' do
       let(:user) { create(:webauth_user) }
       it 'should return an error message to the user' do
-        post :create, mediated_page: { item_id: '1234' }
+        post :create, request: { item_id: '1234' }
         expect(flash[:error]).to eq 'There was a problem creating your request.'
         expect(response).to render_template 'new'
       end
@@ -147,6 +147,7 @@ describe MediatedPagesController do
   describe '#current_request' do
     let(:user) { create(:anon_user) }
     it 'returns a MediatedPage object' do
+      get :new, normal_params
       expect(controller.send(:current_request)).to be_a(MediatedPage)
     end
   end

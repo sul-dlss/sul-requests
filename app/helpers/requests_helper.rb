@@ -17,10 +17,8 @@ module RequestsHelper
   end
 
   def label_for_comments_field
-    t("forms.labels.#{current_request.origin}.comments",
-      default: t("forms.labels.#{current_request.class.name.underscore}.comments",
-                 default: t('forms.labels.comments')
-                )
+    t("forms.labels.#{current_request.origin}.item_comment",
+      default: current_request.class.human_attribute_name(:item_comment)
      )
   end
 

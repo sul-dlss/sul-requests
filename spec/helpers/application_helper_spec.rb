@@ -46,4 +46,28 @@ describe ApplicationHelper do
       expect(helper.render_markdown('**abc**')).to include content_tag(:strong, 'abc')
     end
   end
+
+  describe '#render_user_information' do
+    before do
+      helper.extend(Module.new do
+        def current_user; end
+      end)
+
+      allow(helper).to receive(:current_user).and_return(user)
+    end
+
+    let(:user) { build(:webauth_user, name: 'Some Body') }
+
+    it 'includes the screen reader context' do
+      expect(helper.render_user_information).to have_selector '.sr-only', text: 'You are logged in as'
+    end
+
+    it 'includes the name of the user' do
+      expect(helper.render_user_information).to have_content 'Some Body'
+    end
+
+    it 'includes the email for the user' do
+      expect(helper.render_user_information).to have_content 'some-webauth-user@stanford.edu'
+    end
+  end
 end

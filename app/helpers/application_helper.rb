@@ -4,6 +4,10 @@ module ApplicationHelper
     'col-md-6 col-md-offset-3'
   end
 
+  def request_form_options
+    { as: :request }.merge(bootstrap_form_layout_options)
+  end
+
   def bootstrap_form_layout_options
     { layout: :horizontal, label_col: label_column_class, control_col: content_column_class }
   end
@@ -34,6 +38,12 @@ module ApplicationHelper
 
   def time_tag(dt, format = :default, attr: {})
     content_tag :time, l(dt, format: format), attr.merge(datetime: dt) if dt
+  end
+
+  def render_user_information
+    '<span class="sr-only">You are logged in as </span>'.html_safe +
+      (current_user.name if current_user.name.present?) +
+      current_user.email_address
   end
 
   private
