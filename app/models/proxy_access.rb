@@ -38,6 +38,8 @@ class ProxyAccess
 
   def response
     @response ||= begin
+      return empty_response('No proxy-api url configured') unless request_url.present?
+
       response = Faraday.get(request_url)
 
       return empty_response(response.body) unless response.success?
