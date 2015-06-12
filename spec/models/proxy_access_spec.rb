@@ -52,6 +52,7 @@ describe ProxyAccess do
   describe 'response error handling' do
     context 'when we are unable to connect to the api' do
       before do
+        allow(Settings).to receive(:sul_proxy_api_url).and_return('http://some/url/?libid=%{libid}')
         expect(Faraday.default_connection).to receive(:get).and_raise(Faraday::Error::ConnectionFailed, '')
       end
 
@@ -61,6 +62,7 @@ describe ProxyAccess do
 
     context 'when the api return a failure' do
       before do
+        allow(Settings).to receive(:sul_proxy_api_url).and_return('http://some/url/?libid=%{libid}')
         expect(Faraday.default_connection).to receive(:get).and_return(response)
       end
 
@@ -72,6 +74,7 @@ describe ProxyAccess do
 
     context 'when the api is functional' do
       before do
+        allow(Settings).to receive(:sul_proxy_api_url).and_return('http://some/url/?libid=%{libid}')
         expect(Faraday.default_connection).to receive(:get).and_return(response)
       end
 
