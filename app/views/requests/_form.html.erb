@@ -1,3 +1,5 @@
+<%= render 'searchworks_item_information' %>
+
 <%= bootstrap_form_for(current_request, request_form_options) do |f| %>
   <% unless current_request.persisted? %>
     <%= render partial: 'hidden_form_fields', locals: { f: f } %>

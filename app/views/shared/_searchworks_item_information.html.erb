@@ -1,4 +1,0 @@
-<h2 class="searchworks-item"><%= current_request.stored_or_fetched_item_title %></h2>
-<% if current_request.holdings.one? %>
-  <p><%= current_request.holdings.first.callnumber %></p>
-<% end %>

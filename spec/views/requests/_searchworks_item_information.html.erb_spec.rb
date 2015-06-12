@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'shared/_searchworks_item_information.html.erb' do
+describe 'requests/_searchworks_item_information.html.erb' do
   before do
     allow(view).to receive_messages(current_request: request)
     render
