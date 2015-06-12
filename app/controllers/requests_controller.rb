@@ -4,11 +4,15 @@
 ###
 class RequestsController < ApplicationController
   before_action :modify_item_selector_checkboxes, only: :create
+  before_action :modify_item_proxy_status, only: :create
+
   load_and_authorize_resource instance_name: 'request'
+
   before_action :set_current_request_defaults, only: :new
   before_action :validate_request_type, only: :new
   before_action :redirect_delegatable_requests, only: :new
   before_action :set_current_user_for_request, only: :create, if: :webauth_user?
+  before_action :check_if_proxy_sponsor, only: :create
 
   helper_method :current_request, :delegated_request?
 
@@ -66,7 +70,7 @@ class RequestsController < ApplicationController
 
   def rescue_can_can(exception)
     if !current_user.webauth_user? && create_via_post? && current_request.new_record?
-      request_params = local_object_param.except(:user_attributes)
+      request_params = params[:request].except(:user_attributes)
       redirect_to login_path(referrer: polymorphic_path([:create, current_request], request: request_params))
     else
       super
@@ -74,18 +78,20 @@ class RequestsController < ApplicationController
   end
 
   def new_params
-    validate_new_params
+    params.require(:origin)
+    params.require(:item_id)
+    params.require(:origin_location)
 
     params.permit(:origin, :item_id, :origin_location, :barcode)
   end
 
   def create_params
     params.require(:request).permit(:destination,
-                                    :item_id,
-                                    :origin, :origin_location,
+                                    :item_id, :origin, :origin_location,
                                     :needed_date,
                                     :item_comment, :request_comment,
                                     :authors, :page_range, :section_title, # scans
+                                    :proxy,
                                     barcodes: [],
                                     user_attributes: [:name, :email, :library_id])
   end
@@ -94,8 +100,10 @@ class RequestsController < ApplicationController
     params.require(:request).permit(:needed_date)
   end
 
-  def local_object_param
-    params[:request]
+  def check_if_proxy_sponsor
+    return unless current_request.user.sponsor? && params[:request][:proxy].nil?
+
+    render 'sponsor_request'
   end
 
   def delegated_new_request_path(request)
@@ -104,24 +112,23 @@ class RequestsController < ApplicationController
   end
   helper_method :delegated_new_request_path
 
-  def validate_new_params
-    params.require(:origin)
-    params.require(:item_id)
-    params.require(:origin_location)
+  def modify_item_selector_checkboxes
+    request_params = params[:request]
+    return unless request_params && request_params[:barcodes].is_a?(Hash)
+
+    request_params[:barcodes] = request_params[:barcodes].select { |_, checked| checked == '1' }.keys
   end
 
-  def modify_item_selector_checkboxes
-    return unless local_object_param
-    return unless local_object_param[:barcodes]
-    return unless local_object_param[:barcodes].is_a?(Hash)
-    local_object_param[:barcodes] = local_object_param[:barcodes].select { |_, checked| checked == '1' }.keys
+  def modify_item_proxy_status
+    return unless params[:request]
+
+    params[:request][:proxy] &&= params[:request][:proxy] == 'true'
   end
 
   def redirect_to_success_with_token
-    if current_user.webauth_user?
-      redirect_to polymorphic_path([:successful, current_request])
-    else
-      redirect_to polymorphic_path([:successful, current_request], token: current_request.encrypted_token)
-    end
+    options = {}
+    options[:token] = current_request.encrypted_token unless current_user.webauth_user?
+
+    redirect_to polymorphic_path([:successful, current_request], options)
   end
 end

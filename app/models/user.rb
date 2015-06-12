@@ -8,6 +8,8 @@ class User < ActiveRecord::Base
 
   attr_writer :ldap_group_string
 
+  delegate :proxy?, :sponsor?, to: :proxy_access
+
   def to_email_string
     if non_webauth_user?
       "#{name} (#{email_address})"
@@ -56,5 +58,9 @@ class User < ActiveRecord::Base
 
   def ldap_groups
     (@ldap_group_string || '').split('|')
+  end
+
+  def proxy_access
+    @proxy_access ||= ProxyAccess.new(libid: library_id)
   end
 end

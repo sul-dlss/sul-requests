@@ -36,6 +36,8 @@ gem 'kaminari_bootstrap_paginator'
 
 gem 'redcarpet'
 
+gem 'hash_to_hidden_fields'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

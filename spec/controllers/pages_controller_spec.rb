@@ -66,6 +66,51 @@ describe PagesController do
         expect(User.last.library_id).to eq '12345'
         expect(Page.last.user).to eq User.last
       end
+      context 'for faculty with a sponsored proxy group' do
+        let(:user) do
+          build(:webauth_user).tap do |u|
+            allow(u).to receive(:sponsor?).and_return(true)
+          end
+        end
+
+        it 'prompts the user to decide whether the request should be for the proxy' do
+          put :create, request: {
+            item_id: '1234',
+            origin: 'GREEN',
+            origin_location: 'STACKS',
+            destination: 'BIOLOGY'
+          }
+
+          expect(response).to render_template('sponsor_request')
+        end
+
+        it 'prompts the user to decide whether the request should be for the proxy' do
+          put :create, request: {
+            item_id: '1234',
+            origin: 'GREEN',
+            origin_location: 'STACKS',
+            destination: 'BIOLOGY',
+            proxy: 'true'
+          }
+
+          expect(response.location).to eq successful_page_url(Page.last)
+          expect(Page.last.user).to eq User.last
+        end
+
+        it 'prompts the user to decide whether the request should be for the proxy' do
+          put :create, request: {
+            item_id: '1234',
+            origin: 'GREEN',
+            origin_location: 'STACKS',
+            destination: 'BIOLOGY',
+            proxy: 'false'
+          }
+
+          expect(response.location).to eq successful_page_url(Page.last)
+          expect(Page.last.user).to eq User.last
+        end
+      end
+
       describe 'via get' do
         it 'should raise an error' do
           expect(

@@ -16,7 +16,7 @@ class Request < ActiveRecord::Base
   validate :requested_holdings_exist
 
   # Serialzed data hash
-  store :data, accessors: [:item_comment, :request_comment, :authors, :page_range, :section_title], coder: JSON
+  store :data, accessors: [:item_comment, :request_comment, :authors, :page_range, :section_title, :proxy], coder: JSON
   serialize :barcodes, Array
 
   belongs_to :user, autosave: true
@@ -95,6 +95,10 @@ class Request < ActiveRecord::Base
 
   def requires_needed_date?
     false
+  end
+
+  def proxy?
+    proxy == true
   end
 
   class << self
