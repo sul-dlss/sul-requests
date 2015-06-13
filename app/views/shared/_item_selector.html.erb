@@ -3,7 +3,7 @@
     <% if f.object.holdings.one? %>
       <%= barcode.hidden_field nil, value: f.object.holdings.first.barcode %>
     <% elsif f.object.holdings.many? %>
-      <div id='selected-items-filter' data-behavior='item-selector' data-filter-selected-items="true">
+      <div id='selected-items-filter' data-behavior='item-selector' data-filter-selected-items="true" data-limit-reached-message="<%= t('sul_requests.limit_reached_message', limit: f.object.item_limit) %>">
         <% if f.object.holdings.length >= 10 %>
           <div class='form-group'>
             <label class='control-label <%= label_column_class %>' for='item-selector-search'>Search item list</label>
@@ -39,6 +39,7 @@
       </div>
       <p data-items-counter='true'><span data-count='true'>0</span> items selected</p>
       <div data-behavior='breadcrumb-container'></div>
+      <div data-behavior='max-items-message'></div>
     <% end %>
   <% end %>
 <% end %>
