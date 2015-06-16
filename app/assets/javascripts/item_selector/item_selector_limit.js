@@ -38,10 +38,16 @@ var itemSelectorLimit = (function() {
     enforceSelectedItemLimit: function(checkbox) {
       var _this = this;
       var limit = selectorLimit(_this);
-      if (limit && _this.numberOfSelectedCheckboxes() > limit) {
-        _this.selectorElement().trigger('item-selector:max-selected-reached');
-        checkbox.prop('checked', false)
-                .trigger('item-selector:deselected');
+      if ( limit ) {
+        if ( _this.numberOfSelectedCheckboxes() > limit ) {
+          checkbox.prop('checked', false)
+                  .trigger('item-selector:deselected');
+        }
+
+        if ( _this.numberOfSelectedCheckboxes() >= limit ) {
+          _this.selectorElement()
+               .trigger('item-selector:max-selected-reached');
+        }
       }
     },
 

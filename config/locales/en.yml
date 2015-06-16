@@ -83,4 +83,5 @@ en:
         create: 'Save'
         update: 'Save'
   sul_requests:
+    limit_reached_message: "<p>You've reached the maximum of %{limit} items per day.</p><p>Contact the library if you need help prioritizing your selections.</p>"
     scan_pilot_error_html: '<h4>Scan-to-PDF not available</h4> This pilot service is currently available only to faculty, grad students, postdocs, academic staff, fellows, and visiting scholars. Your feedback will help us refine and expand the service!'

@@ -89,6 +89,28 @@ describe 'Item Selector' do
               expect(field_labeled('ABC 678')).to_not be_checked
             end
           end
+
+          it 'adds and removes a message about the maximum being reached' do
+            expect(page).to_not have_css('#max-items-reached.alert-danger')
+            within('#item-selector') do
+              check('ABC 123')
+              check('ABC 456')
+              check('ABC 789')
+              check('ABC 012')
+              check('ABC 345')
+            end
+
+            expect(page).to have_css(
+              '#max-items-reached.alert-danger',
+              text: 'You\'ve reached the maximum of 5 items per day.'
+            )
+
+            within('#item-selector') do
+              uncheck('ABC 123')
+            end
+
+            expect(page).to_not have_css('#max-items-reached.alert-danger')
+          end
         end
       end
     end
