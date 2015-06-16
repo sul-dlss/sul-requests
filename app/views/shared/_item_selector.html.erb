@@ -21,7 +21,7 @@
             <% f.object.holdings.each do |holding| %>
               <div class='input-group'>
                 <span class='input-group-addon'>
-                  <%= barcode.check_box_without_bootstrap holding.barcode %>
+                  <%= barcode.check_box_without_bootstrap holding.barcode, data: { barcode: holding.barcode, callnumber: holding.callnumber } %>
                 </span>
                 <%= barcode.label holding.barcode, class: 'form-control' do %>
                   <span class='callnumber'><%= holding.callnumber %></span>
@@ -38,6 +38,7 @@
         </div>
       </div>
       <p data-items-counter='true'><span data-count='true'>0</span> items selected</p>
+      <div data-behavior='breadcrumb-container'></div>
     <% end %>
   <% end %>
 <% end %>

@@ -1,0 +1,15 @@
+.breadcrumb-pill {
+  background-color: $white;
+  border: 1px solid $breadcrumb-pill-border-color;
+  border-radius: 10px;
+  display: table;
+  margin-bottom: 5px;
+  padding: 4px;
+
+  .pill-addon {
+    @extend .pull-right;
+    border-left: 2px solid $breadcrumb-pill-border-color;
+    margin-left: 10px;
+    padding: 0 5px;
+  }
+}
