@@ -163,4 +163,40 @@ describe 'Item Selector' do
       end
     end
   end
+
+  describe 'breadcrumb pills', js: true do
+    before do
+      stub_current_user(create(:webauth_user))
+      stub_searchworks_api_json(build(:many_holdings))
+    end
+
+    it 'are addable and removable' do
+      visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
+
+      expect(page).to_not have_css('#breadcrumb-12345678', text: 'ABC 123')
+      expect(page).to_not have_css('#breadcrumb-23456789', text: 'ABC 456')
+      expect(page).to_not have_css('#breadcrumb-34567890', text: 'ABC 789')
+
+      within('#item-selector') do
+        check('ABC 123')
+        check('ABC 456')
+        check('ABC 789')
+      end
+
+      expect(page).to have_css('#breadcrumb-12345678', text: 'ABC 123')
+      expect(page).to have_css('#breadcrumb-23456789', text: 'ABC 456')
+      expect(page).to have_css('#breadcrumb-34567890', text: 'ABC 789')
+
+      # Click the close button on the breadcrumb pill
+      find('#breadcrumb-12345678 .close').click
+      expect(page).to_not have_css('#breadcrumb-12345678', text: 'ABC 123')
+
+      within('#item-selector') do
+        expect(field_labeled('ABC 123')).to_not be_checked
+        uncheck('ABC 456')
+      end
+
+      expect(page).to_not have_css('#breadcrumb-23456789', text: 'ABC 456')
+    end
+  end
 end
