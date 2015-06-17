@@ -25,14 +25,14 @@ var itemSelectorBreadcrumbs = (function() {
 
     addBreadcrumbBehavior: function() {
       var _this = this;
-      _this.checkboxes().each(function() {
-        $(this).on('item-selector:selected', function() {
-          _this.addBreadcrumb($(this));
-        });
+      _this.selectorElement()
+           .on('item-selector:selected', function(event, item) {
+             _this.addBreadcrumb(item);
+      });
 
-        $(this).on('item-selector:deselected', function() {
-          _this.removeBreadcrumb($(this));
-        });
+      _this.selectorElement()
+           .on('item-selector:deselected', function(event, item) {
+             _this.removeBreadcrumb(item);
       });
     },
 
@@ -49,9 +49,11 @@ var itemSelectorBreadcrumbs = (function() {
     },
 
     addBreadcrumbRemoveBehavior: function(pill, item) {
+      var _this = this;
       pill.find('.close').on('click', function() {
-        item.prop('checked', false)
-            .trigger('item-selector:deselected');
+        item.prop('checked', false);
+        _this.selectorElement()
+             .trigger('item-selector:deselected', [item]);
       });
     },
 

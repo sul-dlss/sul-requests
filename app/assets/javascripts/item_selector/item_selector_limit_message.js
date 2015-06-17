@@ -11,7 +11,7 @@ var itemSelectorLimitMessage = (function() {
 
     setupDeselectedListener: function() {
       var _this = this;
-      _this.checkboxes().on('item-selector:deselected', function() {
+      _this.selectorElement().on('item-selector:deselected', function() {
         _this.removeMessage();
       });
     },

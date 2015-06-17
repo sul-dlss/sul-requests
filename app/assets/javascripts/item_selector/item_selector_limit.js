@@ -23,15 +23,13 @@ var itemSelectorLimit = (function() {
 
     setupEventListeners: function() {
       var _this = this;
-      _this.checkboxes().each(function() {
-        $(this).on('item-selector:selected', function() {
-          _this.increaseSelectedNumber();
-          _this.enforceSelectedItemLimit($(this));
-        });
+      _this.selectorElement().on('item-selector:selected', function(_, item) {
+        _this.increaseSelectedNumber();
+        _this.enforceSelectedItemLimit(item);
+      });
 
-        $(this).on('item-selector:deselected', function() {
-          _this.decreaseSelectedNumber();
-        });
+      _this.selectorElement().on('item-selector:deselected', function() {
+        _this.decreaseSelectedNumber();
       });
     },
 
@@ -40,8 +38,9 @@ var itemSelectorLimit = (function() {
       var limit = selectorLimit(_this);
       if ( limit ) {
         if ( _this.numberOfSelectedCheckboxes() > limit ) {
-          checkbox.prop('checked', false)
-                  .trigger('item-selector:deselected');
+          checkbox.prop('checked', false);
+          _this.selectorElement()
+               .trigger('item-selector:deselected', [checkbox]);
         }
 
         if ( _this.numberOfSelectedCheckboxes() >= limit ) {
