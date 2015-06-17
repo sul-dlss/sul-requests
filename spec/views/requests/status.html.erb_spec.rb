@@ -62,6 +62,16 @@ describe 'requests/status.html.erb' do
   end
 
   describe 'for medidated pages' do
+    describe 'ad-hoc items' do
+      let(:request) { create(:mediated_page_with_holdings, user: user, ad_hoc_items: ['ZZZ 123', 'ZZZ 321']) }
+      before { render }
+      it 'are displayed when they are present' do
+        expect(rendered).to have_css('dt', text: 'Additional item(s)')
+        expect(rendered).to have_css('dd', text: 'ZZZ 123')
+        expect(rendered).to have_css('dd', text: 'ZZZ 321')
+      end
+    end
+
     describe 'selected items' do
       let(:request) { create(:mediated_page_with_holdings, user: user, barcodes: %w(12345678 23456789)) }
       before { render }
