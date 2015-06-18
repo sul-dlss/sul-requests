@@ -179,6 +179,8 @@ describe 'Item Selector' do
 
       expect(page).to have_content('5 items selected')
 
+      expect(page).to have_css('.breadcrumb-pill', count: 5)
+
       within('#item-selector') do
         check('ABC 901')
         expect(field_labeled('ABC 901')).to_not be_checked

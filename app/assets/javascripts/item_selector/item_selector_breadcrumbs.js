@@ -19,8 +19,18 @@ var itemSelectorBreadcrumbs = (function() {
     init: function() {
       var _this = this;
       $(document).on('ready page:load', function(){
+        _this.setupDefaultBreadcrumbs();
         _this.addBreadcrumbBehavior();
       });
+    },
+
+    setupDefaultBreadcrumbs: function() {
+      var _this = this;
+      _this.checkboxes()
+           .filter(':checked')
+           .each(function() {
+             _this.addBreadcrumb($(this));
+           });
     },
 
     addBreadcrumbBehavior: function() {
