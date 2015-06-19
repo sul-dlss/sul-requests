@@ -135,6 +135,15 @@ describe SearchworksItem do
       end
     end
 
+    describe 'mhld' do
+      describe 'when not present' do
+        let(:item) { build(:green_stacks_searchworks_item) }
+        it 'returns an empty array' do
+          expect(subject.mhld).to eq []
+        end
+      end
+    end
+
     describe 'by_barcode' do
       let(:item) { build(:green_stacks_multi_holdings_searchworks_item) }
       it 'should return the items given an array of barcodes' do
