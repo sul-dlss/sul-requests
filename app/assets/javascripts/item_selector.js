@@ -17,9 +17,11 @@ var itemSelector = (function() {
       _this.checkboxes().each(function() {
         $(this).on('change', function() {
           if ( $(this).is(':checked') ) {
-            $(this).trigger('item-selector:selected');
+            _this.selectorElement()
+                 .trigger('item-selector:selected', [$(this)]);
           } else {
-            $(this).trigger('item-selector:deselected');
+            _this.selectorElement()
+                 .trigger('item-selector:deselected', [$(this)]);
           }
         });
       });

@@ -10,14 +10,12 @@ var itemSelectorIncrementor = (function() {
 
     addIncrementBehavior: function() {
       var _this = this;
-      _this.checkboxes().each(function() {
-        $(this).on('item-selector:selected', function() {
-          _this.increaseSelectedItemCount();
-        });
+      _this.selectorElement().on('item-selector:selected', function() {
+        _this.increaseSelectedItemCount();
+      });
 
-        $(this).on('item-selector:deselected', function() {
-          _this.decreaseSelectedItemCount();
-        });
+      _this.selectorElement().on('item-selector:deselected', function() {
+        _this.decreaseSelectedItemCount();
       });
     },
 

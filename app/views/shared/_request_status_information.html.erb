@@ -6,6 +6,13 @@
     <% end  %>
   <% end %>
 
+  <% if current_request.ad_hoc_items.present? %>
+    <dt><%= current_request.class.human_attribute_name(:ad_hoc_items) %></dt>
+    <% current_request.ad_hoc_items.each do |item| %>
+      <dd><%= item %></dd>
+    <% end %>
+  <% end %>
+
   <% if current_request.destination.present? %>
     <dt>
       <%= label_for_pickup_libraries_dropdown(current_request.library_location.pickup_libraries) %>

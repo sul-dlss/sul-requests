@@ -179,6 +179,8 @@ describe 'Item Selector' do
 
       expect(page).to have_content('5 items selected')
 
+      expect(page).to have_css('.breadcrumb-pill', count: 5)
+
       within('#item-selector') do
         check('ABC 901')
         expect(field_labeled('ABC 901')).to_not be_checked
@@ -219,6 +221,83 @@ describe 'Item Selector' do
       end
 
       expect(page).to_not have_css('#breadcrumb-23456789', text: 'ABC 456')
+    end
+  end
+
+  describe 'ad-hoc items', js: true do
+    before do
+      stub_current_user(create(:webauth_user))
+      stub_searchworks_api_json(build(:searchable_holdings))
+      visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+    end
+
+    it 'are addable and removable' do
+      expect(page).to_not have_css('#breadcrumb-CUSTOMCALLNUMBER', text: 'CUSTOM .CALLNUMBER')
+
+      fill_in 'ad_hoc_items', with: 'CUSTOM .CALLNUMBER'
+      click_link 'Add'
+
+      expect(page).to have_css('#breadcrumb-CUSTOMCALLNUMBER', text: 'CUSTOM .CALLNUMBER')
+
+      # Click the close button on the breadcrumb pill
+      find('#breadcrumb-CUSTOMCALLNUMBER .close').click
+
+      expect(page).to_not have_css('#breadcrumb-CUSTOMCALLNUMBER', text: 'CUSTOM .CALLNUMBER')
+    end
+
+    it 'are not addable when the max-threshold has been reached' do
+      expect(page).to_not have_css('[data-behavior="ad-hoc-items"] a.btn.disabled')
+      within('#item-selector') do
+        check('ABC 123')
+        check('ABC 456')
+        check('ABC 789')
+        check('ABC 012')
+        check('ABC 345')
+      end
+
+      expect(page).to have_css('.breadcrumb-pill', count: 5)
+      expect(page).to have_css('[data-behavior="ad-hoc-items"] a.btn.disabled')
+
+      within('#item-selector') do
+        uncheck('ABC 123')
+      end
+
+      expect(page).to have_css('.breadcrumb-pill', count: 4)
+      expect(page).to_not have_css('[data-behavior="ad-hoc-items"] a.btn.disabled')
+    end
+
+    it 'adds/removes a hidden field' do
+      expect(page).to_not have_css('input[type="hidden"]#hidden-ZZZ123', visible: false)
+
+      fill_in 'ad_hoc_items', with: 'ZZZ 123'
+      click_link 'Add'
+
+      expect(page).to have_css('input[type="hidden"]#hidden-ZZZ123', visible: false)
+
+      # Click the close button on the ad-hoc-item's pill
+      find('#breadcrumb-ZZZ123 .close').click
+
+      expect(page).to_not have_css('input[type="hidden"]#hidden-ZZZ123', visible: false)
+    end
+
+    it 'are persisted' do
+      fill_in 'ad_hoc_items', with: 'ZZZ 321'
+      click_link 'Add'
+      fill_in 'ad_hoc_items', with: 'ZZZ 456'
+      click_link 'Add'
+      fill_in 'ad_hoc_items', with: 'ZZZ 999'
+      click_link 'Add'
+
+      # Click the close button on the last ad-hoc-item's pill
+      find('#breadcrumb-ZZZ999 .close').click
+
+      click_button 'Send request'
+
+      expect(page).to have_css('dt', text: /additional item\(s\)/i)
+      expect(page).to have_css('dd', text: 'ZZZ 321')
+      expect(page).to have_css('dd', text: 'ZZZ 456')
+      expect(page).to_not have_css('dd', text: 'ZZZ 999')
+      expect(Request.last.ad_hoc_items).to eq(['ZZZ 321', 'ZZZ 456'])
     end
   end
 end

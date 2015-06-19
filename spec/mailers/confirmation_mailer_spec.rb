@@ -34,7 +34,7 @@ describe ConfirmationMailer do
     end
 
     describe 'body' do
-      let(:request) { create(:page_with_holdings, barcodes: ['3610512345678'], user: user) }
+      let(:request) { create(:page_with_holdings, barcodes: ['3610512345678'], ad_hoc_items: ['ZZZ 123'], user: user) }
       let(:body) { mail.body.to_s }
       it 'has the date' do
         expect(body).to match(/On #{request.created_at.strftime('%A, %b %-d %Y')}, you requested the following:/)
@@ -47,6 +47,10 @@ describe ConfirmationMailer do
       it 'has holdings information' do
         expect(body).to include('Item(s) requested:')
         expect(body).to include('ABC 123')
+      end
+
+      it 'has ad hoc items' do
+        expect(body).to include('ZZZ 123')
       end
 
       it 'has a link to the status page' do

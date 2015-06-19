@@ -37,6 +37,16 @@
           </div>
         </div>
       </div>
+      <% if current_request.ad_hoc_item_commentable? %>
+        <div class='form-group'>
+          <div class='col-xs-6 form-inline' data-behavior='ad-hoc-items' data-hidden-field-name="<%= "#{f.object_name}[ad_hoc_items][]" %>">
+            <p>Refer to the collection finding aid to identify the items you need.</p>
+            <%= text_field_tag :ad_hoc_items, '', class: 'form-control' %>
+            <%= link_to 'Add', 'javascript:;', class: 'btn btn-default', data: { behavior: 'submit-ad-hoc-items' } %>
+            <p class='help-block'>Example: Series 1, Box 1</p>
+          </div>
+        </div>
+      <% end %>
       <p data-items-counter='true'><span data-count='true'>0</span> items selected</p>
       <div data-behavior='breadcrumb-container'></div>
       <div data-behavior='max-items-message'></div>

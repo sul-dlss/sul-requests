@@ -4,6 +4,7 @@ On <%= l @request.created_at.to_date, format: :long %>, you requested the follow
 
 Item(s) requested:
   <%= @request.holdings.map(&:callnumber).join("\n  ") %>
+  <%= @request.ad_hoc_items.join("\n  ") if @request.ad_hoc_items.present? %>
 
 <%= @request.data_to_email_s %>
 

@@ -93,6 +93,7 @@ class RequestsController < ApplicationController
                                     :authors, :page_range, :section_title, # scans
                                     :proxy,
                                     barcodes: [],
+                                    ad_hoc_items: [],
                                     user_attributes: [:name, :email, :library_id])
   end
 

@@ -29,6 +29,7 @@ en:
         needed_date: 'Needed on'
         request_comment: 'Comment'
         item_comment: 'Item(s) requested'
+        ad_hoc_items: 'Additional item(s)'
       hold_recall:
         <<: *request_anchor
         needed_date: 'Cancel request after'

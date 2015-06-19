@@ -19,20 +19,30 @@ var itemSelectorBreadcrumbs = (function() {
     init: function() {
       var _this = this;
       $(document).on('ready page:load', function(){
+        _this.setupDefaultBreadcrumbs();
         _this.addBreadcrumbBehavior();
       });
     },
 
+    setupDefaultBreadcrumbs: function() {
+      var _this = this;
+      _this.checkboxes()
+           .filter(':checked')
+           .each(function() {
+             _this.addBreadcrumb($(this));
+           });
+    },
+
     addBreadcrumbBehavior: function() {
       var _this = this;
-      _this.checkboxes().each(function() {
-        $(this).on('item-selector:selected', function() {
-          _this.addBreadcrumb($(this));
-        });
+      _this.selectorElement()
+           .on('item-selector:selected', function(event, item) {
+             _this.addBreadcrumb(item);
+      });
 
-        $(this).on('item-selector:deselected', function() {
-          _this.removeBreadcrumb($(this));
-        });
+      _this.selectorElement()
+           .on('item-selector:deselected', function(event, item) {
+             _this.removeBreadcrumb(item);
       });
     },
 
@@ -49,9 +59,11 @@ var itemSelectorBreadcrumbs = (function() {
     },
 
     addBreadcrumbRemoveBehavior: function(pill, item) {
+      var _this = this;
       pill.find('.close').on('click', function() {
-        item.prop('checked', false)
-            .trigger('item-selector:deselected');
+        item.prop('checked', false);
+        _this.selectorElement()
+             .trigger('item-selector:deselected', [item]);
       });
     },
 
