@@ -1,29 +1,32 @@
 var itemSelectorFiltering = (function() {
-
-  var defaultOptions = {
-    selector: '[data-filter-selected-items="true"]'
-  };
-
   var listOptions = {
     page: 10000,
     valueNames: ['callnumber', 'status']
   };
 
   return $.extend(itemSelector, {
-    init: function(opts) {
+    init: function() {
       var _this = this;
-      _this.filteringOptions = $.extend(defaultOptions, opts);
       $(document).on('ready page:load', function(){
-        _this.initializeListPlugin();
+        var list = _this.listPlugin();
+        _this.clearSearchInputOnFormSubmit(list);
       });
     },
 
-    filteringOptions: {},
+    listPlugin: function() {
+      return new List(this.selectorElement().attr('id'), listOptions);
+    },
 
-    initializeListPlugin: function() {
-      $(this.filteringOptions.selector).each(function() {
-        new List($(this).attr('id'), listOptions);
+    clearSearchInputOnFormSubmit: function(list) {
+      var _this = this;
+      _this.selectorElement().closest('form').on('submit', function() {
+        list.search(); // Clear search filter so all selections are present
+        _this.filterInput().val('');
       });
+    },
+
+    filterInput: function() {
+      return this.selectorElement().find('input.search');
     }
   });
 })();
