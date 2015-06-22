@@ -118,6 +118,8 @@ describe 'Item Selector' do
     describe 'when there are enough to be searchable' do
       let(:request_path) { new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS') }
       let(:holdings) { build(:searchable_holdings) }
+      before { stub_current_user(create(:webauth_user)) }
+
       it 'limits items using the search box' do
         within('#item-selector') do
           expect(page).to have_css('.input-group', count: 10)
@@ -149,6 +151,29 @@ describe 'Item Selector' do
           check('ABC 901')
           expect(field_labeled('ABC 901')).to_not be_checked
         end
+      end
+
+      it 'persists items that are not currently visible due to filtering' do
+        within('#item-selector') do
+          check('ABC 123')
+          check('ABC 456')
+          check('ABC 789')
+        end
+
+        within('#selected-items-filter') do
+          fill_in 'Search item list', with: 'ABC 901'
+        end
+
+        within('#item-selector') do
+          check('ABC 901')
+        end
+
+        click_button 'Send request'
+
+        expect(page).to have_css('dd', text: 'ABC 123')
+        expect(page).to have_css('dd', text: 'ABC 456')
+        expect(page).to have_css('dd', text: 'ABC 789')
+        expect(page).to have_css('dd', text: 'ABC 901')
       end
     end
   end
