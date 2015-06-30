@@ -7,17 +7,17 @@
 
   <%= render partial: 'shared/item_comment', locals: { f: f } %>
 
-  <%= select_for_pickup_libraries(f).html_safe %>
+  <%= render partial: 'form_additional', locals: { f: f } %>
 
-  <% if current_request.request_commentable? %>
-    <%= f.text_area :request_comment, rows: 3 %>
-  <% end %>
+  <%= select_for_pickup_libraries(f).html_safe %>
 
   <% if current_request.requires_needed_date? %>
     <%= f.date_field :needed_date %>
   <% end %>
 
-  <%= render partial: 'form_additional', locals: { f: f } %>
+  <% if current_request.request_commentable? %>
+    <%= f.text_area :request_comment, rows: 3 %>
+  <% end %>
 
   <%= render partial: 'shared/send_request_buttons', locals: { f: f } %>
 <% end %>
