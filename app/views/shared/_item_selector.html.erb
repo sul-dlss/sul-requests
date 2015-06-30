@@ -1,6 +1,14 @@
 <% if f.object.present? %>
   <%= f.fields_for :barcodes do |barcode| %>
     <% if f.object.holdings.one? %>
+      <div class='form-group'>
+        <span class='control-label <%= label_column_class %>'>Call number</span>
+        <div class='<%= content_column_class %>'>
+          <p class="form-control-static">
+            <%= current_request.holdings.first.callnumber %>
+          </p>
+        </div>
+      </div>
       <%= barcode.hidden_field nil, value: f.object.holdings.first.barcode %>
     <% elsif f.object.holdings.many? %>
       <div id='selected-items-filter' data-behavior='item-selector' data-limit-reached-message="<%= t('sul_requests.limit_reached_message', limit: f.object.item_limit) %>">
