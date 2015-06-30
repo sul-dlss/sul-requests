@@ -47,17 +47,28 @@
       </div>
       <% if current_request.ad_hoc_item_commentable? %>
         <div class='form-group'>
-          <div class='col-xs-6 form-inline' data-behavior='ad-hoc-items' data-hidden-field-name="<%= "#{f.object_name}[ad_hoc_items][]" %>">
-            <p>Refer to the collection finding aid to identify the items you need.</p>
-            <%= text_field_tag :ad_hoc_items, '', class: 'form-control' %>
-            <%= link_to 'Add', 'javascript:;', class: 'btn btn-default', data: { behavior: 'submit-ad-hoc-items' } %>
-            <p class='help-block'>Example: Series 1, Box 1</p>
+          <span class='control-label <%= label_column_class %>'>Add unlisted items</span>
+          <div class='<%= content_column_class %>' data-behavior='ad-hoc-items' data-hidden-field-name="<%= "#{f.object_name}[ad_hoc_items][]" %>">
+            <div class="input-group">
+              <%= text_field_tag :ad_hoc_items, '', class: 'form-control' %>
+              <span class="input-group-btn">
+                <%= link_to 'Add', 'javascript:;', class: 'btn btn-default', data: { behavior: 'submit-ad-hoc-items' } %>
+              </span>
+            </div>
+            <p class='help-block'>Refer to the collection finding aid to identify the items you need.<br />Example: Series 1, Box 1</p>
           </div>
         </div>
       <% end %>
-      <p data-items-counter='true'><span data-count='true'>0</span> items selected</p>
-      <div data-behavior='breadcrumb-container'></div>
-      <div data-behavior='max-items-message'></div>
+
+      <div class='form-group'>
+        <span class='control-label <%= label_column_class %>'>
+          <p data-items-counter='true'><span data-count='true'>0</span> items selected</p>
+        </span>
+        <div class='<%= content_column_class %>'>
+          <div data-behavior='breadcrumb-container'></div>
+          <div data-behavior='max-items-message'></div>
+        </div>
+      </div>
     <% end %>
   <% end %>
 <% end %>
