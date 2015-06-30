@@ -36,6 +36,7 @@ en:
         needed_date: 'Cancel request after'
       mediated_page:
         <<: *request_anchor
+        needed_date: 'Planned date of use'
       page:
         <<: *request_anchor
       scan:
