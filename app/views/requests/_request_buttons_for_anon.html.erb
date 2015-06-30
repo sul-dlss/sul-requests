@@ -2,5 +2,5 @@
 <%= send_request_via_login_button %>
 <% unless f.object.requestable_with_sunet_only? %>
   <p class='or-divider'>- or -</p>
-  <%= link_to 'I don\'t have a SUNet ID', 'javascript:;', class: 'btn btn-beige col-xs-12', data: { no_sunet: true, target: '[data-no-sunet-target]', content_target: '[data-no-sunet-content]', link: '[data-go-back-link]' } %>
+  <%= link_to 'I don\'t have a SUNet ID', 'javascript:;', class: 'btn btn-md btn-beige col-xs-12', data: { no_sunet: true, target: '[data-no-sunet-target]', content_target: '[data-no-sunet-content]', link: '[data-go-back-link]' } %>
 <% end %>
