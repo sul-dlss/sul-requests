@@ -42,7 +42,7 @@ en:
         <<: *request_anchor
         authors: 'Author(s)'
         page_range: 'Page range'
-        section_title: 'Article title'
+        section_title: 'Title of article or chapter'
   admin:
     index:
       custom: 'Custom requests'

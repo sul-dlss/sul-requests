@@ -70,7 +70,7 @@ describe 'requests/success.html.erb' do
       end
 
       it 'has a article title section' do
-        expect(rendered).to have_css('dt', text: 'Article title')
+        expect(rendered).to have_css('dt', text: 'Title of article or chapter')
         expect(rendered).to have_css('dd', text: 'Title of section')
       end
 
