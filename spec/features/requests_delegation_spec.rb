@@ -25,6 +25,7 @@ describe 'Requests Delegation' do
       visit new_request_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
 
       expect(page).to have_css('h1#dialogTitle', text: 'Request')
+      expect(page).to have_css('h2', text: 'SAL3 Item Title')
 
       within('#scan-or-deliver') do
         expect(page).to have_css('a', text: 'Deliver to campus library')
