@@ -7,7 +7,7 @@
     <dl class='dl-horizontal dl-invert'>
       <dt class='sr-only'><%= current_request.class.human_attribute_name :user %></dt>
       <dd>
-        <%= current_request.user.to_email_string %>
+        <span class="requested-by"><%= current_request.user.to_email_string %></span>
         <% if current_request.proxy? %>
           <p>Shared with your proxy group</p>
         <% elsif current_user.sponsor? %>
