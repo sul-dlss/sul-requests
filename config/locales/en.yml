@@ -30,6 +30,7 @@ en:
         request_comment: 'Comment'
         item_comment: 'Item(s) requested'
         ad_hoc_items: 'Additional item(s)'
+        user: 'Requested by'
       hold_recall:
         <<: *request_anchor
         needed_date: 'Cancel request after'

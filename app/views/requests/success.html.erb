@@ -5,7 +5,7 @@
 
   <% unless current_request.user.library_id_user? %>
     <dl class='dl-horizontal dl-invert'>
-      <dt><span class='sr-only'>User</span></dt>
+      <dt class='sr-only'><%= current_request.class.human_attribute_name :user %></dt>
       <dd>
         <%= current_request.user.to_email_string %>
         <% if current_request.proxy? %>

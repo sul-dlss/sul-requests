@@ -36,6 +36,7 @@ describe 'requests/success.html.erb' do
       let(:user) { create(:webauth_user) }
       it 'gives their stanford-email address' do
         render
+        expect(rendered).to have_css('dt.sr-only', text: 'Requested by')
         expect(rendered).to have_css('dd', text: 'some-webauth-user@stanford.edu')
       end
     end
@@ -43,6 +44,7 @@ describe 'requests/success.html.erb' do
       let(:user) { create(:non_webauth_user) }
       it 'gives their name and email (in parens)' do
         render
+        expect(rendered).to have_css('dt.sr-only', text: 'Requested by')
         expect(rendered).to have_css('dd', text: 'Jane Stanford (jstanford@stanford.edu)')
       end
     end
