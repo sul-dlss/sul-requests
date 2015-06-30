@@ -11,7 +11,7 @@
       </div>
       <%= barcode.hidden_field nil, value: f.object.holdings.first.barcode %>
     <% elsif f.object.holdings.many? %>
-      <div id='selected-items-filter' data-behavior='item-selector' data-limit-reached-message="<%= t('sul_requests.limit_reached_message', limit: f.object.item_limit) %>">
+      <div id='selected-items-filter' class="form-group" data-behavior='item-selector' data-limit-reached-message="<%= t('sul_requests.limit_reached_message', limit: f.object.item_limit) %>">
         <% if f.object.holdings.length >= 10 %>
           <div class='form-group'>
             <label class='control-label <%= label_column_class %>' for='item-selector-search'>Search item list</label>
