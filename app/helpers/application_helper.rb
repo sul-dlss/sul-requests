@@ -28,7 +28,7 @@ module ApplicationHelper
     button_tag(
       'Send request<span class="btn-sub-text">login with SUNet ID</span>'.html_safe,
       id: 'send_request_via_sunet',
-      class: 'btn btn-md btn-cardinal col-xs-12'
+      class: 'btn btn-md btn-primary btn-full'
     )
   end
 
