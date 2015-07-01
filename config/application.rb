@@ -103,18 +103,15 @@ module SULRequests
       'PAGE-ES' => ['EARTH-SCI'],
       'PAGE-GR' => ['GREEN'],
       'PAGE-HA' => ['HV-ARCHIVE'],
-      'PAGE-HL' => ['HOOVER'],
       'PAGE-HP' => ['GREEN', 'HOPKINS'],
       'PAGE-HV' => ['HOOVER'],
       'PAGE-IRON' => ['BUSINESS'],
-      'PAGE-LAW' => ['LAW'],
       'PAGE-LP' => ['MUSIC', 'MEDIA-MTXT'],
+      'PAGE-LW' => ['LAW'],
       'PAGE-MA' => ['MATH-CS'],
       'PAGE-MD' => ['MUSIC', 'MEDIA-MTXT'],
       'PAGE-MP' => ['EARTH-SCI'],
-      'PAGE-MSS' => ['SPEC-COLL'],
       'PAGE-MU' => ['MUSIC'],
-      'PAGE-SL' => ['SAL'],
       'PAGE-SP' => ['SPEC-COLL']
     }
 
