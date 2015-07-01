@@ -3,8 +3,19 @@
     padding-top: 7px;
   }
 
+  hr {
+    border: 0;
+    border-top: 1px solid $grayish-yellow;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+
   .or-divider {
+    background-color: $body-bg;
+    font-size: 1.1em;
+    margin: -32px auto 10px;
     text-align: center;
+    width: 3em;
   }
 }
 
