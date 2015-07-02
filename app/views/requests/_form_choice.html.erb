@@ -1,7 +1,7 @@
 <div id="scan-or-deliver">
   <div class="row">
     <div class="col-xs-12 col-sm-6 buttons">
-      <%= link_to('Deliver to campus library', delegated_new_request_path(@request), class: 'btn btn-beige', 'aria-describedby' => 'deliveryDescription') %>
+      <%= link_to('Deliver to campus library', delegated_new_request_path(@request), class: 'btn btn-md btn-default', 'aria-describedby' => 'deliveryDescription') %>
     </div>
     <div class="col-xs-12 col-sm-6 content">
       <dl id="deliveryDescription">
@@ -15,7 +15,7 @@
   </div>
   <div class="row scan-to-pdf">
     <div class="col-xs-12 col-sm-6 buttons">
-      <%= link_to('Scan to PDF<span class="btn-sub-text">requires SUNet login</span>'.html_safe, new_scan_path(@request, params.except(:controller, :action)), class: 'btn btn-scan', 'aria-describedby' => 'scanDescription') %>
+      <%= link_to('Scan to PDF<span class="btn-sub-text">requires SUNet login</span>'.html_safe, new_scan_path(@request, params.except(:controller, :action)), class: 'btn btn-md btn-scan', 'aria-describedby' => 'scanDescription') %>
     </div>
     <div class="col-xs-12 col-sm-6 content">
       <dl id="scanDescription">

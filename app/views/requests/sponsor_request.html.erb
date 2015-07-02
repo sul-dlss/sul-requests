@@ -10,11 +10,11 @@
 
       <h2><%= render_user_information %></h2>
       <%= f.form_group help: 'Anyone in your group can check the status of this request and pick it up when it’s available.' do %>
-        <%= f.button 'Yes, share with my group.', class: 'btn btn-default col-xs-12', value: 'true', name: 'request[proxy]' %>
+        <%= f.button 'Yes, share with my group.', class: 'btn btn-md btn-default btn-full', value: 'true', name: 'request[proxy]' %>
       <% end %>
 
       <%= f.form_group help: 'Only you can see and pick up this request.' do %>
-        <%= f.button 'No, just me.', class: 'btn btn-cardinal col-xs-12', value: 'false', name: 'request[proxy]' %>
+        <%= f.button 'No, just me.', class: 'btn btn-md btn-primary btn-full', value: 'false', name: 'request[proxy]' %>
       <% end %>
     <% end %>
   </div>

@@ -4,4 +4,8 @@
       color: $dark-cyan;
     }
   }
+
+  .requested-by {
+    @extend h2;
+  }
 }

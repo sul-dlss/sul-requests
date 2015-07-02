@@ -27,7 +27,7 @@ describe 'Create Scan Request' do
       fill_in 'Page range', with: page_range
 
       article_title = 'The title of the Article'
-      fill_in 'Article title', with: article_title
+      fill_in 'Title of article or chapter', with: article_title
 
       authors = 'Stanford, Jane'
       fill_in 'Author(s)', with: authors

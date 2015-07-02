@@ -3,8 +3,9 @@ require 'rails_helper'
 describe 'Item Selector' do
   describe 'for single items' do
     before { stub_searchworks_api_json(build(:single_holding)) }
-    it 'is not displayed' do
+    it 'displays the item call number' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
+      expect(page).to have_css('.control-label', text: 'Call number')
       expect(page).to have_css('p', text: 'ABC 123')
       expect(page).to_not have_css('#item-selector')
     end

@@ -34,7 +34,7 @@ describe ApplicationHelper do
       expect(button).to have_css('button#send_request_via_sunet')
     end
     it 'should include the appropriate button classes' do
-      expect(button).to have_css('button.btn.btn-cardinal.col-xs-12')
+      expect(button).to have_css('button.btn.btn-primary.btn-full')
     end
     it 'should have the appropriate text' do
       expect(button).to have_text(/Send request.*login with SUNet ID/)

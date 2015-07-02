@@ -1,21 +1,9 @@
-.btn {
-  font-size: 1.1em;
+.btn-md {
+  font-size: 1.1 * $font-size-base;
 }
 
-.btn-beige {
-  @include button-variant(
-    $btn-beige-color,
-    $btn-beige-bg,
-    $btn-beige-border
-  );
-}
-
-.btn-cardinal {
-  @include button-variant(
-    $btn-cardinal-color,
-    $btn-cardinal-bg,
-    $btn-cardinal-border
-  );
+.btn-full {
+  width: 100%;
 }
 
 .btn-scan {
