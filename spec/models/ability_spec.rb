@@ -12,6 +12,16 @@ describe Ability do
   let(:message) { Message.new }
   let(:token) { nil }
   subject { Ability.new(user, token) }
+
+  describe 'site admins' do
+    let(:user) { create(:site_admin_user) }
+
+    it { is_expected.to be_able_to(:manage, LibraryLocation) }
+    it { is_expected.to be_able_to(:manage, Message) }
+    it { is_expected.to be_able_to(:manage, PagingSchedule) }
+    it { is_expected.to be_able_to(:manage, Request) }
+  end
+
   describe 'an anonymous user' do
     let(:user) { create(:anon_user) }
 

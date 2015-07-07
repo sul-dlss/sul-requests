@@ -10,6 +10,9 @@ Rails.application.routes.draw do
   get 'webauth/login' => 'authorization#login', as: :login
   get 'webauth/logout' => 'authorization#logout', as: :logout
 
+  resources :paging_schedule, only: :index
+  get 'paging_schedule/:origin(/:destination)' => 'paging_schedule#show', as: :paging_schedule
+
   concern :creatable_via_get_redirect do
     collection do
       get 'create', as: :create

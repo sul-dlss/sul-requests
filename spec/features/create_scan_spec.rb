@@ -5,6 +5,16 @@ describe 'Create Scan Request' do
     allow_any_instance_of(ScansController).to receive(:illiad_query).and_return('http://illiad.ill')
     stub_searchworks_api_json(build(:sal3_holdings))
   end
+
+  it 'does not display a destination pickup' do
+    stub_current_user(create(:webauth_user))
+
+    visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
+
+    expect(page).to_not have_select('request_destination')
+    expect(page).to_not have_content('Deliver to')
+  end
+
   describe 'by a webauth user' do
     before do
       stub_current_user(create(:webauth_user))
