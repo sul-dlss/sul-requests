@@ -26,9 +26,9 @@
         </div>
         <div id="item-selector" class="item-selector" data-limit-selected-items="<%= f.object.item_limit %>" data-counter-target="[data-items-counter='true']">
           <div class='list'>
-            <% f.object.holdings.each do |holding| %>
+            <% f.object.holdings.sort_by(&:callnumber).each do |holding| %>
               <div class='input-group'>
-                <span class='input-group-addon'>
+                <span class='input-group-addon barcode-checkbox'>
                   <%= barcode.check_box_without_bootstrap holding.barcode, data: { barcode: holding.barcode, callnumber: holding.callnumber } %>
                 </span>
                 <%= barcode.label holding.barcode, class: 'form-control' do %>
