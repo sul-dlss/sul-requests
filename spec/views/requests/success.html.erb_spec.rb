@@ -50,6 +50,38 @@ describe 'requests/success.html.erb' do
     end
   end
 
+  describe 'notification information' do
+    context 'for a normal request made by a sponsor of a proxy group' do
+      let(:user) { create(:webauth_user) }
+
+      before do
+        allow(user).to receive(:sponsor?).and_return(true)
+      end
+
+      it 'is displayed as an individual request' do
+        render
+        expect(rendered).to include 'Individual Request'
+        expect(rendered).to include "We've sent a copy of this request to your email."
+      end
+    end
+
+    context 'for requests on behalf of a proxy group' do
+      let(:user) { create(:library_id_user) }
+
+      before do
+        request.proxy = true
+      end
+
+      it 'is shared with the proxy group' do
+        render
+        expect(rendered).to include 'Shared with your proxy group'
+        expect(rendered).to include <<-EOS.strip
+          We've sent a copy of this request to your email and to the designated notification address.
+        EOS
+      end
+    end
+  end
+
   describe 'for scans' do
     let(:request) do
       create(

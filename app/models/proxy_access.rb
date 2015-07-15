@@ -14,6 +14,12 @@ class ProxyAccess
     proxies.any?
   end
 
+  def email_address
+    return unless table.any?
+
+    table.first[:email_address]
+  end
+
   private
 
   def sponsors
@@ -33,7 +39,7 @@ class ProxyAccess
   end
 
   def table
-    @table ||= CSV.parse(response.body, headers: [:name, :status], col_sep: '|')
+    @table ||= CSV.parse(response.body, headers: [:name, :status, :email_address], col_sep: '|')
   end
 
   def response

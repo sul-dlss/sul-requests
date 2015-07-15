@@ -6,7 +6,7 @@ class ConfirmationMailer < ApplicationMailer
     @request = request
     @status_url = success_url
     mail(
-      to: request.user.email_address,
+      to: request.notification_email_address,
       from: from_address,
       subject: subject
     )

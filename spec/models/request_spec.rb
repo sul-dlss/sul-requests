@@ -207,6 +207,50 @@ describe Request do
     end
   end
 
+  describe 'notification_email_address' do
+    before do
+      subject.user = user
+    end
+
+    context 'for a normal request' do
+      let(:user) { create(:non_webauth_user) }
+
+      it 'goes to the user email address' do
+        expect(subject.notification_email_address).to eq user.email_address
+      end
+    end
+
+    context 'for proxy requests' do
+      let(:user) { create(:library_id_user) }
+      let(:proxy_access) { double(email_address: 'some@lists.stanford.edu') }
+
+      before do
+        user.instance_variable_set(:@proxy_access, proxy_access)
+
+        subject.proxy = true
+      end
+
+      it 'goes to the notice list for proxy requests' do
+        expect(subject.notification_email_address).to eq proxy_access.email_address
+      end
+    end
+
+    context 'for proxy requests without a notification email' do
+      let(:user) { create(:non_webauth_user) }
+      let(:proxy_access) { double(email_address: '') }
+
+      before do
+        user.instance_variable_set(:@proxy_access, proxy_access)
+
+        subject.proxy = true
+      end
+
+      it 'goes to the notice list for proxy requests' do
+        expect(subject.notification_email_address).to eq user.email_address
+      end
+    end
+  end
+
   describe 'send_confirmation!' do
     describe 'for library id users' do
       it 'does not send a confirmation email' do
