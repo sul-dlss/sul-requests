@@ -20,5 +20,12 @@ describe ApplicationController do
       user = controller.send(:current_user)
       expect(user.ldap_groups).to eq ['ldap:group1', 'ldap:group2']
     end
+    it 'has the library id from LDAP' do
+      allow(controller).to receive_messages(user_id: 'some-user')
+      allow(controller.request).to receive(:env).and_return('SUCARDNUMBER' => '12345')
+      user = controller.send(:current_user)
+      expect(user).to be_a User
+      expect(user.library_id).to eq '12345'
+    end
   end
 end
