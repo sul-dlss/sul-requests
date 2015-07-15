@@ -9,9 +9,10 @@ class ApplicationController < ActionController::Base
   def current_user
     @current_user ||= begin
       if user_id.present?
-        user = User.find_or_create_by(webauth: user_id)
-        user.ldap_group_string = request_ldap if request_ldap
-        user
+        User.find_or_create_by(webauth: user_id).tap do |user|
+          user.ldap_group_string = request_ldap if request_ldap
+          user.library_id = request.env['SUCARDNUMBER']
+        end
       else
         User.new
       end
