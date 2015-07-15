@@ -9,17 +9,25 @@ describe ProxyAccess do
     let(:response) { double(body: '') }
 
     context 'for a patron who sponsors a proxy group' do
-      let(:response) { double(body: 'MY_PROXY_GROUP|SPONSOR|') }
+      let(:response) { double(body: 'MY_PROXY_GROUP|SPONSOR|group_notice@lists.stanford.edu|') }
 
       it { is_expected.to be_sponsor }
       it { is_expected.not_to be_proxy }
+
+      it 'has the notification list' do
+        expect(subject.email_address).to eq 'group_notice@lists.stanford.edu'
+      end
     end
 
     context 'for a library id in a proxy group' do
-      let(:response) { double(body: 'MY_PROXY_GROUP|PROXY|') }
+      let(:response) { double(body: 'MY_PROXY_GROUP|PROXY|group_notice@lists.stanford.edu|') }
 
       it { is_expected.not_to be_sponsor }
       it { is_expected.to be_proxy }
+
+      it 'has the notification list' do
+        expect(subject.email_address).to eq 'group_notice@lists.stanford.edu'
+      end
     end
 
     context 'for a patron without a proxy status' do

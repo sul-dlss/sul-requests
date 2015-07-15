@@ -41,8 +41,7 @@ class Request < ActiveRecord::Base
   end
 
   def send_confirmation!
-    return nil if user.library_id_user?
-    ConfirmationMailer.request_confirmation(self).deliver_later
+    ConfirmationMailer.request_confirmation(self).deliver_later if notification_email_address.present?
   end
 
   def delegate_request!
@@ -101,6 +100,14 @@ class Request < ActiveRecord::Base
 
   def proxy?
     proxy == true
+  end
+
+  def notification_email_address
+    if proxy? && user.proxy_access.email_address.present?
+      user.proxy_access.email_address
+    elsif user.email_address.present?
+      user.email_address
+    end
   end
 
   class << self
