@@ -9,12 +9,21 @@ var itemSelectorFiltering = (function() {
       var _this = this;
       $(document).on('ready page:load', function(){
         var list = _this.listPlugin();
+        _this.setDefaultSort(list);
         _this.clearSearchInputOnFormSubmit(list);
       });
     },
 
     listPlugin: function() {
       return new List(this.selectorElement().attr('id'), listOptions);
+    },
+
+    setDefaultSort: function(list) {
+      // List.js dynamically injects behavior, so we need to check
+      // if the list is sortable before setting the default sort
+      if($.isFunction(list.sort)) {
+        list.sort('callnumber', { order: 'asc'});
+      }
     },
 
     clearSearchInputOnFormSubmit: function(list) {

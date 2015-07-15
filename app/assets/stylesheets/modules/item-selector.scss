@@ -1,17 +1,25 @@
-.search {
-  &.form-control {
-    margin-right: 10px;
-  }
-}
-
 .sort-headings {
   display: block;
-  margin-left: 38px;
-  margin-right: 10px;
+  margin-left: 40px;
+
+  .btn {
+    border-radius: 0;
+  }
 
   .sort {
+    line-height: $line-height-computed;
+
     i {
       @extend .glyphicon;
+      @extend .glyphicon-tiny;
+      @extend .pull-right;
+    }
+
+    &.asc,
+    &.desc {
+      background-color: darken($btn-default-bg, 10%);
+      border-color: darken($btn-default-border, 12%);
+      color: $btn-default-color;
     }
 
     &.asc {
@@ -29,24 +37,41 @@
 
   .sort-callnumber {
     text-align: left;
-    width: 80%;
+    width: 75%;
   }
 
   .sort-status {
     text-align: left;
-    width: 20%;
+    width: 25%;
   }
 }
 
 .item-selector {
   border: 1px solid $item-selector-border-color;
   max-height: 300px;
-  overflow: scroll;
-  padding-right: 10px;
+  overflow: auto;
 
-  .input-group {
-    .form-control {
-      border-top-right-radius: 4px !important;
+  .input-group .form-control {
+    border-color: $item-selector-border-color;
+    border-radius: 0;
+    border-top: 0;
+  }
+
+  .input-group.active .form-control {
+    background-color: $item-selector-active-background;
+  }
+
+  .barcode-checkbox {
+    background-color: $btn-default-bg;
+    border-color: $btn-default-border;
+    border-radius: 0;
+    border-top: 0;
+    color: $btn-default-color;
+  }
+
+  .list .input-group:first-child {
+    .barcode-checkbox {
+      border-top: 1px solid $btn-default-border;
     }
   }
 
@@ -58,4 +83,9 @@
     margin-top: 4px;
     padding: 10px;
   }
+}
+
+.glyphicon-tiny {
+  font-size: $font-size-tiny;
+  line-height: $line-height-computed;
 }
