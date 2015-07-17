@@ -45,6 +45,7 @@
           </div>
         </div>
       </div>
+      <div data-behavior='max-items-message'></div>
       <% if current_request.ad_hoc_item_commentable? %>
         <div class='form-group'>
           <span class='control-label <%= label_column_class %>'>Add unlisted items</span>
@@ -66,7 +67,6 @@
         </span>
         <div class='<%= content_column_class %>'>
           <div data-behavior='breadcrumb-container'></div>
-          <div data-behavior='max-items-message'></div>
         </div>
       </div>
     <% end %>
