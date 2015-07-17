@@ -96,4 +96,19 @@ describe RequestsController do
       expect(controller.send(:current_request)).to be_a(Request)
     end
   end
+
+  describe 'layout setting' do
+    before do
+      stub_searchworks_api_json(build(:sal3_holdings))
+    end
+    it 'defaults to application' do
+      get :new, scannable_params
+      expect(response).to render_template(layout: 'application')
+    end
+
+    it 'uses the modal layout when the modal param is set' do
+      get :new, scannable_params.merge(modal: true)
+      expect(response).to render_template(layout: 'modal')
+    end
+  end
 end

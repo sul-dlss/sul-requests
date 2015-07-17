@@ -3,14 +3,15 @@
 #  Other request type specific controllers will handle behaviors for their particular types.
 ###
 class RequestsController < ApplicationController
+  include RequestStrongParams
+  include ModalLayout
+
   before_action :modify_item_selector_checkboxes, only: :create
   before_action :modify_item_proxy_status, only: :create
 
   load_and_authorize_resource instance_name: 'request'
 
-  before_action :set_current_request_defaults, only: :new
-  before_action :validate_request_type, only: :new
-  before_action :redirect_delegatable_requests, only: :new
+  before_action :set_current_request_defaults, :validate_request_type, :redirect_delegatable_requests, only: :new
   before_action :set_current_user_for_request, only: :create, if: :webauth_user?
   before_action :check_if_proxy_sponsor, only: :create
 
@@ -77,30 +78,6 @@ class RequestsController < ApplicationController
     end
   end
 
-  def new_params
-    params.require(:origin)
-    params.require(:item_id)
-    params.require(:origin_location)
-
-    params.permit(:origin, :item_id, :origin_location, :barcode)
-  end
-
-  def create_params
-    params.require(:request).permit(:destination,
-                                    :item_id, :origin, :origin_location,
-                                    :needed_date,
-                                    :item_comment, :request_comment,
-                                    :authors, :page_range, :section_title, # scans
-                                    :proxy,
-                                    barcodes: [],
-                                    ad_hoc_items: [],
-                                    user_attributes: [:name, :email, :library_id])
-  end
-
-  def update_params
-    params.require(:request).permit(:needed_date)
-  end
-
   def check_if_proxy_sponsor
     return unless current_request.user.sponsor? && params[:request][:proxy].nil?
 
@@ -129,6 +106,7 @@ class RequestsController < ApplicationController
   def redirect_to_success_with_token
     options = {}
     options[:token] = current_request.encrypted_token unless current_user.webauth_user?
+    options[:modal] = params[:modal]
 
     redirect_to polymorphic_path([:successful, current_request], options)
   end

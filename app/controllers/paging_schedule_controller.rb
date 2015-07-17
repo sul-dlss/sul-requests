@@ -2,12 +2,14 @@
 #  Controller for returning the pageing schedule for async requests
 ###
 class PagingScheduleController < ApplicationController
+  layout false
+
   def show
     schedule = PagingSchedule.for(request_for_schedule)
     return unless schedule.present?
     respond_to do |format|
       format.json { render json: schedule.estimate }
-      format.html { render text: schedule.estimate.to_s, layout: false }
+      format.html { render text: schedule.estimate.to_s }
     end
   end
 
