@@ -23,6 +23,9 @@
 .searchworks-item {
   font-family: 'dejavu_sansextralight', $font-family-base;
   margin: 0 0 1em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .go-back-link {
