@@ -15,7 +15,7 @@ class LibraryLocation
   end
 
   def pageable?
-    !mediateable?
+    !mediateable? && !hold_recallable?
   end
 
   def pickup_libraries
