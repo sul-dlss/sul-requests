@@ -12,11 +12,17 @@ describe LibraryLocation do
     expect(request.library_location).to be_a HoldRecallable
   end
   describe '#pageable?' do
-    it 'should be true if the LibraryLocation is not mediatable' do
+    it 'should be true if the LibraryLocation is not mediatable or hold recallable' do
       request.origin = 'GREEN'
       request.origin_location = 'STACKS'
       expect(request.library_location).to be_pageable
     end
+
+    it 'is false when the LibraryLocation is hold recallable' do
+      request.requested_barcode = '3610512345678'
+      expect(request.library_location).to_not be_pageable
+    end
+
     it 'should be false if the LibraryLocation is mediatable' do
       request.origin = 'SPEC-COLL'
       request.origin_location = 'STACKS'
