@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
 
   has_many :requests
 
-  attr_writer :ldap_group_string
+  attr_writer :ldap_group_string, :affiliation, :student_type
 
   delegate :proxy?, :sponsor?, to: :proxy_access
 
@@ -62,5 +62,17 @@ class User < ActiveRecord::Base
 
   def proxy_access
     @proxy_access ||= ProxyAccess.new(libid: library_id)
+  end
+
+  def affiliation
+    (@affiliation || '').split('|')
+  end
+
+  def student_type
+    (@student_type || '').split('|')
+  end
+
+  def graduate_student?
+    affiliation.include?('stanford:student') && student_type.include?('Graduate')
   end
 end

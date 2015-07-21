@@ -80,8 +80,8 @@ describe ScansController do
         expect(-> { put(:create, request: { origin: 'SAL3' }) }).to raise_error(CanCan::AccessDenied)
       end
     end
-    describe 'by webauth users' do
-      let(:user) { create(:webauth_user) }
+    describe 'by eligible users' do
+      let(:user) { create(:scan_eligible_user) }
       before do
         stub_searchworks_api_json(build(:sal3_holdings))
       end
@@ -115,11 +115,25 @@ describe ScansController do
       end
     end
     describe 'invalid requests' do
-      let(:user) { create(:webauth_user) }
+      let(:user) { create(:scan_eligible_user) }
+
       it 'should return an error message to the user' do
         post :create, request: { item_id: '12345' }
         expect(flash[:error]).to eq 'There was a problem creating your request.'
         expect(response).to render_template 'new'
+      end
+    end
+
+    describe 'by ineligible users' do
+      render_views
+
+      let(:user) { create(:webauth_user) }
+
+      it 'should be bounced to a page workflow' do
+        params = { request: { item_id: '12345', origin: 'SAL3', origin_location: 'STACKS', barcodes: ['12345678'] } }
+        post :create, params
+        expect(flash[:error]).to include 'Scan-to-PDF not available'
+        expect(response).to redirect_to new_page_url(params[:request])
       end
     end
   end

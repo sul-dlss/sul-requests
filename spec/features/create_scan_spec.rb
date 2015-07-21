@@ -15,9 +15,9 @@ describe 'Create Scan Request' do
     expect(page).to_not have_content('Deliver to')
   end
 
-  describe 'by a webauth user' do
+  describe 'by an eligible webauth user' do
     before do
-      stub_current_user(create(:webauth_user))
+      stub_current_user(create(:scan_eligible_user))
     end
 
     it 'should display a copyright restrictions notice in a collapse' do
@@ -68,7 +68,7 @@ describe 'Create Scan Request' do
 
   describe 'selecting barcodes' do
     before do
-      stub_current_user(create(:webauth_user))
+      stub_current_user(create(:scan_eligible_user))
       stub_searchworks_api_json(build(:sal3_holdings))
     end
 

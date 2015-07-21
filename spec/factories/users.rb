@@ -39,6 +39,14 @@ FactoryGirl.define do
     webauth 'some-webauth-user'
   end
 
+  factory :scan_eligible_user, class: User do
+    webauth 'some-eligible-user'
+
+    after(:build) do |user|
+      user.ldap_group_string = Settings.scan_pilot_groups.first
+    end
+  end
+
   factory :non_webauth_user, class: User do
     name 'Jane Stanford'
     email 'jstanford@stanford.edu'
