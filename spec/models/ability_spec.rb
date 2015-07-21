@@ -117,7 +117,7 @@ describe Ability do
     it { is_expected.to be_able_to(:create, hold_recall) }
     it { is_expected.to be_able_to(:create, mediated_page) }
     it { is_expected.to be_able_to(:create, page) }
-    it { is_expected.to be_able_to(:create, scan) }
+    it { is_expected.not_to be_able_to(:create, scan) }
 
     describe 'who created the request' do
       before do
@@ -161,6 +161,30 @@ describe Ability do
       it { is_expected.not_to be_able_to(:status, mediated_page) }
       it { is_expected.not_to be_able_to(:status, page) }
       it { is_expected.not_to be_able_to(:status, scan) }
+    end
+
+    describe 'who is in the scan and deliver pilot group' do
+      let(:user) { create(:scan_eligible_user) }
+
+      it { is_expected.to be_able_to(:create, scan) }
+    end
+
+    describe 'who is a graduate student' do
+      before do
+        user.affiliation = 'stanford:student'
+        user.student_type = 'Graduate'
+      end
+
+      it { is_expected.to be_able_to(:create, scan) }
+    end
+
+    describe 'who is an undergraduate' do
+      before do
+        user.affiliation = 'stanford:student'
+        user.student_type = 'Undergraduate'
+      end
+
+      it { is_expected.not_to be_able_to(:create, scan) }
     end
   end
 

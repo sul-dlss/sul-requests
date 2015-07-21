@@ -80,8 +80,8 @@ describe ScansController do
         expect(-> { put(:create, request: { origin: 'SAL3' }) }).to raise_error(CanCan::AccessDenied)
       end
     end
-    describe 'by webauth users' do
-      let(:user) { create(:webauth_user) }
+    describe 'by eligible users' do
+      let(:user) { create(:scan_eligible_user) }
       before do
         stub_searchworks_api_json(build(:sal3_holdings))
       end
@@ -115,7 +115,8 @@ describe ScansController do
       end
     end
     describe 'invalid requests' do
-      let(:user) { create(:webauth_user) }
+      let(:user) { create(:scan_eligible_user) }
+
       it 'should return an error message to the user' do
         post :create, request: { item_id: '12345' }
         expect(flash[:error]).to eq 'There was a problem creating your request.'

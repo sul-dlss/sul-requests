@@ -1,6 +1,13 @@
 # LDAP Workgroups for site-adminstrators
 super_admin_groups: []
 site_admin_groups: []
+scan_pilot_groups:
+  - 'stanford:faculty'
+  - 'stanford:student:postdoc'
+  - 'stanford:staff:academic'
+  - 'stanford:affiliate:fellow'
+  - 'stanford:affiliate:visitscholarvs'
+  - 'stanford:affiliate:visitscholarvt'
 
 # LDAP Workgroups for origin specific mediation
 origin_admin_groups:

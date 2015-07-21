@@ -6,7 +6,7 @@
 class Ability
   include CanCan::Ability
 
-  # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
+  # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/MethodLength
   # The CanCan DSL requires a complex initialization method
   def initialize(user, token = nil)
     user ||= User.new
@@ -64,13 +64,16 @@ class Ability
       end
     end
 
-    # Only Webauth users can create scan requests (for now).
-    cannot :create, Scan unless user.webauth_user?
+    cannot :create, Scan unless user.webauth_user? && current_user_in_scan_pilot_group?
   end
-  # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
+  # rubocop:enable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/MethodLength
 
   def current_user_owns_request?(request)
     request.user_id == @user.id && @user.webauth_user?
+  end
+
+  def current_user_in_scan_pilot_group?
+    @user.ldap_groups.any? { |g| Settings.scan_pilot_groups.include? g } || @user.graduate_student?
   end
 
   def request_is_by_anonymous_user?(request)
