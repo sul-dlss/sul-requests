@@ -19,6 +19,7 @@ describe HoldRecallsController do
       expect(assigns[:request].origin).to eq 'GREEN'
       expect(assigns[:request].origin_location).to eq 'STACKS'
       expect(assigns[:request].item_id).to eq '1234'
+      expect(assigns[:request].needed_date).to eq Time.zone.today + 1.year
     end
     it 'should raise an error if the item is unmediateable' do
       expect(
@@ -41,6 +42,7 @@ describe HoldRecallsController do
           )
         )
       end
+
       it 'should not be allowed if user name and email is filled out' do
         expect(
           lambda do
@@ -83,6 +85,16 @@ describe HoldRecallsController do
         expect(response).to redirect_to successful_hold_recall_path(HoldRecall.last)
         expect(HoldRecall.last.origin).to eq 'GREEN'
         expect(HoldRecall.last.user).to eq user
+      end
+
+      it 'sets a default needed_date if one is not present' do
+        post :create, request: normal_params
+        expect(HoldRecall.last.needed_date).to eq Time.zone.today + 1.year
+      end
+
+      it 'accepts a set needed_date when provided' do
+        post :create, request: normal_params.merge(needed_date: Time.zone.today + 1.month)
+        expect(HoldRecall.last.needed_date).to eq Time.zone.today + 1.month
       end
 
       it 'sends an confirmation email' do
