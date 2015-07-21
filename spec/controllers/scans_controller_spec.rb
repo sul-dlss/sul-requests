@@ -122,6 +122,19 @@ describe ScansController do
         expect(response).to render_template 'new'
       end
     end
+
+    describe 'by ineligible users' do
+      render_views
+
+      let(:user) { create(:webauth_user) }
+
+      it 'should be bounced to a page workflow' do
+        params = { request: { item_id: '12345', origin: 'SAL3', origin_location: 'STACKS', barcodes: ['12345678'] } }
+        post :create, params
+        expect(flash[:error]).to include 'Scan-to-PDF not available'
+        expect(response).to redirect_to new_page_url(params[:request])
+      end
+    end
   end
   describe 'update' do
     describe 'by anonymous users' do

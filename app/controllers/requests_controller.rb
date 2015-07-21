@@ -84,9 +84,10 @@ class RequestsController < ApplicationController
     render 'sponsor_request'
   end
 
-  def delegated_new_request_path(request)
+  def delegated_new_request_path(request, url_params = nil)
+    url_params ||= params.except(:controller, :action)
     request.delegate_request!
-    new_polymorphic_path(request.type.underscore, params.except(:controller, :action))
+    new_polymorphic_path(request.type.underscore, url_params)
   end
   helper_method :delegated_new_request_path
 
