@@ -16,7 +16,7 @@ describe ApplicationController do
     end
     it 'should return the ldap groups as an array' do
       allow(controller).to receive_messages(user_id: 'some-user')
-      allow(controller).to receive_messages(request_ldap: 'ldap:group1|ldap:group2')
+      allow(controller).to receive_messages(ldap_attributes: { 'WEBAUTH_LDAPPRIVGROUP' => 'ldap:group1|ldap:group2' })
       user = controller.send(:current_user)
       expect(user.ldap_groups).to eq ['ldap:group1', 'ldap:group2']
     end
@@ -26,6 +26,22 @@ describe ApplicationController do
       user = controller.send(:current_user)
       expect(user).to be_a User
       expect(user.library_id).to eq '12345'
+    end
+  end
+
+  describe '#ldap_attributes' do
+    it 'uses the request env' do
+      allow(controller.request).to receive(:env).and_return('a' => 1)
+      expect(controller.send(:ldap_attributes)).to include 'a' => 1
+    end
+
+    it 'enriches the request env with local settings' do
+      allow(controller).to receive_messages(user_id: 'some-user')
+      allow(controller.request).to receive(:env).and_return('a' => 1)
+      allow(Rails.env).to receive(:development?).and_return(true)
+      Settings.fake_ldap_attributes ||= {}
+      allow(Settings).to receive(:fake_ldap_attributes).and_return('some-user' => { 'b' => 2 })
+      expect(controller.send(:ldap_attributes)).to include 'a' => 1, 'b' => 2
     end
   end
 end

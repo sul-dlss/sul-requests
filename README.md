@@ -57,11 +57,12 @@ Configuration is handled through the [RailsConfig](/railsconfig/rails_config) se
 
 In order to develop the application it may be necessary to fake workgroups so that we don't need a local LDAP service.
 
-* `fake_work_groups` has SUNet IDs configured with a fake LDAP WorkGroup string
+* `fake_ldap_attributes` has SUNet IDs configured with a fake LDAP WorkGroup string
 
 
-    fake_work_groups:
-      user_sunet: 'some-set|of-workgroup-strings'
+    fake_ldap_attributes:
+      user_sunet:
+        WEBAUTH_LDAPPRIVGROUP: 'some-set|of-workgroup-strings'
 
 ### Token Encryption
 
