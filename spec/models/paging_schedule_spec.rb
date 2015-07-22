@@ -118,16 +118,18 @@ describe PagingSchedule do
     end
 
     describe 'attributes' do
+      let(:business_days) { ((Time.zone.today + 2.days)...(Time.zone.today + 5.days)).to_a }
       before do
         expect(business_day_double).to receive(:next_business_day).with(
           Time.zone.today + 4.days
         ).at_least(:once).and_return(
           Time.zone.today + 5.days
         )
+        allow(business_day_double).to receive(:business_days).and_return(business_days)
         expect(LibraryHours).to receive(:new).with('SAL3').at_least(:once).and_return(
           double(
             next_business_day: Time.zone.today + 2.days,
-            business_days: ((Time.zone.today + 2.days)...(Time.zone.today + 5.days)).to_a
+            business_days: business_days
           )
         )
       end
@@ -149,6 +151,10 @@ describe PagingSchedule do
 
         it 'includes the text representation' do
           expect(json[:text]).to eq("#{I18n.l(Time.zone.today + 5.days, format: :long)}, before 12n")
+        end
+
+        it 'includes the destination\'s business days' do
+          expect(json[:destination_business_days]).to eq business_days
         end
       end
 
