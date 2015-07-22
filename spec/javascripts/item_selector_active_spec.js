@@ -27,9 +27,9 @@ describe('Item Selector Active Behavior', function() {
       expect(
         firstCheckbox.closest('.input-group.active').length
       ).toBe(1);
-  
+
       itemSelectorBreadcrumbs.removeActive(firstCheckbox);
-      
+
       expect(
         firstCheckbox.closest('.input-group.active').length
       ).toBe(0);
