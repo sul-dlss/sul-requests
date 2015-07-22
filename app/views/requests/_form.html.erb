@@ -12,7 +12,7 @@
   <%= render partial: 'destination_selector', locals: { f: f } %>
 
   <% if current_request.requires_needed_date? %>
-    <%= f.date_field :needed_date %>
+    <%= f.date_field :needed_date, data: { request_type: current_request.type.underscore } %>
   <% end %>
 
   <% if current_request.request_commentable? %>

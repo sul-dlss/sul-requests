@@ -98,7 +98,12 @@ module PagingSchedule
       end
 
       def as_json(*)
-        { date: date, time: time, text: to_s }
+        {
+          date: date,
+          time: time,
+          text: to_s,
+          destination_business_days: destination_library_hours[to].business_days
+        }
       end
 
       def to_s
@@ -109,6 +114,14 @@ module PagingSchedule
 
       def origins_library_hours
         @origins_library_hours ||= LibraryHours.new(from)
+      end
+
+      # Create a cache of all destinations requested for this
+      # origin's estimate so we don't request multiple times
+      def destination_library_hours
+        @destination_library_hours ||= {}
+        @destination_library_hours[to] ||= LibraryHours.new(to)
+        @destination_library_hours
       end
 
       def origins_next_business_day
@@ -127,8 +140,7 @@ module PagingSchedule
 
       def estimated_delivery_day_to_destination
         # Time.zone.today is a fall back. We have request libraries that don't exist in the API
-        # Not memoized because the `to` parameter can change for the same estimate object
-        LibraryHours.new(to).next_business_day(business_days_later_after_origin_is_open) || Time.zone.today
+        destination_library_hours[to].next_business_day(business_days_later_after_origin_is_open) || Time.zone.today
       end
     end
   end

@@ -55,6 +55,7 @@ var pagingScheduleUpdater = (function() {
       if(_this.schedulerText().text() != data.text) {
         _this.schedulerText().text(data.text);
         _this.schedulerText().addClass('highlighted');
+        _this.schedulerText().trigger('paging-schedule:updated', [data]);
         setTimeout(function(){
           _this.schedulerText().removeClass('highlighted');
         }, 1500);
