@@ -4,7 +4,7 @@
 
     i {
       @extend .glyphicon-plus-sign;
-      color: $dark-cyan;
+      color: $gray-41-percent;
     }
   }
 
@@ -12,8 +12,18 @@
     .mediate-toggle {
       i {
         @extend .glyphicon-minus-sign;
-        color: $cardinal-red;
       }
     }
+  }
+
+  .holdings {
+    table {
+      margin: 0 auto;
+      width: 90%;
+    }
+  }
+
+  .mediation-header {
+    @include sort-icons;
   }
 }

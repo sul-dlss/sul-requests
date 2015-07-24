@@ -1,0 +1,19 @@
+@mixin sort-icons {
+  .sort {
+    i {
+      @extend .glyphicon;
+    }
+
+    &.asc {
+      i {
+        @extend .glyphicon-chevron-down;
+      }
+    }
+
+    &.desc {
+      i {
+        @extend .glyphicon-chevron-up;
+      }
+    }
+  }
+}

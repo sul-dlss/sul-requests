@@ -67,7 +67,8 @@ class ApplicationController < ActionController::Base
   end
 
   def fake_ldap_attributes
-    Settings.fake_ldap_attributes.fetch(user_id, {}) if user_id && use_fake_ldap_attributes?
+    return {} unless user_id && use_fake_ldap_attributes?
+    (Settings.fake_ldap_attributes[user_id] || {}).to_hash.stringify_keys
   end
 
   # Only allow fake ldap information in development

@@ -7,8 +7,12 @@ describe 'Viewing all requests' do
         stub_current_user(create(:superadmin_user))
         create(:page, item_id: 2345, item_title: 'Fourth symphony. [Op. 51].',
                       user: User.create(webauth: 'jstanford'))
-        create(:page, item_id: 2346, item_title: 'An American in Paris', origin: 'SAL-NEWARK',
-                      user: User.create(name: 'Joe', email: 'joe@xyz.com'))
+        create(:page, item_id: 2346,
+                      item_title: 'An American in Paris',
+                      origin: 'SAL-NEWARK',
+                      request_comment: 'I can has this item?',
+                      user: User.create(name: 'Joe', email: 'joe@xyz.com')
+              )
       end
       it 'should list data in tables' do
         visit admin_index_path
@@ -20,6 +24,7 @@ describe 'Viewing all requests' do
         expect(page).to have_css('h3', text: /SAL Newark/)
         expect(page).to have_css('td a', text: 'An American in Paris')
         expect(page).to have_css('td a[href="mailto:joe@xyz.com"]', text: /Joe \(joe@xyz.com\)/)
+        expect(page).to have_css('td', text: 'I can has this item?')
 
         expect(page).to have_selector('table.table-striped', count: 2)
       end
