@@ -7,17 +7,23 @@ describe MediatedPage do
 
   describe 'validation' do
     it 'should not allow non-mediated pages to be created' do
-      expect(
-        -> { MediatedPage.create!(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'BIOLOGY') }
-      ).to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: This item is not mediatable')
+      expect do
+        MediatedPage.create!(item_id: '1234',
+                             origin: 'GREEN',
+                             origin_location: 'STACKS',
+                             destination: 'BIOLOGY',
+                             needed_date: '2010-01-01')
+      end.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: This item is not mediatable')
     end
 
     it 'does not not allow pages to be created with destinations that are not valid pickup libraries of their origin' do
-      expect(
-        lambda do
-          MediatedPage.create!(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'GREEN')
-        end
-      ).to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Destination is not a valid pickup library')
+      expect do
+        MediatedPage.create!(item_id: '1234',
+                             origin: 'SPEC-COLL',
+                             origin_location: 'STACKS',
+                             destination: 'GREEN',
+                             needed_date: '2010-01-01')
+      end.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Destination is not a valid pickup library')
     end
   end
 

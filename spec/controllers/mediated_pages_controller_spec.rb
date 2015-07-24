@@ -51,6 +51,7 @@ describe MediatedPagesController do
           origin: 'SPEC-COLL',
           origin_location: 'STACKS',
           destination: 'SPEC-COLL',
+          needed_date: Time.zone.today + 1.year,
           user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }
         }
 
@@ -63,6 +64,7 @@ describe MediatedPagesController do
           origin: 'SPEC-COLL',
           origin_location: 'STACKS',
           destination: 'SPEC-COLL',
+          needed_date: Time.zone.today + 1.year,
           user_attributes: { library_id: '12345' }
         }
 
@@ -114,7 +116,11 @@ describe MediatedPagesController do
       let(:user) { create(:webauth_user) }
       it 'should be allowed' do
         post :create, request: {
-          item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'SPEC-COLL'
+          item_id: '1234',
+          origin: 'SPEC-COLL',
+          origin_location: 'STACKS',
+          destination: 'SPEC-COLL',
+          needed_date: Time.zone.today + 1.year
         }
         expect(response).to redirect_to successful_mediated_page_path(MediatedPage.last)
         expect(MediatedPage.last.origin).to eq 'SPEC-COLL'
@@ -128,7 +134,8 @@ describe MediatedPagesController do
               item_id: '1234',
               origin: 'SPEC-COLL',
               origin_location: 'STACKS',
-              destination: 'SPEC-COLL'
+              destination: 'SPEC-COLL',
+              needed_date: Time.zone.today + 1.year
             }
           end
         ).to change { ConfirmationMailer.deliveries.count }.by(1)

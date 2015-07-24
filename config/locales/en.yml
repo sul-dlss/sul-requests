@@ -87,3 +87,8 @@ en:
         update: 'Save'
   sul_requests:
     limit_reached_message: "<p>You've reached the maximum of %{limit} items per day.</p><p>Contact the library if you need help prioritizing your selections.</p>"
+  shared:
+    item_selector:
+      help_text:
+        one: 'Select an item from the list above.'
+        other: 'Select one or more items from the list above.'

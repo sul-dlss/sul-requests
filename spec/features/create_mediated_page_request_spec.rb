@@ -19,6 +19,8 @@ describe 'Creating a mediated page request' do
     end
     it 'should be possible if a name and email is filled out', js: true do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+      fill_in_required_fields
+
       click_link "I don't have a SUNet ID"
 
       fill_in 'Name', with: 'Jane Stanford'
@@ -31,6 +33,9 @@ describe 'Creating a mediated page request' do
 
     it 'should be possible if a library id is filled out', js: true do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+
+      fill_in_required_fields
+
       click_link "I don't have a SUNet ID"
 
       expect(page).to have_css('input#request_user_attributes_library_id')
@@ -58,6 +63,9 @@ describe 'Creating a mediated page request' do
     before { stub_current_user(user) }
     it 'should be possible without filling in any user information' do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+
+      fill_in_required_fields
+
       click_button 'Send request'
 
       expect(current_url).to eq successful_mediated_page_url(MediatedPage.last)
@@ -68,6 +76,8 @@ describe 'Creating a mediated page request' do
     before { stub_current_user(user) }
     it 'should have a comments field for commentable libraries' do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+
+      fill_in_required_fields
 
       comment = '1989, Mar: Le Monde'
       fill_in 'Comment', with: comment
@@ -108,6 +118,8 @@ describe 'Creating a mediated page request' do
     it 'should persist to the database' do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
 
+      fill_in_required_fields
+
       within('#item-selector') do
         check('ABC 123')
       end
@@ -118,5 +130,9 @@ describe 'Creating a mediated page request' do
 
       expect(MediatedPage.last.barcodes).to eq(%w(12345678))
     end
+  end
+
+  def fill_in_required_fields
+    fill_in 'Planned date of use', with: (Time.zone.now + 1.day).to_date
   end
 end

@@ -5,6 +5,7 @@ FactoryGirl.define do
     origin_location 'STACKS'
     destination 'SPEC-COLL'
     item_title 'Title of MediatedPage 1234'
+    needed_date Time.zone.today
   end
 
   factory :page_mp_mediated_page, class: MediatedPage do
@@ -13,6 +14,7 @@ FactoryGirl.define do
     origin_location 'PAGE-MP'
     destination 'EARTH-SCI'
     item_title 'Title of MediatedPage 1234'
+    needed_date Time.zone.today
   end
 
   factory :hopkins_mediated_page, class: MediatedPage do
@@ -21,6 +23,7 @@ FactoryGirl.define do
     origin_location 'STACKS'
     destination 'GREEN'
     item_title 'Title of MediatedPage 1234'
+    needed_date Time.zone.today
   end
 
   factory :hoover_mediated_page, class: MediatedPage do
@@ -29,6 +32,7 @@ FactoryGirl.define do
     origin_location 'SOMEWHERE-30'
     destination 'HOOVER'
     item_title 'Title of MediatedPage 1234'
+    needed_date Time.zone.today
   end
 
   factory :hoover_archive_mediated_page, class: MediatedPage do
@@ -37,6 +41,7 @@ FactoryGirl.define do
     origin_location 'SOMEWHERE-30'
     destination 'HV-ARCHIVE'
     item_title 'Title of MediatedPage 1234'
+    needed_date Time.zone.today
   end
 
   factory :mediated_page_with_holdings, class: MediatedPage do
@@ -44,6 +49,7 @@ FactoryGirl.define do
     origin 'SPEC-COLL'
     origin_location 'STACKS'
     destination 'SPEC-COLL'
+    needed_date Time.zone.today
 
     after(:build) do |request|
       class << request

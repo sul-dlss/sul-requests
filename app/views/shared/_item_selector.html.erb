@@ -62,11 +62,14 @@
       <% end %>
 
       <div class='form-group'>
-        <span class='control-label <%= label_column_class %>'>
-          <p data-items-counter='true'><span data-count='true'>0</span> items selected</p>
+        <span class='control-label <%= label_column_class %> required'>
+          <span data-items-counter='true'><span data-count='true'>0</span> items selected</span>
         </span>
         <div class='<%= content_column_class %>'>
           <div data-behavior='breadcrumb-container'></div>
+          <% if f.object.holdings.many? %>
+            <div class="zero-items-message help-text">[<%= t(:'.help_text', count: f.object.item_limit.to_i) %>]</div>
+          <% end %>
         </div>
       </div>
     <% end %>

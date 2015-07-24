@@ -1,6 +1,6 @@
 //= require mediation_table
 //= require jasmine-jquery
-fixture.preload('mediaton_table.html');
+fixture.preload('mediation_table.html');
 describe('Mediation Table', function() {
   beforeAll(function() {
     this.fixtures = fixture.load('mediation_table.html');

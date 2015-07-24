@@ -4,12 +4,14 @@ FactoryGirl.define do
     origin 'SAL3'
     origin_location 'STACKS'
     item_title 'Title for Scan 12345'
+    section_title 'Section Title for Scan 12345'
   end
 
   factory :scan_with_holdings, class: Scan do
     item_id '12345'
     origin 'SAL3'
     origin_location 'STACKS'
+    section_title 'Section Title for Scan 12345'
 
     after(:build) do |scan|
       class << scan

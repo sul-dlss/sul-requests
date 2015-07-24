@@ -6,6 +6,7 @@ FactoryGirl.define do
     requested_barcode '36105212925395'
     destination 'GREEN'
     item_title 'Title of HoldRecall 1234'
+    needed_date Time.zone.today
   end
 
   factory :hold_recall_with_holdings do
@@ -15,6 +16,7 @@ FactoryGirl.define do
     requested_barcode '12345678'
     destination 'GREEN'
     item_title 'Title of HoldRecall 1234'
+    needed_date Time.zone.today
 
     after(:build) do |hold_recall|
       class << hold_recall
