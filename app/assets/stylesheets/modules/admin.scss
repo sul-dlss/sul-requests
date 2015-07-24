@@ -20,12 +20,16 @@
     }
 
     tbody {
-      tr:nth-child(odd) {
+      .odd {
         background-color: $sul-admin-table-row-odd-color;
       }
 
-      tr:nth-child(even) {
+      .even {
         background-color: $sul-admin-table-row-even-color;
+      }
+
+      .holdings {
+        background-color: $white;
       }
     }
   }

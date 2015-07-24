@@ -2,20 +2,21 @@
 
 <h3><%= LibraryLocation.library_name_by_code(origin) %></h3>
 
-<table class="table table-striped mediation-table">
+<table id='mediation-table' class="table table-striped mediation-table">
   <%= render 'table_header' %>
-  <tbody>
+  <tbody class='list'>
     <% collection.each do |request| %>
-      <tr data-mediate-request='<%= holdings_admin_path(request) %>'>
+      <tr data-mediate-request='<%= holdings_admin_path(request) %>' class='<%= cycle('odd', 'even') %>'>
         <td>
           <a class="mediate-toggle" data-behavior='mediate-toggle' href='javascript:;'>
             <i class="glyphicon"></i>
           </a>
         </td>
-        <td><%= time_tag(request.needed_date, :quick) %></td>
-        <td><%= searchworks_link(request.item_id, request.item_title) %></td>
-        <td><%= requester_info(request.user) %></td>
-        <td><%= time_tag(request.created_at, :short) %></td>
+        <td class='needed_date'><%= time_tag(request.needed_date, :quick) %></td>
+        <td class='title'><%= searchworks_link(request.item_id, request.item_title) %></td>
+        <td class='requester'><%= requester_info(request.user) %></td>
+        <td class='created_at'><%= time_tag(request.created_at, :short) %></td>
+        <td class='comment'><%= request.request_comment %></td>
       </tr>
     <% end %>
   </tbody>

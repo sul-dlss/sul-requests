@@ -3,12 +3,24 @@ var mediationTable = (function() {
     selector: '[data-mediate-request]'
   };
 
+  var listOptions = {
+    page: 10000,
+    valueNames: [
+      'needed_date',
+      'title',
+      'requester',
+      'created_at',
+      'comment'
+    ]
+  };
+
   return {
     init: function(opts) {
       var _this = this;
       _this.options = $.extend(defaultOptions, opts);
       $(document).on('ready page:load', function(){
         _this.addToggleHoldingsBehavior();
+        _this.addSortableColumns();
       });
       return this;
     },
@@ -20,6 +32,39 @@ var mediationTable = (function() {
       _this.mediatableRows().each(function(){
         _this.addToggleClick($(this));
       });
+    },
+
+    addSortableColumns: function() {
+      var _this = this;
+      if ( _this.tableElement().length > 0 ) {
+        var list = new List(_this.tableElement().attr('id'), listOptions);
+        list.on('sortComplete', function() {
+          _this.restripeTable();
+          _this.hideAllRows();
+        });
+      }
+    },
+
+    restripeTable: function() {
+      this.tableElement()
+           .find('tr:nth-child(even)')
+           .removeClass('odd')
+           .addClass('even');
+      this.tableElement()
+           .find('tr:nth-child(odd)')
+           .removeClass('even')
+           .addClass('odd');
+    },
+
+    hideAllRows: function() {
+      var _this = this;
+      _this.mediatableRows().each(function() {
+        _this.hideRow($(this));
+      });
+    },
+
+    tableElement: function() {
+      return this.mediatableRows().closest('table');
     },
 
     mediatableRows: function() {
@@ -65,7 +110,7 @@ var mediationTable = (function() {
     },
 
     createHoldingsRow: function(row) {
-      var holdingsRow = $('<tr class="holdings"><td colspan="5"></td></tr>');
+      var holdingsRow = $('<tr class="holdings"><td colspan="6"></td></tr>');
       row.after(holdingsRow);
       return holdingsRow;
     },
