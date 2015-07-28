@@ -22,6 +22,10 @@ module RequestsHelper
      )
   end
 
+  def request_status_for_ad_hoc_item(request, item)
+    SearchworksItem::RequestedHoldings::RequestStatus.new(request, item)
+  end
+
   private
 
   def select_for_multiple_libraries(form, pickup_libraries)

@@ -8,6 +8,8 @@
       <th class='col-xs-2'>Location</th>
       <th class='col-xs-2'>Current</th>
       <th>Call number / Container</th>
+      <th>Status</th>
+      <th>Approved by</th>
     </tr>
   </thead>
   <tbody>
@@ -17,16 +19,31 @@
         <td class='col-xs-2'><%= item.home_location %></td>
         <td class='col-xs-2'><%= item.current_location.code %></td>
         <td><%= item.callnumber %></td>
+        <td><%= item.request_status.approved? %></td>
+        <td>
+          <% if item.request_status.approved? %>
+            <%= item.request_status.approver %> -
+            <%= time_tag(Time.parse(item.request_status.approval_time), :short) %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
 
     <% @request.ad_hoc_items.each do |item| %>
+      <% ad_hoc_item_status = request_status_for_ad_hoc_item(@request, item) %>
       <td class='col-xs-1'>
         <button class="disabled btn btn-xs btn-success">Approve</button>
       </td>
       <td class='col-xs-2'></td>
       <td class='col-xs-2'></td>
       <td><%= item %></td>
+      <td><%= ad_hoc_item_status.approved? %></td>
+      <td>
+        <% if ad_hoc_item_status.approved? %>
+          <%= ad_hoc_item_status.approver %> -
+          <%= time_tag(Time.parse(ad_hoc_item_status.approval_time), :short) %>
+        <% end %>
+      </td>
     <% end if @request.ad_hoc_items.present? %>
   </tbody>
 </table>

@@ -17,7 +17,7 @@ class Request < ActiveRecord::Base
 
   # Serialzed data hash
   store :data, accessors: [
-    :ad_hoc_items, :item_comment, :request_comment, :authors, :page_range, :section_title, :proxy
+    :ad_hoc_items, :authors, :request_status_data, :item_comment, :page_range, :proxy, :request_comment, :section_title
   ], coder: JSON
   serialize :barcodes, Array
 
