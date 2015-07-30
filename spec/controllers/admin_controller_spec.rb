@@ -102,4 +102,36 @@ describe AdminController do
       end
     end
   end
+
+  describe 'approve item' do
+    before { stub_searchworks_api_json(build(:searchable_holdings)) }
+    let(:mediated_page) do
+      create(:mediated_page_with_holdings, user: create(:webauth_user), barcodes: %w(12345678 23456789))
+    end
+
+    describe 'for those that can manage requests' do
+      let(:user) { create(:superadmin_user) }
+
+      it 'can approve individual items' do
+        expect(MediatedPage.find(mediated_page.id).request_status_data).to be_nil
+        get :approve_item, id: mediated_page.id, item: '12345678'
+        expect(response).to be_successful
+        expect(
+          MediatedPage.find(mediated_page.id).request_status_data['12345678']['approved']
+        ).to be true
+      end
+    end
+
+    describe 'for anonymous users' do
+      let(:user) { create(:anon_user) }
+
+      it 'is not possible' do
+        expect(
+          lambda do
+            get :approve_item, id: mediated_page.id, item: 'ABC 123'
+          end
+        ).to raise_error(CanCan::AccessDenied)
+      end
+    end
+  end
 end

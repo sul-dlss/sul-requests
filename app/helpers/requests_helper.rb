@@ -26,6 +26,19 @@ module RequestsHelper
     SearchworksItem::RequestedHoldings::RequestStatus.new(request, item)
   end
 
+  def status_text_for_item(item)
+    case
+    when item.is_a?(String) # ad-hoc-item
+      t('status_text.unlisted')
+    when item.home_location.ends_with?('-30')
+      t('status_text.paged')
+    when item.current_location.try(:code) && item.current_location.code.ends_with?('-LOAN')
+      t('status_text.hold')
+    else
+      t('status_text.other')
+    end
+  end
+
   private
 
   def select_for_multiple_libraries(form, pickup_libraries)
