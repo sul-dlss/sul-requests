@@ -15,7 +15,7 @@ var itemSelectorBreadcrumbs = (function() {
     ].join('\n'));
   };
 
-  return $.extend(itemSelector, {
+  return $.extend({}, itemSelector, {
     init: function() {
       var _this = this;
       $(document).on('ready page:load', function(){
@@ -65,10 +65,6 @@ var itemSelectorBreadcrumbs = (function() {
         _this.selectorElement()
              .trigger('item-selector:deselected', [item]);
       });
-    },
-
-    breadcrumbContainer: function() {
-      return $('[data-behavior="breadcrumb-container"]');
     }
   });
 })();

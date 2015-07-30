@@ -10,8 +10,9 @@ describe('Item Selector Active Behavior', function() {
 
   describe('addActive()', function() {
     it('adds the active class to the row', function() {
-      var firstCheckbox = itemSelectorBreadcrumbs.checkboxes().first();
-      itemSelectorBreadcrumbs.addActive(firstCheckbox);
+      var firstCheckbox = itemSelectorActive.checkboxes().first();
+
+      itemSelectorActive.addActive(firstCheckbox);
       expect(
         firstCheckbox.closest('.input-group.active').length
       ).toBe(1);
@@ -20,15 +21,15 @@ describe('Item Selector Active Behavior', function() {
 
   describe('removeActive()', function() {
     it('removes the active class from the row', function() {
-      var firstCheckbox = itemSelectorBreadcrumbs.checkboxes().first();
+      var firstCheckbox = itemSelectorActive.checkboxes().first();
 
-      itemSelectorBreadcrumbs.addActive(firstCheckbox);
+      itemSelectorActive.addActive(firstCheckbox);
 
       expect(
         firstCheckbox.closest('.input-group.active').length
       ).toBe(1);
 
-      itemSelectorBreadcrumbs.removeActive(firstCheckbox);
+      itemSelectorActive.removeActive(firstCheckbox);
 
       expect(
         firstCheckbox.closest('.input-group.active').length

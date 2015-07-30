@@ -43,6 +43,10 @@ var itemSelector = (function() {
                       .data('selected-items') || this.checkboxes()
                                                      .filter(':checked').length;
       return parseInt(selection, 10);
+    },
+
+    breadcrumbContainer: function() {
+      return $('[data-behavior="breadcrumb-container"]');
     }
   };
 })();
