@@ -64,7 +64,7 @@ class Ability
       end
     end
 
-    cannot :create, Scan unless user.webauth_user? && current_user_in_scan_pilot_group?
+    cannot :create, Scan unless user.superadmin? || current_user_in_scan_pilot_group?
   end
   # rubocop:enable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/MethodLength
 
@@ -73,7 +73,7 @@ class Ability
   end
 
   def current_user_in_scan_pilot_group?
-    @user.ldap_groups.any? { |g| Settings.scan_pilot_groups.include? g } || @user.graduate_student?
+    @user.affiliation.any? { |g| Settings.scan_pilot_groups.include? g } || @user.graduate_student?
   end
 
   def request_is_by_anonymous_user?(request)

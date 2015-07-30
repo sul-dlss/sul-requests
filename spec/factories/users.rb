@@ -43,7 +43,7 @@ FactoryGirl.define do
     webauth 'some-eligible-user'
 
     after(:build) do |user|
-      user.ldap_group_string = Settings.scan_pilot_groups.first
+      user.affiliation = Settings.scan_pilot_groups.first
     end
   end
 
