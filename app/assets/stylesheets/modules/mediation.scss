@@ -21,6 +21,20 @@
       margin: 0 auto;
       width: 90%;
     }
+
+    .request-status {
+      display: none;
+    }
+
+    .approved {
+      .approval-btn {
+        @extend .disabled;
+      }
+
+      .request-status {
+        display: inline;
+      }
+    }
   }
 
   .mediation-header {

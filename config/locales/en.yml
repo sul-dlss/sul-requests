@@ -85,6 +85,11 @@ en:
       message:
         create: 'Save'
         update: 'Save'
+  status_text:
+    paged: Paged
+    hold: Item is on-site - hold for patron
+    other: Added to pick list
+    unlisted: Approved for manual processing
   sul_requests:
     limit_reached_message: "<p>You've reached the maximum of %{limit} items per day.</p><p>Contact the library if you need help prioritizing your selections.</p>"
   shared:

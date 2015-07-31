@@ -1,5 +1,9 @@
 # Controller to handle mediations for admins
 class AdminController < ApplicationController
+  before_action only: [:approve_item, :holdings] do
+    authorize! :manage, (@request = MediatedPage.find(params[:id]))
+  end
+
   def index
     authorize! :manage, Request.new
     @dashboard = Dashboard.new
@@ -11,8 +15,13 @@ class AdminController < ApplicationController
   end
 
   def holdings
-    authorize! :manage, (@request = MediatedPage.find(params[:id]))
     render layout: false
+  end
+
+  def approve_item
+    status = SearchworksItem::RequestedHoldings::RequestStatus.new(@request, params[:item])
+    status.approve!(current_user.webauth) unless status.approved?
+    render json: status, layout: false
   end
 
   private

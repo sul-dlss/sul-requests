@@ -71,7 +71,10 @@ class SearchworksItem
 
     def all
       return [] unless location.present?
-      location.items
+      location.items.map do |item|
+        item.request_status = RequestStatus.new(@searchworks_item.request, item.barcode)
+        item
+      end
     end
 
     def barcoded_holdings
@@ -111,6 +114,67 @@ class SearchworksItem
       return unless library.present?
       library.locations.find do |location|
         location.code == @searchworks_item.request.origin_location
+      end
+    end
+
+    ###
+    #  RequestStatus class to handle the status data and approval for each barcoded item
+    ###
+    class RequestStatus
+      def initialize(request, id)
+        @request = request
+        @id = id
+        request.request_status_data ||= {}
+        request.request_status_data[id] ||= {
+          approved: false,
+          approver: nil,
+          approval_time: nil
+        }
+      end
+
+      def as_json(*)
+        {
+          id: @id,
+          approved: approved?,
+          approver: approver,
+          approval_time: localized_approval_time
+        }
+      end
+
+      def status_object
+        @request.request_status_data[@id]
+      end
+
+      def approved?
+        status_object[:approved]
+      end
+
+      def approver
+        status_object[:approver]
+      end
+
+      def approval_time
+        status_object[:approval_time]
+      end
+
+      def approve!(user)
+        self.status_object = {
+          approved: true,
+          approval_time: Time.zone.now.to_s,
+          approver: user
+        }
+        @request.save!
+      end
+
+      private
+
+      def localized_approval_time
+        return nil unless approval_time.present?
+        I18n.l(Time.zone.parse(approval_time), format: :short)
+      end
+
+      def status_object=(value = {})
+        @request.request_status_data[@id] = value
       end
     end
   end

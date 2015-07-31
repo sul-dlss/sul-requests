@@ -53,4 +53,54 @@ describe RequestsHelper do
       expect(requester_info(non_webauth_user)).to eq '<a href="mailto:joe@xyz.com">Joe (joe@xyz.com)</a>'
     end
   end
+
+  describe 'request_status_for_ad_hoc_item' do
+    let(:request) { create(:request) }
+    it 'returns the request status object for the item' do
+      request_status = request_status_for_ad_hoc_item(request, 'ABC 123')
+      expect(request_status).to be_a SearchworksItem::RequestedHoldings::RequestStatus
+      expect(request.request_status_data['ABC 123']).to eq(
+        'approved' => false,
+        'approver' => nil,
+        'approval_time' => nil
+      )
+      expect(request_status.status_object).to eq(
+        'approved' => false,
+        'approver' => nil,
+        'approval_time' => nil
+      )
+    end
+  end
+
+  describe 'status_text_for_item' do
+    let(:other_item) do
+      double('holding', home_location: 'STACKS', current_location: nil)
+    end
+    let(:home_location_30) do
+      double('holding', home_location: 'PAGE-30', current_location: nil)
+    end
+    let(:current_location_loan) do
+      double(
+        'holding',
+        home_location: 'STACKS',
+        current_location: double('location', code: 'GREEN-LOAN')
+      )
+    end
+
+    it 'returns text for ad-hoc items' do
+      expect(status_text_for_item('ABC-123')).to eq 'Approved for manual processing'
+    end
+
+    it 'returns text for page items' do
+      expect(status_text_for_item(home_location_30)).to eq 'Paged'
+    end
+
+    it 'returns text for hold items' do
+      expect(status_text_for_item(current_location_loan)).to eq 'Item is on-site - hold for patron'
+    end
+
+    it 'returns text for all other items' do
+      expect(status_text_for_item(other_item)).to eq 'Added to pick list'
+    end
+  end
 end

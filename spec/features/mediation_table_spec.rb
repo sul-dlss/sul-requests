@@ -23,10 +23,10 @@ describe 'Mediation table', js: true do
       ad_hoc_items: ['ABC 123'],
       created_at: Time.zone.now + 1.day
     )
+    visit admin_path('SPEC-COLL')
   end
 
   it 'has toggleable rows that display holdings' do
-    visit admin_path('SPEC-COLL')
     expect(page).to have_css('[data-mediate-request]', count: 3)
     expect(page).to have_css('tbody tr', count: 3)
     within(first('[data-mediate-request]')) do
@@ -42,9 +42,29 @@ describe 'Mediation table', js: true do
     end
   end
 
-  it 'has sortable columns' do
-    visit admin_path('SPEC-COLL')
+  it 'has holdings that can be approved' do
+    within(first('[data-mediate-request]')) do
+      page.find('a.mediate-toggle').click
+    end
 
+    within('tbody td table tbody') do
+      expect(page).to_not have_css('tr.approved')
+      within(first('tr')) do
+        expect(page).to have_css('td button', text: 'Approve')
+        expect(page).to_not have_css('td', text: 'Added to pick list', visible: true)
+        expect(page).to_not have_content('super-admin')
+        click_button('Approve')
+      end
+      expect(page).to have_css('tr.approved')
+
+      within(first('tr')) do
+        expect(page).to have_css('td', text: 'Added to pick list', visible: true)
+        expect(page).to have_css('td', text: /super-admin - \d{4}-\d{2}-\d{2}/)
+      end
+    end
+  end
+
+  it 'has sortable columns' do
     within '.mediation-table tbody' do
       expect(page).to have_content(/Jane Stanford.*Joe Doe.*Jim Doe/)
     end

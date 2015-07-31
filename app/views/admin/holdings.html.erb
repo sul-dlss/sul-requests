@@ -8,25 +8,50 @@
       <th class='col-xs-2'>Location</th>
       <th class='col-xs-2'>Current</th>
       <th>Call number / Container</th>
+      <th>Status</th>
+      <th>Approved by</th>
     </tr>
   </thead>
   <tbody>
     <% @request.holdings.each do |item| %>
-      <tr class='<%= cycle('odd', 'even') %>'>
-        <td class='col-xs-1'><button class="disabled btn btn-xs btn-success">Approve</button></td>
+      <tr class='<%= cycle('odd', 'even') %> <%= 'approved' if item.request_status.approved? %>'>
+        <td class='col-xs-1'>
+          <button class="approval-btn btn btn-xs btn-success" data-behavior="item-approval" data-item-approval-url="<%= approve_item_admin_path(@request, item: item.barcode) %>">
+            Approve
+          </button>
+        </td>
         <td class='col-xs-2'><%= item.home_location %></td>
         <td class='col-xs-2'><%= item.current_location.code %></td>
         <td><%= item.callnumber %></td>
+        <td><span class='request-status'><%= status_text_for_item(item) %></span></td>
+        <td data-behavior='approver-information'>
+          <% if item.request_status.approved? %>
+            <%= item.request_status.approver %> -
+            <%= item.request_status.approval_time %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
 
     <% @request.ad_hoc_items.each do |item| %>
-      <td class='col-xs-1'>
-        <button class="disabled btn btn-xs btn-success">Approve</button>
-      </td>
-      <td class='col-xs-2'></td>
-      <td class='col-xs-2'></td>
-      <td><%= item %></td>
+    <% ad_hoc_item_status = request_status_for_ad_hoc_item(@request, item) %>
+      <tr class='<%= cycle('odd', 'even') %> <%= 'approved' if ad_hoc_item_status.approved? %>'>
+        <td class='col-xs-1'>
+          <button class="approval-btn btn btn-xs btn-success" data-behavior="item-approval" data-item-approval-url="<%= approve_item_admin_path(@request, item: item) %>">
+            Approve
+          </button>
+        </td>
+        <td class='col-xs-2'></td>
+        <td class='col-xs-2'></td>
+        <td><%= item %></td>
+        <td><span class='request-status'><%= status_text_for_item(item) %></span></td>
+        <td data-behavior='approver-information'>
+          <% if ad_hoc_item_status.approved? %>
+            <%= ad_hoc_item_status.approver %> -
+            <%= ad_hoc_item_status.approval_time %>
+          <% end %>
+        </td>
+      </tr>
     <% end if @request.ad_hoc_items.present? %>
   </tbody>
 </table>
