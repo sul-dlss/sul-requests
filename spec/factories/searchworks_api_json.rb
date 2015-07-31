@@ -434,4 +434,39 @@ FactoryGirl.define do
       end.to_h
     end
   end
+
+  factory :library_instructions_holdings, class: Hash do
+    title 'Item Title'
+
+    format ['Book']
+
+    holdings [
+      { 'code' => 'SPEC-COLL',
+        'library_instructions' => {
+          'heading' => 'Instruction Heading',
+          'text' => 'This is the library instruction'
+        },
+        'locations' => [
+          { 'code' => 'STACKS',
+            'items' => [
+              { 'barcode' => '12345678',
+                'callnumber' => 'ABC 123',
+                'type' => 'STKS',
+                'status' => {
+                  'availability_class' => 'available',
+                  'status_text' => 'Available'
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+
+    initialize_with do
+      attributes.map do |k, h|
+        [k.to_s, h]
+      end.to_h
+    end
+  end
 end

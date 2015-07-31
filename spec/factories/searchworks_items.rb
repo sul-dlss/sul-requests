@@ -58,4 +58,16 @@ FactoryGirl.define do
       end
     end
   end
+
+  factory :library_instructions_searchworks_item, class: SearchworksItem do
+    initialize_with { new(create(:request, origin: 'SPEC-COLL', origin_location: 'STACKS')) }
+
+    after(:build) do |item|
+      class << item
+        def json
+          FactoryGirl.build(:library_instructions_holdings)
+        end
+      end
+    end
+  end
 end

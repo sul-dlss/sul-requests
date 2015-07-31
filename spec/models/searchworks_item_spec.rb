@@ -127,6 +127,34 @@ describe SearchworksItem do
       end
     end
 
+    describe '#library_instructions' do
+      let(:item) { build(:green_stacks_searchworks_item) }
+      describe 'when not present' do
+        it 'is nil' do
+          expect(subject.library_instructions).to be_nil
+        end
+      end
+
+      describe 'when present in the SearchWorks API response' do
+        let(:item) { build(:library_instructions_searchworks_item) }
+        it 'returns the library instructions from the API response' do
+          expect(subject.library_instructions[:heading]).to eq 'Instruction Heading'
+          expect(subject.library_instructions[:text]).to eq 'This is the library instruction'
+        end
+      end
+
+      describe 'when the origin location has location specific pickup libraries' do
+        let(:item) { build(:page_mp_mediated_page).searchworks_item }
+        it 'returns the location name as the text' do
+          allow(subject).to receive_messages(location: double(
+            code: 'PAGE-MP',
+            name: 'Paging restricted to Branner'
+          ))
+          expect(subject.library_instructions[:text]).to eq 'Paging restricted to Branner'
+        end
+      end
+    end
+
     describe 'barcoded holdings' do
       let(:item) { build(:green_stacks_multi_holdings_searchworks_item) }
       it 'should only return holdings that have the properly formatted barcode' do
