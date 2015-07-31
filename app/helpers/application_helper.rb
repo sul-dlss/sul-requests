@@ -5,7 +5,11 @@ module ApplicationHelper
   end
 
   def request_form_options
-    { as: :request }.merge(bootstrap_form_layout_options)
+    { as: :request }.merge(bootstrap_form_layout_options).merge(request_form_html_options)
+  end
+
+  def request_form_html_options
+    { html: { class: @request.class.model_name.param_key.gsub('_', '-') } }
   end
 
   def bootstrap_form_layout_options

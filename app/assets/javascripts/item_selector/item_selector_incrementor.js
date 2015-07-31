@@ -1,5 +1,5 @@
 var itemSelectorIncrementor = (function() {
-  return $.extend(itemSelector, {
+  return $.extend({}, itemSelector, {
     init: function() {
       var _this = this;
       $(document).on('ready page:load', function(){

@@ -5,6 +5,8 @@
 class HoldRecall < Request
   include TokenEncryptable
 
+  validates :needed_date, presence: true
+
   def requestable_with_library_id?
     true
   end

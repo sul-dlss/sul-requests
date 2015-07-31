@@ -17,6 +17,22 @@
     text-align: center;
     width: 3em;
   }
+
+  .required {
+    &:after {
+      @extend .label;
+      @extend .label-warning;
+      content: ' Required';
+    }
+  }
+}
+
+.hold-recall {
+  label {
+    &[for="request_needed_date"]:after {
+      display: none;
+    }
+  }
 }
 
 .form-group h2,

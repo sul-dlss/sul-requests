@@ -75,6 +75,8 @@ describe 'Create Scan Request' do
     it 'should persist to the database and offer up an illiad url' do
       visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
 
+      fill_in 'Title of article or chapter', with: 'Some Chapter title'
+
       within('#item-selector') do
         check('ABC 123')
       end

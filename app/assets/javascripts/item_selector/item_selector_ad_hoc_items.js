@@ -26,7 +26,7 @@ var itemSelectorAdHocItems = (function() {
     );
   };
 
-  return $.extend(itemSelector, {
+  return $.extend({}, itemSelector, {
     init: function(opts) {
       var _this = this;
       _this.adHocOptions = $.extend(defaultOptions, opts);

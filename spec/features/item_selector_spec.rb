@@ -19,26 +19,26 @@ describe 'Item Selector' do
     describe 'where there are not enough to be searchable' do
       let(:request_path) { new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS') }
       let(:holdings) { build(:multiple_holdings) }
-      it 'displayes the selected item count' do
-        expect(page).to have_css('p[data-items-counter]', text: '0 items selected')
+      it 'displays the selected item count' do
+        expect(page).to have_css('span[data-items-counter]', text: '0 items selected')
 
         within('#item-selector') do
           check('ABC 123')
         end
 
-        expect(page).to have_css('p[data-items-counter]', text: '1 items selected')
+        expect(page).to have_css('span[data-items-counter]', text: '1 items selected')
 
         within('#item-selector') do
           check('ABC 321')
         end
 
-        expect(page).to have_css('p[data-items-counter]', text: '2 items selected')
+        expect(page).to have_css('span[data-items-counter]', text: '2 items selected')
 
         within('#item-selector') do
           uncheck('ABC 123')
         end
 
-        expect(page).to have_css('p[data-items-counter]', text: '1 items selected')
+        expect(page).to have_css('span[data-items-counter]', text: '1 items selected')
       end
     end
 
@@ -155,6 +155,7 @@ describe 'Item Selector' do
       end
 
       it 'persists items that are not currently visible due to filtering' do
+        fill_in 'Planned date of use', with: Time.zone.today + 1.day
         within('#item-selector') do
           check('ABC 123')
           check('ABC 456')
@@ -186,6 +187,8 @@ describe 'Item Selector' do
     end
     it 'still limits selections' do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+
+      fill_in 'Planned date of use', with: Time.zone.today + 1.day
 
       within('#item-selector') do
         check('ABC 123')
@@ -307,6 +310,8 @@ describe 'Item Selector' do
     end
 
     it 'are persisted' do
+      fill_in 'Planned date of use', with: Time.zone.today + 1.day
+
       fill_in 'ad_hoc_items', with: 'ZZZ 321'
       click_link 'Add'
       fill_in 'ad_hoc_items', with: 'ZZZ 456'

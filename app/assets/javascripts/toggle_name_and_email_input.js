@@ -20,7 +20,7 @@
         }
         else if ( targetScope === '[data-no-sunet-target]' )
         {
-          $(contentForm).find('input[type=text]')
+          $(content).find('input[type=text]')
             .filter(':visible:first').focus();
         }
       });

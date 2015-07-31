@@ -86,7 +86,13 @@ describe ScansController do
         stub_searchworks_api_json(build(:sal3_holdings))
       end
       it 'should be allowed' do
-        post :create, request: { item_id: '12345', origin: 'SAL3', origin_location: 'STACKS', barcodes: ['12345678'] }
+        post :create, request: {
+          item_id: '12345',
+          origin: 'SAL3',
+          origin_location: 'STACKS',
+          barcodes: ['12345678'],
+          section_title: 'Some really important chapter'
+        }
         expect(Scan.last.origin).to eq 'SAL3'
         expect(Scan.last.user).to eq user
       end
@@ -108,7 +114,8 @@ describe ScansController do
               item_id: '12345',
               origin: 'SAL3',
               origin_location: 'STACKS',
-              barcodes: ['12345678']
+              barcodes: ['12345678'],
+              section_title: 'Some really important chapter'
             }
           end
         ).to change { ConfirmationMailer.deliveries.count }.by(1)
