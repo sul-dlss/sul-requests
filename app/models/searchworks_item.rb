@@ -85,7 +85,16 @@ class SearchworksItem
       location.mhld
     end
 
+    def library_instructions
+      return library.library_instructions if library && library.library_instructions.present?
+      { text: location.name } if location && location_specific_pickup_libraries.keys.include?(location.code)
+    end
+
     private
+
+    def location_specific_pickup_libraries
+      SULRequests::Application.config.location_specific_pickup_libraries
+    end
 
     def barcode_pattern
       /^36105/
