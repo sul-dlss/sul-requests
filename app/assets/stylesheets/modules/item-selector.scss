@@ -36,6 +36,7 @@
 
 .item-selector {
   border: 1px solid $item-selector-border-color;
+  margin-bottom: $form-group-margin-bottom;
   max-height: 300px;
   overflow: auto;
 
