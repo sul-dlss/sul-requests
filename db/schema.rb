@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150519180238) do
+ActiveRecord::Schema.define(version: 20150801015801) do
 
   create_table "messages", force: :cascade do |t|
     t.text     "text"
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 20150519180238) do
     t.text     "barcodes"
   end
 
+  add_index "requests", ["needed_date"], name: "index_requests_on_needed_date"
   add_index "requests", ["user_id"], name: "index_requests_on_user_id"
 
   create_table "users", force: :cascade do |t|
