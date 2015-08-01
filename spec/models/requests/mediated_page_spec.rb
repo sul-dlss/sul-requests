@@ -27,6 +27,34 @@ describe MediatedPage do
     end
   end
 
+  describe 'scopes' do
+    before do
+      create(:mediated_page, needed_date: Time.zone.today - 3.days)
+      create(:mediated_page, needed_date: Time.zone.today - 2.days)
+      create(:mediated_page, needed_date: Time.zone.today - 1.day)
+      create(:hoover_mediated_page, needed_date: Time.zone.today)
+      create(:hoover_mediated_page, needed_date: Time.zone.today + 1.day)
+    end
+    describe 'archived' do
+      it 'returns records whose needed_date is older than today' do
+        expect(MediatedPage.archived.length).to eq 3
+      end
+    end
+
+    describe 'active' do
+      it 'reutrns the records whose needed_date is today or a future date' do
+        expect(MediatedPage.active.length).to eq 2
+      end
+    end
+
+    describe 'for_origin' do
+      it 'returns the records for a given origin' do
+        expect(MediatedPage.for_origin('SPEC-COLL').length).to eq 3
+        expect(MediatedPage.for_origin('HOOVER').length).to eq 2
+      end
+    end
+  end
+
   describe '#ad_hoc_item_commentable?' do
     it 'is true when the library is SPEC-COLL' do
       subject.origin = 'SPEC-COLL'

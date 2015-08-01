@@ -1,7 +1,12 @@
 <% uniq_locations = collection.map { |h| h['origin_location'] }.uniq %>
 
-<h3><%= LibraryLocation.library_name_by_code(origin) %></h3>
+<h2><%= LibraryLocation.library_name_by_code(origin) %></h2>
 
+<% if params[:expired] %>
+  [<%= link_to('Show current requests', admin_path(params[:id])) %>]
+<% else %>
+  [<%= link_to('Show archived requests', admin_path(params[:id], expired: true)) %>]
+<% end if params[:id] %>
 <table id='mediation-table' class="table table-striped mediation-table">
   <%= render 'table_header' %>
   <tbody class='list'>
