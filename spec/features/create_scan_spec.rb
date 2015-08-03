@@ -78,7 +78,7 @@ describe 'Create Scan Request' do
       fill_in 'Title of article or chapter', with: 'Some Chapter title'
 
       within('#item-selector') do
-        check('ABC 123')
+        choose('ABC 123')
       end
 
       click_button 'Send request'

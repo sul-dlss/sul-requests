@@ -46,11 +46,12 @@ describe 'Item Selector' do
       describe 'for scans' do
         let(:request_path) { new_scan_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS') }
         let(:holdings) { build(:sal3_holdings) }
-        it 'only allows one to be selected' do
+        it 'is restricted to one selection via radio button' do
           within('#item-selector') do
-            check('ABC 123')
-            check('ABC 321')
+            choose('ABC 321')
+            choose('ABC 123')
             expect(field_labeled('ABC 321')).to_not be_checked
+            expect(field_labeled('ABC 123')).to be_checked
           end
           expect(page).to have_content('1 items selected')
         end
