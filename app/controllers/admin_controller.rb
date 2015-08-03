@@ -11,7 +11,7 @@ class AdminController < ApplicationController
 
   def show
     authorize! :manage, Request.new(origin: params[:id]).library_location
-    @mediated_pages = MediatedPage.where(origin: params[:id]).order(:origin).page(page).per(per)
+    @mediated_pages = mediated_pages
   end
 
   def holdings
@@ -25,6 +25,23 @@ class AdminController < ApplicationController
   end
 
   private
+
+  def mediated_pages
+    pages = if params[:expired]
+              archived_mediated_pages
+            else
+              active_mediated_pages
+            end
+    pages.for_origin(params[:id]).page(page).per(per)
+  end
+
+  def archived_mediated_pages
+    MediatedPage.archived
+  end
+
+  def active_mediated_pages
+    MediatedPage.active
+  end
 
   def page
     params[:page]

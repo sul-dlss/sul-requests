@@ -7,6 +7,10 @@ class MediatedPage < Request
   validates :needed_date, presence: true
   validate :destination_is_a_pickup_library
 
+  scope :archived, -> { where('needed_date < ?', Time.zone.today) }
+  scope :active, -> { where('needed_date >= ?', Time.zone.today) }
+  scope :for_origin, ->(origin) { where(origin: origin) }
+
   include TokenEncryptable
 
   def token_encryptor_attributes
