@@ -34,7 +34,8 @@ var itemSelector = (function() {
     },
 
     checkboxes: function() {
-      return this.selectorElement().find('input[type="checkbox"]');
+      return this.selectorElement()
+                 .find('input[type="checkbox"], input[type="radio"]');
     },
 
     numberOfSelectedCheckboxes: function() {
