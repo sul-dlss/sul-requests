@@ -23,6 +23,9 @@ token_encrypt:
   secret: ''
   salt: ''
 
+symphony_api:
+  url: ''
+
 mailer_host: 'example.com'
 searchworks_api: 'http://searchworks-test.stanford.edu/api-test'
 hours_api: 'https://sul-library-hours-prod.stanford.edu'

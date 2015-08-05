@@ -21,7 +21,7 @@ class RequestsController < ApplicationController
   end
 
   def create
-    if current_request.save
+    if current_request.save && current_request.submit!
       current_request.send_confirmation!
       redirect_to_success_with_token
     else

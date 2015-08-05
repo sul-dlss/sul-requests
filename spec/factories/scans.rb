@@ -21,4 +21,10 @@ FactoryGirl.define do
       end
     end
   end
+
+  factory :scan_with_holdings_barcode, parent: :scan_with_holdings do
+    after(:build) do |scan|
+      scan.barcodes = [scan.holdings.first.barcode]
+    end
+  end
 end

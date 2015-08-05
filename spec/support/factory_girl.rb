@@ -8,7 +8,7 @@ RSpec.configure do |config|
       DatabaseCleaner.start
       factories_to_lint = FactoryGirl.factories.reject do |factory|
         # Remove _holdings and _searchworks_item since they are not active record objects
-        factory.name =~ /_holdings?$/ || factory.name =~ /_searchworks_item$/
+        factory.name =~ /_holdings?$/ || factory.name =~ /_searchworks_item$/ || factory.name =~ /^symphony_/
       end
       FactoryGirl.lint factories_to_lint
     ensure

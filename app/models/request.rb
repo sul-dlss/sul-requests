@@ -18,7 +18,8 @@ class Request < ActiveRecord::Base
 
   # Serialzed data hash
   store :data, accessors: [
-    :ad_hoc_items, :authors, :request_status_data, :item_comment, :page_range, :proxy, :request_comment, :section_title
+    :ad_hoc_items, :authors, :request_status_data, :item_comment, :page_range,
+    :proxy, :request_comment, :section_title, :symphony_response
   ], coder: JSON
   serialize :barcodes, Array
 
@@ -101,6 +102,10 @@ class Request < ActiveRecord::Base
     elsif user.email_address.present?
       user.email_address
     end
+  end
+
+  def submit!
+    true
   end
 
   class << self
