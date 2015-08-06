@@ -25,7 +25,7 @@ set :deploy_to, "/opt/app/#{fetch(:user)}/#{fetch(:user)}"
 # set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/initializers/squash.rb')
+set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/initializers/squash.rb', 'public/.htaccess')
 
 # Default value for linked_dirs is []
 set :linked_dirs, fetch(:linked_dirs, []).push('config/settings',
