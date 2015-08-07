@@ -121,6 +121,33 @@ module SULRequests
       'PAGE-SP' => ['SPEC-COLL']
     }
 
+    config.contact_info = {
+      'HOOVER' => {
+        phone: '(650) 723-2058',
+        email: 'hoovercirc@stanford.edu'
+      },
+      'HV-ARCHIVE' => {
+        phone: '(650) 723-3563',
+        email: 'archives@hoover.stanford.edu'
+      },
+      'HOPKINS' => {
+        phone: '(831) 655-6229',
+        email: 'HMS-Library@lists.stanford.edu'
+      },
+      'PAGE-MP' => {
+        phone: '(650) 723-2746',
+        email: 'brannerlibrary@stanford.edu'
+      },
+      'SPEC-COLL' => {
+        phone: '(650) 725-1022',
+        email: 'specialcollections@stanford.edu'
+      },
+      'default' => {
+        phone: '(650) 723-1493',
+        email: 'greencirc@stanford.edu'
+      }
+    }
+
     config.hours_api_location_map = {
       'ARS' => { library_slug: 'ars', location_slug: 'archive-recorded-sound' },
       'ART' => { library_slug: 'art', location_slug: 'library-circulation' },

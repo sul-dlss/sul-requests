@@ -5,6 +5,7 @@ class ConfirmationMailer < ApplicationMailer
   def request_confirmation(request)
     @request = request
     @status_url = success_url
+    @contact_info = formatted_contact_info
     mail(
       to: request.notification_email_address,
       from: from_address,
@@ -15,10 +16,7 @@ class ConfirmationMailer < ApplicationMailer
   private
 
   def from_address
-    I18n.t(
-      "confirmation_email.#{@request.origin.underscore}.from",
-      default: I18n.t('confirmation_email.default.from')
-    )
+    contact_info[:email]
   end
 
   def subject
@@ -27,6 +25,20 @@ class ConfirmationMailer < ApplicationMailer
       title: @request.item_title,
       default: I18n.t('confirmation_email.request.subject')
     )
+  end
+
+  def contact_info
+    contact_info_config[@request.origin_location] ||
+      contact_info_config[@request.origin] ||
+      contact_info_config['default']
+  end
+
+  def contact_info_config
+    SULRequests::Application.config.contact_info
+  end
+
+  def formatted_contact_info
+    "  #{contact_info[:phone]}\n  #{contact_info[:email]}"
   end
 
   def success_url
