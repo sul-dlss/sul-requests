@@ -27,20 +27,11 @@ class ScansController < RequestsController
   end
 
   def redirect_to_success_with_token
-    redirect_to illiad_query(current_request)
+    redirect_to illiad_url
   end
 
-  def illiad_query(scan)
-    illiad_params = {
-      'Action': '10', 'Form': '30', 'rft.genre': 'scananddeliverArticle',
-      'rft.jtitle': scan.item_title,
-      'rft.au': scan.data[:authors],
-      'rft.pages': scan.data[:page_range],
-      'rft.atitle': scan.data[:section_title],
-      'rft.volume': scan.holdings.first.callnumber,
-      'scan_referrer': successful_scan_url(scan)
-    }
-    Settings.sul_illiad + "#{illiad_params.to_query}"
+  def illiad_url
+    IlliadOpenurl.new(current_request, successful_scan_url(current_request)).to_url
   end
 
   def validate_request_type

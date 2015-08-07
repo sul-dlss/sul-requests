@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'Create Scan Request' do
   before do
-    allow_any_instance_of(ScansController).to receive(:illiad_query).and_return('http://illiad.ill')
+    allow_any_instance_of(ScansController).to receive(:illiad_url).and_return('http://illiad.ill')
     stub_searchworks_api_json(build(:sal3_holdings))
   end
 

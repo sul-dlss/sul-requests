@@ -84,6 +84,7 @@ describe ScansController do
       let(:user) { create(:scan_eligible_user) }
       before do
         stub_searchworks_api_json(build(:sal3_holdings))
+        allow(controller).to receive(:current_request).and_return(create(:scan_with_holdings, barcodes: ['12345678']))
       end
       it 'should be allowed' do
         post :create, request: {
@@ -98,12 +99,12 @@ describe ScansController do
       end
 
       it 'should construct an illiad query url' do
-        illiad_response = controller.send(:illiad_query, create(:scan_with_holdings, barcodes: ['12345678']))
+        illiad_response = controller.send(:illiad_url)
         expect(illiad_response).to include('illiad.dll?')
         expect(illiad_response).to include('Action=10&Form=30')
-        expect(illiad_response).to include('&rft.genre=scananddeliverArticle')
+        expect(illiad_response).to include('&rft.genre=scananddeliver')
         expect(illiad_response).to include('&rft.jtitle=SAL3+Item+Title')
-        expect(illiad_response).to include('&rft.volume=ABC+123')
+        expect(illiad_response).to include('&rft.call_number=ABC+123')
       end
 
       it 'sends an confirmation email' do
