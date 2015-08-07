@@ -52,10 +52,6 @@ en:
       pages: 'Pages'
       scans: 'Scan requests'
   confirmation_email:
-    contact:
-      default: "  (650) 723-1493\n  greencirc@stanford.edu"
-    default:
-      from: 'greencirc@stanford.edu'
     request:
       subject: 'Item(s) requested (%{title})'
     scan:

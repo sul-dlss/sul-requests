@@ -13,8 +13,24 @@ describe ConfirmationMailer do
     end
 
     describe 'from' do
-      it 'is the default' do
-        expect(mail.from).to eq ['greencirc@stanford.edu']
+      describe 'default' do
+        it 'is the configured default' do
+          expect(mail.from).to eq ['greencirc@stanford.edu']
+        end
+      end
+
+      describe 'origin specific' do
+        let(:request) { create(:mediated_page, user: user) }
+        it 'is the configured from address for the origin' do
+          expect(mail.from).to eq ['specialcollections@stanford.edu']
+        end
+      end
+
+      describe 'location specific' do
+        let(:request) { create(:page_mp_mediated_page, user: user) }
+        it 'is the configured from address for the origin' do
+          expect(mail.from).to eq ['brannerlibrary@stanford.edu']
+        end
       end
     end
 
@@ -56,12 +72,32 @@ describe ConfirmationMailer do
       it 'has a link to the status page' do
         expect(body).to match(%r{Check the status of your request at .*\/pages\/#{request.id}\/status\?token})
       end
+    end
 
-      it 'has contact information' do
-        expect(body).to include('Questions about your request?')
-        expect(body).to include('Contact:')
-        expect(body).to match(/\(\d{3}\) \d{3}-\d{4}/)
-        expect(body).to include('greencirc@stanford.edu')
+    describe 'contact info' do
+      let(:body) { mail.body.to_s }
+      describe 'default' do
+        let(:request) { create(:page_with_holdings, user: user) }
+        it 'includes the configured contact information' do
+          expect(body).to include('Questions about your request?')
+          expect(body).to include('Contact:')
+          expect(body).to match(/\(\d{3}\) \d{3}-\d{4}/)
+          expect(body).to include('greencirc@stanford.edu')
+        end
+      end
+
+      describe 'origin specific' do
+        let(:request) { create(:mediated_page, user: user) }
+        it 'includes the configured contact information' do
+          expect(body).to include('specialcollections@stanford.edu')
+        end
+      end
+
+      describe 'location specific' do
+        let(:request) { create(:page_mp_mediated_page, user: user) }
+        it 'includes the configured contact information' do
+          expect(body).to include('brannerlibrary@stanford.edu')
+        end
       end
     end
   end

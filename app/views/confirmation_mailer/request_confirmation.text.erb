@@ -13,4 +13,4 @@ Check the status of your request at <%= @status_url %>
 
 Questions about your request?
 Contact:
-<%= t("confirmation_email.contact.#{@request.origin.underscore}", default: t('confirmation_email.contact.default')) %>
+<%= @contact_info %>
