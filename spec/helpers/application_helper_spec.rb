@@ -26,27 +26,6 @@ describe ApplicationHelper do
     end
   end
 
-  describe '#column_size' do
-    it 'defaults to "sm"' do
-      expect(helper.column_size).to eq 'sm'
-    end
-    describe 'under modal' do
-      before do
-        allow(helper).to receive_messages(session: { modal: true })
-      end
-
-      it 'is "xs" when rendering in a modal' do
-        expect(helper.column_size).to eq 'xs'
-      end
-
-      it 'updates the other column helpers' do
-        expect(helper.label_column_class).to match(/-xs-/)
-        expect(helper.label_column_offset_class).to match(/-xs-/)
-        expect(helper.content_column_class).to match(/-xs-/)
-      end
-    end
-  end
-
   describe '#send_request_via_login_button' do
     let(:button) { Capybara.string(send_request_via_login_button) }
     it 'should return a button tag' do

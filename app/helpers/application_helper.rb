@@ -16,21 +16,16 @@ module ApplicationHelper
     { layout: :horizontal, label_col: label_column_class, control_col: content_column_class }
   end
 
-  def column_size
-    return 'xs' if session[:modal]
-    'sm'
-  end
-
   def label_column_class
-    "col-#{column_size}-3"
+    'col-sm-3'
   end
 
   def label_column_offset_class
-    "col-#{column_size}-offset-3"
+    'col-sm-offset-3'
   end
 
   def content_column_class
-    "col-#{column_size}-9"
+    'col-sm-9'
   end
 
   def send_request_via_login_button
