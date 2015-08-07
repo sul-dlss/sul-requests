@@ -4,9 +4,12 @@
 class PagingScheduleController < ApplicationController
   layout false
 
+  rescue_from PagingSchedule::ScheduleNotFound do
+    render status: 404
+  end
+
   def show
     schedule = PagingSchedule.for(request_for_schedule)
-    return unless schedule.present?
     respond_to do |format|
       format.json { render json: schedule.estimate }
       format.html { render text: schedule.estimate.to_s }

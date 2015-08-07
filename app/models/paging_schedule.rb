@@ -17,7 +17,9 @@ module PagingSchedule
     end
 
     def for(request)
-      schedule_for_request(request) || default_schedule(request)
+      schedule_or_default = schedule_for_request(request) || default_schedule(request)
+      fail ScheduleNotFound unless schedule_or_default.present?
+      schedule_or_default
     end
 
     private
@@ -143,5 +145,8 @@ module PagingSchedule
         destination_library_hours[to].next_business_day(business_days_later_after_origin_is_open) || Time.zone.today
       end
     end
+  end
+
+  class ScheduleNotFound < StandardError
   end
 end

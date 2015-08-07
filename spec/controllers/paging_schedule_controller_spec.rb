@@ -19,22 +19,36 @@ describe PagingScheduleController do
   end
 
   describe 'show' do
-    let(:estimate) { double(estimate: { a: 'a', b: 'b' }) }
-    before do
-      expect(PagingSchedule).to receive_messages(for: estimate)
-    end
-    it 'is accessible by anonymous users' do
-      get :show, origin: 'SAL3', destination: 'GREEN'
-      expect(response).to be_success
+    describe 'when an estimate is present' do
+      before do
+        expect(PagingSchedule).to receive_messages(for: estimate)
+      end
+      let(:estimate) { double(estimate: { a: 'a', b: 'b' }) }
+      it 'is accessible by anonymous users' do
+        get :show, origin: 'SAL3', destination: 'GREEN'
+        expect(response).to be_success
+      end
+
+      it 'returns json when requested' do
+        get :show, origin: 'SAL3', destination: 'GREEN', format: 'json'
+        expect(JSON.parse(response.body)).to eq('a' => 'a', 'b' => 'b')
+      end
+
+      it 'returns the estimate as a string when HTML is requested' do
+        get :show, origin: 'SAL3', destination: 'GREEN', format: 'html'
+        expect(response.body).to eq('{:a=>"a", :b=>"b"}')
+      end
     end
 
-    it 'returns json when requested' do
-      get :show, origin: 'SAL3', destination: 'GREEN', format: 'json'
-      expect(JSON.parse(response.body)).to eq('a' => 'a', 'b' => 'b')
-    end
-    it 'returns the estimate as a string when HTML is requested' do
-      get :show, origin: 'SAL3', destination: 'GREEN', format: 'html'
-      expect(response.body).to eq('{:a=>"a", :b=>"b"}')
+    describe 'when there is no schedule found' do
+      before do
+        expect(PagingSchedule).to receive(:for).and_raise(PagingSchedule::ScheduleNotFound)
+      end
+      it 'responds with a 404 error' do
+        get :show, origin: 'DOES-NOT-EXIST', destination: 'NOT-REAL'
+        expect(response).to_not be_success
+        expect(response.status).to be 404
+      end
     end
   end
 end
