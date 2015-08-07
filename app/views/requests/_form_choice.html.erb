@@ -1,12 +1,14 @@
 <div id="scan-or-deliver">
   <div class="row">
     <div class="col-xs-12 col-sm-6 buttons">
-      <%= link_to('Deliver to campus library', delegated_new_request_path(@request), class: 'btn btn-md btn-default', 'aria-describedby' => 'deliveryDescription') %>
+      <%= link_to('Deliver to campus library', delegated_new_request_path(current_request), class: 'btn btn-md btn-default', 'aria-describedby' => 'deliveryDescription') %>
     </div>
-    <div class="col-xs-12 col-sm-6 content">
+    <div class="col-xs-12 col-sm-6 content" data-scheduler-lookup-url='<%= paging_schedule_path(origin: current_request.origin) %>'>
       <dl id="deliveryDescription">
         <dt>Earliest delivery</dt>
-        <dd>Unknown</dd>
+        <dd data-single-library-value='<%= SULRequests::Application.config.default_pickup_library %>'>
+          <span id='scheduler-text' data-scheduler-text='true' aria-live='polite'></span>
+        </dd>
       </dl>
     </div>
   </div>
@@ -15,7 +17,7 @@
   </div>
   <div class="row scan-to-pdf">
     <div class="col-xs-12 col-sm-6 buttons">
-      <%= link_to('Scan to PDF<span class="btn-sub-text">requires SUNet login</span>'.html_safe, new_scan_path(@request, params.except(:controller, :action)), class: 'btn btn-md btn-scan', 'aria-describedby' => 'scanDescription') %>
+      <%= link_to('Scan to PDF<span class="btn-sub-text">requires SUNet login</span>'.html_safe, new_scan_path(current_request, params.except(:controller, :action)), class: 'btn btn-md btn-scan', 'aria-describedby' => 'scanDescription') %>
     </div>
     <div class="col-xs-12 col-sm-6 content">
       <dl id="scanDescription">
