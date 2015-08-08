@@ -41,6 +41,14 @@ describe PagingSchedule do
       expect(schedule.to).to eq :anywhere
       expect(schedule.estimate.to).to eq 'SOMEWHERE-ELSE'
     end
+
+    it 'raises an error when there is no schedule configured found' do
+      expect(
+        lambda do
+          described_class.for(build(:page, origin: 'DOES-NOT-EXIST', destination: 'SOMEWHERE-ELSE'))
+        end
+      ).to raise_error(PagingSchedule::ScheduleNotFound)
+    end
   end
 
   describe PagingSchedule::Scheduler do
