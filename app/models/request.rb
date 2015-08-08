@@ -6,6 +6,7 @@ class Request < ActiveRecord::Base
   include Commentable
   include Holdings
   include Requestable
+  include DefaultRequestOptions
 
   attr_accessor :requested_barcode
   alias_method :barcode=, :requested_barcode=
@@ -82,20 +83,12 @@ class Request < ActiveRecord::Base
     end
   end
 
-  def item_limit
-    nil
-  end
-
   def data_to_email_s
     %w(comments page_range section_title authors).map do |field|
       if (data_field = data[field]).present?
         "#{self.class.human_attribute_name(field)}:\n  #{data_field}"
       end
     end.compact.join("\n")
-  end
-
-  def requires_needed_date?
-    false
   end
 
   def proxy?
