@@ -2,3 +2,7 @@
 <%= f.hidden_field :origin %>
 <%= f.hidden_field :origin_location %>
 <%= hidden_field_tag(:modal, params[:modal]) if params[:modal] %>
+<div style='display:none; visibility:hidden;'>
+  <%= label_tag(:email, 'Ignore this email field. It is used to detect spammers. If you enter anything into this field your message will not be sent.') %>
+  <%= email_field_tag(:email) %>
+</div>

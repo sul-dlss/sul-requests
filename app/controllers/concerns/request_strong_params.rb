@@ -12,9 +12,9 @@ module RequestStrongParams
   end
 
   def create_params
+    params.permit(:email)
     params.permit(:modal)
-    params.require(:request).permit(:destination,
-                                    :item_id, :origin, :origin_location,
+    params.require(:request).permit(:item_id, :origin, :origin_location, :destination,
                                     :needed_date,
                                     :item_comment, :request_comment,
                                     :authors, :page_range, :section_title, # scans
@@ -25,6 +25,7 @@ module RequestStrongParams
   end
 
   def update_params
+    params.permit(:email)
     params.permit(:modal)
     params.require(:request).permit(:needed_date)
   end
