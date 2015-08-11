@@ -14,5 +14,17 @@
     <%= csrf_meta_tags %>
     <%= content_for(:head) %>
   </head>
-  <body><%= yield %></body>
+  <body>
+    <%= yield %>
+    <% if Rails.env.development? %>
+      <script type="text/javascript">
+        var _mfq = _mfq || [];
+        (function() {
+          var mf = document.createElement("script"); mf.type = "text/javascript"; mf.async = true;
+          mf.src = "//cdn.mouseflow.com/projects/07ae47b8-19d1-406d-9d9e-bf9c7fe048bc.js";
+          document.getElementsByTagName("head")[0].appendChild(mf);
+        })();
+      </script>
+    <% end %>
+  </body>
 </html>
