@@ -23,3 +23,33 @@
     }
   }
 }
+
+.messages {
+  margin-left: 2em;
+
+  h2 {
+    color: $black;
+    float: left;
+    font-size: 1.2em;
+    font-weight: normal;
+  }
+
+  .message {
+    clear: both;
+  }
+
+  .status {
+    color: $cardinal-red;
+  }
+
+  .active {
+    color: $green;
+    font-weight: bold;
+  }
+
+  .edit-message {
+    left: 14px;
+    position: relative;
+    top: 14px;
+  }
+}

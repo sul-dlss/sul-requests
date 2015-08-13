@@ -1,24 +1,48 @@
 <div class="messages">
-<% messages = @messages.select { |m| m.library == library_code && m.request_type == request_type } %>
-<% messages.each do |message| %>
-  <div class="message">
-      <% if message.scheduled? %>
-      <div class="status <%= 'active' if message.active? %>">
-        <% if message.active? %>
-          Active <%= time_tag message.start_at.to_date, :short %> through <%= time_tag message.end_at.to_date, :short %>
-        <% else %>
-          Inactive (was <%= time_tag message.start_at.to_date, :short %> through <%= time_tag message.end_at.to_date, :short %>)
-        <% end %>
-      </div>
-      <% end %>
 
-      <div class="text well-sm">
+  <% messages = @messages.select { |m| m.library == library_code && m.request_type == request_type } %>
+
+  <% if library_code == 'SAL' %>
+    <% library_code = "SAL1&2" %>
+  <% elsif library_code == "SAL-NEWARK"%>
+    <% library_code = "SAL Newark" %>
+  <% end %>
+
+  <h2><%= request_type.titleize + " from " + library_code if messages.none? %></h2>
+  <%= link_to " Add message", new_message_path(library: library_code, request_type: request_type), class: 'btn btn-sm btn-default edit-message glyphicon glyphicon-pencil' if messages.none? %>
+
+  <% messages.each do |message| %>
+  <h2><%= request_type.titleize + " from " + library_code %></h2>
+  <% if message.text.length > 0 %>
+    <%= link_to [:edit, message], class: 'btn btn-sm btn-default edit-message' do %>
+      <i class="glyphicon glyphicon-pencil"> Edit message</i>
+    <% end %>
+  <% else %>
+    <%= link_to new_message_path(library: library_code, request_type: request_type), class: 'btn btn-sm btn-default edit-message' do %>
+      <i class="glyphicon glyphicon-pencil"> Add message</i>
+    <% end %>
+  <% end %>
+
+  <div class="message">
+    <% if message.scheduled? %>
+    <div class="status <%= 'active' if message.active? %>">
+      <% if message.active? %>
+      Active <%= time_tag message.start_at.to_date, :short %> through <%= time_tag message.end_at.to_date, :short %>
+      <% else %>
+      Inactive (was <%= time_tag message.start_at.to_date, :short %> through <%= time_tag message.end_at.to_date, :short %>)
+      <% end %>
+    </div>
+    <% end %>
+
+    <% if message.text.length > 0 %>
+      <div class="text alert alert-warning">
         <%= render message %>
       </div>
+    <% end %>
 
-      <%= link_to "Edit message", [:edit, message] %>
   </div>
-<% end %>
+  <% end %>
 
-<%= link_to "Add message", new_message_path(library: library_code, request_type: request_type) if messages.none? %>
+  <div style="clear: both" ></div>
+
 </div>

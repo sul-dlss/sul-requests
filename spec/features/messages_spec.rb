@@ -9,7 +9,6 @@ describe 'Viewing all requests' do
       it 'should list data in tables' do
         visit messages_path
 
-        expect(page).to have_css('h1', text: 'Broadcast messages for request forms')
         expect(page).to have_css('h2', text: /Page from anywhere/)
         expect(page).to have_css('h2', text: /Page from SAL1&2/)
         expect(page).to have_css('h2', text: /Page from SAL3/)
