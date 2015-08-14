@@ -103,4 +103,31 @@ describe RequestsHelper do
       expect(status_text_for_item(other_item)).to eq 'Added to pick list'
     end
   end
+
+  describe 'i18n_title_key_for_hold_recall' do
+    let(:current_request) { double('request') }
+    before { expect(helper).to receive_messages(current_request: current_request) }
+    it 'returns the current location when present' do
+      allow(current_request).to receive_messages(holdings: [
+        double('location', current_location: double('code', code: 'INPROCESS'))
+      ])
+      expect(helper.i18n_title_key_for_hold_recall).to eq 'INPROCESS'
+    end
+
+    it 'falls back to the home location in the absense of a current location' do
+      allow(current_request).to receive_messages(holdings: [
+        double(
+          'location',
+          home_location: 'ON-ORDER',
+          current_location: double('code', code: '')
+        )
+      ])
+      expect(helper.i18n_title_key_for_hold_recall).to eq 'ON-ORDER'
+    end
+
+    it 'falls back on default' do
+      allow(current_request).to receive_messages(holdings: [])
+      expect(helper.i18n_title_key_for_hold_recall).to eq 'default'
+    end
+  end
 end

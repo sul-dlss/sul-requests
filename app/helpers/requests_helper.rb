@@ -39,6 +39,16 @@ module RequestsHelper
     end
   end
 
+  def i18n_title_key_for_hold_recall
+    if (current_location = current_request.holdings.first.try(:current_location).try(:code)).present?
+      current_location
+    elsif (home_location = current_request.holdings.first.try(:home_location)).present?
+      home_location
+    else
+      'default'
+    end
+  end
+
   private
 
   def select_for_multiple_libraries(form, pickup_libraries)

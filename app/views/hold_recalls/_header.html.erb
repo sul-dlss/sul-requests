@@ -1,3 +1,3 @@
 <h1 id='dialogTitle'>
-  <%= t("headers.mediated_page.#{current_request.holdings.first.try(:current_location).try(:code) || 'default'}", default: t('headers.mediated_page.default')) %>
+  <%= t("headers.hold_recall.#{i18n_title_key_for_hold_recall}", default: t('headers.hold_recall.default')) %>
 </h1>

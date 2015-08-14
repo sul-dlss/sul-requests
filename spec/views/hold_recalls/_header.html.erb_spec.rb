@@ -5,6 +5,24 @@ describe 'hold_recalls/_header.html.erb' do
   before do
     allow(view).to receive_messages(current_request: current_request)
   end
+
+  describe 'no current location' do
+    before do
+      allow(current_request).to receive_messages(holdings: [
+        double(
+          'holding',
+          home_location: 'INPROCESS',
+          current_location: double('location', code: '')
+        )
+      ])
+    end
+    it 'falls back to the home location' do
+      render
+      expect(rendered).to have_css('h1', text: 'Request in-process item')
+      expect(rendered).not_to have_css('h1', text: 'checked-out')
+    end
+  end
+
   describe 'ON-ORDER' do
     before do
       allow(current_request).to receive_messages(holdings: [
