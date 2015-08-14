@@ -16,11 +16,6 @@ class Page < Request
     true
   end
 
-  def item_commentable?
-    return super unless origin == 'SAL-NEWARK'
-    !barcoded_holdings?
-  end
-
   private
 
   def page_validator

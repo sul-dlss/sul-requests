@@ -37,6 +37,16 @@ describe Request do
     it 'mixin should be included' do
       expect(subject).to be_kind_of Commentable
     end
+
+    describe 'item_commentable?' do
+      it 'is true when the library is SAL-NEWARK' do
+        subject.origin = 'SAL-NEWARK'
+        expect(subject).to be_item_commentable
+      end
+      it 'is false when the library is not SAL-NEWARK' do
+        expect(subject).to_not be_item_commentable
+      end
+    end
   end
 
   describe 'requestable' do

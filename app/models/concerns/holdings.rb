@@ -11,10 +11,6 @@ module Holdings
     holdings_object.all
   end
 
-  def barcoded_holdings?
-    holdings_object.barcoded_holdings.length > 0
-  end
-
   private
 
   def requested_holdings
