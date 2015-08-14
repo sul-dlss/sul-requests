@@ -3,7 +3,7 @@
 ###
 module HoldRecallable
   def hold_recallable?
-    barcode_present? || on_order? || in_process?
+    barcode_present? || on_order? || in_process? || missing?
   end
 
   private
@@ -18,6 +18,10 @@ module HoldRecallable
 
   def in_process?
     [current_location, origin_location].include?('INPROCESS')
+  end
+
+  def missing?
+    current_location == 'MISSING'
   end
 
   def current_location
