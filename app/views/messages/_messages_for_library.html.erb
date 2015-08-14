@@ -1,24 +1,41 @@
 <div class="messages">
-<% messages = @messages.select { |m| m.library == library_code && m.request_type == request_type } %>
-<% messages.each do |message| %>
-  <div class="message">
+
+  <% messages = @messages.select { |m| m.library == library_code && m.request_type == request_type } %>
+  <% library = LibraryLocation.library_name_by_code(library_code).to_s %>
+
+  <% if messages.none? %>
+    <h2><%= request_type.titleize + " from #{library.presence || 'anywhere'}" %></h2>
+    <%= link_to_add_message(library_code, request_type) %>
+  <% end %>
+
+  <% messages.each do |message| %>
+    <h2><%= message.title %></h2>
+    <% if message.text.length > 0 %>
+      <%= link_to_edit_message(message) %>
+    <% else %>
+      <%= link_to_add_message(library_code, request_type) %>
+    <% end %>
+
+    <div class="message">
       <% if message.scheduled? %>
-      <div class="status <%= 'active' if message.active? %>">
+        <div class="status <%= 'active' if message.active? %>">
         <% if message.active? %>
           Active <%= time_tag message.start_at.to_date, :short %> through <%= time_tag message.end_at.to_date, :short %>
         <% else %>
           Inactive (was <%= time_tag message.start_at.to_date, :short %> through <%= time_tag message.end_at.to_date, :short %>)
-        <% end %>
-      </div>
       <% end %>
+    </div>
+  <% end %>
 
-      <div class="text well-sm">
-        <%= render message %>
-      </div>
+  <% if message.text.length > 0 %>
+    <div class="text alert alert-warning">
+      <%= render message %>
+    </div>
+  <% end %>
 
-      <%= link_to "Edit message", [:edit, message] %>
   </div>
-<% end %>
+  <% end %>
 
-<%= link_to "Add message", new_message_path(library: library_code, request_type: request_type) if messages.none? %>
+  <div style="clear: both" ></div>
+
 </div>
