@@ -61,7 +61,7 @@ describe 'requests/success.html.erb' do
       it 'is displayed as an individual request' do
         render
         expect(rendered).to include 'Individual Request'
-        expect(rendered).to include "We've sent a copy of this request to your email."
+        expect(rendered).to include 'We&#39;ve sent a copy of this request to your email.'
       end
     end
 
@@ -76,8 +76,28 @@ describe 'requests/success.html.erb' do
         render
         expect(rendered).to include 'Shared with your proxy group'
         expect(rendered).to include <<-EOS.strip
-          We've sent a copy of this request to your email and to the designated notification address.
+          We&#39;ve sent a copy of this request to your email and to the designated notification address.
         EOS
+      end
+    end
+
+    context 'for webauth users' do
+      let(:user) { create(:webauth_user) }
+
+      it 'indicates an email was sent' do
+        render
+        expect(rendered).to include user.to_email_string
+        expect(rendered).to include 'We&#39;ve sent a copy of this request to your email.'
+      end
+    end
+
+    context 'for name + email users' do
+      let(:user) { create(:non_webauth_user) }
+
+      it 'indicates an email was sent' do
+        render
+        expect(rendered).to include user.to_email_string
+        expect(rendered).to include 'We&#39;ve sent a copy of this request to your email.'
       end
     end
   end

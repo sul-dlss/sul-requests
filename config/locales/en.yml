@@ -81,6 +81,11 @@ en:
       message:
         create: 'Save'
         update: 'Save'
+  requests:
+    success:
+      email_notification:
+        proxy: "(We've sent a copy of this request to your email and to the designated notification address.)"
+        default: "(We've sent a copy of this request to your email.)"
   status_text:
     paged: Paged
     hold: Item is on-site - hold for patron

@@ -14,12 +14,16 @@
     <% if current_request.proxy? %>
       <dd>
         <p>Shared with your proxy group</p>
-        <p class='help-block'>(We've sent a copy of this request to your email and to the designated notification address.)</p>
+        <p class='help-block'><%= t('.email_notification.proxy') %></p>
       </dd>
     <% elsif current_user.sponsor? %>
       <dd>
         <p>Individual Request</p>
-        <p class='help-block'>(We've sent a copy of this request to your email.)</p>
+        <p class='help-block'><%= t('.email_notification.default') %></p>
+      </dd>
+    <% elsif current_request.notification_email_address.present? %>
+      <dd>
+        <p class='help-block'><%= t('.email_notification.default') %></p>
       </dd>
     <% end %>
   </dl>
