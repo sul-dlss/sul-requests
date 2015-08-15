@@ -18,7 +18,7 @@
     width: 3em;
   }
 
-  .required {
+  .required:not([for='request_destination']) {
     &:after {
       @extend .label;
       @extend .label-warning;
