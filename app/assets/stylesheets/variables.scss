@@ -1,6 +1,6 @@
 @import 'sul-variables';
 
-$brand-primary: $cardinal-red;
+$brand-primary: $color-cardinal-red;
 $btn-primary-border: darken($brand-primary, 9.8%);
 
 $btn-default-color: $btn-beige-color;
@@ -20,10 +20,10 @@ $screen-sm-min: 480px;
 @import 'bootstrap/variables';
 
 $link-color: $gray-dark;
-$link-hover-color: $black;
-$text-color: $black;
+$link-hover-color: $color-black;
+$text-color: $color-black;
 $link-hover-decoration: none;
-$body-bg: $lighter-grayish-yellow;
+$body-bg: $color-beige-05;
 
 
 $font-size-tiny: ceil(($font-size-base * 0.71)) !default; // ~10px
@@ -32,7 +32,7 @@ $pagination-active-bg: #696969;
 $pagination-active-border: #696969;
 
 // Panels
-$panel-danger-text: $black;
+$panel-danger-text: $color-black;
 $panel-danger-bg: $panel-danger-heading-bg;
 
 $dl-horizontal-offset: $component-offset-horizontal + 14px;
