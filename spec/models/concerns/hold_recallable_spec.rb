@@ -55,5 +55,15 @@ describe HoldRecallable do
         expect(request).to be_hold_recallable
       end
     end
+
+    context 'when MISSING' do
+      it 'is true when the current_location is MISSING' do
+        allow(request).to receive_messages(holdings: [
+          double('holding', current_location: double('location', code: 'MISSING'))
+        ])
+
+        expect(request).to be_hold_recallable
+      end
+    end
   end
 end
