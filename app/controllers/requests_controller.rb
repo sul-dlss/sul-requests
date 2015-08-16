@@ -6,6 +6,7 @@ class RequestsController < ApplicationController
   include RequestStrongParams
   include ModalLayout
 
+  before_action :capture_email_field
   before_action :modify_item_selector_checkboxes, only: :create
   before_action :modify_item_proxy_status, only: :create
 
@@ -110,5 +111,12 @@ class RequestsController < ApplicationController
     options[:modal] = params[:modal]
 
     redirect_to polymorphic_path([:successful, current_request], options)
+  end
+
+  def capture_email_field
+    fail HoneyPotFieldError if params[:email].present?
+  end
+
+  class HoneyPotFieldError < StandardError
   end
 end

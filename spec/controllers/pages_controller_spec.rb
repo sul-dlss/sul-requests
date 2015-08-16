@@ -155,6 +155,24 @@ describe PagesController do
           end
         ).to change { ConfirmationMailer.deliveries.count }.by(1)
       end
+
+      context 'create/update' do
+        it 'raises an error when the honey-pot email field is filled in on create' do
+          expect(
+            lambda do
+              post :create, request: normal_params, email: 'something'
+            end
+          ).to raise_error(RequestsController::HoneyPotFieldError)
+        end
+
+        it 'raises an error when the honey-pot email field is filled in on update' do
+          expect(
+            lambda do
+              put :update, id: page[:id], email: 'something'
+            end
+          ).to raise_error(RequestsController::HoneyPotFieldError)
+        end
+      end
     end
     describe 'invalid requests' do
       let(:user) { create(:webauth_user) }
