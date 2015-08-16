@@ -71,10 +71,11 @@ en:
       SAL-NEWARK:
         item_comment: 'List the volumes/issues you need'
   headers:
-    mediated_page:
+    hold_recall:
       CHECKEDOUT: 'Request checked-out item'
       default: 'Request item'
       INPROCESS: 'Request in-process item'
+      MISSING: 'Request missing item'
       ON-ORDER: 'Request on-order item'
   helpers:
     submit:
