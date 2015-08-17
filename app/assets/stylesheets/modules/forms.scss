@@ -1,8 +1,4 @@
 .form-group {
-  .input-like-text {
-    padding-top: 7px;
-  }
-
   hr {
     border: 0;
     border-top: 1px solid $grayish-yellow;
@@ -10,8 +6,13 @@
     margin-top: 20px;
   }
 
+  .input-like-text {
+    padding-top: 7px;
+  }
+
   .or-divider {
     background-color: $body-bg;
+    color: $dark-gray;
     font-size: 1.1em;
     margin: -32px auto 10px;
     text-align: center;
@@ -23,6 +24,7 @@
       @extend .label;
       @extend .label-warning;
       content: ' Required';
+      margin-left: 5px;
     }
   }
 }
@@ -36,9 +38,11 @@
 }
 
 .form-group h2,
+.form-group .success-page .requested-by,
 .searchworks-item {
   font-family: 'dejavu_sansextralight', $font-family-base;
-  margin: 0 0 1em;
+  line-height: 1.6em;
+  margin: 0 0 0.5em;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -46,4 +50,18 @@
 
 .go-back-link {
   line-height: 3;
+}
+
+.help-block {
+  color: $dark-gray;
+  margin-bottom: 0;
+ }
+
+.form-control-static {
+  min-height: 0;
+  padding-bottom: 0;
+}
+
+.login-send-group {
+  margin-top: 25px;
 }

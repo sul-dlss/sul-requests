@@ -1,5 +1,5 @@
 <% if [f.object.requestable_by_all?, f.object.requestable_with_library_id?, f.object.requestable_with_sunet_only?].any? %>
-  <div class='form-group' data-no-sunet-target='true'>
+  <div class='form-group login-send-group' data-no-sunet-target='true'>
     <div class='<%= content_column_class %> <%= label_column_offset_class %>'>
       <% if current_user.webauth_user? %>
         <%= render partial: 'request_buttons_for_webauth', locals: { f: f } %>
