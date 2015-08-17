@@ -33,7 +33,7 @@ en:
         user: 'Requested by'
       hold_recall:
         <<: *request_anchor
-        needed_date: 'Cancel request after'
+        needed_date: 'Not needed after'
       mediated_page:
         <<: *request_anchor
         needed_date: 'Planned date of use'
