@@ -8,9 +8,9 @@ module Commentable
   end
 
   # Currently used to comment which items you would like if the
-  # location you're requesting from does not have any barcoded items
+  # location you're requesting from is configured as item commentable
   def item_commentable?
-    false
+    SULRequests::Application.config.item_commentable_libraries.include?(origin)
   end
 
   def request_commentable?
