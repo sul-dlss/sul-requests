@@ -51,6 +51,11 @@ describe LibraryLocation do
       expect(LibraryLocation.library_name_by_code('GREEN')).to eq 'Green Library'
       expect(LibraryLocation.library_name_by_code('SAL3')).to eq 'SAL3 (off-campus storage)'
     end
+
+    it 'returns the library name for pickups specific codes if present' do
+      expect(LibraryLocation.library_name_by_code('PAGE-MP')).to eq 'Earth Sciences Library (Branner)'
+    end
+
     it 'should return nil when there is no configured library' do
       expect(LibraryLocation.library_name_by_code('NOT-A-LIBRARY')).to be_nil
     end

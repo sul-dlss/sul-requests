@@ -39,7 +39,13 @@ class LibraryLocation
 
   class << self
     def library_name_by_code(code)
-      config.libraries[code]
+      all_libraries[code] || location_specific_library_name_by_code(code)
+    end
+
+    def location_specific_library_name_by_code(code)
+      pickup_libraries_for_location = Array(config.location_specific_pickup_libraries[code])
+      return unless pickup_libraries_for_location.one?
+      all_libraries[pickup_libraries_for_location.first]
     end
 
     def config

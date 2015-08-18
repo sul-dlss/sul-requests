@@ -9,7 +9,7 @@ class MediatedPage < Request
 
   scope :archived, -> { where('needed_date < ?', Time.zone.today) }
   scope :active, -> { where('needed_date >= ?', Time.zone.today) }
-  scope :for_origin, ->(origin) { where(origin: origin) }
+  scope :for_origin, ->(origin) { where('origin = ? OR origin_location = ?', origin, origin) }
 
   include TokenEncryptable
 

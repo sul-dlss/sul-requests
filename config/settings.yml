@@ -14,8 +14,8 @@ origin_admin_groups:
   HOPKINS: []
   HV-ARCHIVE: []
   HOOVER: []
+  PAGE-MP: []
   SPEC-COLL: []
-  SAL3: []
 
 contact_email: 'someone@stanford.edu'
 
