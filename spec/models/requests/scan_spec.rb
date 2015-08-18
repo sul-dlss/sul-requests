@@ -20,9 +20,17 @@ describe Scan do
     it { is_expected.not_to be_requestable_with_library_id }
     it { is_expected.to be_requestable_with_sunet_only }
   end
+
   describe '#item_limit' do
     it 'is 1' do
       expect(subject.item_limit).to eq 1
+    end
+  end
+
+  describe '#submit!' do
+    it 'submits the request to Symphony' do
+      expect(SubmitScanRequestJob).to receive(:perform_now)
+      subject.submit!
     end
   end
 end

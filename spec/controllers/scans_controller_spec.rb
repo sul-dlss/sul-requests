@@ -121,6 +121,18 @@ describe ScansController do
           end
         ).to change { ConfirmationMailer.deliveries.count }.by(1)
       end
+
+      it 'submits the request to symphony' do
+        expect(SubmitScanRequestJob).to receive(:perform_now)
+
+        put :create, request: {
+          item_id: '12345',
+          origin: 'SAL3',
+          origin_location: 'STACKS',
+          barcodes: ['12345678'],
+          section_title: 'Some really important chapter'
+        }
+      end
     end
     describe 'invalid requests' do
       let(:user) { create(:scan_eligible_user) }
