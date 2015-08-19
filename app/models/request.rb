@@ -114,8 +114,8 @@ class Request < ActiveRecord::Base
     # Another alternative would be to use (origin_admin_groups & uniq.pluck(:origin)).present? but that will result
     # in a SELECT DISTNICT which could get un-performant with a large table of requests.
     def mediateable_origins
-      Settings.origin_admin_groups.to_hash.keys.map(&:to_s).select do |library_origin|
-        MediatedPage.exists?(origin: library_origin)
+      Settings.origin_admin_groups.to_hash.keys.map(&:to_s).select do |library_or_location|
+        MediatedPage.exists?(origin: library_or_location) || MediatedPage.exists?(origin_location: library_or_location)
       end
     end
   end
