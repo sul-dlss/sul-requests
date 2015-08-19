@@ -109,4 +109,20 @@ describe MediatedPage do
       expect(subject.item_limit).to eq 5
     end
   end
+
+  describe '#requires_needed_date?' do
+    it 'is false when the library is HOPKINS' do
+      subject.origin = 'HOPKINS'
+      expect(subject.requires_needed_date?).to be_falsey
+    end
+
+    it 'is false when the origin location is PAGE-MP' do
+      subject.origin_location = 'PAGE-MP'
+      expect(subject.requires_needed_date?).to be_falsey
+    end
+
+    it 'is true when otherwise' do
+      expect(subject.requires_needed_date?).to be_truthy
+    end
+  end
 end
