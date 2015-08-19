@@ -1,20 +1,20 @@
 require 'rails_helper'
 
 describe 'hold_recalls/_header.html.erb' do
-  let(:current_request) { double('request') }
+  let(:origin) { 'GREEN' }
+  let(:origin_location) { 'STACKS' }
+  let(:holdings) { [] }
+  let(:current_request) do
+    double('request', origin: origin, origin_location: origin_location, holdings: holdings)
+  end
   before do
     allow(view).to receive_messages(current_request: current_request)
   end
 
-  describe 'no current location' do
-    before do
-      allow(current_request).to receive_messages(holdings: [
-        double(
-          'holding',
-          home_location: 'INPROCESS',
-          current_location: double('location', code: '')
-        )
-      ])
+  describe 'blank current location' do
+    let(:origin_location) { 'INPROCESS' }
+    let(:holdings) do
+      [double('holding', current_location: double('location', code: ''))]
     end
     it 'falls back to the home location' do
       render
@@ -24,11 +24,10 @@ describe 'hold_recalls/_header.html.erb' do
   end
 
   describe 'ON-ORDER' do
-    before do
-      allow(current_request).to receive_messages(holdings: [
-        double('holding', current_location: double('location', code: 'ON-ORDER'))
-      ])
+    let(:holdings) do
+      [double('holding', current_location: double('location', code: 'ON-ORDER'))]
     end
+
     it 'has the correct header' do
       render
       expect(rendered).to have_css('h1', text: 'Request on-order item')
@@ -36,11 +35,10 @@ describe 'hold_recalls/_header.html.erb' do
   end
 
   describe 'INPROCESS' do
-    before do
-      allow(current_request).to receive_messages(holdings: [
-        double('holding', current_location: double('location', code: 'INPROCESS'))
-      ])
+    let(:holdings) do
+      [double('holding', current_location: double('location', code: 'INPROCESS'))]
     end
+
     it 'has the correct header' do
       render
       expect(rendered).to have_css('h1', text: 'Request in-process item')
@@ -48,11 +46,10 @@ describe 'hold_recalls/_header.html.erb' do
   end
 
   describe 'checked out' do
-    before do
-      allow(current_request).to receive_messages(holdings: [
-        double('holding', current_location: double('location', code: 'CHECKEDOUT'))
-      ])
+    let(:holdings) do
+      [double('holding', current_location: double('location', code: 'CHECKEDOUT'))]
     end
+
     it 'has the correct header' do
       render
       expect(rendered).to have_css('h1', text: 'Request checked-out item')
@@ -60,18 +57,21 @@ describe 'hold_recalls/_header.html.erb' do
   end
 
   describe 'default' do
-    it 'falls back to the default title when there is no location' do
-      allow(current_request).to receive_messages(holdings: [])
-      render
-      expect(rendered).to have_css('h1', text: 'Request item')
+    describe 'when there is no location' do
+      it 'falls back to the default title' do
+        render
+        expect(rendered).to have_css('h1', text: 'Request item')
+      end
     end
 
-    it 'falls back to the default title for other locations' do
-      allow(current_request).to receive_messages(holdings: [
-        double('holding', current_location: double('location', code: 'SOMETHING-ELSE'))
-      ])
-      render
-      expect(rendered).to have_css('h1', text: 'Request item')
+    describe 'for other locations' do
+      let(:holdings) do
+        [double('holding', current_location: double('location', code: 'SOMETHING-ELSE'))]
+      end
+      it 'falls back to the default title' do
+        render
+        expect(rendered).to have_css('h1', text: 'Request item')
+      end
     end
   end
 end

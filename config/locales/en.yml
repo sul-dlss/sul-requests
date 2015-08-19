@@ -70,8 +70,8 @@ en:
     labels:
       SAL-NEWARK:
         item_comment: 'List the volumes/issues you need'
-  headers:
-    hold_recall:
+  hold_recalls:
+    header:
       CHECKEDOUT: 'Request checked-out item'
       default: 'Request item'
       INPROCESS: 'Request in-process item'
@@ -82,6 +82,11 @@ en:
       message:
         create: 'Save'
         update: 'Save'
+  mediated_pages:
+    header:
+      default: 'Request on-site access'
+      HOPKINS: 'Request delivery to campus library'
+      PAGE-MP: 'Request delivery to campus library'
   requests:
     success:
       email_notification:
