@@ -39,14 +39,16 @@ module RequestsHelper
     end
   end
 
-  def i18n_title_key_for_hold_recall
+  def i18n_location_title_key
     if (current_location = current_request.holdings.first.try(:current_location).try(:code)).present?
       current_location
-    elsif (home_location = current_request.holdings.first.try(:home_location)).present?
-      home_location
-    else
-      'default'
+    elsif (origin_location = current_request.origin_location).present?
+      origin_location
     end
+  end
+
+  def i18n_library_title_key
+    current_request.origin
   end
 
   private
