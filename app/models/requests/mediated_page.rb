@@ -42,6 +42,8 @@ class MediatedPage < Request
   end
 
   def requires_needed_date?
+    return false if origin == 'HOPKINS'
+    return false if origin_location == 'PAGE-MP'
     true
   end
 
