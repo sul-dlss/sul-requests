@@ -102,4 +102,24 @@ PagingSchedule.configure do
     will_arrive after: '11:00am'
     business_days_later 2
   end
+
+  # Business (PAGE-IRON). This location can only be paged to BUSINESS
+  when_paging from: 'BUSINESS', to: 'BUSINESS', before: '12:00pm' do
+    will_arrive after: '3:00pm'
+    business_days_later 1
+  end
+  when_paging from: 'BUSINESS', to: 'BUSINESS', after: '12:00pm' do
+    will_arrive after: '3:00pm'
+    business_days_later 2
+  end
+
+  # Scan (based on SAL3 -> GREEN with added days)
+  when_paging from: 'SAL3', to: 'SCAN', before: '12:00pm' do
+    will_arrive after: '10:00am'
+    business_days_later 3
+  end
+  when_paging from: 'SAL3', to: 'SCAN', after: '12:00pm' do
+    will_arrive after: '10:00am'
+    business_days_later 4
+  end
 end
