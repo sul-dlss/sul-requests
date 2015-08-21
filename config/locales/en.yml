@@ -69,7 +69,7 @@ en:
   forms:
     labels:
       SAL-NEWARK:
-        item_comment: 'List the volumes/issues you need'
+        item_comment: 'Volumes/issues'
   hold_recalls:
     header:
       CHECKEDOUT: 'Request checked-out item'
