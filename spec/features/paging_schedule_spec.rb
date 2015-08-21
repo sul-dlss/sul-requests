@@ -41,9 +41,19 @@ describe 'Paging Schedule' do
     before { stub_searchworks_api_json(build(:sal3_holdings)) }
     it 'shows the estimated delivery for Green Library' do
       visit new_request_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
+
       within('#deliveryDescription') do
         expect(page).to have_css('#scheduler-text', text: /, (before|after)/, visible: true)
       end
+    end
+  end
+
+  describe 'scan form', js: true do
+    before { stub_searchworks_api_json(build(:sal3_holdings)) }
+    it 'shows the estimated delivery for the Scanning service' do
+      visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
+
+      expect(page).to have_css('#scheduler-text', text: /, (before|after)/, visible: true)
     end
   end
 end
