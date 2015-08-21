@@ -108,9 +108,13 @@ class RequestsController < ApplicationController
   def redirect_to_success_with_token
     options = {}
     options[:token] = current_request.encrypted_token unless current_user.webauth_user?
-    options[:modal] = params[:modal]
+    options.merge!(request_context_params)
 
     redirect_to polymorphic_path([:successful, current_request], options)
+  end
+
+  def request_context_params
+    { modal: params[:modal] }
   end
 
   def capture_email_field

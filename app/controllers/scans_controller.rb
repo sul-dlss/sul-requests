@@ -21,9 +21,8 @@ class ScansController < RequestsController
       origin: @request.origin,
       origin_location: @request.origin_location,
       item_id: @request.item_id,
-      barcodes: @request.barcodes,
-      modal: params[:modal]
-    }
+      barcodes: @request.barcodes
+    }.merge(request_context_params)
   end
 
   def redirect_to_success_with_token
@@ -31,7 +30,7 @@ class ScansController < RequestsController
   end
 
   def illiad_url
-    IlliadOpenurl.new(current_request, successful_scan_url(current_request)).to_url
+    IlliadOpenurl.new(current_request, successful_scan_url(current_request, request_context_params)).to_url
   end
 
   def validate_request_type
