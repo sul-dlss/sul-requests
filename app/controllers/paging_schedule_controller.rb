@@ -2,8 +2,6 @@
 #  Controller for returning the pageing schedule for async requests
 ###
 class PagingScheduleController < ApplicationController
-  layout false
-
   rescue_from PagingSchedule::ScheduleNotFound do
     render status: 404
   end
@@ -11,8 +9,8 @@ class PagingScheduleController < ApplicationController
   def show
     schedule = PagingSchedule.for(request_for_schedule)
     respond_to do |format|
-      format.json { render json: schedule.estimate }
-      format.html { render text: schedule.estimate.to_s }
+      format.json { render json: schedule.estimate, layout: false }
+      format.html { render text: schedule.estimate.to_s, layout: false }
     end
   end
 
