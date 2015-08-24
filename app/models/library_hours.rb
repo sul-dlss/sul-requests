@@ -1,9 +1,8 @@
 # LibraryHours is responsbile for determining
 # if a library is open on a given day
 class LibraryHours
-  attr_reader :library
-  def initialize(library)
-    @library = library
+  def initialize(library_code)
+    @library = library_code
   end
 
   def next_business_day(date = Time.zone.today)
@@ -17,6 +16,10 @@ class LibraryHours
     @business_days ||= days.map do |date, open|
       date if open
     end.compact
+  end
+
+  def library
+    config.scanning_library_proxy[@library] || @library
   end
 
   private
@@ -68,6 +71,10 @@ class LibraryHours
   end
 
   def location_map
-    SULRequests::Application.config.hours_api_location_map[@library]
+    config.hours_api_location_map[library]
+  end
+
+  def config
+    SULRequests::Application.config
   end
 end

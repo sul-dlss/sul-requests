@@ -82,6 +82,8 @@ module SULRequests
       'SAL'
     ]
 
+    config.scanning_library_proxy = { 'SCAN' => 'GREEN' }
+
     config.library_specific_pickup_libraries = {
       'ARS' => ['ARS'],
       'HOOVER' => ['HOOVER'],

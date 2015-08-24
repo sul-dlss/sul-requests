@@ -14,6 +14,21 @@ describe LibraryHours do
     end
   end
 
+  describe '#library' do
+    context 'Non-scan library' do
+      it 'returns the library' do
+        expect(subject.library).to eq 'GREEN'
+      end
+    end
+
+    context 'scanning library' do
+      let(:library) { 'SCAN' }
+      it 'proxies SCAN to GREEN' do
+        expect(subject.library).to eq 'GREEN'
+      end
+    end
+  end
+
   describe 'bad JSON' do
     let(:response) { double('response') }
     before do
