@@ -179,5 +179,11 @@ module SULRequests
       'SPEC-COLL' => { library_slug: 'spc', location_slug: 'field-reading-room' },
       'TANNER' => { library_slug: 'philosophy', location_slug: 'library-circulation' }
     }
+
+    config.illiad_nvtgc_map = {
+      default: 'ST2',
+      'organization:law' => 'RCJ',
+      'organization:gsb' => 'S7Z'
+    }
   end
 end

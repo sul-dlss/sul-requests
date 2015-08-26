@@ -30,7 +30,9 @@ class ScansController < RequestsController
   end
 
   def illiad_url
-    IlliadOpenurl.new(current_request, successful_scan_url(current_request, request_context_params)).to_url
+    redirect_url = successful_scan_url(current_request, request_context_params)
+
+    IlliadOpenurl.new(current_user, current_request, redirect_url).to_url
   end
 
   def validate_request_type
