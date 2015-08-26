@@ -22,7 +22,7 @@ describe ApplicationController do
     end
     it 'has the library id from LDAP' do
       allow(controller).to receive_messages(user_id: 'some-user')
-      allow(controller.request).to receive(:env).and_return('SUCARDNUMBER' => '12345')
+      allow(controller.request).to receive(:env).and_return('WEBAUTH_LDAP_SUCARDNUMBER' => '12345')
       user = controller.send(:current_user)
       expect(user).to be_a User
       expect(user.library_id).to eq '12345'
