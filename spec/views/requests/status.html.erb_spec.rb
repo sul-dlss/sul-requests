@@ -27,7 +27,7 @@ describe 'requests/status.html.erb' do
     request.needed_date = Time.zone.today
     render
     expect(rendered).to have_css('dt', text: 'Needed on')
-    expect(rendered).to have_css('dd', text: Time.zone.today)
+    expect(rendered).to have_css('dd', text: l(Time.zone.today, format: :long))
   end
 
   describe 'for scans' do
