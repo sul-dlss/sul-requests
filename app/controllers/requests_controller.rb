@@ -72,11 +72,16 @@ class RequestsController < ApplicationController
 
   def rescue_can_can(exception)
     if !current_user.webauth_user? && create_via_post? && current_request.new_record?
-      request_params = params[:request].except(:user_attributes)
-      redirect_to login_path(referrer: polymorphic_path([:create, current_request], request: request_params))
+      bounce_request_through_webauth
     else
       super
     end
+  end
+
+  def bounce_request_through_webauth
+    request_params = params[:request].except(:user_attributes)
+    referrer = polymorphic_path([:create, current_request], request_context_params.merge(request: request_params))
+    redirect_to login_path(referrer: referrer)
   end
 
   def check_if_proxy_sponsor
