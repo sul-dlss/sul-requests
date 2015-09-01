@@ -59,7 +59,7 @@ var dateSelector = (function() {
     setDateFieldAsInvalid: function() {
       this.mediatedDateField().closest('.form-group').addClass('has-error');
       this.mediatedDateField()[0].setCustomValidity(
-        'The destination library is not open on ' + this.selectedDate()
+        'This library is not open on ' + this.selectedDate()
       );
     },
 
