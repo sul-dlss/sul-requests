@@ -2,7 +2,8 @@
 #  Class to handle creation of ILLiad OpenURL request
 ###
 class IlliadOpenurl
-  def initialize(scan, redirect_url)
+  def initialize(current_user, scan, redirect_url)
+    @current_user = current_user
     @scan = scan
     @redirect_url = redirect_url
   end
@@ -33,6 +34,20 @@ class IlliadOpenurl
   end
 
   def to_url
-    Settings.sul_illiad + '/st2/illiad.dll?' + "#{query_params}"
+    Settings.sul_illiad + '/' + nvtgc + '/illiad.dll?' + "#{query_params}"
+  end
+
+  private
+
+  def nvtgc
+    illiad_nvtgc_config.each do |k, v|
+      return v if @current_user && @current_user.ldap_groups.include?(k)
+    end
+
+    illiad_nvtgc_config[:default]
+  end
+
+  def illiad_nvtgc_config
+    SULRequests::Application.config.illiad_nvtgc_map
   end
 end
