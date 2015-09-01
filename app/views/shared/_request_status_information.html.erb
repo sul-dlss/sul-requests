@@ -49,6 +49,6 @@
 
   <% if current_request.needed_date.present? %>
     <dt><%= current_request.class.human_attribute_name(:needed_date) %></dt>
-    <dd><%= current_request.needed_date %></dd>
+    <dd><%= l current_request.needed_date, format: :long %></dd>
   <% end %>
 </dl>
