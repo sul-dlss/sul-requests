@@ -167,6 +167,38 @@ describe Request do
         )
         expect(User.where(email: 'jstanford@stanford.edu').length).to eq 1
       end
+
+      it 'should update email users name' do
+        expect(User.where(email: 'jstanford@stanford.edu').length).to eq 0
+        User.create(email: 'jstanford@stanford.edu', name: 'J. Stanford')
+        expect(User.where(email: 'jstanford@stanford.edu').length).to eq 1
+        Request.create!(
+          item_id: '1234',
+          origin: 'GREEN',
+          origin_location: 'STACKS',
+          user_attributes: {
+            name: 'Jane Stanford',
+            email: 'jstanford@stanford.edu'
+          }
+        )
+
+        expect(User.find_by(email: 'jstanford@stanford.edu').name).to eq 'Jane Stanford'
+      end
+
+      it 'should not duplicate library ids' do
+        expect(User.where(library_id: '12345').length).to eq 0
+        User.create(library_id: '12345')
+        expect(User.where(library_id: '12345').length).to eq 1
+        Request.create!(
+          item_id: '1234',
+          origin: 'GREEN',
+          origin_location: 'STACKS',
+          user_attributes: {
+            library_id: '12345'
+          }
+        )
+        expect(User.where(library_id: '12345').length).to eq 1
+      end
     end
   end
 
