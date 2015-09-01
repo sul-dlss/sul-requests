@@ -88,6 +88,7 @@ module SULRequests
       'ARS' => ['ARS'],
       'HOOVER' => ['HOOVER'],
       'HV-ARCHIVE' => ['HV-ARCHIVE'],
+      'LAW' => ['LAW'],
       'SPEC-COLL' => ['SPEC-COLL']
     }
 
