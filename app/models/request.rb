@@ -7,14 +7,12 @@ class Request < ActiveRecord::Base
   include Holdings
   include Requestable
   include DefaultRequestOptions
+  include RequestValidations
 
   attr_accessor :requested_barcode
   alias_method :barcode=, :requested_barcode=
 
   delegate :hold_recallable?, :mediateable?, :pageable?, :scannable?, to: :library_location
-
-  validates :item_id, :origin, :origin_location, presence: true
-  validate :requested_holdings_exist
 
   # Serialzed data hash
   store :data, accessors: [
@@ -118,21 +116,5 @@ class Request < ActiveRecord::Base
         MediatedPage.exists?(origin: library_or_location) || MediatedPage.exists?(origin_location: library_or_location)
       end
     end
-  end
-
-  protected
-
-  def destination_is_a_pickup_library
-    return if library_location.pickup_libraries.include?(destination)
-    errors.add(:destination, 'is not a valid pickup library')
-  end
-
-  # This will currently stil pass if the request has no barcodes.
-  # I'm not sure we strongly enforce WHEN requests require barcodes
-  # (it seems like it may be variable depending on the record).
-  def requested_holdings_exist
-    holdings_barcodes = holdings.map(&:barcode)
-    return if barcodes.all? { |b| holdings_barcodes.include?(b) }
-    errors.add(:base, 'A selected item is not located in the requested location')
   end
 end

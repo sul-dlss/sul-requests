@@ -210,10 +210,10 @@ describe PagesController do
     describe 'by superadmins' do
       let(:user) { create(:superadmin_user) }
       it 'should be allowed to modify page rqeuests' do
-        put :update, id: page[:id], request: { needed_date: '2015-04-14' }
+        put :update, id: page[:id], request: { needed_date: Time.zone.today + 1.day }
         expect(flash[:success]).to eq 'Request was successfully updated.'
         expect(response).to redirect_to root_url
-        expect(Page.find(page.id).needed_date.to_s).to eq '2015-04-14'
+        expect(Page.find(page.id).needed_date.to_s).to eq "#{Time.zone.today + 1.day}"
       end
     end
   end

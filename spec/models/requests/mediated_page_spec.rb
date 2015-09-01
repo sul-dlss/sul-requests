@@ -12,7 +12,7 @@ describe MediatedPage do
                              origin: 'GREEN',
                              origin_location: 'STACKS',
                              destination: 'BIOLOGY',
-                             needed_date: '2010-01-01')
+                             needed_date: Time.zone.today + 1.day)
       end.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: This item is not mediatable')
     end
 
@@ -22,16 +22,16 @@ describe MediatedPage do
                              origin: 'SPEC-COLL',
                              origin_location: 'STACKS',
                              destination: 'GREEN',
-                             needed_date: '2010-01-01')
+                             needed_date: Time.zone.today + 1.day)
       end.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Destination is not a valid pickup library')
     end
   end
 
   describe 'scopes' do
     before do
-      create(:mediated_page, needed_date: Time.zone.today - 3.days)
-      create(:mediated_page, needed_date: Time.zone.today - 2.days)
-      create(:mediated_page, needed_date: Time.zone.today - 1.day)
+      build(:mediated_page, needed_date: Time.zone.today - 3.days).save(validate: false)
+      build(:mediated_page, needed_date: Time.zone.today - 2.days).save(validate: false)
+      build(:mediated_page, needed_date: Time.zone.today - 1.day).save(validate: false)
       create(:hoover_mediated_page, needed_date: Time.zone.today)
       create(:hoover_mediated_page, needed_date: Time.zone.today + 1.day)
     end
