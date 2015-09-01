@@ -1,5 +1,7 @@
-<%= select_for_pickup_libraries(f).html_safe %>
+<div data-scheduler-lookup-url='<%= paging_schedule_path(origin: current_request.origin) %>'>
+  <%= select_for_pickup_libraries(f).html_safe %>
 
-<%= render 'library_instructions' %>
+  <%= render 'library_instructions' %>
 
-<%= render 'scheduler_text' %>
+  <%= render 'scheduler_text' %>
+</div>

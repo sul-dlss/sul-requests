@@ -1,8 +1,8 @@
-<div class='form-group' data-scheduler-lookup-url='<%= paging_schedule_path(origin: current_request.origin) %>'>
+<div class='form-group'>
   <div class='control-label <%= label_column_class %>'>
     Earliest delivery
   </div>
-  <div class='<%= content_column_class %> input-like-text'>
-    <span id='scheduler-text' data-scheduler-text='true' aria-live='polite'></span>
+  <div class='<%= content_column_class %> input-like-text' <%= "data-single-library-value='#{current_request.library_location.pickup_libraries.keys.first}'".html_safe unless current_request.library_location.pickup_libraries.keys.many? %>>
+    <span data-text-object="<%= current_request.object_id %>" data-scheduler-text='true' aria-live='polite'></span>
   </div>
 </div>
