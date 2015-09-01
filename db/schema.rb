@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150801015801) do
+ActiveRecord::Schema.define(version: 20150901152211) do
 
   create_table "messages", force: :cascade do |t|
     t.text     "text"
@@ -50,5 +50,9 @@ ActiveRecord::Schema.define(version: 20150801015801) do
     t.datetime "updated_at", null: false
     t.string   "library_id"
   end
+
+  add_index "users", ["email"], name: "index_users_on_email"
+  add_index "users", ["library_id"], name: "index_users_on_library_id"
+  add_index "users", ["webauth"], name: "index_users_on_webauth"
 
 end
