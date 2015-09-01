@@ -31,6 +31,21 @@ describe Request do
       )
       expect(Request.last.barcodes).to eq %w(3610512345678)
     end
+
+    it 'requires that when a needed_date is provided it is not before today' do
+      expect(
+        lambda do
+          Request.create!(
+            item_id: '1234',
+            origin: 'GREEN',
+            origin_location: 'STACKS',
+            needed_date: Time.zone.today - 1.day
+          )
+        end
+      ).to raise_error(
+        ActiveRecord::RecordInvalid, 'Validation failed: Date cannot be earlier than today'
+      )
+    end
   end
 
   describe 'commentable' do

@@ -75,9 +75,9 @@ describe 'Viewing all requests' do
       end
 
       it 'allows the user to toggle between expired and active mediated pages' do
-        create(:mediated_page, needed_date: Time.zone.today - 3.days)
-        create(:mediated_page, needed_date: Time.zone.today - 2.days)
-        create(:mediated_page, needed_date: Time.zone.today - 1.days)
+        build(:mediated_page, needed_date: Time.zone.today - 3.days).save(validate: false)
+        build(:mediated_page, needed_date: Time.zone.today - 2.days).save(validate: false)
+        build(:mediated_page, needed_date: Time.zone.today - 1.days).save(validate: false)
         visit admin_path('SPEC-COLL')
 
         expect(page).to have_css('tbody tr', count: 2)
