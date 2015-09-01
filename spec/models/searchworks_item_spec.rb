@@ -229,6 +229,12 @@ describe SearchworksItem do
           expect(subject.status_object['approver']).to eq 'jstanford'
           expect(subject.status_object['approval_time']).not_to be_nil
         end
+
+        it 'triggers a request to symphony when an item is approved' do
+          expect(request).to receive(:save!)
+          expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(request, barcodes: [barcode])
+          subject.approve!('jstanford')
+        end
       end
 
       describe '#as_json' do

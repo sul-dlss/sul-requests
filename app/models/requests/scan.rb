@@ -13,10 +13,6 @@ class Scan < Request
     1
   end
 
-  def submit!
-    SubmitScanRequestJob.perform_now(self)
-  end
-
   private
 
   def scannable_validator

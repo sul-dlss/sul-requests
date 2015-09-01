@@ -123,7 +123,7 @@ describe ScansController do
       end
 
       it 'submits the request to symphony' do
-        expect(SubmitScanRequestJob).to receive(:perform_now)
+        expect(SubmitSymphonyRequestJob).to receive(:perform_now)
 
         put :create, request: {
           item_id: '12345',

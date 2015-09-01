@@ -47,6 +47,11 @@ class MediatedPage < Request
     true
   end
 
+  def submit!
+    # creating a mediated page should not submit the request to Symphony
+    true
+  end
+
   private
 
   def commentable_library_whitelist

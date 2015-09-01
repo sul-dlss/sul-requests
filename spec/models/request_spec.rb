@@ -306,4 +306,18 @@ describe Request do
       expect(Request.mediateable_origins).to eq %w(HOPKINS HOOVER SPEC-COLL)
     end
   end
+
+  describe '#submit!' do
+    it 'submits the request to Symphony' do
+      expect(SubmitSymphonyRequestJob).to receive(:perform_now)
+      subject.submit!
+    end
+  end
+
+  describe '#send_to_symphony!' do
+    it 'submits the request to Symphony' do
+      expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(subject, a: 1)
+      subject.send_to_symphony! a: 1
+    end
+  end
 end

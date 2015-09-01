@@ -24,6 +24,7 @@ token_encrypt:
   salt: ''
 
 symphony_api:
+  enabled: true
   url: ''
 
 mailer_host: 'example.com'

@@ -28,6 +28,10 @@ describe ProxyAccess do
       it 'has the notification list' do
         expect(subject.email_address).to eq 'group_notice@lists.stanford.edu'
       end
+
+      it 'has a name' do
+        expect(subject.name).to eq 'MY_PROXY_GROUP'
+      end
     end
 
     context 'for a patron without a proxy status' do

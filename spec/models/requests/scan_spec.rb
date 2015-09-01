@@ -26,11 +26,4 @@ describe Scan do
       expect(subject.item_limit).to eq 1
     end
   end
-
-  describe '#submit!' do
-    it 'submits the request to Symphony' do
-      expect(SubmitScanRequestJob).to receive(:perform_now)
-      subject.submit!
-    end
-  end
 end
