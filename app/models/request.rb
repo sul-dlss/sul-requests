@@ -79,6 +79,8 @@ class Request < ActiveRecord::Base
     return unless user
     if user.webauth_user?
       User.find_by_webauth(user.webauth)
+    elsif user.library_id_user?
+      User.find_by_library_id(user.library_id)
     elsif user.non_webauth_user?
       find_existing_email_user
     end
