@@ -4,3 +4,9 @@
 @import 'bootstrap';
 @import 'sul-requests-mixins';
 @import 'sul-requests';
+
+// Imports sul-icons
+@import 'sul-icons-rails';
+@import 'sul-icons-aliases';
+// Helper classes used in icons
+@import 'sul-icons/helpers';
