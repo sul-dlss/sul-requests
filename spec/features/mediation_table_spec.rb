@@ -56,12 +56,23 @@ describe 'Mediation table', js: true do
         click_button('Approve')
       end
       expect(page).to have_css('tr.approved')
+      expect(page).to have_css('td button', text: 'Approved')
 
       within(first('tr')) do
         expect(page).to have_css('td', text: 'Added to pick list', visible: true)
         expect(page).to have_css('td', text: /super-admin - \d{4}-\d{2}-\d{2}/)
       end
     end
+
+    # and check that it is persisted
+    visit admin_path('SPEC-COLL')
+
+    within(first('[data-mediate-request]')) do
+      page.find('a.mediate-toggle').click
+    end
+
+    expect(page).to have_css('tr.approved')
+    expect(page).to have_css('td button', text: 'Approved')
   end
 
   it 'has sortable columns' do

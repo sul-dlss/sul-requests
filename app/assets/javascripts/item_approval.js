@@ -38,6 +38,7 @@ var itemApproval = (function() {
 
     markRowAsApproved: function(item) {
       item.closest('tr').addClass('approved');
+      item.closest('tr').find(this.options.buttonSelector).html('Approved');
     },
 
     updateApproverInformation: function(item, data) {

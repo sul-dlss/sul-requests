@@ -14,6 +14,7 @@ describe('Item Approval', function() {
       expect(lastRow).not.toHaveClass('approved');
       itemApproval.markRowAsApproved(lastButton);
       expect(lastRow).toHaveClass('approved');
+      expect(lastButton.text()).toBe('Approved');
     });
   });
 
