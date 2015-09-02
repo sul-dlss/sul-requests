@@ -17,20 +17,6 @@
         <dd><%= item %></dd>
       <% end %>
     <% end if current_request.ad_hoc_items.present? %>
-
-    <dt>Not approved</dt>
-    <% current_request.holdings.each do |item| %>
-      <% unless item.request_status.approved? %>
-        <dd><%= item.callnumber %></dd>
-      <% end %>
-    <% end %>
-
-    <% current_request.ad_hoc_items.each do |item| %>
-      <% ad_hoc_item_status = request_status_for_ad_hoc_item(current_request, item) %>
-      <% unless ad_hoc_item_status.approved? %>
-        <dd><%= item %></dd>
-      <% end %>
-    <% end if current_request.ad_hoc_items.present? %>
   </dl>
   <hr />
   <%= render partial: 'searchworks_item_information' %>
