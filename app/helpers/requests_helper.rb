@@ -55,14 +55,17 @@ module RequestsHelper
 
   def select_for_multiple_libraries(form, pickup_libraries)
     return unless pickup_libraries.keys.length > 1
-    form.select :destination,
-                pickup_libraries_array(pickup_libraries),
-                {
-                  label: label_for_pickup_libraries_dropdown(pickup_libraries),
-                  selected: SULRequests::Application.config.default_pickup_library
-                },
-                aria: { controls: 'scheduler-text' },
-                data: { 'paging-schedule-updater' => 'true' }
+    form.select(
+      :destination,
+      pickup_libraries_array(pickup_libraries),
+      { label: label_for_pickup_libraries_dropdown(pickup_libraries), selected: default_pickup_library },
+      aria: { controls: 'scheduler-text' },
+      data: { 'paging-schedule-updater' => 'true', 'text-selector' => "[data-text-object='#{form.object.object_id}']" }
+    )
+  end
+
+  def default_pickup_library
+    SULRequests::Application.config.default_pickup_library
   end
 
   def single_library_markup(form, library)
@@ -71,7 +74,7 @@ module RequestsHelper
         <div class='#{label_column_class} control-label'>
           #{label_for_pickup_libraries_dropdown([])}
         </div>
-        <div class='#{content_column_class} input-like-text' data-single-library-value='#{library.first}'>
+        <div class='#{content_column_class} input-like-text'>
           #{library.last}
         </div>
         #{form.hidden_field :destination, value: library.first}

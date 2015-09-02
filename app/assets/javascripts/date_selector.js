@@ -17,14 +17,13 @@ var dateSelector = (function() {
     setupListeners: function() {
       var _this = this;
       if ( _this.mediatedDateField().length > 0 ) {
-        pagingScheduleUpdater
-          .schedulerText()
+        $('[data-scheduler-text]')
           .on('paging-schedule:updated', function(_, data) {
             _this.setMinDate(data.date);
             _this.restrictToOpenDates(
               data.destination_business_days
             );
-        });
+          });
       }
     },
 

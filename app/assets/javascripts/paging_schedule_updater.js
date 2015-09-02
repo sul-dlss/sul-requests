@@ -1,8 +1,8 @@
 var pagingScheduleUpdater = (function() {
 
   var defaultOptions = {
-    selector: '[data-paging-schedule-updater="true"]',
-    urlSelector: '[data-scheduler-lookup-url]',
+    dropdownSelector: '[data-paging-schedule-updater="true"]',
+    containerSelector: '[data-scheduler-lookup-url]',
     textSelector: '[data-scheduler-text]',
     singleLibrarySelector: '[data-single-library-value]'
   };
@@ -12,72 +12,83 @@ var pagingScheduleUpdater = (function() {
       var _this = this;
       _this.options = $.extend(defaultOptions, opts);
       $(document).on('ready page:load', function(){
-        _this.requestPagingScheduleData(); // Set initial schedule state
-        _this.addSelectChangeBehavior();
+        _this.setInitialSchedules();
       });
     },
 
     options: {},
 
-    addSelectChangeBehavior: function() {
+    setInitialSchedules: function() {
       var _this = this;
-      _this.selectElement().on('change', function() {
-        _this.requestPagingScheduleData();
+      _this.containers().each(function(){
+        _this.renderSingleValueEstimates($(this));
+        _this.renderSelectedDropdownValuesAndAddChangeBehavior($(this));
       });
     },
 
-    requestPagingScheduleData: function() {
+    renderSingleValueEstimates: function(container){
       var _this = this;
-      var originalValue = _this.schedulerValue();
-      if ( originalValue && _this.schedulerText().length > 0 ) {
-        $.ajax({
-          url: _this.schedulerUrl(_this.schedulerValue())
-        }).success(function(data) {
-          if ( originalValue == _this.schedulerValue()) {
-            _this.updateSchedulerText(data);
-          }
-        }).fail(function() {
-          _this.updateSchedulerText({'text': 'No estimate available'});
+      _this.singleLibraryElement(container).each(function(){
+        var destination = $(this).data('single-library-value');
+        var schedulerText = $(this).find(_this.options.textSelector);
+        _this.updatePagingSchedule(container, destination, schedulerText);
+      });
+    },
+
+    renderSelectedDropdownValuesAndAddChangeBehavior: function(container) {
+      var _this = this;
+      _this.destinationDropdown(container).each(function() {
+        var schedulerText = $($(this).data('text-selector'));
+        _this.updatePagingSchedule(container, $(this).val(), schedulerText);
+        $(this).on('change', function() {
+          _this.updatePagingSchedule(container, $(this).val(), schedulerText);
         });
-      }
+      });
     },
 
-    schedulerValue: function() {
-      if ( this.selectElement().val() ) {
-        return this.selectElement().val();
-      }else if ( this.singleLibraryValue() ) {
-        return this.singleLibraryValue();
-      }
-    },
-
-    updateSchedulerText: function(data) {
+    updatePagingSchedule: function(container, destination, schedulerText) {
       var _this = this;
-      if(_this.schedulerText().text() != data.text) {
-        _this.schedulerText().text(data.text);
-        _this.schedulerText().addClass('highlighted');
-        _this.schedulerText().trigger('paging-schedule:updated', [data]);
+      $.ajax({url: _this.schedulerUrl(container, destination)})
+       .success(function(data){
+         _this.updateSchedulerText(schedulerText, data);
+       })
+       .fail(function(){
+         _this.updateSchedulerText(schedulerText, {
+           'text': 'No estimate available'
+         });
+       });
+    },
+
+    updateSchedulerText: function(schedulerText, data) {
+      if(schedulerText.text() != data.text) {
+        schedulerText.text(data.text);
+        schedulerText.addClass('highlighted');
+        schedulerText.trigger('paging-schedule:updated', [data]);
         setTimeout(function(){
-          _this.schedulerText().removeClass('highlighted');
+          schedulerText.removeClass('highlighted');
         }, 1500);
       }
     },
 
-    selectElement: function() {
-      return $(this.options.selector);
+    containers: function() {
+      return $(this.options.containerSelector);
     },
 
-    singleLibraryValue: function() {
-      return $(this.options.singleLibrarySelector).data('single-library-value');
+    destinationDropdown: function(container) {
+      return container.find(this.options.dropdownSelector);
     },
 
-    schedulerUrl: function(destination) {
-      return $(this.options.urlSelector)
-               .data('scheduler-lookup-url') + '/' + destination;
+    singleLibraryElement: function(container) {
+      return container.find(this.options.singleLibrarySelector);
     },
 
-    schedulerText: function() {
-      return $(this.options.textSelector);
-    }
+    schedulerUrl: function(container, destination) {
+      return this.baseUrl(container) + '/' + destination;
+    },
+
+    baseUrl: function(container) {
+      return container.data('scheduler-lookup-url');
+    },
   };
 })();
 

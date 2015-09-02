@@ -5,34 +5,36 @@ fixture.preload('paging_schedule_elements.html');
 fixture.preload('no_dropdown_paging_schedule.html');
 
 describe('Paging schedule updater', function() {
-  describe('With a dropdown', function() {
+  describe('Elements', function() {
     beforeAll(function() {
       this.fixtures = fixture.load('paging_schedule_elements.html');
     });
-
-    describe('selectElement()', function() {
-      it('is present', function() {
-        expect(pagingScheduleUpdater.selectElement().length).toBe(1);
+    describe('containers', function() {
+      it('are present', function() {
+        expect(pagingScheduleUpdater.containers().length).toBe(1);
       });
     });
 
-    describe('schedulerValue()', function() {
-      it('gets the value from the dropdown', function() {
-        expect(pagingScheduleUpdater.schedulerValue()).toBe('opt1');
+    describe('schedulerUrl', function() {
+      it('returns the url with the given destination', function() {
+        var container = pagingScheduleUpdater.containers().first();
+        expect(
+          pagingScheduleUpdater.schedulerUrl(container, 'DEST')
+        ).toBe('abc/DEST');
       });
     });
+  });
 
-    describe('schedulerText()', function() {
-      it('is present', function() {
-        expect(pagingScheduleUpdater.schedulerText().length).toBe(1);
-      });
+  describe('with a dropdown', function() {
+    beforeAll(function() {
+      this.fixtures = fixture.load('paging_schedule_elements.html');
     });
-
-    describe('updateSchedulerText()', function() {
-      it('updates the scheduler text element', function() {
-        expect(pagingScheduleUpdater.schedulerText().text()).toBe('');
-        pagingScheduleUpdater.updateSchedulerText({'text': 'SOMETHING!'});
-        expect(pagingScheduleUpdater.schedulerText().text()).toBe('SOMETHING!');
+    describe('destinationDropdown', function() {
+      it('are present', function() {
+        var container = pagingScheduleUpdater.containers().first();
+        expect(
+          pagingScheduleUpdater.destinationDropdown(container).length
+        ).toBe(1);
       });
     });
   });
@@ -42,30 +44,21 @@ describe('Paging schedule updater', function() {
       this.fixtures = fixture.load('no_dropdown_paging_schedule.html');
     });
 
-    describe('selectElement()', function() {
-      it('is not present', function() {
-        expect(pagingScheduleUpdater.selectElement().length).toBe(0);
+    describe('singleLibraryElement', function() {
+      it('are present', function() {
+        var container = pagingScheduleUpdater.containers().first();
+        expect(pagingScheduleUpdater.singleLibraryElement(container).length).toBe(2);
       });
     });
+  });
 
-    describe('schedulerValue()', function() {
-      it('gets the value for the single item', function() {
-        expect(pagingScheduleUpdater.schedulerValue()).toBe('single-opt');
-      });
-    });
-
-    describe('schedulerText()', function() {
-      it('is present', function() {
-        expect(pagingScheduleUpdater.schedulerText().length).toBe(1);
-      });
-    });
-
-    describe('updateSchedulerText()', function() {
-      it('updates the scheduler text element', function() {
-        expect(pagingScheduleUpdater.schedulerText().text()).toBe('');
-        pagingScheduleUpdater.updateSchedulerText({'text': 'SOMETHING!'});
-        expect(pagingScheduleUpdater.schedulerText().text()).toBe('SOMETHING!');
-      });
+  describe('updateSchedulerText', function() {
+    it('updates the given element text', function() {
+      var schedulerText = $('[data-scheduler-text="true"]').first();
+      var data = { text: 'Updated Text' };
+      expect(schedulerText.text()).toBe('');
+      pagingScheduleUpdater.updateSchedulerText(schedulerText, data);
+      expect(schedulerText.text()).toBe('Updated Text');
     });
   });
 });

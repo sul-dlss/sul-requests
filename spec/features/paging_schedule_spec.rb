@@ -20,11 +20,11 @@ describe 'Paging Schedule' do
 
       expect(page).to have_select('request_destination', selected: 'Green Library')
 
-      expect(page).to have_css('#scheduler-text', text: /, (before|after)/, visible: true)
-      before_text = find('#scheduler-text').text
+      expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: true)
+      before_text = find('[data-scheduler-text]').text
 
       select 'Engineering Library (Terman)', from: 'request_destination'
-      expect(find('#scheduler-text')).to_not eq before_text
+      expect(find('[data-scheduler-text]')).to_not eq before_text
     end
   end
 
@@ -33,7 +33,7 @@ describe 'Paging Schedule' do
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'PAGE-MA')
 
       expect(page).to_not have_select('request_destination')
-      expect(page).to have_css('#scheduler-text', text: /, (before|after)/, visible: true)
+      expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: true)
     end
   end
 
@@ -43,7 +43,7 @@ describe 'Paging Schedule' do
       visit new_request_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
 
       within('#deliveryDescription') do
-        expect(page).to have_css('#scheduler-text', text: /, (before|after)/, visible: true)
+        expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: true)
       end
     end
   end
@@ -53,7 +53,7 @@ describe 'Paging Schedule' do
     it 'shows the estimated delivery for the Scanning service' do
       visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
 
-      expect(page).to have_css('#scheduler-text', text: /, (before|after)/, visible: true)
+      expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: true)
     end
   end
 end
