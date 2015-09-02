@@ -28,9 +28,9 @@ module ApplicationHelper
     'col-sm-9'
   end
 
-  def send_request_via_login_button
+  def send_request_via_login_button(text = nil)
     button_tag(
-      'Send request<span class="btn-sub-text">login with SUNet ID</span>'.html_safe,
+      text || 'Send request<span class="btn-sub-text">login with SUNet ID</span>'.html_safe,
       id: 'send_request_via_sunet',
       class: 'btn btn-md btn-primary btn-full'
     )

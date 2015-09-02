@@ -43,7 +43,7 @@ describe 'Creating a page request' do
     before { stub_current_user(user) }
     it 'should be possible without filling in any user information' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
-      click_button 'Send request'
+      first(:button, 'Send request').click
 
       expect(current_url).to eq successful_page_url(Page.last)
       expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
@@ -58,7 +58,7 @@ describe 'Creating a page request' do
 
     it 'allows the user to share with their proxy group' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
-      click_button 'Send request'
+      first(:button, 'Send request').click
 
       expect(page).to have_css('h1#dialogTitle', text: 'Share with your proxy group?')
       click_button 'Yes, share with my group.'
@@ -70,7 +70,7 @@ describe 'Creating a page request' do
 
     it 'allows the user to keep the request private' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
-      click_button 'Send request'
+      first(:button, 'Send request').click
 
       expect(page).to have_css('h1#dialogTitle', text: 'Share with your proxy group?')
       click_button 'No, just me.'
@@ -94,7 +94,7 @@ describe 'Creating a page request' do
         check('ABC 321')
       end
 
-      click_button 'Send request'
+      first(:button, 'Send request').click
 
       expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
 
@@ -115,7 +115,7 @@ describe 'Creating a page request' do
 
       fill_in 'Volumes/issues', with: 'Volume 1-3'
 
-      click_button 'Send request'
+      first(:button, 'Send request').click
 
       expect(Page.last.item_comment).to eq 'Volume 1-3'
     end

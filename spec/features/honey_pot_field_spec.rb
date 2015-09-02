@@ -11,7 +11,7 @@ describe 'Honey Pot Fields' do
       hidden_field.set('some-email')
 
       expect(
-        -> { click_button 'Send request' }
+        -> { first(:button, 'Send request').click }
       ).to raise_error(RequestsController::HoneyPotFieldError)
     end
   end

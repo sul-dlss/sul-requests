@@ -16,7 +16,7 @@
     font-size: 1.1em;
     margin: -32px auto 10px;
     text-align: center;
-    width: 3em;
+    width: 10ch;
   }
 
   .required:not([for='request_destination']) {
@@ -64,4 +64,16 @@
 
 .login-send-group {
   margin-top: 25px;
+}
+
+.no-js #no-sunetid-form {
+  display: block;
+}
+
+#no-sunetid-form {
+  display: none;
+}
+
+.no-js .go-back-link {
+  display: none;
 }
