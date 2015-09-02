@@ -26,4 +26,10 @@ describe Scan do
       expect(subject.item_limit).to eq 1
     end
   end
+
+  describe '#appears_in_myaccount?' do
+    it 'is disabled' do
+      expect(subject.appears_in_myaccount?).to be false
+    end
+  end
 end

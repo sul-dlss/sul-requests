@@ -352,4 +352,19 @@ describe Request do
       subject.send_to_symphony! a: 1
     end
   end
+  describe '#appears_in_myaccount?' do
+    context 'with non-webauth users' do
+      it 'is disabled' do
+        subject.user = create(:library_id_user)
+        expect(subject.appears_in_myaccount?).to be false
+      end
+    end
+
+    context 'for webauth users' do
+      it 'is enabled' do
+        subject.user = create(:webauth_user)
+        expect(subject.appears_in_myaccount?).to be true
+      end
+    end
+  end
 end

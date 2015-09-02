@@ -119,6 +119,10 @@ class Request < ActiveRecord::Base
     SubmitSymphonyRequestJob.perform_now(self, options)
   end
 
+  def appears_in_myaccount?
+    user.webauth_user?
+  end
+
   class << self
     # The mediateable_oirgins will make multiple (efficient) database requests
     # in order to return the array of locations that are both configured as mediateable and have existing requests.

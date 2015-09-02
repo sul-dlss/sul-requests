@@ -72,6 +72,22 @@ describe ConfirmationMailer do
       it 'has a link to the status page' do
         expect(body).to match(%r{Check the status of your request at .*\/pages\/#{request.id}\/status\?token})
       end
+
+      context 'with a webauth user' do
+        let(:user) { build(:webauth_user) }
+
+        it 'has a link to myaccount' do
+          expect(body).to include 'You can also see the status at http://library.stanford.edu/myaccount'
+        end
+
+        context 'for a scan request' do
+          let(:request) { create(:scan_with_holdings, user: user) }
+
+          it 'excludes the myaccount link for a scan request' do
+            expect(body).not_to include 'You can also see the status at http://library.stanford.edu/myaccount'
+          end
+        end
+      end
     end
 
     describe 'contact info' do
