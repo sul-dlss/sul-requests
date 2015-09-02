@@ -84,10 +84,12 @@ describe 'Viewing all requests' do
         expect(page).to have_css('a', text: 'Show archived requests')
         click_link 'Show archived requests'
 
+        expect(page).to have_css('h2', text: 'Special Collections archived requests')
         expect(page).to have_css('tbody tr', count: 3)
         expect(page).to have_css('a', text: 'Show current requests')
         click_link 'Show current requests'
 
+        expect(page).to have_css('h2', text: 'Special Collections')
         expect(page).to have_css('tbody tr', count: 2)
         expect(page).to have_css('a', text: 'Show archived requests')
       end
