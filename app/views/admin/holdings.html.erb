@@ -17,7 +17,11 @@
       <tr class='<%= cycle('odd', 'even') %> <%= 'approved' if item.request_status.approved? %>'>
         <td class='col-xs-1'>
           <button class="approval-btn btn btn-xs btn-success" data-behavior="item-approval" data-item-approval-url="<%= approve_item_admin_path(@request, item: item.barcode) %>">
-            Approve
+            <% if item.request_status.approved? %>
+              Approved
+            <% else %>
+              Approve
+            <% end %>
           </button>
         </td>
         <td class='col-xs-2'><%= item.home_location %></td>
@@ -38,7 +42,11 @@
       <tr class='<%= cycle('odd', 'even') %> <%= 'approved' if ad_hoc_item_status.approved? %>'>
         <td class='col-xs-1'>
           <button class="approval-btn btn btn-xs btn-success" data-behavior="item-approval" data-item-approval-url="<%= approve_item_admin_path(@request, item: item) %>">
-            Approve
+            <% if item.request_status.approved? %>
+              Approved
+            <% else %>
+              Approve
+            <% end %>
           </button>
         </td>
         <td class='col-xs-2'></td>
