@@ -6,14 +6,6 @@
   width: 100%;
 }
 
-.btn-scan {
-  @include button-variant(
-    $btn-scan-color,
-    $btn-scan-bg,
-    $btn-scan-border
-  );
-}
-
 .btn-sub-text {
   display: block;
   font-size: 0.85em;
