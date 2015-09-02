@@ -163,6 +163,7 @@ class SearchworksItem
           approval_time: Time.zone.now.to_s,
           approver: user
         }
+        @request.send_to_symphony!(barcodes: [@id])
         @request.save!
       end
 

@@ -9,7 +9,7 @@ FactoryGirl.define do
     needed_date Time.zone.today
   end
 
-  factory :hold_recall_with_holdings do
+  factory :hold_recall_with_holdings, class: HoldRecall do
     item_id '1234'
     origin 'SAL3'
     origin_location 'STACKS'

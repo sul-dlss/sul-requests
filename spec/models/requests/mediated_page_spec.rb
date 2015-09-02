@@ -125,4 +125,11 @@ describe MediatedPage do
       expect(subject.requires_needed_date?).to be_truthy
     end
   end
+
+  describe '#submit!' do
+    it 'does not submit the request to Symphony' do
+      expect(SubmitSymphonyRequestJob).not_to receive(:perform_now)
+      subject.submit!
+    end
+  end
 end

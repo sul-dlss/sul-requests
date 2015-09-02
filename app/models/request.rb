@@ -112,7 +112,11 @@ class Request < ActiveRecord::Base
   end
 
   def submit!
-    true
+    send_to_symphony!
+  end
+
+  def send_to_symphony!(options = {})
+    SubmitSymphonyRequestJob.perform_now(self, options)
   end
 
   class << self

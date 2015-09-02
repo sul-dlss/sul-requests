@@ -20,6 +20,12 @@ class ProxyAccess
     table.first[:email_address]
   end
 
+  def name
+    return unless table.any?
+
+    table.first[:name]
+  end
+
   private
 
   def sponsors
