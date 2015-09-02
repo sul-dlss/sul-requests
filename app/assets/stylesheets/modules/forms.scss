@@ -23,7 +23,7 @@
     &:after {
       @extend .label;
       @extend .label-warning;
-      content: ' Required';
+      content: 'Required';
       margin-left: 5px;
     }
   }
