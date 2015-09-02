@@ -17,7 +17,7 @@ gem 'uglifier', '>= 1.3.0'
 # JS Runtime. See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'therubyracer'
 # Common styles for SUL
-gem 'sul_styles'
+gem 'sul_styles', '>= 0.5.0'
 # A gem for simple rails invornment specific config
 gem 'rails_config'
 # Use jquery as the JavaScript library

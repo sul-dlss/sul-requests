@@ -1,7 +1,7 @@
 <div id="scan-or-deliver" data-scheduler-lookup-url='<%= paging_schedule_path(origin: current_request.origin) %>'>
   <div class="row">
     <div class="col-xs-12 col-sm-6 buttons">
-      <%= link_to('Deliver to campus library', delegated_new_request_path(current_request), class: 'btn btn-md btn-primary', 'aria-describedby' => 'deliveryDescription') %>
+      <%= link_to('<i class="sul-i-truck-1" aria-hidden="true"></i> Deliver to campus library'.html_safe, delegated_new_request_path(current_request), class: 'btn btn-md btn-primary', 'aria-describedby' => 'deliveryDescription') %>
     </div>
     <div class="col-xs-12 col-sm-6 content">
       <dl id="deliveryDescription">
