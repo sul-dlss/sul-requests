@@ -23,9 +23,9 @@ describe 'Create Scan Request' do
     it 'should display a copyright restrictions notice in a collapse' do
       visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
 
-      expect(page).to have_content 'Warning concerning copyright restrictions'
+      expect(page).to have_content 'Notice concerning copyright restrictions'
 
-      click_on 'Warning concerning copyright restrictions'
+      click_on 'Notice concerning copyright restrictions'
 
       expect(page).to have_content 'The copyright law of the United States'
     end
