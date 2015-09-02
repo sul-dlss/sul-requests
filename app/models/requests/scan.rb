@@ -13,6 +13,10 @@ class Scan < Request
     1
   end
 
+  def appears_in_myaccount?
+    false
+  end
+
   private
 
   def scannable_validator
