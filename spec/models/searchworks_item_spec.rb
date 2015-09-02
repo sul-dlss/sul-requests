@@ -146,17 +146,6 @@ describe SearchworksItem do
           expect(subject.library_instructions[:text]).to eq 'This is the library instruction'
         end
       end
-
-      describe 'when the origin location has location specific pickup libraries' do
-        let(:item) { build(:page_mp_mediated_page).searchworks_item }
-        it 'returns the location name as the text' do
-          allow(subject).to receive_messages(location: double(
-            code: 'PAGE-MP',
-            name: 'Paging restricted to Branner'
-          ))
-          expect(subject.library_instructions[:text]).to eq 'Paging restricted to Branner'
-        end
-      end
     end
 
     describe 'barcoded holdings' do
