@@ -82,7 +82,7 @@ describe RequestsHelper do
     let(:current_location_loan) do
       double(
         'holding',
-        home_location: 'STACKS',
+        home_location: 'MSS-30',
         current_location: double('location', code: 'GREEN-LOAN')
       )
     end
