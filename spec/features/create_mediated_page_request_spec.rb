@@ -66,7 +66,7 @@ describe 'Creating a mediated page request' do
 
       fill_in_required_fields
 
-      click_button 'Send request'
+      first(:button, 'Send request').click
 
       expect(current_url).to eq successful_mediated_page_url(MediatedPage.last)
       expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
@@ -82,7 +82,7 @@ describe 'Creating a mediated page request' do
       comment = '1989, Mar: Le Monde'
       fill_in 'Comment', with: comment
 
-      click_button 'Send request'
+      first(:button, 'Send request').click
 
       expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
 
@@ -102,7 +102,7 @@ describe 'Creating a mediated page request' do
 
       fill_in 'Planned date of use', with: date
 
-      click_button 'Send request'
+      first(:button, 'Send request').click
 
       expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
 
@@ -124,7 +124,7 @@ describe 'Creating a mediated page request' do
         check('ABC 123')
       end
 
-      click_button 'Send request'
+      first(:button, 'Send request').click
 
       expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
 

@@ -27,7 +27,7 @@ describe 'Creating a hold recall request' do
 
     it 'should be possible without filling in any user information' do
       visit new_hold_recall_path(item_id: '1234', barcode: '3610512345', origin: 'GREEN', origin_location: 'STACKS')
-      click_button 'Send request'
+      first(:button, 'Send request').click
 
       expect(current_url).to eq successful_hold_recall_url(HoldRecall.last)
       expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
@@ -36,7 +36,7 @@ describe 'Creating a hold recall request' do
     it 'should store barcode in the url in the barcodes array' do
       stub_searchworks_api_json(build(:sal3_holdings))
       visit new_hold_recall_path(item_id: '1234', barcode: '12345678', origin: 'SAL3', origin_location: 'STACKS')
-      click_button 'Send request'
+      first(:button, 'Send request').click
 
       expect(HoldRecall.last.barcodes).to eq ['12345678']
     end

@@ -1,6 +1,0 @@
-<% if current_user.webauth_user? %>
-  <h2 class='not-you pull-left'>
-    <%= render_user_information %>
-  </h2>
-  <%= link_to('Not you?', logout_path, class: 'pull-right') %>
-<% end %>

@@ -1,5 +1,5 @@
 <% unless f.object.requestable_with_sunet_only?  %>
-  <div data-no-sunet-content='true' style='display:none;'>
+  <div id="no-sunetid-form" aria-hidden="false">
     <%= f.fields_for :user, User.new do |uf| %>
       <% if f.object.requestable_with_library_id? %>
         <%= uf.text_field :library_id %>
@@ -15,7 +15,15 @@
         <%= uf.email_field :email %>
       <% end %>
     <% end %>
-    <%= f.submit 'Send request', class: "btn btn-md btn-primary #{content_column_class} #{label_column_offset_class}" %>
+
+    <div class='<%= content_column_class %> <%= label_column_offset_class %>'>
+      <%= f.submit 'Send request', class: "btn btn-md btn-primary btn-full" %>
+
+      <div class='go-back-link'>
+        <%= link_to '#sunet-id-form', data: { toggle: 'show', hide: '#no-sunetid-form', show: '#sunetid-form' } do %>
+          <span aria-hidden="true">&lsaquo; </span>Go back (show the login option)
+        <% end %>
+      </div>
+    </div>
   </div>
-  <%= render partial: 'shared/back_to_login' %>
 <% end %>

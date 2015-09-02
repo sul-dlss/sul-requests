@@ -42,7 +42,7 @@ describe 'Create Scan Request' do
       authors = 'Stanford, Jane'
       fill_in 'Author(s)', with: authors
 
-      click_button 'Send request'
+      first(:button, 'Send request').click
 
       scan = Scan.last
       expect(scan.item_id).to eq '12345'

@@ -22,7 +22,7 @@ describe 'Modal Layout' do
 
     expect(page).to have_css('input[name="modal"]')
 
-    click_button 'Send request'
+    first(:button, 'Send request').click
 
     expect(page).to_not have_css('#su-wrap')
     expect(current_url).to match(/modal=true/)

@@ -1,7 +1,0 @@
-<%= render partial: 'no_sunet_form', locals: { f: f } %>
-<%= send_request_via_login_button %>
-<% unless f.object.requestable_with_sunet_only? %>
-  <hr />
-  <p class='or-divider'>or</p>
-  <%= link_to 'I don\'t have a SUNet ID', 'javascript:;', class: 'btn btn-md btn-default btn-full', data: { no_sunet: true, target: '[data-no-sunet-target]', content_target: '[data-no-sunet-content]', link: '[data-go-back-link]' } %>
-<% end %>
