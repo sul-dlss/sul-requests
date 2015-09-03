@@ -24,6 +24,7 @@
       @extend .label;
       @extend .label-warning;
       content: 'Required';
+      display: inline-block;
       margin-left: 5px;
     }
   }
