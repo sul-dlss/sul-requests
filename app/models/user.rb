@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
   def email_address
     case
     when library_id_user?
-      ''
+      email_from_symphony
     when webauth_user?
       "#{webauth}@stanford.edu"
     else
@@ -74,5 +74,11 @@ class User < ActiveRecord::Base
 
   def graduate_student?
     affiliation.include?('stanford:student') && student_type.include?('Graduate')
+  end
+
+  def email_from_symphony
+    self.email ||= begin
+      SymphonyUserNameRequest.new(libid: library_id).email
+    end if library_id_user?
   end
 end
