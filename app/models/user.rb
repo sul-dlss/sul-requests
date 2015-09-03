@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
 
   has_many :requests
 
-  attr_writer :ldap_group_string, :affiliation, :student_type
+  attr_writer :ldap_group_string, :affiliation
 
   delegate :proxy?, :sponsor?, to: :proxy_access
 
@@ -66,14 +66,6 @@ class User < ActiveRecord::Base
 
   def affiliation
     (@affiliation || '').split('|')
-  end
-
-  def student_type
-    (@student_type || '').split('|')
-  end
-
-  def graduate_student?
-    affiliation.include?('stanford:student') && student_type.include?('Graduate')
   end
 
   def email_from_symphony
