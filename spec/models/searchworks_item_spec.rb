@@ -116,7 +116,7 @@ describe SearchworksItem do
         end
 
         it 'adds the request_status object to the items' do
-          expect(subject.all.first.request_status).to be_a SearchworksItem::RequestedHoldings::RequestStatus
+          expect(subject.all.first.request_status).to be_a ItemStatus
         end
       end
 
@@ -182,86 +182,6 @@ describe SearchworksItem do
       end
       it 'should return an empty array if the given barcode does not exist' do
         expect(subject.where(barcodes: 'not-a-barcode')).to eq([])
-      end
-    end
-
-    describe SearchworksItem::RequestedHoldings::RequestStatus do
-      let(:request) { create(:request) }
-      let(:barcode) { '3610512345' }
-      describe 'initialization' do
-        it 'sets the request status data if not present' do
-          expect(request.request_status_data).to be_nil
-          described_class.new(request, barcode)
-          expect(request.request_status_data).to be_a(Hash)
-          expect(request.request_status_data[barcode]).to eq(
-            'approved' => false,
-            'approver' => nil,
-            'approval_time' => nil
-          )
-        end
-      end
-
-      describe '#status_object' do
-        let(:subject) { described_class.new(request, barcode) }
-        it 'fetches the status object from the request_status_data hash' do
-          expect(subject.status_object).to eq(
-            'approved' => false,
-            'approver' => nil,
-            'approval_time' => nil
-          )
-        end
-
-        it 'is updated when the item is approved' do
-          expect(request).to receive(:save!)
-          subject.approve!('jstanford')
-          expect(subject.status_object['approved']).to be true
-          expect(subject.status_object['approver']).to eq 'jstanford'
-          expect(subject.status_object['approval_time']).not_to be_nil
-        end
-
-        it 'triggers a request to symphony when an item is approved' do
-          expect(request).to receive(:save!)
-          expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(request, barcodes: [barcode])
-          subject.approve!('jstanford')
-        end
-      end
-
-      describe '#as_json' do
-        let(:status) { described_class.new(request, barcode) }
-        let(:json) { status.as_json }
-        before { status.approve!('jstanford') }
-        it 'returns the identifier' do
-          expect(json[:id]).to eq barcode
-        end
-
-        it 'returns the approved status' do
-          expect(json[:approved]).to be true
-        end
-
-        it 'returns the approver' do
-          expect(json[:approver]).to eq 'jstanford'
-        end
-
-        it 'returns the formatted approval time' do
-          expect(json[:approval_time]).to eq(
-            I18n.l(Time.zone.parse(status.approval_time), format: :short)
-          )
-        end
-      end
-
-      describe 'accessors' do
-        let(:subject) { described_class.new(request, barcode) }
-        it 'aliases approved? to the status object' do
-          expect(subject.approved?).to eq subject.status_object['approved']
-        end
-
-        it 'aliases approver to the status object' do
-          expect(subject.approver).to eq subject.status_object['approver']
-        end
-
-        it 'aliases approval_time to the status object' do
-          expect(subject.approval_time).to eq subject.status_object['approval_time']
-        end
       end
     end
   end

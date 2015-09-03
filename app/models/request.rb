@@ -134,4 +134,8 @@ class Request < ActiveRecord::Base
       end
     end
   end
+
+  def item_status(id)
+    ItemStatus.new(self, id)
+  end
 end

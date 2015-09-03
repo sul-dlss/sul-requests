@@ -58,13 +58,8 @@ describe RequestsHelper do
     let(:request) { create(:request) }
     it 'returns the request status object for the item' do
       request_status = request_status_for_ad_hoc_item(request, 'ABC 123')
-      expect(request_status).to be_a SearchworksItem::RequestedHoldings::RequestStatus
-      expect(request.request_status_data['ABC 123']).to eq(
-        'approved' => false,
-        'approver' => nil,
-        'approval_time' => nil
-      )
-      expect(request_status.status_object).to eq(
+      expect(request_status).to be_a ItemStatus
+      expect(request_status.send(:status_object)).to eq(
         'approved' => false,
         'approver' => nil,
         'approval_time' => nil
