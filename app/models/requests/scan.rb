@@ -17,6 +17,14 @@ class Scan < Request
     false
   end
 
+  def item_commentable?
+    false
+  end
+
+  def ad_hoc_item_commentable?
+    false
+  end
+
   private
 
   def scannable_validator

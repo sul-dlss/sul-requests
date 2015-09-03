@@ -17,13 +17,12 @@ class MediatedPage < Request
     super << user.email
   end
 
-  def ad_hoc_item_commentable?
-    return false unless origin == 'SPEC-COLL'
-    true
-  end
-
   def request_commentable?
     commentable_library_whitelist.include?(origin)
+  end
+
+  def item_commentable?
+    false
   end
 
   def requestable_by_all?
