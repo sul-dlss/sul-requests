@@ -19,7 +19,7 @@ class AdminController < ApplicationController
   end
 
   def approve_item
-    status = SearchworksItem::RequestedHoldings::RequestStatus.new(@request, params[:item])
+    status = @request.item_status(params[:item])
     status.approve!(current_user.webauth) unless status.approved?
     render json: status, layout: false
   end

@@ -23,7 +23,7 @@ module RequestsHelper
   end
 
   def request_status_for_ad_hoc_item(request, item)
-    SearchworksItem::RequestedHoldings::RequestStatus.new(request, item)
+    request.item_status(item)
   end
 
   def status_text_for_item(item)
