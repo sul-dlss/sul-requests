@@ -7,6 +7,18 @@ describe HoldRecall do
     it { is_expected.not_to be_requestable_with_sunet_only }
   end
 
+  describe 'item_commentable?' do
+    it 'is false' do
+      expect(subject).not_to be_item_commentable
+    end
+  end
+
+  describe 'ad_hoc_item_commentable?' do
+    it 'is false' do
+      expect(subject).not_to be_ad_hoc_item_commentable
+    end
+  end
+
   it 'should have the properly assigned Rails STI attribute value' do
     expect(subject.type).to eq 'HoldRecall'
   end

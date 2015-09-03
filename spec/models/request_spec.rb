@@ -54,12 +54,38 @@ describe Request do
     end
 
     describe 'item_commentable?' do
-      it 'is true when the library is SAL-NEWARK' do
-        subject.origin = 'SAL-NEWARK'
-        expect(subject).to be_item_commentable
+      describe 'with holdings' do
+        before do
+          allow(subject).to receive_messages(holdings: [{}])
+          allow(subject).to receive_messages(holdings_object: double('mhld', mhld: [{}]))
+        end
+        it 'is true when the library is SAL-NEWARK or SPEC-COLL' do
+          subject.origin = 'SAL-NEWARK'
+          expect(subject).to be_item_commentable
+
+          subject.origin = 'SPEC-COLL'
+          expect(subject).to be_item_commentable
+        end
+
+        it 'is false when the library is not SAL-NEWARK or SPEC-COLL' do
+          subject.origin = 'GREEN'
+          expect(subject).to_not be_item_commentable
+        end
       end
-      it 'is false when the library is not SAL-NEWARK' do
-        expect(subject).to_not be_item_commentable
+
+      describe 'without holdings' do
+        before do
+          allow(subject).to receive_messages(holdings: [{}])
+          allow(subject).to receive_messages(holdings_object: double('mhld', mhld: nil))
+        end
+
+        it 'is false when the library is SAL-NEWARK or SPEC-COLL' do
+          subject.origin = 'SAL-NEWARK'
+          expect(subject).not_to be_item_commentable
+
+          subject.origin = 'SPEC-COLL'
+          expect(subject).not_to be_item_commentable
+        end
       end
     end
   end

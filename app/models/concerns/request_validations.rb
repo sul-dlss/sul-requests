@@ -6,6 +6,7 @@ module RequestValidations
 
   included do
     validates :item_id, :origin, :origin_location, presence: true
+    validates :item_comment, presence: true, if: :item_commentable?
     validate :requested_holdings_exist
     validate :needed_date_is_not_in_the_past, on: :create
   end

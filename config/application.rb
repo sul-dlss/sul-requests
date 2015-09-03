@@ -98,7 +98,8 @@ module SULRequests
       'SAL-NEWARK'
     ]
 
-    config.item_commentable_libraries = ['SAL-NEWARK']
+    config.ad_hoc_item_commentable_libraries = ['SAL-NEWARK', 'SPEC-COLL']
+    config.item_commentable_libraries = ['SAL-NEWARK', 'SPEC-COLL']
 
     config.location_specific_pickup_libraries = {
       'PAGE-AR' => ['ART', 'SPEC-COLL'],

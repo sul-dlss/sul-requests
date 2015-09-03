@@ -76,6 +76,13 @@ describe MediatedPage do
       expect(subject).to_not be_request_commentable
     end
   end
+
+  describe 'item_commentable?' do
+    it 'is false' do
+      expect(subject).not_to be_item_commentable
+    end
+  end
+
   describe 'TokenEncryptable' do
     it 'should mixin TokenEncryptable' do
       expect(subject).to be_kind_of TokenEncryptable
