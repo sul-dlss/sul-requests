@@ -26,6 +26,12 @@ linters:
     enabled: true
     max_depth: 5
 
+  # Ignoring particular selectors from format
+  # linting since they are out of our control
+  SelectorFormat:
+    ignored_names:
+      - noncirc_page
+
   StringQuotes:
     enabled: true
     style: single_quotes

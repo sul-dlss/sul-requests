@@ -51,6 +51,18 @@ module RequestsHelper
     current_request.origin
   end
 
+  def label_for_item_selector_holding(holding)
+    if holding.current_location.try(:code) == 'CHECKEDOUT'
+      content_tag :span, class: 'status pull-right availability unavailable' do
+        "Due #{holding.due_date}"
+      end
+    else
+      content_tag :span, class: "status pull-right availability #{holding.status.availability_class}" do
+        holding.status.status_text
+      end
+    end
+  end
+
   private
 
   def select_for_multiple_libraries(form, pickup_libraries)

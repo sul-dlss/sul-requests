@@ -1,0 +1,34 @@
+.availability {
+  &:before {
+    margin-right: 5px;
+  }
+
+  &.available {
+    @extend .sul-i-check-2;
+
+    &:after {
+      color: $sul-available-icon-color;
+    }
+  }
+
+  &.noncirc_page {
+    @extend .sul-i-truck-1;
+
+    &:before {
+      color: $sul-noncirc-icon-color;
+    }
+  }
+
+  &.page {
+    @extend .sul-i-truck-1;
+
+    &:before {
+      color: $sul-available-icon-color;
+    }
+  }
+
+  &.unavailable {
+    @extend .sul-i-remove-2;
+    color: $sul-unavailabe-icon-color;
+  }
+}
