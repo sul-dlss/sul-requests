@@ -4,19 +4,7 @@
   <dl class='dl-horizontal dl-invert'>
     <dt>Requested on</dt>
     <dd><%= time_tag current_request.created_at.to_date, :long %></dd>
-    <dt>Approved</dt>
-    <% current_request.holdings.each do |item| %>
-      <% if item.request_status.approved? %>
-        <dd><%= item.callnumber %></dd>
-      <% end %>
-    <% end %>
-
-    <% current_request.ad_hoc_items.each do |item| %>
-      <% ad_hoc_item_status = request_status_for_ad_hoc_item(current_request, item) %>
-      <% if ad_hoc_item_status.approved? %>
-        <dd><%= item %></dd>
-      <% end %>
-    <% end if current_request.ad_hoc_items.present? %>
+    <%= render partial: 'status_header' %>
   </dl>
   <hr />
   <%= render partial: 'searchworks_item_information' %>

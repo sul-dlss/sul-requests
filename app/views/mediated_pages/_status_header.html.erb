@@ -1,0 +1,14 @@
+<% approved_holdings = current_request.holdings.select { |item| item.request_status.approved? } %>
+<% approved_adhoc_holdings = (current_request.ad_hoc_items || []).select { |item| request_status_for_ad_hoc_item(current_request, item).approved? } %>
+
+<% if approved_holdings.any? || approved_adhoc_holdings.any? %>
+  <dt>Approved</dt>
+
+  <% approved_holdings.each do |item| %>
+      <dd><%= item.callnumber %></dd>
+  <% end %>
+
+  <% approved_adhoc_holdings.each do |item| %>
+      <dd><%= item %></dd>
+  <% end %>
+<% end %>
