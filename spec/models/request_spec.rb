@@ -120,6 +120,15 @@ describe Request do
       end
     end
 
+    describe 'when persisted with no selected barcode' do
+      let(:subject) { create(:request_with_multiple_holdings, barcodes: []) }
+      it 'should get all the holdings for the requested location' do
+        holdings = subject.holdings
+        expect(holdings).to be_a Array
+        expect(holdings).to be_blank
+      end
+    end
+
     describe 'when not persisted' do
       let(:subject) { build(:request_with_multiple_holdings) }
       it 'should get all the holdings for the requested location' do
