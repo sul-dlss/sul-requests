@@ -44,6 +44,9 @@ en:
         authors: 'Author(s)'
         page_range: 'Page range'
         section_title: 'Title of article or chapter'
+    help:
+      scan:
+        section_title: 'One article or chapter; maximum 50 pages'
   admin:
     index:
       custom: 'Custom requests'

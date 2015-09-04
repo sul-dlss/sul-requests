@@ -2,7 +2,7 @@
   <%= f.label :page_range, class: "#{label_column_class} control-label" %>
   <div class='<%= content_column_class %>'>
     <%= f.text_field_without_bootstrap :page_range, class: 'form-control', aria: { describedby: 'page_range_help_block' } %>
-    <span class="help-block" id="page_range_help_block">Example: 1-5, 8, 7-13</span>
+    <span class="help-block" id="page_range_help_block">Examples: '1-15, 25-30' or '249-275, index'</span>
   </div>
 </div>
 <%= f.text_area :section_title, rows: '3' %>
