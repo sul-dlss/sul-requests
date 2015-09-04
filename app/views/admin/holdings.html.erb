@@ -42,7 +42,7 @@
       <tr class='<%= cycle('odd', 'even') %> <%= 'approved' if ad_hoc_item_status.approved? %>'>
         <td class='col-xs-1'>
           <button class="approval-btn btn btn-xs btn-success" data-behavior="item-approval" data-item-approval-url="<%= approve_item_admin_path(@request, item: item) %>">
-            <% if item.request_status.approved? %>
+            <% if ad_hoc_item_status.approved? %>
               Approved
             <% else %>
               Approve

@@ -93,6 +93,20 @@ describe 'Viewing all requests' do
         expect(page).to have_css('tbody tr', count: 2)
         expect(page).to have_css('a', text: 'Show archived requests')
       end
+
+      context 'with an ad-hoc item' do
+        it 'works' do
+          create(:mediated_page, ad_hoc_items: ['ZZZ-123'],
+                                 origin: 'SPEC-COLL',
+                                 request_comment: 'I can has this unbarcoded item?',
+                                 user: User.create(name: 'Jane', email: 'jane@example.com')
+                )
+
+          visit admin_path('SPEC-COLL')
+
+          expect(page).to have_css('td', text: 'I can has this unbarcoded item?')
+        end
+      end
     end
   end
 
