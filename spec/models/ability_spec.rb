@@ -169,22 +169,12 @@ describe Ability do
       it { is_expected.to be_able_to(:create, scan) }
     end
 
-    describe 'who is a graduate student' do
+    describe 'who is a student' do
       before do
         user.affiliation = 'stanford:student'
-        user.student_type = 'Graduate'
       end
 
       it { is_expected.to be_able_to(:create, scan) }
-    end
-
-    describe 'who is an undergraduate' do
-      before do
-        user.affiliation = 'stanford:student'
-        user.student_type = 'Undergraduate'
-      end
-
-      it { is_expected.not_to be_able_to(:create, scan) }
     end
   end
 

@@ -73,7 +73,7 @@ class Ability
   end
 
   def current_user_in_scan_pilot_group?
-    @user.affiliation.any? { |g| Settings.scan_pilot_groups.include? g } || @user.graduate_student?
+    @user.affiliation.any? { |g| Settings.scan_pilot_groups.include? g }
   end
 
   def request_is_by_anonymous_user?(request)
