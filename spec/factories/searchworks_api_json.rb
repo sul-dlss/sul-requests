@@ -469,4 +469,47 @@ FactoryGirl.define do
       end.to_h
     end
   end
+
+  factory :checkedout_holdings, class: Hash do
+    title 'Checked out item'
+
+    format ['Book']
+
+    holdings [
+      { 'code' => 'SAL3',
+        'locations' => [
+          { 'code' => 'STACKS',
+            'items' => [
+              { 'barcode' => '12345678',
+                'callnumber' => 'ABC 123',
+                'type' => 'STKS',
+                'status' => {
+                  'availability_class' => 'available',
+                  'status_text' => 'Available'
+                }
+              },
+              { 'barcode' => '87654321',
+                'callnumber' => 'ABC 321',
+                'current_location' => {
+                  'code' => 'CHECKEDOUT'
+                },
+                'due_date' => '01/01/2015',
+                'type' => 'STKS',
+                'status' => {
+                  'availability_class' => 'page',
+                  'status_text' => 'Available'
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+
+    initialize_with do
+      attributes.map do |k, h|
+        [k.to_s, h]
+      end.to_h
+    end
+  end
 end

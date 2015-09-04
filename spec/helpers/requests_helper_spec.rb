@@ -117,4 +117,40 @@ describe RequestsHelper do
       expect(helper.i18n_location_title_key).to eq 'ON-ORDER'
     end
   end
+
+  describe 'label_for_item_selector_holding' do
+    let(:subject) { Capybara.string(label_for_item_selector_holding(holding)) }
+
+    describe 'checked out items' do
+      let(:holding) do
+        double('holding', current_location: double('location', code: 'CHECKEDOUT'), due_date: Time.zone.today)
+      end
+
+      it 'includes the unavailable class' do
+        expect(subject).to have_css('.unavailable')
+      end
+
+      it 'includes the due date' do
+        expect(subject).to have_content("Due #{Time.zone.today}")
+      end
+    end
+
+    describe 'non checked out items' do
+      let(:holding) do
+        double(
+          'holding',
+          current_location: nil,
+          status: double('status', availability_class: 'noncirc_page', status_text: 'In-library use only')
+        )
+      end
+
+      it 'includes the status icon' do
+        expect(subject).to have_css('.noncirc_page')
+      end
+
+      it 'includes the status text' do
+        expect(subject).to have_content('In-library use only')
+      end
+    end
+  end
 end

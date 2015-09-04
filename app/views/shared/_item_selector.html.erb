@@ -34,7 +34,7 @@
                   </span>
                   <%= barcode.label "_#{holding.barcode}", class: 'form-control' do %>
                     <span class='callnumber'><%= holding.callnumber %></span>
-                    <span class='status pull-right <%= holding.status.availability_class %>'><%= holding.status.status_text %></span>
+                    <%= label_for_item_selector_holding(holding) %>
                   <% end %>
                 <% else %>
                   <span class='input-group-addon barcode-checkbox'>
@@ -42,8 +42,14 @@
                   </span>
                   <%= barcode.label holding.barcode, class: 'form-control' do %>
                     <span class='callnumber'><%= holding.callnumber %></span>
-                    <span class='status pull-right <%= holding.status.availability_class %>'><%= holding.status.status_text %></span>
+                    <%= label_for_item_selector_holding(holding) %>
                   <% end %>
+                <% end %>
+
+                <% if holding.current_location.try(:code) == 'CHECKEDOUT' %>
+                  <div data-behavior='checkedout-note' class='checkedout-note'>
+                    This item is currently in use by another patron. We can still get it for you but we can't estimate the delivery date.
+                  </div>
                 <% end %>
 
                 <% if holding.public_note.present? %>

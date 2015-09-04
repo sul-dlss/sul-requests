@@ -332,4 +332,26 @@ describe 'Item Selector' do
       expect(Request.last.ad_hoc_items).to eq(['ZZZ 321', 'ZZZ 456'])
     end
   end
+
+  describe 'checked out items', js: true do
+    before do
+      stub_current_user(create(:webauth_user))
+      stub_searchworks_api_json(build(:checkedout_holdings))
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
+    end
+
+    it 'has the due date' do
+      within('#item-selector') do
+        expect(page).to have_css('.unavailable', text: 'Due 01/01/2015')
+      end
+    end
+
+    it 'toggles the checked out note' do
+      within('#item-selector') do
+        expect(page).not_to have_css('.checkedout-note')
+        find('.unavailable', text: 'Due 01/01/2015').click
+        expect(page).to have_css('.checkedout-note')
+      end
+    end
+  end
 end
