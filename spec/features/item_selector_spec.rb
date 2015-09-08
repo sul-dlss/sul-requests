@@ -156,7 +156,8 @@ describe 'Item Selector' do
       end
 
       it 'persists items that are not currently visible due to filtering' do
-        fill_in 'Planned date of use', with: Time.zone.today + 1.day
+        fill_in_required_date
+
         within('#item-selector') do
           check('ABC 123')
           check('ABC 456')
@@ -189,7 +190,7 @@ describe 'Item Selector' do
     it 'still limits selections' do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
 
-      fill_in 'Planned date of use', with: Time.zone.today + 1.day
+      fill_in_required_date
 
       within('#item-selector') do
         check('ABC 123')
@@ -311,7 +312,7 @@ describe 'Item Selector' do
     end
 
     it 'are persisted' do
-      fill_in 'Planned date of use', with: Time.zone.today + 1.day
+      fill_in_required_date
 
       fill_in 'ad_hoc_items', with: 'ZZZ 321'
       click_link 'Add'
@@ -353,5 +354,12 @@ describe 'Item Selector' do
         expect(page).to have_css('.checkedout-note')
       end
     end
+  end
+
+  def fill_in_required_date
+    date_input = find('#request_needed_date', visible: false)
+    min_date = date_input['min']
+    date_input.set(min_date)
+    find('.ws-date').set(min_date)
   end
 end
