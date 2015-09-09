@@ -2,7 +2,7 @@
   <% if current_request.holdings.present? %>
     <dt><%= current_request.class.human_attribute_name(:holdings) %></dt>
     <% current_request.holdings.each do |holding| %>
-      <dd><%= holding.callnumber %></dd>
+      <dd><%= holding.callnumber %><%= holding_request_status(holding) %></dd>
     <% end  %>
   <% end %>
 

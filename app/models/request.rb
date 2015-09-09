@@ -17,7 +17,7 @@ class Request < ActiveRecord::Base
   # Serialzed data hash
   store :data, accessors: [
     :ad_hoc_items, :authors, :request_status_data, :item_comment, :page_range,
-    :proxy, :request_comment, :section_title, :symphony_response
+    :proxy, :request_comment, :section_title, :symphony_response_data
   ], coder: JSON
   serialize :barcodes, Array
 
@@ -137,5 +137,13 @@ class Request < ActiveRecord::Base
 
   def item_status(id)
     ItemStatus.new(self, id)
+  end
+
+  def symphony_response
+    @symphony_response ||= SymphonyResponse.new(symphony_response_data || {})
+  end
+
+  def symphony_response_will_change!
+    @symphony_response = nil
   end
 end

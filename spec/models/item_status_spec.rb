@@ -78,4 +78,11 @@ describe ItemStatus do
       expect(subject.approval_time).to eq subject.send(:status_object)['approval_time']
     end
   end
+
+  describe '#msgcode' do
+    it 'returns the message code from the symphony request' do
+      request.symphony_response_data = { requested_items: [{ barcode: '3610512345', msgcode: 'msgcode' }] }
+      expect(subject.msgcode).to eq 'msgcode'
+    end
+  end
 end

@@ -80,6 +80,17 @@ describe 'requests/status.html.erb' do
         expect(rendered).to have_css('dd', text: 'ABC 123')
         expect(rendered).to have_css('dd', text: 'ABC 456')
       end
+
+      context 'with abnormal request statuses' do
+        before do
+          allow_any_instance_of(ItemStatus).to receive(:msgcode).and_return('P001B')
+          render
+        end
+
+        it 'displays abnormal request status messages' do
+          expect(rendered).to have_css('dd', text: 'ABC 123 (delivery may be delayed)')
+        end
+      end
     end
   end
 end

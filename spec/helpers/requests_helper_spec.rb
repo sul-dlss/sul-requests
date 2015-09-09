@@ -153,4 +153,37 @@ describe RequestsHelper do
       end
     end
   end
+
+  describe '#holding_request_status' do
+    describe 'processed items' do
+      let(:subject) { holding_request_status(holding) }
+      let(:holding) do
+        double(
+          'holding',
+          current_location: nil,
+          request_status: double('request_status', msgcode: 209)
+        )
+      end
+
+      it 'has no special status text' do
+        expect(subject).to be_blank
+      end
+    end
+
+    describe 'items that required a hold' do
+      let(:subject) { Capybara.string(holding_request_status(holding)) }
+
+      let(:holding) do
+        double(
+          'holding',
+          current_location: nil,
+          request_status: double('request_status', msgcode: 'P001B')
+        )
+      end
+
+      it 'warns the user of a delay' do
+        expect(subject).to have_css('.alert-danger', text: '(delivery may be delayed)')
+      end
+    end
+  end
 end

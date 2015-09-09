@@ -51,6 +51,15 @@ module RequestsHelper
     end
   end
 
+  def holding_request_status(holding)
+    text = case holding.request_status.msgcode
+           when 'P001B', 'P002B'
+             'delivery may be delayed'
+           end
+
+    content_tag(:span, " (#{text})", class: 'alert-danger small') if text.present?
+  end
+
   private
 
   def format_date(date)

@@ -5,6 +5,8 @@ FactoryGirl.define do
     origin_location 'STACKS'
     item_title 'Title for Scan 12345'
     section_title 'Section Title for Scan 12345'
+
+    to_create { |instance| instance.save(validate: false) }
   end
 
   factory :scan_with_holdings, class: Scan do
