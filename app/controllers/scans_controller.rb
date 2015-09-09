@@ -2,6 +2,12 @@
 #  Controller to handle particular behaviors for Scan type requests
 ###
 class ScansController < RequestsController
+  # Redirect to the illiad_url unless the illiad_success
+  # parameter (that we in the illiad_url method) is present
+  before_action only: :create do
+    redirect_to illiad_url unless params[:illiad_success]
+  end
+
   protected
 
   def rescue_can_can(exception)
@@ -25,12 +31,13 @@ class ScansController < RequestsController
     }.merge(request_context_params)
   end
 
-  def redirect_to_success_with_token
-    redirect_to illiad_url
-  end
-
   def illiad_url
-    redirect_url = successful_scan_url(current_request, request_context_params)
+    redirect_url = create_scans_url(
+      request_context_params.merge(
+        request: params[:request],
+        illiad_success: true
+      )
+    )
 
     IlliadOpenurl.new(current_user, current_request, redirect_url).to_url
   end

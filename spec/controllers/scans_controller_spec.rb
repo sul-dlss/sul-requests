@@ -87,7 +87,7 @@ describe ScansController do
         allow(controller).to receive(:current_request).and_return(create(:scan_with_holdings, barcodes: ['12345678']))
       end
       it 'should be allowed' do
-        post :create, request: {
+        post :create, illiad_success: true, request: {
           item_id: '12345',
           origin: 'SAL3',
           origin_location: 'STACKS',
@@ -96,6 +96,18 @@ describe ScansController do
         }
         expect(Scan.last.origin).to eq 'SAL3'
         expect(Scan.last.user).to eq user
+      end
+
+      it 'should redirect post requests to the Illiad URL when the illiad_success param is not present' do
+        post :create, request: {
+          item_id: '12345',
+          origin: 'SAL3',
+          origin_location: 'STACKS',
+          barcodes: ['12345678'],
+          section_title: 'Some really important chapter'
+        }
+
+        expect(response).to redirect_to(/^#{Settings.sul_illiad}.*scan_referrer=/)
       end
 
       it 'should construct an illiad query url' do
@@ -111,7 +123,7 @@ describe ScansController do
         stub_searchworks_api_json(build(:sal3_holdings))
         expect(
           lambda do
-            put :create, request: {
+            post :create, illiad_success: true, request: {
               item_id: '12345',
               origin: 'SAL3',
               origin_location: 'STACKS',
@@ -125,7 +137,7 @@ describe ScansController do
       it 'submits the request to symphony' do
         expect(SubmitSymphonyRequestJob).to receive(:perform_now)
 
-        put :create, request: {
+        put :create, illiad_success: true, request: {
           item_id: '12345',
           origin: 'SAL3',
           origin_location: 'STACKS',
@@ -138,7 +150,7 @@ describe ScansController do
       let(:user) { create(:scan_eligible_user) }
 
       it 'should return an error message to the user' do
-        post :create, request: { item_id: '12345' }
+        post :create, illiad_success: true, request: { item_id: '12345' }
         expect(flash[:error]).to eq 'There was a problem creating your request.'
         expect(response).to render_template 'new'
       end
