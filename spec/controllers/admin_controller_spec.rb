@@ -113,7 +113,7 @@ describe AdminController do
       let(:user) { create(:superadmin_user) }
 
       it 'can approve individual items' do
-        expect(MediatedPage.find(mediated_page.id).request_status_data).to be_nil
+        expect(MediatedPage.find(mediated_page.id).request_status_data).to be_blank
         get :approve_item, id: mediated_page.id, item: '12345678'
         expect(response).to be_successful
         expect(

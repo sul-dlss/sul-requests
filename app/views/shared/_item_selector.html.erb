@@ -1,18 +1,18 @@
 <% if f.object.present? %>
   <%= f.fields_for :barcodes do |barcode| %>
-    <% if f.object.holdings.one? %>
+    <% if f.object.all_holdings.one? %>
       <div class='form-group'>
         <span class='control-label <%= label_column_class %>'>Call number</span>
         <div class='<%= content_column_class %>'>
           <p class="form-control-static">
-            <%= current_request.holdings.first.callnumber %>
+            <%= current_request.all_holdings.first.callnumber %>
           </p>
         </div>
       </div>
-      <%= barcode.hidden_field nil, value: f.object.holdings.first.barcode %>
-    <% elsif f.object.holdings.many? %>
+      <%= barcode.hidden_field nil, value: f.object.all_holdings.first.barcode %>
+    <% elsif f.object.all_holdings.many? %>
       <div id='selected-items-filter' data-behavior='item-selector' data-limit-reached-message="<%= t('sul_requests.limit_reached_message', limit: f.object.item_limit) %>">
-        <% if f.object.holdings.length >= 10 %>
+        <% if f.object.all_holdings.length >= 10 %>
           <div class='form-group'>
             <label class='control-label <%= label_column_class %>' for='item-selector-search'>Search item list</label>
             <div class='<%= content_column_class %>'>
@@ -26,11 +26,11 @@
         </div>
         <div id="item-selector" class="item-selector" data-limit-selected-items="<%= f.object.item_limit if f.object.item_limit.to_i > 1 %>" data-counter-target="[data-items-counter='true']">
           <div class='list'>
-            <% f.object.holdings.sort_by(&:callnumber).each do |holding| %>
+            <% f.object.all_holdings.sort_by(&:callnumber).each do |holding| %>
               <div class='input-group'>
                 <% if f.object.item_limit.to_i == 1 %>
                   <span class='input-group-addon barcode-checkbox'>
-                    <%= barcode.radio_button_without_bootstrap nil, holding.barcode, data: { barcode: holding.barcode, callnumber: holding.callnumber } %>
+                    <%= barcode.radio_button_without_bootstrap nil, holding.barcode, checked: f.object.requested_holdings.include?(holding), data: { barcode: holding.barcode, callnumber: holding.callnumber } %>
                   </span>
                   <%= barcode.label "_#{holding.barcode}", class: 'form-control' do %>
                     <span class='callnumber'><%= holding.callnumber %></span>
@@ -38,7 +38,7 @@
                   <% end %>
                 <% else %>
                   <span class='input-group-addon barcode-checkbox'>
-                    <%= barcode.check_box_without_bootstrap holding.barcode, data: { barcode: holding.barcode, callnumber: holding.callnumber } %>
+                    <%= barcode.check_box_without_bootstrap holding.barcode, checked: f.object.requested_holdings.include?(holding), data: { barcode: holding.barcode, callnumber: holding.callnumber } %>
                   </span>
                   <%= barcode.label holding.barcode, class: 'form-control' do %>
                     <span class='callnumber'><%= holding.callnumber %></span>
@@ -80,10 +80,14 @@
 
       <div class='form-group'>
         <span class='control-label <%= label_column_class %> required'>
-          <span data-items-counter='true'><span data-count='true'>0</span> items selected</span>
+          <span data-items-counter='true'><span data-count='true'><%= f.object.requested_holdings.length + (f.object.ad_hoc_items || []).length %></span> items selected</span>
         </span>
         <div class='<%= content_column_class %>'>
-          <div data-behavior='breadcrumb-container'></div>
+          <div data-behavior='breadcrumb-container'>
+            <% f.object.ad_hoc_items.each do |i| %>
+              <%= f.hidden_field :ad_hoc_items, value: i, multiple: true %>
+            <% end if f.object.ad_hoc_items %>
+          </div>
           <% if f.object.holdings.many? %>
             <div class="zero-items-message help-text">[<%= t(:'.help_text', count: f.object.item_limit.to_i) %>]</div>
           <% end %>
