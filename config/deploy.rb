@@ -3,7 +3,7 @@ lock '3.4.0'
 
 set :application, 'sul-requests'
 set :repo_url, 'https://github.com/sul-dlss/sul-requests.git'
-set :deploy_host, ask("Server", 'e.g. hostname with no ".stanford.edu" or server node designator')
+set :deploy_host, ask('Server', 'e.g. hostname with no ".stanford.edu" or server node designator')
 ask :user, proc { `whoami`.chomp }.call
 
 # Default branch is :master
@@ -25,16 +25,26 @@ set :deploy_to, "/opt/app/#{fetch(:user)}/#{fetch(:user)}"
 # set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/initializers/squash.rb', 'public/.htaccess')
+set :linked_files, fetch(:linked_files, []).push(
+  'config/database.yml',
+  'config/initializers/squash.rb',
+  'public/.htaccess'
+)
 
 # Default value for linked_dirs is []
-set :linked_dirs, fetch(:linked_dirs, []).push('config/settings',
-                                               'log',
-                                               'tmp/pids',
-                                               'tmp/cache',
-                                               'tmp/sockets',
-                                               'vendor/bundle',
-                                               'public/system')
+set :linked_dirs, fetch(:linked_dirs, []).push(
+  'config/settings',
+  'log',
+  'tmp/pids',
+  'tmp/cache',
+  'tmp/sockets',
+  'vendor/bundle',
+  'public/system'
+)
+
+server "#{fetch(:deploy_host)}.stanford.edu", user: fetch(:user), roles: %w(web db app)
+
+Capistrano::OneTimeKey.generate_one_time_key!
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
