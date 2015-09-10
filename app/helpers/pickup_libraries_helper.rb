@@ -17,16 +17,21 @@ module PickupLibrariesHelper
 
   private
 
+  # rubocop:disable Metrics/MethodLength
   def select_for_multiple_libraries(form, pickup_libraries)
     return unless pickup_libraries.keys.length > 1
     form.select(
       :destination,
       pickup_libraries_array(pickup_libraries),
-      { label: label_for_pickup_libraries_dropdown(pickup_libraries), selected: default_pickup_library },
+      {
+        label: label_for_pickup_libraries_dropdown(pickup_libraries),
+        selected: form.object.destination || default_pickup_library
+      },
       aria: { controls: 'scheduler-text' },
       data: { 'paging-schedule-updater' => 'true', 'text-selector' => "[data-text-object='#{form.object.object_id}']" }
     )
   end
+  # rubocop:enable Metrics/MethodLength
 
   def default_pickup_library
     SULRequests::Application.config.default_pickup_library

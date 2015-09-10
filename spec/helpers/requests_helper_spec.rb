@@ -23,6 +23,15 @@ describe RequestsHelper do
         expect(form).to receive(:select).with(any_args).and_return('<select>')
         expect(select_for_pickup_libraries(form)).to eq '<select>'
       end
+
+      context 'with a destination' do
+        let(:request) { create(:request, origin: 'SAL3', destination: 'ART', origin_location: 'PAGE-HP') }
+
+        it 'defaults to the destination library' do
+          expect(form).to receive(:select).with(anything, anything, hash_including(selected: 'ART'), anything).and_return('<select>')
+          expect(select_for_pickup_libraries(form)).to eq '<select>'
+        end
+      end
     end
   end
   describe '#label_for_pickup_libraries_dropdown' do
