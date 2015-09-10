@@ -33,8 +33,8 @@ describe 'mediated_pages/_status_header.html.erb' do
   context 'with approved holdings' do
     let(:holdings) do
       [
-        double(request_status: double(approved?: true), callnumber: 'XYZ'),
-        double(request_status: double(approved?: false), callnumber: 'ABC')
+        double(request_status: double(approved?: true, msgcode: 'ok'), callnumber: 'XYZ'),
+        double(request_status: double(approved?: false, msgcode: 'ok'), callnumber: 'ABC')
       ]
     end
 

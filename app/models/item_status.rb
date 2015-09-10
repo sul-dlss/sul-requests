@@ -17,6 +17,10 @@ class ItemStatus
     }
   end
 
+  def msgcode
+    symphony_status[:msgcode]
+  end
+
   def approved?
     status_object[:approved]
   end
@@ -52,6 +56,12 @@ class ItemStatus
 
   def status_object=(value = {})
     @request.request_status_data[@id] = value
+  end
+
+  def symphony_status
+    return {} unless @request.symphony_response
+
+    @request.symphony_response.items_by_barcode[@id] || {}
   end
 
   def default_status_object
