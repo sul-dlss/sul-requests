@@ -1,6 +1,6 @@
 <% unless f.object.requestable_with_sunet_only?  %>
   <div id="no-sunetid-form" aria-hidden="false">
-    <%= f.fields_for :user, User.new do |uf| %>
+    <%= f.fields_for :user, (current_request.user unless current_request.user && current_request.user.webauth_user?) || User.new do |uf| %>
       <% if f.object.requestable_with_library_id? %>
         <%= uf.text_field :library_id %>
       <% end  %>
