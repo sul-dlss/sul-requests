@@ -133,6 +133,8 @@ describe 'Creating a mediated page request' do
   end
 
   def fill_in_required_fields
-    fill_in 'Planned date of use', with: (Time.zone.now + 1.day).to_date
+    date_input = find('#request_needed_date', visible: false)
+    min_date = date_input['min']
+    date_input.set(min_date)
   end
 end
