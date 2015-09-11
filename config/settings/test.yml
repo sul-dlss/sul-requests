@@ -10,3 +10,5 @@ destination_admin_groups:
 token_encrypt:
   secret: 'cphNKBJUCUlDeekeQGTmPkinkxAkJKxDsfHailJrKKIzxkSRFHbarXxjYRMdkyKW'
   salt: 'dGcTBhXrQjsvQkbDQCkAIdogYjzOiIQpjToNLjqyzslKShfTvxIJHmMZhzdNjOqtDZKtxutyHBZmNHKOcGMfHzxwCFeOTBeEHYHNedtrmdfLzHMTRSDJCRMURaAjRrDq'
+
+mailer_host: 'example.com'
