@@ -1,1 +1,1 @@
-set :rails_env, 'producution'
+set :rails_env, 'production'

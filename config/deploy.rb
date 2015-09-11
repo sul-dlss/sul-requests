@@ -28,6 +28,7 @@ set :deploy_to, "/opt/app/#{fetch(:user)}/#{fetch(:user)}"
 set :linked_files, fetch(:linked_files, []).push(
   'config/database.yml',
   'config/initializers/squash.rb',
+  'config/secrets.yml',
   'public/.htaccess'
 )
 
