@@ -14,8 +14,8 @@ class IlliadOpenurl
 
   def item_data
     { 'rft.location': @scan.origin,
-      'rft.call_number': @scan.holdings.first.callnumber,
-      'rft.item': @scan.holdings.first.barcode }
+      'rft.call_number': first_holding.try(:callnumber),
+      'rft.item': first_holding.try(:barcode) }
   end
 
   def citation_data
@@ -38,6 +38,10 @@ class IlliadOpenurl
   end
 
   private
+
+  def first_holding
+    @scan.holdings.first
+  end
 
   def nvtgc
     illiad_nvtgc_config.each do |k, v|
