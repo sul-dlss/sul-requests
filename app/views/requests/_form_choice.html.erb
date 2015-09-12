@@ -6,7 +6,7 @@
     <div class="col-xs-12 col-sm-6 content">
       <dl id="deliveryDescription">
         <dt>Earliest delivery</dt>
-        <dd data-single-library-value='<%= SULRequests::Application.config.default_pickup_library %>'>
+        <dd data-single-library-value='<%= SULRequests::Application.config.default_pickup_library unless current_request.holdings_object.single_checked_out_item? %>'>
           <span data-scheduler-text='true' aria-live='polite'></span>
         </dd>
       </dl>
@@ -22,7 +22,7 @@
     <div class="col-xs-12 col-sm-6 content">
       <dl id="scanDescription">
         <dt>Earliest delivery</dt>
-        <dd data-single-library-value='SCAN'>
+        <dd data-single-library-value='<%= 'SCAN' unless current_request.holdings_object.single_checked_out_item? %>'>
           <span data-scheduler-text='true' aria-live='polite'></span>
         </dd>
         <dt>Copyright limit</dt>

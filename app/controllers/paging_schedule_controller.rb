@@ -6,6 +6,10 @@ class PagingScheduleController < ApplicationController
     render status: 404
   end
 
+  before_action only: :show do
+    render status: 404 unless params[:origin].present? && params[:destination].present?
+  end
+
   def show
     schedule = PagingSchedule.for(request_for_schedule)
     respond_to do |format|

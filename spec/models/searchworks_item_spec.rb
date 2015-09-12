@@ -131,6 +131,34 @@ describe SearchworksItem do
       end
     end
 
+    describe 'single_checked_out_item?' do
+      let(:item) { double('item') }
+      describe 'when the holdings include a single checked out item' do
+        before do
+          allow(subject).to receive_messages(all: [
+            double('holding', current_location: double('location', code: 'CHECKEDOUT'))
+          ])
+        end
+
+        it 'returns true' do
+          expect(subject).to be_single_checked_out_item
+        end
+      end
+
+      describe 'when the holdings includes multiple items' do
+        before do
+          allow(subject).to receive_messages(all: [
+            double('holding', current_location: double('location', code: 'CHECKEDOUT')),
+            double('holding', current_location: nil)
+          ])
+        end
+
+        it 'returns false' do
+          expect(subject).not_to be_single_checked_out_item
+        end
+      end
+    end
+
     describe '#library_instructions' do
       let(:item) { build(:green_stacks_searchworks_item) }
       describe 'when not present' do

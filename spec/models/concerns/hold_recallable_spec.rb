@@ -65,5 +65,23 @@ describe HoldRecallable do
         expect(request).to be_hold_recallable
       end
     end
+
+    context 'when CHECKEDOUT' do
+      it 'is true when there is a single checked out item' do
+        allow(request).to receive_messages(
+          holdings_object: double('holdings_object', single_checked_out_item?: true, all: [])
+        )
+
+        expect(request).to be_hold_recallable
+      end
+
+      it 'is false when there is are multiple items' do
+        allow(request).to receive_messages(
+          holdings_object: double('holdings_object', single_checked_out_item?: false, all: [])
+        )
+
+        expect(request).not_to be_hold_recallable
+      end
+    end
   end
 end
