@@ -3,7 +3,11 @@
 ###
 module HoldRecallable
   def hold_recallable?
-    barcode_present? || on_order? || in_process? || missing?
+    barcode_present? ||
+      on_order? ||
+      in_process? ||
+      missing? ||
+      single_checked_out_item?
   end
 
   private
@@ -30,5 +34,9 @@ module HoldRecallable
 
   def origin_location
     @request.origin_location
+  end
+
+  def single_checked_out_item?
+    @request.holdings_object.single_checked_out_item?
   end
 end

@@ -83,6 +83,11 @@ class SearchworksItem
       end
     end
 
+    def single_checked_out_item?
+      all.one? &&
+        all.first.current_location.try(:code) == 'CHECKEDOUT'
+    end
+
     def mhld
       return [] unless location.present? && location.mhld.present?
       location.mhld

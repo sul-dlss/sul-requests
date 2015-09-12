@@ -40,6 +40,14 @@ describe PagingScheduleController do
       end
     end
 
+    describe 'when both the origin and destination are not present' do
+      it 'responds with a 404' do
+        get :show, origin: 'SAL3'
+        expect(response).to_not be_success
+        expect(response.status).to be 404
+      end
+    end
+
     describe 'when there is no schedule found' do
       before do
         expect(PagingSchedule).to receive(:for).and_raise(PagingSchedule::ScheduleNotFound)

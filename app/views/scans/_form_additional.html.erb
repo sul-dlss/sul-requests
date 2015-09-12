@@ -12,7 +12,7 @@
   <div class='control-label <%= label_column_class %>'>
     Earliest delivery
   </div>
-  <div class='<%= content_column_class %> input-like-text' data-single-library-value='SCAN'>
+  <div class='<%= content_column_class %> input-like-text' data-single-library-value='<%= 'SCAN' unless current_request.holdings_object.single_checked_out_item? %>'>
     <span data-scheduler-text='true' aria-live='polite'></span>
   </div>
 </div>
