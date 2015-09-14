@@ -16,7 +16,7 @@ FactoryGirl.define do
     after(:build) do |page|
       class << page
         def searchworks_item
-          FactoryGirl.build(:green_stacks_multi_holdings_searchworks_item)
+          @searchworks_item ||= FactoryGirl.build(:green_stacks_multi_holdings_searchworks_item, request: self)
         end
       end
     end
@@ -31,7 +31,7 @@ FactoryGirl.define do
     after(:build) do |page|
       class << page
         def searchworks_item
-          FactoryGirl.build(:mhld_searchworks_item)
+          @searchworks_item ||= FactoryGirl.build(:mhld_searchworks_item, request: self)
         end
       end
     end

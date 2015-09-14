@@ -1,6 +1,8 @@
 FactoryGirl.define do
   factory :green_stacks_searchworks_item, class: SearchworksItem do
-    initialize_with { new(create(:request, origin: 'GREEN', origin_location: 'STACKS')) }
+    initialize_with { new(request) }
+
+    request { create(:request, origin: 'GREEN', origin_location: 'STACKS') }
 
     after(:build) do |item|
       class << item
@@ -12,7 +14,9 @@ FactoryGirl.define do
   end
 
   factory :green_stacks_multi_holdings_searchworks_item, class: SearchworksItem do
-    initialize_with { new(create(:request, origin: 'GREEN', origin_location: 'STACKS')) }
+    initialize_with { new(request) }
+
+    request { create(:request, origin: 'GREEN', origin_location: 'STACKS') }
 
     after(:build) do |item|
       class << item
@@ -24,7 +28,9 @@ FactoryGirl.define do
   end
 
   factory :sal3_stacks_multi_holdings_searchworks_item, class: SearchworksItem do
-    initialize_with { new(create(:request, origin: 'SAL3', origin_location: 'STACKS')) }
+    initialize_with { new(request) }
+
+    request { create(:request, origin: 'SAL3', origin_location: 'STACKS') }
 
     after(:build) do |item|
       class << item
@@ -36,7 +42,9 @@ FactoryGirl.define do
   end
 
   factory :spec_coll_stacks_multi_holdings_searchworks_item, class: SearchworksItem do
-    initialize_with { new(create(:request, origin: 'SPEC-COLL', origin_location: 'STACKS')) }
+    initialize_with { new(request) }
+
+    request { create(:request, origin: 'SPEC-COLL', origin_location: 'STACKS') }
 
     after(:build) do |item|
       class << item
@@ -48,7 +56,9 @@ FactoryGirl.define do
   end
 
   factory :mhld_searchworks_item, class: SearchworksItem do
-    initialize_with { new(create(:request, origin: 'GREEN', origin_location: 'STACKS')) }
+    initialize_with { new(request) }
+
+    request { create(:request, origin: 'GREEN', origin_location: 'STACKS') }
 
     after(:build) do |item|
       class << item
@@ -60,7 +70,9 @@ FactoryGirl.define do
   end
 
   factory :library_instructions_searchworks_item, class: SearchworksItem do
-    initialize_with { new(create(:request, origin: 'SPEC-COLL', origin_location: 'STACKS')) }
+    initialize_with { new(request) }
+
+    request { create(:request, origin: 'SPEC-COLL', origin_location: 'STACKS') }
 
     after(:build) do |item|
       class << item
