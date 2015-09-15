@@ -1,11 +1,14 @@
+//= require 'item_selector/item_selector_incrementor'
+
 var itemSelectorBreadcrumbs = (function() {
 
-  var breadcrumbTemplate = function(item) {
+  var breadcrumbTemplate = function(item, extraMarkup) {
     var barcode = item.data('barcode');
     var callnumber = item.data('callnumber');
     return $([
       '<div id="breadcrumb-' + barcode + '" class="breadcrumb-pill">',
         callnumber,
+        extraMarkup,
         '<div class="pill-addon">',
           '<button type="button" class="close" aria-label="Close">',
             '<span aria-hidden="true">&times;</span>',
@@ -36,8 +39,8 @@ var itemSelectorBreadcrumbs = (function() {
     addBreadcrumbBehavior: function() {
       var _this = this;
       _this.selectorElement()
-           .on('item-selector:selected', function(event, item) {
-             _this.addBreadcrumb(item);
+           .on('item-selector:selected', function(event, item, extraMarkup) {
+             _this.addBreadcrumb(item, extraMarkup);
       });
 
       _this.selectorElement()
@@ -46,8 +49,8 @@ var itemSelectorBreadcrumbs = (function() {
       });
     },
 
-    addBreadcrumb: function(item) {
-      var pill = breadcrumbTemplate(item);
+    addBreadcrumb: function(item, extraMarkup) {
+      var pill = breadcrumbTemplate(item, extraMarkup);
       this.breadcrumbContainer().append(pill);
       this.addBreadcrumbRemoveBehavior(pill, item);
     },

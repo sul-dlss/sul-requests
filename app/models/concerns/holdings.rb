@@ -7,11 +7,16 @@ module Holdings
   end
 
   def holdings
-    return requested_holdings if persisted? || requested_holdings.present?
-    holdings_object.all
+    if persisted? || requested_holdings.present?
+      requested_holdings
+    else
+      all_holdings
+    end
   end
 
-  private
+  def all_holdings
+    holdings_object.all
+  end
 
   def requested_holdings
     return [] unless requested_barcode.present? || barcodes.present?

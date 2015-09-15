@@ -1,3 +1,8 @@
+//= require 'item_selector/item_selector_limit'
+//= require 'item_selector/item_selector_limit_message'
+//= require 'item_selector/item_selector_zero_disable_submit'
+//= require 'item_selector/item_selector_zero_message'
+
 var itemSelectorIncrementor = (function() {
   return $.extend({}, itemSelector, {
     init: function() {

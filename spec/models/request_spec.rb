@@ -141,6 +141,28 @@ describe Request do
     end
   end
 
+  describe '#all_holdings' do
+    let(:subject) { build(:request_with_multiple_holdings, barcodes: ['3610512345678']) }
+    it 'should get all the holdings for the requested location' do
+      holdings = subject.all_holdings
+      expect(holdings).to be_a Array
+      expect(holdings.length).to eq 3
+      expect(holdings.first.barcode).to eq '3610512345678'
+      expect(holdings.last.barcode).to eq '12345679'
+    end
+  end
+
+  describe '#requested_holdings' do
+    let(:subject) { create(:request_with_multiple_holdings, barcodes: ['3610512345678']) }
+    it 'gets the holdings from the requested location by the persisted barcodes' do
+      holdings = subject.requested_holdings
+      expect(holdings).to be_a Array
+      expect(holdings.length).to eq 1
+      expect(holdings.first.barcode).to eq '3610512345678'
+      expect(holdings.first.callnumber).to eq 'ABC 123'
+    end
+  end
+
   describe '#data_to_email_s' do
     subject { Scan.new }
     it 'turns the serialized data hash into a string' do

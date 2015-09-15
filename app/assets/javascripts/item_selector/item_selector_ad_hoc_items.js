@@ -1,3 +1,5 @@
+//= require 'item_selector/item_selector_breadcrumbs'
+
 var itemSelectorAdHocItems = (function() {
   var defaultOptions = {
     selector: '[data-behavior="ad-hoc-items"]'
@@ -8,22 +10,22 @@ var itemSelectorAdHocItems = (function() {
   };
 
   var adHocItemTemplate = function(value) {
+    var barcode = santizeCallnumber(value);
+
     return $(
       '<span data-barcode="' +
-        santizeCallnumber(value) +
+        barcode +
       '" data-callnumber="' +
         value +
       '"></span>'
     );
   };
 
-  var adHochiddenFieldTemplate = function(item, fieldName) {
-    return $(
-      '<input id="hidden-' + item.data('barcode') + '" ' +
-      'type="hidden" ' +
-      'name="' + fieldName + '" ' +
-      'value="' + item.data('callnumber') + '" />'
-    );
+  var adHochiddenFieldTemplate = function(name, value) {
+    return '<input id="hidden-' + santizeCallnumber(value) + '"' +
+    'type="hidden" ' +
+    'name="' + name + '" ' +
+    'value="' + value + '" />';
   };
 
   return $.extend({}, itemSelector, {
@@ -32,10 +34,22 @@ var itemSelectorAdHocItems = (function() {
       _this.adHocOptions = $.extend(defaultOptions, opts);
       $(document).on('ready page:load', function(){
         _this.addItemsBehavior();
+        _this.setupDefaultBreadcrumbs();
         _this.enableAddButtonOnDeselect();
         _this.disableAddButtonOnMaxItems();
       });
     },
+
+    setupDefaultBreadcrumbs: function() {
+      var _this = this;
+      _this.breadcrumbContainer()
+           .find('input:hidden')
+           .each(function() {
+              _this.addItem($(this).val());
+              $(this).remove();
+            });
+    },
+
 
     adHocOptions: {},
 
@@ -43,30 +57,18 @@ var itemSelectorAdHocItems = (function() {
       var _this = this;
       _this.addItemsButton().on('click', function() {
         var value = _this.addItemsInput().val();
-        if ( value !== '') {
-          var item = adHocItemTemplate(value);
-          _this.selectorElement()
-               .trigger('item-selector:selected', [item]);
-          _this.addHiddenAdHocField(item);
-          _this.addAdditionalRemoveBreadcrumbBehavior(item);
-          _this.addItemsInput().val('');
-        }
+        _this.addItem(value);
+        _this.addItemsInput().val('');
       });
     },
 
-    addAdditionalRemoveBreadcrumbBehavior: function(item) {
-      var barcode = item.data('barcode');
-      $('#breadcrumb-' + barcode)
-        .find('.close').on('click', function() {
-          $('#hidden-' + barcode).remove();
-      });
-    },
-
-    addHiddenAdHocField: function(item) {
-      var _this = this;
-      _this.breadcrumbContainer().append(
-        adHochiddenFieldTemplate(item, _this.hiddenFieldName())
-      );
+    addItem: function(value) {
+      if ( value !== '') {
+        var item = adHocItemTemplate(value);
+        this.selectorElement()
+            .trigger('item-selector:selected',
+              [item, adHochiddenFieldTemplate(this.hiddenFieldName(), value)]);
+      }
     },
 
     disableAddButtonOnMaxItems: function() {
