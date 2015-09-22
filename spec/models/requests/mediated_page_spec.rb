@@ -115,6 +115,11 @@ describe MediatedPage do
       subject.origin = 'SPEC-COLL'
       expect(subject.item_limit).to eq 5
     end
+
+    it 'should be 20 for items from HV-ARCHIVE' do
+      subject.origin = 'HV-ARCHIVE'
+      expect(subject.item_limit).to eq 20
+    end
   end
 
   describe '#requires_needed_date?' do
