@@ -15,5 +15,6 @@
 //= require turbolinks
 //= require bootstrap/alert
 //= require bootstrap/collapse
+//= require bootstrap/tooltip
 //= require list.min.js
 //= require_tree .
