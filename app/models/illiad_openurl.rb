@@ -19,7 +19,7 @@ class IlliadOpenurl
   end
 
   def citation_data
-    { 'rft.jtitle': @scan.item_title,
+    { 'rft.jtitle': @scan.searchworks_item.title,
       'rft.au': @scan.authors,
       'rft.pages': @scan.data[:page_range],
       'rft.atitle': @scan.data[:section_title] }
