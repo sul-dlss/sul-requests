@@ -38,6 +38,7 @@ class ApplicationController < ActionController::Base
     user.ldap_group_string = ldap_attributes['WEBAUTH_LDAPPRIVGROUP']
     user.library_id = ldap_attributes['WEBAUTH_LDAP_SUCARDNUMBER']
     user.affiliation = ldap_attributes['WEBAUTH_LDAP_SUAFFILIATION']
+    user.save if user.changed?
   end
 
   def ldap_attributes
