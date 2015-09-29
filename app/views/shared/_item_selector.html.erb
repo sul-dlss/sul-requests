@@ -1,15 +1,16 @@
 <% if f.object.present? %>
   <%= f.fields_for :barcodes do |barcode| %>
-    <% if f.object.all_holdings.one? %>
+    <% if f.object.barcode_present? || f.object.all_holdings.one? %>
+      <% single_item = f.object.requested_holdings.first || f.object.all_holdings.first %>
       <div class='form-group'>
         <span class='control-label <%= label_column_class %>'>Call number</span>
         <div class='<%= content_column_class %>'>
           <p class="form-control-static">
-            <%= current_request.all_holdings.first.callnumber %>
+            <%= single_item.callnumber %>
           </p>
         </div>
       </div>
-      <%= barcode.hidden_field nil, value: f.object.all_holdings.first.barcode %>
+      <%= barcode.hidden_field nil, value: single_item.barcode %>
     <% elsif f.object.all_holdings.many? %>
       <div id='selected-items-filter' data-behavior='item-selector' data-limit-reached-message="<%= t('sul_requests.limit_reached_message', limit: f.object.item_limit) %>">
         <% if f.object.all_holdings.length >= 10 %>
