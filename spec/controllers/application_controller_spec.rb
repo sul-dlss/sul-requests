@@ -26,6 +26,7 @@ describe ApplicationController do
       user = controller.send(:current_user)
       expect(user).to be_a User
       expect(user.library_id).to eq '12345'
+      expect(user).not_to be_changed
     end
   end
 
