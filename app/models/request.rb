@@ -123,6 +123,10 @@ class Request < ActiveRecord::Base
     user.webauth_user?
   end
 
+  def barcode_present?
+    requested_barcode.present?
+  end
+
   class << self
     # The mediateable_oirgins will make multiple (efficient) database requests
     # in order to return the array of locations that are both configured as mediateable and have existing requests.
