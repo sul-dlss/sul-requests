@@ -15,7 +15,7 @@ module RequestStrongParams
     params.permit(:email)
     params.permit(:modal)
     params.require(:request).permit(:item_id, :origin, :origin_location, :destination,
-                                    :needed_date,
+                                    :needed_date, :estimated_delivery,
                                     :item_comment, :request_comment,
                                     :authors, :page_range, :section_title, # scans
                                     :proxy,

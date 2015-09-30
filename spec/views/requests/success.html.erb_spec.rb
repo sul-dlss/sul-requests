@@ -24,6 +24,13 @@ describe 'requests/success.html.erb' do
     expect(rendered).to have_css('dd', text: 'Green Library')
   end
 
+  it 'has the estimated delivery' do
+    request.estimated_delivery = 'Some day, Before 10am'
+    render
+    expect(rendered).to have_css('dt', text: 'Estimated delivery')
+    expect(rendered).to have_css('dd', text: 'Some day, Before 10am')
+  end
+
   it 'has the needed date' do
     request.needed_date = Time.zone.today
     render

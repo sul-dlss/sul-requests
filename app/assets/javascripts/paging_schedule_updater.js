@@ -62,12 +62,17 @@ var pagingScheduleUpdater = (function() {
     updateSchedulerText: function(schedulerText, data) {
       if(schedulerText.text() != data.text) {
         schedulerText.text(data.text);
+        this.udpateSchedulerHiddenField(schedulerText, data);
         schedulerText.addClass('highlighted');
         schedulerText.trigger('paging-schedule:updated', [data]);
         setTimeout(function(){
           schedulerText.removeClass('highlighted');
         }, 1500);
       }
+    },
+
+    udpateSchedulerHiddenField: function(schedulerText, data) {
+      schedulerText.next('input[data-scheduler-field="true"]').val(data.text);
     },
 
     containers: function() {
