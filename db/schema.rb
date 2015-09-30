@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150901152211) do
+ActiveRecord::Schema.define(version: 20150929234049) do
 
   create_table "messages", force: :cascade do |t|
     t.text     "text"
@@ -27,8 +27,8 @@ ActiveRecord::Schema.define(version: 20150901152211) do
     t.string   "type"
     t.date     "needed_date"
     t.string   "status"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
     t.string   "origin"
     t.string   "destination"
     t.string   "origin_location"
@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 20150901152211) do
     t.text     "data"
     t.string   "item_title"
     t.text     "barcodes"
+    t.string   "estimated_delivery"
   end
 
   add_index "requests", ["needed_date"], name: "index_requests_on_needed_date"
