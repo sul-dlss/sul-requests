@@ -69,6 +69,16 @@ describe ConfirmationMailer do
         expect(body).to include('ZZZ 123')
       end
 
+      context 'for a mediated page' do
+        let(:request) do
+          create(:mediated_page_with_holdings, barcodes: ['12345678'], ad_hoc_items: ['ZZZ 123'], user: user)
+        end
+
+        it 'has a planned date of use' do
+          expect(body).to include "Planned date of use: #{I18n.l request.needed_date, format: :quick}"
+        end
+      end
+
       it 'has a link to the status page' do
         expect(body).to match(%r{Check the status of your request at .*\/pages\/#{request.id}\/status\?token})
       end
