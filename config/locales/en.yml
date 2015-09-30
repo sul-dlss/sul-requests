@@ -61,6 +61,8 @@ en:
       subject: 'Item(s) requested (%{title})'
     scan:
       subject: "Scan to PDF requested (%{title})"
+    mediated_page:
+      mediator_subject: 'New request needs mediation'
   date:
     formats:
       quick: '%a %b %-d'

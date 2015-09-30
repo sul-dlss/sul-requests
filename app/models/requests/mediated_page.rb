@@ -13,6 +13,8 @@ class MediatedPage < Request
 
   include TokenEncryptable
 
+  after_create :notify_mediator!
+
   def token_encryptor_attributes
     super << user.email
   end
@@ -56,6 +58,14 @@ class MediatedPage < Request
     ((barcodes || []) + (ad_hoc_items || [])).all? do |item|
       item_status(item).approved?
     end
+  end
+
+  def notify_mediator!
+    MediationMailer.mediator_notification(self).deliver_later if mediator_notification_email_address.present?
+  end
+
+  def mediator_notification_email_address
+    Rails.application.config.mediator_contact_info.fetch(origin, {})[:email]
   end
 
   private

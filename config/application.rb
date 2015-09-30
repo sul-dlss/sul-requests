@@ -154,6 +154,10 @@ module SULRequests
       }
     }
 
+    config.mediator_contact_info = {
+
+    }
+
     config.hours_api_location_map = {
       'ARS' => { library_slug: 'ars', location_slug: 'archive-recorded-sound' },
       'ART' => { library_slug: 'art', location_slug: 'library-circulation' },
