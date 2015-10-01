@@ -1,4 +1,4 @@
-On <%= l @request.created_at.to_date, format: :long %>, you requested the following:
+On <%= l @request.created_at, format: :short %>, <%= @request.user.to_email_string %> requested the following:
 
 <%= @request.item_title %>
 
@@ -12,9 +12,4 @@ Item(s) requested:
 <%= "#{@request.class.human_attribute_name(:needed_date)}: #{l @request.needed_date, format: :quick}" %>
 <% end %>
 
-Check the status of your request at <%= @status_url %>
-<% if @request.appears_in_myaccount? %>You can also see the status at http://library.stanford.edu/myaccount<% end %>
-
-Questions about your request?
-Contact:
-<%= @contact_info %>
+Login to view and approve the request at <%= @mediation_url %>

@@ -140,6 +140,22 @@ describe MediatedPagesController do
           end
         ).to change { ConfirmationMailer.deliveries.count }.by(1)
       end
+
+      it 'sends an email to the mediator' do
+        mediator_contact_info = { 'SPEC-COLL' => { email: 'someone@example.com' } }
+        allow(Rails.application.config).to receive(:mediator_contact_info).and_return(mediator_contact_info)
+        expect(
+          lambda do
+            put :create, request: {
+              item_id: '1234',
+              origin: 'SPEC-COLL',
+              origin_location: 'STACKS',
+              destination: 'SPEC-COLL',
+              needed_date: Time.zone.today + 1.year
+            }
+          end
+        ).to change { MediationMailer.deliveries.count { |x| x.subject == 'New request needs mediation' } }.by(1)
+      end
     end
     describe 'invalid requests' do
       let(:user) { create(:webauth_user) }
