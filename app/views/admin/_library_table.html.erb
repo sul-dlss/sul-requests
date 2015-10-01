@@ -16,12 +16,16 @@
           <a class="mediate-toggle" data-behavior='mediate-toggle' href='javascript:;'>
             <i class="glyphicon"></i>
           </a>
+          <span data-behavior='all-approved-note' class='label label-success' style='<%= 'display:none;' unless request.all_approved? %>'>
+            <%= t('.all_approved') %>
+          </span>
         </td>
         <td class='needed_date'><%= time_tag(request.needed_date, :quick) %></td>
         <td class='title'><%= searchworks_link(request.item_id, request.item_title) %></td>
         <td class='requester'><%= requester_info(request.user) %></td>
         <td class='created_at'><%= time_tag(request.created_at, :short) %></td>
         <td class='comment'><%= request.request_comment %></td>
+        <td><%= link_to('Status', polymorphic_path([:status, request])) %></td>
       </tr>
     <% end %>
   </tbody>

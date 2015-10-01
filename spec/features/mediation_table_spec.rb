@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'Mediation table', js: true do
-  let(:top_level_columns) { 6 }
+  let(:top_level_columns) { 7 }
   before do
     stub_current_user(create(:superadmin_user))
     stub_searchworks_api_json(build(:searchable_holdings))
@@ -73,6 +73,27 @@ describe 'Mediation table', js: true do
 
     expect(page).to have_css('tr.approved')
     expect(page).to have_css('td button', text: 'Approved')
+  end
+
+  it 'indicates when all items in a request have been approved' do
+    within(first('[data-mediate-request]')) do
+      expect(page).to_not have_css('[data-behavior="all-approved-note"]', text: 'Done')
+      page.find('a.mediate-toggle').click
+    end
+
+    within('tbody td table tbody') do
+      within(all('tr').first) do
+        click_button('Approve')
+      end
+
+      within(all('tr').last) do
+        click_button('Approve')
+      end
+    end
+
+    within(first('[data-mediate-request]')) do
+      expect(page).to have_css('[data-behavior="all-approved-note"]', text: 'Done')
+    end
   end
 
   it 'has sortable columns' do

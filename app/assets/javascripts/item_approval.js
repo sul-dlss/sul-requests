@@ -31,6 +31,7 @@ var itemApproval = (function() {
       $.ajax(url).success(function(data) {
          _this.markRowAsApproved(item);
          _this.updateApproverInformation(item, data);
+         _this.updateAllApprovedNote(item);
        }).fail(function() {
          alert('The item was not able to be approved.');
        });
@@ -45,6 +46,20 @@ var itemApproval = (function() {
       var approverInfo = item.closest('tr')
                              .find(this.options.approverInfoSelector);
       approverInfo.text(data.approver + ' - ' + data.approval_time);
+    },
+
+    updateAllApprovedNote: function(item) {
+      if(this.allItemsAreApproved(item)) {
+        item.closest('tr.holdings')
+            .prev('tr')
+            .find('[data-behavior="all-approved-note"]')
+            .show();
+      }
+    },
+
+    allItemsAreApproved: function(item) {
+      var tbody = item.closest('table tbody');
+      return tbody.find('tr').length == tbody.find('tr.approved').length;
     },
 
     rowIsApproved: function(row) {

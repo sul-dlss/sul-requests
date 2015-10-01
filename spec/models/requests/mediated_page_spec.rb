@@ -83,6 +83,23 @@ describe MediatedPage do
     end
   end
 
+  describe 'all_approved?' do
+    let(:subject) { build(:mediated_page_with_holdings) }
+    before do
+      subject.barcodes = ['12345678']
+      subject.ad_hoc_items = ['ABC 123']
+    end
+    it 'returns true when all requested barcodes and ad-hoc-items are approved' do
+      subject.item_status('12345678').approve!('jstanford')
+      subject.item_status('ABC 123').approve!('jstanford')
+      expect(subject).to be_all_approved
+    end
+    it 'returns false when not all the requested barcodes and ad-hoc-items are approved' do
+      subject.item_status('12345678').approve!('jstanford')
+      expect(subject).not_to be_all_approved
+    end
+  end
+
   describe 'TokenEncryptable' do
     it 'should mixin TokenEncryptable' do
       expect(subject).to be_kind_of TokenEncryptable

@@ -52,6 +52,12 @@ class MediatedPage < Request
     true
   end
 
+  def all_approved?
+    ((barcodes || []) + (ad_hoc_items || [])).all? do |item|
+      item_status(item).approved?
+    end
+  end
+
   private
 
   def commentable_library_whitelist

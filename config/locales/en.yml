@@ -54,6 +54,8 @@ en:
       mediated_pages: 'Mediated pages'
       pages: 'Pages'
       scans: 'Scan requests'
+    library_table:
+      all_approved: 'Done'
   confirmation_email:
     request:
       subject: 'Item(s) requested (%{title})'

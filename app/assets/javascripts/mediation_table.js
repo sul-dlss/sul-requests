@@ -110,7 +110,7 @@ var mediationTable = (function() {
     },
 
     createHoldingsRow: function(row) {
-      var holdingsRow = $('<tr class="holdings"><td colspan="6"></td></tr>');
+      var holdingsRow = $('<tr class="holdings"><td colspan="7"></td></tr>');
       row.after(holdingsRow);
       return holdingsRow;
     },
