@@ -17,7 +17,7 @@ origin_admin_groups:
   PAGE-MP: []
   SPEC-COLL: []
 
-contact_email: 'someone@stanford.edu'
+contact_email: 'site-admin-sul-requests@lists.stanford.edu'
 
 token_encrypt:
   secret: ''
