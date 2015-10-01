@@ -25,6 +25,24 @@ describe MediatedPage do
                              needed_date: Time.zone.today + 1.day)
       end.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Destination is not a valid pickup library')
     end
+
+    it 'does not allow requests to be submitted without a needed_date when required' do
+      expect do
+        MediatedPage.create!(item_id: '1234',
+                             origin: 'SPEC-COLL',
+                             origin_location: 'STACKS',
+                             destination: 'SPEC-COLL')
+      end.to raise_error(ActiveRecord::RecordInvalid, "Validation failed: Planned date of use can't be blank")
+    end
+
+    it 'allows requests to be submitted without a needed_date when not required' do
+      expect do
+        MediatedPage.create!(item_id: '1234',
+                             origin: 'HOPKINS',
+                             origin_location: 'STACKS',
+                             destination: 'GREEN')
+      end.to_not raise_error
+    end
   end
 
   describe 'scopes' do

@@ -4,7 +4,7 @@
 class MediatedPage < Request
   validate :mediated_page_validator
   validates :destination, presence: true
-  validates :needed_date, presence: true
+  validate :needed_date_is_required
   validate :destination_is_a_pickup_library
 
   scope :archived, -> { where('needed_date < ?', Time.zone.today) }
@@ -59,6 +59,10 @@ class MediatedPage < Request
   end
 
   private
+
+  def needed_date_is_required
+    errors.add(:needed_date, "can't be blank") if needed_date.blank? && requires_needed_date?
+  end
 
   def commentable_library_whitelist
     %w(SPEC-COLL)
