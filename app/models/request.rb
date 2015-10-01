@@ -12,6 +12,8 @@ class Request < ActiveRecord::Base
   attr_accessor :requested_barcode
   alias_method :barcode=, :requested_barcode=
 
+  scope :recent, -> { order(created_at: :desc).limit(100) }
+
   delegate :hold_recallable?, :mediateable?, :pageable?, :scannable?, to: :library_location
 
   # Serialzed data hash

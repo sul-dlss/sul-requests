@@ -31,8 +31,8 @@ describe Dashboard do
       create(:page, origin: 'GREEN')
       create(:page, origin: 'SAL3')
     end
-    it 'should return a grouped hash of requests' do
-      expect(subject.recent_requests.keys).to eq %w(SPEC-COLL GREEN SAL3 )
+    it 'should return the recent request scope' do
+      expect(subject.recent_requests).to eq Request.recent
     end
   end
 end

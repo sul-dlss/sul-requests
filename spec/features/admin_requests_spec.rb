@@ -14,19 +14,16 @@ describe 'Viewing all requests' do
                       user: User.create(name: 'Joe', email: 'joe@xyz.com')
               )
       end
-      it 'should list data in tables' do
+      it 'should list data in a table' do
         visit admin_index_path
 
-        expect(page).to have_css('h2', text: /Green Library/)
         expect(page).to have_css('td a', text: 'Fourth symphony. [Op. 51].')
         expect(page).to have_css('td a[href="mailto:jstanford@stanford.edu"]', text: /jstanford@stanford.edu/)
 
-        expect(page).to have_css('h2', text: /SAL Newark/)
         expect(page).to have_css('td a', text: 'An American in Paris')
         expect(page).to have_css('td a[href="mailto:joe@xyz.com"]', text: /Joe \(joe@xyz.com\)/)
-        expect(page).to have_css('td', text: 'I can has this item?')
 
-        expect(page).to have_selector('table.table-striped', count: 2)
+        expect(page).to have_selector('table.table-striped', count: 1)
       end
     end
 

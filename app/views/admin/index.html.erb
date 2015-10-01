@@ -19,7 +19,32 @@
 
 <div class='admin-requests'>
   <h2>Last 100 Requests</h2>
-  <% @dashboard.recent_requests.each do |origin, collection| %>
-    <%= render partial: 'library_table', locals: { origin: origin, collection: collection } %>
-  <% end %>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Origin</th>
+        <th>Destination</th>
+        <th>Title</th>
+        <th>Requester</th>
+        <th>Requested on</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @dashboard.recent_requests.each do |request| %>
+        <tr>
+          <td><%= request.type %></td>
+          <td><%= request.origin %></td>
+          <td><%= request.destination %></td>
+          <td><%= searchworks_link(request.item_id, request.item_title) %></td>
+          <td><%= requester_info(request.user) %></td>
+          <td><%= time_tag(request.created_at, :short) %></td>
+          <td><%= link_to('Status', polymorphic_path([:status, request])) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
 </div>

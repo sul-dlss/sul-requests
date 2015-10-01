@@ -29,6 +29,6 @@ class Dashboard
   end
 
   def recent_requests
-    @recent_requests ||= Request.order(:created_at).limit(100).group_by(&:origin)
+    @recent_requests ||= Request.recent
   end
 end
