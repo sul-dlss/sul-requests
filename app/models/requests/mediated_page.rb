@@ -23,10 +23,6 @@ class MediatedPage < Request
     commentable_library_whitelist.include?(origin)
   end
 
-  def item_commentable?
-    false
-  end
-
   def requestable_by_all?
     return false if origin == 'HOPKINS'
     true
