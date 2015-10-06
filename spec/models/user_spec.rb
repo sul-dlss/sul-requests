@@ -10,6 +10,14 @@ describe User do
     end
   end
 
+  describe '#sucard_number=' do
+    it 'sets the library_id omitings the first 5 digits' do
+      expect(subject.library_id).to be_blank
+      subject.sucard_number = '12345987654321'
+      expect(subject.library_id).to eq '987654321'
+    end
+  end
+
   describe '#email_address' do
     describe 'for webauth users' do
       it 'returns the Stanford email address' do
