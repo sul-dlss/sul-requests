@@ -360,6 +360,7 @@ describe 'Item Selector' do
     date_input = find('#request_needed_date', visible: false)
     min_date = date_input['min']
     date_input.set(min_date)
-    find('.ws-date').set(min_date)
+    md = Time.zone.parse(min_date)
+    find('.ws-date').set(md.strftime('%D'))
   end
 end
