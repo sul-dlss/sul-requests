@@ -20,12 +20,12 @@ describe ApplicationController do
       user = controller.send(:current_user)
       expect(user.ldap_groups).to eq ['ldap:group1', 'ldap:group2']
     end
-    it 'has the library id from LDAP' do
+    it 'has the SUCARD Number id from LDAP and translates it to the library_id' do
       allow(controller).to receive_messages(user_id: 'some-user')
-      allow(controller.request).to receive(:env).and_return('WEBAUTH_LDAP_SUCARDNUMBER' => '12345')
+      allow(controller.request).to receive(:env).and_return('WEBAUTH_LDAP_SUCARDNUMBER' => '12345987654321')
       user = controller.send(:current_user)
       expect(user).to be_a User
-      expect(user.library_id).to eq '12345'
+      expect(user.library_id).to eq '987654321'
       expect(user).not_to be_changed
     end
   end
