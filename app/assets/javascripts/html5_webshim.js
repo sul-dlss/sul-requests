@@ -10,6 +10,8 @@ $(document).on('ready page:load', function(){
         openOnFocus: true
       }
     });
+
+    window.webshim.activeLang('en-US');
     window.webshim.polyfill('forms-ext');
   }
 });
