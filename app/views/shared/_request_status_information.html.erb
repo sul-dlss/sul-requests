@@ -22,7 +22,7 @@
     </dd>
   <% end %>
 
-  <% if current_request.estimated_delivery.present? %>
+  <% if current_request.estimated_delivery.present? && current_request.symphony_response.success? %>
     <dt><%= current_request.class.human_attribute_name(:estimated_delivery) %></dt>
     <dd><%= current_request.estimated_delivery %></dd>
   <% end %>

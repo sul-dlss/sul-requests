@@ -164,12 +164,38 @@ describe RequestsHelper do
     end
   end
 
+  describe '#request_level_request_status' do
+    it 'returns a message for user error codes' do
+      stub_symphony_response(build(:symphony_scan_with_multiple_items))
+      expect(
+        request_level_request_status(create(:request_with_holdings))
+      ).to include("We can't complete your request because your status is <strong>blocked</strong>")
+    end
+
+    it 'returns a message for mixed status items' do
+      stub_symphony_response(build(:symphony_request_with_mixed_status))
+      expect(
+        request_level_request_status(create(:request_with_holdings))
+      ).to include('There was a problem with one or more of your items below')
+    end
+  end
+
+  describe '#new_scan_path_for_current_request' do
+    it 'returns a new scan url using the parameters of the given request' do
+      request = create(:request, origin: 'GREEN', origin_location: 'STACKS', item_id: '12345')
+      expect(
+        new_scan_path_for_current_request(request)
+      ).to eq new_scan_path(origin: 'GREEN', item_id: '12345', origin_location: 'STACKS')
+    end
+  end
+
   describe '#holding_request_status' do
     describe 'processed items' do
-      let(:subject) { holding_request_status(holding) }
+      let(:subject) { holding_request_status(holding, create(:request)) }
       let(:holding) do
         double(
           'holding',
+          barcode: '12345',
           current_location: nil,
           request_status: double('request_status', msgcode: 209)
         )
@@ -181,18 +207,20 @@ describe RequestsHelper do
     end
 
     describe 'items that required a hold' do
-      let(:subject) { Capybara.string(holding_request_status(holding)) }
+      let(:subject) { Capybara.string(holding_request_status(holding, create(:request))) }
 
       let(:holding) do
         double(
           'holding',
+          barcode: '12345',
           current_location: nil,
-          request_status: double('request_status', msgcode: 'P001B')
+          request_status: double('request_status', msgcode: '722', text: 'Error Message')
         )
       end
 
-      it 'warns the user of a delay' do
-        expect(subject).to have_css('.alert-danger', text: '(delivery may be delayed)')
+      it 'provides the message text to the user' do
+        stub_symphony_response(build(:symphony_page_with_multiple_items))
+        expect(subject).to have_css('.alert-danger', text: '(Error Message)')
       end
     end
   end

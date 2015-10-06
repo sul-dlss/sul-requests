@@ -21,7 +21,7 @@ describe 'Creating a hold recall request' do
 
       expect(HoldRecall.last.user).to eq User.last
       expect(User.last.library_id).to eq '123456'
-      expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
+      expect_to_be_on_success_page
     end
   end
 
@@ -33,7 +33,7 @@ describe 'Creating a hold recall request' do
       first(:button, 'Send request').click
 
       expect(current_url).to eq successful_hold_recall_url(HoldRecall.last)
-      expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
+      expect_to_be_on_success_page
     end
 
     it 'should store barcode in the url in the barcodes array' do

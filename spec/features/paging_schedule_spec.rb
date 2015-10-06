@@ -34,6 +34,7 @@ describe 'Paging Schedule' do
       stub_searchworks_api_json(build(:sal3_holdings))
     end
     it 'is persisted' do
+      stub_symphony_response(build(:symphony_page_with_single_item))
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
 
       expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: true)

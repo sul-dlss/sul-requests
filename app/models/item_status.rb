@@ -21,6 +21,10 @@ class ItemStatus
     symphony_status[:msgcode]
   end
 
+  def text
+    symphony_status[:text]
+  end
+
   def approved?
     status_object[:approved]
   end
@@ -34,16 +38,22 @@ class ItemStatus
   end
 
   def approve!(user)
+    @request.send_to_symphony!(barcodes: [@id])
+    return unless symphony_item_successful?
     self.status_object = {
       approved: true,
       approval_time: Time.zone.now.to_s,
       approver: user
-    }
-    @request.send_to_symphony!(barcodes: [@id])
+    }.with_indifferent_access
     @request.save!
   end
 
   private
+
+  def symphony_item_successful?
+    return true if (@request.ad_hoc_items || []).include?(@id)
+    @request.symphony_response.success?(@id)
+  end
 
   def localized_approval_time
     return nil unless approval_time.present?
@@ -61,7 +71,7 @@ class ItemStatus
   def symphony_status
     return {} unless @request.symphony_response
 
-    @request.symphony_response.items_by_barcode[@id] || {}
+    (@request.symphony_response.items_by_barcode[@id] || {}).with_indifferent_access
   end
 
   def default_status_object

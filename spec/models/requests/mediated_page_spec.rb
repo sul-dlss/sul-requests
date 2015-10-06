@@ -106,6 +106,7 @@ describe MediatedPage do
   describe 'all_approved?' do
     let(:subject) { build(:mediated_page_with_holdings) }
     before do
+      stub_symphony_response(build(:symphony_page_with_multiple_items))
       subject.barcodes = ['12345678']
       subject.ad_hoc_items = ['ABC 123']
     end

@@ -4,6 +4,14 @@ FactoryGirl.define do
     origin 'BIOLOGY'
     origin_location 'STACKS'
     item_title 'Title for Request 12345'
+
+    after(:build) do |request|
+      class << request
+        def symphony_response_data
+          FactoryGirl.build(:symphony_page_with_single_item)
+        end
+      end
+    end
   end
 
   factory :request_with_holdings, class: Request do

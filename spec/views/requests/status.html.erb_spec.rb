@@ -91,12 +91,13 @@ describe 'requests/status.html.erb' do
 
       context 'with abnormal request statuses' do
         before do
-          allow_any_instance_of(ItemStatus).to receive(:msgcode).and_return('P001B')
+          allow_any_instance_of(ItemStatus).to receive(:msgcode).and_return('722')
+          allow_any_instance_of(ItemStatus).to receive(:text).and_return('User already has a hold on this material')
           render
         end
 
         it 'displays abnormal request status messages' do
-          expect(rendered).to have_css('dd', text: 'ABC 123 (delivery may be delayed)')
+          expect(rendered).to have_css('dd', text: 'ABC 123 (User already has a hold on this material)')
         end
       end
     end

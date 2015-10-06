@@ -144,6 +144,7 @@ describe PagesController do
         expect(Page.last.barcodes).to eq(%w(3610512345678 12345679))
       end
       it 'sends an confirmation email' do
+        stub_symphony_response(build(:symphony_page_with_single_item))
         expect(
           lambda do
             put :create, request: {
@@ -154,6 +155,19 @@ describe PagesController do
             }
           end
         ).to change { ConfirmationMailer.deliveries.count }.by(1)
+      end
+
+      it 'does not send a confirmation email if the symphony request is not successful' do
+        expect(
+          lambda do
+            put :create, request: {
+              item_id: '1234',
+              origin: 'GREEN',
+              origin_location: 'STACKS',
+              destination: 'BIOLOGY'
+            }
+          end
+        ).not_to change { ConfirmationMailer.deliveries.count }
       end
 
       context 'create/update' do

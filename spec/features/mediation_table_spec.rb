@@ -5,6 +5,7 @@ describe 'Mediation table', js: true do
   before do
     stub_current_user(create(:superadmin_user))
     stub_searchworks_api_json(build(:searchable_holdings))
+    stub_symphony_response(build(:symphony_page_with_multiple_items))
     create(
       :mediated_page_with_holdings,
       user: create(:non_webauth_user),

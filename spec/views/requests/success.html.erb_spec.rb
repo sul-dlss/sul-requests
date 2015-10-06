@@ -7,11 +7,68 @@ describe 'requests/success.html.erb' do
     allow(view).to receive_messages(current_request: request)
     allow(view).to receive_messages(current_user: user)
   end
-  it 'has an icon and h1 heading' do
-    render
-    expect(rendered).to have_css('.glyphicon.glyphicon-ok[aria-hidden="true"]')
-    expect(rendered).to have_css('h1', text: 'Request complete')
+
+  describe 'symphony success' do
+    it 'has success text and icon for successful requests' do
+      render
+      expect(rendered).to have_css('.sul-i-check-2')
+      expect(rendered).to have_css('h1', text: 'Request complete')
+    end
   end
+
+  describe 'symphony failure' do
+    let(:request) { create(:request_with_holdings, user: user) }
+
+    describe 'complete failure' do
+      it 'has unsuccessful text and icon' do
+        render
+        expect(rendered).to have_css('.sul-i-remove-2')
+        expect(rendered).to have_css('h1', text: "Can't complete your request")
+      end
+
+      it 'has an error message' do
+        render
+        expect(rendered).to have_css('.alert.alert-danger', text: /We're unable to complete your request right now/)
+      end
+    end
+
+    describe 'mixed failure' do
+      before do
+        stub_symphony_response(build(:symphony_request_with_mixed_status))
+      end
+
+      it 'has a successful text and icon' do
+        render
+        expect(rendered).to have_css('.sul-i-check-2')
+        expect(rendered).to have_css('h1', text: 'Request complete')
+      end
+
+      it 'has a mixed error message' do
+        render
+        expect(rendered).to have_css(
+          '.alert.alert-danger',
+          text: /There was a problem with one or more of your items below/
+        )
+      end
+    end
+
+    describe 'scannable item' do
+      let(:request) do
+        create(:scan_with_holdings, item_id: '12345', origin: 'SAL3', origin_location: 'STACKS', user: user)
+      end
+      before do
+        stub_symphony_response(build(:symphony_scan_with_multiple_items))
+        allow(request).to receive_messages(scannable?: true)
+        allow(view).to receive(:can?).with(:create, Scan).and_return(true)
+      end
+      it 'renders a link to the scan request form when the user can request scans' do
+        render
+        expect(rendered).to have_css('h2', text: 'Just need a chapter or article?')
+        expect(rendered).to have_css('a', text: 'Request Scan to PDF')
+      end
+    end
+  end
+
   it 'has item title information' do
     render
     expect(rendered).to have_css('h2', text: request.item_title)

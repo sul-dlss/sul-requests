@@ -41,6 +41,14 @@ describe ItemStatus do
       expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(request, barcodes: [barcode])
       subject.approve!('jstanford')
     end
+
+    describe 'with an unsusccessful symphony request' do
+      let(:request) { create(:request_with_holdings) }
+      it 'does not persist any changes if the symphony response is not successful' do
+        expect(request).not_to receive(:save!)
+        expect(subject.approve!('jstanford')).to be nil
+      end
+    end
   end
 
   describe '#as_json' do
@@ -77,12 +85,13 @@ describe ItemStatus do
     it 'aliases approval_time to the status object' do
       expect(subject.approval_time).to eq subject.send(:status_object)['approval_time']
     end
-  end
 
-  describe '#msgcode' do
-    it 'returns the message code from the symphony request' do
-      request.symphony_response_data = { requested_items: [{ barcode: '3610512345', msgcode: 'msgcode' }] }
-      expect(subject.msgcode).to eq 'msgcode'
+    it 'aliases msgcode to the symphony response object' do
+      expect(subject.msgcode).to eq '209'
+    end
+
+    it 'aliases text to the symphony response object' do
+      expect(subject.text).to eq 'Hold placed'
     end
   end
 end
