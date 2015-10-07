@@ -19,6 +19,8 @@ class SubmitSymphonyRequestJob < ActiveJob::Base
   ##
   # Command to submit a Scan request to Symphony for processing
   class Command
+    include ActiveSupport::Benchmarkable
+
     attr_reader :request, :options
 
     delegate :user, to: :request
@@ -29,8 +31,10 @@ class SubmitSymphonyRequestJob < ActiveJob::Base
     end
 
     def execute!
-      response = client.get('func_request_webservice_new.make_request', request_params)
-      JSON.parse(response.body)['request_response']
+      benchmark "Sending func_request_webservice_new.make_request with #{request_params.inspect}" do
+        response = client.get('func_request_webservice_new.make_request', request_params)
+        JSON.parse(response.body)['request_response']
+      end
     end
 
     def request_params
@@ -88,6 +92,10 @@ class SubmitSymphonyRequestJob < ActiveJob::Base
 
     def base_url
       Settings.symphony_api.url
+    end
+
+    def logger
+      Rails.logger
     end
   end
 end
