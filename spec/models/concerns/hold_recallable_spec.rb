@@ -24,6 +24,12 @@ describe HoldRecallable do
         request.requested_barcode = '3610512345'
         expect(subject).to be_hold_recallable
       end
+
+      it 'ignores empty barcodes' do
+        request.requested_barcode = ''
+        expect(subject).not_to be_hold_recallable
+        expect(request.requested_barcode).to be_nil
+      end
     end
 
     describe 'when INPROCESS' do

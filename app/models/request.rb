@@ -9,8 +9,7 @@ class Request < ActiveRecord::Base
   include DefaultRequestOptions
   include RequestValidations
 
-  attr_accessor :requested_barcode
-  alias_method :barcode=, :requested_barcode=
+  attr_reader :requested_barcode
 
   scope :recent, -> { order(created_at: :desc).limit(100) }
 
@@ -128,6 +127,11 @@ class Request < ActiveRecord::Base
   def barcode_present?
     requested_barcode.present?
   end
+
+  def requested_barcode=(barcode)
+    @requested_barcode = barcode if barcode.present?
+  end
+  alias_method :barcode=, :requested_barcode=
 
   class << self
     # The mediateable_oirgins will make multiple (efficient) database requests
