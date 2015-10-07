@@ -18,7 +18,7 @@
 </table>
 
 <div class='admin-requests'>
-  <h2>Last 100 Requests</h2>
+  <h2>Recent Requests</h2>
 
   <table class="table table-striped">
     <thead>
@@ -33,7 +33,7 @@
       </tr>
     </thead>
     <tbody>
-      <% @dashboard.recent_requests.each do |request| %>
+      <% @requests.each do |request| %>
         <tr>
           <td><%= request.type %></td>
           <td><%= request.origin %></td>
@@ -46,5 +46,7 @@
       <% end %>
     </tbody>
   </table>
+
+  <%= paginate @requests, theme: 'bootstrap' %>
 
 </div>

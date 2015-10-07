@@ -6,6 +6,7 @@ describe 'requests/status.html.erb' do
   before do
     allow(view).to receive_messages(current_request: request)
     allow(view).to receive_messages(current_user: user)
+    allow(controller).to receive_messages(current_user: user)
   end
   it 'has an icon and h1 heading' do
     render

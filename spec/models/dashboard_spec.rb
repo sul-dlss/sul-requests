@@ -32,7 +32,7 @@ describe Dashboard do
       create(:page, origin: 'SAL3')
     end
     it 'should return the recent request scope' do
-      expect(subject.recent_requests).to eq Request.recent
+      expect(subject.recent_requests(1, 50).map(&:id)).to eq Request.recent.map(&:id)
     end
   end
 end

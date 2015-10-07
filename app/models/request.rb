@@ -8,10 +8,11 @@ class Request < ActiveRecord::Base
   include Requestable
   include DefaultRequestOptions
   include RequestValidations
+  include SymphonyRequest
 
   attr_reader :requested_barcode
 
-  scope :recent, -> { order(created_at: :desc).limit(100) }
+  scope :recent, -> { order(created_at: :desc) }
 
   delegate :hold_recallable?, :mediateable?, :pageable?, :scannable?, to: :library_location
 
@@ -116,14 +117,6 @@ class Request < ActiveRecord::Base
     send_to_symphony!
   end
 
-  def send_to_symphony!(options = {})
-    SubmitSymphonyRequestJob.perform_now(self, options)
-  end
-
-  def appears_in_myaccount?
-    user.webauth_user?
-  end
-
   def barcode_present?
     requested_barcode.present?
   end
@@ -147,13 +140,5 @@ class Request < ActiveRecord::Base
 
   def item_status(id)
     ItemStatus.new(self, id)
-  end
-
-  def symphony_response
-    @symphony_response ||= SymphonyResponse.new(symphony_response_data || {})
-  end
-
-  def symphony_response_will_change!
-    @symphony_response = nil
   end
 end
