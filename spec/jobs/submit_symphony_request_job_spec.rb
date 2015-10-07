@@ -109,6 +109,11 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
         it 'contains the NO_ITEMS placeholder' do
           expect(subject.request_params).to include items: 'NO_ITEMS^'
         end
+
+        it 'contains the NO_ITEMS placeholder when a given barcode is blank' do
+          request.barcodes = ['']
+          expect(subject.request_params).to include items: 'NO_ITEMS^'
+        end
       end
 
       context 'with requested barcodes' do

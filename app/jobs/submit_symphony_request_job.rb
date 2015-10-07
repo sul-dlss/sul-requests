@@ -81,7 +81,7 @@ class SubmitSymphonyRequestJob < ActiveJob::Base
 
     def barcodes
       items = options[:barcodes]
-      items ||= request.barcodes
+      items ||= request.barcodes.reject(&:blank?)
       items = ['NO_ITEMS'] if items.blank?
       items
     end
