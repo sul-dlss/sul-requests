@@ -13,8 +13,8 @@ class PagingScheduleController < ApplicationController
   def show
     schedule = PagingSchedule.for(request_for_schedule)
     respond_to do |format|
-      format.json { render json: schedule.estimate, layout: false }
-      format.html { render text: schedule.estimate.to_s, layout: false }
+      format.json { render json: schedule.earliest_delivery_estimate, layout: false }
+      format.html { render text: schedule.earliest_delivery_estimate.to_s, layout: false }
     end
   end
 

@@ -57,8 +57,8 @@ module PagingSchedule
       @schedule = instance_eval(&block)
     end
 
-    def estimate
-      @estimate ||= Estimate.new(self)
+    def earliest_delivery_estimate
+      @earliest_delivery_estimate ||= Estimate.new(self)
     end
 
     def business_days_later(days)

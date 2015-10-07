@@ -39,7 +39,7 @@ describe PagingSchedule do
       expect(schedule).to be_a PagingSchedule::Scheduler
       expect(schedule.from).to eq 'SAL3'
       expect(schedule.to).to eq :anywhere
-      expect(schedule.estimate.to).to eq 'SOMEWHERE-ELSE'
+      expect(schedule.earliest_delivery_estimate.to).to eq 'SOMEWHERE-ELSE'
     end
 
     it 'raises an error when there is no schedule configured found' do
