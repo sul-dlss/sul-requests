@@ -95,12 +95,6 @@ describe MediatedPage do
     end
   end
 
-  describe 'item_commentable?' do
-    it 'is false' do
-      expect(subject).not_to be_item_commentable
-    end
-  end
-
   describe 'all_approved?' do
     let(:subject) { build(:mediated_page_with_holdings) }
     before do
