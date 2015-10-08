@@ -180,8 +180,8 @@ module SULRequests
       'MEDIA-MTXT' => { library_slug: 'green', location_slug: 'media-microtext-center' },
       'MUSIC' => { library_slug: 'music', location_slug: 'library-circulation' },
       'SAL' => { library_slug: 'sal12', location_slug: 'sal12-circulation' },
-      'SAL3' => {},
-      'SAL-NEWARK' => {},
+      'SAL3' => { library_slug: 'sal3', location_slug: 'operations' },
+      'SAL-NEWARK' => { library_slug: 'newark', location_slug: 'operations' },
       'SPEC-COLL' => { library_slug: 'spc', location_slug: 'field-reading-room' },
       'TANNER' => { library_slug: 'philosophy', location_slug: 'library-circulation' }
     }
