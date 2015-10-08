@@ -70,7 +70,7 @@ There is a token encryption library that handles encrypting and decrypting token
 
 ## Testing
 
-The test suite (with RuboCop style inforcement) will be run with the default rake task (also run on travis)
+The test suite (with RuboCop style enforcement) will be run with the default rake task (also run on travis)
 
     $ rake
 
