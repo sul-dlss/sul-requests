@@ -100,13 +100,13 @@ describe User do
       expect(subject).not_to be_library_id_user
     end
   end
-  describe '#superadmin?' do
+  describe '#super_admin?' do
     it 'should return false when the user is not a super admin' do
-      expect(subject).to_not be_superadmin
+      expect(subject).to_not be_super_admin
     end
     it 'should return true when the user is in a superadmin group' do
       allow(subject).to receive_messages(ldap_groups: ['FAKE-TEST-SUPER-ADMIN-GROUP'])
-      expect(subject).to be_superadmin
+      expect(subject).to be_super_admin
     end
   end
   describe '#site_admin?' do
