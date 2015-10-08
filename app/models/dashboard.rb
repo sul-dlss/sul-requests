@@ -28,7 +28,7 @@ class Dashboard
     @scans ||= Scan.count
   end
 
-  def recent_requests
-    @recent_requests ||= Request.recent
+  def recent_requests(page, per)
+    @recent_requests ||= Request.page(page).per(per).recent
   end
 end

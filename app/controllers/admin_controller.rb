@@ -7,6 +7,7 @@ class AdminController < ApplicationController
   def index
     authorize! :manage, Request.new
     @dashboard = Dashboard.new
+    @requests = @dashboard.recent_requests(params[:page], params[:per] || 100)
   end
 
   def show

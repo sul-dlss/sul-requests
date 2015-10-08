@@ -424,4 +424,10 @@ describe Request do
       end
     end
   end
+
+  describe '#symphony_request' do
+    it 'provides access to the raw request object' do
+      expect(subject.symphony_request).to be_a SubmitSymphonyRequestJob::Command
+    end
+  end
 end

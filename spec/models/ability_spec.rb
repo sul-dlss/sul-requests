@@ -20,6 +20,7 @@ describe Ability do
     it { is_expected.to be_able_to(:manage, Message) }
     it { is_expected.to be_able_to(:manage, PagingSchedule) }
     it { is_expected.to be_able_to(:manage, Request) }
+    it { is_expected.to be_able_to(:debug, Request) }
   end
 
   describe 'an anonymous user' do
@@ -118,6 +119,7 @@ describe Ability do
     it { is_expected.to be_able_to(:create, mediated_page) }
     it { is_expected.to be_able_to(:create, page) }
     it { is_expected.not_to be_able_to(:create, scan) }
+    it { is_expected.not_to be_able_to(:debug, page) }
 
     describe 'who created the request' do
       before do
