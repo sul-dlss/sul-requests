@@ -31,7 +31,7 @@ describe 'Mediation table', js: true do
     expect(page).to have_css('tbody tr', count: 3)
     within(first('[data-mediate-request]')) do
       expect(page).to have_css('td', count: top_level_columns)
-      page.find('a.mediate-toggle').click
+      page.find('a.mediate-toggle').trigger('click')
     end
     expect(page).to have_css("tbody td[colspan='#{top_level_columns}'] table")
     within("tbody td[colspan='#{top_level_columns}'] table") do
@@ -44,7 +44,7 @@ describe 'Mediation table', js: true do
 
   it 'has holdings that can be approved' do
     within(first('[data-mediate-request]')) do
-      page.find('a.mediate-toggle').click
+      page.find('a.mediate-toggle').trigger('click')
     end
 
     within('tbody td table tbody') do
@@ -68,7 +68,7 @@ describe 'Mediation table', js: true do
     visit admin_path('SPEC-COLL')
 
     within(first('[data-mediate-request]')) do
-      page.find('a.mediate-toggle').click
+      page.find('a.mediate-toggle').trigger('click')
     end
 
     expect(page).to have_css('tr.approved')
@@ -78,7 +78,7 @@ describe 'Mediation table', js: true do
   it 'indicates when all items in a request have been approved' do
     within(first('[data-mediate-request]')) do
       expect(page).to_not have_css('[data-behavior="all-approved-note"]', text: 'Done')
-      page.find('a.mediate-toggle').click
+      page.find('a.mediate-toggle').trigger('click')
     end
 
     within('tbody td table tbody') do
