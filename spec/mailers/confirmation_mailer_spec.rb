@@ -19,6 +19,13 @@ describe ConfirmationMailer do
         end
       end
 
+      describe 'destination specific' do
+        let(:request) { create(:scan, user: user) }
+        it 'is the configured from address for the origin' do
+          expect(mail.from).to eq ['scan-and-deliver@stanford.edu']
+        end
+      end
+
       describe 'origin specific' do
         let(:request) { create(:mediated_page, user: user) }
         it 'is the configured from address for the origin' do

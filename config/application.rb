@@ -128,6 +128,10 @@ module SULRequests
     }
 
     config.contact_info = {
+      'SCAN' => {
+        phone: '(650) 723-1493',
+        email: 'scan-and-deliver@stanford.edu'
+      },
       'HOOVER' => {
         phone: '(650) 723-2058',
         email: 'hoovercirc@stanford.edu'
