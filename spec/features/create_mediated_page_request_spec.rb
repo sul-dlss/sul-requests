@@ -2,6 +2,11 @@ require 'rails_helper'
 
 describe 'Creating a mediated page request' do
   let(:user) { create(:webauth_user) }
+
+  before do
+    allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
+  end
+
   describe 'by an anonmyous user' do
     it 'should be possible to toggle between login and name-email form', js: true do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')

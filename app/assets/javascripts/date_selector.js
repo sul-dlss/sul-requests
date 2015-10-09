@@ -1,6 +1,8 @@
 var dateSelector = (function() {
   var defaultOptions = {
-    mediatedPageFieldSelector: 'input[data-request-type="mediated_page"]'
+    mediatedPageFieldSelector: 'input[data-request-type="mediated_page"]',
+    dropdownSelector: '[data-paging-schedule-updater="true"]',
+    singleLibrarySelector: '[data-single-library-value]'
   };
 
   return {
@@ -17,13 +19,17 @@ var dateSelector = (function() {
     setupListeners: function() {
       var _this = this;
       if ( _this.mediatedDateField().length > 0 ) {
-        $('[data-scheduler-text]')
-          .on('paging-schedule:updated', function(_, data) {
-            _this.setMinDate(data.date);
-            _this.restrictToOpenDates(
-              data.destination_business_days
-            );
-          });
+        _this.destinationDropdown().on('change', function() {
+          _this.validateDateField();
+        });
+
+        $('[data-scheduler-text]').on('paging-schedule:updated', function(_, data) {
+          _this.setMinDate(data.date);
+        });
+
+        _this.mediatedDateField().on('change', function() {
+          _this.validateDateField();
+        });
       }
     },
 
@@ -33,21 +39,41 @@ var dateSelector = (function() {
       }
     },
 
-    restrictToOpenDates: function(openDates) {
-      var _this = this;
-      _this.mediatedDateField().on('change', function() {
-        if ( openDates.indexOf(_this.selectedDate()) > -1 ) {
-          _this.setDateFieldAsValid();
-        } else {
-          _this.setDateFieldAsInvalid();
-        }
-      });
-    },
-
     selectedDate: function() {
       return new Date(
         this.mediatedDateField().val()
       ).toISOString().slice(0, 10);
+    },
+
+    validateDateField: function() {
+      var _this = this;
+      $.getJSON(_this.hoursLookupUrl(_this.destination(), _this.selectedDate()))
+       .done(function(data){
+          if(data.ok === true) {
+            _this.setDateFieldAsValid();
+          } else {
+            _this.setDateFieldAsInvalid();
+          }
+       })
+       .fail(function(){
+         _this.setDateFieldAsInvalid();
+       });
+    },
+
+    destination: function() {
+      if (this.singleLibraryElement().length > 0) {
+        return this.singleLibraryElement().data('single-library-value');
+      } else {
+        return this.destinationDropdown().val();
+      }
+    },
+
+    destinationDropdown: function() {
+      return $(this.options.dropdownSelector);
+    },
+
+    singleLibraryElement: function() {
+      return $(this.options.singleLibrarySelector);
     },
 
     setDateFieldAsValid: function() {
@@ -64,7 +90,15 @@ var dateSelector = (function() {
 
     mediatedDateField: function() {
       return $(this.options.mediatedPageFieldSelector);
-    }
+    },
+
+    hoursLookupUrl: function(destination, date) {
+      return this.baseUrl() + '/' + destination + '/' + date;
+    },
+
+    baseUrl: function(container) {
+      return $('[data-scheduler-lookup-url]').data('scheduler-lookup-url');
+    },
   };
 })();
 

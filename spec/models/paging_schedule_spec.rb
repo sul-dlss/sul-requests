@@ -38,8 +38,7 @@ describe PagingSchedule do
       schedule = described_class.for(build(:page, origin: 'SAL3', destination: 'SOMEWHERE-ELSE'))
       expect(schedule).to be_a PagingSchedule::Scheduler
       expect(schedule.from).to eq 'SAL3'
-      expect(schedule.to).to eq :anywhere
-      expect(schedule.earliest_delivery_estimate.to).to eq 'SOMEWHERE-ELSE'
+      expect(schedule.to).to eq 'SOMEWHERE-ELSE'
     end
 
     it 'raises an error when there is no schedule configured found' do
@@ -48,6 +47,12 @@ describe PagingSchedule do
           described_class.for(build(:page, origin: 'DOES-NOT-EXIST', destination: 'SOMEWHERE-ELSE'))
         end
       ).to raise_error(PagingSchedule::ScheduleNotFound)
+    end
+  end
+
+  describe '.worst_case_delivery_day' do
+    it 'should be the following week' do
+      expect(PagingSchedule.worst_case_delivery_day).to eq Time.zone.today + 7.days
     end
   end
 
@@ -91,86 +96,123 @@ describe PagingSchedule do
     end
   end
 
-  describe PagingSchedule::Scheduler::Estimate do
-    let(:scheduler) { double(to: 'GREEN', from: 'SAL3', days_later: 2, will_arrive_text: 'before 12n') }
-    let(:business_day_double) { double('next_business_day') }
-    before do
-      expect(LibraryHours).to receive(:new).with('GREEN').at_least(:once).and_return(
-        business_day_double
-      )
+  describe 'estimate integration tests' do
+    def earliest_delivery_estimate(from:, to:)
+      request = double(origin: from, destination: to, created_at: Time.zone.now)
+      d = PagingSchedule.for(request).earliest_delivery_estimate
+      d.estimated_delivery_day_to_destination
     end
 
-    describe 'estimating using buisness days' do
-      before do
-        expect(business_day_double).to receive(:next_business_day).with(
-          Time.zone.today + 6.days
-        ).at_least(:once).and_return(
-          Time.zone.today + 6.days
-        )
-        expect(LibraryHours).to receive(:new).with('SAL3').at_least(:once).and_return(
-          double(
-            next_business_day: Time.zone.today + 2.days,
-            business_days: [
-              Time.zone.today + 2.days,
-              Time.zone.today + 5.days,
-              Time.zone.today + 6.days,
-              Time.zone.today + 7.days
-            ]
-          )
-        )
+    context 'shipping from SAL3 to GREEN' do
+      context 'received before noon' do
+        context 'when both the origin and destination are open' do
+          before do
+            data = {
+              'data' => {
+                'attributes' => {
+                  'hours' => [
+                    { 'open' => true, 'opens_at' => '2015-10-08' },
+                    { 'open' => true, 'opens_at' => '2015-10-09' }
+                  ]
+                }
+              }
+            }
+
+            response = LibraryHoursApi::Response.new(data)
+            allow(LibraryHoursApi).to receive(:get).with('sal3', 'operations', anything).and_return(response)
+            allow(LibraryHoursApi).to receive(:get).with('green', 'library-circulation', anything).and_return(response)
+          end
+
+          it 'takes a single day' do
+            travel_to Time.zone.parse('2015-10-08T11:59:59') do
+              expect(earliest_delivery_estimate(from: 'SAL3', to: 'GREEN')).to eq Date.parse('2015-10-09')
+            end
+          end
+        end
       end
 
-      it 'does not count non-business days' do
-        expect(described_class.new(scheduler).date).to eq Time.zone.today + 6.days
+      context 'received after noon' do
+        context 'when the origin and destination are closed for the weekend' do
+          before do
+            data = {
+              'data' => {
+                'attributes' => {
+                  'hours' => [
+                    { 'open' => true, 'opens_at' => '2015-10-08' },
+                    { 'open' => true, 'opens_at' => '2015-10-09' },
+                    { 'open' => false, 'opens_at' => '2015-10-10' },
+                    { 'open' => false, 'opens_at' => '2015-10-11' },
+                    { 'open' => true, 'opens_at' => '2015-10-12' }
+                  ]
+                }
+              }
+            }
+
+            response = LibraryHoursApi::Response.new(data)
+            allow(LibraryHoursApi).to receive(:get).with('sal3', 'operations', anything).and_return(response)
+            allow(LibraryHoursApi).to receive(:get).with('green', 'library-circulation', anything).and_return(response)
+          end
+
+          it 'takes 2 business days' do
+            travel_to Time.zone.parse('2015-10-08T12:00:01') do
+              expect(earliest_delivery_estimate(from: 'SAL3', to: 'GREEN')).to eq Date.parse('2015-10-12')
+            end
+          end
+        end
       end
     end
 
-    describe 'attributes' do
-      let(:business_days) { ((Time.zone.today + 2.days)...(Time.zone.today + 5.days)).to_a }
-      before do
-        expect(business_day_double).to receive(:next_business_day).with(
-          Time.zone.today + 4.days
-        ).at_least(:once).and_return(
-          Time.zone.today + 5.days
-        )
-        allow(business_day_double).to receive(:business_days).and_return(business_days)
-        expect(LibraryHours).to receive(:new).with('SAL3').at_least(:once).and_return(
-          double(
-            next_business_day: Time.zone.today + 2.days,
-            business_days: business_days
-          )
-        )
-      end
-      describe '#date' do
-        it 'returns the estimated date' do
-          expect(described_class.new(scheduler).date).to eq Time.zone.today + 5.days
+    context 'shipping from SAL to GREEN' do
+      context 'received before 1pm' do
+        context 'when both the origin and destination are open' do
+          before do
+            data = {
+              'data' => {
+                'attributes' => {
+                  'hours' => [
+                    { 'open' => true, 'opens_at' => '2015-10-08' }
+                  ]
+                }
+              }
+            }
+
+            response = LibraryHoursApi::Response.new(data)
+            allow(LibraryHoursApi).to receive(:get).with('sal12', 'sal12-circulation', anything).and_return(response)
+            allow(LibraryHoursApi).to receive(:get).with('green', 'library-circulation', anything).and_return(response)
+          end
+
+          it 'is same-day service' do
+            travel_to Time.zone.parse('2015-10-08T11:59:59') do
+              expect(earliest_delivery_estimate(from: 'SAL', to: 'GREEN')).to eq Date.parse('2015-10-08')
+            end
+          end
         end
       end
 
-      describe '#as_json' do
-        let(:json) { described_class.new(scheduler).as_json }
-        it 'includes the date' do
-          expect(json[:date]).to eq(Time.zone.today + 5.days)
-        end
+      context 'received after 1pm' do
+        context 'when the origin and destination are both open' do
+          before do
+            data = {
+              'data' => {
+                'attributes' => {
+                  'hours' => [
+                    { 'open' => true, 'opens_at' => '2015-10-08' },
+                    { 'open' => true, 'opens_at' => '2015-10-09' }
+                  ]
+                }
+              }
+            }
 
-        it 'includes the time' do
-          expect(json[:time]).to eq('before 12n')
-        end
+            response = LibraryHoursApi::Response.new(data)
+            allow(LibraryHoursApi).to receive(:get).with('sal12', 'sal12-circulation', anything).and_return(response)
+            allow(LibraryHoursApi).to receive(:get).with('green', 'library-circulation', anything).and_return(response)
+          end
 
-        it 'includes the text representation' do
-          expect(json[:text]).to eq("#{I18n.l(Time.zone.today + 5.days, format: :long)}, before 12n")
-        end
-
-        it 'includes the destination\'s business days' do
-          expect(json[:destination_business_days]).to eq business_days
-        end
-      end
-
-      describe '#to_s' do
-        it 'returns the text representation' do
-          expect(
-            described_class.new(scheduler).to_s
-          ).to eq "#{I18n.l(Time.zone.today + 5.days, format: :long)}, before 12n"
+          it 'arrives the next day' do
+            travel_to Time.zone.parse('2015-10-08T12:00:01') do
+              expect(earliest_delivery_estimate(from: 'SAL', to: 'GREEN')).to eq Date.parse('2015-10-09')
+            end
+          end
         end
       end
     end

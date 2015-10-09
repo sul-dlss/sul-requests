@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 
   resources :paging_schedule, only: :index
   get 'paging_schedule/:origin(/:destination)' => 'paging_schedule#show', as: :paging_schedule
+  get 'paging_schedule/:origin/:destination/:date' => 'paging_schedule#open', as: :open_hours
 
   concern :creatable_via_get_redirect do
     collection do

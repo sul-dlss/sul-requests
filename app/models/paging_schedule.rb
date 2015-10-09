@@ -22,6 +22,10 @@ module PagingSchedule
       schedule_or_default
     end
 
+    def worst_case_delivery_day
+      (Time.zone.today + worst_case_days_later.days)
+    end
+
     private
 
     def schedule_for_request(request)
@@ -38,8 +42,11 @@ module PagingSchedule
         sched.to == :anywhere &&
         sched.by_time?(request.created_at)
       end
-      s.estimate.to = request.destination if s
-      s
+      s.for(request.destination) if s
+    end
+
+    def worst_case_days_later
+      schedule.map(&:days_later).compact.max + Settings.worst_case_paging_padding
     end
   end
 
@@ -49,16 +56,29 @@ module PagingSchedule
   ###
   class Scheduler
     attr_reader :to, :from, :before, :after, :days_later, :will_arrive_text
-    def initialize(to:, from:, before: nil, after: nil, &block)
+    # rubocop:disable Metrics/ParameterLists
+    def initialize(to:, from:, before: nil, after: nil, days_later: nil, will_arrive_text: nil, &block)
       @to = to
       @from = from
       @before = before
       @after = after
-      @schedule = instance_eval(&block)
+      @days_later = days_later
+      @will_arrive_text = will_arrive_text
+      @schedule = instance_eval(&block) if block_given?
+    end
+    # rubocop:enable Metrics/ParameterLists
+
+    def for(dest)
+      Scheduler.new(to: dest,
+                    from: from,
+                    before: before,
+                    after: after,
+                    days_later: days_later,
+                    will_arrive_text: will_arrive_text)
     end
 
-    def earliest_delivery_estimate
-      @earliest_delivery_estimate ||= Estimate.new(self)
+    def earliest_delivery_estimate(time = Time.zone.now)
+      Estimate.new(self, time)
     end
 
     def business_days_later(days)
@@ -84,65 +104,51 @@ module PagingSchedule
       end
     end
 
+    def valid?(date)
+      date >= earliest_delivery_estimate.estimated_delivery_day_to_destination && destination_open?(date)
+    end
+
+    def destination_open?(date)
+      LibraryHours.new(to).open?(date)
+    end
+
     # Simple class to return estimates
     class Estimate
       attr_accessor :to
-      attr_reader :from, :days_later, :time
-      def initialize(scheduler)
+      attr_reader :from, :days_later, :time, :as_of
+      def initialize(scheduler, as_of = Time.zone.now)
         @to = scheduler.to
         @from = scheduler.from
         @days_later = scheduler.days_later
         @time = scheduler.will_arrive_text
-      end
-
-      def date
-        estimated_delivery_day_to_destination
+        @as_of = as_of
       end
 
       def as_json(*)
         {
-          date: date,
+          date: estimated_delivery_day_to_destination,
           time: time,
-          text: to_s,
-          destination_business_days: destination_library_hours[to].business_days
+          text: to_s
         }
       end
 
       def to_s
-        "#{I18n.l(date, format: :long)}, #{time}"
+        "#{I18n.l(estimated_delivery_day_to_destination, format: :long)}, #{time}"
+      end
+
+      def estimated_delivery_day_to_destination
+        @estimated_delivery_day_to_destination ||= destination_library_hours_next_business_day_after_delivery
+        @estimated_delivery_day_to_destination ||= PagingSchedule.worst_case_delivery_day
       end
 
       private
 
-      def origins_library_hours
-        @origins_library_hours ||= LibraryHours.new(from)
+      def origin_library_next_business_day
+        LibraryHours.new(from).next_business_day(as_of, days_later)
       end
 
-      # Create a cache of all destinations requested for this
-      # origin's estimate so we don't request multiple times
-      def destination_library_hours
-        @destination_library_hours ||= {}
-        @destination_library_hours[to] ||= LibraryHours.new(to)
-        @destination_library_hours
-      end
-
-      def origins_next_business_day
-        # Time.zone.today is a fall back. We have request libraries that don't exist in the API
-        @origins_next_business_day ||= origins_library_hours.next_business_day || Time.zone.today
-      end
-
-      def origins_business_day_index
-        origins_library_hours.business_days.index(origins_next_business_day)
-      end
-
-      def business_days_later_after_origin_is_open
-        return Time.zone.today + days_later.days unless origins_business_day_index.present?
-        origins_library_hours.business_days[origins_business_day_index + days_later]
-      end
-
-      def estimated_delivery_day_to_destination
-        # Time.zone.today is a fall back. We have request libraries that don't exist in the API
-        destination_library_hours[to].next_business_day(business_days_later_after_origin_is_open) || Time.zone.today
+      def destination_library_hours_next_business_day_after_delivery
+        LibraryHours.new(to).next_business_day(origin_library_next_business_day)
       end
     end
   end

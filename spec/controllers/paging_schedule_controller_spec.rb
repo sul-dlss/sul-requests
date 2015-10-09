@@ -23,7 +23,7 @@ describe PagingScheduleController do
       before do
         expect(PagingSchedule).to receive_messages(for: estimate)
       end
-      let(:estimate) { double(estimate: { a: 'a', b: 'b' }) }
+      let(:estimate) { double(earliest_delivery_estimate: { a: 'a', b: 'b' }) }
       it 'is accessible by anonymous users' do
         get :show, origin: 'SAL3', destination: 'GREEN'
         expect(response).to be_success
@@ -56,6 +56,47 @@ describe PagingScheduleController do
         get :show, origin: 'DOES-NOT-EXIST', destination: 'NOT-REAL'
         expect(response).to_not be_success
         expect(response.status).to be 404
+      end
+    end
+  end
+
+  describe 'open' do
+    context 'with a bad date' do
+      it 'responds with a 404' do
+        get :open, origin: 'SAL3', destination: 'GREEN', date: 'tomorrow'
+
+        expect(response).to_not be_success
+        expect(response.status).to be 404
+      end
+    end
+
+    context 'for a pageable day' do
+      before do
+        expect(PagingSchedule).to receive_messages(for: estimate)
+      end
+
+      let(:estimate) { double(valid?: true) }
+
+      it 'return a success code' do
+        get :open, origin: 'SAL3', destination: 'GREEN', date: '2015-05-12'
+
+        expect(response).to be_success
+        expect(response.body).to eq 'true'
+      end
+    end
+
+    context 'for a non-pageable day' do
+      before do
+        expect(PagingSchedule).to receive_messages(for: estimate)
+      end
+
+      let(:estimate) { double(valid?: false) }
+
+      it 'returns an error' do
+        get :open, origin: 'SAL3', destination: 'GREEN', date: '2015-05-12'
+
+        expect(response).to be_success
+        expect(response.body).to eq 'false'
       end
     end
   end

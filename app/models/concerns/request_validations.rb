@@ -8,7 +8,7 @@ module RequestValidations
     validates :item_id, :origin, :origin_location, presence: true
     validates :item_comment, presence: true, if: :item_commentable?
     validate :requested_holdings_exist
-    validate :needed_date_is_not_in_the_past, on: :create
+    validate :needed_date_is_not_in_the_past, on: :create, if: :needed_date
   end
 
   protected
@@ -28,6 +28,6 @@ module RequestValidations
   end
 
   def needed_date_is_not_in_the_past
-    errors.add(:base, 'Date cannot be earlier than today') if needed_date && needed_date < Time.zone.today
+    errors.add(:base, 'Date cannot be earlier than today') if needed_date < Time.zone.today
   end
 end

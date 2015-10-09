@@ -6,6 +6,7 @@ class MediatedPage < Request
   validates :destination, presence: true
   validate :needed_date_is_required
   validate :destination_is_a_pickup_library
+  validate :needed_date_is_valid, on: :create, if: :requires_needed_date?
 
   scope :archived, -> { where('needed_date < ?', Time.zone.today) }
   scope :active, -> { where('needed_date IS NULL OR needed_date >= ?', Time.zone.today) }
@@ -76,5 +77,11 @@ class MediatedPage < Request
 
   def mediated_page_validator
     errors.add(:base, 'This item is not mediatable') unless mediateable?
+  end
+
+  def needed_date_is_valid
+    errors.add(:base, 'The library is not open on the date') unless PagingSchedule.for(self).valid?(needed_date)
+  rescue PagingSchedule::ScheduleNotFound
+    nil
   end
 end
