@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
     !webauth_user? && library_id.present?
   end
 
-  def superadmin?
+  def super_admin?
     admin_groups = Settings.super_admin_groups || []
     (ldap_groups & admin_groups).present?
   end

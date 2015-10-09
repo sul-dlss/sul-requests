@@ -25,7 +25,7 @@ class Ability
     # success has the same rules as status
     alias_action :status, to: :success
 
-    can :manage, :all if user.superadmin?
+    can :manage, :all if user.super_admin?
 
     [LibraryLocation, Message, PagingSchedule, Request].each do |kind|
       can :manage, kind if user.site_admin?
@@ -64,7 +64,7 @@ class Ability
       end
     end
 
-    cannot :create, Scan unless user.superadmin? || current_user_in_scan_pilot_group?
+    cannot :create, Scan unless user.super_admin? || current_user_in_scan_pilot_group?
   end
   # rubocop:enable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/MethodLength
 

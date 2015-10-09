@@ -4,7 +4,7 @@ FactoryGirl.define do
 
     after(:build) do |user|
       class << user
-        def superadmin?
+        def super_admin?
           true
         end
       end

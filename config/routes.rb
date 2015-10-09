@@ -10,8 +10,8 @@ Rails.application.routes.draw do
   get 'sorry/unable'
 
   # Auhtorization routes
-  get 'webauth/login' => 'authorization#login', as: :login
-  get 'webauth/logout' => 'authorization#logout', as: :logout
+  get 'webauth/login' => 'authentication#login', as: :login
+  get 'webauth/logout' => 'authentication#logout', as: :logout
 
   resources :paging_schedule, only: :index
   get 'paging_schedule/:origin(/:destination)' => 'paging_schedule#show', as: :paging_schedule
