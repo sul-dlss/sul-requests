@@ -25,6 +25,10 @@ class Scan < Request
     false
   end
 
+  def destination
+    'SCAN'
+  end
+
   private
 
   def scannable_validator

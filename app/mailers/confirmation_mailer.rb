@@ -30,6 +30,7 @@ class ConfirmationMailer < ApplicationMailer
   def contact_info
     contact_info_config[@request.origin_location] ||
       contact_info_config[@request.origin] ||
+      contact_info_config[@request.destination] ||
       contact_info_config['default']
   end
 
