@@ -28,29 +28,6 @@ describe('Date Selector', function() {
     });
   });
 
-  describe('restrictToOpenDates()', function() {
-    it('is invalid when the date is not in the given dates', function() {
-      var formGroup = dateSelector.mediatedDateField().closest('.form-group');
-      dateSelector.restrictToOpenDates(
-        ['2016-01-01', '2016-01-02', '2016-01-03']
-      );
-      expect(formGroup).not.toHaveClass('has-error');
-      dateSelector.mediatedDateField().val('2016-01-04').trigger('change');
-      expect(formGroup).toHaveClass('has-error');
-    });
-
-    it('is valid when the date is in the given dates', function() {
-      var formGroup = dateSelector.mediatedDateField().closest('.form-group');
-      formGroup.addClass('has-error');
-      dateSelector.restrictToOpenDates(
-        ['2016-01-01', '2016-01-02', '2016-01-03']
-      );
-      expect(formGroup).toHaveClass('has-error');
-      dateSelector.mediatedDateField().val('2016-01-03').trigger('change');
-      expect(formGroup).not.toHaveClass('has-error');
-    });
-  });
-
   describe('setMinDate()', function() {
     it('sets the min attribute of the input', function() {
       expect(dateSelector.mediatedDateField().attr('min')).toBeUndefined();

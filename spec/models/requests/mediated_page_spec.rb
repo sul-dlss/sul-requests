@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 describe MediatedPage do
+  before do
+    allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
+  end
+
   it 'should have the properly assigned Rails STI attribute value' do
     expect(subject.type).to eq 'MediatedPage'
   end

@@ -5,7 +5,7 @@ gem 'rails', '4.2.3'
 # Use sqlite3 as the database (during local development)
 gem 'sqlite3'
 # Use mysql as the database when running on the server environment
-gem 'mysql2'
+gem 'mysql2', '~> 0.3.0'
 # Use sass-powered bootstrap
 gem 'bootstrap-sass', "~> 3.3.4"
 # Use bootstrap_form for easy form building
@@ -19,7 +19,7 @@ gem 'therubyracer'
 # Common styles for SUL
 gem 'sul_styles', '>= 0.5.0'
 # A gem for simple rails invornment specific config
-gem 'rails_config'
+gem 'config'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
@@ -81,7 +81,8 @@ group :development, :test do
   gem 'factory_girl_rails'
 
   # Poltergeist is a capybara driver to run integration tests using PhantomJS
-  gem 'poltergeist'
+  # 1.7.0 causes failures in mediation table feature
+  gem 'poltergeist', '~> 1.6.0'
 
   # Teaspoon-jasmine is a wrapper for the Jasmine javascript testing library
   gem 'teaspoon-jasmine'

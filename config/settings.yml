@@ -29,7 +29,7 @@ symphony_api:
 
 mailer_host: <%= `echo $HOSTNAME` %>
 searchworks_api: 'http://searchworks-test.stanford.edu/api-test'
-hours_api: 'https://sul-library-hours-prod.stanford.edu'
+hours_api: 'https://sul-library-hours-prod.stanford.edu/'
 searchworks_link: 'http://searchworks.stanford.edu/view'
 sul_illiad: 'https://sulils-test.stanford.edu'
 sul_proxy_api_url: ''
@@ -37,3 +37,4 @@ sul_proxy_api_url: ''
 sul_user_name_api_url: ''
 # e.g. sul_user_name_api_url: 'http://localhost:3000/userName?libid=%{libid}'
 GOOGLE_ANALYTICS_ID: ''
+worst_case_paging_padding: 3
