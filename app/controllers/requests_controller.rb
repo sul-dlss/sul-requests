@@ -23,7 +23,7 @@ class RequestsController < ApplicationController
 
   def create
     if current_request.save && current_request.submit!
-      current_request.send_confirmation!
+      send_confirmation
       redirect_to_success_with_token
     else
       flash[:error] = 'There was a problem creating your request.'
@@ -42,6 +42,10 @@ class RequestsController < ApplicationController
   end
 
   protected
+
+  def send_confirmation
+    current_request.send_confirmation! if current_request.symphony_response.success?
+  end
 
   def redirect_delegatable_requests
     return if delegated_request? || current_request.scannable?

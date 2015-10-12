@@ -20,7 +20,7 @@ describe 'Creating a page request' do
 
       click_button 'Send request'
 
-      expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
+      expect_to_be_on_success_page
     end
 
     it 'should be possible if a library ID is filled out', js: true do
@@ -36,7 +36,7 @@ describe 'Creating a page request' do
 
       expect(Page.last.user).to eq User.last
       expect(User.last.library_id).to eq '123456'
-      expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
+      expect_to_be_on_success_page
     end
   end
   describe 'by a webauth user' do
@@ -46,7 +46,7 @@ describe 'Creating a page request' do
       first(:button, 'Send request').click
 
       expect(current_url).to eq successful_page_url(Page.last)
-      expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
+      expect_to_be_on_success_page
     end
   end
 
@@ -54,6 +54,7 @@ describe 'Creating a page request' do
     before do
       stub_current_user(user)
       stub_proxy_api_output('MY_PROXY_GROUP|SPONSOR|')
+      stub_symphony_response(build(:symphony_page_with_single_item))
     end
 
     it 'allows the user to share with their proxy group' do
@@ -64,7 +65,7 @@ describe 'Creating a page request' do
       click_button 'Yes, share with my group.'
 
       expect(current_url).to eq successful_page_url(Page.last)
-      expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
+      expect_to_be_on_success_page
       expect(page).to have_content 'Shared with your proxy group'
     end
 
@@ -76,7 +77,7 @@ describe 'Creating a page request' do
       click_button 'No, just me.'
 
       expect(current_url).to eq successful_page_url(Page.last)
-      expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
+      expect_to_be_on_success_page
       expect(page).to have_content 'Individual Request'
     end
   end
@@ -96,7 +97,7 @@ describe 'Creating a page request' do
 
       first(:button, 'Send request').click
 
-      expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
+      expect_to_be_on_success_page
 
       expect(Page.last.barcodes).to eq(%w(3610512345678 3610587654321))
     end

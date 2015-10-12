@@ -103,3 +103,11 @@ end
 def stub_proxy_api_output(data)
   allow_any_instance_of(ProxyAccess).to receive(:response).and_return(double(body: data))
 end
+
+def stub_symphony_response(response)
+  allow_any_instance_of(Request).to receive(:symphony_response_data).and_return(response)
+end
+
+def expect_to_be_on_success_page
+  expect(page).to have_css('h1#dialogTitle', text: /Request complete|Can't complete your request/)
+end

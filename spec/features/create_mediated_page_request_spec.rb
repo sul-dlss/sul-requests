@@ -33,7 +33,7 @@ describe 'Creating a mediated page request' do
 
       click_button 'Send request'
 
-      expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
+      expect_to_be_on_success_page
     end
 
     it 'should be possible if a library id is filled out', js: true do
@@ -52,7 +52,7 @@ describe 'Creating a mediated page request' do
 
       expect(MediatedPage.last.user).to eq User.last
       expect(User.last.library_id).to eq '123456'
-      expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
+      expect_to_be_on_success_page
     end
 
     it 'should not have library ID/name/email fields if the request is from HOPKINS' do
@@ -74,7 +74,7 @@ describe 'Creating a mediated page request' do
       first(:button, 'Send request').click
 
       expect(current_url).to eq successful_mediated_page_url(MediatedPage.last)
-      expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
+      expect_to_be_on_success_page
     end
   end
   describe 'comments' do
@@ -89,7 +89,7 @@ describe 'Creating a mediated page request' do
 
       first(:button, 'Send request').click
 
-      expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
+      expect_to_be_on_success_page
 
       expect(MediatedPage.last.request_comment).to eq comment
     end
@@ -109,7 +109,7 @@ describe 'Creating a mediated page request' do
 
       first(:button, 'Send request').click
 
-      expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
+      expect_to_be_on_success_page
 
       expect(MediatedPage.last.needed_date).to eq date
     end
@@ -131,7 +131,7 @@ describe 'Creating a mediated page request' do
 
       first(:button, 'Send request').click
 
-      expect(page).to have_css('h1#dialogTitle', text: 'Request complete')
+      expect_to_be_on_success_page
 
       expect(MediatedPage.last.barcodes).to eq(%w(12345678))
     end

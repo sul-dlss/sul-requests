@@ -121,6 +121,7 @@ describe ScansController do
 
       it 'sends an confirmation email' do
         stub_searchworks_api_json(build(:sal3_holdings))
+        stub_symphony_response(build(:symphony_page_with_single_item))
         expect(
           lambda do
             post :create, illiad_success: true, request: {

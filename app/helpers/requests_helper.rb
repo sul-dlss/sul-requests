@@ -51,13 +51,35 @@ module RequestsHelper
     end
   end
 
-  def holding_request_status(holding)
-    text = case holding.request_status.msgcode
-           when 'P001B', 'P002B'
-             'delivery may be delayed'
-           end
+  def request_level_request_status(request = current_request)
+    if !request.symphony_response.success?
+      t(
+        "symphony_response.failure.code_#{request.symphony_response.usererr_code}.alert_html",
+        default: 'symphony_response.failure.default.alert_html'.to_sym
+      )
+    elsif request.symphony_response.mixed_status?
+      t('symphony_response.mixed_failure_html')
+    end
+  end
 
-    content_tag(:span, " (#{text})", class: 'alert-danger small') if text.present?
+  def holding_request_status(holding, request = current_request)
+    return if request.symphony_response.success?(holding.barcode)
+    return if (text = holding.request_status.try(:text)).blank?
+    content_tag(:span, " (#{text})", class: 'alert-danger small')
+  end
+
+  def new_scan_path_for_current_request(request = current_request)
+    new_scan_path(
+      origin: request.origin,
+      item_id: request.item_id,
+      origin_location: request.origin_location
+    )
+  end
+
+  def symphony_request_failed_due_to_user_privs?
+    SULRequests::Application.config.no_user_privs_codes.include?(
+      current_request.symphony_response.usererr_code
+    )
   end
 
   private

@@ -7,10 +7,11 @@ describe 'mediated_pages/_status_header.html.erb' do
   let(:ad_hoc_items) { [] }
 
   let(:current_request) do
-    double('request', origin: origin, origin_location: origin_location, holdings: holdings, ad_hoc_items: ad_hoc_items)
+    create(:request, origin: origin, origin_location: origin_location, ad_hoc_items: ad_hoc_items)
   end
 
   before do
+    allow(current_request).to receive_messages(holdings: holdings)
     allow(view).to receive_messages(current_request: current_request)
   end
 
@@ -22,7 +23,7 @@ describe 'mediated_pages/_status_header.html.erb' do
   end
 
   context 'with a request without approved holdings' do
-    let(:holdings) { [double(request_status: double(approved?: false))] }
+    let(:holdings) { [double(request_status: double(approved?: false), barcode: '12345')] }
 
     it 'should be blank' do
       render
@@ -33,8 +34,8 @@ describe 'mediated_pages/_status_header.html.erb' do
   context 'with approved holdings' do
     let(:holdings) do
       [
-        double(request_status: double(approved?: true, msgcode: 'ok'), callnumber: 'XYZ'),
-        double(request_status: double(approved?: false, msgcode: 'ok'), callnumber: 'ABC')
+        double(request_status: double(approved?: true, msgcode: 'ok'), callnumber: 'XYZ', barcode: '12345'),
+        double(request_status: double(approved?: false, msgcode: 'ok'), callnumber: 'ABC', barcode: '54321')
       ]
     end
 

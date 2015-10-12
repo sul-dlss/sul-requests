@@ -114,10 +114,12 @@ describe AdminController do
 
       it 'can approve individual items' do
         expect(MediatedPage.find(mediated_page.id).request_status_data).to be_blank
-        get :approve_item, id: mediated_page.id, item: '12345678'
+        stub_symphony_response(build(:symphony_page_with_single_item))
+        get :approve_item, id: mediated_page.id, item: '3610512345'
         expect(response).to be_successful
+
         expect(
-          MediatedPage.find(mediated_page.id).request_status_data['12345678']['approved']
+          MediatedPage.find(mediated_page.id).request_status_data['3610512345']['approved']
         ).to be true
       end
     end

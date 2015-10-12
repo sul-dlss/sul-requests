@@ -98,6 +98,7 @@ describe HoldRecallsController do
       end
 
       it 'sends an confirmation email' do
+        stub_symphony_response(build(:symphony_page_with_single_item))
         expect(
           lambda do
             put :create, request: normal_params

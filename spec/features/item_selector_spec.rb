@@ -204,7 +204,7 @@ describe 'Item Selector' do
 
       click_button 'Send request'
 
-      expect(page).to have_content('Request complete')
+      expect_to_be_on_success_page
 
       page.evaluate_script('window.history.back()') # Mimics back-button click
 
