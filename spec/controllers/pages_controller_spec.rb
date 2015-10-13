@@ -232,6 +232,68 @@ describe PagesController do
     end
   end
 
+  describe '#success' do
+    context 'by webauth users' do
+      let(:user) { create(:webauth_user) }
+      it 'is successful if they have the are the creator of the record' do
+        page = create(:page, user: user)
+        get :success, id: page[:id]
+        expect(response).to be_success
+      end
+
+      it 'raises an error if the user is already authenticated but does not have access to the request' do
+        page = create(:page)
+        expect do
+          get :success, id: page[:id]
+        end.to raise_error(CanCan::AccessDenied)
+      end
+    end
+
+    context 'by non-webuth users' do
+      let(:user) { create(:non_webauth_user) }
+      it 'redirects the user to the webauth login with the current url' do
+        page = create(:page, user: create(:non_webauth_user, email: 'jjstanford@stanford.edu'))
+        get :success, id: page[:id]
+        expect(response).to redirect_to(
+          login_path(
+            referrer: successful_page_url(page[:id])
+          )
+        )
+      end
+    end
+  end
+
+  describe '#status' do
+    context 'by webauth users' do
+      let(:user) { create(:webauth_user) }
+      it 'is successful if they have the are the creator of the record' do
+        page = create(:page, user: user)
+        get :status, id: page[:id]
+        expect(response).to be_success
+      end
+
+      it 'raises an error if the user is already authenticated but does not have access to the request' do
+        page = create(:page)
+        expect do
+          get :status, id: page[:id]
+        end.to raise_error(CanCan::AccessDenied)
+      end
+    end
+
+    context 'by non-webuth users' do
+      let(:user) { create(:non_webauth_user) }
+      it 'redirects the user to the webauth login with the current url' do
+        page = create(:page, user: create(:non_webauth_user, email: 'jjstanford@stanford.edu'))
+        get :status, id: page[:id]
+        expect(response).to redirect_to(
+          login_path(
+            referrer: status_page_url(page[:id])
+          )
+        )
+      end
+    end
+  end
+
   describe '#current_request' do
     let(:user) { create(:anon_user) }
     it 'returns a Page object' do
