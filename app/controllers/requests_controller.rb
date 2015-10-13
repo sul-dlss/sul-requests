@@ -75,11 +75,17 @@ class RequestsController < ApplicationController
   end
 
   def rescue_can_can(exception)
-    if !current_user.webauth_user? && create_via_post? && current_request.new_record?
-      bounce_request_through_webauth
-    else
-      super
-    end
+    rescue_new_record_via_post || rescue_status_pages || super
+  end
+
+  def rescue_new_record_via_post
+    return unless !current_user.webauth_user? && create_via_post? && current_request.new_record?
+    bounce_request_through_webauth
+  end
+
+  def rescue_status_pages
+    return unless !current_user.webauth_user? && %w(success status).include?(params[:action])
+    redirect_to login_path(referrer: request.original_url)
   end
 
   def bounce_request_through_webauth
