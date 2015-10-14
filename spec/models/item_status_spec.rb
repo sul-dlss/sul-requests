@@ -45,6 +45,7 @@ describe ItemStatus do
     describe 'with an unsusccessful symphony request' do
       let(:request) { create(:request_with_holdings) }
       it 'does not persist any changes if the symphony response is not successful' do
+        stub_symphony_response(build(:symphony_request_with_all_errored_items))
         expect(request).not_to receive(:save!)
         expect(subject.approve!('jstanford')).to be nil
       end
@@ -54,6 +55,7 @@ describe ItemStatus do
   describe '#as_json' do
     let(:json) { subject.as_json }
     before { subject.approve!('jstanford') }
+
     it 'returns the identifier' do
       expect(json[:id]).to eq barcode
     end
@@ -66,10 +68,42 @@ describe ItemStatus do
       expect(json[:approver]).to eq 'jstanford'
     end
 
+    it 'returns the symphony msgcode for the item' do
+      expect(json[:msgcode]).to eq '209'
+    end
+
+    it 'returns the symphony status text for the item' do
+      expect(json[:text]).to eq 'Hold placed'
+    end
+
     it 'returns the formatted approval time' do
       expect(json[:approval_time]).to eq(
         I18n.l(Time.zone.parse(subject.approval_time), format: :short)
       )
+    end
+
+    it 'returns the errored boolean' do
+      expect(json[:errored]).to be false
+    end
+
+    context 'symphony errors' do
+      let(:request) { build(:request_with_symphony_errors) }
+      let(:barcode) { '12345678901234' }
+      it 'returns user level error codes' do
+        expect(json[:usererr_code]).to eq 'U003'
+      end
+
+      it 'returns item level error codes' do
+        expect(json[:msgcode]).to eq '209'
+      end
+
+      it 'returns the usererr_text when present' do
+        expect(json[:text]).to eq 'Blocked user'
+      end
+
+      it 'returns the errored boolean' do
+        expect(json[:errored]).to be true
+      end
     end
   end
 

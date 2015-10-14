@@ -40,3 +40,16 @@
 .sul-i-remove-2 {
   color: $sul-unavailabe-icon-color;
 }
+
+.mediation-table {
+  .errored {
+    .request-status {
+      color: $sul-unavailabe-icon-color;
+
+      &:before {
+        @extend .glyphicon;
+        @extend .glyphicon-exclamation-sign;
+      }
+    }
+  }
+}

@@ -3,7 +3,7 @@
   <%= render 'searchworks_item_information' %>
   <%= render 'shared/request_status_information' %>
 
-  <% if current_request.symphony_response.success? %>
+  <% if current_request.is_a?(MediatedPage) || current_request.symphony_response.success? %>
     <dl class='dl-horizontal dl-invert'>
       <dt class='sr-only'><%= current_request.class.human_attribute_name :user %></dt>
       <% unless current_request.user.library_id_user? %>

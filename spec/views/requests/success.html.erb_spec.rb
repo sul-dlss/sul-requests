@@ -27,6 +27,7 @@ describe 'requests/success.html.erb' do
       end
 
       it 'has an error message' do
+        stub_symphony_response(build(:symphony_request_with_all_errored_items))
         render
         expect(rendered).to have_css('.alert.alert-danger', text: /We're unable to complete your request right now/)
       end

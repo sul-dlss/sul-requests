@@ -83,33 +83,63 @@ describe RequestsHelper do
 
   describe 'status_text_for_item' do
     let(:other_item) do
-      double('holding', home_location: 'STACKS', current_location: nil)
+      double(
+        'holding',
+        home_location: 'STACKS',
+        current_location: nil,
+        request_status: double(errored?: false)
+      )
     end
     let(:home_location_30) do
-      double('holding', home_location: 'PAGE-30', current_location: nil)
+      double(
+        'holding',
+        home_location: 'PAGE-30',
+        current_location: nil,
+        request_status: double(errored?: false)
+      )
     end
     let(:current_location_loan) do
       double(
         'holding',
         home_location: 'MSS-30',
-        current_location: double('location', code: 'GREEN-LOAN')
+        current_location: double('location', code: 'GREEN-LOAN'),
+        request_status: double(errored?: false)
       )
     end
 
-    it 'returns text for ad-hoc items' do
-      expect(status_text_for_item('ABC-123')).to eq 'Approved for manual processing'
+    context 'from symphony' do
+      let(:error_item) do
+        double(
+          'error-item',
+          request_status: double(
+            'status',
+            errored?: true,
+            symphony_user_error_text: 'User is blocked'
+          )
+        )
+      end
+
+      it 'returns the request status text if the item errored' do
+        expect(status_text_for_item(error_item)).to eq 'User is blocked'
+      end
     end
 
-    it 'returns text for page items' do
-      expect(status_text_for_item(home_location_30)).to eq 'Paged'
-    end
+    context 'from i18n' do
+      it 'returns text for ad-hoc items' do
+        expect(status_text_for_item('ABC-123')).to eq 'Approved for manual processing'
+      end
 
-    it 'returns text for hold items' do
-      expect(status_text_for_item(current_location_loan)).to eq 'Item is on-site - hold for patron'
-    end
+      it 'returns text for page items' do
+        expect(status_text_for_item(home_location_30)).to eq 'Paged'
+      end
 
-    it 'returns text for all other items' do
-      expect(status_text_for_item(other_item)).to eq 'Added to pick list'
+      it 'returns text for hold items' do
+        expect(status_text_for_item(current_location_loan)).to eq 'Item is on-site - hold for patron'
+      end
+
+      it 'returns text for all other items' do
+        expect(status_text_for_item(other_item)).to eq 'Added to pick list'
+      end
     end
   end
 

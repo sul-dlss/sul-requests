@@ -5,7 +5,7 @@ describe 'Mediation table', js: true do
   before do
     stub_current_user(create(:superadmin_user))
     stub_searchworks_api_json(build(:searchable_holdings))
-    stub_symphony_response(build(:symphony_page_with_multiple_items))
+    stub_symphony_response(symphony_response)
     create(
       :mediated_page_with_holdings,
       user: create(:non_webauth_user),
@@ -27,85 +27,141 @@ describe 'Mediation table', js: true do
     visit admin_path('SPEC-COLL')
   end
 
-  it 'has toggleable rows that display holdings' do
-    expect(page).to have_css('[data-mediate-request]', count: 3)
-    expect(page).to have_css('tbody tr', count: 3)
-    within(first('[data-mediate-request]')) do
-      expect(page).to have_css('td', count: top_level_columns)
-      page.find('a.mediate-toggle').trigger('click')
-    end
-    expect(page).to have_css("tbody td[colspan='#{top_level_columns}'] table")
-    within("tbody td[colspan='#{top_level_columns}'] table") do
-      expect(page).to have_css('td button', text: 'Approve', count: 2)
-      expect(page).to have_css('td', text: 'STACKS', count: 2)
-      expect(page).to have_css('td', text: 'ABC 123')
-      expect(page).to have_css('td', text: 'ABC 456')
-    end
-  end
-
-  it 'has holdings that can be approved' do
-    within(first('[data-mediate-request]')) do
-      page.find('a.mediate-toggle').trigger('click')
-    end
-
-    within('tbody td table tbody') do
-      expect(page).to_not have_css('tr.approved')
-      within(first('tr')) do
-        expect(page).to have_css('td button', text: 'Approve')
-        expect(page).to_not have_css('td', text: 'Added to pick list', visible: true)
-        expect(page).to_not have_content('super-admin')
-        click_button('Approve')
+  describe 'successfull symphony response' do
+    let(:symphony_response) { build(:symphony_page_with_multiple_items) }
+    it 'has toggleable rows that display holdings' do
+      expect(page).to have_css('[data-mediate-request]', count: 3)
+      expect(page).to have_css('tbody tr', count: 3)
+      within(first('[data-mediate-request]')) do
+        expect(page).to have_css('td', count: top_level_columns)
+        page.find('a.mediate-toggle').trigger('click')
       end
+      expect(page).to have_css("tbody td[colspan='#{top_level_columns}'] table")
+      within("tbody td[colspan='#{top_level_columns}'] table") do
+        expect(page).to have_css('td button', text: 'Approve', count: 2)
+        expect(page).to have_css('td', text: 'STACKS', count: 2)
+        expect(page).to have_css('td', text: 'ABC 123')
+        expect(page).to have_css('td', text: 'ABC 456')
+      end
+    end
+
+    it 'has holdings that can be approved' do
+      within(first('[data-mediate-request]')) do
+        page.find('a.mediate-toggle').trigger('click')
+      end
+
+      within('tbody td table tbody') do
+        expect(page).to_not have_css('tr.approved')
+        within(first('tr')) do
+          expect(page).to have_css('td button', text: 'Approve')
+          expect(page).to_not have_css('td', text: 'Added to pick list', visible: true)
+          expect(page).to_not have_content('super-admin')
+          click_button('Approve')
+        end
+        expect(page).to have_css('tr.approved')
+        expect(page).to have_css('td button', text: 'Approved')
+
+        within(first('tr')) do
+          expect(page).to have_css('td', text: 'Added to pick list', visible: true)
+          expect(page).to have_css('td', text: /super-admin - \d{4}-\d{2}-\d{2}/)
+        end
+      end
+
+      # and check that it is persisted
+      visit admin_path('SPEC-COLL')
+
+      within(first('[data-mediate-request]')) do
+        page.find('a.mediate-toggle').trigger('click')
+      end
+
       expect(page).to have_css('tr.approved')
       expect(page).to have_css('td button', text: 'Approved')
+      expect(page).to_not have_css('.alert') # does not add request level alert
+    end
 
-      within(first('tr')) do
-        expect(page).to have_css('td', text: 'Added to pick list', visible: true)
-        expect(page).to have_css('td', text: /super-admin - \d{4}-\d{2}-\d{2}/)
+    it 'indicates when all items in a request have been approved' do
+      within(first('[data-mediate-request]')) do
+        expect(page).to_not have_css('[data-behavior="all-approved-note"]', text: 'Done')
+        page.find('a.mediate-toggle').trigger('click')
+      end
+
+      within('tbody td table tbody') do
+        within(all('tr').first) do
+          click_button('Approve')
+        end
+
+        within(all('tr').last) do
+          click_button('Approve')
+        end
+      end
+
+      within(first('[data-mediate-request]')) do
+        expect(page).to have_css('[data-behavior="all-approved-note"]', text: 'Done')
       end
     end
 
-    # and check that it is persisted
-    visit admin_path('SPEC-COLL')
+    it 'has sortable columns' do
+      within '.mediation-table tbody' do
+        expect(page).to have_content(/Jane Stanford.*Joe Doe.*Jim Doe/)
+      end
 
-    within(first('[data-mediate-request]')) do
-      page.find('a.mediate-toggle').trigger('click')
+      click_link 'Requested on'
+
+      within '.mediation-table tbody' do
+        expect(page).to have_content(/Jim Doe.*Joe Doe.*Jane Stanford/)
+      end
     end
-
-    expect(page).to have_css('tr.approved')
-    expect(page).to have_css('td button', text: 'Approved')
   end
 
-  it 'indicates when all items in a request have been approved' do
-    within(first('[data-mediate-request]')) do
-      expect(page).to_not have_css('[data-behavior="all-approved-note"]', text: 'Done')
-      page.find('a.mediate-toggle').trigger('click')
-    end
+  describe 'unsuccessful symphony responses' do
+    let(:symphony_response) { build(:symphony_request_with_mixed_status) }
 
-    within('tbody td table tbody') do
-      within(all('tr').first) do
-        click_button('Approve')
+    it 'has the persisted item level error message' do
+      within(first('[data-mediate-request]')) do
+        page.find('a.mediate-toggle').trigger('click')
       end
 
-      within(all('tr').last) do
-        click_button('Approve')
+      within('tbody td table tbody') do
+        last_tr = all('tr').last
+        expect(last_tr['class']).to include 'errored'
+        within(last_tr) do
+          expect(page).to have_css('td', text: 'Item not found in catalog')
+        end
       end
     end
 
-    within(first('[data-mediate-request]')) do
-      expect(page).to have_css('[data-behavior="all-approved-note"]', text: 'Done')
+    it 'returns the item level error text if it is not user-based' do
+      within(first('[data-mediate-request]')) do
+        page.find('a.mediate-toggle').trigger('click')
+      end
+
+      expect(page).not_to have_css('.alert.alert-danger', text: /There was a problem with this request/)
+
+      within('tbody td table tbody') do
+        within(all('tr').last) do
+          click_button('Approve')
+        end
+      end
+
+      expect(page).to have_css('.alert.alert-danger', text: /There was a problem with this request/)
     end
-  end
 
-  it 'has sortable columns' do
-    within '.mediation-table tbody' do
-      expect(page).to have_content(/Jane Stanford.*Joe Doe.*Jim Doe/)
-    end
+    describe 'on item approval' do
+      let(:symphony_response) { build(:symphony_page_with_multiple_items) }
+      it 'updates the item level error messages' do
+        within(first('[data-mediate-request]')) do
+          page.find('a.mediate-toggle').trigger('click')
+        end
 
-    click_link 'Requested on'
-
-    within '.mediation-table tbody' do
-      expect(page).to have_content(/Jim Doe.*Joe Doe.*Jane Stanford/)
+        within('tbody td table tbody') do
+          within(all('tr').last) do
+            expect(page).not_to have_css('td', text: 'Item not found in catalog')
+            stub_symphony_response(build(:symphony_request_with_mixed_status))
+            click_button('Approve')
+            expect(page).to have_css('td', text: 'Item not found in catalog')
+          end
+        end
+      end
     end
   end
 end

@@ -122,6 +122,12 @@ describe AdminController do
           MediatedPage.find(mediated_page.id).request_status_data['3610512345']['approved']
         ).to be true
       end
+
+      it 'returns a 500 when the item cannot be approved' do
+        get :approve_item, id: mediated_page.id, item: '3610512345'
+        expect(response.status).to eq 500
+        expect(response).not_to be_successful
+      end
     end
 
     describe 'for anonymous users' do
