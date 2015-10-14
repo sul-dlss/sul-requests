@@ -38,6 +38,21 @@ describe 'Creating a page request' do
       expect(User.last.library_id).to eq '123456'
       expect_to_be_on_success_page
     end
+
+    it 'should not be possible with only the name filled out', js: true do
+      visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
+      click_link "I don't have a SUNet ID"
+
+      expect(page).to have_css('input#request_user_attributes_name')
+      expect(page.evaluate_script('document.activeElement.id')).to eq 'request_user_attributes_library_id'
+
+      fill_in 'Name', with: 'somebody'
+
+      click_button 'Send request'
+
+      expect(page).to have_css('div.tooltip-inner',
+                               text: 'Enter your Library ID or your name and email to complete you request.')
+    end
   end
   describe 'by a webauth user' do
     before { stub_current_user(user) }

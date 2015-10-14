@@ -2,8 +2,17 @@
   <div id="no-sunetid-form" aria-hidden="false">
     <%= f.fields_for :user, (current_request.user unless current_request.user && current_request.user.webauth_user?) || User.new do |uf| %>
       <% if f.object.requestable_with_library_id? %>
-        <%= uf.text_field :library_id %>
-      <% end  %>
+        <% if !f.object.requestable_by_all? %>
+        <div class='form-group'>
+          <%= uf.label :library_id, class: "control-label #{label_column_class} required" %>
+          <div class='<%= "#{content_column_class}" %>'>
+            <%= uf.text_field_without_bootstrap :library_id, required: true, class: 'form-control required' %>
+          </div>
+        </div>
+        <% else %>
+          <%= uf.text_field :library_id %>
+        <% end %>
+      <% end %>
       <% if f.object.requestable_by_all? %>
         <div class='form-group'>
           <div class='<%= "#{label_column_offset_class} #{content_column_class}" %>'>
