@@ -27,7 +27,8 @@
 
     <div class='<%= content_column_class %> <%= label_column_offset_class %>'>
 
-      <%= f.submit 'Send request', class: "btn btn-md btn-primary btn-full",
+      <%= f.submit 'Send request', data: { disable_with: 'Send request' },
+                                   class: "btn btn-md btn-primary btn-full",
                                    id: 'no-sunet-submit',
                                    type: 'button',
                                    title: 'Enter your Library ID or your name and email to complete you request.',
