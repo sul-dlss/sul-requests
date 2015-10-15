@@ -7,8 +7,7 @@ class SubmitSymphonyRequestJob < ActiveJob::Base
     return true unless enabled?
 
     response = Command.new(request, options).execute!
-    request.symphony_response_data = response
-    request.symphony_response_will_change!
+    request.merge_symphony_response_data(response.with_indifferent_access)
     request.save
   end
 
@@ -33,7 +32,7 @@ class SubmitSymphonyRequestJob < ActiveJob::Base
     def execute!
       benchmark "Sending func_request_webservice_new.make_request with #{request_params.inspect}" do
         response = client.get('func_request_webservice_new.make_request', request_params)
-        JSON.parse(response.body)['request_response']
+        JSON.parse(response.body)['request_response'] || {}
       end
     end
 

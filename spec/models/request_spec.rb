@@ -430,4 +430,45 @@ describe Request do
       expect(subject.symphony_request).to be_a SubmitSymphonyRequestJob::Command
     end
   end
+
+  describe '#merge_symphony_response_data' do
+    before do
+      subject.symphony_response_data = FactoryGirl.build(:symphony_scan_with_multiple_items)
+    end
+
+    it 'uses any new request-level data' do
+      subject.merge_symphony_response_data req_type: 'SCAN',
+                                           usererr_code: 'USERBLOCKED',
+                                           usererr_text: 'User is Blocked'
+
+      expect(subject.symphony_response.usererr_code).to eq 'USERBLOCKED'
+      expect(subject.symphony_response.usererr_text).to eq 'User is Blocked'
+    end
+
+    it 'preserves old item-level data' do
+      subject.merge_symphony_response_data req_type: 'SCAN',
+                                           requested_items: [
+                                             {
+                                               'barcode' => '987654321',
+                                               'msgcode' => '209',
+                                               'text' => 'Hold placed'
+                                             },
+                                             {
+                                               'barcode' => '12345678901234z',
+                                               'msgcode' => '209',
+                                               'text' => 'Hold placed'
+                                             }
+                                           ]
+
+      item_status = subject.symphony_response.items_by_barcode
+      expect(item_status['987654321']).to be_present
+      expect(item_status['987654321']['msgcode']).to eq '209'
+
+      expect(item_status['12345678901234z']).to be_present
+      expect(item_status['12345678901234z']['msgcode']).to eq '209'
+
+      expect(item_status['36105212920537']).to be_present
+      expect(item_status['36105212920537']['msgcode']).to eq 'S001'
+    end
+  end
 end
