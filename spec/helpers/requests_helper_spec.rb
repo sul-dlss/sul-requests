@@ -56,11 +56,15 @@ describe RequestsHelper do
   describe 'requester info' do
     let(:webauth_user) { User.create(webauth: 'jstanford') }
     let(:non_webauth_user) { User.create(name: 'Joe', email: 'joe@xyz.com') }
+    let(:library_id_user) { User.create(library_id: '123456') }
     it 'should construct requester info for webauth user' do
       expect(requester_info(webauth_user)).to eq '<a href="mailto:jstanford@stanford.edu">jstanford@stanford.edu</a>'
     end
     it 'should construct requester info for non-webauth user' do
       expect(requester_info(non_webauth_user)).to eq '<a href="mailto:joe@xyz.com">Joe (joe@xyz.com)</a>'
+    end
+    it 'should construct requester info for a library id user' do
+      expect(requester_info(library_id_user)).to eq '123456'
     end
   end
 

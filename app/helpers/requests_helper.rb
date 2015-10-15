@@ -95,10 +95,10 @@ module RequestsHelper
   def requester_info(user)
     return unless user
 
-    if user.webauth_user?
-      mail_to user.to_email_string
-    elsif user.email.present?
-      mail_to user.email, user.to_email_string
+    if user.webauth_user? || user.email_address.present?
+      mail_to user.email_address, user.to_email_string
+    elsif user.library_id_user?
+      user.library_id
     end
   end
 end
