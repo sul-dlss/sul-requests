@@ -11,7 +11,11 @@ class User < ActiveRecord::Base
   delegate :proxy?, :sponsor?, to: :proxy_access
 
   def to_email_string
+    if name.present?
       "#{name} (#{email_address})"
+    else
+      email_address
+    end
   end
 
   def sucard_number=(card_number)

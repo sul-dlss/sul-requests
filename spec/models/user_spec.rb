@@ -52,8 +52,9 @@ describe User do
   describe '#to_email_string' do
     describe 'for webauth users' do
       it 'should be their Stanford email address' do
+        subject.name = 'Jane Stanford'
         subject.webauth = 'jstanford'
-        expect(subject.to_email_string).to eq 'jstanford@stanford.edu'
+        expect(subject.to_email_string).to eq 'Jane Stanford (jstanford@stanford.edu)'
       end
     end
 
@@ -62,6 +63,13 @@ describe User do
         subject.name = 'Jane Stanford'
         subject.email = 'jstanford@stanford.edu'
         expect(subject.to_email_string).to eq 'Jane Stanford (jstanford@stanford.edu)'
+      end
+    end
+
+    describe 'for users without a name' do
+      it 'should just be their email address' do
+        subject.webauth = 'jstanford'
+        expect(subject.to_email_string).to eq 'jstanford@stanford.edu'
       end
     end
 
