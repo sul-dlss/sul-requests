@@ -18,6 +18,13 @@ describe User do
     end
   end
 
+  describe '#library_id' do
+    it 'upcases the library id to match symphony' do
+      subject.library_id = 'somelibid'
+      expect(subject.library_id).to eq 'SOMELIBID'
+    end
+  end
+
   describe '#email_address' do
     describe 'for webauth users' do
       it 'returns the Stanford email address' do
