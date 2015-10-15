@@ -4,7 +4,9 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
   let(:test_client) do
     Faraday.new do |builder|
       builder.adapter :test do |stub|
-        stub.get('/func_request_webservice_new.make_request') { |_| [200, {}, '{}'] }
+        stub.get('/func_request_webservice_new.make_request') do |_|
+          [200, {}, { request_response: { req_type: 'PAGE' } }.to_json]
+        end
       end
     end
   end
@@ -19,11 +21,13 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
     end
 
     let(:user) { build(:non_webauth_user) }
-    let(:scan) { create(:scan_with_holdings, user: user) }
+    let(:page) { create(:page_with_holdings, user: user) }
 
     describe '#perform' do
-      it 'submits the request to symphony' do
-        subject.perform(scan)
+      it 'merges response information with the existing request data' do
+        expect(page).to receive(:merge_symphony_response_data).with(hash_including(req_type: 'PAGE')).and_call_original
+        subject.perform(page)
+        expect(page.symphony_response.req_type).to eq 'PAGE'
       end
     end
   end
