@@ -109,9 +109,9 @@ en:
   symphony_response:
     failure:
       code_U003:
-        alert_html: "<p>We can't complete your request because your status is <strong>blocked</strong>.</p><p><a href='https://library.stanford.edu/myaccount'>Check MyAccount for details.</a></p>"
+        alert_html: "<p>We can't complete your request because your status is <strong>blocked</strong>.</p><p><a target='_top' href='https://library.stanford.edu/myaccount'>Check MyAccount for details.</a></p>"
       code_U004:
-        alert_html: "<p>We can't complete your request because your privileges have expired.</p><p><a href='https://library.stanford.edu/myaccount'>Check MyAccount for details.</a></p>"
+        alert_html: "<p>We can't complete your request because your privileges have expired.</p><p><a target='_top' href='https://library.stanford.edu/myaccount'>Check MyAccount for details.</a></p>"
       default:
         alert_html: "<p>We're unable to complete your request right now.</p><p>Please contact <a href='mailto:greencirc@stanford.edu'>greencirc@stanford.edu</a></p>"
     mixed_failure_html: "<p>There was a problem with one or more of your items below.</p><p>Please contact <a href='mailto:greencirc@stanford.edu'>greencirc@stanford.edu</a></p>"
