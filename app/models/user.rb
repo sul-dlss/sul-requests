@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   delegate :proxy?, :sponsor?, to: :proxy_access
 
   def to_email_string
-    if non_webauth_user?
+    if name.present?
       "#{name} (#{email_address})"
     else
       email_address
@@ -21,6 +21,10 @@ class User < ActiveRecord::Base
   def sucard_number=(card_number)
     return unless card_number.present?
     self.library_id = card_number[/\d{5}(\d+)/, 1]
+  end
+
+  def library_id=(library_id)
+    super(library_id.to_s.upcase)
   end
 
   def email_address
