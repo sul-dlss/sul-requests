@@ -92,4 +92,27 @@ FactoryGirl.define do
       end.to_h
     end
   end
+
+  factory :symphony_request_with_all_errored_items, class: Hash do
+    req_type 'PAGE'
+    confirm_email 'jlathrop@stanford.edu'
+    requested_items [
+      {
+        'barcode' => '3610512345',
+        'msgcode' => '123',
+        'text' => 'Unknown error'
+      },
+      {
+        'barcode' => '23456789',
+        'msgcode' => '7',
+        'text' => 'Item not found in catalog'
+      }
+    ]
+
+    initialize_with do
+      attributes.map do |k, h|
+        [k.to_s, h]
+      end.to_h
+    end
+  end
 end

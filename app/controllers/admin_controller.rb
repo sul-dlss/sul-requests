@@ -22,7 +22,12 @@ class AdminController < ApplicationController
   def approve_item
     status = @request.item_status(params[:item])
     status.approve!(current_user.webauth) unless status.approved?
-    render json: status, layout: false
+
+    if @request.symphony_response.success?(params[:item])
+      render json: status, layout: false
+    else
+      render json: status, layout: false, status: 500
+    end
   end
 
   private

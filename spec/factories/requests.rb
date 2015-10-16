@@ -41,4 +41,19 @@ FactoryGirl.define do
       end
     end
   end
+
+  factory :request_with_symphony_errors, class: Request do
+    item_id '12345'
+    origin 'SAL3'
+    origin_location 'STACKS'
+    item_title 'Title for Request 12345'
+
+    after(:build) do |request|
+      class << request
+        def symphony_response_data
+          FactoryGirl.build(:symphony_scan_with_multiple_items)
+        end
+      end
+    end
+  end
 end

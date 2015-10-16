@@ -32,8 +32,12 @@ var itemApproval = (function() {
          _this.markRowAsApproved(item);
          _this.updateApproverInformation(item, data);
          _this.updateAllApprovedNote(item);
-       }).fail(function() {
-         alert('The item was not able to be approved.');
+       }).fail(function(data) {
+         if (data.responseJSON) {
+           _this.addItemErrorInformation(item, data.responseJSON);
+           _this.markRowAsError(item);
+         }
+         _this.addHoldingsLevelAlert(item, data);
        });
     },
 
@@ -42,10 +46,24 @@ var itemApproval = (function() {
       item.closest('tr').find(this.options.buttonSelector).html('Approved');
     },
 
+    markRowAsError: function(item) {
+      item.closest('tr').addClass('errored');
+    },
+
     updateApproverInformation: function(item, data) {
       var approverInfo = item.closest('tr')
                              .find(this.options.approverInfoSelector);
       approverInfo.text(data.approver + ' - ' + data.approval_time);
+    },
+
+    addHoldingsLevelAlert: function(item, data) {
+      var json = data.responseJSON;
+      if(!json || (json.errored && !json.usererr_code)) {
+        var holdingsTable = item.closest('table');
+        if(holdingsTable.prev('.alert.alert-danger').length === 0) {
+          holdingsTable.before(this.alertHtmlTemplate());
+        }
+      }
     },
 
     updateAllApprovedNote: function(item) {
@@ -57,6 +75,12 @@ var itemApproval = (function() {
       }
     },
 
+    addItemErrorInformation: function(item, data) {
+      item.closest('tr')
+          .find('.request-status')
+          .text(data.text);
+    },
+
     allItemsAreApproved: function(item) {
       var tbody = item.closest('table tbody');
       return tbody.find('tr').length == tbody.find('tr.approved').length;
@@ -64,6 +88,17 @@ var itemApproval = (function() {
 
     rowIsApproved: function(row) {
       return row.hasClass('approved');
+    },
+
+    alertHtmlTemplate: function() {
+      var template = [
+        '<div class="alert alert-danger">',
+          'There was a problem with this request.',
+          'Try again, or contact technical support.',
+          'No message has been sent to the patron',
+        '</div>'
+      ].join(' ');
+      return $(template);
     }
   };
 })();

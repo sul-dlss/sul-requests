@@ -18,6 +18,16 @@ describe('Item Approval', function() {
     });
   });
 
+  describe('markRowAsError()', function() {
+    it('adds the errored class to the row', function() {
+      var lastButton = $('button:last');
+      var lastRow = $('tr:last');
+      expect(lastRow).not.toHaveClass('errored');
+      itemApproval.markRowAsError(lastButton);
+      expect(lastRow).toHaveClass('errored');
+    });
+  });
+
   describe('updateApproverInformation()', function() {
     it('adds the given appover data to the approriate element', function() {
       expect($('tr:last td:last').text()).toBe('');

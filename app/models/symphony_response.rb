@@ -19,7 +19,7 @@ class SymphonyResponse
   end
 
   def any_error?
-    !success? || erroneous_barcodes.present?
+    usererr_code.present? || erroneous_barcodes.present?
   end
 
   def mixed_status?

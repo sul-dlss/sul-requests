@@ -30,7 +30,10 @@
       .approval-btn {
         @extend .disabled;
       }
+    }
 
+    .approved,
+    .errored {
       .request-status {
         display: inline;
       }

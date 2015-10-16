@@ -14,7 +14,7 @@
   </thead>
   <tbody>
     <% @request.holdings.each do |item| %>
-      <tr class='<%= cycle('odd', 'even') %> <%= 'approved' if item.request_status.approved? %>'>
+      <tr class='<%= cycle('odd', 'even') %> <%= 'approved' if item.request_status.approved? %> <%= 'errored' if item.request_status.errored? %>'>
         <td class='col-xs-1'>
           <button class="approval-btn btn btn-xs btn-success" data-behavior="item-approval" data-item-approval-url="<%= approve_item_admin_path(@request, item: item.barcode) %>">
             <% if item.request_status.approved? %>

@@ -15,16 +15,7 @@ module RequestsHelper
   end
 
   def status_text_for_item(item)
-    case
-    when item.is_a?(String) # ad-hoc-item
-      t('status_text.unlisted')
-    when item.current_location.try(:code) && item.current_location.code.ends_with?('-LOAN')
-      t('status_text.hold')
-    when item.home_location.ends_with?('-30')
-      t('status_text.paged')
-    else
-      t('status_text.other')
-    end
+    ad_hoc_item_status(item) || status_text_for_errored_item(item) || i18n_status_text(item)
   end
 
   def i18n_location_title_key
@@ -83,6 +74,27 @@ module RequestsHelper
   end
 
   private
+
+  def ad_hoc_item_status(item)
+    return unless item.is_a?(String)
+    t('status_text.unlisted')
+  end
+
+  def i18n_status_text(item)
+    case
+    when item.current_location.try(:code) && item.current_location.code.ends_with?('-LOAN')
+      t('status_text.hold')
+    when item.home_location.ends_with?('-30')
+      t('status_text.paged')
+    else
+      t('status_text.other')
+    end
+  end
+
+  def status_text_for_errored_item(item)
+    return unless item.request_status.errored?
+    item.request_status.symphony_user_error_text || item.request_status.text
+  end
 
   def format_date(date)
     Time.zone.parse(date.to_s).strftime('%Y-%m-%d %I:%M%P')
