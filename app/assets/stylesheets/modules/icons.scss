@@ -29,7 +29,7 @@
 
   &.unavailable {
     @extend .sul-i-remove-2;
-    color: $sul-unavailabe-icon-color;
+    color: $sul-unavailable-icon-color;
   }
 }
 
@@ -38,13 +38,13 @@
 }
 
 .sul-i-remove-2 {
-  color: $sul-unavailabe-icon-color;
+  color: $sul-unavailable-icon-color;
 }
 
 .mediation-table {
   .errored {
     .request-status {
-      color: $sul-unavailabe-icon-color;
+      color: $sul-unavailable-icon-color;
 
       &:before {
         @extend .glyphicon;
