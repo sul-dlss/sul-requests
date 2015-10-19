@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 describe 'Item Selector' do
+  before { stub_current_user(create(:webauth_user)) }
   describe 'for single items' do
     before { stub_searchworks_api_json(build(:single_holding)) }
     it 'displays the item call number' do
@@ -120,7 +121,6 @@ describe 'Item Selector' do
     describe 'when there are enough to be searchable' do
       let(:request_path) { new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS') }
       let(:holdings) { build(:searchable_holdings) }
-      before { stub_current_user(create(:webauth_user)) }
 
       it 'limits items using the search box' do
         within('#item-selector') do
@@ -184,7 +184,6 @@ describe 'Item Selector' do
 
   describe 'when viewed under Back-Forward Cache', js: true do
     before do
-      stub_current_user(create(:webauth_user))
       stub_searchworks_api_json(build(:searchable_holdings))
     end
     it 'still limits selections' do
@@ -221,7 +220,6 @@ describe 'Item Selector' do
 
   describe 'breadcrumb pills', js: true do
     before do
-      stub_current_user(create(:webauth_user))
       stub_searchworks_api_json(build(:many_holdings))
     end
 
@@ -257,7 +255,6 @@ describe 'Item Selector' do
 
   describe 'ad-hoc items', js: true do
     before do
-      stub_current_user(create(:webauth_user))
       stub_searchworks_api_json(build(:searchable_holdings))
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
     end
@@ -336,7 +333,6 @@ describe 'Item Selector' do
 
   describe 'checked out items', js: true do
     before do
-      stub_current_user(create(:webauth_user))
       stub_searchworks_api_json(build(:checkedout_holdings))
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
     end

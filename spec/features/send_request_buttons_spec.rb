@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe 'Send Request Buttons' do
   before { stub_searchworks_api_json(build(:single_holding)) }
-  describe 'by anonymous user' do
-    it 'should be possible to toggle between login and name-email form', js: true do
+  describe 'by anonymous user', js: true do
+    it 'should be possible to toggle between login and name-email form' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
       click_link 'I don\'t have a SUNet ID'
 
@@ -13,6 +13,29 @@ describe 'Send Request Buttons' do
 
       click_link '‹ Go back (show the login option)'
       expect(page).to have_css('a', text: 'I don\'t have a SUNet ID')
+    end
+
+    it 'disables the submit button (and adds a tooltip) when additional user validation is needed' do
+      visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
+      click_link 'I don\'t have a SUNet ID'
+
+      expect(page).to have_field('Library ID', type: 'text')
+      expect(page).to have_field('Name', type: 'text')
+      expect(page).to have_field('Email', type: 'email')
+
+      click_button 'Send request'
+      expect(current_url).to include '/pages/new?' # checks that the current url is still the new page form
+
+      fill_in 'Library ID', with: '12345'
+      expect(page).not_to have_css('input[value="Send request"].disabled')
+
+      fill_in 'Library ID', with: ''
+      expect(page).to have_css('input[value="Send request"].disabled')
+
+      fill_in 'Name', with: 'Jane Stanford'
+      expect(page).to have_css('input[value="Send request"].disabled')
+      fill_in 'Email', with: 'jstanford@stanford.edu'
+      expect(page).not_to have_css('input[value="Send request"].disabled')
     end
   end
 

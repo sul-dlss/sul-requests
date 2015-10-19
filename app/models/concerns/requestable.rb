@@ -11,4 +11,8 @@ module Requestable
   def requestable_with_sunet_only?
     false
   end
+
+  def requires_additional_user_validation?
+    requestable_with_library_id? && requestable_by_all?
+  end
 end
