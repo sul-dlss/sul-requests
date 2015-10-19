@@ -63,10 +63,6 @@ describe ApplicationHelper do
       expect(helper.render_user_information).to have_selector '.sr-only', text: 'You are logged in as'
     end
 
-    it 'includes the name of the user' do
-      expect(helper.render_user_information).to have_content 'Some Body'
-    end
-
     it 'includes the email for the user' do
       expect(helper.render_user_information).to have_content 'some-webauth-user@stanford.edu'
     end
