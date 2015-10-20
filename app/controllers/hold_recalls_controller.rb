@@ -2,6 +2,7 @@
 #  Controller to handle particular behaviors for HoldRecall type requests
 ###
 class HoldRecallsController < RequestsController
+  before_action :check_if_proxy_sponsor, only: :create
   before_action :set_needed_date, only: [:new, :create]
 
   protected

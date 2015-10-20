@@ -14,7 +14,6 @@ class RequestsController < ApplicationController
 
   before_action :set_current_request_defaults, :validate_request_type, :redirect_delegatable_requests, only: :new
   before_action :set_current_user_for_request, only: :create, if: :webauth_user?
-  before_action :check_if_proxy_sponsor, only: :create
 
   helper_method :current_request, :delegated_request?
 

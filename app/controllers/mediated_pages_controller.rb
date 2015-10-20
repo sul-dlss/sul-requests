@@ -2,6 +2,8 @@
 #  Controller to handle particular behaviors for MediatedPage type requests
 ###
 class MediatedPagesController < RequestsController
+  before_action :check_if_proxy_sponsor, only: :create
+
   protected
 
   def send_confirmation
