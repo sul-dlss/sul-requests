@@ -2,7 +2,18 @@
   <div id="no-sunetid-form" aria-hidden="false">
     <%= f.fields_for :user, (current_request.user unless current_request.user && current_request.user.webauth_user?) || User.new do |uf| %>
       <% if f.object.requestable_with_library_id? %>
-        <%= uf.text_field :library_id %>
+        <div class='form-group'>
+          <%= uf.label :library_id, class: "control-label #{label_column_class} #{'required' unless f.object.requestable_by_all?}" %>
+          <div class='<%= content_column_class %>'>
+            <%= uf.text_field_without_bootstrap(
+                  :library_id,
+                  class: 'form-control',
+                  required: !f.object.requestable_by_all?,
+                  data: { behavior: 'single-user-field' }
+                )
+            %>
+          </div>
+        </div>
       <% end  %>
       <% if f.object.requestable_by_all? %>
         <div class='form-group'>
@@ -11,13 +22,23 @@
             <p>Just let us know your name and email.</p>
           </div>
         </div>
-        <%= uf.text_field :name %>
-        <%= uf.email_field :email %>
+        <%= uf.text_field :name, data: { behavior: 'grouped-user-field' } %>
+        <%= uf.email_field :email, data: { behavior: 'grouped-user-field' } %>
       <% end %>
     <% end %>
 
     <div class='<%= content_column_class %> <%= label_column_offset_class %>'>
-      <%= f.submit 'Send request', data: { disable_with: 'Send request' }, class: "btn btn-md btn-primary btn-full" %>
+      <div class='button-wrapper'>
+        <%= f.submit(
+              'Send request',
+              data: {
+                disable_with: 'Send request',
+                additional_user_validation: f.object.requires_additional_user_validation?
+              },
+              class: 'btn btn-md btn-primary btn-full'
+            )
+        %>
+      </div>
 
       <div class='go-back-link'>
         <%= link_to '#sunet-id-form', data: { toggle: 'show', hide: '#no-sunetid-form', show: '#sunetid-form' } do %>

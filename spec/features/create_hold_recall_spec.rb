@@ -5,8 +5,27 @@ describe 'Creating a hold recall request' do
     stub_searchworks_api_json(build(:sal3_holdings))
   end
   let(:user) { create(:webauth_user) }
-  describe 'by an anonmyous user' do
-    it 'should be possible if a library id is filled out', js: true do
+  describe 'by an anonmyous user', js: true do
+    it 'requires the library id field' do
+      form_path = new_hold_recall_path(
+        item_id: '1234',
+        barcode: '12345678',
+        origin: 'SAL3',
+        origin_location: 'STACKS'
+      )
+
+      visit form_path
+
+      click_link "I don't have a SUNet ID"
+
+      expect(field_labeled('Library ID')['required']).to eq 'required'
+
+      click_button 'Send request'
+
+      expect(current_url).to include form_path
+    end
+
+    it 'should be possible if a library id is filled out' do
       visit new_hold_recall_path(
         item_id: '1234',
         barcode: '12345678',
