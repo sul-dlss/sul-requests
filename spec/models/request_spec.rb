@@ -43,7 +43,7 @@ describe Request do
           )
         end
       ).to raise_error(
-        ActiveRecord::RecordInvalid, 'Validation failed: Date cannot be earlier than today'
+        ActiveRecord::RecordInvalid, 'Validation failed: Needed on Date cannot be earlier than today'
       )
     end
   end
