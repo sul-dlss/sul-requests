@@ -28,6 +28,6 @@ module RequestValidations
   end
 
   def needed_date_is_not_in_the_past
-    errors.add(:base, 'Date cannot be earlier than today') if needed_date < Time.zone.today
+    errors.add(:needed_date, 'Date cannot be earlier than today') if needed_date < Time.zone.today
   end
 end

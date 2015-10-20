@@ -9,12 +9,13 @@ describe('Date Selector', function() {
   });
 
   describe('setDateFieldAsValid()', function() {
-    it('it removes the error class from the parent form-group', function() {
+    it('it removes the error class from the parent form-group and the error message', function() {
       var formGroup = dateSelector.mediatedDateField().closest('.form-group');
       formGroup.addClass('has-error');
       expect(formGroup).toHaveClass('has-error');
       dateSelector.setDateFieldAsValid();
       expect(formGroup).not.toHaveClass('has-error');
+      expect(dateSelector.mediatedDateField().siblings('.help-block').length).toBe(0);
     });
   });
 

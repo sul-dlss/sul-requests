@@ -80,7 +80,7 @@ class MediatedPage < Request
   end
 
   def needed_date_is_valid
-    errors.add(:base, 'The library is not open on the date') unless PagingSchedule.for(self).valid?(needed_date)
+    errors.add(:needed_date, 'The library is not open on that date') unless PagingSchedule.for(self).valid?(needed_date)
   rescue PagingSchedule::ScheduleNotFound
     nil
   end

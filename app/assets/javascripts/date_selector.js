@@ -79,6 +79,7 @@ var dateSelector = (function() {
     setDateFieldAsValid: function() {
       this.mediatedDateField().closest('.form-group').removeClass('has-error');
       this.mediatedDateField()[0].setCustomValidity('');
+      this.mediatedDateField().siblings('.help-block').remove();
     },
 
     setDateFieldAsInvalid: function() {
