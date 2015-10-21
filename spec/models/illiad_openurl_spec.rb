@@ -17,7 +17,7 @@ describe IlliadOpenurl do
       let(:user) { law_user }
 
       it 'uses the appropriate illiad instance' do
-        expect(subject.to_url).to include '/RCJ/illiad'
+        expect(subject.to_url).to include '/rcj/illiad'
       end
     end
 
@@ -25,12 +25,12 @@ describe IlliadOpenurl do
       let(:user) { gsb_user }
 
       it 'uses the appropriate illiad instance' do
-        expect(subject.to_url).to include '/S7Z/illiad'
+        expect(subject.to_url).to include '/s7z/illiad'
       end
     end
 
     it 'uses the st2 illiad instance' do
-      expect(subject.to_url).to include '/ST2/illiad'
+      expect(subject.to_url).to include '/st2/illiad'
     end
   end
 end
