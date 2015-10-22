@@ -30,10 +30,11 @@ describe 'Viewing all requests' do
     describe 'by an anonmyous user' do
       before { stub_current_user(create(:anon_user)) }
 
-      it 'should raise an error' do
-        expect(
-          -> { visit admin_index_path }
-        ).to raise_error(CanCan::AccessDenied)
+      it 'should redirect to the login page' do
+        expect_any_instance_of(AdminController).to receive(:redirect_to).with(
+          login_path(referrer: admin_index_url)
+        )
+        visit admin_index_path
       end
     end
   end
@@ -110,10 +111,11 @@ describe 'Viewing all requests' do
   describe 'by an anonmyous user' do
     before { stub_current_user(create(:anon_user)) }
 
-    it 'should raise an error' do
-      expect(
-        -> { visit admin_path('SPEC-COLL') }
-      ).to raise_error(CanCan::AccessDenied)
+    it 'should redirect to the login page' do
+      expect_any_instance_of(AdminController).to receive(:redirect_to).with(
+        login_path(referrer: admin_url('SPEC-COLL'))
+      )
+      visit admin_path('SPEC-COLL')
     end
   end
 end

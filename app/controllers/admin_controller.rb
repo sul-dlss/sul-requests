@@ -56,4 +56,9 @@ class AdminController < ApplicationController
   def per
     params.fetch(:per_page, 100)
   end
+
+  def rescue_can_can(*)
+    return super if webauth_user? || params[:action] == 'approve_item'
+    redirect_to login_path(referrer: request.original_url)
+  end
 end
