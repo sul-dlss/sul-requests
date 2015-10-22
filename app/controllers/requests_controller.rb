@@ -121,7 +121,7 @@ class RequestsController < ApplicationController
 
   def redirect_to_success_with_token
     options = {}
-    options[:token] = current_request.encrypted_token unless current_user.webauth_user?
+    options[:token] = current_request.encrypted_token unless current_request.user.webauth_user?
     options.merge!(request_context_params)
 
     redirect_to polymorphic_path([:successful, current_request], options)

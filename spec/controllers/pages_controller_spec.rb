@@ -131,6 +131,7 @@ describe PagesController do
         expect(Page.last.origin).to eq 'GREEN'
         expect(Page.last.user).to eq user
       end
+
       it 'should map checkbox style barcodes correctly' do
         stub_searchworks_api_json(build(:multiple_holdings))
         put :create, request: {
@@ -143,6 +144,20 @@ describe PagesController do
         expect(response).to redirect_to successful_page_path(Page.last)
         expect(Page.last.barcodes).to eq(%w(3610512345678 12345679))
       end
+
+      it 'redirects to success page with token when the WebAuth user supplies a library ID' do
+        post :create, request: {
+          item_id: '1234',
+          origin: 'GREEN',
+          origin_location: 'STACKS',
+          destination: 'BIOLOGY',
+          user_attributes: { library_id: '5432123' }
+        }
+
+        expect(response.location).to match(/#{successful_page_url(Page.last)}\?token=/)
+        expect(Page.last.user.library_id).to eq '5432123'
+      end
+
       it 'sends an confirmation email' do
         stub_symphony_response(build(:symphony_page_with_single_item))
         expect(
