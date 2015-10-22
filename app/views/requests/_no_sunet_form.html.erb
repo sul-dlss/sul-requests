@@ -8,7 +8,6 @@
             <%= uf.text_field_without_bootstrap(
                   :library_id,
                   class: 'form-control',
-                  required: !f.object.requestable_by_all?,
                   data: { behavior: 'single-user-field' }
                 )
             %>

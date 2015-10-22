@@ -6,7 +6,7 @@ describe 'Creating a hold recall request' do
   end
   let(:user) { create(:webauth_user) }
   describe 'by an anonmyous user', js: true do
-    it 'requires the library id field' do
+    pending 'requires the library id field' do
       form_path = new_hold_recall_path(
         item_id: '1234',
         barcode: '12345678',
