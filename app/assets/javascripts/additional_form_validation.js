@@ -47,7 +47,7 @@ var additionalFormValidation = (function() {
 
     addInputListenerBehavior: function(input) {
       var _this = this;
-      input.on('blur', function() {
+      input.on('propertychange change input paste blur', function() {
         if(_this.submitButtons().is(':visible')) {
           if ( _this.fieldsAreValid() ) {
             _this.enableButton();
