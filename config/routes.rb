@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   #sorry page route
   get 'sorry/unable'
 
+  get 'interstitial' => 'interstitial#show', as: :interstitial
+
   # Auhtorization routes
   get 'webauth/login' => 'authentication#login', as: :login
   get 'webauth/logout' => 'authentication#logout', as: :logout
