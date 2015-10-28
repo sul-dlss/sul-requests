@@ -89,6 +89,7 @@ module SULRequests
       'HOOVER' => ['HOOVER'],
       'HV-ARCHIVE' => ['HV-ARCHIVE'],
       'LAW' => ['LAW'],
+      'MEDIA-MTXT' => ['MEDIA-MTXT'],
       'SPEC-COLL' => ['SPEC-COLL']
     }
 
