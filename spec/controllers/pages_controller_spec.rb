@@ -35,8 +35,10 @@ describe PagesController do
         post :create, request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'BIOLOGY' }
         expect(response).to redirect_to(
           login_path(
-            referrer: create_pages_path(
-              request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'BIOLOGY' }
+            referrer: interstitial_path(
+              redirect_to: create_pages_url(
+                request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'BIOLOGY' }
+              )
             )
           )
         )

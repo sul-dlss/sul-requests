@@ -42,10 +42,12 @@ describe MediatedPagesController do
         }
         expect(response).to redirect_to(
           login_path(
-            referrer: create_mediated_pages_path(
-              request: {
-                item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'SPEC-COLL'
-              }
+            referrer: interstitial_path(
+              redirect_to: create_mediated_pages_url(
+                request: {
+                  item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'SPEC-COLL'
+                }
+              )
             )
           )
         )

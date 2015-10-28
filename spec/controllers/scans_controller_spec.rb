@@ -36,8 +36,10 @@ describe ScansController do
         post :create, request: { item_id: '12345', origin: 'GREEN', origin_location: 'STACKS' }
         expect(response).to redirect_to(
           login_path(
-            referrer: create_scans_path(
-              request: { item_id: '12345', origin: 'GREEN', origin_location: 'STACKS' }
+            referrer: interstitial_path(
+              redirect_to: create_scans_url(
+                request: { item_id: '12345', origin: 'GREEN', origin_location: 'STACKS' }
+              )
             )
           )
         )

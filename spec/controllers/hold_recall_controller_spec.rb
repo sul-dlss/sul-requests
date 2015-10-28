@@ -36,8 +36,10 @@ describe HoldRecallsController do
         post :create, request: normal_params
         expect(response).to redirect_to(
           login_path(
-            referrer: create_hold_recalls_path(
-              request: normal_params
+            referrer: interstitial_path(
+              redirect_to: create_hold_recalls_url(
+                request: normal_params
+              )
             )
           )
         )
