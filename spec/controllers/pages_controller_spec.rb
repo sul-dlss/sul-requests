@@ -266,14 +266,11 @@ describe PagesController do
 
     context 'by non-webuth users' do
       let(:user) { create(:non_webauth_user) }
-      it 'redirects the user to the webauth login with the current url' do
+      it 'raised an AccessDenied error' do
         page = create(:page, user: create(:non_webauth_user, email: 'jjstanford@stanford.edu'))
-        get :success, id: page[:id]
-        expect(response).to redirect_to(
-          login_path(
-            referrer: successful_page_url(page[:id])
-          )
-        )
+        expect do
+          get :success, id: page[:id]
+        end.to raise_error(CanCan::AccessDenied)
       end
     end
   end

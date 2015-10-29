@@ -83,7 +83,8 @@ class RequestsController < ApplicationController
   end
 
   def rescue_status_pages
-    return unless !current_user.webauth_user? && %w(success status).include?(params[:action])
+    return unless params[:action].to_sym == :status
+    return if current_user.webauth_user?
     redirect_to login_path(referrer: request.original_url)
   end
 
