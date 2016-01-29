@@ -244,7 +244,7 @@ describe PagesController do
         put :update, id: page[:id], request: { needed_date: Time.zone.today + 1.day }
         expect(flash[:success]).to eq 'Request was successfully updated.'
         expect(response).to redirect_to root_url
-        expect(Page.find(page.id).needed_date.to_s).to eq "#{Time.zone.today + 1.day}"
+        expect(Page.find(page.id).needed_date.to_s).to eq((Time.zone.today + 1.day).to_s)
       end
     end
   end

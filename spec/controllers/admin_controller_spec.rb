@@ -32,7 +32,7 @@ describe AdminController do
     describe 'for anon user' do
       let(:user) { create(:anon_user) }
       it 'should redirect to the login page' do
-        expect(get :index).to redirect_to(login_path(referrer: admin_index_url))
+        expect(get(:index)).to redirect_to(login_path(referrer: admin_index_url))
       end
     end
   end
@@ -76,7 +76,7 @@ describe AdminController do
     describe 'for anonymouse users' do
       let(:user) { create(:anon_user) }
       it 'should be a redirect to login' do
-        expect(get :show, id: 'SPEC-COLL').to redirect_to(
+        expect(get(:show, id: 'SPEC-COLL')).to redirect_to(
           login_path(referrer: admin_url('SPEC-COLL'))
         )
       end

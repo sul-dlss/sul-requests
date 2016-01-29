@@ -40,8 +40,8 @@ describe HoldRecallable do
 
       it 'is true when the current location is INPROCESS' do
         allow(request).to receive_messages(holdings: [
-          double('holding', current_location: double('location', code: 'INPROCESS'))
-        ])
+                                             double('holding', current_location: double('location', code: 'INPROCESS'))
+                                           ])
 
         expect(request).to be_hold_recallable
       end
@@ -55,8 +55,8 @@ describe HoldRecallable do
 
       it 'is true when the current location is ON-ORDER' do
         allow(request).to receive_messages(holdings: [
-          double('holding', current_location: double('location', code: 'ON-ORDER'))
-        ])
+                                             double('holding', current_location: double('location', code: 'ON-ORDER'))
+                                           ])
 
         expect(request).to be_hold_recallable
       end
@@ -65,8 +65,8 @@ describe HoldRecallable do
     context 'when MISSING' do
       it 'is true when the current_location is MISSING' do
         allow(request).to receive_messages(holdings: [
-          double('holding', current_location: double('location', code: 'MISSING'))
-        ])
+                                             double('holding', current_location: double('location', code: 'MISSING'))
+                                           ])
 
         expect(request).to be_hold_recallable
       end

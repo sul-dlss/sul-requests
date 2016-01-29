@@ -202,7 +202,7 @@ describe ScansController do
         put :update, id: scan[:id], request: { needed_date: Time.zone.today + 1.day }
         expect(response).to redirect_to root_url
         expect(flash[:success]).to eq 'Request was successfully updated.'
-        expect(Scan.find(scan.id).needed_date.to_s).to eq "#{Time.zone.today + 1.day}"
+        expect(Scan.find(scan.id).needed_date.to_s).to eq((Time.zone.today + 1.day).to_s)
       end
     end
   end

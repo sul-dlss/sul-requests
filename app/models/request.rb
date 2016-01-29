@@ -48,9 +48,9 @@ class Request < ActiveRecord::Base
 
   def delegate_request!
     case
-    when mediateable? then self.becomes!(MediatedPage)
-    when hold_recallable? then self.becomes!(HoldRecall)
-    else self.becomes!(Page)
+    when mediateable? then becomes!(MediatedPage)
+    when hold_recallable? then becomes!(HoldRecall)
+    else becomes!(Page)
     end
   end
 
@@ -124,7 +124,7 @@ class Request < ActiveRecord::Base
   def requested_barcode=(barcode)
     @requested_barcode = barcode if barcode.present?
   end
-  alias_method :barcode=, :requested_barcode=
+  alias barcode= requested_barcode=
 
   class << self
     # The mediateable_oirgins will make multiple (efficient) database requests
