@@ -147,9 +147,11 @@ describe RequestsHelper do
     let(:current_request) { double('request') }
     before { expect(helper).to receive_messages(current_request: current_request) }
     it 'returns the current location when present' do
-      allow(current_request).to receive_messages(holdings: [
-        double('location', current_location: double('code', code: 'INPROCESS'))
-      ])
+      allow(current_request).to receive_messages(
+        holdings: [
+          double('location', current_location: double('code', code: 'INPROCESS'))
+        ]
+      )
       expect(helper.i18n_location_title_key).to eq 'INPROCESS'
     end
 

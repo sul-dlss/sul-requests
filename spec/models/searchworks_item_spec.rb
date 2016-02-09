@@ -135,9 +135,11 @@ describe SearchworksItem do
       let(:item) { double('item') }
       describe 'when the holdings include a single checked out item' do
         before do
-          allow(subject).to receive_messages(all: [
-            double('holding', current_location: double('location', code: 'CHECKEDOUT'))
-          ])
+          allow(subject).to receive_messages(
+            all: [
+              double('holding', current_location: double('location', code: 'CHECKEDOUT'))
+            ]
+          )
         end
 
         it 'returns true' do
@@ -147,10 +149,12 @@ describe SearchworksItem do
 
       describe 'when the holdings includes multiple items' do
         before do
-          allow(subject).to receive_messages(all: [
-            double('holding', current_location: double('location', code: 'CHECKEDOUT')),
-            double('holding', current_location: nil)
-          ])
+          allow(subject).to receive_messages(
+            all: [
+              double('holding', current_location: double('location', code: 'CHECKEDOUT')),
+              double('holding', current_location: nil)
+            ]
+          )
         end
 
         it 'returns false' do

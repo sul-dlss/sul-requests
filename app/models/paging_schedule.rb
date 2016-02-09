@@ -39,8 +39,8 @@ module PagingSchedule
     def default_schedule(request)
       s = schedule.detect do |sched|
         sched.from == request.origin &&
-        sched.to == :anywhere &&
-        sched.by_time?(request.created_at)
+          sched.to == :anywhere &&
+          sched.by_time?(request.created_at)
       end
       s.for(request.destination) if s
     end

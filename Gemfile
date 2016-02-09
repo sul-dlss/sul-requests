@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.3'
+gem 'rails', '4.2.5.1'
 # Use sqlite3 as the database (during local development)
 gem 'sqlite3'
 # Use mysql as the database when running on the server environment
@@ -64,12 +64,12 @@ gem 'squash_rails', '1.3.3', require: 'squash/rails'
 # Use is_it_working to monitor the application
 gem 'is_it_working'
 
+# Access an IRB console on exception pages or by using <%= console %> in views
+gem 'web-console', '~> 2.0', group: :development
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
-
-  # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
 
   # RSpec for testing
   gem 'rspec-rails', '~> 3.0'
@@ -94,7 +94,7 @@ group :development, :test do
   gem 'database_cleaner'
 
   # Rubocop is a static code analyzer to enforce style.
-  gem 'rubocop', require: false
+  gem 'rubocop', '~> 0.36', require: false
 
   # scss-lint will test the scss files to enfoce styles
   gem 'scss-lint', require: false

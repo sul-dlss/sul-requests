@@ -35,7 +35,7 @@ class IlliadOpenurl
   end
 
   def to_url
-    Settings.sul_illiad + '/' + nvtgc + '/illiad.dll?' + "#{query_params}"
+    Settings.sul_illiad + '/' + nvtgc + '/illiad.dll?' + query_params.to_s
   end
 
   private
