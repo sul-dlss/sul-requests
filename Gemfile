@@ -21,7 +21,8 @@ gem 'sul_styles', '>= 0.5.0'
 # A gem for simple rails invornment specific config
 gem 'config'
 # Use jquery as the JavaScript library
-gem 'jquery-rails'
+# (pinning to < 4.1 until issue w/ webshims is resolved https://github.com/aFarkas/webshim/issues/560)
+gem 'jquery-rails', '< 4.1'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
