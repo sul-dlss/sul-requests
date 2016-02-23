@@ -139,7 +139,7 @@ module SULRequests
       },
       'HV-ARCHIVE' => {
         phone: '(650) 723-3563',
-        email: 'archives@hoover.stanford.edu'
+        email: 'hooverarchives@stanford.edu'
       },
       'HOPKINS' => {
         phone: '(831) 655-6229',
