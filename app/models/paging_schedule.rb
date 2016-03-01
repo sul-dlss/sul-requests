@@ -18,7 +18,7 @@ module PagingSchedule
 
     def for(request)
       schedule_or_default = schedule_for_request(request) || default_schedule(request)
-      fail ScheduleNotFound unless schedule_or_default.present?
+      raise ScheduleNotFound unless schedule_or_default.present?
       schedule_or_default
     end
 

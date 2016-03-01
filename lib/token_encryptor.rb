@@ -12,8 +12,8 @@ module SULRequests
   ###
   class TokenEncryptor
     def initialize(token)
-      fail InvalidSecret unless secret.present?
-      fail InvalidSalt unless salt.present?
+      raise InvalidSecret unless secret.present?
+      raise InvalidSalt unless salt.present?
       @token = token
     end
 

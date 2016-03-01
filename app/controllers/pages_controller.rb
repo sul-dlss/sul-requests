@@ -7,7 +7,7 @@ class PagesController < RequestsController
   protected
 
   def validate_request_type
-    fail UnpageableItemError unless current_request.pageable?
+    raise UnpageableItemError unless current_request.pageable?
   end
 
   class UnpageableItemError < StandardError
