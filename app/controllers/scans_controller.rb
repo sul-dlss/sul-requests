@@ -43,7 +43,7 @@ class ScansController < RequestsController
   end
 
   def validate_request_type
-    fail UnscannableItemError unless current_request.scannable?
+    raise UnscannableItemError unless current_request.scannable?
   end
 
   class UnscannableItemError < StandardError

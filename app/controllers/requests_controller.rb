@@ -134,7 +134,7 @@ class RequestsController < ApplicationController
   end
 
   def capture_email_field
-    fail HoneyPotFieldError if params[:email].present?
+    raise HoneyPotFieldError if params[:email].present?
   end
 
   class HoneyPotFieldError < StandardError

@@ -20,7 +20,7 @@ task :display_coveralls_coverage do
           untested_lines = list_of_untested_lines(lines)
           puts "\t#{key}: #{lines.count { |v| v == 0 }} untested lines: #{untested_lines.inspect}"
         end
-        fail 'Untested files!'
+        raise 'Untested files!'
       end
     end
   else

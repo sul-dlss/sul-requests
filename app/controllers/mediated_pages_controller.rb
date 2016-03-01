@@ -11,7 +11,7 @@ class MediatedPagesController < RequestsController
   end
 
   def validate_request_type
-    fail UnmediateableItemError unless current_request.mediateable?
+    raise UnmediateableItemError unless current_request.mediateable?
   end
 
   class UnmediateableItemError < StandardError

@@ -12,7 +12,7 @@ class HoldRecallsController < RequestsController
   end
 
   def validate_request_type
-    fail NotHoldRecallableError unless current_request.hold_recallable?
+    raise NotHoldRecallableError unless current_request.hold_recallable?
   end
 
   class NotHoldRecallableError < StandardError
