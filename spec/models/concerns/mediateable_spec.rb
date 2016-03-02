@@ -18,6 +18,12 @@ describe Mediateable do
       subject.library = 'SPEC-COLL'
       expect(subject).to be_mediateable
     end
+
+    it 'should return true if the item is in RUMSEYMAP' do
+      subject.library = 'RUMSEYMAP'
+      expect(subject).to be_mediateable
+    end
+
     it 'should return true if the item is in SAL3 and PAGE-MP location' do
       subject.library = 'SAL3'
       subject.location = 'PAGE-MP'

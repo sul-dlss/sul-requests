@@ -2,8 +2,10 @@
 #  Mixin to encapsulate defining if a request should be a mediated page
 ###
 module Mediateable
+  MEDIATALBE_LIBRARIES = ['RUMSEYMAP', 'SPEC-COLL'].freeze
+
   def mediateable?
-    library_is_special_collections? ||
+    mediated_library? ||
       page_mp? ||
       hopkins_stacks? ||
       hoover_in_sal3?
@@ -11,8 +13,8 @@ module Mediateable
 
   private
 
-  def library_is_special_collections?
-    @library == 'SPEC-COLL'
+  def mediated_library?
+    MEDIATALBE_LIBRARIES.include?(@library)
   end
 
   def page_mp?
