@@ -121,4 +121,14 @@ PagingSchedule.configure do
     will_arrive after: '3:00pm'
     business_days_later 2
   end
+
+  # Rumsey Map Center
+  when_paging from: 'RUMSEYMAP', to: :anywhere, before: '10:00am' do
+    will_arrive after: '11:00pm'
+    business_days_later 1
+  end
+  when_paging from: 'RUMSEYMAP', to: :anywhere, after: '10:00am' do
+    will_arrive after: '11:00pm'
+    business_days_later 2
+  end
 end
