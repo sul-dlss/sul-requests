@@ -55,6 +55,7 @@ module SULRequests
       'MATH-CS' => 'Math & Statistics Library',
       'MEDIA-MTXT' => 'Media Microtext',
       'MUSIC' => 'Music Library',
+      'RUMSEYMAP' => 'David Rumsey Map Center',
       'SAL' => 'SAL1&2 (on-campus shelving)',
       'SAL3' => 'SAL3 (off-campus storage)',
       'SAL-NEWARK' => 'SAL Newark (off-campus storage)',
@@ -90,6 +91,7 @@ module SULRequests
       'HV-ARCHIVE' => ['HV-ARCHIVE'],
       'LAW' => ['LAW'],
       'MEDIA-MTXT' => ['MEDIA-MTXT'],
+      'RUMSEYMAP' => ['RUMSEYMAP'],
       'SPEC-COLL' => ['SPEC-COLL']
     }
 
