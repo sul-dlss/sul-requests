@@ -2,6 +2,12 @@
 #  Request class for making page requests that require mediation
 ###
 class MediatedPage < Request
+  ITEM_LIMITS = {
+    'HV-ARCHIVE' => 20,
+    'RUMSEYMAP' => 5,
+    'SPEC-COLL' => 5
+  }.freeze
+
   validate :mediated_page_validator
   validates :destination, presence: true
   validate :needed_date_is_required
@@ -35,10 +41,7 @@ class MediatedPage < Request
   end
 
   def item_limit
-    return 5 if origin == 'SPEC-COLL'
-    return 5 if origin == 'RUMSEYMAP'
-    return 20 if origin == 'HV-ARCHIVE'
-    super
+    ITEM_LIMITS[origin] || super
   end
 
   def requires_needed_date?
