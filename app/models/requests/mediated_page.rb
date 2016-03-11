@@ -36,6 +36,7 @@ class MediatedPage < Request
 
   def item_limit
     return 5 if origin == 'SPEC-COLL'
+    return 5 if origin == 'RUMSEYMAP'
     return 20 if origin == 'HV-ARCHIVE'
     super
   end
