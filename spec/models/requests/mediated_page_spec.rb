@@ -156,6 +156,11 @@ describe MediatedPage do
       expect(subject.item_limit).to eq 5
     end
 
+    it 'should be 5 for items from RUMSEYMAP' do
+      subject.origin = 'RUMSEYMAP'
+      expect(subject.item_limit).to eq 5
+    end
+
     it 'should be 20 for items from HV-ARCHIVE' do
       subject.origin = 'HV-ARCHIVE'
       expect(subject.item_limit).to eq 20
