@@ -123,12 +123,12 @@ PagingSchedule.configure do
   end
 
   # Rumsey Map Center
-  when_paging from: 'RUMSEYMAP', to: :anywhere, before: '10:00am' do
-    will_arrive after: '11:00pm'
+  when_paging from: 'RUMSEYMAP', to: :anywhere, before: '12:00pm' do
+    will_arrive after: '1:00pm'
     business_days_later 1
   end
-  when_paging from: 'RUMSEYMAP', to: :anywhere, after: '10:00am' do
-    will_arrive after: '11:00pm'
+  when_paging from: 'RUMSEYMAP', to: :anywhere, after: '12:00pm' do
+    will_arrive after: '1:00pm'
     business_days_later 2
   end
 end
