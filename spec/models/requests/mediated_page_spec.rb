@@ -192,4 +192,20 @@ describe MediatedPage do
       subject.submit!
     end
   end
+
+  describe '#mediator_notification_email_address' do
+    it 'fetches email addresses for origin libraires' do
+      subject.origin = 'SPEC-COLL'
+      expect(
+        subject.mediator_notification_email_address
+      ).to eq SULRequests::Application.config.mediator_contact_info['SPEC-COLL'][:email]
+    end
+
+    it 'fetches email addresses for origin locations' do
+      subject.origin_location = 'PAGE-MP'
+      expect(
+        subject.mediator_notification_email_address
+      ).to eq SULRequests::Application.config.mediator_contact_info['PAGE-MP'][:email]
+    end
+  end
 end
