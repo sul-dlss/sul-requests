@@ -6,6 +6,7 @@ FactoryGirl.define do
     destination 'SPEC-COLL'
     item_title 'Title of MediatedPage 1234'
     needed_date Time.zone.today
+    association :user, factory: :sequence_webauth_user
 
     after(:build) do |request|
       class << request
@@ -21,6 +22,7 @@ FactoryGirl.define do
     destination 'EARTH-SCI'
     item_title 'Title of MediatedPage 1234'
     needed_date Time.zone.today
+    association :user, factory: :sequence_webauth_user
   end
 
   factory :hopkins_mediated_page, class: MediatedPage do
@@ -30,18 +32,21 @@ FactoryGirl.define do
     destination 'GREEN'
     item_title 'Title of MediatedPage 1234'
     needed_date Time.zone.today
+    association :user, factory: :sequence_webauth_user
   end
 
   factory :hoover_mediated_page, parent: :mediated_page do
     origin 'HOOVER'
     origin_location 'SOMEWHERE-30'
     destination 'HOOVER'
+    association :user, factory: :sequence_webauth_user
   end
 
   factory :hoover_archive_mediated_page, parent: :mediated_page do
     origin 'HV-ARCHIVE'
     origin_location 'SOMEWHERE-30'
     destination 'HV-ARCHIVE'
+    association :user, factory: :sequence_webauth_user
   end
 
   factory :mediated_page_with_holdings, parent: :mediated_page do
@@ -50,6 +55,7 @@ FactoryGirl.define do
     origin_location 'STACKS'
     destination 'SPEC-COLL'
     needed_date Time.zone.today
+    association :user, factory: :sequence_webauth_user
 
     after(:build) do |request|
       class << request

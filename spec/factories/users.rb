@@ -39,6 +39,10 @@ FactoryGirl.define do
     webauth 'some-webauth-user'
   end
 
+  factory :sequence_webauth_user, class: User do
+    sequence(:webauth) { |n| "some-webauth-user-#{n}" }
+  end
+
   factory :scan_eligible_user, class: User do
     webauth 'some-eligible-user'
 

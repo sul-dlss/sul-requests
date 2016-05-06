@@ -166,7 +166,12 @@ module SULRequests
     config.no_user_privs_codes = ['U003', 'U004']
 
     config.mediator_contact_info = {
-
+      'HV-ARCHIVE' => { email: 'sul-requests-hoover-archive@lists.stanford.edu' },
+      'HOOVER'     => { email: 'sul-requests-hoover-library@lists.stanford.edu' },
+      'HOPKINS'    => { email: 'sul-requests-hopkins@lists.stanford.edu' },
+      'PAGE-MP'    => { email: 'sul-requests-branner@lists.stanford.edu' },
+      'SPEC-COLL'  => { email: 'sul-requests-spec@lists.stanford.edu' },
+      'RUMSEYMAP'  => { email: 'sul-requests-rumsey@lists.stanford.edu' }
     }
 
     config.hours_api_location_map = {
