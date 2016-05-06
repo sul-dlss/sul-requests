@@ -60,8 +60,8 @@ class User < ActiveRecord::Base
     (ldap_groups & admin_groups).present?
   end
 
-  def admin_for_origin?(origin)
-    admin_groups = Settings.origin_admin_groups[origin] || []
+  def admin_for_origin?(library_or_location)
+    admin_groups = Settings.origin_admin_groups[library_or_location] || []
     (ldap_groups & admin_groups).present?
   end
 

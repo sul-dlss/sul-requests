@@ -35,6 +35,18 @@ FactoryGirl.define do
     end
   end
 
+  factory :page_mp_origin_admin_user, class: User do
+    webauth 'page-mp-admin'
+
+    after(:build) do |user|
+      class << user
+        def admin_for_origin?(location)
+          location == 'PAGE-MP'
+        end
+      end
+    end
+  end
+
   factory :webauth_user, class: User do
     webauth 'some-webauth-user'
   end

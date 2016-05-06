@@ -210,7 +210,7 @@ describe Ability do
     it { is_expected.to be_able_to(:delete, message) }
   end
 
-  describe 'an origin admin' do
+  describe 'an origin library admin' do
     let(:user) { create(:webauth_user) }
 
     before do
@@ -223,7 +223,7 @@ describe Ability do
       scan.origin = 'FAKE-ORIGIN-LIBRARY'
     end
 
-    # can manage locations that they are an admin of
+    # can manage libraries that they are an admin of
     it { is_expected.to be_able_to(:manage, request) }
     it { is_expected.to be_able_to(:manage, custom) }
     it { is_expected.to be_able_to(:manage, hold_recall) }
@@ -236,5 +236,27 @@ describe Ability do
     it { is_expected.not_to be_able_to(:read, message) }
     it { is_expected.not_to be_able_to(:update, message) }
     it { is_expected.not_to be_able_to(:delete, message) }
+  end
+
+  describe 'an origin location admin' do
+    let(:user) { create(:webauth_user) }
+
+    before do
+      allow(user).to receive_messages(ldap_groups: ['FAKE-ORIGIN-LOCATION-TEST-LDAP-GROUP'])
+      request.origin_location = 'FAKE-ORIGIN-LOCATION'
+      custom.origin_location = 'FAKE-ORIGIN-LOCATION'
+      hold_recall.origin_location = 'FAKE-ORIGIN-LOCATION'
+      mediated_page.origin_location = 'FAKE-ORIGIN-LOCATION'
+      page.origin_location = 'FAKE-ORIGIN-LOCATION'
+      scan.origin_location = 'FAKE-ORIGIN-LOCATION'
+    end
+
+    # can manage locations that they are an admin of
+    it { is_expected.to be_able_to(:manage, request) }
+    it { is_expected.to be_able_to(:manage, custom) }
+    it { is_expected.to be_able_to(:manage, hold_recall) }
+    it { is_expected.to be_able_to(:manage, mediated_page) }
+    it { is_expected.to be_able_to(:manage, page) }
+    it { is_expected.to be_able_to(:manage, scan) }
   end
 end
