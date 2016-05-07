@@ -61,6 +61,12 @@ describe MediatedPage do
       it 'returns records whose needed_date is older than today' do
         expect(MediatedPage.archived.length).to eq 3
       end
+
+      it 'returns records in descending needed date order' do
+        expect(MediatedPage.archived[0].needed_date).to eq Time.zone.today - 1.day
+        expect(MediatedPage.archived[1].needed_date).to eq Time.zone.today - 2.days
+        expect(MediatedPage.archived[2].needed_date).to eq Time.zone.today - 3.days
+      end
     end
 
     describe 'active' do
