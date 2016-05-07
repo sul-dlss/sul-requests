@@ -141,6 +141,11 @@ describe User do
       allow(subject).to receive_messages(ldap_groups: ['FAKE-ORIGIN-LIBRARY-TEST-LDAP-GROUP'])
       expect(subject).to be_admin_for_origin('FAKE-ORIGIN-LIBRARY')
     end
+
+    it 'should return true when the user is an admin of a location' do
+      allow(subject).to receive_messages(ldap_groups: ['FAKE-ORIGIN-LOCATION-TEST-LDAP-GROUP'])
+      expect(subject).to be_admin_for_origin('FAKE-ORIGIN-LOCATION')
+    end
   end
 
   describe '#proxy_access' do

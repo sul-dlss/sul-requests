@@ -30,14 +30,15 @@ class Ability
     [LibraryLocation, Message, PagingSchedule, Request].each do |kind|
       can :manage, kind if user.site_admin?
     end
+
     # Adminstrators for origins or destinations should be able to
     # manage requests originating or arriving to their library.
     can :manage, Request do |request|
-      user.admin_for_origin?(request.origin)
+      user.admin_for_origin?(request.origin) || user.admin_for_origin?(request.origin_location)
     end
 
     can :manage, LibraryLocation do |library|
-      user.admin_for_origin?(library.library)
+      user.admin_for_origin?(library.library) || user.admin_for_origin?(library.location)
     end
 
     can :new, Request

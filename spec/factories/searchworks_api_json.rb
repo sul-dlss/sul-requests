@@ -221,6 +221,53 @@ FactoryGirl.define do
     end
   end
 
+  factory :page_mp_holdings, class: Hash do
+    title 'PAGE-MP Item Title'
+
+    format ['Book']
+
+    holdings [
+      { 'code' => 'SAL3',
+        'locations' => [
+          { 'code' => 'PAGE-MP',
+            'items' => [
+              { 'barcode' => '12345678',
+                'callnumber' => 'ABC 123',
+                'home_location' => 'STACKS',
+                'type' => 'STKS',
+                'current_location' => {
+                  'code' => ''
+                },
+                'status' => {
+                  'availability_class' => 'page',
+                  'status_text' => 'Page'
+                }
+              },
+              { 'barcode' => '87654321',
+                'callnumber' => 'ABC 321',
+                'home_location' => 'STACKS',
+                'type' => 'STKS',
+                'current_location' => {
+                  'code' => ''
+                },
+                'status' => {
+                  'availability_class' => 'page',
+                  'status_text' => 'Page'
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+
+    initialize_with do
+      attributes.map do |k, h|
+        [k.to_s, h]
+      end.to_h
+    end
+  end
+
   factory :many_holdings, class: Hash do
     title 'Item title'
 
