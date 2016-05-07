@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 describe MediatedPage do
+  let(:user) { create(:webauth_user) }
+
   before do
     allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
   end
@@ -44,6 +46,7 @@ describe MediatedPage do
         MediatedPage.create!(item_id: '1234',
                              origin: 'HOPKINS',
                              origin_location: 'STACKS',
+                             user: user,
                              destination: 'GREEN')
       end.to_not raise_error
     end
@@ -51,11 +54,11 @@ describe MediatedPage do
 
   describe 'scopes' do
     before do
-      build(:mediated_page, needed_date: Time.zone.today - 3.days).save(validate: false)
-      build(:mediated_page, needed_date: Time.zone.today - 2.days).save(validate: false)
-      build(:mediated_page, needed_date: Time.zone.today - 1.day).save(validate: false)
-      create(:hoover_mediated_page, needed_date: Time.zone.today)
-      create(:hoover_mediated_page, needed_date: Time.zone.today + 1.day)
+      build(:mediated_page, user: user, needed_date: Time.zone.today - 3.days).save(validate: false)
+      build(:mediated_page, user: user, needed_date: Time.zone.today - 2.days).save(validate: false)
+      build(:mediated_page, user: user, needed_date: Time.zone.today - 1.day).save(validate: false)
+      create(:hoover_mediated_page, user: user, needed_date: Time.zone.today)
+      create(:hoover_mediated_page, user: user, needed_date: Time.zone.today + 1.day)
     end
     describe 'archived' do
       it 'returns records whose needed_date is older than today' do
@@ -74,7 +77,7 @@ describe MediatedPage do
         expect(MediatedPage.active.length).to eq 2
       end
       it 'reutrns the records whose needed_date is null' do
-        build(:mediated_page).save(validate: false)
+        build(:mediated_page, user: user).save(validate: false)
         expect(MediatedPage.active.length).to eq 3
       end
     end
@@ -110,7 +113,7 @@ describe MediatedPage do
   end
 
   describe 'all_approved?' do
-    let(:subject) { build(:mediated_page_with_holdings) }
+    let(:subject) { build(:mediated_page_with_holdings, user: user) }
     before do
       stub_symphony_response(build(:symphony_page_with_multiple_items))
       subject.barcodes = ['12345678']
@@ -193,6 +196,22 @@ describe MediatedPage do
     it 'does not submit the request to Symphony' do
       expect(SubmitSymphonyRequestJob).not_to receive(:perform_now)
       subject.submit!
+    end
+  end
+
+  describe '#mediator_notification_email_address' do
+    it 'fetches email addresses for origin libraires' do
+      subject.origin = 'SPEC-COLL'
+      expect(
+        subject.mediator_notification_email_address
+      ).to eq SULRequests::Application.config.mediator_contact_info['SPEC-COLL'][:email]
+    end
+
+    it 'fetches email addresses for origin locations' do
+      subject.origin_location = 'PAGE-MP'
+      expect(
+        subject.mediator_notification_email_address
+      ).to eq SULRequests::Application.config.mediator_contact_info['PAGE-MP'][:email]
     end
   end
 end

@@ -66,7 +66,10 @@ class MediatedPage < Request
   end
 
   def mediator_notification_email_address
-    Rails.application.config.mediator_contact_info.fetch(origin, {})[:email]
+    Rails.application.config.mediator_contact_info.fetch(
+      origin,
+      Rails.application.config.mediator_contact_info.fetch(origin_location, {})
+    )[:email]
   end
 
   private

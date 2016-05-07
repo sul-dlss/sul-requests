@@ -134,7 +134,7 @@ describe MediatedPagesController do
         expect(MediatedPage.last.user).to eq user
       end
 
-      it 'sends an confirmation email' do
+      it 'sends a confirmation email to the user and to the mediator' do
         expect(
           lambda do
             put :create, request: {
@@ -145,7 +145,7 @@ describe MediatedPagesController do
               needed_date: Time.zone.today + 1.year
             }
           end
-        ).to change { ConfirmationMailer.deliveries.count }.by(1)
+        ).to change { ConfirmationMailer.deliveries.count }.by(2)
       end
 
       it 'sends an email to the mediator' do
