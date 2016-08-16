@@ -9,7 +9,7 @@ var additionalFormValidation = (function() {
     init: function(opts) {
       var _this = this;
       _this.options = $.extend(defaultOptions, opts);
-      $(document).on('ready page:load', function(){
+      $(document).on('turbolinks:load', function(){
         if(_this.submitButtons().length > 0) {
           if(!_this.fieldsAreValid() && _this.submitButtons().is(':visible')) {
             _this.disableButton();

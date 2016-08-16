@@ -18,7 +18,7 @@ var mediationTable = (function() {
     init: function(opts) {
       var _this = this;
       _this.options = $.extend(defaultOptions, opts);
-      $(document).on('ready page:load', function(){
+      $(document).on('turbolinks:load', function(){
         _this.addToggleHoldingsBehavior();
         _this.addSortableColumns();
       });

@@ -7,7 +7,7 @@ var itemSelectorFiltering = (function() {
   return $.extend({}, itemSelector, {
     init: function() {
       var _this = this;
-      $(document).on('ready page:load', function(){
+      $(document).on('turbolinks:load', function(){
         var list = _this.listPlugin();
         _this.setDefaultSort(list);
         _this.clearSearchInputOnFormSubmit(list);
