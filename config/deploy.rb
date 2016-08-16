@@ -3,8 +3,8 @@ lock '3.6.0'
 
 set :application, 'sul-requests'
 set :repo_url, 'https://github.com/sul-dlss/sul-requests.git'
-set :deploy_host, ask('Server', 'e.g. hostname with no ".stanford.edu" or server node designator')
-ask :user, proc { `whoami`.chomp }.call
+set :deploy_host, "requests-#{fetch(:stage)}.stanford.edu"
+set :user, 'requests'
 
 # Default branch is :master
 ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
@@ -43,7 +43,7 @@ set :linked_dirs, fetch(:linked_dirs, []).push(
   'public/system'
 )
 
-server "#{fetch(:deploy_host)}.stanford.edu", user: fetch(:user), roles: %w(web db app)
+server fetch(:deploy_host), user: fetch(:user), roles: %w(web db app)
 
 Capistrano::OneTimeKey.generate_one_time_key!
 
