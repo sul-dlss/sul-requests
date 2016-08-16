@@ -1,5 +1,5 @@
 # config valid only for current version of Capistrano
-lock '3.4.0'
+lock '3.6.0'
 
 set :application, 'sul-requests'
 set :repo_url, 'https://github.com/sul-dlss/sul-requests.git'
