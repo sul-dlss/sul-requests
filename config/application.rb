@@ -113,6 +113,7 @@ module SULRequests
       'PAGE-EA' => ['EAST-ASIA'],
       'HY-PAGE-EA' => ['EAST-ASIA'],
       'L-PAGE-EA'  => ['EAST-ASIA'],
+      'ND-PAGE-EA' => ['EAST-ASIA'],
       'PAGE-ED' => ['EDUCATION'],
       'PAGE-EN' => ['ENG'],
       'PAGE-ES' => ['EARTH-SCI'],
