@@ -38,7 +38,7 @@ FactoryGirl.define do
   factory :hoover_mediated_page, parent: :mediated_page do
     origin 'HOOVER'
     origin_location 'SOMEWHERE-30'
-    destination 'HOOVER'
+    destination 'GREEN'
     association :user, factory: :sequence_webauth_user
   end
 
