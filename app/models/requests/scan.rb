@@ -21,10 +21,6 @@ class Scan < Request
     false
   end
 
-  def ad_hoc_item_commentable?
-    false
-  end
-
   def destination
     'SCAN'
   end
