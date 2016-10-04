@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 ###
-#  Stub test class for inlcuding Mediateable mixin
+#  Stub test class for including Mediateable mixin
 ###
 class MediateableTestClass
   attr_accessor :library, :location
