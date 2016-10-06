@@ -359,6 +359,8 @@ describe 'Item Selector' do
   end
 
   def fill_in_required_date
+    wait_for_ajax # We need the hours API to respond before we can know what the min-date is
+
     date_input = find('#request_needed_date', visible: false)
     min_date = date_input['min']
     date_input.set(min_date)
