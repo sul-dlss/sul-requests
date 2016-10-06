@@ -73,10 +73,10 @@ describe MediatedPage do
     end
 
     describe 'active' do
-      it 'reutrns the records whose needed_date is today, or a future date' do
+      it 'returns the records whose needed_date is today, or a future date' do
         expect(MediatedPage.active.length).to eq 2
       end
-      it 'reutrns the records whose needed_date is null' do
+      it 'returns the records whose needed_date is null' do
         build(:mediated_page, user: user).save(validate: false)
         expect(MediatedPage.active.length).to eq 3
       end

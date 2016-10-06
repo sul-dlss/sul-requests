@@ -43,7 +43,7 @@ symphony_api:
   url: ''
 
 mailer_host: <%= `echo $HOSTNAME` %>
-searchworks_api: 'http://searchworks-test.stanford.edu/api-test'
+searchworks_api: 'https://searchworks.stanford.edu'
 hours_api: 'https://sul-library-hours-prod.stanford.edu/'
 searchworks_link: 'http://searchworks.stanford.edu/view'
 sul_illiad: 'https://sulils-test.stanford.edu'

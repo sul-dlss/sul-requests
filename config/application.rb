@@ -75,7 +75,6 @@ module SULRequests
       'EDUCATION',
       'ENG',
       'GREEN',
-      'HOOVER',
       'HOPKINS',
       'LAW',
       'MATH-CS',
@@ -87,7 +86,6 @@ module SULRequests
 
     config.library_specific_pickup_libraries = {
       'ARS' => ['ARS'],
-      'HOOVER' => ['HOOVER'],
       'HV-ARCHIVE' => ['HV-ARCHIVE'],
       'LAW' => ['LAW'],
       'MEDIA-MTXT' => ['MEDIA-MTXT'],
@@ -123,7 +121,6 @@ module SULRequests
       'PAGE-GR' => ['GREEN'],
       'PAGE-HA' => ['HV-ARCHIVE'],
       'PAGE-HP' => ['GREEN', 'HOPKINS'],
-      'PAGE-HV' => ['HOOVER'],
       'PAGE-IRON' => ['BUSINESS'],
       'PAGE-LP' => ['MUSIC', 'MEDIA-MTXT'],
       'PAGE-LW' => ['LAW'],
