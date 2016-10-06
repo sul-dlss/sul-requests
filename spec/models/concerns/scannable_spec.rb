@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 ###
-#  Stub test class for inlcuding Scannable mixin
+#  Stub test class for including Scannable mixin
 ###
 class ScannableTestClass
   attr_accessor :request, :library, :location
@@ -26,7 +26,7 @@ describe Scannable do
         expect(subject).to be_scannable
       end
 
-      it 'is true whe from SAL3 + BUS-STACKS' do
+      it 'is true when from SAL3 + BUS-STACKS' do
         subject.library = 'SAL3'
         subject.location = 'BUS-STACKS'
         expect(subject).to be_scannable
@@ -43,7 +43,7 @@ describe Scannable do
     end
 
     describe 'holdings' do
-      let(:scannalbe_items) { [double(type: 'STKS')] }
+      let(:scannable_items) { [double(type: 'STKS')] }
       let(:unscannable_items) { [double(type: 'NOT-STKS')] }
       before do
         allow(subject).to receive_messages(scannable_library?: true)
@@ -51,7 +51,7 @@ describe Scannable do
       end
 
       it 'is true when there are scannable items in the location' do
-        subject.request = double('request', holdings: scannalbe_items)
+        subject.request = double('request', holdings: scannable_items)
         expect(subject).to be_scannable
       end
 
@@ -61,7 +61,7 @@ describe Scannable do
       end
 
       it 'is true when there are mixed items in the location' do
-        subject.request = double('request', holdings: [scannalbe_items, unscannable_items].flatten)
+        subject.request = double('request', holdings: [scannable_items, unscannable_items].flatten)
         expect(subject).to be_scannable
       end
     end
