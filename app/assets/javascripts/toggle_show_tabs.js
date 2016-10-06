@@ -16,7 +16,8 @@ var toggleShowTabs = (function() {
 
     addToggleBehavior: function() {
       var _this = this;
-      $(document).on('click', _this.options.buttonSelector, function() {
+      $(document).on('click', _this.options.buttonSelector, function(e) {
+        e.preventDefault();
         var showElement = $(document).find($(this).data('show'));
         showElement.show();
         showElement.attr('aria-hidden', 'false');
