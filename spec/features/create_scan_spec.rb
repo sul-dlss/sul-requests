@@ -39,7 +39,7 @@ describe 'Create Scan Request' do
 
       click_link 'Request the physical item'
 
-      expect(page).to have_css('h1#dialogTitle', 'Request delivery to campus library')
+      expect(page).to have_css('h1#dialogTitle', text: 'Request delivery to campus library')
       expect(current_url).to eq new_page_url(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
     end
   end
