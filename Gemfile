@@ -52,10 +52,10 @@ gem 'hash_to_hidden_fields'
 # Use Capistrano for deployment
 group :deployment do
   gem 'capistrano', '~> 3.0'
-  gem 'capistrano-rvm'
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
-  gem 'lyberteam-capistrano-devel'
+  gem 'capistrano-passenger'
+  gem 'dlss-capistrano'
 end
 
 # Use Squash for exception reporting
