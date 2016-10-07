@@ -101,11 +101,11 @@ describe 'Creating a mediated page request' do
   end
   describe 'needed on' do
     before { stub_current_user(user) }
-    it 'should have a field for the planned date of use' do
+    it 'should have a field for the planned date of visit' do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
       date = (Time.zone.now + 1.day).to_date
 
-      fill_in 'Planned date of use', with: date
+      fill_in 'I plan to visit on', with: date
 
       first(:button, 'Send request').click
 
