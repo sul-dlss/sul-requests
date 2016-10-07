@@ -48,10 +48,10 @@ Configuration is handled through the [RailsConfig](/railsconfig/rails_config) se
 * `site_admin_groups` is an array of LDAP workgroups that have the ability to manage all requests and related objects in the application.
 * `origin_admin_groups` has library codes configured with an array of LDAP workgroups that can manage requests originating from that library.
 * `destination_admin_groups` has library codes configured with an array of LDAP workgroups that can manage requests being sent to that library.
-
-
+```
     origin_admin_groups:
       SAL-NEWARK: ['worgroup1', 'workgroup2']
+```
 
 #### Faking WorkGroups in Development
 
@@ -59,10 +59,11 @@ In order to develop the application it may be necessary to fake workgroups so th
 
 * `fake_ldap_attributes` has SUNet IDs configured with a fake LDAP WorkGroup string
 
-
+```
     fake_ldap_attributes:
       user_sunet:
         WEBAUTH_LDAPPRIVGROUP: 'some-set|of-workgroup-strings'
+```
 
 ### Token Encryption
 
