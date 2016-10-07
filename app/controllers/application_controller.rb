@@ -4,9 +4,6 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  include Squash::Ruby::ControllerMethods
-  enable_squash_client
-
   rescue_from CanCan::AccessDenied, with: :rescue_can_can
 
   before_action -> { flash.now[:error] &&= flash[:error].html_safe if flash[:html_safe] }
