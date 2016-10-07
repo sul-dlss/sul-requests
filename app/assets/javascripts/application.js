@@ -18,4 +18,5 @@
 //= require bootstrap/tooltip
 //= require list.min.js
 //= require no_js
+//= require trunk8
 //= require_tree .

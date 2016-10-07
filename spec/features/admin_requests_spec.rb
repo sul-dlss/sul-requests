@@ -17,10 +17,10 @@ describe 'Viewing all requests' do
       it 'should list data in a table' do
         visit admin_index_path
 
-        expect(page).to have_css('td a', text: 'Fourth symphony. [Op. 51].')
+        expect(page).to have_css('td a[data-behavior="truncate"]', text: 'Fourth symphony. [Op. 51].')
         expect(page).to have_css('td a[href="mailto:jstanford@stanford.edu"]', text: /jstanford@stanford.edu/)
 
-        expect(page).to have_css('td a', text: 'An American in Paris')
+        expect(page).to have_css('td a[data-behavior="truncate"]', text: 'An American in Paris')
         expect(page).to have_css('td a[href="mailto:joe@xyz.com"]', text: /Joe \(joe@xyz.com\)/)
 
         expect(page).to have_selector('table.table-striped', count: 1)
@@ -48,7 +48,7 @@ describe 'Viewing all requests' do
         create(:hoover_mediated_page)
       end
 
-      it 'should list all the medated pages for the given library' do
+      it 'should list all the mediated pages for the given library' do
         visit admin_path('SPEC-COLL')
 
         expect(page).to have_css('h2', text: 'Special Collections')
@@ -108,7 +108,7 @@ describe 'Viewing all requests' do
     end
   end
 
-  describe 'by an anonmyous user' do
+  describe 'by an anonymous user' do
     before { stub_current_user(create(:anon_user)) }
 
     it 'should redirect to the login page' do
