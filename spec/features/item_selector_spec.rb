@@ -259,6 +259,7 @@ describe 'Item Selector' do
 
   describe 'ad-hoc items', js: true do
     before do
+      expect(SULRequests::Application.config).to receive(:ad_hoc_item_commentable_libraries).and_return(['SPEC-COLL'])
       stub_searchworks_api_json(build(:searchable_holdings))
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
     end

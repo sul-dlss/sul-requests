@@ -4,6 +4,7 @@ describe 'shared/_item_selector.html.erb' do
   let(:user) { create(:webauth_user) }
 
   before do
+    allow(SULRequests::Application.config).to receive(:ad_hoc_item_commentable_libraries).and_return(['SPEC-COLL'])
     view.bootstrap_form_for(request, url: '/') do |f|
       @f = f
     end

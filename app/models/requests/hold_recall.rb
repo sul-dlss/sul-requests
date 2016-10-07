@@ -18,8 +18,4 @@ class HoldRecall < Request
   def item_commentable?
     false
   end
-
-  def ad_hoc_item_commentable?
-    false
-  end
 end

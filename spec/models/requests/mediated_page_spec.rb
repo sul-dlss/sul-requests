@@ -90,17 +90,6 @@ describe MediatedPage do
     end
   end
 
-  describe '#ad_hoc_item_commentable?' do
-    it 'is true when the library is SPEC-COLL' do
-      subject.origin = 'SPEC-COLL'
-      expect(subject).to be_ad_hoc_item_commentable
-    end
-
-    it 'is false when the library is not SPEC-COLL' do
-      expect(subject).not_to be_ad_hoc_item_commentable
-    end
-  end
-
   describe '#request_commentable?' do
     it 'is true when the library is SPEC-COLL' do
       subject.origin = 'SPEC-COLL'

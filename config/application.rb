@@ -99,7 +99,10 @@ module SULRequests
       'SAL-NEWARK'
     ]
 
-    config.ad_hoc_item_commentable_libraries = ['SAL-NEWARK', 'SPEC-COLL']
+    # ad_hoc_item_commentable_libraries is configured to not display for any library.
+    # Keeping this feature in case SPEC-COLL changes thier minds or we need to add
+    # this behavior for another library.
+    config.ad_hoc_item_commentable_libraries = []
     config.item_commentable_libraries = ['SAL-NEWARK', 'SPEC-COLL']
 
     config.location_specific_pickup_libraries = {
