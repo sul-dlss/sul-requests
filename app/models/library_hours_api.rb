@@ -24,7 +24,7 @@ module LibraryHoursApi
       JSON.parse(response)
     rescue JSON::ParserError => e
       Rails.logger.warn("JSON::ParseError for #{api_url}")
-      Squash::Ruby.notify e
+      Honeybadger.notify e
       {}
     end
 
@@ -34,7 +34,7 @@ module LibraryHoursApi
       end
     rescue Faraday::Error::ConnectionFailed => e
       Rails.logger.warn("HTTP GET for #{api_url} failed with: #{e}")
-      Squash::Ruby.notify e
+      Honeybadger.notify e
       {}.to_json
     end
 
