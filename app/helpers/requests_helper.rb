@@ -101,7 +101,7 @@ module RequestsHelper
   end
 
   def searchworks_link(item_id, item_title)
-    link_to item_title, "#{Settings.searchworks_link}/#{item_id}"
+    link_to item_title, "#{Settings.searchworks_link}/#{item_id}", 'data-behavior': 'truncate'
   end
 
   def requester_info(user)

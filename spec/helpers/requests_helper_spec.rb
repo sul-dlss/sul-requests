@@ -50,7 +50,8 @@ describe RequestsHelper do
   end
   describe 'searchworks link' do
     it 'should construct a searchworks link' do
-      expect(searchworks_link('234', 'A title')).to eq '<a href="http://searchworks.stanford.edu/view/234">A title</a>'
+      result = '<a data-behavior="truncate" href="http://searchworks.stanford.edu/view/234">A title</a>'
+      expect(searchworks_link('234', 'A title')).to eq result
     end
   end
   describe 'requester info' do
