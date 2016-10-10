@@ -81,8 +81,7 @@ group :development, :test do
   gem 'factory_girl_rails'
 
   # Poltergeist is a capybara driver to run integration tests using PhantomJS
-  # 1.7.0 causes failures in mediation table feature
-  gem 'poltergeist', '~> 1.6.0'
+  gem 'poltergeist'
 
   # Teaspoon-jasmine is a wrapper for the Jasmine javascript testing library
   gem 'teaspoon-jasmine'
