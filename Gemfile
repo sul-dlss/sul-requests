@@ -26,7 +26,7 @@ gem 'config'
 # (pinning to < 4.1 until issue w/ webshims is resolved https://github.com/aFarkas/webshim/issues/560)
 gem 'jquery-rails', '< 4.1'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
+gem 'turbolinks', '~> 5.0'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 # CanCanCan is an authorization Gem for rails
@@ -81,8 +81,7 @@ group :development, :test do
   gem 'factory_girl_rails'
 
   # Poltergeist is a capybara driver to run integration tests using PhantomJS
-  # 1.7.0 causes failures in mediation table feature
-  gem 'poltergeist', '~> 1.6.0'
+  gem 'poltergeist'
 
   # Teaspoon-jasmine is a wrapper for the Jasmine javascript testing library
   gem 'teaspoon-jasmine'

@@ -32,7 +32,7 @@ var itemSelectorAdHocItems = (function() {
     init: function(opts) {
       var _this = this;
       _this.adHocOptions = $.extend(defaultOptions, opts);
-      $(document).on('ready page:load', function(){
+      $(document).on('turbolinks:load', function(){
         _this.addItemsBehavior();
         _this.setupDefaultBreadcrumbs();
         _this.enableAddButtonOnDeselect();

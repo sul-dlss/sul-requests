@@ -3,7 +3,7 @@ var itemSelectorZeroMessage = (function() {
   return $.extend({}, itemSelector, {
     init: function() {
       var _this = this;
-      $(document).on('ready page:load', function(){
+      $(document).on('turbolinks:load', function(){
         if ($('[data-behavior="item-selector"]').length > 0) {
           _this.setupDeselectedMessageListener();
           _this.setupSelectedMessageListener();
