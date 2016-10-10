@@ -54,3 +54,6 @@ Capistrano::OneTimeKey.generate_one_time_key!
 # set :keep_releases, 5
 
 set :honeybadger_env, fetch(:stage)
+
+# update shared_configs before restarting app
+before 'deploy:restart', 'shared_configs:update'
