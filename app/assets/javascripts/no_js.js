@@ -2,7 +2,7 @@ var noJS = (function() {
   return {
     init: function() {
       var _this = this;
-      $(document).on('ready page:load', function(){
+      $(document).on('turbolinks:load', function(){
         _this.toggleNoJS();
       });
     },

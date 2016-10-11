@@ -1,4 +1,4 @@
-$(document).on('ready page:load', function(){
+$(document).on('turbolinks:load', function(){
   if (window.webshim) {
     window.webshim.setOptions('forms-ext', {
       lazyCustomMessages: true,

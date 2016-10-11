@@ -1,7 +1,7 @@
 var iframePostMessage = (function() {
   return {
     init: function() {
-      $(document).on('ready page:load', function(){
+      $(document).on('turbolinks:load', function(){
         if (top != self) {
           setInterval(function(){
             var message = {
