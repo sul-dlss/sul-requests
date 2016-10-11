@@ -1,0 +1,33 @@
+engines:
+  brakeman:
+    enabled: true
+  bundler-audit:
+    enabled: true
+  coffelint:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - ruby
+        #mass_threshold: 30
+      - javascript
+  esling:
+    enabled: true
+  reek:
+    enabled: true
+  rubocop:
+    enabled: true
+  scss-lint:
+    enabled: true
+
+exclude_paths:
+- spec/**/*
+- "**/vendor/**/*"
+
+ratings:
+   paths:
+   - Gemfile.lock
+   - "**.rb"
+   - "**.erb"
+   - "**.js"
