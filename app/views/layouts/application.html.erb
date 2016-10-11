@@ -10,7 +10,7 @@
     <!-- Mobile IE allows us to activate ClearType technology for smoothing fonts for easy reading -->
     <!--[if IEMobile]> <meta http-equiv="cleartype" content="on"> <![endif]-->
 
-    <title><%= SULRequests::Application.config.application_name %></title>
+    <title><%= yield(:page_title).blank? ? SULRequests::Application.config.application_name : yield(:page_title)%></title>
     <%= favicon_link_tag 'favicon.ico' %>
     <%= stylesheet_link_tag "application", media: "all" %>
     <link href="https://www.stanford.edu/su-identity/css/su-identity.css" rel="stylesheet">
