@@ -67,6 +67,9 @@ gem 'is_it_working'
 # Access an IRB console on exception pages or by using <%= console %> in views
 gem 'web-console', '~> 2.0', group: :development
 
+# test coverage in static code analysis GUI 
+gem 'codeclimate-test-reporter', group: :test, require: false
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
