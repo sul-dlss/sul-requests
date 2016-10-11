@@ -112,13 +112,13 @@ describe 'requests/status.html.erb' do
 
       context 'with abnormal request statuses' do
         before do
-          allow_any_instance_of(ItemStatus).to receive(:msgcode).and_return('722')
-          allow_any_instance_of(ItemStatus).to receive(:text).and_return('User already has a hold on this material')
+          allow_any_instance_of(ItemStatus).to receive(:msgcode).and_return('I001')
+          allow_any_instance_of(ItemStatus).to receive(:text).and_return('Record not in catalog')
           render
         end
 
         it 'displays abnormal request status messages' do
-          expect(rendered).to have_css('dd', text: 'ABC 123 (User already has a hold on this material)')
+          expect(rendered).to have_css('dd', text: 'ABC 123 (Record not in catalog)')
         end
       end
     end
