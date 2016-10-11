@@ -82,7 +82,7 @@ describe ConfirmationMailer do
         end
 
         it 'has a planned date of use' do
-          expect(body).to include "Planned date of use: #{I18n.l request.needed_date, format: :quick}"
+          expect(body).to include "Planned date of use: #{I18n.l request.needed_date, format: :long}"
         end
       end
 
