@@ -3,7 +3,7 @@ var itemSelectorSingleSelect = (function() {
   return $.extend({}, itemSelector, {
     init: function() {
       var _this = this;
-      $(document).on('ready page:load', function(){
+      $(document).on('turbolinks:load', function(){
         _this.addDeselectBehaviorForRadioButtons();
       });
     },
