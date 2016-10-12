@@ -21,11 +21,11 @@
           </span>
         </td>
         <td class='needed_date'><%= time_tag(request.needed_date, :quick) %></td>
-        <td class='title'><%= searchworks_link(request.item_id, request.item_title) %></td>
+        <td class='title'><%= searchworks_link(request.item_id, request.item_title, target: '_blank', rel: 'noopener noreferrer', 'data-behavior' => 'truncate') %></td>
         <td class='requester'><%= requester_info(request.user) %></td>
         <td class='created_at'><%= time_tag(request.created_at, :short) %></td>
         <td class='comment'><%= request.request_comment %></td>
-        <td><%= link_to('Status', polymorphic_path([:status, request])) %></td>
+        <td><%= link_to('Status', polymorphic_path([:status, request]), target: '_blank', rel: 'noopener noreferrer') %></td>
       </tr>
     <% end %>
   </tbody>

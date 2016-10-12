@@ -49,9 +49,9 @@ describe RequestsHelper do
     end
   end
   describe 'searchworks link' do
-    it 'should construct a searchworks link' do
-      result = '<a data-behavior="truncate" href="http://searchworks.stanford.edu/view/234">A title</a>'
-      expect(searchworks_link('234', 'A title')).to eq result
+    it 'should construct a searchworks link including the passed in html_options' do
+      result = '<a data-elt-opt="somebehavior" href="http://searchworks.stanford.edu/view/234">A title</a>'
+      expect(searchworks_link('234', 'A title', 'data-elt-opt' => 'somebehavior')).to eq result
     end
   end
   describe 'requester info' do
