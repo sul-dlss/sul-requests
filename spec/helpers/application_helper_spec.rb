@@ -12,17 +12,17 @@ describe ApplicationHelper do
       expect(options[:layout]).to eq :horizontal
     end
     it 'should define a custom column class' do
-      expect(label_column_class).to eq 'col-sm-3'
+      expect(label_column_class).to eq 'col-sm-4'
       expect(options[:label_col]).to eq label_column_class
     end
     it 'should define a custom column class' do
-      expect(content_column_class).to eq 'col-sm-9'
+      expect(content_column_class).to eq 'col-sm-8'
       expect(options[:control_col]).to eq content_column_class
     end
   end
   describe '#label_column_offset_class' do
     it 'should be defined to help when offseting non-labeled form elements (e.g. buttons)' do
-      expect(label_column_offset_class).to eq 'col-sm-offset-3'
+      expect(label_column_offset_class).to eq 'col-sm-offset-4'
     end
   end
 

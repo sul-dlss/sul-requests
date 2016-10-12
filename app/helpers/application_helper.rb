@@ -17,15 +17,15 @@ module ApplicationHelper
   end
 
   def label_column_class
-    'col-sm-3'
+    'col-sm-4'
   end
 
   def label_column_offset_class
-    'col-sm-offset-3'
+    'col-sm-offset-4'
   end
 
   def content_column_class
-    'col-sm-9'
+    'col-sm-8'
   end
 
   def send_request_via_login_button(text = nil)
