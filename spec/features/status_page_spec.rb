@@ -31,4 +31,31 @@ describe 'Status Page' do
       expect(page).to have_css('dt', text: 'Must be used in')
     end
   end
+
+  describe 'status page title contains item title' do
+    let(:user) { create(:webauth_user) }
+    it 'page' do
+      my_req = create(:page, user: user)
+      visit status_page_path(my_req)
+
+      expect(page).to have_title('Request status: Title for Page 1234')
+    end
+    it 'mediated' do
+      visit status_mediated_page_path(request)
+
+      expect(page).to have_title('Request status: Title of MediatedPage 1234')
+    end
+    it 'hold/recall' do
+      my_req = create(:hold_recall, user: user)
+      visit status_hold_recall_path(my_req)
+
+      expect(page).to have_title('Request status: Title of HoldRecall 1234')
+    end
+    it 'scan' do
+      my_req = create(:scan, user: user)
+      visit status_scan_path(my_req)
+
+      expect(page).to have_title('Request status: Title for Scan 12345')
+    end
+  end
 end
