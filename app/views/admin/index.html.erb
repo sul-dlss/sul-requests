@@ -38,7 +38,7 @@
           <td><%= request.type %></td>
           <td><%= request.origin %></td>
           <td><%= request.destination %></td>
-          <td><%= searchworks_link(request.item_id, request.item_title) %></td>
+          <td><%= searchworks_link(request.item_id, request.item_title, 'data-behavior' => 'truncate') %></td>
           <td><%= requester_info(request.user) %></td>
           <td><%= time_tag(request.created_at, :short) %></td>
           <td><%= link_to('Status', polymorphic_path([:status, request])) %></td>

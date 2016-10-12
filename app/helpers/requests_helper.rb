@@ -100,8 +100,8 @@ module RequestsHelper
     Time.zone.parse(date.to_s).strftime('%Y-%m-%d %I:%M%P')
   end
 
-  def searchworks_link(item_id, item_title)
-    link_to item_title, "#{Settings.searchworks_link}/#{item_id}", 'data-behavior': 'truncate'
+  def searchworks_link(item_id, item_title, html_options = {})
+    link_to item_title, "#{Settings.searchworks_link}/#{item_id}", html_options
   end
 
   def requester_info(user)
