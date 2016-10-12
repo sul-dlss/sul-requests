@@ -18,10 +18,13 @@ var itemApproval = (function() {
     addApprovalBehavior: function() {
       var _this = this;
       $(document).on('click', _this.options.buttonSelector, function() {
-        var row = $(this).closest('tr');
-        if(!_this.rowIsApproved(row)) {
-          _this.approveItem($(this));
+        if($(this).data('approval-behavior-added') === undefined) {
+          var row = $(this).closest('tr');
+          if(!_this.rowIsApproved(row)) {
+            _this.approveItem($(this));
+          }
         }
+        $(this).data('approval-behavior-added', 'true');
       });
     },
 
