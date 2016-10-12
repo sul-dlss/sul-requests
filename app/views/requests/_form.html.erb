@@ -9,7 +9,7 @@
 
   <%= render partial: 'form_additional', locals: { f: f } %>
 
-  <div class="alert alert-warning">
+  <div class="alert alert-warning destination-note-callout">
     <%= render partial: 'destination_selector', locals: { f: f } %>
 
     <% if current_request.requires_needed_date? %>
