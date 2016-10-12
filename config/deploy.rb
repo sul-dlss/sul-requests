@@ -1,6 +1,3 @@
-# config valid only for current version of Capistrano
-lock '3.6.0'
-
 set :application, 'sul-requests'
 set :repo_url, 'https://github.com/sul-dlss/sul-requests.git'
 set :deploy_host, "requests-#{fetch(:stage)}.stanford.edu"
