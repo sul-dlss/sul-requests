@@ -36,7 +36,7 @@ en:
         needed_date: 'Not needed after'
       mediated_page:
         <<: *request_anchor
-        needed_date: 'Planned date of use'
+        needed_date: 'I plan to visit on'
       page:
         <<: *request_anchor
       scan:

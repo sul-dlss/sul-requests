@@ -1,8 +1,0 @@
-<% if current_request.holdings_object.library_instructions.present? %>
-  <div class='alert alert-info <%= "#{label_column_offset_class} #{content_column_class}" %>'>
-    <% if current_request.holdings_object.library_instructions[:heading] %>
-      <h4><%= current_request.holdings_object.library_instructions[:heading] %></h4>
-    <% end %>
-    <%= current_request.holdings_object.library_instructions[:text] %>
-  </div>
-<% end %>

@@ -12,7 +12,7 @@ describe RequestsHelper do
       it 'should return library text and a hidden input w/ the destination library' do
         expect(form).to receive(:hidden_field).with(:destination, value: 'MUSIC').and_return('<hidden_field>')
         markup = Capybara.string(select_for_pickup_libraries(form))
-        expect(markup).to have_css('.form-group .control-label', text: 'Must be used in')
+        expect(markup).to have_css('.form-group .control-label', text: 'Will be delivered to')
         expect(markup).to have_css('.form-group .input-like-text', text: 'Music Library')
         expect(markup).to have_css('hidden_field')
       end
@@ -39,8 +39,8 @@ describe RequestsHelper do
     it 'should be "Deliver to" when if there are mutliple possiblities' do
       expect(label_for_pickup_libraries_dropdown(%w(GREEN MUSIC))).to eq 'Deliver to'
     end
-    it 'should be "Must be used in" when there is only one possibility' do
-      expect(label_for_pickup_libraries_dropdown(['GREEN'])).to eq 'Must be used in'
+    it 'should be "Will be delivered to" when there is only one possibility' do
+      expect(label_for_pickup_libraries_dropdown(['GREEN'])).to eq 'Will be delivered to'
     end
   end
   describe 'format date' do

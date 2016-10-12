@@ -38,7 +38,7 @@ describe MediatedPage do
                              origin: 'SPEC-COLL',
                              origin_location: 'STACKS',
                              destination: 'SPEC-COLL')
-      end.to raise_error(ActiveRecord::RecordInvalid, "Validation failed: Planned date of use can't be blank")
+      end.to raise_error(ActiveRecord::RecordInvalid, "Validation failed: I plan to visit on can't be blank")
     end
 
     it 'allows requests to be submitted without a needed_date when not required' do

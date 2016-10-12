@@ -60,8 +60,8 @@ describe MediationMailer do
         expect(body).to include('ZZZ 123')
       end
 
-      it 'has a planned date of use' do
-        expect(body).to include "Planned date of use: #{I18n.l request.needed_date, format: :quick}"
+      it 'has a planned date of visit' do
+        expect(body).to include "I plan to visit on: #{I18n.l request.needed_date, format: :quick}"
       end
 
       it 'has a link to the mediation page' do

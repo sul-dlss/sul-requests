@@ -15,7 +15,7 @@ describe 'Pickup Libraries Dropdown' do
 
       expect(page).to_not have_css('select')
 
-      expect(page).to have_css('.form-group .control-label', text: 'Must be used in')
+      expect(page).to have_css('.form-group .control-label', text: 'Will be delivered to')
       expect(page).to have_css('.form-group .input-like-text', text: 'Archive of Recorded Sound')
     end
   end

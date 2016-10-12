@@ -15,7 +15,7 @@ describe 'Status Page' do
       expect(page).to have_css('h2', text: request.item_title)
 
       expect(page).to have_css('dt', text: 'Requested on')
-      expect(page).to have_css('dt', text: 'Must be used in')
+      expect(page).to have_css('dt', text: 'Will be delivered to')
     end
   end
 
@@ -28,7 +28,7 @@ describe 'Status Page' do
       expect(page).to have_css('h2', text: request.item_title)
 
       expect(page).to have_css('dt', text: 'Requested on')
-      expect(page).to have_css('dt', text: 'Must be used in')
+      expect(page).to have_css('dt', text: 'Will be delivered to')
     end
   end
 

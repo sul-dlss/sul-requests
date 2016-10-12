@@ -11,7 +11,7 @@ module PickupLibrariesHelper
     if pickup_libraries.many?
       'Deliver to'
     else
-      'Must be used in'
+      'Will be delivered to'
     end
   end
 
