@@ -16,8 +16,12 @@
 /doc
 /coverage
 
-# Ignore rbenv config
+# Ignore rbenv/rvm config
 /.ruby-version
+/.ruby-gemset
+
+# Ignore any byebug history
+.byebug_history
 
 config/settings.local.yml
 config/settings/*.local.yml

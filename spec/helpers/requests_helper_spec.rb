@@ -89,7 +89,7 @@ describe RequestsHelper do
     end
   end
   describe 'requester info' do
-    let(:webauth_user) { User.create(webauth: 'jstanford') }
+    let(:webauth_user) { User.create(webauth: 'jstanford', ldap_email: 'jstanford@stanford.edu') }
     let(:non_webauth_user) { User.create(name: 'Joe', email: 'joe@xyz.com') }
     let(:library_id_user) { User.create(library_id: '123456') }
     it 'should construct requester info for webauth user' do

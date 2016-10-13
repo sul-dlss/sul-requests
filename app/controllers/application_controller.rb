@@ -36,7 +36,14 @@ class ApplicationController < ActionController::Base
     user.ldap_group_string = ldap_attributes['WEBAUTH_LDAPPRIVGROUP']
     user.sucard_number = ldap_attributes['WEBAUTH_LDAP_SUCARDNUMBER']
     user.affiliation = ldap_attributes['WEBAUTH_LDAP_SUAFFILIATION']
+    user.ldap_email = ldap_email
     user.save if user.changed?
+  end
+
+  def ldap_email
+    return ldap_attributes['WEBAUTH_EMAIL'] unless ldap_attributes['WEBAUTH_EMAIL'].nil?
+    "#{user_id}@stanford.edu" if ldap_attributes['WEBAUTH_LDAP_SUEMAILSTATUS'] == 'active'
+    nil
   end
 
   def ldap_attributes

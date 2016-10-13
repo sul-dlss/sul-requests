@@ -38,6 +38,31 @@ describe 'Creating a page request' do
       expect(User.last.library_id).to eq '123456'
       expect_to_be_on_success_page
     end
+
+    it 'should retrieve users by both library ID and email if both a provided by the user', js: true do
+      visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
+      click_link "I don't have a SUNet ID"
+
+      expect(page).to have_css('input#request_user_attributes_library_id')
+      expect(page).to have_css('input#request_user_attributes_email')
+      expect(page.evaluate_script('document.activeElement.id')).to eq 'request_user_attributes_library_id'
+
+      tcramer1 = User.create(library_id: '1011', email: 'tcramer1@stanford.edu')
+      expect(User.where(library_id: '1011', email: 'tcramer1@stanford.edu').size).to eq(1)
+
+      fill_in 'Library ID', with: '123456'
+      fill_in 'Email', with: 'tcramer1@stanford.edu'
+
+      click_button 'Send request'
+
+      expect(Page.last.user).to eq User.last
+
+      # Verify that the old record was not overwritten when the new request was created
+      expect(User.where(library_id: '1011', email: 'tcramer1@stanford.edu').size).to eq(1)
+      expect_to_be_on_success_page
+
+      tcramer1.destroy
+    end
   end
   describe 'by a webauth user' do
     before { stub_current_user(user) }

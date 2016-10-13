@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
     when library_id_user?
       email_from_symphony
     when webauth_user?
-      "#{webauth}@stanford.edu"
+      ldap_email
     else
       email
     end
