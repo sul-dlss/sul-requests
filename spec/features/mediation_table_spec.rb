@@ -29,7 +29,31 @@ describe 'Mediation table', js: true do
       visit admin_path('SPEC-COLL')
     end
 
-    describe 'successfull symphony response' do
+    context 'toggleable truncation of user request comments' do
+      let(:symphony_response) { build(:symphony_request_with_mixed_status) }
+      it 'truncates long comments and shows a more link' do
+        expect(page).to have_css('td.comment > div[data-behavior="trunk8toggle"]', count: 3)
+        expect(page).to have_css('a.trunk8toggle-more', count: 3)
+      end
+      it 'can open and close long comments independently' do
+        expect(page).to have_css('a.trunk8toggle-more', count: 3)
+        expect(page).not_to have_css('a.trunk8toggle-less')
+
+        page.first('a.trunk8toggle-more').trigger('click')
+        expect(page).to have_css('a.trunk8toggle-more', count: 2)
+        expect(page).to have_css('a.trunk8toggle-less', count: 1)
+
+        page.first('a.trunk8toggle-more').trigger('click')
+        expect(page).to have_css('a.trunk8toggle-more', count: 1)
+        expect(page).to have_css('a.trunk8toggle-less', count: 2)
+
+        page.first('a.trunk8toggle-less').trigger('click')
+        expect(page).to have_css('a.trunk8toggle-more', count: 2)
+        expect(page).to have_css('a.trunk8toggle-less', count: 1)
+      end
+    end
+
+    describe 'successful symphony response' do
       let(:symphony_response) { build(:symphony_page_with_multiple_items) }
       it 'has toggleable rows that display holdings' do
         expect(page).to have_css('[data-mediate-request]', count: 3)
