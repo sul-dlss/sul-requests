@@ -3,6 +3,8 @@
 #  STI and sub-class this main request class.
 ###
 class Request < ActiveRecord::Base
+  # We can remove this if Hopkins is no longer mediatable
+  OMIT_IP_CHECK_ORIGINS = ['HOPKINS'].freeze
   include Commentable
   include Holdings
   include Requestable
@@ -125,6 +127,10 @@ class Request < ActiveRecord::Base
     @requested_barcode = barcode if barcode.present?
   end
   alias barcode= requested_barcode=
+
+  def check_remote_ip?
+    mediateable? && !OMIT_IP_CHECK_ORIGINS.include?(origin)
+  end
 
   class << self
     # The mediateable_oirgins will make multiple (efficient) database requests
