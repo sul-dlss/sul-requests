@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
   end
 
   def anonymous_user
-    User.new
+    User.new(ip_address: request.remote_ip)
   end
 
   def create_via_post?
