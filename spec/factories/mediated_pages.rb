@@ -1,3 +1,7 @@
+long_comment = <<-LONG
+  It's wonderful to be here it's certainly a thrill you're such a lovely audience we'd love to take you home with us we'd love to take you home no really we'd really really love to take you home especially if you are a cute puppy.
+LONG
+
 FactoryGirl.define do
   factory :mediated_page do
     item_id '1234'
@@ -55,6 +59,7 @@ FactoryGirl.define do
     origin_location 'STACKS'
     destination 'SPEC-COLL'
     needed_date Time.zone.today
+    request_comment long_comment
     association :user, factory: :sequence_webauth_user
 
     after(:build) do |request|
