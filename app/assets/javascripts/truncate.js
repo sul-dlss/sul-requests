@@ -7,15 +7,16 @@ var truncate = (function() {
                 lines: 2,
                 tooltip: false
             };
+            var trunk8ToggleSettings = {
+                lines: 2,
+                fill: '&hellip;' + toggleMore,
+                tooltip: false
+            };
 
             $(document).on('turbolinks:load', function() {
-                $("[data-behavior='truncate'],[data-behavior='trunk8toggle']").trunk8(trunk8Settings);
+                $("[data-behavior='truncate']").trunk8(trunk8Settings);
 
-                $("[data-behavior='trunk8toggle']").each(function() {
-                    if ($(this).text()) {
-                        $(this).append(toggleMore);
-                    }
-                });
+                $("[data-behavior='trunk8toggle']").trunk8(trunk8ToggleSettings);
             });
 
             $(document).on('click', '.trunk8toggle-more', function () {
@@ -24,7 +25,7 @@ var truncate = (function() {
             });
 
             $(document).on('click', '.trunk8toggle-less', function () {
-                $(this).parent().trunk8(trunk8Settings).append(toggleMore);
+                $(this).parent().trunk8(trunk8ToggleSettings);
                 return false;
            });
         }

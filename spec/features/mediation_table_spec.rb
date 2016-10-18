@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe 'Mediation table', js: true do
   let(:top_level_columns) { 7 }
+  let(:short_comment) { 'not a long comment' }
 
   context 'Library Mediation' do
     before do
@@ -26,13 +27,17 @@ describe 'Mediation table', js: true do
         ad_hoc_items: ['ABC 123'],
         created_at: Time.zone.now + 1.day
       )
+      create(
+        :mediated_page,
+        request_comment: short_comment
+      )
       visit admin_path('SPEC-COLL')
     end
 
     context 'toggleable truncation of user request comments' do
       let(:symphony_response) { build(:symphony_request_with_mixed_status) }
       it 'truncates long comments and shows a more link' do
-        expect(page).to have_css('td.comment > div[data-behavior="trunk8toggle"]', count: 3)
+        expect(page).to have_css('td.comment > div[data-behavior="trunk8toggle"]', count: 4)
         expect(page).to have_css('a.trunk8toggle-more', count: 3)
       end
       it 'can open and close long comments independently' do
@@ -51,13 +56,18 @@ describe 'Mediation table', js: true do
         expect(page).to have_css('a.trunk8toggle-more', count: 2)
         expect(page).to have_css('a.trunk8toggle-less', count: 1)
       end
+      it 'no truncation or "more" link for short comments' do
+        within('td.comment > div[data-behavior="trunk8toggle"]', text: short_comment) do
+          expect(page).not_to have_css('a.trunk8toggle-more')
+        end
+      end
     end
 
     describe 'successful symphony response' do
       let(:symphony_response) { build(:symphony_page_with_multiple_items) }
       it 'has toggleable rows that display holdings' do
-        expect(page).to have_css('[data-mediate-request]', count: 3)
-        expect(page).to have_css('tbody tr', count: 3)
+        expect(page).to have_css('[data-mediate-request]', count: 4)
+        expect(page).to have_css('tbody tr', count: 4)
         within(first('[data-mediate-request]')) do
           expect(page).to have_css('td', count: top_level_columns)
           page.find('a.mediate-toggle').trigger('click')
