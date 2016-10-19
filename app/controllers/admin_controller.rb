@@ -1,7 +1,11 @@
 # Controller to handle mediations for admins
 class AdminController < ApplicationController
   before_action only: [:approve_item, :holdings] do
-    authorize! :manage, (@request = MediatedPage.find(params[:id]))
+    authorize! :manage, (
+      @request = MediatedPage.find(params[:id]).tap do |request|
+        request.live_lookup = false
+      end
+    )
   end
 
   def index
