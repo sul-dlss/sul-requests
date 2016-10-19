@@ -11,7 +11,7 @@ class Request < ActiveRecord::Base
   include SymphonyRequest
 
   attr_reader :requested_barcode
-
+  attr_accessor :live_lookup
   scope :recent, -> { order(created_at: :desc) }
 
   delegate :hold_recallable?, :mediateable?, :pageable?, :scannable?, to: :library_location
@@ -39,7 +39,7 @@ class Request < ActiveRecord::Base
   end
 
   def searchworks_item
-    @searchworks_item ||= SearchworksItem.new(self)
+    @searchworks_item ||= SearchworksItem.new(self, live_lookup)
   end
 
   def send_confirmation!
