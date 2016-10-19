@@ -3,9 +3,10 @@
 #  The API URI is configured using rails_config: Settings.searchworks_api
 ###
 class SearchworksItem
-  attr_reader :request
-  def initialize(request)
+  attr_reader :request, :live_lookup
+  def initialize(request, live_lookup = true)
     @request = request
+    @live_lookup = live_lookup
   end
 
   def title
@@ -32,7 +33,9 @@ class SearchworksItem
   end
 
   def url
-    [base_uri, 'view', request.item_id, 'availability'].join('/')
+    full_url = [base_uri, 'view', request.item_id, 'availability'].join('/')
+    full_url << '?live=false' unless live_lookup
+    full_url
   end
 
   def response
