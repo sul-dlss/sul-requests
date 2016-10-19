@@ -8,8 +8,23 @@ describe SearchworksItem do
     it 'should return the base uri from the settings.yml file' do
       expect(subject.send(:base_uri)).to eq(Settings.searchworks_api)
     end
+
     it 'should return a url for the searchworks api' do
       expect(subject.send(:url)).to eq("#{Settings.searchworks_api}/view/123/availability")
+    end
+
+    context 'by default' do
+      it 'will request a live lookup by omitting any live parameter' do
+        expect(subject.send(:url)).to eq("#{Settings.searchworks_api}/view/123/availability")
+      end
+    end
+
+    context 'when the object is initialized with the live_lookup accessor set to false' do
+      let(:subject) { SearchworksItem.new(request, false) }
+
+      it 'the url will include a "live=false" flag' do
+        expect(subject.send(:url)).to eq("#{Settings.searchworks_api}/view/123/availability?live=false")
+      end
     end
   end
   describe '#json', allow_apis: true do
