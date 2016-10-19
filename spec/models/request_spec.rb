@@ -48,6 +48,16 @@ describe Request do
     end
   end
 
+  describe 'associations' do
+    it 'has many admin comments' do
+      request = create(:request)
+      admin_comment = AdminComment.create!(comment: 'The Comment', commenter: 'user')
+      request.admin_comments = [admin_comment]
+      request.save!
+      expect(request.admin_comments).to eq([admin_comment])
+    end
+  end
+
   describe 'commentable' do
     it 'mixin should be included' do
       expect(subject).to be_kind_of Commentable

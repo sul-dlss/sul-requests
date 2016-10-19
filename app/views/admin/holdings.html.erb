@@ -1,3 +1,6 @@
+<%= render 'admin_comments/form' %>
+<%= render 'admin_comments/comments' %>
+
 <% if @request.data['comments'].present? %>
   <p><%= @request.data['comments'] %></p>
 <% end %>

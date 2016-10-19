@@ -1,0 +1,4 @@
+<%= bootstrap_form_for([@request, AdminComment.new], layout: :inline, control_col: 'col-sm-5', remote: true, html: { 'data-type': 'json' }) do |f| %>
+  <%= f.text_field :comment, label_class: 'sr-only', class: 'admin-comment-input' %>
+  <%= f.submit 'OK' %><a class='btn btn-text' href='javscript:;'>Cancel</a>
+<% end %>

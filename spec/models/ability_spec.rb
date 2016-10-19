@@ -2,6 +2,7 @@ require 'rails_helper'
 require 'cancan/matchers'
 
 describe Ability do
+  let(:admin_comment) { AdminComment.new(request: request) }
   let(:request) { Request.new }
   let(:custom) { Custom.new }
   let(:hold_recall) { HoldRecall.new }
@@ -72,6 +73,8 @@ describe Ability do
     it { is_expected.not_to be_able_to(:read, message) }
     it { is_expected.not_to be_able_to(:update, message) }
     it { is_expected.not_to be_able_to(:delete, message) }
+
+    it { is_expected.not_to be_able_to(:create, admin_comment) }
 
     describe 'who fills out a name and email' do
       let(:user) { build(:non_webauth_user) }
@@ -190,6 +193,7 @@ describe Ability do
     it { is_expected.to be_able_to(:manage, mediated_page) }
     it { is_expected.to be_able_to(:manage, page) }
     it { is_expected.to be_able_to(:manage, scan) }
+    it { is_expected.to be_able_to(:create, admin_comment) }
   end
 
   describe 'a site admin' do
@@ -208,6 +212,7 @@ describe Ability do
     it { is_expected.to be_able_to(:read, message) }
     it { is_expected.to be_able_to(:update, message) }
     it { is_expected.to be_able_to(:delete, message) }
+    it { is_expected.to be_able_to(:create, admin_comment) }
   end
 
   describe 'an origin library admin' do
@@ -236,6 +241,8 @@ describe Ability do
     it { is_expected.not_to be_able_to(:read, message) }
     it { is_expected.not_to be_able_to(:update, message) }
     it { is_expected.not_to be_able_to(:delete, message) }
+
+    it { is_expected.to be_able_to(:create, admin_comment) }
   end
 
   describe 'an origin location admin' do
@@ -258,5 +265,6 @@ describe Ability do
     it { is_expected.to be_able_to(:manage, mediated_page) }
     it { is_expected.to be_able_to(:manage, page) }
     it { is_expected.to be_able_to(:manage, scan) }
+    it { is_expected.to be_able_to(:create, admin_comment) }
   end
 end

@@ -25,6 +25,7 @@ class Request < ActiveRecord::Base
   ], coder: JSON
   serialize :barcodes, Array
 
+  has_many :admin_comments
   belongs_to :user, autosave: true
   accepts_nested_attributes_for :user
 

@@ -1,0 +1,9 @@
+<ul data-behavior='admin-comments-list'>
+  <% if @request.admin_comments.any? %>
+    <% @request.admin_comments.each do |admin_comment| %>
+      <li>
+        <%= admin_comment.comment %> <span class='text-muted'>- <%= admin_comment.commenter %> - <%= admin_comment.created_at %></span>
+      </li>
+    <% end %>
+  <% end %>
+</ul>
