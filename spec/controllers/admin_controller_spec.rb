@@ -95,6 +95,11 @@ describe AdminController do
         expect(response).to be_successful
         expect(assigns(:request)).to be_a(MediatedPage)
       end
+
+      it 'initiates a mediated page object with the live_lookup option set to false' do
+        get :holdings, id: mediated_page.id
+        expect(assigns(:request).live_lookup).to be false
+      end
     end
   end
 
@@ -122,6 +127,11 @@ describe AdminController do
         get :approve_item, id: mediated_page.id, item: '3610512345'
         expect(response.status).to eq 500
         expect(response).not_to be_successful
+      end
+
+      it 'initiates a mediated page object with the live_lookup option set to false' do
+        get :approve_item, id: mediated_page.id, item: '3610512345'
+        expect(assigns(:request).live_lookup).to be false
       end
     end
 
