@@ -10,6 +10,9 @@ describe 'Creating a mediated page request' do
   describe 'by an anonmyous user' do
     it 'should be possible to toggle between login and name-email form', js: true do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+
+      click_remote_user_confirmation
+
       click_link "I don't have a SUNet ID"
 
       expect(page).to have_field('Library ID', type: 'text')
@@ -24,6 +27,9 @@ describe 'Creating a mediated page request' do
     end
     it 'should be possible if a name and email is filled out', js: true do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+
+      click_remote_user_confirmation
+
       fill_in_required_fields
 
       click_link "I don't have a SUNet ID"
@@ -38,6 +44,8 @@ describe 'Creating a mediated page request' do
 
     it 'should be possible if a library id is filled out', js: true do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+
+      click_remote_user_confirmation
 
       fill_in_required_fields
 
@@ -141,5 +149,11 @@ describe 'Creating a mediated page request' do
     date_input = find('#request_needed_date', visible: false)
     min_date = date_input['min']
     date_input.set(min_date)
+  end
+
+  def click_remote_user_confirmation
+    within('.non-stanford-user-overlay') do
+      click_button
+    end
   end
 end

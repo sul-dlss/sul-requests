@@ -5,6 +5,7 @@
   <%= render 'searchworks_item_information' %>
 
   <% if delegated_request? %>
+    <%= render 'remote_user_check' if render_remote_user_check? %>
     <%= render 'form' %>
   <% else %>
     <%= render 'form_choice' %>

@@ -28,6 +28,20 @@ describe ApplicationController do
       expect(user.library_id).to eq '987654321'
       expect(user).not_to be_changed
     end
+
+    describe 'ip address' do
+      it 'is not applied to known webauth users as we do not care about their location' do
+        allow(controller).to receive_messages(user_id: 'some-user')
+        user = controller.send(:current_user)
+        expect(user.ip_address).to be_nil
+      end
+
+      it 'is applied to anonymous current users' do
+        user = controller.send(:current_user)
+        remote_ip = controller.send(:request).remote_ip
+        expect(user.ip_address).to eq remote_ip
+      end
+    end
   end
 
   describe '#ldap_attributes' do

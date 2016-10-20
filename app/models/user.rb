@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   has_many :requests
 
   attr_writer :ldap_group_string, :affiliation
+  attr_accessor :ip_address
 
   delegate :proxy?, :sponsor?, to: :proxy_access
 

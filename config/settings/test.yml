@@ -8,6 +8,10 @@ origin_admin_groups:
 destination_admin_groups:
   FAKE-DESTINATION-LIBRARY: ['FAKE-DESTINATION-LIBRARY-TEST-LDAP-GROUP']
 
+stanford_ips:
+  singletons:
+    - '172.1.1.1'
+
 token_encrypt:
   secret: 'cphNKBJUCUlDeekeQGTmPkinkxAkJKxDsfHailJrKKIzxkSRFHbarXxjYRMdkyKW'
   salt: 'dGcTBhXrQjsvQkbDQCkAIdogYjzOiIQpjToNLjqyzslKShfTvxIJHmMZhzdNjOqtDZKtxutyHBZmNHKOcGMfHzxwCFeOTBeEHYHNedtrmdfLzHMTRSDJCRMURaAjRrDq'

@@ -411,6 +411,20 @@ describe Request do
     end
   end
 
+  describe '#check_remote_ip?' do
+    it 'mediated pages (that are not Hopkins)' do
+      expect(create(:mediated_page).check_remote_ip?).to be true
+    end
+
+    it 'Hopkins mediated page' do
+      expect(create(:mediated_page, origin: 'HOPKINS', destination: 'GREEN').check_remote_ip?).to be false
+    end
+
+    it 'non-mediated pages are false' do
+      expect(create(:page).check_remote_ip?).to be false
+    end
+  end
+
   describe 'mediateable_origins' do
     before do
       create(:mediated_page)
