@@ -63,6 +63,24 @@ describe 'Mediation table', js: true do
       end
     end
 
+    describe 'current location' do
+      let(:symphony_response) { build(:symphony_page_with_multiple_items) }
+      before do
+        location_object = double(current_location: 'THE-CURRENT-LOCATION')
+        expect(SymphonyCurrLocRequest).to receive(:new).at_least(:once).and_return(location_object)
+      end
+
+      it 'is fetched from the SymphonyCurrLocRequest class' do
+        within(first('[data-mediate-request]')) do
+          page.find('a.mediate-toggle').trigger('click')
+        end
+
+        within('tbody td table') do
+          expect(page).to have_css('td', text: 'THE-CURRENT-LOCATION')
+        end
+      end
+    end
+
     describe 'successful symphony response' do
       let(:symphony_response) { build(:symphony_page_with_multiple_items) }
       it 'has toggleable rows that display holdings' do
