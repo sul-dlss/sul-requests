@@ -278,6 +278,22 @@ describe Request do
         expect(User.find_by(email: 'jstanford@stanford.edu').name).to eq 'Jane Stanford'
       end
 
+      it 'should not duplicate user records when both library ID and email is provided' do
+        expect(User.where(library_id: '12345', email: 'jstanford@stanford.edu').length).to eq 0
+        User.create(library_id: '12345', email: 'jstanford@stanford.edu')
+        expect(User.where(library_id: '12345', email: 'jstanford@stanford.edu').length).to eq 1
+        Request.create!(
+          item_id: '1234',
+          origin: 'GREEN',
+          origin_location: 'STACKS',
+          user_attributes: {
+            library_id: '12345',
+            email: 'jstanford@stanford.edu'
+          }
+        )
+        expect(User.where(library_id: '12345', email: 'jstanford@stanford.edu').length).to eq 1
+      end
+
       it 'should not duplicate library ids' do
         expect(User.where(library_id: '12345').length).to eq 0
         User.create(library_id: '12345')

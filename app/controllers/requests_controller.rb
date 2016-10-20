@@ -97,7 +97,6 @@ class RequestsController < ApplicationController
 
   def check_if_proxy_sponsor
     return unless current_request.user.sponsor? && params[:request][:proxy].nil?
-
     render 'sponsor_request'
   end
 

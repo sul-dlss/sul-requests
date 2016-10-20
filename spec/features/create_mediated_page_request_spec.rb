@@ -38,7 +38,6 @@ describe 'Creating a mediated page request' do
       fill_in 'Email', with: 'jstanford@stanford.edu'
 
       click_button 'Send request'
-
       expect_to_be_on_success_page
     end
 
