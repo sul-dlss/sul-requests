@@ -41,9 +41,7 @@ describe IPRange do
       expect(described_class.new('171.10.15.20', test_network)).to be_included
       expect(described_class.new('171.10.15.35', test_network)).to be_included
       expect(described_class.new('171.10.15.36', test_network)).not_to be_included
-    end
 
-    it 'IP addresses configured as ranges using slash suffix are properly identified' do
       expect(described_class.new('171.11.255.255', test_network)).not_to be_included
       expect(described_class.new('171.12.0.0', test_network)).to be_included
       expect(described_class.new('171.14.100.100', test_network)).to be_included
