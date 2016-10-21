@@ -42,8 +42,7 @@ class ApplicationController < ActionController::Base
 
   def ldap_email
     return ldap_attributes['WEBAUTH_EMAIL'] unless ldap_attributes['WEBAUTH_EMAIL'].nil?
-    "#{user_id}@stanford.edu" if ldap_attributes['WEBAUTH_LDAP_SUEMAILSTATUS'] == 'active'
-    nil
+    return "#{user_id}@stanford.edu" if ldap_attributes['WEBAUTH_LDAP_SUEMAILSTATUS'] == 'active'
   end
 
   def ldap_attributes
