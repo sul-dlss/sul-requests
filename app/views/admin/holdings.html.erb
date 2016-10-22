@@ -33,7 +33,7 @@
           </button>
         </td>
         <td class='col-xs-2'><%= item.home_location %></td>
-        <td class='col-xs-2'></td>
+        <td class='col-xs-2'><%= SymphonyCurrLocRequest.new(barcode: item.barcode).current_location %></td>
         <td><%= item.callnumber %></td>
         <td><span class='request-status'><%= status_text_for_item(item) %></span></td>
         <td data-behavior='approver-information'>
