@@ -43,22 +43,6 @@ gem 'redcarpet'
 
 gem 'hash_to_hidden_fields'
 
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
-
-# Use Unicorn as the app server
-# gem 'unicorn'
-
-# Use Capistrano for deployment
-group :deployment do
-  gem 'capistrano', '~> 3.0'
-  gem 'capistrano-bundler'
-  gem 'capistrano-rails'
-  gem 'capistrano-passenger'
-  gem 'capistrano-shared_configs'
-  gem 'dlss-capistrano'
-end
-
 # Use Honeybadger for exception reporting
 gem 'honeybadger'
 
@@ -107,4 +91,14 @@ group :development, :test do
 
   # Coveralls for code coverage metrics
   gem 'coveralls', require: false
+end
+
+# Use Capistrano for deployment
+group :deployment do
+  gem 'capistrano', '~> 3.0'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rails'
+  gem 'capistrano-passenger'
+  gem 'capistrano-shared_configs'
+  gem 'dlss-capistrano'
 end
