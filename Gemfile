@@ -65,10 +65,13 @@ gem 'honeybadger'
 # Use is_it_working to monitor the application
 gem 'is_it_working'
 
+# lograge to reduce noise in logs
+gem 'lograge'
+
 # Access an IRB console on exception pages or by using <%= console %> in views
 gem 'web-console', '~> 2.0', group: :development
 
-# test coverage in static code analysis GUI 
+# test coverage in static code analysis GUI
 gem 'codeclimate-test-reporter', group: :test, require: false
 
 group :development, :test do
