@@ -46,6 +46,7 @@ class SymphonyCurrLocRequest
 
   def faraday_conn_w_req_headers
     Faraday.new(url: url) do |req|
+      req.adapter Faraday.default_adapter
       # need the below for symws catalog/item/barcode
       req.headers['x-sirs-clientID'] = 'DS_CLIENT'
       req.headers['sd-originating-app-id'] = 'requests'
