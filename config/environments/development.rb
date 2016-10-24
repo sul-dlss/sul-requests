@@ -38,4 +38,11 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  # Use default logging formatter so that PID and timestamp are not suppressed.
+  config.log_formatter = ::Logger::Formatter.new
+  # put IP at beginning of log messages
+  config.log_tags = [ :remote_ip ]
+  # reduce noise in logs
+  config.lograge.enabled = true
 end
