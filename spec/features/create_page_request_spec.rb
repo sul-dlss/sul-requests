@@ -121,4 +121,12 @@ describe 'Creating a page request' do
       expect(Page.last.item_comment).to eq 'Volume 1-3'
     end
   end
+
+  describe 'destination and needed date highlight section' do
+    it 'is included' do
+      visit new_page_path(item_id: '1234', origin: 'SAL-NEWARK', origin_location: 'STACKS')
+
+      expect(page).to have_css('.alert-warning.destination-note-callout')
+    end
+  end
 end

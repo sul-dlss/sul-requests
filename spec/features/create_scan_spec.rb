@@ -19,6 +19,14 @@ describe 'Create Scan Request' do
     expect(page).to_not have_content('Deliver to')
   end
 
+  it 'does not include the highlighted section around destination and needed date' do
+    stub_current_user(create(:webauth_user))
+
+    visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
+
+    expect(page).to_not have_css('.alert-warning.destination-note-callout')
+  end
+
   describe 'by an eligible webauth user' do
     before do
       stub_current_user(create(:scan_eligible_user))
