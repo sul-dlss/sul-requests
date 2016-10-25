@@ -5,6 +5,7 @@ module RequestsHelper
   include PickupLibrariesHelper
 
   def render_remote_user_check?
+    return false unless Settings.features.remote_ip_check
     return unless current_request && current_user.try(:ip_address)
     current_request.check_remote_ip? && !IPRange.includes?(current_user.ip_address)
   end

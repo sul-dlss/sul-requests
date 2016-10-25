@@ -17,3 +17,6 @@ token_encrypt:
   salt: 'dGcTBhXrQjsvQkbDQCkAIdogYjzOiIQpjToNLjqyzslKShfTvxIJHmMZhzdNjOqtDZKtxutyHBZmNHKOcGMfHzxwCFeOTBeEHYHNedtrmdfLzHMTRSDJCRMURaAjRrDq'
 
 mailer_host: 'example.com'
+
+features:
+  remote_ip_check: true
