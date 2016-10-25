@@ -1,3 +1,5 @@
+/* global adminComments */
+
 var mediationTable = (function() {
   var defaultOptions = {
     selector: '[data-mediate-request]'
@@ -105,6 +107,7 @@ var mediationTable = (function() {
         $.ajax(row.data('mediate-request')).done(function(data){
           holdingsRow.find('td').html(data);
           row.addClass('expanded');
+          adminComments.init(holdingsRow.find('td'));
         });
       }
     },

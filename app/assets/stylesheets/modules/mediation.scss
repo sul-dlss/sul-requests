@@ -17,9 +17,16 @@
   }
 
   .holdings {
-    table {
+    table,
+    .admin-comments {
       margin: 0 auto;
       width: 90%;
+    }
+
+    .admin-comments {
+      .button-group {
+        margin-bottom: 5px;
+      }
     }
 
     .request-status {
@@ -38,6 +45,10 @@
         display: inline;
       }
     }
+  }
+
+  .admin-comment-input {
+    width: 350px;
   }
 
   .mediation-header {

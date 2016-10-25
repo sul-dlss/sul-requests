@@ -65,6 +65,10 @@ class Ability
       end
     end
 
+    can :create, AdminComment do |admin_comment|
+      can? :manage, admin_comment.request
+    end
+
     cannot :create, Scan unless user.super_admin? || current_user_in_scan_pilot_group?
   end
   # rubocop:enable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/MethodLength
