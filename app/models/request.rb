@@ -83,14 +83,22 @@ class Request < ActiveRecord::Base
     if user.webauth_user?
       User.find_by_webauth(user.webauth)
     elsif user.library_id_user?
-      User.find_by_library_id(user.library_id)
+      find_existing_library_id_user
     elsif user.non_webauth_user?
       find_existing_email_user
     end
   end
 
+  def find_existing_library_id_user
+    if user.email
+      User.find_by(library_id: user.library_id, email: user.email)
+    else
+      User.find_by_library_id(user.library_id)
+    end
+  end
+
   def find_existing_email_user
-    User.find_by_email(user.email).tap do |u|
+    User.find_by(email: user.email, library_id: user.library_id).tap do |u|
       next unless u
       u.update_attributes(name: user.name)
     end
