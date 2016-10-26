@@ -98,7 +98,7 @@ class Request < ActiveRecord::Base
   end
 
   def find_existing_email_user
-    User.find_by_email(user.email).tap do |u|
+    User.find_by(email: user.email, library_id: user.library_id).tap do |u|
       next unless u
       u.update_attributes(name: user.name)
     end
