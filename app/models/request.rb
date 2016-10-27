@@ -13,7 +13,7 @@ class Request < ActiveRecord::Base
   include SymphonyRequest
 
   attr_reader :requested_barcode
-
+  attr_accessor :live_lookup
   scope :recent, -> { order(created_at: :desc) }
 
   delegate :hold_recallable?, :mediateable?, :pageable?, :scannable?, to: :library_location
@@ -42,7 +42,7 @@ class Request < ActiveRecord::Base
   end
 
   def searchworks_item
-    @searchworks_item ||= SearchworksItem.new(self)
+    @searchworks_item ||= SearchworksItem.new(self, live_lookup)
   end
 
   def send_confirmation!
@@ -80,12 +80,10 @@ class Request < ActiveRecord::Base
 
   def find_existing_user
     return unless user
-    if user.webauth_user?
-      User.find_by_webauth(user.webauth)
-    elsif user.library_id_user?
-      find_existing_library_id_user
-    elsif user.non_webauth_user?
-      find_existing_email_user
+    case
+    when user.webauth_user? then User.find_by_webauth(user.webauth)
+    when user.library_id_user? then find_existing_library_id_user
+    when user.non_webauth_user? then find_existing_email_user
     end
   end
 
