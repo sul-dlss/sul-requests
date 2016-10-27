@@ -6,7 +6,7 @@ describe 'Viewing all requests' do
       before do
         stub_current_user(create(:superadmin_user))
         create(:page, item_id: 2345, item_title: 'Fourth symphony. [Op. 51].',
-                      user: User.create(webauth: 'jstanford', ldap_email: 'jstanford@stanford.edu'))
+                      user: User.create(webauth: 'jstanford', email: 'jstanford@stanford.edu'))
         create(:page, item_id: 2346,
                       item_title: 'An American in Paris',
                       origin: 'SAL-NEWARK',

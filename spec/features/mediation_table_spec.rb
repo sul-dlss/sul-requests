@@ -220,6 +220,27 @@ describe 'Mediation table', js: true do
     end
   end
 
+  context 'contact email' do
+    context 'for webauth users that do not have their email address previously set by LDAP' do
+      before do
+        stub_current_user(create(:superadmin_user))
+        create(
+          :mediated_page_with_holdings,
+          user: create(:webauth_user, webauth: 'no-email-user', email: nil),
+          barcodes: %w(12345678 23456789)
+        )
+      end
+
+      it 'it derives the email address from their webauth' do
+        visit admin_path('SPEC-COLL')
+
+        within(first('[data-mediate-request]')) do
+          expect(page).to have_link('no-email-user@stanford.edu', href: 'mailto:no-email-user@stanford.edu')
+        end
+      end
+    end
+  end
+
   context 'Location mediation' do
     before do
       stub_current_user(create(:page_mp_origin_admin_user))

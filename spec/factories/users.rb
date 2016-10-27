@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :superadmin_user, class: User do
     webauth 'super-admin'
+    email 'super-admin@stanford.edu'
 
     after(:build) do |user|
       class << user
@@ -49,16 +50,17 @@ FactoryGirl.define do
 
   factory :webauth_user, class: User do
     webauth 'some-webauth-user'
-    ldap_email 'some-webauth-user@stanford.edu'
+    email 'some-webauth-user@stanford.edu'
   end
 
   factory :sequence_webauth_user, class: User do
     sequence(:webauth) { |n| "some-webauth-user-#{n}" }
+    sequence(:email) { |n| "some-webauth-user-#{n}@stanford.edu" }
   end
 
   factory :scan_eligible_user, class: User do
     webauth 'some-eligible-user'
-    ldap_email 'some-eligible-user@stanford.edu'
+    email 'some-eligible-user@stanford.edu'
 
     after(:build) do |user|
       user.affiliation = Settings.scan_pilot_groups.first
