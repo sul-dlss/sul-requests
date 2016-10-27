@@ -7,7 +7,14 @@ $(document).on('turbolinks:load', function(){
       type: 'date',
       date: {
         startView: 2,
-        openOnFocus: true
+        openOnFocus: true,
+        popover: {
+          position: {
+            my: 'center bottom',
+            at: 'center top',
+            collision: 'none'
+          }
+        }
       }
     });
 
