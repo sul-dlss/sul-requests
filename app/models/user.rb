@@ -32,8 +32,11 @@ class User < ActiveRecord::Base
     case
     when library_id_user?
       email_from_symphony
-    when webauth_user?
-      ldap_email
+    when webauth_user? && !email
+      # Fallback for users who were created before we started
+      # setting the email attribute for webauth users from LDAP
+      notify_honeybadger_of_unknown_webauth_email!
+      "#{webauth}@stanford.edu"
     else
       email
     end
@@ -82,5 +85,13 @@ class User < ActiveRecord::Base
     self.email ||= begin
       SymphonyUserNameRequest.new(libid: library_id).email
     end if library_id_user?
+  end
+
+  private
+
+  def notify_honeybadger_of_unknown_webauth_email!
+    Honeybadger.notify(
+      "Webauth user record being created without a valid email address. Using #{webauth}@stanford.edu instead."
+    ) if new_record?
   end
 end

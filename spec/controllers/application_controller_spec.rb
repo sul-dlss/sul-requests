@@ -29,14 +29,14 @@ describe ApplicationController do
       expect(user).not_to be_changed
     end
 
-    describe 'ldap_email' do
+    describe 'email' do
       it 'is the WEBAUTH_EMAIL from ldap attributes' do
         expect(controller).to receive_messages(user_id: 'some-user')
         expect(controller.request).to receive(:env).at_least(:once).and_return(
           'WEBAUTH_EMAIL' => 'the-email@fromldap.edu'
         )
         user = controller.send(:current_user)
-        expect(user.ldap_email).to eq 'the-email@fromldap.edu'
+        expect(user.email).to eq 'the-email@fromldap.edu'
       end
 
       it 'is the "SUNet@stanford.edu" when there is no WEBAUTH_EMAIL and the WEBAUTH_LDAP_SUEMAILSTATUS is active' do
@@ -45,7 +45,7 @@ describe ApplicationController do
           'WEBAUTH_LDAP_SUEMAILSTATUS' => 'active'
         )
         user = controller.send(:current_user)
-        expect(user.ldap_email).to eq 'some-user@stanford.edu'
+        expect(user.email).to eq 'some-user@stanford.edu'
       end
     end
 

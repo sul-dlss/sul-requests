@@ -27,10 +27,25 @@ describe User do
 
   describe '#email_address' do
     describe 'for webauth users' do
-      it 'returns the Stanford email address' do
+      before do
         subject.webauth = 'jstanford'
-        subject.ldap_email = 'jstanford@stanford.edu'
-        expect(subject.email_address).to eq 'jstanford@stanford.edu'
+      end
+      it 'returns the email address set by the email attribute' do
+        subject.email = 'jjstanford@stanford.edu'
+        expect(subject.email_address).to eq 'jjstanford@stanford.edu'
+      end
+
+      context 'when there is no email set from the LDAP attributes' do
+        it 'sets the value to the SUNet@stanford.edu' do
+          expect(subject.email_address).to eq 'jstanford@stanford.edu'
+        end
+
+        it 'Notifies the exception handling service' do
+          expect(Honeybadger).to receive(:notify).with(
+            'Webauth user record being created without a valid email address. Using jstanford@stanford.edu instead.'
+          )
+          expect(subject.email_address).to eq 'jstanford@stanford.edu'
+        end
       end
     end
 
@@ -55,7 +70,7 @@ describe User do
       it 'should be their Stanford email address' do
         subject.name = 'Jane Stanford'
         subject.webauth = 'jstanford'
-        subject.ldap_email = 'jstanford@stanford.edu'
+        subject.email = 'jstanford@stanford.edu'
         expect(subject.to_email_string).to eq 'Jane Stanford (jstanford@stanford.edu)'
       end
     end
@@ -71,7 +86,7 @@ describe User do
     describe 'for users without a name' do
       it 'should just be their email address' do
         subject.webauth = 'jstanford'
-        subject.ldap_email = 'jstanford@stanford.edu'
+        subject.email = 'jstanford@stanford.edu'
         expect(subject.to_email_string).to eq 'jstanford@stanford.edu'
       end
     end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161019221036) do
+ActiveRecord::Schema.define(version: 20161027202255) do
 
   create_table "admin_comments", force: :cascade do |t|
     t.string   "commenter"
@@ -58,7 +58,6 @@ ActiveRecord::Schema.define(version: 20161019221036) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string   "library_id"
-    t.string   "ldap_email"
   end
 
   add_index "users", ["email"], name: "index_users_on_email"
