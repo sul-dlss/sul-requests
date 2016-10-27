@@ -117,11 +117,8 @@ class Request < ActiveRecord::Base
   end
 
   def notification_email_address
-    if proxy? && user.proxy_access.email_address.present?
-      user.proxy_access.email_address
-    elsif user.email_address.present?
-      user.email_address
-    end
+    return user.proxy_access.email_address if proxy? && user.proxy_access.email_address.present?
+    user.email_address
   end
 
   def submit!
