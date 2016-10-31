@@ -51,7 +51,7 @@ class ItemStatus
   end
 
   def approve!(user)
-    @request.send_to_symphony!(barcodes: [@id])
+    @request.send_to_symphony_now!(barcodes: [@id])
     return unless symphony_item_successful?
     self.status_object = {
       approved: true,

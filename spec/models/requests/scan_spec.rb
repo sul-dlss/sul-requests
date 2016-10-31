@@ -39,4 +39,11 @@ describe Scan do
       expect(subject).not_to be_item_commentable
     end
   end
+
+  describe '#submit!' do
+    it 'submits the request to Symphony immediately' do
+      expect(SubmitSymphonyRequestJob).to receive(:perform_now)
+      subject.submit!
+    end
+  end
 end

@@ -99,6 +99,7 @@ GEM
     config (1.3.0)
       activesupport (>= 3.0)
       deep_merge (~> 1.1.1)
+    connection_pool (2.2.0)
     coveralls (0.8.15)
       json (>= 1.8, < 3)
       simplecov (~> 0.12.0)
@@ -177,6 +178,8 @@ GEM
       websocket-driver (>= 0.2.0)
     powerpack (0.1.1)
     rack (1.6.4)
+    rack-protection (1.5.3)
+      rack
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.2.7.1)
@@ -208,6 +211,7 @@ GEM
     rdoc (4.2.2)
       json (~> 1.4)
     redcarpet (3.3.4)
+    redis (3.3.1)
     ref (2.0.0)
     rspec-core (3.5.4)
       rspec-support (~> 3.5.0)
@@ -246,6 +250,11 @@ GEM
     sdoc (0.4.2)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
+    sidekiq (4.2.3)
+      concurrent-ruby (~> 1.0)
+      connection_pool (~> 2.2, >= 2.2.0)
+      rack-protection (>= 1.5.0)
+      redis (~> 3.2, >= 3.2.1)
     simplecov (0.12.0)
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
@@ -337,6 +346,7 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   scss-lint
   sdoc (~> 0.4.0)
+  sidekiq
   sqlite3
   sul_styles (>= 0.5.0)
   teaspoon-jasmine
@@ -346,4 +356,4 @@ DEPENDENCIES
   web-console (~> 2.0)
 
 BUNDLED WITH
-   1.13.2
+   1.13.3

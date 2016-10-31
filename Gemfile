@@ -61,6 +61,9 @@ gem 'web-console', '~> 2.0', group: :development
 # test coverage in static code analysis GUI
 gem 'codeclimate-test-reporter', group: :test, require: false
 
+# Sidekiq is our background processing framework, run via Active Job
+gem 'sidekiq'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
