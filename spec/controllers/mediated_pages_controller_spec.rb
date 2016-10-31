@@ -174,6 +174,53 @@ describe MediatedPagesController do
     end
   end
 
+  describe 'update' do
+    let(:user) { create(:superadmin_user) }
+    let!(:mediated_page) { create(:mediated_page) }
+
+    context 'when successful' do
+      it 'returns the json representation of the updated request' do
+        expect(mediated_page).to_not be_marked_as_done
+        patch :update, id: mediated_page.id, mediated_page: { approval_status: 'marked_as_done' }, format: :js
+
+        expect(mediated_page.reload).to be_marked_as_done
+        expect(JSON.parse(response.body)['id']).to eq mediated_page.id
+      end
+    end
+
+    context 'when unsuccesful' do
+      before do
+        expect_any_instance_of(MediatedPage).to receive(:update).and_return(false)
+      end
+
+      it 'returns an error status code' do
+        patch :update, id: mediated_page.id, mediated_page: { marked_as_complete: 'true' }, format: :js
+
+        expect(response).not_to be_success
+        expect(response.status).to eq 400
+      end
+
+      it 'returns a small json error message' do
+        patch :update, id: mediated_page.id, mediated_page: { marked_as_complete: 'true' }, format: :js
+
+        expect(JSON.parse(response.body)).to eq('status' => 'error')
+      end
+    end
+
+    context 'by a user who cannot manage the request (even if they created the reqeust)' do
+      let(:user) { create(:webauth_user) }
+      let!(:mediated_page) { create(:mediated_page, user: user) }
+
+      it 'throws an access denied error' do
+        expect(
+          lambda do
+            patch :update, id: mediated_page.id, mediated_page: { marked_as_complete: 'true' }, format: :js
+          end
+        ).to raise_error(CanCan::AccessDenied)
+      end
+    end
+  end
+
   describe '#current_request' do
     let(:user) { create(:anon_user) }
     it 'returns a MediatedPage object' do

@@ -1,4 +1,5 @@
 /* global adminComments */
+/* global markAsComplete */
 
 var mediationTable = (function() {
   var defaultOptions = {
@@ -108,6 +109,7 @@ var mediationTable = (function() {
           holdingsRow.find('td').html(data);
           row.addClass('expanded');
           adminComments.init(holdingsRow.find('td'));
+          markAsComplete.init(holdingsRow.find('td'));
         });
       }
     },

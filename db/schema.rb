@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161027202255) do
+ActiveRecord::Schema.define(version: 20161028235652) do
 
   create_table "admin_comments", force: :cascade do |t|
     t.string   "commenter"
@@ -35,8 +35,8 @@ ActiveRecord::Schema.define(version: 20161027202255) do
     t.string   "type"
     t.date     "needed_date"
     t.string   "status"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.string   "origin"
     t.string   "destination"
     t.string   "origin_location"
@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(version: 20161027202255) do
     t.text     "item_title"
     t.text     "barcodes"
     t.string   "estimated_delivery"
+    t.integer  "approval_status",    default: 0
   end
 
   add_index "requests", ["needed_date"], name: "index_requests_on_needed_date"

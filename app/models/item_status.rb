@@ -58,6 +58,7 @@ class ItemStatus
       approval_time: Time.zone.now.to_s,
       approver: user
     }.with_indifferent_access
+    @request.approval_status = :approved if @request.all_approved?
     @request.save!
   end
 

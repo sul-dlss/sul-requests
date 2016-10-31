@@ -71,10 +71,9 @@ var itemApproval = (function() {
 
     updateAllApprovedNote: function(item) {
       if(this.allItemsAreApproved(item)) {
-        item.closest('tr.holdings')
-            .prev('tr')
-            .find('[data-behavior="all-approved-note"]')
-            .show();
+        var tableRow = item.closest('tr.holdings').prev('tr');
+        tableRow.find('[data-behavior="all-approved-note"]').show();
+        tableRow.find('[data-behavior="mixed-approved-note"]').hide();
       }
     },
 
