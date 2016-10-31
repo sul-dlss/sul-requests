@@ -44,4 +44,9 @@ Rails.application.configure do
   config.log_formatter = ::Logger::Formatter.new
   # reduce noise in logs and retain timestamp
   config.lograge.enabled = true
+
+  # Use the Sidekiq adapter for Active Job if configured in settings
+  if Settings.background_jobs == true
+    config.active_job.queue_adapter = :sidekiq
+  end
 end
