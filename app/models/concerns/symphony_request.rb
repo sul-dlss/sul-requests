@@ -5,8 +5,12 @@ module SymphonyRequest
     user.webauth_user?
   end
 
-  def send_to_symphony!(options = {})
-    SubmitSymphonyRequestJob.perform_now(self, options)
+  def send_to_symphony_now!(options = {})
+    SubmitSymphonyRequestJob.perform_now(id, options)
+  end
+
+  def send_to_symphony_later!(options = {})
+    SubmitSymphonyRequestJob.perform_later(id, options)
   end
 
   def symphony_request

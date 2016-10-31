@@ -25,9 +25,19 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
 
     describe '#perform' do
       it 'merges response information with the existing request data' do
-        expect(page).to receive(:merge_symphony_response_data).with(hash_including(req_type: 'PAGE')).and_call_original
-        subject.perform(page)
+        expect_any_instance_of(page.class).to receive(:merge_symphony_response_data).with(
+          hash_including(req_type: 'PAGE')
+        ).and_call_original
+        subject.perform(page.id)
+        page.reload
         expect(page.symphony_response.req_type).to eq 'PAGE'
+      end
+
+      it 'notifies Honeybadger when the request is not found' do
+        expect_any_instance_of(Honeybadger).to receive(:notify).once.with(
+          'Attempted to call Symphony for Request with ID -1, but no such Request was found.'
+        )
+        subject.perform(-1)
       end
     end
   end

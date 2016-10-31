@@ -38,7 +38,7 @@ describe ItemStatus do
 
     it 'triggers a request to symphony when an item is approved' do
       expect(request).to receive(:save!)
-      expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(request, barcodes: [barcode])
+      expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(request.id, barcodes: [barcode])
       subject.approve!('jstanford')
     end
 
