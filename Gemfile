@@ -49,6 +49,9 @@ gem 'honeybadger'
 # Use is_it_working to monitor the application
 gem 'is_it_working'
 
+# Use okcomputer to monitor the application
+gem 'okcomputer'
+
 # lograge to reduce noise in logs
 gem 'lograge'
 
