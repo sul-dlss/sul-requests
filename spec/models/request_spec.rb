@@ -554,15 +554,15 @@ describe Request do
 
   describe '#submit!' do
     it 'submits the request to Symphony' do
-      expect(SubmitSymphonyRequestJob).to receive(:perform_now)
+      expect(SubmitSymphonyRequestJob).to receive(:perform_later)
       subject.submit!
     end
   end
 
   describe '#send_to_symphony!' do
     it 'submits the request to Symphony' do
-      expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(subject, a: 1)
-      subject.send_to_symphony! a: 1
+      expect(SubmitSymphonyRequestJob).to receive(:perform_later).with(subject.id, a: 1)
+      subject.send_to_symphony_later! a: 1
     end
   end
 

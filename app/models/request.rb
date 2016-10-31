@@ -126,7 +126,7 @@ class Request < ActiveRecord::Base
   end
 
   def submit!
-    send_to_symphony!
+    send_to_symphony_later!
   end
 
   def barcode_present?

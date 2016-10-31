@@ -54,3 +54,8 @@ set :honeybadger_env, fetch(:stage)
 
 # update shared_configs before restarting app
 before 'deploy:restart', 'shared_configs:update'
+
+
+# Sidekiq configuration (run one process with ten threads)
+set :sidekiq_processes, 1
+set :sidekiq_concurrency, 10

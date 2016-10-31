@@ -67,6 +67,9 @@ group :test do
   gem 'codeclimate-test-reporter', require: false
 end
 
+# Sidekiq is our background processing framework, run via Active Job
+gem 'sidekiq'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

@@ -3,12 +3,26 @@
 class SubmitSymphonyRequestJob < ActiveJob::Base
   queue_as :default
 
-  def perform(request, options = {})
+  def perform(request_id, options = {})
     return true unless enabled?
+    request = find_request(request_id)
+
+    return true unless request
 
     response = Command.new(request, options).execute!
     request.merge_symphony_response_data(response.with_indifferent_access)
     request.save
+  end
+
+  def find_request(request_id)
+    request = begin
+      Request.find(request_id)
+    rescue ActiveRecord::RecordNotFound
+      Honeybadger.notify(
+        "Attempted to call Symphony for Request with ID #{request_id}, but no such Request was found."
+      )
+    end
+    request
   end
 
   def enabled?
