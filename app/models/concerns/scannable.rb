@@ -2,6 +2,9 @@
 #  Mixin to encapsulate defining if a request is scannable
 ###
 module Scannable
+  ITEM_TYPES = %w(BUS-STACKS STKS STKS-MONO STKS-PERI).freeze
+  LOCATIONS = %w(BUS-STACKS STACKS).freeze
+
   def scannable?
     scannable_library? &&
       scannable_location? &&
@@ -15,12 +18,19 @@ module Scannable
   end
 
   def scannable_location?
-    %w(BUS-STACKS STACKS).include?(location)
+    LOCATIONS.include?(location)
   end
 
   def includes_scannable_item?
     request.holdings.any? do |item|
-      %w(BUS-STACKS STKS STKS-MONO STKS-PERI).include?(item.type)
+      scannable_item_types.include?(item.type)
     end
+  end
+
+  def scannable_item_types
+    return ITEM_TYPES unless location
+    location_item_types_method_name = "#{location.underscore}_scannable_item_types".to_sym
+    return ITEM_TYPES unless respond_to?(location_item_types_method_name, true)
+    send(location_item_types_method_name)
   end
 end
