@@ -3,7 +3,7 @@
 ###
 module Scannable
   ITEM_TYPES = %w(BUS-STACKS STKS STKS-MONO STKS-PERI).freeze
-  LOCATIONS = %w(BUS-STACKS STACKS).freeze
+  LOCATIONS = %w(BUS-STACKS PAGE-GR STACKS).freeze
 
   def scannable?
     scannable_library? &&
@@ -32,5 +32,9 @@ module Scannable
     location_item_types_method_name = "#{location.underscore}_scannable_item_types".to_sym
     return ITEM_TYPES unless respond_to?(location_item_types_method_name, true)
     send(location_item_types_method_name)
+  end
+
+  def page_gr_scannable_item_types
+    %w(NEWSPAPER NH-INHOUSE).concat(ITEM_TYPES)
   end
 end
