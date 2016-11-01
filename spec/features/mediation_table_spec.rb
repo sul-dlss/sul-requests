@@ -61,6 +61,9 @@ describe 'Mediation table', js: true do
           expect(page).not_to have_css('a.trunk8toggle-more')
         end
       end
+      it 'column has size in header' do
+        expect(page).to have_css('th.col-sm-3', text: 'Comment')
+      end
     end
 
     describe 'current location' do
