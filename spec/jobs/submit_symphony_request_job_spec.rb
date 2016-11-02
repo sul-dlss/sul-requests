@@ -54,7 +54,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
 
       context 'with a scan' do
         let(:request) { scan }
-        it 'has the request type' do
+        it 'req_type is the request type' do
           expect(subject.request_params).to include req_type: 'SCAN'
         end
       end
@@ -62,7 +62,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
       context 'with a hold' do
         let(:request) { hold }
 
-        it 'has the request type' do
+        it 'req_type is the request type' do
           expect(subject.request_params).to include req_type: 'HOLD'
         end
       end
@@ -70,23 +70,23 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
       context 'with a page' do
         let(:request) { page }
 
-        it 'has the request type' do
+        it 'req_type is the request type' do
           expect(subject.request_params).to include req_type: 'PAGE'
         end
       end
 
-      context 'with item comments' do
+      context 'with item comment' do
         let(:request) { page.tap { |x| x.update(item_comment: 'Item Comment') } }
 
-        it 'passes on the request comments' do
+        it 'item_comments is the item comments' do
           expect(subject.request_params).to include item_comments: 'Item Comment'
         end
       end
 
-      context 'with request comments' do
+      context 'with request comment' do
         let(:request) { page.tap { |x| x.update(request_comment: 'Request Comment') } }
 
-        it 'passes on the request comments' do
+        it 'req_comment is the request comment' do
           expect(subject.request_params).to include req_comment: 'Request Comment'
         end
       end
@@ -118,21 +118,21 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
       end
 
       context 'without requested items' do
-        it 'contains the NO_ITEMS placeholder' do
+        it 'items is NO_ITEMS placeholder' do
           expect(subject.request_params).to include items: 'NO_ITEMS^'
         end
 
-        it 'contains the NO_ITEMS placeholder when a given barcode is blank' do
+        it 'items is NO_ITEMS placeholder when the only barcode is blank' do
           request.barcodes = ['']
           expect(subject.request_params).to include items: 'NO_ITEMS^'
         end
       end
 
       context 'with requested barcodes' do
-        let(:scan) { create(:scan_with_holdings_barcode, user: user) }
+        let(:scan) { create(:scan_with_holdings_barcodes, user: user) }
 
-        it 'contains the item barcode' do
-          expect(subject.request_params).to include items: '12345678^'
+        it 'items is the item barcodes separated by ^' do
+          expect(subject.request_params).to include items: '12345678^87654321^'
         end
       end
     end
