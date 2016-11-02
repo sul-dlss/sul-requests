@@ -45,7 +45,7 @@ describe 'Viewing all requests' do
         stub_current_user(create(:superadmin_user))
         create(:mediated_page)
         create(:mediated_page)
-        create(:hoover_mediated_page)
+        create(:hoover_archive_mediated_page)
       end
 
       it 'should list all the mediated pages for the given library' do
@@ -55,9 +55,9 @@ describe 'Viewing all requests' do
 
         expect(page).to have_css('table tbody tr', count: 2)
 
-        visit admin_path('HOOVER')
+        visit admin_path('HV-ARCHIVE')
 
-        expect(page).to have_css('h2', text: 'Hoover Library')
+        expect(page).to have_css('h2', text: 'Hoover Archive')
 
         expect(page).to have_css('table tbody tr', count: 1)
       end

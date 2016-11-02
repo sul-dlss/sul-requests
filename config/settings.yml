@@ -28,7 +28,6 @@ scan_pilot_groups:
 origin_admin_groups:
   HOPKINS: []
   HV-ARCHIVE: []
-  HOOVER: []
   PAGE-MP: []
   SPEC-COLL: []
 
