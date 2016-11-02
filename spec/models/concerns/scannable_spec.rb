@@ -26,6 +26,12 @@ describe Scannable do
         expect(subject).to be_scannable
       end
 
+      it 'is true when from SAL3 + PAGE-GR' do
+        subject.library = 'SAL3'
+        subject.location = 'PAGE-GR'
+        expect(subject).to be_scannable
+      end
+
       it 'is true when from SAL3 + BUS-STACKS' do
         subject.library = 'SAL3'
         subject.location = 'BUS-STACKS'
@@ -45,6 +51,8 @@ describe Scannable do
     describe 'holdings' do
       let(:scannable_items) { [double(type: 'STKS')] }
       let(:unscannable_items) { [double(type: 'NOT-STKS')] }
+      let(:page_gr_scannable_items) { [double(type: 'NH-INHOUSE')] }
+
       before do
         allow(subject).to receive_messages(scannable_library?: true)
         allow(subject).to receive_messages(scannable_location?: true)
@@ -62,6 +70,12 @@ describe Scannable do
 
       it 'is true when there are mixed items in the location' do
         subject.request = double('request', holdings: [scannable_items, unscannable_items].flatten)
+        expect(subject).to be_scannable
+      end
+
+      it 'is true for special PAGE-GR locations' do
+        subject.location = 'PAGE-GR'
+        subject.request = double('request', holdings: page_gr_scannable_items)
         expect(subject).to be_scannable
       end
     end
