@@ -37,6 +37,8 @@ class SubmitSymphonyRequestJob < ActiveJob::Base
     end
 
     def request_params
+      # NOTE:  any changes to params (new ones, key name changes) must be coordinated with
+      # Symphony programmers
       patron_from_request.merge(items_from_request).merge(
         req_type: req_type
       ).reject { |_, v| v.blank? }
@@ -71,7 +73,9 @@ class SubmitSymphonyRequestJob < ActiveJob::Base
         ckey: request.item_id,
         items: barcodes.join('^') + '^',
         home_lib: request.origin,
-        comments: request.item_comment,
+        item_comments: request.item_comment,
+        req_comment: request.request_comment,
+        requested_date: request.created_at.strftime('%m/%d/%Y'),
         pickup_lib: (request.destination unless request.is_a? Scan),
         not_needed_after: (request.needed_date.strftime('%m/%d/%Y') if request.needed_date)
       }
