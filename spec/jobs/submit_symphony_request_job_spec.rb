@@ -75,11 +75,19 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
         end
       end
 
-      context 'with request comments' do
+      context 'with item comments' do
         let(:request) { page.tap { |x| x.update(item_comment: 'Item Comment') } }
 
         it 'passes on the request comments' do
-          expect(subject.request_params).to include comments: 'Item Comment'
+          expect(subject.request_params).to include item_comments: 'Item Comment'
+        end
+      end
+
+      context 'with request comments' do
+        let(:request) { page.tap { |x| x.update(request_comment: 'Request Comment') } }
+
+        it 'passes on the request comments' do
+          expect(subject.request_params).to include req_comment: 'Request Comment'
         end
       end
 
