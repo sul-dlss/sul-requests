@@ -5,7 +5,7 @@ describe IlliadOpenurl do
   let(:law_user) { create(:webauth_user).tap { |x| x.ldap_group_string = 'organization:law' } }
   let(:gsb_user) { create(:webauth_user).tap { |x| x.ldap_group_string = 'organization:gsb' } }
 
-  let(:scan) { create(:scan_with_holdings_barcode) }
+  let(:scan) { create(:scan_with_holdings_barcodes) }
   let(:redirect_url) { '' }
 
   subject { IlliadOpenurl.new(user, scan, redirect_url) }
