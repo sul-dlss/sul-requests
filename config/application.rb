@@ -128,6 +128,7 @@ module SULRequests
       'PAGE-MD' => ['MUSIC', 'MEDIA-MTXT'],
       'PAGE-MP' => ['EARTH-SCI'],
       'PAGE-MU' => ['MUSIC'],
+      'PAGE-RM' => ['RUMSEYMAP'],
       'PAGE-SP' => ['SPEC-COLL']
     }
 
