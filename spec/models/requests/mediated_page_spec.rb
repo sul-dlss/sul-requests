@@ -57,8 +57,8 @@ describe MediatedPage do
       build(:mediated_page, user: user, needed_date: Time.zone.today - 3.days).save(validate: false)
       build(:mediated_page, user: user, needed_date: Time.zone.today - 2.days).save(validate: false)
       build(:mediated_page, user: user, needed_date: Time.zone.today - 1.day).save(validate: false)
-      create(:hoover_mediated_page, user: user, needed_date: Time.zone.today)
-      create(:hoover_mediated_page, user: user, needed_date: Time.zone.today + 1.day)
+      create(:hoover_archive_mediated_page, user: user, needed_date: Time.zone.today)
+      create(:hoover_archive_mediated_page, user: user, needed_date: Time.zone.today + 1.day)
     end
     describe 'archived' do
       it 'returns records whose needed_date is older than today' do
@@ -85,7 +85,7 @@ describe MediatedPage do
     describe 'for_origin' do
       it 'returns the records for a given origin' do
         expect(MediatedPage.for_origin('SPEC-COLL').length).to eq 3
-        expect(MediatedPage.for_origin('HOOVER').length).to eq 2
+        expect(MediatedPage.for_origin('HV-ARCHIVE').length).to eq 2
       end
     end
   end
@@ -96,7 +96,7 @@ describe MediatedPage do
       expect(subject).to be_request_commentable
     end
     it 'is false when the library is not SPEC-COLL' do
-      subject.origin = 'HOOVER'
+      subject.origin = 'HV-ARCHIVE'
       expect(subject).to_not be_request_commentable
     end
   end

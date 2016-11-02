@@ -8,7 +8,7 @@ module Mediateable
     mediated_library? ||
       page_mp? ||
       hopkins_stacks? ||
-      hoover_in_sal3?
+      hoover_archive_in_sal3?
   end
 
   private
@@ -25,16 +25,8 @@ module Mediateable
     @library == 'HOPKINS' && @location == 'STACKS'
   end
 
-  def hoover_in_sal3?
-    hoover_library_in_sal3? || hoover_archive_in_sal3?
-  end
-
   def hoover_archive_in_sal3?
     @library == 'HV-ARCHIVE' && location_lives_in_sal3?
-  end
-
-  def hoover_library_in_sal3?
-    @library == 'HOOVER' && location_lives_in_sal3?
   end
 
   def location_lives_in_sal3?

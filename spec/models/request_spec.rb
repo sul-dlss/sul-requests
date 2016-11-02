@@ -475,11 +475,11 @@ describe Request do
   describe 'mediateable_origins' do
     before do
       create(:mediated_page)
-      create(:hoover_mediated_page)
+      create(:hoover_archive_mediated_page)
       create(:hopkins_mediated_page)
     end
     it 'should return the subset of origin codes that are configured and mediated pages that exist in the database' do
-      expect(Request.mediateable_origins).to eq %w(HOPKINS HOOVER SPEC-COLL)
+      expect(Request.mediateable_origins).to eq %w(HOPKINS HV-ARCHIVE SPEC-COLL)
     end
   end
 

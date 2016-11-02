@@ -101,7 +101,7 @@ describe 'Creating a mediated page request' do
       expect(MediatedPage.last.request_comment).to eq comment
     end
     it 'should not include a comments for requests that do not get them' do
-      visit new_mediated_page_path(item_id: '1234', origin: 'HOOVER', origin_location: 'STACKS-30')
+      visit new_mediated_page_path(item_id: '1234', origin: 'HV-ARCHIVE', origin_location: 'STACKS-30')
 
       expect(page).to_not have_field('Comments')
     end

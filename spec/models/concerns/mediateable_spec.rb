@@ -40,28 +40,15 @@ describe Mediateable do
         expect(subject).to_not be_mediateable
       end
     end
-    describe 'HOOVER' do
-      describe 'library' do
-        before { subject.library = 'HOOVER' }
-        it 'should return true if the item is in a *-30 location' do
-          subject.location = 'SOMEWHERE-30'
-          expect(subject).to be_mediateable
-        end
-        it 'should return false if the item is not in a *-30 location' do
-          subject.location = 'SOMEWHERE-ELSE'
-          expect(subject).not_to be_mediateable
-        end
+    describe 'HV-ARCHIVE' do
+      before { subject.library = 'HV-ARCHIVE' }
+      it 'should return true if the item is in a *-30 location' do
+        subject.location = 'SOMEWHERE-30'
+        expect(subject).to be_mediateable
       end
-      describe 'archives' do
-        before { subject.library = 'HV-ARCHIVE' }
-        it 'should return true if the item is in a *-30 location' do
-          subject.location = 'SOMEWHERE-30'
-          expect(subject).to be_mediateable
-        end
-        it 'should return false if the item is not in a *-30 location' do
-          subject.location = 'SOMEWHERE-ELSE'
-          expect(subject).not_to be_mediateable
-        end
+      it 'should return false if the item is not in a *-30 location' do
+        subject.location = 'SOMEWHERE-ELSE'
+        expect(subject).not_to be_mediateable
       end
     end
   end
