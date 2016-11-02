@@ -230,6 +230,11 @@ describe Request do
       subject.origin = 'HV-ARCHIVE'
       expect(subject.item_limit).to eq 20
     end
+
+    it 'should be 5 for items from the PAGE-SP location' do
+      subject.origin_location = 'PAGE-SP'
+      expect(subject.item_limit).to eq 5
+    end
   end
 
   describe 'nested attributes for' do

@@ -5,11 +5,12 @@ module DefaultRequestOptions
   ITEM_LIMITS = {
     'HV-ARCHIVE' => 20,
     'RUMSEYMAP' => 5,
-    'SPEC-COLL' => 5
+    'SPEC-COLL' => 5,
+    'PAGE-SP' => 5
   }.freeze
 
   def item_limit
-    ITEM_LIMITS[origin]
+    ITEM_LIMITS[origin] || ITEM_LIMITS[origin_location]
   end
 
   def requires_needed_date?
