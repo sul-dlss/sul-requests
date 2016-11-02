@@ -212,8 +212,28 @@ describe Request do
   end
 
   describe '#item_limit' do
-    it 'is nil for the base request class' do
+    it 'is nil when there is no configured item limit' do
       expect(subject.item_limit).to be_nil
+    end
+
+    it 'should be 5 for items from SPEC-COLL' do
+      subject.origin = 'SPEC-COLL'
+      expect(subject.item_limit).to eq 5
+    end
+
+    it 'should be 5 for items from RUMSEYMAP' do
+      subject.origin = 'RUMSEYMAP'
+      expect(subject.item_limit).to eq 5
+    end
+
+    it 'should be 20 for items from HV-ARCHIVE' do
+      subject.origin = 'HV-ARCHIVE'
+      expect(subject.item_limit).to eq 20
+    end
+
+    it 'should be 5 for items from the PAGE-SP location' do
+      subject.origin_location = 'PAGE-SP'
+      expect(subject.item_limit).to eq 5
     end
   end
 
