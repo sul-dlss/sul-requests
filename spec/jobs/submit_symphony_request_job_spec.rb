@@ -75,16 +75,25 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
         end
       end
 
-      context 'with request comments' do
+      context 'with item comments' do
         let(:request) { page.tap { |x| x.update(item_comment: 'Item Comment') } }
 
         it 'passes on the request comments' do
-          expect(subject.request_params).to include comments: 'Item Comment'
+          expect(subject.request_params).to include item_comments: 'Item Comment'
+        end
+      end
+
+      context 'with request comments' do
+        let(:request) { page.tap { |x| x.update(request_comment: 'Request Comment') } }
+
+        it 'passes on the request comments' do
+          expect(subject.request_params).to include req_comment: 'Request Comment'
         end
       end
 
       it 'contains the request information' do
         expect(subject.request_params).to include ckey: '12345', home_lib: 'SAL3'
+        expect(subject.request_params).to include requested_date: %r(\d{2}/\d{2}/\d{4}$)
       end
 
       context 'with a non-webauth user' do
