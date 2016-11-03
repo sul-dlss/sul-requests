@@ -36,7 +36,7 @@ describe MediatedPagesController do
   describe 'create' do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
-      it 'should redirect to the login page passing a refferrer param to continue creating the mediated page request' do
+      it 'should redirect to the login page passing a referrer param to continue creating the mediated page request' do
         post :create, request: {
           item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'SPEC-COLL'
         }

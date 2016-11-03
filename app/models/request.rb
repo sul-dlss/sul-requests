@@ -18,7 +18,7 @@ class Request < ActiveRecord::Base
 
   delegate :hold_recallable?, :mediateable?, :pageable?, :scannable?, to: :library_location
 
-  # Serialzed data hash
+  # Serialized data hash
   store :data, accessors: [
     :ad_hoc_items, :authors, :request_status_data, :item_comment, :page_range,
     :proxy, :request_comment, :section_title, :symphony_response_data
@@ -137,10 +137,10 @@ class Request < ActiveRecord::Base
   end
 
   class << self
-    # The mediateable_oirgins will make multiple (efficient) database requests
+    # The mediateable_origins will make multiple (efficient) database requests
     # in order to return the array of locations that are both configured as mediateable and have existing requests.
     # Another alternative would be to use (origin_admin_groups & uniq.pluck(:origin)).present? but that will result
-    # in a SELECT DISTNICT which could get un-performant with a large table of requests.
+    # in a SELECT DISTINCT which could get un-performant with a large table of requests.
     def mediateable_origins
       Settings.origin_admin_groups.to_hash.keys.map(&:to_s).select do |library_or_location|
         MediatedPage.exists?(origin: library_or_location) || MediatedPage.exists?(origin_location: library_or_location)

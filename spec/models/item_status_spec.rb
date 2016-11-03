@@ -42,7 +42,7 @@ describe ItemStatus do
       subject.approve!('jstanford')
     end
 
-    describe 'with an unsusccessful symphony request' do
+    describe 'with an unsuccessful symphony request' do
       let(:request) { create(:request_with_holdings) }
       it 'does not persist any changes if the symphony response is not successful' do
         stub_symphony_response(build(:symphony_request_with_all_errored_items))

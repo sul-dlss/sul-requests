@@ -496,6 +496,7 @@ describe Request do
       subject.send_to_symphony! a: 1
     end
   end
+
   describe '#appears_in_myaccount?' do
     context 'with non-webauth users' do
       it 'is disabled' do
