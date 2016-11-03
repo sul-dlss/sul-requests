@@ -13,7 +13,7 @@ describe 'shared/_item_selector.html.erb' do
     render
   end
 
-  context 'with an item with only one holding' do
+  context 'item with only one holding' do
     context 'from the holdings' do
       let(:request) { create(:request_with_holdings) }
       it 'displays the single barcoded item' do
@@ -29,7 +29,7 @@ describe 'shared/_item_selector.html.erb' do
     end
   end
 
-  context 'with an item with multiple holdings' do
+  context 'item with multiple holdings' do
     let(:request) { create(:mediated_page_with_holdings) }
 
     it 'shows an item selector' do
@@ -41,7 +41,7 @@ describe 'shared/_item_selector.html.erb' do
     end
   end
 
-  context 'with an item that accepts ad-hoc holdings' do
+  context 'item that accepts ad-hoc holdings' do
     let(:request) { create(:mediated_page_with_holdings, user: user, ad_hoc_items: ['ZZZ 123', 'ZZZ 321']) }
 
     it 'shows the ad-hoc item field' do

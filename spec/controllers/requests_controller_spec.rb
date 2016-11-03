@@ -15,13 +15,12 @@ describe RequestsController do
   end
   describe '#new' do
     describe 'required parameters' do
-      it 'should require an item id, library, and location' do
-        expect(-> { get(:new, item_id: '1234') }).to raise_error(ActionController::ParameterMissing)
-        expect(-> { get(:new, origin: 'GREEN') }).to raise_error(ActionController::ParameterMissing)
-        expect(-> { get(:new, origin_location: 'STACKS') }).to raise_error(ActionController::ParameterMissing)
+      it 'item id, library, and location' do
+        expect(-> { get(:new, item_id: '1234', origin: 'GREEN') }).to raise_error(ActionController::ParameterMissing)
+        expect(-> { get(:new, origin: 'GREEN', origin_location: 'STACKS') }).to raise_error(ActionController::ParameterMissing)
+        expect(-> { get(:new, item_id: '1234', origin_location: 'STACKS') }).to raise_error(ActionController::ParameterMissing)
       end
     end
-
     describe 'defaults' do
       it 'should be set' do
         get :new, hold_recall_params
@@ -50,7 +49,7 @@ describe RequestsController do
     end
 
     describe 'unmediateable item' do
-      it 'rediredcts to the new page form' do
+      it 'redirects to the new page form' do
         get :new, unscannable_params
         expect(response).to redirect_to new_page_path(unscannable_params)
       end
@@ -61,7 +60,7 @@ describe RequestsController do
     let(:path) { controller.send(:delegated_new_request_path, request) }
     describe 'for pages' do
       let(:request) { build(:request) }
-      it 'delegeates the request object' do
+      it 'delegates the request object' do
         path
         expect(request.type).to eq 'Page'
       end
@@ -71,14 +70,14 @@ describe RequestsController do
       end
     end
 
-    describe 'for medated pages' do
+    describe 'for mediated pages' do
       let(:request) { create(:request, origin: 'SPEC-COLL') }
-      it 'delegeates the request object' do
+      it 'delegates the request object' do
         path
         expect(request.type).to eq 'MediatedPage'
       end
 
-      it 'retruns the mediated page path' do
+      it 'returns the mediated page path' do
         expect(path).to eq new_mediated_page_path
       end
     end
