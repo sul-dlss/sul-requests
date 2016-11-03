@@ -64,6 +64,16 @@ class MediatedPage < Request
     )[:email]
   end
 
+  def self.mark_all_archived_as_complete!
+    archived.find_each do |mediated_page|
+      if mediated_page.all_approved?
+        mediated_page.approved!
+      else
+        mediated_page.marked_as_done!
+      end
+    end
+  end
+
   private
 
   def needed_date_is_required
