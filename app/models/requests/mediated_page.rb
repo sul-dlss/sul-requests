@@ -10,8 +10,8 @@ class MediatedPage < Request
   validate :destination_is_a_pickup_library
   validate :needed_date_is_valid, on: :create, if: :requires_needed_date?
 
+  scope :completed, -> { where(approval_status: MediatedPage.approval_statuses.except('unapproved').values) }
   scope :archived, -> { where('needed_date < ?', Time.zone.today).order(needed_date: :desc) }
-  scope :active, -> { where('needed_date IS NULL OR needed_date >= ?', Time.zone.today) }
   scope :for_origin, ->(origin) { where('origin = ? OR origin_location = ?', origin, origin) }
 
   include TokenEncryptable

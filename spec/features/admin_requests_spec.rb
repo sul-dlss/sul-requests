@@ -62,34 +62,54 @@ describe 'Viewing all requests' do
         expect(page).to have_css('table tbody tr', count: 1)
       end
 
-      it 'paginates the data' do
-        visit admin_path('SPEC-COLL', per_page: 1)
+      describe 'pagination' do
+        context 'on the "All pending" page' do
+          before { visit admin_path('SPEC-COLL', per_page: 1) }
 
-        expect(page).to have_css('.pagination')
+          it 'requests are not paginated' do
+            expect(page).not_to have_css('.pagination')
+          end
+        end
 
-        click_on 'Next ›'
+        context 'on the "All done" page' do
+          before do
+            MediatedPage.all.map(&:approved!)
+            visit admin_path('SPEC-COLL', done: 'true', per_page: 1)
+          end
 
-        expect(page).to have_selector('.pagination .disabled', text: 'Next ›')
+          it 'requests are paginated', js: true do
+            expect(page).to have_css('.pagination')
+
+            click_on 'Next ›'
+
+            expect(page).to have_selector('.pagination .disabled', text: 'Next ›')
+          end
+        end
       end
 
-      it 'allows the user to toggle between expired and active mediated pages' do
-        build(:mediated_page, needed_date: Time.zone.today - 3.days).save(validate: false)
-        build(:mediated_page, needed_date: Time.zone.today - 2.days).save(validate: false)
-        build(:mediated_page, needed_date: Time.zone.today - 1.day).save(validate: false)
+      it 'allows the user to toggle between expired and active mediated pages (and updates button class)' do
+        build(:mediated_page, approval_status: :approved, needed_date: Time.zone.today - 3.days).save(validate: false)
+        build(:mediated_page, approval_status: :approved, needed_date: Time.zone.today - 2.days).save(validate: false)
+        build(:mediated_page, approval_status: :approved, needed_date: Time.zone.today - 1.day).save(validate: false)
         visit admin_path('SPEC-COLL')
 
         expect(page).to have_css('tbody tr', count: 2)
-        expect(page).to have_css('a', text: 'Show archived requests')
-        click_link 'Show archived requests'
+        expect(page).to have_css('a.btn-primary', text: 'All pending')
 
-        expect(page).to have_css('h2', text: 'Special Collections archived requests')
+        expect(page).to have_css('a', text: 'All done')
+        expect(page).not_to have_css('a.btn-primary', text: 'All done')
+        click_link 'All done'
+
+        expect(page).to have_css('h2', text: 'Special Collections')
         expect(page).to have_css('tbody tr', count: 3)
-        expect(page).to have_css('a', text: 'Show current requests')
-        click_link 'Show current requests'
+        expect(page).to have_css('a.btn-primary', text: 'All done')
+        expect(page).to have_css('a', text: 'All pending')
+        expect(page).not_to have_css('a.btn-primary', text: 'All pending')
+
+        click_link 'All pending'
 
         expect(page).to have_css('h2', text: 'Special Collections')
         expect(page).to have_css('tbody tr', count: 2)
-        expect(page).to have_css('a', text: 'Show archived requests')
       end
 
       context 'with an ad-hoc item' do
