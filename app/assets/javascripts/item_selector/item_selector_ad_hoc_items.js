@@ -5,12 +5,12 @@ var itemSelectorAdHocItems = (function() {
     selector: '[data-behavior="ad-hoc-items"]'
   };
 
-  var santizeCallnumber = function(callnumber) {
-    return callnumber.replace(/\W+/g, '');
+  var sanitizeValue = function(val) {
+    return val.replace(/\W+/g, '');
   };
 
   var adHocItemTemplate = function(value) {
-    var barcode = santizeCallnumber(value);
+    var barcode = sanitizeValue(value);
 
     return $(
       '<span data-barcode="' +
@@ -22,7 +22,7 @@ var itemSelectorAdHocItems = (function() {
   };
 
   var adHochiddenFieldTemplate = function(name, value) {
-    return '<input id="hidden-' + santizeCallnumber(value) + '"' +
+    return '<input id="hidden-' + sanitizeValue(value) + '"' +
     'type="hidden" ' +
     'name="' + name + '" ' +
     'value="' + value + '" />';
