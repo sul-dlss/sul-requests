@@ -2,6 +2,8 @@
 #  Request class for making page requests that require mediation
 ###
 class MediatedPage < Request
+  enum approval_status: { unapproved: 0, marked_as_done: 1, approved: 2 }
+
   validate :mediated_page_validator
   validates :destination, presence: true
   validate :needed_date_is_required
@@ -60,6 +62,16 @@ class MediatedPage < Request
       origin,
       Rails.application.config.mediator_contact_info.fetch(origin_location, {})
     )[:email]
+  end
+
+  def self.mark_all_archived_as_complete!
+    archived.find_each do |mediated_page|
+      if mediated_page.all_approved?
+        mediated_page.approved!
+      else
+        mediated_page.marked_as_done!
+      end
+    end
   end
 
   private

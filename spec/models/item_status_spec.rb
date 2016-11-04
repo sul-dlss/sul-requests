@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe ItemStatus do
-  let(:request) { create(:request) }
+  let(:request) { create(:mediated_page_with_single_holding) }
   let(:barcode) { '3610512345' }
 
   subject { described_class.new(request, barcode) }
@@ -40,6 +40,27 @@ describe ItemStatus do
       expect(request).to receive(:save!)
       expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(request, barcodes: [barcode])
       subject.approve!('jstanford')
+    end
+
+    describe 'request approval status' do
+      context 'when all items are not approved' do
+        before { expect(request).to receive(:all_approved?).and_return(false) }
+        it 'is not updated' do
+          expect(request).not_to be_approved
+          subject.approve!('jstanford')
+          expect(request).not_to be_approved
+        end
+      end
+
+      context 'when all items are approved' do
+        before { expect(request).to receive(:all_approved?).and_return(true) }
+
+        it 'is set to approved' do
+          expect(request).not_to be_approved
+          subject.approve!('jstanford')
+          expect(request).to be_approved
+        end
+      end
     end
 
     describe 'with an unsusccessful symphony request' do

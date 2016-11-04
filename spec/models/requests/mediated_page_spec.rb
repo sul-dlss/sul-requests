@@ -182,4 +182,38 @@ describe MediatedPage do
       ).to eq SULRequests::Application.config.mediator_contact_info['PAGE-MP'][:email]
     end
   end
+
+  describe '#mark_all_archived_as_complete' do
+    let!(:mediated_page) { create(:mediated_page) }
+    before do
+      mediated_page.needed_date = Time.zone.today - 5.days
+      mediated_page.save
+    end
+
+    context 'requests that have all of their items approved' do
+      before do
+        expect_any_instance_of(MediatedPage).to receive(:all_approved?).at_least(:once).and_return(true)
+      end
+      it 'are marked as approved' do
+        expect(mediated_page).not_to be_approved
+
+        MediatedPage.mark_all_archived_as_complete!
+
+        expect(mediated_page.reload).to be_approved
+      end
+    end
+
+    context 'requests that do not have all their items approved' do
+      before do
+        expect_any_instance_of(MediatedPage).to receive(:all_approved?).at_least(:once).and_return(false)
+      end
+      it 'are marked as done' do
+        expect(mediated_page).not_to be_marked_as_done
+
+        MediatedPage.mark_all_archived_as_complete!
+
+        expect(mediated_page.reload).to be_marked_as_done
+      end
+    end
+  end
 end

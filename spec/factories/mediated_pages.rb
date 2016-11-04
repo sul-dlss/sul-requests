@@ -46,6 +46,24 @@ FactoryGirl.define do
     association :user, factory: :sequence_webauth_user
   end
 
+  factory :mediated_page_with_single_holding, parent: :mediated_page do
+    item_id '12345'
+    origin 'SPEC-COLL'
+    origin_location 'STACKS'
+    destination 'SPEC-COLL'
+    needed_date Time.zone.today
+    request_comment long_comment
+    association :user, factory: :sequence_webauth_user
+
+    after(:build) do |request|
+      class << request
+        def symphony_response_data
+          FactoryGirl.build(:symphony_page_with_single_item)
+        end
+      end
+    end
+  end
+
   factory :mediated_page_with_holdings, parent: :mediated_page do
     item_id '1234'
     origin 'SPEC-COLL'
