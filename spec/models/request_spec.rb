@@ -48,6 +48,21 @@ describe Request do
     end
   end
 
+  describe 'scopes' do
+    describe 'for_date' do
+      before do
+        create(:request, needed_date: Time.zone.today + 1.day)
+        create(:request, needed_date: Time.zone.today + 1.day)
+        create(:request, needed_date: Time.zone.today + 2.days)
+      end
+
+      it 'returns requests that match the given date' do
+        expect(Request.for_date(Time.zone.today + 1.day).count).to eq 2
+        expect(Request.for_date(Time.zone.today + 2.days).count).to eq 1
+      end
+    end
+  end
+
   describe 'associations' do
     it 'has many admin comments' do
       request = create(:request)

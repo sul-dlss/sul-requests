@@ -244,6 +244,37 @@ describe 'Mediation table', js: true do
     end
   end
 
+  describe 'Filtering buttons' do
+    before { stub_current_user(create(:superadmin_user)) }
+    describe 'for needed on dates' do
+      before do
+        create(:mediated_page_with_holdings, needed_date: Time.zone.today + 2.days)
+        create(:mediated_page_with_holdings, needed_date: Time.zone.today + 2.days)
+        create(:mediated_page_with_holdings, needed_date: Time.zone.today + 4.days)
+        create(:mediated_page_with_holdings, needed_date: Time.zone.today + 6.days)
+        create(:mediated_page_with_holdings, needed_date: Time.zone.today + 8.days)
+        visit admin_path('SPEC-COLL')
+      end
+
+      it 'present links for the next 3 days that have requests' do
+        expect(page).to have_css('a.btn', text: I18n.l(Time.zone.today + 2.days, format: :quick))
+        expect(page).to have_css('a.btn', text: I18n.l(Time.zone.today + 4.days, format: :quick))
+        expect(page).to have_css('a.btn', text: I18n.l(Time.zone.today + 6.days, format: :quick))
+        expect(page).not_to have_css('a.btn', text: I18n.l(Time.zone.today + 8.days, format: :quick))
+      end
+
+      it 'filters by the selected date' do
+        find('a.btn', text: I18n.l(Time.zone.today + 2.days, format: :quick)).click
+        expect(page).to have_css('a.btn-primary', text: I18n.l(Time.zone.today + 2.days, format: :quick))
+        expect(page).to have_css('tr[data-mediate-request]', count: 2)
+
+        find('a.btn', text: I18n.l(Time.zone.today + 4.days, format: :quick)).click
+        expect(page).to have_css('a.btn-primary', text: I18n.l(Time.zone.today + 4.days, format: :quick))
+        expect(page).to have_css('tr[data-mediate-request]', count: 1)
+      end
+    end
+  end
+
   context 'Location mediation' do
     let!(:request) do
       build(
