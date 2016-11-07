@@ -72,6 +72,7 @@ class SubmitSymphonyRequestJob < ActiveJob::Base
       {
         ckey: request.item_id,
         items: barcodes.join('^') + '^',
+        copy_note: (copy_notes.join('^') + '^' if copy_notes.present?),
         home_lib: request.origin,
         item_comments: request.item_comment,
         req_comment: request.request_comment,
@@ -86,6 +87,15 @@ class SubmitSymphonyRequestJob < ActiveJob::Base
       items ||= request.barcodes.reject(&:blank?)
       items = ['NO_ITEMS'] if items.blank?
       items
+    end
+
+    def copy_notes
+      return if request.public_notes.blank?
+      result = []
+      request.public_notes.each_pair do |name, val|
+        result << "#{name}:#{val}" if barcodes.include? name
+      end
+      result
     end
 
     def client
