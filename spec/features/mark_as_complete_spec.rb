@@ -74,7 +74,7 @@ describe 'Mark As Complete', js: true do
       )
     end
 
-    before { visit admin_path('SPEC-COLL') }
+    before { visit admin_path('SPEC-COLL', done: 'true') }
 
     it 'has a disabled button' do
       within(first('[data-mediate-request]')) do

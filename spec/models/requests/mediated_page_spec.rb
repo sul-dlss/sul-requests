@@ -54,9 +54,27 @@ describe MediatedPage do
 
   describe 'scopes' do
     before do
-      build(:mediated_page, user: user, needed_date: Time.zone.today - 3.days).save(validate: false)
-      build(:mediated_page, user: user, needed_date: Time.zone.today - 2.days).save(validate: false)
-      build(:mediated_page, user: user, needed_date: Time.zone.today - 1.day).save(validate: false)
+      build(
+        :mediated_page,
+        approval_status: :approved,
+        user: user,
+        needed_date: Time.zone.today - 3.days
+      ).save(validate: false)
+
+      build(
+        :mediated_page,
+        approval_status: :approved,
+        user: user,
+        needed_date: Time.zone.today - 2.days
+      ).save(validate: false)
+
+      build(
+        :mediated_page,
+        approval_status: :marked_as_done,
+        user: user,
+        needed_date: Time.zone.today - 1.day
+      ).save(validate: false)
+
       create(:hoover_archive_mediated_page, user: user, needed_date: Time.zone.today)
       create(:hoover_archive_mediated_page, user: user, needed_date: Time.zone.today + 1.day)
     end
@@ -72,13 +90,9 @@ describe MediatedPage do
       end
     end
 
-    describe 'active' do
-      it 'returns the records whose needed_date is today, or a future date' do
-        expect(MediatedPage.active.length).to eq 2
-      end
-      it 'returns the records whose needed_date is null' do
-        build(:mediated_page, user: user).save(validate: false)
-        expect(MediatedPage.active.length).to eq 3
+    describe 'completed' do
+      it 'returns the requests with an approval status of anything other than unnaproved' do
+        expect(MediatedPage.completed.count).to eq 3
       end
     end
 

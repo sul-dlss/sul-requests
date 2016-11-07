@@ -36,21 +36,25 @@ class AdminController < ApplicationController
 
   private
 
+  def filtered_by_done?
+    params[:done] == 'true'
+  end
+  helper_method :filtered_by_done?
+
   def mediated_pages
-    pages = if params[:expired]
-              archived_mediated_pages
-            else
-              active_mediated_pages
-            end
-    pages.for_origin(params[:id]).page(page).per(per)
+    if filtered_by_done?
+      completed_mediated_pages
+    else
+      pending_mediated_pages
+    end
   end
 
-  def archived_mediated_pages
-    MediatedPage.archived
+  def completed_mediated_pages
+    MediatedPage.completed.for_origin(params[:id]).page(page).per(per)
   end
 
-  def active_mediated_pages
-    MediatedPage.active
+  def pending_mediated_pages
+    MediatedPage.unapproved.for_origin(params[:id])
   end
 
   def page
