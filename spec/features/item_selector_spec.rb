@@ -359,6 +359,23 @@ describe 'Item Selector' do
     end
   end
 
+  describe 'public notes' do
+    let(:request_path) { new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS') }
+    let(:holdings) { build(:searchable_holdings) }
+    before do
+      stub_searchworks_api_json(holdings)
+      visit request_path
+    end
+    it 'are hidden input fields' do
+      within('#item-selector') do
+        css_selector = 'input[name="request[public_notes][45678901]"][value="note for 45678901"]'
+        expect(page).to have_css(css_selector, visible: false)
+        css_selector = 'input[name="request[public_notes][23456789]"][value="note for 23456789"]'
+        expect(page).to have_css(css_selector, visible: false)
+      end
+    end
+  end
+
   def fill_in_required_date
     wait_for_ajax # We need the hours API to respond before we can know what the min-date is
 
