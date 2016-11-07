@@ -364,6 +364,7 @@ FactoryGirl.define do
               { 'barcode' => '23456789',
                 'callnumber' => 'ABC 456',
                 'type' => 'STKS',
+                'public_note' => 'note for 23456789',
                 'current_location' => {
                   'code' => ''
                 },
@@ -388,6 +389,7 @@ FactoryGirl.define do
               { 'barcode' => '45678901',
                 'callnumber' => 'ABC 012',
                 'type' => 'STKS',
+                'public_note' => 'note for 45678901',
                 'current_location' => {
                   'code' => ''
                 },

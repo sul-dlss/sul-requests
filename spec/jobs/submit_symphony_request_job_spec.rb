@@ -91,6 +91,19 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
         end
       end
 
+      context 'with public (copy) notes' do
+        let(:request) do
+          page.tap do |x|
+            x.update(public_notes: { '111' => 'note for 111', '222' => 'note for 222' })
+            x.update(barcodes: %w(111 222))
+          end
+        end
+
+        it 'copy_note is the public_notes reformatted' do
+          expect(subject.request_params).to include(copy_note: '111:note for 111^222:note for 222^')
+        end
+      end
+
       it 'contains the request information' do
         expect(subject.request_params).to include ckey: '12345', home_lib: 'SAL3'
       end
@@ -134,6 +147,27 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
         it 'items is the item barcodes separated by ^' do
           expect(subject.request_params).to include items: '12345678^87654321^'
         end
+      end
+    end
+
+    describe '#copy_notes' do
+      it 'returns Array of Strings of format barcode:note' do
+        subject.request.update(public_notes: { '111' => 'note for 111', '222' => 'note for 222' })
+        subject.request.update(barcodes: %w(111 222))
+        expect(subject.send(:copy_notes)).to eq ['111:note for 111', '222:note for 222']
+      end
+      it 'only includes notes when they are for an included barcode' do
+        subject.request.update(public_notes: { '111' => 'note for 111', '222' => 'note for 222' })
+        subject.request.update(barcodes: ['111'])
+        expect(subject.send(:copy_notes)).to eq ['111:note for 111']
+      end
+      it 'is empty Array if no barcodes' do
+        subject.request.update(public_notes: { '111' => 'note for 111', '222' => 'note for 222' })
+        expect(subject.send(:copy_notes)).to eq []
+      end
+      it 'is nil if no public_notes' do
+        subject.request.update(barcodes: %w(111 222))
+        expect(subject.send(:copy_notes)).to be_nil
       end
     end
   end
