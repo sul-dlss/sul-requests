@@ -259,39 +259,4 @@ describe RequestsHelper do
       ).to eq new_scan_path(origin: 'GREEN', item_id: '12345', origin_location: 'STACKS')
     end
   end
-
-  describe '#holding_request_status' do
-    describe 'processed items' do
-      let(:subject) { holding_request_status(holding, create(:request)) }
-      let(:holding) do
-        double(
-          'holding',
-          barcode: '12345',
-          current_location: nil,
-          request_status: double('request_status', msgcode: 209)
-        )
-      end
-
-      it 'has no special status text' do
-        expect(subject).to be_blank
-      end
-    end
-
-    describe 'items that required a hold' do
-      let(:subject) { Capybara.string(holding_request_status(holding, create(:request))) }
-
-      let(:holding) do
-        double(
-          'holding',
-          barcode: '12345',
-          current_location: nil,
-          request_status: double('request_status', msgcode: 'I001', text: 'Error Message')
-        )
-      end
-
-      it 'provides the message text to the user' do
-        expect(subject).to have_css('.alert-danger', text: '(Error Message)')
-      end
-    end
-  end
 end

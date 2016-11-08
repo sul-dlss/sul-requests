@@ -56,6 +56,20 @@ en:
       scans: 'Scan requests'
     library_table:
       all_approved: 'Done'
+  approval_status:
+    default:
+      error: 'Attention: %{callnumber} %{error_text}'
+      pending: 'Pending.'
+      success: '%{item} has been paged for delivery.'
+    hold_recall:
+      success: '%{item} has been placed on hold.'
+    mediated_page:
+      pending: 'Waiting for approval.'
+      success: '%{item} has been approved.'
+    rumseymap:
+      extra_note: 'Items are typically approved 1-3 days before your scheduled visit.'
+    spec_coll:
+      extra_note: 'Items are typically approved 1-3 days before your scheduled visit.'
   confirmation_email:
     request:
       subject: 'Item(s) requested (%{title})'
@@ -97,8 +111,8 @@ en:
   requests:
     success:
       email_notification:
-        proxy: "(We've sent a copy of this request to your email and to the designated notification address.)"
-        default: "(We've sent a copy of this request to your email.)"
+        proxy: "We'll send an email to you and to the designated notification address when processing is complete."
+        default: "We'll send you an email when processing is complete."
   status_text:
     paged: Paged
     hold: Item is on-site - hold for patron
@@ -109,11 +123,11 @@ en:
   symphony_response:
     failure:
       code_U003:
-        alert_html: "<p>We can't complete your request because your status is <strong>blocked</strong>.</p><p><a target='_top' href='https://library.stanford.edu/myaccount'>Check MyAccount for details.</a></p>"
+        alert_html: "We can't complete your request because your status is <strong>blocked</strong>. <a target='_top' href='https://library.stanford.edu/myaccount'>Check MyAccount for details.</a>"
       code_U004:
-        alert_html: "<p>We can't complete your request because your privileges have expired.</p><p><a target='_top' href='https://library.stanford.edu/myaccount'>Check MyAccount for details.</a></p>"
+        alert_html: "We can't complete your request because your privileges have expired. <a target='_top' href='https://library.stanford.edu/myaccount'>Check MyAccount for details.</a>"
       default:
-        alert_html: "<p>We're unable to complete your request right now.</p><p>Please contact <a href='mailto:greencirc@stanford.edu'>greencirc@stanford.edu</a></p>"
+        alert_html: "We were unable to process your request because of a system error. Please try again, or contact <a href='mailto:greencirc@stanford.edu'>greencirc@stanford.edu</a> for more assistance."
     mixed_failure_html: "<p>There was a problem with one or more of your items below.</p><p>Please contact <a href='mailto:greencirc@stanford.edu'>greencirc@stanford.edu</a></p>"
   shared:
     item_selector:
