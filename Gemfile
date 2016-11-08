@@ -10,6 +10,8 @@ gem 'mysql2', '~> 0.3.0'
 gem 'bootstrap-sass', "~> 3.3.4"
 # Use bootstrap_form for easy form building
 gem 'bootstrap_form'
+gem 'bootstrap-editable-rails'
+gem 'nested_form'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use CoffeeScript for .coffee assets and views

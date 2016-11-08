@@ -13,10 +13,22 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require jquery_nested_form
 //= require bootstrap/alert
 //= require bootstrap/collapse
 //= require bootstrap/tooltip
+//= require bootstrap-sprockets
+//= require bootstrap-editable
+//= require bootstrap-editable-rails
 //= require list.min.js
 //= require no_js
 //= require trunk8
 //= require_tree .
+
+// normally, we'd put this in its own file, but when we tried
+// that, the functionality broke, and it didn't seem worth spending
+// the time to debug further.
+$(document).on('turbolinks:load', function() {
+  $('.editable').editable();
+  $("[data-toggle='tooltip']").tooltip();
+});

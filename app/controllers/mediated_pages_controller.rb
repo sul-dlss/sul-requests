@@ -17,7 +17,7 @@ class MediatedPagesController < RequestsController
   protected
 
   def update_params
-    params.require(:mediated_page).permit(:approval_status)
+    params.require(:mediated_page).permit(:approval_status, :needed_date)
   end
 
   def send_confirmation
