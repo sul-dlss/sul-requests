@@ -58,8 +58,12 @@ gem 'lograge'
 # Access an IRB console on exception pages or by using <%= console %> in views
 gem 'web-console', '~> 2.0', group: :development
 
-# test coverage in static code analysis GUI
-gem 'codeclimate-test-reporter', group: :test, require: false
+# test coverage in static code analysis GUI.
+# needs simplecov, as per https://github.com/codeclimate/ruby-test-reporter/blob/v1.0.1/README.md#installation
+group :test do
+  gem 'simplecov', require: false
+  gem 'codeclimate-test-reporter', require: false
+end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
