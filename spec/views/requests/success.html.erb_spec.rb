@@ -12,61 +12,7 @@ describe 'requests/success.html.erb' do
     it 'has success text and icon for successful requests' do
       render
       expect(rendered).to have_css('.sul-i-check-2')
-      expect(rendered).to have_css('h1', text: 'Request complete')
-    end
-  end
-
-  describe 'symphony failure' do
-    let(:request) { create(:request_with_holdings, user: user) }
-
-    describe 'complete failure' do
-      it 'has unsuccessful text and icon' do
-        render
-        expect(rendered).to have_css('.sul-i-remove-2')
-        expect(rendered).to have_css('h1', text: "Can't complete your request")
-      end
-
-      it 'has an error message' do
-        stub_symphony_response(build(:symphony_request_with_all_errored_items))
-        render
-        expect(rendered).to have_css('.alert.alert-danger', text: /We're unable to complete your request right now/)
-      end
-    end
-
-    describe 'mixed failure' do
-      before do
-        stub_symphony_response(build(:symphony_request_with_mixed_status))
-      end
-
-      it 'has a successful text and icon' do
-        render
-        expect(rendered).to have_css('.sul-i-check-2')
-        expect(rendered).to have_css('h1', text: 'Request complete')
-      end
-
-      it 'has a mixed error message' do
-        render
-        expect(rendered).to have_css(
-          '.alert.alert-danger',
-          text: /There was a problem with one or more of your items below/
-        )
-      end
-    end
-
-    describe 'scannable item' do
-      let(:request) do
-        create(:scan_with_holdings, item_id: '12345', origin: 'SAL3', origin_location: 'STACKS', user: user)
-      end
-      before do
-        stub_symphony_response(build(:symphony_scan_with_multiple_items))
-        allow(request).to receive_messages(scannable?: true)
-        allow(view).to receive(:can?).with(:create, Scan).and_return(true)
-      end
-      it 'renders a link to the scan request form when the user can request scans' do
-        render
-        expect(rendered).to have_css('h2', text: 'Just need a chapter or article?')
-        expect(rendered).to have_css('a', text: 'Request Scan to PDF')
-      end
+      expect(rendered).to have_css('h1', text: /We've received your request/)
     end
   end
 
@@ -101,16 +47,14 @@ describe 'requests/success.html.erb' do
       let(:user) { create(:webauth_user) }
       it 'gives their stanford-email address' do
         render
-        expect(rendered).to have_css('dt.sr-only', text: 'Requested by')
-        expect(rendered).to have_css('dd', text: 'some-webauth-user@stanford.edu')
+        expect(rendered).to have_css('.requested-by', text: 'some-webauth-user@stanford.edu')
       end
     end
     describe 'for non-webauth useres' do
       let(:user) { create(:non_webauth_user) }
       it 'gives their name and email (in parens)' do
         render
-        expect(rendered).to have_css('dt.sr-only', text: 'Requested by')
-        expect(rendered).to have_css('dd', text: 'Jane Stanford (jstanford@stanford.edu)')
+        expect(rendered).to have_css('.requested-by', text: 'Jane Stanford (jstanford@stanford.edu)')
       end
     end
   end
@@ -125,13 +69,12 @@ describe 'requests/success.html.erb' do
 
       it 'is displayed as an individual request' do
         render
-        expect(rendered).to include 'Individual Request'
-        expect(rendered).to include 'We&#39;ve sent a copy of this request to your email.'
+        expect(rendered).to include 'We&#39;ll send you an email when processing is complete.'
       end
     end
 
     context 'for requests on behalf of a proxy group' do
-      let(:user) { create(:library_id_user) }
+      let(:user) { create(:library_id_user, email: 'some-address@example.com') }
 
       before do
         request.proxy = true
@@ -139,9 +82,8 @@ describe 'requests/success.html.erb' do
 
       it 'is shared with the proxy group' do
         render
-        expect(rendered).to include 'Shared with your proxy group'
         expect(rendered).to include <<-EOS.strip
-          We&#39;ve sent a copy of this request to your email and to the designated notification address.
+          We&#39;ll send an email to you and to the designated notification address when processing is complete.
         EOS
       end
     end
@@ -149,20 +91,20 @@ describe 'requests/success.html.erb' do
     context 'for webauth users' do
       let(:user) { create(:webauth_user) }
 
-      it 'indicates an email was sent' do
+      it 'indicates an email will be sent' do
         render
         expect(rendered).to include user.to_email_string
-        expect(rendered).to include 'We&#39;ve sent a copy of this request to your email.'
+        expect(rendered).to include 'We&#39;ll send you an email when processing is complete.'
       end
     end
 
     context 'for name + email users' do
       let(:user) { create(:non_webauth_user) }
 
-      it 'indicates an email was sent' do
+      it 'indicates an email will be sent' do
         render
         expect(rendered).to include user.to_email_string
-        expect(rendered).to include 'We&#39;ve sent a copy of this request to your email.'
+        expect(rendered).to include 'We&#39;ll send you an email when processing is complete.'
       end
     end
   end

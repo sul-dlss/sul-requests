@@ -1,8 +1,0 @@
-<h1 id='dialogTitle'>
-  <% if current_request.symphony_response.success? %>
-    <span class="sul-i-check-2" aria-hidden="true"></span> Request complete
-  <% else %>
-    <span class="sul-i-remove-2" aria-hidden="true"></span> Can't complete your request
-  <% end %>
-</h1>
-<%= render 'request_error_alert' %>
