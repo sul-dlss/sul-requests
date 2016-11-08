@@ -245,15 +245,18 @@ describe 'Mediation table', js: true do
   end
 
   context 'Location mediation' do
-    before do
-      stub_current_user(create(:page_mp_origin_admin_user))
-      stub_searchworks_api_json(build(:page_mp_holdings))
-
-      create(
+    let!(:request) do
+      build(
         :page_mp_mediated_page,
         user: create(:non_webauth_user, name: 'Joe Doe ', email: 'joedoe@example.com'),
         barcodes: %w(12345678 87654321)
       )
+    end
+
+    before do
+      stub_current_user(create(:page_mp_origin_admin_user))
+      stub_searchworks_api_json(build(:page_mp_holdings))
+      request.save(validate: false)
 
       visit admin_path('PAGE-MP')
     end
@@ -280,6 +283,32 @@ describe 'Mediation table', js: true do
       expect(page).to have_css('td.title a[rel="noopener noreferrer"]', text: 'Title of MediatedPage 1234')
       expect(page).to have_css('td a[target="_blank"]', text: 'Status')
       expect(page).to have_css('td a[rel="noopener noreferrer"]', text: 'Status')
+    end
+
+    it 'has a calendar widget for setting "Needed date"' do
+      within '.mediation-table tbody' do
+        # confirm that the current value for the "needed date" is displayed correctly
+        expect(page).to have_css('a.editable', text: I18n.l(Time.zone.today, format: :quick), visible: true)
+
+        # find the table cell and click the link to open the calendar widget
+        needed_date_table_cell = page.find('td.needed_date')
+        needed_date_link = needed_date_table_cell.find('a')
+        needed_date_link.click
+        expect(page).to have_css('.editable-popup')
+
+        within needed_date_table_cell do
+          page.find('th.next').click # click over to the subsequent month
+          expect(page).to have_css('td.day', visible: true) # make sure the calandar day elements have been rendered
+          page.all('td.day').detect { |elt| elt.text == '1' }.click # click the calendar day for the first of the month
+          page.find('button.editable-submit').click # submit the newly chosen date
+        end
+      end
+
+      # use rails magic to get a Date object for the first of next month. then confirm that the UI was updated
+      # to show the date selection made above, and that the new selection has been saved to the object in the DB.
+      expected_needed_date = Time.zone.today.at_beginning_of_month.next_month
+      expect(page).to have_css('a.editable', text: I18n.l(expected_needed_date, format: :quick), visible: true)
+      expect(request.reload.needed_date).to eq expected_needed_date
     end
   end
 end
