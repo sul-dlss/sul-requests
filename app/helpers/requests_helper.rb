@@ -59,12 +59,6 @@ module RequestsHelper
     end
   end
 
-  def holding_request_status(holding, request = current_request)
-    return if request.symphony_response.success?(holding.barcode)
-    return if (text = holding.request_status.try(:text)).blank?
-    content_tag(:span, " (#{text})", class: 'alert-danger small')
-  end
-
   def new_scan_path_for_current_request(request = current_request)
     new_scan_path(
       origin: request.origin,
@@ -73,10 +67,16 @@ module RequestsHelper
     )
   end
 
-  def symphony_request_failed_due_to_user_privs?
-    SULRequests::Application.config.no_user_privs_codes.include?(
-      current_request.symphony_response.usererr_code
-    )
+  def status_page_url_for_request(request)
+    if !request.user.webauth_user? && request.is_a?(TokenEncryptable)
+      polymorphic_url([:status, request], token: request.encrypted_token)
+    else
+      polymorphic_url([:status, request])
+    end
+  end
+
+  def request_approval_status(request = current_request)
+    RequestApprovalStatus.new(request: request).to_html
   end
 
   private
