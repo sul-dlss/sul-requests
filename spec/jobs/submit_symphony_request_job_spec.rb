@@ -106,6 +106,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
 
       it 'contains the request information' do
         expect(subject.request_params).to include ckey: '12345', home_lib: 'SAL3'
+        expect(subject.request_params).to include requested_date: %r(\d{2}/\d{2}/\d{4}$)
       end
 
       context 'with a non-webauth user' do

@@ -76,6 +76,7 @@ class SubmitSymphonyRequestJob < ActiveJob::Base
         home_lib: request.origin,
         item_comments: request.item_comment,
         req_comment: request.request_comment,
+        requested_date: request.created_at.strftime('%m/%d/%Y'),
         pickup_lib: (request.destination unless request.is_a? Scan),
         not_needed_after: (request.needed_date.strftime('%m/%d/%Y') if request.needed_date)
       }
