@@ -94,6 +94,11 @@ describe MediatedPage do
       it 'returns the requests with an approval status of anything other than unnaproved' do
         expect(MediatedPage.completed.count).to eq 3
       end
+      it 'returns records in descending needed date order' do
+        expect(MediatedPage.completed[0].needed_date).to eq Time.zone.today - 1.day
+        expect(MediatedPage.completed[1].needed_date).to eq Time.zone.today - 2.days
+        expect(MediatedPage.completed[2].needed_date).to eq Time.zone.today - 3.days
+      end
     end
 
     describe 'for_origin' do

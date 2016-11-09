@@ -27,7 +27,7 @@ describe 'Viewing all requests' do
       end
     end
 
-    describe 'by an anonmyous user' do
+    describe 'by an anonymous user' do
       before { stub_current_user(create(:anon_user)) }
 
       it 'should redirect to the login page' do
@@ -87,9 +87,9 @@ describe 'Viewing all requests' do
         end
       end
 
-      it 'allows the user to toggle between expired and active mediated pages (and updates button class)' do
-        build(:mediated_page, approval_status: :approved, needed_date: Time.zone.today - 3.days).save(validate: false)
+      it 'allows the user to toggle between done and pending mediated pages (and updates button class)' do
         build(:mediated_page, approval_status: :approved, needed_date: Time.zone.today - 2.days).save(validate: false)
+        build(:mediated_page, approval_status: :approved, needed_date: Time.zone.today - 3.days).save(validate: false)
         build(:mediated_page, approval_status: :approved, needed_date: Time.zone.today - 1.day).save(validate: false)
         visit admin_path('SPEC-COLL')
 
@@ -105,6 +105,10 @@ describe 'Viewing all requests' do
         expect(page).to have_css('a.btn-primary', text: 'All done')
         expect(page).to have_css('a', text: 'All pending')
         expect(page).not_to have_css('a.btn-primary', text: 'All pending')
+
+        # requests are sorted properly (in descending needed_date order)
+        expected_regex = /#{Time.zone.today - 1.day}.*#{Time.zone.today - 2.days}.*#{Time.zone.today - 3.days}/
+        expect(page).to have_content(expected_regex)
 
         click_link 'All pending'
 
