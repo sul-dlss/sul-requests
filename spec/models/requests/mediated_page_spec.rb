@@ -230,4 +230,42 @@ describe MediatedPage do
       end
     end
   end
+
+  describe '#needed_dates_for_origin_after_date' do
+    before do
+      build(:mediated_page, origin: 'SPEC-COLL', needed_date: Time.zone.today - 2.days).save(validate: false)
+      build(:mediated_page, origin: 'SPEC-COLL', needed_date: Time.zone.today - 1.day).save(validate: false)
+      build(:mediated_page, origin: 'SPEC-COLL', needed_date: Time.zone.today).save(validate: false)
+      build(:mediated_page, origin: 'SPEC-COLL', needed_date: Time.zone.today + 2.days).save(validate: false)
+      build(:mediated_page, origin: 'SPEC-COLL', needed_date: Time.zone.today + 1.day).save(validate: false)
+      build(:mediated_page, origin: 'SPEC-COLL', needed_date: Time.zone.today + 1.day).save(validate: false)
+      build(:mediated_page, origin: 'HV-ARCHIVE', needed_date: Time.zone.today + 3.days).save(validate: false)
+    end
+    let(:dates) { MediatedPage.needed_dates_for_origin_after_date(origin: 'SPEC-COLL', date: Time.zone.today) }
+
+    it "returns request's needed_dates that are after today" do
+      expect(dates.length).to eq 2
+    end
+
+    it 'does not duplicate dates' do
+      expect(dates.length).to eq dates.uniq.length
+    end
+
+    it 'sorts the dates' do
+      expect(dates).to eq(
+        [
+          Time.zone.today + 1.day,
+          Time.zone.today + 2.days
+        ]
+      )
+    end
+
+    it 'does not include requests from other origins' do
+      expect(
+        dates.any? do |date|
+          date == Time.zone.today + 3.days # HV-ARCHIVE needed_date
+        end
+      ).to be false
+    end
+  end
 end

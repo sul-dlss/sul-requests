@@ -15,6 +15,7 @@ class Request < ActiveRecord::Base
   attr_reader :requested_barcode
   attr_accessor :live_lookup
   scope :recent, -> { order(created_at: :desc) }
+  scope :for_date, ->(date) { where(needed_date: date) }
 
   delegate :hold_recallable?, :mediateable?, :pageable?, :scannable?, to: :library_location
 

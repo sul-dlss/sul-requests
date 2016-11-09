@@ -16,6 +16,7 @@ class AdminController < ApplicationController
 
   def show
     authorize! :manage, Request.new(origin: params[:id]).library_location
+    @dates = next_three_days_with_requests
     @mediated_pages = mediated_pages
   end
 
@@ -41,9 +42,16 @@ class AdminController < ApplicationController
   end
   helper_method :filtered_by_done?
 
+  def filtered_by_date?
+    params[:date].present?
+  end
+  helper_method :filtered_by_date?
+
   def mediated_pages
     if filtered_by_done?
       completed_mediated_pages
+    elsif filtered_by_date?
+      date_filtered_mediated_pages
     else
       pending_mediated_pages
     end
@@ -51,6 +59,10 @@ class AdminController < ApplicationController
 
   def completed_mediated_pages
     MediatedPage.completed.for_origin(params[:id]).page(page).per(per)
+  end
+
+  def date_filtered_mediated_pages
+    MediatedPage.for_date(params[:date])
   end
 
   def pending_mediated_pages
@@ -63,6 +75,13 @@ class AdminController < ApplicationController
 
   def per
     params.fetch(:per_page, 100)
+  end
+
+  def next_three_days_with_requests
+    MediatedPage.needed_dates_for_origin_after_date(
+      origin: params[:id],
+      date: Time.zone.today
+    ).take(3)
   end
 
   def rescue_can_can(*)
