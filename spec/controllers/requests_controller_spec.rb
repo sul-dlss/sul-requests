@@ -16,9 +16,23 @@ describe RequestsController do
   describe '#new' do
     describe 'required parameters' do
       it 'item id, library, and location' do
-        expect(-> { get(:new, item_id: '1234', origin: 'GREEN') }).to raise_error(ActionController::ParameterMissing)
-        expect(-> { get(:new, origin: 'GREEN', origin_location: 'STACKS') }).to raise_error(ActionController::ParameterMissing)
-        expect(-> { get(:new, item_id: '1234', origin_location: 'STACKS') }).to raise_error(ActionController::ParameterMissing)
+        expect(
+          lambda do
+            get(:new, item_id: '1234', origin: 'GREEN')
+          end
+        ).to raise_error(ActionController::ParameterMissing)
+
+        expect(
+          lambda do
+            get(:new, origin: 'GREEN', origin_location: 'STACKS')
+          end
+        ).to raise_error(ActionController::ParameterMissing)
+
+        expect(
+          lambda do
+            get(:new, item_id: '1234', origin_location: 'STACKS')
+          end
+        ).to raise_error(ActionController::ParameterMissing)
       end
     end
     describe 'defaults' do
