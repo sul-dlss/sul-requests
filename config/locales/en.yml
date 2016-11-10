@@ -50,7 +50,7 @@ en:
   admin:
     index:
       custom: 'Custom requests'
-      hold_recall: 'Hold recalls'
+      hold_recalls: 'Hold recalls'
       mediated_pages: 'Mediated pages'
       pages: 'Pages'
       scans: 'Scan requests'
