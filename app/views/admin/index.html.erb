@@ -11,7 +11,19 @@
   <tfoot>
     <tr>
       <% @dashboard.metrics.each do |metric| %>
-        <td><span class='text-muted'><%= t(".#{metric}") %></span></td>
+        <td>
+          <span class='text-muted'>
+            <%=
+              # if the metric is selected, give an [x] link to go back to the unfiltered request
+              # list.  otherwise, give a link to the filtered list for the request type.
+              if filter_metric == metric
+                (t(".#{metric}") + " ").html_safe + link_to('[x]', admin_index_path)
+              else
+                link_to(t(".#{metric}"), admin_index_path(metric: metric))
+              end
+            %>
+          </span>
+        </td>
       <% end %>
     </tr>
   </tfoot>
