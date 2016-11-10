@@ -61,6 +61,21 @@ describe Request do
         expect(Request.for_date(Time.zone.today + 2.days).count).to eq 1
       end
     end
+
+    describe 'needed_date_desc' do
+      before do
+        create(:request, needed_date: Time.zone.today + 1.day)
+        create(:request, needed_date: Time.zone.today + 3.days)
+        create(:request, needed_date: Time.zone.today + 2.days)
+      end
+
+      it 'returns records in descending needed date order' do
+        sorted = Request.needed_date_desc.limit(3)
+        expect(sorted[0].needed_date).to eq Time.zone.today + 3.days
+        expect(sorted[1].needed_date).to eq Time.zone.today + 2.days
+        expect(sorted[2].needed_date).to eq Time.zone.today + 1.day
+      end
+    end
   end
 
   describe 'associations' do
