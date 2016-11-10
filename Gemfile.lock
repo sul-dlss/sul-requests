@@ -355,7 +355,6 @@ DEPENDENCIES
   sdoc (~> 0.4.0)
   sidekiq
   simplecov
-  sidekiq
   sqlite3
   sul_styles (>= 0.5.0)
   teaspoon-jasmine
