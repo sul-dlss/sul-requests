@@ -11,7 +11,7 @@ class AdminController < ApplicationController
   def index
     authorize! :manage, Request.new
     @dashboard = Dashboard.new
-    @requests = @dashboard.recent_requests(params[:page], params[:per] || 100)
+    @requests = @dashboard.recent_requests(params[:page], params[:per] || 100).for_type(filter_type)
   end
 
   def show
@@ -46,6 +46,15 @@ class AdminController < ApplicationController
     params[:date].present?
   end
   helper_method :filtered_by_date?
+
+  def filter_metric
+    params[:metric].to_sym if params[:metric].present?
+  end
+  helper_method :filter_metric
+
+  def filter_type
+    params[:metric].classify if params[:metric].present?
+  end
 
   def mediated_pages
     if filtered_by_done?

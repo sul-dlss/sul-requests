@@ -13,7 +13,14 @@ describe 'Viewing all requests' do
                       request_comment: 'I can has this item?',
                       user: User.create(name: 'Joe', email: 'joe@xyz.com')
               )
+        create(:mediated_page, ad_hoc_items: ['ZZZ-123'],
+                               item_title: 'A Different Type of Page',
+                               origin: 'SPEC-COLL',
+                               request_comment: 'I can has this mediated item?',
+                               user: User.create(name: 'Jane', email: 'jane@example.com')
+              )
       end
+
       it 'should list data in a table' do
         visit admin_index_path
 
@@ -23,7 +30,44 @@ describe 'Viewing all requests' do
         expect(page).to have_css('td a[data-behavior="truncate"]', text: 'An American in Paris')
         expect(page).to have_css('td a[href="mailto:joe@xyz.com"]', text: /Joe \(joe@xyz.com\)/)
 
+        expect(page).to have_css('td a[data-behavior="truncate"]', text: 'A Different Type of Page')
+        expect(page).to have_css('td a[href="mailto:jane@example.com"]', text: /Jane \(jane@example.com\)/)
+
         expect(page).to have_selector('table.table-striped', count: 1)
+      end
+
+      it 'allows filtering by request type' do
+        visit admin_index_path
+
+        expect(page).to have_css('td a', text: 'Mediated pages')
+        expect(page).to have_css('td a', text: 'Pages')
+
+        click_link 'Mediated pages'
+
+        expect(page).to have_css('td', text: 'Mediated pages [x]')
+        expect(page).to have_css('td a', text: 'Pages')
+
+        expect(page).to_not have_css('td a[data-behavior="truncate"]', text: 'An American in Paris')
+        expect(page).to_not have_css('td a[href="mailto:joe@xyz.com"]', text: /Joe \(joe@xyz.com\)/)
+
+        expect(page).to have_css('td a[data-behavior="truncate"]', text: 'A Different Type of Page')
+        expect(page).to have_css('td a[href="mailto:jane@example.com"]', text: /Jane \(jane@example.com\)/)
+
+        click_link 'Pages'
+
+        expect(page).to have_css('td a', text: 'Mediated pages')
+        expect(page).to have_css('td', text: 'Pages [x]')
+
+        expect(page).to have_css('td a[data-behavior="truncate"]', text: 'An American in Paris')
+        expect(page).to have_css('td a[href="mailto:joe@xyz.com"]', text: /Joe \(joe@xyz.com\)/)
+
+        expect(page).to_not have_css('td a[data-behavior="truncate"]', text: 'A Different Type of Page')
+        expect(page).to_not have_css('td a[href="mailto:jane@example.com"]', text: /Jane \(jane@example.com\)/)
+
+        click_link '[x]'
+
+        expect(page).to have_css('td a', text: 'Mediated pages')
+        expect(page).to have_css('td a', text: 'Pages')
       end
     end
 
