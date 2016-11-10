@@ -42,7 +42,7 @@ describe 'AdminComments' do
       end
     end
 
-    context 'when unsuccesful' do
+    context 'when unsuccessful' do
       before { expect_any_instance_of(AdminComment).to receive(:save).and_return(false) }
       context 'html response' do
         it 'redirects back with a flash error' do
