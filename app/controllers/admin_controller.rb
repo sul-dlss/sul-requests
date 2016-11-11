@@ -67,15 +67,19 @@ class AdminController < ApplicationController
   end
 
   def completed_mediated_pages
-    MediatedPage.completed.for_origin(params[:id]).page(page).per(per)
+    origin_filtered_mediated_pages.completed.page(page).per(per)
   end
 
   def date_filtered_mediated_pages
-    MediatedPage.for_date(params[:date])
+    origin_filtered_mediated_pages.for_date(params[:date])
   end
 
   def pending_mediated_pages
-    MediatedPage.unapproved.for_origin(params[:id])
+    origin_filtered_mediated_pages.unapproved
+  end
+
+  def origin_filtered_mediated_pages
+    MediatedPage.for_origin(params[:id])
   end
 
   def page
