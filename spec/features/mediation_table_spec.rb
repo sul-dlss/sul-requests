@@ -347,5 +347,17 @@ describe 'Mediation table', js: true do
       expect(page).to have_css('a.editable', text: I18n.l(expected_needed_date, format: :quick), visible: true)
       expect(request.reload.needed_date).to eq expected_needed_date
     end
+
+    context 'for requests that do not have a needed date' do
+      before do
+        request.needed_date = nil
+        request.save(validate: false)
+      end
+
+      it 'does not include the edit-in-place element' do
+        visit admin_path('PAGE-MP')
+        expect(page).not_to have_css('a.editable')
+      end
+    end
   end
 end
