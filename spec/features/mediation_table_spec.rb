@@ -248,6 +248,7 @@ describe 'Mediation table', js: true do
     before { stub_current_user(create(:superadmin_user)) }
     describe 'for needed on dates' do
       before do
+        create(:page_mp_mediated_page, needed_date: Time.zone.today + 2.days)
         create(:mediated_page_with_holdings, needed_date: Time.zone.today + 2.days)
         create(:mediated_page_with_holdings, needed_date: Time.zone.today + 2.days)
         create(:mediated_page_with_holdings, needed_date: Time.zone.today + 4.days)
@@ -261,6 +262,11 @@ describe 'Mediation table', js: true do
         expect(page).to have_css('a.btn', text: I18n.l(Time.zone.today + 4.days, format: :quick))
         expect(page).to have_css('a.btn', text: I18n.l(Time.zone.today + 6.days, format: :quick))
         expect(page).not_to have_css('a.btn', text: I18n.l(Time.zone.today + 8.days, format: :quick))
+      end
+
+      it 'retains the origin filter' do
+        find('a.btn', text: I18n.l(Time.zone.today + 2.days, format: :quick)).click
+        expect(page).to have_css('tr[data-mediate-request]', count: 2) # would be 3 if the PAGE-MP request was included
       end
 
       it 'filters by the selected date' do
