@@ -25,19 +25,21 @@
           </span>
         </td>
         <td class='needed_date'>
-          <span data-toggle='tooltip' data-placement='left' title="edit 'Needed on' date">
-            <%=
-              editable_opts =
-                {
-                  name: 'mediated_page[needed_date]',
-                  type: 'date',
-                  value: request.needed_date.to_s,
-                  url: mediated_page_path(request),
-                  format: 'yyyy-mm-dd', viewformat: 'D M d', placement: 'right', weekStart: 0, autotext: 'always', send: 'always'
-                }
-              link_to(request.needed_date, 'javascript:;', class: 'editable editable-click editable-open', data: editable_opts)
-            %>
-          </span>
+          <% if request.needed_date %>
+            <span data-toggle='tooltip' data-placement='left' title="edit 'Needed on' date">
+              <%=
+                editable_opts =
+                  {
+                    name: 'mediated_page[needed_date]',
+                    type: 'date',
+                    value: request.needed_date.to_s,
+                    url: mediated_page_path(request),
+                    format: 'yyyy-mm-dd', viewformat: 'D M d', placement: 'right', weekStart: 0, autotext: 'always', send: 'always'
+                  }
+                link_to(request.needed_date, 'javascript:;', class: 'editable editable-click editable-open', data: editable_opts)
+              %>
+            </span>
+          <% end %>
         </td>
         <td class='title'><%= searchworks_link(request.item_id, request.item_title, target: '_blank', rel: 'noopener noreferrer', 'data-behavior' => 'truncate') %></td>
         <td class='requester'><%= requester_info(request.user) %></td>

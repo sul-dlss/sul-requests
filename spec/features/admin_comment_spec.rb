@@ -16,7 +16,7 @@ describe 'Admin Comments', js: true do
   end
 
   describe 'toggling admin comment form' do
-    it 'begins with the form closed and allows the fom to be toggled open' do
+    it 'begins with the form closed and allows the form to be toggled open' do
       within(first('[data-mediate-request]')) do
         page.find('a.mediate-toggle').trigger('click')
       end

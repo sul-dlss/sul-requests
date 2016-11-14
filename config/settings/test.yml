@@ -22,6 +22,3 @@ symphony_web_services:
   # trailing slashes expected unless it's the end of the URI path
   base_url: 'http://example.com/symws/'
   curr_loc_path: 'v1/catalog/item/barcode/'
-
-features:
-  remote_ip_check: true

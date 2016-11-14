@@ -433,6 +433,12 @@ describe Request do
       subject.data = data_hash
       expect(subject.data).to eq data_hash
     end
+    it 'copes with nested hashes (e.g. public_notes)' do
+      my_hash = { 'a' => 'b', 'public_notes' => { '111' => 'note for 111', '222' => 'note for 222' } }
+      subject.data = my_hash
+      expect(subject.data).to eq my_hash
+      expect(subject.data['public_notes']).to eq('111' => 'note for 111', '222' => 'note for 222')
+    end
   end
 
   describe 'barcodes' do
@@ -546,6 +552,7 @@ describe Request do
       subject.send_to_symphony_later! a: 1
     end
   end
+
   describe '#appears_in_myaccount?' do
     context 'with non-webauth users' do
       it 'is disabled' do

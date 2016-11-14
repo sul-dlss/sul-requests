@@ -82,6 +82,9 @@ GEM
     capistrano-releaseboard (0.0.1)
       faraday
     capistrano-shared_configs (0.1.1)
+    capistrano-sidekiq (0.5.4)
+      capistrano
+      sidekiq (>= 3.4)
     capybara (2.10.1)
       addressable
       mime-types (>= 1.16)
@@ -324,6 +327,7 @@ DEPENDENCIES
   capistrano-passenger
   capistrano-rails
   capistrano-shared_configs
+  capistrano-sidekiq
   capybara
   codeclimate-test-reporter
   coffee-rails (~> 4.2.1)

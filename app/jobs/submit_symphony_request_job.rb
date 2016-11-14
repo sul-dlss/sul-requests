@@ -55,6 +55,8 @@ class SubmitSymphonyRequestJob < ActiveJob::Base
     end
 
     def request_params
+      # NOTE:  any changes to params (new ones, key name changes) must be coordinated with
+      # Symphony programmers
       patron_from_request.merge(items_from_request).merge(
         req_type: req_type
       ).reject { |_, v| v.blank? }
@@ -88,8 +90,11 @@ class SubmitSymphonyRequestJob < ActiveJob::Base
       {
         ckey: request.item_id,
         items: barcodes.join('^') + '^',
+        copy_note: (copy_notes.join('^') + '^' if copy_notes.present?),
         home_lib: request.origin,
-        comments: request.item_comment,
+        item_comments: request.item_comment,
+        req_comment: request.request_comment,
+        requested_date: request.created_at.strftime('%m/%d/%Y'),
         pickup_lib: (request.destination unless request.is_a? Scan),
         not_needed_after: (request.needed_date.strftime('%m/%d/%Y') if request.needed_date)
       }
@@ -101,6 +106,15 @@ class SubmitSymphonyRequestJob < ActiveJob::Base
       items ||= request.barcodes.reject(&:blank?)
       items = ['NO_ITEMS'] if items.blank?
       items
+    end
+
+    def copy_notes
+      return if request.public_notes.blank?
+      result = []
+      request.public_notes.each do |barcode, note|
+        result << "#{barcode}:#{note}" if barcodes.include? barcode
+      end
+      result
     end
 
     def client

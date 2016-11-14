@@ -69,7 +69,7 @@ describe 'requests/status.html.erb' do
     end
   end
 
-  describe 'for medidated pages' do
+  describe 'for mediated pages' do
     describe 'ad-hoc items' do
       let(:request) { create(:mediated_page_with_holdings, user: user, ad_hoc_items: ['ZZZ 123', 'ZZZ 321']) }
       before { render }
@@ -77,6 +77,27 @@ describe 'requests/status.html.erb' do
         expect(rendered).to have_css('dt', text: 'Additional item(s)')
         expect(rendered).to have_css('dd', text: 'ZZZ 123')
         expect(rendered).to have_css('dd', text: 'ZZZ 321')
+      end
+    end
+
+    describe 'item level comments' do
+      let(:request) { create(:mediated_page_with_holdings, user: user, item_comment: ['Volume 666 only']) }
+      before do
+        expect(request).to receive(:item_commentable?).and_return(true)
+        render
+      end
+      it 'are displayed when they are present' do
+        expect(rendered).to have_css('dt', text: 'Item(s) requested')
+        expect(rendered).to have_css('dd', text: 'Volume 666 only')
+      end
+    end
+
+    describe 'request level comments' do
+      let(:request) { create(:mediated_page_with_holdings, user: user, request_comment: 'Here today, gone tomorrow') }
+      before { render }
+      it 'are displayed when they are present' do
+        expect(rendered).to have_css('dt', text: 'Comment')
+        expect(rendered).to have_css('dd', text: 'Here today, gone tomorrow')
       end
     end
 

@@ -11,7 +11,7 @@ class AdminController < ApplicationController
   def index
     authorize! :manage, Request.new
     @dashboard = Dashboard.new
-    @requests = @dashboard.recent_requests(params[:page], params[:per] || 100)
+    @requests = @dashboard.recent_requests(params[:page], params[:per] || 100).for_type(filter_type)
   end
 
   def show
@@ -47,6 +47,15 @@ class AdminController < ApplicationController
   end
   helper_method :filtered_by_date?
 
+  def filter_metric
+    params[:metric].to_sym if params[:metric].present?
+  end
+  helper_method :filter_metric
+
+  def filter_type
+    params[:metric].classify if params[:metric].present?
+  end
+
   def mediated_pages
     if filtered_by_done?
       completed_mediated_pages
@@ -58,15 +67,19 @@ class AdminController < ApplicationController
   end
 
   def completed_mediated_pages
-    MediatedPage.completed.for_origin(params[:id]).page(page).per(per)
+    origin_filtered_mediated_pages.completed.page(page).per(per)
   end
 
   def date_filtered_mediated_pages
-    MediatedPage.for_date(params[:date])
+    origin_filtered_mediated_pages.for_date(params[:date])
   end
 
   def pending_mediated_pages
-    MediatedPage.unapproved.for_origin(params[:id])
+    origin_filtered_mediated_pages.unapproved
+  end
+
+  def origin_filtered_mediated_pages
+    MediatedPage.for_origin(params[:id])
   end
 
   def page

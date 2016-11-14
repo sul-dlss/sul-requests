@@ -62,4 +62,8 @@ stanford_ips:
   singletons: []
   ranges: []
 features:
-  remote_ip_check: false
+  remote_ip_check: true
+
+background_jobs:
+  enabled: false
+

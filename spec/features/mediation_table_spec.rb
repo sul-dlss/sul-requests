@@ -248,6 +248,7 @@ describe 'Mediation table', js: true do
     before { stub_current_user(create(:superadmin_user)) }
     describe 'for needed on dates' do
       before do
+        create(:page_mp_mediated_page, needed_date: Time.zone.today + 2.days)
         create(:mediated_page_with_holdings, needed_date: Time.zone.today + 2.days)
         create(:mediated_page_with_holdings, needed_date: Time.zone.today + 2.days)
         create(:mediated_page_with_holdings, needed_date: Time.zone.today + 4.days)
@@ -261,6 +262,11 @@ describe 'Mediation table', js: true do
         expect(page).to have_css('a.btn', text: I18n.l(Time.zone.today + 4.days, format: :quick))
         expect(page).to have_css('a.btn', text: I18n.l(Time.zone.today + 6.days, format: :quick))
         expect(page).not_to have_css('a.btn', text: I18n.l(Time.zone.today + 8.days, format: :quick))
+      end
+
+      it 'retains the origin filter' do
+        find('a.btn', text: I18n.l(Time.zone.today + 2.days, format: :quick)).click
+        expect(page).to have_css('tr[data-mediate-request]', count: 2) # would be 3 if the PAGE-MP request was included
       end
 
       it 'filters by the selected date' do
@@ -340,6 +346,18 @@ describe 'Mediation table', js: true do
       expected_needed_date = Time.zone.today.at_beginning_of_month.next_month
       expect(page).to have_css('a.editable', text: I18n.l(expected_needed_date, format: :quick), visible: true)
       expect(request.reload.needed_date).to eq expected_needed_date
+    end
+
+    context 'for requests that do not have a needed date' do
+      before do
+        request.needed_date = nil
+        request.save(validate: false)
+      end
+
+      it 'does not include the edit-in-place element' do
+        visit admin_path('PAGE-MP')
+        expect(page).not_to have_css('a.editable')
+      end
     end
   end
 end
