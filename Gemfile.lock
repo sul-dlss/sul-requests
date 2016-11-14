@@ -263,6 +263,8 @@ GEM
       connection_pool (~> 2.2, >= 2.2.0)
       rack-protection (>= 1.5.0)
       redis (~> 3.2, >= 3.2.1)
+    sidekiq-statistic (1.2.0)
+      sidekiq (>= 3.3.4, < 5)
     simplecov (0.12.0)
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
@@ -358,6 +360,7 @@ DEPENDENCIES
   scss-lint
   sdoc (~> 0.4.0)
   sidekiq
+  sidekiq-statistic
   simplecov
   sqlite3
   sul_styles (>= 0.5.0)
