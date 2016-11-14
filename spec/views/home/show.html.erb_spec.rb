@@ -18,13 +18,13 @@ describe 'home/show' do
     it 'should display page an administration section' do
       expect(rendered).to have_css('h2', text: 'Administration')
     end
-    it 'should show a medation section if there are mediateable libraries' do
+    it 'should show a mediation section if there are mediateable libraries' do
       expect(rendered).to have_css('h2', text: 'Mediation')
     end
   end
   describe 'an anonymous user' do
     before { render }
-    it 'should display page sections' do
+    it 'should not display page sections' do
       expect(rendered).to_not have_css('h2', text: 'Administration')
       expect(rendered).to_not have_css('h2', text: 'Mediation')
     end
