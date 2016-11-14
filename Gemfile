@@ -69,6 +69,7 @@ end
 
 # Sidekiq is our background processing framework, run via Active Job
 gem 'sidekiq'
+gem 'sidekiq-statistic'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
