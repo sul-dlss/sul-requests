@@ -2,11 +2,12 @@
 
 <h2><%= LibraryLocation.library_name_by_code(origin) %></h2>
 
-<p>
-  <%= link_to('All pending', admin_path(params[:id]), class: "btn btn-md btn-default #{'btn-primary' unless filtered_by_done? || filtered_by_date?}") %>
+<div>
+  <%= link_to('All pending', admin_path(params[:id]), class: "btn btn-md btn-default #{'btn-primary' unless filtered_by_done? || filtered_by_date? || filtered_by_create_date?}") %>
   <%= render 'date_buttons' %>
   <%= link_to('All done', admin_path(params[:id], done: true), class: "btn btn-md btn-default #{'btn-primary' if filtered_by_done?}") %>
-</p>
+  <%= render 'shared/jump_to_date', form_path: admin_path %>
+</div>
 
 <table id='mediation-table' class="table table-striped mediation-table">
   <%= render 'table_header' %>

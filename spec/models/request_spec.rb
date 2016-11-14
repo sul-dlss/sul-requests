@@ -56,9 +56,22 @@ describe Request do
         create(:request, needed_date: Time.zone.today + 2.days)
       end
 
-      it 'returns requests that match the given date' do
+      it 'returns requests with needed_date matching the given date' do
         expect(Request.for_date(Time.zone.today + 1.day).count).to eq 2
         expect(Request.for_date(Time.zone.today + 2.days).count).to eq 1
+      end
+    end
+
+    describe 'for_create_date' do
+      before do
+        create(:request, created_at: Time.zone.today - 1.day)
+        create(:request, created_at: Time.zone.today - 1.day)
+        create(:request, created_at: Time.zone.today - 2.days)
+      end
+
+      it 'returns requests with created_at matching the given date' do
+        expect(Request.for_create_date((Time.zone.today - 1.day).to_s).count).to eq 2
+        expect(Request.for_create_date((Time.zone.today - 2.days).to_s).count).to eq 1
       end
     end
 

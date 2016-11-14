@@ -325,7 +325,7 @@ describe 'Mediation table', js: true do
         visit admin_path('SPEC-COLL')
       end
 
-      it 'present links for the next 3 days that have requests' do
+      it 'presents links for the next 3 days that have requests' do
         expect(page).to have_css('a.btn', text: I18n.l(Time.zone.today + 2.days, format: :quick))
         expect(page).to have_css('a.btn', text: I18n.l(Time.zone.today + 4.days, format: :quick))
         expect(page).to have_css('a.btn', text: I18n.l(Time.zone.today + 6.days, format: :quick))
@@ -345,6 +345,110 @@ describe 'Mediation table', js: true do
         find('a.btn', text: I18n.l(Time.zone.today + 4.days, format: :quick)).click
         expect(page).to have_css('a.btn-primary', text: I18n.l(Time.zone.today + 4.days, format: :quick))
         expect(page).to have_css('tr[data-mediate-request]', count: 1)
+      end
+
+      it 'returns unpaginated results' do
+        visit admin_path('SPEC-COLL', per_page: 1)
+        find('a.btn', text: I18n.l(Time.zone.today + 2.days, format: :quick)).click
+        expect(page).not_to have_css('.pagination')
+      end
+    end
+  end
+
+  describe 'Date picker' do
+    before { stub_current_user(create(:superadmin_user)) }
+    describe 'for requested on dates' do
+      let(:older) { Time.zone.today - 3.days }
+      let(:today_s) { Time.zone.today.to_s }
+      let(:yesterday) { Time.zone.today - 1.day }
+      let(:future) { Time.zone.today + 2.days }
+      let(:future_s) { I18n.l(future, format: :quick) }
+      before do
+        create(:mediated_page_with_holdings, created_at: older)
+        create(:mediated_page_with_holdings, created_at: older)
+        create(:mediated_page_with_holdings, created_at: yesterday)
+        create(:mediated_page_with_holdings, created_at: yesterday)
+        create(:page_mp_mediated_page, created_at: yesterday)
+        create(:mediated_page_with_holdings, created_at: Time.zone.today)
+        create(:mediated_page_with_holdings, needed_date: future)
+      end
+      before do
+        visit admin_path('SPEC-COLL')
+      end
+
+      it 'retains the origin filter' do
+        # Capybara thinks the date picker is invisible for some reason
+        find('input#created_at', visible: false).set(yesterday.to_s)
+        click_button('Go')
+        expect(page).to have_css('tr[data-mediate-request]', count: 2) # would be 3 if the PAGE-MP request was included
+      end
+
+      it 'returns unpaginated results' do
+        visit admin_path('SPEC-COLL', per_page: 1)
+        find('input#created_at', visible: false).set(yesterday.to_s)
+        click_button('Go')
+        expect(page).not_to have_css('.pagination')
+      end
+
+      it 'returns requests matching create date only' do
+        expect(page).to have_css('tr[data-mediate-request] td.created_at', text: older.to_s, count: 2)
+        expect(page).to have_css('tr[data-mediate-request] td.created_at', text: yesterday.to_s, count: 2)
+        expect(page).to have_css('tr[data-mediate-request] td.created_at', text: today_s, count: 2)
+
+        find('input#created_at', visible: false).set(yesterday.to_s)
+        click_button('Go')
+
+        expect(page).to have_css('tr[data-mediate-request] td.created_at', text: yesterday.to_s, count: 2)
+        expect(page).not_to have_css('tr[data-mediate-request] td.created_at', text: older.to_s)
+        expect(page).not_to have_css('tr[data-mediate-request] td.created_at', text: today_s)
+      end
+
+      it 'includes both pending and done requests' do
+        cdate = Time.zone.today - 8.days
+        create(:page_mp_mediated_page, created_at: cdate)
+        req = create(:page_mp_mediated_page, created_at: cdate)
+        req.approved!
+        visit admin_path('PAGE-MP')
+        find('input#created_at', visible: false).set(cdate.to_s)
+        click_button('Go')
+        # there are no mixed approvals
+        expect(page).not_to have_css('td span[data-behavior="mixed-approved-note"][style=""]', visible: false)
+        my_selector = 'td span[data-behavior="mixed-approved-note"][style="display:none;"]'
+        expect(page).to have_css(my_selector, count: 2, visible: false)
+        # there is one each all-approved
+        expect(page).to have_css('td span[data-behavior="all-approved-note"][style="display:none;"]', visible: false)
+        expect(page).to have_css('td span[data-behavior="all-approved-note"][style=""]', visible: false)
+      end
+
+      it 'interacts appropriately with other date filters' do
+        today_button_text = I18n.l(Time.zone.today, format: :quick)
+
+        # All pending is primary, have right requests
+        expect(page).to have_css('a.btn-primary', text: 'All pending')
+        expect(page).to have_css('input.btn-primary[value="Go"]')
+
+        find('input#created_at', visible: false).set(yesterday.to_s)
+        click_button('Go')
+        # correct dates, correct date filter
+        expect(page).to have_css('tr[data-mediate-request] td.created_at', text: yesterday.to_s, count: 2)
+        expect(page).to have_css('tr[data-mediate-request] td.needed_date', text: today_button_text, count: 2)
+        expect(page).not_to have_css('a.btn-primary')
+        expect(page).to have_css('input.btn-primary[value="Go"]')
+
+        find('a.btn', text: future_s).click
+        # correct dates, correct date filter
+        expect(page).to have_css('tr[data-mediate-request] td.created_at', text: today_s)
+        expect(page).to have_css('tr[data-mediate-request] td.needed_date', text: future_s)
+        expect(page).to have_css('a.btn-primary', text: future_s)
+        expect(page).to have_css('input.btn-primary[value="Go"]')
+
+        find('input#created_at', visible: false).set(today_s)
+        click_button('Go')
+        expect(page).to have_css('tr[data-mediate-request] td.created_at', text: today_s, count: 2)
+        expect(page).to have_css('tr[data-mediate-request] td.needed_date', text: today_button_text)
+        expect(page).to have_css('tr[data-mediate-request] td.needed_date', text: future_s)
+        expect(page).not_to have_css('a.btn-primary')
+        expect(page).to have_css('input.btn-primary[value="Go"]')
       end
     end
   end
