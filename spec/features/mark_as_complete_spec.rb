@@ -45,6 +45,8 @@ describe 'Mark As Complete', js: true do
 
       click_button 'Mark as done'
 
+      wait_for_ajax
+
       button = page.find('button', text: 'Mark as done')
       expect(button).to be_disabled
     end
