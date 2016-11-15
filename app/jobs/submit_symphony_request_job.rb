@@ -29,17 +29,6 @@ class SubmitSymphonyRequestJob < ActiveJob::Base
     request
   end
 
-  def find_request(request_id)
-    request = begin
-      Request.find(request_id)
-    rescue ActiveRecord::RecordNotFound
-      Honeybadger.notify(
-        "Attempted to call Symphony for Request with ID #{request_id}, but no such Request was found."
-      )
-    end
-    request
-  end
-
   def enabled?
     Settings.symphony_api.enabled && Settings.symphony_api.url.present?
   end
