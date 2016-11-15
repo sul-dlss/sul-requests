@@ -20,6 +20,9 @@ Metrics/LineLength:
 Metrics/ClassLength:
   Max: 120
 
+Metrics/ModuleLength:
+  Max: 120
+
 Style/StringLiterals:
   Enabled: true
   EnforcedStyle: single_quotes
