@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sidekiq/logging'
 
 RSpec.describe SubmitSymphonyRequestJob, type: :job do
   let(:test_client) do
@@ -17,6 +18,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
 
   context 'with a stubbed HTTP client' do
     before do
+      Sidekiq.logger.level = Logger::UNKNOWN
       allow_any_instance_of(SubmitSymphonyRequestJob::Command).to receive(:client).and_return(test_client)
     end
 
