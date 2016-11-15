@@ -22,6 +22,9 @@ Metrics/ClassLength:
   Exclude:
     - 'app/models/request.rb'
 
+Metrics/ModuleLength:
+  Max: 120
+
 Style/StringLiterals:
   Enabled: true
   EnforcedStyle: single_quotes
