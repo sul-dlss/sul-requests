@@ -31,6 +31,8 @@ var itemApproval = (function() {
     approveItem: function(item) {
       var _this = this;
       var url = item.data('item-approval-url');
+
+      _this.disableElement(item);
       $.ajax(url).success(function(data) {
          _this.markRowAsApproved(item);
          _this.updateApproverInformation(item, data);
@@ -41,7 +43,16 @@ var itemApproval = (function() {
            _this.markRowAsError(item);
          }
          _this.addHoldingsLevelAlert(item, data);
+         _this.enableElement(item);
        });
+    },
+
+    disableElement: function(elt) {
+      elt.attr('disabled', 'disabled');
+    },
+
+    enableElement: function(elt) {
+      elt.removeAttr('disabled');
     },
 
     markRowAsApproved: function(item) {

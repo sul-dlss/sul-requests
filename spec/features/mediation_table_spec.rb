@@ -117,6 +117,7 @@ describe 'Mediation table', js: true do
           end
           expect(page).to have_css('tr.approved')
           expect(page).to have_css('td button', text: 'Approved')
+          expect(page).to have_button('Approve', disabled: true)
 
           within(first('tr')) do
             expect(page).to have_css('td', text: 'Added to pick list', visible: true)
@@ -145,10 +146,12 @@ describe 'Mediation table', js: true do
         within('tbody td table tbody') do
           within(all('tr').first) do
             click_button('Approve')
+            expect(page).to have_button('Approve', disabled: true)
           end
 
           within(all('tr').last) do
             click_button('Approve')
+            expect(page).to have_button('Approve', disabled: true)
           end
         end
 
@@ -197,6 +200,10 @@ describe 'Mediation table', js: true do
         within('tbody td table tbody') do
           within(all('tr').last) do
             click_button('Approve')
+
+            wait_for_ajax
+            approval_btn = page.find('button.approval-btn')
+            expect(approval_btn['disabled']).to eq false
           end
         end
 
@@ -215,7 +222,11 @@ describe 'Mediation table', js: true do
               expect(page).not_to have_css('td', text: 'Item not found in catalog')
               stub_symphony_response(build(:symphony_request_with_mixed_status))
               click_button('Approve')
+
+              wait_for_ajax
               expect(page).to have_css('td', text: 'Item not found in catalog')
+              approval_btn = page.find('button.approval-btn')
+              expect(approval_btn['disabled']).to eq false
             end
           end
         end
