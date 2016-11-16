@@ -35,6 +35,7 @@ describe 'Public Notes', js: true do
 end
 
 def fill_in_required_fields
+  wait_for_ajax
   date_input = find('#request_needed_date', visible: false)
   min_date = date_input['min']
   date_input.set(min_date)
