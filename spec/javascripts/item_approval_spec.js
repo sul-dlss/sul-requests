@@ -46,4 +46,20 @@ describe('Item Approval', function() {
       expect(itemApproval.rowIsApproved($('tr:last'))).toBe(false);
     });
   });
+
+  describe('disableElement()', function() {
+    it('sets the disabled attr on the button', function() {
+      var lastButton = $('button:last');
+      itemApproval.disableElement(lastButton);
+      expect(lastButton.prop('disabled')).toBe(true);
+    })
+  });
+
+  describe('enableElement()', function() {
+    it('removes the disabled attr from the button', function() {
+      var lastButton = $('button:last');
+      itemApproval.enableElement(lastButton);
+      expect(lastButton.prop('disabled')).toBe(false);
+    })
+  });
 });
