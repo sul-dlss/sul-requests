@@ -508,22 +508,12 @@ describe Request do
   end
 
   describe 'send_confirmation!' do
-    describe 'for library id users' do
-      it 'does not send a confirmation email' do
-        subject.user = create(:library_id_user)
-        expect(
-          -> { subject.send_confirmation! }
-        ).to_not change { ConfirmationMailer.deliveries.count }
-      end
-    end
-
-    describe 'for everybody else' do
-      let(:subject) { create(:page, user: create(:webauth_user)) }
-      it 'sends a confirmation email' do
-        expect(
-          -> { subject.send_confirmation! }
-        ).to change { ConfirmationMailer.deliveries.count }.by(1)
-      end
+    let(:subject) { create(:page, user: create(:webauth_user)) }
+    it 'returns true (other classes can implement confirmation if they want it)' do
+      expect(
+        -> { subject.send_confirmation! }
+      ).not_to change { ConfirmationMailer.deliveries.count }
+      expect(subject.send_confirmation!).to be true
     end
   end
 
