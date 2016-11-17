@@ -517,6 +517,26 @@ describe Request do
     end
   end
 
+  describe 'send_approval_status!' do
+    describe 'for library id users' do
+      let(:subject) { create(:page, user: create(:library_id_user)) }
+      it 'does not send an approval status email' do
+        expect(
+          -> { subject.send_approval_status! }
+        ).to_not change { ApprovalStatusMailer.deliveries.count }
+      end
+    end
+
+    describe 'for everybody else' do
+      let(:subject) { create(:page, user: create(:webauth_user)) }
+      it 'sends an approval status email' do
+        expect(
+          -> { subject.send_approval_status! }
+        ).to change { ApprovalStatusMailer.deliveries.count }.by(1)
+      end
+    end
+  end
+
   describe '#check_remote_ip?' do
     it 'mediated pages (that are not Hopkins)' do
       expect(create(:mediated_page).check_remote_ip?).to be true

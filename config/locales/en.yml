@@ -70,6 +70,16 @@ en:
       extra_note: 'Items are typically approved 1-3 days before your scheduled visit.'
     spec_coll:
       extra_note: 'Items are typically approved 1-3 days before your scheduled visit.'
+  approval_status_email:
+    request:
+      subject:
+        success: "Your request has been processed (\"%{title}\")"
+        failure: "Attention needed: Your request could not be processed (\"%{title}\")"
+    request_status:
+      failure:
+        code_U003: 'Your request could not be processed because your user privileges are blocked.'
+        code_U004: 'Your request could not be processed because your user privileges have expired.'
+
   confirmation_email:
     request:
       subject: 'Item(s) requested ("%{title}")'

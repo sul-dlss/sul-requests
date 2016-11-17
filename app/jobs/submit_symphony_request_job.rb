@@ -15,6 +15,7 @@ class SubmitSymphonyRequestJob < ActiveJob::Base
     Sidekiq::Logging.logger.debug("Symphony response string: #{response}")
     request.merge_symphony_response_data(response.with_indifferent_access)
     request.save
+    request.send_approval_status!
     Sidekiq::Logging.logger.info("Completed SubmitSymphonyRequestJob for request #{request_id}")
   end
 

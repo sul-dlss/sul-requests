@@ -33,6 +33,10 @@ class Scan < Request
     ConfirmationMailer.request_confirmation(self).deliver_later if notification_email_address.present?
   end
 
+  def send_approval_status!
+    true
+  end
+
   private
 
   def scannable_validator

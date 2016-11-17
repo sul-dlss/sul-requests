@@ -80,7 +80,7 @@ describe RequestApprovalStatus do
     let(:request) { create(:request_with_holdings) }
     let(:html) { Capybara.string(subject.to_html) }
     before do
-      stub_symphony_response(build(:symphony_page_with_user_error))
+      stub_symphony_response(build(:symphony_page_with_expired_user))
     end
 
     it 'returns a status message indicating the user error' do
@@ -88,7 +88,7 @@ describe RequestApprovalStatus do
       expect(html).to have_link('Check MyAccount for details.')
     end
 
-    it 'returns a default message if we receive an unkown user error code' do
+    it 'returns a default message if we receive an unknown user error code' do
       expect(request.symphony_response).to receive(:usererr_code).at_least(:once).and_return('unknown-code')
       expect(html).to have_css('dd', text: 'We were unable to process your request because of a system error.')
       expect(html).to have_css('dd', text: 'Please try again, or contact greencirc@stanford.edu for more assistance.')
