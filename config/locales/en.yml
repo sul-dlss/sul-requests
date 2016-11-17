@@ -72,9 +72,9 @@ en:
       extra_note: 'Items are typically approved 1-3 days before your scheduled visit.'
   confirmation_email:
     request:
-      subject: 'Item(s) requested (%{title})'
+      subject: 'Item(s) requested ("%{title}")'
     scan:
-      subject: "Scan to PDF requested (%{title})"
+      subject: "Scan to PDF requested (\"%{title}\")"
     mediated_page:
       mediator_subject: 'New request needs mediation'
   date:
