@@ -46,4 +46,13 @@ describe Scan do
       subject.submit!
     end
   end
+
+  describe 'send_confirmation!' do
+    let(:subject) { create(:scan, user: create(:webauth_user)) }
+    it 'sends a confirmation email' do
+      expect(
+        -> { subject.send_confirmation! }
+      ).to change { ConfirmationMailer.deliveries.count }.by(1)
+    end
+  end
 end

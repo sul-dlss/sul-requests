@@ -160,7 +160,7 @@ describe PagesController do
         expect(Page.last.user.library_id).to eq '5432123'
       end
 
-      it 'sends an confirmation email' do
+      it 'does not send a confirmation email' do
         stub_symphony_response(build(:symphony_page_with_single_item))
         expect(
           lambda do
@@ -171,7 +171,7 @@ describe PagesController do
               destination: 'BIOLOGY'
             }
           end
-        ).to change { ConfirmationMailer.deliveries.count }.by(1)
+        ).not_to change { ConfirmationMailer.deliveries.count }
       end
 
       it 'does not send a confirmation email if the symphony request is not successful' do

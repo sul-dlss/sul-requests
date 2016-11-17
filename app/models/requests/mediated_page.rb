@@ -66,6 +66,10 @@ class MediatedPage < Request
     )[:email]
   end
 
+  def send_confirmation!
+    ConfirmationMailer.request_confirmation(self).deliver_later if notification_email_address.present?
+  end
+
   def self.mark_all_archived_as_complete!
     archived.find_each do |mediated_page|
       if mediated_page.all_approved?
