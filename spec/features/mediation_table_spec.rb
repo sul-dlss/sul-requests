@@ -89,7 +89,7 @@ describe 'Mediation table', js: true do
       it 'has toggleable rows that display holdings' do
         expect(page).to have_css('[data-mediate-request]', count: 4)
         expect(page).to have_css('tbody tr', count: 4)
-        within(first('[data-mediate-request]')) do
+        within(all('[data-mediate-request]').last) do
           expect(page).to have_css('td', count: top_level_columns)
           page.find('a.mediate-toggle').trigger('click')
         end
@@ -103,7 +103,7 @@ describe 'Mediation table', js: true do
       end
 
       it 'has holdings that can be approved' do
-        within(first('[data-mediate-request]')) do
+        within(all('[data-mediate-request]').last) do
           page.find('a.mediate-toggle').trigger('click')
         end
 
@@ -128,7 +128,7 @@ describe 'Mediation table', js: true do
         # and check that it is persisted
         visit admin_path('SPEC-COLL')
 
-        within(first('[data-mediate-request]')) do
+        within(all('[data-mediate-request]').last) do
           page.find('a.mediate-toggle').trigger('click')
         end
 
@@ -138,7 +138,7 @@ describe 'Mediation table', js: true do
       end
 
       it 'indicates when all items in a request have been approved' do
-        within(first('[data-mediate-request]')) do
+        within(all('[data-mediate-request]').last) do
           expect(page).to_not have_css('[data-behavior="all-approved-note"]', text: 'Done')
           page.find('a.mediate-toggle').trigger('click')
         end
@@ -155,14 +155,14 @@ describe 'Mediation table', js: true do
           end
         end
 
-        within(first('[data-mediate-request]')) do
+        within(all('[data-mediate-request]').last) do
           expect(page).to have_css('[data-behavior="all-approved-note"]', text: 'Done')
         end
       end
 
       it 'has sortable columns' do
         within '.mediation-table tbody' do
-          expect(page).to have_content(/Jane Stanford.*Joe Doe.*Jim Doe/)
+          expect(page).to have_content(/Jim Doe.*Joe Doe.*Jane Stanford/)
         end
 
         click_link 'Requested on'
@@ -183,7 +183,7 @@ describe 'Mediation table', js: true do
       let(:symphony_response) { build(:symphony_request_with_mixed_status) }
 
       it 'has the persisted item level error message' do
-        within(first('[data-mediate-request]')) do
+        within(all('[data-mediate-request]').last) do
           page.find('a.mediate-toggle').trigger('click')
         end
 
@@ -197,7 +197,7 @@ describe 'Mediation table', js: true do
       end
 
       it 'returns the item level error text if it is not user-based' do
-        within(first('[data-mediate-request]')) do
+        within(all('[data-mediate-request]').last) do
           page.find('a.mediate-toggle').trigger('click')
         end
 
@@ -219,7 +219,7 @@ describe 'Mediation table', js: true do
       describe 'on item approval' do
         let(:symphony_response) { build(:symphony_page_with_multiple_items) }
         it 'updates the item level error messages' do
-          within(first('[data-mediate-request]')) do
+          within(all('[data-mediate-request]').last) do
             page.find('a.mediate-toggle').trigger('click')
           end
 
