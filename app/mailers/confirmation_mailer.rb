@@ -1,5 +1,5 @@
 ###
-#  Mailer class to send confimration emails after requests have been submitted
+#  Mailer class to send confirmation emails after requests have been submitted
 ###
 class ConfirmationMailer < ApplicationMailer
   def request_confirmation(request)
