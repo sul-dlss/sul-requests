@@ -16,7 +16,7 @@ class ConfirmationMailer < ApplicationMailer
   private
 
   def from_address
-    contact_info[:email]
+    %("Stanford Libraries Requests" <#{contact_info[:email]}>)
   end
 
   def subject
