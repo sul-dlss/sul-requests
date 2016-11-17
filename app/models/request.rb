@@ -55,6 +55,10 @@ class Request < ActiveRecord::Base
     true
   end
 
+  def send_approval_status!
+    ApprovalStatusMailer.request_approval_status(self).deliver_later if notification_email_address.present?
+  end
+
   def delegate_request!
     case
     when mediateable? then becomes!(MediatedPage)

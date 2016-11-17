@@ -35,6 +35,11 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
         expect(page.symphony_response.req_type).to eq 'PAGE'
       end
 
+      it 'calls send_approval_status! on the request object' do
+        expect_any_instance_of(page.class).to receive(:send_approval_status!)
+        subject.perform(page.id)
+      end
+
       it 'notifies Honeybadger when the request is not found' do
         expect_any_instance_of(Honeybadger).to receive(:notify).once.with(
           'Attempted to call Symphony for Request with ID -1, but no such Request was found.'

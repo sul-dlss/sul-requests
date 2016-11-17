@@ -48,11 +48,32 @@ describe Scan do
   end
 
   describe 'send_confirmation!' do
+    describe 'for library id users' do
+      let(:subject) { create(:scan, user: create(:library_id_user)) }
+      it 'does not send a confirmation email' do
+        expect(
+          -> { subject.send_confirmation! }
+        ).to_not change { ConfirmationMailer.deliveries.count }
+      end
+    end
+
+    describe 'for everybody else' do
+      let(:subject) { create(:scan, user: create(:webauth_user)) }
+      it 'sends a confirmation email' do
+        expect(
+          -> { subject.send_confirmation! }
+        ).to change { ConfirmationMailer.deliveries.count }.by(1)
+      end
+    end
+  end
+
+  describe 'send_approval_status!' do
     let(:subject) { create(:scan, user: create(:webauth_user)) }
-    it 'sends a confirmation email' do
+    it 'returns true' do
       expect(
-        -> { subject.send_confirmation! }
-      ).to change { ConfirmationMailer.deliveries.count }.by(1)
+        -> { subject.send_approval_status! }
+      ).not_to change { ApprovalStatusMailer.deliveries.count }
+      expect(subject.send_approval_status!).to be true
     end
   end
 end

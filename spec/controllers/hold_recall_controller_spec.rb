@@ -107,6 +107,8 @@ describe HoldRecallsController do
           end
         ).not_to change { ConfirmationMailer.deliveries.count }
       end
+
+      # Note:  cannot trigger activejob from this spec to check ApprovalStatusMailer
     end
     describe 'invalid requests' do
       let(:user) { create(:webauth_user) }

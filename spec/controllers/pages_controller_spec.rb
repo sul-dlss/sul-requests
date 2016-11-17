@@ -174,18 +174,7 @@ describe PagesController do
         ).not_to change { ConfirmationMailer.deliveries.count }
       end
 
-      it 'does not send a confirmation email if the symphony request is not successful' do
-        expect(
-          lambda do
-            put :create, request: {
-              item_id: '1234',
-              origin: 'GREEN',
-              origin_location: 'STACKS',
-              destination: 'BIOLOGY'
-            }
-          end
-        ).not_to change { ConfirmationMailer.deliveries.count }
-      end
+      # Note:  cannot trigger activejob from this spec to check ApprovalStatusMailer
 
       context 'create/update' do
         it 'raises an error when the honey-pot email field is filled in on create' do
