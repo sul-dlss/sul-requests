@@ -168,6 +168,12 @@ describe 'Mediation table', js: true do
         click_link 'Requested on'
 
         within '.mediation-table tbody' do
+          expect(page).to have_content(/Jane Stanford.*Joe Doe.*Jim Doe/)
+        end
+
+        click_link 'Requested on'
+
+        within '.mediation-table tbody' do
           expect(page).to have_content(/Jim Doe.*Joe Doe.*Jane Stanford/)
         end
       end
