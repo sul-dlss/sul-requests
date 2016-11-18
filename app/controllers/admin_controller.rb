@@ -67,7 +67,7 @@ class AdminController < ApplicationController
   end
 
   def completed_mediated_pages
-    origin_filtered_mediated_pages.completed.page(page).per(per)
+    origin_filtered_mediated_pages.completed.page(page).per(per).order(needed_date: 'desc', created_at: 'desc')
   end
 
   def date_filtered_mediated_pages
@@ -75,7 +75,7 @@ class AdminController < ApplicationController
   end
 
   def pending_mediated_pages
-    origin_filtered_mediated_pages.unapproved
+    origin_filtered_mediated_pages.unapproved.order(needed_date: 'asc', created_at: 'desc')
   end
 
   def origin_filtered_mediated_pages

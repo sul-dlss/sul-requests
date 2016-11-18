@@ -9,28 +9,70 @@ describe 'Mediation table', js: true do
       stub_current_user(create(:superadmin_user))
       stub_searchworks_api_json(build(:searchable_holdings))
       stub_symphony_response(symphony_response)
+
+      # create some pending requests
       create(
         :mediated_page_with_holdings,
         user: create(:non_webauth_user),
         barcodes: %w(12345678 23456789),
-        created_at: Time.zone.now - 1.day
+        created_at: Time.zone.now - 1.day,
+        needed_date: Time.zone.now + 3.days
       )
       create(
         :mediated_page_with_holdings,
         user: create(:non_webauth_user, name: 'Joe Doe ', email: 'joedoe@example.com'),
-        barcodes: %w(34567890 45678901)
+        barcodes: %w(34567890 45678901),
+        needed_date: Time.zone.now + 2.days
       )
       create(
         :mediated_page_with_holdings,
         user: create(:non_webauth_user, name: 'Jim Doe ', email: 'jimdoe@example.com'),
         barcodes: %w(34567890),
         ad_hoc_items: ['ABC 123'],
-        created_at: Time.zone.now + 1.day
+        created_at: Time.zone.now + 1.day,
+        needed_date: Time.zone.now
       )
       create(
         :mediated_page,
-        request_comment: short_comment
+        request_comment: short_comment,
+        needed_date: Time.zone.now
       )
+
+      # create some completed requests (don't validate, since validation disallows needed dates which fall in the past)
+      build(
+        :mediated_page_with_holdings,
+        user: create(:non_webauth_user, name: 'Bob Doe', email: 'bobdoe@example.com'),
+        barcodes: %w(12345678 23456789),
+        created_at: Time.zone.now - 7.days,
+        needed_date: Time.zone.now - 2.days,
+        approval_status: MediatedPage.approval_statuses['approved']
+      ).save(validate: false)
+      build(
+        :mediated_page_with_holdings,
+        user: create(:non_webauth_user, name: 'Alice Doe ', email: 'alicedoe@example.com'),
+        barcodes: %w(12345678 23456789),
+        created_at: Time.zone.now - 5.days,
+        needed_date: Time.zone.now - 3.days,
+        approval_status: MediatedPage.approval_statuses['approved']
+      ).save(validate: false)
+      build(
+        :mediated_page_with_holdings,
+        user: create(:non_webauth_user, name: 'Mal Doe ', email: 'maldoe@example.com'),
+        barcodes: %w(34567890 45678901),
+        created_at: Time.zone.now - 3.days,
+        needed_date: nil,
+        approval_status: MediatedPage.approval_statuses['marked_as_done']
+      ).save(validate: false)
+      build(
+        :mediated_page_with_holdings,
+        user: create(:non_webauth_user, name: 'Eve Doe ', email: 'evedoe@example.com'),
+        barcodes: %w(34567890),
+        ad_hoc_items: ['ABC 123'],
+        created_at: Time.zone.now - 2.days,
+        needed_date: nil,
+        approval_status: MediatedPage.approval_statuses['approved']
+      ).save(validate: false)
+
       visit admin_path('SPEC-COLL')
     end
 
@@ -89,7 +131,7 @@ describe 'Mediation table', js: true do
       it 'has toggleable rows that display holdings' do
         expect(page).to have_css('[data-mediate-request]', count: 4)
         expect(page).to have_css('tbody tr', count: 4)
-        within(first('[data-mediate-request]')) do
+        within(all('[data-mediate-request]').last) do
           expect(page).to have_css('td', count: top_level_columns)
           page.find('a.mediate-toggle').trigger('click')
         end
@@ -103,7 +145,7 @@ describe 'Mediation table', js: true do
       end
 
       it 'has holdings that can be approved' do
-        within(first('[data-mediate-request]')) do
+        within(all('[data-mediate-request]').last) do
           page.find('a.mediate-toggle').trigger('click')
         end
 
@@ -128,7 +170,7 @@ describe 'Mediation table', js: true do
         # and check that it is persisted
         visit admin_path('SPEC-COLL')
 
-        within(first('[data-mediate-request]')) do
+        within(all('[data-mediate-request]').last) do
           page.find('a.mediate-toggle').trigger('click')
         end
 
@@ -138,7 +180,7 @@ describe 'Mediation table', js: true do
       end
 
       it 'indicates when all items in a request have been approved' do
-        within(first('[data-mediate-request]')) do
+        within(all('[data-mediate-request]').last) do
           expect(page).to_not have_css('[data-behavior="all-approved-note"]', text: 'Done')
           page.find('a.mediate-toggle').trigger('click')
         end
@@ -155,16 +197,25 @@ describe 'Mediation table', js: true do
           end
         end
 
-        within(first('[data-mediate-request]')) do
+        within(all('[data-mediate-request]').last) do
           expect(page).to have_css('[data-behavior="all-approved-note"]', text: 'Done')
         end
       end
 
-      it 'has sortable columns' do
+      it 'has the expected default sort order for pending requests (needed on ascending, created on descending)' do
         within '.mediation-table tbody' do
-          expect(page).to have_content(/Jane Stanford.*Joe Doe.*Jim Doe/)
+          expect(page).to have_content(/Jim Doe.*Joe Doe.*Jane Stanford/)
         end
+      end
 
+      it 'has the expected default sort order for completed requests (needed on descending, created on descending)' do
+        visit admin_path('SPEC-COLL', done: 'true')
+        within '.mediation-table tbody' do
+          expect(page).to have_content(/Bob Doe.*Alice Doe.*Eve Doe.*Mal Doe/)
+        end
+      end
+
+      it 'has sortable columns' do
         click_link 'Requested on'
 
         within '.mediation-table tbody' do
@@ -183,7 +234,7 @@ describe 'Mediation table', js: true do
       let(:symphony_response) { build(:symphony_request_with_mixed_status) }
 
       it 'has the persisted item level error message' do
-        within(first('[data-mediate-request]')) do
+        within(all('[data-mediate-request]').last) do
           page.find('a.mediate-toggle').trigger('click')
         end
 
@@ -197,7 +248,7 @@ describe 'Mediation table', js: true do
       end
 
       it 'returns the item level error text if it is not user-based' do
-        within(first('[data-mediate-request]')) do
+        within(all('[data-mediate-request]').last) do
           page.find('a.mediate-toggle').trigger('click')
         end
 
@@ -219,7 +270,7 @@ describe 'Mediation table', js: true do
       describe 'on item approval' do
         let(:symphony_response) { build(:symphony_page_with_multiple_items) }
         it 'updates the item level error messages' do
-          within(first('[data-mediate-request]')) do
+          within(all('[data-mediate-request]').last) do
             page.find('a.mediate-toggle').trigger('click')
           end
 
