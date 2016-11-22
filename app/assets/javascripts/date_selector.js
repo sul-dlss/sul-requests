@@ -2,7 +2,8 @@ var dateSelector = (function() {
   var defaultOptions = {
     mediatedPageFieldSelector: 'input[data-request-type="mediated_page"]',
     dropdownSelector: '[data-paging-schedule-updater="true"]',
-    singleLibrarySelector: '[data-single-library-value]'
+    singleLibrarySelector: '[data-single-library-value]',
+    neededDateWarningSelector: '#needed-date-warning'
   };
 
   return {
@@ -80,17 +81,22 @@ var dateSelector = (function() {
       this.mediatedDateField().closest('.form-group').removeClass('has-error');
       this.mediatedDateField()[0].setCustomValidity('');
       this.mediatedDateField().siblings('.help-block').remove();
+      this.mediatedDateWarning().text('');
     },
 
     setDateFieldAsInvalid: function() {
+      var message = 'This library is not open on ' + this.selectedDate();
+      this.mediatedDateField()[0].setCustomValidity(message);
+      this.mediatedDateWarning().text(message);
       this.mediatedDateField().closest('.form-group').addClass('has-error');
-      this.mediatedDateField()[0].setCustomValidity(
-        'This library is not open on ' + this.selectedDate()
-      );
     },
 
     mediatedDateField: function() {
       return $(this.options.mediatedPageFieldSelector);
+    },
+
+    mediatedDateWarning: function() {
+      return $(this.options.neededDateWarningSelector);
     },
 
     hoursLookupUrl: function(destination, date) {

@@ -16,6 +16,7 @@ describe('Date Selector', function() {
       dateSelector.setDateFieldAsValid();
       expect(formGroup).not.toHaveClass('has-error');
       expect(dateSelector.mediatedDateField().siblings('.help-block').length).toBe(0);
+      expect(dateSelector.mediatedDateWarning().text()).toBe('');
     });
   });
 
@@ -26,6 +27,7 @@ describe('Date Selector', function() {
       expect(formGroup).not.toHaveClass('has-error');
       dateSelector.setDateFieldAsInvalid();
       expect(formGroup).toHaveClass('has-error');
+      expect(dateSelector.mediatedDateWarning().text()).toBe('This library is not open on 2016-01-01');
     });
   });
 
