@@ -11,7 +11,7 @@ class AdminController < ApplicationController
   def index
     authorize! :manage, Request.new
     @dashboard = Dashboard.new
-    @requests = @dashboard.recent_requests(params[:page], params[:per] || 100).for_type(filter_type)
+    @requests = dashboard_requests
   end
 
   def show
@@ -47,6 +47,11 @@ class AdminController < ApplicationController
   end
   helper_method :filtered_by_date?
 
+  def filtered_by_create_date?
+    params[:created_at].present?
+  end
+  helper_method :filtered_by_create_date?
+
   def filter_metric
     params[:metric].to_sym if params[:metric].present?
   end
@@ -56,22 +61,44 @@ class AdminController < ApplicationController
     params[:metric].classify if params[:metric].present?
   end
 
+  def dashboard_requests
+    if filtered_by_create_date?
+      dashboard_create_date_filtered_requests
+    else
+      dashboard_recent_requests
+    end
+  end
+
+  def dashboard_create_date_filtered_requests
+    Request.for_create_date(params[:created_at]).for_type(filter_type)
+  end
+
+  def dashboard_recent_requests
+    @dashboard.recent_requests(page, per_page).for_type(filter_type)
+  end
+
   def mediated_pages
     if filtered_by_done?
       completed_mediated_pages
     elsif filtered_by_date?
       date_filtered_mediated_pages
+    elsif filtered_by_create_date?
+      create_date_filtered_mediated_pages
     else
       pending_mediated_pages
     end
   end
 
   def completed_mediated_pages
-    origin_filtered_mediated_pages.completed.page(page).per(per).order(needed_date: 'desc', created_at: 'desc')
+    origin_filtered_mediated_pages.completed.page(page).per(per_page).order(needed_date: 'desc', created_at: 'desc')
   end
 
   def date_filtered_mediated_pages
     origin_filtered_mediated_pages.for_date(params[:date])
+  end
+
+  def create_date_filtered_mediated_pages
+    origin_filtered_mediated_pages.for_create_date(params[:created_at])
   end
 
   def pending_mediated_pages
@@ -86,7 +113,7 @@ class AdminController < ApplicationController
     params[:page]
   end
 
-  def per
+  def per_page
     params.fetch(:per_page, 100)
   end
 

@@ -2,7 +2,7 @@
   <div class="form-group">
     <%= f.label :needed_date, class: "#{label_column_class} required control-label" %>
     <div class='<%= content_column_class %>'>
-      <%= f.date_field_without_bootstrap :needed_date, class: 'form-control', required: true, min: Time.zone.today , data: { request_type: current_request.type.underscore } %>
+      <%= f.date_field_without_bootstrap :needed_date, class: 'form-control', required: true, min: Time.zone.today, data: { request_type: current_request.type.underscore } %>
       <% if current_request.holdings_object.library_instructions.present? %>
         <p class='needed-date-help-block'>
           <%= current_request.holdings_object.library_instructions[:text] %>

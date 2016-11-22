@@ -14,7 +14,7 @@ describe 'Viewing all requests' do
                       user: User.create(name: 'Joe', email: 'joe@xyz.com')
               )
         create(:mediated_page, ad_hoc_items: ['ZZZ-123'],
-                               item_title: 'A Different Type of Page',
+                               item_title: 'I am Mediated',
                                origin: 'SPEC-COLL',
                                request_comment: 'I can has this mediated item?',
                                user: User.create(name: 'Jane', email: 'jane@example.com')
@@ -30,7 +30,7 @@ describe 'Viewing all requests' do
         expect(page).to have_css('td a[data-behavior="truncate"]', text: 'An American in Paris')
         expect(page).to have_css('td a[href="mailto:joe@xyz.com"]', text: /Joe \(joe@xyz.com\)/)
 
-        expect(page).to have_css('td a[data-behavior="truncate"]', text: 'A Different Type of Page')
+        expect(page).to have_css('td a[data-behavior="truncate"]', text: 'I am Mediated')
         expect(page).to have_css('td a[href="mailto:jane@example.com"]', text: /Jane \(jane@example.com\)/)
 
         expect(page).to have_selector('table.table-striped', count: 1)
@@ -50,7 +50,7 @@ describe 'Viewing all requests' do
         expect(page).to_not have_css('td a[data-behavior="truncate"]', text: 'An American in Paris')
         expect(page).to_not have_css('td a[href="mailto:joe@xyz.com"]', text: /Joe \(joe@xyz.com\)/)
 
-        expect(page).to have_css('td a[data-behavior="truncate"]', text: 'A Different Type of Page')
+        expect(page).to have_css('td a[data-behavior="truncate"]', text: 'I am Mediated')
         expect(page).to have_css('td a[href="mailto:jane@example.com"]', text: /Jane \(jane@example.com\)/)
 
         click_link 'Pages'
@@ -61,13 +61,83 @@ describe 'Viewing all requests' do
         expect(page).to have_css('td a[data-behavior="truncate"]', text: 'An American in Paris')
         expect(page).to have_css('td a[href="mailto:joe@xyz.com"]', text: /Joe \(joe@xyz.com\)/)
 
-        expect(page).to_not have_css('td a[data-behavior="truncate"]', text: 'A Different Type of Page')
+        expect(page).to_not have_css('td a[data-behavior="truncate"]', text: 'I am Mediated')
         expect(page).to_not have_css('td a[href="mailto:jane@example.com"]', text: /Jane \(jane@example.com\)/)
 
         click_link '[x]'
 
         expect(page).to have_css('td a', text: 'Mediated pages')
         expect(page).to have_css('td a', text: 'Pages')
+      end
+
+      context 'filter by create date' do
+        yesterday = Time.zone.today - 1.day
+        let(:today_s) { Time.zone.today.to_s }
+        before(:context) do
+          create(:page_mp_mediated_page, created_at: yesterday)
+          create(:page, created_at: yesterday)
+        end
+        before do
+          visit admin_index_path
+          fill_in(:created_at, with: yesterday.to_s)
+          click_button('Go')
+        end
+
+        it 'has the desired label' do
+          expect(page).to have_css('label[for="created_at"]', text: 'Find by date requested:')
+        end
+
+        it 'returns requests matching create date only' do
+          within('.table-striped/tbody') do
+            expect(page).to have_css('tr', count: 2)
+            expect(page).to have_css('tr/td/time', text: yesterday.to_s, count: 2)
+          end
+          fill_in(:created_at, with: today_s)
+          click_button('Go')
+          within('.table-striped/tbody') do
+            expect(page).to have_css('tr', count: 3)
+            expect(page).to have_css('tr/td/time', text: today_s, count: 3)
+          end
+        end
+
+        it 'should return all request types' do
+          within('.table-striped/tbody') do
+            expect(page).to have_css('tr', text: 'MediatedPage')
+            expect(page).to have_css('tr', text: 'Page')
+          end
+        end
+
+        it 'is not paginated' do
+          visit admin_index_path(per_page: 1)
+          expect(page).to have_css('.pagination')
+          fill_in(:created_at, with: yesterday.to_s)
+          click_button('Go')
+          expect(page).not_to have_css('.pagination')
+        end
+
+        it 'interacts nicely with request filters' do
+          click_link 'Mediated pages'
+
+          expect(page).to have_css('td', text: 'Mediated pages [x]')
+          expect(page).to have_css('td a', text: 'Pages')
+          within('.table-striped/tbody') do
+            expect(page).to have_css('tr', count: 2)
+            expect(page).to have_css('tr/td/time', text: yesterday.to_s)
+            expect(page).to have_css('tr/td/time', text: today_s)
+            expect(page).to have_css('tr', text: 'MediatedPage')
+            expect(page).not_to have_css('tr', text: /^Page$/)
+          end
+
+          fill_in(:created_at, with: yesterday)
+          click_button('Go')
+
+          within('.table-striped/tbody') do
+            expect(page).to have_css('tr', count: 2)
+            expect(page).to have_css('tr/td/time', text: yesterday.to_s, count: 2)
+          end
+          expect(page).not_to have_css('td', text: 'Mediated pages [x]')
+          expect(page).to have_css('td a', text: 'Mediated pages')
+        end
       end
     end
 
@@ -83,6 +153,7 @@ describe 'Viewing all requests' do
     end
   end
 
+  # see also features/mediation_table_spec
   describe 'show' do
     describe 'by a superadmin' do
       before do
@@ -96,13 +167,11 @@ describe 'Viewing all requests' do
         visit admin_path('SPEC-COLL')
 
         expect(page).to have_css('h2', text: 'Special Collections')
-
         expect(page).to have_css('table tbody tr', count: 2)
 
         visit admin_path('HV-ARCHIVE')
 
         expect(page).to have_css('h2', text: 'Hoover Archive')
-
         expect(page).to have_css('table tbody tr', count: 1)
       end
 

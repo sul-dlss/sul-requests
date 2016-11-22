@@ -31,6 +31,7 @@
 
 <div class='admin-requests'>
   <h2>Recent Requests</h2>
+  <%= render 'shared/jump_to_date', form_path: admin_index_path %>
 
   <table class="table table-striped">
     <thead>
@@ -59,6 +60,6 @@
     </tbody>
   </table>
 
-  <%= paginate @requests, theme: 'bootstrap' %>
+  <%= paginate @requests, theme: 'bootstrap' unless filtered_by_create_date? %>
 
 </div>

@@ -17,6 +17,9 @@ class Request < ActiveRecord::Base
   scope :recent, -> { order(created_at: :desc) }
   scope :needed_date_desc, -> { order(needed_date: :desc) }
   scope :for_date, ->(date) { where(needed_date: date) }
+  scope :for_create_date, lambda { |date|
+    where(created_at: Time.zone.parse(date).beginning_of_day..Time.zone.parse(date).end_of_day)
+  }
   scope :for_type, ->(request_type) { where(type: request_type) if request_type }
 
   delegate :hold_recallable?, :mediateable?, :pageable?, :scannable?, to: :library_location
