@@ -73,7 +73,8 @@ gem 'sidekiq-statistic'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
+  # or call 'binding.pry'  (you may need require 'pry-byebug' first)
+  gem 'pry-byebug'
 
   # RSpec for testing
   gem 'rspec-rails', '~> 3.0'
