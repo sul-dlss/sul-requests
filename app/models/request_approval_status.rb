@@ -1,7 +1,7 @@
 ##
 # Relatively simple utility class to render the status of a request.
 # The status can either be pending, a user error, or return the list of items,
-# that have either been requested sucessfully or have returned with an error.
+# that have either been requested successfully or have returned with an error.
 class RequestApprovalStatus
   include ActionView::Context
   include ActionView::Helpers::TagHelper
