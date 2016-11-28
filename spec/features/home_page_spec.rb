@@ -15,6 +15,13 @@ feature 'Home Page' do
       expect(page).to have_css('.header-links a', text: 'My Account')
       expect(page).to have_css('.header-links a', text: 'Feedback')
     end
+
+    it 'should have a target="_blank" feedback link (with appropriate rel attribute)' do
+      feedback_link = page.find('.header-links a', text: 'Feedback')
+      expect(feedback_link['target']).to eq '_blank'
+      expect(feedback_link['rel']).to eq 'noopener noreferrer'
+    end
+
     it 'should display SUL footer' do
       expect(page).to have_css('#sul-footer #sul-footer-img img')
       expect(page).to have_css('#sul-footer-links a', text: 'Stanford University Libraries')
