@@ -6,6 +6,11 @@
   }
 
   .requested-by {
-    @extend h2;
+    font-size: 1.6em;
   }
+}
+
+.approval-error {
+  color: $alert-red;
+  font-weight: bold;
 }

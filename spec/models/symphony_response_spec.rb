@@ -53,4 +53,14 @@ describe SymphonyResponse do
       expect(subject.any_error?).to be false
     end
   end
+
+  describe 'item_failed?' do
+    it 'is false when the item was successful' do
+      expect(subject.item_failed?('12345678901234')).to be false
+    end
+
+    it 'is true when the item has a non-successful status code' do
+      expect(subject.item_failed?('12345678901234z')).to be true
+    end
+  end
 end

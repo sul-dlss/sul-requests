@@ -186,6 +186,37 @@ describe MediatedPage do
     end
   end
 
+  describe '#send_confirmation!' do
+    describe 'for library id users' do
+      let!(:subject) { create(:mediated_page) }
+      it 'does not send a confirmation email' do
+        subject.user = create(:library_id_user)
+        expect(
+          -> { subject.send_confirmation! }
+        ).to_not change { ConfirmationMailer.deliveries.count }
+      end
+    end
+
+    describe 'for everybody else' do
+      let!(:subject) { create(:mediated_page) }
+      it 'sends a confirmation email' do
+        expect(
+          -> { subject.send_confirmation! }
+        ).to change { ConfirmationMailer.deliveries.count }.by(1)
+      end
+    end
+  end
+
+  describe 'send_approval_status!' do
+    let!(:subject) { create(:mediated_page) }
+    it 'returns true' do
+      expect(
+        -> { subject.send_approval_status! }
+      ).not_to change { ApprovalStatusMailer.deliveries.count }
+      expect(subject.send_approval_status!).to be true
+    end
+  end
+
   describe '#mediator_notification_email_address' do
     it 'fetches email addresses for origin libraires' do
       subject.origin = 'SPEC-COLL'

@@ -25,6 +25,18 @@ class Scan < Request
     'SCAN'
   end
 
+  def submit!
+    send_to_symphony_now!
+  end
+
+  def send_confirmation!
+    ConfirmationMailer.request_confirmation(self).deliver_later if notification_email_address.present?
+  end
+
+  def send_approval_status!
+    true
+  end
+
   private
 
   def scannable_validator

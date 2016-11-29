@@ -52,7 +52,11 @@ class Request < ActiveRecord::Base
   end
 
   def send_confirmation!
-    ConfirmationMailer.request_confirmation(self).deliver_later if notification_email_address.present?
+    true
+  end
+
+  def send_approval_status!
+    ApprovalStatusMailer.request_approval_status(self).deliver_later if notification_email_address.present?
   end
 
   def delegate_request!
@@ -126,7 +130,7 @@ class Request < ActiveRecord::Base
   end
 
   def submit!
-    send_to_symphony!
+    send_to_symphony_later!
   end
 
   def barcode_present?

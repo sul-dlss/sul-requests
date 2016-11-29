@@ -45,13 +45,13 @@ describe ConfirmationMailer do
       describe 'for Scan requests' do
         let(:request) { create(:scan_with_holdings, user: user) }
         it 'is custom' do
-          expect(mail.subject).to eq "Scan to PDF requested (#{request.item_title})"
+          expect(mail.subject).to eq "Scan to PDF requested (\"#{request.item_title}\")"
         end
       end
 
       describe 'for other requests' do
         it 'is the default' do
-          expect(mail.subject).to eq "Item(s) requested (#{request.item_title})"
+          expect(mail.subject).to eq "Item(s) requested (\"#{request.item_title}\")"
         end
       end
     end

@@ -160,21 +160,8 @@ describe PagesController do
         expect(Page.last.user.library_id).to eq '5432123'
       end
 
-      it 'sends an confirmation email' do
+      it 'does not send a confirmation email' do
         stub_symphony_response(build(:symphony_page_with_single_item))
-        expect(
-          lambda do
-            put :create, request: {
-              item_id: '1234',
-              origin: 'GREEN',
-              origin_location: 'STACKS',
-              destination: 'BIOLOGY'
-            }
-          end
-        ).to change { ConfirmationMailer.deliveries.count }.by(1)
-      end
-
-      it 'does not send a confirmation email if the symphony request is not successful' do
         expect(
           lambda do
             put :create, request: {
@@ -186,6 +173,8 @@ describe PagesController do
           end
         ).not_to change { ConfirmationMailer.deliveries.count }
       end
+
+      # Note:  cannot trigger activejob from this spec to check ApprovalStatusMailer
 
       context 'create/update' do
         it 'raises an error when the honey-pot email field is filled in on create' do

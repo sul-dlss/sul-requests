@@ -69,57 +69,56 @@ describe 'requests/status.html.erb' do
     end
   end
 
-  describe 'for mediated pages' do
-    describe 'ad-hoc items' do
-      let(:request) { create(:mediated_page_with_holdings, user: user, ad_hoc_items: ['ZZZ 123', 'ZZZ 321']) }
-      before { render }
-      it 'are displayed when they are present' do
-        expect(rendered).to have_css('dt', text: 'Additional item(s)')
-        expect(rendered).to have_css('dd', text: 'ZZZ 123')
-        expect(rendered).to have_css('dd', text: 'ZZZ 321')
-      end
+  describe 'ad-hoc items' do
+    let(:request) { create(:mediated_page_with_holdings, user: user, ad_hoc_items: ['ZZZ 123', 'ZZZ 321']) }
+    before { render }
+    it 'are displayed when they are present' do
+      expect(rendered).to have_css('dt', text: 'Additional item(s)')
+      expect(rendered).to have_css('dd', text: 'ZZZ 123')
+      expect(rendered).to have_css('dd', text: 'ZZZ 321')
+    end
+  end
+
+  describe 'item level comments' do
+    let(:request) { create(:mediated_page_with_holdings, user: user, item_comment: ['Volume 666 only']) }
+    before do
+      expect(request).to receive(:item_commentable?).and_return(true)
+      render
+    end
+    it 'are displayed when they are present' do
+      expect(rendered).to have_css('dt', text: 'Item(s) requested')
+      expect(rendered).to have_css('dd', text: 'Volume 666 only')
+    end
+  end
+
+  describe 'request level comments' do
+    let(:request) { create(:mediated_page_with_holdings, user: user, request_comment: 'Here today, gone tomorrow') }
+    before { render }
+    it 'are displayed when they are present' do
+      expect(rendered).to have_css('dt', text: 'Comment')
+      expect(rendered).to have_css('dd', text: 'Here today, gone tomorrow')
+    end
+  end
+
+  describe 'selected items' do
+    let(:request) do
+      create(
+        :mediated_page_with_holdings,
+        user: user,
+        barcodes: %w(12345678 23456789),
+        symphony_response_data: build(:symphony_request_with_mixed_status)
+      )
+    end
+    before { render }
+    it 'are displayed when there are multiple selected' do
+      expect(rendered).to have_css('dt', text: 'Item(s) requested')
+      expect(rendered).to have_css('dd', text: 'ABC 123')
+      expect(rendered).to have_css('dd', text: 'ABC 456')
     end
 
-    describe 'item level comments' do
-      let(:request) { create(:mediated_page_with_holdings, user: user, item_comment: ['Volume 666 only']) }
-      before do
-        expect(request).to receive(:item_commentable?).and_return(true)
-        render
-      end
-      it 'are displayed when they are present' do
-        expect(rendered).to have_css('dt', text: 'Item(s) requested')
-        expect(rendered).to have_css('dd', text: 'Volume 666 only')
-      end
-    end
-
-    describe 'request level comments' do
-      let(:request) { create(:mediated_page_with_holdings, user: user, request_comment: 'Here today, gone tomorrow') }
-      before { render }
-      it 'are displayed when they are present' do
-        expect(rendered).to have_css('dt', text: 'Comment')
-        expect(rendered).to have_css('dd', text: 'Here today, gone tomorrow')
-      end
-    end
-
-    describe 'selected items' do
-      let(:request) { create(:mediated_page_with_holdings, user: user, barcodes: %w(12345678 23456789)) }
-      before { render }
-      it 'are displayed when there are multiple selected' do
-        expect(rendered).to have_css('dt', text: 'Item(s) requested')
-        expect(rendered).to have_css('dd', text: 'ABC 123')
-        expect(rendered).to have_css('dd', text: 'ABC 456')
-      end
-
-      context 'with abnormal request statuses' do
-        before do
-          allow_any_instance_of(ItemStatus).to receive(:msgcode).and_return('722')
-          allow_any_instance_of(ItemStatus).to receive(:text).and_return('User already has a hold on this material')
-          render
-        end
-
-        it 'displays abnormal request status messages' do
-          expect(rendered).to have_css('dd', text: 'ABC 123 (User already has a hold on this material)')
-        end
+    context 'with abnormal request statuses' do
+      it 'displays abnormal request status messages' do
+        expect(rendered).to have_css('dd', text: 'Attention: ABC 456 Item not found in catalog')
       end
     end
   end

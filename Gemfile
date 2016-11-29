@@ -67,9 +67,14 @@ group :test do
   gem 'codeclimate-test-reporter', require: false
 end
 
+# Sidekiq is our background processing framework, run via Active Job
+gem 'sidekiq'
+gem 'sidekiq-statistic'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
+  # or call 'binding.pry'  (you may need require 'pry-byebug' first)
+  gem 'pry-byebug'
 
   # RSpec for testing
   gem 'rspec-rails', '~> 3.0'
@@ -109,5 +114,6 @@ group :deployment do
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
   gem 'capistrano-shared_configs'
+  gem 'capistrano-sidekiq'
   gem 'dlss-capistrano'
 end
