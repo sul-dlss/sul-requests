@@ -34,6 +34,14 @@ describe 'Viewing all requests' do
         expect(page).to have_css('td a[href="mailto:jane@example.com"]', text: /Jane \(jane@example.com\)/)
 
         expect(page).to have_selector('table.table-striped', count: 1)
+
+        expect(page).to have_css('th.col-sm-1', text: 'Type')
+        expect(page).to have_css('th.col-sm-1', text: 'Origin')
+        expect(page).to have_css('th.col-sm-1', text: 'Destination')
+        expect(page).to have_css('th.col-sm-5', text: 'Title')
+        expect(page).to have_css('th.col-sm-2', text: 'Requester')
+        expect(page).to have_css('th.col-sm-1', text: 'Requested on')
+        expect(page).to have_css('th.col-sm-1', text: 'Status')
       end
 
       it 'allows filtering by request type' do
