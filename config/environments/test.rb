@@ -46,7 +46,7 @@ Rails.application.configure do
   config.lograge.enabled = true
 
   # Use the Sidekiq adapter for Active Job if configured in settings
-  if Settings.background_jobs == true
+  if Settings.background_jobs && Settings.background_jobs.enabled == true
     config.active_job.queue_adapter = :sidekiq
   end
 end
