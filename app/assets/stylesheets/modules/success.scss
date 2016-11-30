@@ -8,6 +8,13 @@
   .requested-by {
     font-size: 1.6em;
   }
+
+  .user-contact-information {
+    .requested-by {
+      color: $alert-red;
+      font-weight: 300;
+    }
+  }
 }
 
 .approval-error {
