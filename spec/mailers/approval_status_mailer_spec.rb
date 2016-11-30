@@ -82,8 +82,8 @@ describe ApprovalStatusMailer do
         expect(body).to include(request.item_title)
       end
 
-      it 'has items processed' do
-        expect(body).to include('ABC 123')
+      it 'includes the text provided by the RequestApprovalStatus text representation' do
+        expect(body).to include('Pending.')
       end
 
       it 'has ad hoc items' do

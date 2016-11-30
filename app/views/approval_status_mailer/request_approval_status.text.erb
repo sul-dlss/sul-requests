@@ -10,7 +10,7 @@ Items:
 There were problems with one or more of the items listed below:
 <% end -%>
 
-  <%= @request.holdings.map(&:callnumber).join("\n  ") -%>
+  <%= RequestApprovalStatus.new(request: @request).to_text %>
   <%= @request.ad_hoc_items.join("\n  ") if @request.ad_hoc_items.present? -%>
 
 <%= @request.data_to_email_s -%>
