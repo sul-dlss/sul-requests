@@ -285,12 +285,11 @@ describe RequestsHelper do
           'holding',
           barcode: '12345',
           current_location: nil,
-          request_status: double('request_status', msgcode: '722', text: 'Error Message')
+          request_status: double('request_status', msgcode: 'I001', text: 'Error Message')
         )
       end
 
       it 'provides the message text to the user' do
-        stub_symphony_response(build(:symphony_page_with_multiple_items))
         expect(subject).to have_css('.alert-danger', text: '(Error Message)')
       end
     end
