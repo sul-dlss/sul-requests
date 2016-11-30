@@ -30,10 +30,6 @@ class Scan < Request
   end
 
   def send_confirmation!
-    ConfirmationMailer.request_confirmation(self).deliver_later if notification_email_address.present?
-  end
-
-  def send_approval_status!
     true
   end
 

@@ -134,25 +134,10 @@ describe ScansController do
               section_title: 'Some really important chapter'
             }
           end
-        ).to change { ConfirmationMailer.deliveries.count }.by(1)
+        ).not_to change { ConfirmationMailer.deliveries.count }
       end
 
-      it 'does not send an approval status email' do
-        stub_symphony_response(build(:symphony_page_with_single_item))
-        expect(
-          lambda do
-            post :create, illiad_success: true, request: {
-              item_id: '12345',
-              origin: 'SAL3',
-              origin_location: 'STACKS',
-              barcodes: ['12345678'],
-              section_title: 'Some really important chapter'
-            }
-          end
-        ).not_to change {
-          ApprovalStatusMailer.deliveries.count { |x| x.subject =~ /Your request/ }
-        }
-      end
+      # Note:  cannot trigger activejob from this spec to check ApprovalStatusMailer
 
       it 'submits the request to symphony' do
         expect(SubmitSymphonyRequestJob).to receive(:perform_now)

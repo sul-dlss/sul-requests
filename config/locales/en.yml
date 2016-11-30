@@ -66,6 +66,8 @@ en:
     mediated_page:
       pending: 'Waiting for approval.'
       success: '%{item} has been approved.'
+    scan:
+      success: '%{item} has been paged for scanning.'
     rumseymap:
       extra_note: 'Items are typically approved 1-3 days before your scheduled visit.'
     spec_coll:
