@@ -131,4 +131,57 @@ PagingSchedule.configure do
     will_arrive after: '1:00pm'
     business_days_later 2
   end
+
+  # Media Microtext
+  when_paging from: 'MEDIA-MTXT', to: 'MEDIA-MTXT', before: '10:00am' do
+    will_arrive after: '11:00am'
+    business_days_later 0
+  end
+  when_paging from: 'MEDIA-MTXT', to: 'MEDIA-MTXT', before: '2:00pm' do
+    will_arrive after: '3:00pm'
+    business_days_later 0
+  end
+  when_paging from: 'MEDIA-MTXT', to: 'MEDIA-MTXT', before: '5:00pm' do
+    will_arrive after: '6:00pm'
+    business_days_later 0
+  end
+  when_paging from: 'MEDIA-MTXT', to: 'MEDIA-MTXT', after: '5:00pm' do
+    will_arrive after: '11:00am'
+    business_days_later 1
+  end
+
+  when_paging from: 'MEDIA-MTXT', to: 'GREEN', before: '10:00am' do
+    will_arrive after: '11:00am'
+    business_days_later 0
+  end
+  when_paging from: 'MEDIA-MTXT', to: 'GREEN', before: '2:00pm' do
+    will_arrive after: '3:00pm'
+    business_days_later 0
+  end
+  when_paging from: 'MEDIA-MTXT', to: 'GREEN', before: '6:30pm' do
+    will_arrive after: '7:30pm'
+    business_days_later 0
+  end
+  when_paging from: 'MEDIA-MTXT', to: 'GREEN', after: '6:30pm' do
+    will_arrive after: '11:00am'
+    business_days_later 1
+  end
+
+  when_paging from: 'MEDIA-MTXT', to: 'HOPKINS', before: '10:00am' do
+    will_arrive after: '1:00pm'
+    business_days_later 1
+  end
+  when_paging from: 'MEDIA-MTXT', to: 'HOPKINS', after: '10:00am' do
+    will_arrive after: '1:00pm'
+    business_days_later 2
+  end
+
+  when_paging from: 'MEDIA-MTXT', to: :anywhere, before: '3:00pm' do
+    will_arrive after: '12:00pm'
+    business_days_later 1
+  end
+  when_paging from: 'MEDIA-MTXT', to: :anywhere, after: '3:00pm' do
+    will_arrive after: '12:00pm'
+    business_days_later 2
+  end
 end
