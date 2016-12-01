@@ -74,7 +74,12 @@ class LibraryLocation
   def pickup_libraries_for(collection)
     all_libraries.select do |k, _|
       collection.include?(k)
-    end
+    end.merge(additional_pickup_libraries)
+  end
+
+  def additional_pickup_libraries
+    return {} unless SULRequests::Application.config.include_self_in_library_list.include?(@library)
+    all_libraries.select { |k, _| k == @library }
   end
 
   def library_specific_pickup_libraries

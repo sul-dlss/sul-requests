@@ -21,7 +21,7 @@ module PickupLibrariesHelper
     return unless pickup_libraries.keys.length > 1
     form.select(
       :destination,
-      pickup_libraries_array(pickup_libraries),
+      pickup_libraries_array(form, pickup_libraries),
       {
         label: label_for_pickup_libraries_dropdown(pickup_libraries),
         selected: form.object.destination || default_pickup_library
@@ -49,9 +49,16 @@ module PickupLibrariesHelper
     HTML
   end
 
-  def pickup_libraries_array(pickup_libraries)
-    pickup_libraries.map do |k, v|
+  def pickup_libraries_array(form, pickup_libraries)
+    libraries = pickup_libraries.merge(additional_pickup_libraries(form)).sort
+    libraries.map do |k, v|
       [v, k]
     end
+  end
+
+  def additional_pickup_libraries(form)
+    origin = form.object.origin
+    return {} unless SULRequests::Application.config.include_self_in_library_list.include?(origin)
+    SULRequests::Application.config.libraries.select { |k, _| k == origin }
   end
 end
