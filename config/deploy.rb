@@ -59,3 +59,4 @@ before 'deploy:restart', 'shared_configs:update'
 # Sidekiq configuration (run one process with ten threads)
 set :sidekiq_processes, 1
 set :sidekiq_concurrency, 10
+set :sidekiq_queue, ['default', 'mailers']

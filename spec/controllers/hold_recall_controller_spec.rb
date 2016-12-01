@@ -99,14 +99,16 @@ describe HoldRecallsController do
         expect(HoldRecall.last.needed_date).to eq Time.zone.today + 1.month
       end
 
-      it 'sends an confirmation email' do
+      it 'does not send a confirmation email' do
         stub_symphony_response(build(:symphony_page_with_single_item))
         expect(
           lambda do
             put :create, request: normal_params
           end
-        ).to change { ConfirmationMailer.deliveries.count }.by(1)
+        ).not_to change { ConfirmationMailer.deliveries.count }
       end
+
+      # Note:  cannot trigger activejob from this spec to check ApprovalStatusMailer
     end
     describe 'invalid requests' do
       let(:user) { create(:webauth_user) }

@@ -134,8 +134,10 @@ describe ScansController do
               section_title: 'Some really important chapter'
             }
           end
-        ).to change { ConfirmationMailer.deliveries.count }.by(1)
+        ).not_to change { ConfirmationMailer.deliveries.count }
       end
+
+      # Note:  cannot trigger activejob from this spec to check ApprovalStatusMailer
 
       it 'submits the request to symphony' do
         expect(SubmitSymphonyRequestJob).to receive(:perform_now)

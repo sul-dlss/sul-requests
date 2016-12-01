@@ -1,8 +1,8 @@
 ###
-#  Mailer class to send confirmation emails after requests have been submitted
+#  Mailer class to send approval status emails after requests have been submitted
 ###
-class ConfirmationMailer < ApplicationMailer
-  def request_confirmation(request)
+class ApprovalStatusMailer < ApplicationMailer
+  def request_approval_status(request)
     @request = request
     @status_url = success_url
     @contact_info = formatted_contact_info
@@ -21,9 +21,9 @@ class ConfirmationMailer < ApplicationMailer
 
   def subject
     I18n.t(
-      "confirmation_email.#{@request.class.name.underscore}.subject",
+      "approval_status_email.#{@request.class.name.underscore}.subject.#{suffix}",
       title: @request.item_title,
-      default: I18n.t('confirmation_email.request.subject')
+      default: I18n.t("approval_status_email.request.subject.#{suffix}")
     )
   end
 
@@ -47,6 +47,16 @@ class ConfirmationMailer < ApplicationMailer
       polymorphic_url([:status, @request], token: @request.encrypted_token)
     else
       polymorphic_url([:status, @request])
+    end
+  end
+
+  def suffix
+    @suffix ||= begin
+      if @request.symphony_response.success?
+        'success'
+      else
+        'failure'
+      end
     end
   end
 end

@@ -1,0 +1,47 @@
+On <%= l @request.created_at.to_date, format: :long %>, you requested:
+
+<%= @request.item_title %>
+
+<% if @request.symphony_response.success? -%>
+The items listed below have been processed:
+<% elsif @request.symphony_response.usererr_code.present? -%>
+Items:
+<% else -%>
+There were problems with one or more of the items listed below:
+<% end -%>
+
+  <%= RequestApprovalStatus.new(request: @request).to_text %>
+  <%= @request.ad_hoc_items.join("\n  ") if @request.ad_hoc_items.present? -%>
+
+<%= @request.data_to_email_s -%>
+
+<% if @request.symphony_response.success? -%>
+  <% if @request.needed_date.present? -%>
+<%= "#{@request.class.human_attribute_name(:needed_date)}: #{l @request.needed_date, format: :long}" %>
+
+  <% end -%>
+Any further updates will be posted on the status page at <%= @status_url %>
+<% if @request.appears_in_myaccount? %>You can also see the status at http://library.stanford.edu/myaccount<% end %>
+<% else -%>
+<%= t("approval_status_email.request_status.failure.code_#{@request.symphony_response.usererr_code}", default: '')%>
+
+What can you do now?
+
+  Request assistance by replying to this email, or
+  <% if @request.symphony_response.usererr_code.blank? -%>
+  try your request again, at https://searchworks.stanford.edu/view/<%= @request.item_id %>
+  <% else -%>
+  check MyAccount (http://library.stanford.edu/myaccount) for more information.
+  <% end -%>
+<% end -%>
+
+<% if @request.symphony_response.usererr_code.present? -%>
+Just need a chapter or article?
+     Even though your status is blocked, you are eligible for Scan to PDF.
+     You can request a single article or chapter, up to 50 pages.
+     https://searchworks.stanford.edu/view/<%= @request.item_id %>
+<% end -%>
+
+Questions about your request?
+Contact:
+<%= @contact_info %>

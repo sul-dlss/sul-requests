@@ -1,4 +1,22 @@
 FactoryGirl.define do
+  factory :symphony_scan_success, class: Hash do
+    req_type 'SCAN'
+    confirm_email 'jlathrop@stanford.edu'
+    requested_items [
+      {
+        'barcode' => '36105212920537',
+        'msgcode' => 'S001',
+        'text' => 'Scan submitted'
+      }
+    ]
+
+    initialize_with do
+      attributes.map do |k, h|
+        [k.to_s, h]
+      end.to_h
+    end
+  end
+
   factory :symphony_scan_with_multiple_items, class: Hash do
     req_type 'SCAN'
     confirm_email 'jlathrop@stanford.edu'
@@ -116,7 +134,20 @@ FactoryGirl.define do
     end
   end
 
-  factory :symphony_page_with_user_error, class: Hash do
+  factory :symphony_page_with_blocked_user, class: Hash do
+    req_type 'PAGE'
+    confirm_email 'jlathrop@stanford.edu'
+    usererr_code 'U003'
+    requested_items []
+
+    initialize_with do
+      attributes.map do |k, h|
+        [k.to_s, h]
+      end.to_h
+    end
+  end
+
+  factory :symphony_page_with_expired_user, class: Hash do
     req_type 'PAGE'
     confirm_email 'jlathrop@stanford.edu'
     usererr_code 'U004'

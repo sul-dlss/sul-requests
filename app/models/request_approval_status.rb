@@ -1,7 +1,7 @@
 ##
 # Relatively simple utility class to render the status of a request.
 # The status can either be pending, a user error, or return the list of items,
-# that have either been requested sucessfully or have returned with an error.
+# that have either been requested successfully or have returned with an error.
 class RequestApprovalStatus
   include ActionView::Context
   include ActionView::Helpers::TagHelper
@@ -16,7 +16,14 @@ class RequestApprovalStatus
   def to_html
     return content_wrapper { pending_text } if pending?
     return content_wrapper { user_error_text } if user_error?
-    safe_join(item_list_with_status)
+    safe_join(item_list_with_status_markup)
+  end
+
+  def to_text
+    return pending_text if pending?
+    # Not putting user errors here because it
+    # is handled elswehere in the context of the plain text status
+    item_list_with_status.join("\n")
   end
 
   def pending?
@@ -49,6 +56,16 @@ class RequestApprovalStatus
   def item_list_with_status
     request.holdings.map do |item|
       if request.symphony_response.success?(item.barcode)
+        succcess_text_for_item(item.callnumber)
+      elsif request.symphony_response.item_failed?(item.barcode)
+        error_text_for_item(item)
+      end
+    end
+  end
+
+  def item_list_with_status_markup
+    request.holdings.map do |item|
+      if request.symphony_response.success?(item.barcode)
         success_markup_for_item(item.callnumber)
       elsif request.symphony_response.item_failed?(item.barcode)
         error_markup_for_item(item)
@@ -57,23 +74,23 @@ class RequestApprovalStatus
   end
 
   def error_markup_for_item(item)
-    content_wrapper(css_class: 'approval-error') do
-      t(
-        :'approval_status.default.error',
-        callnumber: item.callnumber,
-        error_text: item.request_status.try(:text)
-      )
-    end
+    content_wrapper(css_class: 'approval-error') { error_text_for_item(item) }
+  end
+
+  def error_text_for_item(item)
+    t(:'approval_status.default.error', callnumber: item.callnumber, error_text: item.request_status.try(:text))
   end
 
   def success_markup_for_item(item)
-    content_wrapper do
-      t(
-        :"approval_status.#{request_class_name}.success",
-        default: [:"approval_status.#{request_origin}.success", :'approval_status.default.success'],
-        item: item
-      )
-    end
+    content_wrapper { succcess_text_for_item(item) }
+  end
+
+  def succcess_text_for_item(item)
+    t(
+      :"approval_status.#{request_class_name}.success",
+      default: [:"approval_status.#{request_origin}.success", :'approval_status.default.success'],
+      item: item
+    )
   end
 
   def user_error_text
