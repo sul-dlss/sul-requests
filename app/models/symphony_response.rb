@@ -26,6 +26,11 @@ class SymphonyResponse
     erroneous_barcodes.present? && successful_barcodes.present?
   end
 
+  def item_failed?(barcode)
+    return unless barcode && items_by_barcode[barcode]
+    items_by_barcode[barcode]['msgcode'] && !item_successful?(barcode)
+  end
+
   private
 
   def item_successful?(barcode = nil)

@@ -51,7 +51,8 @@ class ItemStatus
   end
 
   def approve!(user)
-    @request.send_to_symphony!(barcodes: [@id])
+    @request.send_to_symphony_now!(barcodes: [@id])
+    reload_request # reloading to get any attributes saved to the database above
     return unless symphony_item_successful?
     self.status_object = {
       approved: true,
@@ -97,6 +98,12 @@ class ItemStatus
   def symphony_user_error_code
     return unless @request.symphony_response && @request.symphony_response.usererr_code.present?
     @request.symphony_response.usererr_code
+  end
+
+  def reload_request
+    return unless @request.persisted?
+    @request.reload
+    @request.request_status_data ||= {}
   end
 
   def default_status_object

@@ -2,7 +2,7 @@
   <% if current_request.holdings.present? %>
     <dt><%= current_request.class.human_attribute_name(:holdings) %></dt>
     <% current_request.holdings.each do |holding| %>
-      <dd><%= holding.callnumber %><%= holding_request_status(holding) %></dd>
+      <dd><%= holding.callnumber %></dd>
     <% end  %>
   <% end %>
 
@@ -13,12 +13,13 @@
     <% end %>
   <% end %>
 
-  <% if current_request.destination.present? %>
+  <% destination_name = LibraryLocation.library_name_by_code(current_request.destination) %>
+  <% if destination_name.present? %>
     <dt>
       <%= label_for_pickup_libraries_dropdown(current_request.library_location.pickup_libraries) %>
     </dt>
     <dd>
-      <%= LibraryLocation.library_name_by_code(current_request.destination) %>
+      <%= destination_name %>
     </dd>
   <% end %>
 

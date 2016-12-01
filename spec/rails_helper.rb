@@ -109,5 +109,5 @@ def stub_symphony_response(response)
 end
 
 def expect_to_be_on_success_page
-  expect(page).to have_css('h1#dialogTitle', text: /Request complete|Can't complete your request/)
+  expect(page).to have_css('h1#dialogTitle', text: /We've received your request/)
 end

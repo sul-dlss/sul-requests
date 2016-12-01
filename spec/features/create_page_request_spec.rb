@@ -91,7 +91,7 @@ describe 'Creating a page request' do
 
       expect(current_url).to eq successful_page_url(Page.last)
       expect_to_be_on_success_page
-      expect(page).to have_content 'Shared with your proxy group'
+      expect(Page.last).to be_proxy
     end
 
     it 'allows the user to keep the request private' do
@@ -103,7 +103,7 @@ describe 'Creating a page request' do
 
       expect(current_url).to eq successful_page_url(Page.last)
       expect_to_be_on_success_page
-      expect(page).to have_content 'Individual Request'
+      expect(page).to have_content "We'll send you an email when processing is complete."
     end
   end
 

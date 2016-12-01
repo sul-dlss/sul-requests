@@ -5,10 +5,10 @@
   <dl class='dl-horizontal dl-invert'>
     <dt>Requested on</dt>
     <dd><%= time_tag current_request.created_at.to_date, :long %></dd>
-    <dt>Status</dt>
-    <%= request_approval_status %>
   </dl>
   <hr />
+
+  <%= render 'request_error_alert' %>
 
   <%= render partial: 'searchworks_item_information' %>
   <%= render partial: 'shared/request_status_information' %>

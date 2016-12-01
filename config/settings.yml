@@ -63,3 +63,7 @@ stanford_ips:
   ranges: []
 features:
   remote_ip_check: true
+
+background_jobs:
+  enabled: false
+

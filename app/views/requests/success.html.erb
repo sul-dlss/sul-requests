@@ -1,40 +1,25 @@
 <div class='<%= dialog_column_class %> success-page'>
-  <%= render 'success_header' %>
+  <h1 id='dialogTitle'>
+    <span class="sul-i-check-2" aria-hidden="true"></span> We've received your request
+  </h1>
+
+  <div class='alert alert-info'>
+    <% if current_request.notification_email_address.present? %>
+      <% if current_request.user.to_email_string.present? %>
+        <span class='requested-by'><%= current_request.user.to_email_string %></span>
+      <% end %>
+      <p>
+        <% if current_request.proxy? %>
+          <%= t('.email_notification.proxy') %>
+        <% else %>
+          <%= t('.email_notification.default') %>
+        <% end %>
+        (This may take a few minutes.)
+      </p>
+    <% end %>
+    <p>You can <%= link_to('check the status of your request', status_page_url_for_request(current_request)) %> at any time.</p>
+  </div>
+
   <%= render 'searchworks_item_information' %>
   <%= render 'shared/request_status_information' %>
-
-  <% if current_request.is_a?(MediatedPage) || current_request.symphony_response.success? %>
-    <dl class='dl-horizontal dl-invert'>
-      <dt class='sr-only'><%= current_request.class.human_attribute_name :user %></dt>
-      <% unless current_request.user.library_id_user? %>
-        <dd>
-          <span class="requested-by"><%= current_request.user.to_email_string %></span>
-        </dd>
-      <% end %>
-
-      <% if current_request.proxy? %>
-        <dd>
-          <p>Shared with your proxy group</p>
-          <p class='help-block'><%= t('.email_notification.proxy') %></p>
-        </dd>
-      <% elsif current_user.sponsor? %>
-        <dd>
-          <p>Individual Request</p>
-          <p class='help-block'><%= t('.email_notification.default') %></p>
-        </dd>
-      <% elsif current_request.notification_email_address.present? %>
-        <dd>
-          <p class='help-block'><%= t('.email_notification.default') %></p>
-        </dd>
-      <% end %>
-    </dl>
-  <% end %>
-
-  <% if symphony_request_failed_due_to_user_privs? && current_request.scannable? && can?(:create, Scan) %>
-    <div class='<%= content_column_class %> <%= label_column_offset_class %>'>
-      <h2>Just need a chapter or article?</h2>
-      <p>Even though your status is blocked, you are eligible for Scan to PDF. You can request a single article or chapter, up to 50 pages.</p>
-      <%= link_to('Request Scan to PDF', new_scan_path_for_current_request, class: 'btn btn-md btn-default btn-full') %>
-    </div>
-  <% end %>
 </div>

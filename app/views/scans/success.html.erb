@@ -1,0 +1,35 @@
+<div class='<%= dialog_column_class %> success-page'>
+  <h1 id='dialogTitle'>
+    <span class="sul-i-check-2" aria-hidden="true"></span> Request complete
+  </h1>
+
+  <%= render 'searchworks_item_information' %>
+  <%= render 'shared/request_status_information' %>
+
+  <% if current_request.symphony_response.success? %>
+    <dl class='dl-horizontal dl-invert user-contact-information'>
+      <dt class='sr-only'><%= current_request.class.human_attribute_name :user %></dt>
+      <% unless current_request.user.library_id_user? %>
+        <dd>
+          <span class="requested-by"><%= current_request.user.to_email_string %></span>
+        </dd>
+      <% end %>
+
+      <% if current_request.proxy? %>
+        <dd>
+          <p>Shared with your proxy group</p>
+          <p class='help-block'><%= t('requests.success.synchronous_email_notification.proxy') %></p>
+        </dd>
+      <% elsif current_user.sponsor? %>
+        <dd>
+          <p>Individual Request</p>
+          <p class='help-block'><%= t('requests.success.synchronous_email_notification.default') %></p>
+        </dd>
+      <% elsif current_request.notification_email_address.present? %>
+        <dd>
+          <p class='help-block'><%= t('requests.success.synchronous_email_notification.default') %></p>
+        </dd>
+      <% end %>
+    </dl>
+  <% end %>
+</div>

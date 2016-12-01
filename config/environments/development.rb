@@ -44,5 +44,10 @@ Rails.application.configure do
   # put IP at beginning of log messages
   config.log_tags = [ :remote_ip ]
   # reduce noise in logs
-  config.lograge.enabled = true
+  #config.lograge.enabled = true
+
+  # Use the Sidekiq adapter for Active Job if configured in settings
+  if Settings.background_jobs && Settings.background_jobs.enabled == true
+    config.active_job.queue_adapter = :sidekiq
+  end
 end

@@ -6,6 +6,18 @@
   }
 
   .requested-by {
-    @extend h2;
+    font-size: 1.6em;
   }
+
+  .user-contact-information {
+    .requested-by {
+      color: $alert-red;
+      font-weight: 300;
+    }
+  }
+}
+
+.approval-error {
+  color: $alert-red;
+  font-weight: bold;
 }

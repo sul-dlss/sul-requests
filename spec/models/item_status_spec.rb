@@ -1,5 +1,11 @@
 require 'rails_helper'
 
+def update_symphony_data_and_save(request, symphony_data)
+  r = Request.find(request.id)
+  r.symphony_response_data = symphony_data
+  r.save!
+end
+
 describe ItemStatus do
   let(:request) { create(:mediated_page_with_single_holding) }
   let(:barcode) { '3610512345' }
@@ -38,8 +44,22 @@ describe ItemStatus do
 
     it 'triggers a request to symphony when an item is approved' do
       expect(request).to receive(:save!)
-      expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(request, barcodes: [barcode])
+      expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(request.id, barcodes: [barcode])
       subject.approve!('jstanford')
+    end
+
+    context 'persisting data' do
+      let(:request) { create(:mediated_page) }
+      it 'reloads the record to ensure that any serialized attributes are updated' do
+        response = build(:symphony_page_with_single_item)
+        expect(request.symphony_response_data).to be_nil
+
+        expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(request.id, barcodes: [barcode]).and_return(
+          update_symphony_data_and_save(request, response)
+        )
+        subject.approve!('jstanford')
+        expect(request.symphony_response_data).to eq response
+      end
     end
 
     describe 'request approval status' do
@@ -108,7 +128,7 @@ describe ItemStatus do
     end
 
     context 'symphony errors' do
-      let(:request) { build(:request_with_symphony_errors) }
+      let(:request) { create(:request_with_symphony_errors) }
       let(:barcode) { '12345678901234' }
       it 'returns user level error codes' do
         expect(json[:usererr_code]).to eq 'U003'

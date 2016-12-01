@@ -25,6 +25,14 @@ class Scan < Request
     'SCAN'
   end
 
+  def submit!
+    send_to_symphony_now!
+  end
+
+  def send_confirmation!
+    true
+  end
+
   private
 
   def scannable_validator

@@ -6,12 +6,17 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'home#show'
 
+  require 'sidekiq/web'
+  require 'sidekiq_constraint'
+  Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]
+  mount Sidekiq::Web => '/sidekiq', constraints: SidekiqConstraint.new
+
   #sorry page route
   get 'sorry/unable'
 
   get 'interstitial' => 'interstitial#show', as: :interstitial
 
-  # Auhtorization routes
+  # Authorization routes
   get 'webauth/login' => 'authentication#login', as: :login
   get 'webauth/logout' => 'authentication#logout', as: :logout
 
