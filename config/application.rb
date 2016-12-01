@@ -65,6 +65,8 @@ module SULRequests
 
     config.default_pickup_library = 'GREEN'
 
+    config.include_self_in_library_list = ['MEDIA-MTXT']
+
     config.pickup_libraries = [
       'ART',
       'BIOLOGY',
@@ -88,7 +90,6 @@ module SULRequests
       'ARS' => ['ARS'],
       'HV-ARCHIVE' => ['HV-ARCHIVE'],
       'LAW' => ['LAW'],
-      'MEDIA-MTXT' => ['MEDIA-MTXT'],
       'RUMSEYMAP' => ['RUMSEYMAP'],
       'SPEC-COLL' => ['SPEC-COLL']
     }

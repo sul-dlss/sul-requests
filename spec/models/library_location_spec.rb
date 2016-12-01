@@ -45,6 +45,12 @@ describe LibraryLocation do
       request.origin_location = 'PAGE-MU'
       expect(LibraryLocation.new(request).pickup_libraries).to eq('MUSIC' => 'Music Library')
     end
+
+    it 'should return pickup libraries that include itself (when configured)' do
+      request.origin = 'MEDIA-MTXT'
+      request.origin_location = 'MM-STACKS'
+      expect(LibraryLocation.new(request).pickup_libraries.keys).to include('MEDIA-MTXT')
+    end
   end
   describe '#library_name_by_code' do
     it 'should return the configured library\'s name' do
