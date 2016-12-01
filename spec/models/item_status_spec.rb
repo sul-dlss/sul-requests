@@ -3,7 +3,7 @@ require 'rails_helper'
 def update_symphony_data_and_save(request, symphony_data)
   r = Request.find(request.id)
   r.symphony_response_data = symphony_data
-  r.save!
+  r.save
 end
 
 describe ItemStatus do
@@ -22,7 +22,7 @@ describe ItemStatus do
     end
 
     it 'is updated when the item is approved' do
-      expect(request).to receive(:save!)
+      expect(request).to receive(:save)
       subject.approve!('jstanford')
       expect(subject.send(:status_object)['approved']).to be true
       expect(subject.send(:status_object)['approver']).to eq 'jstanford'
@@ -32,7 +32,7 @@ describe ItemStatus do
 
   describe '#approve!' do
     it 'persists the status to the request' do
-      expect(request).to receive(:save!)
+      expect(request).to receive(:save)
       subject.approve!('jstanford')
 
       status = request.request_status_data[barcode]
@@ -43,7 +43,7 @@ describe ItemStatus do
     end
 
     it 'triggers a request to symphony when an item is approved' do
-      expect(request).to receive(:save!)
+      expect(request).to receive(:save)
       expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(request.id, barcodes: [barcode])
       subject.approve!('jstanford')
     end
@@ -87,7 +87,7 @@ describe ItemStatus do
       let(:request) { create(:request_with_holdings) }
       it 'does not persist any changes if the symphony response is not successful' do
         stub_symphony_response(build(:symphony_request_with_all_errored_items))
-        expect(request).not_to receive(:save!)
+        expect(request).not_to receive(:save)
         expect(subject.approve!('jstanford')).to be nil
       end
     end
