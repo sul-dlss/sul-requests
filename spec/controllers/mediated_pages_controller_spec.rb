@@ -205,7 +205,7 @@ describe MediatedPagesController do
       end
     end
 
-    context 'when unsuccesful' do
+    context 'when unsuccessful' do
       before do
         expect_any_instance_of(MediatedPage).to receive(:update).and_return(false)
       end

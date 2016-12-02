@@ -121,7 +121,7 @@ describe ScansController do
         expect(illiad_response).to include('&rft.call_number=ABC+123')
       end
 
-      it 'sends an confirmation email' do
+      it 'does not send a confirmation email' do
         stub_searchworks_api_json(build(:sal3_holdings))
         stub_symphony_response(build(:symphony_page_with_single_item))
         expect(
