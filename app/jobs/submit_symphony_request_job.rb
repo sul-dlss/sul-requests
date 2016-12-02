@@ -3,6 +3,9 @@
 class SubmitSymphonyRequestJob < ActiveJob::Base
   queue_as :default
 
+  # we pass the ActiveRecord identifier to our job, rather than the ActiveRecord reference.
+  #   This is recommended as a Sidekiq best practice (https://github.com/mperham/sidekiq/wiki/Best-Practices).
+  #   It also helps reduce the size of the Redis database (used by Sidekiq), which stores its data in memory.
   def perform(request_id, options = {})
     return true unless enabled?
     request = find_request(request_id)
