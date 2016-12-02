@@ -4,6 +4,7 @@
 [![Code Climate Test Coverage](https://codeclimate.com/github/sul-dlss/sul-requests/badges/coverage.svg)](https://codeclimate.com/github/sul-dlss/sul-requests/coverage)
 [![Dependency Status](https://gemnasium.com/sul-dlss/sul-requests.svg)](https://gemnasium.com/sul-dlss/sul-requests)
 [![Stories in Ready](https://badge.waffle.io/sul-dlss/sul-requests.png?label=ready&title=Ready)](https://waffle.io/sul-dlss/sul-requests)
+[![Latest Tagged version](https://badge.fury.io/gh/sul-dlss%2Fsul-requests.svg)](https://badge.fury.io/gh/sul-dlss%2Fsul-requests)
 
 
 # SUL Requests
