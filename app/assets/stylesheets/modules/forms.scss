@@ -8,6 +8,14 @@
   color: $text-color;
 }
 
+// This ensures that the login options toggle is viewed
+// as part of the form DOM so that the contentHeight is
+// calculated properly in IE.
+#new-request {
+  display: inline-block;
+  width: 100%;
+}
+
 hr {
   border: 0;
   border-top: 1px solid $grayish-yellow;
