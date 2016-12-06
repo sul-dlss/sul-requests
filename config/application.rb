@@ -66,6 +66,7 @@ module SULRequests
     config.default_pickup_library = 'GREEN'
 
     config.include_self_in_library_list = ['MEDIA-MTXT']
+    config.self_in_library_list_is_selected = ['MEDIA-MTXT']
 
     config.pickup_libraries = [
       'ART',
