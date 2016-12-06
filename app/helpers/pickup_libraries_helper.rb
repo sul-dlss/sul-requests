@@ -24,15 +24,20 @@ module PickupLibrariesHelper
       pickup_libraries_array(form, pickup_libraries),
       {
         label: label_for_pickup_libraries_dropdown(pickup_libraries),
-        selected: form.object.destination || default_pickup_library
+        selected: form.object.destination || default_pickup_library(form.object.origin)
       },
       aria: { controls: 'scheduler-text' },
       data: { 'paging-schedule-updater' => 'true', 'text-selector' => "[data-text-object='#{form.object.object_id}']" }
     )
   end
 
-  def default_pickup_library
-    SULRequests::Application.config.default_pickup_library
+  def default_pickup_library(origin)
+    pickup_library_for_origin(origin) || SULRequests::Application.config.default_pickup_library
+  end
+
+  def pickup_library_for_origin(origin)
+    return unless SULRequests::Application.config.self_in_library_list_is_selected.include?(origin)
+    origin
   end
 
   def single_library_markup(form, library)
