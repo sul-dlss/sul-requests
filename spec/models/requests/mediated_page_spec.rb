@@ -17,7 +17,7 @@ describe MediatedPage do
         MediatedPage.create!(item_id: '1234',
                              origin: 'GREEN',
                              origin_location: 'STACKS',
-                             destination: 'BIOLOGY',
+                             destination: 'ART',
                              needed_date: Time.zone.today + 1.day)
       end.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: This item is not mediatable')
     end

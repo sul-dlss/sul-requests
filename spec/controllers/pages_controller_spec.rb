@@ -3,7 +3,7 @@ require 'rails_helper'
 describe PagesController do
   let(:page) { create(:page) }
   let(:normal_params) do
-    { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'BIOLOGY' }
+    { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
   end
   before do
     allow(controller).to receive_messages(current_user: user)
@@ -23,7 +23,7 @@ describe PagesController do
     it 'should raise an error when the item is not pageable' do
       expect(
         lambda do
-          get :new, item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'BIOLOGY'
+          get :new, item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'ART'
         end
       ).to raise_error(PagesController::UnpageableItemError)
     end
@@ -32,12 +32,12 @@ describe PagesController do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
       it 'should redirect to the login page passing a referrer param to continue creating the page request' do
-        post :create, request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'BIOLOGY' }
+        post :create, request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
         expect(response).to redirect_to(
           login_path(
             referrer: interstitial_path(
               redirect_to: create_pages_url(
-                request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'BIOLOGY' }
+                request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
               )
             )
           )
@@ -48,7 +48,7 @@ describe PagesController do
           item_id: '1234',
           origin: 'GREEN',
           origin_location: 'STACKS',
-          destination: 'BIOLOGY',
+          destination: 'ART',
           user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }
         }
 
@@ -60,7 +60,7 @@ describe PagesController do
           item_id: '1234',
           origin: 'GREEN',
           origin_location: 'STACKS',
-          destination: 'BIOLOGY',
+          destination: 'ART',
           user_attributes: { library_id: '12345' }
         }
 
@@ -80,7 +80,7 @@ describe PagesController do
             item_id: '1234',
             origin: 'GREEN',
             origin_location: 'STACKS',
-            destination: 'BIOLOGY'
+            destination: 'ART'
           }
 
           expect(response).to render_template('sponsor_request')
@@ -91,7 +91,7 @@ describe PagesController do
             item_id: '1234',
             origin: 'GREEN',
             origin_location: 'STACKS',
-            destination: 'BIOLOGY',
+            destination: 'ART',
             proxy: 'true'
           }
 
@@ -104,7 +104,7 @@ describe PagesController do
             item_id: '1234',
             origin: 'GREEN',
             origin_location: 'STACKS',
-            destination: 'BIOLOGY',
+            destination: 'ART',
             proxy: 'false'
           }
 
@@ -118,7 +118,7 @@ describe PagesController do
           expect(
             lambda do
               get :create, request: {
-                item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'BIOLOGY'
+                item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART'
               }
             end
           ).to raise_error(CanCan::AccessDenied)
@@ -128,7 +128,7 @@ describe PagesController do
     describe 'by webauth users' do
       let(:user) { create(:webauth_user) }
       it 'should be allowed' do
-        post :create, request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'BIOLOGY' }
+        post :create, request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
         expect(response).to redirect_to successful_page_path(Page.last)
         expect(Page.last.origin).to eq 'GREEN'
         expect(Page.last.user).to eq user
@@ -140,7 +140,7 @@ describe PagesController do
           item_id: '1234',
           origin: 'GREEN',
           origin_location: 'STACKS',
-          destination: 'BIOLOGY',
+          destination: 'ART',
           barcodes: { '3610512345678' => '1', '3610587654321' => '0', '12345679' => '1' }
         }
         expect(response).to redirect_to successful_page_path(Page.last)
@@ -152,7 +152,7 @@ describe PagesController do
           item_id: '1234',
           origin: 'GREEN',
           origin_location: 'STACKS',
-          destination: 'BIOLOGY',
+          destination: 'ART',
           user_attributes: { library_id: '5432123' }
         }
 
@@ -168,7 +168,7 @@ describe PagesController do
               item_id: '1234',
               origin: 'GREEN',
               origin_location: 'STACKS',
-              destination: 'BIOLOGY'
+              destination: 'ART'
             }
           end
         ).not_to change { ConfirmationMailer.deliveries.count }
