@@ -24,7 +24,7 @@ describe HoldRecallsController do
     it 'should raise an error if the item is unmediateable' do
       expect(
         lambda do
-          get :new, item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'BIOLOGY'
+          get :new, item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART'
         end
       ).to raise_error(HoldRecallsController::NotHoldRecallableError)
     end

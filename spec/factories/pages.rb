@@ -3,7 +3,7 @@ FactoryGirl.define do
     item_id '1234'
     origin 'GREEN'
     origin_location 'STACKS'
-    destination 'BIOLOGY'
+    destination 'ART'
     item_title 'Title for Page 1234'
 
     after(:build) do |request|
@@ -19,7 +19,7 @@ FactoryGirl.define do
     item_id '1234'
     origin 'GREEN'
     origin_location 'STACKS'
-    destination 'BIOLOGY'
+    destination 'ART'
 
     after(:build) do |page|
       class << page
@@ -34,7 +34,7 @@ FactoryGirl.define do
     item_id '1234'
     origin 'GREEN'
     origin_location 'STACKS'
-    destination 'BIOLOGY'
+    destination 'ART'
 
     after(:build) do |page|
       class << page

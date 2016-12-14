@@ -59,6 +59,7 @@ module SULRequests
       'SAL' => 'SAL1&2 (on-campus shelving)',
       'SAL3' => 'SAL3 (off-campus storage)',
       'SAL-NEWARK' => 'SAL Newark (off-campus storage)',
+      'SCIENCE' => 'Science Library (Li and Ma)',
       'SPEC-COLL' => 'Special Collections',
       'TANNER' => 'Philosophy Library (Tanner)'
     }
@@ -70,9 +71,7 @@ module SULRequests
 
     config.pickup_libraries = [
       'ART',
-      'BIOLOGY',
       'BUSINESS',
-      'CHEMCHMENG',
       'EARTH-SCI',
       'EAST-ASIA',
       'EDUCATION',
@@ -80,9 +79,9 @@ module SULRequests
       'GREEN',
       'HOPKINS',
       'LAW',
-      'MATH-CS',
       'MUSIC',
-      'SAL'
+      'SAL',
+      'SCIENCE'
     ]
 
     config.scanning_library_proxy = { 'SCAN' => 'GREEN' }
@@ -155,6 +154,10 @@ module SULRequests
         phone: '(650) 723-2746',
         email: 'brannerlibrary@stanford.edu'
       },
+      'SCIENCE' => {
+        phone: '(650) 723-1528',
+        email: 'sciencelibrary@stanford.edu'
+      },
       'SPEC-COLL' => {
         phone: '(650) 725-1022',
         email: 'specialcollections@stanford.edu'
@@ -204,6 +207,7 @@ module SULRequests
       'SAL3' => { library_slug: 'sal3', location_slug: 'operations' },
       'SAL-NEWARK' => { library_slug: 'newark', location_slug: 'operations' },
       'SPEC-COLL' => { library_slug: 'spc', location_slug: 'field-reading-room' },
+      'SCIENCE' => { library_slug: 'science', location_slug: 'library-circulation' },
       'TANNER' => { library_slug: 'philosophy', location_slug: 'library-circulation' }
     }
 
