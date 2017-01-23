@@ -11,7 +11,7 @@
 
 SUL Requests in a rails application that allows users to request materials from the Stanford University Library.  This application aims to:
 
-1. Support Scan & Deliver service for limited materials. *Pilot project for a limited audience.*
+1. Support Scan & Deliver service for limited materials.
 2. Provide better support for the Special Collections request process. *Request all materials from a single online form, regardless of home location.*
 3. Address known usability/accessibility issues with existing request forms.
 4. Support necessary administrative tasks, including request mediation, updating the paging schedule, adding/removing requestable item categories.
