@@ -60,6 +60,9 @@ gem 'lograge'
 # Access an IRB console on exception pages or by using <%= console %> in views
 gem 'web-console', '~> 2.0', group: :development
 
+# Specify Nokogiri to address security concerns
+gem 'nokogiri', '>= 1.7.1'
+
 # test coverage in static code analysis GUI.
 # needs simplecov, as per https://github.com/codeclimate/ruby-test-reporter/blob/v1.0.1/README.md#installation
 group :test do
