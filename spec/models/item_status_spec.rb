@@ -148,6 +148,28 @@ describe ItemStatus do
     end
   end
 
+  describe '#errored?' do
+    let(:request) { build(:mediated_page) }
+
+    before do
+      request.symphony_response_data = build(:symphony_page_with_expired_user)
+    end
+
+    it 'is marked as errored' do
+      expect(subject).to be_errored
+    end
+
+    context 'for an approved request' do
+      before do
+        request.approved!
+      end
+
+      it 'is still marked as errored' do
+        expect(subject).to be_errored
+      end
+    end
+  end
+
   describe 'accessors' do
     it 'aliases approved? to the status object' do
       expect(subject.approved?).to eq subject.send(:status_object)['approved']
