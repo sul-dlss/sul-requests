@@ -35,7 +35,7 @@ class ItemStatus
   end
 
   def errored?
-    !approved? && (symphony_user_error_code.present? || !symphony_item_successful?)
+    symphony_user_error_code.present? || !symphony_item_successful?
   end
 
   def approved?
