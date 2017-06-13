@@ -1,20 +1,14 @@
 <div class='<%= dialog_column_class %> success-page'>
-  <h1 id='dialogTitle'>
-    <span class="sul-i-check-2" aria-hidden="true"></span> We've received your request
-  </h1>
-
-  <div class='alert alert-info'>
+  <h1 id='dialogTitle'>We're working on it...</h1>
+  <div class='alert alert-warning request-info'>
+    <h2>Processing your request may take a few minutes.</h2>
     <% if current_request.notification_email_address.present? %>
-      <% if current_request.user.to_email_string.present? %>
-        <span class='requested-by'><%= current_request.user.to_email_string %></span>
-      <% end %>
       <p>
         <% if current_request.proxy? %>
-          <%= t('.email_notification.proxy') %>
+          <%= t('.email_notification.proxy', email: current_request.notification_email_address).html_safe %>
         <% else %>
-          <%= t('.email_notification.default') %>
+          <%= t('.email_notification.default', email: current_request.notification_email_address).html_safe %>
         <% end %>
-        (This may take a few minutes.)
       </p>
     <% end %>
     <p>You can <%= link_to('check the status of your request', status_page_url_for_request(current_request)) %> at any time.</p>
