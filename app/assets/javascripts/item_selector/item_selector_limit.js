@@ -23,13 +23,29 @@ var itemSelectorLimit = (function() {
 
     setupEventListeners: function() {
       var _this = this;
+      _this.searchListener();
       _this.selectorElement().on('item-selector:selected', function(_, item) {
         _this.increaseSelectedNumber();
         _this.enforceSelectedItemLimit(item);
       });
 
-      _this.selectorElement().on('item-selector:deselected', function() {
+      _this.selectorElement().on('item-selector:deselected', function(_, item) {
         _this.decreaseSelectedNumber();
+        _this.enforceSelectedItemLimit(item);
+      });
+    },
+
+    searchListener: function(){
+      var _this = this;
+      var limit = selectorLimit(_this);
+      $('#item-selector-search').on('blur', function(){
+        if (_this.numberOfSelectedCheckboxes() >= limit){
+          _this.disableUnselected();
+        }
+
+        if ( _this.numberOfSelectedCheckboxes() < limit ) {
+          _this.reenableUnselected();
+        }
       });
     },
 
@@ -37,17 +53,34 @@ var itemSelectorLimit = (function() {
       var _this = this;
       var limit = selectorLimit(_this);
       if ( limit ) {
+
         if ( _this.numberOfSelectedCheckboxes() > limit ) {
-          checkbox.prop('checked', false);
           _this.selectorElement()
                .trigger('item-selector:deselected', [checkbox]);
+        }
+
+        if ( _this.numberOfSelectedCheckboxes() < limit ) {
+          _this.reenableUnselected();
         }
 
         if ( _this.numberOfSelectedCheckboxes() >= limit ) {
           _this.selectorElement()
                .trigger('item-selector:max-selected-reached');
+          _this.disableUnselected();
         }
       }
+    },
+
+    disableUnselected: function(){
+      this.selectorElement()
+        .find('input[type="checkbox"]:not(:checked)')
+        .attr('disabled','disabled');
+    },
+
+    reenableUnselected: function(){
+      this.selectorElement()
+        .find($('input[type="checkbox"]').attr('disabled', 'disabled'))
+        .removeAttr('disabled');
     },
 
     increaseSelectedNumber: function() {

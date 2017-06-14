@@ -76,7 +76,7 @@ describe 'Item Selector' do
         end
       end
 
-      describe 'for mediated pages' do
+      describe 'for mediated pages', js: true do
         let(:request_path) { new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS') }
         let(:holdings) { build(:searchable_holdings) }
         describe 'in SPEC-COLL' do
@@ -87,9 +87,9 @@ describe 'Item Selector' do
               check('ABC 789')
               check('ABC 012')
               check('ABC 345')
-
-              check('ABC 678')
-              expect(field_labeled('ABC 678')).to_not be_checked
+              expect(page).to have_field('ABC 678', disabled: true)
+              uncheck('ABC 345')
+              expect(page).not_to have_field('ABC 678', disabled: true)
             end
           end
 
@@ -150,8 +150,26 @@ describe 'Item Selector' do
         end
 
         within('#item-selector') do
+          expect(page).to have_field('ABC 901', disabled: true)
+        end
+      end
+
+      it 'prevents users from selecting more than 5 items across different searches' do
+        within('#item-selector') do
+          check('ABC 123')
+          check('ABC 456')
+          check('ABC 789')
+          check('ABC 012')
+        end
+
+        within('#selected-items-filter') do
+          fill_in 'Search item list', with: 'ABC 901'
           check('ABC 901')
-          expect(field_labeled('ABC 901')).to_not be_checked
+          fill_in 'Search item list', with: ''
+        end
+
+        within('#item-selector') do
+          expect(page).to have_field('ABC 345', disabled: true)
         end
       end
 
@@ -209,7 +227,7 @@ describe 'Item Selector' do
 
       expect_to_be_on_success_page
 
-      page.evaluate_script('window.history.back()') # Mimics back-button click
+      page.driver.go_back # Mimics back-button click
 
       expect(page).to have_content('5 items selected')
 
