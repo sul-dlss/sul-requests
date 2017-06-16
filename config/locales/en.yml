@@ -122,9 +122,10 @@ en:
       PAGE-MP: 'Request delivery to campus library'
   requests:
     success:
+      
       email_notification:
-        proxy: "We'll send an email to you and to the designated notification address when processing is complete."
-        default: "We'll send you an email when processing is complete."
+        proxy: "We'll send an email to you at <strong>%{email}</strong> and to the designated notification address when processing is complete."
+        default: "We'll send you an email at <strong>%{email}</strong> when processing is complete."
       synchronous_email_notification:
         proxy: "(We've sent a copy of this request to your email and to the designated notification address.)"
         default: "(We've sent a copy of this request to your email.)"

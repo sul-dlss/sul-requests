@@ -9,10 +9,9 @@ describe 'requests/success.html.erb' do
   end
 
   describe 'symphony success' do
-    it 'has success text and icon for successful requests' do
+    it 'has success text for successful requests' do
       render
-      expect(rendered).to have_css('.sul-i-check-2')
-      expect(rendered).to have_css('h1', text: /We've received your request/)
+      expect(rendered).to have_css('h1#dialogTitle', text: /We're working on it/)
     end
   end
 
@@ -47,14 +46,14 @@ describe 'requests/success.html.erb' do
       let(:user) { create(:webauth_user) }
       it 'gives their stanford-email address' do
         render
-        expect(rendered).to have_css('.requested-by', text: 'some-webauth-user@stanford.edu')
+        expect(rendered).to have_content('some-webauth-user@stanford.edu')
       end
     end
     describe 'for non-webauth useres' do
       let(:user) { create(:non_webauth_user) }
-      it 'gives their name and email (in parens)' do
+      it 'gives their email' do
         render
-        expect(rendered).to have_css('.requested-by', text: 'Jane Stanford (jstanford@stanford.edu)')
+        expect(rendered).to have_content('jstanford@stanford.edu')
       end
     end
   end
@@ -69,7 +68,7 @@ describe 'requests/success.html.erb' do
 
       it 'is displayed as an individual request' do
         render
-        expect(rendered).to include 'We&#39;ll send you an email when processing is complete.'
+        expect(rendered).to include 'We\'ll send you an email'
       end
     end
 
@@ -82,9 +81,9 @@ describe 'requests/success.html.erb' do
 
       it 'is shared with the proxy group' do
         render
-        expect(rendered).to include <<-EOS.strip
-          We&#39;ll send an email to you and to the designated notification address when processing is complete.
-        EOS
+        expect(rendered).to include(
+          'We\'ll send an email to you at <strong>some-address@example.com</strong> and to the designated notification'
+        )
       end
     end
 
@@ -93,8 +92,10 @@ describe 'requests/success.html.erb' do
 
       it 'indicates an email will be sent' do
         render
-        expect(rendered).to include user.to_email_string
-        expect(rendered).to include 'We&#39;ll send you an email when processing is complete.'
+        expect(rendered).to include user.email_address
+        expect(rendered).to include(
+          'We\'ll send you an email at <strong>some-webauth-user@stanford.edu</strong> when processing is complete.'
+        )
       end
     end
 
@@ -103,8 +104,10 @@ describe 'requests/success.html.erb' do
 
       it 'indicates an email will be sent' do
         render
-        expect(rendered).to include user.to_email_string
-        expect(rendered).to include 'We&#39;ll send you an email when processing is complete.'
+        expect(rendered).to include user.email_address
+        expect(rendered).to include(
+          'We\'ll send you an email at <strong>jstanford@stanford.edu</strong> when processing is complete.'
+        )
       end
     end
   end

@@ -1,7 +1,12 @@
 .success-page {
-  h1 {
-    .glyphicon-ok {
-      color: $dark-cyan;
+
+  .request-info {
+    color: $gray-base;
+
+    h2 {
+      color: inherit;
+      font-size: 1.6em;
+      margin-top: 0;
     }
   }
 
