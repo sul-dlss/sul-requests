@@ -206,7 +206,7 @@ describe 'Item Selector' do
     before do
       stub_searchworks_api_json(build(:searchable_holdings))
     end
-    it 'still limits selections' do
+    xit 'still limits selections' do
       skip('The CDN we load the date slider from seems to block Travis') if ENV['ci']
 
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
@@ -233,10 +233,11 @@ describe 'Item Selector' do
 
       expect(page).to have_css('.breadcrumb-pill', count: 5)
 
-      within('#item-selector') do
-        check('ABC 901')
-        expect(field_labeled('ABC 901')).to_not be_checked
-      end
+      # temporarily disabled, see issue #719
+      # within('#item-selector') do
+      #   check('ABC 901')
+      #   expect(field_labeled('ABC 901')).to_not be_checked
+      # end
     end
   end
 
