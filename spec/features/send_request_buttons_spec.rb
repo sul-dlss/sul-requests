@@ -16,6 +16,7 @@ describe 'Send Request Buttons' do
     end
 
     it 'disables the submit button (and adds a tooltip) when additional user validation is needed' do
+      Capybara.default_max_wait_time = ENV['TRAVIS'] ? 120 : 10
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
       click_link 'I don\'t have a SUNet ID'
 
