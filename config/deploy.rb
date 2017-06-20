@@ -1,13 +1,11 @@
 set :application, 'sul-requests'
 set :repo_url, 'https://github.com/sul-dlss/sul-requests.git'
-set :deploy_host, "requests-#{fetch(:stage)}.stanford.edu"
-set :user, 'requests'
 
 # Default branch is :master
 ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
 # Default deploy_to directory is /var/www/my_app_name
-set :deploy_to, "/opt/app/#{fetch(:user)}/#{fetch(:user)}"
+set :deploy_to, '/opt/app/requests/requests'
 
 # Default value for :scm is :git
 # set :scm, :git
@@ -39,10 +37,6 @@ set :linked_dirs, fetch(:linked_dirs, []).push(
   'vendor/bundle',
   'public/system'
 )
-
-server fetch(:deploy_host), user: fetch(:user), roles: %w(web db app)
-
-Capistrano::OneTimeKey.generate_one_time_key!
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
