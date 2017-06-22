@@ -44,8 +44,6 @@ set :linked_dirs, fetch(:linked_dirs, []).push(
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
-set :honeybadger_env, fetch(:stage)
-
 # update shared_configs before restarting app
 before 'deploy:restart', 'shared_configs:update'
 
