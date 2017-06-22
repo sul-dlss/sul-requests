@@ -26,17 +26,18 @@ describe 'Send Request Buttons' do
 
       click_button 'Send request'
       expect(current_url).to include '/pages/new?' # checks that the current url is still the new page form
+      within '#new_request' do
+        fill_in 'Library ID', with: '12345'
+        expect(page).not_to have_css('input[value="Send request"].disabled')
 
-      fill_in 'Library ID', with: '12345'
-      expect(page).not_to have_css('input[value="Send request"].disabled')
+        fill_in 'Library ID', with: ''
+        expect(page).to have_css('input[value="Send request"].disabled')
 
-      fill_in 'Library ID', with: ''
-      expect(page).to have_css('input[value="Send request"].disabled')
-
-      fill_in 'Name', with: 'Jane Stanford'
-      expect(page).to have_css('input[value="Send request"].disabled')
-      fill_in 'Email', with: 'jstanford@stanford.edu'
-      expect(page).not_to have_css('input[value="Send request"].disabled')
+        fill_in 'Name', with: 'Jane Stanford'
+        expect(page).to have_css('input[value="Send request"].disabled')
+        fill_in 'Email', with: 'jstanford@stanford.edu'
+        expect(page).not_to have_css('input[value="Send request"].disabled')
+      end
     end
   end
 
