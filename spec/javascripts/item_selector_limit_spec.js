@@ -25,7 +25,7 @@ describe('Item Selector', function() {
   });
 
   describe('enforceSelectedItemLimit()', function() {
-    it('deselects the item if it is selected passed the limit', function() {
+    it('disables selection if the limit has been passed', function() {
       itemSelectorLimit.checkboxes().filter(':nth-child(1)').trigger('click');
       itemSelectorLimit.checkboxes().filter(':nth-child(2)').trigger('click');
       itemSelectorLimit.checkboxes().filter(':nth-child(3)').trigger('click');
@@ -33,12 +33,17 @@ describe('Item Selector', function() {
 
       var fourthCheckbox = itemSelectorLimit.checkboxes()
                                             .filter(':nth-child(4)');
-      fourthCheckbox.trigger('click');
-      expect(itemSelectorLimit.checkboxes().filter(':checked').length).toBe(4);
+      spyOnEvent(fourthCheckbox, 'click');
+      fourthCheckbox.('click')
+      expect('click').toHaveBeenPreventedOn(fourthCheckbox)
+      expect(itemSelectorLimit.checkboxes().filter(':checked').length).toBe(3);
 
-      itemSelectorLimit.enforceSelectedItemLimit(fourthCheckbox);
+      itemSelectorLimit.checkboxes().filter(':nth-child(3)').trigger('click');
+      expect(itemSelectorLimit.checkboxes().filter(':checked').length).toBe(2);
+      fourthCheckbox.('click')
       expect(itemSelectorLimit.checkboxes().filter(':checked').length).toBe(3);
     });
+
   });
 
   describe('increaseSelectedNumber() and decreaseSelectedNumber()', function() {
