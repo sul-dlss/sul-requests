@@ -22,8 +22,8 @@ var additionalFormValidation = (function() {
     options: {},
 
     enableButton: function() {
-      this.removeTooltip();
       this.submitButtons().removeClass('disabled');
+      this.submitButtons().removeAttr('disabled');
       this.submitButtons().closest('form').unbind('submit.disabled-button');
     },
 
