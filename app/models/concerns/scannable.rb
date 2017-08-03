@@ -3,7 +3,10 @@
 ###
 module Scannable
   ITEM_TYPES = %w(BUS-STACKS STKS STKS-MONO STKS-PERI).freeze
-  LOCATIONS = %w(BUS-STACKS PAGE-GR STACKS).freeze
+  LIBRARIES = %w(SAL3).freeze
+  LOCATIONS = {
+    'SAL3' => %w(BUS-STACKS PAGE-GR STACKS)
+  }.freeze
 
   def scannable?
     scannable_library? &&
@@ -14,11 +17,11 @@ module Scannable
   private
 
   def scannable_library?
-    library == 'SAL3'
+    LIBRARIES.include?(library)
   end
 
   def scannable_location?
-    LOCATIONS.include?(location)
+    LOCATIONS[library].include?(location)
   end
 
   def includes_scannable_item?
