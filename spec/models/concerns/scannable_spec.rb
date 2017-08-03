@@ -20,25 +20,31 @@ describe Scannable do
         allow(subject).to receive_messages(includes_scannable_item?: true)
       end
 
-      it 'is true when from SAL3 + STACKS' do
+      it 'is true for particular SAL3 locations' do
         subject.library = 'SAL3'
         subject.location = 'STACKS'
         expect(subject).to be_scannable
-      end
 
-      it 'is true when from SAL3 + PAGE-GR' do
-        subject.library = 'SAL3'
         subject.location = 'PAGE-GR'
         expect(subject).to be_scannable
-      end
 
-      it 'is true when from SAL3 + BUS-STACKS' do
-        subject.library = 'SAL3'
         subject.location = 'BUS-STACKS'
         expect(subject).to be_scannable
       end
 
-      it 'is false when library or location is not SAL3 or STACKS' do
+      it 'is true for particular SAL1/2 locations' do
+        subject.library = 'SAL'
+        subject.location = 'STACKS'
+        expect(subject).to be_scannable
+
+        subject.location = 'ND-PAGE-EA'
+        expect(subject).to be_scannable
+
+        subject.location = 'NOT-STACKS'
+        expect(subject).not_to be_scannable
+      end
+
+      it 'is false when library or location is not scannable' do
         subject.library = 'NOT-SAL3'
         subject.location = 'STACKS'
         expect(subject).to_not be_scannable
