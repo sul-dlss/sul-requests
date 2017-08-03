@@ -38,12 +38,27 @@ describe HoldRecallable do
         expect(request).to be_hold_recallable
       end
 
-      it 'is true when the current location is INPROCESS' do
-        allow(request).to receive_messages(holdings: [
-                                             double('holding', current_location: double('location', code: 'INPROCESS'))
-                                           ])
+      it 'is true when all the current locations are INPROCESS' do
+        expect(request).to receive_messages(
+          holdings: [
+            double('holding', current_location: double('location', code: 'INPROCESS')),
+            double('holding', current_location: double('location', code: 'INPROCESS')),
+            double('holding', current_location: double('location', code: 'INPROCESS'))
+          ]
+        )
 
         expect(request).to be_hold_recallable
+      end
+
+      it 'is false when only some of the current locations are INPROCESS' do
+        expect(request).to receive_messages(
+          holdings: [
+            double('holding', current_location: double('location', code: 'INPROCESS')),
+            double('holding', current_location: double('location', code: 'ANOTHER-LOCATION'))
+          ]
+        )
+
+        expect(request).not_to be_hold_recallable
       end
     end
 
