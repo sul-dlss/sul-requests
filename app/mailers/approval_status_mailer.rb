@@ -1,19 +1,47 @@
 ###
-#  Mailer class to send approval status emails after requests have been submitted
+#  Mailer class to send approval status emails after requests have
+#  been submitted based on either the request type or user error status
 ###
 class ApprovalStatusMailer < ApplicationMailer
+  # User ID does not exist
+  def approval_status_for_u002(request)
+    request_approval_status(request)
+  end
+
+  # User is blocked
+  def approval_status_for_u003(request)
+    request_approval_status(request)
+  end
+
+  # User privs are expired
+  def approval_status_for_u004(request)
+    request_approval_status(request)
+  end
+
+  def approval_status_for_holdrecall(request)
+    request_approval_status(request)
+  end
+
+  def approval_status_for_page(request)
+    request_approval_status(request)
+  end
+
+  def approval_status_for_scan(request)
+    request_approval_status(request)
+  end
+
+  private
+
   def request_approval_status(request)
     @request = request
     @status_url = success_url
-    @contact_info = formatted_contact_info
+    @contact_info = contact_info
     mail(
       to: request.notification_email_address,
       from: from_address,
       subject: subject
     )
   end
-
-  private
 
   def from_address
     %("Stanford Libraries Requests" <#{contact_info[:email]}>)
@@ -36,10 +64,6 @@ class ApprovalStatusMailer < ApplicationMailer
 
   def contact_info_config
     SULRequests::Application.config.contact_info
-  end
-
-  def formatted_contact_info
-    "  #{contact_info[:phone]}\n  #{contact_info[:email]}"
   end
 
   def success_url

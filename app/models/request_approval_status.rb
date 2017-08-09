@@ -26,6 +26,16 @@ class RequestApprovalStatus
     item_list_with_status.join("\n")
   end
 
+  def item_list_with_status
+    request.holdings.map do |item|
+      if request.symphony_response.success?(item.barcode)
+        succcess_text_for_item(item.callnumber)
+      elsif request.symphony_response.item_failed?(item.barcode)
+        error_text_for_item(item)
+      end
+    end
+  end
+
   def pending?
     request.symphony_response_data.blank?
   end
@@ -51,16 +61,6 @@ class RequestApprovalStatus
     )
     text << " #{t("approval_status.#{request_origin}.extra_note", default: '')}"
     text
-  end
-
-  def item_list_with_status
-    request.holdings.map do |item|
-      if request.symphony_response.success?(item.barcode)
-        succcess_text_for_item(item.callnumber)
-      elsif request.symphony_response.item_failed?(item.barcode)
-        error_text_for_item(item)
-      end
-    end
   end
 
   def item_list_with_status_markup
