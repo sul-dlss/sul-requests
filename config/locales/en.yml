@@ -75,7 +75,7 @@ en:
   approval_status_email:
     request:
       subject:
-        success: "Your request has been processed (\"%{title}\")"
+        success: "Request confirmed: \"%{title}\""
         failure: "Attention needed: Your request could not be processed (\"%{title}\")"
     request_status:
       failure:
@@ -99,6 +99,7 @@ en:
     pm: p
     formats:
       short: '%Y-%m-%d %l.%M%P'
+      formal: '%A, %b %-d %Y at %l:%M%P'
   forms:
     labels:
       SAL-NEWARK:
@@ -122,7 +123,7 @@ en:
       PAGE-MP: 'Request delivery to campus library'
   requests:
     success:
-      
+
       email_notification:
         proxy: "We'll send an email to you at <strong>%{email}</strong> and to the designated notification address when processing is complete."
         default: "We'll send you an email at <strong>%{email}</strong> when processing is complete."

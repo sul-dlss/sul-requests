@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <p>
+      The following items have been queued for scanning:<br/>
+      Title: <%= @request.item_title %>
+    </p>
+
+    <p>Call number(s):</p>
+    <ul>
+      <% RequestApprovalStatus.new(request: @request).item_list_with_status.each do |status| %>
+        <li><%= status %></li>
+      <% end %>
+    </ul>
+
+    <p>
+      <%= @request.data_to_email.join('<br/>') %>
+    </p>
+
+    <p>
+      Estimated delivery: <%= @request.estimated_delivery %><br/>
+      We'll send you another email when your request is ready for download.
+    </p>
+
+    <p>Request was placed: <%= l(@request.created_at, format: :formal) %></p>
+
+    <p>
+      You can see this request status online at <%= link_to('requests.stanford.edu', @status_url) %><br/>
+      You can also see and change your requests at <%= link_to('http://library.stanford.edu/myaccount', 'http://library.stanford.edu/myaccount') %>
+    </p>
+
+    <p>
+      Questions about your request?<br/>
+      Contact:<br/>
+      <%= @contact_info[:phone] %><br/>
+      <%= mail_to(@contact_info[:email], @contact_info[:email]) %>
+    </p>
+  </body>
+</html>

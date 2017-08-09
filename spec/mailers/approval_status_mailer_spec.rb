@@ -4,7 +4,81 @@ describe ApprovalStatusMailer do
   describe '#request_approval_status' do
     let(:user) { build(:non_webauth_user) }
     let(:request) { create(:page, user: user) }
-    let(:mail) { ApprovalStatusMailer.request_approval_status(request) }
+    let(:mailer_method) { :approval_status_for_page }
+    let(:mail) { ApprovalStatusMailer.send(mailer_method, request) }
+
+    describe '#approval_status_for_u002' do
+      let(:mailer_method) { :approval_status_for_u002 }
+      before { user.library_id = 'ABC123' }
+
+      it 'renders the correct email' do
+        expect(mail.body.to_s).to include(
+          'Stanford Library ID you entered (ABC123) was not found in our system'
+        )
+      end
+    end
+
+    describe '#approval_status_for_u003' do
+      let(:mailer_method) { :approval_status_for_u003 }
+
+      it 'renders the correct email' do
+        expect(mail.body.to_s).to include(
+          'We were unable to process your request because your status is BLOCKED.'
+        )
+      end
+
+      describe '#approval_status_for_u004' do
+        let(:mailer_method) { :approval_status_for_u004 }
+
+        it 'renders the correct email' do
+          expect(mail.body.to_s).to include(
+            'We were unable to process your request because your status is EXPIRED.'
+          )
+        end
+      end
+
+      context 'when the item is scannable' do
+        let(:request) { create(:scan_with_holdings_barcodes, user: user) }
+
+        it 'indicates to the user they can request the item be scanned' do
+          expect(mail.body.to_s).to include(
+            'Even though your status is blocked, you are eligible for Scan to PDF.'
+          )
+        end
+      end
+    end
+
+    describe '#approval_status_for_holdrecall' do
+      let(:mailer_method) { :approval_status_for_holdrecall }
+      let(:request) { create(:hold_recall, user: user) }
+
+      it 'renders the correct email' do
+        expect(mail.body.to_s).to include(
+          'You have been added to the hold queue for the following item(s):'
+        )
+      end
+    end
+
+    describe '#approval_status_for_page' do
+      let(:request) { create(:page, user: user) }
+
+      it 'renders the correct email' do
+        expect(mail.body.to_s).to include(
+          "You'll receive another email when your request is ready for pickup."
+        )
+      end
+    end
+
+    describe '#approval_status_for_scan' do
+      let(:mailer_method) { :approval_status_for_scan }
+      let(:request) { create(:scan, user: user) }
+
+      it 'renders the correct email' do
+        expect(mail.body.to_s).to include(
+          "We'll send you another email when your request is ready for download."
+        )
+      end
+    end
 
     describe 'to' do
       it 'is the user email address' do
@@ -44,7 +118,7 @@ describe ApprovalStatusMailer do
     describe 'subject' do
       describe 'success' do
         it '"request has been processed"' do
-          expect(mail.subject).to eq "Your request has been processed (\"#{request.item_title}\")"
+          expect(mail.subject).to eq "Request confirmed: \"#{request.item_title}\""
         end
       end
       describe 'failure' do
@@ -52,133 +126,16 @@ describe ApprovalStatusMailer do
           allow(request.symphony_response).to receive(:success?).and_return false
         end
         it '"Attention needed ... request could not be processed"' do
-          fail_mail = ApprovalStatusMailer.request_approval_status(request)
-          expect(fail_mail.subject).to eq "Attention needed: Your request could not be processed (\"#{request.item_title}\")"
+          expect(mail.subject).to eq "Attention needed: Your request could not be processed (\"#{request.item_title}\")"
         end
       end
       describe 'user blocked' do
-        let(:blocked_request) { create(:page_with_holdings, barcodes: ['3610512345678'], user: user) }
-        let(:blocked_mail) { ApprovalStatusMailer.request_approval_status(blocked_request) }
+        let(:request) { create(:page_with_holdings, barcodes: ['3610512345678'], user: user) }
         before do
           stub_symphony_response(build(:symphony_page_with_blocked_user))
         end
         it '"Attention needed ... request could not be processed"' do
-          expect(blocked_mail.subject).to eq "Attention needed: Your request could not be processed (\"#{blocked_request.item_title}\")"
-        end
-      end
-    end
-
-    describe 'body' do
-      before do
-        allow(request.symphony_response).to receive(:success?).and_return true
-      end
-      let(:request) { create(:page_with_holdings, barcodes: ['3610512345678'], ad_hoc_items: ['ZZZ 123'], user: user) }
-      let(:body) { mail.body.to_s }
-      it 'has the date' do
-        expect(body).to match(/On #{request.created_at.strftime('%A, %b %-d %Y')}, you requested:/)
-      end
-
-      it 'has the title' do
-        expect(body).to include(request.item_title)
-      end
-
-      it 'includes the text provided by the RequestApprovalStatus text representation' do
-        expect(body).to include('Pending.')
-      end
-
-      it 'has ad hoc items' do
-        expect(body).to include('ZZZ 123')
-      end
-
-      describe 'success' do
-        it 'has items processed line' do
-          expect(body).to include('The items listed below have been processed:')
-        end
-
-        it 'has a not needed after date if present' do
-          my_request = create(:page, needed_date: '2066-06-06', user: user)
-          mailer = ApprovalStatusMailer.request_approval_status(my_request)
-          h = my_request.class.human_attribute_name(:needed_date)
-          expect(mailer.body.to_s).to include "#{h}: #{I18n.l my_request.needed_date, format: :long}"
-        end
-
-        it 'has a link to the status page' do
-          expect(body).to match(%r{Any further updates will be posted on the status page at .*\/pages\/#{request.id}\/status\?token})
-        end
-
-        it 'does not have scan suggestion' do
-          expect(body).not_to include 'Even though your status is blocked, you are eligible for Scan to PDF.'
-        end
-
-        context 'with a webauth user' do
-          let(:user) { build(:webauth_user) }
-
-          it 'has a link to myaccount' do
-            expect(body).to include 'You can also see the status at http://library.stanford.edu/myaccount'
-          end
-        end
-      end
-
-      describe 'failure' do
-        before do
-          allow(request.symphony_response).to receive(:success?).and_return false
-          request = create(:page_with_holdings, barcodes: ['3610512345678'], user: user)
-          fail_mail = ApprovalStatusMailer.request_approval_status(request)
-          @fail_body = fail_mail.body.to_s
-        end
-        it 'has item status line' do
-          expect(@fail_body).to include('There were problems with one or more of the items listed below:')
-        end
-
-        it 'has what can you do now section' do
-          expect(@fail_body).to include 'What can you do now?'
-          expect(@fail_body).to include 'Request assistance by replying to this email, or'
-        end
-
-        describe 'user not blocked' do
-          it 'has searchworks link' do
-            sw_url = "https://searchworks.stanford.edu/view/#{request.id}"
-            expect(@fail_body).to include "try your request again, at #{sw_url}"
-          end
-          it 'does not have scan suggestion' do
-            expect(@fail_body).not_to include 'Even though your status is blocked, you are eligible for Scan to PDF.'
-          end
-        end
-
-        describe 'user blocked' do
-          let(:blocked_request) { create(:page_with_holdings, barcodes: ['3610512345678'], user: user) }
-          let(:blocked_mail) { ApprovalStatusMailer.request_approval_status(blocked_request) }
-          let(:blocked_body) { blocked_mail.body.to_s }
-          before do
-            stub_symphony_response(build(:symphony_page_with_blocked_user))
-          end
-          it 'has item header line' do
-            expect(blocked_body).to include('Items:')
-          end
-          it 'has item status line' do
-            expect(blocked_body).to include('Your request could not be processed because your user privileges are blocked.')
-          end
-          it 'has myaccount link' do
-            line = 'check MyAccount (http://library.stanford.edu/myaccount) for more information.'
-            expect(blocked_body).to include line
-          end
-          it 'has scan suggestion' do
-            expect(blocked_body).to include 'Just need a chapter or article?'
-            expect(blocked_body).to include 'Even though your status is blocked, you are eligible for Scan to PDF.'
-            expect(blocked_body).to include 'You can request a single article or chapter, up to 50 pages.'
-            expect(blocked_body).to include "https://searchworks.stanford.edu/view/#{blocked_request.item_id}"
-          end
-        end
-        describe 'user expired' do
-          let(:expired_request) { create(:page_with_holdings, barcodes: ['3610512345678'], user: user) }
-          let(:expired_mail) { ApprovalStatusMailer.request_approval_status(expired_request) }
-          let(:expired_body) { expired_mail.body.to_s }
-          before do
-            stub_symphony_response(build(:symphony_page_with_expired_user))
-          end
-          it 'has item status line' do
-            expect(expired_body).to include('Your request could not be processed because your user privileges have expired.')
-          end
+          expect(mail.subject).to eq "Attention needed: Your request could not be processed (\"#{request.item_title}\")"
         end
       end
     end
