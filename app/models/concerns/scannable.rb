@@ -3,7 +3,16 @@
 ###
 module Scannable
   ITEM_TYPES = %w(BUS-STACKS STKS STKS-MONO STKS-PERI).freeze
-  LOCATIONS = %w(BUS-STACKS PAGE-GR STACKS).freeze
+  LIBRARIES = %w(SAL SAL3).freeze
+  LOCATIONS = {
+    'SAL' => %w(
+      EAL-SETS EAL-STKS-C EAL-STKS-J EAL-STKS-K
+      FED-DOCS HY-PAGE-EA ND-PAGE-EA PAGE-EA PAGE-GR
+      SAL-ARABIC SAL-FOLIO SAL-PAGE SAL-SERG SAL-TEMP
+      SALTURKISH SOUTH-MEZZ STACKS TECH-RPTS UNCAT
+    ),
+    'SAL3' => %w(BUS-STACKS PAGE-GR STACKS)
+  }.freeze
 
   def scannable?
     scannable_library? &&
@@ -14,11 +23,11 @@ module Scannable
   private
 
   def scannable_library?
-    library == 'SAL3'
+    LIBRARIES.include?(library)
   end
 
   def scannable_location?
-    LOCATIONS.include?(location)
+    LOCATIONS[library].include?(location)
   end
 
   def includes_scannable_item?

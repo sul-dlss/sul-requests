@@ -53,6 +53,14 @@ PagingSchedule.configure do
     will_arrive after: '1:00pm'
     business_days_later 1
   end
+  when_paging from: 'SAL', to: 'SCAN', before: '1:00pm' do
+    will_arrive after: '6:00pm'
+    business_days_later 1
+  end
+  when_paging from: 'SAL', to: 'SCAN', after: '1:00pm' do
+    will_arrive after: '6:00pm'
+    business_days_later 2
+  end
   when_paging from: 'SAL', to: :anywhere, before: '1:00pm' do
     will_arrive after: '4:30pm'
     business_days_later 1
