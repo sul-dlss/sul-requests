@@ -14,6 +14,7 @@ class IlliadOpenurl
 
   def item_data
     { 'rft.location': @scan.origin,
+      'rft.reference': @scan.origin_location,
       'rft.call_number': first_holding.try(:callnumber),
       'rft.ill_number': first_holding.try(:barcode),
       'rft.item': first_holding.try(:barcode) }
