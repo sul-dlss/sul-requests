@@ -1,7 +1,13 @@
 <div class='<%= dialog_column_class %>'>
   <%= render 'header' %>
-  <h2>Status alert</h2>
-  <p>We're currently upgrading the core library management system. We expect to be back in business by end of day Thursday, December 28.</p>
-  <p><strong>We are unable to accept new requests during this outage.</strong></p>
-  <p>Our apologies for the inconvenience.</p>
+  <%= render 'form_flashes' %>
+
+  <%= render 'searchworks_item_information' %>
+
+  <% if delegated_request? %>
+    <%= render 'remote_user_check' if render_remote_user_check? %>
+    <%= render 'form' %>
+  <% else %>
+    <%= render 'form_choice' %>
+  <% end %>
 </div>
