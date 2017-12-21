@@ -81,6 +81,14 @@ describe LibraryHoursApi do
         expect(hour).to be_open
         expect(hour.day).to eq Time.zone.today
       end
+
+      context 'when there are no hours in the response' do
+        let(:data) { { 'data' => { 'attributes' => nil } } }
+
+        it 'is an empty array (and does not throw error)' do
+          expect(subject.hours).to eq([])
+        end
+      end
     end
   end
 end

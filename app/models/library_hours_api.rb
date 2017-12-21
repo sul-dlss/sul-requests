@@ -66,8 +66,9 @@ module LibraryHoursApi
     end
 
     def hours
-      return [] unless data.present?
-      data['data']['attributes']['hours'].map do |h|
+      return [] if data.blank?
+
+      (data.dig('data', 'attributes', 'hours') || []).map do |h|
         Hours.new(h)
       end
     end
