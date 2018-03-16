@@ -51,3 +51,5 @@ before 'deploy:restart', 'shared_configs:update'
 # Sidekiq configuration (run one process with ten threads)
 # see sidekiq.yml for concurrency and queue settings
 set :sidekiq_processes, 1
+# honeybadger_env otherwise defaults to rails_env
+set :honeybadger_env, "#{fetch(:stage)}"
