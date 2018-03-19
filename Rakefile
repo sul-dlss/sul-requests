@@ -6,4 +6,11 @@ require File.expand_path('../config/application', __FILE__)
 
 Rails.application.load_tasks
 
-task default: [:teaspoon, :rubocop, :scss_lint, :spec, :display_coveralls_coverage]
+task default: [
+  :teaspoon,
+  :rubocop,
+  :scss_lint,
+  :spec,
+  # :display_coveralls_coverage # disabled temporarily while we have ruby-version dependent code
+  #                              (see lib/token_encryptor.rb)
+]

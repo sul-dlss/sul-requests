@@ -28,7 +28,7 @@ module SULRequests
     private
 
     def key
-      @key ||= ActiveSupport::KeyGenerator.new(secret).generate_key(salt)
+      @key ||= ActiveSupport::KeyGenerator.new(secret).generate_key(salt)[0..(key_len - 1)]
     end
 
     def encryptor
@@ -41,6 +41,15 @@ module SULRequests
 
     def salt
       Settings.token_encrypt['salt']
+    end
+
+    # Ruby 2.4 requires keys of very particular lengths
+    def key_len
+      if ActiveSupport::MessageEncryptor.respond_to? :key_len
+        ActiveSupport::MessageEncryptor.key_len
+      else
+        0
+      end
     end
 
     class InvalidSecret < StandardError
