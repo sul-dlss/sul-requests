@@ -14,13 +14,12 @@ describe PagesController do
 
   describe 'new' do
     let(:user) { User.new }
-
     it 'is accessible by anonymous users' do
-      get :new, normal_params
+      get :new, params: normal_params
       expect(response).to be_success
     end
     it 'sets defaults' do
-      get :new, normal_params
+      get :new, params: normal_params
       expect(assigns[:request].origin).to eq 'GREEN'
       expect(assigns[:request].origin_location).to eq 'STACKS'
       expect(assigns[:request].item_id).to eq '1234'
@@ -28,7 +27,7 @@ describe PagesController do
     it 'raises an error when the item is not pageable' do
       expect(
         lambda do
-          get :new, item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'ART'
+          get :new, params: { item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'ART' }
         end
       ).to raise_error(PagesController::UnpageableItemError)
     end
@@ -37,9 +36,8 @@ describe PagesController do
   describe 'create' do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
-
       it 'redirects to the login page passing a referrer param to continue creating the page request' do
-        post :create, request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
+        post :create, params: { request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' } }
         expect(response).to redirect_to(
           login_path(
             referrer: interstitial_path(
@@ -51,24 +49,28 @@ describe PagesController do
         )
       end
       it 'is allowed if user name and email is filled out (via token)' do
-        put :create, request: {
-          item_id: '1234',
-          origin: 'GREEN',
-          origin_location: 'STACKS',
-          destination: 'ART',
-          user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }
+        put :create, params: {
+          request: {
+            item_id: '1234',
+            origin: 'GREEN',
+            origin_location: 'STACKS',
+            destination: 'ART',
+            user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }
+          }
         }
 
         expect(response.location).to match(/#{successful_page_url(Page.last)}\?token=/)
         expect(Page.last.user).to eq User.last
       end
       it 'is allowed if the library ID field is filled out' do
-        put :create, request: {
-          item_id: '1234',
-          origin: 'GREEN',
-          origin_location: 'STACKS',
-          destination: 'ART',
-          user_attributes: { library_id: '12345' }
+        put :create, params: {
+          request: {
+            item_id: '1234',
+            origin: 'GREEN',
+            origin_location: 'STACKS',
+            destination: 'ART',
+            user_attributes: { library_id: '12345' }
+          }
         }
 
         expect(response.location).to match(/#{successful_page_url(Page.last)}\?token=/)
@@ -83,23 +85,27 @@ describe PagesController do
         end
 
         it 'prompts the user to decide whether the request should be for the proxy' do
-          put :create, request: {
-            item_id: '1234',
-            origin: 'GREEN',
-            origin_location: 'STACKS',
-            destination: 'ART'
+          put :create, params: {
+            request: {
+              item_id: '1234',
+              origin: 'GREEN',
+              origin_location: 'STACKS',
+              destination: 'ART'
+            }
           }
 
           expect(response).to render_template('sponsor_request')
         end
 
         it 'prompts the user to decide whether the request should be for the proxy' do
-          put :create, request: {
-            item_id: '1234',
-            origin: 'GREEN',
-            origin_location: 'STACKS',
-            destination: 'ART',
-            proxy: 'true'
+          put :create, params: {
+            request: {
+              item_id: '1234',
+              origin: 'GREEN',
+              origin_location: 'STACKS',
+              destination: 'ART',
+              proxy: 'true'
+            }
           }
 
           expect(response.location).to eq successful_page_url(Page.last)
@@ -107,12 +113,14 @@ describe PagesController do
         end
 
         it 'prompts the user to decide whether the request should be for the proxy' do
-          put :create, request: {
-            item_id: '1234',
-            origin: 'GREEN',
-            origin_location: 'STACKS',
-            destination: 'ART',
-            proxy: 'false'
+          put :create, params: {
+            request: {
+              item_id: '1234',
+              origin: 'GREEN',
+              origin_location: 'STACKS',
+              destination: 'ART',
+              proxy: 'false'
+            }
           }
 
           expect(response.location).to eq successful_page_url(Page.last)
@@ -135,9 +143,8 @@ describe PagesController do
 
     describe 'by webauth users' do
       let(:user) { create(:webauth_user) }
-
       it 'is allowed' do
-        post :create, request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
+        post :create, params: { request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' } }
         expect(response).to redirect_to successful_page_path(Page.last)
         expect(Page.last.origin).to eq 'GREEN'
         expect(Page.last.user).to eq user
@@ -145,24 +152,28 @@ describe PagesController do
 
       it 'maps checkbox style barcodes correctly' do
         stub_searchworks_api_json(build(:multiple_holdings))
-        put :create, request: {
-          item_id: '1234',
-          origin: 'GREEN',
-          origin_location: 'STACKS',
-          destination: 'ART',
-          barcodes: { '3610512345678' => '1', '3610587654321' => '0', '12345679' => '1' }
+        put :create, params: {
+          request: {
+            item_id: '1234',
+            origin: 'GREEN',
+            origin_location: 'STACKS',
+            destination: 'ART',
+            barcodes: { '3610512345678' => '1', '3610587654321' => '0', '12345679' => '1' }
+          }
         }
         expect(response).to redirect_to successful_page_path(Page.last)
         expect(Page.last.barcodes).to eq(%w(3610512345678 12345679))
       end
 
       it 'redirects to success page with token when the WebAuth user supplies a library ID' do
-        post :create, request: {
-          item_id: '1234',
-          origin: 'GREEN',
-          origin_location: 'STACKS',
-          destination: 'ART',
-          user_attributes: { library_id: '5432123' }
+        post :create, params: {
+          request: {
+            item_id: '1234',
+            origin: 'GREEN',
+            origin_location: 'STACKS',
+            destination: 'ART',
+            user_attributes: { library_id: '5432123' }
+          }
         }
 
         expect(response.location).to match(/#{successful_page_url(Page.last)}\?token=/)
@@ -173,11 +184,13 @@ describe PagesController do
         stub_symphony_response(build(:symphony_page_with_single_item))
         expect(
           lambda do
-            put :create, request: {
-              item_id: '1234',
-              origin: 'GREEN',
-              origin_location: 'STACKS',
-              destination: 'ART'
+            put :create, params: {
+              request: {
+                item_id: '1234',
+                origin: 'GREEN',
+                origin_location: 'STACKS',
+                destination: 'ART'
+              }
             }
           end
         ).not_to change { ConfirmationMailer.deliveries.count }
@@ -189,7 +202,7 @@ describe PagesController do
         it 'raises an error when the honey-pot email field is filled in on create' do
           expect(
             lambda do
-              post :create, request: normal_params, email: 'something'
+              post :create, params: { request: normal_params, email: 'something' }
             end
           ).to raise_error(RequestsController::HoneyPotFieldError)
         end
@@ -197,7 +210,7 @@ describe PagesController do
         it 'raises an error when the honey-pot email field is filled in on update' do
           expect(
             lambda do
-              put :update, id: page[:id], email: 'something'
+              put :update, params: { id: page[:id], email: 'something' }
             end
           ).to raise_error(RequestsController::HoneyPotFieldError)
         end
@@ -206,9 +219,8 @@ describe PagesController do
 
     describe 'invalid requests' do
       let(:user) { create(:webauth_user) }
-
       it 'returns an error message to the user' do
-        post :create, request: { item_id: '1234' }
+        post :create, params: { request: { item_id: '1234' } }
         expect(flash[:error]).to eq 'There was a problem creating your request.'
         expect(response).to render_template 'new'
       end
@@ -218,9 +230,8 @@ describe PagesController do
   describe 'update' do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
-
       it 'raises an error' do
-        expect(-> { put :update, id: page[:id], request: { origin: 'GREEN' } }).to raise_error(CanCan::AccessDenied)
+        expect(-> { put :update, params: { id: page[:id], request: { origin: 'GREEN' } } }).to raise_error(CanCan::AccessDenied)
       end
     end
 
@@ -230,9 +241,8 @@ describe PagesController do
       before do
         allow_any_instance_of(page.class).to receive(:update).with({}).and_return(false)
       end
-
       it 'returns an error message to the user' do
-        put :update, id: page[:id], request: { item_id: nil }
+        put :update, params: { id: page[:id], request: { item_id: nil } }
         expect(flash[:error]).to eq 'There was a problem updating your request.'
         expect(response).to render_template 'edit'
       end
@@ -240,17 +250,15 @@ describe PagesController do
 
     describe 'by webauth users' do
       let(:user) { create(:webauth_user) }
-
       it 'raises an error' do
-        expect(-> { put(:update, id: page[:id]) }).to raise_error(CanCan::AccessDenied)
+        expect(-> { put(:update, params: { id: page[:id] }) }).to raise_error(CanCan::AccessDenied)
       end
     end
 
     describe 'by superadmins' do
       let(:user) { create(:superadmin_user) }
-
       it 'is allowed to modify page rqeuests' do
-        put :update, id: page[:id], request: { needed_date: Time.zone.today + 1.day }
+        put :update, params: { id: page[:id], request: { needed_date: Time.zone.today + 1.day } }
         expect(flash[:success]).to eq 'Request was successfully updated.'
         expect(response).to redirect_to root_url
         expect(Page.find(page.id).needed_date.to_s).to eq((Time.zone.today + 1.day).to_s)
@@ -264,14 +272,14 @@ describe PagesController do
 
       it 'is successful if they have the are the creator of the record' do
         page = create(:page, user: user)
-        get :success, id: page[:id]
+        get :success, params: { id: page[:id] }
         expect(response).to be_success
       end
 
       it 'raises an error if the user is already authenticated but does not have access to the request' do
         page = create(:page)
         expect do
-          get :success, id: page[:id]
+          get :success, params: { id: page[:id] }
         end.to raise_error(CanCan::AccessDenied)
       end
     end
@@ -282,7 +290,7 @@ describe PagesController do
       it 'raised an AccessDenied error' do
         page = create(:page, user: create(:non_webauth_user, email: 'jjstanford@stanford.edu'))
         expect do
-          get :success, id: page[:id]
+          get :success, params: { id: page[:id] }
         end.to raise_error(CanCan::AccessDenied)
       end
     end
@@ -294,14 +302,14 @@ describe PagesController do
 
       it 'is successful if they have the are the creator of the record' do
         page = create(:page, user: user)
-        get :status, id: page[:id]
+        get :status, params: { id: page[:id] }
         expect(response).to be_success
       end
 
       it 'raises an error if the user is already authenticated but does not have access to the request' do
         page = create(:page)
         expect do
-          get :status, id: page[:id]
+          get :status, params: { id: page[:id] }
         end.to raise_error(CanCan::AccessDenied)
       end
     end
@@ -311,7 +319,7 @@ describe PagesController do
 
       it 'redirects the user to the webauth login with the current url' do
         page = create(:page, user: create(:non_webauth_user, email: 'jjstanford@stanford.edu'))
-        get :status, id: page[:id]
+        get :status, params: { id: page[:id] }
         expect(response).to redirect_to(
           login_path(
             referrer: status_page_url(page[:id])
@@ -325,7 +333,7 @@ describe PagesController do
     let(:user) { create(:anon_user) }
 
     it 'returns a Page object' do
-      get :new, normal_params
+      get :new, params: normal_params
       expect(controller.send(:current_request)).to be_a(Page)
     end
   end

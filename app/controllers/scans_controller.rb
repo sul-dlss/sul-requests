@@ -36,7 +36,7 @@ class ScansController < RequestsController
   def illiad_url
     redirect_url = create_scans_url(
       request_context_params.merge(
-        request: params[:request],
+        request: params[:request].to_unsafe_h,
         illiad_success: true
       )
     )

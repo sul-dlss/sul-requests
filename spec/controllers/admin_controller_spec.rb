@@ -46,48 +46,43 @@ describe AdminController do
   describe 'show' do
     describe 'for super admin' do
       let(:user) { create(:superadmin_user) }
-
       it 'is accessible' do
-        get :show, id: 'SAL3'
+        get :show, params: { id: 'SAL3' }
         expect(response).to be_successful
       end
     end
 
     describe 'for site admin' do
       let(:user) { create(:site_admin_user) }
-
       it 'is accessible' do
-        get :show, id: 'SAL3'
+        get :show, params: { id: 'SAL3' }
         expect(response).to be_successful
       end
     end
 
     describe 'for origin admin' do
       let(:user) { create(:sal3_origin_admin_user) }
-
       it 'is accessible when the user is an admin for the location' do
-        get :show, id: 'SAL3'
+        get :show, params: { id: 'SAL3' }
         expect(response).to be_successful
       end
 
-      it 'is not accessible when the user is not an admin for the location' do
-        expect(-> { get :show, id: 'SPEC-COLL' }).to raise_error(CanCan::AccessDenied)
+      it 'is not be accessible when the user is not an admin for the location' do
+        expect(-> { get :show, params: { id: 'SPEC-COLL' } }).to raise_error(CanCan::AccessDenied)
       end
     end
 
     describe 'for normal webuath user' do
       let(:user) { create(:webauth_user) }
-
-      it 'is not accessible' do
-        expect(-> { get :show, id: 'SPEC-COLL' }).to raise_error(CanCan::AccessDenied)
+      it 'is not be accessible' do
+        expect(-> { get :show, params: { id: 'SPEC-COLL' } }).to raise_error(CanCan::AccessDenied)
       end
     end
 
     describe 'for anonymouse users' do
       let(:user) { create(:anon_user) }
-
-      it 'is a redirect to login' do
-        expect(get(:show, id: 'SPEC-COLL')).to redirect_to(
+      it 'redirects to login' do
+        expect(get(:show, params: { id: 'SPEC-COLL' })).to redirect_to(
           login_path(referrer: admin_url('SPEC-COLL'))
         )
       end
@@ -102,13 +97,13 @@ describe AdminController do
       end
 
       it 'returns the holdings table markup' do
-        get :holdings, id: mediated_page.id
+        get :holdings, params: { id: mediated_page.id }
         expect(response).to be_successful
         expect(assigns(:request)).to be_a(MediatedPage)
       end
 
       it 'initiates a mediated page object with the live_lookup option set to false' do
-        get :holdings, id: mediated_page.id
+        get :holdings, params: { id: mediated_page.id }
         expect(assigns(:request).live_lookup).to be false
       end
     end
@@ -127,7 +122,7 @@ describe AdminController do
       it 'can approve individual items' do
         expect(MediatedPage.find(mediated_page.id).request_status_data).to be_blank
         stub_symphony_response(build(:symphony_page_with_single_item))
-        get :approve_item, id: mediated_page.id, item: '3610512345'
+        get :approve_item, params: { id: mediated_page.id, item: '3610512345' }
         expect(response).to be_successful
 
         expect(
@@ -136,13 +131,13 @@ describe AdminController do
       end
 
       it 'returns a 500 when the item cannot be approved' do
-        get :approve_item, id: mediated_page.id, item: '3610512345'
+        get :approve_item, params: { id: mediated_page.id, item: '3610512345' }
         expect(response.status).to eq 500
         expect(response).not_to be_successful
       end
 
       it 'initiates a mediated page object with the live_lookup option set to false' do
-        get :approve_item, id: mediated_page.id, item: '3610512345'
+        get :approve_item, params: { id: mediated_page.id, item: '3610512345' }
         expect(assigns(:request).live_lookup).to be false
       end
     end
@@ -152,7 +147,7 @@ describe AdminController do
 
       it 'is not possible' do
         expect do
-          get :approve_item, id: mediated_page.id, item: 'ABC 123'
+          get :approve_item, params: { id: mediated_page.id, item: 'ABC 123' }
         end.to raise_error(CanCan::AccessDenied)
       end
     end

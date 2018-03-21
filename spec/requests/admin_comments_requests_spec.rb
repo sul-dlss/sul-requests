@@ -15,13 +15,13 @@ describe 'AdminComments' do
   describe '#create' do
     context 'when successful' do
       it "merges the current user's webauth into the persisted comment as the commenter" do
-        post(url, { admin_comment: { comment: 'This is a comment' } }, headers)
+        post(url, params: { admin_comment: { comment: 'This is a comment' } }, headers: headers)
         expect(AdminComment.last.commenter).to eq user.webauth
       end
 
       context 'html response' do
         it 'redirects back with a flash notice' do
-          post(url, { admin_comment: { comment: 'This is another comment' } }, headers)
+          post(url, params: { admin_comment: { comment: 'This is another comment' } }, headers: headers)
           expect(response).to redirect_to(:back)
           expect(flash[:notice]).to eq 'Comment was successfully created.'
           expect(AdminComment.last.comment).to eq 'This is another comment'
@@ -30,11 +30,11 @@ describe 'AdminComments' do
 
       context 'js response' do
         it 'returns a succesful status code' do
-          post("#{url}.js", { admin_comment: { comment: 'This is yet another comment' } }, headers)
+          post("#{url}.js", params: { admin_comment: { comment: 'This is yet another comment' } }, headers: headers)
           expect(response).to be_success
         end
         it 'returns the JSON of the comment object that was just created' do
-          post("#{url}.js", { admin_comment: { comment: 'This is yet another comment' } }, headers)
+          post("#{url}.js", params: { admin_comment: { comment: 'This is yet another comment' } }, headers: headers)
           response_comment = JSON.parse(response.body)
           last_comment = AdminComment.last
           expect(response_comment['id']).to eq last_comment.id
@@ -49,7 +49,7 @@ describe 'AdminComments' do
 
       context 'html response' do
         it 'redirects back with a flash error' do
-          post(url, { admin_comment: { comment: 'A comment that will not be persisted' } }, headers)
+          post(url, params: { admin_comment: { comment: 'A comment that will not be persisted' } }, headers: headers)
           expect(response).to redirect_to(:back)
           expect(flash[:error]).to eq 'There was an error creating your comment.'
         end
@@ -57,7 +57,7 @@ describe 'AdminComments' do
 
       context 'js response' do
         it 'returns a failure status code' do
-          post("#{url}.js", { admin_comment: { comment: 'A comment that will not be persisted' } }, headers)
+          post("#{url}.js", params: { admin_comment: { comment: 'A comment that will not be persisted' } }, headers: headers)
           expect(response).not_to be_success
           expect(JSON.parse(response.body)).to eq('status' => 'error')
         end
@@ -69,7 +69,7 @@ describe 'AdminComments' do
     let(:user) { create(:webauth_user) }
 
     it 'raises an access denied error' do
-      expect { post(url, admin_comment: { comment: 'A comment' }) }.to raise_error(CanCan::AccessDenied)
+      expect { post(url, params: { admin_comment: { comment: 'A comment' } }) }.to raise_error(CanCan::AccessDenied)
     end
   end
 end

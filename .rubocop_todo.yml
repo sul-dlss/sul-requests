@@ -12,6 +12,13 @@ Layout/ClosingParenthesisIndentation:
   Exclude:
     - 'spec/features/admin_requests_spec.rb'
 
+# Offense count: 1
+# Cop supports --auto-correct.
+# Configuration parameters: AllowForAlignment, ForceEqualSignAlignment.
+Layout/ExtraSpacing:
+  Exclude:
+    - 'spec/controllers/scans_controller_spec.rb'
+
 # Offense count: 54
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
@@ -72,6 +79,12 @@ Lint/UriEscapeUnescape:
 # ExcludedMethods: refine
 Metrics/BlockLength:
   Max: 560
+
+# Offense count: 4
+# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
+# URISchemes: http, https
+Metrics/LineLength:
+  Max: 128
 
 # Offense count: 3
 # Configuration parameters: CountComments, ExcludedMethods.
@@ -227,6 +240,21 @@ Rails/ActiveRecordAliases:
   Exclude:
     - 'app/models/request.rb'
 
+# Offense count: 1
+# Cop supports --auto-correct.
+Rails/ApplicationJob:
+  Exclude:
+    - 'app/jobs/submit_symphony_request_job.rb'
+
+# Offense count: 4
+# Cop supports --auto-correct.
+Rails/ApplicationRecord:
+  Exclude:
+    - 'app/models/admin_comment.rb'
+    - 'app/models/message.rb'
+    - 'app/models/request.rb'
+    - 'app/models/user.rb'
+
 # Offense count: 13
 # Cop supports --auto-correct.
 # Configuration parameters: NilOrEmpty, NotPresent, UnlessPresent.
@@ -265,6 +293,14 @@ Rails/HasManyOrHasOneDependent:
   Exclude:
     - 'app/models/request.rb'
     - 'app/models/user.rb'
+
+# Offense count: 1
+# Cop supports --auto-correct.
+# Configuration parameters: Include.
+# Include: spec/**/*, test/**/*
+Rails/HttpPositionalArguments:
+  Exclude:
+    - 'spec/controllers/pages_controller_spec.rb'
 
 # Offense count: 4
 # Configuration parameters: Include.
