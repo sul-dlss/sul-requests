@@ -107,7 +107,7 @@ group :development, :test do
   gem 'scss-lint', require: false
 
   # Coveralls for code coverage metrics
-  gem 'coveralls', require: false
+  gem 'coveralls', '~> 0.8', require: false
 end
 
 # Use Capistrano for deployment
