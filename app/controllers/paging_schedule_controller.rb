@@ -3,11 +3,11 @@
 ###
 class PagingScheduleController < ApplicationController
   rescue_from PagingSchedule::ScheduleNotFound do
-    render text: 'Schedule not found', status: 404
+    render text: 'Schedule not found', status: :not_found
   end
 
   before_action only: [:show, :open] do
-    render text: 'Locations not found', status: 404 unless params[:origin].present? && params[:destination].present?
+    render text: 'Locations not found', status: :not_found unless params[:origin].present? && params[:destination].present?
   end
 
   before_action :load_schedule, only: [:show, :open]

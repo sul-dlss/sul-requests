@@ -15,7 +15,7 @@ Rails:
   Enabled: true
 
 Metrics/LineLength:
-  Max: 120
+  Max: 125
   Exclude:
     - 'spec/mailers/approval_status_mailer_spec.rb'
 
