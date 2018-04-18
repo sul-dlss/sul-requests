@@ -31,7 +31,7 @@ class AdminController < ApplicationController
     if @request.symphony_response.success?(params[:item])
       render json: status, layout: false
     else
-      render json: status, layout: false, status: 500
+      render json: status, layout: false, status: :internal_server_error
     end
   end
 
