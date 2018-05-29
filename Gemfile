@@ -6,6 +6,8 @@ gem 'rails', '4.2.9'
 gem 'sqlite3'
 # Use mysql as the database when running on the server environment
 gem 'mysql2', '~> 0.3.0'
+# Use Puma as the app server
+gem 'puma'
 # Use sass-powered bootstrap
 gem 'bootstrap-sass', "~> 3.3.4"
 # Use bootstrap_form for easy form building

@@ -230,6 +230,7 @@ GEM
       byebug (~> 10.0)
       pry (~> 0.10)
     public_suffix (3.0.2)
+    puma (3.11.4)
     rack (1.6.10)
     rack-protection (2.0.1)
       rack
@@ -401,6 +402,7 @@ DEPENDENCIES
   okcomputer
   poltergeist
   pry-byebug
+  puma
   rails (= 4.2.9)
   redcarpet
   rspec-rails (~> 3.0)
