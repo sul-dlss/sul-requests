@@ -18,7 +18,7 @@ describe 'Creating a hold recall request' do
 
       click_link "I don't have a SUNet ID"
 
-      expect(field_labeled('Library ID')['required']).to eq 'required'
+      expect(find_field('Library ID')['required']).to eq 'required'
 
       click_button 'Send request'
 

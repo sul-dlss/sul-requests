@@ -58,7 +58,7 @@ describe 'Send Request Buttons' do
       visit new_hold_recall_path(item_id: '1234', barcode: '3610512345', origin: 'GREEN', origin_location: 'STACKS')
     end
     it 'allows to send requests via SUNet ID' do
-      expect(page).to have_css('button', text: /Send request.*login with SUNet ID/)
+      expect(page).to have_css('button', text: /Send request.*login with SUNet ID/m)
     end
 
     it 'allows to send requests via LibraryID' do
