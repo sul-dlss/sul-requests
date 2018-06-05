@@ -228,7 +228,7 @@ describe 'Viewing all requests' do
         expect(page).not_to have_css('a.btn-primary', text: 'All pending')
 
         # requests are sorted properly (in descending needed_date order)
-        expected_regex = /#{Time.zone.today - 1.day}.*#{Time.zone.today - 2.days}.*#{Time.zone.today - 3.days}/
+        expected_regex = /#{Time.zone.today - 1.day}.*#{Time.zone.today - 2.days}.*#{Time.zone.today - 3.days}/m
         expect(page).to have_content(expected_regex)
 
         click_link 'All pending'

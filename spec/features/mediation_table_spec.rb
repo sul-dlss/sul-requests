@@ -204,14 +204,14 @@ describe 'Mediation table', js: true do
 
       it 'has the expected default sort order for pending requests (needed on ascending, created on descending)' do
         within '.mediation-table tbody' do
-          expect(page).to have_content(/Jim Doe.*Joe Doe.*Jane Stanford/)
+          expect(page).to have_content(/Jim Doe.*Joe Doe.*Jane Stanford/m)
         end
       end
 
       it 'has the expected default sort order for completed requests (needed on descending, created on descending)' do
         visit admin_path('SPEC-COLL', done: 'true')
         within '.mediation-table tbody' do
-          expect(page).to have_content(/Bob Doe.*Alice Doe.*Eve Doe.*Mal Doe/)
+          expect(page).to have_content(/Bob Doe.*Alice Doe.*Eve Doe.*Mal Doe/m)
         end
       end
 
@@ -219,13 +219,13 @@ describe 'Mediation table', js: true do
         click_link 'Requested on'
 
         within '.mediation-table tbody' do
-          expect(page).to have_content(/Jane Stanford.*Joe Doe.*Jim Doe/)
+          expect(page).to have_content(/Jane Stanford.*Joe Doe.*Jim Doe/m)
         end
 
         click_link 'Requested on'
 
         within '.mediation-table tbody' do
-          expect(page).to have_content(/Jim Doe.*Joe Doe.*Jane Stanford/)
+          expect(page).to have_content(/Jim Doe.*Joe Doe.*Jane Stanford/m)
         end
       end
     end

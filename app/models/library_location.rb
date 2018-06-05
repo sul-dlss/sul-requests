@@ -91,10 +91,10 @@ class LibraryLocation
   end
 
   def library_specific_pickup_libraries?
-    config.library_specific_pickup_libraries.keys.include?(@library)
+    config.library_specific_pickup_libraries.key?(@library)
   end
 
   def location_specific_pickup_libraries?
-    config.location_specific_pickup_libraries.keys.include?(@location)
+    config.location_specific_pickup_libraries.key?(@location)
   end
 end

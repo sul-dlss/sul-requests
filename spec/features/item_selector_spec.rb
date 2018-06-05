@@ -51,8 +51,8 @@ describe 'Item Selector' do
           within('#item-selector') do
             choose('ABC 321')
             choose('ABC 123')
-            expect(field_labeled('ABC 321')).to_not be_checked
-            expect(field_labeled('ABC 123')).to be_checked
+            expect(find_field('ABC 321')).to_not be_checked
+            expect(find_field('ABC 123')).to be_checked
           end
           expect(page).to have_content('1 items selected')
         end
@@ -70,7 +70,7 @@ describe 'Item Selector' do
             check('ABC 345')
 
             check('ABC 678')
-            expect(field_labeled('ABC 678')).to be_checked
+            expect(find_field('ABC 678')).to be_checked
           end
           expect(page).to have_content('6 items selected')
         end
@@ -236,7 +236,7 @@ describe 'Item Selector' do
       # temporarily disabled, see issue #719
       # within('#item-selector') do
       #   check('ABC 901')
-      #   expect(field_labeled('ABC 901')).to_not be_checked
+      #   expect(find_field('ABC 901')).to_not be_checked
       # end
     end
   end
@@ -268,7 +268,7 @@ describe 'Item Selector' do
       expect(page).to_not have_css('#breadcrumb-12345678', text: 'ABC 123')
 
       within('#item-selector') do
-        expect(field_labeled('ABC 123')).to_not be_checked
+        expect(find_field('ABC 123')).to_not be_checked
         uncheck('ABC 456')
       end
 
