@@ -3,6 +3,7 @@
 #  The API URI is configured using rails_config: Settings.searchworks_api
 ###
 class SearchworksItem
+  include ActiveSupport::Benchmarkable
   attr_reader :request, :live_lookup
   def initialize(request, live_lookup = true)
     @request = request
@@ -40,10 +41,16 @@ class SearchworksItem
 
   def response
     @response ||= begin
-      Faraday.get(url)
+      benchmark "GET #{url}" do
+        Faraday.get(url)
+      end
     rescue Faraday::Error::ConnectionFailed
       NullResponse.new
     end
+  end
+
+  def logger
+    Rails.logger
   end
 
   def json
