@@ -4,10 +4,8 @@
 #  Controller to handle particular behaviors for Scan type requests
 ###
 class ScansController < RequestsController
-  # Redirect to the illiad_url unless the illiad_success
-  # parameter (that we in the illiad_url method) is present
   before_action only: :create do
-    redirect_to illiad_url unless params[:illiad_success]
+    check_illiad unless params[:illiad_success]
   end
 
   protected
@@ -33,15 +31,16 @@ class ScansController < RequestsController
     }.merge(request_context_params)
   end
 
-  def illiad_url
-    redirect_url = create_scans_url(
-      request_context_params.merge(
-        request: params[:request].to_unsafe_h,
-        illiad_success: true
-      )
-    )
+  def illiad_request
+    IlliadRequest.new(current_user, current_request).response
+  end
 
-    IlliadOpenurl.new(current_user, current_request, redirect_url).to_url
+  def check_illiad
+    response = illiad_request.body
+    Rails.logger.info "ILLiad response: #{response}"
+    # If there is a connection or url problem the request will be blank.
+    # If there is a problem with a POST value (e.g. blank Username) the response will include the word 'invalid'
+    redirect_to sorry_unable_path if response.blank? || response.include?('The request is invalid.')
   end
 
   def validate_request_type
