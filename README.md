@@ -64,7 +64,7 @@ In order to develop the application it may be necessary to fake workgroups so th
 ```
     fake_ldap_attributes:
       user_sunet:
-        WEBAUTH_LDAPPRIVGROUP: 'some-set|of-workgroup-strings'
+        eduPersonEntitlement: 'some-set|of-workgroup-strings'
 ```
 
 So your `config/settings/development.local.yml` file might look like:
@@ -72,7 +72,7 @@ So your `config/settings/development.local.yml` file might look like:
 ```
 fake_ldap_attributes:
   (your sunet id):
-    WEBAUTH_LDAPPRIVGROUP: 'mine:mine'
+    eduPersonEntitlement: 'mine:mine'
 
 super_admin_groups: ['mine:mine']
 ```

@@ -30,17 +30,41 @@ class CurrentUser
   end
 
   def update_ldap_attributes(user)
-    user.name = ldap_attributes['WEBAUTH_LDAP_DISPLAYNAME']
-    user.ldap_group_string = ldap_attributes['WEBAUTH_LDAPPRIVGROUP']
-    user.sucard_number = ldap_attributes['WEBAUTH_LDAP_SUCARDNUMBER']
-    user.affiliation = ldap_attributes['WEBAUTH_LDAP_SUAFFILIATION']
+    user.name = ldap_name
+    user.ldap_group_string = ldap_group_string
+    user.sucard_number = ldap_sucard_number
+    user.affiliation = ldap_affiliation
     user.email = ldap_email
     user.save if user.changed?
   end
 
+  def ldap_name
+    ldap_attributes['WEBAUTH_LDAP_DISPLAYNAME'] || ldap_attributes['displayName']
+  end
+
+  def ldap_group_string
+    ldap_attributes['WEBAUTH_LDAPPRIVGROUP'] || ldap_attributes['eduPersonEntitlement']
+  end
+
+  def ldap_sucard_number
+    ldap_attributes['WEBAUTH_LDAP_SUCARDNUMBER'] || ldap_attributes['suCardNumber']
+  end
+
+  def ldap_affiliation
+    ldap_attributes['WEBAUTH_LDAP_SUAFFILIATION'] || ldap_attributes['suAffiliation']
+  end
+
   def ldap_email
-    return ldap_attributes['WEBAUTH_EMAIL'] unless ldap_attributes['WEBAUTH_EMAIL'].nil?
-    return "#{user_id}@stanford.edu" if ldap_attributes['WEBAUTH_LDAP_SUEMAILSTATUS'] == 'active'
+    return ldap_email_attribute unless ldap_email_attribute.nil?
+    return "#{user_id}@stanford.edu" if ldap_email_status == 'active'
+  end
+
+  def ldap_email_attribute
+    ldap_attributes['WEBAUTH_EMAIL'] || ldap_attributes['mail']
+  end
+
+  def ldap_email_status
+    ldap_attributes['WEBAUTH_LDAP_SUEMAILSTATUS'] || ldap_attributes['suEmailStatus']
   end
 
   def ldap_attributes
