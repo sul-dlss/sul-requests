@@ -5,15 +5,12 @@ require 'rails_helper'
 describe ScansController do
   before do
     stub_searchworks_api_json(build(:sal3_holdings))
+    allow(controller).to receive_messages(current_user: user)
   end
 
   let(:scan) { create(:scan_with_holdings, origin: 'SAL3', origin_location: 'STACKS', barcodes: ['12345678']) }
   let(:scannable_params) do
     { item_id: '12345', origin: 'SAL3', origin_location: 'STACKS' }
-  end
-
-  before do
-    allow(controller).to receive_messages(current_user: user)
   end
 
   describe 'new' do
@@ -103,28 +100,9 @@ describe ScansController do
 
       before do
         stub_searchworks_api_json(build(:sal3_holdings))
-      end
-
-      it 'is allowed' do
+        allow(controller).to receive(:current_request).and_return(create(:scan_with_holdings, barcodes: ['12345678']))
         post :create, params: {
-          illiad_success: true,
-          request: {
-            item_id: '12345',
-            origin: 'SAL3',
-            origin_location: 'STACKS',
-            barcodes: ['87654321'],
-            section_title: 'Some really important chapter'
-          }
-        }
-
-        expect(Scan.last.origin).to eq 'SAL3'
-        expect(Scan.last.user).to eq user
-        expect(Scan.last.barcodes).to eq(['87654321'])
-      end
-
-      it 'redirects post requests to the Illiad URL when the illiad_success param is not present' do
-        post :create, params: {
-          request: {
+          illiad_success: true, request: {
             item_id: '12345',
             origin: 'SAL3',
             origin_location: 'STACKS',
@@ -132,23 +110,17 @@ describe ScansController do
             section_title: 'Some really important chapter'
           }
         }
-
-        expect(response).to redirect_to(/^#{Settings.sul_illiad}.*scan_referrer=/)
       end
 
-      it 'constructs an illiad query url' do
-        allow(controller).to receive(:params).and_return(
-          ActionController::Parameters.new(request: { origin: 'GREEN' })
-        )
+      it 'is allowed' do
+        expect(Scan.last.origin).to eq 'SAL3'
+        expect(Scan.last.user).to eq user
+        expect(Scan.last.barcodes).to eq(['12345678'])
+      end
 
-        expect(controller).to receive(:current_request).and_return(create(:scan_with_holdings, barcodes: ['12345678']))
-
-        illiad_response = controller.send(:illiad_url)
-        expect(illiad_response).to include('illiad.dll?')
-        expect(illiad_response).to include('Action=10&Form=30')
-        expect(illiad_response).to include('&rft.genre=scananddeliver')
-        expect(illiad_response).to include('&rft.jtitle=SAL3+Item+Title')
-        expect(illiad_response).to include('&rft.call_number=ABC+123')
+      it 'are redirected to the scan success page after a successful illiad request' do
+        allow(controller).to receive(:illiad_request).and_return(true)
+        expect(controller.send(:illiad_request)).to redirect_to '/scans/1/success'
       end
 
       it 'does not send a confirmation email' do
@@ -165,7 +137,7 @@ describe ScansController do
               section_title: 'Some really important chapter'
             }
           }
-        end.not_to change { ConfirmationMailer.deliveries.count }
+        end.not_to(change { ConfirmationMailer.deliveries.count })
       end
 
       # Note:  cannot trigger activejob from this spec to check ApprovalStatusMailer
@@ -189,8 +161,22 @@ describe ScansController do
     describe 'invalid requests' do
       let(:user) { create(:scan_eligible_user) }
 
+      it 'redirect to the sorry page after an unsuccessful illiad request' do
+        put :create, params: {
+          request: {
+            item_id: '12345',
+            origin: 'SAL3',
+            origin_location: 'STACKS',
+            barcodes: ['12345678'],
+            section_title: 'Some really important chapter'
+          }
+        }
+        # with invalid illiad test url: sul_illiad: 'https://illiad-test/'
+        expect(response).to redirect_to sorry_unable_path
+      end
+
       it 'returns an error message to the user' do
-        post :create, params:  { illiad_success: true, request: { item_id: '12345' } }
+        post :create, params: { illiad_success: true, request: { item_id: '12345' } }
         expect(flash[:error]).to eq 'There was a problem creating your request.'
         expect(response).to render_template 'new'
       end
