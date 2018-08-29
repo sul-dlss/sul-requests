@@ -3,6 +3,27 @@ require 'rails_helper'
 describe CurrentUser do
   let(:rails_req) { double(env: {}, remote_ip: '') }
   subject { described_class.for(rails_req) }
+
+  # We can remove this test and change all the tests below
+  # to use shib attributes when we yank the webauth code
+  it 'handles shibboleth attributes' do
+    allow_any_instance_of(described_class).to receive_messages(user_id: 'some-user')
+    ldap_attr = {
+      'displayName' => 'Jane Stanford',
+      'eduPersonEntitlement' => 'ldap:group1;ldap:group2',
+      'suCardNumber' => '12345987654321',
+      'suAffiliation' => 'stanford:staff;stanford:student',
+      'mail' => 'the-email@fromldap.edu'
+    }
+    allow_any_instance_of(described_class).to receive_messages(ldap_attributes: ldap_attr)
+
+    expect(subject.name).to eq 'Jane Stanford'
+    expect(subject.ldap_groups).to eq ['ldap:group1', 'ldap:group2']
+    expect(subject.library_id).to eq '987654321'
+    expect(subject.affiliation).to eq ['stanford:staff', 'stanford:student']
+    expect(subject.email).to eq 'the-email@fromldap.edu'
+  end
+
   describe '#current_user' do
     it 'should return nil user if there is no user in the environment' do
       expect(subject).to be_a User

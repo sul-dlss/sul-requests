@@ -70,7 +70,7 @@ class User < ActiveRecord::Base
   end
 
   def ldap_groups
-    (@ldap_group_string || '').split('|')
+    (@ldap_group_string || '').split(/[|;]/)
   end
 
   def proxy_access
@@ -78,7 +78,7 @@ class User < ActiveRecord::Base
   end
 
   def affiliation
-    (@affiliation || '').split('|')
+    (@affiliation || '').split(/[|;]/)
   end
 
   def email_from_symphony
