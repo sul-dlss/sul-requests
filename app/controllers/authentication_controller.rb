@@ -9,6 +9,6 @@ class AuthenticationController < ApplicationController
 
   def logout
     flash[:notice] = 'You have been successfully logged out.'
-    redirect_to params[:referrer] || :back
+    redirect_to '/Shibboleth.sso/Logout'
   end
 end
