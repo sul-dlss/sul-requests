@@ -23,8 +23,7 @@ set :log_level, :info
 set :linked_files, fetch(:linked_files, []).push(
   'config/database.yml',
   'config/honeybadger.yml',
-  'config/secrets.yml',
-  'public/.htaccess'
+  'config/secrets.yml'
 )
 
 # Default value for linked_dirs is []

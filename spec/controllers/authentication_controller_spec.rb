@@ -19,13 +19,9 @@ describe AuthenticationController do
     end
   end
   describe 'logout' do
-    it 'should redirect back to the provided referrer' do
-      get :logout, referrer: '/'
-      expect(response).to redirect_to('/')
-    end
-    it 'should redirect back when there is no provided referrer' do
+    it 'should redirect to the Shibboleth logout page' do
       get :logout
-      expect(response).to redirect_to('https://example.com')
+      expect(response).to redirect_to('/Shibboleth.sso/Logout')
     end
     it 'should have a flash notice message informing the user they logged out' do
       get :logout

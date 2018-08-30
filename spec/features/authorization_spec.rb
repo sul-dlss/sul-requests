@@ -14,12 +14,11 @@ describe 'User Authorization' do
     before do
       stub_current_user(create(:webauth_user))
     end
-    it 'is present in the home page and redirects with message' do
+
+    it 'is present in the home page' do
       visit root_path
-      click_link 'some-webauth-user: Logout'
-      within('.flashes') do
-        expect(page).to have_css('.alert-info', text: 'You have been successfully logged out.')
-      end
+      expect(page).to have_link 'some-webauth-user: Logout'
+      # We don't test clicking on the link because Shibboleth provides the logout page
     end
   end
 end
