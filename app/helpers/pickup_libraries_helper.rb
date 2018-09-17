@@ -4,6 +4,7 @@ module PickupLibrariesHelper
   def select_for_pickup_libraries(form)
     pickup_libraries = form.object.library_location.pickup_libraries
     return unless pickup_libraries.present?
+
     select_for_multiple_libraries(form, pickup_libraries) || single_library_markup(form, pickup_libraries.first)
   end
 
@@ -19,6 +20,7 @@ module PickupLibrariesHelper
 
   def select_for_multiple_libraries(form, pickup_libraries)
     return unless pickup_libraries.keys.length > 1
+
     form.select(
       :destination,
       pickup_libraries_array(form, pickup_libraries),
@@ -37,6 +39,7 @@ module PickupLibrariesHelper
 
   def pickup_library_for_origin(origin)
     return unless SULRequests::Application.config.self_in_library_list_is_selected.include?(origin)
+
     origin
   end
 
@@ -64,6 +67,7 @@ module PickupLibrariesHelper
   def additional_pickup_libraries(form)
     origin = form.object.origin
     return {} unless SULRequests::Application.config.include_self_in_library_list.include?(origin)
+
     SULRequests::Application.config.libraries.select { |k, _| k == origin }
   end
 end

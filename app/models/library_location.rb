@@ -45,6 +45,7 @@ class LibraryLocation
     def location_specific_library_name_by_code(code)
       pickup_libraries_for_location = Array(config.location_specific_pickup_libraries[code])
       return unless pickup_libraries_for_location.one?
+
       all_libraries[pickup_libraries_for_location.first]
     end
 
@@ -79,6 +80,7 @@ class LibraryLocation
 
   def additional_pickup_libraries
     return {} unless SULRequests::Application.config.include_self_in_library_list.include?(@library)
+
     all_libraries.select { |k, _| k == @library }
   end
 

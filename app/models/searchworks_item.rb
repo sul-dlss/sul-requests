@@ -19,6 +19,7 @@ class SearchworksItem
 
   def holdings
     return [] unless json['holdings'].present?
+
     @holdings ||= JSON.parse(json['holdings'].to_json, object_class: OpenStruct)
   end
 
@@ -48,6 +49,7 @@ class SearchworksItem
 
   def json
     return {} unless response.success?
+
     @json ||= begin
       JSON.parse(response.body)
     rescue JSON::ParserError
@@ -66,6 +68,7 @@ class SearchworksItem
 
     def where(barcodes: [])
       raise ArgumentError unless barcodes.present?
+
       barcodes = Array(barcodes)
       all.select do |item|
         barcodes.include?(item.barcode)
@@ -74,6 +77,7 @@ class SearchworksItem
 
     def all
       return [] unless location.present?
+
       location.items.map do |item|
         item.request_status = @searchworks_item.request.item_status(item.barcode)
         item
@@ -93,6 +97,7 @@ class SearchworksItem
 
     def mhld
       return [] unless location.present? && location.mhld.present?
+
       location.mhld
     end
 
@@ -108,6 +113,7 @@ class SearchworksItem
 
     def library
       return unless @searchworks_item.holdings.present?
+
       @searchworks_item.holdings.find do |library|
         library.code == @searchworks_item.request.origin
       end
@@ -115,6 +121,7 @@ class SearchworksItem
 
     def location
       return unless library.present?
+
       library.locations.find do |location|
         location.code == @searchworks_item.request.origin_location
       end

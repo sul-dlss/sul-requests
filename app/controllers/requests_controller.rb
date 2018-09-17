@@ -79,12 +79,14 @@ class RequestsController < ApplicationController
 
   def rescue_new_record_via_post
     return unless !current_user.webauth_user? && create_via_post? && current_request.new_record?
+
     bounce_request_through_webauth
   end
 
   def rescue_status_pages
     return unless params[:action].to_sym == :status
     return if current_user.webauth_user?
+
     redirect_to login_path(referrer: request.original_url)
   end
 
@@ -97,6 +99,7 @@ class RequestsController < ApplicationController
 
   def check_if_proxy_sponsor
     return unless current_request.user.sponsor? && params[:request][:proxy].nil?
+
     render 'sponsor_request'
   end
 

@@ -38,8 +38,10 @@ module Scannable
 
   def scannable_item_types
     return ITEM_TYPES unless location
+
     location_item_types_method_name = "#{location.underscore}_scannable_item_types".to_sym
     return ITEM_TYPES unless respond_to?(location_item_types_method_name, true)
+
     send(location_item_types_method_name)
   end
 

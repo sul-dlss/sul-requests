@@ -126,6 +126,7 @@ class AdminController < ApplicationController
 
   def rescue_can_can(*)
     return super if webauth_user? || params[:action] == 'approve_item'
+
     redirect_to login_path(referrer: request.original_url)
   end
 end

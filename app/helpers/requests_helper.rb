@@ -7,6 +7,7 @@ module RequestsHelper
   def render_remote_user_check?
     return false unless Settings.features.remote_ip_check
     return unless current_request && current_user.try(:ip_address)
+
     current_request.check_remote_ip? && !IPRange.includes?(current_user.ip_address)
   end
 
@@ -83,6 +84,7 @@ module RequestsHelper
 
   def ad_hoc_item_status(item)
     return unless item.is_a?(String)
+
     t('status_text.unlisted')
   end
 
@@ -99,6 +101,7 @@ module RequestsHelper
 
   def status_text_for_errored_item(item)
     return unless item.request_status.errored?
+
     item.request_status.symphony_user_error_text || item.request_status.text
   end
 

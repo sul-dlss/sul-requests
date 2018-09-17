@@ -20,6 +20,7 @@ module Holdings
 
   def requested_holdings
     return [] unless requested_barcode.present? || barcodes.present?
+
     holdings_object.where(barcodes: requested_barcode || barcodes)
   end
 end

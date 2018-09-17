@@ -12,6 +12,7 @@ module ModalLayout
 
   def set_modal_layout
     return unless params[:modal]
+
     'modal'
   end
 end

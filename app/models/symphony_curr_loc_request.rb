@@ -8,6 +8,7 @@ class SymphonyCurrLocRequest
 
   def current_location
     return '' if json.empty?
+
     json['fields']['currentLocation']['key']
   rescue NoMethodError => e
     Rails.logger.warn("currentLocation not available for #{barcode}; failed with: #{e}")
@@ -19,6 +20,7 @@ class SymphonyCurrLocRequest
   def response
     @response ||= faraday_conn_w_req_headers.get
     return empty_response(@response.body) unless @response.success?
+
     @response
   rescue Faraday::Error::ConnectionFailed => e
     empty_response(e)
@@ -26,6 +28,7 @@ class SymphonyCurrLocRequest
 
   def json
     return {} unless response.success?
+
     @json ||= JSON.parse(response.body)
   rescue JSON::ParserError => e
     Rails.logger.warn("Couldn't parse JSON from #{url}: #{e}")

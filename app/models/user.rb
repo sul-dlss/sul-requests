@@ -21,6 +21,7 @@ class User < ActiveRecord::Base
 
   def sucard_number=(card_number)
     return unless card_number.present?
+
     self.library_id = card_number[/\d{5}(\d+)/, 1]
   end
 
