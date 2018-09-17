@@ -16,11 +16,13 @@ class RequestApprovalStatus
   def to_html
     return content_wrapper { pending_text } if pending?
     return content_wrapper { user_error_text } if user_error?
+
     safe_join(item_list_with_status_markup)
   end
 
   def to_text
     return pending_text if pending?
+
     # Not putting user errors here because it
     # is handled elswehere in the context of the plain text status
     item_list_with_status.join("\n")

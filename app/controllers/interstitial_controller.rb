@@ -18,6 +18,7 @@ class InterstitialController < ApplicationController
 
   def redirect_param_same_as_host?
     return false if params[:redirect_to].blank?
+
     URI.parse(URI.decode(params[:redirect_to])).host == request.host
   end
 end

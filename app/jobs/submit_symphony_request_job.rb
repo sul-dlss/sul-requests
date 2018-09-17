@@ -8,6 +8,7 @@ class SubmitSymphonyRequestJob < ActiveJob::Base
   #   It also helps reduce the size of the Redis database (used by Sidekiq), which stores its data in memory.
   def perform(request_id, options = {})
     return true unless enabled?
+
     request = find_request(request_id)
 
     return true unless request
@@ -114,6 +115,7 @@ class SubmitSymphonyRequestJob < ActiveJob::Base
 
     def copy_notes
       return if request.public_notes.blank?
+
       result = []
       request.public_notes.each do |barcode, note|
         result << "#{barcode}:#{note}" if barcodes.include? barcode

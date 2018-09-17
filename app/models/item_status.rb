@@ -31,6 +31,7 @@ class ItemStatus
 
   def symphony_user_error_text
     return unless @request.symphony_response && @request.symphony_response.usererr_text.present?
+
     @request.symphony_response.usererr_text
   end
 
@@ -54,6 +55,7 @@ class ItemStatus
     @request.send_to_symphony_now!(barcodes: [@id])
     reload_request # reloading to get any attributes saved to the database above
     return unless symphony_item_successful?
+
     self.status_object = {
       approved: true,
       approval_time: Time.zone.now.to_s,
@@ -68,6 +70,7 @@ class ItemStatus
   def symphony_item_successful?
     return true if (@request.ad_hoc_items || []).include?(@id)
     return true if non_existent_item_in_symphony_response_for_mediated_page?
+
     @request.symphony_response.success?(@id)
   end
 
@@ -78,6 +81,7 @@ class ItemStatus
 
   def localized_approval_time
     return nil unless approval_time.present?
+
     I18n.l(Time.zone.parse(approval_time), format: :short)
   end
 
@@ -97,11 +101,13 @@ class ItemStatus
 
   def symphony_user_error_code
     return unless @request.symphony_response && @request.symphony_response.usererr_code.present?
+
     @request.symphony_response.usererr_code
   end
 
   def reload_request
     return unless @request.persisted?
+
     @request.reload
     @request.request_status_data ||= {}
   end

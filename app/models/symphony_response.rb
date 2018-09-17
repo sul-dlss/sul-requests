@@ -15,6 +15,7 @@ class SymphonyResponse
     return false if usererr_code.present?
     return false if items_by_barcode.blank?
     return item_successful?(barcode) if barcode
+
     successful_barcodes.present?
   end
 
@@ -28,6 +29,7 @@ class SymphonyResponse
 
   def item_failed?(barcode)
     return unless barcode && items_by_barcode[barcode]
+
     items_by_barcode[barcode]['msgcode'] && !item_successful?(barcode)
   end
 
@@ -35,6 +37,7 @@ class SymphonyResponse
 
   def item_successful?(barcode = nil)
     return unless barcode && items_by_barcode[barcode]
+
     success_codes.include?(items_by_barcode[barcode]['msgcode'])
   end
 

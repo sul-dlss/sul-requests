@@ -14,6 +14,7 @@ module SULRequests
     def initialize(token)
       raise InvalidSecret unless secret.present?
       raise InvalidSalt unless salt.present?
+
       @token = token
     end
 

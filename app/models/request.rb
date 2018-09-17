@@ -80,6 +80,7 @@ class Request < ActiveRecord::Base
   # there already is one associated with that email address
   def autosave_associated_records_for_user
     return unless user
+
     if (existing_user = find_existing_user)
       self.user = existing_user
     else
@@ -90,6 +91,7 @@ class Request < ActiveRecord::Base
 
   def find_existing_user
     return unless user
+
     case
     when user.webauth_user? then User.find_by_webauth(user.webauth)
     when user.library_id_user? then find_existing_library_id_user
@@ -108,6 +110,7 @@ class Request < ActiveRecord::Base
   def find_existing_email_user
     User.find_by(email: user.email, library_id: user.library_id).tap do |u|
       next unless u
+
       u.update_attributes(name: user.name)
     end
   end
@@ -126,6 +129,7 @@ class Request < ActiveRecord::Base
 
   def notification_email_address
     return user.proxy_access.email_address if proxy? && user.proxy_access.email_address.present?
+
     user.email_address
   end
 

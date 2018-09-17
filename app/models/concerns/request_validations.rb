@@ -15,6 +15,7 @@ module RequestValidations
 
   def destination_is_a_pickup_library
     return if library_location.pickup_libraries.include?(destination)
+
     errors.add(:destination, 'is not a valid pickup library')
   end
 
@@ -24,6 +25,7 @@ module RequestValidations
   def requested_holdings_exist
     holdings_barcodes = holdings.map(&:barcode)
     return if barcodes.all? { |b| holdings_barcodes.include?(b) }
+
     errors.add(:base, 'A selected item is not located in the requested location')
   end
 
