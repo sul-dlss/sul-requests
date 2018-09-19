@@ -9,13 +9,13 @@ PagingSchedule.configure do
     business_days_later 2
   end
   # Scan (based on SAL3 -> GREEN with added days)
-  when_paging from: 'SAL3', to: 'SCAN', before: '12:00pm' do
-    will_arrive after: '6:00pm'
-    business_days_later 1
+  when_paging from: 'SAL3', to: 'SCAN', before: '11:55am' do
+    will_arrive after: '3:00pm'
+    business_days_later 0
   end
-  when_paging from: 'SAL3', to: 'SCAN', after: '12:00pm' do
-    will_arrive after: '6:00pm'
-    business_days_later 2
+  when_paging from: 'SAL3', to: 'SCAN', after: '11:55am' do
+    will_arrive after: '12:00pm'
+    business_days_later 1
   end
   when_paging from: 'SAL3', to: :anywhere, before: '12:00pm' do
     will_arrive after: '4:00pm'
