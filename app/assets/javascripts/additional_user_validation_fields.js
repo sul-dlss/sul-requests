@@ -1,4 +1,4 @@
-var additionalFormValidation = (function() {
+var additionalUserValidationFields = (function() {
   var defaultOptions = {
     singleUserFieldSelector: '[data-behavior="single-user-field"]',
     groupedUserFieldSelector: '[data-behavior="grouped-user-field"]',
@@ -11,29 +11,11 @@ var additionalFormValidation = (function() {
       _this.options = $.extend(defaultOptions, opts);
       $(document).on('turbolinks:load', function(){
         if(_this.submitButtons().length > 0) {
-          if(!_this.fieldsAreValid() && _this.submitButtons().is(':visible')) {
-            _this.disableButton();
-          }
-
           _this.addFormvalidationBehavior();
         }
       });
     },
     options: {},
-
-    enableButton: function() {
-      this.submitButtons().removeClass('disabled');
-      this.submitButtons().removeAttr('disabled');
-      this.submitButtons().closest('form').unbind('submit.disabled-button');
-    },
-
-    disableButton: function() {
-      this.addTooltipToButtonWrapper();
-      this.submitButtons().addClass('disabled');
-      this.submitButtons().closest('form').on('submit.disabled-button', function(e) {
-        e.preventDefault();
-      });
-    },
 
     addFormvalidationBehavior: function() {
       var _this = this;
@@ -50,9 +32,9 @@ var additionalFormValidation = (function() {
       input.on('propertychange change input paste blur', function() {
         if(_this.submitButtons().is(':visible')) {
           if ( _this.fieldsAreValid() ) {
-            _this.enableButton();
+            $('form').trigger('item-selector:additional-user-validation-passed');
           } else {
-            _this.disableButton();
+            $('form').trigger('item-selector:additional-user-validation-failed');
           }
         }
       });
@@ -108,4 +90,4 @@ var additionalFormValidation = (function() {
 
 })();
 
-additionalFormValidation.init();
+additionalUserValidationFields.init();
