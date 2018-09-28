@@ -23,8 +23,7 @@ describe 'Send Request Buttons' do
       expect(page).to have_field('Name', type: 'text')
       expect(page).to have_field('Email', type: 'email')
 
-      click_button 'Send request'
-      expect(current_url).to include '/pages/new?' # checks that the current url is still the new page form
+      expect(page).to have_css('input[value="Send request"][disabled].disabled')
 
       fill_in 'Library ID', with: '12345'
       expect(page).not_to have_css('input[value="Send request"].disabled')

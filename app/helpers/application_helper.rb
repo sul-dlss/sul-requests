@@ -33,7 +33,7 @@ module ApplicationHelper
       text || 'Send request<span class="btn-sub-text">login with SUNet ID</span>'.html_safe,
       id: 'send_request_via_sunet',
       class: 'btn btn-md btn-primary btn-full',
-      data: { disable_with: 'Send request' }
+      data: { disable_with: 'Send request', additional_user_validation: 'false' }
     )
   end
 

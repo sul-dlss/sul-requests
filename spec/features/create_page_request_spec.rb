@@ -8,8 +8,11 @@ describe 'Creating a page request' do
     end
   end
   describe 'by an anonmyous user' do
+    before { stub_searchworks_api_json(build(:single_holding)) }
+
     it 'should be possible if a name and email is filled out', js: true do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
+
       click_link "I don't have a SUNet ID"
 
       expect(page).to have_css('input#request_user_attributes_library_id')
