@@ -75,7 +75,7 @@ describe ApprovalStatusMailer do
 
       it 'renders the correct email' do
         expect(mail.body.to_s).to include(
-          "We'll send you another email when your request is ready for download."
+          "You'll receive another email when your request is ready for download."
         )
       end
     end
