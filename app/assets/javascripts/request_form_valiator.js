@@ -78,7 +78,9 @@ var requestFormValidator = (function() {
       button.prop('disabled', true);
       button.addClass('disabled');
       button.closest('form').on('submit.disabled-button', function(e) {
-        e.preventDefault();
+        if(button.is(':visible')) {
+          e.preventDefault();
+        }
       });
     },
 
