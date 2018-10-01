@@ -2,6 +2,18 @@ require 'rails_helper'
 
 describe 'Send Request Buttons' do
   before { stub_searchworks_api_json(build(:single_holding)) }
+
+  describe 'as a Stanford user', js: true do
+    before { stub_current_user(create(:webauth_user)) }
+    it 'allows submit' do
+      visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
+
+      click_button 'Send request'
+
+      expect_to_be_on_success_page
+    end
+  end
+
   describe 'by anonymous user', js: true do
     it 'should be possible to toggle between login and name-email form' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
