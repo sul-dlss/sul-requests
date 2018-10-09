@@ -24,5 +24,11 @@ describe InterstitialController do
       get :show, redirect_to: 'http:%2F%2Ftest.host%2Fsome-route'
       expect(assigns(:redirect_to)).to eq 'http://test.host/some-route'
     end
+
+    it 'handles redirects to non-ascii URLs appropriately' do
+      get :show, redirect_to: 'http://test.host/some-route?q=Bedeutung+f%C3%BCr+die+Medi%C3%A4visti'
+
+      expect(response).to be_success
+    end
   end
 end
