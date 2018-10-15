@@ -1,11 +1,11 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.1.0'
+gem 'rails', '~> 5.2.0'
 # Use sqlite3 as the database (during local development)
 gem 'sqlite3'
 # Use mysql as the database when running on the server environment
-gem 'mysql2', '~> 0.4.4'
+gem 'mysql2', '~> 0.5'
 # Use Puma as the app server
 gem 'puma'
 # Use sass-powered bootstrap
@@ -105,7 +105,7 @@ group :development, :test do
 
   # Coveralls for code coverage metrics
   gem 'coveralls', require: false
-  
+
   gem 'rails-controller-testing'
 end
 
