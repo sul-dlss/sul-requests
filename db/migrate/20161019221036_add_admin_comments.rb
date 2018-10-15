@@ -1,4 +1,4 @@
-class AddAdminComments < ActiveRecord::Migration
+class AddAdminComments < ActiveRecord::Migration[4.2]
   def change
     create_table :admin_comments do |t|
       t.string :commenter

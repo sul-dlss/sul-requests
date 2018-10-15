@@ -1,4 +1,4 @@
-class ChangeRequestItemTitleToText < ActiveRecord::Migration
+class ChangeRequestItemTitleToText < ActiveRecord::Migration[4.2]
   def up
     change_column :requests, :item_title, :text
   end
