@@ -31,7 +31,7 @@ describe 'AdminComments' do
       context 'js response' do
         it 'returns a succesful status code' do
           post("#{url}.js", params: { admin_comment: { comment: 'This is yet another comment' } }, headers: headers)
-          expect(response).to be_success
+          expect(response).to be_successful
         end
         it 'returns the JSON of the comment object that was just created' do
           post("#{url}.js", params: { admin_comment: { comment: 'This is yet another comment' } }, headers: headers)
@@ -58,7 +58,7 @@ describe 'AdminComments' do
       context 'js response' do
         it 'returns a failure status code' do
           post("#{url}.js", params: { admin_comment: { comment: 'A comment that will not be persisted' } }, headers: headers)
-          expect(response).not_to be_success
+          expect(response).not_to be_successful
           expect(JSON.parse(response.body)).to eq('status' => 'error')
         end
       end

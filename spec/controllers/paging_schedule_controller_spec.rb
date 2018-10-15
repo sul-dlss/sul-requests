@@ -15,7 +15,7 @@ describe PagingScheduleController do
 
       it 'assigns the paging_schedule instance variable' do
         get :index
-        expect(response).to be_success
+        expect(response).to be_successful
         expect(assigns(:paging_schedule)).to be_a Array
       end
     end
@@ -31,7 +31,7 @@ describe PagingScheduleController do
 
       it 'is accessible by anonymous users' do
         get :show, params: { origin: 'SAL3', destination: 'GREEN' }
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it 'returns json when requested' do
@@ -48,7 +48,7 @@ describe PagingScheduleController do
     describe 'when both the origin and destination are not present' do
       it 'responds with a 404' do
         get :show, params: { origin: 'SAL3' }
-        expect(response).to_not be_success
+        expect(response).to_not be_successful
         expect(response.status).to be 404
       end
     end
@@ -60,7 +60,7 @@ describe PagingScheduleController do
 
       it 'responds with a 404 error' do
         get :show, params: { origin: 'DOES-NOT-EXIST', destination: 'NOT-REAL' }
-        expect(response).to_not be_success
+        expect(response).to_not be_successful
         expect(response.status).to be 404
       end
     end
@@ -71,7 +71,7 @@ describe PagingScheduleController do
       it 'responds with a 404' do
         get :open, params: { origin: 'SAL3', destination: 'GREEN', date: 'tomorrow' }
 
-        expect(response).not_to be_success
+        expect(response).to_not be_successful
         expect(response.status).to be 404
       end
     end
@@ -86,7 +86,7 @@ describe PagingScheduleController do
       it 'return a success code' do
         get :open, params: { origin: 'SAL3', destination: 'GREEN', date: '2015-05-12' }
 
-        expect(response).to be_success
+        expect(response).to be_successful
         expect(response.body).to eq 'true'
       end
     end
@@ -101,7 +101,7 @@ describe PagingScheduleController do
       it 'returns an error' do
         get :open, params: { origin: 'SAL3', destination: 'GREEN', date: '2015-05-12' }
 
-        expect(response).to be_success
+        expect(response).to be_successful
         expect(response.body).to eq 'false'
       end
     end

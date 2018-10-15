@@ -20,7 +20,7 @@ describe ScansController do
     let(:user) { create(:anon_user) }
     it 'is accessible by anonymous users' do
       get :new, params: scannable_params
-      expect(response).to be_success
+      expect(response).to be_successful
     end
     it 'sets defaults' do
       get :new, params: scannable_params

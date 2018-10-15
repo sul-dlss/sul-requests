@@ -20,7 +20,7 @@ describe MediatedPagesController do
     let(:user) { create(:anon_user) }
     it 'is accessible by anonymous users' do
       get :new, params: normal_params
-      expect(response).to be_success
+      expect(response).to be_successful
     end
     it 'sets defaults' do
       get :new, params: normal_params
@@ -240,7 +240,7 @@ describe MediatedPagesController do
       it 'returns an error status code' do
         patch :update, params: { id: mediated_page.id, mediated_page: { marked_as_complete: 'true' } }, format: :js
 
-        expect(response).not_to be_success
+        expect(response).not_to be_successful
         expect(response.status).to eq 400
       end
 

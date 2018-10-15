@@ -16,7 +16,7 @@ describe PagesController do
     let(:user) { User.new }
     it 'is accessible by anonymous users' do
       get :new, params: normal_params
-      expect(response).to be_success
+      expect(response).to be_successful
     end
     it 'sets defaults' do
       get :new, params: normal_params
@@ -273,7 +273,7 @@ describe PagesController do
       it 'is successful if they have the are the creator of the record' do
         page = create(:page, user: user)
         get :success, params: { id: page[:id] }
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it 'raises an error if the user is already authenticated but does not have access to the request' do
@@ -303,7 +303,7 @@ describe PagesController do
       it 'is successful if they have the are the creator of the record' do
         page = create(:page, user: user)
         get :status, params: { id: page[:id] }
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it 'raises an error if the user is already authenticated but does not have access to the request' do
