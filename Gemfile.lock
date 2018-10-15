@@ -52,6 +52,8 @@ GEM
       execjs
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
+    bootsnap (1.3.2)
+      msgpack (~> 1.0)
     bootstrap-editable-rails (0.0.9)
       railties (>= 3.1)
       sass-rails
@@ -215,6 +217,7 @@ GEM
     mini_mime (1.0.1)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
+    msgpack (1.2.4)
     multi_json (1.13.1)
     multipart-post (2.0.0)
     mysql2 (0.5.2)
@@ -383,6 +386,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bootsnap
   bootstrap-editable-rails
   bootstrap-sass (~> 3.3.4)
   bootstrap_form

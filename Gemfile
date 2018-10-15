@@ -8,6 +8,7 @@ gem 'sqlite3'
 gem 'mysql2', '~> 0.5'
 # Use Puma as the app server
 gem 'puma'
+gem 'bootsnap'
 # Use sass-powered bootstrap
 gem 'bootstrap-sass', "~> 3.3.4"
 # Use bootstrap_form for easy form building
