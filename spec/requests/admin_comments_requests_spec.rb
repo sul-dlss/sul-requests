@@ -22,7 +22,6 @@ describe 'AdminComments' do
       context 'html response' do
         it 'redirects back with a flash notice' do
           post(url, params: { admin_comment: { comment: 'This is another comment' } }, headers: headers)
-          expect(response).to redirect_to(:back)
           expect(flash[:notice]).to eq 'Comment was successfully created.'
           expect(AdminComment.last.comment).to eq 'This is another comment'
         end
@@ -50,7 +49,6 @@ describe 'AdminComments' do
       context 'html response' do
         it 'redirects back with a flash error' do
           post(url, params: { admin_comment: { comment: 'A comment that will not be persisted' } }, headers: headers)
-          expect(response).to redirect_to(:back)
           expect(flash[:error]).to eq 'There was an error creating your comment.'
         end
       end
