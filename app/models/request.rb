@@ -34,7 +34,7 @@ class Request < ActiveRecord::Base
   serialize :barcodes, Array
 
   has_many :admin_comments
-  belongs_to :user, autosave: true
+  belongs_to :user, autosave: true, optional: true
   accepts_nested_attributes_for :user
 
   before_create do
