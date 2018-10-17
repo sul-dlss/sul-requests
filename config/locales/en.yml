@@ -75,7 +75,7 @@ en:
   approval_status_email:
     request:
       subject:
-        success: "Request received: \"%{title}\""
+        success: "We received your request for \"%{title}\""
         failure: "Attention needed: Your request could not be processed (\"%{title}\")"
     request_status:
       failure:

@@ -118,7 +118,7 @@ describe ApprovalStatusMailer do
     describe 'subject' do
       describe 'success' do
         it '"request has been processed"' do
-          expect(mail.subject).to eq "Request received: \"#{request.item_title}\""
+          expect(mail.subject).to eq "We received your request for \"#{request.item_title}\""
         end
       end
       describe 'failure' do
