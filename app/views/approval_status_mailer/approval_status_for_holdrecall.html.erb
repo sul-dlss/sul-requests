@@ -2,6 +2,10 @@
 <html>
   <body>
     <p>
+      We'll email you again when your request is ready for pickup.
+    </p>
+    
+    <p>
       You have been added to the hold queue for the following item(s):<br/>
       Title: <%= @request.item_title %>
     </p>
@@ -15,10 +19,6 @@
 
     <p>
       <%= @request.data_to_email.join('<br/>') %>
-    </p>
-
-    <p>
-      We'll send another email when your request is ready for pickup.
     </p>
 
     <p>

@@ -2,6 +2,9 @@
 <html>
   <body>
     <p>
+      We'll email you again when your request is ready for download.
+    </p>
+    <p>
       The following items have been queued for scanning:<br/>
       Title: <%= @request.item_title %>
     </p>
@@ -18,8 +21,7 @@
     </p>
 
     <p>
-      Estimated delivery: <%= @request.estimated_delivery %><br/>
-      You'll receive another email when your request is ready for download.
+      Estimated delivery: <%= @request.estimated_delivery %>
     </p>
 
     <p>Request was placed: <%= l(@request.created_at, format: :formal) %></p>
