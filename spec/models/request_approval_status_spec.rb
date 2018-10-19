@@ -57,8 +57,8 @@ describe RequestApprovalStatus do
 
         context 'by default' do
           it 'is the default success text' do
-            expect(html).to have_css('dd', text: 'ABC 123 has been paged for delivery.')
-            expect(text).to eq 'ABC 123 has been paged for delivery.'
+            expect(html).to have_css('dd', text: 'ABC 123')
+            expect(text).to eq 'ABC 123'
           end
         end
 
@@ -66,8 +66,8 @@ describe RequestApprovalStatus do
           let(:request) { create(:mediated_page_with_holdings, barcodes: ['12345678']) }
 
           it 'returns the request type specific success label' do
-            expect(html).to have_css('dd', text: 'ABC 123 has been approved.')
-            expect(text).to eq 'ABC 123 has been approved.'
+            expect(html).to have_css('dd', text: 'ABC 123')
+            expect(text).to eq 'ABC 123'
           end
         end
       end
