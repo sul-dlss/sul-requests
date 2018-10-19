@@ -37,11 +37,6 @@
     <p>Request was placed: <%= l(@request.created_at, format: :formal) %></p>
 
     <p>
-      You can see this request status online at <%= link_to('requests.stanford.edu', @status_url) %><br/>
-      You can also see and change your requests at <%= link_to('http://library.stanford.edu/myaccount', 'http://library.stanford.edu/myaccount') %>
-    </p>
-
-    <p>
       Questions about your request?<br/>
       Contact:<br/>
       <%= @contact_info[:phone] %><br/>
