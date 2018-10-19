@@ -82,7 +82,8 @@ describe ConfirmationMailer do
         end
 
         it 'has a planned date of visit' do
-          expect(body).to include "I plan to visit on: #{I18n.l request.needed_date, format: :long}"
+          expect(body).to include "If your request is approved, we'll have it ready when you visit"
+          expect(body).to include I18n.l request.needed_date, format: :long
         end
       end
 
@@ -92,10 +93,6 @@ describe ConfirmationMailer do
 
       context 'with a webauth user' do
         let(:user) { build(:webauth_user) }
-
-        it 'has a link to myaccount' do
-          expect(body).to include 'You can also see the status at http://library.stanford.edu/myaccount'
-        end
 
         context 'for a scan request' do
           let(:request) { create(:scan_with_holdings, user: user) }
