@@ -27,10 +27,6 @@
     <p>Request was placed: <%= l(@request.created_at, format: :formal) %></p>
 
     <p>
-      You can see this request status online at <%= link_to('requests.stanford.edu', @status_url) %>
-    </p>
-
-    <p>
       Questions about your request?<br/>
       Contact:<br/>
       <%= @contact_info[:phone] %><br/>
