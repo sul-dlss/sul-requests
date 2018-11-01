@@ -37,9 +37,9 @@ describe RequestApprovalStatus do
         it 'the extra text is included' do
           expect(html).to have_css(
             'dd',
-            text: 'Waiting for approval. Items are typically approved 1-3 days before your scheduled visit.'
+            text: 'Waiting for approval. Requests are typically approved 1-3 days before your scheduled visit.'
           )
-          expect(text).to eq 'Waiting for approval. Items are typically approved 1-3 days before your scheduled visit.'
+          expect(text).to eq 'Waiting for approval. Requests are typically approved 1-3 days before your scheduled visit.'
         end
       end
     end

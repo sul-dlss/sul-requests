@@ -10,7 +10,7 @@ Item(s) requested:
 
 <%= t('approval_status.spec_coll.extra_note') %>
 <% if @request.needed_date.present? %>
-<%= "If your request is approved, we'll have it ready when you visit on: #{l @request.needed_date, format: :long}" %>
+<%= "Items approved for access will be ready when you visit on: #{l @request.needed_date, format: :long}" %>
 <% end %>
 
 Check the status of your request at <%= @status_url %>
