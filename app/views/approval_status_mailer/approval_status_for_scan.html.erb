@@ -20,10 +20,6 @@
       <%= @request.data_to_email.join('<br/>') %>
     </p>
 
-    <p>
-      Estimated delivery: <%= @request.estimated_delivery %>
-    </p>
-
     <p>Request was placed: <%= l(@request.created_at, format: :formal) %></p>
 
     <p>
