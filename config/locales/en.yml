@@ -60,22 +60,22 @@ en:
     default:
       error: 'Attention: %{callnumber} %{error_text}'
       pending: 'Pending.'
-      success: '%{item} has been paged for delivery.'
+      success: '%{item}'
     hold_recall:
-      success: '%{item} has been placed on hold.'
+      success: '%{item}'
     mediated_page:
       pending: 'Waiting for approval.'
-      success: '%{item} has been approved.'
+      success: '%{item}'
     scan:
-      success: '%{item} has been paged for scanning.'
+      success: '%{item}'
     rumseymap:
-      extra_note: 'Items are typically approved 1-3 days before your scheduled visit.'
+      extra_note: 'Requests are typically approved 1-3 days before your scheduled visit.'
     spec_coll:
-      extra_note: 'Items are typically approved 1-3 days before your scheduled visit.'
+      extra_note: 'Requests are typically approved 1-3 days before your scheduled visit.'
   approval_status_email:
     request:
       subject:
-        success: "Your request has been processed (\"%{title}\")"
+        success: "We received your request for \"%{title}\""
         failure: "Attention needed: Your request could not be processed (\"%{title}\")"
     request_status:
       failure:
@@ -84,7 +84,7 @@ en:
 
   confirmation_email:
     request:
-      subject: 'Item(s) requested ("%{title}")'
+      subject: 'Request is pending approval ("%{title}")'
     scan:
       subject: "Scan to PDF requested (\"%{title}\")"
     mediated_page:
@@ -99,6 +99,7 @@ en:
     pm: p
     formats:
       short: '%Y-%m-%d %l.%M%P'
+      formal: '%A, %b %-d %Y at %l:%M%P'
   forms:
     labels:
       SAL-NEWARK:
@@ -122,7 +123,7 @@ en:
       PAGE-MP: 'Request delivery to campus library'
   requests:
     success:
-      
+
       email_notification:
         proxy: "We'll send an email to you at <strong>%{email}</strong> and to the designated notification address when processing is complete."
         default: "We'll send you an email at <strong>%{email}</strong> when processing is complete."

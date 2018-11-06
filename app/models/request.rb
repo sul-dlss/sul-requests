@@ -56,7 +56,7 @@ class Request < ActiveRecord::Base
   end
 
   def send_approval_status!
-    ApprovalStatusMailer.request_approval_status(self).deliver_later if notification_email_address.present?
+    ApprovalStatusMailerFactory.for(self).deliver_later if notification_email_address.present?
   end
 
   def delegate_request!
@@ -116,11 +116,15 @@ class Request < ActiveRecord::Base
   end
 
   def data_to_email_s
+    data_to_email.join("\n")
+  end
+
+  def data_to_email
     %w(comments page_range section_title authors).map do |field|
       if (data_field = data[field]).present?
         "#{self.class.human_attribute_name(field)}:\n  #{data_field}"
       end
-    end.compact.join("\n")
+    end.compact
   end
 
   def proxy?

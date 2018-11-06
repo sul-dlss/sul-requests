@@ -51,7 +51,7 @@ describe ConfirmationMailer do
 
       describe 'for other requests' do
         it 'is the default' do
-          expect(mail.subject).to eq "Item(s) requested (\"#{request.item_title}\")"
+          expect(mail.subject).to eq "Request is pending approval (\"#{request.item_title}\")"
         end
       end
     end
@@ -82,7 +82,8 @@ describe ConfirmationMailer do
         end
 
         it 'has a planned date of visit' do
-          expect(body).to include "I plan to visit on: #{I18n.l request.needed_date, format: :long}"
+          expect(body).to include 'Items approved for access will be ready when you visit'
+          expect(body).to include I18n.l request.needed_date, format: :long
         end
       end
 
@@ -92,10 +93,6 @@ describe ConfirmationMailer do
 
       context 'with a webauth user' do
         let(:user) { build(:webauth_user) }
-
-        it 'has a link to myaccount' do
-          expect(body).to include 'You can also see the status at http://library.stanford.edu/myaccount'
-        end
 
         context 'for a scan request' do
           let(:request) { create(:scan_with_holdings, user: user) }

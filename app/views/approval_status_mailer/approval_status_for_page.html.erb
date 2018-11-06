@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <p>
+      We'll email you again when your request is ready for pickup.
+    </p>
+
+    <p>
+      The following items are scheduled to be delivered to <%= SULRequests::Application.config.libraries[@request.destination] %>:<br/>
+      Title: <%= @request.item_title %>
+    </p>
+
+    <p>Call number(s):</p>
+    <ul>
+      <% RequestApprovalStatus.new(request: @request).item_list_with_status.each do |status| %>
+        <li><%= status %></li>
+      <% end %>
+    </ul>
+
+    <p>
+      Earliest delivery: <%= @request.estimated_delivery %>
+    </p>
+
+    <p>Request was placed: <%= l(@request.created_at, format: :formal) %></p>
+
+    <p>
+      You can see this request status online at <%= link_to('requests.stanford.edu', @status_url) %><br/>
+    </p>
+
+    <p>
+      Questions about your request?<br/>
+      Contact:<br/>
+      <%= @contact_info[:phone] %><br/>
+      <%= mail_to(@contact_info[:email], @contact_info[:email]) %>
+    </p>
+  </body>
+</html>
