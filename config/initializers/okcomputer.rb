@@ -6,7 +6,7 @@ OkComputer.check_in_parallel = true
 
 OkComputer::Registry.register 'confirmation_mailer', OkComputer::ActionMailerCheck.new(ConfirmationMailer)
 OkComputer::Registry.register 'searchworks_api', OkComputer::HttpCheck.new("#{Settings.searchworks_api}/status")
-
+OkComputer::Registry.register 'background_jobs', OkComputer::SidekiqLatencyCheck.new('default', 25)
 
 if Settings.symphony_api.enabled && Settings.symphony_api.url.present?
   symphony_api_url = URI.parse(Settings.symphony_api.url)
