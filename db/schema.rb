@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2016_10_28_235652) do
+ActiveRecord::Schema.define(version: 2018_11_15_194822) do
 
   create_table "admin_comments", force: :cascade do |t|
     t.string "commenter"
@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(version: 2016_10_28_235652) do
     t.text "barcodes"
     t.string "estimated_delivery"
     t.integer "approval_status", default: 0
+    t.boolean "via_borrow_direct", default: false
     t.index ["needed_date"], name: "index_requests_on_needed_date"
     t.index ["user_id"], name: "index_requests_on_user_id"
   end
