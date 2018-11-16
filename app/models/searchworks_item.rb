@@ -19,6 +19,10 @@ class SearchworksItem
     json['format'] || []
   end
 
+  def isbn
+    json['isbn'] || []
+  end
+
   def holdings
     return [] unless json['holdings'].present?
 

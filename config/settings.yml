@@ -61,9 +61,11 @@ worst_case_paging_padding: 3
 stanford_ips:
   singletons: []
   ranges: []
+borrow_direct:
+  api_key: an-api-key
 features:
   remote_ip_check: true
+  hold_recall_via_borrow_direct: true
 
 background_jobs:
   enabled: false
-

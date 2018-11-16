@@ -2,7 +2,7 @@
 
 ##
 # Rails Job to submit a Scan request to Symphony for processing
-class SubmitSymphonyRequestJob < ActiveJob::Base
+class SubmitSymphonyRequestJob < ApplicationJob
   queue_as :default
 
   # we pass the ActiveRecord identifier to our job, rather than the ActiveRecord reference.

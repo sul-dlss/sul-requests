@@ -78,7 +78,7 @@ class ApprovalStatusMailer < ApplicationMailer
 
   def suffix
     @suffix ||= begin
-      if @request.symphony_response.success?
+      if @request.symphony_response.success? || @request.via_borrow_direct?
         'success'
       else
         'failure'
