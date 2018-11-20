@@ -600,7 +600,7 @@ describe Request do
 
   describe '#merge_symphony_response_data' do
     before do
-      subject.symphony_response_data = FactoryGirl.build(:symphony_scan_with_multiple_items)
+      subject.symphony_response_data = FactoryBot.build(:symphony_scan_with_multiple_items)
     end
 
     it 'uses any new request-level data' do

@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :request do
     item_id '12345'
     origin 'BIOLOGY'
@@ -8,7 +8,7 @@ FactoryGirl.define do
     after(:build) do |request|
       class << request
         def symphony_response_data
-          FactoryGirl.build(:symphony_page_with_single_item)
+          FactoryBot.build(:symphony_page_with_single_item)
         end
       end
     end
@@ -22,7 +22,7 @@ FactoryGirl.define do
     after(:build) do |request|
       class << request
         def searchworks_item
-          @searchworks_item ||= FactoryGirl.build(:green_stacks_searchworks_item, request: self)
+          @searchworks_item ||= FactoryBot.build(:green_stacks_searchworks_item, request: self)
         end
       end
     end
@@ -36,7 +36,7 @@ FactoryGirl.define do
     after(:build) do |request|
       class << request
         def searchworks_item
-          @searchworks_item ||= FactoryGirl.build(:green_stacks_multi_holdings_searchworks_item, request: self)
+          @searchworks_item ||= FactoryBot.build(:green_stacks_multi_holdings_searchworks_item, request: self)
         end
       end
     end
@@ -51,7 +51,7 @@ FactoryGirl.define do
     after(:build) do |request|
       class << request
         def symphony_response_data
-          FactoryGirl.build(:symphony_scan_with_multiple_items)
+          FactoryBot.build(:symphony_scan_with_multiple_items)
         end
       end
     end

@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :green_stacks_searchworks_item, class: SearchworksItem do
     initialize_with { new(request) }
 
@@ -7,7 +7,7 @@ FactoryGirl.define do
     after(:build) do |item|
       class << item
         def json
-          FactoryGirl.build(:single_holding)
+          FactoryBot.build(:single_holding)
         end
       end
     end
@@ -21,7 +21,7 @@ FactoryGirl.define do
     after(:build) do |item|
       class << item
         def json
-          FactoryGirl.build(:multiple_holdings)
+          FactoryBot.build(:multiple_holdings)
         end
       end
     end
@@ -35,7 +35,7 @@ FactoryGirl.define do
     after(:build) do |item|
       class << item
         def json
-          FactoryGirl.build(:sal3_holdings)
+          FactoryBot.build(:sal3_holdings)
         end
       end
     end
@@ -49,7 +49,7 @@ FactoryGirl.define do
     after(:build) do |item|
       class << item
         def json
-          FactoryGirl.build(:searchable_holdings)
+          FactoryBot.build(:searchable_holdings)
         end
       end
     end
@@ -63,7 +63,7 @@ FactoryGirl.define do
     after(:build) do |item|
       class << item
         def json
-          FactoryGirl.build(:mhld_summary_holdings)
+          FactoryBot.build(:mhld_summary_holdings)
         end
       end
     end
@@ -77,7 +77,7 @@ FactoryGirl.define do
     after(:build) do |item|
       class << item
         def json
-          FactoryGirl.build(:library_instructions_holdings)
+          FactoryBot.build(:library_instructions_holdings)
         end
       end
     end

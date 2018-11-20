@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :multiple_holdings, class: Hash do
     title 'Item Title'
 

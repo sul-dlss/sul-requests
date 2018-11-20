@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :symphony_scan_success, class: Hash do
     req_type 'SCAN'
     confirm_email 'jlathrop@stanford.edu'

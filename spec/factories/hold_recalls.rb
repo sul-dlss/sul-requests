@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :hold_recall do
     item_id '1234'
     origin 'GREEN'
@@ -21,7 +21,7 @@ FactoryGirl.define do
     after(:build) do |hold_recall|
       class << hold_recall
         def searchworks_item
-          @searchworks_item ||= FactoryGirl.build(:sal3_stacks_multi_holdings_searchworks_item, request: self)
+          @searchworks_item ||= FactoryBot.build(:sal3_stacks_multi_holdings_searchworks_item, request: self)
         end
       end
     end

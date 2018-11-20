@@ -2,7 +2,7 @@ long_comment = <<-LONG
   It's wonderful to be here it's certainly a thrill you're such a lovely audience we'd love to take you home with us we'd love to take you home no really we'd really really love to take you home especially if you are a cute puppy.
 LONG
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :mediated_page do
     item_id '1234'
     origin 'SPEC-COLL'
@@ -58,7 +58,7 @@ FactoryGirl.define do
     after(:build) do |request|
       class << request
         def symphony_response_data
-          FactoryGirl.build(:symphony_page_with_single_item)
+          FactoryBot.build(:symphony_page_with_single_item)
         end
       end
     end
@@ -76,7 +76,7 @@ FactoryGirl.define do
     after(:build) do |request|
       class << request
         def searchworks_item
-          @searchworks_item ||= FactoryGirl.build(:spec_coll_stacks_multi_holdings_searchworks_item, request: self)
+          @searchworks_item ||= FactoryBot.build(:spec_coll_stacks_multi_holdings_searchworks_item, request: self)
         end
       end
     end

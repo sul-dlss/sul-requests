@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :superadmin_user, class: User do
     webauth 'super-admin'
     email 'super-admin@stanford.edu'
