@@ -2,44 +2,46 @@
 
 FactoryBot.define do
   factory :multiple_holdings, class: Hash do
-    title 'Item Title'
+    title { 'Item Title' }
 
-    format ['Book']
+    format { ['Book'] }
 
-    holdings [
-      { 'code' => 'GREEN',
-        'locations' => [
-          { 'code' => 'STACKS',
-            'items' => [
-              { 'barcode' => '3610512345678',
-                'callnumber' => 'ABC 123',
-                'type' => 'STKS',
-                'status' => {
-                  'availability_class' => 'available',
-                  'status_text' => 'Available'
+    holdings do
+      [
+        { 'code' => 'GREEN',
+          'locations' => [
+            { 'code' => 'STACKS',
+              'items' => [
+                { 'barcode' => '3610512345678',
+                  'callnumber' => 'ABC 123',
+                  'type' => 'STKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
+                },
+                { 'barcode' => '3610587654321',
+                  'callnumber' => 'ABC 321',
+                  'type' => 'STKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
+                },
+                { 'barcode' => '12345679',
+                  'callnumber' => 'ABC 456',
+                  'type' => 'STKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
                 }
-              },
-              { 'barcode' => '3610587654321',
-                'callnumber' => 'ABC 321',
-                'type' => 'STKS',
-                'status' => {
-                  'availability_class' => 'available',
-                  'status_text' => 'Available'
-                }
-              },
-              { 'barcode' => '12345679',
-                'callnumber' => 'ABC 456',
-                'type' => 'STKS',
-                'status' => {
-                  'availability_class' => 'available',
-                  'status_text' => 'Available'
-                }
-              }
-            ]
-          }
-        ]
-      }
-    ]
+              ]
+            }
+          ]
+        }
+      ]
+    end
 
     initialize_with do
       attributes.map do |k, h|
@@ -49,28 +51,30 @@ FactoryBot.define do
   end
 
   factory :single_holding, class: Hash do
-    title 'Item Title'
+    title { 'Item Title' }
 
-    format ['Book']
+    format { ['Book'] }
 
-    holdings [
-      { 'code' => 'GREEN',
-        'locations' => [
-          { 'code' => 'STACKS',
-            'items' => [
-              { 'barcode' => '12345678',
-                'callnumber' => 'ABC 123',
-                'type' => 'STKS',
-                'status' => {
-                  'availability_class' => 'available',
-                  'status_text' => 'Available'
+    holdings do
+      [
+        { 'code' => 'GREEN',
+          'locations' => [
+            { 'code' => 'STACKS',
+              'items' => [
+                { 'barcode' => '12345678',
+                  'callnumber' => 'ABC 123',
+                  'type' => 'STKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
                 }
-              }
-            ]
-          }
-        ]
-      }
-    ]
+              ]
+            }
+          ]
+        }
+      ]
+    end
 
     initialize_with do
       attributes.map do |k, h|
@@ -80,29 +84,31 @@ FactoryBot.define do
   end
 
   factory :sal_newark_holding, class: Hash do
-    title 'Item Title'
+    title { 'Item Title' }
 
-    format ['Book']
+    format { ['Book'] }
 
-    holdings [
-      { 'code' => 'SAL-NEWARK',
-        'locations' => [
-          { 'code' => 'STACKS',
-            'mhld' => {},
-            'items' => [
-              { 'barcode' => '12345678',
-                'callnumber' => 'ABC 123',
-                'type' => 'STKS',
-                'status' => {
-                  'availability_class' => 'available',
-                  'status_text' => 'Available'
+    holdings do
+      [
+        { 'code' => 'SAL-NEWARK',
+          'locations' => [
+            { 'code' => 'STACKS',
+              'mhld' => {},
+              'items' => [
+                { 'barcode' => '12345678',
+                  'callnumber' => 'ABC 123',
+                  'type' => 'STKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
                 }
-              }
-            ]
-          }
-        ]
-      }
-    ]
+              ]
+            }
+          ]
+        }
+      ]
+    end
 
     initialize_with do
       attributes.map do |k, h|
@@ -112,31 +118,33 @@ FactoryBot.define do
   end
 
   factory :mhld_summary_holdings, class: Hash do
-    title 'Item Title'
+    title { 'Item Title' }
 
-    format ['Book']
+    format { ['Book'] }
 
-    holdings [
-      { 'code' => 'GREEN',
-        'locations' => [
-          { 'code' => 'STACKS',
-            'mhld' => {
-              'library_has' => 'This is the library has holdings summary'
-            },
-            'items' => [
-              { 'barcode' => '12345678',
-                'callnumber' => 'ABC 123',
-                'type' => 'STKS',
-                'status' => {
-                  'availability_class' => 'available',
-                  'status_text' => 'Available'
+    holdings do
+      [
+        { 'code' => 'GREEN',
+          'locations' => [
+            { 'code' => 'STACKS',
+              'mhld' => {
+                'library_has' => 'This is the library has holdings summary'
+              },
+              'items' => [
+                { 'barcode' => '12345678',
+                  'callnumber' => 'ABC 123',
+                  'type' => 'STKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
                 }
-              }
-            ]
-          }
-        ]
-      }
-    ]
+              ]
+            }
+          ]
+        }
+      ]
+    end
 
     initialize_with do
       attributes.map do |k, h|
@@ -146,36 +154,38 @@ FactoryBot.define do
   end
 
   factory :special_collections_holdings, class: Hash do
-    title 'Special Collections Item Title'
+    title { 'Special Collections Item Title' }
 
-    format ['Book']
+    format { ['Book'] }
 
-    holdings [
-      { 'code' => 'SPEC-COLL',
-        'locations' => [
-          { 'code' => 'STACKS',
-            'items' => [
-              { 'barcode' => '12345678',
-                'callnumber' => 'ABC 123',
-                'type' => 'STKS',
-                'status' => {
-                  'availability_class' => 'page',
-                  'status_text' => 'Page'
+    holdings do
+      [
+        { 'code' => 'SPEC-COLL',
+          'locations' => [
+            { 'code' => 'STACKS',
+              'items' => [
+                { 'barcode' => '12345678',
+                  'callnumber' => 'ABC 123',
+                  'type' => 'STKS',
+                  'status' => {
+                    'availability_class' => 'page',
+                    'status_text' => 'Page'
+                  }
+                },
+                { 'barcode' => '87654321',
+                  'callnumber' => 'ABC 321',
+                  'type' => 'STKS',
+                  'status' => {
+                    'availability_class' => 'page',
+                    'status_text' => 'Page'
+                  }
                 }
-              },
-              { 'barcode' => '87654321',
-                'callnumber' => 'ABC 321',
-                'type' => 'STKS',
-                'status' => {
-                  'availability_class' => 'page',
-                  'status_text' => 'Page'
-                }
-              }
-            ]
-          }
-        ]
-      }
-    ]
+              ]
+            }
+          ]
+        }
+      ]
+    end
 
     initialize_with do
       attributes.map do |k, h|
@@ -185,36 +195,38 @@ FactoryBot.define do
   end
 
   factory :sal3_holdings, class: Hash do
-    title 'SAL3 Item Title'
+    title { 'SAL3 Item Title' }
 
-    format ['Book']
+    format { ['Book'] }
 
-    holdings [
-      { 'code' => 'SAL3',
-        'locations' => [
-          { 'code' => 'STACKS',
-            'items' => [
-              { 'barcode' => '12345678',
-                'callnumber' => 'ABC 123',
-                'type' => 'STKS',
-                'status' => {
-                  'availability_class' => 'page',
-                  'status_text' => 'Page'
+    holdings do
+      [
+        { 'code' => 'SAL3',
+          'locations' => [
+            { 'code' => 'STACKS',
+              'items' => [
+                { 'barcode' => '12345678',
+                  'callnumber' => 'ABC 123',
+                  'type' => 'STKS',
+                  'status' => {
+                    'availability_class' => 'page',
+                    'status_text' => 'Page'
+                  }
+                },
+                { 'barcode' => '87654321',
+                  'callnumber' => 'ABC 321',
+                  'type' => 'STKS',
+                  'status' => {
+                    'availability_class' => 'page',
+                    'status_text' => 'Page'
+                  }
                 }
-              },
-              { 'barcode' => '87654321',
-                'callnumber' => 'ABC 321',
-                'type' => 'STKS',
-                'status' => {
-                  'availability_class' => 'page',
-                  'status_text' => 'Page'
-                }
-              }
-            ]
-          }
-        ]
-      }
-    ]
+              ]
+            }
+          ]
+        }
+      ]
+    end
 
     initialize_with do
       attributes.map do |k, h|
@@ -224,44 +236,46 @@ FactoryBot.define do
   end
 
   factory :page_mp_holdings, class: Hash do
-    title 'PAGE-MP Item Title'
+    title { 'PAGE-MP Item Title' }
 
-    format ['Book']
+    format { ['Book'] }
 
-    holdings [
-      { 'code' => 'SAL3',
-        'locations' => [
-          { 'code' => 'PAGE-MP',
-            'items' => [
-              { 'barcode' => '12345678',
-                'callnumber' => 'ABC 123',
-                'home_location' => 'STACKS',
-                'type' => 'STKS',
-                'current_location' => {
-                  'code' => ''
+    holdings do
+      [
+        { 'code' => 'SAL3',
+          'locations' => [
+            { 'code' => 'PAGE-MP',
+              'items' => [
+                { 'barcode' => '12345678',
+                  'callnumber' => 'ABC 123',
+                  'home_location' => 'STACKS',
+                  'type' => 'STKS',
+                  'current_location' => {
+                    'code' => ''
+                  },
+                  'status' => {
+                    'availability_class' => 'page',
+                    'status_text' => 'Page'
+                  }
                 },
-                'status' => {
-                  'availability_class' => 'page',
-                  'status_text' => 'Page'
+                { 'barcode' => '87654321',
+                  'callnumber' => 'ABC 321',
+                  'home_location' => 'STACKS',
+                  'type' => 'STKS',
+                  'current_location' => {
+                    'code' => ''
+                  },
+                  'status' => {
+                    'availability_class' => 'page',
+                    'status_text' => 'Page'
+                  }
                 }
-              },
-              { 'barcode' => '87654321',
-                'callnumber' => 'ABC 321',
-                'home_location' => 'STACKS',
-                'type' => 'STKS',
-                'current_location' => {
-                  'code' => ''
-                },
-                'status' => {
-                  'availability_class' => 'page',
-                  'status_text' => 'Page'
-                }
-              }
-            ]
-          }
-        ]
-      }
-    ]
+              ]
+            }
+          ]
+        }
+      ]
+    end
 
     initialize_with do
       attributes.map do |k, h|
@@ -271,68 +285,70 @@ FactoryBot.define do
   end
 
   factory :many_holdings, class: Hash do
-    title 'Item title'
+    title { 'Item title' }
 
-    format ['Book']
+    format { ['Book'] }
 
-    holdings [
-      { 'code' => 'GREEN',
-        'locations' => [
-          { 'code' => 'STACKS',
-            'items' => [
-              { 'barcode' => '12345678',
-                'callnumber' => 'ABC 123',
-                'type' => 'STKS',
-                'status' => {
-                  'availability_class' => 'available',
-                  'status_text' => 'Available'
+    holdings do
+      [
+        { 'code' => 'GREEN',
+          'locations' => [
+            { 'code' => 'STACKS',
+              'items' => [
+                { 'barcode' => '12345678',
+                  'callnumber' => 'ABC 123',
+                  'type' => 'STKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
+                },
+                { 'barcode' => '23456789',
+                  'callnumber' => 'ABC 456',
+                  'type' => 'SOMETHING-ELSE',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
+                },
+                { 'barcode' => '34567890',
+                  'callnumber' => 'ABC 789',
+                  'type' => 'STKS-MONO',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
+                },
+                { 'barcode' => '45678901',
+                  'callnumber' => 'ABC 012',
+                  'type' => 'STKS-PERI',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
+                },
+                { 'barcode' => '56789012',
+                  'callnumber' => 'ABC 345',
+                  'type' => 'STKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
+                },
+                { 'barcode' => '67890123',
+                  'callnumber' => 'ABC 678',
+                  'type' => 'STKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
                 }
-              },
-              { 'barcode' => '23456789',
-                'callnumber' => 'ABC 456',
-                'type' => 'SOMETHING-ELSE',
-                'status' => {
-                  'availability_class' => 'available',
-                  'status_text' => 'Available'
-                }
-              },
-              { 'barcode' => '34567890',
-                'callnumber' => 'ABC 789',
-                'type' => 'STKS-MONO',
-                'status' => {
-                  'availability_class' => 'available',
-                  'status_text' => 'Available'
-                }
-              },
-              { 'barcode' => '45678901',
-                'callnumber' => 'ABC 012',
-                'type' => 'STKS-PERI',
-                'status' => {
-                  'availability_class' => 'available',
-                  'status_text' => 'Available'
-                }
-              },
-              { 'barcode' => '56789012',
-                'callnumber' => 'ABC 345',
-                'type' => 'STKS',
-                'status' => {
-                  'availability_class' => 'available',
-                  'status_text' => 'Available'
-                }
-              },
-              { 'barcode' => '67890123',
-                'callnumber' => 'ABC 678',
-                'type' => 'STKS',
-                'status' => {
-                  'availability_class' => 'available',
-                  'status_text' => 'Available'
-                }
-              }
-            ]
-          }
-        ]
-      }
-    ]
+              ]
+            }
+          ]
+        }
+      ]
+    end
 
     initialize_with do
       attributes.map do |k, h|
@@ -342,142 +358,144 @@ FactoryBot.define do
   end
 
   factory :searchable_holdings, class: Hash do
-    title 'Item Title'
+    title { 'Item Title' }
 
-    format ['Book']
+    format { ['Book'] }
 
-    holdings [
-      { 'code' => 'SPEC-COLL',
-        'locations' => [
-          { 'code' => 'STACKS',
-            'items' => [
-              { 'barcode' => '12345678',
-                'callnumber' => 'ABC 123',
-                'type' => 'STKS',
-                'current_location' => {
-                  'code' => ''
+    holdings do
+      [
+        { 'code' => 'SPEC-COLL',
+          'locations' => [
+            { 'code' => 'STACKS',
+              'items' => [
+                { 'barcode' => '12345678',
+                  'callnumber' => 'ABC 123',
+                  'type' => 'STKS',
+                  'current_location' => {
+                    'code' => ''
+                  },
+                  'home_location' => 'STACKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
                 },
-                'home_location' => 'STACKS',
-                'status' => {
-                  'availability_class' => 'available',
-                  'status_text' => 'Available'
-                }
-              },
-              { 'barcode' => '23456789',
-                'callnumber' => 'ABC 456',
-                'type' => 'STKS',
-                'public_note' => 'note for 23456789',
-                'current_location' => {
-                  'code' => ''
+                { 'barcode' => '23456789',
+                  'callnumber' => 'ABC 456',
+                  'type' => 'STKS',
+                  'public_note' => 'note for 23456789',
+                  'current_location' => {
+                    'code' => ''
+                  },
+                  'home_location' => 'STACKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
                 },
-                'home_location' => 'STACKS',
-                'status' => {
-                  'availability_class' => 'available',
-                  'status_text' => 'Available'
-                }
-              },
-              { 'barcode' => '34567890',
-                'callnumber' => 'ABC 789',
-                'type' => 'STKS',
-                'current_location' => {
-                  'code' => ''
+                { 'barcode' => '34567890',
+                  'callnumber' => 'ABC 789',
+                  'type' => 'STKS',
+                  'current_location' => {
+                    'code' => ''
+                  },
+                  'home_location' => 'STACKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
                 },
-                'home_location' => 'STACKS',
-                'status' => {
-                  'availability_class' => 'available',
-                  'status_text' => 'Available'
-                }
-              },
-              { 'barcode' => '45678901',
-                'callnumber' => 'ABC 012',
-                'type' => 'STKS',
-                'public_note' => 'note for 45678901',
-                'current_location' => {
-                  'code' => ''
+                { 'barcode' => '45678901',
+                  'callnumber' => 'ABC 012',
+                  'type' => 'STKS',
+                  'public_note' => 'note for 45678901',
+                  'current_location' => {
+                    'code' => ''
+                  },
+                  'home_location' => 'STACKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
                 },
-                'home_location' => 'STACKS',
-                'status' => {
-                  'availability_class' => 'available',
-                  'status_text' => 'Available'
-                }
-              },
-              { 'barcode' => '56789012',
-                'callnumber' => 'ABC 345',
-                'type' => 'STKS',
-                'current_location' => {
-                  'code' => ''
+                { 'barcode' => '56789012',
+                  'callnumber' => 'ABC 345',
+                  'type' => 'STKS',
+                  'current_location' => {
+                    'code' => ''
+                  },
+                  'home_location' => 'STACKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
                 },
-                'home_location' => 'STACKS',
-                'status' => {
-                  'availability_class' => 'available',
-                  'status_text' => 'Available'
-                }
-              },
-              { 'barcode' => '67890123',
-                'callnumber' => 'ABC 678',
-                'type' => 'STKS',
-                'current_location' => {
-                  'code' => ''
+                { 'barcode' => '67890123',
+                  'callnumber' => 'ABC 678',
+                  'type' => 'STKS',
+                  'current_location' => {
+                    'code' => ''
+                  },
+                  'home_location' => 'STACKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
                 },
-                'home_location' => 'STACKS',
-                'status' => {
-                  'availability_class' => 'available',
-                  'status_text' => 'Available'
-                }
-              },
-              { 'barcode' => '78901234',
-                'callnumber' => 'ABC 901',
-                'type' => 'STKS',
-                'current_location' => {
-                  'code' => ''
+                { 'barcode' => '78901234',
+                  'callnumber' => 'ABC 901',
+                  'type' => 'STKS',
+                  'current_location' => {
+                    'code' => ''
+                  },
+                  'home_location' => 'STACKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
                 },
-                'home_location' => 'STACKS',
-                'status' => {
-                  'availability_class' => 'available',
-                  'status_text' => 'Available'
-                }
-              },
-              { 'barcode' => '89012345',
-                'callnumber' => 'ABC 234',
-                'type' => 'STKS',
-                'current_location' => {
-                  'code' => ''
+                { 'barcode' => '89012345',
+                  'callnumber' => 'ABC 234',
+                  'type' => 'STKS',
+                  'current_location' => {
+                    'code' => ''
+                  },
+                  'home_location' => 'STACKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
                 },
-                'home_location' => 'STACKS',
-                'status' => {
-                  'availability_class' => 'available',
-                  'status_text' => 'Available'
-                }
-              },
-              { 'barcode' => '90123456',
-                'callnumber' => 'ABC 567',
-                'type' => 'STKS',
-                'current_location' => {
-                  'code' => ''
+                { 'barcode' => '90123456',
+                  'callnumber' => 'ABC 567',
+                  'type' => 'STKS',
+                  'current_location' => {
+                    'code' => ''
+                  },
+                  'home_location' => 'STACKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
                 },
-                'home_location' => 'STACKS',
-                'status' => {
-                  'availability_class' => 'available',
-                  'status_text' => 'Available'
+                { 'barcode' => '01234567',
+                  'callnumber' => 'ABC 890',
+                  'type' => 'STKS',
+                  'current_location' => {
+                    'code' => ''
+                  },
+                  'home_location' => 'STACKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
                 }
-              },
-              { 'barcode' => '01234567',
-                'callnumber' => 'ABC 890',
-                'type' => 'STKS',
-                'current_location' => {
-                  'code' => ''
-                },
-                'home_location' => 'STACKS',
-                'status' => {
-                  'availability_class' => 'available',
-                  'status_text' => 'Available'
-                }
-              }
-            ]
-          }
-        ]
-      }
-    ]
+              ]
+            }
+          ]
+        }
+      ]
+    end
 
     initialize_with do
       attributes.map do |k, h|
@@ -487,32 +505,34 @@ FactoryBot.define do
   end
 
   factory :library_instructions_holdings, class: Hash do
-    title 'Item Title'
+    title { 'Item Title' }
 
-    format ['Book']
+    format { ['Book'] }
 
-    holdings [
-      { 'code' => 'SPEC-COLL',
-        'library_instructions' => {
-          'heading' => 'Instruction Heading',
-          'text' => 'This is the library instruction'
-        },
-        'locations' => [
-          { 'code' => 'STACKS',
-            'items' => [
-              { 'barcode' => '12345678',
-                'callnumber' => 'ABC 123',
-                'type' => 'STKS',
-                'status' => {
-                  'availability_class' => 'available',
-                  'status_text' => 'Available'
+    holdings do
+      [
+        { 'code' => 'SPEC-COLL',
+          'library_instructions' => {
+            'heading' => 'Instruction Heading',
+            'text' => 'This is the library instruction'
+          },
+          'locations' => [
+            { 'code' => 'STACKS',
+              'items' => [
+                { 'barcode' => '12345678',
+                  'callnumber' => 'ABC 123',
+                  'type' => 'STKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
                 }
-              }
-            ]
-          }
-        ]
-      }
-    ]
+              ]
+            }
+          ]
+        }
+      ]
+    end
 
     initialize_with do
       attributes.map do |k, h|
@@ -522,40 +542,42 @@ FactoryBot.define do
   end
 
   factory :checkedout_holdings, class: Hash do
-    title 'Checked out item'
+    title { 'Checked out item' }
 
-    format ['Book']
+    format { ['Book'] }
 
-    holdings [
-      { 'code' => 'SAL3',
-        'locations' => [
-          { 'code' => 'STACKS',
-            'items' => [
-              { 'barcode' => '12345678',
-                'callnumber' => 'ABC 123',
-                'type' => 'STKS',
-                'status' => {
-                  'availability_class' => 'available',
-                  'status_text' => 'Available'
-                }
-              },
-              { 'barcode' => '87654321',
-                'callnumber' => 'ABC 321',
-                'current_location' => {
-                  'code' => 'CHECKEDOUT'
+    holdings do
+      [
+        { 'code' => 'SAL3',
+          'locations' => [
+            { 'code' => 'STACKS',
+              'items' => [
+                { 'barcode' => '12345678',
+                  'callnumber' => 'ABC 123',
+                  'type' => 'STKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
                 },
-                'due_date' => '01/01/2015',
-                'type' => 'STKS',
-                'status' => {
-                  'availability_class' => 'page',
-                  'status_text' => 'Available'
+                { 'barcode' => '87654321',
+                  'callnumber' => 'ABC 321',
+                  'current_location' => {
+                    'code' => 'CHECKEDOUT'
+                  },
+                  'due_date' => '01/01/2015',
+                  'type' => 'STKS',
+                  'status' => {
+                    'availability_class' => 'page',
+                    'status_text' => 'Available'
+                  }
                 }
-              }
-            ]
-          }
-        ]
-      }
-    ]
+              ]
+            }
+          ]
+        }
+      ]
+    end
 
     initialize_with do
       attributes.map do |k, h|

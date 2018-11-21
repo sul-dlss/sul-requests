@@ -46,6 +46,7 @@ describe 'AdminComments' do
 
     context 'when unsuccessful' do
       before { expect_any_instance_of(AdminComment).to receive(:save).and_return(false) }
+
       context 'html response' do
         it 'redirects back with a flash error' do
           post(url, { admin_comment: { comment: 'A comment that will not be persisted' } }, headers)

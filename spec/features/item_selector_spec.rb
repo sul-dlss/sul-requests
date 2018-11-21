@@ -4,13 +4,15 @@ require 'rails_helper'
 
 describe 'Item Selector' do
   before { stub_current_user(create(:webauth_user)) }
+
   describe 'for single items' do
     before { stub_searchworks_api_json(build(:single_holding)) }
+
     it 'displays the item call number' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
       expect(page).to have_css('.control-label', text: 'Call number')
       expect(page).to have_css('p', text: 'ABC 123')
-      expect(page).to_not have_css('#item-selector')
+      expect(page).not_to have_css('#item-selector')
     end
   end
 
@@ -19,9 +21,11 @@ describe 'Item Selector' do
       stub_searchworks_api_json(holdings)
       visit request_path
     end
+
     describe 'where there are not enough to be searchable' do
       let(:request_path) { new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS') }
       let(:holdings) { build(:multiple_holdings) }
+
       it 'displays the selected item count' do
         expect(page).to have_css('span[data-items-counter]', text: '0 items selected')
 
@@ -49,11 +53,12 @@ describe 'Item Selector' do
       describe 'for scans' do
         let(:request_path) { new_scan_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS') }
         let(:holdings) { build(:sal3_holdings) }
+
         it 'is restricted to one selection via radio button' do
           within('#item-selector') do
             choose('ABC 321')
             choose('ABC 123')
-            expect(find_field('ABC 321')).to_not be_checked
+            expect(find_field('ABC 321')).not_to be_checked
             expect(find_field('ABC 123')).to be_checked
           end
           expect(page).to have_content('1 items selected')
@@ -63,6 +68,7 @@ describe 'Item Selector' do
       describe 'for pages' do
         let(:request_path) { new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS') }
         let(:holdings) { build(:many_holdings) }
+
         it 'does not limit selection' do
           within('#item-selector') do
             check('ABC 123')
@@ -81,6 +87,7 @@ describe 'Item Selector' do
       describe 'for mediated pages', js: true do
         let(:request_path) { new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS') }
         let(:holdings) { build(:searchable_holdings) }
+
         describe 'in SPEC-COLL' do
           it 'does not allow more than 5 to be selected' do
             within('#item-selector') do
@@ -96,7 +103,7 @@ describe 'Item Selector' do
           end
 
           it 'adds and removes a message about the maximum being reached' do
-            expect(page).to_not have_css('#max-items-reached.alert-danger')
+            expect(page).not_to have_css('#max-items-reached.alert-danger')
             within('#item-selector') do
               check('ABC 123')
               check('ABC 456')
@@ -114,7 +121,7 @@ describe 'Item Selector' do
               uncheck('ABC 123')
             end
 
-            expect(page).to_not have_css('#max-items-reached.alert-danger')
+            expect(page).not_to have_css('#max-items-reached.alert-danger')
           end
         end
       end
@@ -208,6 +215,7 @@ describe 'Item Selector' do
     before do
       stub_searchworks_api_json(build(:searchable_holdings))
     end
+
     xit 'still limits selections' do
       skip('The CDN we load the date slider from seems to block Travis') if ENV['ci']
 
@@ -251,9 +259,9 @@ describe 'Item Selector' do
     it 'are addable and removable' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
 
-      expect(page).to_not have_css('#breadcrumb-12345678', text: 'ABC 123')
-      expect(page).to_not have_css('#breadcrumb-23456789', text: 'ABC 456')
-      expect(page).to_not have_css('#breadcrumb-34567890', text: 'ABC 789')
+      expect(page).not_to have_css('#breadcrumb-12345678', text: 'ABC 123')
+      expect(page).not_to have_css('#breadcrumb-23456789', text: 'ABC 456')
+      expect(page).not_to have_css('#breadcrumb-34567890', text: 'ABC 789')
 
       within('#item-selector') do
         check('ABC 123')
@@ -267,14 +275,14 @@ describe 'Item Selector' do
 
       # Click the close button on the breadcrumb pill
       find('#breadcrumb-12345678 .close').click
-      expect(page).to_not have_css('#breadcrumb-12345678', text: 'ABC 123')
+      expect(page).not_to have_css('#breadcrumb-12345678', text: 'ABC 123')
 
       within('#item-selector') do
-        expect(find_field('ABC 123')).to_not be_checked
+        expect(find_field('ABC 123')).not_to be_checked
         uncheck('ABC 456')
       end
 
-      expect(page).to_not have_css('#breadcrumb-23456789', text: 'ABC 456')
+      expect(page).not_to have_css('#breadcrumb-23456789', text: 'ABC 456')
     end
   end
 
@@ -286,7 +294,7 @@ describe 'Item Selector' do
     end
 
     it 'are addable and removable' do
-      expect(page).to_not have_css('#breadcrumb-CUSTOMCALLNUMBER', text: 'CUSTOM .CALLNUMBER')
+      expect(page).not_to have_css('#breadcrumb-CUSTOMCALLNUMBER', text: 'CUSTOM .CALLNUMBER')
 
       fill_in 'ad_hoc_items', with: 'CUSTOM .CALLNUMBER'
       click_link 'Add'
@@ -296,11 +304,11 @@ describe 'Item Selector' do
       # Click the close button on the breadcrumb pill
       find('#breadcrumb-CUSTOMCALLNUMBER .close').click
 
-      expect(page).to_not have_css('#breadcrumb-CUSTOMCALLNUMBER', text: 'CUSTOM .CALLNUMBER')
+      expect(page).not_to have_css('#breadcrumb-CUSTOMCALLNUMBER', text: 'CUSTOM .CALLNUMBER')
     end
 
     it 'are not addable when the max-threshold has been reached' do
-      expect(page).to_not have_css('[data-behavior="ad-hoc-items"] a.btn.disabled')
+      expect(page).not_to have_css('[data-behavior="ad-hoc-items"] a.btn.disabled')
       within('#item-selector') do
         check('ABC 123')
         check('ABC 456')
@@ -317,11 +325,11 @@ describe 'Item Selector' do
       end
 
       expect(page).to have_css('.breadcrumb-pill', count: 4)
-      expect(page).to_not have_css('[data-behavior="ad-hoc-items"] a.btn.disabled')
+      expect(page).not_to have_css('[data-behavior="ad-hoc-items"] a.btn.disabled')
     end
 
     it 'adds/removes a hidden field' do
-      expect(page).to_not have_css('input[type="hidden"]#hidden-ZZZ123', visible: false)
+      expect(page).not_to have_css('input[type="hidden"]#hidden-ZZZ123', visible: false)
 
       fill_in 'ad_hoc_items', with: 'ZZZ 123'
       click_link 'Add'
@@ -331,7 +339,7 @@ describe 'Item Selector' do
       # Click the close button on the ad-hoc-item's pill
       find('#breadcrumb-ZZZ123 .close').click
 
-      expect(page).to_not have_css('input[type="hidden"]#hidden-ZZZ123', visible: false)
+      expect(page).not_to have_css('input[type="hidden"]#hidden-ZZZ123', visible: false)
     end
 
     it 'are persisted' do
@@ -354,7 +362,7 @@ describe 'Item Selector' do
       expect(page).to have_css('dt', text: /additional item\(s\)/i)
       expect(page).to have_css('dd', text: 'ZZZ 321')
       expect(page).to have_css('dd', text: 'ZZZ 456')
-      expect(page).to_not have_css('dd', text: 'ZZZ 999')
+      expect(page).not_to have_css('dd', text: 'ZZZ 999')
       expect(Request.last.ad_hoc_items).to eq(['ZZZ 321', 'ZZZ 456'])
     end
   end
@@ -383,10 +391,12 @@ describe 'Item Selector' do
   describe 'public notes' do
     let(:request_path) { new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS') }
     let(:holdings) { build(:searchable_holdings) }
+
     before do
       stub_searchworks_api_json(holdings)
       visit request_path
     end
+
     it 'are hidden input fields' do
       within('#item-selector') do
         css_selector = 'input[name="request[public_notes][45678901]"][value="note for 45678901"]'

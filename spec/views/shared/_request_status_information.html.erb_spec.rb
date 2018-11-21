@@ -14,12 +14,13 @@ describe 'shared/_request_status_information.html.erb' do
     context 'when there is no delivery destination' do
       it "doesn't display the 'Deliver to' field" do
         render
-        expect(rendered).to_not have_content('Will be delivered to')
+        expect(rendered).not_to have_content('Will be delivered to')
       end
     end
 
     context 'when there is a delivery destination' do
       let(:request) { create(:page_mp_mediated_page, user: user) }
+
       it "displays the 'Deliver to' field" do
         render
         expect(rendered).to have_content('Will be delivered to')

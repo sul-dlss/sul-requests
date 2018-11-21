@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe 'messages/edit', type: :view do
-  before(:each) do
+  before do
     @message = assign(:message, create(:message))
   end
 

@@ -3,14 +3,14 @@
 require 'rails_helper'
 
 describe IlliadOpenurl do
+  subject { described_class.new(user, scan, redirect_url) }
+
   let(:lib_user) { create(:webauth_user).tap { |x| x.ldap_group_string = 'organization:sul' } }
   let(:law_user) { create(:webauth_user).tap { |x| x.ldap_group_string = 'organization:law' } }
   let(:gsb_user) { create(:webauth_user).tap { |x| x.ldap_group_string = 'organization:gsb' } }
 
   let(:scan) { create(:scan_with_holdings_barcodes) }
   let(:redirect_url) { '' }
-
-  subject { IlliadOpenurl.new(user, scan, redirect_url) }
 
   describe '#to_url' do
     let(:user) { lib_user }

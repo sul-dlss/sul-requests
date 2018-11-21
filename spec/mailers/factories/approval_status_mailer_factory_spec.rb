@@ -4,7 +4,9 @@ require 'rails_helper'
 
 describe ApprovalStatusMailerFactory do
   subject(:mailer) { described_class.for(request) }
+
   let(:user) { create(:anon_user) }
+
   before { request.user = user }
 
   describe 'user errors' do

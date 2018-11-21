@@ -4,18 +4,18 @@ require 'rails_helper'
 
 describe Request do
   describe 'validations' do
-    it 'should require the basic set of information to be present' do
-      expect(-> { Request.create! }).to raise_error(ActiveRecord::RecordInvalid)
-      expect(-> { Request.create!(item_id: '1234', origin: 'GREEN') }).to raise_error(ActiveRecord::RecordInvalid)
-      expect(-> { Request.create! }).to raise_error(ActiveRecord::RecordInvalid)
-      expect(-> { Request.create! }).to raise_error(ActiveRecord::RecordInvalid)
+    it 'requires the basic set of information to be present' do
+      expect(-> { described_class.create! }).to raise_error(ActiveRecord::RecordInvalid)
+      expect(-> { described_class.create!(item_id: '1234', origin: 'GREEN') }).to raise_error(ActiveRecord::RecordInvalid)
+      expect(-> { described_class.create! }).to raise_error(ActiveRecord::RecordInvalid)
+      expect(-> { described_class.create! }).to raise_error(ActiveRecord::RecordInvalid)
     end
 
     it 'requires that the requested barcodes exist in the holdings of the requested location' do
       stub_searchworks_api_json(build(:multiple_holdings))
       expect(
         lambda do
-          Request.create!(
+          described_class.create!(
             item_id: '1234',
             origin: 'GREEN',
             origin_location: 'STACKS',
@@ -25,19 +25,19 @@ describe Request do
       ).to raise_error(
         ActiveRecord::RecordInvalid, 'Validation failed: A selected item is not located in the requested location'
       )
-      Request.create!(
+      described_class.create!(
         item_id: '1234',
         origin: 'GREEN',
         origin_location: 'STACKS',
         barcodes: %w(3610512345678)
       )
-      expect(Request.last.barcodes).to eq %w(3610512345678)
+      expect(described_class.last.barcodes).to eq %w(3610512345678)
     end
 
     it 'requires that when a needed_date is provided it is not before today' do
       expect(
         lambda do
-          Request.create!(
+          described_class.create!(
             item_id: '1234',
             origin: 'GREEN',
             origin_location: 'STACKS',
@@ -59,8 +59,8 @@ describe Request do
       end
 
       it 'returns requests with needed_date matching the given date' do
-        expect(Request.for_date(Time.zone.today + 1.day).count).to eq 2
-        expect(Request.for_date(Time.zone.today + 2.days).count).to eq 1
+        expect(described_class.for_date(Time.zone.today + 1.day).count).to eq 2
+        expect(described_class.for_date(Time.zone.today + 2.days).count).to eq 1
       end
     end
 
@@ -72,8 +72,8 @@ describe Request do
       end
 
       it 'returns requests with created_at matching the given date' do
-        expect(Request.for_create_date((Time.zone.today - 1.day).to_s).count).to eq 2
-        expect(Request.for_create_date((Time.zone.today - 2.days).to_s).count).to eq 1
+        expect(described_class.for_create_date((Time.zone.today - 1.day).to_s).count).to eq 2
+        expect(described_class.for_create_date((Time.zone.today - 2.days).to_s).count).to eq 1
       end
     end
 
@@ -85,7 +85,7 @@ describe Request do
       end
 
       it 'returns records in descending needed date order' do
-        sorted = Request.needed_date_desc.limit(3)
+        sorted = described_class.needed_date_desc.limit(3)
         expect(sorted[0].needed_date).to eq Time.zone.today + 3.days
         expect(sorted[1].needed_date).to eq Time.zone.today + 2.days
         expect(sorted[2].needed_date).to eq Time.zone.today + 1.day
@@ -114,6 +114,7 @@ describe Request do
           allow(subject).to receive_messages(holdings: [{}])
           allow(subject).to receive_messages(holdings_object: double('mhld', mhld: [{}]))
         end
+
         it 'is true when the library is SAL-NEWARK or SPEC-COLL' do
           subject.origin = 'SAL-NEWARK'
           expect(subject).to be_item_commentable
@@ -124,7 +125,7 @@ describe Request do
 
         it 'is false when the library is not SAL-NEWARK or SPEC-COLL' do
           subject.origin = 'GREEN'
-          expect(subject).to_not be_item_commentable
+          expect(subject).not_to be_item_commentable
         end
       end
 
@@ -178,13 +179,13 @@ describe Request do
   end
 
   describe '#library_location' do
-    it 'should return a library_location object' do
+    it 'returns a library_location object' do
       expect(subject.library_location).to be_a LibraryLocation
     end
   end
 
   describe '#searchworks_item' do
-    it 'should return a searchworks_item object' do
+    it 'returns a searchworks_item object' do
       expect(subject.searchworks_item).to be_a SearchworksItem
     end
   end
@@ -192,7 +193,8 @@ describe Request do
   describe '#holdings' do
     describe 'when persisted' do
       let(:subject) { create(:request_with_multiple_holdings, barcodes: ['3610512345678']) }
-      it 'should get the holdings from the requested location by the persisted barcodes' do
+
+      it 'gets the holdings from the requested location by the persisted barcodes' do
         holdings = subject.holdings
         expect(holdings).to be_a Array
         expect(holdings.length).to eq 1
@@ -203,7 +205,8 @@ describe Request do
 
     describe 'when persisted with no selected barcode' do
       let(:subject) { create(:request_with_multiple_holdings, barcodes: []) }
-      it 'should get all the holdings for the requested location' do
+
+      it 'gets all the holdings for the requested location' do
         holdings = subject.holdings
         expect(holdings).to be_a Array
         expect(holdings).to be_blank
@@ -212,7 +215,8 @@ describe Request do
 
     describe 'when not persisted' do
       let(:subject) { build(:request_with_multiple_holdings) }
-      it 'should get all the holdings for the requested location' do
+
+      it 'gets all the holdings for the requested location' do
         holdings = subject.holdings
         expect(holdings).to be_a Array
         expect(holdings.length).to eq 3
@@ -224,7 +228,8 @@ describe Request do
 
   describe '#all_holdings' do
     let(:subject) { build(:request_with_multiple_holdings, barcodes: ['3610512345678']) }
-    it 'should get all the holdings for the requested location' do
+
+    it 'gets all the holdings for the requested location' do
       holdings = subject.all_holdings
       expect(holdings).to be_a Array
       expect(holdings.length).to eq 3
@@ -235,6 +240,7 @@ describe Request do
 
   describe '#requested_holdings' do
     let(:subject) { create(:request_with_multiple_holdings, barcodes: ['3610512345678']) }
+
     it 'gets the holdings from the requested location by the persisted barcodes' do
       holdings = subject.requested_holdings
       expect(holdings).to be_a Array
@@ -246,6 +252,7 @@ describe Request do
 
   describe '#data_to_email_s' do
     subject { Scan.new }
+
     it 'turns the serialized data hash into a string' do
       subject.data = { 'page_range' => 'Range', 'authors' => 'Authors' }
       expect(subject.data_to_email_s).to include('Page range:')
@@ -261,22 +268,22 @@ describe Request do
       expect(subject.item_limit).to be_nil
     end
 
-    it 'should be 5 for items from SPEC-COLL' do
+    it 'is 5 for items from SPEC-COLL' do
       subject.origin = 'SPEC-COLL'
       expect(subject.item_limit).to eq 5
     end
 
-    it 'should be 5 for items from RUMSEYMAP' do
+    it 'is 5 for items from RUMSEYMAP' do
       subject.origin = 'RUMSEYMAP'
       expect(subject.item_limit).to eq 5
     end
 
-    it 'should be 20 for items from HV-ARCHIVE' do
+    it 'is 20 for items from HV-ARCHIVE' do
       subject.origin = 'HV-ARCHIVE'
       expect(subject.item_limit).to eq 20
     end
 
-    it 'should be 5 for items from the PAGE-SP location' do
+    it 'is 5 for items from the PAGE-SP location' do
       subject.origin_location = 'PAGE-SP'
       expect(subject.item_limit).to eq 5
     end
@@ -284,21 +291,21 @@ describe Request do
 
   describe 'nested attributes for' do
     describe 'users' do
-      it 'should handle webauth users (w/o emails) correctly' do
+      it 'handles webauth users (w/o emails) correctly' do
         User.create!(webauth: 'a-webauth-user')
         webauth_user = User.new(webauth: 'current-webauth-user')
-        allow_any_instance_of(Request).to receive_messages(user: webauth_user)
-        Request.create!(
+        allow_any_instance_of(described_class).to receive_messages(user: webauth_user)
+        described_class.create!(
           item_id: '1234',
           origin: 'GREEN',
           origin_location: 'STACKS'
         )
-        expect(Request.last.user).to eq User.last
+        expect(described_class.last.user).to eq User.last
       end
 
-      it 'should create new users' do
+      it 'creates new users' do
         expect(User.find_by_email('jstanford@stanford.edu')).to be_nil
-        Request.create(
+        described_class.create(
           item_id: '1234',
           origin: 'GREEN',
           origin_location: 'STACKS',
@@ -310,11 +317,11 @@ describe Request do
         expect(User.find_by_email('jstanford@stanford.edu')).to be_present
       end
 
-      it 'should not duplicate users email addresses' do
+      it 'does not duplicate users email addresses' do
         expect(User.where(email: 'jstanford@stanford.edu').length).to eq 0
         User.create(email: 'jstanford@stanford.edu')
         expect(User.where(email: 'jstanford@stanford.edu').length).to eq 1
-        Request.create!(
+        described_class.create!(
           item_id: '1234',
           origin: 'GREEN',
           origin_location: 'STACKS',
@@ -326,11 +333,11 @@ describe Request do
         expect(User.where(email: 'jstanford@stanford.edu').length).to eq 1
       end
 
-      it 'should update email users name' do
+      it 'updates email users name' do
         expect(User.where(email: 'jstanford@stanford.edu').length).to eq 0
         User.create(email: 'jstanford@stanford.edu', name: 'J. Stanford')
         expect(User.where(email: 'jstanford@stanford.edu').length).to eq 1
-        Request.create!(
+        described_class.create!(
           item_id: '1234',
           origin: 'GREEN',
           origin_location: 'STACKS',
@@ -343,11 +350,11 @@ describe Request do
         expect(User.find_by(email: 'jstanford@stanford.edu').name).to eq 'Jane Stanford'
       end
 
-      it 'should not duplicate user records when both library ID and email is provided' do
+      it 'does not duplicate user records when both library ID and email is provided' do
         expect(User.where(library_id: '12345', email: 'jstanford@stanford.edu').length).to eq 0
         User.create(library_id: '12345', email: 'jstanford@stanford.edu')
         expect(User.where(library_id: '12345', email: 'jstanford@stanford.edu').length).to eq 1
-        Request.create!(
+        described_class.create!(
           item_id: '1234',
           origin: 'GREEN',
           origin_location: 'STACKS',
@@ -359,7 +366,7 @@ describe Request do
         expect(User.where(library_id: '12345', email: 'jstanford@stanford.edu').length).to eq 1
       end
 
-      it 'should not use existing user records when a name+email is provded' do
+      it 'does not use existing user records when a name+email is provded' do
         bad_id = '54321'
         # User is already created with a bad library ID
         User.create(library_id: bad_id, email: 'jstanford@stanford.edu')
@@ -367,7 +374,7 @@ describe Request do
         # User comes in and just adds a name+email with the same email address as the bad ID
         expect(
           lambda do
-            Request.create!(
+            described_class.create!(
               item_id: '1234',
               origin: 'GREEN',
               origin_location: 'STACKS',
@@ -377,14 +384,14 @@ describe Request do
               }
             )
           end
-        ).to change { User.count }.by(1)
+        ).to change(User, :count).by(1)
       end
 
-      it 'should not duplicate library ids' do
+      it 'does not duplicate library ids' do
         expect(User.where(library_id: '12345').length).to eq 0
         User.create(library_id: '12345')
         expect(User.where(library_id: '12345').length).to eq 1
-        Request.create!(
+        described_class.create!(
           item_id: '1234',
           origin: 'GREEN',
           origin_location: 'STACKS',
@@ -398,43 +405,43 @@ describe Request do
   end
 
   describe 'item_title' do
-    it 'should fetch the item title on object creation', allow_apis: true do
-      Request.create!(item_id: '2824966', origin: 'GREEN', origin_location: 'STACKS')
-      expect(Request.last.item_title).to eq 'When do you need an antacid? : a burning question'
+    it 'fetches the item title on object creation', allow_apis: true do
+      described_class.create!(item_id: '2824966', origin: 'GREEN', origin_location: 'STACKS')
+      expect(described_class.last.item_title).to eq 'When do you need an antacid? : a burning question'
     end
 
-    it 'should not fetch the title when it is already present' do
-      Request.create!(item_id: '2824966', origin: 'GREEN', origin_location: 'STACKS', item_title: 'This title')
-      expect(Request.last.item_title).to eq 'This title'
+    it 'does not fetch the title when it is already present' do
+      described_class.create!(item_id: '2824966', origin: 'GREEN', origin_location: 'STACKS', item_title: 'This title')
+      expect(described_class.last.item_title).to eq 'This title'
     end
   end
 
   describe 'stored_or_fetched_item_title' do
-    it 'should return the stored item title for persisted objects' do
+    it 'returns the stored item title for persisted objects' do
       expect(create(:request).stored_or_fetched_item_title).to eq 'Title for Request 12345'
     end
-    it 'should return the item title from the fetched searchworks record for non persisted objects' do
-      allow_any_instance_of(Request).to receive(:searchworks_item).and_return(OpenStruct.new(title: 'A fetched title'))
-      expect(Request.new.stored_or_fetched_item_title).to eq 'A fetched title'
+    it 'returns the item title from the fetched searchworks record for non persisted objects' do
+      allow_any_instance_of(described_class).to receive(:searchworks_item).and_return(OpenStruct.new(title: 'A fetched title'))
+      expect(described_class.new.stored_or_fetched_item_title).to eq 'A fetched title'
     end
   end
 
   describe '#delegate_request!' do
-    it 'should delegate to a mediated page if it is mediateable' do
+    it 'delegates to a mediated page if it is mediateable' do
       allow(subject).to receive_messages(mediateable?: true)
       expect(subject.type).to be_nil
       subject.delegate_request!
       expect(subject.type).to eq 'MediatedPage'
     end
 
-    it 'should delegate to a hold recall if it is hold recallable' do
+    it 'delegates to a hold recall if it is hold recallable' do
       allow(subject).to receive_messages(hold_recallable?: true)
       expect(subject.type).to be_nil
       subject.delegate_request!
       expect(subject.type).to eq 'HoldRecall'
     end
 
-    it 'should delegate to a page request otherwise' do
+    it 'delegates to a page request otherwise' do
       expect(subject.type).to be_nil
       subject.delegate_request!
       expect(subject.type).to eq 'Page'
@@ -443,7 +450,8 @@ describe Request do
 
   describe '#data' do
     let(:data_hash) { { 'a' => 'a', 'b' => 'b' } }
-    it 'should be a serialized hash' do
+
+    it 'is a serialized hash' do
       expect(subject.data).to eq({})
       subject.data = data_hash
       expect(subject.data).to eq data_hash
@@ -458,7 +466,8 @@ describe Request do
 
   describe 'barcodes' do
     let(:array) { %w(a b c) }
-    it 'should be a serialized array' do
+
+    it 'is a serialized array' do
       expect(subject.barcodes).to eq([])
       subject.barcodes = array
       expect(subject.barcodes).to eq(array)
@@ -511,6 +520,7 @@ describe Request do
 
   describe 'send_confirmation!' do
     let(:subject) { create(:page, user: create(:webauth_user)) }
+
     it 'returns true (other classes can implement confirmation if they want it)' do
       expect(
         -> { subject.send_confirmation! }
@@ -522,15 +532,17 @@ describe Request do
   describe 'send_approval_status!' do
     describe 'for library id users' do
       let(:subject) { create(:page, user: create(:library_id_user)) }
+
       it 'does not send an approval status email' do
         expect(
           -> { subject.send_approval_status! }
-        ).to_not change { ApprovalStatusMailer.deliveries.count }
+        ).not_to change { ApprovalStatusMailer.deliveries.count }
       end
     end
 
     describe 'for everybody else' do
       let(:subject) { create(:page, user: create(:webauth_user)) }
+
       it 'sends an approval status email' do
         expect(
           -> { subject.send_approval_status! }
@@ -559,8 +571,9 @@ describe Request do
       create(:hoover_archive_mediated_page)
       create(:hopkins_mediated_page)
     end
-    it 'should return the subset of origin codes that are configured and mediated pages that exist in the database' do
-      expect(Request.mediateable_origins).to eq %w(HOPKINS HV-ARCHIVE SPEC-COLL)
+
+    it 'returns the subset of origin codes that are configured and mediated pages that exist in the database' do
+      expect(described_class.mediateable_origins).to eq %w(HOPKINS HV-ARCHIVE SPEC-COLL)
     end
   end
 

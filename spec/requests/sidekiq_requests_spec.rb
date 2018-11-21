@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe 'Sidekiq requests' do
   let(:url) { '/sidekiq' }
+
   context 'with superadmin privileges' do
     it 'is successful' do
       allow(CurrentUser).to receive(:for).and_return(double(super_admin?: true))

@@ -18,6 +18,7 @@ describe 'shared/_item_selector.html.erb' do
   context 'item with only one holding' do
     context 'from the holdings' do
       let(:request) { create(:request_with_holdings) }
+
       it 'displays the single barcoded item' do
         expect(rendered).to have_selector '.form-control-static', text: 'ABC 123'
       end
@@ -25,6 +26,7 @@ describe 'shared/_item_selector.html.erb' do
 
     context 'requested via barcode' do
       let(:request) { create(:request_with_multiple_holdings, barcode: '3610512345678') }
+
       it 'displays the single barcoded item' do
         expect(rendered).to have_selector '.form-control-static', text: 'ABC 123'
       end

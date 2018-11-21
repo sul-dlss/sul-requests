@@ -12,6 +12,7 @@ describe 'User Authorization' do
       end
     end
   end
+
   describe 'logout' do
     before do
       stub_current_user(create(:webauth_user))

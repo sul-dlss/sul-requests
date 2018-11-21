@@ -10,7 +10,8 @@ describe AdminController do
   describe 'index' do
     describe 'for super admin' do
       let(:user) { create(:superadmin_user) }
-      it 'should be accessible' do
+
+      it 'is accessible' do
         get :index
         expect(response).to be_successful
       end
@@ -18,7 +19,8 @@ describe AdminController do
 
     describe 'for site admin' do
       let(:user) { create(:site_admin_user) }
-      it 'should be accessible' do
+
+      it 'is accessible' do
         get :index
         expect(response).to be_successful
       end
@@ -26,14 +28,16 @@ describe AdminController do
 
     describe 'for webauth user' do
       let(:user) { create(:webauth_user) }
-      it 'should not be accessible' do
+
+      it 'is not accessible' do
         expect(-> { get :index }).to raise_error(CanCan::AccessDenied)
       end
     end
 
     describe 'for anon user' do
       let(:user) { create(:anon_user) }
-      it 'should redirect to the login page' do
+
+      it 'redirects to the login page' do
         expect(get(:index)).to redirect_to(login_path(referrer: admin_index_url))
       end
     end
@@ -42,7 +46,8 @@ describe AdminController do
   describe 'show' do
     describe 'for super admin' do
       let(:user) { create(:superadmin_user) }
-      it 'should be accessible' do
+
+      it 'is accessible' do
         get :show, id: 'SAL3'
         expect(response).to be_successful
       end
@@ -50,7 +55,8 @@ describe AdminController do
 
     describe 'for site admin' do
       let(:user) { create(:site_admin_user) }
-      it 'should be accessible' do
+
+      it 'is accessible' do
         get :show, id: 'SAL3'
         expect(response).to be_successful
       end
@@ -58,26 +64,29 @@ describe AdminController do
 
     describe 'for origin admin' do
       let(:user) { create(:sal3_origin_admin_user) }
-      it 'should be accessible when the user is an admin for the location' do
+
+      it 'is accessible when the user is an admin for the location' do
         get :show, id: 'SAL3'
         expect(response).to be_successful
       end
 
-      it 'should not be accessible when the user is not an admin for the location' do
+      it 'is not accessible when the user is not an admin for the location' do
         expect(-> { get :show, id: 'SPEC-COLL' }).to raise_error(CanCan::AccessDenied)
       end
     end
 
     describe 'for normal webuath user' do
       let(:user) { create(:webauth_user) }
-      it 'should not be accessible' do
+
+      it 'is not accessible' do
         expect(-> { get :show, id: 'SPEC-COLL' }).to raise_error(CanCan::AccessDenied)
       end
     end
 
     describe 'for anonymouse users' do
       let(:user) { create(:anon_user) }
-      it 'should be a redirect to login' do
+
+      it 'is a redirect to login' do
         expect(get(:show, id: 'SPEC-COLL')).to redirect_to(
           login_path(referrer: admin_url('SPEC-COLL'))
         )
@@ -92,7 +101,7 @@ describe AdminController do
         create(:mediated_page_with_holdings, user: create(:non_webauth_user), barcodes: %w(12345678 23456789))
       end
 
-      it 'should return the holdings table markup' do
+      it 'returns the holdings table markup' do
         get :holdings, id: mediated_page.id
         expect(response).to be_successful
         expect(assigns(:request)).to be_a(MediatedPage)
@@ -107,6 +116,7 @@ describe AdminController do
 
   describe 'approve item' do
     before { stub_searchworks_api_json(build(:searchable_holdings)) }
+
     let(:mediated_page) do
       create(:mediated_page_with_holdings, user: create(:webauth_user), barcodes: %w(12345678 23456789))
     end

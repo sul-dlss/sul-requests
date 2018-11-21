@@ -5,6 +5,7 @@ require 'rails_helper'
 describe 'requests/success.html.erb' do
   let(:user) { create(:webauth_user) }
   let(:request) { create(:page, user: user) }
+
   before do
     allow(view).to receive_messages(current_request: request)
     allow(view).to receive_messages(current_user: user)
@@ -46,13 +47,16 @@ describe 'requests/success.html.erb' do
   describe 'user information' do
     describe 'for webauth users' do
       let(:user) { create(:webauth_user) }
+
       it 'gives their stanford-email address' do
         render
         expect(rendered).to have_content('some-webauth-user@stanford.edu')
       end
     end
+
     describe 'for non-webauth useres' do
       let(:user) { create(:non_webauth_user) }
+
       it 'gives their email' do
         render
         expect(rendered).to have_content('jstanford@stanford.edu')
@@ -148,7 +152,9 @@ describe 'requests/success.html.erb' do
   describe 'for mediated pages' do
     describe 'ad-hoc items' do
       let(:request) { create(:mediated_page_with_holdings, user: user, ad_hoc_items: ['ZZZ 123', 'ZZZ 321']) }
+
       before { render }
+
       it 'are displayed when they are present' do
         expect(rendered).to have_css('dt', text: 'Additional item(s)')
         expect(rendered).to have_css('dd', text: 'ZZZ 123')
@@ -158,10 +164,12 @@ describe 'requests/success.html.erb' do
 
     describe 'item level comments' do
       let(:request) { create(:mediated_page_with_holdings, user: user, item_comment: ['Volume 666 only']) }
+
       before do
         expect(request).to receive(:item_commentable?).and_return(true)
         render
       end
+
       it 'are displayed when they are present' do
         expect(rendered).to have_css('dt', text: 'Item(s) requested')
         expect(rendered).to have_css('dd', text: 'Volume 666 only')
@@ -170,7 +178,9 @@ describe 'requests/success.html.erb' do
 
     describe 'request level comments' do
       let(:request) { create(:mediated_page_with_holdings, user: user, request_comment: 'Here today, gone tomorrow') }
+
       before { render }
+
       it 'are displayed when they are present' do
         expect(rendered).to have_css('dt', text: 'Comment')
         expect(rendered).to have_css('dd', text: 'Here today, gone tomorrow')
@@ -179,7 +189,9 @@ describe 'requests/success.html.erb' do
 
     describe 'selected items' do
       let(:request) { create(:mediated_page_with_holdings, user: user, barcodes: %w(12345678 23456789)) }
+
       before { render }
+
       it 'are displayed when there are multiple selected' do
         expect(rendered).to have_css('dt', text: 'Item(s) requested')
         expect(rendered).to have_css('dd', text: 'ABC 123')

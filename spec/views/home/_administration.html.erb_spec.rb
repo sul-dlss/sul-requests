@@ -6,7 +6,8 @@ describe 'home/_administration.html.erb' do
   before do
     render
   end
-  it 'should have title and description' do
+
+  it 'has title and description' do
     expect(rendered).to have_css('h2', text: 'Administration')
   end
   it 'has expected links' do

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe SymphonyUserNameRequest do
-  subject { SymphonyUserNameRequest.new(libid: '12345') }
+  subject { described_class.new(libid: '12345') }
 
   describe 'name and email' do
     before do
@@ -33,7 +33,7 @@ describe SymphonyUserNameRequest do
         expect(Faraday.default_connection).to receive(:get).and_return(response)
       end
 
-      it 'should be blank' do
+      it 'is blank' do
         expect(subject.name).to be_blank
         expect(subject.email).to be_blank
       end
@@ -46,7 +46,7 @@ describe SymphonyUserNameRequest do
 
       let(:response) { double(success?: false, body: '') }
 
-      it 'should be blank' do
+      it 'is blank' do
         expect(subject.name).to be_blank
         expect(subject.email).to be_blank
       end

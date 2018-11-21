@@ -80,6 +80,7 @@ describe 'Mediation table', js: true do
 
     context 'toggleable truncation of user request comments' do
       let(:symphony_response) { build(:symphony_request_with_mixed_status) }
+
       it 'truncates long comments and shows a more link' do
         expect(page).to have_css('td.comment > div[data-behavior="trunk8toggle"]', count: 4)
         expect(page).to have_css('a.trunk8toggle-more', count: 3)
@@ -112,6 +113,7 @@ describe 'Mediation table', js: true do
 
     describe 'current location' do
       let(:symphony_response) { build(:symphony_page_with_multiple_items) }
+
       before do
         location_object = double(current_location: 'THE-CURRENT-LOCATION')
         expect(SymphonyCurrLocRequest).to receive(:new).at_least(:once).and_return(location_object)
@@ -130,6 +132,7 @@ describe 'Mediation table', js: true do
 
     describe 'successful symphony response' do
       let(:symphony_response) { build(:symphony_page_with_multiple_items) }
+
       it 'has toggleable rows that display holdings' do
         expect(page).to have_css('[data-mediate-request]', count: 4)
         expect(page).to have_css('tbody tr', count: 4)
@@ -152,11 +155,11 @@ describe 'Mediation table', js: true do
         end
 
         within('tbody td table tbody') do
-          expect(page).to_not have_css('tr.approved')
+          expect(page).not_to have_css('tr.approved')
           within(first('tr')) do
             expect(page).to have_css('td button', text: 'Approve')
-            expect(page).to_not have_css('td', text: 'Added to pick list', visible: true)
-            expect(page).to_not have_content('super-admin')
+            expect(page).not_to have_css('td', text: 'Added to pick list', visible: true)
+            expect(page).not_to have_content('super-admin')
             click_button('Approve')
           end
           expect(page).to have_css('tr.approved')
@@ -178,12 +181,12 @@ describe 'Mediation table', js: true do
 
         expect(page).to have_css('tr.approved')
         expect(page).to have_css('td button', text: 'Approved')
-        expect(page).to_not have_css('.alert') # does not add request level alert
+        expect(page).not_to have_css('.alert') # does not add request level alert
       end
 
       it 'indicates when all items in a request have been approved' do
         within(all('[data-mediate-request]').last) do
-          expect(page).to_not have_css('[data-behavior="all-approved-note"]', text: 'Done')
+          expect(page).not_to have_css('[data-behavior="all-approved-note"]', text: 'Done')
           page.find('a.mediate-toggle').trigger('click')
         end
 
@@ -271,6 +274,7 @@ describe 'Mediation table', js: true do
 
       describe 'on item approval' do
         let(:symphony_response) { build(:symphony_page_with_multiple_items) }
+
         it 'updates the item level error messages' do
           within(all('[data-mediate-request]').last) do
             page.find('a.mediate-toggle').trigger('click')
@@ -304,7 +308,7 @@ describe 'Mediation table', js: true do
         )
       end
 
-      it 'it derives the email address from their webauth' do
+      it 'derives the email address from their webauth' do
         visit admin_path('SPEC-COLL')
 
         within(first('[data-mediate-request]')) do
@@ -316,6 +320,7 @@ describe 'Mediation table', js: true do
 
   describe 'Filtering buttons' do
     before { stub_current_user(create(:superadmin_user)) }
+
     describe 'for needed on dates' do
       before do
         create(:page_mp_mediated_page, needed_date: Time.zone.today + 2.days)
@@ -359,12 +364,14 @@ describe 'Mediation table', js: true do
 
   describe 'Date picker' do
     before { stub_current_user(create(:superadmin_user)) }
+
     describe 'for requested on dates' do
       let(:older) { Time.zone.today - 3.days }
       let(:today_s) { Time.zone.today.to_s }
       let(:yesterday) { Time.zone.today - 1.day }
       let(:future) { Time.zone.today + 2.days }
       let(:future_s) { I18n.l(future, format: :quick) }
+
       before do
         create(:mediated_page_with_holdings, created_at: older)
         create(:mediated_page_with_holdings, created_at: older)
@@ -374,6 +381,7 @@ describe 'Mediation table', js: true do
         create(:mediated_page_with_holdings, created_at: Time.zone.today)
         create(:mediated_page_with_holdings, needed_date: future)
       end
+
       before do
         visit admin_path('SPEC-COLL')
       end

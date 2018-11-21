@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe 'Paging Schedule' do
   before { stub_current_user(create(:superadmin_user)) }
+
   describe 'admin list' do
     it 'displays the currently configured paging schedule' do
       visit paging_schedule_index_path
@@ -17,6 +18,7 @@ describe 'Paging Schedule' do
 
   describe 'Select dropdown', js: true do
     before { stub_searchworks_api_json(build(:sal3_holdings)) }
+
     it 'displays the estimate for the currently selected value and updates it when a new destination is selected' do
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
 
@@ -26,7 +28,7 @@ describe 'Paging Schedule' do
       before_text = find('[data-scheduler-text]').text
 
       select 'Engineering Library (Terman)', from: 'request_destination'
-      expect(find('[data-scheduler-text]')).to_not eq before_text
+      expect(find('[data-scheduler-text]')).not_to eq before_text
     end
   end
 
@@ -35,6 +37,7 @@ describe 'Paging Schedule' do
       stub_current_user(create(:webauth_user))
       stub_searchworks_api_json(build(:sal3_holdings))
     end
+
     it 'is persisted' do
       stub_symphony_response(build(:symphony_page_with_single_item))
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
@@ -57,13 +60,14 @@ describe 'Paging Schedule' do
     it 'displays an estimate for the single possible destination' do
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'PAGE-MA')
 
-      expect(page).to_not have_select('request_destination')
+      expect(page).not_to have_select('request_destination')
       expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: true)
     end
   end
 
   describe 'form choice page', js: true do
     before { stub_searchworks_api_json(build(:sal3_holdings)) }
+
     it 'shows the estimated delivery for Green Library' do
       visit new_request_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
 
@@ -75,6 +79,7 @@ describe 'Paging Schedule' do
 
   describe 'scan form', js: true do
     before { stub_searchworks_api_json(build(:sal3_holdings)) }
+
     it 'shows the estimated delivery for the Scanning service' do
       visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
 

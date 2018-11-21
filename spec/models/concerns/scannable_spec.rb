@@ -13,9 +13,11 @@ end
 describe Scannable do
   let(:request) { build(:request) }
   let(:subject) { ScannableTestClass.new }
+
   before do
     subject.request = request
   end
+
   describe '#scannable?' do
     describe 'library and location' do
       before do
@@ -49,10 +51,10 @@ describe Scannable do
       it 'is false when library or location is not scannable' do
         subject.library = 'NOT-SAL3'
         subject.location = 'STACKS'
-        expect(subject).to_not be_scannable
+        expect(subject).not_to be_scannable
         subject.library = 'SAL3'
         subject.location = 'NOT-STACKS'
-        expect(subject).to_not be_scannable
+        expect(subject).not_to be_scannable
       end
     end
 
@@ -73,7 +75,7 @@ describe Scannable do
 
       it 'is false when there are no scannable items in the location' do
         subject.request = double('request', holdings: unscannable_items)
-        expect(subject).to_not be_scannable
+        expect(subject).not_to be_scannable
       end
 
       it 'is true when there are mixed items in the location' do

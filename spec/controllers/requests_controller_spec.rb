@@ -15,6 +15,7 @@ describe RequestsController do
   let(:hold_recall_params) do
     { item_id: '12345', barcode: '3610512345', origin: 'GREEN', origin_location: 'STACKS' }
   end
+
   describe '#new' do
     describe 'required parameters' do
       it 'item id, library, and location' do
@@ -37,8 +38,9 @@ describe RequestsController do
         ).to raise_error(ActionController::ParameterMissing)
       end
     end
+
     describe 'defaults' do
-      it 'should be set' do
+      it 'is set' do
         get :new, hold_recall_params
         expect(assigns[:request].origin).to eq 'GREEN'
         expect(assigns[:request].origin_location).to eq 'STACKS'
@@ -51,14 +53,15 @@ describe RequestsController do
       before do
         stub_searchworks_api_json(build(:sal3_holdings))
       end
-      it 'should display a page to choose to have an item scanned or delivered' do
+
+      it 'displays a page to choose to have an item scanned or delivered' do
         get :new, scannable_params
         expect(response).to render_template('new')
       end
     end
 
     describe 'unscannable item' do
-      it 'should redirect to the new mediated page request form' do
+      it 'redirects to the new mediated page request form' do
         get :new, mediated_page_params
         expect(response).to redirect_to new_mediated_page_path(mediated_page_params)
       end
@@ -74,8 +77,10 @@ describe RequestsController do
 
   describe 'delegated_new_request_path' do
     let(:path) { controller.send(:delegated_new_request_path, request) }
+
     describe 'for pages' do
       let(:request) { build(:request) }
+
       it 'delegates the request object' do
         path
         expect(request.type).to eq 'Page'
@@ -88,6 +93,7 @@ describe RequestsController do
 
     describe 'for mediated pages' do
       let(:request) { create(:request, origin: 'SPEC-COLL') }
+
       it 'delegates the request object' do
         path
         expect(request.type).to eq 'MediatedPage'
@@ -100,7 +106,7 @@ describe RequestsController do
   end
 
   describe 'modify_item_selector_checkboxes' do
-    it 'should raise an error of the subclassing controller does not implement the local_object_param method' do
+    it 'raises an error of the subclassing controller does not implement the local_object_param method' do
       expect(controller.send(:modify_item_selector_checkboxes)).to be_nil
     end
   end
@@ -116,6 +122,7 @@ describe RequestsController do
     before do
       stub_searchworks_api_json(build(:sal3_holdings))
     end
+
     it 'defaults to application' do
       get :new, scannable_params
       expect(response).to render_template(layout: 'application')

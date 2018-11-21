@@ -53,8 +53,8 @@ describe PagingSchedule do
   end
 
   describe '.worst_case_delivery_day' do
-    it 'should be no more than 6 days away' do
-      expect(PagingSchedule.worst_case_delivery_day).to eq Time.zone.today + 6.days
+    it 'is no more than 6 days away' do
+      expect(described_class.worst_case_delivery_day).to eq Time.zone.today + 6.days
     end
   end
 

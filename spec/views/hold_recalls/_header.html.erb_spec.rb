@@ -9,6 +9,7 @@ describe 'hold_recalls/_header.html.erb' do
   let(:current_request) do
     double('request', origin: origin, origin_location: origin_location, holdings: holdings)
   end
+
   before do
     allow(view).to receive_messages(current_request: current_request)
   end
@@ -18,6 +19,7 @@ describe 'hold_recalls/_header.html.erb' do
     let(:holdings) do
       [double('holding', current_location: double('location', code: ''))]
     end
+
     it 'falls back to the home location' do
       render
       expect(rendered).to have_css('h1', text: 'Request in-process item')
@@ -70,6 +72,7 @@ describe 'hold_recalls/_header.html.erb' do
       let(:holdings) do
         [double('holding', current_location: double('location', code: 'SOMETHING-ELSE'))]
       end
+
       it 'falls back to the default title' do
         render
         expect(rendered).to have_css('h1', text: 'Request item')

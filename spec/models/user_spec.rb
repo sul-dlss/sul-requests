@@ -4,10 +4,10 @@ require 'rails_helper'
 
 describe User do
   describe 'validations' do
-    it 'should only allow unique webauth ids' do
-      User.create!(webauth: 'some-user')
+    it 'onlies allow unique webauth ids' do
+      described_class.create!(webauth: 'some-user')
       expect(
-        -> { User.create!(webauth: 'some-user') }
+        -> { described_class.create!(webauth: 'some-user') }
       ).to raise_error(ActiveRecord::RecordInvalid)
     end
   end
@@ -32,6 +32,7 @@ describe User do
       before do
         subject.webauth = 'jstanford'
       end
+
       it 'returns the email address set by the email attribute' do
         subject.email = 'jjstanford@stanford.edu'
         expect(subject.email_address).to eq 'jjstanford@stanford.edu'
@@ -69,7 +70,7 @@ describe User do
 
   describe '#to_email_string' do
     describe 'for webauth users' do
-      it 'should be their Stanford email address' do
+      it 'is their Stanford email address' do
         subject.name = 'Jane Stanford'
         subject.webauth = 'jstanford'
         subject.email = 'jstanford@stanford.edu'
@@ -78,7 +79,7 @@ describe User do
     end
 
     describe 'for non-webauth users' do
-      it 'should be their name plus their email in parenthesis' do
+      it 'is their name plus their email in parenthesis' do
         subject.name = 'Jane Stanford'
         subject.email = 'jstanford@stanford.edu'
         expect(subject.to_email_string).to eq 'Jane Stanford (jstanford@stanford.edu)'
@@ -86,7 +87,7 @@ describe User do
     end
 
     describe 'for users without a name' do
-      it 'should just be their email address' do
+      it 'justs be their email address' do
         subject.webauth = 'jstanford'
         subject.email = 'jstanford@stanford.edu'
         expect(subject.to_email_string).to eq 'jstanford@stanford.edu'
@@ -100,30 +101,34 @@ describe User do
       end
     end
   end
+
   describe '#webauth_user?' do
-    it 'should return false when the user has no WebAuth attribute' do
-      expect(subject).to_not be_webauth_user
+    it 'returns false when the user has no WebAuth attribute' do
+      expect(subject).not_to be_webauth_user
     end
-    it 'should return true when the user has a WebAuth attribute' do
+    it 'returns true when the user has a WebAuth attribute' do
       subject.webauth = 'WebAuth User'
       expect(subject).to be_webauth_user
     end
   end
+
   describe '#non_webauth_user?' do
     describe 'with name and email' do
       before do
         subject.name = 'Jane Stanford'
         subject.email = 'jstanford@stanford.edu'
       end
-      it 'should return true when the user has a name and email address but not a webauth ID' do
+
+      it 'returns true when the user has a name and email address but not a webauth ID' do
         expect(subject).to be_non_webauth_user
       end
-      it 'should return false when the user has a webauth ID' do
+      it 'returns false when the user has a webauth ID' do
         subject.webauth = 'jstanford'
-        expect(subject).to_not be_non_webauth_user
+        expect(subject).not_to be_non_webauth_user
       end
     end
   end
+
   describe '#library_id_user?' do
     it 'is true when the user has supplied a library ID' do
       subject.library_id = '12345'
@@ -135,34 +140,37 @@ describe User do
       expect(subject).not_to be_library_id_user
     end
   end
+
   describe '#super_admin?' do
-    it 'should return false when the user is not a super admin' do
-      expect(subject).to_not be_super_admin
+    it 'returns false when the user is not a super admin' do
+      expect(subject).not_to be_super_admin
     end
-    it 'should return true when the user is in a superadmin group' do
+    it 'returns true when the user is in a superadmin group' do
       allow(subject).to receive_messages(ldap_groups: ['FAKE-TEST-SUPER-ADMIN-GROUP'])
       expect(subject).to be_super_admin
     end
   end
+
   describe '#site_admin?' do
-    it 'should return false when the user is not a site admin' do
-      expect(subject).to_not be_site_admin
+    it 'returns false when the user is not a site admin' do
+      expect(subject).not_to be_site_admin
     end
-    it 'should return true when the user is in a site admin group' do
+    it 'returns true when the user is in a site admin group' do
       allow(subject).to receive_messages(ldap_groups: ['FAKE-TEST-SITE-ADMIN-GROUP'])
       expect(subject).to be_site_admin
     end
   end
+
   describe '#admin_for_origin?' do
-    it 'should return false when the user is not in an originating library admin group' do
-      expect(subject).to_not be_admin_for_origin('FAKE-ORIGIN-LIBRARY')
+    it 'returns false when the user is not in an originating library admin group' do
+      expect(subject).not_to be_admin_for_origin('FAKE-ORIGIN-LIBRARY')
     end
-    it 'should return true when the user is in a site admin group' do
+    it 'returns true when the user is in a site admin group' do
       allow(subject).to receive_messages(ldap_groups: ['FAKE-ORIGIN-LIBRARY-TEST-LDAP-GROUP'])
       expect(subject).to be_admin_for_origin('FAKE-ORIGIN-LIBRARY')
     end
 
-    it 'should return true when the user is an admin of a location' do
+    it 'returns true when the user is an admin of a location' do
       allow(subject).to receive_messages(ldap_groups: ['FAKE-ORIGIN-LOCATION-TEST-LDAP-GROUP'])
       expect(subject).to be_admin_for_origin('FAKE-ORIGIN-LOCATION')
     end

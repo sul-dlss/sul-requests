@@ -12,17 +12,19 @@ describe RequestsHelper do
         current_user: user
       )
     end
+
     context 'for a webauth user' do
       let(:user) { create(:webauth_user, ip_address: Settings.stanford_ips.singletons.first) }
 
       it 'is falsey regardless of location' do
-        expect(helper.render_remote_user_check?).to be_falsey
+        expect(helper).not_to be_render_remote_user_check
       end
     end
 
     context 'for an anonymous user' do
       context 'that is in the configured IP range' do
         let(:user) { create(:anon_user, ip_address: Settings.stanford_ips.singletons.first) }
+
         it 'is false' do
           expect(helper.render_remote_user_check?).to be false
         end
@@ -40,12 +42,15 @@ describe RequestsHelper do
 
   describe '#select_for_pickup_libraries' do
     let(:form) { double('form') }
+
     before do
       allow(form).to receive_messages(object: request)
     end
+
     describe 'single library' do
       let(:request) { create(:request, origin: 'SAL3', origin_location: 'PAGE-MU') }
-      it 'should return library text and a hidden input w/ the destination library' do
+
+      it 'returns library text and a hidden input w/ the destination library' do
         expect(form).to receive(:hidden_field).with(:destination, value: 'MUSIC').and_return('<hidden_field>')
         markup = Capybara.string(select_for_pickup_libraries(form))
         expect(markup).to have_css('.form-group .control-label', text: 'Will be delivered to')
@@ -53,9 +58,11 @@ describe RequestsHelper do
         expect(markup).to have_css('hidden_field')
       end
     end
+
     describe 'multiple libraries' do
       let(:request) { create(:request, origin: 'SAL3', origin_location: 'PAGE-HP') }
-      it 'should attempt to create a select list' do
+
+      it 'attempts to create a select list' do
         expect(form).to receive(:select).with(any_args).and_return('<select>')
         expect(select_for_pickup_libraries(form)).to eq '<select>'
       end
@@ -71,42 +78,48 @@ describe RequestsHelper do
       end
     end
   end
+
   describe '#label_for_pickup_libraries_dropdown' do
-    it 'should be "Deliver to" when if there are mutliple possiblities' do
+    it 'is "Deliver to" when if there are mutliple possiblities' do
       expect(label_for_pickup_libraries_dropdown(%w(GREEN MUSIC))).to eq 'Deliver to'
     end
-    it 'should be "Will be delivered to" when there is only one possibility' do
+    it 'is "Will be delivered to" when there is only one possibility' do
       expect(label_for_pickup_libraries_dropdown(['GREEN'])).to eq 'Will be delivered to'
     end
   end
+
   describe 'format date' do
-    it 'should format a date' do
+    it 'formats a date' do
       expect(format_date('2015-04-23 10:12:14')).to eq '2015-04-23 10:12am'
     end
   end
+
   describe 'searchworks link' do
-    it 'should construct a searchworks link including the passed in html_options' do
+    it 'constructs a searchworks link including the passed in html_options' do
       result = '<a data-elt-opt="somebehavior" href="http://searchworks.stanford.edu/view/234">A title</a>'
       expect(searchworks_link('234', 'A title', 'data-elt-opt' => 'somebehavior')).to eq result
     end
   end
+
   describe 'requester info' do
     let(:webauth_user) { User.create(webauth: 'jstanford', email: 'jstanford@stanford.edu') }
     let(:non_webauth_user) { User.create(name: 'Joe', email: 'joe@xyz.com') }
     let(:library_id_user) { User.create(library_id: '123456') }
-    it 'should construct requester info for webauth user' do
+
+    it 'constructs requester info for webauth user' do
       expect(requester_info(webauth_user)).to eq '<a href="mailto:jstanford@stanford.edu">jstanford@stanford.edu</a>'
     end
-    it 'should construct requester info for non-webauth user' do
+    it 'constructs requester info for non-webauth user' do
       expect(requester_info(non_webauth_user)).to eq '<a href="mailto:joe@xyz.com">Joe (joe@xyz.com)</a>'
     end
-    it 'should construct requester info for a library id user' do
+    it 'constructs requester info for a library id user' do
       expect(requester_info(library_id_user)).to eq '123456'
     end
   end
 
   describe 'request_status_for_ad_hoc_item' do
     let(:request) { create(:request) }
+
     it 'returns the request status object for the item' do
       request_status = request_status_for_ad_hoc_item(request, 'ABC 123')
       expect(request_status).to be_a ItemStatus
@@ -182,7 +195,9 @@ describe RequestsHelper do
 
   describe 'i18n_location_title_key' do
     let(:current_request) { double('request') }
+
     before { expect(helper).to receive_messages(current_request: current_request) }
+
     it 'returns the current location when present' do
       allow(current_request).to receive_messages(
         holdings: [

@@ -48,6 +48,7 @@ describe Message, type: :model do
       subject.request_type = 'page'
       subject.library = 'ARS'
     end
+
     it 'constructs a title from the request type and library' do
       expect(subject.title).to eq 'Page from Archive of Recorded Sound'
     end

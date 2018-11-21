@@ -17,8 +17,8 @@ describe 'Create Scan Request' do
 
     visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
 
-    expect(page).to_not have_select('request_destination')
-    expect(page).to_not have_content('Deliver to')
+    expect(page).not_to have_select('request_destination')
+    expect(page).not_to have_content('Deliver to')
   end
 
   it 'does not include the highlighted section around destination and needed date' do
@@ -26,7 +26,7 @@ describe 'Create Scan Request' do
 
     visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
 
-    expect(page).to_not have_css('.alert-warning.destination-note-callout')
+    expect(page).not_to have_css('.alert-warning.destination-note-callout')
   end
 
   describe 'by an eligible webauth user' do
@@ -34,15 +34,16 @@ describe 'Create Scan Request' do
       stub_current_user(create(:scan_eligible_user))
     end
 
-    it 'should display a copyright restrictions notice in a collapse' do
+    it 'displays a copyright restrictions notice in a collapse' do
       visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
 
       expect(page).to have_content 'Notice concerning copyright restrictions'
       expect(page).to have_content 'The copyright law of the United States'
     end
   end
+
   describe 'by non webauth user' do
-    it 'should provide a link to page the item' do
+    it 'provides a link to page the item' do
       visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
 
       expect(page).to have_link 'Request the physical item'

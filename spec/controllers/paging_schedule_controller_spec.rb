@@ -12,6 +12,7 @@ describe PagingScheduleController do
 
     describe 'by site admins' do
       before { stub_current_user(create(:site_admin_user)) }
+
       it 'assigns the paging_schedule instance variable' do
         get :index
         expect(response).to be_success
@@ -25,7 +26,9 @@ describe PagingScheduleController do
       before do
         expect(PagingSchedule).to receive_messages(for: estimate)
       end
+
       let(:estimate) { double(earliest_delivery_estimate: { a: 'a', b: 'b' }) }
+
       it 'is accessible by anonymous users' do
         get :show, origin: 'SAL3', destination: 'GREEN'
         expect(response).to be_success
@@ -45,7 +48,7 @@ describe PagingScheduleController do
     describe 'when both the origin and destination are not present' do
       it 'responds with a 404' do
         get :show, origin: 'SAL3'
-        expect(response).to_not be_success
+        expect(response).not_to be_success
         expect(response.status).to be 404
       end
     end
@@ -54,9 +57,10 @@ describe PagingScheduleController do
       before do
         expect(PagingSchedule).to receive(:for).and_raise(PagingSchedule::ScheduleNotFound)
       end
+
       it 'responds with a 404 error' do
         get :show, origin: 'DOES-NOT-EXIST', destination: 'NOT-REAL'
-        expect(response).to_not be_success
+        expect(response).not_to be_success
         expect(response.status).to be 404
       end
     end
@@ -67,7 +71,7 @@ describe PagingScheduleController do
       it 'responds with a 404' do
         get :open, origin: 'SAL3', destination: 'GREEN', date: 'tomorrow'
 
-        expect(response).to_not be_success
+        expect(response).not_to be_success
         expect(response.status).to be 404
       end
     end

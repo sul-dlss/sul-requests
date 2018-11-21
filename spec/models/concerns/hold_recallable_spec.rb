@@ -13,9 +13,11 @@ end
 describe HoldRecallable do
   let(:request) { build(:request) }
   let(:subject) { HoldRecallableTestClass.new }
+
   before do
     subject.request = request
   end
+
   describe '#HoldRecallable?' do
     it 'is false by default' do
       expect(subject).not_to be_hold_recallable

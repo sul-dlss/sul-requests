@@ -2,11 +2,11 @@
 
 FactoryBot.define do
   factory :page do
-    item_id '1234'
-    origin 'GREEN'
-    origin_location 'STACKS'
-    destination 'ART'
-    item_title 'Title for Page 1234'
+    item_id { '1234' }
+    origin { 'GREEN' }
+    origin_location { 'STACKS' }
+    destination { 'ART' }
+    item_title { 'Title for Page 1234' }
 
     after(:build) do |request|
       class << request
@@ -18,10 +18,10 @@ FactoryBot.define do
   end
 
   factory :page_with_holdings, class: Page do
-    item_id '1234'
-    origin 'GREEN'
-    origin_location 'STACKS'
-    destination 'ART'
+    item_id { '1234' }
+    origin { 'GREEN' }
+    origin_location { 'STACKS' }
+    destination { 'ART' }
 
     after(:build) do |page|
       class << page
@@ -33,10 +33,10 @@ FactoryBot.define do
   end
 
   factory :page_with_holdings_summary, class: Page do
-    item_id '1234'
-    origin 'GREEN'
-    origin_location 'STACKS'
-    destination 'ART'
+    item_id { '1234' }
+    origin { 'GREEN' }
+    origin_location { 'STACKS' }
+    destination { 'ART' }
 
     after(:build) do |page|
       class << page
