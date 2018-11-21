@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Allow administrators to add special broadcast messages to request forms
 class MessagesController < ApplicationController

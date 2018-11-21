@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # A helper for mediation specific methods
 module MediationHelper

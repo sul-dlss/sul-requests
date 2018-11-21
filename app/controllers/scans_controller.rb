@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ###
 #  Controller to handle particular behaviors for Scan type requests
 ###

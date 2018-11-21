@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 describe SorryController, type: :controller do
   describe 'get #unable' do

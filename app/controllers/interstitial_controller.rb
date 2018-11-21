@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ###
 #  This controller simply handles incoming requests (and responds immediately)
 #  then redirects the user to the requested url. This allows us to take the user from WebAuth

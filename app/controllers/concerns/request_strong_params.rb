@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ###
 #  Module to mixin the permitted and required parameters for request controller actions
 ###

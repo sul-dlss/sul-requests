@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # A factory class to return the appropriate ApprovalStatusMailer
 # method based on failure status and request type

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ###
 #  Mailer class to send approval status emails after requests have
 #  been submitted based on either the request type or user error status

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'json'
 
 # API for retrieving the current location from a barcode via Symphony Web Services
@@ -35,7 +37,7 @@ class SymphonyCurrLocRequest
     {}
   end
 
-  BASE_URL = "#{Settings.symphony_web_services.base_url}#{Settings.symphony_web_services.curr_loc_path}".freeze
+  BASE_URL = "#{Settings.symphony_web_services.base_url}#{Settings.symphony_web_services.curr_loc_path}"
   QUERY_STR = { includeFields: 'currentLocation' }.to_query.freeze
 
   def url

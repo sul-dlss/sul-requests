@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Model responses from Symphony requests
 class SymphonyResponse

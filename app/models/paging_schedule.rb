@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ###
 #  PagingScheduleEstimate is a module that takes a requested item and can
 #  read the paging schedule configuration and estimate a date of arrival.
@@ -43,7 +45,7 @@ module PagingSchedule
           sched.to == :anywhere &&
           sched.by_time?(request.created_at)
       end
-      s.for(request.destination) if s
+      s&.for(request.destination)
     end
 
     def worst_case_days_later

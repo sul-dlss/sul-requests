@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 long_comment = <<-LONG
   It's wonderful to be here it's certainly a thrill you're such a lovely audience we'd love to take you home with us we'd love to take you home no really we'd really really love to take you home especially if you are a cute puppy.
 LONG

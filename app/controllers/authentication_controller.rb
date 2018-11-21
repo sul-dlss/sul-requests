@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ###
 #  Controller for handling login/logout and redirecting with flash messages.
 ###

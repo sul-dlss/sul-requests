@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :green_stacks_searchworks_item, class: SearchworksItem do
     initialize_with { new(request) }

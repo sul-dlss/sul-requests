@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Default options for request workflows
 module DefaultRequestOptions

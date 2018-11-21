@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ###
 #  Helpers method for CanCan authorization in views
 ###

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Messages to be displayed on request forms
 class Message < ActiveRecord::Base
   validates :library, :request_type, presence: true

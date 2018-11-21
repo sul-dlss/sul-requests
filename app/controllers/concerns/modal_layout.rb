@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ###
 #  Controller concern to be mixed in to controllers that need to display modal content
 ###

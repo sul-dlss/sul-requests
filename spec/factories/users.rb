@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :superadmin_user, class: User do
     webauth 'super-admin'

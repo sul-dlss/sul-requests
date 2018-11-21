@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ###
 #  Request class for requesting materials to be scanned
 ###

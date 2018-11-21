@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 def update_symphony_data_and_save(request, symphony_data)

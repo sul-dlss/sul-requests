@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # wrapper for working with the library hours api
 module LibraryHoursApi
   def self.get(library_slug, location_slug, range = {})

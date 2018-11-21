@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Rails Job to submit a Scan request to Symphony for processing
 class SubmitSymphonyRequestJob < ActiveJob::Base
@@ -101,7 +103,7 @@ class SubmitSymphonyRequestJob < ActiveJob::Base
         req_comment: request.request_comment,
         requested_date: request.created_at.strftime('%m/%d/%Y'),
         pickup_lib: (request.destination unless request.is_a? Scan),
-        not_needed_after: (request.needed_date.strftime('%m/%d/%Y') if request.needed_date)
+        not_needed_after: (request.needed_date&.strftime('%m/%d/%Y'))
       }
     end
     # rubocop:enable Metrics/AbcSize

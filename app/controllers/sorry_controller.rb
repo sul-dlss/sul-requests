@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Page to display if something goes wrong with the request
 # e.g. redirect from ILLiad logon or ScanAndDeliver pages
 class SorryController < ApplicationController

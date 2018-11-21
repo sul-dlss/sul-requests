@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ###
 #  Mixin to define commentable behavior in request objects
 ###

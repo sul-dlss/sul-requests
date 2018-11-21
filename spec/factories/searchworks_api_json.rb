@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :multiple_holdings, class: Hash do
     title 'Item Title'

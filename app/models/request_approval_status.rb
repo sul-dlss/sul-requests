@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Relatively simple utility class to render the status of a request.
 # The status can either be pending, a user error, or return the list of items,

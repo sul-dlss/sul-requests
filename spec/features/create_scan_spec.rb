@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 # Since we need to redirect through Illiad on POST and the rails test harness does

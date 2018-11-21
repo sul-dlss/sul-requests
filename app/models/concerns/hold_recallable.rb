@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ###
 #  Mixin to encapsulate defining hold recall requests
 ###

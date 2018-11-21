@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ###
 #  Main ability class for authorization
 #  See the wiki for details about defining abilities:
@@ -82,10 +84,10 @@ class Ability
   end
 
   def request_is_by_anonymous_user?(request)
-    request.user && request.user.non_webauth_user?
+    request.user&.non_webauth_user?
   end
 
   def request_is_by_library_id_user?(request)
-    request.user && request.user.library_id_user?
+    request.user&.library_id_user?
   end
 end

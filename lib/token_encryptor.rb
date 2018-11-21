@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SULRequests
   ###
   #  Class to encrypt and decrypt messages using ActiveSupport::MessageEncryptor

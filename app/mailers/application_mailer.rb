@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ###
 #  Top-level mailer class to allow us to set defaults like from and layout.
 ###

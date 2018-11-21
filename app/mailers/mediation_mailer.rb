@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ###
 #  Mailer class to send emails to mediators after requests have been submitted
 ###

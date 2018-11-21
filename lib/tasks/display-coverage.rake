@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 desc 'Display coveralls current coverage metric'
 task :display_coveralls_coverage do
   coverage_file_path = File.join(Rails.root, 'coverage', '.last_run.json')

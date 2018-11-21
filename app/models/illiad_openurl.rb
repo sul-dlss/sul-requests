@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ###
 #  Class to handle creation of ILLiad OpenURL request
 ###
@@ -47,7 +49,7 @@ class IlliadOpenurl
 
   def nvtgc
     illiad_nvtgc_config.each do |k, v|
-      return v if @current_user && @current_user.ldap_groups.include?(k)
+      return v if @current_user&.ldap_groups&.include?(k)
     end
 
     illiad_nvtgc_config[:default]

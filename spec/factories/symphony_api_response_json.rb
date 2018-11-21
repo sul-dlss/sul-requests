@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :symphony_scan_success, class: Hash do
     req_type 'SCAN'
