@@ -6,7 +6,12 @@ describe Request do
   describe 'validations' do
     it 'requires the basic set of information to be present' do
       expect(-> { described_class.create! }).to raise_error(ActiveRecord::RecordInvalid)
-      expect(-> { described_class.create!(item_id: '1234', origin: 'GREEN') }).to raise_error(ActiveRecord::RecordInvalid)
+      expect(lambda {
+               described_class.create!(
+                 item_id: '1234',
+                 origin: 'GREEN'
+               )
+             }).to raise_error(ActiveRecord::RecordInvalid)
       expect(-> { described_class.create! }).to raise_error(ActiveRecord::RecordInvalid)
       expect(-> { described_class.create! }).to raise_error(ActiveRecord::RecordInvalid)
     end
@@ -421,7 +426,8 @@ describe Request do
       expect(create(:request).stored_or_fetched_item_title).to eq 'Title for Request 12345'
     end
     it 'returns the item title from the fetched searchworks record for non persisted objects' do
-      allow_any_instance_of(described_class).to receive(:searchworks_item).and_return(OpenStruct.new(title: 'A fetched title'))
+      allow_any_instance_of(described_class).to receive(:searchworks_item)
+        .and_return(OpenStruct.new(title: 'A fetched title'))
       expect(described_class.new.stored_or_fetched_item_title).to eq 'A fetched title'
     end
   end

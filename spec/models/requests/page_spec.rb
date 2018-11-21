@@ -16,7 +16,14 @@ describe Page do
   describe 'validation' do
     it 'does not allow mediated pages to be created' do
       expect(
-        -> { described_class.create!(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'SPEC-COLL') }
+        lambda {
+          described_class.create!(
+            item_id: '1234',
+            origin: 'SPEC-COLL',
+            origin_location: 'STACKS',
+            destination: 'SPEC-COLL'
+          )
+        }
       ).to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: This item is not pageable')
     end
 
