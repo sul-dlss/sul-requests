@@ -16,6 +16,10 @@
       <% end %>
     </ul>
 
+    <% if @request.estimated_delivery.present? %>
+      <p>Estimated delivery: <%= @request.estimated_delivery %></p>
+    <% end %>
+
     <p>
       <%= @request.data_to_email.join('<br/>') %>
     </p>
