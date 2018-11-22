@@ -140,6 +140,15 @@ describe ApprovalStatusMailer do
       end
     end
 
+    describe 'status url' do
+      let(:body) { Capybara.string(mail.body.to_s) }
+
+      it 'gives the correct URL w/ an https protocol' do
+        expect(body).to have_css('p', text: 'You can see this request status online at requests.stanford.edu')
+        expect(body).to have_link('requests.stanford.edu', href: %r{^https://example\.com/pages/1/status})
+      end
+    end
+
     describe 'contact info' do
       let(:body) { mail.body.to_s }
       describe 'default' do
