@@ -14,6 +14,7 @@
   </div>
   <div class='<%= content_column_class %> input-like-text' data-single-library-value='<%= 'SCAN' unless current_request.holdings_object.single_checked_out_item? %>'>
     <span data-scheduler-text='true' aria-live='polite'></span>
+    <%= f.hidden_field :estimated_delivery, data: { 'scheduler-field' => true } %>
   </div>
 </div>
 
