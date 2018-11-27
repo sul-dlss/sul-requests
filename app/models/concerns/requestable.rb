@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Check if a resource is requestable
 module Requestable
   def requestable_by_all?

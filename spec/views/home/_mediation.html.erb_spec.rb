@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'home/_mediation.html.erb' do
@@ -7,7 +9,8 @@ describe 'home/_mediation.html.erb' do
     )
     render
   end
-  it 'should have title and description' do
+
+  it 'has title and description' do
     expect(rendered).to have_css('h2', text: 'Mediation')
     expect(rendered).to have_css('a', text: 'Special Collections')
     expect(rendered).to have_css('a', text: 'Hoover Library')

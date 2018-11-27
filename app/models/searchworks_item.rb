@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ###
 #  Class to connect to the searchworks availability API
 #  The API URI is configured using rails_config: Settings.searchworks_api

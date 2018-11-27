@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Scan do
-  it 'should have the properly assigned Rails STI attribute value' do
+  it 'has the properly assigned Rails STI attribute value' do
     expect(subject.type).to eq 'Scan'
   end
-  it 'should validate based on if the item is scannable or not' do
+  it 'validates based on if the item is scannable or not' do
     expect do
-      Scan.create!(item_id: '1234',
-                   origin: 'GREEN',
-                   origin_location: 'STACKS',
-                   section_title: 'Some chapter title')
+      described_class.create!(item_id: '1234',
+                              origin: 'GREEN',
+                              origin_location: 'STACKS',
+                              section_title: 'Some chapter title')
     end.to raise_error(
       ActiveRecord::RecordInvalid, 'Validation failed: This item is not scannable'
     )
@@ -49,6 +51,7 @@ describe Scan do
 
   describe 'send_confirmation!' do
     let(:subject) { create(:scan, user: create(:webauth_user)) }
+
     it 'returns true' do
       expect(
         -> { subject.send_confirmation! }
@@ -60,15 +63,17 @@ describe Scan do
   describe 'send_approval_status!' do
     describe 'for library id users' do
       let(:subject) { create(:scan, user: create(:library_id_user)) }
+
       it 'does not send an approval status email' do
         expect(
           -> { subject.send_approval_status! }
-        ).to_not change { ApprovalStatusMailer.deliveries.count }
+        ).not_to change { ApprovalStatusMailer.deliveries.count }
       end
     end
 
     describe 'for everybody else' do
       let(:subject) { create(:scan, user: create(:webauth_user)) }
+
       it 'sends an approval status email' do
         expect(
           -> { subject.send_approval_status! }

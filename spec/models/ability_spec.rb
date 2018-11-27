@@ -1,7 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'cancan/matchers'
 
 describe Ability do
+  subject { described_class.new(user, token) }
+
   let(:admin_comment) { AdminComment.new(request: request) }
   let(:request) { Request.new }
   let(:custom) { Custom.new }
@@ -12,7 +16,6 @@ describe Ability do
   let(:request_objects) { [custom, hold_recall, mediated_page, page, scan] }
   let(:message) { Message.new }
   let(:token) { nil }
-  subject { Ability.new(user, token) }
 
   describe 'site admins' do
     let(:user) { create(:site_admin_user) }
@@ -80,20 +83,26 @@ describe Ability do
       let(:user) { build(:non_webauth_user) }
       let(:page) { build(:page, user: user) }
       let(:mediated_page) { build(:mediated_page, user: user) }
+
       it { is_expected.to be_able_to(:create, page) }
       it { is_expected.to be_able_to(:create, mediated_page) }
       describe 'and views a success page with a token' do
         describe 'for a page' do
           let(:token) { page.encrypted_token }
+
           it { is_expected.to be_able_to(:success, page) }
         end
+
         describe 'for a mediated page' do
           let(:token) { mediated_page.encrypted_token }
+
           it { is_expected.to be_able_to(:success, mediated_page) }
         end
       end
+
       describe 'when the library is HOPKINS' do
         before { mediated_page.origin = 'HOPKINS' }
+
         it { is_expected.not_to be_able_to(:create, mediated_page) }
       end
     end
@@ -103,12 +112,14 @@ describe Ability do
       let(:page) { build(:page, user: user) }
       let(:mediated_page) { build(:mediated_page, user: user) }
       let(:scan) { build(:scan, user: user) }
+
       it { is_expected.to be_able_to(:create, page) }
       it { is_expected.to be_able_to(:create, mediated_page) }
       it { is_expected.to be_able_to(:create, mediated_page) }
 
       describe 'when the library is HOPKINS' do
         before { mediated_page.origin = 'HOPKINS' }
+
         it { is_expected.not_to be_able_to(:create, mediated_page) }
       end
     end

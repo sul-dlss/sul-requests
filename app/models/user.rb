@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ###
 #  User class for authenticating via WebAuth
 ###

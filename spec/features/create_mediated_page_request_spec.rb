@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Creating a mediated page request' do
@@ -8,7 +10,7 @@ describe 'Creating a mediated page request' do
   end
 
   describe 'by an anonmyous user' do
-    it 'should be possible to toggle between login and name-email form', js: true do
+    it 'is possible to toggle between login and name-email form', js: true do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
 
       click_remote_user_confirmation
@@ -25,7 +27,7 @@ describe 'Creating a mediated page request' do
       click_link '‹ Go back (show the login option)'
       expect(page).to have_css('a', text: "I don't have a SUNet ID")
     end
-    it 'should be possible if a name and email is filled out', js: true do
+    it 'is possible if a name and email is filled out', js: true do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
 
       click_remote_user_confirmation
@@ -41,7 +43,7 @@ describe 'Creating a mediated page request' do
       expect_to_be_on_success_page
     end
 
-    it 'should be possible if a library id is filled out', js: true do
+    it 'is possible if a library id is filled out', js: true do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
 
       click_remote_user_confirmation
@@ -62,18 +64,20 @@ describe 'Creating a mediated page request' do
       expect_to_be_on_success_page
     end
 
-    it 'should not have library ID/name/email fields if the request is from HOPKINS' do
+    it 'does not have library ID/name/email fields if the request is from HOPKINS' do
       visit new_mediated_page_path(item_id: '1234', origin: 'HOPKINS', origin_location: 'STACKS')
 
-      expect(page).to_not have_link('I don\'t have a SUNet ID')
-      expect(page).to_not have_field('Library ID')
-      expect(page).to_not have_field('Name')
-      expect(page).to_not have_field('Email')
+      expect(page).not_to have_link('I don\'t have a SUNet ID')
+      expect(page).not_to have_field('Library ID')
+      expect(page).not_to have_field('Name')
+      expect(page).not_to have_field('Email')
     end
   end
+
   describe 'by a webauth user' do
     before { stub_current_user(user) }
-    it 'should be possible without filling in any user information' do
+
+    it 'is possible without filling in any user information' do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
 
       fill_in_required_fields
@@ -84,9 +88,11 @@ describe 'Creating a mediated page request' do
       expect_to_be_on_success_page
     end
   end
+
   describe 'comments' do
     before { stub_current_user(user) }
-    it 'should have a comments field for commentable libraries' do
+
+    it 'has a comments field for commentable libraries' do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
 
       fill_in_required_fields
@@ -100,15 +106,17 @@ describe 'Creating a mediated page request' do
 
       expect(MediatedPage.last.request_comment).to eq comment
     end
-    it 'should not include a comments for requests that do not get them' do
+    it 'does not include a comments for requests that do not get them' do
       visit new_mediated_page_path(item_id: '1234', origin: 'HV-ARCHIVE', origin_location: 'STACKS-30')
 
-      expect(page).to_not have_field('Comments')
+      expect(page).not_to have_field('Comments')
     end
   end
+
   describe 'needed on' do
     before { stub_current_user(user) }
-    it 'should have a field for the planned date of visit' do
+
+    it 'has a field for the planned date of visit' do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
       date = (Time.zone.now + 1.day).to_date
 
@@ -127,7 +135,8 @@ describe 'Creating a mediated page request' do
       stub_current_user(user)
       stub_searchworks_api_json(build(:special_collections_holdings))
     end
-    it 'should persist to the database' do
+
+    it 'persists to the database' do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
 
       fill_in_required_fields

@@ -1,16 +1,20 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Creating a page request' do
   let(:user) { create(:webauth_user) }
+
   describe 'item information' do
-    it 'should display the items title' do
+    it 'displays the items title' do
       visit new_page_path(item_id: '2824966', origin: 'GREEN', origin_location: 'STACKS')
     end
   end
+
   describe 'by an anonmyous user' do
     before { stub_searchworks_api_json(build(:single_holding)) }
 
-    it 'should be possible if a name and email is filled out', js: true do
+    it 'is possible if a name and email is filled out', js: true do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
 
       click_link "I don't have a SUNet ID"
@@ -26,7 +30,7 @@ describe 'Creating a page request' do
       expect_to_be_on_success_page
     end
 
-    it 'should be possible if a library ID is filled out', js: true do
+    it 'is possible if a library ID is filled out', js: true do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
       click_link "I don't have a SUNet ID"
 
@@ -42,7 +46,7 @@ describe 'Creating a page request' do
       expect_to_be_on_success_page
     end
 
-    it 'should retrieve users by both library ID and email if both a provided by the user', js: true do
+    it 'retrieves users by both library ID and email if both a provided by the user', js: true do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
       click_link "I don't have a SUNet ID"
 
@@ -67,9 +71,11 @@ describe 'Creating a page request' do
       tcramer1.destroy
     end
   end
+
   describe 'by a webauth user' do
     before { stub_current_user(user) }
-    it 'should be possible without filling in any user information' do
+
+    it 'is possible without filling in any user information' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
       first(:button, 'Send request').click
 
@@ -117,7 +123,8 @@ describe 'Creating a page request' do
       stub_current_user(user)
       stub_searchworks_api_json(build(:multiple_holdings))
     end
-    it 'should persist to the database' do
+
+    it 'persists to the database' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
 
       within('#item-selector') do

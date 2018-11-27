@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # get the current User object from the Rails request object
 # Intended to be used as CurrentUser.for(request)
 class CurrentUser

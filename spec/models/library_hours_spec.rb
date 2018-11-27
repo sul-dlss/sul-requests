@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe LibraryHours do
@@ -14,6 +16,7 @@ describe LibraryHours do
 
     context 'scanning library' do
       let(:library) { 'SCAN' }
+
       it 'proxies SCAN to GREEN' do
         expect(subject.send(:library)).to eq 'GREEN'
       end

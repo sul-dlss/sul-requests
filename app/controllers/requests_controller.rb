@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ###
 #  Controller to handle base Create, Read, Update, and Delete actions of request objects.
 #  Other request type specific controllers will handle behaviors for their particular types.

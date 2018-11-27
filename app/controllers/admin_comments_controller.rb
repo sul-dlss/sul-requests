@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Controller to handle the creation of admin comments on requests
 class AdminCommentsController < ApplicationController

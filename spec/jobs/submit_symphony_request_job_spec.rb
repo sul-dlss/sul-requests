@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'sidekiq/logging'
 
@@ -50,13 +52,13 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
   end
 
   describe SubmitSymphonyRequestJob::Command do
+    subject { described_class.new(request) }
+
     let(:user) { build(:non_webauth_user) }
     let(:request) { scan }
     let(:scan) { create(:scan_with_holdings, user: user) }
     let(:hold) { create(:hold_recall_with_holdings, user: user) }
     let(:page) { create(:page_with_holdings, user: user) }
-
-    subject { described_class.new(request) }
 
     describe '#client' do
       it 'provides an HTTP client for the given base URL' do
@@ -71,6 +73,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
 
       context 'with a scan' do
         let(:request) { scan }
+
         it 'req_type is the request type' do
           expect(subject.request_params).to include req_type: 'SCAN'
         end

@@ -1,9 +1,13 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe MediationHelper do
   describe '#current_location_for_mediated_item' do
-    let(:item) { double(home_location: 'MSS-30', barcode: '123456') }
     subject { current_location_for_mediated_item(item) }
+
+    let(:item) { double(home_location: 'MSS-30', barcode: '123456') }
+
     before do
       location_object = double(current_location: current_location)
       expect(SymphonyCurrLocRequest).to receive(:new).with(barcode: '123456').and_return(location_object)

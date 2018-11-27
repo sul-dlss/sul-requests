@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Admin Comments', js: true do
   let(:user) { create(:superadmin_user) }
+
   before do
     stub_searchworks_api_json(build(:searchable_holdings))
     stub_current_user(user)

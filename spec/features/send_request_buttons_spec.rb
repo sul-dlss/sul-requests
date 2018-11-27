@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Send Request Buttons' do
@@ -5,6 +7,7 @@ describe 'Send Request Buttons' do
 
   describe 'as a Stanford user', js: true do
     before { stub_current_user(create(:webauth_user)) }
+
     it 'allows submit' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
 
@@ -15,7 +18,7 @@ describe 'Send Request Buttons' do
   end
 
   describe 'by anonymous user', js: true do
-    it 'should be possible to toggle between login and name-email form' do
+    it 'is possible to toggle between login and name-email form' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
       click_link 'I don\'t have a SUNet ID'
 
@@ -55,6 +58,7 @@ describe 'Send Request Buttons' do
       stub_searchworks_api_json(build(:sal3_holdings))
       visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
     end
+
     it 'only allows to send request via WebAuth login' do
       expect(page).to have_css('button', text: /Send request.*login with SUNet ID/)
       expect(page).not_to have_css('a', text: 'I don\'t have a SUNet ID')
@@ -68,6 +72,7 @@ describe 'Send Request Buttons' do
     before do
       visit new_hold_recall_path(item_id: '1234', barcode: '3610512345', origin: 'GREEN', origin_location: 'STACKS')
     end
+
     it 'allows to send requests via SUNet ID' do
       expect(page).to have_css('button', text: /Send request.*login with SUNet ID/m)
     end
@@ -79,8 +84,8 @@ describe 'Send Request Buttons' do
 
     it 'does not allow to send requests via Name and Email' do
       click_link 'I don\'t have a SUNet ID'
-      expect(page).to_not have_field('Name', type: 'text')
-      expect(page).to_not have_field('Email', type: 'email')
+      expect(page).not_to have_field('Name', type: 'text')
+      expect(page).not_to have_field('Email', type: 'email')
     end
   end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # LibraryHours is responsbile for determining
 # if a library is open on a given day
 class LibraryHours

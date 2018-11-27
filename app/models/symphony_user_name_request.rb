@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # API for retrieving the username and email from a library id
 class SymphonyUserNameRequest

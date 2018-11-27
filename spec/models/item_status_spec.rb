@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 def update_symphony_data_and_save(request, symphony_data)
@@ -7,10 +9,10 @@ def update_symphony_data_and_save(request, symphony_data)
 end
 
 describe ItemStatus do
+  subject { described_class.new(request, barcode) }
+
   let(:request) { create(:mediated_page_with_single_holding) }
   let(:barcode) { '3610512345' }
-
-  subject { described_class.new(request, barcode) }
 
   describe '#status_object' do
     it 'fetches the status object from the request_status_data hash' do
@@ -50,6 +52,7 @@ describe ItemStatus do
 
     context 'persisting data' do
       let(:request) { create(:mediated_page) }
+
       it 'reloads the record to ensure that any serialized attributes are updated' do
         response = build(:symphony_page_with_single_item)
         expect(request.symphony_response_data).to be_nil
@@ -65,6 +68,7 @@ describe ItemStatus do
     describe 'request approval status' do
       context 'when all items are not approved' do
         before { expect(request).to receive(:all_approved?).and_return(false) }
+
         it 'is not updated' do
           expect(request).not_to be_approved
           subject.approve!('jstanford')
@@ -85,6 +89,7 @@ describe ItemStatus do
 
     describe 'with an unsuccessful symphony request' do
       let(:request) { create(:request_with_holdings) }
+
       it 'does not persist any changes if the symphony response is not successful' do
         stub_symphony_response(build(:symphony_request_with_all_errored_items))
         expect(request).not_to receive(:save!)
@@ -95,6 +100,7 @@ describe ItemStatus do
 
   describe '#as_json' do
     let(:json) { subject.as_json }
+
     before { subject.approve!('jstanford') }
 
     it 'returns the identifier' do
@@ -130,6 +136,7 @@ describe ItemStatus do
     context 'symphony errors' do
       let(:request) { create(:request_with_symphony_errors) }
       let(:barcode) { '12345678901234' }
+
       it 'returns user level error codes' do
         expect(json[:usererr_code]).to eq 'U003'
       end

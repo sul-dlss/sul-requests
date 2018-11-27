@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'mediated_pages/_header.html.erb' do
@@ -7,12 +9,14 @@ describe 'mediated_pages/_header.html.erb' do
   let(:current_request) do
     double('request', origin: origin, origin_location: origin_location, holdings: holdings)
   end
+
   before do
     allow(view).to receive_messages(current_request: current_request)
   end
 
   describe 'library level titles' do
     let(:origin) { 'HOPKINS' }
+
     it 'are returned when present' do
       render
       expect(rendered).to have_css('h1', text: 'Request delivery to campus library')
@@ -21,6 +25,7 @@ describe 'mediated_pages/_header.html.erb' do
 
   describe 'location level titles' do
     let(:origin_location) { 'PAGE-MP' }
+
     it 'are returned when present' do
       render
       expect(rendered).to have_css('h1', text: 'Request delivery to campus library')

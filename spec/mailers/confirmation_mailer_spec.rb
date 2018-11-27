@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe ConfirmationMailer do
   describe 'request_confirmation' do
     let(:user) { build(:non_webauth_user) }
     let(:request) { create(:page, user: user) }
-    let(:mail) { ConfirmationMailer.request_confirmation(request) }
+    let(:mail) { described_class.request_confirmation(request) }
 
     describe 'to' do
       it 'is the user email address' do
@@ -21,6 +23,7 @@ describe ConfirmationMailer do
 
       describe 'destination specific' do
         let(:request) { create(:scan, user: user) }
+
         it 'is the configured from address for the origin' do
           expect(mail.from).to eq ['scan-and-deliver@stanford.edu']
         end
@@ -28,6 +31,7 @@ describe ConfirmationMailer do
 
       describe 'origin specific' do
         let(:request) { create(:mediated_page, user: user) }
+
         it 'is the configured from address for the origin' do
           expect(mail.from).to eq ['specialcollections@stanford.edu']
         end
@@ -35,6 +39,7 @@ describe ConfirmationMailer do
 
       describe 'location specific' do
         let(:request) { create(:page_mp_mediated_page, user: user) }
+
         it 'is the configured from address for the origin' do
           expect(mail.from).to eq ['brannerlibrary@stanford.edu']
         end
@@ -44,6 +49,7 @@ describe ConfirmationMailer do
     describe 'subject' do
       describe 'for Scan requests' do
         let(:request) { create(:scan_with_holdings, user: user) }
+
         it 'is custom' do
           expect(mail.subject).to eq "Scan to PDF requested (\"#{request.item_title}\")"
         end
@@ -59,6 +65,7 @@ describe ConfirmationMailer do
     describe 'body' do
       let(:request) { create(:page_with_holdings, barcodes: ['3610512345678'], ad_hoc_items: ['ZZZ 123'], user: user) }
       let(:body) { mail.body.to_s }
+
       it 'has the date' do
         expect(body).to match(/On #{request.created_at.strftime('%A, %b %-d %Y')}, you requested the following:/)
       end
@@ -106,8 +113,10 @@ describe ConfirmationMailer do
 
     describe 'contact info' do
       let(:body) { mail.body.to_s }
+
       describe 'default' do
         let(:request) { create(:page_with_holdings, user: user) }
+
         it 'includes the configured contact information' do
           expect(body).to include('Questions about your request?')
           expect(body).to include('Contact:')
@@ -118,6 +127,7 @@ describe ConfirmationMailer do
 
       describe 'origin specific' do
         let(:request) { create(:mediated_page, user: user) }
+
         it 'includes the configured contact information' do
           expect(body).to include('specialcollections@stanford.edu')
         end
@@ -125,6 +135,7 @@ describe ConfirmationMailer do
 
       describe 'location specific' do
         let(:request) { create(:page_mp_mediated_page, user: user) }
+
         it 'includes the configured contact information' do
           expect(body).to include('brannerlibrary@stanford.edu')
         end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Controller to handle mediations for admins
 class AdminController < ApplicationController
   before_action only: [:approve_item, :holdings] do

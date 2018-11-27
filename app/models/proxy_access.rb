@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'csv'
 
 # API for checking the proxy status of a library id

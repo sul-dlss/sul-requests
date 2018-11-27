@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Viewing all requests' do
@@ -21,7 +23,7 @@ describe 'Viewing all requests' do
               )
       end
 
-      it 'should list data in a table' do
+      it 'lists data in a table' do
         visit admin_index_path
 
         expect(page).to have_css('td a[data-behavior="truncate"]', text: 'Fourth symphony. [Op. 51].')
@@ -55,8 +57,8 @@ describe 'Viewing all requests' do
         expect(page).to have_css('td', text: 'Mediated pages [x]')
         expect(page).to have_css('td a', text: 'Pages')
 
-        expect(page).to_not have_css('td a[data-behavior="truncate"]', text: 'An American in Paris')
-        expect(page).to_not have_css('td a[href="mailto:joe@xyz.com"]', text: /Joe \(joe@xyz.com\)/)
+        expect(page).not_to have_css('td a[data-behavior="truncate"]', text: 'An American in Paris')
+        expect(page).not_to have_css('td a[href="mailto:joe@xyz.com"]', text: /Joe \(joe@xyz.com\)/)
 
         expect(page).to have_css('td a[data-behavior="truncate"]', text: 'I am Mediated')
         expect(page).to have_css('td a[href="mailto:jane@example.com"]', text: /Jane \(jane@example.com\)/)
@@ -69,8 +71,8 @@ describe 'Viewing all requests' do
         expect(page).to have_css('td a[data-behavior="truncate"]', text: 'An American in Paris')
         expect(page).to have_css('td a[href="mailto:joe@xyz.com"]', text: /Joe \(joe@xyz.com\)/)
 
-        expect(page).to_not have_css('td a[data-behavior="truncate"]', text: 'I am Mediated')
-        expect(page).to_not have_css('td a[href="mailto:jane@example.com"]', text: /Jane \(jane@example.com\)/)
+        expect(page).not_to have_css('td a[data-behavior="truncate"]', text: 'I am Mediated')
+        expect(page).not_to have_css('td a[href="mailto:jane@example.com"]', text: /Jane \(jane@example.com\)/)
 
         click_link '[x]'
 
@@ -81,10 +83,12 @@ describe 'Viewing all requests' do
       context 'filter by create date' do
         yesterday = Time.zone.today - 1.day
         let(:today_s) { Time.zone.today.to_s }
+
         before(:context) do
           create(:page_mp_mediated_page, created_at: yesterday)
           create(:page, created_at: yesterday)
         end
+
         before do
           visit admin_index_path
           fill_in(:created_at, with: yesterday.to_s)
@@ -108,7 +112,7 @@ describe 'Viewing all requests' do
           end
         end
 
-        it 'should return all request types' do
+        it 'returns all request types' do
           within('.table-striped/tbody') do
             expect(page).to have_css('tr', text: 'MediatedPage')
             expect(page).to have_css('tr', text: 'Page')
@@ -152,7 +156,7 @@ describe 'Viewing all requests' do
     describe 'by an anonymous user' do
       before { stub_current_user(create(:anon_user)) }
 
-      it 'should redirect to the login page' do
+      it 'redirects to the login page' do
         expect_any_instance_of(AdminController).to receive(:redirect_to).with(
           login_path(referrer: admin_index_url)
         )
@@ -171,7 +175,7 @@ describe 'Viewing all requests' do
         create(:hoover_archive_mediated_page)
       end
 
-      it 'should list all the mediated pages for the given library' do
+      it 'lists all the mediated pages for the given library' do
         visit admin_path('SPEC-COLL')
 
         expect(page).to have_css('h2', text: 'Special Collections')
@@ -256,7 +260,7 @@ describe 'Viewing all requests' do
   describe 'by an anonymous user' do
     before { stub_current_user(create(:anon_user)) }
 
-    it 'should redirect to the login page' do
+    it 'redirects to the login page' do
       expect_any_instance_of(AdminController).to receive(:redirect_to).with(
         login_path(referrer: admin_url('SPEC-COLL'))
       )

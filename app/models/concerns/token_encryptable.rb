@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ###
 #  Mixin to handle creating, encyrpting, and decrypting, and validating tokens for objects
 ###

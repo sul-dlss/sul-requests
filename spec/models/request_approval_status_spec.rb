@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe RequestApprovalStatus do
-  let(:request) { create(:request) }
   subject { described_class.new(request: request) }
+
+  let(:request) { create(:request) }
 
   describe 'pending' do
     let(:request) { create(:request_with_holdings) }
@@ -48,9 +51,11 @@ describe RequestApprovalStatus do
   describe 'individual item approval status' do
     let(:html) { Capybara.string(subject.to_html) }
     let(:text) { subject.to_text }
+
     describe 'status html' do
       context 'success' do
         let(:request) { create(:request_with_holdings, barcodes: ['12345678']) }
+
         before do
           stub_symphony_response(build(:symphony_page_with_multiple_items))
         end
@@ -74,6 +79,7 @@ describe RequestApprovalStatus do
 
       context 'error' do
         let(:request) { create(:mediated_page_with_holdings, barcodes: ['23456789']) }
+
         before { stub_symphony_response(build(:symphony_request_with_mixed_status)) }
 
         it 'includes the error text returned from symphony' do
@@ -88,6 +94,7 @@ describe RequestApprovalStatus do
     let(:request) { create(:request_with_holdings) }
     let(:html) { Capybara.string(subject.to_html) }
     let(:text) { subject.to_text }
+
     before do
       stub_symphony_response(build(:symphony_page_with_expired_user))
     end

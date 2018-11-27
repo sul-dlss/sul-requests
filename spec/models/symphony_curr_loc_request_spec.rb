@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'faraday'
 
 describe SymphonyCurrLocRequest do
-  subject { SymphonyCurrLocRequest.new(barcode: '36105123456789') }
+  subject { described_class.new(barcode: '36105123456789') }
 
   describe '#current_location' do
     context 'valid response' do
@@ -20,13 +22,16 @@ describe SymphonyCurrLocRequest do
           }'
         double(success?: true, body: resp_body)
       end
+
       before do
         expect_any_instance_of(Faraday::Connection).to receive(:get).and_return(response)
       end
+
       it 'has a value' do
         expect(subject.current_location).to eq 'SOUTH-MEZZ'
       end
     end
+
     context 'json without info' do
       let(:response) do
         resp_body =
@@ -38,26 +43,33 @@ describe SymphonyCurrLocRequest do
           }'
         double(success?: true, body: resp_body)
       end
+
       before do
         expect_any_instance_of(Faraday::Connection).to receive(:get).and_return(response)
       end
+
       it 'returns empty string' do
         expect(subject.current_location).to eq ''
       end
     end
+
     context 'for an error response' do
       let(:response) { double(success?: false, body: '') }
+
       before do
         expect_any_instance_of(Faraday::Connection).to receive(:get).and_return(response)
       end
+
       it 'is blank' do
         expect(subject.current_location).to be_blank
       end
     end
+
     context 'for a failed response' do
       before do
         expect_any_instance_of(Faraday::Connection).to receive(:get).and_raise(Faraday::Error::ConnectionFailed, '')
       end
+
       it 'is blank' do
         expect(subject.current_location).to be_blank
       end
@@ -71,9 +83,11 @@ describe SymphonyCurrLocRequest do
   context '#json (private)' do
     context 'invalid JSON returned' do
       let(:response) { double(success?: true, body: 'symphony returned an error instead of JSON') }
+
       before do
         expect_any_instance_of(Faraday::Connection).to receive(:get).and_return(response)
       end
+
       it 'returns empty hash' do
         expect(subject.send(:json)).to eq({})
       end

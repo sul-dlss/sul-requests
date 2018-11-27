@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ###
 #  Class to handle configuration and logic around library codes and labels
 ###

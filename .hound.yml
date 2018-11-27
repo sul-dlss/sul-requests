@@ -2,7 +2,7 @@ coffee_script:
   enabled: false
 
 ruby:
-  config_file: .rubocop.yml
+  enabled: false
 
 scss:
   config_file: .scss-lint.yml

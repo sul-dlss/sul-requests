@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe ApprovalStatusMailer do
@@ -5,10 +7,11 @@ describe ApprovalStatusMailer do
     let(:user) { build(:non_webauth_user) }
     let(:request) { create(:page, user: user) }
     let(:mailer_method) { :approval_status_for_page }
-    let(:mail) { ApprovalStatusMailer.send(mailer_method, request) }
+    let(:mail) { described_class.send(mailer_method, request) }
 
     describe '#approval_status_for_u002' do
       let(:mailer_method) { :approval_status_for_u002 }
+
       before { user.library_id = 'ABC123' }
 
       it 'renders the correct email' do
@@ -95,6 +98,7 @@ describe ApprovalStatusMailer do
 
       describe 'destination specific' do
         let(:request) { create(:scan, user: user) }
+
         it 'is the configured from address for the origin' do
           expect(mail.from).to eq ['scan-and-deliver@stanford.edu']
         end
@@ -102,6 +106,7 @@ describe ApprovalStatusMailer do
 
       describe 'origin specific' do
         let(:request) { create(:mediated_page, user: user) }
+
         it 'is the configured from address for the origin' do
           expect(mail.from).to eq ['specialcollections@stanford.edu']
         end
@@ -109,6 +114,7 @@ describe ApprovalStatusMailer do
 
       describe 'location specific' do
         let(:request) { create(:page_mp_mediated_page, user: user) }
+
         it 'is the configured from address for the origin' do
           expect(mail.from).to eq ['brannerlibrary@stanford.edu']
         end
@@ -121,19 +127,24 @@ describe ApprovalStatusMailer do
           expect(mail.subject).to eq "We received your request for \"#{request.item_title}\""
         end
       end
+
       describe 'failure' do
         before do
           allow(request.symphony_response).to receive(:success?).and_return false
         end
+
         it '"Attention needed ... request could not be processed"' do
           expect(mail.subject).to eq "Attention needed: Your request could not be processed (\"#{request.item_title}\")"
         end
       end
+
       describe 'user blocked' do
         let(:request) { create(:page_with_holdings, barcodes: ['3610512345678'], user: user) }
+
         before do
           stub_symphony_response(build(:symphony_page_with_blocked_user))
         end
+
         it '"Attention needed ... request could not be processed"' do
           expect(mail.subject).to eq "Attention needed: Your request could not be processed (\"#{request.item_title}\")"
         end
@@ -142,8 +153,10 @@ describe ApprovalStatusMailer do
 
     describe 'contact info' do
       let(:body) { mail.body.to_s }
+
       describe 'default' do
         let(:request) { create(:page_with_holdings, user: user) }
+
         it 'includes the configured contact information' do
           expect(body).to include('Questions about your request?')
           expect(body).to include('Contact:')

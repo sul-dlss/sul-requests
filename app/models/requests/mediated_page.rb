@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ###
 #  Request class for making page requests that require mediation
 ###

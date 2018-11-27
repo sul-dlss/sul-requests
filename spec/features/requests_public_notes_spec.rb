@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Public Notes', js: true do
@@ -13,7 +15,7 @@ describe 'Public Notes', js: true do
       stub_searchworks_api_json(build(:searchable_holdings))
     end
 
-    it 'should persist to the database as hash of barcode=>note pairs' do
+    it 'persists to the database as hash of barcode=>note pairs' do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
 
       fill_in_required_fields

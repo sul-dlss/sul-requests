@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe MediationMailer do
@@ -9,7 +11,7 @@ describe MediationMailer do
       allow(Rails.application.config).to receive(:mediator_contact_info).and_return(mediator_contact_info)
     end
 
-    let(:mail) { MediationMailer.mediator_notification(request) }
+    let(:mail) { described_class.mediator_notification(request) }
 
     describe 'to' do
       it 'is the origin contact email address' do
@@ -24,6 +26,7 @@ describe MediationMailer do
 
       describe 'location specific' do
         let(:request) { create(:page_mp_mediated_page, user: user) }
+
         it 'is the configured from address for the origin' do
           expect(mail.from).to eq ['brannerlibrary@stanford.edu']
         end
@@ -42,6 +45,7 @@ describe MediationMailer do
       end
 
       let(:body) { mail.body.to_s }
+
       it 'has the date' do
         date_str = I18n.l(request.created_at, format: :short)
         expect(body).to include "On #{date_str}, Jane Stanford (jstanford@stanford.edu) requested the following:"

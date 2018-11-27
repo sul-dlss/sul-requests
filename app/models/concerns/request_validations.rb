@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ###
 # Module to group request object validations together
 ###

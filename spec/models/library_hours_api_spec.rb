@@ -1,15 +1,19 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe LibraryHoursApi do
+  subject { LibraryHoursApi::Request.new(library, location, range) }
+
   let(:library) { 'green' }
   let(:location) { 'library-circulation' }
   let(:range) { {} }
-  subject { LibraryHoursApi::Request.new(library, location, range) }
 
   describe 'bad JSON' do
     before do
       allow(subject).to receive_messages(response: '<html />')
     end
+
     it 'returns an empty hash' do
       expect(subject.json).to be {}
     end
@@ -19,6 +23,7 @@ describe LibraryHoursApi do
     before do
       allow(Faraday.default_connection).to receive(:get).and_raise(Faraday::Error::ConnectionFailed, '')
     end
+
     it 'returns a NullResponse' do
       expect(subject.json).to be_blank
     end
@@ -26,6 +31,7 @@ describe LibraryHoursApi do
 
   describe '#api_url' do
     let(:api_url) { subject.hours_request(range).send(:api_url) }
+
     it 'constructs a url containing the library slug' do
       expect(subject.api_url).to match(%r{/libraries\/green/})
     end
@@ -36,6 +42,7 @@ describe LibraryHoursApi do
 
     context 'with a range' do
       let(:range) { { from: 'a', to: 'b' } }
+
       it 'constructs a url containing a date range of two months from today' do
         expect(subject.api_url).to include('from=a')
         expect(subject.api_url).to include('to=b')
@@ -44,13 +51,15 @@ describe LibraryHoursApi do
   end
 
   describe LibraryHoursApi::Response do
+    subject { described_class.new(data) }
+
     let(:data) { { 'data' => { 'attributes' => { 'hours' => hours_data } } } }
     let(:hours_data) { [] }
-    subject { described_class.new(data) }
 
     describe '#open?' do
       context 'with hours the location is open' do
         let(:hours_data) { [{ 'open' => true }] }
+
         it 'is true' do
           expect(subject).to be_open
         end

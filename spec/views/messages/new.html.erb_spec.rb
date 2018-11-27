@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'messages/new', type: :view do
-  before(:each) do
+  before do
     @message = assign(:message, build(:message))
   end
 

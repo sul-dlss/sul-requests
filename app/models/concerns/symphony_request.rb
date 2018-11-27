@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ###
 #  Symphony methods for sending and managing requests in symphony
 module SymphonyRequest

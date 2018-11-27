@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe CurrentUser do
-  let(:rails_req) { double(env: {}, remote_ip: '') }
   subject { described_class.for(rails_req) }
+
+  let(:rails_req) { double(env: {}, remote_ip: '') }
 
   # We can remove this test and change all the tests below
   # to use shib attributes when we yank the webauth code
@@ -25,17 +28,17 @@ describe CurrentUser do
   end
 
   describe '#current_user' do
-    it 'should return nil user if there is no user in the environment' do
+    it 'returns nil user if there is no user in the environment' do
       expect(subject).to be_a User
-      expect(subject).to_not be_persisted
+      expect(subject).not_to be_persisted
       expect(subject.id).to be_nil
     end
-    it 'should return a user when there is a user in the environment' do
+    it 'returns a user when there is a user in the environment' do
       allow_any_instance_of(described_class).to receive_messages(user_id: 'some-user')
       expect(subject).to be_a User
       expect(subject.webauth).to eq 'some-user'
     end
-    it 'should return the ldap groups as an array' do
+    it 'returns the ldap groups as an array' do
       allow_any_instance_of(described_class).to receive_messages(user_id: 'some-user')
       ldap_attr = { 'WEBAUTH_LDAPPRIVGROUP' => 'ldap:group1|ldap:group2' }
       allow_any_instance_of(described_class).to receive_messages(ldap_attributes: ldap_attr)

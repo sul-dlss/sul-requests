@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ###
 #  ItemStatus class to handle the status data and approval for each barcoded item
 ###
