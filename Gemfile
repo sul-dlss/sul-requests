@@ -108,6 +108,9 @@ group :development, :test do
   gem 'coveralls', require: false
 
   gem 'rails-controller-testing'
+
+  # listen is used by bootsnap to listen to file changes
+  gem 'listen'
 end
 
 # Use Capistrano for deployment
