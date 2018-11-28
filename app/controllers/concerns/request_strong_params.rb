@@ -24,9 +24,7 @@ module RequestStrongParams
                                                        barcodes: {},
                                                        public_notes: {},
                                                        ad_hoc_items: [],
-                                                       user_attributes: [:name, :email, :library_id]).tap do |whitelisted|
-                                                         whitelisted[:public_notes] = params[:request][:public_notes]
-                                                       end
+                                                       user_attributes: [:name, :email, :library_id])
   end
 
   def update_params
