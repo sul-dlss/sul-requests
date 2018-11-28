@@ -16,17 +16,17 @@ module RequestStrongParams
   def create_params
     params.permit(:email)
     params.permit(:modal)
-    params.require(:request).permit(:item_id, :origin, :origin_location, :destination,
-                                    :needed_date, :estimated_delivery,
-                                    :item_comment, :request_comment,
-                                    :authors, :page_range, :section_title, # scans
-                                    :proxy,
-                                    barcodes: [],
-                                    public_notes: {},
-                                    ad_hoc_items: [],
-                                    user_attributes: [:name, :email, :library_id]).tap do |whitelisted|
-                                      whitelisted[:public_notes] = params[:request][:public_notes]
-                                    end
+    @create_params ||= params.require(:request).permit(:item_id, :origin, :origin_location, :destination,
+                                                       :needed_date, :estimated_delivery,
+                                                       :item_comment, :request_comment,
+                                                       :authors, :page_range, :section_title, # scans
+                                                       :proxy,
+                                                       barcodes: {},
+                                                       public_notes: {},
+                                                       ad_hoc_items: [],
+                                                       user_attributes: [:name, :email, :library_id]).tap do |whitelisted|
+                                                         whitelisted[:public_notes] = params[:request][:public_notes]
+                                                       end
   end
 
   def update_params

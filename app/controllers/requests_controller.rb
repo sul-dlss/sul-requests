@@ -113,16 +113,15 @@ class RequestsController < ApplicationController
   helper_method :delegated_new_request_path
 
   def modify_item_selector_checkboxes
-    request_params = params[:request]
-    return unless request_params && request_params[:barcodes].is_a?(Hash)
+    return unless create_params && create_params[:barcodes].is_a?(ActionController::Parameters)
 
-    request_params[:barcodes] = request_params[:barcodes].select { |_, checked| checked == '1' }.keys
+    create_params[:barcodes] = create_params[:barcodes].select { |_, checked| checked == '1' }.keys
   end
 
   def modify_item_proxy_status
-    return unless params[:request]
+    return unless create_params
 
-    params[:request][:proxy] &&= params[:request][:proxy] == 'true'
+    create_params[:proxy] &&= create_params[:proxy] == 'true'
   end
 
   def redirect_to_success_with_token
