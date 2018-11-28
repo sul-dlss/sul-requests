@@ -195,7 +195,9 @@ describe ScansController do
       let(:user) { create(:webauth_user) }
 
       it 'is bounced to a page workflow' do
-        params = { request: { item_id: '12345', origin: 'SAL3', origin_location: 'STACKS', barcodes: ['12345678'] } }
+        params = {
+          request: { item_id: '12345', origin: 'SAL3', origin_location: 'STACKS', barcodes: { '12345678' => '1' } }
+        }
         post :create, params: params
         expect(flash[:error]).to include 'Scan-to-PDF not available'
         expect(response).to redirect_to new_page_url(params[:request])

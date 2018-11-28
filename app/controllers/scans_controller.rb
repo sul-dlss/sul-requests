@@ -29,7 +29,7 @@ class ScansController < RequestsController
       origin: @request.origin,
       origin_location: @request.origin_location,
       item_id: @request.item_id,
-      barcodes: @request.barcodes
+      barcodes: params[:request][:barcodes].to_unsafe_h # Pulling barcodes from params so they are not transformed
     }.merge(request_context_params)
   end
 
