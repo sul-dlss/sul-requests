@@ -14,6 +14,7 @@ describe PagesController do
 
   describe 'new' do
     let(:user) { User.new }
+
     it 'is accessible by anonymous users' do
       get :new, params: normal_params
       expect(response).to be_successful
@@ -36,8 +37,11 @@ describe PagesController do
   describe 'create' do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
+
       it 'redirects to the login page passing a referrer param to continue creating the page request' do
-        post :create, params: { request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' } }
+        post :create, params: {
+          request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
+        }
         expect(response).to redirect_to(
           login_path(
             referrer: interstitial_path(
@@ -143,8 +147,11 @@ describe PagesController do
 
     describe 'by webauth users' do
       let(:user) { create(:webauth_user) }
+
       it 'is allowed' do
-        post :create, params: { request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' } }
+        post :create, params: {
+          request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
+        }
         expect(response).to redirect_to successful_page_path(Page.last)
         expect(Page.last.origin).to eq 'GREEN'
         expect(Page.last.user).to eq user
@@ -219,6 +226,7 @@ describe PagesController do
 
     describe 'invalid requests' do
       let(:user) { create(:webauth_user) }
+
       it 'returns an error message to the user' do
         post :create, params: { request: { item_id: '1234' } }
         expect(flash[:error]).to eq 'There was a problem creating your request.'
@@ -230,8 +238,11 @@ describe PagesController do
   describe 'update' do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
+
       it 'raises an error' do
-        expect(-> { put :update, params: { id: page[:id], request: { origin: 'GREEN' } } }).to raise_error(CanCan::AccessDenied)
+        expect do
+          put :update, params: { id: page[:id], request: { origin: 'GREEN' } }
+        end.to raise_error(CanCan::AccessDenied)
       end
     end
 
@@ -241,6 +252,7 @@ describe PagesController do
       before do
         allow_any_instance_of(page.class).to receive(:update).with({}).and_return(false)
       end
+
       it 'returns an error message to the user' do
         put :update, params: { id: page[:id], request: { item_id: nil } }
         expect(flash[:error]).to eq 'There was a problem updating your request.'
@@ -250,6 +262,7 @@ describe PagesController do
 
     describe 'by webauth users' do
       let(:user) { create(:webauth_user) }
+
       it 'raises an error' do
         expect(-> { put(:update, params: { id: page[:id] }) }).to raise_error(CanCan::AccessDenied)
       end
@@ -257,6 +270,7 @@ describe PagesController do
 
     describe 'by superadmins' do
       let(:user) { create(:superadmin_user) }
+
       it 'is allowed to modify page rqeuests' do
         put :update, params: { id: page[:id], request: { needed_date: Time.zone.today + 1.day } }
         expect(flash[:success]).to eq 'Request was successfully updated.'

@@ -94,7 +94,10 @@ class RequestsController < ApplicationController
 
   def bounce_request_through_webauth
     request_params = params[:request].except(:user_attributes)
-    create_path = polymorphic_url([:create, current_request], request_context_params.merge(request: request_params.to_unsafe_h))
+    create_path = polymorphic_url(
+      [:create, current_request], request_context_params.merge(request: request_params.to_unsafe_h)
+    )
+
     referrer = interstitial_path(redirect_to: create_path)
     redirect_to login_path(referrer: referrer)
   end

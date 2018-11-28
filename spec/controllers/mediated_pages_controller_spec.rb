@@ -18,6 +18,7 @@ describe MediatedPagesController do
 
   describe 'new' do
     let(:user) { create(:anon_user) }
+
     it 'is accessible by anonymous users' do
       get :new, params: normal_params
       expect(response).to be_successful
@@ -40,6 +41,7 @@ describe MediatedPagesController do
   describe 'create' do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
+
       it 'redirects to the login page passing a referrer param to continue creating the mediated page request' do
         post :create, params: {
           request: {
@@ -139,6 +141,7 @@ describe MediatedPagesController do
 
     describe 'by webauth users' do
       let(:user) { create(:webauth_user) }
+
       it 'is allowed' do
         post :create, params: {
           request: {
@@ -210,6 +213,7 @@ describe MediatedPagesController do
 
     describe 'invalid requests' do
       let(:user) { create(:webauth_user) }
+
       it 'returns an error message to the user' do
         post :create, params: { request: { item_id: '1234' } }
         expect(flash[:error]).to eq 'There was a problem creating your request.'
@@ -224,7 +228,7 @@ describe MediatedPagesController do
 
     context 'when successful' do
       it 'returns the json representation of the updated request' do
-        expect(mediated_page).to_not be_marked_as_done
+        expect(mediated_page).not_to be_marked_as_done
         patch :update, params: { id: mediated_page.id, mediated_page: { approval_status: 'marked_as_done' } }, format: :js
 
         expect(mediated_page.reload).to be_marked_as_done

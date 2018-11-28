@@ -18,6 +18,7 @@ describe ScansController do
 
   describe 'new' do
     let(:user) { create(:anon_user) }
+
     it 'is accessible by anonymous users' do
       get :new, params: scannable_params
       expect(response).to be_successful
@@ -38,6 +39,7 @@ describe ScansController do
   describe 'create' do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
+
       it 'redirects to the login page passing a refferrer param to continue creating your request' do
         post :create, params: { request: { item_id: '12345', origin: 'GREEN', origin_location: 'STACKS' } }
         expect(response).to redirect_to(
@@ -89,6 +91,7 @@ describe ScansController do
 
     describe 'by non-webauth users' do
       let(:user) { create(:non_webauth_user) }
+
       it 'raises an error' do
         expect(-> { put(:create, params: { request: { origin: 'SAL3' } }) }).to raise_error(CanCan::AccessDenied)
       end
@@ -101,6 +104,7 @@ describe ScansController do
         stub_searchworks_api_json(build(:sal3_holdings))
         allow(controller).to receive(:current_request).and_return(create(:scan_with_holdings, barcodes: ['12345678']))
       end
+
       it 'is allowed' do
         post :create, params: {
           illiad_success: true,
@@ -208,6 +212,7 @@ describe ScansController do
   describe 'update' do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
+
       it 'raises an error' do
         expect(-> { put(:update, params: { id: scan[:id] }) }).to raise_error(CanCan::AccessDenied)
       end
@@ -219,6 +224,7 @@ describe ScansController do
       before do
         allow_any_instance_of(scan.class).to receive(:update).with({}).and_return(false)
       end
+
       it 'returns an error message to the user' do
         put :update, params: { id: scan[:id], request: { item_id: nil } }
         expect(flash[:error]).to eq 'There was a problem updating your request.'
@@ -228,6 +234,7 @@ describe ScansController do
 
     describe 'by webauth users' do
       let(:user) { create(:webauth_user) }
+
       it 'raises an error' do
         expect(-> { put(:update, params: { id: scan[:id] }) }).to raise_error(CanCan::AccessDenied)
       end
@@ -235,6 +242,7 @@ describe ScansController do
 
     describe 'by superadmins' do
       let(:user) { create(:superadmin_user) }
+
       it 'is allowed to modify page rqeuests' do
         put :update, params: { id: scan[:id], request: { needed_date: Time.zone.today + 1.day } }
         expect(response).to redirect_to root_url

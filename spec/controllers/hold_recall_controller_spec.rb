@@ -14,6 +14,7 @@ describe HoldRecallsController do
 
   describe 'new' do
     let(:user) { create(:anon_user) }
+
     it 'is accessible by anonymous users' do
       get :new, params: normal_params
       expect(response).to be_successful
@@ -37,6 +38,7 @@ describe HoldRecallsController do
   describe 'create' do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
+
       it 'redirects to the login page passing a referrer param to continue creating the hold recall request' do
         post :create, params: { request: normal_params }
         expect(response).to redirect_to(
@@ -92,6 +94,7 @@ describe HoldRecallsController do
 
     describe 'by webauth users' do
       let(:user) { create(:webauth_user) }
+
       it 'is allowed' do
         post :create, params: { request: normal_params }
         expect(response).to redirect_to successful_hold_recall_path(HoldRecall.last)
@@ -123,6 +126,7 @@ describe HoldRecallsController do
 
     describe 'invalid requests' do
       let(:user) { create(:webauth_user) }
+
       it 'returns an error message to the user' do
         post :create, params: { request: { item_id: '1234' } }
         expect(flash[:error]).to eq 'There was a problem creating your request.'

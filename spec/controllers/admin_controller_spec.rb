@@ -46,6 +46,7 @@ describe AdminController do
   describe 'show' do
     describe 'for super admin' do
       let(:user) { create(:superadmin_user) }
+
       it 'is accessible' do
         get :show, params: { id: 'SAL3' }
         expect(response).to be_successful
@@ -54,6 +55,7 @@ describe AdminController do
 
     describe 'for site admin' do
       let(:user) { create(:site_admin_user) }
+
       it 'is accessible' do
         get :show, params: { id: 'SAL3' }
         expect(response).to be_successful
@@ -62,6 +64,7 @@ describe AdminController do
 
     describe 'for origin admin' do
       let(:user) { create(:sal3_origin_admin_user) }
+
       it 'is accessible when the user is an admin for the location' do
         get :show, params: { id: 'SAL3' }
         expect(response).to be_successful
@@ -74,6 +77,7 @@ describe AdminController do
 
     describe 'for normal webuath user' do
       let(:user) { create(:webauth_user) }
+
       it 'is not be accessible' do
         expect(-> { get :show, params: { id: 'SPEC-COLL' } }).to raise_error(CanCan::AccessDenied)
       end
@@ -81,6 +85,7 @@ describe AdminController do
 
     describe 'for anonymouse users' do
       let(:user) { create(:anon_user) }
+
       it 'redirects to login' do
         expect(get(:show, params: { id: 'SPEC-COLL' })).to redirect_to(
           login_path(referrer: admin_url('SPEC-COLL'))
