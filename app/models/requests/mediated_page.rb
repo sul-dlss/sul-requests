@@ -90,7 +90,7 @@ class MediatedPage < Request
   end
 
   def self.needed_dates_for_origin_after_date(origin:, date:)
-    for_origin(origin).where('needed_date > ?', date).uniq.pluck(:needed_date).sort
+    for_origin(origin).where('needed_date > ?', date).distinct.pluck(:needed_date).sort
   end
 
   private
