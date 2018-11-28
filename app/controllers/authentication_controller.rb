@@ -6,7 +6,12 @@
 class AuthenticationController < ApplicationController
   def login
     flash[:success] = 'You have been successfully logged in.'
-    redirect_to params[:referrer] || :back
+
+    if params[:referrer]
+      redirect_to params[:referrer]
+    else
+      redirect_back fallback_location: root_url
+    end
   end
 
   def logout

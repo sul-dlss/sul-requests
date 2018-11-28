@@ -21,27 +21,27 @@ describe RequestsController do
       it 'item id, library, and location' do
         expect(
           lambda do
-            get(:new, item_id: '1234', origin: 'GREEN')
+            get(:new, params: { item_id: '1234', origin: 'GREEN' })
           end
         ).to raise_error(ActionController::ParameterMissing)
 
         expect(
           lambda do
-            get(:new, origin: 'GREEN', origin_location: 'STACKS')
+            get(:new, params: { origin: 'GREEN', origin_location: 'STACKS' })
           end
         ).to raise_error(ActionController::ParameterMissing)
 
         expect(
           lambda do
-            get(:new, item_id: '1234', origin_location: 'STACKS')
+            get(:new, params: { item_id: '1234', origin_location: 'STACKS' })
           end
         ).to raise_error(ActionController::ParameterMissing)
       end
     end
 
     describe 'defaults' do
-      it 'is set' do
-        get :new, hold_recall_params
+      it 'are set' do
+        get :new, params: hold_recall_params
         expect(assigns[:request].origin).to eq 'GREEN'
         expect(assigns[:request].origin_location).to eq 'STACKS'
         expect(assigns[:request].item_id).to eq '12345'
@@ -55,21 +55,21 @@ describe RequestsController do
       end
 
       it 'displays a page to choose to have an item scanned or delivered' do
-        get :new, scannable_params
+        get :new, params: scannable_params
         expect(response).to render_template('new')
       end
     end
 
     describe 'unscannable item' do
       it 'redirects to the new mediated page request form' do
-        get :new, mediated_page_params
+        get :new, params: mediated_page_params
         expect(response).to redirect_to new_mediated_page_path(mediated_page_params)
       end
     end
 
     describe 'unmediateable item' do
       it 'redirects to the new page form' do
-        get :new, unscannable_params
+        get :new, params: unscannable_params
         expect(response).to redirect_to new_page_path(unscannable_params)
       end
     end
@@ -107,13 +107,16 @@ describe RequestsController do
 
   describe 'modify_item_selector_checkboxes' do
     it 'raises an error of the subclassing controller does not implement the local_object_param method' do
+      allow(controller).to receive(:params).and_return(
+        ActionController::Parameters.new(request: { origin: 'GREEN' })
+      )
       expect(controller.send(:modify_item_selector_checkboxes)).to be_nil
     end
   end
 
   describe '#current_request' do
     it 'returns a request object' do
-      get :new, scannable_params
+      get :new, params: scannable_params
       expect(controller.send(:current_request)).to be_a(Request)
     end
   end
@@ -124,12 +127,12 @@ describe RequestsController do
     end
 
     it 'defaults to application' do
-      get :new, scannable_params
+      get :new, params: scannable_params
       expect(response).to render_template(layout: 'application')
     end
 
     it 'uses the modal layout when the modal param is set' do
-      get :new, scannable_params.merge(modal: true)
+      get :new, params: scannable_params.merge(modal: true)
       expect(response).to render_template(layout: 'modal')
     end
   end

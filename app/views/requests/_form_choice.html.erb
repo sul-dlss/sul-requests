@@ -17,7 +17,7 @@
   </div>
   <div class="row scan-to-pdf">
     <div class="col-xs-12 col-sm-6 buttons">
-      <%= link_to('Scan to PDF<span class="btn-sub-text">requires SUNet login</span>'.html_safe, new_scan_path(current_request, params.except(:controller, :action)), class: 'btn btn-md btn-default', 'aria-describedby' => 'scanDescription') %>
+      <%= link_to('Scan to PDF<span class="btn-sub-text">requires SUNet login</span>'.html_safe, new_scan_path(current_request, request_params), class: 'btn btn-md btn-default', 'aria-describedby' => 'scanDescription') %>
     </div>
     <div class="col-xs-12 col-sm-6 content">
       <dl id="scanDescription">

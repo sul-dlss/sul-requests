@@ -31,11 +31,17 @@ module SULRequests
     private
 
     def key
-      @key ||= ActiveSupport::KeyGenerator.new(secret).generate_key(salt)[0..(key_len - 1)]
+      ActiveSupport::KeyGenerator.new(secret).generate_key(salt)[0..(ActiveSupport::MessageEncryptor.key_len - 1)]
+    end
+
+    def old_key
+      ActiveSupport::KeyGenerator.new(secret).generate_key(salt)
     end
 
     def encryptor
-      @encryptor ||= ActiveSupport::MessageEncryptor.new(key)
+      @encryptor ||= ActiveSupport::MessageEncryptor.new(key).tap do |crypt|
+        crypt.rotate old_key
+      end
     end
 
     def secret
@@ -44,10 +50,6 @@ module SULRequests
 
     def salt
       Settings.token_encrypt['salt']
-    end
-
-    def key_len
-      ActiveSupport::MessageEncryptor.key_len
     end
 
     class InvalidSecret < StandardError

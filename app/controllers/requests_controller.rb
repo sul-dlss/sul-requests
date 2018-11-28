@@ -94,7 +94,10 @@ class RequestsController < ApplicationController
 
   def bounce_request_through_webauth
     request_params = params[:request].except(:user_attributes)
-    create_path = polymorphic_url([:create, current_request], request_context_params.merge(request: request_params))
+    create_path = polymorphic_url(
+      [:create, current_request], request_context_params.merge(request: request_params.to_unsafe_h)
+    )
+
     referrer = interstitial_path(redirect_to: create_path)
     redirect_to login_path(referrer: referrer)
   end
@@ -106,23 +109,22 @@ class RequestsController < ApplicationController
   end
 
   def delegated_new_request_path(request, url_params = nil)
-    url_params ||= params.except(:controller, :action)
+    url_params ||= params.except(:controller, :action).to_unsafe_h
     request.delegate_request!
     new_polymorphic_path(request.type.underscore, url_params)
   end
   helper_method :delegated_new_request_path
 
   def modify_item_selector_checkboxes
-    request_params = params[:request]
-    return unless request_params && request_params[:barcodes].is_a?(Hash)
+    return unless create_params && create_params[:barcodes].is_a?(ActionController::Parameters)
 
-    request_params[:barcodes] = request_params[:barcodes].select { |_, checked| checked == '1' }.keys
+    create_params[:barcodes] = create_params[:barcodes].select { |_, checked| checked == '1' }.keys
   end
 
   def modify_item_proxy_status
-    return unless params[:request]
+    return unless create_params
 
-    params[:request][:proxy] &&= params[:request][:proxy] == 'true'
+    create_params[:proxy] &&= create_params[:proxy] == 'true'
   end
 
   def redirect_to_success_with_token

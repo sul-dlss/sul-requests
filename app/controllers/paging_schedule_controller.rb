@@ -5,11 +5,11 @@
 ###
 class PagingScheduleController < ApplicationController
   rescue_from PagingSchedule::ScheduleNotFound do
-    render text: 'Schedule not found', status: :not_found
+    render plain: 'Schedule not found', status: :not_found
   end
 
   before_action only: [:show, :open] do
-    render text: 'Locations not found', status: :not_found unless params[:origin].present? && params[:destination].present?
+    render plain: 'Locations not found', status: :not_found unless params[:origin].present? && params[:destination].present?
   end
 
   before_action :load_schedule, only: [:show, :open]
@@ -17,7 +17,7 @@ class PagingScheduleController < ApplicationController
   def show
     respond_to do |format|
       format.json { render json: @schedule.earliest_delivery_estimate, layout: false }
-      format.html { render text: @schedule.earliest_delivery_estimate.to_s, layout: false }
+      format.html { render plain: @schedule.earliest_delivery_estimate.to_s, layout: false }
     end
   end
 
@@ -34,7 +34,7 @@ class PagingScheduleController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { render text: @schedule.valid?(date) ? 'true' : 'false', layout: false }
+      format.html { render plain: @schedule.valid?(date) ? 'true' : 'false', layout: false }
       format.json { render json: { ok: @schedule.valid?(date) }, layout: false }
     end
   end

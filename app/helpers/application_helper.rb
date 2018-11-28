@@ -53,7 +53,7 @@ module ApplicationHelper
   end
 
   def request_params
-    params.except(:controller, :action)
+    params.except(:controller, :action).to_unsafe_h
   end
 
   private

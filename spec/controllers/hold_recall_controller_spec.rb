@@ -16,11 +16,11 @@ describe HoldRecallsController do
     let(:user) { create(:anon_user) }
 
     it 'is accessible by anonymous users' do
-      get :new, normal_params
-      expect(response).to be_success
+      get :new, params: normal_params
+      expect(response).to be_successful
     end
     it 'sets defaults' do
-      get :new, normal_params
+      get :new, params: normal_params
       expect(assigns[:request].origin).to eq 'GREEN'
       expect(assigns[:request].origin_location).to eq 'STACKS'
       expect(assigns[:request].item_id).to eq '1234'
@@ -29,7 +29,7 @@ describe HoldRecallsController do
     it 'raises an error if the item is unmediateable' do
       expect(
         lambda do
-          get :new, item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART'
+          get :new, params: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
         end
       ).to raise_error(HoldRecallsController::NotHoldRecallableError)
     end
@@ -39,8 +39,8 @@ describe HoldRecallsController do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
 
-      it 'redirects to the login page passing a refferrer param to continue creating the hold recall request' do
-        post :create, request: normal_params
+      it 'redirects to the login page passing a referrer param to continue creating the hold recall request' do
+        post :create, params: { request: normal_params }
         expect(response).to redirect_to(
           login_path(
             referrer: interstitial_path(
@@ -55,22 +55,26 @@ describe HoldRecallsController do
       it 'is not allowed if user name and email is filled out' do
         expect(
           lambda do
-            put :create, request: normal_params.merge(
-              user_attributes: {
-                name: 'Jane Stanford',
-                email: 'jstanford@stanford.edu'
-              }
-            )
+            put :create, params: {
+              request: normal_params.merge(
+                user_attributes: {
+                  name: 'Jane Stanford',
+                  email: 'jstanford@stanford.edu'
+                }
+              )
+            }
           end
         ).to raise_error(CanCan::AccessDenied)
       end
       it 'is allowed if the library ID field is filled out' do
-        put :create, request: {
-          item_id: '1234',
-          origin: 'SPEC-COLL',
-          origin_location: 'STACKS',
-          destination: 'SPEC-COLL',
-          user_attributes: { library_id: '12345' }
+        put :create, params: {
+          request: {
+            item_id: '1234',
+            origin: 'SPEC-COLL',
+            origin_location: 'STACKS',
+            destination: 'SPEC-COLL',
+            user_attributes: { library_id: '12345' }
+          }
         }
 
         expect(response.location).to match(/#{successful_hold_recall_url(HoldRecall.last)}\?token=/)
@@ -81,7 +85,7 @@ describe HoldRecallsController do
         it 'raises an error' do
           expect(
             lambda do
-              get :create, request: normal_params
+              get :create, params: { request: normal_params }
             end
           ).to raise_error(CanCan::AccessDenied)
         end
@@ -92,19 +96,19 @@ describe HoldRecallsController do
       let(:user) { create(:webauth_user) }
 
       it 'is allowed' do
-        post :create, request: normal_params
+        post :create, params: { request: normal_params }
         expect(response).to redirect_to successful_hold_recall_path(HoldRecall.last)
         expect(HoldRecall.last.origin).to eq 'GREEN'
         expect(HoldRecall.last.user).to eq user
       end
 
       it 'sets a default needed_date if one is not present' do
-        post :create, request: normal_params
+        post :create, params: { request: normal_params }
         expect(HoldRecall.last.needed_date).to eq Time.zone.today + 1.year
       end
 
       it 'accepts a set needed_date when provided' do
-        post :create, request: normal_params.merge(needed_date: Time.zone.today + 1.month)
+        post :create, params: { request: normal_params.merge(needed_date: Time.zone.today + 1.month) }
         expect(HoldRecall.last.needed_date).to eq Time.zone.today + 1.month
       end
 
@@ -112,7 +116,7 @@ describe HoldRecallsController do
         stub_symphony_response(build(:symphony_page_with_single_item))
         expect(
           lambda do
-            put :create, request: normal_params
+            put :create, params: { request: normal_params }
           end
         ).not_to change { ConfirmationMailer.deliveries.count }
       end
@@ -124,7 +128,7 @@ describe HoldRecallsController do
       let(:user) { create(:webauth_user) }
 
       it 'returns an error message to the user' do
-        post :create, request: { item_id: '1234' }
+        post :create, params: { request: { item_id: '1234' } }
         expect(flash[:error]).to eq 'There was a problem creating your request.'
         expect(response).to render_template 'new'
       end
@@ -135,7 +139,7 @@ describe HoldRecallsController do
     let(:user) { create(:anon_user) }
 
     it 'returns a HoldRecall object' do
-      get :new, normal_params
+      get :new, params: normal_params
       expect(controller.send(:current_request)).to be_a(HoldRecall)
     end
   end
