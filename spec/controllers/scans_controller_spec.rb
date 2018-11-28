@@ -131,6 +131,9 @@ describe ScansController do
       end
 
       it 'constructs an illiad query url' do
+        allow(controller).to receive(:params).and_return(
+          ActionController::Parameters.new(request: { origin: 'GREEN' })
+        )
         illiad_response = controller.send(:illiad_url)
         expect(illiad_response).to include('illiad.dll?')
         expect(illiad_response).to include('Action=10&Form=30')

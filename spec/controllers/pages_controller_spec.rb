@@ -132,8 +132,8 @@ describe PagesController do
         it 'raises an error' do
           expect(
             lambda do
-              get :create, request: {
-                item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART'
+              get :create, params: {
+                request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
               }
             end
           ).to raise_error(CanCan::AccessDenied)
@@ -162,7 +162,7 @@ describe PagesController do
           }
         }
         expect(response).to redirect_to successful_page_path(Page.last)
-        expect(Page.last.barcodes).to eq(%w(3610512345678 12345679))
+        expect(Page.last.barcodes.sort).to eq(%w(12345679 3610512345678))
       end
 
       it 'redirects to success page with token when the WebAuth user supplies a library ID' do
