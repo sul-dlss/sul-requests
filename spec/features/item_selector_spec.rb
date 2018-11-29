@@ -170,11 +170,12 @@ describe 'Item Selector' do
           check('ABC 789')
           check('ABC 012')
         end
-
         within('#selected-items-filter') do
           fill_in 'Search item list', with: 'ABC 901'
           check('ABC 901')
-          fill_in 'Search item list', with: ''
+
+          fill_in 'Search item list', with: 'ABC'
+          page.execute_script('$("#item-selector-search").blur()') # Bluring element so js events fire
         end
 
         within('#item-selector') do
@@ -410,10 +411,9 @@ describe 'Item Selector' do
   def fill_in_required_date
     wait_for_ajax # We need the hours API to respond before we can know what the min-date is
 
-    date_input = find('#request_needed_date', visible: false)
-    min_date = date_input['min']
-    date_input.set(min_date)
-    md = Time.zone.parse(min_date)
-    find('.ws-date').set(md.strftime('%D'))
+    min_date = find('#request_needed_date', visible: false)['min']
+    min_date_to_s = Time.zone.parse(min_date).strftime('%D')
+    page.execute_script("$('#request_needed_date').prop('value', '#{min_date}')")
+    page.execute_script("$('.ws-date').prop('value', '#{min_date_to_s}')")
   end
 end

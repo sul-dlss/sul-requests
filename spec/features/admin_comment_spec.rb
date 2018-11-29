@@ -21,7 +21,7 @@ describe 'Admin Comments', js: true do
   describe 'toggling admin comment form' do
     it 'begins with the form closed and allows the form to be toggled open' do
       within(first('[data-mediate-request]')) do
-        page.find('a.mediate-toggle').trigger('click')
+        page.find('a.mediate-toggle').click
       end
 
       within('.admin-comments') do
@@ -35,7 +35,7 @@ describe 'Admin Comments', js: true do
   describe 'saving comments' do
     it 'updates the page with the saved comment' do
       within(first('[data-mediate-request]')) do
-        page.find('a.mediate-toggle').trigger('click')
+        page.find('a.mediate-toggle').click
       end
 
       within('.admin-comments') do
@@ -56,7 +56,7 @@ describe 'Admin Comments', js: true do
   describe 'cancel button' do
     it 'clears and hides the form' do
       within(first('[data-mediate-request]')) do
-        page.find('a.mediate-toggle').trigger('click')
+        page.find('a.mediate-toggle').click
       end
 
       within('.admin-comments') do

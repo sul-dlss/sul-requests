@@ -89,15 +89,15 @@ describe 'Mediation table', js: true do
         expect(page).to have_css('a.trunk8toggle-more', count: 3)
         expect(page).not_to have_css('a.trunk8toggle-less')
 
-        page.first('a.trunk8toggle-more').trigger('click')
+        page.first('a.trunk8toggle-more').click
         expect(page).to have_css('a.trunk8toggle-more', count: 2)
         expect(page).to have_css('a.trunk8toggle-less', count: 1)
 
-        page.first('a.trunk8toggle-more').trigger('click')
+        page.first('a.trunk8toggle-more').click
         expect(page).to have_css('a.trunk8toggle-more', count: 1)
         expect(page).to have_css('a.trunk8toggle-less', count: 2)
 
-        page.first('a.trunk8toggle-less').trigger('click')
+        page.first('a.trunk8toggle-less').click
         expect(page).to have_css('a.trunk8toggle-more', count: 2)
         expect(page).to have_css('a.trunk8toggle-less', count: 1)
       end
@@ -121,7 +121,7 @@ describe 'Mediation table', js: true do
 
       it 'is fetched from the SymphonyCurrLocRequest class' do
         within(first('[data-mediate-request]')) do
-          page.find('a.mediate-toggle').trigger('click')
+          page.find('a.mediate-toggle').click
         end
 
         within('tbody td table') do
@@ -138,7 +138,7 @@ describe 'Mediation table', js: true do
         expect(page).to have_css('tbody tr', count: 4)
         within(all('[data-mediate-request]').last) do
           expect(page).to have_css('td', count: top_level_columns)
-          page.find('a.mediate-toggle').trigger('click')
+          page.find('a.mediate-toggle').click
         end
         expect(page).to have_css("tbody td[colspan='#{top_level_columns}'] table")
         within("tbody td[colspan='#{top_level_columns}'] table") do
@@ -151,7 +151,7 @@ describe 'Mediation table', js: true do
 
       it 'has holdings that can be approved' do
         within(all('[data-mediate-request]').last) do
-          page.find('a.mediate-toggle').trigger('click')
+          page.find('a.mediate-toggle').click
         end
 
         within('tbody td table tbody') do
@@ -176,7 +176,7 @@ describe 'Mediation table', js: true do
         visit admin_path('SPEC-COLL')
 
         within(all('[data-mediate-request]').last) do
-          page.find('a.mediate-toggle').trigger('click')
+          page.find('a.mediate-toggle').click
         end
 
         expect(page).to have_css('tr.approved')
@@ -187,7 +187,7 @@ describe 'Mediation table', js: true do
       it 'indicates when all items in a request have been approved' do
         within(all('[data-mediate-request]').last) do
           expect(page).not_to have_css('[data-behavior="all-approved-note"]', text: 'Done')
-          page.find('a.mediate-toggle').trigger('click')
+          page.find('a.mediate-toggle').click
         end
 
         within('tbody td table tbody') do
@@ -240,7 +240,7 @@ describe 'Mediation table', js: true do
 
       it 'has the persisted item level error message' do
         within(all('[data-mediate-request]').last) do
-          page.find('a.mediate-toggle').trigger('click')
+          page.find('a.mediate-toggle').click
         end
 
         within('tbody td table tbody') do
@@ -254,7 +254,7 @@ describe 'Mediation table', js: true do
 
       it 'returns the item level error text if it is not user-based' do
         within(all('[data-mediate-request]').last) do
-          page.find('a.mediate-toggle').trigger('click')
+          page.find('a.mediate-toggle').click
         end
 
         expect(page).not_to have_css('.alert.alert-danger', text: /There was a problem with this request/)
@@ -265,7 +265,7 @@ describe 'Mediation table', js: true do
 
             wait_for_ajax
             approval_btn = page.find('button.approval-btn')
-            expect(approval_btn['disabled']).to eq false
+            expect(approval_btn).not_to be_disabled
           end
         end
 
@@ -277,7 +277,7 @@ describe 'Mediation table', js: true do
 
         it 'updates the item level error messages' do
           within(all('[data-mediate-request]').last) do
-            page.find('a.mediate-toggle').trigger('click')
+            page.find('a.mediate-toggle').click
           end
 
           within('tbody td table tbody') do
@@ -289,7 +289,7 @@ describe 'Mediation table', js: true do
               wait_for_ajax
               expect(page).to have_css('td', text: 'Item not found in catalog')
               approval_btn = page.find('button.approval-btn')
-              expect(approval_btn['disabled']).to eq false
+              expect(approval_btn).not_to be_disabled
             end
           end
         end
@@ -388,14 +388,14 @@ describe 'Mediation table', js: true do
 
       it 'retains the origin filter' do
         # Capybara thinks the date picker is invisible for some reason
-        find('input#created_at', visible: false).set(yesterday.to_s)
+        page.execute_script("$('input#created_at').prop('value', '#{yesterday}')")
         click_button('Go')
         expect(page).to have_css('tr[data-mediate-request]', count: 2) # would be 3 if the PAGE-MP request was included
       end
 
       it 'returns unpaginated results' do
         visit admin_path('SPEC-COLL', per_page: 1)
-        find('input#created_at', visible: false).set(yesterday.to_s)
+        page.execute_script("$('input#created_at').prop('value', '#{yesterday}')")
         click_button('Go')
         expect(page).not_to have_css('.pagination')
       end
@@ -405,7 +405,7 @@ describe 'Mediation table', js: true do
         expect(page).to have_css('tr[data-mediate-request] td.created_at', text: yesterday.to_s, count: 2)
         expect(page).to have_css('tr[data-mediate-request] td.created_at', text: today_s, count: 2)
 
-        find('input#created_at', visible: false).set(yesterday.to_s)
+        page.execute_script("$('input#created_at').prop('value', '#{yesterday}')")
         click_button('Go')
 
         expect(page).to have_css('tr[data-mediate-request] td.created_at', text: yesterday.to_s, count: 2)
@@ -419,7 +419,7 @@ describe 'Mediation table', js: true do
         req = create(:page_mp_mediated_page, created_at: cdate)
         req.approved!
         visit admin_path('PAGE-MP')
-        find('input#created_at', visible: false).set(cdate.to_s)
+        page.execute_script("$('input#created_at').prop('value', '#{cdate}')")
         click_button('Go')
         # there are no mixed approvals
         expect(page).not_to have_css('td span[data-behavior="mixed-approved-note"][style=""]', visible: false)
@@ -437,7 +437,7 @@ describe 'Mediation table', js: true do
         expect(page).to have_css('a.btn-primary', text: 'All pending')
         expect(page).to have_css('input.btn-primary[value="Go"]')
 
-        find('input#created_at', visible: false).set(yesterday.to_s)
+        page.execute_script("$('input#created_at').prop('value', '#{yesterday}')")
         click_button('Go')
         # correct dates, correct date filter
         expect(page).to have_css('tr[data-mediate-request] td.created_at', text: yesterday.to_s, count: 2)
@@ -452,7 +452,7 @@ describe 'Mediation table', js: true do
         expect(page).to have_css('a.btn-primary', text: future_s)
         expect(page).to have_css('input.btn-primary[value="Go"]')
 
-        find('input#created_at', visible: false).set(today_s)
+        page.execute_script("$('input#created_at').prop('value', '#{today_s}')")
         click_button('Go')
         expect(page).to have_css('tr[data-mediate-request] td.created_at', text: today_s, count: 2)
         expect(page).to have_css('tr[data-mediate-request] td.needed_date', text: today_button_text)
@@ -485,7 +485,7 @@ describe 'Mediation table', js: true do
       expect(page).to have_css('tbody tr', count: 1)
       within(first('[data-mediate-request]')) do
         expect(page).to have_css('td', count: top_level_columns)
-        page.find('a.mediate-toggle').trigger('click')
+        page.find('a.mediate-toggle').click
       end
 
       expect(page).to have_css("tbody td[colspan='#{top_level_columns}'] table")
