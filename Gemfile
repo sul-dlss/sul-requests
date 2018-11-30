@@ -85,8 +85,11 @@ group :development, :test do
   # factory_bot_rails for creating fixtures in tests
   gem 'factory_bot_rails'
 
-  # Poltergeist is a capybara driver to run integration tests using PhantomJS
-  gem 'poltergeist'
+  # selenium-webdriver is used by Capybara for driving "browser" tests
+  gem 'selenium-webdriver'
+
+  # chromedriver-helper is a capybara driver to run integration tests using headless chrome
+  gem 'chromedriver-helper'
 
   # Teaspoon-jasmine is a wrapper for the Jasmine javascript testing library
   gem 'teaspoon-jasmine'

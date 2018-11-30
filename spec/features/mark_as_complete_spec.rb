@@ -27,7 +27,7 @@ describe 'Mark As Complete', js: true do
       expect(mediated_page).not_to be_marked_as_done
 
       within(first('[data-mediate-request]')) do
-        page.find('a.mediate-toggle').trigger('click')
+        page.find('a.mediate-toggle').click
       end
 
       click_button 'Mark as done'
@@ -39,7 +39,7 @@ describe 'Mark As Complete', js: true do
 
     it 'disables the button' do
       within(first('[data-mediate-request]')) do
-        page.find('a.mediate-toggle').trigger('click')
+        page.find('a.mediate-toggle').click
       end
 
       button = page.find('button', text: 'Mark as done')
@@ -57,7 +57,7 @@ describe 'Mark As Complete', js: true do
       expect(page).not_to have_css('[data-behavior="mixed-approved-note"]', visible: true)
 
       within(first('[data-mediate-request]')) do
-        page.find('a.mediate-toggle').trigger('click')
+        page.find('a.mediate-toggle').click
       end
 
       click_button 'Mark as done'
@@ -82,7 +82,7 @@ describe 'Mark As Complete', js: true do
 
     it 'has a disabled button' do
       within(first('[data-mediate-request]')) do
-        page.find('a.mediate-toggle').trigger('click')
+        page.find('a.mediate-toggle').click
       end
 
       button = page.find('button', text: 'Mark as done')
