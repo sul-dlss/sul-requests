@@ -47,6 +47,12 @@ describe ProxyAccess do
     it { is_expected.not_to be_proxy }
   end
 
+  context 'without a library id' do
+    before { subject.libid = '' }
+
+    it { expect(subject.send(:response)).to be_a NullResponse }
+  end
+
   describe '#request_url' do
     before do
       allow(Settings).to receive(:sul_proxy_api_url).and_return('http://some/url/?libid=%{libid}')
@@ -64,6 +70,8 @@ describe ProxyAccess do
   end
 
   describe 'response error handling' do
+    before { subject.libid = '123' }
+
     context 'when we are unable to connect to the api' do
       before do
         allow(Settings).to receive(:sul_proxy_api_url).and_return('http://some/url/?libid=%{libid}')
