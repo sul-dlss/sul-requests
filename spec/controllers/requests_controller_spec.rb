@@ -105,15 +105,6 @@ describe RequestsController do
     end
   end
 
-  describe 'modify_item_selector_checkboxes' do
-    it 'raises an error of the subclassing controller does not implement the local_object_param method' do
-      allow(controller).to receive(:params).and_return(
-        ActionController::Parameters.new(request: { origin: 'GREEN' })
-      )
-      expect(controller.send(:modify_item_selector_checkboxes)).to be_nil
-    end
-  end
-
   describe '#current_request' do
     it 'returns a request object' do
       get :new, params: scannable_params

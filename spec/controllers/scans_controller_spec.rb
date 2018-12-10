@@ -102,7 +102,6 @@ describe ScansController do
 
       before do
         stub_searchworks_api_json(build(:sal3_holdings))
-        allow(controller).to receive(:current_request).and_return(create(:scan_with_holdings, barcodes: ['12345678']))
       end
 
       it 'is allowed' do
@@ -112,12 +111,14 @@ describe ScansController do
             item_id: '12345',
             origin: 'SAL3',
             origin_location: 'STACKS',
-            barcodes: ['12345678'],
+            barcodes: ['87654321'],
             section_title: 'Some really important chapter'
           }
         }
+
         expect(Scan.last.origin).to eq 'SAL3'
         expect(Scan.last.user).to eq user
+        expect(Scan.last.barcodes).to eq(['87654321'])
       end
 
       it 'redirects post requests to the Illiad URL when the illiad_success param is not present' do
@@ -138,6 +139,9 @@ describe ScansController do
         allow(controller).to receive(:params).and_return(
           ActionController::Parameters.new(request: { origin: 'GREEN' })
         )
+
+        expect(controller).to receive(:current_request).and_return(create(:scan_with_holdings, barcodes: ['12345678']))
+
         illiad_response = controller.send(:illiad_url)
         expect(illiad_response).to include('illiad.dll?')
         expect(illiad_response).to include('Action=10&Form=30')
