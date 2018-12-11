@@ -51,6 +51,8 @@ class ProxyAccess
   end
 
   def response
+    return NullResponse.new if libid.blank?
+
     @response ||= begin
       return empty_response('No proxy-api url configured') unless request_url.present?
 
