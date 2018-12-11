@@ -9,7 +9,7 @@ class RequestsController < ApplicationController
   include ModalLayout
 
   before_action :capture_email_field
-  before_action :modify_item_selector_checkboxes, only: :create
+  before_action :modify_item_selector_checkboxes_or_radios, only: :create
   before_action :modify_item_proxy_status, only: :create
 
   load_and_authorize_resource instance_name: 'request'
@@ -115,10 +115,21 @@ class RequestsController < ApplicationController
   end
   helper_method :delegated_new_request_path
 
-  def modify_item_selector_checkboxes
-    return unless create_params && create_params[:barcodes].is_a?(ActionController::Parameters)
+  # Overwrite the barcodes attribute in create_params to be checkbox/radio button agnostic.
+  # We need the param to be an array since we serialize barcodes in the database as an array.
+  def modify_item_selector_checkboxes_or_radios
+    return unless create_params && params[:request][:barcodes].present?
 
-    create_params[:barcodes] = create_params[:barcodes].select { |_, checked| checked == '1' }.keys
+    create_params[:barcodes] = item_selector_checkboxes_or_radios_as_array
+  end
+
+  # Radio buttons will be represented as an array, and can simply be passed through.
+  # Otherwise, the barcodes should be a hash, and we want to only return the ones w/ a value of "1" (selected)
+  def item_selector_checkboxes_or_radios_as_array
+    barcodes = params[:request][:barcodes]
+    return barcodes if barcodes.is_a?(Array)
+
+    barcodes.select { |_, checked| checked == '1' }.keys
   end
 
   def modify_item_proxy_status
