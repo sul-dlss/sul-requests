@@ -93,13 +93,24 @@ class RequestsController < ApplicationController
   end
 
   def bounce_request_through_webauth
-    request_params = params[:request].except(:user_attributes)
+    request_params = request_params_without_user_attrs_or_unselected_barcodes
     create_path = polymorphic_url(
       [:create, current_request], request_context_params.merge(request: request_params.to_unsafe_h)
     )
 
     referrer = interstitial_path(redirect_to: create_path)
     redirect_to login_path(referrer: referrer)
+  end
+
+  # Strips out undesired parameters when sending the user through our auth service
+  # Removes user attributes as the user will be returned authenticated
+  # Removes unselected barcodes to prevent the auth service from throwing an error with large records
+  def request_params_without_user_attrs_or_unselected_barcodes
+    return params[:request].except(:user_attributes) unless params.dig(:request, :barcodes)
+
+    params[:request].except(:user_attributes).merge(
+      barcodes: params.dig(:request, :barcodes).select { |_, v| v.to_s == '1' }
+    )
   end
 
   def check_if_proxy_sponsor
