@@ -52,6 +52,27 @@ describe PagesController do
           )
         )
       end
+
+      it 'strips any unselected barcodes out of the request (to reduce request size to our auth service)' do
+        post :create, params: {
+          request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART', barcodes: {
+            '12345' => '0', '54321' => '1', '56789' => '0', '98765' => '1'
+          } }
+        }
+
+        expect(response).to redirect_to(
+          login_path(
+            referrer: interstitial_path(
+              redirect_to: create_pages_url(
+                request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART', barcodes: {
+                  '54321' => '1', '98765' => '1'
+                } }
+              )
+            )
+          )
+        )
+      end
+
       it 'is allowed if user name and email is filled out (via token)' do
         put :create, params: {
           request: {
