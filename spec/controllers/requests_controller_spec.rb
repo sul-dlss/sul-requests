@@ -112,6 +112,32 @@ describe RequestsController do
     end
   end
 
+  describe '#request_params_without_user_attrs_or_unselected_barcodes' do
+    it 'removes unselected barcodes' do
+      expect(subject).to receive(:params).at_least(:once).and_return(
+        ActionController::Parameters.new(
+          request: { 'barcodes': { 'abc' => '1', 'cba' => '0' } }
+        )
+      )
+
+      expect(controller.send(:request_params_without_user_attrs_or_unselected_barcodes).to_unsafe_h).to eq(
+        'barcodes' => { 'abc' => '1' }
+      )
+    end
+
+    it 'handles barcode arrays' do
+      expect(subject).to receive(:params).at_least(:once).and_return(
+        ActionController::Parameters.new(
+          request: { 'barcodes': ['abc'] }
+        )
+      )
+
+      expect(controller.send(:request_params_without_user_attrs_or_unselected_barcodes).to_unsafe_h).to eq(
+        'barcodes' => ['abc']
+      )
+    end
+  end
+
   describe 'layout setting' do
     before do
       stub_searchworks_api_json(build(:sal3_holdings))
