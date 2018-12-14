@@ -109,8 +109,18 @@ class RequestsController < ApplicationController
     return params[:request].except(:user_attributes) unless params.dig(:request, :barcodes)
 
     params[:request].except(:user_attributes).merge(
-      barcodes: params.dig(:request, :barcodes).select { |_, v| v.to_s == '1' }
+      barcodes: barcode_array_or_selected_hash
     )
+  end
+
+  # Return the barcodes param if it is an array, otherwise return
+  # only the selected barcodes (indicated by a value of "1")
+  # Barcodes sent in as an array are assumed as selected, and will be handled downstream
+  def barcode_array_or_selected_hash
+    barcodes = params.dig(:request, :barcodes)
+    return barcodes if barcodes.is_a?(Array)
+
+    barcodes.select { |_, v| v.to_s == '1' }
   end
 
   def check_if_proxy_sponsor
