@@ -48,7 +48,7 @@ describe 'requests/status.html.erb' do
         :scan_with_holdings,
         user: user,
         data: {
-          'page_range' => 'Range of pages', 'section_title' => 'Title of section', 'authors' => 'The Author'
+          'page_range' => 'Range <em>of</em> pages', 'section_title' => 'Title of section', 'authors' => 'The Author'
         }
       )
     end

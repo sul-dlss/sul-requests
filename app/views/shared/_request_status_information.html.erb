@@ -41,7 +41,7 @@
   <% if current_request.data.present? %>
     <% if (page_range = current_request.data['page_range']).present? %>
       <dt><%= current_request.class.human_attribute_name(:page_range) %></dt>
-      <dd><%= page_range %></dd>
+      <dd><%= page_range.html_safe %></dd>
     <% end %>
     <% if (section_title = current_request.data['section_title']).present? %>
       <dt><%= current_request.class.human_attribute_name(:section_title) %></dt>
