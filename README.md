@@ -18,8 +18,8 @@ SUL Requests in a rails application that allows users to request materials from 
 
 ## Requirements
 
-1. Ruby (2.2.1 or greater)
-2. Rails (4.2.0 or greater)
+1. Ruby (2.5.3 or greater)
+2. Rails (5.2.2 or greater)
 3. A database
 
 ## Installation
