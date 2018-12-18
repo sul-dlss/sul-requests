@@ -74,11 +74,17 @@ describe ApprovalStatusMailer do
 
     describe '#approval_status_for_scan' do
       let(:mailer_method) { :approval_status_for_scan }
-      let(:request) { create(:scan, user: user) }
+      let(:request) { create(:scan, user: user, page_range: '1-2', section_title: 'Chapter2') }
 
       it 'renders the correct email' do
         expect(mail.body.to_s).to include(
           "We'll email you again when your request is ready for download."
+        )
+      end
+
+      it 'delimits request data with HTML safe line breaks' do
+        expect(mail.body.to_s).not_to include(
+          '&lt;br/&gt;'
         )
       end
     end
