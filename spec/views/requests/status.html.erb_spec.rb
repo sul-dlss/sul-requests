@@ -16,6 +16,19 @@ describe 'requests/status.html.erb' do
     render
     expect(rendered).to have_css('h1', text: 'Status of your request')
   end
+
+  describe 'Status' do
+    context 'for Hold/Recalls sent to BorrowDirect' do
+      before { request.via_borrow_direct = true }
+
+      it 'has a hard-coded status indicating we are working on getting the item' do
+        render
+        expect(rendered).to have_css('dt', text: 'Status')
+        expect(rendered).to have_css('dd', text: "We're working on getting this item for you.")
+      end
+    end
+  end
+
   it 'has item title information' do
     render
     expect(rendered).to have_css('h2', text: request.item_title)
