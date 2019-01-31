@@ -119,6 +119,7 @@ class RequestsController < ApplicationController
   def barcode_array_or_selected_hash
     barcodes = params.dig(:request, :barcodes)
     return barcodes if barcodes.is_a?(Array)
+    return [] if barcodes.keys == ['NO_BARCODE']
 
     barcodes.select { |_, v| v.to_s == '1' }
   end
@@ -149,6 +150,7 @@ class RequestsController < ApplicationController
   def item_selector_checkboxes_or_radios_as_array
     barcodes = params[:request][:barcodes]
     return barcodes if barcodes.is_a?(Array)
+    return [] if barcodes.keys == ['NO_BARCODE']
 
     barcodes.select { |_, checked| checked == '1' }.keys
   end

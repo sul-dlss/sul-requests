@@ -136,6 +136,18 @@ describe RequestsController do
         'barcodes' => ['abc']
       )
     end
+
+    it 'handles the special NO_BARCODE value' do
+      expect(subject).to receive(:params).at_least(:once).and_return(
+        ActionController::Parameters.new(
+          request: { 'barcodes': { 'NO_BARCODE' => '1' } }
+        )
+      )
+
+      expect(controller.send(:request_params_without_user_attrs_or_unselected_barcodes).to_unsafe_h).to eq(
+        'barcodes' => []
+      )
+    end
   end
 
   describe 'layout setting' do
