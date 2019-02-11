@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.0'
 # Use sqlite3 as the database (during local development)
-gem 'sqlite3'
+gem 'sqlite3', '~> 1.3.13'
 # Use mysql as the database when running on the server environment
 gem 'mysql2', '~> 0.5'
 # Use Puma as the app server

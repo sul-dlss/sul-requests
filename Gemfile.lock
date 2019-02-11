@@ -363,7 +363,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    sqlite3 (1.4.0)
+    sqlite3 (1.3.13)
     sshkit (1.18.2)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
@@ -454,7 +454,7 @@ DEPENDENCIES
   sidekiq
   sidekiq-statistic
   simplecov
-  sqlite3
+  sqlite3 (~> 1.3.13)
   sul_styles (>= 0.5.0)
   teaspoon-jasmine
   therubyracer
