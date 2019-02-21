@@ -7,5 +7,11 @@ describe SorryController, type: :controller do
       get :unable
       expect(response).to have_http_status(:internal_server_error)
     end
+
+    it 'gets the request type from the parameter' do
+      get :unable, params: { request_type: 'scan' }
+      request_type = assigns(:request_type)
+      expect(request_type).to eq 'scan'
+    end
   end
 end

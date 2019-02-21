@@ -12,8 +12,11 @@ RSpec.configure do |config|
       factory.name =~ /_holdings?$/ || factory.name =~ /_searchworks_item$/ || factory.name =~ /^symphony_/
     end
 
-    FactoryBot.lint factories_to_lint unless config.files_to_run.one?
-  ensure
-    DatabaseCleaner.clean
+    begin
+      FactoryBot.lint factories_to_lint unless config.files_to_run.one?
+    ensure
+      DatabaseCleaner.clean
+    end
   end
+
 end

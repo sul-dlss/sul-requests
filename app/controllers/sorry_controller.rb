@@ -5,6 +5,7 @@
 class SorryController < ApplicationController
   def unable
     @please_contact = please_contact
+    @request_type = request_type
     render status: :internal_server_error
   end
 
@@ -21,5 +22,9 @@ class SorryController < ApplicationController
   def please_contact
     "Please contact the circulation desk in Green Library at
     #{contact_info[:email]} or #{contact_info[:phone]}."
+  end
+
+  def request_type
+    params.permit(:request_type)[:request_type]
   end
 end
