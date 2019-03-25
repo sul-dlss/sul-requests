@@ -15,11 +15,11 @@ class SorryController < ApplicationController
   end
 
   def contact_info
-    contact_info_config['default']
+    contact_info_config['SCAN']
   end
 
   def please_contact
-    "Please contact the circulation desk in Green Library at
+    "Please contact the scan processing team at
     #{contact_info[:email]} or #{contact_info[:phone]}."
   end
 end
