@@ -34,7 +34,7 @@ module SULRequests
 
     config.libraries = {
       'ARS' => 'Archive of Recorded Sound',
-      'ART' => 'Art & Architecture Library',
+      'ART' => 'Art & Architecture Library (Bowes)',
       'BIOLOGY' => 'Biology Library (Falconer)',
       'BUSINESS' => 'Business Library',
       'CHEMCHMENG' => 'Chemistry & ChemEng Library (Swain)',
