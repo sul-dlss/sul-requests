@@ -59,9 +59,9 @@ GEM
     bootstrap-editable-rails (0.0.9)
       railties (>= 3.1)
       sass-rails
-    bootstrap-sass (3.3.7)
+    bootstrap-sass (3.4.1)
       autoprefixer-rails (>= 5.2.1)
-      sass (>= 3.3.4)
+      sassc (>= 2.0.0)
     bootstrap_form (2.7.0)
     borrow_direct (1.2.0)
       httpclient (~> 2.4)
@@ -338,6 +338,9 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
+    sassc (2.0.1)
+      ffi (~> 1.9)
+      rake
     scss-lint (0.38.0)
       rainbow (~> 2.0)
       sass (~> 3.4.1)
@@ -407,7 +410,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap
   bootstrap-editable-rails
-  bootstrap-sass (~> 3.3.4)
+  bootstrap-sass (~> 3.4)
   bootstrap_form (< 4)
   borrow_direct
   cancancan (~> 1.10)

@@ -10,7 +10,7 @@ gem 'mysql2', '~> 0.5'
 gem 'puma'
 gem 'bootsnap'
 # Use sass-powered bootstrap
-gem 'bootstrap-sass', "~> 3.3.4"
+gem 'bootstrap-sass', "~> 3.4"
 # Use bootstrap_form for easy form building
 gem 'bootstrap_form', '< 4' # pin to < 4 since we are not on bootstrap 4
 gem 'bootstrap-editable-rails'
