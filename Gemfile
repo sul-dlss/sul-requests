@@ -90,9 +90,7 @@ group :development, :test do
 
   # selenium-webdriver is used by Capybara for driving "browser" tests
   gem 'selenium-webdriver'
-
-  # chromedriver-helper is a capybara driver to run integration tests using headless chrome
-  gem 'chromedriver-helper'
+  gem 'webdrivers'
 
   # Teaspoon-jasmine is a wrapper for the Jasmine javascript testing library
   gem 'teaspoon-jasmine'
