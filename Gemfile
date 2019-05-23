@@ -34,7 +34,7 @@ gem 'turbolinks', '~> 5.0'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 # CanCanCan is an authorization Gem for rails
-gem 'cancancan', '~> 1.10'
+gem 'cancancan'
 # Use faraday for making HTTP requests
 gem 'faraday'
 # Use kaminari for pagination
