@@ -41,7 +41,7 @@ class SymphonyCurrLocRequest
   QUERY_STR = { includeFields: 'currentLocation' }.to_query.freeze
 
   def url
-    @url ||= "#{BASE_URL}#{barcode}?#{QUERY_STR}"
+    @url ||= "#{BASE_URL}#{ERB::Util.url_encode(barcode)}?#{QUERY_STR}"
   end
 
   def empty_response(error = nil)

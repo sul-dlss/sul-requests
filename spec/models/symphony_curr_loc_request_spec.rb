@@ -80,6 +80,10 @@ describe SymphonyCurrLocRequest do
     expect(SymphonyCurrLocRequest::BASE_URL).to eq 'http://example.com/symws/v1/catalog/item/barcode/'
   end
 
+  it 'the barcode is URL excaped (so we don\'t get invalid URL errors)' do
+    expect(described_class.new(barcode: 'abc 123').send(:url)).to match(%r{/abc%20123\?includeFields=currentLocation})
+  end
+
   context '#json (private)' do
     context 'invalid JSON returned' do
       let(:response) { double(success?: true, body: 'symphony returned an error instead of JSON') }
