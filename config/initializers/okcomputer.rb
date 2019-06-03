@@ -23,7 +23,7 @@ end
 # NON-Crucial (Optional) Checks
 ###
 
-OkComputer::Registry.register 'hours_api', OkComputer::HttpCheck.new("#{Settings.hours_api}/is_it_working")
+OkComputer::Registry.register 'hours_api', OkComputer::HttpCheck.new("#{Settings.hours_api}/status")
 OkComputer::Registry.register 'sul_illiad', OkComputer::HttpCheck.new(Settings.sul_illiad)
 
 if Settings.symphony_web_services.base_url.present?
