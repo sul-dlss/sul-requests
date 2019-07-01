@@ -1,6 +1,7 @@
 require:
   - rubocop-rspec
   - rubocop-performance
+  - rubocop-rails
 
 inherit_from: .rubocop_todo.yml
 
@@ -27,9 +28,6 @@ Metrics/ClassLength:
   Max: 120
   Exclude:
     - 'app/models/request.rb'
-
-Metrics/ModuleLength:
-  Max: 120
 
 Metrics/ModuleLength:
   Max: 120
