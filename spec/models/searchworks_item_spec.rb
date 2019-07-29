@@ -123,13 +123,13 @@ describe SearchworksItem do
   end
 
   describe SearchworksItem::RequestedHoldings do
-    let(:subject) { SearchworksItem::RequestedHoldings.new(item) }
+    let(:subject) { described_class.new(item) }
 
     describe 'in the searchworks item' do
       let(:subject) { build(:green_stacks_searchworks_item) }
 
       it 'return a SearchworksItem::RequestedHoldings object' do
-        expect(subject.requested_holdings).to be_a SearchworksItem::RequestedHoldings
+        expect(subject.requested_holdings).to be_a described_class
       end
     end
 
