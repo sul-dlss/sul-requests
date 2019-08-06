@@ -1,6 +1,8 @@
 scss_files: 'app/assets/**/*.scss'
 
-exclude: 'vendor/**'
+exclude:
+  - 'vendor/**'
+  - 'app/assets/stylesheets/modules/sul-footer.scss'
 
 linters:
   IdSelector:
