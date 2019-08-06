@@ -27,7 +27,6 @@ describe 'Home Page' do
 
     it 'displays SUL footer' do
       expect(page).to have_css('#sul-footer #sul-footer-img img')
-      expect(page).to have_css('#sul-footer-links a', text: 'Stanford University Libraries')
       expect(page).to have_css('#sul-footer-links a', text: 'Hours & locations')
       expect(page).to have_css('#sul-footer-links a', text: 'My Account')
       expect(page).to have_css('#sul-footer-links a', text: 'Ask us')
@@ -35,7 +34,7 @@ describe 'Home Page' do
     end
     it 'displays SU footer' do
       expect(page).to have_css('#global-footer #bottom-logo img')
-      expect(page).to have_css('#global-footer #bottom-text a', text: 'SU Home')
+      expect(page).to have_css('#global-footer #bottom-text a', text: 'Stanford Home')
       expect(page).to have_css('#global-footer #bottom-text a', text: 'Maps & Directions')
       expect(page).to have_css('#global-footer #bottom-text a', text: 'Search Stanford')
       expect(page).to have_css('#global-footer #bottom-text a', text: 'Terms of Use')
