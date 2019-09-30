@@ -48,7 +48,7 @@ class SearchworksItem
   def response
     @response ||= begin
       Faraday.get(url)
-    rescue Faraday::Error::ConnectionFailed
+    rescue Faraday::ConnectionFailed
       NullResponse.new
     end
   end
