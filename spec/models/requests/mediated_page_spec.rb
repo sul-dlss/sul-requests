@@ -97,6 +97,7 @@ describe MediatedPage do
       it 'returns the requests with an approval status of anything other than unnaproved' do
         expect(described_class.completed.count).to eq 3
       end
+
       it 'returns records in descending needed date order' do
         expect(described_class.completed[0].needed_date).to eq Time.zone.today - 1.day
         expect(described_class.completed[1].needed_date).to eq Time.zone.today - 2.days
@@ -117,6 +118,7 @@ describe MediatedPage do
       subject.origin = 'SPEC-COLL'
       expect(subject).to be_request_commentable
     end
+
     it 'is false when the library is not SPEC-COLL' do
       subject.origin = 'HV-ARCHIVE'
       expect(subject).not_to be_request_commentable
@@ -137,6 +139,7 @@ describe MediatedPage do
       subject.item_status('ABC 123').approve!('jstanford')
       expect(subject).to be_all_approved
     end
+
     it 'returns false when not all the requested barcodes and ad-hoc-items are approved' do
       subject.item_status('12345678').approve!('jstanford')
       expect(subject).not_to be_all_approved
@@ -147,6 +150,7 @@ describe MediatedPage do
     it 'mixins TokenEncryptable' do
       expect(subject).to be_kind_of TokenEncryptable
     end
+
     it 'adds the user email address to the token' do
       subject.user = build(:non_webauth_user)
       expect(subject.to_token).to match(/jstanford@stanford.edu$/)

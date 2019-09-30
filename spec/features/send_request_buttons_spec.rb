@@ -63,6 +63,7 @@ describe 'Send Request Buttons' do
       expect(page).to have_css('button', text: /Send request.*login with SUNet ID/)
       expect(page).not_to have_css('a', text: 'I don\'t have a SUNet ID')
     end
+
     it 'has a link to request the physical item' do
       expect(page).to have_css('a', text: 'Request the physical item')
     end

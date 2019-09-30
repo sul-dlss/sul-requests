@@ -425,6 +425,7 @@ describe Request do
     it 'returns the stored item title for persisted objects' do
       expect(create(:request).stored_or_fetched_item_title).to eq 'Title for Request 12345'
     end
+
     it 'returns the item title from the fetched searchworks record for non persisted objects' do
       allow_any_instance_of(described_class).to receive(:searchworks_item)
         .and_return(OpenStruct.new(title: 'A fetched title'))
@@ -462,6 +463,7 @@ describe Request do
       subject.data = data_hash
       expect(subject.data).to eq data_hash
     end
+
     it 'copes with nested hashes (e.g. public_notes)' do
       my_hash = { 'a' => 'b', 'public_notes' => { '111' => 'note for 111', '222' => 'note for 222' } }
       subject.data = my_hash

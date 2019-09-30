@@ -10,10 +10,12 @@ describe SULRequests::TokenEncryptor do
     allow_any_instance_of(subject).to receive(:secret).and_return('')
     expect(-> { subject.new(token) }).to raise_error(SULRequests::TokenEncryptor::InvalidSecret)
   end
+
   it 'throws an error if there is no configured salt' do
     allow_any_instance_of(subject).to receive(:salt).and_return('')
     expect(-> { subject.new(token) }).to raise_error(SULRequests::TokenEncryptor::InvalidSalt)
   end
+
   describe '#encrypt_and_sign' do
     it 'returns an encyrpted and signed message' do
       expect(subject.new(token).encrypt_and_sign).to include '==--'
@@ -27,6 +29,7 @@ describe SULRequests::TokenEncryptor do
     it 'decrypts and verify encrypted and signed messages' do
       expect(subject.new(encrypted_token).decrypt_and_verify).to eq token
     end
+
     it 'raises an error if the token is not valid' do
       expect(
         -> { subject.new("1#{encrypted_token}").decrypt_and_verify }

@@ -19,6 +19,7 @@ describe HoldRecallsController do
       get :new, params: normal_params
       expect(response).to be_successful
     end
+
     it 'sets defaults' do
       get :new, params: normal_params
       expect(assigns[:request].origin).to eq 'GREEN'
@@ -26,6 +27,7 @@ describe HoldRecallsController do
       expect(assigns[:request].item_id).to eq '1234'
       expect(assigns[:request].needed_date).to eq Time.zone.today + 1.year
     end
+
     it 'raises an error if the item is unmediateable' do
       expect(
         lambda do
@@ -66,6 +68,7 @@ describe HoldRecallsController do
           end
         ).to raise_error(CanCan::AccessDenied)
       end
+
       it 'is allowed if the library ID field is filled out' do
         put :create, params: {
           request: {
@@ -81,6 +84,7 @@ describe HoldRecallsController do
         expect(User.last.library_id).to eq '12345'
         expect(HoldRecall.last.user).to eq User.last
       end
+
       describe 'via get' do
         it 'raises an error' do
           expect(

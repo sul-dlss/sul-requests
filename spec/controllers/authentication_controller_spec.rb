@@ -12,10 +12,12 @@ describe AuthenticationController do
       get :login, params: { referrer: '/' }
       expect(response).to redirect_to('/')
     end
+
     it 'redirects back when there is no provided referrer' do
       get :login
       expect(response).to redirect_to('https://example.com')
     end
+
     it 'has a flash success message informing the user they logged in' do
       get :login
       expect(flash[:success]).to eq 'You have been successfully logged in.'
@@ -27,6 +29,7 @@ describe AuthenticationController do
       get :logout
       expect(response).to redirect_to('/Shibboleth.sso/Logout')
     end
+
     it 'has a flash notice message informing the user they logged out' do
       get :logout
       expect(flash[:notice]).to eq 'You have been successfully logged out.'

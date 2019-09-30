@@ -84,7 +84,7 @@ describe SymphonyCurrLocRequest do
     expect(described_class.new(barcode: 'abc 123').send(:url)).to match(%r{/abc%20123\?includeFields=currentLocation})
   end
 
-  context '#json (private)' do
+  describe '#json (private)' do
     context 'invalid JSON returned' do
       let(:response) { double(success?: true, body: 'symphony returned an error instead of JSON') }
 
@@ -98,7 +98,7 @@ describe SymphonyCurrLocRequest do
     end
   end
 
-  context '#faraday_conn_w_req_headers' do
+  describe '#faraday_conn_w_req_headers' do
     it 'has required headers' do
       faraday_conn = subject.send(:faraday_conn_w_req_headers)
       expect(faraday_conn.headers).to include('x-sirs-clientID' => 'DS_CLIENT')

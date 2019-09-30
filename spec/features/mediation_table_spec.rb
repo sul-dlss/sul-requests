@@ -85,6 +85,7 @@ describe 'Mediation table', js: true do
         expect(page).to have_css('td.comment > div[data-behavior="trunk8toggle"]', count: 4)
         expect(page).to have_css('a.trunk8toggle-more', count: 3)
       end
+
       it 'can open and close long comments independently' do
         expect(page).to have_css('a.trunk8toggle-more', count: 3)
         expect(page).not_to have_css('a.trunk8toggle-less')
@@ -101,11 +102,13 @@ describe 'Mediation table', js: true do
         expect(page).to have_css('a.trunk8toggle-more', count: 2)
         expect(page).to have_css('a.trunk8toggle-less', count: 1)
       end
+
       it 'no truncation or "more" link for short comments' do
         within('td.comment > div[data-behavior="trunk8toggle"]', text: short_comment) do
           expect(page).not_to have_css('a.trunk8toggle-more')
         end
       end
+
       it 'column has size in header' do
         expect(page).to have_css('th.col-sm-3', text: 'Comment')
       end

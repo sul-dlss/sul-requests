@@ -6,6 +6,7 @@ describe Scan do
   it 'has the properly assigned Rails STI attribute value' do
     expect(subject.type).to eq 'Scan'
   end
+
   it 'validates based on if the item is scannable or not' do
     expect do
       described_class.create!(item_id: '1234',

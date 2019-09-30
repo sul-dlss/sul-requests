@@ -11,9 +11,11 @@ describe 'Home Page' do
     it 'has the application name as the page title' do
       expect(page).to have_title('SUL Requests')
     end
+
     it 'displays logo' do
       expect(page).to have_css('header.header-logo')
     end
+
     it 'displays top menu links' do
       expect(page).to have_css('.header-links a', text: 'My Account')
       expect(page).to have_css('.header-links a', text: 'Feedback')
@@ -32,6 +34,7 @@ describe 'Home Page' do
       expect(page).to have_css('#sul-footer-links a', text: 'Ask us')
       expect(page).to have_css('#sul-footer-links a', text: 'Opt out of analytics')
     end
+
     it 'displays SU footer' do
       expect(page).to have_css('#global-footer #bottom-logo img')
       expect(page).to have_css('#global-footer #bottom-text a', text: 'Stanford Home')

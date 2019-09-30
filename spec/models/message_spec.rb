@@ -19,6 +19,7 @@ describe Message, type: :model do
       subject.end_at = Time.zone.now + 5.minutes
       expect(subject).not_to be_active
     end
+
     it 'is not active if it is after the scheduled time' do
       subject.start_at = Time.zone.now - 5.minutes
       subject.end_at = Time.zone.now - 1.minute
@@ -37,6 +38,7 @@ describe Message, type: :model do
       subject.end_at = Time.zone.now + 1.minute
       expect(subject).not_to be_scheduled
     end
+
     it 'is not scheduled if the end time is not set' do
       subject.start_at = Time.zone.now - 1.minute
       expect(subject).not_to be_scheduled

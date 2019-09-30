@@ -33,17 +33,20 @@ describe CurrentUser do
       expect(subject).not_to be_persisted
       expect(subject.id).to be_nil
     end
+
     it 'returns a user when there is a user in the environment' do
       allow_any_instance_of(described_class).to receive_messages(user_id: 'some-user')
       expect(subject).to be_a User
       expect(subject.webauth).to eq 'some-user'
     end
+
     it 'returns the ldap groups as an array' do
       allow_any_instance_of(described_class).to receive_messages(user_id: 'some-user')
       ldap_attr = { 'WEBAUTH_LDAPPRIVGROUP' => 'ldap:group1|ldap:group2' }
       allow_any_instance_of(described_class).to receive_messages(ldap_attributes: ldap_attr)
       expect(subject.ldap_groups).to eq ['ldap:group1', 'ldap:group2']
     end
+
     it 'has the SUCARD Number id from LDAP and translates it to the library_id' do
       allow_any_instance_of(described_class).to receive_messages(user_id: 'some-user')
       allow(rails_req).to receive(:env).and_return('WEBAUTH_LDAP_SUCARDNUMBER' => '12345987654321')

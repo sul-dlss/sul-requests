@@ -23,12 +23,14 @@ describe ScansController do
       get :new, params: scannable_params
       expect(response).to be_successful
     end
+
     it 'sets defaults' do
       get :new, params: scannable_params
       expect(assigns[:request].origin).to eq 'SAL3'
       expect(assigns[:request].origin_location).to eq 'STACKS'
       expect(assigns[:request].item_id).to eq '12345'
     end
+
     it 'raises an error when an unscannable item is requested' do
       expect(
         -> { get :new, params: { item_id: '12345', origin: 'SAL1/2', origin_location: 'STACKS' } }
@@ -52,6 +54,7 @@ describe ScansController do
           )
         )
       end
+
       it 'is not allowed by users that only supply name and email' do
         expect(
           lambda do
@@ -66,6 +69,7 @@ describe ScansController do
           end
         ).to raise_error(CanCan::AccessDenied)
       end
+
       it 'is not allowed by users that only supply a library id' do
         expect(
           lambda do
@@ -80,6 +84,7 @@ describe ScansController do
           end
         ).to raise_error(CanCan::AccessDenied)
       end
+
       describe 'via get' do
         it 'raises an error' do
           expect(

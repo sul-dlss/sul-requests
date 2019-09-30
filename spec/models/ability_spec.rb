@@ -86,6 +86,7 @@ describe Ability do
 
       it { is_expected.to be_able_to(:create, page) }
       it { is_expected.to be_able_to(:create, mediated_page) }
+
       describe 'and views a success page with a token' do
         describe 'for a page' do
           let(:token) { page.encrypted_token }

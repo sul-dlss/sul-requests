@@ -27,6 +27,7 @@ describe 'Creating a mediated page request' do
       click_link '‹ Go back (show the login option)'
       expect(page).to have_css('a', text: "I don't have a SUNet ID")
     end
+
     it 'is possible if a name and email is filled out', js: true do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
 
@@ -106,6 +107,7 @@ describe 'Creating a mediated page request' do
 
       expect(MediatedPage.last.request_comment).to eq comment
     end
+
     it 'does not include a comments for requests that do not get them' do
       visit new_mediated_page_path(item_id: '1234', origin: 'HV-ARCHIVE', origin_location: 'STACKS-30')
 

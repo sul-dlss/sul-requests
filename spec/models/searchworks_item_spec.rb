@@ -38,11 +38,13 @@ describe SearchworksItem do
       expect(json).to have_key 'title'
       expect(json).to have_key 'holdings'
     end
+
     it 'handles JSON Parser Errors by returning an empty hash' do
       response = double('response', body: 'not-json', success?: true)
       allow(subject).to receive_messages(response: response)
       expect(json).to eq({})
     end
+
     it 'returns an empty hash when the response is not a success' do
       response = double('response', success?: false)
       allow(subject).to receive_messages(response: response)
@@ -76,9 +78,11 @@ describe SearchworksItem do
       it 'returns an NullResponse when there is a connection error' do
         expect(subject.send(:response)).to be_a NullResponse
       end
+
       it 'returns blank json' do
         expect(subject.send(:json)).to eq({})
       end
+
       it 'handles title, format, and holdings correctly' do
         expect(subject.title).to eq('')
         expect(subject.holdings).to eq([])
@@ -94,9 +98,11 @@ describe SearchworksItem do
       it 'has a title string' do
         expect(subject.title).to eq('The title of the object')
       end
+
       it 'has a format array' do
         expect(subject.format).to eq %w(Format1 Format2)
       end
+
       it 'has an array of nested OpenStruct objects describing the holdings' do
         expect(subject.holdings).to be_a Array
         expect(subject.holdings.length).to eq 1
@@ -107,6 +113,7 @@ describe SearchworksItem do
         expect(subject.holdings.first.locations.first).to be_a OpenStruct
         expect(subject.holdings.first.locations.first.code).to eq 'STACKS'
       end
+
       describe 'for an empty response' do
         before do
           allow(subject).to receive_messages(json: empty_json)
@@ -115,6 +122,7 @@ describe SearchworksItem do
         it 'has an empty title string' do
           expect(subject.title).to eq ''
         end
+
         it 'is an empty array' do
           expect(subject.holdings).to eq []
         end
@@ -243,12 +251,14 @@ describe SearchworksItem do
         expect(by_barcodes.first.barcode).to eq '3610512345678'
         expect(by_barcodes.last.barcode).to eq '3610587654321'
       end
+
       it 'returns the item given a single barcode' do
         by_barcodes = subject.where(barcodes: '12345679')
         expect(by_barcodes).to be_a Array
         expect(by_barcodes.length).to eq 1
         expect(by_barcodes.first.barcode).to eq '12345679'
       end
+
       it 'returns an empty array if the given barcode does not exist' do
         expect(subject.where(barcodes: 'not-a-barcode')).to eq([])
       end

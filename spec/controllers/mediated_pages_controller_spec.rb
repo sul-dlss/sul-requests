@@ -23,12 +23,14 @@ describe MediatedPagesController do
       get :new, params: normal_params
       expect(response).to be_successful
     end
+
     it 'sets defaults' do
       get :new, params: normal_params
       expect(assigns[:request].origin).to eq 'SPEC-COLL'
       expect(assigns[:request].origin_location).to eq 'STACKS'
       expect(assigns[:request].item_id).to eq '1234'
     end
+
     it 'raises an error if the item is unmediateable' do
       expect(
         lambda do
@@ -60,6 +62,7 @@ describe MediatedPagesController do
           )
         )
       end
+
       it 'is allowed if user name and email is filled out (via token)' do
         put :create, params: {
           request: {
@@ -75,6 +78,7 @@ describe MediatedPagesController do
         expect(response.location).to match(/#{successful_mediated_page_url(MediatedPage.last)}\?token=/)
         expect(MediatedPage.last.user).to eq User.last
       end
+
       it 'is allowed if the library ID field is filled out' do
         put :create, params: {
           request: {
@@ -91,6 +95,7 @@ describe MediatedPagesController do
         expect(User.last.library_id).to eq '12345'
         expect(MediatedPage.last.user).to eq User.last
       end
+
       describe 'for HOPKINS' do
         it 'is not by library ID' do
           expect(
@@ -107,6 +112,7 @@ describe MediatedPagesController do
             end
           ).to raise_error(CanCan::AccessDenied)
         end
+
         it 'is not by name and email' do
           expect(
             lambda do

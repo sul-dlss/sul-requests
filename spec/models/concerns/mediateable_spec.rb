@@ -17,6 +17,7 @@ describe Mediateable do
     it 'is false if the item does not have the scannable attributes' do
       expect(subject).not_to be_mediateable
     end
+
     it 'returns true if the item is in SPEC-COLL' do
       subject.library = 'SPEC-COLL'
       expect(subject).to be_mediateable
@@ -32,6 +33,7 @@ describe Mediateable do
       subject.location = 'PAGE-MP'
       expect(subject).to be_mediateable
     end
+
     describe 'HOPKINS' do
       before { subject.library = 'HOPKINS' }
 
@@ -39,6 +41,7 @@ describe Mediateable do
         subject.location = 'STACKS'
         expect(subject).to be_mediateable
       end
+
       it 'returns false if the item is not in the STACKS location' do
         subject.location = 'SOMEWHERE-ELSE'
         expect(subject).not_to be_mediateable
@@ -52,6 +55,7 @@ describe Mediateable do
         subject.location = 'SOMEWHERE-30'
         expect(subject).to be_mediateable
       end
+
       it 'returns false if the item is not in a *-30 location' do
         subject.location = 'SOMEWHERE-ELSE'
         expect(subject).not_to be_mediateable

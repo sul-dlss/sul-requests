@@ -25,6 +25,7 @@ describe TokenEncryptable do
     it 'includes id and created_at by default' do
       expect(subject.to_token).to eq '123now'
     end
+
     it 'shuold include attributes added by the class that is mixing in' do
       subject.new_attribute = 'my_new_attr'
       expect(subject.to_token).to eq '123nowmy_new_attr'
@@ -39,9 +40,11 @@ describe TokenEncryptable do
       it 'returns an encrypted_token longer than the original' do
         expect(encrypted_token.length).to be > token.length
       end
+
       it 'is able to verify that a given encrypted token is valid' do
         expect(subject).to be_valid_token(encrypted_token)
       end
+
       it 'raises an error when passed an invalid encrypted token' do
         expect(-> { subject.valid_token?(token) }).to raise_error(ActiveSupport::MessageVerifier::InvalidSignature)
       end

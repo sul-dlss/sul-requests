@@ -177,15 +177,18 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
         subject.request.update(barcodes: %w(111 222))
         expect(subject.send(:copy_notes)).to eq ['111:note for 111', '222:note for 222']
       end
+
       it 'only includes notes when they are for an included barcode' do
         subject.request.update(public_notes: { '111' => 'note for 111', '222' => 'note for 222' })
         subject.request.update(barcodes: ['111'])
         expect(subject.send(:copy_notes)).to eq ['111:note for 111']
       end
+
       it 'is empty Array if no barcodes' do
         subject.request.update(public_notes: { '111' => 'note for 111', '222' => 'note for 222' })
         expect(subject.send(:copy_notes)).to eq []
       end
+
       it 'is nil if no public_notes' do
         subject.request.update(barcodes: %w(111 222))
         expect(subject.send(:copy_notes)).to be_nil
