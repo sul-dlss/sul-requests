@@ -15,10 +15,12 @@ describe ApplicationHelper do
     it 'is a horizontal layout' do
       expect(options[:layout]).to eq :horizontal
     end
+
     it 'defines a custom column class' do
       expect(label_column_class).to eq 'col-sm-4'
       expect(options[:label_col]).to eq label_column_class
     end
+
     it 'defines a custom column class' do
       expect(content_column_class).to eq 'col-sm-8'
       expect(options[:control_col]).to eq content_column_class
@@ -37,12 +39,15 @@ describe ApplicationHelper do
     it 'returns a button tag' do
       expect(button).to have_css('button[type="submit"]')
     end
+
     it 'includes an ID' do
       expect(button).to have_css('button#send_request_via_sunet')
     end
+
     it 'includes the appropriate button classes' do
       expect(button).to have_css('button.btn.btn-primary.btn-full')
     end
+
     it 'has the appropriate text' do
       expect(button).to have_text(/Send request.*login with SUNet ID/)
     end

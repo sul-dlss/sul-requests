@@ -83,6 +83,7 @@ describe RequestsHelper do
     it 'is "Deliver to" when if there are mutliple possiblities' do
       expect(label_for_pickup_libraries_dropdown(%w(GREEN MUSIC))).to eq 'Deliver to'
     end
+
     it 'is "Will be delivered to" when there is only one possibility' do
       expect(label_for_pickup_libraries_dropdown(['GREEN'])).to eq 'Will be delivered to'
     end
@@ -109,9 +110,11 @@ describe RequestsHelper do
     it 'constructs requester info for webauth user' do
       expect(requester_info(webauth_user)).to eq '<a href="mailto:jstanford@stanford.edu">jstanford@stanford.edu</a>'
     end
+
     it 'constructs requester info for non-webauth user' do
       expect(requester_info(non_webauth_user)).to eq '<a href="mailto:joe@xyz.com">Joe (joe@xyz.com)</a>'
     end
+
     it 'constructs requester info for a library id user' do
       expect(requester_info(library_id_user)).to eq '123456'
     end

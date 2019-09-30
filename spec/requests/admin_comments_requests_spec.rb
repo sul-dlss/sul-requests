@@ -32,6 +32,7 @@ describe 'AdminComments' do
           post("#{url}.js", params: { admin_comment: { comment: 'This is yet another comment' } }, headers: headers)
           expect(response).to be_successful
         end
+
         it 'returns the JSON of the comment object that was just created' do
           post("#{url}.js", params: { admin_comment: { comment: 'This is yet another comment' } }, headers: headers)
           response_comment = JSON.parse(response.body)

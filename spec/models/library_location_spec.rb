@@ -8,12 +8,15 @@ describe LibraryLocation do
   it 'includes the mediateable mixin' do
     expect(request.library_location).to be_a Mediateable
   end
+
   it 'includes the scannable mixin' do
     expect(request.library_location).to be_a Scannable
   end
+
   it 'includes the hold recallable mixin' do
     expect(request.library_location).to be_a HoldRecallable
   end
+
   describe '#pageable?' do
     it 'is true if the LibraryLocation is not mediatable or hold recallable' do
       request.origin = 'GREEN'
@@ -39,11 +42,13 @@ describe LibraryLocation do
       request.origin_location = 'STACKS'
       expect(described_class.new(request).pickup_libraries.keys).to eq SULRequests::Application.config.pickup_libraries
     end
+
     it 'returns pickup libraries specific to a library if configured' do
       request.origin = 'ARS'
       request.origin_location = 'STACKS'
       expect(described_class.new(request).pickup_libraries).to eq('ARS' => 'Archive of Recorded Sound')
     end
+
     it 'returns pickup libraries specific to a location if configured' do
       request.origin = 'SAL3'
       request.origin_location = 'PAGE-MU'

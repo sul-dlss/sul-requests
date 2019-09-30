@@ -106,6 +106,7 @@ describe User do
     it 'returns false when the user has no WebAuth attribute' do
       expect(subject).not_to be_webauth_user
     end
+
     it 'returns true when the user has a WebAuth attribute' do
       subject.webauth = 'WebAuth User'
       expect(subject).to be_webauth_user
@@ -122,6 +123,7 @@ describe User do
       it 'returns true when the user has a name and email address but not a webauth ID' do
         expect(subject).to be_non_webauth_user
       end
+
       it 'returns false when the user has a webauth ID' do
         subject.webauth = 'jstanford'
         expect(subject).not_to be_non_webauth_user
@@ -134,6 +136,7 @@ describe User do
       subject.library_id = '12345'
       expect(subject).to be_library_id_user
     end
+
     it 'is false when the user has a webauth ID' do
       subject.webauth = 'jstanford'
       subject.library_id = '12345'
@@ -145,6 +148,7 @@ describe User do
     it 'returns false when the user is not a super admin' do
       expect(subject).not_to be_super_admin
     end
+
     it 'returns true when the user is in a superadmin group' do
       allow(subject).to receive_messages(ldap_groups: ['FAKE-TEST-SUPER-ADMIN-GROUP'])
       expect(subject).to be_super_admin
@@ -155,6 +159,7 @@ describe User do
     it 'returns false when the user is not a site admin' do
       expect(subject).not_to be_site_admin
     end
+
     it 'returns true when the user is in a site admin group' do
       allow(subject).to receive_messages(ldap_groups: ['FAKE-TEST-SITE-ADMIN-GROUP'])
       expect(subject).to be_site_admin
@@ -165,6 +170,7 @@ describe User do
     it 'returns false when the user is not in an originating library admin group' do
       expect(subject).not_to be_admin_for_origin('FAKE-ORIGIN-LIBRARY')
     end
+
     it 'returns true when the user is in a site admin group' do
       allow(subject).to receive_messages(ldap_groups: ['FAKE-ORIGIN-LIBRARY-TEST-LDAP-GROUP'])
       expect(subject).to be_admin_for_origin('FAKE-ORIGIN-LIBRARY')

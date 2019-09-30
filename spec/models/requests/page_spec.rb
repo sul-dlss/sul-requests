@@ -7,6 +7,7 @@ describe Page do
     it 'mixins TokenEncryptable' do
       expect(subject).to be_kind_of TokenEncryptable
     end
+
     it 'adds the user email address to the token' do
       subject.user = build(:non_webauth_user)
       expect(subject.to_token).to match(/jstanford@stanford.edu$/)

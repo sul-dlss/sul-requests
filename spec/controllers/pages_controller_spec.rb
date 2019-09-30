@@ -19,12 +19,14 @@ describe PagesController do
       get :new, params: normal_params
       expect(response).to be_successful
     end
+
     it 'sets defaults' do
       get :new, params: normal_params
       expect(assigns[:request].origin).to eq 'GREEN'
       expect(assigns[:request].origin_location).to eq 'STACKS'
       expect(assigns[:request].item_id).to eq '1234'
     end
+
     it 'raises an error when the item is not pageable' do
       expect(
         lambda do
@@ -87,6 +89,7 @@ describe PagesController do
         expect(response.location).to match(/#{successful_page_url(Page.last)}\?token=/)
         expect(Page.last.user).to eq User.last
       end
+
       it 'is allowed if the library ID field is filled out' do
         put :create, params: {
           request: {
@@ -102,6 +105,7 @@ describe PagesController do
         expect(User.last.library_id).to eq '12345'
         expect(Page.last.user).to eq User.last
       end
+
       context 'for faculty with a sponsored proxy group' do
         let(:user) do
           build(:webauth_user).tap do |u|
