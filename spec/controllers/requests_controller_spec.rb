@@ -19,23 +19,17 @@ describe RequestsController do
   describe '#new' do
     describe 'required parameters' do
       it 'item id, library, and location' do
-        expect(
-          lambda do
-            get(:new, params: { item_id: '1234', origin: 'GREEN' })
-          end
-        ).to raise_error(ActionController::ParameterMissing)
+        expect do
+          get(:new, params: { item_id: '1234', origin: 'GREEN' })
+        end.to raise_error(ActionController::ParameterMissing)
 
-        expect(
-          lambda do
-            get(:new, params: { origin: 'GREEN', origin_location: 'STACKS' })
-          end
-        ).to raise_error(ActionController::ParameterMissing)
+        expect do
+          get(:new, params: { origin: 'GREEN', origin_location: 'STACKS' })
+        end.to raise_error(ActionController::ParameterMissing)
 
-        expect(
-          lambda do
-            get(:new, params: { item_id: '1234', origin_location: 'STACKS' })
-          end
-        ).to raise_error(ActionController::ParameterMissing)
+        expect do
+          get(:new, params: { item_id: '1234', origin_location: 'STACKS' })
+        end.to raise_error(ActionController::ParameterMissing)
       end
     end
 

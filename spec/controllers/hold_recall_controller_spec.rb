@@ -29,11 +29,9 @@ describe HoldRecallsController do
     end
 
     it 'raises an error if the item is unmediateable' do
-      expect(
-        lambda do
-          get :new, params: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
-        end
-      ).to raise_error(HoldRecallsController::NotHoldRecallableError)
+      expect do
+        get :new, params: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
+      end.to raise_error(HoldRecallsController::NotHoldRecallableError)
     end
   end
 
@@ -55,18 +53,16 @@ describe HoldRecallsController do
       end
 
       it 'is not allowed if user name and email is filled out' do
-        expect(
-          lambda do
-            put :create, params: {
-              request: normal_params.merge(
-                user_attributes: {
-                  name: 'Jane Stanford',
-                  email: 'jstanford@stanford.edu'
-                }
-              )
-            }
-          end
-        ).to raise_error(CanCan::AccessDenied)
+        expect do
+          put :create, params: {
+            request: normal_params.merge(
+              user_attributes: {
+                name: 'Jane Stanford',
+                email: 'jstanford@stanford.edu'
+              }
+            )
+          }
+        end.to raise_error(CanCan::AccessDenied)
       end
 
       it 'is allowed if the library ID field is filled out' do
@@ -87,11 +83,9 @@ describe HoldRecallsController do
 
       describe 'via get' do
         it 'raises an error' do
-          expect(
-            lambda do
-              get :create, params: { request: normal_params }
-            end
-          ).to raise_error(CanCan::AccessDenied)
+          expect do
+            get :create, params: { request: normal_params }
+          end.to raise_error(CanCan::AccessDenied)
         end
       end
     end
@@ -118,11 +112,9 @@ describe HoldRecallsController do
 
       it 'does not send a confirmation email' do
         stub_symphony_response(build(:symphony_page_with_single_item))
-        expect(
-          lambda do
-            put :create, params: { request: normal_params }
-          end
-        ).not_to change { ConfirmationMailer.deliveries.count }
+        expect do
+          put :create, params: { request: normal_params }
+        end.not_to change { ConfirmationMailer.deliveries.count }
       end
 
       # Note:  cannot trigger activejob from this spec to check ApprovalStatusMailer

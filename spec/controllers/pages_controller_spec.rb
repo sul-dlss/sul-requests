@@ -28,11 +28,9 @@ describe PagesController do
     end
 
     it 'raises an error when the item is not pageable' do
-      expect(
-        lambda do
-          get :new, params: { item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'ART' }
-        end
-      ).to raise_error(PagesController::UnpageableItemError)
+      expect do
+        get :new, params: { item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'ART' }
+      end.to raise_error(PagesController::UnpageableItemError)
     end
   end
 
@@ -159,13 +157,11 @@ describe PagesController do
 
       describe 'via get' do
         it 'raises an error' do
-          expect(
-            lambda do
-              get :create, params: {
-                request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
-              }
-            end
-          ).to raise_error(CanCan::AccessDenied)
+          expect do
+            get :create, params: {
+              request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
+            }
+          end.to raise_error(CanCan::AccessDenied)
         end
       end
     end
@@ -214,37 +210,31 @@ describe PagesController do
 
       it 'does not send a confirmation email' do
         stub_symphony_response(build(:symphony_page_with_single_item))
-        expect(
-          lambda do
-            put :create, params: {
-              request: {
-                item_id: '1234',
-                origin: 'GREEN',
-                origin_location: 'STACKS',
-                destination: 'ART'
-              }
+        expect do
+          put :create, params: {
+            request: {
+              item_id: '1234',
+              origin: 'GREEN',
+              origin_location: 'STACKS',
+              destination: 'ART'
             }
-          end
-        ).not_to change { ConfirmationMailer.deliveries.count }
+          }
+        end.not_to change { ConfirmationMailer.deliveries.count }
       end
 
       # Note:  cannot trigger activejob from this spec to check ApprovalStatusMailer
 
       context 'create/update' do
         it 'raises an error when the honey-pot email field is filled in on create' do
-          expect(
-            lambda do
-              post :create, params: { request: normal_params, email: 'something' }
-            end
-          ).to raise_error(RequestsController::HoneyPotFieldError)
+          expect do
+            post :create, params: { request: normal_params, email: 'something' }
+          end.to raise_error(RequestsController::HoneyPotFieldError)
         end
 
         it 'raises an error when the honey-pot email field is filled in on update' do
-          expect(
-            lambda do
-              put :update, params: { id: page[:id], email: 'something' }
-            end
-          ).to raise_error(RequestsController::HoneyPotFieldError)
+          expect do
+            put :update, params: { id: page[:id], email: 'something' }
+          end.to raise_error(RequestsController::HoneyPotFieldError)
         end
       end
     end
@@ -289,7 +279,7 @@ describe PagesController do
       let(:user) { create(:webauth_user) }
 
       it 'raises an error' do
-        expect(-> { put(:update, params: { id: page[:id] }) }).to raise_error(CanCan::AccessDenied)
+        expect { put(:update, params: { id: page[:id] }) }.to raise_error(CanCan::AccessDenied)
       end
     end
 

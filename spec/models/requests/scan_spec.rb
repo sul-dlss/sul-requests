@@ -54,9 +54,9 @@ describe Scan do
     let(:subject) { create(:scan, user: create(:webauth_user)) }
 
     it 'returns true' do
-      expect(
-        -> { subject.send_confirmation! }
-      ).not_to change { ConfirmationMailer.deliveries.count }
+      expect do
+        subject.send_confirmation!
+      end.not_to change { ConfirmationMailer.deliveries.count }
       expect(subject.send_confirmation!).to be true
     end
   end
@@ -66,9 +66,9 @@ describe Scan do
       let(:subject) { create(:scan, user: create(:library_id_user)) }
 
       it 'does not send an approval status email' do
-        expect(
-          -> { subject.send_approval_status! }
-        ).not_to change { ApprovalStatusMailer.deliveries.count }
+        expect do
+          subject.send_approval_status!
+        end.not_to change { ApprovalStatusMailer.deliveries.count }
       end
     end
 
@@ -76,9 +76,9 @@ describe Scan do
       let(:subject) { create(:scan, user: create(:webauth_user)) }
 
       it 'sends an approval status email' do
-        expect(
-          -> { subject.send_approval_status! }
-        ).to change { ApprovalStatusMailer.deliveries.count }.by(1)
+        expect do
+          subject.send_approval_status!
+        end.to change { ApprovalStatusMailer.deliveries.count }.by(1)
       end
     end
   end

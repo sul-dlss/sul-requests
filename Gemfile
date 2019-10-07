@@ -71,7 +71,7 @@ group :test do
 end
 
 # Sidekiq is our background processing framework, run via Active Job
-gem 'sidekiq'
+gem 'sidekiq', '< 6' # Pin to < 6 until we can upgrade to be compatible
 gem 'sidekiq-statistic'
 
 group :development, :test do
