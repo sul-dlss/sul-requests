@@ -30,7 +30,7 @@ describe AdminController do
       let(:user) { create(:webauth_user) }
 
       it 'is not accessible' do
-        expect(-> { get :index }).to raise_error(CanCan::AccessDenied)
+        expect { get :index }.to raise_error(CanCan::AccessDenied)
       end
     end
 
@@ -71,7 +71,7 @@ describe AdminController do
       end
 
       it 'is not be accessible when the user is not an admin for the location' do
-        expect(-> { get :show, params: { id: 'SPEC-COLL' } }).to raise_error(CanCan::AccessDenied)
+        expect { get :show, params: { id: 'SPEC-COLL' } }.to raise_error(CanCan::AccessDenied)
       end
     end
 
@@ -79,7 +79,7 @@ describe AdminController do
       let(:user) { create(:webauth_user) }
 
       it 'is not be accessible' do
-        expect(-> { get :show, params: { id: 'SPEC-COLL' } }).to raise_error(CanCan::AccessDenied)
+        expect { get :show, params: { id: 'SPEC-COLL' } }.to raise_error(CanCan::AccessDenied)
       end
     end
 

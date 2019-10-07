@@ -32,9 +32,9 @@ describe ScansController do
     end
 
     it 'raises an error when an unscannable item is requested' do
-      expect(
-        -> { get :new, params: { item_id: '12345', origin: 'SAL1/2', origin_location: 'STACKS' } }
-      ).to raise_error(ScansController::UnscannableItemError)
+      expect do
+        get :new, params: { item_id: '12345', origin: 'SAL1/2', origin_location: 'STACKS' }
+      end.to raise_error(ScansController::UnscannableItemError)
     end
   end
 
@@ -56,40 +56,36 @@ describe ScansController do
       end
 
       it 'is not allowed by users that only supply name and email' do
-        expect(
-          lambda do
-            put :create, params: {
-              request: {
-                item_id: '12345',
-                origin: 'SAL3',
-                origin_location: 'STACKS',
-                user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }
-              }
+        expect do
+          put :create, params: {
+            request: {
+              item_id: '12345',
+              origin: 'SAL3',
+              origin_location: 'STACKS',
+              user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }
             }
-          end
-        ).to raise_error(CanCan::AccessDenied)
+          }
+        end.to raise_error(CanCan::AccessDenied)
       end
 
       it 'is not allowed by users that only supply a library id' do
-        expect(
-          lambda do
-            put :create, params: {
-              request: {
-                item_id: '12345',
-                origin: 'SAL3',
-                origin_location: 'STACKS',
-                user_attributes: { library_id: '12345' }
-              }
+        expect do
+          put :create, params: {
+            request: {
+              item_id: '12345',
+              origin: 'SAL3',
+              origin_location: 'STACKS',
+              user_attributes: { library_id: '12345' }
             }
-          end
-        ).to raise_error(CanCan::AccessDenied)
+          }
+        end.to raise_error(CanCan::AccessDenied)
       end
 
       describe 'via get' do
         it 'raises an error' do
-          expect(
-            -> { get :create, params: { request: { item_id: '12345', origin: 'GREEN', origin_location: 'STACKS' } } }
-          ).to raise_error(CanCan::AccessDenied)
+          expect do
+            get :create, params: { request: { item_id: '12345', origin: 'GREEN', origin_location: 'STACKS' } }
+          end.to raise_error(CanCan::AccessDenied)
         end
       end
     end
@@ -98,7 +94,7 @@ describe ScansController do
       let(:user) { create(:non_webauth_user) }
 
       it 'raises an error' do
-        expect(-> { put(:create, params: { request: { origin: 'SAL3' } }) }).to raise_error(CanCan::AccessDenied)
+        expect { put(:create, params: { request: { origin: 'SAL3' } }) }.to raise_error(CanCan::AccessDenied)
       end
     end
 
@@ -158,20 +154,18 @@ describe ScansController do
       it 'does not send a confirmation email' do
         stub_searchworks_api_json(build(:sal3_holdings))
         stub_symphony_response(build(:symphony_page_with_single_item))
-        expect(
-          lambda do
-            post :create, params: {
-              illiad_success: true,
-              request: {
-                item_id: '12345',
-                origin: 'SAL3',
-                origin_location: 'STACKS',
-                barcodes: ['12345678'],
-                section_title: 'Some really important chapter'
-              }
+        expect do
+          post :create, params: {
+            illiad_success: true,
+            request: {
+              item_id: '12345',
+              origin: 'SAL3',
+              origin_location: 'STACKS',
+              barcodes: ['12345678'],
+              section_title: 'Some really important chapter'
             }
-          end
-        ).not_to change { ConfirmationMailer.deliveries.count }
+          }
+        end.not_to change { ConfirmationMailer.deliveries.count }
       end
 
       # Note:  cannot trigger activejob from this spec to check ApprovalStatusMailer
@@ -223,7 +217,7 @@ describe ScansController do
       let(:user) { create(:anon_user) }
 
       it 'raises an error' do
-        expect(-> { put(:update, params: { id: scan[:id] }) }).to raise_error(CanCan::AccessDenied)
+        expect { put(:update, params: { id: scan[:id] }) }.to raise_error(CanCan::AccessDenied)
       end
     end
 
@@ -245,7 +239,7 @@ describe ScansController do
       let(:user) { create(:webauth_user) }
 
       it 'raises an error' do
-        expect(-> { put(:update, params: { id: scan[:id] }) }).to raise_error(CanCan::AccessDenied)
+        expect { put(:update, params: { id: scan[:id] }) }.to raise_error(CanCan::AccessDenied)
       end
     end
 

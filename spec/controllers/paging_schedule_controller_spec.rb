@@ -6,7 +6,7 @@ describe PagingScheduleController do
   describe 'index' do
     describe 'by anonmyous users' do
       it 'raises an error' do
-        expect(-> { get :index }).to raise_error(CanCan::AccessDenied)
+        expect { get :index }.to raise_error(CanCan::AccessDenied)
       end
     end
 

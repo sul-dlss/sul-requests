@@ -46,7 +46,7 @@ describe TokenEncryptable do
       end
 
       it 'raises an error when passed an invalid encrypted token' do
-        expect(-> { subject.valid_token?(token) }).to raise_error(ActiveSupport::MessageVerifier::InvalidSignature)
+        expect { subject.valid_token?(token) }.to raise_error(ActiveSupport::MessageVerifier::InvalidSignature)
       end
     end
   end

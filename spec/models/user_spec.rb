@@ -6,9 +6,9 @@ describe User do
   describe 'validations' do
     it 'onlies allow unique webauth ids' do
       described_class.create!(webauth: 'some-user')
-      expect(
-        -> { described_class.create!(webauth: 'some-user') }
-      ).to raise_error(ActiveRecord::RecordInvalid)
+      expect do
+        described_class.create!(webauth: 'some-user')
+      end.to raise_error(ActiveRecord::RecordInvalid)
     end
   end
 

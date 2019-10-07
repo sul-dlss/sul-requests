@@ -202,9 +202,9 @@ describe MediatedPage do
 
       it 'does not send a confirmation email' do
         subject.user = create(:library_id_user)
-        expect(
-          -> { subject.send_confirmation! }
-        ).not_to change { ConfirmationMailer.deliveries.count }
+        expect do
+          subject.send_confirmation!
+        end.not_to change { ConfirmationMailer.deliveries.count }
       end
     end
 
@@ -212,9 +212,9 @@ describe MediatedPage do
       let!(:subject) { create(:mediated_page) }
 
       it 'sends a confirmation email' do
-        expect(
-          -> { subject.send_confirmation! }
-        ).to change { ConfirmationMailer.deliveries.count }.by(1)
+        expect do
+          subject.send_confirmation!
+        end.to change { ConfirmationMailer.deliveries.count }.by(1)
       end
     end
   end
@@ -223,9 +223,9 @@ describe MediatedPage do
     let!(:subject) { create(:mediated_page) }
 
     it 'returns true' do
-      expect(
-        -> { subject.send_approval_status! }
-      ).not_to change { ApprovalStatusMailer.deliveries.count }
+      expect do
+        subject.send_approval_status!
+      end.not_to change { ApprovalStatusMailer.deliveries.count }
       expect(subject.send_approval_status!).to be true
     end
   end

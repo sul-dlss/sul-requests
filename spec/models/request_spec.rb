@@ -5,29 +5,27 @@ require 'rails_helper'
 describe Request do
   describe 'validations' do
     it 'requires the basic set of information to be present' do
-      expect(-> { described_class.create! }).to raise_error(ActiveRecord::RecordInvalid)
-      expect(lambda {
-               described_class.create!(
-                 item_id: '1234',
-                 origin: 'GREEN'
-               )
-             }).to raise_error(ActiveRecord::RecordInvalid)
-      expect(-> { described_class.create! }).to raise_error(ActiveRecord::RecordInvalid)
-      expect(-> { described_class.create! }).to raise_error(ActiveRecord::RecordInvalid)
+      expect { described_class.create! }.to raise_error(ActiveRecord::RecordInvalid)
+      expect do
+        described_class.create!(
+          item_id: '1234',
+          origin: 'GREEN'
+        )
+      end.to raise_error(ActiveRecord::RecordInvalid)
+      expect { described_class.create! }.to raise_error(ActiveRecord::RecordInvalid)
+      expect { described_class.create! }.to raise_error(ActiveRecord::RecordInvalid)
     end
 
     it 'requires that the requested barcodes exist in the holdings of the requested location' do
       stub_searchworks_api_json(build(:multiple_holdings))
-      expect(
-        lambda do
-          described_class.create!(
-            item_id: '1234',
-            origin: 'GREEN',
-            origin_location: 'STACKS',
-            barcodes: %w(9999999 3610512345678)
-          )
-        end
-      ).to raise_error(
+      expect do
+        described_class.create!(
+          item_id: '1234',
+          origin: 'GREEN',
+          origin_location: 'STACKS',
+          barcodes: %w(9999999 3610512345678)
+        )
+      end.to raise_error(
         ActiveRecord::RecordInvalid, 'Validation failed: A selected item is not located in the requested location'
       )
       described_class.create!(
@@ -40,16 +38,14 @@ describe Request do
     end
 
     it 'requires that when a needed_date is provided it is not before today' do
-      expect(
-        lambda do
-          described_class.create!(
-            item_id: '1234',
-            origin: 'GREEN',
-            origin_location: 'STACKS',
-            needed_date: Time.zone.today - 1.day
-          )
-        end
-      ).to raise_error(
+      expect do
+        described_class.create!(
+          item_id: '1234',
+          origin: 'GREEN',
+          origin_location: 'STACKS',
+          needed_date: Time.zone.today - 1.day
+        )
+      end.to raise_error(
         ActiveRecord::RecordInvalid, 'Validation failed: Needed on Date cannot be earlier than today'
       )
     end
@@ -377,19 +373,17 @@ describe Request do
         User.create(library_id: bad_id, email: 'jstanford@stanford.edu')
         expect(User.where(library_id: bad_id, email: 'jstanford@stanford.edu').length).to eq 1
         # User comes in and just adds a name+email with the same email address as the bad ID
-        expect(
-          lambda do
-            described_class.create!(
-              item_id: '1234',
-              origin: 'GREEN',
-              origin_location: 'STACKS',
-              user_attributes: {
-                name: 'Jane Stanford',
-                email: 'jstanford@stanford.edu'
-              }
-            )
-          end
-        ).to change(User, :count).by(1)
+        expect do
+          described_class.create!(
+            item_id: '1234',
+            origin: 'GREEN',
+            origin_location: 'STACKS',
+            user_attributes: {
+              name: 'Jane Stanford',
+              email: 'jstanford@stanford.edu'
+            }
+          )
+        end.to change(User, :count).by(1)
       end
 
       it 'does not duplicate library ids' do
@@ -530,9 +524,9 @@ describe Request do
     let(:subject) { create(:page, user: create(:webauth_user)) }
 
     it 'returns true (other classes can implement confirmation if they want it)' do
-      expect(
-        -> { subject.send_confirmation! }
-      ).not_to change { ConfirmationMailer.deliveries.count }
+      expect do
+        subject.send_confirmation!
+      end.not_to change { ConfirmationMailer.deliveries.count }
       expect(subject.send_confirmation!).to be true
     end
   end
@@ -542,9 +536,9 @@ describe Request do
       let(:subject) { create(:page, user: create(:library_id_user)) }
 
       it 'does not send an approval status email' do
-        expect(
-          -> { subject.send_approval_status! }
-        ).not_to change { ApprovalStatusMailer.deliveries.count }
+        expect do
+          subject.send_approval_status!
+        end.not_to change { ApprovalStatusMailer.deliveries.count }
       end
     end
 
@@ -552,9 +546,9 @@ describe Request do
       let(:subject) { create(:page, user: create(:webauth_user)) }
 
       it 'sends an approval status email' do
-        expect(
-          -> { subject.send_approval_status! }
-        ).to change { ApprovalStatusMailer.deliveries.count }.by(1)
+        expect do
+          subject.send_approval_status!
+        end.to change { ApprovalStatusMailer.deliveries.count }.by(1)
       end
     end
   end

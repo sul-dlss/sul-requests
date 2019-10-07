@@ -24,9 +24,9 @@ describe 'Viewing all requests' do
       before { stub_current_user(create(:anon_user)) }
 
       it 'raises an error' do
-        expect(
-          -> { visit messages_path }
-        ).to raise_error(CanCan::AccessDenied)
+        expect do
+          visit messages_path
+        end.to raise_error(CanCan::AccessDenied)
       end
     end
   end
@@ -59,9 +59,9 @@ describe 'Viewing all requests' do
       before { stub_current_user(create(:anon_user)) }
 
       it 'raises an error' do
-        expect(
-          -> { visit new_message_path }
-        ).to raise_error(CanCan::AccessDenied)
+        expect do
+          visit new_message_path
+        end.to raise_error(CanCan::AccessDenied)
       end
     end
   end
@@ -98,9 +98,9 @@ describe 'Viewing all requests' do
       before { stub_current_user(create(:anon_user)) }
 
       it 'raises an error' do
-        expect(
-          -> { visit edit_message_path(message) }
-        ).to raise_error(CanCan::AccessDenied)
+        expect do
+          visit edit_message_path(message)
+        end.to raise_error(CanCan::AccessDenied)
       end
     end
   end

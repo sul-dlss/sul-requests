@@ -32,11 +32,9 @@ describe MediatedPagesController do
     end
 
     it 'raises an error if the item is unmediateable' do
-      expect(
-        lambda do
-          get :new, params: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
-        end
-      ).to raise_error(MediatedPagesController::UnmediateableItemError)
+      expect do
+        get :new, params: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
+      end.to raise_error(MediatedPagesController::UnmediateableItemError)
     end
   end
 
@@ -98,49 +96,43 @@ describe MediatedPagesController do
 
       describe 'for HOPKINS' do
         it 'is not by library ID' do
-          expect(
-            lambda do
-              put :create, params: {
-                request: {
-                  item_id: '1234',
-                  origin: 'HOPKINS',
-                  origin_location: 'STACKS',
-                  destination: 'GREEN',
-                  user_attributes: { library_id: '12345' }
-                }
+          expect do
+            put :create, params: {
+              request: {
+                item_id: '1234',
+                origin: 'HOPKINS',
+                origin_location: 'STACKS',
+                destination: 'GREEN',
+                user_attributes: { library_id: '12345' }
               }
-            end
-          ).to raise_error(CanCan::AccessDenied)
+            }
+          end.to raise_error(CanCan::AccessDenied)
         end
 
         it 'is not by name and email' do
-          expect(
-            lambda do
-              put :create, params: {
-                request: {
-                  item_id: '1234',
-                  origin: 'HOPKINS',
-                  origin_location: 'STACKS',
-                  destination: 'GREEN',
-                  user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }
-                }
+          expect do
+            put :create, params: {
+              request: {
+                item_id: '1234',
+                origin: 'HOPKINS',
+                origin_location: 'STACKS',
+                destination: 'GREEN',
+                user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }
               }
-            end
-          ).to raise_error(CanCan::AccessDenied)
+            }
+          end.to raise_error(CanCan::AccessDenied)
         end
       end
 
       describe 'via get' do
         it 'raises an error' do
-          expect(
-            lambda do
-              get :create, params: {
-                request: {
-                  item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'SPEC-COLL'
-                }
+          expect do
+            get :create, params: {
+              request: {
+                item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'SPEC-COLL'
               }
-            end
-          ).to raise_error(CanCan::AccessDenied)
+            }
+          end.to raise_error(CanCan::AccessDenied)
         end
       end
     end
@@ -165,55 +157,49 @@ describe MediatedPagesController do
 
       it 'does not send an approval status email' do
         stub_symphony_response(build(:symphony_page_with_single_item))
-        expect(
-          lambda do
-            put :create, params: {
-              request: {
-                item_id: '1234',
-                origin: 'SPEC-COLL',
-                origin_location: 'STACKS',
-                destination: 'SPEC-COLL',
-                needed_date: Time.zone.today + 1.year
-              }
+        expect do
+          put :create, params: {
+            request: {
+              item_id: '1234',
+              origin: 'SPEC-COLL',
+              origin_location: 'STACKS',
+              destination: 'SPEC-COLL',
+              needed_date: Time.zone.today + 1.year
             }
-          end
-        ).not_to change {
+          }
+        end.not_to change {
           ApprovalStatusMailer.deliveries.count { |x| x.subject =~ /Your request/ }
         }
       end
 
       it 'sends a confirmation email to the user' do
-        expect(
-          lambda do
-            put :create, params: {
-              request: {
-                item_id: '1234',
-                origin: 'SPEC-COLL',
-                origin_location: 'STACKS',
-                destination: 'SPEC-COLL',
-                needed_date: Time.zone.today + 1.year
-              }
+        expect do
+          put :create, params: {
+            request: {
+              item_id: '1234',
+              origin: 'SPEC-COLL',
+              origin_location: 'STACKS',
+              destination: 'SPEC-COLL',
+              needed_date: Time.zone.today + 1.year
             }
-          end
-        ).to change { ConfirmationMailer.deliveries.count { |x| x.subject != 'New request needs mediation' } }.by(1)
+          }
+        end.to change { ConfirmationMailer.deliveries.count { |x| x.subject != 'New request needs mediation' } }.by(1)
       end
 
       it 'sends an email to the mediator' do
         mediator_contact_info = { 'SPEC-COLL' => { email: 'someone@example.com' } }
         allow(Rails.application.config).to receive(:mediator_contact_info).and_return(mediator_contact_info)
-        expect(
-          lambda do
-            put :create, params: {
-              request: {
-                item_id: '1234',
-                origin: 'SPEC-COLL',
-                origin_location: 'STACKS',
-                destination: 'SPEC-COLL',
-                needed_date: Time.zone.today + 1.year
-              }
+        expect do
+          put :create, params: {
+            request: {
+              item_id: '1234',
+              origin: 'SPEC-COLL',
+              origin_location: 'STACKS',
+              destination: 'SPEC-COLL',
+              needed_date: Time.zone.today + 1.year
             }
-          end
-        ).to change { MediationMailer.deliveries.count { |x| x.subject == 'New request needs mediation' } }.by(1)
+          }
+        end.to change { MediationMailer.deliveries.count { |x| x.subject == 'New request needs mediation' } }.by(1)
       end
     end
 
@@ -266,11 +252,9 @@ describe MediatedPagesController do
       let!(:mediated_page) { create(:mediated_page, user: user) }
 
       it 'throws an access denied error' do
-        expect(
-          lambda do
-            patch :update, params: { id: mediated_page.id, mediated_page: { marked_as_complete: 'true' } }, format: :js
-          end
-        ).to raise_error(CanCan::AccessDenied)
+        expect do
+          patch :update, params: { id: mediated_page.id, mediated_page: { marked_as_complete: 'true' } }, format: :js
+        end.to raise_error(CanCan::AccessDenied)
       end
     end
   end

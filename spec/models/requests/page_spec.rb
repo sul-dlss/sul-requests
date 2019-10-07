@@ -16,22 +16,20 @@ describe Page do
 
   describe 'validation' do
     it 'does not allow mediated pages to be created' do
-      expect(
-        lambda {
-          described_class.create!(
-            item_id: '1234',
-            origin: 'SPEC-COLL',
-            origin_location: 'STACKS',
-            destination: 'SPEC-COLL'
-          )
-        }
-      ).to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: This item is not pageable')
+      expect do
+        described_class.create!(
+          item_id: '1234',
+          origin: 'SPEC-COLL',
+          origin_location: 'STACKS',
+          destination: 'SPEC-COLL'
+        )
+      end.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: This item is not pageable')
     end
 
     it 'does not not allow pages to be created with destinations that are not valid pickup libraries of their origin' do
-      expect(
-        -> { described_class.create!(item_id: '1234', origin: 'ARS', origin_location: 'STACKS', destination: 'GREEN') }
-      ).to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Destination is not a valid pickup library')
+      expect do
+        described_class.create!(item_id: '1234', origin: 'ARS', origin_location: 'STACKS', destination: 'GREEN')
+      end.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Destination is not a valid pickup library')
     end
   end
 
@@ -61,9 +59,9 @@ describe Page do
     let(:subject) { create(:page, user: create(:webauth_user)) }
 
     it 'returns true' do
-      expect(
-        -> { subject.send_confirmation! }
-      ).not_to change { ConfirmationMailer.deliveries.count }
+      expect do
+        subject.send_confirmation!
+      end.not_to change { ConfirmationMailer.deliveries.count }
       expect(subject.send_confirmation!).to be true
     end
   end
@@ -73,9 +71,9 @@ describe Page do
       let(:subject) { create(:page, user: create(:library_id_user)) }
 
       it 'does not send an approval status email' do
-        expect(
-          -> { subject.send_approval_status! }
-        ).not_to change { ApprovalStatusMailer.deliveries.count }
+        expect do
+          subject.send_approval_status!
+        end.not_to change { ApprovalStatusMailer.deliveries.count }
       end
     end
 
@@ -83,9 +81,9 @@ describe Page do
       let(:subject) { create(:page, user: create(:webauth_user)) }
 
       it 'sends an approval status email' do
-        expect(
-          -> { subject.send_approval_status! }
-        ).to change { ApprovalStatusMailer.deliveries.count }.by(1)
+        expect do
+          subject.send_approval_status!
+        end.to change { ApprovalStatusMailer.deliveries.count }.by(1)
       end
     end
   end

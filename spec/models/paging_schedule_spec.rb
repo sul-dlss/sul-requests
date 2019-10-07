@@ -17,14 +17,12 @@ describe PagingSchedule do
 
   describe '#configure' do
     it 'adds scheduler items to the schedule array' do
-      expect(
-        lambda do
-          described_class.configure do
-            when_paging from: 'SOMEWHERE', to: 'SOMEWHERE-ELSE', before: '10:00am' do
-            end
+      expect do
+        described_class.configure do
+          when_paging from: 'SOMEWHERE', to: 'SOMEWHERE-ELSE', before: '10:00am' do
           end
         end
-      ).to change { described_class.schedule.count }.by(1)
+      end.to change { described_class.schedule.count }.by(1)
     end
   end
 
@@ -44,11 +42,9 @@ describe PagingSchedule do
     end
 
     it 'raises an error when there is no schedule configured found' do
-      expect(
-        lambda do
-          described_class.for(build(:page, origin: 'DOES-NOT-EXIST', destination: 'SOMEWHERE-ELSE'))
-        end
-      ).to raise_error(PagingSchedule::ScheduleNotFound)
+      expect do
+        described_class.for(build(:page, origin: 'DOES-NOT-EXIST', destination: 'SOMEWHERE-ELSE'))
+      end.to raise_error(PagingSchedule::ScheduleNotFound)
     end
   end
 
