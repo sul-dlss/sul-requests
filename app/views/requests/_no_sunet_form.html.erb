@@ -8,22 +8,32 @@
             <%= uf.text_field_without_bootstrap(
                   :library_id,
                   class: 'form-control',
+                  'aria-describedby' => 'library-id-help',
                   data: { behavior: 'single-user-field' },
                   autocomplete: 'off'
                 )
             %>
+            <p id="library-id-help" class="help-block">ID is a 10-digit number.
+              <% if f.object.requestable_by_all? %>
+                It's optional, but may help you track your request in My Library Account.
+              <% end %>
+            </p>
           </div>
         </div>
       <% end  %>
       <% if f.object.requestable_by_all? %>
-        <div class='form-group'>
-          <div class='<%= "#{label_column_offset_class} #{content_column_class}" %>'>
-            <h3>Don’t have a Stanford Library ID?</h3>
-            <p>Just enter your name and email.</p>
-          </div>
-        </div>
-        <%= uf.text_field :name, data: { behavior: 'grouped-user-field' } %>
-        <%= uf.email_field :email, data: { behavior: 'grouped-user-field' } %>
+        <%= uf.text_field(
+              :name,
+              label_class: 'required',
+              data: { behavior: 'grouped-user-field' }
+            )
+        %>
+        <%= uf.email_field(
+              :email,
+              label_class: 'required',
+              data: { behavior: 'grouped-user-field' }
+            )
+        %>
       <% end %>
     <% end %>
 
