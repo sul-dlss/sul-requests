@@ -41,7 +41,11 @@ var additionalUserValidationFields = (function() {
     },
 
     fieldsAreValid: function() {
-      return this.validateSingleUserFields() || this.validateGroupUserFields();
+      if (this.groupedUserFields().length > 0) { // If we have a name + email field
+        return this.validateGroupUserFields();   // Validate name + email field are filled out only (they are always required when present)
+      } else {                                   // Else, we should only have a Library ID field
+        return this.validateSingleUserFields();  // Validate Library ID field because it should be required.
+      }
     },
 
     validateSingleUserFields: function() {
