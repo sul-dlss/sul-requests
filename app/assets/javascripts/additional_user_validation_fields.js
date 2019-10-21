@@ -49,13 +49,28 @@ var additionalUserValidationFields = (function() {
     },
 
     validateSingleUserFields: function() {
+      var _this = this;
       var valid = false;
-      this.singleUserFields().each(function() {
-        if ( $(this).val() ) {
+      _this.singleUserFields().each(function() {
+        if ( $(this).val() && _this.customMinLengthValidation($(this)) ) {
           valid = true;
         }
       });
       return valid;
+    },
+
+    customMinLengthValidation: function(field) {
+      if ( !field.attr('minlength') ) { return true; }
+
+      if ( field.val().length < field.attr('minlength') ) {
+        field[0].setCustomValidity(
+          'Stanford Library ID must have 10 digits (you have entered ' + field.val().length + ' ).'
+        );
+      } else {
+        field[0].setCustomValidity('');
+      }
+
+      return true;
     },
 
     validateGroupUserFields: function() {

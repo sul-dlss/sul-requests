@@ -8,6 +8,8 @@
             <%= uf.text_field_without_bootstrap(
                   :library_id,
                   class: 'form-control',
+                  minlength: (10 unless f.object.requestable_by_all?),
+                  maxlength: 10,
                   'aria-describedby' => 'library-id-help',
                   data: { behavior: 'single-user-field' },
                   autocomplete: 'off'
