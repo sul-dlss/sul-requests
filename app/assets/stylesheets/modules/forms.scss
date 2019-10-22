@@ -91,6 +91,16 @@ hr {
   display: none;
 }
 
+.with-library-id-error {
+  #sunetid-form {
+    display: none;
+  }
+
+  #no-sunetid-form {
+    display: block;
+  }
+}
+
 // This is done because the html5 shim uses an element with the .help-block class
 // to display error messages. When a successful date is chosen the shim will remove
 // elements with a .help-block class which removes our note.
@@ -104,4 +114,9 @@ hr {
 
 .mark-as-complete-form {
   display: inline;
+}
+
+.suid-prefix {
+  font-weight: bold;
+  letter-spacing: 0.1em;
 }

@@ -14,6 +14,10 @@ module Requestable
     false
   end
 
+  def validate_library_id?
+    requestable_with_library_id? && !requestable_by_all?
+  end
+
   def requires_additional_user_validation?
     requestable_with_library_id? || requestable_by_all?
   end

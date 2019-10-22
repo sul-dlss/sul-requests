@@ -15,6 +15,10 @@ class SymphonyUserNameRequest
     match[:email]
   end
 
+  def exists?
+    name.present? || email.present?
+  end
+
   private
 
   def match
