@@ -31,6 +31,6 @@ class Dashboard
   end
 
   def recent_requests(page, per)
-    @recent_requests ||= Request.page(page).per(per).recent
+    @recent_requests ||= Request.page(page).per(per).recent.includes(:user)
   end
 end
