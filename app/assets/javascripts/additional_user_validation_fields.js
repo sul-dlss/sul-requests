@@ -41,17 +41,36 @@ var additionalUserValidationFields = (function() {
     },
 
     fieldsAreValid: function() {
-      return this.validateSingleUserFields() || this.validateGroupUserFields();
+      if (this.groupedUserFields().length > 0) { // If we have a name + email field
+        return this.validateGroupUserFields();   // Validate name + email field are filled out only (they are always required when present)
+      } else {                                   // Else, we should only have a Library ID field
+        return this.validateSingleUserFields();  // Validate Library ID field because it should be required.
+      }
     },
 
     validateSingleUserFields: function() {
+      var _this = this;
       var valid = false;
-      this.singleUserFields().each(function() {
-        if ( $(this).val() ) {
+      _this.singleUserFields().each(function() {
+        if ( $(this).val() && _this.customMinLengthValidation($(this)) ) {
           valid = true;
         }
       });
       return valid;
+    },
+
+    customMinLengthValidation: function(field) {
+      if ( !field.attr('minlength') ) { return true; }
+
+      if ( field.val().length < field.attr('minlength') ) {
+        field[0].setCustomValidity(
+          'Stanford Library ID must have 10 digits (you have entered ' + field.val().length + ' ).'
+        );
+      } else {
+        field[0].setCustomValidity('');
+      }
+
+      return true;
     },
 
     validateGroupUserFields: function() {

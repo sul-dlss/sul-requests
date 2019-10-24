@@ -156,6 +156,10 @@ class Request < ActiveRecord::Base
     mediateable? && !OMIT_IP_CHECK_ORIGINS.include?(origin)
   end
 
+  def library_id_error?
+    errors[:library_id].present?
+  end
+
   class << self
     # The mediateable_origins will make multiple (efficient) database requests
     # in order to return the array of locations that are both configured as mediateable and have existing requests.

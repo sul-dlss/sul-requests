@@ -41,7 +41,7 @@ describe 'Send Request Buttons' do
       expect(page).to have_css('input[value="Send request"][disabled].disabled')
 
       fill_in 'Library ID', with: '12345'
-      expect(page).not_to have_css('input[value="Send request"].disabled')
+      expect(page).to have_css('input[value="Send request"].disabled')
 
       fill_in 'Library ID', with: ''
       expect(page).to have_css('input[value="Send request"].disabled')

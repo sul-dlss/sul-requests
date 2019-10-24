@@ -38,12 +38,12 @@ describe 'Creating a hold recall request' do
       )
       click_link "I don't have a SUNet ID"
 
-      fill_in 'Library ID', with: '123456'
+      fill_in 'Library ID', with: '1234567891'
 
       click_button 'Send request'
 
       expect(HoldRecall.last.user).to eq User.last
-      expect(User.last.library_id).to eq '123456'
+      expect(User.last.library_id).to eq '1234567891'
       expect_to_be_on_success_page
     end
   end

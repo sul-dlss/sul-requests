@@ -57,6 +57,8 @@ describe 'Creating a mediated page request' do
       expect(page.evaluate_script('document.activeElement.id')).to eq 'request_user_attributes_library_id'
 
       fill_in 'Library ID', with: '123456'
+      fill_in 'Name', with: 'Jane Stanford'
+      fill_in 'Email', with: 'jstanford@stanford.edu'
 
       click_button 'Send request'
 

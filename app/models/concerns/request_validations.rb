@@ -11,6 +11,7 @@ module RequestValidations
     validates :item_comment, presence: true, if: :item_commentable?
     validate :requested_holdings_exist, on: :create
     validate :needed_date_is_not_in_the_past, on: :create, if: :needed_date
+    validate :library_id_exists, on: :create, if: :validate_library_id?
   end
 
   protected
@@ -33,5 +34,14 @@ module RequestValidations
 
   def needed_date_is_not_in_the_past
     errors.add(:needed_date, 'Date cannot be earlier than today') if needed_date < Time.zone.today
+  end
+
+  def library_id_exists
+    # We require the library ID is on the client side when neccesary
+    # required when necessary, so if it's blank here, it's not required
+    return if user&.library_id.blank?
+    return if SymphonyUserNameRequest.new(libid: user.library_id).exists?
+
+    errors.add(:library_id, 'This ID was not found in our records')
   end
 end

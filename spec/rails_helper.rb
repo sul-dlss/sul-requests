@@ -66,6 +66,7 @@ RSpec.configure do |config|
   config.include DisallowAPIs
   config.before(:each, allow_apis: false) do
     stub_searchworks_api_json({})
+    stub_library_id_lookup
   end
 
   config.before(:each, js: true) do
@@ -102,6 +103,10 @@ end
 
 def stub_searchworks_api_json(json)
   allow_any_instance_of(SearchworksItem).to receive(:json).and_return(json)
+end
+
+def stub_library_id_lookup
+  allow_any_instance_of(SymphonyUserNameRequest).to receive(:exists?).and_return(true)
 end
 
 def stub_proxy_api_output(data)
