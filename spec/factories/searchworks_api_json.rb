@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :multiple_holdings, class: Hash do
+  factory :multiple_holdings, class: 'Hash' do
     title { 'Item Title' }
 
     format { ['Book'] }
@@ -50,7 +50,7 @@ FactoryBot.define do
     end
   end
 
-  factory :single_holding, class: Hash do
+  factory :single_holding, class: 'Hash' do
     title { 'Item Title' }
 
     format { ['Book'] }
@@ -83,7 +83,7 @@ FactoryBot.define do
     end
   end
 
-  factory :sal_newark_holding, class: Hash do
+  factory :sal_newark_holding, class: 'Hash' do
     title { 'Item Title' }
 
     format { ['Book'] }
@@ -117,7 +117,7 @@ FactoryBot.define do
     end
   end
 
-  factory :mhld_summary_holdings, class: Hash do
+  factory :mhld_summary_holdings, class: 'Hash' do
     title { 'Item Title' }
 
     format { ['Book'] }
@@ -153,7 +153,7 @@ FactoryBot.define do
     end
   end
 
-  factory :special_collections_holdings, class: Hash do
+  factory :special_collections_holdings, class: 'Hash' do
     title { 'Special Collections Item Title' }
 
     format { ['Book'] }
@@ -194,7 +194,7 @@ FactoryBot.define do
     end
   end
 
-  factory :sal3_holdings, class: Hash do
+  factory :sal3_holdings, class: 'Hash' do
     title { 'SAL3 Item Title' }
 
     format { ['Book'] }
@@ -235,7 +235,7 @@ FactoryBot.define do
     end
   end
 
-  factory :page_mp_holdings, class: Hash do
+  factory :page_mp_holdings, class: 'Hash' do
     title { 'PAGE-MP Item Title' }
 
     format { ['Book'] }
@@ -284,7 +284,7 @@ FactoryBot.define do
     end
   end
 
-  factory :many_holdings, class: Hash do
+  factory :many_holdings, class: 'Hash' do
     title { 'Item title' }
 
     format { ['Book'] }
@@ -357,7 +357,7 @@ FactoryBot.define do
     end
   end
 
-  factory :searchable_holdings, class: Hash do
+  factory :searchable_holdings, class: 'Hash' do
     title { 'Item Title' }
 
     format { ['Book'] }
@@ -504,7 +504,7 @@ FactoryBot.define do
     end
   end
 
-  factory :library_instructions_holdings, class: Hash do
+  factory :library_instructions_holdings, class: 'Hash' do
     title { 'Item Title' }
 
     format { ['Book'] }
@@ -541,7 +541,7 @@ FactoryBot.define do
     end
   end
 
-  factory :checkedout_holdings, class: Hash do
+  factory :checkedout_holdings, class: 'Hash' do
     title { 'Checked out item' }
 
     format { ['Book'] }

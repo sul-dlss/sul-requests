@@ -11,7 +11,7 @@ FactoryBot.define do
     to_create { |instance| instance.save(validate: false) }
   end
 
-  factory :scan_with_holdings, class: Scan do
+  factory :scan_with_holdings, class: 'Scan' do
     item_id { '12345' }
     origin { 'SAL3' }
     origin_location { 'STACKS' }

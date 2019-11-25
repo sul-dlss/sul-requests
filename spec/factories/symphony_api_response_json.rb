@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :symphony_scan_success, class: Hash do
+  factory :symphony_scan_success, class: 'Hash' do
     req_type { 'SCAN' }
     confirm_email { 'jlathrop@stanford.edu' }
     requested_items do
@@ -21,7 +21,7 @@ FactoryBot.define do
     end
   end
 
-  factory :symphony_scan_with_multiple_items, class: Hash do
+  factory :symphony_scan_with_multiple_items, class: 'Hash' do
     req_type { 'SCAN' }
     confirm_email { 'jlathrop@stanford.edu' }
     usererr_code { 'U003' }
@@ -53,7 +53,7 @@ FactoryBot.define do
     end
   end
 
-  factory :symphony_page_with_single_item, class: Hash do
+  factory :symphony_page_with_single_item, class: 'Hash' do
     req_type { 'PAGE' }
     confirm_email { 'jlathrop@stanford.edu' }
     requested_items do
@@ -73,7 +73,7 @@ FactoryBot.define do
     end
   end
 
-  factory :symphony_page_with_multiple_items, class: Hash do
+  factory :symphony_page_with_multiple_items, class: 'Hash' do
     req_type { 'PAGE' }
     confirm_email { 'jlathrop@stanford.edu' }
     requested_items do
@@ -98,7 +98,7 @@ FactoryBot.define do
     end
   end
 
-  factory :symphony_request_with_mixed_status, class: Hash do
+  factory :symphony_request_with_mixed_status, class: 'Hash' do
     req_type { 'PAGE' }
     confirm_email { 'jlathrop@stanford.edu' }
     requested_items do
@@ -123,7 +123,7 @@ FactoryBot.define do
     end
   end
 
-  factory :symphony_request_with_all_errored_items, class: Hash do
+  factory :symphony_request_with_all_errored_items, class: 'Hash' do
     req_type { 'PAGE' }
     confirm_email { 'jlathrop@stanford.edu' }
     requested_items do
@@ -148,7 +148,7 @@ FactoryBot.define do
     end
   end
 
-  factory :symphony_page_with_blocked_user, class: Hash do
+  factory :symphony_page_with_blocked_user, class: 'Hash' do
     req_type { 'PAGE' }
     confirm_email { 'jlathrop@stanford.edu' }
     usererr_code { 'U003' }
@@ -161,7 +161,7 @@ FactoryBot.define do
     end
   end
 
-  factory :symphony_page_with_expired_user, class: Hash do
+  factory :symphony_page_with_expired_user, class: 'Hash' do
     req_type { 'PAGE' }
     confirm_email { 'jlathrop@stanford.edu' }
     usererr_code { 'U004' }

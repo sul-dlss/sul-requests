@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :green_stacks_searchworks_item, class: SearchworksItem do
+  factory :green_stacks_searchworks_item, class: 'SearchworksItem' do
     initialize_with { new(request) }
 
     request { create(:request, origin: 'GREEN', origin_location: 'STACKS') }
@@ -15,7 +15,7 @@ FactoryBot.define do
     end
   end
 
-  factory :green_stacks_multi_holdings_searchworks_item, class: SearchworksItem do
+  factory :green_stacks_multi_holdings_searchworks_item, class: 'SearchworksItem' do
     initialize_with { new(request) }
 
     request { create(:request, origin: 'GREEN', origin_location: 'STACKS') }
@@ -29,7 +29,7 @@ FactoryBot.define do
     end
   end
 
-  factory :sal3_stacks_multi_holdings_searchworks_item, class: SearchworksItem do
+  factory :sal3_stacks_multi_holdings_searchworks_item, class: 'SearchworksItem' do
     initialize_with { new(request) }
 
     request { create(:request, origin: 'SAL3', origin_location: 'STACKS') }
@@ -43,7 +43,7 @@ FactoryBot.define do
     end
   end
 
-  factory :spec_coll_stacks_multi_holdings_searchworks_item, class: SearchworksItem do
+  factory :spec_coll_stacks_multi_holdings_searchworks_item, class: 'SearchworksItem' do
     initialize_with { new(request) }
 
     request { create(:request, origin: 'SPEC-COLL', origin_location: 'STACKS') }
@@ -57,7 +57,7 @@ FactoryBot.define do
     end
   end
 
-  factory :mhld_searchworks_item, class: SearchworksItem do
+  factory :mhld_searchworks_item, class: 'SearchworksItem' do
     initialize_with { new(request) }
 
     request { create(:request, origin: 'GREEN', origin_location: 'STACKS') }
@@ -71,7 +71,7 @@ FactoryBot.define do
     end
   end
 
-  factory :library_instructions_searchworks_item, class: SearchworksItem do
+  factory :library_instructions_searchworks_item, class: 'SearchworksItem' do
     initialize_with { new(request) }
 
     request { create(:request, origin: 'SPEC-COLL', origin_location: 'STACKS') }

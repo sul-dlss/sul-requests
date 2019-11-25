@@ -17,7 +17,7 @@ FactoryBot.define do
     end
   end
 
-  factory :page_with_holdings, class: Page do
+  factory :page_with_holdings, class: 'Page' do
     item_id { '1234' }
     origin { 'GREEN' }
     origin_location { 'STACKS' }
@@ -32,7 +32,7 @@ FactoryBot.define do
     end
   end
 
-  factory :page_with_holdings_summary, class: Page do
+  factory :page_with_holdings_summary, class: 'Page' do
     item_id { '1234' }
     origin { 'GREEN' }
     origin_location { 'STACKS' }
