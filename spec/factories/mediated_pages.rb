@@ -21,7 +21,7 @@ FactoryBot.define do
     end
   end
 
-  factory :page_mp_mediated_page, class: MediatedPage do
+  factory :page_mp_mediated_page, class: 'MediatedPage' do
     item_id { '1234' }
     origin { 'SAL3' }
     origin_location { 'PAGE-MP' }
@@ -31,7 +31,7 @@ FactoryBot.define do
     association :user, factory: :sequence_webauth_user
   end
 
-  factory :hopkins_mediated_page, class: MediatedPage do
+  factory :hopkins_mediated_page, class: 'MediatedPage' do
     item_id { '1234' }
     origin { 'HOPKINS' }
     origin_location { 'STACKS' }
