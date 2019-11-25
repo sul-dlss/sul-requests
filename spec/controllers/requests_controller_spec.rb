@@ -108,7 +108,7 @@ describe RequestsController do
 
   describe '#request_params_without_user_attrs_or_unselected_barcodes' do
     it 'removes unselected barcodes' do
-      expect(subject).to receive(:params).at_least(:once).and_return(
+      expect(controller).to receive(:params).at_least(:once).and_return(
         ActionController::Parameters.new(
           request: { 'barcodes': { 'abc' => '1', 'cba' => '0' } }
         )
@@ -120,7 +120,7 @@ describe RequestsController do
     end
 
     it 'handles barcode arrays' do
-      expect(subject).to receive(:params).at_least(:once).and_return(
+      expect(controller).to receive(:params).at_least(:once).and_return(
         ActionController::Parameters.new(
           request: { 'barcodes': ['abc'] }
         )
@@ -132,7 +132,7 @@ describe RequestsController do
     end
 
     it 'handles the special NO_BARCODE value' do
-      expect(subject).to receive(:params).at_least(:once).and_return(
+      expect(controller).to receive(:params).at_least(:once).and_return(
         ActionController::Parameters.new(
           request: { 'barcodes': { 'NO_BARCODE' => '1' } }
         )
