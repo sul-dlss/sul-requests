@@ -9,7 +9,7 @@ describe 'Pickup Libraries Dropdown' do
 
       expect(page).to have_select('Deliver to')
 
-      expect(page).to have_css('#request_destination option', count: 12)
+      expect(page).to have_css('#request_destination option', count: 13)
     end
 
     it 'simplies display the text of the destination library if there is only one possible' do
@@ -27,7 +27,7 @@ describe 'Pickup Libraries Dropdown' do
       it 'does not include the configured library in the drop down' do
         visit new_request_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
 
-        expect(page).to have_css('#request_destination option', count: 12)
+        expect(page).to have_css('#request_destination option', count: 13)
         expect(page).not_to have_css('option', text: 'Media Microtext')
       end
     end
@@ -36,7 +36,7 @@ describe 'Pickup Libraries Dropdown' do
       it 'appear in the drop down' do
         visit new_request_path(item_id: '1234', origin: 'MEDIA-MTXT', origin_location: 'MM-STACKS')
 
-        expect(page).to have_css('#request_destination option', count: 13)
+        expect(page).to have_css('#request_destination option', count: 14)
         expect(page).to have_css('option', text: 'Media Microtext')
       end
     end
