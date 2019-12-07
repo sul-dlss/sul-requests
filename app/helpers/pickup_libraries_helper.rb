@@ -60,10 +60,10 @@ module PickupLibrariesHelper
   end
 
   def pickup_libraries_array(form, pickup_libraries)
-    libraries = pickup_libraries.merge(additional_pickup_libraries(form)).sort
+    libraries = pickup_libraries.merge(additional_pickup_libraries(form))
     libraries.map do |k, v|
       [v, k]
-    end
+    end.sort
   end
 
   def additional_pickup_libraries(form)
