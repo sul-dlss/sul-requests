@@ -104,7 +104,7 @@ Naming/MemoizedInstanceVariableName:
 # Offense count: 2
 # Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
 # AllowedNames: io, id, to, by, on, in, at, ip, db, os
-Naming/UncommunicativeMethodParamName:
+Naming/MethodParameterName:
   Exclude:
     - 'app/helpers/application_helper.rb'
     - 'app/models/library_hours.rb'
