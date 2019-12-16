@@ -5,7 +5,8 @@ gem 'rails', '~> 5.2.0'
 # Use sqlite3 as the database (during local development)
 gem 'sqlite3'
 # Use mysql as the database when running on the server environment
-gem 'mysql2', '~> 0.5'
+# mysql 0.5.3 is not compatible with the version of ruby we are using
+gem 'mysql2', '< 0.5.3'
 # Use Puma as the app server
 gem 'puma'
 gem 'bootsnap'
