@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 desc 'Display coveralls current coverage metric'
-task :display_coveralls_coverage do
+task display_coveralls_coverage: :environment do
   coverage_file_path = File.join(Rails.root, 'coverage', '.last_run.json')
   coverage_result_path = File.join(Rails.root, 'coverage', '.resultset.json')
   if File.exist?(coverage_file_path) && File.exist?(coverage_result_path)
