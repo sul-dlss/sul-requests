@@ -10,7 +10,7 @@ require 'capybara/rails'
 require 'selenium-webdriver'
 
 # Auto require all files in spec/support.
-Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+Dir[Rails.root.join('spec/support/**/*.rb')].sort.each { |f| require f }
 
 Capybara.javascript_driver = :selenium_chrome_headless
 
