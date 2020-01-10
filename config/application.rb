@@ -54,6 +54,7 @@ module SULRequests
       'MEDIA-MTXT' => 'Media Microtext',
       'MUSIC' => 'Music Library',
       'RUMSEYMAP' => 'David Rumsey Map Center',
+      'RWC' => 'Academy Hall (SRWC)',
       'SAL' => 'SAL1&2 (on-campus shelving)',
       'SAL3' => 'SAL3 (off-campus storage)',
       'SAL-NEWARK' => 'SAL Newark (off-campus storage)',
@@ -78,6 +79,7 @@ module SULRequests
       'HOPKINS',
       'LAW',
       'MUSIC',
+      'RWC',
       'SAL',
       'SCIENCE'
     ]
@@ -201,6 +203,7 @@ module SULRequests
       'MEDIA-MTXT' => { library_slug: 'green', location_slug: 'media-microtext-center' },
       'MUSIC' => { library_slug: 'music', location_slug: 'library-circulation' },
       'RUMSEYMAP' => { library_slug: 'Rumsey', location_slug: 'visitor-access' },
+      'RWC' => { library_slug: 'srwc', location_slug: 'lobby-desk' },
       'SAL' => { library_slug: 'sal12', location_slug: 'sal12-circulation' },
       'SAL3' => { library_slug: 'sal3', location_slug: 'operations' },
       'SAL-NEWARK' => { library_slug: 'newark', location_slug: 'operations' },
