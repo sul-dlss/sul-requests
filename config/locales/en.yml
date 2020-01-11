@@ -88,6 +88,8 @@ en:
     scan:
       subject: "Scan to PDF requested (\"%{title}\")"
     mediated_page:
+      SPEC-COLL:
+        subject: "Request received: \"%{title}\""
       mediator_subject: 'New request needs mediation'
   date:
     formats:

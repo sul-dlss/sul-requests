@@ -55,6 +55,14 @@ describe ConfirmationMailer do
         end
       end
 
+      describe 'for mediated pages from SPEC-COLL' do
+        let(:request) { create(:mediated_page, origin: 'SPEC-COLL', user: user) }
+
+        it 'is custom' do
+          expect(mail.subject).to eq "Request received: \"#{request.item_title}\""
+        end
+      end
+
       describe 'for other requests' do
         it 'is the default' do
           expect(mail.subject).to eq "Request is pending approval (\"#{request.item_title}\")"
