@@ -35,7 +35,7 @@ describe RequestApprovalStatus do
       end
 
       context 'for origins that include additional pending text' do
-        let(:request) { create(:mediated_page, origin: 'SPEC-COLL') }
+        let(:request) { create(:mediated_page, origin: 'RUMSEYMAP', destination: 'RUMSEYMAP') }
 
         it 'the extra text is included' do
           expect(html).to have_css(
