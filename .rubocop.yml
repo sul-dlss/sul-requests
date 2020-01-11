@@ -19,7 +19,7 @@ AllCops:
 Rails:
   Enabled: true
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 125
   Exclude:
     - 'spec/mailers/approval_status_mailer_spec.rb'
