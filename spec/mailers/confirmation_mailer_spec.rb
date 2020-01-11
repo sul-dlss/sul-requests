@@ -55,6 +55,14 @@ describe ConfirmationMailer do
         end
       end
 
+      describe 'for mediated pages from SPEC-COLL' do
+        let(:request) { create(:mediated_page, origin: 'SPEC-COLL', user: user) }
+
+        it 'is custom' do
+          expect(mail.subject).to eq "Request received: \"#{request.item_title}\""
+        end
+      end
+
       describe 'for other requests' do
         it 'is the default' do
           expect(mail.subject).to eq "Request is pending approval (\"#{request.item_title}\")"
@@ -91,6 +99,30 @@ describe ConfirmationMailer do
         it 'has a planned date of visit' do
           expect(body).to include 'Items approved for access will be ready when you visit'
           expect(body).to include I18n.l request.needed_date, format: :long
+        end
+
+        context 'extra note for SPEC-COLL' do
+          let(:request) do
+            create(
+              :mediated_page_with_holdings,
+              origin: 'SPEC-COLL',
+              barcodes: ['12345678'],
+              ad_hoc_items: ['ZZZ 123'],
+              user: user
+            )
+          end
+
+          it 'does not include the extra note' do
+            expect(body).not_to include 'Requests are typically approved 1-3 days before'
+          end
+        end
+
+        context 'extra note for other libraries' do
+          let(:request) { create(:page_mp_mediated_page) }
+
+          it 'includes the extra note' do
+            expect(body).to include 'Requests are typically approved 1-3 days before'
+          end
         end
       end
 

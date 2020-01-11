@@ -8,7 +8,7 @@ Item(s) requested:
 
 <%= @request.data_to_email_s %>
 
-<%= t('approval_status.spec_coll.extra_note') %>
+<%= t("approval_status.#{@request.origin.underscore}.extra_note", default: :'approval_status.default.extra_note') %>
 <% if @request.needed_date.present? %>
 <%= "Items approved for access will be ready when you visit on: #{l @request.needed_date, format: :long}" %>
 <% end %>
