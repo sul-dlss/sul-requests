@@ -23,9 +23,12 @@ class ConfirmationMailer < ApplicationMailer
 
   def subject
     I18n.t(
-      "confirmation_email.#{@request.class.name.underscore}.subject",
+      "confirmation_email.#{@request.class.name.underscore}.#{@request.origin}.subject",
       title: @request.item_title,
-      default: I18n.t('confirmation_email.request.subject')
+      default: [
+        :"confirmation_email.#{@request.class.name.underscore}.subject",
+        :'confirmation_email.request.subject'
+      ]
     )
   end
 
