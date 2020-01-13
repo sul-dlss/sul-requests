@@ -432,7 +432,7 @@ DEPENDENCIES
   database_cleaner
   dlss-capistrano
   factory_bot_rails
-  faraday
+  faraday (~> 1)
   hash_to_hidden_fields
   honeybadger
   is_it_working

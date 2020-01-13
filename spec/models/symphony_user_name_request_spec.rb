@@ -45,7 +45,7 @@ describe SymphonyUserNameRequest do
 
     context 'for a failed response' do
       before do
-        expect(Faraday.default_connection).to receive(:get).and_raise(Faraday::Error::ConnectionFailed, '')
+        expect(Faraday.default_connection).to receive(:get).and_raise(Faraday::ConnectionFailed, '')
       end
 
       let(:response) { double(success?: false, body: '') }

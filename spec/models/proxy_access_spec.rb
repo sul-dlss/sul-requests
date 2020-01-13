@@ -75,7 +75,7 @@ describe ProxyAccess do
     context 'when we are unable to connect to the api' do
       before do
         allow(Settings).to receive(:sul_proxy_api_url).and_return('http://some/url/?libid=%{libid}')
-        expect(Faraday.default_connection).to receive(:get).and_raise(Faraday::Error::ConnectionFailed, '')
+        expect(Faraday.default_connection).to receive(:get).and_raise(Faraday::ConnectionFailed, '')
       end
 
       it { is_expected.not_to be_sponsor }
