@@ -34,7 +34,7 @@ module LibraryHoursApi
       benchmark "GET #{api_url}" do
         Faraday.get(api_url).body
       end
-    rescue Faraday::Error::ConnectionFailed => e
+    rescue Faraday::ConnectionFailed => e
       Rails.logger.warn("HTTP GET for #{api_url} failed with: #{e}")
       Honeybadger.notify e
       {}.to_json

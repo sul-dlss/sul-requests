@@ -34,7 +34,7 @@ class SymphonyUserNameRequest
       return empty_response(response.body) unless response.success?
 
       response
-    rescue Faraday::Error::ConnectionFailed => e
+    rescue Faraday::ConnectionFailed => e
       empty_response(e)
     end
   end

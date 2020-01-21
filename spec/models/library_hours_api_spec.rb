@@ -21,7 +21,7 @@ describe LibraryHoursApi do
 
   describe 'ConnectionFailed' do
     before do
-      allow(Faraday.default_connection).to receive(:get).and_raise(Faraday::Error::ConnectionFailed, '')
+      allow(Faraday.default_connection).to receive(:get).and_raise(Faraday::ConnectionFailed, '')
     end
 
     it 'returns a NullResponse' do

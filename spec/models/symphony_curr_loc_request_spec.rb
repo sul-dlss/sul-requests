@@ -67,7 +67,7 @@ describe SymphonyCurrLocRequest do
 
     context 'for a failed response' do
       before do
-        expect_any_instance_of(Faraday::Connection).to receive(:get).and_raise(Faraday::Error::ConnectionFailed, '')
+        expect_any_instance_of(Faraday::Connection).to receive(:get).and_raise(Faraday::ConnectionFailed, '')
       end
 
       it 'is blank' do
