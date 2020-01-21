@@ -64,6 +64,11 @@ gem 'nokogiri', '>= 1.7.1'
 # borrow_drect gem is used to attempt to submit requests for Hold/Recalls before sending to symphony
 gem 'borrow_direct'
 
+# rack is a webserver interface used by rails.
+# Pinning to 2.0.8 for incompatability with sidekiq.
+# The next rack release post 2.1.1 should fix this and we can unpin.
+gem 'rack', '= 2.0.8'
+
 group :test do
   gem 'simplecov', require: false
 end
