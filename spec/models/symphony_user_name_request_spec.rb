@@ -26,6 +26,22 @@ describe SymphonyUserNameRequest do
       end
 
       it { expect(subject.exists?).to be true }
+
+      context 'when there is only a name' do
+        let(:response) { double(success?: true, body: 'Some Patron ()') }
+
+        it { expect(subject.name).to eq 'Some Patron' }
+        it { expect(subject.email).to be_blank }
+        it { expect(subject.exists?).to be true }
+      end
+
+      context 'when there is only an email' do
+        let(:response) { double(success?: true, body: ' (email@example.com)') }
+
+        it { expect(subject.name).to be_blank }
+        it { expect(subject.email).to eq 'email@example.com' }
+        it { expect(subject.exists?).to be true }
+      end
     end
 
     context 'for an error response' do

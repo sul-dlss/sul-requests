@@ -22,7 +22,7 @@ class SymphonyUserNameRequest
   private
 
   def match
-    @match ||= response.body.match(/\A(?<name>[^(]+)\((?<email>[^)]+)\)\Z/) || {}
+    @match ||= response.body.match(/\A(?<name>[^(]+)\((?<email>[^)]*)\)\Z/) || {}
   end
 
   def response
