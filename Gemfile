@@ -113,9 +113,6 @@ group :development, :test do
   # scss-lint will test the scss files to enfoce styles
   gem 'scss-lint', require: false
 
-  # Coveralls for code coverage metrics
-  gem 'coveralls', require: false
-
   gem 'rails-controller-testing'
 
   # listen is used by bootsnap to listen to file changes
