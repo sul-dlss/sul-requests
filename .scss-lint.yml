@@ -1,6 +1,7 @@
 scss_files: 'app/assets/**/*.scss'
 
 exclude:
+  - 'coverage/**'
   - 'vendor/**'
   - 'app/assets/stylesheets/modules/sul-footer.scss'
 
