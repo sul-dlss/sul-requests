@@ -42,6 +42,7 @@ symphony_api:
   url: ''
 
 symphony_web_services:
+  enabled: true
   # trailing slashes expected unless it's the end of the URI path
   base_url: 'http://symphony-endpoint.example.com/'
   # lookup current location of an item by barcode
