@@ -6,6 +6,10 @@ require 'faraday'
 describe SymphonyCurrLocRequest do
   subject { described_class.new(barcode: '36105123456789') }
 
+  before do
+    allow(Settings.symphony_web_services).to receive(:enabled).and_return(true)
+  end
+
   describe '#current_location' do
     context 'valid response' do
       let(:response) do
