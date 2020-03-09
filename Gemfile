@@ -19,8 +19,6 @@ gem 'sass-rails', '~> 5.0'
 gem 'coffee-rails', '~> 4.2', '>= 4.2.1'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 2.7.2'
-# JS Runtime. See https://github.com/rails/execjs#readme for more supported runtimes
-gem 'therubyracer'
 # Common styles for SUL
 gem 'sul_styles', '>= 0.5.0'
 # A gem for simple rails invornment specific config
