@@ -30,7 +30,7 @@ class MediatedPage < Request
     commentable_library_whitelist.include?(origin)
   end
 
-  def requestable_by_all?
+  def requestable_with_library_id?
     return false if origin == 'HOPKINS'
 
     true

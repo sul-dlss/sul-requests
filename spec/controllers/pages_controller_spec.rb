@@ -73,7 +73,7 @@ describe PagesController do
         )
       end
 
-      it 'is allowed if user name and email is filled out (via token)' do
+      pending 'is allowed if user name and email is filled out (via token)' do
         put :create, params: {
           request: {
             item_id: '1234',

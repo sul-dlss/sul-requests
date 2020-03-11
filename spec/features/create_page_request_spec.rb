@@ -11,7 +11,7 @@ describe 'Creating a page request' do
     end
   end
 
-  describe 'by an anonmyous user' do
+  pending 'by an anonmyous user' do
     before { stub_searchworks_api_json(build(:single_holding)) }
 
     it 'is possible if a name and email is filled out', js: true do

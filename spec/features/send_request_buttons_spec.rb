@@ -17,7 +17,7 @@ describe 'Send Request Buttons' do
     end
   end
 
-  describe 'by anonymous user', js: true do
+  pending 'by anonymous user', js: true do
     it 'is possible to toggle between login and name-email form' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
       click_link 'I don\'t have a SUNet ID'

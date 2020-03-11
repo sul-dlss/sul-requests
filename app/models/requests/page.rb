@@ -15,16 +15,8 @@ class Page < Request
     super << user.email
   end
 
-  def requestable_by_all?
-    return false if REQUESTALBE_BY_SUNET_OR_LIBRARY_ONLY.include?(origin)
-
-    true
-  end
-
   def requestable_with_library_id?
-    return true if REQUESTALBE_BY_SUNET_OR_LIBRARY_ONLY.include?(origin)
-
-    super
+    true
   end
 
   private
