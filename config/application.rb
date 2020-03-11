@@ -80,7 +80,6 @@ module SULRequests
       'LAW',
       'MUSIC',
       'RWC',
-      'SAL',
       'SCIENCE'
     ]
 
