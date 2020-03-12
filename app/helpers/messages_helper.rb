@@ -25,4 +25,16 @@ module MessagesHelper
                     edit-message
                     glyphicon glyphicon-pencil'
   end
+
+  def link_to_delete_message(message)
+    link_to ' Delete message',
+            message,
+            method: :delete,
+            class: 'btn
+                    btn-sm
+                    btn-default
+                    edit-message
+                    glyphicon
+                    glyphicon-trash'
+  end
 end

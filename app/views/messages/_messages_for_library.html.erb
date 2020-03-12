@@ -11,6 +11,7 @@
   <% messages.each do |message| %>
     <h2><%= message.title %></h2>
     <%= link_to_edit_message(message) %>
+    <%= link_to_delete_message(message) %>
 
     <div class="message">
       <% if message.scheduled? %>
