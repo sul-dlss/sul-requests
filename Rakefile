@@ -12,6 +12,5 @@ task default: [
   :teaspoon,
   :rubocop,
   :scss_lint,
-  :spec,
-  :display_coveralls_coverage
+  :spec
 ]
