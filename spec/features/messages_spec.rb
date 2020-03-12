@@ -105,6 +105,28 @@ describe 'Viewing all requests' do
     end
   end
 
+  describe 'destroy' do
+    before do
+      create(:message, library: 'SAL3')
+    end
+
+    describe 'by a superadmin user' do
+      before do
+        stub_current_user(create(:superadmin_user))
+      end
+
+      it 'messages can be destroyed' do
+        visit messages_path
+
+        expect(Message.count).to be 1
+        expect(page).to have_css('.text.alert', text: 'MyText')
+        click_link 'Delete message'
+        expect(page).not_to have_css('.text.alert', text: 'MyText')
+        expect(Message.count).to be_zero
+      end
+    end
+  end
+
   describe 'displays on a request page' do
     let(:message) { create(:message) }
 
