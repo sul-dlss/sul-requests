@@ -3,18 +3,14 @@
   <% messages = @messages.select { |m| m.library == library_code && m.request_type == request_type } %>
   <% library = LibraryLocation.library_name_by_code(library_code).to_s %>
 
-  <% if messages.none? %>
+  <div>
     <h2><%= request_type.titleize + " from #{library.presence || 'anywhere'}" %></h2>
     <%= link_to_add_message(library_code, request_type) %>
-  <% end %>
+  </div>
 
   <% messages.each do |message| %>
     <h2><%= message.title %></h2>
-    <% if message.text.length > 0 %>
-      <%= link_to_edit_message(message) %>
-    <% else %>
-      <%= link_to_add_message(library_code, request_type) %>
-    <% end %>
+    <%= link_to_edit_message(message) %>
 
     <div class="message">
       <% if message.scheduled? %>
