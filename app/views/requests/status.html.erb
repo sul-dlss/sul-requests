@@ -1,5 +1,8 @@
 <% content_for :page_title do %>Request status: <%= current_request.item_title %><% end %>
+
 <div class="<%= dialog_column_class %>">
+  <%= render 'messages' %>
+
   <h1>Status of your request</h1>
   <hr />
   <dl class='dl-horizontal dl-invert'>
