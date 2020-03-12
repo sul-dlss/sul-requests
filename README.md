@@ -1,8 +1,6 @@
 [![Build Status](https://travis-ci.org/sul-dlss/sul-requests.svg?branch=master)](https://travis-ci.org/sul-dlss/sul-requests)
-[![Coverage Status](https://coveralls.io/repos/sul-dlss/sul-requests/badge.svg)](https://coveralls.io/r/sul-dlss/sul-requests)
 [![Code Climate](https://codeclimate.com/github/sul-dlss/sul-requests/badges/gpa.svg)](https://codeclimate.com/github/sul-dlss/sul-requests)
 [![Code Climate Test Coverage](https://codeclimate.com/github/sul-dlss/sul-requests/badges/coverage.svg)](https://codeclimate.com/github/sul-dlss/sul-requests/coverage)
-[![Stories in Ready](https://badge.waffle.io/sul-dlss/sul-requests.png?label=ready&title=Ready)](https://waffle.io/sul-dlss/sul-requests)
 [![Latest Tagged version](https://badge.fury.io/gh/sul-dlss%2Fsul-requests.svg)](https://badge.fury.io/gh/sul-dlss%2Fsul-requests)
 
 
