@@ -25,6 +25,7 @@ describe Ability do
     it { is_expected.to be_able_to(:manage, PagingSchedule) }
     it { is_expected.to be_able_to(:manage, Request) }
     it { is_expected.to be_able_to(:debug, Request) }
+    it { is_expected.not_to be_able_to(:create, Request) }
   end
 
   describe 'an anonymous user' do
@@ -84,8 +85,8 @@ describe Ability do
       let(:page) { build(:page, user: user) }
       let(:mediated_page) { build(:mediated_page, user: user) }
 
-      it { is_expected.to be_able_to(:create, page) }
-      it { is_expected.to be_able_to(:create, mediated_page) }
+      pending { is_expected.to be_able_to(:create, page) }
+      pending { is_expected.to be_able_to(:create, mediated_page) }
 
       describe 'and views a success page with a token' do
         describe 'for a page' do
@@ -114,9 +115,9 @@ describe Ability do
       let(:mediated_page) { build(:mediated_page, user: user) }
       let(:scan) { build(:scan, user: user) }
 
-      it { is_expected.to be_able_to(:create, page) }
-      it { is_expected.to be_able_to(:create, mediated_page) }
-      it { is_expected.to be_able_to(:create, mediated_page) }
+      pending { is_expected.to be_able_to(:create, page) }
+      pending { is_expected.to be_able_to(:create, mediated_page) }
+      pending { is_expected.to be_able_to(:create, mediated_page) }
 
       describe 'when the library is HOPKINS' do
         before { mediated_page.origin = 'HOPKINS' }
@@ -129,10 +130,10 @@ describe Ability do
   describe 'a webauth user' do
     let(:user) { create(:webauth_user) }
 
-    it { is_expected.to be_able_to(:create, custom) }
-    it { is_expected.to be_able_to(:create, hold_recall) }
-    it { is_expected.to be_able_to(:create, mediated_page) }
-    it { is_expected.to be_able_to(:create, page) }
+    pending { is_expected.to be_able_to(:create, custom) }
+    pending { is_expected.to be_able_to(:create, hold_recall) }
+    pending { is_expected.to be_able_to(:create, mediated_page) }
+    pending { is_expected.to be_able_to(:create, page) }
     it { is_expected.not_to be_able_to(:create, scan) }
     it { is_expected.not_to be_able_to(:debug, page) }
 
@@ -183,7 +184,7 @@ describe Ability do
     describe 'who is in the scan and deliver pilot group' do
       let(:user) { create(:scan_eligible_user) }
 
-      it { is_expected.to be_able_to(:create, scan) }
+      pending { is_expected.to be_able_to(:create, scan) }
     end
 
     describe 'who is a student' do
@@ -191,7 +192,7 @@ describe Ability do
         user.affiliation = 'stanford:student'
       end
 
-      it { is_expected.to be_able_to(:create, scan) }
+      pending { is_expected.to be_able_to(:create, scan) }
     end
   end
 

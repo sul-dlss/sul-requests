@@ -72,6 +72,8 @@ class Ability
     end
 
     cannot :create, Scan unless user.super_admin? || current_user_in_scan_pilot_group?
+
+    cannot :create, Request
   end
   # rubocop:enable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/MethodLength
 
