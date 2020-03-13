@@ -25,7 +25,7 @@ describe 'Remote user confirmation' do
       end
     end
 
-    context 'that are not in the configured IP ranges' do
+    pending 'that are not in the configured IP ranges' do
       let(:user) { create(:anon_user, ip_address: '123.45.6.78') }
 
       it 'is rendered' do
@@ -50,7 +50,7 @@ describe 'Remote user confirmation' do
     end
   end
 
-  describe 'confirmation buttons' do
+  pending 'confirmation buttons' do
     it 'hides the overlay when the "Yes" button is clicked', js: true do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
 

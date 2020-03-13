@@ -5,7 +5,7 @@ require 'rails_helper'
 describe 'Item Selector' do
   before { stub_current_user(create(:webauth_user)) }
 
-  describe 'for single items' do
+  pending 'for single items' do
     before { stub_searchworks_api_json(build(:single_holding)) }
 
     it 'displays the item call number' do
@@ -16,7 +16,7 @@ describe 'Item Selector' do
     end
   end
 
-  describe 'for multiple items', js: true do
+  pending 'for multiple items', js: true do
     before do
       stub_searchworks_api_json(holdings)
       visit request_path
@@ -212,7 +212,7 @@ describe 'Item Selector' do
     end
   end
 
-  describe 'when viewed under Back-Forward Cache', js: true do
+  pending 'when viewed under Back-Forward Cache', js: true do
     before do
       stub_searchworks_api_json(build(:searchable_holdings))
     end
@@ -252,7 +252,7 @@ describe 'Item Selector' do
     end
   end
 
-  describe 'breadcrumb pills', js: true do
+  pending 'breadcrumb pills', js: true do
     before do
       stub_searchworks_api_json(build(:many_holdings))
     end
@@ -287,7 +287,7 @@ describe 'Item Selector' do
     end
   end
 
-  describe 'ad-hoc items', js: true do
+  pending 'ad-hoc items', js: true do
     before do
       expect(SULRequests::Application.config).to receive(:ad_hoc_item_commentable_libraries).and_return(['SPEC-COLL'])
       stub_searchworks_api_json(build(:searchable_holdings))
@@ -368,7 +368,7 @@ describe 'Item Selector' do
     end
   end
 
-  describe 'checked out items', js: true do
+  pending 'checked out items', js: true do
     before do
       stub_searchworks_api_json(build(:checkedout_holdings))
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
@@ -389,7 +389,7 @@ describe 'Item Selector' do
     end
   end
 
-  describe 'public notes' do
+  pending 'public notes' do
     let(:request_path) { new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS') }
     let(:holdings) { build(:searchable_holdings) }
 

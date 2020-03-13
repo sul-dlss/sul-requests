@@ -16,7 +16,7 @@ describe 'Paging Schedule' do
     end
   end
 
-  describe 'Select dropdown', js: true do
+  pending 'Select dropdown', js: true do
     before { stub_searchworks_api_json(build(:sal3_holdings)) }
 
     it 'displays the estimate for the currently selected value and updates it when a new destination is selected' do
@@ -32,7 +32,7 @@ describe 'Paging Schedule' do
     end
   end
 
-  describe 'Estimated delivery', js: true do
+  pending 'Estimated delivery', js: true do
     before do
       stub_current_user(create(:webauth_user))
       stub_searchworks_api_json(build(:sal3_holdings))
@@ -56,7 +56,7 @@ describe 'Paging Schedule' do
     end
   end
 
-  describe 'Single library destination', js: true do
+  pending 'Single library destination', js: true do
     it 'displays an estimate for the single possible destination' do
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'PAGE-MA')
 
@@ -65,7 +65,7 @@ describe 'Paging Schedule' do
     end
   end
 
-  describe 'form choice page', js: true do
+  pending 'form choice page', js: true do
     before { stub_searchworks_api_json(build(:sal3_holdings)) }
 
     it 'shows the estimated delivery for Green Library' do
@@ -77,7 +77,7 @@ describe 'Paging Schedule' do
     end
   end
 
-  describe 'scan form', js: true do
+  pending 'scan form', js: true do
     before { stub_searchworks_api_json(build(:sal3_holdings)) }
 
     it 'shows the estimated delivery for the Scanning service' do
