@@ -65,7 +65,7 @@ describe HoldRecallsController do
         end.to raise_error(CanCan::AccessDenied)
       end
 
-      it 'is allowed if the library ID field is filled out' do
+      pending 'is allowed if the library ID field is filled out' do
         put :create, params: {
           request: {
             item_id: '1234',
@@ -90,7 +90,7 @@ describe HoldRecallsController do
       end
     end
 
-    describe 'by webauth users' do
+    pending 'by webauth users' do
       let(:user) { create(:webauth_user) }
 
       it 'is allowed' do
@@ -120,7 +120,7 @@ describe HoldRecallsController do
       # Note:  cannot trigger activejob from this spec to check ApprovalStatusMailer
     end
 
-    describe 'invalid requests' do
+    pending 'invalid requests' do
       let(:user) { create(:webauth_user) }
 
       it 'returns an error message to the user' do

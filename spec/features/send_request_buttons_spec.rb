@@ -5,7 +5,7 @@ require 'rails_helper'
 describe 'Send Request Buttons' do
   before { stub_searchworks_api_json(build(:single_holding)) }
 
-  describe 'as a Stanford user', js: true do
+  pending 'as a Stanford user', js: true do
     before { stub_current_user(create(:webauth_user)) }
 
     it 'allows submit' do
@@ -17,7 +17,7 @@ describe 'Send Request Buttons' do
     end
   end
 
-  describe 'by anonymous user', js: true do
+  pending 'by anonymous user', js: true do
     it 'is possible to toggle between login and name-email form' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
       click_link 'I don\'t have a SUNet ID'
@@ -53,7 +53,7 @@ describe 'Send Request Buttons' do
     end
   end
 
-  describe 'Scans' do
+  pending 'Scans' do
     before do
       stub_searchworks_api_json(build(:sal3_holdings))
       visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
@@ -69,7 +69,7 @@ describe 'Send Request Buttons' do
     end
   end
 
-  describe 'HoldRecall', js: true do
+  pending 'HoldRecall', js: true do
     before do
       visit new_hold_recall_path(item_id: '1234', barcode: '3610512345', origin: 'GREEN', origin_location: 'STACKS')
     end
@@ -90,7 +90,7 @@ describe 'Send Request Buttons' do
     end
   end
 
-  describe 'Mediated Pages' do
+  pending 'Mediated Pages' do
     describe 'for non-HOPKINS libraries' do
       it 'allows users to submit without a SUNet ID' do
         visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
