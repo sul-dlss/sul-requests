@@ -80,7 +80,7 @@ class CurrentUser
   end
 
   def user_id
-    request.env['REMOTE_USER'] || ENV['REMOTE_USER']
+    request.env['REMOTE_USER'].presence || ENV['REMOTE_USER']
   end
 
   def fake_ldap_attributes
