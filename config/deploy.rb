@@ -46,9 +46,13 @@ set :linked_dirs, fetch(:linked_dirs, []).push(
 # update shared_configs before restarting app
 before 'deploy:restart', 'shared_configs:update'
 
-
-# Sidekiq configuration (run one process with ten threads)
-# see sidekiq.yml for concurrency and queue settings
-set :sidekiq_processes, 1
 # honeybadger_env otherwise defaults to rails_env
 set :honeybadger_env, "#{fetch(:stage)}"
+
+namespace :deploy do
+  after :restart, :restart_sidekiq do
+    on roles(:app) do
+      sudo :systemctl, "restart", "sidekiq-*", raise_on_non_zero_exit: false
+    end
+  end
+end
