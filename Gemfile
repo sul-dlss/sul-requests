@@ -63,16 +63,14 @@ gem 'nokogiri', '>= 1.7.1'
 gem 'borrow_direct'
 
 # rack is a webserver interface used by rails.
-# Pinning to 2.0.8 for incompatability with sidekiq.
-# The next rack release post 2.1.1 should fix this and we can unpin.
-gem 'rack', '= 2.0.8'
+gem 'rack'
 
 group :test do
   gem 'simplecov', require: false
 end
 
 # Sidekiq is our background processing framework, run via Active Job
-gem 'sidekiq', '< 6' # Pin to < 6 until we can upgrade to be compatible
+gem 'sidekiq'
 gem 'sidekiq-statistic'
 
 group :development, :test do
@@ -130,6 +128,5 @@ group :deployment do
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
   gem 'capistrano-shared_configs'
-  gem 'capistrano-sidekiq'
   gem 'dlss-capistrano'
 end
