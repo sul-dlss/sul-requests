@@ -9,7 +9,7 @@ class SubmitBorrowDirectRequestJob < ApplicationJob
     request = find_request(request_id)
     return true unless request
 
-    Sidekiq::Logging.logger.info("Started SubmitBorrowDirectRequestJob for request #{request_id}")
+    Sidekiq.logger.info("Started SubmitBorrowDirectRequestJob for request #{request_id}")
 
     begin
       make_borrow_direct_or_symphony_request(request)
@@ -19,7 +19,7 @@ class SubmitBorrowDirectRequestJob < ApplicationJob
       SubmitSymphonyRequestJob.perform_now(request_id)
     end
 
-    Sidekiq::Logging.logger.info("Completed SubmitBorrowDirectRequestJob for request #{request_id}")
+    Sidekiq.logger.info("Completed SubmitBorrowDirectRequestJob for request #{request_id}")
   end
 
   def find_request(request_id)
