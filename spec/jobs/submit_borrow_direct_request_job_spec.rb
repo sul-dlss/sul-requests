@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'sidekiq/logging'
 
 describe SubmitBorrowDirectRequestJob, type: :job do
   let(:user) { create(:library_id_user) }
