@@ -139,3 +139,6 @@ purl:
 
 mylibrary:
   url: https://mylibrary.stanford.edu/
+
+data_cleanup:
+  age: <%= 1.year.ago %>

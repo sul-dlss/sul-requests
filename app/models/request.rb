@@ -24,6 +24,9 @@ class Request < ActiveRecord::Base
     where(created_at: Time.zone.parse(date).beginning_of_day..Time.zone.parse(date).end_of_day)
   }
   scope :for_type, ->(request_type) { where(type: request_type) if request_type }
+  scope :obsolete, lambda { |date|
+    where('created_at < ? AND (type != "MediatedPage" OR needed_date < ?)', date, date)
+  }
 
   delegate :hold_recallable?, :mediateable?, :pageable?, :scannable?, to: :library_location
 
