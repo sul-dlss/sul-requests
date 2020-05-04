@@ -66,8 +66,8 @@ describe 'shared/_item_selector.html.erb' do
 
     it 'populates the ad-hoc items' do
       expect(rendered).to have_selector '[data-behavior="ad-hoc-items"]'
-      expect(rendered).to have_selector '[name="mediated_page[ad_hoc_items][]"][value="ZZZ 123"]', visible: false
-      expect(rendered).to have_selector '[name="mediated_page[ad_hoc_items][]"][value="ZZZ 321"]', visible: false
+      expect(rendered).to have_selector '[name="mediated_page[ad_hoc_items][]"][value="ZZZ 123"]', hidden: true
+      expect(rendered).to have_selector '[name="mediated_page[ad_hoc_items][]"][value="ZZZ 321"]', hidden: true
     end
   end
 end
