@@ -81,7 +81,7 @@ describe SymphonyCurrLocRequest do
   end
 
   it 'BASE_URL is concatenation of web services url and current_loc_path' do
-    expect(SymphonyCurrLocRequest::BASE_URL).to eq 'http://example.com/symws/v1/catalog/item/barcode/'
+    expect(SymphonyCurrLocRequest::BASE_URL).to eq 'http://example.com/symws/catalog/item/barcode/'
   end
 
   it 'the barcode is URL excaped (so we don\'t get invalid URL errors)' do
