@@ -29,7 +29,7 @@ describe 'Create Scan Request' do
     expect(page).not_to have_css('.alert-warning.destination-note-callout')
   end
 
-  pending 'by an eligible webauth user' do
+  describe 'by an eligible webauth user' do
     before do
       stub_current_user(create(:scan_eligible_user))
     end
@@ -42,7 +42,7 @@ describe 'Create Scan Request' do
     end
   end
 
-  pending 'by non webauth user' do
+  describe 'by non webauth user' do
     it 'provides a link to page the item' do
       visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
 

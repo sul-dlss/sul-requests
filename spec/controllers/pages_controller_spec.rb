@@ -12,7 +12,7 @@ describe PagesController do
     allow(controller).to receive_messages(current_user: user)
   end
 
-  pending 'new' do
+  describe 'new' do
     let(:user) { User.new }
 
     it 'is accessible by anonymous users' do
@@ -34,7 +34,7 @@ describe PagesController do
     end
   end
 
-  pending 'create' do
+  describe 'create' do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
 
@@ -250,7 +250,7 @@ describe PagesController do
     end
   end
 
-  pending 'update' do
+  describe 'update' do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
 
@@ -358,7 +358,7 @@ describe PagesController do
     end
   end
 
-  pending '#current_request' do
+  describe '#current_request' do
     let(:user) { create(:anon_user) }
 
     it 'returns a Page object' do

@@ -9,7 +9,7 @@ describe 'Creating a mediated page request' do
     allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
   end
 
-  pending 'by an anonmyous user' do
+  describe 'by an anonmyous user' do
     it 'is possible to toggle between login and name-email form', js: true do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
 
@@ -77,7 +77,7 @@ describe 'Creating a mediated page request' do
     end
   end
 
-  pending 'by a webauth user' do
+  describe 'by a webauth user' do
     before { stub_current_user(user) }
 
     it 'is possible without filling in any user information' do
@@ -92,7 +92,7 @@ describe 'Creating a mediated page request' do
     end
   end
 
-  pending 'comments' do
+  describe 'comments' do
     before { stub_current_user(user) }
 
     it 'has a comments field for commentable libraries' do
@@ -117,7 +117,7 @@ describe 'Creating a mediated page request' do
     end
   end
 
-  pending 'needed on' do
+  describe 'needed on' do
     before { stub_current_user(user) }
 
     it 'has a field for the planned date of visit' do
@@ -134,7 +134,7 @@ describe 'Creating a mediated page request' do
     end
   end
 
-  pending 'selecting barcodes' do
+  describe 'selecting barcodes' do
     before do
       stub_current_user(user)
       stub_searchworks_api_json(build(:special_collections_holdings))

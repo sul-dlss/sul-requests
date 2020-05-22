@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe 'Requests Delegation' do
-  pending 'non-scannable materials' do
+  describe 'non-scannable materials' do
     it 'is automatically delegated to the page request form' do
       visit new_request_path(item_id: '12345', origin: 'SAL1/2', origin_location: 'STACKS')
 
@@ -12,7 +12,7 @@ describe 'Requests Delegation' do
     end
   end
 
-  pending 'mediated page materials' do
+  describe 'mediated page materials' do
     it 'automaticallies delegate to the mediated page request form' do
       visit new_request_path(item_id: '12345', origin: 'SPEC-COLL', origin_location: 'STACKS')
 
@@ -21,7 +21,7 @@ describe 'Requests Delegation' do
     end
   end
 
-  pending 'scannable materials' do
+  describe 'scannable materials' do
     before do
       stub_searchworks_api_json(build(:sal3_holdings))
     end
