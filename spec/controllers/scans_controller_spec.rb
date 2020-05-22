@@ -16,7 +16,7 @@ describe ScansController do
     allow(controller).to receive_messages(current_user: user)
   end
 
-  pending 'new' do
+  describe 'new' do
     let(:user) { create(:anon_user) }
 
     it 'is accessible by anonymous users' do
@@ -38,7 +38,7 @@ describe ScansController do
     end
   end
 
-  pending 'create' do
+  describe 'create' do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
 
@@ -212,7 +212,7 @@ describe ScansController do
     end
   end
 
-  pending 'update' do
+  describe 'update' do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
 
@@ -255,7 +255,7 @@ describe ScansController do
     end
   end
 
-  pending '#current_request' do
+  describe '#current_request' do
     let(:user) { create(:anon_user) }
 
     it 'returns a Scan object' do
