@@ -9,7 +9,7 @@ describe 'Public Notes', js: true do
     allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
   end
 
-  pending 'public_notes' do
+  describe 'public_notes' do
     before do
       stub_current_user(user)
       stub_searchworks_api_json(build(:searchable_holdings))
