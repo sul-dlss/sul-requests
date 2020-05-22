@@ -85,11 +85,12 @@ Metrics/BlockLength:
 Metrics/MethodLength:
   Max: 11
 
-# Offense count: 1
+# Offense count: 2
 # Configuration parameters: ExpectMatchingDefinition, Regex, IgnoreExecutableScripts, AllowedAcronyms.
 # AllowedAcronyms: CLI, DSL, ACL, API, ASCII, CPU, CSS, DNS, EOF, GUID, HTML, HTTP, HTTPS, ID, IP, JSON, LHS, QPS, RAM, RHS, RPC, SLA, SMTP, SQL, SSH, TCP, TLS, TTL, UDP, UI, UID, UUID, URI, URL, UTF8, VM, XML, XMPP, XSRF, XSS
 Naming/FileName:
   Exclude:
+    - 'lib/tasks/display-coverage.rake'
     - 'lib/tasks/scss-lint.rake'
 
 # Offense count: 2
@@ -102,7 +103,7 @@ Naming/MemoizedInstanceVariableName:
 
 # Offense count: 2
 # Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
-# AllowedNames: io, id, to, by, on, in, at, ip, db, os, pp
+# AllowedNames: io, id, to, by, on, in, at, ip, db, os
 Naming/MethodParameterName:
   Exclude:
     - 'app/helpers/application_helper.rb'
@@ -130,7 +131,7 @@ RSpec/ContextWording:
 RSpec/DescribeClass:
   Enabled: false
 
-# Offense count: 192
+# Offense count: 148
 # Configuration parameters: Max.
 RSpec/ExampleLength:
   Enabled: false
@@ -164,17 +165,17 @@ RSpec/LetSetup:
 RSpec/MessageSpies:
   EnforcedStyle: receive
 
-# Offense count: 326
+# Offense count: 288
 # Configuration parameters: AggregateFailuresByDefault.
 RSpec/MultipleExpectations:
-  Max: 25
+  Max: 16
 
-# Offense count: 514
+# Offense count: 508
 # Configuration parameters: IgnoreSharedExamples.
 RSpec/NamedSubject:
   Enabled: false
 
-# Offense count: 107
+# Offense count: 109
 RSpec/NestedGroups:
   Max: 5
 
@@ -214,7 +215,7 @@ RSpec/SubjectStub:
     - 'spec/models/symphony_response_spec.rb'
     - 'spec/models/user_spec.rb'
 
-# Offense count: 101
+# Offense count: 99
 # Configuration parameters: IgnoreNameless, IgnoreSymbolicNames.
 RSpec/VerifiedDoubles:
   Enabled: false
@@ -256,6 +257,14 @@ Rails/DynamicFindBy:
   Exclude:
     - 'app/models/request.rb'
     - 'spec/models/request_spec.rb'
+
+# Offense count: 3
+# Configuration parameters: EnforcedStyle.
+# SupportedStyles: slashes, arguments
+Rails/FilePath:
+  Exclude:
+    - 'lib/tasks/display-coverage.rake'
+    - 'spec/rails_helper.rb'
 
 # Offense count: 2
 # Configuration parameters: Include.
@@ -350,7 +359,7 @@ Style/MultilineIfModifier:
   Exclude:
     - 'app/models/user.rb'
 
-# Offense count: 1
+# Offense count: 4
 # Cop supports --auto-correct.
 # Configuration parameters: AutoCorrect, EnforcedStyle, IgnoredMethods.
 # SupportedStyles: predicate, comparison
@@ -358,6 +367,7 @@ Style/NumericPredicate:
   Exclude:
     - 'spec/**/*'
     - 'app/models/dashboard.rb'
+    - 'lib/tasks/display-coverage.rake'
 
 # Offense count: 40
 # Cop supports --auto-correct.

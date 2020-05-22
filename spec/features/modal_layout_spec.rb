@@ -16,9 +16,7 @@ describe 'Modal Layout' do
     visit new_request_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS', modal: true)
 
     expect(page).not_to have_css('#su-wrap')
-  end
 
-  pending 'Continued test from above that is pending due to requets shut down' do
     click_link 'Deliver to campus library'
 
     expect(page).not_to have_css('#su-wrap')
