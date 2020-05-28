@@ -26,3 +26,6 @@ symphony_web_services:
 
 background_jobs:
   enabled: false
+
+features:
+  scan_service: true
