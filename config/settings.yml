@@ -67,6 +67,7 @@ borrow_direct:
 features:
   remote_ip_check: true
   hold_recall_via_borrow_direct: true
+  scan_service: false
 
 background_jobs:
   enabled: false
