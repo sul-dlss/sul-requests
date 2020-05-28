@@ -68,35 +68,49 @@ module SULRequests
     config.include_self_in_library_list = ['MEDIA-MTXT']
     config.self_in_library_list_is_selected = ['LAW', 'MEDIA-MTXT']
 
-    config.pickup_libraries = [
-      'ART',
-      'BUSINESS',
-      'EARTH-SCI',
-      'EAST-ASIA',
-      'EDUCATION',
-      'ENG',
-      'GREEN',
-      'HOPKINS',
-      'LAW',
-      'MUSIC',
-      'RWC',
-      'SCIENCE'
-    ]
+    if Rails.env.test?
+      config.pickup_libraries = [
+        'ART',
+        'BUSINESS',
+        'EARTH-SCI',
+        'EAST-ASIA',
+        'EDUCATION',
+        'ENG',
+        'GREEN',
+        'HOPKINS',
+        'LAW',
+        'MUSIC',
+        'RWC',
+        'SCIENCE'
+      ]
+    else
+      config.pickup_libraries = [
+        'GREEN'
+      ]
+    end
 
     config.scanning_library_proxy = { 'SCAN' => 'GREEN' }
 
-    config.library_specific_pickup_libraries = {
-      'ARS' => ['ARS'],
-      'HV-ARCHIVE' => ['HV-ARCHIVE'],
-      'RUMSEYMAP' => ['RUMSEYMAP'],
-      'SPEC-COLL' => ['SPEC-COLL']
-    }
+    if Rails.env.test?
+      config.library_specific_pickup_libraries = {
+        'ARS' => ['ARS'],
+        'HV-ARCHIVE' => ['HV-ARCHIVE'],
+        'RUMSEYMAP' => ['RUMSEYMAP'],
+        'SPEC-COLL' => ['SPEC-COLL']
+      }
+    else
+      config.library_specific_pickup_libraries = {}
+    end
 
-    config.pageable_libraries = [
-      'SAL',
-      'SAL3',
-      'SAL-NEWARK'
-    ]
+    if Rails.env.test?
+      config.pageable_libraries = [
+        'SAL',
+        'SAL3',
+        'SAL-NEWARK'
+      ]
+    else
+      config.pageable_libraries = ['GREEN']
+    end
 
     # ad_hoc_item_commentable_libraries is configured to not display for any library.
     # Keeping this feature in case SPEC-COLL changes thier minds or we need to add
@@ -104,33 +118,37 @@ module SULRequests
     config.ad_hoc_item_commentable_libraries = []
     config.item_commentable_libraries = ['SAL-NEWARK', 'SPEC-COLL']
 
-    config.location_specific_pickup_libraries = {
-      'PAGE-AR' => ['ART', 'SPEC-COLL'],
-      'PAGE-AS' => ['ARS'],
-      'PAGE-BI' => ['BIOLOGY'],
-      'PAGE-BU' => ['BUSINESS'],
-      'PAGE-CH' => ['CHEMCHMENG'],
-      'PAGE-EA' => ['EAST-ASIA'],
-      'HY-PAGE-EA' => ['EAST-ASIA'],
-      'L-PAGE-EA'  => ['EAST-ASIA'],
-      'ND-PAGE-EA' => ['EAST-ASIA'],
-      'PAGE-ED' => ['EDUCATION'],
-      'PAGE-EN' => ['ENG'],
-      'PAGE-ES' => ['EARTH-SCI'],
-      'PAGE-GR' => ['GREEN'],
-      'PAGE-HA' => ['HV-ARCHIVE'],
-      'PAGE-HP' => ['GREEN', 'HOPKINS'],
-      'PAGE-IRON' => ['BUSINESS'],
-      'PAGE-LP' => ['MUSIC', 'MEDIA-MTXT'],
-      'PAGE-LW' => ['LAW'],
-      'PAGE-MA' => ['MATH-CS'],
-      'PAGE-MD' => ['MUSIC', 'MEDIA-MTXT'],
-      'PAGE-MP' => ['EARTH-SCI'],
-      'PAGE-MU' => ['MUSIC'],
-      'PAGE-RM' => ['RUMSEYMAP'],
-      'PAGE-SI' => ['SCIENCE'],
-      'PAGE-SP' => ['SPEC-COLL']
-    }
+    if Rails.env.test?
+      config.location_specific_pickup_libraries = {
+        'PAGE-AR' => ['ART', 'SPEC-COLL'],
+        'PAGE-AS' => ['ARS'],
+        'PAGE-BI' => ['BIOLOGY'],
+        'PAGE-BU' => ['BUSINESS'],
+        'PAGE-CH' => ['CHEMCHMENG'],
+        'PAGE-EA' => ['EAST-ASIA'],
+        'HY-PAGE-EA' => ['EAST-ASIA'],
+        'L-PAGE-EA'  => ['EAST-ASIA'],
+        'ND-PAGE-EA' => ['EAST-ASIA'],
+        'PAGE-ED' => ['EDUCATION'],
+        'PAGE-EN' => ['ENG'],
+        'PAGE-ES' => ['EARTH-SCI'],
+        'PAGE-GR' => ['GREEN'],
+        'PAGE-HA' => ['HV-ARCHIVE'],
+        'PAGE-HP' => ['GREEN', 'HOPKINS'],
+        'PAGE-IRON' => ['BUSINESS'],
+        'PAGE-LP' => ['MUSIC', 'MEDIA-MTXT'],
+        'PAGE-LW' => ['LAW'],
+        'PAGE-MA' => ['MATH-CS'],
+        'PAGE-MD' => ['MUSIC', 'MEDIA-MTXT'],
+        'PAGE-MP' => ['EARTH-SCI'],
+        'PAGE-MU' => ['MUSIC'],
+        'PAGE-RM' => ['RUMSEYMAP'],
+        'PAGE-SI' => ['SCIENCE'],
+        'PAGE-SP' => ['SPEC-COLL']
+      }
+    else
+      config.location_specific_pickup_libraries = {}
+    end
 
     config.contact_info = {
       'SCAN' => {
