@@ -17,6 +17,8 @@ module Scannable
   }.freeze
 
   def scannable?
+    return false unless Settings.features.scan_service
+
     scannable_library? &&
       scannable_location? &&
       includes_scannable_item?
