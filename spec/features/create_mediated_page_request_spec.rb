@@ -118,7 +118,8 @@ describe 'Creating a mediated page request' do
     end
   end
 
-  describe 'needed on' do
+  # TODO: COVID-19 We are not collecting needed_date currently
+  pending 'needed on' do
     before { stub_current_user(user) }
 
     it 'has a field for the planned date of visit' do
@@ -159,15 +160,16 @@ describe 'Creating a mediated page request' do
   end
 
   def fill_in_required_fields
-    if Capybara.current_driver == :rack_test
-      date_input = find('#request_needed_date', visible: false)
-      min_date = date_input['min']
-      date_input.set(min_date)
-    else
-      wait_for_ajax
-      min_date = find('#request_needed_date', visible: false)['min']
-      page.execute_script("$('#request_needed_date').prop('value', '#{min_date}')")
-    end
+    # TODO: COVID-19 We are not collecting needed_date currently
+    # if Capybara.current_driver == :rack_test
+    #   date_input = find('#request_needed_date', visible: false)
+    #   min_date = date_input['min']
+    #   date_input.set(min_date)
+    # else
+    #   wait_for_ajax
+    #   min_date = find('#request_needed_date', visible: false)['min']
+    #   page.execute_script("$('#request_needed_date').prop('value', '#{min_date}')")
+    # end
   end
 
   def click_remote_user_confirmation
