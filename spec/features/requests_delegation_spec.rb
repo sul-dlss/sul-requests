@@ -7,7 +7,7 @@ describe 'Requests Delegation' do
     it 'is automatically delegated to the page request form' do
       visit new_request_path(item_id: '12345', origin: 'SAL1/2', origin_location: 'STACKS')
 
-      expect(page).to have_css('h1#dialogTitle', text: 'Request delivery to campus library')
+      expect(page).to have_css('h1#dialogTitle', text: 'Limited pickup service')
       expect(current_url).to eq new_page_url(item_id: '12345', origin: 'SAL1/2', origin_location: 'STACKS')
     end
   end
