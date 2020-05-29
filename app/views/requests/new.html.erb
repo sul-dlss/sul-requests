@@ -6,6 +6,7 @@
 
   <% if delegated_request? %>
     <%= render 'remote_user_check' if render_remote_user_check? %>
+    <%= render 'eligibility_confirmation' if Settings.features.confirm_eligibility %>
     <%= render 'form' %>
   <% else %>
     <%= render 'form_choice' %>
