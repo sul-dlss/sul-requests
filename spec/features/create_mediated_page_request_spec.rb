@@ -9,7 +9,8 @@ describe 'Creating a mediated page request' do
     allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
   end
 
-  describe 'by an anonmyous user' do
+  # TODO: COVID-19
+  pending 'by an anonmyous user' do
     it 'is possible to toggle between login and name-email form', js: true do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
 
