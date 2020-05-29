@@ -28,5 +28,6 @@ background_jobs:
   enabled: false
 
 features:
+  confirm_eligibility: false
   estimate_delivery: true
   scan_service: true
