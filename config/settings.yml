@@ -65,6 +65,7 @@ stanford_ips:
 borrow_direct:
   api_key: an-api-key
 features:
+  estimate_delivery: false
   remote_ip_check: true
   hold_recall_via_borrow_direct: true
   scan_service: false
