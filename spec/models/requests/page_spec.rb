@@ -38,16 +38,18 @@ describe Page do
       before { subject.origin = 'MEDIA-MTXT' }
 
       it { is_expected.not_to be_requestable_by_all }
-      it { is_expected.to be_requestable_with_library_id }
-      it { is_expected.not_to be_requestable_with_sunet_only }
-      it { is_expected.to be_requires_additional_user_validation }
+      pending { is_expected.to be_requestable_with_library_id }
+      pending { is_expected.not_to be_requestable_with_sunet_only }
+      it { is_expected.to be_requestable_with_sunet_only }
+      pending { is_expected.to be_requires_additional_user_validation }
     end
 
     context 'other libraries' do
-      it { is_expected.to be_requestable_by_all }
-      it { is_expected.to be_requestable_with_library_id }
-      it { is_expected.not_to be_requestable_with_sunet_only }
-      it { is_expected.to be_requires_additional_user_validation }
+      pending { is_expected.to be_requestable_by_all }
+      pending { is_expected.to be_requestable_with_library_id }
+      pending { is_expected.not_to be_requestable_with_sunet_only }
+      it { is_expected.to be_requestable_with_sunet_only }
+      pending { is_expected.to be_requires_additional_user_validation }
     end
   end
 
@@ -55,7 +57,8 @@ describe Page do
     expect(subject.type).to eq 'Page'
   end
 
-  describe 'library id validation', allow_apis: true do
+  # TODO: COVID-19 We can uncomment this when we are allowing requests with a library ID again
+  pending 'library id validation', allow_apis: true do
     let(:user) { create(:library_id_user) }
     let(:subject) do
       described_class.create(

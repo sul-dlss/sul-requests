@@ -17,7 +17,8 @@ describe 'Send Request Buttons' do
     end
   end
 
-  describe 'by anonymous user', js: true do
+  # TODO: COVID-19
+  pending 'by anonymous user', js: true do
     it 'is possible to toggle between login and name-email form' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
       click_link 'I don\'t have a SUNet ID'
@@ -78,12 +79,14 @@ describe 'Send Request Buttons' do
       expect(page).to have_css('button', text: /Send request.*login with SUNet ID/m)
     end
 
-    it 'allows to send requests via LibraryID' do
+    # TODO: COVID-19
+    pending 'allows to send requests via LibraryID' do
       click_link 'I don\'t have a SUNet ID'
       expect(page).to have_field('Library ID', type: 'text')
     end
 
-    it 'does not allow to send requests via Name and Email' do
+    # TODO: COVID-19
+    pending 'does not allow to send requests via Name and Email' do
       click_link 'I don\'t have a SUNet ID'
       expect(page).not_to have_field('Name', type: 'text')
       expect(page).not_to have_field('Email', type: 'email')
@@ -92,7 +95,8 @@ describe 'Send Request Buttons' do
 
   describe 'Mediated Pages' do
     describe 'for non-HOPKINS libraries' do
-      it 'allows users to submit without a SUNet ID' do
+      # TODO: COVID-19
+      pending 'allows users to submit without a SUNet ID' do
         visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
         expect(page).to have_css('a', text: 'I don\'t have a SUNet ID')
       end
