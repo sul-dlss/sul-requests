@@ -36,7 +36,7 @@ describe HoldRecallsController do
   end
 
   describe 'create' do
-    describe 'by anonymous users' do
+    pending 'by anonymous users' do
       let(:user) { create(:anon_user) }
 
       it 'redirects to the login page passing a referrer param to continue creating the hold recall request' do
