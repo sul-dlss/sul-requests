@@ -65,8 +65,13 @@ module SULRequests
 
     config.default_pickup_library = 'GREEN'
 
-    config.include_self_in_library_list = ['MEDIA-MTXT']
-    config.self_in_library_list_is_selected = ['LAW', 'MEDIA-MTXT']
+    if Rails.env.test?
+      config.include_self_in_library_list = ['MEDIA-MTXT']
+      config.self_in_library_list_is_selected = ['LAW', 'MEDIA-MTXT']
+    else
+      config.include_self_in_library_list = []
+      config.self_in_library_list_is_selected = []
+    end
 
     if Rails.env.test?
       config.pickup_libraries = [
