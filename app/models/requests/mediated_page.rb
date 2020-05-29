@@ -30,17 +30,19 @@ class MediatedPage < Request
     commentable_library_whitelist.include?(origin)
   end
 
-  def requestable_by_all?
-    return false if origin == 'HOPKINS'
-
-    true
-  end
-
-  def requestable_with_sunet_only?
-    return true if origin == 'HOPKINS'
-
-    false
-  end
+  # TODO: COVID-19 Disabling for now while we re-open so that it falls back to the default behavior
+  # We can uncomment if we allow guests to request again (but not at particular libraries like Hopkins)
+  # def requestable_by_all?
+  #   return false if origin == 'HOPKINS'
+  #
+  #   true
+  # end
+  #
+  # def requestable_with_sunet_only?
+  #   return true if origin == 'HOPKINS'
+  #
+  #   false
+  # end
 
   def requires_needed_date?
     return false if origin == 'HOPKINS'
