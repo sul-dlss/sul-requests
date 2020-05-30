@@ -12,14 +12,3 @@
     text-align: center;
   }
 }
-
-.modal-body {
-  // We only want a really tall overlay
-  // (with overflow hidden) when we're
-  // being displayed in a modal. Otherwise
-  // the normal page flow should be fine
-  .confirmation-overlay {
-    min-height: 10000px;
-    overflow: hidden;
-  }
-}
