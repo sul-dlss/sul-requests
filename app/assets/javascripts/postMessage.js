@@ -6,7 +6,7 @@ var iframePostMessage = (function() {
         if (top != self) {
           setInterval(function(){
             _this.sendMessage({
-              contentHeight: $('html').outerHeight(true),
+              contentHeight: $('body')[0].scrollHeight,
               successPage: $('.success-page').length > 0
             });
           }, 1000);
