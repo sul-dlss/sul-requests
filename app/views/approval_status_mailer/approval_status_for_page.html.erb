@@ -17,9 +17,11 @@
       <% end %>
     </ul>
 
-    <p>
-      Earliest delivery: <%= @request.estimated_delivery %>
-    </p>
+    <% if @request.estimated_delivery.present? %>
+      <p>
+        Earliest delivery: <%= @request.estimated_delivery %>
+      </p>
+    <% end %>
 
     <p>Request was placed: <%= l(@request.created_at, format: :formal) %></p>
 

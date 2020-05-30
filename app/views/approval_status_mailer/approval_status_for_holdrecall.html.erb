@@ -23,7 +23,9 @@
 
     <p>
       Request was placed: <%= l(@request.created_at, format: :formal) %><br/>
-      Request will be canceled if it cannot be fulfilled before: <%= l(@request.needed_date, format: :long) %>
+      <% if @request.needed_date.present? %>
+        Request will be canceled if it cannot be fulfilled before: <%= l(@request.needed_date, format: :long) %>
+      <% end %>
     </p>
 
     <p>
