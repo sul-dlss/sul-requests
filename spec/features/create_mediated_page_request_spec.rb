@@ -159,6 +159,17 @@ describe 'Creating a mediated page request' do
     end
   end
 
+  describe 'special note for SPEC items about reading room access' do
+    before { stub_current_user(user) }
+
+    it 'is present' do
+      visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+
+      expect(page).to have_css('.control-label', text: 'Reading Room access')
+      expect(page).to have_css('.input-like-text', text: /^When the items have been approved and are ready for use/)
+    end
+  end
+
   def fill_in_required_fields
     # TODO: COVID-19 We are not collecting needed_date currently
     # if Capybara.current_driver == :rack_test
