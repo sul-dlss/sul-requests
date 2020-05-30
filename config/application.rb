@@ -104,7 +104,9 @@ module SULRequests
         'SPEC-COLL' => ['SPEC-COLL']
       }
     else
-      config.library_specific_pickup_libraries = {}
+      config.library_specific_pickup_libraries = {
+        'SPEC-COLL' => ['SPEC-COLL']
+      }
     end
 
     if Rails.env.test?
