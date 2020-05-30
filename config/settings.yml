@@ -70,6 +70,7 @@ features:
   remote_ip_check: true
   hold_recall_via_borrow_direct: true
   scan_service: false
+  special_spec_note: true
 
 background_jobs:
   enabled: false
