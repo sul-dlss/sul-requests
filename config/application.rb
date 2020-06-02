@@ -65,6 +65,8 @@ module SULRequests
 
     config.default_pickup_library = 'GREEN'
 
+    config.confirm_eligibility_libraries = ['SPEC-COLL']
+
     if Rails.env.test?
       config.include_self_in_library_list = ['MEDIA-MTXT']
       config.self_in_library_list_is_selected = ['LAW', 'MEDIA-MTXT']
