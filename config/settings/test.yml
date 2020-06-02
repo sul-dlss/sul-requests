@@ -30,4 +30,5 @@ background_jobs:
 features:
   confirm_eligibility: false
   estimate_delivery: true
+  remote_ip_check: true
   scan_service: true
