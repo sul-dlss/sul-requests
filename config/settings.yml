@@ -40,6 +40,8 @@ paging_eligible_groups:
   - 'stanford:staff:emeritus'
   - 'stanford:staff:otherteaching'
   - 'stanford:affiliate:fellow'
+  - 'stanford:affiliate:visitscholarvs'
+  - 'stanford:affiliate:visitscholarvt'
 
 # LDAP Workgroups for origin specific mediation
 origin_admin_groups:
