@@ -1,0 +1,26 @@
+<div id="eligibility-confirm-overlay" class='confirmation-overlay'>
+  <div class='modal-body'>
+    <h1>Special Collections access</h1>
+    <p>This item can be viewed only in the Field Reading Room of Green Library.</p>
+
+    <h2 class="h3">Who can visit the Reading Room?</h2>
+    <p>Stanford faculty (including emeriti), graduate students, and post docs are eligible.</p>
+    <p>To maintain social distancing, the Reading Room will admit one researcher per table in 2-hour blocks.</p>
+
+    <h2 class="h3">How does it work?</h2>
+    <ol>
+      <li>Request the item.</li>
+      <li>When it's ready for use, we'll send you an email with instructions to schedule your visit.</li>
+      <li>Follow the required health and safety protocols and Special Collections policies when you arrive for your visit.</li>
+    </ol>
+
+    <p>
+      <i class="sul-i-navigation-next-4"></i> <%= link_to('Use of materials in the Field Room', 'https://library.stanford.edu/spc/use-materials-field-room', target: '_blank') %>
+    </p>
+
+    <div class='overlay-options'>
+      <%= button_tag('Continue', class: 'btn btn-success', data: { behavior: 'close-overlay', 'close-target' => '#eligibility-confirm-overlay' }) %>
+      <%= link_to('Cancel', "#{Settings.searchworks_link}/#{current_request.item_id}", class: 'btn btn-link', data: { behavior: 'close-parent-modal' }) %>
+    </div>
+  </div>
+</div>
