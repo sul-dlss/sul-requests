@@ -36,6 +36,12 @@ Rails.application.routes.draw do
     end
   end
 
+  concern :eligibility_checkable do
+    collection do
+      get :ineligible, as: :ineligible
+    end
+  end
+
   concern :statusable do
     member do
       get :status, as: :status
@@ -46,7 +52,7 @@ Rails.application.routes.draw do
     resources :admin_comments
   end
 
-  resources :requests, only: :new
+  resources :requests, only: :new, concerns: [:eligibility_checkable]
   resources :pages, concerns: [:creatable_via_get_redirect, :successable, :statusable]
   resources :scans, concerns: [:creatable_via_get_redirect, :successable, :statusable]
   resources :mediated_pages, concerns: [:admin_commentable, :creatable_via_get_redirect, :successable, :statusable]
