@@ -32,3 +32,4 @@ features:
   estimate_delivery: true
   remote_ip_check: true
   scan_service: true
+  validate_eligibility: false

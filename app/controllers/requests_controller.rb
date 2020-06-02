@@ -9,6 +9,7 @@ class RequestsController < ApplicationController
   include ModalLayout
 
   before_action :capture_email_field
+  before_action :validate_eligibility, only: :create
   before_action :modify_item_selector_checkboxes_or_radios, only: :create
   before_action :modify_item_proxy_status, only: :create
 
@@ -175,6 +176,13 @@ class RequestsController < ApplicationController
 
   def capture_email_field
     raise HoneyPotFieldError if params[:email].present?
+  end
+
+  def validate_eligibility
+    return unless Settings.features.validate_eligibility
+    return if current_user.affiliation.any? { |aff| Settings.paging_eligible_groups.include?(aff) }
+
+    redirect_to polymorphic_path([:ineligible_requests, current_request])
   end
 
   class HoneyPotFieldError < StandardError
