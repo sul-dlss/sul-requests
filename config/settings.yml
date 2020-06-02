@@ -24,6 +24,23 @@ scan_pilot_groups:
   - 'stanford:affiliate:visitscholarvs'
   - 'stanford:affiliate:visitscholarvt'
 
+paging_eligible_groups:
+  - 'stanford:student'
+  - 'stanford:student:onleave'
+  - 'stanford:student:postdoc'
+  - 'stanford:faculty'
+  - 'stanford:faculty:onleave'
+  - 'stanford:faculty:emeritus'
+  - 'stanford:faculty:otherteaching'
+  - 'stanford:faculty:affiliate'
+  - 'stanford:faculty:slac'
+  - 'stanford:staff'
+  - 'stanford:staff:academic'
+  - 'stanford:staff:onleave'
+  - 'stanford:staff:emeritus'
+  - 'stanford:staff:otherteaching'
+  - 'stanford:affiliate:fellow'
+
 # LDAP Workgroups for origin specific mediation
 origin_admin_groups:
   HOPKINS: []
@@ -71,6 +88,7 @@ features:
   hold_recall_via_borrow_direct: true
   scan_service: false
   special_spec_note: true
+  validate_eligibility: true
 
 background_jobs:
   enabled: false

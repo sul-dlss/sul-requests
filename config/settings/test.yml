@@ -31,3 +31,4 @@ features:
   confirm_eligibility: false
   estimate_delivery: true
   scan_service: true
+  validate_eligibility: false

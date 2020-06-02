@@ -32,6 +32,7 @@ Metrics/ClassLength:
   Max: 120
   Exclude:
     - 'app/models/request.rb'
+    - 'app/controllers/requests_controller.rb'
 
 Metrics/ModuleLength:
   Max: 120
