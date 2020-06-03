@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <p>We’ve received your request for the item(s) below.</p>
+
+    <p>What happens now?</p>
+    <ol>
+      <li>A librarian will review and approve your request, or contact you.</li>
+      <li>Approved materials will be delivered to the Field Reading Room.</li>
+      <li>We’ll send an email to let you know they’re ready.</li>
+      <li>You’ll be able to schedule research time in the Field Reading Room via <%= link_to('My Library Account', 'https://mylibrary.stanford.edu') %>.</li>
+    </ol>
+
+    <p>If you haven’t already, complete <%= link_to('COVID-19 Hygiene Best Practices, EHS-2470-WEB', 'https://starsexpress.stanford.edu/index.html?ref=LM_SS_LEARNING.LM_BROWSE_LEARNER.GBL&type=COURSE&code=EHS-2470') %> before your visit.</p>
+
+    <p><%= @request.item_title %></p>
+
+    <p>Item(s) requested:</p>
+    <ul>
+      <% @request.holdings.map(&:callnumber).each do |callnumber| %>
+        <li><%= callnumber %></li>
+      <% end %>
+      <% @request.ad_hoc_items.each do |ad_hoc_item| %>
+        <li><%= ad_hoc_item %></li>
+      <% end if @request.ad_hoc_items.present? %>
+    </ul>
+
+    <p>
+      <%= @request.data_to_email.join('<br/>') %>
+    </p>
+
+    <p>
+      <%= t("approval_status.#{@request.origin.underscore}.extra_note", default: :'approval_status.default.extra_note') %>
+    </p>
+
+    <% if @request.needed_date.present? %>
+      <p>
+        <%= "Items approved for access will be ready when you visit on: #{l @request.needed_date, format: :long}" %>
+      </p>
+    <% end %>
+
+    <p>
+      Questions about your request?<br/>
+      Contact:<br/>
+      <%= @contact_info[:phone] %><br/>
+      <%= mail_to(@contact_info[:email], @contact_info[:email]) %>
+    </p>
+  </body>
+</html>
