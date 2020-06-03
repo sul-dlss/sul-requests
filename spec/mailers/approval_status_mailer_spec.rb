@@ -67,7 +67,7 @@ describe ApprovalStatusMailer do
 
       it 'renders the correct email' do
         expect(mail.body.to_s).to include(
-          "We'll email you again when your request is ready for pickup."
+          "We've received your request. We'll email you again when it's ready for pickup."
         )
       end
     end
@@ -157,7 +157,8 @@ describe ApprovalStatusMailer do
       end
     end
 
-    describe 'status url' do
+    # TODO: COVID-19 Not linking to the status page for now
+    pending 'status url' do
       let(:body) { Capybara.string(mail.body.to_s) }
 
       it 'gives the correct URL w/ an https protocol' do

@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html>
   <body>
-    <p>
-      We'll email you again when your request is ready for pickup.
-    </p>
+    <%= render 'pickup_confirmation' %>
 
     <p>
       You have been added to the hold queue for the following item(s):<br/>
@@ -26,11 +24,6 @@
       <% if @request.needed_date.present? %>
         Request will be canceled if it cannot be fulfilled before: <%= l(@request.needed_date, format: :long) %>
       <% end %>
-    </p>
-
-    <p>
-      You can see this request status online at <%= link_to('requests.stanford.edu', @status_url) %><br/>
-      You can also see and change your requests at <%= link_to('https://library.stanford.edu/myaccount', 'https://library.stanford.edu/myaccount') %>
     </p>
 
     <p>
