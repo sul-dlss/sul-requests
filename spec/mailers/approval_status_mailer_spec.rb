@@ -67,7 +67,7 @@ describe ApprovalStatusMailer do
 
       it 'renders the correct email' do
         expect(mail.body.to_s).to include(
-          "We'll email you again when your request is ready for pickup."
+          "We've received your request. We'll email you again when it's ready for pickup."
         )
       end
     end
