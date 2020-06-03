@@ -175,7 +175,8 @@ describe ApprovalStatusMailer do
       end
     end
 
-    describe 'status url' do
+    # TODO: COVID-19 Not linking to the status page for now
+    pending 'status url' do
       let(:body) { Capybara.string(mail.body.to_s) }
 
       it 'gives the correct URL w/ an https protocol' do
