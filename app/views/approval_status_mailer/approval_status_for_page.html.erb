@@ -4,7 +4,7 @@
     <%= render 'pickup_confirmation' %>
 
     <p>
-      The following items are scheduled to be delivered to <%= SULRequests::Application.config.libraries[@request.destination] %>:<br/>
+      The following item(s) will be delivered to <%= SULRequests::Application.config.libraries[@request.destination] %>:<br/>
       Title: <%= @request.item_title %>
     </p>
 
