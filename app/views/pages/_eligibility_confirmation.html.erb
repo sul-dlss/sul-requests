@@ -17,7 +17,7 @@
     </p>
 
     <div class='overlay-options'>
-      <%= button_tag('Continue', class: 'btn btn-success', data: { behavior: 'close-overlay', 'close-target' => '#eligibility-confirm-overlay' }) %>
+      <%= button_tag('Continue', class: 'btn btn-success', type: 'button', data: { behavior: 'close-overlay', 'close-target' => '#eligibility-confirm-overlay' }) %>
       <%= link_to('Cancel', "#{Settings.searchworks_link}/#{current_request.item_id}", class: 'btn btn-link', data: { behavior: 'close-parent-modal' }) %>
     </div>
   </div>
