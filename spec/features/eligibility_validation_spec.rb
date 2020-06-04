@@ -33,7 +33,7 @@ describe 'Eligibility Validation' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
       first(:button, 'Send request').click
 
-      expect(current_url).to eq ineligible_requests_url
+      expect(current_url).to eq ineligible_pages_url
       expect(page).to have_css('h1#dialogTitle', text: /Sorry, we can't fulfill your request/)
       expect(Page.last).to be_nil
     end
