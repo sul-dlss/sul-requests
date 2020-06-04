@@ -87,6 +87,7 @@ features:
   confirm_eligibility: true
   estimate_delivery: false
   remote_ip_check: false
+  hold_recall_service: false
   hold_recall_via_borrow_direct: true
   scan_service: false
   special_spec_note: true
