@@ -10,32 +10,80 @@ describe 'Eligibility Validation' do
     stub_current_user(user)
   end
 
-  context 'when the user making the request has an eligible affiliation' do
-    before do
-      user.affiliation = 'stanford:student'
+  context 'for page requests' do
+    context 'when the user making the request has an eligible affiliation' do
+      before do
+        user.affiliation = 'stanford:student'
+      end
+
+      it 'allows the request to be submitted' do
+        visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
+        first(:button, 'Send request').click
+
+        expect(current_url).to eq successful_page_url(Page.last)
+        expect_to_be_on_success_page
+      end
     end
 
-    it 'allows the request to be submitted' do
-      visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
-      first(:button, 'Send request').click
+    context 'when the user making the request does not have an eligible affiliation' do
+      before do
+        user.affiliation = 'stanford:affiliate:sponsored'
+      end
 
-      expect(current_url).to eq successful_page_url(Page.last)
-      expect_to_be_on_success_page
+      it 'sends the user to the ineligible pages page' do
+        visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
+        first(:button, 'Send request').click
+
+        expect(current_url).to eq ineligible_pages_url(origin: 'GREEN')
+        expect(page).to have_css('h1#dialogTitle', text: /Sorry, we can't fulfill your request/)
+        expect(Page.last).to be_nil
+      end
     end
   end
 
-  context 'when the user making the request does not have an eligible affiliation' do
-    before do
-      user.affiliation = 'stanford:affiliate:sponsored'
+  context 'for mediated page requests ' do
+    context 'when the user has an eligibible affiliation' do
+      before do
+        user.affiliation = 'stanford:faculty'
+      end
+
+      it 'allows the request to be submitted' do
+        visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+        first(:button, 'Send request').click
+
+        expect(current_url).to eq successful_mediated_page_url(MediatedPage.last)
+        expect_to_be_on_success_page
+      end
     end
 
-    it 'allows the request to be submitted' do
-      visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
-      first(:button, 'Send request').click
+    context 'when the user has a student affiliation but has a type of "graduate"' do
+      before do
+        user.affiliation = 'stanford:student'
+        user.student_type = 'graduate'
+      end
 
-      expect(current_url).to eq ineligible_pages_url(origin: 'GREEN')
-      expect(page).to have_css('h1#dialogTitle', text: /Sorry, we can't fulfill your request/)
-      expect(Page.last).to be_nil
+      it 'allows the request to be submitted' do
+        visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+        first(:button, 'Send request').click
+
+        expect(current_url).to eq successful_mediated_page_url(MediatedPage.last)
+        expect_to_be_on_success_page
+      end
+    end
+
+    context 'when the user has an ineligible affiliation' do
+      before do
+        user.affiliation = 'stanford:student'
+      end
+
+      it 'sends the user to the ineligible mediated pages page' do
+        visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+        first(:button, 'Send request').click
+
+        expect(current_url).to eq ineligible_mediated_pages_url(origin: 'SPEC-COLL')
+        expect(page).to have_css('h1#dialogTitle', text: /Sorry, we can't fulfill your request/)
+        expect(MediatedPage.last).to be_nil
+      end
     end
   end
 end
