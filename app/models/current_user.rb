@@ -37,6 +37,8 @@ class CurrentUser
     user.sucard_number = ldap_sucard_number
     user.affiliation = ldap_affiliation
     user.email = ldap_email
+    user.student_type = ldap_student_type
+
     user.save if user.changed?
   end
 
@@ -54,6 +56,10 @@ class CurrentUser
 
   def ldap_affiliation
     ldap_attributes['WEBAUTH_LDAP_SUAFFILIATION'] || ldap_attributes['suAffiliation']
+  end
+
+  def ldap_student_type
+    ldap_attributes['WEBAUTH_LDAP_SUSTUDENTTYPE'] || ldap_attributes['suStudentType']
   end
 
   def ldap_email
