@@ -1,0 +1,3 @@
+<% if SULRequests::Application.config.confirm_eligibility_libraries.include?(params[:origin]) %>
+  <%= render "#{params[:origin]}_ineligible_notice" %>
+<% end %>

@@ -182,7 +182,10 @@ class RequestsController < ApplicationController
     return unless Settings.features.validate_eligibility
     return if current_user.affiliation.any? { |aff| Settings.paging_eligible_groups.include?(aff) }
 
-    redirect_to polymorphic_path([:ineligible, current_request], request_context_params)
+    redirect_to polymorphic_path(
+      [:ineligible, current_request],
+      request_context_params.merge(origin: current_request.origin)
+    )
   end
 
   class HoneyPotFieldError < StandardError
