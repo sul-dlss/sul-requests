@@ -9,7 +9,6 @@ class RequestsController < ApplicationController
   include ModalLayout
 
   before_action :capture_email_field
-  before_action :validate_eligibility, only: :create
   before_action :modify_item_selector_checkboxes_or_radios, only: :create
   before_action :modify_item_proxy_status, only: :create
 
@@ -17,6 +16,7 @@ class RequestsController < ApplicationController
 
   before_action :set_current_request_defaults, :validate_request_type, :redirect_delegatable_requests, only: :new
   before_action :set_current_user_for_request, only: :create, if: :webauth_user?
+  before_action :validate_eligibility, only: :create
 
   helper_method :current_request, :delegated_request?
 
