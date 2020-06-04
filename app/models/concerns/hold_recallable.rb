@@ -12,6 +12,8 @@ module HoldRecallable
   #   - ALL current locations are MISSING (this might be able to just go in the HoldRecallable::LOCATIONS array)
   #   - There is only a single item to be requested and it is checked out
   def hold_recallable?
+    return false unless Settings.features.hold_recall_service
+
     @request.barcode_present? ||
       hold_recallable_current_or_home_location? ||
       missing_current_location? ||

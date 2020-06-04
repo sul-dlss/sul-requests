@@ -30,6 +30,7 @@ background_jobs:
 features:
   confirm_eligibility: false
   estimate_delivery: true
+  hold_recall_service: true
   remote_ip_check: true
   scan_service: true
   validate_eligibility: false
