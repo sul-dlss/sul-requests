@@ -16,9 +16,11 @@
       <i class="sul-i-navigation-next-4"></i> <%= link_to('More information about the service', 'https://library.stanford.edu/returntoresearch', target: '_blank') %>
     </p>
 
-    <div class='overlay-options'>
+    <div>
       <%= button_tag('Continue', class: 'btn btn-success', type: 'button', data: { behavior: 'close-overlay', 'close-target' => '#eligibility-confirm-overlay' }) %>
-      <%= link_to('Cancel', "#{Settings.searchworks_link}/#{current_request.item_id}", class: 'btn btn-link', data: { behavior: 'close-parent-modal' }) %>
+      <% unless params[:modal] %>
+        <%= link_to('Cancel', "#{Settings.searchworks_link}/#{current_request.item_id}", class: 'btn btn-link') %>
+      <% end %>
     </div>
   </div>
 </div>
