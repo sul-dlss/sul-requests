@@ -34,6 +34,10 @@
   }
 }
 
+.single-item-checkedout-note {
+  color: $color-cardinal-red;
+}
+
 .item-selector {
   border: 1px solid $item-selector-border-color;
   margin-bottom: $form-group-margin-bottom;
