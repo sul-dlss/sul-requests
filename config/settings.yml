@@ -43,6 +43,18 @@ paging_eligible_groups:
   - 'stanford:affiliate:visitscholarvs'
   - 'stanford:affiliate:visitscholarvt'
 
+mediated_paging_eligible_groups:
+  - 'stanford:student:postdoc'
+  - 'stanford:faculty'
+  - 'stanford:faculty:onleave'
+  - 'stanford:faculty:emeritus'
+  - 'stanford:faculty:otherteaching'
+  - 'stanford:faculty:affiliate'
+  - 'stanford:faculty:slac'
+  - 'stanford:affiliate:fellow'
+  - 'stanford:affiliate:visitscholarvs'
+  - 'stanford:affiliate:visitscholarvt'
+
 # LDAP Workgroups for origin specific mediation
 origin_admin_groups:
   HOPKINS: []
