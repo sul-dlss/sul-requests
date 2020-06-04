@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_15_194822) do
+ActiveRecord::Schema.define(version: 2020_06_04_224225) do
 
   create_table "admin_comments", force: :cascade do |t|
     t.string "commenter"
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(version: 2018_11_15_194822) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "library_id"
+    t.string "student_type"
     t.index ["email"], name: "index_users_on_email"
     t.index ["library_id"], name: "index_users_on_library_id"
     t.index ["webauth"], name: "index_users_on_webauth"
