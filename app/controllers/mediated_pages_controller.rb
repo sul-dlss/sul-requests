@@ -20,6 +20,7 @@ class MediatedPagesController < RequestsController
 
   def validate_eligibility
     return unless Settings.features.validate_eligibility
+    return if can?(:manage, current_request)
     return if current_user_affiliated_or_grad_student?
 
     redirect_to polymorphic_path(
