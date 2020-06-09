@@ -2,7 +2,7 @@ set :application, 'sul-requests'
 set :repo_url, 'https://github.com/sul-dlss/sul-requests.git'
 
 # Default branch is :master
-set :branch, 'master'
+# set :branch, 'master'
 
 # Default deploy_to directory is /var/www/my_app_name
 set :deploy_to, '/opt/app/requests/requests'
