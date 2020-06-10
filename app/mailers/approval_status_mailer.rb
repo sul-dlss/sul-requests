@@ -20,6 +20,11 @@ class ApprovalStatusMailer < ApplicationMailer
     request_approval_status(request)
   end
 
+  # Symohony returned an error code we don't know how to handle
+  def generic_symphony_error(request)
+    request_approval_status(request)
+  end
+
   def approval_status_for_holdrecall(request)
     request_approval_status(request)
   end

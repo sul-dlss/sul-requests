@@ -30,6 +30,14 @@ describe ApprovalStatusMailerFactory do
         expect(mailer.body.to_s).to include 'We were unable to process your request because your status is BLOCKED'
       end
     end
+
+    describe 'Errors that we do not have a specific email for' do
+      let(:request) { create(:page_with_holdings, symphony_response_data: { usererr_code: 'P004' }) }
+
+      it 'sends a generic symphony error email' do
+        expect(mailer.body.to_s).to include 'Something went wrong and we were unable to process your request'
+      end
+    end
   end
 
   describe 'request types' do

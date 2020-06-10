@@ -16,7 +16,14 @@ class ApprovalStatusMailerFactory
     private
 
     def email_for_user_error(request)
-      mailer_class.send(:"approval_status_for_#{request.symphony_response.usererr_code.downcase}", request)
+      error_code = request.symphony_response.usererr_code
+
+      if mailer_class.respond_to?(:"approval_status_for_#{error_code.downcase}")
+        mailer_class.send(:"approval_status_for_#{error_code.downcase}", request)
+      else
+        Honeybadger.notify("Unknown Symohony Error #{error_code} for request #{request.id}")
+        mailer_class.generic_symphony_error(request)
+      end
     end
 
     def email_for_request_class(request)
