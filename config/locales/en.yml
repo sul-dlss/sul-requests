@@ -125,6 +125,8 @@ en:
       HOPKINS: 'Request delivery to campus library'
       PAGE-MP: 'Request delivery to campus library'
   requests:
+    item_selector:
+      checked_out_note: This item is currently in use by another patron. We can still get it for you but we can't estimate the delivery date.
     success:
 
       email_notification:
