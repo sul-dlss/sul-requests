@@ -5,6 +5,8 @@
 #  been submitted based on either the request type or user error status
 ###
 class ApprovalStatusMailer < ApplicationMailer
+  attr_accessor :custom_from_address
+
   # User ID does not exist
   def approval_status_for_u002(request)
     request_approval_status(request)
@@ -17,6 +19,13 @@ class ApprovalStatusMailer < ApplicationMailer
 
   # User privs are expired
   def approval_status_for_u004(request)
+    request_approval_status(request)
+  end
+
+  # Symohony returned an error code we don't know how to handle
+  def generic_symphony_error(request)
+    self.custom_from_address = %("Stanford Libraries Requests" <sul-requests-support@stanford.edu>)
+
     request_approval_status(request)
   end
 
@@ -46,7 +55,7 @@ class ApprovalStatusMailer < ApplicationMailer
   end
 
   def from_address
-    %("Stanford Libraries Requests" <#{contact_info[:email]}>)
+    custom_from_address || %("Stanford Libraries Requests" <#{contact_info[:email]}>)
   end
 
   def subject

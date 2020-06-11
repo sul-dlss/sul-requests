@@ -40,6 +40,16 @@ describe ApprovalStatusMailer do
         end
       end
 
+      describe '#generic_symphony_error' do
+        let(:mailer_method) { :generic_symphony_error }
+
+        it 'renders the correct email' do
+          expect(mail.body.to_s).to include(
+            'Something went wrong and we were unable to process your request'
+          )
+        end
+      end
+
       context 'when the item is scannable' do
         let(:request) { create(:scan_with_holdings_barcodes, user: user) }
 
@@ -123,6 +133,14 @@ describe ApprovalStatusMailer do
 
         it 'is the configured from address for the origin' do
           expect(mail.from).to eq ['brannerlibrary@stanford.edu']
+        end
+      end
+
+      describe 'for generic errors' do
+        let(:mailer_method) { :generic_symphony_error }
+
+        it 'has a custom from address' do
+          expect(mail.from).to eq ['sul-requests-support@stanford.edu']
         end
       end
     end
