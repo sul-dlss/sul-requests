@@ -53,7 +53,7 @@ describe ApprovalStatusMailerFactory do
       let(:request) { create(:page) }
 
       it 'send the correct mail based on the type of the request' do
-        expect(mailer.body.to_s).to include 'The following items are scheduled to be delivered to'
+        expect(mailer.body.to_s).to include 'The following item(s) will be delivered to'
       end
     end
   end

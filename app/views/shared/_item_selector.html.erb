@@ -8,6 +8,11 @@
           <p class="form-control-static">
             <%= single_item.callnumber %>
           </p>
+          <% if single_item.current_location.try(:code) == 'CHECKEDOUT' %>
+            <p class="single-item-checkedout-note">
+              <%= t('requests.item_selector.checked_out_note') %>
+            </p>
+          <% end %>
         </div>
       </div>
       <%= barcode.hidden_field single_item.barcode.present? ? single_item.barcode : 'NO_BARCODE', value: 1 %>
@@ -49,7 +54,7 @@
 
                 <% if holding.current_location.try(:code) == 'CHECKEDOUT' %>
                   <div data-behavior='checkedout-note' class='checkedout-note'>
-                    This item is currently in use by another patron. We can still get it for you but we can't estimate the delivery date.
+                    <%= t('requests.item_selector.checked_out_note') %>
                   </div>
                 <% end %>
 

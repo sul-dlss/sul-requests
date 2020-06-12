@@ -12,7 +12,7 @@ describe PagesController do
     allow(controller).to receive_messages(current_user: user)
   end
 
-  pending 'new' do
+  describe 'new' do
     let(:user) { User.new }
 
     it 'is accessible by anonymous users' do
@@ -34,7 +34,7 @@ describe PagesController do
     end
   end
 
-  pending 'create' do
+  describe 'create' do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
 
@@ -73,7 +73,8 @@ describe PagesController do
         )
       end
 
-      it 'is allowed if user name and email is filled out (via token)' do
+      # TODO: COVID-19
+      pending 'is allowed if user name and email is filled out (via token)' do
         put :create, params: {
           request: {
             item_id: '1234',
@@ -88,7 +89,7 @@ describe PagesController do
         expect(Page.last.user).to eq User.last
       end
 
-      it 'is allowed if the library ID field is filled out' do
+      pending 'is allowed if the library ID field is filled out' do
         put :create, params: {
           request: {
             item_id: '1234',
@@ -250,7 +251,7 @@ describe PagesController do
     end
   end
 
-  pending 'update' do
+  describe 'update' do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
 
@@ -358,7 +359,7 @@ describe PagesController do
     end
   end
 
-  pending '#current_request' do
+  describe '#current_request' do
     let(:user) { create(:anon_user) }
 
     it 'returns a Page object' do

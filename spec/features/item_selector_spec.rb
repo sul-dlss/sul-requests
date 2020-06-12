@@ -5,7 +5,7 @@ require 'rails_helper'
 describe 'Item Selector' do
   before { stub_current_user(create(:webauth_user)) }
 
-  pending 'for single items' do
+  describe 'for single items' do
     before { stub_searchworks_api_json(build(:single_holding)) }
 
     it 'displays the item call number' do
@@ -16,7 +16,7 @@ describe 'Item Selector' do
     end
   end
 
-  pending 'for multiple items', js: true do
+  describe 'for multiple items', js: true do
     before do
       stub_searchworks_api_json(holdings)
       visit request_path
@@ -212,7 +212,7 @@ describe 'Item Selector' do
     end
   end
 
-  pending 'when viewed under Back-Forward Cache', js: true do
+  describe 'when viewed under Back-Forward Cache', js: true do
     before do
       stub_searchworks_api_json(build(:searchable_holdings))
     end
@@ -252,7 +252,7 @@ describe 'Item Selector' do
     end
   end
 
-  pending 'breadcrumb pills', js: true do
+  describe 'breadcrumb pills', js: true do
     before do
       stub_searchworks_api_json(build(:many_holdings))
     end
@@ -287,7 +287,7 @@ describe 'Item Selector' do
     end
   end
 
-  pending 'ad-hoc items', js: true do
+  describe 'ad-hoc items', js: true do
     before do
       expect(SULRequests::Application.config).to receive(:ad_hoc_item_commentable_libraries).and_return(['SPEC-COLL'])
       stub_searchworks_api_json(build(:searchable_holdings))
@@ -368,7 +368,7 @@ describe 'Item Selector' do
     end
   end
 
-  pending 'checked out items', js: true do
+  describe 'checked out items', js: true do
     before do
       stub_searchworks_api_json(build(:checkedout_holdings))
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
@@ -389,7 +389,7 @@ describe 'Item Selector' do
     end
   end
 
-  pending 'public notes' do
+  describe 'public notes' do
     let(:request_path) { new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS') }
     let(:holdings) { build(:searchable_holdings) }
 
@@ -409,11 +409,12 @@ describe 'Item Selector' do
   end
 
   def fill_in_required_date
-    wait_for_ajax # We need the hours API to respond before we can know what the min-date is
+    # TODO: COVID-19 We are not collecting needed_date currently
+    # wait_for_ajax # We need the hours API to respond before we can know what the min-date is
 
-    min_date = find('#request_needed_date', visible: false)['min']
-    min_date_to_s = Time.zone.parse(min_date).strftime('%D')
-    page.execute_script("$('#request_needed_date').prop('value', '#{min_date}')")
-    page.execute_script("$('.ws-date').prop('value', '#{min_date_to_s}')")
+    # min_date = find('#request_needed_date', visible: false)['min']
+    # min_date_to_s = Time.zone.parse(min_date).strftime('%D')
+    # page.execute_script("$('#request_needed_date').prop('value', '#{min_date}')")
+    # page.execute_script("$('.ws-date').prop('value', '#{min_date_to_s}')")
   end
 end

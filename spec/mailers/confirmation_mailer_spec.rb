@@ -74,10 +74,6 @@ describe ConfirmationMailer do
       let(:request) { create(:page_with_holdings, barcodes: ['3610512345678'], ad_hoc_items: ['ZZZ 123'], user: user) }
       let(:body) { mail.body.to_s }
 
-      it 'has the date' do
-        expect(body).to match(/On #{request.created_at.strftime('%A, %b %-d %Y')}, you requested the following:/)
-      end
-
       it 'has the title' do
         expect(body).to include(request.item_title)
       end
@@ -126,7 +122,8 @@ describe ConfirmationMailer do
         end
       end
 
-      it 'has a link to the status page' do
+      # TODO: COVID-19 Not currently linking to the requests status page
+      pending 'has a link to the status page' do
         expect(body).to match(%r{Check the status of your request at .*\/pages\/#{request.id}\/status\?token})
       end
 

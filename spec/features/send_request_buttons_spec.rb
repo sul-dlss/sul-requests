@@ -5,7 +5,7 @@ require 'rails_helper'
 describe 'Send Request Buttons' do
   before { stub_searchworks_api_json(build(:single_holding)) }
 
-  pending 'as a Stanford user', js: true do
+  describe 'as a Stanford user', js: true do
     before { stub_current_user(create(:webauth_user)) }
 
     it 'allows submit' do
@@ -17,6 +17,7 @@ describe 'Send Request Buttons' do
     end
   end
 
+  # TODO: COVID-19
   pending 'by anonymous user', js: true do
     it 'is possible to toggle between login and name-email form' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
@@ -53,7 +54,7 @@ describe 'Send Request Buttons' do
     end
   end
 
-  pending 'Scans' do
+  describe 'Scans' do
     before do
       stub_searchworks_api_json(build(:sal3_holdings))
       visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
@@ -69,7 +70,7 @@ describe 'Send Request Buttons' do
     end
   end
 
-  pending 'HoldRecall', js: true do
+  describe 'HoldRecall', js: true do
     before do
       visit new_hold_recall_path(item_id: '1234', barcode: '3610512345', origin: 'GREEN', origin_location: 'STACKS')
     end
@@ -78,21 +79,24 @@ describe 'Send Request Buttons' do
       expect(page).to have_css('button', text: /Send request.*login with SUNet ID/m)
     end
 
-    it 'allows to send requests via LibraryID' do
+    # TODO: COVID-19
+    pending 'allows to send requests via LibraryID' do
       click_link 'I don\'t have a SUNet ID'
       expect(page).to have_field('Library ID', type: 'text')
     end
 
-    it 'does not allow to send requests via Name and Email' do
+    # TODO: COVID-19
+    pending 'does not allow to send requests via Name and Email' do
       click_link 'I don\'t have a SUNet ID'
       expect(page).not_to have_field('Name', type: 'text')
       expect(page).not_to have_field('Email', type: 'email')
     end
   end
 
-  pending 'Mediated Pages' do
+  describe 'Mediated Pages' do
     describe 'for non-HOPKINS libraries' do
-      it 'allows users to submit without a SUNet ID' do
+      # TODO: COVID-19
+      pending 'allows users to submit without a SUNet ID' do
         visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
         expect(page).to have_css('a', text: 'I don\'t have a SUNet ID')
       end

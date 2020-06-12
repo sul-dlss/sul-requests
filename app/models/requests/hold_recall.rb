@@ -15,13 +15,17 @@ class HoldRecall < Request
     SubmitBorrowDirectRequestJob.perform_later(id)
   end
 
-  def requestable_with_library_id?
-    true
-  end
+  # TODO: COVID-19 Disabling for now while we re-open so that it falls back to the default behavior
+  # We can uncomment if we want HoldRecalls to be requestable by non-SUNet users in the future.
+  # def requestable_with_library_id?
+  #   true
+  # end
 
-  def requires_needed_date?
-    true
-  end
+  # TODO: COVID-19 Disabling for now while we re-open so that it falls back to the default behavior
+  # We can uncomment if we want to start collecting the needed_date again.
+  # def requires_needed_date?
+  #   true
+  # end
 
   def item_commentable?
     false

@@ -24,10 +24,15 @@ Layout/LineLength:
   Exclude:
     - 'spec/mailers/approval_status_mailer_spec.rb'
 
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/models/request_spec.rb'
+
 Metrics/ClassLength:
   Max: 120
   Exclude:
     - 'app/models/request.rb'
+    - 'app/controllers/requests_controller.rb'
 
 Metrics/ModuleLength:
   Max: 120

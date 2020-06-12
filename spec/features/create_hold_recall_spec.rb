@@ -48,7 +48,7 @@ describe 'Creating a hold recall request' do
     end
   end
 
-  pending 'by a webauth user' do
+  describe 'by a webauth user' do
     before { stub_current_user(user) }
 
     it 'is possible without filling in any user information' do

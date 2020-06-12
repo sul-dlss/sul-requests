@@ -8,7 +8,7 @@ describe 'Remote user confirmation' do
       stub_current_user(create(:webauth_user))
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
 
-      expect(page).not_to have_css('.non-stanford-user-overlay')
+      expect(page).not_to have_css('#remote-ip-check-overlay')
     end
   end
 
@@ -21,17 +21,17 @@ describe 'Remote user confirmation' do
       it 'is not rendered' do
         visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
 
-        expect(page).not_to have_css('.non-stanford-user-overlay')
+        expect(page).not_to have_css('#remote-ip-check-overlay')
       end
     end
 
-    pending 'that are not in the configured IP ranges' do
+    context 'that are not in the configured IP ranges' do
       let(:user) { create(:anon_user, ip_address: '123.45.6.78') }
 
       it 'is rendered' do
         visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
 
-        expect(page).to have_css('.non-stanford-user-overlay')
+        expect(page).to have_css('#remote-ip-check-overlay')
       end
     end
   end
@@ -40,27 +40,27 @@ describe 'Remote user confirmation' do
     it 'is not rendered for non-mediated pages' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
 
-      expect(page).not_to have_css('.non-stanford-user-overlay')
+      expect(page).not_to have_css('#remote-ip-check-overlay')
     end
 
     it 'is not rendered for HOPKINS mediated pages' do
       visit new_mediated_page_path(item_id: '1234', origin: 'HOPKINS', origin_location: 'STACKS')
 
-      expect(page).not_to have_css('.non-stanford-user-overlay')
+      expect(page).not_to have_css('#remote-ip-check-overlay')
     end
   end
 
-  pending 'confirmation buttons' do
+  describe 'confirmation buttons' do
     it 'hides the overlay when the "Yes" button is clicked', js: true do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
 
-      expect(page).to have_css('.non-stanford-user-overlay', visible: true)
+      expect(page).to have_css('#remote-ip-check-overlay', visible: true)
 
-      within('.non-stanford-user-overlay') do
+      within('#remote-ip-check-overlay') do
         click_button
       end
 
-      expect(page).not_to have_css('.non-stanford-user-overlay', visible: true)
+      expect(page).not_to have_css('#remote-ip-check-overlay', visible: true)
     end
 
     it 'includes a link styled like a button that send the user to the record in SearchWorks' do

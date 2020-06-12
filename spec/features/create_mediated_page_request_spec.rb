@@ -9,6 +9,7 @@ describe 'Creating a mediated page request' do
     allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
   end
 
+  # TODO: COVID-19
   pending 'by an anonmyous user' do
     it 'is possible to toggle between login and name-email form', js: true do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
@@ -77,7 +78,7 @@ describe 'Creating a mediated page request' do
     end
   end
 
-  pending 'by a webauth user' do
+  describe 'by a webauth user' do
     before { stub_current_user(user) }
 
     it 'is possible without filling in any user information' do
@@ -92,7 +93,7 @@ describe 'Creating a mediated page request' do
     end
   end
 
-  pending 'comments' do
+  describe 'comments' do
     before { stub_current_user(user) }
 
     it 'has a comments field for commentable libraries' do
@@ -117,6 +118,7 @@ describe 'Creating a mediated page request' do
     end
   end
 
+  # TODO: COVID-19 We are not collecting needed_date currently
   pending 'needed on' do
     before { stub_current_user(user) }
 
@@ -134,7 +136,7 @@ describe 'Creating a mediated page request' do
     end
   end
 
-  pending 'selecting barcodes' do
+  describe 'selecting barcodes' do
     before do
       stub_current_user(user)
       stub_searchworks_api_json(build(:special_collections_holdings))
@@ -157,16 +159,28 @@ describe 'Creating a mediated page request' do
     end
   end
 
-  def fill_in_required_fields
-    if Capybara.current_driver == :rack_test
-      date_input = find('#request_needed_date', visible: false)
-      min_date = date_input['min']
-      date_input.set(min_date)
-    else
-      wait_for_ajax
-      min_date = find('#request_needed_date', visible: false)['min']
-      page.execute_script("$('#request_needed_date').prop('value', '#{min_date}')")
+  describe 'special note for SPEC items about reading room access' do
+    before { stub_current_user(user) }
+
+    it 'is present' do
+      visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+
+      expect(page).to have_css('.control-label', text: 'Reading Room access')
+      expect(page).to have_css('.input-like-text', text: /^When the items have been approved and are ready for use/)
     end
+  end
+
+  def fill_in_required_fields
+    # TODO: COVID-19 We are not collecting needed_date currently
+    # if Capybara.current_driver == :rack_test
+    #   date_input = find('#request_needed_date', visible: false)
+    #   min_date = date_input['min']
+    #   date_input.set(min_date)
+    # else
+    #   wait_for_ajax
+    #   min_date = find('#request_needed_date', visible: false)['min']
+    #   page.execute_script("$('#request_needed_date').prop('value', '#{min_date}')")
+    # end
   end
 
   def click_remote_user_confirmation

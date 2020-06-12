@@ -175,7 +175,9 @@ describe Request do
   describe 'requestable' do
     it { is_expected.not_to be_requestable_by_all }
     it { is_expected.not_to be_requestable_with_library_id }
-    it { is_expected.not_to be_requestable_with_sunet_only }
+    # TODO: COVID-19
+    pending { is_expected.not_to be_requestable_with_sunet_only }
+    it { is_expected.to be_requestable_with_sunet_only }
     it { is_expected.not_to be_requires_additional_user_validation }
   end
 

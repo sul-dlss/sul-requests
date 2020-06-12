@@ -15,17 +15,19 @@ class Page < Request
     super << user.email
   end
 
-  def requestable_by_all?
-    return false if REQUESTALBE_BY_SUNET_OR_LIBRARY_ONLY.include?(origin)
-
-    true
-  end
-
-  def requestable_with_library_id?
-    return true if REQUESTALBE_BY_SUNET_OR_LIBRARY_ONLY.include?(origin)
-
-    super
-  end
+  # TODO: COVID-19 Disabling for now while we re-open so that it falls back to the default behavior
+  # We can uncomment if we allow guests to request again (but not at particular libraries like MEDIA-MTXT)
+  # def requestable_by_all?
+  #   return false if REQUESTALBE_BY_SUNET_OR_LIBRARY_ONLY.include?(origin)
+  #
+  #   true
+  # end
+  #
+  # def requestable_with_library_id?
+  #   return true if REQUESTALBE_BY_SUNET_OR_LIBRARY_ONLY.include?(origin)
+  #
+  #   super
+  # end
 
   private
 

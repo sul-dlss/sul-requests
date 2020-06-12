@@ -5,7 +5,7 @@ require 'rails_helper'
 describe 'Creating a page request' do
   let(:user) { create(:webauth_user) }
 
-  pending 'item information' do
+  describe 'item information' do
     it 'displays the items title' do
       visit new_page_path(item_id: '2824966', origin: 'GREEN', origin_location: 'STACKS')
     end
@@ -57,7 +57,7 @@ describe 'Creating a page request' do
     end
   end
 
-  pending 'by a webauth user' do
+  describe 'by a webauth user' do
     before { stub_current_user(user) }
 
     it 'is possible without filling in any user information' do
@@ -69,7 +69,7 @@ describe 'Creating a page request' do
     end
   end
 
-  pending 'by a user who sponsors a proxy group' do
+  describe 'by a user who sponsors a proxy group' do
     before do
       stub_current_user(user)
       stub_proxy_api_output('MY_PROXY_GROUP|SPONSOR|')
@@ -103,7 +103,7 @@ describe 'Creating a page request' do
     end
   end
 
-  pending 'selecting barcodes' do
+  describe 'selecting barcodes' do
     before do
       stub_current_user(user)
       stub_searchworks_api_json(build(:multiple_holdings))
@@ -125,7 +125,7 @@ describe 'Creating a page request' do
     end
   end
 
-  pending 'item commentable' do
+  describe 'item commentable' do
     before do
       stub_current_user(user)
       stub_searchworks_api_json(build(:sal_newark_holding))
@@ -144,7 +144,7 @@ describe 'Creating a page request' do
     end
   end
 
-  pending 'destination and needed date highlight section' do
+  describe 'destination and needed date highlight section' do
     it 'is included' do
       visit new_page_path(item_id: '1234', origin: 'SAL-NEWARK', origin_location: 'STACKS')
 

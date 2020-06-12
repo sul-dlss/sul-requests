@@ -1,0 +1,14 @@
+.confirmation-overlay {
+  background-color: $body-bg;
+  bottom: auto;
+  left: 0;
+  min-height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1000;
+
+  .overlay-options {
+    text-align: center;
+  }
+}

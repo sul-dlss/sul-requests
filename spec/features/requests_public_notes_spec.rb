@@ -9,7 +9,7 @@ describe 'Public Notes', js: true do
     allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
   end
 
-  pending 'public_notes' do
+  describe 'public_notes' do
     before do
       stub_current_user(user)
       stub_searchworks_api_json(build(:searchable_holdings))
@@ -37,8 +37,9 @@ describe 'Public Notes', js: true do
 end
 
 def fill_in_required_fields
-  wait_for_ajax
-
-  min_date = find('#request_needed_date', visible: false)['min']
-  page.execute_script("$('#request_needed_date').prop('value', '#{min_date}')")
+  # TODO: COVID-19 don't need to fill in date field
+  # wait_for_ajax
+  #
+  # min_date = find('#request_needed_date', visible: false)['min']
+  # page.execute_script("$('#request_needed_date').prop('value', '#{min_date}')")
 end
