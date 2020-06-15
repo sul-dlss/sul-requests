@@ -7,6 +7,7 @@ require 'rails_helper'
 ###
 class HoldRecallableTestClass
   attr_accessor :request
+
   include HoldRecallable
 end
 

@@ -330,17 +330,17 @@ describe 'Item Selector' do
     end
 
     it 'adds/removes a hidden field' do
-      expect(page).not_to have_css('input[type="hidden"]#hidden-ZZZ123', visible: false)
+      expect(page).not_to have_css('input[type="hidden"]#hidden-ZZZ123', visible: :all)
 
       fill_in 'ad_hoc_items', with: 'ZZZ 123'
       click_link 'Add'
 
-      expect(page).to have_css('input[type="hidden"]#hidden-ZZZ123', visible: false)
+      expect(page).to have_css('input[type="hidden"]#hidden-ZZZ123', visible: :all)
 
       # Click the close button on the ad-hoc-item's pill
       find('#breadcrumb-ZZZ123 .close').click
 
-      expect(page).not_to have_css('input[type="hidden"]#hidden-ZZZ123', visible: false)
+      expect(page).not_to have_css('input[type="hidden"]#hidden-ZZZ123', visible: :all)
     end
 
     it 'are persisted' do
@@ -401,9 +401,9 @@ describe 'Item Selector' do
     it 'are hidden input fields' do
       within('#item-selector') do
         css_selector = 'input[name="request[public_notes][45678901]"][value="note for 45678901"]'
-        expect(page).to have_css(css_selector, visible: false)
+        expect(page).to have_css(css_selector, visible: :all)
         css_selector = 'input[name="request[public_notes][23456789]"][value="note for 23456789"]'
-        expect(page).to have_css(css_selector, visible: false)
+        expect(page).to have_css(css_selector, visible: :all)
       end
     end
   end
@@ -412,7 +412,7 @@ describe 'Item Selector' do
     # TODO: COVID-19 We are not collecting needed_date currently
     # wait_for_ajax # We need the hours API to respond before we can know what the min-date is
 
-    # min_date = find('#request_needed_date', visible: false)['min']
+    # min_date = find('#request_needed_date', visible: :all)['min']
     # min_date_to_s = Time.zone.parse(min_date).strftime('%D')
     # page.execute_script("$('#request_needed_date').prop('value', '#{min_date}')")
     # page.execute_script("$('.ws-date').prop('value', '#{min_date_to_s}')")

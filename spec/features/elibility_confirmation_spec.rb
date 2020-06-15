@@ -11,13 +11,13 @@ describe 'Eligibility Confirmation' do
     it 'shows an eligibility confiration overlay that can be cleared to reveal the form' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
 
-      expect(page).to have_css('#new_request', visible: false)
-      expect(page).to have_css('#eligibility-confirm-overlay', visible: true)
+      expect(page).to have_css('#new_request', visible: :all)
+      expect(page).to have_css('#eligibility-confirm-overlay', visible: :visible)
 
       click_button 'Continue'
 
-      expect(page).to have_css('#eligibility-confirm-overlay', visible: false)
-      expect(page).to have_css('#new_request', visible: true)
+      expect(page).to have_css('#eligibility-confirm-overlay', visible: :all)
+      expect(page).to have_css('#new_request', visible: :visible)
     end
   end
 
@@ -25,13 +25,13 @@ describe 'Eligibility Confirmation' do
     it 'shows an eligibility confiration overlay that can be cleared to reveal the form' do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'RARE-BOOKS')
 
-      expect(page).to have_css('#new_request', visible: false)
-      expect(page).to have_css('#eligibility-confirm-overlay', visible: true)
+      expect(page).to have_css('#new_request', visible: :all)
+      expect(page).to have_css('#eligibility-confirm-overlay', visible: :visible)
 
       click_button 'Continue'
 
-      expect(page).to have_css('#eligibility-confirm-overlay', visible: false)
-      expect(page).to have_css('#new_request', visible: true)
+      expect(page).to have_css('#eligibility-confirm-overlay', visible: :all)
+      expect(page).to have_css('#new_request', visible: :visible)
     end
   end
 end

@@ -6,6 +6,7 @@
 ###
 class SearchworksItem
   attr_reader :request, :live_lookup
+
   def initialize(request, live_lookup = true)
     @request = request
     @live_lookup = live_lookup

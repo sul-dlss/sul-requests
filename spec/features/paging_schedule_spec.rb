@@ -24,7 +24,7 @@ describe 'Paging Schedule' do
 
       expect(page).to have_select('request_destination', selected: 'Green Library')
 
-      expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: true)
+      expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: :visible)
       before_text = find('[data-scheduler-text]').text
 
       select 'Engineering Library (Terman)', from: 'request_destination'
@@ -42,7 +42,7 @@ describe 'Paging Schedule' do
       stub_symphony_response(build(:symphony_page_with_single_item))
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
 
-      expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: true)
+      expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: :visible)
       schedule_text = find('[data-scheduler-text]').text
 
       within('#item-selector') do
@@ -61,7 +61,7 @@ describe 'Paging Schedule' do
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'PAGE-MA')
 
       expect(page).not_to have_select('request_destination')
-      expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: true)
+      expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: :visible)
     end
   end
 
@@ -72,7 +72,7 @@ describe 'Paging Schedule' do
       visit new_request_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
 
       within('#deliveryDescription') do
-        expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: true)
+        expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: :visible)
       end
     end
   end
@@ -83,7 +83,7 @@ describe 'Paging Schedule' do
     it 'shows the estimated delivery for the Scanning service' do
       visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
 
-      expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: true)
+      expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: :visible)
     end
   end
 end

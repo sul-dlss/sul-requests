@@ -7,6 +7,7 @@ require 'rails_helper'
 ###
 class MediateableTestClass
   attr_accessor :library, :location
+
   include Mediateable
 end
 
