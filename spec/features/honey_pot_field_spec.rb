@@ -11,7 +11,7 @@ describe 'Honey Pot Fields' do
     it 'raises an error if the field has been filled out' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
 
-      hidden_field = find('#email', visible: :all)
+      hidden_field = find('#email', visible: :hidden)
       hidden_field.set('some-email')
 
       expect do

@@ -173,12 +173,12 @@ describe 'Creating a mediated page request' do
   def fill_in_required_fields
     # TODO: COVID-19 We are not collecting needed_date currently
     # if Capybara.current_driver == :rack_test
-    #   date_input = find('#request_needed_date', visible: :all)
+    #   date_input = find('#request_needed_date', visible: :hidden)
     #   min_date = date_input['min']
     #   date_input.set(min_date)
     # else
     #   wait_for_ajax
-    #   min_date = find('#request_needed_date', visible: :all)['min']
+    #   min_date = find('#request_needed_date', visible: :hidden)['min']
     #   page.execute_script("$('#request_needed_date').prop('value', '#{min_date}')")
     # end
   end

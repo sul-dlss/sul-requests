@@ -425,11 +425,11 @@ describe 'Mediation table', js: true do
         page.execute_script("$('input#created_at').prop('value', '#{cdate}')")
         click_button('Go')
         # there are no mixed approvals
-        expect(page).not_to have_css('td span[data-behavior="mixed-approved-note"][style=""]', visible: :all)
+        expect(page).not_to have_css('td span[data-behavior="mixed-approved-note"][style=""]', visible: :hidden)
         my_selector = 'td span[data-behavior="mixed-approved-note"][style="display:none;"]'
-        expect(page).to have_css(my_selector, count: 2, visible: :all)
+        expect(page).to have_css(my_selector, count: 2, visible: :hidden)
         # there is one each all-approved
-        expect(page).to have_css('td span[data-behavior="all-approved-note"][style="display:none;"]', visible: :all)
+        expect(page).to have_css('td span[data-behavior="all-approved-note"][style="display:none;"]', visible: :hidden)
         expect(page).to have_css('td span[data-behavior="all-approved-note"][style=""]', visible: :all)
       end
 

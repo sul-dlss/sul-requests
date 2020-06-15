@@ -25,7 +25,7 @@ describe 'Admin Comments', js: true do
       end
 
       within('.admin-comments') do
-        expect(page).to have_css('form#new_admin_comment', visible: :all)
+        expect(page).to have_css('form#new_admin_comment', visible: :hidden)
         click_button 'Comment'
         expect(page).to have_css('form#new_admin_comment', visible: :visible)
       end
@@ -69,8 +69,8 @@ describe 'Admin Comments', js: true do
 
         click_link 'Cancel'
 
-        expect(page).to have_css('form#new_admin_comment', visible: :all)
-        input = page.find('form#new_admin_comment input[type="text"]')
+        expect(page).to have_css('form#new_admin_comment', visible: :hidden)
+        input = page.find('form#new_admin_comment input[type="text"]', visible: :hidden)
         expect(input['value']).to eq ''
       end
     end
