@@ -124,7 +124,7 @@ describe ConfirmationMailer do
 
       # TODO: COVID-19 Not currently linking to the requests status page
       pending 'has a link to the status page' do
-        expect(body).to match(%r{Check the status of your request at .*\/pages\/#{request.id}\/status\?token})
+        expect(body).to match(%r{Check the status of your request at .*/pages/#{request.id}/status\?token})
       end
 
       context 'with a webauth user' do

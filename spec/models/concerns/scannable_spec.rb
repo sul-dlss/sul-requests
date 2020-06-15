@@ -7,6 +7,7 @@ require 'rails_helper'
 ###
 class ScannableTestClass
   attr_accessor :request, :library, :location
+
   include Scannable
 end
 

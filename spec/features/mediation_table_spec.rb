@@ -161,7 +161,7 @@ describe 'Mediation table', js: true do
           expect(page).not_to have_css('tr.approved')
           within(first('tr')) do
             expect(page).to have_css('td button', text: 'Approve')
-            expect(page).not_to have_css('td', text: 'Added to pick list', visible: true)
+            expect(page).not_to have_css('td', text: 'Added to pick list', visible: :visible)
             expect(page).not_to have_content('super-admin')
             click_button('Approve')
           end
@@ -170,7 +170,7 @@ describe 'Mediation table', js: true do
           expect(page).to have_button('Approve', disabled: true)
 
           within(first('tr')) do
-            expect(page).to have_css('td', text: 'Added to pick list', visible: true)
+            expect(page).to have_css('td', text: 'Added to pick list', visible: :visible)
             expect(page).to have_css('td', text: /super-admin - \d{4}-\d{2}-\d{2}/)
           end
         end
@@ -425,12 +425,12 @@ describe 'Mediation table', js: true do
         page.execute_script("$('input#created_at').prop('value', '#{cdate}')")
         click_button('Go')
         # there are no mixed approvals
-        expect(page).not_to have_css('td span[data-behavior="mixed-approved-note"][style=""]', visible: false)
+        expect(page).not_to have_css('td span[data-behavior="mixed-approved-note"][style=""]', visible: :hidden)
         my_selector = 'td span[data-behavior="mixed-approved-note"][style="display:none;"]'
-        expect(page).to have_css(my_selector, count: 2, visible: false)
+        expect(page).to have_css(my_selector, count: 2, visible: :hidden)
         # there is one each all-approved
-        expect(page).to have_css('td span[data-behavior="all-approved-note"][style="display:none;"]', visible: false)
-        expect(page).to have_css('td span[data-behavior="all-approved-note"][style=""]', visible: false)
+        expect(page).to have_css('td span[data-behavior="all-approved-note"][style="display:none;"]', visible: :hidden)
+        expect(page).to have_css('td span[data-behavior="all-approved-note"][style=""]', visible: :all)
       end
 
       it 'interacts appropriately with other date filters' do
@@ -510,7 +510,7 @@ describe 'Mediation table', js: true do
     it 'has a calendar widget for setting "Needed date"' do
       within '.mediation-table tbody' do
         # confirm that the current value for the "needed date" is displayed correctly
-        expect(page).to have_css('a.editable', text: I18n.l(Time.zone.today, format: :quick), visible: true)
+        expect(page).to have_css('a.editable', text: I18n.l(Time.zone.today, format: :quick), visible: :visible)
 
         # find the table cell and click the link to open the calendar widget
         needed_date_table_cell = page.find('td.needed_date')
@@ -520,7 +520,7 @@ describe 'Mediation table', js: true do
 
         within needed_date_table_cell do
           page.find('th.next').click # click over to the subsequent month
-          expect(page).to have_css('td.day', visible: true) # make sure the calandar day elements have been rendered
+          expect(page).to have_css('td.day', visible: :visible) # make sure the calandar day elements have been rendered
           page.all('td.day').detect { |elt| elt.text == '1' }.click # click the calendar day for the first of the month
           page.find('button.editable-submit').click # submit the newly chosen date
         end
@@ -529,7 +529,7 @@ describe 'Mediation table', js: true do
       # use rails magic to get a Date object for the first of next month. then confirm that the UI was updated
       # to show the date selection made above, and that the new selection has been saved to the object in the DB.
       expected_needed_date = Time.zone.today.at_beginning_of_month.next_month
-      expect(page).to have_css('a.editable', text: I18n.l(expected_needed_date, format: :quick), visible: true)
+      expect(page).to have_css('a.editable', text: I18n.l(expected_needed_date, format: :quick), visible: :visible)
       expect(request.reload.needed_date).to eq expected_needed_date
     end
 

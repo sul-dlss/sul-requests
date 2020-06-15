@@ -33,11 +33,11 @@ describe LibraryHoursApi do
     let(:api_url) { subject.hours_request(range).send(:api_url) }
 
     it 'constructs a url containing the library slug' do
-      expect(subject.api_url).to match(%r{/libraries\/green/})
+      expect(subject.api_url).to match(%r{/libraries/green/})
     end
 
     it 'constructs a url containing the location slug' do
-      expect(subject.api_url).to match(%r{/locations\/library-circulation/})
+      expect(subject.api_url).to match(%r{/locations/library-circulation/})
     end
 
     context 'with a range' do

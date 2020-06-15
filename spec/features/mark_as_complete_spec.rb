@@ -32,7 +32,7 @@ describe 'Mark As Complete', js: true do
 
       click_button 'Mark as done'
 
-      expect(page).to have_css('[data-behavior="mixed-approved-note"]', visible: true) # to wait for ajax
+      expect(page).to have_css('[data-behavior="mixed-approved-note"]', visible: :visible) # to wait for ajax
 
       expect(MediatedPage.find(mediated_page.id)).to be_marked_as_done
     end
@@ -54,7 +54,7 @@ describe 'Mark As Complete', js: true do
     end
 
     it 'shows the mixed-approval label on the request row' do
-      expect(page).not_to have_css('[data-behavior="mixed-approved-note"]', visible: true)
+      expect(page).not_to have_css('[data-behavior="mixed-approved-note"]', visible: :visible)
 
       within(first('[data-mediate-request]')) do
         page.find('a.mediate-toggle').click
@@ -62,7 +62,7 @@ describe 'Mark As Complete', js: true do
 
       click_button 'Mark as done'
 
-      expect(page).to have_css('[data-behavior="mixed-approved-note"]', visible: true)
+      expect(page).to have_css('[data-behavior="mixed-approved-note"]', visible: :visible)
     end
   end
 
@@ -90,7 +90,7 @@ describe 'Mark As Complete', js: true do
     end
 
     it 'shows the mixed-approval label on the request row' do
-      expect(page).to have_css('[data-behavior="mixed-approved-note"]', visible: true)
+      expect(page).to have_css('[data-behavior="mixed-approved-note"]', visible: :visible)
     end
   end
 end

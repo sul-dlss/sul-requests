@@ -7,6 +7,7 @@ require 'rails_helper'
 ###
 class TestEncryptorClass
   attr_accessor :id, :created_at, :new_attribute
+
   include TokenEncryptable
   def token_encryptor_attributes
     super << new_attribute

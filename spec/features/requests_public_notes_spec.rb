@@ -40,6 +40,6 @@ def fill_in_required_fields
   # TODO: COVID-19 don't need to fill in date field
   # wait_for_ajax
   #
-  # min_date = find('#request_needed_date', visible: false)['min']
+  # min_date = find('#request_needed_date', visible: :hidden)['min']
   # page.execute_script("$('#request_needed_date').prop('value', '#{min_date}')")
 end

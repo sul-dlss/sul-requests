@@ -15,9 +15,7 @@ FactoryBot.define do
     end
 
     initialize_with do
-      attributes.map do |k, h|
-        [k.to_s, h]
-      end.to_h
+      attributes.transform_keys(&:to_s).to_h
     end
   end
 
@@ -47,9 +45,7 @@ FactoryBot.define do
     end
 
     initialize_with do
-      attributes.map do |k, h|
-        [k.to_s, h]
-      end.to_h
+      attributes.transform_keys(&:to_s).to_h
     end
   end
 
@@ -67,9 +63,7 @@ FactoryBot.define do
     end
 
     initialize_with do
-      attributes.map do |k, h|
-        [k.to_s, h]
-      end.to_h
+      attributes.transform_keys(&:to_s).to_h
     end
   end
 
@@ -92,9 +86,7 @@ FactoryBot.define do
     end
 
     initialize_with do
-      attributes.map do |k, h|
-        [k.to_s, h]
-      end.to_h
+      attributes.transform_keys(&:to_s).to_h
     end
   end
 
@@ -117,9 +109,7 @@ FactoryBot.define do
     end
 
     initialize_with do
-      attributes.map do |k, h|
-        [k.to_s, h]
-      end.to_h
+      attributes.transform_keys(&:to_s).to_h
     end
   end
 
@@ -142,9 +132,7 @@ FactoryBot.define do
     end
 
     initialize_with do
-      attributes.map do |k, h|
-        [k.to_s, h]
-      end.to_h
+      attributes.transform_keys(&:to_s).to_h
     end
   end
 
@@ -155,9 +143,7 @@ FactoryBot.define do
     requested_items { [] }
 
     initialize_with do
-      attributes.map do |k, h|
-        [k.to_s, h]
-      end.to_h
+      attributes.transform_keys(&:to_s).to_h
     end
   end
 
@@ -168,9 +154,7 @@ FactoryBot.define do
     requested_items { [] }
 
     initialize_with do
-      attributes.map do |k, h|
-        [k.to_s, h]
-      end.to_h
+      attributes.transform_keys(&:to_s).to_h
     end
   end
 end

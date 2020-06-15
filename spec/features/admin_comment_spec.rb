@@ -25,9 +25,9 @@ describe 'Admin Comments', js: true do
       end
 
       within('.admin-comments') do
-        expect(page).to have_css('form#new_admin_comment', visible: false)
+        expect(page).to have_css('form#new_admin_comment', visible: :hidden)
         click_button 'Comment'
-        expect(page).to have_css('form#new_admin_comment', visible: true)
+        expect(page).to have_css('form#new_admin_comment', visible: :visible)
       end
     end
   end
@@ -40,7 +40,7 @@ describe 'Admin Comments', js: true do
 
       within('.admin-comments') do
         click_button 'Comment'
-        expect(page).to have_css('form#new_admin_comment', visible: true)
+        expect(page).to have_css('form#new_admin_comment', visible: :visible)
 
         expect(page).to have_css('ul[data-behavior="admin-comments-list"]')
         expect(page).not_to have_css('ul[data-behavior="admin-comments-list"] li')
@@ -61,7 +61,7 @@ describe 'Admin Comments', js: true do
 
       within('.admin-comments') do
         click_button 'Comment'
-        expect(page).to have_css('form#new_admin_comment', visible: true)
+        expect(page).to have_css('form#new_admin_comment', visible: :visible)
 
         fill_in 'Comment', with: 'A comment I do not like'
         input = page.find('form#new_admin_comment input[type="text"]')
@@ -69,8 +69,8 @@ describe 'Admin Comments', js: true do
 
         click_link 'Cancel'
 
-        expect(page).to have_css('form#new_admin_comment', visible: false)
-        input = page.find('form#new_admin_comment input[type="text"]')
+        expect(page).to have_css('form#new_admin_comment', visible: :hidden)
+        input = page.find('form#new_admin_comment input[type="text"]', visible: :hidden)
         expect(input['value']).to eq ''
       end
     end

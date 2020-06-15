@@ -54,13 +54,13 @@ describe 'Remote user confirmation' do
     it 'hides the overlay when the "Yes" button is clicked', js: true do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
 
-      expect(page).to have_css('#remote-ip-check-overlay', visible: true)
+      expect(page).to have_css('#remote-ip-check-overlay', visible: :visible)
 
       within('#remote-ip-check-overlay') do
         click_button
       end
 
-      expect(page).not_to have_css('#remote-ip-check-overlay', visible: true)
+      expect(page).not_to have_css('#remote-ip-check-overlay', visible: :visible)
     end
 
     it 'includes a link styled like a button that send the user to the record in SearchWorks' do

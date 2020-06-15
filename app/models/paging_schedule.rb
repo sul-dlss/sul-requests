@@ -59,6 +59,7 @@ module PagingSchedule
   ###
   class Scheduler
     attr_reader :to, :from, :before, :after, :days_later, :will_arrive_text
+
     # rubocop:disable Metrics/ParameterLists
     def initialize(to:, from:, before: nil, after: nil, days_later: nil, will_arrive_text: nil, &block)
       @to = to
@@ -119,6 +120,7 @@ module PagingSchedule
     class Estimate
       attr_accessor :to
       attr_reader :from, :days_later, :time, :as_of
+
       def initialize(scheduler, as_of = Time.zone.now)
         @to = scheduler.to
         @from = scheduler.from
