@@ -156,7 +156,12 @@ module SULRequests
         'PAGE-SP' => ['SPEC-COLL']
       }
     else
-      config.location_specific_pickup_libraries = {}
+      config.location_specific_pickup_libraries = {
+        'PAGE-EA' => ['EAST-ASIA'],
+        'HY-PAGE-EA' => ['EAST-ASIA'],
+        'L-PAGE-EA'  => ['EAST-ASIA'],
+        'ND-PAGE-EA' => ['EAST-ASIA']
+      }
     end
 
     config.contact_info = {
