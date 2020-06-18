@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
 
   has_many :requests
 
-  attr_writer :ldap_group_string, :affiliation, :student_type
+  attr_writer :ldap_group_string, :affiliation
   attr_accessor :ip_address
 
   delegate :proxy?, :sponsor?, to: :proxy_access
@@ -85,7 +85,7 @@ class User < ActiveRecord::Base
   end
 
   def student_type
-    (@student_type || '').split(/[|;]/)
+    (super || '').split(/[|;]/)
   end
 
   def email_from_symphony
