@@ -113,6 +113,17 @@ describe User do
     end
   end
 
+  describe '#student_type' do
+    it 'processes the data from the database properly' do
+      expect(subject.student_type).to eq([])
+
+      subject.student_type = 'type1;type2'
+      expect(subject).to be_changed
+      subject.save
+      expect(subject.student_type).to eq %w[type1 type2]
+    end
+  end
+
   describe '#non_webauth_user?' do
     describe 'with name and email' do
       before do
