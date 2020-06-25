@@ -11,7 +11,6 @@ module Mediateable
     mediated_library? ||
       art_locked_stacks? ||
       page_mp? ||
-      hopkins_stacks? ||
       hoover_archive_in_sal3?
   end
 
@@ -27,10 +26,6 @@ module Mediateable
 
   def page_mp?
     @library == 'SAL3' && @location == 'PAGE-MP'
-  end
-
-  def hopkins_stacks?
-    @library == 'HOPKINS' && @location == 'STACKS'
   end
 
   def hoover_archive_in_sal3?

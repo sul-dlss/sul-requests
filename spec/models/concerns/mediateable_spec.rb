@@ -49,20 +49,6 @@ describe Mediateable do
       end
     end
 
-    describe 'HOPKINS' do
-      before { subject.library = 'HOPKINS' }
-
-      it 'returns true if the item is in the STACKS location' do
-        subject.location = 'STACKS'
-        expect(subject).to be_mediateable
-      end
-
-      it 'returns false if the item is not in the STACKS location' do
-        subject.location = 'SOMEWHERE-ELSE'
-        expect(subject).not_to be_mediateable
-      end
-    end
-
     describe 'HV-ARCHIVE' do
       before { subject.library = 'HV-ARCHIVE' }
 
