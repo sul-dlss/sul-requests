@@ -35,6 +35,20 @@ describe Mediateable do
       expect(subject).to be_mediateable
     end
 
+    describe 'ART Locked Stacks' do
+      it 'returns true if the item is in a locked stacks location within ART' do
+        subject.library = 'ART'
+        subject.location = 'ARTLCKO'
+        expect(subject).to be_mediateable
+      end
+
+      it 'returns false if the item is in a non-locked stacks location within ART' do
+        subject.library = 'ART'
+        subject.location = 'STACKS'
+        expect(subject).not_to be_mediateable
+      end
+    end
+
     describe 'HOPKINS' do
       before { subject.library = 'HOPKINS' }
 
