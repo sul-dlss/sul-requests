@@ -65,7 +65,7 @@ module SULRequests
 
     config.default_pickup_library = 'GREEN'
 
-    config.confirm_eligibility_libraries = ['SPEC-COLL']
+    config.confirm_eligibility_libraries = ['RUMSEYMAP', 'SPEC-COLL']
 
     if Rails.env.test?
       config.include_self_in_library_list = ['MEDIA-MTXT']
@@ -107,6 +107,7 @@ module SULRequests
       }
     else
       config.library_specific_pickup_libraries = {
+        'RUMSEYMAP' => ['SPEC-COLL'],
         'SPEC-COLL' => ['SPEC-COLL']
       }
     end
