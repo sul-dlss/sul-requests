@@ -59,6 +59,7 @@ mediated_paging_eligible_groups:
 
 # LDAP Workgroups for origin specific mediation
 origin_admin_groups:
+  ART: []
   HOPKINS: []
   HV-ARCHIVE: []
   PAGE-MP: []

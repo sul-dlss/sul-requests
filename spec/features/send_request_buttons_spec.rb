@@ -104,7 +104,7 @@ describe 'Send Request Buttons' do
 
     describe 'for HOPKINS' do
       it 'only allows to send request via WebAuth login' do
-        visit new_mediated_page_path(item_id: '1234', origin: 'HOPKINS', origin_location: 'STACKS')
+        visit new_page_path(item_id: '1234', origin: 'HOPKINS', origin_location: 'STACKS')
         expect(page).to have_css('button', text: /Send request.*login with SUNet ID/)
         expect(page).not_to have_css('a', text: 'I don\'t have a SUNet ID')
       end

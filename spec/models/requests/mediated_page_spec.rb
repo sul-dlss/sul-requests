@@ -47,10 +47,10 @@ describe MediatedPage do
     it 'allows requests to be submitted without a needed_date when not required' do
       expect do
         described_class.create!(item_id: '1234',
-                                origin: 'HOPKINS',
+                                origin: 'RUMSEYMAP',
                                 origin_location: 'STACKS',
                                 user: user,
-                                destination: 'GREEN')
+                                destination: 'RUMSEYMAP')
       end.not_to raise_error
     end
   end

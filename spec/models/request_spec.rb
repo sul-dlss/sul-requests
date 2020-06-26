@@ -560,7 +560,8 @@ describe Request do
       expect(create(:mediated_page).check_remote_ip?).to be true
     end
 
-    it 'Hopkins mediated page' do
+    # Hopkins isn't mediated now, and not getting remote IP checks
+    pending 'Hopkins mediated page' do
       expect(create(:mediated_page, origin: 'HOPKINS', destination: 'GREEN').check_remote_ip?).to be false
     end
 
@@ -573,11 +574,10 @@ describe Request do
     before do
       create(:mediated_page)
       create(:hoover_archive_mediated_page)
-      create(:hopkins_mediated_page)
     end
 
     it 'returns the subset of origin codes that are configured and mediated pages that exist in the database' do
-      expect(described_class.mediateable_origins).to eq %w(HOPKINS HV-ARCHIVE SPEC-COLL)
+      expect(described_class.mediateable_origins).to eq %w(HV-ARCHIVE SPEC-COLL)
     end
   end
 

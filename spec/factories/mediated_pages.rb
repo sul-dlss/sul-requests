@@ -31,16 +31,6 @@ FactoryBot.define do
     association :user, factory: :sequence_webauth_user
   end
 
-  factory :hopkins_mediated_page, class: 'MediatedPage' do
-    item_id { '1234' }
-    origin { 'HOPKINS' }
-    origin_location { 'STACKS' }
-    destination { 'GREEN' }
-    item_title { 'Title of MediatedPage 1234' }
-    needed_date { Time.zone.today }
-    association :user, factory: :sequence_webauth_user
-  end
-
   factory :hoover_archive_mediated_page, parent: :mediated_page do
     origin { 'HV-ARCHIVE' }
     origin_location { 'SOMEWHERE-30' }

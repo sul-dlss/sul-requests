@@ -65,7 +65,7 @@ module SULRequests
 
     config.default_pickup_library = 'GREEN'
 
-    config.confirm_eligibility_libraries = ['SPEC-COLL']
+    config.confirm_eligibility_libraries = ['ART', 'RUMSEYMAP', 'SPEC-COLL']
 
     if Rails.env.test?
       config.include_self_in_library_list = ['MEDIA-MTXT']
@@ -107,6 +107,7 @@ module SULRequests
       }
     else
       config.library_specific_pickup_libraries = {
+        'RUMSEYMAP' => ['SPEC-COLL'],
         'SPEC-COLL' => ['SPEC-COLL']
       }
     end
@@ -160,7 +161,15 @@ module SULRequests
         'PAGE-EA' => ['EAST-ASIA'],
         'HY-PAGE-EA' => ['EAST-ASIA'],
         'L-PAGE-EA'  => ['EAST-ASIA'],
-        'ND-PAGE-EA' => ['EAST-ASIA']
+        'ND-PAGE-EA' => ['EAST-ASIA'],
+        'ARTLCKL' => ['SPEC-COLL'],
+        'ARTLCKL-R' => ['SPEC-COLL'],
+        'ARTLCKM' => ['SPEC-COLL'],
+        'ARTLCKM-R' => ['SPEC-COLL'],
+        'ARTLCKO' => ['SPEC-COLL'],
+        'ARTLCKO-R' => ['SPEC-COLL'],
+        'ARTLCKS' => ['SPEC-COLL'],
+        'ARTLCKS-R' => ['SPEC-COLL']
       }
     end
 

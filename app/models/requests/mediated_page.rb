@@ -27,7 +27,7 @@ class MediatedPage < Request
   end
 
   def request_commentable?
-    commentable_library_whitelist.include?(origin)
+    commentable_libraries.include?(origin)
   end
 
   # TODO: COVID-19 Disabling for now while we re-open so that it falls back to the default behavior
@@ -103,7 +103,7 @@ class MediatedPage < Request
     errors.add(:needed_date, "can't be blank") if needed_date.blank? && requires_needed_date?
   end
 
-  def commentable_library_whitelist
+  def commentable_libraries
     %w(SPEC-COLL)
   end
 
