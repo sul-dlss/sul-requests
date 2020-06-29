@@ -213,6 +213,7 @@ module SULRequests
     config.no_user_privs_codes = ['U003', 'U004']
 
     config.mediator_contact_info = {
+      'ART'        => { email: ' sul-requests-art@lists.stanford.edu' },
       'HV-ARCHIVE' => { email: 'sul-requests-hoover-archive@lists.stanford.edu' },
       'HOOVER'     => { email: 'sul-requests-hoover-library@lists.stanford.edu' },
       'HOPKINS'    => { email: 'sul-requests-hopkins@lists.stanford.edu' },
