@@ -107,6 +107,7 @@ module SULRequests
       }
     else
       config.library_specific_pickup_libraries = {
+        'BUSINESS' => ['BUSINESS'],
         'RUMSEYMAP' => ['SPEC-COLL'],
         'SPEC-COLL' => ['SPEC-COLL']
       }
