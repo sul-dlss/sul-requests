@@ -175,6 +175,10 @@ module SULRequests
     end
 
     config.contact_info = {
+      'BUSINESS' => {
+        phone: '(650) 725-2055',
+        email: 'gsb_librarycirc@stanford.edu'
+      },
       'SCAN' => {
         phone: '(650) 723-3278',
         email: 'scan-and-deliver@stanford.edu'
