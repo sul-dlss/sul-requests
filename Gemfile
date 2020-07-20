@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2.0'
+gem 'rails', '~> 6.0'
 # Use sqlite3 as the database (during local development)
 gem 'sqlite3'
 # Use Puma as the app server
@@ -16,7 +16,7 @@ gem 'nested_form'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '~> 4.2', '>= 4.2.1'
+gem 'coffee-rails'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 2.7.2'
 # Common styles for SUL
@@ -79,7 +79,7 @@ group :development, :test do
   gem 'pry-byebug'
 
   # RSpec for testing
-  gem 'rspec-rails', '~> 3.0'
+  gem 'rspec-rails', '~> 4.0'
 
   # Capybara for feature/integration tests
   gem 'capybara'
