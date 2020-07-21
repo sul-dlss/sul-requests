@@ -114,7 +114,7 @@ class Request < ActiveRecord::Base
     User.find_by(email: user.email, library_id: user.library_id).tap do |u|
       next unless u
 
-      u.update_attributes(name: user.name)
+      u.update(name: user.name)
     end
   end
 
