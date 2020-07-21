@@ -6,6 +6,9 @@ Rails.application.configure do
   # since you don't have to restart the web server when you make code changes.
   config.cache_classes = false
 
+  # Since our dev server runs in the rails "development" env, we need to add our host
+  config.hosts << 'requests-dev.stanford.edu'
+
   # Do not eager load code on boot.
   config.eager_load = false
 
