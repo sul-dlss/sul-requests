@@ -33,7 +33,7 @@ describe SULRequests::TokenEncryptor do
     it 'raises an error if the token is not valid' do
       expect do
         subject.new("1#{encrypted_token}").decrypt_and_verify
-      end.to raise_error(ActiveSupport::MessageVerifier::InvalidSignature)
+      end.to raise_error(ActiveSupport::MessageEncryptor::InvalidMessage)
     end
   end
 end
