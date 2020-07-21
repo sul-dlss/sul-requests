@@ -10,7 +10,7 @@ module RequestsHelper
     return false unless Settings.features.remote_ip_check
     return unless current_request && current_user.try(:ip_address)
 
-    current_request.check_remote_ip? && !IPRange.includes?(current_user.ip_address)
+    current_request.check_remote_ip? && !IpRange.includes?(current_user.ip_address)
   end
 
   def label_for_comments_field

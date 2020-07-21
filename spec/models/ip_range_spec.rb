@@ -18,7 +18,7 @@ class TestIPNetwork
   end
 end
 
-describe IPRange do
+describe IpRange do
   let(:test_network) { TestIPNetwork.new }
 
   context 'singletons' do
