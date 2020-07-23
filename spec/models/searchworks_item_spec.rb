@@ -60,10 +60,10 @@ describe SearchworksItem do
         'holdings' => [
           { 'code' => 'GREEN',
             'name' => 'Green Library',
-            'locations' => [
+            'locations' => [{
               'code' => 'STACKS',
               'name' => 'Stacks'
-            ]
+            }]
           }
         ]
       }

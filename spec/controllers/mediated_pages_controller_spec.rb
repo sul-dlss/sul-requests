@@ -169,7 +169,7 @@ describe MediatedPagesController do
             }
           }
         end.not_to change {
-          ApprovalStatusMailer.deliveries.count { |x| x.subject =~ /Your request/ }
+          ApprovalStatusMailer.deliveries.count { |x| x.subject.include?('Your request') }
         }
       end
 

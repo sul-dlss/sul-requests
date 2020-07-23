@@ -16,11 +16,11 @@
 # )
 #
 # Example Usage:
-# IPRange.includes?('172.12.52.21')
+# IpRange.includes?('172.12.52.21')
 # => false
-# IPRange.new('172.12.52.21', example_network).includes?
+# IpRange.new('172.12.52.21', example_network).includes?
 # => true
-class IPRange
+class IpRange
   attr_reader :ip_to_check, :network
 
   def initialize(ip, network_definition = self.class.default_network)

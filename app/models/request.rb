@@ -114,7 +114,7 @@ class Request < ActiveRecord::Base
     User.find_by(email: user.email, library_id: user.library_id).tap do |u|
       next unless u
 
-      u.update_attributes(name: user.name)
+      u.update(name: user.name)
     end
   end
 
@@ -154,7 +154,7 @@ class Request < ActiveRecord::Base
   alias barcode= requested_barcode=
 
   def check_remote_ip?
-    mediateable? && !OMIT_IP_CHECK_ORIGINS.include?(origin)
+    mediateable? && OMIT_IP_CHECK_ORIGINS.exclude?(origin)
   end
 
   def library_id_error?
