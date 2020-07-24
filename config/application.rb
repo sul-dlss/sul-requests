@@ -108,6 +108,7 @@ module SULRequests
       }
     else
       config.library_specific_pickup_libraries = {
+        'EAST-ASIA' => ['EAST-ASIA'],
         'BUSINESS' => ['BUSINESS'],
         'RUMSEYMAP' => ['SPEC-COLL'],
         'SPEC-COLL' => ['SPEC-COLL']
