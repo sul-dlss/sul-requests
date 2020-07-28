@@ -117,8 +117,7 @@ end
 
 group :production do
   # Use mysql as the database when running on the server environment
-  # mysql 0.5.3 is not compatible with the version of ruby we are using
-  gem 'mysql2', '< 0.5.3'
+  gem 'mysql2'
 end
 
 # Use Capistrano for deployment
