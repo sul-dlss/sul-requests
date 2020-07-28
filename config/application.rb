@@ -76,6 +76,13 @@ module SULRequests
       config.self_in_library_list_is_selected = []
     end
 
+    config.location_specific_default_library = {
+      'EAL-SETS' => 'EAST-ASIA',
+      'EAL-STKS-C' => 'EAST-ASIA',
+      'EAL-STKS-J' => 'EAST-ASIA',
+      'EAL-STKS-K' => 'EAST-ASIA'
+    }
+
     if Rails.env.test?
       config.pickup_libraries = [
         'ART',
@@ -161,6 +168,10 @@ module SULRequests
       }
     else
       config.location_specific_pickup_libraries = {
+        'EAL-SETS' => ['EAST-ASIA', 'GREEN'],
+        'EAL-STKS-C' => ['EAST-ASIA', 'GREEN'],
+        'EAL-STKS-J' => ['EAST-ASIA', 'GREEN'],
+        'EAL-STKS-K' => ['EAST-ASIA', 'GREEN'],
         'PAGE-EA' => ['EAST-ASIA'],
         'HY-PAGE-EA' => ['EAST-ASIA'],
         'L-PAGE-EA'  => ['EAST-ASIA'],
