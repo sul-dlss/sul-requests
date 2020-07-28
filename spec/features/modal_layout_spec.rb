@@ -17,7 +17,7 @@ describe 'Modal Layout' do
 
     expect(page).not_to have_css('#su-wrap')
 
-    click_link 'Deliver to campus library'
+    click_link 'Request & pickup'
 
     expect(page).not_to have_css('#su-wrap')
     expect(current_url).to match(/modal=true/)

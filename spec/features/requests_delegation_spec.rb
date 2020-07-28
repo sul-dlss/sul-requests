@@ -29,12 +29,11 @@ describe 'Requests Delegation' do
     it 'is given the opportunity to request a scan or delivery' do
       visit new_request_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
 
-      expect(page).to have_css('h1#dialogTitle', text: 'Request')
-      expect(page).to have_css('h2', text: 'SAL3 Item Title')
+      expect(page).to have_css('h1#dialogTitle', text: 'Request options')
 
       within('#scan-or-deliver') do
-        expect(page).to have_css('a', text: 'Deliver to campus library')
-        expect(page).to have_css('a', text: /Scan to PDF.*requires SUNet login/)
+        expect(page).to have_css('a', text: 'Request & pickup')
+        expect(page).to have_css('a', text: 'Scan to PDF')
       end
     end
   end
