@@ -12,37 +12,8 @@
     text-align: left;
   }
 
-  .separator {
-    text-align: center;
-
-    h2 {
-      background: $sul-request-form-separator-h2-bg;
-      border: 0;
-      display: inline-block;
-      margin: 0 0 0.5em;
-      padding: 0 10px;
-      text-align: center;
-    }
-  }
-
   .scan-to-pdf {
-    border-top: 1px solid $sul-request-form-scan-border-color;
-    margin-top: -1.7em;
     padding-top: 2.5em;
-  }
-
-  .service-description {
-    color: $color-cardinal-red;
-  }
-}
-
-@media only screen and (max-width : 480px) {
-  #scan-or-deliver {
-    .separator {
-      h2 {
-        font-size: 1.7em;
-      }
-    }
   }
 }
 

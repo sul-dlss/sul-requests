@@ -2,9 +2,8 @@
   <%= render 'header' %>
   <%= render 'form_flashes' %>
 
-  <%= render 'searchworks_item_information' %>
-
   <% if delegated_request? %>
+    <%= render 'searchworks_item_information' %>
     <%= render 'remote_user_check' if render_remote_user_check? %>
     <%= render 'eligibility_confirmation' if Settings.features.confirm_eligibility %>
     <%= render 'form' %>
