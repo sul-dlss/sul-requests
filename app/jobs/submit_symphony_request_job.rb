@@ -39,7 +39,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
 
   ##
   # Command to submit a Scan request to Symphony for processing
-  class Command
+  class StoredProcedureCommand
     include ActiveSupport::Benchmarkable
 
     attr_reader :request, :options
@@ -134,4 +134,28 @@ class SubmitSymphonyRequestJob < ApplicationJob
       Rails.logger
     end
   end
+
+  # Submit requests using Symws
+  class SymWsCommand
+    def initialize(request, options)
+      @request = request
+      @options = options
+    end
+
+    def execute!; end
+
+    def request_params
+      []
+    end
+  end
+
+  # rubocop:disable Naming/ConstantName
+  Command = begin
+    if Settings.symphony_api.adapter == 'symws'
+      SubmitSymphonyRequestJob::SymWsCommand
+    else
+      SubmitSymphonyRequestJob::StoredProcedureCommand
+    end
+  end
+  # rubocop:enable Naming/ConstantName
 end

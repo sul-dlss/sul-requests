@@ -76,6 +76,7 @@ token_encrypt:
 symphony_api:
   enabled: true
   url: ''
+  adapter: :stored_procedures
 
 symphony_web_services:
   enabled: true
