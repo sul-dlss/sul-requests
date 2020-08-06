@@ -33,6 +33,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'cancancan'
 # Use faraday for making HTTP requests
 gem 'faraday', '~> 1'
+gem 'http'
 # Use kaminari for pagination
 gem 'kaminari'
 gem 'kaminari_bootstrap_paginator'
@@ -113,6 +114,8 @@ group :development, :test do
 
   # listen is used by bootsnap to listen to file changes
   gem 'listen'
+
+  gem 'webmock'
 end
 
 group :production do
