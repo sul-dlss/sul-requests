@@ -113,3 +113,8 @@ features:
 
 background_jobs:
   enabled: false
+
+symws:
+  url:
+  headers: {}
+  login_params: {}
