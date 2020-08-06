@@ -6,6 +6,7 @@ $grayish-yellow: #d5d5d3;
 $green: #008000;
 $light-grayish-orange: #f0eeea;
 $light-grayish-yellow: #f7f7f4;
+$bright-blue: #006cb8;
 $pure-yellow: #ff0;
 $white: #fff;
 $dark-cyan: #007c5d;
@@ -38,6 +39,11 @@ $sul-unavailable-icon-color: $color-cardinal-red;
 $btn-beige-color: $color-black;
 $btn-beige-bg: $color-beige-30;
 $btn-beige-border: darken($btn-beige-bg, 9.8%);
+
+$btn-blue-color: $white;
+$btn-blue-bg: $bright-blue;
+$btn-blue-border: darken($bright-blue, 9.8%);
+
 $sul-shadow-color: rgba(0, 0, 0, 0.2);
 
 // Item Selector
