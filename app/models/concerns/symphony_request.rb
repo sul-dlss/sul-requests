@@ -15,8 +15,8 @@ module SymphonyRequest
     SubmitSymphonyRequestJob.perform_later(id, options)
   end
 
-  def symphony_request
-    SubmitSymphonyRequestJob::Command.new(self)
+  def symphony_request(klass = SubmitSymphonyRequestJob::Command)
+    klass.new(self)
   end
 
   def symphony_response
