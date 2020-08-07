@@ -44,6 +44,22 @@ class SymphonyClient
     end
   end
 
+  def catalog_info(key)
+    headers = if Settings.symws.headers
+                {}
+              else
+                guest_headers
+              end
+
+    response = request("/catalog/item/barcode/#{ERB::Util.url_encode(key)}", params: {
+                         includeFields: 'currentLocation'
+                       }, headers: headers)
+
+    JSON.parse(response.body)
+  rescue JSON::ParserError, HTTP::Error
+    nil
+  end
+
   private
 
   def response_prompt(response)
@@ -66,10 +82,18 @@ class SymphonyClient
   end
 
   def base_url
-    Settings.symws.url
+    Settings.symws.url || Settings.symphony_web_services&.base_url
   end
 
   def default_headers
     DEFAULT_HEADERS.merge(Settings.symws.headers || {})
+  end
+
+  def guest_headers
+    {
+      'x-sirs-clientID': 'DS_CLIENT',
+      'sd-originating-app-id': 'requests',
+      'SD-Preferred-Role': 'GUEST'
+    }
   end
 end

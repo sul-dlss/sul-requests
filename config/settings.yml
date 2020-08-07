@@ -78,13 +78,6 @@ symphony_api:
   url: ''
   adapter: :stored_procedures
 
-symphony_web_services:
-  enabled: true
-  # trailing slashes expected unless it's the end of the URI path
-  base_url: 'http://symphony-endpoint.example.com/'
-  # lookup current location of an item by barcode
-  curr_loc_path: 'v1/catalog/item/barcode/'
-
 mailer_host: <%= `echo $HOSTNAME` %>
 searchworks_api: 'https://searchworks.stanford.edu'
 hours_api: 'https://sul-library-hours-prod.stanford.edu/'
