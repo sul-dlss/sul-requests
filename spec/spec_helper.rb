@@ -63,6 +63,11 @@ RSpec.configure do |config|
     end
   end
 
+  config.before(:each, type: :feature) do
+    stub_request(:get, %r{https://example.com/symws/catalog/item/barcode/.*}).
+      to_return(status: 200, body: "", headers: {})
+  end
+
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
 =begin

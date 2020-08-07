@@ -1,20 +1,28 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'faraday'
 
 describe SymphonyCurrLocRequest do
   subject { described_class.new(barcode: '36105123456789') }
 
   before do
-    allow(Settings.symphony_web_services).to receive(:enabled).and_return(true)
+    stub_request(:post, 'https://example.com/symws/user/staff/login')
+      .with(body: Settings.symws.login_params.to_h)
+      .to_return(body: { sessionToken: 'tokentokentoken' }.to_json)
   end
 
   describe '#current_location' do
+    before do
+      stub_request(:get, 'https://example.com/symws/catalog/item/barcode/36105123456789?includeFields=currentLocation')
+        .to_return(response)
+    end
+
+    let(:response) { { body: '' } }
+
     context 'valid response' do
       let(:response) do
-        resp_body =
-          '{
+        {
+          body: '{
             "resource": "/catalog/item",
             "key": "666:2:1",
             "fields": {
@@ -24,11 +32,7 @@ describe SymphonyCurrLocRequest do
               }
             }
           }'
-        double(success?: true, body: resp_body)
-      end
-
-      before do
-        expect_any_instance_of(Faraday::Connection).to receive(:get).and_return(response)
+        }
       end
 
       it 'has a value' do
@@ -38,18 +42,14 @@ describe SymphonyCurrLocRequest do
 
     context 'json without info' do
       let(:response) do
-        resp_body =
-          '{
+        {
+          body: '{
             "resource": "/catalog/item",
             "key": "666:2:1",
             "fields": {
             }
           }'
-        double(success?: true, body: resp_body)
-      end
-
-      before do
-        expect_any_instance_of(Faraday::Connection).to receive(:get).and_return(response)
+        }
       end
 
       it 'returns empty string' do
@@ -58,11 +58,7 @@ describe SymphonyCurrLocRequest do
     end
 
     context 'for an error response' do
-      let(:response) { double(success?: false, body: '') }
-
-      before do
-        expect_any_instance_of(Faraday::Connection).to receive(:get).and_return(response)
-      end
+      let(:response) { { status: [500, 'Internal Server Error'] } }
 
       it 'is blank' do
         expect(subject.current_location).to be_blank
@@ -71,43 +67,36 @@ describe SymphonyCurrLocRequest do
 
     context 'for a failed response' do
       before do
-        expect_any_instance_of(Faraday::Connection).to receive(:get).and_raise(Faraday::ConnectionFailed, '')
+        stub_request(:get, 'https://example.com/symws/catalog/item/barcode/36105123456789?includeFields=currentLocation')
+          .to_timeout
       end
 
       it 'is blank' do
         expect(subject.current_location).to be_blank
       end
     end
-  end
 
-  it 'BASE_URL is concatenation of web services url and current_loc_path' do
-    expect(SymphonyCurrLocRequest::BASE_URL).to eq 'http://example.com/symws/v1/catalog/item/barcode/'
-  end
-
-  it 'the barcode is URL excaped (so we don\'t get invalid URL errors)' do
-    expect(described_class.new(barcode: 'abc 123').send(:url)).to match(%r{/abc%20123\?includeFields=currentLocation})
-  end
-
-  describe '#json (private)' do
     context 'invalid JSON returned' do
-      let(:response) { double(success?: true, body: 'symphony returned an error instead of JSON') }
-
-      before do
-        expect_any_instance_of(Faraday::Connection).to receive(:get).and_return(response)
-      end
+      let(:response) { { body: 'symphony returned an error instead of JSON' } }
 
       it 'returns empty hash' do
         expect(subject.send(:json)).to eq({})
       end
     end
-  end
 
-  describe '#faraday_conn_w_req_headers' do
-    it 'has required headers' do
-      faraday_conn = subject.send(:faraday_conn_w_req_headers)
-      expect(faraday_conn.headers).to include('x-sirs-clientID' => 'DS_CLIENT')
-      expect(faraday_conn.headers).to include('sd-originating-app-id' => 'requests')
-      expect(faraday_conn.headers).to include('SD-Preferred-Role' => 'GUEST')
+    context 'with a barcode that needs url escaping' do
+      subject { described_class.new(barcode: 'abc 123') }
+
+      before do
+        stub_request(:get, 'https://example.com/symws/catalog/item/barcode/abc%20123?includeFields=currentLocation')
+          .to_return(response)
+      end
+
+      let(:response) { { body: '{ "success": true }' } }
+
+      it 'escapes the barcode' do
+        expect(subject.send(:json)).to eq({ 'success' => true })
+      end
     end
   end
 end
