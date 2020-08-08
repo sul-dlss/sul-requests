@@ -49,6 +49,22 @@ describe Request do
         ActiveRecord::RecordInvalid, 'Validation failed: Needed on Date cannot be earlier than today'
       )
     end
+
+    it 'requires that at item is not avaialble via temporary access' do
+      stub_searchworks_api_json(build(:temporary_access_holdings))
+
+      expect do
+        described_class.create!(
+          item_id: '12345',
+          origin: 'SAL3',
+          origin_location: 'STACKS'
+        )
+      end.to raise_error(
+        ActiveRecord::RecordInvalid,
+        'Validation failed: This item is available online via Hathi Trust ETAS. ' \
+        'The physical copy is not available for Request & pickup.'
+      )
+    end
   end
 
   describe 'scopes' do
@@ -419,7 +435,7 @@ describe Request do
 
   describe 'stored_or_fetched_item_title' do
     it 'returns the stored item title for persisted objects' do
-      expect(create(:request).stored_or_fetched_item_title).to eq 'Title for Request 12345'
+      expect(create(:request).stored_or_fetched_item_title).to eq 'Title for Request 123456'
     end
 
     it 'returns the item title from the fetched searchworks record for non persisted objects' do

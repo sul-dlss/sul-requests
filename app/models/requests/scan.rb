@@ -37,6 +37,10 @@ class Scan < Request
 
   private
 
+  def requested_item_is_not_temporary_access
+    # leave blank so temp access validations are not run for scans
+  end
+
   def scannable_validator
     errors.add(:base, 'This item is not scannable') unless scannable?
   end

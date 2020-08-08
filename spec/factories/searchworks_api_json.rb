@@ -79,6 +79,39 @@ FactoryBot.define do
     end
   end
 
+  factory :temporary_access_holdings, class: 'Hash' do
+    title { 'Item Title' }
+
+    format { ['Book'] }
+
+    temporary_access { true }
+
+    holdings do
+      [
+        { 'code' => 'SAL3',
+          'locations' => [
+            { 'code' => 'STACKS',
+              'items' => [
+                { 'barcode' => '12345678',
+                  'callnumber' => 'ABC 123',
+                  'type' => 'STKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    end
+
+    initialize_with do
+      attributes.transform_keys(&:to_s).to_h
+    end
+  end
+
   factory :sal_newark_holding, class: 'Hash' do
     title { 'Item Title' }
 

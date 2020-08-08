@@ -34,6 +34,10 @@ class SearchworksItem
     @requested_holdings ||= RequestedHoldings.new(self)
   end
 
+  def temporary_access?
+    !!json['temporary_access']
+  end
+
   private
 
   def base_uri
