@@ -2,10 +2,10 @@
 
 FactoryBot.define do
   factory :request do
-    item_id { '12345' }
+    item_id { '123456' }
     origin { 'BIOLOGY' }
     origin_location { 'STACKS' }
-    item_title { 'Title for Request 12345' }
+    item_title { 'Title for Request 123456' }
 
     after(:build) do |request|
       class << request
@@ -45,10 +45,10 @@ FactoryBot.define do
   end
 
   factory :request_with_symphony_errors, class: 'Request' do
-    item_id { '12345' }
+    item_id { '123456' }
     origin { 'SAL3' }
     origin_location { 'STACKS' }
-    item_title { 'Title for Request 12345' }
+    item_title { 'Title for Request 123456' }
 
     after(:build) do |request|
       class << request

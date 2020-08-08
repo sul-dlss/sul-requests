@@ -18,6 +18,19 @@ describe Scan do
     )
   end
 
+  it 'allows temporary access materials to be requested for scan' do
+    stub_searchworks_api_json(build(:temporary_access_holdings))
+
+    expect do
+      described_class.create!(
+        item_id: '12345',
+        origin: 'SAL3',
+        origin_location: 'STACKS',
+        section_title: 'Chapter 1'
+      )
+    end.not_to raise_error
+  end
+
   describe 'requestable' do
     it { is_expected.not_to be_requestable_by_all }
     it { is_expected.not_to be_requestable_with_library_id }
