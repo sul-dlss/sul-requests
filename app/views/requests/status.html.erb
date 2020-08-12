@@ -31,5 +31,9 @@
       <h4>Symphony Response</h4>
       <pre class="well"><%= JSON.pretty_generate(current_request.symphony_response_data || {}) %></pre>
     <% end %>
+    <% if current_request.is_a?(Scan) && current_request.illiad_response_data.present? %>
+      <h4>Illiad Response</h4>
+      <pre class="well"><%= current_request.illiad_response_data %></pre>
+    <% end %>
   <% end %>
 </div>

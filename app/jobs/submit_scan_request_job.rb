@@ -7,7 +7,9 @@ class SubmitScanRequestJob < ApplicationJob
   retry_on Faraday::ConnectionFailed
 
   def perform(scan)
-    IlliadRequest.new(scan).request!
+    response = IlliadRequest.new(scan).request!
+
+    scan.update(illiad_response_data: response.body)
 
     scan.send_to_symphony_later!
   end

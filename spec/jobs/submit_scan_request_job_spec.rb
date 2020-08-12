@@ -9,12 +9,14 @@ RSpec.describe SubmitScanRequestJob, type: :job do
   end
 
   let(:scan) { create(:scan) }
-  let(:illiad_request) { instance_double(IlliadRequest, request!: true) }
+  let(:illiad_request) { instance_double(IlliadRequest, request!: double(body: 'Blah')) }
 
   it 'makes a request to illiad' do
     described_class.perform_now(scan)
 
     expect(illiad_request).to have_received(:request!)
+
+    expect(scan.illiad_response_data).to eq 'Blah'
   end
 
   it 'enqueues a request to symphony' do
