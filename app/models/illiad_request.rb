@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 ###
 #  Class to handle creation of ILLiad OpenURL request
 ###
 class IlliadRequest
-  def initialize(current_user, scan)
-    @current_user = current_user
+  def initialize(scan)
     @scan = scan
   end
 
@@ -11,17 +12,14 @@ class IlliadRequest
     illiad_user.merge(illiad_route.merge(illiad_bib.merge(illiad_item))).to_json
   end
 
-  def response
+  def request!
     faraday_conn_w_req_headers.post('ILLiadWebPlatform/Transaction/', illiad_transaction_request)
-  rescue Faraday::ConnectionFailed => e
-    Rails.logger.warn("HTTP POST for #{illiad_url} failed with: #{e}")
-    NullResponse.new
   end
 
   private
 
   def illiad_user
-    { 'Username': @current_user.webauth }
+    { 'Username': @scan.user.webauth }
   end
 
   def illiad_route

@@ -5,6 +5,7 @@ require 'rails_helper'
 describe ScansController do
   before do
     stub_searchworks_api_json(build(:sal3_holdings))
+    allow(SubmitScanRequestJob).to receive(:perform_later)
   end
 
   let(:scan) { create(:scan_with_holdings, origin: 'SAL3', origin_location: 'STACKS', barcodes: ['12345678']) }
@@ -115,15 +116,14 @@ describe ScansController do
         }
       end
 
-      it 'should be allowed' do
+      it 'is allowed' do
         expect(Scan.last.origin).to eq 'SAL3'
         expect(Scan.last.user).to eq user
         expect(Scan.last.barcodes).to eq(['87654321'])
       end
 
-      it 'should redirect to the scan success page after a successful illiad request' do
-        allow(controller).to receive(:illiad_request).and_return(true)
-        expect(controller.send(:illiad_request)).to redirect_to '/scans/1/success'
+      it 'redirects to the scan success page after a successful illiad request' do
+        expect(SubmitScanRequestJob).to have_received(:perform_later).with(Scan.last)
       end
 
       it 'does not send a confirmation email' do
@@ -141,46 +141,6 @@ describe ScansController do
             }
           }
         end.not_to change { ConfirmationMailer.deliveries.count }
-      end
-
-      # Note:  cannot trigger activejob from this spec to check ApprovalStatusMailer
-
-      it 'submits the request to symphony' do
-        expect(SubmitSymphonyRequestJob).to receive(:perform_now)
-
-        put :create, params: {
-          illiad_success: true,
-          request: {
-            item_id: '12345',
-            origin: 'SAL3',
-            origin_location: 'STACKS',
-            barcodes: ['12345678'],
-            section_title: 'Some really important chapter'
-          }
-        }
-      end
-    end
-
-    describe 'invalid requests' do
-      let(:user) { create(:scan_eligible_user) }
-      it 'should redirect to the sorry page after unsuccessful illiad request' do
-        put :create, params: {
-          request: {
-            item_id: '12345',
-            origin: 'SAL3',
-            origin_location: 'STACKS',
-            barcodes: ['12345678'],
-            section_title: 'Some really important chapter'
-          }
-        }
-        # with invalid illiad test url: sul_illiad: 'https://illiad-test/'
-        expect(response).to redirect_to sorry_unable_path
-      end
-
-      it 'returns an error message to the user' do
-        post :create, params:  { illiad_success: true, request: { item_id: '12345' } }
-        expect(flash[:error]).to eq 'There was a problem creating your request.'
-        expect(response).to render_template 'new'
       end
     end
 

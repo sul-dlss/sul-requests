@@ -8,7 +8,7 @@ require 'rails_helper'
 # to the illiad URL passing the create scan URL via GET and that the create scan URL via GET works.
 describe 'Create Scan Request' do
   before do
-    allow_any_instance_of(ScansController).to receive(:illiad_request).and_return(true)
+    allow(SubmitScanRequestJob).to receive(:perform_later)
     stub_searchworks_api_json(build(:sal3_holdings))
   end
 
