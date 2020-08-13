@@ -104,7 +104,7 @@ features:
   remote_ip_check: false
   hold_recall_service: false
   hold_recall_via_borrow_direct: true
-  scan_service: false
+  scan_service: true
   special_spec_note: true
   validate_eligibility: true
 
