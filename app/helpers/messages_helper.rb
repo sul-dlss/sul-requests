@@ -9,7 +9,7 @@ module MessagesHelper
             [:edit, message],
             class: 'btn
                     btn-sm
-                    btn-default
+                    btn-secondary
                     edit-message
                     glyphicon
                     glyphicon-pencil'
@@ -21,7 +21,7 @@ module MessagesHelper
                              request_type: request_type),
             class: 'btn
                     btn-sm
-                    btn-default
+                    btn-secondary
                     edit-message
                     glyphicon glyphicon-pencil'
   end
@@ -32,7 +32,7 @@ module MessagesHelper
             method: :delete,
             class: 'btn
                     btn-sm
-                    btn-default
+                    btn-secondary
                     edit-message
                     glyphicon
                     glyphicon-trash'

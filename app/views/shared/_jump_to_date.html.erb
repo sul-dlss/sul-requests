@@ -1,4 +1,4 @@
-<%= bootstrap_form_tag(url: form_path, method: 'get', layout: :inline, :html => {class: "pull-right"}) do |f| %>
+<%= bootstrap_form_tag(url: form_path, method: 'get', layout: :inline, :html => {class: "float-right"}) do |f| %>
   <%= f.date_field(:created_at, value: params[:created_at] || Time.zone.today, label: 'Find by date requested: &nbsp;'.html_safe, 'data-behavior': 'admin-date-picker') %>
   <%= f.primary "Go" %>
 <% end %>

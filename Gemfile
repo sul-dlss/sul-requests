@@ -8,13 +8,13 @@ gem 'sqlite3'
 gem 'puma'
 gem 'bootsnap'
 # Use sass-powered bootstrap
-gem 'bootstrap-sass', "~> 3.4"
+gem 'bootstrap'
 # Use bootstrap_form for easy form building
-gem 'bootstrap_form', '< 4' # pin to < 4 since we are not on bootstrap 4
+gem 'bootstrap_form'
 gem 'bootstrap-editable-rails'
 gem 'nested_form'
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
+gem 'sass-rails', '~> 6.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails'
 # Use Uglifier as compressor for JavaScript assets

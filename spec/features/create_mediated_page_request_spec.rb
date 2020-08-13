@@ -165,7 +165,7 @@ describe 'Creating a mediated page request' do
     it 'is present' do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
 
-      expect(page).to have_css('.control-label', text: 'Reading Room access')
+      expect(page).to have_css('.col-form-label', text: 'Reading Room access')
       expect(page).to have_css('.input-like-text', text: /^When the items have been approved and are ready for use/)
     end
   end

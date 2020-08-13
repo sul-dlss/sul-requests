@@ -1,41 +1,42 @@
 <!DOCTYPE html>
-<html lang="en" class="no-js">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description" content="Stanford University Libraries' application to request materials" />
-    <!-- Mobile viewport optimization h5bp.com/ad -->
-    <meta name="HandheldFriendly" content="True">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <!-- Mobile IE allows us to activate ClearType technology for smoothing fonts for easy reading -->
-    <!--[if IEMobile]> <meta http-equiv="cleartype" content="on"> <![endif]-->
+<%= content_tag :html, class: 'no-js', lang: 'en', **(try(:html_tag_attributes) || {}) do %>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= favicon_link_tag %>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= stylesheet_link_tag "https://www-media.stanford.edu/su-identity/css/su-identity.css" %>
+  <%= stylesheet_link_tag "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700" %>
+  <%= javascript_include_tag 'application' %>
+  <%= content_for(:head) %>
+  <title><%= yield(:page_title).blank? ? SULRequests::Application.config.application_name : yield(:page_title)%></title>
+</head>
 
-    <title><%= yield(:page_title).blank? ? SULRequests::Application.config.application_name : yield(:page_title)%></title>
-    <%= favicon_link_tag 'favicon.ico' %>
-    <%= stylesheet_link_tag "application", media: "all" %>
-    <link href="https://www-media.stanford.edu/su-identity/css/su-identity.css" rel="stylesheet">
-    <%= stylesheet_link_tag "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700" %>
-    <%= javascript_include_tag "application" %>
-    <%= javascript_include_tag "https://cdn.jsdelivr.net/webshim/1.15.8/polyfiller.js" %>
-    <%= csrf_meta_tags %>
-    <%= content_for(:head) %>
-    <!--[if IE 8]> <link rel="stylesheet" type="text/css" href="https://www.stanford.edu/su-identity/css/ie/ie8.css" /> <![endif]-->
-    <!--[if IE 7]> <link rel="stylesheet" type="text/css" href="https://www.stanford.edu/su-identity/css/ie/ie7.css" /> <![endif]-->
-  </head>
-
-  <body data-analytics-id="<%= Settings.GOOGLE_ANALYTICS_ID %>">
-    <div id="su-wrap"> <!-- #su-wrap start -->
-      <div id="su-content"> <!-- #su-content start -->
-        <div id="outer-container" class="container-fluid">
-          <%= render 'shared/top_navbar' %>
-          <section id="main-container" role="main">
-            <%= render 'shared/flashes' %>
-            <%= yield %>
-          </section>
-        </div>
+<body data-analytics-id="<%= Settings.GOOGLE_ANALYTICS_ID %>" class="<%= try(:render_body_class) %>">
+  <%= render 'shared/body_top' %>
+  <div id="skip-link">
+    <%= render 'shared/skip_links' %>
+  </div>
+  <div id="su-wrap"> <!-- #su-wrap start -->
+    <div id="su-content"> <!-- #su-content start -->
+      <%= render 'shared/top_navbar' %>
+      <%= render 'shared/header_navbar' %>
+      <div id='main-container' role='main' class='container mt-3 mb-3'>
+        <%= content_for(:container_header) %>
+        <%= render '/shared/global_alert' %>
+        <%= render partial: '/shared/flash_msg', layout: 'shared/flash_messages' %>
+        <%= content_for?(:content) ? yield(:content) : yield %>
       </div>
-    </div>
-
+    </div> <!-- #su-content end -->
+  </div> <!-- #su-wrap end -->
+  <%= render 'shared/modal' %>
+  <footer role="contentinfo">
     <%= render 'shared/sul_footer' %>
-  </body>
-</html>
+    <%= render 'shared/global_footer' %>
+  </footer>
+  <%= render 'shared/footer' %>
+</body>
+<% end %>

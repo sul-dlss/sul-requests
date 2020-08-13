@@ -1,14 +1,11 @@
-@import 'bootstrap-sprockets';
-@import 'sul-styles';
-@import 'variables';
+@import 'application/variables';
 @import 'bootstrap';
 @import 'bootstrap-editable';
-@import 'sul-requests-mixins';
-@import 'sul-requests';
+@import 'application/sul-requests-mixins';
+@import 'application/sul-requests';
 
 // Imports sul-icons
 @import 'sul-icons-rails';
 @import 'sul-icons-aliases';
 // Helper classes used in icons
 @import 'sul-icons/helpers';
-

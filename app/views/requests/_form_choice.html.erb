@@ -1,9 +1,9 @@
 <div id="scan-or-deliver" data-scheduler-lookup-url='<%= paging_schedule_path(origin: current_request.origin) %>'>
   <div class="row">
-    <div class="col-xs-12 buttons">
+    <div class="col-12 buttons">
       <%= link_to('Request & pickup', delegated_new_request_path(current_request), class: "btn btn-md btn-info #{'disabled' if current_request.searchworks_item.temporary_access?}", 'aria-describedby' => 'deliveryDescription') %>
     </div>
-    <div id="deliveryDescription" class="col-xs-12 content">
+    <div id="deliveryDescription" class="col-12 content">
       <% if current_request.searchworks_item.temporary_access? %>
         <p>This item is available online via Hathi Trust ETAS. The physical copy is not available for Request & pickup.</p>
       <% else %>
@@ -24,10 +24,10 @@
   </div>
 
   <div class="row scan-to-pdf">
-    <div class="col-xs-12 buttons">
+    <div class="col-12 buttons">
       <%= link_to('Scan to PDF', new_scan_path(current_request, request_params), class: 'btn btn-md btn-info', 'aria-describedby' => 'scanDescription') %>
     </div>
-    <div id="scanDescription" class="col-xs-12 content">
+    <div id="scanDescription" class="col-12 content">
       <p>Limited to one article or chapter; maximum 50 pages.</p>
       <p>Available to faculty, staff, students, post-docs, fellows, and Stanford Visiting Scholars.</p>
       <% if Settings.features.estimate_delivery %>

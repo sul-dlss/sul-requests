@@ -1,6 +1,6 @@
 <% if current_request.item_commentable? %>
 <div class='form-group'>
-  <%= f.label :item_comment, label_for_comments_field, class: "#{label_column_class} control-label required" %>
+  <%= f.label :item_comment, label_for_comments_field, class: "#{label_column_class} col-form-label required" %>
   <div class='<%= content_column_class %>'>
     <%= f.text_area_without_bootstrap :item_comment, class: 'form-control', required: true %>
     <% if current_request.library_location.mhld.any? { |mhld| mhld.library_has.present? } %>

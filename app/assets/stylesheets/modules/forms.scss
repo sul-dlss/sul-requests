@@ -1,11 +1,12 @@
 .form-group {
+  @extend .row;
   h3 {
     margin-top: 0;
   }
 }
 
 .destination-note-callout {
-  color: $text-color;
+  color: $body-color;
 }
 
 // This ensures that the login options toggle is viewed
@@ -24,7 +25,7 @@ hr {
 }
 
 .input-like-text {
-  padding-top: 7px;
+  // padding-top: 7px;
 }
 
 .or-divider {
@@ -38,8 +39,8 @@ hr {
 
 .required:not([for='request_destination']) {
   &:after {
-    @extend .label;
-    @extend .label-warning;
+    @extend .badge;
+    @extend .badge-warning;
     content: 'Required';
     display: inline-block;
     margin-left: 5px;

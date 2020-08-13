@@ -57,7 +57,7 @@ module PickupLibrariesHelper
   def single_library_markup(form, library)
     <<-HTML
       <div class='form-group'>
-        <div class='#{label_column_class} control-label'>
+        <div class='#{label_column_class} col-form-label'>
           #{label_for_pickup_libraries_dropdown([])}
         </div>
         <div class='#{content_column_class} input-like-text'>

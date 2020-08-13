@@ -18,7 +18,7 @@
 }
 
 .panel-danger {
-  .panel-heading {
+  .card-header {
     border-bottom: 0;
     font-size: 1.3em;
 
@@ -49,11 +49,15 @@
     }
   }
 
-  .panel-body {
-    background: $panel-danger-bg;
+  .card-header, .card-body {
+    background: lighten($panel-danger-bg, 60);
+
+    p:last-child {
+      margin-bottom: 0;
+    }
   }
 
-  .panel-title {
+  .card-title {
     font-weight: 500;
   }
 }

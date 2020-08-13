@@ -1,18 +1,18 @@
 @mixin sort-icons {
   .sort {
     i {
-      @extend .glyphicon;
+      // @extend .glyphicon;
     }
 
     &.asc {
       i {
-        @extend .glyphicon-chevron-down;
+        // @extend .glyphicon-chevron-down;
       }
     }
 
     &.desc {
       i {
-        @extend .glyphicon-chevron-up;
+        // @extend .glyphicon-chevron-up;
       }
     }
   }

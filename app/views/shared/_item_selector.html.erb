@@ -3,7 +3,7 @@
     <% if f.object.barcode_present? || f.object.all_holdings.one? %>
       <% single_item = f.object.requested_holdings.first || f.object.all_holdings.first %>
       <div class='form-group'>
-        <span class='control-label <%= label_column_class %>'>Call number</span>
+        <span class='col-form-label <%= label_column_class %>'>Call number</span>
         <div class='<%= content_column_class %>'>
           <p class="form-control-static">
             <%= single_item.callnumber %>
@@ -20,22 +20,22 @@
       <div id='selected-items-filter' data-behavior='item-selector' data-limit-reached-message="<%= t('sul_requests.limit_reached_message', limit: f.object.item_limit) %>">
         <% if f.object.all_holdings.length >= 10 %>
           <div class='form-group'>
-            <label class='control-label <%= label_column_class %>' for='item-selector-search'>Search item list</label>
+            <label class='col-form-label <%= label_column_class %>' for='item-selector-search'>Search item list</label>
             <div class='<%= content_column_class %>'>
-              <input id='item-selector-search' type='text' class='pull-right search form-control' />
+              <input id='item-selector-search' type='text' class='float-right search form-control' />
             </div>
           </div>
         <% end %>
-        <div class='btn-group btn-group-xs sort-headings clearfix'>
-          <a href="javascript:;" class="sort sort-callnumber btn btn-default pull-left" data-sort="callnumber">Call number <i></i></a>
-          <a href="javascript:;" class="sort sort-status btn btn-default pull-right" data-sort="status">Status <i></i></a>
+        <div class='btn-group btn-group-sm sort-headings clearfix'>
+          <a href="javascript:;" class="sort sort-callnumber btn btn-secondary float-left" data-sort="callnumber">Call number <i></i></a>
+          <a href="javascript:;" class="sort sort-status btn btn-secondary float-right" data-sort="status">Status <i></i></a>
         </div>
         <div id="item-selector" class="item-selector" data-limit-selected-items="<%= f.object.item_limit if f.object.item_limit.to_i > 1 %>" data-counter-target="[data-items-counter='true']">
           <div class='list'>
             <% f.object.all_holdings.sort_by(&:callnumber).each do |holding| %>
               <div class='input-group'>
                 <% if f.object.item_limit.to_i == 1 %>
-                  <span class='input-group-addon barcode-checkbox'>
+                  <span class='input-group-prepend barcode-checkbox'>
                     <%= barcode.radio_button_without_bootstrap nil, holding.barcode, checked: f.object.requested_holdings.include?(holding), data: { barcode: holding.barcode, callnumber: holding.callnumber } %>
                   </span>
                   <%= barcode.label "_#{holding.barcode}", class: 'form-control' do %>
@@ -43,7 +43,7 @@
                     <%= label_for_item_selector_holding(holding) %>
                   <% end %>
                 <% else %>
-                  <span class='input-group-addon barcode-checkbox'>
+                  <span class='input-group-prepend barcode-checkbox'>
                     <%= barcode.check_box_without_bootstrap holding.barcode, checked: f.object.requested_holdings.include?(holding), data: { barcode: holding.barcode, callnumber: holding.callnumber } %>
                   </span>
                   <%= barcode.label holding.barcode, class: 'form-control' do %>
@@ -74,12 +74,12 @@
       <div data-behavior='max-items-message'></div>
       <% if current_request.ad_hoc_item_commentable? %>
         <div class='form-group'>
-          <span class='control-label <%= label_column_class %>'>Add unlisted items</span>
+          <span class='col-form-label <%= label_column_class %>'>Add unlisted items</span>
           <div class='<%= content_column_class %>' data-behavior='ad-hoc-items' data-hidden-field-name="<%= "#{f.object_name}[ad_hoc_items][]" %>">
             <div class="input-group">
               <%= text_field_tag :ad_hoc_items, '', class: 'form-control' %>
               <span class="input-group-btn">
-                <%= link_to 'Add', 'javascript:;', class: 'btn btn-default', data: { behavior: 'submit-ad-hoc-items' } %>
+                <%= link_to 'Add', 'javascript:;', class: 'btn btn-secondary', data: { behavior: 'submit-ad-hoc-items' } %>
               </span>
             </div>
             <p class='help-block'>Refer to the collection finding aid to identify the items you need.<br />Example: Series 1, Box 1</p>
@@ -88,7 +88,7 @@
       <% end %>
 
       <div class='form-group'>
-        <span class='control-label <%= label_column_class %> required'>
+        <span class='col-form-label <%= label_column_class %> required'>
           <span data-items-counter='true'><span data-count='true'><%= f.object.requested_holdings.length + (f.object.ad_hoc_items || []).length %></span> items selected</span>
         </span>
         <div class='<%= content_column_class %>'>

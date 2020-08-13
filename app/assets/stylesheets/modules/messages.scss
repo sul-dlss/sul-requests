@@ -12,13 +12,13 @@
     display: inline-block;
   }
 
-  @media screen and (max-width: $screen-xs-max) {
+  @media screen and (max-width: $screen-sm-min) {
     .start-at,
     .end-at {
       display: block;
     }
 
-    .control-label {
+    .col-form-label {
       width: 14ch;
     }
   }
@@ -50,7 +50,6 @@
 
   .edit-message {
     margin-bottom: 7px;
-    word-spacing: -7px;
   }
 }
 

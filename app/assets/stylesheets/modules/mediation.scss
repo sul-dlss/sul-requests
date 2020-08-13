@@ -3,7 +3,7 @@
     border-bottom: 0;
 
     i {
-      @extend .glyphicon-plus-sign;
+      // @extend .glyphicon-plus-sign;
       color: $gray-41-percent;
     }
   }
@@ -11,7 +11,7 @@
   .expanded {
     .mediate-toggle {
       i {
-        @extend .glyphicon-minus-sign;
+        // @extend .glyphicon-minus-sign;
       }
     }
   }
