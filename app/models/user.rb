@@ -101,6 +101,8 @@ class User < ActiveRecord::Base
   end
 
   def patron_key
+    return unless library_id.present?
+
     @patron_key ||= SymphonyClient.new.login_by_library_id(library_id)&.dig('key')
   end
 

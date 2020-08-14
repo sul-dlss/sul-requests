@@ -55,6 +55,10 @@ class Request < ActiveRecord::Base
     @searchworks_item ||= SearchworksItem.new(self, live_lookup)
   end
 
+  def bib_info
+    @bib_info ||= BibInfo.new(SymphonyClient.new.bib_info(item_id))
+  end
+
   def send_confirmation!
     true
   end
@@ -174,7 +178,7 @@ class Request < ActiveRecord::Base
     end
   end
 
-  def item_status(id)
-    ItemStatus.new(self, id)
+  def item_status(id, **opts)
+    ItemStatus.new(self, id, **opts)
   end
 end

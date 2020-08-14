@@ -240,6 +240,10 @@ module SULRequests
       'RUMSEYMAP'  => { email: 'sul-requests-rumsey@lists.stanford.edu' }
     }
 
+    config.picklist_contact_info = {
+      'SPEC-COLL' => { email: 'specialcollections@stanford.edu' }
+    }
+
     config.hours_api_location_map = {
       'ARS' => { library_slug: 'ars', location_slug: 'archive-recorded-sound' },
       'ART' => { library_slug: 'art', location_slug: 'library-circulation' },

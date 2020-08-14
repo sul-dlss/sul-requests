@@ -64,9 +64,9 @@ class SymphonyClient
                 guest_headers
               end
 
-    response = request("/catalog/item/barcode/#{ERB::Util.url_encode(key)}", params: {
-                         includeFields: 'currentLocation'
-                       }, headers: headers)
+    response = authenticated_request("/catalog/item/barcode/#{ERB::Util.url_encode(key)}", params: {
+                                       includeFields: '*,call{*},currentLocation'
+                                     }, headers: headers)
 
     JSON.parse(response.body)
   rescue JSON::ParserError, HTTP::Error
