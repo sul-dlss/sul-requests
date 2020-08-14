@@ -147,6 +147,21 @@ describe MediatedPage do
     end
   end
 
+  describe '#item_statuses' do
+    let(:subject) { build(:mediated_page_with_holdings, user: user) }
+
+    before do
+      stub_symphony_response(build(:symphony_page_with_multiple_items))
+      subject.barcodes = ['12345678']
+      subject.ad_hoc_items = ['ABC 123']
+    end
+
+    it 'returns an enumerable of the statuses' do
+      expect(subject.item_statuses.count).to eq 2
+      expect(subject.item_statuses.map(&:id)).to eq ['12345678', 'ABC 123']
+    end
+  end
+
   describe 'TokenEncryptable' do
     it 'mixins TokenEncryptable' do
       expect(subject).to be_kind_of TokenEncryptable

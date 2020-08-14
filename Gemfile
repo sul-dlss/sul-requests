@@ -74,6 +74,8 @@ end
 gem 'sidekiq'
 gem 'sidekiq-statistic'
 
+gem 'whenever'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   # or call 'binding.pry'  (you may need require 'pry-byebug' first)

@@ -13,7 +13,7 @@ describe SymphonyCurrLocRequest do
 
   describe '#current_location' do
     before do
-      stub_request(:get, 'https://example.com/symws/catalog/item/barcode/36105123456789?includeFields=currentLocation')
+      stub_request(:get, %r{https://example.com/symws/catalog/item/barcode/36105123456789?.*})
         .to_return(response)
     end
 
@@ -67,7 +67,7 @@ describe SymphonyCurrLocRequest do
 
     context 'for a failed response' do
       before do
-        stub_request(:get, 'https://example.com/symws/catalog/item/barcode/36105123456789?includeFields=currentLocation')
+        stub_request(:get, %r{https://example.com/symws/catalog/item/barcode/36105123456789?.*})
           .to_timeout
       end
 
@@ -88,7 +88,7 @@ describe SymphonyCurrLocRequest do
       subject { described_class.new(barcode: 'abc 123') }
 
       before do
-        stub_request(:get, 'https://example.com/symws/catalog/item/barcode/abc%20123?includeFields=currentLocation')
+        stub_request(:get, %r{https://example.com/symws/catalog/item/barcode/abc%20123?.*})
           .to_return(response)
       end
 
