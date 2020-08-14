@@ -18,7 +18,7 @@
 }
 
 .panel-danger {
-  .panel-heading {
+  .card-header {
     border-bottom: 0;
     font-size: 1.3em;
 
@@ -26,34 +26,38 @@
       border-bottom: 0;
     }
 
-    .glyphicon {
+    .fa {
       line-height: 1.3em;
     }
 
-    .glyphicon-chevron-down {
+    .fa-chevron-down {
       display: inline;
     }
 
-    .glyphicon-chevron-right {
+    .fa-chevron-right {
       display: none;
     }
 
     .collapsed {
-      .glyphicon-chevron-down {
+      .fa-chevron-down {
         display: none;
       }
 
-      .glyphicon-chevron-right {
+      .fa-chevron-right {
         display: inline;
       }
     }
   }
 
-  .panel-body {
-    background: $panel-danger-bg;
+  .card-header, .card-body {
+    background: lighten($panel-danger-bg, 60);
+
+    p:last-child {
+      margin-bottom: 0;
+    }
   }
 
-  .panel-title {
+  .card-title {
     font-weight: 500;
   }
 }

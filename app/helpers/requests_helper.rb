@@ -41,11 +41,11 @@ module RequestsHelper
 
   def label_for_item_selector_holding(holding)
     if holding.current_location.try(:code) == 'CHECKEDOUT'
-      content_tag :span, class: 'status pull-right availability unavailable' do
+      content_tag :span, class: 'status float-right availability unavailable' do
         "Due #{holding.due_date}"
       end
     else
-      content_tag :span, class: "status pull-right availability #{holding.status.availability_class}" do
+      content_tag :span, class: "status float-right availability #{holding.status.availability_class}" do
         holding.status.status_text
       end
     end

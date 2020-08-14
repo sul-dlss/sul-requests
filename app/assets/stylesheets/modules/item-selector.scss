@@ -8,7 +8,8 @@
   }
 
   .sort {
-    line-height: $line-height-computed;
+    @extend .btn-beige;
+    line-height: $line-height-base;
 
     i {
       @extend .glyphicon-tiny;
@@ -17,9 +18,7 @@
 
     &.asc,
     &.desc {
-      background-color: darken($btn-default-bg, 10%);
-      border-color: darken($btn-default-border, 12%);
-      color: $btn-default-color;
+      @extend .btn-secondary;
     }
   }
 
@@ -39,7 +38,7 @@
 }
 
 .item-selector {
-  border: 1px solid $item-selector-border-color;
+  // border: 1px solid $item-selector-border-color;
   margin-bottom: $form-group-margin-bottom;
   max-height: 200px;
   overflow: auto;
@@ -60,17 +59,15 @@
   }
 
   .barcode-checkbox {
-    background-color: $btn-default-bg;
-    border-color: $btn-default-border;
+    @extend .btn-secondary;
     border-radius: 0;
     border-top: 0;
-    color: $btn-default-color;
     vertical-align: top;
   }
 
   .list .input-group:first-child {
     .barcode-checkbox {
-      border-top: 1px solid $btn-default-border;
+      border-top: 1px solid #ccc;
     }
   }
 
@@ -86,6 +83,6 @@
 }
 
 .glyphicon-tiny {
-  font-size: $font-size-tiny;
-  line-height: $line-height-computed;
+  font-size: $font-size-sm;
+  line-height: $line-height-base;
 }

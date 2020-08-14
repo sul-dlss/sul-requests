@@ -65,11 +65,6 @@ $sul-footer-height: 80px;
     }
   }
   #sul-footer-img {
-    a,
-    a:hover,
-    a:focus { 
-      border-bottom: 0;
-    }
     display: table-cell;
     vertical-align: middle;
     width: 162px;
@@ -80,14 +75,5 @@ $sul-footer-height: 80px;
     padding-left: 15px;
     text-align: left;
     vertical-align: middle;
-  }
-}
-
-#global-footer {max-width: 100%;}
-#global-footer p {max-width: 100%; width: auto; }
-#global-footer #bottom-text {margin-right: 6px;}
-#global-footer {
-  .vcard {
-    margin-left: 2rem;
   }
 }

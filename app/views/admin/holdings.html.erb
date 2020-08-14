@@ -2,10 +2,10 @@
   <div class='button-group'>
     <%= bootstrap_form_for(@request, remote: true, html: { class: 'mark-as-complete-form', 'data-type': 'json' }) do |f| %>
       <%= f.hidden_field :approval_status, value: 'marked_as_done' %>
-      <button class='btn btn-default btn-xs' <%= 'disabled' unless @request.unapproved? %> data-behavior='mark-as-complete'>Mark as done</button>
+      <button class='btn btn-secondary btn-sm' <%= 'disabled' unless @request.unapproved? %> data-behavior='mark-as-complete'>Mark as done</button>
     <% end %>
 
-    <button class='btn btn-default btn-xs' data-behavior='toggle-admin-comment-form'>Comment</button>
+    <button class='btn btn-secondary btn-sm' data-behavior='toggle-admin-comment-form'>Comment</button>
   </div>
   <%= render 'admin_comments/form' %>
   <%= render 'admin_comments/comments' %>
@@ -17,9 +17,9 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th class='col-xs-1'>Approve</th>
-      <th class='col-xs-2'>Location</th>
-      <th class='col-xs-2'>Current</th>
+      <th class='col-1'>Approve</th>
+      <th class='col-2'>Location</th>
+      <th class='col-2'>Current</th>
       <th>Call number / Container</th>
       <th>Status</th>
       <th>Approved by</th>
@@ -28,8 +28,8 @@
   <tbody>
     <% @request.holdings.each do |item| %>
       <tr class='<%= cycle('odd', 'even') %> <%= 'approved' if item.request_status.approved? %> <%= 'errored' if item.request_status.errored? %>'>
-        <td class='col-xs-1'>
-          <button class="approval-btn btn btn-xs btn-success" data-behavior="item-approval" data-item-approval-url="<%= approve_item_admin_path(@request, item: item.barcode) %>">
+        <td class='col-1'>
+          <button class="approval-btn btn btn-sm btn-success" data-behavior="item-approval" data-item-approval-url="<%= approve_item_admin_path(@request, item: item.barcode) %>">
             <% if item.request_status.approved? %>
               Approved
             <% else %>
@@ -37,8 +37,8 @@
             <% end %>
           </button>
         </td>
-        <td class='col-xs-2'><%= item.home_location %></td>
-        <td class='col-xs-2'><%= current_location_for_mediated_item(item) %></td>
+        <td class='col-2'><%= item.home_location %></td>
+        <td class='col-2'><%= current_location_for_mediated_item(item) %></td>
         <td><%= item.callnumber %></td>
         <td><span class='request-status'><%= status_text_for_item(item) %></span></td>
         <td data-behavior='approver-information'>
@@ -53,8 +53,8 @@
     <% @request.ad_hoc_items.each do |item| %>
     <% ad_hoc_item_status = request_status_for_ad_hoc_item(@request, item) %>
       <tr class='<%= cycle('odd', 'even') %> <%= 'approved' if ad_hoc_item_status.approved? %>'>
-        <td class='col-xs-1'>
-          <button class="approval-btn btn btn-xs btn-success" data-behavior="item-approval" data-item-approval-url="<%= approve_item_admin_path(@request, item: item) %>">
+        <td class='col-1'>
+          <button class="approval-btn btn btn-sm btn-success" data-behavior="item-approval" data-item-approval-url="<%= approve_item_admin_path(@request, item: item) %>">
             <% if ad_hoc_item_status.approved? %>
               Approved
             <% else %>
@@ -62,8 +62,8 @@
             <% end %>
           </button>
         </td>
-        <td class='col-xs-2'></td>
-        <td class='col-xs-2'></td>
+        <td class='col-2'></td>
+        <td class='col-2'></td>
         <td><%= item %></td>
         <td><span class='request-status'><%= status_text_for_item(item) %></span></td>
         <td data-behavior='approver-information'>

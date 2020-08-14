@@ -1,0 +1,25 @@
+@import 'identity/bootstrap-variables';
+@import 'sul-variables';
+
+// Reducing screen-sm-min to (now deprecated) screen-xs-min pixel size in order
+// to allow the sm/xs threshold to be appropriate for rendering within a modal
+$screen-sm-min: 480px;
+
+@import 'bootstrap/functions';
+@import 'bootstrap/variables';
+
+$pagination-active-bg: #696969;
+$pagination-active-border: #696969;
+
+// Panels
+$panel-danger-text: $color-black;
+$panel-danger-bg: $red;
+
+$dl-horizontal-offset: 194px;
+
+$sul-footer-bg-color: $su-light-sandstone;
+
+$h1-font-size: 2.323rem;
+$h2-font-size: 1.383rem;
+$h3-font-size: 1.383rem;
+$h4-font-size: 1.215rem;
