@@ -11,8 +11,8 @@ module MessagesHelper
                     btn-sm
                     btn-secondary
                     edit-message
-                    glyphicon
-                    glyphicon-pencil'
+                    fa
+                    fa-pencil-alt'
   end
 
   def link_to_add_message(library_code, request_type)
@@ -23,7 +23,7 @@ module MessagesHelper
                     btn-sm
                     btn-secondary
                     edit-message
-                    glyphicon glyphicon-pencil'
+                    fa fa-pencil-alt'
   end
 
   def link_to_delete_message(message)
@@ -34,7 +34,7 @@ module MessagesHelper
                     btn-sm
                     btn-secondary
                     edit-message
-                    glyphicon
-                    glyphicon-trash'
+                    fa
+                    fa-trash-alt'
   end
 end

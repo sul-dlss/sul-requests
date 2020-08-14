@@ -47,8 +47,8 @@
       color: $sul-unavailable-icon-color;
 
       &:before {
-        // @extend .glyphicon;
-        // @extend .glyphicon-exclamation-sign;
+        @extend .fa;
+        @extend .fa-exclamation-triangle;
       }
     }
   }

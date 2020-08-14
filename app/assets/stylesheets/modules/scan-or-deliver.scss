@@ -26,24 +26,24 @@
       border-bottom: 0;
     }
 
-    .glyphicon {
+    .fa {
       line-height: 1.3em;
     }
 
-    .glyphicon-chevron-down {
+    .fa-chevron-down {
       display: inline;
     }
 
-    .glyphicon-chevron-right {
+    .fa-chevron-right {
       display: none;
     }
 
     .collapsed {
-      .glyphicon-chevron-down {
+      .fa-chevron-down {
         display: none;
       }
 
-      .glyphicon-chevron-right {
+      .fa-chevron-right {
         display: inline;
       }
     }

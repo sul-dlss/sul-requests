@@ -12,6 +12,8 @@ gem 'bootstrap'
 # Use bootstrap_form for easy form building
 gem 'bootstrap_form'
 gem 'bootstrap-editable-rails'
+gem 'font-awesome-rails'
+
 gem 'nested_form'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 6.0'

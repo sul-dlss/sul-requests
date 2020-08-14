@@ -16,7 +16,7 @@
       <tr data-mediate-request='<%= holdings_admin_path(request) %>' class='<%= cycle('odd', 'even') %>'>
         <td>
           <a class="mediate-toggle" data-behavior='mediate-toggle' href='javascript:;'>
-            <i class="glyphicon"></i>
+            <i class="fa"></i>
           </a>
           <span data-behavior='all-approved-note' class='label label-success' style='<%= 'display:none;' unless request.approved? %>'>
             <%= t('.all_approved') %>

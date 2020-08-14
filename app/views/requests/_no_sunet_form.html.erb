@@ -17,7 +17,7 @@
             %>
             <% if f.object.library_id_error? %>
               <div role="alert" id="library-id-help" class="alert alert-danger">
-                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="fa fa-exclamation-triangle" aria-hidden="true"></span>
                 <%= f.object.errors[:library_id].join('. ') %>.<br/>
                 A Stanford Library ID has 10 digits. On some University ID cards, it has a prefix of <span class="suid-prefix" aria-label="8 0 6 0 9">80609</span>.
               </div>

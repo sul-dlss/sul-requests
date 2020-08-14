@@ -45,13 +45,13 @@
 
 .editable-date {
   .icon-arrow-left {
-    // @extend .glyphicon;
-    // @extend .glyphicon-arrow-left;
+    @extend .fa;
+    @extend .fa-arrow-left;
   }
 
   .icon-arrow-right {
-    // @extend .glyphicon;
-    // @extend .glyphicon-arrow-right;
+    @extend .fa;
+    @extend .fa-arrow-right;
   }
 
   .active.day {
