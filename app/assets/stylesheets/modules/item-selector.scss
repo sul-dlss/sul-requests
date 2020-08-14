@@ -8,6 +8,7 @@
   }
 
   .sort {
+    @extend .btn-beige;
     line-height: $line-height-base;
 
     i {
@@ -37,7 +38,7 @@
 }
 
 .item-selector {
-  border: 1px solid $item-selector-border-color;
+  // border: 1px solid $item-selector-border-color;
   margin-bottom: $form-group-margin-bottom;
   max-height: 200px;
   overflow: auto;

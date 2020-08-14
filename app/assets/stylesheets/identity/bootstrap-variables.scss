@@ -31,7 +31,8 @@ $theme-colors: () !default;
 $theme-colors: map-merge(
   (
     "cardinal-red": $su-cardinal-red,
-    "beige": $su-light-sandstone
+    "beige": $su-light-sandstone,
+    "secondary": $su-cloud,
   ),
   $theme-colors
 );

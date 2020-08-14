@@ -35,7 +35,7 @@
             <% f.object.all_holdings.sort_by(&:callnumber).each do |holding| %>
               <div class='input-group'>
                 <% if f.object.item_limit.to_i == 1 %>
-                  <span class='input-group-prepend barcode-checkbox'>
+                  <span class='input-group-text input-group-prepend bg-beige barcode-checkbox'>
                     <%= barcode.radio_button_without_bootstrap nil, holding.barcode, checked: f.object.requested_holdings.include?(holding), data: { barcode: holding.barcode, callnumber: holding.callnumber } %>
                   </span>
                   <%= barcode.label "_#{holding.barcode}", class: 'form-control' do %>
@@ -43,7 +43,7 @@
                     <%= label_for_item_selector_holding(holding) %>
                   <% end %>
                 <% else %>
-                  <span class='input-group-prepend barcode-checkbox'>
+                  <span class='input-group-text input-group-prepend bg-beige barcode-checkbox'>
                     <%= barcode.check_box_without_bootstrap holding.barcode, checked: f.object.requested_holdings.include?(holding), data: { barcode: holding.barcode, callnumber: holding.callnumber } %>
                   </span>
                   <%= barcode.label holding.barcode, class: 'form-control' do %>
