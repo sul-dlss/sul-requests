@@ -60,6 +60,53 @@ class SymphonyClient
     nil
   end
 
+  ##
+  # TODO Ask Shelly or Sarah
+  def request_library()
+    # authenticated_request('/', method: :post, json: {
+    #   currentLocation, homeLocation, library
+    #   })
+  end
+
+  # rubocop:disable Metrics/ParameterLists
+  def place_hold(fill_by_date:, key: 'GREEN', recall_status: 'STANDARD', item: {}, patron_barcode:, for_group: false, comment:)
+    response = authenticated_request('/circulation/holdRecord/placeHold', method: :post, json: {
+      comment: comment.truncate(50, omission: ''),
+      fillByDate: (fill_by_date || DateTime.now + 3.years).strftime('%Y-%m-%d'),
+      holdRange: 'SYSTEM',
+      patronBarcode: patron_barcode,
+      pickupLibrary: {
+        key: key,
+        resource: '/policy/library'
+      },
+      recallStatus: recall_status
+    }.merge(item), headers: { 'SD-Prompt-Return': "GROUP_PROMPT/#{for_group}", 'SD-Working-LibraryID': 'SUL' })
+    JSON.parse(response.body)
+  rescue JSON::ParserError, HTTP::Error
+    nil
+  end
+  # rubocop:enable Metrics/ParameterLists
+
+  # rubocop:disable Metrics/MethodLength
+  def patron_info(patron_key)
+    response = authenticated_request("/user/patron/key/#{patron_key}", params: {
+                                       includeFields: [
+                                         '*',
+                                         'address1',
+                                         'profile{chargeLimit}',
+                                         'customInformation{*}',
+                                         'groupSettings{*,group{memberList{*}}}'
+                                       ].join(',')
+                                     })
+
+    begin
+      JSON.parse(response.body)
+    rescue JSON::ParserError
+      nil
+    end
+  end
+  # rubocop:enable Metrics/MethodLength
+
   private
 
   def response_prompt(response)

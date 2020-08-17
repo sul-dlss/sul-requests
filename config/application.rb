@@ -276,5 +276,9 @@ module SULRequests
       'organization:law' => 'rcj',
       'organization:gsb' => 's7z'
     }
+
+    config.pickup_library_pseudo_patrons = {
+      'GREEN' => 'HOLD@GR'
+    }
   end
 end
