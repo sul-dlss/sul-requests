@@ -270,5 +270,15 @@ module SULRequests
       'SCIENCE' => { library_slug: 'science', location_slug: 'library-circulation' },
       'TANNER' => { library_slug: 'philosophy', location_slug: 'library-circulation' }
     }
+
+    config.illiad_nvtgc_map = {
+      default: 'st2',
+      'organization:law' => 'rcj',
+      'organization:gsb' => 's7z'
+    }
+
+    config.pickup_library_pseudo_patrons = {
+      'GREEN' => 'HOLD@GR'
+    }
   end
 end

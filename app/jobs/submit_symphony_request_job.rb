@@ -34,7 +34,8 @@ class SubmitSymphonyRequestJob < ApplicationJob
   end
 
   def enabled?
-    Settings.symphony_api.enabled && Settings.symphony_api.url.present?
+    true
+    #Settings.symphony_api.enabled && Settings.symphony_api.url.present?
   end
 
   ##
@@ -137,15 +138,142 @@ class SubmitSymphonyRequestJob < ApplicationJob
 
   # Submit requests using Symws
   class SymWsCommand
-    def initialize(request, options)
+    attr_reader :request
+
+    delegate :user, to: :request
+
+    def initialize(request, options = {})
       @request = request
       @options = options
     end
 
-    def execute!; end
+    def symphony_client
+      @symphony_client ||= SymphonyClient.new
+    end
+
+    def patron_profile
+      @patron_profile ||= symphony_client.patron_info(request.user.library_id) || {} if request.user.library_id.present? || {}
+    end
+
+    def fee_borrower?
+      patron_profile&.dig('fields', 'profile', 'key')&.starts_with?('MXFEE')
+    end
+
+    def execute!
+      responses = request_params.map do |param|
+        symphony_client.place_hold(**param)
+      end
+      {
+        requested_items: responses
+      }
+    end
+
+    ##
+    # TODO Get clarification from Shelly
+    def item(item)
+      item_return = {
+        itemBarcode: item.barcode
+      }
+      if request.is_a?(Scan) || request.is_a?(Page)
+        item_return['holdType'] = 'COPY'
+      end
+      item_return
+    end
+
+    def scan_stuff(item)
+      return {} unless request.is_a? Scan
+
+      current_location = SymphonyCurrLocRequest.new(barcode: item.barcode).current_location
+      if current_location == 'SAL' && request.origin == 'SAL' && symphony_client.request_library == 'SAL'
+        return {
+          key: 'GREEN',
+          patron_barcode: 'GRE-SCANDELIVER'
+        }
+      end
+      if request.origin == 'SAL' && ['HY-PAGE-EA', 'ND-PAGE-EA'].include?(current_location)
+        return {
+          key: 'EAST-ASIA',
+          patron_barcode: 'EAL-SCANREVIEW'
+        }
+      end
+      {
+        key: 'SAL3',
+        patron_barcode: 'SAL3-SCANDELIVER'
+      }
+    end
+
+    def good_standing_patron?
+      standing = patron_profile&.dig('fields', 'standing', 'key')
+      ['DELINQUENT', 'OK'].include?(standing)
+    end
+
+    def patron_barcode
+      case request
+      when Scan
+        nil
+      when HoldRecall
+        request.user.library_id
+      when Page, MediatedPage
+        if good_standing_patron?
+          request.user.library_id
+        else
+          pseduo_patron(request.destination)
+        end
+      end
+    end
+
+    def pseduo_patron(key)
+      SULRequests::Application.config.pickup_library_pseudo_patrons[key] || 'HOLD@GR'
+    end
+
+    def comment
+      [name, email].join(' ')
+    end
+
+    def name
+      user.name || [patron_profile.dig('fields', 'firstName'), patron_profile.dig('fields', 'lastName')].join(' ')
+    end
+
+    def email
+      user.email_address || symphony_email
+    end
+
+    def symphony_email
+      email_resource = patron_profile.dig('fields', 'address1').find do |address|
+        address['fields']['code']['key'] == 'EMAIL'
+      end
+      email_resource && email_resource['fields']['data']
+    end
 
     def request_params
-      []
+      if request.holdings.empty? # case for no barcode items :(
+        return [{
+          fill_by_date: request.needed_date,
+          key: request.destination,
+          recall_status: fee_borrower? ? 'NO' : 'STANDARD',
+          item: {
+            bib: {
+              key: request.item_id,
+              resource: '/catalog/bib'
+            },
+            holdType: 'TITLE'
+          },
+          patron_barcode: patron_barcode,
+          for_group: request.proxy? || request.user.proxy?,
+          comment: comment
+        }]
+      end
+      request.holdings.map do |item|
+        {
+          fill_by_date: request.needed_date,
+          key: request.destination,
+          recall_status: fee_borrower? ? 'NO' : 'STANDARD',
+          item: item(item),
+          patron_barcode: patron_barcode,
+          for_group: request.proxy? || request.user.proxy?,
+          comment: comment
+        }.merge(scan_stuff(item))
+      end
     end
   end
 
