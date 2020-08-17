@@ -73,7 +73,7 @@ describe 'Eligibility Validation' do
 
     context 'when the user has an ineligible affiliation' do
       before do
-        user.affiliation = 'stanford:student'
+        user.affiliation = 'stanford:faculty:nonactive'
       end
 
       it 'sends the user to the ineligible mediated pages page' do
