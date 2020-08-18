@@ -168,43 +168,41 @@ class SubmitSymphonyRequestJob < ApplicationJob
       }
     end
 
-    ##
-    # TODO Get clarification from Shelly
     def item(item)
       item_return = {
-        itemBarcode: item.barcode
+        itemBarcode: item.barcode,
+        holdType: 'TITLE'
       }
-      if request.is_a?(Scan) || request.is_a?(Page)
+      current_location = SymphonyCurrLocRequest.new(barcode: item.barcode).current_location if item && request.is_a?(Scan)
+      # FIXME: potentially unreachable code as we guard against this in Scannable.
+      if request.is_a?(Scan) && ['INPROCESS', 'ON-ORDER'].include?(current_location)
         item_return['holdType'] = 'COPY'
       end
       item_return
     end
 
-    def scan_stuff(item)
+    def scan_destinations(item = nil)
       return {} unless request.is_a? Scan
 
-      current_location = SymphonyCurrLocRequest.new(barcode: item.barcode).current_location
-      if current_location == 'SAL' && request.origin == 'SAL' && symphony_client.request_library == 'SAL'
-        return {
-          key: 'GREEN',
-          patron_barcode: 'GRE-SCANDELIVER'
-        }
-      end
+      current_location = SymphonyCurrLocRequest.new(barcode: item.barcode).current_location if item
       if request.origin == 'SAL' && ['HY-PAGE-EA', 'ND-PAGE-EA'].include?(current_location)
         return {
           key: 'EAST-ASIA',
           patron_barcode: 'EAL-SCANREVIEW'
         }
       end
-      {
-        key: 'SAL3',
-        patron_barcode: 'SAL3-SCANDELIVER'
-      }
+      SULRequests::Application.config.scan_destinations.fetch(request.origin) do
+        {
+          key: 'GREEN',
+          patron_barcode: 'GRE-SCANDELIVER'
+        }
+      end
     end
 
     def patron_barcode
       case request
       when Scan
+        # Scan patron barcodes use logic in #scan_destinations
         nil
       when HoldRecall
         request.user.library_id
@@ -248,7 +246,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
         patron_barcode: patron_barcode,
         for_group: request.proxy? || request.user.proxy?,
         comment: comment
-      }]
+      }.merge(scan_destinations)]
     end
 
     def request_params
@@ -263,7 +261,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
           patron_barcode: patron_barcode,
           for_group: request.proxy? || request.user.proxy?,
           comment: comment
-        }.merge(scan_stuff(item))
+        }.merge(scan_destinations(item))
       end
     end
   end
