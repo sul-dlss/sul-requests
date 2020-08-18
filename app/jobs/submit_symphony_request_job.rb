@@ -155,8 +155,8 @@ class SubmitSymphonyRequestJob < ApplicationJob
       @patron_profile ||= symphony_client.patron_info(request.user.library_id) || {} if request.user.library_id.present? || {}
     end
 
-    def fee_borrower?
-      patron_profile&.dig('fields', 'profile', 'key')&.starts_with?('MXFEE')
+    def patron
+      @patron ||= Patron.new(patron_profile)
     end
 
     def execute!
@@ -202,11 +202,6 @@ class SubmitSymphonyRequestJob < ApplicationJob
       }
     end
 
-    def good_standing_patron?
-      standing = patron_profile&.dig('fields', 'standing', 'key')
-      ['DELINQUENT', 'OK'].include?(standing)
-    end
-
     def patron_barcode
       case request
       when Scan
@@ -214,7 +209,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
       when HoldRecall
         request.user.library_id
       when Page, MediatedPage
-        if good_standing_patron?
+        if patron.good_standing?
           request.user.library_id
         else
           pseduo_patron(request.destination)
@@ -231,18 +226,11 @@ class SubmitSymphonyRequestJob < ApplicationJob
     end
 
     def name
-      user.name || [patron_profile.dig('fields', 'firstName'), patron_profile.dig('fields', 'lastName')].join(' ')
+      user.name || patron.full_name
     end
 
     def email
-      user.email_address || symphony_email
-    end
-
-    def symphony_email
-      email_resource = patron_profile.dig('fields', 'address1').find do |address|
-        address['fields']['code']['key'] == 'EMAIL'
-      end
-      email_resource && email_resource['fields']['data']
+      user.email_address || patron.email
     end
 
     def request_params
@@ -250,7 +238,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
         return [{
           fill_by_date: request.needed_date,
           key: request.destination,
-          recall_status: fee_borrower? ? 'NO' : 'STANDARD',
+          recall_status: patron.fee_borrower? ? 'NO' : 'STANDARD',
           item: {
             bib: {
               key: request.item_id,
@@ -267,7 +255,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
         {
           fill_by_date: request.needed_date,
           key: request.destination,
-          recall_status: fee_borrower? ? 'NO' : 'STANDARD',
+          recall_status: patron.fee_borrower? ? 'NO' : 'STANDARD',
           item: item(item),
           patron_barcode: patron_barcode,
           for_group: request.proxy? || request.user.proxy?,
