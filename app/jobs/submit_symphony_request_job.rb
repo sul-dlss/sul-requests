@@ -138,7 +138,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
 
   # Submit requests using Symws
   class SymWsCommand
-    attr_reader :request
+    attr_reader :request, :options
 
     delegate :user, to: :request
 
@@ -249,10 +249,20 @@ class SubmitSymphonyRequestJob < ApplicationJob
       }.merge(scan_destinations)]
     end
 
+    def holdings
+      if options[:barcode]
+        request.holdings.select do |item|
+          options[:barcode].include?(item.barcode)
+        end
+      else
+        request.holdings
+      end
+    end
+
     def request_params
       return request_without_barcode if request.holdings.empty? # case for no barcode items :(
 
-      request.holdings.map do |item|
+      holdings.map do |item|
         {
           fill_by_date: request.needed_date,
           key: request.destination,
