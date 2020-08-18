@@ -106,3 +106,28 @@ For example:
 2.  Open the "Request" button in SearchWorks in a new tab or new window.
 
 3.  Copy the Request url after the host name and paste it after "localhost:3000" in your browser, when you have the app running locally.  (i.e. `/scan/...`  or `/mediated_page/...`)   Then submit the request in your browser pointed to your locally running app.
+
+
+### Some example requests
+
+<details>
+  <summary>Pickup / scan</summary>
+
+  - http://localhost:3000/requests/new?item_id=13331339&origin=SAL3&origin_location=STACKS
+  - http://localhost:3000/requests/new?item_id=9446542&origin=SAL3&origin_location=STACKS
+  - http://localhost:3000/requests/new?item_id=2028136&origin=SAL3&origin_location=PAGE-GR
+</details>
+
+<details>
+  <summary>Hold / recall</summary>
+
+</details>
+
+<details>
+  <summary>Mediated page</summary>
+
+  - http://localhost:3000/requests/new?item_id=9926506&origin=SPEC-COLL&origin_location=MANUSCRIPT
+  - http://localhost:3000/requests/new?item_id=11835941&origin=SPEC-COLL&origin_location=UARCH-30 (a few boxes)
+  - http://localhost:3000/requests/new?item_id=4086059&origin=SPEC-COLL&origin_location=U-ARCHIVES (lots of boxes)
+  - http://localhost:3000/requests/new?item_id=4103002&origin=SPEC-COLL&origin_location=UARCH-30 (item commentable)
+</details>
