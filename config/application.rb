@@ -280,5 +280,11 @@ module SULRequests
     config.pickup_library_pseudo_patrons = {
       'GREEN' => 'HOLD@GR'
     }
+
+    config.scan_destinations = {
+      'GREEN' => { key: 'GREEN', patron_barcode: 'GRE-SCANDELIVER' },
+      'SAL' => { key: 'GREEN', patron_barcode: 'GRE-SCANDELIVER' },
+      'SAL3' => { key: 'SAL3', patron_barcode: 'SAL3-SCANDELIVER' }
+    }
   end
 end

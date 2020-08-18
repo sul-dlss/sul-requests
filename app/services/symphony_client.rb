@@ -60,14 +60,6 @@ class SymphonyClient
     nil
   end
 
-  ##
-  # TODO Ask Shelly or Sarah
-  def request_library()
-    # authenticated_request('/', method: :post, json: {
-    #   currentLocation, homeLocation, library
-    #   })
-  end
-
   # rubocop:disable Metrics/ParameterLists
   def place_hold(fill_by_date:, key: 'GREEN', recall_status: 'STANDARD', item: {}, patron_barcode:, for_group: false, comment:)
     response = authenticated_request('/circulation/holdRecord/placeHold', method: :post, json: {
