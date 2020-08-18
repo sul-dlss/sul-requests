@@ -226,7 +226,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
     end
 
     def name
-      user.name || patron.full_name
+      user.name || patron.display_name
     end
 
     def email

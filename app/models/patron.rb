@@ -37,7 +37,7 @@ class Patron
     fields['lastName']
   end
 
-  def full_name
+  def display_name
     [first_name, last_name].join(' ')
   end
 
