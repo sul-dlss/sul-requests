@@ -212,12 +212,12 @@ class SubmitSymphonyRequestJob < ApplicationJob
         if patron.good_standing?
           request.user.library_id
         else
-          pseduo_patron(request.destination)
+          pseudo_patron(request.destination)
         end
       end
     end
 
-    def pseduo_patron(key)
+    def pseudo_patron(key)
       SULRequests::Application.config.pickup_library_pseudo_patrons[key] || 'HOLD@GR'
     end
 
