@@ -233,24 +233,27 @@ class SubmitSymphonyRequestJob < ApplicationJob
       user.email_address || patron.email
     end
 
-    def request_params
-      if request.holdings.empty? # case for no barcode items :(
-        return [{
-          fill_by_date: request.needed_date,
-          key: request.destination,
-          recall_status: patron.fee_borrower? ? 'NO' : 'STANDARD',
-          item: {
-            bib: {
-              key: request.item_id,
-              resource: '/catalog/bib'
-            },
-            holdType: 'TITLE'
+    def request_without_barcode
+      [{
+        fill_by_date: request.needed_date,
+        key: request.destination,
+        recall_status: patron.fee_borrower? ? 'NO' : 'STANDARD',
+        item: {
+          bib: {
+            key: request.item_id,
+            resource: '/catalog/bib'
           },
-          patron_barcode: patron_barcode,
-          for_group: request.proxy? || request.user.proxy?,
-          comment: comment
-        }]
-      end
+          holdType: 'TITLE'
+        },
+        patron_barcode: patron_barcode,
+        for_group: request.proxy? || request.user.proxy?,
+        comment: comment
+      }]
+    end
+
+    def request_params
+      return request_without_barcode if request.holdings.empty? # case for no barcode items :(
+
       request.holdings.map do |item|
         {
           fill_by_date: request.needed_date,
