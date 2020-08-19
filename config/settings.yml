@@ -84,6 +84,9 @@ symphony_api:
   url: ''
   adapter: :stored_procedures
 
+symphony:
+  override: PASSWORD
+
 mailer_host: <%= `echo $HOSTNAME` %>
 searchworks_api: 'https://searchworks.stanford.edu'
 hours_api: 'https://sul-library-hours-prod.stanford.edu/'

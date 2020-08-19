@@ -70,7 +70,7 @@ class SymphonyClient
   end
 
   # rubocop:disable Metrics/ParameterLists
-  def place_hold(fill_by_date:, key: 'GREEN', recall_status: 'STANDARD', item: {}, patron_barcode:, for_group: false, comment:)
+  def place_hold(fill_by_date:, key: 'GREEN', recall_status: 'STANDARD', item: {}, patron_barcode:, comment:, sd_prompt_return: [])
     response = authenticated_request('/circulation/holdRecord/placeHold', method: :post, json: {
       comment: comment.truncate(50, omission: ''),
       fillByDate: (fill_by_date || DateTime.now + 3.years).strftime('%Y-%m-%d'),
@@ -81,7 +81,10 @@ class SymphonyClient
         resource: '/policy/library'
       },
       recallStatus: recall_status
-    }.merge(item), headers: { 'SD-Prompt-Return': "GROUP_PROMPT/#{for_group}", 'SD-Working-LibraryID': 'SUL' })
+    }.merge(item), headers: {
+      'SD-Prompt-Return': sd_prompt_return.join(';'),
+      'SD-Working-LibraryID': 'SUL'
+    })
     JSON.parse(response.body)
   rescue JSON::ParserError, HTTP::Error
     nil
