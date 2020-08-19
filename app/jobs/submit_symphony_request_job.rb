@@ -141,6 +141,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
     attr_reader :request, :options
 
     delegate :user, to: :request
+    delegate :patron, to: :user
 
     def initialize(request, options = {})
       @request = request
@@ -149,14 +150,6 @@ class SubmitSymphonyRequestJob < ApplicationJob
 
     def symphony_client
       @symphony_client ||= SymphonyClient.new
-    end
-
-    def patron_profile
-      @patron_profile ||= symphony_client.patron_info(request.user.library_id) || {} if request.user.library_id.present? || {}
-    end
-
-    def patron
-      @patron ||= Patron.new(patron_profile)
     end
 
     def bib_info(key)
