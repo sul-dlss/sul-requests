@@ -47,4 +47,15 @@ class Patron
     end
     email_resource && email_resource['fields']['data']
   end
+
+  def expired?
+    return false unless expired_date
+
+    expired_date.past?
+  end
+
+  def expired_date
+    Time.zone.parse(fields['privilegeExpiresDate']) if fields['privilegeExpiresDate']
+  end
+
 end
