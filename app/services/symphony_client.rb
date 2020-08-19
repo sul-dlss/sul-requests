@@ -110,7 +110,7 @@ class SymphonyClient
                                          'address1',
                                          'profile{chargeLimit}',
                                          'customInformation{*}',
-                                         'groupSettings{*,group{memberList{*}}}'
+                                         'groupSettings{*,group{memberList{*,address1}}}'
                                        ].join(',')
                                      })
 
