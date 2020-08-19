@@ -165,11 +165,23 @@ class SubmitSymphonyRequestJob < ApplicationJob
 
     def execute!
       responses = request_params.map do |param|
-        symphony_client.place_hold(**param)
+        place_hold_response = symphony_client.place_hold(**param)
+        {
+          barcode: param.dig(:item, :itemBarcode) || param.dig(:item, :call, :key),
+          msgcode: place_hold_response.dig('messageList', 0, 'message') || '209',
+          response: place_hold_response
+        }
       end
       {
         requested_items: responses
-      }
+      }.merge(usererr)
+    end
+
+    def usererr
+      return { usererr_code: 'U003', usererr_text: 'User is BLOCKED' } unless user.patron.good_standing?
+      return { usererr_code: 'U004', usererr_text: 'User\'s privileges have expired' } if user.patron.expired?
+
+      { usererr_code: nil, usererr_text: nil }
     end
 
     def item(item)
@@ -180,7 +192,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
       current_location = SymphonyCurrLocRequest.new(barcode: item.barcode).current_location if item && request.is_a?(Scan)
       # FIXME: potentially unreachable code as we guard against this in Scannable.
       if request.is_a?(Scan) && ['INPROCESS', 'ON-ORDER'].include?(current_location)
-        item_return['holdType'] = 'COPY'
+        item_return[:holdType] = 'COPY'
       end
       item_return
     end
