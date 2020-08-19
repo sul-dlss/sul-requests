@@ -94,11 +94,27 @@ class User < ActiveRecord::Base
     end if library_id_user?
   end
 
+  def patron_profile
+    @patron_profile ||= symphony_client.patron_info(patron_key) || {} if patron_key.present? || {}
+  end
+
+  def patron
+    @patron ||= Patron.new(patron_profile)
+  end
+
+  def patron_key
+    @patron_key ||= SymphonyClient.new.login_by_library_id(library_id)&.dig('key')
+  end
+
   private
 
   def notify_honeybadger_of_unknown_webauth_email!
     Honeybadger.notify(
       "Webauth user record being created without a valid email address. Using #{webauth}@stanford.edu instead."
     ) if new_record?
+  end
+
+  def symphony_client
+    @symphony_client ||= SymphonyClient.new
   end
 end

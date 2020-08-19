@@ -32,6 +32,15 @@ class SymphonyClient
     JSON.parse(response.body)['result'].first
   end
 
+  def login_by_library_id(library_id)
+    response = authenticated_request('/user/patron/search', params: {
+                                       q: "id:#{library_id}",
+                                       includeFields: '*'
+                                     })
+
+    JSON.parse(response.body)['result'].first
+  end
+
   # get a session token by authenticating to symws
   def session_token
     @session_token ||= begin
@@ -63,7 +72,7 @@ class SymphonyClient
   def bib_info(key)
     response = authenticated_request("/catalog/bib/key/#{key}", params: {
                                        includeFields: '*,callList{*}'
-                                     })
+                                     }, headers: headers)
     JSON.parse(response.body)
   rescue JSON::ParserError, HTTP::Error
     nil
