@@ -278,7 +278,29 @@ module SULRequests
     }
 
     config.pickup_library_pseudo_patrons = {
-      'GREEN' => 'HOLD@GR'
+      'ARS' => 'HOLD@AS',
+      'ART' => 'HOLD@AR',
+      'BUSINESS' => 'HOLD@BU',
+      'CLASSICS' => 'HOLD@CL',
+      'EARTH-SCI' => 'HOLD@ES',
+      'EAST-ASIA' => 'HOLD@EA',
+      'EDUCATION' => 'HOLD@ED',
+      'ENG' => 'HOLD@EN',
+      'GREEN' => 'HOLD@GR',
+      'HOOVER' => 'HOLD@HL',
+      'HOOV-DESK' => 'HOLD@HL',
+      'HV-ARCHIVE' => 'HOLD@HA',
+      'HOPKINS' => 'HOLD@HP',
+      'LAW' => 'HOLD@LW',
+      'MEDIA-MTXT' => 'HOLD@MD',
+      'MUSIC' => 'HOLD@MU',
+      'RUMSEYMAP' => 'HOLD@RM',
+      'RWC' => 'HOLD@RU',
+      'SAL' => 'HOLD@SL',
+      'SCIENCE' => 'HOLD@CS',
+      'SPEC-COLL' => 'HOLD@SP',
+      'SPEC-DESK' => 'HOLD@SP',
+      'TANNER' => 'HOLD@TA'
     }
 
     config.scan_destinations = {
