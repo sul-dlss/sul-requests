@@ -72,14 +72,16 @@ class SymphonyClient
   def bib_info(key)
     response = authenticated_request("/catalog/bib/key/#{key}", params: {
                                        includeFields: '*,callList{*}'
-                                     }, headers: headers)
+                                     })
     JSON.parse(response.body)
   rescue JSON::ParserError, HTTP::Error
     nil
   end
 
   # rubocop:disable Metrics/ParameterLists
-  def place_hold(fill_by_date:, key: 'GREEN', recall_status: 'STANDARD', item: {}, patron_barcode:, comment:, sd_prompt_return: [])
+  def place_hold(fill_by_date:, key: 'GREEN', recall_status: 'STANDARD', item: {}, patron_barcode:, comment:, for_group: false, force: true)
+    sd_prompt_return = ["GROUP_PROMPT/#{for_group}"]
+    sd_prompt_return << "HOLD_NO_HOLDS_OVRCD/#{Settings.symphony.override}" if force
     response = authenticated_request('/circulation/holdRecord/placeHold', method: :post, json: {
       comment: comment.truncate(50, omission: ''),
       fillByDate: (fill_by_date || DateTime.now + 3.years).strftime('%Y-%m-%d'),

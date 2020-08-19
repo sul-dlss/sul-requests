@@ -235,16 +235,6 @@ class SubmitSymphonyRequestJob < ApplicationJob
       user.email_address || patron.email
     end
 
-    def prompt_return(item = nil)
-      prompt_return = ["GROUP_PROMPT/#{request.proxy? || request.user.proxy?}"]
-      current_location = SymphonyCurrLocRequest.new(barcode: item.barcode).current_location if item
-
-      if request.is_a?(Page) || request.is_a?(Scan) || ['INPROCESS', 'ON-ORDER'].include?(current_location)
-        prompt_return << "HOLD_NO_HOLDS_OVRCD/#{Settings.symphony.override}"
-      end
-      prompt_return
-    end
-
     def request_without_barcode
       [{
         fill_by_date: request.needed_date,
@@ -259,7 +249,8 @@ class SubmitSymphonyRequestJob < ApplicationJob
         },
         patron_barcode: patron_barcode,
         comment: comment,
-        sd_prompt_return: prompt_return
+        for_group: (request.proxy? || request.user.proxy?),
+        force: true
       }.merge(scan_destinations)]
     end
 
@@ -284,7 +275,8 @@ class SubmitSymphonyRequestJob < ApplicationJob
           item: item(item),
           patron_barcode: patron_barcode,
           comment: comment,
-          sd_prompt_return: prompt_return(item)
+          for_group: (request.proxy? || request.user.proxy?),
+          force: true
         }.merge(scan_destinations(item))
       end
     end
