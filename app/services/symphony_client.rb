@@ -60,6 +60,15 @@ class SymphonyClient
     nil
   end
 
+  def bib_info(key)
+    response = authenticated_request("/catalog/bib/key/#{key}", params: {
+                                       includeFields: '*,callList{*}'
+                                     })
+    JSON.parse(response.body)
+  rescue JSON::ParserError, HTTP::Error
+    nil
+  end
+
   # rubocop:disable Metrics/ParameterLists
   def place_hold(fill_by_date:, key: 'GREEN', recall_status: 'STANDARD', item: {}, patron_barcode:, for_group: false, comment:)
     response = authenticated_request('/circulation/holdRecord/placeHold', method: :post, json: {

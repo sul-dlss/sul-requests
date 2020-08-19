@@ -159,6 +159,17 @@ class SubmitSymphonyRequestJob < ApplicationJob
       @patron ||= Patron.new(patron_profile)
     end
 
+    def bib_info(key)
+      @bib_info ||= Hash.new do |h, k|
+        h[k] = symphony_client.bib_info(key)
+      end
+      @bib_info[key]
+    end
+
+    def call_list(key)
+      bib_info(key)&.dig('fields', 'callList', 0, 'key')
+    end
+
     def execute!
       responses = request_params.map do |param|
         symphony_client.place_hold(**param)
@@ -237,9 +248,9 @@ class SubmitSymphonyRequestJob < ApplicationJob
         key: request.destination,
         recall_status: patron.fee_borrower? ? 'NO' : 'STANDARD',
         item: {
-          bib: {
-            key: request.item_id,
-            resource: '/catalog/bib'
+          call: {
+            key: call_list(request.item_id),
+            resource: '/catalog/call'
           },
           holdType: 'TITLE'
         },
