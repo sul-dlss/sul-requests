@@ -58,4 +58,15 @@ class Patron
     Time.zone.parse(fields['privilegeExpiresDate']) if fields['privilegeExpiresDate']
   end
 
+  def proxy?
+    fields.dig('groupSettings', 'fields', 'responsibility', 'key') == 'PROXY'
+  end
+
+  def sponsor?
+    fields.dig('groupSettings', 'fields', 'responsibility', 'key') == 'SPONSOR'
+  end
+
+  def group
+    @group ||= Group.new(record)
+  end
 end

@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   attr_writer :ldap_group_string, :affiliation
   attr_accessor :ip_address
 
-  delegate :proxy?, :sponsor?, to: :proxy_access
+  delegate :proxy?, :sponsor?, to: :patron
 
   def to_email_string
     if name.present?
