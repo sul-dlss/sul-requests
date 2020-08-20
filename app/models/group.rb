@@ -2,9 +2,12 @@
 
 # Class to model Research group information
 class Group < Patron
-
   def sponsor
     members.find(&:sponsor?)
+  end
+
+  def email
+    sponsor&.email
   end
 
   private

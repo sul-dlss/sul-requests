@@ -78,8 +78,11 @@ class SymphonyClient
     nil
   end
 
-  # rubocop:disable Metrics/ParameterLists
-  def place_hold(fill_by_date:, key: 'GREEN', recall_status: 'STANDARD', item: {}, patron_barcode:, comment:, for_group: false, force: true)
+  # rubocop:disable Metrics/ParameterLists, Metrics/MethodLength
+  def place_hold(
+    fill_by_date:, key: 'GREEN', recall_status: 'STANDARD',
+    item: {}, patron_barcode:, comment:, for_group: false, force: true
+  )
     sd_prompt_return = ["GROUP_PROMPT/#{for_group}"]
     sd_prompt_return << "HOLD_NO_HOLDS_OVRCD/#{Settings.symphony.override}" if force
     response = authenticated_request('/circulation/holdRecord/placeHold', method: :post, json: {
@@ -100,7 +103,7 @@ class SymphonyClient
   rescue JSON::ParserError, HTTP::Error
     nil
   end
-  # rubocop:enable Metrics/ParameterLists
+  # rubocop:enable Metrics/ParameterLists, Metrics/MethodLength
 
   # rubocop:disable Metrics/MethodLength
   def patron_info(patron_key)

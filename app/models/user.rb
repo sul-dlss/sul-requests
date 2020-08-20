@@ -95,11 +95,11 @@ class User < ActiveRecord::Base
   end
 
   def patron_profile
-    @patron_profile ||= symphony_client.patron_info(patron_key) || {} if patron_key.present? || {}
+    symphony_client.patron_info(patron_key) if patron_key.present?
   end
 
   def patron
-    @patron ||= Patron.new(patron_profile)
+    @patron ||= Patron.new(patron_profile || {})
   end
 
   def patron_key

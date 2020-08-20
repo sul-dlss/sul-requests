@@ -162,6 +162,21 @@ class SubmitSymphonyRequestJob < ApplicationJob
       bib_info(key)&.dig('fields', 'callList', 0, 'key')
     end
 
+    def notify_staff_for_multiple_holds(barcode)
+      MultipleHoldsMailer.multiple_holds_notification(
+        {
+          barcode: barcode,
+          c_key: request.item_id,
+          patron_barcode: patron_barcode,
+          name: name,
+          email: email,
+          pickup_library: request.destination,
+          item_library: request.origin
+        }
+      ).deliver_later
+    end
+
+    # rubocop:disable Metrics/MethodLength
     def execute!
       responses = request_params.map do |param|
         place_hold_response = symphony_client.place_hold(**param)
@@ -169,17 +184,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
         barcode = param.dig(:item, :itemBarcode) || param.dig(:item, :call, :key)
 
         if message == 'User already has a hold on this material' && param[:patron_barcode].match(/^HOLD@/)
-          MultipleHoldsMailer.multiple_holds_notification(
-            {
-              barcode: barcode,
-              c_key: request.item_id,
-              patron_barcode: param[:patron_barcode],
-              name: name,
-              email: email,
-              pickup_library: request.destination,
-              item_library: request.origin
-            }
-          ).deliver_later
+          notify_staff_for_multiple_holds(barcode)
         end
         {
           barcode: barcode,
@@ -191,6 +196,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
         requested_items: responses
       }.merge(usererr)
     end
+    # rubocop:enable Metrics/MethodLength
 
     def usererr
       return { usererr_code: 'U003', usererr_text: 'User is BLOCKED' } unless user.patron.good_standing?
@@ -206,9 +212,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
       }
       current_location = SymphonyCurrLocRequest.new(barcode: barcode).current_location if barcode && request.is_a?(Scan)
       # FIXME: potentially unreachable code as we guard against this in Scannable.
-      if request.is_a?(Scan) && ['INPROCESS', 'ON-ORDER'].include?(current_location)
-        item_return[:holdType] = 'COPY'
-      end
+      item_return[:holdType] = 'COPY' if request.is_a?(Scan) && ['INPROCESS', 'ON-ORDER'].include?(current_location)
       item_return
     end
 
@@ -217,19 +221,17 @@ class SubmitSymphonyRequestJob < ApplicationJob
 
       current_location = SymphonyCurrLocRequest.new(barcode: barcode).current_location if barcode
       if request.origin == 'SAL' && ['HY-PAGE-EA', 'ND-PAGE-EA'].include?(current_location)
-        return {
-          key: 'EAST-ASIA',
-          patron_barcode: 'EAL-SCANREVIEW'
-        }
+        return lookup_scan_destination('EAL_REVIEW_WORKFLOW')
       end
-      SULRequests::Application.config.scan_destinations.fetch(request.origin) do
-        {
-          key: 'GREEN',
-          patron_barcode: 'GRE-SCANDELIVER'
-        }
-      end
+
+      lookup_scan_destination(request.origin) || lookup_scan_destination('GREEN')
     end
 
+    def lookup_scan_destination(key)
+      SULRequests::Application.config.scan_destinations.fetch(key)
+    end
+
+    # rubocop:disable Metrics/MethodLength
     def patron_barcode
       case request
       when Scan
@@ -245,6 +247,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
         end
       end
     end
+    # rubocop:enable Metrics/MethodLength
 
     def pseudo_patron(key)
       SULRequests::Application.config.pickup_library_pseudo_patrons[key] || 'HOLD@GR'
@@ -263,22 +266,15 @@ class SubmitSymphonyRequestJob < ApplicationJob
     end
 
     def request_without_barcode
-      [{
-        fill_by_date: request.needed_date,
-        key: request.destination,
-        recall_status: patron.fee_borrower? ? 'NO' : 'STANDARD',
-        item: {
-          call: {
-            key: call_list(request.item_id),
-            resource: '/catalog/call'
-          },
-          holdType: 'TITLE'
-        },
-        patron_barcode: patron_barcode,
-        comment: comment,
-        for_group: (request.proxy? || request.user.proxy?),
-        force: true
-      }.merge(scan_destinations)]
+      generic_request
+        .merge({ item: {
+                 call: {
+                   key: call_list(request.item_id),
+                   resource: '/catalog/call'
+                 },
+                 holdType: 'TITLE'
+               } })
+        .merge(scan_destinations)
     end
 
     def barcodes
@@ -291,20 +287,25 @@ class SubmitSymphonyRequestJob < ApplicationJob
       end
     end
 
-    def request_params
-      return request_without_barcode if request.barcodes.empty? # case for no barcode items :(
+    def generic_request
+      {
+        fill_by_date: request.needed_date,
+        key: request.destination,
+        recall_status: patron.fee_borrower? ? 'NO' : 'STANDARD',
+        patron_barcode: patron_barcode,
+        comment: comment,
+        for_group: (request.proxy? || request.user.proxy?),
+        force: true
+      }
+    end
 
-      barcodes.map do |item|
-        {
-          fill_by_date: request.needed_date,
-          key: request.destination,
-          recall_status: patron.fee_borrower? ? 'NO' : 'STANDARD',
-          item: item(item),
-          patron_barcode: patron_barcode,
-          comment: comment,
-          for_group: (request.proxy? || request.user.proxy?),
-          force: true
-        }.merge(scan_destinations(item))
+    def request_params
+      return [request_without_barcode] if request.barcodes.empty? # case for no barcode items :(
+
+      barcodes.map do |barcode|
+        generic_request
+          .merge({ item: item(barcode) })
+          .merge(scan_destinations(barcode))
       end
     end
   end

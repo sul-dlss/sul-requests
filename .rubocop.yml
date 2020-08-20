@@ -33,6 +33,8 @@ Metrics/ClassLength:
   Exclude:
     - 'app/models/request.rb'
     - 'app/controllers/requests_controller.rb'
+    - 'app/jobs/submit_symphony_request_job.rb'
+    - 'app/services/symphony_client.rb'
 
 Metrics/ModuleLength:
   Max: 120
@@ -46,6 +48,8 @@ RSpec/MultipleMemoizedHelpers:
 
 Layout/EmptyLinesAroundAttributeAccessor:
   Enabled: true
+Layout/RescueEnsureAlignment:
+  Enabled: false
 Layout/SpaceAroundMethodCallOperator:
   Enabled: true
 Lint/DeprecatedOpenSSLConstant:
