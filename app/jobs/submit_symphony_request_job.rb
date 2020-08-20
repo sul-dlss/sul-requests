@@ -166,9 +166,25 @@ class SubmitSymphonyRequestJob < ApplicationJob
     def execute!
       responses = request_params.map do |param|
         place_hold_response = symphony_client.place_hold(**param)
+        message = place_hold_response.dig('messageList', 0, 'message')
+        barcode = param.dig(:item, :itemBarcode) || param.dig(:item, :call, :key)
+
+        if message == 'User already has a hold on this material' && param[:patron_barcode].match(/^HOLD@/)
+          MultipleHoldsMailer.multiple_holds_notification(
+            {
+              barcode: barcode,
+              c_key: request.item_id,
+              patron_barcode: param[:patron_barcode],
+              name: name,
+              email: email,
+              pickup_library: request.destination,
+              item_library: request.origin
+            }
+          ).deliver_later
+        end
         {
-          barcode: param.dig(:item, :itemBarcode) || param.dig(:item, :call, :key),
-          msgcode: place_hold_response.dig('messageList', 0, 'message') || '209',
+          barcode: barcode,
+          msgcode: message || '209',
           response: place_hold_response
         }
       end
