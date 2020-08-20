@@ -30,6 +30,8 @@ class SymphonyClient
                                      })
 
     JSON.parse(response.body)['result'].first
+  rescue JSON::ParserError
+    nil
   end
 
   def login_by_library_id(library_id)
@@ -39,6 +41,8 @@ class SymphonyClient
                                      })
 
     JSON.parse(response.body)['result'].first
+    rescue JSON::ParserError
+      nil
   end
 
   # get a session token by authenticating to symws
