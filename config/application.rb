@@ -304,6 +304,7 @@ module SULRequests
     }
 
     config.scan_destinations = {
+      'EAL_REVIEW_WORKFLOW' => { key: 'EAST-ASIA', patron_barcode: 'EAL-SCANREVIEW' },
       'GREEN' => { key: 'GREEN', patron_barcode: 'GRE-SCANDELIVER' },
       'SAL' => { key: 'GREEN', patron_barcode: 'GRE-SCANDELIVER' },
       'SAL3' => { key: 'SAL3', patron_barcode: 'SAL3-SCANDELIVER' }

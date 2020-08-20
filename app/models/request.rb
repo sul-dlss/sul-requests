@@ -136,7 +136,7 @@ class Request < ActiveRecord::Base
   end
 
   def notification_email_address
-    return user.patron.group.sponsor.email if proxy? && user&.patron&.group&.sponsor&.email&.present?
+    return user.patron.group.email if proxy? && user&.patron&.group&.email&.present?
 
     user.email_address
   end
