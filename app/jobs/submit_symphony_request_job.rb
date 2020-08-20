@@ -200,12 +200,12 @@ class SubmitSymphonyRequestJob < ApplicationJob
       { usererr_code: nil, usererr_text: nil }
     end
 
-    def item(item)
+    def item(barcode)
       item_return = {
-        itemBarcode: item.barcode,
+        itemBarcode: barcode,
         holdType: 'TITLE'
       }
-      current_location = SymphonyCurrLocRequest.new(barcode: item.barcode).current_location if item && request.is_a?(Scan)
+      current_location = SymphonyCurrLocRequest.new(barcode: barcode).current_location if barcode && request.is_a?(Scan)
       # FIXME: potentially unreachable code as we guard against this in Scannable.
       if request.is_a?(Scan) && ['INPROCESS', 'ON-ORDER'].include?(current_location)
         item_return[:holdType] = 'COPY'
@@ -213,10 +213,10 @@ class SubmitSymphonyRequestJob < ApplicationJob
       item_return
     end
 
-    def scan_destinations(item = nil)
+    def scan_destinations(barcode = nil)
       return {} unless request.is_a? Scan
 
-      current_location = SymphonyCurrLocRequest.new(barcode: item.barcode).current_location if item
+      current_location = SymphonyCurrLocRequest.new(barcode: barcode).current_location if barcode
       if request.origin == 'SAL' && ['HY-PAGE-EA', 'ND-PAGE-EA'].include?(current_location)
         return {
           key: 'EAST-ASIA',
@@ -282,20 +282,20 @@ class SubmitSymphonyRequestJob < ApplicationJob
       }.merge(scan_destinations)]
     end
 
-    def holdings
+    def barcodes
       if options[:barcode]
-        request.holdings.select do |item|
-          options[:barcode].include?(item.barcode)
+        request.barcodes.select do |barcode|
+          options[:barcode].include?(barcode)
         end
       else
-        request.holdings
+        request.barcodes
       end
     end
 
     def request_params
-      return request_without_barcode if request.holdings.empty? # case for no barcode items :(
+      return request_without_barcode if request.barcodes.empty? # case for no barcode items :(
 
-      holdings.map do |item|
+      barcodes.map do |item|
         {
           fill_by_date: request.needed_date,
           key: request.destination,

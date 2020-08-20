@@ -194,4 +194,57 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
       end
     end
   end
+
+  describe SubmitSymphonyRequestJob::SymWsCommand do
+    subject { described_class.new(request) }
+
+    let(:user) { build(:non_webauth_user) }
+    let(:request) { scan }
+    let(:scan) { create(:scan_with_holdings_barcodes, user: user) }
+
+    describe '#execute!' do
+      it 'for each barcode place a hold with symphony' do
+        expect(subject.user).to receive(:patron).at_least(3).times.and_return(Patron.new({}))
+        allow_any_instance_of(SymphonyCurrLocRequest).to receive(:current_location).and_return('SAL')
+        expect(subject.symphony_client).to receive(:place_hold).with(
+          {
+            fill_by_date: nil, key: 'SAL3', recall_status: 'STANDARD',
+            item: { itemBarcode: '12345678', holdType: 'TITLE' },
+            patron_barcode: 'SAL3-SCANDELIVER', comment: 'Jane Stanford jstanford@stanford.edu',
+            for_group: false, force: true
+          }
+        ).and_return({}).ordered
+        expect(subject.symphony_client).to receive(:place_hold).with(
+          {
+            fill_by_date: nil, key: 'SAL3', recall_status: 'STANDARD',
+            item: { itemBarcode: '87654321', holdType: 'TITLE' },
+            patron_barcode: 'SAL3-SCANDELIVER', comment: 'Jane Stanford jstanford@stanford.edu',
+            for_group: false, force: true
+          }
+        ).and_return({}).ordered
+        subject.execute!
+      end
+
+      context 'without barcodes' do
+        let(:scan) { create(:scan, user: user) }
+
+        it 'places a hold using a callkey' do
+          expect(subject.user).to receive(:patron).at_least(3).times.and_return(Patron.new({}))
+          allow_any_instance_of(SymphonyCurrLocRequest).to receive(:current_location).and_return('SAL')
+          expect(subject.symphony_client).to receive(:bib_info).and_return(
+            { 'fields' => { 'callList' => [{ 'key' => 'hello:world' }] } }
+          )
+          expect(subject.symphony_client).to receive(:place_hold).with(
+            {
+              fill_by_date: nil, key: 'SAL3', recall_status: 'STANDARD',
+              item: { call: { key: 'hello:world', resource: '/catalog/call' }, holdType: 'TITLE' },
+              patron_barcode: 'SAL3-SCANDELIVER', comment: 'Jane Stanford jstanford@stanford.edu',
+              for_group: false, force: true
+            }
+          ).and_return({})
+          subject.execute!
+        end
+      end
+    end
+  end
 end
