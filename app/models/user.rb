@@ -96,6 +96,8 @@ class User < ActiveRecord::Base
 
   def patron_profile
     symphony_client.patron_info(patron_key) if patron_key.present?
+  rescue HTTP::Error
+    nil
   end
 
   def patron
