@@ -210,9 +210,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
         itemBarcode: barcode,
         holdType: 'TITLE'
       }
-      current_location = SymphonyCurrLocRequest.new(barcode: barcode).current_location if barcode && request.is_a?(Scan)
-      # FIXME: potentially unreachable code as we guard against this in Scannable.
-      item_return[:holdType] = 'COPY' if request.is_a?(Scan) && ['INPROCESS', 'ON-ORDER'].include?(current_location)
+      item_return[:holdType] = 'COPY' if request.is_a?(Scan) || request.is_a?(MediatedPage)
       item_return
     end
 

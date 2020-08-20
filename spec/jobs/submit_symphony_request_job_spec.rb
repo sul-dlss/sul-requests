@@ -209,7 +209,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
         expect(subject.symphony_client).to receive(:place_hold).with(
           {
             fill_by_date: nil, key: 'SAL3', recall_status: 'STANDARD',
-            item: { itemBarcode: '12345678', holdType: 'TITLE' },
+            item: { itemBarcode: '12345678', holdType: 'COPY' },
             patron_barcode: 'SAL3-SCANDELIVER', comment: 'Jane Stanford jstanford@stanford.edu',
             for_group: false, force: true
           }
@@ -217,7 +217,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
         expect(subject.symphony_client).to receive(:place_hold).with(
           {
             fill_by_date: nil, key: 'SAL3', recall_status: 'STANDARD',
-            item: { itemBarcode: '87654321', holdType: 'TITLE' },
+            item: { itemBarcode: '87654321', holdType: 'COPY' },
             patron_barcode: 'SAL3-SCANDELIVER', comment: 'Jane Stanford jstanford@stanford.edu',
             for_group: false, force: true
           }
