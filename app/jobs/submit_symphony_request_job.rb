@@ -34,8 +34,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
   end
 
   def enabled?
-    true
-    #Settings.symphony_api.enabled && Settings.symphony_api.url.present?
+    Settings.symphony_api.enabled && Settings.symphony_api.url.present?
   end
 
   ##
