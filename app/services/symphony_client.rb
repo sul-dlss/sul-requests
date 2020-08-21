@@ -93,6 +93,40 @@ class SymphonyClient
     nil
   end
 
+  def renew_item(item_barcode)
+    response = authenticated_request('/circulation/circRecord/renew', method: :post, json: {
+                                       itemBarcode: item_barcode
+                                     })
+    begin
+      JSON.parse(response.body)
+    rescue JSON::ParserError
+      nil
+    end
+  end
+
+  def check_in_item(item_barcode)
+    response = authenticated_request('/circulation/circRecord/checkIn', method: :post, json: {
+                                       itemBarcode: item_barcode
+                                     })
+    begin
+      JSON.parse(response.body)
+    rescue JSON::ParserError
+      nil
+    end
+  end
+
+  def check_out_item(item_barcode, patron_barcode)
+    response = authenticated_request('/circulation/circRecord/checkOut', method: :post, json: {
+                                       itemBarcode: item_barcode,
+                                       patronBarcode: patron_barcode
+                                     })
+    begin
+      JSON.parse(response.body)
+    rescue JSON::ParserError
+      nil
+    end
+  end
+
   # rubocop:disable Metrics/ParameterLists, Metrics/MethodLength
   def place_hold_params(
     fill_by_date:, key: 'GREEN', recall_status: 'STANDARD',
