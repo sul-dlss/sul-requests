@@ -71,7 +71,7 @@ class ItemStatus
   end
 
   def catalog_info
-    @catalog_info ||= CatalogInfo.new(SymphonyClient.new.catalog_info(id))
+    @catalog_info ||= CatalogInfo.find(id)
   end
 
   private

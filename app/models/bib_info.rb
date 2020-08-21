@@ -2,6 +2,10 @@
 
 # Accessing bibliographic information from the symphony response
 class BibInfo
+  def self.find(catkey)
+    new(SymphonyClient.new.bib_info(catkey))
+  end
+
   def initialize(response)
     @response = response
   end

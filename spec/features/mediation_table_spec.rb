@@ -119,10 +119,10 @@ describe 'Mediation table', js: true do
 
       before do
         location_object = double(current_location: 'THE-CURRENT-LOCATION')
-        expect(SymphonyCurrLocRequest).to receive(:new).at_least(:once).and_return(location_object)
+        expect(CatalogInfo).to receive(:find).at_least(:once).and_return(location_object)
       end
 
-      it 'is fetched from the SymphonyCurrLocRequest class' do
+      it 'is fetched from Symphony' do
         within(first('[data-mediate-request]')) do
           page.find('a.mediate-toggle').click
         end
