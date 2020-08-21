@@ -196,17 +196,18 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
   end
 
   describe SubmitSymphonyRequestJob::SymWsCommand do
-    subject { described_class.new(request) }
+    subject { described_class.new(request, symphony_client: mock_client) }
 
     let(:user) { build(:non_webauth_user) }
     let(:request) { scan }
     let(:scan) { create(:scan_with_holdings_barcodes, user: user) }
+    let(:mock_client) { instance_double(SymphonyClient) }
 
     describe '#execute!' do
       it 'for each barcode place a hold with symphony' do
         expect(subject.user).to receive(:patron).at_least(3).times.and_return(Patron.new({}))
         allow_any_instance_of(CatalogInfo).to receive(:current_location).and_return('SAL')
-        expect(subject.symphony_client).to receive(:place_hold).with(
+        expect(mock_client).to receive(:place_hold).with(
           {
             fill_by_date: nil, key: 'SAL3', recall_status: 'STANDARD',
             item: { itemBarcode: '12345678', holdType: 'COPY' },
@@ -214,7 +215,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
             for_group: false, force: true
           }
         ).and_return({}).ordered
-        expect(subject.symphony_client).to receive(:place_hold).with(
+        expect(mock_client).to receive(:place_hold).with(
           {
             fill_by_date: nil, key: 'SAL3', recall_status: 'STANDARD',
             item: { itemBarcode: '87654321', holdType: 'COPY' },
@@ -231,10 +232,10 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
         it 'places a hold using a callkey' do
           expect(subject.user).to receive(:patron).at_least(3).times.and_return(Patron.new({}))
           allow_any_instance_of(CatalogInfo).to receive(:current_location).and_return('SAL')
-          expect(subject.symphony_client).to receive(:bib_info).and_return(
+          expect(mock_client).to receive(:bib_info).and_return(
             { 'fields' => { 'callList' => [{ 'key' => 'hello:world' }] } }
           )
-          expect(subject.symphony_client).to receive(:place_hold).with(
+          expect(mock_client).to receive(:place_hold).with(
             {
               fill_by_date: nil, key: 'SAL3', recall_status: 'STANDARD',
               item: { call: { key: 'hello:world', resource: '/catalog/call' }, holdType: 'TITLE' },
