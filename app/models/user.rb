@@ -89,9 +89,7 @@ class User < ActiveRecord::Base
   end
 
   def email_from_symphony
-    self.email ||= begin
-      SymphonyUserNameRequest.new(libid: library_id).email
-    end if library_id_user?
+    self.email ||= patron.email if library_id_user?
   end
 
   def patron_profile

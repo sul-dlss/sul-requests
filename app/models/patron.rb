@@ -9,6 +9,10 @@ class Patron
     @record = record
   end
 
+  def exists?
+    fields.present?
+  end
+
   def fields
     record['fields'] || {}
   end

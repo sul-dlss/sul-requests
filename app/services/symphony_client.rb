@@ -41,8 +41,8 @@ class SymphonyClient
                                      })
 
     JSON.parse(response.body)['result'].first
-    rescue JSON::ParserError
-      nil
+  rescue JSON::ParserError
+    nil
   end
 
   # get a session token by authenticating to symws
