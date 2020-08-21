@@ -84,4 +84,15 @@ RSpec.describe SymphonyClient do
       expect(client.login_by_sunetid('sunetid')).to include 'key' => 'key'
     end
   end
+
+  describe '#login_by_library_id' do
+    before do
+      stub_request(:get, 'https://example.com/symws/user/patron/search?includeFields=*&q=id:barcode')
+        .to_return(body: { result: [{ key: 'key' }] }.to_json)
+    end
+
+    it 'authenticates the user against symphony' do
+      expect(client.login_by_library_id('barcode')).to include 'key' => 'key'
+    end
+  end
 end

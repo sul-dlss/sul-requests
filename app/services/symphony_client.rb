@@ -40,7 +40,7 @@ class SymphonyClient
                                        includeFields: '*'
                                      })
 
-    JSON.parse(response.body)['result'].first
+    JSON.parse(response.body)['result']&.first
   rescue JSON::ParserError
     nil
   end
