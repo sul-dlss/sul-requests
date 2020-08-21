@@ -55,7 +55,7 @@ class Request < ActiveRecord::Base
   end
 
   def bib_info
-    @bib_info ||= BibInfo.new(SymphonyClient.new.bib_info(item_id))
+    @bib_info ||= BibInfo.find(item_id)
   end
 
   def send_confirmation!

@@ -205,7 +205,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
     describe '#execute!' do
       it 'for each barcode place a hold with symphony' do
         expect(subject.user).to receive(:patron).at_least(3).times.and_return(Patron.new({}))
-        allow_any_instance_of(SymphonyCurrLocRequest).to receive(:current_location).and_return('SAL')
+        allow_any_instance_of(CatalogInfo).to receive(:current_location).and_return('SAL')
         expect(subject.symphony_client).to receive(:place_hold).with(
           {
             fill_by_date: nil, key: 'SAL3', recall_status: 'STANDARD',
@@ -230,7 +230,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
 
         it 'places a hold using a callkey' do
           expect(subject.user).to receive(:patron).at_least(3).times.and_return(Patron.new({}))
-          allow_any_instance_of(SymphonyCurrLocRequest).to receive(:current_location).and_return('SAL')
+          allow_any_instance_of(CatalogInfo).to receive(:current_location).and_return('SAL')
           expect(subject.symphony_client).to receive(:bib_info).and_return(
             { 'fields' => { 'callList' => [{ 'key' => 'hello:world' }] } }
           )

@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-describe SymphonyCurrLocRequest do
-  subject { described_class.new(barcode: '36105123456789') }
+describe CatalogInfo do
+  subject { described_class.find('36105123456789') }
 
   before do
     stub_request(:post, 'https://example.com/symws/user/staff/login')
@@ -52,8 +52,8 @@ describe SymphonyCurrLocRequest do
         }
       end
 
-      it 'returns empty string' do
-        expect(subject.current_location).to eq ''
+      it 'is blank' do
+        expect(subject.current_location).to be_blank
       end
     end
 
@@ -79,13 +79,13 @@ describe SymphonyCurrLocRequest do
     context 'invalid JSON returned' do
       let(:response) { { body: 'symphony returned an error instead of JSON' } }
 
-      it 'returns empty hash' do
-        expect(subject.send(:json)).to eq({})
+      it 'is blank' do
+        expect(subject.response).to be_blank
       end
     end
 
     context 'with a barcode that needs url escaping' do
-      subject { described_class.new(barcode: 'abc 123') }
+      subject { described_class.find('abc 123') }
 
       before do
         stub_request(:get, %r{https://example.com/symws/catalog/item/barcode/abc%20123?.*})
@@ -95,7 +95,7 @@ describe SymphonyCurrLocRequest do
       let(:response) { { body: '{ "success": true }' } }
 
       it 'escapes the barcode' do
-        expect(subject.send(:json)).to eq({ 'success' => true })
+        expect(subject.response).to eq({ 'success' => true })
       end
     end
   end

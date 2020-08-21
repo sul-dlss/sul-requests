@@ -217,7 +217,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
     def scan_destinations(barcode = nil)
       return {} unless request.is_a? Scan
 
-      current_location = SymphonyCurrLocRequest.new(barcode: barcode).current_location if barcode
+      current_location = CatalogInfo.find(barcode).current_location if barcode
       if request.origin == 'SAL' && ['HY-PAGE-EA', 'ND-PAGE-EA'].include?(current_location)
         return lookup_scan_destination('EAL_REVIEW_WORKFLOW')
       end
