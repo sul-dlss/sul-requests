@@ -49,7 +49,8 @@ RSpec/MultipleMemoizedHelpers:
 
 RSpec/MessageSpies:
   Enabled: false
-
+RSpec/MessageChain:
+  Enabled: false
 Layout/EmptyLinesAroundAttributeAccessor:
   Enabled: true
 Layout/RescueEnsureAlignment:

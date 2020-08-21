@@ -76,10 +76,6 @@ class User < ActiveRecord::Base
     (@ldap_group_string || '').split(/[|;]/)
   end
 
-  def proxy_access
-    @proxy_access ||= ProxyAccess.new(libid: library_id)
-  end
-
   def affiliation
     (@affiliation || '').split(/[|;]/)
   end
@@ -89,7 +85,9 @@ class User < ActiveRecord::Base
   end
 
   def email_from_symphony
-    self.email ||= patron.email if library_id_user?
+    self.email ||= begin
+      patron.email if library_id_user? && patron.exists?
+    end
   end
 
   def patron_profile

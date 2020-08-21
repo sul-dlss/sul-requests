@@ -192,11 +192,4 @@ describe User do
       expect(subject).to be_admin_for_origin('FAKE-ORIGIN-LOCATION')
     end
   end
-
-  describe '#proxy_access' do
-    it 'checks if the user has proxy access' do
-      subject.library_id = '12345'
-      expect(subject.proxy_access.libid).to eq '12345'
-    end
-  end
 end

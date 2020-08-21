@@ -10,6 +10,10 @@ class Group < Patron
     sponsor&.email
   end
 
+  def name
+    sponsor&.display_name
+  end
+
   private
 
   def members
