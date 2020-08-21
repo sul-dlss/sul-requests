@@ -16,7 +16,10 @@
   <% if can? :debug, current_request %>
     <hr />
     <h4>Symphony Request</h4>
-    <pre class="well"><%= JSON.pretty_generate(current_request.symphony_request.request_params) %></pre>
+    <h5>Stored Procedures Request</h5>
+    <pre class="well"><%= JSON.pretty_generate(current_request.symphony_request(SubmitSymphonyRequestJob::StoredProcedureCommand).request_params) %></pre>
+    <h5>Web Services Request</h5>
+    <pre class="well"><%= JSON.pretty_generate(current_request.symphony_request(SubmitSymphonyRequestJob::SymWsCommand).request_params) %></pre>
     <h4>Symphony Response</h4>
     <pre class="well"><%= JSON.pretty_generate(current_request.symphony_response_data || {}) %></pre>
 
