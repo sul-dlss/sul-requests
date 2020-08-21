@@ -65,7 +65,12 @@ class SymphonyClient
               end
 
     response = authenticated_request("/catalog/item/barcode/#{ERB::Util.url_encode(key)}", params: {
-                                       includeFields: '*,call{*},currentLocation'
+                                       includeFields: [
+                                         '*',
+                                         'bib{holdRecordList{*,item{call}}}',
+                                         'call{*,itemList{*}}',
+                                         'currentLocation'
+                                       ].join(',')
                                      }, headers: headers)
 
     JSON.parse(response.body)
@@ -82,10 +87,20 @@ class SymphonyClient
     nil
   end
 
+  def hold_record_info(key)
+    response = authenticated_request("/circulation/holdRecord/key/#{key}", params: {
+                                       includeFields: '*'
+                                     })
+    JSON.parse(response.body)
+  rescue JSON::ParserError, HTTP::Error
+    nil
+  end
+
   def place_hold(**params)
     response = authenticated_request(
       '/circulation/holdRecord/placeHold',
       method: :post,
+      params: { includeFields: 'holdRecord{*}' },
       **place_hold_params(**params, override_code: Settings.symphony.override)
     )
     JSON.parse(response.body)
@@ -93,7 +108,71 @@ class SymphonyClient
     nil
   end
 
-  # rubocop:disable Metrics/ParameterLists, Metrics/MethodLength
+  def renew_item(item_barcode)
+    response = authenticated_request('/circulation/circRecord/renew', method: :post, json: {
+                                       itemBarcode: item_barcode
+                                     }, headers: {
+                                       'SD-Prompt-Return': "HOLD_NO_HOLDS_OVRCD/#{Settings.symphony.override}"
+                                     })
+    begin
+      JSON.parse(response.body)
+    rescue JSON::ParserError
+      nil
+    end
+  end
+
+  def update_hold(hold_record_key, comment:)
+    response = authenticated_request(
+      "/circulation/holdRecord/key/#{hold_record_key}",
+      method: :put,
+      json: {
+        resource: '/circulation/holdRecord',
+        key: hold_record_key,
+        fields: {
+          comment: comment
+        }
+      }
+    )
+    JSON.parse(response.body)
+  rescue JSON::ParserError, HTTP::Error
+    nil
+  end
+
+  def check_in_item(item_barcode)
+    response = authenticated_request('/circulation/circRecord/checkIn', method: :post, json: {
+                                       itemBarcode: item_barcode
+                                     })
+    begin
+      JSON.parse(response.body)
+    rescue JSON::ParserError
+      nil
+    end
+  end
+
+  def check_out_item(item_barcode, patron_barcode)
+    sd_prompt_return = [
+      "CIRC_NONCHARGEABLE_OVRCD/#{Settings.symphony.override}",
+      "HOLD_NO_HOLDS_OVRCD/#{Settings.symphony.override}",
+      "CKOBLOCKS/#{Settings.symphony.override}",
+      "CIRC_HOLDS_OVRCD/#{Settings.symphony.override}"
+    ]
+    response = authenticated_request('/circulation/circRecord/checkOut', method: :post, params: {
+                                       includeFields: 'circRecord{*,item{barcode}}'
+                                     }, json: {
+                                       itemBarcode: item_barcode,
+                                       patronBarcode: patron_barcode
+                                     }, headers: {
+                                       'SD-Prompt-Return': sd_prompt_return.join(';'),
+                                       'SD-Working-LibraryID': 'SUL'
+                                     })
+    begin
+      JSON.parse(response.body)
+    rescue JSON::ParserError
+      nil
+    end
+  end
+
+  # rubocop:disable Metrics/ParameterLists
   def place_hold_params(
     fill_by_date:, key: 'GREEN', recall_status: 'STANDARD',
     item: {}, patron_barcode:, comment:,
@@ -120,9 +199,22 @@ class SymphonyClient
       }
     }
   end
-  # rubocop:enable Metrics/ParameterLists, Metrics/MethodLength
+  # rubocop:enable Metrics/ParameterLists
 
-  # rubocop:disable Metrics/MethodLength
+  def cancel_hold(hold_record_id)
+    response = authenticated_request('/circulation/holdRecord/cancelHold', method: :post, json: {
+                                       holdRecord: {
+                                         resource: '/circulation/holdRecord',
+                                         key: hold_record_id
+                                       }
+                                     })
+    begin
+      JSON.parse(response)
+    rescue JSON::ParserError, HTTP::Error
+      nil
+    end
+  end
+
   def patron_info(patron_key)
     response = authenticated_request("/user/patron/key/#{patron_key}", params: {
                                        includeFields: [
@@ -130,7 +222,8 @@ class SymphonyClient
                                          'address1',
                                          'profile{chargeLimit}',
                                          'customInformation{*}',
-                                         'groupSettings{*,group{memberList{*,address1}}}'
+                                         'groupSettings{*,group{memberList{*,address1}}}',
+                                         'holdRecordList{*,item{call}}'
                                        ].join(',')
                                      })
 
@@ -140,7 +233,21 @@ class SymphonyClient
       nil
     end
   end
-  # rubocop:enable Metrics/MethodLength
+
+  def circ_record_info(circ_record_key)
+    response = authenticated_request("/circulation/circRecord/key/#{circ_record_key}", params: {
+                                       includeFields: [
+                                         '*',
+                                         'item{barcode}'
+                                       ].join(',')
+                                     })
+
+    begin
+      JSON.parse(response.body)
+    rescue JSON::ParserError
+      nil
+    end
+  end
 
   private
 
