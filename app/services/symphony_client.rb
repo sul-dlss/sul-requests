@@ -82,30 +82,43 @@ class SymphonyClient
     nil
   end
 
-  # rubocop:disable Metrics/ParameterLists, Metrics/MethodLength
-  def place_hold(
-    fill_by_date:, key: 'GREEN', recall_status: 'STANDARD',
-    item: {}, patron_barcode:, comment:, for_group: false, force: true
-  )
-    sd_prompt_return = ["GROUP_PROMPT/#{for_group}"]
-    sd_prompt_return << "HOLD_NO_HOLDS_OVRCD/#{Settings.symphony.override}" if force
-    response = authenticated_request('/circulation/holdRecord/placeHold', method: :post, json: {
-      comment: comment.truncate(50, omission: ''),
-      fillByDate: (fill_by_date || DateTime.now + 3.years).strftime('%Y-%m-%d'),
-      holdRange: 'SYSTEM',
-      patronBarcode: patron_barcode,
-      pickupLibrary: {
-        key: key,
-        resource: '/policy/library'
-      },
-      recallStatus: recall_status
-    }.merge(item), headers: {
-      'SD-Prompt-Return': sd_prompt_return.join(';'),
-      'SD-Working-LibraryID': 'SUL'
-    })
+  def place_hold(**params)
+    response = authenticated_request(
+      '/circulation/holdRecord/placeHold',
+      method: :post,
+      **place_hold_params(**params, override_code: Settings.symphony.override)
+    )
     JSON.parse(response.body)
   rescue JSON::ParserError, HTTP::Error
     nil
+  end
+
+  # rubocop:disable Metrics/ParameterLists, Metrics/MethodLength
+  def place_hold_params(
+    fill_by_date:, key: 'GREEN', recall_status: 'STANDARD',
+    item: {}, patron_barcode:, comment:,
+    for_group: false, force: true, override_code: '*****'
+  )
+    sd_prompt_return = ["GROUP_PROMPT/#{for_group}"]
+    sd_prompt_return << "HOLD_NO_HOLDS_OVRCD/#{override_code}" if force
+
+    {
+      json: {
+        comment: comment.truncate(50, omission: ''),
+        fillByDate: (fill_by_date || DateTime.now + 3.years).strftime('%Y-%m-%d'),
+        holdRange: 'SYSTEM',
+        patronBarcode: patron_barcode,
+        pickupLibrary: {
+          key: key,
+          resource: '/policy/library'
+        },
+        recallStatus: recall_status
+      }.merge(item),
+      headers: {
+        'SD-Prompt-Return': sd_prompt_return.join(';'),
+        'SD-Working-LibraryID': 'SUL'
+      }
+    }
   end
   # rubocop:enable Metrics/ParameterLists, Metrics/MethodLength
 
