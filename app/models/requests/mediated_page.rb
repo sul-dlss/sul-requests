@@ -59,8 +59,18 @@ class MediatedPage < Request
   end
 
   def all_approved?
-    ((barcodes || []) + (ad_hoc_items || [])).all? do |item|
-      item_status(item).approved?
+    item_statuses.all?(&:approved?)
+  end
+
+  def item_statuses
+    return to_enum(:item_statuses) unless block_given?
+
+    (barcodes || []).each do |item|
+      yield item_status(item)
+    end
+
+    (ad_hoc_items || []).each do |item|
+      yield item_status(item, ad_hoc: true)
     end
   end
 

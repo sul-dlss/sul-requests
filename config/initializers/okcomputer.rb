@@ -26,14 +26,17 @@ end
 OkComputer::Registry.register 'hours_api', OkComputer::HttpCheck.new("#{Settings.hours_api}/status")
 OkComputer::Registry.register 'sul_illiad', OkComputer::HttpCheck.new(Settings.sul_illiad)
 
-symphony_web_services_url = URI.parse(Settings.symws.url)
+OkComputer.make_optional %w(hours_api sul_illiad)
 
-OkComputer::Registry.register(
-  'symphony_web_services',
-  OkComputer::PingCheck.new(
-    symphony_web_services_url.host,
-    symphony_web_services_url.port
+if Settings.symws.url
+  symphony_web_services_url = URI.parse(Settings.symws.url)
+
+  OkComputer::Registry.register(
+    'symphony_web_services',
+    OkComputer::PingCheck.new(
+      symphony_web_services_url.host,
+      symphony_web_services_url.port
+    )
   )
-)
-
-OkComputer.make_optional %w(hours_api sul_illiad symphony_web_services)
+  OkComputer.make_optional %w(symphony_web_services)
+end
