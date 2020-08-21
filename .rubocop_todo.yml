@@ -51,7 +51,6 @@ Layout/RescueEnsureAlignment:
   Exclude:
     - 'app/controllers/paging_schedule_controller.rb'
     - 'app/jobs/submit_symphony_request_job.rb'
-    - 'app/models/proxy_access.rb'
     - 'app/models/searchworks_item.rb'
     - 'app/models/symphony_user_name_request.rb'
 
@@ -208,7 +207,6 @@ RSpec/SubjectStub:
     - 'spec/jobs/submit_symphony_request_job_spec.rb'
     - 'spec/models/concerns/scannable_spec.rb'
     - 'spec/models/library_hours_api_spec.rb'
-    - 'spec/models/proxy_access_spec.rb'
     - 'spec/models/request_spec.rb'
     - 'spec/models/searchworks_item_spec.rb'
     - 'spec/models/symphony_response_spec.rb'
@@ -242,7 +240,6 @@ Rails/Blank:
     - 'app/helpers/pickup_libraries_helper.rb'
     - 'app/models/item_status.rb'
     - 'app/models/paging_schedule.rb'
-    - 'app/models/proxy_access.rb'
     - 'app/models/searchworks_item.rb'
     - 'app/models/symphony_user_name_request.rb'
     - 'app/models/user.rb'
@@ -344,7 +341,6 @@ Style/ExpandPathArguments:
 # SupportedStyles: format, sprintf, percent
 Style/FormatString:
   Exclude:
-    - 'app/models/proxy_access.rb'
     - 'app/models/symphony_user_name_request.rb'
 
 # Offense count: 5
@@ -352,7 +348,6 @@ Style/FormatString:
 # SupportedStyles: annotated, template, unannotated
 Style/FormatStringToken:
   Exclude:
-    - 'spec/models/proxy_access_spec.rb'
     - 'spec/models/symphony_user_name_request_spec.rb'
 
 # Offense count: 2

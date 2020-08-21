@@ -509,25 +509,25 @@ describe Request do
 
     context 'for proxy requests' do
       let(:user) { create(:library_id_user) }
-      let(:proxy_access) { double(email_address: 'some@lists.stanford.edu') }
+      let(:group) { instance_double(Group, email: 'some@lists.stanford.edu') }
 
       before do
-        user.instance_variable_set(:@proxy_access, proxy_access)
+        allow(user).to receive_message_chain(:patron, :group).and_return(group)
 
         subject.proxy = true
       end
 
       it 'goes to the notice list for proxy requests' do
-        expect(subject.notification_email_address).to eq proxy_access.email_address
+        expect(subject.notification_email_address).to eq 'some@lists.stanford.edu'
       end
     end
 
     context 'for proxy requests without a notification email' do
       let(:user) { create(:non_webauth_user) }
-      let(:proxy_access) { double(email_address: '') }
+      let(:group) { instance_double(Group, email: '') }
 
       before do
-        user.instance_variable_set(:@proxy_access, proxy_access)
+        allow(user).to receive_message_chain(:patron, :group).and_return(group)
 
         subject.proxy = true
       end

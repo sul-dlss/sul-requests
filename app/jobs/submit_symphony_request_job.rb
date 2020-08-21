@@ -86,7 +86,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
         library_id: user.library_id,
         patron_name: (user.name if user.library_id.blank?),
         patron_email: (user.email_address if user.library_id.blank?),
-        proxy_group: (user.proxy_access.name if request.proxy?)
+        proxy_group: (user.patron&.group&.name if request.proxy?)
       }
     end
 
