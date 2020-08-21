@@ -40,7 +40,9 @@ describe PicklistMailer do
 
   describe '#picklist_notification' do
     let(:user) { create(:superadmin_user) }
-    let(:mock_client) { instance_double(SymphonyClient, bib_info: {}, catalog_info: {}, patron_info: {}) }
+    let(:mock_client) do
+      instance_double(SymphonyClient, login_by_library_id: nil, bib_info: {}, catalog_info: {}, patron_info: {})
+    end
 
     before do
       allow(SymphonyClient).to receive(:new).and_return(mock_client)

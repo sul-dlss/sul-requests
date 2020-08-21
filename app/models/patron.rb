@@ -5,6 +5,18 @@
 class Patron
   attr_reader :record
 
+  def self.find_by(library_id: nil, patron_key: nil)
+    symphony_client = SymphonyClient.new
+
+    patron_key ||= symphony_client.login_by_library_id(library_id)&.dig('key')
+
+    return if patron_key.blank?
+
+    new(symphony_client.patron_info(patron_key))
+  rescue HTTP::Error
+    nil
+  end
+
   def initialize(record)
     @record = record
   end

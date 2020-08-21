@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   attr_writer :ldap_group_string, :affiliation
   attr_accessor :ip_address
 
-  delegate :proxy?, :sponsor?, to: :patron
+  delegate :proxy?, :sponsor?, to: :patron, allow_nil: true
 
   def to_email_string
     if name.present?
@@ -86,24 +86,12 @@ class User < ActiveRecord::Base
 
   def email_from_symphony
     self.email ||= begin
-      patron.email if library_id_user? && patron.exists?
+      patron.email if library_id_user? && patron.present?
     end
   end
 
-  def patron_profile
-    symphony_client.patron_info(patron_key) if patron_key.present?
-  rescue HTTP::Error
-    nil
-  end
-
   def patron
-    @patron ||= Patron.new(patron_profile || {})
-  end
-
-  def patron_key
-    return unless library_id.present?
-
-    @patron_key ||= SymphonyClient.new.login_by_library_id(library_id)&.dig('key')
+    @patron ||= Patron.find_by(library_id: library_id)
   end
 
   private
@@ -112,9 +100,5 @@ class User < ActiveRecord::Base
     Honeybadger.notify(
       "Webauth user record being created without a valid email address. Using #{webauth}@stanford.edu instead."
     ) if new_record?
-  end
-
-  def symphony_client
-    @symphony_client ||= SymphonyClient.new
   end
 end
