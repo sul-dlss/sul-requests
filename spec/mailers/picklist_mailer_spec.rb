@@ -22,13 +22,13 @@ describe PicklistMailer do
     it 'sends a picklist since the last time it was run' do
       described_class.deliver_picklist('SPEC-COLL', last_run_file: state_file.path)
 
-      expect(described_class).to have_received(:picklist_notification).with('SPEC-COLL', last_run_time...now)
+      expect(described_class).to have_received(:picklist_notification).with('SPEC-COLL', range: last_run_time...now)
     end
 
     it 'defaults to the last day' do
       described_class.deliver_picklist('SPEC-COLL', last_run_file: Tempfile.new('whatever').path)
 
-      expect(described_class).to have_received(:picklist_notification).with('SPEC-COLL', (now - 1.day)...now)
+      expect(described_class).to have_received(:picklist_notification).with('SPEC-COLL', range: (now - 1.day)...now)
     end
 
     it 'records its last run time' do

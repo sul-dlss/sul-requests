@@ -16,7 +16,7 @@ class PicklistMailer < ApplicationMailer
     with_last_run_bookkeeping(last_run_file) do |stored_last_run|
       range = stored_last_run.present? ? Time.zone.parse(stored_last_run)...Time.zone.now : default
 
-      picklist_notification(location, range).deliver_now
+      picklist_notification(location, range: range).deliver_now
 
       range.last
     end
