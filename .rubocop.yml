@@ -27,6 +27,7 @@ Layout/LineLength:
 Metrics/BlockLength:
   Exclude:
     - 'spec/models/request_spec.rb'
+    - 'spec/factories/**/*'
 
 Metrics/ClassLength:
   Max: 120

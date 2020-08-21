@@ -65,6 +65,21 @@ describe Request do
         'The physical copy is not available for Request & pickup.'
       )
     end
+
+    it 'requires that an item is not scannable only' do
+      stub_searchworks_api_json(build(:scannable_only_holdings))
+
+      expect do
+        described_class.create!(
+          item_id: '123456',
+          origin: 'SAL',
+          origin_location: 'SAL-TEMP'
+        )
+      end.to raise_error(
+        ActiveRecord::RecordInvalid,
+        'Validation failed: This item is for in-library use and not available for Request & pickup.'
+      )
+    end
   end
 
   describe 'scopes' do

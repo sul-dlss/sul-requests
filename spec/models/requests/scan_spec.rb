@@ -31,6 +31,19 @@ describe Scan do
     end.not_to raise_error
   end
 
+  it 'allows scannabe only materials to be requested for scan' do
+    stub_searchworks_api_json(build(:scannable_only_holdings))
+
+    expect do
+      described_class.create!(
+        item_id: '123456',
+        origin: 'SAL',
+        origin_location: 'SAL-TEMP',
+        section_title: 'Chapter 1'
+      )
+    end.not_to raise_error
+  end
+
   describe 'requestable' do
     it { is_expected.not_to be_requestable_by_all }
     it { is_expected.not_to be_requestable_with_library_id }
