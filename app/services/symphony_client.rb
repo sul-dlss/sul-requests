@@ -118,11 +118,18 @@ class SymphonyClient
   end
 
   def check_out_item(item_barcode, patron_barcode)
-    response = authenticated_request('/circulation/circRecord/checkOut', method: :post, json: {
+    sd_prompt_return = [
+      "CIRC_NONCHARGEABLE_OVRCD/#{Settings.symphony.override}",
+      "HOLD_NO_HOLDS_OVRCD/#{Settings.symphony.override}"
+    ]
+    response = authenticated_request('/circulation/circRecord/checkOut', method: :post, params: {
+                                       includeFields: 'circRecord{*}'
+                                     }, json: {
                                        itemBarcode: item_barcode,
                                        patronBarcode: patron_barcode
                                      }, headers: {
-                                       'SD-Prompt-Return': "HOLD_NO_HOLDS_OVRCD/#{Settings.symphony.override}"
+                                       'SD-Prompt-Return': sd_prompt_return.join(';'),
+                                       'SD-Working-LibraryID': 'SUL'
                                      })
     begin
       JSON.parse(response.body)
