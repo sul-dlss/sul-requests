@@ -114,3 +114,8 @@ symws:
   url:
   headers: {}
   login_params: {}
+
+cdl:
+  jwt:
+    algorithm: 'HS256'
+    secret: secret

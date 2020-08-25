@@ -6,7 +6,7 @@ class CdlController < ApplicationController
 
   def checkin
     # Decode jwt
-    payload, _headers = JWT.decode(checkin_params['token'], nil, false)
+    payload, _headers = JWT.decode(checkin_params['token'], Settings.cdl.jwt.secret, true, { algorithm: Settings.cdl.jwt.algorithm })
     checkin = symphony_client.check_in_item(payload['barcode'])
     redirect_to checkin_params['return_to'] + '?success=true'
   end
@@ -52,7 +52,7 @@ class CdlController < ApplicationController
       sub: current_user.webauth,
       exp: DateTime.parse(due_date).to_i
     }
-    token = JWT.encode(payload, nil, 'none')
+    token = JWT.encode(payload, Settings.cdl.jwt.secret, Settings.cdl.jwt.algorithm)
     redirect_to checkout_params['return_to'] + '?token=' + token
   end
 
