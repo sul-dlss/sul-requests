@@ -120,7 +120,8 @@ class SymphonyClient
   def check_out_item(item_barcode, patron_barcode)
     sd_prompt_return = [
       "CIRC_NONCHARGEABLE_OVRCD/#{Settings.symphony.override}",
-      "HOLD_NO_HOLDS_OVRCD/#{Settings.symphony.override}"
+      "HOLD_NO_HOLDS_OVRCD/#{Settings.symphony.override}",
+      "CKOBLOCKS/#{Settings.symphony.override}"
     ]
     response = authenticated_request('/circulation/circRecord/checkOut', method: :post, params: {
                                        includeFields: 'circRecord{*}'
