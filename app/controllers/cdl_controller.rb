@@ -21,23 +21,36 @@ class CdlController < ApplicationController
     # schedule a job to check the item back in?
     # schedule a job to remove the users hold on the item
     # correct checkout, at correct time, w/ correct user
+
+    catalog_info = symphony_client.catalog_info(params['barcode'])
+    barcode = catalog_info&.dig('fields', 'call', 'fields', 'itemList').select { |item| item.dig('fields','currentLocation','key') }.first&.dig('fields','barcode')
+    callkey = catalog_info&.dig('fields', 'call', 'key')
+
     symphony_client.place_hold(
       comment: "CDL checkout for #{checkout_params['id']}",
       fill_by_date: DateTime.now + 1.year,
       patron_barcode: current_user.library_id,
       item: {
-        itemBarcode: checkout_params['barcode'],
+        call: {key: callkey, resource: '/catalog/call' },
         holdType: 'TITLE'
       }
       # key: 'CDL'
     )
-    checkout = symphony_client.check_out_item(checkout_params['barcode'], current_user.library_id)
-    due_date = DateTime.parse(checkout&.dig('circRecord', 'fields', 'dueDate'))
+    checkout = symphony_client.check_out_item(barcode, current_user.library_id)
+
+    due_date = checkout&.dig('circRecord', 'fields', 'dueDate')
+    messages = Array.wrap(checkout&.dig('messageList')).map { |message| message.dig('message') }
+
+    if messages.present?
+      render json: { error: messages.join(' ') }.to_json, status: :internal_server_error
+      return
+    end
+
     payload = {
-      barcode: checkout_params['barcode'],
+      barcode: barcode,
       id: checkout_params['id'],
       sub: current_user.webauth,
-      exp: due_date.to_i
+      exp: DateTime.parse(due_date).to_i
     }
     token = JWT.encode(payload, nil, 'none')
     redirect_to checkout_params['return_to'] + '?token=' + token
