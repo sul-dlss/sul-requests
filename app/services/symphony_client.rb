@@ -96,6 +96,8 @@ class SymphonyClient
   def renew_item(item_barcode)
     response = authenticated_request('/circulation/circRecord/renew', method: :post, json: {
                                        itemBarcode: item_barcode
+                                     }, headers: {
+                                       'SD-Prompt-Return': "HOLD_NO_HOLDS_OVRCD/#{Settings.symphony.override}"
                                      })
     begin
       JSON.parse(response.body)
@@ -119,6 +121,8 @@ class SymphonyClient
     response = authenticated_request('/circulation/circRecord/checkOut', method: :post, json: {
                                        itemBarcode: item_barcode,
                                        patronBarcode: patron_barcode
+                                     }, headers: {
+                                       'SD-Prompt-Return': "HOLD_NO_HOLDS_OVRCD/#{Settings.symphony.override}"
                                      })
     begin
       JSON.parse(response.body)
