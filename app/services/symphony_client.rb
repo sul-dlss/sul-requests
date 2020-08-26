@@ -106,6 +106,23 @@ class SymphonyClient
     end
   end
 
+  def update_hold(hold_record_key, comment:)
+    response = authenticated_request(
+      "/circulation/holdRecord/key/#{hold_record_key}",
+      method: :put,
+      json: {
+        resource: '/circulation/holdRecord',
+        key: hold_record_key,
+        fields: {
+          comment: comment
+        }
+      }
+    )
+    JSON.parse(response.body)
+  rescue JSON::ParserError, HTTP::Error
+    nil
+  end
+
   def check_in_item(item_barcode)
     response = authenticated_request('/circulation/circRecord/checkIn', method: :post, json: {
                                        itemBarcode: item_barcode
@@ -121,7 +138,8 @@ class SymphonyClient
     sd_prompt_return = [
       "CIRC_NONCHARGEABLE_OVRCD/#{Settings.symphony.override}",
       "HOLD_NO_HOLDS_OVRCD/#{Settings.symphony.override}",
-      "CKOBLOCKS/#{Settings.symphony.override}"
+      "CKOBLOCKS/#{Settings.symphony.override}",
+      "CIRC_HOLDS_OVRCD/#{Settings.symphony.override}"
     ]
     response = authenticated_request('/circulation/circRecord/checkOut', method: :post, params: {
                                        includeFields: 'circRecord{*}'
@@ -176,7 +194,8 @@ class SymphonyClient
                                          'address1',
                                          'profile{chargeLimit}',
                                          'customInformation{*}',
-                                         'groupSettings{*,group{memberList{*,address1}}}'
+                                         'groupSettings{*,group{memberList{*,address1}}}',
+                                         'holdRecordList{*,call}'
                                        ].join(',')
                                      })
 
@@ -187,6 +206,21 @@ class SymphonyClient
     end
   end
   # rubocop:enable Metrics/MethodLength
+
+  def circ_record_info(circ_record_key)
+    response = authenticated_request("/circulation/circRecord/key/#{circ_record_key}", params: {
+                                       includeFields: [
+                                         '*',
+                                         'item{barcode}'
+                                       ].join(',')
+                                     })
+
+    begin
+      JSON.parse(response.body)
+    rescue JSON::ParserError
+      nil
+    end
+  end
 
   private
 

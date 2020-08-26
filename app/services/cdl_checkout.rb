@@ -13,7 +13,21 @@ class CdlCheckout
   ##
   # @return token [String]
   def process_checkout
-    place_hold
+    hold = find_hold
+
+    if hold.present?
+      comment = hold.dig('fields', 'comment').to_s
+      cdl, _druid, circ_record_key = comment.split(';', 3)
+      if cdl == 'CDL' && circ_record_key.present?
+        circ_record = symphony_client.circ_record_info(circ_record_key)
+        if circ_record.present? && circ_record&.dig('fields', 'status') == 'ACTIVE'
+          barcode = circRecord.dig('fields', 'item', 'fields', 'barcode')
+          return create_token(circRecord.dig('fields', 'dueDate'), barcode)
+        end
+      end
+    else
+      hold = place_hold
+    end
     checkout = place_checkout
 
     due_date = checkout&.dig('circRecord', 'fields', 'dueDate')
@@ -24,12 +38,15 @@ class CdlCheckout
     # TODOS:
     # schedule a job to check the item back in?
     # schedule a job to remove the users hold on the item
-    create_token(due_date)
+
+    update_hold = symphony_client.update_hold(hold['key'], comment: "CDL;#{druid};#{checkout&.dig('circRecord', 'key')}")
+
+    create_token(due_date, selected_barcode)
   end
 
-  def create_token(due_date)
+  def create_token(due_date, barcode)
     payload = {
-      barcode: selected_barcode,
+      barcode: barcode,
       aud: druid,
       sub: user.webauth,
       exp: DateTime.parse(due_date).to_i
@@ -37,9 +54,13 @@ class CdlCheckout
     JWT.encode(payload, Settings.cdl.jwt.secret, Settings.cdl.jwt.algorithm)
   end
 
+  def find_hold
+    user.patron.holds.find { |hold_record| hold_record.dig('fields', 'call', 'key') == callkey }
+  end
+
   def place_hold
     symphony_client.place_hold(
-      comment: "CDL checkout for #{druid}",
+      comment: "CDL;#{druid}", # max 50
       fill_by_date: DateTime.now + 1.year,
       patron_barcode: user.library_id,
       item: {
@@ -51,7 +72,7 @@ class CdlCheckout
   end
 
   def place_checkout
-    symphony_client.check_out_item(selected_barcode, user.library_id)
+    symphony_client.check_out_item(selected_barcode, 'HOLD@GR')
   end
 
   def self.checkout(barcode, druid, user)
