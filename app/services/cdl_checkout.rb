@@ -45,7 +45,7 @@ class CdlCheckout
       item: {
         call: { key: callkey, resource: '/catalog/call' },
         holdType: 'TITLE'
-      }
+      },
       key: 'SUL'
     )
   end
