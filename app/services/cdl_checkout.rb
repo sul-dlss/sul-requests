@@ -12,7 +12,7 @@ class CdlCheckout
 
   ##
   # @return token [String]
-  def checkout
+  def process_checkout
     place_hold
     checkout = place_checkout
 
@@ -55,7 +55,11 @@ class CdlCheckout
   end
 
   def self.checkout(barcode, druid, user)
-    new(barcode, druid, user).checkout
+    new(barcode, druid, user).process_checkout
+  end
+
+  def symphony_client
+    @symphony_client ||= SymphonyClient.new
   end
 
   private
@@ -66,16 +70,12 @@ class CdlCheckout
 
   def selected_barcode
     ## Eventually we may have to figure out "which" one to grab (maybe not the first)
-    catalog_info&.dig('fields', 'call', 'fields', 'itemList')
-      .select { |item| item.dig('fields','currentLocation','key') }
-      .first&.dig('fields','barcode')
+    Array.wrap(catalog_info&.dig('fields', 'call', 'fields', 'itemList'))
+         .select { |item| item.dig('fields','currentLocation','key') }
+         .first&.dig('fields', 'barcode')
   end
 
   def catalog_info
     @catalog_info ||= symphony_client.catalog_info(barcode)
-  end
-
-  def symphony_client
-    @symphony_client ||= SymphonyClient.new
   end
 end
