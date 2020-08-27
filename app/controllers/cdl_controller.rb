@@ -12,6 +12,10 @@ class CdlController < ApplicationController
   def checkin
     # Decode jwt
     payload, _headers = JWT.decode(checkin_params['token'], Settings.cdl.jwt.secret, true, { algorithm: Settings.cdl.jwt.algorithm })
+    circ_record = CircRecord.find(payload['jti'])
+
+    render status: 400, json: 'The item is not checked out' and return if circ_record.item_barcode != payload['barcode']
+
     checkin = symphony_client.check_in_item(payload['barcode'])
     redirect_to checkin_params['return_to'] + '?success=true'
   end
