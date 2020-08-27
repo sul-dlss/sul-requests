@@ -20,11 +20,11 @@ class CircRecord
   end
 
   def key
-    record['key']
+    record&.[]('key')
   end
 
   def fields
-    record['fields'] || {}
+    record&.[]('fields')
   end
 
   def status
