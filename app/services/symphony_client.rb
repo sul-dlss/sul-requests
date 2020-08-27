@@ -108,6 +108,18 @@ class SymphonyClient
     nil
   end
 
+  def circ_information(item_barcode)
+    response = authenticated_request('/circulation/itemCircInfo/advise', method: :post, json: {
+                                       itemBarcode: item_barcode
+                                     })
+
+    begin
+      JSON.parse(response.body)
+    rescue JSON::ParserError
+      nil
+    end
+  end
+
   def update_hold(hold_record_key, comment:)
     response = authenticated_request(
       "/circulation/holdRecord/key/#{hold_record_key}",

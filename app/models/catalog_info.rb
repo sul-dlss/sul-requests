@@ -51,4 +51,10 @@ class CatalogInfo
       yield CatalogInfo.new(record)
     end
   end
+
+  def hold_records
+    Array.wrap(fields.dig('bib', 'fields', 'holdRecordList')&.map { |record| HoldRecord.new(record) }&.select do |record|
+      callkey == record.item_call_key && record.active?
+    end)
+  end
 end

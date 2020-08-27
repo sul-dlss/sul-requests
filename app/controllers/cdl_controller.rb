@@ -9,6 +9,17 @@ class CdlController < ApplicationController
   rescue_from Exceptions::CdlCheckoutError, with: :handle_cdl_error
   rescue_from Exceptions::SymphonyError, with: :handle_symphony_error
 
+  before_action :set_origin_header, only: [:availability]
+
+  def set_origin_header
+    response.headers['Access-Control-Allow-Origin'] = '*'
+  end
+
+  def availability
+    availability_info = CdlAvailability.available(barcode: availability_params)
+    render json: availability_info.to_json
+  end
+
   def checkin
     hold_record_key = if checkin_params['token']
                         payload, _headers = decode_token(checkin_params['token'])
@@ -66,6 +77,10 @@ class CdlController < ApplicationController
     return super if webauth_user?
 
     redirect_to login_path(referrer: request.original_url)
+  end
+
+  def availability_params
+    params.require(:barcode)
   end
 
   def checkout_params
