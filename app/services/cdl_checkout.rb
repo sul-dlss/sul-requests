@@ -44,7 +44,7 @@ class CdlCheckout
   def create_token(circ_record)
     payload = {
       jti: circ_record.key,
-      barcode: circ_record.barcode,
+      barcode: circ_record.item_barcode,
       aud: druid,
       sub: user.webauth,
       exp: circ_record.due_date.to_i
