@@ -111,6 +111,7 @@ class CdlCheckout
         raise(Exceptions::CdlCheckoutError, 'Item not checked out for digital lending')
       end
 
+      invalidate_jwt_token(hold_record.circ_record, hold_record_key)
       checkin_response = symphony_client.check_in_item(hold_record.circ_record.item_barcode)
       check_for_symphony_errors(checkin_response)
     end
@@ -127,7 +128,7 @@ class CdlCheckout
   # a JWT payload.
   def create_token(circ_record, hold_record_id)
     {
-      jti: "#{circ_record.key}-#{circ_record.checkout_date.to_i}",
+      jti: "#{circ_record.key}-#{circ_record.checkout_date.to_i}-#{hold_record_id}",
       iat: Time.zone.now.to_i,
       barcode: circ_record.item_barcode,
       aud: druid,
@@ -184,5 +185,25 @@ class CdlCheckout
     error_messages = Array.wrap(response&.dig('messageList')).map { |message| message.dig('message') }
 
     raise(Exceptions::SymphonyError, error_messages.join(' ')) if error_messages.present?
+  end
+
+  def invalidate_jwt_token(circ_record, hold_record_id)
+    return unless redis
+
+    key = "#{circ_record.key}-#{circ_record.checkout_date.to_i}-#{hold_record_id}"
+
+    redis.multi do
+      redis.set("cdl.#{key}", 'expired')
+      redis.expireat(key.to_s, circ_record.due_date.to_i)
+    end
+  rescue => e
+    Honeybadger.notify(e) if Rails.env.production?
+    Rails.logger.error(e)
+  end
+
+  def redis
+    return unless Settings.cdl.redis || ENV['REDIS_URL']
+
+    @redis ||= Redis.new(Settings.cdl.redis.to_h)
   end
 end

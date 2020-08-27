@@ -482,6 +482,7 @@ DEPENDENCIES
   rails (~> 6.0)
   rails-controller-testing
   redcarpet
+  redis
   rspec-rails (~> 4.0)
   rubocop
   rubocop-performance

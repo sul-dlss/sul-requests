@@ -58,6 +58,4 @@ class CircRecord
   def patron_barcode
     fields.dig('patron', 'fields', 'barcode')
   end
-
-  def token; end
 end

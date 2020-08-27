@@ -127,3 +127,4 @@ cdl:
   jwt:
     algorithm: 'HS256'
     secret: secret
+  redis: {}
