@@ -154,7 +154,7 @@ class SymphonyClient
       "CIRC_HOLDS_OVRCD/#{Settings.symphony.override}"
     ]
     response = authenticated_request('/circulation/circRecord/checkOut', method: :post, params: {
-                                       includeFields: 'circRecord{*}'
+                                       includeFields: 'circRecord{*,item{barcode}}'
                                      }, json: {
                                        itemBarcode: item_barcode,
                                        patronBarcode: patron_barcode
