@@ -13,21 +13,34 @@ class CdlAvailability
   end
 
   def available
-    circ_response
+    earliest_due = nil
+    Array.wrap(catalog_info&.dig('fields', 'call', 'fields', 'itemList')).each do |item|
+      item_barcode = item.dig('fields', 'barcode')
+      circ_info = symphony_client.circ_information(item_barcode)
+
+      ## A copy is available for CDL, so let it be known
+      return { available: true } if ['ON_SHELF', 'ON_RESERVE'].include?(circ_info&.dig('currentStatus'))
+
+      item_due_date = parse_due_date(circ_info)
+
+      earliest_due = item_due_date unless earliest_due && !item_due_date && earliest_due < item_due_date
+    end
+    {
+      available: false,
+      dueDate: earliest_due
+    }
   end
 
   def symphony_client
     @symphony_client ||= SymphonyClient.new
   end
 
-  def circ_response
-    {
-      status: circ_info&.dig('currentStatus'),
-      dueDate: circ_info&.dig('dueDate')
-    }
+  def catalog_info
+    @catalog_info ||= symphony_client.catalog_info(barcode)
   end
 
-  def circ_info
-    @circ_info ||= symphony_client.circ_information(barcode)
+  def parse_due_date(circ_info)
+    date = circ_info&.dig('dueDate')
+    DateTime.parse(date) if date
   end
 end
