@@ -207,7 +207,7 @@ class SymphonyClient
                                          'profile{chargeLimit}',
                                          'customInformation{*}',
                                          'groupSettings{*,group{memberList{*,address1}}}',
-                                         'holdRecordList{*,call}'
+                                         'holdRecordList{*,item{call}}'
                                        ].join(',')
                                      })
 

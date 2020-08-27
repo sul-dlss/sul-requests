@@ -53,7 +53,7 @@ class CdlCheckout
   end
 
   def find_hold
-    user.patron.holds.find { |hold_record| hold_record.dig('fields', 'call', 'key') == callkey }
+    user.patron.holds.find { |hold_record| hold_record.dig('fields', 'item', 'fields', 'call', 'key') == callkey }
   end
 
   def place_hold
