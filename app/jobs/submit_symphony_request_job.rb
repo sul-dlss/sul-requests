@@ -294,7 +294,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
     def generic_request
       {
         fill_by_date: request.needed_date,
-        key: request.destination,
+        key: request.destination == 'SPEC-COLL' ? 'SPEC-DESK' : request.destination,
         recall_status: patron.fee_borrower? ? 'NO' : 'STANDARD',
         patron_barcode: patron_barcode,
         comment: comment,
