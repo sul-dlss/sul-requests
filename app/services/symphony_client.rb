@@ -93,6 +93,18 @@ class SymphonyClient
     nil
   end
 
+  def circ_information(item_barcode)
+    response = authenticated_request('/circulation/itemCircInfo/advise', method: :post, json: {
+                                       itemBarcode: item_barcode
+                                     })
+
+    begin
+      JSON.parse(response.body)
+    rescue JSON::ParserError
+      nil
+    end
+  end
+
   def renew_item(item_barcode)
     response = authenticated_request('/circulation/circRecord/renew', method: :post, json: {
                                        itemBarcode: item_barcode

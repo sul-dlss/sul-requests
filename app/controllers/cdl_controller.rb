@@ -4,6 +4,11 @@
 class CdlController < ApplicationController
   authorize_resource class: false
 
+  def availability
+    availability_info = CdlAvailability.available(barcode: availability_params)
+    render json: availability_info.to_json
+  end
+
   def checkin
     # Decode jwt
     payload, _headers = JWT.decode(checkin_params['token'], Settings.cdl.jwt.secret, true, { algorithm: Settings.cdl.jwt.algorithm })
@@ -28,6 +33,10 @@ class CdlController < ApplicationController
     return super if webauth_user?
 
     redirect_to login_path(referrer: request.original_url)
+  end
+
+  def availability_params
+    params.require(:barcode)
   end
 
   def checkout_params
