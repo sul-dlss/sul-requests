@@ -10,13 +10,30 @@ class CdlController < ApplicationController
   end
 
   def checkin
-    # Decode jwt
-    payload, _headers = JWT.decode(checkin_params['token'], Settings.cdl.jwt.secret, true, { algorithm: Settings.cdl.jwt.algorithm })
-    circ_record = CircRecord.find(payload['jti'])
+    circ_record = CircRecord.new({})
+    hold_record_id = nil
 
-    render status: 400, json: 'The item is not checked out' and return if circ_record.item_barcode != payload['barcode']
+    if checkin_params['token']
+      payload, _headers = JWT.decode(checkin_params['token'], Settings.cdl.jwt.secret, true, { algorithm: Settings.cdl.jwt.algorithm })
+      hold_record_id = payload['hold_record_id']
+      circ_record = CircRecord.find(payload['jti'])
+      render status: :bad_request, json: { error: 'The item is not checked out' } and return if circ_record.item_barcode != payload['barcode']
+    end
 
-    checkin = symphony_client.check_in_item(payload['barcode'])
+    if checkin_params['hold_record_key']
+      hold_record = current_user.patron.holds.find { |hold| hold['key'] == checkin_params['hold_record_key'] }
+      hold_record_id = hold_record['key']
+      _cdl, _druid, circ_record_key = hold_record&.dig('fields', 'comment').to_s.split(';', 3)
+      render status: :bad_request, json: { error: 'The item is not checked out' } and return unless circ_record_key
+
+      circ_record = CircRecord.find(circ_record_key)
+    end
+
+    render status: :bad_request, json: { error: 'The item is not active' } and return unless circ_record.exists?
+
+    ## Check the item back in and cancel the hold
+    symphony_client.check_in_item(circ_record.item_barcode)
+    symphony_client.cancel_hold(hold_record_id)
     redirect_to checkin_params['return_to'] + '?success=true'
   end
 
@@ -50,7 +67,6 @@ class CdlController < ApplicationController
   end
 
   def checkin_params
-    params.require(:token)
-    params.permit(:token, :return_to)
+    params.permit(:token, :return_to, :hold_record_key)
   end
 end

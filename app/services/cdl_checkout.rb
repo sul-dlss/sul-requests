@@ -20,7 +20,7 @@ class CdlCheckout
       cdl, _druid, circ_record_key = comment.split(';', 3)
       if cdl == 'CDL' && circ_record_key.present?
         circ_record = CircRecord.find(circ_record_key)
-        return create_token(circ_record) if circ_record.active?
+        return create_token(circ_record, hold['key']) if circ_record.active?
       end
     else
       hold = place_hold
@@ -38,16 +38,17 @@ class CdlCheckout
     circ_record = CircRecord.new(checkout&.dig('circRecord'))
     update_hold = symphony_client.update_hold(hold['key'], comment: "CDL;#{druid};#{circ_record.key}")
 
-    create_token(circ_record)
+    create_token(circ_record, hold['key'])
   end
 
-  def create_token(circ_record)
+  def create_token(circ_record, hold_record_id)
     payload = {
       jti: circ_record.key,
       barcode: circ_record.item_barcode,
       aud: druid,
       sub: user.webauth,
-      exp: circ_record.due_date.to_i
+      exp: circ_record.due_date.to_i,
+      hold_record_id: hold_record_id
     }
     JWT.encode(payload, Settings.cdl.jwt.secret, Settings.cdl.jwt.algorithm)
   end
