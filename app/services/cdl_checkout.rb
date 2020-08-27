@@ -57,7 +57,7 @@ class CdlCheckout
   end
 
   def place_hold
-    symphony_client.place_hold(
+    response = symphony_client.place_hold(
       comment: "CDL;#{druid}", # max 50
       fill_by_date: DateTime.now + 1.year,
       patron_barcode: user.library_id,
@@ -67,6 +67,8 @@ class CdlCheckout
       },
       key: 'SUL'
     )
+
+    response&.dig('holdRecord')
   end
 
   def place_checkout
