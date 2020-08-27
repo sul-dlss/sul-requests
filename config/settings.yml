@@ -120,6 +120,7 @@ cdl:
   jwt:
     algorithm: 'HS256'
     secret: secret
+  redis: {}
 
 embed:
   url: https://embed.stanford.edu
