@@ -72,7 +72,7 @@ class CdlCheckout
   end
 
   def place_checkout
-    symphony_client.check_out_item(selected_barcode, 'HOLD@GR')
+    symphony_client.check_out_item(selected_barcode, 'CDL-CHECKEDOUT')
   end
 
   def self.checkout(barcode, druid, user)
