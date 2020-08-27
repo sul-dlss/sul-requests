@@ -27,6 +27,10 @@ class Patron
     fields.present?
   end
 
+  def key
+    record['key']
+  end
+
   def fields
     record['fields'] || {}
   end
@@ -86,6 +90,10 @@ class Patron
 
   def sponsor?
     fields.dig('groupSettings', 'fields', 'responsibility', 'key') == 'SPONSOR'
+  end
+
+  def checkouts
+    @checkouts ||= SymphonyClient.new.checkouts(key).map { |record| CircRecord.new(record) }
   end
 
   def group

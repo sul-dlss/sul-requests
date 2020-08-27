@@ -229,11 +229,26 @@ class SymphonyClient
   end
   # rubocop:enable Metrics/MethodLength
 
-  def circ_record_info(circ_record_key)
+  def checkouts(patron_key)
+    response = authenticated_request("/user/patron/key/#{patron_key}", params: {
+                                       includeFields: [
+                                         'circRecordList{*}'
+                                       ].join(',')
+                                     })
+
+    begin
+      JSON.parse(response.body)&.dig('fields', 'circRecordList') || []
+    rescue JSON::ParserError
+      []
+    end
+  end
+
+  def circ_record_info(circ_record_key, return_holds: false)
+    hold_return = return_holds ? 'item{barcode,bib{holdRecordList{*,item{call}}}}' : 'item{barcode}'
     response = authenticated_request("/circulation/circRecord/key/#{circ_record_key}", params: {
                                        includeFields: [
                                          '*',
-                                         'item{barcode}'
+                                         hold_return
                                        ].join(',')
                                      })
 
