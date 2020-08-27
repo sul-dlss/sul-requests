@@ -10,7 +10,7 @@ class CdlController < ApplicationController
   end
 
   def checkin
-    circ_record = CircRecord.new({})
+    circ_record = CircRecord.new()
     hold_record_id = nil
 
     if checkin_params['token']

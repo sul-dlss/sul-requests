@@ -11,7 +11,7 @@ class CircRecord
 
   attr_reader :record
 
-  def initialize(record)
+  def initialize(record = {})
     @record = record
   end
 
@@ -20,11 +20,11 @@ class CircRecord
   end
 
   def key
-    record&.[]('key')
+    record['key']
   end
 
   def fields
-    record&.[]('fields')
+    record['fields'] || {}
   end
 
   def status
