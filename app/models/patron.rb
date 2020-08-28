@@ -40,7 +40,7 @@ class Patron
   end
 
   def holds
-    fields.dig('holdRecordList') || []
+    @holds ||= (fields.dig('holdRecordList') || []).map { |record| HoldRecord.new(record) }
   end
 
   def fee_borrower?

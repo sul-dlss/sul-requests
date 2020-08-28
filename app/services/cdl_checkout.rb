@@ -13,32 +13,20 @@ class CdlCheckout
   ##
   # @return token [String]
   def process_checkout
-    hold = find_hold
+    hold = find_hold || place_hold
 
-    if hold.present?
-      comment = hold.dig('fields', 'comment').to_s
-      cdl, _druid, circ_record_key, _ = comment.split(';')
-      if cdl == 'CDL' && circ_record_key.present?
-        circ_record = CircRecord.find(circ_record_key)
-        return create_token(circ_record, hold['key']) if circ_record.active?
-      end
-    else
-      hold = place_hold
-    end
+    return create_token(hold.circ_record, hold.key) if hold.circ_record&.active?
+
     checkout = place_checkout
 
     error_messages = Array.wrap(checkout&.dig('messageList')).map { |message| message.dig('message') }
 
     raise(Exceptions::CdlCheckoutError, error_messages.join(' ')) if error_messages.present?
 
-    # TODOS:
-    # schedule a job to check the item back in?
-    # schedule a job to remove the users hold on the item
-
     circ_record = CircRecord.new(checkout&.dig('circRecord'))
-    update_hold = symphony_client.update_hold(hold['key'], comment: "CDL;#{druid};#{circ_record.key};#{circ_record.due_date.iso8601}")
+    symphony_client.update_hold(hold.key, comment: "CDL;#{druid};#{circ_record.key};#{circ_record.due_date.iso8601}")
 
-    create_token(circ_record, hold['key'])
+    create_token(circ_record, hold.key)
   end
 
   def create_token(circ_record, hold_record_id)
@@ -54,7 +42,7 @@ class CdlCheckout
   end
 
   def find_hold
-    user.patron.holds.find { |hold_record| hold_record.dig('fields', 'item', 'fields', 'call', 'key') == callkey }
+    user.patron.holds.find { |hold_record| hold_record.item_call_key == callkey }
   end
 
   def place_hold
@@ -69,7 +57,7 @@ class CdlCheckout
       key: 'SUL'
     )
 
-    response&.dig('holdRecord')
+    HoldRecord.new(response&.dig('holdRecord') || {})
   end
 
   def place_checkout
