@@ -43,9 +43,13 @@ class HoldRecord
     comment.split(';')
   end
 
-  def circ_record
-    return unless cdl? && cdl_comment[2]
+  def circ_record_key
+    cdl_comment[2]
+  end
 
-    @circ_record ||= CircRecord.find(cdl_comment[2])
+  def circ_record
+    return unless cdl? && circ_record_key
+
+    @circ_record ||= CircRecord.find(circ_record_key)
   end
 end

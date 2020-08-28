@@ -50,7 +50,7 @@ class CircRecord
   end
 
   def hold_records
-    fields.dig('item', 'fields', 'bib', 'fields', 'holdRecordList')
+    fields.dig('item', 'fields', 'bib', 'fields', 'holdRecordList').map { |record| HoldRecord.new(record) }
   end
 
   def token; end
