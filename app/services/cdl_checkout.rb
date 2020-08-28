@@ -17,7 +17,7 @@ class CdlCheckout
 
     if hold.present?
       comment = hold.dig('fields', 'comment').to_s
-      cdl, _druid, circ_record_key = comment.split(';', 3)
+      cdl, _druid, circ_record_key, _ = comment.split(';')
       if cdl == 'CDL' && circ_record_key.present?
         circ_record = CircRecord.find(circ_record_key)
         return create_token(circ_record, hold['key']) if circ_record.active?
@@ -36,7 +36,7 @@ class CdlCheckout
     # schedule a job to remove the users hold on the item
 
     circ_record = CircRecord.new(checkout&.dig('circRecord'))
-    update_hold = symphony_client.update_hold(hold['key'], comment: "CDL;#{druid};#{circ_record.key}")
+    update_hold = symphony_client.update_hold(hold['key'], comment: "CDL;#{druid};#{circ_record.key};#{circ_record.due_date.iso8601}")
 
     create_token(circ_record, hold['key'])
   end

@@ -23,7 +23,7 @@ class CdlController < ApplicationController
     if checkin_params['hold_record_key']
       hold_record = current_user.patron.holds.find { |hold| hold['key'] == checkin_params['hold_record_key'] }
       hold_record_id = hold_record['key']
-      _cdl, _druid, circ_record_key = hold_record&.dig('fields', 'comment').to_s.split(';', 3)
+      _cdl, _druid, circ_record_key, _ = hold_record&.dig('fields', 'comment').to_s.split(';')
       render status: :bad_request, json: { error: 'The item is not checked out' } and return unless circ_record_key
 
       circ_record = CircRecord.find(circ_record_key)

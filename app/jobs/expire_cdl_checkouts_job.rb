@@ -8,7 +8,7 @@ class ExpireCdlCheckoutsJob < ApplicationJob
       circ_record = CircRecord.find(checkout.key, return_holds: true)
       hold_records = circ_record.hold_records
       active_hold_record = hold_records.find do |record|
-        cdl, _druid, circ_record_key = record.dig('fields', 'comment').split(';', 3)
+        cdl, _druid, circ_record_key, _ = record.dig('fields', 'comment').split(';')
         return true if cdl == 'CDL' && circ_record_key == checkout.key
       end
       symphony_client.cancel_hold(active_hold_record['key']) if active_hold_record
