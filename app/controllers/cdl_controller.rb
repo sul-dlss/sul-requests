@@ -4,6 +4,12 @@
 class CdlController < ApplicationController
   authorize_resource class: false
 
+  before_action :set_origin_header, only: [:availability]
+
+  def set_origin_header
+    response.headers['Access-Control-Allow-Origin'] = '*'
+  end
+
   def availability
     availability_info = CdlAvailability.available(barcode: availability_params)
     render json: availability_info.to_json
