@@ -3,7 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe CdlCheckout do
-  subject { described_class.new('abc123', 'druid', create(:webauth_user)) }
+  subject { described_class.new('abc123', 'druid', user) }
+  let(:user) { create(:webauth_user) }
+
+  before do
+    allow(user).to receive(:patron).and_return(Patron.new({}))
+  end
 
   describe '#process_checkout' do
     it 'places the hold, checks the item out, and creates a token' do
@@ -17,9 +22,12 @@ RSpec.describe CdlCheckout do
           }
         }
       )
-      expect(subject.process_checkout).to eq 'eyJhbGciOiJIUzI1NiJ9.eyJiYXJjb2R'\
-      'lIjpudWxsLCJhdWQiOiJkcnVpZCIsInN1YiI6InNvbWUtd2ViYXV0aC11c2VyIiwiZXhwIj'\
-      'o0MDkxNDEwNzQwfQ.GnSvhnC_cnI0kUAJelPXj5GydJGtZP7OoioFdv9hIpI'
+
+      token = subject.process_checkout
+
+      payload, _headers = JWT.decode(token, Settings.cdl.jwt.secret, Settings.cdl.jwt.algorithm)
+
+      expect(payload.with_indifferent_access).to include sub: user.webauth
     end
   end
 end
