@@ -4,7 +4,7 @@
 class CircRecord
   def self.find(key, return_holds: false)
     symphony_client = SymphonyClient.new
-    new(symphony_client.circ_record_info(key, return_holds))
+    new(symphony_client.circ_record_info(key, return_holds: return_holds))
   rescue HTTP::Error
     nil
   end
