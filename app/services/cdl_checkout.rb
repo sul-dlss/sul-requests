@@ -1,16 +1,44 @@
 # frozen_string_literal: true
 
-# Procedurual service for checking out CDL content from symphony
+# Procedurual service for "circulating" CDL content from symphony
 class CdlCheckout
-  attr_reader :barcode, :druid, :user
+  attr_reader :druid, :user
 
   def self.checkout(barcode, druid, user)
-    new(barcode, druid, user).process_checkout
+    new(druid, user).process_checkout(barcode)
   end
 
   def self.checkin(hold_record_key, user)
-    symphony_client = SymphonyClient.new
+    new(nil, user).process_checkin(hold_record_key)
+  end
 
+  def initialize(druid, user)
+    @druid = druid
+    @user = user
+  end
+
+  ##
+  # @return token [String]
+  def process_checkout(barcode)
+    item_info = CatalogInfo.find(barcode)
+
+    hold = find_hold(item_info.callkey) || place_hold(item_info.callkey)
+
+    return create_token(hold.circ_record, hold.key) if hold.circ_record&.active?
+
+    selected_item = item_info.items.find { |item| item.current_location != 'CHECKEDOUT' }
+    raise(Exceptions::CdlCheckoutError, 'Unable to find eligible item') unless selected_item
+
+    checkout = place_checkout(selected_item.barcode)
+
+    circ_record = CircRecord.new(checkout&.dig('circRecord'))
+    update_hold_response = symphony_client.update_hold(hold.key, comment: "CDL;#{druid};#{circ_record.key};#{circ_record.due_date.iso8601}")
+    check_for_symphony_errors(update_hold_response)
+
+    create_token(circ_record, hold.key)
+  end
+
+  def process_checkin(hold_record_key)
     hold_record = user.patron.holds.find { |hold| hold.key == hold_record_key }
 
     raise(Exceptions::CdlCheckoutError, 'Could not find hold record') unless hold_record&.exists? && hold_record&.cdl?
@@ -27,29 +55,8 @@ class CdlCheckout
 
     cancel_hold_response = symphony_client.cancel_hold(hold_record.key)
     check_for_symphony_errors(cancel_hold_response)
-  end
 
-  def initialize(barcode, druid, user)
-    @barcode = barcode
-    @druid = druid
-    @user = user
-  end
-
-  ##
-  # @return token [String]
-  def process_checkout
-    hold = find_hold || place_hold
-
-    return create_token(hold.circ_record, hold.key) if hold.circ_record&.active?
-
-    checkout = place_checkout
-    check_for_symphony_errors(checkout)
-
-    circ_record = CircRecord.new(checkout&.dig('circRecord'))
-    update_hold_response = symphony_client.update_hold(hold.key, comment: "CDL;#{druid};#{circ_record.key};#{circ_record.due_date.iso8601}")
-    check_for_symphony_errors(update_hold_response)
-
-    create_token(circ_record, hold.key)
+    true
   end
 
   def create_token(circ_record, hold_record_id)
@@ -64,11 +71,11 @@ class CdlCheckout
     }
   end
 
-  def find_hold
+  def find_hold(callkey)
     user.patron.holds.find { |hold_record| hold_record.item_call_key == callkey }
   end
 
-  def place_hold
+  def place_hold(callkey)
     response = symphony_client.place_hold(
       comment: "CDL;#{druid}", # max 50
       fill_by_date: DateTime.now + 1.year,
@@ -85,8 +92,12 @@ class CdlCheckout
     HoldRecord.new(response&.dig('holdRecord') || {})
   end
 
-  def place_checkout
-    symphony_client.check_out_item(selected_barcode, Settings.cdl.pseudo_patron_id)
+  def place_checkout(selected_barcode)
+    response = symphony_client.check_out_item(selected_barcode, Settings.cdl.pseudo_patron_id)
+
+    check_for_symphony_errors(response)
+
+    response
   end
 
   def symphony_client
@@ -94,21 +105,6 @@ class CdlCheckout
   end
 
   private
-
-  def callkey
-    @callkey ||= catalog_info&.dig('fields', 'call', 'key')
-  end
-
-  def selected_barcode
-    ## Eventually we may have to figure out "which" one to grab (maybe not the first)
-    Array.wrap(catalog_info&.dig('fields', 'call', 'fields', 'itemList'))
-         .select { |item| item.dig('fields','currentLocation','key') }
-         .first&.dig('fields', 'barcode')
-  end
-
-  def catalog_info
-    @catalog_info ||= symphony_client.catalog_info(barcode)
-  end
 
   def check_for_symphony_errors(response)
     error_messages = Array.wrap(response&.dig('messageList')).map { |message| message.dig('message') }

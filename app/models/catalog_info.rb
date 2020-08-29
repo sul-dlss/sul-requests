@@ -12,6 +12,10 @@ class CatalogInfo
     @response = response
   end
 
+  def barcode
+    fields.dig('barcode')
+  end
+
   def call_number
     fields.dig('call', 'fields', 'callNumber')
   end
@@ -26,5 +30,17 @@ class CatalogInfo
 
   def fields
     (@response || {}).dig('fields') || {}
+  end
+
+  def callkey
+    fields.dig('call', 'key')
+  end
+
+  def items
+    return to_enum(:items) unless block_given?
+
+    Array.wrap(fields.dig('call', 'fields', 'itemList')).each do |record|
+      CatalogInfo.new(record)
+    end
   end
 end
