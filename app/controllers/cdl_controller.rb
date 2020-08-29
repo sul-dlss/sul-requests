@@ -55,10 +55,6 @@ class CdlController < ApplicationController
     render json: { error: exception.message }.to_json, status: :internal_server_error
   end
 
-  def symphony_client
-    @symphony_client ||= SymphonyClient.new
-  end
-
   def rescue_can_can(*)
     return super if webauth_user?
 
