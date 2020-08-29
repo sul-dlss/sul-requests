@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe CdlCheckout do
   subject { described_class.new('druid', user) }
+
   let(:user) { create(:webauth_user) }
   let(:catalog_info) do
     instance_double(CatalogInfo,

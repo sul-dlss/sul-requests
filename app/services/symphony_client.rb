@@ -207,7 +207,6 @@ class SymphonyClient
     })
   end
 
-
   # rubocop:disable Metrics/MethodLength
   def patron_info(patron_key)
     response = authenticated_request("/user/patron/key/#{patron_key}", params: {
