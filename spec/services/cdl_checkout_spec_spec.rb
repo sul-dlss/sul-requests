@@ -8,11 +8,14 @@ RSpec.describe CdlCheckout do
   let(:user) { create(:webauth_user) }
   let(:catalog_info) do
     instance_double(CatalogInfo,
-      callkey: 'xyz',
-      items: [
-        instance_double(CatalogInfo, barcode: '12345', current_location: 'CDL-RESERVE')
-      ]
-    )
+                    callkey: 'xyz',
+                    items: items)
+  end
+
+  let(:items) do
+    [
+      instance_double(CatalogInfo, barcode: '12345', current_location: 'CDL-RESERVE')
+    ]
   end
 
   before do
@@ -20,6 +23,24 @@ RSpec.describe CdlCheckout do
   end
 
   describe '#process_checkout' do
+    # rubocop:disable RSpec/EmptyExampleGroup
+    context 'with an existing hold and associated checkout' do
+      pending 'gives you the active token'
+    end
+
+    context 'with an existing hold' do
+      pending 'updates the existing hold the the checkout'
+    end
+
+    context 'when all eligible items are in use' do
+      pending 'places a hold and renders something about a waitlist'
+    end
+
+    context 'when there is a choice if eligible items' do
+      pending 'places a hold and picks one of the items using some criteria'
+    end
+    # rubocop:enable RSpec/EmptyExampleGroup
+
     it 'places the hold, checks the item out, and creates a token' do
       allow(CatalogInfo).to receive(:find).with('abc123').and_return(catalog_info)
 
