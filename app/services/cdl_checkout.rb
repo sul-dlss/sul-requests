@@ -4,12 +4,8 @@
 class CdlCheckout
   attr_reader :barcode, :druid, :user
 
-  def self.encode_token(payload)
-    JWT.encode(payload, Settings.cdl.jwt.secret, Settings.cdl.jwt.algorithm)
-  end
-
-  def self.decode_token(token)
-    JWT.decode(token, Settings.cdl.jwt.secret, true, { algorithm: Settings.cdl.jwt.algorithm })
+  def self.checkout(barcode, druid, user)
+    new(barcode, druid, user).process_checkout
   end
 
   def self.checkin(hold_record_key, user)
@@ -57,7 +53,7 @@ class CdlCheckout
   end
 
   def create_token(circ_record, hold_record_id)
-    CdlCheckout.encode_token(
+    {
       jti: circ_record.key,
       iat: Time.zone.now.to_i,
       barcode: circ_record.item_barcode,
@@ -65,7 +61,7 @@ class CdlCheckout
       sub: user.webauth,
       exp: circ_record.due_date.to_i,
       hold_record_id: hold_record_id
-    )
+    }
   end
 
   def find_hold
@@ -91,10 +87,6 @@ class CdlCheckout
 
   def place_checkout
     symphony_client.check_out_item(selected_barcode, Settings.cdl.pseudo_patron_id)
-  end
-
-  def self.checkout(barcode, druid, user)
-    new(barcode, druid, user).process_checkout
   end
 
   def symphony_client

@@ -19,7 +19,7 @@ class CdlController < ApplicationController
 
   def checkin
     hold_record_key = if checkin_params['token']
-                        payload, _headers = CdlCheckout.decode_token(checkin_params['token'])
+                        payload, _headers = decode_token(checkin_params['token'])
 
                         payload['hold_record_id']
                       elsif checkin_params['hold_record_key']
@@ -33,10 +33,19 @@ class CdlController < ApplicationController
 
   def checkout
     token = CdlCheckout.checkout(checkout_params['barcode'], checkout_params['id'], current_user)
-    redirect_to checkout_params['return_to'] + '?token=' + token
+
+    redirect_to checkout_params['return_to'] + '?token=' + encode_token(token)
   end
 
   private
+
+  def encode_token(payload)
+    JWT.encode(payload, Settings.cdl.jwt.secret, Settings.cdl.jwt.algorithm)
+  end
+
+  def decode_token(token)
+    JWT.decode(token, Settings.cdl.jwt.secret, true, { algorithm: Settings.cdl.jwt.algorithm })
+  end
 
   def handle_cdl_error(exception)
     render json: { error: exception.message }.to_json, status: :bad_request

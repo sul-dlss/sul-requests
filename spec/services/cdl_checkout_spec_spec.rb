@@ -23,11 +23,8 @@ RSpec.describe CdlCheckout do
         }
       )
 
-      token = subject.process_checkout
-
-      payload, _headers = JWT.decode(token, Settings.cdl.jwt.secret, Settings.cdl.jwt.algorithm)
-
-      expect(payload.with_indifferent_access).to include sub: user.webauth
+      payload = subject.process_checkout
+      expect(payload).to include sub: user.webauth
     end
   end
 end
