@@ -53,5 +53,9 @@ class CircRecord
     fields.dig('item', 'fields', 'bib', 'fields', 'holdRecordList').map { |record| HoldRecord.new(record) }
   end
 
+  def patron_barcode
+    fields.dig('patron', 'fields', 'barcode')
+  end
+
   def token; end
 end

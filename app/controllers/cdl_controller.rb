@@ -5,6 +5,8 @@ class CdlController < ApplicationController
   authorize_resource class: false
 
   before_action :set_origin_header, only: [:availability]
+  rescue_from Exceptions::CdlCheckoutError, with: :handle_cdl_error
+  rescue_from Exceptions::SymphonyError, with: :handle_symphony_error
 
   def set_origin_header
     response.headers['Access-Control-Allow-Origin'] = '*'
@@ -16,40 +18,33 @@ class CdlController < ApplicationController
   end
 
   def checkin
-    circ_record = CircRecord.new()
-    hold_record_id = nil
+    hold_record_key = if checkin_params['token']
+                        payload, _headers = CdlCheckout.decode_token(checkin_params['token'])
 
-    if checkin_params['token']
-      payload, _headers = JWT.decode(checkin_params['token'], Settings.cdl.jwt.secret, true, { algorithm: Settings.cdl.jwt.algorithm })
-      hold_record_id = payload['hold_record_id']
-      circ_record = CircRecord.find(payload['jti'])
-      render status: :bad_request, json: { error: 'The item is not checked out' } and return if circ_record.item_barcode != payload['barcode']
-    end
+                        payload['hold_record_id']
+                      elsif checkin_params['hold_record_key']
+                        checkin_params['hold_record_key']
+                      end
 
-    if checkin_params['hold_record_key']
-      hold_record = current_user.patron.holds.find { |hold| hold.key == checkin_params['hold_record_key'] }
-      hold_record_id = hold_record.key
-      render status: :bad_request, json: { error: 'The item is not checked out' } and return unless hold_record.circ_record&.exists?
+    CdlCheckout.checkin(hold_record_key, current_user)
 
-      circ_record = hold_record.circ_record
-    end
-
-    render status: :bad_request, json: { error: 'The item is not active' } and return unless circ_record.exists?
-
-    ## Check the item back in and cancel the hold
-    symphony_client.check_in_item(circ_record.item_barcode)
-    symphony_client.cancel_hold(hold_record_id)
     redirect_to checkin_params['return_to'] + '?success=true'
   end
 
   def checkout
     token = CdlCheckout.checkout(checkout_params['barcode'], checkout_params['id'], current_user)
     redirect_to checkout_params['return_to'] + '?token=' + token
-  rescue Exceptions::CdlCheckoutError => e
-    render json: { error: e.message }.to_json, status: :internal_server_error
   end
 
   private
+
+  def handle_cdl_error(exception)
+    render json: { error: exception.message }.to_json, status: :bad_request
+  end
+
+  def handle_symphony_error(exception)
+    render json: { error: exception.message }.to_json, status: :internal_server_error
+  end
 
   def symphony_client
     @symphony_client ||= SymphonyClient.new
