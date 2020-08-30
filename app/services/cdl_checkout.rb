@@ -4,10 +4,17 @@
 class CdlCheckout
   attr_reader :druid, :user
 
+  # @param barcode [String] item barcode
+  # @param druid [String]
+  # @param user [User]
+  # @return [Hash] token payload
   def self.checkout(barcode, druid, user)
     new(druid, user).process_checkout(barcode)
   end
 
+  # @param hold_record_key [String] Symphony hold record key
+  # @param user [User] user
+  # @return [Boolean]
   def self.checkin(hold_record_key, user)
     new(nil, user).process_checkin(hold_record_key)
   end
@@ -18,7 +25,14 @@ class CdlCheckout
   end
 
   ##
-  # @return token [String]
+  # Checkout does three things:
+  #  - finds or creates a TITLE level hold on the call record for the patron
+  #  - checks out an item to a CDL pseudopatron (NOTE: we select an eligible item
+  #      from the call list, so it may be different than the barcode that came in)
+  #  - updates the hold comment to link the hold to the actual checkout
+  #
+  # @param barcode [String] item barcode
+  # @return [Hash] token payload
   def process_checkout(barcode)
     item_info = CatalogInfo.find(barcode)
 
@@ -38,6 +52,13 @@ class CdlCheckout
     create_token(circ_record, hold.key)
   end
 
+  ##
+  # CDL checkins do three things:
+  #  - check in the item from the CDL pseudopatron
+  #  - remove the CDL hold for the patron
+  #  - (TODO:) add the token to the blocklist so it can't be used
+  # @param [String] cdl hold record key
+  # @return [Boolean]
   def process_checkin(hold_record_key)
     hold_record = user.patron.holds.find { |hold| hold.key == hold_record_key }
 
@@ -59,6 +80,10 @@ class CdlCheckout
     true
   end
 
+  private
+
+  # Create a token payload that suspiciously resembles
+  # a JWT payload.
   def create_token(circ_record, hold_record_id)
     {
       jti: circ_record.key,
@@ -103,8 +128,6 @@ class CdlCheckout
   def symphony_client
     @symphony_client ||= SymphonyClient.new
   end
-
-  private
 
   def check_for_symphony_errors(response)
     error_messages = Array.wrap(response&.dig('messageList')).map { |message| message.dig('message') }
