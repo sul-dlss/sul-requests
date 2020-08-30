@@ -40,7 +40,7 @@ class CatalogInfo
     return to_enum(:items) unless block_given?
 
     Array.wrap(fields.dig('call', 'fields', 'itemList')).each do |record|
-      CatalogInfo.new(record)
+      yield CatalogInfo.new(record)
     end
   end
 end
