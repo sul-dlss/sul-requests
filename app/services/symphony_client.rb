@@ -199,12 +199,17 @@ class SymphonyClient
   # rubocop:enable Metrics/ParameterLists, Metrics/MethodLength
 
   def cancel_hold(hold_record_id)
-    authenticated_request('/circulation/holdRecord/cancelHold', method: :post, json: {
-      holdRecord: {
-        resource: '/circulation/holdRecord',
-        key: hold_record_id
-      }
-    })
+    response = authenticated_request('/circulation/holdRecord/cancelHold', method: :post, json: {
+                                       holdRecord: {
+                                         resource: '/circulation/holdRecord',
+                                         key: hold_record_id
+                                       }
+                                     })
+    begin
+      JSON.parse(response)
+    rescue JSON::ParserError, HTTP::Error
+      nil
+    end
   end
 
   # rubocop:disable Metrics/MethodLength
