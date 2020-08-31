@@ -46,7 +46,8 @@ class CdlCheckout
     checkout = place_checkout(selected_item.barcode)
 
     circ_record = CircRecord.new(checkout&.dig('circRecord'))
-    update_hold_response = symphony_client.update_hold(hold.key, comment: "CDL;#{druid};#{circ_record.key};#{circ_record.due_date.iso8601}")
+    comment = "CDL;#{druid};#{circ_record.key};#{circ_record.due_date.to_i}"
+    update_hold_response = symphony_client.update_hold(hold.key, comment: comment)
     check_for_symphony_errors(update_hold_response)
 
     create_token(circ_record, hold.key)
