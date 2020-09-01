@@ -82,6 +82,15 @@ class SymphonyClient
     nil
   end
 
+  def hold_record_info(key)
+    response = authenticated_request("/circulation/holdRecord/key/#{key}", params: {
+                                       includeFields: '*'
+                                     })
+    JSON.parse(response.body)
+  rescue JSON::ParserError, HTTP::Error
+    nil
+  end
+
   def place_hold(**params)
     response = authenticated_request(
       '/circulation/holdRecord/placeHold',
