@@ -98,7 +98,9 @@ class CdlCheckout
   end
 
   def find_hold(callkey)
-    user.patron.holds.find { |hold_record| hold_record.item_call_key == callkey }
+    user.patron.holds.find do |hold_record|
+      hold_record.item_call_key == callkey && hold_record.active?
+    end
   end
 
   def place_hold(callkey)

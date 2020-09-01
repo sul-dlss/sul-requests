@@ -27,6 +27,14 @@ class HoldRecord
     record['fields'] || {}
   end
 
+  def status
+    fields.dig('status')
+  end
+
+  def active?
+    %w(PLACED).include?(status)
+  end
+
   def comment
     fields.dig('comment').to_s
   end
@@ -48,7 +56,7 @@ class HoldRecord
   end
 
   def circ_record
-    return unless cdl? && circ_record_key
+    return unless cdl? && circ_record_key && active?
 
     @circ_record ||= CircRecord.find(circ_record_key)
   end
