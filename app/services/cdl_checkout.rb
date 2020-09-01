@@ -38,7 +38,7 @@ class CdlCheckout
 
     hold = find_hold(item_info.callkey) || place_hold(item_info.callkey)
 
-    return create_token(hold.circ_record, hold.key) if hold.circ_record&.active?
+    return create_token(hold.circ_record, hold.key) if hold.circ_record&.exists?
 
     selected_item = item_info.items.find { |item| item.current_location != 'CHECKEDOUT' }
     raise(Exceptions::CdlCheckoutError, 'Unable to find eligible item') unless selected_item
