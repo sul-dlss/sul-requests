@@ -11,6 +11,7 @@ RSpec.describe CdlCheckout do
                     callkey: 'xyz',
                     items: items)
   end
+  let(:symphony_client) { instance_double(SymphonyClient) }
 
   let(:items) do
     [
@@ -20,6 +21,7 @@ RSpec.describe CdlCheckout do
 
   before do
     allow(user).to receive(:patron).and_return(Patron.new({}))
+    allow(SymphonyClient).to receive(:new).and_return(symphony_client)
   end
 
   describe '#process_checkout' do
@@ -44,8 +46,8 @@ RSpec.describe CdlCheckout do
     it 'places the hold, checks the item out, and creates a token' do
       allow(CatalogInfo).to receive(:find).with('abc123').and_return(catalog_info)
 
-      expect(subject.symphony_client).to receive(:place_hold)
-      expect(subject.symphony_client).to receive(:check_out_item).with('12345', 'CDL-CHECKEDOUT').and_return(
+      expect(symphony_client).to receive(:place_hold)
+      expect(symphony_client).to receive(:check_out_item).with('12345', 'CDL-CHECKEDOUT').and_return(
         {
           'circRecord' => {
             'fields' => {
@@ -54,6 +56,7 @@ RSpec.describe CdlCheckout do
           }
         }
       )
+      expect(symphony_client).to receive(:update_hold)
 
       payload = subject.process_checkout('abc123')
       expect(payload).to include sub: user.webauth
