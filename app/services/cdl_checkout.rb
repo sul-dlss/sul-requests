@@ -53,6 +53,7 @@ class CdlCheckout
     create_token(circ_record, hold.key)
   end
 
+  # rubocop:disable Metrics/CyclomaticComplexity
   ##
   # CDL checkins do three things:
   #  - check in the item from the CDL pseudopatron
@@ -80,6 +81,7 @@ class CdlCheckout
 
     true
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
 
   private
 

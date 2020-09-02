@@ -178,7 +178,7 @@ class SymphonyClient
     end
   end
 
-  # rubocop:disable Metrics/ParameterLists, Metrics/MethodLength
+  # rubocop:disable Metrics/ParameterLists
   def place_hold_params(
     fill_by_date:, key: 'GREEN', recall_status: 'STANDARD',
     item: {}, patron_barcode:, comment:,
@@ -205,7 +205,7 @@ class SymphonyClient
       }
     }
   end
-  # rubocop:enable Metrics/ParameterLists, Metrics/MethodLength
+  # rubocop:enable Metrics/ParameterLists
 
   def cancel_hold(hold_record_id)
     response = authenticated_request('/circulation/holdRecord/cancelHold', method: :post, json: {
@@ -221,7 +221,6 @@ class SymphonyClient
     end
   end
 
-  # rubocop:disable Metrics/MethodLength
   def patron_info(patron_key)
     response = authenticated_request("/user/patron/key/#{patron_key}", params: {
                                        includeFields: [
@@ -240,7 +239,6 @@ class SymphonyClient
       nil
     end
   end
-  # rubocop:enable Metrics/MethodLength
 
   def checkouts(patron_key)
     response = authenticated_request("/user/patron/key/#{patron_key}", params: {
