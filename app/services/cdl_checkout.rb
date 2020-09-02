@@ -38,10 +38,11 @@ class CdlCheckout
 
     hold = find_hold(item_info.callkey) || place_hold(item_info.callkey)
 
-    return create_token(hold.circ_record, hold.key) if hold.circ_record&.exists?
+    return { token: create_token(hold.circ_record, hold.key), hold: hold } if hold.circ_record&.exists?
 
     selected_item = item_info.items.find { |item| item.current_location != 'CHECKEDOUT' }
-    raise(Exceptions::CdlCheckoutError, 'Unable to find eligible item') unless selected_item
+
+    return { token: nil, hold: hold } unless selected_item
 
     checkout = place_checkout(selected_item.barcode)
 
@@ -50,7 +51,7 @@ class CdlCheckout
     update_hold_response = symphony_client.update_hold(hold.key, comment: comment)
     check_for_symphony_errors(update_hold_response)
 
-    create_token(circ_record, hold.key)
+    { token: create_token(circ_record, hold.key), hold: hold }
   end
 
   # rubocop:disable Metrics/CyclomaticComplexity

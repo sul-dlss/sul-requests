@@ -71,4 +71,8 @@ class HoldRecord
       record
     end
   end
+
+  def queue_position
+    fields.dig('queuePosition')
+  end
 end

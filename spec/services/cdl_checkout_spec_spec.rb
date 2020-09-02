@@ -59,7 +59,7 @@ RSpec.describe CdlCheckout do
       expect(symphony_client).to receive(:update_hold)
 
       payload = subject.process_checkout('abc123')
-      expect(payload).to include sub: user.webauth
+      expect(payload[:token]).to include sub: user.webauth
     end
   end
 end
