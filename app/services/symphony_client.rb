@@ -65,7 +65,7 @@ class SymphonyClient
               end
 
     response = authenticated_request("/catalog/item/barcode/#{ERB::Util.url_encode(key)}", params: {
-                                       includeFields: '*,call{*,itemList{*}},currentLocation'
+                                       includeFields: '*,bib{holdRecordList{*,item{call}}},call{*,itemList{*}},currentLocation'
                                      }, headers: headers)
 
     JSON.parse(response.body)

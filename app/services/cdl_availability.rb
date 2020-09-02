@@ -3,6 +3,7 @@
 # Availability check for CDL items
 class CdlAvailability
   attr_reader :barcode
+  delegate :items, to: :catalog_info
 
   def initialize(barcode)
     @barcode = barcode
@@ -14,7 +15,8 @@ class CdlAvailability
 
   def available
     earliest_due = nil
-    CatalogInfo.find(barcode).items.each do |item|
+
+    items.each do |item|
       circ_info = symphony_client.circ_information(item.barcode)
 
       ## A copy is available for CDL, so let it be known
@@ -24,9 +26,12 @@ class CdlAvailability
 
       earliest_due = item_due_date unless earliest_due && !item_due_date && earliest_due < item_due_date
     end
+
     {
       available: false,
-      dueDate: earliest_due
+      dueDate: earliest_due,
+      items: items.count,
+      waitlist: catalog_info.hold_records.length,
     }
   end
 
@@ -37,5 +42,9 @@ class CdlAvailability
   def parse_due_date(circ_info)
     date = circ_info&.dig('dueDate')
     DateTime.parse(date) if date
+  end
+
+  def catalog_info
+    @catalog_info ||= CatalogInfo.find(barcode)
   end
 end
