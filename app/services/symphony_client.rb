@@ -95,6 +95,7 @@ class SymphonyClient
     response = authenticated_request(
       '/circulation/holdRecord/placeHold',
       method: :post,
+      params: { includeFields: 'holdRecord{*}' },
       **place_hold_params(**params, override_code: Settings.symphony.override)
     )
     JSON.parse(response.body)
