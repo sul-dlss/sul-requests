@@ -46,7 +46,7 @@ class CdlCheckout
     checkout = place_checkout(selected_item.barcode)
 
     circ_record = CircRecord.new(checkout&.dig('circRecord'))
-    comment = "CDL;#{druid};#{circ_record.key};#{circ_record.due_date.to_i}"
+    comment = "CDL;#{druid};#{circ_record.key};#{circ_record.checkout_date.to_i}"
     update_hold_response = symphony_client.update_hold(hold.key, comment: comment)
     check_for_symphony_errors(update_hold_response)
 
@@ -87,7 +87,7 @@ class CdlCheckout
   # a JWT payload.
   def create_token(circ_record, hold_record_id)
     {
-      jti: circ_record.key,
+      jti: "#{circ_record.key}-#{circ_record.checkout_date.to_i}",
       iat: Time.zone.now.to_i,
       barcode: circ_record.item_barcode,
       aud: druid,
