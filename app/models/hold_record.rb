@@ -66,7 +66,7 @@ class HoldRecord
 
     @circ_record ||= begin
       record = CircRecord.find(circ_record_key)
-      return unless record.checkout_date == circ_record_checkout_date
+      return unless record.checkout_date == cdl_circ_record_checkout_date
 
       record
     end
