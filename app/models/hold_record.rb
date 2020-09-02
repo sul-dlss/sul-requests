@@ -55,9 +55,20 @@ class HoldRecord
     cdl_comment[2]
   end
 
-  def circ_record
-    return unless cdl? && circ_record_key && active?
+  def cdl_circ_record_checkout_date
+    return if cdl_comment[3].blank?
 
-    @circ_record ||= CircRecord.find(circ_record_key)
+    Time.zone.at(cdl_comment[3].to_i)
+  end
+
+  def circ_record
+    return unless cdl? && circ_record_key
+
+    @circ_record ||= begin
+      record = CircRecord.find(circ_record_key)
+      return unless record.checkout_date == circ_record_checkout_date
+
+      record
+    end
   end
 end

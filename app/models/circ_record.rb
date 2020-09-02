@@ -41,6 +41,12 @@ class CircRecord
     Time.zone.parse(fields.dig('dueDate'))
   end
 
+  def checkout_date
+    return unless fields.dig('checkoutDate')
+
+    Time.zone.parse(fields.dig('checkoutDate'))
+  end
+
   def active?
     status == 'ACTIVE'
   end
