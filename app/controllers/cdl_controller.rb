@@ -3,6 +3,7 @@
 # Controller to handle mediations for admins
 class CdlController < ApplicationController
   authorize_resource class: false
+  include ModalLayout
 
   before_action :set_origin_header, only: [:availability]
   rescue_from Exceptions::CdlCheckoutError, with: :handle_cdl_error
