@@ -42,9 +42,9 @@ class CircRecord
   end
 
   def checkout_date
-    return unless fields.dig('checkoutDate')
+    return unless fields.dig('checkOutDate')
 
-    Time.zone.parse(fields.dig('checkoutDate'))
+    Time.zone.parse(fields.dig('checkOutDate'))
   end
 
   def active?
