@@ -46,6 +46,12 @@ class CdlController < ApplicationController
     render
   end
 
+  def renew
+    renewal = CdlCheckout.renew(checkout_params['barcode'], checkout_params['id'], current_user)
+
+    redirect_to checkout_params['return_to'] + '?token=' + encode_token(renewal[:token])
+  end
+
   private
 
   def encode_token(payload)

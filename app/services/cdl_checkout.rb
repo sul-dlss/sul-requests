@@ -19,6 +19,14 @@ class CdlCheckout
     new(nil, user).process_checkin(hold_record_key)
   end
 
+  # @param barcode [String] item barcode
+  # @param druid [String]
+  # @param user [User]
+  # @return [Hash] token payload
+  def self.renew(barcode, druid, user)
+    new(druid, user).process_renewal(barcode)
+  end
+
   def initialize(druid, user)
     @druid = druid
     @user = user
@@ -52,6 +60,28 @@ class CdlCheckout
     check_for_symphony_errors(update_hold_response)
 
     { token: create_token(circ_record, hold.key), hold: hold }
+  end
+
+  def process_renewal(barcode)
+    item_info = CatalogInfo.find(barcode)
+    hold = find_hold(item_info.callkey)
+
+    raise(Exceptions::CdlCheckoutError, 'Could not find hold record') unless hold&.exists? && hold&.cdl?
+    raise(Exceptions::CdlCheckoutError, 'Could not find circ record') unless hold&.circ_record&.exists?
+
+    due_date = hold.circ_record.due_date
+
+    # Our time for newewal is w/i 5 minuts, we're adding an addl. minute of slop here
+    raise(Exceptions::CdlCheckoutError, 'Item not renewable') if due_date.before?(6.minutes.ago)
+
+    renewal = place_renewal(hold.item_key)
+
+    circ_record = CircRecord.new(renewal&.dig('circRecord'))
+    comment = "CDL;#{druid};#{circ_record.key};#{circ_record.checkout_date.to_i}"
+    update_hold_response = symphony_client.update_hold(hold.key, comment: comment)
+    check_for_symphony_errors(update_hold_response)
+
+    create_token(circ_record, hold.key)
   end
 
   # rubocop:disable Metrics/CyclomaticComplexity
@@ -125,6 +155,14 @@ class CdlCheckout
 
   def place_checkout(selected_barcode)
     response = symphony_client.check_out_item(selected_barcode, Settings.cdl.pseudo_patron_id)
+
+    check_for_symphony_errors(response)
+
+    response
+  end
+
+  def place_renewal(selected_barcode)
+    response = symphony_client.renew_item(selected_barcode, Settings.cdl.pseudo_patron_id)
 
     check_for_symphony_errors(response)
 
