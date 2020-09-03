@@ -55,8 +55,20 @@ class HoldRecord
     comment.split(';')
   end
 
+  def druid
+    cdl_comment[1]
+  end
+
   def circ_record_key
-    cdl_comment[2]
+    cdl_comment[2].presence
+  end
+
+  def next_up_cdl?
+    cdl_comment[4].present?
+  end
+
+  def patron
+    @patron ||= Patron.find_by(patron_key: fields.dig('patron', 'key'))
   end
 
   def cdl_circ_record_checkout_date

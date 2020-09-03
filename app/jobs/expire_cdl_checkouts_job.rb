@@ -15,8 +15,7 @@ class ExpireCdlCheckoutsJob < ApplicationJob
       record.active? && record.cdl? && record.circ_record_key == checkout.key
     end
     symphony_client.cancel_hold(active_hold_record.key) if active_hold_record
-    symphony_client.check_in_item(circ_record.item_barcode)
-    # TODO: waitlist stuff
+    CdlWaitlistJob.perform_now(checkout.key, checkout_date: circ_record.checkout_date)
   end
 
   def symphony_client

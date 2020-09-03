@@ -166,6 +166,21 @@ class SymphonyClient
     end
   end
 
+  def edit_circ_record_info(circ_record_key, **params)
+    response = authenticated_request(
+      "/circulation/circRecord/key/#{circ_record_key}",
+      method: :put,
+      json: {
+        resource: '/circulation/circRecord',
+        key: circ_record_key,
+        fields: params
+      }
+    )
+    JSON.parse(response.body)
+  rescue JSON::ParserError, HTTP::Error
+    nil
+  end
+
   def renew_item(item_barcode, patron_barcode)
     sd_prompt_return = [
       "CIRC_NONCHARGEABLE_OVRCD/#{Settings.symphony.override}",
