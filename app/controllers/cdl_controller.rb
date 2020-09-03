@@ -50,7 +50,7 @@ class CdlController < ApplicationController
     payload, _headers = decode_token(renew_params['token'])
     renewal = CdlCheckout.renew(payload['barcode'], payload['aud'], current_user)
 
-    redirect_to renew_params['return_to'] + '?token=' + encode_token(renewal[:token])
+    redirect_to renew_params['return_to'] + '?token=' + encode_token(renewal)
   end
 
   private
