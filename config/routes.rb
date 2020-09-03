@@ -26,6 +26,7 @@ Rails.application.routes.draw do
 
   get '/cdl/checkin' => 'cdl#checkin'
   get '/cdl/checkout' => 'cdl#checkout'
+  get '/cdl/renew' => 'cdl#renew'
   get '/cdl/availability/:barcode' => 'cdl#availability'
 
   concern :creatable_via_get_redirect do
