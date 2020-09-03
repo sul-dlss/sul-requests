@@ -55,7 +55,10 @@ class CdlCheckout
 
       selected_item = item_info.items.select(&:cdlable?).find { |item| item.current_location != 'CHECKEDOUT' }
 
-      return { token: nil, hold: hold } unless selected_item
+      unless selected_item
+        CdlWaitlistMailer.on_waitlist(hold.key).deliver_later
+        return { token: nil, hold: hold }
+      end
 
       checkout = place_checkout(selected_item.barcode, dueDate: item_info.loan_period.from_now.iso8601)
       circ_record = CircRecord.new(checkout&.dig('circRecord'))
@@ -105,18 +108,13 @@ class CdlCheckout
 
     raise(Exceptions::CdlCheckoutError, 'Could not find hold record') unless hold_record&.exists? && hold_record&.cdl?
 
-    ## Check the item back in and cancel the hold
-    if hold_record.circ_record&.exists?
-      unless hold_record.circ_record.patron_barcode == Settings.cdl.pseudo_patron_id
-        raise(Exceptions::CdlCheckoutError, 'Item not checked out for digital lending')
-      end
+    cancel_hold_response = symphony_client.cancel_hold(hold_record.key)
 
+    if hold_record.circ_record&.exists?
       invalidate_jwt_token(hold_record.circ_record, hold_record_key)
-      checkin_response = symphony_client.check_in_item(hold_record.circ_record.item_barcode)
-      check_for_symphony_errors(checkin_response)
+      CdlWaitlistJob.perform_later(hold_record.circ_record.key, checkout_date: hold_record.circ_record.checkout_date)
     end
 
-    cancel_hold_response = symphony_client.cancel_hold(hold_record.key)
     check_for_symphony_errors(cancel_hold_response)
 
     true

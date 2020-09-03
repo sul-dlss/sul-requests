@@ -84,6 +84,7 @@ describe CdlController do
       end
 
       it 'if no token exists render success' do
+        expect(CdlCheckout).to receive(:checkout).and_return({})
         get :checkout, params: { id: 'ab123cd4567', barcode: '123456' }
         expect(response).to be_successful
       end

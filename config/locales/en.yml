@@ -103,6 +103,7 @@ en:
     formats:
       short: '%Y-%m-%d %l.%M%P'
       formal: '%A, %b %-d %Y at %l:%M%P'
+      time_only: '%l:%M%P %Z'
   forms:
     labels:
       SAL-NEWARK:

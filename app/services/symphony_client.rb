@@ -67,7 +67,7 @@ class SymphonyClient
     response = authenticated_request("/catalog/item/barcode/#{ERB::Util.url_encode(key)}", params: {
                                        includeFields: [
                                          '*',
-                                         'bib{holdRecordList{*,item{call}}}',
+                                         'bib{holdRecordList{*,item{call,bib{title}}}}',
                                          'call{*,itemList{*}}',
                                          'currentLocation'
                                        ].join(',')
@@ -89,7 +89,7 @@ class SymphonyClient
 
   def hold_record_info(key)
     response = authenticated_request("/circulation/holdRecord/key/#{key}", params: {
-                                       includeFields: '*'
+                                       includeFields: '*,patron{email},item{call,bib{title}}'
                                      })
     JSON.parse(response.body)
   rescue JSON::ParserError, HTTP::Error
@@ -100,7 +100,7 @@ class SymphonyClient
     response = authenticated_request(
       '/circulation/holdRecord/placeHold',
       method: :post,
-      params: { includeFields: 'holdRecord{*}' },
+      params: { includeFields: 'holdRecord{*,item{call,bib{title}}}' },
       **place_hold_params(**params, override_code: Settings.symphony.override)
     )
     JSON.parse(response.body)
@@ -264,7 +264,7 @@ class SymphonyClient
                                          'profile{chargeLimit}',
                                          'customInformation{*}',
                                          'groupSettings{*,group{memberList{*,address1}}}',
-                                         'holdRecordList{*,item{call}}'
+                                         'holdRecordList{*,item{call,bib{title}}}'
                                        ].join(',')
                                      })
 
@@ -290,7 +290,7 @@ class SymphonyClient
   end
 
   def circ_record_info(circ_record_key, return_holds: false)
-    hold_return = return_holds ? 'item{barcode,bib{holdRecordList{*,item{call}}}}' : 'item{barcode}'
+    hold_return = return_holds ? 'item{barcode,bib{holdRecordList{*,item{call,bib{title}}}}}' : 'item{barcode}'
     response = authenticated_request("/circulation/circRecord/key/#{circ_record_key}", params: {
                                        includeFields: [
                                          '*',

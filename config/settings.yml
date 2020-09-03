@@ -129,3 +129,12 @@ cdl:
     algorithm: 'HS256'
     secret: secret
   redis: {}
+
+embed:
+  url: https://embed.stanford.edu
+
+purl:
+  url: https://purl.stanford.edu
+
+mylibrary:
+  url: https://mylibrary.stanford.edu/
