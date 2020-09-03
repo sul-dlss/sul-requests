@@ -39,6 +39,10 @@ class HoldRecord
     fields.dig('comment').to_s
   end
 
+  def item_key
+    fields.dig('item', 'key')
+  end
+
   def item_call_key
     fields.dig('item', 'fields', 'call', 'key')
   end

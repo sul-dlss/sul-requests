@@ -37,6 +37,13 @@ class CdlController < ApplicationController
     render
   end
 
+  def renew
+    payload, _headers = decode_token(renew_params['token'])
+    renewal = CdlCheckout.renew(payload['barcode'], payload['aud'], current_user)
+
+    redirect_to renew_params['return_to'] + '?token=' + encode_token(renewal)
+  end
+
   private
 
   def encode_token(payload)
@@ -69,5 +76,9 @@ class CdlController < ApplicationController
 
   def checkin_params
     params.permit(:token, :return_to, :hold_record_key)
+  end
+
+  def renew_params
+    params.permit(:token, :return_to)
   end
 end
