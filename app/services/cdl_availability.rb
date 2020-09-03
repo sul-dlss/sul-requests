@@ -20,18 +20,23 @@ class CdlAvailability
       circ_info = symphony_client.circ_information(item.barcode)
 
       ## A copy is available for CDL, so let it be known
-      return { available: true } if ['ON_SHELF', 'ON_RESERVE'].include?(circ_info&.dig('currentStatus'))
+      if ['ON_SHELF', 'ON_RESERVE'].include?(circ_info&.dig('currentStatus'))
+        return { available: true, items: items.count, waitlist: catalog_info.hold_records.length }
+      end
 
       item_due_date = parse_due_date(circ_info)
 
-      earliest_due = item_due_date unless earliest_due && !item_due_date && earliest_due < item_due_date
+      earliest_due = item_due_date if earliest_due.blank?
+      next if item_due_date.blank?
+
+      earliest_due = item_due_date unless earliest_due < item_due_date
     end
 
     {
       available: false,
       dueDate: earliest_due,
       items: items.count,
-      waitlist: catalog_info.hold_records.length,
+      waitlist: catalog_info.hold_records.length
     }
   end
 
