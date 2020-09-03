@@ -102,14 +102,8 @@ class CdlCheckout
 
     raise(Exceptions::CdlCheckoutError, 'Could not find hold record') unless hold_record&.exists? && hold_record&.cdl?
 
-    ## Check the item back in and cancel the hold
     if hold_record.circ_record&.exists?
-      unless hold_record.circ_record.patron_barcode == Settings.cdl.pseudo_patron_id
-        raise(Exceptions::CdlCheckoutError, 'Item not checked out for digital lending')
-      end
-
-      checkin_response = symphony_client.check_in_item(hold_record.circ_record.item_barcode)
-      check_for_symphony_errors(checkin_response)
+      CdlWaitlistJob.perform_later(circ_record.key, checkout_date: circ_record.checkout_date)
     end
 
     cancel_hold_response = symphony_client.cancel_hold(hold_record.key)
