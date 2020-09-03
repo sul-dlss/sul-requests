@@ -46,15 +46,20 @@ class CdlCheckout
 
     hold = find_hold(item_info.callkey) || place_hold(item_info.callkey)
 
-    return { token: create_token(hold.circ_record, hold.key), hold: hold } if hold.circ_record&.exists?
+    if hold.next_up_cdl?
+      circ_record = hold.circ_record
+      symphony_client.edit_circ_record_info(circ_record.key, dueDate: item_info.loan_period.from_now.iso8601)
+    else
+      return { token: create_token(hold.circ_record, hold.key), hold: hold } if hold.circ_record&.exists?
 
-    selected_item = item_info.items.find { |item| item.current_location != 'CHECKEDOUT' }
+      selected_item = item_info.items.find { |item| item.current_location != 'CHECKEDOUT' }
 
-    return { token: nil, hold: hold } unless selected_item
+      return { token: nil, hold: hold } unless selected_item
 
-    checkout = place_checkout(selected_item.barcode)
+      checkout = place_checkout(selected_item.barcode, dueDate: item_info.loan_period.from_now.iso8601)
+      circ_record = CircRecord.new(checkout&.dig('circRecord'))
+    end
 
-    circ_record = CircRecord.new(checkout&.dig('circRecord'))
     comment = "CDL;#{druid};#{circ_record.key};#{circ_record.checkout_date.to_i}"
     update_hold_response = symphony_client.update_hold(hold.key, comment: comment)
     check_for_symphony_errors(update_hold_response)
@@ -74,7 +79,7 @@ class CdlCheckout
     # Our time for newewal is w/i 5 minuts, we're adding an addl. minute of slop here
     raise(Exceptions::CdlCheckoutError, 'Item not renewable') if due_date.before?(6.minutes.ago)
 
-    renewal = place_renewal(hold.item_key)
+    renewal = place_renewal(hold.item_key, dueDate: item_info.loan_period.from_now.iso8601)
 
     circ_record = CircRecord.new(renewal&.dig('circRecord'))
     comment = "CDL;#{druid};#{circ_record.key};#{circ_record.checkout_date.to_i}"
@@ -153,16 +158,16 @@ class CdlCheckout
     HoldRecord.new(response&.dig('holdRecord') || {})
   end
 
-  def place_checkout(selected_barcode)
-    response = symphony_client.check_out_item(selected_barcode, Settings.cdl.pseudo_patron_id)
+  def place_checkout(selected_barcode, **additional_params)
+    response = symphony_client.check_out_item(selected_barcode, Settings.cdl.pseudo_patron_id, **additional_params)
 
     check_for_symphony_errors(response)
 
     response
   end
 
-  def place_renewal(selected_barcode)
-    response = symphony_client.renew_item(selected_barcode, Settings.cdl.pseudo_patron_id)
+  def place_renewal(selected_barcode, **additional_params)
+    response = symphony_client.renew_item(selected_barcode, Settings.cdl.pseudo_patron_id, **additional_params)
 
     check_for_symphony_errors(response)
 

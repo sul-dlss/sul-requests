@@ -24,17 +24,22 @@ class CdlWaitlistJob < ApplicationJob
 
     symphony_client.cancel_hold(next_available_hold.key) if next_available_hold.present?
 
-    # If none or the next available is really the only one, check back in
-    return symphony_client.check_in_item(circ_record.item_barcode) if remaining_holds.empty?
+    symphony_client.check_in_item(circ_record.item_barcode)
+
+    return if remaining_holds.blank?
+
+    checkout = symphony_client.check_out_item(
+      circ_record.item_barcode, Settings.cdl.pseudo_patron_id, dueDate: 30.minutes.from_now.iso8601
+    )
+
+    new_circ_record = CircRecord.new(checkout&.dig('circRecord'))
 
     # Figure out which hold is next
     next_up = remaining_holds.min(&:key)
 
     # Update hold record so its next
-    comment = "CDL;#{next_up.druid};#{circ_record.key};;NEXT_UP"
+    comment = "CDL;#{next_up.druid};#{circ_record.key};#{new_circ_record.checkout_date.to_i};NEXT_UP"
     symphony_client.update_hold(next_up.key, comment: comment)
-
-    symphony_client.edit_circ_record_info(circ_record.key, { dueDate: 30.minutes.from_now.iso8601 })
 
     # Send patron an email
     CdlWaitlistMailer.youre_up(next_up).deliver_now

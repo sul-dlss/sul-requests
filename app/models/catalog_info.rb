@@ -36,6 +36,10 @@ class CatalogInfo
     fields.dig('call', 'key')
   end
 
+  def loan_period
+    2.hours
+  end
+
   def items
     return to_enum(:items) unless block_given?
 

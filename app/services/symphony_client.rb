@@ -143,7 +143,7 @@ class SymphonyClient
     end
   end
 
-  def check_out_item(item_barcode, patron_barcode)
+  def check_out_item(item_barcode, patron_barcode, **params)
     sd_prompt_return = [
       "CIRC_NONCHARGEABLE_OVRCD/#{Settings.symphony.override}",
       "HOLD_NO_HOLDS_OVRCD/#{Settings.symphony.override}",
@@ -155,7 +155,7 @@ class SymphonyClient
                                      }, json: {
                                        itemBarcode: item_barcode,
                                        patronBarcode: patron_barcode
-                                     }, headers: {
+                                     }.merge(params), headers: {
                                        'SD-Prompt-Return': sd_prompt_return.join(';'),
                                        'SD-Working-LibraryID': 'SUL'
                                      })
@@ -181,7 +181,7 @@ class SymphonyClient
     nil
   end
 
-  def renew_item(item_barcode, patron_barcode)
+  def renew_item(item_barcode, patron_barcode, **params)
     sd_prompt_return = [
       "CIRC_NONCHARGEABLE_OVRCD/#{Settings.symphony.override}",
       "HOLD_NO_HOLDS_OVRCD/#{Settings.symphony.override}",
@@ -196,8 +196,7 @@ class SymphonyClient
                                          key: item_barcode,
                                          resource: '/catalog/item'
                                        },
-                                       # itemBarcode: item_barcode,
-                                       patronBarcode: patron_barcode
+                                       patronBarcode: patron_barcode, **params
                                      }, headers: {
                                        'SD-Prompt-Return': sd_prompt_return.join(';'),
                                        'SD-Working-LibraryID': 'SUL'
