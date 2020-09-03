@@ -103,7 +103,7 @@ class CdlCheckout
     raise(Exceptions::CdlCheckoutError, 'Could not find hold record') unless hold_record&.exists? && hold_record&.cdl?
 
     if hold_record.circ_record&.exists?
-      CdlWaitlistJob.perform_later(circ_record.key, checkout_date: circ_record.checkout_date)
+      CdlWaitlistJob.perform_later(hold_record.circ_record.key, checkout_date: hold_record.circ_record.checkout_date)
     end
 
     cancel_hold_response = symphony_client.cancel_hold(hold_record.key)
