@@ -49,4 +49,12 @@ class CatalogInfo
       callkey == record.item_call_key && record.active?
     end
   end
+
+  def circulation_map
+    @loan_period ||= SymphonyClient.new.circulation_map(barcode, Settings.cdl.pseudo_patron_id, library: fields.dig('library', 'key'))
+  end
+
+  def loan_period
+    circulation_map&.dig('fields', 'circulationRule', 'fields', 'loanPeriod')
+  end
 end

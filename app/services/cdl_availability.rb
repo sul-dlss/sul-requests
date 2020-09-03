@@ -20,7 +20,7 @@ class CdlAvailability
       circ_info = symphony_client.circ_information(item.barcode)
 
       ## A copy is available for CDL, so let it be known
-      return { available: true } if ['ON_SHELF', 'ON_RESERVE'].include?(circ_info&.dig('currentStatus'))
+      return { available: true, loan_period: loan_period } if ['ON_SHELF', 'ON_RESERVE'].include?(circ_info&.dig('currentStatus'))
 
       item_due_date = parse_due_date(circ_info)
 
@@ -31,6 +31,7 @@ class CdlAvailability
       available: false,
       dueDate: earliest_due,
       items: items.count,
+      loan_period: loan_period,
       waitlist: catalog_info.hold_records.length,
     }
   end
@@ -46,5 +47,22 @@ class CdlAvailability
 
   def catalog_info
     @catalog_info ||= CatalogInfo.find(barcode)
+  end
+
+  def loan_period
+    return unless catalog_info.loan_period
+
+    description = catalog_info.loan_period.dig('fields', 'description')
+
+    return description if description.present? && description != '0'
+
+    count = catalog_info.loan_period.dig('fields', 'periodCount')
+    type = catalog_info.loan_period.dig('fields', 'periodType', 'key')
+
+    if count.zero?
+      I18n.t('zero', scope: ['symphony', 'loan_period', type], count: count)
+    else
+      I18n.t(type, scope:['symphony', 'loan_period'], count: count)
+    end
   end
 end

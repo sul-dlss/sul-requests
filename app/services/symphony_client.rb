@@ -272,6 +272,30 @@ class SymphonyClient
     end
   end
 
+  def circulation_map(item_barcode, patron_barcode, library:, parameterNumber: 'CIRC')
+    response = authenticated_request('/circulation/circRecord/circRuleDriver', method: :post, params: {
+                                         includeFields: [
+                                           'circulationMap{circulationRule{*,loanPeriod{*}}}'
+                                         ].join(',')
+                                       },
+                                       json: {
+                                         parameterNumber: parameterNumber,
+                                         itemBarcode: item_barcode,
+                                         patronBarcode: patron_barcode,
+                                         library:  {
+                                           resource: '/policy/library',
+                                           key: library,
+                                         }
+                                       })
+
+    begin
+      JSON.parse(response.body)&.dig('circulationMap') || {}
+    rescue JSON::ParserError
+      {}
+    end
+
+  end
+
   private
 
   def response_prompt(response)

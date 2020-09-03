@@ -153,6 +153,10 @@ en:
       default:
         alert_html: "We were unable to process your request because of a system error. Please try again, or contact <a href='mailto:greencirc@stanford.edu'>greencirc@stanford.edu</a> for more assistance."
     mixed_failure_html: "<p>There was a problem with one or more of your items below.</p><p>Please contact <a href='mailto:greencirc@stanford.edu'>greencirc@stanford.edu</a></p>"
+  symphony:
+    loan_period:
+      DAILY:
+        zero: 'same-day'
   shared:
     item_selector:
       help_text:
