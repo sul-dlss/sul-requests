@@ -3,6 +3,8 @@
 # Auto expire CDL Checkouts and holds
 class ExpireCdlCheckoutsJob < ApplicationJob
   def perform
+    return unless Settings.cdl.enabled
+
     patron = Patron.find_by(library_id: Settings.cdl.pseudo_patron_id)
     patron.checkouts.select(&:overdue?).each do |checkout|
       expire_overdue_checkout(checkout)
