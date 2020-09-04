@@ -15,14 +15,16 @@ class CdlAvailability
 
   def available
     earliest_due = nil
-
+    response = {
+      items: items.count,
+      loanPeriod: catalog_info.loan_period,
+      waitlist: catalog_info.hold_records.length
+    }
     items.each do |item|
       circ_info = symphony_client.circ_information(item.barcode)
 
       ## A copy is available for CDL, so let it be known
-      if ['ON_SHELF', 'ON_RESERVE'].include?(circ_info&.dig('currentStatus'))
-        return { available: true, items: items.count, waitlist: catalog_info.hold_records.length }
-      end
+      return response.merge({ available: true }) if ['ON_SHELF', 'ON_RESERVE'].include?(circ_info&.dig('currentStatus'))
 
       item_due_date = parse_due_date(circ_info)
 
@@ -34,10 +36,8 @@ class CdlAvailability
 
     {
       available: false,
-      dueDate: earliest_due,
-      items: items.count,
-      waitlist: catalog_info.hold_records.length
-    }
+      dueDate: earliest_due
+    }.merge(response)
   end
 
   def symphony_client
