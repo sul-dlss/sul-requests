@@ -73,9 +73,11 @@ class Ability
 
     cannot :create, Scan unless user.super_admin? || current_user_in_scan_pilot_group?
 
-    can :checkin, :cdl if user.webauth_user?
-    can :checkout, :cdl if user.webauth_user?
-    can :availability, :cdl if true == true
+    if Settings.cdl.enabled
+      can :checkin, :cdl if user.webauth_user?
+      can :checkout, :cdl if user.webauth_user?
+      can :availability, :cdl if true == true
+    end
   end
   # rubocop:enable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/MethodLength
 

@@ -4,3 +4,6 @@ token_encrypt:
   salt: 'dcVNcekAYNIFtggdJXQpSkWHBpBVsVsPiRzCFpWbZGLrQtHKSdMBKIWKmYYIZnkbXuMisFlSkHbUmIimKMbjFMVDpfzyIRLvmLYBUparuPAaxYjPzdmFfRGBGgxfvwOR'
 
 mailer_host: 'localhost:3000'
+
+cdl:
+  enabled: true

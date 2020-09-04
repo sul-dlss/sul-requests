@@ -123,6 +123,7 @@ symws:
   login_params: {}
 
 cdl:
+  enabled: false
   pseudo_patron_id: CDL-CHECKEDOUT
   jwt:
     algorithm: 'HS256'
