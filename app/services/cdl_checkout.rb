@@ -195,6 +195,6 @@ class CdlCheckout
   def redis
     return unless Settings.cdl.redis || ENV['REDIS_URL']
 
-    @redis ||= Redis.new(Settings.cdl.redis)
+    @redis ||= Redis.new(Settings.cdl.redis.to_h)
   end
 end
