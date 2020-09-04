@@ -103,6 +103,7 @@ class CdlCheckout
     raise(Exceptions::CdlCheckoutError, 'Could not find hold record') unless hold_record&.exists? && hold_record&.cdl?
 
     if hold_record.circ_record&.exists?
+      invalidate_jwt_token(hold_record.circ_record)
       CdlWaitlistJob.perform_later(hold_record.circ_record.key, checkout_date: hold_record.circ_record.checkout_date)
     end
 
@@ -176,5 +177,24 @@ class CdlCheckout
     error_messages = Array.wrap(response&.dig('messageList')).map { |message| message.dig('message') }
 
     raise(Exceptions::SymphonyError, error_messages.join(' ')) if error_messages.present?
+  end
+
+  def invalidate_jwt_token(circ_record)
+    return unless redis
+    key = "#{circ_record.key}-#{circ_record.checkout_date.to_i}"
+
+    redis.multi do
+      redis.set("cdl.#{key}", 'expired')
+      redis.expireat("#{key}", circ_record.due_date.to_i)
+    end
+  rescue => e
+    Honeybadger.notify(e) if Rails.env.production?
+    Rails.logger.error(e)
+  end
+
+  def redis
+    return unless Settings.cdl.redis || ENV['REDIS_URL']
+
+    @redis ||= Redis.new(Settings.cdl.redis)
   end
 end
