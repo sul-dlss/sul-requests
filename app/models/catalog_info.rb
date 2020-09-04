@@ -37,7 +37,7 @@ class CatalogInfo
   end
 
   def loan_period
-    2.hours
+    (fields.dig('itemCategory3', 'bad')&.scan(/^CDL-(\d+)H$/)&.flatten&.first&.to_i || 2).hours
   end
 
   def items
