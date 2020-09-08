@@ -9,7 +9,7 @@ class SubmitScanRequestJob < ApplicationJob
   def perform(scan)
     response = IlliadRequest.new(scan).request!
 
-    scan.update(illiad_response_data: response.body)
+    scan.update(illiad_response_data: JSON.parse(response.body) || {})
 
     scan.send_to_symphony_later!
   end

@@ -22,7 +22,7 @@
 
     <% if current_request.illiad_response_data.present? %>
       <h4>Illiad Response</h4>
-      <pre class="well"><%= current_request.illiad_response_data %></pre>
+      <pre class="well"><%= JSON.pretty_generate(current_request.illiad_response_data) %></pre>
     <% end %>
   <% end %>
 </div>
