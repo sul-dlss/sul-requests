@@ -4,8 +4,6 @@
 #  Class to handle creation of ILLiad request
 ###
 class IlliadRequest
-  include IlliadClient
-
   def initialize(current_user, scan)
     @current_user = current_user
     @scan = scan
@@ -32,7 +30,7 @@ class IlliadRequest
   # rubocop:enable Metrics/MethodLength
 
   def response
-    connection_with_headers.post(
+    faraday_conn_w_req_headers.post(
       'ILLiadWebPlatform/Transaction/', illiad_transaction_request
     )
   rescue Faraday::ConnectionFailed => e
@@ -80,5 +78,16 @@ class IlliadRequest
 
   def first_holding
     @scan.holdings.first
+  end
+
+  def faraday_conn_w_req_headers
+    Faraday.new(url: Settings.sul_illiad) do |req|
+      req.adapter Faraday.default_adapter
+      req.headers = {
+        'ApiKey': Settings.illiad_api_key,
+        'Accept': 'application/json; version=1',
+        'Content-type': 'application/json'
+      }
+    end
   end
 end

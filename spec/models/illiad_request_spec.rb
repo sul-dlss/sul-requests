@@ -7,7 +7,6 @@ describe IlliadRequest do
 
   let(:user) { create(:webauth_user) }
   let(:scan) { create(:scan_with_holdings_barcodes) }
-  let(:client) { subject.connection_with_headers }
 
   describe 'illiad request json' do
     it 'includes the correct illiad routing info' do
@@ -89,9 +88,10 @@ describe IlliadRequest do
 
     describe '#faraday_conn_w_req_headers' do
       it 'has required headers' do
-        expect(client.headers).to include('ApiKey')
-        expect(client.headers).to include('Accept' => 'application/json; version=1')
-        expect(client.headers).to include('Content-type' => 'application/json')
+        faraday_conn = subject.send(:faraday_conn_w_req_headers)
+        expect(faraday_conn.headers).to include('ApiKey')
+        expect(faraday_conn.headers).to include('Accept' => 'application/json; version=1')
+        expect(faraday_conn.headers).to include('Content-type' => 'application/json')
       end
     end
   end
