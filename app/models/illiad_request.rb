@@ -13,6 +13,7 @@ class IlliadRequest
   end
 
   def request!
+    puts "Submitting Scan request to Illiad url #{illiad_url} path: \"ILLiadWebPlatform/Transaction/\" params #{illiad_transaction_request}"
     faraday_conn_w_req_headers.post('ILLiadWebPlatform/Transaction/', illiad_transaction_request)
   end
 
