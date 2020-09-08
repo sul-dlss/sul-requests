@@ -3,7 +3,6 @@
 # Availability check for CDL items
 class CdlAvailability
   attr_reader :barcode
-  delegate :items, to: :catalog_info
 
   def initialize(barcode)
     @barcode = barcode
@@ -51,5 +50,9 @@ class CdlAvailability
 
   def catalog_info
     @catalog_info ||= CatalogInfo.find(barcode)
+  end
+
+  def items
+    catalog_info.items.select(&:cdlable?)
   end
 end

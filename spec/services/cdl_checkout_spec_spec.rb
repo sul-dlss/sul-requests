@@ -9,13 +9,14 @@ RSpec.describe CdlCheckout do
   let(:catalog_info) do
     instance_double(CatalogInfo,
                     callkey: 'xyz',
+                    loan_period: 2.hours,
                     items: items)
   end
   let(:symphony_client) { instance_double(SymphonyClient) }
 
   let(:items) do
     [
-      instance_double(CatalogInfo, barcode: '12345', current_location: 'CDL-RESERVE')
+      instance_double(CatalogInfo, barcode: '12345', cdlable?: true, current_location: 'CDL-RESERVE')
     ]
   end
 
@@ -47,7 +48,7 @@ RSpec.describe CdlCheckout do
       allow(CatalogInfo).to receive(:find).with('abc123').and_return(catalog_info)
 
       expect(symphony_client).to receive(:place_hold)
-      expect(symphony_client).to receive(:check_out_item).with('12345', 'CDL-CHECKEDOUT').and_return(
+      expect(symphony_client).to receive(:check_out_item).with('12345', 'CDL-CHECKEDOUT', dueDate: anything).and_return(
         {
           'circRecord' => {
             'fields' => {

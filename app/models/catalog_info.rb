@@ -40,6 +40,10 @@ class CatalogInfo
     (fields.dig('itemCategory3', 'dig')&.scan(/^CDL-(\d+)H$/)&.flatten&.first&.to_i || 2).hours
   end
 
+  def cdlable?
+    home_location == 'CDL'
+  end
+
   def items
     return to_enum(:items) unless block_given?
 

@@ -52,7 +52,7 @@ class CdlCheckout
     else
       return { token: create_token(hold.circ_record, hold.key), hold: hold } if hold.circ_record&.exists?
 
-      selected_item = item_info.items.find { |item| item.current_location != 'CHECKEDOUT' }
+      selected_item = item_info.items.select(&:cdlable?).find { |item| item.current_location != 'CHECKEDOUT' }
 
       return { token: nil, hold: hold } unless selected_item
 

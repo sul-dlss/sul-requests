@@ -99,4 +99,46 @@ describe CatalogInfo do
       end
     end
   end
+  describe '#cdlable?' do
+    before do
+      stub_request(:get, %r{https://example.com/symws/catalog/item/barcode/36105123456789?.*})
+        .to_return(response)
+    end
+
+    let(:response) do
+      {
+        body: '{
+          "resource": "/catalog/item",
+          "key": "666:2:1",
+          "fields": {
+            "homeLocation": {
+              "resource": "/policy/location",
+              "key": "STACKS"
+            }
+          }
+        }'
+      }
+    end
+
+    it { is_expected.not_to be_cdlable }
+
+    context 'with the right home location' do
+      let(:response) do
+        {
+          body: '{
+            "resource": "/catalog/item",
+            "key": "666:2:1",
+            "fields": {
+              "homeLocation": {
+                "resource": "/policy/location",
+                "key": "CDL"
+              }
+            }
+          }'
+        }
+      end
+
+      it { is_expected.to be_cdlable }
+    end
+  end
 end
