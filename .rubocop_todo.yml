@@ -158,12 +158,6 @@ RSpec/LetSetup:
   Exclude:
     - 'spec/features/mark_as_complete_spec.rb'
 
-# Offense count: 64
-# Configuration parameters: .
-# SupportedStyles: have_received, receive
-RSpec/MessageSpies:
-  EnforcedStyle: receive
-
 # Offense count: 289
 RSpec/MultipleExpectations:
   Max: 16

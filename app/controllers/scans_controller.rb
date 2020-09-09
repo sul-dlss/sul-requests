@@ -4,12 +4,6 @@
 #  Controller to handle particular behaviors for Scan type requests
 ###
 class ScansController < RequestsController
-  # Redirect to the illiad_url unless the illiad_success
-  # parameter (that we in the illiad_url method) is present
-  before_action only: :create do
-    redirect_to illiad_url unless params[:illiad_success]
-  end
-
   protected
 
   def rescue_can_can(exception)
@@ -31,17 +25,6 @@ class ScansController < RequestsController
       item_id: @request.item_id,
       barcodes: params[:request][:barcodes].to_unsafe_h # Pulling barcodes from params so they are not transformed
     }.merge(request_context_params)
-  end
-
-  def illiad_url
-    redirect_url = create_scans_url(
-      request_context_params.merge(
-        request: params[:request].to_unsafe_h,
-        illiad_success: true
-      )
-    )
-
-    IlliadOpenurl.new(current_user, current_request, redirect_url).to_url
   end
 
   def validate_request_type

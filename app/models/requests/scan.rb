@@ -28,7 +28,7 @@ class Scan < Request
   end
 
   def submit!
-    send_to_symphony_now!
+    SubmitScanRequestJob.perform_later(self)
   end
 
   def send_confirmation!

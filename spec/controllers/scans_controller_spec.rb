@@ -5,6 +5,7 @@ require 'rails_helper'
 describe ScansController do
   before do
     stub_searchworks_api_json(build(:sal3_holdings))
+    allow(SubmitScanRequestJob).to receive(:perform_later)
   end
 
   let(:scan) { create(:scan_with_holdings, origin: 'SAL3', origin_location: 'STACKS', barcodes: ['12345678']) }
@@ -103,9 +104,6 @@ describe ScansController do
 
       before do
         stub_searchworks_api_json(build(:sal3_holdings))
-      end
-
-      it 'is allowed' do
         post :create, params: {
           illiad_success: true,
           request: {
@@ -116,39 +114,16 @@ describe ScansController do
             section_title: 'Some really important chapter'
           }
         }
+      end
 
+      it 'is allowed' do
         expect(Scan.last.origin).to eq 'SAL3'
         expect(Scan.last.user).to eq user
         expect(Scan.last.barcodes).to eq(['87654321'])
       end
 
-      it 'redirects post requests to the Illiad URL when the illiad_success param is not present' do
-        post :create, params: {
-          request: {
-            item_id: '12345',
-            origin: 'SAL3',
-            origin_location: 'STACKS',
-            barcodes: ['12345678'],
-            section_title: 'Some really important chapter'
-          }
-        }
-
-        expect(response).to redirect_to(/^#{Settings.sul_illiad}.*scan_referrer=/)
-      end
-
-      it 'constructs an illiad query url' do
-        allow(controller).to receive(:params).and_return(
-          ActionController::Parameters.new(request: { origin: 'GREEN' })
-        )
-
-        expect(controller).to receive(:current_request).and_return(create(:scan_with_holdings, barcodes: ['12345678']))
-
-        illiad_response = controller.send(:illiad_url)
-        expect(illiad_response).to include('illiad.dll?')
-        expect(illiad_response).to include('Action=10&Form=30')
-        expect(illiad_response).to include('&rft.genre=scananddeliver')
-        expect(illiad_response).to include('&rft.jtitle=SAL3+Item+Title')
-        expect(illiad_response).to include('&rft.call_number=ABC+123')
+      it 'redirects to the scan success page after a successful illiad request' do
+        expect(SubmitScanRequestJob).to have_received(:perform_later).with(Scan.last)
       end
 
       it 'does not send a confirmation email' do
@@ -166,33 +141,6 @@ describe ScansController do
             }
           }
         end.not_to change { ConfirmationMailer.deliveries.count }
-      end
-
-      # Note:  cannot trigger activejob from this spec to check ApprovalStatusMailer
-
-      it 'submits the request to symphony' do
-        expect(SubmitSymphonyRequestJob).to receive(:perform_now)
-
-        put :create, params: {
-          illiad_success: true,
-          request: {
-            item_id: '12345',
-            origin: 'SAL3',
-            origin_location: 'STACKS',
-            barcodes: ['12345678'],
-            section_title: 'Some really important chapter'
-          }
-        }
-      end
-    end
-
-    describe 'invalid requests' do
-      let(:user) { create(:scan_eligible_user) }
-
-      it 'returns an error message to the user' do
-        post :create, params:  { illiad_success: true, request: { item_id: '12345' } }
-        expect(flash[:error]).to eq 'There was a problem creating your request.'
-        expect(response).to render_template 'new'
       end
     end
 

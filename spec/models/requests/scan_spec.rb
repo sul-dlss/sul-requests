@@ -57,8 +57,8 @@ describe Scan do
   end
 
   describe '#submit!' do
-    it 'submits the request to Symphony immediately' do
-      expect(SubmitSymphonyRequestJob).to receive(:perform_now)
+    it 'submits the request to ILLIAD' do
+      expect(SubmitScanRequestJob).to receive(:perform_later)
       subject.submit!
     end
   end
