@@ -12,6 +12,7 @@ class CdlAvailability
     new(barcode).available
   end
 
+  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def available
     earliest_due = nil
     response = {
@@ -38,6 +39,7 @@ class CdlAvailability
       dueDate: earliest_due
     }.merge(response)
   end
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   def symphony_client
     @symphony_client ||= SymphonyClient.new

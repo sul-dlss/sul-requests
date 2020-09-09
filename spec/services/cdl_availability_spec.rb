@@ -5,6 +5,7 @@ require 'rails_helper'
 RSpec.describe CdlAvailability do
   describe '#available' do
     let(:subject) { described_class.new('123456') }
+
     context 'when no items exist and cannot be found' do
       it do
         expect(subject.available).to include(

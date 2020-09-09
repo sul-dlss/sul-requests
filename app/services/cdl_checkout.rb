@@ -32,6 +32,7 @@ class CdlCheckout
     @user = user
   end
 
+  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
   ##
   # Checkout does three things:
   #  - finds or creates a TITLE level hold on the call record for the patron
@@ -66,7 +67,9 @@ class CdlCheckout
 
     { token: create_token(circ_record, hold.key), hold: hold }
   end
+  # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
+  # rubocop:disable Metrics/CyclomaticComplexity
   def process_renewal(barcode)
     item_info = CatalogInfo.find(barcode)
     hold = find_hold(item_info.callkey)
@@ -88,8 +91,8 @@ class CdlCheckout
 
     create_token(circ_record, hold.key)
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
 
-  # rubocop:disable Metrics/CyclomaticComplexity
   ##
   # CDL checkins do three things:
   #  - check in the item from the CDL pseudopatron
@@ -112,7 +115,6 @@ class CdlCheckout
 
     true
   end
-  # rubocop:enable Metrics/CyclomaticComplexity
 
   private
 
@@ -181,11 +183,12 @@ class CdlCheckout
 
   def invalidate_jwt_token(circ_record)
     return unless redis
+
     key = "#{circ_record.key}-#{circ_record.checkout_date.to_i}"
 
     redis.multi do
       redis.set("cdl.#{key}", 'expired')
-      redis.expireat("#{key}", circ_record.due_date.to_i)
+      redis.expireat(key.to_s, circ_record.due_date.to_i)
     end
   rescue => e
     Honeybadger.notify(e) if Rails.env.production?

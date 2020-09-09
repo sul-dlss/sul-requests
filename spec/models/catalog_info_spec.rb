@@ -99,6 +99,7 @@ describe CatalogInfo do
       end
     end
   end
+
   describe '#cdlable?' do
     before do
       stub_request(:get, %r{https://example.com/symws/catalog/item/barcode/36105123456789?.*})

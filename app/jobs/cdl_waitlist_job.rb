@@ -2,6 +2,7 @@
 
 ## Stuff
 class CdlWaitlistJob < ApplicationJob
+  # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
   def perform(circ_record_key, checkout_date:)
     circ_record = CircRecord.find(circ_record_key, return_holds: true)
 
@@ -44,6 +45,7 @@ class CdlWaitlistJob < ApplicationJob
     # Send patron an email
     CdlWaitlistMailer.youre_up(next_up).deliver_now
   end
+  # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
 
   def symphony_client
     @symphony_client ||= SymphonyClient.new
