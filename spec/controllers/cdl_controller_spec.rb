@@ -83,9 +83,17 @@ describe CdlController do
         }
       end
 
-      it 'if not token exists render success' do
+      it 'if no token exists render success' do
         get :checkout, params: { id: 'ab123cd4567', barcode: '123456' }
         expect(response).to be_successful
+      end
+
+      it 'when things workout, redirect with token' do
+        expect(CdlCheckout).to receive(:checkout).and_return({ token: 'token' })
+        get :checkout, params: { id: 'ab123cd4567', barcode: '123456', return_to: 'http://example.com' }
+        expect(response).to redirect_to(
+          'http://example.com?token=eyJhbGciOiJIUzI1NiJ9.InRva2VuIg.aYiyhjXiai3MdvkQtp_vygZw6CR_ys0OzhdYVPbegsg'
+        )
       end
     end
   end
