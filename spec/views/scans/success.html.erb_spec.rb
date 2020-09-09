@@ -12,17 +12,14 @@ describe 'scans/success.html.erb' do
     stub_template 'scans/_searchworks_item_information.html.erb' => ''
   end
 
-  describe 'symphony contacted' do
-    it 'has completion text and icon for completed requests' do
-      render
-      expect(rendered).to have_css('.sul-i-check-2')
-      expect(rendered).to have_css('h1', text: /Request complete/)
-    end
+  it 'has text indicating that the request is in process' do
+    render
+    expect(rendered).to have_css('h1', text: /We're working on it/)
+  end
 
-    it 'omits the user contact info if the symphony response failed to indicate success' do
-      render
-      expect(rendered).not_to have_css('dl.user-contact-information span.requested-by')
-    end
+  it 'omits the user contact info if the symphony response failed to indicate success' do
+    render
+    expect(rendered).not_to have_css('dl.user-contact-information span.requested-by')
   end
 
   describe 'successful symphony response' do
