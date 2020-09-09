@@ -40,3 +40,6 @@ if Settings.symws.url
   )
   OkComputer.make_optional %w(symphony_web_services)
 end
+
+OkComputer::Registry.register 'redis', OkComputer::RedisCheck.new(Settings.cdl.redis.to_h) if Settings.cdl.redis
+OkComputer.make_optional %w(redis)
