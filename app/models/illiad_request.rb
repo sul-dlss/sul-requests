@@ -8,9 +8,25 @@ class IlliadRequest
     @scan = scan
   end
 
+  # rubocop:disable Metrics/MethodLength
   def illiad_transaction_request
-    illiad_user.merge(illiad_route.merge(illiad_bib.merge(illiad_item))).to_json
+    {
+      'ProcessType': 'Borrowing',
+      'RequestType': 'Article',
+      'SpecIns': 'Scan and Deliver Request',
+      'PhotoJournalTitle': scan_title,
+      'PhotoArticleAuthor': @scan.authors,
+      'Loaction': @scan.origin,
+      'ReferenceNumber': @scan.origin_location,
+      'PhotoArticleTitle': @scan.data[:section_title],
+      'PhotoJournalInclusivePages': @scan.data[:page_range],
+      'CallNumber': call_number,
+      'ILLNumber': ill_number,
+      'ItemNumber': item_number,
+      'Username': @scan.user.webauth
+    }.to_json
   end
+  # rubocop:enable Metrics/MethodLength
 
   def request!
     faraday_conn_w_req_headers.post('ILLiadWebPlatform/Transaction/', illiad_transaction_request)
@@ -18,39 +34,20 @@ class IlliadRequest
 
   private
 
-  def illiad_user
-    { 'Username': @scan.user.webauth }
+  def scan_title
+    @scan.searchworks_item.title
   end
 
-  def illiad_route
-    {
-      'ProcessType': 'Borrowing',
-      'RequestType': 'Article',
-      'SpecIns': 'Scan and Deliver Request'
-    }
+  def ill_number
+    first_holding.try(:barcode)
   end
 
-  def illiad_bib
-    {
-      'PhotoJournalTitle': @scan.searchworks_item.title,
-      'PhotoArticleAuthor': @scan.authors,
-      'PhotoArticleTitle': @scan.data[:section_title],
-      'PhotoJournalInclusivePages': @scan.data[:page_range],
-      'Loaction': @scan.origin,
-      'ReferenceNumber': @scan.origin_location
-    }
+  def item_number
+    first_holding.try(:barcode)
   end
 
-  def illiad_item
-    {
-      'CallNumber': first_holding.try(:callnumber),
-      'ILLNumber': first_holding.try(:barcode),
-      'ItemNumber': first_holding.try(:barcode)
-    }
-  end
-
-  def illiad_url
-    Settings.sul_illiad
+  def call_number
+    first_holding.try(:callnumber)
   end
 
   def first_holding
@@ -58,7 +55,7 @@ class IlliadRequest
   end
 
   def faraday_conn_w_req_headers
-    Faraday.new(url: illiad_url) do |req|
+    Faraday.new(url: Settings.sul_illiad) do |req|
       req.headers['ApiKey'] = Settings.illiad_api_key
       req.headers['Accept'] = 'application/json; version=1'
       req.headers['Content-type'] = 'application/json'
