@@ -56,7 +56,7 @@ class CircRecord
   end
 
   def hold_records
-    fields.dig('item', 'fields', 'bib', 'fields', 'holdRecordList').map { |record| HoldRecord.new(record) }
+    Array.wrap(fields.dig('item', 'fields', 'bib', 'fields', 'holdRecordList')).map { |record| HoldRecord.new(record) }
   end
 
   def patron_barcode
