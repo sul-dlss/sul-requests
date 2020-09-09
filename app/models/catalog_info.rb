@@ -53,8 +53,8 @@ class CatalogInfo
   end
 
   def hold_records
-    fields.dig('bib', 'fields', 'holdRecordList').map { |record| HoldRecord.new(record) }.select do |record|
+    Array.wrap(fields.dig('bib', 'fields', 'holdRecordList')&.map { |record| HoldRecord.new(record) }&.select do |record|
       callkey == record.item_call_key && record.active?
-    end
+    end)
   end
 end
