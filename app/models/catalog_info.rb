@@ -37,7 +37,7 @@ class CatalogInfo
   end
 
   def loan_period
-    (fields.dig('itemCategory3', 'dig')&.scan(/^CDL-(\d+)H$/)&.flatten&.first&.to_i || 2).hours
+    (fields.dig('itemCategory3', 'key')&.scan(/^CDL-(\d+)H$/)&.flatten&.first&.to_i || 2).hours
   end
 
   def cdlable?
