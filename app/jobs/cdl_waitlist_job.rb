@@ -13,7 +13,7 @@ class CdlWaitlistJob < ApplicationJob
       record.active? && record.cdl? && record.circ_record_key == circ_record_key
     end
 
-    return if active_hold_record.present?
+    raise(CdlCheckinError, "An active hold exists for #{circ_record.key}") if active_hold_record.present?
 
     cdl_holds = circ_record.hold_records.select do |record|
       record.active? && record.cdl?
