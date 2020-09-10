@@ -108,7 +108,7 @@ class CdlCheckout
     cancel_hold_response = symphony_client.cancel_hold(hold_record.key)
 
     if hold_record.circ_record&.exists?
-      invalidate_jwt_token(hold_record.circ_record)
+      invalidate_jwt_token(hold_record.circ_record, hold_record_key)
       CdlWaitlistJob.perform_later(hold_record.circ_record.key, checkout_date: hold_record.circ_record.checkout_date)
     end
 
@@ -123,7 +123,7 @@ class CdlCheckout
   # a JWT payload.
   def create_token(circ_record, hold_record_id)
     {
-      jti: "#{circ_record.key}-#{circ_record.checkout_date.to_i}",
+      jti: "#{circ_record.key}-#{circ_record.checkout_date.to_i}-#{hold_record_id}",
       iat: Time.zone.now.to_i,
       barcode: circ_record.item_barcode,
       aud: druid,
@@ -182,10 +182,10 @@ class CdlCheckout
     raise(Exceptions::SymphonyError, error_messages.join(' ')) if error_messages.present?
   end
 
-  def invalidate_jwt_token(circ_record)
+  def invalidate_jwt_token(circ_record, hold_record_id)
     return unless redis
 
-    key = "#{circ_record.key}-#{circ_record.checkout_date.to_i}"
+    key = "#{circ_record.key}-#{circ_record.checkout_date.to_i}-#{hold_record_id}"
 
     redis.multi do
       redis.set("cdl.#{key}", 'expired')
