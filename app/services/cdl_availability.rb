@@ -12,19 +12,17 @@ class CdlAvailability
     new(barcode).available
   end
 
-  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+  # rubocop:disable Metrics/MethodLength
   def available
     earliest_due = nil
-    response = {
-      items: items.count,
-      loanPeriod: catalog_info.loan_period,
-      waitlist: catalog_info.hold_records.length
-    }
+
     items.each do |item|
       circ_info = symphony_client.circ_information(item.barcode)
 
       ## A copy is available for CDL, so let it be known
-      return response.merge({ available: true }) if ['ON_SHELF', 'ON_RESERVE'].include?(circ_info&.dig('currentStatus'))
+      if ['ON_SHELF', 'ON_RESERVE'].include?(circ_info&.dig('currentStatus'))
+        return availability_response.merge({ available: true })
+      end
 
       item_due_date = parse_due_date(circ_info)
 
@@ -37,9 +35,18 @@ class CdlAvailability
     {
       available: false,
       dueDate: earliest_due
-    }.merge(response)
+    }.merge(availability_response)
   end
-  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+  # rubocop:enable Metrics/MethodLength
+
+  def availability_response
+    {
+      items: items.count,
+      loanPeriod: catalog_info.loan_period,
+      nextUps: catalog_info.hold_records.select(&:next_up_cdl?).map(&:key),
+      waitlist: catalog_info.hold_records.length
+    }
+  end
 
   def symphony_client
     @symphony_client ||= SymphonyClient.new

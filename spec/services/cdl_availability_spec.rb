@@ -27,7 +27,7 @@ RSpec.describe CdlAvailability do
         instance_double(CatalogInfo,
                         callkey: 'xyz',
                         loan_period: 2.hours,
-                        hold_records: [1, 2, 3],
+                        hold_records: Array.new(3) { instance_double(HoldRecord, next_up_cdl?: false) },
                         items: items)
       end
       let(:items) do
@@ -58,7 +58,7 @@ RSpec.describe CdlAvailability do
         instance_double(CatalogInfo,
                         callkey: 'xyz',
                         loan_period: 2.hours,
-                        hold_records: [1, 2, 3],
+                        hold_records: Array.new(3) { |x| instance_double(HoldRecord, key: x, next_up_cdl?: x == 0) },
                         items: items)
       end
       let(:items) do
@@ -77,7 +77,8 @@ RSpec.describe CdlAvailability do
         expect(subject.available).to include(
           available: false,
           dueDate: DateTime.parse('2020-09-09T15:16:50-06:00'),
-          items: 1
+          items: 1,
+          nextUps: [0]
         )
       end
     end
