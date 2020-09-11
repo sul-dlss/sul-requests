@@ -36,7 +36,7 @@ class CdlWaitlistJob < ApplicationJob
     new_circ_record = CircRecord.new(checkout&.dig('circRecord'))
 
     # Figure out which hold is next
-    next_up = remaining_holds.min(&:key)
+    next_up = remaining_holds.min_by(&:key)
 
     # Update hold record so its next
     comment = "CDL;#{next_up.druid};#{circ_record.key};#{new_circ_record.checkout_date.to_i};NEXT_UP"
