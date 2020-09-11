@@ -100,7 +100,10 @@ module SULRequests
       ]
     else
       config.pickup_libraries = [
-        'GREEN'
+        'BUSINESS',
+        'EAST-ASIA',
+        'GREEN',
+        'HOPKINS'
       ]
     end
 
@@ -115,8 +118,6 @@ module SULRequests
       }
     else
       config.library_specific_pickup_libraries = {
-        'EAST-ASIA' => ['EAST-ASIA'],
-        'BUSINESS' => ['BUSINESS'],
         'RUMSEYMAP' => ['SPEC-COLL'],
         'SPEC-COLL' => ['SPEC-COLL']
       }
@@ -168,10 +169,6 @@ module SULRequests
       }
     else
       config.location_specific_pickup_libraries = {
-        'EAL-SETS' => ['EAST-ASIA', 'GREEN'],
-        'EAL-STKS-C' => ['EAST-ASIA', 'GREEN'],
-        'EAL-STKS-J' => ['EAST-ASIA', 'GREEN'],
-        'EAL-STKS-K' => ['EAST-ASIA', 'GREEN'],
         'PAGE-EA' => ['EAST-ASIA'],
         'HY-PAGE-EA' => ['EAST-ASIA'],
         'L-PAGE-EA'  => ['EAST-ASIA'],
