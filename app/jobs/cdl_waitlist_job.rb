@@ -13,17 +13,15 @@ class CdlWaitlistJob < ApplicationJob
       record.active? && record.cdl? && record.circ_record_key == circ_record_key
     end
 
-    raise(CdlCheckinError, "An active hold exists for #{circ_record.key}") if active_hold_record.present?
-
-    cdl_holds = circ_record.hold_records.select do |record|
-      record.active? && record.cdl?
+    if active_hold_record&.next_up_cdl?
+      symphony_client.cancel_hold(active_hold_record.key)
+    elsif active_hold_record.present?
+      raise(Exceptions::CdlCheckinError, "An active hold exists for #{circ_record.key}")
     end
 
-    next_available_hold, remaining_holds = cdl_holds.partition do |hold|
-      hold.next_up_cdl? && hold.circ_record_key == circ_record.key
+    remaining_holds = circ_record.hold_records.select do |record|
+      record.active? && record.cdl? && !record.next_up_cdl?
     end
-
-    symphony_client.cancel_hold(next_available_hold.key) if next_available_hold.present?
 
     symphony_client.check_in_item(circ_record.item_barcode)
 
