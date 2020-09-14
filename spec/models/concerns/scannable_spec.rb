@@ -91,4 +91,30 @@ describe Scannable do
       end
     end
   end
+
+  describe '#scannable_only?' do
+    it 'is true a scannable only library/location has scannable only items' do
+      subject.library = 'SAL'
+      subject.location = 'SAL-TEMP'
+      subject.request = double('request', holdings: [double(type: 'NONCIRC')])
+
+      expect(subject).to be_scannable_only
+    end
+
+    it 'is false when not scannable only library/location' do
+      subject.library = 'SAL'
+      subject.location = 'STACKS'
+      subject.request = double('request', holdings: [double(type: 'NONCIRC')])
+
+      expect(subject).not_to be_scannable_only
+    end
+
+    it 'is false when a circulating item is in the scannable only library/location' do
+      subject.library = 'SAL'
+      subject.location = 'SAL-TEMP'
+      subject.request = double('request', holdings: [double(type: 'STKS')])
+
+      expect(subject).not_to be_scannable_only
+    end
+  end
 end

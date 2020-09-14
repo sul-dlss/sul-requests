@@ -112,6 +112,33 @@ FactoryBot.define do
     end
   end
 
+  factory :scannable_only_holdings, class: 'Hash' do
+    title { 'Item Title' }
+
+    format { ['Book'] }
+
+    holdings do
+      [
+        { 'code' => 'SAL',
+          'locations' => [
+            { 'code' => 'SAL-TEMP',
+              'items' => [
+                { 'barcode' => '12345678',
+                  'callnumber' => 'ABC 123',
+                  'type' => 'NONCIRC'
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    end
+
+    initialize_with do
+      attributes.transform_keys(&:to_s).to_h
+    end
+  end
+
   factory :sal_newark_holding, class: 'Hash' do
     title { 'Item Title' }
 

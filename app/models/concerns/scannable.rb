@@ -15,13 +15,26 @@ module Scannable
     ),
     'SAL3' => %w(BUS-STACKS PAGE-GR STACKS)
   }.freeze
+  SCANNABLE_ONLY_LOCATIONS = {
+    'SAL' => %w(SAL-TEMP UNCAT)
+  }.freeze
+  SCANNABLE_ONLY_ITEM_TYPES = {
+    'SAL' => %w(NONCIRC)
+  }.freeze
 
   def scannable?
     return false unless Settings.features.scan_service
+    return true if scannable_only?
 
     scannable_library? &&
       scannable_location? &&
       includes_scannable_item?
+  end
+
+  def scannable_only?
+    scannable_library? &&
+      scannable_only_location? &&
+      includes_scannable_only_items?
   end
 
   private
@@ -51,5 +64,15 @@ module Scannable
 
   def page_gr_scannable_item_types
     %w(NEWSPAPER NH-INHOUSE).concat(ITEM_TYPES)
+  end
+
+  def scannable_only_location?
+    SCANNABLE_ONLY_LOCATIONS[library]&.include?(location)
+  end
+
+  def includes_scannable_only_items?
+    request.holdings.any? do |item|
+      SCANNABLE_ONLY_ITEM_TYPES[library]&.include?(item.type)
+    end
   end
 end
