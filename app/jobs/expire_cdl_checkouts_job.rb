@@ -13,10 +13,6 @@ class ExpireCdlCheckoutsJob < ApplicationJob
 
   def expire_overdue_checkout(checkout)
     circ_record = CircRecord.find(checkout.key, return_holds: true)
-    active_hold_record = circ_record.hold_records.find do |record|
-      record.active? && record.cdl? && record.circ_record_key == checkout.key
-    end
-    symphony_client.cancel_hold(active_hold_record.key) if active_hold_record
     CdlWaitlistJob.perform_now(checkout.key, checkout_date: circ_record.checkout_date)
   end
 

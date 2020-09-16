@@ -9,19 +9,18 @@ class CdlWaitlistJob < ApplicationJob
     return unless circ_record.patron_barcode == Settings.cdl.pseudo_patron_id
     return unless checkout_date.nil? || circ_record.checkout_date == checkout_date
 
-    active_hold_record = circ_record.hold_records.find do |record|
-      record.active? && record.cdl? && record.circ_record_key == circ_record_key
+    cdl_hold_records = circ_record.hold_records.select do |record|
+      record.active? && record.cdl?
     end
 
-    if active_hold_record&.next_up_cdl?
+    active_hold_records, remaining_holds = cdl_hold_records.partition do |record|
+      record.circ_record_key == circ_record_key
+    end
+
+    if active_hold_records.any?
+      active_hold_record = active_hold_records.first
       symphony_client.cancel_hold(active_hold_record.key)
-      CdlWaitlistMailer.hold_expired(active_hold_record.key).deliver_later
-    elsif active_hold_record.present?
-      raise(Exceptions::CdlCheckinError, "An active hold exists for #{circ_record.key}")
-    end
-
-    remaining_holds = circ_record.hold_records.select do |record|
-      record.active? && record.cdl? && !record.next_up_cdl?
+      CdlWaitlistMailer.hold_expired(active_hold_record.key).deliver_later if active_hold_record.next_up_cdl?
     end
 
     symphony_client.check_in_item(circ_record.item_barcode)

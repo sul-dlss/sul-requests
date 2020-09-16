@@ -22,23 +22,25 @@ describe CdlWaitlistJob, type: :job do
     end
   end
 
-  context 'when there is an active hold record and its not next up' do
+  context 'when there is an active hold record' do
     let(:checkout) do
       instance_double(
         CircRecord,
         key: 'abc',
+        checkout_date: Time.zone.now,
+        item_barcode: '001234',
         patron_barcode: 'CDL-CHECKEDOUT',
         hold_records: [
-          instance_double(HoldRecord, active?: true, cdl?: true, circ_record_key: 'abc', next_up_cdl?: false)
+          instance_double(HoldRecord, key: '1', druid: 'druid', active?: true, cdl?: true, circ_record_key: 'abc', next_up_cdl?: false)
         ]
       )
     end
 
-    it do
+    it 'cancels it' do
       expect(CircRecord).to receive(:find).and_return(checkout)
-      expect do
-        subject.perform('abc', checkout_date: nil)
-      end.to raise_error Exceptions::CdlCheckinError, 'An active hold exists for abc'
+      expect_any_instance_of(SymphonyClient).to receive(:cancel_hold).with('1')
+      expect(CdlWaitlistMailer).not_to receive(:hold_expired)
+      subject.perform('abc', checkout_date: nil)
     end
   end
 
