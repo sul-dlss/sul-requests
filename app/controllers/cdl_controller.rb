@@ -42,7 +42,7 @@ class CdlController < ApplicationController
       return
     end
 
-    @hold = checkout[:hold]
+    @hold_record = checkout[:hold]
 
     render
   end
