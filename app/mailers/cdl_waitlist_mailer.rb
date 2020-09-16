@@ -2,6 +2,8 @@
 
 ##
 class CdlWaitlistMailer < ApplicationMailer
+  helper CdlHelper
+
   def youre_up(hold_record, circ_record)
     @hold_record = hold_record
     @circ_record = circ_record
