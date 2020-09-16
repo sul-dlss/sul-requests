@@ -1,6 +1,6 @@
-<p>You have been added to the waitlist for <%= @hold_record.title %>.</p>
+<p>You have been added to the waitlist for "<%= @hold_record.title %>".</p>
 
-<p>You are <%= @hold_record.queue_position == 1 ? 'next' : @hold_record.queue_position.ordinal %> in line.</p>
+<p>You are <%= @hold_record.queue_position == 1 ? 'next' : "#{@hold_record.queue_position}#{@hold_record.queue_position.ordinal}" %> in line.</p>
 
 <p>We'll send another email when it's your turn. Check your email frequently. We can't predict when the item will be available, and it may be outside normal library hours.</p>
 

@@ -1,4 +1,4 @@
-<p>"<%= @hold_record.title %>" was on hold for you until <%= l(Time.zone.now, format: :time_only) %>. It has been released for others to check out.</p>
+<p>"<%= @hold_record.title %>" was on hold for you until <%= l(@hold_record.cdl_circ_record_checkout_date + 30.minutes, format: :time_only) %>. It has been released for others to check out.</p>
 
 <p>You are no longer on the waitlist. If you still need the item, it may currently be available for checkout, or you can re-join the waitlist.</p>
 
