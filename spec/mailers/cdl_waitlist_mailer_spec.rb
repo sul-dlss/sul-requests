@@ -14,13 +14,14 @@ describe CdlWaitlistMailer do
 
   describe '.youre_up' do
     subject(:mail) { described_class.youre_up(hold_record, circ_record) }
+
     let(:hold_record) do
       HoldRecord.new({
         key: 'xyz',
         fields: {
           comment: "CDL;druid;12345:1:1:1;#{checkout_date.to_i};NEXT_UP",
           patron: {
-            key: patron_key,
+            key: patron_key
           },
           item: {
             fields: {
@@ -38,8 +39,7 @@ describe CdlWaitlistMailer do
     let(:checkout_date) { Time.zone.parse('2020-09-15T11:12:13') }
     let(:circ_record) do
       instance_double(CircRecord, due_date: Time.zone.parse('2020-09-16T01:02:03'),
-                                  checkout_date: checkout_date
-    )
+                                  checkout_date: checkout_date)
     end
 
     describe 'to' do
@@ -64,6 +64,7 @@ describe CdlWaitlistMailer do
 
   describe '.hold_expired' do
     subject(:mail) { described_class.hold_expired(hold_record_key) }
+
     let(:hold_record_key) { 'key' }
     let(:hold_record) do
       HoldRecord.new({
@@ -71,7 +72,7 @@ describe CdlWaitlistMailer do
         fields: {
           comment: "CDL;druid;12345:1:1:1;#{Time.zone.parse('2020-09-15T11:12:13').to_i};NEXT_UP",
           patron: {
-            key: patron_key,
+            key: patron_key
           },
           item: {
             fields: {
@@ -104,21 +105,23 @@ describe CdlWaitlistMailer do
 
     describe 'body' do
       subject(:body) { mail.body.to_s }
+
       it { is_expected.to include '"Book: A Book" was on hold for you until 11:42a PDT' }
     end
   end
 
   describe '.on_waitlist' do
     subject(:mail) { described_class.on_waitlist(hold_record_key) }
+
     let(:hold_record_key) { 'key' }
     let(:hold_record) do
       HoldRecord.new({
         key: 'xyz',
         fields: {
-          comment: "CDL;druid",
+          comment: 'CDL;druid',
           queuePosition: 5,
           patron: {
-            key: patron_key,
+            key: patron_key
           },
           item: {
             fields: {
