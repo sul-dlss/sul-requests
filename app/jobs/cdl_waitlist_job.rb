@@ -42,7 +42,7 @@ class CdlWaitlistJob < ApplicationJob
     symphony_client.update_hold(next_up.key, comment: comment)
 
     # Send patron an email
-    CdlWaitlistMailer.youre_up(next_up).deliver_now
+    CdlWaitlistMailer.youre_up(next_up, new_circ_record).deliver_now
   end
   # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
 

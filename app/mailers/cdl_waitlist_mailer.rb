@@ -2,8 +2,10 @@
 
 ##
 class CdlWaitlistMailer < ApplicationMailer
-  def youre_up(hold_record)
+  def youre_up(hold_record, circ_record)
     @hold_record = hold_record
+    @circ_record = circ_record
+
     mail(
       to: @hold_record.patron.email,
       subject: "Ready for checkout: #{@hold_record.title}"
