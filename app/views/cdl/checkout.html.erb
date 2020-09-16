@@ -1,7 +1,7 @@
 <div class='<%= dialog_column_class %>'>
   <h1>You have been added to the waitlist</h1>
 
-  You are <%= @hold.queue_position == 1 ? 'next' : "#{@hold_record.queue_position}#{@hold_record.queue_position.ordinal}" %> in line.
+  You are <%= @hold_record.queue_position == 1 ? 'next' : "#{@hold_record.queue_position}#{@hold_record.queue_position.ordinal}" %> in line.
 
   <p>We'll send an email to <strong><%= current_user.patron.email %></strong> when it's your turn.</p>
 
