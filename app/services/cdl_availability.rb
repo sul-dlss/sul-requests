@@ -43,7 +43,7 @@ class CdlAvailability
     {
       items: items.count,
       loanPeriod: catalog_info.loan_period,
-      nextUps: catalog_info.hold_records.select(&:next_up_cdl?).map(&:key),
+      nextUps: catalog_info.hold_records.select { |x| x.circ_record_key.present? }.map(&:key),
       waitlist: catalog_info.hold_records.length
     }
   end
