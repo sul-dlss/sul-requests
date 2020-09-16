@@ -1,0 +1,7 @@
+<p>"<%= @hold_record.title %>" is available for you to check out.</p>
+
+<p><%= link_to 'Open viewer', "#{Settings.purl.url}/#{@hold_record.druid}" %></p>
+
+<p><strong>We are holding this item for you until <%= l(@hold_record.circ_record.due_date, format: :time_only) %>.</strong> After that time it will be released for others to check out.</p>
+
+<p>You can also access this item from <%= link_to 'My Library Account', Settings.mylibrary.url %>.</p>

@@ -91,4 +91,8 @@ class HoldRecord
   def queue_position
     fields.dig('queuePosition')
   end
+
+  def title
+    fields.dig('item', 'fields', 'bib', 'fields', 'title')
+  end
 end

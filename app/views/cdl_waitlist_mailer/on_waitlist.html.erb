@@ -1,0 +1,9 @@
+<p>You have been added to the waitlist for <%= @hold_record.title %>.</p>
+
+<p>You are <%= @hold_record.queue_position == 1 ? 'next' : @hold_record.queue_position.ordinal %> in line.</p>
+
+<p>We'll send another email when it's your turn. Check your email frequently. We can't predict when the item will be available, and it may be outside normal library hours.</p>
+
+<p>You'll have 30 minutes to check it out, before it passes to the next person on the waitlist.</p>
+
+<p>You can also check your position in the waitlist in <%= link_to 'My Library Account', Settings.mylibrary.url %> (Requests tab).</p>

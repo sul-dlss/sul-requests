@@ -15,6 +15,7 @@ class CdlWaitlistJob < ApplicationJob
 
     if active_hold_record&.next_up_cdl?
       symphony_client.cancel_hold(active_hold_record.key)
+      CdlWaitlistMailer.hold_expired(active_hold_record.key).deliver_later
     elsif active_hold_record.present?
       raise(Exceptions::CdlCheckinError, "An active hold exists for #{circ_record.key}")
     end

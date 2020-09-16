@@ -55,7 +55,10 @@ class CdlCheckout
 
       selected_item = item_info.items.select(&:cdlable?).find { |item| item.current_location != 'CHECKEDOUT' }
 
-      return { token: nil, hold: hold } unless selected_item
+      unless selected_item
+        CdlWaitlistMailer.on_waitlist(hold.key).deliver_later
+        return { token: nil, hold: hold }
+      end
 
       checkout = place_checkout(selected_item.barcode, dueDate: item_info.loan_period.from_now.iso8601)
       circ_record = CircRecord.new(checkout&.dig('circRecord'))
