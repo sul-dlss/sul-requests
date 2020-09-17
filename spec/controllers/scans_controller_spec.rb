@@ -105,7 +105,6 @@ describe ScansController do
       before do
         stub_searchworks_api_json(build(:sal3_holdings))
         post :create, params: {
-          illiad_success: true,
           request: {
             item_id: '12345',
             origin: 'SAL3',
@@ -131,7 +130,6 @@ describe ScansController do
         stub_symphony_response(build(:symphony_page_with_single_item))
         expect do
           post :create, params: {
-            illiad_success: true,
             request: {
               item_id: '12345',
               origin: 'SAL3',
