@@ -47,7 +47,7 @@ describe CdlWaitlistJob, type: :job do
   context 'when there is a next available hold' do
     let(:expiring_hold) do
       instance_double(HoldRecord, active?: true, cdl?: true, next_up_cdl?: true,
-                                  key: '2', circ_record_key: 'abc')
+                                  key: '2', circ_record_key: 'abc', comment: 'CDL;druid;abc;1599865763;NEXT_UP')
     end
 
     let(:checkout) do
@@ -73,6 +73,7 @@ describe CdlWaitlistJob, type: :job do
       expect_any_instance_of(SymphonyClient).to receive(:cancel_hold).with('2')
       expect_any_instance_of(SymphonyClient).to receive(:check_in_item).with('001234')
       expect_any_instance_of(SymphonyClient).to receive(:update_hold).with('1', comment: 'CDL;druid;abc;1599865763;NEXT_UP')
+      expect_any_instance_of(SymphonyClient).to receive(:update_hold).with('2', comment: 'CDL;druid;abc;1599865763;EXPIRED')
       expect_any_instance_of(SymphonyClient).to receive(:check_out_item).and_return(
         {
           'circRecord' => {
