@@ -20,7 +20,11 @@ class CdlWaitlistJob < ApplicationJob
     if active_hold_records.any?
       active_hold_record = active_hold_records.first
       symphony_client.cancel_hold(active_hold_record.key)
-      CdlWaitlistMailer.hold_expired(active_hold_record.key).deliver_later if active_hold_record.next_up_cdl?
+      if active_hold_record.next_up_cdl?
+        comment = active_hold_record.comment.gsub('NEXT_UP', 'EXPIRED')
+        symphony_client.update_hold(active_hold_record.key, comment: comment)
+        CdlWaitlistMailer.hold_expired(active_hold_record.key).deliver_later
+      end
     end
 
     symphony_client.check_in_item(circ_record.item_barcode)

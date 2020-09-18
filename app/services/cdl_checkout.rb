@@ -64,7 +64,7 @@ class CdlCheckout
       circ_record = CircRecord.new(checkout&.dig('circRecord'))
     end
 
-    comment = "CDL;#{druid};#{circ_record.key};#{circ_record.checkout_date.to_i}"
+    comment = "CDL;#{druid};#{circ_record.key};#{circ_record.checkout_date.to_i};ACTIVE"
     update_hold_response = symphony_client.update_hold(hold.key, comment: comment)
     check_for_symphony_errors(update_hold_response)
 
@@ -88,7 +88,7 @@ class CdlCheckout
     renewal = place_renewal(hold.item_key, dueDate: item_info.loan_period.from_now.iso8601)
 
     circ_record = CircRecord.new(renewal&.dig('circRecord'))
-    comment = "CDL;#{druid};#{circ_record.key};#{circ_record.checkout_date.to_i}"
+    comment = "CDL;#{druid};#{circ_record.key};#{circ_record.checkout_date.to_i};ACTIVE"
     update_hold_response = symphony_client.update_hold(hold.key, comment: comment)
     check_for_symphony_errors(update_hold_response)
 
@@ -108,6 +108,8 @@ class CdlCheckout
 
     raise(Exceptions::CdlCheckoutError, 'Could not find hold record') unless hold_record&.exists? && hold_record&.cdl?
 
+    comment = hold_record.comment.gsub('ACTIVE', 'COMPLETED')
+    symphony_client.update_hold(hold_record.key, comment: comment)
     cancel_hold_response = symphony_client.cancel_hold(hold_record.key)
 
     if hold_record.circ_record&.exists?
@@ -144,7 +146,7 @@ class CdlCheckout
 
   def place_hold(callkey)
     response = symphony_client.place_hold(
-      comment: "CDL;#{druid}", # max 50
+      comment: "CDL;#{druid};;;WAITLIST", # max 50
       fill_by_date: DateTime.now + 1.year,
       patron_barcode: user.library_id,
       item: {
