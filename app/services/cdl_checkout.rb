@@ -83,7 +83,7 @@ class CdlCheckout
     due_date = hold.circ_record.due_date
 
     # Our time for newewal is w/i 5 minuts, we're adding an addl. minute of slop here
-    raise(Exceptions::CdlCheckoutError, 'Item not renewable') if due_date.before?(6.minutes.ago)
+    raise(Exceptions::CdlCheckoutError, 'Item not renewable') unless due_date.before?(6.minutes.from_now)
 
     renewal = place_renewal(hold.item_key, dueDate: item_info.loan_period.from_now.iso8601)
 
