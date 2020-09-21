@@ -226,6 +226,59 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
         subject.execute!
       end
 
+      context 'for a response where the user already has a hold on the material' do
+        let(:request) { create(:page_with_holdings, user: user) }
+
+        before do
+          allow(mock_client).to receive(:bib_info).and_return({})
+          expect(mock_client).to receive(:place_hold).at_least(:once).and_return(
+            {
+              'messageList' => [
+                { 'message' => 'User already has a hold on this material', 'code' => 'hatErrorResponse.722' }
+              ]
+            }
+          )
+        end
+
+        context 'when a typical user' do
+          before { subject.user.library_id = '123456' }
+
+          it 'but does not notify staff' do
+            allow(subject.user).to receive(:patron).and_return(
+              Patron.new(
+                { 'fields' => { 'standing' => { 'key' => 'OK' } } }
+              )
+            )
+
+            expect do
+              subject.execute!
+            end.to change { MultipleHoldsMailer.deliveries.count }.by(0)
+          end
+        end
+
+        context 'when the patron barcode begins with "HOLD@"' do
+          it 'notifies staff' do
+            allow(subject.user).to receive(:patron).and_return(Patron.new({}))
+
+            expect do
+              subject.execute!
+            end.to change { MultipleHoldsMailer.deliveries.count }.by(1)
+          end
+        end
+
+        context 'when the item is a scan' do
+          let(:request) { scan }
+
+          it 'does not notify staff' do
+            allow(subject.user).to receive(:patron).and_return(Patron.new({}))
+
+            expect do
+              subject.execute!
+            end.to change { MultipleHoldsMailer.deliveries.count }.by(0)
+          end
+        end
+      end
+
       context 'for a SPEC-COLL request' do
         let(:request) { create(:mediated_page) }
 

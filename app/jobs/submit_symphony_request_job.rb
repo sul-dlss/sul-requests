@@ -147,19 +147,20 @@ class SubmitSymphonyRequestJob < ApplicationJob
       @options = options
     end
 
-    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
     def execute!
       responses = place_hold_params.map do |param|
         place_hold_response = symphony_client.place_hold(**param)
         message = place_hold_response.dig('messageList', 0, 'message')
+        msg_code = place_hold_response.dig('messageList', 0, 'code')&.sub(/^hatErrorResponse\./, '')
         barcode = param.dig(:item, :itemBarcode) || param.dig(:item, :call, :key)
 
         if message == 'User already has a hold on this material' && param[:patron_barcode].match(/^HOLD@/)
-          notify_staff_for_multiple_holds(barcode)
+          notify_staff_for_multiple_holds(barcode) unless request.is_a?(Scan)
         end
         {
           barcode: barcode,
-          msgcode: message || '209',
+          msgcode: msg_code || '209',
           response: place_hold_response
         }
       end
@@ -167,7 +168,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
         requested_items: responses
       }.merge(usererr)
     end
-    # rubocop:enable Metrics/MethodLength
+    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
 
     def request_params
       place_hold_params.map { |params| symphony_client.place_hold_params(params) }
