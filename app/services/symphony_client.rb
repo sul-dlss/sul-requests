@@ -89,7 +89,7 @@ class SymphonyClient
 
   def hold_record_info(key)
     response = authenticated_request("/circulation/holdRecord/key/#{key}", params: {
-                                       includeFields: '*,patron{email},item{call,bib{title}}'
+                                       includeFields: '*,patron{email},item{call,bib{title},barcode}'
                                      })
     JSON.parse(response.body)
   rescue JSON::ParserError, HTTP::Error
@@ -120,16 +120,14 @@ class SymphonyClient
     end
   end
 
-  def update_hold(hold_record_key, comment:)
+  def update_hold(hold_record_key, **params)
     response = authenticated_request(
       "/circulation/holdRecord/key/#{hold_record_key}",
       method: :put,
       json: {
         resource: '/circulation/holdRecord',
         key: hold_record_key,
-        fields: {
-          comment: comment
-        }
+        fields: params
       }
     )
     JSON.parse(response.body)
@@ -264,7 +262,7 @@ class SymphonyClient
                                          'profile{chargeLimit}',
                                          'customInformation{*}',
                                          'groupSettings{*,group{memberList{*,address1}}}',
-                                         'holdRecordList{*,item{call,bib{title}}}'
+                                         'holdRecordList{*,item{call,bib{title},barcode}}'
                                        ].join(',')
                                      })
 

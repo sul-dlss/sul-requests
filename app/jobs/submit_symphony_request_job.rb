@@ -17,7 +17,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
 
     Sidekiq.logger.info("Started SubmitSymphonyRequestJob for request #{request_id}")
     response = Command.new(request, options).execute!
-
+    PlaceCdlHoldJob.perform_later(request)
     Sidekiq.logger.debug("Symphony response string: #{response}")
     request.merge_symphony_response_data(response.with_indifferent_access)
     request.save

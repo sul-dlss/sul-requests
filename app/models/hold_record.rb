@@ -43,6 +43,10 @@ class HoldRecord
     fields.dig('item', 'key')
   end
 
+  def item_barcode
+    fields.dig('item', 'fields', 'barcode')
+  end
+
   def item_call_key
     fields.dig('item', 'fields', 'call', 'key')
   end
@@ -67,8 +71,12 @@ class HoldRecord
     cdl_comment[4] == 'NEXT_UP'
   end
 
+  def patron_key
+    fields.dig('patron', 'key')
+  end
+
   def patron
-    @patron ||= Patron.find_by(patron_key: fields.dig('patron', 'key'))
+    @patron ||= Patron.find_by(patron_key: patron_key)
   end
 
   def cdl_circ_record_checkout_date
