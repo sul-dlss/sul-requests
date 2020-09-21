@@ -64,7 +64,7 @@ class HoldRecord
   end
 
   def next_up_cdl?
-    cdl_comment[4].present?
+    cdl_comment[4] == 'NEXT_UP'
   end
 
   def patron
