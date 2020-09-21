@@ -32,7 +32,7 @@ class HoldRecord
   end
 
   def active?
-    %w(PLACED FILLED BEING_HELD).include?(status)
+    %w(PLACED BEING_HELD).include?(status)
   end
 
   def comment
