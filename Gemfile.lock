@@ -275,6 +275,8 @@ GEM
     puma (4.3.5)
       nio4r (~> 2.0)
     rack (2.2.3)
+    rack-attack (6.3.1)
+      rack (>= 1.0, < 3)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (6.0.3.2)
@@ -478,6 +480,7 @@ DEPENDENCIES
   pry-byebug
   puma
   rack
+  rack-attack
   rails (~> 6.0)
   rails-controller-testing
   redcarpet

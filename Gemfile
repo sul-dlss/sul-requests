@@ -77,6 +77,7 @@ gem 'sidekiq-statistic'
 gem 'whenever'
 
 gem 'jwt'
+gem 'rack-attack'
 gem 'redis'
 
 group :development, :test do
