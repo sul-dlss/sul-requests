@@ -121,3 +121,9 @@ symws:
   url:
   headers: {}
   login_params: {}
+
+cdl:
+  pseudo_patron_id: CDL-CHECKEDOUT
+  jwt:
+    algorithm: 'HS256'
+    secret: secret

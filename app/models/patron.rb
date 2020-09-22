@@ -35,6 +35,10 @@ class Patron
     fields.dig('profile', 'key')
   end
 
+  def holds
+    @holds ||= (fields.dig('holdRecordList') || []).map { |record| HoldRecord.new(record) }
+  end
+
   def fee_borrower?
     profile_key&.starts_with?('MXFEE')
   end

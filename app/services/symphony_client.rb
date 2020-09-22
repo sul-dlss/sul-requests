@@ -238,7 +238,8 @@ class SymphonyClient
     response = authenticated_request("/circulation/circRecord/key/#{circ_record_key}", params: {
                                        includeFields: [
                                          '*',
-                                         'item{barcode}'
+                                         'item{barcode}',
+                                         'patron{barcode}'
                                        ].join(',')
                                      })
 

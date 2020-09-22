@@ -36,6 +36,10 @@ class CatalogInfo
     fields.dig('call', 'key')
   end
 
+  def cdlable?
+    home_location == 'CDL'
+  end
+
   def items
     return to_enum(:items) unless block_given?
 
