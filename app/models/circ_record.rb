@@ -2,9 +2,9 @@
 
 # Wrapper for a Symphony CircRecord
 class CircRecord
-  def self.find(key)
+  def self.find(key, return_holds: false)
     symphony_client = SymphonyClient.new
-    new(symphony_client.circ_record_info(key))
+    new(symphony_client.circ_record_info(key, return_holds: return_holds))
   rescue HTTP::Error
     nil
   end
@@ -51,8 +51,12 @@ class CircRecord
     status == 'ACTIVE'
   end
 
+  def overdue?
+    fields.dig('overdue')
+  end
+
   def hold_records
-    fields.dig('item', 'fields', 'bib', 'fields', 'holdRecordList').map { |record| HoldRecord.new(record) }
+    Array.wrap(fields.dig('item', 'fields', 'bib', 'fields', 'holdRecordList')).map { |record| HoldRecord.new(record) }
   end
 
   def patron_barcode
