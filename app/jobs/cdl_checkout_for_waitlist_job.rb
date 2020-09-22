@@ -20,6 +20,6 @@ class CdlCheckoutForWaitlistJob < ApplicationJob
   # rubocop:enable Metrics/AbcSize
 
   def symphony_client
-    @symphony_client ||= SymphonyClient.new
+    @symphony_client ||= SymphonyClient.instance
   end
 end

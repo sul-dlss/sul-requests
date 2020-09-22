@@ -3,7 +3,7 @@
 # A Symphony HoldRecord
 class HoldRecord
   def self.find(key)
-    symphony_client = SymphonyClient.new
+    symphony_client = SymphonyClient.instance
     new(symphony_client.hold_record_info(key))
   rescue HTTP::Error
     nil

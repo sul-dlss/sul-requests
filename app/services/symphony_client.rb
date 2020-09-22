@@ -2,6 +2,7 @@
 
 # HTTP client wrapper for making requests to Symws
 class SymphonyClient
+  include Singleton
   DEFAULT_HEADERS = {
     accept: 'application/json',
     content_type: 'application/json'

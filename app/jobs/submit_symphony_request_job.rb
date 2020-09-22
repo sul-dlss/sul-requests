@@ -176,7 +176,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
     private
 
     def symphony_client
-      @symphony_client ||= options[:symphony_client] || SymphonyClient.new
+      @symphony_client ||= options[:symphony_client] || SymphonyClient.instance
     end
 
     def bib_info(key)

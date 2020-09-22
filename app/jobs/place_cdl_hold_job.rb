@@ -24,6 +24,6 @@ class PlaceCdlHoldJob < ApplicationJob
   # rubocop:enable Metrics/MethodLength
 
   def symphony_client
-    @symphony_client ||= SymphonyClient.new
+    @symphony_client ||= SymphonyClient.instance
   end
 end
