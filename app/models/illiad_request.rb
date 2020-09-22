@@ -16,7 +16,7 @@ class IlliadRequest
       'SpecIns': 'Scan and Deliver Request',
       'PhotoJournalTitle': scan_title,
       'PhotoArticleAuthor': @scan.authors,
-      'Loaction': @scan.origin,
+      'Location': @scan.origin,
       'ReferenceNumber': @scan.origin_location,
       'PhotoArticleTitle': @scan.data[:section_title],
       'PhotoJournalInclusivePages': @scan.data[:page_range],

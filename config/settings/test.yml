@@ -25,6 +25,7 @@ symphony_web_services:
   curr_loc_path: 'v1/catalog/item/barcode/'
 
 sul_illiad: 'https://illiad-test/'
+illiad_email_address: 'illiad-test@stanford.edu'
 
 background_jobs:
   enabled: false

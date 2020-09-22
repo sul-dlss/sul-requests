@@ -35,6 +35,14 @@ class Scan < Request
     true
   end
 
+  def illiad_error?
+    illiad_response_data['Message'].present?
+  end
+
+  def notify_ilb!
+    IlbMailer.ilb_notification(self).deliver_later
+  end
+
   private
 
   def requested_item_is_not_temporary_access
