@@ -3,7 +3,7 @@
 # Wrapper for a Symphony CircRecord
 class CircRecord
   def self.find(key, return_holds: false)
-    symphony_client = SymphonyClient.new
+    symphony_client = SymphonyClient.instance
     new(symphony_client.circ_record_info(key, return_holds: return_holds))
   rescue HTTP::Error
     nil

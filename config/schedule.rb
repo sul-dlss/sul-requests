@@ -9,3 +9,7 @@ end
 every '* * * * *'do
   runner 'ExpireCdlCheckoutsJob.perform_later'
 end
+
+every '0 * * * *' do
+  runner 'PollForCdlHoldsJob.perform_later'
+end

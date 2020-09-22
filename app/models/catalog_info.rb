@@ -3,7 +3,7 @@
 # Accessing item catalog information from the symphony response
 class CatalogInfo
   def self.find(barcode)
-    new(SymphonyClient.new.catalog_info(barcode))
+    new(SymphonyClient.instance.catalog_info(barcode))
   end
 
   attr_reader :response

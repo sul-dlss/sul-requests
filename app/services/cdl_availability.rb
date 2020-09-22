@@ -49,7 +49,7 @@ class CdlAvailability
   end
 
   def symphony_client
-    @symphony_client ||= SymphonyClient.new
+    @symphony_client ||= SymphonyClient.instance
   end
 
   def parse_due_date(circ_info)

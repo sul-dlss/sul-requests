@@ -56,6 +56,7 @@ class CdlCheckout
       selected_item = item_info.items.select(&:cdlable?).find { |item| item.current_location != 'CHECKEDOUT' }
 
       unless selected_item
+        PlaceOrEscalateCdlHoldJob.perform_later(hold.key)
         CdlWaitlistMailer.on_waitlist(hold.key).deliver_later
         return { token: nil, hold: hold }
       end
@@ -178,7 +179,7 @@ class CdlCheckout
   end
 
   def symphony_client
-    @symphony_client ||= SymphonyClient.new
+    @symphony_client ||= SymphonyClient.instance
   end
 
   def check_for_symphony_errors(response)
