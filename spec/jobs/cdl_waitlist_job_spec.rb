@@ -77,6 +77,7 @@ describe CdlWaitlistJob, type: :job do
       expect_any_instance_of(SymphonyClient).to receive(:check_out_item).and_return(
         {
           'circRecord' => {
+            'key' => 'abc',
             'fields' => {
               'checkOutDate' => 'Fri, 11 Sep 2020 16:09:23 PDT -07:00'
             }
