@@ -36,6 +36,10 @@ class CatalogInfo
     fields.dig('call', 'key')
   end
 
+  def loan_period
+    (fields.dig('itemCategory3', 'key')&.scan(/^CDL-(\d+)H$/)&.flatten&.first&.to_i || 2).hours
+  end
+
   def cdlable?
     home_location == 'CDL'
   end
