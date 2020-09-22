@@ -3,6 +3,9 @@
 # Controller to handle mediations for admins
 class CdlController < ApplicationController
   authorize_resource class: false
+
+  include ModalLayout
+
   rescue_from Exceptions::CdlCheckoutError, with: :handle_cdl_error
   rescue_from Exceptions::SymphonyError, with: :handle_symphony_error
 
@@ -21,9 +24,17 @@ class CdlController < ApplicationController
   end
 
   def checkout
-    token = CdlCheckout.checkout(checkout_params['barcode'], checkout_params['id'], current_user)
+    checkout = CdlCheckout.checkout(checkout_params['barcode'], checkout_params['id'], current_user)
 
-    redirect_to checkout_params['return_to'] + '?token=' + encode_token(token)
+    if checkout[:token]
+      redirect_to checkout_params['return_to'] + '?token=' + encode_token(checkout[:token])
+
+      return
+    end
+
+    @hold = checkout[:hold]
+
+    render
   end
 
   private
