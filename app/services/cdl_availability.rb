@@ -4,6 +4,8 @@
 class CdlAvailability
   attr_reader :barcode
 
+  CIRC_AVAILABILITY_STATUS_FOR_CDL = ['ON_SHELF', 'ON_RESERVE'].freeze
+
   def initialize(barcode)
     @barcode = barcode
   end
@@ -20,7 +22,7 @@ class CdlAvailability
       circ_info = symphony_client.circ_information(item.barcode)
 
       ## A copy is available for CDL, so let it be known
-      if ['ON_SHELF', 'ON_RESERVE'].include?(circ_info&.dig('currentStatus'))
+      if CIRC_AVAILABILITY_STATUS_FOR_CDL.include?(circ_info&.dig('currentStatus'))
         return availability_response.merge({ available: true })
       end
 
