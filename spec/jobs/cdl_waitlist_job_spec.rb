@@ -31,7 +31,9 @@ describe CdlWaitlistJob, type: :job do
         item_barcode: '001234',
         patron_barcode: 'CDL-CHECKEDOUT',
         hold_records: [
-          instance_double(HoldRecord, key: '1', druid: 'druid', active?: true, cdl?: true, circ_record_key: 'abc', next_up_cdl?: false)
+          instance_double(
+            HoldRecord, key: '1', druid: 'druid', active?: true, cdl?: true, circ_record_key: 'abc', next_up_cdl?: false
+          )
         ]
       )
     end
