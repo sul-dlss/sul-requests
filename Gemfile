@@ -33,6 +33,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'cancancan'
 # Use faraday for making HTTP requests
 gem 'faraday', '~> 1'
+gem 'http'
 # Use kaminari for pagination
 gem 'kaminari'
 gem 'kaminari_bootstrap_paginator'
@@ -72,6 +73,8 @@ end
 # Sidekiq is our background processing framework, run via Active Job
 gem 'sidekiq'
 gem 'sidekiq-statistic'
+
+gem 'whenever'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -113,6 +116,8 @@ group :development, :test do
 
   # listen is used by bootsnap to listen to file changes
   gem 'listen'
+
+  gem 'webmock'
 end
 
 group :production do

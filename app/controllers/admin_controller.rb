@@ -22,6 +22,17 @@ class AdminController < ApplicationController
     @mediated_pages = mediated_pages
   end
 
+  def picklist
+    authorize! :manage, Request.new(origin: params[:id]).library_location
+
+    @range = range_param
+    @items = origin_filtered_mediated_pages.where(updated_at: @range).flat_map do |request|
+      request_has_items_approved_within_range?(request, @range)
+    end
+
+    render layout: false
+  end
+
   def holdings
     render layout: false
   end
@@ -130,5 +141,20 @@ class AdminController < ApplicationController
     return super if webauth_user? || params[:action] == 'approve_item'
 
     redirect_to login_path(referrer: request.original_url)
+  end
+
+  def range_param(default: Time.zone.now.beginning_of_day...Time.zone.now)
+    from = (params[:from] && Time.zone.parse(params[:from])) || default.first
+    to = (params[:to] && Time.zone.parse(params[:to])) || default.last
+
+    from...to
+  end
+
+  def request_has_items_approved_within_range?(request, range)
+    request.item_statuses.select do |item_status|
+      item_status.approved? &&
+        item_status.approval_time &&
+        range.include?(Time.zone.parse(item_status.approval_time))
+    end
   end
 end

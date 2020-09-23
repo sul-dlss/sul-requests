@@ -4,9 +4,12 @@
 #  ItemStatus class to handle the status data and approval for each barcoded item
 ###
 class ItemStatus
-  def initialize(request, id)
+  attr_reader :id, :request
+
+  def initialize(request, id, ad_hoc: false)
     @request = request
     @id = id
+    @ad_hoc = ad_hoc
     @request.request_status_data ||= {}
   end
 
@@ -53,18 +56,22 @@ class ItemStatus
     status_object[:approval_time]
   end
 
-  def approve!(user)
+  def approve!(user, approval_time = nil)
     @request.send_to_symphony_now!(barcodes: [@id])
     reload_request # reloading to get any attributes saved to the database above
     return unless symphony_item_successful?
 
     self.status_object = {
       approved: true,
-      approval_time: Time.zone.now.to_s,
+      approval_time: (approval_time || Time.zone.now).to_s,
       approver: user
     }.with_indifferent_access
     @request.approval_status = :approved if @request.all_approved?
     @request.save!
+  end
+
+  def catalog_info
+    @catalog_info ||= CatalogInfo.find(id)
   end
 
   private

@@ -57,6 +57,7 @@ Rails.application.routes.draw do
 
   resources :admin, only: [:index, :show] do
     member do
+      get :picklist
       get :holdings, as: :holdings
       get :approve_item, as: :approve_item
     end

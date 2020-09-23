@@ -72,7 +72,7 @@ describe 'Creating a page request' do
   describe 'by a user who sponsors a proxy group' do
     before do
       stub_current_user(user)
-      stub_proxy_api_output('MY_PROXY_GROUP|SPONSOR|')
+      allow(user).to receive(:sponsor?).and_return(true)
       stub_symphony_response(build(:symphony_page_with_single_item))
     end
 

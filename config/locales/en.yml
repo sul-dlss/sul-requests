@@ -124,6 +124,8 @@ en:
       default: 'Request on-site access'
       HOPKINS: 'Request delivery to campus library'
       PAGE-MP: 'Request delivery to campus library'
+  multiple_holds_notification:
+    subject: "Multiple pages for %{patron_barcode}"
   requests:
     item_selector:
       checked_out_note: This item is currently in use by another patron. We'll add you to the request queue but we can't estimate the delivery date.

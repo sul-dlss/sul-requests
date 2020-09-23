@@ -61,7 +61,7 @@ module RequestValidations
     # We require the library ID is on the client side when neccesary
     # required when necessary, so if it's blank here, it's not required
     return if user&.library_id.blank?
-    return if SymphonyUserNameRequest.new(libid: user.library_id).exists?
+    return if user&.patron&.exists?
 
     errors.add(:library_id, 'This ID was not found in our records')
   end

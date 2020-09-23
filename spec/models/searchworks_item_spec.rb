@@ -73,6 +73,7 @@ describe SearchworksItem do
 
     describe 'for a connection failure', allow_apis: true do
       before do
+        stub_request(:get, %r{https://searchwroks.stanford.edu/.*}).to_timeout
         allow(subject).to receive_messages(url: Settings.searchworks_api.gsub('searchworks', 'searchwroks'))
       end
 

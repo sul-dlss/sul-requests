@@ -1,0 +1,28 @@
+<%- request = item_status.request %>
+<div class="request">
+  <small class="req-id">
+    Request ID #<%= request.id %>
+    <% if request.item_statuses.count > 1 %>
+     (item <%= request.item_statuses.map(&:id).index(item_status.id) + 1 %> of <%= request.item_statuses.count %>)
+   <% end %>
+  </small>
+  <table>
+    <tr><th scope="row">Call Number:</th><td><%= item_status.catalog_info.call_number %></td></tr>
+    <tr><th scope="row">Home Location:</th><td><%= request.origin_location %></td></tr>
+    <tr><th scope="row">Current Location:</th><td><%= item_status.catalog_info.current_location %></td></tr>
+    <tr><th scope="row">Title:</th><td><span class="text"><%= request.item_title %></span></td></tr>
+    <tr><th scope="row">Author:</th><td><span class="text"><%= request.bib_info.author %></span></td></tr>
+    <tr><th scope="row">Pubyear:</th><td><%= request.bib_info.pub_year %></td></tr>
+    <tr><th scope="row">Cat key:</th><td><%= request.item_id %></td></tr>
+    <tr><th scope="row">Item ID:</th><td><%= item_status.id %></td></tr>
+    <tr><th scope="row">Copy Note:</th><td><span class="text"><%= (request.public_notes || {})[item_status.id] %></span></td></tr>
+    <tr><th scope="row">User ID:</th><td><%= request.user.library_id %></td></tr>
+    <tr><th scope="row">User Name:</th><td><span class="text"><%= request.user.name %></span></td></tr>
+    <tr><th scope="row">User Email:</th><td><span class="text"><%= request.user.email_address %></span></td></tr>
+    <tr><th scope="row">User Profile:</th><td><%= request.user.patron&.profile_key %></td></tr>
+    <tr><th scope="row">User Item Note:</th><td><span class="text"><%= request.item_comment %></span></td></tr>
+    <tr><th scope="row">User Request Comment:</th><td><span class="text"><%= request.request_comment %></span></td></tr>
+    <tr><th scope="row">Planned Date of Use:</th><td><%= l(request.needed_date.to_date, format: :short) if request.needed_date %></td></tr>
+    <tr><th scope="row">Request Date:</th><td><%= l(request.created_at.to_date, format: :short) %></td></tr>
+  </table>
+</div>

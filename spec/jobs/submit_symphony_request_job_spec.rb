@@ -194,4 +194,122 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
       end
     end
   end
+
+  describe SubmitSymphonyRequestJob::SymWsCommand do
+    subject { described_class.new(request, symphony_client: mock_client) }
+
+    let(:user) { build(:non_webauth_user) }
+    let(:request) { scan }
+    let(:scan) { create(:scan_with_holdings_barcodes, user: user) }
+    let(:mock_client) { instance_double(SymphonyClient) }
+
+    describe '#execute!' do
+      it 'for each barcode place a hold with symphony' do
+        expect(subject.user).to receive(:patron).at_least(3).times.and_return(Patron.new({}))
+        allow_any_instance_of(CatalogInfo).to receive(:current_location).and_return('SAL')
+        expect(mock_client).to receive(:place_hold).with(
+          {
+            fill_by_date: nil, key: 'SAL3', recall_status: 'STANDARD',
+            item: { itemBarcode: '12345678', holdType: 'COPY' },
+            patron_barcode: 'SAL3-SCANDELIVER', comment: 'Jane Stanford jstanford@stanford.edu',
+            for_group: false, force: true
+          }
+        ).and_return({}).ordered
+        expect(mock_client).to receive(:place_hold).with(
+          {
+            fill_by_date: nil, key: 'SAL3', recall_status: 'STANDARD',
+            item: { itemBarcode: '87654321', holdType: 'COPY' },
+            patron_barcode: 'SAL3-SCANDELIVER', comment: 'Jane Stanford jstanford@stanford.edu',
+            for_group: false, force: true
+          }
+        ).and_return({}).ordered
+        subject.execute!
+      end
+
+      context 'for a response where the user already has a hold on the material' do
+        let(:request) { create(:page_with_holdings, user: user) }
+
+        before do
+          allow(mock_client).to receive(:bib_info).and_return({})
+          expect(mock_client).to receive(:place_hold).at_least(:once).and_return(
+            {
+              'messageList' => [
+                { 'message' => 'User already has a hold on this material', 'code' => 'hatErrorResponse.722' }
+              ]
+            }
+          )
+        end
+
+        context 'when a typical user' do
+          before { subject.user.library_id = '123456' }
+
+          it 'but does not notify staff' do
+            allow(subject.user).to receive(:patron).and_return(
+              Patron.new(
+                { 'fields' => { 'standing' => { 'key' => 'OK' } } }
+              )
+            )
+
+            expect do
+              subject.execute!
+            end.to change { MultipleHoldsMailer.deliveries.count }.by(0)
+          end
+        end
+
+        context 'when the patron barcode begins with "HOLD@"' do
+          it 'notifies staff' do
+            allow(subject.user).to receive(:patron).and_return(Patron.new({}))
+
+            expect do
+              subject.execute!
+            end.to change { MultipleHoldsMailer.deliveries.count }.by(1)
+          end
+        end
+
+        context 'when the item is a scan' do
+          let(:request) { scan }
+
+          it 'does not notify staff' do
+            allow(subject.user).to receive(:patron).and_return(Patron.new({}))
+
+            expect do
+              subject.execute!
+            end.to change { MultipleHoldsMailer.deliveries.count }.by(0)
+          end
+        end
+      end
+
+      context 'for a SPEC-COLL request' do
+        let(:request) { create(:mediated_page) }
+
+        it 'actually sets the pickup library to SPEC-DESK' do
+          allow(subject.user).to receive(:patron).and_return(Patron.new({}))
+          allow(mock_client).to receive(:bib_info).and_return({})
+          expect(mock_client).to receive(:place_hold).with(hash_including(key: 'SPEC-DESK')).and_return({})
+          subject.execute!
+        end
+      end
+
+      context 'without barcodes' do
+        let(:scan) { create(:scan, user: user) }
+
+        it 'places a hold using a callkey' do
+          expect(subject.user).to receive(:patron).at_least(3).times.and_return(Patron.new({}))
+          allow_any_instance_of(CatalogInfo).to receive(:current_location).and_return('SAL')
+          expect(mock_client).to receive(:bib_info).and_return(
+            { 'fields' => { 'callList' => [{ 'key' => 'hello:world' }] } }
+          )
+          expect(mock_client).to receive(:place_hold).with(
+            {
+              fill_by_date: nil, key: 'SAL3', recall_status: 'STANDARD',
+              item: { call: { key: 'hello:world', resource: '/catalog/call' }, holdType: 'TITLE' },
+              patron_barcode: 'SAL3-SCANDELIVER', comment: 'Jane Stanford jstanford@stanford.edu',
+              for_group: false, force: true
+            }
+          ).and_return({})
+          subject.execute!
+        end
+      end
+    end
+  end
 end

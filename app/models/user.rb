@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   attr_writer :ldap_group_string, :affiliation
   attr_accessor :ip_address
 
-  delegate :proxy?, :sponsor?, to: :proxy_access
+  delegate :proxy?, :sponsor?, to: :patron, allow_nil: true
 
   def to_email_string
     if name.present?
@@ -76,10 +76,6 @@ class User < ActiveRecord::Base
     (@ldap_group_string || '').split(/[|;]/)
   end
 
-  def proxy_access
-    @proxy_access ||= ProxyAccess.new(libid: library_id)
-  end
-
   def affiliation
     (@affiliation || '').split(/[|;]/)
   end
@@ -90,8 +86,12 @@ class User < ActiveRecord::Base
 
   def email_from_symphony
     self.email ||= begin
-      SymphonyUserNameRequest.new(libid: library_id).email
-    end if library_id_user?
+      patron.email if library_id_user? && patron.present?
+    end
+  end
+
+  def patron
+    @patron ||= Patron.find_by(library_id: library_id)
   end
 
   private

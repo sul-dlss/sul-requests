@@ -55,6 +55,10 @@ class Request < ActiveRecord::Base
     @searchworks_item ||= SearchworksItem.new(self, live_lookup)
   end
 
+  def bib_info
+    @bib_info ||= BibInfo.find(item_id)
+  end
+
   def send_confirmation!
     true
   end
@@ -136,7 +140,7 @@ class Request < ActiveRecord::Base
   end
 
   def notification_email_address
-    return user.proxy_access.email_address if proxy? && user.proxy_access.email_address.present?
+    return user.patron.group.email if proxy? && user&.patron&.group&.email&.present?
 
     user.email_address
   end
@@ -174,7 +178,7 @@ class Request < ActiveRecord::Base
     end
   end
 
-  def item_status(id)
-    ItemStatus.new(self, id)
+  def item_status(id, **opts)
+    ItemStatus.new(self, id, **opts)
   end
 end

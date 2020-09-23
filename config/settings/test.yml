@@ -18,12 +18,6 @@ token_encrypt:
 
 mailer_host: 'example.com'
 
-symphony_web_services:
-  enabled: false
-  # trailing slashes expected unless it's the end of the URI path
-  base_url: 'http://example.com/symws/'
-  curr_loc_path: 'v1/catalog/item/barcode/'
-
 sul_illiad: 'https://illiad-test/'
 illiad_email_address: 'illiad-test@stanford.edu'
 
@@ -37,3 +31,11 @@ features:
   remote_ip_check: true
   scan_service: true
   validate_eligibility: false
+
+symws:
+  url: https://example.com/symws
+  headers:
+      x-sirs-clientID: SymWSTestClient
+  login_params:
+    login: 'fake_user'
+    password: 'some_password'

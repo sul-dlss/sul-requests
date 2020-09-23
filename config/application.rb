@@ -240,6 +240,10 @@ module SULRequests
       'RUMSEYMAP'  => { email: 'sul-requests-rumsey@lists.stanford.edu' }
     }
 
+    config.picklist_contact_info = {
+      'SPEC-COLL' => { email: 'specialcollections@stanford.edu' }
+    }
+
     config.hours_api_location_map = {
       'ARS' => { library_slug: 'ars', location_slug: 'archive-recorded-sound' },
       'ART' => { library_slug: 'art', location_slug: 'library-circulation' },
@@ -269,6 +273,45 @@ module SULRequests
       'SPEC-COLL' => { library_slug: 'spc', location_slug: 'field-reading-room' },
       'SCIENCE' => { library_slug: 'science', location_slug: 'library-circulation' },
       'TANNER' => { library_slug: 'philosophy', location_slug: 'library-circulation' }
+    }
+
+    config.illiad_nvtgc_map = {
+      default: 'st2',
+      'organization:law' => 'rcj',
+      'organization:gsb' => 's7z'
+    }
+
+    config.pickup_library_pseudo_patrons = {
+      'ARS' => 'HOLD@AS',
+      'ART' => 'HOLD@AR',
+      'BUSINESS' => 'HOLD@BU',
+      'CLASSICS' => 'HOLD@CL',
+      'EARTH-SCI' => 'HOLD@ES',
+      'EAST-ASIA' => 'HOLD@EA',
+      'EDUCATION' => 'HOLD@ED',
+      'ENG' => 'HOLD@EN',
+      'GREEN' => 'HOLD@GR',
+      'HOOVER' => 'HOLD@HL',
+      'HOOV-DESK' => 'HOLD@HL',
+      'HV-ARCHIVE' => 'HOLD@HA',
+      'HOPKINS' => 'HOLD@HP',
+      'LAW' => 'HOLD@LW',
+      'MEDIA-MTXT' => 'HOLD@MD',
+      'MUSIC' => 'HOLD@MU',
+      'RUMSEYMAP' => 'HOLD@RM',
+      'RWC' => 'HOLD@RU',
+      'SAL' => 'HOLD@SL',
+      'SCIENCE' => 'HOLD@CS',
+      'SPEC-COLL' => 'HOLD@SP',
+      'SPEC-DESK' => 'HOLD@SP',
+      'TANNER' => 'HOLD@TA'
+    }
+
+    config.scan_destinations = {
+      'EAL_REVIEW_WORKFLOW' => { key: 'EAST-ASIA', patron_barcode: 'EAL-SCANREVIEW' },
+      'GREEN' => { key: 'GREEN', patron_barcode: 'GRE-SCANDELIVER' },
+      'SAL' => { key: 'GREEN', patron_barcode: 'GRE-SCANDELIVER' },
+      'SAL3' => { key: 'SAL3', patron_barcode: 'SAL3-SCANDELIVER' }
     }
   end
 end
