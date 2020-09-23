@@ -36,7 +36,6 @@ describe ExpireCdlCheckoutsJob, type: :job do
   it 'checks in overdue items, cancels hold for active hold record, and calls the CdlWaitlistJob' do
     expect(patron).to receive(:checkouts).and_return checkouts
     expect(CircRecord).to receive(:find).and_return(checkouts[0], checkouts[1])
-    expect(subject.symphony_client).to receive(:cancel_hold).once.with('a:1')
     expect(CdlWaitlistJob).to receive(:perform_now).with('a:1', checkout_date: Time.zone.parse('01-01-1970'))
     expect(CdlWaitlistJob).to receive(:perform_now).with('b', checkout_date: nil)
     subject.perform
