@@ -19,7 +19,7 @@ Rack::Attack.throttle("excessive-cdl-checkouts-per-item", limit: 20, period: 24.
     [
       'cdl-checkout-throttle',
       request.env['REMOTE_USER'],
-      req.params['id'].to_s.downcase.gsub(/\s+/, "")
+      request.params['id'].to_s.downcase.gsub(/\s+/, "")
     ].join(':')
   end
 end
