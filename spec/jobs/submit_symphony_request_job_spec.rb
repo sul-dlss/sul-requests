@@ -226,6 +226,28 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
         subject.execute!
       end
 
+      context 'for a sunetid patron without a library id' do
+        let(:user) { build(:webauth_user) }
+        let(:request) { create(:page_with_holdings, user: user) }
+
+        before do
+          allow(mock_client).to receive(:bib_info).and_return({})
+        end
+
+        it 'places the request on behalf of a pseudopatron and lets the circ desk figure it out' do
+          expect(subject.user).to receive(:patron).at_least(3).times.and_return(nil)
+          expect(mock_client).to receive(:place_hold) do |**params|
+            expect(params).to include(
+              comment: ' some-webauth-user@stanford.edu',
+              patron_barcode: 'HOLD@AR',
+              recall_status: 'STANDARD'
+            )
+          end.and_return({})
+
+          subject.execute!
+        end
+      end
+
       context 'for a response where the user already has a hold on the material' do
         let(:request) { create(:page_with_holdings, user: user) }
 
