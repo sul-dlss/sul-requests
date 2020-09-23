@@ -206,8 +206,8 @@ class SubmitSymphonyRequestJob < ApplicationJob
     end
 
     def usererr
-      return { usererr_code: 'U003', usererr_text: 'User is BLOCKED' } unless user.patron.good_standing?
-      return { usererr_code: 'U004', usererr_text: 'User\'s privileges have expired' } if user.patron.expired?
+      return { usererr_code: 'U003', usererr_text: 'User is BLOCKED' } unless patron&.good_standing?
+      return { usererr_code: 'U004', usererr_text: 'User\'s privileges have expired' } if patron&.expired?
 
       { usererr_code: nil, usererr_text: nil }
     end
@@ -245,7 +245,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
       when HoldRecall
         request.user.library_id
       when Page, MediatedPage
-        if patron.good_standing?
+        if patron&.good_standing?
           request.user.library_id
         else
           pseudo_patron(request.destination)
@@ -263,11 +263,11 @@ class SubmitSymphonyRequestJob < ApplicationJob
     end
 
     def name
-      user.name || patron.display_name
+      user.name || patron&.display_name
     end
 
     def email
-      user.email_address || patron.email
+      user.email_address || patron&.email
     end
 
     def request_without_barcode
@@ -296,7 +296,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
       {
         fill_by_date: request.needed_date,
         key: request.destination == 'SPEC-COLL' ? 'SPEC-DESK' : request.destination,
-        recall_status: patron.fee_borrower? ? 'NO' : 'STANDARD',
+        recall_status: patron&.fee_borrower? ? 'NO' : 'STANDARD',
         patron_barcode: patron_barcode,
         comment: comment,
         for_group: (request.proxy? || request.user.proxy?),
