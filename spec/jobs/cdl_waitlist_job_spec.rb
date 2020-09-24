@@ -32,7 +32,8 @@ describe CdlWaitlistJob, type: :job do
         patron_barcode: 'CDL-CHECKEDOUT',
         hold_records: [
           instance_double(
-            HoldRecord, key: '1', druid: 'druid', active?: true, cdl?: true, circ_record_key: 'abc', next_up_cdl?: false
+            HoldRecord, key: '1', druid: 'druid', active?: true, cdl?: true, circ_record_key: 'abc', next_up_cdl?: false,
+                        comment: 'CDL;druid;abc;1599;ACTIVE'
           )
         ]
       )
@@ -41,6 +42,7 @@ describe CdlWaitlistJob, type: :job do
     it 'cancels it' do
       expect(CircRecord).to receive(:find).and_return(checkout)
       expect_any_instance_of(SymphonyClient).to receive(:cancel_hold).with('1')
+      expect_any_instance_of(SymphonyClient).to receive(:update_hold).with('1', comment: 'CDL;druid;abc;1599;COMPLETED')
       expect(CdlWaitlistMailer).not_to receive(:hold_expired)
       subject.perform('abc', checkout_date: nil)
     end
