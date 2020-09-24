@@ -10,7 +10,11 @@ class Patron
     patron_key ||= symphony_client.login_by_sunetid(sunetid)&.dig('key') if sunetid
     patron_key ||= symphony_client.login_by_library_id(library_id)&.dig('key') if library_id
 
-    new(symphony_client.patron_info(patron_key)) if patron_key.present?
+    return new(symphony_client.patron_info(patron_key)) if patron_key.present?
+
+    Honeybadger.notify("Unable to find patron (looked up by sunetid: #{sunetid} / barcode: #{library_id}")
+
+    nil
   rescue HTTP::Error
     nil
   end
