@@ -202,10 +202,14 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
     let(:request) { scan }
     let(:scan) { create(:scan_with_holdings_barcodes, user: user) }
     let(:mock_client) { instance_double(SymphonyClient) }
+    let(:patron) { Patron.new({}) }
+
+    before do
+      allow(user).to receive(:patron).and_return(patron)
+    end
 
     describe '#execute!' do
       it 'for each barcode place a hold with symphony' do
-        expect(subject.user).to receive(:patron).at_least(3).times.and_return(Patron.new({}))
         allow_any_instance_of(CatalogInfo).to receive(:current_location).and_return('SAL')
         expect(mock_client).to receive(:place_hold).with(
           {
@@ -226,6 +230,34 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
         subject.execute!
       end
 
+      context 'for a patron with a library id' do
+        let(:user) { build(:webauth_user) }
+        let(:request) { create(:page_with_holdings, user: user) }
+        let(:patron) do
+          Patron.new({
+                       'fields' => {
+                         'barcode' => '12345',
+                         'standing' => { 'key' => 'OK' }
+                       }
+                     })
+        end
+
+        before do
+          allow(mock_client).to receive(:bib_info).and_return({})
+        end
+
+        it 'places the request on behalf of the patron' do
+          expect(mock_client).to receive(:place_hold) do |**params|
+            expect(params).to include(
+              patron_barcode: '12345',
+              recall_status: 'STANDARD'
+            )
+          end.and_return({})
+
+          subject.execute!
+        end
+      end
+
       context 'for a sunetid patron without a library id' do
         let(:user) { build(:webauth_user) }
         let(:request) { create(:page_with_holdings, user: user) }
@@ -235,7 +267,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
         end
 
         it 'places the request on behalf of a pseudopatron and lets the circ desk figure it out' do
-          expect(subject.user).to receive(:patron).at_least(3).times.and_return(nil)
+          allow(user).to receive(:patron).and_return(nil)
           expect(mock_client).to receive(:place_hold) do |**params|
             expect(params).to include(
               comment: ' some-webauth-user@stanford.edu',
@@ -263,15 +295,13 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
         end
 
         context 'when a typical user' do
-          before { subject.user.library_id = '123456' }
+          let(:patron) do
+            Patron.new(
+              { 'fields' => { 'barcode' => '123456', 'standing' => { 'key' => 'OK' } } }
+            )
+          end
 
           it 'but does not notify staff' do
-            allow(subject.user).to receive(:patron).and_return(
-              Patron.new(
-                { 'fields' => { 'standing' => { 'key' => 'OK' } } }
-              )
-            )
-
             expect do
               subject.execute!
             end.to change { MultipleHoldsMailer.deliveries.count }.by(0)
@@ -292,8 +322,6 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
           let(:request) { scan }
 
           it 'does not notify staff' do
-            allow(subject.user).to receive(:patron).and_return(Patron.new({}))
-
             expect do
               subject.execute!
             end.to change { MultipleHoldsMailer.deliveries.count }.by(0)
@@ -305,7 +333,6 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
         let(:request) { create(:mediated_page) }
 
         it 'actually sets the pickup library to SPEC-DESK' do
-          allow(subject.user).to receive(:patron).and_return(Patron.new({}))
           allow(mock_client).to receive(:bib_info).and_return({})
           expect(mock_client).to receive(:place_hold).with(hash_including(key: 'SPEC-DESK')).and_return({})
           subject.execute!
@@ -316,7 +343,6 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
         let(:scan) { create(:scan, user: user) }
 
         it 'places a hold using a callkey' do
-          expect(subject.user).to receive(:patron).at_least(3).times.and_return(Patron.new({}))
           allow_any_instance_of(CatalogInfo).to receive(:current_location).and_return('SAL')
           expect(mock_client).to receive(:bib_info).and_return(
             { 'fields' => { 'callList' => [{ 'key' => 'hello:world' }] } }

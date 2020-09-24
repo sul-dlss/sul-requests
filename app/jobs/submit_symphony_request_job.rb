@@ -243,10 +243,10 @@ class SubmitSymphonyRequestJob < ApplicationJob
         # Scan patron barcodes use logic in #scan_destinations
         nil
       when HoldRecall
-        request.user.library_id
+        patron.barcode
       when Page, MediatedPage
         if patron&.good_standing?
-          request.user.library_id
+          patron.barcode
         else
           pseudo_patron(request.destination)
         end
