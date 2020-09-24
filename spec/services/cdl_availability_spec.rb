@@ -27,7 +27,9 @@ RSpec.describe CdlAvailability do
         instance_double(CatalogInfo,
                         callkey: 'xyz',
                         loan_period: 2.hours,
-                        hold_records: Array.new(3) { instance_double(HoldRecord, next_up_cdl?: false) },
+                        hold_records: Array.new(3) do |x|
+                          instance_double(HoldRecord, circ_record_key: x, key: x, next_up_cdl?: false)
+                        end,
                         items: items)
       end
       let(:items) do
@@ -58,7 +60,9 @@ RSpec.describe CdlAvailability do
         instance_double(CatalogInfo,
                         callkey: 'xyz',
                         loan_period: 2.hours,
-                        hold_records: Array.new(3) { |x| instance_double(HoldRecord, key: x, next_up_cdl?: x == 0) },
+                        hold_records: Array.new(3) do |x|
+                          instance_double(HoldRecord, circ_record_key: x == 0 ? x : nil, key: x, next_up_cdl?: x == 0)
+                        end,
                         items: items)
       end
       let(:items) do
