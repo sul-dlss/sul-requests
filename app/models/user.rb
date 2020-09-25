@@ -91,7 +91,8 @@ class User < ActiveRecord::Base
   end
 
   def patron
-    @patron ||= Patron.find_by(library_id: library_id)
+    @patron ||= Patron.find_by(sunetid: webauth) if webauth
+    @patron ||= Patron.find_by(library_id: library_id) if library_id
   end
 
   private
