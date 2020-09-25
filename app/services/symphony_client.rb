@@ -164,7 +164,7 @@ class SymphonyClient
   end
 
   def base_url
-    Settings.symws.url || Settings.symphony_web_services&.base_url
+    Settings.symws.url
   end
 
   def default_headers
