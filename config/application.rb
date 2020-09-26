@@ -180,7 +180,9 @@ module SULRequests
         'ARTLCKO' => ['SPEC-COLL'],
         'ARTLCKO-R' => ['SPEC-COLL'],
         'ARTLCKS' => ['SPEC-COLL'],
-        'ARTLCKS-R' => ['SPEC-COLL']
+        'ARTLCKS-R' => ['SPEC-COLL'],
+        'PAGE-GR' => ['GREEN'],
+        'PAGE-SP' => ['SPEC-COLL']
       }
     end
 
