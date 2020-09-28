@@ -27,8 +27,6 @@
       <pre class="well"><%= JSON.pretty_generate(current_request.borrow_direct_response_data || {}) %></pre>
     <% else %>
       <h4>Symphony Request</h4>
-      <h5>Stored Procedures Request</h5>
-      <pre class="well"><%= JSON.pretty_generate(current_request.symphony_request(SubmitSymphonyRequestJob::StoredProcedureCommand).request_params) %></pre>
       <h5>Web Services Request</h5>
       <pre class="well"><%= JSON.pretty_generate(current_request.symphony_request(SubmitSymphonyRequestJob::SymWsCommand).request_params) %></pre>
       <h4>Symphony Response</h4>
