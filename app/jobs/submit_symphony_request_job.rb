@@ -3,6 +3,8 @@
 ##
 # Rails Job to submit a Scan request to Symphony for processing
 class SubmitSymphonyRequestJob < ApplicationJob
+  class SymphonyWebServiceAdapterError < StandardError; end
+
   queue_as :default
 
   # we pass the ActiveRecord identifier to our job, rather than the ActiveRecord reference.
@@ -215,6 +217,10 @@ class SubmitSymphonyRequestJob < ApplicationJob
           .merge(scan_destinations(barcode))
       end
     end
+  end
+
+  unless Settings.symphony_api.adapter.to_s == 'symws'
+    raise SymphonyWebServiceAdapterError, "#{Settings.symphony_api.adapter} is not a known Symphony Web Services Adapter"
   end
 
   Command = SubmitSymphonyRequestJob::SymWsCommand
