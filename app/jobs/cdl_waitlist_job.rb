@@ -21,7 +21,7 @@ class CdlWaitlistJob < ApplicationJob
       active_hold_record = active_hold_records.first
       symphony_client.cancel_hold(active_hold_record.key)
 
-      comment = active_hold_record.comment.gsub('NEXT_UP', 'EXPIRED').gsub('ACTIVE', 'COMPLETED')
+      comment = active_hold_record.comment.gsub('NEXT_UP', 'MISSED').gsub('ACTIVE', 'EXPIRED')
       symphony_client.update_hold(active_hold_record.key, comment: comment)
 
       CdlWaitlistMailer.hold_expired(active_hold_record.key).deliver_later if active_hold_record.next_up_cdl?
