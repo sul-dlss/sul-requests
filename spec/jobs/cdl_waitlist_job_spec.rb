@@ -42,7 +42,7 @@ describe CdlWaitlistJob, type: :job do
     it 'cancels it' do
       expect(CircRecord).to receive(:find).and_return(checkout)
       expect_any_instance_of(SymphonyClient).to receive(:cancel_hold).with('1')
-      expect_any_instance_of(SymphonyClient).to receive(:update_hold).with('1', comment: 'CDL;druid;abc;1599;COMPLETED')
+      expect_any_instance_of(SymphonyClient).to receive(:update_hold).with('1', comment: 'CDL;druid;abc;1599;EXPIRED')
       expect(CdlWaitlistMailer).not_to receive(:hold_expired)
       subject.perform('abc', checkout_date: nil)
     end
@@ -77,7 +77,7 @@ describe CdlWaitlistJob, type: :job do
       expect_any_instance_of(SymphonyClient).to receive(:cancel_hold).with('2')
       expect_any_instance_of(SymphonyClient).to receive(:check_in_item).with('001234')
       expect_any_instance_of(SymphonyClient).to receive(:update_hold).with('1', comment: 'CDL;druid;abc;1599865763;NEXT_UP')
-      expect_any_instance_of(SymphonyClient).to receive(:update_hold).with('2', comment: 'CDL;druid;abc;1599865763;EXPIRED')
+      expect_any_instance_of(SymphonyClient).to receive(:update_hold).with('2', comment: 'CDL;druid;abc;1599865763;MISSED')
       expect_any_instance_of(SymphonyClient).to receive(:check_out_item).and_return(
         {
           'circRecord' => {
