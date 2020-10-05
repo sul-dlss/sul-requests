@@ -7,7 +7,7 @@
    <% end %>
   </small>
   <table>
-    <tr><th scope="row">Call Number:</th><td><%= item_status.catalog_info.call_number %></td></tr>
+    <tr><th scope="row">Call Number:</th><td><%= item_status.catalog_info.display_call_number %></td></tr>
     <tr><th scope="row">Home Location:</th><td><%= request.origin_location %></td></tr>
     <tr><th scope="row">Current Location:</th><td><%= item_status.catalog_info.current_location %></td></tr>
     <tr><th scope="row">Title:</th><td><span class="text"><%= request.item_title %></span></td></tr>
