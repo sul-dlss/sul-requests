@@ -12,6 +12,10 @@ class CatalogInfo
     @response = response
   end
 
+  def key
+    @response['key']
+  end
+
   def barcode
     fields.dig('barcode')
   end
@@ -44,6 +48,12 @@ class CatalogInfo
     home_location == 'CDL'
   end
 
+  def cdl_proxy_hold_item
+    @cdl_proxy_hold_item ||= begin
+      items.find(&:cdl_preferred_hold?) || fallback_proxy_item
+    end
+  end
+
   def items
     return to_enum(:items) unless block_given?
 
@@ -56,5 +66,17 @@ class CatalogInfo
     Array.wrap(fields.dig('bib', 'fields', 'holdRecordList')&.map { |record| HoldRecord.new(record) }&.select do |record|
       callkey == record.item_call_key && record.active?
     end)
+  end
+
+  private
+
+  def cdl_preferred_hold?
+    fields.dig('itemCategory4', 'key') == 'CDL-HOLDS'
+  end
+
+  def fallback_proxy_item
+    Honeybadger.notify("No CDL preferred hold item for #{barcode}")
+
+    items.select(&:cdlable?).min_by(&:key) || self
   end
 end
