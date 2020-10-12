@@ -66,11 +66,17 @@ class CdlController < ApplicationController
   end
 
   def handle_cdl_error(exception)
-    render json: { error: exception.message }.to_json, status: :bad_request
+    respond_to do |format|
+      format.json { render json: { error: exception.message }.to_json, status: :bad_request }
+      format.html { render 'cdl_error' }
+    end
   end
 
   def handle_symphony_error(exception)
-    render json: { error: exception.message }.to_json, status: :internal_server_error
+    respond_to do |format|
+      format.json { render json: { error: exception.message }.to_json, status: :internal_server_error }
+      format.html { render 'symphony_error' }
+    end
   end
 
   def rescue_can_can(*)
