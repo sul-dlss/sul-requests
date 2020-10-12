@@ -37,9 +37,19 @@ Metrics/ClassLength:
     - 'app/controllers/requests_controller.rb'
     - 'app/jobs/submit_symphony_request_job.rb'
     - 'app/services/symphony_client.rb'
+    - 'app/services/cdl_checkout.rb'
+
+Metrics/MethodLength:
+  Exclude:
+    - 'app/services/symphony_client.rb'
+    - 'app/services/cdl_checkout.rb'
 
 Metrics/ModuleLength:
   Max: 120
+
+Metrics/AbcSize:
+  Exclude:
+    - 'app/services/cdl_checkout.rb'
 
 Style/StringLiterals:
   Enabled: true

@@ -1,0 +1,13 @@
+<div class='<%= dialog_column_class %>'>
+  <h1>You have been added to the waitlist</h1>
+
+  You are <%= @hold_record.queue_position == 1 ? 'next' : "#{@hold_record.queue_position}#{@hold_record.queue_position&.ordinal}" %> in line.
+
+  <p>We'll send an email to <strong><%= current_user.patron&.email || current_user.email || 'you' %></strong> when it's your turn.</p>
+
+  <p><strong>Check your email frequently.</strong> We can't predict when the item will be available, and it may be outside normal library hours.</p>
+
+  <p>You'll have <strong>30 minutes</strong> to claim it, before it passes to the next person on the waitlist.</p>
+
+  <button class="btn btn-link" onclick="window.close()">Close</button>
+</div>

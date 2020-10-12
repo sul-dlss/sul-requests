@@ -21,6 +21,11 @@ Rails.application.routes.draw do
   get 'paging_schedule/:origin(/:destination)' => 'paging_schedule#show', as: :paging_schedule
   get 'paging_schedule/:origin/:destination/:date' => 'paging_schedule#open', as: :open_hours
 
+  get '/cdl/checkin' => 'cdl#checkin'
+  get '/cdl/checkout' => 'cdl#checkout'
+  get '/cdl/renew' => 'cdl#renew'
+  get '/cdl/availability/:barcode' => 'cdl#availability', as: :cdl_availability
+
   concern :creatable_via_get_redirect do
     collection do
       get 'create', as: :create

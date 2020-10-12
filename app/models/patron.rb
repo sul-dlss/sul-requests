@@ -32,12 +32,20 @@ class Patron
     fields.present?
   end
 
+  def key
+    record['key']
+  end
+
   def fields
     record['fields'] || {}
   end
 
   def profile_key
     fields.dig('profile', 'key')
+  end
+
+  def holds
+    @holds ||= (fields.dig('holdRecordList') || []).map { |record| HoldRecord.new(record) }
   end
 
   def fee_borrower?
@@ -87,6 +95,10 @@ class Patron
 
   def sponsor?
     fields.dig('groupSettings', 'fields', 'responsibility', 'key') == 'SPONSOR'
+  end
+
+  def checkouts
+    @checkouts ||= SymphonyClient.new.checkouts(key).map { |record| CircRecord.new(record) }
   end
 
   def group
