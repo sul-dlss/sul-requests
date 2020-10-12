@@ -290,7 +290,7 @@ class SymphonyClient
   end
 
   def circ_record_info(circ_record_key, return_holds: false)
-    hold_return = return_holds ? 'item{barcode,bib{holdRecordList{*,item{call,bib{title}}}}}' : 'item{barcode}'
+    hold_return = return_holds ? 'item{barcode,call,bib{holdRecordList{*,item{call,bib{title}}}}}' : 'item{barcode}'
     response = authenticated_request("/circulation/circRecord/key/#{circ_record_key}", params: {
                                        includeFields: [
                                          '*',

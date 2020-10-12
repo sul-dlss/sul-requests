@@ -45,7 +45,7 @@ class CdlCheckout
   def process_checkout(barcode)
     item_info = CatalogInfo.find(barcode)
 
-    hold = find_hold(item_info.callkey) || place_hold(item_info.callkey)
+    hold = find_hold(item_info) || place_hold(item_info)
 
     if hold.next_up_cdl?
       circ_record = hold.circ_record
@@ -75,7 +75,7 @@ class CdlCheckout
   # rubocop:disable Metrics/CyclomaticComplexity
   def process_renewal(barcode)
     item_info = CatalogInfo.find(barcode)
-    hold = find_hold(item_info.callkey)
+    hold = find_hold(item_info)
 
     raise(Exceptions::CdlCheckoutError, 'Could not find hold record') unless hold&.exists? && hold&.cdl?
     raise(Exceptions::CdlCheckoutError, 'Could not find circ record') unless hold&.circ_record&.exists?
@@ -138,22 +138,22 @@ class CdlCheckout
     }
   end
 
-  def find_hold(callkey)
+  def find_hold(item)
     return nil unless user.patron
 
     user.patron.holds.find do |hold_record|
-      hold_record.item_call_key == callkey && hold_record.active?
+      hold_record.item_call_key == item.callkey && hold_record.active?
     end
   end
 
-  def place_hold(callkey)
+  def place_hold(item)
     response = symphony_client.place_hold(
       comment: "CDL;#{druid};;;WAITLIST", # max 50
       fill_by_date: DateTime.now + 1.year,
       patron_barcode: user.library_id,
       item: {
-        call: { key: callkey, resource: '/catalog/call' },
-        holdType: 'TITLE'
+        item: { key: item.cdl_proxy_hold_item.key, resource: '/catalog/item' },
+        holdType: 'COPY'
       },
       key: 'SUL'
     )

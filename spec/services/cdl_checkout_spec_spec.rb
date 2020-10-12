@@ -9,6 +9,7 @@ RSpec.describe CdlCheckout do
   let(:catalog_info) do
     instance_double(CatalogInfo,
                     callkey: 'xyz',
+                    cdl_proxy_hold_item: instance_double(CatalogInfo, key: '1'),
                     loan_period: 2.hours,
                     items: items)
   end
@@ -16,7 +17,9 @@ RSpec.describe CdlCheckout do
 
   let(:items) do
     [
-      instance_double(CatalogInfo, barcode: '12345', cdlable?: true, current_location: 'CDL-RESERVE')
+      instance_double(CatalogInfo, barcode: '12345',
+                                   cdlable?: true,
+                                   current_location: 'CDL-RESERVE')
     ]
   end
 
