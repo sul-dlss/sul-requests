@@ -76,7 +76,7 @@ class Ability
     if Settings.cdl.enabled
       can :checkin, :cdl if user.webauth_user?
       can :checkout, :cdl if user.webauth_user?
-      can :availability, :cdl if true == true
+      can :availability, :cdl
     end
   end
   # rubocop:enable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/MethodLength
