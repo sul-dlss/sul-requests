@@ -139,6 +139,8 @@ class CdlCheckout
   end
 
   def find_hold(callkey)
+    return nil unless user.patron
+
     user.patron.holds.find do |hold_record|
       hold_record.item_call_key == callkey && hold_record.active?
     end
@@ -182,6 +184,8 @@ class CdlCheckout
   end
 
   def check_for_symphony_errors(response)
+    raise(Exceptions::SymphonyError, 'No response fom symphony') if response.nil?
+
     error_messages = Array.wrap(response&.dig('messageList')).map { |message| message.dig('message') }
 
     raise(Exceptions::SymphonyError, error_messages.join(' ')) if error_messages.present?

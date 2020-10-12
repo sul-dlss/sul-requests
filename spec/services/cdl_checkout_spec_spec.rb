@@ -47,7 +47,7 @@ RSpec.describe CdlCheckout do
     it 'places the hold, checks the item out, and creates a token' do
       allow(CatalogInfo).to receive(:find).with('abc123').and_return(catalog_info)
 
-      expect(symphony_client).to receive(:place_hold)
+      expect(symphony_client).to receive(:place_hold).and_return({})
       expect(symphony_client).to receive(:check_out_item).with('12345', 'CDL-CHECKEDOUT', dueDate: anything).and_return(
         {
           'circRecord' => {
@@ -57,7 +57,7 @@ RSpec.describe CdlCheckout do
           }
         }
       )
-      expect(symphony_client).to receive(:update_hold)
+      expect(symphony_client).to receive(:update_hold).and_return({})
 
       payload = subject.process_checkout('abc123')
       expect(payload[:token]).to include sub: user.webauth
