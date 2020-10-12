@@ -54,6 +54,10 @@ class CatalogInfo
     end
   end
 
+  def cdl_preferred_hold?
+    fields.dig('itemCategory4', 'key') == 'CDL-HOLDS'
+  end
+
   def items
     return to_enum(:items) unless block_given?
 
@@ -69,10 +73,6 @@ class CatalogInfo
   end
 
   private
-
-  def cdl_preferred_hold?
-    fields.dig('itemCategory4', 'key') == 'CDL-HOLDS'
-  end
 
   def fallback_proxy_item
     Honeybadger.notify("No CDL preferred hold item for #{barcode}")
