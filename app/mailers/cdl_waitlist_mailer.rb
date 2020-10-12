@@ -24,6 +24,9 @@ class CdlWaitlistMailer < ApplicationMailer
 
   def on_waitlist(hold_record_key)
     @hold_record = HoldRecord.find(hold_record_key)
+
+    return unless @hold_record.exists?
+
     mail(
       to: @hold_record.patron.email,
       subject: "Added to waitlist for: #{@hold_record.title}"
