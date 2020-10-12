@@ -16,8 +16,8 @@ class CatalogInfo
     fields.dig('barcode')
   end
 
-  def call_number
-    fields.dig('call', 'fields', 'callNumber')
+  def display_call_number
+    fields.dig('call', 'fields', 'dispCallNumber')
   end
 
   def current_location

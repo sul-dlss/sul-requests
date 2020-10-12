@@ -19,6 +19,7 @@ token_encrypt:
 mailer_host: 'example.com'
 
 sul_illiad: 'https://illiad-test/'
+illiad_email_address: 'illiad-test@stanford.edu'
 
 background_jobs:
   enabled: false

@@ -82,7 +82,7 @@ token_encrypt:
 symphony_api:
   enabled: true
   url: ''
-  adapter: :stored_procedures
+  adapter: :symws
 
 symphony:
   override: PASSWORD

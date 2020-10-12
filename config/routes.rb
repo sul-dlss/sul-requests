@@ -11,9 +11,6 @@ Rails.application.routes.draw do
   Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]
   mount Sidekiq::Web => '/sidekiq', constraints: SidekiqConstraint.new
 
-  #sorry page route
-  get 'sorry/unable'
-
   get 'interstitial' => 'interstitial#show', as: :interstitial
 
   # Authorization routes

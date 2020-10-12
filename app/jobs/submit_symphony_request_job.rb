@@ -3,6 +3,8 @@
 ##
 # Rails Job to submit a Scan request to Symphony for processing
 class SubmitSymphonyRequestJob < ApplicationJob
+  class SymphonyWebServiceAdapterError < StandardError; end
+
   queue_as :default
 
   # we pass the ActiveRecord identifier to our job, rather than the ActiveRecord reference.
@@ -35,104 +37,6 @@ class SubmitSymphonyRequestJob < ApplicationJob
 
   def enabled?
     Settings.symphony_api.enabled && Settings.symphony_api.url.present?
-  end
-
-  ##
-  # Command to submit a Scan request to Symphony for processing
-  class StoredProcedureCommand
-    include ActiveSupport::Benchmarkable
-
-    attr_reader :request, :options
-
-    delegate :user, to: :request
-
-    def initialize(request, options = {})
-      @request = request
-      @options = options
-    end
-
-    def execute!
-      benchmark "Sending func_request_webservice_new.make_request with #{request_params.inspect}" do
-        response = client.get('func_request_webservice_new.make_request', request_params)
-        JSON.parse(response.body)['request_response'] || {}
-      end
-    end
-
-    def request_params
-      # NOTE:  any changes to params (new ones, key name changes) must be coordinated with
-      # Symphony programmers
-      patron_from_request.merge(items_from_request).merge(
-        req_type: req_type
-      ).reject { |_, v| v.blank? }
-    end
-
-    private
-
-    def req_type
-      case request
-      when Scan
-        'SCAN'
-      when HoldRecall
-        'HOLD'
-      when Page, MediatedPage
-        'PAGE'
-      end
-    end
-
-    # rubocop:disable Metrics/AbcSize
-    def patron_from_request
-      {
-        sunet_id: (user.webauth if user.webauth_user?),
-        library_id: user.library_id,
-        patron_name: (user.name if user.library_id.blank?),
-        patron_email: (user.email_address if user.library_id.blank?),
-        proxy_group: (user.patron&.group&.name if request.proxy?)
-      }
-    end
-
-    def items_from_request
-      {
-        ckey: request.item_id,
-        items: barcodes.join('^') + '^',
-        copy_note: (copy_notes.join('^') + '^' if copy_notes.present?),
-        home_lib: request.origin,
-        item_comments: request.item_comment,
-        req_comment: request.request_comment,
-        requested_date: request.created_at.strftime('%m/%d/%Y'),
-        pickup_lib: (request.destination unless request.is_a? Scan),
-        not_needed_after: request.needed_date&.strftime('%m/%d/%Y')
-      }
-    end
-    # rubocop:enable Metrics/AbcSize
-
-    def barcodes
-      items = options[:barcodes]
-      items ||= request.barcodes.reject(&:blank?)
-      items = ['NO_ITEMS'] if items.blank?
-      items
-    end
-
-    def copy_notes
-      return if request.public_notes.blank?
-
-      result = []
-      request.public_notes.each do |barcode, note|
-        result << "#{barcode}:#{note}" if barcodes.include? barcode
-      end
-      result
-    end
-
-    def client
-      @client ||= Faraday.new(url: base_url)
-    end
-
-    def base_url
-      Settings.symphony_api.url
-    end
-
-    def logger
-      Rails.logger
-    end
   end
 
   # Submit requests using Symws
@@ -206,8 +110,8 @@ class SubmitSymphonyRequestJob < ApplicationJob
     end
 
     def usererr
-      return { usererr_code: 'U003', usererr_text: 'User is BLOCKED' } unless user.patron.good_standing?
-      return { usererr_code: 'U004', usererr_text: 'User\'s privileges have expired' } if user.patron.expired?
+      return { usererr_code: 'U003', usererr_text: 'User is BLOCKED' } unless patron&.good_standing?
+      return { usererr_code: 'U004', usererr_text: 'User\'s privileges have expired' } if patron&.expired?
 
       { usererr_code: nil, usererr_text: nil }
     end
@@ -243,10 +147,10 @@ class SubmitSymphonyRequestJob < ApplicationJob
         # Scan patron barcodes use logic in #scan_destinations
         nil
       when HoldRecall
-        request.user.library_id
+        patron.barcode
       when Page, MediatedPage
-        if patron.good_standing?
-          request.user.library_id
+        if patron&.good_standing?
+          patron.barcode
         else
           pseudo_patron(request.destination)
         end
@@ -263,11 +167,11 @@ class SubmitSymphonyRequestJob < ApplicationJob
     end
 
     def name
-      user.name || patron.display_name
+      user.name || patron&.display_name
     end
 
     def email
-      user.email_address || patron.email
+      user.email_address || patron&.email
     end
 
     def request_without_barcode
@@ -296,7 +200,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
       {
         fill_by_date: request.needed_date,
         key: request.destination == 'SPEC-COLL' ? 'SPEC-DESK' : request.destination,
-        recall_status: patron.fee_borrower? ? 'NO' : 'STANDARD',
+        recall_status: patron&.fee_borrower? ? 'NO' : 'STANDARD',
         patron_barcode: patron_barcode,
         comment: comment,
         for_group: (request.proxy? || request.user.proxy?),
@@ -315,13 +219,9 @@ class SubmitSymphonyRequestJob < ApplicationJob
     end
   end
 
-  # rubocop:disable Naming/ConstantName
-  Command = begin
-    if Settings.symphony_api.adapter == 'symws'
-      SubmitSymphonyRequestJob::SymWsCommand
-    else
-      SubmitSymphonyRequestJob::StoredProcedureCommand
-    end
+  unless Settings.symphony_api.adapter.to_s == 'symws'
+    raise SymphonyWebServiceAdapterError, "#{Settings.symphony_api.adapter} is not a known Symphony Web Services Adapter"
   end
-  # rubocop:enable Naming/ConstantName
+
+  Command = SubmitSymphonyRequestJob::SymWsCommand
 end
