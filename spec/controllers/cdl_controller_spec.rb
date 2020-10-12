@@ -43,6 +43,7 @@ describe CdlController do
       end
 
       it 'redirects when successful' do
+        expect(CdlCheckout).to receive(:checkin).and_return({})
         get :checkin, params: { hold_record_key: 'abc123', return_to: 'http://example.com' }
         expect(response).to redirect_to(
           'http://example.com?success=true'
