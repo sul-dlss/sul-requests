@@ -10,6 +10,9 @@ class CdlCheckout
   # @return [Hash] token payload
   def self.checkout(barcode, druid, user)
     new(druid, user).process_checkout(barcode)
+  rescue Exceptions::SymphonyError
+    SubmitCdlCheckoutJob.perform_later(user, druid, barcode)
+    {}
   end
 
   # @param hold_record_key [String] Symphony hold record key
@@ -17,6 +20,8 @@ class CdlCheckout
   # @return [Boolean]
   def self.checkin(hold_record_key, user)
     new(nil, user).process_checkin(hold_record_key)
+  rescue Exceptions::SymphonyError
+    SubmitCdlCheckinJob.perform_later(user, hold_record_key)
   end
 
   # @param barcode [String] item barcode
