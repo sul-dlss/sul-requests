@@ -108,7 +108,7 @@ class CdlCheckout
 
     raise(Exceptions::CdlCheckoutError, 'Could not find hold record') unless hold_record&.exists? && hold_record&.cdl?
 
-    comment = hold_record.comment.gsub('ACTIVE', 'COMPLETED')
+    comment = hold_record.comment.gsub('ACTIVE', 'COMPLETED').gsub('WAITLIST', 'CANCELED').gsub('NEXT_UP', 'CANCELED')
     symphony_client.update_hold(hold_record.key, comment: comment)
     cancel_hold_response = symphony_client.cancel_hold(hold_record.key)
 
