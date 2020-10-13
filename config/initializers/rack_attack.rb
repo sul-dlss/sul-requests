@@ -13,8 +13,8 @@ Rack::Attack.throttle("excessive-cdl-checkouts", limit: 5000, period: 24.hours) 
   end
 end
 
-# 20 checkouts per item per user per day
-Rack::Attack.throttle("excessive-cdl-checkouts-per-item", limit: 20, period: 24.hours) do |request|
+# eventually targetting 20 checkouts per item per user per day
+Rack::Attack.throttle("excessive-cdl-checkouts-per-item", limit: 100, period: 24.hours) do |request|
   if request.path == '/cdl/checkout' && request.env['REMOTE_USER'].present?
     [
       'cdl-checkout-throttle',
