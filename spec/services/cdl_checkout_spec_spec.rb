@@ -28,6 +28,68 @@ RSpec.describe CdlCheckout do
     allow(SymphonyClient).to receive(:new).and_return(symphony_client)
   end
 
+  # rubocop:disable RSpec/SubjectStub
+  describe '.checkout' do
+    before do
+      allow(described_class).to receive(:new).with('druid', user).and_return(subject)
+      allow(subject).to receive(:process_checkout).with('12345')
+    end
+
+    it 'calls #process_checkout' do
+      described_class.checkout('12345', 'druid', user)
+
+      expect(subject).to have_received(:process_checkout).with('12345')
+    end
+
+    context 'when symphony is unhappy' do
+      it 'tries to eventually handle the checkout in a background job' do
+        expect(subject).to receive(:process_checkout).with('12345').and_raise(Exceptions::SymphonyError).ordered
+        expect(subject).to receive(:process_checkout).with('12345').and_return({}).ordered
+
+        expect do
+          expect(described_class.checkout('12345', 'druid', user)).to eq({})
+        end.to have_performed_job(SubmitCdlCheckoutJob)
+      end
+
+      it 'sends the user a next-up email if the background checkout succeeds' do
+        hold = instance_double(HoldRecord, circ_record: instance_double(CircRecord))
+        expect(subject).to receive(:process_checkout).with('12345').and_raise(Exceptions::SymphonyError).ordered
+        expect(subject).to receive(:process_checkout).with('12345').and_return({ hold: hold, token: 'xyz' }).ordered
+
+        mailer = double(deliver_later: true)
+        expect(CdlWaitlistMailer).to receive(:youre_up).with(hold, hold.circ_record).and_return(mailer)
+
+        described_class.checkout('12345', 'druid', user)
+        expect(mailer).to have_received :deliver_later
+      end
+    end
+  end
+
+  describe '.checkin' do
+    before do
+      allow(described_class).to receive(:new).with(nil, user).and_return(subject)
+      allow(subject).to receive(:process_checkin).with('holdrecordkey')
+    end
+
+    it 'calls #process_checkout' do
+      described_class.checkin('holdrecordkey', user)
+
+      expect(subject).to have_received(:process_checkin).with('holdrecordkey')
+    end
+
+    context 'when symphony is unhappy' do
+      it 'tries to eventually handle the checkout in a background job' do
+        expect(subject).to receive(:process_checkin).with('holdrecordkey').and_raise(Exceptions::SymphonyError).ordered
+        expect(subject).to receive(:process_checkin).with('holdrecordkey').and_return({}).ordered
+
+        expect do
+          described_class.checkin('holdrecordkey', user)
+        end.to have_performed_job(SubmitCdlCheckinJob)
+      end
+    end
+  end
+  # rubocop:enable RSpec/SubjectStub
+
   describe '#process_checkout' do
     # rubocop:disable RSpec/EmptyExampleGroup
     context 'with an existing hold and associated checkout' do
