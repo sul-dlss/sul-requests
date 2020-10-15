@@ -148,7 +148,7 @@ class SymphonyClient
     end
   end
 
-  def check_out_item(item_barcode, patron_barcode, **params)
+  def check_out_item(item_barcode, _patron_barcode, **params)
     sd_prompt_return = [
       "CIRC_NONCHARGEABLE_OVRCD/#{Settings.symphony.override}",
       "HOLD_NO_HOLDS_OVRCD/#{Settings.symphony.override}",
@@ -159,7 +159,14 @@ class SymphonyClient
                                        includeFields: 'circRecord{*,item{barcode}}'
                                      }, json: {
                                        itemBarcode: item_barcode,
-                                       patronBarcode: patron_barcode
+                                       # patronBarcode: patron_barcode
+                                       # Using patron key here instead of barcode due to a Symphony
+                                       # Web Services bug where the transaction is not reported in
+                                       # statistics logs.
+                                       patron: {
+                                         resource: '/user/patron',
+                                         key: Settings.cdl.pseudo_patron_key
+                                       }
                                      }.merge(params), headers: {
                                        'SD-Prompt-Return': sd_prompt_return.join(';'),
                                        'SD-Working-LibraryID': 'SUL'
