@@ -156,7 +156,7 @@ describe CdlWaitlistMailer do
       subject(:body) { mail.body.to_s }
 
       it { is_expected.to include 'added to the waitlist for "Book: A Book"' }
-      it { is_expected.to include 'You are 5th in line.' }
+      it { is_expected.to include 'You are 4th in line.' }
     end
   end
 end

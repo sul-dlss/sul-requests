@@ -22,10 +22,11 @@ class CdlWaitlistMailer < ApplicationMailer
     )
   end
 
-  def on_waitlist(hold_record_key)
+  def on_waitlist(hold_record_key, items: 1)
     @hold_record = HoldRecord.find(hold_record_key)
-
     return unless @hold_record.exists?
+
+    @queue_position = [@hold_record.queue_position - items, 1].max
 
     mail(
       to: @hold_record.patron.email,
