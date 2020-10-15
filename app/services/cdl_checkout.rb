@@ -61,8 +61,10 @@ class CdlCheckout
       selected_item = item_info.items.select(&:cdlable?).find { |item| item.current_location != 'CHECKEDOUT' }
 
       unless selected_item
-        CdlWaitlistMailer.on_waitlist(hold.key).deliver_later
-        return { token: nil, hold: hold }
+        items = item_info.items.count(&:cdlable?)
+
+        CdlWaitlistMailer.on_waitlist(hold.key, items: items).deliver_later
+        return { token: nil, hold: hold, items: items }
       end
 
       checkout = place_checkout(selected_item.barcode, dueDate: item_info.loan_period.from_now.iso8601)

@@ -34,6 +34,7 @@ class CdlController < ApplicationController
     redirect_to checkin_params['return_to'] + '?success=true'
   end
 
+  # rubocop:disable Metrics/AbcSize
   def checkout
     checkout = CdlCheckout.checkout(checkout_params['barcode'], checkout_params['id'], current_user)
 
@@ -43,10 +44,11 @@ class CdlController < ApplicationController
       return
     end
 
-    @hold_record = checkout[:hold]
+    @queue_position = [@hold_record.queue_position - (checkout[:items] || 1).to_i, 1].max if @hold_record&.queue_position
 
     render
   end
+  # rubocop:enable Metrics/AbcSize
 
   def renew
     payload, _headers = decode_token(renew_params['token'])
