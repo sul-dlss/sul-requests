@@ -47,7 +47,7 @@ RSpec.describe CdlCheckout do
         expect(subject).to receive(:process_checkout).with('12345').and_return({}).ordered
 
         expect do
-          expect(described_class.checkout('12345', 'druid', user)).to eq({})
+          expect { described_class.checkout('12345', 'druid', user) }.to raise_exception(Exceptions::SymphonyError)
         end.to have_performed_job(SubmitCdlCheckoutJob)
       end
 
@@ -59,7 +59,7 @@ RSpec.describe CdlCheckout do
         mailer = double(deliver_later: true)
         expect(CdlWaitlistMailer).to receive(:youre_up).with(hold, hold.circ_record).and_return(mailer)
 
-        described_class.checkout('12345', 'druid', user)
+        expect { described_class.checkout('12345', 'druid', user) }.to raise_exception(Exceptions::SymphonyError)
         expect(mailer).to have_received :deliver_later
       end
     end
