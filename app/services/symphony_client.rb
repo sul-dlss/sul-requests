@@ -320,13 +320,37 @@ class SymphonyClient
     request(path, headers: headers.merge('x-sirs-sessionToken': session_token), **other)
   end
 
+  # rubocop:disable Metrics/AbcSize
   def request(path, headers: {}, method: :get, **other)
-    HTTP
-      .timeout(60)
-      .use(instrumentation: { instrumenter: ActiveSupport::Notifications.instrumenter, namespace: 'symphony' })
-      .headers(default_headers.merge(headers))
-      .request(method, base_url + path, **other)
+    Honeybadger.add_breadcrumb('Symphony request', metadata: {
+                                 path: path,
+                                 params: other[:params].to_json,
+                                 json: other[:json].to_json
+                               })
+
+    response = HTTP
+               .timeout(60)
+               .use(instrumentation: { instrumenter: ActiveSupport::Notifications.instrumenter, namespace: 'symphony' })
+               .headers(default_headers.merge(headers))
+               .request(method, base_url + path, **other)
+
+    Honeybadger.add_breadcrumb('Symphony response', metadata: { body: response.body.to_s })
+
+    begin
+      JSON.parse(response.body)
+    rescue JSON::ParserError => e
+      Honeybadger.notify(e)
+    end
+
+    # let the specific API methods figure out what fallback to apply
+    response
+  rescue HTTP::Error => e
+    Honeybadger.notify(e)
+
+    # let the specific API methods figure out what fallback to apply
+    raise e
   end
+  # rubocop:enable Metrics/AbcSize
 
   def base_url
     Settings.symws.url
