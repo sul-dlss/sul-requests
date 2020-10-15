@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe CatalogInfo do
-  subject { described_class.find('36105123456789') }
+  subject(:info) { described_class.find('36105123456789') }
 
   before do
     stub_request(:post, 'https://example.com/symws/user/staff/login')
@@ -140,6 +140,53 @@ describe CatalogInfo do
       end
 
       it { is_expected.to be_cdlable }
+    end
+  end
+
+  describe '#loan_period' do
+    subject { info.loan_period }
+
+    let(:response) do
+      {
+        body: %{{
+          "resource": "/catalog/item",
+          "key": "666:2:1",
+          "fields": {
+            "itemCategory3": {
+              "key": "#{value}"
+            }
+          }
+        }}
+      }
+    end
+
+    before do
+      stub_request(:get, %r{https://example.com/symws/catalog/item/barcode/36105123456789?.*})
+        .to_return(response)
+    end
+
+    context 'with days' do
+      let(:value) { 'CDL-7D' }
+
+      it { is_expected.to eq 7.days }
+    end
+
+    context 'with hours' do
+      let(:value) { 'CDL-4H' }
+
+      it { is_expected.to eq 4.hours }
+    end
+
+    context 'with minutes' do
+      let(:value) { 'CDL-16M' }
+
+      it { is_expected.to eq 16.minutes }
+    end
+
+    context 'with garbage' do
+      let(:value) { 'not a cdl value' }
+
+      it { is_expected.to eq 2.hours }
     end
   end
 end

@@ -41,7 +41,20 @@ class CatalogInfo
   end
 
   def loan_period
-    (fields.dig('itemCategory3', 'key')&.scan(/^CDL-(\d+)H$/)&.flatten&.first&.to_i || 2).hours
+    loan_period_key = fields.dig('itemCategory3', 'key')
+
+    time, units = loan_period_key&.scan(/^CDL-(\d+)([DHM])$/)&.first
+
+    return 2.hours unless time && units
+
+    case units
+    when 'D'
+      time.to_i.days
+    when 'M'
+      time.to_i.minutes
+    else
+      time.to_i.hours
+    end
   end
 
   def cdlable?
