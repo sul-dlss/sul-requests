@@ -44,7 +44,9 @@ class CdlController < ApplicationController
       return
     end
 
-    @queue_position = [@hold_record.queue_position - (checkout[:items] || 1).to_i, 1].max if @hold_record&.queue_position
+    if checkout[:hold]&.queue_position
+      @queue_position = [checkout[:hold].queue_position - (checkout[:items] || 1).to_i, 1].max
+    end
 
     render
   end
