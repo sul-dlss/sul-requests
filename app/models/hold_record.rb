@@ -63,8 +63,12 @@ class HoldRecord
     cdl_comment[2].presence
   end
 
+  def cdl_status
+    cdl_comment[4]
+  end
+
   def next_up_cdl?
-    cdl_comment[4] == 'NEXT_UP'
+    cdl_status == 'NEXT_UP'
   end
 
   def patron
