@@ -10,9 +10,9 @@ class CdlCheckout
   # @return [Hash] token payload
   def self.checkout(barcode, druid, user)
     new(druid, user).process_checkout(barcode)
-  rescue Exceptions::SymphonyError
+  rescue Exceptions::SymphonyError => e
     SubmitCdlCheckoutJob.perform_later(user, druid, barcode)
-    {}
+    raise e
   end
 
   # @param hold_record_key [String] Symphony hold record key
@@ -193,9 +193,9 @@ class CdlCheckout
   def check_for_symphony_errors(response)
     raise(Exceptions::SymphonyError, 'No response fom symphony') if response.nil?
 
-    error_messages = Array.wrap(response&.dig('messageList')).map { |message| message.dig('message') }
+    errors = Array.wrap(response&.dig('messageList'))
 
-    raise(Exceptions::SymphonyError, error_messages.join(' ')) if error_messages.present?
+    raise(Exceptions::SymphonyError, errors) if errors.any?
   end
 
   def invalidate_jwt_token(circ_record, hold_record_id)
