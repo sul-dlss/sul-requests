@@ -6,6 +6,7 @@
 class Scan < Request
   validate :scannable_validator
   validates :section_title, presence: true
+  validates :page_range, length: { maximum: 30 }
 
   def requestable_with_sunet_only?
     true
