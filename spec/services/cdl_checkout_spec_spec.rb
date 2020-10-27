@@ -91,7 +91,6 @@ RSpec.describe CdlCheckout do
   # rubocop:enable RSpec/SubjectStub
 
   describe '#process_checkout' do
-    # rubocop:disable RSpec/EmptyExampleGroup
     context 'with an existing hold and associated checkout' do
       pending 'gives you the active token'
     end
@@ -107,7 +106,6 @@ RSpec.describe CdlCheckout do
     context 'when there is a choice if eligible items' do
       pending 'places a hold and picks one of the items using some criteria'
     end
-    # rubocop:enable RSpec/EmptyExampleGroup
 
     it 'places the hold, checks the item out, and creates a token' do
       allow(CatalogInfo).to receive(:find).with('abc123').and_return(catalog_info)
