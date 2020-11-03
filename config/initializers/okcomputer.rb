@@ -8,17 +8,6 @@ OkComputer::Registry.register 'confirmation_mailer', OkComputer::ActionMailerChe
 OkComputer::Registry.register 'searchworks_api', OkComputer::HttpCheck.new("#{Settings.searchworks_api}/status")
 OkComputer::Registry.register 'background_jobs', OkComputer::SidekiqLatencyCheck.new('default', 25)
 
-if Settings.symphony_api.enabled && Settings.symphony_api.url.present?
-  symphony_api_url = URI.parse(Settings.symphony_api.url)
-  OkComputer::Registry.register(
-    'symphony_api',
-    OkComputer::PingCheck.new(
-      symphony_api_url.host,
-      symphony_api_url.port
-    )
-  )
-end
-
 ###
 # NON-Crucial (Optional) Checks
 ###
