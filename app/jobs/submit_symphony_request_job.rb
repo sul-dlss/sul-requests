@@ -36,7 +36,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
   end
 
   def enabled?
-    Settings.symphony_api.enabled && Settings.symphony_api.url.present?
+    Settings.symphony_api.enabled && Settings.symws.url.present?
   end
 
   # Submit requests using Symws
