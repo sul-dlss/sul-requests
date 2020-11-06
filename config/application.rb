@@ -73,7 +73,7 @@ module SULRequests
       config.self_in_library_list_is_selected = ['LAW', 'MEDIA-MTXT']
     else
       config.include_self_in_library_list = []
-      config.self_in_library_list_is_selected = []
+      config.self_in_library_list_is_selected = ['LAW']
     end
 
     config.location_specific_default_library = {
@@ -103,7 +103,8 @@ module SULRequests
         'BUSINESS',
         'EAST-ASIA',
         'GREEN',
-        'HOPKINS'
+        'HOPKINS',
+        'LAW'
       ]
     end
 
