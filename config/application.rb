@@ -208,6 +208,10 @@ module SULRequests
         phone: '(831) 655-6229',
         email: 'HMS-Library@lists.stanford.edu'
       },
+      'LAW' => {
+        phone: '(650) 723-2477',
+        email: 'circulation@law.stanford.edu'
+      },
       'PAGE-MP' => {
         phone: '(650) 723-2746',
         email: 'brannerlibrary@stanford.edu'
