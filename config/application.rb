@@ -73,7 +73,7 @@ module SULRequests
       config.self_in_library_list_is_selected = ['LAW', 'MEDIA-MTXT']
     else
       config.include_self_in_library_list = []
-      config.self_in_library_list_is_selected = []
+      config.self_in_library_list_is_selected = ['LAW']
     end
 
     config.location_specific_default_library = {
@@ -103,7 +103,8 @@ module SULRequests
         'BUSINESS',
         'EAST-ASIA',
         'GREEN',
-        'HOPKINS'
+        'HOPKINS',
+        'LAW'
       ]
     end
 
@@ -206,6 +207,10 @@ module SULRequests
       'HOPKINS' => {
         phone: '(831) 655-6229',
         email: 'HMS-Library@lists.stanford.edu'
+      },
+      'LAW' => {
+        phone: '(650) 723-2477',
+        email: 'circulation@law.stanford.edu'
       },
       'PAGE-MP' => {
         phone: '(650) 723-2746',
