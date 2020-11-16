@@ -223,7 +223,7 @@ describe PagesController do
         end.not_to change { ConfirmationMailer.deliveries.count }
       end
 
-      # Note:  cannot trigger activejob from this spec to check ApprovalStatusMailer
+      # NOTE: cannot trigger activejob from this spec to check ApprovalStatusMailer
 
       context 'create/update' do
         it 'raises an error when the honey-pot email field is filled in on create' do
