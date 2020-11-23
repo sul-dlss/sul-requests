@@ -3,6 +3,7 @@
 # Generic location for custom exceptions
 module Exceptions
   class CdlCheckoutError < StandardError; end
+
   class CdlCheckinError < StandardError; end
 
   # deal with Symphony's errors..
