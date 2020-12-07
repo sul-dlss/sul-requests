@@ -45,7 +45,7 @@ class Ability
 
     can :new, Request
 
-    can :create, Request do |_|
+    can :create, Request do |_request|
       user.webauth_user?
     end
 
