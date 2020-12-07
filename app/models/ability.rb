@@ -44,10 +44,7 @@ class Ability
     end
 
     can :new, Request
-
-    can :create, Request do |_|
-      user.webauth_user?
-    end
+    can :create, Request if user.webauth_user?
 
     can :success, Request do |request|
       current_user_owns_request?(request)
