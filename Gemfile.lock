@@ -489,7 +489,7 @@ DEPENDENCIES
   puma
   rack
   rack-attack
-  rails (~> 6.0)
+  rails (~> 6.1)
   rails-controller-testing
   redcarpet
   redis
