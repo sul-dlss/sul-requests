@@ -15,10 +15,6 @@ module SULRequests
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
-    config.action_dispatch.default_headers = {
-      'X-Frame-Options' => 'ALLOWALL'
-    }
-
     config.action_mailer.default_url_options = { host: Settings.mailer_host }
 
     require 'token_encryptor'
