@@ -8,9 +8,9 @@
           <p class="form-control-static">
             <%= single_item.callnumber %>
           </p>
-          <% if single_item.current_location.try(:code) == 'CHECKEDOUT' %>
-            <p class="single-item-checkedout-note">
-              <%= t('requests.item_selector.checked_out_note') %>
+          <% if (note = CurrentLocationNote.new(single_item.current_location.try(:code))).present? %>
+            <p class="single-item-current-location-note">
+              <%= note %>
             </p>
           <% end %>
         </div>
@@ -52,9 +52,9 @@
                   <% end %>
                 <% end %>
 
-                <% if holding.current_location.try(:code) == 'CHECKEDOUT' %>
-                  <div data-behavior='checkedout-note' class='checkedout-note'>
-                    <%= t('requests.item_selector.checked_out_note') %>
+                <% if (note = CurrentLocationNote.new(holding.current_location.try(:code))).present? %>
+                  <div data-behavior='current-location-note' class='current-location-note'>
+                    <%= note %>
                   </div>
                 <% end %>
 

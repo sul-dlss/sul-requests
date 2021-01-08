@@ -34,7 +34,7 @@
   }
 }
 
-.single-item-checkedout-note {
+.single-item-current-location-note {
   color: $color-cardinal-red;
 }
 
@@ -44,7 +44,7 @@
   max-height: 200px;
   overflow: auto;
 
-  .checkedout-note {
+  .current-location-note {
     color: $color-cardinal-red;
     display: none;
   }
@@ -75,7 +75,7 @@
   }
 
   .public-note,
-  .checkedout-note {
+  .current-location-note {
     border-bottom: 1px solid $public-note-border-color;
     border-bottom-right-radius: 4px;
     border-left: 1px solid $public-note-border-color;

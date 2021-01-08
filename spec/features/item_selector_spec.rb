@@ -382,9 +382,9 @@ describe 'Item Selector' do
 
     it 'toggles the checked out note' do
       within('#item-selector') do
-        expect(page).not_to have_css('.checkedout-note')
+        expect(page).not_to have_css('.current-location-note')
         find('.unavailable', text: 'Due 01/01/2015').click
-        expect(page).to have_css('.checkedout-note')
+        expect(page).to have_css('.current-location-note')
       end
     end
   end
