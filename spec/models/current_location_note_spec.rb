@@ -24,4 +24,11 @@ RSpec.describe CurrentLocationNote do
     it { expect(note).to be_present }
     it { expect(note.to_s).to start_with 'We\'re currently processing this item for use' }
   end
+
+  context 'when missing' do
+    let(:current_location) { described_class::MISSING_LOCATIONS.sample }
+
+    it { expect(note).to be_present }
+    it { expect(note.to_s).to start_with 'We\'re currently searching for this missing item' }
+  end
 end
