@@ -17,4 +17,11 @@ RSpec.describe CurrentLocationNote do
     it { expect(note).to be_present }
     it { expect(note.to_s).to start_with 'This item is currently in use by another patron' }
   end
+
+  context 'when being processed' do
+    let(:current_location) { described_class::BEING_PROCESSED_LOCATIONS.sample }
+
+    it { expect(note).to be_present }
+    it { expect(note.to_s).to start_with 'We\'re currently processing this item for use' }
+  end
 end
