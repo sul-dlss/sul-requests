@@ -63,7 +63,7 @@ class CatalogInfo
 
   def cdl_proxy_hold_item
     @cdl_proxy_hold_item ||= begin
-      items.find(&:cdl_preferred_hold?) || fallback_proxy_item
+      items(refetch: true).find(&:cdl_preferred_hold?) || fallback_proxy_item
     end
   end
 
@@ -71,11 +71,15 @@ class CatalogInfo
     fields.dig('itemCategory4', 'key') == 'CDL-HOLDS'
   end
 
-  def items
-    return to_enum(:items) unless block_given?
+  def items(refetch: false)
+    return to_enum(:items, refetch: refetch) unless block_given?
 
     Array.wrap(fields.dig('call', 'fields', 'itemList')).each do |record|
-      yield CatalogInfo.new(record)
+      if refetch
+        yield CatalogInfo.find(record.dig('fields', 'barcode'))
+      else
+        yield CatalogInfo.new(record)
+      end
     end
   end
 
