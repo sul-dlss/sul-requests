@@ -20,7 +20,10 @@ class CurrentLocationNote
     return I18n.t('requests.item_selector.checked_out_note') if checkedout?
     return I18n.t('requests.item_selector.being_processed_note') if being_processed?
     return I18n.t('requests.item_selector.missing_note') if missing?
+    return I18n.t('requests.item_selector.loan_desk_note') if loan_desk?
   end
+
+  private
 
   def checkedout?
     current_location == 'CHECKEDOUT'
@@ -32,5 +35,9 @@ class CurrentLocationNote
 
   def missing?
     MISSING_LOCATIONS.include?(current_location)
+  end
+
+  def loan_desk?
+    current_location.strip.end_with?('-LOAN')
   end
 end

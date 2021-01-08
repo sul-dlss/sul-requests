@@ -31,4 +31,11 @@ RSpec.describe CurrentLocationNote do
     it { expect(note).to be_present }
     it { expect(note.to_s).to start_with 'We\'re currently searching for this missing item' }
   end
+
+  context 'when at a loan desk' do
+    let(:current_location) { 'ANYTHING-LOAN' }
+
+    it { expect(note).to be_present }
+    it { expect(note.to_s).to start_with 'This item is currently being held for use by another patron' }
+  end
 end
