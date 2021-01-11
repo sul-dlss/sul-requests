@@ -14,6 +14,7 @@ class ExpireCdlCheckoutsJob < ApplicationJob
   end
 
   def expire_overdue_checkout(circ_record)
+    cdl_logger "Expiring overdue/orphaned checkout for #{circ_record.key}"
     CdlWaitlistJob.perform_now(circ_record.key, checkout_date: circ_record.checkout_date)
   end
 
