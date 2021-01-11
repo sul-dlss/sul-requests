@@ -71,6 +71,10 @@ class HoldRecord
     cdl_status == 'NEXT_UP'
   end
 
+  def cdl_waitlisted?
+    cdl_status == 'WAITLIST'
+  end
+
   def patron
     @patron ||= Patron.find_by(patron_key: fields.dig('patron', 'key'))
   end
