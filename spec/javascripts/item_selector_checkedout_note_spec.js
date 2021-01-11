@@ -1,4 +1,4 @@
-//= require item_selector/item_selector_checkedout_note
+//= require item_selector/item_selector_current_location_note
 //= require jasmine-jquery
 
 fixture.preload('checkedout_item_selector.html');
@@ -10,76 +10,76 @@ describe('Checked Out Note Toggling', function() {
 
   describe('toggling behavior on item select events', function() {
     beforeEach(function(){
-      itemSelectorCheckedoutNote.addCheckedoutNoteToggleBehavior();
+      itemSelectorCurrentLocationNote.addCurrentLocationNoteToggleBehavior();
     });
 
     it('shows the item checkedout note with the selected event', function() {
       var checkbox = $('input[type="checkbox"]');
       expect(
-        itemSelectorCheckedoutNote.checkedoutNote(checkbox)
+        itemSelectorCurrentLocationNote.currentLocationNote(checkbox)
       ).not.toBeVisible();
 
-      itemSelectorCheckedoutNote
+      itemSelectorCurrentLocationNote
         .selectorElement()
         .trigger('item-selector:selected', [checkbox]);
 
       expect(
-        itemSelectorCheckedoutNote.checkedoutNote(checkbox)
+        itemSelectorCurrentLocationNote.currentLocationNote(checkbox)
       ).toBeVisible();
     });
 
     it('hides the item checkedout note with the deselected event', function() {
       var checkbox = $('input[type="checkbox"]');
-      $('[data-behavior="checkedout-note"]').show();
+      $('[data-behavior="current-location-note"]').show();
       expect(
-        itemSelectorCheckedoutNote.checkedoutNote(checkbox)
+        itemSelectorCurrentLocationNote.currentLocationNote(checkbox)
       ).toBeVisible();
 
-      itemSelectorCheckedoutNote
+      itemSelectorCurrentLocationNote
         .selectorElement()
         .trigger('item-selector:deselected', [checkbox]);
 
       expect(
-        itemSelectorCheckedoutNote.checkedoutNote(checkbox)
+        itemSelectorCurrentLocationNote.currentLocationNote(checkbox)
       ).not.toBeVisible();
     });
   });
 
-  describe('showCheckedoutNote()', function() {
+  describe('showCurrentLocationNote()', function() {
     it('displays the hidden note', function() {
       var checkbox = $('input[type="checkbox"]');
       expect(
-        itemSelectorCheckedoutNote.checkedoutNote(checkbox)
+        itemSelectorCurrentLocationNote.currentLocationNote(checkbox)
       ).not.toBeVisible();
 
-      itemSelectorCheckedoutNote.showCheckedoutNote(checkbox);
+      itemSelectorCurrentLocationNote.showCurrentLocationNote(checkbox);
 
       expect(
-        itemSelectorCheckedoutNote.checkedoutNote(checkbox)
+        itemSelectorCurrentLocationNote.currentLocationNote(checkbox)
       ).toBeVisible();
     });
   });
 
-  describe('hideCheckedoutNote()', function() {
+  describe('hideCurrentLocationtNote()', function() {
     it('hides the visible note', function() {
       var checkbox = $('input[type="checkbox"]');
-      $('[data-behavior="checkedout-note"]').show();
+      $('[data-behavior="current-location-note"]').show();
       expect(
-        itemSelectorCheckedoutNote.checkedoutNote(checkbox)
+        itemSelectorCurrentLocationNote.currentLocationNote(checkbox)
       ).toBeVisible();
 
-      itemSelectorCheckedoutNote.hideCheckedoutNote(checkbox);
+      itemSelectorCurrentLocationNote.hideCurrentLocationtNote(checkbox);
 
       expect(
-        itemSelectorCheckedoutNote.checkedoutNote(checkbox)
+        itemSelectorCurrentLocationNote.currentLocationNote(checkbox)
       ).not.toBeVisible();
     });
   });
 
-  describe('checkedoutNote()', function() {
+  describe('currentLocationNote()', function() {
     it('returns the checkedout note given a checkbox', function() {
       var checkbox = $('input[type="checkbox"]');
-      expect(itemSelectorCheckedoutNote.checkedoutNote(checkbox)).toExist();
+      expect(itemSelectorCurrentLocationNote.currentLocationNote(checkbox)).toExist();
     });
   });
 });

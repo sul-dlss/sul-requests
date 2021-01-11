@@ -129,7 +129,10 @@ en:
     subject: "Multiple pages for %{patron_barcode}"
   requests:
     item_selector:
+      being_processed_note: We're currently processing this item for use. We'll add you to the request queue but we can't estimate the delivery date.
       checked_out_note: This item is currently in use by another patron. We'll add you to the request queue but we can't estimate the delivery date.
+      loan_desk_note: This item is currently being held for use by another patron. We'll add you to the request queue but we can't estimate the delivery date.
+      missing_note: We're currently searching for this missing item. We'll add you to the request queue but we can't estimate the delivery date.
     success:
 
       email_notification:
