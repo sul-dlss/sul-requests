@@ -28,6 +28,14 @@ class Patron
     fields['barcode']
   end
 
+  def anonymized_id
+    if barcode
+      "xxxx#{barcode.slice(-6..-1)}"
+    else
+      "id #{key}"
+    end
+  end
+
   def exists?
     fields.present?
   end

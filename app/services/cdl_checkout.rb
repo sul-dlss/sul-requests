@@ -53,6 +53,7 @@ class CdlCheckout
     hold = find_hold(item_info) || place_hold(item_info)
 
     if hold.next_up_cdl?
+      cdl_logger "Checking out #{barcode} for next-up patron #{user.patron.anonymized_id}"
       circ_record = hold.circ_record
       symphony_client.edit_circ_record_info(circ_record.key, dueDate: item_info.loan_period.from_now.iso8601)
     else
@@ -62,11 +63,13 @@ class CdlCheckout
 
       unless selected_item
         items = item_info.items.count(&:cdlable?)
+        cdl_logger "Adding hold #{hold.key} for waitlisted patron #{user.patron.anonymized_id}"
 
         CdlWaitlistMailer.on_waitlist(hold.key, items: items).deliver_later
         return { token: nil, hold: hold, items: items }
       end
 
+      cdl_logger "Checking out #{selected_item.barcode} for patron #{user.patron.anonymized_id}"
       checkout = place_checkout(selected_item.barcode, dueDate: item_info.loan_period.from_now.iso8601)
       circ_record = CircRecord.new(checkout&.dig('circRecord'))
     end
@@ -92,6 +95,7 @@ class CdlCheckout
     # Our time for newewal is w/i 5 minuts, we're adding an addl. minute of slop here
     raise(Exceptions::CdlCheckoutError, 'Item not renewable') unless due_date.before?(6.minutes.from_now)
 
+    cdl_logger "Renewing hold #{hold.key} for patron #{user.patron.anonymized_id}"
     renewal = place_renewal(hold.item_key, dueDate: item_info.loan_period.from_now.iso8601)
 
     circ_record = CircRecord.new(renewal&.dig('circRecord'))
@@ -114,6 +118,8 @@ class CdlCheckout
     hold_record = user.patron.holds.find { |hold| hold.key == hold_record_key }
 
     raise(Exceptions::CdlCheckoutError, 'Could not find hold record') unless hold_record&.exists? && hold_record&.cdl?
+
+    cdl_logger "Checking in #{hold_record_key} for patron #{user.patron.anonymized_id}"
 
     comment = hold_record.comment.gsub('ACTIVE', 'COMPLETED').gsub('WAITLIST', 'CANCELED').gsub('NEXT_UP', 'CANCELED')
     symphony_client.update_hold(hold_record.key, comment: comment)
@@ -216,5 +222,11 @@ class CdlCheckout
     return unless Settings.cdl.redis || ENV['REDIS_URL']
 
     @redis ||= Redis.new(Settings.cdl.redis.to_h)
+  end
+
+  def cdl_logger(*args)
+    Rails.logger.tagged('CDL') do
+      Rails.logger.info(*args)
+    end
   end
 end
