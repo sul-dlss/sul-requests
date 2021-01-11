@@ -7,13 +7,17 @@ describe CdlWaitlistMailer do
   let(:patron) do
     instance_double(Patron, email: 'someone@example.com')
   end
+  let(:hold_record_key) { 'key' }
 
   before do
     allow(Patron).to receive(:find_by).with(patron_key: patron_key).and_return(patron)
+    allow(HoldRecord).to receive(:find).with(hold_record_key).and_return(hold_record)
   end
 
   describe '.youre_up' do
-    subject(:mail) { described_class.youre_up(hold_record, circ_record) }
+    subject(:mail) { described_class.youre_up(hold_record_key) }
+
+    let(:hold_record_key) { 'key' }
 
     let(:hold_record) do
       HoldRecord.new({
@@ -35,11 +39,15 @@ describe CdlWaitlistMailer do
         }
       }.with_indifferent_access)
     end
-
     let(:checkout_date) { Time.zone.parse('2020-09-15T11:12:13') }
     let(:circ_record) do
       instance_double(CircRecord, due_date: Time.zone.parse('2020-09-16T01:02:03'),
                                   checkout_date: checkout_date)
+    end
+
+    before do
+      allow(hold_record).to receive(:patron).and_return(patron)
+      allow(hold_record).to receive(:circ_record).and_return(circ_record)
     end
 
     describe 'to' do
@@ -65,7 +73,6 @@ describe CdlWaitlistMailer do
   describe '.hold_expired' do
     subject(:mail) { described_class.hold_expired(hold_record_key) }
 
-    let(:hold_record_key) { 'key' }
     let(:hold_record) do
       HoldRecord.new({
         key: 'xyz',
@@ -85,10 +92,6 @@ describe CdlWaitlistMailer do
           }
         }
       }.with_indifferent_access)
-    end
-
-    before do
-      allow(HoldRecord).to receive(:find).with(hold_record_key).and_return(hold_record)
     end
 
     describe 'to' do
@@ -113,7 +116,6 @@ describe CdlWaitlistMailer do
   describe '.on_waitlist' do
     subject(:mail) { described_class.on_waitlist(hold_record_key) }
 
-    let(:hold_record_key) { 'key' }
     let(:hold_record) do
       HoldRecord.new({
         key: 'xyz',
@@ -134,10 +136,6 @@ describe CdlWaitlistMailer do
           }
         }
       }.with_indifferent_access)
-    end
-
-    before do
-      allow(HoldRecord).to receive(:find).with(hold_record_key).and_return(hold_record)
     end
 
     describe 'to' do
