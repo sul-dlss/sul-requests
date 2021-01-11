@@ -15,7 +15,7 @@ describe CdlWaitlistMailer do
   end
 
   describe '.youre_up' do
-    subject(:mail) { described_class.youre_up(hold_record_key) }
+    subject(:mail) { described_class.youre_up(hold_record_key, circ_record_key) }
 
     let(:hold_record_key) { 'key' }
 
@@ -44,10 +44,11 @@ describe CdlWaitlistMailer do
       instance_double(CircRecord, due_date: Time.zone.parse('2020-09-16T01:02:03'),
                                   checkout_date: checkout_date)
     end
+    let(:circ_record_key) { 'circ_record_key' }
 
     before do
       allow(hold_record).to receive(:patron).and_return(patron)
-      allow(hold_record).to receive(:circ_record).and_return(circ_record)
+      allow(CircRecord).to receive(:find).with(circ_record_key).and_return(circ_record)
     end
 
     describe 'to' do
