@@ -38,9 +38,11 @@ class CdlWaitlistJob < ApplicationJob
     cdl_logger "Checking in #{circ_record.item_barcode}"
     symphony_client.check_in_item(circ_record.item_barcode)
 
-    return if remaining_holds.blank?
+    waitlisted_holds = remaining_holds.select(&:cdl_waitlisted?)
 
-    cdl_logger "Checking out #{circ_record.item_barcode} for 30 minute grace period; #{remaining_holds.length} in queue"
+    return if waitlisted_holds.blank?
+
+    cdl_logger "Checking out #{circ_record.item_barcode} for 30 minute grace period; #{waitlisted_holds.length} in queue"
     checkout = symphony_client.check_out_item(
       circ_record.item_barcode, Settings.cdl.pseudo_patron_id, dueDate: 30.minutes.from_now.iso8601
     )
@@ -48,7 +50,7 @@ class CdlWaitlistJob < ApplicationJob
     new_circ_record = CircRecord.new(checkout&.dig('circRecord'))
 
     # Figure out which hold is next
-    next_up = remaining_holds.min_by(&:key)
+    next_up = waitlisted_holds.min_by(&:key)
 
     cdl_logger "Marking hold #{next_up.key} as next for #{circ_record.item_barcode}"
     # Update hold record so its next

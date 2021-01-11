@@ -33,7 +33,7 @@ describe CdlWaitlistJob, type: :job do
         hold_records: [
           instance_double(
             HoldRecord, key: '1', druid: 'druid', active?: true, cdl?: true, circ_record_key: 'abc', next_up_cdl?: false,
-                        comment: 'CDL;druid;abc;1599;ACTIVE'
+                        comment: 'CDL;druid;abc;1599;ACTIVE', cdl_waitlisted?: false
           )
         ]
       )
@@ -50,7 +50,7 @@ describe CdlWaitlistJob, type: :job do
 
   context 'when there is a next available hold' do
     let(:expiring_hold) do
-      instance_double(HoldRecord, active?: true, cdl?: true, next_up_cdl?: true,
+      instance_double(HoldRecord, active?: true, cdl?: true, next_up_cdl?: true, cdl_waitlisted?: false,
                                   key: '2', circ_record_key: 'abc', comment: 'CDL;druid;abc;1599865763;NEXT_UP')
     end
 
@@ -63,7 +63,7 @@ describe CdlWaitlistJob, type: :job do
         patron_barcode: 'CDL-CHECKEDOUT',
         hold_records: [
           instance_double(
-            HoldRecord, active?: true, cdl?: true, next_up_cdl?: false,
+            HoldRecord, active?: true, cdl?: true, next_up_cdl?: false, cdl_waitlisted?: true,
                         key: '1', circ_record_key: 'def', druid: 'druid'
           ),
           expiring_hold
