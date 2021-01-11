@@ -4,9 +4,9 @@
 class CdlWaitlistMailer < ApplicationMailer
   helper CdlHelper
 
-  def youre_up(hold_record, circ_record)
-    @hold_record = hold_record
-    @circ_record = circ_record
+  def youre_up(hold_record_key)
+    @hold_record = HoldRecord.find(hold_record_key)
+    @circ_record = @hold_record.circ_record
 
     mail(
       to: @hold_record.patron.email,
