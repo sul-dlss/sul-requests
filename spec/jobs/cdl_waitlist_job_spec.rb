@@ -41,8 +41,9 @@ describe CdlWaitlistJob, type: :job do
 
     it 'cancels it' do
       expect(CircRecord).to receive(:find).and_return(checkout)
-      expect_any_instance_of(SymphonyClient).to receive(:cancel_hold).with('1')
-      expect_any_instance_of(SymphonyClient).to receive(:update_hold).with('1', comment: 'CDL;druid;abc;1599;EXPIRED')
+      expect_any_instance_of(SymphonyClient).to receive(:check_in_item).with('001234').and_return({})
+      expect_any_instance_of(SymphonyClient).to receive(:cancel_hold).with('1').and_return({})
+      expect_any_instance_of(SymphonyClient).to receive(:update_hold).with('1', comment: 'CDL;druid;abc;1599;EXPIRED').and_return({})
       expect(CdlWaitlistMailer).not_to receive(:hold_expired)
       subject.perform('abc', checkout_date: nil)
     end
@@ -74,10 +75,10 @@ describe CdlWaitlistJob, type: :job do
     it 'cancels that next available hold if its next up and then proceed' do
       expect(CircRecord).to receive(:find).and_return(checkout)
       expect(CdlWaitlistMailer).to receive(:hold_expired).with('2').and_return(double(deliver_later: 'Delivered!'))
-      expect_any_instance_of(SymphonyClient).to receive(:cancel_hold).with('2')
-      expect_any_instance_of(SymphonyClient).to receive(:check_in_item).with('001234')
-      expect_any_instance_of(SymphonyClient).to receive(:update_hold).with('1', comment: 'CDL;druid;abc;1599865763;NEXT_UP')
-      expect_any_instance_of(SymphonyClient).to receive(:update_hold).with('2', comment: 'CDL;druid;abc;1599865763;MISSED')
+      expect_any_instance_of(SymphonyClient).to receive(:cancel_hold).with('2').and_return({})
+      expect_any_instance_of(SymphonyClient).to receive(:check_in_item).with('001234').and_return({})
+      expect_any_instance_of(SymphonyClient).to receive(:update_hold).with('1', comment: 'CDL;druid;abc;1599865763;NEXT_UP').and_return({})
+      expect_any_instance_of(SymphonyClient).to receive(:update_hold).with('2', comment: 'CDL;druid;abc;1599865763;MISSED').and_return({})
       expect_any_instance_of(SymphonyClient).to receive(:check_out_item).and_return(
         {
           'circRecord' => {
