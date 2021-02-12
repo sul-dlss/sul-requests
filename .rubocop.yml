@@ -20,7 +20,7 @@ Rails:
   Enabled: true
 
 Layout/LineLength:
-  Max: 125
+  Max: 140
   Exclude:
     - 'spec/mailers/approval_status_mailer_spec.rb'
 

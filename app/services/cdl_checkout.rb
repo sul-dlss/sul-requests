@@ -76,7 +76,7 @@ class CdlCheckout
 
     comment = "CDL;#{druid};#{circ_record.key};#{circ_record.checkout_date.to_i};ACTIVE"
     update_hold_response = symphony_client.update_hold(hold.key, comment: comment)
-    check_for_symphony_errors(update_hold_response)
+    retry_symphony_errors { update_hold_response }
 
     { token: create_token(circ_record, hold.key), hold: hold }
   end
@@ -101,7 +101,7 @@ class CdlCheckout
     circ_record = CircRecord.new(renewal&.dig('circRecord'))
     comment = "CDL;#{druid};#{circ_record.key};#{circ_record.checkout_date.to_i};ACTIVE"
     update_hold_response = symphony_client.update_hold(hold.key, comment: comment)
-    check_for_symphony_errors(update_hold_response)
+    retry_symphony_errors { update_hold_response }
 
     create_token(circ_record, hold.key)
   end
@@ -202,6 +202,22 @@ class CdlCheckout
     errors = Array.wrap(response&.dig('messageList'))
 
     raise(Exceptions::SymphonyError, errors) if errors.any?
+
+    response
+  end
+
+  def retry_symphony_errors(times: 3)
+    i = 0
+
+    begin
+      check_for_symphony_errors(yield)
+    rescue Exceptions::SymphonyError => e
+      raise e if i > times
+
+      i += 1
+      sleep 1
+      retry
+    end
   end
 
   def invalidate_jwt_token(circ_record, hold_record_id)

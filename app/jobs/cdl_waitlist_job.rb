@@ -27,25 +27,27 @@ class CdlWaitlistJob < ApplicationJob
       else
         cdl_logger "Hold #{active_hold_record.key} checkout expired; expiring hold"
       end
-      symphony_client.cancel_hold(active_hold_record.key)
+      check_for_symphony_errors(symphony_client.cancel_hold(active_hold_record.key))
 
       comment = active_hold_record.comment.gsub('NEXT_UP', 'MISSED').gsub('ACTIVE', 'EXPIRED')
-      symphony_client.update_hold(active_hold_record.key, comment: comment)
+      retry_symphony_errors { symphony_client.update_hold(active_hold_record.key, comment: comment) }
 
       CdlWaitlistMailer.hold_expired(active_hold_record.key).deliver_later if active_hold_record.next_up_cdl?
     end
 
     cdl_logger "Checking in #{circ_record.item_barcode}"
-    symphony_client.check_in_item(circ_record.item_barcode)
+    check_for_symphony_errors(symphony_client.check_in_item(circ_record.item_barcode))
 
     waitlisted_holds = remaining_holds.select(&:cdl_waitlisted?)
 
     return if waitlisted_holds.blank?
 
     cdl_logger "Checking out #{circ_record.item_barcode} for 30 minute grace period; #{waitlisted_holds.length} in queue"
-    checkout = symphony_client.check_out_item(
-      circ_record.item_barcode, Settings.cdl.pseudo_patron_id, dueDate: 30.minutes.from_now.iso8601
-    )
+    checkout = retry_symphony_errors do
+      symphony_client.check_out_item(
+        circ_record.item_barcode, Settings.cdl.pseudo_patron_id, dueDate: 30.minutes.from_now.iso8601
+      )
+    end
 
     new_circ_record = CircRecord.new(checkout&.dig('circRecord'))
 
@@ -55,12 +57,36 @@ class CdlWaitlistJob < ApplicationJob
     cdl_logger "Marking hold #{next_up.key} as next for #{circ_record.item_barcode}"
     # Update hold record so its next
     comment = "CDL;#{next_up.druid};#{circ_record.key};#{new_circ_record.checkout_date.to_i};NEXT_UP"
-    symphony_client.update_hold(next_up.key, comment: comment)
+    retry_symphony_errors { symphony_client.update_hold(next_up.key, comment: comment) }
 
     # Send patron an email
     CdlWaitlistMailer.youre_up(next_up.key, new_circ_record.key).deliver_now
   end
   # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+
+  def check_for_symphony_errors(response)
+    raise(Exceptions::SymphonyError, 'No response fom symphony') if response.nil?
+
+    errors = Array.wrap(response&.dig('messageList'))
+
+    raise(Exceptions::SymphonyError, errors) if errors.any?
+
+    response
+  end
+
+  def retry_symphony_errors(times: 3)
+    i = 0
+
+    begin
+      check_for_symphony_errors(yield)
+    rescue Exceptions::SymphonyError => e
+      raise e if i > times
+
+      i += 1
+      sleep 1
+      retry
+    end
+  end
 
   def symphony_client
     @symphony_client ||= SymphonyClient.new
