@@ -75,8 +75,7 @@ class CdlCheckout
     end
 
     comment = "CDL;#{druid};#{circ_record.key};#{circ_record.checkout_date.to_i};ACTIVE"
-    update_hold_response = symphony_client.update_hold(hold.key, comment: comment)
-    retry_symphony_errors { update_hold_response }
+    retry_symphony_errors { symphony_client.update_hold(hold.key, comment: comment) }
 
     { token: create_token(circ_record, hold.key), hold: hold }
   end
