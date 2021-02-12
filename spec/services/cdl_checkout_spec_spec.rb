@@ -52,12 +52,12 @@ RSpec.describe CdlCheckout do
       end
 
       it 'sends the user a next-up email if the background checkout succeeds' do
-        hold = instance_double(HoldRecord, key: 'x', circ_record: instance_double(CircRecord))
+        hold = instance_double(HoldRecord, key: 'x', circ_record_key: 'y', circ_record: instance_double(CircRecord))
         expect(subject).to receive(:process_checkout).with('12345').and_raise(Exceptions::SymphonyError).ordered
         expect(subject).to receive(:process_checkout).with('12345').and_return({ hold: hold, token: 'xyz' }).ordered
 
         mailer = double(deliver_later: true)
-        expect(CdlWaitlistMailer).to receive(:youre_up).with(hold.key).and_return(mailer)
+        expect(CdlWaitlistMailer).to receive(:youre_up).with(hold.key, hold.circ_record_key).and_return(mailer)
 
         expect { described_class.checkout('12345', 'druid', user) }.to raise_exception(Exceptions::SymphonyError)
         expect(mailer).to have_received :deliver_later

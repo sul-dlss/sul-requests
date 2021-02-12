@@ -70,6 +70,8 @@ class CdlController < ApplicationController
   end
 
   def handle_cdl_error(exception)
+    Honeybadger.notify(exception)
+
     respond_to do |format|
       format.json { render json: { error: exception.message }.to_json, status: :bad_request }
       format.html { render 'cdl_error' }
@@ -77,6 +79,8 @@ class CdlController < ApplicationController
   end
 
   def handle_symphony_error(exception)
+    Honeybadger.notify(exception)
+
     @exception = exception
 
     status = exception.privileges_error? ? :unauthorized : :internal_server_error
