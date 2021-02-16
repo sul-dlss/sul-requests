@@ -11,7 +11,7 @@ class PicklistMailer < ApplicationMailer
     last_run_file: nil,
     default: (Time.zone.now - 1.day)...Time.zone.now
   )
-    last_run_file ||= Rails.root + "tmp/picklist_last_send_#{location}_#{Rails.env}"
+    last_run_file ||= Rails.root + "tmp/state/picklist_last_send_#{location}_#{Rails.env}"
 
     with_last_run_bookkeeping(last_run_file) do |stored_last_run|
       range = stored_last_run.present? ? Time.zone.parse(stored_last_run)...Time.zone.now : default
