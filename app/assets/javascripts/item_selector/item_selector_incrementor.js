@@ -51,3 +51,8 @@ var itemSelectorIncrementor = (function() {
 })();
 
 itemSelectorIncrementor.init();
+
+// Basic support of CommonJS module for import into test
+if (typeof exports === "object") {
+  module.exports = itemSelectorIncrementor;
+}

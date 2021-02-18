@@ -117,3 +117,8 @@ var itemApproval = (function() {
 })();
 
 itemApproval.init();
+
+// Basic support of CommonJS module for import into test
+if (typeof exports === "object") {
+  module.exports = itemApproval;
+}
