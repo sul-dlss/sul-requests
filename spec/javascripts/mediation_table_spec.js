@@ -1,72 +1,73 @@
-//= require mediation_table
-//= require jasmine-jquery
-fixture.preload('mediation_table.html');
-describe('Mediation Table', function() {
-  beforeAll(function() {
-    this.fixtures = fixture.load('mediation_table.html');
+const mediationTable = require('../../app/assets/javascripts/mediation_table.js');
+
+const fixture = readFixtures('mediation_table.html');
+
+describe('Mediation Table', () => {
+  beforeEach(() => {
+    document.body.innerHTML = fixture;
   });
 
-  describe('Rows', function(){
-    it('gets all the mediateable rows by selector', function(){
+  describe('Rows', () =>{
+    it('gets all the mediateable rows by selector', () =>{
       expect(mediationTable.mediatableRows().length).toBe(3);
     });
   });
 
-  describe('Row toggling', function(){
-    describe('showRow', function() {
-      it('adds the expanded class to the row', function() {
+  describe('Row toggling', () =>{
+    describe('showRow', () => {
+      it('adds the expanded class to the row', () => {
         var lastRow = mediationTable.mediatableRows().last();
         lastRow.removeClass('expanded');
-        expect(lastRow).not.toHaveClass('expanded');
+        expect(lastRow[0]).not.toHaveClass('expanded');
         mediationTable.showRow(lastRow);
-        expect(lastRow).toHaveClass('expanded');
+        expect(lastRow[0]).toHaveClass('expanded');
       });
     });
 
-    describe('hideRow', function() {
-      it('removes the expanded class on the row', function() {
+    describe('hideRow', () => {
+      it('removes the expanded class on the row', () => {
         var lastRow = mediationTable.mediatableRows().last();
         lastRow.addClass('expanded');
-        expect(lastRow).toHaveClass('expanded');
+        expect(lastRow[0]).toHaveClass('expanded');
         mediationTable.hideRow(lastRow);
-        expect(lastRow).not.toHaveClass('expanded');
+        expect(lastRow[0]).not.toHaveClass('expanded');
       });
     });
   });
 
-  describe('Toggle Handle', function() {
-    it('finds the handle in the row', function() {
+  describe('Toggle Handle', () => {
+    it('finds the handle in the row', () => {
       var row = mediationTable.mediatableRows().first();
       expect(mediationTable.toggleHandle(row).attr('id')).toBe('toggle-handle1');
     });
   });
 
-  describe('rowIsProcessed', function() {
-    it('is truthy when the next row is a populated holdings row', function() {
+  describe('rowIsProcessed', () => {
+    it('is truthy when the next row is a populated holdings row', () => {
       var lastRow = mediationTable.mediatableRows().last();
       expect(mediationTable.rowIsProcessed(lastRow)).toBeTruthy();
     });
 
-    it('is falsy when the next row is not a populated holdings row', function() {
+    it('is falsy when the next row is not a populated holdings row', () => {
       var firstRow = mediationTable.mediatableRows().first();
       expect(mediationTable.rowIsProcessed(firstRow)).toBeFalsy();
     });
   });
 
-  describe('holdingsRow', function() {
-    it('returns the row that will contain the holdings', function() {
+  describe('holdingsRow', () => {
+    it('returns the row that will contain the holdings', () => {
       var lastRow = mediationTable.mediatableRows().last();
       expect(mediationTable.holdingsRow(lastRow).length).toBe(1);
     });
 
-    it('returns nothing when not present', function() {
+    it('returns nothing when not present', () => {
       var firstRow = mediationTable.mediatableRows().first();
       expect(mediationTable.holdingsRow(firstRow).length).toBe(0);
     });
   });
 
-  describe('createHoldingsRow', function() {
-    it('adds a row to place the holdings into', function() {
+  describe('createHoldingsRow', () => {
+    it('adds a row to place the holdings into', () => {
       var firstRow = mediationTable.mediatableRows().first();
       expect(firstRow.next('tr.holdings').length).toBe(0);
       mediationTable.createHoldingsRow(firstRow);
@@ -74,12 +75,12 @@ describe('Mediation Table', function() {
     });
   });
 
-  describe('Options', function() {
-    it('has defaults', function() {
+  describe('Options', () => {
+    it('has defaults', () => {
       expect(mediationTable.options.selector).toBe('[data-mediate-request]');
     });
 
-    it('extends default with passed in attributes', function() {
+    it('extends default with passed in attributes', () => {
       mediationTable.init({ selector: '.something-else' });
       expect(mediationTable.options.selector).toBe('.something-else');
     });

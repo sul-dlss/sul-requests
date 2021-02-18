@@ -1,21 +1,22 @@
-//= require item_selector/item_selector_breadcrumbs
-//= require jasmine-jquery
+const itemSelector = require('../../app/assets/javascripts/item_selector.js');
+global.itemSelector = itemSelector;
+const itemSelectorBreadcrumbs = require('../../app/assets/javascripts/item_selector/item_selector_breadcrumbs.js');
 
-fixture.preload('no_limit_item_selector.html');
+const fixture = readFixtures('no_limit_item_selector.html');
 
-describe('Item Selector Breadcrumbs', function() {
-  beforeAll(function() {
-    this.fixtures = fixture.load('no_limit_item_selector.html');
+describe('Item Selector Breadcrumbs', () => {
+  beforeEach(() => {
+    document.body.innerHTML = fixture;
   });
 
-  describe('breadcrumbContainer()', function() {
-    it('is present', function() {
+  describe('breadcrumbContainer()', () => {
+    it('is present', () => {
       expect(itemSelectorBreadcrumbs.breadcrumbContainer().length).toBe(1);
     });
   });
 
-  describe('addBreadcrumb()', function() {
-    it('adds the breadcrumb pill', function() {
+  describe('addBreadcrumb()', () => {
+    it('adds the breadcrumb pill', () => {
       expect(
         itemSelectorBreadcrumbs.breadcrumbContainer()
                                .find('.breadcrumb-pill')
@@ -30,7 +31,7 @@ describe('Item Selector Breadcrumbs', function() {
       ).toBe(1);
     });
 
-    it('adds remove behavior to the pill', function() {
+    it('adds remove behavior to the pill', () => {
       itemSelectorBreadcrumbs.addBreadcrumbBehavior();
       var firstCheckbox = itemSelectorBreadcrumbs.checkboxes().first();
       firstCheckbox.prop('checked', true);
@@ -49,8 +50,8 @@ describe('Item Selector Breadcrumbs', function() {
     });
   });
 
-  describe('removeBreadcrumb()', function() {
-    it('removes the breadcrumb element', function() {
+  describe('removeBreadcrumb()', () => {
+    it('removes the breadcrumb element', () => {
       var firstCheckbox = itemSelectorBreadcrumbs.checkboxes().first();
       itemSelectorBreadcrumbs.addBreadcrumb(firstCheckbox);
 

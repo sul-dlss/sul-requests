@@ -1,30 +1,29 @@
-//= require item_selector
-//= require jasmine-jquery
+const itemSelector = require('../../app/assets/javascripts/item_selector.js');
 
-fixture.preload('no_limit_item_selector.html');
+const fixture = readFixtures('no_limit_item_selector.html');
 
-describe('Item Selector', function() {
-  beforeAll(function() {
-    this.fixtures = fixture.load('no_limit_item_selector.html');
+describe('Item Selector', () => {
+  beforeEach(() => {
+    document.body.innerHTML = fixture;
   });
-  describe('selectorElement()', function() {
-    it('returns the item selector element', function() {
+  describe('selectorElement()', () => {
+    it('returns the item selector element', () => {
       expect(
         itemSelector.selectorElement().length
       ).toBe(1);
     });
   });
 
-  describe('checkboxes()', function() {
-    it('returns the list of checkboxes in the item selector', function() {
+  describe('checkboxes()', () => {
+    it('returns the list of checkboxes in the item selector', () => {
       expect(
         itemSelector.checkboxes().length
       ).toBe(9);
     });
   });
 
-  describe('numberOfSelectedCheckboxes()', function() {
-    it('returns the number of checked checkboxes', function() {
+  describe('numberOfSelectedCheckboxes()', () => {
+    it('returns the number of checked checkboxes', () => {
       expect(itemSelector.numberOfSelectedCheckboxes()).toBe(0);
       itemSelector.checkboxes()
                   .first()
@@ -34,7 +33,7 @@ describe('Item Selector', function() {
                   .prop('checked', true);
       expect(itemSelector.numberOfSelectedCheckboxes()).toBe(2);
     });
-    it('returns the data attribute from the selector', function() {
+    it('returns the data attribute from the selector', () => {
       expect(itemSelector.numberOfSelectedCheckboxes()).toBe(0);
       itemSelector.selectorElement().data('selected-items', 2);
       expect(itemSelector.numberOfSelectedCheckboxes()).toBe(2);

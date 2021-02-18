@@ -1,23 +1,24 @@
-//= require item_selector/item_selector_limit_message
-//= require jasmine-jquery
+const itemSelector = require('../../app/assets/javascripts/item_selector.js');
+global.itemSelector = itemSelector;
+const itemSelectorLimitMessage = require('../../app/assets/javascripts/item_selector/item_selector_limit_message.js');
 
-fixture.preload('limited_item_selector.html');
+const fixture = readFixtures('limited_item_selector.html');
 
-describe('Item Selector Limit Message', function() {
-  beforeAll(function() {
-    this.fixtures = fixture.load('limited_item_selector.html');
+describe('Item Selector Limit Message', () => {
+  beforeEach(() => {
+    document.body.innerHTML = fixture;
   });
 
-  describe('messageContainer()', function() {
-    it('is present', function() {
+  describe('messageContainer()', () => {
+    it('is present', () => {
       expect(
         itemSelectorLimitMessage.messageContainer().length
       ).toBe(1);
     });
   });
 
-  describe('Adding/Removing Messages', function() {
-    it('can toggle the messages', function() {
+  describe('Adding/Removing Messages', () => {
+    it('can toggle the messages', () => {
       expect($('#max-items-reached').length).toBe(0);
       itemSelectorLimitMessage.addMessage();
       expect($('#max-items-reached').length).toBe(1);

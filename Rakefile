@@ -9,8 +9,16 @@ require File.expand_path('../config/application', __FILE__)
 Rails.application.load_tasks
 
 task default: [
-  :teaspoon,
+  :javascript_tests,
   :rubocop,
   :scss_lint,
   :spec
 ]
+
+task asset_paths: [:environment] do
+  puts Rails.application.config.assets.paths
+end
+
+task javascript_tests: [:environment] do
+  system 'yarn test'
+end

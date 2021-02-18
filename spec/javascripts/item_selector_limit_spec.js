@@ -1,16 +1,22 @@
-//= require item_selector/item_selector_limit
-//= require jasmine-jquery
+const itemSelector = require('../../app/assets/javascripts/item_selector.js');
+global.itemSelector = itemSelector;
+const itemSelectorLimit = require('../../app/assets/javascripts/item_selector/item_selector_limit.js');
 
-fixture.preload('limited_item_selector.html');
+const fixture = readFixtures('limited_item_selector.html');
 
-describe('Item Selector', function() {
-  beforeAll(function() {
-    this.fixtures = fixture.load('limited_item_selector.html');
+describe('Item Selector', () => {
+  beforeEach(() => {
+    document.body.innerHTML = fixture;
+    itemSelector.init();
+    itemSelectorLimit.init();
+    $(document).trigger('turbolinks:load');
+  });
+  afterEach(() => {
+    $(document).off(); // reset listeners between the tests
   });
 
-  describe('setupDefaults()', function() {
-    it('sets the default based on the numberOfSelectedCheckboxes', function() {
-      itemSelectorLimit.setupDefaults();
+  describe('setupDefaults()', () => {
+    it('sets the default based on the numberOfSelectedCheckboxes', () => {
       expect(
         itemSelectorLimit.selectorElement().data('selected-items')
       ).toBe(0);
@@ -24,8 +30,8 @@ describe('Item Selector', function() {
     });
   });
 
-  describe('enforceSelectedItemLimit()', function() {
-    it('disables selection if the limit has been passed', function() {
+  describe('enforceSelectedItemLimit()', () => {
+    it('disables selection if the limit has been passed', () => {
       itemSelectorLimit.checkboxes().filter(':nth-child(1)').trigger('click');
       itemSelectorLimit.checkboxes().filter(':nth-child(2)').trigger('click');
       itemSelectorLimit.checkboxes().filter(':nth-child(3)').trigger('click');
@@ -33,22 +39,22 @@ describe('Item Selector', function() {
 
       var fourthCheckbox = itemSelectorLimit.checkboxes()
                                             .filter(':nth-child(4)');
-      spyOnEvent(fourthCheckbox, 'click');
-      fourthCheckbox.('click')
-      expect('click').toHaveBeenPreventedOn(fourthCheckbox)
+      var spy = jest.spyOn(fourthCheckbox, 'click');
+      fourthCheckbox.click();
+      expect(spy).toHaveBeenCalled();
       expect(itemSelectorLimit.checkboxes().filter(':checked').length).toBe(3);
 
       itemSelectorLimit.checkboxes().filter(':nth-child(3)').trigger('click');
       expect(itemSelectorLimit.checkboxes().filter(':checked').length).toBe(2);
-      fourthCheckbox.('click')
+      fourthCheckbox.click();
       expect(itemSelectorLimit.checkboxes().filter(':checked').length).toBe(3);
     });
 
   });
 
-  describe('increaseSelectedNumber() and decreaseSelectedNumber()', function() {
-    beforeEach(function() { itemSelectorLimit.setupDefaults(); });
-    it('increases and decreases the number in the data attribute', function() {
+  describe('increaseSelectedNumber() and decreaseSelectedNumber()', () => {
+    beforeEach(() => { itemSelectorLimit.setupDefaults(); });
+    it('increases and decreases the number in the data attribute', () => {
       expect(
         itemSelectorLimit.selectorElement().data('selected-items')
       ).toBe(0);

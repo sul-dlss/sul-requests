@@ -1,11 +1,13 @@
-//= require item_selector/item_selector_incrementor
-//= require jasmine-jquery
+const itemSelector = require('../../app/assets/javascripts/item_selector.js');
+global.itemSelector = itemSelector;
+const itemSelectorIncrementor = require('../../app/assets/javascripts/item_selector/item_selector_incrementor.js');
 
-fixture.preload('no_limit_item_selector.html');
+const fixture = readFixtures('no_limit_item_selector.html');
+
 
 describe('Item Selector Incrementor', function() {
-  beforeAll(function() {
-    this.fixtures = fixture.load('no_limit_item_selector.html');
+  beforeEach(() => {
+    document.body.innerHTML = fixture;
   });
 
   describe('selectedItemCounter', function() {

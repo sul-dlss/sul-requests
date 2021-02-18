@@ -1,22 +1,21 @@
-//= require paging_schedule_updater
-//= require jasmine-jquery
+const pagingScheduleUpdater = require('../../app/assets/javascripts/paging_schedule_updater.js');
 
-fixture.preload('paging_schedule_elements.html');
-fixture.preload('no_dropdown_paging_schedule.html');
+const fixture_paging_schedule = readFixtures('paging_schedule_elements.html');
+const fixture_no_dropdown_paging_schedule = readFixtures('no_dropdown_paging_schedule.html');
 
-describe('Paging schedule updater', function() {
-  describe('Elements', function() {
-    beforeAll(function() {
-      this.fixtures = fixture.load('paging_schedule_elements.html');
+describe('Paging schedule updater', () => {
+  describe('Elements', () => {
+    beforeEach(() => {
+      document.body.innerHTML = fixture_paging_schedule;
     });
-    describe('containers', function() {
-      it('are present', function() {
+    describe('containers', () => {
+      it('are present', () => {
         expect(pagingScheduleUpdater.containers().length).toBe(1);
       });
     });
 
-    describe('schedulerUrl', function() {
-      it('returns the url with the given destination', function() {
+    describe('schedulerUrl', () => {
+      it('returns the url with the given destination', () => {
         var container = pagingScheduleUpdater.containers().first();
         expect(
           pagingScheduleUpdater.schedulerUrl(container, 'DEST')
@@ -25,12 +24,12 @@ describe('Paging schedule updater', function() {
     });
   });
 
-  describe('with a dropdown', function() {
-    beforeAll(function() {
-      this.fixtures = fixture.load('paging_schedule_elements.html');
+  describe('with a dropdown', () => {
+    beforeEach(() => {
+      document.body.innerHTML = fixture_paging_schedule;
     });
-    describe('destinationDropdown', function() {
-      it('are present', function() {
+    describe('destinationDropdown', () => {
+      it('are present', () => {
         var container = pagingScheduleUpdater.containers().first();
         expect(
           pagingScheduleUpdater.destinationDropdown(container).length
@@ -39,21 +38,21 @@ describe('Paging schedule updater', function() {
     });
   });
 
-  describe('without a dropdown', function() {
-    beforeAll(function() {
-      this.fixtures = fixture.load('no_dropdown_paging_schedule.html');
+  describe('without a dropdown', () => {
+    beforeEach(() => {
+      document.body.innerHTML = fixture_no_dropdown_paging_schedule;
     });
 
-    describe('singleLibraryElement', function() {
-      it('are present', function() {
+    describe('singleLibraryElement', () => {
+      it('are present', () => {
         var container = pagingScheduleUpdater.containers().first();
         expect(pagingScheduleUpdater.singleLibraryElement(container).length).toBe(2);
       });
     });
   });
 
-  describe('updateSchedulerText', function() {
-    it('updates the given element text', function() {
+  describe('updateSchedulerText', () => {
+    it('updates the given element text', () => {
       var schedulerText = $('[data-scheduler-text="true"]').first();
       var data = { text: 'Updated Text' };
       expect(schedulerText.text()).toBe('');

@@ -1,15 +1,16 @@
-//= require item_selector/item_selector_active
-//= require jasmine-jquery
+const itemSelector = require('../../app/assets/javascripts/item_selector.js');
+global.itemSelector = itemSelector;
+const itemSelectorActive = require('../../app/assets/javascripts/item_selector/item_selector_active.js');
 
-fixture.preload('input_group_selector.html');
+const fixture = readFixtures('input_group_selector.html');
 
-describe('Item Selector Active Behavior', function() {
-  beforeAll(function() {
-    this.fixtures = fixture.load('input_group_selector.html');
+describe('Item Selector Active Behavior', () => {
+  beforeEach(() => {
+    document.body.innerHTML = fixture;
   });
 
-  describe('addActive()', function() {
-    it('adds the active class to the row', function() {
+  describe('addActive()', () => {
+    it('adds the active class to the row', () => {
       var firstCheckbox = itemSelectorActive.checkboxes().first();
 
       itemSelectorActive.addActive(firstCheckbox);
@@ -19,8 +20,8 @@ describe('Item Selector Active Behavior', function() {
     });
   });
 
-  describe('removeActive()', function() {
-    it('removes the active class from the row', function() {
+  describe('removeActive()', () => {
+    it('removes the active class from the row', () => {
       var firstCheckbox = itemSelectorActive.checkboxes().first();
 
       itemSelectorActive.addActive(firstCheckbox);
