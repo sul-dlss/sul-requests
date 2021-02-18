@@ -4,6 +4,7 @@ exclude:
   - 'coverage/**'
   - 'vendor/**'
   - 'app/assets/stylesheets/modules/sul-footer.scss'
+  - 'node_modules/**'
 
 linters:
   IdSelector:
