@@ -1,16 +1,16 @@
-//= require item_approval
-//= require jasmine-jquery
-fixture.preload('item_approval_rows.html');
+const itemApproval = require('../../app/assets/javascripts/item_approval.js');
+
+const fixture = readFixtures('item_approval_rows.html');
 
 describe('Item Approval', function() {
-  beforeAll(function() {
-    this.fixtures = fixture.load('item_approval_rows.html');
+  beforeEach(() => {
+    document.body.innerHTML = fixture;
   });
 
   describe('markRowAsApproved()', function() {
     it('adds the approved class to the row', function() {
       var lastButton = $('button:last');
-      var lastRow = $('tr:last');
+      var lastRow = $('tr:last')[0];
       expect(lastRow).not.toHaveClass('approved');
       itemApproval.markRowAsApproved(lastButton);
       expect(lastRow).toHaveClass('approved');
@@ -21,7 +21,7 @@ describe('Item Approval', function() {
   describe('markRowAsError()', function() {
     it('adds the errored class to the row', function() {
       var lastButton = $('button:last');
-      var lastRow = $('tr:last');
+      var lastRow = $('tr:last')[0];
       expect(lastRow).not.toHaveClass('errored');
       itemApproval.markRowAsError(lastButton);
       expect(lastRow).toHaveClass('errored');

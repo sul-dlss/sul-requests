@@ -1,29 +1,30 @@
-//= require item_selector/item_selector_filtering
-//= require jasmine-jquery
+const itemSelector = require('../../app/assets/javascripts/item_selector.js');
+global.itemSelector = itemSelector;
+const itemSelectorFiltering = require('../../app/assets/javascripts/item_selector/item_selector_filtering.js');
 
-fixture.preload('no_limit_item_selector.html');
+const fixture = readFixtures('no_limit_item_selector.html');
 
-describe('Item Selector Filtering', function() {
-  beforeAll(function() {
-    this.fixtures = fixture.load('no_limit_item_selector.html');
+describe('Item Selector Filtering', () => {
+  beforeEach(() => {
+    document.body.innerHTML = fixture;
   });
 
-  describe('filterInput()', function() {
-    it('is present', function() {
-      expect(itemSelectorFiltering.filterInput()).toExist();
+  describe('filterInput()', () => {
+    it('is present', () => {
+      expect(itemSelectorFiltering.filterInput().length).toBe(1);
     });
 
-    it('is an HTML input', function() {
-      expect(itemSelectorFiltering.filterInput()).toEqual('input[type="text"]');
+    it('is an HTML input', () => {
+      expect(itemSelectorFiltering.filterInput()[0]).toContainHTML('<input type="text"');
     });
   });
 
-  describe('listPlugin()', function() {
-    it('is present', function() {
+  describe('listPlugin()', () => {
+    it('is present', () => {
       expect(itemSelectorFiltering.listPlugin()).toBeDefined();
     });
 
-    it('is a List', function() {
+    it('is a List', () => {
       expect(itemSelectorFiltering.listPlugin()).toEqual(jasmine.any(List));
     });
   });

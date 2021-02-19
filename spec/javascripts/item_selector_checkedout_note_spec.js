@@ -1,22 +1,23 @@
-//= require item_selector/item_selector_current_location_note
-//= require jasmine-jquery
+const itemSelector = require('../../app/assets/javascripts/item_selector.js');
+global.itemSelector = itemSelector;
+const itemSelectorCurrentLocationNote = require('../../app/assets/javascripts/item_selector/item_selector_current_location_note.js');
 
-fixture.preload('checkedout_item_selector.html');
+const fixture = readFixtures('checkedout_item_selector.html');
 
-describe('Checked Out Note Toggling', function() {
-  beforeAll(function() {
-    this.fixtures = fixture.load('checkedout_item_selector.html');
+describe('Checked Out Note Toggling', () => {
+  beforeEach(() => {
+    document.body.innerHTML = fixture;
   });
 
-  describe('toggling behavior on item select events', function() {
-    beforeEach(function(){
+  describe('toggling behavior on item select events', () => {
+    beforeEach(() =>{
       itemSelectorCurrentLocationNote.addCurrentLocationNoteToggleBehavior();
     });
 
-    it('shows the item checkedout note with the selected event', function() {
+    it('shows the item checkedout note with the selected event', () => {
       var checkbox = $('input[type="checkbox"]');
       expect(
-        itemSelectorCurrentLocationNote.currentLocationNote(checkbox)
+        itemSelectorCurrentLocationNote.currentLocationNote(checkbox)[0]
       ).not.toBeVisible();
 
       itemSelectorCurrentLocationNote
@@ -24,15 +25,15 @@ describe('Checked Out Note Toggling', function() {
         .trigger('item-selector:selected', [checkbox]);
 
       expect(
-        itemSelectorCurrentLocationNote.currentLocationNote(checkbox)
+        itemSelectorCurrentLocationNote.currentLocationNote(checkbox)[0]
       ).toBeVisible();
     });
 
-    it('hides the item checkedout note with the deselected event', function() {
+    it('hides the item checkedout note with the deselected event', () => {
       var checkbox = $('input[type="checkbox"]');
       $('[data-behavior="current-location-note"]').show();
       expect(
-        itemSelectorCurrentLocationNote.currentLocationNote(checkbox)
+        itemSelectorCurrentLocationNote.currentLocationNote(checkbox)[0]
       ).toBeVisible();
 
       itemSelectorCurrentLocationNote
@@ -40,46 +41,46 @@ describe('Checked Out Note Toggling', function() {
         .trigger('item-selector:deselected', [checkbox]);
 
       expect(
-        itemSelectorCurrentLocationNote.currentLocationNote(checkbox)
+        itemSelectorCurrentLocationNote.currentLocationNote(checkbox)[0]
       ).not.toBeVisible();
     });
   });
 
-  describe('showCurrentLocationNote()', function() {
-    it('displays the hidden note', function() {
+  describe('showCurrentLocationNote()', () => {
+    it('displays the hidden note', () => {
       var checkbox = $('input[type="checkbox"]');
       expect(
-        itemSelectorCurrentLocationNote.currentLocationNote(checkbox)
+        itemSelectorCurrentLocationNote.currentLocationNote(checkbox)[0]
       ).not.toBeVisible();
 
       itemSelectorCurrentLocationNote.showCurrentLocationNote(checkbox);
 
       expect(
-        itemSelectorCurrentLocationNote.currentLocationNote(checkbox)
+        itemSelectorCurrentLocationNote.currentLocationNote(checkbox)[0]
       ).toBeVisible();
     });
   });
 
-  describe('hideCurrentLocationtNote()', function() {
-    it('hides the visible note', function() {
+  describe('hideCurrentLocationtNote()', () => {
+    it('hides the visible note', () => {
       var checkbox = $('input[type="checkbox"]');
       $('[data-behavior="current-location-note"]').show();
       expect(
-        itemSelectorCurrentLocationNote.currentLocationNote(checkbox)
+        itemSelectorCurrentLocationNote.currentLocationNote(checkbox)[0]
       ).toBeVisible();
 
       itemSelectorCurrentLocationNote.hideCurrentLocationtNote(checkbox);
 
       expect(
-        itemSelectorCurrentLocationNote.currentLocationNote(checkbox)
+        itemSelectorCurrentLocationNote.currentLocationNote(checkbox)[0]
       ).not.toBeVisible();
     });
   });
 
-  describe('currentLocationNote()', function() {
-    it('returns the checkedout note given a checkbox', function() {
+  describe('currentLocationNote()', () => {
+    it('returns the checkedout note given a checkbox', () => {
       var checkbox = $('input[type="checkbox"]');
-      expect(itemSelectorCurrentLocationNote.currentLocationNote(checkbox)).toExist();
+      expect(itemSelectorCurrentLocationNote.currentLocationNote(checkbox).length).toBe(1);
     });
   });
 });

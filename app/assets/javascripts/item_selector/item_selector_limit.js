@@ -100,3 +100,8 @@ var itemSelectorLimit = (function() {
 })();
 
 itemSelectorLimit.init();
+
+// Basic support of CommonJS module for import into test
+if (typeof exports === "object") {
+  module.exports = itemSelectorLimit;
+}

@@ -1,15 +1,15 @@
-//= require no_js
-//= require jasmine-jquery
+import readFixtures from 'read_fixtures';
+const noJS = require('../../app/assets/javascripts/no_js.js');
 
-fixture.preload('no_js.html');
+const fixture = readFixtures('no_js.html');
 
 describe('No Javascript', function() {
-  beforeAll(function() {
-    this.fixtures = fixture.load('no_js.html');
+  beforeEach(() => {
+    document.body.innerHTML = fixture;
   });
 
   describe('the no-js class', function() {
-    it('is not present', function() {
+    test('is not present', function() {
       expect($('.no-js').length).toEqual(1);
       noJS.toggleNoJS();
       expect($('.no-js').length).toEqual(0);

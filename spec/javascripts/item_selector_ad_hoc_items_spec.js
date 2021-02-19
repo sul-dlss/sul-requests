@@ -1,43 +1,44 @@
-//= require item_selector/item_selector_ad_hoc_items
-//= require jasmine-jquery
+const itemSelector = require('../../app/assets/javascripts/item_selector.js');
+global.itemSelector = itemSelector;
+const itemSelectorAdHocItems = require('../../app/assets/javascripts/item_selector/item_selector_ad_hoc_items.js');
 
-fixture.preload('ad_hoc_items_item_selector.html');
+const fixture = readFixtures('ad_hoc_items_item_selector.html');
 
-describe('Item Selector Ad-Hoc Items', function(){
-  beforeAll(function() {
-    this.fixtures = fixture.load('ad_hoc_items_item_selector.html');
+describe('Item Selector Ad-Hoc Items', () =>{
+  beforeEach(() => {
+    document.body.innerHTML = fixture;
   });
 
-  describe('addItemsInput()', function() {
-    it('is present', function() {
+  describe('addItemsInput()', () => {
+    it('is present', () => {
       expect(itemSelectorAdHocItems.addItemsInput().length).toBe(1);
     });
   });
 
-  describe('addItemsButton()', function() {
-    it('is present', function() {
+  describe('addItemsButton()', () => {
+    it('is present', () => {
       expect(itemSelectorAdHocItems.addItemsButton().length).toBe(1);
     });
   });
 
-  describe('disableAddButtonOnMaxItems()', function() {
-    it('disables the Add link when max items is reached', function() {
+  describe('disableAddButtonOnMaxItems()', () => {
+    it('disables the Add link when max items is reached', () => {
       expect(
-        itemSelectorAdHocItems.addItemsButton().attr('class')
-      ).not.toMatch('disabled');
+        itemSelectorAdHocItems.addItemsButton()[0]
+      ).not.toHaveClass('disabled');
 
       itemSelectorAdHocItems.disableAddButtonOnMaxItems();
       itemSelectorAdHocItems.selectorElement()
                             .trigger('item-selector:max-selected-reached');
 
       expect(
-        itemSelectorAdHocItems.addItemsButton().attr('class')
-      ).toMatch('disabled');
+        itemSelectorAdHocItems.addItemsButton()[0]
+      ).toHaveClass('disabled');
     });
   });
 
-  describe('enableAddButtonOnDeselect()', function() {
-    it('enables the Add link when an item is deselected', function() {
+  describe('enableAddButtonOnDeselect()', () => {
+    it('enables the Add link when an item is deselected', () => {
       itemSelectorAdHocItems.enableAddButtonOnDeselect();
 
       itemSelectorAdHocItems.addItemsButton().addClass('disabled');
@@ -45,8 +46,8 @@ describe('Item Selector Ad-Hoc Items', function(){
                             .trigger('item-selector:deselected');
 
       expect(
-        itemSelectorAdHocItems.addItemsButton().attr('class')
-      ).not.toMatch('disabled');
+        itemSelectorAdHocItems.addItemsButton()[0]
+      ).not.toHaveClass('disabled');
     });
   });
 });
