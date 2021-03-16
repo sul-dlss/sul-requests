@@ -138,6 +138,9 @@ module SULRequests
 
     if Rails.env.test?
       config.location_specific_pickup_libraries = {
+        'EDUCATION' => {
+          'LOCKED-STK' => ['SPEC-COLL']
+        },
         'PAGE-AR' => ['ART', 'SPEC-COLL'],
         'PAGE-AS' => ['ARS'],
         'PAGE-BI' => ['BIOLOGY'],
@@ -166,6 +169,9 @@ module SULRequests
       }
     else
       config.location_specific_pickup_libraries = {
+        'EDUCATION' => {
+          'LOCKED-STK' => ['SPEC-COLL']
+        },
         'PAGE-EA' => ['EAST-ASIA'],
         'HY-PAGE-EA' => ['EAST-ASIA'],
         'L-PAGE-EA'  => ['EAST-ASIA'],
