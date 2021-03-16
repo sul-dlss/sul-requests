@@ -123,6 +123,29 @@ describe Request do
         expect(sorted[2].needed_date).to eq Time.zone.today + 1.day
       end
     end
+
+    describe 'obsolete' do
+      before do
+        create(:hold_recall, created_at: Time.zone.today - 1.month, item_comment: 'Too new')
+        create(:hold_recall, created_at: Time.zone.today - 2.years, item_comment: 'Obsolete')
+        create(:scan, created_at: Time.zone.today + 3.days, item_comment: 'Too new')
+        create(:scan, created_at: Time.zone.today - 15.months, item_comment: 'Obsolete')
+        r = build(:mediated_page, created_at: Time.zone.today - 15.months,
+                                  needed_date: Time.zone.today - 83.days,
+                                  item_comment: 'Old enough, but needed date too recent')
+        r.save!(validate: false)
+        r = build(:mediated_page, created_at: Time.zone.today - 15.months,
+                                  needed_date: Time.zone.today - 13.months,
+                                  item_comment: 'Obsolete')
+        r.save!(validate: false)
+      end
+
+      it 'returns records that are older than the given date' do
+        result = described_class.obsolete(1.year.ago)
+        expect(result.count).to eq 3
+        expect(result.map(&:item_comment).uniq).to match_array ['Obsolete']
+      end
+    end
   end
 
   describe 'associations' do
