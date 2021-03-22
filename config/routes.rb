@@ -8,7 +8,6 @@ Rails.application.routes.draw do
 
   require 'sidekiq/web'
   require 'sidekiq_constraint'
-  Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]
   mount Sidekiq::Web => '/sidekiq', constraints: SidekiqConstraint.new
 
   get 'interstitial' => 'interstitial#show', as: :interstitial
