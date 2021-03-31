@@ -190,13 +190,25 @@ module SULRequests
     end
 
     config.contact_info = {
+      'ART' => {
+        phone: '(650) 723-3408',
+        email: 'artlibrary@stanford.edu',
+      },
       'BUSINESS' => {
         phone: '(650) 725-2055',
         email: 'gsb_librarycirc@stanford.edu'
       },
+      'EDUCATION' => {
+        phone: '(650) 723-2121',
+        email: 'cubberley@stanford.edu'
+      },
       'SCAN' => {
         phone: '(650) 723-3278',
         email: 'scan-and-deliver@stanford.edu'
+      },
+      'GREEN' => {
+        phone: '(650) 723-1493',
+        email: 'greencirc@stanford.edu'
       },
       'HOOVER' => {
         phone: '(650) 723-2058',
