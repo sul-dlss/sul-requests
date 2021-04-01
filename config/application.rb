@@ -38,7 +38,7 @@ module SULRequests
       'CLASSICS' => 'Classics Library',
       'EARTH-SCI' => 'Earth Sciences Library (Branner)',
       'EAST-ASIA' => 'East Asia Library',
-      'EDUCATION' => 'Education Library (Cubberley)',
+      'EDUCATION' => 'Education Library',
       'ENG' => 'Engineering Library (Terman)',
       'GREEN' => 'Green Library',
       'HOOVER' => 'Hoover Library',
@@ -62,7 +62,7 @@ module SULRequests
 
     config.default_pickup_library = 'GREEN'
 
-    config.confirm_eligibility_libraries = ['ART', 'RUMSEYMAP', 'SPEC-COLL']
+    config.confirm_eligibility_libraries = ['ART', 'EDUCATION','RUMSEYMAP', 'SPEC-COLL']
 
     if Rails.env.test?
       config.include_self_in_library_list = ['MEDIA-MTXT']
@@ -138,6 +138,9 @@ module SULRequests
 
     if Rails.env.test?
       config.location_specific_pickup_libraries = {
+        'EDUCATION' => {
+          'LOCKED-STK' => ['SPEC-COLL']
+        },
         'PAGE-AR' => ['ART', 'SPEC-COLL'],
         'PAGE-AS' => ['ARS'],
         'PAGE-BI' => ['BIOLOGY'],
@@ -166,6 +169,9 @@ module SULRequests
       }
     else
       config.location_specific_pickup_libraries = {
+        'EDUCATION' => {
+          'LOCKED-STK' => ['SPEC-COLL']
+        },
         'PAGE-EA' => ['EAST-ASIA'],
         'HY-PAGE-EA' => ['EAST-ASIA'],
         'L-PAGE-EA'  => ['EAST-ASIA'],
@@ -184,13 +190,25 @@ module SULRequests
     end
 
     config.contact_info = {
+      'ART' => {
+        phone: '(650) 723-3408',
+        email: 'artlibrary@stanford.edu',
+      },
       'BUSINESS' => {
         phone: '(650) 725-2055',
         email: 'gsb_librarycirc@stanford.edu'
       },
+      'EDUCATION' => {
+        phone: '(650) 723-2121',
+        email: 'cubberley@stanford.edu'
+      },
       'SCAN' => {
         phone: '(650) 723-3278',
         email: 'scan-and-deliver@stanford.edu'
+      },
+      'GREEN' => {
+        phone: '(650) 723-1493',
+        email: 'greencirc@stanford.edu'
       },
       'HOOVER' => {
         phone: '(650) 723-2058',
@@ -231,7 +249,8 @@ module SULRequests
     config.no_user_privs_codes = ['U003', 'U004']
 
     config.mediator_contact_info = {
-      'ART'        => { email: ' sul-requests-art@lists.stanford.edu' },
+      'ART'        => { email: 'sul-requests-art@lists.stanford.edu' },
+      'EDUCATION'  => { email: 'sul-requests-education@lists.stanford.edu'},
       'HV-ARCHIVE' => { email: 'sul-requests-hoover-archive@lists.stanford.edu' },
       'HOOVER'     => { email: 'sul-requests-hoover-library@lists.stanford.edu' },
       'HOPKINS'    => { email: 'sul-requests-hopkins@lists.stanford.edu' },

@@ -6,12 +6,14 @@
 module Mediateable
   MEDIATALBE_LIBRARIES = ['RUMSEYMAP', 'SPEC-COLL'].freeze
   ART_LOCKED_STACKS_LOCATIONS = %w[ARTLCKL ARTLCKL-R ARTLCKM ARTLCKM-R ARTLCKO ARTLCKO-R ARTLCKS ARTLCKS-R].freeze
+  EDUCATION_LOCKED_STACKS_LOCATIONS = ['LOCKED-STK'].freeze
 
   def mediateable?
     mediated_library? ||
       art_locked_stacks? ||
       page_mp? ||
-      hoover_archive_in_sal3?
+      hoover_archive_in_sal3? ||
+      education_locked_stacks?
   end
 
   private
@@ -34,5 +36,9 @@ module Mediateable
 
   def location_lives_in_sal3?
     @location.ends_with?('-30')
+  end
+
+  def education_locked_stacks?
+    @library == 'EDUCATION' && EDUCATION_LOCKED_STACKS_LOCATIONS.include?(@location)
   end
 end

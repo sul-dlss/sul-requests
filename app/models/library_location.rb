@@ -22,9 +22,9 @@ class LibraryLocation
 
   def pickup_libraries
     case
-    when location_specific_pickup_libraries?
+    when location_specific_pickup_library_config.present?
       location_specific_pickup_libraries
-    when library_specific_pickup_libraries?
+    when library_specific_pickup_library_config.present?
       library_specific_pickup_libraries
     else
       pickup_libraries_for(config.pickup_libraries)
@@ -87,18 +87,19 @@ class LibraryLocation
   end
 
   def library_specific_pickup_libraries
-    pickup_libraries_for(config.library_specific_pickup_libraries[@library])
+    pickup_libraries_for(library_specific_pickup_library_config)
   end
 
   def location_specific_pickup_libraries
-    pickup_libraries_for(config.location_specific_pickup_libraries[@location])
+    pickup_libraries_for(location_specific_pickup_library_config)
   end
 
-  def library_specific_pickup_libraries?
-    config.library_specific_pickup_libraries.key?(@library)
+  def library_specific_pickup_library_config
+    config.library_specific_pickup_libraries[@library]
   end
 
-  def location_specific_pickup_libraries?
-    config.location_specific_pickup_libraries.key?(@location)
+  def location_specific_pickup_library_config
+    config.location_specific_pickup_libraries[@location] ||
+      config.location_specific_pickup_libraries.dig(@library, @location)
   end
 end

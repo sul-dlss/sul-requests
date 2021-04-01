@@ -60,6 +60,18 @@ describe LibraryLocation do
       request.origin_location = 'MM-STACKS'
       expect(described_class.new(request).pickup_libraries.keys).to include('MEDIA-MTXT')
     end
+
+    it 'returns pickup libraries for library/location specific combinations' do
+      request.origin = 'EDUCATION'
+      request.origin_location = 'LOCKED-STK'
+      expect(described_class.new(request).pickup_libraries).to eq('SPEC-COLL' => 'Special Collections')
+    end
+
+    it 'returns all pickup libraries for library that have a location specific config defined' do
+      request.origin = 'EDUCATION'
+      request.origin_location = 'STACKS'
+      expect(described_class.new(request).pickup_libraries.keys).to eq SULRequests::Application.config.pickup_libraries
+    end
   end
 
   describe '#library_name_by_code' do
