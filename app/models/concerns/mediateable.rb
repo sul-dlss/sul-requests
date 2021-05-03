@@ -4,7 +4,7 @@
 #  Mixin to encapsulate defining if a request should be a mediated page
 ###
 module Mediateable
-  MEDIATALBE_LIBRARIES = ['RUMSEYMAP', 'SPEC-COLL'].freeze
+  MEDIATABLE_LIBRARIES = ['RUMSEYMAP', 'SPEC-COLL'].freeze
   ART_LOCKED_STACKS_LOCATIONS = %w[ARTLCKL ARTLCKL-R ARTLCKM ARTLCKM-R ARTLCKO ARTLCKO-R ARTLCKS ARTLCKS-R].freeze
   EDUCATION_LOCKED_STACKS_LOCATIONS = ['LOCKED-STK'].freeze
 
@@ -19,7 +19,7 @@ module Mediateable
   private
 
   def mediated_library?
-    MEDIATALBE_LIBRARIES.include?(@library)
+    MEDIATABLE_LIBRARIES.include?(@library)
   end
 
   def art_locked_stacks?
