@@ -4,7 +4,7 @@
 #  Request class for making simple page requests
 ###
 class Page < Request
-  REQUESTALBE_BY_SUNET_OR_LIBRARY_ONLY = ['MEDIA-MTXT'].freeze
+  REQUESTABLE_BY_SUNET_OR_LIBRARY_ONLY = ['MEDIA-MTXT'].freeze
   validate :page_validator
   validates :destination, presence: true
   validate :destination_is_a_pickup_library
@@ -18,13 +18,13 @@ class Page < Request
   # TODO: COVID-19 Disabling for now while we re-open so that it falls back to the default behavior
   # We can uncomment if we allow guests to request again (but not at particular libraries like MEDIA-MTXT)
   # def requestable_by_all?
-  #   return false if REQUESTALBE_BY_SUNET_OR_LIBRARY_ONLY.include?(origin)
+  #   return false if REQUESTABLE_BY_SUNET_OR_LIBRARY_ONLY.include?(origin)
   #
   #   true
   # end
   #
   # def requestable_with_library_id?
-  #   return true if REQUESTALBE_BY_SUNET_OR_LIBRARY_ONLY.include?(origin)
+  #   return true if REQUESTABLE_BY_SUNET_OR_LIBRARY_ONLY.include?(origin)
   #
   #   super
   # end
