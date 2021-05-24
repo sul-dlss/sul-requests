@@ -9,12 +9,27 @@ describe Scan do
 
   it 'validates based on if the item is scannable or not' do
     expect do
-      described_class.create!(item_id: '1234',
+      described_class.create!(item_id: '123',
                               origin: 'GREEN',
                               origin_location: 'STACKS',
                               section_title: 'Some chapter title')
     end.to raise_error(
       ActiveRecord::RecordInvalid, 'Validation failed: This item is not scannable'
+    )
+  end
+
+  it 'validates that the page range length is 30 charachters or less' do
+    expect do
+      described_class.create!(
+        item_id: '1234',
+        origin: 'SAL3',
+        origin_location: 'STACKS',
+        section_title: 'Some chapter title',
+        page_range: 'pages 1-30 and then some long comment describing something more specific about the specified range.'
+      )
+    end.to raise_error(
+      ActiveRecord::RecordInvalid,
+      'Validation failed: This item is not scannable, Page range is too long (maximum is 30 characters)'
     )
   end
 
@@ -39,7 +54,8 @@ describe Scan do
         item_id: '123456',
         origin: 'SAL',
         origin_location: 'SAL-TEMP',
-        section_title: 'Chapter 1'
+        section_title: 'Chapter 1',
+        page_range: 'pages 1-30'
       )
     end.not_to raise_error
   end
