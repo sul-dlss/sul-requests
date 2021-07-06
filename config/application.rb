@@ -38,7 +38,7 @@ module SULRequests
       'CLASSICS' => 'Classics Library',
       'EARTH-SCI' => 'Earth Sciences Library (Branner)',
       'EAST-ASIA' => 'East Asia Library',
-      'EDUCATION' => 'Education Library',
+      'EDUCATION' => 'Education Library (at SAL1&2)',
       'ENG' => 'Engineering Library (Terman)',
       'GREEN' => 'Green Library',
       'HOOVER' => 'Hoover Library',
