@@ -4,20 +4,11 @@
 #  Class to handle configuration and logic around library codes and labels
 ###
 class LibraryLocation
-  attr_reader :request, :library, :location
+  attr_reader :library, :location
 
-  include HoldRecallable
-  include Mediateable
-  include Scannable
-
-  def initialize(request)
-    @request = request
-    @library = request.origin
-    @location = request.origin_location
-  end
-
-  def pageable?
-    !mediateable? && !hold_recallable?
+  def initialize(library, location)
+    @library = library
+    @location = location
   end
 
   def pickup_libraries

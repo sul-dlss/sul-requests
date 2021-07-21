@@ -7,39 +7,27 @@ describe LibraryLocation do
 
   describe '#pickup_libraries' do
     it 'returns all pickup libraries when the given library and location are not configured' do
-      request.origin = 'GREEN'
-      request.origin_location = 'STACKS'
-      expect(described_class.new(request).pickup_libraries.keys).to eq SULRequests::Application.config.pickup_libraries
+      expect(described_class.new('GREEN', 'STACKS').pickup_libraries.keys).to eq SULRequests::Application.config.pickup_libraries
     end
 
     it 'returns pickup libraries specific to a library if configured' do
-      request.origin = 'ARS'
-      request.origin_location = 'STACKS'
-      expect(described_class.new(request).pickup_libraries).to eq('ARS' => 'Archive of Recorded Sound')
+      expect(described_class.new('ARS', 'STACKS').pickup_libraries).to eq('ARS' => 'Archive of Recorded Sound')
     end
 
     it 'returns pickup libraries specific to a location if configured' do
-      request.origin = 'SAL3'
-      request.origin_location = 'PAGE-MU'
-      expect(described_class.new(request).pickup_libraries).to eq('MUSIC' => 'Music Library')
+      expect(described_class.new('SAL3', 'PAGE-MU').pickup_libraries).to eq('MUSIC' => 'Music Library')
     end
 
     it 'returns pickup libraries that include itself (when configured)' do
-      request.origin = 'MEDIA-MTXT'
-      request.origin_location = 'MM-STACKS'
-      expect(described_class.new(request).pickup_libraries.keys).to include('MEDIA-MTXT')
+      expect(described_class.new('MEDIA-MTXT', 'MM-STACKS').pickup_libraries.keys).to include('MEDIA-MTXT')
     end
 
     it 'returns pickup libraries for library/location specific combinations' do
-      request.origin = 'EDUCATION'
-      request.origin_location = 'LOCKED-STK'
-      expect(described_class.new(request).pickup_libraries).to eq('SPEC-COLL' => 'Special Collections')
+      expect(described_class.new('EDUCATION', 'LOCKED-STK').pickup_libraries).to eq('SPEC-COLL' => 'Special Collections')
     end
 
     it 'returns all pickup libraries for library that have a location specific config defined' do
-      request.origin = 'EDUCATION'
-      request.origin_location = 'STACKS'
-      expect(described_class.new(request).pickup_libraries.keys).to eq SULRequests::Application.config.pickup_libraries
+      expect(described_class.new('EDUCATION', 'STACKS').pickup_libraries.keys).to eq SULRequests::Application.config.pickup_libraries
     end
   end
 

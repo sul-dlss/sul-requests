@@ -47,7 +47,7 @@ class Request < ActiveRecord::Base
   end
 
   def library_location
-    @library_location ||= LibraryLocation.new(self)
+    @library_location ||= LibraryLocation.new(origin, origin_location)
   end
 
   def active_messages
