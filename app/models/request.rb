@@ -28,7 +28,7 @@ class Request < ActiveRecord::Base
     where('created_at < ? AND (type != "MediatedPage" OR needed_date < ?)', date, date)
   }
 
-  delegate :hold_recallable?, :mediateable?, :pageable?, :scannable?, to: :library_location
+  delegate :hold_recallable?, :mediateable?, :pageable?, :scannable?, :scannable_only?, to: :request_abilities
 
   # Serialized data hash
   store :data, accessors: [
@@ -183,5 +183,9 @@ class Request < ActiveRecord::Base
 
   def item_status(id, **opts)
     ItemStatus.new(self, id, **opts)
+  end
+
+  def request_abilities
+    @request_abilities ||= RequestAbilities.new(self)
   end
 end

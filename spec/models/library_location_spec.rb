@@ -5,37 +5,6 @@ require 'rails_helper'
 describe LibraryLocation do
   let(:request) { Request.new }
 
-  it 'includes the mediateable mixin' do
-    expect(request.library_location).to be_a Mediateable
-  end
-
-  it 'includes the scannable mixin' do
-    expect(request.library_location).to be_a Scannable
-  end
-
-  it 'includes the hold recallable mixin' do
-    expect(request.library_location).to be_a HoldRecallable
-  end
-
-  describe '#pageable?' do
-    it 'is true if the LibraryLocation is not mediatable or hold recallable' do
-      request.origin = 'GREEN'
-      request.origin_location = 'STACKS'
-      expect(request.library_location).to be_pageable
-    end
-
-    it 'is false when the LibraryLocation is hold recallable' do
-      request.requested_barcode = '3610512345678'
-      expect(request.library_location).not_to be_pageable
-    end
-
-    it 'is false if the LibraryLocation is mediatable' do
-      request.origin = 'SPEC-COLL'
-      request.origin_location = 'STACKS'
-      expect(request.library_location).not_to be_pageable
-    end
-  end
-
   describe '#pickup_libraries' do
     it 'returns all pickup libraries when the given library and location are not configured' do
       request.origin = 'GREEN'

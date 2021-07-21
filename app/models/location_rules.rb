@@ -52,18 +52,18 @@ class LocationRules
     private
 
     def match_library?(request)
-      library.nil? || library == request.library
+      library.nil? || library == request.origin
     end
 
     def match_location?(request)
-      (locations.nil? || Array(locations).include?(request.location)) &&
-        (locations_match.nil? || Array(locations_match).any? { |pattern| Regexp.new(pattern).match? request.location })
+      (locations.nil? || Array(locations).include?(request.origin_location)) &&
+        (locations_match.nil? || Array(locations_match).any? { |pattern| Regexp.new(pattern).match? request.origin_location })
     end
 
     def match_current_location?(request)
       return true if current_locations.nil?
 
-      holding_current_locations = request.request.holdings.map do |holding|
+      holding_current_locations = request.holdings.map do |holding|
         holding.try(:current_location).try(:code)
       end
 
@@ -77,7 +77,7 @@ class LocationRules
     def match_types?(request)
       return true if item_types.nil?
 
-      holding_item_types = request.request.holdings.map(&:type)
+      holding_item_types = request.holdings.map(&:type)
       (Array(item_types) & holding_item_types).any?
     end
   end

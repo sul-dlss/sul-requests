@@ -2,54 +2,47 @@
 
 require 'rails_helper'
 
-###
-#  Stub test class for including Scannable mixin
-###
-class ScannableTestClass
-  attr_accessor :request, :library, :location
+describe 'Scannable' do
+  subject(:request) { build(:request, origin: library, origin_location: location) }
 
-  include ActiveModel::Model
-  include Scannable
-end
-
-describe Scannable do
-  subject { ScannableTestClass.new(request: request, library: library, location: location) }
-
-  let(:request) { double(:request, holdings: [double(type: item_type)]) }
   let(:library) { 'SAL3' }
   let(:location) { 'STACKS' }
   let(:item_type) { 'STKS' }
 
+  before do
+    allow(request).to receive(:holdings).and_return([double(type: item_type)])
+  end
+
   describe '#scannable?' do
     it 'is true for scannable items in particular SAL3 locations' do
-      subject.location = 'STACKS'
+      subject.origin_location = 'STACKS'
       expect(subject).to be_scannable
 
-      subject.location = 'PAGE-GR'
+      subject.origin_location = 'PAGE-GR'
       expect(subject).to be_scannable
 
-      subject.location = 'BUS-STACKS'
+      subject.origin_location = 'BUS-STACKS'
       expect(subject).to be_scannable
     end
 
     it 'is true for scannable items in particular SAL 1/2 locations' do
-      subject.library = 'SAL'
-      subject.location = 'STACKS'
+      subject.origin = 'SAL'
+      subject.origin_location = 'STACKS'
       expect(subject).to be_scannable
 
-      subject.location = 'ND-PAGE-EA'
+      subject.origin_location = 'ND-PAGE-EA'
       expect(subject).to be_scannable
     end
 
     it 'is false when the location is not scannable' do
-      subject.library = 'SAL'
-      subject.location = 'NOT-STACKS'
+      subject.origin = 'SAL'
+      subject.origin_location = 'NOT-STACKS'
       expect(subject).not_to be_scannable
     end
 
     it 'is false when the library is not scannable' do
-      subject.library = 'NOT-SAL3'
-      subject.location = 'STACKS'
+      subject.origin = 'NOT-SAL3'
+      subject.origin_location = 'STACKS'
       expect(subject).not_to be_scannable
     end
 
@@ -74,25 +67,25 @@ describe Scannable do
 
   describe '#scannable_only?' do
     it 'is true a scannable only library/location has scannable only items' do
-      subject.library = 'SAL'
-      subject.location = 'SAL-TEMP'
-      subject.request = double('request', holdings: [double(type: 'NONCIRC')])
+      subject.origin = 'SAL'
+      subject.origin_location = 'SAL-TEMP'
+      allow(request).to receive(:holdings).and_return([double(type: 'NONCIRC')])
 
       expect(subject).to be_scannable_only
     end
 
     it 'is false when not scannable only library/location' do
-      subject.library = 'SAL'
-      subject.location = 'STACKS'
-      subject.request = double('request', holdings: [double(type: 'NONCIRC')])
+      subject.origin = 'SAL'
+      subject.origin_location = 'STACKS'
+      allow(request).to receive(:holdings).and_return([double(type: 'NONCIRC')])
 
       expect(subject).not_to be_scannable_only
     end
 
     it 'is false when a circulating item is in the scannable only library/location' do
-      subject.library = 'SAL'
-      subject.location = 'SAL-TEMP'
-      subject.request = double('request', holdings: [double(type: 'STKS')])
+      subject.origin = 'SAL'
+      subject.origin_location = 'SAL-TEMP'
+      allow(request).to receive(:holdings).and_return([double(type: 'STKS')])
 
       expect(subject).not_to be_scannable_only
     end
