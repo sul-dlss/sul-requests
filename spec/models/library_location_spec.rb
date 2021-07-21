@@ -88,14 +88,4 @@ describe LibraryLocation do
       expect(described_class.library_name_by_code('NOT-A-LIBRARY')).to be_nil
     end
   end
-
-  describe '#mhld' do
-    let(:request) { create(:page_with_holdings_summary) }
-    let(:subject) { described_class.new(request) }
-
-    it 'returns the requested locations MHLD data if present' do
-      expect(subject.mhld).to be_present
-      expect(subject.mhld.library_has).to eq 'This is the library has holdings summary'
-    end
-  end
 end

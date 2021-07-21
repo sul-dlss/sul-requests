@@ -4,6 +4,8 @@
 #  Module to mixin holdings related behavior
 ###
 module Holdings
+  delegate :mhld, to: :holdings_object
+
   def holdings_object
     searchworks_item.requested_holdings
   end

@@ -711,4 +711,13 @@ describe Request do
       expect(item_status['36105212920537']['msgcode']).to eq 'S001'
     end
   end
+
+  describe '#mhld' do
+    let(:request) { create(:page_with_holdings_summary) }
+
+    it 'returns the requested locations MHLD data if present' do
+      expect(request.mhld).to be_present
+      expect(request.mhld.library_has).to eq 'This is the library has holdings summary'
+    end
+  end
 end

@@ -3,9 +3,9 @@
   <%= f.label :item_comment, label_for_comments_field, class: "#{label_column_class} control-label required" %>
   <div class='<%= content_column_class %>'>
     <%= f.text_area_without_bootstrap :item_comment, class: 'form-control', required: true %>
-    <% if current_request.library_location.mhld.any? { |mhld| mhld.library_has.present? } %>
+    <% if current_request.mhld.any? { |mhld| mhld.library_has.present? } %>
     <p class='help-block'>
-      Library has: <%= current_request.library_location.mhld.map(&:library_has).join(' ').html_safe %>
+      Library has: <%= current_request.mhld.map(&:library_has).join(' ').html_safe %>
     </p>
     <% end %>
   </div>
