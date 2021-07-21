@@ -4,44 +4,26 @@
 #  Mixin to encapsulate defining hold recall requests
 ###
 module HoldRecallable
-  LOCATIONS = %w(INPROCESS ON-ORDER).freeze
-
   # returns a true if any of the following is true
   #   - The incoming request includes a barcode (which means an item-level link, likely a checked out item)
-  #   - The home location OR ALL current locations are in the HoldRecallable::LOCATIONS
-  #   - ALL current locations are MISSING (this might be able to just go in the HoldRecallable::LOCATIONS array)
+  #   - The home location or current location is an allowed recallable location by Settings.hold_recallable
   #   - There is only a single item to be requested and it is checked out
   def hold_recallable?
     return false unless Settings.features.hold_recall_service
 
     @request.barcode_present? ||
-      hold_recallable_current_or_home_location? ||
-      missing_current_location? ||
+      hold_recallable_location? ||
       single_checked_out_item?
   end
 
   private
 
-  def hold_recallable_current_or_home_location?
-    return true if LOCATIONS.include?(origin_location)
-
-    current_locations_are_all?(LOCATIONS)
+  def hold_recallable_location?
+    hold_recallable_rules.applies_to(self).any?
   end
 
-  def missing_current_location?
-    current_locations_are_all?('MISSING')
-  end
-
-  def current_locations_are_all?(current_location)
-    current_locations = Array.wrap(current_location)
-
-    @request.holdings.present? && @request.holdings.all? do |holding|
-      current_locations.include?(holding.try(:current_location).try(:code))
-    end
-  end
-
-  def origin_location
-    @request.origin_location
+  def hold_recallable_rules
+    LocationRules.new(Settings.hold_recallable)
   end
 
   def single_checked_out_item?

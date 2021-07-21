@@ -6,7 +6,7 @@ require 'rails_helper'
 #  Stub test class for including HolDRecallable mixin
 ###
 class HoldRecallableTestClass
-  attr_accessor :request
+  attr_accessor :request, :location
 
   include HoldRecallable
 end

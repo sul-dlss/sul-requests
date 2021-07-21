@@ -143,3 +143,86 @@ mylibrary:
 
 data_cleanup:
   age: <%= 1.year %>
+
+hold_recallable:
+  - locations:
+      - MISSING
+      - INPROCESS
+      - ON-ORDER
+  - current_locations:
+      - MISSING
+      - INPROCESS
+      - ON-ORDER
+
+mediateable:
+  - library: RUMSEYMAP
+  - library: SPEC-COLL
+  - library: ART
+    locations:
+      - ARTLCKL
+      - ARTLCKL-R
+      - ARTLCKM
+      - ARTLCKM-R
+      - ARTLCKO
+      - ARTLCKO-R
+      - ARTLCKS
+      - ARTLCKS-R
+  - library: SAL3
+    locations: PAGE-MP
+  - library: EDUCATION
+    locations:
+      - LOCKED-STK
+  - library: HV-ARCHIVE
+    locations_match:
+      - "-30$"
+
+scannable:
+  - library: SAL
+    item_types:
+      - NONCIRC
+    locations:
+      - SAL-TEMP
+      - UNCAT
+    only_scannable: true
+  - library: SAL
+    item_types:
+      - BUS-STACKS
+      - STKS
+      - STKS-MONO
+      - STKS-PERI
+    locations:
+      - EAL-SETS
+      - EAL-STKS-C
+      - EAL-STKS-J
+      - EAL-STKS-K
+      - FED-DOCS
+      - HY-PAGE-EA
+      - ND-PAGE-EA
+      - PAGE-EA
+      - PAGE-GR
+      - SAL-ARABIC
+      - SAL-FOLIO
+      - SAL-PAGE
+      - SAL-SERG
+      - SAL-TEMP
+      - SALTURKISH
+      - SOUTH-MEZZ
+      - STACKS
+      - TECH-RPTS
+      - UNCAT
+  - library: SAL3
+    item_types:
+      - BUS-STACKS
+      - STKS
+      - STKS-MONO
+      - STKS-PERI
+    locations:
+      - BUS-STACKS
+      - STACKS
+      - PAGE-GR
+  - library: SAL3
+    item_types:
+      - NEWSPAPER
+      - NH-INHOUSE
+    locations:
+      - PAGE-GR
