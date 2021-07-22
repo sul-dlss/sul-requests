@@ -35,7 +35,7 @@ module RequestValidations
   end
 
   def requested_item_is_not_scannable_only
-    return unless library_location.scannable_only?
+    return unless scannable_only?
 
     errors.add(
       :base,

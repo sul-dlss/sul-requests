@@ -2,17 +2,8 @@
 
 require 'rails_helper'
 
-###
-#  Stub test class for including Mediateable mixin
-###
-class MediateableTestClass
-  attr_accessor :library, :location
-
-  include Mediateable
-end
-
-describe Mediateable do
-  let(:subject) { MediateableTestClass.new }
+describe 'Mediateable' do
+  subject(:request) { build(:request) }
 
   describe '#Mediateable?' do
     it 'is false if the item does not have the scannable attributes' do
@@ -20,45 +11,45 @@ describe Mediateable do
     end
 
     it 'returns true if the item is in SPEC-COLL' do
-      subject.library = 'SPEC-COLL'
+      subject.origin = 'SPEC-COLL'
       expect(subject).to be_mediateable
     end
 
     it 'returns true if the item is in RUMSEYMAP' do
-      subject.library = 'RUMSEYMAP'
+      subject.origin = 'RUMSEYMAP'
       expect(subject).to be_mediateable
     end
 
     it 'returns true if the item is in SAL3 and PAGE-MP location' do
-      subject.library = 'SAL3'
-      subject.location = 'PAGE-MP'
+      subject.origin = 'SAL3'
+      subject.origin_location = 'PAGE-MP'
       expect(subject).to be_mediateable
     end
 
     describe 'ART Locked Stacks' do
       it 'returns true if the item is in a locked stacks location within ART' do
-        subject.library = 'ART'
-        subject.location = 'ARTLCKO'
+        subject.origin = 'ART'
+        subject.origin_location = 'ARTLCKO'
         expect(subject).to be_mediateable
       end
 
       it 'returns false if the item is in a non-locked stacks location within ART' do
-        subject.library = 'ART'
-        subject.location = 'STACKS'
+        subject.origin = 'ART'
+        subject.origin_location = 'STACKS'
         expect(subject).not_to be_mediateable
       end
     end
 
     describe 'HV-ARCHIVE' do
-      before { subject.library = 'HV-ARCHIVE' }
+      before { subject.origin = 'HV-ARCHIVE' }
 
       it 'returns true if the item is in a *-30 location' do
-        subject.location = 'SOMEWHERE-30'
+        subject.origin_location = 'SOMEWHERE-30'
         expect(subject).to be_mediateable
       end
 
       it 'returns false if the item is not in a *-30 location' do
-        subject.location = 'SOMEWHERE-ELSE'
+        subject.origin_location = 'SOMEWHERE-ELSE'
         expect(subject).not_to be_mediateable
       end
     end

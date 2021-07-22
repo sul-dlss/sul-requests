@@ -2,37 +2,23 @@
 
 require 'rails_helper'
 
-###
-#  Stub test class for including HolDRecallable mixin
-###
-class HoldRecallableTestClass
-  attr_accessor :request
-
-  include HoldRecallable
-end
-
-describe HoldRecallable do
-  let(:request) { build(:request) }
-  let(:subject) { HoldRecallableTestClass.new }
-
-  before do
-    subject.request = request
-  end
+describe 'HoldRecallable' do
+  subject(:request) { build(:request) }
 
   describe '#HoldRecallable?' do
     it 'is false by default' do
-      expect(subject).not_to be_hold_recallable
+      expect(request).not_to be_hold_recallable
     end
 
     describe 'when a barcode is provided' do
       it 'is true' do
         request.requested_barcode = '3610512345'
-        expect(subject).to be_hold_recallable
+        expect(request).to be_hold_recallable
       end
 
       it 'ignores empty barcodes' do
         request.requested_barcode = ''
-        expect(subject).not_to be_hold_recallable
+        expect(request).not_to be_hold_recallable
         expect(request.requested_barcode).to be_nil
       end
     end

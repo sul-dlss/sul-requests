@@ -198,6 +198,7 @@ RSpec/StubbedMock:
 RSpec/SubjectStub:
   Exclude:
     - 'spec/jobs/submit_borrow_direct_request_job_spec.rb'
+    - 'spec/models/concerns/hold_recallable_spec.rb'
     - 'spec/models/concerns/scannable_spec.rb'
     - 'spec/models/library_hours_api_spec.rb'
     - 'spec/models/request_spec.rb'
