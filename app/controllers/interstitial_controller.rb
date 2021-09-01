@@ -13,7 +13,7 @@ class InterstitialController < ApplicationController
   end
 
   def show
-    @redirect_to = URI.decode(params[:redirect_to])
+    @redirect_to = CGI.unescape(params[:redirect_to])
   end
 
   private
@@ -22,7 +22,7 @@ class InterstitialController < ApplicationController
     return false if params[:redirect_to].blank?
 
     param_host = begin
-      URI.parse(URI.decode(params[:redirect_to]))
+      URI.parse(CGI.unescape(params[:redirect_to]))
     rescue URI::InvalidURIError
       URI.parse(params[:redirect_to])
     end
