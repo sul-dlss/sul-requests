@@ -125,19 +125,10 @@ class SubmitSymphonyRequestJob < ApplicationJob
       item_return
     end
 
-    def scan_destinations(barcode = nil)
+    def scan_destinations
       return {} unless request.is_a? Scan
 
-      current_location = CatalogInfo.find(barcode).current_location if barcode
-      if request.origin == 'SAL' && ['HY-PAGE-EA', 'ND-PAGE-EA'].include?(current_location)
-        return lookup_scan_destination('EAL_REVIEW_WORKFLOW')
-      end
-
-      lookup_scan_destination(request.origin) || lookup_scan_destination('GREEN')
-    end
-
-    def lookup_scan_destination(key)
-      SULRequests::Application.config.scan_destinations.fetch(key)
+      request.scannable_location_rule&.destination || Settings.default_scan_destination
     end
 
     # rubocop:disable Metrics/MethodLength
@@ -214,7 +205,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
       barcodes.map do |barcode|
         generic_request
           .merge({ item: item(barcode) })
-          .merge(scan_destinations(barcode))
+          .merge(scan_destinations)
       end
     end
   end

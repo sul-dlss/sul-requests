@@ -35,6 +35,7 @@ class LocationRules
              :only_scannable, # with covid-19 restrictions, some items were exclusively scannable
              :default_pickup_library,
              :mediated,
+             :destination,
              to: :rule
 
     # @param [Config::Option] rule

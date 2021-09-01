@@ -184,7 +184,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
       end
 
       context 'without barcodes' do
-        let(:scan) { create(:scan, user: user) }
+        let(:scan) { create(:scan_with_holdings, user: user) }
 
         it 'places a hold using a callkey' do
           allow_any_instance_of(CatalogInfo).to receive(:current_location).and_return('SAL')

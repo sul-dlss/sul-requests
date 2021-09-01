@@ -572,6 +572,10 @@ hold_recallable:
       - INPROCESS
       - ON-ORDER
 
+default_scan_destination:
+  key: 'GREEN'
+  patron_barcode: 'GRE-SCANDELIVER'
+
 scannable:
   - library: SAL
     item_types:
@@ -580,6 +584,9 @@ scannable:
       - SAL-TEMP
       - UNCAT
     only_scannable: true
+    destination:
+      key: 'GREEN'
+      patron_barcode: 'GRE-SCANDELIVER'
   - library: SAL
     item_types:
       - BUS-STACKS
@@ -592,8 +599,6 @@ scannable:
       - EAL-STKS-J
       - EAL-STKS-K
       - FED-DOCS
-      - HY-PAGE-EA
-      - ND-PAGE-EA
       - PAGE-EA
       - PAGE-GR
       - SAL-ARABIC
@@ -606,6 +611,21 @@ scannable:
       - STACKS
       - TECH-RPTS
       - UNCAT
+    destination:
+      key: 'GREEN'
+      patron_barcode: 'GRE-SCANDELIVER'
+  - library: SAL
+    item_types:
+      - BUS-STACKS
+      - STKS
+      - STKS-MONO
+      - STKS-PERI
+    locations:
+      - HY-PAGE-EA
+      - ND-PAGE-EA
+    destination:
+      key: 'EAST-ASIA'
+      patron_barcode: 'EAL-SCANREVIEW'
   - library: SAL3
     item_types:
       - BUS-STACKS
@@ -616,9 +636,15 @@ scannable:
       - BUS-STACKS
       - STACKS
       - PAGE-GR
+    destination:
+      key: 'SAL3'
+      patron_barcode: 'SAL3-SCANDELIVER'
   - library: SAL3
     item_types:
       - NEWSPAPER
       - NH-INHOUSE
     locations:
       - PAGE-GR
+    destination:
+      key: 'SAL3'
+      patron_barcode: 'SAL3-SCANDELIVER'
