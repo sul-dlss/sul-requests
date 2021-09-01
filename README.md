@@ -47,6 +47,7 @@ Configuration is handled through the [RailsConfig](/railsconfig/rails_config) se
 * `super_admin_groups` is an array of LDAP workgroups that get all privileges in the application.
 * `site_admin_groups` is an array of LDAP workgroups that have the ability to manage all requests and related objects in the application.
 * `origin_admin_groups` has library codes configured with an array of LDAP workgroups that can manage requests originating from that library.
+* `origin_location_admin_groups` has location codes configured with an array of LDAP workgroups that can manage requests originating from that location.
 * `destination_admin_groups` has library codes configured with an array of LDAP workgroups that can manage requests being sent to that library.
 ```
     origin_admin_groups:
