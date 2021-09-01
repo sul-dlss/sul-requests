@@ -29,8 +29,6 @@ module SULRequests
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
-    config.confirm_eligibility_libraries = ['ART', 'EDUCATION','RUMSEYMAP', 'SPEC-COLL']
-
     config.scanning_library_proxy = { 'SCAN' => 'GREEN' }
 
     if Rails.env.test?
@@ -42,12 +40,6 @@ module SULRequests
     else
       config.pageable_libraries = ['GREEN']
     end
-
-    # ad_hoc_item_commentable_libraries is configured to not display for any library.
-    # Keeping this feature in case SPEC-COLL changes thier minds or we need to add
-    # this behavior for another library.
-    config.ad_hoc_item_commentable_libraries = []
-    config.item_commentable_libraries = ['SAL-NEWARK', 'SPEC-COLL']
 
     config.contact_info = {
       'PAGE-MP' => {

@@ -6,7 +6,10 @@ describe 'shared/_item_selector.html.erb' do
   let(:user) { create(:webauth_user) }
 
   before do
-    allow(SULRequests::Application.config).to receive(:ad_hoc_item_commentable_libraries).and_return(['SPEC-COLL'])
+    without_partial_double_verification do
+      allow(Settings.pageable.find { |x| x.library == 'SPEC-COLL' }).to receive(:ad_hoc_item_commentable).and_return(true)
+    end
+
     view.bootstrap_form_for(request, url: '/') do |f|
       @f = f
     end
