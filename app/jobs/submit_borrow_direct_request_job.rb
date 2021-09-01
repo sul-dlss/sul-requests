@@ -112,7 +112,7 @@ class SubmitBorrowDirectRequestJob < ApplicationJob
     # return the requested pickup destination label if the locations set by the API include the requested label
     # return the default pickup destination label otherwise (and notify Honeybadger)
     def pickup_library
-      requested_pickup_library = library_config[request.destination]
+      requested_pickup_library = library_config[request.destination]&.label
       return requested_pickup_library if api_pickup_locations.blank? ||
                                          api_pickup_locations.include?(requested_pickup_library)
 
@@ -121,19 +121,15 @@ class SubmitBorrowDirectRequestJob < ApplicationJob
         "#{requested_pickup_library} but the only pickup libraries are #{api_pickup_locations.to_sentence}"
       )
 
-      default_pickup_library
+      default_pickup_library.label
     end
 
     def default_pickup_library
-      library_config[app_config.default_pickup_library]
+      library_config[Settings.default_pickup_library]
     end
 
     def library_config
-      app_config.libraries
-    end
-
-    def app_config
-      SULRequests::Application.config
+      Settings.libraries
     end
   end
 end

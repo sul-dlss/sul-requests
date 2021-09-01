@@ -159,7 +159,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
     # rubocop:enable Metrics/MethodLength
 
     def pseudo_patron(key)
-      SULRequests::Application.config.pickup_library_pseudo_patrons[key] || 'HOLD@GR'
+      Settings.libraries[key]&.hold_pseudopatron || SULRequests::Application.config.pickup_library_pseudo_patrons[key] || 'HOLD@GR'
     end
 
     def comment

@@ -34,7 +34,7 @@ class LibraryHours
   end
 
   def location_map
-    config.hours_api_location_map[library]
+    Settings.libraries[library]&.hours
   end
 
   def config

@@ -29,39 +29,6 @@ module SULRequests
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
-    config.libraries = {
-      'ARS' => 'Archive of Recorded Sound',
-      'ART' => 'Art & Architecture Library (Bowes)',
-      'BIOLOGY' => 'Biology Library (Falconer)',
-      'BUSINESS' => 'Business Library',
-      'CHEMCHMENG' => 'Chemistry & ChemEng Library (Swain)',
-      'CLASSICS' => 'Classics Library',
-      'EARTH-SCI' => 'Earth Sciences Library (Branner)',
-      'EAST-ASIA' => 'East Asia Library',
-      'EDUCATION' => 'Education Library (at SAL1&2)',
-      'ENG' => 'Engineering Library (Terman)',
-      'GREEN' => 'Green Library',
-      'HOOVER' => 'Hoover Library',
-      'HOPKINS' => 'Marine Biology Library (Miller)',
-      'HV-ARCHIVE' => 'Hoover Archives',
-      'LANE-MED' => 'Medical Library (Lane)',
-      'LATHROP' => 'Lathrop Library',
-      'LAW' => 'Law Library (Crown)',
-      'MATH-CS' => 'Math & Statistics Library',
-      'MEDIA-MTXT' => 'Media Microtext',
-      'MUSIC' => 'Music Library',
-      'RUMSEYMAP' => 'David Rumsey Map Center',
-      'RWC' => 'Academy Hall (SRWC)',
-      'SAL' => 'SAL1&2 (on-campus shelving)',
-      'SAL3' => 'SAL3 (off-campus storage)',
-      'SAL-NEWARK' => 'SAL Newark (off-campus storage)',
-      'SCIENCE' => 'Science Library (Li and Ma)',
-      'SPEC-COLL' => 'Special Collections',
-      'TANNER' => 'Philosophy Library (Tanner)'
-    }
-
-    config.default_pickup_library = 'GREEN'
-
     config.confirm_eligibility_libraries = ['ART', 'EDUCATION','RUMSEYMAP', 'SPEC-COLL']
 
     if Rails.env.test?
@@ -190,57 +157,9 @@ module SULRequests
     end
 
     config.contact_info = {
-      'ART' => {
-        phone: '(650) 723-3408',
-        email: 'artlibrary@stanford.edu',
-      },
-      'BUSINESS' => {
-        phone: '(650) 725-2055',
-        email: 'gsb_librarycirc@stanford.edu'
-      },
-      'EDUCATION' => {
-        phone: '(650) 723-2121',
-        email: 'cubberley@stanford.edu'
-      },
-      'SCAN' => {
-        phone: '(650) 723-3278',
-        email: 'scan-and-deliver@stanford.edu'
-      },
-      'GREEN' => {
-        phone: '(650) 723-1493',
-        email: 'greencirc@stanford.edu'
-      },
-      'HOOVER' => {
-        phone: '(650) 723-2058',
-        email: 'hoovercirc@stanford.edu'
-      },
-      'HV-ARCHIVE' => {
-        phone: '(650) 723-3563',
-        email: 'hooverarchives@stanford.edu'
-      },
-      'HOPKINS' => {
-        phone: '(831) 655-6229',
-        email: 'HMS-Library@lists.stanford.edu'
-      },
-      'LAW' => {
-        phone: '(650) 723-2477',
-        email: 'circulation@law.stanford.edu'
-      },
       'PAGE-MP' => {
         phone: '(650) 723-2746',
         email: 'brannerlibrary@stanford.edu'
-      },
-      'SCIENCE' => {
-        phone: '(650) 723-1528',
-        email: 'sciencelibrary@stanford.edu'
-      },
-      'SPEC-COLL' => {
-        phone: '(650) 725-1022',
-        email: 'specialcollections@stanford.edu'
-      },
-      'default' => {
-        phone: '(650) 723-1493',
-        email: 'greencirc@stanford.edu'
       }
     }
 
@@ -263,37 +182,6 @@ module SULRequests
       'SPEC-COLL' => { email: 'specialcollections@stanford.edu' }
     }
 
-    config.hours_api_location_map = {
-      'ARS' => { library_slug: 'ars', location_slug: 'archive-recorded-sound' },
-      'ART' => { library_slug: 'art', location_slug: 'library-circulation' },
-      'BIOLOGY' => { library_slug: 'falconer', location_slug: 'library-circulation' },
-      'BUSINESS' => { library_slug: 'business', location_slug: 'library-i-desk' },
-      'CHEMCHMENG' => { library_slug: 'swain', location_slug: 'library-circulation' },
-      'CLASSICS' => { library_slug: 'classics-library', location_slug: 'library-circulation' },
-      'EARTH-SCI' => { library_slug: 'branner', location_slug: 'library-circulation' },
-      'EAST-ASIA' => { library_slug: 'eal', location_slug: 'library-circulation' },
-      'EDUCATION' => { library_slug: 'cubberley', location_slug: 'library-circulation' },
-      'ENG' => { library_slug: 'englib', location_slug: 'library-circulation' },
-      'GREEN' => { library_slug: 'green', location_slug: 'library-circulation' },
-      'HOOVER' => { library_slug: 'hoover', location_slug: 'library-circulation' },
-      'HOPKINS' => { library_slug: 'hopkins', location_slug: 'library-circulation' },
-      'HV-ARCHIVE' => { library_slug: 'hila', location_slug: 'reference' },
-      'LANE-MED' => { library_slug: 'lane', location_slug: 'library-circulation' },
-      'LATHROP' => { library_slug: 'lathrop', location_slug: 'tech-lounge' },
-      'LAW' => { library_slug: 'law', location_slug: 'library-circulation' },
-      'MATH-CS' => { library_slug: 'mathstat', location_slug: 'library-circulation' },
-      'MEDIA-MTXT' => { library_slug: 'green', location_slug: 'media-microtext-center' },
-      'MUSIC' => { library_slug: 'music', location_slug: 'library-circulation' },
-      'RUMSEYMAP' => { library_slug: 'Rumsey', location_slug: 'visitor-access' },
-      'RWC' => { library_slug: 'srwc', location_slug: 'lobby-desk' },
-      'SAL' => { library_slug: 'sal12', location_slug: 'sal12-circulation' },
-      'SAL3' => { library_slug: 'sal3', location_slug: 'operations' },
-      'SAL-NEWARK' => { library_slug: 'newark', location_slug: 'operations' },
-      'SPEC-COLL' => { library_slug: 'spc', location_slug: 'field-reading-room' },
-      'SCIENCE' => { library_slug: 'science', location_slug: 'library-circulation' },
-      'TANNER' => { library_slug: 'philosophy', location_slug: 'library-circulation' }
-    }
-
     config.illiad_nvtgc_map = {
       default: 'st2',
       'organization:law' => 'rcj',
@@ -301,30 +189,8 @@ module SULRequests
     }
 
     config.pickup_library_pseudo_patrons = {
-      'ARS' => 'HOLD@AS',
-      'ART' => 'HOLD@AR',
-      'BUSINESS' => 'HOLD@BU',
-      'CLASSICS' => 'HOLD@CL',
-      'EARTH-SCI' => 'HOLD@ES',
-      'EAST-ASIA' => 'HOLD@EA',
-      'EDUCATION' => 'HOLD@ED',
-      'ENG' => 'HOLD@EN',
-      'GREEN' => 'HOLD@GR',
-      'HOOVER' => 'HOLD@HL',
       'HOOV-DESK' => 'HOLD@HL',
-      'HV-ARCHIVE' => 'HOLD@HA',
-      'HOPKINS' => 'HOLD@HP',
-      'LAW' => 'HOLD@LW',
-      'MEDIA-MTXT' => 'HOLD@MD',
-      'MUSIC' => 'HOLD@MU',
-      'RUMSEYMAP' => 'HOLD@RM',
-      'RWC' => 'HOLD@RU',
-      'SAL' => 'HOLD@SL',
-      'SCIENCE' => 'HOLD@CS',
-      'SPEC-COLL' => 'HOLD@SP',
       'SPEC-DESK' => 'HOLD@SP',
-      'TANNER' => 'HOLD@TA'
-    }
 
     config.scan_destinations = {
       'EAL_REVIEW_WORKFLOW' => { key: 'EAST-ASIA', patron_barcode: 'EAL-SCANREVIEW' },

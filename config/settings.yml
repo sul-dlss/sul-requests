@@ -144,15 +144,207 @@ mylibrary:
 data_cleanup:
   age: <%= 1.year %>
 
-hold_recallable:
-  - locations:
-      - MISSING
-      - INPROCESS
-      - ON-ORDER
-  - current_locations:
-      - MISSING
-      - INPROCESS
-      - ON-ORDER
+libraries:
+  default:
+    contact_info:
+      phone: "(650) 723-1493"
+      email: greencirc@stanford.edu
+    label: Stanford Libraries
+  ARS:
+    label: Archive of Recorded Sound
+    hold_pseudopatron: HOLD@AS
+    hours:
+      library_slug: ars
+      location_slug: archive-recorded-sound
+  ART:
+    label: Art & Architecture Library (Bowes)
+    contact_info:
+      phone: "(650) 723-3408"
+      email: artlibrary@stanford.edu
+    hold_pseudopatron: HOLD@AR
+    hours:
+      library_slug: art
+      location_slug: library-circulation
+  BIOLOGY:
+    label: Biology Library (Falconer)
+    hours:
+      library_slug: falconer
+      location_slug: library-circulation
+  BUSINESS:
+    label: Business Library
+    contact_info:
+      phone: "(650) 725-2055"
+      email: gsb_librarycirc@stanford.edu
+    hold_pseudopatron: HOLD@BU
+    hours:
+      library_slug: business
+      location_slug: library-i-desk
+  CHEMCHMENG:
+    label: Chemistry & ChemEng Library (Swain)
+    hours:
+      library_slug: swain
+      location_slug: library-circulation
+  CLASSICS:
+    label: Classics Library
+    hold_pseudopatron: HOLD@CL
+    hours:
+      library_slug: classics-library
+      location_slug: library-circulation
+  EARTH-SCI:
+    label: Earth Sciences Library (Branner)
+    hold_pseudopatron: HOLD@ES
+    hours:
+      library_slug: branner
+      location_slug: library-circulation
+  EAST-ASIA:
+    label: East Asia Library
+    hold_pseudopatron: HOLD@EA
+    hours:
+      library_slug: eal
+      location_slug: library-circulation
+  EDUCATION:
+    label: Education Library (at SAL1&2)
+    contact_info:
+      phone: "(650) 723-2121"
+      email: cubberley@stanford.edu
+    hold_pseudopatron: HOLD@ED
+    hours:
+      library_slug: cubberley
+      location_slug: library-circulation
+  ENG:
+    label: Engineering Library (Terman)
+    hold_pseudopatron: HOLD@EN
+    hours:
+      library_slug: englib
+      location_slug: library-circulation
+  GREEN:
+    label: Green Library
+    contact_info:
+      phone: "(650) 723-1493"
+      email: greencirc@stanford.edu
+    hold_pseudopatron: HOLD@GR
+    hours:
+      library_slug: green
+      location_slug: library-circulation
+  HOOVER:
+    label: Hoover Library
+    contact_info:
+      phone: "(650) 723-2058"
+      email: hoovercirc@stanford.edu
+    hold_pseudopatron: HOLD@HL
+    hours:
+      library_slug: hoover
+      location_slug: library-circulation
+  HOPKINS:
+    label: Marine Biology Library (Miller)
+    contact_info:
+      phone: "(831) 655-6229"
+      email: HMS-Library@lists.stanford.edu
+    hold_pseudopatron: HOLD@HP
+    hours:
+      library_slug: hopkins
+      location_slug: library-circulation
+  HV-ARCHIVE:
+    label: Hoover Archives
+    contact_info:
+      phone: "(650) 723-3563"
+      email: hooverarchives@stanford.edu
+    hold_pseudopatron: HOLD@HA
+    hours:
+      library_slug: hila
+      location_slug: reference
+  LANE-MED:
+    label: Medical Library (Lane)
+    hours:
+      library_slug: lane
+      location_slug: library-circulation
+  LATHROP:
+    label: Lathrop Library
+    hours:
+      library_slug: lathrop
+      location_slug: tech-lounge
+  LAW:
+    label: Law Library (Crown)
+    contact_info:
+      phone: "(650) 723-2477"
+      email: circulation@law.stanford.edu
+    hold_pseudopatron: HOLD@LW
+    hours:
+      library_slug: law
+      location_slug: library-circulation
+  MATH-CS:
+    label: Math & Statistics Library
+    hours:
+      library_slug: mathstat
+      location_slug: library-circulation
+  MEDIA-MTXT:
+    label: Media Microtext
+    hold_pseudopatron: HOLD@MD
+    hours:
+      library_slug: green
+      location_slug: media-microtext-center
+  MUSIC:
+    label: Music Library
+    hold_pseudopatron: HOLD@MU
+    hours:
+      library_slug: music
+      location_slug: library-circulation
+  RUMSEYMAP:
+    label: David Rumsey Map Center
+    hold_pseudopatron: HOLD@RM
+    hours:
+      library_slug: Rumsey
+      location_slug: visitor-access
+  RWC:
+    label: Academy Hall (SRWC)
+    hold_pseudopatron: HOLD@RU
+    hours:
+      library_slug: srwc
+      location_slug: lobby-desk
+  SAL:
+    label: SAL1&2 (on-campus shelving)
+    hold_pseudopatron: HOLD@SL
+    hours:
+      library_slug: sal12
+      location_slug: sal12-circulation
+  SAL3:
+    label: SAL3 (off-campus storage)
+    hours:
+      library_slug: sal3
+      location_slug: operations
+  SAL-NEWARK:
+    label: SAL Newark (off-campus storage)
+    hours:
+      library_slug: newark
+      location_slug: operations
+  SCAN:
+    contact_info:
+      phone: '(650) 723-3278'
+      email: 'scan-and-deliver@stanford.edu'
+  SCIENCE:
+    label: Science Library (Li and Ma)
+    contact_info:
+      phone: "(650) 723-1528"
+      email: sciencelibrary@stanford.edu
+    hold_pseudopatron: HOLD@CS
+    hours:
+      library_slug: science
+      location_slug: library-circulation
+  SPEC-COLL:
+    label: Special Collections
+    contact_info:
+      phone: "(650) 725-1022"
+      email: specialcollections@stanford.edu
+    hold_pseudopatron: HOLD@SP
+    hours:
+      library_slug: spc
+      location_slug: field-reading-room
+  TANNER:
+    label: Philosophy Library (Tanner)
+    hold_pseudopatron: HOLD@TA
+    hours:
+      library_slug: philosophy
+      location_slug: library-circulation
 
 mediateable:
   - library: RUMSEYMAP
