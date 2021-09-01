@@ -31,61 +31,7 @@ module SULRequests
 
     config.confirm_eligibility_libraries = ['ART', 'EDUCATION','RUMSEYMAP', 'SPEC-COLL']
 
-    if Rails.env.test?
-      config.include_self_in_library_list = ['MEDIA-MTXT']
-      config.self_in_library_list_is_selected = ['LAW', 'MEDIA-MTXT']
-    else
-      config.include_self_in_library_list = []
-      config.self_in_library_list_is_selected = ['LAW']
-    end
-
-    config.location_specific_default_library = {
-      'EAL-SETS' => 'EAST-ASIA',
-      'EAL-STKS-C' => 'EAST-ASIA',
-      'EAL-STKS-J' => 'EAST-ASIA',
-      'EAL-STKS-K' => 'EAST-ASIA'
-    }
-
-    if Rails.env.test?
-      config.pickup_libraries = [
-        'ART',
-        'BUSINESS',
-        'EARTH-SCI',
-        'EAST-ASIA',
-        'EDUCATION',
-        'ENG',
-        'GREEN',
-        'HOPKINS',
-        'LAW',
-        'MUSIC',
-        'RWC',
-        'SCIENCE'
-      ]
-    else
-      config.pickup_libraries = [
-        'BUSINESS',
-        'EAST-ASIA',
-        'GREEN',
-        'HOPKINS',
-        'LAW'
-      ]
-    end
-
     config.scanning_library_proxy = { 'SCAN' => 'GREEN' }
-
-    if Rails.env.test?
-      config.library_specific_pickup_libraries = {
-        'ARS' => ['ARS'],
-        'HV-ARCHIVE' => ['HV-ARCHIVE'],
-        'RUMSEYMAP' => ['RUMSEYMAP'],
-        'SPEC-COLL' => ['SPEC-COLL']
-      }
-    else
-      config.library_specific_pickup_libraries = {
-        'RUMSEYMAP' => ['SPEC-COLL'],
-        'SPEC-COLL' => ['SPEC-COLL']
-      }
-    end
 
     if Rails.env.test?
       config.pageable_libraries = [
@@ -102,59 +48,6 @@ module SULRequests
     # this behavior for another library.
     config.ad_hoc_item_commentable_libraries = []
     config.item_commentable_libraries = ['SAL-NEWARK', 'SPEC-COLL']
-
-    if Rails.env.test?
-      config.location_specific_pickup_libraries = {
-        'EDUCATION' => {
-          'LOCKED-STK' => ['SPEC-COLL']
-        },
-        'PAGE-AR' => ['ART', 'SPEC-COLL'],
-        'PAGE-AS' => ['ARS'],
-        'PAGE-BI' => ['BIOLOGY'],
-        'PAGE-BU' => ['BUSINESS'],
-        'PAGE-CH' => ['CHEMCHMENG'],
-        'PAGE-EA' => ['EAST-ASIA'],
-        'HY-PAGE-EA' => ['EAST-ASIA'],
-        'L-PAGE-EA'  => ['EAST-ASIA'],
-        'ND-PAGE-EA' => ['EAST-ASIA'],
-        'PAGE-ED' => ['EDUCATION'],
-        'PAGE-EN' => ['ENG'],
-        'PAGE-ES' => ['EARTH-SCI'],
-        'PAGE-GR' => ['GREEN'],
-        'PAGE-HA' => ['HV-ARCHIVE'],
-        'PAGE-HP' => ['GREEN', 'HOPKINS'],
-        'PAGE-IRON' => ['BUSINESS'],
-        'PAGE-LP' => ['MUSIC', 'MEDIA-MTXT'],
-        'PAGE-LW' => ['LAW'],
-        'PAGE-MA' => ['MATH-CS'],
-        'PAGE-MD' => ['MUSIC', 'MEDIA-MTXT'],
-        'PAGE-MP' => ['EARTH-SCI'],
-        'PAGE-MU' => ['MUSIC'],
-        'PAGE-RM' => ['RUMSEYMAP'],
-        'PAGE-SI' => ['SCIENCE'],
-        'PAGE-SP' => ['SPEC-COLL']
-      }
-    else
-      config.location_specific_pickup_libraries = {
-        'EDUCATION' => {
-          'LOCKED-STK' => ['SPEC-COLL']
-        },
-        'PAGE-EA' => ['EAST-ASIA'],
-        'HY-PAGE-EA' => ['EAST-ASIA'],
-        'L-PAGE-EA'  => ['EAST-ASIA'],
-        'ND-PAGE-EA' => ['EAST-ASIA'],
-        'ARTLCKL' => ['SPEC-COLL'],
-        'ARTLCKL-R' => ['SPEC-COLL'],
-        'ARTLCKM' => ['SPEC-COLL'],
-        'ARTLCKM-R' => ['SPEC-COLL'],
-        'ARTLCKO' => ['SPEC-COLL'],
-        'ARTLCKO-R' => ['SPEC-COLL'],
-        'ARTLCKS' => ['SPEC-COLL'],
-        'ARTLCKS-R' => ['SPEC-COLL'],
-        'PAGE-GR' => ['GREEN'],
-        'PAGE-SP' => ['SPEC-COLL']
-      }
-    end
 
     config.contact_info = {
       'PAGE-MP' => {

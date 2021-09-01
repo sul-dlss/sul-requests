@@ -20,7 +20,7 @@ module RequestValidations
   protected
 
   def destination_is_a_pickup_library
-    return if library_location.pickup_libraries.include?(destination)
+    return if pickup_libraries.include?(destination)
 
     errors.add(:destination, 'is not a valid pickup library')
   end

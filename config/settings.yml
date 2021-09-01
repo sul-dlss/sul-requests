@@ -357,9 +357,19 @@ libraries:
       library_slug: philosophy
       location_slug: library-circulation
 
-mediateable:
+pageable:
+  # Mediated pages
   - library: RUMSEYMAP
+    pickup_libraries:
+      - RUMSEYMAP
+    mediated: true
+    confirm_eligibility: true
   - library: SPEC-COLL
+    pickup_libraries:
+      - SPEC-COLL
+    mediated: true
+    item_commentable: true
+    confirm_eligibility: true
   - library: ART
     locations:
       - ARTLCKL
@@ -370,14 +380,197 @@ mediateable:
       - ARTLCKO-R
       - ARTLCKS
       - ARTLCKS-R
-  - library: SAL3
-    locations: PAGE-MP
+    pickup_libraries:
+      - ART
+    confirm_eligibility: true
+    mediated: true
+  - locations:
+      - PAGE-MP
+    pickup_libraries:
+      - EARTH-SCI
+    mediated: true
   - library: EDUCATION
     locations:
       - LOCKED-STK
+    pickup_libraries:
+      - SPEC-COLL
+    confirm_eligibility: true
+    mediated: true
   - library: HV-ARCHIVE
     locations_match:
       - "-30$"
+    pickup_libraries:
+      - HV-ARCHIVE
+    mediated: true
+  # Location-specific pickup libraries
+  - locations:
+      - PAGE-AR
+    pickup_libraries: ['ART', 'SPEC-COLL']
+  - locations:
+      - PAGE-AS
+    pickup_libraries: ['ARS']
+  - locations:
+      - PAGE-BI
+    pickup_libraries: ['BIOLOGY']
+  - locations:
+      - PAGE-BU
+    pickup_libraries: ['BUSINESS']
+  - locations:
+      - PAGE-CH
+    pickup_libraries: ['CHEMCHMENG']
+  - locations:
+      - PAGE-EA
+      - HY-PAGE-EA
+      - L-PAGE-EA
+      - ND-PAGE-EA
+    pickup_libraries: ['EAST-ASIA']
+  - locations:
+      - PAGE-ED
+    pickup_libraries: ['EDUCATION']
+  - locations:
+      - PAGE-EN
+    pickup_libraries: ['ENG']
+  - locations:
+      - PAGE-ES
+    pickup_libraries: ['EARTH-SCI']
+  - locations:
+      - PAGE-GR
+    pickup_libraries: ['GREEN']
+  - locations:
+      - PAGE-HA
+    pickup_libraries: ['HV-ARCHIVE']
+  - locations:
+      - PAGE-HP
+    pickup_libraries: ['GREEN', 'HOPKINS']
+  - locations:
+      - PAGE-IRON
+    pickup_libraries: ['BUSINESS']
+  - locations:
+      - PAGE-LP
+    pickup_libraries: ['MUSIC', 'MEDIA-MTXT']
+  - locations:
+      - PAGE-LW
+    pickup_libraries: ['LAW']
+  - locations:
+      - PAGE-MA
+    pickup_libraries: ['MATH-CS']
+  - locations:
+      - PAGE-MD
+    pickup_libraries: ['MUSIC', 'MEDIA-MTXT']
+  - locations:
+      - PAGE-MM
+    pickup_libraries: ['MEDIA-MTXT']
+  - locations:
+      - PAGE-MP
+    pickup_libraries: ['EARTH-SCI']
+  - locations:
+      - PAGE-MU
+    pickup_libraries: ['MUSIC']
+  - locations:
+      - PAGE-RM
+    pickup_libraries: ['RUMSEYMAP']
+  - locations:
+      - PAGE-SI
+    pickup_libraries: ['SCIENCE']
+  - locations:
+      - PAGE-SP
+    pickup_libraries: ['SPEC-COLL']
+  # Library-specific pickup libraries
+  - library: HV-ARCHIVE
+    pickup_libraries:
+      - HV-ARCHIVE
+  - library: ARS
+    pickup_libraries:
+      - ARS
+  # Other request configuration
+  - library: LAW
+    default_pickup_library: LAW
+  - library: MEDIA-MTXT
+    additional_pickup_libraries: ['MEDIA-MTXT']
+  - locations_match:
+      - ^EAL-SETS$
+      - ^EAL-STKS-
+    default_pickup_library: EAST-ASIA
+  - library: SAL-NEWARK
+    item_commentable: true
+  - library: SAL3
+  - library: SAL
+  - library: EDUCATION
+  - library:
+      - ART
+      - BUSINESS
+      - EARTH-SCI
+      - EAST-ASIA
+      - EDUCATION
+      - ENG
+      - GREEN
+      - MEDIA-MTXT
+      - MUSIC
+      - SCIENCE
+    locations:
+      - INPROCESS
+      - ON-ORDER
+  - library: BUSINESS
+    locations:
+      - BUS-CMC
+      - BUS-PER
+      - BUS-TEMP
+      - MEDIA
+      - STACKS
+  - library: EDUCATION
+    locations:
+      - CURRICULUM
+      - CURRSTOR
+      - MICROTEXT
+      - PERM-RES
+      - STACKS
+      - STORAGE
+  - library: GREEN
+    locations:
+      - LOCKED-STK
+  - library: LAW
+    locations:
+      - BASEMENT
+      - FOLIO-BAS
+      - LAW-CAREER
+      - LOCKED-STK
+      - NEWBOOKS
+      - OUT-TRAVEL
+      - PERM-RES
+      - STACKS-1
+      - VROOMAN
+      - VROOMAN-OV
+      - WELLNESS
+  - library: MEDIA-MTXT
+    location:
+      - MM-CDCAB
+      - MM-OVERSIZ
+      - MM-STACKS
+  # For any other library... we just allow the request through and hope for the best.. for now.
+  - default_pickup_library: GREEN
+
+default_pickup_library: GREEN
+default_pickup_libraries:
+  - ART
+  - BUSINESS
+  - EARTH-SCI
+  - EAST-ASIA
+  - ENG
+  - GREEN
+  - HOPKINS
+  - LAW
+  - MUSIC
+  - SCIENCE
+
+hold_recallable:
+  - locations:
+      - MISSING
+      - INPROCESS
+      - ON-ORDER
+  - current_locations:
+      - MISSING
+      - INPROCESS
+      - ON-ORDER
 
 scannable:
   - library: SAL

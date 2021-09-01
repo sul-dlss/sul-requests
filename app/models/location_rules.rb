@@ -33,6 +33,8 @@ class LocationRules
              :current_locations, # multi-valued list of location codes to match against the holding's current_location
              :item_types, # multi-valued list of item type codes
              :only_scannable, # with covid-19 restrictions, some items were exclusively scannable
+             :default_pickup_library,
+             :mediated,
              to: :rule
 
     # @param [Config::Option] rule
@@ -49,10 +51,14 @@ class LocationRules
         match_types?(request)
     end
 
+    def pickup_libraries
+      (rule.pickup_libraries || Settings.default_pickup_libraries) + (rule.additional_pickup_libraries || [])
+    end
+
     private
 
     def match_library?(request)
-      library.nil? || library == request.origin
+      library.nil? || Array(library).include?(request.origin)
     end
 
     def match_location?(request)

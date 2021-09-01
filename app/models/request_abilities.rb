@@ -4,7 +4,7 @@
 class RequestAbilities
   def self.rules
     @rules ||= {
-      mediateable: LocationRules.new(Settings.mediateable),
+      pageable: LocationRules.new(Settings.pageable),
       hold_recallable: LocationRules.new(Settings.hold_recallable),
       scannable: LocationRules.new(Settings.scannable)
     }
@@ -20,16 +20,16 @@ class RequestAbilities
   def scannable?
     return false unless Settings.features.scan_service
 
-    applicable_rules(:scannable).any?
+    scannable_location_rule.present?
   end
 
   # With covid-19 restrictions, some items were exclusively available for scanning
   def scannable_only?
-    applicable_rules(:scannable).any?(&:only_scannable)
+    scannable_location_rule&.only_scannable
   end
 
   def mediateable?
-    applicable_rules(:mediateable).any?
+    applicable_rules(:pageable).first&.mediated
   end
 
   # returns a true if any of the following is true
@@ -46,6 +46,14 @@ class RequestAbilities
 
   def pageable?
     !mediateable? && !hold_recallable?
+  end
+
+  def location_rule
+    @location_rule ||= applicable_rules(:pageable).first
+  end
+
+  def scannable_location_rule
+    @scannable_location_rule ||= applicable_rules(:scannable).first
   end
 
   private

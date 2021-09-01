@@ -16,7 +16,7 @@
   <% destination_name = LibraryLocation.library_name_by_code(current_request.destination) %>
   <% if destination_name.present? %>
     <dt>
-      <%= label_for_pickup_libraries_dropdown(current_request.library_location.pickup_libraries) %>
+      <%= label_for_pickup_libraries_dropdown(current_request.pickup_libraries) %>
     </dt>
     <dd>
       <%= destination_name %>

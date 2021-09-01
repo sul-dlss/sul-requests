@@ -4,7 +4,7 @@
   </div>
 
   <% if Settings.features.estimate_delivery %>
-    <div class="<%= content_column_class %> input-like-text" <%= "data-single-library-value='#{current_request.library_location.pickup_libraries.keys.first}'".html_safe unless current_request.library_location.pickup_libraries.keys.many? %>>
+    <div class="<%= content_column_class %> input-like-text" <%= "data-single-library-value='#{current_request.pickup_libraries.first}'".html_safe unless current_request.pickup_libraries.many? %>>
       <span data-text-object="<%= current_request.object_id %>" data-scheduler-text='true' aria-live='polite'></span>
       <%= f.hidden_field :estimated_delivery, data: { 'scheduler-field' => true } %>
     </div>

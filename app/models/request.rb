@@ -28,7 +28,8 @@ class Request < ActiveRecord::Base
     where('created_at < ? AND (type != "MediatedPage" OR needed_date < ?)', date, date)
   }
 
-  delegate :hold_recallable?, :mediateable?, :pageable?, :scannable?, :scannable_only?, to: :request_abilities
+  delegate :hold_recallable?, :mediateable?, :pageable?, :scannable?, :scannable_only?,
+           :location_rule, :scannable_location_rule, to: :request_abilities
 
   # Serialized data hash
   store :data, accessors: [

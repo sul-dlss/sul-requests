@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe 'Pickup Libraries Dropdown' do
-  let(:standard_pickup_lib_total) { SULRequests::Application.config.pickup_libraries.count }
+  let(:standard_pickup_lib_total) { Settings.default_pickup_libraries.count }
 
   describe 'for multiple libraries' do
     it 'has a select dropdown to choose the library to deliver to' do
