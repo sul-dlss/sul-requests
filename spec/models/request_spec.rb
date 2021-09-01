@@ -631,7 +631,7 @@ describe Request do
     end
 
     it 'returns the subset of origin codes that are configured and mediated pages that exist in the database' do
-      expect(described_class.mediateable_origins).to eq %w(HV-ARCHIVE SPEC-COLL)
+      expect(described_class.mediateable_origins.to_h.keys).to eq %w(HV-ARCHIVE SPEC-COLL)
     end
   end
 

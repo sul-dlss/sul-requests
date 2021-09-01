@@ -1,9 +1,9 @@
 <section class="home-page-section">
   <h2>Mediation</h2>
   <ul>
-    <% locations.each do |location| %>
+    <% locations.each do |code, config| %>
       <li>
-        <%= link_to(LibraryLocation.library_name_by_code(location), admin_path(location)) %>
+        <%= link_to(LibraryLocation.library_name_by_code(config&.library_override || code), admin_path(code)) %>
       </li>
     <% end %>
   </ul>

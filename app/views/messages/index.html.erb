@@ -4,9 +4,9 @@
   <%= render partial: 'messages_for_library', locals: { library_code: 'anywhere', request_type: 'page'} %>
 </div>
 
-<% LibraryLocation.pageable_libraries.each do |library_code, library_name| %>
+<% LibraryLocation.pageable_libraries.each do |library_code, config| %>
   <div class="library-page-<%= library_code %>">
-    <%= render partial: 'messages_for_library', locals: { library_name: library_name, library_code: library_code, request_type: 'page'} %>
+    <%= render partial: 'messages_for_library', locals: { library_name: config.label, library_code: library_code.to_s, request_type: 'page'} %>
   </div>
 <% end %>
 

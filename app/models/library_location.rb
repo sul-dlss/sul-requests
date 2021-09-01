@@ -28,14 +28,7 @@ class LibraryLocation
 
   class << self
     def library_name_by_code(code)
-      all_libraries[code] || location_specific_library_name_by_code(code)
-    end
-
-    def location_specific_library_name_by_code(code)
-      pickup_libraries_for_location = Array(config.location_specific_pickup_libraries[code])
-      return unless pickup_libraries_for_location.one?
-
-      all_libraries[pickup_libraries_for_location.first]
+      all_libraries[code]&.label
     end
 
     def config
@@ -43,11 +36,11 @@ class LibraryLocation
     end
 
     def all_libraries
-      config.libraries
+      Settings.libraries
     end
 
     def pageable_libraries
-      all_libraries.select { |k, _| config.pageable_libraries.include? k }
+      all_libraries.map.select { |k, _| config.pageable_libraries.include? k.to_s }
     end
   end
 

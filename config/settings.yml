@@ -71,8 +71,19 @@ origin_admin_groups:
   EDUCATION: []
   HOPKINS: []
   HV-ARCHIVE: []
-  PAGE-MP: []
   SPEC-COLL: []
+
+origin_location_admin_groups:
+  PAGE-MP: []
+
+mediateable_origins:
+  ART: {}
+  EDUCATION: {}
+  HOPKINS: {}
+  HV-ARCHIVE: {}
+  PAGE-MP:
+    library_override: EARTH-SCI
+  SPEC-COLL: {}
 
 contact_email: 'site-admin-sul-requests@lists.stanford.edu'
 
