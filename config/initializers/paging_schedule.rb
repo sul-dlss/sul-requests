@@ -70,6 +70,32 @@ PagingSchedule.configure do
     business_days_later 2
   end
 
+  # Education (at SAL 1/2)
+  when_paging from: 'EDUCATION', to: 'GREEN', before: '1:00pm' do
+    will_arrive after: '4:30pm'
+    business_days_later 0
+  end
+  when_paging from: 'EDUCATION', to: 'GREEN', after: '1:00pm' do
+    will_arrive after: '1:00pm'
+    business_days_later 1
+  end
+  when_paging from: 'EDUCATION', to: 'SCAN', before: '1:00pm' do
+    will_arrive after: '6:00pm'
+    business_days_later 1
+  end
+  when_paging from: 'EDUCATION', to: 'SCAN', after: '1:00pm' do
+    will_arrive after: '6:00pm'
+    business_days_later 2
+  end
+  when_paging from: 'EDUCATION', to: :anywhere, before: '1:00pm' do
+    will_arrive after: '4:30pm'
+    business_days_later 1
+  end
+  when_paging from: 'EDUCATION', to: :anywhere, after: '1:00pm' do
+    will_arrive after: '4:30pm'
+    business_days_later 2
+  end
+
   # Hopkins
   when_paging from: 'HOPKINS', to: 'GREEN', before: '9:00am' do
     will_arrive after: '12:00pm'
