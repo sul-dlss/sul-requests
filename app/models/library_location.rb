@@ -20,12 +20,14 @@ class LibraryLocation
       all_libraries[code]&.label
     end
 
+    # This is a super-clunky way to convert data from RailsConfig to something
+    # Enumerable, so we can use e.g. #select
     def all_libraries
-      Settings.libraries
+      Settings.libraries.map.to_h.with_indifferent_access
     end
 
     def pageable_libraries
-      all_libraries.map.select { |_, v| v.pageable }.to_h.stringify_keys
+      all_libraries.select { |_, v| v.pageable }
     end
   end
 end
