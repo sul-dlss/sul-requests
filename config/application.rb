@@ -72,10 +72,5 @@ module SULRequests
       'organization:law' => 'rcj',
       'organization:gsb' => 's7z'
     }
-
-    config.pickup_library_pseudo_patrons = {
-      'HOOV-DESK' => 'HOLD@HL',
-      'SPEC-DESK' => 'HOLD@SP',
-    }
   end
 end
