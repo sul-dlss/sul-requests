@@ -31,16 +31,6 @@ module SULRequests
 
     config.scanning_library_proxy = { 'SCAN' => 'GREEN' }
 
-    if Rails.env.test?
-      config.pageable_libraries = [
-        'SAL',
-        'SAL3',
-        'SAL-NEWARK'
-      ]
-    else
-      config.pageable_libraries = ['GREEN']
-    end
-
     config.contact_info = {
       'PAGE-MP' => {
         phone: '(650) 723-2746',

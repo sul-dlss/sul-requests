@@ -20,16 +20,12 @@ class LibraryLocation
       all_libraries[code]&.label
     end
 
-    def config
-      SULRequests::Application.config
-    end
-
     def all_libraries
       Settings.libraries
     end
 
     def pageable_libraries
-      all_libraries.map.select { |k, _| config.pageable_libraries.include? k.to_s }
+      all_libraries.map.select { |_, v| v.pageable }.to_h.stringify_keys
     end
   end
 end
