@@ -31,13 +31,6 @@ module SULRequests
 
     config.scanning_library_proxy = { 'SCAN' => 'GREEN' }
 
-    config.contact_info = {
-      'PAGE-MP' => {
-        phone: '(650) 723-2746',
-        email: 'brannerlibrary@stanford.edu'
-      }
-    }
-
     config.symphony_success_codes = ['209', '722', 'S001', 'P001', 'P001B', 'P002', 'P005']
 
     config.no_user_privs_codes = ['U003', 'U004']

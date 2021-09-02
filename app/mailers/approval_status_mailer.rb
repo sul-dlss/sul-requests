@@ -67,14 +67,10 @@ class ApprovalStatusMailer < ApplicationMailer
   end
 
   def contact_info
-    contact_info_config[@request.origin_location] ||
+    Settings.locations[@request.origin_location]&.contact_info ||
       Settings.libraries[@request.origin]&.contact_info ||
       Settings.libraries[@request.destination]&.contact_info ||
       Settings.libraries.default.contact_info
-  end
-
-  def contact_info_config
-    SULRequests::Application.config.contact_info
   end
 
   def success_url

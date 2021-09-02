@@ -360,6 +360,12 @@ libraries:
       library_slug: philosophy
       location_slug: library-circulation
 
+locations:
+  PAGE-MP:
+    contact_info:
+      phone: '(650) 723-2746'
+      email: 'brannerlibrary@stanford.edu'
+
 pageable:
   # Mediated pages
   - library: RUMSEYMAP
