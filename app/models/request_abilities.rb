@@ -45,7 +45,7 @@ class RequestAbilities
   end
 
   def pageable?
-    !mediateable? && !hold_recallable?
+    !mediateable? && !hold_recallable? && location_rule.present?
   end
 
   def location_rule

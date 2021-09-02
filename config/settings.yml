@@ -557,6 +557,7 @@ pageable:
       - MM-STACKS
   # For any other library... we just allow the request through and hope for the best.. for now.
   - default_pickup_library: GREEN
+    send_honeybadger_notice_if_used: true
 
 default_pickup_library: GREEN
 default_pickup_libraries:

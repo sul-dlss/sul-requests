@@ -15,6 +15,13 @@ class Page < Request
     super << user.email
   end
 
+  # Ideally, we'll be able to drop the wildcard rule because no requests will make it here
+  after_create do
+    next if location_rule&.send_honeybadger_notice_if_used
+
+    Honeybadger.notify("WARNING: Using default location rule for page #{id} (origin: #{origin}, origin_location: #{origin_location})")
+  end
+
   # TODO: COVID-19 Disabling for now while we re-open so that it falls back to the default behavior
   # We can uncomment if we allow guests to request again (but not at particular libraries like MEDIA-MTXT)
   # def requestable_by_all?

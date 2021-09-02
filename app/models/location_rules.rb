@@ -39,6 +39,7 @@ class LocationRules
              :default_pickup_library,
              :mediated,
              :destination,
+             :send_honeybadger_notice_if_used,
              to: :rule
 
     # @param [Config::Option] rule
