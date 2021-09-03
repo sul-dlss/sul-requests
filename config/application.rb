@@ -161,6 +161,7 @@ module SULRequests
         'PAGE-LW' => ['LAW'],
         'PAGE-MA' => ['MATH-CS'],
         'PAGE-MD' => ['MUSIC', 'MEDIA-MTXT'],
+        'PAGE-MM' => ['MEDIA-MTXT'],
         'PAGE-MP' => ['EARTH-SCI'],
         'PAGE-MU' => ['MUSIC'],
         'PAGE-RM' => ['RUMSEYMAP'],
@@ -185,6 +186,7 @@ module SULRequests
         'ARTLCKS' => ['SPEC-COLL'],
         'ARTLCKS-R' => ['SPEC-COLL'],
         'PAGE-GR' => ['GREEN'],
+        'PAGE-MM' => ['MEDIA-MTXT'],
         'PAGE-SP' => ['SPEC-COLL']
       }
     end
