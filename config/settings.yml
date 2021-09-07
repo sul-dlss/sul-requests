@@ -317,7 +317,7 @@ libraries:
     hold_pseudopatron: HOLD@SL
     hours:
       library_slug: sal12
-      location_slug: sal12-circulation
+      location_slug: operations
     pageable: true
   SAL3:
     label: SAL3 (off-campus storage)
