@@ -4,16 +4,21 @@ require 'rails_helper'
 
 RSpec.describe PickupLibrariesHelper do
   describe '#pickup_libraries_array' do
-    let(:form) { instance_double('ActiveModel::Form', object: OpenStruct.new(origin: '')) }
     let(:libraries) do
-      {
-        'ABC' => 'Library 2',
-        'XYZ' => 'Library 1'
-      }
+      %w[ABC XYZ]
+    end
+
+    before do
+      allow(Settings).to receive(:libraries).and_return(
+        {
+          'ABC' => OpenStruct.new(label: 'Library 2'),
+          'XYZ' => OpenStruct.new(label: 'Library 1')
+        }
+      )
     end
 
     it 'sorts the libraries by the name of the library (and not the code)' do
-      pickup_libraries = helper.send(:pickup_libraries_array, form, libraries)
+      pickup_libraries = helper.send(:pickup_libraries_array, libraries)
 
       expect(pickup_libraries).to eq([['Library 1', 'XYZ'], ['Library 2', 'ABC']])
     end
@@ -21,19 +26,19 @@ RSpec.describe PickupLibrariesHelper do
 
   describe '#default_pickup_library' do
     it 'sets an origin specific default' do
-      default = helper.send(:default_pickup_library, 'LAW', 'STACKS')
+      default = helper.send(:default_pickup_library, Request.new(origin: 'LAW', origin_location: 'STACKS'))
 
       expect(default).to eq 'LAW'
     end
 
     it 'sets an origin location specific default' do
-      default = helper.send(:default_pickup_library, 'SAL3', 'EAL-SETS')
+      default = helper.send(:default_pickup_library, Request.new(origin: 'SAL3', origin_location: 'EAL-SETS'))
 
       expect(default).to eq 'EAST-ASIA'
     end
 
     it 'falls back to a default location' do
-      default = helper.send(:default_pickup_library, 'ART', 'STACKS')
+      default = helper.send(:default_pickup_library, Request.new(origin: 'ART', origin_location: 'STACKS'))
 
       expect(default).to eq 'GREEN'
     end

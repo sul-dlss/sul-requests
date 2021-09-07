@@ -11,82 +11,23 @@ class LibraryLocation
     @location = location
   end
 
-  def pickup_libraries
-    case
-    when location_specific_pickup_library_config.present?
-      location_specific_pickup_libraries
-    when library_specific_pickup_library_config.present?
-      library_specific_pickup_libraries
-    else
-      pickup_libraries_for(config.pickup_libraries)
-    end
-  end
-
   def active_messages
     @active_messages ||= Message.where(library: [library, 'anywhere']).active
   end
 
   class << self
     def library_name_by_code(code)
-      all_libraries[code] || location_specific_library_name_by_code(code)
+      all_libraries[code]&.label
     end
 
-    def location_specific_library_name_by_code(code)
-      pickup_libraries_for_location = Array(config.location_specific_pickup_libraries[code])
-      return unless pickup_libraries_for_location.one?
-
-      all_libraries[pickup_libraries_for_location.first]
-    end
-
-    def config
-      SULRequests::Application.config
-    end
-
+    # This is a super-clunky way to convert data from RailsConfig to something
+    # Enumerable, so we can use e.g. #select
     def all_libraries
-      config.libraries
+      Settings.libraries.map.to_h.with_indifferent_access
     end
 
     def pageable_libraries
-      all_libraries.select { |k, _| config.pageable_libraries.include? k }
+      all_libraries.select { |_, v| v.pageable }
     end
-  end
-
-  private
-
-  def all_libraries
-    self.class.all_libraries
-  end
-
-  def config
-    self.class.config
-  end
-
-  def pickup_libraries_for(collection)
-    all_libraries.select do |k, _|
-      collection.include?(k)
-    end.merge(additional_pickup_libraries)
-  end
-
-  def additional_pickup_libraries
-    return {} unless SULRequests::Application.config.include_self_in_library_list.include?(@library)
-
-    all_libraries.select { |k, _| k == @library }
-  end
-
-  def library_specific_pickup_libraries
-    pickup_libraries_for(library_specific_pickup_library_config)
-  end
-
-  def location_specific_pickup_libraries
-    pickup_libraries_for(location_specific_pickup_library_config)
-  end
-
-  def library_specific_pickup_library_config
-    config.library_specific_pickup_libraries[@library]
-  end
-
-  def location_specific_pickup_library_config
-    config.location_specific_pickup_libraries[@location] ||
-      config.location_specific_pickup_libraries.dig(@library, @location)
   end
 end

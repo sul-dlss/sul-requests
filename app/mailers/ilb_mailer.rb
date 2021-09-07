@@ -8,7 +8,7 @@ class IlbMailer < ApplicationMailer
     @request = request
     mail(
       to: Settings.illiad_email_address,
-      from: SULRequests::Application.config.contact_info['default'][:email],
+      from: Settings.libraries.default.contact_info.email,
       subject: 'Scan request problem, please remediate'
     )
   end

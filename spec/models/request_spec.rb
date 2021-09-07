@@ -209,8 +209,9 @@ describe Request do
 
       context 'when a library is configured' do
         before do
-          libs = ['SAL-NEWARK']
-          expect(SULRequests::Application.config).to receive(:ad_hoc_item_commentable_libraries).and_return(libs)
+          without_partial_double_verification do
+            allow(Settings.pageable.find { |x| x.library == 'SAL-NEWARK' }).to receive(:ad_hoc_item_commentable).and_return(true)
+          end
         end
 
         it 'is true for that library' do
@@ -620,7 +621,7 @@ describe Request do
     end
 
     it 'non-mediated pages are false' do
-      expect(create(:page).check_remote_ip?).to be false
+      expect(create(:page)).not_to be_check_remote_ip
     end
   end
 
@@ -631,7 +632,7 @@ describe Request do
     end
 
     it 'returns the subset of origin codes that are configured and mediated pages that exist in the database' do
-      expect(described_class.mediateable_origins).to eq %w(HV-ARCHIVE SPEC-COLL)
+      expect(described_class.mediateable_origins.to_h.keys).to eq %w(HV-ARCHIVE SPEC-COLL)
     end
   end
 

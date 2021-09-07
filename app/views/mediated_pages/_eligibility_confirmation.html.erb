@@ -1,3 +1,1 @@
-<% if SULRequests::Application.config.confirm_eligibility_libraries.include?(current_request.origin) %>
-  <%= render "#{current_request.origin}_eligibility_confirmation" %>
-<% end %>
+<%= render "#{current_request.origin}_eligibility_confirmation" if current_request.location_rule&.confirm_eligibility %>

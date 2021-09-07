@@ -13,7 +13,7 @@
         <% if Settings.features.estimate_delivery %>
           <dl>
             <dt>Earliest delivery</dt>
-            <dd data-single-library-value='<%= SULRequests::Application.config.default_pickup_library unless current_request.holdings_object.single_checked_out_item? %>'>
+            <dd data-single-library-value='<%= Settings.default_pickup_library unless current_request.holdings_object.single_checked_out_item? %>'>
               <span data-scheduler-text='true' aria-live='polite'></span>
             </dd>
           </dl>

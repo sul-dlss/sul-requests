@@ -3,6 +3,8 @@ site_admin_groups: ['FAKE-TEST-SITE-ADMIN-GROUP']
 
 origin_admin_groups:
   FAKE-ORIGIN-LIBRARY: ['FAKE-ORIGIN-LIBRARY-TEST-LDAP-GROUP']
+
+origin_location_admin_groups:
   FAKE-ORIGIN-LOCATION: ['FAKE-ORIGIN-LOCATION-TEST-LDAP-GROUP']
 
 destination_admin_groups:

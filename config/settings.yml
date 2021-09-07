@@ -71,8 +71,19 @@ origin_admin_groups:
   EDUCATION: []
   HOPKINS: []
   HV-ARCHIVE: []
-  PAGE-MP: []
   SPEC-COLL: []
+
+origin_location_admin_groups:
+  PAGE-MP: []
+
+mediateable_origins:
+  ART: {}
+  EDUCATION: {}
+  HOPKINS: {}
+  HV-ARCHIVE: {}
+  PAGE-MP:
+    library_override: EARTH-SCI
+  SPEC-COLL: {}
 
 contact_email: 'site-admin-sul-requests@lists.stanford.edu'
 
@@ -144,19 +155,230 @@ mylibrary:
 data_cleanup:
   age: <%= 1.year %>
 
-hold_recallable:
-  - locations:
-      - MISSING
-      - INPROCESS
-      - ON-ORDER
-  - current_locations:
-      - MISSING
-      - INPROCESS
-      - ON-ORDER
+libraries:
+  default:
+    contact_info:
+      phone: "(650) 723-1493"
+      email: greencirc@stanford.edu
+    label: Stanford Libraries
+  ARS:
+    label: Archive of Recorded Sound
+    hold_pseudopatron: HOLD@AS
+    hours:
+      library_slug: ars
+      location_slug: archive-recorded-sound
+  ART:
+    label: Art & Architecture Library (Bowes)
+    contact_info:
+      phone: "(650) 723-3408"
+      email: artlibrary@stanford.edu
+    hold_pseudopatron: HOLD@AR
+    hours:
+      library_slug: art
+      location_slug: library-circulation
+  BIOLOGY:
+    label: Biology Library (Falconer)
+    hours:
+      library_slug: falconer
+      location_slug: library-circulation
+  BUSINESS:
+    label: Business Library
+    contact_info:
+      phone: "(650) 725-2055"
+      email: gsb_librarycirc@stanford.edu
+    hold_pseudopatron: HOLD@BU
+    hours:
+      library_slug: business
+      location_slug: library-i-desk
+  CHEMCHMENG:
+    label: Chemistry & ChemEng Library (Swain)
+    hours:
+      library_slug: swain
+      location_slug: library-circulation
+  CLASSICS:
+    label: Classics Library
+    hold_pseudopatron: HOLD@CL
+    hours:
+      library_slug: classics-library
+      location_slug: library-circulation
+  EARTH-SCI:
+    label: Earth Sciences Library (Branner)
+    hold_pseudopatron: HOLD@ES
+    hours:
+      library_slug: branner
+      location_slug: library-circulation
+  EAST-ASIA:
+    label: East Asia Library
+    hold_pseudopatron: HOLD@EA
+    hours:
+      library_slug: eal
+      location_slug: library-circulation
+  EDUCATION:
+    label: Education Library (at SAL1&2)
+    contact_info:
+      phone: "(650) 723-2121"
+      email: cubberley@stanford.edu
+    hold_pseudopatron: HOLD@ED
+    hours:
+      library_slug: cubberley
+      location_slug: library-circulation
+  ENG:
+    label: Engineering Library (Terman)
+    hold_pseudopatron: HOLD@EN
+    hours:
+      library_slug: englib
+      location_slug: library-circulation
+  GREEN:
+    label: Green Library
+    contact_info:
+      phone: "(650) 723-1493"
+      email: greencirc@stanford.edu
+    hold_pseudopatron: HOLD@GR
+    hours:
+      library_slug: green
+      location_slug: library-circulation
+  HOOVER:
+    label: Hoover Library
+    contact_info:
+      phone: "(650) 723-2058"
+      email: hoovercirc@stanford.edu
+    hold_pseudopatron: HOLD@HL
+    hours:
+      library_slug: hoover
+      location_slug: library-circulation
+  HOPKINS:
+    label: Marine Biology Library (Miller)
+    contact_info:
+      phone: "(831) 655-6229"
+      email: HMS-Library@lists.stanford.edu
+    hold_pseudopatron: HOLD@HP
+    hours:
+      library_slug: hopkins
+      location_slug: library-circulation
+  HV-ARCHIVE:
+    label: Hoover Archives
+    contact_info:
+      phone: "(650) 723-3563"
+      email: hooverarchives@stanford.edu
+    hold_pseudopatron: HOLD@HA
+    hours:
+      library_slug: hila
+      location_slug: reference
+  LANE-MED:
+    label: Medical Library (Lane)
+    hours:
+      library_slug: lane
+      location_slug: library-circulation
+  LATHROP:
+    label: Lathrop Library
+    hours:
+      library_slug: lathrop
+      location_slug: tech-lounge
+  LAW:
+    label: Law Library (Crown)
+    contact_info:
+      phone: "(650) 723-2477"
+      email: circulation@law.stanford.edu
+    hold_pseudopatron: HOLD@LW
+    hours:
+      library_slug: law
+      location_slug: library-circulation
+  MATH-CS:
+    label: Math & Statistics Library
+    hours:
+      library_slug: mathstat
+      location_slug: library-circulation
+  MEDIA-MTXT:
+    label: Media Microtext
+    hold_pseudopatron: HOLD@MD
+    hours:
+      library_slug: green
+      location_slug: media-microtext-center
+  MUSIC:
+    label: Music Library
+    hold_pseudopatron: HOLD@MU
+    hours:
+      library_slug: music
+      location_slug: library-circulation
+  RUMSEYMAP:
+    label: David Rumsey Map Center
+    hold_pseudopatron: HOLD@RM
+    hours:
+      library_slug: Rumsey
+      location_slug: visitor-access
+  RWC:
+    label: Academy Hall (SRWC)
+    hold_pseudopatron: HOLD@RU
+    hours:
+      library_slug: srwc
+      location_slug: lobby-desk
+  SAL:
+    label: SAL1&2 (on-campus shelving)
+    hold_pseudopatron: HOLD@SL
+    hours:
+      library_slug: sal12
+      location_slug: sal12-circulation
+    pageable: true
+  SAL3:
+    label: SAL3 (off-campus storage)
+    hours:
+      library_slug: sal3
+      location_slug: operations
+    pageable: true
+  SAL-NEWARK:
+    label: SAL Newark (off-campus storage)
+    hours:
+      library_slug: newark
+      location_slug: operations
+    pageable: true
+  SCAN:
+    contact_info:
+      phone: '(650) 723-3278'
+      email: 'scan-and-deliver@stanford.edu'
+  SCIENCE:
+    label: Science Library (Li and Ma)
+    contact_info:
+      phone: "(650) 723-1528"
+      email: sciencelibrary@stanford.edu
+    hold_pseudopatron: HOLD@CS
+    hours:
+      library_slug: science
+      location_slug: library-circulation
+  SPEC-COLL:
+    label: Special Collections
+    contact_info:
+      phone: "(650) 725-1022"
+      email: specialcollections@stanford.edu
+    hold_pseudopatron: HOLD@SP
+    hours:
+      library_slug: spc
+      location_slug: field-reading-room
+  TANNER:
+    label: Philosophy Library (Tanner)
+    hold_pseudopatron: HOLD@TA
+    hours:
+      library_slug: philosophy
+      location_slug: library-circulation
 
-mediateable:
+locations:
+  PAGE-MP:
+    contact_info:
+      phone: '(650) 723-2746'
+      email: 'brannerlibrary@stanford.edu'
+
+pageable:
+  # Mediated pages
   - library: RUMSEYMAP
+    pickup_libraries:
+      - RUMSEYMAP
+    mediated: true
+    confirm_eligibility: true
   - library: SPEC-COLL
+    pickup_libraries:
+      - SPEC-COLL
+    mediated: true
+    item_commentable: true
+    confirm_eligibility: true
   - library: ART
     locations:
       - ARTLCKL
@@ -167,14 +389,202 @@ mediateable:
       - ARTLCKO-R
       - ARTLCKS
       - ARTLCKS-R
-  - library: SAL3
-    locations: PAGE-MP
+    pickup_libraries:
+      - ART
+    confirm_eligibility: true
+    mediated: true
+  - locations:
+      - PAGE-MP
+    pickup_libraries:
+      - EARTH-SCI
+    mediated: true
   - library: EDUCATION
     locations:
       - LOCKED-STK
+    pickup_libraries:
+      - SPEC-COLL
+    confirm_eligibility: true
+    mediated: true
   - library: HV-ARCHIVE
     locations_match:
       - "-30$"
+    pickup_libraries:
+      - HV-ARCHIVE
+    mediated: true
+  # Location-specific pickup libraries
+  - locations:
+      - PAGE-AR
+    pickup_libraries: ['ART', 'SPEC-COLL']
+  - locations:
+      - PAGE-AS
+    pickup_libraries: ['ARS']
+  - locations:
+      - PAGE-BI
+    pickup_libraries: ['BIOLOGY']
+  - locations:
+      - PAGE-BU
+    pickup_libraries: ['BUSINESS']
+  - locations:
+      - PAGE-CH
+    pickup_libraries: ['CHEMCHMENG']
+  - locations:
+      - PAGE-EA
+      - HY-PAGE-EA
+      - L-PAGE-EA
+      - ND-PAGE-EA
+    pickup_libraries: ['EAST-ASIA']
+  - locations:
+      - PAGE-ED
+    pickup_libraries: ['EDUCATION']
+  - locations:
+      - PAGE-EN
+    pickup_libraries: ['ENG']
+  - locations:
+      - PAGE-ES
+    pickup_libraries: ['EARTH-SCI']
+  - locations:
+      - PAGE-GR
+    pickup_libraries: ['GREEN']
+  - locations:
+      - PAGE-HA
+    pickup_libraries: ['HV-ARCHIVE']
+  - locations:
+      - PAGE-HP
+    pickup_libraries: ['GREEN', 'HOPKINS']
+  - locations:
+      - PAGE-IRON
+    pickup_libraries: ['BUSINESS']
+  - locations:
+      - PAGE-LP
+    pickup_libraries: ['MUSIC', 'MEDIA-MTXT']
+  - locations:
+      - PAGE-LW
+    pickup_libraries: ['LAW']
+  - locations:
+      - PAGE-MA
+    pickup_libraries: ['MATH-CS']
+  - locations:
+      - PAGE-MD
+    pickup_libraries: ['MUSIC', 'MEDIA-MTXT']
+  - locations:
+      - PAGE-MM
+    pickup_libraries: ['MEDIA-MTXT']
+  - locations:
+      - PAGE-MP
+    pickup_libraries: ['EARTH-SCI']
+  - locations:
+      - PAGE-MU
+    pickup_libraries: ['MUSIC']
+  - locations:
+      - PAGE-RM
+    pickup_libraries: ['RUMSEYMAP']
+  - locations:
+      - PAGE-SI
+    pickup_libraries: ['SCIENCE']
+  - locations:
+      - PAGE-SP
+    pickup_libraries: ['SPEC-COLL']
+  # Library-specific pickup libraries
+  - library: HV-ARCHIVE
+    pickup_libraries:
+      - HV-ARCHIVE
+  - library: ARS
+    pickup_libraries:
+      - ARS
+  # Other request configuration
+  - library: LAW
+    default_pickup_library: LAW
+  - library: MEDIA-MTXT
+    additional_pickup_libraries: ['MEDIA-MTXT']
+  - locations_match:
+      - ^EAL-SETS$
+      - ^EAL-STKS-
+    default_pickup_library: EAST-ASIA
+  - library: SAL-NEWARK
+    item_commentable: true
+  - library: SAL3
+  - library: SAL
+  - library: EDUCATION
+  - library:
+      - ART
+      - BUSINESS
+      - EARTH-SCI
+      - EAST-ASIA
+      - EDUCATION
+      - ENG
+      - GREEN
+      - MEDIA-MTXT
+      - MUSIC
+      - SCIENCE
+    locations:
+      - INPROCESS
+      - ON-ORDER
+  - library: BUSINESS
+    locations:
+      - BUS-CMC
+      - BUS-PER
+      - BUS-TEMP
+      - MEDIA
+      - STACKS
+  - library: EDUCATION
+    locations:
+      - CURRICULUM
+      - CURRSTOR
+      - MICROTEXT
+      - PERM-RES
+      - STACKS
+      - STORAGE
+  - library: GREEN
+    locations:
+      - LOCKED-STK
+  - library: LAW
+    locations:
+      - BASEMENT
+      - FOLIO-BAS
+      - LAW-CAREER
+      - LOCKED-STK
+      - NEWBOOKS
+      - OUT-TRAVEL
+      - PERM-RES
+      - STACKS-1
+      - VROOMAN
+      - VROOMAN-OV
+      - WELLNESS
+  - library: MEDIA-MTXT
+    location:
+      - MM-CDCAB
+      - MM-OVERSIZ
+      - MM-STACKS
+  # For any other library... we just allow the request through and hope for the best.. for now.
+  - default_pickup_library: GREEN
+    send_honeybadger_notice_if_used: true
+
+default_pickup_library: GREEN
+default_pickup_libraries:
+  - ART
+  - BUSINESS
+  - EARTH-SCI
+  - EAST-ASIA
+  - ENG
+  - GREEN
+  - HOPKINS
+  - LAW
+  - MUSIC
+  - SCIENCE
+
+hold_recallable:
+  - locations:
+      - MISSING
+      - INPROCESS
+      - ON-ORDER
+  - current_locations:
+      - MISSING
+      - INPROCESS
+      - ON-ORDER
+
+default_scan_destination:
+  key: 'GREEN'
+  patron_barcode: 'GRE-SCANDELIVER'
 
 scannable:
   - library: SAL
@@ -184,6 +594,9 @@ scannable:
       - SAL-TEMP
       - UNCAT
     only_scannable: true
+    destination:
+      key: 'GREEN'
+      patron_barcode: 'GRE-SCANDELIVER'
   - library: SAL
     item_types:
       - BUS-STACKS
@@ -196,8 +609,6 @@ scannable:
       - EAL-STKS-J
       - EAL-STKS-K
       - FED-DOCS
-      - HY-PAGE-EA
-      - ND-PAGE-EA
       - PAGE-EA
       - PAGE-GR
       - SAL-ARABIC
@@ -210,6 +621,21 @@ scannable:
       - STACKS
       - TECH-RPTS
       - UNCAT
+    destination:
+      key: 'GREEN'
+      patron_barcode: 'GRE-SCANDELIVER'
+  - library: SAL
+    item_types:
+      - BUS-STACKS
+      - STKS
+      - STKS-MONO
+      - STKS-PERI
+    locations:
+      - HY-PAGE-EA
+      - ND-PAGE-EA
+    destination:
+      key: 'EAST-ASIA'
+      patron_barcode: 'EAL-SCANREVIEW'
   - library: SAL3
     item_types:
       - BUS-STACKS
@@ -220,9 +646,15 @@ scannable:
       - BUS-STACKS
       - STACKS
       - PAGE-GR
+    destination:
+      key: 'SAL3'
+      patron_barcode: 'SAL3-SCANDELIVER'
   - library: SAL3
     item_types:
       - NEWSPAPER
       - NH-INHOUSE
     locations:
       - PAGE-GR
+    destination:
+      key: 'SAL3'
+      patron_barcode: 'SAL3-SCANDELIVER'

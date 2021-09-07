@@ -28,7 +28,8 @@ class Request < ActiveRecord::Base
     where('created_at < ? AND (type != "MediatedPage" OR needed_date < ?)', date, date)
   }
 
-  delegate :hold_recallable?, :mediateable?, :pageable?, :scannable?, :scannable_only?, to: :request_abilities
+  delegate :hold_recallable?, :mediateable?, :pageable?, :scannable?, :scannable_only?,
+           :location_rule, :scannable_location_rule, to: :request_abilities
 
   # Serialized data hash
   store :data, accessors: [
@@ -169,14 +170,26 @@ class Request < ActiveRecord::Base
     errors[:library_id].present?
   end
 
+  def pickup_libraries
+    location_rule&.pickup_libraries
+  end
+
   class << self
     # The mediateable_origins will make multiple (efficient) database requests
     # in order to return the array of locations that are both configured as mediateable and have existing requests.
     # Another alternative would be to use (origin_admin_groups & uniq.pluck(:origin)).present? but that will result
     # in a SELECT DISTINCT which could get un-performant with a large table of requests.
     def mediateable_origins
-      Settings.origin_admin_groups.to_hash.keys.map(&:to_s).select do |library_or_location|
-        MediatedPage.exists?(origin: library_or_location) || MediatedPage.exists?(origin_location: library_or_location)
+      # This is a super-clunky way to convert data from RailsConfig to something
+      # Enumerable, so we can use e.g. #select
+      origins = Settings.mediateable_origins.map.to_h.with_indifferent_access
+
+      origins.select do |code, config|
+        if config.library_override
+          MediatedPage.exists?(origin_location: code.to_s)
+        else
+          MediatedPage.exists?(origin: code.to_s)
+        end
       end
     end
   end
