@@ -175,7 +175,7 @@ describe PagingSchedule do
             }
 
             response = LibraryHoursApi::Response.new(data)
-            allow(LibraryHoursApi).to receive(:get).with('sal12', 'sal12-circulation', anything).and_return(response)
+            allow(LibraryHoursApi).to receive(:get).with('sal12', 'operations', anything).and_return(response)
             allow(LibraryHoursApi).to receive(:get).with('green', 'library-circulation', anything).and_return(response)
           end
 
@@ -202,7 +202,7 @@ describe PagingSchedule do
             }
 
             response = LibraryHoursApi::Response.new(data)
-            allow(LibraryHoursApi).to receive(:get).with('sal12', 'sal12-circulation', anything).and_return(response)
+            allow(LibraryHoursApi).to receive(:get).with('sal12', 'operations', anything).and_return(response)
             allow(LibraryHoursApi).to receive(:get).with('green', 'library-circulation', anything).and_return(response)
           end
 

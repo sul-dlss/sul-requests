@@ -219,9 +219,9 @@ libraries:
       phone: "(650) 723-2121"
       email: cubberley@stanford.edu
     hold_pseudopatron: HOLD@ED
-    hours:
-      library_slug: cubberley
-      location_slug: library-circulation
+    hours: # Use SAL 1+2 hours while EDUCATION is closed
+      library_slug: sal12
+      location_slug: operations
   ENG:
     label: Engineering Library (Terman)
     hold_pseudopatron: HOLD@EN
@@ -317,7 +317,7 @@ libraries:
     hold_pseudopatron: HOLD@SL
     hours:
       library_slug: sal12
-      location_slug: sal12-circulation
+      location_slug: operations
     pageable: true
   SAL3:
     label: SAL3 (off-campus storage)
