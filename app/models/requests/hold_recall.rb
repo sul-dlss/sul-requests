@@ -21,11 +21,9 @@ class HoldRecall < Request
   #   true
   # end
 
-  # TODO: COVID-19 Disabling for now while we re-open so that it falls back to the default behavior
-  # We can uncomment if we want to start collecting the needed_date again.
-  # def requires_needed_date?
-  #   true
-  # end
+  def requires_needed_date?
+    true
+  end
 
   def item_commentable?
     false
