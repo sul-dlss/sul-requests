@@ -13,7 +13,7 @@ AllCops:
     - 'config/**/*'
     - 'spec/spec_helper.rb'
     - 'vendor/**/*'
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 2.7
 
 Rails:
   Enabled: true
