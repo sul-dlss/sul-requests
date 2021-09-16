@@ -97,7 +97,7 @@ describe ConfirmationMailer do
           expect(body).to include I18n.l request.needed_date, format: :long
         end
 
-        context 'extra note for SPEC-COLL' do
+        xcontext 'extra note for SPEC-COLL' do
           let(:request) do
             create(
               :mediated_page_with_holdings,
@@ -113,7 +113,7 @@ describe ConfirmationMailer do
           end
         end
 
-        context 'extra note for other libraries' do
+        xcontext 'extra note for other libraries' do
           let(:request) { create(:page_mp_mediated_page) }
 
           it 'includes the extra note' do

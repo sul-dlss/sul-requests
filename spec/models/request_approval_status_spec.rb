@@ -33,18 +33,6 @@ describe RequestApprovalStatus do
           expect(text).to eq 'Waiting for approval. '
         end
       end
-
-      context 'for origins that include additional pending text' do
-        let(:request) { create(:mediated_page, origin: 'RUMSEYMAP', destination: 'RUMSEYMAP') }
-
-        it 'the extra text is included' do
-          expect(html).to have_css(
-            'dd',
-            text: 'Waiting for approval. Requests are typically approved 1-3 days before your scheduled visit.'
-          )
-          expect(text).to eq 'Waiting for approval. Requests are typically approved 1-3 days before your scheduled visit.'
-        end
-      end
     end
   end
 
