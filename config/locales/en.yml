@@ -59,7 +59,7 @@ en:
   approval_status:
     default:
       error: 'Attention: %{callnumber} %{error_text}'
-      extra_note: 'Requests are typically approved 1-3 days before your scheduled visit.'
+      extra_note: ''
       pending: 'Pending.'
       success: '%{item}'
     hold_recall:
@@ -70,7 +70,7 @@ en:
     scan:
       success: '%{item}'
     rumseymap:
-      extra_note: 'Requests are typically approved 1-3 days before your scheduled visit.'
+      extra_note: ''
     spec_coll:
       extra_note: ''
   approval_status_email:
