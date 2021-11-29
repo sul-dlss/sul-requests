@@ -11,9 +11,16 @@ require 'selenium-webdriver'
 
 # Auto require all files in spec/support.
 Dir[Rails.root.join('spec/support/**/*.rb')].sort.each { |f| require f }
+Capybara.javascript_driver = :headless_chrome
 
-Capybara.javascript_driver = :selenium_chrome_headless
-
+Capybara.register_driver :headless_chrome do |app|
+  Capybara::Selenium::Driver.load_selenium
+  browser_options = ::Selenium::WebDriver::Chrome::Options.new.tap do |opts|
+    opts.args << '--headless'
+    opts.args << '--window-size=1000,700'
+  end
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: browser_options)
+end
 Capybara.default_max_wait_time = 30
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
