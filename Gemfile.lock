@@ -186,30 +186,11 @@ GEM
     factory_bot_rails (6.2.0)
       factory_bot (~> 6.2.0)
       railties (>= 5.0.0)
-    faraday (1.9.3)
-      faraday-em_http (~> 1.0)
-      faraday-em_synchrony (~> 1.0)
-      faraday-excon (~> 1.1)
-      faraday-httpclient (~> 1.0)
-      faraday-multipart (~> 1.0)
-      faraday-net_http (~> 1.0)
-      faraday-net_http_persistent (~> 1.0)
-      faraday-patron (~> 1.0)
-      faraday-rack (~> 1.0)
-      faraday-retry (~> 1.0)
+    faraday (2.0.1)
+      faraday-net_http (~> 2.0)
       ruby2_keywords (>= 0.0.4)
-    faraday-em_http (1.0.0)
-    faraday-em_synchrony (1.0.0)
-    faraday-excon (1.1.0)
-    faraday-httpclient (1.0.1)
-    faraday-multipart (1.0.3)
-      multipart-post (>= 1.2, < 3)
-    faraday-net_http (1.0.1)
-    faraday-net_http_persistent (1.2.0)
-    faraday-patron (1.0.0)
-    faraday-rack (1.0.0)
-    faraday-retry (1.0.3)
-    ffi (1.15.4)
+    faraday-net_http (2.0.1)
+    ffi (1.15.5)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
@@ -277,7 +258,6 @@ GEM
     mini_portile2 (2.7.1)
     minitest (5.15.0)
     msgpack (1.4.2)
-    multipart-post (2.1.1)
     mysql2 (0.5.3)
     nested_form (0.3.2)
     net-scp (3.0.0)
@@ -492,7 +472,7 @@ DEPENDENCIES
   database_cleaner
   dlss-capistrano
   factory_bot_rails
-  faraday (~> 1)
+  faraday (~> 2)
   hash_to_hidden_fields
   honeybadger
   http

@@ -32,7 +32,7 @@ gem 'jbuilder', '~> 2.5'
 # CanCanCan is an authorization Gem for rails
 gem 'cancancan'
 # Use faraday for making HTTP requests
-gem 'faraday', '~> 1'
+gem 'faraday', '~> 2'
 gem 'http'
 # Use kaminari for pagination
 gem 'kaminari'
