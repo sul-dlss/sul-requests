@@ -75,7 +75,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
     # rubocop:enable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
 
     def request_params
-      place_hold_params.map { |params| symphony_client.place_hold_params(params) }
+      place_hold_params.map { |params| symphony_client.place_hold_params(**params) }
     end
 
     private
