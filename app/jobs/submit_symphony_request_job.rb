@@ -119,9 +119,9 @@ class SubmitSymphonyRequestJob < ApplicationJob
     def item(barcode)
       item_return = {
         itemBarcode: barcode,
-        holdType: 'TITLE'
+        holdType: 'COPY'
       }
-      item_return[:holdType] = 'COPY' if request.is_a?(Scan) || request.is_a?(MediatedPage)
+      item_return[:holdType] = 'TITLE' if request.is_a?(HoldRecall)
       item_return
     end
 
