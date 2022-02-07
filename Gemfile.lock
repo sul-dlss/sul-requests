@@ -327,7 +327,7 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     redcarpet (3.5.1)
-    redis (4.6.0)
+    redis (4.5.1)
     regexp_parser (2.2.0)
     request_store (1.5.1)
       rack (>= 1.4)
@@ -495,7 +495,7 @@ DEPENDENCIES
   rails (~> 6.1)
   rails-controller-testing
   redcarpet
-  redis
+  redis (~> 4.5.1)
   rspec-rails (~> 4.0)
   rubocop
   rubocop-performance
