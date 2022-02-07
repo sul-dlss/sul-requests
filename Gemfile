@@ -78,7 +78,7 @@ gem 'whenever'
 
 gem 'jwt'
 gem 'rack-attack'
-gem 'redis'
+gem 'redis', '~> 4.5.1' # 4.6.0 spews deprecation warnings out of sidekiq
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
