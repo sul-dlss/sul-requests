@@ -6,6 +6,8 @@ class ExpireCdlCheckoutsJob < ApplicationJob
     return unless Settings.cdl.enabled
 
     patron = Patron.find_by(library_id: Settings.cdl.pseudo_patron_id)
+    return if patron.blank?
+
     patron.checkouts.each do |checkout|
       circ_record = CircRecord.find(checkout.key, return_holds: true)
 
