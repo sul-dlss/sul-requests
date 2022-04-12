@@ -57,7 +57,7 @@ class SymphonyClient
     end
   end
 
-  def catalog_info(key)
+  def catalog_info(key, return_holds: false)
     headers = if Settings.symws.headers
                 {}
               else
@@ -67,10 +67,10 @@ class SymphonyClient
     response = authenticated_request("/catalog/item/barcode/#{ERB::Util.url_encode(key)}", params: {
                                        includeFields: [
                                          '*',
-                                         'bib{holdRecordList{*,item{call,bib{title}}}}',
+                                         ('bib{holdRecordList{*,item{call,bib{title}}}}' if return_holds),
                                          'call{*,itemList{*}}',
                                          'currentLocation'
-                                       ].join(',')
+                                       ].compact.join(',')
                                      }, headers: headers)
 
     JSON.parse(response.body)
