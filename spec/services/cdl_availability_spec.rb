@@ -20,7 +20,7 @@ RSpec.describe CdlAvailability do
 
     context 'when items exist and one is available' do
       before do
-        allow(CatalogInfo).to receive(:find).with('123456').and_return(catalog_info)
+        allow(CatalogInfo).to receive(:find).with('123456', return_holds: true).and_return(catalog_info)
       end
 
       let(:catalog_info) do
@@ -53,7 +53,7 @@ RSpec.describe CdlAvailability do
 
     context 'when items exist and none are available' do
       before do
-        allow(CatalogInfo).to receive(:find).with('123456').and_return(catalog_info)
+        allow(CatalogInfo).to receive(:find).with('123456', return_holds: true).and_return(catalog_info)
       end
 
       let(:catalog_info) do

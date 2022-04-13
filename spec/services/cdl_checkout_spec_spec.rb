@@ -108,7 +108,7 @@ RSpec.describe CdlCheckout do
     end
 
     it 'places the hold, checks the item out, and creates a token' do
-      allow(CatalogInfo).to receive(:find).with('abc123').and_return(catalog_info)
+      allow(CatalogInfo).to receive(:find).with('abc123', return_holds: true).and_return(catalog_info)
 
       expect(symphony_client).to receive(:place_hold).and_return({})
       expect(symphony_client).to receive(:check_out_item).with('12345', 'CDL-CHECKEDOUT', dueDate: anything).and_return(

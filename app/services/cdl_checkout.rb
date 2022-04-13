@@ -48,7 +48,7 @@ class CdlCheckout
   # @param barcode [String] item barcode
   # @return [Hash] token payload
   def process_checkout(barcode)
-    item_info = CatalogInfo.find(barcode)
+    item_info = CatalogInfo.find(barcode, return_holds: true)
 
     hold = find_hold(item_info) || place_hold(item_info)
 
@@ -83,7 +83,7 @@ class CdlCheckout
 
   # rubocop:disable Metrics/CyclomaticComplexity
   def process_renewal(barcode)
-    item_info = CatalogInfo.find(barcode)
+    item_info = CatalogInfo.find(barcode, return_holds: true)
     hold = find_hold(item_info)
 
     raise(Exceptions::CdlCheckoutError, 'Could not find hold record') unless hold&.exists? && hold&.cdl?
