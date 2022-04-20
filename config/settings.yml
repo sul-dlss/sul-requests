@@ -119,7 +119,7 @@ stanford_ips:
 borrow_direct:
   api_key: an-api-key
 features:
-  confirm_eligibility: true
+  confirm_eligibility: false
   estimate_delivery: false
   remote_ip_check: false
   hold_recall_service: false
@@ -374,13 +374,11 @@ pageable:
     pickup_libraries:
       - RUMSEYMAP
     mediated: true
-    confirm_eligibility: true
   - library: SPEC-COLL
     pickup_libraries:
       - SPEC-COLL
     mediated: true
     item_commentable: true
-    confirm_eligibility: true
   - library: ART
     locations:
       - ARTLCKL
@@ -393,7 +391,6 @@ pageable:
       - ARTLCKS-R
     pickup_libraries:
       - ART
-    confirm_eligibility: true
     mediated: true
   - locations:
       - PAGE-MP
@@ -405,7 +402,6 @@ pageable:
       - LOCKED-STK
     pickup_libraries:
       - SPEC-COLL
-    confirm_eligibility: true
     mediated: true
   - library: HV-ARCHIVE
     locations_match:
