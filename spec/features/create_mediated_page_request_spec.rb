@@ -160,7 +160,10 @@ describe 'Creating a mediated page request' do
   end
 
   describe 'special note for SPEC items about reading room access' do
-    before { stub_current_user(user) }
+    before do
+      stub_current_user(user)
+      allow(Settings.features).to receive(:special_spec_note).and_return(true)
+    end
 
     it 'is present' do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')

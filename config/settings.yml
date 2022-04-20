@@ -125,7 +125,7 @@ features:
   hold_recall_service: false
   hold_recall_via_borrow_direct: true
   scan_service: true
-  special_spec_note: true
+  special_spec_note: false
   validate_eligibility: true
 
 background_jobs:
