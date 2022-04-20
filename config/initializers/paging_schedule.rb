@@ -138,11 +138,11 @@ PagingSchedule.configure do
 
   # Special Collections
   when_paging from: 'SPEC-COLL', to: 'SPEC-COLL', before: '10:00am' do
-    will_arrive after: '11:00am'
+    will_arrive after: '9:00am'
     business_days_later 1
   end
   when_paging from: 'SPEC-COLL', to: 'SPEC-COLL', after: '10:00am' do
-    will_arrive after: '11:00am'
+    will_arrive after: '9:00am'
     business_days_later 2
   end
 
