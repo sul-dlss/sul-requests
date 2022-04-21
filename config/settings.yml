@@ -122,7 +122,7 @@ features:
   confirm_eligibility: true
   estimate_delivery: false
   remote_ip_check: false
-  hold_recall_service: false
+  hold_recall_service: true
   hold_recall_via_borrow_direct: true
   scan_service: true
   special_spec_note: true
@@ -165,6 +165,9 @@ libraries:
     label: Stanford Libraries
   ARS:
     label: Archive of Recorded Sound
+    contact_info:
+      phone: (650) 723-9312
+      email: soundarchive@stanford.edu
     hold_pseudopatron: HOLD@AS
     hours:
       library_slug: ars
@@ -211,6 +214,9 @@ libraries:
       location_slug: library-circulation
   EAST-ASIA:
     label: East Asia Library
+    contact_info:
+      phone: (650) 725-3435
+      email: eastasialibrary@stanford.edu
     hold_pseudopatron: HOLD@EA
     hours:
       library_slug: eal
@@ -242,8 +248,8 @@ libraries:
   HOOVER:
     label: Hoover Library
     contact_info:
-      phone: "(650) 723-2058"
-      email: hoovercirc@stanford.edu
+      phone: "(650) 723-3563"
+      email: hooverarchives@stanford.edu
     hold_pseudopatron: HOLD@HL
     hours:
       library_slug: hoover
@@ -298,6 +304,9 @@ libraries:
       location_slug: media-microtext-center
   MUSIC:
     label: Music Library
+    contact_info:
+      phone: (650) 723-1211
+      email: muslibcirc@stanford.edu
     hold_pseudopatron: HOLD@MU
     hours:
       library_slug: music
