@@ -8,6 +8,7 @@ describe 'Eligibility Validation' do
   before do
     expect(Settings.features).to receive(:validate_eligibility).and_return(true)
     stub_current_user(user)
+    allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
   end
 
   context 'for page requests' do
@@ -49,8 +50,10 @@ describe 'Eligibility Validation' do
 
       it 'allows the request to be submitted' do
         visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
-        first(:button, 'Send request').click
 
+        fill_in_required_fields
+
+        first(:button, 'Send request').click
         expect(current_url).to eq successful_mediated_page_url(MediatedPage.last)
         expect_to_be_on_success_page
       end
@@ -64,6 +67,9 @@ describe 'Eligibility Validation' do
 
       it 'allows the request to be submitted' do
         visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+
+        fill_in_required_fields
+
         first(:button, 'Send request').click
 
         expect(current_url).to eq successful_mediated_page_url(MediatedPage.last)
@@ -97,11 +103,26 @@ describe 'Eligibility Validation' do
 
       it 'allows users who can manage the mediated page to submit the request ' do
         visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+
+        fill_in_required_fields
+
         first(:button, 'Send request').click
 
         expect(current_url).to eq successful_mediated_page_url(MediatedPage.last)
         expect_to_be_on_success_page
       end
+    end
+  end
+
+  def fill_in_required_fields
+    if Capybara.current_driver == :rack_test
+      date_input = find('#request_needed_date', visible: :all)
+      min_date = date_input['min']
+      date_input.set(min_date)
+    else
+      wait_for_ajax
+      min_date = find('#request_needed_date', visible: :all)['min']
+      page.execute_script("$('#request_needed_date').prop('value', '#{min_date}')")
     end
   end
 end

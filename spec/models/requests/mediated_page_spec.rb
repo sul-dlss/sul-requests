@@ -34,8 +34,7 @@ describe MediatedPage do
       end.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Destination is not a valid pickup library')
     end
 
-    # TODO: COVID-19 We are not validating needed_date currently
-    pending 'does not allow requests to be submitted without a needed_date when required' do
+    it 'does not allow requests to be submitted without a needed_date when required' do
       expect do
         described_class.create!(item_id: '1234',
                                 origin: 'SPEC-COLL',
@@ -48,7 +47,7 @@ describe MediatedPage do
       expect do
         described_class.create!(item_id: '1234',
                                 origin: 'RUMSEYMAP',
-                                origin_location: 'STACKS',
+                                origin_location: 'PAGE-MP',
                                 user: user,
                                 destination: 'RUMSEYMAP')
       end.not_to raise_error
@@ -200,8 +199,7 @@ describe MediatedPage do
       expect(subject).not_to be_requires_needed_date
     end
 
-    # TODO: COVID-19 We are not requiring needed_date currently
-    pending 'is true when otherwise' do
+    it 'is true when otherwise' do
       expect(subject).to be_requires_needed_date
     end
   end

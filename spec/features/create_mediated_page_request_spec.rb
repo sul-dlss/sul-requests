@@ -9,8 +9,7 @@ describe 'Creating a mediated page request' do
     allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
   end
 
-  # TODO: COVID-19
-  pending 'by an anonmyous user' do
+  describe 'by an anonmyous user' do
     it 'is possible to toggle between login and name-email form', js: true do
       visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
 
@@ -68,7 +67,8 @@ describe 'Creating a mediated page request' do
       expect_to_be_on_success_page
     end
 
-    it 'does not have library ID/name/email fields if the request is from HOPKINS' do
+    # TODO: Waiting for confirmation whether HOPKINS pages are mediated or not.
+    xit 'does not have library ID/name/email fields if the request is from HOPKINS' do
       visit new_mediated_page_path(item_id: '1234', origin: 'HOPKINS', origin_location: 'STACKS')
 
       expect(page).not_to have_link('I don\'t have a SUNet ID')
@@ -118,8 +118,7 @@ describe 'Creating a mediated page request' do
     end
   end
 
-  # TODO: COVID-19 We are not collecting needed_date currently
-  pending 'needed on' do
+  describe 'needed on' do
     before { stub_current_user(user) }
 
     it 'has a field for the planned date of visit' do
@@ -174,20 +173,19 @@ describe 'Creating a mediated page request' do
   end
 
   def fill_in_required_fields
-    # TODO: COVID-19 We are not collecting needed_date currently
-    # if Capybara.current_driver == :rack_test
-    #   date_input = find('#request_needed_date', visible: :hidden)
-    #   min_date = date_input['min']
-    #   date_input.set(min_date)
-    # else
-    #   wait_for_ajax
-    #   min_date = find('#request_needed_date', visible: :hidden)['min']
-    #   page.execute_script("$('#request_needed_date').prop('value', '#{min_date}')")
-    # end
+    if Capybara.current_driver == :rack_test
+      date_input = find('#request_needed_date', visible: :all)
+      min_date = date_input['min']
+      date_input.set(min_date)
+    else
+      wait_for_ajax
+      min_date = find('#request_needed_date', visible: :all)['min']
+      page.execute_script("$('#request_needed_date').prop('value', '#{min_date}')")
+    end
   end
 
   def click_remote_user_confirmation
-    within('.non-stanford-user-overlay') do
+    within('.confirmation-overlay') do
       click_button
     end
   end
