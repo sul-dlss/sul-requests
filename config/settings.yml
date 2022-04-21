@@ -304,6 +304,9 @@ libraries:
       location_slug: library-circulation
   RUMSEYMAP:
     label: David Rumsey Map Center
+    contact_info:
+      phone: (650) 498-8698
+      email: rumseymapcenter@stanford.edu
     hold_pseudopatron: HOLD@RM
     hours:
       library_slug: Rumsey
