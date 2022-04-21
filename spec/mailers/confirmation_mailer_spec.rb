@@ -75,7 +75,7 @@ describe ConfirmationMailer do
       let(:body) { mail.body.to_s }
 
       it 'has the title' do
-        expect(body).to include(request.item_title)
+        expect(body).to include("Title: #{request.item_title}")
       end
 
       it 'has holdings information' do
@@ -96,35 +96,10 @@ describe ConfirmationMailer do
           expect(body).to include 'Items approved for access will be ready when you visit'
           expect(body).to include I18n.l request.needed_date, format: :long
         end
-
-        xcontext 'extra note for SPEC-COLL' do
-          let(:request) do
-            create(
-              :mediated_page_with_holdings,
-              origin: 'SPEC-COLL',
-              barcodes: ['12345678'],
-              ad_hoc_items: ['ZZZ 123'],
-              user: user
-            )
-          end
-
-          it 'does not include the extra note' do
-            expect(body).not_to include 'Requests are typically approved 1-3 days before'
-          end
-        end
-
-        xcontext 'extra note for other libraries' do
-          let(:request) { create(:page_mp_mediated_page) }
-
-          it 'includes the extra note' do
-            expect(body).to include 'Requests are typically approved 1-3 days before'
-          end
-        end
       end
 
-      # TODO: COVID-19 Not currently linking to the requests status page
-      pending 'has a link to the status page' do
-        expect(body).to match(%r{Check the status of your request at .*/pages/#{request.id}/status\?token})
+      it 'has a link to the status page' do
+        expect(body).to match(%r{Check the status before your visit at .*/pages/#{request.id}/status\?token})
       end
 
       context 'with a webauth user' do
