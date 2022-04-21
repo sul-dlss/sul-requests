@@ -61,8 +61,7 @@ describe MediatedPagesController do
         )
       end
 
-      # TODO: COVID-19
-      pending 'is allowed if user name and email is filled out (via token)' do
+      it 'is allowed if user name and email is filled out (via token)' do
         put :create, params: {
           request: {
             item_id: '1234',
@@ -78,7 +77,7 @@ describe MediatedPagesController do
         expect(MediatedPage.last.user).to eq User.last
       end
 
-      pending 'is allowed if the library ID field is filled out' do
+      it 'is allowed if the library ID field is filled out' do
         put :create, params: {
           request: {
             item_id: '1234',

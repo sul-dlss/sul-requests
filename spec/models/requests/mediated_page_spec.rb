@@ -174,12 +174,10 @@ describe MediatedPage do
   end
 
   describe 'requestable' do
-    # TODO: COVID-19
-    pending { is_expected.to be_requestable_by_all }
-    pending { is_expected.to be_requestable_with_library_id }
-    pending { is_expected.not_to be_requestable_with_sunet_only }
-    it { is_expected.to be_requestable_with_sunet_only }
-    pending { is_expected.to be_requires_additional_user_validation }
+    it { is_expected.to be_requestable_by_all }
+    it { is_expected.to be_requestable_with_library_id }
+    it { is_expected.not_to be_requestable_with_sunet_only }
+    it { is_expected.to be_requires_additional_user_validation }
 
     describe 'for hopkins' do
       before { subject.origin = 'HOPKINS' }

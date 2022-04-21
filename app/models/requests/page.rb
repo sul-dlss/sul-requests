@@ -22,19 +22,20 @@ class Page < Request
     Honeybadger.notify("WARNING: Using default location rule for page #{id} (origin: #{origin}, origin_location: #{origin_location})")
   end
 
-  # TODO: COVID-19 Disabling for now while we re-open so that it falls back to the default behavior
-  # We can uncomment if we allow guests to request again (but not at particular libraries like MEDIA-MTXT)
-  # def requestable_by_all?
-  #   return false if REQUESTABLE_BY_SUNET_OR_LIBRARY_ONLY.include?(origin)
-  #
-  #   true
-  # end
-  #
-  # def requestable_with_library_id?
-  #   return true if REQUESTABLE_BY_SUNET_OR_LIBRARY_ONLY.include?(origin)
-  #
-  #   super
-  # end
+  # Allow requests with Name/Email
+  # TODO: Clarify method name, allows name/email
+  def requestable_by_all?
+    return false if REQUESTABLE_BY_SUNET_OR_LIBRARY_ONLY.include?(origin)
+
+    true
+  end
+
+  # Allow requests with Library ID
+  def requestable_with_library_id?
+    return true if REQUESTABLE_BY_SUNET_OR_LIBRARY_ONLY.include?(origin)
+
+    super
+  end
 
   private
 

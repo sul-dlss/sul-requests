@@ -17,8 +17,7 @@ describe 'Send Request Buttons' do
     end
   end
 
-  # TODO: COVID-19
-  pending 'by anonymous user', js: true do
+  describe 'by anonymous user', js: true do
     it 'is possible to toggle between login and name-email form' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
       click_link 'I don\'t have a SUNet ID'
@@ -65,7 +64,7 @@ describe 'Send Request Buttons' do
       expect(page).not_to have_css('a', text: 'I don\'t have a SUNet ID')
     end
 
-    pending 'has a link to request the physical item' do
+    it 'has a link to request the physical item' do
       expect(page).to have_css('a', text: 'Request the physical item')
     end
   end
@@ -79,14 +78,12 @@ describe 'Send Request Buttons' do
       expect(page).to have_css('button', text: /Send request.*login with SUNet ID/m)
     end
 
-    # TODO: COVID-19
-    pending 'allows to send requests via LibraryID' do
+    it 'allows to send requests via LibraryID' do
       click_link 'I don\'t have a SUNet ID'
       expect(page).to have_field('Library ID', type: 'text')
     end
 
-    # TODO: COVID-19
-    pending 'does not allow to send requests via Name and Email' do
+    it 'does not allow to send requests via Name and Email' do
       click_link 'I don\'t have a SUNet ID'
       expect(page).not_to have_field('Name', type: 'text')
       expect(page).not_to have_field('Email', type: 'email')
@@ -95,14 +92,16 @@ describe 'Send Request Buttons' do
 
   describe 'Mediated Pages' do
     describe 'for non-HOPKINS libraries' do
-      # TODO: COVID-19
-      pending 'allows users to submit without a SUNet ID' do
+      it 'allows users to submit without a SUNet ID' do
         visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
         expect(page).to have_css('a', text: 'I don\'t have a SUNet ID')
       end
     end
 
-    describe 'for HOPKINS' do
+    # TODO: CORY -- why is this in the mediated pages group when it's just a page?
+    # HOPKINS switched to non-mediate Pages?
+    # Should HOPKINS material be requestable without a SUNET ID?
+    pending 'for HOPKINS' do
       it 'only allows to send request via WebAuth login' do
         visit new_page_path(item_id: '1234', origin: 'HOPKINS', origin_location: 'STACKS')
         expect(page).to have_css('button', text: /Send request.*login with SUNet ID/)

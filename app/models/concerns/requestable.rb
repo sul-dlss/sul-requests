@@ -11,7 +11,7 @@ module Requestable
   end
 
   def requestable_with_sunet_only?
-    true
+    false
   end
 
   def validate_library_id?
