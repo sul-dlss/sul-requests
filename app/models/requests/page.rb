@@ -22,9 +22,7 @@ class Page < Request
     Honeybadger.notify("WARNING: Using default location rule for page #{id} (origin: #{origin}, origin_location: #{origin_location})")
   end
 
-  # Allow requests with Name/Email
-  # TODO: Clarify method name, allows name/email
-  def requestable_by_all?
+  def requestable_with_name_email?
     return false if REQUESTABLE_BY_SUNET_OR_LIBRARY_ONLY.include?(origin)
 
     true

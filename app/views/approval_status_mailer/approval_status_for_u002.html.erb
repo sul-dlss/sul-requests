@@ -20,7 +20,7 @@
       <%= @request.data_to_email.join('<br/>') %>
     </p>
 
-    <% if @request.requestable_by_all? %>
+    <% if @request.requestable_with_name_email? %>
       <p>
         Try your request again using just your name and email: <%= link_to("#{Settings.searchworks_link}/#{@request.item_id}", "#{Settings.searchworks_link}/#{@request.item_id}") %>
       </p>

@@ -56,7 +56,7 @@ class Ability
       end
 
       can :create, request_type do |request|
-        request_is_by_anonymous_user?(request) && request.requestable_by_all?
+        request_is_by_anonymous_user?(request) && request.requestable_with_name_email?
       end
 
       can :create, request_type do |request|

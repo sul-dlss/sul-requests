@@ -30,9 +30,7 @@ class MediatedPage < Request
     commentable_libraries.include?(origin)
   end
 
-  # Allow requests with Name/Email
-  # TODO: Clarify method name, allows name/email
-  def requestable_by_all?
+  def requestable_with_name_email?
     true
   end
 
