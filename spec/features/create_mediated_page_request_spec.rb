@@ -66,16 +66,6 @@ describe 'Creating a mediated page request' do
       expect(User.last.library_id).to eq '123456'
       expect_to_be_on_success_page
     end
-
-    # TODO: Waiting for confirmation whether HOPKINS pages are mediated or not.
-    xit 'does not have library ID/name/email fields if the request is from HOPKINS' do
-      visit new_mediated_page_path(item_id: '1234', origin: 'HOPKINS', origin_location: 'STACKS')
-
-      expect(page).not_to have_link('I don\'t have a SUNet ID')
-      expect(page).not_to have_field('Library ID')
-      expect(page).not_to have_field('Name')
-      expect(page).not_to have_field('Email')
-    end
   end
 
   describe 'by a webauth user' do

@@ -42,13 +42,6 @@ describe 'Remote user confirmation' do
 
       expect(page).not_to have_css('#remote-ip-check-overlay')
     end
-
-    # Hopkins isn't mediated now, and not getting remote IP checks
-    pending 'is not rendered for HOPKINS mediated pages' do
-      visit new_mediated_page_path(item_id: '1234', origin: 'HOPKINS', origin_location: 'STACKS')
-
-      expect(page).not_to have_css('#remote-ip-check-overlay')
-    end
   end
 
   describe 'confirmation buttons' do

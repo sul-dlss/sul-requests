@@ -33,19 +33,14 @@ class MediatedPage < Request
   # Allow requests with Name/Email
   # TODO: Clarify method name, allows name/email
   def requestable_by_all?
-    return false if origin == 'HOPKINS'
-
     true
   end
 
   def requestable_with_sunet_only?
-    return true if origin == 'HOPKINS'
-
     false
   end
 
   def requires_needed_date?
-    return false if origin == 'HOPKINS'
     return false if origin_location == 'PAGE-MP'
 
     true

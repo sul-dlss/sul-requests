@@ -53,6 +53,14 @@ describe 'Send Request Buttons' do
     end
   end
 
+  describe 'for HOPKINS' do
+    it 'allows to send request via WebAuth login or a SUNet ID' do
+      visit new_page_path(item_id: '1234', origin: 'HOPKINS', origin_location: 'STACKS')
+      expect(page).to have_css('button', text: /Send request.*login with SUNet ID/)
+      expect(page).to have_css('a', text: 'I don\'t have a SUNet ID')
+    end
+  end
+
   describe 'Scans' do
     before do
       stub_searchworks_api_json(build(:sal3_holdings))
@@ -91,22 +99,9 @@ describe 'Send Request Buttons' do
   end
 
   describe 'Mediated Pages' do
-    describe 'for non-HOPKINS libraries' do
-      it 'allows users to submit without a SUNet ID' do
-        visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
-        expect(page).to have_css('a', text: 'I don\'t have a SUNet ID')
-      end
-    end
-
-    # TODO: CORY -- why is this in the mediated pages group when it's just a page?
-    # HOPKINS switched to non-mediate Pages?
-    # Should HOPKINS material be requestable without a SUNET ID?
-    pending 'for HOPKINS' do
-      it 'only allows to send request via WebAuth login' do
-        visit new_page_path(item_id: '1234', origin: 'HOPKINS', origin_location: 'STACKS')
-        expect(page).to have_css('button', text: /Send request.*login with SUNet ID/)
-        expect(page).not_to have_css('a', text: 'I don\'t have a SUNet ID')
-      end
+    it 'allows users to submit without a SUNet ID' do
+      visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+      expect(page).to have_css('a', text: 'I don\'t have a SUNet ID')
     end
   end
 end

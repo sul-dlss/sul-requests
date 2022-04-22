@@ -100,12 +100,6 @@ describe Ability do
           it { is_expected.to be_able_to(:success, mediated_page) }
         end
       end
-
-      describe 'when the library is HOPKINS' do
-        before { mediated_page.origin = 'HOPKINS' }
-
-        it { is_expected.not_to be_able_to(:create, mediated_page) }
-      end
     end
 
     describe 'who fills out the library ID field' do
@@ -117,12 +111,6 @@ describe Ability do
       it { is_expected.to be_able_to(:create, page) }
       it { is_expected.to be_able_to(:create, mediated_page) }
       it { is_expected.to be_able_to(:create, mediated_page) }
-
-      describe 'when the library is HOPKINS' do
-        before { mediated_page.origin = 'HOPKINS' }
-
-        it { is_expected.not_to be_able_to(:create, mediated_page) }
-      end
     end
   end
 

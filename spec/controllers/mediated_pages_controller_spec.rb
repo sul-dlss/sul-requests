@@ -94,36 +94,6 @@ describe MediatedPagesController do
         expect(MediatedPage.last.user).to eq User.last
       end
 
-      describe 'for HOPKINS' do
-        it 'is not by library ID' do
-          expect do
-            put :create, params: {
-              request: {
-                item_id: '1234',
-                origin: 'HOPKINS',
-                origin_location: 'STACKS',
-                destination: 'GREEN',
-                user_attributes: { library_id: '12345' }
-              }
-            }
-          end.to raise_error(CanCan::AccessDenied)
-        end
-
-        it 'is not by name and email' do
-          expect do
-            put :create, params: {
-              request: {
-                item_id: '1234',
-                origin: 'HOPKINS',
-                origin_location: 'STACKS',
-                destination: 'GREEN',
-                user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }
-              }
-            }
-          end.to raise_error(CanCan::AccessDenied)
-        end
-      end
-
       describe 'via get' do
         it 'raises an error' do
           expect do
