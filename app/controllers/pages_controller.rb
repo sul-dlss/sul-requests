@@ -12,6 +12,16 @@ class PagesController < RequestsController
     raise UnpageableItemError unless current_request.pageable?
   end
 
+  def validate_patron_standing
+    return unless Settings.features.validate_patron_standing
+    return unless current_user.patron.blocked?
+
+    redirect_to polymorphic_path(
+      [:blocked, current_request],
+      request_context_params.merge(origin: current_request.origin)
+    )
+  end
+
   class UnpageableItemError < StandardError
   end
 end

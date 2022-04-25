@@ -17,6 +17,16 @@ class HoldRecallsController < RequestsController
     raise NotHoldRecallableError unless current_request.hold_recallable?
   end
 
+  def validate_patron_standing
+    return unless Settings.features.validate_patron_standing
+    return unless current_user.patron.blocked?
+
+    redirect_to polymorphic_path(
+      [:blocked, current_request],
+      request_context_params.merge(origin: current_request.origin)
+    )
+  end
+
   class NotHoldRecallableError < StandardError
   end
 end

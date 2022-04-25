@@ -29,6 +29,8 @@ class MediatedPagesController < RequestsController
     )
   end
 
+  def validate_patron_standing; end
+
   def current_user_affiliated_or_grad_student?
     valid_affiliation = current_user.affiliation.any? { |aff| Settings.mediated_paging_eligible_groups.include?(aff) }
     grad_student = current_user.affiliation.include?('stanford:student') && current_user.student_type.include?('graduate')

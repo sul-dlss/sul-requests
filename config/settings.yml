@@ -127,6 +127,7 @@ features:
   scan_service: true
   special_spec_note: true
   validate_eligibility: true
+  validate_patron_standing: true
 
 background_jobs:
   enabled: false

@@ -65,7 +65,11 @@ class Patron
   end
 
   def good_standing?
-    ['DELINQUENT', 'OK'].include?(standing)
+    %w[DELINQUENT OK].include?(standing)
+  end
+
+  def blocked?
+    %w[BLOCKED BARRED EXPIRED].include?(standing)
   end
 
   def first_name
