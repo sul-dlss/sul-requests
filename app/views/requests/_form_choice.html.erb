@@ -9,7 +9,9 @@
       <% elsif current_request.scannable_only? %>
         <p>This item is for in-library use and not available for Request & pickup.</p>
       <% else %>
-        <p>Stanford faculty, staff, students, post-docs, graduate students, and fellows with a current Stanford ID card and SUNet ID. Stanford Visiting Scholars and Courtesy ID card holders with a current Stanford ID card and SUNet ID are also eligible.</p>
+        <% if Settings.features.validate_eligibility %>
+          <p>Stanford faculty, staff, students, post-docs, graduate students, and fellows with a current Stanford ID card and SUNet ID. Stanford Visiting Scholars and Courtesy ID card holders with a current Stanford ID card and SUNet ID are also eligible.</p>
+        <% end %>
         <% if Settings.features.estimate_delivery %>
           <dl>
             <dt>Earliest delivery</dt>
