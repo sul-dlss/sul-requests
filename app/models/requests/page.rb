@@ -4,7 +4,7 @@
 #  Request class for making simple page requests
 ###
 class Page < Request
-  REQUESTABLE_BY_SUNET_OR_LIBRARY_ONLY = ['MEDIA-MTXT'].freeze
+  REQUESTABLE_BY_SUNET_OR_LIBRARY_ONLY = ['MEDIA-MTXT', 'BUSINESS'].freeze
   validate :page_validator
   validates :destination, presence: true
   validate :destination_is_a_pickup_library
