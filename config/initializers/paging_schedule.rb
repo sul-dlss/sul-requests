@@ -218,4 +218,13 @@ PagingSchedule.configure do
     will_arrive after: '12:00pm'
     business_days_later 2
   end
+
+  when_paging from: 'ART', to: 'ART', before: '12:00pm' do
+    will_arrive after: '2:00pm'
+    business_days_later 0
+  end
+  when_paging from: 'ART', to: 'ART', after: '12:00pm' do
+    will_arrive after: '10:00am'
+    business_days_later 1
+  end
 end
