@@ -61,8 +61,7 @@ describe MediatedPagesController do
         )
       end
 
-      # TODO: COVID-19
-      pending 'is allowed if user name and email is filled out (via token)' do
+      it 'is allowed if user name and email is filled out (via token)' do
         put :create, params: {
           request: {
             item_id: '1234',
@@ -78,7 +77,7 @@ describe MediatedPagesController do
         expect(MediatedPage.last.user).to eq User.last
       end
 
-      pending 'is allowed if the library ID field is filled out' do
+      it 'is allowed if the library ID field is filled out' do
         put :create, params: {
           request: {
             item_id: '1234',
@@ -93,36 +92,6 @@ describe MediatedPagesController do
         expect(response.location).to match(/#{successful_mediated_page_url(MediatedPage.last)}\?token=/)
         expect(User.last.library_id).to eq '12345'
         expect(MediatedPage.last.user).to eq User.last
-      end
-
-      describe 'for HOPKINS' do
-        it 'is not by library ID' do
-          expect do
-            put :create, params: {
-              request: {
-                item_id: '1234',
-                origin: 'HOPKINS',
-                origin_location: 'STACKS',
-                destination: 'GREEN',
-                user_attributes: { library_id: '12345' }
-              }
-            }
-          end.to raise_error(CanCan::AccessDenied)
-        end
-
-        it 'is not by name and email' do
-          expect do
-            put :create, params: {
-              request: {
-                item_id: '1234',
-                origin: 'HOPKINS',
-                origin_location: 'STACKS',
-                destination: 'GREEN',
-                user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }
-              }
-            }
-          end.to raise_error(CanCan::AccessDenied)
-        end
       end
 
       describe 'via get' do

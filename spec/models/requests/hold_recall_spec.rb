@@ -4,11 +4,9 @@ require 'rails_helper'
 
 describe HoldRecall do
   describe 'requestable' do
-    it { is_expected.not_to be_requestable_by_all }
-    # TODO: COVID-19
-    pending { is_expected.to be_requestable_with_library_id }
-    pending { is_expected.not_to be_requestable_with_sunet_only }
-    it { is_expected.to be_requestable_with_sunet_only }
+    it { is_expected.not_to be_requestable_with_name_email }
+    it { is_expected.to be_requestable_with_library_id }
+    it { is_expected.not_to be_requestable_with_sunet_only }
   end
 
   describe 'item_commentable?' do
@@ -34,7 +32,14 @@ describe HoldRecall do
 
   describe 'send_approval_status!' do
     describe 'for library id users' do
-      let(:subject) { create(:hold_recall, user: create(:library_id_user)) }
+      let(:user) { create(:library_id_user) }
+      let(:subject) { create(:hold_recall, user: user) }
+
+      before do
+        allow(Patron).to receive(:find_by).with(library_id: user.library_id).at_least(:once).and_return(
+          double(exists?: true, email: nil)
+        )
+      end
 
       it 'does not send an approval status email' do
         expect do

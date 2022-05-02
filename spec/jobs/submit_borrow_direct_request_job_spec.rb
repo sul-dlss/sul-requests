@@ -9,6 +9,9 @@ describe SubmitBorrowDirectRequestJob, type: :job do
 
   before do
     Sidekiq.logger.level = Logger::UNKNOWN
+    allow(Patron).to receive(:find_by).with(library_id: user.library_id).at_least(:once).and_return(
+      double(exists?: true, email: nil)
+    )
     allow(request).to receive(:searchworks_item).and_return(sw_item)
   end
 

@@ -228,11 +228,9 @@ describe Request do
   end
 
   describe 'requestable' do
-    it { is_expected.not_to be_requestable_by_all }
+    it { is_expected.not_to be_requestable_with_name_email }
     it { is_expected.not_to be_requestable_with_library_id }
-    # TODO: COVID-19
-    pending { is_expected.not_to be_requestable_with_sunet_only }
-    it { is_expected.to be_requestable_with_sunet_only }
+    it { is_expected.not_to be_requestable_with_sunet_only }
     it { is_expected.not_to be_requires_additional_user_validation }
   end
 
@@ -611,13 +609,8 @@ describe Request do
   end
 
   describe '#check_remote_ip?' do
-    it 'mediated pages (that are not Hopkins)' do
+    it 'mediated pages' do
       expect(create(:mediated_page).check_remote_ip?).to be true
-    end
-
-    # Hopkins isn't mediated now, and not getting remote IP checks
-    pending 'Hopkins mediated page' do
-      expect(create(:mediated_page, origin: 'HOPKINS', destination: 'GREEN').check_remote_ip?).to be false
     end
 
     it 'non-mediated pages are false' do

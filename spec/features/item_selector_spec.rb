@@ -411,12 +411,11 @@ describe 'Item Selector' do
   end
 
   def fill_in_required_date
-    # TODO: COVID-19 We are not collecting needed_date currently
-    # wait_for_ajax # We need the hours API to respond before we can know what the min-date is
+    wait_for_ajax # We need the hours API to respond before we can know what the min-date is
 
-    # min_date = find('#request_needed_date', visible: :hidden)['min']
-    # min_date_to_s = Time.zone.parse(min_date).strftime('%D')
-    # page.execute_script("$('#request_needed_date').prop('value', '#{min_date}')")
-    # page.execute_script("$('.ws-date').prop('value', '#{min_date_to_s}')")
+    min_date = find('#request_needed_date', visible: :hidden)['min']
+    min_date_to_s = Time.zone.parse(min_date).strftime('%D')
+    page.execute_script("$('#request_needed_date').prop('value', '#{min_date}')")
+    page.execute_script("$('.ws-date').prop('value', '#{min_date_to_s}')")
   end
 end

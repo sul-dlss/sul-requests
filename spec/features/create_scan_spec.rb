@@ -43,7 +43,7 @@ describe 'Create Scan Request' do
   end
 
   describe 'by non webauth user' do
-    pending 'provides a link to page the item' do
+    it 'provides a link to page the item' do
       visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
 
       expect(page).to have_link 'Request the physical item'

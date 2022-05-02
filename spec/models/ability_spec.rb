@@ -84,9 +84,8 @@ describe Ability do
       let(:page) { build(:page, user: user) }
       let(:mediated_page) { build(:mediated_page, user: user) }
 
-      # TODO: COVID-19
-      pending { is_expected.to be_able_to(:create, page) }
-      pending { is_expected.to be_able_to(:create, mediated_page) }
+      it { is_expected.to be_able_to(:create, page) }
+      it { is_expected.to be_able_to(:create, mediated_page) }
 
       describe 'and views a success page with a token' do
         describe 'for a page' do
@@ -101,12 +100,6 @@ describe Ability do
           it { is_expected.to be_able_to(:success, mediated_page) }
         end
       end
-
-      describe 'when the library is HOPKINS' do
-        before { mediated_page.origin = 'HOPKINS' }
-
-        it { is_expected.not_to be_able_to(:create, mediated_page) }
-      end
     end
 
     describe 'who fills out the library ID field' do
@@ -115,16 +108,9 @@ describe Ability do
       let(:mediated_page) { build(:mediated_page, user: user) }
       let(:scan) { build(:scan, user: user) }
 
-      # TODO: COVID-19
-      pending { is_expected.to be_able_to(:create, page) }
-      pending { is_expected.to be_able_to(:create, mediated_page) }
-      pending { is_expected.to be_able_to(:create, mediated_page) }
-
-      describe 'when the library is HOPKINS' do
-        before { mediated_page.origin = 'HOPKINS' }
-
-        it { is_expected.not_to be_able_to(:create, mediated_page) }
-      end
+      it { is_expected.to be_able_to(:create, page) }
+      it { is_expected.to be_able_to(:create, mediated_page) }
+      it { is_expected.to be_able_to(:create, mediated_page) }
     end
   end
 

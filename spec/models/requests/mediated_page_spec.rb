@@ -34,8 +34,7 @@ describe MediatedPage do
       end.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Destination is not a valid pickup library')
     end
 
-    # TODO: COVID-19 We are not validating needed_date currently
-    pending 'does not allow requests to be submitted without a needed_date when required' do
+    it 'does not allow requests to be submitted without a needed_date when required' do
       expect do
         described_class.create!(item_id: '1234',
                                 origin: 'SPEC-COLL',
@@ -48,7 +47,7 @@ describe MediatedPage do
       expect do
         described_class.create!(item_id: '1234',
                                 origin: 'RUMSEYMAP',
-                                origin_location: 'STACKS',
+                                origin_location: 'PAGE-MP',
                                 user: user,
                                 destination: 'RUMSEYMAP')
       end.not_to raise_error
@@ -174,36 +173,19 @@ describe MediatedPage do
   end
 
   describe 'requestable' do
-    # TODO: COVID-19
-    pending { is_expected.to be_requestable_by_all }
-    pending { is_expected.to be_requestable_with_library_id }
-    pending { is_expected.not_to be_requestable_with_sunet_only }
-    it { is_expected.to be_requestable_with_sunet_only }
-    pending { is_expected.to be_requires_additional_user_validation }
-
-    describe 'for hopkins' do
-      before { subject.origin = 'HOPKINS' }
-
-      it { is_expected.not_to be_requestable_by_all }
-      it { is_expected.not_to be_requestable_with_library_id }
-      it { is_expected.to be_requestable_with_sunet_only }
-      it { is_expected.not_to be_requires_additional_user_validation }
-    end
+    it { is_expected.to be_requestable_with_name_email }
+    it { is_expected.to be_requestable_with_library_id }
+    it { is_expected.not_to be_requestable_with_sunet_only }
+    it { is_expected.to be_requires_additional_user_validation }
   end
 
   describe '#requires_needed_date?' do
-    it 'is false when the library is HOPKINS' do
-      subject.origin = 'HOPKINS'
-      expect(subject).not_to be_requires_needed_date
-    end
-
     it 'is false when the origin location is PAGE-MP' do
       subject.origin_location = 'PAGE-MP'
       expect(subject).not_to be_requires_needed_date
     end
 
-    # TODO: COVID-19 We are not requiring needed_date currently
-    pending 'is true when otherwise' do
+    it 'is true when otherwise' do
       expect(subject).to be_requires_needed_date
     end
   end

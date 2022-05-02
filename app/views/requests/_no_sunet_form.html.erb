@@ -3,12 +3,12 @@
     <%= f.fields_for :user, (current_request.user unless current_request.user && current_request.user.webauth_user?) || User.new do |uf| %>
       <% if f.object.requestable_with_library_id? %>
         <div class="form-group <%= "has-error" if f.object.library_id_error? %>">
-          <%= uf.label :library_id, 'Stanford Library ID', class: "control-label #{label_column_class} #{'required' unless f.object.requestable_by_all?}" %>
+          <%= uf.label :library_id, 'Stanford Library ID', class: "control-label #{label_column_class} #{'required' unless f.object.requestable_with_name_email?}" %>
           <div class='<%= content_column_class %>'>
             <%= uf.text_field_without_bootstrap(
                   :library_id,
                   class: 'form-control',
-                  minlength: (10 unless f.object.requestable_by_all?),
+                  minlength: (10 unless f.object.requestable_with_name_email?),
                   maxlength: 10,
                   'aria-describedby' => 'library-id-help',
                   data: { behavior: 'single-user-field' },
@@ -24,7 +24,7 @@
             <% else %>
               <p id="library-id-help" class="help-block">
                 ID is a 10-digit number.
-                <% if f.object.requestable_by_all? %>
+                <% if f.object.requestable_with_name_email? %>
                   It's optional, but may help you track your request in My Library Account.
                 <% end %>
               </p>
@@ -32,7 +32,7 @@
           </div>
         </div>
       <% end  %>
-      <% if f.object.requestable_by_all? %>
+      <% if f.object.requestable_with_name_email? %>
         <%= uf.text_field(
               :name,
               label_class: 'required',

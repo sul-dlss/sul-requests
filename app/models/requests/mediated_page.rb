@@ -30,28 +30,19 @@ class MediatedPage < Request
     commentable_libraries.include?(origin)
   end
 
-  # TODO: COVID-19 Disabling for now while we re-open so that it falls back to the default behavior
-  # We can uncomment if we allow guests to request again (but not at particular libraries like Hopkins)
-  # def requestable_by_all?
-  #   return false if origin == 'HOPKINS'
-  #
-  #   true
-  # end
-  #
-  # def requestable_with_sunet_only?
-  #   return true if origin == 'HOPKINS'
-  #
-  #   false
-  # end
+  def requestable_with_name_email?
+    true
+  end
 
-  # TODO: COVID-19 Disabling for now while we re-open so that it falls back to the default behavior
-  # We can uncomment if we want to start collecting the needed_date again.
-  # def requires_needed_date?
-  #   return false if origin == 'HOPKINS'
-  #   return false if origin_location == 'PAGE-MP'
-  #
-  #   true
-  # end
+  def requestable_with_sunet_only?
+    false
+  end
+
+  def requires_needed_date?
+    return false if origin_location == 'PAGE-MP'
+
+    true
+  end
 
   def submit!
     # creating a mediated page should not submit the request to Symphony

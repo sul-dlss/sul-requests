@@ -37,19 +37,17 @@ describe Page do
     context 'Media Microtext' do
       before { subject.origin = 'MEDIA-MTXT' }
 
-      it { is_expected.not_to be_requestable_by_all }
-      pending { is_expected.to be_requestable_with_library_id }
-      pending { is_expected.not_to be_requestable_with_sunet_only }
-      it { is_expected.to be_requestable_with_sunet_only }
-      pending { is_expected.to be_requires_additional_user_validation }
+      it { is_expected.not_to be_requestable_with_name_email }
+      it { is_expected.to be_requestable_with_library_id }
+      it { is_expected.not_to be_requestable_with_sunet_only }
+      it { is_expected.to be_requires_additional_user_validation }
     end
 
     context 'other libraries' do
-      pending { is_expected.to be_requestable_by_all }
-      pending { is_expected.to be_requestable_with_library_id }
-      pending { is_expected.not_to be_requestable_with_sunet_only }
-      it { is_expected.to be_requestable_with_sunet_only }
-      pending { is_expected.to be_requires_additional_user_validation }
+      it { is_expected.to be_requestable_with_name_email }
+      it { is_expected.to be_requestable_with_library_id }
+      it { is_expected.not_to be_requestable_with_sunet_only }
+      it { is_expected.to be_requires_additional_user_validation }
     end
   end
 
@@ -57,8 +55,7 @@ describe Page do
     expect(subject.type).to eq 'Page'
   end
 
-  # TODO: COVID-19 We can uncomment this when we are allowing requests with a library ID again
-  pending 'library id validation', allow_apis: true do
+  describe 'library id validation', allow_apis: true do
     let(:user) { create(:library_id_user) }
     let(:subject) do
       described_class.create(
@@ -71,7 +68,7 @@ describe Page do
     end
 
     before do
-      expect(SymphonyUserNameRequest).to receive(:new).with(libid: user.library_id).at_least(:once).and_return(
+      expect(Patron).to receive(:find_by).with(library_id: user.library_id).at_least(:once).and_return(
         double(exists?: user_exists)
       )
     end
