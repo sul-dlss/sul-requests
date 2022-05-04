@@ -33,7 +33,7 @@ describe HoldRecall do
       it 'does not send an approval status email' do
         expect do
           subject.send_approval_status!
-        end.not_to change { ApprovalStatusMailer.deliveries.count }
+        end.not_to change { RequestStatusMailer.deliveries.count }
       end
     end
 
@@ -43,7 +43,7 @@ describe HoldRecall do
       it 'sends an approval status email' do
         expect do
           subject.send_approval_status!
-        end.to change { ApprovalStatusMailer.deliveries.count }.by(1)
+        end.to change { RequestStatusMailer.deliveries.count }.by(1)
       end
     end
   end

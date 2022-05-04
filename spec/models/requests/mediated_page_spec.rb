@@ -224,7 +224,7 @@ describe MediatedPage do
     it 'returns true' do
       expect do
         subject.send_approval_status!
-      end.not_to change { ApprovalStatusMailer.deliveries.count }
+      end.not_to change { RequestStatusMailer.deliveries.count }
       expect(subject.send_approval_status!).to be true
     end
   end

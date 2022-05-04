@@ -96,7 +96,7 @@ class MediatedPage < Request
   private
 
   def send_confirmation!
-    ConfirmationMailer.request_confirmation(self).deliver_later if notification_email_address.present?
+    RequestStatusMailer.request_status_for_mediatedpage(self).deliver_later if notification_email_address.present?
   end
 
   def needed_date_is_required

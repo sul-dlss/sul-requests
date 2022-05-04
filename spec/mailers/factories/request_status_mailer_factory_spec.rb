@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe ApprovalStatusMailerFactory do
+describe RequestStatusMailerFactory do
   subject(:mailer) { described_class.for(request) }
 
   let(:user) { create(:anon_user) }

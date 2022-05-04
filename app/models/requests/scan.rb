@@ -39,6 +39,10 @@ class Scan < Request
     IlbMailer.ilb_notification(self).deliver_later
   end
 
+  def send_approval_status!
+    RequestStatusMailer.request_status_for_scan(self).deliver_later if notification_email_address.present?
+  end
+
   private
 
   def requested_item_is_not_temporary_access

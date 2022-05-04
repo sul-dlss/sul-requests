@@ -73,7 +73,13 @@ en:
       extra_note: ''
     spec_coll:
       extra_note: ''
-  approval_status_email:
+  request_status_email:
+    mediated_page:
+      SPEC-COLL:
+        subject:
+          success: "Request received: \"%{title}\""
+      subject:
+        success: 'Request is pending approval ("%{title}")'
     request:
       subject:
         success: "We received your request for \"%{title}\""
@@ -84,13 +90,7 @@ en:
         code_U004: 'Your request could not be processed because your user privileges have expired.'
 
   confirmation_email:
-    request:
-      subject: 'Request is pending approval ("%{title}")'
-    scan:
-      subject: "Scan to PDF requested (\"%{title}\")"
     mediated_page:
-      SPEC-COLL:
-        subject: "Request received: \"%{title}\""
       mediator_subject: 'New request needs mediation'
   date:
     formats:

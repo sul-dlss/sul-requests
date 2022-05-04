@@ -62,7 +62,7 @@ class Request < ActiveRecord::Base
   end
 
   def send_approval_status!
-    ApprovalStatusMailerFactory.for(self).deliver_later if notification_email_address.present?
+    RequestStatusMailerFactory.for(self).deliver_later if notification_email_address.present?
   end
 
   def delegate_request!

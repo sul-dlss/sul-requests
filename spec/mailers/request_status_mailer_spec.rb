@@ -2,15 +2,15 @@
 
 require 'rails_helper'
 
-describe ApprovalStatusMailer do
-  describe '#request_approval_status' do
+describe RequestStatusMailer do
+  describe '#request_status' do
     let(:user) { build(:non_webauth_user) }
     let(:request) { create(:page, user: user) }
-    let(:mailer_method) { :approval_status_for_page }
+    let(:mailer_method) { :request_status_for_page }
     let(:mail) { described_class.send(mailer_method, request) }
 
-    describe '#approval_status_for_u002' do
-      let(:mailer_method) { :approval_status_for_u002 }
+    describe '#request_status_for_u002' do
+      let(:mailer_method) { :request_status_for_u002 }
 
       before { user.library_id = 'ABC123' }
 
@@ -21,8 +21,8 @@ describe ApprovalStatusMailer do
       end
     end
 
-    describe '#approval_status_for_u003' do
-      let(:mailer_method) { :approval_status_for_u003 }
+    describe '#request_status_for_u003' do
+      let(:mailer_method) { :request_status_for_u003 }
 
       it 'renders the correct email' do
         expect(mail.body.to_s).to include(
@@ -30,8 +30,8 @@ describe ApprovalStatusMailer do
         )
       end
 
-      describe '#approval_status_for_u004' do
-        let(:mailer_method) { :approval_status_for_u004 }
+      describe '#request_status_for_u004' do
+        let(:mailer_method) { :request_status_for_u004 }
 
         it 'renders the correct email' do
           expect(mail.body.to_s).to include(
@@ -61,8 +61,8 @@ describe ApprovalStatusMailer do
       end
     end
 
-    describe '#approval_status_for_holdrecall' do
-      let(:mailer_method) { :approval_status_for_holdrecall }
+    describe '#request_status_for_holdrecall' do
+      let(:mailer_method) { :request_status_for_holdrecall }
       let(:request) { create(:hold_recall, user: user) }
 
       it 'renders the correct email' do
@@ -72,7 +72,7 @@ describe ApprovalStatusMailer do
       end
     end
 
-    describe '#approval_status_for_page' do
+    describe '#request_status_for_page' do
       let(:request) { create(:page, user: user) }
 
       it 'renders the correct email' do
@@ -82,8 +82,8 @@ describe ApprovalStatusMailer do
       end
     end
 
-    describe '#approval_status_for_scan' do
-      let(:mailer_method) { :approval_status_for_scan }
+    describe '#request_status_for_scan' do
+      let(:mailer_method) { :request_status_for_scan }
       let(:request) { create(:scan, user: user, page_range: '1-2', section_title: 'Chapter2') }
 
       it 'renders the correct email' do
@@ -96,6 +96,79 @@ describe ApprovalStatusMailer do
         expect(mail.body.to_s).not_to include(
           '&lt;br/&gt;'
         )
+      end
+    end
+
+    describe '#request_status_from_mediatedpage' do
+      let(:mailer_method) { :request_status_for_mediatedpage }
+
+      describe 'from' do
+        describe 'origin specific' do
+          let(:request) { create(:mediated_page, user: user) }
+
+          it 'is the configured from address for the origin' do
+            expect(mail.from).to eq ['specialcollections@stanford.edu']
+          end
+        end
+
+        describe 'location specific' do
+          let(:request) { create(:page_mp_mediated_page, user: user) }
+
+          it 'is the configured from address for the origin' do
+            expect(mail.from).to eq ['brannerlibrary@stanford.edu']
+          end
+        end
+      end
+
+      describe 'subject' do
+        describe 'for mediated pages from SPEC-COLL' do
+          let(:request) { create(:mediated_page, origin: 'SPEC-COLL', user: user) }
+
+          it 'is custom' do
+            expect(mail.subject).to eq "Request received: \"#{request.item_title}\""
+          end
+        end
+
+        describe 'for other requests' do
+          let(:request) { create(:page_mp_mediated_page, user: user) }
+
+          it 'is the default' do
+            expect(mail.subject).to eq "Request is pending approval (\"#{request.item_title}\")"
+          end
+        end
+      end
+
+      describe 'body' do
+        let(:request) { create(:page_with_holdings, barcodes: ['3610512345678'], ad_hoc_items: ['ZZZ 123'], user: user) }
+        let(:body) { mail.body.to_s }
+
+        it 'has the title' do
+          expect(body).to include("Title: #{request.item_title}")
+        end
+
+        it 'has holdings information' do
+          expect(body).to include('Item(s) requested:')
+          expect(body).to include('ABC 123')
+        end
+
+        it 'has ad hoc items' do
+          expect(body).to include('ZZZ 123')
+        end
+
+        context 'for a mediated page' do
+          let(:request) do
+            create(:mediated_page_with_holdings, barcodes: ['12345678'], ad_hoc_items: ['ZZZ 123'], user: user)
+          end
+
+          it 'has a planned date of visit' do
+            expect(body).to include 'Items approved for access will be ready when you visit'
+            expect(body).to include I18n.l request.needed_date, format: :long
+          end
+        end
+
+        it 'has a link to the status page' do
+          expect(body).to match(%r{Check the status before your visit at .*/pages/#{request.id}/status\?token})
+        end
       end
     end
 

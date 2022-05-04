@@ -124,22 +124,6 @@ describe ScansController do
       it 'redirects to the scan success page after a successful illiad request' do
         expect(SubmitScanRequestJob).to have_received(:perform_later).with(Scan.last)
       end
-
-      it 'does not send a confirmation email' do
-        stub_searchworks_api_json(build(:sal3_holdings))
-        stub_symphony_response(build(:symphony_page_with_single_item))
-        expect do
-          post :create, params: {
-            request: {
-              item_id: '12345',
-              origin: 'SAL3',
-              origin_location: 'STACKS',
-              barcodes: ['12345678'],
-              section_title: 'Some really important chapter'
-            }
-          }
-        end.not_to change { ConfirmationMailer.deliveries.count }
-      end
     end
 
     describe 'by ineligible users' do
