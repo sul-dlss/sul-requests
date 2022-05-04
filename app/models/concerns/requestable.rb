@@ -10,10 +10,6 @@ module Requestable
     requestable_with_name_email? || false
   end
 
-  def requestable_with_sunet_only?
-    false
-  end
-
   def validate_library_id?
     requestable_with_library_id? && !requestable_with_name_email?
   end

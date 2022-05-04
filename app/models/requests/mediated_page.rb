@@ -32,10 +32,6 @@ class MediatedPage < Request
     true
   end
 
-  def requestable_with_sunet_only?
-    false
-  end
-
   def requires_needed_date?
     return false if origin_location == 'PAGE-MP'
 
