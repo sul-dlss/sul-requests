@@ -154,7 +154,7 @@ describe ApprovalStatusMailer do
 
       describe 'failure' do
         before do
-          allow(request.symphony_response).to receive(:success?).and_return false
+          allow(request.symphony_response).to receive(:all_successful?).and_return false
         end
 
         it '"Attention needed ... problem with your request"' do

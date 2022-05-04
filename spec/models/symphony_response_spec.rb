@@ -18,25 +18,37 @@ describe SymphonyResponse do
       expect(subject.success?('12345678901234')).to be true
       expect(subject.success?('12345678901234z')).to be false
     end
+  end
 
-    it 'is true when there is a usererr_code' do
-      allow(subject).to receive_messages(usererr_code: 'abc')
-      expect(subject).not_to be_success
+  describe '#all_successful?' do
+    context 'when all the items were requested successfully' do
+      subject { described_class.new(build(:symphony_page_with_multiple_items)) }
+
+      it 'is true' do
+        expect(subject.all_successful?).to be true
+      end
     end
 
-    it 'determines the success of all items when a barcode has not been supplied' do
-      expect(subject).not_to be_success
+    context 'when some of the items fails' do
+      it 'is false' do
+        expect(subject.all_successful?).to be false
+      end
     end
   end
 
-  describe 'mixed_status?' do
-    it 'returns true when there are both successful and unsuccessful items' do
-      expect(subject.mixed_status?).to be true
+  describe '#all_errored?' do
+    context 'when all the items were requested successfully' do
+      subject { described_class.new(build(:symphony_page_with_multiple_items)) }
+
+      it 'is false' do
+        expect(subject.all_errored?).to be false
+      end
     end
 
-    it 'returns false when there is not a mix of items' do
-      subject = described_class.new(build(:symphony_page_with_multiple_items))
-      expect(subject.mixed_status?).to be false
+    context 'when only some of the items failed' do
+      it 'is false' do
+        expect(subject.all_errored?).to be false
+      end
     end
   end
 
@@ -53,16 +65,6 @@ describe SymphonyResponse do
     it 'returns false when all items are successful' do
       subject = described_class.new(build(:symphony_page_with_multiple_items))
       expect(subject.any_error?).to be false
-    end
-  end
-
-  describe 'item_failed?' do
-    it 'is false when the item was successful' do
-      expect(subject.item_failed?('12345678901234')).to be false
-    end
-
-    it 'is true when the item has a non-successful status code' do
-      expect(subject.item_failed?('12345678901234z')).to be true
     end
   end
 end

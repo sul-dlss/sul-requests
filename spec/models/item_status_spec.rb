@@ -134,7 +134,7 @@ describe ItemStatus do
     end
 
     context 'symphony errors' do
-      let(:request) { create(:request_with_symphony_errors) }
+      let(:request) { create(:mediated_page_with_symphony_errors) }
       let(:barcode) { '12345678901234' }
 
       it 'returns user level error codes' do
