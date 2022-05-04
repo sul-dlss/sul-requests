@@ -7,11 +7,6 @@
 class RequestStatusMailer < ApplicationMailer
   attr_accessor :custom_from_address
 
-  # User ID does not exist
-  def request_status_for_u002(request)
-    request_status(request)
-  end
-
   # User is blocked
   def request_status_for_u003(request)
     request_status(request)

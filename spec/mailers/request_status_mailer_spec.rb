@@ -9,18 +9,6 @@ describe RequestStatusMailer do
     let(:mailer_method) { :request_status_for_page }
     let(:mail) { described_class.send(mailer_method, request) }
 
-    describe '#request_status_for_u002' do
-      let(:mailer_method) { :request_status_for_u002 }
-
-      before { user.library_id = 'ABC123' }
-
-      it 'renders the correct email' do
-        expect(mail.body.to_s).to include(
-          'Stanford Library ID you entered (ABC123) was not found in our system'
-        )
-      end
-    end
-
     describe '#request_status_for_u003' do
       let(:mailer_method) { :request_status_for_u003 }
 
