@@ -134,13 +134,12 @@ en:
       loan_desk_note: This item is currently being held for use by another patron. We'll add you to the request queue but we can't estimate the delivery date.
       missing_note: We're currently searching for this missing item. We'll add you to the request queue but we can't estimate the delivery date.
     success:
-
       email_notification:
         proxy: "We'll send an email to you at <strong>%{email}</strong> and to the designated notification address when processing is complete."
         default: "We'll send you an email at <strong>%{email}</strong> when processing is complete."
       synchronous_email_notification:
-        proxy: "(We've sent a copy of this request to your email and to the designated notification address.)"
-        default: "(We've sent a copy of this request to your email.)"
+        proxy: "(We'll send a copy of this request to your email and to the designated notification address.)"
+        default: "(We'll send a copy of this request to your email.)"
   status_text:
     paged: Paged
     hold: Item is on-site - hold for patron
