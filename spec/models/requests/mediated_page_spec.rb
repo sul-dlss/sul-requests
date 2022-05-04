@@ -191,31 +191,29 @@ describe MediatedPage do
   end
 
   describe '#submit!' do
-    it 'does not submit the request to Symphony' do
+    it 'does not immediately submit the request to Symphony' do
       expect(SubmitSymphonyRequestJob).not_to receive(:perform_now)
       subject.submit!
     end
-  end
 
-  describe '#send_confirmation!' do
     describe 'for library id users' do
       let!(:subject) { create(:mediated_page) }
 
-      it 'does not send a confirmation email' do
+      it 'sends a mediator email, but does not send a confirmation email' do
         subject.user = create(:library_id_user)
         expect do
-          subject.send_confirmation!
-        end.not_to change { ConfirmationMailer.deliveries.count }
+          subject.submit!
+        end.to change { ApplicationMailer.deliveries.count }.by(1)
       end
     end
 
     describe 'for everybody else' do
       let!(:subject) { create(:mediated_page) }
 
-      it 'sends a confirmation email' do
+      it 'sends a confirmation email and a mediator email' do
         expect do
-          subject.send_confirmation!
-        end.to change { ConfirmationMailer.deliveries.count }.by(1)
+          subject.submit!
+        end.to change { ApplicationMailer.deliveries.count }.by(2)
       end
     end
   end

@@ -31,10 +31,6 @@ class Scan < Request
     SubmitScanRequestJob.perform_later(self)
   end
 
-  def send_confirmation!
-    true
-  end
-
   def illiad_error?
     illiad_response_data['Message'].present?
   end

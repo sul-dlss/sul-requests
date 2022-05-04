@@ -40,10 +40,6 @@ class MediatedPagesController < RequestsController
     params.require(:mediated_page).permit(:approval_status, :needed_date)
   end
 
-  def send_confirmation
-    current_request.send_confirmation!
-  end
-
   def validate_request_type
     raise UnmediateableItemError unless current_request.mediateable?
   end

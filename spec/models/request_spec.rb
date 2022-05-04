@@ -575,17 +575,6 @@ describe Request do
     end
   end
 
-  describe 'send_confirmation!' do
-    let(:subject) { create(:page, user: create(:webauth_user)) }
-
-    it 'returns true (other classes can implement confirmation if they want it)' do
-      expect do
-        subject.send_confirmation!
-      end.not_to change { ConfirmationMailer.deliveries.count }
-      expect(subject.send_confirmation!).to be true
-    end
-  end
-
   describe 'send_approval_status!' do
     describe 'for library id users' do
       let(:subject) { create(:page, user: create(:library_id_user)) }

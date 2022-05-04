@@ -20,8 +20,6 @@ class MediatedPage < Request
 
   include TokenEncryptable
 
-  after_create :notify_mediator!
-
   def token_encryptor_attributes
     super << user.email
   end
@@ -46,7 +44,8 @@ class MediatedPage < Request
 
   def submit!
     # creating a mediated page should not submit the request to Symphony
-    true
+    send_confirmation!
+    notify_mediator!
   end
 
   def all_approved?
@@ -76,10 +75,6 @@ class MediatedPage < Request
     )[:email]
   end
 
-  def send_confirmation!
-    ConfirmationMailer.request_confirmation(self).deliver_later if notification_email_address.present?
-  end
-
   def send_approval_status!
     true
   end
@@ -99,6 +94,10 @@ class MediatedPage < Request
   end
 
   private
+
+  def send_confirmation!
+    ConfirmationMailer.request_confirmation(self).deliver_later if notification_email_address.present?
+  end
 
   def needed_date_is_required
     errors.add(:needed_date, "can't be blank") if needed_date.blank? && requires_needed_date?
