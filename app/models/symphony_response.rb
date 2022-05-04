@@ -13,12 +13,8 @@ class SymphonyResponse
     end
   end
 
-  def success?(barcode = nil)
-    return false if usererr_code.present?
-    return false if items_by_barcode.blank?
-    return item_successful?(barcode) if barcode
-
-    successful_barcodes.present?
+  def success?(barcode)
+    item_successful?(barcode)
   end
 
   def any_error?
