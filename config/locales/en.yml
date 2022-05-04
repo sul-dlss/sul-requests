@@ -77,7 +77,7 @@ en:
     request:
       subject:
         success: "We received your request for \"%{title}\""
-        failure: "Attention needed: Your request could not be processed (\"%{title}\")"
+        failure: "Attention needed: There is a problem with your request (\"%{title}\")"
     request_status:
       failure:
         code_U003: 'Your request could not be processed because your user privileges are blocked.'

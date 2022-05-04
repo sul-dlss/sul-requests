@@ -157,8 +157,8 @@ describe ApprovalStatusMailer do
           allow(request.symphony_response).to receive(:success?).and_return false
         end
 
-        it '"Attention needed ... request could not be processed"' do
-          expect(mail.subject).to eq "Attention needed: Your request could not be processed (\"#{request.item_title}\")"
+        it '"Attention needed ... problem with your request"' do
+          expect(mail.subject).to eq "Attention needed: There is a problem with your request (\"#{request.item_title}\")"
         end
       end
 
@@ -169,8 +169,8 @@ describe ApprovalStatusMailer do
           stub_symphony_response(build(:symphony_page_with_blocked_user))
         end
 
-        it '"Attention needed ... request could not be processed"' do
-          expect(mail.subject).to eq "Attention needed: Your request could not be processed (\"#{request.item_title}\")"
+        it '"Attention needed ... problem with your request"' do
+          expect(mail.subject).to eq "Attention needed: There is a problem with your request (\"#{request.item_title}\")"
         end
       end
     end
