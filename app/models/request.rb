@@ -114,6 +114,8 @@ class Request < ActiveRecord::Base
   end
 
   def find_existing_email_user
+    return unless user.email
+
     User.find_by(email: user.email, library_id: user.library_id).tap do |u|
       next unless u
 

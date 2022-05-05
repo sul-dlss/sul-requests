@@ -7,14 +7,6 @@ class Scan < Request
   validate :scannable_validator
   validates :section_title, presence: true
 
-  def requestable_with_library_id?
-    false
-  end
-
-  def requestable_with_name_email?
-    false
-  end
-
   def item_limit
     1
   end

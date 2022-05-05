@@ -4,7 +4,6 @@
 #  Request class for making simple page requests
 ###
 class Page < Request
-  REQUESTABLE_BY_SUNET_OR_LIBRARY_ONLY = ['MEDIA-MTXT', 'BUSINESS'].freeze
   validate :page_validator
   validates :destination, presence: true
   validate :destination_is_a_pickup_library
@@ -20,19 +19,6 @@ class Page < Request
     next unless location_rule&.send_honeybadger_notice_if_used
 
     Honeybadger.notify("WARNING: Using default location rule for page #{id} (origin: #{origin}, origin_location: #{origin_location})")
-  end
-
-  def requestable_with_name_email?
-    return false if REQUESTABLE_BY_SUNET_OR_LIBRARY_ONLY.include?(origin)
-
-    true
-  end
-
-  # Allow requests with Library ID
-  def requestable_with_library_id?
-    return true if REQUESTABLE_BY_SUNET_OR_LIBRARY_ONLY.include?(origin)
-
-    super
   end
 
   private

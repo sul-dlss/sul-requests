@@ -54,11 +54,15 @@ class User < ActiveRecord::Base
   end
 
   def non_webauth_user?
-    !webauth_user? && name.present? && email.present?
+    !webauth_user?
   end
 
   def library_id_user?
     !webauth_user? && library_id.present?
+  end
+
+  def name_email_user?
+    !webauth_user? && !library_id_user? && name.present? && email.present?
   end
 
   def super_admin?
@@ -68,11 +72,6 @@ class User < ActiveRecord::Base
 
   def site_admin?
     admin_groups = Settings.site_admin_groups || []
-    (ldap_groups & admin_groups).present?
-  end
-
-  def admin_for_origin?(library_or_location)
-    admin_groups = Settings.origin_admin_groups[library_or_location] || Settings.origin_location_admin_groups[library_or_location] || []
     (ldap_groups & admin_groups).present?
   end
 

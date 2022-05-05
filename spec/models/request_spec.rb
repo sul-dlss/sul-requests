@@ -230,7 +230,6 @@ describe Request do
   describe 'requestable' do
     it { is_expected.not_to be_requestable_with_name_email }
     it { is_expected.not_to be_requestable_with_library_id }
-    it { is_expected.not_to be_requires_additional_user_validation }
   end
 
   describe '#library_location' do
@@ -345,6 +344,10 @@ describe Request do
   end
 
   describe 'nested attributes for' do
+    before do
+      allow(Patron).to receive(:find_by).with(library_id: '12345').and_return(instance_double(Patron, exists?: true))
+    end
+
     describe 'users' do
       it 'handles webauth users (w/o emails) correctly' do
         User.create!(webauth: 'a-webauth-user')
@@ -575,8 +578,18 @@ describe Request do
   end
 
   describe 'send_approval_status!' do
+    subject(:request) { create(:page, user: user) }
+
+    let(:user) {}
+
+    before do
+      allow(Patron).to receive(:find_by).with(library_id: user.library_id).and_return(
+        instance_double(Patron, exists?: true, email: '')
+      )
+    end
+
     describe 'for library id users' do
-      let(:subject) { create(:page, user: create(:library_id_user)) }
+      let(:user) { create(:library_id_user) }
 
       it 'does not send an approval status email' do
         expect do
@@ -586,7 +599,7 @@ describe Request do
     end
 
     describe 'for everybody else' do
-      let(:subject) { create(:page, user: create(:webauth_user)) }
+      let(:user) { create(:webauth_user) }
 
       it 'sends an approval status email' do
         expect do

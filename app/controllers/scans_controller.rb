@@ -6,8 +6,8 @@
 class ScansController < RequestsController
   protected
 
-  def rescue_can_can(exception)
-    if action_name == 'create' && current_user && current_user.webauth_user? && !can?(:create, Scan)
+  def rescue_new_record_via_post
+    if current_user&.webauth_user?
       # if they are logged in, but not eligible, send the user to the appropriate page for
       redirect_to delegated_new_request_path(@request, new_request_params), flash: {
         html_safe: true,

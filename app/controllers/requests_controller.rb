@@ -50,6 +50,16 @@ class RequestsController < ApplicationController
 
   protected
 
+  def current_ability
+    @current_ability ||= Ability.new(request_specific_user || current_user, params[:token])
+  end
+
+  def request_specific_user
+    user_attributes = params.dig(:request, :user_attributes)&.permit(:name, :email, :library_id).to_h.reject { |_k, v| v.blank? }
+
+    User.new(**user_attributes, ip_address: request.remote_ip) if user_attributes.present?
+  end
+
   def redirect_delegatable_requests
     return if delegated_request? || current_request.scannable?
 
@@ -65,9 +75,7 @@ class RequestsController < ApplicationController
   end
 
   def set_current_user_for_request
-    return if current_request.user && (current_request.user.library_id_user? || current_request.user.non_webauth_user?)
-
-    current_request.user = current_user if current_user.webauth_user?
+    current_request.user = current_user if current_user.webauth_user? && !request_specific_user
   end
 
   def set_current_request_defaults
@@ -78,20 +86,28 @@ class RequestsController < ApplicationController
   end
 
   def rescue_can_can(exception)
-    rescue_new_record_via_post || rescue_status_pages || super
+    if create_via_post?
+      rescue_new_record_via_post
+    elsif params[:action].to_sym == :status
+      rescue_status_pages
+    end || super
   end
 
-  def rescue_new_record_via_post
-    return unless !current_user.webauth_user? && create_via_post? && current_request.new_record?
+  def create_via_post?
+    params[:action].to_sym == :create && request.post?
+  end
 
-    bounce_request_through_webauth
+  # if the patron is trying to submit a request and didn't provide a library id or name/email,
+  # webauth them. Since we only provide the library id or name/email option for requests where
+  # it will succeed, we should only end up here if the request requires webauth'ing.
+  #
+  # if we ever validate patron data from the ILS, we'll need to add more logic here
+  def rescue_new_record_via_post
+    bounce_request_through_webauth unless current_user.webauth_user?
   end
 
   def rescue_status_pages
-    return unless params[:action].to_sym == :status
-    return if current_user.webauth_user?
-
-    redirect_to login_path(referrer: request.original_url)
+    redirect_to login_path(referrer: request.original_url) unless current_user.webauth_user?
   end
 
   def bounce_request_through_webauth
@@ -127,7 +143,7 @@ class RequestsController < ApplicationController
   end
 
   def check_if_proxy_sponsor
-    return unless current_request.user.sponsor? && params[:request][:proxy].nil?
+    return unless current_request.user&.webauth_user? && current_request.user&.sponsor? && params[:request][:proxy].nil?
 
     render 'sponsor_request'
   end

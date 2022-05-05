@@ -63,10 +63,10 @@ describe AdminController do
     end
 
     describe 'for origin admin' do
-      let(:user) { create(:sal3_origin_admin_user) }
+      let(:user) { create(:art_origin_admin_user) }
 
       it 'is accessible when the user is an admin for the location' do
-        get :show, params: { id: 'SAL3' }
+        get :show, params: { id: 'ART' }
         expect(response).to be_successful
       end
 
@@ -147,10 +147,10 @@ describe AdminController do
     end
 
     describe 'for origin admin' do
-      let(:user) { create(:sal3_origin_admin_user) }
+      let(:user) { create(:art_origin_admin_user) }
 
       it 'is accessible when the user is an admin for the location' do
-        get :picklist, params: { id: 'SAL3' }
+        get :picklist, params: { id: 'ART' }
         expect(response).to be_successful
       end
 

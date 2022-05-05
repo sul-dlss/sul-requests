@@ -155,6 +155,28 @@ describe User do
     end
   end
 
+  describe '#name_email_user?' do
+    before do
+      subject.name = 'jstanford'
+      subject.email = 'jstanford@stanford.edu'
+    end
+
+    it 'is true when the user has supplied a name and email address' do
+      expect(subject).to be_name_email_user
+    end
+
+    it 'is false when the user has also supplied a library ID' do
+      subject.library_id = '12345'
+      expect(subject).not_to be_name_email_user
+    end
+
+    it 'is false when the user has a webauth ID' do
+      subject.webauth = 'jstanford'
+      subject.library_id = '12345'
+      expect(subject).not_to be_name_email_user
+    end
+  end
+
   describe '#super_admin?' do
     it 'returns false when the user is not a super admin' do
       expect(subject).not_to be_super_admin
@@ -174,22 +196,6 @@ describe User do
     it 'returns true when the user is in a site admin group' do
       allow(subject).to receive_messages(ldap_groups: ['FAKE-TEST-SITE-ADMIN-GROUP'])
       expect(subject).to be_site_admin
-    end
-  end
-
-  describe '#admin_for_origin?' do
-    it 'returns false when the user is not in an originating library admin group' do
-      expect(subject).not_to be_admin_for_origin('FAKE-ORIGIN-LIBRARY')
-    end
-
-    it 'returns true when the user is in a site admin group' do
-      allow(subject).to receive_messages(ldap_groups: ['FAKE-ORIGIN-LIBRARY-TEST-LDAP-GROUP'])
-      expect(subject).to be_admin_for_origin('FAKE-ORIGIN-LIBRARY')
-    end
-
-    it 'returns true when the user is an admin of a location' do
-      allow(subject).to receive_messages(ldap_groups: ['FAKE-ORIGIN-LOCATION-TEST-LDAP-GROUP'])
-      expect(subject).to be_admin_for_origin('FAKE-ORIGIN-LOCATION')
     end
   end
 end

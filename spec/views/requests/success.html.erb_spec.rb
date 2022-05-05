@@ -79,6 +79,7 @@ describe 'requests/success.html.erb' do
     end
 
     context 'for requests on behalf of a proxy group' do
+      let(:request) { build(:page, user: user) }
       let(:user) { create(:library_id_user, email: 'some-address@example.com') }
 
       before do

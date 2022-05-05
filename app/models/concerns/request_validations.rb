@@ -14,7 +14,7 @@ module RequestValidations
              :requested_item_is_not_scannable_only,
              on: :create
     validate :needed_date_is_not_in_the_past, on: :create, if: :needed_date
-    validate :library_id_exists, on: :create, if: :validate_library_id?
+    validate :library_id_exists, on: :create
   end
 
   protected
@@ -57,12 +57,18 @@ module RequestValidations
     errors.add(:needed_date, 'Date cannot be earlier than today') if needed_date < Time.zone.today
   end
 
+  # rubocop:disable Metrics/CyclomaticComplexity
   def library_id_exists
+    return unless user
+
+    # Ensure we don't contact symphony if we don't need to validate the library ID
+    return if user.webauth_user? || (requestable_with_name_email? && user.name_email_user?)
+
     # We require the library ID is on the client side when neccesary
     # required when necessary, so if it's blank here, it's not required
-    return if user&.library_id.blank?
-    return if user&.patron&.exists?
+    return if user.library_id.blank?
 
-    errors.add(:library_id, 'This ID was not found in our records')
+    errors.add(:library_id, 'This ID was not found in our records') unless user.patron&.exists?
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
 end

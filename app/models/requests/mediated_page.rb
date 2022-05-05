@@ -28,10 +28,6 @@ class MediatedPage < Request
     commentable_libraries.include?(origin)
   end
 
-  def requestable_with_name_email?
-    true
-  end
-
   def requires_needed_date?
     return false if origin_location == 'PAGE-MP'
 

@@ -15,11 +15,6 @@ class HoldRecall < Request
     SubmitBorrowDirectRequestJob.perform_later(id)
   end
 
-  # Allow requests with Library ID
-  def requestable_with_library_id?
-    true
-  end
-
   def requires_needed_date?
     true
   end

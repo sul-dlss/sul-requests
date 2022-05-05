@@ -4,49 +4,29 @@ FactoryBot.define do
   factory :superadmin_user, class: 'User' do
     webauth { 'super-admin' }
     email { 'super-admin@stanford.edu' }
-
     after(:build) do |user|
-      class << user
-        def super_admin?
-          true
-        end
-      end
+      user.ldap_group_string = 'FAKE-TEST-SUPER-ADMIN-GROUP'
     end
   end
 
   factory :site_admin_user, class: 'User' do
     webauth { 'site-admin' }
-
     after(:build) do |user|
-      class << user
-        def site_admin?
-          true
-        end
-      end
+      user.ldap_group_string = 'FAKE-TEST-SITE-ADMIN-GROUP'
     end
   end
 
-  factory :sal3_origin_admin_user, class: 'User' do
-    webauth { 'sal3-admin' }
-
+  factory :art_origin_admin_user, class: 'User' do
+    webauth { 'art-admin' }
     after(:build) do |user|
-      class << user
-        def admin_for_origin?(location)
-          location == 'SAL3'
-        end
-      end
+      user.ldap_group_string = 'ART-TEST-LDAP-GROUP'
     end
   end
 
   factory :page_mp_origin_admin_user, class: 'User' do
     webauth { 'page-mp-admin' }
-
     after(:build) do |user|
-      class << user
-        def admin_for_origin?(location)
-          location == 'PAGE-MP'
-        end
-      end
+      user.ldap_group_string = 'PAGE-MP-TEST-LDAP-GROUP'
     end
   end
 

@@ -24,12 +24,12 @@ describe TokenEncryptable do
 
   describe 'to_token' do
     it 'includes id and created_at by default' do
-      expect(subject.to_token).to eq '123now'
+      expect(subject.to_token(version: 1)).to eq '123now'
     end
 
     it 'shuold include attributes added by the class that is mixing in' do
       subject.new_attribute = 'my_new_attr'
-      expect(subject.to_token).to eq '123nowmy_new_attr'
+      expect(subject.to_token(version: 1)).to eq '123nowmy_new_attr'
     end
   end
 

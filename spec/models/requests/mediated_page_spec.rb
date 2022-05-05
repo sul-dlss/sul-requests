@@ -168,14 +168,13 @@ describe MediatedPage do
 
     it 'adds the user email address to the token' do
       subject.user = build(:non_webauth_user)
-      expect(subject.to_token).to match(/jstanford@stanford.edu$/)
+      expect(subject.to_token(version: 1)).to match(/jstanford@stanford.edu$/)
     end
   end
 
   describe 'requestable' do
     it { is_expected.to be_requestable_with_name_email }
     it { is_expected.to be_requestable_with_library_id }
-    it { is_expected.to be_requires_additional_user_validation }
   end
 
   describe '#requires_needed_date?' do

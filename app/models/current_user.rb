@@ -5,6 +5,8 @@
 class CurrentUser
   attr_reader :request
 
+  delegate :params, to: :request
+
   def initialize(request)
     @request = request
   end

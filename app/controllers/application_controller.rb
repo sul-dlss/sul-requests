@@ -15,15 +15,7 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_user
 
-  def current_ability
-    @current_ability ||= Ability.new(current_user, params[:token])
-  end
-
   private
-
-  def create_via_post?
-    params[:action].to_sym == :create && request.post?
-  end
 
   def webauth_user?
     current_user.webauth_user?
