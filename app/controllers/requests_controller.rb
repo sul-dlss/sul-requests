@@ -12,7 +12,7 @@ class RequestsController < ApplicationController
   before_action :modify_item_selector_checkboxes_or_radios, only: :create
   before_action :modify_item_proxy_status, only: :create
 
-  load_and_authorize_resource instance_name: 'request'
+  load_and_authorize_resource instance_name: :request, except: [:ineligible]
 
   before_action :set_current_request_defaults, :validate_request_type, :redirect_delegatable_requests, only: :new
   before_action :set_current_user_for_request, only: :create, if: :webauth_user?
@@ -40,6 +40,12 @@ class RequestsController < ApplicationController
       flash[:error] = 'There was a problem updating your request.'
       render 'edit'
     end
+  end
+
+  def success
+  end
+
+  def ineligible
   end
 
   protected
