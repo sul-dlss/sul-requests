@@ -49,7 +49,6 @@ en:
         section_title: 'One article or chapter; maximum 50 pages'
   admin:
     index:
-      custom: 'Custom requests'
       hold_recalls: 'Hold recalls'
       mediated_pages: 'Mediated pages'
       pages: 'Pages'
