@@ -173,6 +173,30 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
         end
       end
 
+      context 'for a response from symphony where the record is currently in use' do
+        let(:request) { create(:page_with_holdings, user: user) }
+
+        before do
+          allow(mock_client).to receive(:bib_info).and_return({})
+          expect(mock_client).to receive(:place_hold).and_return(
+            { # first request
+              'messageList' => [
+                { 'message' => 'The record is currently in use', 'code' => 'hatErrorResponse.116' }
+              ]
+            },
+            {
+              # second request
+            }
+          )
+        end
+
+        it 'retries the request' do
+          response = subject.execute!
+
+          expect(response.dig(:requested_items, 0, :msgcode)).to eq '209'
+        end
+      end
+
       context 'for a SPEC-COLL request' do
         let(:request) { create(:mediated_page) }
 
