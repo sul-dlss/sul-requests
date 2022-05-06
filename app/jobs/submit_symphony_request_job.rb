@@ -51,28 +51,45 @@ class SubmitSymphonyRequestJob < ApplicationJob
       @options = options
     end
 
-    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
+    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     def execute!
+      redo_count = 0
+
       responses = place_hold_params.map do |param|
         place_hold_response = symphony_client.place_hold(**param)
         message = place_hold_response.dig('messageList', 0, 'message')
         msg_code = place_hold_response.dig('messageList', 0, 'code')&.sub(/^hatErrorResponse\./, '')
         barcode = param.dig(:item, :itemBarcode) || param.dig(:item, :call, :key)
 
+        # When we run into the error "The records are currently in use"
+        # sometimes retrying it after a delay is all Symphony needs to
+        # figure out how to do the right thing
+        if msg_code == '116'
+          sleep redo_count * 5
+          redo_count += 1
+          redo if redo_count < 5
+        end
+        redo_count = 0
+
+        # When a request is placed on behalf of a pseudopatron, sometimes multiple people can
+        # request the same item. Symphony can't handle this case gracefully, so we let staff
+        # know they'll have to do something about it.
         if message == 'User already has a hold on this material' && param[:patron_barcode].match(/^HOLD@/)
           notify_staff_for_multiple_holds(barcode) unless request.is_a?(Scan)
         end
+
         {
           barcode: barcode,
           msgcode: msg_code || '209',
           response: place_hold_response
         }
       end
+
       {
         requested_items: responses
       }.merge(usererr)
     end
-    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
     def request_params
       place_hold_params.map { |params| symphony_client.place_hold_params(**params) }
