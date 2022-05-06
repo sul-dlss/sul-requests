@@ -33,11 +33,8 @@ class Ability
     # alias_action :edit, to: :update
 
     clear_aliased_actions
-    alias_action :index, :show, to: :read
+    alias_action :index, :show, :status, :success, to: :read
     alias_action :edit, to: :update
-    # Adding new aliased action because
-    # success has the same rules as status
-    alias_action :status, to: :success
 
     can :manage, :all if user.super_admin?
 
@@ -80,7 +77,7 @@ class Ability
     can :create, Scan if user.super_admin? || in_scan_pilot_group?(user)
 
     # ... and to check the status, you either need to be logged in or include a special token in the URL
-    can :success, [Request, Page, HoldRecall, Scan, MediatedPage], user_id: user.id if user.webauth_user?
+    can :read, [Request, Page, HoldRecall, Scan, MediatedPage], user_id: user.id if user.webauth_user?
 
     if token
       begin
@@ -88,9 +85,9 @@ class Ability
 
         if token.starts_with? 'v2/'
           _v, id, _date = token.split('/', 3)
-          can :success, [Request, Page, HoldRecall, Scan, MediatedPage], id: id.to_i
+          can :read, [Request, Page, HoldRecall, Scan, MediatedPage], id: id.to_i
         else
-          can :success, Request do |request|
+          can :read, Request do |request|
             request.to_token(version: 1) == token
           end
         end
