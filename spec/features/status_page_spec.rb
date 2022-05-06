@@ -26,6 +26,10 @@ describe 'Status Page' do
   describe 'by users with tokens' do
     let(:user) { create(:library_id_user) }
 
+    before do
+      allow(Patron).to receive(:find_by).with(library_id: user.library_id).and_return(instance_double(Patron, exists?: true))
+    end
+
     it 'is available' do
       visit status_mediated_page_path(request, token: request.encrypted_token)
 

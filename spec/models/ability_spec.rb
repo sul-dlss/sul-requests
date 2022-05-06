@@ -72,8 +72,8 @@ describe Ability do
 
     describe 'who fills out a name and email' do
       let(:user) { build(:non_webauth_user) }
-      let(:page) { build(:page, user: user) }
-      let(:mediated_page) { build(:mediated_page, user: user) }
+      let(:page) { create(:page, user: user) }
+      let(:mediated_page) { create(:mediated_page, user: user) }
 
       it { is_expected.to be_able_to(:create, page) }
       it { is_expected.to be_able_to(:create, mediated_page) }

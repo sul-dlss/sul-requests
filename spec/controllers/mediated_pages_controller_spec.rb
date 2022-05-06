@@ -78,6 +78,10 @@ describe MediatedPagesController do
       end
 
       it 'is allowed if the library ID field is filled out' do
+        allow(Patron).to receive(:find_by).with(library_id: '12345').and_return(
+          instance_double('Patron', email: nil, exists?: true)
+        )
+
         put :create, params: {
           request: {
             item_id: '1234',

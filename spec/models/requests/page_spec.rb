@@ -10,7 +10,7 @@ describe Page do
 
     it 'adds the user email address to the token' do
       subject.user = build(:non_webauth_user)
-      expect(subject.to_token).to match(/jstanford@stanford.edu$/)
+      expect(subject.to_token(version: 1)).to match(/jstanford@stanford.edu$/)
     end
   end
 
@@ -39,13 +39,11 @@ describe Page do
 
       it { is_expected.not_to be_requestable_with_name_email }
       it { is_expected.to be_requestable_with_library_id }
-      it { is_expected.to be_requires_additional_user_validation }
     end
 
     context 'other libraries' do
       it { is_expected.to be_requestable_with_name_email }
       it { is_expected.to be_requestable_with_library_id }
-      it { is_expected.to be_requires_additional_user_validation }
     end
   end
 
@@ -85,8 +83,18 @@ describe Page do
   end
 
   describe 'send_approval_status!' do
+    subject(:request) { create(:page, user: user) }
+
+    let(:user) {}
+
+    before do
+      allow(Patron).to receive(:find_by).with(library_id: user.library_id).and_return(
+        instance_double(Patron, exists?: true, email: '')
+      )
+    end
+
     describe 'for library id users' do
-      let(:subject) { create(:page, user: create(:library_id_user)) }
+      let(:user) { create(:library_id_user) }
 
       it 'does not send an approval status email' do
         expect do
@@ -96,7 +104,7 @@ describe Page do
     end
 
     describe 'for everybody else' do
-      let(:subject) { create(:page, user: create(:webauth_user)) }
+      let(:user) { create(:webauth_user) }
 
       it 'sends an approval status email' do
         expect do

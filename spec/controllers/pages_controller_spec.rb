@@ -89,6 +89,10 @@ describe PagesController do
       end
 
       it 'is allowed if the library ID field is filled out' do
+        allow(Patron).to receive(:find_by).with(library_id: '12345').and_return(
+          instance_double('Patron', email: nil, exists?: true)
+        )
+
         put :create, params: {
           request: {
             item_id: '1234',
@@ -194,6 +198,10 @@ describe PagesController do
       end
 
       it 'redirects to success page with token when the WebAuth user supplies a library ID' do
+        allow(Patron).to receive(:find_by).with(library_id: '5432123').and_return(
+          instance_double('Patron', email: nil, exists?: true)
+        )
+
         post :create, params: {
           request: {
             item_id: '1234',

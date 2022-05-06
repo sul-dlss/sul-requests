@@ -4,8 +4,12 @@
 #  Mixin to handle creating, encyrpting, and decrypting, and validating tokens for objects
 ###
 module TokenEncryptable
-  def to_token
-    token_encryptor_attributes.join
+  def to_token(version: 2)
+    if version == 2
+      (['v2'] + [id]).join('/')
+    else
+      token_encryptor_attributes.join
+    end
   end
 
   def token_encryptor_attributes

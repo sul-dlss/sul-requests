@@ -124,34 +124,26 @@ describe User do
     end
   end
 
-  describe '#non_webauth_user?' do
-    describe 'with name and email' do
-      before do
-        subject.name = 'Jane Stanford'
-        subject.email = 'jstanford@stanford.edu'
-      end
-
-      it 'returns true when the user has a name and email address but not a webauth ID' do
-        expect(subject).to be_non_webauth_user
-      end
-
-      it 'returns false when the user has a webauth ID' do
-        subject.webauth = 'jstanford'
-        expect(subject).not_to be_non_webauth_user
-      end
-    end
-  end
-
   describe '#library_id_user?' do
     it 'is true when the user has supplied a library ID' do
       subject.library_id = '12345'
       expect(subject).to be_library_id_user
     end
 
-    it 'is false when the user has a webauth ID' do
-      subject.webauth = 'jstanford'
-      subject.library_id = '12345'
+    it 'is false when the user has not  supplied a library ID' do
       expect(subject).not_to be_library_id_user
+    end
+  end
+
+  describe '#name_email_user?' do
+    it 'is true when the user has supplied a name and email address' do
+      subject.name = 'jstanford'
+      subject.email = 'jstanford@stanford.edu'
+      expect(subject).to be_name_email_user
+    end
+
+    it 'is false when the user has not supplied a library ID' do
+      expect(subject).not_to be_name_email_user
     end
   end
 
@@ -174,22 +166,6 @@ describe User do
     it 'returns true when the user is in a site admin group' do
       allow(subject).to receive_messages(ldap_groups: ['FAKE-TEST-SITE-ADMIN-GROUP'])
       expect(subject).to be_site_admin
-    end
-  end
-
-  describe '#admin_for_origin?' do
-    it 'returns false when the user is not in an originating library admin group' do
-      expect(subject).not_to be_admin_for_origin('FAKE-ORIGIN-LIBRARY')
-    end
-
-    it 'returns true when the user is in a site admin group' do
-      allow(subject).to receive_messages(ldap_groups: ['FAKE-ORIGIN-LIBRARY-TEST-LDAP-GROUP'])
-      expect(subject).to be_admin_for_origin('FAKE-ORIGIN-LIBRARY')
-    end
-
-    it 'returns true when the user is an admin of a location' do
-      allow(subject).to receive_messages(ldap_groups: ['FAKE-ORIGIN-LOCATION-TEST-LDAP-GROUP'])
-      expect(subject).to be_admin_for_origin('FAKE-ORIGIN-LOCATION')
     end
   end
 end

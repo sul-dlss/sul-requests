@@ -94,7 +94,7 @@ describe 'Eligibility Validation' do
 
     context 'when the user as an ineligible affiliation but can manage the request' do
       before do
-        expect(Settings).to receive(:origin_admin_groups).and_return(
+        allow(Settings).to receive(:origin_admin_groups).and_return(
           'SPEC-COLL' => ['sul:spec-coll-test-admins']
         )
         user.affiliation = 'stanford:staff'
