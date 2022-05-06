@@ -66,12 +66,12 @@ class Ability
     can :new, Request
 
     # ... but only some types of users can actually submit the request successfully
-    if user.webauth_user? || user.library_id_user? || (user.name && user.email)
+    if user.webauth_user? || user.library_id_user? || user.name_email_user?
       can :create, MediatedPage
       can :create, Page
     end
 
-    if user.non_webauth_user? && !user.library_id_user?
+    if user.name_email_user? && !user.library_id_user?
       cannot :create, Page, origin: 'BUSINESS'
       cannot :create, Page, origin: 'MEDIA-MTXT'
     end

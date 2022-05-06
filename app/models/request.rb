@@ -101,7 +101,7 @@ class Request < ActiveRecord::Base
     case
     when user.webauth_user? then User.find_by_webauth(user.webauth)
     when user.library_id_user? then find_existing_library_id_user
-    when user.non_webauth_user? then find_existing_email_user
+    when user.name_email_user? then find_existing_email_user
     end
   end
 

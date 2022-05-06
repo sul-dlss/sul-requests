@@ -33,13 +33,13 @@ class User < ActiveRecord::Base
 
   def email_address
     case
-    when library_id_user?
-      email_from_symphony
     when webauth_user? && !email
       # Fallback for users who were created before we started
       # setting the email attribute for webauth users from LDAP
       notify_honeybadger_of_unknown_webauth_email!
       "#{webauth}@stanford.edu"
+    when library_id_user?
+      email_from_symphony
     else
       email
     end
@@ -53,16 +53,12 @@ class User < ActiveRecord::Base
     webauth.present?
   end
 
-  def non_webauth_user?
-    !webauth_user?
-  end
-
   def library_id_user?
-    !webauth_user? && library_id.present?
+    library_id.present?
   end
 
   def name_email_user?
-    !webauth_user? && !library_id_user? && name.present? && email.present?
+    name.present? && email.present?
   end
 
   def super_admin?
