@@ -73,4 +73,18 @@ FactoryBot.define do
       end
     end
   end
+
+  factory :mediated_page_with_symphony_errors, class: 'MediatedPage', parent: :request_with_symphony_errors do
+    origin { 'SPEC-COLL' }
+    origin_location { 'STACKS' }
+    destination { 'SPEC-COLL' }
+    needed_date { Time.zone.today }
+    association :user, factory: :sequence_webauth_user
+
+    after(:build) do |request|
+      class << request
+        def needed_date_is_valid; end
+      end
+    end
+  end
 end

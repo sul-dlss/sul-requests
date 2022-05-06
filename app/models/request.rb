@@ -61,12 +61,8 @@ class Request < ActiveRecord::Base
     @bib_info ||= BibInfo.find(item_id)
   end
 
-  def send_confirmation!
-    true
-  end
-
   def send_approval_status!
-    ApprovalStatusMailerFactory.for(self).deliver_later if notification_email_address.present?
+    RequestStatusMailerFactory.for(self).deliver_later if notification_email_address.present?
   end
 
   def delegate_request!
@@ -142,9 +138,8 @@ class Request < ActiveRecord::Base
   end
 
   def notification_email_address
-    return user.patron.group.email if proxy? && user&.patron&.group&.email&.present?
-
-    user.email_address
+    (user&.proxy_email_address if proxy?) ||
+      user&.email_address
   end
 
   def submit!

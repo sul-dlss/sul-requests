@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe ApprovalStatusMailerFactory do
+describe RequestStatusMailerFactory do
   subject(:mailer) { described_class.for(request) }
 
   let(:user) { create(:anon_user) }
@@ -10,19 +10,6 @@ describe ApprovalStatusMailerFactory do
   before { request.user = user }
 
   describe 'user errors' do
-    describe 'Error U002' do
-      let(:user) { create(:library_id_user) }
-      let(:request) { create(:page_with_holdings, symphony_response_data: { usererr_code: 'U002' }) }
-
-      it 'sends the correct email based on the user error code' do
-        expect(mailer.body.to_s).to include(
-          'We were unable to process your request because ' \
-          'the Stanford Library ID you entered (12345678) ' \
-          'was not found in our system'
-        )
-      end
-    end
-
     describe 'Error U003' do
       let(:request) { create(:page_with_holdings, symphony_response_data: { usererr_code: 'U003' }) }
 

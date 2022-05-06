@@ -52,13 +52,12 @@ module RequestsHelper
   end
 
   def request_level_request_status(request = current_request)
-    if !request.symphony_response.success?
-      t(
-        "symphony_response.failure.code_#{request.symphony_response.usererr_code}.alert_html",
-        default: 'symphony_response.failure.default.alert_html'.to_sym
-      )
-    elsif request.symphony_response.mixed_status?
+    if request.symphony_response.usererr_code
+      t("symphony_response.failure.code_#{request.symphony_response.usererr_code}.alert_html")
+    elsif request.symphony_response.any_successful? && request.symphony_response.any_error?
       t('symphony_response.mixed_failure_html')
+    elsif request.symphony_response.all_errored?
+      t('symphony_response.failure.default.alert_html')
     end
   end
 

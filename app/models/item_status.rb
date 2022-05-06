@@ -35,9 +35,11 @@ class ItemStatus
   end
 
   def symphony_user_error_text
-    return unless @request.symphony_response && @request.symphony_response.usererr_text.present?
+    @request&.symphony_response&.usererr_text.presence
+  end
 
-    @request.symphony_response.usererr_text
+  def symphony_user_error_code
+    @request&.symphony_response&.usererr_code.presence
   end
 
   def errored?
@@ -106,12 +108,6 @@ class ItemStatus
     return {} unless @request.symphony_response
 
     (@request.symphony_response.items_by_barcode[@id] || {}).with_indifferent_access
-  end
-
-  def symphony_user_error_code
-    return unless @request.symphony_response && @request.symphony_response.usererr_code.present?
-
-    @request.symphony_response.usererr_code
   end
 
   def reload_request

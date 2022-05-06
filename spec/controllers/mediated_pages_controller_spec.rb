@@ -125,23 +125,6 @@ describe MediatedPagesController do
         expect(MediatedPage.last.user).to eq user
       end
 
-      it 'does not send an approval status email' do
-        stub_symphony_response(build(:symphony_page_with_single_item))
-        expect do
-          put :create, params: {
-            request: {
-              item_id: '1234',
-              origin: 'SPEC-COLL',
-              origin_location: 'STACKS',
-              destination: 'SPEC-COLL',
-              needed_date: Time.zone.today + 1.year
-            }
-          }
-        end.not_to change {
-          ApprovalStatusMailer.deliveries.count { |x| x.subject.include?('Your request') }
-        }
-      end
-
       it 'sends a confirmation email to the user' do
         expect do
           put :create, params: {
@@ -153,7 +136,7 @@ describe MediatedPagesController do
               needed_date: Time.zone.today + 1.year
             }
           }
-        end.to change { ConfirmationMailer.deliveries.count { |x| x.subject != 'New request needs mediation' } }.by(1)
+        end.to change { RequestStatusMailer.deliveries.count { |x| x.subject != 'New request needs mediation' } }.by(1)
       end
 
       it 'sends an email to the mediator' do

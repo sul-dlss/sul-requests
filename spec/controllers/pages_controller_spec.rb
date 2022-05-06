@@ -208,21 +208,7 @@ describe PagesController do
         expect(Page.last.user.library_id).to eq '5432123'
       end
 
-      it 'does not send a confirmation email' do
-        stub_symphony_response(build(:symphony_page_with_single_item))
-        expect do
-          put :create, params: {
-            request: {
-              item_id: '1234',
-              origin: 'GREEN',
-              origin_location: 'STACKS',
-              destination: 'ART'
-            }
-          }
-        end.not_to change { ConfirmationMailer.deliveries.count }
-      end
-
-      # NOTE: cannot trigger activejob from this spec to check ApprovalStatusMailer
+      # NOTE: cannot trigger activejob from this spec to check RequestStatusMailer
 
       context 'create/update' do
         it 'raises an error when the honey-pot email field is filled in on create' do

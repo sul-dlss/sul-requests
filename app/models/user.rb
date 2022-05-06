@@ -45,6 +45,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def proxy_email_address
+    patron&.group&.email&.presence
+  end
+
   def webauth_user?
     webauth.present?
   end

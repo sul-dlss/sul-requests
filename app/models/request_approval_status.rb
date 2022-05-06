@@ -34,7 +34,7 @@ class RequestApprovalStatus
     request.holdings.map do |item|
       if request.symphony_response.success?(item.barcode)
         succcess_text_for_item(item.callnumber)
-      elsif request.symphony_response.item_failed?(item.barcode)
+      else
         error_text_for_item(item)
       end
     end
@@ -71,7 +71,7 @@ class RequestApprovalStatus
     request.holdings.map do |item|
       if request.symphony_response.success?(item.barcode)
         success_markup_for_item(item.callnumber)
-      elsif request.symphony_response.item_failed?(item.barcode)
+      else
         error_markup_for_item(item)
       end
     end

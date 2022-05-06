@@ -109,15 +109,7 @@ describe HoldRecallsController do
         post :create, params: { request: normal_params.merge(needed_date: Time.zone.today + 1.month) }
         expect(HoldRecall.last.needed_date).to eq Time.zone.today + 1.month
       end
-
-      it 'does not send a confirmation email' do
-        stub_symphony_response(build(:symphony_page_with_single_item))
-        expect do
-          put :create, params: { request: normal_params }
-        end.not_to change { ConfirmationMailer.deliveries.count }
-      end
-
-      # NOTE: cannot trigger activejob from this spec to check ApprovalStatusMailer
+      # NOTE: cannot trigger activejob from this spec to check RequestStatusMailer
     end
 
     describe 'invalid requests' do

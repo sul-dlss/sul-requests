@@ -127,12 +127,13 @@ class SubmitSymphonyRequestJob < ApplicationJob
     end
 
     def usererr
-      if request.is_a? HoldRecall
-        return { usererr_code: 'U003', usererr_text: 'User is BLOCKED' } unless patron&.good_standing?
-        return { usererr_code: 'U004', usererr_text: 'User\'s privileges have expired' } if patron&.expired?
+      if patron&.expired?
+        { usererr_code: 'U004', usererr_text: 'User\'s privileges have expired' }
+      elsif !patron&.good_standing?
+        { usererr_code: 'U003', usererr_text: 'User is BLOCKED' }
+      else
+        {}
       end
-
-      { usererr_code: nil, usererr_text: nil }
     end
 
     def item(barcode)

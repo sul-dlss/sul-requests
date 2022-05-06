@@ -98,8 +98,8 @@ describe SubmitBorrowDirectRequestJob, type: :job do
       end
 
       it 'sends the approval status email' do
-        expect(ApprovalStatusMailer).to receive(
-          :approval_status_for_holdrecall
+        expect(RequestStatusMailer).to receive(
+          :request_status_for_holdrecall
         ).at_least(:once).with(request).and_call_original
 
         subject.perform(request.id)

@@ -5,13 +5,9 @@
 ###
 class Dashboard
   def metrics
-    [:custom, :hold_recalls, :mediated_pages, :pages, :scans].select do |metric|
+    [:hold_recalls, :mediated_pages, :pages, :scans].select do |metric|
       send(metric) > 0
     end
-  end
-
-  def custom
-    @custom ||= Custom.count
   end
 
   def hold_recalls

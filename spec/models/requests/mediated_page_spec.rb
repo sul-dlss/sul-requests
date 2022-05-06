@@ -175,7 +175,6 @@ describe MediatedPage do
   describe 'requestable' do
     it { is_expected.to be_requestable_with_name_email }
     it { is_expected.to be_requestable_with_library_id }
-    it { is_expected.not_to be_requestable_with_sunet_only }
     it { is_expected.to be_requires_additional_user_validation }
   end
 
@@ -191,31 +190,29 @@ describe MediatedPage do
   end
 
   describe '#submit!' do
-    it 'does not submit the request to Symphony' do
+    it 'does not immediately submit the request to Symphony' do
       expect(SubmitSymphonyRequestJob).not_to receive(:perform_now)
       subject.submit!
     end
-  end
 
-  describe '#send_confirmation!' do
     describe 'for library id users' do
       let!(:subject) { create(:mediated_page) }
 
-      it 'does not send a confirmation email' do
+      it 'sends a mediator email, but does not send a confirmation email' do
         subject.user = create(:library_id_user)
         expect do
-          subject.send_confirmation!
-        end.not_to change { ConfirmationMailer.deliveries.count }
+          subject.submit!
+        end.to change { ApplicationMailer.deliveries.count }.by(1)
       end
     end
 
     describe 'for everybody else' do
       let!(:subject) { create(:mediated_page) }
 
-      it 'sends a confirmation email' do
+      it 'sends a confirmation email and a mediator email' do
         expect do
-          subject.send_confirmation!
-        end.to change { ConfirmationMailer.deliveries.count }.by(1)
+          subject.submit!
+        end.to change { ApplicationMailer.deliveries.count }.by(2)
       end
     end
   end
@@ -226,7 +223,7 @@ describe MediatedPage do
     it 'returns true' do
       expect do
         subject.send_approval_status!
-      end.not_to change { ApprovalStatusMailer.deliveries.count }
+      end.not_to change { RequestStatusMailer.deliveries.count }
       expect(subject.send_approval_status!).to be true
     end
   end

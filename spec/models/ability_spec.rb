@@ -8,12 +8,11 @@ describe Ability do
 
   let(:admin_comment) { AdminComment.new(request: request) }
   let(:request) { Request.new }
-  let(:custom) { Custom.new }
   let(:hold_recall) { HoldRecall.new }
   let(:mediated_page) { MediatedPage.new }
   let(:page) { Page.new }
   let(:scan) { Scan.new }
-  let(:request_objects) { [custom, hold_recall, mediated_page, page, scan] }
+  let(:request_objects) { [hold_recall, mediated_page, page, scan] }
   let(:message) { Message.new }
   let(:token) { nil }
 
@@ -29,14 +28,6 @@ describe Ability do
 
   describe 'an anonymous user' do
     let(:user) { create(:anon_user) }
-
-    it { is_expected.to be_able_to(:new, custom) }
-    it { is_expected.not_to be_able_to(:create, custom) }
-    it { is_expected.not_to be_able_to(:read, custom) }
-    it { is_expected.not_to be_able_to(:update, custom) }
-    it { is_expected.not_to be_able_to(:delete, custom) }
-    it { is_expected.not_to be_able_to(:success, custom) }
-    it { is_expected.not_to be_able_to(:status, custom) }
 
     it { is_expected.to be_able_to(:new, hold_recall) }
     it { is_expected.not_to be_able_to(:create, hold_recall) }
@@ -117,7 +108,6 @@ describe Ability do
   describe 'a webauth user' do
     let(:user) { create(:webauth_user) }
 
-    it { is_expected.to be_able_to(:create, custom) }
     it { is_expected.to be_able_to(:create, hold_recall) }
     it { is_expected.to be_able_to(:create, mediated_page) }
     it { is_expected.to be_able_to(:create, page) }
@@ -132,14 +122,12 @@ describe Ability do
       end
 
       # Can see the success page for their request
-      it { is_expected.to be_able_to(:success, custom) }
       it { is_expected.to be_able_to(:success, hold_recall) }
       it { is_expected.to be_able_to(:success, mediated_page) }
       it { is_expected.to be_able_to(:success, page) }
       it { is_expected.to be_able_to(:success, scan) }
 
       # Can see the status page for their request
-      it { is_expected.to be_able_to(:status, custom) }
       it { is_expected.to be_able_to(:status, hold_recall) }
       it { is_expected.to be_able_to(:status, mediated_page) }
       it { is_expected.to be_able_to(:status, page) }
@@ -154,14 +142,12 @@ describe Ability do
       end
 
       # Can't see the success page for other user's requests
-      it { is_expected.not_to be_able_to(:success, custom) }
       it { is_expected.not_to be_able_to(:success, hold_recall) }
       it { is_expected.not_to be_able_to(:success, mediated_page) }
       it { is_expected.not_to be_able_to(:success, page) }
       it { is_expected.not_to be_able_to(:success, scan) }
 
       # Can't see the status page for other user's requests
-      it { is_expected.not_to be_able_to(:status, custom) }
       it { is_expected.not_to be_able_to(:status, hold_recall) }
       it { is_expected.not_to be_able_to(:status, mediated_page) }
       it { is_expected.not_to be_able_to(:status, page) }
@@ -188,7 +174,6 @@ describe Ability do
 
     # can manage anything
     it { is_expected.to be_able_to(:manage, request) }
-    it { is_expected.to be_able_to(:manage, custom) }
     it { is_expected.to be_able_to(:manage, hold_recall) }
     it { is_expected.to be_able_to(:manage, mediated_page) }
     it { is_expected.to be_able_to(:manage, page) }
@@ -201,7 +186,6 @@ describe Ability do
 
     # can manage anything
     it { is_expected.to be_able_to(:manage, request) }
-    it { is_expected.to be_able_to(:manage, custom) }
     it { is_expected.to be_able_to(:manage, hold_recall) }
     it { is_expected.to be_able_to(:manage, mediated_page) }
     it { is_expected.to be_able_to(:manage, page) }
@@ -221,7 +205,6 @@ describe Ability do
     before do
       allow(user).to receive_messages(ldap_groups: ['FAKE-ORIGIN-LIBRARY-TEST-LDAP-GROUP'])
       request.origin = 'FAKE-ORIGIN-LIBRARY'
-      custom.origin = 'FAKE-ORIGIN-LIBRARY'
       hold_recall.origin = 'FAKE-ORIGIN-LIBRARY'
       mediated_page.origin = 'FAKE-ORIGIN-LIBRARY'
       page.origin = 'FAKE-ORIGIN-LIBRARY'
@@ -230,7 +213,6 @@ describe Ability do
 
     # can manage libraries that they are an admin of
     it { is_expected.to be_able_to(:manage, request) }
-    it { is_expected.to be_able_to(:manage, custom) }
     it { is_expected.to be_able_to(:manage, hold_recall) }
     it { is_expected.to be_able_to(:manage, mediated_page) }
     it { is_expected.to be_able_to(:manage, page) }
@@ -251,7 +233,6 @@ describe Ability do
     before do
       allow(user).to receive_messages(ldap_groups: ['FAKE-ORIGIN-LOCATION-TEST-LDAP-GROUP'])
       request.origin_location = 'FAKE-ORIGIN-LOCATION'
-      custom.origin_location = 'FAKE-ORIGIN-LOCATION'
       hold_recall.origin_location = 'FAKE-ORIGIN-LOCATION'
       mediated_page.origin_location = 'FAKE-ORIGIN-LOCATION'
       page.origin_location = 'FAKE-ORIGIN-LOCATION'
@@ -260,7 +241,6 @@ describe Ability do
 
     # can manage locations that they are an admin of
     it { is_expected.to be_able_to(:manage, request) }
-    it { is_expected.to be_able_to(:manage, custom) }
     it { is_expected.to be_able_to(:manage, hold_recall) }
     it { is_expected.to be_able_to(:manage, mediated_page) }
     it { is_expected.to be_able_to(:manage, page) }

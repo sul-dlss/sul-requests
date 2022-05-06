@@ -65,7 +65,7 @@ class Patron
   end
 
   def good_standing?
-    ['DELINQUENT', 'OK'].include?(standing)
+    ['DELINQUENT', 'OK'].include?(standing) && !expired?
   end
 
   def first_name

@@ -7,8 +7,12 @@ class Scan < Request
   validate :scannable_validator
   validates :section_title, presence: true
 
-  def requestable_with_sunet_only?
-    true
+  def requestable_with_library_id?
+    false
+  end
+
+  def requestable_with_name_email?
+    false
   end
 
   def item_limit
@@ -31,16 +35,16 @@ class Scan < Request
     SubmitScanRequestJob.perform_later(self)
   end
 
-  def send_confirmation!
-    true
-  end
-
   def illiad_error?
     illiad_response_data['Message'].present?
   end
 
   def notify_ilb!
     IlbMailer.ilb_notification(self).deliver_later
+  end
+
+  def send_approval_status!
+    RequestStatusMailer.request_status_for_scan(self).deliver_later if notification_email_address.present?
   end
 
   private

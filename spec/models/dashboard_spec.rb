@@ -11,7 +11,6 @@ describe Dashboard do
 
   describe 'request type methods' do
     it 'returns the count of the different types of requests' do
-      expect(subject.custom).to eq 0
       expect(subject.hold_recalls).to eq 0
       expect(subject.mediated_pages).to eq 1
       expect(subject.pages).to eq 2

@@ -49,7 +49,6 @@ en:
         section_title: 'One article or chapter; maximum 50 pages'
   admin:
     index:
-      custom: 'Custom requests'
       hold_recalls: 'Hold recalls'
       mediated_pages: 'Mediated pages'
       pages: 'Pages'
@@ -73,24 +72,24 @@ en:
       extra_note: ''
     spec_coll:
       extra_note: ''
-  approval_status_email:
+  request_status_email:
+    mediated_page:
+      SPEC-COLL:
+        subject:
+          success: "Request received: \"%{title}\""
+      subject:
+        success: 'Request is pending approval ("%{title}")'
     request:
       subject:
         success: "We received your request for \"%{title}\""
-        failure: "Attention needed: Your request could not be processed (\"%{title}\")"
+        failure: "Attention needed: There is a problem with your request (\"%{title}\")"
     request_status:
       failure:
         code_U003: 'Your request could not be processed because your user privileges are blocked.'
         code_U004: 'Your request could not be processed because your user privileges have expired.'
 
   confirmation_email:
-    request:
-      subject: 'Request is pending approval ("%{title}")'
-    scan:
-      subject: "Scan to PDF requested (\"%{title}\")"
     mediated_page:
-      SPEC-COLL:
-        subject: "Request received: \"%{title}\""
       mediator_subject: 'New request needs mediation'
   date:
     formats:
@@ -134,13 +133,12 @@ en:
       loan_desk_note: This item is currently being held for use by another patron. We'll add you to the request queue but we can't estimate the delivery date.
       missing_note: We're currently searching for this missing item. We'll add you to the request queue but we can't estimate the delivery date.
     success:
-
       email_notification:
         proxy: "We'll send an email to you at <strong>%{email}</strong> and to the designated notification address when processing is complete."
         default: "We'll send you an email at <strong>%{email}</strong> when processing is complete."
       synchronous_email_notification:
-        proxy: "(We've sent a copy of this request to your email and to the designated notification address.)"
-        default: "(We've sent a copy of this request to your email.)"
+        proxy: "(We'll send a copy of this request to your email and to the designated notification address.)"
+        default: "(We'll send a copy of this request to your email.)"
   status_text:
     paged: Paged
     hold: Item is on-site - hold for patron

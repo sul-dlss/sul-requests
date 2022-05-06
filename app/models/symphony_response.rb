@@ -13,46 +13,30 @@ class SymphonyResponse
     end
   end
 
-  def success?(barcode = nil)
-    return false if usererr_code.present?
-    return false if items_by_barcode.blank?
-    return item_successful?(barcode) if barcode
+  def success?(barcode)
+    item_successful?(barcode)
+  end
 
-    successful_barcodes.present?
+  def all_successful?
+    items_by_barcode.any? && items_by_barcode.keys.all? { |barcode| item_successful?(barcode) }
+  end
+
+  def all_errored?
+    items_by_barcode.any? && items_by_barcode.keys.all? { |barcode| !item_successful?(barcode) }
+  end
+
+  def any_successful?
+    items_by_barcode.any? && items_by_barcode.keys.any? { |barcode| item_successful?(barcode) }
   end
 
   def any_error?
-    usererr_code.present? || erroneous_barcodes.present?
-  end
-
-  def mixed_status?
-    erroneous_barcodes.present? && successful_barcodes.present?
-  end
-
-  def item_failed?(barcode)
-    return unless barcode && items_by_barcode[barcode]
-
-    items_by_barcode[barcode]['msgcode'] && !item_successful?(barcode)
+    items_by_barcode.any? && items_by_barcode.keys.any? { |barcode| !item_successful?(barcode) }
   end
 
   private
 
-  def item_successful?(barcode = nil)
-    return unless barcode && items_by_barcode[barcode]
-
-    success_codes.include?(items_by_barcode[barcode]['msgcode'])
-  end
-
-  def successful_barcodes
-    items_by_barcode.keys.select do |barcode|
-      item_successful?(barcode)
-    end
-  end
-
-  def erroneous_barcodes
-    items_by_barcode.keys.reject do |barcode|
-      item_successful?(barcode)
-    end
+  def item_successful?(barcode)
+    success_codes.include?(items_by_barcode.dig(barcode, 'msgcode'))
   end
 
   def success_codes

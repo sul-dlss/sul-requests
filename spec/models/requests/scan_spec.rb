@@ -47,7 +47,6 @@ describe Scan do
   describe 'requestable' do
     it { is_expected.not_to be_requestable_with_name_email }
     it { is_expected.not_to be_requestable_with_library_id }
-    it { is_expected.to be_requestable_with_sunet_only }
     it { is_expected.not_to be_requires_additional_user_validation }
   end
 
@@ -76,17 +75,6 @@ describe Scan do
     end
   end
 
-  describe 'send_confirmation!' do
-    let(:subject) { create(:scan, user: create(:webauth_user)) }
-
-    it 'returns true' do
-      expect do
-        subject.send_confirmation!
-      end.not_to change { ConfirmationMailer.deliveries.count }
-      expect(subject.send_confirmation!).to be true
-    end
-  end
-
   describe 'send_approval_status!' do
     describe 'for library id users' do
       let(:subject) { create(:scan, user: create(:library_id_user)) }
@@ -94,7 +82,7 @@ describe Scan do
       it 'does not send an approval status email' do
         expect do
           subject.send_approval_status!
-        end.not_to change { ApprovalStatusMailer.deliveries.count }
+        end.not_to change { RequestStatusMailer.deliveries.count }
       end
     end
 
@@ -104,7 +92,7 @@ describe Scan do
       it 'sends an approval status email' do
         expect do
           subject.send_approval_status!
-        end.to change { ApprovalStatusMailer.deliveries.count }.by(1)
+        end.to change { RequestStatusMailer.deliveries.count }.by(1)
       end
     end
   end
