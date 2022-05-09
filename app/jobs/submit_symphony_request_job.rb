@@ -87,7 +87,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
 
       {
         requested_items: responses
-      }.merge(usererr)
+      }.merge(usererr || {})
     end
     # rubocop:enable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
@@ -127,12 +127,14 @@ class SubmitSymphonyRequestJob < ApplicationJob
     end
 
     def usererr
-      if patron&.expired?
+      # if there's no patron record attached to this user, don't bother
+      # reporting any user status information
+      return unless patron
+
+      if patron.expired?
         { usererr_code: 'U004', usererr_text: 'User\'s privileges have expired' }
-      elsif !patron&.good_standing?
+      elsif !patron.good_standing?
         { usererr_code: 'U003', usererr_text: 'User is BLOCKED' }
-      else
-        {}
       end
     end
 
