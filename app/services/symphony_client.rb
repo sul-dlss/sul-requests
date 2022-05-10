@@ -263,7 +263,7 @@ class SymphonyClient
     end
   end
 
-  def patron_info(patron_key)
+  def patron_info(patron_key, return_holds: false)
     response = authenticated_request("/user/patron/key/#{patron_key}", params: {
                                        includeFields: [
                                          '*',
@@ -271,8 +271,8 @@ class SymphonyClient
                                          'profile{chargeLimit}',
                                          'customInformation{*}',
                                          'groupSettings{*,group{memberList{*,address1}}}',
-                                         'holdRecordList{*,item{call,bib{title}}}'
-                                       ].join(',')
+                                         ('holdRecordList{*,item{call,bib{title}}}' if return_holds)
+                                       ].compact.join(',')
                                      })
 
     begin

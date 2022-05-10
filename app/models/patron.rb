@@ -6,11 +6,11 @@ class Patron
   attr_reader :record
 
   # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-  def self.find_by(sunetid: nil, library_id: nil, patron_key: nil, symphony_client: SymphonyClient.new)
+  def self.find_by(sunetid: nil, library_id: nil, patron_key: nil, symphony_client: SymphonyClient.new, with_holds: false)
     patron_key ||= symphony_client.login_by_sunetid(sunetid)&.dig('key') if sunetid
     patron_key ||= symphony_client.login_by_library_id(library_id)&.dig('key') if library_id
 
-    return new(symphony_client.patron_info(patron_key)) if patron_key.present?
+    return new(symphony_client.patron_info(patron_key, return_holds: with_holds)) if patron_key.present?
 
     Honeybadger.notify("Unable to find patron (looked up by sunetid: #{sunetid} / barcode: #{library_id}")
 
@@ -53,7 +53,15 @@ class Patron
   end
 
   def holds
-    @holds ||= (fields.dig('holdRecordList') || []).map { |record| HoldRecord.new(record) }
+    @holds ||= begin
+      records = hold_record_list || Patron.find_by(patron_key: key, with_holds: true)&.hold_record_list || []
+
+      records.map { |record| HoldRecord.new(record) }
+    end
+  end
+
+  def hold_record_list
+    fields.dig('holdRecordList')
   end
 
   def fee_borrower?
