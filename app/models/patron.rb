@@ -7,8 +7,8 @@ class Patron
 
   # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
   def self.find_by(sunetid: nil, library_id: nil, patron_key: nil, symphony_client: SymphonyClient.new, with_holds: false)
-    patron_key ||= symphony_client.login_by_sunetid(sunetid)&.dig('key') if sunetid
-    patron_key ||= symphony_client.login_by_library_id(library_id)&.dig('key') if library_id
+    patron_key ||= symphony_client.login_by_sunetid(sunetid)&.dig('key') if sunetid.present?
+    patron_key ||= symphony_client.login_by_library_id(library_id)&.dig('key') if library_id.present?
 
     return new(symphony_client.patron_info(patron_key, return_holds: with_holds)) if patron_key.present?
 
