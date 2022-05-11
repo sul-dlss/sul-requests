@@ -69,6 +69,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
           redo_count += 1
           redo if redo_count < 5
         end
+        place_hold_response[:retries] = redo_count if redo_count.positive?
         redo_count = 0
 
         # When a request is placed on behalf of a pseudopatron, sometimes multiple people can
