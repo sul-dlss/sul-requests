@@ -18,7 +18,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
     return true unless request
 
     Sidekiq.logger.info("Started SubmitSymphonyRequestJob for request #{request_id}")
-    response = Command.new(request, options).execute!
+    response = Command.new(request, **options).execute!
 
     Sidekiq.logger.debug("Symphony response string: #{response}")
     request.merge_symphony_response_data(response.with_indifferent_access)
@@ -41,14 +41,15 @@ class SubmitSymphonyRequestJob < ApplicationJob
 
   # Submit requests using Symws
   class SymWsCommand
-    attr_reader :request, :options
+    attr_reader :request, :symphony_client, :barcode
 
     delegate :user, to: :request
     delegate :patron, to: :user
 
-    def initialize(request, options = {})
+    def initialize(request, symphony_client: nil, barcode: nil)
       @request = request
-      @options = options
+      @symphony_client = symphony_client || SymphonyClient.new
+      @barcode = barcode
     end
 
     # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
@@ -97,10 +98,6 @@ class SubmitSymphonyRequestJob < ApplicationJob
     end
 
     private
-
-    def symphony_client
-      @symphony_client ||= options[:symphony_client] || SymphonyClient.new
-    end
 
     def bib_info(key)
       @bib_info ||= Hash.new do |h, k|
@@ -201,12 +198,10 @@ class SubmitSymphonyRequestJob < ApplicationJob
     end
 
     def barcodes
-      if options[:barcode]
-        request.barcodes.select do |barcode|
-          options[:barcode].include?(barcode)
-        end
-      else
-        request.barcodes
+      return request.barcodes unless @barcode
+
+      request.barcodes.select do |barcode|
+        @barcode == barcode
       end
     end
 
