@@ -10,6 +10,8 @@ class AdminController < ApplicationController
     )
   end
 
+  before_action :load_and_authorize_library_location, only: [:show, :picklist]
+
   def index
     authorize! :manage, Request.new
     @dashboard = Dashboard.new
@@ -17,14 +19,11 @@ class AdminController < ApplicationController
   end
 
   def show
-    authorize! :manage, Request.new(origin: params[:id]).library_location
     @dates = next_three_days_with_requests
     @mediated_pages = mediated_pages
   end
 
   def picklist
-    authorize! :manage, Request.new(origin: params[:id]).library_location
-
     @range = range_param
     @items = origin_filtered_mediated_pages.where(updated_at: @range).flat_map do |request|
       request_has_items_approved_within_range?(request, @range)
@@ -156,5 +155,15 @@ class AdminController < ApplicationController
         item_status.approval_time &&
         range.include?(Time.zone.parse(item_status.approval_time))
     end
+  end
+
+  def load_and_authorize_library_location
+    @library_location = if Settings.mediateable_origins.dig(params[:id], :library_override)
+                          LibraryLocation.new(Settings.mediateable_origins.dig(params[:id], :library_override), params[:id])
+                        else
+                          LibraryLocation.new(params[:id])
+                        end
+
+    authorize! :manage, @library_location
   end
 end
