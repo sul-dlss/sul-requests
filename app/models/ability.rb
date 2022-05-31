@@ -53,7 +53,7 @@ class Ability
     end
 
     if admin_locations.any?
-      can :manage, LibraryLocation, library: admin_locations
+      can :manage, LibraryLocation, location: admin_locations
       can :create, AdminComment, request: { origin_location: admin_locations }
       can :manage, Request, origin_location: admin_locations
     end

@@ -6,13 +6,13 @@
 module AuthorizationHelper
   def mediated_locations_for(locations)
     locations.select do |code, config|
-      request = if config.library_override
-                  Request.new(origin: config.library_override, origin_location: code.to_s)
-                else
-                  Request.new(origin: code.to_s)
-                end
+      library_location = if config.library_override
+                           LibraryLocation.new(config.library_override, code.to_s)
+                         else
+                           LibraryLocation.new(code.to_s)
+                         end
 
-      can? :manage, request.library_location
+      can? :manage, library_location
     end
   end
 end

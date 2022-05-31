@@ -6,7 +6,7 @@
 class LibraryLocation
   attr_reader :library, :location
 
-  def initialize(library, location)
+  def initialize(library, location = nil)
     @library = library
     @location = location
   end
