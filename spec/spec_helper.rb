@@ -5,7 +5,7 @@ require 'webmock/rspec'
 WebMock.disable_net_connect!(allow_localhost: true, allow: [
   'chromedriver.storage.googleapis.com',
   'searchworks.stanford.edu',
-  'sul-library-hours-prod.stanford.edu',
+  'library-hours.stanford.edu',
   'example.com'
 ])
 

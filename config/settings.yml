@@ -103,7 +103,7 @@ symphony:
 
 mailer_host: <%= `echo $HOSTNAME` %>
 searchworks_api: 'https://searchworks.stanford.edu'
-hours_api: 'https://sul-library-hours-prod.stanford.edu/'
+hours_api: 'https://library-hours.stanford.edu/'
 searchworks_link: 'http://searchworks.stanford.edu/view'
 sul_illiad: 'https://sul-illiad-test.stanford.edu/'
 illiad_api_key: 'AbC123'
