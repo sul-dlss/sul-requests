@@ -64,14 +64,17 @@ class SymphonyClient
                 guest_headers
               end
 
-    response = authenticated_request("/catalog/item/barcode/#{ERB::Util.url_encode(key)}", params: {
-                                       includeFields: [
-                                         '*',
-                                         ('bib{holdRecordList{*,item{call,bib{title}}}}' if return_holds),
-                                         'call{*,itemList{*}}',
-                                         'currentLocation'
-                                       ].compact.join(',')
-                                     }, headers: headers)
+    response = authenticated_request(
+      "/catalog/item/barcode/#{ERB::Util.url_encode(key)}",
+      params: {
+        includeFields: [
+          '*',
+          ('bib{holdRecordList{*,item{call,bib{title}}}}' if return_holds),
+          'call{*,itemList{*}}',
+          'currentLocation'
+        ].compact.join(',')
+      }, headers: headers
+    )
 
     JSON.parse(response.body)
   rescue JSON::ParserError, HTTP::Error
@@ -155,22 +158,25 @@ class SymphonyClient
       "CKOBLOCKS/#{Settings.symphony.override}",
       "CIRC_HOLDS_OVRCD/#{Settings.symphony.override}"
     ]
-    response = authenticated_request('/circulation/circRecord/checkOut', method: :post, params: {
-                                       includeFields: 'circRecord{*,item{barcode}}'
-                                     }, json: {
-                                       itemBarcode: item_barcode,
-                                       # patronBarcode: patron_barcode
-                                       # Using patron key here instead of barcode due to a Symphony
-                                       # Web Services bug where the transaction is not reported in
-                                       # statistics logs.
-                                       patron: {
-                                         resource: '/user/patron',
-                                         key: Settings.cdl.pseudo_patron_key
-                                       }
-                                     }.merge(params), headers: {
-                                       'SD-Prompt-Return': sd_prompt_return.join(';'),
-                                       'SD-Working-LibraryID': 'SUL'
-                                     })
+    response = authenticated_request(
+      '/circulation/circRecord/checkOut',
+      method: :post, params: {
+                       includeFields: 'circRecord{*,item{barcode}}'
+                     }, json: {
+                       itemBarcode: item_barcode,
+                       # patronBarcode: patron_barcode
+                       # Using patron key here instead of barcode due to a Symphony
+                       # Web Services bug where the transaction is not reported in
+                       # statistics logs.
+                       patron: {
+                         resource: '/user/patron',
+                         key: Settings.cdl.pseudo_patron_key
+                       }
+                     }.merge(params), headers: {
+                       'SD-Prompt-Return': sd_prompt_return.join(';'),
+                       'SD-Working-LibraryID': 'SUL'
+                     }
+    )
     begin
       JSON.parse(response.body)
     rescue JSON::ParserError
@@ -202,17 +208,17 @@ class SymphonyClient
       "CIRC_UNSEEN_RENEW_LIMIT_OVRCD/#{Settings.symphony.override}"
     ]
     response = authenticated_request('/circulation/circRecord/renew', method: :post, params: {
-                                       includeFields: 'circRecord{*,item{barcode}}'
-                                     }, json: {
-                                       item: {
-                                         key: item_barcode,
-                                         resource: '/catalog/item'
-                                       },
-                                       patronBarcode: patron_barcode, **params
-                                     }, headers: {
-                                       'SD-Prompt-Return': sd_prompt_return.join(';'),
-                                       'SD-Working-LibraryID': 'SUL'
-                                     })
+                                                                                       includeFields: 'circRecord{*,item{barcode}}'
+                                                                                     }, json: {
+                                                                                          item: {
+                                                                                            key: item_barcode,
+                                                                                            resource: '/catalog/item'
+                                                                                          },
+                                                                                          patronBarcode: patron_barcode, **params
+                                                                                        }, headers: {
+                                                                                          'SD-Prompt-Return': sd_prompt_return.join(';'),
+                                                                                          'SD-Working-LibraryID': 'SUL'
+                                                                                        })
     begin
       JSON.parse(response.body)
     rescue JSON::ParserError
