@@ -31,10 +31,10 @@ class Request < ActiveRecord::Base
 
   # Serialized data hash
   store :data, accessors: [
-    :ad_hoc_items, :authors, :request_status_data, :item_comment, :public_notes, :page_range,
-    :proxy, :request_comment, :section_title, :symphony_response_data, :borrow_direct_response_data,
-    :illiad_response_data
-  ], coder: JSON
+                 :ad_hoc_items, :authors, :request_status_data, :item_comment, :public_notes, :page_range,
+                 :proxy, :request_comment, :section_title, :symphony_response_data, :borrow_direct_response_data,
+                 :illiad_response_data
+               ], coder: JSON
   serialize :barcodes, Array
 
   has_many :admin_comments
