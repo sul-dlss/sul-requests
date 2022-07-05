@@ -57,8 +57,6 @@ Style/StringLiterals:
 RSpec/MultipleMemoizedHelpers:
   Enabled: false
 
-RSpec/MessageSpies:
-  Enabled: false
 RSpec/MessageChain:
   Enabled: false
 Layout/EmptyLinesAroundAttributeAccessor:

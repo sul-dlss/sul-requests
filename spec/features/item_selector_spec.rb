@@ -346,7 +346,7 @@ describe 'Item Selector' do
     end
 
     it 'are persisted' do
-      skip('The CDN we load the date slider from seems to block Travis') if ENV['ci']
+      skip('The CDN we load the date slider from seems to block Travis') if ENV['CI']
 
       fill_in_required_date
 
