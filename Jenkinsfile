@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    PROJECT = 'sul-dlss/stacks'
+    PROJECT = 'sul-dlss/sul-requests'
   }
 
   stages {
