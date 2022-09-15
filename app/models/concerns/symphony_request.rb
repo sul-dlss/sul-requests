@@ -3,10 +3,6 @@
 ###
 #  Symphony methods for sending and managing requests in symphony
 module SymphonyRequest
-  def appears_in_myaccount?
-    user.webauth_user?
-  end
-
   def send_to_symphony_now!(options = {})
     SubmitSymphonyRequestJob.perform_now(id, options)
   end
