@@ -23,11 +23,9 @@ module SymphonyRequest
     @symphony_response = nil
   end
 
-  def merge_symphony_response_data(new_response_data)
-    new_response = SymphonyResponse.new(new_response_data)
-
-    self.symphony_response_data = new_response_data.tap do |h|
-      h[:requested_items] = new_response.items_by_barcode.reverse_merge(symphony_response.items_by_barcode).values
+  def merge_symphony_response_data(new_response)
+    self.symphony_response_data = new_response.as_json.with_indifferent_access.tap do |h|
+      h['requested_items'] = new_response.items_by_barcode.reverse_merge(symphony_response.items_by_barcode).values
     end
 
     symphony_response_will_change!
