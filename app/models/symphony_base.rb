@@ -2,6 +2,8 @@
 
 # Common Symphony record model behaviors
 class SymphonyBase
+  class_attribute :symphony_client, default: SymphonyClient.new
+
   attr_reader :response
 
   def initialize(response = {})

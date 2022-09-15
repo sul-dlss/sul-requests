@@ -3,7 +3,7 @@
 # Accessing item catalog information from the symphony response
 class CatalogInfo < SymphonyBase
   def self.find(barcode, return_holds: false)
-    new(SymphonyClient.new.catalog_info(barcode, return_holds: return_holds))
+    new(symphony_client.catalog_info(barcode, return_holds: return_holds))
   end
 
   def barcode

@@ -37,7 +37,7 @@ describe SubmitBorrowDirectRequestJob, type: :job do
 
       it 'sends the request off to Symphony (without attempting to request it)' do
         expect(borrow_direct_item).not_to receive(:request_item)
-        expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(request.id)
+        expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(request.id, {})
 
         subject.perform(request.id)
       end
@@ -52,7 +52,7 @@ describe SubmitBorrowDirectRequestJob, type: :job do
       end
 
       it 'sends the request off to Symphony' do
-        expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(request.id)
+        expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(request.id, {})
 
         subject.perform(request.id)
       end
@@ -67,7 +67,7 @@ describe SubmitBorrowDirectRequestJob, type: :job do
         expect(Honeybadger).to receive(:notify).with(
           'BorrowDirect Request failed for 1 with The API Error. Submitted to Symphony instead.'
         )
-        expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(request.id)
+        expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(request.id, {})
 
         subject.perform(request.id)
       end

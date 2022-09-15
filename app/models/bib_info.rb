@@ -3,7 +3,7 @@
 # Accessing bibliographic information from the symphony response
 class BibInfo < SymphonyBase
   def self.find(catkey)
-    new(SymphonyClient.new.bib_info(catkey))
+    new(symphony_client.bib_info(catkey))
   end
 
   def title
