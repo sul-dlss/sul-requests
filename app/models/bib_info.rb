@@ -1,13 +1,9 @@
 # frozen_string_literal: true
 
 # Accessing bibliographic information from the symphony response
-class BibInfo
+class BibInfo < SymphonyBase
   def self.find(catkey)
     new(SymphonyClient.new.bib_info(catkey))
-  end
-
-  def initialize(response)
-    @response = response
   end
 
   def title
@@ -25,9 +21,5 @@ class BibInfo
 
   def marc(tag)
     (fields.dig('bib', 'fields') || []).select { |field| field['tag'] == tag }
-  end
-
-  def fields
-    (@response || {}).dig('fields') || {}
   end
 end

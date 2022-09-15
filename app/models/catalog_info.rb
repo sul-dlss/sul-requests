@@ -1,19 +1,9 @@
 # frozen_string_literal: true
 
 # Accessing item catalog information from the symphony response
-class CatalogInfo
+class CatalogInfo < SymphonyBase
   def self.find(barcode, return_holds: false)
     new(SymphonyClient.new.catalog_info(barcode, return_holds: return_holds))
-  end
-
-  attr_reader :response
-
-  def initialize(response)
-    @response = response
-  end
-
-  def key
-    @response['key']
   end
 
   def barcode
@@ -30,10 +20,6 @@ class CatalogInfo
 
   def home_location
     fields.dig('homeLocation', 'key')
-  end
-
-  def fields
-    (@response || {}).dig('fields') || {}
   end
 
   def callkey

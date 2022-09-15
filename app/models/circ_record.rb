@@ -1,30 +1,12 @@
 # frozen_string_literal: true
 
 # Wrapper for a Symphony CircRecord
-class CircRecord
+class CircRecord < SymphonyBase
   def self.find(key, return_holds: false)
     symphony_client = SymphonyClient.new
     new(symphony_client.circ_record_info(key, return_holds: return_holds))
   rescue HTTP::Error
     nil
-  end
-
-  attr_reader :record
-
-  def initialize(record = {})
-    @record = record
-  end
-
-  def exists?
-    fields.present?
-  end
-
-  def key
-    record['key']
-  end
-
-  def fields
-    record['fields'] || {}
   end
 
   def status

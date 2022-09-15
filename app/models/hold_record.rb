@@ -1,30 +1,12 @@
 # frozen_string_literal: true
 
 # A Symphony HoldRecord
-class HoldRecord
+class HoldRecord < SymphonyBase
   def self.find(key)
     symphony_client = SymphonyClient.new
     new(symphony_client.hold_record_info(key))
   rescue HTTP::Error
     nil
-  end
-
-  attr_reader :record
-
-  def initialize(record = {})
-    @record = record || {}
-  end
-
-  def exists?
-    fields.present?
-  end
-
-  def key
-    record['key']
-  end
-
-  def fields
-    record['fields'] || {}
   end
 
   def status
