@@ -233,4 +233,8 @@ class SubmitSymphonyRequestJob < ApplicationJob
   end
 
   Command = SubmitSymphonyRequestJob::SymWsCommand
+
+  def self.command
+    Command
+  end
 end

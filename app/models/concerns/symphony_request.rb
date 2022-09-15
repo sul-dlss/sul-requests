@@ -3,16 +3,22 @@
 ###
 #  Symphony methods for sending and managing requests in symphony
 module SymphonyRequest
+  extend ActiveSupport::Concern
+
+  included do
+    class_attribute :symphony_job, default: SubmitSymphonyRequestJob
+  end
+
   def send_to_symphony_now!(options = {})
-    SubmitSymphonyRequestJob.perform_now(id, options)
+    symphony_job.perform_now(id, options)
   end
 
   def send_to_symphony_later!(options = {})
-    SubmitSymphonyRequestJob.perform_later(id, options)
+    symphony_job.perform_later(id, options)
   end
 
-  def symphony_request(klass = SubmitSymphonyRequestJob::Command)
-    klass.new(self)
+  def symphony_request
+    symphony_job.command.new(self)
   end
 
   def symphony_response
