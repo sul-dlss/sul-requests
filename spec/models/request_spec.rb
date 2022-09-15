@@ -644,22 +644,6 @@ describe Request do
     end
   end
 
-  describe '#appears_in_myaccount?' do
-    context 'with non-webauth users' do
-      it 'is disabled' do
-        subject.user = create(:library_id_user)
-        expect(subject.appears_in_myaccount?).to be false
-      end
-    end
-
-    context 'for webauth users' do
-      it 'is enabled' do
-        subject.user = create(:webauth_user)
-        expect(subject.appears_in_myaccount?).to be true
-      end
-    end
-  end
-
   describe '#symphony_request' do
     it 'provides access to the raw request object' do
       expect(subject.symphony_request).to be_a SubmitSymphonyRequestJob::Command

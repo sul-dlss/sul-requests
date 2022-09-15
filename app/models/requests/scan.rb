@@ -11,10 +11,6 @@ class Scan < Request
     1
   end
 
-  def appears_in_myaccount?
-    false
-  end
-
   def item_commentable?
     false
   end

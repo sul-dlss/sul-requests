@@ -55,12 +55,6 @@ describe Scan do
     end
   end
 
-  describe '#appears_in_myaccount?' do
-    it 'is disabled' do
-      expect(subject.appears_in_myaccount?).to be false
-    end
-  end
-
   describe 'item_commentable?' do
     it 'is false' do
       expect(subject).not_to be_item_commentable
