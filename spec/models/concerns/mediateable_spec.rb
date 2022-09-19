@@ -39,19 +39,5 @@ describe 'Mediateable' do
         expect(subject).not_to be_mediateable
       end
     end
-
-    describe 'HV-ARCHIVE' do
-      before { subject.origin = 'HV-ARCHIVE' }
-
-      it 'returns true if the item is in a *-30 location' do
-        subject.origin_location = 'SOMEWHERE-30'
-        expect(subject).to be_mediateable
-      end
-
-      it 'returns false if the item is not in a *-30 location' do
-        subject.origin_location = 'SOMEWHERE-ELSE'
-        expect(subject).not_to be_mediateable
-      end
-    end
   end
 end

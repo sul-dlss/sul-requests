@@ -13,11 +13,11 @@ describe 'Requests Delegation' do
   end
 
   describe 'mediated page materials' do
-    it 'automaticallies delegate to the mediated page request form' do
-      visit new_request_path(item_id: '12345', origin: 'SPEC-COLL', origin_location: 'STACKS')
+    it 'automatically delegate to the mediated page request form' do
+      visit new_request_path(item_id: '12345', origin: 'ART', origin_location: 'ARTLCKL')
 
       expect(page).to have_css('h1#dialogTitle', text: 'Request on-site access')
-      expect(current_url).to eq new_mediated_page_url(item_id: '12345', origin: 'SPEC-COLL', origin_location: 'STACKS')
+      expect(current_url).to eq new_mediated_page_url(item_id: '12345', origin: 'ART', origin_location: 'ARTLCKL')
     end
   end
 

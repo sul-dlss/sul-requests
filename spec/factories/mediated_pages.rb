@@ -31,11 +31,20 @@ FactoryBot.define do
     association :user, factory: :sequence_webauth_user
   end
 
-  factory :hoover_archive_mediated_page, parent: :mediated_page do
-    origin { 'HV-ARCHIVE' }
-    origin_location { 'SOMEWHERE-30' }
-    destination { 'HV-ARCHIVE' }
+  factory :art_mediated_page, class: 'MediatedPage' do
+    item_id { '1234' }
+    origin { 'ART' }
+    origin_location { 'ARTLCKL' }
+    destination { 'ART' }
+    item_title { 'Art MediatedPage' }
+    needed_date { Time.zone.today }
     association :user, factory: :sequence_webauth_user
+
+    after(:build) do |request|
+      class << request
+        def needed_date_is_valid; end
+      end
+    end
   end
 
   factory :mediated_page_with_single_holding, parent: :mediated_page do

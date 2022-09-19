@@ -415,12 +415,6 @@ pageable:
     pickup_libraries:
       - SPEC-COLL
     mediated: true
-  - library: HV-ARCHIVE
-    locations_match:
-      - "-30$"
-    pickup_libraries:
-      - HV-ARCHIVE
-    mediated: true
   # Location-specific pickup libraries
   - locations:
       - PAGE-AR

@@ -553,13 +553,13 @@ FactoryBot.define do
 
     holdings do
       [
-        { 'code' => 'SPEC-COLL',
+        { 'code' => 'ART',
           'library_instructions' => {
             'heading' => 'Instruction Heading',
             'text' => 'This is the library instruction'
           },
           'locations' => [
-            { 'code' => 'STACKS',
+            { 'code' => 'ARTLCKL',
               'items' => [
                 { 'barcode' => '12345678',
                   'callnumber' => 'ABC 123',
