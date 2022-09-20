@@ -86,7 +86,7 @@ describe RequestsController do
     end
 
     describe 'for mediated pages' do
-      let(:request) { create(:request, origin: 'SPEC-COLL') }
+      let(:request) { create(:request, origin: 'ART', origin_location: 'ARTLCKL') }
 
       it 'delegates the request object' do
         path

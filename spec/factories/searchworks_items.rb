@@ -74,7 +74,7 @@ FactoryBot.define do
   factory :library_instructions_searchworks_item, class: 'SearchworksItem' do
     initialize_with { new(request) }
 
-    request { create(:request, origin: 'SPEC-COLL', origin_location: 'STACKS') }
+    request { create(:request, origin: 'ART', origin_location: 'ARTLCKL') }
 
     after(:build) do |item|
       class << item

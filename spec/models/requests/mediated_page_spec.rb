@@ -77,8 +77,8 @@ describe MediatedPage do
         needed_date: Time.zone.today - 1.day
       ).save(validate: false)
 
-      create(:hoover_archive_mediated_page, user: user, needed_date: Time.zone.today)
-      create(:hoover_archive_mediated_page, user: user, needed_date: Time.zone.today + 1.day)
+      create(:art_mediated_page, user: user, needed_date: Time.zone.today)
+      create(:art_mediated_page, user: user, needed_date: Time.zone.today + 1.day)
     end
 
     describe 'archived' do
@@ -108,7 +108,7 @@ describe MediatedPage do
     describe 'for_origin' do
       it 'returns the records for a given origin' do
         expect(described_class.for_origin('SPEC-COLL').length).to eq 3
-        expect(described_class.for_origin('HV-ARCHIVE').length).to eq 2
+        expect(described_class.for_origin('ART').length).to eq 2
       end
     end
   end

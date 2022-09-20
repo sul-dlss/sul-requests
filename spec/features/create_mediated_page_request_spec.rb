@@ -102,7 +102,7 @@ describe 'Creating a mediated page request' do
     end
 
     it 'does not include a comments for requests that do not get them' do
-      visit new_mediated_page_path(item_id: '1234', origin: 'HV-ARCHIVE', origin_location: 'STACKS-30')
+      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
 
       expect(page).not_to have_field('Comments')
     end
