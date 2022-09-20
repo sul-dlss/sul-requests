@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'shared/_item_selector.html.erb' do
+describe 'application/_item_selector.html.erb' do
   let(:user) { create(:webauth_user) }
 
   before do

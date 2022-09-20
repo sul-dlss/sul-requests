@@ -32,11 +32,11 @@
         </div>
         <div id="item-selector" class="item-selector" data-limit-selected-items="<%= f.object.item_limit if f.object.item_limit.to_i > 1 %>" data-counter-target="[data-items-counter='true']">
           <div class='list'>
-            <% f.object.all_holdings.sort_by(&:callnumber).each do |holding| %>
+            <% f.object.all_holdings.sort_by(&:callnumber).each.with_index(1) do |holding, index| %>
               <div class='input-group'>
                 <% if f.object.item_limit.to_i == 1 %>
                   <span class='input-group-addon barcode-checkbox'>
-                    <%= barcode.radio_button_without_bootstrap nil, holding.barcode, checked: f.object.requested_holdings.include?(holding), data: { barcode: holding.barcode, callnumber: holding.callnumber } %>
+                    <%= render partial: 'item_selector_radio_button', locals: { f: f, barcode: barcode, holding: holding, index: index } %>
                   </span>
                   <%= barcode.label "_#{holding.barcode}", class: 'form-control' do %>
                     <span class='callnumber'><%= holding.callnumber %></span>
@@ -44,7 +44,7 @@
                   <% end %>
                 <% else %>
                   <span class='input-group-addon barcode-checkbox'>
-                    <%= barcode.check_box_without_bootstrap holding.barcode, checked: f.object.requested_holdings.include?(holding), data: { barcode: holding.barcode, callnumber: holding.callnumber } %>
+                    <%= render partial: 'item_selector_checkbox', locals: { f: f, barcode: barcode, holding: holding, index: index } %>
                   </span>
                   <%= barcode.label holding.barcode, class: 'form-control' do %>
                     <span class='callnumber'><%= holding.callnumber %></span>
