@@ -7,7 +7,7 @@ describe 'shared/_item_selector.html.erb' do
 
   before do
     without_partial_double_verification do
-      allow(Settings.pageable.find { |x| x.library == 'SPEC-COLL' }).to receive(:ad_hoc_item_commentable).and_return(true)
+      allow(Settings.pageable.find { |x| x.library == 'ART' }).to receive(:ad_hoc_item_commentable).and_return(true)
     end
 
     view.bootstrap_form_for(request, url: '/') do |f|

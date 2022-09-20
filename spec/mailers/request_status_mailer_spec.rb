@@ -95,7 +95,7 @@ describe RequestStatusMailer do
           let(:request) { create(:mediated_page, user: user) }
 
           it 'is the configured from address for the origin' do
-            expect(mail.from).to eq ['specialcollections@stanford.edu']
+            expect(mail.from).to eq ['artlibrary@stanford.edu']
           end
         end
 
@@ -109,20 +109,10 @@ describe RequestStatusMailer do
       end
 
       describe 'subject' do
-        describe 'for mediated pages from SPEC-COLL' do
-          let(:request) { create(:mediated_page, origin: 'SPEC-COLL', user: user) }
+        let(:request) { create(:page_mp_mediated_page, user: user) }
 
-          it 'is custom' do
-            expect(mail.subject).to eq "Request received: \"#{request.item_title}\""
-          end
-        end
-
-        describe 'for other requests' do
-          let(:request) { create(:page_mp_mediated_page, user: user) }
-
-          it 'is the default' do
-            expect(mail.subject).to eq "Request is pending approval (\"#{request.item_title}\")"
-          end
+        it 'is the default' do
+          expect(mail.subject).to eq "Request is pending approval (\"#{request.item_title}\")"
         end
       end
 
@@ -185,7 +175,7 @@ describe RequestStatusMailer do
         let(:request) { create(:mediated_page, user: user) }
 
         it 'is the configured from address for the origin' do
-          expect(mail.from).to eq ['specialcollections@stanford.edu']
+          expect(mail.from).to eq ['artlibrary@stanford.edu']
         end
       end
 

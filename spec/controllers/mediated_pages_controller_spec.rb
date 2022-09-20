@@ -5,7 +5,7 @@ require 'rails_helper'
 describe MediatedPagesController do
   let(:mediated_page) { create(:mediated_page) }
   let(:normal_params) do
-    { item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'SPEC-COLL' }
+    { item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL', destination: 'ART' }
   end
 
   before do
@@ -26,8 +26,8 @@ describe MediatedPagesController do
 
     it 'sets defaults' do
       get :new, params: normal_params
-      expect(assigns[:request].origin).to eq 'SPEC-COLL'
-      expect(assigns[:request].origin_location).to eq 'STACKS'
+      expect(assigns[:request].origin).to eq 'ART'
+      expect(assigns[:request].origin_location).to eq 'ARTLCKL'
       expect(assigns[:request].item_id).to eq '1234'
     end
 
@@ -45,7 +45,7 @@ describe MediatedPagesController do
       it 'redirects to the login page passing a referrer param to continue creating the mediated page request' do
         post :create, params: {
           request: {
-            item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'SPEC-COLL'
+            item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL', destination: 'ART'
           }
         }
         expect(response).to redirect_to(
@@ -53,7 +53,7 @@ describe MediatedPagesController do
             referrer: interstitial_path(
               redirect_to: create_mediated_pages_url(
                 request: {
-                  item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'SPEC-COLL'
+                  item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL', destination: 'ART'
                 }
               )
             )
@@ -65,9 +65,9 @@ describe MediatedPagesController do
         put :create, params: {
           request: {
             item_id: '1234',
-            origin: 'SPEC-COLL',
-            origin_location: 'STACKS',
-            destination: 'SPEC-COLL',
+            origin: 'ART',
+            origin_location: 'ARTLCKL',
+            destination: 'ART',
             needed_date: Time.zone.today + 1.year,
             user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }
           }
@@ -85,9 +85,9 @@ describe MediatedPagesController do
         put :create, params: {
           request: {
             item_id: '1234',
-            origin: 'SPEC-COLL',
-            origin_location: 'STACKS',
-            destination: 'SPEC-COLL',
+            origin: 'ART',
+            origin_location: 'ARTLCKL',
+            destination: 'ART',
             needed_date: Time.zone.today + 1.year,
             user_attributes: { library_id: '12345' }
           }
@@ -103,7 +103,7 @@ describe MediatedPagesController do
           expect do
             get :create, params: {
               request: {
-                item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS', destination: 'SPEC-COLL'
+                item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL', destination: 'ART'
               }
             }
           end.to raise_error(CanCan::AccessDenied)
@@ -118,14 +118,14 @@ describe MediatedPagesController do
         post :create, params: {
           request: {
             item_id: '1234',
-            origin: 'SPEC-COLL',
-            origin_location: 'STACKS',
-            destination: 'SPEC-COLL',
+            origin: 'ART',
+            origin_location: 'ARTLCKL',
+            destination: 'ART',
             needed_date: Time.zone.today + 1.year
           }
         }
         expect(response).to redirect_to successful_mediated_page_path(MediatedPage.last)
-        expect(MediatedPage.last.origin).to eq 'SPEC-COLL'
+        expect(MediatedPage.last.origin).to eq 'ART'
         expect(MediatedPage.last.user).to eq user
       end
 
@@ -134,9 +134,9 @@ describe MediatedPagesController do
           put :create, params: {
             request: {
               item_id: '1234',
-              origin: 'SPEC-COLL',
-              origin_location: 'STACKS',
-              destination: 'SPEC-COLL',
+              origin: 'ART',
+              origin_location: 'ARTLCKL',
+              destination: 'ART',
               needed_date: Time.zone.today + 1.year
             }
           }
@@ -144,15 +144,15 @@ describe MediatedPagesController do
       end
 
       it 'sends an email to the mediator' do
-        mediator_contact_info = { 'SPEC-COLL' => { email: 'someone@example.com' } }
+        mediator_contact_info = { 'ART' => { email: 'someone@example.com' } }
         allow(Rails.application.config).to receive(:mediator_contact_info).and_return(mediator_contact_info)
         expect do
           put :create, params: {
             request: {
               item_id: '1234',
-              origin: 'SPEC-COLL',
-              origin_location: 'STACKS',
-              destination: 'SPEC-COLL',
+              origin: 'ART',
+              origin_location: 'ARTLCKL',
+              destination: 'ART',
               needed_date: Time.zone.today + 1.year
             }
           }

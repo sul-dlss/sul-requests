@@ -11,7 +11,7 @@ describe 'Creating a mediated page request' do
 
   describe 'by an anonmyous user' do
     it 'is possible to toggle between login and name-email form', js: true do
-      visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
 
       click_remote_user_confirmation
 
@@ -29,7 +29,7 @@ describe 'Creating a mediated page request' do
     end
 
     it 'is possible if a name and email is filled out', js: true do
-      visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
 
       click_remote_user_confirmation
 
@@ -45,7 +45,7 @@ describe 'Creating a mediated page request' do
     end
 
     it 'is possible if a library id is filled out', js: true do
-      visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
 
       click_remote_user_confirmation
 
@@ -72,7 +72,7 @@ describe 'Creating a mediated page request' do
     before { stub_current_user(user) }
 
     it 'is possible without filling in any user information' do
-      visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
 
       fill_in_required_fields
 
@@ -87,7 +87,8 @@ describe 'Creating a mediated page request' do
     before { stub_current_user(user) }
 
     it 'has a comments field for commentable libraries' do
-      visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+      skip 'No commentable libraries as of 2022-09-22'
+      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
 
       fill_in_required_fields
 
@@ -112,7 +113,7 @@ describe 'Creating a mediated page request' do
     before { stub_current_user(user) }
 
     it 'has a field for the planned date of visit' do
-      visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
       date = (Time.zone.now + 1.day).to_date
 
       fill_in 'I plan to visit on', with: date
@@ -128,11 +129,11 @@ describe 'Creating a mediated page request' do
   describe 'selecting barcodes' do
     before do
       stub_current_user(user)
-      stub_searchworks_api_json(build(:special_collections_holdings))
+      stub_searchworks_api_json(build(:searchable_holdings))
     end
 
     it 'persists to the database' do
-      visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
 
       fill_in_required_fields
 
@@ -145,20 +146,6 @@ describe 'Creating a mediated page request' do
       expect_to_be_on_success_page
 
       expect(MediatedPage.last.barcodes).to eq(%w(12345678))
-    end
-  end
-
-  describe 'special note for SPEC items about reading room access' do
-    before do
-      stub_current_user(user)
-      allow(Settings.features).to receive(:special_spec_note).and_return(true)
-    end
-
-    it 'is present' do
-      visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
-
-      expect(page).to have_css('.control-label', text: 'Reading Room access')
-      expect(page).to have_css('.input-like-text', text: /^When the items have been approved and are ready for use/)
     end
   end
 

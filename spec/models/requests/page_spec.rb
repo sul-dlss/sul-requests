@@ -19,9 +19,9 @@ describe Page do
       expect do
         described_class.create!(
           item_id: '1234',
-          origin: 'SPEC-COLL',
-          origin_location: 'STACKS',
-          destination: 'SPEC-COLL'
+          origin: 'ART',
+          origin_location: 'ARTLCKL',
+          destination: 'ART'
         )
       end.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: This item is not pageable')
     end

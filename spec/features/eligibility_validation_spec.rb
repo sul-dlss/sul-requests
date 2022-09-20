@@ -49,7 +49,7 @@ describe 'Eligibility Validation' do
       end
 
       it 'allows the request to be submitted' do
-        visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+        visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
 
         fill_in_required_fields
 
@@ -66,7 +66,7 @@ describe 'Eligibility Validation' do
       end
 
       it 'allows the request to be submitted' do
-        visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+        visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
 
         fill_in_required_fields
 
@@ -83,10 +83,10 @@ describe 'Eligibility Validation' do
       end
 
       it 'sends the user to the ineligible mediated pages page' do
-        visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+        visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
         first(:button, 'Send request').click
 
-        expect(current_url).to eq ineligible_mediated_pages_url(origin: 'SPEC-COLL')
+        expect(current_url).to eq ineligible_mediated_pages_url(origin: 'ART')
         expect(page).to have_css('h1#dialogTitle', text: /Sorry, we can't fulfill your request/)
         expect(MediatedPage.last).to be_nil
       end
@@ -102,7 +102,7 @@ describe 'Eligibility Validation' do
       end
 
       it 'allows users who can manage the mediated page to submit the request ' do
-        visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+        visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
 
         fill_in_required_fields
 

@@ -16,12 +16,24 @@ class SearchworksItem
     json['title'] || ''
   end
 
+  def author
+    json['author'] || ''
+  end
+
+  def pub_date
+    json['pub_date'] || ''
+  end
+
   def format
     json['format'] || []
   end
 
   def isbn
     json['isbn'] || []
+  end
+
+  def finding_aid
+    json['finding_aid'] || ''
   end
 
   def holdings
@@ -38,6 +50,14 @@ class SearchworksItem
     !!json['temporary_access']
   end
 
+  def finding_aid?
+    !!json['finding_aid']
+  end
+
+  def view_url
+    [base_uri, 'view', request.item_id].join('/')
+  end
+
   private
 
   def base_uri
@@ -45,7 +65,7 @@ class SearchworksItem
   end
 
   def url
-    full_url = [base_uri, 'view', request.item_id, 'availability'].join('/')
+    full_url = [view_url, 'availability'].join('/')
     full_url << '?live=false' unless live_lookup
     full_url
   end

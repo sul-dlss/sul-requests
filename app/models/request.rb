@@ -26,8 +26,10 @@ class Request < ActiveRecord::Base
     where('created_at < ? AND (type != "MediatedPage" OR needed_date < ?)', date, date)
   }
 
-  delegate :hold_recallable?, :mediateable?, :pageable?, :scannable?, :scannable_only?,
-           :location_rule, :scannable_location_rule, to: :request_abilities
+  delegate :hold_recallable?, :mediateable?, :pageable?, :aeon_pageable?, :scannable?, :scannable_only?,
+           :location_rule, :scannable_location_rule, :aeon_site, to: :request_abilities
+
+  delegate :finding_aid, :finding_aid?, to: :searchworks_item
 
   # Serialized data hash
   store :data, accessors: [
@@ -67,6 +69,7 @@ class Request < ActiveRecord::Base
 
   def delegate_request!
     case
+    when aeon_pageable? then becomes!(AeonPage)
     when mediateable? then becomes!(MediatedPage)
     when hold_recallable? then becomes!(HoldRecall)
     else becomes!(Page)

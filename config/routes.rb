@@ -54,6 +54,7 @@ Rails.application.routes.draw do
   end
 
   resources :requests, only: :new
+  resources :aeon_pages, only: :new
   resources :pages, concerns: [:creatable_via_get_redirect, :eligibility_checkable, :successable, :statusable]
   resources :scans, concerns: [:creatable_via_get_redirect, :eligibility_checkable, :successable, :statusable]
   resources :mediated_pages, concerns: [:admin_commentable, :creatable_via_get_redirect, :eligibility_checkable, :successable, :statusable]

@@ -38,6 +38,8 @@ class LocationRules
              :confirm_eligibility,
              :default_pickup_library,
              :mediated,
+             :aeon,
+             :aeon_site,
              :destination,
              :send_honeybadger_notice_if_used,
              to: :rule

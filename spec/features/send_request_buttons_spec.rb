@@ -100,7 +100,7 @@ describe 'Send Request Buttons' do
 
   describe 'Mediated Pages' do
     it 'allows users to submit without a SUNet ID' do
-      visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
       expect(page).to have_css('a', text: 'I don\'t have a SUNet ID')
     end
   end

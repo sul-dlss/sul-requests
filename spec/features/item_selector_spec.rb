@@ -3,7 +3,9 @@
 require 'rails_helper'
 
 describe 'Item Selector' do
-  before { stub_current_user(create(:webauth_user)) }
+  before do
+    stub_current_user(create(:webauth_user))
+  end
 
   describe 'for single items' do
     before { stub_searchworks_api_json(build(:single_holding)) }
@@ -18,6 +20,7 @@ describe 'Item Selector' do
 
   describe 'for multiple items', js: true do
     before do
+      allow_any_instance_of(MediatedPage).to receive(:item_limit).and_return(5)
       stub_searchworks_api_json(holdings)
       visit request_path
     end
@@ -84,9 +87,11 @@ describe 'Item Selector' do
         end
       end
 
-      describe 'for mediated pages', js: true do
-        let(:request_path) { new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS') }
-        let(:holdings) { build(:searchable_holdings) }
+      describe 'for aeon pages', js: true do
+        let(:request_path) { new_aeon_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS') }
+        let(:holdings) { build(:searchable_spec_holdings) }
+
+        before { click_on 'Continue' }
 
         describe 'in SPEC-COLL' do
           it 'does not allow more than 5 to be selected' do
@@ -128,7 +133,7 @@ describe 'Item Selector' do
     end
 
     describe 'when there are enough to be searchable' do
-      let(:request_path) { new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS') }
+      let(:request_path) { new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL') }
       let(:holdings) { build(:searchable_holdings) }
 
       it 'limits items using the search box' do
@@ -220,7 +225,7 @@ describe 'Item Selector' do
     xit 'still limits selections' do
       skip('The CDN we load the date slider from seems to block Travis') if ENV['ci']
 
-      visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
 
       fill_in_required_date
 
@@ -290,10 +295,11 @@ describe 'Item Selector' do
   describe 'ad-hoc items', js: true do
     before do
       without_partial_double_verification do
-        allow(Settings.pageable.find { |x| x.library == 'SPEC-COLL' }).to receive(:ad_hoc_item_commentable).and_return(true)
+        allow(Settings.pageable.find { |x| x.library == 'ART' }).to receive(:ad_hoc_item_commentable).and_return(true)
       end
+      allow_any_instance_of(MediatedPage).to receive(:item_limit).and_return(5)
       stub_searchworks_api_json(build(:searchable_holdings))
-      visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
     end
 
     it 'are addable and removable' do
@@ -392,7 +398,7 @@ describe 'Item Selector' do
   end
 
   describe 'public notes' do
-    let(:request_path) { new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS') }
+    let(:request_path) { new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL') }
     let(:holdings) { build(:searchable_holdings) }
 
     before do

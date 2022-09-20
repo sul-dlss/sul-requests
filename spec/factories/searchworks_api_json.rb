@@ -207,6 +207,83 @@ FactoryBot.define do
 
   factory :special_collections_holdings, class: 'Hash' do
     title { 'Special Collections Item Title' }
+    author { 'John Q. Public' }
+    pub_date { '2018' }
+
+    format { ['Book'] }
+
+    holdings do
+      [
+        { 'code' => 'SPEC-COLL',
+          'locations' => [
+            { 'code' => 'STACKS',
+              'items' => [
+                { 'barcode' => '12345678',
+                  'callnumber' => 'ABC 123',
+                  'type' => 'STKS',
+                  'status' => {
+                    'availability_class' => 'page',
+                    'status_text' => 'Page'
+                  }
+                },
+                { 'barcode' => '87654321',
+                  'callnumber' => 'ABC 321',
+                  'type' => 'STKS',
+                  'status' => {
+                    'availability_class' => 'page',
+                    'status_text' => 'Page'
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    end
+
+    initialize_with do
+      attributes.transform_keys(&:to_s).to_h
+    end
+  end
+
+  factory :special_collections_single_holding, class: 'Hash' do
+    title { 'Special Collections Item Title' }
+    author { 'John Q. Public' }
+    pub_date { '2018' }
+
+    format { ['Book'] }
+
+    holdings do
+      [
+        { 'code' => 'SPEC-COLL',
+          'locations' => [
+            { 'code' => 'STACKS',
+              'items' => [
+                { 'barcode' => '12345678',
+                  'callnumber' => 'ABC 123',
+                  'type' => 'STKS',
+                  'status' => {
+                    'availability_class' => 'page',
+                    'status_text' => 'Page'
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    end
+
+    initialize_with do
+      attributes.transform_keys(&:to_s).to_h
+    end
+  end
+
+  factory :special_collections_finding_aid_holdings, class: 'Hash' do
+    title { 'Special Collections Item Title' }
+    author { 'John Q. Public' }
+    pub_date { '2018' }
+    finding_aid { 'http://www.oac.cdlib.org/findaid/ark:/12345/abcdefgh/' }
 
     format { ['Book'] }
 
@@ -408,6 +485,151 @@ FactoryBot.define do
 
     holdings do
       [
+        { 'code' => 'ART',
+          'locations' => [
+            { 'code' => 'ARTLCKL',
+              'items' => [
+                { 'barcode' => '12345678',
+                  'callnumber' => 'ABC 123',
+                  'type' => 'LCKSTK',
+                  'current_location' => {
+                    'code' => ''
+                  },
+                  'home_location' => 'STACKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
+                },
+                { 'barcode' => '23456789',
+                  'callnumber' => 'ABC 456',
+                  'type' => 'LCKSTK',
+                  'public_note' => 'note for 23456789',
+                  'current_location' => {
+                    'code' => ''
+                  },
+                  'home_location' => 'STACKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
+                },
+                { 'barcode' => '34567890',
+                  'callnumber' => 'ABC 789',
+                  'type' => 'LCKSTK',
+                  'current_location' => {
+                    'code' => ''
+                  },
+                  'home_location' => 'STACKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
+                },
+                { 'barcode' => '45678901',
+                  'callnumber' => 'ABC 012',
+                  'type' => 'LCKSTK',
+                  'public_note' => 'note for 45678901',
+                  'current_location' => {
+                    'code' => ''
+                  },
+                  'home_location' => 'STACKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
+                },
+                { 'barcode' => '56789012',
+                  'callnumber' => 'ABC 345',
+                  'type' => 'LCKSTK',
+                  'current_location' => {
+                    'code' => ''
+                  },
+                  'home_location' => 'STACKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
+                },
+                { 'barcode' => '67890123',
+                  'callnumber' => 'ABC 678',
+                  'type' => 'LCKSTK',
+                  'current_location' => {
+                    'code' => ''
+                  },
+                  'home_location' => 'STACKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
+                },
+                { 'barcode' => '78901234',
+                  'callnumber' => 'ABC 901',
+                  'type' => 'LCKSTK',
+                  'current_location' => {
+                    'code' => ''
+                  },
+                  'home_location' => 'STACKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
+                },
+                { 'barcode' => '89012345',
+                  'callnumber' => 'ABC 234',
+                  'type' => 'LCKSTK',
+                  'current_location' => {
+                    'code' => ''
+                  },
+                  'home_location' => 'STACKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
+                },
+                { 'barcode' => '90123456',
+                  'callnumber' => 'ABC 567',
+                  'type' => 'LCKSTK',
+                  'current_location' => {
+                    'code' => ''
+                  },
+                  'home_location' => 'STACKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
+                },
+                { 'barcode' => '01234567',
+                  'callnumber' => 'ABC 890',
+                  'type' => 'LCKSTK',
+                  'current_location' => {
+                    'code' => ''
+                  },
+                  'home_location' => 'STACKS',
+                  'status' => {
+                    'availability_class' => 'available',
+                    'status_text' => 'Available'
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    end
+
+    initialize_with do
+      attributes.transform_keys(&:to_s).to_h
+    end
+  end
+
+  factory :searchable_spec_holdings, class: 'Hash' do
+    title { 'Item Title' }
+
+    format { ['Book'] }
+
+    holdings do
+      [
         { 'code' => 'SPEC-COLL',
           'locations' => [
             { 'code' => 'STACKS',
@@ -563,7 +785,7 @@ FactoryBot.define do
               'items' => [
                 { 'barcode' => '12345678',
                   'callnumber' => 'ABC 123',
-                  'type' => 'STKS',
+                  'type' => 'LCKSTK',
                   'status' => {
                     'availability_class' => 'available',
                     'status_text' => 'Available'

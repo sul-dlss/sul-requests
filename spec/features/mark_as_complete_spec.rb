@@ -21,7 +21,7 @@ describe 'Mark As Complete', js: true do
       )
     end
 
-    before { visit admin_path('SPEC-COLL') }
+    before { visit admin_path('ART') }
 
     it 'saves state for the request object' do
       expect(mediated_page).not_to be_marked_as_done
@@ -78,7 +78,7 @@ describe 'Mark As Complete', js: true do
       )
     end
 
-    before { visit admin_path('SPEC-COLL', done: 'true') }
+    before { visit admin_path('ART', done: 'true') }
 
     it 'has a disabled button' do
       within(first('[data-mediate-request]')) do
