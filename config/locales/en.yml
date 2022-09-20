@@ -124,6 +124,40 @@ en:
       default: 'Request on-site access'
       HOPKINS: 'Request delivery to campus library'
       PAGE-MP: 'Request delivery to campus library'
+  aeon_pages:
+    new:
+      header: Request access
+      continue_button: Continue to complete request
+    info_modal:
+      header: '%{library} access'
+      reading_room_info: Restricted items are made available for use in the Reading Room. They cannot be checked out from the library or borrowed via Interlibrary Loan.
+      how_to:
+        header: How does it work?
+        body: On-site and digital access requests are managed by Aeon, an archives and special collections system. If you haven’t already created a Stanford Aeon special collections research account, you will need to do so as part of the request process. Once you have an Aeon account, you will be able to check the status of requests, edit or cancel requests, create a new appointment or edit an existing appointment, and review your request history.
+      steps: 
+        header: 'To make a request:'
+        single_vol_html: |
+          <li>Log in to your Stanford Aeon user account (or create one)</li>
+          <li>Complete the request form</li>
+          <li>For on-site requests, create an appointment so we know when you’re planning to arrive</li>
+          <li>Submit your request</li>
+        multi_vol_html: |
+          <li>Select the materials you would like access to</li>
+          <li>Log in to your Stanford Aeon user account (or create one)</li>
+          <li>Complete the request form</li>
+          <li>For on-site requests, create an appointment so we know when you’re planning to arrive</li>
+          <li>Submit your request</li>
+        finding_aid_html: |
+          <li>Review the Collection Guide in the Online Archive of California</li>
+          <li>Select “Request items”</li>
+          <li>Log in to your Stanford Aeon user account (or create one)</li>
+          <li>Select the materials you would like access to</li>
+          <li>Complete the request form</li>
+          <li>For on-site requests, create an appointment so we know when you’re planning to arrive</li>
+          <li>Submit your request</li>
+      more_details_html: 'For more details, visit the <a href="%{reading_room_url}">%{library} Reading Room service page <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a>'
+      continue_button: Continue
+      cancel_button: Cancel
   multiple_holds_notification:
     subject: "Multiple pages for %{patron_barcode}"
   requests:
@@ -155,7 +189,7 @@ en:
       default:
         alert_html: "We were unable to process your request because of a system error. Please try again, or contact <a href='mailto:greencirc@stanford.edu'>greencirc@stanford.edu</a> for more assistance."
     mixed_failure_html: "<p>There was a problem with one or more of your items below.</p><p>Please contact <a href='mailto:greencirc@stanford.edu'>greencirc@stanford.edu</a></p>"
-  shared:
+  application:
     item_selector:
       help_text:
         one: 'Select an item from the list above.'
