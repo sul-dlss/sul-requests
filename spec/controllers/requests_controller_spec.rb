@@ -10,7 +10,7 @@ describe RequestsController do
     { item_id: '12345', origin: 'SAL1/2', origin_location: 'STACKS' }
   end
   let(:mediated_page_params) do
-    { item_id: '12345', origin: 'SPEC-COLL', origin_location: 'STACKS' }
+    { item_id: '12345', origin: 'ART', origin_location: 'ARTLCKL' }
   end
   let(:hold_recall_params) do
     { item_id: '12345', barcode: '3610512345', origin: 'GREEN', origin_location: 'STACKS' }
@@ -95,6 +95,19 @@ describe RequestsController do
 
       it 'returns the mediated page path' do
         expect(path).to eq new_mediated_page_path
+      end
+    end
+
+    describe 'for aeon pages' do
+      let(:request) { create(:request, origin: 'SPEC-COLL') }
+
+      it 'delegates the request object' do
+        path
+        expect(request.type).to eq 'AeonPage'
+      end
+
+      it 'returns the aeon page path' do
+        expect(path).to eq new_aeon_page_path
       end
     end
   end

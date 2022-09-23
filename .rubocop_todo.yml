@@ -142,7 +142,7 @@ RSpec/FilePath:
 RSpec/InstanceVariable:
   Exclude:
     - 'spec/views/messages/edit.html.erb_spec.rb'
-    - 'spec/views/shared/_item_selector.html.erb_spec.rb'
+    - 'spec/views/application/_item_selector.html.erb_spec.rb'
 
 # Offense count: 1
 RSpec/LetSetup:

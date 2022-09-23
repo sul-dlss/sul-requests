@@ -168,6 +168,7 @@ libraries:
     contact_info:
       phone: (650) 723-9312
       email: soundarchive@stanford.edu
+    reading_room_url: https://library.stanford.edu/ars/using-archive
     hold_pseudopatron: HOLD@AS
     hours:
       library_slug: ars
@@ -217,6 +218,7 @@ libraries:
     contact_info:
       phone: (650) 725-3435
       email: eastasialibrary@stanford.edu
+    reading_room_url: https://library.stanford.edu/eal/special-collections-east-asia
     hold_pseudopatron: HOLD@EA
     hours:
       library_slug: eal
@@ -316,6 +318,7 @@ libraries:
     contact_info:
       phone: (650) 498-8698
       email: rumseymapcenter@stanford.edu
+    reading_room_url: https://library.stanford.edu/rumsey/about-center/visitor-policies
     hold_pseudopatron: HOLD@RM
     hours:
       library_slug: Rumsey
@@ -363,6 +366,7 @@ libraries:
     contact_info:
       phone: "(650) 725-1022"
       email: specialcollections@stanford.edu
+    reading_room_url: https://library.stanford.edu/spc/using-our-collections
     hold_pseudopatron: HOLD@SP
     hours:
       library_slug: spc
@@ -381,16 +385,53 @@ locations:
       email: 'brannerlibrary@stanford.edu'
 
 pageable:
-  # Mediated pages
+  # Libraries using Aeon
+  - library: ARS
+    locations:
+      - RECORDINGS
+    aeon: true
+    aeon_site: ARS
+  - library: EAST-ASIA
+    locations:
+      - LOCKED-STK
+      - LOCK-STK-O
+      - LOCK-CHN
+    item_types:
+      - LCKSTK
+    aeon: true
+    aeon_site: EASTASIA
   - library: RUMSEYMAP
     pickup_libraries:
       - RUMSEYMAP
-    mediated: true
+    aeon: true
+    aeon_site: RUMSEYMAP
   - library: SPEC-COLL
     pickup_libraries:
       - SPEC-COLL
-    mediated: true
-    item_commentable: true
+    aeon: true
+    aeon_site: SPECUA
+  - library: SAL
+    locations:
+      - L-PAGE-EA
+    item_types:
+      - NH-INHOUSE
+    aeon: true
+    aeon_site: EASTASIA
+  - library: SAL3
+    locations:
+      - PAGE-AS
+    item_types:
+      - NH-INHOUSE
+    aeon: true
+    aeon_site: ARS
+  - library: SAL3
+    locations:
+      - PAGE-EA
+    item_types:
+      - LCKSTK
+    aeon: true
+    aeon_site: EASTASIA
+  # Mediated pages
   - library: ART
     locations:
       - ARTLCKL
@@ -662,3 +703,6 @@ scannable:
     destination:
       key: 'SAL3'
       patron_barcode: 'SAL3-SCANDELIVER'
+
+# Aeon external request endpoint (ERE)
+aeon_ere_url: https://stanford.aeon.atlas-sys.com/logon?Action=11&Type=200

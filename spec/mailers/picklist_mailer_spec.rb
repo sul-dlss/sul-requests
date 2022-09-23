@@ -20,19 +20,19 @@ describe PicklistMailer do
     end
 
     it 'sends a picklist since the last time it was run' do
-      described_class.deliver_picklist('SPEC-COLL', last_run_file: state_file.path)
+      described_class.deliver_picklist('ART', last_run_file: state_file.path)
 
-      expect(described_class).to have_received(:picklist_notification).with('SPEC-COLL', range: last_run_time...now)
+      expect(described_class).to have_received(:picklist_notification).with('ART', range: last_run_time...now)
     end
 
     it 'defaults to the last day' do
-      described_class.deliver_picklist('SPEC-COLL', last_run_file: Tempfile.new('whatever').path)
+      described_class.deliver_picklist('ART', last_run_file: Tempfile.new('whatever').path)
 
-      expect(described_class).to have_received(:picklist_notification).with('SPEC-COLL', range: (now - 1.day)...now)
+      expect(described_class).to have_received(:picklist_notification).with('ART', range: (now - 1.day)...now)
     end
 
     it 'records its last run time' do
-      described_class.deliver_picklist('SPEC-COLL', last_run_file: state_file.path)
+      described_class.deliver_picklist('ART', last_run_file: state_file.path)
 
       expect(File.read(state_file.path)).to eq now.to_s
     end
@@ -57,6 +57,7 @@ describe PicklistMailer do
     end
 
     it 'attaches a picklist' do
+      skip 'SPEC-COLL is using Aeon now'
       mail = described_class.picklist_notification('SPEC-COLL', range: (Time.zone.now - 2.days)...Time.zone.now)
 
       expect(mail.to).to include 'specialcollections@stanford.edu'

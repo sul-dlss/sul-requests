@@ -115,7 +115,10 @@ describe 'requests/status.html.erb' do
   describe 'request level comments' do
     let(:request) { create(:mediated_page_with_holdings, user: user, request_comment: 'Here today, gone tomorrow') }
 
-    before { render }
+    before do
+      allow(request).to receive(:request_commentable?).and_return(true)
+      render
+    end
 
     it 'are displayed when they are present' do
       expect(rendered).to have_css('dt', text: 'Comment')

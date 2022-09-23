@@ -54,7 +54,7 @@ describe 'Home Page' do
     end
 
     it 'has links for the library level mediation' do
-      expect(page).to have_link('Special Collections', href: '/admin/SPEC-COLL')
+      expect(page).to have_link('Art & Architecture Library (Bowes)', href: '/admin/ART')
     end
 
     it 'has links for the location level mediation' do

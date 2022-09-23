@@ -27,8 +27,8 @@ describe MediatedPage do
     it 'does not not allow pages to be created with destinations that are not valid pickup libraries of their origin' do
       expect do
         described_class.create!(item_id: '1234',
-                                origin: 'SPEC-COLL',
-                                origin_location: 'STACKS',
+                                origin: 'ART',
+                                origin_location: 'ARTLCKL',
                                 destination: 'GREEN',
                                 needed_date: Time.zone.today + 1.day)
       end.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Destination is not a valid pickup library')
@@ -37,9 +37,9 @@ describe MediatedPage do
     it 'does not allow requests to be submitted without a needed_date when required' do
       expect do
         described_class.create!(item_id: '1234',
-                                origin: 'SPEC-COLL',
-                                origin_location: 'STACKS',
-                                destination: 'SPEC-COLL')
+                                origin: 'ART',
+                                origin_location: 'ARTLCKL',
+                                destination: 'ART')
       end.to raise_error(ActiveRecord::RecordInvalid, "Validation failed: I plan to visit on can't be blank")
     end
 
@@ -77,8 +77,8 @@ describe MediatedPage do
         needed_date: Time.zone.today - 1.day
       ).save(validate: false)
 
-      create(:art_mediated_page, user: user, needed_date: Time.zone.today)
-      create(:art_mediated_page, user: user, needed_date: Time.zone.today + 1.day)
+      create(:page_mp_mediated_page, user: user, needed_date: Time.zone.today)
+      create(:page_mp_mediated_page, user: user, needed_date: Time.zone.today + 1.day)
     end
 
     describe 'archived' do
@@ -107,8 +107,8 @@ describe MediatedPage do
 
     describe 'for_origin' do
       it 'returns the records for a given origin' do
-        expect(described_class.for_origin('SPEC-COLL').length).to eq 3
-        expect(described_class.for_origin('ART').length).to eq 2
+        expect(described_class.for_origin('ART').length).to eq 3
+        expect(described_class.for_origin('PAGE-MP').length).to eq 2
       end
     end
   end
@@ -282,16 +282,16 @@ describe MediatedPage do
 
   describe '#needed_dates_for_origin_after_date' do
     before do
-      build(:mediated_page, origin: 'SPEC-COLL', needed_date: Time.zone.today - 2.days).save(validate: false)
-      build(:mediated_page, origin: 'SPEC-COLL', needed_date: Time.zone.today - 1.day).save(validate: false)
-      build(:mediated_page, origin: 'SPEC-COLL', needed_date: Time.zone.today).save(validate: false)
-      build(:mediated_page, origin: 'SPEC-COLL', needed_date: Time.zone.today + 2.days).save(validate: false)
-      build(:mediated_page, origin: 'SPEC-COLL', needed_date: Time.zone.today + 1.day).save(validate: false)
-      build(:mediated_page, origin: 'SPEC-COLL', needed_date: Time.zone.today + 1.day).save(validate: false)
-      build(:mediated_page, origin: 'HV-ARCHIVE', needed_date: Time.zone.today + 3.days).save(validate: false)
+      build(:mediated_page, origin: 'ART', needed_date: Time.zone.today - 2.days).save(validate: false)
+      build(:mediated_page, origin: 'ART', needed_date: Time.zone.today - 1.day).save(validate: false)
+      build(:mediated_page, origin: 'ART', needed_date: Time.zone.today).save(validate: false)
+      build(:mediated_page, origin: 'ART', needed_date: Time.zone.today + 2.days).save(validate: false)
+      build(:mediated_page, origin: 'ART', needed_date: Time.zone.today + 1.day).save(validate: false)
+      build(:mediated_page, origin: 'ART', needed_date: Time.zone.today + 1.day).save(validate: false)
+      build(:mediated_page, origin: 'EDUCATION', needed_date: Time.zone.today + 3.days).save(validate: false)
     end
 
-    let(:dates) { described_class.needed_dates_for_origin_after_date(origin: 'SPEC-COLL', date: Time.zone.today) }
+    let(:dates) { described_class.needed_dates_for_origin_after_date(origin: 'ART', date: Time.zone.today) }
 
     it "returns request's needed_dates that are after today" do
       expect(dates.length).to eq 2
@@ -313,7 +313,7 @@ describe MediatedPage do
     it 'does not include requests from other origins' do
       expect(
         dates.any? do |date|
-          date == Time.zone.today + 3.days # HV-ARCHIVE needed_date
+          date == Time.zone.today + 3.days # EDUCATION needed_date
         end
       ).to be false
     end

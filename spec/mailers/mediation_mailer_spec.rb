@@ -21,7 +21,7 @@ describe MediationMailer do
 
     describe 'from' do
       it 'is the configured from address for the origin' do
-        expect(mail.from).to eq ['specialcollections@stanford.edu']
+        expect(mail.from).to eq ['artlibrary@stanford.edu']
       end
 
       describe 'location specific' do

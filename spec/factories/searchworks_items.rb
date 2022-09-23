@@ -43,10 +43,10 @@ FactoryBot.define do
     end
   end
 
-  factory :spec_coll_stacks_multi_holdings_searchworks_item, class: 'SearchworksItem' do
+  factory :art_multi_holdings_searchworks_item, class: 'SearchworksItem' do
     initialize_with { new(request) }
 
-    request { create(:request, origin: 'SPEC-COLL', origin_location: 'STACKS') }
+    request { create(:request, origin: 'ART', origin_location: 'ARTLCKL') }
 
     after(:build) do |item|
       class << item

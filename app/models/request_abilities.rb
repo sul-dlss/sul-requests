@@ -29,7 +29,15 @@ class RequestAbilities
   end
 
   def mediateable?
-    applicable_rules(:pageable).first&.mediated
+    applicable_rules(:pageable).first&.mediated || aeon_pageable?
+  end
+
+  def aeon_pageable?
+    applicable_rules(:pageable).first&.aeon
+  end
+
+  def aeon_site
+    applicable_rules(:pageable).first&.aeon_site if aeon_pageable?
   end
 
   # returns a true if any of the following is true

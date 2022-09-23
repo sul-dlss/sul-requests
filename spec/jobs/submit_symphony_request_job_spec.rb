@@ -197,16 +197,6 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
         end
       end
 
-      context 'for a SPEC-COLL request' do
-        let(:request) { create(:mediated_page) }
-
-        it 'actually sets the pickup library to SPEC-DESK' do
-          allow(mock_client).to receive(:bib_info).and_return({})
-          expect(mock_client).to receive(:place_hold).with(hash_including(key: 'SPEC-DESK')).and_return({})
-          subject.execute!
-        end
-      end
-
       context 'without barcodes' do
         let(:scan) { create(:scan_with_holdings, user: user) }
 

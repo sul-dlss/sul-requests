@@ -7,9 +7,9 @@ LONG
 FactoryBot.define do
   factory :mediated_page do
     item_id { '1234' }
-    origin { 'SPEC-COLL' }
-    origin_location { 'STACKS' }
-    destination { 'SPEC-COLL' }
+    origin { 'ART' }
+    origin_location { 'ARTLCKL' }
+    destination { 'ART' }
     item_title { 'Title of MediatedPage 1234' }
     needed_date { Time.zone.today }
     association :user, factory: :sequence_webauth_user
@@ -31,27 +31,11 @@ FactoryBot.define do
     association :user, factory: :sequence_webauth_user
   end
 
-  factory :art_mediated_page, class: 'MediatedPage' do
-    item_id { '1234' }
+  factory :mediated_page_with_single_holding, parent: :mediated_page do
+    item_id { '12345' }
     origin { 'ART' }
     origin_location { 'ARTLCKL' }
     destination { 'ART' }
-    item_title { 'Art MediatedPage' }
-    needed_date { Time.zone.today }
-    association :user, factory: :sequence_webauth_user
-
-    after(:build) do |request|
-      class << request
-        def needed_date_is_valid; end
-      end
-    end
-  end
-
-  factory :mediated_page_with_single_holding, parent: :mediated_page do
-    item_id { '12345' }
-    origin { 'SPEC-COLL' }
-    origin_location { 'STACKS' }
-    destination { 'SPEC-COLL' }
     needed_date { Time.zone.today }
     request_comment { long_comment }
     association :user, factory: :sequence_webauth_user
@@ -67,9 +51,9 @@ FactoryBot.define do
 
   factory :mediated_page_with_holdings, parent: :mediated_page do
     item_id { '1234' }
-    origin { 'SPEC-COLL' }
-    origin_location { 'STACKS' }
-    destination { 'SPEC-COLL' }
+    origin { 'ART' }
+    origin_location { 'ARTLCKL' }
+    destination { 'ART' }
     needed_date { Time.zone.today }
     request_comment { long_comment }
     association :user, factory: :sequence_webauth_user
@@ -77,16 +61,16 @@ FactoryBot.define do
     after(:build) do |request|
       class << request
         def searchworks_item
-          @searchworks_item ||= FactoryBot.build(:spec_coll_stacks_multi_holdings_searchworks_item, request: self)
+          @searchworks_item ||= FactoryBot.build(:art_multi_holdings_searchworks_item, request: self)
         end
       end
     end
   end
 
   factory :mediated_page_with_symphony_errors, class: 'MediatedPage', parent: :request_with_symphony_errors do
-    origin { 'SPEC-COLL' }
-    origin_location { 'STACKS' }
-    destination { 'SPEC-COLL' }
+    origin { 'ART' }
+    origin_location { 'ARTLCKL' }
+    destination { 'ART' }
     needed_date { Time.zone.today }
     association :user, factory: :sequence_webauth_user
 

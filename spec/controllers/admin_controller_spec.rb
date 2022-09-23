@@ -140,7 +140,7 @@ describe AdminController do
         c = create(:mediated_page_with_holdings, user: create(:non_webauth_user), barcodes: %w(12345678 23456789))
         c.item_statuses.first.approve!(user, Time.zone.now + 1.day)
 
-        get :picklist, params: { id: 'SPEC-COLL', from: (Time.zone.now - 2.days).to_s, to: (Time.zone.now + 2.days).to_s }
+        get :picklist, params: { id: 'ART', from: (Time.zone.now - 2.days).to_s, to: (Time.zone.now + 2.days).to_s }
 
         expect(assigns(:items).length).to eq 2
       end

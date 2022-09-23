@@ -6,7 +6,7 @@ describe 'Remote user confirmation' do
   context 'for webauth users' do
     it 'is not rendered' do
       stub_current_user(create(:webauth_user))
-      visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
 
       expect(page).not_to have_css('#remote-ip-check-overlay')
     end
@@ -19,7 +19,7 @@ describe 'Remote user confirmation' do
       let(:user) { create(:anon_user, ip_address: Settings.stanford_ips.singletons.first) }
 
       it 'is not rendered' do
-        visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+        visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
 
         expect(page).not_to have_css('#remote-ip-check-overlay')
       end
@@ -29,7 +29,7 @@ describe 'Remote user confirmation' do
       let(:user) { create(:anon_user, ip_address: '123.45.6.78') }
 
       it 'is rendered' do
-        visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+        visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
 
         expect(page).to have_css('#remote-ip-check-overlay')
       end
@@ -46,7 +46,7 @@ describe 'Remote user confirmation' do
 
   describe 'confirmation buttons' do
     it 'hides the overlay when the "Yes" button is clicked', js: true do
-      visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
 
       expect(page).to have_css('#remote-ip-check-overlay', visible: :visible)
 
@@ -58,7 +58,7 @@ describe 'Remote user confirmation' do
     end
 
     it 'includes a link styled like a button that send the user to the record in SearchWorks' do
-      visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
 
       expect(page).to have_link('Not right now', href: "#{Settings.searchworks_link}/1234")
     end

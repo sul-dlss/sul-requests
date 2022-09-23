@@ -16,7 +16,7 @@ describe 'Public Notes', js: true do
     end
 
     it 'persists to the database as hash of barcode=>note pairs' do
-      visit new_mediated_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
+      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
 
       fill_in_required_fields
 

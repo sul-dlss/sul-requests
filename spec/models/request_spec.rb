@@ -622,11 +622,11 @@ describe Request do
   describe 'mediateable_origins' do
     before do
       create(:mediated_page)
-      create(:art_mediated_page)
+      create(:page_mp_mediated_page)
     end
 
     it 'returns the subset of origin codes that are configured and mediated pages that exist in the database' do
-      expect(described_class.mediateable_origins.to_h.keys).to eq %w(ART SPEC-COLL)
+      expect(described_class.mediateable_origins.to_h.keys).to eq %w(ART PAGE-MP)
     end
   end
 

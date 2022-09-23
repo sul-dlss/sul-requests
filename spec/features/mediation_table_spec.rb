@@ -75,7 +75,7 @@ describe 'Mediation table', js: true do
         approval_status: MediatedPage.approval_statuses['approved']
       ).save(validate: false)
 
-      visit admin_path('SPEC-COLL')
+      visit admin_path('ART')
     end
 
     context 'toggleable truncation of user request comments' do
@@ -176,7 +176,7 @@ describe 'Mediation table', js: true do
         end
 
         # and check that it is persisted
-        visit admin_path('SPEC-COLL')
+        visit admin_path('ART')
 
         within(all('[data-mediate-request]').last) do
           page.find('a.mediate-toggle').click
@@ -217,7 +217,7 @@ describe 'Mediation table', js: true do
       end
 
       it 'has the expected default sort order for completed requests (needed on descending, created on descending)' do
-        visit admin_path('SPEC-COLL', done: 'true')
+        visit admin_path('ART', done: 'true')
         within '.mediation-table tbody' do
           expect(page).to have_content(/Bob Doe.*Alice Doe.*Eve Doe.*Mal Doe/m)
         end
@@ -312,7 +312,7 @@ describe 'Mediation table', js: true do
       end
 
       it 'derives the email address from their webauth' do
-        visit admin_path('SPEC-COLL')
+        visit admin_path('ART')
 
         within(first('[data-mediate-request]')) do
           expect(page).to have_link('no-email-user@stanford.edu', href: 'mailto:no-email-user@stanford.edu')
@@ -332,7 +332,7 @@ describe 'Mediation table', js: true do
         create(:mediated_page_with_holdings, needed_date: Time.zone.today + 4.days)
         create(:mediated_page_with_holdings, needed_date: Time.zone.today + 6.days)
         create(:mediated_page_with_holdings, needed_date: Time.zone.today + 8.days)
-        visit admin_path('SPEC-COLL')
+        visit admin_path('ART')
       end
 
       it 'presents links for the next 3 days that have requests' do
@@ -358,7 +358,7 @@ describe 'Mediation table', js: true do
       end
 
       it 'returns unpaginated results' do
-        visit admin_path('SPEC-COLL', per_page: 1)
+        visit admin_path('ART', per_page: 1)
         find('a.btn', text: I18n.l(Time.zone.today + 2.days, format: :quick)).click
         expect(page).not_to have_css('.pagination')
       end
@@ -386,7 +386,7 @@ describe 'Mediation table', js: true do
       end
 
       before do
-        visit admin_path('SPEC-COLL')
+        visit admin_path('ART')
       end
 
       it 'retains the origin filter' do
@@ -397,7 +397,7 @@ describe 'Mediation table', js: true do
       end
 
       it 'returns unpaginated results' do
-        visit admin_path('SPEC-COLL', per_page: 1)
+        visit admin_path('ART', per_page: 1)
         page.execute_script("$('input#created_at').prop('value', '#{yesterday}')")
         click_button('Go')
         expect(page).not_to have_css('.pagination')

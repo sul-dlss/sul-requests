@@ -15,7 +15,7 @@ describe 'Admin Comments', js: true do
       ad_hoc_items: ['ABC 123'],
       created_at: Time.zone.now + 1.day
     )
-    visit admin_path('SPEC-COLL')
+    visit admin_path('ART')
   end
 
   describe 'toggling admin comment form' do

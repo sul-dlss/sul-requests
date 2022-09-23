@@ -17,7 +17,7 @@ describe 'Viewing all requests' do
               )
         create(:mediated_page, ad_hoc_items: ['ZZZ-123'],
                                item_title: 'I am Mediated',
-                               origin: 'SPEC-COLL',
+                               origin: 'ART',
                                request_comment: 'I can has this mediated item?',
                                user: User.create(name: 'Jane', email: 'jane@example.com')
               )
@@ -172,24 +172,19 @@ describe 'Viewing all requests' do
         stub_current_user(create(:superadmin_user))
         create(:mediated_page)
         create(:mediated_page)
-        create(:art_mediated_page)
+        create(:page_mp_mediated_page)
       end
 
       it 'lists all the mediated pages for the given library' do
-        visit admin_path('SPEC-COLL')
-
-        expect(page).to have_css('h2', text: 'Special Collections')
-        expect(page).to have_css('table tbody tr', count: 2)
-
         visit admin_path('ART')
 
         expect(page).to have_css('h2', text: 'Art & Architecture Library (Bowes)')
-        expect(page).to have_css('table tbody tr', count: 1)
+        expect(page).to have_css('table tbody tr', count: 2)
       end
 
       describe 'pagination' do
         context 'on the "All pending" page' do
-          before { visit admin_path('SPEC-COLL', per_page: 1) }
+          before { visit admin_path('ART', per_page: 1) }
 
           it 'requests are not paginated' do
             expect(page).not_to have_css('.pagination')
@@ -199,7 +194,7 @@ describe 'Viewing all requests' do
         context 'on the "All done" page' do
           before do
             MediatedPage.all.map(&:approved!)
-            visit admin_path('SPEC-COLL', done: 'true', per_page: 1)
+            visit admin_path('ART', done: 'true', per_page: 1)
           end
 
           it 'requests are paginated', js: true do
@@ -216,7 +211,7 @@ describe 'Viewing all requests' do
         build(:mediated_page, approval_status: :approved, needed_date: Time.zone.today - 2.days).save(validate: false)
         build(:mediated_page, approval_status: :approved, needed_date: Time.zone.today - 3.days).save(validate: false)
         build(:mediated_page, approval_status: :approved, needed_date: Time.zone.today - 1.day).save(validate: false)
-        visit admin_path('SPEC-COLL')
+        visit admin_path('ART')
 
         expect(page).to have_css('tbody tr', count: 2)
         expect(page).to have_css('a.btn-primary', text: 'All pending')
@@ -225,7 +220,7 @@ describe 'Viewing all requests' do
         expect(page).not_to have_css('a.btn-primary', text: 'All done')
         click_link 'All done'
 
-        expect(page).to have_css('h2', text: 'Special Collections')
+        expect(page).to have_css('h2', text: 'Art & Architecture Library (Bowes)')
         expect(page).to have_css('tbody tr', count: 3)
         expect(page).to have_css('a.btn-primary', text: 'All done')
         expect(page).to have_css('a', text: 'All pending')
@@ -237,19 +232,19 @@ describe 'Viewing all requests' do
 
         click_link 'All pending'
 
-        expect(page).to have_css('h2', text: 'Special Collections')
+        expect(page).to have_css('h2', text: 'Art & Architecture Library (Bowes)')
         expect(page).to have_css('tbody tr', count: 2)
       end
 
       context 'with an ad-hoc item' do
         it 'works' do
           create(:mediated_page, ad_hoc_items: ['ZZZ-123'],
-                                 origin: 'SPEC-COLL',
+                                 origin: 'ART',
                                  request_comment: 'I can has this unbarcoded item?',
                                  user: User.create(name: 'Jane', email: 'jane@example.com')
                 )
 
-          visit admin_path('SPEC-COLL')
+          visit admin_path('ART')
 
           expect(page).to have_css('td', text: 'I can has this unbarcoded item?')
         end
@@ -262,9 +257,9 @@ describe 'Viewing all requests' do
 
     it 'redirects to the login page' do
       expect_any_instance_of(AdminController).to receive(:redirect_to).with(
-        login_path(referrer: admin_url('SPEC-COLL'))
+        login_path(referrer: admin_url('ART'))
       )
-      visit admin_path('SPEC-COLL')
+      visit admin_path('ART')
     end
   end
 end
