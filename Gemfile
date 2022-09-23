@@ -81,9 +81,8 @@ gem 'rack-attack'
 gem 'redis', '~> 4.5.1' # 4.6.0 spews deprecation warnings out of sidekiq
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  # or call 'binding.pry'  (you may need require 'pry-byebug' first)
-  gem 'pry-byebug'
+  # Call 'binding.break' anywhere in the code to stop execution and get a debugger console
+  gem 'debug', require: false
 
   # RSpec for testing
   gem 'rspec-rails', '~> 4.0'
