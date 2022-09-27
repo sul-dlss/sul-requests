@@ -76,7 +76,7 @@ class RequestStatusMailer < ApplicationMailer
   end
 
   def success_url
-    if !@request.user.webauth_user? && @request.is_a?(TokenEncryptable)
+    if !@request.user.sso_user? && @request.is_a?(TokenEncryptable)
       polymorphic_url([:status, @request], token: @request.encrypted_token, only_path: false, protocol: 'https')
     else
       polymorphic_url([:status, @request], only_path: false, protocol: 'https')

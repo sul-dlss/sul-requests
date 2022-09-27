@@ -1,6 +1,6 @@
 <% if f.object.requestable_with_library_id? || f.object.requestable_with_name_email? %>
   <div id="no-sunetid-form" aria-hidden="false">
-    <%= f.fields_for :user, (current_request.user unless current_request.user && current_request.user.webauth_user?) || User.new do |uf| %>
+    <%= f.fields_for :user, (current_request.user unless current_request.user && current_request.user.sso_user?) || User.new do |uf| %>
       <% if f.object.requestable_with_library_id? %>
         <div class="form-group <%= "has-error" if f.object.library_id_error? %>">
           <%= uf.label :library_id, 'Stanford Library ID', class: "control-label #{label_column_class} #{'required' unless f.object.requestable_with_name_email?}" %>

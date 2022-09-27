@@ -6,7 +6,7 @@ describe 'Send Request Buttons' do
   before { stub_searchworks_api_json(build(:single_holding)) }
 
   describe 'as a Stanford user', js: true do
-    before { stub_current_user(create(:webauth_user)) }
+    before { stub_current_user(create(:sso_user)) }
 
     it 'allows submit' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
@@ -54,7 +54,7 @@ describe 'Send Request Buttons' do
   end
 
   describe 'for HOPKINS' do
-    it 'allows to send request via WebAuth login or a SUNet ID' do
+    it 'allows to send request via SSO login or a SUNet ID' do
       visit new_page_path(item_id: '1234', origin: 'HOPKINS', origin_location: 'STACKS')
       expect(page).to have_css('button', text: /Send request.*login with SUNet ID/)
       expect(page).to have_css('a', text: 'I don\'t have a SUNet ID')
@@ -67,7 +67,7 @@ describe 'Send Request Buttons' do
       visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
     end
 
-    it 'only allows to send request via WebAuth login' do
+    it 'only allows to send request via SSO login' do
       expect(page).to have_css('button', text: /Send request.*login with SUNet ID/)
       expect(page).not_to have_css('a', text: 'I don\'t have a SUNet ID')
     end

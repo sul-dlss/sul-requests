@@ -92,7 +92,7 @@ class CdlController < ApplicationController
   end
 
   def rescue_can_can(*)
-    return super if webauth_user?
+    return super if sso_user?
 
     redirect_to login_path(referrer: request.original_url)
   end

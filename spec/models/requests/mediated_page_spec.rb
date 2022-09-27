@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe MediatedPage do
-  let(:user) { create(:webauth_user) }
+  let(:user) { create(:sso_user) }
 
   before do
     allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
@@ -167,7 +167,7 @@ describe MediatedPage do
     end
 
     it 'adds the user email address to the token' do
-      subject.user = build(:non_webauth_user)
+      subject.user = build(:non_sso_user)
       expect(subject.to_token(version: 1)).to match(/jstanford@stanford.edu$/)
     end
   end

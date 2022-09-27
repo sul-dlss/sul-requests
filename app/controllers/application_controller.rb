@@ -17,8 +17,8 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def webauth_user?
-    current_user.webauth_user?
+  def sso_user?
+    current_user.sso_user?
   end
 
   def rescue_can_can(exception)

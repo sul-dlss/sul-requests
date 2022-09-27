@@ -74,7 +74,7 @@ describe SubmitBorrowDirectRequestJob, type: :job do
     end
 
     context 'when the item is requestable and the request succeeds' do
-      let(:user) { create(:webauth_user) }
+      let(:user) { create(:sso_user) }
 
       before do
         expect(borrow_direct_item).to receive_messages(

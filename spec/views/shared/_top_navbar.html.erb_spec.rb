@@ -17,14 +17,14 @@ describe 'shared/_top_navbar.html.erb' do
   end
 
   describe 'logout link' do
-    let(:user) { create(:webauth_user) }
+    let(:user) { create(:sso_user) }
 
     it 'has a logout link if there is a user' do
-      expect(rendered).to have_css('a', text: 'some-webauth-user: Logout')
+      expect(rendered).to have_css('a', text: 'some-sso-user: Logout')
     end
 
     it 'redirects users back to the home page of the app' do
-      expect(rendered).to have_css('a[href="/webauth/logout?referrer=%2F"]')
+      expect(rendered).to have_css('a[href="/sso/logout?referrer=%2F"]')
     end
   end
 end

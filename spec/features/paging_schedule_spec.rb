@@ -34,7 +34,7 @@ describe 'Paging Schedule' do
 
   describe 'Estimated delivery', js: true do
     before do
-      stub_current_user(create(:webauth_user))
+      stub_current_user(create(:sso_user))
       stub_searchworks_api_json(build(:sal3_holdings))
     end
 

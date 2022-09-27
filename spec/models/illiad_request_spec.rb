@@ -5,12 +5,12 @@ require 'rails_helper'
 RSpec.describe IlliadRequest do
   subject { described_class.new(scan) }
 
-  let(:user) { create(:webauth_user) }
+  let(:user) { create(:sso_user) }
   let(:scan) { create(:scan_with_holdings_barcodes, user: user) }
 
   describe 'illiad request json' do
     it 'includes the correct illiad routing info' do
-      expect(subject.illiad_transaction_request).to include('"Username":"some-webauth-user"')
+      expect(subject.illiad_transaction_request).to include('"Username":"some-sso-user"')
       expect(subject.illiad_transaction_request).to include('"ProcessType":"Borrowing"')
       expect(subject.illiad_transaction_request).to include('"RequestType":"Article"')
       expect(subject.illiad_transaction_request).to include('"SpecIns":"Scan and Deliver Request"')

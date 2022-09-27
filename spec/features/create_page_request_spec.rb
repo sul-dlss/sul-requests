@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe 'Creating a page request' do
-  let(:user) { create(:webauth_user) }
+  let(:user) { create(:sso_user) }
 
   describe 'item information' do
     it 'displays the items title' do
@@ -57,7 +57,7 @@ describe 'Creating a page request' do
     end
   end
 
-  describe 'by a webauth user' do
+  describe 'by a SSO user' do
     before { stub_current_user(user) }
 
     it 'is possible without filling in any user information' do
@@ -98,7 +98,7 @@ describe 'Creating a page request' do
       expect(current_url).to eq successful_page_url(Page.last)
       expect_to_be_on_success_page
       expect(page).to have_content(
-        'We\'ll send you an email at some-webauth-user@stanford.edu when processing is complete.'
+        'We\'ll send you an email at some-sso-user@stanford.edu when processing is complete.'
       )
     end
   end

@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :superadmin_user, class: 'User' do
-    webauth { 'super-admin' }
+    sunetid { 'super-admin' }
     email { 'super-admin@stanford.edu' }
     after(:build) do |user|
       user.ldap_group_string = 'FAKE-TEST-SUPER-ADMIN-GROUP'
@@ -10,38 +10,38 @@ FactoryBot.define do
   end
 
   factory :site_admin_user, class: 'User' do
-    webauth { 'site-admin' }
+    sunetid { 'site-admin' }
     after(:build) do |user|
       user.ldap_group_string = 'FAKE-TEST-SITE-ADMIN-GROUP'
     end
   end
 
   factory :art_origin_admin_user, class: 'User' do
-    webauth { 'art-admin' }
+    sunetid { 'art-admin' }
     after(:build) do |user|
       user.ldap_group_string = 'ART-TEST-LDAP-GROUP'
     end
   end
 
   factory :page_mp_origin_admin_user, class: 'User' do
-    webauth { 'page-mp-admin' }
+    sunetid { 'page-mp-admin' }
     after(:build) do |user|
       user.ldap_group_string = 'PAGE-MP-TEST-LDAP-GROUP'
     end
   end
 
-  factory :webauth_user, class: 'User' do
-    webauth { 'some-webauth-user' }
-    email { 'some-webauth-user@stanford.edu' }
+  factory :sso_user, class: 'User' do
+    sunetid { 'some-sso-user' }
+    email { 'some-sso-user@stanford.edu' }
   end
 
-  factory :sequence_webauth_user, class: 'User' do
-    sequence(:webauth) { |n| "some-webauth-user-#{n}" }
-    sequence(:email) { |n| "some-webauth-user-#{n}@stanford.edu" }
+  factory :sequence_sso_user, class: 'User' do
+    sequence(:sunetid) { |n| "some-sso-user-#{n}" }
+    sequence(:email) { |n| "some-sso-user-#{n}@stanford.edu" }
   end
 
   factory :scan_eligible_user, class: 'User' do
-    webauth { 'some-eligible-user' }
+    sunetid { 'some-eligible-user' }
     email { 'some-eligible-user@stanford.edu' }
 
     after(:build) do |user|
@@ -49,7 +49,7 @@ FactoryBot.define do
     end
   end
 
-  factory :non_webauth_user, class: 'User' do
+  factory :non_sso_user, class: 'User' do
     name { 'Jane Stanford' }
     email { 'jstanford@stanford.edu' }
   end

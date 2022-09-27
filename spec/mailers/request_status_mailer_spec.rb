@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe RequestStatusMailer do
   describe '#request_status' do
-    let(:user) { build(:non_webauth_user) }
+    let(:user) { build(:non_sso_user) }
     let(:request) { create(:page, user: user) }
     let(:mailer_method) { :request_status_for_page }
     let(:mail) { described_class.send(mailer_method, request) }

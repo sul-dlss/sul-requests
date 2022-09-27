@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe 'Creating an Aeon request', js: true do
-  let(:user) { create(:webauth_user) }
+  let(:user) { create(:sso_user) }
   let(:api_json) { build(:special_collections_single_holding) }
 
   before do

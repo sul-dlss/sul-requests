@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe 'Eligibility Validation' do
-  let(:user) { create(:webauth_user) }
+  let(:user) { create(:sso_user) }
 
   before do
     expect(Settings.features).to receive(:validate_eligibility).and_return(true)

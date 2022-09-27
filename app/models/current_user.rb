@@ -18,7 +18,7 @@ class CurrentUser
   def user_object
     @user_object ||= begin
       if user_id.present?
-        webauth_user
+        sso_user
       else
         anonymous_user
       end
@@ -27,8 +27,8 @@ class CurrentUser
 
   private
 
-  def webauth_user
-    User.find_or_create_by(webauth: user_id).tap do |user|
+  def sso_user
+    User.find_or_create_by(sunetid: user_id).tap do |user|
       update_ldap_attributes(user)
     end
   end
@@ -45,23 +45,23 @@ class CurrentUser
   end
 
   def ldap_name
-    ldap_attributes['WEBAUTH_LDAP_DISPLAYNAME'] || ldap_attributes['displayName']
+    ldap_attributes['displayName']
   end
 
   def ldap_group_string
-    ldap_attributes['WEBAUTH_LDAPPRIVGROUP'] || ldap_attributes['eduPersonEntitlement']
+    ldap_attributes['eduPersonEntitlement']
   end
 
   def ldap_sucard_number
-    ldap_attributes['WEBAUTH_LDAP_SUCARDNUMBER'] || ldap_attributes['suCardNumber']
+    ldap_attributes['suCardNumber']
   end
 
   def ldap_affiliation
-    ldap_attributes['WEBAUTH_LDAP_SUAFFILIATION'] || ldap_attributes['suAffiliation']
+    ldap_attributes['suAffiliation']
   end
 
   def ldap_student_type
-    ldap_attributes['WEBAUTH_LDAP_SUSTUDENTTYPE'] || ldap_attributes['suStudentType']
+    ldap_attributes['suStudentType']
   end
 
   def ldap_email
@@ -70,11 +70,11 @@ class CurrentUser
   end
 
   def ldap_email_attribute
-    ldap_attributes['WEBAUTH_EMAIL'] || ldap_attributes['mail']
+    ldap_attributes['mail']
   end
 
   def ldap_email_status
-    ldap_attributes['WEBAUTH_LDAP_SUEMAILSTATUS'] || ldap_attributes['suEmailStatus']
+    ldap_attributes['suEmailStatus']
   end
 
   def ldap_attributes

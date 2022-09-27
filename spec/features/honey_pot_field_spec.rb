@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe 'Honey Pot Fields' do
-  let(:user) { create(:webauth_user) }
+  let(:user) { create(:sso_user) }
 
   before { stub_current_user(user) }
 

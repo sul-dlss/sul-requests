@@ -10,7 +10,7 @@ describe 'Status Page' do
   end
 
   describe 'by webuath users' do
-    let(:user) { create(:webauth_user) }
+    let(:user) { create(:sso_user) }
 
     it 'is available' do
       visit status_mediated_page_path(request)
@@ -42,7 +42,7 @@ describe 'Status Page' do
   end
 
   describe 'status page title contains item title' do
-    let(:user) { create(:webauth_user) }
+    let(:user) { create(:sso_user) }
 
     it 'page' do
       my_req = create(:page, user: user)

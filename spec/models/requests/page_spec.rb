@@ -9,7 +9,7 @@ describe Page do
     end
 
     it 'adds the user email address to the token' do
-      subject.user = build(:non_webauth_user)
+      subject.user = build(:non_sso_user)
       expect(subject.to_token(version: 1)).to match(/jstanford@stanford.edu$/)
     end
   end
@@ -104,7 +104,7 @@ describe Page do
     end
 
     describe 'for everybody else' do
-      let(:user) { create(:webauth_user) }
+      let(:user) { create(:sso_user) }
 
       it 'sends an approval status email' do
         expect do

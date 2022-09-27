@@ -16,8 +16,8 @@ class Ability
     @with_a_library_id ||= Ability.new(User.new(library_id: '0000000000'))
   end
 
-  def self.webauth
-    @webauth ||= Ability.new(User.new(webauth: 'generic'))
+  def self.sso
+    @sso ||= Ability.new(User.new(sunetid: 'generic'))
   end
 
   # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/MethodLength
@@ -63,7 +63,7 @@ class Ability
     can :new, Request
 
     # ... but only some types of users can actually submit the request successfully
-    if user.webauth_user? || user.library_id_user? || user.name_email_user?
+    if user.sso_user? || user.library_id_user? || user.name_email_user?
       can :create, MediatedPage
       can :create, Page
     end
@@ -73,11 +73,11 @@ class Ability
       cannot :create, Page, origin: 'MEDIA-MTXT'
     end
 
-    can :create, HoldRecall if user.library_id_user? || user.webauth_user?
+    can :create, HoldRecall if user.library_id_user? || user.sso_user?
     can :create, Scan if user.super_admin? || in_scan_pilot_group?(user)
 
     # ... and to check the status, you either need to be logged in or include a special token in the URL
-    can :read, [Request, Page, HoldRecall, Scan, MediatedPage], user_id: user.id if user.webauth_user?
+    can :read, [Request, Page, HoldRecall, Scan, MediatedPage], user_id: user.id if user.sso_user?
 
     if token
       begin
@@ -97,8 +97,8 @@ class Ability
     end
 
     if Settings.cdl.enabled
-      can :checkin, :cdl if user.webauth_user?
-      can :checkout, :cdl if user.webauth_user?
+      can :checkin, :cdl if user.sso_user?
+      can :checkout, :cdl if user.sso_user?
       can :availability, :cdl
     end
   end

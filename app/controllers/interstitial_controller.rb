@@ -2,7 +2,7 @@
 
 ###
 #  This controller simply handles incoming requests (and responds immediately)
-#  then redirects the user to the requested url. This allows us to take the user from WebAuth
+#  then redirects the user to the requested url. This allows us to take the user from authentication
 #  and send them to their destination w/o allowing them to submit multiple superfluous requests
 ###
 class InterstitialController < ApplicationController

@@ -110,7 +110,7 @@ describe PagesController do
 
       context 'for faculty with a sponsored proxy group' do
         let(:user) do
-          build(:webauth_user).tap do |u|
+          build(:sso_user).tap do |u|
             allow(u).to receive(:sponsor?).and_return(true)
           end
         end
@@ -170,8 +170,8 @@ describe PagesController do
       end
     end
 
-    describe 'by webauth users' do
-      let(:user) { create(:webauth_user) }
+    describe 'by sso users' do
+      let(:user) { create(:sso_user) }
 
       it 'is allowed' do
         post :create, params: {
@@ -197,7 +197,7 @@ describe PagesController do
         expect(Page.last.barcodes.sort).to eq(%w(12345679 3610512345678))
       end
 
-      it 'redirects to success page with token when the WebAuth user supplies a library ID' do
+      it 'redirects to success page with token when the sso user supplies a library ID' do
         allow(Patron).to receive(:find_by).with(library_id: '5432123').and_return(
           instance_double('Patron', email: nil, exists?: true)
         )
@@ -234,7 +234,7 @@ describe PagesController do
     end
 
     describe 'invalid requests' do
-      let(:user) { create(:webauth_user) }
+      let(:user) { create(:sso_user) }
 
       it 'returns an error message to the user' do
         post :create, params: { request: { item_id: '1234' } }
@@ -269,8 +269,8 @@ describe PagesController do
       end
     end
 
-    describe 'by webauth users' do
-      let(:user) { create(:webauth_user) }
+    describe 'by sso users' do
+      let(:user) { create(:sso_user) }
 
       it 'raises an error' do
         expect { put(:update, params: { id: page[:id] }) }.to raise_error(CanCan::AccessDenied)
@@ -290,8 +290,8 @@ describe PagesController do
   end
 
   describe '#success' do
-    context 'by webauth users' do
-      let(:user) { create(:webauth_user) }
+    context 'by sso users' do
+      let(:user) { create(:sso_user) }
 
       it 'is successful if they have the are the creator of the record' do
         page = create(:page, user: user)
@@ -308,10 +308,10 @@ describe PagesController do
     end
 
     context 'by non-webuth users' do
-      let(:user) { create(:non_webauth_user) }
+      let(:user) { create(:non_sso_user) }
 
       it 'raised an AccessDenied error' do
-        page = create(:page, user: create(:non_webauth_user, email: 'jjstanford@stanford.edu'))
+        page = create(:page, user: create(:non_sso_user, email: 'jjstanford@stanford.edu'))
         expect do
           get :success, params: { id: page[:id] }
         end.to raise_error(CanCan::AccessDenied)
@@ -320,8 +320,8 @@ describe PagesController do
   end
 
   describe '#status' do
-    context 'by webauth users' do
-      let(:user) { create(:webauth_user) }
+    context 'by sso users' do
+      let(:user) { create(:sso_user) }
 
       it 'is successful if they have the are the creator of the record' do
         page = create(:page, user: user)
@@ -338,10 +338,10 @@ describe PagesController do
     end
 
     context 'by non-webuth users' do
-      let(:user) { create(:non_webauth_user) }
+      let(:user) { create(:non_sso_user) }
 
-      it 'redirects the user to the webauth login with the current url' do
-        page = create(:page, user: create(:non_webauth_user, email: 'jjstanford@stanford.edu'))
+      it 'redirects the user to the sso login with the current url' do
+        page = create(:page, user: create(:non_sso_user, email: 'jjstanford@stanford.edu'))
         get :status, params: { id: page[:id] }
         expect(response).to redirect_to(
           login_path(

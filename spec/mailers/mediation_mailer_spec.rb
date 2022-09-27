@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe MediationMailer do
   describe 'mediator_notification' do
-    let(:user) { build(:non_webauth_user) }
+    let(:user) { build(:non_sso_user) }
     let(:request) { create(:mediated_page, user: user) }
     let(:mediator_contact_info) { { request.origin => { email: 'someone@example.com' } } }
     before do

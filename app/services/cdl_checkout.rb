@@ -144,7 +144,7 @@ class CdlCheckout
       iat: Time.zone.now.to_i,
       barcode: circ_record.item_barcode,
       aud: druid,
-      sub: user.webauth,
+      sub: user.sunetid,
       exp: circ_record.due_date.to_i,
       hold_record_id: hold_record_id
     }

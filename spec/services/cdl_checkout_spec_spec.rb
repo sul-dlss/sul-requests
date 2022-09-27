@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe CdlCheckout do
   subject { described_class.new('druid', user) }
 
-  let(:user) { create(:webauth_user) }
+  let(:user) { create(:sso_user) }
   let(:catalog_info) do
     instance_double(CatalogInfo,
                     callkey: 'xyz',
@@ -123,7 +123,7 @@ RSpec.describe CdlCheckout do
       expect(symphony_client).to receive(:update_hold).and_return({})
 
       payload = subject.process_checkout('abc123')
-      expect(payload[:token]).to include sub: user.webauth
+      expect(payload[:token]).to include sub: user.sunetid
     end
   end
 end

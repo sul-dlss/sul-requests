@@ -90,8 +90,8 @@ describe HoldRecallsController do
       end
     end
 
-    describe 'by webauth users' do
-      let(:user) { create(:webauth_user) }
+    describe 'by sso users' do
+      let(:user) { create(:sso_user) }
 
       it 'is allowed' do
         post :create, params: { request: normal_params }
@@ -113,7 +113,7 @@ describe HoldRecallsController do
     end
 
     describe 'invalid requests' do
-      let(:user) { create(:webauth_user) }
+      let(:user) { create(:sso_user) }
 
       it 'returns an error message to the user' do
         post :create, params: { request: { item_id: '1234' } }

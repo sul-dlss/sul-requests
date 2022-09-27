@@ -70,7 +70,7 @@ module RequestsHelper
   end
 
   def status_page_url_for_request(request)
-    if !request.user.webauth_user? && request.is_a?(TokenEncryptable)
+    if !request.user.sso_user? && request.is_a?(TokenEncryptable)
       polymorphic_url([:status, request], token: request.encrypted_token)
     else
       polymorphic_url([:status, request])
@@ -121,7 +121,7 @@ module RequestsHelper
   def requester_info(user)
     return unless user
 
-    if user.webauth_user? || user.email_address.present?
+    if user.sso_user? || user.email_address.present?
       mail_to user.email_address, user.to_email_string
     elsif user.library_id_user?
       user.library_id

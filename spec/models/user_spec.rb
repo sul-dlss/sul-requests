@@ -4,10 +4,10 @@ require 'rails_helper'
 
 describe User do
   describe 'validations' do
-    it 'onlies allow unique webauth ids' do
-      described_class.create!(webauth: 'some-user')
+    it 'onlies allow unique sunetids' do
+      described_class.create!(sunetid: 'some-user')
       expect do
-        described_class.create!(webauth: 'some-user')
+        described_class.create!(sunetid: 'some-user')
       end.to raise_error(ActiveRecord::RecordInvalid)
     end
   end
@@ -28,9 +28,9 @@ describe User do
   end
 
   describe '#email_address' do
-    describe 'for webauth users' do
+    describe 'for SSO users' do
       before do
-        subject.webauth = 'jstanford'
+        subject.sunetid = 'jstanford'
       end
 
       it 'returns the email address set by the email attribute' do
@@ -45,14 +45,14 @@ describe User do
 
         it 'Notifies the exception handling service' do
           expect(Honeybadger).to receive(:notify).with(
-            'Webauth user record being created without a valid email address. Using jstanford@stanford.edu instead.'
+            'SSO User being created without an email address. Using jstanford@stanford.edu instead.'
           )
           expect(subject.email_address).to eq 'jstanford@stanford.edu'
         end
       end
     end
 
-    describe 'for non-webauth users' do
+    describe 'for non-SSO users' do
       it 'returns the user email address' do
         subject.name = 'Jane Stanford'
         subject.email = 'jstanford@example.com'
@@ -69,16 +69,16 @@ describe User do
   end
 
   describe '#to_email_string' do
-    describe 'for webauth users' do
+    describe 'for SSO users' do
       it 'is their Stanford email address' do
         subject.name = 'Jane Stanford'
-        subject.webauth = 'jstanford'
+        subject.sunetid = 'jstanford'
         subject.email = 'jstanford@stanford.edu'
         expect(subject.to_email_string).to eq 'Jane Stanford (jstanford@stanford.edu)'
       end
     end
 
-    describe 'for non-webauth users' do
+    describe 'for non-SSO users' do
       it 'is their name plus their email in parenthesis' do
         subject.name = 'Jane Stanford'
         subject.email = 'jstanford@stanford.edu'
@@ -88,7 +88,7 @@ describe User do
 
     describe 'for users without a name' do
       it 'justs be their email address' do
-        subject.webauth = 'jstanford'
+        subject.sunetid = 'jstanford'
         subject.email = 'jstanford@stanford.edu'
         expect(subject.to_email_string).to eq 'jstanford@stanford.edu'
       end
@@ -102,14 +102,14 @@ describe User do
     end
   end
 
-  describe '#webauth_user?' do
-    it 'returns false when the user has no WebAuth attribute' do
-      expect(subject).not_to be_webauth_user
+  describe '#sso_user?' do
+    it 'returns false when the user has no sunetid attribute' do
+      expect(subject).not_to be_sso_user
     end
 
-    it 'returns true when the user has a WebAuth attribute' do
-      subject.webauth = 'WebAuth User'
-      expect(subject).to be_webauth_user
+    it 'returns true when the user has a sunetid attribute' do
+      subject.sunetid = 'SSO user'
+      expect(subject).to be_sso_user
     end
   end
 

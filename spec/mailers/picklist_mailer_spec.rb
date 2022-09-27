@@ -48,11 +48,11 @@ describe PicklistMailer do
       allow(SymphonyClient).to receive(:new).and_return(mock_client)
       allow(SubmitSymphonyRequestJob).to receive(:perform_now)
 
-      create(:mediated_page_with_holdings, user: create(:non_webauth_user), barcodes: %w(12345678 23456789))
-      b = create(:mediated_page_with_holdings, user: create(:non_webauth_user), barcodes: %w(12345678 23456789))
+      create(:mediated_page_with_holdings, user: create(:non_sso_user), barcodes: %w(12345678 23456789))
+      b = create(:mediated_page_with_holdings, user: create(:non_sso_user), barcodes: %w(12345678 23456789))
       b.item_statuses.to_a.first.approve!(user, Time.zone.now - 5.days)
       b.item_statuses.to_a.last.approve!(user, Time.zone.now - 1.day)
-      c = create(:mediated_page_with_holdings, user: create(:non_webauth_user), barcodes: %w(12345678 23456789))
+      c = create(:mediated_page_with_holdings, user: create(:non_sso_user), barcodes: %w(12345678 23456789))
       c.item_statuses.first.approve!(user, Time.zone.now - 1.day)
     end
 

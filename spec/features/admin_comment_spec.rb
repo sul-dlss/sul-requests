@@ -10,7 +10,7 @@ describe 'Admin Comments', js: true do
     stub_current_user(user)
     create(
       :mediated_page_with_holdings,
-      user: create(:non_webauth_user, name: 'Jim Doe ', email: 'jimdoe@example.com'),
+      user: create(:non_sso_user, name: 'Jim Doe ', email: 'jimdoe@example.com'),
       barcodes: %w(34567890),
       ad_hoc_items: ['ABC 123'],
       created_at: Time.zone.now + 1.day

@@ -1,5 +1,5 @@
 <div id="sunetid-form" class='<%= content_column_class %> <%= label_column_offset_class %>'>
-  <% if current_user.webauth_user? %>
+  <% if current_user.sso_user? %>
     <h2>
       <%= render_user_information %>
     </h2>
