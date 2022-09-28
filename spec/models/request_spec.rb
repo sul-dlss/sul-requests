@@ -656,28 +656,28 @@ describe Request do
     end
 
     it 'uses any new request-level data' do
-      subject.merge_symphony_response_data req_type: 'SCAN',
-                                           usererr_code: 'USERBLOCKED',
-                                           usererr_text: 'User is Blocked'
+      subject.merge_symphony_response_data SymphonyResponse.new(req_type: 'SCAN',
+                                                                usererr_code: 'USERBLOCKED',
+                                                                usererr_text: 'User is Blocked')
 
       expect(subject.symphony_response.usererr_code).to eq 'USERBLOCKED'
       expect(subject.symphony_response.usererr_text).to eq 'User is Blocked'
     end
 
     it 'preserves old item-level data' do
-      subject.merge_symphony_response_data req_type: 'SCAN',
-                                           requested_items: [
-                                             {
-                                               'barcode' => '987654321',
-                                               'msgcode' => '209',
-                                               'text' => 'Hold placed'
-                                             },
-                                             {
-                                               'barcode' => '12345678901234z',
-                                               'msgcode' => '209',
-                                               'text' => 'Hold placed'
-                                             }
-                                           ]
+      subject.merge_symphony_response_data SymphonyResponse.new(req_type: 'SCAN',
+                                                                requested_items: [
+                                                                  {
+                                                                    'barcode' => '987654321',
+                                                                    'msgcode' => '209',
+                                                                    'text' => 'Hold placed'
+                                                                  },
+                                                                  {
+                                                                    'barcode' => '12345678901234z',
+                                                                    'msgcode' => '209',
+                                                                    'text' => 'Hold placed'
+                                                                  }
+                                                                ])
 
       item_status = subject.symphony_response.items_by_barcode
       expect(item_status['987654321']).to be_present

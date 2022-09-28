@@ -16,7 +16,7 @@ class SubmitBorrowDirectRequestJob < ApplicationJob
     rescue BorrowDirect::Error => e
       Honeybadger.notify("BorrowDirect Request failed for #{request_id} with #{e}. Submitted to Symphony instead.")
 
-      SubmitSymphonyRequestJob.perform_now(request_id)
+      request.send_to_symphony_now!
     end
 
     Sidekiq.logger.info("Completed SubmitBorrowDirectRequestJob for request #{request_id}")
@@ -39,7 +39,7 @@ class SubmitBorrowDirectRequestJob < ApplicationJob
       request.save
       request.send_approval_status!
     else
-      SubmitSymphonyRequestJob.perform_now(request.id)
+      request.send_to_symphony_now!
     end
   end
 

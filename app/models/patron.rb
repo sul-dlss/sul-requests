@@ -2,11 +2,9 @@
 
 # Class to model Patron information from Symphony Web Services
 # Partially extracted from https://github.com/sul-dlss/mylibrary/blob/master/app/models/patron.rb
-class Patron
-  attr_reader :record
-
+class Patron < SymphonyBase
   # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-  def self.find_by(sunetid: nil, library_id: nil, patron_key: nil, symphony_client: SymphonyClient.new, with_holds: false)
+  def self.find_by(sunetid: nil, library_id: nil, patron_key: nil, with_holds: false)
     patron_key ||= symphony_client.login_by_sunetid(sunetid)&.dig('key') if sunetid.present?
     patron_key ||= symphony_client.login_by_library_id(library_id)&.dig('key') if library_id.present?
 
@@ -20,10 +18,6 @@ class Patron
   end
   # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
-  def initialize(record)
-    @record = record
-  end
-
   def barcode
     fields['barcode']
   end
@@ -34,18 +28,6 @@ class Patron
     else
       "id #{key}"
     end
-  end
-
-  def exists?
-    fields.present?
-  end
-
-  def key
-    record['key']
-  end
-
-  def fields
-    record['fields'] || {}
   end
 
   def profile_key
@@ -114,7 +96,7 @@ class Patron
   end
 
   def checkouts
-    @checkouts ||= SymphonyClient.new.checkouts(key).map { |record| CircRecord.new(record) }
+    @checkouts ||= symphony_client.checkouts(key).map { |record| CircRecord.new(record) }
   end
 
   def group
