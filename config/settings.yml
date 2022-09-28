@@ -404,7 +404,7 @@ pageable:
     pickup_libraries:
       - RUMSEYMAP
     aeon: true
-    aeon_site: RUMSEYMAP
+    aeon_site: RUMSEY
   - library: SPEC-COLL
     pickup_libraries:
       - SPEC-COLL
