@@ -385,53 +385,17 @@ locations:
       email: 'brannerlibrary@stanford.edu'
 
 pageable:
-  # Libraries using Aeon
-  - library: ARS
-    locations:
-      - RECORDINGS
-    aeon: true
-    aeon_site: ARS
-  - library: EAST-ASIA
-    locations:
-      - LOCKED-STK
-      - LOCK-STK-O
-      - LOCK-CHN
-    item_types:
-      - LCKSTK
-    aeon: true
-    aeon_site: EASTASIA
+  # Mediated pages
+  # NOTE: Aeon temporarily disabled; see dev or test settings to restore
   - library: RUMSEYMAP
     pickup_libraries:
       - RUMSEYMAP
-    aeon: true
-    aeon_site: RUMSEY
+    mediated: true
   - library: SPEC-COLL
     pickup_libraries:
       - SPEC-COLL
-    aeon: true
-    aeon_site: SPECUA
-  - library: SAL
-    locations:
-      - L-PAGE-EA
-    item_types:
-      - NH-INHOUSE
-    aeon: true
-    aeon_site: EASTASIA
-  - library: SAL3
-    locations:
-      - PAGE-AS
-    item_types:
-      - NH-INHOUSE
-    aeon: true
-    aeon_site: ARS
-  - library: SAL3
-    locations:
-      - PAGE-EA
-    item_types:
-      - LCKSTK
-    aeon: true
-    aeon_site: EASTASIA
-  # Mediated pages
+    mediated: true
+    item_commentable: true
   - library: ART
     locations:
       - ARTLCKL
