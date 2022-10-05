@@ -29,7 +29,7 @@ class SymphonyClient
                                        includeFields: '*'
                                      })
 
-    JSON.parse(response.body)['result'].first
+    JSON.parse(response.body).dig('result', 0)
   rescue JSON::ParserError
     nil
   end
@@ -40,7 +40,7 @@ class SymphonyClient
                                        includeFields: '*'
                                      })
 
-    JSON.parse(response.body)['result']&.first
+    JSON.parse(response.body).dig('result', 0)
   rescue JSON::ParserError
     nil
   end
