@@ -37,7 +37,7 @@ hr {
 }
 
 .required:not([for='request_destination']) {
-  &:after {
+  &::after {
     @extend .label;
     @extend .label-warning;
     content: 'Required';
@@ -48,7 +48,7 @@ hr {
 
 .hold-recall {
   label {
-    &[for="request_needed_date"]:after {
+    &[for="request_needed_date"]::after {
       display: none;
     }
   }

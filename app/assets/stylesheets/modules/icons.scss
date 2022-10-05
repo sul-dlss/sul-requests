@@ -1,12 +1,12 @@
 .availability {
-  &:before {
+  &::before {
     margin-right: 5px;
   }
 
   &.available {
     @extend .sul-i-check-2;
 
-    &:after {
+    &::after {
       color: $sul-available-icon-color;
     }
   }
@@ -14,7 +14,7 @@
   &.noncirc_page {
     @extend .sul-i-truck-1;
 
-    &:before {
+    &::before {
       color: $sul-noncirc-icon-color;
     }
   }
@@ -22,7 +22,7 @@
   &.page {
     @extend .sul-i-truck-1;
 
-    &:before {
+    &::before {
       color: $sul-available-icon-color;
     }
   }
@@ -46,7 +46,7 @@
     .request-status {
       color: $sul-unavailable-icon-color;
 
-      &:before {
+      &::before {
         @extend .glyphicon;
         @extend .glyphicon-exclamation-sign;
       }
