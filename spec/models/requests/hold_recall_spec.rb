@@ -37,7 +37,7 @@ describe HoldRecall do
     end
 
     describe 'for everybody else' do
-      let(:subject) { create(:hold_recall, user: create(:webauth_user)) }
+      let(:subject) { create(:hold_recall, user: create(:sso_user)) }
 
       it 'sends an approval status email' do
         expect do

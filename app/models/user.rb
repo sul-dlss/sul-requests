@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 ###
-#  User class for authenticating via WebAuth
+#  User class for authenticating via SSO
 ###
 class User < ActiveRecord::Base
-  validates :webauth, uniqueness: true, allow_blank: true
+  validates :sunetid, uniqueness: true, allow_blank: true
 
   has_many :requests
 
@@ -33,11 +33,11 @@ class User < ActiveRecord::Base
 
   def email_address
     case
-    when webauth_user? && !email
+    when sso_user? && !email
       # Fallback for users who were created before we started
-      # setting the email attribute for webauth users from LDAP
-      notify_honeybadger_of_unknown_webauth_email!
-      "#{webauth}@stanford.edu"
+      # setting the email attribute for SSO users from LDAP
+      notify_honeybadger_of_missing_sso_email!
+      "#{sunetid}@stanford.edu"
     when library_id_user?
       email_from_symphony
     else
@@ -49,8 +49,8 @@ class User < ActiveRecord::Base
     patron&.group&.email&.presence
   end
 
-  def webauth_user?
-    webauth.present?
+  def sso_user?
+    sunetid.present?
   end
 
   def library_id_user?
@@ -90,15 +90,15 @@ class User < ActiveRecord::Base
   end
 
   def patron
-    @patron ||= Patron.find_by(sunetid: webauth) if webauth
+    @patron ||= Patron.find_by(sunetid: sunetid) if sunetid
     @patron ||= Patron.find_by(library_id: library_id) if library_id
   end
 
   private
 
-  def notify_honeybadger_of_unknown_webauth_email!
+  def notify_honeybadger_of_missing_sso_email!
     Honeybadger.notify(
-      "Webauth user record being created without a valid email address. Using #{webauth}@stanford.edu instead."
+      "SSO User being created without an email address. Using #{sunetid}@stanford.edu instead."
     ) if new_record?
   end
 end

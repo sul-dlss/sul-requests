@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe 'Public Notes', js: true do
-  let(:user) { create(:webauth_user) }
+  let(:user) { create(:sso_user) }
 
   before do
     allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)

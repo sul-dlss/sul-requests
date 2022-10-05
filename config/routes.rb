@@ -13,8 +13,8 @@ Rails.application.routes.draw do
   get 'interstitial' => 'interstitial#show', as: :interstitial
 
   # Authorization routes
-  get 'webauth/login' => 'authentication#login', as: :login
-  get 'webauth/logout' => 'authentication#logout', as: :logout
+  get 'sso/login' => 'authentication#login', as: :login
+  get 'sso/logout' => 'authentication#logout', as: :logout
 
   resources :paging_schedule, only: :index
   get 'paging_schedule/:origin(/:destination)' => 'paging_schedule#show', as: :paging_schedule

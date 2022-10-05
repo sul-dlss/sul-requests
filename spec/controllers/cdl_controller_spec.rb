@@ -15,18 +15,18 @@ describe CdlController do
       it 'is restricted' do
         get :checkin, params: { hold_record_key: 'abc123' }
         expect(response).to redirect_to(
-          '/webauth/login?referrer=http%3A%2F%2Ftest.host%2Fcdl%2Fcheckin%3Fhold_record_key%3Dabc123'
+          '/sso/login?referrer=http%3A%2F%2Ftest.host%2Fcdl%2Fcheckin%3Fhold_record_key%3Dabc123'
         )
       end
     end
 
-    context 'webauth user' do
+    context 'sso user' do
       before do
         allow(controller).to receive_messages(current_user: user)
         allow(user).to receive_messages(patron: Patron.new(patron_record))
       end
 
-      let(:user) { create(:webauth_user) }
+      let(:user) { create(:sso_user) }
       let(:patron_record) do
         {
           'fields' => {
@@ -57,18 +57,18 @@ describe CdlController do
       it 'is restricted' do
         get :checkout, params: { id: 'ab123cd4567', barcode: '123456' }
         expect(response).to redirect_to(
-          '/webauth/login?referrer=http%3A%2F%2Ftest.host%2Fcdl%2Fcheckout%3Fbarcode%3D123456%26id%3Dab123cd4567'
+          '/sso/login?referrer=http%3A%2F%2Ftest.host%2Fcdl%2Fcheckout%3Fbarcode%3D123456%26id%3Dab123cd4567'
         )
       end
     end
 
-    context 'webauth user' do
+    context 'sso user' do
       before do
         allow(controller).to receive_messages(current_user: user)
         allow(user).to receive_messages(patron: Patron.new(patron_record))
       end
 
-      let(:user) { create(:webauth_user) }
+      let(:user) { create(:sso_user) }
       let(:patron_record) do
         {
           'fields' => {

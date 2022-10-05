@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe 'Item Selector' do
   before do
-    stub_current_user(create(:webauth_user))
+    stub_current_user(create(:sso_user))
   end
 
   describe 'for single items' do

@@ -80,7 +80,7 @@ describe Scan do
     end
 
     describe 'for everybody else' do
-      let(:subject) { create(:scan, user: create(:webauth_user)) }
+      let(:subject) { create(:scan, user: create(:sso_user)) }
 
       it 'sends an approval status email' do
         expect do

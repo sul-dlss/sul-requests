@@ -71,7 +71,7 @@ describe Ability do
     it { is_expected.not_to be_able_to(:create, admin_comment) }
 
     describe 'who fills out a name and email' do
-      let(:user) { build(:non_webauth_user) }
+      let(:user) { build(:non_sso_user) }
       let(:page) { create(:page, user: user) }
       let(:mediated_page) { create(:mediated_page, user: user) }
 
@@ -105,8 +105,8 @@ describe Ability do
     end
   end
 
-  describe 'a webauth user' do
-    let(:user) { create(:webauth_user) }
+  describe 'a SSO user' do
+    let(:user) { create(:sso_user) }
 
     it { is_expected.to be_able_to(:create, hold_recall) }
     it { is_expected.to be_able_to(:create, mediated_page) }
@@ -137,7 +137,7 @@ describe Ability do
     describe 'who did not create the requst' do
       before do
         request_objects.each do |object|
-          allow(object).to receive_messages(user_id: User.create(webauth: 'some-other-user').id)
+          allow(object).to receive_messages(user_id: User.create(sunetid: 'some-other-user').id)
         end
       end
 
@@ -200,7 +200,7 @@ describe Ability do
   end
 
   describe 'an origin library admin' do
-    let(:user) { create(:webauth_user) }
+    let(:user) { create(:sso_user) }
 
     before do
       allow(user).to receive_messages(ldap_groups: ['FAKE-ORIGIN-LIBRARY-TEST-LDAP-GROUP'])
@@ -228,7 +228,7 @@ describe Ability do
   end
 
   describe 'an origin location admin' do
-    let(:user) { create(:webauth_user) }
+    let(:user) { create(:sso_user) }
 
     before do
       allow(user).to receive_messages(ldap_groups: ['FAKE-ORIGIN-LOCATION-TEST-LDAP-GROUP'])

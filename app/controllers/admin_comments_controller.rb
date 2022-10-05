@@ -23,6 +23,6 @@ class AdminCommentsController < ApplicationController
   protected
 
   def create_params
-    params.require(:admin_comment).permit(:comment).to_h.merge(commenter: current_user.webauth)
+    params.require(:admin_comment).permit(:comment).to_h.merge(commenter: current_user.sunetid)
   end
 end

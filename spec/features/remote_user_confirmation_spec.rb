@@ -3,16 +3,16 @@
 require 'rails_helper'
 
 describe 'Remote user confirmation' do
-  context 'for webauth users' do
+  context 'for SSO users' do
     it 'is not rendered' do
-      stub_current_user(create(:webauth_user))
+      stub_current_user(create(:sso_user))
       visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
 
       expect(page).not_to have_css('#remote-ip-check-overlay')
     end
   end
 
-  context 'for non-webauth users' do
+  context 'for non-SSO users' do
     before { stub_current_user(user) }
 
     context 'that are in the configured IP ranges' do

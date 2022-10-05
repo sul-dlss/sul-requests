@@ -62,7 +62,7 @@ module RequestValidations
     return unless user
 
     # Ensure we don't contact symphony if we don't need to validate the library ID
-    return if user.webauth_user? || (requestable_with_name_email? && user.name_email_user?)
+    return if user.sso_user? || (requestable_with_name_email? && user.name_email_user?)
 
     # We require the library ID is on the client side when neccesary
     # required when necessary, so if it's blank here, it's not required

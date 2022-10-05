@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe 'requests/success.html.erb' do
-  let(:user) { create(:webauth_user) }
+  let(:user) { create(:sso_user) }
   let(:request) { create(:page, user: user) }
 
   before do
@@ -45,17 +45,17 @@ describe 'requests/success.html.erb' do
   end
 
   describe 'user information' do
-    describe 'for webauth users' do
-      let(:user) { create(:webauth_user) }
+    describe 'for SSO users' do
+      let(:user) { create(:sso_user) }
 
       it 'gives their stanford-email address' do
         render
-        expect(rendered).to have_content('some-webauth-user@stanford.edu')
+        expect(rendered).to have_content('some-sso-user@stanford.edu')
       end
     end
 
-    describe 'for non-webauth useres' do
-      let(:user) { create(:non_webauth_user) }
+    describe 'for non-SSO useres' do
+      let(:user) { create(:non_sso_user) }
 
       it 'gives their email' do
         render
@@ -66,7 +66,7 @@ describe 'requests/success.html.erb' do
 
   describe 'notification information' do
     context 'for a normal request made by a sponsor of a proxy group' do
-      let(:user) { create(:webauth_user) }
+      let(:user) { create(:sso_user) }
 
       before do
         allow(user).to receive(:sponsor?).and_return(true)
@@ -94,20 +94,20 @@ describe 'requests/success.html.erb' do
       end
     end
 
-    context 'for webauth users' do
-      let(:user) { create(:webauth_user) }
+    context 'for SSO users' do
+      let(:user) { create(:sso_user) }
 
       it 'indicates an email will be sent' do
         render
         expect(rendered).to include user.email_address
         expect(rendered).to include(
-          'We\'ll send you an email at <strong>some-webauth-user@stanford.edu</strong> when processing is complete.'
+          'We\'ll send you an email at <strong>some-sso-user@stanford.edu</strong> when processing is complete.'
         )
       end
     end
 
     context 'for name + email users' do
-      let(:user) { create(:non_webauth_user) }
+      let(:user) { create(:non_sso_user) }
 
       it 'indicates an email will be sent' do
         render

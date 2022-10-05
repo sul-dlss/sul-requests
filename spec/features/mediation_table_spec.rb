@@ -15,20 +15,20 @@ describe 'Mediation table', js: true do
       # create some pending requests
       create(
         :mediated_page_with_holdings,
-        user: create(:non_webauth_user),
+        user: create(:non_sso_user),
         barcodes: %w(12345678 23456789),
         created_at: Time.zone.now - 1.day,
         needed_date: Time.zone.now + 3.days
       )
       create(
         :mediated_page_with_holdings,
-        user: create(:non_webauth_user, name: 'Joe Doe ', email: 'joedoe@example.com'),
+        user: create(:non_sso_user, name: 'Joe Doe ', email: 'joedoe@example.com'),
         barcodes: %w(34567890 45678901),
         needed_date: Time.zone.now + 2.days
       )
       create(
         :mediated_page_with_holdings,
-        user: create(:non_webauth_user, name: 'Jim Doe ', email: 'jimdoe@example.com'),
+        user: create(:non_sso_user, name: 'Jim Doe ', email: 'jimdoe@example.com'),
         barcodes: %w(34567890),
         ad_hoc_items: ['ABC 123'],
         created_at: Time.zone.now + 1.day,
@@ -43,7 +43,7 @@ describe 'Mediation table', js: true do
       # create some completed requests (don't validate, since validation disallows needed dates which fall in the past)
       build(
         :mediated_page_with_holdings,
-        user: create(:non_webauth_user, name: 'Bob Doe', email: 'bobdoe@example.com'),
+        user: create(:non_sso_user, name: 'Bob Doe', email: 'bobdoe@example.com'),
         barcodes: %w(12345678 23456789),
         created_at: Time.zone.now - 7.days,
         needed_date: Time.zone.now - 2.days,
@@ -51,7 +51,7 @@ describe 'Mediation table', js: true do
       ).save(validate: false)
       build(
         :mediated_page_with_holdings,
-        user: create(:non_webauth_user, name: 'Alice Doe ', email: 'alicedoe@example.com'),
+        user: create(:non_sso_user, name: 'Alice Doe ', email: 'alicedoe@example.com'),
         barcodes: %w(12345678 23456789),
         created_at: Time.zone.now - 5.days,
         needed_date: Time.zone.now - 3.days,
@@ -59,7 +59,7 @@ describe 'Mediation table', js: true do
       ).save(validate: false)
       build(
         :mediated_page_with_holdings,
-        user: create(:non_webauth_user, name: 'Mal Doe ', email: 'maldoe@example.com'),
+        user: create(:non_sso_user, name: 'Mal Doe ', email: 'maldoe@example.com'),
         barcodes: %w(34567890 45678901),
         created_at: Time.zone.now - 3.days,
         needed_date: nil,
@@ -67,7 +67,7 @@ describe 'Mediation table', js: true do
       ).save(validate: false)
       build(
         :mediated_page_with_holdings,
-        user: create(:non_webauth_user, name: 'Eve Doe ', email: 'evedoe@example.com'),
+        user: create(:non_sso_user, name: 'Eve Doe ', email: 'evedoe@example.com'),
         barcodes: %w(34567890),
         ad_hoc_items: ['ABC 123'],
         created_at: Time.zone.now - 2.days,
@@ -301,17 +301,17 @@ describe 'Mediation table', js: true do
   end
 
   context 'contact email' do
-    context 'for webauth users that do not have their email address previously set by LDAP' do
+    context 'for SSO users that do not have their email address previously set by LDAP' do
       before do
         stub_current_user(create(:superadmin_user))
         create(
           :mediated_page_with_holdings,
-          user: create(:webauth_user, webauth: 'no-email-user', email: nil),
+          user: create(:sso_user, sunetid: 'no-email-user', email: nil),
           barcodes: %w(12345678 23456789)
         )
       end
 
-      it 'derives the email address from their webauth' do
+      it 'derives the email address from their sunetid' do
         visit admin_path('ART')
 
         within(first('[data-mediate-request]')) do
@@ -470,7 +470,7 @@ describe 'Mediation table', js: true do
     let!(:request) do
       build(
         :page_mp_mediated_page,
-        user: create(:non_webauth_user, name: 'Joe Doe ', email: 'joedoe@example.com'),
+        user: create(:non_sso_user, name: 'Joe Doe ', email: 'joedoe@example.com'),
         barcodes: %w(12345678 87654321)
       )
     end

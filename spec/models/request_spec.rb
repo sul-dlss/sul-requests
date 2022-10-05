@@ -349,10 +349,10 @@ describe Request do
     end
 
     describe 'users' do
-      it 'handles webauth users (w/o emails) correctly' do
-        User.create!(webauth: 'a-webauth-user')
-        webauth_user = User.new(webauth: 'current-webauth-user')
-        allow_any_instance_of(described_class).to receive_messages(user: webauth_user)
+      it 'handles SSO users (w/o emails) correctly' do
+        User.create!(sunetid: 'a-sso-user')
+        sso_user = User.new(sunetid: 'current-sso-user')
+        allow_any_instance_of(described_class).to receive_messages(user: sso_user)
         described_class.create!(
           item_id: '1234',
           origin: 'GREEN',
@@ -539,7 +539,7 @@ describe Request do
     end
 
     context 'for a normal request' do
-      let(:user) { create(:non_webauth_user) }
+      let(:user) { create(:non_sso_user) }
 
       it 'goes to the user email address' do
         expect(subject.notification_email_address).to eq user.email_address
@@ -562,7 +562,7 @@ describe Request do
     end
 
     context 'for proxy requests without a notification email' do
-      let(:user) { create(:non_webauth_user) }
+      let(:user) { create(:non_sso_user) }
       let(:group) { instance_double(Group, email: '') }
 
       before do
@@ -599,7 +599,7 @@ describe Request do
     end
 
     describe 'for everybody else' do
-      let(:user) { create(:webauth_user) }
+      let(:user) { create(:sso_user) }
 
       it 'sends an approval status email' do
         expect do

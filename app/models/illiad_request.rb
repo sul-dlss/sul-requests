@@ -23,7 +23,7 @@ class IlliadRequest
       'CallNumber': call_number,
       'ILLNumber': ill_number,
       'ItemNumber': item_number,
-      'Username': @scan.user.webauth
+      'Username': @scan.user.sunetid
     }.to_json
   end
   # rubocop:enable Metrics/MethodLength

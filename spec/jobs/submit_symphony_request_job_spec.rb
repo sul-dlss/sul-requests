@@ -13,7 +13,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
       Sidekiq.logger.level = Logger::UNKNOWN
     end
 
-    let(:user) { build(:non_webauth_user) }
+    let(:user) { build(:non_sso_user) }
     let(:request) { create(:page_with_holdings, user: user) }
 
     describe '#perform' do
@@ -42,7 +42,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
   describe SubmitSymphonyRequestJob::SymWsCommand do
     subject { described_class.new(request, symphony_client: mock_client) }
 
-    let(:user) { build(:non_webauth_user) }
+    let(:user) { build(:non_sso_user) }
     let(:request) { scan }
     let(:scan) { create(:scan_with_holdings_barcodes, user: user) }
     let(:mock_client) { instance_double(SymphonyClient) }
@@ -75,7 +75,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
       end
 
       context 'for a patron with a library id' do
-        let(:user) { build(:webauth_user) }
+        let(:user) { build(:sso_user) }
         let(:request) { create(:page_with_holdings, user: user) }
         let(:patron) do
           Patron.new({
@@ -103,7 +103,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
       end
 
       context 'for a sunetid patron without a library id' do
-        let(:user) { build(:webauth_user) }
+        let(:user) { build(:sso_user) }
         let(:request) { create(:page_with_holdings, user: user) }
 
         before do
@@ -114,7 +114,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
           allow(user).to receive(:patron).and_return(nil)
           expect(mock_client).to receive(:place_hold) do |**params|
             expect(params).to include(
-              comment: ' some-webauth-user@stanford.edu',
+              comment: ' some-sso-user@stanford.edu',
               patron_barcode: 'HOLD@AR',
               recall_status: 'STANDARD'
             )

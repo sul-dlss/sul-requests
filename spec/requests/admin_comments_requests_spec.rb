@@ -14,9 +14,9 @@ describe 'AdminComments' do
 
   describe '#create' do
     context 'when successful' do
-      it "merges the current user's webauth into the persisted comment as the commenter" do
+      it "merges the current user's sunetid into the persisted comment as the commenter" do
         post(url, params: { admin_comment: { comment: 'This is a comment' } }, headers: headers)
-        expect(AdminComment.last.commenter).to eq user.webauth
+        expect(AdminComment.last.commenter).to eq user.sunetid
       end
 
       context 'html response' do
@@ -65,7 +65,7 @@ describe 'AdminComments' do
   end
 
   context 'by a user who cannot add admin comments' do
-    let(:user) { create(:webauth_user) }
+    let(:user) { create(:sso_user) }
 
     it 'raises an access denied error' do
       expect { post(url, params: { admin_comment: { comment: 'A comment' } }) }.to raise_error(CanCan::AccessDenied)

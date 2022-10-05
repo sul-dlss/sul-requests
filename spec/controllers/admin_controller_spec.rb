@@ -26,8 +26,8 @@ describe AdminController do
       end
     end
 
-    describe 'for webauth user' do
-      let(:user) { create(:webauth_user) }
+    describe 'for sso user' do
+      let(:user) { create(:sso_user) }
 
       it 'is not accessible' do
         expect { get :index }.to raise_error(CanCan::AccessDenied)
@@ -76,7 +76,7 @@ describe AdminController do
     end
 
     describe 'for normal webuath user' do
-      let(:user) { create(:webauth_user) }
+      let(:user) { create(:sso_user) }
 
       it 'is not be accessible' do
         expect { get :show, params: { id: 'SPEC-COLL' } }.to raise_error(CanCan::AccessDenied)
@@ -98,7 +98,7 @@ describe AdminController do
     describe 'for super admins' do
       let(:user) { create(:superadmin_user) }
       let(:mediated_page) do
-        create(:mediated_page_with_holdings, user: create(:non_webauth_user), barcodes: %w(12345678 23456789))
+        create(:mediated_page_with_holdings, user: create(:non_sso_user), barcodes: %w(12345678 23456789))
       end
 
       it 'returns the holdings table markup' do
@@ -133,11 +133,11 @@ describe AdminController do
       end
 
       it 'selects items that have approvals within a range' do
-        create(:mediated_page_with_holdings, user: create(:non_webauth_user), barcodes: %w(12345678 23456789))
-        b = create(:mediated_page_with_holdings, user: create(:non_webauth_user), barcodes: %w(12345678 23456789))
+        create(:mediated_page_with_holdings, user: create(:non_sso_user), barcodes: %w(12345678 23456789))
+        b = create(:mediated_page_with_holdings, user: create(:non_sso_user), barcodes: %w(12345678 23456789))
         b.item_statuses.to_a.first.approve!(user, Time.zone.now - 5.days)
         b.item_statuses.to_a.last.approve!(user, Time.zone.now - 1.day)
-        c = create(:mediated_page_with_holdings, user: create(:non_webauth_user), barcodes: %w(12345678 23456789))
+        c = create(:mediated_page_with_holdings, user: create(:non_sso_user), barcodes: %w(12345678 23456789))
         c.item_statuses.first.approve!(user, Time.zone.now + 1.day)
 
         get :picklist, params: { id: 'ART', from: (Time.zone.now - 2.days).to_s, to: (Time.zone.now + 2.days).to_s }
@@ -160,7 +160,7 @@ describe AdminController do
     end
 
     describe 'for normal webuath user' do
-      let(:user) { create(:webauth_user) }
+      let(:user) { create(:sso_user) }
 
       it 'is not be accessible' do
         expect { get :picklist, params: { id: 'SPEC-COLL' } }.to raise_error(CanCan::AccessDenied)
@@ -182,7 +182,7 @@ describe AdminController do
     before { stub_searchworks_api_json(build(:searchable_holdings)) }
 
     let(:mediated_page) do
-      create(:mediated_page_with_holdings, user: create(:webauth_user), barcodes: %w(12345678 23456789))
+      create(:mediated_page_with_holdings, user: create(:sso_user), barcodes: %w(12345678 23456789))
     end
 
     describe 'for those that can manage requests' do

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe 'Creating a mediated page request' do
-  let(:user) { create(:webauth_user) }
+  let(:user) { create(:sso_user) }
 
   before do
     allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
@@ -68,7 +68,7 @@ describe 'Creating a mediated page request' do
     end
   end
 
-  describe 'by a webauth user' do
+  describe 'by a SSO user' do
     before { stub_current_user(user) }
 
     it 'is possible without filling in any user information' do

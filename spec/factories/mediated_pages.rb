@@ -12,7 +12,7 @@ FactoryBot.define do
     destination { 'ART' }
     item_title { 'Title of MediatedPage 1234' }
     needed_date { Time.zone.today }
-    association :user, factory: :sequence_webauth_user
+    association :user, factory: :sequence_sso_user
 
     after(:build) do |request|
       class << request
@@ -28,7 +28,7 @@ FactoryBot.define do
     destination { 'EARTH-SCI' }
     item_title { 'Title of MediatedPage 1234' }
     needed_date { Time.zone.today }
-    association :user, factory: :sequence_webauth_user
+    association :user, factory: :sequence_sso_user
   end
 
   factory :mediated_page_with_single_holding, parent: :mediated_page do
@@ -38,7 +38,7 @@ FactoryBot.define do
     destination { 'ART' }
     needed_date { Time.zone.today }
     request_comment { long_comment }
-    association :user, factory: :sequence_webauth_user
+    association :user, factory: :sequence_sso_user
 
     after(:build) do |request|
       class << request
@@ -56,7 +56,7 @@ FactoryBot.define do
     destination { 'ART' }
     needed_date { Time.zone.today }
     request_comment { long_comment }
-    association :user, factory: :sequence_webauth_user
+    association :user, factory: :sequence_sso_user
 
     after(:build) do |request|
       class << request
@@ -72,7 +72,7 @@ FactoryBot.define do
     origin_location { 'ARTLCKL' }
     destination { 'ART' }
     needed_date { Time.zone.today }
-    association :user, factory: :sequence_webauth_user
+    association :user, factory: :sequence_sso_user
 
     after(:build) do |request|
       class << request

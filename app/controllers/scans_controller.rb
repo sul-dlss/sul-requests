@@ -7,7 +7,7 @@ class ScansController < RequestsController
   protected
 
   def rescue_new_record_via_post
-    if current_user&.webauth_user?
+    if current_user&.sso_user?
       # if they are logged in, but not eligible, send the user to the appropriate page for
       redirect_to delegated_new_request_path(@request, new_request_params), flash: {
         html_safe: true,

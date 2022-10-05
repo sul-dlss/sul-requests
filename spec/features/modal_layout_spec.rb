@@ -12,7 +12,7 @@ describe 'Modal Layout' do
   end
 
   it 'is used when the modal param is passed by the form and redirects' do
-    stub_current_user(create(:webauth_user))
+    stub_current_user(create(:sso_user))
     visit new_request_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS', modal: true)
 
     expect(page).not_to have_css('#su-wrap')

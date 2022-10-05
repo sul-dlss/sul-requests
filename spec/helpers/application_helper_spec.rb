@@ -68,14 +68,14 @@ describe ApplicationHelper do
       allow(helper).to receive(:current_user).and_return(user)
     end
 
-    let(:user) { build(:webauth_user, name: 'Some Body') }
+    let(:user) { build(:sso_user, name: 'Some Body') }
 
     it 'includes the screen reader context' do
       expect(helper.render_user_information).to have_selector '.sr-only', text: 'You are logged in as'
     end
 
     it 'includes the email for the user' do
-      expect(helper.render_user_information).to have_content 'some-webauth-user@stanford.edu'
+      expect(helper.render_user_information).to have_content 'some-sso-user@stanford.edu'
     end
   end
 end

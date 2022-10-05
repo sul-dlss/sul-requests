@@ -13,8 +13,8 @@ describe RequestsHelper do
       )
     end
 
-    context 'for a webauth user' do
-      let(:user) { create(:webauth_user, ip_address: Settings.stanford_ips.singletons.first) }
+    context 'for a SSO user' do
+      let(:user) { create(:sso_user, ip_address: Settings.stanford_ips.singletons.first) }
 
       it 'is falsey regardless of location' do
         expect(helper).not_to be_render_remote_user_check
@@ -103,16 +103,16 @@ describe RequestsHelper do
   end
 
   describe 'requester info' do
-    let(:webauth_user) { User.create(webauth: 'jstanford', email: 'jstanford@stanford.edu') }
-    let(:non_webauth_user) { User.create(name: 'Joe', email: 'joe@xyz.com') }
+    let(:sso_user) { User.create(sunetid: 'jstanford', email: 'jstanford@stanford.edu') }
+    let(:non_sso_user) { User.create(name: 'Joe', email: 'joe@xyz.com') }
     let(:library_id_user) { User.create(library_id: '123456') }
 
-    it 'constructs requester info for webauth user' do
-      expect(requester_info(webauth_user)).to eq '<a href="mailto:jstanford@stanford.edu">jstanford@stanford.edu</a>'
+    it 'constructs requester info for SSO user' do
+      expect(requester_info(sso_user)).to eq '<a href="mailto:jstanford@stanford.edu">jstanford@stanford.edu</a>'
     end
 
-    it 'constructs requester info for non-webauth user' do
-      expect(requester_info(non_webauth_user)).to eq '<a href="mailto:joe@xyz.com">Joe (joe@xyz.com)</a>'
+    it 'constructs requester info for non-SSO user' do
+      expect(requester_info(non_sso_user)).to eq '<a href="mailto:joe@xyz.com">Joe (joe@xyz.com)</a>'
     end
 
     it 'constructs requester info for a library id user' do

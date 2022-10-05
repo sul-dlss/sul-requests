@@ -91,8 +91,8 @@ describe ScansController do
       end
     end
 
-    describe 'by non-webauth users' do
-      let(:user) { create(:non_webauth_user) }
+    describe 'by non-sso users' do
+      let(:user) { create(:non_sso_user) }
 
       it 'raises an error' do
         expect { put(:create, params: { request: { origin: 'SAL3' } }) }.to raise_error(CanCan::AccessDenied)
@@ -129,7 +129,7 @@ describe ScansController do
     describe 'by ineligible users' do
       render_views
 
-      let(:user) { create(:webauth_user) }
+      let(:user) { create(:sso_user) }
 
       it 'is bounced to a page workflow' do
         params = {
@@ -165,8 +165,8 @@ describe ScansController do
       end
     end
 
-    describe 'by webauth users' do
-      let(:user) { create(:webauth_user) }
+    describe 'by sso users' do
+      let(:user) { create(:sso_user) }
 
       it 'raises an error' do
         expect { put(:update, params: { id: scan[:id] }) }.to raise_error(CanCan::AccessDenied)

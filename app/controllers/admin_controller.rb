@@ -38,7 +38,7 @@ class AdminController < ApplicationController
 
   def approve_item
     status = @request.item_status(params[:item])
-    status.approve!(current_user.webauth) unless status.approved?
+    status.approve!(current_user.sunetid) unless status.approved?
 
     if @request.symphony_response.success?(params[:item])
       render json: status, layout: false
@@ -137,7 +137,7 @@ class AdminController < ApplicationController
   end
 
   def rescue_can_can(*)
-    return super if webauth_user? || params[:action] == 'approve_item'
+    return super if sso_user? || params[:action] == 'approve_item'
 
     redirect_to login_path(referrer: request.original_url)
   end

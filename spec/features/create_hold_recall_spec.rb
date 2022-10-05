@@ -7,7 +7,7 @@ describe 'Creating a hold recall request' do
     stub_searchworks_api_json(build(:sal3_holdings))
   end
 
-  let(:user) { create(:webauth_user) }
+  let(:user) { create(:sso_user) }
 
   pending 'by an anonmyous user', js: true do
     it 'requires the library id field' do
@@ -48,7 +48,7 @@ describe 'Creating a hold recall request' do
     end
   end
 
-  describe 'by a webauth user' do
+  describe 'by a SSO user' do
     before { stub_current_user(user) }
 
     it 'is possible without filling in any user information' do

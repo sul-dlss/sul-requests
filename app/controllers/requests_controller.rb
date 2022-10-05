@@ -15,7 +15,7 @@ class RequestsController < ApplicationController
   load_and_authorize_resource instance_name: :request, except: [:ineligible]
 
   before_action :set_current_request_defaults, :validate_request_type, :redirect_delegatable_requests, only: :new
-  before_action :set_current_user_for_request, only: :create, if: :webauth_user?
+  before_action :set_current_user_for_request, only: :create, if: :sso_user?
   before_action :validate_eligibility, only: :create
 
   helper_method :current_request, :delegated_request?
@@ -75,7 +75,7 @@ class RequestsController < ApplicationController
   end
 
   def set_current_user_for_request
-    current_request.user = current_user if current_user.webauth_user? && !request_specific_user
+    current_request.user = current_user if current_user.sso_user? && !request_specific_user
   end
 
   def set_current_request_defaults
@@ -98,19 +98,19 @@ class RequestsController < ApplicationController
   end
 
   # if the patron is trying to submit a request and didn't provide a library id or name/email,
-  # webauth them. Since we only provide the library id or name/email option for requests where
-  # it will succeed, we should only end up here if the request requires webauth'ing.
+  # authenticate them. Since we only provide the library id or name/email option for requests where
+  # it will succeed, we should only end up here if the request requires authentication.
   #
   # if we ever validate patron data from the ILS, we'll need to add more logic here
   def rescue_new_record_via_post
-    bounce_request_through_webauth unless current_user.webauth_user?
+    bounce_request_through_sso unless current_user.sso_user?
   end
 
   def rescue_status_pages
-    redirect_to login_path(referrer: request.original_url) unless current_user.webauth_user?
+    redirect_to login_path(referrer: request.original_url) unless current_user.sso_user?
   end
 
-  def bounce_request_through_webauth
+  def bounce_request_through_sso
     request_params = request_params_without_user_attrs_or_unselected_barcodes
     create_path = polymorphic_url(
       [:create, current_request], request_context_params.merge(request: request_params.to_unsafe_h)
@@ -143,7 +143,7 @@ class RequestsController < ApplicationController
   end
 
   def check_if_proxy_sponsor
-    return unless current_request.user&.webauth_user? && current_request.user&.sponsor? && params[:request][:proxy].nil?
+    return unless current_request.user&.sso_user? && current_request.user&.sponsor? && params[:request][:proxy].nil?
 
     render 'sponsor_request'
   end
@@ -181,7 +181,7 @@ class RequestsController < ApplicationController
 
   def redirect_to_success_with_token
     options = {}
-    options[:token] = current_request.encrypted_token unless current_request.user.webauth_user?
+    options[:token] = current_request.encrypted_token unless current_request.user.sso_user?
     options.merge!(request_context_params)
 
     redirect_to polymorphic_path([:successful, current_request], options)

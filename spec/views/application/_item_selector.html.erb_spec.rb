@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe 'application/_item_selector.html.erb' do
-  let(:user) { create(:webauth_user) }
+  let(:user) { create(:sso_user) }
 
   before do
     without_partial_double_verification do

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe 'scans/success.html.erb' do
-  let(:user) { create(:webauth_user) }
+  let(:user) { create(:sso_user) }
   let(:request) { create(:scan, user: user) }
 
   before do
