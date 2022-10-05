@@ -7,7 +7,7 @@ every '30 15 * * 1-5', roles: :production_cron do
 end
 
 every '* * * * *' do
-  runner 'ExpireCdlCheckoutsJob.perform_later'
+  runner 'ExpireCdlCheckoutsJob.perform_now'
 end
 
 every 1.day, roles: :production_cron  do
