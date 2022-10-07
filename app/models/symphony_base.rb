@@ -2,6 +2,10 @@
 
 # Common Symphony record model behaviors
 class SymphonyBase
+  class Current < ActiveSupport::CurrentAttributes
+    attribute :connection
+  end
+
   attr_reader :response
 
   def initialize(response = {})
@@ -21,10 +25,10 @@ class SymphonyBase
   end
 
   def self.symphony_client
-    SymphonyClient.new
+    SymphonyBase::Current.connection ||= SymphonyClient.new
   end
 
   def symphony_client
-    @symphony_client ||= self.class.symphony_client
+    self.class.symphony_client
   end
 end
