@@ -100,6 +100,6 @@ class Patron < SymphonyBase
   end
 
   def group
-    @group ||= Group.new(record)
+    @group ||= Group.new(response)
   end
 end
