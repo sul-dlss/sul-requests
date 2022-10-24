@@ -285,7 +285,7 @@ GEM
     parser (3.1.2.1)
       ast (~> 2.4.1)
     public_suffix (5.0.0)
-    puma (6.0.0)
+    puma (5.6.5)
       nio4r (~> 2.0)
     racc (1.6.0)
     rack (2.2.4)
@@ -502,7 +502,7 @@ DEPENDENCIES
   nested_form
   nokogiri (>= 1.7.1)
   okcomputer
-  puma
+  puma (~> 5.0)
   rack
   rack-attack
   rails (~> 6.1)
