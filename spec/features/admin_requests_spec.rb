@@ -237,7 +237,7 @@ describe 'Viewing all requests' do
       end
 
       context 'with an ad-hoc item' do
-        it 'works' do
+        it 'renders the page' do
           create(:mediated_page, ad_hoc_items: ['ZZZ-123'],
                                  origin: 'ART',
                                  request_comment: 'I can has this unbarcoded item?',

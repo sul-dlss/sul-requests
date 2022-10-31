@@ -21,8 +21,7 @@ RSpec.describe Patron do
       },
       profile: {
         key: 'MXFEE-FUN',
-        fields: {
-        }
+        fields: {}
       },
       privilegeExpiresDate: nil,
       address1: [
