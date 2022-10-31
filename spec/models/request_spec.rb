@@ -639,7 +639,7 @@ describe Request do
 
   describe '#send_to_symphony!' do
     it 'submits the request to Symphony' do
-      expect(SubmitSymphonyRequestJob).to receive(:perform_later).with(subject.id, a: 1)
+      expect(SubmitSymphonyRequestJob).to receive(:perform_later).with(subject.id, { a: 1 })
       subject.send_to_symphony_later! a: 1
     end
   end
