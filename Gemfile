@@ -70,6 +70,9 @@ group :test do
   gem 'simplecov', require: false
 end
 
+# See https://stackoverflow.com/questions/70500220/rails-7-ruby-3-1-loaderror-cannot-load-such-file-net-smtp
+gem 'net-smtp', require: false
+
 # Sidekiq is our background processing framework, run via Active Job
 gem 'sidekiq'
 gem 'sidekiq-statistic'
