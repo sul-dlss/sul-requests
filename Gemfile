@@ -75,7 +75,6 @@ gem 'net-smtp', require: false
 
 # Sidekiq is our background processing framework, run via Active Job
 gem 'sidekiq'
-gem 'sidekiq-statistic'
 
 gem 'whenever'
 
