@@ -74,7 +74,7 @@ end
 gem 'net-smtp', require: false
 
 # Sidekiq is our background processing framework, run via Active Job
-gem 'sidekiq'
+gem 'sidekiq', '< 7' # Remain on v6 until Redis is updated to v7 on VMs
 
 gem 'whenever'
 

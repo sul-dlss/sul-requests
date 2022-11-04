@@ -8,7 +8,7 @@ describe 'Sidekiq requests' do
   context 'with superadmin privileges' do
     it 'is successful' do
       allow(CurrentUser).to receive(:for).and_return(double(super_admin?: true))
-      expect { get(url) }.to raise_error(RedisClient::CannotConnectError)
+      expect { get(url) }.to raise_error(Redis::CannotConnectError)
     end
   end
 
