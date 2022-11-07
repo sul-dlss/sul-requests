@@ -121,7 +121,6 @@ borrow_direct:
 features:
   confirm_eligibility: false
   estimate_delivery: false
-  remote_ip_check: false
   hold_recall_service: true
   hold_recall_via_borrow_direct: true
   scan_service: true

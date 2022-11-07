@@ -1,4 +1,4 @@
-.confirmation-overlay {
+.aeon-overlay {
   background-color: $body-bg;
   bottom: auto;
   left: 0;
@@ -13,10 +13,10 @@
   }
 }
 
-// above $screen-md-min, .confirmation-overlay's parent div switches to a float-based stacked grid layout per Bootstrap 3
+// above $screen-md-min, .aeon-overlay's parent div switches to a float-based stacked grid layout per Bootstrap 3
 // this top spacing fixes a resulting overlap with the header's box shadow
 @media (min-width: $screen-md-min) {
-  .confirmation-overlay {
+  .aeon-overlay {
     top: 10px;
   }
 }

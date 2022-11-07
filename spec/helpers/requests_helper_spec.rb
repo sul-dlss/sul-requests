@@ -5,41 +5,6 @@ require 'rails_helper'
 describe RequestsHelper do
   include ApplicationHelper
 
-  describe '#render_remote_user_check?' do
-    before do
-      expect(helper).to receive_messages(
-        current_request: create(:mediated_page),
-        current_user: user
-      )
-    end
-
-    context 'for a SSO user' do
-      let(:user) { create(:sso_user, ip_address: Settings.stanford_ips.singletons.first) }
-
-      it 'is falsey regardless of location' do
-        expect(helper).not_to be_render_remote_user_check
-      end
-    end
-
-    context 'for an anonymous user' do
-      context 'that is in the configured IP range' do
-        let(:user) { create(:anon_user, ip_address: Settings.stanford_ips.singletons.first) }
-
-        it 'is false' do
-          expect(helper.render_remote_user_check?).to be false
-        end
-      end
-
-      context 'that is not in the configured IP range' do
-        let(:user) { create(:anon_user, ip_address: '123.45.6.78') }
-
-        it 'is true' do
-          expect(helper.render_remote_user_check?).to be true
-        end
-      end
-    end
-  end
-
   describe '#select_for_pickup_libraries' do
     let(:form) { double('form') }
 

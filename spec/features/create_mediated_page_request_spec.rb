@@ -13,8 +13,6 @@ describe 'Creating a mediated page request' do
     it 'is possible to toggle between login and name-email form', js: true do
       visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
 
-      click_remote_user_confirmation
-
       click_link "I don't have a SUNet ID"
 
       expect(page).to have_field('Library ID', type: 'text')
@@ -31,8 +29,6 @@ describe 'Creating a mediated page request' do
     it 'is possible if a name and email is filled out', js: true do
       visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
 
-      click_remote_user_confirmation
-
       fill_in_required_fields
 
       click_link "I don't have a SUNet ID"
@@ -46,8 +42,6 @@ describe 'Creating a mediated page request' do
 
     it 'is possible if a library id is filled out', js: true do
       visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
-
-      click_remote_user_confirmation
 
       fill_in_required_fields
 
@@ -158,12 +152,6 @@ describe 'Creating a mediated page request' do
       wait_for_ajax
       min_date = find('#request_needed_date', visible: :all)['min']
       page.execute_script("$('#request_needed_date').prop('value', '#{min_date}')")
-    end
-  end
-
-  def click_remote_user_confirmation
-    within('.confirmation-overlay') do
-      click_button
     end
   end
 end
