@@ -35,7 +35,6 @@ class LocationRules
              :only_scannable, # with covid-19 restrictions, some items were exclusively scannable
              :item_commentable,
              :ad_hoc_item_commentable,
-             :confirm_eligibility,
              :default_pickup_library,
              :mediated,
              :aeon,

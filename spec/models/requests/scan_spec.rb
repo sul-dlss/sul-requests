@@ -18,19 +18,6 @@ describe Scan do
     )
   end
 
-  it 'allows temporary access materials to be requested for scan' do
-    stub_searchworks_api_json(build(:temporary_access_holdings))
-
-    expect do
-      described_class.create!(
-        item_id: '12345',
-        origin: 'SAL3',
-        origin_location: 'STACKS',
-        section_title: 'Chapter 1'
-      )
-    end.not_to raise_error
-  end
-
   it 'allows scannabe only materials to be requested for scan' do
     stub_searchworks_api_json(build(:scannable_only_holdings))
 

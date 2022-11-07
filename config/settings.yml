@@ -24,47 +24,6 @@ scan_pilot_groups:
   - 'stanford:affiliate:visitscholarvs'
   - 'stanford:affiliate:visitscholarvt'
 
-paging_eligible_groups:
-  - 'stanford:student'
-  - 'stanford:student:postdoc'
-  - 'stanford:faculty'
-  - 'stanford:faculty:onleave'
-  - 'stanford:faculty:emeritus'
-  - 'stanford:faculty:otherteaching'
-  - 'stanford:faculty:affiliate'
-  - 'stanford:faculty:slac'
-  - 'stanford:staff'
-  - 'stanford:staff:academic'
-  - 'stanford:staff:casual'
-  - 'stanford:staff:emeritus'
-  - 'stanford:staff:onleave'
-  - 'stanford:staff:otherteaching'
-  - 'stanford:staff:temporary'
-  - 'stanford:affiliate:courtesy'
-  - 'stanford:affiliate:fellow'
-  - 'stanford:affiliate:visitscholarvs'
-  - 'stanford:affiliate:visitscholarvt'
-
-mediated_paging_eligible_groups:
-  - 'stanford:student'
-  - 'stanford:student:postdoc'
-  - 'stanford:faculty'
-  - 'stanford:faculty:onleave'
-  - 'stanford:faculty:emeritus'
-  - 'stanford:faculty:otherteaching'
-  - 'stanford:faculty:affiliate'
-  - 'stanford:faculty:slac'
-  - 'stanford:staff'
-  - 'stanford:staff:academic'
-  - 'stanford:staff:casual'
-  - 'stanford:staff:emeritus'
-  - 'stanford:staff:otherteaching'
-  - 'stanford:staff:temporary'
-  - 'stanford:affiliate:courtesy'
-  - 'stanford:affiliate:fellow'
-  - 'stanford:affiliate:visitscholarvs'
-  - 'stanford:affiliate:visitscholarvt'
-
 # LDAP Workgroups for origin specific mediation
 origin_admin_groups:
   ART: []
@@ -119,14 +78,10 @@ stanford_ips:
 borrow_direct:
   api_key: an-api-key
 features:
-  confirm_eligibility: false
   estimate_delivery: false
-  remote_ip_check: false
   hold_recall_service: true
   hold_recall_via_borrow_direct: true
   scan_service: true
-  special_spec_note: false
-  validate_eligibility: false
 
 background_jobs:
   enabled: false

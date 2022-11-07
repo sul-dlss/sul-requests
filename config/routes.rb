@@ -37,12 +37,6 @@ Rails.application.routes.draw do
     end
   end
 
-  concern :eligibility_checkable do
-    collection do
-      get :ineligible, as: :ineligible
-    end
-  end
-
   concern :statusable do
     member do
       get :status, as: :status
@@ -55,10 +49,10 @@ Rails.application.routes.draw do
 
   resources :requests, only: :new
   resources :aeon_pages, only: :new
-  resources :pages, concerns: [:creatable_via_get_redirect, :eligibility_checkable, :successable, :statusable]
-  resources :scans, concerns: [:creatable_via_get_redirect, :eligibility_checkable, :successable, :statusable]
-  resources :mediated_pages, concerns: [:admin_commentable, :creatable_via_get_redirect, :eligibility_checkable, :successable, :statusable]
-  resources :hold_recalls, concerns: [:creatable_via_get_redirect, :eligibility_checkable, :successable, :statusable]
+  resources :pages, concerns: [:creatable_via_get_redirect, :successable, :statusable]
+  resources :scans, concerns: [:creatable_via_get_redirect, :successable, :statusable]
+  resources :mediated_pages, concerns: [:admin_commentable, :creatable_via_get_redirect, :successable, :statusable]
+  resources :hold_recalls, concerns: [:creatable_via_get_redirect, :successable, :statusable]
 
   resources :admin, only: [:index, :show] do
     member do

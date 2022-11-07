@@ -46,10 +46,6 @@ class SearchworksItem
     @requested_holdings ||= RequestedHoldings.new(self)
   end
 
-  def temporary_access?
-    !!json['temporary_access']
-  end
-
   def finding_aid?
     !!json['finding_aid']
   end

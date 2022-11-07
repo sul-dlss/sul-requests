@@ -10,7 +10,6 @@ module RequestValidations
     validates :item_id, :origin, :origin_location, presence: true
     validates :item_comment, presence: true, if: :item_commentable?
     validate :requested_holdings_exist,
-             :requested_item_is_not_temporary_access,
              :requested_item_is_not_scannable_only,
              on: :create
     validate :needed_date_is_not_in_the_past, on: :create, if: :needed_date
@@ -23,15 +22,6 @@ module RequestValidations
     return if pickup_libraries.include?(destination)
 
     errors.add(:destination, 'is not a valid pickup library')
-  end
-
-  def requested_item_is_not_temporary_access
-    return unless searchworks_item.temporary_access?
-
-    errors.add(
-      :base,
-      'This item is available online via Hathi Trust ETAS. The physical copy is not available for Request & pickup.'
-    )
   end
 
   def requested_item_is_not_scannable_only
