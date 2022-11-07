@@ -50,22 +50,6 @@ describe Request do
       )
     end
 
-    it 'requires that at item is not avaialble via temporary access' do
-      stub_searchworks_api_json(build(:temporary_access_holdings))
-
-      expect do
-        described_class.create!(
-          item_id: '12345',
-          origin: 'SAL3',
-          origin_location: 'STACKS'
-        )
-      end.to raise_error(
-        ActiveRecord::RecordInvalid,
-        'Validation failed: This item is available online via Hathi Trust ETAS. ' \
-        'The physical copy is not available for Request & pickup.'
-      )
-    end
-
     it 'requires that an item is not scannable only' do
       stub_searchworks_api_json(build(:scannable_only_holdings))
 

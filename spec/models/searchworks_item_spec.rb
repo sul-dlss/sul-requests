@@ -57,7 +57,6 @@ describe SearchworksItem do
       {
         'title' => 'The title of the object',
         'format' => %w(Format1 Format2),
-        'temporary_access' => true,
         'holdings' => [
           { 'code' => 'GREEN',
             'name' => 'Green Library',
@@ -105,10 +104,6 @@ describe SearchworksItem do
         expect(subject.format).to eq %w(Format1 Format2)
       end
 
-      it 'has a temporary_access flag' do
-        expect(subject.temporary_access?).to be true
-      end
-
       it 'has an array of nested OpenStruct objects describing the holdings' do
         expect(subject.holdings).to be_a Array
         expect(subject.holdings.length).to eq 1
@@ -127,10 +122,6 @@ describe SearchworksItem do
 
         it 'has an empty title string' do
           expect(subject.title).to eq ''
-        end
-
-        it 'has false temporary_access? flag' do
-          expect(subject.temporary_access?).to be false
         end
 
         it 'is an empty array' do

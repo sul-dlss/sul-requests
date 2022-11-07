@@ -1,12 +1,10 @@
 <div id="scan-or-deliver" data-scheduler-lookup-url='<%= paging_schedule_path(origin: current_request.origin) %>'>
   <div class="row">
     <div class="col-xs-12 buttons">
-      <%= link_to('Request & pickup', delegated_new_request_path(current_request), class: "btn btn-md btn-info #{'disabled' if current_request.searchworks_item.temporary_access? || current_request.scannable_only?}", 'aria-describedby' => 'deliveryDescription') %>
+      <%= link_to('Request & pickup', delegated_new_request_path(current_request), class: "btn btn-md btn-info #{'disabled' if current_request.scannable_only?}", 'aria-describedby' => 'deliveryDescription') %>
     </div>
     <div id="deliveryDescription" class="col-xs-12 content">
-      <% if current_request.searchworks_item.temporary_access? %>
-        <p>This item is available online via Hathi Trust ETAS. The physical copy is not available for Request & pickup.</p>
-      <% elsif current_request.scannable_only? %>
+      <% if current_request.scannable_only? %>
         <p>This item is for in-library use and not available for Request & pickup.</p>
       <% else %>
         <% if Settings.features.estimate_delivery %>

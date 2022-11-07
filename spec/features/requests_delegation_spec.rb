@@ -34,21 +34,6 @@ describe 'Requests Delegation' do
         expect(page).to have_css('a', text: 'Scan to PDF')
       end
     end
-
-    context 'when an item is avaialble via temporary access' do
-      before { stub_searchworks_api_json(build(:temporary_access_holdings)) }
-
-      it 'disables the request option' do
-        visit new_request_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
-
-        expect(page).to have_css('h1#dialogTitle', text: 'Request options')
-
-        within('#scan-or-deliver') do
-          expect(page).to have_css('a.disabled', text: 'Request & pickup')
-          expect(page).to have_content('The physical copy is not available for Request & pickup.')
-        end
-      end
-    end
   end
 
   describe 'scannable only material' do
