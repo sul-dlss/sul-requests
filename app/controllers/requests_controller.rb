@@ -12,11 +12,10 @@ class RequestsController < ApplicationController
   before_action :modify_item_selector_checkboxes_or_radios, only: :create
   before_action :modify_item_proxy_status, only: :create
 
-  load_and_authorize_resource instance_name: :request, except: [:ineligible]
+  load_and_authorize_resource instance_name: :request
 
   before_action :set_current_request_defaults, :validate_request_type, :redirect_delegatable_requests, only: :new
   before_action :set_current_user_for_request, only: :create, if: :sso_user?
-  before_action :validate_eligibility, only: :create
 
   helper_method :current_request, :delegated_request?
 
@@ -43,9 +42,6 @@ class RequestsController < ApplicationController
   end
 
   def success
-  end
-
-  def ineligible
   end
 
   protected
@@ -193,16 +189,6 @@ class RequestsController < ApplicationController
 
   def capture_email_field
     raise HoneyPotFieldError if params[:email].present?
-  end
-
-  def validate_eligibility
-    return unless Settings.features.validate_eligibility
-    return if current_user.affiliation.any? { |aff| Settings.paging_eligible_groups.include?(aff) }
-
-    redirect_to polymorphic_path(
-      [:ineligible, current_request],
-      request_context_params.merge(origin: current_request.origin)
-    )
   end
 
   class HoneyPotFieldError < StandardError

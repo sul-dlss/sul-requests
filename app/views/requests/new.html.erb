@@ -4,7 +4,6 @@
 
   <% if delegated_request? %>
     <%= render 'searchworks_item_information' %>
-    <%= render 'eligibility_confirmation' if Settings.features.confirm_eligibility %>
     <%= render 'form' %>
   <% else %>
     <%= render 'form_choice' %>

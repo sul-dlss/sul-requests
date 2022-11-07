@@ -18,24 +18,6 @@ class MediatedPagesController < RequestsController
 
   protected
 
-  def validate_eligibility
-    return unless Settings.features.validate_eligibility
-    return if can?(:manage, current_request)
-    return if current_user_affiliated_or_grad_student?
-
-    redirect_to polymorphic_path(
-      [:ineligible, current_request],
-      request_context_params.merge(origin: current_request.origin)
-    )
-  end
-
-  def current_user_affiliated_or_grad_student?
-    valid_affiliation = current_user.affiliation.any? { |aff| Settings.mediated_paging_eligible_groups.include?(aff) }
-    grad_student = current_user.affiliation.include?('stanford:student') && current_user.student_type.include?('graduate')
-
-    valid_affiliation || grad_student
-  end
-
   def update_params
     params.require(:mediated_page).permit(:approval_status, :needed_date)
   end
