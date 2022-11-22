@@ -10,9 +10,13 @@ class HoldRecall < Request
   validates :needed_date, presence: true
 
   def submit!
-    return super unless request_via_borrow_direct?
-
-    SubmitBorrowDirectRequestJob.perform_later(id)
+    if Settings.features.hold_recall_via_reshare
+      SubmitReshareRequestJob.perform_later(id)
+    elsif Settings.features.hold_recall_via_relais
+      SubmitBorrowDirectRequestJob.perform_later(id)
+    else
+      super
+    end
   end
 
   def requires_needed_date?
@@ -21,9 +25,5 @@ class HoldRecall < Request
 
   def item_commentable?
     false
-  end
-
-  def request_via_borrow_direct?
-    Settings.features.hold_recall_via_borrow_direct
   end
 end
