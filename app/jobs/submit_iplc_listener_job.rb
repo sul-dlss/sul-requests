@@ -34,6 +34,7 @@ class SubmitIplcListenerJob < ApplicationJob
 
     request.borrow_direct_response_data = iplc_response.as_json
     request.via_borrow_direct = true
+    # We don't care if this save was successful or not, because if it went through the back-end service, then requests is no longer the source of truth for this.
     request.save
 
     request.send_approval_status!
