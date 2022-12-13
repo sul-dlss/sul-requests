@@ -87,7 +87,7 @@ class SubmitIplcListenerJob < ApplicationJob
     end
 
     def iplc_pickup_location_code
-      Settings.libraries[request.destination]&.iplc_pickup_location_code || "STA_#{request.destination.underscore}"
+      Settings.libraries[request.destination]&.iplc_pickup_location_code || "STA_#{request.destination.underscore.upcase}"
     end
   end
 end
