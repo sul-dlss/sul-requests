@@ -19,7 +19,7 @@ describe SubmitIplcListenerJob, type: :job do
     let(:iplc_response_item) { double('IplcWrapper') }
 
     before do
-      expect(SubmitIplcListenerJob::IplcWrapper).to receive(:new).with(request, 'iplc-uuid').and_return(
+      expect(SubmitIplcListenerJob::IplcWrapper).to receive(:new).with(request, 'iplc-uuid', 'iplc-title').and_return(
         iplc_response_item
       )
     end
@@ -35,7 +35,7 @@ describe SubmitIplcListenerJob, type: :job do
         )
         expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(request.id, {})
 
-        subject.perform(request.id, 'iplc-uuid')
+        subject.perform(request.id, 'iplc-uuid', 'iplc-title')
       end
     end
 
@@ -50,7 +50,7 @@ describe SubmitIplcListenerJob, type: :job do
       end
 
       it 'persists the BorrowDirect response' do
-        subject.perform(request.id, 'iplc-uuid')
+        subject.perform(request.id, 'iplc-uuid', 'iplc-title')
 
         expect(request.reload.borrow_direct_response_data).to eq(
           'mockResponse' => ['Successful Response'], 'RequestNumber' => '1'
@@ -58,7 +58,7 @@ describe SubmitIplcListenerJob, type: :job do
       end
 
       it 'sets the via_borrow_direct? flag to true' do
-        subject.perform(request.id, 'iplc-uuid')
+        subject.perform(request.id, 'iplc-uuid', 'iplc-title')
 
         expect(request.reload).to be_via_borrow_direct
       end
@@ -68,7 +68,7 @@ describe SubmitIplcListenerJob, type: :job do
           :request_status_for_holdrecall
         )
 
-        subject.perform(request.id, 'iplc-uuid')
+        subject.perform(request.id, 'iplc-uuid', 'iplc-title')
       end
     end
   end

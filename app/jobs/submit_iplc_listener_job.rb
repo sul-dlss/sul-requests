@@ -11,13 +11,13 @@ class SubmitIplcListenerJob < ApplicationJob
     )
   end
 
-  def perform(request_id, instance_uuid)
+  def perform(request_id, instance_uuid, instance_title)
     request = Request.find(request_id)
 
     Sidekiq.logger.info("Started SubmitIplcRequestJob for request #{request_id}")
 
     begin
-      make_iplc_request(request, instance_uuid)
+      make_iplc_request(request, instance_uuid, instance_title)
     rescue StandardError => e
       Honeybadger.notify("IPLC Request failed for #{request_id} with #{e}. Submitted to Symphony instead.")
 
@@ -27,8 +27,8 @@ class SubmitIplcListenerJob < ApplicationJob
     Sidekiq.logger.info("Completed SubmitIplcRequestJob for request #{request_id}")
   end
 
-  def make_iplc_request(request, instance_uuid)
-    iplc_response = IplcWrapper.new(request, instance_uuid)
+  def make_iplc_request(request, instance_uuid, instance_title)
+    iplc_response = IplcWrapper.new(request, instance_uuid, instance_title)
 
     raise 'IPLC HTTP request failed' unless iplc_response.success?
 
@@ -43,11 +43,12 @@ class SubmitIplcListenerJob < ApplicationJob
 
   # Basic client for working with the IPLC listener HTTP API.
   class IplcWrapper
-    attr_reader :request, :instance_uuid
+    attr_reader :request, :instance_uuid, :instance_title
 
-    def initialize(request, instance_uuid)
+    def initialize(request, instance_uuid, instance_title)
       @request = request
       @instance_uuid = instance_uuid
+      @instance_title = instance_title
     end
 
     def as_json(_options = nil)
@@ -76,6 +77,7 @@ class SubmitIplcListenerJob < ApplicationJob
         svc_id: 'json',
         req_id: iplc_patron_id,
         rft_id: instance_uuid,
+        'rft.title': instance_title,
         'res.org': 'ISIL:US-CST',
         'svc.pickupLocation': iplc_pickup_location_code,
         rfr_id: request.to_global_id.to_s
