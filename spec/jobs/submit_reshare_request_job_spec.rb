@@ -66,6 +66,7 @@ describe SubmitReshareRequestJob, type: :job do
         expect(reshare_vufind_item).to receive_messages(
           requestable?: true,
           instance_uuid: '12345',
+          instance_title: 'A title',
           as_json: { 'mockResponse' => ['Successful Response'], 'RequestNumber' => '1' }
         )
 
@@ -89,7 +90,7 @@ describe SubmitReshareRequestJob, type: :job do
       it 'enqueues the request to IPLC' do
         subject.perform(request.id)
 
-        expect(SubmitIplcListenerJob).to have_received(:perform_later).with(request.id, '12345')
+        expect(SubmitIplcListenerJob).to have_received(:perform_later).with(request.id, '12345', 'A title')
       end
     end
   end

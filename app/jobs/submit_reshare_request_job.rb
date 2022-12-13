@@ -37,7 +37,9 @@ class SubmitReshareRequestJob < ApplicationJob
 
       # Since we found the item to request, we can send a request to IPLC. We defer it to a background job
       # to make error handling easier.
-      SubmitIplcListenerJob.perform_later(request.id, reshare_vufind_item.instance_uuid)
+      SubmitIplcListenerJob.perform_later(request.id,
+                                          reshare_vufind_item.instance_uuid,
+                                          reshare_vufind_item.instance_title)
     else
       request.send_to_symphony_now!
     end
@@ -61,6 +63,11 @@ class SubmitReshareRequestJob < ApplicationJob
       loanable_record['id']
     end
 
+    # @return [String] the reshare instance title for the instance we want to request
+    def instance_title
+      loanable_record['title']
+    end
+
     # @return [Boolean] whether the item is requestable in Reshare
     def requestable?
       return false if requested_isbn.blank?
@@ -73,6 +80,7 @@ class SubmitReshareRequestJob < ApplicationJob
         requestable: requestable?,
         response: vufind_response,
         instance_uuid: instance_uuid,
+        instance_title: instance_title,
         requested_isbn: requested_isbn
       }
     end
