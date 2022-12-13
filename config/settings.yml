@@ -82,8 +82,8 @@ borrow_direct:
 features:
   estimate_delivery: false
   hold_recall_service: true
-  hold_recall_via_relais: true
-  hold_recall_via_reshare: false
+  hold_recall_via_relais: false
+  hold_recall_via_reshare: true
   scan_service: true
 
 background_jobs:
