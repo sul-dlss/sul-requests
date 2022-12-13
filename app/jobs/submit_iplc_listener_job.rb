@@ -50,7 +50,7 @@ class SubmitIplcListenerJob < ApplicationJob
       @instance_uuid = instance_uuid
     end
 
-    def as_json(_options)
+    def as_json(_options = nil)
       {
         response: response,
         params: iplc_params
