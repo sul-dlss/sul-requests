@@ -68,7 +68,7 @@ class SubmitReshareRequestJob < ApplicationJob
       loanable_record.present?
     end
 
-    def as_json(_options)
+    def as_json(_options = nil)
       {
         requestable: requestable?,
         response: vufind_response,
