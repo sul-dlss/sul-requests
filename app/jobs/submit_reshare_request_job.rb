@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'debug'
-
 ##
 # Background job to look up an item to request in Reshare.
 # If Reshare has the item and we start a request to Reshare .
