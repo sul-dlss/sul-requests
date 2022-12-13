@@ -102,4 +102,8 @@ class Patron < SymphonyBase
   def group
     @group ||= Group.new(response)
   end
+
+  def university_id
+    fields['alternateID']
+  end
 end

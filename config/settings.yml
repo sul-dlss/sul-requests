@@ -77,10 +77,13 @@ stanford_ips:
   ranges: []
 borrow_direct:
   api_key: an-api-key
+  iplc_listener_url: https://iplc-listener.reshare.indexdata.com/iplc
+  reshare_vufind_url: https://borrowdirect.reshare.indexdata.com
 features:
   estimate_delivery: false
   hold_recall_service: true
-  hold_recall_via_borrow_direct: true
+  hold_recall_via_relais: true
+  hold_recall_via_reshare: false
   scan_service: true
 
 background_jobs:
@@ -187,6 +190,7 @@ libraries:
     hours: # Use SAL 1+2 hours while EDUCATION is closed
       library_slug: sal12
       location_slug: operations
+    iplc_pickup_location_code: STA_GREEN
   ENG:
     label: Engineering Library (Terman)
     hold_pseudopatron: HOLD@EN
