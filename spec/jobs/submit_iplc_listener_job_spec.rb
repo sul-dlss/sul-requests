@@ -73,52 +73,49 @@ describe SubmitIplcListenerJob, type: :job do
     end
   end
 
-  describe SubmitReshareRequestJob::ReshareVufindWrapper do
-    subject(:reshare_vufind_item) { described_class.new(request) }
+  describe SubmitIplcListenerJob::IplcWrapper do
+    subject(:iplc_request) { described_class.new(request, 'iplc-uuid', 'iplc-title') }
 
-    describe '#requestable?' do
-      context 'when the SearchWorksItem does not have an ISBN' do
-        before { expect(sw_item).to receive(:isbn).and_return(nil) }
+    let(:iplc_params) do
+      {
+        req_id: 'university-id',
+        'res.org': 'ISIL:US-CST',
+        rfr_id: 'gid://sul-requests/HoldRecall/1',
+        rft_id: 'iplc-uuid',
+        'rft.title': 'iplc-title',
+        'svc.pickupLocation': 'STA_GREEN',
+        svc_id: 'json'
+      }
+    end
 
-        it do
-          expect(subject).not_to be_requestable
-        end
+    before do
+      stub_request(:get, Settings.borrow_direct.iplc_listener_url)
+        .with(query: iplc_params)
+        .to_return(iplc_return)
+      allow(user.patron).to receive(:university_id).and_return('university-id')
+    end
+
+    context 'when the request is successful' do
+      let(:iplc_return) { { body: '{"response":{"status":201}}' } }
+
+      it do
+        expect(subject).to be_success
       end
 
-      context 'when the SearchWorksItem has an ISBN but the item is not findable in BorrowDirect' do
-        before do
-          stub_request(:get, %r{#{Settings.borrow_direct.reshare_vufind_url}/api/v1/search})
-            .with(query: hash_including(lookfor: '12345'))
-            .to_return(body: '{"total":0,"records":[]}')
-        end
-
-        it do
-          expect(subject).not_to be_requestable
-        end
+      it 'includes the response' do
+        expect(JSON.parse(subject.to_json)['response']).to eq({ 'response' => { 'status' => 201 } })
       end
 
-      context 'when the SearchWorksItem has an ISBN but the item is not available in BorrowDirect' do
-        before do
-          stub_request(:get, %r{#{Settings.borrow_direct.reshare_vufind_url}/api/v1/search})
-            .with(query: hash_including(lookfor: '12345'))
-            .to_return(body: '{"total":1,"records":[{"lendingStatus":["NONLENDABLE"]}]}')
-        end
-
-        it do
-          expect(subject).not_to be_requestable
-        end
+      it 'includes the params with Symphony to ReShare converted pickup location code' do
+        expect(JSON.parse(subject.to_json)['params']['svc.pickupLocation']).to eq('STA_GREEN')
       end
+    end
 
-      context 'when the SearchWorksItem has an ISBN and the item is available in BorrowDirect' do
-        before do
-          stub_request(:get, %r{#{Settings.borrow_direct.reshare_vufind_url}/api/v1/search})
-            .with(query: hash_including(lookfor: '12345'))
-            .to_return(body: '{"total":1,"records":[{"id":"12345", "lendingStatus":["LOANABLE"]}]}')
-        end
+    context 'when the request is not successful' do
+      let(:iplc_return) { { status: 400 } }
 
-        it do
-          expect(subject).to be_requestable.and have_attributes(instance_uuid: '12345')
-        end
+      it do
+        expect(subject).not_to be_success
       end
     end
   end

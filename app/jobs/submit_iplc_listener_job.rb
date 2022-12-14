@@ -88,8 +88,16 @@ class SubmitIplcListenerJob < ApplicationJob
       request.user.patron.university_id
     end
 
+    # Symphony location codes can be converted to ReShare location codes by:
+    # 1) Adding the prefix STA_
+    # 2) Replacing - with _
+    #
+    # Examples:
+    # Symphony code => ReShare code
+    # LAW           => STA_LAW
+    # EAST-ASIA     => STA_EAST_ASIA
     def iplc_pickup_location_code
-      Settings.libraries[request.destination]&.iplc_pickup_location_code || "STA_#{request.destination.underscore.upcase}"
+      Settings.libraries[request.destination]&.iplc_pickup_location_code || "STA_#{request.destination.tr('-', '_')}"
     end
   end
 end
