@@ -96,7 +96,7 @@ class SubmitReshareRequestJob < ApplicationJob
     end
 
     def loanable_record
-      vufind_response['records'].find { |record| record['lendingStatus'].include? 'LOANABLE' }
+      vufind_response['records']&.find { |record| record['lendingStatus'].include? 'LOANABLE' }
     end
 
     def vufind_request
