@@ -111,7 +111,7 @@ describe SubmitReshareRequestJob, type: :job do
         before do
           stub_request(:get, %r{#{Settings.borrow_direct.reshare_vufind_url}/api/v1/search})
             .with(query: hash_including(lookfor: '12345'))
-            .to_return(body: '{"total":0,"records":[]}')
+            .to_return(body: '{"total":0}')
         end
 
         it do
