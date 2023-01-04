@@ -343,7 +343,9 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     redcarpet (3.5.1)
-    redis (4.5.1)
+    redis (4.8.0)
+    redis-client (0.11.2)
+      connection_pool
     regexp_parser (2.6.1)
     reline (0.3.2)
       io-console (~> 0.5)
@@ -410,10 +412,11 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
-    sidekiq (6.5.8)
-      connection_pool (>= 2.2.5, < 3)
-      rack (~> 2.0)
-      redis (>= 4.5.0, < 5)
+    sidekiq (7.0.2)
+      concurrent-ruby (< 2)
+      connection_pool (>= 2.3.0)
+      rack (>= 2.2.4)
+      redis-client (>= 0.11.0)
     simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -520,7 +523,7 @@ DEPENDENCIES
   rails (~> 7.0)
   rails-controller-testing
   redcarpet
-  redis (~> 4.5.1)
+  redis (~> 4.8)
   rspec-rails (~> 6.0)
   rubocop
   rubocop-performance
@@ -529,7 +532,7 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   scss_lint
   selenium-webdriver
-  sidekiq (< 7)
+  sidekiq (~> 7.0)
   simplecov
   sqlite3
   sul_styles (>= 0.5.0)

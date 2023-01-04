@@ -73,14 +73,11 @@ end
 # See https://stackoverflow.com/questions/70500220/rails-7-ruby-3-1-loaderror-cannot-load-such-file-net-smtp
 gem 'net-smtp', require: false
 
-# Sidekiq is our background processing framework, run via Active Job
-gem 'sidekiq', '< 7' # Remain on v6 until Redis is updated to v7 on VMs
-
-gem 'whenever'
-
 gem 'jwt'
 gem 'rack-attack'
-gem 'redis', '~> 4.5.1' # 4.6.0 spews deprecation warnings out of sidekiq
+gem 'redis', '~> 4.8'
+gem 'sidekiq', '~> 7.0'
+gem 'whenever'
 
 group :development, :test do
   # Call 'binding.break' anywhere in the code to stop execution and get a debugger console
