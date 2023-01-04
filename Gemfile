@@ -87,7 +87,7 @@ group :development, :test do
   gem 'debug', require: false
 
   # RSpec for testing
-  gem 'rspec-rails', '~> 4.0'
+  gem 'rspec-rails', '~> 6.0'
 
   # Capybara for feature/integration tests
   gem 'capybara'
