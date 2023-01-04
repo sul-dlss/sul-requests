@@ -153,7 +153,7 @@ class AdminController < ApplicationController
     request.item_statuses.select do |item_status|
       item_status.approved? &&
         item_status.approval_time &&
-        range.include?(Time.zone.parse(item_status.approval_time))
+        range.cover?(Time.zone.parse(item_status.approval_time))
     end
   end
 

@@ -10,32 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_27_230539) do
-
+ActiveRecord::Schema[7.0].define(version: 2023_01_04_195859) do
   create_table "admin_comments", force: :cascade do |t|
     t.string "commenter"
     t.string "comment"
     t.integer "request_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "messages", force: :cascade do |t|
     t.text "text"
-    t.datetime "start_at"
-    t.datetime "end_at"
+    t.datetime "start_at", precision: nil
+    t.datetime "end_at", precision: nil
     t.string "library"
     t.string "request_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "requests", force: :cascade do |t|
     t.string "type"
     t.date "needed_date"
     t.string "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "origin"
     t.string "destination"
     t.string "origin_location"
@@ -55,8 +54,8 @@ ActiveRecord::Schema.define(version: 2022_09_27_230539) do
     t.string "sunetid"
     t.string "name"
     t.string "email"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "library_id"
     t.string "student_type"
     t.index ["email"], name: "index_users_on_email"
