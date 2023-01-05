@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.1'
+gem 'rails', '~> 7.0'
+
 # Use sqlite3 as the database (during local development)
 gem 'sqlite3'
 # Use Puma as the app server
@@ -84,7 +84,7 @@ gem 'redis', '~> 4.5.1' # 4.6.0 spews deprecation warnings out of sidekiq
 
 group :development, :test do
   # Call 'binding.break' anywhere in the code to stop execution and get a debugger console
-  gem 'debug', require: false
+  gem 'debug'
 
   # RSpec for testing
   gem 'rspec-rails', '~> 6.0'
