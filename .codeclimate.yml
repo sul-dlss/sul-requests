@@ -19,8 +19,6 @@ engines:
   rubocop:
     enabled: true
     channel: rubocop-0-80
-  scss-lint:
-    enabled: true
 
 exclude_paths:
 - spec/**/*

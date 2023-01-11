@@ -105,9 +105,6 @@ group :development, :test do
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
 
-  # scss_lint will test the scss files to enfoce styles
-  gem 'scss_lint', require: false
-
   gem 'rails-controller-testing'
 
   # listen is used by bootsnap to listen to file changes

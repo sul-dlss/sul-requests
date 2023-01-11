@@ -11,7 +11,6 @@ Rails.application.load_tasks
 task default: [
   :javascript_tests,
   :rubocop,
-  :scss_lint,
   :spec
 ]
 
