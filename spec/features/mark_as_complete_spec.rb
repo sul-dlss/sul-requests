@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'Mark As Complete', js: true do
+RSpec.describe 'Mark As Complete', js: true do
   let(:user) { create(:superadmin_user) }
 
   before do

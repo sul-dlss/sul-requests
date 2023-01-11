@@ -9,9 +9,9 @@ class MediatedPagesController < RequestsController
   def update
     respond_to do |format|
       if current_request.update(update_params)
-        format.js { render json: current_request }
+        format.json { render json: current_request }
       else
-        format.js { render json: { status: :error }, status: :bad_request }
+        format.json { render json: { status: :error }, status: :bad_request }
       end
     end
   end
