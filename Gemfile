@@ -11,7 +11,6 @@ gem 'bootsnap'
 gem 'bootstrap-sass', "~> 3.4"
 # Use bootstrap_form for easy form building
 gem 'bootstrap_form', '< 4' # pin to < 4 since we are not on bootstrap 4
-gem 'bootstrap-editable-rails'
 gem 'nested_form'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'

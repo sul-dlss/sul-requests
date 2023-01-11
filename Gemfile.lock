@@ -76,9 +76,6 @@ GEM
     bindex (0.8.1)
     bootsnap (1.15.0)
       msgpack (~> 1.2)
-    bootstrap-editable-rails (0.0.9)
-      railties (>= 3.1)
-      sass-rails
     bootstrap-sass (3.4.1)
       autoprefixer-rails (>= 5.2.1)
       sassc (>= 2.0.0)
@@ -481,7 +478,6 @@ PLATFORMS
 
 DEPENDENCIES
   bootsnap
-  bootstrap-editable-rails
   bootstrap-sass (~> 3.4)
   bootstrap_form (< 4)
   borrow_direct
