@@ -33,7 +33,7 @@ var itemApproval = (function() {
       var url = item.data('item-approval-url');
 
       _this.disableElement(item);
-      $.ajax(url).success(function(data) {
+      $.ajax(url).done(function(data) {
          _this.markRowAsApproved(item);
          _this.updateApproverInformation(item, data);
          _this.updateAllApprovedNote(item);
