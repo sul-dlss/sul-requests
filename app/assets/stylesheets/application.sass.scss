@@ -1,7 +1,8 @@
-@import 'bootstrap-sprockets';
-@import 'sul-styles';
+@import 'palette';
+// @import 'bootstrap-sprockets';
+// @import 'sul-styles';
 @import 'variables';
-@import 'bootstrap';
+@import 'bootstrap-sass/assets/stylesheets/bootstrap';
 @import 'bootstrap-editable';
 @import 'sul-requests-mixins';
 @import 'sul-requests';

@@ -2,6 +2,9 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 7.0'
 
+# The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
+gem 'sprockets-rails'
+
 # Use sqlite3 as the database (during local development)
 gem 'sqlite3'
 # Use Puma as the app server
@@ -10,14 +13,8 @@ gem 'bootsnap'
 # Use bootstrap_form for easy form building
 gem 'bootstrap_form', '< 4' # pin to < 4 since we are not on bootstrap 4
 gem 'nested_form'
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails'
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 2.7.2'
-# Common styles for SUL
-gem 'sul_styles', '>= 0.5.0'
 # A gem for simple rails invornment specific config
 gem 'config'
 # Use jquery as the JavaScript library
@@ -124,3 +121,5 @@ group :deployment do
   gem 'capistrano-shared_configs'
   gem 'dlss-capistrano'
 end
+
+gem "cssbundling-rails", "~> 1.1"

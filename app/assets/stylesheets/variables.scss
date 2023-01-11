@@ -21,7 +21,8 @@ $font-family-base: 'Source Sans Pro', 'Arial Unicode MS', Helvetica, sans-serif;
 // to allow the sm/xs threshold to be appropriate for rendering within a modal
 $screen-sm-min: 480px;
 
-@import 'bootstrap/variables';
+$icon-font-path: 'bootstrap/'; // So that rails can serve the glyphicon fonts
+@import 'bootstrap-sass/assets/stylesheets/bootstrap/variables';
 
 $link-color: $gray-dark;
 $link-hover-color: $color-black;
