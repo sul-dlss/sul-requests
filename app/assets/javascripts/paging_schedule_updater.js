@@ -49,7 +49,7 @@ var pagingScheduleUpdater = (function() {
     updatePagingSchedule: function(container, destination, schedulerText) {
       var _this = this;
       $.ajax({url: _this.schedulerUrl(container, destination)})
-       .success(function(data){
+       .done(function(data){
          _this.updateSchedulerText(schedulerText, data);
        })
        .fail(function(){
