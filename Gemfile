@@ -7,8 +7,6 @@ gem 'sqlite3'
 # Use Puma as the app server
 gem 'puma', '~> 5.0' # avoid capybara errors until capybara release; see https://github.com/teamcapybara/capybara/pull/2530
 gem 'bootsnap'
-# Use sass-powered bootstrap
-gem 'bootstrap-sass', "~> 3.4"
 # Use bootstrap_form for easy form building
 gem 'bootstrap_form', '< 4' # pin to < 4 since we are not on bootstrap 4
 gem 'nested_form'
