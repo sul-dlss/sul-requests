@@ -69,6 +69,9 @@ RSpec.configure do |config|
       to_return(status: 200, body: "", headers: {})
   end
 
+  # Enable flags like --only-failures and --next-failure
+  config.example_status_persistence_file_path = ".rspec_status"
+
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
 =begin

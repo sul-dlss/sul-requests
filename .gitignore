@@ -16,19 +16,15 @@
 /tmp
 /doc
 /coverage
+.rspec_status
 
 # Ignore rbenv/rvm config
 /.ruby-version
 /.ruby-gemset
 
-# Ignore any byebug history
-.byebug_history
-
 config/settings.local.yml
 config/settings/*.local.yml
 config/environments/*.local.yml
-
-.pry_history
 
 /node_modules
 /yarn-error.log
