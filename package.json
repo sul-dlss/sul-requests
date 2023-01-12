@@ -6,7 +6,8 @@
   "license": "Apache-2.0",
   "private": true,
   "scripts": {
-    "test": "jest -c jest.config.js"
+    "test": "jest -c jest.config.js",
+    "build:css": "sass ./app/assets/stylesheets/application.sass.scss:./app/assets/builds/application.css --no-source-map --load-path=node_modules --load-path=vendor/assets/stylesheets"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.16",
@@ -17,5 +18,9 @@
     "@testing-library/jest-dom": "^5.11.9",
     "jest": "^26.6.3",
     "jest-fixtures": "^0.6.0"
+  },
+  "dependencies": {
+    "bootstrap-sass": "3.4.1",
+    "sass": "^1.57.1"
   }
 }

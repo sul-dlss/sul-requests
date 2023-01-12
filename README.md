@@ -29,11 +29,11 @@ bundle install
 ```
 run database migrations:
 ```
-rake db:migrate
+bin/rails db:migrate
 ```
 run a development server:
 ```
-REMOTE_USER=yoursunetid rails s
+REMOTE_USER=yoursunetid bin/dev
 ```
 ## configuration
 configuration is handled through the [RailsConfig](/railsconfig/rails_config) settings.yml files. you can create a `config/settings/development.local.yml` file to use while developing, which will be ignored by git.

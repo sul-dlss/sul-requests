@@ -29,15 +29,11 @@
   float: left;
 }
 
-// Disableing scss-lint checks in this selector
-// to attempt to fix a webkit iframe issue
-// scss-lint:disable PropertySortOrder, PropertySpelling
 .modal-body {
   width: 1px;
   min-width: 100%;
   *width: 100%;
 }
-// scss-lint:enable PropertySortOrder, PropertySpelling
 
 @media (min-width: 768px) {
   #topnav,
