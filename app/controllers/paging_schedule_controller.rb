@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ###
-#  Controller for returning the pageing schedule for async requests
+#  Controller for returning the paging schedule for async requests
 ###
 class PagingScheduleController < ApplicationController
   rescue_from PagingSchedule::ScheduleNotFound do
