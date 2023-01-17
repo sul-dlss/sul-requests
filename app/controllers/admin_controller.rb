@@ -10,7 +10,7 @@ class AdminController < ApplicationController
     )
   end
 
-  before_action :load_and_authorize_library_location, only: [:show, :picklist]
+  before_action :load_and_authorize_library_location, only: [:show]
 
   def index
     authorize! :manage, Request.new
@@ -21,15 +21,6 @@ class AdminController < ApplicationController
   def show
     @dates = next_three_days_with_requests
     @mediated_pages = mediated_pages
-  end
-
-  def picklist
-    @range = range_param
-    @items = origin_filtered_mediated_pages.where(updated_at: @range).flat_map do |request|
-      request_has_items_approved_within_range?(request, @range)
-    end
-
-    render layout: false
   end
 
   def holdings
