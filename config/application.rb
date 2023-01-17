@@ -46,10 +46,6 @@ module SULRequests
       'RUMSEYMAP'  => { email: 'sul-requests-rumsey@lists.stanford.edu' }
     }
 
-    config.picklist_contact_info = {
-      'SPEC-COLL' => { email: 'specialcollections@stanford.edu' }
-    }
-
     config.illiad_nvtgc_map = {
       default: 'st2',
       'organization:law' => 'rcj',

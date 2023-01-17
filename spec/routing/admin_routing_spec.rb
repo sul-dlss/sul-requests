@@ -15,9 +15,5 @@ describe AdminController, type: :routing do
     it 'routes to #holdings' do
       expect(get: '/admin/1/holdings').to route_to('admin#holdings', id: '1')
     end
-
-    it 'routes to #picklists' do
-      expect(get: '/admin/SPEC-COLL/picklist').to route_to('admin#picklist', id: 'SPEC-COLL')
-    end
   end
 end
