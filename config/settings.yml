@@ -90,7 +90,7 @@ background_jobs:
   enabled: false
 
 symws:
-  url:
+  url: http://exmample.com/symws
   headers: {}
   login_params: {}
 

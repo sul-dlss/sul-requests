@@ -13,7 +13,8 @@ var markAsComplete = (function() {
 
     onAjaxSuccess: function() {
       var _this = this;
-      _this.markAsCompleteForm().on('ajax:success', function(_, request) {
+      _this.markAsCompleteForm().on('ajax:success', function(event) {
+        const request = event.detail[0]
         if(request.approval_status === 'marked_as_done') {
           _this.disableMarkAsCompleteButton();
           _this.markRequestRowAsMixedStatus();

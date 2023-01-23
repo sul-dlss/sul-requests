@@ -41,7 +41,9 @@ var adminComments = (function() {
 
     onAjaxSuccess: function() {
       var _this = this;
-      _this.form.on('ajax:success', function(e, comment){
+      _this.form.on('ajax:success', function(event){
+        const comment = event.detail[0]
+
         _this.form.find('input[type="text"]').val('');
         var commentList = _this.holdingsTable.find(adminCommentListSelector);
 

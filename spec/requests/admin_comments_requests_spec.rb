@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'AdminComments' do
+RSpec.describe 'AdminComments' do
   let(:user) { create(:superadmin_user) }
   let(:mediated_page) { create(:mediated_page) }
   let(:headers) { { 'HTTP_REFERER' => 'http://example.com' } }
@@ -27,14 +27,16 @@ describe 'AdminComments' do
         end
       end
 
-      context 'js response' do
+      context 'json response' do
+        let(:headers) { { 'Accept' => 'application/json' } }
+
         it 'returns a succesful status code' do
-          post("#{url}.js", params: { admin_comment: { comment: 'This is yet another comment' } }, headers: headers)
+          post(url, params: { admin_comment: { comment: 'This is yet another comment' } }, headers: headers)
           expect(response).to be_successful
         end
 
         it 'returns the JSON of the comment object that was just created' do
-          post("#{url}.js", params: { admin_comment: { comment: 'This is yet another comment' } }, headers: headers)
+          post(url, params: { admin_comment: { comment: 'This is yet another comment' } }, headers: headers)
           response_comment = JSON.parse(response.body)
           last_comment = AdminComment.last
           expect(response_comment['id']).to eq last_comment.id
@@ -54,9 +56,11 @@ describe 'AdminComments' do
         end
       end
 
-      context 'js response' do
+      context 'json response' do
+        let(:headers) { { 'Accept' => 'application/json' } }
+
         it 'returns a failure status code' do
-          post("#{url}.js", params: { admin_comment: { comment: 'A comment that will not be persisted' } }, headers: headers)
+          post(url, params: { admin_comment: { comment: 'A comment that will not be persisted' } }, headers: headers)
           expect(response).not_to be_successful
           expect(JSON.parse(response.body)).to eq('status' => 'error')
         end
