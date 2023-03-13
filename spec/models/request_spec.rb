@@ -127,7 +127,7 @@ describe Request do
       it 'returns records that are older than the given date' do
         result = described_class.obsolete(1.year.ago)
         expect(result.count).to eq 3
-        expect(result.map(&:item_comment).uniq).to match_array ['Obsolete']
+        expect(result.map(&:item_comment).uniq).to contain_exactly('Obsolete')
       end
     end
   end
