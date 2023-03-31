@@ -70,7 +70,7 @@ sul_proxy_api_url: ''
 # e.g. sul_proxy_api_url: 'http://localhost:3000/proxy?libid=%{libid}'
 sul_user_name_api_url: ''
 # e.g. sul_user_name_api_url: 'http://localhost:3000/userName?libid=%{libid}'
-GOOGLE_ANALYTICS_ID: ''
+analytics_debug: true
 worst_case_paging_padding: 3
 stanford_ips:
   singletons: []
