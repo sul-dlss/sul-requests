@@ -15,6 +15,17 @@
     <%= stylesheet_link_tag "application", media: "all" %>
     <link href="https://www-media.stanford.edu/su-identity/css/su-identity.css" rel="stylesheet">
     <%= stylesheet_link_tag "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700" %>
+     <!-- Google tag (gtag.js) --> 
+     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8H7ZHEYXVM"></script>
+     <script> 
+       window.dataLayer = window.dataLayer || []; 
+       function gtag(){dataLayer.push(arguments);} 
+       // To turn off debug mode, exclude the parameter altogether (cannot just set to false)
+       // See https://support.google.com/analytics/answer/7201382?hl=en#zippy=%2Cgoogle-tag-websites
+       args = <%= Settings.analytics_debug %> ? {"debug_mode": true} : {};
+       gtag('js', new Date()); 
+       gtag('config', 'G-8H7ZHEYXVM', args); 
+     </script>
     <%= javascript_include_tag "application" %>
     <%= javascript_include_tag "https://cdn.jsdelivr.net/webshim/1.15.8/polyfiller.js" %>
     <%= csrf_meta_tags %>
@@ -24,7 +35,7 @@
     <%= stylesheet_link_tag "application" %>
   </head>
 
-  <body data-analytics-id="<%= Settings.GOOGLE_ANALYTICS_ID %>">
+  <body>
     <div id="su-wrap"> <!-- #su-wrap start -->
       <div id="su-content"> <!-- #su-content start -->
         <div id="outer-container" class="container-fluid">

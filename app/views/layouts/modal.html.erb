@@ -14,7 +14,7 @@
     <%= csrf_meta_tags %>
     <%= content_for(:head) %>
   </head>
-  <body data-analytics-id="<%= Settings.GOOGLE_ANALYTICS_ID %>" class='modal-body'>
+  <body class='modal-body'>
     <%= render 'shared/flashes' %>
     <%= yield %>
   </body>
