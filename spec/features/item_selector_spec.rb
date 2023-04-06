@@ -417,11 +417,7 @@ describe 'Item Selector' do
   end
 
   def fill_in_required_date
-    wait_for_ajax # We need the hours API to respond before we can know what the min-date is
-
-    min_date = find('#request_needed_date', visible: :hidden)['min']
-    min_date_to_s = Time.zone.parse(min_date).strftime('%D')
+    min_date = find('#request_needed_date')['min']
     page.execute_script("$('#request_needed_date').prop('value', '#{min_date}')")
-    page.execute_script("$('.ws-date').prop('value', '#{min_date_to_s}')")
   end
 end
