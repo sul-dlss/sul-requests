@@ -11,7 +11,8 @@
     line-height: $line-height-computed;
 
     i {
-      @extend .glyphicon-tiny;
+      font-size: $font-size-tiny;
+      line-height: $line-height-computed;      
       margin-left: 15px;
     }
 
@@ -85,7 +86,3 @@
   }
 }
 
-.glyphicon-tiny {
-  font-size: $font-size-tiny;
-  line-height: $line-height-computed;
-}
