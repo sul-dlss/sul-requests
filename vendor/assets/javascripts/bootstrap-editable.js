@@ -4677,12 +4677,13 @@ Editableform based on Twitter Bootstrap 3
     });    
     
     //buttons
+    // NOTE: We removed support for glyphicons, but the bootstrap-editable library relied on them internally, so we altered the following icon classes
     $.fn.editableform.buttons = 
       '<button type="submit" class="btn btn-primary btn-sm editable-submit">'+
-        '<i class="glyphicon glyphicon-ok"></i>'+
+        '<i class="bi bi-check-circle-fill"></i>'+
       '</button>'+
       '<button type="button" class="btn btn-default btn-sm editable-cancel">'+
-        '<i class="glyphicon glyphicon-remove"></i>'+
+        '<i class="bi bi-x-circle-fill"></i>'+
       '</button>';         
     
     //error classes

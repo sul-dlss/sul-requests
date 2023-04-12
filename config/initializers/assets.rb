@@ -9,9 +9,4 @@ Rails.application.config.assets.paths += [
   Rails.root.join('node_modules/bootstrap-sass/assets/fonts')
 ]
 
-# Precompile additional assets.
-# application.js, application.css, and all non-JS/CSS in the app/assets
-# folder are already added.
-%w(eot svg ttf woff woff2).each do |ext|
-  Rails.application.config.assets.precompile << "bootstrap/glyphicons-halflings-regular.#{ext}"
-end
+Rails.application.config.assets.paths << Rails.root.join("node_modules/bootstrap-icons/font")

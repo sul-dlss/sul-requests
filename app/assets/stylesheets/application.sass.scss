@@ -2,6 +2,7 @@
 // @import 'bootstrap-sprockets';
 // @import 'sul-styles';
 @import 'variables';
+@import "bootstrap-icons/font/bootstrap-icons";
 @import 'bootstrap-sass/assets/stylesheets/bootstrap';
 @import 'bootstrap-editable';
 @import 'sul-requests-mixins';
@@ -12,4 +13,3 @@
 @import 'sul-icons-aliases';
 // Helper classes used in icons
 @import 'sul-icons/helpers';
-
