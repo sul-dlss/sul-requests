@@ -541,6 +541,17 @@ pageable:
   - library: GREEN
     locations:
       - LOCKED-STK
+  - library: HOPKINS
+    locations:
+      - CHILDRENYA
+      - GRAPHICNOV
+      - MEDIA
+      - OVERSIZED
+      - POPSCI
+      - SERIALS
+      - SHELBYSER
+      - SHELBYTITL
+      - STACKS
   - library: LAW
     locations:
       - BASEMENT
