@@ -32,14 +32,11 @@ class FolioClient
   end
 
   # See https://s3.amazonaws.com/foliodocs/api/mod-patron/p/patron.html#patron_account__id__instance__instanceid__hold_post
-  # @example client.create_instance_hold('jcoyne85', 'cc3d8728-a6b9-45c4-ad0c-432873c3ae47', '123d9cba-85a8-42e0-b130-c82e504c64d6')
-  # @param [String] sunetid
+  # @example client.create_instance_hold('562a5cb0-e998-4ea2-80aa-34ac2b536238', 'cc3d8728-a6b9-45c4-ad0c-432873c3ae47', '123d9cba-85a8-42e0-b130-c82e504c64d6')
+  # @param [String] user_id the UUID of the FOLIO user
   # @param [String] instance_id the UUID of the FOLIO instance
   # @param [String] pickup_location_id the UUID of the pickup locatio
-  def create_instance_hold(sunetid, instance_id, pickup_location_id)
-    user_id = lookup_user_id(sunetid)
-    raise "No user_id for #{sunetid}" unless user_id
-
+  def create_instance_hold(user_id, instance_id, pickup_location_id)
     response = post("/patron/account/#{user_id}/instance/#{instance_id}/hold",
                     json: {
                       requestDate: Time.now.utc.iso8601,
@@ -48,6 +45,23 @@ class FolioClient
     return if response.status.success?
 
     raise "Hold request for user_id: #{user_id}, instance_id: #{instance_id}, " \
+          "pickup_location_id: #{pickup_location_id} was not successful. status: #{response.status.code}, #{response.body}"
+  end
+
+  # See https://s3.amazonaws.com/foliodocs/api/mod-patron/p/patron.html#patron_account__id__item__itemid__hold_post
+  # @example client.create_item_hold('562a5cb0-e998-4ea2-80aa-34ac2b536238', 'd9097766-cc5d-5bb5-9173-8e883950380f', '123d9cba-85a8-42e0-b130-c82e504c64d6')
+  # @param [String] user_id the UUID of the FOLIO user
+  # @param [String] item_id the UUID of the FOLIO item
+  # @param [String] pickup_location_id the UUID of the pickup locatio
+  def create_item_hold(user_id, item_id, pickup_location_id)
+    response = post("/patron/account/#{user_id}/item/#{item_id}/hold",
+                    json: {
+                      requestDate: Time.now.utc.iso8601,
+                      pickupLocationId: pickup_location_id
+                    })
+    return if response.status.success?
+
+    raise "Hold request for user_id: #{user_id}, item_id: #{item_id}, " \
           "pickup_location_id: #{pickup_location_id} was not successful. status: #{response.status.code}, #{response.body}"
   end
 
