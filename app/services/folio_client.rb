@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'http'
-
 # Calls FOLIO REST endpoints
 class FolioClient
   DEFAULT_HEADERS = {
@@ -32,7 +30,9 @@ class FolioClient
   end
 
   # See https://s3.amazonaws.com/foliodocs/api/mod-patron/p/patron.html#patron_account__id__instance__instanceid__hold_post
-  # @example client.create_instance_hold('562a5cb0-e998-4ea2-80aa-34ac2b536238', 'cc3d8728-a6b9-45c4-ad0c-432873c3ae47', '123d9cba-85a8-42e0-b130-c82e504c64d6')
+  # @example client.create_instance_hold('562a5cb0-e998-4ea2-80aa-34ac2b536238',
+  #                                      'cc3d8728-a6b9-45c4-ad0c-432873c3ae47',
+  #                                      '123d9cba-85a8-42e0-b130-c82e504c64d6')
   # @param [String] user_id the UUID of the FOLIO user
   # @param [String] instance_id the UUID of the FOLIO instance
   # @param [String] pickup_location_id the UUID of the pickup locatio
@@ -42,14 +42,14 @@ class FolioClient
                       requestDate: Time.now.utc.iso8601,
                       pickupLocationId: pickup_location_id
                     })
-    return if response.status.success?
-
-    raise "Hold request for user_id: #{user_id}, instance_id: #{instance_id}, " \
-          "pickup_location_id: #{pickup_location_id} was not successful. status: #{response.status.code}, #{response.body}"
+    check_response(response, title: 'Hold request',
+                             context: { user_id: user_id, instance_id: instance_id, pickup_location_id: pickup_location_id })
   end
 
   # See https://s3.amazonaws.com/foliodocs/api/mod-patron/p/patron.html#patron_account__id__item__itemid__hold_post
-  # @example client.create_item_hold('562a5cb0-e998-4ea2-80aa-34ac2b536238', 'd9097766-cc5d-5bb5-9173-8e883950380f', '123d9cba-85a8-42e0-b130-c82e504c64d6')
+  # @example client.create_item_hold('562a5cb0-e998-4ea2-80aa-34ac2b536238',
+  #                                  'd9097766-cc5d-5bb5-9173-8e883950380f',
+  #                                  '123d9cba-85a8-42e0-b130-c82e504c64d6')
   # @param [String] user_id the UUID of the FOLIO user
   # @param [String] item_id the UUID of the FOLIO item
   # @param [String] pickup_location_id the UUID of the pickup locatio
@@ -59,13 +59,18 @@ class FolioClient
                       requestDate: Time.now.utc.iso8601,
                       pickupLocationId: pickup_location_id
                     })
-    return if response.status.success?
-
-    raise "Hold request for user_id: #{user_id}, item_id: #{item_id}, " \
-          "pickup_location_id: #{pickup_location_id} was not successful. status: #{response.status.code}, #{response.body}"
+    check_response(response, title: 'Hold request', context: { user_id: user_id, item_id: item_id, pickup_location_id: pickup_location_id })
   end
 
   private
+
+  def check_response(response, title:, context:)
+    return if response.success?
+
+    context_string = context.map { |k, v| "#{k}: #{v}" }.join(', ')
+    raise "#{title} request for #{context_string} was not successful. " \
+          "status: #{response.status}, #{response.body}"
+  end
 
   def get(path, **kwargs)
     authenticated_request(path, method: :get, **kwargs)
@@ -79,11 +84,11 @@ class FolioClient
     parse_json(get(path, **kwargs))
   end
 
-  # @param [HTTP::Response] response
+  # @param [Faraday::Response] response
   # @raises [StandardError] if the response was not a 200
   # @return [Hash] the parsed JSON data structure
   def parse_json(response)
-    raise response unless response.status.ok?
+    raise response unless response.status == 200
     return nil if response.body.empty?
 
     JSON.parse(response.body)
@@ -92,20 +97,29 @@ class FolioClient
   def session_token
     @session_token ||= begin
       response = request('/authn/login', json: { username: @username, password: @password }, method: :post)
-      raise response.body unless response.status.created?
+      raise response.body unless response.status == 201
 
       response['x-okapi-token']
     end
   end
 
-  def authenticated_request(path, headers: {}, **other)
-    request(path, headers: headers.merge('x-okapi-token': session_token), **other)
+  def authenticated_request(path, method:, params: nil, headers: {}, json: nil)
+    request(path, method: method, params: params, headers: headers.merge('x-okapi-token': session_token), json: json)
   end
 
-  def request(path, headers: {}, method: :get, **other)
-    HTTP
-      .headers(default_headers.merge(headers))
-      .request(method, base_url + path, **other)
+  def request(path, method:, headers: nil, params: nil, json: nil)
+    connection.send(method, path, params, headers) do |req|
+      req.body = json.to_json if json
+    end
+  end
+
+  def connection
+    @connection ||= Faraday.new(base_url) do |builder|
+      builder.request :retry, max: 4, interval: 1, backoff_factor: 2
+      default_headers.each do |k, v|
+        builder.headers[k] = v
+      end
+    end
   end
 
   def default_headers
