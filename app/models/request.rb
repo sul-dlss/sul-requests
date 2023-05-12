@@ -10,7 +10,7 @@ class Request < ActiveRecord::Base
   include Requestable
   include DefaultRequestOptions
   include RequestValidations
-  include SymphonyRequest
+  include IlsRequest
 
   attr_reader :requested_barcode
   attr_accessor :live_lookup
@@ -149,7 +149,7 @@ class Request < ActiveRecord::Base
   end
 
   def submit!
-    send_to_symphony_later!
+    send_to_ils_later!
   end
 
   def barcode_present?

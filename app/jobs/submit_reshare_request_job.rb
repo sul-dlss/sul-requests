@@ -21,7 +21,7 @@ class SubmitReshareRequestJob < ApplicationJob
     rescue StandardError => e
       Honeybadger.notify("Reshare Request failed for #{request_id} with #{e}. Submitted to Symphony instead.")
 
-      request.send_to_symphony_now!
+      request.send_to_ils_now!
     end
 
     Sidekiq.logger.info("Completed SubmitReshareRequestJob for request #{request_id}")
@@ -41,7 +41,7 @@ class SubmitReshareRequestJob < ApplicationJob
                                           reshare_vufind_item.instance_uuid,
                                           reshare_vufind_item.instance_title)
     else
-      request.send_to_symphony_now!
+      request.send_to_ils_now!
     end
   end
 

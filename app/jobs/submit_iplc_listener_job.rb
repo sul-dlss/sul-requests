@@ -21,7 +21,7 @@ class SubmitIplcListenerJob < ApplicationJob
     rescue StandardError => e
       Honeybadger.notify("IPLC Request failed for #{request_id} with #{e}. Submitted to Symphony instead.")
 
-      request.send_to_symphony_now!
+      request.send_to_ils_now!
     end
 
     Sidekiq.logger.info("Completed SubmitIplcRequestJob for request #{request_id}")

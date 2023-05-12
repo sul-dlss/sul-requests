@@ -59,7 +59,7 @@ class ItemStatus
   end
 
   def approve!(user, approval_time = nil)
-    @request.send_to_symphony_now!(barcode: @id)
+    @request.send_to_ils_now!(barcode: @id)
     reload_request # reloading to get any attributes saved to the database above
     return unless symphony_item_successful?
 

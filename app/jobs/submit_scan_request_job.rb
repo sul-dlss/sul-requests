@@ -13,6 +13,6 @@ class SubmitScanRequestJob < ApplicationJob
 
     scan.notify_ilb! if scan.illiad_error?
 
-    scan.send_to_symphony_later!
+    scan.send_to_ils_later!
   end
 end

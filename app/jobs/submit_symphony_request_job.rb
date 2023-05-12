@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ##
-# Rails Job to submit a Scan request to Symphony for processing
+# Rails Job to submit a hold request to Symphony for processing
 class SubmitSymphonyRequestJob < ApplicationJob
   class SymphonyWebServiceAdapterError < StandardError; end
 

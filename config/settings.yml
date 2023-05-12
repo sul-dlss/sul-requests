@@ -85,6 +85,7 @@ features:
   hold_recall_via_relais: false
   hold_recall_via_reshare: true
   scan_service: true
+  use_symphony: true # Set to false to use folio
 
 background_jobs:
   enabled: false
