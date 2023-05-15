@@ -13,6 +13,7 @@
 - provide support for the Special Collections request process.
 - avoid known usability/accessibility issues with third-party request forms.
 - support administrative tasks, including request mediation, updating the paging schedule, and adding/removing requestable item categories.
+- provides a mechanism for the general public (without an ILS account) to request items with just name and email, specifically to support government documents.
 ## local development
 ### requirements
 - Ruby (tested on 3.0)
