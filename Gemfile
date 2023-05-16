@@ -26,8 +26,9 @@ gem 'jbuilder', '~> 2.5'
 # CanCanCan is an authorization Gem for rails
 gem 'cancancan'
 # Use faraday for making HTTP requests
-gem 'faraday', '~> 2'
-gem 'http'
+gem 'faraday', '~> 2' # for lirary hours, Illiad, and Folio clients
+gem 'faraday-retry'
+gem 'http' # for Reshare and SymphonyClient
 # Use kaminari for pagination
 gem 'kaminari'
 gem 'kaminari_bootstrap_paginator'
