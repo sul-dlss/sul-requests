@@ -22,11 +22,22 @@ class FolioClient
     @tenant = tenant
   end
 
-  # Return the FOLIO user_id given a sunetid
+  # Return the FOLIO user object given a sunetid
   # See https://s3.amazonaws.com/foliodocs/api/mod-users/p/users.html#users__userid__get
-  def lookup_user_id(sunetid)
-    result = json_response('/users', params: { query: "username==\"#{sunetid}\"" })
-    result.dig('users', 0, 'id')
+  def login_by_sunetid(sunetid)
+    response = get_json('/users', params: { query: CqlQuery.new(username: sunetid).to_query })
+    response.dig('users', 0)
+  end
+
+  # Return the FOLIO user object given a library id (e.g. barcode)
+  # See https://s3.amazonaws.com/foliodocs/api/mod-users/p/users.html#users__userid__get
+  def login_by_library_id(library_id)
+    response = get_json('/users', params: { query: CqlQuery.new(barcode: library_id).to_query })
+    response.dig('users', 0)
+  end
+
+  def user_info(user_id)
+    get_json("/users/#{CGI.escape(user_id)}")
   end
 
   # See https://s3.amazonaws.com/foliodocs/api/mod-patron/p/patron.html#patron_account__id__instance__instanceid__hold_post
@@ -80,7 +91,7 @@ class FolioClient
     authenticated_request(path, method: :post, **kwargs)
   end
 
-  def json_response(path, **kwargs)
+  def get_json(path, **kwargs)
     parse_json(get(path, **kwargs))
   end
 
