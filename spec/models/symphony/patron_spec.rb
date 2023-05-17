@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Patron do
+RSpec.describe Symphony::Patron do
   subject(:patron) do
     described_class.new(
       {

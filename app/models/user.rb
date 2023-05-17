@@ -90,8 +90,8 @@ class User < ActiveRecord::Base
   end
 
   def patron
-    @patron ||= Patron.find_by(sunetid: sunetid) if sunetid
-    @patron ||= Patron.find_by(library_id: library_id) if library_id
+    @patron ||= Symphony::Patron.find_by(sunetid: sunetid) if sunetid
+    @patron ||= Symphony::Patron.find_by(library_id: library_id) if library_id
   end
 
   def borrow_direct_eligible?

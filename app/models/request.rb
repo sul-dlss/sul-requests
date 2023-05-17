@@ -61,7 +61,7 @@ class Request < ActiveRecord::Base
   end
 
   def bib_info
-    @bib_info ||= BibInfo.find(item_id)
+    @bib_info ||= Symphony::BibInfo.find(item_id)
   end
 
   def send_approval_status!

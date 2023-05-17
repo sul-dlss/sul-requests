@@ -10,7 +10,7 @@ describe MediationHelper do
 
     before do
       location_object = double(current_location: current_location)
-      expect(CatalogInfo).to receive(:find).with('123456').and_return(location_object)
+      expect(Symphony::CatalogInfo).to receive(:find).with('123456').and_return(location_object)
     end
 
     context 'when the current and home locations match' do

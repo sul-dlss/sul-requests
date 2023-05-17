@@ -4,13 +4,13 @@ require 'rails_helper'
 
 describe SubmitReshareRequestJob, type: :job do
   let(:user) { create(:library_id_user) }
-  let(:patron) { instance_double('Patron', exists?: true, email: nil, university_id: '1234567') }
+  let(:patron) { instance_double(Symphony::Patron, exists?: true, email: nil, university_id: '1234567') }
   let(:request) { create(:hold_recall_with_holdings, user: user) }
   let(:sw_item) { double('SeachWorksItem', isbn: %w[12345 54321]) }
 
   before do
     Sidekiq.logger.level = Logger::UNKNOWN
-    allow(Patron).to receive(:find_by).with(library_id: user.library_id).and_return(patron)
+    allow(Symphony::Patron).to receive(:find_by).with(library_id: user.library_id).and_return(patron)
     allow(request).to receive(:searchworks_item).and_return(sw_item)
   end
 

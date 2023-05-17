@@ -45,7 +45,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
     let(:request) { scan }
     let(:scan) { create(:scan_with_holdings_barcodes, user: user) }
     let(:mock_client) { instance_double(SymphonyClient) }
-    let(:patron) { Patron.new({}) }
+    let(:patron) { Symphony::Patron.new({}) }
 
     before do
       allow(user).to receive(:patron).and_return(patron)
@@ -53,7 +53,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
 
     describe '#execute!' do
       it 'for each barcode place a hold with symphony' do
-        allow_any_instance_of(CatalogInfo).to receive(:current_location).and_return('SAL')
+        allow_any_instance_of(Symphony::CatalogInfo).to receive(:current_location).and_return('SAL')
         expect(mock_client).to receive(:place_hold).with(
           {
             fill_by_date: nil, key: 'SAL3', recall_status: 'STANDARD',
@@ -77,12 +77,12 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
         let(:user) { build(:sso_user) }
         let(:request) { create(:page_with_holdings, user: user) }
         let(:patron) do
-          Patron.new({
-                       'fields' => {
-                         'barcode' => '12345',
-                         'standing' => { 'key' => 'OK' }
-                       }
-                     })
+          Symphony::Patron.new({
+                                 'fields' => {
+                                   'barcode' => '12345',
+                                   'standing' => { 'key' => 'OK' }
+                                 }
+                               })
         end
 
         before do
@@ -139,7 +139,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
 
         context 'when a typical user' do
           let(:patron) do
-            Patron.new(
+            Symphony::Patron.new(
               { 'fields' => { 'barcode' => '123456', 'standing' => { 'key' => 'OK' } } }
             )
           end
@@ -153,7 +153,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
 
         context 'when the patron barcode begins with "HOLD@"' do
           it 'notifies staff' do
-            allow(subject.user).to receive(:patron).and_return(Patron.new({}))
+            allow(subject.user).to receive(:patron).and_return(Symphony::Patron.new({}))
 
             expect do
               subject.execute!
@@ -200,7 +200,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
         let(:scan) { create(:scan_with_holdings, user: user) }
 
         it 'places a hold using a callkey' do
-          allow_any_instance_of(CatalogInfo).to receive(:current_location).and_return('SAL')
+          allow_any_instance_of(Symphony::CatalogInfo).to receive(:current_location).and_return('SAL')
           expect(mock_client).to receive(:bib_info).and_return(
             { 'fields' => { 'callList' => [{ 'key' => 'hello:world' }] } }
           )

@@ -4,7 +4,7 @@
 class CdlWaitlistJob < ApplicationJob
   # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
   def perform(circ_record_key, checkout_date:)
-    circ_record = CircRecord.find(circ_record_key, return_holds: true)
+    circ_record = Symphony::CircRecord.find(circ_record_key, return_holds: true)
 
     unless circ_record.patron_barcode == Settings.cdl.pseudo_patron_id
       cdl_logger("Circ record #{circ_record_key} checked out to non-CDL patron")
@@ -49,7 +49,7 @@ class CdlWaitlistJob < ApplicationJob
       )
     end
 
-    new_circ_record = CircRecord.new(checkout&.dig('circRecord'))
+    new_circ_record = Symphony::CircRecord.new(checkout&.dig('circRecord'))
 
     # Figure out which hold is next
     next_up = waitlisted_holds.min_by(&:key)

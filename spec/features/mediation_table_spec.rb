@@ -119,7 +119,7 @@ describe 'Mediation table', js: true do
 
       before do
         location_object = double(current_location: 'THE-CURRENT-LOCATION')
-        expect(CatalogInfo).to receive(:find).at_least(:once).and_return(location_object)
+        expect(Symphony::CatalogInfo).to receive(:find).at_least(:once).and_return(location_object)
       end
 
       it 'is fetched from Symphony' do

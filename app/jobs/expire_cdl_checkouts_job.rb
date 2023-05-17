@@ -5,11 +5,11 @@ class ExpireCdlCheckoutsJob < ApplicationJob
   def perform
     return unless Settings.cdl.enabled
 
-    patron = Patron.find_by(library_id: Settings.cdl.pseudo_patron_id)
+    patron = Symphony::Patron.find_by(library_id: Settings.cdl.pseudo_patron_id)
     return if patron.blank?
 
     patron.checkouts.each do |checkout|
-      circ_record = CircRecord.find(checkout.key, return_holds: true)
+      circ_record = Symphony::CircRecord.find(checkout.key, return_holds: true)
 
       expire_overdue_checkout(circ_record) if checkout.overdue? || orphaned?(circ_record)
     end

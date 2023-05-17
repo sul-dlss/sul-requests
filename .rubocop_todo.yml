@@ -368,11 +368,11 @@ Style/RescueStandardError:
 # Cop supports --auto-correct.
 Style/SingleArgumentDig:
   Exclude:
-    - 'app/models/bib_info.rb'
-    - 'app/models/catalog_info.rb'
-    - 'app/models/circ_record.rb'
-    - 'app/models/hold_record.rb'
-    - 'app/models/patron.rb'
+    - 'app/models/symphony/bib_info.rb'
+    - 'app/models/symphony/catalog_info.rb'
+    - 'app/models/symphony/circ_record.rb'
+    - 'app/models/symphony/hold_record.rb'
+    - 'app/models/symphony/patron.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.

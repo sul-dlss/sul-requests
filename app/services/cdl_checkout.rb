@@ -48,7 +48,7 @@ class CdlCheckout
   # @param barcode [String] item barcode
   # @return [Hash] token payload
   def process_checkout(barcode)
-    item_info = CatalogInfo.find(barcode, return_holds: true)
+    item_info = Symphony::CatalogInfo.find(barcode, return_holds: true)
 
     hold = find_hold(item_info) || place_hold(item_info)
 
@@ -71,7 +71,7 @@ class CdlCheckout
 
       cdl_logger "Checking out #{selected_item.barcode} for patron #{user.patron.anonymized_id}"
       checkout = place_checkout(selected_item.barcode, dueDate: item_info.loan_period.from_now.iso8601)
-      circ_record = CircRecord.new(checkout&.dig('circRecord'))
+      circ_record = Symphony::CircRecord.new(checkout&.dig('circRecord'))
     end
 
     comment = "CDL;#{druid};#{circ_record.key};#{circ_record.checkout_date.to_i};ACTIVE"
@@ -83,7 +83,7 @@ class CdlCheckout
 
   # rubocop:disable Metrics/CyclomaticComplexity
   def process_renewal(barcode)
-    item_info = CatalogInfo.find(barcode, return_holds: true)
+    item_info = Symphony::CatalogInfo.find(barcode, return_holds: true)
     hold = find_hold(item_info)
 
     raise(Exceptions::CdlCheckoutError, 'Could not find hold record') unless hold&.exists? && hold&.cdl?
@@ -97,7 +97,7 @@ class CdlCheckout
     cdl_logger "Renewing hold #{hold.key} for patron #{user.patron.anonymized_id}"
     renewal = place_renewal(hold.item_key, dueDate: item_info.loan_period.from_now.iso8601)
 
-    circ_record = CircRecord.new(renewal&.dig('circRecord'))
+    circ_record = Symphony::CircRecord.new(renewal&.dig('circRecord'))
     comment = "CDL;#{druid};#{circ_record.key};#{circ_record.checkout_date.to_i};ACTIVE"
     update_hold_response = symphony_client.update_hold(hold.key, comment: comment)
     retry_symphony_errors { update_hold_response }
@@ -172,7 +172,7 @@ class CdlCheckout
 
     check_for_symphony_errors(response)
 
-    HoldRecord.new(response&.dig('holdRecord') || {})
+    Symphony::HoldRecord.new(response&.dig('holdRecord') || {})
   end
 
   def place_checkout(selected_barcode, **additional_params)
