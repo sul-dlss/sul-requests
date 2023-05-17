@@ -190,7 +190,7 @@ describe MediatedPage do
 
   describe '#submit!' do
     it 'does not immediately submit the request to Symphony' do
-      expect(SubmitSymphonyRequestJob).not_to receive(:perform_now)
+      expect(Request.ils_job_class).not_to receive(:perform_now)
       subject.submit!
     end
 

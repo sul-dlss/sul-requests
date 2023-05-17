@@ -3,9 +3,15 @@
 ##
 # Model responses from Symphony requests
 class SymphonyResponse
+  SUCCESS_CODES = %w[209 722 S001 P001 P001B P002 P005].freeze
+
   include ActiveModel::Model
 
   attr_accessor :req_type, :confirm_email, :usererr_code, :usererr_text, :requested_items
+
+  def blank?
+    req_type.blank? && requested_items.blank?
+  end
 
   def items_by_barcode
     (requested_items || []).each_with_object({}) do |i, h|
@@ -33,13 +39,13 @@ class SymphonyResponse
     items_by_barcode.any? && items_by_barcode.keys.any? { |barcode| !item_successful?(barcode) }
   end
 
+  def user_error?
+    usererr_code.present?
+  end
+
   private
 
   def item_successful?(barcode)
-    success_codes.include?(items_by_barcode.dig(barcode, 'msgcode'))
-  end
-
-  def success_codes
-    SULRequests::Application.config.symphony_success_codes
+    SymphonyResponse::SUCCESS_CODES.include?(items_by_barcode.dig(barcode, 'msgcode'))
   end
 end

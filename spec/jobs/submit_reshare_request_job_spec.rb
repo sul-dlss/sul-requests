@@ -29,7 +29,7 @@ describe SubmitReshareRequestJob, type: :job do
       end
 
       it 'sends the request to Symphony' do
-        expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(request.id, {})
+        expect(Request.ils_job_class).to receive(:perform_now).with(request.id, {})
 
         subject.perform(request.id)
       end
@@ -38,9 +38,9 @@ describe SubmitReshareRequestJob, type: :job do
     context 'when the item is not requestable in BorrowDirect' do
       before { expect(reshare_vufind_item).to receive(:requestable?).and_return(false) }
 
-      it 'sends the request off to Symphony (without attempting to request it)' do
+      it 'sends the request off to the ILS (without attempting to request it)' do
         expect(reshare_vufind_item).not_to receive(:request_item)
-        expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(request.id, {})
+        expect(Request.ils_job_class).to receive(:perform_now).with(request.id, {})
 
         subject.perform(request.id)
       end
@@ -51,11 +51,11 @@ describe SubmitReshareRequestJob, type: :job do
         expect(reshare_vufind_item).to receive(:requestable?).and_raise('The API Error')
       end
 
-      it 'sends the request off to Symphony and notifies Honeybadger' do
+      it 'sends the request off to the ILS and notifies Honeybadger' do
         expect(Honeybadger).to receive(:notify).with(
-          'Reshare Request failed for 1 with The API Error. Submitted to Symphony instead.'
+          'Reshare Request failed for 1 with The API Error. Submitted to the ILS instead.'
         )
-        expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(request.id, {})
+        expect(Request.ils_job_class).to receive(:perform_now).with(request.id, {})
 
         subject.perform(request.id)
       end

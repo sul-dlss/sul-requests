@@ -35,9 +35,9 @@ describe SubmitBorrowDirectRequestJob, type: :job do
     context 'when the item is not requestable in BorrowDirect' do
       before { expect(borrow_direct_item).to receive(:requestable?).and_return(false) }
 
-      it 'sends the request off to Symphony (without attempting to request it)' do
+      it 'sends the request off to the LS (without attempting to request it)' do
         expect(borrow_direct_item).not_to receive(:request_item)
-        expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(request.id, {})
+        expect(Request.ils_job_class).to receive(:perform_now).with(request.id, {})
 
         subject.perform(request.id)
       end
@@ -51,8 +51,8 @@ describe SubmitBorrowDirectRequestJob, type: :job do
         )
       end
 
-      it 'sends the request off to Symphony' do
-        expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(request.id, {})
+      it 'sends the request off to the ILS' do
+        expect(Request.ils_job_class).to receive(:perform_now).with(request.id, {})
 
         subject.perform(request.id)
       end
@@ -65,9 +65,9 @@ describe SubmitBorrowDirectRequestJob, type: :job do
 
       it 'sends the request off to Symphony and notifies Honeybadger' do
         expect(Honeybadger).to receive(:notify).with(
-          'BorrowDirect Request failed for 1 with The API Error. Submitted to Symphony instead.'
+          'BorrowDirect Request failed for 1 with The API Error. Submitted to the ILS instead.'
         )
-        expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(request.id, {})
+        expect(Request.ils_job_class).to receive(:perform_now).with(request.id, {})
 
         subject.perform(request.id)
       end

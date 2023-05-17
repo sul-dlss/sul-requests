@@ -12,9 +12,9 @@ class SubmitBorrowDirectRequestJob < ApplicationJob
     Sidekiq.logger.info("Started SubmitBorrowDirectRequestJob for request #{request_id}")
 
     begin
-      make_borrow_direct_or_symphony_request(request)
+      make_borrow_direct_or_ils_request(request)
     rescue BorrowDirect::Error => e
-      Honeybadger.notify("BorrowDirect Request failed for #{request_id} with #{e}. Submitted to Symphony instead.")
+      Honeybadger.notify("BorrowDirect Request failed for #{request_id} with #{e}. Submitted to the ILS instead.")
 
       request.send_to_ils_now!
     end
@@ -30,7 +30,7 @@ class SubmitBorrowDirectRequestJob < ApplicationJob
     )
   end
 
-  def make_borrow_direct_or_symphony_request(request)
+  def make_borrow_direct_or_ils_request(request)
     borrow_direct_item = BorrowDirectWrapper.new(request)
 
     if borrow_direct_item.requestable? && (response = borrow_direct_item.request_item).present?

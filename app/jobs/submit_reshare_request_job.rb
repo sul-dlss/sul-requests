@@ -3,7 +3,7 @@
 ##
 # Background job to look up an item to request in Reshare.
 # If Reshare has the item and we start a request to Reshare .
-# If Reshare does not have it or we cannot succesfully request it, trigger the normal Symphony request.
+# If Reshare does not have it or we cannot succesfully request it, trigger the normal request.
 class SubmitReshareRequestJob < ApplicationJob
   discard_on ActiveRecord::RecordNotFound do |job, _error|
     Honeybadger.notify(
@@ -17,9 +17,9 @@ class SubmitReshareRequestJob < ApplicationJob
     Sidekiq.logger.info("Started SubmitReshareRequestJob for request #{request_id}")
 
     begin
-      make_reshare_or_symphony_request(request)
+      make_reshare_or_ils_request(request)
     rescue StandardError => e
-      Honeybadger.notify("Reshare Request failed for #{request_id} with #{e}. Submitted to Symphony instead.")
+      Honeybadger.notify("Reshare Request failed for #{request_id} with #{e}. Submitted to the ILS instead.")
 
       request.send_to_ils_now!
     end
@@ -27,7 +27,7 @@ class SubmitReshareRequestJob < ApplicationJob
     Sidekiq.logger.info("Completed SubmitReshareRequestJob for request #{request_id}")
   end
 
-  def make_reshare_or_symphony_request(request)
+  def make_reshare_or_ils_request(request)
     reshare_vufind_item = ReshareVufindWrapper.new(request)
 
     if request.user.borrow_direct_eligible? && reshare_vufind_item.requestable?

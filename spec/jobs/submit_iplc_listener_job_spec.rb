@@ -31,9 +31,9 @@ describe SubmitIplcListenerJob, type: :job do
 
       it 'sends the request off to Symphony and notifies Honeybadger' do
         expect(Honeybadger).to receive(:notify).with(
-          'IPLC Request failed for 1 with The API Error. Submitted to Symphony instead.'
+          'IPLC Request failed for 1 with The API Error. Submitted to the ILS instead.'
         )
-        expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(request.id, {})
+        expect(Request.ils_job_class).to receive(:perform_now).with(request.id, {})
 
         subject.perform(request.id, 'iplc-uuid', 'iplc-title')
       end

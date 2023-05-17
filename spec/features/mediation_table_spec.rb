@@ -10,7 +10,7 @@ describe 'Mediation table', js: true do
     before do
       stub_current_user(create(:superadmin_user))
       stub_searchworks_api_json(build(:searchable_holdings))
-      stub_symphony_response(symphony_response)
+      stub_symphony_response(ils_response)
 
       # create some pending requests
       create(
@@ -79,7 +79,7 @@ describe 'Mediation table', js: true do
     end
 
     context 'toggleable truncation of user request comments' do
-      let(:symphony_response) { build(:symphony_request_with_mixed_status) }
+      let(:ils_response) { build(:symphony_request_with_mixed_status) }
 
       it 'truncates long comments and shows a more link' do
         expect(page).to have_css('td.comment > div[data-behavior="trunk8toggle"]', count: 4)
@@ -115,7 +115,7 @@ describe 'Mediation table', js: true do
     end
 
     describe 'current location' do
-      let(:symphony_response) { build(:symphony_page_with_multiple_items) }
+      let(:ils_response) { build(:symphony_page_with_multiple_items) }
 
       before do
         location_object = double(current_location: 'THE-CURRENT-LOCATION')
@@ -134,7 +134,7 @@ describe 'Mediation table', js: true do
     end
 
     describe 'successful symphony response' do
-      let(:symphony_response) { build(:symphony_page_with_multiple_items) }
+      let(:ils_response) { build(:symphony_page_with_multiple_items) }
 
       it 'has toggleable rows that display holdings' do
         expect(page).to have_css('[data-mediate-request]', count: 4)
@@ -239,7 +239,7 @@ describe 'Mediation table', js: true do
     end
 
     describe 'unsuccessful symphony responses' do
-      let(:symphony_response) { build(:symphony_request_with_mixed_status) }
+      let(:ils_response) { build(:symphony_request_with_mixed_status) }
 
       it 'has the persisted item level error message' do
         within(all('[data-mediate-request]').last) do
@@ -276,7 +276,7 @@ describe 'Mediation table', js: true do
       end
 
       describe 'on item approval' do
-        let(:symphony_response) { build(:symphony_page_with_multiple_items) }
+        let(:ils_response) { build(:symphony_page_with_multiple_items) }
 
         it 'updates the item level error messages' do
           within(all('[data-mediate-request]').last) do

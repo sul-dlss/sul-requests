@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ##
-# Rails Job to submit a Scan request to Symphony for processing
+# Rails Job to submit a Scan request to the ILS for processing
 class SubmitScanRequestJob < ApplicationJob
   queue_as :default
   retry_on Faraday::ConnectionFailed

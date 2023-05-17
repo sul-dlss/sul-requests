@@ -28,8 +28,8 @@ describe RequestStatusMailer do
         end
       end
 
-      describe '#generic_symphony_error' do
-        let(:mailer_method) { :generic_symphony_error }
+      describe '#generic_ils_error' do
+        let(:mailer_method) { :generic_ils_error }
 
         it 'renders the correct email' do
           expect(mail.body.to_s).to include(
@@ -188,7 +188,7 @@ describe RequestStatusMailer do
       end
 
       describe 'for generic errors' do
-        let(:mailer_method) { :generic_symphony_error }
+        let(:mailer_method) { :generic_ils_error }
 
         it 'has a custom from address' do
           expect(mail.from).to eq ['sul-requests-support@stanford.edu']
@@ -205,7 +205,7 @@ describe RequestStatusMailer do
 
       describe 'failure' do
         before do
-          allow(request.symphony_response).to receive(:all_successful?).and_return false
+          allow(request.ils_response).to receive(:all_successful?).and_return false
         end
 
         it '"Attention needed ... problem with your request"' do

@@ -52,10 +52,8 @@ token_encrypt:
   secret: ''
   salt: ''
 
-symphony_api:
-  enabled: true
-  url: ''
-  adapter: :symws
+ils:
+  request_job: SubmitSymphonyRequestJob
 
 symphony:
   override: PASSWORD
@@ -81,7 +79,6 @@ features:
   hold_recall_via_relais: false
   hold_recall_via_reshare: true
   scan_service: true
-  use_symphony: true # Set to false to use folio
 
 background_jobs:
   enabled: false

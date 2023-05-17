@@ -132,7 +132,7 @@ describe RequestsHelper do
           request_status: double(
             'status',
             errored?: true,
-            symphony_user_error_text: 'User is blocked'
+            user_error_text: 'User is blocked'
           )
         )
       end

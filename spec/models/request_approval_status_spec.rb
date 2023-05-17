@@ -97,7 +97,7 @@ describe RequestApprovalStatus do
     end
 
     it 'returns a default message if we receive an unknown user error code' do
-      expect(request.symphony_response).to receive(:usererr_code).at_least(:once).and_return('unknown-code')
+      expect(request.ils_response).to receive(:usererr_code).at_least(:once).and_return('unknown-code')
       expect(html).to have_css('dd', text: 'We were unable to process your request because of a system error.')
       expect(html).to have_css('dd', text: 'Please try again, or contact greencirc@stanford.edu for more assistance.')
       expect(html).to have_link('greencirc@stanford.edu')

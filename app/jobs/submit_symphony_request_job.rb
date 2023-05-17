@@ -11,8 +11,6 @@ class SubmitSymphonyRequestJob < ApplicationJob
   #   This is recommended as a Sidekiq best practice (https://github.com/mperham/sidekiq/wiki/Best-Practices).
   #   It also helps reduce the size of the Redis database (used by Sidekiq), which stores its data in memory.
   def perform(request_id, options = {})
-    return true unless enabled?
-
     request = find_request(request_id)
 
     return true unless request
@@ -21,7 +19,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
     response = Command.new(request, **options).execute!
 
     Sidekiq.logger.debug("Symphony response string: #{response}")
-    request.merge_symphony_response_data(SymphonyResponse.new(response.with_indifferent_access))
+    request.merge_ils_response_data(SymphonyResponse.new(response.with_indifferent_access))
     request.save
     request.send_approval_status!
     Sidekiq.logger.info("Completed SubmitSymphonyRequestJob for request #{request_id}")
@@ -33,10 +31,6 @@ class SubmitSymphonyRequestJob < ApplicationJob
     Honeybadger.notify(
       "Attempted to call Symphony for Request with ID #{request_id}, but no such Request was found."
     )
-  end
-
-  def enabled?
-    Settings.symphony_api.enabled
   end
 
   # Submit requests using Symws
@@ -226,10 +220,6 @@ class SubmitSymphonyRequestJob < ApplicationJob
           .merge(scan_destinations)
       end
     end
-  end
-
-  unless Settings.symphony_api.adapter.to_s == 'symws'
-    raise SymphonyWebServiceAdapterError, "#{Settings.symphony_api.adapter} is not a known Symphony Web Services Adapter"
   end
 
   Command = SubmitSymphonyRequestJob::SymWsCommand

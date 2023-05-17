@@ -18,7 +18,7 @@ class RequestStatusMailer < ApplicationMailer
   end
 
   # Symohony returned an error code we don't know how to handle
-  def generic_symphony_error(request)
+  def generic_ils_error(request)
     self.custom_from_address = %("Stanford Libraries Requests" <sul-requests-support@stanford.edu>)
 
     request_status(request)
@@ -84,7 +84,7 @@ class RequestStatusMailer < ApplicationMailer
   end
 
   def suffix
-    @suffix ||= if @request.symphony_response.all_successful? || @request.via_borrow_direct? || @request.is_a?(MediatedPage)
+    @suffix ||= if @request.ils_response.all_successful? || @request.via_borrow_direct? || @request.is_a?(MediatedPage)
                   'success'
                 else
                   'failure'

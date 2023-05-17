@@ -17,7 +17,7 @@ class RequestApprovalStatus
 
   def to_html
     return content_wrapper { pending_text } if pending?
-    return content_wrapper { user_error_text } if user_error?
+    return content_wrapper { user_error_text } if request.ils_response.user_error?
 
     safe_join(item_list_with_status_markup)
   end
@@ -32,7 +32,7 @@ class RequestApprovalStatus
 
   def item_list_with_status
     request.holdings.map do |item|
-      if request.symphony_response.success?(item.barcode)
+      if request.ils_response.success?(item.barcode)
         succcess_text_for_item(item.callnumber)
       else
         error_text_for_item(item)
@@ -41,11 +41,7 @@ class RequestApprovalStatus
   end
 
   def pending?
-    request.symphony_response_data.blank?
-  end
-
-  def user_error?
-    request.symphony_response.usererr_code.present?
+    request.ils_response.blank?
   end
 
   private
@@ -69,7 +65,7 @@ class RequestApprovalStatus
 
   def item_list_with_status_markup
     request.holdings.map do |item|
-      if request.symphony_response.success?(item.barcode)
+      if request.ils_response.success?(item.barcode)
         success_markup_for_item(item.callnumber)
       else
         error_markup_for_item(item)
@@ -99,7 +95,7 @@ class RequestApprovalStatus
 
   def user_error_text
     t(
-      :"symphony_response.failure.code_#{request.symphony_response.usererr_code}.alert_html",
+      :"symphony_response.failure.code_#{request.ils_response.usererr_code}.alert_html",
       default: :'symphony_response.failure.default.alert_html'
     )
   end

@@ -4,8 +4,7 @@ require 'rails_helper'
 
 RSpec.describe SubmitSymphonyRequestJob, type: :job do
   before do
-    allow(Settings.symphony_api).to receive(:enabled).and_return(true)
-    allow(Settings.symphony_api).to receive(:url).and_return('http://illiad.ill.example.com/')
+    allow(Settings.ils).to receive(:request_job).and_return(described_class)
   end
 
   context 'with a stubbed HTTP client' do

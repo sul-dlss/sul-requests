@@ -31,8 +31,6 @@ module SULRequests
 
     config.scanning_library_proxy = { 'SCAN' => 'GREEN' }
 
-    config.symphony_success_codes = ['209', '722', 'S001', 'P001', 'P001B', 'P002', 'P005']
-
     config.no_user_privs_codes = ['U003', 'U004']
 
     config.mediator_contact_info = {

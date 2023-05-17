@@ -31,7 +31,7 @@ class AdminController < ApplicationController
     status = @request.item_status(params[:item])
     status.approve!(current_user.sunetid) unless status.approved?
 
-    if @request.symphony_response.success?(params[:item])
+    if @request.ils_response.success?(params[:item])
       render json: status, layout: false
     else
       render json: status, layout: false, status: :internal_server_error
