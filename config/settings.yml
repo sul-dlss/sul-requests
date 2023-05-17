@@ -66,10 +66,6 @@ hours_api: 'https://library-hours.stanford.edu/'
 searchworks_link: 'http://searchworks.stanford.edu/view'
 sul_illiad: 'https://sul-illiad-test.stanford.edu/'
 illiad_api_key: 'AbC123'
-sul_proxy_api_url: ''
-# e.g. sul_proxy_api_url: 'http://localhost:3000/proxy?libid=%{libid}'
-sul_user_name_api_url: ''
-# e.g. sul_user_name_api_url: 'http://localhost:3000/userName?libid=%{libid}'
 analytics_debug: true
 worst_case_paging_padding: 3
 stanford_ips:
