@@ -9,7 +9,7 @@ class FolioClient
 
   attr_reader :base_url
 
-  def initialize(url: ENV.fetch('OKAPI_URL'), tenant: 'sul')
+  def initialize(url: Settings.folio.okapi_url, tenant: Settings.folio.tenant)
     uri = URI.parse(url)
 
     @username = uri.user

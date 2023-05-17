@@ -60,6 +60,10 @@ ils:
 symphony:
   override: PASSWORD
 
+folio:
+  okapi_url: <%= ENV.fetch('OKAPI_URL', 'http://example.com') %>
+  tenant: 'sul'
+
 mailer_host: <%= `echo $HOSTNAME` %>
 searchworks_api: 'https://searchworks.stanford.edu'
 hours_api: 'https://library-hours.stanford.edu/'
