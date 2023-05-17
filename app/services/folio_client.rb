@@ -55,6 +55,8 @@ class FolioClient
                     })
     check_response(response, title: 'Hold request',
                              context: { user_id: user_id, instance_id: instance_id, pickup_location_id: pickup_location_id })
+
+    parse_json(response)
   end
 
   # See https://s3.amazonaws.com/foliodocs/api/mod-patron/p/patron.html#patron_account__id__item__itemid__hold_post
@@ -71,6 +73,8 @@ class FolioClient
                       pickupLocationId: pickup_location_id
                     })
     check_response(response, title: 'Hold request', context: { user_id: user_id, item_id: item_id, pickup_location_id: pickup_location_id })
+
+    parse_json(response)
   end
 
   private
