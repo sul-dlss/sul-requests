@@ -35,7 +35,7 @@ class MediatedPage < Request
   end
 
   def submit!
-    # creating a mediated page should not submit the request to Symphony
+    # creating a mediated page should not submit the request to ILS (it needs to wait for approvals)
     send_confirmation!
     notify_mediator!
   end

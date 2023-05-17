@@ -6,7 +6,7 @@
 class RequestStatusMailerFactory
   class << self
     def for(request)
-      if request.symphony_response.usererr_code.present? && !request.is_a?(MediatedPage)
+      if request.ils_response.usererr_code.present? && !request.is_a?(MediatedPage)
         email_for_user_error(request)
       else
         email_for_request_class(request)
@@ -16,13 +16,13 @@ class RequestStatusMailerFactory
     private
 
     def email_for_user_error(request)
-      error_code = request.symphony_response.usererr_code
+      error_code = request.ils_response.usererr_code
 
       if mailer_class.respond_to?(:"request_status_for_#{error_code.downcase}")
         mailer_class.send(:"request_status_for_#{error_code.downcase}", request)
       else
-        Honeybadger.notify("Unknown Symphony Error #{error_code} for request #{request.id}")
-        mailer_class.generic_symphony_error(request)
+        Honeybadger.notify("Unknown ILS Error #{error_code} for request #{request.id}")
+        mailer_class.generic_ils_error(request)
       end
     end
 

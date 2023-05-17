@@ -46,7 +46,7 @@ describe ItemStatus do
 
     it 'triggers a request to symphony when an item is approved' do
       expect(request).to receive(:save!)
-      expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(request.id, { barcode: barcode })
+      expect(Request.ils_job_class).to receive(:perform_now).with(request.id, { barcode: barcode })
       subject.approve!('jstanford')
     end
 
@@ -57,7 +57,7 @@ describe ItemStatus do
         response = build(:symphony_page_with_single_item)
         expect(request.symphony_response_data).to be_nil
 
-        expect(SubmitSymphonyRequestJob).to receive(:perform_now).with(request.id, { barcode: barcode }).and_return(
+        expect(Request.ils_job_class).to receive(:perform_now).with(request.id, { barcode: barcode }).and_return(
           update_symphony_data_and_save(request, response)
         )
         subject.approve!('jstanford')

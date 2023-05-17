@@ -3,7 +3,7 @@
 ##
 # Background job to send requests to IPLC.
 # If Reshare has the item and we succesfully request it, let the user know it is on the way.
-# If Reshare does not have it or we cannot succesfully request it, trigger the normal Symphony request workflow.
+# If Reshare does not have it or we cannot succesfully request it, trigger the normal request workflow.
 class SubmitIplcListenerJob < ApplicationJob
   discard_on ActiveRecord::RecordNotFound do |job, _error|
     Honeybadger.notify(
@@ -19,7 +19,7 @@ class SubmitIplcListenerJob < ApplicationJob
     begin
       make_iplc_request(request, instance_uuid, instance_title)
     rescue StandardError => e
-      Honeybadger.notify("IPLC Request failed for #{request_id} with #{e}. Submitted to Symphony instead.")
+      Honeybadger.notify("IPLC Request failed for #{request_id} with #{e}. Submitted to the ILS instead.")
 
       request.send_to_ils_now!
     end

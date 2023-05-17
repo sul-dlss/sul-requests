@@ -6,7 +6,7 @@ RSpec.describe SubmitScanRequestJob, type: :job do
   context 'when illiad response is success' do
     before do
       allow(IlliadRequest).to receive(:new).with(scan).and_return(illiad_request)
-      allow(SubmitSymphonyRequestJob).to receive(:perform_later)
+      allow(Request.ils_job_class).to receive(:perform_later)
     end
 
     let(:scan) { create(:scan) }
@@ -20,17 +20,17 @@ RSpec.describe SubmitScanRequestJob, type: :job do
       expect(scan.illiad_response_data).to eq({ 'IlliadResponse' => 'Blah' })
     end
 
-    it 'enqueues a request to symphony' do
+    it 'enqueues a request to the ILS' do
       described_class.perform_now(scan)
 
-      expect(SubmitSymphonyRequestJob).to have_received(:perform_later).with(scan.id, anything)
+      expect(Request.ils_job_class).to have_received(:perform_later).with(scan.id, anything)
     end
   end
 
   context 'when illiad response is an error' do
     before do
       allow(IlliadRequest).to receive(:new).with(scan).and_return(failed_illiad_request)
-      allow(SubmitSymphonyRequestJob).to receive(:perform_later)
+      allow(Request.ils_job_class).to receive(:perform_later)
     end
 
     let(:user) { build(:scan_eligible_user) }

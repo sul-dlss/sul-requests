@@ -36,9 +36,6 @@ features:
   hold_recall_service: true
   scan_service: true
 
-symphony_api:
-  enabled: false
-
 symws:
   url: https://example.com/symws
   headers:

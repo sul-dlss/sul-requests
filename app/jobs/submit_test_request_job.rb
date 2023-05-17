@@ -9,7 +9,7 @@ class SubmitTestRequestJob < ApplicationJob
   #   This is recommended as a Sidekiq best practice (https://github.com/mperham/sidekiq/wiki/Best-Practices).
   #   It also helps reduce the size of the Redis database (used by Sidekiq), which stores its data in memory.
   def perform(request_id, _options = {})
-    request = find_request(request_id)
+    find_request(request_id)
 
     logger.info("NOOP TestRequestJob request #{request_id}")
   end

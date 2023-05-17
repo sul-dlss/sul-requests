@@ -616,54 +616,54 @@ describe Request do
 
   describe '#submit!' do
     it 'submits the request to Symphony' do
-      expect(SubmitSymphonyRequestJob).to receive(:perform_later)
+      expect(described_class.ils_job_class).to receive(:perform_later)
       subject.submit!
     end
   end
 
-  describe '#send_to_symphony!' do
+  describe '#send_to_ils!' do
     it 'submits the request to Symphony' do
-      expect(SubmitSymphonyRequestJob).to receive(:perform_later).with(subject.id, { a: 1 })
+      expect(described_class.ils_job_class).to receive(:perform_later).with(subject.id, { a: 1 })
       subject.send_to_ils_later! a: 1
     end
   end
 
-  describe '#symphony_request' do
+  describe '#ils_request_command' do
     it 'provides access to the raw request object' do
-      expect(subject.ils_request_command).to be_a SubmitSymphonyRequestJob::Command
+      expect(subject.ils_request_command).to be_a described_class.ils_job_class.command
     end
   end
 
   describe '#merge_ils_response_data' do
     before do
-      subject.ils_response_data = FactoryBot.build(:symphony_scan_with_multiple_items)
+      subject.symphony_response_data = FactoryBot.build(:symphony_scan_with_multiple_items)
     end
 
     it 'uses any new request-level data' do
       subject.merge_ils_response_data SymphonyResponse.new(req_type: 'SCAN',
-                                                                usererr_code: 'USERBLOCKED',
-                                                                usererr_text: 'User is Blocked')
+                                                           usererr_code: 'USERBLOCKED',
+                                                           usererr_text: 'User is Blocked')
 
-      expect(subject.symphony_response.usererr_code).to eq 'USERBLOCKED'
-      expect(subject.symphony_response.usererr_text).to eq 'User is Blocked'
+      expect(subject.ils_response.usererr_code).to eq 'USERBLOCKED'
+      expect(subject.ils_response.usererr_text).to eq 'User is Blocked'
     end
 
     it 'preserves old item-level data' do
       subject.merge_ils_response_data SymphonyResponse.new(req_type: 'SCAN',
-                                                                requested_items: [
-                                                                  {
-                                                                    'barcode' => '987654321',
-                                                                    'msgcode' => '209',
-                                                                    'text' => 'Hold placed'
-                                                                  },
-                                                                  {
-                                                                    'barcode' => '12345678901234z',
-                                                                    'msgcode' => '209',
-                                                                    'text' => 'Hold placed'
-                                                                  }
-                                                                ])
+                                                           requested_items: [
+                                                             {
+                                                               'barcode' => '987654321',
+                                                               'msgcode' => '209',
+                                                               'text' => 'Hold placed'
+                                                             },
+                                                             {
+                                                               'barcode' => '12345678901234z',
+                                                               'msgcode' => '209',
+                                                               'text' => 'Hold placed'
+                                                             }
+                                                           ])
 
-      item_status = subject.symphony_response.items_by_barcode
+      item_status = subject.ils_response.items_by_barcode
       expect(item_status['987654321']).to be_present
       expect(item_status['987654321']['msgcode']).to eq '209'
 

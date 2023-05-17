@@ -20,30 +20,30 @@ class ItemStatus
       approver: approver,
       approval_time: localized_approval_time,
       msgcode: msgcode,
-      text: symphony_user_error_text || text,
-      usererr_code: symphony_user_error_code,
+      text: user_error_text || text,
+      usererr_code: user_error_code,
       errored: errored?
     }
   end
 
   def msgcode
-    symphony_status[:msgcode]
+    ils_status[:msgcode]
   end
 
   def text
-    symphony_status[:text]
+    ils_status[:text]
   end
 
-  def symphony_user_error_text
-    @request&.symphony_response&.usererr_text.presence
+  def user_error_text
+    @request&.ils_response&.usererr_text.presence
   end
 
-  def symphony_user_error_code
-    @request&.symphony_response&.usererr_code.presence
+  def user_error_code
+    @request&.ils_response&.usererr_code.presence
   end
 
   def errored?
-    symphony_user_error_code.present? || !symphony_item_successful?
+    user_error_code.present? || !ils_item_successful?
   end
 
   def approved?
@@ -61,7 +61,7 @@ class ItemStatus
   def approve!(user, approval_time = nil)
     @request.send_to_ils_now!(barcode: @id)
     reload_request # reloading to get any attributes saved to the database above
-    return unless symphony_item_successful?
+    return unless ils_item_successful?
 
     self.status_object = {
       approved: true,
@@ -78,16 +78,16 @@ class ItemStatus
 
   private
 
-  def symphony_item_successful?
+  def ils_item_successful?
     return true if (@request.ad_hoc_items || []).include?(@id)
-    return true if non_existent_item_in_symphony_response_for_mediated_page?
+    return true if non_existent_item_in_ils_response_for_mediated_page?
 
-    @request.symphony_response.success?(@id)
+    @request.ils_response.success?(@id)
   end
 
-  def non_existent_item_in_symphony_response_for_mediated_page?
+  def non_existent_item_in_ils_response_for_mediated_page?
     # This makes sure medidated pages that have not been touched not reported as errors
-    @request.is_a?(MediatedPage) && @request.symphony_response.items_by_barcode[@id].blank?
+    @request.is_a?(MediatedPage) && @request.ils_response.items_by_barcode[@id].blank?
   end
 
   def localized_approval_time
@@ -104,10 +104,10 @@ class ItemStatus
     @request.request_status_data[@id] = value
   end
 
-  def symphony_status
-    return {} unless @request.symphony_response
+  def ils_status
+    return {} unless @request.ils_response
 
-    (@request.symphony_response.items_by_barcode[@id] || {}).with_indifferent_access
+    (@request.ils_response.items_by_barcode[@id] || {}).with_indifferent_access
   end
 
   def reload_request

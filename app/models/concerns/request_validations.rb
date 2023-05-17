@@ -51,7 +51,7 @@ module RequestValidations
   def library_id_exists
     return unless user
 
-    # Ensure we don't contact symphony if we don't need to validate the library ID
+    # Ensure we don't contact the ILS if we don't need to validate the library ID
     return if user.sso_user? || (requestable_with_name_email? && user.name_email_user?)
 
     # We require the library ID is on the client side when neccesary

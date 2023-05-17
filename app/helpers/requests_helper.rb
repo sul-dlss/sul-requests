@@ -45,11 +45,11 @@ module RequestsHelper
   end
 
   def request_level_request_status(request = current_request)
-    if request.symphony_response.usererr_code
-      t("symphony_response.failure.code_#{request.symphony_response.usererr_code}.alert_html")
-    elsif request.symphony_response.any_successful? && request.symphony_response.any_error?
+    if request.ils_response.usererr_code
+      t("symphony_response.failure.code_#{request.ils_response.usererr_code}.alert_html")
+    elsif request.ils_response.any_successful? && request.ils_response.any_error?
       t('symphony_response.mixed_failure_html')
-    elsif request.symphony_response.all_errored?
+    elsif request.ils_response.all_errored?
       t('symphony_response.failure.default.alert_html')
     end
   end
@@ -100,7 +100,7 @@ module RequestsHelper
   def status_text_for_errored_item(item)
     return unless item.request_status.errored?
 
-    item.request_status.symphony_user_error_text || item.request_status.text
+    item.request_status.user_error_text || item.request_status.text
   end
 
   def format_date(date)
