@@ -6,7 +6,7 @@ module IlsRequest
   extend ActiveSupport::Concern
 
   def ils_request_job
-    Settings.features.use_symphony ? SubmitSymphonyRequestJob : SubmitFolioRequestJob
+    Settings.features.ils == 'symphony' ? SubmitSymphonyRequestJob : SubmitFolioRequestJob
   end
 
   def send_to_ils_now!(options = {})

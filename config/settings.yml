@@ -54,7 +54,6 @@ token_encrypt:
 
 symphony_api:
   enabled: true
-  url: ''
   adapter: :symws
 
 symphony:
@@ -81,7 +80,7 @@ features:
   hold_recall_via_relais: false
   hold_recall_via_reshare: true
   scan_service: true
-  use_symphony: true # Set to false to use folio
+  ils: symphony # or folio
 
 background_jobs:
   enabled: false
