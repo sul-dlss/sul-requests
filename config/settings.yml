@@ -53,6 +53,8 @@ token_encrypt:
   salt: ''
 
 ils:
+  bib_model: SearchworksItem
+  patron_model: Symphony::Patron
   request_job: SubmitSymphonyRequestJob
 
 symphony:
