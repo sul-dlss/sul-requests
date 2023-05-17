@@ -228,10 +228,6 @@ class SubmitSymphonyRequestJob < ApplicationJob
     end
   end
 
-  unless Settings.symphony_api.adapter.to_s == 'symws'
-    raise SymphonyWebServiceAdapterError, "#{Settings.symphony_api.adapter} is not a known Symphony Web Services Adapter"
-  end
-
   Command = SubmitSymphonyRequestJob::SymWsCommand
 
   def self.command

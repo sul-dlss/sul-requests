@@ -54,7 +54,6 @@ token_encrypt:
 
 symphony_api:
   enabled: true
-  adapter: :symws
 
 symphony:
   override: PASSWORD
