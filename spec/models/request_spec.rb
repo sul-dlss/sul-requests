@@ -630,17 +630,17 @@ describe Request do
 
   describe '#symphony_request' do
     it 'provides access to the raw request object' do
-      expect(subject.symphony_request).to be_a SubmitSymphonyRequestJob::Command
+      expect(subject.ils_request_command).to be_a SubmitSymphonyRequestJob::Command
     end
   end
 
-  describe '#merge_symphony_response_data' do
+  describe '#merge_ils_response_data' do
     before do
-      subject.symphony_response_data = FactoryBot.build(:symphony_scan_with_multiple_items)
+      subject.ils_response_data = FactoryBot.build(:symphony_scan_with_multiple_items)
     end
 
     it 'uses any new request-level data' do
-      subject.merge_symphony_response_data SymphonyResponse.new(req_type: 'SCAN',
+      subject.merge_ils_response_data SymphonyResponse.new(req_type: 'SCAN',
                                                                 usererr_code: 'USERBLOCKED',
                                                                 usererr_text: 'User is Blocked')
 
@@ -649,7 +649,7 @@ describe Request do
     end
 
     it 'preserves old item-level data' do
-      subject.merge_symphony_response_data SymphonyResponse.new(req_type: 'SCAN',
+      subject.merge_ils_response_data SymphonyResponse.new(req_type: 'SCAN',
                                                                 requested_items: [
                                                                   {
                                                                     'barcode' => '987654321',

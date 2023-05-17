@@ -20,6 +20,9 @@ token_encrypt:
   secret: 'cphNKBJUCUlDeekeQGTmPkinkxAkJKxDsfHailJrKKIzxkSRFHbarXxjYRMdkyKW'
   salt: 'dGcTBhXrQjsvQkbDQCkAIdogYjzOiIQpjToNLjqyzslKShfTvxIJHmMZhzdNjOqtDZKtxutyHBZmNHKOcGMfHzxwCFeOTBeEHYHNedtrmdfLzHMTRSDJCRMURaAjRrDq'
 
+ils:
+  request_job: SubmitTestRequestJob
+
 mailer_host: 'example.com'
 
 sul_illiad: 'https://illiad-test/'

@@ -6,7 +6,7 @@ module IlsRequest
   extend ActiveSupport::Concern
 
   def ils_request_job
-    Settings.features.ils == 'symphony' ? SubmitSymphonyRequestJob : SubmitFolioRequestJob
+    Settings.ils.request_job.constantize
   end
 
   def send_to_ils_now!(options = {})
@@ -18,25 +18,25 @@ module IlsRequest
   end
 
   # This is used only in the debug view
-  def symphony_request
+  def ils_request_command
     ils_request_job.command.new(self)
   end
 
   # NOTE: symphony_response_data is stored in the JSON in the "data" column
-  def symphony_response
+  def ils_response
     @symphony_response ||= SymphonyResponse.new(symphony_response_data || {})
   end
 
-  def symphony_response_will_change!
+  def ils_response_will_change!
     @symphony_response = nil
   end
 
   # Called by SubmitSymphonyRequestJob
-  def merge_symphony_response_data(new_response)
+  def merge_ils_response_data(new_response)
     self.symphony_response_data = new_response.as_json.with_indifferent_access.tap do |h|
-      h['requested_items'] = new_response.items_by_barcode.reverse_merge(symphony_response.items_by_barcode).values
+      h['requested_items'] = new_response.items_by_barcode.reverse_merge(ils_response.items_by_barcode).values
     end
 
-    symphony_response_will_change!
+    ils_response_will_change!
   end
 end
