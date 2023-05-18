@@ -83,6 +83,12 @@ class FolioClient
     response.dig('items', 0)
   end
 
+  def get_service_point(code)
+    response = get_json('/service-points', params: { query: CqlQuery.new(code: code).to_query })
+
+    response.dig('servicepoints', 0)
+  end
+
   private
 
   def check_response(response, title:, context:)
