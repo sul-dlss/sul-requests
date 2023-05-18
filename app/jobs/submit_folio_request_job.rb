@@ -57,9 +57,9 @@ class SubmitFolioRequestJob < ApplicationJob
 
         expiration_date = (request.needed_date || Time.zone.today + 3.years).utc.iso8601
 
-        place_hold_response = folio_client.create_item_hold(user_id, item_id, pickupLocationId: pickup_location_id,
-                                                                              patronComments: request.item_comment,
-                                                                              expirationDate: expiration_date)
+        place_hold_response = folio_client.create_item_hold(user_id, item_id, pickup_location_id: pickup_location_id,
+                                                                              patron_comments: request.item_comment,
+                                                                              expiration_date: expiration_date)
 
         {
           barcode: barcode,
