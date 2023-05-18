@@ -15,8 +15,7 @@ describe 'Viewing all requests' do
                       request_comment: 'I can has this item?',
                       user: User.create(name: 'Joe', email: 'joe@xyz.com')
               )
-        create(:mediated_page, ad_hoc_items: ['ZZZ-123'],
-                               item_title: 'I am Mediated',
+        create(:mediated_page, item_title: 'I am Mediated',
                                origin: 'ART',
                                request_comment: 'I can has this mediated item?',
                                user: User.create(name: 'Jane', email: 'jane@example.com')
@@ -234,20 +233,6 @@ describe 'Viewing all requests' do
 
         expect(page).to have_css('h2', text: 'Art & Architecture Library (Bowes)')
         expect(page).to have_css('tbody tr', count: 2)
-      end
-
-      context 'with an ad-hoc item' do
-        it 'renders the page' do
-          create(:mediated_page, ad_hoc_items: ['ZZZ-123'],
-                                 origin: 'ART',
-                                 request_comment: 'I can has this unbarcoded item?',
-                                 user: User.create(name: 'Jane', email: 'jane@example.com')
-                )
-
-          visit admin_path('ART')
-
-          expect(page).to have_css('td', text: 'I can has this unbarcoded item?')
-        end
       end
     end
   end

@@ -29,7 +29,6 @@ en:
         needed_date: 'Needed on'
         request_comment: 'Comment'
         item_comment: 'Item(s) requested'
-        ad_hoc_items: 'Additional item(s)'
         user: 'Requested by'
       hold_recall:
         <<: *request_anchor
@@ -134,7 +133,7 @@ en:
       how_to:
         header: How does it work?
         body: On-site and digital access requests are managed by Aeon, an archives and special collections system. If you haven’t already created a Stanford Aeon special collections research account, you will need to do so as part of the request process. Once you have an Aeon account, you will be able to check the status of requests, edit or cancel requests, create a new appointment or edit an existing appointment, and review your request history.
-      steps: 
+      steps:
         header: 'To make a request:'
         single_vol_html: |
           <li>Log in to your Stanford Aeon user account (or create one)</li>

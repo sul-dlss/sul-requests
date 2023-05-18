@@ -6,10 +6,6 @@ describe 'application/_item_selector.html.erb' do
   let(:user) { create(:sso_user) }
 
   before do
-    without_partial_double_verification do
-      allow(Settings.pageable.find { |x| x.library == 'ART' }).to receive(:ad_hoc_item_commentable).and_return(true)
-    end
-
     view.bootstrap_form_for(request, url: '/') do |f|
       @f = f
     end
@@ -45,32 +41,6 @@ describe 'application/_item_selector.html.erb' do
       expect(rendered).to have_selector 'input[name="mediated_page[barcodes][45678901]"]'
       expect(rendered).to have_selector 'input[name="mediated_page[barcodes][12345678]"]'
       expect(rendered).to have_selector 'input[name="mediated_page[barcodes][89012345]"]'
-    end
-  end
-
-  context 'item that accepts ad-hoc holdings' do
-    let(:request) { create(:mediated_page_with_holdings, user: user, ad_hoc_items: ['ZZZ 123', 'ZZZ 321']) }
-
-    it 'shows the ad-hoc item field' do
-      expect(rendered).to have_selector '[data-behavior="ad-hoc-items"]'
-    end
-  end
-
-  context 'with an existing request' do
-    let(:request) do
-      create(:mediated_page_with_holdings, user: user,
-                                           barcodes: %w(12345678),
-                                           ad_hoc_items: ['ZZZ 123', 'ZZZ 321'])
-    end
-
-    it 'pre-selects any selected items' do
-      expect(rendered).to have_selector 'input[name="mediated_page[barcodes][12345678]"][checked="checked"]'
-    end
-
-    it 'populates the ad-hoc items' do
-      expect(rendered).to have_selector '[data-behavior="ad-hoc-items"]'
-      expect(rendered).to have_selector '[name="mediated_page[ad_hoc_items][]"][value="ZZZ 123"]', visible: :hidden
-      expect(rendered).to have_selector '[name="mediated_page[ad_hoc_items][]"][value="ZZZ 321"]', visible: :hidden
     end
   end
 end

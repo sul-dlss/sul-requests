@@ -118,17 +118,16 @@ describe MediatedPage do
 
     before do
       stub_symphony_response(build(:symphony_page_with_multiple_items))
-      subject.barcodes = ['12345678']
-      subject.ad_hoc_items = ['ABC 123']
+      subject.barcodes = ['12345678', '23456789']
     end
 
-    it 'returns true when all requested barcodes and ad-hoc-items are approved' do
+    it 'returns true when all requested barcodes are approved' do
       subject.item_status('12345678').approve!('jstanford')
-      subject.item_status('ABC 123').approve!('jstanford')
+      subject.item_status('23456789').approve!('jstanford')
       expect(subject).to be_all_approved
     end
 
-    it 'returns false when not all the requested barcodes and ad-hoc-items are approved' do
+    it 'returns false when not all the requested barcodes are approved' do
       subject.item_status('12345678').approve!('jstanford')
       expect(subject).not_to be_all_approved
     end
@@ -139,13 +138,12 @@ describe MediatedPage do
 
     before do
       stub_symphony_response(build(:symphony_page_with_multiple_items))
-      subject.barcodes = ['12345678']
-      subject.ad_hoc_items = ['ABC 123']
+      subject.barcodes = ['12345678', '23456789']
     end
 
     it 'returns an enumerable of the statuses' do
       expect(subject.item_statuses.count).to eq 2
-      expect(subject.item_statuses.map(&:id)).to eq ['12345678', 'ABC 123']
+      expect(subject.item_statuses.map(&:id)).to eq ['12345678', '23456789']
     end
   end
 

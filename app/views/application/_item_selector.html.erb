@@ -72,31 +72,13 @@
         </div>
       </div>
       <div data-behavior='max-items-message'></div>
-      <% if current_request.ad_hoc_item_commentable? %>
-        <div class='form-group'>
-          <span class='control-label <%= label_column_class %>'>Add unlisted items</span>
-          <div class='<%= content_column_class %>' data-behavior='ad-hoc-items' data-hidden-field-name="<%= "#{f.object_name}[ad_hoc_items][]" %>">
-            <div class="input-group">
-              <%= text_field_tag :ad_hoc_items, '', class: 'form-control' %>
-              <span class="input-group-btn">
-                <%= link_to 'Add', 'javascript:;', class: 'btn btn-default', data: { behavior: 'submit-ad-hoc-items' } %>
-              </span>
-            </div>
-            <p class='help-block'>Refer to the collection finding aid to identify the items you need.<br />Example: Series 1, Box 1</p>
-          </div>
-        </div>
-      <% end %>
 
       <div class='form-group'>
         <span class='control-label <%= label_column_class %> required'>
-          <span data-items-counter='true'><span data-count='true'><%= f.object.requested_holdings.length + (f.object.ad_hoc_items || []).length %></span> items selected</span>
+          <span data-items-counter='true'><span data-count='true'><%= f.object.requested_holdings.length %></span> items selected</span>
         </span>
         <div class='<%= content_column_class %>'>
-          <div data-behavior='breadcrumb-container'>
-            <% f.object.ad_hoc_items.each do |i| %>
-              <%= f.hidden_field :ad_hoc_items, value: i, multiple: true %>
-            <% end if f.object.ad_hoc_items %>
-          </div>
+          <div data-behavior='breadcrumb-container'></div>
           <% if f.object.holdings.many? %>
             <div class="zero-items-message help-text">[<%= t(:'.help_text', count: f.object.item_limit.to_i) %>]</div>
           <% end %>

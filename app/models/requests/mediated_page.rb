@@ -46,10 +46,6 @@ class MediatedPage < Request
     (barcodes || []).each do |item|
       yield item_status(item)
     end
-
-    (ad_hoc_items || []).each do |item|
-      yield item_status(item, ad_hoc: true)
-    end
   end
 
   def notify_mediator!

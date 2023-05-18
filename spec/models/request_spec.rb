@@ -183,32 +183,6 @@ describe Request do
         end
       end
     end
-
-    describe 'ad_hoc_item_commentable?' do
-      context 'when no libraries are configured' do
-        it 'is false' do
-          expect(subject).not_to be_ad_hoc_item_commentable
-        end
-      end
-
-      context 'when a library is configured' do
-        before do
-          without_partial_double_verification do
-            allow(Settings.pageable.find { |x| x.library == 'SAL-NEWARK' }).to receive(:ad_hoc_item_commentable).and_return(true)
-          end
-        end
-
-        it 'is true for that library' do
-          subject.origin = 'SAL-NEWARK'
-          expect(subject).to be_ad_hoc_item_commentable
-        end
-
-        it 'is false for other libraries' do
-          subject.origin = 'NOT-SAL-NEWARK'
-          expect(subject).not_to be_ad_hoc_item_commentable
-        end
-      end
-    end
   end
 
   describe 'requestable' do

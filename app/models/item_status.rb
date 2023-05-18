@@ -6,10 +6,9 @@
 class ItemStatus
   attr_reader :id, :request
 
-  def initialize(request, id, ad_hoc: false)
+  def initialize(request, id)
     @request = request
     @id = id
-    @ad_hoc = ad_hoc
     @request.request_status_data ||= {}
   end
 
@@ -75,7 +74,6 @@ class ItemStatus
   private
 
   def ils_item_successful?
-    return true if (@request.ad_hoc_items || []).include?(@id)
     return true if non_existent_item_in_ils_response_for_mediated_page?
 
     @request.ils_response.success?(@id)
