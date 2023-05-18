@@ -47,14 +47,14 @@ class FolioClient
   # @param [String] user_id the UUID of the FOLIO user
   # @param [String] instance_id the UUID of the FOLIO instance
   # @param [String] pickup_location_id the UUID of the pickup locatio
-  def create_instance_hold(user_id, instance_id, pickup_location_id)
+  def create_instance_hold(user_id, instance_id, **attr)
     response = post("/patron/account/#{user_id}/instance/#{instance_id}/hold",
                     json: {
                       requestDate: Time.now.utc.iso8601,
-                      pickupLocationId: pickup_location_id
+                      **attr
                     })
     check_response(response, title: 'Hold request',
-                             context: { user_id: user_id, instance_id: instance_id, pickup_location_id: pickup_location_id })
+                             context: { user_id: user_id, instance_id: instance_id, **attr })
 
     parse_json(response)
   end
@@ -66,13 +66,13 @@ class FolioClient
   # @param [String] user_id the UUID of the FOLIO user
   # @param [String] item_id the UUID of the FOLIO item
   # @param [String] pickup_location_id the UUID of the pickup locatio
-  def create_item_hold(user_id, item_id, pickup_location_id)
+  def create_item_hold(user_id, item_id, **attr)
     response = post("/patron/account/#{user_id}/item/#{item_id}/hold",
                     json: {
                       requestDate: Time.now.utc.iso8601,
-                      pickupLocationId: pickup_location_id
+                      **attr
                     })
-    check_response(response, title: 'Hold request', context: { user_id: user_id, item_id: item_id, pickup_location_id: pickup_location_id })
+    check_response(response, title: 'Hold request', context: { user_id: user_id, item_id: item_id, **attr })
 
     parse_json(response)
   end
