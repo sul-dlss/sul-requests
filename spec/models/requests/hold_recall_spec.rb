@@ -8,12 +8,6 @@ describe HoldRecall do
     it { is_expected.to be_requestable_with_library_id }
   end
 
-  describe 'item_commentable?' do
-    it 'is false' do
-      expect(subject).not_to be_item_commentable
-    end
-  end
-
   it 'has the properly assigned Rails STI attribute value' do
     expect(subject.type).to eq 'HoldRecall'
   end

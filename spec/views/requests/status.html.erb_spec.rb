@@ -90,7 +90,6 @@ describe 'requests/status.html.erb' do
     let(:request) { create(:mediated_page_with_holdings, user: user, item_comment: ['Volume 666 only']) }
 
     before do
-      expect(request).to receive(:item_commentable?).and_return(true)
       render
     end
 

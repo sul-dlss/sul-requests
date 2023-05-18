@@ -22,8 +22,4 @@ class HoldRecall < Request
   def requires_needed_date?
     true
   end
-
-  def item_commentable?
-    false
-  end
 end

@@ -5,7 +5,6 @@
 #  STI and sub-class this main request class.
 ###
 class Request < ActiveRecord::Base
-  include Commentable
   include Holdings
   include Requestable
   include DefaultRequestOptions

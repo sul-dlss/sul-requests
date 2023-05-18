@@ -21,7 +21,7 @@
     <dd><%= current_request.estimated_delivery %></dd>
   <% end %>
 
-  <% if current_request.item_commentable? && current_request.item_comment.present? %>
+  <% if current_request.item_comment.present? %>
     <dt><%= current_request.class.human_attribute_name(:item_comment) %></dt>
     <dd><%= current_request.item_comment %></dd>
   <% end %>

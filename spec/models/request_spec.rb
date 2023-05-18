@@ -142,49 +142,6 @@ describe Request do
     end
   end
 
-  describe 'commentable' do
-    it 'mixin should be included' do
-      expect(subject).to be_kind_of Commentable
-    end
-
-    describe 'item_commentable?' do
-      describe 'with holdings' do
-        before do
-          allow(subject).to receive_messages(holdings: [{}])
-          allow(subject).to receive_messages(holdings_object: double('mhld', mhld: [{}]))
-        end
-
-        it 'is true when the library is SAL-NEWARK or SPEC-COLL' do
-          subject.origin = 'SAL-NEWARK'
-          expect(subject).to be_item_commentable
-
-          subject.origin = 'SPEC-COLL'
-          expect(subject).to be_item_commentable
-        end
-
-        it 'is false when the library is not SAL-NEWARK or SPEC-COLL' do
-          subject.origin = 'GREEN'
-          expect(subject).not_to be_item_commentable
-        end
-      end
-
-      describe 'without holdings' do
-        before do
-          allow(subject).to receive_messages(holdings: [{}])
-          allow(subject).to receive_messages(holdings_object: double('mhld', mhld: nil))
-        end
-
-        it 'is false when the library is SAL-NEWARK or SPEC-COLL' do
-          subject.origin = 'SAL-NEWARK'
-          expect(subject).not_to be_item_commentable
-
-          subject.origin = 'SPEC-COLL'
-          expect(subject).not_to be_item_commentable
-        end
-      end
-    end
-  end
-
   describe 'requestable' do
     it { is_expected.not_to be_requestable_with_name_email }
     it { is_expected.not_to be_requestable_with_library_id }
