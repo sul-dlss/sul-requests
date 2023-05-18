@@ -33,7 +33,7 @@
     <dd><%= current_request.item_comment %></dd>
   <% end %>
 
-  <% if current_request.request_commentable? && current_request.request_comment.present? %>
+  <% if current_request.request_comment.present? %>
     <dt><%= current_request.class.human_attribute_name(:request_comment) %></dt>
     <dd><%= current_request.request_comment %></dd>
   <% end %>

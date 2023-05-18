@@ -113,18 +113,6 @@ describe MediatedPage do
     end
   end
 
-  describe '#request_commentable?' do
-    it 'is true when the library is SPEC-COLL' do
-      subject.origin = 'SPEC-COLL'
-      expect(subject).to be_request_commentable
-    end
-
-    it 'is false when the library is not SPEC-COLL' do
-      subject.origin = 'HV-ARCHIVE'
-      expect(subject).not_to be_request_commentable
-    end
-  end
-
   describe 'all_approved?' do
     let(:subject) { build(:mediated_page_with_holdings, user: user) }
 

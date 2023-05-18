@@ -16,8 +16,4 @@ module Commentable
       holdings.one? &&
       holdings_object.mhld.present?
   end
-
-  def request_commentable?
-    false
-  end
 end

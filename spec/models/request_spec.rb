@@ -316,11 +316,6 @@ describe Request do
       expect(subject.item_limit).to eq 5
     end
 
-    it 'is 20 for items from HV-ARCHIVE' do
-      subject.origin = 'HV-ARCHIVE'
-      expect(subject.item_limit).to eq 20
-    end
-
     it 'is 5 for items from the PAGE-SP location' do
       subject.origin_location = 'PAGE-SP'
       expect(subject.item_limit).to eq 5

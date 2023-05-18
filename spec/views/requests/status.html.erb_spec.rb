@@ -116,7 +116,6 @@ describe 'requests/status.html.erb' do
     let(:request) { create(:mediated_page_with_holdings, user: user, request_comment: 'Here today, gone tomorrow') }
 
     before do
-      allow(request).to receive(:request_commentable?).and_return(true)
       render
     end
 
