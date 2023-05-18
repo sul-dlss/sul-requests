@@ -8,7 +8,7 @@ class SubmitFolioRequestJob < ApplicationJob
   # we pass the ActiveRecord identifier to our job, rather than the ActiveRecord reference.
   #   This is recommended as a Sidekiq best practice (https://github.com/mperham/sidekiq/wiki/Best-Practices).
   #   It also helps reduce the size of the Redis database (used by Sidekiq), which stores its data in memory.
-  def perform(request_id, _options = {})
+  def perform(request_id, options = {})
     request = find_request(request_id)
 
     return true unless request
@@ -42,12 +42,41 @@ class SubmitFolioRequestJob < ApplicationJob
       @barcode = barcode
     end
 
+    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     def execute!
-      {}
+      responses = barcodes.map do |barcode|
+        user_id = request.user.patron.id
+        item_id = folio_client.get_item(barcode)['id']
+        pickup_location_id = Settings.libraries[request.destination].folio_pickup_service_point_uuid
+
+        Rails.logger.info("Submitting hold request for user #{user_id} and item #{item_id} for pickup up #{pickup_location_id}")
+        place_hold_response = folio_client.create_item_hold(user_id, item_id, pickup_location_id)
+
+        {
+          barcode: barcode,
+          msgcode: '209',
+          response: place_hold_response
+        }
+      end
+
+      {
+        requested_items: responses
+      }
     end
+    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
     def request_params
       {}
+    end
+
+    private
+
+    def barcodes
+      return request.barcodes unless @barcode
+
+      request.barcodes.select do |barcode|
+        @barcode == barcode
+      end
     end
   end
 

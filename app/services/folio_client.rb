@@ -77,6 +77,12 @@ class FolioClient
     parse_json(response)
   end
 
+  def get_item(barcode)
+    response = get_json('/item-storage/items', params: { query: CqlQuery.new(barcode: barcode).to_query })
+
+    response.dig('items', 0)
+  end
+
   private
 
   def check_response(response, title:, context:)
