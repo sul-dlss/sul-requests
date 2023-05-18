@@ -9,7 +9,7 @@ class FolioClient
 
   attr_reader :base_url
 
-  def initialize(url: ENV.fetch('OKAPI_URL'), tenant: 'sul')
+  def initialize(url: Settings.folio.okapi_url, tenant: Settings.folio.tenant)
     uri = URI.parse(url)
 
     @username = uri.user
@@ -22,11 +22,22 @@ class FolioClient
     @tenant = tenant
   end
 
-  # Return the FOLIO user_id given a sunetid
+  # Return the FOLIO user object given a sunetid
   # See https://s3.amazonaws.com/foliodocs/api/mod-users/p/users.html#users__userid__get
-  def lookup_user_id(sunetid)
-    result = json_response('/users', params: { query: "username==\"#{sunetid}\"" })
-    result.dig('users', 0, 'id')
+  def login_by_sunetid(sunetid)
+    response = get_json('/users', params: { query: CqlQuery.new(username: sunetid).to_query })
+    response.dig('users', 0)
+  end
+
+  # Return the FOLIO user object given a library id (e.g. barcode)
+  # See https://s3.amazonaws.com/foliodocs/api/mod-users/p/users.html#users__userid__get
+  def login_by_library_id(library_id)
+    response = get_json('/users', params: { query: CqlQuery.new(barcode: library_id).to_query })
+    response.dig('users', 0)
+  end
+
+  def user_info(user_id)
+    get_json("/users/#{CGI.escape(user_id)}")
   end
 
   # See https://s3.amazonaws.com/foliodocs/api/mod-patron/p/patron.html#patron_account__id__instance__instanceid__hold_post
@@ -44,6 +55,8 @@ class FolioClient
                     })
     check_response(response, title: 'Hold request',
                              context: { user_id: user_id, instance_id: instance_id, pickup_location_id: pickup_location_id })
+
+    parse_json(response)
   end
 
   # See https://s3.amazonaws.com/foliodocs/api/mod-patron/p/patron.html#patron_account__id__item__itemid__hold_post
@@ -60,6 +73,14 @@ class FolioClient
                       pickupLocationId: pickup_location_id
                     })
     check_response(response, title: 'Hold request', context: { user_id: user_id, item_id: item_id, pickup_location_id: pickup_location_id })
+
+    parse_json(response)
+  end
+
+  def get_item(barcode)
+    response = get_json('/item-storage/items', params: { query: CqlQuery.new(barcode: barcode).to_query })
+
+    response.dig('items', 0)
   end
 
   private
@@ -80,7 +101,7 @@ class FolioClient
     authenticated_request(path, method: :post, **kwargs)
   end
 
-  def json_response(path, **kwargs)
+  def get_json(path, **kwargs)
     parse_json(get(path, **kwargs))
   end
 
@@ -88,7 +109,6 @@ class FolioClient
   # @raises [StandardError] if the response was not a 200
   # @return [Hash] the parsed JSON data structure
   def parse_json(response)
-    raise response unless response.status == 200
     return nil if response.body.empty?
 
     JSON.parse(response.body)

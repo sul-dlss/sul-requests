@@ -23,7 +23,7 @@ describe CdlController do
     context 'sso user' do
       before do
         allow(controller).to receive_messages(current_user: user)
-        allow(user).to receive_messages(patron: Patron.new(patron_record))
+        allow(user).to receive_messages(patron: Symphony::Patron.new(patron_record))
       end
 
       let(:user) { create(:sso_user) }
@@ -65,7 +65,7 @@ describe CdlController do
     context 'sso user' do
       before do
         allow(controller).to receive_messages(current_user: user)
-        allow(user).to receive_messages(patron: Patron.new(patron_record))
+        allow(user).to receive_messages(patron: Symphony::Patron.new(patron_record))
       end
 
       let(:user) { create(:sso_user) }

@@ -20,21 +20,21 @@ RSpec.describe CdlAvailability do
 
     context 'when items exist and one is available' do
       before do
-        allow(CatalogInfo).to receive(:find).with('123456', return_holds: true).and_return(catalog_info)
+        allow(Symphony::CatalogInfo).to receive(:find).with('123456', return_holds: true).and_return(catalog_info)
       end
 
       let(:catalog_info) do
-        instance_double(CatalogInfo,
+        instance_double(Symphony::CatalogInfo,
                         callkey: 'xyz',
                         loan_period: 2.hours,
                         hold_records: Array.new(3) do |x|
-                          instance_double(HoldRecord, circ_record_key: x, key: x, next_up_cdl?: false)
+                          instance_double(Symphony::HoldRecord, circ_record_key: x, key: x, next_up_cdl?: false)
                         end,
                         items: items)
       end
       let(:items) do
         [
-          instance_double(CatalogInfo, barcode: '12345', cdlable?: true, current_location: 'CDL-RESERVE')
+          instance_double(Symphony::CatalogInfo, barcode: '12345', cdlable?: true, current_location: 'CDL-RESERVE')
         ]
       end
 
@@ -53,23 +53,23 @@ RSpec.describe CdlAvailability do
 
     context 'when items exist and none are available' do
       before do
-        allow(CatalogInfo).to receive(:find).with('123456', return_holds: true).and_return(catalog_info)
+        allow(Symphony::CatalogInfo).to receive(:find).with('123456', return_holds: true).and_return(catalog_info)
       end
 
       let(:catalog_info) do
-        instance_double(CatalogInfo,
+        instance_double(Symphony::CatalogInfo,
                         callkey: 'xyz',
                         loan_period: 2.hours,
                         hold_records: [
-                          instance_double(HoldRecord, circ_record_key: 0, key: 0, next_up_cdl?: true),
-                          instance_double(HoldRecord, circ_record_key: nil, key: 1, next_up_cdl?: false),
-                          instance_double(HoldRecord, circ_record_key: nil, key: 2, next_up_cdl?: false)
+                          instance_double(Symphony::HoldRecord, circ_record_key: 0, key: 0, next_up_cdl?: true),
+                          instance_double(Symphony::HoldRecord, circ_record_key: nil, key: 1, next_up_cdl?: false),
+                          instance_double(Symphony::HoldRecord, circ_record_key: nil, key: 2, next_up_cdl?: false)
                         ],
                         items: items)
       end
       let(:items) do
         [
-          instance_double(CatalogInfo, barcode: '12345', cdlable?: true, current_location: 'CDL-RESERVE')
+          instance_double(Symphony::CatalogInfo, barcode: '12345', cdlable?: true, current_location: 'CDL-RESERVE')
         ]
       end
 

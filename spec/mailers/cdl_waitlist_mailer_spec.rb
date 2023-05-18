@@ -5,13 +5,13 @@ require 'rails_helper'
 describe CdlWaitlistMailer do
   let(:patron_key) { 42 }
   let(:patron) do
-    instance_double(Patron, email: 'someone@example.com')
+    instance_double(Symphony::Patron, email: 'someone@example.com')
   end
   let(:hold_record_key) { 'key' }
 
   before do
-    allow(Patron).to receive(:find_by).with(patron_key: patron_key).and_return(patron)
-    allow(HoldRecord).to receive(:find).with(hold_record_key).and_return(hold_record)
+    allow(Symphony::Patron).to receive(:find_by).with(patron_key: patron_key).and_return(patron)
+    allow(Symphony::HoldRecord).to receive(:find).with(hold_record_key).and_return(hold_record)
   end
 
   describe '.youre_up' do
@@ -20,7 +20,7 @@ describe CdlWaitlistMailer do
     let(:hold_record_key) { 'key' }
 
     let(:hold_record) do
-      HoldRecord.new({
+      Symphony::HoldRecord.new({
         key: 'xyz',
         fields: {
           comment: "CDL;druid;12345:1:1:1;#{checkout_date.to_i};NEXT_UP",
@@ -41,14 +41,14 @@ describe CdlWaitlistMailer do
     end
     let(:checkout_date) { Time.zone.parse('2020-09-15T11:12:13') }
     let(:circ_record) do
-      instance_double(CircRecord, due_date: Time.zone.parse('2020-09-16T01:02:03'),
-                                  checkout_date: checkout_date)
+      instance_double(Symphony::CircRecord, due_date: Time.zone.parse('2020-09-16T01:02:03'),
+                                            checkout_date: checkout_date)
     end
     let(:circ_record_key) { 'circ_record_key' }
 
     before do
       allow(hold_record).to receive(:patron).and_return(patron)
-      allow(CircRecord).to receive(:find).with(circ_record_key).and_return(circ_record)
+      allow(Symphony::CircRecord).to receive(:find).with(circ_record_key).and_return(circ_record)
     end
 
     describe 'to' do
@@ -75,7 +75,7 @@ describe CdlWaitlistMailer do
     subject(:mail) { described_class.hold_expired(hold_record_key) }
 
     let(:hold_record) do
-      HoldRecord.new({
+      Symphony::HoldRecord.new({
         key: 'xyz',
         fields: {
           comment: "CDL;druid;12345:1:1:1;#{Time.zone.parse('2020-09-15T11:12:13').to_i};NEXT_UP",
@@ -118,7 +118,7 @@ describe CdlWaitlistMailer do
     subject(:mail) { described_class.on_waitlist(hold_record_key) }
 
     let(:hold_record) do
-      HoldRecord.new({
+      Symphony::HoldRecord.new({
         key: 'xyz',
         fields: {
           comment: 'CDL;druid',

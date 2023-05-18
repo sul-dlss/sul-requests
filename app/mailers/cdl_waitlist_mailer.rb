@@ -5,8 +5,8 @@ class CdlWaitlistMailer < ApplicationMailer
   helper CdlHelper
 
   def youre_up(hold_record_key, circ_record_key)
-    @hold_record = HoldRecord.find(hold_record_key)
-    @circ_record = CircRecord.find(circ_record_key)
+    @hold_record = Symphony::HoldRecord.find(hold_record_key)
+    @circ_record = Symphony::CircRecord.find(circ_record_key)
 
     mail(
       to: @hold_record.patron.email,
@@ -15,7 +15,7 @@ class CdlWaitlistMailer < ApplicationMailer
   end
 
   def hold_expired(hold_record_key)
-    @hold_record = HoldRecord.find(hold_record_key)
+    @hold_record = Symphony::HoldRecord.find(hold_record_key)
     mail(
       to: @hold_record.patron.email,
       subject: "Hold expired for: #{@hold_record.title}"
@@ -23,7 +23,7 @@ class CdlWaitlistMailer < ApplicationMailer
   end
 
   def on_waitlist(hold_record_key, items: 1)
-    @hold_record = HoldRecord.find(hold_record_key)
+    @hold_record = Symphony::HoldRecord.find(hold_record_key)
     return unless @hold_record.exists?
 
     @queue_position = [@hold_record.queue_position - items, 1].max

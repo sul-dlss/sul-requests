@@ -44,6 +44,8 @@ class Request < ActiveRecord::Base
   belongs_to :user, autosave: true, optional: true
   accepts_nested_attributes_for :user
 
+  class_attribute :searchworks_item_class, default: Settings.ils.bib_model&.constantize || SearchworksItem
+
   before_create do
     self.item_title ||= searchworks_item.title
   end
@@ -57,11 +59,11 @@ class Request < ActiveRecord::Base
   end
 
   def searchworks_item
-    @searchworks_item ||= SearchworksItem.new(self, live_lookup)
+    @searchworks_item ||= searchworks_item_class.new(self, live_lookup)
   end
 
   def bib_info
-    @bib_info ||= BibInfo.find(item_id)
+    @bib_info ||= Symphony::BibInfo.find(item_id)
   end
 
   def send_approval_status!

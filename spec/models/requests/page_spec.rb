@@ -64,7 +64,7 @@ describe Page do
     end
 
     before do
-      expect(Patron).to receive(:find_by).with(library_id: user.library_id).at_least(:once).and_return(
+      expect(Symphony::Patron).to receive(:find_by).with(library_id: user.library_id).at_least(:once).and_return(
         double(exists?: user_exists)
       )
     end
@@ -88,8 +88,8 @@ describe Page do
     let(:user) {}
 
     before do
-      allow(Patron).to receive(:find_by).with(library_id: user.library_id).and_return(
-        instance_double(Patron, exists?: true, email: '')
+      allow(Symphony::Patron).to receive(:find_by).with(library_id: user.library_id).and_return(
+        instance_double(Symphony::Patron, exists?: true, email: '')
       )
     end
 

@@ -329,7 +329,7 @@ describe Request do
 
   describe 'nested attributes for' do
     before do
-      allow(Patron).to receive(:find_by).with(library_id: '12345').and_return(instance_double(Patron, exists?: true))
+      allow(Symphony::Patron).to receive(:find_by).with(library_id: '12345').and_return(instance_double(Symphony::Patron, exists?: true))
     end
 
     describe 'users' do
@@ -532,7 +532,7 @@ describe Request do
 
     context 'for proxy requests' do
       let(:user) { create(:library_id_user) }
-      let(:group) { instance_double(Group, email: 'some@lists.stanford.edu') }
+      let(:group) { instance_double(Symphony::Group, email: 'some@lists.stanford.edu') }
 
       before do
         allow(user).to receive_message_chain(:patron, :group).and_return(group)
@@ -547,7 +547,7 @@ describe Request do
 
     context 'for proxy requests without a notification email' do
       let(:user) { create(:non_sso_user) }
-      let(:group) { instance_double(Group, email: '') }
+      let(:group) { instance_double(Symphony::Group, email: '') }
 
       before do
         allow(user).to receive_message_chain(:patron, :group).and_return(group)
@@ -567,8 +567,8 @@ describe Request do
     let(:user) {}
 
     before do
-      allow(Patron).to receive(:find_by).with(library_id: user.library_id).and_return(
-        instance_double(Patron, exists?: true, email: '')
+      allow(Symphony::Patron).to receive(:find_by).with(library_id: user.library_id).and_return(
+        instance_double(Symphony::Patron, exists?: true, email: '')
       )
     end
 

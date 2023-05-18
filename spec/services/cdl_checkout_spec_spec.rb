@@ -7,9 +7,9 @@ RSpec.describe CdlCheckout do
 
   let(:user) { create(:sso_user) }
   let(:catalog_info) do
-    instance_double(CatalogInfo,
+    instance_double(Symphony::CatalogInfo,
                     callkey: 'xyz',
-                    cdl_proxy_hold_item: instance_double(CatalogInfo, key: '1'),
+                    cdl_proxy_hold_item: instance_double(Symphony::CatalogInfo, key: '1'),
                     loan_period: 2.hours,
                     items: items)
   end
@@ -17,14 +17,14 @@ RSpec.describe CdlCheckout do
 
   let(:items) do
     [
-      instance_double(CatalogInfo, barcode: '12345',
-                                   cdlable?: true,
-                                   current_location: 'CDL-RESERVE')
+      instance_double(Symphony::CatalogInfo, barcode: '12345',
+                                             cdlable?: true,
+                                             current_location: 'CDL-RESERVE')
     ]
   end
 
   before do
-    allow(user).to receive(:patron).and_return(Patron.new({}))
+    allow(user).to receive(:patron).and_return(Symphony::Patron.new({}))
     allow(SymphonyClient).to receive(:new).and_return(symphony_client)
   end
 
@@ -52,7 +52,7 @@ RSpec.describe CdlCheckout do
       end
 
       it 'sends the user a next-up email if the background checkout succeeds' do
-        hold = instance_double(HoldRecord, key: 'x', circ_record_key: 'y', circ_record: instance_double(CircRecord))
+        hold = instance_double(Symphony::HoldRecord, key: 'x', circ_record_key: 'y', circ_record: instance_double(Symphony::CircRecord))
         expect(subject).to receive(:process_checkout).with('12345').and_raise(Exceptions::SymphonyError).ordered
         expect(subject).to receive(:process_checkout).with('12345').and_return({ hold: hold, token: 'xyz' }).ordered
 
@@ -108,7 +108,7 @@ RSpec.describe CdlCheckout do
     end
 
     it 'places the hold, checks the item out, and creates a token' do
-      allow(CatalogInfo).to receive(:find).with('abc123', return_holds: true).and_return(catalog_info)
+      allow(Symphony::CatalogInfo).to receive(:find).with('abc123', return_holds: true).and_return(catalog_info)
 
       expect(symphony_client).to receive(:place_hold).and_return({})
       expect(symphony_client).to receive(:check_out_item).with('12345', 'CDL-CHECKEDOUT', dueDate: anything).and_return(

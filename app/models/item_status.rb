@@ -72,10 +72,6 @@ class ItemStatus
     @request.save!
   end
 
-  def catalog_info
-    @catalog_info ||= CatalogInfo.find(id)
-  end
-
   private
 
   def ils_item_successful?

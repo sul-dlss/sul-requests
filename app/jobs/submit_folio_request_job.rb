@@ -8,22 +8,79 @@ class SubmitFolioRequestJob < ApplicationJob
   # we pass the ActiveRecord identifier to our job, rather than the ActiveRecord reference.
   #   This is recommended as a Sidekiq best practice (https://github.com/mperham/sidekiq/wiki/Best-Practices).
   #   It also helps reduce the size of the Redis database (used by Sidekiq), which stores its data in memory.
-  def perform(request_id, _options = {})
+  def perform(request_id, options = {})
     request = find_request(request_id)
 
     return true unless request
 
-    # TODO: something like this
-    # response = Call folio here
-    # request.merge_folio_response_data(FolioResponse.new(response.with_indifferent_access))
-    # request.save
-    # request.send_approval_status!
-    logger.info("NOOP FolioRequest request #{request_id}")
+    Sidekiq.logger.info("Started SubmitFolioRequestJob for request #{request_id}")
+    response = Command.new(request, **options).execute!
+
+    Sidekiq.logger.debug("FOLIO response: #{response}")
+    request.merge_ils_response_data(FolioResponse.new(response.with_indifferent_access))
+    request.save
+    request.send_approval_status!
+    Sidekiq.logger.info("Completed SubmitFolioRequestJob for request #{request_id}")
   end
 
   def find_request(request_id)
     Request.find(request_id)
   rescue ActiveRecord::RecordNotFound
     Honeybadger.notify('Unable to find Request', conext: { request_id: request_id })
+  end
+
+  # Submit a hold request to FOLIO
+  class Command
+    attr_reader :request, :folio_client, :barcode
+
+    delegate :user, to: :request
+    delegate :patron, to: :user
+
+    def initialize(request, folio_client: nil, barcode: nil)
+      @request = request
+      @folio_client = folio_client || FolioClient.new
+      @barcode = barcode
+    end
+
+    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+    def execute!
+      responses = barcodes.map do |barcode|
+        user_id = request.user.patron.id
+        item_id = folio_client.get_item(barcode)['id']
+        pickup_location_id = Settings.libraries[request.destination].folio_pickup_service_point_uuid
+
+        Rails.logger.info("Submitting hold request for user #{user_id} and item #{item_id} for pickup up #{pickup_location_id}")
+        place_hold_response = folio_client.create_item_hold(user_id, item_id, pickup_location_id)
+
+        {
+          barcode: barcode,
+          msgcode: '209',
+          response: place_hold_response
+        }
+      end
+
+      {
+        requested_items: responses
+      }
+    end
+    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+
+    def request_params
+      {}
+    end
+
+    private
+
+    def barcodes
+      return request.barcodes unless @barcode
+
+      request.barcodes.select do |barcode|
+        @barcode == barcode
+      end
+    end
+  end
+
+  def self.command
+    Command
   end
 end

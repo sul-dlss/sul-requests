@@ -60,7 +60,7 @@ class CdlAvailability
   end
 
   def catalog_info
-    @catalog_info ||= CatalogInfo.find(barcode, return_holds: true)
+    @catalog_info ||= Symphony::CatalogInfo.find(barcode, return_holds: true)
   end
 
   def items

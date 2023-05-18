@@ -13,6 +13,8 @@ class User < ActiveRecord::Base
 
   delegate :proxy?, :sponsor?, to: :patron, allow_nil: true
 
+  class_attribute :patron_model_class, default: Settings.ils.patron_model&.constantize || Symphony::Patron
+
   def to_email_string
     if name.present?
       "#{name} (#{email_address})"
@@ -90,8 +92,8 @@ class User < ActiveRecord::Base
   end
 
   def patron
-    @patron ||= Patron.find_by(sunetid: sunetid) if sunetid
-    @patron ||= Patron.find_by(library_id: library_id) if library_id
+    @patron ||= patron_model_class.find_by(sunetid: sunetid) if sunetid
+    @patron ||= patron_model_class.find_by(library_id: library_id) if library_id
   end
 
   def borrow_direct_eligible?

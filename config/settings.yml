@@ -53,10 +53,16 @@ token_encrypt:
   salt: ''
 
 ils:
+  bib_model: SearchworksItem
+  patron_model: Symphony::Patron
   request_job: SubmitSymphonyRequestJob
 
 symphony:
   override: PASSWORD
+
+folio:
+  okapi_url: <%= ENV.fetch('OKAPI_URL', 'http://example.com') %>
+  tenant: 'sul'
 
 mailer_host: <%= `echo $HOSTNAME` %>
 searchworks_api: 'https://searchworks.stanford.edu'
@@ -120,6 +126,7 @@ libraries:
     contact_info:
       phone: (650) 723-9312
       email: soundarchive@stanford.edu
+    folio_pickup_service_point_uuid: ''
     reading_room_url: https://library.stanford.edu/ars/using-archive
     hold_pseudopatron: HOLD@AS
     hours:
@@ -130,6 +137,7 @@ libraries:
     contact_info:
       phone: "(650) 723-3408"
       email: artlibrary@stanford.edu
+    folio_pickup_service_point_uuid: ''
     hold_pseudopatron: HOLD@AR
     hours:
       library_slug: art
@@ -144,12 +152,14 @@ libraries:
     contact_info:
       phone: "(650) 725-2055"
       email: gsb_librarycirc@stanford.edu
+    folio_pickup_service_point_uuid: ''
     hold_pseudopatron: HOLD@BU
     hours:
       library_slug: business
       location_slug: library-i-desk
   CHEMCHMENG:
     label: Chemistry & ChemEng Library (Swain)
+    folio_pickup_service_point_uuid: ''
     hours:
       library_slug: swain
       location_slug: library-circulation
@@ -161,6 +171,7 @@ libraries:
       location_slug: library-circulation
   EARTH-SCI:
     label: Earth Sciences Library (Branner)
+    folio_pickup_service_point_uuid: ''
     hold_pseudopatron: HOLD@ES
     hours:
       library_slug: branner
@@ -171,6 +182,7 @@ libraries:
       phone: (650) 725-3435
       email: eastasialibrary@stanford.edu
     reading_room_url: https://library.stanford.edu/eal/special-collections-east-asia
+    folio_pickup_service_point_uuid: ''
     hold_pseudopatron: HOLD@EA
     hours:
       library_slug: eal
@@ -187,6 +199,7 @@ libraries:
     iplc_pickup_location_code: STA_GREEN
   ENG:
     label: Engineering Library (Terman)
+    folio_pickup_service_point_uuid: ''
     hold_pseudopatron: HOLD@EN
     hours:
       library_slug: englib
@@ -196,6 +209,7 @@ libraries:
     contact_info:
       phone: "(650) 723-1493"
       email: greencirc@stanford.edu
+    folio_pickup_service_point_uuid: a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d
     hold_pseudopatron: HOLD@GR
     hours:
       library_slug: green
@@ -214,6 +228,7 @@ libraries:
     contact_info:
       phone: "(831) 655-6229"
       email: HMS-Library@lists.stanford.edu
+    folio_pickup_service_point_uuid: ''
     hold_pseudopatron: HOLD@HP
     hours:
       library_slug: hopkins
@@ -223,6 +238,7 @@ libraries:
     contact_info:
       phone: "(650) 723-3563"
       email: hooverarchives@stanford.edu
+    folio_pickup_service_point_uuid: ''
     hold_pseudopatron: HOLD@HA
     hours:
       library_slug: hila
@@ -242,17 +258,20 @@ libraries:
     contact_info:
       phone: "(650) 723-2477"
       email: circulation@law.stanford.edu
+    folio_pickup_service_point_uuid: ''
     hold_pseudopatron: HOLD@LW
     hours:
       library_slug: law
       location_slug: library-circulation
   MATH-CS:
     label: Math & Statistics Library
+    folio_pickup_service_point_uuid: ''
     hours:
       library_slug: mathstat
       location_slug: library-circulation
   MEDIA-MTXT:
     label: Media Microtext
+    folio_pickup_service_point_uuid: ''
     hold_pseudopatron: HOLD@MD
     hours:
       library_slug: green
@@ -262,6 +281,7 @@ libraries:
     contact_info:
       phone: (650) 723-1211
       email: muslibcirc@stanford.edu
+    folio_pickup_service_point_uuid: ''
     hold_pseudopatron: HOLD@MU
     hours:
       library_slug: music
@@ -271,6 +291,7 @@ libraries:
     contact_info:
       phone: (650) 498-8698
       email: rumseymapcenter@stanford.edu
+    folio_pickup_service_point_uuid: ''
     reading_room_url: https://library.stanford.edu/rumsey/about-center/visitor-policies
     hold_pseudopatron: HOLD@RM
     hours:
@@ -278,6 +299,7 @@ libraries:
       location_slug: visitor-access
   RWC:
     label: Academy Hall (SRWC)
+    folio_pickup_service_point_uuid: ''
     hold_pseudopatron: HOLD@RU
     hours:
       library_slug: srwc
@@ -310,6 +332,7 @@ libraries:
     contact_info:
       phone: "(650) 723-1528"
       email: sciencelibrary@stanford.edu
+    folio_pickup_service_point_uuid: ''
     hold_pseudopatron: HOLD@CS
     hours:
       library_slug: science
@@ -319,6 +342,7 @@ libraries:
     contact_info:
       phone: "(650) 725-1022"
       email: specialcollections@stanford.edu
+    folio_pickup_service_point_uuid: ''
     reading_room_url: https://library.stanford.edu/spc/using-our-collections
     hold_pseudopatron: HOLD@SP
     hours:
