@@ -109,7 +109,6 @@ class FolioClient
   # @raises [StandardError] if the response was not a 200
   # @return [Hash] the parsed JSON data structure
   def parse_json(response)
-    raise response unless response.status == 200
     return nil if response.body.empty?
 
     JSON.parse(response.body)
