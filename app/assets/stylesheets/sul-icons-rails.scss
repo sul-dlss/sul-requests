@@ -4,11 +4,11 @@
 
 @font-face {
   font-family: "sul-icons";
-  src: font-url("sul-icons.eot");
-  src: font-url("sul-icons.eot?#iefix") format("embedded-opentype"),
-       font-url("sul-icons.woff") format("woff"),
-       font-url("sul-icons.ttf") format("truetype"),
-       font-url("sul-icons.svg#sul-icons") format("svg");
+  src: url("sul-icons.eot");
+  src: url("sul-icons.eot?#iefix") format("embedded-opentype"),
+       url("sul-icons.woff") format("woff"),
+       url("sul-icons.ttf") format("truetype"),
+       url("sul-icons.svg#sul-icons") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -16,7 +16,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: "sul-icons";
-    src: font-url("sul-icons.svg#sul-icons") format("svg");
+    src: url("sul-icons.svg#sul-icons") format("svg");
   }
 }
 
