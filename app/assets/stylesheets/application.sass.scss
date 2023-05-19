@@ -1,6 +1,4 @@
 @import 'palette';
-// @import 'bootstrap-sprockets';
-// @import 'sul-styles';
 @import 'variables';
 @import "bootstrap-icons/font/bootstrap-icons";
 @import 'bootstrap-sass/assets/stylesheets/bootstrap';
@@ -8,8 +6,4 @@
 @import 'sul-requests-mixins';
 @import 'sul-requests';
 
-// Imports sul-icons
 @import 'sul-icons-rails';
-@import 'sul-icons-aliases';
-// Helper classes used in icons
-@import 'sul-icons/helpers';
