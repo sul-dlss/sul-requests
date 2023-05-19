@@ -47,10 +47,19 @@ class SubmitFolioRequestJob < ApplicationJob
       responses = barcodes.map do |barcode|
         user_id = request.user.patron.id
         item_id = folio_client.get_item(barcode)['id']
-        pickup_location_id = Settings.libraries[request.destination].folio_pickup_service_point_uuid
 
-        Rails.logger.info("Submitting hold request for user #{user_id} and item #{item_id} for pickup up #{pickup_location_id}")
-        place_hold_response = folio_client.create_item_hold(user_id, item_id, pickup_location_id)
+        code = Settings.libraries[request.destination].folio_pickup_service_point_code
+        pickup_location_id = folio_client.get_service_point(code)['id']
+
+        Rails.logger.info(
+          "Submitting hold request for user #{user_id} and item #{item_id} for pickup up at #{code} (#{pickup_location_id})"
+        )
+
+        expiration_date = (request.needed_date || Time.zone.today + 3.years).utc.iso8601
+
+        place_hold_response = folio_client.create_item_hold(user_id, item_id, pickup_location_id: pickup_location_id,
+                                                                              patron_comments: request.item_comment,
+                                                                              expiration_date: expiration_date)
 
         {
           barcode: barcode,

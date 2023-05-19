@@ -46,15 +46,21 @@ class FolioClient
   #                                      '123d9cba-85a8-42e0-b130-c82e504c64d6')
   # @param [String] user_id the UUID of the FOLIO user
   # @param [String] instance_id the UUID of the FOLIO instance
-  # @param [String] pickup_location_id the UUID of the pickup locatio
-  def create_instance_hold(user_id, instance_id, pickup_location_id)
+  # @param [String] pickup_location_id the UUID of the pickup location
+  # rubocop:disable Metrics/MethodLength
+  def create_instance_hold(user_id, instance_id, pickup_location_id:, patron_comments: nil, expiration_date: nil)
+    params = {
+      pickupLocationId: pickup_location_id,
+      patronComments: patron_comments,
+      expirationDate: expiration_date
+    }
+
     response = post("/patron/account/#{user_id}/instance/#{instance_id}/hold",
                     json: {
                       requestDate: Time.now.utc.iso8601,
-                      pickupLocationId: pickup_location_id
+                      **params
                     })
-    check_response(response, title: 'Hold request',
-                             context: { user_id: user_id, instance_id: instance_id, pickup_location_id: pickup_location_id })
+    check_response(response, title: 'Hold request', context: { user_id: user_id, instance_id: instance_id, **params })
 
     parse_json(response)
   end
@@ -65,22 +71,36 @@ class FolioClient
   #                                  '123d9cba-85a8-42e0-b130-c82e504c64d6')
   # @param [String] user_id the UUID of the FOLIO user
   # @param [String] item_id the UUID of the FOLIO item
-  # @param [String] pickup_location_id the UUID of the pickup locatio
-  def create_item_hold(user_id, item_id, pickup_location_id)
+  # @param [String] pickup_location_id the UUID of the pickup location
+  def create_item_hold(user_id, item_id, pickup_location_id:, patron_comments: nil, expiration_date: nil)
+    params = {
+      pickupLocationId: pickup_location_id,
+      patronComments: patron_comments,
+      expirationDate: expiration_date
+    }
+
     response = post("/patron/account/#{user_id}/item/#{item_id}/hold",
                     json: {
                       requestDate: Time.now.utc.iso8601,
-                      pickupLocationId: pickup_location_id
+                      **params
                     })
-    check_response(response, title: 'Hold request', context: { user_id: user_id, item_id: item_id, pickup_location_id: pickup_location_id })
+
+    check_response(response, title: 'Hold request', context: { user_id: user_id, instance_id: instance_id, **params })
 
     parse_json(response)
   end
+  # rubocop:enable Metrics/MethodLength
 
   def get_item(barcode)
     response = get_json('/item-storage/items', params: { query: CqlQuery.new(barcode: barcode).to_query })
 
     response.dig('items', 0)
+  end
+
+  def get_service_point(code)
+    response = get_json('/service-points', params: { query: CqlQuery.new(code: code).to_query })
+
+    response.dig('servicepoints', 0)
   end
 
   private
