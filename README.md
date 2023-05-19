@@ -1,6 +1,4 @@
 # sul-requests
-[![Build Status](https://travis-ci.org/sul-dlss/sul-requests.svg?branch=master)](https://travis-ci.org/sul-dlss/sul-requests)
-![tested on ruby 3.0](https://img.shields.io/badge/ruby-v3.0-red)
 [![Current release](https://img.shields.io/github/v/release/sul-dlss/sul-requests)](https://github.com/sul-dlss/sul-requests/releases)
 [![License](https://img.shields.io/badge/license-apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
