@@ -40,26 +40,30 @@ class FolioClient
     get_json("/users/#{CGI.escape(user_id)}")
   end
 
+  # Defines the hold request to Folio
+  # [String] pickup_location_id the UUID of the pickup location
+  # [String] patron_comments
+  # [Date] expiration_date
+  class HoldRequest < Data.define(:pickup_location_id, :patron_comments, :expiration_date)
+    def as_json
+      {
+        pickupLocationId: pickup_location_id,
+        patronComments: patron_comments,
+        expirationDate: expiration_date,
+        requestDate: Time.now.utc.iso8601
+      }
+    end
+  end
+
   # See https://s3.amazonaws.com/foliodocs/api/mod-patron/p/patron.html#patron_account__id__instance__instanceid__hold_post
   # @example client.create_instance_hold('562a5cb0-e998-4ea2-80aa-34ac2b536238',
   #                                      'cc3d8728-a6b9-45c4-ad0c-432873c3ae47',
-  #                                      '123d9cba-85a8-42e0-b130-c82e504c64d6')
+  #                                      HoldRequest.new)
   # @param [String] user_id the UUID of the FOLIO user
   # @param [String] instance_id the UUID of the FOLIO instance
-  # @param [String] pickup_location_id the UUID of the pickup location
-  # rubocop:disable Metrics/MethodLength
-  def create_instance_hold(user_id, instance_id, pickup_location_id:, patron_comments: nil, expiration_date: nil)
-    params = {
-      pickupLocationId: pickup_location_id,
-      patronComments: patron_comments,
-      expirationDate: expiration_date
-    }
-
-    response = post("/patron/account/#{user_id}/instance/#{instance_id}/hold",
-                    json: {
-                      requestDate: Time.now.utc.iso8601,
-                      **params
-                    })
+  # @param [HoldRequest] request
+  def create_instance_hold(user_id, instance_id, request)
+    response = post("/patron/account/#{user_id}/instance/#{instance_id}/hold", json: request.as_json)
     check_response(response, title: 'Hold request', context: { user_id: user_id, instance_id: instance_id, **params })
 
     parse_json(response)
@@ -68,28 +72,17 @@ class FolioClient
   # See https://s3.amazonaws.com/foliodocs/api/mod-patron/p/patron.html#patron_account__id__item__itemid__hold_post
   # @example client.create_item_hold('562a5cb0-e998-4ea2-80aa-34ac2b536238',
   #                                  'd9097766-cc5d-5bb5-9173-8e883950380f',
-  #                                  '123d9cba-85a8-42e0-b130-c82e504c64d6')
+  #                                  HoldRequest.new)
   # @param [String] user_id the UUID of the FOLIO user
   # @param [String] item_id the UUID of the FOLIO item
-  # @param [String] pickup_location_id the UUID of the pickup location
-  def create_item_hold(user_id, item_id, pickup_location_id:, patron_comments: nil, expiration_date: nil)
-    params = {
-      pickupLocationId: pickup_location_id,
-      patronComments: patron_comments,
-      expirationDate: expiration_date
-    }
-
-    response = post("/patron/account/#{user_id}/item/#{item_id}/hold",
-                    json: {
-                      requestDate: Time.now.utc.iso8601,
-                      **params
-                    })
+  # @param [HoldRequest] request
+  def create_item_hold(user_id, item_id, request)
+    response = post("/patron/account/#{user_id}/item/#{item_id}/hold", json: request.as_json)
 
     check_response(response, title: 'Hold request', context: { user_id: user_id, instance_id: instance_id, **params })
 
     parse_json(response)
   end
-  # rubocop:enable Metrics/MethodLength
 
   def get_item(barcode)
     response = get_json('/item-storage/items', params: { query: CqlQuery.new(barcode: barcode).to_query })
