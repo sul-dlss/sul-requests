@@ -14,16 +14,16 @@ class PagingScheduleController < ApplicationController
 
   before_action :load_schedule, only: [:show, :open]
 
+  def index
+    authorize! :manage, PagingSchedule
+    @paging_schedule = PagingSchedule.schedule
+  end
+
   def show
     respond_to do |format|
       format.json { render json: @schedule.earliest_delivery_estimate, layout: false }
       format.html { render plain: @schedule.earliest_delivery_estimate.to_s, layout: false }
     end
-  end
-
-  def index
-    authorize! :manage, PagingSchedule
-    @paging_schedule = PagingSchedule.schedule
   end
 
   def open

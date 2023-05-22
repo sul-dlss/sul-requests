@@ -117,7 +117,7 @@ class SubmitBorrowDirectRequestJob < ApplicationJob
                                          api_pickup_locations.include?(requested_pickup_library)
 
       Honeybadger.notify(
-        "Request id #{request.id} attempted to submit a BorrowDirect request to be picked up at "\
+        "Request id #{request.id} attempted to submit a BorrowDirect request to be picked up at " \
         "#{requested_pickup_library} but the only pickup libraries are #{api_pickup_locations.to_sentence}"
       )
 

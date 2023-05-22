@@ -19,7 +19,7 @@ class Request < ActiveRecord::Base
   scope :needed_date_desc, -> { order(needed_date: :desc) }
   scope :for_date, ->(date) { where(needed_date: date) }
   scope :for_create_date, lambda { |date|
-    where(created_at: Time.zone.parse(date).beginning_of_day..Time.zone.parse(date).end_of_day)
+    where(created_at: Time.zone.parse(date).all_day)
   }
   scope :for_type, ->(request_type) { where(type: request_type) if request_type }
   scope :obsolete, lambda { |date|

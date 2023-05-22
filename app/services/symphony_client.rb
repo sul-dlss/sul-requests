@@ -238,7 +238,7 @@ class SymphonyClient
     {
       json: {
         comment: comment.truncate(50, omission: ''),
-        fillByDate: (fill_by_date || DateTime.now + 3.years).strftime('%Y-%m-%d'),
+        fillByDate: (fill_by_date || (DateTime.now + 3.years)).strftime('%Y-%m-%d'),
         holdRange: 'SYSTEM',
         patronBarcode: patron_barcode,
         pickupLibrary: {
