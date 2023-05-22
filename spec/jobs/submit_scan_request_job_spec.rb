@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe SubmitScanRequestJob, type: :job do
+RSpec.describe SubmitScanRequestJob do
   context 'when illiad response is success' do
     before do
       allow(IlliadRequest).to receive(:new).with(scan).and_return(illiad_request)

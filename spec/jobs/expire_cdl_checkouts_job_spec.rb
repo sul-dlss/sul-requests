@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe ExpireCdlCheckoutsJob, type: :job do
+describe ExpireCdlCheckoutsJob do
   before do
     expect(Symphony::Patron).to receive(:find_by).and_return(patron)
   end

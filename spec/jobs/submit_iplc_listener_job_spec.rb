@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe SubmitIplcListenerJob, type: :job do
+describe SubmitIplcListenerJob do
   let(:user) { create(:library_id_user) }
   let(:request) { create(:hold_recall_with_holdings, user: user) }
   let(:sw_item) { double('SeachWorksItem', isbn: %w[12345 54321]) }

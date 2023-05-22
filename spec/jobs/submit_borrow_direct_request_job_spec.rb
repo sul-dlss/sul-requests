@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe SubmitBorrowDirectRequestJob, type: :job do
+describe SubmitBorrowDirectRequestJob do
   let(:user) { create(:library_id_user) }
   let(:request) { create(:hold_recall_with_holdings, user: user) }
   let(:sw_item) { double('SeachWorksItem', isbn: %w[12345 54321]) }

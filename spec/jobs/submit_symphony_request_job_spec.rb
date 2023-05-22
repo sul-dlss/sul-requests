@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe SubmitSymphonyRequestJob, type: :job do
+RSpec.describe SubmitSymphonyRequestJob do
   before do
     allow(Settings.ils).to receive(:request_job).and_return(described_class)
   end
