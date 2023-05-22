@@ -55,7 +55,7 @@ class SubmitFolioRequestJob < ApplicationJob
           "Submitting hold request for user #{user_id} and item #{item_id} for pickup up at #{code} (#{pickup_location_id})"
         )
 
-        expiration_date = (request.needed_date || Time.zone.today + 3.years).utc.iso8601
+        expiration_date = (request.needed_date || (Time.zone.today + 3.years)).utc.iso8601
 
         place_hold_response = folio_client.create_item_hold(user_id, item_id, pickup_location_id: pickup_location_id,
                                                                               patron_comments: request.item_comment,

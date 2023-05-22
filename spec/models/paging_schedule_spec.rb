@@ -82,12 +82,12 @@ describe PagingSchedule do
         end
       end
 
-      it 'handles before attributes correctly ' do
+      it 'handles before attributes correctly' do
         expect(before_scheduler.by_time?(Time.zone.parse('11:00am'))).to be true
         expect(before_scheduler.by_time?(Time.zone.parse('1:00pm'))).to be false
       end
 
-      it 'handles after attributes correctly ' do
+      it 'handles after attributes correctly' do
         expect(after_scheduler.by_time?(Time.zone.parse('11:00am'))).to be false
         expect(after_scheduler.by_time?(Time.zone.parse('1:00pm'))).to be true
       end

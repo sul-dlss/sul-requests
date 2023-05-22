@@ -57,7 +57,7 @@ RSpec.describe SymphonyClient do
       end
 
       it 'retrieves a session token from symws' do
-        expect(client.session_token).to be nil
+        expect(client.session_token).to be_nil
       end
     end
   end

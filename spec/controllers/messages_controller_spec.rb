@@ -14,7 +14,7 @@ describe MessagesController, type: :controller do
   end
 
   let(:valid_attributes) do
-    required_attributes.merge(start_at: Time.zone.now, end_at: Time.zone.now + 1.day)
+    required_attributes.merge(start_at: Time.zone.now, end_at: 1.day.from_now)
   end
 
   let(:invalid_attributes) do
@@ -89,7 +89,7 @@ describe MessagesController, type: :controller do
   describe 'PUT #update' do
     context 'with valid params' do
       let(:new_attributes) do
-        { start_at: Time.zone.now - 1.day }
+        { start_at: 1.day.ago }
       end
 
       it 'updates the requested message' do

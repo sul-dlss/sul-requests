@@ -38,6 +38,6 @@ end
 
 def fill_in_required_fields
   wait_for_ajax
-  min_date = find('#request_needed_date')['min']
+  min_date = find_by_id('request_needed_date')['min']
   page.execute_script("$('#request_needed_date').prop('value', '#{min_date}')")
 end
