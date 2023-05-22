@@ -20,7 +20,7 @@ class LocationRules
   # Selects the rules that apply to a given request
   # @param [Request] request
   def applies_to(request)
-    lazy.select { |rule| rule.match?(request) }
+    lazy.grep(request)
   end
 
   # Utility for testing location rules against the request

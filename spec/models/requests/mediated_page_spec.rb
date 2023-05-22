@@ -312,9 +312,7 @@ describe MediatedPage do
 
     it 'does not include requests from other origins' do
       expect(
-        dates.any? do |date|
-          date == Time.zone.today + 3.days # EDUCATION needed_date
-        end
+        dates.any?(Time.zone.today + 3.days)
       ).to be false
     end
   end

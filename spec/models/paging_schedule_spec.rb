@@ -8,9 +8,7 @@ describe PagingSchedule do
       expect(described_class.schedule).to be_present
       expect(described_class.schedule).to be_a Array
       expect(
-        described_class.schedule.all? do |schedule|
-          schedule.is_a?(PagingSchedule::Scheduler)
-        end
+        described_class.schedule.all?(PagingSchedule::Scheduler)
       ).to be true
     end
   end
