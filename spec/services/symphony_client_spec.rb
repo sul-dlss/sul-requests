@@ -28,7 +28,7 @@ RSpec.describe SymphonyClient do
 
   describe '#ping' do
     it 'returns true if we can connect to symws' do
-      expect(client.ping).to eq true
+      expect(client.ping).to be true
     end
 
     context 'when unable to connect' do
@@ -37,7 +37,7 @@ RSpec.describe SymphonyClient do
       end
 
       it 'returns false' do
-        expect(client.ping).to eq false
+        expect(client.ping).to be false
       end
     end
   end
