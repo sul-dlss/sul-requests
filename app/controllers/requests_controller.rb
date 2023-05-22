@@ -51,7 +51,7 @@ class RequestsController < ApplicationController
   end
 
   def request_specific_user
-    user_attributes = params.dig(:request, :user_attributes)&.permit(:name, :email, :library_id).to_h.reject { |_k, v| v.blank? }
+    user_attributes = params.dig(:request, :user_attributes)&.permit(:name, :email, :library_id).to_h.compact_blank
 
     User.new(**user_attributes, ip_address: request.remote_ip) if user_attributes.present?
   end
