@@ -49,7 +49,7 @@ module PagingSchedule
     end
 
     def worst_case_days_later
-      schedule.map(&:days_later).compact.max + Settings.worst_case_paging_padding
+      schedule.filter_map(&:days_later).max + Settings.worst_case_paging_padding
     end
   end
 
