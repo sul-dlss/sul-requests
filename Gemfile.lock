@@ -269,7 +269,6 @@ GEM
     minitest (5.18.0)
     msgpack (1.7.0)
     mysql2 (0.5.5)
-    nested_form (0.3.2)
     net-imap (0.3.4)
       date
       net-protocol
@@ -495,7 +494,6 @@ DEPENDENCIES
   listen
   lograge
   mysql2
-  nested_form
   net-smtp
   nokogiri (>= 1.7.1)
   okcomputer
