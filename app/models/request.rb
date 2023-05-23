@@ -62,10 +62,6 @@ class Request < ActiveRecord::Base
     @searchworks_item ||= searchworks_item_class.new(self, live_lookup)
   end
 
-  def bib_info
-    @bib_info ||= Symphony::BibInfo.find(item_id)
-  end
-
   def send_approval_status!
     RequestStatusMailerFactory.for(self).deliver_later if notification_email_address.present?
   end
