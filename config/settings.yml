@@ -53,7 +53,7 @@ token_encrypt:
   salt: ''
 
 ils:
-  bib_model: SearchworksItem
+  bib_model: SearchworksItem # or Folio::BibData
   patron_model: Symphony::Patron
   request_job: SubmitSymphonyRequestJob
 
@@ -64,6 +64,7 @@ folio:
   okapi_url: <%= ENV.fetch('OKAPI_URL', 'http://example.com') %>
   tenant: 'sul'
   fee_borrower_patron_group: 985acbb9-f7a7-4f44-9b34-458c02a78fbc
+  isbn_identifier_type: 8261054f-be78-422d-bd51-4ed9f33c3422
 
 mailer_host: <%= `echo $HOSTNAME` %>
 searchworks_api: 'https://searchworks.stanford.edu'
