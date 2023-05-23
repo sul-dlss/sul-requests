@@ -88,7 +88,7 @@ class CurrentUser
   end
 
   def user_id
-    request.env['REMOTE_USER'].presence || ENV['REMOTE_USER']
+    request.env['REMOTE_USER'].presence || ENV.fetch('REMOTE_USER', nil)
   end
 
   def fake_ldap_attributes

@@ -180,7 +180,7 @@ describe SubmitBorrowDirectRequestJob, type: :job do
             request.destination = 'LATHROP'
             expect(stub_request_client).to receive(:request_item_request).with('Green Library', Hash)
             expect(Honeybadger).to receive(:notify).with(
-              'Request id 1 attempted to submit a BorrowDirect request to be picked up at Lathrop Library '\
+              'Request id 1 attempted to submit a BorrowDirect request to be picked up at Lathrop Library ' \
               'but the only pickup libraries are Library1, Library2, and Library3'
             )
             expect(subject.request_item).to be_present

@@ -17,21 +17,21 @@ describe 'Mediation table', js: true do
         :mediated_page_with_holdings,
         user: create(:non_sso_user),
         barcodes: %w(12345678 23456789),
-        created_at: Time.zone.now - 1.day,
-        needed_date: Time.zone.now + 3.days
+        created_at: 1.day.ago,
+        needed_date: 3.days.from_now
       )
       create(
         :mediated_page_with_holdings,
         user: create(:non_sso_user, name: 'Joe Doe ', email: 'joedoe@example.com'),
         barcodes: %w(34567890 45678901),
-        needed_date: Time.zone.now + 2.days
+        needed_date: 2.days.from_now
       )
       create(
         :mediated_page_with_holdings,
         user: create(:non_sso_user, name: 'Jim Doe ', email: 'jimdoe@example.com'),
         barcodes: %w(34567890),
         ad_hoc_items: ['ABC 123'],
-        created_at: Time.zone.now + 1.day,
+        created_at: 1.day.from_now,
         needed_date: Time.zone.now
       )
       create(
@@ -45,23 +45,23 @@ describe 'Mediation table', js: true do
         :mediated_page_with_holdings,
         user: create(:non_sso_user, name: 'Bob Doe', email: 'bobdoe@example.com'),
         barcodes: %w(12345678 23456789),
-        created_at: Time.zone.now - 7.days,
-        needed_date: Time.zone.now - 2.days,
+        created_at: 7.days.ago,
+        needed_date: 2.days.ago,
         approval_status: MediatedPage.approval_statuses['approved']
       ).save(validate: false)
       build(
         :mediated_page_with_holdings,
         user: create(:non_sso_user, name: 'Alice Doe ', email: 'alicedoe@example.com'),
         barcodes: %w(12345678 23456789),
-        created_at: Time.zone.now - 5.days,
-        needed_date: Time.zone.now - 3.days,
+        created_at: 5.days.ago,
+        needed_date: 3.days.ago,
         approval_status: MediatedPage.approval_statuses['approved']
       ).save(validate: false)
       build(
         :mediated_page_with_holdings,
         user: create(:non_sso_user, name: 'Mal Doe ', email: 'maldoe@example.com'),
         barcodes: %w(34567890 45678901),
-        created_at: Time.zone.now - 3.days,
+        created_at: 3.days.ago,
         needed_date: nil,
         approval_status: MediatedPage.approval_statuses['marked_as_done']
       ).save(validate: false)
@@ -70,7 +70,7 @@ describe 'Mediation table', js: true do
         user: create(:non_sso_user, name: 'Eve Doe ', email: 'evedoe@example.com'),
         barcodes: %w(34567890),
         ad_hoc_items: ['ABC 123'],
-        created_at: Time.zone.now - 2.days,
+        created_at: 2.days.ago,
         needed_date: nil,
         approval_status: MediatedPage.approval_statuses['approved']
       ).save(validate: false)

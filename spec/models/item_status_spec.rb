@@ -93,7 +93,7 @@ describe ItemStatus do
       it 'does not persist any changes if the symphony response is not successful' do
         stub_symphony_response(build(:symphony_request_with_all_errored_items))
         expect(request).not_to receive(:save!)
-        expect(subject.approve!('jstanford')).to be nil
+        expect(subject.approve!('jstanford')).to be_nil
       end
     end
   end

@@ -130,7 +130,7 @@ describe User do
       expect(subject).to be_library_id_user
     end
 
-    it 'is false when the user has not  supplied a library ID' do
+    it 'is false when the user has not supplied a library ID' do
       expect(subject).not_to be_library_id_user
     end
   end

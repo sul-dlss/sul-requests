@@ -108,7 +108,7 @@ describe 'Creating a mediated page request' do
 
     it 'has a field for the planned date of visit' do
       visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
-      date = (Time.zone.now + 1.day).to_date
+      date = 1.day.from_now.to_date
 
       fill_in 'I plan to visit on', with: date
 
@@ -145,12 +145,12 @@ describe 'Creating a mediated page request' do
 
   def fill_in_required_fields
     if Capybara.current_driver == :rack_test
-      date_input = find('#request_needed_date', visible: :all)
+      date_input = find_by_id('request_needed_date', visible: :all)
       min_date = date_input['min']
       date_input.set(min_date)
     else
       wait_for_ajax
-      min_date = find('#request_needed_date', visible: :all)['min']
+      min_date = find_by_id('request_needed_date', visible: :all)['min']
       page.execute_script("$('#request_needed_date').prop('value', '#{min_date}')")
     end
   end

@@ -13,7 +13,7 @@ describe 'Admin Comments', js: true do
       user: create(:non_sso_user, name: 'Jim Doe ', email: 'jimdoe@example.com'),
       barcodes: %w(34567890),
       ad_hoc_items: ['ABC 123'],
-      created_at: Time.zone.now + 1.day
+      created_at: 1.day.from_now
     )
     visit admin_path('ART')
   end

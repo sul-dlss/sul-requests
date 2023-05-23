@@ -11,19 +11,19 @@ class IlliadRequest
   # rubocop:disable Metrics/MethodLength
   def illiad_transaction_request
     {
-      'ProcessType': 'Borrowing',
-      'RequestType': 'Article',
-      'SpecIns': 'Scan and Deliver Request',
-      'PhotoJournalTitle': scan_title,
-      'PhotoArticleAuthor': @scan.authors,
-      'Location': @scan.origin,
-      'ReferenceNumber': @scan.origin_location,
-      'PhotoArticleTitle': @scan.data[:section_title],
-      'PhotoJournalInclusivePages': @scan.data[:page_range],
-      'CallNumber': call_number,
-      'ILLNumber': ill_number,
-      'ItemNumber': item_number,
-      'Username': @scan.user.sunetid
+      ProcessType: 'Borrowing',
+      RequestType: 'Article',
+      SpecIns: 'Scan and Deliver Request',
+      PhotoJournalTitle: scan_title,
+      PhotoArticleAuthor: @scan.authors,
+      Location: @scan.origin,
+      ReferenceNumber: @scan.origin_location,
+      PhotoArticleTitle: @scan.data[:section_title],
+      PhotoJournalInclusivePages: @scan.data[:page_range],
+      CallNumber: call_number,
+      ILLNumber: ill_number,
+      ItemNumber: item_number,
+      Username: @scan.user.sunetid
     }.to_json
   end
   # rubocop:enable Metrics/MethodLength

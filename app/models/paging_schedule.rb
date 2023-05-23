@@ -68,7 +68,7 @@ module PagingSchedule
       @after = after
       @days_later = days_later
       @will_arrive_text = will_arrive_text
-      @schedule = instance_eval(&block) if block_given?
+      @schedule = instance_eval(&block) if block
     end
     # rubocop:enable Metrics/ParameterLists
 

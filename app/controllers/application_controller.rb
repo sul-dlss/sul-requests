@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
   end
 
   def rescue_can_can(exception)
-    Rails.logger.debug "Access denied on #{exception.action} #{exception.subject.inspect}"
+    Rails.logger.debug { "Access denied on #{exception.action} #{exception.subject.inspect}" }
     raise exception
   end
 end
