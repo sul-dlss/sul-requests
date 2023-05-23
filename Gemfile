@@ -12,7 +12,6 @@ gem 'puma', '~> 5.0' # avoid capybara errors until capybara release; see https:/
 gem 'bootsnap'
 # Use bootstrap_form for easy form building
 gem 'bootstrap_form', '< 4' # pin to < 4 since we are not on bootstrap 4
-gem 'nested_form'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails'
 # A gem for simple rails invornment specific config

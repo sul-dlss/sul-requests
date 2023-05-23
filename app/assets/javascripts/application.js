@@ -13,7 +13,6 @@
 //= require jquery3
 //= require rails-ujs
 //= require turbolinks
-//= require jquery_nested_form
 //= require bootstrap/alert
 //= require bootstrap/collapse
 //= require bootstrap/tooltip
