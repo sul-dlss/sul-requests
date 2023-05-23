@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Request do
+RSpec.describe Request do
   describe 'validations' do
     it 'requires the basic set of information to be present' do
       expect { described_class.create! }.to raise_error(ActiveRecord::RecordInvalid)
@@ -153,10 +153,10 @@ describe Request do
     end
   end
 
-  describe '#searchworks_item' do
-    it 'returns a searchworks_item object' do
-      expect(subject.searchworks_item).to be_a SearchworksItem
-    end
+  describe '#bib_data' do
+    subject { described_class.new.bib_data }
+
+    it { is_expected.to be_a SearchworksItem }
   end
 
   describe '#holdings' do
@@ -388,7 +388,7 @@ describe Request do
     end
 
     it 'returns the item title from the fetched searchworks record for non persisted objects' do
-      allow_any_instance_of(described_class).to receive(:searchworks_item)
+      allow_any_instance_of(described_class).to receive(:bib_data)
         .and_return(OpenStruct.new(title: 'A fetched title'))
       expect(described_class.new.stored_or_fetched_item_title).to eq 'A fetched title'
     end

@@ -3,10 +3,10 @@
 <%= f.hidden_field :aeon_document_type, name: 'DocumentType', value: 'Monograph' %>
 <%= f.hidden_field :aeon_site, name: 'Site', value: f.object.aeon_site %>
 <%= f.hidden_field :aeon_location, name: 'Location', value: f.object.origin_location %>
-<%= f.hidden_field :aeon_title, name: 'ItemTitle', value: f.object.searchworks_item.title %>
-<%= f.hidden_field :aeon_author, name: 'ItemAuthor', value: f.object.searchworks_item.author %>
-<%= f.hidden_field :aeon_date, name: 'ItemDate', value: f.object.searchworks_item.pub_date %>
-<%= f.hidden_field :aeon_link, name: 'ItemInfo1', value: f.object.searchworks_item.view_url %>
+<%= f.hidden_field :aeon_title, name: 'ItemTitle', value: f.object.bib_data.title %>
+<%= f.hidden_field :aeon_author, name: 'ItemAuthor', value: f.object.bib_data.author %>
+<%= f.hidden_field :aeon_date, name: 'ItemDate', value: f.object.bib_data.pub_date %>
+<%= f.hidden_field :aeon_link, name: 'ItemInfo1', value: f.object.bib_data.view_url %>
 <% if f.object.barcode_present? || f.object.all_holdings.one? %>
   <% single_item = f.object.requested_holdings.first || f.object.all_holdings.first %>
   <%= f.hidden_field :aeon_request_index, name: 'Request', value: 1 %>

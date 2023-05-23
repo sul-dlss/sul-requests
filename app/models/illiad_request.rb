@@ -35,7 +35,7 @@ class IlliadRequest
   private
 
   def scan_title
-    @scan.searchworks_item.title
+    @scan.bib_data.title
   end
 
   def ill_number

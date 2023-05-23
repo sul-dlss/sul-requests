@@ -5,7 +5,7 @@
 ###
 module Holdings
   def holdings_object
-    searchworks_item.requested_holdings
+    bib_data.requested_holdings
   end
 
   def holdings

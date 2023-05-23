@@ -25,8 +25,8 @@ FactoryBot.define do
 
     after(:build) do |page|
       class << page
-        def searchworks_item
-          @searchworks_item ||= FactoryBot.build(:green_stacks_multi_holdings_searchworks_item, request: self)
+        def bib_data
+          @bib_data ||= FactoryBot.build(:green_stacks_multi_holdings_searchworks_item, request: self)
         end
       end
     end

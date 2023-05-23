@@ -48,8 +48,8 @@ class SubmitBorrowDirectRequestJob < ApplicationJob
   class BorrowDirectWrapper
     attr_reader :api_pickup_locations, :auth_id, :request
 
-    delegate :searchworks_item, :user, to: :request
-    delegate :isbn, to: :searchworks_item
+    delegate :bib_data, :user, to: :request
+    delegate :isbn, to: :bib_data
     delegate :library_id, to: :user
 
     def initialize(request)

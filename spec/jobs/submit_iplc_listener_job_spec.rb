@@ -12,7 +12,7 @@ describe SubmitIplcListenerJob, type: :job do
     allow(Symphony::Patron).to receive(:find_by).with(library_id: user.library_id).at_least(:once).and_return(
       double(exists?: true, email: 'patron@example.com')
     )
-    allow(request).to receive(:searchworks_item).and_return(sw_item)
+    allow(request).to receive(:bib_data).and_return(sw_item)
   end
 
   describe '#perform' do
