@@ -123,3 +123,5 @@ group :deployment do
 end
 
 gem "cssbundling-rails", "~> 1.1"
+
+gem "view_component", "~> 3.0"
