@@ -36,7 +36,7 @@ describe PagingScheduleController do
 
       it 'returns json when requested' do
         get :show, params: { origin: 'SAL3', destination: 'GREEN', format: 'json' }
-        expect(JSON.parse(response.body)).to eq('a' => 'a', 'b' => 'b')
+        expect(response.parsed_body).to eq('a' => 'a', 'b' => 'b')
       end
 
       it 'returns the estimate as a string when HTML is requested' do
