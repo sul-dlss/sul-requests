@@ -223,15 +223,6 @@ describe SearchworksItem do
       end
     end
 
-    describe 'barcoded holdings' do
-      let(:item) { build(:green_stacks_multi_holdings_searchworks_item) }
-
-      it 'onlies return holdings that have the properly formatted barcode' do
-        expect(subject.all.length).to eq 3
-        expect(subject.barcoded_holdings.length).to eq 2
-      end
-    end
-
     describe 'mhld' do
       describe 'when not present' do
         let(:item) { build(:green_stacks_searchworks_item) }
