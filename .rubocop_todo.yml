@@ -220,15 +220,6 @@ RSpec/PendingWithoutReason:
     - 'spec/features/item_selector_spec.rb'
     - 'spec/mailers/request_status_mailer_spec.rb'
 
-# Offense count: 8
-# This cop supports unsafe autocorrection (--autocorrect-all).
-RSpec/Rails/HaveHttpStatus:
-  Exclude:
-    - 'spec/controllers/admin_controller_spec.rb'
-    - 'spec/controllers/interstitial_controller_spec.rb'
-    - 'spec/controllers/mediated_pages_controller_spec.rb'
-    - 'spec/controllers/paging_schedule_controller_spec.rb'
-
 # Offense count: 15
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: Inferences.

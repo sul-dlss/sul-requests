@@ -137,7 +137,7 @@ describe AdminController do
 
       it 'returns a 500 when the item cannot be approved' do
         get :approve_item, params: { id: mediated_page.id, item: '3610512345' }
-        expect(response.status).to eq 500
+        expect(response).to have_http_status :internal_server_error
         expect(response).not_to be_successful
       end
 
