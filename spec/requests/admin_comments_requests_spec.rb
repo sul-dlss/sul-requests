@@ -37,7 +37,7 @@ RSpec.describe 'AdminComments' do
 
         it 'returns the JSON of the comment object that was just created' do
           post(url, params: { admin_comment: { comment: 'This is yet another comment' } }, headers: headers)
-          response_comment = JSON.parse(response.body)
+          response_comment = response.parsed_body
           last_comment = AdminComment.last
           expect(response_comment['id']).to eq last_comment.id
           expect(response_comment['comment']).to eq last_comment.comment
@@ -62,7 +62,7 @@ RSpec.describe 'AdminComments' do
         it 'returns a failure status code' do
           post(url, params: { admin_comment: { comment: 'A comment that will not be persisted' } }, headers: headers)
           expect(response).not_to be_successful
-          expect(JSON.parse(response.body)).to eq('status' => 'error')
+          expect(response.parsed_body).to eq('status' => 'error')
         end
       end
     end

@@ -181,7 +181,7 @@ RSpec.describe MediatedPagesController do
         patch :update, params: { id: mediated_page.id, mediated_page: { approval_status: 'marked_as_done' } }, format: :json
 
         expect(mediated_page.reload).to be_marked_as_done
-        expect(JSON.parse(response.body)['id']).to eq mediated_page.id
+        expect(response.parsed_body['id']).to eq mediated_page.id
       end
     end
 
@@ -200,7 +200,7 @@ RSpec.describe MediatedPagesController do
       it 'returns a small json error message' do
         patch :update, params: { id: mediated_page.id, mediated_page: { marked_as_complete: 'true' } }, format: :json
 
-        expect(JSON.parse(response.body)).to eq('status' => 'error')
+        expect(response.parsed_body).to eq('status' => 'error')
       end
     end
 

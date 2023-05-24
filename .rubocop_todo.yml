@@ -394,16 +394,6 @@ Rails/OutputSafety:
     - 'app/controllers/application_controller.rb'
     - 'app/helpers/application_helper.rb'
 
-# Offense count: 5
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: Include.
-# Include: spec/controllers/**/*.rb, spec/requests/**/*.rb, test/controllers/**/*.rb, test/integration/**/*.rb
-Rails/ResponseParsedBody:
-  Exclude:
-    - 'spec/controllers/mediated_pages_controller_spec.rb'
-    - 'spec/controllers/paging_schedule_controller_spec.rb'
-    - 'spec/requests/admin_comments_requests_spec.rb'
-
 # Offense count: 1
 # Configuration parameters: Include.
 # Include: app/models/**/*.rb
