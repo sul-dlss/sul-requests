@@ -49,7 +49,7 @@ describe PagingScheduleController do
       it 'responds with a 404' do
         get :show, params: { origin: 'SAL3' }
         expect(response).not_to be_successful
-        expect(response.status).to be 404
+        expect(response).to have_http_status :not_found
       end
     end
 
@@ -61,7 +61,7 @@ describe PagingScheduleController do
       it 'responds with a 404 error' do
         get :show, params: { origin: 'DOES-NOT-EXIST', destination: 'NOT-REAL' }
         expect(response).not_to be_successful
-        expect(response.status).to be 404
+        expect(response).to have_http_status :not_found
       end
     end
   end
@@ -72,7 +72,7 @@ describe PagingScheduleController do
         get :open, params: { origin: 'SAL3', destination: 'GREEN', date: 'tomorrow' }
 
         expect(response).not_to be_successful
-        expect(response.status).to be 404
+        expect(response).to have_http_status :not_found
       end
     end
 

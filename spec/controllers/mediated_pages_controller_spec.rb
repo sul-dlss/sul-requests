@@ -194,7 +194,7 @@ RSpec.describe MediatedPagesController do
         patch :update, params: { id: mediated_page.id, mediated_page: { marked_as_complete: 'true' } }, format: :json
 
         expect(response).not_to be_successful
-        expect(response.status).to eq 400
+        expect(response).to have_http_status :bad_request
       end
 
       it 'returns a small json error message' do
