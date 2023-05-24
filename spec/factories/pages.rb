@@ -31,19 +31,4 @@ FactoryBot.define do
       end
     end
   end
-
-  factory :page_with_holdings_summary, class: 'Page' do
-    item_id { '1234' }
-    origin { 'GREEN' }
-    origin_location { 'STACKS' }
-    destination { 'ART' }
-
-    after(:build) do |page|
-      class << page
-        def searchworks_item
-          @searchworks_item ||= FactoryBot.build(:mhld_searchworks_item, request: self)
-        end
-      end
-    end
-  end
 end
