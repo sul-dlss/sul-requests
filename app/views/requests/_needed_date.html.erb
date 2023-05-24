@@ -4,7 +4,7 @@
     <div class='<%= content_column_class %>'>
       <%= f.date_field_without_bootstrap :needed_date, class: 'form-control', required: true, min: Time.zone.today, data: { request_type: current_request.type.underscore } %>
       <div id='needed-date-warning' class='has-error needed-date-help-block'></div>
-      <%= render LibraryInstructionsComponent.new(request: current_request) %>
+      <%= render LibraryInstructionsComponent.new(library_code: current_request.origin) %>
     </div>
   </div>
 <% end %>

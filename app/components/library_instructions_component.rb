@@ -2,15 +2,13 @@
 
 # Display the instructions for the requested library
 class LibraryInstructionsComponent < ViewComponent::Base
-  def initialize(request:)
-    @request = request
+  def initialize(library_code:)
+    @text = Settings.libraries[library_code]&.instructions
   end
 
   def render?
-    @request.holdings_object.library_instructions.present?
+    text.present?
   end
 
-  def text
-    @request.holdings_object.library_instructions[:text]
-  end
+  attr_reader :text
 end

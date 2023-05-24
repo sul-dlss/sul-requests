@@ -120,10 +120,6 @@ class SearchworksItem
         all.first.current_location.try(:code) == 'CHECKEDOUT'
     end
 
-    def library_instructions
-      library.library_instructions if library && library.library_instructions.present?
-    end
-
     private
 
     def library

@@ -201,25 +201,6 @@ RSpec.describe SearchworksItem do
       end
     end
 
-    describe '#library_instructions' do
-      let(:item) { build(:green_stacks_searchworks_item) }
-
-      describe 'when not present' do
-        it 'is nil' do
-          expect(subject.library_instructions).to be_nil
-        end
-      end
-
-      describe 'when present in the SearchWorks API response' do
-        let(:item) { build(:library_instructions_searchworks_item) }
-
-        it 'returns the library instructions from the API response' do
-          expect(subject.library_instructions[:heading]).to eq 'Instruction Heading'
-          expect(subject.library_instructions[:text]).to eq 'This is the library instruction'
-        end
-      end
-    end
-
     describe '#by_barcode' do
       let(:item) { build(:green_stacks_multi_holdings_searchworks_item) }
 
