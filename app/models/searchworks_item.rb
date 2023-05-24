@@ -43,7 +43,7 @@ class SearchworksItem
   end
 
   def requested_holdings
-    @requested_holdings ||= RequestedHoldings.new(self)
+    @requested_holdings ||= RequestedHoldings.new(request, holdings)
   end
 
   def finding_aid?
@@ -89,8 +89,11 @@ class SearchworksItem
   #  holdings to just what was requested by the user
   ###
   class RequestedHoldings
-    def initialize(searchworks_item)
-      @searchworks_item = searchworks_item
+    # @param [Request] request the users request
+    # @param [Array<#code>] holdings all of the holdings for the requested item
+    def initialize(request, holdings)
+      @request = request
+      @holdings = holdings
     end
 
     def where(barcodes: [])
@@ -105,7 +108,7 @@ class SearchworksItem
       return [] unless location.present?
 
       location.items.map do |item|
-        item.request_status = @searchworks_item.request.item_status(item.barcode)
+        item.request_status = @request.item_status(item.barcode)
         item
       end
     end
@@ -122,10 +125,10 @@ class SearchworksItem
     private
 
     def library
-      return unless @searchworks_item.holdings.present?
+      return unless @holdings.present?
 
-      @searchworks_item.holdings.find do |library|
-        library.code == @searchworks_item.request.origin
+      @holdings.find do |library|
+        library.code == @request.origin
       end
     end
 
@@ -133,7 +136,7 @@ class SearchworksItem
       return unless library.present?
 
       library.locations.find do |location|
-        location.code == @searchworks_item.request.origin_location
+        location.code == @request.origin_location
       end
     end
   end
