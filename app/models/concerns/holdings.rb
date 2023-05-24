@@ -18,10 +18,12 @@ module Holdings
     end
   end
 
+  # @return [Array<OpenStruct>] a list of every holding in the requested library/location
   def all_holdings
     holdings_object.all
   end
 
+  # @return [Array<OpenStruct>] a list of every holding in the requested library/location with the requested barcodes
   def requested_holdings
     holdings_object.where(barcodes: Array(requested_barcode || barcodes))
   end

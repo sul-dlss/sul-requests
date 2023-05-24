@@ -93,6 +93,7 @@ class SearchworksItem
       @searchworks_item = searchworks_item
     end
 
+    # @return [Array<OpenStruct>] a list of every holding in the requested library/location with the given barcodes
     def where(barcodes: [])
       return [] if barcodes.empty?
 
@@ -101,6 +102,7 @@ class SearchworksItem
       end
     end
 
+    # @return [Array<OpenStruct>] a list of every holding in the requested library/location
     def all
       return [] unless location.present?
 
