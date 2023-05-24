@@ -2,9 +2,10 @@
 
 require 'rails_helper'
 
-describe SearchworksItem do
+RSpec.describe SearchworksItem do
+  subject { described_class.new(request) }
+
   let(:request) { create(:request, item_id: '123') }
-  let(:subject) { described_class.new(request) }
 
   describe 'api urls' do
     it 'returns the base uri from the settings.yml file' do
@@ -132,7 +133,7 @@ describe SearchworksItem do
   end
 
   describe SearchworksItem::RequestedHoldings do
-    subject(:requested_holdings) { described_class.new(item) }
+    subject(:requested_holdings) { described_class.new(item.request, item.holdings) }
 
     describe 'in the searchworks item' do
       subject { build(:green_stacks_searchworks_item) }
@@ -172,7 +173,7 @@ describe SearchworksItem do
     end
 
     describe 'single_checked_out_item?' do
-      let(:item) { double('item') }
+      subject(:requested_holdings) { described_class.new(instance_double(Request), instance_double(Array)) }
 
       describe 'when the holdings include a single checked out item' do
         before do
@@ -183,9 +184,7 @@ describe SearchworksItem do
           )
         end
 
-        it 'returns true' do
-          expect(subject).to be_single_checked_out_item
-        end
+        it { is_expected.to be_single_checked_out_item }
       end
 
       describe 'when the holdings includes multiple items' do
@@ -198,9 +197,7 @@ describe SearchworksItem do
           )
         end
 
-        it 'returns false' do
-          expect(subject).not_to be_single_checked_out_item
-        end
+        it { is_expected.not_to be_single_checked_out_item }
       end
     end
 
