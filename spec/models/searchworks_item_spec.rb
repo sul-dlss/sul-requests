@@ -132,10 +132,10 @@ describe SearchworksItem do
   end
 
   describe SearchworksItem::RequestedHoldings do
-    let(:subject) { described_class.new(item) }
+    subject(:requested_holdings) { described_class.new(item) }
 
     describe 'in the searchworks item' do
-      let(:subject) { build(:green_stacks_searchworks_item) }
+      subject { build(:green_stacks_searchworks_item) }
 
       it 'return a SearchworksItem::RequestedHoldings object' do
         expect(subject.requested_holdings).to be_a described_class
@@ -242,26 +242,34 @@ describe SearchworksItem do
       end
     end
 
-    describe 'by_barcode' do
+    describe '#by_barcode' do
       let(:item) { build(:green_stacks_multi_holdings_searchworks_item) }
 
-      it 'returns the items given an array of barcodes' do
-        by_barcodes = subject.where(barcodes: %w(3610512345678 3610587654321))
-        expect(by_barcodes).to be_a Array
-        expect(by_barcodes.length).to eq 2
-        expect(by_barcodes.first.barcode).to eq '3610512345678'
-        expect(by_barcodes.last.barcode).to eq '3610587654321'
+      context 'when given an array of barcodes' do
+        subject(:by_barcodes) { requested_holdings.where(barcodes: %w(3610512345678 3610587654321)) }
+
+        it 'returns the items' do
+          expect(by_barcodes).to be_a Array
+          expect(by_barcodes.length).to eq 2
+          expect(by_barcodes.first.barcode).to eq '3610512345678'
+          expect(by_barcodes.last.barcode).to eq '3610587654321'
+        end
       end
 
-      it 'returns the item given a single barcode' do
-        by_barcodes = subject.where(barcodes: '12345679')
-        expect(by_barcodes).to be_a Array
-        expect(by_barcodes.length).to eq 1
-        expect(by_barcodes.first.barcode).to eq '12345679'
+      context 'when given a single barcode' do
+        subject(:by_barcodes) { requested_holdings.where(barcodes: ['12345679']) }
+
+        it 'returns the items' do
+          expect(by_barcodes).to be_a Array
+          expect(by_barcodes.length).to eq 1
+          expect(by_barcodes.first.barcode).to eq '12345679'
+        end
       end
 
-      it 'returns an empty array if the given barcode does not exist' do
-        expect(subject.where(barcodes: 'not-a-barcode')).to eq([])
+      context 'when the given barcode does not exist' do
+        subject(:by_barcodes) { requested_holdings.where(barcodes: ['not-a-barcode']) }
+
+        it { is_expected.to be_empty }
       end
     end
   end

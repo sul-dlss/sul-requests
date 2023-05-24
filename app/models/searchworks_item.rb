@@ -94,9 +94,8 @@ class SearchworksItem
     end
 
     def where(barcodes: [])
-      raise ArgumentError unless barcodes.present?
+      return [] if barcodes.empty?
 
-      barcodes = Array(barcodes)
       all.select do |item|
         barcodes.include?(item.barcode)
       end

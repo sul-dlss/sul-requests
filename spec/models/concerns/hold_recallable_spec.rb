@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'HoldRecallable' do
+RSpec.describe 'HoldRecallable' do
   subject(:request) { build(:request) }
 
   describe '#HoldRecallable?' do
@@ -79,20 +79,24 @@ describe 'HoldRecallable' do
     end
 
     context 'when CHECKEDOUT' do
-      it 'is true when there is a single checked out item' do
-        allow(request).to receive_messages(
-          holdings_object: double('holdings_object', single_checked_out_item?: true, all: [])
-        )
-
-        expect(request).to be_hold_recallable
+      let(:holdings_object) do
+        instance_double(SearchworksItem::RequestedHoldings, single_checked_out_item?: single_checked_out, all: [], where: [])
       end
 
-      it 'is false when there is are multiple items' do
-        allow(request).to receive_messages(
-          holdings_object: double('holdings_object', single_checked_out_item?: false, all: [])
-        )
+      before do
+        allow(request).to receive(:holdings_object).and_return(holdings_object)
+      end
 
-        expect(request).not_to be_hold_recallable
+      context 'when there is a single checked out item' do
+        let(:single_checked_out) { true }
+
+        it { is_expected.to be_hold_recallable }
+      end
+
+      context 'when there is are multiple items' do
+        let(:single_checked_out) { false }
+
+        it { is_expected.not_to be_hold_recallable }
       end
     end
   end
