@@ -16,7 +16,6 @@ RSpec.describe 'Mark As Complete', js: true do
         :mediated_page_with_holdings,
         user: create(:non_sso_user, name: 'Jim Doe ', email: 'jimdoe@example.com'),
         barcodes: %w(34567890),
-        ad_hoc_items: ['ABC 123'],
         created_at: 1.day.from_now
       )
     end
@@ -73,7 +72,6 @@ RSpec.describe 'Mark As Complete', js: true do
         user: create(:non_sso_user, name: 'Jim Doe ', email: 'jimdoe@example.com'),
         barcodes: %w(34567890),
         approval_status: :marked_as_done,
-        ad_hoc_items: ['ABC 123'],
         created_at: 1.day.from_now
       )
     end

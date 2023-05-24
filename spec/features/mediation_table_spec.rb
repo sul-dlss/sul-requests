@@ -30,7 +30,6 @@ describe 'Mediation table', js: true do
         :mediated_page_with_holdings,
         user: create(:non_sso_user, name: 'Jim Doe ', email: 'jimdoe@example.com'),
         barcodes: %w(34567890),
-        ad_hoc_items: ['ABC 123'],
         created_at: 1.day.from_now,
         needed_date: Time.zone.now
       )
@@ -69,7 +68,6 @@ describe 'Mediation table', js: true do
         :mediated_page_with_holdings,
         user: create(:non_sso_user, name: 'Eve Doe ', email: 'evedoe@example.com'),
         barcodes: %w(34567890),
-        ad_hoc_items: ['ABC 123'],
         created_at: 2.days.ago,
         needed_date: nil,
         approval_status: MediatedPage.approval_statuses['approved']

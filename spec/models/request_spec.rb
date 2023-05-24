@@ -142,75 +142,6 @@ describe Request do
     end
   end
 
-  describe 'commentable' do
-    it 'mixin should be included' do
-      expect(subject).to be_kind_of Commentable
-    end
-
-    describe 'item_commentable?' do
-      describe 'with holdings' do
-        before do
-          allow(subject).to receive_messages(holdings: [{}])
-          allow(subject).to receive_messages(holdings_object: double('mhld', mhld: [{}]))
-        end
-
-        it 'is true when the library is SAL-NEWARK or SPEC-COLL' do
-          subject.origin = 'SAL-NEWARK'
-          expect(subject).to be_item_commentable
-
-          subject.origin = 'SPEC-COLL'
-          expect(subject).to be_item_commentable
-        end
-
-        it 'is false when the library is not SAL-NEWARK or SPEC-COLL' do
-          subject.origin = 'GREEN'
-          expect(subject).not_to be_item_commentable
-        end
-      end
-
-      describe 'without holdings' do
-        before do
-          allow(subject).to receive_messages(holdings: [{}])
-          allow(subject).to receive_messages(holdings_object: double('mhld', mhld: nil))
-        end
-
-        it 'is false when the library is SAL-NEWARK or SPEC-COLL' do
-          subject.origin = 'SAL-NEWARK'
-          expect(subject).not_to be_item_commentable
-
-          subject.origin = 'SPEC-COLL'
-          expect(subject).not_to be_item_commentable
-        end
-      end
-    end
-
-    describe 'ad_hoc_item_commentable?' do
-      context 'when no libraries are configured' do
-        it 'is false' do
-          expect(subject).not_to be_ad_hoc_item_commentable
-        end
-      end
-
-      context 'when a library is configured' do
-        before do
-          without_partial_double_verification do
-            allow(Settings.pageable.find { |x| x.library == 'SAL-NEWARK' }).to receive(:ad_hoc_item_commentable).and_return(true)
-          end
-        end
-
-        it 'is true for that library' do
-          subject.origin = 'SAL-NEWARK'
-          expect(subject).to be_ad_hoc_item_commentable
-        end
-
-        it 'is false for other libraries' do
-          subject.origin = 'NOT-SAL-NEWARK'
-          expect(subject).not_to be_ad_hoc_item_commentable
-        end
-      end
-    end
-  end
-
   describe 'requestable' do
     it { is_expected.not_to be_requestable_with_name_email }
     it { is_expected.not_to be_requestable_with_library_id }
@@ -314,11 +245,6 @@ describe Request do
     it 'is 5 for items from RUMSEYMAP' do
       subject.origin = 'RUMSEYMAP'
       expect(subject.item_limit).to eq 5
-    end
-
-    it 'is 20 for items from HV-ARCHIVE' do
-      subject.origin = 'HV-ARCHIVE'
-      expect(subject.item_limit).to eq 20
     end
 
     it 'is 5 for items from the PAGE-SP location' do

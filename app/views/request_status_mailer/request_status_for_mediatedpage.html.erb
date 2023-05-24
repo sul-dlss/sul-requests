@@ -12,9 +12,6 @@
       <% @request.holdings.map(&:callnumber).each do |callnumber| %>
         <li><%= callnumber %></li>
       <% end %>
-      <% @request.ad_hoc_items.each do |ad_hoc_item| %>
-        <li><%= ad_hoc_item %></li>
-      <% end if @request.ad_hoc_items.present? %>
     </ul>
 
     <p>

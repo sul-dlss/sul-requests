@@ -23,7 +23,6 @@ module RequestStrongParams
                                                        :proxy,
                                                        barcodes: {},
                                                        public_notes: {},
-                                                       ad_hoc_items: [],
                                                        user_attributes: [:name, :email, :library_id])
   end
 

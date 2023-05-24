@@ -49,30 +49,5 @@
         </td>
       </tr>
     <% end %>
-
-    <% @request.ad_hoc_items.each do |item| %>
-    <% ad_hoc_item_status = request_status_for_ad_hoc_item(@request, item) %>
-      <tr class='<%= cycle('odd', 'even') %> <%= 'approved' if ad_hoc_item_status.approved? %>'>
-        <td class='col-xs-1'>
-          <button class="approval-btn btn btn-xs btn-success" data-behavior="item-approval" data-item-approval-url="<%= approve_item_admin_path(@request, item: item) %>">
-            <% if ad_hoc_item_status.approved? %>
-              Approved
-            <% else %>
-              Approve
-            <% end %>
-          </button>
-        </td>
-        <td class='col-xs-2'></td>
-        <td class='col-xs-2'></td>
-        <td><%= item %></td>
-        <td><span class='request-status'><%= status_text_for_item(item) %></span></td>
-        <td data-behavior='approver-information'>
-          <% if ad_hoc_item_status.approved? %>
-            <%= ad_hoc_item_status.approver %> -
-            <%= ad_hoc_item_status.approval_time %>
-          <% end %>
-        </td>
-      </tr>
-    <% end if @request.ad_hoc_items.present? %>
   </tbody>
 </table>

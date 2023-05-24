@@ -520,8 +520,6 @@ pageable:
       - ^EAL-SETS$
       - ^EAL-STKS-
     default_pickup_library: EAST-ASIA
-  - library: SAL-NEWARK
-    item_commentable: true
   - library: SAL3
   - library: SAL
   - library: EDUCATION

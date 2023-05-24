@@ -5,15 +5,9 @@
 
   <%= render partial: 'application/item_selector', locals: { f: f } %>
 
-  <%= render partial: 'shared/item_comment', locals: { f: f } %>
-
   <%= render partial: 'form_additional', locals: { f: f } %>
 
   <%= render partial: 'destination_and_needed_date', locals: { f: f } %>
-
-  <% if current_request.request_commentable? %>
-    <%= f.text_area :request_comment, rows: 3 %>
-  <% end %>
 
   <%= render partial: 'submit_request_buttons', locals: { f: f } %>
 <% end %>

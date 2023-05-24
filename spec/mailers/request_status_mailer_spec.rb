@@ -117,7 +117,7 @@ describe RequestStatusMailer do
       end
 
       describe 'body' do
-        let(:request) { create(:page_with_holdings, barcodes: ['3610512345678'], ad_hoc_items: ['ZZZ 123'], user: user) }
+        let(:request) { create(:page_with_holdings, barcodes: ['3610512345678'], user: user) }
         let(:body) { mail.body.to_s }
 
         it 'has the title' do
@@ -129,13 +129,9 @@ describe RequestStatusMailer do
           expect(body).to include('ABC 123')
         end
 
-        it 'has ad hoc items' do
-          expect(body).to include('ZZZ 123')
-        end
-
         context 'for a mediated page' do
           let(:request) do
-            create(:mediated_page_with_holdings, barcodes: ['12345678'], ad_hoc_items: ['ZZZ 123'], user: user)
+            create(:mediated_page_with_holdings, barcodes: ['12345678'], user: user)
           end
 
           it 'has a planned date of visit' do

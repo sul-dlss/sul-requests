@@ -12,12 +12,8 @@ module RequestsHelper
      )
   end
 
-  def request_status_for_ad_hoc_item(request, item)
-    request.item_status(item)
-  end
-
   def status_text_for_item(item)
-    ad_hoc_item_status(item) || status_text_for_errored_item(item) || i18n_status_text(item)
+    status_text_for_errored_item(item) || i18n_status_text(item)
   end
 
   def i18n_location_title_key
@@ -79,12 +75,6 @@ module RequestsHelper
   end
 
   private
-
-  def ad_hoc_item_status(item)
-    return unless item.is_a?(String)
-
-    t('status_text.unlisted')
-  end
 
   def i18n_status_text(item)
     case

@@ -4,7 +4,6 @@ On <%= l @request.created_at, format: :short %>, <%= @request.user.to_email_stri
 
 Item(s) requested:
   <%= @request.holdings.map(&:callnumber).join("\n  ") %>
-  <%= @request.ad_hoc_items.join("\n  ") if @request.ad_hoc_items.present? %>
 
 <%= @request.data_to_email_s %>
 

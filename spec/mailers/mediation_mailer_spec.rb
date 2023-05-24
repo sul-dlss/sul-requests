@@ -41,7 +41,7 @@ describe MediationMailer do
 
     describe 'body' do
       let(:request) do
-        create(:mediated_page_with_holdings, barcodes: ['12345678'], ad_hoc_items: ['ZZZ 123'], user: user)
+        create(:mediated_page_with_holdings, barcodes: ['12345678'], user: user)
       end
 
       let(:body) { mail.body.to_s }
@@ -58,10 +58,6 @@ describe MediationMailer do
       it 'has holdings information' do
         expect(body).to include('Item(s) requested:')
         expect(body).to include('ABC 123')
-      end
-
-      it 'has ad hoc items' do
-        expect(body).to include('ZZZ 123')
       end
 
       it 'has a planned date of visit' do

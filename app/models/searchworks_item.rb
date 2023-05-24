@@ -110,12 +110,6 @@ class SearchworksItem
       end
     end
 
-    def barcoded_holdings
-      @barcoded_holdings ||= all.select do |item|
-        item.barcode.match(barcode_pattern)
-      end
-    end
-
     def single_checked_out_item?
       all.one? &&
         all.first.current_location.try(:code) == 'CHECKEDOUT'
@@ -132,10 +126,6 @@ class SearchworksItem
     end
 
     private
-
-    def barcode_pattern
-      /^36105/
-    end
 
     def library
       return unless @searchworks_item.holdings.present?

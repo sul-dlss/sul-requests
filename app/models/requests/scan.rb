@@ -11,10 +11,6 @@ class Scan < Request
     1
   end
 
-  def item_commentable?
-    false
-  end
-
   def destination
     'SCAN'
   end

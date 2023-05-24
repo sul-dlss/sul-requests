@@ -5,7 +5,6 @@
 module DefaultRequestOptions
   extend ActiveSupport::Concern
   ITEM_LIMITS = {
-    'HV-ARCHIVE' => 20,
     'RUMSEYMAP' => 5,
     'SPEC-COLL' => 5,
     'PAGE-SP' => 5

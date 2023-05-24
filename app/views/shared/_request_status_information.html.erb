@@ -6,13 +6,6 @@
     <% end  %>
   <% end %>
 
-  <% if current_request.ad_hoc_items.present? %>
-    <dt><%= current_request.class.human_attribute_name(:ad_hoc_items) %></dt>
-    <% current_request.ad_hoc_items.each do |item| %>
-      <dd><%= item %></dd>
-    <% end %>
-  <% end %>
-
   <% destination_name = LibraryLocation.library_name_by_code(current_request.destination) %>
   <% if destination_name.present? %>
     <dt>
@@ -28,12 +21,12 @@
     <dd><%= current_request.estimated_delivery %></dd>
   <% end %>
 
-  <% if current_request.item_commentable? && current_request.item_comment.present? %>
+  <% if current_request.item_comment.present? %>
     <dt><%= current_request.class.human_attribute_name(:item_comment) %></dt>
     <dd><%= current_request.item_comment %></dd>
   <% end %>
 
-  <% if current_request.request_commentable? && current_request.request_comment.present? %>
+  <% if current_request.request_comment.present? %>
     <dt><%= current_request.class.human_attribute_name(:request_comment) %></dt>
     <dd><%= current_request.request_comment %></dd>
   <% end %>

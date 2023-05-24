@@ -42,12 +42,6 @@ describe Scan do
     end
   end
 
-  describe 'item_commentable?' do
-    it 'is false' do
-      expect(subject).not_to be_item_commentable
-    end
-  end
-
   describe '#submit!' do
     it 'submits the request to ILLIAD' do
       expect(SubmitScanRequestJob).to receive(:perform_later)

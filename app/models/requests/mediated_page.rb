@@ -24,10 +24,6 @@ class MediatedPage < Request
     super << user.email
   end
 
-  def request_commentable?
-    commentable_libraries.include?(origin)
-  end
-
   def requires_needed_date?
     return false if origin_location == 'PAGE-MP'
 
@@ -49,10 +45,6 @@ class MediatedPage < Request
 
     (barcodes || []).each do |item|
       yield item_status(item)
-    end
-
-    (ad_hoc_items || []).each do |item|
-      yield item_status(item, ad_hoc: true)
     end
   end
 
@@ -93,10 +85,6 @@ class MediatedPage < Request
 
   def needed_date_is_required
     errors.add(:needed_date, "can't be blank") if needed_date.blank? && requires_needed_date?
-  end
-
-  def commentable_libraries
-    %w(SPEC-COLL)
   end
 
   def mediated_page_validator
