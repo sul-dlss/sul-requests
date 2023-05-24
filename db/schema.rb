@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_04_195859) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_24_160954) do
   create_table "admin_comments", force: :cascade do |t|
     t.string "commenter"
     t.string "comment"
@@ -60,7 +60,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_04_195859) do
     t.string "student_type"
     t.index ["email"], name: "index_users_on_email"
     t.index ["library_id"], name: "index_users_on_library_id"
-    t.index ["sunetid"], name: "index_users_on_sunetid"
+    t.index ["sunetid"], name: "unique_users_by_sunetid", unique: true
   end
 
 end
