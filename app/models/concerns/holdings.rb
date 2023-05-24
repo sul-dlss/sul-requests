@@ -23,8 +23,6 @@ module Holdings
   end
 
   def requested_holdings
-    return [] unless requested_barcode.present? || barcodes.present?
-
-    holdings_object.where(barcodes: requested_barcode || barcodes)
+    holdings_object.where(barcodes: Array(requested_barcode || barcodes))
   end
 end
