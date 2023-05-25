@@ -2,45 +2,85 @@
 
 FactoryBot.define do
   factory :multiple_holdings, class: 'Hash' do
-    title { 'Item Title' }
+    if (Settings.bib_model == 'SearchworksItem')
+      title { 'Item Title' }
 
-    format { ['Book'] }
+      format { ['Book'] }
 
-    holdings do
-      [
-        { 'code' => 'GREEN',
-          'locations' => [
-            { 'code' => 'STACKS',
-              'items' => [
-                { 'barcode' => '3610512345678',
-                  'callnumber' => 'ABC 123',
-                  'type' => 'STKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
+      holdings do
+        [
+          { 'code' => 'GREEN',
+            'locations' => [
+              { 'code' => 'STACKS',
+                'items' => [
+                  { 'barcode' => '3610512345678',
+                    'callnumber' => 'ABC 123',
+                    'type' => 'STKS',
+                    'status' => {
+                      'availability_class' => 'available',
+                      'status_text' => 'Available'
+                    }
+                  },
+                  { 'barcode' => '3610587654321',
+                    'callnumber' => 'ABC 321',
+                    'type' => 'STKS',
+                    'status' => {
+                      'availability_class' => 'available',
+                      'status_text' => 'Available'
+                    }
+                  },
+                  { 'barcode' => '12345679',
+                    'callnumber' => 'ABC 456',
+                    'type' => 'STKS',
+                    'status' => {
+                      'availability_class' => 'available',
+                      'status_text' => 'Available'
+                    }
                   }
-                },
-                { 'barcode' => '3610587654321',
-                  'callnumber' => 'ABC 321',
-                  'type' => 'STKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
+                ]
+              }
+            ]
+          }
+        ]
+      end
+    else
+      indexTitle { 'bob' }
+      holdings do
+        [
+          { 'code' => 'GREEN',
+            'locations' => [
+              { 'code' => 'STACKS',
+                'items' => [
+                  { 'barcode' => '3610512345678',
+                    'callnumber' => 'ABC 123',
+                    'type' => 'STKS',
+                    'status' => {
+                      'availability_class' => 'available',
+                      'status_text' => 'Available'
+                    }
+                  },
+                  { 'barcode' => '3610587654321',
+                    'callnumber' => 'ABC 321',
+                    'type' => 'STKS',
+                    'status' => {
+                      'availability_class' => 'available',
+                      'status_text' => 'Available'
+                    }
+                  },
+                  { 'barcode' => '12345679',
+                    'callnumber' => 'ABC 456',
+                    'type' => 'STKS',
+                    'status' => {
+                      'availability_class' => 'available',
+                      'status_text' => 'Available'
+                    }
                   }
-                },
-                { 'barcode' => '12345679',
-                  'callnumber' => 'ABC 456',
-                  'type' => 'STKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                }
-              ]
-            }
-          ]
-        }
-      ]
+                ]
+              }
+            ]
+          }
+        ]
+      end
     end
 
     initialize_with do

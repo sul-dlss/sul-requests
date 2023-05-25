@@ -43,13 +43,11 @@ module Folio
     end
 
     def holdings
-      return [] if json['holdings'].blank?
-
-      @holdings ||= JSON.parse(json['holdings'].to_json)
+      json['holdings']
     end
 
     def requested_holdings
-      @requested_holdings ||= RequestedHoldings.new(self)
+      @requested_holdings ||= RequestedHoldings.new(request, holdings)
     end
 
     def finding_aid?
@@ -64,8 +62,11 @@ module Folio
 
     # Stub class for holdings. To be completed before done.
     class RequestedHoldings
-      def initialize(bib_data)
-        @bib_data = bib_data
+      # @param [Request] request the users request
+      # @param [Array<#code>] holdings all of the holdings for the requested item
+      def initialize(request, holdings)
+        @request = request
+        @holdings = holdings
       end
 
       def where(*)
@@ -73,6 +74,7 @@ module Folio
       end
 
       def all
+        debugger
         []
       end
 

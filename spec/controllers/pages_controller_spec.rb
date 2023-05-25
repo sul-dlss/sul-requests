@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe PagesController do
+RSpec.describe PagesController do
   let(:page) { create(:page) }
   let(:normal_params) do
     { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
@@ -183,6 +183,8 @@ describe PagesController do
 
       it 'maps checkbox style barcodes correctly' do
         stub_searchworks_api_json(build(:multiple_holdings))
+        stub_folio_api(build(:multiple_holdings))
+
         put :create, params: {
           request: {
             item_id: '1234',
