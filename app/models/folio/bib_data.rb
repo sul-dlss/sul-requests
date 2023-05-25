@@ -85,7 +85,8 @@ module Folio
 
     def json
       hrid = "a#{request.item_id}"
-      folio_client.find_instance(hrid: hrid)
+      instane_id = folio_client.resolve_to_instance_id(hrid: hrid)
+      folio_client.find_instance(instance_id: instance_id)
     end
 
     def folio_client

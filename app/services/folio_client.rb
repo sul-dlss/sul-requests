@@ -113,7 +113,7 @@ class FolioClient
     search_response.dig('instances', 0, 'id')
   end
 
-  def find_instance(instance_id)
+  def find_instance(instance_id:)
     get_json("/inventory/instances/#{instance_id}")
   end
 
