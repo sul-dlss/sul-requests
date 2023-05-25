@@ -117,6 +117,10 @@ def stub_searchworks_api_json(json)
   allow_any_instance_of(SearchworksItem).to receive(:json).and_return(json)
 end
 
+def stub_folio_api(json)
+  allow_any_instance_of(FolioClient).to receive(:find_instance).and_return(json)
+end
+
 def stub_symphony_response(response)
   allow_any_instance_of(Request).to receive(:symphony_response_data).and_return(response)
 end
