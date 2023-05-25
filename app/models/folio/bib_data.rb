@@ -68,10 +68,16 @@ module Folio
         @bib_data = bib_data
       end
 
-      def where(*); end
+      def where(*)
+        []
+      end
 
       def all
         []
+      end
+
+      def single_checked_out_item?
+        false
       end
     end
 
