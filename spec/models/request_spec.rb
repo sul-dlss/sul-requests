@@ -159,6 +159,14 @@ RSpec.describe Request do
     it { is_expected.to be_a SearchworksItem }
   end
 
+  describe '#holdings_object' do
+    subject { request.holdings_object }
+
+    let(:request) { described_class.new }
+
+    it { is_expected.to be_a Searchworks::Holdings }
+  end
+
   describe '#holdings' do
     describe 'when persisted' do
       let(:subject) { create(:request_with_multiple_holdings, barcodes: ['3610512345678']) }

@@ -80,7 +80,7 @@ RSpec.describe 'HoldRecallable' do
 
     context 'when CHECKEDOUT' do
       let(:holdings_object) do
-        instance_double(SearchworksItem::RequestedHoldings, single_checked_out_item?: single_checked_out, all: [], where: [])
+        instance_double(Searchworks::Holdings, single_checked_out_item?: single_checked_out, all: [], where: [])
       end
 
       before do
