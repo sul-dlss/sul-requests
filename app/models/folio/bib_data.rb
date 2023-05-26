@@ -54,14 +54,14 @@ module Folio
       [Settings.searchworks_api, 'view', request.item_id].join('/')
     end
 
+    def instance_id
+      @instance ||= folio_client.resolve_to_instance_id(hrid: "a#{request.item_id}")
+    end
+    
     private
 
     def json
       @json = folio_client.find_instance(instance_id: instance_id)
-    end
-
-    def instance_id
-      @instance ||= folio_client.resolve_to_instance_id(hrid: "a#{request.item_id}")
     end
 
     def folio_client

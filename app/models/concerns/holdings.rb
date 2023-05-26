@@ -6,8 +6,7 @@
 module Holdings
   def holdings_object
     @holdings_object ||= if bib_data.is_a? Folio::BibData
-      debugger
-                           Folio::Holdings.new(self, bib_data.holdings)
+                           Folio::Holdings.new(self, bib_data.instance_id)
                          else
                            Searchworks::Holdings.new(self, bib_data.holdings)
                          end

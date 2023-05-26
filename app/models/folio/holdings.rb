@@ -6,10 +6,10 @@ module Folio
   ###
   class Holdings
     # @param [Request] request the users request
-    # @param [Array<#code>] holdings all of the holdings for the requested item
-    def initialize(request, holdings)
+    # @param [String] instance_id the FOLIO instance_id (a UUID)
+    def initialize(request, instance_id)
       @request = request
-      @holdings = holdings
+      @instance_id = instance_id
     end
 
     # @return [Array<OpenStruct>] a list of every holding in the requested library/location with the given barcodes
@@ -25,7 +25,7 @@ module Folio
     def all
       return [] if location.blank?
 
-      location.items.map do |item|
+      items_in_location.map do |item|
         item.request_status = @request.item_status(item.barcode)
         item
       end
@@ -37,20 +37,41 @@ module Folio
 
     private
 
-    def library
-      return if @holdings.blank?
-
-      @holdings.find do |library|
-        library.code == @request.origin
-      end
+    def items_and_holdings
+      debugger
+      @items_and_holdings ||= folio_client.items_and_holdings(instance_id: @instance_id)
     end
 
-    def location
-      return if library.blank?
-
-      library.locations.find do |location|
-        location.code == @request.origin_location
-      end
+    def folio_client
+      FolioClient.new
     end
+
+    def holdings
+      items_and_holdings.fetch('holdings')
+    end
+
+    def folio_location_code
+      @folio_location_code ||= (@request.origin[0,3],@request.origin_location).join('-')
+    end
+
+    def items_in_location
+    end
+
+    # def library
+    #   return if holdings.blank?
+    #   debugger
+    #   holdings.find do |library|
+    #     library.code == @request.origin
+    #   end
+    # end
+
+    # def location
+    #   return if library.blank?
+    #   debugger
+
+    #   library.locations.find do |location|
+    #     location.code == @request.origin_location
+    #   end
+    # end
   end
 end
