@@ -84,6 +84,14 @@ class FolioClient
     parse_json(response)
   end
 
+  def items_and_holdings(instance_id:)
+    body = {
+      instanceIds: [instance_id],
+      skipSuppressedFromDiscoveryRecords: false
+    }
+    get_json('/inventory-hierarchy/items-and-holdings', method: :post, json: body)
+  end
+
   def get_item(barcode)
     response = get_json('/item-storage/items', params: { query: CqlQuery.new(barcode: barcode).to_query })
 
