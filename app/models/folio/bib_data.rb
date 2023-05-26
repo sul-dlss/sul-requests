@@ -55,9 +55,9 @@ module Folio
     end
 
     def instance_id
-      @instance ||= folio_client.resolve_to_instance_id(hrid: "a#{request.item_id}")
+      @instance_id ||= folio_client.resolve_to_instance_id(hrid: "a#{request.item_id}")
     end
-    
+
     private
 
     def json
