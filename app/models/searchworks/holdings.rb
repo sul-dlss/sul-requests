@@ -6,7 +6,7 @@ module Searchworks
   ###
   class Holdings
     # @param [Request] request the users request
-    # @param [Array<#code>] holdings all of the holdings for the requested item
+    # @param [Array<Searchworks::Holding>] holdings all of the holdings for the requested item
     def initialize(request, holdings)
       @request = request
       @holdings = holdings
@@ -32,8 +32,7 @@ module Searchworks
     end
 
     def single_checked_out_item?
-      all.one? &&
-        all.first.current_location.try(:code) == 'CHECKEDOUT'
+      all.one? && all.first.checked_out?
     end
 
     private

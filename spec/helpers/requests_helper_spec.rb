@@ -87,40 +87,32 @@ describe RequestsHelper do
 
   describe 'status_text_for_item' do
     let(:other_item) do
-      double(
-        'holding',
-        home_location: 'STACKS',
-        current_location: nil,
-        request_status: double(errored?: false)
-      )
+      instance_double(Searchworks::HoldingItem,
+                      hold?: false,
+                      paged?: false,
+                      home_location: 'STACKS',
+                      request_status: double(errored?: false))
     end
     let(:home_location_30) do
-      double(
-        'holding',
-        home_location: 'PAGE-30',
-        current_location: nil,
-        request_status: double(errored?: false)
-      )
+      instance_double(Searchworks::HoldingItem,
+                      hold?: false,
+                      paged?: true,
+                      request_status: double(errored?: false))
     end
     let(:current_location_loan) do
-      double(
-        'holding',
-        home_location: 'MSS-30',
-        current_location: double('location', code: 'GREEN-LOAN'),
-        request_status: double(errored?: false)
-      )
+      instance_double(Searchworks::HoldingItem,
+                      hold?: true,
+                      request_status: double(errored?: false))
     end
 
     context 'from symphony' do
       let(:error_item) do
-        double(
-          'error-item',
-          request_status: double(
-            'status',
-            errored?: true,
-            user_error_text: 'User is blocked'
-          )
-        )
+        instance_double(Searchworks::HoldingItem,
+                        request_status: double(
+                          'status',
+                          errored?: true,
+                          user_error_text: 'User is blocked'
+                        ))
       end
 
       it 'returns the request status text if the item errored' do
@@ -151,7 +143,7 @@ describe RequestsHelper do
     it 'returns the current location when present' do
       allow(current_request).to receive_messages(
         holdings: [
-          double('location', current_location: double('code', code: 'INPROCESS'))
+          instance_double(Searchworks::HoldingItem, current_location_code: 'INPROCESS')
         ]
       )
       expect(helper.i18n_location_title_key).to eq 'INPROCESS'
@@ -160,7 +152,7 @@ describe RequestsHelper do
     it 'falls back to the home location in the absense of a current location' do
       allow(current_request).to receive_messages(
         origin_location: 'ON-ORDER',
-        holdings: [double('location', current_location: double('code', code: ''))]
+        holdings: [instance_double(Searchworks::HoldingItem, current_location_code: '')]
       )
       expect(helper.i18n_location_title_key).to eq 'ON-ORDER'
     end
@@ -171,7 +163,8 @@ describe RequestsHelper do
 
     describe 'checked out items' do
       let(:holding) do
-        double('holding', current_location: double('location', code: 'CHECKEDOUT'), due_date: Time.zone.today)
+        instance_double(Searchworks::HoldingItem,
+                        checked_out?: true, due_date: Time.zone.today)
       end
 
       it 'includes the unavailable class' do
@@ -185,10 +178,10 @@ describe RequestsHelper do
 
     describe 'non checked out items' do
       let(:holding) do
-        double(
-          'holding',
-          current_location: nil,
-          status: double('status', availability_class: 'noncirc_page', status_text: 'In-library use only')
+        instance_double(
+          Searchworks::HoldingItem,
+          checked_out?: false,
+          status_class: 'noncirc_page', status_text: 'In-library use only'
         )
       end
 

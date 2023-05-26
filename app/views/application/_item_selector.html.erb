@@ -8,7 +8,7 @@
           <p class="form-control-static">
             <%= single_item.callnumber %>
           </p>
-          <% if (note = CurrentLocationNote.new(single_item.current_location.try(:code))).present? %>
+          <% if (note = CurrentLocationNote.new(single_item.current_location_code)).present? %>
             <p class="single-item-current-location-note">
               <%= note %>
             </p>
@@ -52,7 +52,7 @@
                   <% end %>
                 <% end %>
 
-                <% if (note = CurrentLocationNote.new(holding.current_location.try(:code))).present? %>
+                <% if (note = CurrentLocationNote.new(holding.current_location_code)).present? %>
                   <div data-behavior='current-location-note' class='current-location-note'>
                     <%= note %>
                   </div>
