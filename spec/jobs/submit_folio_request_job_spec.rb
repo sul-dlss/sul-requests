@@ -19,10 +19,7 @@ RSpec.describe SubmitFolioRequestJob do
 
     it 'calls the create_item_hold API method' do
       described_class.perform_now(request.id)
-      expect(client).to have_received(:create_item_hold).with(3, 4,
-                                                              { expiration_date: expected_date,
-                                                                patron_comments: nil,
-                                                                pickup_location_id: 5 })
+      expect(client).to have_received(:create_item_hold).with(3, 4, FolioClient::HoldRequest)
     end
   end
 end
