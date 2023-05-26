@@ -44,7 +44,7 @@ FactoryBot.define do
     end
 
     initialize_with do
-      attributes.transform_keys(&:to_s).to_h
+      attributes.stringify_keys
     end
   end
 
@@ -75,7 +75,7 @@ FactoryBot.define do
     end
 
     initialize_with do
-      attributes.transform_keys(&:to_s).to_h
+      attributes.stringify_keys
     end
   end
 
@@ -102,7 +102,7 @@ FactoryBot.define do
     end
 
     initialize_with do
-      attributes.transform_keys(&:to_s).to_h
+      attributes.stringify_keys
     end
   end
 
@@ -175,7 +175,7 @@ FactoryBot.define do
     end
 
     initialize_with do
-      attributes.transform_keys(&:to_s).to_h
+      attributes.stringify_keys
     end
   end
 
@@ -208,7 +208,7 @@ FactoryBot.define do
     end
 
     initialize_with do
-      attributes.transform_keys(&:to_s).to_h
+      attributes.stringify_keys
     end
   end
 
@@ -250,7 +250,7 @@ FactoryBot.define do
     end
 
     initialize_with do
-      attributes.transform_keys(&:to_s).to_h
+      attributes.stringify_keys
     end
   end
 
@@ -289,7 +289,7 @@ FactoryBot.define do
     end
 
     initialize_with do
-      attributes.transform_keys(&:to_s).to_h
+      attributes.stringify_keys
     end
   end
 
@@ -336,7 +336,7 @@ FactoryBot.define do
     end
 
     initialize_with do
-      attributes.transform_keys(&:to_s).to_h
+      attributes.stringify_keys
     end
   end
 
@@ -407,7 +407,7 @@ FactoryBot.define do
     end
 
     initialize_with do
-      attributes.transform_keys(&:to_s).to_h
+      attributes.stringify_keys
     end
   end
 
@@ -552,7 +552,7 @@ FactoryBot.define do
     end
 
     initialize_with do
-      attributes.transform_keys(&:to_s).to_h
+      attributes.stringify_keys
     end
   end
 
@@ -697,7 +697,7 @@ FactoryBot.define do
     end
 
     initialize_with do
-      attributes.transform_keys(&:to_s).to_h
+      attributes.stringify_keys
     end
   end
 
@@ -732,7 +732,7 @@ FactoryBot.define do
     end
 
     initialize_with do
-      attributes.transform_keys(&:to_s).to_h
+      attributes.stringify_keys
     end
   end
 
@@ -775,7 +775,7 @@ FactoryBot.define do
     end
 
     initialize_with do
-      attributes.transform_keys(&:to_s).to_h
+      attributes.stringify_keys
     end
   end
 end
