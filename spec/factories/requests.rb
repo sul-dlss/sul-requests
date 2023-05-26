@@ -23,8 +23,8 @@ FactoryBot.define do
 
     after(:build) do |request|
       class << request
-        def searchworks_item
-          @searchworks_item ||= FactoryBot.build(:green_stacks_searchworks_item, request: self)
+        def bib_data
+          @bib_data ||= FactoryBot.build(:green_stacks_searchworks_item, request: self)
         end
       end
     end
@@ -37,8 +37,8 @@ FactoryBot.define do
 
     after(:build) do |request|
       class << request
-        def searchworks_item
-          @searchworks_item ||= FactoryBot.build(:green_stacks_multi_holdings_searchworks_item, request: self)
+        def bib_data
+          @bib_data ||= FactoryBot.build(:green_stacks_multi_holdings_searchworks_item, request: self)
         end
       end
     end

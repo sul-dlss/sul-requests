@@ -49,7 +49,7 @@ class SubmitReshareRequestJob < ApplicationJob
   class ReshareVufindWrapper
     attr_reader :request
 
-    delegate :searchworks_item, to: :request
+    delegate :bib_data, to: :request
 
     # @param request [HoldRecall]
     # @param isbn [String]
@@ -92,7 +92,7 @@ class SubmitReshareRequestJob < ApplicationJob
     end
 
     def requested_isbn
-      Array(@isbn || searchworks_item&.isbn).first
+      Array(@isbn || bib_data&.isbn).first
     end
 
     def loanable_record

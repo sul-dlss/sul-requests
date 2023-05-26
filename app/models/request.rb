@@ -28,7 +28,7 @@ class Request < ActiveRecord::Base
   delegate :hold_recallable?, :mediateable?, :pageable?, :aeon_pageable?, :scannable?, :scannable_only?,
            :location_rule, :scannable_location_rule, :aeon_site, to: :request_abilities
 
-  delegate :finding_aid, :finding_aid?, to: :searchworks_item
+  delegate :finding_aid, :finding_aid?, to: :bib_data
 
   # Serialized data hash
   store :data, accessors: [
@@ -43,10 +43,10 @@ class Request < ActiveRecord::Base
   belongs_to :user, autosave: true, optional: true
   accepts_nested_attributes_for :user
 
-  class_attribute :searchworks_item_class, default: Settings.ils.bib_model&.constantize || SearchworksItem
+  class_attribute :bib_model_class, default: Settings.ils.bib_model&.constantize || SearchworksItem
 
   before_create do
-    self.item_title ||= searchworks_item.title
+    self.item_title ||= bib_data.title
   end
 
   def library_location
@@ -57,8 +57,9 @@ class Request < ActiveRecord::Base
     library_location.active_messages.for_type(Message.notification_type(self))
   end
 
-  def searchworks_item
-    @searchworks_item ||= searchworks_item_class.new(self, live_lookup)
+  # @returns the model class either sourced from SearchWorks or from Folio.
+  def bib_data
+    @bib_data ||= bib_model_class.new(self, live_lookup)
   end
 
   def send_approval_status!
@@ -78,7 +79,7 @@ class Request < ActiveRecord::Base
     if persisted?
       item_title
     else
-      searchworks_item.title
+      bib_data.title
     end
   end
 

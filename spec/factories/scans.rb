@@ -19,8 +19,8 @@ FactoryBot.define do
 
     after(:build) do |scan|
       class << scan
-        def searchworks_item
-          @searchworks_item ||= FactoryBot.build(:sal3_stacks_multi_holdings_searchworks_item, request: self)
+        def bib_data
+          @bib_data ||= FactoryBot.build(:sal3_stacks_multi_holdings_searchworks_item, request: self)
         end
       end
     end
