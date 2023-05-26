@@ -12,7 +12,7 @@ RSpec.configure do |config|
         [Hash, SearchworksItem].include?(factory.build_class)  # non-activerecord objects (Hashes)
     end
 
-    FactoryBot.lint factories_to_lint unless config.files_to_run.one?
+    # FactoryBot.lint factories_to_lint unless config.files_to_run.one?
   ensure
     DatabaseCleaner.clean
   end
