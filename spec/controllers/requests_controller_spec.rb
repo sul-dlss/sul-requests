@@ -92,6 +92,7 @@ RSpec.describe RequestsController do
       before do
         stub_searchworks_api_json(build(:sal3_holdings))
       end
+
       let(:folio_holding_response) do
         { 'instanceId' => 'f1c52ab3-721e-5234-9a00-1023e034e2e8',
           'source' => 'MARC',
@@ -114,8 +115,8 @@ RSpec.describe RequestsController do
               'barcode' => '12345679',
               'location' =>
               { 'effectiveLocation' => { 'code' => 'SAL3-STACKS' },
-              'permanentLocation' => { 'code' => 'SAL3-STACKS' },
-              'temporaryLocation' => {} },
+                'permanentLocation' => { 'code' => 'SAL3-STACKS' },
+                'temporaryLocation' => {} },
               'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
               'permanentLoanType' => 'Can circulate',
               'suppressFromDiscovery' => false }] }
@@ -257,13 +258,13 @@ RSpec.describe RequestsController do
             'barcode' => '12345679',
             'location' =>
             { 'effectiveLocation' => { 'code' => 'SAL3-STACKS' },
-            'permanentLocation' => { 'code' => 'SAL3-STACKS' },
-            'temporaryLocation' => {} },
+              'permanentLocation' => { 'code' => 'SAL3-STACKS' },
+              'temporaryLocation' => {} },
             'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
             'permanentLoanType' => 'Can circulate',
             'suppressFromDiscovery' => false }] }
     end
-    
+
     it 'defaults to application' do
       get :new, params: scannable_params
       expect(response).to render_template(layout: 'application')

@@ -8,7 +8,6 @@ RSpec.describe HoldRecallsController do
     { item_id: '1234', barcode: '36105212925395', origin: 'GREEN', origin_location: 'STACKS', destination: 'GREEN' }
   end
 
-
   let(:folio_holding_response) do
     { 'instanceId' => 'f1c52ab3-721e-5234-9a00-1023e034e2e8',
       'source' => 'MARC',

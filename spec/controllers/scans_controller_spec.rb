@@ -25,11 +25,15 @@ RSpec.describe ScansController do
           'barcode' => '12345679',
           'location' =>
           { 'effectiveLocation' => { 'code' => 'SAL3-STACKS' },
-          'permanentLocation' => { 'code' => 'SAL3-STACKS' },
-          'temporaryLocation' => {} },
+            'permanentLocation' => { 'code' => 'SAL3-STACKS' },
+            'temporaryLocation' => {} },
           'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
           'permanentLoanType' => 'Can circulate',
           'suppressFromDiscovery' => false }] }
+  end
+  let(:scan) { create(:scan, :with_holdings, origin: 'SAL', origin_location: 'STACKS', barcodes: ['12345678']) }
+  let(:scannable_params) do
+    { item_id: '12345', origin: 'SAL3', origin_location: 'STACKS' }
   end
 
   before do
@@ -39,11 +43,6 @@ RSpec.describe ScansController do
     stub_searchworks_api_json(build(:sal3_holdings))
     allow(SubmitScanRequestJob).to receive(:perform_later)
     allow(controller).to receive_messages(current_user: user)
-  end
-
-  let(:scan) { create(:scan, :with_holdings, origin: 'SAL', origin_location: 'STACKS', barcodes: ['12345678']) }
-  let(:scannable_params) do
-    { item_id: '12345', origin: 'SAL3', origin_location: 'STACKS' }
   end
 
   describe 'new' do

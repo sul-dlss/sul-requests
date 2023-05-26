@@ -109,7 +109,7 @@ class FolioClient
   end
 
   def resolve_to_instance_id(hrid:)
-    search_response = get_json('/search/instances', params: { limit: 10, query: CqlQuery.new(hrid: hrid).to_query })
+    search_response = get_json('/search/instances', params: { limit: 10, query: CqlQuery.new(hrid:).to_query })
     search_response.dig('instances', 0, 'id')
   end
 
