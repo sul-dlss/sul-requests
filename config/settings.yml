@@ -188,6 +188,7 @@ libraries:
       location_slug: library-circulation
   EDUCATION:
     label: Education Library (at SAL1&2)
+    instructions: The Education Library is closed for construction. Request items for pickup at another library.
     contact_info:
       phone: "(650) 723-2121"
       email: cubberley@stanford.edu
@@ -215,6 +216,7 @@ libraries:
       location_slug: library-circulation
   HOOVER:
     label: Hoover Library
+    instructions: Items must be requested in advance and viewed on-site.
     contact_info:
       phone: "(650) 723-3563"
       email: hooverarchives@stanford.edu
@@ -234,6 +236,7 @@ libraries:
       location_slug: library-circulation
   HV-ARCHIVE:
     label: Hoover Archives
+    instructions: Items must be requested in advance and viewed on-site.
     contact_info:
       phone: "(650) 723-3563"
       email: hooverarchives@stanford.edu
@@ -286,6 +289,7 @@ libraries:
       location_slug: library-circulation
   RUMSEYMAP:
     label: David Rumsey Map Center
+    instructions: Researchers can request to view these materials in the David Rumsey Map Center.
     contact_info:
       phone: (650) 498-8698
       email: rumseymapcenter@stanford.edu
@@ -337,6 +341,7 @@ libraries:
       location_slug: library-circulation
   SPEC-COLL:
     label: Special Collections
+    instructions: Researchers can request to view these materials in the Special Collections Reading Room. Request materials at least 2 business days in advance. Maximum 5 items per day.
     contact_info:
       phone: "(650) 725-1022"
       email: specialcollections@stanford.edu

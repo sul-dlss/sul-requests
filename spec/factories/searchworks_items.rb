@@ -56,18 +56,4 @@ FactoryBot.define do
       end
     end
   end
-
-  factory :library_instructions_searchworks_item, class: 'SearchworksItem' do
-    initialize_with { new(request) }
-
-    request { create(:request, origin: 'ART', origin_location: 'ARTLCKL') }
-
-    after(:build) do |item|
-      class << item
-        def json
-          FactoryBot.build(:library_instructions_holdings)
-        end
-      end
-    end
-  end
 end

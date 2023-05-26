@@ -676,20 +676,23 @@ FactoryBot.define do
 
     holdings do
       [
-        { 'code' => 'ART',
+        { 'code' => 'EDUCATION',
           'library_instructions' => {
             'heading' => 'Instruction Heading',
             'text' => 'This is the library instruction'
           },
           'locations' => [
-            { 'code' => 'ARTLCKL',
+            { 'code' => 'STACKS',
               'items' => [
                 { 'barcode' => '12345678',
                   'callnumber' => 'ABC 123',
-                  'type' => 'LCKSTK',
+                  'type' => 'STKS-MONO',
+                  'current_location' => {
+                    'code' => 'CHECKEDOUT'
+                  },
                   'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
+                    'availability_class' => 'unknown',
+                    'status_text' => 'Unknown'
                   }
                 }
               ]
