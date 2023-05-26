@@ -46,10 +46,6 @@ module Folio
       json['holdings']
     end
 
-    def requested_holdings
-      @requested_holdings ||= RequestedHoldings.new(request, holdings)
-    end
-
     def finding_aid?
       finding_aid.present?
     end
@@ -60,33 +56,12 @@ module Folio
 
     private
 
-    # Stub class for holdings. To be completed before done.
-    class RequestedHoldings
-      # @param [Request] request the users request
-      # @param [Array<#code>] holdings all of the holdings for the requested item
-      def initialize(request, holdings)
-        @request = request
-        @holdings = holdings
-      end
-
-      def where(*)
-        []
-      end
-
-      def all
-        debugger
-        []
-      end
-
-      def single_checked_out_item?
-        false
-      end
+    def json
+      @json = folio_client.find_instance(instance_id: instance_id)
     end
 
-    def json
-      hrid = "a#{request.item_id}"
-      instane_id = folio_client.resolve_to_instance_id(hrid: hrid)
-      folio_client.find_instance(instance_id: instance_id)
+    def instance_id
+      @instance ||= folio_client.resolve_to_instance_id(hrid: "a#{request.item_id}")
     end
 
     def folio_client

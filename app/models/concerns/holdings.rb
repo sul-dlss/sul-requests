@@ -5,7 +5,12 @@
 ###
 module Holdings
   def holdings_object
-    @holdings_object ||= Searchworks::Holdings.new(self, bib_data.holdings)
+    @holdings_object ||= if bib_data.is_a? Folio::BibData
+      debugger
+                           Folio::Holdings.new(self, bib_data.holdings)
+                         else
+                           Searchworks::Holdings.new(self, bib_data.holdings)
+                         end
   end
 
   def holdings

@@ -118,6 +118,7 @@ def stub_searchworks_api_json(json)
 end
 
 def stub_folio_api(json)
+  allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return("f1c52ab3-721e-5234-9a00-1023e034e2e8")
   allow_any_instance_of(FolioClient).to receive(:find_instance).and_return(json)
 end
 
