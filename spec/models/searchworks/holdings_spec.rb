@@ -3,6 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe Searchworks::Holdings do
+  before do
+    allow(Request).to receive(:bib_model_class).and_return(SearchworksItem) 
+  end
   subject(:requested_holdings) { described_class.new(item.request, item.holdings) }
 
   describe '#all' do
