@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe SearchworksItem do
-  subject { described_class.new(request) }
+  subject(:item) { described_class.new(request) }
 
   let(:request) { create(:request, item_id: '123') }
 
@@ -63,7 +63,8 @@ RSpec.describe SearchworksItem do
             'name' => 'Green Library',
             'locations' => [{
               'code' => 'STACKS',
-              'name' => 'Stacks'
+              'name' => 'Stacks',
+              'items' => []
             }]
           }
         ]
@@ -92,9 +93,9 @@ RSpec.describe SearchworksItem do
       end
     end
 
-    describe 'for a standard response' do
+    context 'with a standard response' do
       before do
-        allow(subject).to receive_messages(json: standard_json)
+        allow(item).to receive_messages(json: standard_json)
       end
 
       it 'has a title string' do
@@ -105,15 +106,19 @@ RSpec.describe SearchworksItem do
         expect(subject.format).to eq %w(Format1 Format2)
       end
 
-      it 'has an array of nested OpenStruct objects describing the holdings' do
-        expect(subject.holdings).to be_a Array
-        expect(subject.holdings.length).to eq 1
-        expect(subject.holdings.first).to be_a OpenStruct
-        expect(subject.holdings.first.code).to eq 'GREEN'
+      describe '#holdings' do
+        subject(:holdings) { item.holdings }
 
-        expect(subject.holdings.first.locations).to be_a Array
-        expect(subject.holdings.first.locations.first).to be_a OpenStruct
-        expect(subject.holdings.first.locations.first.code).to eq 'STACKS'
+        it 'has an array of Searchworks::Holding objects describing the holdings' do
+          expect(holdings).to be_a Array
+          expect(holdings.length).to eq 1
+          expect(holdings.first).to be_a Searchworks::Holding
+          expect(holdings.first.code).to eq 'GREEN'
+
+          expect(holdings.first.locations).to be_a Array
+          expect(holdings.first.locations.first).to be_a Searchworks::HoldingLocation
+          expect(holdings.first.locations.first.code).to eq 'STACKS'
+        end
       end
 
       describe 'for an empty response' do

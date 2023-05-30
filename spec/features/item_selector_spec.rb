@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'Item Selector' do
+RSpec.describe 'Item Selector' do
   before do
     stub_current_user(create(:sso_user))
   end

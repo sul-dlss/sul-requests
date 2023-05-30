@@ -17,7 +17,7 @@ module RequestsHelper
   end
 
   def i18n_location_title_key
-    if (current_location = current_request.holdings.first.try(:current_location).try(:code)).present?
+    if (current_location = current_request.holdings.first&.current_location_code).present?
       current_location
     elsif (origin_location = current_request.origin_location).present?
       origin_location
@@ -29,13 +29,13 @@ module RequestsHelper
   end
 
   def label_for_item_selector_holding(holding)
-    if holding.current_location.try(:code) == 'CHECKEDOUT'
+    if holding.checked_out?
       content_tag :span, class: 'status pull-right availability unavailable' do
         "Due #{holding.due_date}"
       end
     else
-      content_tag :span, class: "status pull-right availability #{holding.status.availability_class}" do
-        holding.status.status_text
+      content_tag :span, class: "status pull-right availability #{holding.status_class}" do
+        holding.status_text
       end
     end
   end
@@ -78,9 +78,9 @@ module RequestsHelper
 
   def i18n_status_text(item)
     case
-    when item.current_location.try(:code) && item.current_location.code.ends_with?('-LOAN')
+    when item.hold?
       t('status_text.hold')
-    when item.home_location.ends_with?('-30')
+    when item.paged?
       t('status_text.paged')
     else
       t('status_text.other')

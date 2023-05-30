@@ -39,7 +39,7 @@ class SearchworksItem
   def holdings
     return [] unless json['holdings'].present?
 
-    @holdings ||= JSON.parse(json['holdings'].to_json, object_class: OpenStruct)
+    @holdings ||= json['holdings'].map { |holding| Searchworks::Holding.new(holding) }
   end
 
   def finding_aid?

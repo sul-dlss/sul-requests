@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Scan do
+RSpec.describe Scan do
   it 'has the properly assigned Rails STI attribute value' do
     expect(subject.type).to eq 'Scan'
   end

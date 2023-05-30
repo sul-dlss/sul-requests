@@ -2,23 +2,24 @@
 
 require 'rails_helper'
 
-describe 'hold_recalls/_header.html.erb' do
+RSpec.describe 'hold_recalls/_header.html.erb' do
   let(:origin) { 'GREEN' }
   let(:origin_location) { 'STACKS' }
-  let(:holdings) { [] }
   let(:current_request) do
     double('request', origin:, origin_location:, holdings:)
+  end
+
+  let(:holdings) do
+    [instance_double(Searchworks::HoldingItem, current_location_code:)]
   end
 
   before do
     allow(view).to receive_messages(current_request:)
   end
 
-  describe 'blank current location' do
+  context 'with a blank current location' do
     let(:origin_location) { 'INPROCESS' }
-    let(:holdings) do
-      [double('holding', current_location: double('location', code: ''))]
-    end
+    let(:current_location_code) { '' }
 
     it 'falls back to the home location' do
       render
@@ -27,10 +28,8 @@ describe 'hold_recalls/_header.html.erb' do
     end
   end
 
-  describe 'ON-ORDER' do
-    let(:holdings) do
-      [double('holding', current_location: double('location', code: 'ON-ORDER'))]
-    end
+  context 'when current location is ON-ORDER' do
+    let(:current_location_code) { 'ON-ORDER' }
 
     it 'has the correct header' do
       render
@@ -38,10 +37,8 @@ describe 'hold_recalls/_header.html.erb' do
     end
   end
 
-  describe 'INPROCESS' do
-    let(:holdings) do
-      [double('holding', current_location: double('location', code: 'INPROCESS'))]
-    end
+  context 'when current location is INPROCESS' do
+    let(:current_location_code) { 'INPROCESS' }
 
     it 'has the correct header' do
       render
@@ -49,10 +46,8 @@ describe 'hold_recalls/_header.html.erb' do
     end
   end
 
-  describe 'checked out' do
-    let(:holdings) do
-      [double('holding', current_location: double('location', code: 'CHECKEDOUT'))]
-    end
+  context 'when current location is checked out' do
+    let(:current_location_code) { 'CHECKEDOUT' }
 
     it 'has the correct header' do
       render
@@ -60,23 +55,21 @@ describe 'hold_recalls/_header.html.erb' do
     end
   end
 
-  describe 'default' do
-    describe 'when there is no location' do
-      it 'falls back to the default title' do
-        render
-        expect(rendered).to have_css('h1', text: 'Request item')
-      end
+  context 'when there are no holdings' do
+    let(:holdings) { [] }
+
+    it 'falls back to the default title' do
+      render
+      expect(rendered).to have_css('h1', text: 'Request item')
     end
+  end
 
-    describe 'for other locations' do
-      let(:holdings) do
-        [double('holding', current_location: double('location', code: 'SOMETHING-ELSE'))]
-      end
+  context 'when it is some other location' do
+    let(:current_location_code) { 'SOMETHING-ELSE' }
 
-      it 'falls back to the default title' do
-        render
-        expect(rendered).to have_css('h1', text: 'Request item')
-      end
+    it 'falls back to the default title' do
+      render
+      expect(rendered).to have_css('h1', text: 'Request item')
     end
   end
 end
