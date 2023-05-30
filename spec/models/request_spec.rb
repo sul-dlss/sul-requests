@@ -397,7 +397,7 @@ RSpec.describe Request do
 
     it 'returns the item title from the fetched searchworks record for non persisted objects' do
       allow_any_instance_of(described_class).to receive(:bib_data)
-        .and_return(OpenStruct.new(title: 'A fetched title'))
+        .and_return(instance_double(described_class.bib_model_class, title: 'A fetched title'))
       expect(described_class.new.stored_or_fetched_item_title).to eq 'A fetched title'
     end
   end
