@@ -42,13 +42,13 @@ RSpec.describe SearchworksItem do
 
     it 'handles JSON Parser Errors by returning an empty hash' do
       response = double('response', body: 'not-json', success?: true)
-      allow(subject).to receive_messages(response: response)
+      allow(subject).to receive_messages(response:)
       expect(json).to eq({})
     end
 
     it 'returns an empty hash when the response is not a success' do
       response = double('response', success?: false)
-      allow(subject).to receive_messages(response: response)
+      allow(subject).to receive_messages(response:)
       expect(json).to eq({})
     end
   end

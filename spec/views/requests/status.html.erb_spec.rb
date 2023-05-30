@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe 'requests/status.html.erb' do
   let(:user) { create(:sso_user) }
-  let(:request) { create(:page, user: user) }
+  let(:request) { create(:page, user:) }
 
   before do
     allow(view).to receive_messages(current_request: request)
@@ -59,7 +59,7 @@ describe 'requests/status.html.erb' do
     let(:request) do
       create(
         :scan_with_holdings,
-        user: user,
+        user:,
         data: {
           'page_range' => 'Range of pages', 'section_title' => 'Title of section', 'authors' => 'The Author'
         }
@@ -87,7 +87,7 @@ describe 'requests/status.html.erb' do
   end
 
   describe 'item level comments' do
-    let(:request) { create(:mediated_page_with_holdings, user: user, item_comment: ['Volume 666 only']) }
+    let(:request) { create(:mediated_page_with_holdings, user:, item_comment: ['Volume 666 only']) }
 
     before do
       render
@@ -100,7 +100,7 @@ describe 'requests/status.html.erb' do
   end
 
   describe 'request level comments' do
-    let(:request) { create(:mediated_page_with_holdings, user: user, request_comment: 'Here today, gone tomorrow') }
+    let(:request) { create(:mediated_page_with_holdings, user:, request_comment: 'Here today, gone tomorrow') }
 
     before do
       render
@@ -116,7 +116,7 @@ describe 'requests/status.html.erb' do
     let(:request) do
       create(
         :mediated_page_with_holdings,
-        user: user,
+        user:,
         barcodes: %w(12345678 23456789),
         symphony_response_data: build(:symphony_request_with_mixed_status)
       )

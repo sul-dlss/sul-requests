@@ -9,7 +9,7 @@ describe MediationHelper do
     let(:item) { double(home_location: 'MSS-30', barcode: '123456') }
 
     before do
-      location_object = double(current_location: current_location)
+      location_object = double(current_location:)
       expect(Symphony::CatalogInfo).to receive(:find).with('123456').and_return(location_object)
     end
 

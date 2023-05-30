@@ -89,7 +89,7 @@ class RequestApprovalStatus
     t(
       :"approval_status.#{request_class_name}.success",
       default: [:"approval_status.#{request_origin}.success", :'approval_status.default.success'],
-      item: item
+      item:
     )
   end
 

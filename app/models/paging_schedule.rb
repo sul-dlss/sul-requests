@@ -10,12 +10,12 @@ module PagingSchedule
   end
 
   class << self
-    def configure(&block)
-      instance_eval(&block)
+    def configure(&)
+      instance_eval(&)
     end
 
     def when_paging(to:, from:, before: nil, after: nil, &block)
-      schedule << Scheduler.new(to: to, from: from, before: before, after: after, &block)
+      schedule << Scheduler.new(to:, from:, before:, after:, &block)
     end
 
     def for(request)
@@ -74,11 +74,11 @@ module PagingSchedule
 
     def for(dest)
       Scheduler.new(to: dest,
-                    from: from,
-                    before: before,
-                    after: after,
-                    days_later: days_later,
-                    will_arrive_text: will_arrive_text)
+                    from:,
+                    before:,
+                    after:,
+                    days_later:,
+                    will_arrive_text:)
     end
 
     def earliest_delivery_estimate(time = Time.zone.now)
@@ -132,7 +132,7 @@ module PagingSchedule
       def as_json(*)
         {
           date: estimated_delivery_day_to_destination,
-          time: time,
+          time:,
           text: to_s
         }
       end

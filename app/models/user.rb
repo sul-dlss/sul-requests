@@ -65,12 +65,12 @@ class User < ActiveRecord::Base
 
   def super_admin?
     admin_groups = Settings.super_admin_groups || []
-    (ldap_groups & admin_groups).present?
+    ldap_groups.intersect?(admin_groups)
   end
 
   def site_admin?
     admin_groups = Settings.site_admin_groups || []
-    (ldap_groups & admin_groups).present?
+    ldap_groups.intersect?(admin_groups)
   end
 
   def ldap_groups
@@ -92,8 +92,8 @@ class User < ActiveRecord::Base
   end
 
   def patron
-    @patron ||= patron_model_class.find_by(sunetid: sunetid) if sunetid
-    @patron ||= patron_model_class.find_by(library_id: library_id) if library_id
+    @patron ||= patron_model_class.find_by(sunetid:) if sunetid
+    @patron ||= patron_model_class.find_by(library_id:) if library_id
   end
 
   def borrow_direct_eligible?

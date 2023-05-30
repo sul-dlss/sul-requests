@@ -10,7 +10,7 @@ class MediationMailer < ApplicationMailer
     mail(
       to: request.mediator_notification_email_address,
       from: from_address,
-      subject: subject
+      subject:
     )
   end
 

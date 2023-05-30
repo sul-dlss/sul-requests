@@ -17,7 +17,7 @@ class SubmitTestRequestJob < ApplicationJob
   def find_request(request_id)
     Request.find(request_id)
   rescue ActiveRecord::RecordNotFound
-    Honeybadger.notify('Unable to find Request', conext: { request_id: request_id })
+    Honeybadger.notify('Unable to find Request', conext: { request_id: })
   end
 
   def self.command

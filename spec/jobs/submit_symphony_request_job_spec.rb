@@ -13,7 +13,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
     end
 
     let(:user) { build(:non_sso_user) }
-    let(:request) { create(:page_with_holdings, user: user) }
+    let(:request) { create(:page_with_holdings, user:) }
 
     describe '#perform' do
       let(:mock_client) { instance_double(SymphonyClient) }
@@ -43,7 +43,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
 
     let(:user) { build(:non_sso_user) }
     let(:request) { scan }
-    let(:scan) { create(:scan_with_holdings_barcodes, user: user) }
+    let(:scan) { create(:scan_with_holdings_barcodes, user:) }
     let(:mock_client) { instance_double(SymphonyClient) }
     let(:patron) { Symphony::Patron.new({}) }
 
@@ -75,7 +75,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
 
       context 'for a patron with a library id' do
         let(:user) { build(:sso_user) }
-        let(:request) { create(:page_with_holdings, user: user) }
+        let(:request) { create(:page_with_holdings, user:) }
         let(:patron) do
           Symphony::Patron.new({
                                  'fields' => {
@@ -103,7 +103,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
 
       context 'for a sunetid patron without a library id' do
         let(:user) { build(:sso_user) }
-        let(:request) { create(:page_with_holdings, user: user) }
+        let(:request) { create(:page_with_holdings, user:) }
 
         before do
           allow(mock_client).to receive(:bib_info).and_return({})
@@ -124,7 +124,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
       end
 
       context 'for a response where the user already has a hold on the material' do
-        let(:request) { create(:page_with_holdings, user: user) }
+        let(:request) { create(:page_with_holdings, user:) }
 
         before do
           allow(mock_client).to receive(:bib_info).and_return({})
@@ -173,7 +173,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
       end
 
       context 'for a response from symphony where the record is currently in use' do
-        let(:request) { create(:page_with_holdings, user: user) }
+        let(:request) { create(:page_with_holdings, user:) }
 
         before do
           allow(mock_client).to receive(:bib_info).and_return({})
@@ -197,7 +197,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
       end
 
       context 'without barcodes' do
-        let(:scan) { create(:scan_with_holdings, user: user) }
+        let(:scan) { create(:scan_with_holdings, user:) }
 
         it 'places a hold using a callkey' do
           allow_any_instance_of(Symphony::CatalogInfo).to receive(:current_location).and_return('SAL')

@@ -75,7 +75,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
         end
 
         {
-          barcode: barcode,
+          barcode:,
           msgcode: msg_code || '209',
           response: place_hold_response
         }
@@ -107,11 +107,11 @@ class SubmitSymphonyRequestJob < ApplicationJob
     def notify_staff_for_multiple_holds(barcode)
       MultipleHoldsMailer.multiple_holds_notification(
         {
-          barcode: barcode,
+          barcode:,
           c_key: request.item_id,
-          patron_barcode: patron_barcode,
-          name: name,
-          email: email,
+          patron_barcode:,
+          name:,
+          email:,
           pickup_library: request.destination,
           item_library: request.origin
         }
@@ -204,8 +204,8 @@ class SubmitSymphonyRequestJob < ApplicationJob
         fill_by_date: request.needed_date,
         key: request.destination == 'SPEC-COLL' ? 'SPEC-DESK' : request.destination,
         recall_status: patron&.fee_borrower? ? 'NO' : 'STANDARD',
-        patron_barcode: patron_barcode,
-        comment: comment,
+        patron_barcode:,
+        comment:,
         for_group: (request.proxy? || request.user.proxy?),
         force: true
       }

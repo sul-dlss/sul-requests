@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe 'shared/_request_status_information.html.erb' do
   let(:user) { create(:sso_user) }
-  let(:request) { create(:scan, user: user) }
+  let(:request) { create(:scan, user:) }
 
   before do
     allow(view).to receive_messages(current_request: request)
@@ -19,7 +19,7 @@ describe 'shared/_request_status_information.html.erb' do
     end
 
     context 'when there is a delivery destination' do
-      let(:request) { create(:page_mp_mediated_page, user: user) }
+      let(:request) { create(:page_mp_mediated_page, user:) }
 
       it "displays the 'Deliver to' field" do
         render

@@ -34,7 +34,7 @@ RSpec.describe SubmitScanRequestJob, type: :job do
     end
 
     let(:user) { build(:scan_eligible_user) }
-    let(:scan) { create(:scan, user: user) }
+    let(:scan) { create(:scan, user:) }
     let(:failed_illiad_request) do
       instance_double(IlliadRequest, request!: double(body: { 'Message' => 'error' }.to_json))
     end

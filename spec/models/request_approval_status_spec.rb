@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe RequestApprovalStatus do
-  subject { described_class.new(request: request) }
+  subject { described_class.new(request:) }
 
   let(:request) { create(:request) }
 

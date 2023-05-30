@@ -7,11 +7,11 @@ describe 'mediated_pages/_header.html.erb' do
   let(:origin_location) { 'STACKS' }
   let(:holdings) { [] }
   let(:current_request) do
-    double('request', origin: origin, origin_location: origin_location, holdings: holdings)
+    double('request', origin:, origin_location:, holdings:)
   end
 
   before do
-    allow(view).to receive_messages(current_request: current_request)
+    allow(view).to receive_messages(current_request:)
   end
 
   describe 'library level titles' do

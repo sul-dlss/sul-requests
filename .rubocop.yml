@@ -1,8 +1,9 @@
 require:
   - rubocop-capybara
-  - rubocop-rspec
+  - rubocop-factory_bot
   - rubocop-performance
   - rubocop-rails
+  - rubocop-rspec
 
 inherit_from: .rubocop_todo.yml
 
@@ -14,7 +15,7 @@ AllCops:
     - 'config/**/*'
     - 'spec/spec_helper.rb'
     - 'vendor/**/*'
-  TargetRubyVersion: 2.7
+  TargetRubyVersion: 3.2
 
 Rails:
   Enabled: true
@@ -483,4 +484,12 @@ Rails/WhereMissing: # new in 2.16
 Rails/WhereNot: # new in 2.8
   Enabled: true
 Rails/WhereNotWithMultipleConditions: # new in 2.17
+  Enabled: true
+Style/ExactRegexpMatch: # new in 1.51
+  Enabled: true
+FactoryBot/AssociationStyle: # new in 2.23
+  Enabled: true
+FactoryBot/FactoryAssociationWithStrategy: # new in 2.23
+  Enabled: false
+FactoryBot/RedundantFactoryOption: # new in 2.23
   Enabled: true

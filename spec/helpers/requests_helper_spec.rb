@@ -146,7 +146,7 @@ describe RequestsHelper do
   describe 'i18n_location_title_key' do
     let(:current_request) { double('request') }
 
-    before { expect(helper).to receive_messages(current_request: current_request) }
+    before { expect(helper).to receive_messages(current_request:) }
 
     it 'returns the current location when present' do
       allow(current_request).to receive_messages(

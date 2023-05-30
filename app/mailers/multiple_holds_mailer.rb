@@ -7,7 +7,7 @@ class MultipleHoldsMailer < ApplicationMailer
     @options = options
     mail(
       to: 'sulcirchelp@stanford.edu',
-      subject: subject
+      subject:
     )
   end
 

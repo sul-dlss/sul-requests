@@ -57,7 +57,7 @@ class CdlCheckout
       circ_record = hold.circ_record
       symphony_client.edit_circ_record_info(circ_record.key, dueDate: item_info.loan_period.from_now.iso8601)
     else
-      return { token: create_token(hold.circ_record, hold.key), hold: hold } if hold.circ_record&.exists?
+      return { token: create_token(hold.circ_record, hold.key), hold: } if hold.circ_record&.exists?
 
       selected_item = item_info.items.select(&:cdlable?).find { |item| item.current_location != 'CHECKEDOUT' }
 
@@ -65,8 +65,8 @@ class CdlCheckout
         items = item_info.items.count(&:cdlable?)
         cdl_logger "Adding hold #{hold.key} for waitlisted patron #{user.patron.anonymized_id}"
 
-        CdlWaitlistMailer.on_waitlist(hold.key, items: items).deliver_later
-        return { token: nil, hold: hold, items: items }
+        CdlWaitlistMailer.on_waitlist(hold.key, items:).deliver_later
+        return { token: nil, hold:, items: }
       end
 
       cdl_logger "Checking out #{selected_item.barcode} for patron #{user.patron.anonymized_id}"
@@ -75,9 +75,9 @@ class CdlCheckout
     end
 
     comment = "CDL;#{druid};#{circ_record.key};#{circ_record.checkout_date.to_i};ACTIVE"
-    retry_symphony_errors { symphony_client.update_hold(hold.key, comment: comment) }
+    retry_symphony_errors { symphony_client.update_hold(hold.key, comment:) }
 
-    { token: create_token(circ_record, hold.key), hold: hold }
+    { token: create_token(circ_record, hold.key), hold: }
   end
   # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
@@ -99,7 +99,7 @@ class CdlCheckout
 
     circ_record = Symphony::CircRecord.new(renewal&.dig('circRecord'))
     comment = "CDL;#{druid};#{circ_record.key};#{circ_record.checkout_date.to_i};ACTIVE"
-    update_hold_response = symphony_client.update_hold(hold.key, comment: comment)
+    update_hold_response = symphony_client.update_hold(hold.key, comment:)
     retry_symphony_errors { update_hold_response }
 
     create_token(circ_record, hold.key)
@@ -121,7 +121,7 @@ class CdlCheckout
     cdl_logger "Checking in #{hold_record_key} for patron #{user.patron.anonymized_id}"
 
     comment = hold_record.comment.gsub('ACTIVE', 'COMPLETED').gsub('WAITLIST', 'CANCELED').gsub('NEXT_UP', 'CANCELED')
-    symphony_client.update_hold(hold_record.key, comment: comment)
+    symphony_client.update_hold(hold_record.key, comment:)
     cancel_hold_response = symphony_client.cancel_hold(hold_record.key)
 
     if hold_record.circ_record&.exists?
@@ -146,7 +146,7 @@ class CdlCheckout
       aud: druid,
       sub: user.sunetid,
       exp: circ_record.due_date.to_i,
-      hold_record_id: hold_record_id
+      hold_record_id:
     }
   end
 

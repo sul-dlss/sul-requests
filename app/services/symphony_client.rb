@@ -73,7 +73,7 @@ class SymphonyClient
           'call{*,itemList{*}}',
           'currentLocation'
         ].compact.join(',')
-      }, headers: headers
+      }, headers:
     )
 
     JSON.parse(response.body)
@@ -131,7 +131,7 @@ class SymphonyClient
         resource: '/circulation/holdRecord',
         key: hold_record_key,
         fields: {
-          comment: comment
+          comment:
         }
       }
     )
@@ -242,7 +242,7 @@ class SymphonyClient
         holdRange: 'SYSTEM',
         patronBarcode: patron_barcode,
         pickupLibrary: {
-          key: key,
+          key:,
           resource: '/policy/library'
         },
         recallStatus: recall_status
@@ -336,7 +336,7 @@ class SymphonyClient
   # rubocop:disable Metrics/AbcSize
   def request(path, headers: {}, method: :get, **other)
     Honeybadger.add_breadcrumb('Symphony request', metadata: {
-                                 path: path,
+                                 path:,
                                  params: other[:params].to_json,
                                  json: other[:json].to_json
                                })

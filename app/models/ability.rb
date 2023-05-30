@@ -43,8 +43,8 @@ class Ability
     # Adminstrators for origins or destinations should be able to
     # manage requests originating or arriving to their library.
 
-    admin_libraries = Settings.origin_admin_groups.to_h.select { |_k, v| (user.ldap_groups & v).present? }.keys.map(&:to_s)
-    admin_locations = Settings.origin_location_admin_groups.to_h.select { |_k, v| (user.ldap_groups & v).present? }.keys.map(&:to_s)
+    admin_libraries = Settings.origin_admin_groups.to_h.select { |_k, v| user.ldap_groups.intersect?(v) }.keys.map(&:to_s)
+    admin_locations = Settings.origin_location_admin_groups.to_h.select { |_k, v| user.ldap_groups.intersect?(v) }.keys.map(&:to_s)
 
     if admin_libraries.any?
       can :manage, LibraryLocation, library: admin_libraries

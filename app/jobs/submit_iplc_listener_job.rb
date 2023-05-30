@@ -53,7 +53,7 @@ class SubmitIplcListenerJob < ApplicationJob
 
     def as_json(_options = nil)
       {
-        response: response,
+        response:,
         params: iplc_params
       }
     end

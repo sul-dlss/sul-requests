@@ -16,7 +16,7 @@ module MessagesHelper
   def link_to_add_message(library_code, request_type)
     link_to tag.i(class: 'bi bi-pencil') + tag.span(' Add message'),
             new_message_path(library: library_code,
-                             request_type: request_type),
+                             request_type:),
             class: 'btn
                     btn-sm
                     btn-default

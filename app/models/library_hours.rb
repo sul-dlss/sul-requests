@@ -12,7 +12,7 @@ class LibraryHours
   end
 
   def next_business_day(from, n = 0)
-    library_hours(from: from, business_days: n + 1).open_hours.last.try(:day)
+    library_hours(from:, business_days: n + 1).open_hours.last.try(:day)
   end
 
   private

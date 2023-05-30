@@ -48,7 +48,7 @@ describe MediatedPage do
         described_class.create!(item_id: '1234',
                                 origin: 'RUMSEYMAP',
                                 origin_location: 'PAGE-MP',
-                                user: user,
+                                user:,
                                 destination: 'RUMSEYMAP')
       end.not_to raise_error
     end
@@ -59,26 +59,26 @@ describe MediatedPage do
       build(
         :mediated_page,
         approval_status: :approved,
-        user: user,
+        user:,
         needed_date: Time.zone.today - 3.days
       ).save(validate: false)
 
       build(
         :mediated_page,
         approval_status: :approved,
-        user: user,
+        user:,
         needed_date: Time.zone.today - 2.days
       ).save(validate: false)
 
       build(
         :mediated_page,
         approval_status: :marked_as_done,
-        user: user,
+        user:,
         needed_date: Time.zone.today - 1.day
       ).save(validate: false)
 
-      create(:page_mp_mediated_page, user: user, needed_date: Time.zone.today)
-      create(:page_mp_mediated_page, user: user, needed_date: Time.zone.today + 1.day)
+      create(:page_mp_mediated_page, user:, needed_date: Time.zone.today)
+      create(:page_mp_mediated_page, user:, needed_date: Time.zone.today + 1.day)
     end
 
     describe 'archived' do
@@ -114,7 +114,7 @@ describe MediatedPage do
   end
 
   describe 'all_approved?' do
-    let(:subject) { build(:mediated_page_with_holdings, user: user) }
+    let(:subject) { build(:mediated_page_with_holdings, user:) }
 
     before do
       stub_symphony_response(build(:symphony_page_with_multiple_items))
@@ -134,7 +134,7 @@ describe MediatedPage do
   end
 
   describe '#item_statuses' do
-    let(:subject) { build(:mediated_page_with_holdings, user: user) }
+    let(:subject) { build(:mediated_page_with_holdings, user:) }
 
     before do
       stub_symphony_response(build(:symphony_page_with_multiple_items))

@@ -5,7 +5,7 @@ require 'rails_helper'
 describe MediationMailer do
   describe 'mediator_notification' do
     let(:user) { build(:non_sso_user) }
-    let(:request) { create(:mediated_page, user: user) }
+    let(:request) { create(:mediated_page, user:) }
     let(:mediator_contact_info) { { request.origin => { email: 'someone@example.com' } } }
     before do
       allow(Rails.application.config).to receive(:mediator_contact_info).and_return(mediator_contact_info)
@@ -25,7 +25,7 @@ describe MediationMailer do
       end
 
       describe 'location specific' do
-        let(:request) { create(:page_mp_mediated_page, user: user) }
+        let(:request) { create(:page_mp_mediated_page, user:) }
 
         it 'is the configured from address for the origin' do
           expect(mail.from).to eq ['brannerlibrary@stanford.edu']
@@ -41,7 +41,7 @@ describe MediationMailer do
 
     describe 'body' do
       let(:request) do
-        create(:mediated_page_with_holdings, barcodes: ['12345678'], user: user)
+        create(:mediated_page_with_holdings, barcodes: ['12345678'], user:)
       end
 
       let(:body) { mail.body.to_s }
