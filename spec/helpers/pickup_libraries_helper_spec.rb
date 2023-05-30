@@ -11,8 +11,8 @@ RSpec.describe PickupLibrariesHelper do
     before do
       allow(Settings).to receive(:libraries).and_return(
         {
-          'ABC' => OpenStruct.new(label: 'Library 2'),
-          'XYZ' => OpenStruct.new(label: 'Library 1')
+          'ABC' => double(Config::Options, label: 'Library 2'),
+          'XYZ' => double(Config::Options, label: 'Library 1')
         }
       )
     end

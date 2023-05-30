@@ -16,7 +16,7 @@ describe 'home/show' do
   describe 'superadmin' do
     before do
       allow(controller).to receive_messages(current_user: create(:superadmin_user))
-      allow(Request).to receive_messages(mediateable_origins: { 'SAL3' => OpenStruct.new })
+      allow(Request).to receive_messages(mediateable_origins: { 'SAL3' => double(Config::Options, library_override: nil) })
       render
     end
 
