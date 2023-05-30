@@ -5,7 +5,7 @@ require 'rails_helper'
 describe IlbMailer do
   describe 'ilb_notification' do
     let(:user) { build(:scan_eligible_user) }
-    let(:request) { create(:scan, user: user) }
+    let(:request) { create(:scan, user:) }
     let(:mail) { described_class.ilb_notification(request) }
 
     describe 'to' do
@@ -20,7 +20,7 @@ describe IlbMailer do
       end
 
       describe 'location specific' do
-        let(:request) { create(:scan, user: user) }
+        let(:request) { create(:scan, user:) }
 
         it 'is the configured from address for the origin' do
           expect(mail.from).to eq ['greencirc@stanford.edu']
@@ -36,7 +36,7 @@ describe IlbMailer do
 
     describe 'body' do
       let(:request) do
-        create(:scan, user: user)
+        create(:scan, user:)
       end
 
       let(:body) { mail.body.to_s }

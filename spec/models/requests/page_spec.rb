@@ -59,7 +59,7 @@ describe Page do
         origin_location: 'MM-STACKS',
         destination: 'GREEN',
         item_id: 'abc123',
-        user: user
+        user:
       )
     end
 
@@ -83,7 +83,7 @@ describe Page do
   end
 
   describe 'send_approval_status!' do
-    subject(:request) { create(:page, user: user) }
+    subject(:request) { create(:page, user:) }
 
     let(:user) {}
 

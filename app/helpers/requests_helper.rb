@@ -67,7 +67,7 @@ module RequestsHelper
   end
 
   def request_approval_status(request = current_request)
-    RequestApprovalStatus.new(request: request).to_html
+    RequestApprovalStatus.new(request:).to_html
   end
 
   def aeon_pages_path(*)

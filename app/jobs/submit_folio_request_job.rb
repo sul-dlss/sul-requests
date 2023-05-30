@@ -26,7 +26,7 @@ class SubmitFolioRequestJob < ApplicationJob
   def find_request(request_id)
     Request.find(request_id)
   rescue ActiveRecord::RecordNotFound
-    Honeybadger.notify('Unable to find Request', conext: { request_id: request_id })
+    Honeybadger.notify('Unable to find Request', conext: { request_id: })
   end
 
   # Submit a hold request to FOLIO
@@ -56,13 +56,13 @@ class SubmitFolioRequestJob < ApplicationJob
         )
 
         expiration_date = (request.needed_date || (Time.zone.today + 3.years)).to_time.utc.iso8601
-        hold_request = FolioClient::HoldRequest.new(pickup_location_id: pickup_location_id,
+        hold_request = FolioClient::HoldRequest.new(pickup_location_id:,
                                                     patron_comments: request.item_comment,
-                                                    expiration_date: expiration_date)
+                                                    expiration_date:)
         place_hold_response = folio_client.create_item_hold(user_id, item_id, hold_request)
 
         {
-          barcode: barcode,
+          barcode:,
           msgcode: '209',
           response: place_hold_response
         }

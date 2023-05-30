@@ -16,9 +16,9 @@ class ItemStatus
     {
       id: @id,
       approved: approved?,
-      approver: approver,
+      approver:,
       approval_time: localized_approval_time,
-      msgcode: msgcode,
+      msgcode:,
       text: user_error_text || text,
       usererr_code: user_error_code,
       errored: errored?

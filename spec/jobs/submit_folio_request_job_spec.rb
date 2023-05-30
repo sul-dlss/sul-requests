@@ -15,7 +15,7 @@ RSpec.describe SubmitFolioRequestJob do
   end
 
   context 'with a HoldRecall type request' do
-    let(:request) { create(:hold_recall_with_holdings, barcodes: ['12345678'], user: user) }
+    let(:request) { create(:hold_recall_with_holdings, barcodes: ['12345678'], user:) }
 
     it 'calls the create_item_hold API method' do
       described_class.perform_now(request.id)

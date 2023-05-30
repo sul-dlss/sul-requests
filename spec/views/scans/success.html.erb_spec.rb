@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe 'scans/success.html.erb' do
   let(:user) { create(:sso_user) }
-  let(:request) { create(:scan, user: user) }
+  let(:request) { create(:scan, user:) }
 
   before do
     allow(view).to receive_messages(current_request: request)

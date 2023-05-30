@@ -44,7 +44,7 @@ module ApplicationHelper
   end
 
   def time_tag(dt, format = :default, attr: {})
-    content_tag :time, l(dt, format: format), attr.merge(datetime: dt) if dt
+    content_tag :time, l(dt, format:), attr.merge(datetime: dt) if dt
   end
 
   def render_user_information

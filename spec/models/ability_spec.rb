@@ -6,7 +6,7 @@ require 'cancan/matchers'
 describe Ability do
   subject { described_class.new(user, token) }
 
-  let(:admin_comment) { AdminComment.new(request: request) }
+  let(:admin_comment) { AdminComment.new(request:) }
   let(:request) { Request.new }
   let(:hold_recall) { HoldRecall.new }
   let(:mediated_page) { MediatedPage.new }
@@ -72,8 +72,8 @@ describe Ability do
 
     describe 'who fills out a name and email' do
       let(:user) { build(:non_sso_user) }
-      let(:page) { create(:page, user: user) }
-      let(:mediated_page) { create(:mediated_page, user: user) }
+      let(:page) { create(:page, user:) }
+      let(:mediated_page) { create(:mediated_page, user:) }
 
       it { is_expected.to be_able_to(:create, page) }
       it { is_expected.to be_able_to(:create, mediated_page) }
@@ -95,9 +95,9 @@ describe Ability do
 
     describe 'who fills out the library ID field' do
       let(:user) { build(:library_id_user) }
-      let(:page) { build(:page, user: user) }
-      let(:mediated_page) { build(:mediated_page, user: user) }
-      let(:scan) { build(:scan, user: user) }
+      let(:page) { build(:page, user:) }
+      let(:mediated_page) { build(:mediated_page, user:) }
+      let(:scan) { build(:scan, user:) }
 
       it { is_expected.to be_able_to(:create, page) }
       it { is_expected.to be_able_to(:create, mediated_page) }

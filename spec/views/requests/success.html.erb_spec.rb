@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe 'requests/success.html.erb' do
   let(:user) { create(:sso_user) }
-  let(:request) { create(:page, user: user) }
+  let(:request) { create(:page, user:) }
 
   before do
     allow(view).to receive_messages(current_request: request)
@@ -79,7 +79,7 @@ describe 'requests/success.html.erb' do
     end
 
     context 'for requests on behalf of a proxy group' do
-      let(:request) { build(:page, user: user) }
+      let(:request) { build(:page, user:) }
       let(:user) { create(:library_id_user, email: 'some-address@example.com') }
 
       before do
@@ -123,7 +123,7 @@ describe 'requests/success.html.erb' do
     let(:request) do
       create(
         :scan_with_holdings,
-        user: user,
+        user:,
         data: {
           'page_range' => 'Range of pages', 'section_title' => 'Title of section', 'authors' => 'The Author'
         }
@@ -152,7 +152,7 @@ describe 'requests/success.html.erb' do
 
   describe 'for mediated pages' do
     describe 'item level comments' do
-      let(:request) { create(:mediated_page_with_holdings, user: user, item_comment: ['Volume 666 only']) }
+      let(:request) { create(:mediated_page_with_holdings, user:, item_comment: ['Volume 666 only']) }
 
       before do
         render
@@ -165,7 +165,7 @@ describe 'requests/success.html.erb' do
     end
 
     describe 'request level comments' do
-      let(:request) { create(:mediated_page_with_holdings, user: user, request_comment: 'Here today, gone tomorrow') }
+      let(:request) { create(:mediated_page_with_holdings, user:, request_comment: 'Here today, gone tomorrow') }
 
       before do
         render
@@ -178,7 +178,7 @@ describe 'requests/success.html.erb' do
     end
 
     describe 'selected items' do
-      let(:request) { create(:mediated_page_with_holdings, user: user, barcodes: %w(12345678 23456789)) }
+      let(:request) { create(:mediated_page_with_holdings, user:, barcodes: %w(12345678 23456789)) }
 
       before { render }
 

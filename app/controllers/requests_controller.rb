@@ -113,7 +113,7 @@ class RequestsController < ApplicationController
     )
 
     referrer = interstitial_path(redirect_to: create_path)
-    redirect_to login_path(referrer: referrer)
+    redirect_to login_path(referrer:)
   end
 
   # Strips out undesired parameters when sending the user through our auth service

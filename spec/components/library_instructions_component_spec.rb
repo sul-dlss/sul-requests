@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe LibraryInstructionsComponent, type: :component do
-  let(:rendered) { render_inline(described_class.new(library_code: library_code)) }
+  let(:rendered) { render_inline(described_class.new(library_code:)) }
 
   context 'when the library is has instructions' do
     let(:library_code) { 'EDUCATION' }

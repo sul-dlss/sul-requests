@@ -30,7 +30,7 @@ RSpec.describe CdlAvailability do
                         hold_records: Array.new(3) do |x|
                           instance_double(Symphony::HoldRecord, circ_record_key: x, key: x, next_up_cdl?: false)
                         end,
-                        items: items)
+                        items:)
       end
       let(:items) do
         [
@@ -65,7 +65,7 @@ RSpec.describe CdlAvailability do
                           instance_double(Symphony::HoldRecord, circ_record_key: nil, key: 1, next_up_cdl?: false),
                           instance_double(Symphony::HoldRecord, circ_record_key: nil, key: 2, next_up_cdl?: false)
                         ],
-                        items: items)
+                        items:)
       end
       let(:items) do
         [

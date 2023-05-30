@@ -15,13 +15,13 @@ RSpec.describe 'AdminComments' do
   describe '#create' do
     context 'when successful' do
       it "merges the current user's sunetid into the persisted comment as the commenter" do
-        post(url, params: { admin_comment: { comment: 'This is a comment' } }, headers: headers)
+        post(url, params: { admin_comment: { comment: 'This is a comment' } }, headers:)
         expect(AdminComment.last.commenter).to eq user.sunetid
       end
 
       context 'html response' do
         it 'redirects back with a flash notice' do
-          post(url, params: { admin_comment: { comment: 'This is another comment' } }, headers: headers)
+          post(url, params: { admin_comment: { comment: 'This is another comment' } }, headers:)
           expect(flash[:notice]).to eq 'Comment was successfully created.'
           expect(AdminComment.last.comment).to eq 'This is another comment'
         end
@@ -31,12 +31,12 @@ RSpec.describe 'AdminComments' do
         let(:headers) { { 'Accept' => 'application/json' } }
 
         it 'returns a succesful status code' do
-          post(url, params: { admin_comment: { comment: 'This is yet another comment' } }, headers: headers)
+          post(url, params: { admin_comment: { comment: 'This is yet another comment' } }, headers:)
           expect(response).to be_successful
         end
 
         it 'returns the JSON of the comment object that was just created' do
-          post(url, params: { admin_comment: { comment: 'This is yet another comment' } }, headers: headers)
+          post(url, params: { admin_comment: { comment: 'This is yet another comment' } }, headers:)
           response_comment = response.parsed_body
           last_comment = AdminComment.last
           expect(response_comment['id']).to eq last_comment.id
@@ -51,7 +51,7 @@ RSpec.describe 'AdminComments' do
 
       context 'html response' do
         it 'redirects back with a flash error' do
-          post(url, params: { admin_comment: { comment: 'A comment that will not be persisted' } }, headers: headers)
+          post(url, params: { admin_comment: { comment: 'A comment that will not be persisted' } }, headers:)
           expect(flash[:error]).to eq 'There was an error creating your comment.'
         end
       end
@@ -60,7 +60,7 @@ RSpec.describe 'AdminComments' do
         let(:headers) { { 'Accept' => 'application/json' } }
 
         it 'returns a failure status code' do
-          post(url, params: { admin_comment: { comment: 'A comment that will not be persisted' } }, headers: headers)
+          post(url, params: { admin_comment: { comment: 'A comment that will not be persisted' } }, headers:)
           expect(response).not_to be_successful
           expect(response.parsed_body).to eq('status' => 'error')
         end

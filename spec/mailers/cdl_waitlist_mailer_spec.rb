@@ -10,7 +10,7 @@ describe CdlWaitlistMailer do
   let(:hold_record_key) { 'key' }
 
   before do
-    allow(Symphony::Patron).to receive(:find_by).with(patron_key: patron_key).and_return(patron)
+    allow(Symphony::Patron).to receive(:find_by).with(patron_key:).and_return(patron)
     allow(Symphony::HoldRecord).to receive(:find).with(hold_record_key).and_return(hold_record)
   end
 
@@ -42,7 +42,7 @@ describe CdlWaitlistMailer do
     let(:checkout_date) { Time.zone.parse('2020-09-15T11:12:13') }
     let(:circ_record) do
       instance_double(Symphony::CircRecord, due_date: Time.zone.parse('2020-09-16T01:02:03'),
-                                            checkout_date: checkout_date)
+                                            checkout_date:)
     end
     let(:circ_record_key) { 'circ_record_key' }
 

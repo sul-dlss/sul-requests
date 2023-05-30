@@ -5,7 +5,7 @@ require 'rails_helper'
 describe SubmitReshareRequestJob, type: :job do
   let(:user) { create(:library_id_user) }
   let(:patron) { instance_double(Symphony::Patron, exists?: true, email: nil, university_id: '1234567') }
-  let(:request) { create(:hold_recall_with_holdings, user: user) }
+  let(:request) { create(:hold_recall_with_holdings, user:) }
   let(:sw_item) { double('SeachWorksItem', isbn: %w[12345 54321]) }
 
   before do

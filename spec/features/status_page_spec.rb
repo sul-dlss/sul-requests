@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe 'Status Page' do
-  let(:request) { create(:mediated_page, user: user) }
+  let(:request) { create(:mediated_page, user:) }
 
   before do
     stub_current_user(user)
@@ -46,7 +46,7 @@ describe 'Status Page' do
     let(:user) { create(:sso_user) }
 
     it 'page' do
-      my_req = create(:page, user: user)
+      my_req = create(:page, user:)
       visit status_page_path(my_req)
 
       expect(page).to have_title('Request status: Title for Page 1234')
@@ -59,14 +59,14 @@ describe 'Status Page' do
     end
 
     it 'hold/recall' do
-      my_req = create(:hold_recall, user: user)
+      my_req = create(:hold_recall, user:)
       visit status_hold_recall_path(my_req)
 
       expect(page).to have_title('Request status: Title of HoldRecall 1234')
     end
 
     it 'scan' do
-      my_req = create(:scan, user: user)
+      my_req = create(:scan, user:)
       visit status_scan_path(my_req)
 
       expect(page).to have_title('Request status: Title for Scan 12345')

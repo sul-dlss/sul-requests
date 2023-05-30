@@ -49,7 +49,7 @@ class RequestStatusMailer < ApplicationMailer
     mail(
       to: request.notification_email_address,
       from: from_address,
-      subject: subject
+      subject:
     )
   end
 

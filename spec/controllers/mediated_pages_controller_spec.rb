@@ -206,7 +206,7 @@ RSpec.describe MediatedPagesController do
 
     context 'by a user who cannot manage the request (even if they created the reqeust)' do
       let(:user) { create(:sso_user) }
-      let!(:mediated_page) { create(:mediated_page, user: user) }
+      let!(:mediated_page) { create(:mediated_page, user:) }
 
       it 'throws an access denied error' do
         expect do

@@ -79,9 +79,9 @@ class SubmitReshareRequestJob < ApplicationJob
       {
         requestable: requestable?,
         response: vufind_response,
-        instance_uuid: instance_uuid,
-        instance_title: instance_title,
-        requested_isbn: requested_isbn
+        instance_uuid:,
+        instance_title:,
+        requested_isbn:
       }
     end
 
@@ -104,7 +104,7 @@ class SubmitReshareRequestJob < ApplicationJob
 
       raise ArgumentError, 'No ISBN provided' if params[:lookfor].blank?
 
-      HTTP.get("#{Settings.borrow_direct.reshare_vufind_url}/api/v1/search", params: params)
+      HTTP.get("#{Settings.borrow_direct.reshare_vufind_url}/api/v1/search", params:)
     end
 
     # We try to match on the requested item's first ISBN; this is behavior inherited from

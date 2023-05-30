@@ -5,7 +5,7 @@ require 'rails_helper'
 describe RequestStatusMailer do
   describe '#request_status' do
     let(:user) { build(:non_sso_user) }
-    let(:request) { create(:page, user: user) }
+    let(:request) { create(:page, user:) }
     let(:mailer_method) { :request_status_for_page }
     let(:mail) { described_class.send(mailer_method, request) }
 
@@ -39,7 +39,7 @@ describe RequestStatusMailer do
       end
 
       context 'when the item is scannable' do
-        let(:request) { create(:scan_with_holdings_barcodes, user: user) }
+        let(:request) { create(:scan_with_holdings_barcodes, user:) }
 
         it 'indicates to the user they can request the item be scanned' do
           expect(mail.body.to_s).to include(
@@ -51,7 +51,7 @@ describe RequestStatusMailer do
 
     describe '#request_status_for_holdrecall' do
       let(:mailer_method) { :request_status_for_holdrecall }
-      let(:request) { create(:hold_recall, user: user) }
+      let(:request) { create(:hold_recall, user:) }
 
       it 'renders the correct email' do
         expect(mail.body.to_s).to include(
@@ -61,7 +61,7 @@ describe RequestStatusMailer do
     end
 
     describe '#request_status_for_page' do
-      let(:request) { create(:page, user: user) }
+      let(:request) { create(:page, user:) }
 
       it 'renders the correct email' do
         expect(mail.body.to_s).to include(
@@ -72,7 +72,7 @@ describe RequestStatusMailer do
 
     describe '#request_status_for_scan' do
       let(:mailer_method) { :request_status_for_scan }
-      let(:request) { create(:scan, user: user, page_range: '1-2', section_title: 'Chapter2') }
+      let(:request) { create(:scan, user:, page_range: '1-2', section_title: 'Chapter2') }
 
       it 'renders the correct email' do
         expect(mail.body.to_s).to include(
@@ -92,7 +92,7 @@ describe RequestStatusMailer do
 
       describe 'from' do
         describe 'origin specific' do
-          let(:request) { create(:mediated_page, user: user) }
+          let(:request) { create(:mediated_page, user:) }
 
           it 'is the configured from address for the origin' do
             expect(mail.from).to eq ['artlibrary@stanford.edu']
@@ -100,7 +100,7 @@ describe RequestStatusMailer do
         end
 
         describe 'location specific' do
-          let(:request) { create(:page_mp_mediated_page, user: user) }
+          let(:request) { create(:page_mp_mediated_page, user:) }
 
           it 'is the configured from address for the origin' do
             expect(mail.from).to eq ['brannerlibrary@stanford.edu']
@@ -109,7 +109,7 @@ describe RequestStatusMailer do
       end
 
       describe 'subject' do
-        let(:request) { create(:page_mp_mediated_page, user: user) }
+        let(:request) { create(:page_mp_mediated_page, user:) }
 
         it 'is the default' do
           expect(mail.subject).to eq "Request is pending approval (\"#{request.item_title}\")"
@@ -117,7 +117,7 @@ describe RequestStatusMailer do
       end
 
       describe 'body' do
-        let(:request) { create(:page_with_holdings, barcodes: ['3610512345678'], user: user) }
+        let(:request) { create(:page_with_holdings, barcodes: ['3610512345678'], user:) }
         let(:body) { mail.body.to_s }
 
         it 'has the title' do
@@ -131,7 +131,7 @@ describe RequestStatusMailer do
 
         context 'for a mediated page' do
           let(:request) do
-            create(:mediated_page_with_holdings, barcodes: ['12345678'], user: user)
+            create(:mediated_page_with_holdings, barcodes: ['12345678'], user:)
           end
 
           it 'has a planned date of visit' do
@@ -160,7 +160,7 @@ describe RequestStatusMailer do
       end
 
       describe 'destination specific' do
-        let(:request) { create(:scan, user: user) }
+        let(:request) { create(:scan, user:) }
 
         it 'is the configured from address for the origin' do
           expect(mail.from).to eq ['scan-and-deliver@stanford.edu']
@@ -168,7 +168,7 @@ describe RequestStatusMailer do
       end
 
       describe 'origin specific' do
-        let(:request) { create(:mediated_page, user: user) }
+        let(:request) { create(:mediated_page, user:) }
 
         it 'is the configured from address for the origin' do
           expect(mail.from).to eq ['artlibrary@stanford.edu']
@@ -176,7 +176,7 @@ describe RequestStatusMailer do
       end
 
       describe 'location specific' do
-        let(:request) { create(:page_mp_mediated_page, user: user) }
+        let(:request) { create(:page_mp_mediated_page, user:) }
 
         it 'is the configured from address for the origin' do
           expect(mail.from).to eq ['brannerlibrary@stanford.edu']
@@ -210,7 +210,7 @@ describe RequestStatusMailer do
       end
 
       describe 'user blocked' do
-        let(:request) { create(:page_with_holdings, barcodes: ['3610512345678'], user: user) }
+        let(:request) { create(:page_with_holdings, barcodes: ['3610512345678'], user:) }
 
         before do
           stub_symphony_response(build(:symphony_page_with_blocked_user))
@@ -236,7 +236,7 @@ describe RequestStatusMailer do
       let(:body) { mail.body.to_s }
 
       describe 'default' do
-        let(:request) { create(:page_with_holdings, user: user) }
+        let(:request) { create(:page_with_holdings, user:) }
 
         it 'includes the configured contact information' do
           expect(body).to include('Questions about your request?')

@@ -4,7 +4,7 @@ module Symphony
   # Accessing item catalog information from the symphony response
   class CatalogInfo < Symphony::Base
     def self.find(barcode, return_holds: false)
-      new(symphony_client.catalog_info(barcode, return_holds: return_holds))
+      new(symphony_client.catalog_info(barcode, return_holds:))
     end
 
     def barcode
@@ -57,7 +57,7 @@ module Symphony
     end
 
     def items(refetch: false)
-      return to_enum(:items, refetch: refetch) unless block_given?
+      return to_enum(:items, refetch:) unless block_given?
 
       Array.wrap(fields.dig('call', 'fields', 'itemList')).each do |record|
         if refetch

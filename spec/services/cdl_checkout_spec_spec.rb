@@ -11,7 +11,7 @@ RSpec.describe CdlCheckout do
                     callkey: 'xyz',
                     cdl_proxy_hold_item: instance_double(Symphony::CatalogInfo, key: '1'),
                     loan_period: 2.hours,
-                    items: items)
+                    items:)
   end
   let(:symphony_client) { instance_double(SymphonyClient) }
 
@@ -54,7 +54,7 @@ RSpec.describe CdlCheckout do
       it 'sends the user a next-up email if the background checkout succeeds' do
         hold = instance_double(Symphony::HoldRecord, key: 'x', circ_record_key: 'y', circ_record: instance_double(Symphony::CircRecord))
         expect(subject).to receive(:process_checkout).with('12345').and_raise(Exceptions::SymphonyError).ordered
-        expect(subject).to receive(:process_checkout).with('12345').and_return({ hold: hold, token: 'xyz' }).ordered
+        expect(subject).to receive(:process_checkout).with('12345').and_return({ hold:, token: 'xyz' }).ordered
 
         mailer = double(deliver_later: true)
         expect(CdlWaitlistMailer).to receive(:youre_up).with(hold.key, hold.circ_record_key).and_return(mailer)

@@ -86,7 +86,7 @@ class CdlController < ApplicationController
     status = exception.privileges_error? ? :unauthorized : :internal_server_error
 
     respond_to do |format|
-      format.json { render json: { error: exception.messages }.to_json, status: status }
+      format.json { render json: { error: exception.messages }.to_json, status: }
       format.html { render 'symphony_error' }
     end
   end

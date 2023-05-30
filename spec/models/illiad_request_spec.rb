@@ -6,7 +6,7 @@ RSpec.describe IlliadRequest do
   subject { described_class.new(scan) }
 
   let(:user) { create(:sso_user) }
-  let(:scan) { create(:scan_with_holdings_barcodes, user: user) }
+  let(:scan) { create(:scan_with_holdings_barcodes, user:) }
 
   describe 'illiad request json' do
     it 'includes the correct illiad routing info' do

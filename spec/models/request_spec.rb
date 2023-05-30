@@ -496,7 +496,7 @@ RSpec.describe Request do
   end
 
   describe 'send_approval_status!' do
-    subject(:request) { create(:page, user: user) }
+    subject(:request) { create(:page, user:) }
 
     let(:user) {}
 

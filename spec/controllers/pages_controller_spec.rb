@@ -294,7 +294,7 @@ describe PagesController do
       let(:user) { create(:sso_user) }
 
       it 'is successful if they have the are the creator of the record' do
-        page = create(:page, user: user)
+        page = create(:page, user:)
         get :success, params: { id: page[:id] }
         expect(response).to be_successful
       end
@@ -324,7 +324,7 @@ describe PagesController do
       let(:user) { create(:sso_user) }
 
       it 'is successful if they have the are the creator of the record' do
-        page = create(:page, user: user)
+        page = create(:page, user:)
         get :status, params: { id: page[:id] }
         expect(response).to be_successful
       end

@@ -88,7 +88,7 @@ class LocationRules
       return true if item_types.nil?
 
       holding_item_types = request.holdings.map(&:type)
-      (Array(item_types) & holding_item_types).any?
+      Array(item_types).intersect?(holding_item_types)
     end
   end
 end

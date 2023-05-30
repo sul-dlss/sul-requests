@@ -30,7 +30,7 @@ class CdlWaitlistJob < ApplicationJob
       check_for_symphony_errors(symphony_client.cancel_hold(active_hold_record.key))
 
       comment = active_hold_record.comment.gsub('NEXT_UP', 'MISSED').gsub('ACTIVE', 'EXPIRED')
-      retry_symphony_errors { symphony_client.update_hold(active_hold_record.key, comment: comment) }
+      retry_symphony_errors { symphony_client.update_hold(active_hold_record.key, comment:) }
 
       CdlWaitlistMailer.hold_expired(active_hold_record.key).deliver_later if active_hold_record.next_up_cdl?
     end
@@ -57,7 +57,7 @@ class CdlWaitlistJob < ApplicationJob
     cdl_logger "Marking hold #{next_up.key} as next for #{circ_record.item_barcode}"
     # Update hold record so its next
     comment = "CDL;#{next_up.druid};#{circ_record.key};#{new_circ_record.checkout_date.to_i};NEXT_UP"
-    retry_symphony_errors { symphony_client.update_hold(next_up.key, comment: comment) }
+    retry_symphony_errors { symphony_client.update_hold(next_up.key, comment:) }
 
     # Send patron an email
     CdlWaitlistMailer.youre_up(next_up.key, new_circ_record.key).deliver_now

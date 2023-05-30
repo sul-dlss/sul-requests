@@ -44,7 +44,7 @@ class FolioClient
   # [String] pickup_location_id the UUID of the pickup location
   # [String] patron_comments
   # [Date] expiration_date
-  class HoldRequest < Data.define(:pickup_location_id, :patron_comments, :expiration_date)
+  HoldRequest = Data.define(:pickup_location_id, :patron_comments, :expiration_date) do
     def as_json
       {
         pickupLocationId: pickup_location_id,
@@ -64,7 +64,7 @@ class FolioClient
   # @param [HoldRequest] request
   def create_instance_hold(user_id, instance_id, request)
     response = post("/patron/account/#{user_id}/instance/#{instance_id}/hold", json: request.as_json)
-    check_response(response, title: 'Hold request', context: { user_id: user_id, instance_id: instance_id, **params })
+    check_response(response, title: 'Hold request', context: { user_id:, instance_id:, **params })
 
     parse_json(response)
   end
@@ -79,7 +79,7 @@ class FolioClient
   def create_item_hold(user_id, item_id, request)
     response = post("/patron/account/#{user_id}/item/#{item_id}/hold", json: request.as_json)
 
-    check_response(response, title: 'Hold request', context: { user_id: user_id, instance_id: instance_id, **params })
+    check_response(response, title: 'Hold request', context: { user_id:, instance_id:, **params })
 
     parse_json(response)
   end
@@ -93,13 +93,13 @@ class FolioClient
   end
 
   def get_item(barcode)
-    response = get_json('/item-storage/items', params: { query: CqlQuery.new(barcode: barcode).to_query })
+    response = get_json('/item-storage/items', params: { query: CqlQuery.new(barcode:).to_query })
 
     response.dig('items', 0)
   end
 
   def get_service_point(code)
-    response = get_json('/service-points', params: { query: CqlQuery.new(code: code).to_query })
+    response = get_json('/service-points', params: { query: CqlQuery.new(code:).to_query })
 
     response.dig('servicepoints', 0)
   end
@@ -145,7 +145,7 @@ class FolioClient
   end
 
   def authenticated_request(path, method:, params: nil, headers: {}, json: nil)
-    request(path, method: method, params: params, headers: headers.merge('x-okapi-token': session_token), json: json)
+    request(path, method:, params:, headers: headers.merge('x-okapi-token': session_token), json:)
   end
 
   def request(path, method:, headers: nil, params: nil, json: nil)
