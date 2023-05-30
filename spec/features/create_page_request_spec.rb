@@ -16,11 +16,12 @@ RSpec.describe 'Creating a page request' do
           'status' => 'Available',
           'barcode' => '3610512345678',
           'location' =>
-          { 'effectiveLocation' => { 'code' => 'GRE-STACKS' },
-            'permanentLocation' => { 'code' => 'GRE-STACKS' },
+          { 'effectiveLocation' => { 'code' => 'SAL3-PAGE-GR' },
+            'permanentLocation' => { 'code' => 'SAL3-PAGE-GR' },
             'temporaryLocation' => {} },
           'callNumber' =>
             { 'typeId' => '6caca63e-5651-4db6-9247-3205156e9699', 'typeName' => 'Other scheme', 'callNumber' => 'ABC 123' },
+          'materialType' => 'periodical',
           'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
           'permanentLoanType' => 'Can circulate',
           'suppressFromDiscovery' => false },
@@ -28,11 +29,12 @@ RSpec.describe 'Creating a page request' do
           'status' => 'Available',
           'barcode' => '3610587654321',
           'location' =>
-          { 'effectiveLocation' => { 'code' => 'GRE-STACKS' },
-            'permanentLocation' => { 'code' => 'GRE-STACKS' },
+          { 'effectiveLocation' => { 'code' => 'SAL3-PAGE-GR' },
+            'permanentLocation' => { 'code' => 'SAL3-PAGE-GR' },
             'temporaryLocation' => {} },
           'callNumber' =>
             { 'typeId' => '6caca63e-5651-4db6-9247-3205156e9699', 'typeName' => 'Other scheme', 'callNumber' => 'ABC 321' },
+          'materialType' => 'periodical',
           'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
           'permanentLoanType' => 'Can circulate',
           'suppressFromDiscovery' => false }] }

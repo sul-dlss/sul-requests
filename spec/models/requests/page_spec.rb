@@ -52,7 +52,6 @@ RSpec.describe Page do
       expect(subject.to_token(version: 1)).to match(/jstanford@stanford.edu$/)
     end
   end
-  
 
   describe 'validation' do
     it 'does not allow mediated pages to be created' do

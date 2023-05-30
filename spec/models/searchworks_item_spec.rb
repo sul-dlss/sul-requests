@@ -3,11 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe SearchworksItem do
-  before do
-    allow(Request).to receive(:bib_model_class).and_return(described_class) 
-  end
-
   subject(:item) { described_class.new(request) }
+
+  before do
+    allow(Request).to receive(:bib_model_class).and_return(described_class)
+  end
 
   let(:request) { create(:request, item_id: '123') }
 

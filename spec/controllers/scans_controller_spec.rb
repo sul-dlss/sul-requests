@@ -17,7 +17,9 @@ RSpec.describe ScansController do
           { 'effectiveLocation' => { 'code' => 'SAL3-STACKS' },
             'permanentLocation' => { 'code' => 'SAL3-STACKS' },
             'temporaryLocation' => {} },
+          'callNumber' => { 'callNumber' => 'PR6123 .E475 W42 2009' },
           'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
+          'materialType' => 'book',
           'permanentLoanType' => 'Can circulate',
           'suppressFromDiscovery' => false },
         { 'id' => '99466f50-2b8c-51d4-8890-373190b8f6c4',
@@ -27,7 +29,9 @@ RSpec.describe ScansController do
           { 'effectiveLocation' => { 'code' => 'SAL3-STACKS' },
             'permanentLocation' => { 'code' => 'SAL3-STACKS' },
             'temporaryLocation' => {} },
+          'callNumber' => { 'callNumber' => 'PR6123 .E475 W42 2009' },
           'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
+          'materialType' => 'book',
           'permanentLoanType' => 'Can circulate',
           'suppressFromDiscovery' => false }] }
   end
