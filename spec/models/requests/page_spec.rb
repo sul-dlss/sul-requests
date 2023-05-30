@@ -3,6 +3,45 @@
 require 'rails_helper'
 
 RSpec.describe Page do
+  before do
+    allow_any_instance_of(FolioClient).to receive(:find_instance).and_return({ indexTitle: 'Item Title' })
+    allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
+    allow_any_instance_of(FolioClient).to receive(:items_and_holdings).and_return(folio_holding_response)
+  end
+
+  let(:folio_holding_response) do
+    { 'instanceId' => 'f1c52ab3-721e-5234-9a00-1023e034e2e8',
+      'source' => 'MARC',
+      'modeOfIssuance' => 'single unit',
+      'natureOfContent' => [],
+      'holdings' => [],
+      'items' =>
+       [{ 'id' => '584baef9-ea2f-5ff5-9947-bbc348aee4a4',
+          'status' => 'Available',
+          'barcode' => '3610512345678',
+          'location' =>
+          { 'effectiveLocation' => { 'code' => 'GRE-STACKS' },
+            'permanentLocation' => { 'code' => 'GRE-STACKS' },
+            'temporaryLocation' => {} },
+          'callNumber' =>
+            { 'typeId' => '6caca63e-5651-4db6-9247-3205156e9699', 'typeName' => 'Other scheme', 'callNumber' => 'ABC 123' },
+          'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
+          'permanentLoanType' => 'Can circulate',
+          'suppressFromDiscovery' => false },
+        { 'id' => '99466f50-2b8c-51d4-8890-373190b8f6c4',
+          'status' => 'Available',
+          'barcode' => '3610587654321',
+          'location' =>
+          { 'effectiveLocation' => { 'code' => 'GRE-STACKS' },
+            'permanentLocation' => { 'code' => 'GRE-STACKS' },
+            'temporaryLocation' => {} },
+          'callNumber' =>
+            { 'typeId' => '6caca63e-5651-4db6-9247-3205156e9699', 'typeName' => 'Other scheme', 'callNumber' => 'ABC 321' },
+          'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
+          'permanentLoanType' => 'Can circulate',
+          'suppressFromDiscovery' => false }] }
+  end
+
   describe 'TokenEncryptable' do
     it 'mixins TokenEncryptable' do
       expect(subject).to be_kind_of TokenEncryptable
@@ -13,6 +52,7 @@ RSpec.describe Page do
       expect(subject.to_token(version: 1)).to match(/jstanford@stanford.edu$/)
     end
   end
+  
 
   describe 'validation' do
     it 'does not allow mediated pages to be created' do
