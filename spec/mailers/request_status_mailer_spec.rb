@@ -2,12 +2,18 @@
 
 require 'rails_helper'
 
-describe RequestStatusMailer do
+RSpec.describe RequestStatusMailer do
   describe '#request_status' do
     let(:user) { build(:non_sso_user) }
-    let(:request) { create(:page, user:) }
+    let(:request) { build_stubbed(:page, user:) }
     let(:mailer_method) { :request_status_for_page }
     let(:mail) { described_class.send(mailer_method, request) }
+    let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
+    let(:selected_items) { [] }
+
+    before do
+      allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    end
 
     describe '#request_status_for_u003' do
       let(:mailer_method) { :request_status_for_u003 }
@@ -40,6 +46,7 @@ describe RequestStatusMailer do
 
       context 'when the item is scannable' do
         let(:request) { create(:scan, :with_holdings_barcodes, user:) }
+        let(:selected_items) { [double(:item, barcode: '12345678', type: 'foo')] }
 
         it 'indicates to the user they can request the item be scanned' do
           expect(mail.body.to_s).to include(
@@ -117,31 +124,36 @@ describe RequestStatusMailer do
       end
 
       describe 'body' do
-        let(:request) { create(:page_with_holdings, barcodes: ['3610512345678'], user:) }
         let(:body) { mail.body.to_s }
 
-        it 'has the title' do
-          expect(body).to include("Title: #{request.item_title}")
-        end
+        context 'for a page with holdings' do
+          let(:request) { create(:page_with_holdings, barcodes: ['3610512345678'], user:) }
+          let(:selected_items) { [double(:item, barcode: '3610512345678', callnumber: 'ABC 123')] }
 
-        it 'has holdings information' do
-          expect(body).to include('Item(s) requested:')
-          expect(body).to include('ABC 123')
+          it 'has the title' do
+            expect(body).to include("Title: #{request.item_title}")
+          end
+
+          it 'has holdings information' do
+            expect(body).to include('Item(s) requested:')
+            expect(body).to include('ABC 123')
+          end
+
+          it 'has a link to the status page' do
+            expect(body).to match(%r{Check the status before your visit at .*/pages/#{request.id}/status\?token})
+          end
         end
 
         context 'for a mediated page' do
           let(:request) do
             create(:mediated_page_with_holdings, barcodes: ['12345678'], user:)
           end
+          let(:selected_items) { [double(:item, barcode: '12345678', callnumber: 'ABC 123')] }
 
           it 'has a planned date of visit' do
             expect(body).to include 'Items approved for access will be ready when you visit'
             expect(body).to include I18n.l request.needed_date, format: :long
           end
-        end
-
-        it 'has a link to the status page' do
-          expect(body).to match(%r{Check the status before your visit at .*/pages/#{request.id}/status\?token})
         end
       end
     end
@@ -194,6 +206,10 @@ describe RequestStatusMailer do
 
     describe 'subject' do
       describe 'success' do
+        before do
+          allow(request.ils_response).to receive(:all_successful?).and_return true
+        end
+
         it '"request has been processed"' do
           expect(mail.subject).to eq "We received your request for \"#{request.item_title}\""
         end
@@ -211,6 +227,9 @@ describe RequestStatusMailer do
 
       describe 'user blocked' do
         let(:request) { create(:page_with_holdings, barcodes: ['3610512345678'], user:) }
+        let(:selected_items) do
+          [double(:item, barcode: '3610512345678', callnumber: 'ABC 123', request_status: double('status', text: 'foo'))]
+        end
 
         before do
           stub_symphony_response(build(:symphony_page_with_blocked_user))
