@@ -6,8 +6,11 @@ require 'rails_helper'
 # not follow redirects we can't test via the form that the requests are going through.
 # Our controller tests are going to have to be sufficient where we test that we redirect
 # to the illiad URL passing the create scan URL via GET and that the create scan URL via GET works.
-describe 'Create Scan Request' do
+RSpec.describe 'Create Scan Request' do
+  let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
+
   before do
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
     allow(SubmitScanRequestJob).to receive(:perform_later)
     stub_searchworks_api_json(build(:sal3_holdings))
   end
