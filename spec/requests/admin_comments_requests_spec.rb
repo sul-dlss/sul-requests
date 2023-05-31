@@ -7,8 +7,11 @@ RSpec.describe 'AdminComments' do
   let(:mediated_page) { create(:mediated_page) }
   let(:headers) { { 'HTTP_REFERER' => 'http://example.com' } }
   let(:url) { "/mediated_pages/#{mediated_page.id}/admin_comments" }
+  let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
+  let(:selected_items) { [] }
 
   before do
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
     stub_current_user(user)
   end
 
