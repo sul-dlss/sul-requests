@@ -2,8 +2,11 @@
 
 require 'rails_helper'
 
-describe Dashboard do
+RSpec.describe Dashboard do
+  let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
+
   before do
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
     create(:mediated_page)
     create(:page)
     create(:page)
