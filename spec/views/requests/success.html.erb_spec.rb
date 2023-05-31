@@ -2,11 +2,14 @@
 
 require 'rails_helper'
 
-describe 'requests/success.html.erb' do
+RSpec.describe 'requests/success.html.erb' do
   let(:user) { create(:sso_user) }
-  let(:request) { create(:page, user:) }
+  let(:request) { create(:page, user:, item_title: 'Test title') }
+  let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
+  let(:selected_items) { [] }
 
   before do
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
     allow(view).to receive_messages(current_request: request)
     allow(view).to receive_messages(current_user: user)
   end
@@ -79,7 +82,7 @@ describe 'requests/success.html.erb' do
     end
 
     context 'for requests on behalf of a proxy group' do
-      let(:request) { build(:page, user:) }
+      let(:request) { build_stubbed(:page, user:, item_title: 'Test title') }
       let(:user) { create(:library_id_user, email: 'some-address@example.com') }
 
       before do
@@ -178,6 +181,11 @@ describe 'requests/success.html.erb' do
     end
 
     describe 'selected items' do
+      let(:selected_items) do
+        [double('item', barcode: '12345678', callnumber: 'ABC 123'),
+         double('item', barcode: '23456789', callnumber: 'ABC 456')]
+      end
+
       let(:request) { create(:mediated_page_with_holdings, user:, barcodes: %w(12345678 23456789)) }
 
       before { render }
