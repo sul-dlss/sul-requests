@@ -2,12 +2,16 @@
 
 require 'rails_helper'
 
-describe RequestStatusMailerFactory do
+RSpec.describe RequestStatusMailerFactory do
   subject(:mailer) { described_class.for(request) }
 
-  let(:user) { create(:anon_user) }
+  let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
+  let(:selected_items) { [] }
 
-  before { request.user = user }
+  before do
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    request.user = create(:anon_user)
+  end
 
   describe 'user errors' do
     describe 'Error U003' do
