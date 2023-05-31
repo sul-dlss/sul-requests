@@ -5,8 +5,23 @@ require 'rails_helper'
 RSpec.describe 'Mediation table', js: true do
   let(:top_level_columns) { 7 }
   let(:short_comment) { 'not a long comment' }
+  let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
+  let(:selected_items) { [] }
+
+  before do
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+  end
 
   context 'Library Mediation' do
+    let(:selected_items) do
+      [
+        double(:item, barcode: '12345678'),
+        double(:item, barcode: '23456789'),
+        double(:item, barcode: '34567890'),
+        double(:item, barcode: '45678901')
+      ]
+    end
+
     before do
       stub_current_user(create(:superadmin_user))
       stub_searchworks_api_json(build(:searchable_holdings))
@@ -308,6 +323,13 @@ RSpec.describe 'Mediation table', js: true do
 
   context 'contact email' do
     context 'for SSO users that do not have their email address previously set by LDAP' do
+      let(:selected_items) do
+        [
+          double(:item, barcode: '12345678'),
+          double(:item, barcode: '23456789')
+        ]
+      end
+
       before do
         stub_current_user(create(:superadmin_user))
         create(
