@@ -5,69 +5,89 @@ require 'rails_helper'
 RSpec.describe Request do
   describe 'validations' do
     it 'requires the basic set of information to be present' do
-      expect { described_class.create! }.to raise_error(ActiveRecord::RecordInvalid)
       expect do
         described_class.create!(
           item_id: '1234',
           origin: 'GREEN'
         )
       end.to raise_error(ActiveRecord::RecordInvalid)
-      expect { described_class.create! }.to raise_error(ActiveRecord::RecordInvalid)
-      expect { described_class.create! }.to raise_error(ActiveRecord::RecordInvalid)
     end
 
-    it 'requires that the requested barcodes exist in the holdings of the requested location' do
-      stub_searchworks_api_json(build(:multiple_holdings))
-      expect do
+    context 'when barcodes are provided' do
+      before do
+        stub_searchworks_api_json(build(:multiple_holdings))
+      end
+
+      let(:create_request) do
         described_class.create!(
           item_id: '1234',
           origin: 'GREEN',
           origin_location: 'STACKS',
-          barcodes: %w(9999999 3610512345678)
+          barcodes:
         )
-      end.to raise_error(
-        ActiveRecord::RecordInvalid, 'Validation failed: A selected item is not located in the requested location'
-      )
-      described_class.create!(
-        item_id: '1234',
-        origin: 'GREEN',
-        origin_location: 'STACKS',
-        barcodes: %w(3610512345678)
-      )
-      expect(described_class.last.barcodes).to eq %w(3610512345678)
+      end
+
+      context 'when one of the requested barcodes does not exist in the ILS' do
+        let(:barcodes) { %w(9999999 3610512345678) }
+
+        it 'fails to validate' do
+          expect { create_request }.to raise_error(
+            ActiveRecord::RecordInvalid, 'Validation failed: A selected item is not located in the requested location'
+          )
+        end
+      end
+
+      context 'when the barcodes exists in the ILS' do
+        let(:barcodes) { %w(3610512345678) }
+
+        it 'passes validation' do
+          create_request
+          expect(described_class.last.barcodes).to eq %w(3610512345678)
+        end
+      end
     end
 
-    it 'requires that when a needed_date is provided it is not before today' do
-      expect do
+    context 'when a needed_date is provided and it is before today' do
+      let(:create_request) do
         described_class.create!(
           item_id: '1234',
           origin: 'GREEN',
           origin_location: 'STACKS',
           needed_date: Time.zone.today - 1.day
         )
-      end.to raise_error(
-        ActiveRecord::RecordInvalid, 'Validation failed: Needed on Date cannot be earlier than today'
-      )
+      end
+
+      it 'fails validation' do
+        expect { create_request }.to raise_error(
+          ActiveRecord::RecordInvalid, 'Validation failed: Needed on Date cannot be earlier than today'
+        )
+      end
     end
 
-    it 'requires that an item is not scannable only' do
-      stub_searchworks_api_json(build(:scannable_only_holdings))
-
-      expect do
+    context 'when the item is scannable only' do
+      let(:create_request) do
         described_class.create!(
           item_id: '123456',
           origin: 'SAL',
           origin_location: 'SAL-TEMP'
         )
-      end.to raise_error(
-        ActiveRecord::RecordInvalid,
-        'Validation failed: This item is for in-library use and not available for Request & pickup.'
-      )
+      end
+
+      before do
+        stub_searchworks_api_json(build(:scannable_only_holdings))
+      end
+
+      it 'fails validation' do
+        expect { create_request }.to raise_error(
+          ActiveRecord::RecordInvalid,
+          'Validation failed: This item is for in-library use and not available for Request & pickup.'
+        )
+      end
     end
   end
 
   describe 'scopes' do
-    describe 'for_date' do
+    describe '.for_date' do
       before do
         create(:request, needed_date: Time.zone.today + 1.day)
         create(:request, needed_date: Time.zone.today + 1.day)
@@ -80,7 +100,7 @@ RSpec.describe Request do
       end
     end
 
-    describe 'for_create_date' do
+    describe '.for_create_date' do
       before do
         create(:request, created_at: Time.zone.today - 1.day)
         create(:request, created_at: Time.zone.today - 1.day)
@@ -93,7 +113,7 @@ RSpec.describe Request do
       end
     end
 
-    describe 'needed_date_desc' do
+    describe '.needed_date_desc' do
       before do
         create(:request, needed_date: Time.zone.today + 1.day)
         create(:request, needed_date: Time.zone.today + 3.days)
@@ -108,7 +128,7 @@ RSpec.describe Request do
       end
     end
 
-    describe 'obsolete' do
+    describe '.obsolete' do
       before do
         create(:hold_recall, created_at: Time.zone.today - 1.month, item_comment: 'Too new')
         create(:hold_recall, created_at: Time.zone.today - 2.years, item_comment: 'Obsolete')
