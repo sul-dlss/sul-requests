@@ -3,6 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe Request do
+  let(:holdings) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
+
+  before do
+    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))  
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings)
+  end
+  
   describe 'validations' do
     it 'requires the basic set of information to be present' do
       expect do

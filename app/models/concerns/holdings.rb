@@ -5,11 +5,7 @@
 ###
 module Holdings
   def holdings_object
-    @holdings_object ||= if bib_data.is_a? Folio::BibData
-                           Folio::Holdings.new(self, bib_data.instance_id)
-                         else
-                           Searchworks::Holdings.new(self, bib_data.holdings)
-                         end
+    @holdings_object ||= HoldingsRelationshipBuilder.build(bib_data)
   end
 
   def holdings
