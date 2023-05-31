@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe SubmitBorrowDirectRequestJob, type: :job do
+RSpec.describe SubmitBorrowDirectRequestJob, type: :job do
   let(:user) { create(:library_id_user) }
   let(:request) { create(:hold_recall_with_holdings, user:) }
   let(:sw_item) { double('SeachWorksItem', isbn: %w[12345 54321]) }
@@ -75,8 +75,12 @@ describe SubmitBorrowDirectRequestJob, type: :job do
 
     context 'when the item is requestable and the request succeeds' do
       let(:user) { create(:sso_user) }
+      let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
+      let(:selected_items) { [] }
 
       before do
+        allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+
         expect(borrow_direct_item).to receive_messages(
           requestable?: true,
           request_item: { 'mockResponse' => ['Successful Response'], 'RequestNumber' => '1' }
