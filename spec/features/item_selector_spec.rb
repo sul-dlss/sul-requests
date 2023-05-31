@@ -3,12 +3,19 @@
 require 'rails_helper'
 
 RSpec.describe 'Item Selector' do
+  let(:holdings_relationship) { double(:relationship, where: [], all: all_items, single_checked_out_item?: false) }
+  let(:all_items) { [] }
+  let(:bib_data) { double(:bib_data, title: 'Test title') }
+
   before do
+    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(bib_data)
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
     stub_current_user(create(:sso_user))
   end
 
   describe 'for single items' do
     before { stub_searchworks_api_json(build(:single_holding)) }
+    let(:all_items) { [double(:item, callnumber: 'ABC 123', current_location_code: 'derp', barcode: '9999')] }
 
     it 'displays the item call number' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
@@ -28,6 +35,14 @@ RSpec.describe 'Item Selector' do
     describe 'where there are not enough to be searchable' do
       let(:request_path) { new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS') }
       let(:holdings) { build(:multiple_holdings) }
+      let(:all_items) do
+        [
+          double(:item, callnumber: 'ABC 123', checked_out?: false, barcode: '9999', status_class: 'available', status_text: 'Available', current_location_code: 'huh?', public_note: 'huh?'),
+          double(:item, callnumber: 'ABC 321', checked_out?: false, barcode: '8888', status_class: 'available', status_text: 'Available', current_location_code: 'huh?', public_note: 'huh?')
+
+          ]
+        end
+
 
       it 'displays the selected item count' do
         expect(page).to have_css('span[data-items-counter]', text: '0 items selected')
@@ -90,6 +105,26 @@ RSpec.describe 'Item Selector' do
       describe 'for aeon pages', js: true do
         let(:request_path) { new_aeon_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS') }
         let(:holdings) { build(:searchable_spec_holdings) }
+        let(:bib_data) do
+           double(:bib_data, title: 'Test title', finding_aid?: true, finding_aid: 'https://findingaids.dev/hmm', author: 'bob',
+                  pub_date: '2020-09-01', view_url: 'https://searchworks.stanford.edu')
+        end
+
+        let(:all_items) do
+          [
+            double(:item, callnumber: 'ABC 123', checked_out?: false, barcode: '12345678', status_class: 'available', status_text: 'Available', current_location_code: 'huh?', public_note: 'huh?'),
+            double(:item, callnumber: 'ABC 456', checked_out?: false, barcode: '23456789', status_class: 'available', status_text: 'Available', current_location_code: 'huh?', public_note: 'huh?'),
+            double(:item, callnumber: 'ABC 789', checked_out?: false, barcode: '34567890', status_class: 'available', status_text: 'Available', current_location_code: 'huh?', public_note: 'huh?'),
+            double(:item, callnumber: 'ABC 012', checked_out?: false, barcode: '45678901', status_class: 'available', status_text: 'Available', current_location_code: 'huh?', public_note: 'huh?'),
+            double(:item, callnumber: 'ABC 345', checked_out?: false, barcode: '56789012', status_class: 'available', status_text: 'Available', current_location_code: 'huh?', public_note: 'huh?'),
+            double(:item, callnumber: 'ABC 678', checked_out?: false, barcode: '67890123', status_class: 'available', status_text: 'Available', current_location_code: 'huh?', public_note: 'huh?'),
+            double(:item, callnumber: 'ABC 901', checked_out?: false, barcode: '67890123', status_class: 'available', status_text: 'Available', current_location_code: 'huh?', public_note: 'huh?'),
+            double(:item, callnumber: 'ABC 234', checked_out?: false, barcode: '67890123', status_class: 'available', status_text: 'Available', current_location_code: 'huh?', public_note: 'huh?'),
+            double(:item, callnumber: 'ABC 567', checked_out?: false, barcode: '67890123', status_class: 'available', status_text: 'Available', current_location_code: 'huh?', public_note: 'huh?'),
+            double(:item, callnumber: 'ABC 890', checked_out?: false, barcode: '67890123', status_class: 'available', status_text: 'Available', current_location_code: 'huh?', public_note: 'huh?')
+
+            ]
+          end
 
         before { click_on 'Continue' }
 
