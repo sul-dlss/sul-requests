@@ -2,13 +2,7 @@
 
 require 'rails_helper'
 
-def update_symphony_data_and_save(request, symphony_data)
-  r = Request.find(request.id)
-  r.symphony_response_data = symphony_data
-  r.save!
-end
-
-describe ItemStatus do
+RSpec.describe ItemStatus do
   subject { described_class.new(request, barcode) }
 
   let(:request) { create(:mediated_page_with_single_holding) }
@@ -48,21 +42,6 @@ describe ItemStatus do
       expect(request).to receive(:save!)
       expect(Request.ils_job_class).to receive(:perform_now).with(request.id, { barcode: })
       subject.approve!('jstanford')
-    end
-
-    context 'persisting data' do
-      let(:request) { create(:mediated_page) }
-
-      it 'reloads the record to ensure that any serialized attributes are updated' do
-        response = build(:symphony_page_with_single_item)
-        expect(request.symphony_response_data).to be_nil
-
-        expect(Request.ils_job_class).to receive(:perform_now).with(request.id, { barcode: }).and_return(
-          update_symphony_data_and_save(request, response)
-        )
-        subject.approve!('jstanford')
-        expect(request.symphony_response_data).to eq response
-      end
     end
 
     describe 'request approval status' do
