@@ -2,7 +2,15 @@
 
 require 'rails_helper'
 
-describe 'Requests Delegation' do
+RSpec.describe 'Requests Delegation' do
+  let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
+  let(:selected_items) { [] }
+
+  before do
+    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+  end
+
   describe 'non-scannable materials' do
     it 'is automatically delegated to the page request form' do
       visit new_request_path(item_id: '12345', origin: 'SAL1/2', origin_location: 'STACKS')
