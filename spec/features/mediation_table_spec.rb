@@ -13,23 +13,43 @@ RSpec.describe 'Mediation table', js: true do
   end
 
   context 'Library Mediation' do
-    let(:request_status) do
-      instance_double(ItemStatus, approved?: true, errored?: false, approver: 'bob', approval_time: '2023-05-31')
+    let(:request_status1) do # rubocop:disable RSpec/IndexedLet
+      instance_double(ItemStatus, approved?: false, errored?: false, approver: 'bob', approval_time: '2023-05-31')
+    end
+    let(:request_status2) do # rubocop:disable RSpec/IndexedLet
+      instance_double(ItemStatus, approved?: false, errored?: false, approver: 'bob', approval_time: '2023-05-31')
     end
     let(:selected_items) do
       [
-        double(:item, barcode: '12345678', callnumber: 'ABC 123', hold?: true, request_status:,
-                      permanent_location: 'ART-STACKS', temporary_location: nil),
-        double(:item, barcode: '23456789', callnumber: 'ABC 123', hold?: true, request_status:,
-                      permanent_location: 'ART-STACKS', temporary_location: nil),
-        double(:item, barcode: '34567890', callnumber: 'ABC 123', hold?: true, request_status:,
-                      permanent_location: 'ART-STACKS', temporary_location: nil),
-        double(:item, barcode: '45678901', callnumber: 'ABC 123', hold?: true, request_status:,
-                      permanent_location: 'ART-STACKS', temporary_location: nil)
+        double(:item, barcode: '12345678', callnumber: 'ABC 123', hold?: false, paged?: false, request_status: request_status1,
+                      permanent_location: 'ART-STACKS', temporary_location:),
+        double(:item, barcode: '23456789', callnumber: 'ABC 456', hold?: true, request_status: request_status2,
+                      permanent_location: 'ART-STACKS', temporary_location:)
       ]
     end
 
+    let(:holdings_relationship_for_validation) do
+      double(:relationship, where: selected_items_for_validation, all: [], single_checked_out_item?: false)
+    end
+
+    let(:selected_items_for_validation) do
+      [
+        double(:item, barcode: '12345678', callnumber: 'ABC 123', hold?: true,
+                      permanent_location: 'ART-STACKS', temporary_location:),
+        double(:item, barcode: '23456789', callnumber: 'ABC 123', hold?: true,
+                      permanent_location: 'ART-STACKS', temporary_location:),
+        double(:item, barcode: '34567890', callnumber: 'ABC 123', hold?: true,
+                      permanent_location: 'ART-STACKS', temporary_location:),
+        double(:item, barcode: '45678901', callnumber: 'ABC 123', hold?: true,
+                      permanent_location: 'ART-STACKS', temporary_location:)
+      ]
+    end
+
+    let(:temporary_location) { nil }
+
     before do
+      allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship_for_validation)
+
       stub_current_user(create(:superadmin_user))
       stub_searchworks_api_json(build(:searchable_holdings))
       stub_symphony_response(ils_response)
@@ -60,6 +80,8 @@ RSpec.describe 'Mediation table', js: true do
         request_comment: short_comment,
         needed_date: Time.zone.now
       )
+
+      allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
 
       # create some completed requests (don't validate, since validation disallows needed dates which fall in the past)
       build(
@@ -136,10 +158,11 @@ RSpec.describe 'Mediation table', js: true do
 
     describe 'current location' do
       let(:ils_response) { build(:symphony_page_with_multiple_items) }
+      let(:temporary_location) { 'THE-CURRENT-LOCATION' }
 
       before do
         location_object = double(current_location: 'THE-CURRENT-LOCATION')
-        expect(Symphony::CatalogInfo).to receive(:find).at_least(:once).and_return(location_object)
+        allow(Symphony::CatalogInfo).to receive(:find).and_return(location_object)
       end
 
       it 'is fetched from Symphony' do
@@ -153,7 +176,7 @@ RSpec.describe 'Mediation table', js: true do
       end
     end
 
-    describe 'successful symphony response' do
+    context 'when the symphony response is successful' do
       let(:ils_response) { build(:symphony_page_with_multiple_items) }
 
       before do
@@ -262,8 +285,15 @@ RSpec.describe 'Mediation table', js: true do
       end
     end
 
-    describe 'unsuccessful symphony responses' do
+    describe 'when one of the symphony responses is unsuccessful' do
       let(:ils_response) { build(:symphony_request_with_mixed_status) }
+      let(:request_status1) do # rubocop:disable RSpec/IndexedLet
+        instance_double(ItemStatus, approved?: false, errored?: false, approver: 'bob', approval_time: '2023-05-31')
+      end
+      let(:request_status2) do # rubocop:disable RSpec/IndexedLet
+        instance_double(ItemStatus, approved?: false, errored?: true, user_error_text: 'Item not found in catalog', approver: 'bob',
+                                    approval_time: '2023-05-31')
+      end
 
       before do
         allow(Request.ils_job_class).to receive(:perform_now)
@@ -505,6 +535,18 @@ RSpec.describe 'Mediation table', js: true do
         user: create(:non_sso_user, name: 'Joe Doe ', email: 'joedoe@example.com'),
         barcodes: %w(12345678 87654321)
       )
+    end
+    let(:request_status) do
+      instance_double(ItemStatus, approved?: false, errored?: false)
+    end
+
+    let(:selected_items) do
+      [
+        double(:item, barcode: '12345678', callnumber: 'ABC 123', hold?: false, paged?: false, request_status:,
+                      permanent_location: 'ART-STACKS', temporary_location: nil),
+        double(:item, barcode: '23456789', callnumber: 'ABC 321', hold?: true, request_status:,
+                      permanent_location: 'ART-STACKS', temporary_location: nil)
+      ]
     end
 
     before do
