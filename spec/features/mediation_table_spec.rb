@@ -13,12 +13,19 @@ RSpec.describe 'Mediation table', js: true do
   end
 
   context 'Library Mediation' do
+    let(:request_status) do
+      instance_double(ItemStatus, approved?: true, errored?: false, approver: 'bob', approval_time: '2023-05-31')
+    end
     let(:selected_items) do
       [
-        double(:item, barcode: '12345678'),
-        double(:item, barcode: '23456789'),
-        double(:item, barcode: '34567890'),
-        double(:item, barcode: '45678901')
+        double(:item, barcode: '12345678', callnumber: 'ABC 123', hold?: true, request_status:,
+                      permanent_location: 'ART-STACKS', current_location: 'ART-STACKS'),
+        double(:item, barcode: '23456789', callnumber: 'ABC 123', hold?: true, request_status:,
+                      permanent_location: 'ART-STACKS', current_location: 'ART-STACKS'),
+        double(:item, barcode: '34567890', callnumber: 'ABC 123', hold?: true, request_status:,
+                      permanent_location: 'ART-STACKS', current_location: 'ART-STACKS'),
+        double(:item, barcode: '45678901', callnumber: 'ABC 123', hold?: true, request_status:,
+                      permanent_location: 'ART-STACKS', current_location: 'ART-STACKS')
       ]
     end
 
