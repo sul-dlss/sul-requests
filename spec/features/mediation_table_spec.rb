@@ -19,13 +19,13 @@ RSpec.describe 'Mediation table', js: true do
     let(:selected_items) do
       [
         double(:item, barcode: '12345678', callnumber: 'ABC 123', hold?: true, request_status:,
-                      permanent_location: 'ART-STACKS', current_location: 'ART-STACKS'),
+                      permanent_location: 'ART-STACKS', temporary_location: nil),
         double(:item, barcode: '23456789', callnumber: 'ABC 123', hold?: true, request_status:,
-                      permanent_location: 'ART-STACKS', current_location: 'ART-STACKS'),
+                      permanent_location: 'ART-STACKS', temporary_location: nil),
         double(:item, barcode: '34567890', callnumber: 'ABC 123', hold?: true, request_status:,
-                      permanent_location: 'ART-STACKS', current_location: 'ART-STACKS'),
+                      permanent_location: 'ART-STACKS', temporary_location: nil),
         double(:item, barcode: '45678901', callnumber: 'ABC 123', hold?: true, request_status:,
-                      permanent_location: 'ART-STACKS', current_location: 'ART-STACKS')
+                      permanent_location: 'ART-STACKS', temporary_location: nil)
       ]
     end
 

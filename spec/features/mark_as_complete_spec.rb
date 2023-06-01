@@ -13,7 +13,7 @@ RSpec.describe 'Mark As Complete', js: true do
       double(:item, barcode: '34567890',
                     request_status:,
                     permanent_location: 'ART-STACKS',
-                    current_location: 'ART-STACKS',
+                    temporary_location: nil,
                     callnumber: 'ABC 123',
                     hold?: true)
     ]
