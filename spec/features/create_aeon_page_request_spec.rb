@@ -21,28 +21,21 @@ RSpec.describe 'Creating an Aeon request', js: true do
             'permanentLocation' => { 'code' => 'SPEC-STACKS' },
             'temporaryLocation' => {} },
           'callNumber' =>
-            { 'typeId' => '6caca63e-5651-4db6-9247-3205156e9699', 'typeName' => 'Other scheme', 'callNumber' => 'XX(14198886.2)' },
-          'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
-          'materialType' => 'book',
-          'permanentLoanType' => 'Can circulate',
-          'suppressFromDiscovery' => false },
-        { 'id' => '99466f50-2b8c-51d4-8890-373190b8f6c4',
-          'status' => 'Available',
-          'barcode' => '87654321',
-          'location' =>
-          { 'effectiveLocation' => { 'code' => 'SPEC-STACKS' },
-            'permanentLocation' => { 'code' => 'SPEC-STACKS' },
-            'temporaryLocation' => {} },
-          'callNumber' =>
-            { 'typeId' => '6caca63e-5651-4db6-9247-3205156e9699', 'typeName' => 'Other scheme', 'callNumber' => 'XX(14198886.2)' },
+            { 'typeId' => '6caca63e-5651-4db6-9247-3205156e9699', 'typeName' => 'Other scheme', 'callNumber' => 'ABC 123' },
           'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
           'materialType' => 'book',
           'permanentLoanType' => 'Can circulate',
           'suppressFromDiscovery' => false }] }
   end
 
+  let(:folio_bib_info) do
+    { 'indexTitle' => 'Special Collections Item Title',
+      'contributors' => [{ 'name' => 'John Q. Public' }],
+      'publication' => [{ 'dateOfPublication' => '2018' }] }
+  end
+
   before do
-    allow_any_instance_of(FolioClient).to receive(:find_instance).and_return({ indexTitle: 'Item Title' })
+    allow_any_instance_of(FolioClient).to receive(:find_instance).and_return(folio_bib_info)
     allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
     allow_any_instance_of(FolioClient).to receive(:items_and_holdings).and_return(folio_holding_response)
     stub_current_user(user)
@@ -60,8 +53,8 @@ RSpec.describe 'Creating an Aeon request', js: true do
     end
   end
 
-  describe 'for an item without a finding aid' do
-    describe 'with a single holding' do
+  context 'with an item without a finding aid' do
+    context 'with a single holding' do
       describe 'info modal' do
         it 'provides instructions for the user to complete the request' do
           expect(page).to have_content 'Complete the request form'
@@ -123,6 +116,40 @@ RSpec.describe 'Creating an Aeon request', js: true do
 
     describe 'with multiple holdings' do
       let(:api_json) { build(:special_collections_holdings) }
+      let(:folio_holding_response) do
+        { 'instanceId' => 'f1c52ab3-721e-5234-9a00-1023e034e2e8',
+          'source' => 'MARC',
+          'modeOfIssuance' => 'single unit',
+          'natureOfContent' => [],
+          'holdings' => [],
+          'items' =>
+           [{ 'id' => '584baef9-ea2f-5ff5-9947-bbc348aee4a4',
+              'status' => 'Available',
+              'barcode' => '12345678',
+              'location' =>
+              { 'effectiveLocation' => { 'code' => 'SPEC-STACKS' },
+                'permanentLocation' => { 'code' => 'SPEC-STACKS' },
+                'temporaryLocation' => {} },
+              'callNumber' =>
+                { 'typeId' => '6caca63e-5651-4db6-9247-3205156e9699', 'typeName' => 'Other scheme', 'callNumber' => 'ABC 123' },
+              'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
+              'materialType' => 'book',
+              'permanentLoanType' => 'Can circulate',
+              'suppressFromDiscovery' => false },
+            { 'id' => '584baef9-ea2f-5ff5-9947-bbc348aee4a4',
+              'status' => 'Available',
+              'barcode' => '87654321',
+              'location' =>
+              { 'effectiveLocation' => { 'code' => 'SPEC-STACKS' },
+                'permanentLocation' => { 'code' => 'SPEC-STACKS' },
+                'temporaryLocation' => {} },
+              'callNumber' =>
+                { 'typeId' => '6caca63e-5651-4db6-9247-3205156e9699', 'typeName' => 'Other scheme', 'callNumber' => 'ABC 321' },
+              'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
+              'materialType' => 'book',
+              'permanentLoanType' => 'Can circulate',
+              'suppressFromDiscovery' => false }] }
+      end
 
       describe 'info modal' do
         it 'provides instructions for the user to complete the request' do
@@ -179,6 +206,14 @@ RSpec.describe 'Creating an Aeon request', js: true do
 
     describe 'for an item with a finding aid' do
       let(:api_json) { build(:special_collections_finding_aid_holdings) }
+
+      let(:folio_bib_info) do
+        { 'indexTitle' => 'Special Collections Item Title',
+          'electronicAccess' => [
+            { 'materialsSpecification' => 'Finding aid available online',
+              'uri' => 'http://www.oac.cdlib.org/findaid/ark:/12345/abcdefgh/' }
+          ] }
+      end
 
       describe 'info modal' do
         it 'provides instructions for the user to complete the request' do

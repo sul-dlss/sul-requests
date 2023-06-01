@@ -451,13 +451,6 @@ RSpec.describe 'Item Selector' do
 
   describe 'public notes' do
     let(:request_path) { new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL') }
-    let(:holdings) { build(:searchable_holdings) }
-
-    before do
-      stub_searchworks_api_json(holdings)
-      visit request_path
-    end
-
     let(:all_items) do
       [
         double(:item, callnumber: 'ABC 123', checked_out?: false, barcode: '12345678', status_class: 'available',
@@ -466,6 +459,12 @@ RSpec.describe 'Item Selector' do
                       status_text: 'Available', current_location_code: 'huh?', public_note: 'huh?')
 
       ]
+    end
+    let(:holdings) { build(:searchable_holdings) }
+
+    before do
+      stub_searchworks_api_json(holdings)
+      visit request_path
     end
 
     it 'are hidden input fields' do
