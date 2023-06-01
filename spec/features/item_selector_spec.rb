@@ -429,7 +429,7 @@ RSpec.describe 'Item Selector' do
         double(:item, callnumber: 'ABC 123', checked_out?: false, barcode: '12345678', status_class: 'available',
                       status_text: 'Available', current_location_code: 'huh?', public_note: 'huh?'),
         double(:item, callnumber: 'ABC 321', checked_out?: true, barcode: '87654321', status_class: 'available',
-                      status_text: 'Available', current_location_code: 'huh?', public_note: 'huh?')
+                      status_text: 'Available', current_location_code: 'huh?', public_note: 'huh?', due_date: '01/01/2015')
 
       ]
     end
@@ -453,10 +453,10 @@ RSpec.describe 'Item Selector' do
     let(:request_path) { new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL') }
     let(:all_items) do
       [
-        double(:item, callnumber: 'ABC 123', checked_out?: false, barcode: '12345678', status_class: 'available',
-                      status_text: 'Available', current_location_code: 'huh?', public_note: 'huh?'),
-        double(:item, callnumber: 'ABC 321', checked_out?: false, barcode: '87654321', status_class: 'available',
-                      status_text: 'Available', current_location_code: 'huh?', public_note: 'huh?')
+        double(:item, callnumber: 'ABC 123', checked_out?: false, barcode: '45678901', status_class: 'available',
+                      status_text: 'Available', current_location_code: 'huh?', public_note: 'note for 45678901'),
+        double(:item, callnumber: 'ABC 321', checked_out?: false, barcode: '23456789', status_class: 'available',
+                      status_text: 'Available', current_location_code: 'huh?', public_note: 'note for 23456789')
 
       ]
     end

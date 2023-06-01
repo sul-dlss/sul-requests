@@ -29,6 +29,10 @@ module Folio
       'depr'
     end
 
+    def due_date
+      raise "To be implemented (probably need to add real time availablity API. It's not in holdings)"
+    end
+
     def hold?
       raise 'how do we know? See Searchworks::HoldingItem'
     end
