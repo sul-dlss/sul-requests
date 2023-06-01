@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'Scannable' do
+RSpec.describe 'Scannable' do
   subject(:request) { build(:request, origin: library, origin_location: location) }
 
   let(:library) { 'SAL3' }
@@ -34,10 +34,13 @@ describe 'Scannable' do
       expect(subject).to be_scannable
     end
 
-    it 'is false when the location is not scannable' do
-      subject.origin = 'SAL'
-      subject.origin_location = 'NOT-STACKS'
-      expect(subject).not_to be_scannable
+    context 'when the location is not scannable' do
+      before do
+        request.origin = 'SAL'
+        request.origin_location = 'NOT-STACKS'
+      end
+
+      it { is_expected.not_to be_scannable }
     end
 
     it 'is false when the library is not scannable' do
@@ -46,7 +49,8 @@ describe 'Scannable' do
       expect(subject).not_to be_scannable
     end
 
-    context 'when there are no scannable items in the location' do
+    # FOLIO doesn't have item_type to filter by
+    context 'when there are no scannable items in the location', if: Settings.ils.bib_model != 'Folio::BibData' do
       let(:item_type) { 'NOT-STKS' }
 
       it 'is false' do
@@ -54,7 +58,8 @@ describe 'Scannable' do
       end
     end
 
-    context 'for some page-gr item types' do
+    # FOLIO doesn't have item_type to filter by
+    context 'for some page-gr item types', if: Settings.ils.bib_model != 'Folio::BibData' do
       let(:library) { 'SAL3' }
       let(:location) { 'PAGE-GR' }
       let(:item_type) { 'NH-INHOUSE' }
@@ -65,7 +70,8 @@ describe 'Scannable' do
     end
   end
 
-  describe '#scannable_only?' do
+  # FOLIO doesn't have item_type to filter by
+  describe '#scannable_only?', if: Settings.ils.bib_model != 'Folio::BibData' do
     it 'is true a scannable only library/location has scannable only items' do
       subject.origin = 'SAL'
       subject.origin_location = 'SAL-TEMP'
@@ -82,12 +88,14 @@ describe 'Scannable' do
       expect(subject).not_to be_scannable_only
     end
 
-    it 'is false when a circulating item is in the scannable only library/location' do
-      subject.origin = 'SAL'
-      subject.origin_location = 'SAL-TEMP'
-      allow(request).to receive(:holdings).and_return([double(type: 'STKS')])
+    context 'when a circulating item is in the scannable only library/location' do
+      it 'is false' do
+        subject.origin = 'SAL'
+        subject.origin_location = 'SAL-TEMP'
+        allow(request).to receive(:holdings).and_return([double(type: 'STKS')])
 
-      expect(subject).not_to be_scannable_only
+        expect(subject).not_to be_scannable_only
+      end
     end
   end
 end

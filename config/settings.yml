@@ -53,7 +53,7 @@ token_encrypt:
   salt: ''
 
 ils:
-  bib_model: Folio::BibData # or SearchworksItem 
+  bib_model: Folio::BibData # or SearchworksItem
   patron_model: Symphony::Patron
   request_job: SubmitSymphonyRequestJob
 
