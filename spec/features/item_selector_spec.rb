@@ -429,7 +429,7 @@ RSpec.describe 'Item Selector' do
         double(:item, callnumber: 'ABC 123', checked_out?: false, barcode: '12345678', status_class: 'available',
                       status_text: 'Available', current_location_code: 'huh?', public_note: 'huh?'),
         double(:item, callnumber: 'ABC 321', checked_out?: true, barcode: '87654321', status_class: 'available',
-                      status_text: 'Available', current_location_code: 'huh?', public_note: 'huh?', due_date: '01/01/2015')
+                      status_text: 'Available', current_location_code: 'CHECKEDOUT', public_note: 'huh?', due_date: '01/01/2015')
 
       ]
     end
