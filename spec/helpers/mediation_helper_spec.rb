@@ -10,7 +10,7 @@ RSpec.describe MediationHelper do
 
     before do
       location_object = double(current_location:)
-      expect(Symphony::CatalogInfo).to receive(:find).with('123456').and_return(location_object)
+      allow(Symphony::CatalogInfo).to receive(:find).with('123456').and_return(location_object)
     end
 
     context 'when the current and home locations match' do
