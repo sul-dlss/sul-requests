@@ -9,10 +9,6 @@ module Folio
       status == CHECKED_OUT
     end
 
-    def current_location
-      temporary_location || permanent_location
-    end
-
     # TODO, is this complete?
     def status_class
       status == AVAILABLE ? 'available' : 'unavailable'
