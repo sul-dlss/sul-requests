@@ -3,8 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe 'Item Selector' do
-  let(:holdings_relationship) { double(:relationship, where: [], all: all_items, single_checked_out_item?: false) }
+  let(:holdings_relationship) { double(:relationship, where: requested_items, all: all_items, single_checked_out_item?: false) }
   let(:all_items) { [] }
+  let(:requested_items) { [] }
+
   let(:bib_data) { double(:bib_data, title: 'Test title') }
 
   before do
@@ -233,6 +235,18 @@ RSpec.describe 'Item Selector' do
           double(:item, callnumber: 'ABC 890', checked_out?: false, barcode: '67890123', status_class: 'available',
                         status_text: 'Available', current_location_code: 'huh?', public_note: 'huh?')
 
+        ]
+      end
+      let(:requested_items) do
+        [
+          double(:item, callnumber: 'ABC 123', checked_out?: false, barcode: '12345678', status_class: 'available',
+                        status_text: 'Available', current_location_code: 'huh?', public_note: 'huh?'),
+          double(:item, callnumber: 'ABC 456', checked_out?: false, barcode: '23456789', status_class: 'available',
+                        status_text: 'Available', current_location_code: 'huh?', public_note: 'huh?'),
+          double(:item, callnumber: 'ABC 789', checked_out?: false, barcode: '34567890', status_class: 'available',
+                        status_text: 'Available', current_location_code: 'huh?', public_note: 'huh?'),
+          double(:item, callnumber: 'ABC 901', checked_out?: false, barcode: '67890123', status_class: 'available',
+                        status_text: 'Available', current_location_code: 'huh?', public_note: 'huh?')
         ]
       end
 
