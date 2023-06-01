@@ -10,6 +10,7 @@ RSpec.describe 'Create Scan Request' do
   let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
 
   before do
+    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
     allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
     allow(SubmitScanRequestJob).to receive(:perform_later)
     stub_searchworks_api_json(build(:sal3_holdings))
