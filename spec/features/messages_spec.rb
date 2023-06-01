@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'Viewing all requests' do
+RSpec.describe 'Viewing all requests' do
   describe 'index' do
     describe 'by a superadmin user' do
       before do
@@ -126,6 +126,12 @@ describe 'Viewing all requests' do
 
   describe 'displays on a request page' do
     let(:message) { create(:message) }
+    let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
+
+    before do
+      allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
+      allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    end
 
     it 'displays the broadcast message' do
       visit new_mediated_page_path(item_id: '1234', origin: message.library, origin_location: 'STACKS')
