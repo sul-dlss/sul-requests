@@ -13,6 +13,7 @@ RSpec.describe MediatedPage do
       'holdings' => [],
       'items' =>
        [{ 'id' => '584baef9-ea2f-5ff5-9947-bbc348aee4a4',
+          'notes' => [],
           'status' => 'Available',
           'barcode' => '3610512345678',
           'location' =>
@@ -26,6 +27,7 @@ RSpec.describe MediatedPage do
           'permanentLoanType' => 'Can circulate',
           'suppressFromDiscovery' => false },
         { 'id' => '99466f50-2b8c-51d4-8890-373190b8f6c4',
+          'notes' => [],
           'status' => 'Available',
           'barcode' => '3610587654321',
           'location' =>

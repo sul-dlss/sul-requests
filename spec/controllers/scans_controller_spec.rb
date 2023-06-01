@@ -11,6 +11,7 @@ RSpec.describe ScansController do
       'holdings' => [],
       'items' =>
        [{ 'id' => '584baef9-ea2f-5ff5-9947-bbc348aee4a4',
+          'notes' => [],
           'status' => 'Available',
           'barcode' => '12345678',
           'location' =>
@@ -23,6 +24,7 @@ RSpec.describe ScansController do
           'permanentLoanType' => 'Can circulate',
           'suppressFromDiscovery' => false },
         { 'id' => '99466f50-2b8c-51d4-8890-373190b8f6c4',
+          'notes' => [],
           'status' => 'Available',
           'barcode' => '87654321',
           'location' =>

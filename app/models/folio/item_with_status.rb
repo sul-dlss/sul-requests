@@ -4,7 +4,8 @@ module Folio
   CHECKED_OUT = 'Checked out'
   AVAILABLE = 'Available'
 
-  ItemWithStatus = Data.define(:barcode, :status, :request_status, :type, :permanent_location, :temporary_location, :callnumber) do
+  ItemWithStatus = Data.define(:barcode, :status, :request_status, :type, :public_note, :permanent_location, :temporary_location,
+                               :callnumber) do
     def checked_out?
       status == CHECKED_OUT
     end

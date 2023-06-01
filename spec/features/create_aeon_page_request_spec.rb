@@ -14,6 +14,7 @@ RSpec.describe 'Creating an Aeon request', js: true do
       'holdings' => [],
       'items' =>
        [{ 'id' => '584baef9-ea2f-5ff5-9947-bbc348aee4a4',
+          'notes' => [],
           'status' => 'Available',
           'barcode' => '12345678',
           'location' =>
@@ -124,6 +125,7 @@ RSpec.describe 'Creating an Aeon request', js: true do
           'holdings' => [],
           'items' =>
            [{ 'id' => '584baef9-ea2f-5ff5-9947-bbc348aee4a4',
+              'notes' => [],
               'status' => 'Available',
               'barcode' => '12345678',
               'location' =>
@@ -137,6 +139,7 @@ RSpec.describe 'Creating an Aeon request', js: true do
               'permanentLoanType' => 'Can circulate',
               'suppressFromDiscovery' => false },
             { 'id' => '584baef9-ea2f-5ff5-9947-bbc348aee4a4',
+              'notes' => [],
               'status' => 'Available',
               'barcode' => '87654321',
               'location' =>
