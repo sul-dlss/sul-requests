@@ -2,8 +2,14 @@
 
 require 'rails_helper'
 
-describe 'Paging Schedule' do
-  before { stub_current_user(create(:superadmin_user)) }
+RSpec.describe 'Paging Schedule' do
+  let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
+
+  before do
+    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    stub_current_user(create(:superadmin_user))
+  end
 
   describe 'admin list' do
     it 'displays the currently configured paging schedule' do
