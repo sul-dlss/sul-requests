@@ -16,8 +16,8 @@ RSpec.describe 'Creating a page request' do
           'status' => 'Available',
           'barcode' => '3610512345678',
           'location' =>
-          { 'effectiveLocation' => { 'code' => 'SAL3-PAGE-GR' },
-            'permanentLocation' => { 'code' => 'SAL3-PAGE-GR' },
+          { 'effectiveLocation' => { 'code' => 'GRE-STACKS' },
+            'permanentLocation' => { 'code' => 'GRE-STACKS' },
             'temporaryLocation' => {} },
           'callNumber' =>
             { 'typeId' => '6caca63e-5651-4db6-9247-3205156e9699', 'typeName' => 'Other scheme', 'callNumber' => 'ABC 123' },
@@ -29,8 +29,8 @@ RSpec.describe 'Creating a page request' do
           'status' => 'Available',
           'barcode' => '3610587654321',
           'location' =>
-          { 'effectiveLocation' => { 'code' => 'SAL3-PAGE-GR' },
-            'permanentLocation' => { 'code' => 'SAL3-PAGE-GR' },
+          { 'effectiveLocation' => { 'code' => 'GRE-STACKS' },
+            'permanentLocation' => { 'code' => 'GRE-STACKS' },
             'temporaryLocation' => {} },
           'callNumber' =>
             { 'typeId' => '6caca63e-5651-4db6-9247-3205156e9699', 'typeName' => 'Other scheme', 'callNumber' => 'ABC 321' },
