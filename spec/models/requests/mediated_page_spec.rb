@@ -22,6 +22,7 @@ RSpec.describe MediatedPage do
           'callNumber' =>
             { 'typeId' => '6caca63e-5651-4db6-9247-3205156e9699', 'typeName' => 'Other scheme', 'callNumber' => 'ABC 123' },
           'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
+          'materialType' => 'book',
           'permanentLoanType' => 'Can circulate',
           'suppressFromDiscovery' => false },
         { 'id' => '99466f50-2b8c-51d4-8890-373190b8f6c4',
@@ -34,6 +35,7 @@ RSpec.describe MediatedPage do
           'callNumber' =>
             { 'typeId' => '6caca63e-5651-4db6-9247-3205156e9699', 'typeName' => 'Other scheme', 'callNumber' => 'ABC 321' },
           'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
+          'materialType' => 'book',
           'permanentLoanType' => 'Can circulate',
           'suppressFromDiscovery' => false }] }
   end
