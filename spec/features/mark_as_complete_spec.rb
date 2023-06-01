@@ -4,8 +4,24 @@ require 'rails_helper'
 
 RSpec.describe 'Mark As Complete', js: true do
   let(:user) { create(:superadmin_user) }
+  let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
+  let(:request_status) do
+    instance_double(ItemStatus, approved?: true, errored?: false, approver: 'bob', approval_time: '2023-05-31')
+  end
+  let(:selected_items) do
+    [
+      double(:item, barcode: '34567890',
+                    request_status:,
+                    permanent_location: 'ART-STACKS',
+                    current_location: 'ART-STACKS',
+                    callnumber: 'ABC 123',
+                    hold?: true)
+    ]
+  end
 
   before do
+    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
     stub_searchworks_api_json(build(:searchable_holdings))
     stub_current_user(user)
   end

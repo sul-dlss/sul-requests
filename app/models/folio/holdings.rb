@@ -51,7 +51,7 @@ module Folio
     end
 
     def items_in_location
-      items.select { |item| item.dig('location', 'effectiveLocation', 'code') == folio_location_code }.map { |dyn| Item.from_hash(dyn) }
+      items.map { |dyn| Item.from_hash(dyn) }.select { |item| item.permanent_location == folio_location_code }
     end
   end
 end
