@@ -24,7 +24,7 @@ RSpec.describe ScansController do
           'suppressFromDiscovery' => false },
         { 'id' => '99466f50-2b8c-51d4-8890-373190b8f6c4',
           'status' => 'Available',
-          'barcode' => '12345679',
+          'barcode' => '87654321',
           'location' =>
           { 'effectiveLocation' => { 'code' => 'SAL3-STACKS' },
             'permanentLocation' => { 'code' => 'SAL3-STACKS' },
