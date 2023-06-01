@@ -2,11 +2,38 @@
 
 require 'rails_helper'
 
-describe 'Public Notes', js: true do
+RSpec.describe 'Public Notes', js: true do
   let(:user) { create(:sso_user) }
+  let(:holdings_relationship) { double(:relationship, where: selected_items, all: all_items, single_checked_out_item?: false) }
+  let(:selected_items) do
+    [
+      double(:item, barcode: '12345678', current_location_code: 'huh?', callnumber: 'ABC 123', checked_out?: false,
+                    status_class: 'available', status_text: 'Available'),
+      double(:item, barcode: '23456789', current_location_code: 'huh?', callnumber: 'ABC 456', checked_out?: false,
+                    status_class: 'available', status_text: 'Available'),
+      double(:item, barcode: '34567890', current_location_code: 'huh?', callnumber: 'ABC 012', checked_out?: false,
+                    status_class: 'available', status_text: 'Available'),
+      double(:item, barcode: '45678901', current_location_code: 'huh?', callnumber: 'ABC 345', checked_out?: false,
+                    status_class: 'available', status_text: 'Available')
+    ]
+  end
+  let(:all_items) do
+    [
+      double(:item, barcode: '12345678', current_location_code: 'huh?', callnumber: 'ABC 123', checked_out?: false,
+                    status_class: 'available', status_text: 'Available', public_note: nil),
+      double(:item, barcode: '23456789', current_location_code: 'huh?', callnumber: 'ABC 456', checked_out?: false,
+                    status_class: 'available', status_text: 'Available', public_note: 'note for 23456789'),
+      double(:item, barcode: '34567890', current_location_code: 'huh?', callnumber: 'ABC 012', checked_out?: false,
+                    status_class: 'available', status_text: 'Available', public_note: nil),
+      double(:item, barcode: '45678901', current_location_code: 'huh?', callnumber: 'ABC 345', checked_out?: false,
+                    status_class: 'available', status_text: 'Available', public_note: 'note for 45678901')
+    ]
+  end
 
   before do
     allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
+    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
   end
 
   describe 'public_notes' do
