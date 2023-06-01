@@ -39,13 +39,23 @@ RSpec.describe 'Paging Schedule' do
   end
 
   describe 'Estimated delivery', js: true do
+    let(:holdings_relationship) { double(:relationship, where: [], all: all_items, single_checked_out_item?: false) }
+    let(:all_items) do
+      [
+        double('item', callnumber: 'ABC 123', current_location_code: 'huh?', barcode: '123123124',
+                       checked_out?: false, status_class: 'active', status_text: 'Active', public_note: 'huh?'),
+        double('item', callnumber: 'ABC 321', current_location_code: 'huh?', barcode: '9928812',
+                       checked_out?: false, status_class: 'active', status_text: 'Active', public_note: 'huh?')
+      ]
+    end
+
     before do
       stub_current_user(create(:sso_user))
       stub_searchworks_api_json(build(:sal3_holdings))
+      stub_symphony_response(build(:symphony_page_with_single_item))
     end
 
     it 'is persisted' do
-      stub_symphony_response(build(:symphony_page_with_single_item))
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
 
       expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: :visible)
