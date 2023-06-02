@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 module Folio
-  CHECKED_OUT = 'Checked out'
-  AVAILABLE = 'Available'
-  HOLD = 'Awaiting pickup'
+  # Other status that we aren't using include "Unavailable", "On order", "In process", "Intellectual item", "In transit"
+  STATUS_CHECKED_OUT = 'Checked out'
+  STATUS_AVAILABLE = 'Available'
+  STATUS_HOLD = 'Awaiting pickup'
+
   PAGE_LOCATIONS = %w(HILA-SAL3-STACKS
                       HILA-SAL3-STACKS
                       SPEC-SAL3-FELTON
@@ -17,12 +19,12 @@ module Folio
   ItemWithStatus = Data.define(:barcode, :status, :request_status, :type, :public_note, :permanent_location, :temporary_location,
                                :callnumber) do
     def checked_out?
-      status == CHECKED_OUT
+      status == STATUS_CHECKED_OUT
     end
 
     # TODO, is this complete?
     def status_class
-      status == AVAILABLE ? 'available' : 'unavailable'
+      status == STATUS_AVAILABLE ? 'available' : 'unavailable'
     end
 
     # TODO, we probably need to handle "Page", which is something Symphony had.
@@ -40,7 +42,7 @@ module Folio
     end
 
     def hold?
-      status == HOLD
+      status == STATUS_HOLD
     end
 
     def paged?
