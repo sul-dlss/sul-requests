@@ -19,5 +19,13 @@ task asset_paths: [:environment] do
 end
 
 task javascript_tests: [:environment] do
-  system 'yarn test'
+  cmd = 'yarn test'
+  success = system(cmd)
+
+  if success
+    puts 'JavaScript tests passed'
+  else
+    puts 'JavaScript tests failed'
+    exit(1)
+  end
 end
