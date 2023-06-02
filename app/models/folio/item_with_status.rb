@@ -3,6 +3,15 @@
 module Folio
   CHECKED_OUT = 'Checked out'
   AVAILABLE = 'Available'
+  PAGE_LOCATIONS = %w(HILA-SAL3-STACKS
+                      HILA-SAL3-STACKS
+                      SPEC-SAL3-FELTON
+                      SPEC-SAL3-GUNST
+                      SPEC-SAL3-MEDIA
+                      SPEC-SAL3-MSS
+                      SPEC-SAL3-RBC
+                      SPEC-SAL3-U-ARCHIVES
+                      SPEC-SAL3-U-ARCHIVES).freeze
 
   ItemWithStatus = Data.define(:barcode, :status, :request_status, :type, :public_note, :permanent_location, :temporary_location,
                                :callnumber) do
@@ -35,11 +44,13 @@ module Folio
     end
 
     def hold?
-      raise 'how do we know? See Searchworks::HoldingItem'
+      # TODO: How do we know if something should be “Item is on-site - hold for patron”?
+      # We used to display this when the Sirsi “current_location” ended with “-LOAN”.
+      false
     end
 
     def paged?
-      raise 'how do we know? See Searchworks::HoldingItem'
+      PAGE_LOCATIONS.include?(permanent_location)
     end
   end
 end
