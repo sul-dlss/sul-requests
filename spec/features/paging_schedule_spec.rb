@@ -3,7 +3,15 @@
 require 'rails_helper'
 
 RSpec.describe 'Paging Schedule' do
-  let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
+  let(:holdings_relationship) { double(:relationship, where: [], all: all_items, single_checked_out_item?: false) }
+  let(:all_items) do
+    [
+      double('item', callnumber: 'ABC 123', current_location_code: 'huh?', barcode: '123123124',
+                     checked_out?: false, status_class: 'active', status_text: 'Active', public_note: 'huh?', type: 'STKS'),
+      double('item', callnumber: 'ABC 321', current_location_code: 'huh?', barcode: '9928812',
+                     checked_out?: false, status_class: 'active', status_text: 'Active', public_note: 'huh?', type: 'STKS')
+    ]
+  end
 
   before do
     allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
@@ -39,16 +47,6 @@ RSpec.describe 'Paging Schedule' do
   end
 
   describe 'Estimated delivery', js: true do
-    let(:holdings_relationship) { double(:relationship, where: [], all: all_items, single_checked_out_item?: false) }
-    let(:all_items) do
-      [
-        double('item', callnumber: 'ABC 123', current_location_code: 'huh?', barcode: '123123124',
-                       checked_out?: false, status_class: 'active', status_text: 'Active', public_note: 'huh?'),
-        double('item', callnumber: 'ABC 321', current_location_code: 'huh?', barcode: '9928812',
-                       checked_out?: false, status_class: 'active', status_text: 'Active', public_note: 'huh?')
-      ]
-    end
-
     before do
       stub_current_user(create(:sso_user))
       stub_searchworks_api_json(build(:sal3_holdings))

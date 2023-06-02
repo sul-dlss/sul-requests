@@ -46,7 +46,7 @@ RSpec.describe RequestStatusMailer do
 
       context 'when the item is scannable' do
         let(:request) { create(:scan, :with_holdings_barcodes, user:) }
-        let(:selected_items) { [double(:item, barcode: '12345678', type: 'foo', callnumber: 'ABC 123', request_status: nil)] }
+        let(:selected_items) { [double(:item, barcode: '12345678', callnumber: 'ABC 123', request_status: nil, type: 'STKS')] }
 
         it 'indicates to the user they can request the item be scanned' do
           expect(mail.body.to_s).to include(

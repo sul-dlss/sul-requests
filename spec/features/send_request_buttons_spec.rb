@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Send Request Buttons' do
   let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
-  let(:selected_items) { [double(:item, callnumber: 'ABC 123', current_location_code: 'huh?', barcode: '12345678', type: 'huh?')] }
+  let(:selected_items) { [double(:item, callnumber: 'ABC 123', current_location_code: 'huh?', barcode: '12345678', type: 'STKS')] }
 
   before do
     stub_searchworks_api_json(build(:single_holding))

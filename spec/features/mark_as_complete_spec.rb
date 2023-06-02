@@ -14,6 +14,7 @@ RSpec.describe 'Mark As Complete', js: true do
                     request_status:,
                     permanent_location: 'ART-STACKS',
                     temporary_location: nil,
+                    home_location: 'STACKS',
                     callnumber: 'ABC 123',
                     hold?: true)
     ]

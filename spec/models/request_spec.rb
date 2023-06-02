@@ -4,9 +4,10 @@ require 'rails_helper'
 
 RSpec.describe Request do
   let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
+  let(:bib_data) { double(:bib_data, title: 'Test title') }
 
   before do
-    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
+    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(bib_data)
     allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
   end
 
@@ -80,6 +81,12 @@ RSpec.describe Request do
           origin: 'SAL',
           origin_location: 'SAL-TEMP'
         )
+      end
+      let(:holdings_relationship) { double(:relationship, where: [], all: all_holdings, single_checked_out_item?: false) }
+
+      let(:all_holdings) do
+        # This is just used for Searchworks integration
+        [double(:item, type: 'NONCIRC', code: 'SAL-TEMP', barcode: '12345678')]
       end
 
       before do
@@ -206,14 +213,20 @@ RSpec.describe Request do
     end
 
     describe 'when not persisted' do
-      let(:subject) { build(:request_with_multiple_holdings) }
+      subject(:request) { build(:request_with_multiple_holdings) }
+
+      let(:bib_data) { double(:bib_data, title: 'Test title', holdings:) }
+      let(:holdings) do
+        # This is just used for Searchworks integration
+        request.bib_data.holdings
+      end
 
       before do
         allow(HoldingsRelationshipBuilder).to receive(:build).and_call_original
       end
 
       it 'gets all the holdings for the requested location' do
-        holdings = subject.holdings
+        holdings = request.holdings
         expect(holdings).to be_a Array
         expect(holdings.length).to eq 3
         expect(holdings.first.barcode).to eq '3610512345678'
