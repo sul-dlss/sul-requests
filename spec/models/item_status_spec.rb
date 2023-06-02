@@ -2,13 +2,7 @@
 
 require 'rails_helper'
 
-def update_symphony_data_and_save(request, symphony_data)
-  r = Request.find(request.id)
-  r.symphony_response_data = symphony_data
-  r.save!
-end
-
-describe ItemStatus do
+RSpec.describe ItemStatus do
   subject { described_class.new(request, barcode) }
 
   let(:request) { create(:mediated_page_with_single_holding) }
@@ -52,16 +46,18 @@ describe ItemStatus do
 
     context 'persisting data' do
       let(:request) { create(:mediated_page) }
+      let(:response) { build(:symphony_page_with_single_item) }
 
       it 'reloads the record to ensure that any serialized attributes are updated' do
-        response = build(:symphony_page_with_single_item)
-        expect(request.symphony_response_data).to be_nil
+        allow(Request.ils_job_class).to receive(:perform_now).with(request.id, { barcode: })
 
-        expect(Request.ils_job_class).to receive(:perform_now).with(request.id, { barcode: }).and_return(
-          update_symphony_data_and_save(request, response)
-        )
-        subject.approve!('jstanford')
-        expect(request.symphony_response_data).to eq response
+        expect do
+          # Here we operate on a separate instance of this database record.
+          # This illustrates what happens in perform_now where it isn't using the same instance of the Request object
+          Request.find(request.id).update(symphony_response_data: response)
+
+          subject.approve!('jstanford')
+        end.to change(request, :symphony_response_data).from(nil).to(response)
       end
     end
 
