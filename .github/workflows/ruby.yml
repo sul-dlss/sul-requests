@@ -35,5 +35,11 @@ jobs:
       run: bin/setup
     - name: Ensure tmp/pids exists
       run: mkdir -p tmp/pids
-    - name: Run tests
+    - name: Run tests for FOLIO
       run: bundle exec rake
+      env:
+          SETTINGS__ILS__BIB_MODEL: Folio::BibData
+    - name: Run tests for Searchworks
+      run: bundle exec rake
+      env:
+          SETTINGS__ILS__BIB_MODEL: SearchworksItem
