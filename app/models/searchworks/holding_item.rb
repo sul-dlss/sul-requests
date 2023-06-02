@@ -3,6 +3,9 @@
 module Searchworks
   # A model on the Searchworks holding JSON data
   class HoldingItem
+    PROCESSING_LOCATIONS = %w[ON-ORDER INPROCESS ENDPROCESS BINDERY].freeze
+    MISSING_LOCATIONS = %w[MISSING].freeze
+
     def initialize(attributes)
       @barcode = attributes.fetch('barcode')
       @callnumber = attributes.fetch('callnumber')
@@ -27,11 +30,19 @@ module Searchworks
     end
 
     def hold?
-      current_location_code.ends_with?('-LOAN')
+      current_location_code&.ends_with?('-LOAN')
     end
 
     def paged?
       home_location&.ends_with?('-30')
+    end
+
+    def processing?
+      PROCESSING_LOCATIONS.include?(current_location_code)
+    end
+
+    def missing?
+      MISSING_LOCATIONS.include?(current_location_code)
     end
   end
 end
