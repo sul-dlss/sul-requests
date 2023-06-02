@@ -3,6 +3,7 @@
 module Folio
   CHECKED_OUT = 'Checked out'
   AVAILABLE = 'Available'
+  HOLD = 'Awaiting pickup'
   PAGE_LOCATIONS = %w(HILA-SAL3-STACKS
                       HILA-SAL3-STACKS
                       SPEC-SAL3-FELTON
@@ -34,19 +35,12 @@ module Folio
       'derp'
     end
 
-    # TODO
-    def public_note
-      'depr'
-    end
-
     def due_date
       raise "To be implemented (probably need to add real time availablity API. It's not in holdings)"
     end
 
     def hold?
-      # TODO: How do we know if something should be “Item is on-site - hold for patron”?
-      # We used to display this when the Sirsi “current_location” ended with “-LOAN”.
-      false
+      status == HOLD
     end
 
     def paged?
