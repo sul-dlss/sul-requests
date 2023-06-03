@@ -128,8 +128,10 @@ RSpec.describe 'Creating a mediated page request' do
   describe 'selecting barcodes' do
     let(:selected_items) do
       [
-        double(:item, barcode: '12345678', current_location_code: 'huh?', callnumber: 'ABC 123'),
-        double(:item, barcode: '34567555', current_location_code: 'huh?', callnumber: 'ABC 321')
+        double(:item, barcode: '12345678', checked_out?: false, processing?: false, missing?: false, hold?: false, on_order?: false,
+                      callnumber: 'ABC 123'),
+        double(:item, barcode: '34567555', checked_out?: false, processing?: false, missing?: false, hold?: false, on_order?: false,
+                      callnumber: 'ABC 321')
       ]
     end
 
@@ -137,9 +139,12 @@ RSpec.describe 'Creating a mediated page request' do
 
     let(:all_items) do
       [
-        double(:item, barcode: '12345678', current_location_code: 'huh?', callnumber: 'ABC 123', checked_out?: false,
+        double(:item, barcode: '12345678', checked_out?: false, processing?: false, missing?: false,
+                      hold?: false, on_order?: false, callnumber: 'ABC 123',
                       status_class: 'available', status_text: 'Available', public_note: 'huh?'),
-        double(:item, barcode: '34567555', current_location_code: 'huh?', callnumber: 'ABC 321', checked_out?: false,
+
+        double(:item, barcode: '34567555', checked_out?: false, processing?: false, missing?: false,
+                      hold?: false, on_order?: false, callnumber: 'ABC 321',
                       status_class: 'available', status_text: 'Available', public_note: 'huh?')
       ]
     end

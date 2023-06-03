@@ -6,9 +6,9 @@ RSpec.describe 'Paging Schedule' do
   let(:holdings_relationship) { double(:relationship, where: [], all: all_items, single_checked_out_item?: false) }
   let(:all_items) do
     [
-      double('item', callnumber: 'ABC 123', current_location_code: 'huh?', barcode: '123123124',
+      double('item', callnumber: 'ABC 123', processing?: false, missing?: false, hold?: false, on_order?: false, barcode: '123123124',
                      checked_out?: false, status_class: 'active', status_text: 'Active', public_note: 'huh?', type: 'STKS'),
-      double('item', callnumber: 'ABC 321', current_location_code: 'huh?', barcode: '9928812',
+      double('item', callnumber: 'ABC 321', processing?: false, missing?: false, hold?: false, on_order?: false, barcode: '9928812',
                      checked_out?: false, status_class: 'active', status_text: 'Active', public_note: 'huh?', type: 'STKS')
     ]
   end

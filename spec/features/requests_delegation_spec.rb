@@ -6,7 +6,8 @@ RSpec.describe 'Requests Delegation' do
   let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
   let(:selected_items) do
     [
-      double(:item, barcode: '34567890', type: 'STKS', callnumber: 'ABC 123', current_location_code: 'HERE')
+      double(:item, barcode: '34567890', type: 'STKS', callnumber: 'ABC 123', checked_out?: false, processing?: false, missing?: false,
+                    hold?: false, on_order?: false)
     ]
   end
 
@@ -53,7 +54,7 @@ RSpec.describe 'Requests Delegation' do
 
     let(:selected_items) do
       [
-        double(:item, barcode: '34567890', type: 'NONCIRC', callnumber: 'ABC 123', current_location_code: 'HERE')
+        double(:item, barcode: '34567890', type: 'NONCIRC', callnumber: 'ABC 123')
       ]
     end
 

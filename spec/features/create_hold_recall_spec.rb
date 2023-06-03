@@ -50,7 +50,12 @@ RSpec.describe 'Creating a hold recall request' do
 
   describe 'by a SSO user' do
     let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
-    let(:selected_items) { [double(:item, barcode: '12345678', current_location_code: 'huh?', callnumber: 'ABC 123', type: 'huh?')] }
+    let(:selected_items) do
+      [
+        double(:item, barcode: '12345678', checked_out?: false, processing?: false, missing?: false, hold?: false, on_order?: false,
+                      callnumber: 'ABC 123', type: 'huh?')
+      ]
+    end
 
     before do
       allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))

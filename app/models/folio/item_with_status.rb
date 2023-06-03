@@ -5,6 +5,9 @@ module Folio
   STATUS_CHECKED_OUT = 'Checked out'
   STATUS_AVAILABLE = 'Available'
   STATUS_HOLD = 'Awaiting pickup'
+  STATUS_MISSING = 'Missing'
+  STATUS_IN_PROCESS_NR = 'In process (non-requestable)'
+  STATUS_IN_PROCESS = 'In process'
 
   PAGE_LOCATIONS = %w(HILA-SAL3-STACKS
                       HILA-SAL3-STACKS
@@ -32,9 +35,12 @@ module Folio
       status
     end
 
-    # TODO, HUH?
-    def current_location_code
-      'derp'
+    def processing?
+      [STATUS_IN_PROCESS, STATUS_IN_PROCESS_NR].include?(status)
+    end
+
+    def missing?
+      status == STATUS_MISSING
     end
 
     def due_date
