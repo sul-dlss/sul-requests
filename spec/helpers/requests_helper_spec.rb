@@ -136,25 +136,28 @@ describe RequestsHelper do
   end
 
   describe 'i18n_location_title_key' do
-    let(:current_request) { double('request') }
+    subject { helper.i18n_location_title_key }
+
+    let(:current_request) { double('request', holdings: [holding], origin_location:) }
+    let(:holding) do
+      Searchworks::HoldingItem.new('barcode' => '123', 'callnumber' => '456', 'type' => 'book',
+                                   'current_location' => { 'code' => current_location_code })
+    end
+    let(:origin_location) { '' }
 
     before { expect(helper).to receive_messages(current_request:) }
 
-    it 'returns the current location when present' do
-      allow(current_request).to receive_messages(
-        holdings: [
-          instance_double(Searchworks::HoldingItem, current_location_code: 'INPROCESS')
-        ]
-      )
-      expect(helper.i18n_location_title_key).to eq 'INPROCESS'
+    context 'when the the item is in-process' do
+      let(:current_location_code) { 'INPROCESS' }
+
+      it { is_expected.to eq 'INPROCESS' }
     end
 
-    it 'falls back to the home location in the absense of a current location' do
-      allow(current_request).to receive_messages(
-        origin_location: 'ON-ORDER',
-        holdings: [instance_double(Searchworks::HoldingItem, current_location_code: '')]
-      )
-      expect(helper.i18n_location_title_key).to eq 'ON-ORDER'
+    context 'when current_location_code is blank' do
+      let(:current_location_code) { '' }
+      let(:origin_location) { 'HOPKINS' }
+
+      it { is_expected.to eq 'HOPKINS' }
     end
   end
 

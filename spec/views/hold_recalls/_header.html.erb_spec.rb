@@ -9,8 +9,10 @@ RSpec.describe 'hold_recalls/_header.html.erb' do
     double('request', origin:, origin_location:, holdings:)
   end
 
-  let(:holdings) do
-    [instance_double(Searchworks::HoldingItem, current_location_code:)]
+  let(:holdings) { [holding] }
+  let(:holding) do
+    Searchworks::HoldingItem.new('barcode' => '123', 'callnumber' => '456', 'type' => 'book',
+                                 'current_location' => { 'code' => current_location_code })
   end
 
   before do

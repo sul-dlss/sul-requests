@@ -26,7 +26,11 @@ module Searchworks
     attr_accessor :request_status
 
     def checked_out?
-      current_location_code == 'CHECKEDOUT'
+      current_location_code == 'CHECKEDOUT' # TODO: itemStatus == 'Checked out' in Folio
+    end
+
+    def on_order?
+      current_location_code == 'ON-ORDER' # TODO: itemStatus == 'On order' in Folio
     end
 
     def hold?
@@ -38,11 +42,14 @@ module Searchworks
     end
 
     def processing?
+      # TODO: in Folio 'In process (non-requestable)', 'In process').include?(itemStatus)
+      # This may also involve some temporary locations. See:
+      #  https://docs.google.com/spreadsheets/d/1TCWHj45Yb7_7kHst0Cg0Wrk9vGcRX86qYeAqhX1lYvA/edit#gid=0
       PROCESSING_LOCATIONS.include?(current_location_code)
     end
 
     def missing?
-      MISSING_LOCATIONS.include?(current_location_code)
+      MISSING_LOCATIONS.include?(current_location_code) # TODO: itemStatus == 'Missing' in Folio
     end
   end
 end
