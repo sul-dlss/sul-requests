@@ -58,6 +58,5 @@ FactoryBot.define do
     library_id { '12345678' }
   end
 
-  factory :anon_user, class: 'User' do
-  end
+  factory :anon_user, class: 'User'
 end
