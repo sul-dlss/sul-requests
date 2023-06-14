@@ -2,8 +2,9 @@
 
 module Folio
   # Represents an item returned from the /inventory-hierarchy/items-and-holdings Folio API
-  # TODO: This want's a "type" attribute, but I don't know how we get the folio version of a holding type.
+  # TODO: This wants a "type" attribute, but I don't know how we get the folio version of a holding type.
   #       See https://github.com/sul-dlss/searchworks_traject_indexer/blob/02192452815de3861dcfafb289e1be8e575cb000/lib/traject/config/sirsi_config.rb#L2379
+  # NOTE, barcode and callnumber may be nil. see instance_hrid: 'in00000063826'
   Item = Data.define(:barcode, :status, :type, :callnumber, :public_note, :permanent_location, :temporary_location) do
     def with_status(request_status)
       ItemWithStatus.new(barcode:,
@@ -17,10 +18,10 @@ module Folio
     end
 
     def self.from_hash(dyn)
-      new(barcode: dyn.fetch('barcode'),
+      new(barcode: dyn['barcode'],
           status: dyn.fetch('status'),
           type: dyn.fetch('materialType'),
-          callnumber: dyn.fetch('callNumber').fetch('callNumber'),
+          callnumber: dyn.fetch('callNumber')['callNumber'],
           public_note: dyn.fetch('notes').find { |note| note.fetch('itemNoteTypeName') == 'Public' }&.fetch('note'),
           permanent_location: dyn.dig('location', 'permanentLocation', 'code'),
           temporary_location: dyn.dig('location', 'temporaryLocation', 'code'))
