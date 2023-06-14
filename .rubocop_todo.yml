@@ -77,7 +77,6 @@ Lint/AmbiguousBlockAssociation:
 # Configuration parameters: AllowComments, AllowEmptyLambdas.
 Lint/EmptyBlock:
   Exclude:
-    - 'spec/factories/users.rb'
     - 'spec/models/library_hours_api_spec.rb'
     - 'spec/models/paging_schedule_spec.rb'
     - 'spec/models/request_spec.rb'
