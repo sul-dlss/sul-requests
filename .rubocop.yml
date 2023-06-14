@@ -493,3 +493,9 @@ FactoryBot/FactoryAssociationWithStrategy: # new in 2.23
   Enabled: false
 FactoryBot/RedundantFactoryOption: # new in 2.23
   Enabled: true
+Style/RedundantArrayConstructor: # new in 1.52
+  Enabled: true
+Style/RedundantFilterChain: # new in 1.52
+  Enabled: true
+Style/RedundantRegexpConstructor: # new in 1.52
+  Enabled: true
