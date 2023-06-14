@@ -3,11 +3,10 @@
 # Describe request types available for a given generic request
 class RequestAbilities
   def self.rules
-    @rules ||= {
-      pageable: LocationRules.new(Settings.pageable),
-      scannable: LocationRules.new(Settings.scannable)
-    }
+    @rules ||= location_rules_class.rules_by_request_type
   end
+
+  class_attribute :location_rules_class, default: Settings.ils.location_rules&.constantize || LocationRules
 
   attr_reader :request
 

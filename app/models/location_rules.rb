@@ -6,6 +6,14 @@ class LocationRules
 
   attr_reader :rules
 
+  # Rules organized by request type, used in RequestAbilities
+  def self.rules_by_request_type
+    {
+      pageable: new(Settings.pageable),
+      scannable: new(Settings.scannable)
+    }
+  end
+
   # @param [Config::Option] rules (see `Rule` class for rule data)
   def initialize(rules)
     @rules = rules
