@@ -16,13 +16,28 @@ module RequestsHelper
     status_text_for_errored_item(item) || i18n_status_text(item)
   end
 
+  # rubocop:disable Metrics/PerceivedComplexity
+  # rubocop:disable Metrics/MethodLength
   def i18n_location_title_key
-    if (current_location = current_request.holdings.first&.current_location_code).present?
-      current_location
+    holding = current_request.holdings.first
+    if holding
+      if holding.checked_out?
+        'CHECKEDOUT'
+      elsif holding.on_order?
+        'ON-ORDER'
+      elsif holding.missing?
+        'MISSING'
+      elsif holding.processing?
+        'INPROCESS'
+      else
+        current_request.origin_location.presence
+      end
     elsif (origin_location = current_request.origin_location).present?
       origin_location
     end
   end
+  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/PerceivedComplexity
 
   def i18n_library_title_key
     current_request.origin
