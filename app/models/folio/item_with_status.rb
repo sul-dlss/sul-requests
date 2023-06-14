@@ -44,7 +44,7 @@ module Folio
     end
 
     def due_date
-      raise "To be implemented (probably need to add real time availablity API. It's not in holdings)"
+      '2025-01-01' # TODO: To be implemented (probably need to add real time availablity API. It's not in holdings)
     end
 
     def hold?
