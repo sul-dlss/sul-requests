@@ -55,10 +55,15 @@ module Folio
     end
 
     def instance_id
-      @instance_id ||= folio_client.resolve_to_instance_id(hrid: "a#{request.item_id}")
+      @instance_id ||= folio_client.resolve_to_instance_id(hrid:)
     end
 
     private
+
+    # Append "a" to the item_id unless it already starts with a letter (e.g. "in00000063826")
+    def hrid
+      request.item_id.start_with?(/\d/) ? "a#{request.item_id}" : request.item_id
+    end
 
     def json
       @json = folio_client.find_instance(instance_id:)
