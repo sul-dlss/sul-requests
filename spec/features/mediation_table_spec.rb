@@ -381,9 +381,6 @@ describe 'Mediation table', js: true do
         create(:page_mp_mediated_page, created_at: yesterday)
         create(:mediated_page_with_holdings, created_at: Time.zone.today)
         create(:mediated_page_with_holdings, needed_date: future)
-      end
-
-      before do
         visit admin_path('ART')
       end
 

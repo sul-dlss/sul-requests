@@ -6,15 +6,12 @@ describe ScansController do
   before do
     stub_searchworks_api_json(build(:sal3_holdings))
     allow(SubmitScanRequestJob).to receive(:perform_later)
+    allow(controller).to receive_messages(current_user: user)
   end
 
   let(:scan) { create(:scan_with_holdings, origin: 'SAL3', origin_location: 'STACKS', barcodes: ['12345678']) }
   let(:scannable_params) do
     { item_id: '12345', origin: 'SAL3', origin_location: 'STACKS' }
-  end
-
-  before do
-    allow(controller).to receive_messages(current_user: user)
   end
 
   describe 'new' do

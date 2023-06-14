@@ -10,9 +10,6 @@ RSpec.describe MediatedPagesController do
 
   before do
     allow(controller).to receive_messages(current_user: user)
-  end
-
-  before do
     allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
   end
 
