@@ -273,14 +273,6 @@ RSpec/ScatteredLet:
   Exclude:
     - 'spec/mailers/mediation_mailer_spec.rb'
 
-# Offense count: 6
-# This cop supports safe autocorrection (--autocorrect).
-RSpec/ScatteredSetup:
-  Exclude:
-    - 'spec/controllers/mediated_pages_controller_spec.rb'
-    - 'spec/controllers/scans_controller_spec.rb'
-    - 'spec/features/mediation_table_spec.rb'
-
 # Offense count: 66
 RSpec/StubbedMock:
   Enabled: false
