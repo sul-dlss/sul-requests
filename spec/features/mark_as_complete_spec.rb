@@ -66,7 +66,7 @@ RSpec.describe 'Mark As Complete', js: true do
   end
 
   describe 'a request that has already been marked as complete' do
-    let!(:mediated_page) do
+    before do
       create(
         :mediated_page_with_holdings,
         user: create(:non_sso_user, name: 'Jim Doe ', email: 'jimdoe@example.com'),
@@ -74,9 +74,8 @@ RSpec.describe 'Mark As Complete', js: true do
         approval_status: :marked_as_done,
         created_at: 1.day.from_now
       )
+      visit admin_path('ART', done: 'true')
     end
-
-    before { visit admin_path('ART', done: 'true') }
 
     it 'has a disabled button' do
       within(first('[data-mediate-request]')) do
