@@ -141,12 +141,6 @@ Performance/RedundantEqualityComparisonBlock:
 RSpec/AnyInstance:
   Enabled: false
 
-# Offense count: 2
-# This cop supports unsafe autocorrection (--autocorrect-all).
-RSpec/BeEq:
-  Exclude:
-    - 'spec/services/symphony_client_spec.rb'
-
 # Offense count: 1
 RSpec/BeforeAfterAll:
   Exclude:
