@@ -20,7 +20,7 @@ describe ExpireCdlCheckoutsJob, type: :job do
                                        'key' => 'a:1',
                                        'fields' => {
                                          'status' => 'PLACED',
-                                         'comment' => 'CDL;;a:1;' + Time.zone.parse('2017-07-06T16:03:00-07:00').to_i.to_s
+                                         'comment' => "CDL;;a:1;#{Time.zone.parse('2017-07-06T16:03:00-07:00').to_i}"
                                        }
                                      }
                                    ] } } }
@@ -51,7 +51,7 @@ describe ExpireCdlCheckoutsJob, type: :job do
                                        'key' => 'a:1',
                                        'fields' => {
                                          'status' => 'PLACED',
-                                         'comment' => 'CDL;;c:1;' + Time.zone.parse('2017-07-06T16:03:00-07:00').to_i.to_s
+                                         'comment' => "CDL;;c:1;#{Time.zone.parse('2017-07-06T16:03:00-07:00').to_i}"
                                        }
                                      }
                                    ] } } }
