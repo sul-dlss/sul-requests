@@ -23,12 +23,6 @@ Capybara/SpecificMatcher:
     - 'spec/helpers/application_helper_spec.rb'
     - 'spec/views/shared/_top_navbar.html.erb_spec.rb'
 
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-FactoryBot/SyntaxMethods:
-  Exclude:
-    - 'spec/models/request_spec.rb'
-
 # Offense count: 2
 # This cop supports safe autocorrection (--autocorrect).
 Layout/ClosingParenthesisIndentation:
