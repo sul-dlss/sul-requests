@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe ScansController do
+RSpec.describe ScansController do
   before do
     stub_searchworks_api_json(build(:sal3_holdings))
     allow(SubmitScanRequestJob).to receive(:perform_later)
@@ -100,7 +100,6 @@ describe ScansController do
       let(:user) { create(:scan_eligible_user) }
 
       before do
-        stub_searchworks_api_json(build(:sal3_holdings))
         post :create, params: {
           request: {
             item_id: '12345',
@@ -173,7 +172,7 @@ describe ScansController do
     describe 'by superadmins' do
       let(:user) { create(:superadmin_user) }
 
-      it 'is allowed to modify page rqeuests' do
+      it 'is allowed to modify page requests' do
         put :update, params: { id: scan[:id], request: { needed_date: Time.zone.today + 1.day } }
         expect(response).to redirect_to root_url
         expect(flash[:success]).to eq 'Request was successfully updated.'
