@@ -41,7 +41,7 @@ module LibraryHoursApi
     end
 
     def api_url
-      [Settings.hours_api, 'libraries', library, 'locations', location, 'hours.json'].join('/') + '?' + range.to_query
+      "#{[Settings.hours_api, 'libraries', library, 'locations', location, 'hours.json'].join('/')}?#{range.to_query}"
     end
 
     private
