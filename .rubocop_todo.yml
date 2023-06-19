@@ -118,13 +118,6 @@ Naming/VariableNumber:
 
 # Offense count: 2
 # This cop supports unsafe autocorrection (--autocorrect-all).
-Performance/MapCompact:
-  Exclude:
-    - 'app/models/paging_schedule.rb'
-    - 'app/models/request.rb'
-
-# Offense count: 2
-# This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: AllowRegexpMatch.
 Performance/RedundantEqualityComparisonBlock:
   Exclude:

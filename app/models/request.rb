@@ -130,11 +130,11 @@ class Request < ActiveRecord::Base
   end
 
   def data_to_email
-    %w(comments page_range section_title authors).map do |field|
+    %w(comments page_range section_title authors).filter_map do |field|
       if (data_field = data[field]).present?
         "#{self.class.human_attribute_name(field)}:\n  #{data_field}"
       end
-    end.compact
+    end
   end
 
   def proxy?
