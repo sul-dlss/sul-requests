@@ -18,24 +18,24 @@ class RequestAbilities
   def scannable?
     return false unless Settings.features.scan_service
 
-    scannable_location_rule.present?
+    scanning_rule.present?
   end
 
   # With covid-19 restrictions, some items were exclusively available for scanning
   def scannable_only?
-    scannable_location_rule&.only_scannable
+    scanning_rule&.only_scannable
   end
 
   def mediateable?
-    applicable_rules(:pageable).first&.mediated || aeon_pageable?
+    paging_rule&.mediated? || aeon_pageable?
   end
 
   def aeon_pageable?
-    applicable_rules(:pageable).first&.aeon
+    paging_rule&.aeon?
   end
 
   def aeon_site
-    applicable_rules(:pageable).first&.aeon_site if aeon_pageable?
+    paging_rule&.aeon_site if aeon_pageable?
   end
 
   # returns a true if any of the following is true
@@ -49,15 +49,15 @@ class RequestAbilities
   end
 
   def pageable?
-    !mediateable? && !hold_recallable? && location_rule.present?
+    !mediateable? && !hold_recallable? && paging_rule.present?
   end
 
-  def location_rule
-    @location_rule ||= applicable_rules(:pageable).first
+  def paging_rule
+    @paging_rule ||= applicable_rules(:pageable).first
   end
 
-  def scannable_location_rule
-    @scannable_location_rule ||= applicable_rules(:scannable).first
+  def scanning_rule
+    @scanning_rule ||= applicable_rules(:scannable).first
   end
 
   private

@@ -42,8 +42,6 @@ class LocationRules
              :item_types, # multi-valued list of item type codes
              :only_scannable, # with covid-19 restrictions, some items were exclusively scannable
              :default_pickup_library,
-             :mediated,
-             :aeon,
              :aeon_site,
              :destination,
              :send_honeybadger_notice_if_used,
@@ -65,6 +63,14 @@ class LocationRules
 
     def pickup_libraries
       (rule.pickup_libraries || Settings.default_pickup_libraries) + (rule.additional_pickup_libraries || [])
+    end
+
+    def aeon?
+      aeon_site.present?
+    end
+
+    def mediated?
+      rule.mediated
     end
 
     private
