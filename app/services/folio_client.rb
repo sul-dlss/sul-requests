@@ -9,6 +9,8 @@ class FolioClient # rubocop:disable Metrics/ClassLength
 
   attr_reader :base_url
 
+  delegate :locations, to: :folio_graphql_client
+
   def initialize(url: Settings.folio.okapi_url, tenant: Settings.folio.tenant)
     uri = URI.parse(url)
 
@@ -118,6 +120,11 @@ class FolioClient # rubocop:disable Metrics/ClassLength
     search_response.dig('instances', 0, 'id')
   end
 
+  def get_location(code)
+    response = get_json('/locations', params: { query: CqlQuery.new(code:).to_query })
+    response.dig('locations', 0)
+  end
+
   def find_instance(instance_id:)
     get_json("/inventory/instances/#{instance_id}")
   end
@@ -189,5 +196,9 @@ class FolioClient # rubocop:disable Metrics/ClassLength
 
   def default_headers
     DEFAULT_HEADERS.merge({ 'X-Okapi-Tenant': @tenant, 'User-Agent': 'SulRequests' })
+  end
+
+  def folio_graphql_client
+    @folio_graphql_client ||= FolioGraphqlClient.new
   end
 end
