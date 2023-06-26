@@ -468,6 +468,12 @@ pageable:
       - PAGE-ES
     pickup_libraries: ['EARTH-SCI']
   - locations:
+      - PAGE-FC
+    pickup_libraries:
+      - ART
+      - MUSIC
+      - SPEC-COLL
+  - locations:
       - PAGE-GR
     pickup_libraries: ['GREEN']
   - locations:
