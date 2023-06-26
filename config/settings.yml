@@ -63,6 +63,7 @@ symphony:
 folio:
   okapi_url: <%= ENV.fetch('OKAPI_URL', 'http://example.com') %>
   tenant: 'sul'
+  fee_borrower_patron_group: 985acbb9-f7a7-4f44-9b34-458c02a78fbc
 
 mailer_host: <%= `echo $HOSTNAME` %>
 searchworks_api: 'https://searchworks.stanford.edu'

@@ -32,9 +32,8 @@ module Folio
       user_info['barcode']
     end
 
-    # TODO
     def fee_borrower?
-      false
+      user_info.fetch('patronGroup') == Settings.folio.fee_borrower_patron_group
     end
 
     def standing
