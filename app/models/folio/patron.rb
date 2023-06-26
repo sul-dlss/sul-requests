@@ -41,7 +41,7 @@ module Folio
     end
 
     def good_standing?
-      user_info['active']
+      user_info['active'] && !blocked?
     end
 
     def first_name
@@ -81,6 +81,11 @@ module Folio
 
     def university_id
       user_info['externalSystemId']
+    end
+
+    def blocked?
+      blocks = self.class.folio_client.patron_blocks(user_info.fetch('id'))
+      blocks.fetch('automatedPatronBlocks').present?
     end
   end
 end

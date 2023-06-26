@@ -49,4 +49,31 @@ RSpec.describe Folio::Patron do
   describe '#fee_borrower?' do
     it { is_expected.to be_fee_borrower }
   end
+
+  describe '#good_standing?' do
+    let(:folio_client) { instance_double(FolioClient, patron_blocks:) }
+    let(:patron_blocks) { { 'automatedPatronBlocks' => [] } }
+
+    before do
+      allow(described_class).to receive(:folio_client).and_return(folio_client)
+    end
+
+    it { is_expected.to be_good_standing }
+
+    context 'when blocks exist' do
+      let(:patron_blocks) do
+        { 'automatedPatronBlocks' => [
+          {
+            patronBlockConditionId: 'ac13a725-b25f-48fa-84a6-4af021d13afe',
+            blockBorrowing: false,
+            blockRenewals: false,
+            blockRequests: true,
+            message: 'Patron has reached maximum allowed outstanding fee/fine balance for his/her patron group'
+          }
+        ] }
+      end
+
+      it { is_expected.not_to be_good_standing }
+    end
+  end
 end
