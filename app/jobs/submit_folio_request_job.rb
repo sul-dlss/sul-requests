@@ -33,9 +33,6 @@ class SubmitFolioRequestJob < ApplicationJob
   class Command
     attr_reader :request, :folio_client, :barcode, :logger
 
-    delegate :user, to: :request
-    delegate :patron, to: :user
-
     # @param [Request] request
     # @param [Logger] logger
     # @param [FolioClient] folio_client (nil)
@@ -49,13 +46,17 @@ class SubmitFolioRequestJob < ApplicationJob
 
     def execute!
       requested_items = barcodes.map do |barcode|
-        response = request_item(user_id: patron.id, pickup_location_id:, barcode:)
+        item_id = folio_client.get_item(barcode)['id']
+        response = place_hold(item_id:)
         { barcode:, msgcode: '209', response: }
       end
       { requested_items: }
     end
 
     private
+        
+    delegate :user, to: :request
+    delegate :patron, to: :user
 
     def pickup_location_id
       @pickup_location_id ||= begin
@@ -64,12 +65,7 @@ class SubmitFolioRequestJob < ApplicationJob
       end
     end
 
-    def request_item(user_id:, pickup_location_id:, barcode:)
-      item_id = folio_client.get_item(barcode)['id']
-      place_hold(item_id:, user_id:, pickup_location_id:)
-    end
-
-    def place_hold(item_id:, user_id:, pickup_location_id:)
+    def place_hold(item_id:)
       logger.info(
         "Submitting hold request for user #{user_id} and item #{item_id} for pickup up at #{pickup_location_id}"
       )
@@ -79,6 +75,28 @@ class SubmitFolioRequestJob < ApplicationJob
                                                   patron_comments: request.item_comment,
                                                   expiration_date:)
       folio_client.create_item_hold(user_id, item_id, hold_request)
+    end
+
+    # rubocop:disable Metrics/MethodLength
+    def user_id
+      @user_id ||= case request
+                   when Scan
+                     # TODO: pseudopatron for scanning
+                     raise 'to be implemented'
+                   when HoldRecall
+                     patron.id
+                   when Page, MediatedPage
+                     if patron&.good_standing?
+                       patron.id
+                     else
+                       pseudo_patron(request.destination)
+                     end
+                   end
+    end
+    # rubocop:enable Metrics/MethodLength
+
+    def pseudo_patron(key)
+      Settings.libraries[key]&.folio_hold_pseudopatron || raise("no hold pseudopatron for '#{key}'")
     end
 
     def barcodes

@@ -130,6 +130,7 @@ libraries:
     folio_pickup_service_point_code: ARS
     reading_room_url: https://library.stanford.edu/ars/using-archive
     hold_pseudopatron: HOLD@AS
+    folio_hold_pseudopatron: a49d08ae-6b9f-4476-b9ce-b8c537b7475b
     hours:
       library_slug: ars
       location_slug: archive-recorded-sound
@@ -140,6 +141,7 @@ libraries:
       email: artlibrary@stanford.edu
     folio_pickup_service_point_code: ART
     hold_pseudopatron: HOLD@AR
+    folio_hold_pseudopatron: 2bd36e69-1f58-4f6b-9073-e8d932edeed2
     hours:
       library_slug: art
       location_slug: library-circulation
@@ -154,7 +156,8 @@ libraries:
       phone: "(650) 725-2055"
       email: gsb_librarycirc@stanford.edu
     folio_pickup_service_point_code: BUS-IDESK
-    hold_pseudopatron: HOLD@BU
+    hold_pseudopatron: HOLD@BU # NOTE, in FOLIO the name is HOLD@JA
+    folio_hold_pseudopatron: f0a9929b-4fb8-4277-8ec6-51268be3e7ca
     hours:
       library_slug: business
       location_slug: library-i-desk
@@ -166,6 +169,7 @@ libraries:
   CLASSICS:
     label: Classics Library
     hold_pseudopatron: HOLD@CL
+    folio_hold_pseudopatron: c1e6ee90-e73d-411c-bc48-dc825bb4d0fb
     hours:
       library_slug: classics-library
       location_slug: library-circulation
@@ -173,6 +177,7 @@ libraries:
     label: Earth Sciences Library (Branner)
     folio_pickup_service_point_code: EARTH-SCI
     hold_pseudopatron: HOLD@ES
+    folio_hold_pseudopatron: a4135aa3-9d62-48d3-9603-df4648ec9abe
     hours:
       library_slug: branner
       location_slug: library-circulation
@@ -184,6 +189,7 @@ libraries:
     reading_room_url: https://library.stanford.edu/eal/special-collections-east-asia
     folio_pickup_service_point_code: EAST-ASIA
     hold_pseudopatron: HOLD@EA
+    folio_hold_pseudopatron: 07d963c0-2727-4353-aadd-86a22d1f3999
     hours:
       library_slug: eal
       location_slug: library-circulation
@@ -194,6 +200,7 @@ libraries:
       phone: "(650) 723-2121"
       email: cubberley@stanford.edu
     hold_pseudopatron: HOLD@ED
+    folio_hold_pseudopatron: 45f64599-6cd2-4b03-b45a-d01e6185de23
     hours: # Use SAL 1+2 hours while EDUCATION is closed
       library_slug: sal12
       location_slug: operations
@@ -202,6 +209,7 @@ libraries:
     label: Engineering Library (Terman)
     folio_pickup_service_point_code: ENG
     hold_pseudopatron: HOLD@EN
+    folio_hold_pseudopatron: f9427719-e0fd-4a9d-bb19-12a45ae19942
     hours:
       library_slug: englib
       location_slug: library-circulation
@@ -212,6 +220,7 @@ libraries:
       email: greencirc@stanford.edu
     folio_pickup_service_point_code: GREEN-LOAN
     hold_pseudopatron: HOLD@GR
+    folio_hold_pseudopatron: 48d388f0-5866-4719-a37e-b63ef809279b
     hours:
       library_slug: green
       location_slug: library-circulation
@@ -222,6 +231,7 @@ libraries:
       phone: "(650) 723-3563"
       email: hooverarchives@stanford.edu
     hold_pseudopatron: HOLD@HL
+    folio_hold_pseudopatron: 560fbbf8-35b6-4440-b218-6c4aa6625258
     hours:
       library_slug: hoover
       location_slug: library-circulation
@@ -232,6 +242,7 @@ libraries:
       email: HMS-Library@lists.stanford.edu
     folio_pickup_service_point_code: MARINE-BIO
     hold_pseudopatron: HOLD@HP
+    folio_hold_pseudopatron: 1fb12835-2da8-4bc8-becc-3c9500fc3991
     hours:
       library_slug: hopkins
       location_slug: library-circulation
@@ -243,6 +254,7 @@ libraries:
       email: hooverarchives@stanford.edu
     folio_pickup_service_point_code: HILA
     hold_pseudopatron: HOLD@HA
+    folio_hold_pseudopatron: d36cbac2-7ae7-49b3-b786-a389e67a3344
     hours:
       library_slug: hila
       location_slug: reference
@@ -263,6 +275,7 @@ libraries:
       email: circulation@law.stanford.edu
     folio_pickup_service_point_code: LAW
     hold_pseudopatron: HOLD@LW
+    folio_hold_pseudopatron: 0527e34c-f47b-41e0-aa67-27c7aa27d75f
     hours:
       library_slug: law
       location_slug: library-circulation
@@ -275,6 +288,7 @@ libraries:
     label: Media Microtext
     folio_pickup_service_point_code: MEDIA-CENTER
     hold_pseudopatron: HOLD@MD
+    folio_hold_pseudopatron: ed513be0-0a8d-4da4-b942-cfad5281d0cf
     hours:
       library_slug: green
       location_slug: media-microtext-center
@@ -285,6 +299,7 @@ libraries:
       email: muslibcirc@stanford.edu
     folio_pickup_service_point_code: MUSIC
     hold_pseudopatron: HOLD@MU
+    folio_hold_pseudopatron: 9cae03c5-1f0c-4379-a1c8-f11df0c061d6
     hours:
       library_slug: music
       location_slug: library-circulation
@@ -297,6 +312,7 @@ libraries:
     folio_pickup_service_point_code: RUMSEY-MAP
     reading_room_url: https://library.stanford.edu/rumsey/about-center/visitor-policies
     hold_pseudopatron: HOLD@RM
+    folio_hold_pseudopatron: 462ca8af-7190-4ec8-b73e-468501d3dc4b
     hours:
       library_slug: Rumsey
       location_slug: visitor-access
@@ -304,12 +320,14 @@ libraries:
     label: Academy Hall (SRWC)
     folio_pickup_service_point_code: RWC
     hold_pseudopatron: HOLD@RU
+    folio_hold_pseudopatron: 2a0fa6a6-6114-41ed-afd6-554cabe88f6f
     hours:
       library_slug: srwc
       location_slug: lobby-desk
   SAL:
     label: SAL1&2 (on-campus shelving)
     hold_pseudopatron: HOLD@SL
+    folio_hold_pseudopatron: f480a0d5-0228-4a0d-807a-381f7ffaa25e
     hours:
       library_slug: sal12
       location_slug: operations
@@ -337,6 +355,7 @@ libraries:
       email: sciencelibrary@stanford.edu
     folio_pickup_service_point_code: SCIENCE
     hold_pseudopatron: HOLD@CS
+    folio_hold_pseudopatron: 8e29c4f9-bd07-456b-8f66-07fd68930f7f    
     hours:
       library_slug: science
       location_slug: library-circulation
@@ -349,12 +368,14 @@ libraries:
     folio_pickup_service_point_code: SPEC
     reading_room_url: https://library.stanford.edu/spc/using-our-collections
     hold_pseudopatron: HOLD@SP
+    folio_hold_pseudopatron: 5e702134-5577-49f5-b2e3-4409cdbf1653
     hours:
       library_slug: spc
       location_slug: field-reading-room
   TANNER:
     label: Philosophy Library (Tanner)
     hold_pseudopatron: HOLD@TA
+    folio_hold_pseudopatron: ecaea137-b1cd-4eb2-a057-d5c9fb8117c3
     hours:
       library_slug: philosophy
       location_slug: library-circulation
