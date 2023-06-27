@@ -36,6 +36,9 @@ class SubmitFolioRequestJob < ApplicationJob
     delegate :user, to: :request
     delegate :patron, to: :user
 
+    # @param [Request] request
+    # @param [FolioClient] folio_client (nil)
+    # @param [String] barcode (nil)
     def initialize(request, folio_client: nil, barcode: nil)
       @request = request
       @folio_client = folio_client || FolioClient.new
