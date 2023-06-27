@@ -62,18 +62,6 @@ RSpec.describe SymphonyClient do
     end
   end
 
-  describe '#login' do
-    before do
-      stub_request(:post, 'https://example.com/symws/user/patron/authenticate')
-        .with(body: { barcode: '123', password: '321' })
-        .to_return(body: { patronKey: 'key' }.to_json)
-    end
-
-    it 'authenticates the user against symphony' do
-      expect(client.login('123', '321')).to include 'patronKey' => 'key'
-    end
-  end
-
   describe '#login_by_sunetid' do
     before do
       stub_request(:get, 'https://example.com/symws/user/patron/search?includeFields=*&q=webAuthID:sunetid')
