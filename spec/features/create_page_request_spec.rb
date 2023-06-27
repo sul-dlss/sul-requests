@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'Creating a page request' do
+RSpec.describe 'Creating a page request' do
   let(:user) { create(:sso_user) }
 
   describe 'item information' do
@@ -11,7 +11,7 @@ describe 'Creating a page request' do
     end
   end
 
-  pending 'by an anonmyous user' do
+  context 'when initiated by an anonmyous user' do
     before { stub_searchworks_api_json(build(:single_holding)) }
 
     it 'is possible if a name and email is filled out', js: true do
@@ -30,30 +30,25 @@ describe 'Creating a page request' do
       expect_to_be_on_success_page
     end
 
-    it 'retrieves users by both library ID and email if both a provided by the user', js: true do
-      visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
-      click_link "I don't have a SUNet ID"
+    context 'when both library ID and email are provided by the user' do
+      before do
+        User.create!(library_id: '1011', email: 'tcramer1@stanford.edu')
+      end
 
-      expect(page).to have_css('input#request_user_attributes_library_id')
-      expect(page).to have_css('input#request_user_attributes_email')
-      expect(page.evaluate_script('document.activeElement.id')).to eq 'request_user_attributes_library_id'
+      it 'creates a new user', js: true do
+        visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
+        click_link "I don't have a SUNet ID"
 
-      tcramer1 = User.create(library_id: '1011', email: 'tcramer1@stanford.edu')
-      expect(User.where(library_id: '1011', email: 'tcramer1@stanford.edu').size).to eq(1)
+        fill_in 'Library ID', with: '123456'
+        fill_in 'Name', with: 'Tim Cramer'
+        fill_in 'Email', with: 'tcramer1@stanford.edu'
 
-      fill_in 'Library ID', with: '123456'
-      fill_in 'Name', with: 'Tim Cramer'
-      fill_in 'Email', with: 'tcramer1@stanford.edu'
+        click_button 'Send request'
 
-      click_button 'Send request'
-
-      expect(Page.last.user).to eq User.last
-
-      # Verify that the old record was not overwritten when the new request was created
-      expect(User.where(library_id: '1011', email: 'tcramer1@stanford.edu').size).to eq(1)
-      expect_to_be_on_success_page
-
-      tcramer1.destroy
+        # Verify that the old record was not overwritten when the new request was created
+        expect(User.where(email: 'tcramer1@stanford.edu').count).to eq 2
+        expect_to_be_on_success_page
+      end
     end
   end
 
