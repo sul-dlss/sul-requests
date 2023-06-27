@@ -148,7 +148,7 @@ RSpec.describe Folio::BibData do
   describe '#author' do
     subject { data.author }
 
-    it { is_expected.to eq 'Assefa, Nebiuy; Brown, Joanna' }
+    it { is_expected.to eq 'Assefa, Nebiuy' }
   end
 
   describe '#pub_date' do

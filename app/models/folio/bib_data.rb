@@ -15,7 +15,9 @@ module Folio
     end
 
     def author
-      json.fetch('contributors', []).map { |contrib| contrib.fetch('name') }.join('; ')
+      contributors = json.fetch('contributors', [])
+      contributor = contributors.find { |contrib| contrib.fetch('primary') } || contributors.first
+      contributor&.fetch('name')
     end
 
     def pub_date
