@@ -3,6 +3,7 @@
 module Folio
   # Bibliographic data from Folio.
   class BibData
+    TITLE_AUTHOR_DELIMITOR = ' / '
     def initialize(request, _ = nil)
       @request = request
     end
@@ -10,7 +11,7 @@ module Folio
     attr_reader :request
 
     def title
-      json.fetch('indexTitle', '')
+      json.fetch('title', '').split(TITLE_AUTHOR_DELIMITOR).first
     end
 
     def author
