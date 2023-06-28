@@ -1,4 +1,4 @@
-const itemSelector = require('../../app/assets/javascripts/item_selector.js');
+import itemSelector from "../../app/assets/javascripts/item_selector.js"
 
 const fixture = readFixtures('no_limit_item_selector.html');
 

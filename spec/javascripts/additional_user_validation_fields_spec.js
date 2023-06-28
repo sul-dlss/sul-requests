@@ -1,4 +1,4 @@
-const additionalUserValidationFields = require('../../app/assets/javascripts/additional_user_validation_fields.js');
+import pagingScheduleUpdater from "../../app/assets/javascripts/additional_user_validation_fields.js"
 
 const fixture_elements = readFixtures('additional_user_validation_fields_elements.html');
 const fixture_single_input = readFixtures('additional_user_validation_fields_single_input_elements.html');

@@ -1,5 +1,5 @@
 import readFixtures from 'read_fixtures';
-const noJS = require('../../app/assets/javascripts/no_js.js');
+import noJS from "../../app/assets/javascripts/no_js.js"
 
 const fixture = readFixtures('no_js.html');
 

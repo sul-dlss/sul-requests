@@ -1,4 +1,4 @@
-const itemApproval = require('../../app/assets/javascripts/item_approval.js');
+import itemApproval from "../../app/assets/javascripts/item_approval.js"
 
 const fixture = readFixtures('item_approval_rows.html');
 

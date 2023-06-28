@@ -1,15 +1,19 @@
 import { JSDOM } from 'jsdom';
-import $ from 'jquery';
-import List from 'list.min';
+import jQuery from 'jquery';
+// import List from 'list.min';
 import '@testing-library/jest-dom';
-
-import readFixtures from 'read_fixtures';
 
 const jsdom = new JSDOM('<html></html>', { pretendToBeVisual: true });
 const { window } = jsdom;
 
-global.readFixtures = readFixtures;
+console.error("jquery", jQuery)
+const more = jQuery.extend({one: '1'}, {two: '2'})
+
+// import readFixtures from 'read_fixtures';
+
+
+// global.readFixtures = readFixtures;
 global.window = window;
-global.jQuery = $;
+global.jQuery = jQuery;
 global.$ = global.jQuery;
-global.List = List;
+// global.List = List;
