@@ -261,6 +261,45 @@ FactoryBot.define do
     end
   end
 
+  factory :sal_holdings, class: 'Hash' do
+    title { 'SAL Item Title' }
+
+    format { ['Book'] }
+
+    holdings do
+      [
+        { 'code' => 'SAL',
+          'locations' => [
+            { 'code' => 'STACKS',
+              'items' => [
+                { 'barcode' => '12345678',
+                  'callnumber' => 'ABC 123',
+                  'type' => 'STKS',
+                  'status' => {
+                    'availability_class' => 'page',
+                    'status_text' => 'Page'
+                  }
+                },
+                { 'barcode' => '87654321',
+                  'callnumber' => 'ABC 321',
+                  'type' => 'STKS',
+                  'status' => {
+                    'availability_class' => 'page',
+                    'status_text' => 'Page'
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    end
+
+    initialize_with do
+      attributes.stringify_keys
+    end
+  end
+
   factory :page_mp_holdings, class: 'Hash' do
     title { 'PAGE-MP Item Title' }
 

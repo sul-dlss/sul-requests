@@ -9,7 +9,7 @@ RSpec.describe ScansController do
     allow(controller).to receive_messages(current_user: user)
   end
 
-  let(:scan) { create(:scan_with_holdings, origin: 'SAL3', origin_location: 'STACKS', barcodes: ['12345678']) }
+  let(:scan) { create(:scan, :with_holdings, origin: 'SAL', origin_location: 'STACKS', barcodes: ['12345678']) }
   let(:scannable_params) do
     { item_id: '12345', origin: 'SAL3', origin_location: 'STACKS' }
   end
@@ -139,6 +139,10 @@ RSpec.describe ScansController do
   end
 
   describe 'update' do
+    before do
+      allow(Request).to receive(:find).and_return(scan) # So that holdings are stubbed from FactoryBot
+    end
+
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
 

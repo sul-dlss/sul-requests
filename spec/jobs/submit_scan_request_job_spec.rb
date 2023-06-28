@@ -9,7 +9,7 @@ RSpec.describe SubmitScanRequestJob, type: :job do
       allow(Request.ils_job_class).to receive(:perform_later)
     end
 
-    let(:scan) { create(:scan) }
+    let(:scan) { create(:scan, :without_validations) }
     let(:illiad_request) { instance_double(IlliadRequest, request!: double(body: { 'IlliadResponse' => 'Blah' }.to_json)) }
 
     it 'makes a request to illiad' do
@@ -34,7 +34,7 @@ RSpec.describe SubmitScanRequestJob, type: :job do
     end
 
     let(:user) { build(:scan_eligible_user) }
-    let(:scan) { create(:scan, user:) }
+    let(:scan) { create(:scan, :without_validations, user:) }
     let(:failed_illiad_request) do
       instance_double(IlliadRequest, request!: double(body: { 'Message' => 'error' }.to_json))
     end

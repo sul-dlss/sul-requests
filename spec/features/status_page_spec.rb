@@ -66,7 +66,7 @@ describe 'Status Page' do
     end
 
     it 'scan' do
-      my_req = create(:scan, user:)
+      my_req = create(:scan, :with_item_title, :without_validations, user:)
       visit status_scan_path(my_req)
 
       expect(page).to have_title('Request status: Title for Scan 12345')

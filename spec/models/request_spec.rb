@@ -132,8 +132,8 @@ RSpec.describe Request do
       before do
         create(:hold_recall, created_at: Time.zone.today - 1.month, item_comment: 'Too new')
         create(:hold_recall, created_at: Time.zone.today - 2.years, item_comment: 'Obsolete')
-        create(:scan, created_at: Time.zone.today + 3.days, item_comment: 'Too new')
-        create(:scan, created_at: Time.zone.today - 15.months, item_comment: 'Obsolete')
+        create(:scan, :without_validations, created_at: Time.zone.today + 3.days, item_comment: 'Too new')
+        create(:scan, :without_validations, created_at: Time.zone.today - 15.months, item_comment: 'Obsolete')
         r = build(:mediated_page, created_at: Time.zone.today - 15.months,
                                   needed_date: Time.zone.today - 83.days,
                                   item_comment: 'Old enough, but needed date too recent')

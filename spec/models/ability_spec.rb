@@ -97,7 +97,7 @@ describe Ability do
       let(:user) { build(:library_id_user) }
       let(:page) { build(:page, user:) }
       let(:mediated_page) { build(:mediated_page, user:) }
-      let(:scan) { build(:scan, user:) }
+      let(:scan) { build(:scan, :without_validations, user:) }
 
       it { is_expected.to be_able_to(:create, page) }
       it { is_expected.to be_able_to(:create, mediated_page) }

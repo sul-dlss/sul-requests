@@ -43,6 +43,20 @@ FactoryBot.define do
     end
   end
 
+  factory :sal_stacks_multi_holdings_searchworks_item, class: 'SearchworksItem' do
+    initialize_with { new(request) }
+
+    request { create(:request, origin: 'SAL', origin_location: 'STACKS') }
+
+    after(:build) do |item|
+      class << item
+        def json
+          FactoryBot.build(:sal_holdings)
+        end
+      end
+    end
+  end
+
   factory :art_multi_holdings_searchworks_item, class: 'SearchworksItem' do
     initialize_with { new(request) }
 

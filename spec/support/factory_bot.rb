@@ -8,8 +8,8 @@ RSpec.configure do |config|
   config.before(:suite) do
     DatabaseCleaner.start
     factories_to_lint = FactoryBot.factories.reject do |factory|
-      # Remove non-activerecord objects (Hashes)
-      [Hash, SearchworksItem].include? factory.build_class
+      factory.name == :scan || # Produces an invalid object (no matching holdings)
+        [Hash, SearchworksItem].include?(factory.build_class)  # non-activerecord objects (Hashes)
     end
 
     FactoryBot.lint factories_to_lint unless config.files_to_run.one?
