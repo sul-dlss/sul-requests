@@ -14,7 +14,7 @@ class SubmitFolioRequestJob < ApplicationJob
     return true unless request
 
     Sidekiq.logger.info("Started SubmitFolioRequestJob for request #{request_id}")
-    response = Command.new(request, **options).execute!
+    response = Command.new(request, logger:, **options).execute!
 
     Sidekiq.logger.debug("FOLIO response: #{response}")
     request.merge_ils_response_data(FolioResponse.new(response.with_indifferent_access))
@@ -31,57 +31,55 @@ class SubmitFolioRequestJob < ApplicationJob
 
   # Submit a hold request to FOLIO
   class Command
-    attr_reader :request, :folio_client, :barcode
+    attr_reader :request, :folio_client, :barcode, :logger
 
     delegate :user, to: :request
     delegate :patron, to: :user
 
     # @param [Request] request
+    # @param [Logger] logger
     # @param [FolioClient] folio_client (nil)
     # @param [String] barcode (nil)
-    def initialize(request, folio_client: nil, barcode: nil)
+    def initialize(request, logger:, folio_client: nil, barcode: nil)
       @request = request
+      @logger = logger
       @folio_client = folio_client || FolioClient.new
       @barcode = barcode
     end
 
-    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     def execute!
-      responses = barcodes.map do |barcode|
-        user_id = request.user.patron.id
-        item_id = folio_client.get_item(barcode)['id']
-
-        code = Settings.libraries[request.destination].folio_pickup_service_point_code
-        pickup_location_id = folio_client.get_service_point(code)['id']
-
-        Rails.logger.info(
-          "Submitting hold request for user #{user_id} and item #{item_id} for pickup up at #{code} (#{pickup_location_id})"
-        )
-
-        expiration_date = (request.needed_date || (Time.zone.today + 3.years)).to_time.utc.iso8601
-        hold_request = FolioClient::HoldRequest.new(pickup_location_id:,
-                                                    patron_comments: request.item_comment,
-                                                    expiration_date:)
-        place_hold_response = folio_client.create_item_hold(user_id, item_id, hold_request)
-
-        {
-          barcode:,
-          msgcode: '209',
-          response: place_hold_response
-        }
+      requested_items = barcodes.map do |barcode|
+        response = request_item(user_id: patron.id, pickup_location_id:, barcode:)
+        { barcode:, msgcode: '209', response: }
       end
-
-      {
-        requested_items: responses
-      }
-    end
-    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
-
-    def request_params
-      {}
+      { requested_items: }
     end
 
     private
+
+    def pickup_location_id
+      @pickup_location_id ||= begin
+        code = Settings.libraries[request.destination].folio_pickup_service_point_code
+        folio_client.get_service_point(code)['id']
+      end
+    end
+
+    def request_item(user_id:, pickup_location_id:, barcode:)
+      item_id = folio_client.get_item(barcode)['id']
+      place_hold(item_id:, user_id:, pickup_location_id:)
+    end
+
+    def place_hold(item_id:, user_id:, pickup_location_id:)
+      logger.info(
+        "Submitting hold request for user #{user_id} and item #{item_id} for pickup up at #{pickup_location_id}"
+      )
+
+      expiration_date = (request.needed_date || (Time.zone.today + 3.years)).to_time.utc.iso8601
+      hold_request = FolioClient::HoldRequest.new(pickup_location_id:,
+                                                  patron_comments: request.item_comment,
+                                                  expiration_date:)
+      folio_client.create_item_hold(user_id, item_id, hold_request)
+    end
 
     def barcodes
       return request.barcodes unless @barcode
