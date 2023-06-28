@@ -18,39 +18,38 @@ module Folio
       FolioClient.new
     end
 
-    attr_reader :fields
+    attr_reader :user_info
 
     def initialize(fields = {})
-      @fields = fields
+      @user_info = fields
     end
 
     def id
-      fields['id']
+      user_info['id']
     end
 
     def barcode
-      fields['barcode']
+      user_info['barcode']
     end
 
-    # TODO
     def fee_borrower?
-      false
+      user_info.fetch('patronGroup') == Settings.folio.fee_borrower_patron_group
     end
 
     def standing
-      fields.dig('standing', 'key')
+      user_info.dig('standing', 'key')
     end
 
     def good_standing?
-      fields['active']
+      user_info['active'] && !blocked?
     end
 
     def first_name
-      field.dig('personal', 'preferredFirstName') || fields.dig('personal', 'firstName')
+      field.dig('personal', 'preferredFirstName') || user_info.dig('personal', 'firstName')
     end
 
     def last_name
-      fields.dig('personal', 'lastName')
+      user_info.dig('personal', 'lastName')
     end
 
     def display_name
@@ -58,11 +57,11 @@ module Folio
     end
 
     def email
-      fields.dig('personal', 'email')
+      user_info.dig('personal', 'email')
     end
 
     def expired?
-      !fields['active']
+      !user_info['active']
     end
 
     # TODO
@@ -81,7 +80,12 @@ module Folio
     end
 
     def university_id
-      fields['externalSystemId']
+      user_info['externalSystemId']
+    end
+
+    def blocked?
+      blocks = self.class.folio_client.patron_blocks(user_info.fetch('id'))
+      blocks.fetch('automatedPatronBlocks').present?
     end
   end
 end

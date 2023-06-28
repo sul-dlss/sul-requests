@@ -40,6 +40,10 @@ class FolioClient
     get_json("/users/#{CGI.escape(user_id)}")
   end
 
+  def patron_blocks(user_id)
+    get_json("/automated-patron-blocks/#{user_id}")
+  end
+
   # Defines the hold request to Folio
   # [String] pickup_location_id the UUID of the pickup location
   # [String] patron_comments
