@@ -45,7 +45,7 @@ RSpec.describe RequestStatusMailer do
       end
 
       context 'when the item is scannable' do
-        let(:request) { create(:scan, :with_holdings_barcodes, user:) }
+        let(:request) { create(:scan, :with_holdings_barcodes, :with_item_title, user:) }
         let(:selected_items) { [double(:item, barcode: '12345678', callnumber: 'ABC 123', request_status: nil, type: 'STKS')] }
 
         it 'indicates to the user they can request the item be scanned' do
@@ -79,7 +79,7 @@ RSpec.describe RequestStatusMailer do
 
     describe '#request_status_for_scan' do
       let(:mailer_method) { :request_status_for_scan }
-      let(:request) { create(:scan, :without_validations, user:, page_range: '1-2', section_title: 'Chapter2') }
+      let(:request) { create(:scan, :without_validations, :with_item_title, user:, page_range: '1-2', section_title: 'Chapter2') }
 
       it 'renders the correct email' do
         expect(mail.body.to_s).to include(
@@ -172,7 +172,7 @@ RSpec.describe RequestStatusMailer do
       end
 
       describe 'destination specific' do
-        let(:request) { create(:scan, :without_validations, user:) }
+        let(:request) { create(:scan, :without_validations, :with_item_title, user:) }
 
         it 'is the configured from address for the origin' do
           expect(mail.from).to eq ['scan-and-deliver@stanford.edu']
