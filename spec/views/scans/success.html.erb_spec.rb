@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'scans/success.html.erb' do
   let(:user) { create(:sso_user) }
-  let(:request) { create(:scan, :without_validations, user:) }
+  let(:request) { create(:scan, :without_validations, :with_item_title, user:) }
 
   before do
     allow(view).to receive_messages(current_request: request)
