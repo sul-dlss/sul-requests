@@ -37,7 +37,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
   class SymWsCommand
     attr_reader :request, :symphony_client, :barcode
 
-    delegate :user, :scan_destination, to: :request
+    delegate :user, to: :request
     delegate :patron, to: :user
 
     def initialize(request, symphony_client: nil, barcode: nil)
@@ -137,6 +137,10 @@ class SubmitSymphonyRequestJob < ApplicationJob
       }
       item_return[:holdType] = 'TITLE' if request.is_a?(HoldRecall)
       item_return
+    end
+
+    def scan_destination
+      request.scan_destination.to_h.slice(:key, :patron_barcode)
     end
 
     # rubocop:disable Metrics/MethodLength

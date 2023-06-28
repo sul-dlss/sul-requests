@@ -25,9 +25,11 @@ module Folio
     end
 
     def id
-      user_info['id']
+      user_info.fetch('id')
     end
 
+    # TODO: I belive we added this for parity with Symphony::Patron, but I don't think we will need it.
+    # @deprecated
     def barcode
       user_info['barcode']
     end
