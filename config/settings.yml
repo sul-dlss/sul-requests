@@ -624,10 +624,6 @@ hold_recallable:
       - INPROCESS
       - ON-ORDER
 
-default_scan_destination:
-  key: 'GREEN'
-  patron_barcode: 'GRE-SCANDELIVER'
-
 scannable:
   - library: SAL
     item_types:

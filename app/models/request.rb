@@ -171,6 +171,10 @@ class Request < ActiveRecord::Base
     location_rule&.pickup_libraries
   end
 
+  def scan_destination
+    {}
+  end
+
   class << self
     # The mediateable_origins will make multiple (efficient) database requests
     # in order to return the array of locations that are both configured as mediateable and have existing requests.
