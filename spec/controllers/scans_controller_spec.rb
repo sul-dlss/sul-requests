@@ -9,7 +9,7 @@ RSpec.describe ScansController do
     allow(controller).to receive_messages(current_user: user)
   end
 
-  let(:scan) { create(:scan_with_holdings, origin: 'SAL3', origin_location: 'STACKS', barcodes: ['12345678']) }
+  let(:scan) { create(:scan, :with_holdings, origin: 'SAL3', origin_location: 'STACKS', barcodes: ['12345678']) }
   let(:scannable_params) do
     { item_id: '12345', origin: 'SAL3', origin_location: 'STACKS' }
   end

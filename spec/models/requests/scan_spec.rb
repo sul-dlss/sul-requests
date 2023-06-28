@@ -51,7 +51,7 @@ RSpec.describe Scan do
 
   describe 'send_approval_status!' do
     describe 'for library id users' do
-      let(:subject) { create(:scan, user: create(:library_id_user)) }
+      let(:subject) { create(:scan, :without_validations, user: create(:library_id_user)) }
 
       it 'does not send an approval status email' do
         expect do
@@ -61,7 +61,7 @@ RSpec.describe Scan do
     end
 
     describe 'for everybody else' do
-      let(:subject) { create(:scan, user: create(:sso_user)) }
+      let(:subject) { create(:scan, :without_validations, user: create(:sso_user)) }
 
       it 'sends an approval status email' do
         expect do

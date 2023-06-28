@@ -43,7 +43,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
 
     let(:user) { build(:non_sso_user) }
     let(:request) { scan }
-    let(:scan) { create(:scan_with_holdings_barcodes, user:) }
+    let(:scan) { create(:scan, :with_holdings_barcodes, user:) }
     let(:mock_client) { instance_double(SymphonyClient) }
     let(:patron) { Symphony::Patron.new({}) }
 
@@ -197,7 +197,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
       end
 
       context 'without barcodes' do
-        let(:scan) { create(:scan_with_holdings, user:) }
+        let(:scan) { create(:scan, :with_holdings, user:) }
 
         it 'places a hold using a callkey' do
           allow_any_instance_of(Symphony::CatalogInfo).to receive(:current_location).and_return('SAL')

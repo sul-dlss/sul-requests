@@ -58,7 +58,7 @@ describe 'requests/status.html.erb' do
   describe 'for scans' do
     let(:request) do
       create(
-        :scan_with_holdings,
+        :scan, :with_holdings,
         user:,
         data: {
           'page_range' => 'Range of pages', 'section_title' => 'Title of section', 'authors' => 'The Author'

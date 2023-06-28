@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe 'shared/_request_status_information.html.erb' do
   let(:user) { create(:sso_user) }
-  let(:request) { create(:scan, user:) }
+  let(:request) { create(:scan, :without_validations, user:) }
 
   before do
     allow(view).to receive_messages(current_request: request)

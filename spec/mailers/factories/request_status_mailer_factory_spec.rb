@@ -29,7 +29,7 @@ describe RequestStatusMailerFactory do
 
   describe 'request types' do
     describe 'scan' do
-      let(:request) { create(:scan) }
+      let(:request) { create(:scan, :without_validations) }
 
       it 'send the correct mail based on the type of the request' do
         expect(mailer.body.to_s).to include 'The following items have been queued for scanning'

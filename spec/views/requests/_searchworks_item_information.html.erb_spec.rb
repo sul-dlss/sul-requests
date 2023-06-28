@@ -9,7 +9,7 @@ describe 'requests/_searchworks_item_information.html.erb' do
   end
 
   describe 'persisted objects' do
-    let(:request) { create(:scan_with_holdings) }
+    let(:request) { create(:scan, :with_holdings) }
 
     it 'displays the stored item title in an h2' do
       expect(rendered).to have_css('h2', text: 'SAL3 Item Title')
