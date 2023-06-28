@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Calls FOLIO REST endpoints
-class FolioClient
+class FolioClient # rubocop:disable Metrics/ClassLength
   DEFAULT_HEADERS = {
     accept: 'application/json, text/plain',
     content_type: 'application/json'
