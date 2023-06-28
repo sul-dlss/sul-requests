@@ -47,4 +47,18 @@ RSpec.describe SubmitFolioRequestJob do
       end
     end
   end
+
+  context 'with a Scan type request' do
+    context 'with a non-sso user' do
+      let(:request) do
+        create(:scan, :with_holdings_barcodes, user: create(:sso_user))
+      end
+
+      it 'calls the create_item_hold API method' do
+        described_class.perform_now(request.id)
+        # once for each barcode
+        expect(client).to have_received(:create_item_hold).with('0ba81714-52d4-4f37-8b4d-f9d929af048d', 4, FolioClient::HoldRequest).twice
+      end
+    end
+  end
 end

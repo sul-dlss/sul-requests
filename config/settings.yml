@@ -656,6 +656,7 @@ scannable:
     destination:
       key: 'GREEN'
       patron_barcode: 'GRE-SCANDELIVER'
+      folio_pseudopatron: 0ba81714-52d4-4f37-8b4d-f9d929af048d  
   - library: SAL
     item_types:
       - BUS-STACKS
@@ -683,6 +684,7 @@ scannable:
     destination:
       key: 'GREEN'
       patron_barcode: 'GRE-SCANDELIVER'
+      folio_pseudopatron: 0ba81714-52d4-4f37-8b4d-f9d929af048d
   - library: SAL
     item_types:
       - BUS-STACKS
@@ -695,6 +697,7 @@ scannable:
     destination:
       key: 'EAST-ASIA'
       patron_barcode: 'EAL-SCANREVIEW'
+      folio_pseudopatron: 45873e99-3048-4246-b189-315df10717e5
   - library: SAL3
     item_types:
       - BUS-STACKS

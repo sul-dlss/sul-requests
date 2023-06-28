@@ -54,8 +54,8 @@ class SubmitFolioRequestJob < ApplicationJob
     end
 
     private
-        
-    delegate :user, to: :request
+
+    delegate :user, :scan_destination, to: :request
     delegate :patron, to: :user
 
     def pickup_location_id
@@ -70,19 +70,21 @@ class SubmitFolioRequestJob < ApplicationJob
         "Submitting hold request for user #{user_id} and item #{item_id} for pickup up at #{pickup_location_id}"
       )
 
-      expiration_date = (request.needed_date || (Time.zone.today + 3.years)).to_time.utc.iso8601
       hold_request = FolioClient::HoldRequest.new(pickup_location_id:,
                                                   patron_comments: request.item_comment,
                                                   expiration_date:)
       folio_client.create_item_hold(user_id, item_id, hold_request)
     end
 
+    def expiration_date
+      (request.needed_date || (Time.zone.today + 3.years)).to_time.utc.iso8601
+    end
+
     # rubocop:disable Metrics/MethodLength
     def user_id
       @user_id ||= case request
                    when Scan
-                     # TODO: pseudopatron for scanning
-                     raise 'to be implemented'
+                     scan_destination.folio_pseudopatron
                    when HoldRecall
                      patron.id
                    when Page, MediatedPage
