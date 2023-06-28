@@ -12,18 +12,29 @@ RSpec.describe SubmitScanRequestJob, type: :job do
     let(:scan) { create(:scan, :with_holdings) }
     let(:illiad_request) { instance_double(IlliadRequest, request!: double(body: { 'IlliadResponse' => 'Blah' }.to_json)) }
 
-    it 'makes a request to illiad' do
-      described_class.perform_now(scan)
+    context 'when the scan destination is present' do
+      it 'makes a request to illiad and the ILS' do
+        described_class.perform_now(scan)
 
-      expect(illiad_request).to have_received(:request!)
+        expect(illiad_request).to have_received(:request!)
 
-      expect(scan.illiad_response_data).to eq({ 'IlliadResponse' => 'Blah' })
+        expect(scan.illiad_response_data).to eq({ 'IlliadResponse' => 'Blah' })
+        expect(Request.ils_job_class).to have_received(:perform_later).with(scan.id, anything)
+      end
     end
 
-    it 'enqueues a request to the ILS' do
-      described_class.perform_now(scan)
+    context 'when the scan_destination is not present' do
+      let(:scan) { create(:scan, :without_validations, origin: 'SAL3') }
 
-      expect(Request.ils_job_class).to have_received(:perform_later).with(scan.id, anything)
+      # SAL3 scans should not be sent to the ILS
+      it 'makes a request to illiad, but not to the ILS' do
+        described_class.perform_now(scan)
+
+        expect(illiad_request).to have_received(:request!)
+
+        expect(scan.illiad_response_data).to eq({ 'IlliadResponse' => 'Blah' })
+        expect(Request.ils_job_class).not_to have_received(:perform_later).with(scan.id, anything)
+      end
     end
   end
 
