@@ -6,12 +6,6 @@
 module RequestsHelper
   include PickupLibrariesHelper
 
-  def label_for_comments_field
-    t("forms.labels.#{current_request.origin}.item_comment",
-      default: current_request.class.human_attribute_name(:item_comment)
-     )
-  end
-
   def status_text_for_item(item)
     status_text_for_errored_item(item) || i18n_status_text(item)
   end
@@ -62,22 +56,6 @@ module RequestsHelper
       t('symphony_response.mixed_failure_html')
     elsif request.ils_response.all_errored?
       t('symphony_response.failure.default.alert_html')
-    end
-  end
-
-  def new_scan_path_for_current_request(request = current_request)
-    new_scan_path(
-      origin: request.origin,
-      item_id: request.item_id,
-      origin_location: request.origin_location
-    )
-  end
-
-  def status_page_url_for_request(request)
-    if !request.user.sso_user? && request.is_a?(TokenEncryptable)
-      polymorphic_url([:status, request], token: request.encrypted_token)
-    else
-      polymorphic_url([:status, request])
     end
   end
 
