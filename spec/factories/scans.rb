@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :scan do
     item_id { '12345' }
-    origin { 'SAL3' }
+    origin { 'SAL' }
     origin_location { 'STACKS' }
     section_title { 'Section Title for Scan 12345' }
 
@@ -19,7 +19,7 @@ FactoryBot.define do
       after(:build) do |scan|
         class << scan
           def bib_data
-            @bib_data ||= FactoryBot.build(:sal3_stacks_multi_holdings_searchworks_item, request: self)
+            @bib_data ||= FactoryBot.build(:sal_stacks_multi_holdings_searchworks_item, request: self)
           end
         end
       end

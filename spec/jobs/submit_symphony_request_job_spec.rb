@@ -56,17 +56,17 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
         allow_any_instance_of(Symphony::CatalogInfo).to receive(:current_location).and_return('SAL')
         expect(mock_client).to receive(:place_hold).with(
           {
-            fill_by_date: nil, key: 'SAL3', recall_status: 'STANDARD',
+            fill_by_date: nil, key: 'GREEN', recall_status: 'STANDARD',
             item: { itemBarcode: '12345678', holdType: 'COPY' },
-            patron_barcode: 'SAL3-SCANDELIVER', comment: 'Jane Stanford jstanford@stanford.edu',
+            patron_barcode: 'GRE-SCANDELIVER', comment: 'Jane Stanford jstanford@stanford.edu',
             for_group: false, force: true
           }
         ).and_return({}).ordered
         expect(mock_client).to receive(:place_hold).with(
           {
-            fill_by_date: nil, key: 'SAL3', recall_status: 'STANDARD',
+            fill_by_date: nil, key: 'GREEN', recall_status: 'STANDARD',
             item: { itemBarcode: '87654321', holdType: 'COPY' },
-            patron_barcode: 'SAL3-SCANDELIVER', comment: 'Jane Stanford jstanford@stanford.edu',
+            patron_barcode: 'GRE-SCANDELIVER', comment: 'Jane Stanford jstanford@stanford.edu',
             for_group: false, force: true
           }
         ).and_return({}).ordered
@@ -206,9 +206,9 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
           )
           expect(mock_client).to receive(:place_hold).with(
             {
-              fill_by_date: nil, key: 'SAL3', recall_status: 'STANDARD',
+              fill_by_date: nil, key: 'GREEN', recall_status: 'STANDARD',
               item: { call: { key: 'hello:world', resource: '/catalog/call' }, holdType: 'TITLE' },
-              patron_barcode: 'SAL3-SCANDELIVER', comment: 'Jane Stanford jstanford@stanford.edu',
+              patron_barcode: 'GRE-SCANDELIVER', comment: 'Jane Stanford jstanford@stanford.edu',
               for_group: false, force: true
             }
           ).and_return({})
