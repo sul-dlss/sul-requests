@@ -9,7 +9,7 @@ RSpec.describe SubmitScanRequestJob, type: :job do
       allow(Request.ils_job_class).to receive(:perform_later)
     end
 
-    let(:scan) { create(:scan, :without_validations) }
+    let(:scan) { create(:scan, :with_holdings) }
     let(:illiad_request) { instance_double(IlliadRequest, request!: double(body: { 'IlliadResponse' => 'Blah' }.to_json)) }
 
     it 'makes a request to illiad' do

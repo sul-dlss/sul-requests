@@ -31,6 +31,11 @@ class Scan < Request
     RequestStatusMailer.request_status_for_scan(self).deliver_later if notification_email_address.present?
   end
 
+  # @return [Hash]
+  def scan_destination
+    scannable_location_rule&.destination || {}
+  end
+
   private
 
   def requested_item_is_not_scannable_only

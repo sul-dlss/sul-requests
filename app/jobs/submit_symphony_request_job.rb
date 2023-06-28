@@ -37,7 +37,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
   class SymWsCommand
     attr_reader :request, :symphony_client, :barcode
 
-    delegate :user, to: :request
+    delegate :user, :scan_destination, to: :request
     delegate :patron, to: :user
 
     def initialize(request, symphony_client: nil, barcode: nil)
@@ -139,17 +139,11 @@ class SubmitSymphonyRequestJob < ApplicationJob
       item_return
     end
 
-    def scan_destinations
-      return {} unless request.is_a? Scan
-
-      request.scannable_location_rule&.destination || Settings.default_scan_destination
-    end
-
     # rubocop:disable Metrics/MethodLength
     def patron_barcode
       case request
       when Scan
-        # Scan patron barcodes use logic in #scan_destinations
+        # Scan patron barcodes use logic in Scan#scan_destination
         nil
       when HoldRecall
         patron.barcode
@@ -188,7 +182,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
                  },
                  holdType: 'TITLE'
                } })
-        .merge(scan_destinations)
+        .merge(scan_destination)
     end
 
     def barcodes
@@ -217,7 +211,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
       barcodes.map do |barcode|
         generic_request
           .merge({ item: item(barcode) })
-          .merge(scan_destinations)
+          .merge(scan_destination)
       end
     end
   end
