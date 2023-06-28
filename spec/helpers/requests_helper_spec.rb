@@ -213,13 +213,4 @@ describe RequestsHelper do
       ).to include('There was a problem with one or more of your items below')
     end
   end
-
-  describe '#new_scan_path_for_current_request' do
-    it 'returns a new scan url using the parameters of the given request' do
-      request = create(:request, origin: 'GREEN', origin_location: 'STACKS', item_id: '12345')
-      expect(
-        new_scan_path_for_current_request(request)
-      ).to eq new_scan_path(origin: 'GREEN', item_id: '12345', origin_location: 'STACKS')
-    end
-  end
 end
