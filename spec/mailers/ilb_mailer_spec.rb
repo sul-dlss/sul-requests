@@ -2,10 +2,11 @@
 
 require 'rails_helper'
 
-describe IlbMailer do
+RSpec.describe IlbMailer do
+  let(:request) { create(:scan, :without_validations, user:) }
+
   describe 'ilb_notification' do
     let(:user) { build(:scan_eligible_user) }
-    let(:request) { create(:scan, :without_validations, user:) }
     let(:mail) { described_class.ilb_notification(request) }
 
     describe 'to' do
@@ -18,14 +19,6 @@ describe IlbMailer do
       it 'is the configured from address for the origin' do
         expect(mail.from).to eq ['greencirc@stanford.edu']
       end
-
-      describe 'location specific' do
-        let(:request) { create(:scan, :without_validations, user:) }
-
-        it 'is the configured from address for the origin' do
-          expect(mail.from).to eq ['greencirc@stanford.edu']
-        end
-      end
     end
 
     describe 'subject' do
@@ -35,10 +28,6 @@ describe IlbMailer do
     end
 
     describe 'body' do
-      let(:request) do
-        create(:scan, :without_validations, user:)
-      end
-
       let(:body) { mail.body.to_s }
 
       it 'has the date' do
