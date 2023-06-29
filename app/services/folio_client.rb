@@ -73,7 +73,7 @@ class FolioClient
   # @param [HoldRequest] request
   def create_instance_hold(user_id, instance_id, request)
     response = post("/patron/account/#{user_id}/instance/#{instance_id}/hold", json: request.as_json)
-    check_response(response, title: 'Hold request', context: { user_id:, instance_id:, **params })
+    check_response(response, title: 'Hold request', context: { user_id:, instance_id: })
 
     parse_json(response)
   end
@@ -88,7 +88,7 @@ class FolioClient
   def create_item_hold(user_id, item_id, request)
     response = post("/patron/account/#{user_id}/item/#{item_id}/hold", json: request.as_json)
 
-    check_response(response, title: 'Hold request', context: { user_id:, item_id:, **params })
+    check_response(response, title: 'Hold request', context: { user_id:, item_id: })
 
     parse_json(response)
   end
