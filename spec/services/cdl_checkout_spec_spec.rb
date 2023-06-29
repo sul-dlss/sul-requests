@@ -3,6 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe CdlCheckout do
+  include ActiveJob::TestHelper
   subject { described_class.new('druid', user) }
 
   let(:user) { create(:sso_user) }
@@ -45,10 +46,11 @@ RSpec.describe CdlCheckout do
       it 'tries to eventually handle the checkout in a background job' do
         expect(subject).to receive(:process_checkout).with('12345').and_raise(Exceptions::SymphonyError).ordered
         expect(subject).to receive(:process_checkout).with('12345').and_return({}).ordered
-
-        expect do
-          expect { described_class.checkout('12345', 'druid', user) }.to raise_exception(Exceptions::SymphonyError)
-        end.to have_performed_job(SubmitCdlCheckoutJob)
+        perform_enqueued_jobs do
+          expect do
+            expect { described_class.checkout('12345', 'druid', user) }.to raise_exception(Exceptions::SymphonyError)
+          end.to have_performed_job(SubmitCdlCheckoutJob)
+        end
       end
 
       it 'sends the user a next-up email if the background checkout succeeds' do
@@ -58,8 +60,9 @@ RSpec.describe CdlCheckout do
 
         mailer = double(deliver_later: true)
         expect(CdlWaitlistMailer).to receive(:youre_up).with(hold.key, hold.circ_record_key).and_return(mailer)
-
-        expect { described_class.checkout('12345', 'druid', user) }.to raise_exception(Exceptions::SymphonyError)
+        perform_enqueued_jobs do
+          expect { described_class.checkout('12345', 'druid', user) }.to raise_exception(Exceptions::SymphonyError)
+        end
         expect(mailer).to have_received :deliver_later
       end
     end
@@ -82,9 +85,11 @@ RSpec.describe CdlCheckout do
         expect(subject).to receive(:process_checkin).with('holdrecordkey').and_raise(Exceptions::SymphonyError).ordered
         expect(subject).to receive(:process_checkin).with('holdrecordkey').and_return({}).ordered
 
-        expect do
-          described_class.checkin('holdrecordkey', user)
-        end.to have_performed_job(SubmitCdlCheckinJob)
+        perform_enqueued_jobs do
+          expect do
+            described_class.checkin('holdrecordkey', user)
+          end.to have_performed_job(SubmitCdlCheckinJob)
+        end
       end
     end
   end

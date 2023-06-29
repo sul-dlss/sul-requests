@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'Mediation table', js: true do
+RSpec.describe 'Mediation table', js: true do
   let(:top_level_columns) { 7 }
   let(:short_comment) { 'not a long comment' }
 
@@ -134,6 +134,10 @@ describe 'Mediation table', js: true do
     describe 'successful symphony response' do
       let(:ils_response) { build(:symphony_page_with_multiple_items) }
 
+      before do
+        allow(Request.ils_job_class).to receive(:perform_now)
+      end
+
       it 'has toggleable rows that display holdings' do
         expect(page).to have_css('[data-mediate-request]', count: 4)
         expect(page).to have_css('tbody tr', count: 4)
@@ -238,6 +242,10 @@ describe 'Mediation table', js: true do
 
     describe 'unsuccessful symphony responses' do
       let(:ils_response) { build(:symphony_request_with_mixed_status) }
+
+      before do
+        allow(Request.ils_job_class).to receive(:perform_now)
+      end
 
       it 'has the persisted item level error message' do
         within(all('[data-mediate-request]').last) do

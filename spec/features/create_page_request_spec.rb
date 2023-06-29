@@ -5,6 +5,10 @@ require 'rails_helper'
 RSpec.describe 'Creating a page request' do
   let(:user) { create(:sso_user) }
 
+  before do
+    allow(Request.ils_job_class).to receive(:perform_now)
+  end
+
   describe 'item information' do
     it 'displays the items title' do
       visit new_page_path(item_id: '2824966', origin: 'GREEN', origin_location: 'STACKS')
@@ -16,7 +20,6 @@ RSpec.describe 'Creating a page request' do
 
     it 'is possible if a name and email is filled out', js: true do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
-
       click_link "I don't have a SUNet ID"
 
       expect(page).to have_css('input#request_user_attributes_library_id')

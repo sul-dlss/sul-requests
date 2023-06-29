@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe HoldRecall do
+RSpec.describe HoldRecall do
   describe 'requestable' do
     it { is_expected.not_to be_requestable_with_name_email }
     it { is_expected.to be_requestable_with_library_id }
@@ -26,7 +26,7 @@ describe HoldRecall do
       it 'does not send an approval status email' do
         expect do
           subject.send_approval_status!
-        end.not_to change { RequestStatusMailer.deliveries.count }
+        end.not_to have_enqueued_mail
       end
     end
 
@@ -36,7 +36,7 @@ describe HoldRecall do
       it 'sends an approval status email' do
         expect do
           subject.send_approval_status!
-        end.to change { RequestStatusMailer.deliveries.count }.by(1)
+        end.to have_enqueued_mail(RequestStatusMailer)
       end
     end
   end

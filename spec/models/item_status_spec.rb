@@ -8,6 +8,10 @@ RSpec.describe ItemStatus do
   let(:request) { create(:mediated_page_with_single_holding) }
   let(:barcode) { '3610512345' }
 
+  before do
+    allow(Request.ils_job_class).to receive(:perform_now)
+  end
+
   describe '#status_object' do
     it 'fetches the status object from the request_status_data hash' do
       expect(subject.send(:status_object)).to eq(
