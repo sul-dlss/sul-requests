@@ -2,46 +2,45 @@
 
 require 'rails_helper'
 
-describe 'Home Page' do
+RSpec.describe 'Home Page' do
   describe 'layout' do
     before do
       visit root_path
     end
 
-    it 'has the application name as the page title' do
+    it 'renders the page' do
       expect(page).to have_title('SUL Requests')
-    end
-
-    it 'displays logo' do
       expect(page).to have_css('header.header-logo')
-    end
+      within('.header-links') do
+        expect(page).to have_link('My Account')
+        expect(page).to have_link('Feedback')
+      end
 
-    it 'displays top menu links' do
-      expect(page).to have_css('.header-links a', text: 'My Account')
-      expect(page).to have_css('.header-links a', text: 'Feedback')
-    end
-
-    it 'has a target="_blank" feedback link (with appropriate rel attribute)' do
+      # page has a target="_blank" feedback link (with appropriate rel attribute)
       feedback_link = page.find('.header-links a', text: 'Feedback')
       expect(feedback_link['target']).to eq '_blank'
       expect(feedback_link['rel']).to eq 'noopener noreferrer'
-    end
 
-    it 'displays SUL footer' do
-      expect(page).to have_css('#sul-footer #sul-footer-img img')
-      expect(page).to have_css('#sul-footer-links a', text: 'Hours & locations')
-      expect(page).to have_css('#sul-footer-links a', text: 'My Account')
-      expect(page).to have_css('#sul-footer-links a', text: 'Ask us')
-      expect(page).to have_css('#sul-footer-links a', text: 'Opt out of analytics')
-    end
+      within('#sul-footer') do
+        expect(page).to have_css('#sul-footer-img img')
+        within('#sul-footer-links') do
+          expect(page).to have_link('Hours & locations')
+          expect(page).to have_link('My Account')
+          expect(page).to have_link('Ask us')
+          expect(page).to have_link('Opt out of analytics')
+        end
+      end
 
-    it 'displays SU footer' do
-      expect(page).to have_css('#global-footer #bottom-logo img')
-      expect(page).to have_css('#global-footer #bottom-text a', text: 'Stanford Home')
-      expect(page).to have_css('#global-footer #bottom-text a', text: 'Maps & Directions')
-      expect(page).to have_css('#global-footer #bottom-text a', text: 'Search Stanford')
-      expect(page).to have_css('#global-footer #bottom-text a', text: 'Terms of Use')
-      expect(page).to have_css('#global-footer #bottom-text a', text: 'Emergency Info')
+      within('#global-footer') do
+        expect(page).to have_css('#bottom-logo img')
+        within('#bottom-text') do
+          expect(page).to have_link('Stanford Home')
+          expect(page).to have_link('Maps & Directions')
+          expect(page).to have_link('Search Stanford')
+          expect(page).to have_link('Terms of Use')
+          expect(page).to have_link('Emergency Info')
+        end
+      end
     end
   end
 
@@ -53,11 +52,8 @@ describe 'Home Page' do
       visit root_path
     end
 
-    it 'has links for the library level mediation' do
+    it 'has admin links for the library level mediation' do
       expect(page).to have_link('Art & Architecture Library (Bowes)', href: '/admin/ART')
-    end
-
-    it 'has links for the location level mediation' do
       expect(page).to have_link('Earth Sciences Library (Branner)', href: '/admin/PAGE-MP')
     end
   end

@@ -178,10 +178,6 @@ RSpec/InstanceVariable:
     - 'spec/views/application/_item_selector.html.erb_spec.rb'
     - 'spec/views/messages/edit.html.erb_spec.rb'
 
-# Offense count: 297
-RSpec/MultipleExpectations:
-  Max: 16
-
 # Offense count: 427
 # Configuration parameters: EnforcedStyle, IgnoreSharedExamples.
 # SupportedStyles: always, named_only
