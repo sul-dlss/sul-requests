@@ -30,7 +30,7 @@ RSpec.describe 'Creating an Aeon request', js: true do
   end
 
   let(:folio_bib_info) do
-    { 'indexTitle' => 'Special Collections Item Title',
+    { 'title' => 'Special Collections Item Title',
       'contributors' => [{ 'name' => 'John Q. Public', 'primary' => true }],
       'publication' => [{ 'dateOfPublication' => '2018' }] }
   end
