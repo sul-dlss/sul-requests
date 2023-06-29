@@ -54,36 +54,33 @@ RSpec.describe ScansController do
       end
 
       it 'is not allowed by users that only supply name and email' do
-        expect do
-          put :create, params: {
-            request: {
-              item_id: '12345',
-              origin: 'SAL3',
-              origin_location: 'STACKS',
-              user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }
-            }
+        put :create, params: {
+          request: {
+            item_id: '12345',
+            origin: 'SAL3',
+            origin_location: 'STACKS',
+            user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }
           }
-        end.to raise_error(CanCan::AccessDenied)
+        }
+        expect(response).to have_http_status(:forbidden)
       end
 
       it 'is not allowed by users that only supply a library id' do
-        expect do
-          put :create, params: {
-            request: {
-              item_id: '12345',
-              origin: 'SAL3',
-              origin_location: 'STACKS',
-              user_attributes: { library_id: '12345' }
-            }
+        put :create, params: {
+          request: {
+            item_id: '12345',
+            origin: 'SAL3',
+            origin_location: 'STACKS',
+            user_attributes: { library_id: '12345' }
           }
-        end.to raise_error(CanCan::AccessDenied)
+        }
+        expect(response).to have_http_status(:forbidden)
       end
 
       describe 'via get' do
-        it 'raises an error' do
-          expect do
-            get :create, params: { request: { item_id: '12345', origin: 'GREEN', origin_location: 'STACKS' } }
-          end.to raise_error(CanCan::AccessDenied)
+        it 'is forbidden' do
+          get :create, params: { request: { item_id: '12345', origin: 'GREEN', origin_location: 'STACKS' } }
+          expect(response).to have_http_status(:forbidden)
         end
       end
     end
@@ -92,7 +89,8 @@ RSpec.describe ScansController do
       let(:user) { create(:non_sso_user) }
 
       it 'raises an error' do
-        expect { put(:create, params: { request: { origin: 'SAL3' } }) }.to raise_error(CanCan::AccessDenied)
+        put(:create, params: { request: { origin: 'SAL3' } })
+        expect(response).to have_http_status(:forbidden)
       end
     end
 
@@ -146,8 +144,9 @@ RSpec.describe ScansController do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
 
-      it 'raises an error' do
-        expect { put(:update, params: { id: scan[:id] }) }.to raise_error(CanCan::AccessDenied)
+      it 'is forbidden' do
+        put(:update, params: { id: scan[:id] })
+        expect(response).to have_http_status(:forbidden)
       end
     end
 
@@ -168,8 +167,9 @@ RSpec.describe ScansController do
     describe 'by sso users' do
       let(:user) { create(:sso_user) }
 
-      it 'raises an error' do
-        expect { put(:update, params: { id: scan[:id] }) }.to raise_error(CanCan::AccessDenied)
+      it 'is forbidden' do
+        put(:update, params: { id: scan[:id] })
+        expect(response).to have_http_status(:forbidden)
       end
     end
 

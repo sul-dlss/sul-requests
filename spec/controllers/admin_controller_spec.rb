@@ -30,7 +30,8 @@ describe AdminController do
       let(:user) { create(:sso_user) }
 
       it 'is not accessible' do
-        expect { get :index }.to raise_error(CanCan::AccessDenied)
+        get :index
+        expect(response).to have_http_status(:forbidden)
       end
     end
 
@@ -71,7 +72,8 @@ describe AdminController do
       end
 
       it 'is not be accessible when the user is not an admin for the location' do
-        expect { get :show, params: { id: 'SPEC-COLL' } }.to raise_error(CanCan::AccessDenied)
+        get :show, params: { id: 'SPEC-COLL' }
+        expect(response).to have_http_status(:forbidden)
       end
     end
 
@@ -79,7 +81,8 @@ describe AdminController do
       let(:user) { create(:sso_user) }
 
       it 'is not be accessible' do
-        expect { get :show, params: { id: 'SPEC-COLL' } }.to raise_error(CanCan::AccessDenied)
+        get :show, params: { id: 'SPEC-COLL' }
+        expect(response).to have_http_status(:forbidden)
       end
     end
 
@@ -151,9 +154,8 @@ describe AdminController do
       let(:user) { create(:anon_user) }
 
       it 'is not possible' do
-        expect do
-          get :approve_item, params: { id: mediated_page.id, item: 'ABC 123' }
-        end.to raise_error(CanCan::AccessDenied)
+        get :approve_item, params: { id: mediated_page.id, item: 'ABC 123' }
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end

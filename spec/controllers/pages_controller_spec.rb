@@ -160,12 +160,11 @@ describe PagesController do
       end
 
       describe 'via get' do
-        it 'raises an error' do
-          expect do
-            get :create, params: {
-              request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
-            }
-          end.to raise_error(CanCan::AccessDenied)
+        it 'is forbidden' do
+          get :create, params: {
+            request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
+          }
+          expect(response).to have_http_status(:forbidden)
         end
       end
     end
@@ -248,10 +247,9 @@ describe PagesController do
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
 
-      it 'raises an error' do
-        expect do
-          put :update, params: { id: page[:id], request: { origin: 'GREEN' } }
-        end.to raise_error(CanCan::AccessDenied)
+      it 'is forbidden' do
+        put :update, params: { id: page[:id], request: { origin: 'GREEN' } }
+        expect(response).to have_http_status(:forbidden)
       end
     end
 
@@ -272,8 +270,9 @@ describe PagesController do
     describe 'by sso users' do
       let(:user) { create(:sso_user) }
 
-      it 'raises an error' do
-        expect { put(:update, params: { id: page[:id] }) }.to raise_error(CanCan::AccessDenied)
+      it 'is forbidden' do
+        put(:update, params: { id: page[:id] })
+        expect(response).to have_http_status(:forbidden)
       end
     end
 
@@ -299,22 +298,20 @@ describe PagesController do
         expect(response).to be_successful
       end
 
-      it 'raises an error if the user is already authenticated but does not have access to the request' do
+      it 'is forbidden when the user is already authenticated but does not have access to the request' do
         page = create(:page)
-        expect do
-          get :success, params: { id: page[:id] }
-        end.to raise_error(CanCan::AccessDenied)
+        get :success, params: { id: page[:id] }
+        expect(response).to have_http_status(:forbidden)
       end
     end
 
     context 'by non-webuth users' do
       let(:user) { create(:non_sso_user) }
 
-      it 'raised an AccessDenied error' do
+      it 'is forbidden' do
         page = create(:page, user: create(:non_sso_user, email: 'jjstanford@stanford.edu'))
-        expect do
-          get :success, params: { id: page[:id] }
-        end.to raise_error(CanCan::AccessDenied)
+        get :success, params: { id: page[:id] }
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end
@@ -329,11 +326,10 @@ describe PagesController do
         expect(response).to be_successful
       end
 
-      it 'raises an error if the user is already authenticated but does not have access to the request' do
+      it 'is forbidden when the user is already authenticated but does not have access to the request' do
         page = create(:page)
-        expect do
-          get :status, params: { id: page[:id] }
-        end.to raise_error(CanCan::AccessDenied)
+        get :status, params: { id: page[:id] }
+        expect(response).to have_http_status(:forbidden)
       end
     end
 

@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
   end
 
   def rescue_can_can(exception)
-    Rails.logger.debug { "Access denied on #{exception.action} #{exception.subject.inspect}" }
-    raise exception
+    logger.debug { "Access denied on #{exception.action} #{exception.subject.inspect}" }
+    render status: :forbidden, plain: 'Access to this resource is denied.'
   end
 end

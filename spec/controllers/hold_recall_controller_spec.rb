@@ -53,16 +53,15 @@ describe HoldRecallsController do
       end
 
       it 'is not allowed if user name and email is filled out' do
-        expect do
-          put :create, params: {
-            request: normal_params.merge(
-              user_attributes: {
-                name: 'Jane Stanford',
-                email: 'jstanford@stanford.edu'
-              }
-            )
-          }
-        end.to raise_error(CanCan::AccessDenied)
+        put :create, params: {
+          request: normal_params.merge(
+            user_attributes: {
+              name: 'Jane Stanford',
+              email: 'jstanford@stanford.edu'
+            }
+          )
+        }
+        expect(response).to have_http_status(:forbidden)
       end
 
       it 'is allowed if the library ID field is filled out' do
@@ -83,9 +82,8 @@ describe HoldRecallsController do
 
       describe 'via get' do
         it 'raises an error' do
-          expect do
-            get :create, params: { request: normal_params }
-          end.to raise_error(CanCan::AccessDenied)
+          get :create, params: { request: normal_params }
+          expect(response).to have_http_status(:forbidden)
         end
       end
     end

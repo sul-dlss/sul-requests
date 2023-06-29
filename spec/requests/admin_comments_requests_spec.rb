@@ -71,8 +71,9 @@ RSpec.describe 'AdminComments' do
   context 'by a user who cannot add admin comments' do
     let(:user) { create(:sso_user) }
 
-    it 'raises an access denied error' do
-      expect { post(url, params: { admin_comment: { comment: 'A comment' } }) }.to raise_error(CanCan::AccessDenied)
+    it 'is forbidden' do
+      post(url, params: { admin_comment: { comment: 'A comment' } })
+      expect(response).to have_http_status(:forbidden)
     end
   end
 end
