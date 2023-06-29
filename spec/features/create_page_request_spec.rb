@@ -9,12 +9,6 @@ RSpec.describe 'Creating a page request' do
     allow(Request.ils_job_class).to receive(:perform_now)
   end
 
-  describe 'item information' do
-    it 'displays the items title' do
-      visit new_page_path(item_id: '2824966', origin: 'GREEN', origin_location: 'STACKS')
-    end
-  end
-
   context 'when initiated by an anonmyous user' do
     before { stub_searchworks_api_json(build(:single_holding)) }
 
