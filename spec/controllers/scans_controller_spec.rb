@@ -3,15 +3,18 @@
 require 'rails_helper'
 
 RSpec.describe ScansController do
-  before do
-    stub_searchworks_api_json(build(:sal3_holdings))
-    allow(SubmitScanRequestJob).to receive(:perform_later)
-    allow(controller).to receive_messages(current_user: user)
-  end
-
   let(:scan) { create(:scan, :with_holdings, origin: 'SAL', origin_location: 'STACKS', barcodes: ['12345678']) }
   let(:scannable_params) do
     { item_id: '12345', origin: 'SAL3', origin_location: 'STACKS' }
+  end
+
+  before do
+    allow_any_instance_of(FolioClient).to receive(:find_instance).and_return({ indexTitle: 'Item Title' })
+    allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
+    stub_folio_holdings(:folio_sal3_multiple_holdings)
+    stub_searchworks_api_json(build(:sal3_holdings))
+    allow(SubmitScanRequestJob).to receive(:perform_later)
+    allow(controller).to receive_messages(current_user: user)
   end
 
   describe 'new' do

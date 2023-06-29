@@ -2,13 +2,16 @@
 
 require 'rails_helper'
 
-describe HoldRecallsController do
+RSpec.describe HoldRecallsController do
   let(:hold_recall) { create(:hold_recall) }
   let(:normal_params) do
     { item_id: '1234', barcode: '36105212925395', origin: 'GREEN', origin_location: 'STACKS', destination: 'GREEN' }
   end
 
   before do
+    allow_any_instance_of(FolioClient).to receive(:find_instance).and_return({ indexTitle: 'Item Title' })
+    allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
+    stub_folio_holdings(:folio_multiple_holding)
     allow(controller).to receive_messages(current_user: user)
   end
 

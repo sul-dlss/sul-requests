@@ -3,6 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe Scan do
+  before do
+    allow_any_instance_of(FolioClient).to receive(:find_instance).and_return({ indexTitle: 'Item Title' })
+    allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
+    stub_folio_holdings(:folio_multiple_holding)
+  end
+
   it 'has the properly assigned Rails STI attribute value' do
     expect(subject.type).to eq 'Scan'
   end
@@ -18,7 +24,7 @@ RSpec.describe Scan do
     )
   end
 
-  it 'allows scannabe only materials to be requested for scan' do
+  it 'allows scannable only materials to be requested for scan' do
     stub_searchworks_api_json(build(:scannable_only_holdings))
 
     expect do

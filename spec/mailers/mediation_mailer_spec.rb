@@ -2,12 +2,16 @@
 
 require 'rails_helper'
 
-describe MediationMailer do
+RSpec.describe MediationMailer do
+  let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
+  let(:selected_items) { [] }
+
   describe 'mediator_notification' do
     let(:user) { build(:non_sso_user) }
     let(:request) { create(:mediated_page, user:) }
     let(:mediator_contact_info) { { request.origin => { email: 'someone@example.com' } } }
     before do
+      allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
       allow(Rails.application.config).to receive(:mediator_contact_info).and_return(mediator_contact_info)
     end
 
@@ -40,6 +44,8 @@ describe MediationMailer do
     end
 
     describe 'body' do
+      let(:selected_items) { [double(:item, barcode: '12345678', callnumber: 'ABC 123')] }
+
       let(:request) do
         create(:mediated_page_with_holdings, barcodes: ['12345678'], user:)
       end

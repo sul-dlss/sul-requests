@@ -2,8 +2,14 @@
 
 require 'rails_helper'
 
-describe 'Pickup Libraries Dropdown' do
+RSpec.describe 'Pickup Libraries Dropdown' do
   let(:standard_pickup_lib_total) { Settings.default_pickup_libraries.count }
+  let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
+
+  before do
+    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+  end
 
   describe 'for multiple libraries' do
     it 'has a select dropdown to choose the library to deliver to' do
@@ -14,7 +20,7 @@ describe 'Pickup Libraries Dropdown' do
       expect(page).to have_css('#request_destination option', count: standard_pickup_lib_total)
     end
 
-    it 'simplies display the text of the destination library if there is only one possible' do
+    it 'simplfies the display of the text of the destination library if there is only one possible' do
       visit new_request_path(item_id: '1234', origin: 'ARS', origin_location: 'STACKS')
 
       expect(page).not_to have_css('select')

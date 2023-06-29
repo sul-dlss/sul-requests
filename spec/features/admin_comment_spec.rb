@@ -2,10 +2,27 @@
 
 require 'rails_helper'
 
-describe 'Admin Comments', js: true do
+RSpec.describe 'Admin Comments', js: true do
   let(:user) { create(:superadmin_user) }
+  let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
+  let(:request_status) do
+    instance_double(ItemStatus, approved?: true, errored?: false, approver: 'bob', approval_time: '2023-05-31')
+  end
+  let(:selected_items) do
+    [
+      double(:item, barcode: '34567890',
+                    request_status:,
+                    permanent_location: 'ART-STACKS',
+                    temporary_location: nil,
+                    home_location: 'ART-STACKS',
+                    callnumber: 'ABC 123',
+                    hold?: true)
+    ]
+  end
 
   before do
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+
     stub_searchworks_api_json(build(:searchable_holdings))
     stub_current_user(user)
     create(

@@ -45,7 +45,10 @@ RSpec.describe 'Home Page' do
   end
 
   describe 'mediation section' do
+    let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
+
     before do
+      allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
       create(:mediated_page)
       create(:page_mp_mediated_page)
       stub_current_user(create(:superadmin_user))

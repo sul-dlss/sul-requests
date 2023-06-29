@@ -5,6 +5,10 @@ require 'rails_helper'
 RSpec.describe Searchworks::Holdings do
   subject(:requested_holdings) { described_class.new(item.request, item.holdings) }
 
+  before do
+    allow(Request).to receive(:bib_model_class).and_return(SearchworksItem)
+  end
+
   describe '#all' do
     describe 'items that exist' do
       let(:item) { build(:green_stacks_searchworks_item) }

@@ -16,24 +16,31 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
     let(:request) { create(:page_with_holdings, user:) }
 
     describe '#perform' do
-      let(:mock_client) { instance_double(SymphonyClient) }
+      context 'when the request is found' do
+        let(:mock_client) { instance_double(SymphonyClient) }
+        let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
+        let(:selected_items) { [] }
 
-      before do
-        allow(mock_client).to receive(:place_hold).and_return({})
-        allow(mock_client).to receive(:bib_info).and_return({})
-        allow_any_instance_of(SubmitSymphonyRequestJob::Command).to receive(:symphony_client).and_return(mock_client)
+        before do
+          allow(mock_client).to receive(:place_hold).and_return({})
+          allow(mock_client).to receive(:bib_info).and_return({})
+          allow_any_instance_of(SubmitSymphonyRequestJob::Command).to receive(:symphony_client).and_return(mock_client)
+          allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+        end
+
+        it 'calls send_approval_status! on the request object' do
+          expect_any_instance_of(request.class).to receive(:send_approval_status!)
+          subject.perform(request.id)
+        end
       end
 
-      it 'calls send_approval_status! on the request object' do
-        expect_any_instance_of(request.class).to receive(:send_approval_status!)
-        subject.perform(request.id)
-      end
-
-      it 'notifies Honeybadger when the request is not found' do
-        expect_any_instance_of(Honeybadger).to receive(:notify).once.with(
-          'Attempted to call Symphony for Request with ID -1, but no such Request was found.'
-        )
-        subject.perform(-1)
+      context 'when the request is not found' do
+        it 'notifies Honeybadger' do
+          expect_any_instance_of(Honeybadger).to receive(:notify).once.with(
+            'Attempted to call Symphony for Request with ID -1, but no such Request was found.'
+          )
+          subject.perform(-1)
+        end
       end
     end
   end

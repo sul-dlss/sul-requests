@@ -72,20 +72,35 @@ describe Ability do
 
     describe 'who fills out a name and email' do
       let(:user) { build(:non_sso_user) }
-      let(:page) { create(:page, user:) }
-      let(:mediated_page) { create(:mediated_page, user:) }
+      let(:page) { build(:page, user:) }
+      let(:mediated_page) { build(:mediated_page, user:) }
 
       it { is_expected.to be_able_to(:create, page) }
       it { is_expected.to be_able_to(:create, mediated_page) }
 
       describe 'and views a success page with a token' do
+        let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
+
+        before do
+          allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
+          allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+        end
+
         describe 'for a page' do
+          before do
+            page.save!
+          end
+
           let(:token) { page.encrypted_token }
 
           it { is_expected.to be_able_to(:success, page) }
         end
 
         describe 'for a mediated page' do
+          before do
+            mediated_page.save!
+          end
+
           let(:token) { mediated_page.encrypted_token }
 
           it { is_expected.to be_able_to(:success, mediated_page) }

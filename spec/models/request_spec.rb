@@ -3,6 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe Request do
+  let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
+  let(:bib_data) { double(:bib_data, title: 'Test title') }
+
+  before do
+    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(bib_data)
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+  end
+
   describe 'validations' do
     it 'requires the basic set of information to be present' do
       expect do
@@ -17,6 +25,8 @@ RSpec.describe Request do
       before do
         stub_searchworks_api_json(build(:multiple_holdings))
       end
+
+      let(:holdings_relationship) { double(:relationship, where: [double('item', barcode: '3610512345678')]) }
 
       let(:create_request) do
         described_class.create!(
@@ -71,6 +81,12 @@ RSpec.describe Request do
           origin: 'SAL',
           origin_location: 'SAL-TEMP'
         )
+      end
+      let(:holdings_relationship) { double(:relationship, where: [], all: all_holdings, single_checked_out_item?: false) }
+
+      let(:all_holdings) do
+        # This is just used for Searchworks integration
+        [double(:item, type: 'NONCIRC', code: 'SAL-TEMP', barcode: '12345678')]
       end
 
       before do
@@ -173,30 +189,16 @@ RSpec.describe Request do
     end
   end
 
-  describe '#bib_data' do
-    subject { described_class.new.bib_data }
-
-    it { is_expected.to be_a SearchworksItem }
-  end
-
-  describe '#holdings_object' do
-    subject { request.holdings_object }
-
-    let(:request) { described_class.new }
-
-    it { is_expected.to be_a Searchworks::Holdings }
-  end
-
   describe '#holdings' do
     describe 'when persisted' do
       let(:subject) { create(:request_with_multiple_holdings, barcodes: ['3610512345678']) }
+      let(:holdings_relationship) { double(:relationship, where: [double('item', barcode: '3610512345678')]) }
 
       it 'gets the holdings from the requested location by the persisted barcodes' do
         holdings = subject.holdings
         expect(holdings).to be_a Array
         expect(holdings.length).to eq 1
         expect(holdings.first.barcode).to eq '3610512345678'
-        expect(holdings.first.callnumber).to eq 'ABC 123'
       end
     end
 
@@ -211,10 +213,20 @@ RSpec.describe Request do
     end
 
     describe 'when not persisted' do
-      let(:subject) { build(:request_with_multiple_holdings) }
+      subject(:request) { build(:request_with_multiple_holdings) }
+
+      let(:bib_data) { double(:bib_data, title: 'Test title', holdings:) }
+      let(:holdings) do
+        # This is just used for Searchworks integration
+        request.bib_data.holdings
+      end
+
+      before do
+        allow(HoldingsRelationshipBuilder).to receive(:build).and_call_original
+      end
 
       it 'gets all the holdings for the requested location' do
-        holdings = subject.holdings
+        holdings = request.holdings
         expect(holdings).to be_a Array
         expect(holdings.length).to eq 3
         expect(holdings.first.barcode).to eq '3610512345678'
@@ -224,26 +236,31 @@ RSpec.describe Request do
   end
 
   describe '#all_holdings' do
-    let(:subject) { build(:request_with_multiple_holdings, barcodes: ['3610512345678']) }
+    subject(:all_holdings) { request.all_holdings }
+
+    let(:request) { build(:request_with_multiple_holdings, barcodes: ['3610512345678']) }
+    let(:holdings_relationship) do
+      double(:relationship, all: [double('item', barcode: '3610512345678'), double('item'), double('item', barcode: '12345679')])
+    end
 
     it 'gets all the holdings for the requested location' do
-      holdings = subject.all_holdings
-      expect(holdings).to be_a Array
-      expect(holdings.length).to eq 3
-      expect(holdings.first.barcode).to eq '3610512345678'
-      expect(holdings.last.barcode).to eq '12345679'
+      expect(all_holdings).to be_a Array
+      expect(all_holdings.length).to eq 3
+      expect(all_holdings.first.barcode).to eq '3610512345678'
+      expect(all_holdings.last.barcode).to eq '12345679'
     end
   end
 
   describe '#requested_holdings' do
-    let(:subject) { create(:request_with_multiple_holdings, barcodes: ['3610512345678']) }
+    subject(:holdings) { request.requested_holdings }
+
+    let(:request) { create(:request_with_multiple_holdings, barcodes: ['3610512345678']) }
+    let(:holdings_relationship) { double(:relationship, where: [double('item', barcode: '3610512345678')]) }
 
     it 'gets the holdings from the requested location by the persisted barcodes' do
-      holdings = subject.requested_holdings
       expect(holdings).to be_a Array
       expect(holdings.length).to eq 1
       expect(holdings.first.barcode).to eq '3610512345678'
-      expect(holdings.first.callnumber).to eq 'ABC 123'
     end
   end
 
@@ -399,14 +416,24 @@ RSpec.describe Request do
   end
 
   describe 'item_title' do
-    it 'fetches the item title on object creation', allow_apis: true do
-      described_class.create!(item_id: '2824966', origin: 'GREEN', origin_location: 'STACKS')
-      expect(described_class.last.item_title).to eq 'When do you need an antacid? : a burning question'
+    context 'when the title is not present' do
+      before do
+        allow(Settings.ils.bib_model.constantize).to receive(:new)
+          .and_return(double(:bib_data,
+                             title: 'When do you need an antacid? : a burning question'))
+      end
+
+      it 'fetches the item title', allow_apis: true do
+        described_class.create!(item_id: '2824966', origin: 'GREEN', origin_location: 'STACKS')
+        expect(described_class.last.item_title).to eq 'When do you need an antacid? : a burning question'
+      end
     end
 
-    it 'does not fetch the title when it is already present' do
-      described_class.create!(item_id: '2824966', origin: 'GREEN', origin_location: 'STACKS', item_title: 'This title')
-      expect(described_class.last.item_title).to eq 'This title'
+    context 'when the title is present' do
+      it 'does not fetch the title' do
+        described_class.create!(item_id: '2824966', origin: 'GREEN', origin_location: 'STACKS', item_title: 'This title')
+        expect(described_class.last.item_title).to eq 'This title'
+      end
     end
   end
 

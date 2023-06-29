@@ -2,14 +2,20 @@
 
 require 'rails_helper'
 
-describe 'Pageable' do
+RSpec.describe 'Pageable' do
   subject(:request) { build(:request) }
 
   describe '#pageable?' do
-    it 'is true if the LibraryLocation is not mediatable or hold recallable' do
-      request.origin = 'GREEN'
-      request.origin_location = 'STACKS'
-      expect(request).to be_pageable
+    context 'when the LibraryLocation is not mediatable or hold recallable' do
+      let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
+
+      before do
+        request.origin = 'GREEN'
+        request.origin_location = 'STACKS'
+        allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+      end
+
+      it { is_expected.to be_pageable }
     end
 
     it 'is false when the LibraryLocation is hold recallable' do

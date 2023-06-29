@@ -2,7 +2,20 @@
 
 require 'rails_helper'
 
-describe 'Requests Delegation' do
+RSpec.describe 'Requests Delegation' do
+  let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
+  let(:selected_items) do
+    [
+      double(:item, barcode: '34567890', type: 'STKS', callnumber: 'ABC 123', checked_out?: false, processing?: false, missing?: false,
+                    hold?: false, on_order?: false)
+    ]
+  end
+
+  before do
+    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+  end
+
   describe 'non-scannable materials' do
     it 'is automatically delegated to the page request form' do
       visit new_request_path(item_id: '12345', origin: 'SAL1/2', origin_location: 'STACKS')
@@ -38,6 +51,12 @@ describe 'Requests Delegation' do
 
   describe 'scannable only material' do
     before { stub_searchworks_api_json(build(:scannable_only_holdings)) }
+
+    let(:selected_items) do
+      [
+        double(:item, barcode: '34567890', type: 'NONCIRC', callnumber: 'ABC 123')
+      ]
+    end
 
     it 'disables the link to page the item' do
       visit new_request_path(item_id: '12345', origin: 'SAL', origin_location: 'SAL-TEMP')

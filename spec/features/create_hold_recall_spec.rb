@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'Creating a hold recall request' do
+RSpec.describe 'Creating a hold recall request' do
   before do
     stub_searchworks_api_json(build(:sal3_holdings))
   end
@@ -49,7 +49,19 @@ describe 'Creating a hold recall request' do
   end
 
   describe 'by a SSO user' do
-    before { stub_current_user(user) }
+    let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
+    let(:selected_items) do
+      [
+        double(:item, barcode: '12345678', checked_out?: false, processing?: false, missing?: false, hold?: false, on_order?: false,
+                      callnumber: 'ABC 123', type: 'huh?')
+      ]
+    end
+
+    before do
+      allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
+      allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+      stub_current_user(user)
+    end
 
     it 'is possible without filling in any user information' do
       visit new_hold_recall_path(item_id: '1234', barcode: '12345678', origin: 'SAL3', origin_location: 'STACKS')

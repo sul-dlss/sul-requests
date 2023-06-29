@@ -2,7 +2,13 @@
 
 require 'rails_helper'
 
-describe 'Viewing all requests' do
+RSpec.describe 'Viewing all requests' do
+  before do
+    allow_any_instance_of(FolioClient).to receive(:find_instance).and_return({ indexTitle: 'Item Title' })
+    allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
+    stub_folio_holdings(:folio_multiple_holding)
+  end
+
   describe 'index' do
     describe 'by a superadmin user' do
       before do
@@ -83,12 +89,9 @@ describe 'Viewing all requests' do
         yesterday = Time.zone.today - 1.day
         let(:today_s) { Time.zone.today.to_s }
 
-        before(:context) do
+        before do
           create(:page_mp_mediated_page, created_at: yesterday)
           create(:page, created_at: yesterday)
-        end
-
-        before do
           visit admin_index_path
           fill_in(:created_at, with: yesterday.to_s)
           click_button('Go')

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe PagesController do
+RSpec.describe PagesController do
   let(:page) { create(:page) }
   let(:normal_params) do
     { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
@@ -10,6 +10,9 @@ describe PagesController do
 
   before do
     allow(controller).to receive_messages(current_user: user)
+    allow_any_instance_of(FolioClient).to receive(:find_instance).and_return({ indexTitle: 'Item Title' })
+    allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
+    stub_folio_holdings(:folio_multiple_holding)
   end
 
   describe 'new' do
@@ -183,6 +186,7 @@ describe PagesController do
 
       it 'maps checkbox style barcodes correctly' do
         stub_searchworks_api_json(build(:multiple_holdings))
+
         put :create, params: {
           request: {
             item_id: '1234',

@@ -2,10 +2,15 @@
 
 require 'rails_helper'
 
-describe 'Creating a mediated page request' do
+RSpec.describe 'Creating a mediated page request' do
   let(:user) { create(:sso_user) }
+  let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
+  let(:selected_items) { [] }
 
   before do
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
+
     allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
   end
 
@@ -121,6 +126,29 @@ describe 'Creating a mediated page request' do
   end
 
   describe 'selecting barcodes' do
+    let(:selected_items) do
+      [
+        double(:item, barcode: '12345678', checked_out?: false, processing?: false, missing?: false, hold?: false, on_order?: false,
+                      callnumber: 'ABC 123'),
+        double(:item, barcode: '34567555', checked_out?: false, processing?: false, missing?: false, hold?: false, on_order?: false,
+                      callnumber: 'ABC 321')
+      ]
+    end
+
+    let(:holdings_relationship) { double(:relationship, where: selected_items, all: all_items, single_checked_out_item?: false) }
+
+    let(:all_items) do
+      [
+        double(:item, barcode: '12345678', checked_out?: false, processing?: false, missing?: false,
+                      hold?: false, on_order?: false, callnumber: 'ABC 123',
+                      status_class: 'available', status_text: 'Available', public_note: 'huh?'),
+
+        double(:item, barcode: '34567555', checked_out?: false, processing?: false, missing?: false,
+                      hold?: false, on_order?: false, callnumber: 'ABC 321',
+                      status_class: 'available', status_text: 'Available', public_note: 'huh?')
+      ]
+    end
+
     before do
       stub_current_user(user)
       stub_searchworks_api_json(build(:searchable_holdings))

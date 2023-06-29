@@ -15,7 +15,6 @@
       <%= destination_name %>
     </dd>
   <% end %>
-
   <% if current_request.estimated_delivery.present? && current_request.ils_response.any_successful? %>
     <dt><%= current_request.class.human_attribute_name(:estimated_delivery) %></dt>
     <dd><%= current_request.estimated_delivery %></dd>

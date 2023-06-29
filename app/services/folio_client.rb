@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Calls FOLIO REST endpoints
-class FolioClient
+class FolioClient # rubocop:disable Metrics/ClassLength
   DEFAULT_HEADERS = {
     accept: 'application/json, text/plain',
     content_type: 'application/json'
@@ -111,6 +111,21 @@ class FolioClient
     response = get_json('/service-points', params: { query: CqlQuery.new(code:).to_query })
 
     response.dig('servicepoints', 0)
+  end
+
+  def resolve_to_instance_id(hrid:)
+    search_response = get_json('/search/instances', params: { limit: 10, query: CqlQuery.new(hrid:).to_query })
+    search_response.dig('instances', 0, 'id')
+  end
+
+  def find_instance(instance_id:)
+    get_json("/inventory/instances/#{instance_id}")
+  end
+
+  # TODO: This could be cached. There are typically only 25 responses
+  def instance_types
+    response = get_json('/instance-types?limit=1000&query=cql.allRecords=1 sortby name')
+    response['instanceTypes']
   end
 
   private

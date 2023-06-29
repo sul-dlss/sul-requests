@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe IlbMailer do
-  let(:request) { create(:scan, :without_validations, user:) }
+  let(:request) { create(:scan, :without_validations, :with_item_title, user:) }
 
   describe 'ilb_notification' do
     let(:user) { build(:scan_eligible_user) }

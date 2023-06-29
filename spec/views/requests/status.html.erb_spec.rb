@@ -2,14 +2,17 @@
 
 require 'rails_helper'
 
-describe 'requests/status.html.erb' do
+RSpec.describe 'requests/status.html.erb' do
   let(:user) { create(:sso_user) }
-  let(:request) { create(:page, user:) }
+  let(:request) { build_stubbed(:page, user:) }
+  let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
+  let(:selected_items) { [] }
 
   before do
     allow(view).to receive_messages(current_request: request)
     allow(view).to receive_messages(current_user: user)
     allow(controller).to receive_messages(current_user: user)
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
   end
 
   it 'has an icon and h1 heading' do
@@ -42,6 +45,7 @@ describe 'requests/status.html.erb' do
   end
 
   it 'has the estimated delivery' do
+    allow(request.ils_response).to receive(:any_successful?).and_return(true)
     request.estimated_delivery = 'Some day, Before 10am'
     render
     expect(rendered).to have_css('dt', text: 'Estimated delivery')

@@ -2,8 +2,21 @@
 
 require 'rails_helper'
 
-describe 'Send Request Buttons' do
-  before { stub_searchworks_api_json(build(:single_holding)) }
+RSpec.describe 'Send Request Buttons' do
+  let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
+  let(:selected_items) do
+    [
+      double(:item, callnumber: 'ABC 123', checked_out?: false, processing?: false, missing?: false, hold?: false, on_order?: false,
+                    barcode: '12345678', type: 'STKS')
+    ]
+  end
+
+  before do
+    stub_searchworks_api_json(build(:single_holding))
+    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
+
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+  end
 
   describe 'as a Stanford user', js: true do
     before { stub_current_user(create(:sso_user)) }

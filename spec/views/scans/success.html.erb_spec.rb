@@ -2,13 +2,14 @@
 
 require 'rails_helper'
 
-describe 'scans/success.html.erb' do
+RSpec.describe 'scans/success.html.erb' do
   let(:user) { create(:sso_user) }
-  let(:request) { create(:scan, :without_validations, user:) }
+  let(:request) { create(:scan, :without_validations, :with_item_title, user:) }
 
   before do
     allow(view).to receive_messages(current_request: request)
     allow(view).to receive_messages(current_user: user)
+    stub_template 'shared/_request_status_information.html.erb' => ''
     stub_template 'scans/_searchworks_item_information.html.erb' => ''
   end
 

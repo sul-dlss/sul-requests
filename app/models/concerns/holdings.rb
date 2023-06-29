@@ -5,7 +5,7 @@
 ###
 module Holdings
   def holdings_object
-    @holdings_object ||= Searchworks::Holdings.new(self, bib_data.holdings)
+    @holdings_object ||= HoldingsRelationshipBuilder.build(self, bib_data)
   end
 
   def holdings

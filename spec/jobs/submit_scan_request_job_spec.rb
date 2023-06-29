@@ -3,10 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe SubmitScanRequestJob, type: :job do
+  before do
+    stub_folio_holdings(:folio_multiple_holding)
+    allow(Request.ils_job_class).to receive(:perform_later)
+  end
+
   context 'when illiad response is success' do
     before do
       allow(IlliadRequest).to receive(:new).with(scan).and_return(illiad_request)
-      allow(Request.ils_job_class).to receive(:perform_later)
     end
 
     let(:scan) { create(:scan, :with_holdings) }
@@ -30,11 +34,10 @@ RSpec.describe SubmitScanRequestJob, type: :job do
   context 'when illiad response is an error' do
     before do
       allow(IlliadRequest).to receive(:new).with(scan).and_return(failed_illiad_request)
-      allow(Request.ils_job_class).to receive(:perform_later)
     end
 
     let(:user) { build(:scan_eligible_user) }
-    let(:scan) { create(:scan, :without_validations, user:) }
+    let(:scan) { create(:scan, :without_validations, :with_item_title, user:) }
     let(:failed_illiad_request) do
       instance_double(IlliadRequest, request!: double(body: { 'Message' => 'error' }.to_json))
     end

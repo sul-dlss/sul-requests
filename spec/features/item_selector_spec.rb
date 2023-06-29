@@ -3,12 +3,27 @@
 require 'rails_helper'
 
 RSpec.describe 'Item Selector' do
+  let(:holdings_relationship) { double(:relationship, where: requested_items, all: all_items, single_checked_out_item?: false) }
+  let(:all_items) { [] }
+  let(:requested_items) { [] }
+
+  let(:bib_data) { double(:bib_data, title: 'Test title') }
+
   before do
+    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(bib_data)
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
     stub_current_user(create(:sso_user))
   end
 
   describe 'for single items' do
     before { stub_searchworks_api_json(build(:single_holding)) }
+
+    let(:all_items) do
+      [
+        double(:item, callnumber: 'ABC 123', checked_out?: false, processing?: false, missing?: false, hold?: false, on_order?: false,
+                      barcode: '9999')
+      ]
+    end
 
     it 'displays the item call number' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
@@ -28,6 +43,17 @@ RSpec.describe 'Item Selector' do
     describe 'where there are not enough to be searchable' do
       let(:request_path) { new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS') }
       let(:holdings) { build(:multiple_holdings) }
+      let(:all_items) do
+        [
+          double(:item, callnumber: 'ABC 123', checked_out?: false, processing?: false, missing?: false,
+                        hold?: false, on_order?: false, barcode: '9999', status_class: 'available',
+                        status_text: 'Available', public_note: 'huh?'),
+          double(:item, callnumber: 'ABC 321', checked_out?: false, processing?: false, missing?: false,
+                        hold?: false, on_order?: false, barcode: '8888', status_class: 'available',
+                        status_text: 'Available', public_note: 'huh?')
+
+        ]
+      end
 
       it 'displays the selected item count' do
         expect(page).to have_css('span[data-items-counter]', text: '0 items selected')
@@ -57,6 +83,18 @@ RSpec.describe 'Item Selector' do
         let(:request_path) { new_scan_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS') }
         let(:holdings) { build(:sal3_holdings) }
 
+        let(:all_items) do
+          [
+            double(:item, callnumber: 'ABC 123', checked_out?: false, processing?: false, missing?: false,
+                          hold?: false, on_order?: false, barcode: '12345678', status_class: 'available',
+                          status_text: 'Available', public_note: 'huh?', type: 'STKS'),
+            double(:item, callnumber: 'ABC 321', checked_out?: false, processing?: false, missing?: false,
+                          hold?: false, on_order?: false, barcode: '23456789', status_class: 'available',
+                          status_text: 'Available', public_note: 'huh?', type: 'STKS')
+
+          ]
+        end
+
         it 'is restricted to one selection via radio button' do
           within('#item-selector') do
             choose('ABC 321')
@@ -71,6 +109,30 @@ RSpec.describe 'Item Selector' do
       describe 'for pages' do
         let(:request_path) { new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS') }
         let(:holdings) { build(:many_holdings) }
+
+        let(:all_items) do
+          [
+            double(:item, callnumber: 'ABC 123', checked_out?: false, processing?: false, missing?: false,
+                          hold?: false, on_order?: false, barcode: '12345678', status_class: 'available',
+                          status_text: 'Available', public_note: 'huh?'),
+            double(:item, callnumber: 'ABC 456', checked_out?: false, processing?: false, missing?: false,
+                          hold?: false, on_order?: false, barcode: '23456789', status_class: 'available',
+                          status_text: 'Available', public_note: 'huh?'),
+            double(:item, callnumber: 'ABC 789', checked_out?: false, processing?: false, missing?: false,
+                          hold?: false, on_order?: false, barcode: '34567890', status_class: 'available',
+                          status_text: 'Available', public_note: 'huh?'),
+            double(:item, callnumber: 'ABC 012', checked_out?: false, processing?: false, missing?: false,
+                          hold?: false, on_order?: false, barcode: '45678901', status_class: 'available',
+                          status_text: 'Available', public_note: 'huh?'),
+            double(:item, callnumber: 'ABC 345', checked_out?: false, processing?: false, missing?: false,
+                          hold?: false, on_order?: false, barcode: '56789012', status_class: 'available',
+                          status_text: 'Available', public_note: 'huh?'),
+            double(:item, callnumber: 'ABC 678', checked_out?: false, processing?: false, missing?: false,
+                          hold?: false, on_order?: false, barcode: '67890123', status_class: 'available',
+                          status_text: 'Available', public_note: 'huh?')
+
+          ]
+        end
 
         it 'does not limit selection' do
           within('#item-selector') do
@@ -90,6 +152,46 @@ RSpec.describe 'Item Selector' do
       describe 'for aeon pages', js: true do
         let(:request_path) { new_aeon_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS') }
         let(:holdings) { build(:searchable_spec_holdings) }
+        let(:bib_data) do
+          double(:bib_data, title: 'Test title', finding_aid?: false, author: 'bob',
+                            pub_date: '2020-09-01', view_url: 'https://searchworks.stanford.edu')
+        end
+
+        let(:all_items) do
+          [
+            double(:item, callnumber: 'ABC 123', checked_out?: false, processing?: false, missing?: false,
+                          hold?: false, on_order?: false, barcode: '12345678', status_class: 'available',
+                          status_text: 'Available', public_note: 'huh?'),
+            double(:item, callnumber: 'ABC 456', checked_out?: false, processing?: false, missing?: false,
+                          hold?: false, on_order?: false, barcode: '23456789', status_class: 'available',
+                          status_text: 'Available', public_note: 'huh?'),
+            double(:item, callnumber: 'ABC 789', checked_out?: false, processing?: false, missing?: false,
+                          hold?: false, on_order?: false, barcode: '34567890', status_class: 'available',
+                          status_text: 'Available', public_note: 'huh?'),
+            double(:item, callnumber: 'ABC 012', checked_out?: false, processing?: false, missing?: false,
+                          hold?: false, on_order?: false, barcode: '45678901', status_class: 'available',
+                          status_text: 'Available', public_note: 'huh?'),
+            double(:item, callnumber: 'ABC 345', checked_out?: false, processing?: false, missing?: false,
+                          hold?: false, on_order?: false, barcode: '56789012', status_class: 'available',
+                          status_text: 'Available', public_note: 'huh?'),
+            double(:item, callnumber: 'ABC 678', checked_out?: false, processing?: false, missing?: false,
+                          hold?: false, on_order?: false, barcode: '67890123', status_class: 'available',
+                          status_text: 'Available', public_note: 'huh?'),
+            double(:item, callnumber: 'ABC 901', checked_out?: false, processing?: false, missing?: false,
+                          hold?: false, on_order?: false, barcode: '67890123', status_class: 'available',
+                          status_text: 'Available', public_note: 'huh?'),
+            double(:item, callnumber: 'ABC 234', checked_out?: false, processing?: false, missing?: false,
+                          hold?: false, on_order?: false, barcode: '67890123', status_class: 'available',
+                          status_text: 'Available', public_note: 'huh?'),
+            double(:item, callnumber: 'ABC 567', checked_out?: false, processing?: false, missing?: false,
+                          hold?: false, on_order?: false, barcode: '67890123', status_class: 'available',
+                          status_text: 'Available', public_note: 'huh?'),
+            double(:item, callnumber: 'ABC 890', checked_out?: false, processing?: false, missing?: false,
+                          hold?: false, on_order?: false, barcode: '67890123', status_class: 'available',
+                          status_text: 'Available', public_note: 'huh?')
+
+          ]
+        end
 
         before { click_on 'Continue' }
 
@@ -135,6 +237,69 @@ RSpec.describe 'Item Selector' do
     describe 'when there are enough to be searchable' do
       let(:request_path) { new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL') }
       let(:holdings) { build(:searchable_holdings) }
+      let(:all_items) do
+        [
+          double(:item, callnumber: 'ABC 123', checked_out?: false, processing?: false, missing?: false,
+                        hold?: false, on_order?: false, barcode: '12345678', status_class: 'available',
+                        status_text: 'Available', public_note: 'huh?'),
+
+          double(:item, callnumber: 'ABC 456', checked_out?: false, processing?: false, missing?: false,
+                        hold?: false, on_order?: false, barcode: '23456789', status_class: 'available',
+                        status_text: 'Available', public_note: 'huh?'),
+
+          double(:item, callnumber: 'ABC 789', checked_out?: false, processing?: false, missing?: false,
+                        hold?: false, on_order?: false, barcode: '34567890', status_class: 'available',
+                        status_text: 'Available', public_note: 'huh?'),
+
+          double(:item, callnumber: 'ABC 012', checked_out?: false, processing?: false, missing?: false,
+                        hold?: false, on_order?: false, barcode: '45678901', status_class: 'available',
+                        status_text: 'Available', public_note: 'huh?'),
+
+          double(:item, callnumber: 'ABC 345', checked_out?: false, processing?: false, missing?: false,
+                        hold?: false, on_order?: false, barcode: '56789012', status_class: 'available',
+                        status_text: 'Available', public_note: 'huh?'),
+
+          double(:item, callnumber: 'ABC 678', checked_out?: false, processing?: false, missing?: false,
+                        hold?: false, on_order?: false, barcode: '67890123', status_class: 'available',
+                        status_text: 'Available', public_note: 'huh?'),
+
+          double(:item, callnumber: 'ABC 901', checked_out?: false, processing?: false, missing?: false,
+                        hold?: false, on_order?: false, barcode: '67890123', status_class: 'available',
+                        status_text: 'Available', public_note: 'huh?'),
+
+          double(:item, callnumber: 'ABC 234', checked_out?: false, processing?: false, missing?: false,
+                        hold?: false, on_order?: false, barcode: '67890123', status_class: 'available',
+                        status_text: 'Available', public_note: 'huh?'),
+
+          double(:item, callnumber: 'ABC 567', checked_out?: false, processing?: false, missing?: false,
+                        hold?: false, on_order?: false, barcode: '67890123', status_class: 'available',
+                        status_text: 'Available', public_note: 'huh?'),
+
+          double(:item, callnumber: 'ABC 890', checked_out?: false, processing?: false, missing?: false,
+                        hold?: false, on_order?: false, barcode: '67890123', status_class: 'available',
+                        status_text: 'Available', public_note: 'huh?')
+
+        ]
+      end
+      let(:requested_items) do
+        [
+          double(:item, callnumber: 'ABC 123', checked_out?: false, processing?: false, missing?: false,
+                        hold?: false, on_order?: false, barcode: '12345678', status_class: 'available',
+                        status_text: 'Available', public_note: 'huh?'),
+
+          double(:item, callnumber: 'ABC 456', checked_out?: false, processing?: false, missing?: false,
+                        hold?: false, on_order?: false, barcode: '23456789', status_class: 'available',
+                        status_text: 'Available', public_note: 'huh?'),
+
+          double(:item, callnumber: 'ABC 789', checked_out?: false, processing?: false, missing?: false,
+                        hold?: false, on_order?: false, barcode: '34567890', status_class: 'available',
+                        status_text: 'Available', public_note: 'huh?'),
+
+          double(:item, callnumber: 'ABC 901', checked_out?: false, processing?: false, missing?: false,
+                        hold?: false, on_order?: false, barcode: '67890123', status_class: 'available',
+                        status_text: 'Available', public_note: 'huh?')
+        ]
+      end
 
       it 'limits items using the search box' do
         within('#item-selector') do
@@ -262,6 +427,50 @@ RSpec.describe 'Item Selector' do
       stub_searchworks_api_json(build(:many_holdings))
     end
 
+    let(:all_items) do
+      [
+        double(:item, callnumber: 'ABC 123', checked_out?: false, processing?: false, missing?: false,
+                      hold?: false, barcode: '12345678', status_class: 'available',
+                      status_text: 'Available', public_note: 'huh?'),
+
+        double(:item, callnumber: 'ABC 456', checked_out?: false, processing?: false, missing?: false,
+                      hold?: false, barcode: '23456789', status_class: 'available',
+                      status_text: 'Available', public_note: 'huh?'),
+
+        double(:item, callnumber: 'ABC 789', checked_out?: false, processing?: false, missing?: false,
+                      hold?: false, barcode: '34567890', status_class: 'available',
+                      status_text: 'Available', public_note: 'huh?'),
+
+        double(:item, callnumber: 'ABC 012', checked_out?: false, processing?: false, missing?: false,
+                      hold?: false, barcode: '45678901', status_class: 'available',
+                      status_text: 'Available', public_note: 'huh?'),
+
+        double(:item, callnumber: 'ABC 345', checked_out?: false, processing?: false, missing?: false,
+                      hold?: false, barcode: '56789012', status_class: 'available',
+                      status_text: 'Available', public_note: 'huh?'),
+
+        double(:item, callnumber: 'ABC 678', checked_out?: false, processing?: false, missing?: false,
+                      hold?: false, barcode: '67890123', status_class: 'available',
+                      status_text: 'Available', public_note: 'huh?'),
+
+        double(:item, callnumber: 'ABC 901', checked_out?: false, processing?: false, missing?: false,
+                      hold?: false, barcode: '67890123', status_class: 'available',
+                      status_text: 'Available', public_note: 'huh?'),
+
+        double(:item, callnumber: 'ABC 234', checked_out?: false, processing?: false, missing?: false,
+                      hold?: false, barcode: '67890123', status_class: 'available',
+                      status_text: 'Available', public_note: 'huh?'),
+
+        double(:item, callnumber: 'ABC 567', checked_out?: false, processing?: false, missing?: false,
+                      hold?: false, barcode: '67890123', status_class: 'available',
+                      status_text: 'Available', public_note: 'huh?'),
+
+        double(:item, callnumber: 'ABC 890', checked_out?: false, processing?: false, missing?: false,
+                      hold?: false, barcode: '67890123', status_class: 'available',
+                      status_text: 'Available', public_note: 'huh?')
+      ]
+    end
+
     it 'are addable and removable' do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
 
@@ -298,6 +507,19 @@ RSpec.describe 'Item Selector' do
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
     end
 
+    let(:all_items) do
+      [
+        double(:item, callnumber: 'ABC 123', checked_out?: false, processing?: false, missing?: false,
+                      hold?: false, barcode: '12345678', status_class: 'available',
+                      status_text: 'Available', public_note: 'huh?'),
+
+        double(:item, callnumber: 'ABC 321', checked_out?: true, processing?: false, missing?: false,
+                      hold?: false, barcode: '87654321', status_class: 'available',
+                      status_text: 'Available', public_note: 'huh?', due_date: '01/01/2015')
+
+      ]
+    end
+
     it 'has the due date' do
       within('#item-selector') do
         expect(page).to have_css('.unavailable', text: 'Due 01/01/2015')
@@ -315,6 +537,18 @@ RSpec.describe 'Item Selector' do
 
   describe 'public notes' do
     let(:request_path) { new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL') }
+    let(:all_items) do
+      [
+        double(:item, callnumber: 'ABC 123', checked_out?: false, processing?: false, missing?: false,
+                      hold?: false, on_order?: false, barcode: '45678901', status_class: 'available',
+                      status_text: 'Available', public_note: 'note for 45678901'),
+
+        double(:item, callnumber: 'ABC 321', checked_out?: false, processing?: false, missing?: false,
+                      hold?: false, on_order?: false, barcode: '23456789', status_class: 'available',
+                      status_text: 'Available', public_note: 'note for 23456789')
+
+      ]
+    end
     let(:holdings) { build(:searchable_holdings) }
 
     before do

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe RequestsController do
+RSpec.describe RequestsController do
   let(:scannable_params) do
     { item_id: '12345', origin: 'SAL3', origin_location: 'STACKS' }
   end
@@ -14,6 +14,12 @@ describe RequestsController do
   end
   let(:hold_recall_params) do
     { item_id: '12345', barcode: '3610512345', origin: 'GREEN', origin_location: 'STACKS' }
+  end
+
+  before do
+    allow_any_instance_of(FolioClient).to receive(:find_instance).and_return({ indexTitle: 'Item Title' })
+    allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
+    stub_folio_holdings(:folio_multiple_holding)
   end
 
   describe '#new' do

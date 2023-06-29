@@ -7,10 +7,22 @@ RSpec.describe 'Creating a page request' do
 
   before do
     allow(Request.ils_job_class).to receive(:perform_now)
+    allow_any_instance_of(FolioClient).to receive(:find_instance).and_return({ indexTitle: 'Item Title' })
+    allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
+    stub_folio_holdings(:folio_multiple_holding)
+  end
+
+  describe 'item information' do
+    it 'displays the items title' do
+      visit new_page_path(item_id: '2824966', origin: 'GREEN', origin_location: 'STACKS')
+    end
   end
 
   context 'when initiated by an anonmyous user' do
-    before { stub_searchworks_api_json(build(:single_holding)) }
+    before do
+      stub_searchworks_api_json(build(:single_holding))
+      stub_folio_holdings(:folio_single_holding)
+    end
 
     it 'is possible if a name and email is filled out', js: true do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe RequestApprovalStatus do
+RSpec.describe RequestApprovalStatus do
   subject { described_class.new(request:) }
 
   let(:request) { create(:request) }
@@ -27,6 +27,12 @@ describe RequestApprovalStatus do
 
       context 'for mediated pages' do
         let(:request) { create(:page_mp_mediated_page) }
+        let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
+        let(:selected_items) { [] }
+
+        before do
+          allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+        end
 
         it 'is the mediated page text' do
           expect(html).to have_css('dd', text: 'Waiting for approval.')

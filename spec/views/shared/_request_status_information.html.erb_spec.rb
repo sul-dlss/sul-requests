@@ -2,11 +2,13 @@
 
 require 'rails_helper'
 
-describe 'shared/_request_status_information.html.erb' do
+RSpec.describe 'shared/_request_status_information.html.erb' do
   let(:user) { create(:sso_user) }
-  let(:request) { create(:scan, :without_validations, user:) }
+  let(:request) { create(:scan, :without_validations, :with_item_title, user:) }
+  let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
 
   before do
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
     allow(view).to receive_messages(current_request: request)
   end
 

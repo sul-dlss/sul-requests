@@ -2,8 +2,22 @@
 
 require 'rails_helper'
 
-describe 'Paging Schedule' do
-  before { stub_current_user(create(:superadmin_user)) }
+RSpec.describe 'Paging Schedule' do
+  let(:holdings_relationship) { double(:relationship, where: [], all: all_items, single_checked_out_item?: false) }
+  let(:all_items) do
+    [
+      double('item', callnumber: 'ABC 123', processing?: false, missing?: false, hold?: false, on_order?: false, barcode: '123123124',
+                     checked_out?: false, status_class: 'active', status_text: 'Active', public_note: 'huh?', type: 'STKS'),
+      double('item', callnumber: 'ABC 321', processing?: false, missing?: false, hold?: false, on_order?: false, barcode: '9928812',
+                     checked_out?: false, status_class: 'active', status_text: 'Active', public_note: 'huh?', type: 'STKS')
+    ]
+  end
+
+  before do
+    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    stub_current_user(create(:superadmin_user))
+  end
 
   describe 'admin list' do
     it 'displays the currently configured paging schedule' do
@@ -36,10 +50,10 @@ describe 'Paging Schedule' do
     before do
       stub_current_user(create(:sso_user))
       stub_searchworks_api_json(build(:sal3_holdings))
+      stub_symphony_response(build(:symphony_page_with_single_item))
     end
 
     it 'is persisted' do
-      stub_symphony_response(build(:symphony_page_with_single_item))
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
 
       expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: :visible)
