@@ -28,6 +28,9 @@ module Folio
       user_info.fetch('id')
     end
 
+    # always nil for a real patron, but filled in for a PseudoPatron
+    def patron_comments; end
+
     # TODO: I belive we added this for parity with Symphony::Patron, but I don't think we will need it.
     # @deprecated
     def barcode
