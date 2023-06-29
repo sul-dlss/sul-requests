@@ -23,10 +23,9 @@ describe 'Viewing all requests' do
     describe 'by an anonmyous user' do
       before { stub_current_user(create(:anon_user)) }
 
-      it 'raises an error' do
-        expect do
-          visit messages_path
-        end.to raise_error(CanCan::AccessDenied)
+      it 'is forbidden' do
+        visit messages_path
+        expect(page.status_code).to eq 403
       end
     end
   end
@@ -58,10 +57,9 @@ describe 'Viewing all requests' do
     describe 'by an anonmyous user' do
       before { stub_current_user(create(:anon_user)) }
 
-      it 'raises an error' do
-        expect do
-          visit new_message_path
-        end.to raise_error(CanCan::AccessDenied)
+      it 'is forbidden' do
+        visit new_message_path
+        expect(page.status_code).to eq 403
       end
     end
   end
@@ -97,10 +95,9 @@ describe 'Viewing all requests' do
     describe 'by an anonmyous user' do
       before { stub_current_user(create(:anon_user)) }
 
-      it 'raises an error' do
-        expect do
-          visit edit_message_path(message)
-        end.to raise_error(CanCan::AccessDenied)
+      it 'is forbidden' do
+        visit edit_message_path(message)
+        expect(page.status_code).to eq 403
       end
     end
   end

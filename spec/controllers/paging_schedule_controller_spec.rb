@@ -5,8 +5,9 @@ require 'rails_helper'
 describe PagingScheduleController do
   describe 'index' do
     describe 'by anonmyous users' do
-      it 'raises an error' do
-        expect { get :index }.to raise_error(CanCan::AccessDenied)
+      it 'is forbidden' do
+        get :index
+        expect(response).to have_http_status(:forbidden)
       end
     end
 

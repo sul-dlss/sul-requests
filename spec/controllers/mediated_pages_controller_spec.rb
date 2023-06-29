@@ -96,14 +96,13 @@ RSpec.describe MediatedPagesController do
       end
 
       describe 'via get' do
-        it 'raises an error' do
-          expect do
-            get :create, params: {
-              request: {
-                item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL', destination: 'ART'
-              }
+        it 'is forbidden' do
+          get :create, params: {
+            request: {
+              item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL', destination: 'ART'
             }
-          end.to raise_error(CanCan::AccessDenied)
+          }
+          expect(response).to have_http_status(:forbidden)
         end
       end
     end
@@ -205,10 +204,9 @@ RSpec.describe MediatedPagesController do
       let(:user) { create(:sso_user) }
       let!(:mediated_page) { create(:mediated_page, user:) }
 
-      it 'throws an access denied error' do
-        expect do
-          patch :update, params: { id: mediated_page.id, mediated_page: { marked_as_complete: 'true' } }, format: :js
-        end.to raise_error(CanCan::AccessDenied)
+      it 'renders forbidden' do
+        patch :update, params: { id: mediated_page.id, mediated_page: { marked_as_complete: 'true' } }, format: :js
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end
