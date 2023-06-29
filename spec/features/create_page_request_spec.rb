@@ -58,6 +58,29 @@ RSpec.describe 'Creating a page request' do
   context 'when initiated by an anonmyous user' do
     before { stub_searchworks_api_json(build(:single_holding)) }
 
+    let(:folio_holding_response) do
+      { 'instanceId' => 'f1c52ab3-721e-5234-9a00-1023e034e2e8',
+        'source' => 'MARC',
+        'modeOfIssuance' => 'single unit',
+        'natureOfContent' => [],
+        'holdings' => [],
+        'items' =>
+         [{ 'id' => '584baef9-ea2f-5ff5-9947-bbc348aee4a4',
+            'notes' => [],
+            'status' => 'Available',
+            'barcode' => '3610512345678',
+            'location' =>
+            { 'effectiveLocation' => { 'code' => 'GRE-STACKS' },
+              'permanentLocation' => { 'code' => 'GRE-STACKS' },
+              'temporaryLocation' => {} },
+            'callNumber' =>
+              { 'typeId' => '6caca63e-5651-4db6-9247-3205156e9699', 'typeName' => 'Other scheme', 'callNumber' => 'ABC 123' },
+            'materialType' => 'periodical',
+            'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
+            'permanentLoanType' => 'Can circulate',
+            'suppressFromDiscovery' => false }] }
+    end
+
     it 'is possible if a name and email is filled out', js: true do
       visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
       click_link "I don't have a SUNet ID"
