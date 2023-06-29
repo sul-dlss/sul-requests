@@ -69,7 +69,7 @@ module Folio
     end
 
     def json
-      @json = folio_client.find_instance(instance_id:)
+      @json ||= folio_client.find_instance(instance_id:)
     end
 
     def folio_client
