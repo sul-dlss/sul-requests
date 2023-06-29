@@ -147,7 +147,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
           it 'but does not notify staff' do
             expect do
               subject.execute!
-            end.not_to change { MultipleHoldsMailer.deliveries.count }
+            end.not_to have_enqueued_mail
           end
         end
 
@@ -157,7 +157,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
 
             expect do
               subject.execute!
-            end.to change { MultipleHoldsMailer.deliveries.count }.by(1)
+            end.to have_enqueued_mail(MultipleHoldsMailer)
           end
         end
 
@@ -167,7 +167,7 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
           it 'does not notify staff' do
             expect do
               subject.execute!
-            end.not_to change { MultipleHoldsMailer.deliveries.count }
+            end.not_to have_enqueued_mail
           end
         end
       end

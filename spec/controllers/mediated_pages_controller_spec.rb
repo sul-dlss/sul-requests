@@ -137,7 +137,7 @@ RSpec.describe MediatedPagesController do
               needed_date: Time.zone.today + 1.year
             }
           }
-        end.to change { RequestStatusMailer.deliveries.count { |x| x.subject != 'New request needs mediation' } }.by(1)
+        end.to have_enqueued_mail(RequestStatusMailer)
       end
 
       it 'sends an email to the mediator' do
@@ -153,7 +153,7 @@ RSpec.describe MediatedPagesController do
               needed_date: Time.zone.today + 1.year
             }
           }
-        end.to change { MediationMailer.deliveries.count { |x| x.subject == 'New request needs mediation' } }.by(1)
+        end.to have_enqueued_mail(MediationMailer)
       end
     end
 

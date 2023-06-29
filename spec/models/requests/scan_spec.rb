@@ -56,7 +56,7 @@ RSpec.describe Scan do
       it 'does not send an approval status email' do
         expect do
           subject.send_approval_status!
-        end.not_to change { RequestStatusMailer.deliveries.count }
+        end.not_to have_enqueued_mail
       end
     end
 
@@ -66,7 +66,7 @@ RSpec.describe Scan do
       it 'sends an approval status email' do
         expect do
           subject.send_approval_status!
-        end.to change { RequestStatusMailer.deliveries.count }.by(1)
+        end.to have_enqueued_mail(RequestStatusMailer)
       end
     end
   end

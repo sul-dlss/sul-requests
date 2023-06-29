@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe SubmitIplcListenerJob, type: :job do
+RSpec.describe SubmitIplcListenerJob, type: :job do
   let(:user) { create(:library_id_user) }
   let(:request) { create(:hold_recall_with_holdings, user:) }
   let(:sw_item) { double('SeachWorksItem', isbn: %w[12345 54321]) }
@@ -41,6 +41,7 @@ describe SubmitIplcListenerJob, type: :job do
 
     context 'when the item is requestable and the request succeeds' do
       before do
+        allow(Request.ils_job_class).to receive(:perform_now)
         expect(iplc_response_item).to receive_messages(
           success?: true,
           as_json: { 'mockResponse' => ['Successful Response'], 'RequestNumber' => '1' }

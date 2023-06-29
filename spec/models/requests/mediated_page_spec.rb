@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe MediatedPage do
+RSpec.describe MediatedPage do
   let(:user) { create(:sso_user) }
 
   before do
@@ -119,6 +119,7 @@ describe MediatedPage do
     before do
       stub_symphony_response(build(:symphony_page_with_multiple_items))
       subject.barcodes = ['12345678', '23456789']
+      allow(Request.ils_job_class).to receive(:perform_now)
     end
 
     it 'returns true when all requested barcodes are approved' do
@@ -187,7 +188,7 @@ describe MediatedPage do
         subject.user = create(:library_id_user)
         expect do
           subject.submit!
-        end.to change { ApplicationMailer.deliveries.count }.by(1)
+        end.to have_enqueued_mail
       end
     end
 
@@ -197,7 +198,7 @@ describe MediatedPage do
       it 'sends a confirmation email and a mediator email' do
         expect do
           subject.submit!
-        end.to change { ApplicationMailer.deliveries.count }.by(2)
+        end.to have_enqueued_mail.twice
       end
     end
   end
@@ -208,7 +209,7 @@ describe MediatedPage do
     it 'returns true' do
       expect do
         subject.send_approval_status!
-      end.not_to change { RequestStatusMailer.deliveries.count }
+      end.not_to have_enqueued_mail
       expect(subject.send_approval_status!).to be true
     end
   end
