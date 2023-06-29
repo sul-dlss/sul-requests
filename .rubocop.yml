@@ -59,6 +59,9 @@ Style/StringLiterals:
 RSpec/MultipleMemoizedHelpers:
   Enabled: false
 
+RSpec/MultipleExpectations:
+  Max: 20
+
 RSpec/MessageChain:
   Enabled: false
 Layout/EmptyLinesAroundAttributeAccessor:
