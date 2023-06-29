@@ -22,6 +22,11 @@ class FolioClient
     @tenant = tenant
   end
 
+  # Overridden so that we don't display password
+  def inspect
+    "#<#{self.class.name}:#{object_id}  @base_url=\"#{base_url}\">"
+  end
+
   # Return the FOLIO user object given a sunetid
   # See https://s3.amazonaws.com/foliodocs/api/mod-users/p/users.html#users__userid__get
   def login_by_sunetid(sunetid)
