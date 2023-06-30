@@ -4,20 +4,23 @@ module Symphony
   # Class to model Patron information from Symphony Web Services
   # Partially extracted from https://github.com/sul-dlss/mylibrary/blob/master/app/models/patron.rb
   class Patron < Symphony::Base
-    # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+    # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/AbcSize
     def self.find_by(sunetid: nil, library_id: nil, patron_key: nil, with_holds: false)
       patron_key ||= symphony_client.login_by_sunetid(sunetid)&.dig('key') if sunetid.present?
       patron_key ||= symphony_client.login_by_library_id(library_id)&.dig('key') if library_id.present?
 
       return new(symphony_client.patron_info(patron_key, return_holds: with_holds)) if patron_key.present?
 
-      Honeybadger.notify("Unable to find patron (looked up by sunetid: #{sunetid} / barcode: #{library_id}")
+      # if no sunet or library_id they are probably a general public (name/email) user. We don't want that case logged.
+      if sunetid || library_id.present?
+        Honeybadger.notify("Unable to find patron (looked up by sunetid: #{sunetid} / barcode: #{library_id}")
+      end
 
       nil
     rescue HTTP::Error
       nil
     end
-    # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+    # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/AbcSize
 
     def barcode
       fields['barcode']
