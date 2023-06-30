@@ -5,14 +5,12 @@ require 'rails_helper'
 RSpec.describe 'requests/status.html.erb' do
   let(:user) { create(:sso_user) }
   let(:request) { build_stubbed(:page, user:) }
-  let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
-  let(:selected_items) { [] }
 
   before do
     allow(view).to receive_messages(current_request: request)
     allow(view).to receive_messages(current_user: user)
     allow(controller).to receive_messages(current_user: user)
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    stub_folio_holdings(:empty)
   end
 
   it 'has an icon and h1 heading' do

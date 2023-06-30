@@ -3,12 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe Request do
-  let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
-  let(:bib_data) { double(:bib_data, title: 'Test title') }
-
   before do
-    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(bib_data)
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    allow_any_instance_of(FolioClient).to receive(:find_instance).and_return({ title: 'Item Title' })
+    allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
+    stub_folio_holdings(:folio_multiple_holding)
   end
 
   describe 'validations' do
@@ -25,8 +23,6 @@ RSpec.describe Request do
       before do
         stub_searchworks_api_json(build(:multiple_holdings))
       end
-
-      let(:holdings_relationship) { double(:relationship, where: [double('item', barcode: '3610512345678')]) }
 
       let(:create_request) do
         described_class.create!(
@@ -81,12 +77,6 @@ RSpec.describe Request do
           origin: 'SAL',
           origin_location: 'SAL-TEMP'
         )
-      end
-      let(:holdings_relationship) { double(:relationship, where: [], all: all_holdings, single_checked_out_item?: false) }
-
-      let(:all_holdings) do
-        # This is just used for Searchworks integration
-        [double(:item, type: 'NONCIRC', code: 'SAL-TEMP', barcode: '12345678')]
       end
 
       before do
@@ -192,7 +182,6 @@ RSpec.describe Request do
   describe '#holdings' do
     describe 'when persisted' do
       let(:subject) { create(:request_with_multiple_holdings, barcodes: ['3610512345678']) }
-      let(:holdings_relationship) { double(:relationship, where: [double('item', barcode: '3610512345678')]) }
 
       it 'gets the holdings from the requested location by the persisted barcodes' do
         holdings = subject.holdings
@@ -215,14 +204,9 @@ RSpec.describe Request do
     describe 'when not persisted' do
       subject(:request) { build(:request_with_multiple_holdings) }
 
-      let(:bib_data) { double(:bib_data, title: 'Test title', holdings:) }
       let(:holdings) do
         # This is just used for Searchworks integration
         request.bib_data.holdings
-      end
-
-      before do
-        allow(HoldingsRelationshipBuilder).to receive(:build).and_call_original
       end
 
       it 'gets all the holdings for the requested location' do
@@ -239,9 +223,6 @@ RSpec.describe Request do
     subject(:all_holdings) { request.all_holdings }
 
     let(:request) { build(:request_with_multiple_holdings, barcodes: ['3610512345678']) }
-    let(:holdings_relationship) do
-      double(:relationship, all: [double('item', barcode: '3610512345678'), double('item'), double('item', barcode: '12345679')])
-    end
 
     it 'gets all the holdings for the requested location' do
       expect(all_holdings).to be_a Array
@@ -255,7 +236,6 @@ RSpec.describe Request do
     subject(:holdings) { request.requested_holdings }
 
     let(:request) { create(:request_with_multiple_holdings, barcodes: ['3610512345678']) }
-    let(:holdings_relationship) { double(:relationship, where: [double('item', barcode: '3610512345678')]) }
 
     it 'gets the holdings from the requested location by the persisted barcodes' do
       expect(holdings).to be_a Array
@@ -431,12 +411,11 @@ RSpec.describe Request do
   describe 'item_title' do
     context 'when the title is not present' do
       before do
-        allow(Settings.ils.bib_model.constantize).to receive(:new)
-          .and_return(double(:bib_data,
-                             title: 'When do you need an antacid? : a burning question'))
+        allow_any_instance_of(Settings.ils.bib_model.constantize).to receive(:title)
+          .and_return('When do you need an antacid? : a burning question')
       end
 
-      it 'fetches the item title', allow_apis: true do
+      it 'fetches the item title' do
         described_class.create!(item_id: '2824966', origin: 'GREEN', origin_location: 'STACKS')
         expect(described_class.last.item_title).to eq 'When do you need an antacid? : a burning question'
       end
@@ -463,24 +442,41 @@ RSpec.describe Request do
   end
 
   describe '#delegate_request!' do
-    it 'delegates to a mediated page if it is mediateable' do
-      allow(subject).to receive_messages(mediateable?: true)
-      expect(subject.type).to be_nil
-      subject.delegate_request!
-      expect(subject.type).to eq 'MediatedPage'
+    context 'when mediateable' do
+      before do
+        allow(subject).to receive_messages(mediateable?: true)
+      end
+
+      it 'delegates to a mediated page' do
+        allow(subject).to receive_messages(mediateable?: true)
+        expect(subject.type).to be_nil
+        subject.delegate_request!
+        expect(subject.type).to eq 'MediatedPage'
+      end
     end
 
-    it 'delegates to a hold recall if it is hold recallable' do
-      allow(subject).to receive_messages(hold_recallable?: true)
-      expect(subject.type).to be_nil
-      subject.delegate_request!
-      expect(subject.type).to eq 'HoldRecall'
+    context 'when hold_recallable' do
+      before do
+        allow(subject).to receive_messages(hold_recallable?: true)
+      end
+
+      it 'delegates to a hold recall' do
+        expect(subject.type).to be_nil
+        subject.delegate_request!
+        expect(subject.type).to eq 'HoldRecall'
+      end
     end
 
-    it 'delegates to a page request otherwise' do
-      expect(subject.type).to be_nil
-      subject.delegate_request!
-      expect(subject.type).to eq 'Page'
+    context 'when neither mediatable or hold recallable' do
+      before do
+        allow(subject).to receive_messages(mediateable?: false, hold_recallable?: false)
+      end
+
+      it 'delegates to a page request otherwise' do
+        expect(subject.type).to be_nil
+        subject.delegate_request!
+        expect(subject.type).to eq 'Page'
+      end
     end
   end
 

@@ -3,19 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe 'Send Request Buttons' do
-  let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
-  let(:selected_items) do
-    [
-      double(:item, callnumber: 'ABC 123', checked_out?: false, processing?: false, missing?: false, hold?: false, on_order?: false,
-                    barcode: '12345678', type: 'STKS')
-    ]
-  end
-
   before do
     stub_searchworks_api_json(build(:single_holding))
-    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
-
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    allow_any_instance_of(FolioClient).to receive(:find_instance).and_return({ indexTitle: 'Test title' })
+    allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
+    stub_folio_holdings(:folio_single_holding)
   end
 
   describe 'as a Stanford user', js: true do

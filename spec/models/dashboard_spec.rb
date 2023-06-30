@@ -3,15 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe Dashboard do
-  let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
-  let(:selected_items) do
-    [
-      double(:item, barcode: '34567890', type: 'STKS', callnumber: 'ABC 123')
-    ]
-  end
-
   before do
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    allow_any_instance_of(FolioClient).to receive(:find_instance).and_return({ title: 'Test title' })
+    allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
+    stub_folio_holdings(:folio_single_holding)
     create(:mediated_page)
     create(:page)
     create(:page)

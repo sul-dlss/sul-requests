@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
 def stub_folio_holdings(fixture_name)
-  allow_any_instance_of(FolioClient).to receive(:items_and_holdings).and_return(StubFolioApiResponse.send(fixture_name))
+  if fixture_name == :empty
+    holdings_relationship = double(:relationship, where: [], all: [], single_checked_out_item?: false)
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+  else
+    allow_any_instance_of(FolioClient).to receive(:items_and_holdings).and_return(StubFolioApiResponse.send(fixture_name))
+  end
 end
 
 class StubFolioApiResponse

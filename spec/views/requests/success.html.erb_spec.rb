@@ -5,15 +5,13 @@ require 'rails_helper'
 RSpec.describe 'requests/success.html.erb' do
   let(:user) { create(:sso_user) }
   let(:request) { create(:page, user:, item_title: 'Test title') }
-  let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
-  let(:selected_items) do
-    [
-      double(:item, barcode: '12345678', type: 'STKS', callnumber: 'ABC 123')
-    ]
-  end
+  let(:folio_stub) { :folio_single_holding }
 
   before do
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    allow_any_instance_of(FolioClient).to receive(:find_instance).and_return({ title: 'Test title' })
+    allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
+
+    stub_folio_holdings(folio_stub)
     allow(view).to receive_messages(current_request: request)
     allow(view).to receive_messages(current_user: user)
   end
@@ -185,12 +183,8 @@ RSpec.describe 'requests/success.html.erb' do
     end
 
     describe 'selected items' do
-      let(:selected_items) do
-        [double('item', barcode: '12345678', callnumber: 'ABC 123'),
-         double('item', barcode: '23456789', callnumber: 'ABC 456')]
-      end
-
       let(:request) { create(:mediated_page_with_holdings, user:, barcodes: %w(12345678 23456789)) }
+      let(:folio_stub) { :folio_multiple_holding }
 
       before { render }
 

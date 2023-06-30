@@ -5,10 +5,8 @@ require 'rails_helper'
 RSpec.describe 'HoldRecallable' do
   subject(:request) { build(:request) }
 
-  let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
-
   before do
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    stub_folio_holdings(:empty)
   end
 
   describe '#hold_recallable?' do
