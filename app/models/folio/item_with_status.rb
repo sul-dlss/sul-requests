@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 module Folio
-  # Other status that we aren't using include "Unavailable", "On order", "In process", "Intellectual item", "In transit"
+  # Other status that we aren't using include "Unavailable", "In process", "Intellectual item", "In transit"
   STATUS_CHECKED_OUT = 'Checked out'
+  STATUS_ON_ORDER = 'On order'
   STATUS_AVAILABLE = 'Available'
   STATUS_HOLD = 'Awaiting pickup'
   STATUS_MISSING = 'Missing'
@@ -23,6 +24,10 @@ module Folio
                                :callnumber) do
     def checked_out?
       status == STATUS_CHECKED_OUT
+    end
+
+    def on_order?
+      status == STATUS_ON_ORDER
     end
 
     # TODO, is this complete?

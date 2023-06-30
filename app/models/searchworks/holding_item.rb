@@ -26,11 +26,11 @@ module Searchworks
     attr_accessor :request_status
 
     def checked_out?
-      current_location_code == 'CHECKEDOUT' # TODO: itemStatus == 'Checked out' in Folio
+      current_location_code == 'CHECKEDOUT'
     end
 
     def on_order?
-      current_location_code == 'ON-ORDER' # TODO: itemStatus == 'On order' in Folio
+      current_location_code == 'ON-ORDER'
     end
 
     def hold?
