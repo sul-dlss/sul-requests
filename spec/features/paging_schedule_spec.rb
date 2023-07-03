@@ -3,7 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe 'Paging Schedule' do
-  let(:holdings_relationship) { double(:relationship, where: [], all: all_items, single_checked_out_item?: false) }
+  let(:holdings_relationship) do
+    double(:relationship, where: [], all: all_items, single_checked_out_item?: false, single_in_process_item?: false)
+  end
   let(:all_items) do
     [
       double('item', callnumber: 'ABC 123', processing?: false, missing?: false, hold?: false, on_order?: false, barcode: '123123124',

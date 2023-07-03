@@ -5,7 +5,9 @@ require 'rails_helper'
 RSpec.describe 'requests/success.html.erb' do
   let(:user) { create(:sso_user) }
   let(:request) { create(:page, user:, item_title: 'Test title') }
-  let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
+  let(:holdings_relationship) do
+    double(:relationship, where: selected_items, all: [], single_checked_out_item?: false, single_in_process_item?: false)
+  end
   let(:selected_items) do
     [
       double(:item, barcode: '12345678', type: 'STKS', callnumber: 'ABC 123')

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Pickup Libraries Dropdown' do
   let(:standard_pickup_lib_total) { Settings.default_pickup_libraries.count }
-  let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
+  let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false, single_in_process_item?: false) }
 
   before do
     allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))

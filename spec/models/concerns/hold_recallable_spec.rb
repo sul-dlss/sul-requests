@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'HoldRecallable' do
   subject(:request) { build(:request) }
 
-  let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
+  let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false, single_in_process_item?: false) }
 
   before do
     allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
@@ -59,6 +59,18 @@ RSpec.describe 'HoldRecallable' do
       end
     end
 
+    context 'when a single item is in process' do
+      let(:holdings_object) do
+        instance_double(Searchworks::Holdings, single_in_process_item?: true, single_checked_out_item?: false, all: [], where: [])
+      end
+
+      before do
+        allow(request).to receive(:holdings_object).and_return(holdings_object)
+      end
+
+      it { is_expected.to be_hold_recallable }
+    end
+
     describe 'when ON-ORDER' do
       it 'is true when the origin_location is ON-ORDER' do
         request.origin_location = 'ON-ORDER'
@@ -86,7 +98,8 @@ RSpec.describe 'HoldRecallable' do
 
     context 'when CHECKEDOUT' do
       let(:holdings_object) do
-        instance_double(Searchworks::Holdings, single_checked_out_item?: single_checked_out, all: [], where: [])
+        instance_double(Searchworks::Holdings, single_checked_out_item?: single_checked_out, single_in_process_item?: false, all: [],
+                                               where: [])
       end
 
       before do

@@ -75,7 +75,9 @@ RSpec.describe SubmitBorrowDirectRequestJob, type: :job do
 
     context 'when the item is requestable and the request succeeds' do
       let(:user) { create(:sso_user) }
-      let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
+      let(:holdings_relationship) do
+        double(:relationship, where: selected_items, all: [], single_checked_out_item?: false, single_in_process_item?: false)
+      end
       let(:selected_items) { [] }
 
       before do

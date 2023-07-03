@@ -32,6 +32,10 @@ module Folio
       all.one? && all.first.checked_out?
     end
 
+    def single_in_process_item?
+      all.one? && all.first.processing?
+    end
+
     private
 
     def items_and_holdings

@@ -3,7 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe 'Library Instructions' do
-  let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: true) }
+  let(:holdings_relationship) do
+    double(:relationship, where: selected_items, all: [], single_checked_out_item?: true, single_in_process_item?: false)
+  end
   let(:selected_items) { [double(:item, checked_out?: false, processing?: false, missing?: false, hold?: false, on_order?: false)] }
 
   before do

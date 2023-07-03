@@ -43,13 +43,14 @@ class RequestAbilities
   # returns a true if any of the following is true
   #   - The incoming request includes a barcode (which means an item-level link, likely a checked out item)
   #   - The home location or current location is an allowed recallable location by Settings.hold_recallable
-  #   - There is only a single item to be requested and it is checked out
+  #   - There is only a single item to be requested and it is checked out or in process
   def hold_recallable?
     return false unless Settings.features.hold_recall_service
 
     request.barcode_present? ||
       hold_recallable_location? ||
-      single_checked_out_item?
+      single_checked_out_item? ||
+      single_in_process_item?
   end
 
   def pageable?
@@ -72,6 +73,10 @@ class RequestAbilities
 
   def single_checked_out_item?
     request.holdings_object.single_checked_out_item?
+  end
+
+  def single_in_process_item?
+    request.holdings_object.single_in_process_item?
   end
 
   def applicable_rules(request_type)

@@ -45,7 +45,9 @@ RSpec.describe 'Home Page' do
   end
 
   describe 'mediation section' do
-    let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
+    let(:holdings_relationship) do
+      double(:relationship, where: [], all: [], single_checked_out_item?: false, single_in_process_item?: false)
+    end
 
     before do
       allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
