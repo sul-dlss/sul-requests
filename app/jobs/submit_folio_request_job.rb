@@ -49,10 +49,16 @@ class SubmitFolioRequestJob < ApplicationJob
     def execute!
       requested_items = barcodes.map do |barcode|
         item_id = folio_client.get_item(barcode)['id']
+        create_log(barcode:, item_id:)
         response = place_hold(item_id:)
         { barcode:, msgcode: '209', response: }
       end
       { requested_items: }
+    end
+
+    # Called by the debug views
+    def request_params
+      request.folio_command_logs.map(&:as_json)
     end
 
     private
@@ -77,8 +83,13 @@ class SubmitFolioRequestJob < ApplicationJob
       folio_client.create_item_hold(patron.id, item_id, hold_request)
     end
 
+    def create_log(barcode:, item_id:)
+      request.folio_command_logs.create!(barcode:, user_id: patron.id, item_id:, pickup_location_id:,
+                                         patron_comments: patron.patron_comments, expiration_date:)
+    end
+
     def expiration_date
-      (request.needed_date || (Time.zone.today + 3.years)).to_time.utc.iso8601
+      @expiration_date ||= (request.needed_date || (Time.zone.today + 3.years)).to_time.utc.iso8601
     end
 
     # rubocop:disable Metrics/MethodLength

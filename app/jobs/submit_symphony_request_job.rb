@@ -40,11 +40,13 @@ class SubmitSymphonyRequestJob < ApplicationJob
     delegate :user, to: :request
     delegate :patron, to: :user
 
-    def initialize(request, symphony_client: nil, barcode: nil)
+    # rubocop:disable Lint/UnusedMethodArgument
+    def initialize(request, logger: nil, symphony_client: nil, barcode: nil)
       @request = request
       @symphony_client = symphony_client || SymphonyClient.new
       @barcode = barcode
     end
+    # rubocop:enable Lint/UnusedMethodArgument
 
     # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     def execute!
