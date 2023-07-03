@@ -29,6 +29,8 @@ class SubmitFolioRequestJob < ApplicationJob
     Honeybadger.notify('Unable to find Request', conext: { request_id: })
   end
 
+  PsuedoPatron = Data.define(:id, :patron_comments)
+
   # Submit a hold request to FOLIO
   class Command
     attr_reader :request, :folio_client, :barcode, :logger
@@ -56,7 +58,6 @@ class SubmitFolioRequestJob < ApplicationJob
     private
 
     delegate :user, :scan_destination, to: :request
-    delegate :patron, to: :user
 
     def pickup_location_id
       @pickup_location_id ||= begin
@@ -67,13 +68,13 @@ class SubmitFolioRequestJob < ApplicationJob
 
     def place_hold(item_id:)
       logger.info(
-        "Submitting hold request for user #{user_id} and item #{item_id} for pickup up at #{pickup_location_id}"
+        "Submitting hold request for user #{patron.id} and item #{item_id} for pickup up at #{pickup_location_id}"
       )
 
       hold_request = FolioClient::HoldRequest.new(pickup_location_id:,
-                                                  patron_comments: request.item_comment,
+                                                  patron_comments: patron.patron_comments,
                                                   expiration_date:)
-      folio_client.create_item_hold(user_id, item_id, hold_request)
+      folio_client.create_item_hold(patron.id, item_id, hold_request)
     end
 
     def expiration_date
@@ -81,24 +82,29 @@ class SubmitFolioRequestJob < ApplicationJob
     end
 
     # rubocop:disable Metrics/MethodLength
-    def user_id
-      @user_id ||= case request
-                   when Scan
-                     scan_destination.folio_pseudopatron
-                   when HoldRecall
-                     patron.id
-                   when Page, MediatedPage
-                     if patron&.good_standing?
-                       patron.id
-                     else
-                       pseudo_patron(request.destination)
-                     end
-                   end
+    def patron
+      @patron ||= case request
+                  when Scan
+                    build_pseudopatron(scan_destination.folio_pseudopatron)
+                  when HoldRecall
+                    user.patron
+                  when Page, MediatedPage
+                    if user.patron&.good_standing?
+                      user.patron
+                    else
+                      find_hold_pseudo_patron_for(request.destination)
+                    end
+                  end
     end
     # rubocop:enable Metrics/MethodLength
 
-    def pseudo_patron(key)
-      Settings.libraries[key]&.folio_hold_pseudopatron || raise("no hold pseudopatron for '#{key}'")
+    def build_pseudopatron(id)
+      PsuedoPatron.new(id:, patron_comments: "#{user.name} <#{user.email}>")
+    end
+
+    def find_hold_pseudo_patron_for(key)
+      id = Settings.libraries[key]&.folio_hold_pseudopatron || raise("no hold pseudopatron for '#{key}'")
+      build_pseudopatron(id)
     end
 
     def barcodes
