@@ -278,23 +278,36 @@ RSpec.describe Request do
   end
 
   describe '#item_limit' do
-    it 'is nil when there is no configured item limit' do
-      expect(subject.item_limit).to be_nil
+    subject { request.item_limit }
+
+    let(:request) { described_class.new }
+
+    context 'when there is no configured item limit' do
+      it { is_expected.to be_nil }
     end
 
-    it 'is 5 for items from SPEC-COLL' do
-      subject.origin = 'SPEC-COLL'
-      expect(subject.item_limit).to eq 5
+    context 'when the origin is SPEC-COLL' do
+      before do
+        request.origin = 'SPEC-COLL'
+      end
+
+      it { is_expected.to eq 5 }
     end
 
-    it 'is 5 for items from RUMSEYMAP' do
-      subject.origin = 'RUMSEYMAP'
-      expect(subject.item_limit).to eq 5
+    context 'when the origin is RUMSEYMAP' do
+      before do
+        request.origin = 'RUMSEYMAP'
+      end
+
+      it { is_expected.to eq 5 }
     end
 
-    it 'is 5 for items from the PAGE-SP location' do
-      subject.origin_location = 'PAGE-SP'
-      expect(subject.item_limit).to eq 5
+    context 'when the origin is PAGE-SP' do
+      before do
+        request.origin_location = 'PAGE-SP'
+      end
+
+      it { is_expected.to eq 5 }
     end
   end
 
