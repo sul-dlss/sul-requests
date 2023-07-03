@@ -1,4 +1,4 @@
-const itemSelector = require('../../app/assets/javascripts/item_selector.js');
+import itemSelector from "../../app/assets/javascripts/item_selector.js"
 global.itemSelector = itemSelector;
 const itemSelectorZeroMessage = require('../../app/assets/javascripts/item_selector/item_selector_zero_message.js');
 

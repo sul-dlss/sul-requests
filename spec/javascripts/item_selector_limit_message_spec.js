@@ -1,4 +1,4 @@
-const itemSelector = require('../../app/assets/javascripts/item_selector.js');
+import itemSelector from "../../app/assets/javascripts/item_selector.js"
 global.itemSelector = itemSelector;
 const itemSelectorLimitMessage = require('../../app/assets/javascripts/item_selector/item_selector_limit_message.js');
 

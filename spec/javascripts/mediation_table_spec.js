@@ -1,4 +1,4 @@
-const mediationTable = require('../../app/assets/javascripts/mediation_table.js');
+import mediationTable from "../../app/assets/javascripts/mediation_table.js"
 
 const fixture = readFixtures('mediation_table.html');
 

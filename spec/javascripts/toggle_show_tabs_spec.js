@@ -1,4 +1,4 @@
-const toggleShowTabs = require('../../app/assets/javascripts/toggle_show_tabs.js');
+import toggleShowTabs from '../../app/assets/javascripts/toggle_show_tabs.js'
 
 const fixture = readFixtures('toggle_show_tabs.html');
 
