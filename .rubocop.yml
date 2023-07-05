@@ -25,6 +25,10 @@ Layout/LineLength:
   Exclude:
     - 'spec/mailers/approval_status_mailer_spec.rb'
 
+Lint/MissingSuper:
+  Exclude:
+    - 'app/components/**/*.rb'
+
 Metrics/BlockLength:
   Exclude:
     - 'spec/models/request_spec.rb'
