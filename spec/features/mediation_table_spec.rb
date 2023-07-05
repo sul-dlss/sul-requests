@@ -16,7 +16,6 @@ RSpec.describe 'Mediation table', js: true do
   let(:folio_items) { [] }
 
   before do
-    allow_any_instance_of(FolioClient).to receive(:find_instance).and_return({ indexTitle: 'Item Title' })
     allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
     allow_any_instance_of(FolioClient).to receive(:items_and_holdings).and_return(folio_holding_response)
   end
