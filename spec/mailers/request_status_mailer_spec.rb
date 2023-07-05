@@ -78,19 +78,22 @@ RSpec.describe RequestStatusMailer do
     end
 
     describe '#request_status_for_scan' do
+      subject(:body) { mail.body.to_s }
+
       let(:mailer_method) { :request_status_for_scan }
       let(:request) { create(:scan, :without_validations, :with_item_title, user:, page_range: '1-2', section_title: 'Chapter2') }
 
       it 'renders the correct email' do
-        expect(mail.body.to_s).to include(
-          "We'll email you again when your request is ready for download."
-        )
-      end
+        aggregate_failures 'the body' do
+          expect(body).to include(
+            "We'll email you again when your request is ready for download."
+          )
 
-      it 'delimits request data with HTML safe line breaks' do
-        expect(mail.body.to_s).not_to include(
-          '&lt;br/&gt;'
-        )
+          # request data has HTML safe line breaks
+          expect(body).not_to include(
+            '&lt;br/&gt;'
+          )
+        end
       end
     end
 
@@ -130,17 +133,11 @@ RSpec.describe RequestStatusMailer do
           let(:request) { create(:page_with_holdings, barcodes: ['3610512345678'], user:) }
           let(:selected_items) { [double(:item, barcode: '3610512345678', callnumber: 'ABC 123')] }
 
-          it 'has the title' do
+          it 'has the data' do
             expect(body).to include("Title: #{request.item_title}")
-          end
-
-          it 'has holdings information' do
-            expect(body).to include('Item(s) requested:')
-            expect(body).to include('ABC 123')
-          end
-
-          it 'has a link to the status page' do
-            expect(body).to match(%r{Check the status before your visit at .*/pages/#{request.id}/status\?token})
+              .and include('Item(s) requested:')
+              .and include('ABC 123')
+              .and match(%r{Check the status before your visit at .*/pages/#{request.id}/status\?token})
           end
         end
 
