@@ -82,7 +82,6 @@ borrow_direct:
   iplc_listener_url: https://iplc-listener.reshare.indexdata.com/iplc
   reshare_vufind_url: https://borrowdirect.reshare.indexdata.com
 features:
-  estimate_delivery: false
   hold_recall_service: true
   hold_recall_via_relais: false
   hold_recall_via_reshare: true

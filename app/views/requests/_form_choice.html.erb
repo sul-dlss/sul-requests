@@ -7,16 +7,12 @@
       <% if current_request.scannable_only? %>
         <p>This item is for in-library use and not available for Request & pickup.</p>
       <% else %>
-        <% if Settings.features.estimate_delivery %>
-          <dl>
-            <dt>Earliest delivery</dt>
-            <dd data-single-library-value='<%= Settings.default_pickup_library unless current_request.holdings_object.single_checked_out_item? %>'>
-              <span data-scheduler-text='true' aria-live='polite'></span>
-            </dd>
-          </dl>
-        <% else %>
-          <p>No delivery estimate.</p>
-        <% end %>
+        <dl>
+          <dt>Earliest delivery</dt>
+          <dd data-single-library-value='<%= Settings.default_pickup_library unless current_request.holdings_object.single_checked_out_item? %>'>
+            <span data-scheduler-text='true' aria-live='polite'></span>
+          </dd>
+        </dl>
       <% end %>
     </div>
   </div>
@@ -28,16 +24,12 @@
     <div id="scanDescription" class="col-xs-12 content">
       <p>Limited to one article or chapter; maximum 50 pages.</p>
       <p>Available to faculty, staff, students, post-docs, fellows, and Stanford Visiting Scholars.</p>
-      <% if Settings.features.estimate_delivery %>
-        <dl>
-          <dt>Earliest delivery</dt>
-          <dd data-single-library-value='<%= 'SCAN' unless current_request.holdings_object.single_checked_out_item? %>'>
-            <span data-scheduler-text='true' aria-live='polite'></span>
-          </dd>
-        </dl>
-      <% else %>
-        <p>No delivery estimate.</p>
-      <% end %>
+      <dl>
+        <dt>Earliest delivery</dt>
+        <dd data-single-library-value='<%= 'SCAN' unless current_request.holdings_object.single_checked_out_item? %>'>
+          <span data-scheduler-text='true' aria-live='polite'></span>
+        </dd>
+      </dl>
     </div>
   </div>
 </div>
