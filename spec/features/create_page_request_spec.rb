@@ -12,12 +12,6 @@ RSpec.describe 'Creating a page request' do
     stub_folio_holdings(:folio_multiple_holding)
   end
 
-  describe 'item information' do
-    it 'displays the items title' do
-      visit new_page_path(item_id: '2824966', origin: 'GREEN', origin_location: 'STACKS')
-    end
-  end
-
   context 'when initiated by an anonmyous user' do
     before do
       stub_searchworks_api_json(build(:single_holding))
