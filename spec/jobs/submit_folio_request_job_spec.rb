@@ -23,7 +23,7 @@ RSpec.describe SubmitFolioRequestJob do
       end
 
       it 'calls the create_item_hold API method' do
-        described_class.perform_now(request.id)
+        expect { described_class.perform_now(request.id) }.to change { request.folio_command_logs.count }.by(1)
         expect(client).to have_received(:create_item_hold).with('562a5cb0-e998-4ea2-80aa-34ac2b536238', 4, FolioClient::HoldRequest)
       end
     end
@@ -78,7 +78,7 @@ RSpec.describe SubmitFolioRequestJob do
       end
 
       it 'calls the create_item_hold API method' do
-        described_class.perform_now(request.id)
+        expect { described_class.perform_now(request.id) }.to change { request.folio_command_logs.count }.by(1)
         expect(client).to have_received(:create_item_hold).with('2bd36e69-1f58-4f6b-9073-e8d932edeed2', 4, FolioClient::HoldRequest)
       end
     end
@@ -91,7 +91,7 @@ RSpec.describe SubmitFolioRequestJob do
       end
 
       it 'calls the create_item_hold API method' do
-        described_class.perform_now(request.id)
+        expect { described_class.perform_now(request.id) }.to change { request.folio_command_logs.count }.by(2)
         # once for each barcode
         expect(client).to have_received(:create_item_hold).with('0ba81714-52d4-4f37-8b4d-f9d929af048d', 4, FolioClient::HoldRequest).twice
       end

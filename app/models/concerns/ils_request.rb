@@ -18,7 +18,7 @@ module IlsRequest
 
   # This is used only in the debug view
   def ils_request_command
-    ils_job_class.command.new(self)
+    ils_job_class.command.new(self, logger:)
   end
 
   # NOTE: symphony_response_data + folio_response_data are stored in the JSON in the "data" column

@@ -10,13 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_24_160954) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_03_181415) do
   create_table "admin_comments", force: :cascade do |t|
     t.string "commenter"
     t.string "comment"
     t.integer "request_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+  end
+
+  create_table "folio_command_logs", force: :cascade do |t|
+    t.string "pickup_location_id", null: false
+    t.string "user_id", null: false
+    t.string "barcode", null: false
+    t.string "item_id", null: false
+    t.string "patron_comments"
+    t.date "expiration_date", null: false
+    t.integer "request_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["request_id"], name: "index_folio_command_logs_on_request_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -63,4 +76,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_24_160954) do
     t.index ["sunetid"], name: "unique_users_by_sunetid", unique: true
   end
 
+  add_foreign_key "folio_command_logs", "requests"
 end
