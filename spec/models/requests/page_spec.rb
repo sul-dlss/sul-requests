@@ -4,7 +4,6 @@ require 'rails_helper'
 
 RSpec.describe Page do
   before do
-    allow_any_instance_of(FolioClient).to receive(:find_instance).and_return({ indexTitle: 'Item Title' })
     allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
     stub_folio_holdings(:folio_multiple_holding)
   end
@@ -65,6 +64,7 @@ RSpec.describe Page do
         origin_location: 'MM-STACKS',
         destination: 'GREEN',
         item_id: 'abc123',
+        item_title: 'foo',
         user:
       )
     end

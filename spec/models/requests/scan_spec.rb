@@ -4,7 +4,6 @@ require 'rails_helper'
 
 RSpec.describe Scan do
   before do
-    allow_any_instance_of(FolioClient).to receive(:find_instance).and_return({ indexTitle: 'Item Title' })
     allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
     stub_folio_holdings(:folio_multiple_holding)
   end
@@ -18,7 +17,8 @@ RSpec.describe Scan do
       described_class.create!(item_id: '1234',
                               origin: 'GREEN',
                               origin_location: 'STACKS',
-                              section_title: 'Some chapter title')
+                              section_title: 'Some chapter title',
+                              item_title: 'foo')
     end.to raise_error(
       ActiveRecord::RecordInvalid, 'Validation failed: This item is not scannable'
     )
@@ -32,7 +32,8 @@ RSpec.describe Scan do
         item_id: '123456',
         origin: 'SAL',
         origin_location: 'SAL-TEMP',
-        section_title: 'Chapter 1'
+        section_title: 'Chapter 1',
+        item_title: 'foo'
       )
     end.not_to raise_error
   end
@@ -57,7 +58,7 @@ RSpec.describe Scan do
 
   describe 'send_approval_status!' do
     describe 'for library id users' do
-      let(:subject) { create(:scan, :without_validations, user: create(:library_id_user)) }
+      let(:subject) { create(:scan, :without_validations, user: create(:library_id_user), item_title: 'foo') }
 
       it 'does not send an approval status email' do
         expect do
@@ -67,7 +68,7 @@ RSpec.describe Scan do
     end
 
     describe 'for everybody else' do
-      let(:subject) { create(:scan, :without_validations, user: create(:sso_user)) }
+      let(:subject) { create(:scan, :without_validations, user: create(:sso_user), item_title: 'foo') }
 
       it 'sends an approval status email' do
         expect do
