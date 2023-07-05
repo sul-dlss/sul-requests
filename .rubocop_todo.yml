@@ -76,12 +76,6 @@ Lint/EmptyBlock:
     - 'spec/models/request_spec.rb'
     - 'spec/models/requests/page_spec.rb'
 
-# Offense count: 2
-Lint/MissingSuper:
-  Exclude:
-    - 'app/components/library_instructions_component.rb'
-    - 'app/lib/exceptions.rb'
-
 # Offense count: 1
 Lint/NoReturnInBeginEndBlocks:
   Exclude:

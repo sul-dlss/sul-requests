@@ -10,7 +10,7 @@ module Exceptions
   class SymphonyError < StandardError
     attr_reader :messages
 
-    def initialize(messages = [])
+    def initialize(messages = []) # rubocop:disable Lint/MissingSuper
       @messages = Array(messages) || []
     end
 
