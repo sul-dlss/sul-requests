@@ -12,8 +12,6 @@ class HoldRecall < Request
   def submit!
     if Settings.features.hold_recall_via_reshare
       SubmitReshareRequestJob.perform_later(id)
-    elsif Settings.features.hold_recall_via_relais
-      SubmitBorrowDirectRequestJob.perform_later(id)
     else
       super
     end
