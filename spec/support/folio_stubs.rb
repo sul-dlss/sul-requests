@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 def stub_folio_holdings(fixture_name)
+  allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
   allow_any_instance_of(FolioClient).to receive(:items_and_holdings).and_return(StubFolioApiResponse.send(fixture_name))
 end
 

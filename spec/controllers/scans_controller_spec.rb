@@ -9,7 +9,6 @@ RSpec.describe ScansController do
   end
 
   before do
-    allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
     stub_folio_holdings(:folio_sal3_multiple_holdings)
     stub_searchworks_api_json(build(:sal3_holdings))
     allow(SubmitScanRequestJob).to receive(:perform_later)
