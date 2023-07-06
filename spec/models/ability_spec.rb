@@ -79,7 +79,7 @@ describe Ability do
       it { is_expected.to be_able_to(:create, mediated_page) }
 
       describe 'and views a success page with a token' do
-        let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
+        let(:holdings_relationship) { double(:relationship, where: [], all: []) }
 
         before do
           allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))

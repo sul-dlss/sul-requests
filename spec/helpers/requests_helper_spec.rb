@@ -7,7 +7,7 @@ describe RequestsHelper do
 
   describe '#select_for_pickup_libraries' do
     let(:form) { double('form') }
-    let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
+    let(:holdings_relationship) { double(:relationship, where: [], all: []) }
 
     before do
       allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)

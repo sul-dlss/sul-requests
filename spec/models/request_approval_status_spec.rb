@@ -27,7 +27,7 @@ RSpec.describe RequestApprovalStatus do
 
       context 'for mediated pages' do
         let(:request) { create(:page_mp_mediated_page) }
-        let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
+        let(:holdings_relationship) { double(:relationship, where: selected_items, all: []) }
         let(:selected_items) { [] }
 
         before do

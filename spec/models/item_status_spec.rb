@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe ItemStatus do
   subject { described_class.new(request, barcode) }
 
-  let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
+  let(:holdings_relationship) { double(:relationship, where: [], all: []) }
   let(:request) { create(:mediated_page_with_single_holding) }
   let(:barcode) { '3610512345' }
 

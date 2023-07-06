@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Honey Pot Fields' do
   let(:user) { create(:sso_user) }
-  let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
+  let(:holdings_relationship) { double(:relationship, where: [], all: []) }
 
   before do
     allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))

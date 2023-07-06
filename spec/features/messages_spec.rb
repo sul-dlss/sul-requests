@@ -126,7 +126,7 @@ RSpec.describe 'Viewing all requests' do
 
   describe 'displays on a request page' do
     let(:message) { create(:message) }
-    let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
+    let(:holdings_relationship) { double(:relationship, where: [], all: []) }
 
     before do
       allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))

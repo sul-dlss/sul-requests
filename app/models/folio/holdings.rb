@@ -28,10 +28,6 @@ module Folio
       end
     end
 
-    def single_checked_out_item?
-      all.one? && all.first.checked_out?
-    end
-
     private
 
     def items_and_holdings

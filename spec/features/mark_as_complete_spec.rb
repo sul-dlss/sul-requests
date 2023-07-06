@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Mark As Complete', js: true do
   let(:user) { create(:superadmin_user) }
-  let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
+  let(:holdings_relationship) { double(:relationship, where: selected_items, all: []) }
   let(:request_status) do
     instance_double(ItemStatus, approved?: true, errored?: false, approver: 'bob', approval_time: '2023-05-31')
   end

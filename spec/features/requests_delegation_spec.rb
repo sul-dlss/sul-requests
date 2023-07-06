@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Requests Delegation' do
-  let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
+  let(:holdings_relationship) { double(:relationship, where: selected_items, all: []) }
   let(:selected_items) do
     [
       double(:item, barcode: '34567890', type: 'STKS', callnumber: 'ABC 123', checked_out?: false, processing?: false, missing?: false,

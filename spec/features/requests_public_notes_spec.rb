@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Public Notes', js: true do
   let(:user) { create(:sso_user) }
-  let(:holdings_relationship) { double(:relationship, where: selected_items, all: all_items, single_checked_out_item?: false) }
+  let(:holdings_relationship) { double(:relationship, where: selected_items, all: all_items) }
   let(:selected_items) do
     [
       double(:item, barcode: '12345678', checked_out?: false, processing?: false, missing?: false, hold?: false,

@@ -637,13 +637,9 @@ default_pickup_libraries:
 
 hold_recallable:
   - locations:
-      - MISSING
-      - INPROCESS
-      - ON-ORDER
-  - current_locations:
-      - MISSING
-      - INPROCESS
-      - ON-ORDER
+    - MISSING
+    - INPROCESS
+    - ON-ORDER
 
 scannable:
   - library: SAL

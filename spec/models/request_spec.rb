@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Request do
-  let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
+  let(:holdings_relationship) { double(:relationship, where: [], all: []) }
   let(:bib_data) { double(:bib_data, title: 'Test title') }
 
   before do
@@ -82,7 +82,7 @@ RSpec.describe Request do
           origin_location: 'SAL-TEMP'
         )
       end
-      let(:holdings_relationship) { double(:relationship, where: [], all: all_holdings, single_checked_out_item?: false) }
+      let(:holdings_relationship) { double(:relationship, where: [], all: all_holdings) }
 
       let(:all_holdings) do
         # This is just used for Searchworks integration

@@ -38,56 +38,6 @@ RSpec.describe Searchworks::Holdings do
     end
   end
 
-  describe '#single_checked_out_item?' do
-    subject(:requested_holdings) do
-      described_class.new(request, holdings)
-    end
-
-    let(:request) { build(:request) }
-
-    context 'when the holdings include a single checked out item' do
-      let(:holdings) do
-        [
-          Searchworks::Holding.new('code' => 'BIOLOGY',
-                                   'locations' =>
-           [{ 'code' => 'STACKS',
-              'items' =>
-              [{ 'barcode' => '87654321',
-                 'callnumber' => 'ABC 321',
-                 'current_location' => { 'code' => 'CHECKEDOUT' },
-                 'due_date' => '01/01/2015',
-                 'type' => 'STKS',
-                 'status' => { 'availability_class' => 'page', 'status_text' => 'Available' } }] }])
-        ]
-      end
-
-      it { is_expected.to be_single_checked_out_item }
-    end
-
-    context 'when the holdings includes multiple items' do
-      let(:holdings) do
-        [
-          Searchworks::Holding.new('code' => 'BIOLOGY',
-                                   'locations' =>
-             [{ 'code' => 'STACKS',
-                'items' =>
-                [{ 'barcode' => '12345678',
-                   'callnumber' => 'ABC 123',
-                   'type' => 'STKS',
-                   'status' => { 'availability_class' => 'available', 'status_text' => 'Available' } },
-                 { 'barcode' => '87654321',
-                   'callnumber' => 'ABC 321',
-                   'current_location' => { 'code' => 'CHECKEDOUT' },
-                   'due_date' => '01/01/2015',
-                   'type' => 'STKS',
-                   'status' => { 'availability_class' => 'page', 'status_text' => 'Available' } }] }])
-        ]
-      end
-
-      it { is_expected.not_to be_single_checked_out_item }
-    end
-  end
-
   describe '#where' do
     let(:item) { build(:green_stacks_multi_holdings_searchworks_item) }
 

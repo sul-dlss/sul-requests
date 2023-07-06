@@ -7,7 +7,7 @@ RSpec.describe 'Pageable' do
 
   describe '#pageable?' do
     context 'when the LibraryLocation is not mediatable or hold recallable' do
-      let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
+      let(:holdings_relationship) { double(:relationship, where: [], all: []) }
 
       before do
         request.origin = 'GREEN'
