@@ -45,7 +45,6 @@ module SULRequests
     }
 
     config.picklist_contact_info = {
-      'SPEC-COLL' => { email: 'specialcollections@stanford.edu' }
     }
 
     config.illiad_nvtgc_map = {
