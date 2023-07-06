@@ -31,6 +31,8 @@ module Searchworks
       end
     end
 
+    # TODO: extend Enumerable so .all?, .any?, etc. are simpler
+
     private
 
     def library

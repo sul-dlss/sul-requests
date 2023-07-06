@@ -28,6 +28,8 @@ module Folio
       end
     end
 
+    # TODO: extend Enumerable so .all?, .any?, etc. are simpler
+
     private
 
     def items_and_holdings
