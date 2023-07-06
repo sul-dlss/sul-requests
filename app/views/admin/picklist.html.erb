@@ -1,0 +1,79 @@
+<html>
+<head>
+  <style>
+    @media print {
+      .page {
+        page-break-after: always;
+      }
+      .page:last-of-type {
+        page-break-after: inherit;
+      }
+    }
+
+    @media screen {
+      body {
+        background-color: #f8f8f8;
+      }
+      .page {
+        background-color: #fff;
+        margin-bottom: 50px;
+        border: 1px solid #ccc;
+        box-shadow: 3px 3px 3px #ddd;
+      }
+    }
+
+    .page {
+      position: relative;
+      height: 11in;
+      width: 8.5in;
+      box-sizing: border-box;
+      padding-top: 0.5in;
+      padding-bottom: 0.5in;
+      padding-left: 0.5in;
+      padding-right: 0.5in;
+      overflow: hidden;
+    }
+
+    .request {
+      position: relative;
+      margin-bottom: 0.5in;
+    }
+
+    hr + .request {
+      margin-top: 0.5in;
+    }
+
+    .req-id { position: absolute; right: 0; bottom: 0; }
+
+    th { text-align: right; padding-right: 1em; width: 22ch; }
+    hr {
+      margin-left: -0.5in;
+      margin-right: -0.5in;
+    }
+
+    tbody {
+      vertical-align: top;
+    }
+
+    .text {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+<% @items.each do |item_status| %>
+  <div class="page">
+    <% item_markup = capture do %>
+      <%= render 'admin/picklist_item', item_status: item_status %>
+    <% end %>
+
+    <%= item_markup %>
+    <hr />
+    <%= item_markup %>
+  </div>
+  <% end %>
+</body>
+</html>

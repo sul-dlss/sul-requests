@@ -117,6 +117,74 @@ describe AdminController do
     end
   end
 
+  describe 'picklist' do
+    describe 'for super admin' do
+      let(:user) { create(:superadmin_user) }
+
+      it 'is accessible' do
+        get :picklist, params: { id: 'SAL3' }
+        expect(response).to be_successful
+      end
+    end
+
+    describe 'for site admin' do
+      let(:user) { create(:site_admin_user) }
+
+      it 'is accessible' do
+        get :picklist, params: { id: 'SAL3' }
+        expect(response).to be_successful
+      end
+
+      it 'selects items that have approvals within a range' do
+        allow(SubmitSymphonyRequestJob).to receive(:perform_now)
+
+        create(:mediated_page_with_holdings, user: create(:non_sso_user), barcodes: %w(12345678 23456789))
+        b = create(:mediated_page_with_holdings, user: create(:non_sso_user), barcodes: %w(12345678 23456789))
+        b.item_statuses.to_a.first.approve!(user, 5.days.ago)
+        b.item_statuses.to_a.last.approve!(user, 1.day.ago)
+        c = create(:mediated_page_with_holdings, user: create(:non_sso_user), barcodes: %w(12345678 23456789))
+        c.item_statuses.first.approve!(user, 1.day.from_now)
+
+        get :picklist, params: { id: 'ART', from: 2.days.ago.to_s, to: 2.days.from_now.to_s }
+
+        expect(assigns(:items).length).to eq 2
+      end
+    end
+
+    describe 'for origin admin' do
+      let(:user) { create(:art_origin_admin_user) }
+
+      it 'is accessible when the user is an admin for the location' do
+        get :picklist, params: { id: 'ART' }
+        expect(response).to be_successful
+      end
+
+      it 'is not be accessible when the user is not an admin for the location' do
+        get :picklist, params: { id: 'SPEC-COLL' }
+        expect(response).to have_http_status :forbidden
+      end
+    end
+
+    describe 'for normal webuath user' do
+      let(:user) { create(:sso_user) }
+
+      it 'is not be accessible' do
+        get :picklist, params: { id: 'SPEC-COLL' }
+        expect(response).to have_http_status :forbidden
+      end
+    end
+
+    describe 'for anonymouse users' do
+      let(:user) { create(:anon_user) }
+
+      it 'redirects to login' do
+        expect(get(:picklist, params: { id: 'SPEC-COLL' })).to redirect_to(
+          login_path(referrer: picklist_admin_url('SPEC-COLL'))
+        )
+      end
+    end
+  end
+
   describe 'approve item' do
     before { stub_searchworks_api_json(build(:searchable_holdings)) }
 
