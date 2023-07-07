@@ -635,12 +635,6 @@ default_pickup_libraries:
   - RWC
   - SCIENCE
 
-hold_recallable:
-  - locations:
-    - MISSING
-    - INPROCESS
-    - ON-ORDER
-
 scannable:
   - library: SAL
     item_types:
