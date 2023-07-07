@@ -8,7 +8,7 @@ class CreateFolioCommandLog < ActiveRecord::Migration[7.0]
       t.string :item_id, null: false
       t.string :patron_comments
       t.date :expiration_date, null: false
-      t.references :request, null: false, foreign_key: true
+      t.references :request, null: false
       t.timestamps
     end
   end
