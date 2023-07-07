@@ -6,10 +6,9 @@ RSpec.describe 'HoldRecallable' do
   subject(:request) { build(:request) }
 
   let(:all) { [] }
-  let(:holdings) { double(:holdings, where: [], all:) }
 
   before do
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings)
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(all)
   end
 
   describe '#hold_recallable?' do

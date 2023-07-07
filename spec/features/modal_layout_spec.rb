@@ -3,16 +3,16 @@
 require 'rails_helper'
 
 RSpec.describe 'Modal Layout' do
-  let(:holdings_relationship) { double(:relationship, where: selected_items, all: []) }
   let(:selected_items) do
     [
-      double(:item, barcode: '34567890', type: 'STKS', callnumber: 'ABC 123')
+      double(:item, barcode: '34567890', type: 'STKS', callnumber: 'ABC 123', checked_out?: false, processing?: false, missing?: false,
+                    hold?: false, hold_recallable?: false)
     ]
   end
 
   before do
     allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(selected_items)
     stub_searchworks_api_json(build(:sal3_holdings))
   end
 

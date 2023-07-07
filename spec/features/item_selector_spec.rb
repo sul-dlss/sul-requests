@@ -3,15 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe 'Item Selector' do
-  let(:holdings_relationship) { double(:relationship, where: requested_items, all: all_items) }
-  let(:all_items) { [] }
-  let(:requested_items) { [] }
-
   let(:bib_data) { double(:bib_data, title: 'Test title') }
 
   before do
     allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(bib_data)
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(all_items)
     stub_current_user(create(:sso_user))
   end
 
@@ -178,16 +174,16 @@ RSpec.describe 'Item Selector' do
                           hold?: false, on_order?: false, hold_recallable?: false, barcode: '67890123', status_class: 'available',
                           status_text: 'Available', public_note: 'huh?'),
             double(:item, callnumber: 'ABC 901', checked_out?: false, processing?: false, missing?: false,
-                          hold?: false, on_order?: false, hold_recallable?: false, barcode: '67890123', status_class: 'available',
+                          hold?: false, on_order?: false, hold_recallable?: false, barcode: '67890124', status_class: 'available',
                           status_text: 'Available', public_note: 'huh?'),
             double(:item, callnumber: 'ABC 234', checked_out?: false, processing?: false, missing?: false,
-                          hold?: false, on_order?: false, hold_recallable?: false, barcode: '67890123', status_class: 'available',
+                          hold?: false, on_order?: false, hold_recallable?: false, barcode: '67890125', status_class: 'available',
                           status_text: 'Available', public_note: 'huh?'),
             double(:item, callnumber: 'ABC 567', checked_out?: false, processing?: false, missing?: false,
-                          hold?: false, on_order?: false, hold_recallable?: false, barcode: '67890123', status_class: 'available',
+                          hold?: false, on_order?: false, hold_recallable?: false, barcode: '67890126', status_class: 'available',
                           status_text: 'Available', public_note: 'huh?'),
             double(:item, callnumber: 'ABC 890', checked_out?: false, processing?: false, missing?: false,
-                          hold?: false, on_order?: false, hold_recallable?: false, barcode: '67890123', status_class: 'available',
+                          hold?: false, on_order?: false, hold_recallable?: false, barcode: '67890127', status_class: 'available',
                           status_text: 'Available', public_note: 'huh?')
 
           ]
@@ -264,40 +260,21 @@ RSpec.describe 'Item Selector' do
                         status_text: 'Available', public_note: 'huh?'),
 
           double(:item, callnumber: 'ABC 901', checked_out?: false, processing?: false, missing?: false,
-                        hold?: false, on_order?: false, hold_recallable?: false, barcode: '67890123', status_class: 'available',
+                        hold?: false, on_order?: false, hold_recallable?: false, barcode: '67890124', status_class: 'available',
                         status_text: 'Available', public_note: 'huh?'),
 
           double(:item, callnumber: 'ABC 234', checked_out?: false, processing?: false, missing?: false,
-                        hold?: false, on_order?: false, hold_recallable?: false, barcode: '67890123', status_class: 'available',
+                        hold?: false, on_order?: false, hold_recallable?: false, barcode: '67890125', status_class: 'available',
                         status_text: 'Available', public_note: 'huh?'),
 
           double(:item, callnumber: 'ABC 567', checked_out?: false, processing?: false, missing?: false,
-                        hold?: false, on_order?: false, hold_recallable?: false, barcode: '67890123', status_class: 'available',
+                        hold?: false, on_order?: false, hold_recallable?: false, barcode: '67890126', status_class: 'available',
                         status_text: 'Available', public_note: 'huh?'),
 
           double(:item, callnumber: 'ABC 890', checked_out?: false, processing?: false, missing?: false,
-                        hold?: false, on_order?: false, hold_recallable?: false, barcode: '67890123', status_class: 'available',
+                        hold?: false, on_order?: false, hold_recallable?: false, barcode: '67890127', status_class: 'available',
                         status_text: 'Available', public_note: 'huh?')
 
-        ]
-      end
-      let(:requested_items) do
-        [
-          double(:item, callnumber: 'ABC 123', checked_out?: false, processing?: false, missing?: false,
-                        hold?: false, on_order?: false, hold_recallable?: false, barcode: '12345678', status_class: 'available',
-                        status_text: 'Available', public_note: 'huh?'),
-
-          double(:item, callnumber: 'ABC 456', checked_out?: false, processing?: false, missing?: false,
-                        hold?: false, on_order?: false, hold_recallable?: false, barcode: '23456789', status_class: 'available',
-                        status_text: 'Available', public_note: 'huh?'),
-
-          double(:item, callnumber: 'ABC 789', checked_out?: false, processing?: false, missing?: false,
-                        hold?: false, on_order?: false, hold_recallable?: false, barcode: '34567890', status_class: 'available',
-                        status_text: 'Available', public_note: 'huh?'),
-
-          double(:item, callnumber: 'ABC 901', checked_out?: false, processing?: false, missing?: false,
-                        hold?: false, on_order?: false, hold_recallable?: false, barcode: '67890123', status_class: 'available',
-                        status_text: 'Available', public_note: 'huh?')
         ]
       end
 
@@ -354,8 +331,6 @@ RSpec.describe 'Item Selector' do
       end
 
       it 'persists items that are not currently visible due to filtering' do
-        skip('The CDN we load the date slider from seems to block Travis') if ENV['ci']
-
         fill_in_required_date
 
         within('#item-selector') do
@@ -454,19 +429,19 @@ RSpec.describe 'Item Selector' do
                       status_text: 'Available', public_note: 'huh?'),
 
         double(:item, callnumber: 'ABC 901', checked_out?: false, processing?: false, missing?: false,
-                      hold?: false, hold_recallable?: false, barcode: '67890123', status_class: 'available',
+                      hold?: false, hold_recallable?: false, barcode: '67890124', status_class: 'available',
                       status_text: 'Available', public_note: 'huh?'),
 
         double(:item, callnumber: 'ABC 234', checked_out?: false, processing?: false, missing?: false,
-                      hold?: false, hold_recallable?: false, barcode: '67890123', status_class: 'available',
+                      hold?: false, hold_recallable?: false, barcode: '67890125', status_class: 'available',
                       status_text: 'Available', public_note: 'huh?'),
 
         double(:item, callnumber: 'ABC 567', checked_out?: false, processing?: false, missing?: false,
-                      hold?: false, hold_recallable?: false, barcode: '67890123', status_class: 'available',
+                      hold?: false, hold_recallable?: false, barcode: '67890126', status_class: 'available',
                       status_text: 'Available', public_note: 'huh?'),
 
         double(:item, callnumber: 'ABC 890', checked_out?: false, processing?: false, missing?: false,
-                      hold?: false, hold_recallable?: false, barcode: '67890123', status_class: 'available',
+                      hold?: false, hold_recallable?: false, barcode: '67890127', status_class: 'available',
                       status_text: 'Available', public_note: 'huh?')
       ]
     end

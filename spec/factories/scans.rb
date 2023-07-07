@@ -28,7 +28,7 @@ FactoryBot.define do
     trait :with_holdings_barcodes do
       with_holdings
       after(:build) do |scan|
-        scan.barcodes = [scan.holdings.first.barcode, scan.holdings.last.barcode]
+        scan.barcodes = [scan.holdings.first.barcode, scan.holdings.to_a.last.barcode]
       end
     end
   end

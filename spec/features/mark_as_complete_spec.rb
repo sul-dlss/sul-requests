@@ -4,7 +4,6 @@ require 'rails_helper'
 
 RSpec.describe 'Mark As Complete', js: true do
   let(:user) { create(:superadmin_user) }
-  let(:holdings_relationship) { double(:relationship, where: selected_items, all: []) }
   let(:request_status) do
     instance_double(ItemStatus, approved?: true, errored?: false, approver: 'bob', approval_time: '2023-05-31')
   end
@@ -22,7 +21,7 @@ RSpec.describe 'Mark As Complete', js: true do
 
   before do
     allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(selected_items)
     stub_searchworks_api_json(build(:searchable_holdings))
     stub_current_user(user)
   end

@@ -18,11 +18,13 @@ module Holdings
 
   # @return [Array<OpenStruct>] a list of every holding in the requested library/location
   def all_holdings
-    holdings_object.all
+    holdings_object
   end
 
   # @return [Array<OpenStruct>] a list of every holding in the requested library/location with the requested barcodes
   def requested_holdings
-    holdings_object.where(barcodes: Array(requested_barcode || barcodes))
+    requested_item_barcodes = Set.new(Array(requested_barcode || barcodes))
+
+    holdings_object.select { |item| requested_item_barcodes.include? item.barcode }
   end
 end

@@ -7,16 +7,16 @@ require 'rails_helper'
 # Our controller tests are going to have to be sufficient where we test that we redirect
 # to the illiad URL passing the create scan URL via GET and that the create scan URL via GET works.
 RSpec.describe 'Create Scan Request' do
-  let(:holdings_relationship) { double(:relationship, where: selected_items, all: []) }
   let(:selected_items) do
     [
-      double(:item, barcode: '12345678', type: 'STKS', callnumber: 'ABC 123')
+      double(:item, barcode: '12345678', type: 'STKS', callnumber: 'ABC 123', checked_out?: false, hold?: false, missing?: false,
+                    processing?: false, hold_recallable?: false)
     ]
   end
 
   before do
     allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(selected_items)
     allow(SubmitScanRequestJob).to receive(:perform_later)
     stub_searchworks_api_json(build(:sal3_holdings))
   end

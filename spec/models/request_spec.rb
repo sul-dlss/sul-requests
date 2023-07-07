@@ -3,12 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe Request do
-  let(:holdings_relationship) { double(:relationship, where: [], all: []) }
+  let(:items) { [] }
   let(:bib_data) { double(:bib_data, title: 'Test title') }
 
   before do
     allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(bib_data)
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(items)
   end
 
   describe 'validations' do
@@ -26,7 +26,7 @@ RSpec.describe Request do
         stub_searchworks_api_json(build(:multiple_holdings))
       end
 
-      let(:holdings_relationship) { double(:relationship, where: [double('item', barcode: '3610512345678')]) }
+      let(:items) { [double('item', barcode: '3610512345678')] }
 
       let(:create_request) do
         described_class.create!(
@@ -82,9 +82,7 @@ RSpec.describe Request do
           origin_location: 'SAL-TEMP'
         )
       end
-      let(:holdings_relationship) { double(:relationship, where: [], all: all_holdings) }
-
-      let(:all_holdings) do
+      let(:items) do
         # This is just used for Searchworks integration
         [double(:item, type: 'NONCIRC', code: 'SAL-TEMP', barcode: '12345678')]
       end
@@ -192,7 +190,7 @@ RSpec.describe Request do
   describe '#holdings' do
     describe 'when persisted' do
       let(:subject) { create(:request_with_multiple_holdings, barcodes: ['3610512345678']) }
-      let(:holdings_relationship) { double(:relationship, where: [double('item', barcode: '3610512345678')]) }
+      let(:items) { [double('item', barcode: '3610512345678')] }
 
       it 'gets the holdings from the requested location by the persisted barcodes' do
         holdings = subject.holdings
@@ -239,15 +237,14 @@ RSpec.describe Request do
     subject(:all_holdings) { request.all_holdings }
 
     let(:request) { build(:request_with_multiple_holdings, barcodes: ['3610512345678']) }
-    let(:holdings_relationship) do
-      double(:relationship, all: [double('item', barcode: '3610512345678'), double('item'), double('item', barcode: '12345679')])
+    let(:items) do
+      [double('item', barcode: '3610512345678'), double('item'), double('item', barcode: '12345679')]
     end
 
     it 'gets all the holdings for the requested location' do
-      expect(all_holdings).to be_a Array
-      expect(all_holdings.length).to eq 3
+      expect(all_holdings.count).to eq 3
       expect(all_holdings.first.barcode).to eq '3610512345678'
-      expect(all_holdings.last.barcode).to eq '12345679'
+      expect(all_holdings.to_a.last.barcode).to eq '12345679'
     end
   end
 
@@ -255,7 +252,7 @@ RSpec.describe Request do
     subject(:holdings) { request.requested_holdings }
 
     let(:request) { create(:request_with_multiple_holdings, barcodes: ['3610512345678']) }
-    let(:holdings_relationship) { double(:relationship, where: [double('item', barcode: '3610512345678')]) }
+    let(:items) { [double('item', barcode: '3610512345678')] }
 
     it 'gets the holdings from the requested location by the persisted barcodes' do
       expect(holdings).to be_a Array
