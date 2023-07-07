@@ -126,7 +126,7 @@ RSpec.describe PagesController do
             }
           }
 
-          expect(response).to render_template('sponsor_request')
+          expect(response).to render_template('proxy_request')
         end
 
         it 'prompts the user to decide whether the request should be for the proxy' do

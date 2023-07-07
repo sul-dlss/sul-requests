@@ -138,11 +138,15 @@ class RequestsController < ApplicationController
     barcodes.select { |_, v| v.to_s == '1' }
   end
 
+  # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
   def check_if_proxy_sponsor
-    return unless current_request.user&.sso_user? && current_request.user&.sponsor? && params[:request][:proxy].nil?
+    return unless current_request.user&.sso_user? && params[:request][:proxy].nil?
 
-    render 'sponsor_request'
+    return unless current_request.user&.sponsor? || (Settings.ils.patron_model == 'Folio::Patron' && current_request.user&.proxy?)
+
+    render 'proxy_request'
   end
+  # rubocop:enable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
 
   def delegated_new_request_path(request, url_params = nil)
     url_params ||= params.except(:controller, :action).to_unsafe_h
