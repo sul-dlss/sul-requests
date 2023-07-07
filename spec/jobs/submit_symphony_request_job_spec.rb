@@ -18,14 +18,12 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
     describe '#perform' do
       context 'when the request is found' do
         let(:mock_client) { instance_double(SymphonyClient) }
-        let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
-        let(:selected_items) { [] }
 
         before do
           allow(mock_client).to receive(:place_hold).and_return({})
           allow(mock_client).to receive(:bib_info).and_return({})
           allow_any_instance_of(SubmitSymphonyRequestJob::Command).to receive(:symphony_client).and_return(mock_client)
-          allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+          allow(HoldingsRelationshipBuilder).to receive(:build).and_return([])
         end
 
         it 'calls send_approval_status! on the request object' do

@@ -5,6 +5,8 @@ module Searchworks
   #  Winnows down the entire holdings to just what was requested by the user
   ###
   class Holdings
+    include Enumerable
+
     # @param [Request] request the users request
     # @param [Array<Searchworks::Holding>] holdings all of the holdings for the requested item
     def initialize(request, holdings)
@@ -12,27 +14,13 @@ module Searchworks
       @holdings = holdings
     end
 
-    # @return [Array<OpenStruct>] a list of every holding in the requested library/location with the given barcodes
-    def where(barcodes: [])
-      return [] if barcodes.empty?
+    def each(&block)
+      return to_enum(:each) unless block
 
-      all.select do |item|
-        barcodes.include?(item.barcode)
-      end
-    end
-
-    # @return [Array<OpenStruct>] a list of every holding in the requested library/location
-    def all
-      return [] if location.blank?
-
-      location.items.map do |item|
+      location&.items&.each do |item|
         item.request_status = @request.item_status(item.barcode)
-        item
+        yield item
       end
-    end
-
-    def single_checked_out_item?
-      all.one? && all.first.checked_out?
     end
 
     private

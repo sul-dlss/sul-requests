@@ -49,7 +49,11 @@ module Searchworks
     end
 
     def missing?
-      MISSING_LOCATIONS.include?(current_location_code) # TODO: itemStatus == 'Missing' in Folio
+      MISSING_LOCATIONS.include?(current_location_code)
+    end
+
+    def hold_recallable?
+      checked_out? || missing? || processing? || on_order?
     end
   end
 end

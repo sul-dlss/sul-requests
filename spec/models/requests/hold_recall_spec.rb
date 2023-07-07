@@ -13,10 +13,8 @@ RSpec.describe HoldRecall do
   end
 
   describe 'send_approval_status!' do
-    let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
-
     before do
-      allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+      allow(HoldingsRelationshipBuilder).to receive(:build).and_return([])
     end
 
     describe 'for library id users' do

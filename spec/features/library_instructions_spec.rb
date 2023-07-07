@@ -3,12 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe 'Library Instructions' do
-  let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: true) }
-  let(:selected_items) { [double(:item, checked_out?: false, processing?: false, missing?: false, hold?: false, on_order?: false)] }
+  let(:selected_items) do
+    [double(:item, callnumber: 'ABC 123', barcode: '12345678', checked_out?: true, processing?: false, missing?: false, hold?: false,
+                   on_order?: false, hold_recallable?: true)]
+  end
 
   before do
     allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(selected_items)
     stub_searchworks_api_json(build(:library_instructions_holdings))
   end
 

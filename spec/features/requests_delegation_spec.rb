@@ -3,17 +3,16 @@
 require 'rails_helper'
 
 RSpec.describe 'Requests Delegation' do
-  let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
   let(:selected_items) do
     [
       double(:item, barcode: '34567890', type: 'STKS', callnumber: 'ABC 123', checked_out?: false, processing?: false, missing?: false,
-                    hold?: false, on_order?: false)
+                    hold?: false, on_order?: false, hold_recallable?: false)
     ]
   end
 
   before do
     allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(selected_items)
   end
 
   describe 'non-scannable materials' do
@@ -54,7 +53,8 @@ RSpec.describe 'Requests Delegation' do
 
     let(:selected_items) do
       [
-        double(:item, barcode: '34567890', type: 'NONCIRC', callnumber: 'ABC 123')
+        double(:item, barcode: '34567890', type: 'NONCIRC', callnumber: 'ABC 123', hold_recallable?: false, checked_out?: false,
+                      processing?: false, missing?: false)
       ]
     end
 

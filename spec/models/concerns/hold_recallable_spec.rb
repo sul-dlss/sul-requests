@@ -5,18 +5,14 @@ require 'rails_helper'
 RSpec.describe 'HoldRecallable' do
   subject(:request) { build(:request) }
 
-  let(:holdings_relationship) { double(:relationship, where: [], all: [], single_checked_out_item?: false) }
+  let(:all) { [] }
 
   before do
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(all)
   end
 
   describe '#hold_recallable?' do
-    it 'is false by default' do
-      expect(request).not_to be_hold_recallable
-    end
-
-    describe 'when a barcode is provided' do
+    context 'when a barcode is provided' do
       it 'is true' do
         request.requested_barcode = '3610512345'
         expect(request).to be_hold_recallable
@@ -29,80 +25,43 @@ RSpec.describe 'HoldRecallable' do
       end
     end
 
-    describe 'when INPROCESS' do
-      it 'is true when the origin_location is INPROCESS' do
-        request.origin_location = 'INPROCESS'
+    context 'when the origin location is a hold recallable location' do
+      it 'is true' do
+        request.origin_location = 'MISSING'
         expect(request).to be_hold_recallable
       end
+    end
 
-      it 'is true when all the current locations are INPROCESS' do
-        expect(request).to receive_messages(
-          holdings: [
-            double('holding', current_location: double('location', code: 'INPROCESS')),
-            double('holding', current_location: double('location', code: 'INPROCESS')),
-            double('holding', current_location: double('location', code: 'INPROCESS'))
-          ]
-        )
-
-        expect(request).to be_hold_recallable
-      end
-
-      it 'is false when only some of the current locations are INPROCESS' do
-        expect(request).to receive_messages(
-          holdings: [
-            double('holding', current_location: double('location', code: 'INPROCESS')),
-            double('holding', current_location: double('location', code: 'ANOTHER-LOCATION'))
-          ]
-        )
-
+    context 'when the origin location is not a hold recallable location' do
+      it 'is false' do
+        request.origin_location = 'STACKS'
         expect(request).not_to be_hold_recallable
       end
     end
 
-    describe 'when ON-ORDER' do
-      it 'is true when the origin_location is ON-ORDER' do
-        request.origin_location = 'ON-ORDER'
-        expect(request).to be_hold_recallable
+    context 'when all items are hold/recallable' do
+      let(:all) do
+        [
+          double(:item, hold_recallable?: true),
+          double(:item, hold_recallable?: true)
+        ]
       end
 
-      it 'is true when the current location is ON-ORDER' do
-        allow(request).to receive_messages(holdings: [
-                                             double('holding', current_location: double('location', code: 'ON-ORDER'))
-                                           ])
-
-        expect(request).to be_hold_recallable
-      end
-    end
-
-    context 'when MISSING' do
-      it 'is true when the current_location is MISSING' do
-        allow(request).to receive_messages(holdings: [
-                                             double('holding', current_location: double('location', code: 'MISSING'))
-                                           ])
-
+      it 'is true' do
         expect(request).to be_hold_recallable
       end
     end
 
-    context 'when CHECKEDOUT' do
-      let(:holdings_object) do
-        instance_double(Searchworks::Holdings, single_checked_out_item?: single_checked_out, all: [], where: [])
+    context 'when some items are not hold/recallable' do
+      let(:all) do
+        [
+          double(:item, hold_recallable?: true),
+          double(:item, hold_recallable?: false)
+        ]
       end
 
-      before do
-        allow(request).to receive(:holdings_object).and_return(holdings_object)
-      end
-
-      context 'when there is a single checked out item' do
-        let(:single_checked_out) { true }
-
-        it { is_expected.to be_hold_recallable }
-      end
-
-      context 'when there is are multiple items' do
-        let(:single_checked_out) { false }
-
-        it { is_expected.not_to be_hold_recallable }
+      it 'is false' do
+        expect(request).not_to be_hold_recallable
       end
     end
   end

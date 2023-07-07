@@ -5,11 +5,8 @@ require 'rails_helper'
 RSpec.describe RequestStatusMailerFactory do
   subject(:mailer) { described_class.for(request) }
 
-  let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
-  let(:selected_items) { [] }
-
   before do
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return([])
     request.user = create(:anon_user)
   end
 

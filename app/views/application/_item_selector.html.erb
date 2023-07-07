@@ -18,7 +18,7 @@
       <%= barcode.hidden_field single_item.barcode.present? ? single_item.barcode : 'NO_BARCODE', value: 1 %>
     <% elsif f.object.all_holdings.many? %>
       <div id='selected-items-filter' data-behavior='item-selector' data-limit-reached-message="<%= t('sul_requests.limit_reached_message', limit: f.object.item_limit) %>">
-        <% if f.object.all_holdings.length >= 10 %>
+        <% if f.object.all_holdings.count >= 10 %>
           <div class='form-group'>
             <label class='control-label <%= label_column_class %>' for='item-selector-search'>Search item list</label>
             <div class='<%= content_column_class %>'>

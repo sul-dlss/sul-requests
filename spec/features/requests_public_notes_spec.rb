@@ -4,19 +4,6 @@ require 'rails_helper'
 
 RSpec.describe 'Public Notes', js: true do
   let(:user) { create(:sso_user) }
-  let(:holdings_relationship) { double(:relationship, where: selected_items, all: all_items, single_checked_out_item?: false) }
-  let(:selected_items) do
-    [
-      double(:item, barcode: '12345678', checked_out?: false, processing?: false, missing?: false, hold?: false,
-                    on_order?: false, callnumber: 'ABC 123', status_class: 'available', status_text: 'Available'),
-      double(:item, barcode: '23456789', checked_out?: false, processing?: false, missing?: false, hold?: false,
-                    on_order?: false, callnumber: 'ABC 456', status_class: 'available', status_text: 'Available'),
-      double(:item, barcode: '34567890', checked_out?: false, processing?: false, missing?: false, hold?: false,
-                    on_order?: false, callnumber: 'ABC 012', status_class: 'available', status_text: 'Available'),
-      double(:item, barcode: '45678901', checked_out?: false, processing?: false, missing?: false, hold?: false,
-                    on_order?: false, callnumber: 'ABC 345', status_class: 'available', status_text: 'Available')
-    ]
-  end
   let(:all_items) do
     [
       double(:item, barcode: '12345678', checked_out?: false, processing?: false, missing?: false, hold?: false,
@@ -37,7 +24,7 @@ RSpec.describe 'Public Notes', js: true do
   before do
     allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
     allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(all_items)
   end
 
   describe 'public_notes' do

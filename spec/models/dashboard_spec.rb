@@ -3,15 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe Dashboard do
-  let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
   let(:selected_items) do
     [
-      double(:item, barcode: '34567890', type: 'STKS', callnumber: 'ABC 123')
+      double(:item, barcode: '34567890', type: 'STKS', callnumber: 'ABC 123', hold_recallable?: false)
     ]
   end
 
   before do
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(selected_items)
     create(:mediated_page)
     create(:page)
     create(:page)

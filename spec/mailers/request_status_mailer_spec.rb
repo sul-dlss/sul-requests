@@ -8,11 +8,10 @@ RSpec.describe RequestStatusMailer do
     let(:request) { build_stubbed(:page, user:) }
     let(:mailer_method) { :request_status_for_page }
     let(:mail) { described_class.send(mailer_method, request) }
-    let(:holdings_relationship) { double(:relationship, where: selected_items, all: [], single_checked_out_item?: false) }
     let(:selected_items) { [] }
 
     before do
-      allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+      allow(HoldingsRelationshipBuilder).to receive(:build).and_return(selected_items)
     end
 
     describe '#request_status_for_u003' do
@@ -131,7 +130,7 @@ RSpec.describe RequestStatusMailer do
 
         context 'for a page with holdings' do
           let(:request) { create(:page_with_holdings, barcodes: ['3610512345678'], user:) }
-          let(:selected_items) { [double(:item, barcode: '3610512345678', callnumber: 'ABC 123')] }
+          let(:selected_items) { [double(:item, barcode: '3610512345678', callnumber: 'ABC 123', hold_recallable?: false)] }
 
           it 'has the data' do
             expect(body).to include("Title: #{request.item_title}")
@@ -225,7 +224,8 @@ RSpec.describe RequestStatusMailer do
       describe 'user blocked' do
         let(:request) { create(:page_with_holdings, barcodes: ['3610512345678'], user:) }
         let(:selected_items) do
-          [double(:item, barcode: '3610512345678', callnumber: 'ABC 123', request_status: double('status', text: 'foo'))]
+          [double(:item, barcode: '3610512345678', callnumber: 'ABC 123', request_status: double('status', text: 'foo'),
+                         hold_recallable?: false)]
         end
 
         before do
