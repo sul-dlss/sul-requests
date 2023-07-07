@@ -76,5 +76,4 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_03_181415) do
     t.index ["sunetid"], name: "unique_users_by_sunetid", unique: true
   end
 
-  add_foreign_key "folio_command_logs", "requests"
 end
