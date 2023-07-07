@@ -57,7 +57,7 @@ module Folio
     end
 
     def first_name
-      field.dig('personal', 'preferredFirstName') || user_info.dig('personal', 'firstName')
+      user_info.dig('personal', 'preferredFirstName') || user_info.dig('personal', 'firstName')
     end
 
     def last_name

@@ -97,4 +97,52 @@ RSpec.describe SubmitFolioRequestJob do
       end
     end
   end
+
+  context 'with a proxy request' do
+    let(:request) { create(:page_with_holdings, barcodes: ['3610512345678'], user:, proxy: true) }
+
+    context 'with a proxy user' do
+      let(:user) { create(:sequence_sso_user) }
+      let(:proxy_id) { '562a5cb0-e998-4ea2-80aa-34ac2b536238' }
+      let(:sponsor_id) { '2bd36e69-1f58-4f6b-9073-e8d932edeed2' }
+      let(:patron) { Folio::Patron.new({ 'id' => proxy_id, 'active' => true }) }
+
+      let(:proxy_response) do
+        {
+          'userId' => sponsor_id
+        }
+      end
+
+      before do
+        allow(request.user).to receive(:patron).and_return(patron)
+        allow(patron).to receive(:blocked?).and_return(false)
+        allow(client).to receive(:proxy_info).with(proxy_id).and_return(proxy_response)
+      end
+
+      it 'calls the create_item_hold API method' do
+        described_class.perform_now(request.id)
+        expect(client).to have_received(:create_item_hold).with(sponsor_id, 4, have_attributes(patron_comments: /PROXY PICKUP OK/))
+      end
+    end
+
+    context 'with the sponsor' do
+      let(:user) { create(:sequence_sso_user) }
+      let(:sponsor_id) { '2bd36e69-1f58-4f6b-9073-e8d932edeed2' }
+      let(:patron) { Folio::Patron.new({ 'id' => sponsor_id, 'active' => true }) }
+      let(:proxy_response) do
+        {}
+      end
+
+      before do
+        allow(request.user).to receive(:patron).and_return(patron)
+        allow(patron).to receive(:blocked?).and_return(false)
+        allow(client).to receive(:proxy_info).with(sponsor_id).and_return(proxy_response)
+      end
+
+      it 'calls the create_item_hold API method' do
+        described_class.perform_now(request.id)
+        expect(client).to have_received(:create_item_hold).with(sponsor_id, 4, have_attributes(patron_comments: /PROXY PICKUP OK/))
+      end
+    end
+  end
 end

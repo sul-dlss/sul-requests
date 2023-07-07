@@ -72,24 +72,31 @@ class SubmitFolioRequestJob < ApplicationJob
       end
     end
 
+    # rubocop:disable Metrics/AbcSize
     def place_hold(item_id:)
       logger.info(
         "Submitting hold request for user #{patron.id} and item #{item_id} for pickup up at #{pickup_location_id}"
       )
 
       hold_request = FolioClient::HoldRequest.new(pickup_location_id:,
-                                                  patron_comments: patron.patron_comments,
+                                                  patron_comments: request_comments,
                                                   expiration_date:)
-      folio_client.create_item_hold(patron.id, item_id, hold_request)
+      folio_client.create_item_hold(request.proxy? && patron.proxy? ? patron.proxy_sponsor_user_id : patron.id, item_id, hold_request)
     end
+    # rubocop:enable Metrics/AbcSize
 
     def create_log(barcode:, item_id:)
       request.folio_command_logs.create!(barcode:, user_id: patron.id, item_id:, pickup_location_id:,
-                                         patron_comments: patron.patron_comments, expiration_date:)
+                                         patron_comments: request_comments, expiration_date:)
     end
 
     def expiration_date
       @expiration_date ||= (request.needed_date || (Time.zone.today + 3.years)).to_time.utc.iso8601
+    end
+
+    def request_comments
+      [patron.patron_comments,
+       ("(PROXY PICKUP OK; request placed by #{patron.display_name} <#{patron.email}>)" if request.proxy?)].compact.join("\n")
     end
 
     # rubocop:disable Metrics/MethodLength
