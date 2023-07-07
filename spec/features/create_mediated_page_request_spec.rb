@@ -4,11 +4,10 @@ require 'rails_helper'
 
 RSpec.describe 'Creating a mediated page request' do
   let(:user) { create(:sso_user) }
-  let(:holdings_relationship) { double(:relationship, where: selected_items, all: []) }
-  let(:selected_items) { [] }
+  let(:all_items) { [] }
 
   before do
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(all_items)
     allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
 
     allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
@@ -126,17 +125,6 @@ RSpec.describe 'Creating a mediated page request' do
   end
 
   describe 'selecting barcodes' do
-    let(:selected_items) do
-      [
-        double(:item, barcode: '12345678', checked_out?: false, processing?: false, missing?: false, hold?: false, on_order?: false,
-                      callnumber: 'ABC 123'),
-        double(:item, barcode: '34567555', checked_out?: false, processing?: false, missing?: false, hold?: false, on_order?: false,
-                      callnumber: 'ABC 321')
-      ]
-    end
-
-    let(:holdings_relationship) { double(:relationship, where: selected_items, all: all_items) }
-
     let(:all_items) do
       [
         double(:item, barcode: '12345678', checked_out?: false, processing?: false, missing?: false,

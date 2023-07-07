@@ -5,14 +5,13 @@ require 'rails_helper'
 RSpec.describe ItemStatus do
   subject { described_class.new(request, barcode) }
 
-  let(:holdings_relationship) { double(:relationship, where: [], all: []) }
   let(:request) { create(:mediated_page_with_single_holding) }
   let(:barcode) { '3610512345' }
 
   before do
     allow(Request.ils_job_class).to receive(:perform_now)
     allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return([])
   end
 
   describe '#status_object' do

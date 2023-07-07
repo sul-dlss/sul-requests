@@ -67,7 +67,7 @@ class RequestAbilities
   private
 
   def all_items_hold_recallable?
-    request.holdings_object.all.any? && request.holdings_object.all.all?(&:hold_recallable?)
+    request.holdings_object.any? && request.holdings_object.all?(&:hold_recallable?)
   end
 
   def hold_recallable_location?

@@ -27,11 +27,9 @@ RSpec.describe RequestApprovalStatus do
 
       context 'for mediated pages' do
         let(:request) { create(:page_mp_mediated_page) }
-        let(:holdings_relationship) { double(:relationship, where: selected_items, all: []) }
-        let(:selected_items) { [] }
 
         before do
-          allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+          allow(HoldingsRelationshipBuilder).to receive(:build).and_return([])
         end
 
         it 'is the mediated page text' do

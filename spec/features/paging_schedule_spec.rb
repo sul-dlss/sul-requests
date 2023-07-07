@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Paging Schedule' do
-  let(:holdings_relationship) { double(:relationship, where: [], all: all_items) }
   let(:all_items) do
     [
       double('item', callnumber: 'ABC 123', processing?: false, missing?: false, hold?: false, on_order?: false, hold_recallable?: false,
@@ -17,7 +16,7 @@ RSpec.describe 'Paging Schedule' do
 
   before do
     allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(all_items)
     stub_current_user(create(:superadmin_user))
   end
 

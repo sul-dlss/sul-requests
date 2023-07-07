@@ -4,7 +4,6 @@ require 'rails_helper'
 
 RSpec.describe 'Admin Comments', js: true do
   let(:user) { create(:superadmin_user) }
-  let(:holdings_relationship) { double(:relationship, where: selected_items, all: []) }
   let(:request_status) do
     instance_double(ItemStatus, approved?: true, errored?: false, approver: 'bob', approval_time: '2023-05-31')
   end
@@ -21,7 +20,7 @@ RSpec.describe 'Admin Comments', js: true do
   end
 
   before do
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(selected_items)
 
     stub_searchworks_api_json(build(:searchable_holdings))
     stub_current_user(user)
@@ -39,6 +38,8 @@ RSpec.describe 'Admin Comments', js: true do
       within(first('[data-mediate-request]')) do
         page.find('a.mediate-toggle').click
       end
+
+      expect(page).to have_css('.admin-comments')
 
       within('.admin-comments') do
         expect(page).to have_css('form#new_admin_comment', visible: :hidden)

@@ -4,12 +4,10 @@ require 'rails_helper'
 
 RSpec.describe 'Status Page' do
   let(:request) { create(:mediated_page, user:) }
-  let(:holdings_relationship) { double(:relationship, where: selected_items, all: []) }
-  let(:selected_items) { [] }
 
   before do
     stub_current_user(user)
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(holdings_relationship)
+    allow(HoldingsRelationshipBuilder).to receive(:build).and_return([])
   end
 
   describe 'by webuath users' do

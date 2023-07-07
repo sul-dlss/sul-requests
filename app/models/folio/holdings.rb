@@ -5,6 +5,8 @@ module Folio
   #  Winnows down the entire holdings to just what was requested by the user
   ###
   class Holdings
+    include Enumerable
+
     # @param [Request] request the users request
     # @param [String] instance_id the FOLIO instance_id (a UUID)
     def initialize(request, instance_id)
@@ -12,23 +14,13 @@ module Folio
       @instance_id = instance_id
     end
 
-    # @return [Array<OpenStruct>] a list of every holding in the requested library/location with the given barcodes
-    def where(barcodes: [])
-      return [] if barcodes.empty?
+    def each(&block)
+      return to_enum(:each) unless block
 
-      all.select do |item|
-        barcodes.include?(item.barcode)
+      items_in_location.each do |item|
+        yield item.with_status(@request.item_status(item.barcode))
       end
     end
-
-    # @return [Array<OpenStruct>] a list of every holding in the requested library/location
-    def all
-      @all ||= items_in_location.map do |item|
-        item.with_status(@request.item_status(item.barcode))
-      end
-    end
-
-    # TODO: extend Enumerable so .all?, .any?, etc. are simpler
 
     private
 
