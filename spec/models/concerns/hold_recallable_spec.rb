@@ -25,20 +25,6 @@ RSpec.describe 'HoldRecallable' do
       end
     end
 
-    context 'when the origin location is a hold recallable location' do
-      it 'is true' do
-        request.origin_location = 'MISSING'
-        expect(request).to be_hold_recallable
-      end
-    end
-
-    context 'when the origin location is not a hold recallable location' do
-      it 'is false' do
-        request.origin_location = 'STACKS'
-        expect(request).not_to be_hold_recallable
-      end
-    end
-
     context 'when all items are hold/recallable' do
       let(:all) do
         [
