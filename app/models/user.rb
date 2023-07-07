@@ -47,10 +47,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  def proxy_email_address
-    patron&.group&.email&.presence
-  end
-
   def sso_user?
     sunetid.present?
   end

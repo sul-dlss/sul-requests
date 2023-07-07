@@ -519,10 +519,9 @@ RSpec.describe Request do
 
     context 'for proxy requests' do
       let(:user) { create(:library_id_user) }
-      let(:group) { instance_double(Symphony::Group, email: 'some@lists.stanford.edu') }
 
       before do
-        allow(user).to receive_message_chain(:patron, :group).and_return(group)
+        allow(user).to receive_message_chain(:patron, :proxy_email_address).and_return('some@lists.stanford.edu')
 
         subject.proxy = true
       end
@@ -534,10 +533,9 @@ RSpec.describe Request do
 
     context 'for proxy requests without a notification email' do
       let(:user) { create(:non_sso_user) }
-      let(:group) { instance_double(Symphony::Group, email: '') }
 
       before do
-        allow(user).to receive_message_chain(:patron, :group).and_return(group)
+        allow(user).to receive_message_chain(:patron, :proxy_email_address).and_return('')
 
         subject.proxy = true
       end
