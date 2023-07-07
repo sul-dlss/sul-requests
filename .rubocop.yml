@@ -42,6 +42,7 @@ Metrics/ClassLength:
     - 'app/controllers/requests_controller.rb'
     - 'app/jobs/submit_symphony_request_job.rb'
     - 'app/services/symphony_client.rb'
+    - 'app/services/folio_client.rb'
     - 'app/services/folio_graphql_client.rb'
     - 'app/services/cdl_checkout.rb'
 
