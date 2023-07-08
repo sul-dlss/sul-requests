@@ -309,7 +309,9 @@ RSpec.describe Request do
 
   describe 'nested attributes for' do
     before do
-      allow(Symphony::Patron).to receive(:find_by).with(library_id: '12345').and_return(instance_double(Symphony::Patron, exists?: true))
+      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: '12345').and_return(
+        instance_double(Symphony::Patron, exists?: true)
+      )
     end
 
     describe 'users' do
@@ -557,7 +559,7 @@ RSpec.describe Request do
     let(:user) {}
 
     before do
-      allow(Symphony::Patron).to receive(:find_by).with(library_id: user.library_id).and_return(
+      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: user.library_id).and_return(
         instance_double(Symphony::Patron, exists?: true, email: '')
       )
     end

@@ -28,8 +28,9 @@ RSpec.describe 'Status Page' do
     let(:user) { create(:library_id_user) }
 
     before do
-      allow(Symphony::Patron).to receive(:find_by).with(library_id: user.library_id).and_return(instance_double(Symphony::Patron,
-                                                                                                                exists?: true))
+      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: user.library_id).and_return(
+        instance_double(Symphony::Patron, exists?: true)
+      )
     end
 
     it 'is available' do

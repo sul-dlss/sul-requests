@@ -10,7 +10,7 @@ describe SubmitReshareRequestJob, type: :job do
 
   before do
     Sidekiq.logger.level = Logger::UNKNOWN
-    allow(Symphony::Patron).to receive(:find_by).with(library_id: user.library_id).and_return(patron)
+    allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: user.library_id).and_return(patron)
     allow(request).to receive(:bib_data).and_return(sw_item)
   end
 

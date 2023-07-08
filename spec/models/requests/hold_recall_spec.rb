@@ -22,7 +22,7 @@ RSpec.describe HoldRecall do
       let(:subject) { create(:hold_recall, user:) }
 
       before do
-        allow(Symphony::Patron).to receive(:find_by).with(library_id: user.library_id).at_least(:once).and_return(
+        allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: user.library_id).at_least(:once).and_return(
           double(exists?: true, email: nil)
         )
       end

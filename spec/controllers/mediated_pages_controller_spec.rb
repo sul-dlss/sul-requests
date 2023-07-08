@@ -77,7 +77,7 @@ RSpec.describe MediatedPagesController do
       end
 
       it 'is allowed if the library ID field is filled out' do
-        allow(Symphony::Patron).to receive(:find_by).with(library_id: '12345').and_return(
+        allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: '12345').and_return(
           instance_double(Symphony::Patron, email: nil, exists?: true)
         )
 

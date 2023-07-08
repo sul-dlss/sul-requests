@@ -69,7 +69,7 @@ RSpec.describe Page do
     end
 
     before do
-      expect(Symphony::Patron).to receive(:find_by).with(library_id: user.library_id).at_least(:once).and_return(
+      expect(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: user.library_id).at_least(:once).and_return(
         double(exists?: user_exists)
       )
     end
@@ -93,7 +93,7 @@ RSpec.describe Page do
     let(:user) {}
 
     before do
-      allow(Symphony::Patron).to receive(:find_by).with(library_id: user.library_id).and_return(
+      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: user.library_id).and_return(
         instance_double(Symphony::Patron, exists?: true, email: '')
       )
     end
