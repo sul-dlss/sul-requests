@@ -363,7 +363,7 @@ libraries:
       email: sciencelibrary@stanford.edu
     folio_pickup_service_point_code: SCIENCE
     hold_pseudopatron: HOLD@CS
-    folio_hold_pseudopatron: 8e29c4f9-bd07-456b-8f66-07fd68930f7f    
+    folio_hold_pseudopatron: 8e29c4f9-bd07-456b-8f66-07fd68930f7f
     hours:
       library_slug: science
       location_slug: library-circulation
@@ -654,7 +654,7 @@ scannable:
     destination:
       key: 'GREEN'
       patron_barcode: 'GRE-SCANDELIVER'
-      folio_pseudopatron: 0ba81714-52d4-4f37-8b4d-f9d929af048d  
+      folio_pseudopatron: 0ba81714-52d4-4f37-8b4d-f9d929af048d
   - library: SAL
     item_types:
       - BUS-STACKS
