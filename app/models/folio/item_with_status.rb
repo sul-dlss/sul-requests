@@ -12,7 +12,6 @@ module Folio
   STATUS_AWAITING_PICKUP = 'Awaiting pickup'
   STATUS_AWAITING_DELIVERY = 'Awaiting delivery'
   STATUS_IN_TRANSIT = 'In transit'
-  STATUS_MISSING = 'Missing'
   STATUS_PAGED = 'Paged'
   STATUS_RESTRICTED = 'Restricted'
   STATUS_NONE = ''
