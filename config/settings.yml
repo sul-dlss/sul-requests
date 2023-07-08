@@ -52,16 +52,24 @@ token_encrypt:
   secret: ''
   salt: ''
 
-ils:
-  bib_model: SearchworksItem # or Folio::BibData
+symphony_ils: &symphony_ils
+  bib_model: SearchworksItem
   patron_model: Symphony::Patron
   request_job: SubmitSymphonyRequestJob
+
+folio_ils: &folio_ils
+  bib_model: Folio::Instance
+  patron_model: Folio::Patron
+  request_job: SubmitFolioRequestJob
+
+ils: *symphony_ils # or *symphony_ils
 
 symphony:
   override: PASSWORD
 
 folio:
   okapi_url: <%= ENV.fetch('OKAPI_URL', 'http://example.com') %>
+  graphql_url: <%= ENV.fetch('FOLIO_GRAPHQL_URL', 'http://example.com') %>
   tenant: 'sul'
   fee_borrower_patron_group: 985acbb9-f7a7-4f44-9b34-458c02a78fbc
   isbn_identifier_type: 8261054f-be78-422d-bd51-4ed9f33c3422
