@@ -11,7 +11,7 @@ RSpec.describe Folio::Item do
         { 'id' => 'a9030d19-5bbe-4976-ba31-ef8840f4145d',
           'tags' => { 'tagList' => [] },
           'notes' => [],
-          'status' => 'On order',
+          'status' => { 'name' => 'On order' },
           'location' =>
            { 'location' =>
              { 'code' => 'SAL3-STACKS',
@@ -24,7 +24,7 @@ RSpec.describe Folio::Item do
           'formerIds' => [],
           'callNumber' => {},
           'yearCaption' => [],
-          'materialType' => 'book',
+          'materialType' => { 'name' => 'book' },
           'electronicAccess' => [],
           'holdingsRecordId' => 'fef99dba-15f4-495c-b391-e501afdaed6d',
           'statisticalCodes' => [],
@@ -39,7 +39,7 @@ RSpec.describe Folio::Item do
       let(:data) do
         { 'id' => '195053fb-3c8e-5c54-854d-8806ec65fe52',
           'notes' => [],
-          'status' => 'Available',
+          'status' => { 'name' => 'Available' },
           'barcode' => '36105124065330',
           'location' =>
            { 'location' =>
@@ -62,7 +62,7 @@ RSpec.describe Folio::Item do
              'callNumber' => 'SB270 .E8 A874 2007' },
           'copyNumber' => '1',
           'yearCaption' => [],
-          'materialType' => 'book',
+          'materialType' => { 'name' => 'book' },
           'numberOfPieces' => '1',
           'electronicAccess' => [],
           'holdingsRecordId' => '9e7afebb-08a6-51f5-a8f2-ecf622757dd7',

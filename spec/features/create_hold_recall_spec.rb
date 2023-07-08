@@ -5,8 +5,6 @@ require 'rails_helper'
 RSpec.describe 'Creating a hold recall request' do
   before do
     stub_searchworks_api_json(build(:sal3_holdings))
-    allow_any_instance_of(FolioClient).to receive(:find_instance).and_return({ title: 'Item Title' })
-    allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
     stub_folio_holdings(:folio_sal3_multiple_holdings)
   end
 

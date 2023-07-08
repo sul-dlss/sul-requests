@@ -41,6 +41,72 @@ class FolioGraphqlClient
   end
 
   # rubocop:disable Metrics/MethodLength
+  def instance(hrid:)
+    data = post_json('/', json:
+    {
+      query:
+        <<~GQL
+          query InstanceByHrid {
+            instances(hrid: "#{hrid}") {
+              id
+              title
+              identifiers {
+                value
+                identifierTypeObject {
+                  name
+                }
+              }
+              instanceType {
+                name
+              }
+              contributors {
+                name
+                primary
+              }
+              publication {
+                dateOfPublication
+              }
+              electronicAccess {
+                materialsSpecification
+                uri
+              }
+              items {
+                barcode
+                status {
+                  name
+                }
+                materialType {
+                  name
+                }
+                chronology
+                enumeration
+                effectiveCallNumberComponents {
+                  callNumber
+                }
+                notes {
+                  note
+                  itemNoteType {
+                    name
+                  }
+                }
+                effectiveLocation {
+                  campusId
+                  libraryId
+                  institutionId
+                  code
+                  discoveryDisplayName
+                  name
+                }
+              }
+            }
+          }
+        GQL
+    })
+    raise data['errors'].pluck('message').join("\n") if data.key?('errors')
+
+    data.dig('data', 'instances', 0)
+  end
+
   def locations
     data = post_json('/', json:
     {

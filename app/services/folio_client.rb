@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Calls FOLIO REST endpoints
-class FolioClient # rubocop:disable Metrics/ClassLength
+class FolioClient
   DEFAULT_HEADERS = {
     accept: 'application/json, text/plain',
     content_type: 'application/json'
@@ -95,14 +95,6 @@ class FolioClient # rubocop:disable Metrics/ClassLength
     parse_json(response)
   end
 
-  def items_and_holdings(instance_id:)
-    body = {
-      instanceIds: [instance_id],
-      skipSuppressedFromDiscoveryRecords: false
-    }
-    get_json('/inventory-hierarchy/items-and-holdings', method: :post, json: body)
-  end
-
   def get_item(barcode)
     response = get_json('/item-storage/items', params: { query: CqlQuery.new(barcode:).to_query })
 
@@ -115,24 +107,8 @@ class FolioClient # rubocop:disable Metrics/ClassLength
     response.dig('servicepoints', 0)
   end
 
-  def resolve_to_instance_id(hrid:)
-    search_response = get_json('/search/instances', params: { limit: 10, query: CqlQuery.new(hrid:).to_query })
-    search_response.dig('instances', 0, 'id')
-  end
-
-  def get_location(code)
-    response = get_json('/locations', params: { query: CqlQuery.new(code:).to_query })
-    response.dig('locations', 0)
-  end
-
-  def find_instance(instance_id:)
-    get_json("/inventory/instances/#{instance_id}")
-  end
-
-  # TODO: This could be cached. There are typically only 25 responses
-  def instance_types
-    response = get_json('/instance-types?limit=1000&query=cql.allRecords=1 sortby name')
-    response['instanceTypes']
+  def find_instance_by(hrid:)
+    folio_graphql_client.instance(hrid:)
   end
 
   private

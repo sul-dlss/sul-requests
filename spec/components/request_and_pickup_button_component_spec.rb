@@ -12,7 +12,6 @@ RSpec.describe RequestAndPickupButtonComponent, type: :component do
   let(:component) { described_class.new(current_request: build(:request)) }
 
   before do
-    allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
     stub_folio_holdings(:folio_single_holding)
   end
 

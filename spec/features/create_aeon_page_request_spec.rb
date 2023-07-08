@@ -36,9 +36,6 @@ RSpec.describe 'Creating an Aeon request', js: true do
   end
 
   before do
-    allow_any_instance_of(FolioClient).to receive(:find_instance).and_return(folio_bib_info)
-    allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
-    allow_any_instance_of(FolioClient).to receive(:items_and_holdings).and_return(folio_holding_response)
     stub_current_user(user)
     stub_searchworks_api_json(api_json)
     visit new_aeon_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 def stub_folio_holdings(fixture_name)
-  allow_any_instance_of(FolioClient).to receive(:items_and_holdings).and_return(StubFolioApiResponse.send(fixture_name))
+  allow_any_instance_of(FolioClient).to receive(:find_instance_by).and_return(StubFolioApiResponse.send(fixture_name))
 end
 
 class StubFolioApiResponse

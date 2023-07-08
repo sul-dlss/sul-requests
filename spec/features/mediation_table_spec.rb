@@ -15,11 +15,6 @@ RSpec.describe 'Mediation table', js: true do
   end
   let(:folio_items) { [] }
 
-  before do
-    allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
-    allow_any_instance_of(FolioClient).to receive(:items_and_holdings).and_return(folio_holding_response)
-  end
-
   context 'Library Mediation' do
     let(:folio_items) do
       [
@@ -275,7 +270,7 @@ RSpec.describe 'Mediation table', js: true do
         expect(page).to have_css("tbody td[colspan='#{top_level_columns}'] table")
         within("tbody td[colspan='#{top_level_columns}'] table") do
           expect(page).to have_css('td button', text: 'Approve', count: 2)
-          if Settings.ils.bib_model == 'Folio::BibData'
+          if Settings.ils.bib_model == 'Folio::Instance'
             expect(page).to have_css('td', text: 'ART-LOCKED-LARGE', count: 2)
           else
             # From home_location in the Searchworks reply.
@@ -656,7 +651,6 @@ RSpec.describe 'Mediation table', js: true do
     before do
       stub_current_user(create(:page_mp_origin_admin_user))
       stub_searchworks_api_json(build(:page_mp_holdings))
-      allow_any_instance_of(FolioClient).to receive(:items_and_holdings).and_return(folio_holding_response)
       request.save(validate: false)
 
       visit admin_path('PAGE-MP')
@@ -673,7 +667,7 @@ RSpec.describe 'Mediation table', js: true do
       expect(page).to have_css("tbody td[colspan='#{top_level_columns}'] table")
       within("tbody td[colspan='#{top_level_columns}'] table") do
         expect(page).to have_css('td button', text: 'Approve', count: 2)
-        if Settings.ils.bib_model == 'Folio::BibData'
+        if Settings.ils.bib_model == 'Folio::Instance'
           expect(page).to have_css('td', text: 'SAL3-PAGE-MP', count: 2)
         else
           # From home_location in the Searchworks reply.
