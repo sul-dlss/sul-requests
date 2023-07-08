@@ -37,7 +37,7 @@
             <% end %>
           </button>
         </td>
-        <td class='col-xs-2'><%= Settings.ils.bib_model == 'Folio::BibData' ? item.permanent_location : item.home_location %></td>
+        <td class='col-xs-2'><%= item.home_location %></td>
         <td class='col-xs-2'><%= current_location_for_mediated_item(item) %></td>
         <td><%= item.callnumber %></td>
         <td><span class='request-status'><%= status_text_for_item(item) %></span></td>
