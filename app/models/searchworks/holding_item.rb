@@ -25,6 +25,8 @@ module Searchworks
                 :public_note, :due_date, :home_location
     attr_accessor :request_status
 
+    delegate :current_location, to: :catalog_info
+
     def checked_out?
       home_location == 'CHECKEDOUT' || current_location_code == 'CHECKEDOUT'
     end
@@ -54,6 +56,12 @@ module Searchworks
 
     def hold_recallable?
       checked_out? || missing? || processing? || on_order?
+    end
+
+    private
+
+    def catalog_info
+      @catalog_info ||= Symphony::CatalogInfo.find(barcode)
     end
   end
 end

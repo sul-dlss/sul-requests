@@ -36,10 +36,12 @@ class SearchworksItem
     json['finding_aid'] || ''
   end
 
-  def holdings
-    return [] unless json['holdings'].present?
+  def request_holdings(request)
+    Searchworks::Holdings.new(request, holdings)
+  end
 
-    @holdings ||= json['holdings'].map { |holding| Searchworks::Holding.new(holding) }
+  def holdings
+    @holdings ||= (json['holdings'] || []).map { |holding| Searchworks::Holding.new(holding) }
   end
 
   def finding_aid?
