@@ -60,7 +60,7 @@ class Request < ActiveRecord::Base
 
   # @returns the model class either sourced from SearchWorks or from Folio.
   def bib_data
-    @bib_data ||= bib_model_class.new(self, live_lookup)
+    @bib_data ||= bib_model_class.fetch(self, live_lookup)
   end
 
   def send_approval_status!
