@@ -9,6 +9,7 @@ FactoryBot.define do
     campus { Folio::Campus.new(id: 'uuid') }
     library { Folio::Campus.new(id: 'uuid') }
     institution { Folio::Campus.new(id: 'uuid') }
+    details { {} }
 
     initialize_with { new(**attributes) }
   end

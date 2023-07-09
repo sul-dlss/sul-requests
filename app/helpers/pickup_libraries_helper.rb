@@ -36,7 +36,7 @@ module PickupLibrariesHelper
   end
 
   def default_pickup_library(request)
-    request.location_rule&.default_pickup_library || Settings.default_pickup_library
+    request.default_pickup_library || Settings.default_pickup_library
   end
 
   def single_library_markup(form, library)

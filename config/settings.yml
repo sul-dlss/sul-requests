@@ -56,11 +56,13 @@ symphony_ils: &symphony_ils
   bib_model: SearchworksItem
   patron_model: Symphony::Patron
   request_job: SubmitSymphonyRequestJob
+  abilities_model: RequestAbilities
 
 folio_ils: &folio_ils
   bib_model: Folio::Instance
   patron_model: Folio::Patron
   request_job: SubmitFolioRequestJob
+  abilities_model: Folio::RequestAbilities
 
 ils: *symphony_ils # or *symphony_ils
 
@@ -72,6 +74,7 @@ folio:
   graphql_url: <%= ENV.fetch('FOLIO_GRAPHQL_URL', 'http://example.com') %>
   tenant: 'sul'
   fee_borrower_patron_group: 985acbb9-f7a7-4f44-9b34-458c02a78fbc
+  standard_patron_group_names: ['staff', 'faculty', 'undergrad', 'graduate']
 
 mailer_host: <%= `echo $HOSTNAME` %>
 searchworks_api: 'https://searchworks.stanford.edu'

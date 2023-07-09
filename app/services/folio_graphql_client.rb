@@ -98,6 +98,15 @@ class FolioGraphqlClient
                   code
                   discoveryDisplayName
                   name
+                  details {
+                    pageAeonSite
+                    pageMediationGroupKey
+                    pageServicePoints {
+                      id
+                      code
+                      name
+                    }
+                  }
                 }
                 permanentLoanTypeId
                 temporaryLoanTypeId
@@ -109,44 +118,6 @@ class FolioGraphqlClient
     raise data['errors'].pluck('message').join("\n") if data&.key?('errors')
 
     data&.dig('data', 'instances', 0)
-  end
-
-  def locations
-    data = post_json('/', json:
-    {
-      query:
-        <<~GQL
-          query LocationsWithRules {
-            locations {
-              id
-              code
-              name
-              details {
-                pageAeonSite
-                pageMediationGroupKey
-                pageServicePoints {
-                  id
-                  code
-                  name
-                }
-                scanServicePoint {
-                  id
-                  code
-                  name
-                }
-                scanPseudopatronBarcode
-                scanMaterialTypes {
-                  id
-                  name
-                }
-              }
-            }
-          }
-        GQL
-    })
-    raise data['errors'].pluck('message').join("\n") if data.key?('errors')
-
-    data.dig('data', 'locations').map { |l| Folio::Location.from_dynamic(l) }
   end
   # rubocop:enable Metrics/MethodLength
 

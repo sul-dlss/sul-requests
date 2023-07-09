@@ -27,6 +27,10 @@ class RequestAbilities
     scannable_location_rule&.only_scannable
   end
 
+  def scan_destination
+    scannable_location_rule&.destination || {}
+  end
+
   def mediateable?
     applicable_rules(:pageable).first&.mediated || aeon_pageable?
   end
@@ -59,6 +63,14 @@ class RequestAbilities
 
   def scannable_location_rule
     @scannable_location_rule ||= applicable_rules(:scannable).first
+  end
+
+  def default_pickup_library
+    location_rule&.default_pickup_library
+  end
+
+  def pickup_libraries
+    location_rule&.pickup_libraries
   end
 
   private
