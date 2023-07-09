@@ -1,6 +1,18 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
+  factory :location, class: 'Folio::Location' do
+    id { 'uuid' }
+    code { 'GRE-STACKS' }
+    name { 'Location name' }
+    discovery_display_name { 'Discovery display name' }
+    campus { Folio::Campus.new(id: 'uuid') }
+    library { Folio::Campus.new(id: 'uuid') }
+    institution { Folio::Campus.new(id: 'uuid') }
+
+    initialize_with { new(**attributes) }
+  end
+
   factory :multiple_holdings, class: 'Folio::Instance' do
     id { '1234' }
     hrid { 'a1234' }
@@ -12,7 +24,7 @@ FactoryBot.define do
           barcode: '3610512345678',
           callnumber: 'ABC 123',
           status: 'Available',
-          effective_location: 'GRE-STACKS',
+          effective_location: build(:location, code: 'GRE-STACKS'),
           public_note: '',
           type: 'STKS'
         ),
@@ -20,7 +32,7 @@ FactoryBot.define do
           barcode: '3610587654321',
           callnumber: 'ABC 321',
           status: 'Available',
-          effective_location: 'GRE-STACKS',
+          effective_location: build(:location, code: 'GRE-STACKS'),
           public_note: '',
           type: 'STKS'
         ),
@@ -28,7 +40,7 @@ FactoryBot.define do
           barcode: '12345679',
           callnumber: 'ABC 456',
           status: 'Available',
-          effective_location: 'GRE-STACKS',
+          effective_location: build(:location, code: 'GRE-STACKS'),
           public_note: '',
           type: 'STKS'
         )
@@ -51,7 +63,7 @@ FactoryBot.define do
           barcode: '87654321',
           callnumber: 'ABC 87654321',
           status: 'Available',
-          effective_location: 'SAL3-STACKS',
+          effective_location: build(:location, code: 'SAL3-STACKS'),
           public_note: '',
           type: 'STKS'
         )
@@ -76,7 +88,7 @@ FactoryBot.define do
           barcode: '12345678',
           callnumber: 'ABC 123',
           status: 'Available',
-          effective_location: 'GRE-STACKS',
+          effective_location: build(:location, code: 'GRE-STACKS'),
           public_note: '',
           type: 'STKS'
         )
@@ -100,7 +112,7 @@ FactoryBot.define do
           barcode: '12345678',
           callnumber: 'ABC 123',
           status: 'Available',
-          effective_location: 'SAL-TEMP',
+          effective_location: build(:location, code: 'SAL-TEMP'),
           public_note: '',
           type: 'NONCIRC'
         )
@@ -127,7 +139,7 @@ FactoryBot.define do
           barcode: '12345678',
           callnumber: 'ABC 123',
           status: 'Page',
-          effective_location: 'SPEC-STACKS',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
           public_note: '',
           type: 'STKS'
         ),
@@ -135,7 +147,7 @@ FactoryBot.define do
           barcode: '87654321',
           callnumber: 'ABC 321',
           status: 'Page',
-          effective_location: 'SPEC-STACKS',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
           public_note: '',
           type: 'STKS'
         )
@@ -162,7 +174,7 @@ FactoryBot.define do
           barcode: '12345678',
           callnumber: 'ABC 123',
           status: 'Page',
-          effective_location: 'SPEC-STACKS',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
           public_note: '',
           type: 'STKS'
         )
@@ -190,7 +202,7 @@ FactoryBot.define do
           barcode: '12345678',
           callnumber: 'ABC 123',
           status: 'Page',
-          effective_location: 'SPEC-STACKS',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
           public_note: '',
           type: 'STKS'
         )
@@ -214,7 +226,7 @@ FactoryBot.define do
           barcode: '12345678',
           callnumber: 'ABC 123',
           status: 'Page',
-          effective_location: 'SAL3-STACKS',
+          effective_location: build(:location, code: 'SAL3-STACKS'),
           public_note: '',
           type: 'STKS'
         ),
@@ -222,7 +234,7 @@ FactoryBot.define do
           barcode: '87654321',
           callnumber: 'ABC 321',
           status: 'Page',
-          effective_location: 'SAL3-STACKS',
+          effective_location: build(:location, code: 'SAL3-STACKS'),
           public_note: '',
           type: 'STKS'
         )
@@ -246,7 +258,7 @@ FactoryBot.define do
           barcode: '12345678',
           callnumber: 'ABC 123',
           status: 'Page',
-          effective_location: 'SAL-STACKS',
+          effective_location: build(:location, code: 'SAL-STACKS'),
           public_note: '',
           type: 'STKS'
         ),
@@ -254,7 +266,7 @@ FactoryBot.define do
           barcode: '87654321',
           callnumber: 'ABC 321',
           status: 'Page',
-          effective_location: 'SAL-STACKS',
+          effective_location: build(:location, code: 'SAL-STACKS'),
           public_note: '',
           type: 'STKS'
         )
@@ -278,7 +290,7 @@ FactoryBot.define do
           barcode: '12345678',
           callnumber: 'ABC 123',
           status: 'Page',
-          effective_location: 'SAL3-PAGE-MP',
+          effective_location: build(:location, code: 'SAL3-PAGE-MP'),
           public_note: '',
           type: 'STKS'
         ),
@@ -286,7 +298,7 @@ FactoryBot.define do
           barcode: '87654321',
           callnumber: 'ABC 321',
           status: 'Page',
-          effective_location: 'SAL3-PAGE-MP',
+          effective_location: build(:location, code: 'SAL3-PAGE-MP'),
           public_note: '',
           type: 'STKS'
         )
@@ -310,7 +322,7 @@ FactoryBot.define do
           barcode: '12345678',
           callnumber: 'ABC 123',
           status: 'Available',
-          effective_location: 'SAL3-STACKS',
+          effective_location: build(:location, code: 'SAL3-STACKS'),
           public_note: '',
           type: 'STKS'
         ),
@@ -318,7 +330,7 @@ FactoryBot.define do
           barcode: '23456789',
           callnumber: 'ABC 456',
           status: 'Available',
-          effective_location: 'SAL3-STACKS',
+          effective_location: build(:location, code: 'SAL3-STACKS'),
           public_note: '',
           type: 'STKS'
         ),
@@ -326,7 +338,7 @@ FactoryBot.define do
           barcode: '34567890',
           callnumber: 'ABC 789',
           status: 'Available',
-          effective_location: 'SAL3-STACKS',
+          effective_location: build(:location, code: 'SAL3-STACKS'),
           public_note: '',
           type: 'STKS'
         ),
@@ -334,7 +346,7 @@ FactoryBot.define do
           barcode: '45678901',
           callnumber: 'ABC 012',
           status: 'Available',
-          effective_location: 'SAL3-STACKS',
+          effective_location: build(:location, code: 'SAL3-STACKS'),
           public_note: 'note for 45678901',
           type: 'STKS'
         ),
@@ -342,7 +354,7 @@ FactoryBot.define do
           barcode: '56789012',
           callnumber: 'ABC 345',
           status: 'Available',
-          effective_location: 'SAL3-STACKS',
+          effective_location: build(:location, code: 'SAL3-STACKS'),
           public_note: '',
           type: 'STKS'
         ),
@@ -350,7 +362,7 @@ FactoryBot.define do
           barcode: '67890123',
           callnumber: 'ABC 678',
           status: 'Available',
-          effective_location: 'SAL3-STACKS',
+          effective_location: build(:location, code: 'SAL3-STACKS'),
           public_note: '',
           type: 'STKS'
         )
@@ -374,7 +386,7 @@ FactoryBot.define do
           barcode: '12345678',
           callnumber: 'ABC 123',
           status: 'Available',
-          effective_location: 'ART-LOCKED-LARGE',
+          effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
           public_note: '',
           type: 'LCKSTK'
         ),
@@ -382,7 +394,7 @@ FactoryBot.define do
           barcode: '23456789',
           callnumber: 'ABC 456',
           status: 'Available',
-          effective_location: 'ART-LOCKED-LARGE',
+          effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
           public_note: 'note for 23456789',
           type: 'LCKSTK'
         ),
@@ -390,7 +402,7 @@ FactoryBot.define do
           barcode: '34567890',
           callnumber: 'ABC 789',
           status: 'THE-CURRENT-LOCATION',
-          effective_location: 'ART-LOCKED-LARGE',
+          effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
           public_note: '',
           type: 'LCKSTK'
         ),
@@ -398,7 +410,7 @@ FactoryBot.define do
           barcode: '45678901',
           callnumber: 'ABC 012',
           status: 'Available',
-          effective_location: 'ART-LOCKED-LARGE',
+          effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
           public_note: 'note for 45678901',
           type: 'LCKSTK'
         ),
@@ -406,7 +418,7 @@ FactoryBot.define do
           barcode: '56789012',
           callnumber: 'ABC 345',
           status: 'Available',
-          effective_location: 'ART-LOCKED-LARGE',
+          effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
           public_note: '',
           type: 'LCKSTK'
         ),
@@ -414,7 +426,7 @@ FactoryBot.define do
           barcode: '67890123',
           callnumber: 'ABC 678',
           status: 'Available',
-          effective_location: 'ART-LOCKED-LARGE',
+          effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
           public_note: '',
           type: 'LCKSTK'
         ),
@@ -422,7 +434,7 @@ FactoryBot.define do
           barcode: '78901234',
           callnumber: 'ABC 901',
           status: 'Available',
-          effective_location: 'ART-LOCKED-LARGE',
+          effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
           public_note: '',
           type: 'LCKSTK'
         ),
@@ -430,7 +442,7 @@ FactoryBot.define do
           barcode: '89012345',
           callnumber: 'ABC 234',
           status: 'Available',
-          effective_location: 'ART-LOCKED-LARGE',
+          effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
           public_note: '',
           type: 'LCKSTK'
         ),
@@ -438,7 +450,7 @@ FactoryBot.define do
           barcode: '90123456',
           callnumber: 'ABC 567',
           status: 'Available',
-          effective_location: 'ART-LOCKED-LARGE',
+          effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
           public_note: '',
           type: 'LCKSTK'
         ),
@@ -446,7 +458,7 @@ FactoryBot.define do
           barcode: '01234567',
           callnumber: 'ABC 890',
           status: 'Available',
-          effective_location: 'ART-LOCKED-LARGE',
+          effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
           public_note: '',
           type: 'LCKSTK'
         )
@@ -470,7 +482,7 @@ FactoryBot.define do
           barcode: '12345678',
           callnumber: 'ABC 123',
           status: 'Available',
-          effective_location: 'SPEC-STACKS',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
           public_note: '',
           type: 'STKS'
         ),
@@ -478,7 +490,7 @@ FactoryBot.define do
           barcode: '23456789',
           callnumber: 'ABC 456',
           status: 'Available',
-          effective_location: 'SPEC-STACKS',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
           public_note: '',
           type: 'STKS'
         ),
@@ -486,7 +498,7 @@ FactoryBot.define do
           barcode: '34567890',
           callnumber: 'ABC 789',
           status: 'Available',
-          effective_location: 'SPEC-STACKS',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
           public_note: '',
           type: 'STKS'
         ),
@@ -494,7 +506,7 @@ FactoryBot.define do
           barcode: '45678901',
           callnumber: 'ABC 012',
           status: 'Available',
-          effective_location: 'SPEC-STACKS',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
           public_note: 'note for 45678901',
           type: 'STKS'
         ),
@@ -502,7 +514,7 @@ FactoryBot.define do
           barcode: '56789012',
           callnumber: 'ABC 345',
           status: 'Available',
-          effective_location: 'SPEC-STACKS',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
           public_note: '',
           type: 'STKS'
         ),
@@ -510,7 +522,7 @@ FactoryBot.define do
           barcode: '67890123',
           callnumber: 'ABC 678',
           status: 'Available',
-          effective_location: 'SPEC-STACKS',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
           public_note: '',
           type: 'STKS'
         ),
@@ -518,7 +530,7 @@ FactoryBot.define do
           barcode: '78901234',
           callnumber: 'ABC 901',
           status: 'Available',
-          effective_location: 'SPEC-STACKS',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
           public_note: '',
           type: 'STKS'
         ),
@@ -526,7 +538,7 @@ FactoryBot.define do
           barcode: '89012345',
           callnumber: 'ABC 234',
           status: 'Available',
-          effective_location: 'SPEC-STACKS',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
           public_note: '',
           type: 'STKS'
         ),
@@ -534,7 +546,7 @@ FactoryBot.define do
           barcode: '90123456',
           callnumber: 'ABC 567',
           status: 'Available',
-          effective_location: 'SPEC-STACKS',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
           public_note: '',
           type: 'STKS'
         ),
@@ -542,7 +554,7 @@ FactoryBot.define do
           barcode: '01234567',
           callnumber: 'ABC 890',
           status: 'Available',
-          effective_location: 'SPEC-STACKS',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
           public_note: '',
           type: 'STKS'
         )
@@ -566,7 +578,7 @@ FactoryBot.define do
           barcode: '12345678',
           callnumber: 'ABC 123',
           status: 'Available',
-          effective_location: 'SAL3-STACKS',
+          effective_location: build(:location, code: 'SAL3-STACKS'),
           public_note: '',
           type: 'STKS'
         ),
@@ -575,7 +587,7 @@ FactoryBot.define do
           callnumber: 'ABC 321',
           due_date: '2015-01-01T12:59:00.000+00:00',
           status: 'Checked out',
-          effective_location: 'SAL3-STACKS',
+          effective_location: build(:location, code: 'SAL3-STACKS'),
           public_note: '',
           type: 'STKS'
         )

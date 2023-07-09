@@ -41,27 +41,49 @@ module Folio
     STATUS_NONE
   ].freeze
 
+  Location = Data.define(:id, :campus, :library, :institution, :code, :discovery_display_name, :name) do
+    def self.from_hash(dyn)
+      new(
+        id: dyn.fetch('id'),
+        campus: Campus.new(id: dyn.fetch('campusId')),
+        library: Library.new(id: dyn.fetch('libraryId')),
+        institution: Institution.new(id: dyn.fetch('institutionId')),
+        code: dyn.fetch('code'),
+        discovery_display_name: dyn.fetch('discoveryDisplayName') || dyn.fetch('name'),
+        name: dyn.fetch('name')
+      )
+    end
+  end
+  Library = Data.define(:id)
+  Campus = Data.define(:id)
+  Institution = Data.define(:id)
+  MaterialType = Data.define(:id)
+  LoanType = Data.define(:id)
+
   # Represents an item returned from the /inventory-hierarchy/items-and-holdings Folio API
   # TODO: This wants a "type" attribute, but I don't know how we get the folio version of a holding type.
   #       See https://github.com/sul-dlss/searchworks_traject_indexer/blob/02192452815de3861dcfafb289e1be8e575cb000/lib/traject/config/sirsi_config.rb#L2379
   # NOTE, barcode and callnumber may be nil. see instance_hrid: 'in00000063826'
   class Item
-    attr_reader :barcode, :status, :type, :callnumber, :public_note, :effective_location
+    attr_reader :barcode, :status, :type, :callnumber, :public_note, :effective_location, :material_type, :loan_type
 
     # rubocop:disable Metrics/ParameterLists
-    def initialize(barcode:, status:, type:, callnumber:, public_note:, effective_location:, due_date: nil)
+    def initialize(barcode:, status:, type:, callnumber:, public_note:, effective_location:, material_type: nil, loan_type: nil,
+                   due_date: nil)
       @barcode = barcode
       @status = status
       @type = type
       @callnumber = callnumber
       @public_note = public_note
       @effective_location = effective_location
+      @material_type = material_type
+      @loan_type = loan_type
       @due_date = due_date
     end
     # rubocop:enable Metrics/ParameterLists
 
     def home_location
-      effective_location
+      effective_location.code
     end
 
     def current_location
@@ -103,13 +125,14 @@ module Folio
     end
 
     def paged?
-      PAGE_LOCATIONS.include?(effective_location)
+      PAGE_LOCATIONS.include?(effective_location.code)
     end
 
     def hold_recallable?
       HOLD_RECALL_STATUSES.include?(status)
     end
 
+    # rubocop:disable Metrics/AbcSize
     def self.from_hash(dyn)
       new(barcode: dyn['barcode'],
           status: dyn.dig('status', 'name'),
@@ -117,7 +140,10 @@ module Folio
           callnumber: [dyn.dig('effectiveCallNumberComponents', 'callNumber'), dyn['volume'], dyn['enumeration'],
                        dyn['chronology']].filter_map(&:presence).join(' '),
           public_note: dyn.fetch('notes').find { |note| note.dig('itemNoteType', 'name') == 'Public' }&.fetch('note'),
-          effective_location: dyn.dig('effectiveLocation', 'code'))
+          effective_location: Location.from_hash(dyn.fetch('effectiveLocation')),
+          material_type: MaterialType.new(id: dyn.dig('materialType', 'id')),
+          loan_type: LoanType.new(id: dyn.fetch('tempooraryLoanTypeId', dyn.fetch('permanentLoanTypeId'))))
     end
+    # rubocop:enable Metrics/AbcSize
   end
 end

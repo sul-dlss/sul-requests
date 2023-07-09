@@ -76,6 +76,7 @@ class FolioGraphqlClient
                   name
                 }
                 materialType {
+                  id
                   name
                 }
                 chronology
@@ -90,6 +91,7 @@ class FolioGraphqlClient
                   }
                 }
                 effectiveLocation {
+                  id
                   campusId
                   libraryId
                   institutionId
@@ -97,6 +99,8 @@ class FolioGraphqlClient
                   discoveryDisplayName
                   name
                 }
+                permanentLoanTypeId
+                temporaryLoanTypeId
               }
             }
           }
