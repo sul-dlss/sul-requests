@@ -9,8 +9,6 @@ RSpec.describe MediatedPagesController do
   end
 
   before do
-    stub_folio_holdings(:folio_multiple_holding)
-
     allow(controller).to receive_messages(current_user: user)
     allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
   end

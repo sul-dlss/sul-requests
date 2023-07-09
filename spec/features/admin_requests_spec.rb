@@ -3,10 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Viewing all requests' do
-  before do
-    stub_folio_holdings(:folio_multiple_holding)
-  end
-
   describe 'index' do
     describe 'by a superadmin user' do
       before do

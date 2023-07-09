@@ -9,8 +9,7 @@ RSpec.describe ScansController do
   end
 
   before do
-    stub_folio_holdings(:folio_sal3_multiple_holdings)
-    stub_searchworks_api_json(build(:sal3_holdings))
+    stub_bib_data_json(:sal3_holdings)
     allow(SubmitScanRequestJob).to receive(:perform_later)
     allow(controller).to receive_messages(current_user: user)
   end
@@ -99,6 +98,8 @@ RSpec.describe ScansController do
       let(:user) { create(:scan_eligible_user) }
 
       before do
+        stub_bib_data_json(:sal3_holding)
+
         post :create, params: {
           request: {
             item_id: '12345',
@@ -125,6 +126,10 @@ RSpec.describe ScansController do
       render_views
 
       let(:user) { create(:sso_user) }
+
+      before do
+        stub_bib_data_json(:sal3_holding)
+      end
 
       it 'is bounced to a page workflow' do
         params = {

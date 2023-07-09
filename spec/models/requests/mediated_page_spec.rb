@@ -6,8 +6,6 @@ RSpec.describe MediatedPage do
   let(:user) { create(:sso_user) }
 
   before do
-    stub_folio_holdings(:folio_multiple_holding)
-
     allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
   end
 

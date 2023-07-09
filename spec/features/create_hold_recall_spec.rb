@@ -4,8 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Creating a hold recall request' do
   before do
-    stub_searchworks_api_json(build(:sal3_holdings))
-    stub_folio_holdings(:folio_sal3_multiple_holdings)
+    stub_bib_data_json(:sal3_holdings)
   end
 
   let(:user) { create(:sso_user) }

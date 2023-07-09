@@ -10,7 +10,7 @@ RSpec.describe PagesController do
 
   before do
     allow(controller).to receive_messages(current_user: user)
-    stub_folio_holdings(:folio_multiple_holding)
+    allow(Folio::Instance).to receive(:fetch).and_return(Folio::Instance.new(id: '1234'))
   end
 
   describe 'new' do
@@ -183,7 +183,7 @@ RSpec.describe PagesController do
       end
 
       it 'maps checkbox style barcodes correctly' do
-        stub_searchworks_api_json(build(:multiple_holdings))
+        stub_bib_data_json(:multiple_holdings)
 
         put :create, params: {
           request: {

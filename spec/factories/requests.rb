@@ -6,6 +6,7 @@ FactoryBot.define do
     origin { 'BIOLOGY' }
     origin_location { 'STACKS' }
     item_title { 'Title for Request 123456' }
+    bib_data { FactoryBot.build(:multiple_holdings) }
 
     after(:build) do |request|
       class << request
@@ -20,28 +21,14 @@ FactoryBot.define do
     item_id { '12345' }
     origin { 'GREEN' }
     origin_location { 'STACKS' }
-
-    after(:build) do |request|
-      class << request
-        def bib_data
-          @bib_data ||= FactoryBot.build(:green_stacks_searchworks_item, request: self)
-        end
-      end
-    end
+    bib_data { FactoryBot.build(:single_holding) }
   end
 
   factory :request_with_multiple_holdings, class: 'Request' do
     item_id { '12345' }
     origin { 'GREEN' }
     origin_location { 'STACKS' }
-
-    after(:build) do |request|
-      class << request
-        def bib_data
-          @bib_data ||= FactoryBot.build(:green_stacks_multi_holdings_searchworks_item, request: self)
-        end
-      end
-    end
+    bib_data { FactoryBot.build(:multiple_holdings) }
   end
 
   factory :request_with_symphony_errors, class: 'Request' do

@@ -13,10 +13,6 @@ RSpec.describe HoldRecall do
   end
 
   describe 'send_approval_status!' do
-    before do
-      allow(HoldingsRelationshipBuilder).to receive(:build).and_return([])
-    end
-
     describe 'for library id users' do
       let(:user) { create(:library_id_user) }
       let(:subject) { create(:hold_recall, user:) }

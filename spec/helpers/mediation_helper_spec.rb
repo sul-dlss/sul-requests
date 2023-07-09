@@ -6,7 +6,7 @@ RSpec.describe MediationHelper do
   describe '#current_location_for_mediated_item' do
     subject { current_location_for_mediated_item(item) }
 
-    let(:item) { double(:item, home_location: 'MSS-30', barcode: '123456', home_location: 'MSS-30', current_location:) }
+    let(:item) { double(:item, barcode: '123456', home_location: 'MSS-30', current_location:) }
 
     context 'when the current and home locations match' do
       let(:current_location) { 'MSS-30' }

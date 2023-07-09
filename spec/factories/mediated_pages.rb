@@ -57,14 +57,7 @@ FactoryBot.define do
     needed_date { Time.zone.today }
     request_comment { long_comment }
     user factory: [:sequence_sso_user]
-
-    after(:build) do |request|
-      class << request
-        def bib_data
-          @bib_data ||= FactoryBot.build(:art_multi_holdings_searchworks_item, request: self)
-        end
-      end
-    end
+    bib_data { FactoryBot.build(:searchable_holdings) }
   end
 
   factory :mediated_page_with_symphony_errors, class: 'MediatedPage', parent: :request_with_symphony_errors do

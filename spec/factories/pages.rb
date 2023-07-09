@@ -7,6 +7,7 @@ FactoryBot.define do
     origin_location { 'STACKS' }
     destination { 'ART' }
     item_title { 'Title for Page 1234' }
+    bib_data { Folio::Instance.new(id: '1234') } if Settings.ils.bib_model == 'Folio::Instance'
 
     after(:build) do |request|
       class << request
@@ -22,13 +23,6 @@ FactoryBot.define do
     origin { 'GREEN' }
     origin_location { 'STACKS' }
     destination { 'ART' }
-
-    after(:build) do |page|
-      class << page
-        def bib_data
-          @bib_data ||= FactoryBot.build(:green_stacks_multi_holdings_searchworks_item, request: self)
-        end
-      end
-    end
+    bib_data { FactoryBot.build(:multiple_holdings) }
   end
 end

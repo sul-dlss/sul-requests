@@ -11,10 +11,6 @@ RSpec.describe RequestAndPickupButtonComponent, type: :component do
 
   let(:component) { described_class.new(current_request: build(:request)) }
 
-  before do
-    stub_folio_holdings(:folio_single_holding)
-  end
-
   it 'renders the component' do
     expect(rendered).to have_link 'Request & pickup', href: '/pages/new'
     expect(rendered).to have_selector 'dd[data-single-library-value="GREEN"]'

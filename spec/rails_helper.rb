@@ -72,9 +72,8 @@ RSpec.configure do |config|
 
   config.include DisallowAPIs
   config.before(:each, allow_apis: false) do
-    stub_searchworks_api_json({})
-    stub_request(:get, %r{https://example.com/symws/.*})
-      .to_return(status: 200, body: '', headers: {})
+    stub_request(:any, %r{https://example.com/symws/.*}).to_return(status: 200, body: '', headers: {})
+    stub_request(:any, %r{http://example.com/.*}).to_return(status: 200, body: '', headers: {})
   end
 
   config.before(:each, js: true) do
@@ -111,14 +110,6 @@ end
 
 def stub_current_user(user = create(:anon_user))
   allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
-end
-
-def stub_searchworks_api_json(json)
-  allow_any_instance_of(SearchworksItem).to receive(:json).and_return(json)
-end
-
-def stub_symphony_response(response)
-  allow_any_instance_of(Request).to receive(:symphony_response_data).and_return(response)
 end
 
 def expect_to_be_on_success_page

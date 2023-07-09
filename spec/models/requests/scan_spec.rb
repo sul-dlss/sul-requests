@@ -3,10 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe Scan do
-  before do
-    stub_folio_holdings(:folio_multiple_holding)
-  end
-
   it 'has the properly assigned Rails STI attribute value' do
     expect(subject.type).to eq 'Scan'
   end
@@ -24,7 +20,7 @@ RSpec.describe Scan do
   end
 
   it 'allows scannable only materials to be requested for scan' do
-    stub_searchworks_api_json(build(:scannable_only_holdings))
+    stub_bib_data_json(:scannable_only_holdings)
 
     expect do
       described_class.create!(

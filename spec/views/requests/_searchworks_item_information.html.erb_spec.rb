@@ -21,9 +21,8 @@ RSpec.describe 'requests/_searchworks_item_information.html.erb' do
     let(:request) { Scan.new(item_id: '2824966') }
 
     before do
-      allow(Settings.ils.bib_model.constantize).to receive(:new)
-        .and_return(double(:bib_data,
-                           title: 'When do you need an antacid? : a burning question'))
+      allow(Settings.ils.bib_model.constantize).to receive(:fetch)
+        .and_return(double(title: 'When do you need an antacid? : a burning question'))
       render
     end
 

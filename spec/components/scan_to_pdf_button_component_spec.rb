@@ -12,10 +12,6 @@ RSpec.describe ScanToPdfButtonComponent, type: :component do
   let(:current_request) { build(:request, item_title: 'foo') }
   let(:component) { described_class.new(current_request:) }
 
-  before do
-    stub_folio_holdings(:folio_single_holding)
-  end
-
   it 'renders the component' do
     expect(rendered).to have_link 'Scan to PDF', href: '/scans/new'
     expect(rendered).to have_selector 'dd[data-single-library-value="SCAN"]'

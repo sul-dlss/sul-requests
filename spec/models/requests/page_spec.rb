@@ -3,10 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe Page do
-  before do
-    stub_folio_holdings(:folio_multiple_holding)
-  end
-
   describe 'TokenEncryptable' do
     it 'mixins TokenEncryptable' do
       expect(subject).to be_kind_of TokenEncryptable
@@ -55,7 +51,7 @@ RSpec.describe Page do
     expect(subject.type).to eq 'Page'
   end
 
-  describe 'library id validation', allow_apis: true do
+  describe 'library id validation' do
     let(:user) { create(:library_id_user) }
     let(:subject) do
       described_class.create(

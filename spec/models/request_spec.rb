@@ -23,7 +23,7 @@ RSpec.describe Request do
 
     context 'when barcodes are provided' do
       before do
-        stub_searchworks_api_json(build(:multiple_holdings))
+        stub_bib_data_json(:multiple_holdings)
       end
 
       let(:items) { [double('item', barcode: '3610512345678')] }
@@ -85,10 +85,6 @@ RSpec.describe Request do
       let(:items) do
         # This is just used for Searchworks integration
         [double(:item, type: 'NONCIRC', code: 'SAL-TEMP', barcode: '12345678')]
-      end
-
-      before do
-        stub_searchworks_api_json(build(:scannable_only_holdings))
       end
 
       it 'fails validation' do
@@ -429,12 +425,11 @@ RSpec.describe Request do
   describe 'item_title' do
     context 'when the title is not present' do
       before do
-        allow(Settings.ils.bib_model.constantize).to receive(:new)
-          .and_return(double(:bib_data,
-                             title: 'When do you need an antacid? : a burning question'))
+        allow(Settings.ils.bib_model.constantize).to receive(:fetch)
+          .and_return(double(:bib_data, title: 'When do you need an antacid? : a burning question'))
       end
 
-      it 'fetches the item title', allow_apis: true do
+      it 'fetches the item title' do
         described_class.create!(item_id: '2824966', origin: 'GREEN', origin_location: 'STACKS')
         expect(described_class.last.item_title).to eq 'When do you need an antacid? : a burning question'
       end
