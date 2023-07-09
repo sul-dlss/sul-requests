@@ -125,7 +125,7 @@ module Folio
     end
 
     def paged?
-      PAGE_LOCATIONS.include?(effective_location.code)
+      effective_location.code =~ /SAL-/ || effective_location.code =~ /SAL3/
     end
 
     def hold_recallable?
