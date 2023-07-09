@@ -33,14 +33,14 @@ class FolioClient
   # See https://s3.amazonaws.com/foliodocs/api/mod-users/p/users.html#users__userid__get
   def login_by_sunetid(sunetid)
     response = get_json('/users', params: { query: CqlQuery.new(username: sunetid).to_query })
-    response.dig('users', 0)
+    response&.dig('users', 0)
   end
 
   # Return the FOLIO user object given a library id (e.g. barcode)
   # See https://s3.amazonaws.com/foliodocs/api/mod-users/p/users.html#users__userid__get
   def login_by_library_id(library_id)
     response = get_json('/users', params: { query: CqlQuery.new(barcode: library_id).to_query })
-    response.dig('users', 0)
+    response&.dig('users', 0)
   end
 
   def user_info(user_id)
@@ -145,7 +145,7 @@ class FolioClient
   def session_token
     @session_token ||= begin
       response = request('/authn/login', json: { username: @username, password: @password }, method: :post)
-      raise response.body unless response.status == 201
+      raise response.body unless response.success?
 
       response['x-okapi-token']
     end

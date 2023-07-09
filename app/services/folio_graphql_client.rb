@@ -102,9 +102,9 @@ class FolioGraphqlClient
           }
         GQL
     })
-    raise data['errors'].pluck('message').join("\n") if data.key?('errors')
+    raise data['errors'].pluck('message').join("\n") if data&.key?('errors')
 
-    data.dig('data', 'instances', 0)
+    data&.dig('data', 'instances', 0)
   end
 
   def locations
