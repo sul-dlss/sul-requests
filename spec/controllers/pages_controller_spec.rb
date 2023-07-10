@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe PagesController do
   let(:page) { create(:page) }
   let(:normal_params) do
-    { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
+    { item_id: '1234', origin: 'SAL3', origin_location: 'STACKS', destination: 'ART' }
   end
 
   before do
@@ -23,7 +23,7 @@ RSpec.describe PagesController do
 
     it 'sets defaults' do
       get :new, params: normal_params
-      expect(assigns[:request].origin).to eq 'GREEN'
+      expect(assigns[:request].origin).to eq 'SAL3'
       expect(assigns[:request].origin_location).to eq 'STACKS'
       expect(assigns[:request].item_id).to eq '1234'
     end
@@ -41,13 +41,13 @@ RSpec.describe PagesController do
 
       it 'redirects to the login page passing a referrer param to continue creating the page request' do
         post :create, params: {
-          request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
+          request: { item_id: '1234', origin: 'SAL3', origin_location: 'STACKS', destination: 'ART' }
         }
         expect(response).to redirect_to(
           login_path(
             referrer: interstitial_path(
               redirect_to: create_pages_url(
-                request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
+                request: { item_id: '1234', origin: 'SAL3', origin_location: 'STACKS', destination: 'ART' }
               )
             )
           )
@@ -56,7 +56,7 @@ RSpec.describe PagesController do
 
       it 'strips any unselected barcodes out of the request (to reduce request size to our auth service)' do
         post :create, params: {
-          request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART', barcodes: {
+          request: { item_id: '1234', origin: 'SAL3', origin_location: 'STACKS', destination: 'ART', barcodes: {
             '12345' => '0', '54321' => '1', '56789' => '0', '98765' => '1'
           } }
         }
@@ -65,7 +65,7 @@ RSpec.describe PagesController do
           login_path(
             referrer: interstitial_path(
               redirect_to: create_pages_url(
-                request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART', barcodes: {
+                request: { item_id: '1234', origin: 'SAL3', origin_location: 'STACKS', destination: 'ART', barcodes: {
                   '54321' => '1', '98765' => '1'
                 } }
               )
@@ -78,7 +78,7 @@ RSpec.describe PagesController do
         put :create, params: {
           request: {
             item_id: '1234',
-            origin: 'GREEN',
+            origin: 'SAL3',
             origin_location: 'STACKS',
             destination: 'ART',
             user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }
@@ -97,7 +97,7 @@ RSpec.describe PagesController do
         put :create, params: {
           request: {
             item_id: '1234',
-            origin: 'GREEN',
+            origin: 'SAL3',
             origin_location: 'STACKS',
             destination: 'ART',
             user_attributes: { library_id: '12345' }
@@ -120,7 +120,7 @@ RSpec.describe PagesController do
           put :create, params: {
             request: {
               item_id: '1234',
-              origin: 'GREEN',
+              origin: 'SAL3',
               origin_location: 'STACKS',
               destination: 'ART'
             }
@@ -133,7 +133,7 @@ RSpec.describe PagesController do
           put :create, params: {
             request: {
               item_id: '1234',
-              origin: 'GREEN',
+              origin: 'SAL3',
               origin_location: 'STACKS',
               destination: 'ART',
               proxy: 'true'
@@ -148,7 +148,7 @@ RSpec.describe PagesController do
           put :create, params: {
             request: {
               item_id: '1234',
-              origin: 'GREEN',
+              origin: 'SAL3',
               origin_location: 'STACKS',
               destination: 'ART',
               proxy: 'false'
@@ -163,7 +163,7 @@ RSpec.describe PagesController do
       describe 'via get' do
         it 'is forbidden' do
           get :create, params: {
-            request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
+            request: { item_id: '1234', origin: 'SAL3', origin_location: 'STACKS', destination: 'ART' }
           }
           expect(response).to have_http_status(:forbidden)
         end
@@ -175,10 +175,10 @@ RSpec.describe PagesController do
 
       it 'is allowed' do
         post :create, params: {
-          request: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
+          request: { item_id: '1234', origin: 'SAL3', origin_location: 'STACKS', destination: 'ART' }
         }
         expect(response).to redirect_to successful_page_path(Page.last)
-        expect(Page.last.origin).to eq 'GREEN'
+        expect(Page.last.origin).to eq 'SAL3'
         expect(Page.last.user).to eq user
       end
 
@@ -188,7 +188,7 @@ RSpec.describe PagesController do
         put :create, params: {
           request: {
             item_id: '1234',
-            origin: 'GREEN',
+            origin: 'SAL3',
             origin_location: 'STACKS',
             destination: 'ART',
             barcodes: { '3610512345678' => '1', '3610587654321' => '0', '12345679' => '1' }
@@ -206,7 +206,7 @@ RSpec.describe PagesController do
         post :create, params: {
           request: {
             item_id: '1234',
-            origin: 'GREEN',
+            origin: 'SAL3',
             origin_location: 'STACKS',
             destination: 'ART',
             user_attributes: { library_id: '5432123' }

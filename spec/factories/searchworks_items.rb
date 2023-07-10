@@ -15,7 +15,7 @@ if Settings.ils.bib_model == 'SearchworksItem'
 
       holdings do
         [
-          { 'code' => 'GREEN',
+          { 'code' => 'SAL3',
             'locations' => [
               { 'code' => 'STACKS',
                 'items' => [
@@ -53,7 +53,7 @@ if Settings.ils.bib_model == 'SearchworksItem'
 
       holdings do
         [
-          { 'code' => 'GREEN',
+          { 'code' => 'SAL3',
             'locations' => [
               { 'code' => 'STACKS',
                 'items' => [
@@ -691,10 +691,10 @@ if Settings.ils.bib_model == 'SearchworksItem'
       end
     end
 
-    factory :green_stacks_searchworks_item, parent: :searchworks_item do
+    factory :sal3_stacks_searchworks_item, parent: :searchworks_item do
       holdings do
         [
-          { 'code' => 'GREEN',
+          { 'code' => 'SAL3',
             'locations' => [
               { 'code' => 'STACKS',
                 'items' => [

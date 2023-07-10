@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe HoldRecallsController do
   let(:hold_recall) { create(:hold_recall) }
   let(:normal_params) do
-    { item_id: '1234', barcode: '36105212925395', origin: 'GREEN', origin_location: 'STACKS', destination: 'GREEN' }
+    { item_id: '1234', barcode: '36105212925395', origin: 'SAL3', origin_location: 'STACKS', destination: 'GREEN' }
   end
 
   before do
@@ -23,15 +23,15 @@ RSpec.describe HoldRecallsController do
 
     it 'sets defaults' do
       get :new, params: normal_params
-      expect(assigns[:request].origin).to eq 'GREEN'
+      expect(assigns[:request].origin).to eq 'SAL3'
       expect(assigns[:request].origin_location).to eq 'STACKS'
       expect(assigns[:request].item_id).to eq '1234'
       expect(assigns[:request].needed_date).to eq Time.zone.today + 1.year
     end
 
-    it 'raises an error if the item is unmediateable' do
+    it 'raises an error if the item is not provided' do
       expect do
-        get :new, params: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
+        get :new, params: { item_id: '1234', origin: 'SAL3', origin_location: 'STACKS', destination: 'ART' }
       end.to raise_error(HoldRecallsController::NotHoldRecallableError)
     end
   end
@@ -95,7 +95,7 @@ RSpec.describe HoldRecallsController do
       it 'is allowed' do
         post :create, params: { request: normal_params }
         expect(response).to redirect_to successful_hold_recall_path(HoldRecall.last)
-        expect(HoldRecall.last.origin).to eq 'GREEN'
+        expect(HoldRecall.last.origin).to eq 'SAL3'
         expect(HoldRecall.last.user).to eq user
       end
 

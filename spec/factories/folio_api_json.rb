@@ -25,7 +25,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
             barcode: '3610512345678',
             callnumber: 'ABC 123',
             status: 'Available',
-            effective_location: build(:location, code: 'GRE-STACKS'),
+            effective_location: build(:location, code: 'SAL3-STACKS'),
             public_note: '',
             type: 'STKS'
           ),
@@ -33,7 +33,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
             barcode: '3610587654321',
             callnumber: 'ABC 321',
             status: 'Available',
-            effective_location: build(:location, code: 'GRE-STACKS'),
+            effective_location: build(:location, code: 'SAL3-STACKS'),
             public_note: '',
             type: 'STKS'
           ),
@@ -41,7 +41,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
             barcode: '12345679',
             callnumber: 'ABC 456',
             status: 'Available',
-            effective_location: build(:location, code: 'GRE-STACKS'),
+            effective_location: build(:location, code: 'SAL3-STACKS'),
             public_note: '',
             type: 'STKS'
           )
@@ -89,7 +89,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
             barcode: '12345678',
             callnumber: 'ABC 123',
             status: 'Available',
-            effective_location: build(:location, code: 'GRE-STACKS'),
+            effective_location: build(:location, code: 'SAL3-STACKS'),
             public_note: '',
             type: 'STKS'
           )
@@ -600,7 +600,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
       end
     end
 
-    factory :green_stacks_searchworks_item, class: 'Folio::Instance' do
+    factory :sal3_stacks_searchworks_item, class: 'Folio::Instance' do
       id { '1234' }
       title { 'Green stacks item' }
 
@@ -612,7 +612,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
             barcode: '12345678',
             callnumber: 'ABC 123',
             status: 'Available',
-            effective_location: build(:location, code: 'GRE-STACKS'),
+            effective_location: build(:location, code: 'SAL3-STACKS'),
             public_note: '',
             type: 'STKS'
           )

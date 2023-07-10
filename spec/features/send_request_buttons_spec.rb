@@ -19,7 +19,7 @@ RSpec.describe 'Send Request Buttons' do
     before { stub_current_user(create(:sso_user)) }
 
     it 'allows submit' do
-      visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
 
       click_button 'Send request'
 
@@ -29,7 +29,7 @@ RSpec.describe 'Send Request Buttons' do
 
   describe 'by anonymous user', js: true do
     it 'is possible to toggle between login and name-email form' do
-      visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
       click_link 'I don\'t have a SUNet ID'
 
       expect(page).to have_field('Name', type: 'text')
@@ -41,7 +41,7 @@ RSpec.describe 'Send Request Buttons' do
     end
 
     it 'disables the submit button (and adds a tooltip) when additional user validation is needed' do
-      visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
       click_link 'I don\'t have a SUNet ID'
 
       expect(page).to have_field('Library ID', type: 'text')

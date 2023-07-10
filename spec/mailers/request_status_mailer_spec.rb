@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe RequestStatusMailer do
   describe '#request_status' do
     let(:user) { build(:non_sso_user) }
-    let(:request) { build_stubbed(:page, user:) }
+    let(:request) { build_stubbed(:page, destination: 'GREEN', user:) }
     let(:mailer_method) { :request_status_for_page }
     let(:mail) { described_class.send(mailer_method, request) }
 
@@ -240,7 +240,7 @@ RSpec.describe RequestStatusMailer do
       let(:body) { mail.body.to_s }
 
       describe 'default' do
-        let(:request) { create(:page_with_holdings, user:) }
+        let(:request) { create(:page_with_holdings, destination: 'GREEN', user:) }
 
         it 'includes the configured contact information' do
           expect(body).to include('Questions about your request?')

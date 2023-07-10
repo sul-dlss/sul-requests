@@ -30,7 +30,7 @@ RSpec.describe Request do
       let(:create_request) do
         described_class.create!(
           item_id: '1234',
-          origin: 'GREEN',
+          origin: 'SAL3',
           origin_location: 'STACKS',
           barcodes:
         )
