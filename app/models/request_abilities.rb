@@ -11,6 +11,8 @@ class RequestAbilities
 
   attr_reader :request
 
+  delegate :send_honeybadger_notice_if_used, to: :location_rule, allow_nil: true
+
   # @param [Request] request
   def initialize(request)
     @request = request
@@ -53,6 +55,20 @@ class RequestAbilities
     !mediateable? && !hold_recallable? && location_rule.present?
   end
 
+  def scan_destination
+    scannable_location_rule&.destination || {}
+  end
+
+  def pickup_libraries
+    location_rule&.pickup_libraries || Settings.default_pickup_libraries
+  end
+
+  def default_pickup_library
+    location_rule&.default_pickup_library || Settings.default_pickup_library
+  end
+
+  private
+
   def location_rule
     @location_rule ||= applicable_rules(:pageable).first
   end
@@ -60,8 +76,6 @@ class RequestAbilities
   def scannable_location_rule
     @scannable_location_rule ||= applicable_rules(:scannable).first
   end
-
-  private
 
   def all_items_hold_recallable?
     request.holdings_object.any? && request.holdings_object.all?(&:hold_recallable?)

@@ -28,15 +28,11 @@ module PickupLibrariesHelper
       pickup_libraries_array(pickup_libraries),
       {
         label: label_for_pickup_libraries_dropdown(pickup_libraries),
-        selected: form.object.destination || default_pickup_library(form.object)
+        selected: form.object.destination || form.object.default_pickup_library
       },
       aria: { controls: 'scheduler-text' },
       data: { 'paging-schedule-updater' => 'true', 'text-selector' => "[data-text-object='#{form.object.object_id}']" }
     )
-  end
-
-  def default_pickup_library(request)
-    request.location_rule&.default_pickup_library || Settings.default_pickup_library
   end
 
   def single_library_markup(form, library)

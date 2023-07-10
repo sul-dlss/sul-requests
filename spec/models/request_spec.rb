@@ -659,4 +659,24 @@ RSpec.describe Request do
       expect(item_status['36105212920537']['msgcode']).to eq 'S001'
     end
   end
+
+  describe '#default_pickup_library' do
+    it 'sets an origin specific default' do
+      request = described_class.new(origin: 'LAW', origin_location: 'STACKS')
+
+      expect(request.default_pickup_library).to eq 'LAW'
+    end
+
+    it 'sets an origin location specific default' do
+      request = described_class.new(origin: 'SAL3', origin_location: 'EAL-SETS')
+
+      expect(request.default_pickup_library).to eq 'EAST-ASIA'
+    end
+
+    it 'falls back to a default location' do
+      request = described_class.new(origin: 'ART', origin_location: 'STACKS')
+
+      expect(request.default_pickup_library).to eq 'GREEN'
+    end
+  end
 end
