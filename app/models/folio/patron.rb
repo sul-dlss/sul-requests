@@ -57,7 +57,7 @@ module Folio
     end
 
     def first_name
-      field.dig('personal', 'preferredFirstName') || user_info.dig('personal', 'firstName')
+      user_info.dig('personal', 'preferredFirstName') || user_info.dig('personal', 'firstName')
     end
 
     def last_name
@@ -72,23 +72,24 @@ module Folio
       user_info.dig('personal', 'email')
     end
 
+    def proxy_email_address
+      proxy_info&.dig('notificationsTo') || email
+    end
+
     def expired?
       !user_info['active']
     end
 
-    # TODO
     def proxy?
-      false
+      proxy_info.present?
     end
 
-    # TODO
     def sponsor?
-      false
+      proxy_group_info.present?
     end
 
-    # TODO
-    def group
-      nil
+    def proxy_sponsor_user_id
+      proxy_info&.dig('userId')
     end
 
     def university_id
@@ -96,8 +97,21 @@ module Folio
     end
 
     def blocked?
-      blocks = self.class.folio_client.patron_blocks(user_info.fetch('id'))
-      blocks.fetch('automatedPatronBlocks').present?
+      patron_blocks.fetch('automatedPatronBlocks').present?
+    end
+
+    private
+
+    def patron_blocks
+      @patron_blocks ||= self.class.folio_client.patron_blocks(id)
+    end
+
+    def proxy_info
+      @proxy_info ||= self.class.folio_client.proxy_info(id)
+    end
+
+    def proxy_group_info
+      @proxy_group_info ||= self.class.folio_client.proxy_group_info(id)
     end
   end
 end

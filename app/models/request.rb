@@ -144,7 +144,7 @@ class Request < ActiveRecord::Base
   end
 
   def notification_email_address
-    (user&.proxy_email_address if proxy?) ||
+    (user&.patron&.proxy_email_address.presence if proxy?) ||
       user&.email_address
   end
 

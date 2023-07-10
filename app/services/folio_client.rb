@@ -47,6 +47,18 @@ class FolioClient
     get_json("/users/#{CGI.escape(user_id)}")
   end
 
+  def proxy_group_info(user_id)
+    get_json('/proxiesfor', params: { query: CqlQuery.new(userId: user_id).to_query })
+
+    repsonse.dig('proxiesFor', 0)
+  end
+
+  def proxy_info(user_id)
+    get_json('/proxiesfor', params: { query: CqlQuery.new(proxyUserId: user_id).to_query })
+
+    repsonse.dig('proxiesFor', 0)
+  end
+
   def patron_blocks(user_id)
     get_json("/automated-patron-blocks/#{user_id}")
   end

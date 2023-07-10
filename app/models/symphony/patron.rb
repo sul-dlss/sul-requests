@@ -81,6 +81,10 @@ module Symphony
       email_resource && email_resource['fields']['data']
     end
 
+    def proxy_email_address
+      group&.email&.presence
+    end
+
     def expired?
       return false unless expired_date
 
@@ -103,12 +107,14 @@ module Symphony
       @checkouts ||= symphony_client.checkouts(key).map { |record| Symphony::CircRecord.new(record) }
     end
 
-    def group
-      @group ||= Symphony::Group.new(response)
-    end
-
     def university_id
       fields['alternateID']
+    end
+
+    private
+
+    def group
+      @group ||= Symphony::Group.new(response)
     end
   end
 end
