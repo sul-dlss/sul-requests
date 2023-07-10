@@ -27,7 +27,7 @@ class Request < ActiveRecord::Base
   }
 
   delegate :hold_recallable?, :mediateable?, :pageable?, :aeon_pageable?, :scannable?, :scannable_only?,
-           :location_rule, :scannable_location_rule, :aeon_site, to: :request_abilities
+           :default_pickup_library, :pickup_libraries, :scan_destination, :aeon_site, to: :request_abilities
 
   delegate :finding_aid, :finding_aid?, to: :bib_data, allow_nil: true
 
@@ -167,14 +167,6 @@ class Request < ActiveRecord::Base
 
   def library_id_error?
     errors[:library_id].present?
-  end
-
-  def pickup_libraries
-    location_rule&.pickup_libraries
-  end
-
-  def scan_destination
-    {}
   end
 
   class << self
