@@ -7,9 +7,29 @@ FactoryBot.define do
     name { 'Location name' }
     discovery_display_name { 'Discovery display name' }
     campus { Folio::Campus.new(id: 'uuid') }
-    library { Folio::Campus.new(id: 'uuid') }
-    institution { Folio::Campus.new(id: 'uuid') }
+    library { Folio::Library.new(id: 'uuid') }
+    institution { Folio::Institution.new(id: 'uuid') }
     details { {} }
+
+    initialize_with { new(**attributes) }
+  end
+
+  factory :pageable_location, parent: :location do
+    id { '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2' }
+    library { Folio::Library.new(id: 'ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9') }
+    code { 'SAL3-STACKS' }
+  end
+
+  factory :aeon_mediated_location, parent: :location do
+    details { { 'pageMediationGroupKey' => 'SPEC-COLL', 'pageAeonSite' => 'UA' } }
+  end
+
+  factory :art_mediated_location, parent: :location do
+    details { { 'pageMediationGroupKey' => 'ART' } }
+  end
+
+  factory :material_type_book, class: 'Folio::MaterialType' do
+    id { Folio::Types.get_type('material_types').find { |t| t['name'] == 'book'}.dig('id') }
 
     initialize_with { new(**attributes) }
   end
@@ -64,7 +84,8 @@ FactoryBot.define do
           barcode: '87654321',
           callnumber: 'ABC 87654321',
           status: 'Available',
-          effective_location: build(:location, code: 'SAL3-STACKS'),
+          effective_location: build(:pageable_location),
+          material_type: build(:material_type_book),
           public_note: '',
           type: 'STKS'
         )
@@ -140,7 +161,7 @@ FactoryBot.define do
           barcode: '12345678',
           callnumber: 'ABC 123',
           status: 'Page',
-          effective_location: build(:location, code: 'SPEC-STACKS'),
+          effective_location: build(:aeon_mediated_location, code: 'SPEC-STACKS'),
           public_note: '',
           type: 'STKS'
         ),
@@ -148,7 +169,7 @@ FactoryBot.define do
           barcode: '87654321',
           callnumber: 'ABC 321',
           status: 'Page',
-          effective_location: build(:location, code: 'SPEC-STACKS'),
+          effective_location: build(:aeon_mediated_location, code: 'SPEC-STACKS'),
           public_note: '',
           type: 'STKS'
         )
@@ -175,7 +196,7 @@ FactoryBot.define do
           barcode: '12345678',
           callnumber: 'ABC 123',
           status: 'Page',
-          effective_location: build(:location, code: 'SPEC-STACKS'),
+          effective_location: build(:aeon_mediated_location, code: 'SPEC-STACKS'),
           public_note: '',
           type: 'STKS'
         )
@@ -203,7 +224,7 @@ FactoryBot.define do
           barcode: '12345678',
           callnumber: 'ABC 123',
           status: 'Page',
-          effective_location: build(:location, code: 'SPEC-STACKS'),
+          effective_location: build(:aeon_mediated_location, code: 'SPEC-STACKS'),
           public_note: '',
           type: 'STKS'
         )

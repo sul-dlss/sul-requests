@@ -15,11 +15,11 @@ class Page < Request
   end
 
   # Ideally, we'll be able to drop the wildcard rule because no requests will make it here
-  after_create do
-    next unless location_rule&.send_honeybadger_notice_if_used
+  # after_create do
+  #   next unless location_rule&.send_honeybadger_notice_if_used
 
-    Honeybadger.notify("WARNING: Using default location rule for page #{id} (origin: #{origin}, origin_location: #{origin_location})")
-  end
+  #   Honeybadger.notify("WARNING: Using default location rule for page #{id} (origin: #{origin}, origin_location: #{origin_location})")
+  # end
 
   private
 

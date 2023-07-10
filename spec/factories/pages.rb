@@ -3,11 +3,11 @@
 FactoryBot.define do
   factory :page do
     item_id { '1234' }
-    origin { 'GREEN' }
+    origin { 'SAL3' }
     origin_location { 'STACKS' }
     destination { 'ART' }
     item_title { 'Title for Page 1234' }
-    bib_data { Folio::Instance.new(id: '1234') } if Settings.ils.bib_model == 'Folio::Instance'
+    bib_data { build(:sal3_holding) }
 
     after(:build) do |request|
       class << request

@@ -4,10 +4,10 @@ require 'rails_helper'
 
 RSpec.describe 'requests/success.html.erb' do
   let(:user) { create(:sso_user) }
-  let(:request) { create(:page, user:, item_title: 'Test title') }
+  let(:request) { build(:page, user:, item_title: 'Test title') }
   let(:selected_items) do
     [
-      double(:item, barcode: '12345678', type: 'STKS', callnumber: 'ABC 123', hold_recallable?: false)
+      double(:item, barcode: '12345678', type: 'STKS', callnumber: 'ABC 123', hold_recallable?: false, effective_location: build(:location))
     ]
   end
 
@@ -127,7 +127,7 @@ RSpec.describe 'requests/success.html.erb' do
 
   describe 'for scans' do
     let(:request) do
-      create(
+      build(
         :scan, :with_holdings,
         user:,
         data: {
@@ -157,6 +157,11 @@ RSpec.describe 'requests/success.html.erb' do
   end
 
   describe 'for mediated pages' do
+    let(:selected_items) do
+      [
+        double(:item, barcode: '12345678', type: 'STKS', callnumber: 'ABC 123', hold_recallable?: false, effective_location: build(:art_mediated_location))
+      ]
+    end
     describe 'item level comments' do
       let(:request) { create(:mediated_page_with_holdings, user:, item_comment: ['Volume 666 only']) }
 
@@ -185,8 +190,8 @@ RSpec.describe 'requests/success.html.erb' do
 
     describe 'selected items' do
       let(:selected_items) do
-        [double('item', barcode: '12345678', callnumber: 'ABC 123'),
-         double('item', barcode: '23456789', callnumber: 'ABC 456')]
+        [double('item', barcode: '12345678', callnumber: 'ABC 123', effective_location: build(:art_mediated_location)),
+         double('item', barcode: '23456789', callnumber: 'ABC 456', effective_location: build(:art_mediated_location))]
       end
 
       let(:request) { create(:mediated_page_with_holdings, user:, barcodes: %w(12345678 23456789)) }

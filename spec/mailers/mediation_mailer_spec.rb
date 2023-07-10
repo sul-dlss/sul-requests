@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe MediationMailer do
-  let(:selected_items) { [] }
+  let(:selected_items) { [double(:item, barcode: '12345678', callnumber: 'ABC 123', effective_location: build(:art_mediated_location))] }
 
   describe 'mediator_notification' do
     let(:user) { build(:non_sso_user) }
@@ -43,8 +43,6 @@ RSpec.describe MediationMailer do
     end
 
     describe 'body' do
-      let(:selected_items) { [double(:item, barcode: '12345678', callnumber: 'ABC 123')] }
-
       let(:request) do
         create(:mediated_page_with_holdings, barcodes: ['12345678'], user:)
       end

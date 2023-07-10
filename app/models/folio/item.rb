@@ -41,23 +41,6 @@ module Folio
     STATUS_NONE
   ].freeze
 
-  Location = Data.define(:id, :campus, :library, :institution, :code, :discovery_display_name, :name, :details) do
-    def self.from_hash(dyn)
-      new(
-        id: dyn.fetch('id'),
-        campus: Campus.new(id: dyn.fetch('campusId')),
-        library: Library.new(id: dyn.fetch('libraryId')),
-        institution: Institution.new(id: dyn.fetch('institutionId')),
-        code: dyn.fetch('code'),
-        discovery_display_name: dyn.fetch('discoveryDisplayName') || dyn.fetch('name'),
-        name: dyn.fetch('name'),
-        details: dyn.fetch('details', {}) || {}
-      )
-    end
-  end
-  Library = Data.define(:id)
-  Campus = Data.define(:id)
-  Institution = Data.define(:id)
   MaterialType = Data.define(:id)
   LoanType = Data.define(:id)
 
@@ -77,8 +60,8 @@ module Folio
       @callnumber = callnumber
       @public_note = public_note
       @effective_location = effective_location
-      @material_type = material_type
-      @loan_type = loan_type
+      @material_type = material_type || MaterialType.new(id: nil)
+      @loan_type = loan_type || LoanType.new(id: nil)
       @due_date = due_date
     end
     # rubocop:enable Metrics/ParameterLists

@@ -3,7 +3,7 @@
 module Folio
   class Types
     class << self
-      delegate :policies, :circulation_rules, :criteria, to: :instance
+      delegate :policies, :circulation_rules, :criteria, :get_type, to: :instance
     end
 
     def self.instance
