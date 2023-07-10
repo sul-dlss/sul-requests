@@ -78,38 +78,9 @@ RSpec.describe 'Item Selector' do
 
       describe 'for pages' do
         let(:request_path) { new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS') }
-        let(:all_items) do
-          [
-            double(:item, effective_location: double(code: 'SAL3-STACKS'), callnumber: 'ABC 123',
-                          checked_out?: false, processing?: false, missing?: false, hold?: false,
-                          on_order?: false, hold_recallable?: false, barcode: '12345678', status_class: 'available',
-                          status_text: 'Available', public_note: 'huh?'),
-            double(:item, effective_location: double(code: 'SAL3-STACKS'), callnumber: 'ABC 456',
-                          checked_out?: false, processing?: false, missing?: false, hold?: false,
-                          on_order?: false, hold_recallable?: false, barcode: '23456789', status_class: 'available',
-                          status_text: 'Available', public_note: 'huh?'),
-            double(:item, effective_location: double(code: 'SAL3-STACKS'), callnumber: 'ABC 789',
-                          checked_out?: false, processing?: false, missing?: false, hold?: false,
-                          on_order?: false, hold_recallable?: false, barcode: '34567890', status_class: 'available',
-                          status_text: 'Available', public_note: 'huh?'),
-            double(:item, effective_location: double(code: 'SAL3-STACKS'), callnumber: 'ABC 012',
-                          checked_out?: false, processing?: false, missing?: false, hold?: false,
-                          on_order?: false, hold_recallable?: false, barcode: '45678901', status_class: 'available',
-                          status_text: 'Available', public_note: 'huh?'),
-            double(:item, effective_location: double(code: 'SAL3-STACKS'), callnumber: 'ABC 345',
-                          checked_out?: false, processing?: false, missing?: false, hold?: false,
-                          on_order?: false, hold_recallable?: false, barcode: '56789012', status_class: 'available',
-                          status_text: 'Available', public_note: 'huh?'),
-            double(:item, effective_location: double(code: 'SAL3-STACKS'), callnumber: 'ABC 678',
-                          checked_out?: false, processing?: false, missing?: false, hold?: false,
-                          on_order?: false, hold_recallable?: false, barcode: '67890123', status_class: 'available',
-                          status_text: 'Available', public_note: 'huh?')
-
-          ]
-        end
 
         before do
-          stub_bib_data_json(:sal3_holdings, items: all_items)
+          stub_bib_data_json(:many_holdings)
         end
 
         it 'does not limit selection' do

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'requests/success.html.erb' do
   let(:user) { create(:sso_user) }
-  let(:request) { create(:page, user:, item_title: 'Test title') }
+  let(:request) { build_stubbed(:page, user:, item_title: 'Test title') }
   let(:selected_items) do
     [
       double(:item, barcode: '12345678', type: 'STKS', callnumber: 'ABC 123', hold_recallable?: false)
@@ -12,7 +12,6 @@ RSpec.describe 'requests/success.html.erb' do
   end
 
   before do
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(selected_items)
     allow(view).to receive_messages(current_request: request)
     allow(view).to receive_messages(current_user: user)
   end

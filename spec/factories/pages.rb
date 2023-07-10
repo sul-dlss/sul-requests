@@ -7,15 +7,8 @@ FactoryBot.define do
     origin_location { 'STACKS' }
     destination { 'ART' }
     item_title { 'Title for Page 1234' }
-    bib_data { Folio::Instance.new(id: '1234') } if Settings.ils.bib_model == 'Folio::Instance'
-
-    after(:build) do |request|
-      class << request
-        def symphony_response_data
-          FactoryBot.build(:symphony_page_with_single_item)
-        end
-      end
-    end
+    bib_data { build(:green_stacks_searchworks_item) }
+    symphony_response_data { build(:symphony_page_with_single_item) }
   end
 
   factory :page_with_holdings, class: 'Page' do

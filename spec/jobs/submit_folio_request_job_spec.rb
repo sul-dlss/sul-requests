@@ -114,7 +114,8 @@ RSpec.describe SubmitFolioRequestJob do
       end
 
       before do
-        allow(request.user).to receive(:patron).and_return(patron)
+        allow_any_instance_of(Request).to receive(:user).and_return(user)
+        allow(user).to receive(:patron).and_return(patron)
         allow(patron).to receive(:blocked?).and_return(false)
         allow(client).to receive(:proxy_info).with(proxy_id).and_return(proxy_response)
       end
@@ -134,7 +135,8 @@ RSpec.describe SubmitFolioRequestJob do
       end
 
       before do
-        allow(request.user).to receive(:patron).and_return(patron)
+        allow_any_instance_of(Request).to receive(:user).and_return(user)
+        allow(user).to receive(:patron).and_return(patron)
         allow(patron).to receive(:blocked?).and_return(false)
         allow(client).to receive(:proxy_info).with(sponsor_id).and_return(proxy_response)
       end

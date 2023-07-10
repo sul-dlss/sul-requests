@@ -8,11 +8,6 @@ RSpec.describe RequestStatusMailer do
     let(:request) { build_stubbed(:page, user:) }
     let(:mailer_method) { :request_status_for_page }
     let(:mail) { described_class.send(mailer_method, request) }
-    let(:selected_items) { [] }
-
-    before do
-      allow(HoldingsRelationshipBuilder).to receive(:build).and_return(selected_items)
-    end
 
     describe '#request_status_for_u003' do
       let(:mailer_method) { :request_status_for_u003 }
@@ -45,7 +40,6 @@ RSpec.describe RequestStatusMailer do
 
       context 'when the item is scannable' do
         let(:request) { create(:scan, :with_holdings_barcodes, :with_item_title, user:) }
-        let(:selected_items) { [double(:item, barcode: '12345678', callnumber: 'ABC 123', request_status: nil, type: 'STKS')] }
 
         it 'indicates to the user they can request the item be scanned' do
           expect(mail.body.to_s).to include(
@@ -130,7 +124,6 @@ RSpec.describe RequestStatusMailer do
 
         context 'for a page with holdings' do
           let(:request) { create(:page_with_holdings, barcodes: ['3610512345678'], user:) }
-          let(:selected_items) { [double(:item, barcode: '3610512345678', callnumber: 'ABC 123', hold_recallable?: false)] }
 
           it 'has the data' do
             expect(body).to include("Title: #{request.item_title}")
@@ -144,7 +137,6 @@ RSpec.describe RequestStatusMailer do
           let(:request) do
             create(:mediated_page_with_holdings, barcodes: ['12345678'], user:)
           end
-          let(:selected_items) { [double(:item, barcode: '12345678', callnumber: 'ABC 123')] }
 
           it 'has a planned date of visit' do
             expect(body).to include 'Items approved for access will be ready when you visit'
@@ -223,10 +215,6 @@ RSpec.describe RequestStatusMailer do
 
       describe 'user blocked' do
         let(:request) { create(:page_with_holdings, barcodes: ['3610512345678'], user:) }
-        let(:selected_items) do
-          [double(:item, barcode: '3610512345678', callnumber: 'ABC 123', request_status: double('status', text: 'foo'),
-                         hold_recallable?: false)]
-        end
 
         before do
           stub_symphony_response(build(:symphony_page_with_blocked_user))

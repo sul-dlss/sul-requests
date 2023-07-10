@@ -6,7 +6,6 @@ RSpec.describe RequestStatusMailerFactory do
   subject(:mailer) { described_class.for(request) }
 
   before do
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return([])
     request.user = create(:anon_user)
   end
 

@@ -4,10 +4,9 @@ require 'rails_helper'
 
 RSpec.describe 'shared/_request_status_information.html.erb' do
   let(:user) { create(:sso_user) }
-  let(:request) { create(:scan, :without_validations, :with_item_title, user:) }
+  let(:request) { build_stubbed(:scan, :without_validations, :with_item_title, user:) }
 
   before do
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return([])
     allow(view).to receive_messages(current_request: request)
   end
 

@@ -9,7 +9,6 @@ RSpec.describe 'AdminComments' do
   let(:url) { "/mediated_pages/#{mediated_page.id}/admin_comments" }
 
   before do
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return([])
     stub_current_user(user)
   end
 

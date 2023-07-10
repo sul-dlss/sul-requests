@@ -10,7 +10,6 @@ RSpec.describe 'Pageable' do
       before do
         request.origin = 'GREEN'
         request.origin_location = 'STACKS'
-        allow(HoldingsRelationshipBuilder).to receive(:build).and_return([])
       end
 
       it { is_expected.to be_pageable }

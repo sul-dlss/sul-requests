@@ -10,8 +10,7 @@ RSpec.describe ItemStatus do
 
   before do
     allow(Request.ils_job_class).to receive(:perform_now)
-    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return([])
+    allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(double(:bib_data, title: 'Test title', request_holdings: []))
   end
 
   describe '#status_object' do

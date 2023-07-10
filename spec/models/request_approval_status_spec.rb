@@ -28,10 +28,6 @@ RSpec.describe RequestApprovalStatus do
       context 'for mediated pages' do
         let(:request) { create(:page_mp_mediated_page) }
 
-        before do
-          allow(HoldingsRelationshipBuilder).to receive(:build).and_return([])
-        end
-
         it 'is the mediated page text' do
           expect(html).to have_css('dd', text: 'Waiting for approval.')
           expect(text).to eq 'Waiting for approval. '

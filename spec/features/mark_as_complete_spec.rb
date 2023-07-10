@@ -21,8 +21,8 @@ RSpec.describe 'Mark As Complete', js: true do
   end
 
   before do
-    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(selected_items)
+    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title',
+                                                                                            request_holdings: selected_items))
     stub_current_user(user)
   end
 

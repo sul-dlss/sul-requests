@@ -80,8 +80,8 @@ describe Ability do
 
       describe 'and views a success page with a token' do
         before do
-          allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
-          allow(HoldingsRelationshipBuilder).to receive(:build).and_return([])
+          allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(double(:bib_data, title: 'Test title',
+                                                                                                    request_holdings: []))
         end
 
         describe 'for a page' do

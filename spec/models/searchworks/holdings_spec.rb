@@ -2,15 +2,12 @@
 
 require 'rails_helper'
 
-RSpec.describe Searchworks::Holdings do
-  subject(:requested_holdings) { described_class.new(item.request, item.holdings) }
-
-  before do
-    allow(Request).to receive(:bib_model_class).and_return(SearchworksItem)
-  end
+RSpec.describe Searchworks::Holdings, if: Settings.ils.bib_model == 'SearchworksItem' do
+  subject(:requested_holdings) { described_class.new(request, item.holdings) }
 
   describe 'items that exist' do
     let(:item) { build(:green_stacks_searchworks_item) }
+    let(:request) { build(:request, origin: 'GREEN', origin_location: 'STACKS') }
 
     it 'are present for the requested location' do
       expect(subject.count).to eq 1
@@ -25,10 +22,7 @@ RSpec.describe Searchworks::Holdings do
 
   describe 'items that do not exist' do
     let(:item) { build(:green_stacks_searchworks_item) }
-
-    before do
-      allow(item).to receive_messages(request: build(:request, origin: 'SAL3', origin_location: 'STACKS'))
-    end
+    let(:request) { build(:request, origin: 'SAL3', origin_location: 'STACKS') }
 
     it 'are not present for the requested location' do
       expect(subject.count).to eq 0

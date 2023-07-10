@@ -4,11 +4,10 @@ require 'rails_helper'
 
 RSpec.describe Request do
   let(:items) { [] }
-  let(:bib_data) { double(:bib_data, title: 'Test title') }
+  let(:bib_data) { double(:bib_data, title: 'Test title', request_holdings: items) }
 
   before do
-    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(bib_data)
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(items)
+    allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(bib_data)
   end
 
   describe 'validations' do
@@ -197,7 +196,7 @@ RSpec.describe Request do
     end
 
     describe 'when persisted with no selected barcode' do
-      let(:subject) { create(:request_with_multiple_holdings, barcodes: []) }
+      let(:subject) { build_stubbed(:request_with_multiple_holdings, barcodes: []) }
 
       it 'gets all the holdings for the requested location' do
         holdings = subject.holdings
@@ -208,16 +207,6 @@ RSpec.describe Request do
 
     describe 'when not persisted' do
       subject(:request) { build(:request_with_multiple_holdings) }
-
-      let(:bib_data) { double(:bib_data, title: 'Test title', holdings:) }
-      let(:holdings) do
-        # This is just used for Searchworks integration
-        request.bib_data.holdings
-      end
-
-      before do
-        allow(HoldingsRelationshipBuilder).to receive(:build).and_call_original
-      end
 
       it 'gets all the holdings for the requested location' do
         holdings = request.holdings
@@ -426,7 +415,7 @@ RSpec.describe Request do
     context 'when the title is not present' do
       before do
         allow(Settings.ils.bib_model.constantize).to receive(:fetch)
-          .and_return(double(:bib_data, title: 'When do you need an antacid? : a burning question'))
+          .and_return(double(:bib_data, title: 'When do you need an antacid? : a burning question', request_holdings: []))
       end
 
       it 'fetches the item title' do

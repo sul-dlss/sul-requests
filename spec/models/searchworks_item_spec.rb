@@ -3,61 +3,71 @@
 require 'rails_helper'
 
 RSpec.describe SearchworksItem do
-  subject(:item) { described_class.new(request) }
+  subject(:item) { described_class.new(request, '123') }
 
   before do
     allow(Request).to receive(:bib_model_class).and_return(described_class)
   end
 
   let(:request) { create(:request, item_id: '123') }
+  let(:url) { "#{Settings.searchworks_api}/view/123/availability" }
 
   describe 'api urls' do
-    it 'returns the base uri from the settings.yml file' do
-      expect(subject.send(:base_uri)).to eq(Settings.searchworks_api)
-    end
-
     it 'returns a url for the searchworks api' do
-      expect(subject.send(:url)).to eq("#{Settings.searchworks_api}/view/123/availability")
-    end
+      allow(Faraday).to receive(:get).with(url).and_return(double('response',
+                                                                  success?: true,
+                                                                  body: '{}'))
+      described_class.fetch(request, true)
 
-    context 'by default' do
-      it 'will request a live lookup by omitting any live parameter' do
-        expect(subject.send(:url)).to eq("#{Settings.searchworks_api}/view/123/availability")
-      end
+      expect(Faraday).to have_received(:get)
     end
 
     context 'when the object is initialized with the live_lookup accessor set to false' do
-      let(:subject) { described_class.new(request, false) }
-
       it 'the url will include a "live=false" flag' do
-        expect(subject.send(:url)).to eq("#{Settings.searchworks_api}/view/123/availability?live=false")
+        allow(Faraday).to receive(:get).with("#{url}?live=false").and_return(double('response',
+                                                                                    success?: true,
+                                                                                    body: '{}'))
+        described_class.fetch(request, false)
+
+        expect(Faraday).to have_received(:get)
+      end
+    end
+
+    it 'gracefully handles JSON Parser Errors' do
+      allow(Faraday).to receive(:get).with(url).and_return(double('response',
+                                                                  success?: true,
+                                                                  body: 'not-json'))
+      subject = described_class.fetch(request, true)
+
+      expect(subject.title).to be_blank
+    end
+
+    it 'gracefully handles when the response is not a success' do
+      allow(Faraday).to receive(:get).with(url).and_return(double('response',
+                                                                  success?: false,
+                                                                  body: 'not-json'))
+      subject = described_class.fetch(request, true)
+      expect(subject.title).to be_blank
+    end
+
+    describe 'for a connection failure', allow_apis: true do
+      before do
+        stub_request(:get, %r{https://searchworks.stanford.edu/.*}).to_timeout
+      end
+
+      it 'handles title, format, and holdings correctly' do
+        subject = described_class.fetch(request, true)
+
+        expect(subject.title).to eq('')
+        expect(subject.holdings).to eq([])
+        expect(subject.format).to eq([])
       end
     end
   end
 
-  describe '#json', allow_apis: true do
-    let(:json) { subject.send(:json) }
+  describe 'accessors' do
+    subject(:item) { described_class.new(standard_json, '123') }
 
-    it 'returns json as the body of the response object', allow_apis: true do
-      expect(json).to be_a Hash
-      expect(json).to have_key 'title'
-      expect(json).to have_key 'holdings'
-    end
-
-    it 'handles JSON Parser Errors by returning an empty hash' do
-      response = double('response', body: 'not-json', success?: true)
-      allow(subject).to receive_messages(response:)
-      expect(json).to eq({})
-    end
-
-    it 'returns an empty hash when the response is not a success' do
-      response = double('response', success?: false)
-      allow(subject).to receive_messages(response:)
-      expect(json).to eq({})
-    end
-  end
-
-  describe '#response' do
     let(:standard_json) do
       {
         'title' => 'The title of the object',
@@ -74,34 +84,8 @@ RSpec.describe SearchworksItem do
         ]
       }
     end
-    let(:empty_json) { {} }
-
-    describe 'for a connection failure', allow_apis: true do
-      before do
-        stub_request(:get, %r{https://searchwroks.stanford.edu/.*}).to_timeout
-        allow(subject).to receive_messages(url: Settings.searchworks_api.gsub('searchworks', 'searchwroks'))
-      end
-
-      it 'returns an NullResponse when there is a connection error' do
-        expect(subject.send(:response)).to be_a NullResponse
-      end
-
-      it 'returns blank json' do
-        expect(subject.send(:json)).to eq({})
-      end
-
-      it 'handles title, format, and holdings correctly' do
-        expect(subject.title).to eq('')
-        expect(subject.holdings).to eq([])
-        expect(subject.format).to eq([])
-      end
-    end
 
     context 'with a standard response' do
-      before do
-        allow(item).to receive_messages(json: standard_json)
-      end
-
       it 'has a title string' do
         expect(subject.title).to eq('The title of the object')
       end
@@ -122,20 +106,6 @@ RSpec.describe SearchworksItem do
           expect(holdings.first.locations).to be_a Array
           expect(holdings.first.locations.first).to be_a Searchworks::HoldingLocation
           expect(holdings.first.locations.first.code).to eq 'STACKS'
-        end
-      end
-
-      describe 'for an empty response' do
-        before do
-          allow(subject).to receive_messages(json: empty_json)
-        end
-
-        it 'has an empty title string' do
-          expect(subject.title).to eq ''
-        end
-
-        it 'is an empty array' do
-          expect(subject.holdings).to eq []
         end
       end
     end
