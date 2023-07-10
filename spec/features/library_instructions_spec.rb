@@ -11,7 +11,6 @@ RSpec.describe 'Library Instructions' do
   before do
     allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
     allow(HoldingsRelationshipBuilder).to receive(:build).and_return(selected_items)
-    stub_searchworks_api_json(build(:library_instructions_holdings))
   end
 
   it 'returns the library instructions from the Settings' do

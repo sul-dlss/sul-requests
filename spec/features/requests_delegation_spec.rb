@@ -35,8 +35,6 @@ RSpec.describe 'Requests Delegation' do
 
   describe 'scannable materials' do
     it 'is given the opportunity to request a scan or delivery' do
-      stub_searchworks_api_json(build(:sal3_holdings))
-
       visit new_request_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
 
       expect(page).to have_css('h1#dialogTitle', text: 'Request options')
@@ -49,8 +47,6 @@ RSpec.describe 'Requests Delegation' do
   end
 
   describe 'scannable only material' do
-    before { stub_searchworks_api_json(build(:scannable_only_holdings)) }
-
     let(:selected_items) do
       [
         double(:item, barcode: '34567890', type: 'NONCIRC', callnumber: 'ABC 123', hold_recallable?: false, checked_out?: false,

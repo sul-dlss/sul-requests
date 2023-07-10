@@ -50,7 +50,7 @@ RSpec.describe 'Scannable' do
     end
 
     # FOLIO doesn't have item_type to filter by
-    context 'when there are no scannable items in the location', if: Settings.ils.bib_model != 'Folio::BibData' do
+    context 'when there are no scannable items in the location', unless: Settings.ils.bib_model == 'Folio::Instance' do
       let(:item_type) { 'NOT-STKS' }
 
       it 'is false' do
@@ -59,7 +59,7 @@ RSpec.describe 'Scannable' do
     end
 
     # FOLIO doesn't have item_type to filter by
-    context 'for some page-gr item types', if: Settings.ils.bib_model != 'Folio::BibData' do
+    context 'for some page-gr item types', unless: Settings.ils.bib_model == 'Folio::Instance' do
       let(:library) { 'SAL3' }
       let(:location) { 'PAGE-GR' }
       let(:item_type) { 'NH-INHOUSE' }
@@ -71,7 +71,7 @@ RSpec.describe 'Scannable' do
   end
 
   # FOLIO doesn't have item_type to filter by
-  describe '#scannable_only?', if: Settings.ils.bib_model != 'Folio::BibData' do
+  describe '#scannable_only?', unless: Settings.ils.bib_model == 'Folio::Instance' do
     it 'is true a scannable only library/location has scannable only items' do
       subject.origin = 'SAL'
       subject.origin_location = 'SAL-TEMP'

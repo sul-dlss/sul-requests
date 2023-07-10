@@ -39,8 +39,7 @@ RSpec.describe CdlAvailability do
       end
 
       it do
-        stub_symphony(
-          :circ_information,
+        allow_any_instance_of(SymphonyClient).to receive(:circ_information).and_return(
           {
             'currentStatus' => 'ON_SHELF'
           }
@@ -74,8 +73,7 @@ RSpec.describe CdlAvailability do
       end
 
       it do
-        stub_symphony(
-          :circ_information,
+        allow_any_instance_of(SymphonyClient).to receive(:circ_information).and_return(
           {
             'dueDate' => '2020-09-09T15:16:50-06:00'
           }

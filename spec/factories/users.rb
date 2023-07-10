@@ -33,6 +33,18 @@ FactoryBot.define do
   factory :sso_user, class: 'User' do
     sunetid { 'some-sso-user' }
     email { 'some-sso-user@stanford.edu' }
+
+    after(:build) do |user|
+      class << user
+        def sponsor?
+          false
+        end
+
+        def proxy?
+          false
+        end
+      end
+    end
   end
 
   factory :sequence_sso_user, class: 'User' do

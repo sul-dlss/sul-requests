@@ -16,13 +16,7 @@ FactoryBot.define do
     end
 
     trait :with_holdings do
-      after(:build) do |scan|
-        class << scan
-          def bib_data
-            @bib_data ||= FactoryBot.build(:sal_stacks_multi_holdings_searchworks_item, request: self)
-          end
-        end
-      end
+      bib_data { FactoryBot.build(:sal_holdings) }
     end
 
     trait :with_holdings_barcodes do

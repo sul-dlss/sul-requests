@@ -8,37 +8,27 @@ FactoryBot.define do
 
     after(:build) do |item|
       class << item
+        # rubocop:disable Metrics/MethodLength
         def json
-          FactoryBot.build(:single_holding)
+          {
+            holdings: [
+              { 'code' => 'GREEN',
+                'locations' => [
+                  { 'code' => 'STACKS',
+                    'items' => [
+                      { 'barcode' => '12345678',
+                        'callnumber' => 'ABC 123',
+                        'type' => 'STKS',
+                        'status' => {
+                          'availability_class' => 'available',
+                          'status_text' => 'Available'
+                        } }
+                    ] }
+                ] }
+            ]
+          }.stringify_keys
         end
-      end
-    end
-  end
-
-  factory :green_stacks_multi_holdings_searchworks_item, class: 'SearchworksItem' do
-    initialize_with { new(request) }
-
-    request { create(:request, origin: 'GREEN', origin_location: 'STACKS') }
-
-    after(:build) do |item|
-      class << item
-        def json
-          FactoryBot.build(:multiple_holdings)
-        end
-      end
-    end
-  end
-
-  factory :sal3_stacks_multi_holdings_searchworks_item, class: 'SearchworksItem' do
-    initialize_with { new(request) }
-
-    request { create(:request, origin: 'SAL3', origin_location: 'STACKS') }
-
-    after(:build) do |item|
-      class << item
-        def json
-          FactoryBot.build(:sal3_holdings)
-        end
+        # rubocop:enable Metrics/MethodLength
       end
     end
   end

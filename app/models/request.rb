@@ -12,6 +12,7 @@ class Request < ActiveRecord::Base
   include IlsRequest
 
   attr_reader :requested_barcode
+  attr_writer :bib_data
   attr_accessor :live_lookup
 
   scope :recent, -> { order(created_at: :desc) }
@@ -28,7 +29,7 @@ class Request < ActiveRecord::Base
   delegate :hold_recallable?, :mediateable?, :pageable?, :aeon_pageable?, :scannable?, :scannable_only?,
            :location_rule, :scannable_location_rule, :aeon_site, to: :request_abilities
 
-  delegate :finding_aid, :finding_aid?, to: :bib_data
+  delegate :finding_aid, :finding_aid?, to: :bib_data, allow_nil: true
 
   # Serialized data hash
   store :data, accessors: [
@@ -47,7 +48,7 @@ class Request < ActiveRecord::Base
   class_attribute :bib_model_class, default: Settings.ils.bib_model&.constantize || SearchworksItem
 
   before_create do
-    self.item_title ||= bib_data.title
+    self.item_title ||= bib_data&.title
   end
 
   def library_location
@@ -60,7 +61,7 @@ class Request < ActiveRecord::Base
 
   # @returns the model class either sourced from SearchWorks or from Folio.
   def bib_data
-    @bib_data ||= bib_model_class.new(self, live_lookup)
+    @bib_data ||= bib_model_class.fetch(self, live_lookup)
   end
 
   def send_approval_status!
@@ -80,7 +81,7 @@ class Request < ActiveRecord::Base
     if persisted?
       item_title
     else
-      bib_data.title
+      bib_data&.title
     end
   end
 

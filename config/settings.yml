@@ -52,19 +52,26 @@ token_encrypt:
   secret: ''
   salt: ''
 
-ils:
-  bib_model: SearchworksItem # or Folio::BibData
+symphony_ils: &symphony_ils
+  bib_model: SearchworksItem
   patron_model: Symphony::Patron
   request_job: SubmitSymphonyRequestJob
+
+folio_ils: &folio_ils
+  bib_model: Folio::Instance
+  patron_model: Folio::Patron
+  request_job: SubmitFolioRequestJob
+
+ils: *symphony_ils # or *symphony_ils
 
 symphony:
   override: PASSWORD
 
 folio:
   okapi_url: <%= ENV.fetch('OKAPI_URL', 'http://example.com') %>
+  graphql_url: <%= ENV.fetch('FOLIO_GRAPHQL_URL', 'http://example.com') %>
   tenant: 'sul'
   fee_borrower_patron_group: 985acbb9-f7a7-4f44-9b34-458c02a78fbc
-  isbn_identifier_type: 8261054f-be78-422d-bd51-4ed9f33c3422
 
 mailer_host: <%= `echo $HOSTNAME` %>
 searchworks_api: 'https://searchworks.stanford.edu'
@@ -355,7 +362,7 @@ libraries:
       email: sciencelibrary@stanford.edu
     folio_pickup_service_point_code: SCIENCE
     hold_pseudopatron: HOLD@CS
-    folio_hold_pseudopatron: 8e29c4f9-bd07-456b-8f66-07fd68930f7f    
+    folio_hold_pseudopatron: 8e29c4f9-bd07-456b-8f66-07fd68930f7f
     hours:
       library_slug: science
       location_slug: library-circulation
@@ -646,7 +653,7 @@ scannable:
     destination:
       key: 'GREEN'
       patron_barcode: 'GRE-SCANDELIVER'
-      folio_pseudopatron: 0ba81714-52d4-4f37-8b4d-f9d929af048d  
+      folio_pseudopatron: 0ba81714-52d4-4f37-8b4d-f9d929af048d
   - library: SAL
     item_types:
       - BUS-STACKS

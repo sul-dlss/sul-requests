@@ -118,8 +118,6 @@ describe AdminController do
   end
 
   describe 'approve item' do
-    before { stub_searchworks_api_json(build(:searchable_holdings)) }
-
     let(:mediated_page) do
       create(:mediated_page_with_holdings, user: create(:sso_user), barcodes: %w(12345678 23456789))
     end

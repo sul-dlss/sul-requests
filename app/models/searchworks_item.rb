@@ -7,6 +7,10 @@
 class SearchworksItem
   attr_reader :request, :live_lookup
 
+  def self.fetch(request, live_lookup = true)
+    new(request, live_lookup)
+  end
+
   def initialize(request, live_lookup = true)
     @request = request
     @live_lookup = live_lookup
@@ -36,10 +40,12 @@ class SearchworksItem
     json['finding_aid'] || ''
   end
 
-  def holdings
-    return [] unless json['holdings'].present?
+  def request_holdings(request)
+    Searchworks::Holdings.new(request, holdings)
+  end
 
-    @holdings ||= json['holdings'].map { |holding| Searchworks::Holding.new(holding) }
+  def holdings
+    @holdings ||= (json['holdings'] || []).map { |holding| Searchworks::Holding.new(holding) }
   end
 
   def finding_aid?

@@ -30,7 +30,7 @@ RSpec.describe 'Public Notes', js: true do
   describe 'public_notes' do
     before do
       stub_current_user(user)
-      stub_searchworks_api_json(build(:searchable_holdings))
+      stub_bib_data_json(:searchable_holdings)
     end
 
     it 'persists to the database as hash of barcode=>note pairs' do

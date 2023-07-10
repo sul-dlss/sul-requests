@@ -14,6 +14,7 @@ RSpec.describe 'Mark As Complete', js: true do
                     permanent_location: 'ART-STACKS',
                     temporary_location: nil,
                     home_location: 'STACKS',
+                    current_location: nil,
                     callnumber: 'ABC 123',
                     hold?: true)
     ]
@@ -22,7 +23,6 @@ RSpec.describe 'Mark As Complete', js: true do
   before do
     allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
     allow(HoldingsRelationshipBuilder).to receive(:build).and_return(selected_items)
-    stub_searchworks_api_json(build(:searchable_holdings))
     stub_current_user(user)
   end
 

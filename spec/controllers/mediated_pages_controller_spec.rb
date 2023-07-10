@@ -9,10 +9,6 @@ RSpec.describe MediatedPagesController do
   end
 
   before do
-    allow_any_instance_of(FolioClient).to receive(:find_instance).and_return({ indexTitle: 'Item Title' })
-    allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
-    stub_folio_holdings(:folio_multiple_holding)
-
     allow(controller).to receive_messages(current_user: user)
     allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
   end
@@ -79,7 +75,7 @@ RSpec.describe MediatedPagesController do
       end
 
       it 'is allowed if the library ID field is filled out' do
-        allow(Symphony::Patron).to receive(:find_by).with(library_id: '12345').and_return(
+        allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: '12345').and_return(
           instance_double(Symphony::Patron, email: nil, exists?: true)
         )
 

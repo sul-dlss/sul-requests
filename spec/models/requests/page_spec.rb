@@ -3,11 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe Page do
-  before do
-    allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
-    stub_folio_holdings(:folio_multiple_holding)
-  end
-
   describe 'TokenEncryptable' do
     it 'mixins TokenEncryptable' do
       expect(subject).to be_kind_of TokenEncryptable
@@ -56,7 +51,7 @@ RSpec.describe Page do
     expect(subject.type).to eq 'Page'
   end
 
-  describe 'library id validation', allow_apis: true do
+  describe 'library id validation' do
     let(:user) { create(:library_id_user) }
     let(:subject) do
       described_class.create(
@@ -70,7 +65,7 @@ RSpec.describe Page do
     end
 
     before do
-      expect(Symphony::Patron).to receive(:find_by).with(library_id: user.library_id).at_least(:once).and_return(
+      expect(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: user.library_id).at_least(:once).and_return(
         double(exists?: user_exists)
       )
     end
@@ -94,7 +89,7 @@ RSpec.describe Page do
     let(:user) {}
 
     before do
-      allow(Symphony::Patron).to receive(:find_by).with(library_id: user.library_id).and_return(
+      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: user.library_id).and_return(
         instance_double(Symphony::Patron, exists?: true, email: '')
       )
     end

@@ -10,9 +10,7 @@ RSpec.describe PagesController do
 
   before do
     allow(controller).to receive_messages(current_user: user)
-    allow_any_instance_of(FolioClient).to receive(:find_instance).and_return({ indexTitle: 'Item Title' })
-    allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
-    stub_folio_holdings(:folio_multiple_holding)
+    allow(Folio::Instance).to receive(:fetch).and_return(Folio::Instance.new(id: '1234'))
   end
 
   describe 'new' do
@@ -92,7 +90,7 @@ RSpec.describe PagesController do
       end
 
       it 'is allowed if the library ID field is filled out' do
-        allow(Symphony::Patron).to receive(:find_by).with(library_id: '12345').and_return(
+        allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: '12345').and_return(
           instance_double(Symphony::Patron, email: nil, exists?: true)
         )
 
@@ -185,7 +183,7 @@ RSpec.describe PagesController do
       end
 
       it 'maps checkbox style barcodes correctly' do
-        stub_searchworks_api_json(build(:multiple_holdings))
+        stub_bib_data_json(:multiple_holdings)
 
         put :create, params: {
           request: {
@@ -201,7 +199,7 @@ RSpec.describe PagesController do
       end
 
       it 'redirects to success page with token when the sso user supplies a library ID' do
-        allow(Symphony::Patron).to receive(:find_by).with(library_id: '5432123').and_return(
+        allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: '5432123').and_return(
           instance_double(Symphony::Patron, email: nil, exists?: true)
         )
 

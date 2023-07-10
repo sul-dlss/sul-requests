@@ -19,13 +19,6 @@ FactoryBot.define do
     destination { 'GREEN' }
     item_title { 'Title of HoldRecall 1234' }
     needed_date { Time.zone.today }
-
-    after(:build) do |hold_recall|
-      class << hold_recall
-        def bib_data
-          @bib_data ||= FactoryBot.build(:sal3_stacks_multi_holdings_searchworks_item, request: self)
-        end
-      end
-    end
+    bib_data { FactoryBot.build(:sal3_holdings) }
   end
 end

@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
 # Calls FOLIO REST endpoints
-class FolioClient # rubocop:disable Metrics/ClassLength
+class FolioClient
   DEFAULT_HEADERS = {
     accept: 'application/json, text/plain',
     content_type: 'application/json'
   }.freeze
 
   attr_reader :base_url
+
+  delegate :locations, to: :folio_graphql_client
 
   def initialize(url: Settings.folio.okapi_url, tenant: Settings.folio.tenant)
     uri = URI.parse(url)
@@ -31,14 +33,14 @@ class FolioClient # rubocop:disable Metrics/ClassLength
   # See https://s3.amazonaws.com/foliodocs/api/mod-users/p/users.html#users__userid__get
   def login_by_sunetid(sunetid)
     response = get_json('/users', params: { query: CqlQuery.new(username: sunetid).to_query })
-    response.dig('users', 0)
+    response&.dig('users', 0)
   end
 
   # Return the FOLIO user object given a library id (e.g. barcode)
   # See https://s3.amazonaws.com/foliodocs/api/mod-users/p/users.html#users__userid__get
   def login_by_library_id(library_id)
     response = get_json('/users', params: { query: CqlQuery.new(barcode: library_id).to_query })
-    response.dig('users', 0)
+    response&.dig('users', 0)
   end
 
   def user_info(user_id)
@@ -93,14 +95,6 @@ class FolioClient # rubocop:disable Metrics/ClassLength
     parse_json(response)
   end
 
-  def items_and_holdings(instance_id:)
-    body = {
-      instanceIds: [instance_id],
-      skipSuppressedFromDiscoveryRecords: false
-    }
-    get_json('/inventory-hierarchy/items-and-holdings', method: :post, json: body)
-  end
-
   def get_item(barcode)
     response = get_json('/item-storage/items', params: { query: CqlQuery.new(barcode:).to_query })
 
@@ -113,19 +107,8 @@ class FolioClient # rubocop:disable Metrics/ClassLength
     response.dig('servicepoints', 0)
   end
 
-  def resolve_to_instance_id(hrid:)
-    search_response = get_json('/search/instances', params: { limit: 10, query: CqlQuery.new(hrid:).to_query })
-    search_response.dig('instances', 0, 'id')
-  end
-
-  def find_instance(instance_id:)
-    get_json("/inventory/instances/#{instance_id}")
-  end
-
-  # TODO: This could be cached. There are typically only 25 responses
-  def instance_types
-    response = get_json('/instance-types?limit=1000&query=cql.allRecords=1 sortby name')
-    response['instanceTypes']
+  def find_instance_by(hrid:)
+    folio_graphql_client.instance(hrid:)
   end
 
   private
@@ -162,7 +145,7 @@ class FolioClient # rubocop:disable Metrics/ClassLength
   def session_token
     @session_token ||= begin
       response = request('/authn/login', json: { username: @username, password: @password }, method: :post)
-      raise response.body unless response.status == 201
+      raise response.body unless response.success?
 
       response['x-okapi-token']
     end
@@ -189,5 +172,9 @@ class FolioClient # rubocop:disable Metrics/ClassLength
 
   def default_headers
     DEFAULT_HEADERS.merge({ 'X-Okapi-Tenant': @tenant, 'User-Agent': 'SulRequests' })
+  end
+
+  def folio_graphql_client
+    @folio_graphql_client ||= FolioGraphqlClient.new
   end
 end

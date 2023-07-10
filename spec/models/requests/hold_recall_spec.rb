@@ -13,16 +13,12 @@ RSpec.describe HoldRecall do
   end
 
   describe 'send_approval_status!' do
-    before do
-      allow(HoldingsRelationshipBuilder).to receive(:build).and_return([])
-    end
-
     describe 'for library id users' do
       let(:user) { create(:library_id_user) }
       let(:subject) { create(:hold_recall, user:) }
 
       before do
-        allow(Symphony::Patron).to receive(:find_by).with(library_id: user.library_id).at_least(:once).and_return(
+        allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: user.library_id).at_least(:once).and_return(
           double(exists?: true, email: nil)
         )
       end

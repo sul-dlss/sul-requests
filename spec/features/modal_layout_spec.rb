@@ -13,7 +13,7 @@ RSpec.describe 'Modal Layout' do
   before do
     allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
     allow(HoldingsRelationshipBuilder).to receive(:build).and_return(selected_items)
-    stub_searchworks_api_json(build(:sal3_holdings))
+    stub_bib_data_json(:sal3_holdings)
   end
 
   it 'is not used when the modal param is not set' do

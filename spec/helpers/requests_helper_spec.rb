@@ -9,7 +9,6 @@ describe RequestsHelper do
     let(:form) { double('form') }
 
     before do
-      allow(HoldingsRelationshipBuilder).to receive(:build).and_return([])
       allow(form).to receive_messages(object: request)
     end
 

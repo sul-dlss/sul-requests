@@ -16,11 +16,6 @@ RSpec.describe RequestsController do
     { item_id: '12345', barcode: '3610512345', origin: 'GREEN', origin_location: 'STACKS' }
   end
 
-  before do
-    allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
-    stub_folio_holdings(:folio_multiple_holding)
-  end
-
   describe '#new' do
     describe 'required parameters' do
       it 'item id, library, and location' do
@@ -50,7 +45,7 @@ RSpec.describe RequestsController do
 
     describe 'scannable item' do
       before do
-        stub_searchworks_api_json(build(:sal3_holdings))
+        stub_bib_data_json(:sal3_holdings)
       end
 
       it 'displays a page to choose to have an item scanned or delivered' do
@@ -68,6 +63,8 @@ RSpec.describe RequestsController do
 
     describe 'unmediateable item' do
       it 'redirects to the new page form' do
+        stub_bib_data_json(:multiple_holdings)
+
         get :new, params: unscannable_params
         expect(response).to redirect_to new_page_path(unscannable_params)
       end
@@ -164,7 +161,7 @@ RSpec.describe RequestsController do
 
   describe 'layout setting' do
     before do
-      stub_searchworks_api_json(build(:sal3_holdings))
+      stub_bib_data_json(:sal3_holdings)
     end
 
     it 'defaults to application' do

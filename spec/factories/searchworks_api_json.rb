@@ -1,791 +1,601 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :multiple_holdings, class: 'Hash' do
+  factory :location, class: 'Folio::Location' do
+    id { 'uuid' }
+    code { 'GRE-STACKS' }
+    name { 'Location name' }
+    discovery_display_name { 'Discovery display name' }
+    campus { Folio::Campus.new(id: 'uuid') }
+    library { Folio::Campus.new(id: 'uuid') }
+    institution { Folio::Campus.new(id: 'uuid') }
+
+    initialize_with { new(**attributes) }
+  end
+
+  factory :multiple_holdings, class: 'Folio::Instance' do
+    id { '1234' }
+    hrid { 'a1234' }
+    title { 'Item Title' }
+    format { 'Book' }
+    items do
+      [
+        Folio::Item.new(
+          barcode: '3610512345678',
+          callnumber: 'ABC 123',
+          status: 'Available',
+          effective_location: build(:location, code: 'GRE-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        ),
+        Folio::Item.new(
+          barcode: '3610587654321',
+          callnumber: 'ABC 321',
+          status: 'Available',
+          effective_location: build(:location, code: 'GRE-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        ),
+        Folio::Item.new(
+          barcode: '12345679',
+          callnumber: 'ABC 456',
+          status: 'Available',
+          effective_location: build(:location, code: 'GRE-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        )
+      ]
+    end
+
+    initialize_with do
+      new(**attributes)
+    end
+  end
+
+  factory :sal3_holding, class: 'Folio::Instance' do
+    id { '12345' }
+    hrid { 'a12345' }
+    title { 'Item Title' }
+    format { 'Book' }
+    items do
+      [
+        Folio::Item.new(
+          barcode: '87654321',
+          callnumber: 'ABC 87654321',
+          status: 'Available',
+          effective_location: build(:location, code: 'SAL3-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        )
+      ]
+    end
+
+    initialize_with do
+      new(**attributes)
+    end
+  end
+
+  factory :single_holding, class: 'Folio::Instance' do
+    id { '123' }
+
     title { 'Item Title' }
 
     format { ['Book'] }
 
-    holdings do
+    items do
       [
-        { 'code' => 'GREEN',
-          'locations' => [
-            { 'code' => 'STACKS',
-              'items' => [
-                { 'barcode' => '3610512345678',
-                  'callnumber' => 'ABC 123',
-                  'type' => 'STKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                },
-                { 'barcode' => '3610587654321',
-                  'callnumber' => 'ABC 321',
-                  'type' => 'STKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                },
-                { 'barcode' => '12345679',
-                  'callnumber' => 'ABC 456',
-                  'type' => 'STKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                }
-              ]
-            }
-          ]
-        }
+        Folio::Item.new(
+          barcode: '12345678',
+          callnumber: 'ABC 123',
+          status: 'Available',
+          effective_location: build(:location, code: 'GRE-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        )
       ]
     end
 
     initialize_with do
-      attributes.stringify_keys
+      new(**attributes)
     end
   end
 
-  factory :single_holding, class: 'Hash' do
+  factory :scannable_only_holdings, class: 'Folio::Instance' do
+    id { '1234' }
     title { 'Item Title' }
 
     format { ['Book'] }
 
-    holdings do
+    items do
       [
-        { 'code' => 'GREEN',
-          'locations' => [
-            { 'code' => 'STACKS',
-              'items' => [
-                { 'barcode' => '12345678',
-                  'callnumber' => 'ABC 123',
-                  'type' => 'STKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                }
-              ]
-            }
-          ]
-        }
+        Folio::Item.new(
+          barcode: '12345678',
+          callnumber: 'ABC 123',
+          status: 'Available',
+          effective_location: build(:location, code: 'SAL-TEMP'),
+          public_note: '',
+          type: 'NONCIRC'
+        )
       ]
     end
 
     initialize_with do
-      attributes.stringify_keys
+      new(**attributes)
     end
   end
 
-  factory :scannable_only_holdings, class: 'Hash' do
-    title { 'Item Title' }
-
-    format { ['Book'] }
-
-    holdings do
-      [
-        { 'code' => 'SAL',
-          'locations' => [
-            { 'code' => 'SAL-TEMP',
-              'items' => [
-                { 'barcode' => '12345678',
-                  'callnumber' => 'ABC 123',
-                  'type' => 'NONCIRC'
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    end
-
-    initialize_with do
-      attributes.stringify_keys
-    end
-  end
-
-  factory :special_collections_holdings, class: 'Hash' do
+  factory :special_collections_holdings, class: 'Folio::Instance' do
+    id { '1234' }
+    hrid { 'a1234' }
     title { 'Special Collections Item Title' }
-    author { 'John Q. Public' }
+    contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
     pub_date { '2018' }
 
     format { ['Book'] }
 
-    holdings do
+    items do
       [
-        { 'code' => 'SPEC-COLL',
-          'locations' => [
-            { 'code' => 'STACKS',
-              'items' => [
-                { 'barcode' => '12345678',
-                  'callnumber' => 'ABC 123',
-                  'type' => 'STKS',
-                  'status' => {
-                    'availability_class' => 'page',
-                    'status_text' => 'Page'
-                  }
-                },
-                { 'barcode' => '87654321',
-                  'callnumber' => 'ABC 321',
-                  'type' => 'STKS',
-                  'status' => {
-                    'availability_class' => 'page',
-                    'status_text' => 'Page'
-                  }
-                }
-              ]
-            }
-          ]
-        }
+        Folio::Item.new(
+          barcode: '12345678',
+          callnumber: 'ABC 123',
+          status: 'Page',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        ),
+        Folio::Item.new(
+          barcode: '87654321',
+          callnumber: 'ABC 321',
+          status: 'Page',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        )
       ]
     end
 
     initialize_with do
-      attributes.stringify_keys
+      new(**attributes)
     end
   end
 
-  factory :special_collections_single_holding, class: 'Hash' do
+  factory :special_collections_single_holding, class: 'Folio::Instance' do
+    id { '1234' }
+    hrid { 'a1234' }
     title { 'Special Collections Item Title' }
-    author { 'John Q. Public' }
+    contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
     pub_date { '2018' }
 
     format { ['Book'] }
 
-    holdings do
+    items do
       [
-        { 'code' => 'SPEC-COLL',
-          'locations' => [
-            { 'code' => 'STACKS',
-              'items' => [
-                { 'barcode' => '12345678',
-                  'callnumber' => 'ABC 123',
-                  'type' => 'STKS',
-                  'status' => {
-                    'availability_class' => 'page',
-                    'status_text' => 'Page'
-                  }
-                }
-              ]
-            }
-          ]
-        }
+        Folio::Item.new(
+          barcode: '12345678',
+          callnumber: 'ABC 123',
+          status: 'Page',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        )
       ]
     end
 
     initialize_with do
-      attributes.stringify_keys
+      new(**attributes)
     end
   end
 
-  factory :special_collections_finding_aid_holdings, class: 'Hash' do
+  factory :special_collections_finding_aid_holdings, class: 'Folio::Instance' do
+    id { '1234' }
+    hrid { 'a1234' }
     title { 'Special Collections Item Title' }
-    author { 'John Q. Public' }
     pub_date { '2018' }
-    finding_aid { 'http://www.oac.cdlib.org/findaid/ark:/12345/abcdefgh/' }
+    contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
+    electronic_access { [{ 'uri' => 'http://www.oac.cdlib.org/findaid/ark:/12345/abcdefgh/', 'materialsSpecification' => 'Finding aid available online' }] }
 
     format { ['Book'] }
 
-    holdings do
+    items do
       [
-        { 'code' => 'SPEC-COLL',
-          'locations' => [
-            { 'code' => 'STACKS',
-              'items' => [
-                { 'barcode' => '12345678',
-                  'callnumber' => 'ABC 123',
-                  'type' => 'STKS',
-                  'status' => {
-                    'availability_class' => 'page',
-                    'status_text' => 'Page'
-                  }
-                },
-                { 'barcode' => '87654321',
-                  'callnumber' => 'ABC 321',
-                  'type' => 'STKS',
-                  'status' => {
-                    'availability_class' => 'page',
-                    'status_text' => 'Page'
-                  }
-                }
-              ]
-            }
-          ]
-        }
+        Folio::Item.new(
+          barcode: '12345678',
+          callnumber: 'ABC 123',
+          status: 'Page',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        )
       ]
     end
 
     initialize_with do
-      attributes.stringify_keys
+      new(**attributes)
     end
   end
 
-  factory :sal3_holdings, class: 'Hash' do
+  factory :sal3_holdings, class: 'Folio::Instance' do
+    id { '123456' }
     title { 'SAL3 Item Title' }
 
     format { ['Book'] }
 
-    holdings do
+    items do
       [
-        { 'code' => 'SAL3',
-          'locations' => [
-            { 'code' => 'STACKS',
-              'items' => [
-                { 'barcode' => '12345678',
-                  'callnumber' => 'ABC 123',
-                  'type' => 'STKS',
-                  'status' => {
-                    'availability_class' => 'page',
-                    'status_text' => 'Page'
-                  }
-                },
-                { 'barcode' => '87654321',
-                  'callnumber' => 'ABC 321',
-                  'type' => 'STKS',
-                  'status' => {
-                    'availability_class' => 'page',
-                    'status_text' => 'Page'
-                  }
-                }
-              ]
-            }
-          ]
-        }
+        Folio::Item.new(
+          barcode: '12345678',
+          callnumber: 'ABC 123',
+          status: 'Page',
+          effective_location: build(:location, code: 'SAL3-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        ),
+        Folio::Item.new(
+          barcode: '87654321',
+          callnumber: 'ABC 321',
+          status: 'Page',
+          effective_location: build(:location, code: 'SAL3-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        )
       ]
     end
 
     initialize_with do
-      attributes.stringify_keys
+      new(**attributes)
     end
   end
 
-  factory :sal_holdings, class: 'Hash' do
+  factory :sal_holdings, class: 'Folio::Instance' do
+    id { '1234' }
     title { 'SAL Item Title' }
 
     format { ['Book'] }
 
-    holdings do
+    items do
       [
-        { 'code' => 'SAL',
-          'locations' => [
-            { 'code' => 'STACKS',
-              'items' => [
-                { 'barcode' => '12345678',
-                  'callnumber' => 'ABC 123',
-                  'type' => 'STKS',
-                  'status' => {
-                    'availability_class' => 'page',
-                    'status_text' => 'Page'
-                  }
-                },
-                { 'barcode' => '87654321',
-                  'callnumber' => 'ABC 321',
-                  'type' => 'STKS',
-                  'status' => {
-                    'availability_class' => 'page',
-                    'status_text' => 'Page'
-                  }
-                }
-              ]
-            }
-          ]
-        }
+        Folio::Item.new(
+          barcode: '12345678',
+          callnumber: 'ABC 123',
+          status: 'Page',
+          effective_location: build(:location, code: 'SAL-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        ),
+        Folio::Item.new(
+          barcode: '87654321',
+          callnumber: 'ABC 321',
+          status: 'Page',
+          effective_location: build(:location, code: 'SAL-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        )
       ]
     end
 
     initialize_with do
-      attributes.stringify_keys
+      new(**attributes)
     end
   end
 
-  factory :page_mp_holdings, class: 'Hash' do
+  factory :page_mp_holdings, class: 'Folio::Instance' do
+    id { '1234' }
     title { 'PAGE-MP Item Title' }
 
     format { ['Book'] }
 
-    holdings do
+    items do
       [
-        { 'code' => 'SAL3',
-          'locations' => [
-            { 'code' => 'PAGE-MP',
-              'items' => [
-                { 'barcode' => '12345678',
-                  'callnumber' => 'ABC 123',
-                  'home_location' => 'STACKS',
-                  'type' => 'STKS',
-                  'current_location' => {
-                    'code' => ''
-                  },
-                  'status' => {
-                    'availability_class' => 'page',
-                    'status_text' => 'Page'
-                  }
-                },
-                { 'barcode' => '87654321',
-                  'callnumber' => 'ABC 321',
-                  'home_location' => 'STACKS',
-                  'type' => 'STKS',
-                  'current_location' => {
-                    'code' => ''
-                  },
-                  'status' => {
-                    'availability_class' => 'page',
-                    'status_text' => 'Page'
-                  }
-                }
-              ]
-            }
-          ]
-        }
+        Folio::Item.new(
+          barcode: '12345678',
+          callnumber: 'ABC 123',
+          status: 'Page',
+          effective_location: build(:location, code: 'SAL3-PAGE-MP'),
+          public_note: '',
+          type: 'STKS'
+        ),
+        Folio::Item.new(
+          barcode: '87654321',
+          callnumber: 'ABC 321',
+          status: 'Page',
+          effective_location: build(:location, code: 'SAL3-PAGE-MP'),
+          public_note: '',
+          type: 'STKS'
+        )
       ]
     end
 
     initialize_with do
-      attributes.stringify_keys
+      new(**attributes)
     end
   end
 
-  factory :many_holdings, class: 'Hash' do
+  factory :many_holdings, class: 'Folio::Instance' do
+    id { '1234' }
     title { 'Item title' }
 
     format { ['Book'] }
 
-    holdings do
+    items do
       [
-        { 'code' => 'GREEN',
-          'locations' => [
-            { 'code' => 'STACKS',
-              'items' => [
-                { 'barcode' => '12345678',
-                  'callnumber' => 'ABC 123',
-                  'type' => 'STKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                },
-                { 'barcode' => '23456789',
-                  'callnumber' => 'ABC 456',
-                  'type' => 'SOMETHING-ELSE',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                },
-                { 'barcode' => '34567890',
-                  'callnumber' => 'ABC 789',
-                  'type' => 'STKS-MONO',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                },
-                { 'barcode' => '45678901',
-                  'callnumber' => 'ABC 012',
-                  'type' => 'STKS-PERI',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                },
-                { 'barcode' => '56789012',
-                  'callnumber' => 'ABC 345',
-                  'type' => 'STKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                },
-                { 'barcode' => '67890123',
-                  'callnumber' => 'ABC 678',
-                  'type' => 'STKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                }
-              ]
-            }
-          ]
-        }
+        Folio::Item.new(
+          barcode: '12345678',
+          callnumber: 'ABC 123',
+          status: 'Available',
+          effective_location: build(:location, code: 'SAL3-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        ),
+        Folio::Item.new(
+          barcode: '23456789',
+          callnumber: 'ABC 456',
+          status: 'Available',
+          effective_location: build(:location, code: 'SAL3-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        ),
+        Folio::Item.new(
+          barcode: '34567890',
+          callnumber: 'ABC 789',
+          status: 'Available',
+          effective_location: build(:location, code: 'SAL3-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        ),
+        Folio::Item.new(
+          barcode: '45678901',
+          callnumber: 'ABC 012',
+          status: 'Available',
+          effective_location: build(:location, code: 'SAL3-STACKS'),
+          public_note: 'note for 45678901',
+          type: 'STKS'
+        ),
+        Folio::Item.new(
+          barcode: '56789012',
+          callnumber: 'ABC 345',
+          status: 'Available',
+          effective_location: build(:location, code: 'SAL3-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        ),
+        Folio::Item.new(
+          barcode: '67890123',
+          callnumber: 'ABC 678',
+          status: 'Available',
+          effective_location: build(:location, code: 'SAL3-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        )
       ]
     end
 
     initialize_with do
-      attributes.stringify_keys
+      new(**attributes)
     end
   end
 
-  factory :searchable_holdings, class: 'Hash' do
+  factory :searchable_holdings, class: 'Folio::Instance' do
+    id { '1234' }
     title { 'Item Title' }
 
     format { ['Book'] }
 
-    holdings do
+    items do
       [
-        { 'code' => 'ART',
-          'locations' => [
-            { 'code' => 'ARTLCKL',
-              'items' => [
-                { 'barcode' => '12345678',
-                  'callnumber' => 'ABC 123',
-                  'type' => 'LCKSTK',
-                  'current_location' => {
-                    'code' => ''
-                  },
-                  'home_location' => 'STACKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                },
-                { 'barcode' => '23456789',
-                  'callnumber' => 'ABC 456',
-                  'type' => 'LCKSTK',
-                  'public_note' => 'note for 23456789',
-                  'current_location' => {
-                    'code' => ''
-                  },
-                  'home_location' => 'STACKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                },
-                { 'barcode' => '34567890',
-                  'callnumber' => 'ABC 789',
-                  'type' => 'LCKSTK',
-                  'current_location' => {
-                    'code' => ''
-                  },
-                  'home_location' => 'STACKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                },
-                { 'barcode' => '45678901',
-                  'callnumber' => 'ABC 012',
-                  'type' => 'LCKSTK',
-                  'public_note' => 'note for 45678901',
-                  'current_location' => {
-                    'code' => ''
-                  },
-                  'home_location' => 'STACKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                },
-                { 'barcode' => '56789012',
-                  'callnumber' => 'ABC 345',
-                  'type' => 'LCKSTK',
-                  'current_location' => {
-                    'code' => ''
-                  },
-                  'home_location' => 'STACKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                },
-                { 'barcode' => '67890123',
-                  'callnumber' => 'ABC 678',
-                  'type' => 'LCKSTK',
-                  'current_location' => {
-                    'code' => ''
-                  },
-                  'home_location' => 'STACKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                },
-                { 'barcode' => '78901234',
-                  'callnumber' => 'ABC 901',
-                  'type' => 'LCKSTK',
-                  'current_location' => {
-                    'code' => ''
-                  },
-                  'home_location' => 'STACKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                },
-                { 'barcode' => '89012345',
-                  'callnumber' => 'ABC 234',
-                  'type' => 'LCKSTK',
-                  'current_location' => {
-                    'code' => ''
-                  },
-                  'home_location' => 'STACKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                },
-                { 'barcode' => '90123456',
-                  'callnumber' => 'ABC 567',
-                  'type' => 'LCKSTK',
-                  'current_location' => {
-                    'code' => ''
-                  },
-                  'home_location' => 'STACKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                },
-                { 'barcode' => '01234567',
-                  'callnumber' => 'ABC 890',
-                  'type' => 'LCKSTK',
-                  'current_location' => {
-                    'code' => ''
-                  },
-                  'home_location' => 'STACKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                }
-              ]
-            }
-          ]
-        }
+        Folio::Item.new(
+          barcode: '12345678',
+          callnumber: 'ABC 123',
+          status: 'Available',
+          effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
+          public_note: '',
+          type: 'LCKSTK'
+        ),
+        Folio::Item.new(
+          barcode: '23456789',
+          callnumber: 'ABC 456',
+          status: 'Available',
+          effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
+          public_note: 'note for 23456789',
+          type: 'LCKSTK'
+        ),
+        Folio::Item.new(
+          barcode: '34567890',
+          callnumber: 'ABC 789',
+          status: 'THE-CURRENT-LOCATION',
+          effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
+          public_note: '',
+          type: 'LCKSTK'
+        ),
+        Folio::Item.new(
+          barcode: '45678901',
+          callnumber: 'ABC 012',
+          status: 'Available',
+          effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
+          public_note: 'note for 45678901',
+          type: 'LCKSTK'
+        ),
+        Folio::Item.new(
+          barcode: '56789012',
+          callnumber: 'ABC 345',
+          status: 'Available',
+          effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
+          public_note: '',
+          type: 'LCKSTK'
+        ),
+        Folio::Item.new(
+          barcode: '67890123',
+          callnumber: 'ABC 678',
+          status: 'Available',
+          effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
+          public_note: '',
+          type: 'LCKSTK'
+        ),
+        Folio::Item.new(
+          barcode: '78901234',
+          callnumber: 'ABC 901',
+          status: 'Available',
+          effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
+          public_note: '',
+          type: 'LCKSTK'
+        ),
+        Folio::Item.new(
+          barcode: '89012345',
+          callnumber: 'ABC 234',
+          status: 'Available',
+          effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
+          public_note: '',
+          type: 'LCKSTK'
+        ),
+        Folio::Item.new(
+          barcode: '90123456',
+          callnumber: 'ABC 567',
+          status: 'Available',
+          effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
+          public_note: '',
+          type: 'LCKSTK'
+        ),
+        Folio::Item.new(
+          barcode: '01234567',
+          callnumber: 'ABC 890',
+          status: 'Available',
+          effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
+          public_note: '',
+          type: 'LCKSTK'
+        )
       ]
     end
 
     initialize_with do
-      attributes.stringify_keys
+      new(**attributes)
     end
   end
 
-  factory :searchable_spec_holdings, class: 'Hash' do
+  factory :searchable_spec_holdings, class: 'Folio::Instance' do
+    id { '1234' }
     title { 'Item Title' }
 
     format { ['Book'] }
 
-    holdings do
+    items do
       [
-        { 'code' => 'SPEC-COLL',
-          'locations' => [
-            { 'code' => 'STACKS',
-              'items' => [
-                { 'barcode' => '12345678',
-                  'callnumber' => 'ABC 123',
-                  'type' => 'STKS',
-                  'current_location' => {
-                    'code' => ''
-                  },
-                  'home_location' => 'STACKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                },
-                { 'barcode' => '23456789',
-                  'callnumber' => 'ABC 456',
-                  'type' => 'STKS',
-                  'public_note' => 'note for 23456789',
-                  'current_location' => {
-                    'code' => ''
-                  },
-                  'home_location' => 'STACKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                },
-                { 'barcode' => '34567890',
-                  'callnumber' => 'ABC 789',
-                  'type' => 'STKS',
-                  'current_location' => {
-                    'code' => ''
-                  },
-                  'home_location' => 'STACKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                },
-                { 'barcode' => '45678901',
-                  'callnumber' => 'ABC 012',
-                  'type' => 'STKS',
-                  'public_note' => 'note for 45678901',
-                  'current_location' => {
-                    'code' => ''
-                  },
-                  'home_location' => 'STACKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                },
-                { 'barcode' => '56789012',
-                  'callnumber' => 'ABC 345',
-                  'type' => 'STKS',
-                  'current_location' => {
-                    'code' => ''
-                  },
-                  'home_location' => 'STACKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                },
-                { 'barcode' => '67890123',
-                  'callnumber' => 'ABC 678',
-                  'type' => 'STKS',
-                  'current_location' => {
-                    'code' => ''
-                  },
-                  'home_location' => 'STACKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                },
-                { 'barcode' => '78901234',
-                  'callnumber' => 'ABC 901',
-                  'type' => 'STKS',
-                  'current_location' => {
-                    'code' => ''
-                  },
-                  'home_location' => 'STACKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                },
-                { 'barcode' => '89012345',
-                  'callnumber' => 'ABC 234',
-                  'type' => 'STKS',
-                  'current_location' => {
-                    'code' => ''
-                  },
-                  'home_location' => 'STACKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                },
-                { 'barcode' => '90123456',
-                  'callnumber' => 'ABC 567',
-                  'type' => 'STKS',
-                  'current_location' => {
-                    'code' => ''
-                  },
-                  'home_location' => 'STACKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                },
-                { 'barcode' => '01234567',
-                  'callnumber' => 'ABC 890',
-                  'type' => 'STKS',
-                  'current_location' => {
-                    'code' => ''
-                  },
-                  'home_location' => 'STACKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                }
-              ]
-            }
-          ]
-        }
+        Folio::Item.new(
+          barcode: '12345678',
+          callnumber: 'ABC 123',
+          status: 'Available',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        ),
+        Folio::Item.new(
+          barcode: '23456789',
+          callnumber: 'ABC 456',
+          status: 'Available',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        ),
+        Folio::Item.new(
+          barcode: '34567890',
+          callnumber: 'ABC 789',
+          status: 'Available',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        ),
+        Folio::Item.new(
+          barcode: '45678901',
+          callnumber: 'ABC 012',
+          status: 'Available',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
+          public_note: 'note for 45678901',
+          type: 'STKS'
+        ),
+        Folio::Item.new(
+          barcode: '56789012',
+          callnumber: 'ABC 345',
+          status: 'Available',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        ),
+        Folio::Item.new(
+          barcode: '67890123',
+          callnumber: 'ABC 678',
+          status: 'Available',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        ),
+        Folio::Item.new(
+          barcode: '78901234',
+          callnumber: 'ABC 901',
+          status: 'Available',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        ),
+        Folio::Item.new(
+          barcode: '89012345',
+          callnumber: 'ABC 234',
+          status: 'Available',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        ),
+        Folio::Item.new(
+          barcode: '90123456',
+          callnumber: 'ABC 567',
+          status: 'Available',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        ),
+        Folio::Item.new(
+          barcode: '01234567',
+          callnumber: 'ABC 890',
+          status: 'Available',
+          effective_location: build(:location, code: 'SPEC-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        )
       ]
     end
 
     initialize_with do
-      attributes.stringify_keys
+      new(**attributes)
     end
   end
 
-  factory :library_instructions_holdings, class: 'Hash' do
-    title { 'Item Title' }
-
-    format { ['Book'] }
-
-    holdings do
-      [
-        { 'code' => 'EDUCATION',
-          'library_instructions' => {
-            'heading' => 'Instruction Heading',
-            'text' => 'This is the library instruction'
-          },
-          'locations' => [
-            { 'code' => 'STACKS',
-              'items' => [
-                { 'barcode' => '12345678',
-                  'callnumber' => 'ABC 123',
-                  'type' => 'STKS-MONO',
-                  'current_location' => {
-                    'code' => 'CHECKEDOUT'
-                  },
-                  'status' => {
-                    'availability_class' => 'unknown',
-                    'status_text' => 'Unknown'
-                  }
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    end
-
-    initialize_with do
-      attributes.stringify_keys
-    end
-  end
-
-  factory :checkedout_holdings, class: 'Hash' do
+  factory :checkedout_holdings, class: 'Folio::Instance' do
+    id { '1234' }
     title { 'Checked out item' }
 
     format { ['Book'] }
 
-    holdings do
+    items do
       [
-        { 'code' => 'SAL3',
-          'locations' => [
-            { 'code' => 'STACKS',
-              'items' => [
-                { 'barcode' => '12345678',
-                  'callnumber' => 'ABC 123',
-                  'type' => 'STKS',
-                  'status' => {
-                    'availability_class' => 'available',
-                    'status_text' => 'Available'
-                  }
-                },
-                { 'barcode' => '87654321',
-                  'callnumber' => 'ABC 321',
-                  'current_location' => {
-                    'code' => 'CHECKEDOUT'
-                  },
-                  'due_date' => '01/01/2015',
-                  'type' => 'STKS',
-                  'status' => {
-                    'availability_class' => 'page',
-                    'status_text' => 'Available'
-                  }
-                }
-              ]
-            }
-          ]
-        }
+        Folio::Item.new(
+          barcode: '12345678',
+          callnumber: 'ABC 123',
+          status: 'Available',
+          effective_location: build(:location, code: 'SAL3-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        ),
+        Folio::Item.new(
+          barcode: '87654321',
+          callnumber: 'ABC 321',
+          due_date: '2015-01-01T12:59:00.000+00:00',
+          status: 'Checked out',
+          effective_location: build(:location, code: 'SAL3-STACKS'),
+          public_note: '',
+          type: 'STKS'
+        )
       ]
     end
 
     initialize_with do
-      attributes.stringify_keys
+      new(**attributes)
     end
   end
 end

@@ -7,15 +7,11 @@ RSpec.describe 'Creating a page request' do
 
   before do
     allow(Request.ils_job_class).to receive(:perform_now)
-    allow_any_instance_of(FolioClient).to receive(:find_instance).and_return({ title: 'Item Title' })
-    allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
-    stub_folio_holdings(:folio_multiple_holding)
   end
 
   context 'when initiated by an anonmyous user' do
     before do
-      stub_searchworks_api_json(build(:single_holding))
-      stub_folio_holdings(:folio_single_holding)
+      stub_bib_data_json(:single_holding)
     end
 
     it 'is possible if a name and email is filled out', js: true do
@@ -104,7 +100,7 @@ RSpec.describe 'Creating a page request' do
   describe 'selecting barcodes' do
     before do
       stub_current_user(user)
-      stub_searchworks_api_json(build(:multiple_holdings))
+      stub_bib_data_json(:multiple_holdings)
     end
 
     it 'persists to the database' do

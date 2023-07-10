@@ -5,82 +5,11 @@ require 'rails_helper'
 RSpec.describe 'Mediation table', js: true do
   let(:top_level_columns) { 7 }
   let(:short_comment) { 'not a long comment' }
-  let(:folio_holding_response) do
-    { 'instanceId' => 'f1c52ab3-721e-5234-9a00-1023e034e2e8',
-      'source' => 'MARC',
-      'modeOfIssuance' => 'single unit',
-      'natureOfContent' => [],
-      'holdings' => [],
-      'items' => folio_items }
-  end
-  let(:folio_items) { [] }
-
-  before do
-    allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
-    allow_any_instance_of(FolioClient).to receive(:items_and_holdings).and_return(folio_holding_response)
-  end
 
   context 'Library Mediation' do
-    let(:folio_items) do
-      [
-        { 'id' => '584baef9-ea2f-5ff5-9947-bbc348aee4a4',
-          'notes' => [],
-          'status' => 'Available',
-          'barcode' => '12345678',
-          'location' =>
-          { 'effectiveLocation' => { 'code' => 'ART-LOCKED-LARGE' },
-            'permanentLocation' => { 'code' => 'ART-LOCKED-LARGE' },
-            'temporaryLocation' => {} },
-          'callNumber' => { 'callNumber' => 'ABC 123' },
-          'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
-          'materialType' => 'book',
-          'permanentLoanType' => 'Can circulate',
-          'suppressFromDiscovery' => false },
-        { 'id' => '99466f50-2b8c-51d4-8890-373190b8f6c4',
-          'notes' => [],
-          'status' => 'Available',
-          'barcode' => '23456789',
-          'location' =>
-          { 'effectiveLocation' => { 'code' => 'ART-LOCKED-LARGE' },
-            'permanentLocation' => { 'code' => 'ART-LOCKED-LARGE' },
-            'temporaryLocation' => {} },
-          'callNumber' => { 'callNumber' => 'ABC 456' },
-          'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
-          'materialType' => 'book',
-          'permanentLoanType' => 'Can circulate',
-          'suppressFromDiscovery' => false },
-        { 'id' => 'deec4ae9-545c-5d60-85b0-b1048b9dad05',
-          'notes' => [],
-          'status' => 'Available',
-          'barcode' => '34567890',
-          'location' =>
-          { 'effectiveLocation' => { 'code' => 'ART-LOCKED-LARGE' },
-            'permanentLocation' => { 'code' => 'ART-LOCKED-LARGE' },
-            'temporaryLocation' => {} },
-          'callNumber' => { 'callNumber' => 'ABC 789' },
-          'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
-          'materialType' => 'book',
-          'permanentLoanType' => 'Can circulate',
-          'suppressFromDiscovery' => false },
-        { 'id' => 'deec4ae9-545c-5d60-85b0-b1048b9dad05',
-          'notes' => [],
-          'status' => 'Available',
-          'barcode' => '45678901',
-          'location' =>
-            { 'effectiveLocation' => { 'code' => 'ART-LOCKED-LARGE' },
-              'permanentLocation' => { 'code' => 'ART-LOCKED-LARGE' },
-              'temporaryLocation' => {} },
-          'callNumber' => { 'callNumber' => 'ABC 012' },
-          'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
-          'materialType' => 'book',
-          'permanentLoanType' => 'Can circulate',
-          'suppressFromDiscovery' => false }
-      ]
-    end
-
     before do
+      stub_bib_data_json(:searchable_holdings)
       stub_current_user(create(:superadmin_user))
-      stub_searchworks_api_json(build(:searchable_holdings))
       stub_symphony_response(ils_response)
 
       # create some pending requests
@@ -185,66 +114,10 @@ RSpec.describe 'Mediation table', js: true do
 
     describe 'current location' do
       let(:ils_response) { build(:symphony_page_with_multiple_items) }
-      let(:folio_items) do
-        [
-          { 'id' => '584baef9-ea2f-5ff5-9947-bbc348aee4a4',
-            'notes' => [],
-            'status' => 'Available',
-            'barcode' => '12345678',
-            'location' =>
-            { 'effectiveLocation' => { 'code' => 'ART-LOCKED-LARGE' },
-              'permanentLocation' => { 'code' => 'ART-LOCKED-LARGE' },
-              'temporaryLocation' => {} },
-            'callNumber' => { 'callNumber' => 'ABC 123' },
-            'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
-            'materialType' => 'book',
-            'permanentLoanType' => 'Can circulate',
-            'suppressFromDiscovery' => false },
-          { 'id' => '99466f50-2b8c-51d4-8890-373190b8f6c4',
-            'notes' => [],
-            'status' => 'Available',
-            'barcode' => '23456789',
-            'location' =>
-            { 'effectiveLocation' => { 'code' => 'ART-LOCKED-LARGE' },
-              'permanentLocation' => { 'code' => 'ART-LOCKED-LARGE' },
-              'temporaryLocation' => {} },
-            'callNumber' => { 'callNumber' => 'ABC 456' },
-            'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
-            'materialType' => 'book',
-            'permanentLoanType' => 'Can circulate',
-            'suppressFromDiscovery' => false },
-          { 'id' => 'deec4ae9-545c-5d60-85b0-b1048b9dad05',
-            'notes' => [],
-            'status' => 'Available',
-            'barcode' => '34567890',
-            'location' =>
-            { 'effectiveLocation' => { 'code' => 'ART-LOCKED-LARGE' },
-              'permanentLocation' => { 'code' => 'ART-LOCKED-LARGE' },
-              'temporaryLocation' => { 'code' => 'THE-CURRENT-LOCATION' } },
-            'callNumber' => { 'callNumber' => 'ABC 789' },
-            'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
-            'materialType' => 'book',
-            'permanentLoanType' => 'Can circulate',
-            'suppressFromDiscovery' => false },
-          { 'id' => 'deec4ae9-545c-5d60-85b0-b1048b9dad05',
-            'notes' => [],
-            'status' => 'Available',
-            'barcode' => '45678901',
-            'location' =>
-              { 'effectiveLocation' => { 'code' => 'ART-LOCKED-LARGE' },
-                'permanentLocation' => { 'code' => 'ART-LOCKED-LARGE' },
-                'temporaryLocation' => { 'code' => 'THE-CURRENT-LOCATION' } },
-            'callNumber' => { 'callNumber' => 'ABC 012' },
-            'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
-            'materialType' => 'book',
-            'permanentLoanType' => 'Can circulate',
-            'suppressFromDiscovery' => false }
-        ]
-      end
 
       before do
-        location_object = double(current_location: 'THE-CURRENT-LOCATION')
-        allow(Symphony::CatalogInfo).to receive(:find).and_return(location_object)
+        stub_bib_data_json(:searchable_holdings)
+        visit(admin_path('ART'))
       end
 
       it 'is fetched from Symphony' do
@@ -275,12 +148,7 @@ RSpec.describe 'Mediation table', js: true do
         expect(page).to have_css("tbody td[colspan='#{top_level_columns}'] table")
         within("tbody td[colspan='#{top_level_columns}'] table") do
           expect(page).to have_css('td button', text: 'Approve', count: 2)
-          if Settings.ils.bib_model == 'Folio::BibData'
-            expect(page).to have_css('td', text: 'ART-LOCKED-LARGE', count: 2)
-          else
-            # From home_location in the Searchworks reply.
-            expect(page).to have_css('td', text: 'STACKS', count: 2)
-          end
+          expect(page).to have_css('td', text: 'ART-LOCKED-LARGE', count: 2)
           expect(page).to have_css('td', text: 'ABC 123')
           expect(page).to have_css('td', text: 'ABC 456')
         end
@@ -622,41 +490,9 @@ RSpec.describe 'Mediation table', js: true do
       instance_double(ItemStatus, approved?: false, errored?: false)
     end
 
-    let(:folio_items) do
-      [
-        { 'id' => '584baef9-ea2f-5ff5-9947-bbc348aee4a4',
-          'notes' => [],
-          'status' => 'Available',
-          'barcode' => '12345678',
-          'location' =>
-          { 'effectiveLocation' => { 'code' => 'SAL3-PAGE-MP' },
-            'permanentLocation' => { 'code' => 'SAL3-PAGE-MP' },
-            'temporaryLocation' => {} },
-          'callNumber' => { 'callNumber' => 'ABC 123' },
-          'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
-          'materialType' => 'book',
-          'permanentLoanType' => 'Can circulate',
-          'suppressFromDiscovery' => false },
-        { 'id' => '99466f50-2b8c-51d4-8890-373190b8f6c4',
-          'notes' => [],
-          'status' => 'Available',
-          'barcode' => '87654321',
-          'location' =>
-          { 'effectiveLocation' => { 'code' => 'SAL3-PAGE-MP' },
-            'permanentLocation' => { 'code' => 'SAL3-PAGE-MP' },
-            'temporaryLocation' => {} },
-          'callNumber' => { 'callNumber' => 'ABC 321' },
-          'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
-          'materialType' => 'book',
-          'permanentLoanType' => 'Can circulate',
-          'suppressFromDiscovery' => false }
-      ]
-    end
-
     before do
       stub_current_user(create(:page_mp_origin_admin_user))
-      stub_searchworks_api_json(build(:page_mp_holdings))
-      allow_any_instance_of(FolioClient).to receive(:items_and_holdings).and_return(folio_holding_response)
+      stub_bib_data_json(:page_mp_holdings)
       request.save(validate: false)
 
       visit admin_path('PAGE-MP')
@@ -673,12 +509,7 @@ RSpec.describe 'Mediation table', js: true do
       expect(page).to have_css("tbody td[colspan='#{top_level_columns}'] table")
       within("tbody td[colspan='#{top_level_columns}'] table") do
         expect(page).to have_css('td button', text: 'Approve', count: 2)
-        if Settings.ils.bib_model == 'Folio::BibData'
-          expect(page).to have_css('td', text: 'SAL3-PAGE-MP', count: 2)
-        else
-          # From home_location in the Searchworks reply.
-          expect(page).to have_css('td', text: 'STACKS', count: 2)
-        end
+        expect(page).to have_css('td', text: 'SAL3-PAGE-MP', count: 2)
         expect(page).to have_css('td', text: 'ABC 123')
         expect(page).to have_css('td', text: 'ABC 321')
       end

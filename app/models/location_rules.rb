@@ -85,7 +85,7 @@ class LocationRules
     end
 
     def match_types?(request)
-      return true if item_types.nil? || Settings.ils.bib_model == 'Folio::BibData' # Folio doesn't support item_type
+      return true if item_types.nil?
 
       holding_item_types = request.holdings.map(&:type)
       Array(item_types).intersect?(holding_item_types)

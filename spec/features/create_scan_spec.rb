@@ -18,7 +18,7 @@ RSpec.describe 'Create Scan Request' do
     allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
     allow(HoldingsRelationshipBuilder).to receive(:build).and_return(selected_items)
     allow(SubmitScanRequestJob).to receive(:perform_later)
-    stub_searchworks_api_json(build(:sal3_holdings))
+    stub_bib_data_json(:sal3_holdings)
   end
 
   it 'does not display a destination pickup' do

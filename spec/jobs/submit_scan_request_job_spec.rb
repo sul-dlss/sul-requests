@@ -4,7 +4,6 @@ require 'rails_helper'
 
 RSpec.describe SubmitScanRequestJob, type: :job do
   before do
-    stub_folio_holdings(:folio_multiple_holding)
     allow(Request.ils_job_class).to receive(:perform_later)
   end
 

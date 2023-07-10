@@ -5,7 +5,7 @@
 ###
 module Holdings
   def holdings_object
-    @holdings_object ||= HoldingsRelationshipBuilder.build(self, bib_data)
+    @holdings_object ||= HoldingsRelationshipBuilder.build(self)
   end
 
   def holdings

@@ -139,7 +139,7 @@ RSpec.describe 'Creating a mediated page request' do
 
     before do
       stub_current_user(user)
-      stub_searchworks_api_json(build(:searchable_holdings))
+      stub_bib_data_json(:searchable_holdings)
     end
 
     it 'persists to the database' do

@@ -11,7 +11,7 @@ RSpec.describe 'Send Request Buttons' do
   end
 
   before do
-    stub_searchworks_api_json(build(:single_holding))
+    stub_bib_data_json(:single_holding)
     allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
 
     allow(HoldingsRelationshipBuilder).to receive(:build).and_return(selected_items)
@@ -75,7 +75,7 @@ RSpec.describe 'Send Request Buttons' do
 
   describe 'Scans' do
     before do
-      stub_searchworks_api_json(build(:sal3_holdings))
+      stub_bib_data_json(:sal3_holdings)
       visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
     end
 

@@ -4,43 +4,11 @@ require 'rails_helper'
 
 RSpec.describe 'Creating an Aeon request', js: true do
   let(:user) { create(:sso_user) }
-  let(:api_json) { build(:special_collections_single_holding) }
-
-  let(:folio_holding_response) do
-    { 'instanceId' => 'f1c52ab3-721e-5234-9a00-1023e034e2e8',
-      'source' => 'MARC',
-      'modeOfIssuance' => 'single unit',
-      'natureOfContent' => [],
-      'holdings' => [],
-      'items' =>
-       [{ 'id' => '584baef9-ea2f-5ff5-9947-bbc348aee4a4',
-          'notes' => [],
-          'status' => 'Available',
-          'barcode' => '12345678',
-          'location' =>
-          { 'effectiveLocation' => { 'code' => 'SPEC-STACKS' },
-            'permanentLocation' => { 'code' => 'SPEC-STACKS' },
-            'temporaryLocation' => {} },
-          'callNumber' =>
-            { 'typeId' => '6caca63e-5651-4db6-9247-3205156e9699', 'typeName' => 'Other scheme', 'callNumber' => 'ABC 123' },
-          'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
-          'materialType' => 'book',
-          'permanentLoanType' => 'Can circulate',
-          'suppressFromDiscovery' => false }] }
-  end
-
-  let(:folio_bib_info) do
-    { 'title' => 'Special Collections Item Title',
-      'contributors' => [{ 'name' => 'John Q. Public', 'primary' => true }],
-      'publication' => [{ 'dateOfPublication' => '2018' }] }
-  end
+  let(:bib_data) { :special_collections_single_holding }
 
   before do
-    allow_any_instance_of(FolioClient).to receive(:find_instance).and_return(folio_bib_info)
-    allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
-    allow_any_instance_of(FolioClient).to receive(:items_and_holdings).and_return(folio_holding_response)
     stub_current_user(user)
-    stub_searchworks_api_json(api_json)
+    stub_bib_data_json(bib_data)
     visit new_aeon_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
   end
 
@@ -116,43 +84,7 @@ RSpec.describe 'Creating an Aeon request', js: true do
     end
 
     describe 'with multiple holdings' do
-      let(:api_json) { build(:special_collections_holdings) }
-      let(:folio_holding_response) do
-        { 'instanceId' => 'f1c52ab3-721e-5234-9a00-1023e034e2e8',
-          'source' => 'MARC',
-          'modeOfIssuance' => 'single unit',
-          'natureOfContent' => [],
-          'holdings' => [],
-          'items' =>
-           [{ 'id' => '584baef9-ea2f-5ff5-9947-bbc348aee4a4',
-              'notes' => [],
-              'status' => 'Available',
-              'barcode' => '12345678',
-              'location' =>
-              { 'effectiveLocation' => { 'code' => 'SPEC-STACKS' },
-                'permanentLocation' => { 'code' => 'SPEC-STACKS' },
-                'temporaryLocation' => {} },
-              'callNumber' =>
-                { 'typeId' => '6caca63e-5651-4db6-9247-3205156e9699', 'typeName' => 'Other scheme', 'callNumber' => 'ABC 123' },
-              'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
-              'materialType' => 'book',
-              'permanentLoanType' => 'Can circulate',
-              'suppressFromDiscovery' => false },
-            { 'id' => '584baef9-ea2f-5ff5-9947-bbc348aee4a4',
-              'notes' => [],
-              'status' => 'Available',
-              'barcode' => '87654321',
-              'location' =>
-              { 'effectiveLocation' => { 'code' => 'SPEC-STACKS' },
-                'permanentLocation' => { 'code' => 'SPEC-STACKS' },
-                'temporaryLocation' => {} },
-              'callNumber' =>
-                { 'typeId' => '6caca63e-5651-4db6-9247-3205156e9699', 'typeName' => 'Other scheme', 'callNumber' => 'ABC 321' },
-              'holdingsRecordId' => 'd1d495e8-7436-540b-a55a-5dfccfba25a3',
-              'materialType' => 'book',
-              'permanentLoanType' => 'Can circulate',
-              'suppressFromDiscovery' => false }] }
-      end
+      let(:bib_data) { :special_collections_holdings }
 
       describe 'info modal' do
         it 'provides instructions for the user to complete the request' do
@@ -208,15 +140,7 @@ RSpec.describe 'Creating an Aeon request', js: true do
     end
 
     describe 'for an item with a finding aid' do
-      let(:api_json) { build(:special_collections_finding_aid_holdings) }
-
-      let(:folio_bib_info) do
-        { 'indexTitle' => 'Special Collections Item Title',
-          'electronicAccess' => [
-            { 'materialsSpecification' => 'Finding aid available online',
-              'uri' => 'http://www.oac.cdlib.org/findaid/ark:/12345/abcdefgh/' }
-          ] }
-      end
+      let(:bib_data) { :special_collections_finding_aid_holdings }
 
       describe 'info modal' do
         it 'provides instructions for the user to complete the request' do

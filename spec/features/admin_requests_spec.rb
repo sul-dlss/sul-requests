@@ -3,11 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Viewing all requests' do
-  before do
-    allow_any_instance_of(FolioClient).to receive(:resolve_to_instance_id).and_return('f1c52ab3-721e-5234-9a00-1023e034e2e8')
-    stub_folio_holdings(:folio_multiple_holding)
-  end
-
   describe 'index' do
     describe 'by a superadmin user' do
       before do
