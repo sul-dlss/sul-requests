@@ -136,6 +136,7 @@ module Folio
     def self.from_hash(dyn)
       new(barcode: dyn['barcode'],
           status: dyn.dig('status', 'name'),
+          due_date: dyn['dueDate'],
           type: dyn.dig('materialType', 'name'),
           callnumber: [dyn.dig('effectiveCallNumberComponents', 'callNumber'), dyn['volume'], dyn['enumeration'],
                        dyn['chronology']].filter_map(&:presence).join(' '),

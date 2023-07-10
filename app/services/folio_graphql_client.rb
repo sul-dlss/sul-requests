@@ -75,6 +75,7 @@ class FolioGraphqlClient
                 status {
                   name
                 }
+                dueDate
                 materialType {
                   id
                   name
