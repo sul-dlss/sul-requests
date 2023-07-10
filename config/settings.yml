@@ -62,7 +62,7 @@ folio_ils: &folio_ils
   patron_model: Folio::Patron
   request_job: SubmitFolioRequestJob
 
-ils: *symphony_ils # or *symphony_ils
+ils: *symphony_ils # or *folio_ils
 
 symphony:
   override: PASSWORD
