@@ -705,18 +705,12 @@ scannable:
       - BUS-STACKS
       - STACKS
       - PAGE-GR
-    destination:
-      key: 'SAL3'
-      patron_barcode: 'SAL3-SCANDELIVER'
   - library: SAL3
     item_types:
       - NEWSPAPER
       - NH-INHOUSE
     locations:
       - PAGE-GR
-    destination:
-      key: 'SAL3'
-      patron_barcode: 'SAL3-SCANDELIVER'
 
 # Aeon external request endpoint (ERE)
 aeon_ere_url: https://stanford.aeon.atlas-sys.com/logon?Action=11&Type=200
