@@ -441,17 +441,15 @@ RSpec.describe Request do
         expect(described_class.last.item_title).to eq 'This title'
       end
     end
-  end
 
-  describe 'stored_or_fetched_item_title' do
     it 'returns the stored item title for persisted objects' do
-      expect(create(:request).stored_or_fetched_item_title).to eq 'Title for Request 123456'
+      expect(create(:request).item_title).to eq 'Title for Request 123456'
     end
 
-    it 'returns the item title from the fetched searchworks record for non persisted objects' do
+    it 'returns the item title from the fetched searchworks record' do
       allow_any_instance_of(described_class).to receive(:bib_data)
         .and_return(instance_double(described_class.bib_model_class, title: 'A fetched title'))
-      expect(described_class.new.stored_or_fetched_item_title).to eq 'A fetched title'
+      expect(described_class.new.item_title).to eq 'A fetched title'
     end
   end
 
