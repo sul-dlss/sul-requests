@@ -10,7 +10,6 @@ RSpec.describe 'requests/status.html.erb' do
     allow(view).to receive_messages(current_request: request)
     allow(view).to receive_messages(current_user: user)
     allow(controller).to receive_messages(current_user: user)
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return([])
   end
 
   it 'has an icon and h1 heading' do

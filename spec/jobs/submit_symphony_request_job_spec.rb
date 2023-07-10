@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe SubmitSymphonyRequestJob, type: :job do
   before do
-    allow(Settings.ils).to receive(:request_job).and_return(described_class)
+    allow(Settings.ils).to receive(:request_job).and_return(described_class.to_s)
   end
 
   context 'with a stubbed HTTP client' do
@@ -23,7 +23,6 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
           allow(mock_client).to receive(:place_hold).and_return({})
           allow(mock_client).to receive(:bib_info).and_return({})
           allow_any_instance_of(SubmitSymphonyRequestJob::Command).to receive(:symphony_client).and_return(mock_client)
-          allow(HoldingsRelationshipBuilder).to receive(:build).and_return([])
         end
 
         it 'calls send_approval_status! on the request object' do

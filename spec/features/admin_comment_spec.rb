@@ -7,22 +7,8 @@ RSpec.describe 'Admin Comments', js: true do
   let(:request_status) do
     instance_double(ItemStatus, approved?: true, errored?: false, approver: 'bob', approval_time: '2023-05-31')
   end
-  let(:selected_items) do
-    [
-      double(:item, barcode: '34567890',
-                    request_status:,
-                    permanent_location: 'ART-STACKS',
-                    temporary_location: nil,
-                    home_location: 'ART-STACKS',
-                    current_location: nil,
-                    callnumber: 'ABC 123',
-                    hold?: true)
-    ]
-  end
 
   before do
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(selected_items)
-
     stub_current_user(user)
     create(
       :mediated_page_with_holdings,

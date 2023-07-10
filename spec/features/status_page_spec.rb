@@ -7,7 +7,6 @@ RSpec.describe 'Status Page' do
 
   before do
     stub_current_user(user)
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return([])
   end
 
   describe 'by webuath users' do

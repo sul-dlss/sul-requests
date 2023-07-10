@@ -46,7 +46,6 @@ RSpec.describe 'Home Page' do
 
   describe 'mediation section' do
     before do
-      allow(HoldingsRelationshipBuilder).to receive(:build).and_return([])
       create(:mediated_page)
       create(:page_mp_mediated_page)
       stub_current_user(create(:superadmin_user))

@@ -23,14 +23,13 @@ RSpec.describe 'Public Notes', js: true do
 
   before do
     allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
-    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(all_items)
+    allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(double(:bib_data, title: 'Test title',
+                                                                                              request_holdings: all_items))
   end
 
   describe 'public_notes' do
     before do
       stub_current_user(user)
-      stub_bib_data_json(:searchable_holdings)
     end
 
     it 'persists to the database as hash of barcode=>note pairs' do

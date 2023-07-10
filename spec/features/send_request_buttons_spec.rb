@@ -11,10 +11,8 @@ RSpec.describe 'Send Request Buttons' do
   end
 
   before do
-    stub_bib_data_json(:single_holding)
-    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
-
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(selected_items)
+    allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(double(:bib_data, title: 'Test title',
+                                                                                              request_holdings: selected_items))
   end
 
   describe 'as a Stanford user', js: true do

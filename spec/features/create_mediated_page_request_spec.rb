@@ -7,8 +7,8 @@ RSpec.describe 'Creating a mediated page request' do
   let(:all_items) { [] }
 
   before do
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(all_items)
-    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
+    allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(double(:bib_data, title: 'Test title',
+                                                                                              request_holdings: all_items))
 
     allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
   end

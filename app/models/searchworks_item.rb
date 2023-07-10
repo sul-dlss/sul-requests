@@ -5,15 +5,33 @@
 #  The API URI is configured using rails_config: Settings.searchworks_api
 ###
 class SearchworksItem
-  attr_reader :request, :live_lookup
+  attr_reader :request, :live_lookup, :json, :catkey
 
   def self.fetch(request, live_lookup = true)
-    new(request, live_lookup)
+    response = begin
+      Faraday.get(url_for(request.item_id, live: live_lookup))
+    rescue Faraday::ConnectionFailed
+      NullResponse.new
+    end
+
+    json = begin
+      JSON.parse(response.body) if response.success?
+    rescue JSON::ParserError
+      nil
+    end
+
+    new(json || {}, request.item_id)
   end
 
-  def initialize(request, live_lookup = true)
-    @request = request
-    @live_lookup = live_lookup
+  def self.url_for(catkey, **kwargs)
+    base_url = [Settings.searchworks_api, 'view', catkey, 'availability'].join('/')
+    params = kwargs.reject { |k, v| k == :live && v == true }.to_param.presence
+    [base_url, params].compact.join('?')
+  end
+
+  def initialize(json, catkey)
+    @json = json
+    @catkey = catkey
   end
 
   def title
@@ -53,36 +71,12 @@ class SearchworksItem
   end
 
   def view_url
-    [base_uri, 'view', request.item_id].join('/')
+    [base_uri, 'view', catkey].join('/')
   end
 
   private
 
   def base_uri
     Settings.searchworks_api
-  end
-
-  def url
-    full_url = [view_url, 'availability'].join('/')
-    full_url << '?live=false' unless live_lookup
-    full_url
-  end
-
-  def response
-    @response ||= begin
-      Faraday.get(url)
-    rescue Faraday::ConnectionFailed
-      NullResponse.new
-    end
-  end
-
-  def json
-    return {} unless response.success?
-
-    @json ||= begin
-      JSON.parse(response.body)
-    rescue JSON::ParserError
-      {}
-    end
   end
 end

@@ -6,8 +6,7 @@ RSpec.describe 'Pickup Libraries Dropdown' do
   let(:standard_pickup_lib_total) { Settings.default_pickup_libraries.count }
 
   before do
-    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title'))
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return([])
+    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title', request_holdings: []))
   end
 
   describe 'for multiple libraries' do

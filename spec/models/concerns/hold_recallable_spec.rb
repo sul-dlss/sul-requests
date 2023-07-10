@@ -3,13 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe 'HoldRecallable' do
-  subject(:request) { build(:request) }
+  subject(:request) { build(:request, bib_data: double(request_holdings: all)) }
 
   let(:all) { [] }
-
-  before do
-    allow(HoldingsRelationshipBuilder).to receive(:build).and_return(all)
-  end
 
   describe '#hold_recallable?' do
     context 'when a barcode is provided' do
