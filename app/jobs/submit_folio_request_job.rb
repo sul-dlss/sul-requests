@@ -13,14 +13,14 @@ class SubmitFolioRequestJob < ApplicationJob
 
     return true unless request
 
-    Sidekiq.logger.info("Started SubmitFolioRequestJob for request #{request_id}")
+    logger.info("Started SubmitFolioRequestJob for request #{request_id}")
     response = Command.new(request, logger:, **options).execute!
 
-    Sidekiq.logger.debug("FOLIO response: #{response}")
+    logger.debug("FOLIO response: #{response}")
     request.merge_ils_response_data(FolioResponse.new(response.with_indifferent_access))
     request.save
     request.send_approval_status!
-    Sidekiq.logger.info("Completed SubmitFolioRequestJob for request #{request_id}")
+    logger.info("Completed SubmitFolioRequestJob for request #{request_id}")
   end
 
   def find_request(request_id)

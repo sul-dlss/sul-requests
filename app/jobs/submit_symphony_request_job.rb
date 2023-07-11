@@ -15,14 +15,14 @@ class SubmitSymphonyRequestJob < ApplicationJob
 
     return true unless request
 
-    Sidekiq.logger.info("Started SubmitSymphonyRequestJob for request #{request_id}")
+    logger.info("Started SubmitSymphonyRequestJob for request #{request_id}")
     response = Command.new(request, **options).execute!
 
-    Sidekiq.logger.debug("Symphony response string: #{response}")
+    logger.debug("Symphony response string: #{response}")
     request.merge_ils_response_data(SymphonyResponse.new(response.with_indifferent_access))
     request.save
     request.send_approval_status!
-    Sidekiq.logger.info("Completed SubmitSymphonyRequestJob for request #{request_id}")
+    logger.info("Completed SubmitSymphonyRequestJob for request #{request_id}")
   end
 
   def find_request(request_id)
