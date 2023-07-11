@@ -127,7 +127,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
 
       if patron.expired?
         { usererr_code: 'U004', usererr_text: 'User\'s privileges have expired' }
-      elsif !patron.good_standing?
+      elsif !patron.make_request_as_patron?
         { usererr_code: 'U003', usererr_text: 'User is BLOCKED' }
       end
     end
@@ -154,7 +154,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
       when HoldRecall
         patron.barcode
       when Page, MediatedPage
-        if patron&.good_standing?
+        if patron&.make_request_as_patron?
           patron.barcode
         else
           pseudo_patron(request.destination)

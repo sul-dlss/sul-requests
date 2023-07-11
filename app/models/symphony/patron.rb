@@ -58,7 +58,7 @@ module Symphony
       fields.dig('standing', 'key')
     end
 
-    def good_standing?
+    def make_request_as_patron?
       ['DELINQUENT', 'OK'].include?(standing) && !expired?
     end
 

@@ -107,7 +107,7 @@ class SubmitFolioRequestJob < ApplicationJob
                   when HoldRecall
                     user.patron
                   when Page, MediatedPage
-                    if user.patron&.good_standing?
+                    if user.patron&.make_request_as_patron?
                       user.patron
                     else
                       find_hold_pseudo_patron_for(request.destination)
