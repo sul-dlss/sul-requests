@@ -18,7 +18,7 @@ class SubmitFolioRequestJob < ApplicationJob
 
     logger.debug("FOLIO response: #{response}")
     request.merge_ils_response_data(FolioResponse.new(response.with_indifferent_access))
-    request.save
+    request.save(validate: false) # By placing this request in the ILS, the item is no longer in a requestable state, so avoid validation.
     request.send_approval_status!
     logger.info("Completed SubmitFolioRequestJob for request #{request_id}")
   end
