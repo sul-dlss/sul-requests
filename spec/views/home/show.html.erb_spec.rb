@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'home/show' do
+RSpec.describe 'home/show' do
   before do
     allow(controller).to receive_messages(current_user: create(:anon_user))
   end

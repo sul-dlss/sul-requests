@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe CdlController do
+RSpec.describe CdlController do
   describe '#availability' do
     it 'is accessible by anyone' do
       get :availability, params: { barcode: 'abc123' }

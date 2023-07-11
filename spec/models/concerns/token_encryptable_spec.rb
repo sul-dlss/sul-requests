@@ -14,7 +14,7 @@ class TestEncryptorClass
   end
 end
 
-describe TokenEncryptable do
+RSpec.describe TokenEncryptable do
   let(:subject) { TestEncryptorClass.new }
 
   before do

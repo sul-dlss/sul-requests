@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe CurrentUser do
+RSpec.describe CurrentUser do
   subject { described_class.for(rails_req) }
 
   let(:rails_req) { double(env: {}, remote_ip: '') }

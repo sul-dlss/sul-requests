@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe HomeController do
+RSpec.describe HomeController do
   describe '#show' do
     it 'is successful' do
       get :show

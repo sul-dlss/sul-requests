@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'Mediateable' do
+RSpec.describe 'Mediateable' do
   subject(:request) { build(:request) }
 
   describe '#Mediateable?' do

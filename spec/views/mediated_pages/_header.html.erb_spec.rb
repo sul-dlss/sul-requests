@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'mediated_pages/_header.html.erb' do
+RSpec.describe 'mediated_pages/_header.html.erb' do
   let(:origin) { 'GREEN' }
   let(:origin_location) { 'STACKS' }
   let(:holdings) { [] }

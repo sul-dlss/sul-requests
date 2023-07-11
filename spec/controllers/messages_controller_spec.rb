@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe MessagesController, type: :controller do
+RSpec.describe MessagesController, type: :controller do
   before do
     allow(controller).to receive_messages(current_user: user)
   end

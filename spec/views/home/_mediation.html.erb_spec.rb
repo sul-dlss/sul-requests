@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'home/_mediation.html.erb' do
+RSpec.describe 'home/_mediation.html.erb' do
   before do
     allow(view).to receive_messages(
       locations: ['SPEC-COLL', 'HOOVER', 'HV-ARCHIVE']

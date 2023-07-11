@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'Sidekiq requests' do
+RSpec.describe 'Sidekiq requests' do
   let(:url) { '/sidekiq' }
 
   context 'with superadmin privileges' do

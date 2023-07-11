@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Symphony::CatalogInfo do
+RSpec.describe Symphony::CatalogInfo do
   subject(:info) { described_class.find('36105123456789') }
 
   before do

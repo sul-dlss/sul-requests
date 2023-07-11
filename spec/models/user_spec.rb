@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe User do
+RSpec.describe User do
   describe 'validations' do
     it 'onlies allow unique sunetids' do
       described_class.create!(sunetid: 'some-user')
