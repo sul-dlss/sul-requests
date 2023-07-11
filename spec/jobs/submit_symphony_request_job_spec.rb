@@ -8,10 +8,6 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
   end
 
   context 'with a stubbed HTTP client' do
-    before do
-      Sidekiq.logger.level = Logger::UNKNOWN
-    end
-
     let(:user) { build(:non_sso_user) }
     let(:request) { create(:page_with_holdings, user:) }
 

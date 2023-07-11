@@ -14,7 +14,7 @@ class SubmitIplcListenerJob < ApplicationJob
   def perform(request_id, instance_uuid, instance_title)
     request = Request.find(request_id)
 
-    Sidekiq.logger.info("Started SubmitIplcRequestJob for request #{request_id}")
+    logger.info("Started SubmitIplcRequestJob for request #{request_id}")
 
     begin
       make_iplc_request(request, instance_uuid, instance_title)
@@ -24,7 +24,7 @@ class SubmitIplcListenerJob < ApplicationJob
       request.send_to_ils_now!
     end
 
-    Sidekiq.logger.info("Completed SubmitIplcRequestJob for request #{request_id}")
+    logger.info("Completed SubmitIplcRequestJob for request #{request_id}")
   end
 
   def make_iplc_request(request, instance_uuid, instance_title)
