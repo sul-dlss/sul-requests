@@ -29,7 +29,7 @@ RSpec.describe Dashboard do
   describe 'recent requests' do
     before do
       create(:page)
-      create(:page, origin: 'GREEN')
+      create(:page, origin: 'SAL')
       create(:page, origin: 'SAL3')
     end
 

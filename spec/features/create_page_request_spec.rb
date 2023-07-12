@@ -15,7 +15,7 @@ RSpec.describe 'Creating a page request' do
     end
 
     it 'is possible if a name and email is filled out', js: true do
-      visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
       click_link "I don't have a SUNet ID"
 
       expect(page).to have_css('input#request_user_attributes_library_id')
@@ -35,7 +35,7 @@ RSpec.describe 'Creating a page request' do
       end
 
       it 'creates a new user', js: true do
-        visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
+        visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
         click_link "I don't have a SUNet ID"
 
         fill_in 'Library ID', with: '123456'
@@ -55,7 +55,7 @@ RSpec.describe 'Creating a page request' do
     before { stub_current_user(user) }
 
     it 'is possible without filling in any user information' do
-      visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
       first(:button, 'Send request').click
 
       expect(current_url).to eq successful_page_url(Page.last)
@@ -71,7 +71,7 @@ RSpec.describe 'Creating a page request' do
     end
 
     it 'allows the user to share with their proxy group' do
-      visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
       first(:button, 'Send request').click
 
       expect(page).to have_css('h1#dialogTitle', text: 'Share with your proxy group?')
@@ -83,7 +83,7 @@ RSpec.describe 'Creating a page request' do
     end
 
     it 'allows the user to keep the request private' do
-      visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
       first(:button, 'Send request').click
 
       expect(page).to have_css('h1#dialogTitle', text: 'Share with your proxy group?')
@@ -104,7 +104,7 @@ RSpec.describe 'Creating a page request' do
     end
 
     it 'persists to the database' do
-      visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
 
       within('#item-selector') do
         check('ABC 123')

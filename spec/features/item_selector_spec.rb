@@ -11,7 +11,7 @@ RSpec.describe 'Item Selector' do
     before { stub_bib_data_json(:single_holding) }
 
     it 'displays the item call number' do
-      visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
       expect(page).to have_css('.control-label', text: 'Call number')
       expect(page).to have_css('p', text: 'ABC 123')
       expect(page).not_to have_css('#item-selector')
@@ -24,7 +24,7 @@ RSpec.describe 'Item Selector' do
     end
 
     describe 'where there are not enough to be searchable' do
-      let(:request_path) { new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS') }
+      let(:request_path) { new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS') }
 
       before do
         stub_bib_data_json(:multiple_holdings)

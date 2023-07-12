@@ -12,7 +12,7 @@ RSpec.describe 'Honey Pot Fields' do
 
   context 'Email field' do
     it 'raises an error if the field has been filled out' do
-      visit new_page_path(item_id: '1234', origin: 'GREEN', origin_location: 'STACKS')
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
 
       hidden_field = find_by_id('email', visible: :hidden)
       hidden_field.set('some-email')

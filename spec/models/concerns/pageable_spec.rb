@@ -8,7 +8,7 @@ RSpec.describe 'Pageable' do
   describe '#pageable?' do
     context 'when the LibraryLocation is not mediatable or hold recallable' do
       before do
-        request.origin = 'GREEN'
+        request.origin = 'SAL3'
         request.origin_location = 'STACKS'
       end
 

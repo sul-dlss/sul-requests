@@ -11,7 +11,7 @@ RSpec.describe 'Viewing all requests' do
                       user: User.create(sunetid: 'jstanford', email: 'jstanford@stanford.edu'))
         create(:page, item_id: 2346,
                       item_title: 'An American in Paris',
-                      origin: 'SAL-NEWARK',
+                      origin: 'SAL',
                       request_comment: 'I can has this item?',
                       user: User.create(name: 'Joe', email: 'joe@xyz.com')
               )
