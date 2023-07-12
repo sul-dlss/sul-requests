@@ -142,6 +142,8 @@ class SubmitSymphonyRequestJob < ApplicationJob
     end
 
     def scan_destination
+      return {} unless request.is_a? Scan
+
       request.scan_destination.to_h.slice(:key, :patron_barcode)
     end
 
