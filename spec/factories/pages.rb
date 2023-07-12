@@ -16,6 +16,14 @@ FactoryBot.define do
     origin { 'GREEN' }
     origin_location { 'STACKS' }
     destination { 'ART' }
-    bib_data { FactoryBot.build(:multiple_holdings) }
+    bib_data { build(:multiple_holdings) }
+  end
+
+  factory :page_on_order, class: 'Page' do
+    item_id { '1234' }
+    origin { 'ZOMBIE' }
+    origin_location { 'STACKS' }
+    destination { 'ART' }
+    bib_data { build(:on_order_instance) }
   end
 end

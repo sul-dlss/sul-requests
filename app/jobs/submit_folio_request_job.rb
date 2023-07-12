@@ -47,10 +47,12 @@ class SubmitFolioRequestJob < ApplicationJob
     end
 
     def execute!
+      return place_title_hold if barcodes.blank?
+
       requested_items = barcodes.map do |barcode|
         item_id = folio_client.get_item(barcode)['id']
         create_log(barcode:, item_id:)
-        response = place_hold(item_id:)
+        response = place_item_hold(item_id:)
         { barcode:, msgcode: '209', response: }
       end
       { requested_items: }
@@ -65,6 +67,20 @@ class SubmitFolioRequestJob < ApplicationJob
 
     delegate :user, :scan_destination, to: :request
 
+    def place_title_hold
+      instance_id = request.bib_data.instance_id
+      logger.info(
+        "Submitting title hold request for user #{patron.id} and instance #{instance_id} for pickup up at #{pickup_location_id}"
+      )
+      { requested_items: [
+        {
+          barcode: instance_id,
+          msgcode: '209',
+          response: folio_client.create_instance_hold(patron_or_proxy_id, instance_id, hold_request)
+        }
+      ] }
+    end
+
     def pickup_location_id
       @pickup_location_id ||= begin
         code = Settings.libraries[request.destination].folio_pickup_service_point_code
@@ -72,18 +88,23 @@ class SubmitFolioRequestJob < ApplicationJob
       end
     end
 
-    # rubocop:disable Metrics/AbcSize
-    def place_hold(item_id:)
+    def place_item_hold(item_id:)
       logger.info(
-        "Submitting hold request for user #{patron.id} and item #{item_id} for pickup up at #{pickup_location_id}"
+        "Submitting item hold request for user #{patron.id} and item #{item_id} for pickup up at #{pickup_location_id}"
       )
 
-      hold_request = FolioClient::HoldRequest.new(pickup_location_id:,
-                                                  patron_comments: request_comments,
-                                                  expiration_date:)
-      folio_client.create_item_hold(request.proxy? && patron.proxy? ? patron.proxy_sponsor_user_id : patron.id, item_id, hold_request)
+      folio_client.create_item_hold(patron_or_proxy_id, item_id, hold_request)
     end
-    # rubocop:enable Metrics/AbcSize
+
+    def hold_request
+      FolioClient::HoldRequest.new(pickup_location_id:,
+                                   patron_comments: request_comments,
+                                   expiration_date:)
+    end
+
+    def patron_or_proxy_id
+      request.proxy? && patron.proxy? ? patron.proxy_sponsor_user_id : patron.id
+    end
 
     def create_log(barcode:, item_id:)
       request.folio_command_logs.create!(barcode:, user_id: patron.id, item_id:, pickup_location_id:,
