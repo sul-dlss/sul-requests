@@ -41,22 +41,6 @@ module Folio
     STATUS_NONE
   ].freeze
 
-  Location = Data.define(:id, :campus, :library, :institution, :code, :discovery_display_name, :name) do
-    def self.from_hash(dyn)
-      new(
-        id: dyn.fetch('id'),
-        campus: Campus.new(id: dyn.fetch('campusId')),
-        library: Library.new(id: dyn.fetch('libraryId')),
-        institution: Institution.new(id: dyn.fetch('institutionId')),
-        code: dyn.fetch('code'),
-        discovery_display_name: dyn.fetch('discoveryDisplayName') || dyn.fetch('name'),
-        name: dyn.fetch('name')
-      )
-    end
-  end
-  Library = Data.define(:id)
-  Campus = Data.define(:id)
-  Institution = Data.define(:id)
   MaterialType = Data.define(:id)
   LoanType = Data.define(:id)
 
