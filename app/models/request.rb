@@ -190,6 +190,6 @@ class Request < ActiveRecord::Base
   end
 
   def request_abilities
-    @request_abilities ||= RequestAbilities.new(self)
+    @request_abilities ||= Settings.ils.request_abilities_class.constantize.new(self)
   end
 end

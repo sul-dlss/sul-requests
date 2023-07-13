@@ -7,7 +7,7 @@ RSpec.describe RequestsController do
     { item_id: '12345', origin: 'SAL3', origin_location: 'STACKS' }
   end
   let(:unscannable_params) do
-    { item_id: '12345', origin: 'SAL1/2', origin_location: 'STACKS' }
+    { item_id: '12345', origin: 'SAL3', origin_location: 'PAGE-LP' }
   end
   let(:mediated_page_params) do
     { item_id: '12345', origin: 'ART', origin_location: 'ARTLCKL' }
@@ -64,7 +64,7 @@ RSpec.describe RequestsController do
 
     describe 'unmediateable item' do
       it 'redirects to the new page form' do
-        stub_bib_data_json(build(:multiple_holdings))
+        stub_bib_data_json(build(:page_lp_holdings))
 
         get :new, params: unscannable_params
         expect(response).to redirect_to new_page_path(unscannable_params)

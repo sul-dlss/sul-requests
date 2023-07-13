@@ -445,6 +445,11 @@ RSpec.describe Request do
   end
 
   describe '#delegate_request!' do
+    before do
+      stub_bib_data_json(build(:multiple_holdings))
+      subject.update(origin: 'SAL3', origin_location: 'STACKS')
+    end
+
     it 'delegates to a mediated page if it is mediateable' do
       allow(subject).to receive_messages(mediateable?: true)
       expect(subject.type).to be_nil

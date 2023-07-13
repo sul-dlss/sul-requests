@@ -56,11 +56,13 @@ symphony_ils: &symphony_ils
   bib_model: SearchworksItem
   patron_model: Symphony::Patron
   request_job: SubmitSymphonyRequestJob
+  request_abilities_class: RequestAbilities
 
 folio_ils: &folio_ils
   bib_model: Folio::Instance
   patron_model: Folio::Patron
   request_job: SubmitFolioRequestJob
+  request_abilities_class: Folio::RequestAbilities
 
 ils: *symphony_ils # or *folio_ils
 
