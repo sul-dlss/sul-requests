@@ -41,7 +41,7 @@ module Folio
     STATUS_NONE
   ].freeze
 
-  MaterialType = Data.define(:id)
+  MaterialType = Data.define(:id, :name)
   LoanType = Data.define(:id)
 
   # Represents an item returned from the /inventory-hierarchy/items-and-holdings Folio API
@@ -126,7 +126,7 @@ module Folio
                        dyn['chronology']].filter_map(&:presence).join(' '),
           public_note: dyn.fetch('notes').find { |note| note.dig('itemNoteType', 'name') == 'Public' }&.fetch('note'),
           effective_location: Location.from_hash(dyn.fetch('effectiveLocation')),
-          material_type: MaterialType.new(id: dyn.dig('materialType', 'id')),
+          material_type: MaterialType.new(id: dyn.dig('materialType', 'id'), name: dyn.dig('materialType', 'name')),
           loan_type: LoanType.new(id: dyn.fetch('tempooraryLoanTypeId', dyn.fetch('permanentLoanTypeId'))))
     end
     # rubocop:enable Metrics/AbcSize
