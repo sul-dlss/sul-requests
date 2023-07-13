@@ -12,7 +12,7 @@ RSpec.describe SubmitScanRequestJob, type: :job do
       allow(IlliadRequest).to receive(:new).with(scan).and_return(illiad_request)
     end
 
-    let(:scan) { create(:scan, :with_holdings) }
+    let(:scan) { create(:scan, :with_holdings, origin: 'SAL', origin_location: 'SAL-TEMP', bib_data: build(:scannable_only_holdings)) }
     let(:illiad_request) { instance_double(IlliadRequest, request!: double(body: { 'IlliadResponse' => 'Blah' }.to_json)) }
 
     context 'when the scan destination is present' do

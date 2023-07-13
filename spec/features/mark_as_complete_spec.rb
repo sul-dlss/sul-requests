@@ -16,13 +16,16 @@ RSpec.describe 'Mark As Complete', js: true do
                     home_location: 'STACKS',
                     current_location: nil,
                     callnumber: 'ABC 123',
-                    hold?: true)
+                    hold?: true,
+                    effective_location: build(:mediated_location),
+                    material_type: build(:book_material_type),
+                    loan_type: double(id: nil))
     ]
   end
 
   before do
-    allow(Settings.ils.bib_model.constantize).to receive(:new).and_return(double(:bib_data, title: 'Test title',
-                                                                                            request_holdings: selected_items))
+    allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(double(:bib_data, title: 'Test title',
+                                                                                              request_holdings: selected_items))
     stub_current_user(user)
   end
 

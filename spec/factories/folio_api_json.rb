@@ -1,15 +1,87 @@
 # frozen_string_literal: true
 
 if Settings.ils.bib_model == 'Folio::Instance'
+
   FactoryBot.define do
     factory :location, class: 'Folio::Location' do
-      id { 'uuid' }
-      code { 'GRE-STACKS' }
+      id { Folio::Types.get_type('locations').find { |l| l['code'] == code }.fetch('id') }
+      code { 'SAL3-STACKS' }
       name { 'Location name' }
       discovery_display_name { 'Discovery display name' }
-      campus { Folio::Campus.new(id: 'uuid') }
-      library { Folio::Campus.new(id: 'uuid') }
-      institution { Folio::Campus.new(id: 'uuid') }
+      campus { Folio::Campus.new(id: 'uuid', code: 'SUL') }
+      library { Folio::Library.new(id: 'uuid', code: 'LIB') }
+      institution { Folio::Institution.new(id: 'uuid') }
+      details { {} }
+
+      initialize_with { new(**attributes) }
+    end
+
+    factory :mediated_location, parent: :location do
+      details { { 'pageMediationGroupKey' => 'ART', 'pageServicePoints' => [{ 'code' => 'ART' }] } }
+    end
+
+    factory :page_mp_location, parent: :location do
+      code { 'SAL3-PAGE-MP' }
+      details { { 'pageMediationGroupKey' => 'PAGE-MP', 'pageServicePoints' => [{ 'code' => 'EARTH-SCI' }] } }
+    end
+
+    factory :page_lp_location, parent: :location do
+      code { 'SAL3-PAGE-LP' }
+      details { { 'pageServicePoints' => [{ 'code' => 'MUSIC' }, { 'code' => 'MEDIA-CENTER' }] } }
+    end
+
+    factory :page_en_location, parent: :location do
+      code { 'SAL3-PAGE-EN' }
+      details { { 'pageServicePoints' => [{ 'code' => 'ENG' }] } }
+    end
+
+    factory :scannable_location, parent: :location do
+      code { 'SAL3-STACKS' }
+      details { { 'scanServicePoints' => [{ 'code' => 'SAL3' }] } }
+    end
+
+    factory :sal_temp_location, parent: :location do
+      code { 'SAL-TEMP' }
+      details { { 'scanServicePoints' => [{ 'code' => 'GREEN' }] } }
+    end
+
+    factory :mmstacks_location, parent: :location do
+      code { 'MEDIA-CAGE' }
+      library { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'MEDIA-CENTER') }
+    end
+
+    factory :law_location, parent: :location do
+      code { 'LAW-STACKS1' }
+      library { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'LAW') }
+    end
+
+    factory :eal_sets_location, parent: :location do
+      code { 'EAL-SETS' }
+      library { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'EAST-ASIA') }
+    end
+
+    factory :book_material_type, class: 'Folio::MaterialType' do
+      id { '1a54b431-2e4f-452d-9cae-9cee66c9a892' }
+      name { 'book' }
+
+      initialize_with { new(**attributes) }
+    end
+
+    factory :multimedia_material_type, class: 'Folio::MaterialType' do
+      id { '794de86f-ecbc-45ad-b790-f30eb19797ec' }
+      name { 'multimedia' }
+
+      initialize_with { new(**attributes) }
+    end
+
+    factory :item, class: 'Folio::Item' do
+      barcode { '3610512345678' }
+      callnumber { 'ABC 123' }
+      status { 'Available' }
+      public_note { '' }
+      type { '' }
+      material_type { build(:book_material_type) }
+      loan_type { Folio::LoanType.new(id: '') }
 
       initialize_with { new(**attributes) }
     end
@@ -21,30 +93,18 @@ if Settings.ils.bib_model == 'Folio::Instance'
       format { 'Book' }
       items do
         [
-          Folio::Item.new(
-            barcode: '3610512345678',
-            callnumber: 'ABC 123',
-            status: 'Available',
-            effective_location: build(:location, code: 'SAL3-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          ),
-          Folio::Item.new(
-            barcode: '3610587654321',
-            callnumber: 'ABC 321',
-            status: 'Available',
-            effective_location: build(:location, code: 'SAL3-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          ),
-          Folio::Item.new(
-            barcode: '12345679',
-            callnumber: 'ABC 456',
-            status: 'Available',
-            effective_location: build(:location, code: 'SAL3-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          )
+          build(:item,
+                barcode: '3610512345678',
+                callnumber: 'ABC 123',
+                effective_location: build(:location, code: 'SAL3-STACKS')),
+          build(:item,
+                barcode: '3610587654321',
+                callnumber: 'ABC 321',
+                effective_location: build(:location, code: 'SAL3-STACKS')),
+          build(:item,
+                barcode: '12345679',
+                callnumber: 'ABC 456',
+                effective_location: build(:location, code: 'SAL3-STACKS'))
         ]
       end
 
@@ -60,14 +120,10 @@ if Settings.ils.bib_model == 'Folio::Instance'
       format { 'Book' }
       items do
         [
-          Folio::Item.new(
-            barcode: '87654321',
-            callnumber: 'ABC 87654321',
-            status: 'Available',
-            effective_location: build(:location, code: 'SAL3-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          )
+          build(:item,
+                barcode: '87654321',
+                callnumber: 'ABC 87654321',
+                effective_location: build(:location, code: 'SAL3-STACKS'))
         ]
       end
 
@@ -85,14 +141,10 @@ if Settings.ils.bib_model == 'Folio::Instance'
 
       items do
         [
-          Folio::Item.new(
-            barcode: '12345678',
-            callnumber: 'ABC 123',
-            status: 'Available',
-            effective_location: build(:location, code: 'SAL3-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          )
+          build(:item,
+                barcode: '12345678',
+                callnumber: 'ABC 123',
+                effective_location: build(:location, code: 'SAL3-STACKS'))
         ]
       end
 
@@ -109,14 +161,11 @@ if Settings.ils.bib_model == 'Folio::Instance'
 
       items do
         [
-          Folio::Item.new(
-            barcode: '12345678',
-            callnumber: 'ABC 123',
-            status: 'Available',
-            effective_location: build(:location, code: 'SAL-TEMP'),
-            public_note: '',
-            type: 'NONCIRC'
-          )
+          build(:item,
+                barcode: '12345678',
+                callnumber: 'ABC 123',
+                effective_location: build(:sal_temp_location),
+                type: 'NONCIRC')
         ]
       end
 
@@ -136,22 +185,16 @@ if Settings.ils.bib_model == 'Folio::Instance'
 
       items do
         [
-          Folio::Item.new(
-            barcode: '12345678',
-            callnumber: 'ABC 123',
-            status: 'Page',
-            effective_location: build(:location, code: 'SPEC-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          ),
-          Folio::Item.new(
-            barcode: '87654321',
-            callnumber: 'ABC 321',
-            status: 'Page',
-            effective_location: build(:location, code: 'SPEC-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          )
+          build(:item,
+                barcode: '12345678',
+                callnumber: 'ABC 123',
+                status: 'Page',
+                effective_location: build(:location, code: 'SPEC-STACKS')),
+          build(:item,
+                barcode: '87654321',
+                callnumber: 'ABC 321',
+                status: 'Page',
+                effective_location: build(:location, code: 'SPEC-STACKS'))
         ]
       end
 
@@ -171,14 +214,11 @@ if Settings.ils.bib_model == 'Folio::Instance'
 
       items do
         [
-          Folio::Item.new(
-            barcode: '12345678',
-            callnumber: 'ABC 123',
-            status: 'Page',
-            effective_location: build(:location, code: 'SPEC-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          )
+          build(:item,
+                barcode: '12345678',
+                callnumber: 'ABC 123',
+                status: 'Page',
+                effective_location: build(:location, code: 'SPEC-STACKS'))
         ]
       end
 
@@ -199,14 +239,11 @@ if Settings.ils.bib_model == 'Folio::Instance'
 
       items do
         [
-          Folio::Item.new(
-            barcode: '12345678',
-            callnumber: 'ABC 123',
-            status: 'Page',
-            effective_location: build(:location, code: 'SPEC-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          )
+          build(:item,
+                barcode: '12345678',
+                callnumber: 'ABC 123',
+                status: 'Page',
+                effective_location: build(:location, code: 'SPEC-STACKS'))
         ]
       end
 
@@ -223,22 +260,16 @@ if Settings.ils.bib_model == 'Folio::Instance'
 
       items do
         [
-          Folio::Item.new(
-            barcode: '12345678',
-            callnumber: 'ABC 123',
-            status: 'Page',
-            effective_location: build(:location, code: 'SAL3-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          ),
-          Folio::Item.new(
-            barcode: '87654321',
-            callnumber: 'ABC 321',
-            status: 'Page',
-            effective_location: build(:location, code: 'SAL3-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          )
+          build(:item,
+                barcode: '12345678',
+                callnumber: 'ABC 123',
+                status: 'Page',
+                effective_location: build(:location, code: 'SAL3-STACKS')),
+          build(:item,
+                barcode: '87654321',
+                callnumber: 'ABC 321',
+                status: 'Page',
+                effective_location: build(:location, code: 'SAL3-STACKS'))
         ]
       end
 
@@ -247,7 +278,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
       end
     end
 
-    factory :sal_holdings, class: 'Folio::Instance' do
+    factory :scannable_holdings, class: 'Folio::Instance' do
       id { '1234' }
       title { 'SAL Item Title' }
 
@@ -255,22 +286,37 @@ if Settings.ils.bib_model == 'Folio::Instance'
 
       items do
         [
-          Folio::Item.new(
-            barcode: '12345678',
-            callnumber: 'ABC 123',
-            status: 'Page',
-            effective_location: build(:location, code: 'SAL-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          ),
-          Folio::Item.new(
-            barcode: '87654321',
-            callnumber: 'ABC 321',
-            status: 'Page',
-            effective_location: build(:location, code: 'SAL-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          )
+          build(:item,
+                barcode: '12345678',
+                callnumber: 'ABC 123',
+                status: 'Page',
+                effective_location: build(:scannable_location, code: 'SAL3-STACKS')),
+          build(:item,
+                barcode: '87654321',
+                callnumber: 'ABC 321',
+                status: 'Page',
+                effective_location: build(:scannable_location, code: 'SAL3-STACKS'))
+        ]
+      end
+
+      initialize_with do
+        new(**attributes)
+      end
+    end
+
+    factory :page_lp_holdings, class: 'Folio::Instance' do
+      id { '1234' }
+      title { 'PAGE-LP Item Title' }
+
+      format { ['Book'] }
+
+      items do
+        [
+          build(:item,
+                barcode: '12345678',
+                callnumber: 'ABC 123',
+                status: 'Page',
+                effective_location: build(:page_lp_location))
         ]
       end
 
@@ -287,22 +333,16 @@ if Settings.ils.bib_model == 'Folio::Instance'
 
       items do
         [
-          Folio::Item.new(
-            barcode: '12345678',
-            callnumber: 'ABC 123',
-            status: 'Page',
-            effective_location: build(:location, code: 'SAL3-PAGE-MP'),
-            public_note: '',
-            type: 'STKS'
-          ),
-          Folio::Item.new(
-            barcode: '87654321',
-            callnumber: 'ABC 321',
-            status: 'Page',
-            effective_location: build(:location, code: 'SAL3-PAGE-MP'),
-            public_note: '',
-            type: 'STKS'
-          )
+          build(:item,
+                barcode: '12345678',
+                callnumber: 'ABC 123',
+                status: 'Page',
+                effective_location: build(:page_mp_location)),
+          build(:item,
+                barcode: '87654321',
+                callnumber: 'ABC 321',
+                status: 'Page',
+                effective_location: build(:page_mp_location))
         ]
       end
 
@@ -319,54 +359,73 @@ if Settings.ils.bib_model == 'Folio::Instance'
 
       items do
         [
-          Folio::Item.new(
-            barcode: '12345678',
-            callnumber: 'ABC 123',
-            status: 'Available',
-            effective_location: build(:location, code: 'SAL3-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          ),
-          Folio::Item.new(
-            barcode: '23456789',
-            callnumber: 'ABC 456',
-            status: 'Available',
-            effective_location: build(:location, code: 'SAL3-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          ),
-          Folio::Item.new(
-            barcode: '34567890',
-            callnumber: 'ABC 789',
-            status: 'Available',
-            effective_location: build(:location, code: 'SAL3-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          ),
-          Folio::Item.new(
-            barcode: '45678901',
-            callnumber: 'ABC 012',
-            status: 'Available',
-            effective_location: build(:location, code: 'SAL3-STACKS'),
-            public_note: 'note for 45678901',
-            type: 'STKS'
-          ),
-          Folio::Item.new(
-            barcode: '56789012',
-            callnumber: 'ABC 345',
-            status: 'Available',
-            effective_location: build(:location, code: 'SAL3-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          ),
-          Folio::Item.new(
-            barcode: '67890123',
-            callnumber: 'ABC 678',
-            status: 'Available',
-            effective_location: build(:location, code: 'SAL3-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          )
+          build(:item,
+                barcode: '12345678',
+                callnumber: 'ABC 123',
+                effective_location: build(:location, code: 'SAL3-STACKS')),
+          build(:item,
+                barcode: '23456789',
+                callnumber: 'ABC 456',
+                effective_location: build(:location, code: 'SAL3-STACKS')),
+          build(:item,
+                barcode: '34567890',
+                callnumber: 'ABC 789',
+                effective_location: build(:location, code: 'SAL3-STACKS')),
+          build(:item,
+                barcode: '45678901',
+                callnumber: 'ABC 012',
+                effective_location: build(:location, code: 'SAL3-STACKS'),
+                public_note: 'note for 45678901'),
+          build(:item,
+                barcode: '56789012',
+                callnumber: 'ABC 345',
+                effective_location: build(:location, code: 'SAL3-STACKS')),
+          build(:item,
+                barcode: '67890123',
+                callnumber: 'ABC 678',
+                effective_location: build(:location, code: 'SAL3-STACKS'))
+        ]
+      end
+
+      initialize_with do
+        new(**attributes)
+      end
+    end
+
+    factory :single_mediated_holding, class: 'Folio::Instance' do
+      id { '1234' }
+      title { 'Item Title' }
+
+      format { ['Book'] }
+
+      items do
+        [
+          build(:item,
+                barcode: '12345678',
+                callnumber: 'ABC 123',
+                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                type: 'LCKSTK')
+        ]
+      end
+
+      initialize_with do
+        new(**attributes)
+      end
+    end
+
+    factory :art_stacks_holding, class: 'Folio::Instance' do
+      id { '1234' }
+      title { 'Item Title' }
+
+      format { ['Book'] }
+
+      items do
+        [
+          build(:item,
+                barcode: '12345678',
+                callnumber: 'ABC 123',
+                effective_location: build(:location, code: 'ART-STACKS'),
+                type: 'STKS')
         ]
       end
 
@@ -383,86 +442,59 @@ if Settings.ils.bib_model == 'Folio::Instance'
 
       items do
         [
-          Folio::Item.new(
-            barcode: '12345678',
-            callnumber: 'ABC 123',
-            status: 'Available',
-            effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
-            public_note: '',
-            type: 'LCKSTK'
-          ),
-          Folio::Item.new(
-            barcode: '23456789',
-            callnumber: 'ABC 456',
-            status: 'Available',
-            effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
-            public_note: 'note for 23456789',
-            type: 'LCKSTK'
-          ),
-          Folio::Item.new(
-            barcode: '34567890',
-            callnumber: 'ABC 789',
-            status: 'THE-CURRENT-LOCATION',
-            effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
-            public_note: '',
-            type: 'LCKSTK'
-          ),
-          Folio::Item.new(
-            barcode: '45678901',
-            callnumber: 'ABC 012',
-            status: 'Available',
-            effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
-            public_note: 'note for 45678901',
-            type: 'LCKSTK'
-          ),
-          Folio::Item.new(
-            barcode: '56789012',
-            callnumber: 'ABC 345',
-            status: 'Available',
-            effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
-            public_note: '',
-            type: 'LCKSTK'
-          ),
-          Folio::Item.new(
-            barcode: '67890123',
-            callnumber: 'ABC 678',
-            status: 'Available',
-            effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
-            public_note: '',
-            type: 'LCKSTK'
-          ),
-          Folio::Item.new(
-            barcode: '78901234',
-            callnumber: 'ABC 901',
-            status: 'Available',
-            effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
-            public_note: '',
-            type: 'LCKSTK'
-          ),
-          Folio::Item.new(
-            barcode: '89012345',
-            callnumber: 'ABC 234',
-            status: 'Available',
-            effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
-            public_note: '',
-            type: 'LCKSTK'
-          ),
-          Folio::Item.new(
-            barcode: '90123456',
-            callnumber: 'ABC 567',
-            status: 'Available',
-            effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
-            public_note: '',
-            type: 'LCKSTK'
-          ),
-          Folio::Item.new(
-            barcode: '01234567',
-            callnumber: 'ABC 890',
-            status: 'Available',
-            effective_location: build(:location, code: 'ART-LOCKED-LARGE'),
-            public_note: '',
-            type: 'LCKSTK'
-          )
+          build(:item,
+                barcode: '12345678',
+                callnumber: 'ABC 123',
+                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                type: 'LCKSTK'),
+          build(:item,
+                barcode: '23456789',
+                callnumber: 'ABC 456',
+                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                public_note: 'note for 23456789',
+                type: 'LCKSTK'),
+          build(:item,
+                barcode: '34567890',
+                callnumber: 'ABC 789',
+                status: 'THE-CURRENT-LOCATION',
+                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                type: 'LCKSTK'),
+          build(:item,
+                barcode: '45678901',
+                callnumber: 'ABC 012',
+                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                public_note: 'note for 45678901',
+                type: 'LCKSTK'),
+          build(:item,
+                barcode: '56789012',
+                callnumber: 'ABC 345',
+                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                type: 'LCKSTK'),
+          build(:item,
+                barcode: '67890123',
+                callnumber: 'ABC 678',
+                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                type: 'LCKSTK'),
+          build(:item,
+                barcode: '78901234',
+                callnumber: 'ABC 901',
+                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                type: 'LCKSTK'),
+          build(:item,
+                barcode: '89012345',
+                callnumber: 'ABC 234',
+                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                type: 'LCKSTK'),
+          build(:item,
+                barcode: '90123456',
+                callnumber: 'ABC 567',
+                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                type: 'LCKSTK'),
+          build(:item,
+                barcode: '01234567',
+                callnumber: 'ABC 890',
+                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                type: 'LCKSTK')
         ]
       end
 
@@ -479,86 +511,47 @@ if Settings.ils.bib_model == 'Folio::Instance'
 
       items do
         [
-          Folio::Item.new(
-            barcode: '12345678',
-            callnumber: 'ABC 123',
-            status: 'Available',
-            effective_location: build(:location, code: 'SPEC-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          ),
-          Folio::Item.new(
-            barcode: '23456789',
-            callnumber: 'ABC 456',
-            status: 'Available',
-            effective_location: build(:location, code: 'SPEC-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          ),
-          Folio::Item.new(
-            barcode: '34567890',
-            callnumber: 'ABC 789',
-            status: 'Available',
-            effective_location: build(:location, code: 'SPEC-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          ),
-          Folio::Item.new(
-            barcode: '45678901',
-            callnumber: 'ABC 012',
-            status: 'Available',
-            effective_location: build(:location, code: 'SPEC-STACKS'),
-            public_note: 'note for 45678901',
-            type: 'STKS'
-          ),
-          Folio::Item.new(
-            barcode: '56789012',
-            callnumber: 'ABC 345',
-            status: 'Available',
-            effective_location: build(:location, code: 'SPEC-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          ),
-          Folio::Item.new(
-            barcode: '67890123',
-            callnumber: 'ABC 678',
-            status: 'Available',
-            effective_location: build(:location, code: 'SPEC-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          ),
-          Folio::Item.new(
-            barcode: '78901234',
-            callnumber: 'ABC 901',
-            status: 'Available',
-            effective_location: build(:location, code: 'SPEC-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          ),
-          Folio::Item.new(
-            barcode: '89012345',
-            callnumber: 'ABC 234',
-            status: 'Available',
-            effective_location: build(:location, code: 'SPEC-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          ),
-          Folio::Item.new(
-            barcode: '90123456',
-            callnumber: 'ABC 567',
-            status: 'Available',
-            effective_location: build(:location, code: 'SPEC-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          ),
-          Folio::Item.new(
-            barcode: '01234567',
-            callnumber: 'ABC 890',
-            status: 'Available',
-            effective_location: build(:location, code: 'SPEC-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          )
+          build(:item,
+                barcode: '12345678',
+                callnumber: 'ABC 123',
+                effective_location: build(:location, code: 'SPEC-STACKS')),
+          build(:item,
+                barcode: '23456789',
+                callnumber: 'ABC 456',
+                effective_location: build(:location, code: 'SPEC-STACKS')),
+          build(:item,
+                barcode: '34567890',
+                callnumber: 'ABC 789',
+                effective_location: build(:location, code: 'SPEC-STACKS')),
+          build(:item,
+                barcode: '45678901',
+                callnumber: 'ABC 012',
+                effective_location: build(:location, code: 'SPEC-STACKS'),
+                public_note: 'note for 45678901'),
+          build(:item,
+                barcode: '56789012',
+                callnumber: 'ABC 345',
+                effective_location: build(:location, code: 'SPEC-STACKS')),
+          build(:item,
+                barcode: '67890123',
+                callnumber: 'ABC 678',
+                effective_location: build(:location, code: 'SPEC-STACKS')),
+          build(:item,
+                barcode: '78901234',
+                callnumber: 'ABC 901',
+                effective_location: build(:location, code: 'SPEC-STACKS')),
+          build(:item,
+                barcode: '89012345',
+                callnumber: 'ABC 234',
+                effective_location: build(:location, code: 'SPEC-STACKS')),
+          build(:item,
+                barcode: '90123456',
+                callnumber: 'ABC 567',
+                effective_location: build(:location, code: 'SPEC-STACKS')),
+          build(:item,
+                barcode: '01234567',
+                callnumber: 'ABC 890',
+                effective_location: build(:location, code: 'SPEC-STACKS'))
         ]
       end
 
@@ -575,23 +568,16 @@ if Settings.ils.bib_model == 'Folio::Instance'
 
       items do
         [
-          Folio::Item.new(
-            barcode: '12345678',
-            callnumber: 'ABC 123',
-            status: 'Available',
-            effective_location: build(:location, code: 'SAL3-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          ),
-          Folio::Item.new(
-            barcode: '87654321',
-            callnumber: 'ABC 321',
-            due_date: '2015-01-01T12:59:00.000+00:00',
-            status: 'Checked out',
-            effective_location: build(:location, code: 'SAL3-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          )
+          build(:item,
+                barcode: '12345678',
+                callnumber: 'ABC 123',
+                effective_location: build(:location, code: 'SAL3-STACKS')),
+          build(:item,
+                barcode: '87654321',
+                callnumber: 'ABC 321',
+                due_date: '2015-01-01T12:59:00.000+00:00',
+                status: 'Checked out',
+                effective_location: build(:location, code: 'SAL3-STACKS'))
         ]
       end
 
@@ -602,20 +588,16 @@ if Settings.ils.bib_model == 'Folio::Instance'
 
     factory :sal3_stacks_searchworks_item, class: 'Folio::Instance' do
       id { '1234' }
-      title { 'Green stacks item' }
+      title { 'SAL3 stacks item' }
 
       format { ['Book'] }
 
       items do
         [
-          Folio::Item.new(
-            barcode: '12345678',
-            callnumber: 'ABC 123',
-            status: 'Available',
-            effective_location: build(:location, code: 'SAL3-STACKS'),
-            public_note: '',
-            type: 'STKS'
-          )
+          build(:item,
+                barcode: '12345678',
+                callnumber: 'ABC 123',
+                effective_location: build(:location, code: 'SAL3-STACKS'))
         ]
       end
 

@@ -13,13 +13,21 @@ RSpec.describe RequestsHelper do
     end
 
     describe 'single library' do
-      let(:request) { create(:request, origin: 'SAL3', origin_location: 'PAGE-MU') }
+      let(:request) { build(:request, origin: 'SAL3', origin_location: 'PAGE-EN', bib_data:) }
+      let(:item) do
+        build(:item,
+              barcode: '3610512345678',
+              callnumber: 'ABC 123',
+              effective_location: build(:page_en_location))
+      end
+
+      let(:bib_data) { double(:bib_data, title: 'Test title', request_holdings: [item]) }
 
       it 'returns library text and a hidden input w/ the destination library' do
-        expect(form).to receive(:hidden_field).with(:destination, value: 'MUSIC').and_return('<hidden_field>')
+        expect(form).to receive(:hidden_field).with(:destination, value: 'ENG').and_return('<hidden_field>')
         markup = Capybara.string(select_for_pickup_libraries(form))
         expect(markup).to have_css('.form-group .control-label', text: 'Will be delivered to')
-        expect(markup).to have_css('.form-group .input-like-text', text: 'Music Library')
+        expect(markup).to have_css('.form-group .input-like-text', text: 'Engineering Library (Terman)')
         expect(markup).to have_css('hidden_field')
       end
     end

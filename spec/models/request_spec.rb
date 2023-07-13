@@ -22,7 +22,7 @@ RSpec.describe Request do
 
     context 'when barcodes are provided' do
       before do
-        stub_bib_data_json(:multiple_holdings)
+        stub_bib_data_json(build(:multiple_holdings))
       end
 
       let(:items) { [double('item', barcode: '3610512345678')] }
@@ -87,6 +87,8 @@ RSpec.describe Request do
       end
 
       it 'fails validation' do
+        pending('FOLIO does not have any non-circulating, scannable items') if Settings.ils.bib_model == 'Folio::Instance'
+
         expect { create_request }.to raise_error(
           ActiveRecord::RecordInvalid,
           'Validation failed: This item is for in-library use and not available for Request & pickup.'
@@ -649,13 +651,15 @@ RSpec.describe Request do
 
   describe '#default_pickup_library' do
     it 'sets an origin specific default' do
-      request = described_class.new(origin: 'LAW', origin_location: 'STACKS')
+      request = described_class.new(origin: 'LAW', origin_location: 'STACKS',
+                                    bib_data: double(request_holdings: [build(:item, effective_location: build(:law_location))]))
 
       expect(request.default_pickup_library).to eq 'LAW'
     end
 
     it 'sets an origin location specific default' do
-      request = described_class.new(origin: 'SAL3', origin_location: 'EAL-SETS')
+      request = described_class.new(origin: 'EAST-ASIA', origin_location: 'EAL-SETS',
+                                    bib_data: double(request_holdings: [build(:item, effective_location: build(:eal_sets_location))]))
 
       expect(request.default_pickup_library).to eq 'EAST-ASIA'
     end

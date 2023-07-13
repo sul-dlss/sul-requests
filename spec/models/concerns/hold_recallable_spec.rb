@@ -24,8 +24,10 @@ RSpec.describe 'HoldRecallable' do
     context 'when all items are hold/recallable' do
       let(:all) do
         [
-          double(:item, hold_recallable?: true),
-          double(:item, hold_recallable?: true)
+          double(:item, barcode: '1', hold_recallable?: true, effective_location: build(:location),
+                        material_type: build(:book_material_type), loan_type: double(id: nil)),
+          double(:item, barcode: '2', hold_recallable?: true, effective_location: build(:location),
+                        material_type: build(:book_material_type), loan_type: double(id: nil))
         ]
       end
 
@@ -37,8 +39,8 @@ RSpec.describe 'HoldRecallable' do
     context 'when some items are not hold/recallable' do
       let(:all) do
         [
-          double(:item, hold_recallable?: true),
-          double(:item, hold_recallable?: false)
+          double(:item, barcode: '1', hold_recallable?: true),
+          double(:item, barcode: '2', hold_recallable?: false)
         ]
       end
 

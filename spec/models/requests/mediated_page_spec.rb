@@ -27,30 +27,35 @@ RSpec.describe MediatedPage do
     it 'does not not allow pages to be created with destinations that are not valid pickup libraries of their origin' do
       expect do
         described_class.create!(item_id: '1234',
+                                barcodes: ['12345678'],
                                 origin: 'ART',
                                 origin_location: 'ARTLCKL',
                                 destination: 'GREEN',
-                                needed_date: Time.zone.today + 1.day)
+                                needed_date: Time.zone.today + 1.day,
+                                bib_data: build(:single_mediated_holding))
       end.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Destination is not a valid pickup library')
     end
 
     it 'does not allow requests to be submitted without a needed_date when required' do
       expect do
         described_class.create!(item_id: '1234',
+                                barcodes: ['12345678'],
                                 origin: 'ART',
                                 origin_location: 'ARTLCKL',
-                                destination: 'ART')
+                                destination: 'ART',
+                                bib_data: build(:single_mediated_holding))
       end.to raise_error(ActiveRecord::RecordInvalid, "Validation failed: I plan to visit on can't be blank")
     end
 
     it 'allows requests to be submitted without a needed_date when not required' do
       expect do
         described_class.create!(item_id: '1234',
-                                origin: 'RUMSEYMAP',
+                                origin: 'SAL3',
                                 origin_location: 'PAGE-MP',
                                 user:,
-                                destination: 'RUMSEYMAP',
-                                item_title: 'foo')
+                                destination: 'EARTH-SCI',
+                                item_title: 'foo',
+                                bib_data: build(:page_mp_holdings))
       end.not_to raise_error
     end
   end
@@ -235,8 +240,9 @@ RSpec.describe MediatedPage do
     let!(:mediated_page) { create(:mediated_page) }
 
     before do
-      mediated_page.needed_date = Time.zone.today - 5.days
-      mediated_page.save
+      mediated_page.needed_date = 5.days.ago
+      mediated_page.save(validate: false)
+      stub_bib_data_json(build(:single_mediated_holding))
     end
 
     context 'requests that have all of their items approved' do

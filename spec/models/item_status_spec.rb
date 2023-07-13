@@ -10,7 +10,6 @@ RSpec.describe ItemStatus do
 
   before do
     allow(Request.ils_job_class).to receive(:perform_now)
-    allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(double(:bib_data, title: 'Test title', request_holdings: []))
   end
 
   describe '#status_object' do
@@ -54,12 +53,14 @@ RSpec.describe ItemStatus do
       let(:response) { build(:symphony_page_with_single_item) }
 
       it 'reloads the record to ensure that any serialized attributes are updated' do
+        stub_bib_data_json(build(:single_mediated_holding))
+
         allow(Request.ils_job_class).to receive(:perform_now).with(request.id, { barcode: })
 
         expect do
           # Here we operate on a separate instance of this database record.
           # This illustrates what happens in perform_now where it isn't using the same instance of the Request object
-          Request.find(request.id).update(symphony_response_data: response)
+          Request.find(request.id).update!(symphony_response_data: response)
 
           subject.approve!('jstanford')
         end.to change(request, :symphony_response_data).from(nil).to(response)

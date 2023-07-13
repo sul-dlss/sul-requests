@@ -21,14 +21,16 @@ RSpec.describe Page do
           item_id: '1234',
           origin: 'ART',
           origin_location: 'ARTLCKL',
-          destination: 'ART'
+          destination: 'ART',
+          bib_data: build(:single_mediated_holding)
         )
       end.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: This item is not pageable')
     end
 
     it 'does not not allow pages to be created with destinations that are not valid pickup libraries of their origin' do
       expect do
-        described_class.create!(item_id: '1234', origin: 'ARS', origin_location: 'STACKS', destination: 'GREEN')
+        described_class.create!(item_id: '1234', origin: 'SAL3', origin_location: 'PAGE-LP', destination: 'GREEN',
+                                bib_data: build(:page_lp_holdings))
       end.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Destination is not a valid pickup library')
     end
   end
@@ -55,12 +57,14 @@ RSpec.describe Page do
     let(:user) { create(:library_id_user) }
     let(:subject) do
       described_class.create(
-        origin: 'MEDIA-MTXT',
-        origin_location: 'MM-STACKS',
+        origin: 'SAL3',
+        origin_location: 'STACKS',
         destination: 'GREEN',
         item_id: 'abc123',
         item_title: 'foo',
-        user:
+        user:,
+        barcodes: ['87654321'],
+        bib_data: build(:sal3_holding)
       )
     end
 

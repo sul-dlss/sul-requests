@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'AdminComments' do
   let(:user) { create(:superadmin_user) }
-  let(:mediated_page) { create(:mediated_page) }
+  let(:mediated_page) { create(:mediated_page_with_holdings) }
   let(:headers) { { 'HTTP_REFERER' => 'http://example.com' } }
   let(:url) { "/mediated_pages/#{mediated_page.id}/admin_comments" }
 

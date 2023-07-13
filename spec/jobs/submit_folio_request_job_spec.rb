@@ -2,7 +2,9 @@
 
 require 'rails_helper'
 
-RSpec.describe SubmitFolioRequestJob, if: Settings.ils.bib_model == 'Folio::Instance' do
+RSpec.describe SubmitFolioRequestJob do
+  skip unless Settings.ils.request_job == described_class.to_s
+
   let(:client) { instance_double(FolioClient, get_item: { 'id' => 4 }, get_service_point: { 'id' => 5 }, create_item_hold: double) }
   let(:expected_date) { DateTime.now.beginning_of_day.utc.iso8601 }
 
@@ -101,7 +103,8 @@ RSpec.describe SubmitFolioRequestJob, if: Settings.ils.bib_model == 'Folio::Inst
   context 'with a Scan type request' do
     context 'with a non-sso user' do
       let(:request) do
-        create(:scan, :with_holdings_barcodes, user: create(:sso_user))
+        create(:scan, :with_holdings_barcodes, origin: 'SAL', origin_location: 'SAL-TEMP', bib_data: build(:scannable_only_holdings),
+                                               user: create(:sso_user))
       end
 
       it 'calls the create_item_hold API method' do

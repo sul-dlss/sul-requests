@@ -8,7 +8,7 @@ RSpec.describe 'Item Selector' do
   end
 
   describe 'for single items' do
-    before { stub_bib_data_json(:single_holding) }
+    before { stub_bib_data_json(build(:single_holding)) }
 
     it 'displays the item call number' do
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
@@ -27,7 +27,7 @@ RSpec.describe 'Item Selector' do
       let(:request_path) { new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS') }
 
       before do
-        stub_bib_data_json(:multiple_holdings)
+        stub_bib_data_json(build(:multiple_holdings))
       end
 
       it 'displays the selected item count' do
@@ -60,7 +60,7 @@ RSpec.describe 'Item Selector' do
         let(:request_path) { new_scan_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS') }
 
         before do
-          stub_bib_data_json(:sal3_holdings)
+          stub_bib_data_json(build(:scannable_holdings))
         end
 
         it 'is restricted to one selection via radio button' do
@@ -80,7 +80,7 @@ RSpec.describe 'Item Selector' do
         let(:request_path) { new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS') }
 
         before do
-          stub_bib_data_json(:many_holdings)
+          stub_bib_data_json(build(:many_holdings))
         end
 
         it 'does not limit selection' do
@@ -104,7 +104,7 @@ RSpec.describe 'Item Selector' do
         let(:request_path) { new_aeon_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS') }
 
         before do
-          stub_bib_data_json(:searchable_spec_holdings)
+          stub_bib_data_json(build(:searchable_spec_holdings))
 
           visit request_path
           click_on 'Continue'
@@ -153,7 +153,7 @@ RSpec.describe 'Item Selector' do
       let(:request_path) { new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL') }
 
       before do
-        stub_bib_data_json(:searchable_holdings)
+        stub_bib_data_json(build(:searchable_holdings))
         visit request_path
       end
 
@@ -238,7 +238,7 @@ RSpec.describe 'Item Selector' do
 
   describe 'when viewed under Back-Forward Cache', js: true do
     before do
-      stub_bib_data_json(:searchable_holdings)
+      stub_bib_data_json(build(:searchable_holdings))
     end
 
     xit 'still limits selections' do
@@ -278,7 +278,7 @@ RSpec.describe 'Item Selector' do
 
   describe 'breadcrumb pills', js: true do
     before do
-      stub_bib_data_json(:many_holdings)
+      stub_bib_data_json(build(:many_holdings))
     end
 
     it 'are addable and removable' do
@@ -313,7 +313,7 @@ RSpec.describe 'Item Selector' do
 
   describe 'checked out items', js: true do
     before do
-      stub_bib_data_json(:checkedout_holdings)
+      stub_bib_data_json(build(:checkedout_holdings))
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
     end
 
@@ -336,7 +336,7 @@ RSpec.describe 'Item Selector' do
     let(:request_path) { new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL') }
 
     before do
-      stub_bib_data_json(:searchable_holdings)
+      stub_bib_data_json(build(:searchable_holdings))
       visit request_path
     end
 

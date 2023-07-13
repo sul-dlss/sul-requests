@@ -6,7 +6,9 @@ RSpec.describe 'Modal Layout' do
   let(:selected_items) do
     [
       double(:item, barcode: '34567890', type: 'STKS', callnumber: 'ABC 123', checked_out?: false, processing?: false, missing?: false,
-                    hold?: false, hold_recallable?: false)
+                    hold?: false, hold_recallable?: false,
+                    effective_location: build(:location, code: 'SAL3-STACKS'),
+                    material_type: build(:book_material_type), loan_type: double(id: nil))
     ]
   end
 
@@ -23,6 +25,7 @@ RSpec.describe 'Modal Layout' do
 
   it 'is used when the modal param is passed by the form and redirects' do
     stub_current_user(create(:sso_user))
+    stub_bib_data_json(build(:scannable_holdings))
     visit new_request_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS', modal: true)
 
     expect(page).not_to have_css('#su-wrap')

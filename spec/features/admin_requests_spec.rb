@@ -11,7 +11,6 @@ RSpec.describe 'Viewing all requests' do
                       user: User.create(sunetid: 'jstanford', email: 'jstanford@stanford.edu'))
         create(:page, item_id: 2346,
                       item_title: 'An American in Paris',
-                      origin: 'SAL',
                       request_comment: 'I can has this item?',
                       user: User.create(name: 'Joe', email: 'joe@xyz.com')
               )
@@ -166,10 +165,12 @@ RSpec.describe 'Viewing all requests' do
     describe 'by a superadmin' do
       before do
         stub_current_user(create(:superadmin_user))
-        create(:mediated_page)
-        create(:mediated_page)
-        create(:page_mp_mediated_page)
       end
+
+      # rubocop:disable RSpec/LetSetup
+      let!(:pages) { create_list(:mediated_page, 2) }
+      let!(:other_pages) { create_list(:page_mp_mediated_page, 1) }
+      # rubocop:enable RSpec/LetSetup
 
       it 'lists all the mediated pages for the given library' do
         visit admin_path('ART')
@@ -189,7 +190,7 @@ RSpec.describe 'Viewing all requests' do
 
         context 'on the "All done" page' do
           before do
-            MediatedPage.all.map(&:approved!)
+            pages.each(&:approved!)
             visit admin_path('ART', done: 'true', per_page: 1)
           end
 

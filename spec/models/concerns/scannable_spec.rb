@@ -3,50 +3,37 @@
 require 'rails_helper'
 
 RSpec.describe 'Scannable' do
-  subject(:request) { build(:request, origin: library, origin_location: location) }
+  subject(:request) { build(:request, origin: library, origin_location: location, bib_data:) }
 
   let(:library) { 'SAL3' }
   let(:location) { 'STACKS' }
   let(:item_type) { 'STKS' }
+  let(:bib_data) { build(:scannable_holdings) }
 
   before do
-    allow(request).to receive(:holdings).and_return([double(type: item_type)])
+    allow(request).to receive(:holdings).and_return([double(type: item_type)]) unless Settings.ils.bib_model == 'Folio::Instance'
   end
 
   describe '#scannable?' do
     it 'is true for scannable items in particular SAL3 locations' do
-      subject.origin_location = 'STACKS'
-      expect(subject).to be_scannable
-
-      subject.origin_location = 'PAGE-GR'
-      expect(subject).to be_scannable
-
-      subject.origin_location = 'BUS-STACKS'
       expect(subject).to be_scannable
     end
 
-    it 'is true for scannable items in particular SAL 1/2 locations' do
-      subject.origin = 'SAL'
-      subject.origin_location = 'STACKS'
-      expect(subject).to be_scannable
+    context 'for SAL1/2 locations' do
+      let(:library) { 'SAL' }
+      let(:location) { 'SAL-TEMP' }
+      let(:bib_data) { build(:scannable_only_holdings) }
 
-      subject.origin_location = 'ND-PAGE-EA'
-      expect(subject).to be_scannable
+      it 'is true for scannable items in particular SAL 1/2 locations' do
+        expect(subject).to be_scannable
+      end
     end
 
     context 'when the location is not scannable' do
-      before do
-        request.origin = 'SAL'
-        request.origin_location = 'NOT-STACKS'
-      end
+      let(:location) { 'PAGE-LP' }
+      let(:bib_data) { build(:page_lp_holdings) }
 
       it { is_expected.not_to be_scannable }
-    end
-
-    it 'is false when the library is not scannable' do
-      subject.origin = 'NOT-SAL3'
-      subject.origin_location = 'STACKS'
-      expect(subject).not_to be_scannable
     end
 
     # FOLIO doesn't have item_type to filter by

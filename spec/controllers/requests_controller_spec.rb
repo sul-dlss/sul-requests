@@ -45,7 +45,7 @@ RSpec.describe RequestsController do
 
     describe 'scannable item' do
       before do
-        stub_bib_data_json(:sal3_holdings)
+        stub_bib_data_json(build(:scannable_holdings))
       end
 
       it 'displays a page to choose to have an item scanned or delivered' do
@@ -56,6 +56,7 @@ RSpec.describe RequestsController do
 
     describe 'unscannable item' do
       it 'redirects to the new mediated page request form' do
+        stub_bib_data_json(build(:single_mediated_holding))
         get :new, params: mediated_page_params
         expect(response).to redirect_to new_mediated_page_path(mediated_page_params)
       end
@@ -63,7 +64,7 @@ RSpec.describe RequestsController do
 
     describe 'unmediateable item' do
       it 'redirects to the new page form' do
-        stub_bib_data_json(:multiple_holdings)
+        stub_bib_data_json(build(:multiple_holdings))
 
         get :new, params: unscannable_params
         expect(response).to redirect_to new_page_path(unscannable_params)
@@ -88,7 +89,13 @@ RSpec.describe RequestsController do
     end
 
     describe 'for mediated pages' do
-      let(:request) { create(:request, origin: 'ART', origin_location: 'ARTLCKL') }
+      let(:request) do
+        create(:request, origin: 'ART', origin_location: 'ARTLCKL', barcodes: ['12345678'], bib_data: build(:single_mediated_holding))
+      end
+
+      before do
+        stub_bib_data_json(build(:single_mediated_holding))
+      end
 
       it 'delegates the request object' do
         path
@@ -161,7 +168,7 @@ RSpec.describe RequestsController do
 
   describe 'layout setting' do
     before do
-      stub_bib_data_json(:sal3_holdings)
+      stub_bib_data_json(build(:scannable_holdings))
     end
 
     it 'defaults to application' do

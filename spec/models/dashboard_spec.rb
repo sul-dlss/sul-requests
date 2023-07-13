@@ -29,8 +29,8 @@ RSpec.describe Dashboard do
   describe 'recent requests' do
     before do
       create(:page)
-      create(:page, origin: 'SAL')
-      create(:page, origin: 'SAL3')
+      create(:page)
+      create(:page)
     end
 
     it 'returns the recent request scope' do

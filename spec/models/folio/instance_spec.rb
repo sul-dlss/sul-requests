@@ -82,12 +82,19 @@ RSpec.describe Folio::Instance do
             ],
             "effectiveLocation": {
               "id": "4573e824-9273-4f13-972f-cff7bf504217",
-              "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-              "libraryId": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+              "campus": {
+                "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                "code": "SUL"
+              },
+              "library": {
+                "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+                "code": "GREEN"
+              },
               "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
               "code": "GRE-STACKS",
               "discoveryDisplayName": "Green Library Stacks",
-              "name": "Green Stacks"
+              "name": "Green Stacks",
+              "details": {}
             },
             "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
             "temporaryLoanTypeId": null
@@ -191,12 +198,19 @@ RSpec.describe Folio::Instance do
                 ],
                 "effectiveLocation": {
                   "id": "635d2ddc-c7a1-46ce-b46d-336f1384c4dc",
-                  "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-                  "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+                  "campus": {
+                    "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                    "code": "SUL"
+                  },
+                  "library": {
+                    "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+                    "code": "SPEC-COLL"
+                  },
                   "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
                   "code": "SPEC-U-ARCHIVES",
                   "discoveryDisplayName": "University Archives",
-                  "name": "Spec U-Archives"
+                  "name": "Spec U-Archives",
+                  "details": {}
                 },
                 "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
                 "temporaryLoanTypeId": null
@@ -215,12 +229,19 @@ RSpec.describe Folio::Instance do
                 "notes": [],
                 "effectiveLocation": {
                   "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
-                  "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-                  "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+                  "campus": {
+                    "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                    "code": "SUL"
+                  },
+                  "library": {
+                    "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+                    "code": "SPEC-COLL"
+                  },
                   "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
                   "code": "SPEC-SAL3-U-ARCHIVES",
                   "discoveryDisplayName": "University Archives",
-                  "name": "Spec SAL3 U-Archives"
+                  "name": "Spec SAL3 U-Archives",
+                  "details": {}
                 },
                 "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
                 "temporaryLoanTypeId": null
@@ -239,12 +260,19 @@ RSpec.describe Folio::Instance do
                 "notes": [],
                 "effectiveLocation": {
                   "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
-                  "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-                  "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+                  "campus": {
+                    "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                    "code": "SUL"
+                  },
+                  "library": {
+                    "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+                    "code": "SPEC-COLL"
+                  },
                   "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
                   "code": "SPEC-SAL3-U-ARCHIVES",
                   "discoveryDisplayName": "University Archives",
-                  "name": "Spec SAL3 U-Archives"
+                  "name": "Spec SAL3 U-Archives",
+                  "details": {}
                 },
                 "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
                 "temporaryLoanTypeId": null
@@ -263,12 +291,19 @@ RSpec.describe Folio::Instance do
                 "notes": [],
                 "effectiveLocation": {
                   "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
-                  "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-                  "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+                  "campus": {
+                    "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                    "code": "SUL"
+                  },
+                  "library": {
+                    "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+                    "code": "SPEC-COLL"
+                  },
                   "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
                   "code": "SPEC-SAL3-U-ARCHIVES",
                   "discoveryDisplayName": "University Archives",
-                  "name": "Spec SAL3 U-Archives"
+                  "name": "Spec SAL3 U-Archives",
+                  "details": {}
                 },
                 "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
                 "temporaryLoanTypeId": null

@@ -20,15 +20,14 @@ RSpec.describe Scan do
   end
 
   it 'allows scannable only materials to be requested for scan' do
-    stub_bib_data_json(:scannable_only_holdings)
-
     expect do
       described_class.create!(
         item_id: '123456',
         origin: 'SAL',
         origin_location: 'SAL-TEMP',
         section_title: 'Chapter 1',
-        item_title: 'foo'
+        item_title: 'foo',
+        bib_data: build(:scannable_only_holdings)
       )
     end.not_to raise_error
   end

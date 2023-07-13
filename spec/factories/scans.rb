@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :scan do
     item_id { '12345' }
-    origin { 'SAL' }
+    origin { 'SAL3' }
     origin_location { 'STACKS' }
     section_title { 'Section Title for Scan 12345' }
 
@@ -16,7 +16,7 @@ FactoryBot.define do
     end
 
     trait :with_holdings do
-      bib_data { FactoryBot.build(:sal_holdings) }
+      bib_data { FactoryBot.build(:scannable_holdings) }
     end
 
     trait :with_holdings_barcodes do

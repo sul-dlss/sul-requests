@@ -7,8 +7,7 @@ RSpec.describe 'Creating a mediated page request' do
   let(:all_items) { [] }
 
   before do
-    allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(double(:bib_data, title: 'Test title',
-                                                                                              request_holdings: all_items))
+    allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(build(:single_mediated_holding))
 
     allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
   end
@@ -139,7 +138,7 @@ RSpec.describe 'Creating a mediated page request' do
 
     before do
       stub_current_user(user)
-      stub_bib_data_json(:searchable_holdings)
+      stub_bib_data_json(build(:searchable_holdings))
     end
 
     it 'persists to the database' do

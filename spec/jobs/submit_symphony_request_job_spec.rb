@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe SubmitSymphonyRequestJob, type: :job do
+RSpec.describe SubmitSymphonyRequestJob, if: Settings.ils.request_job == 'SubmitSymphonyRequestJob', type: :job do
   before do
     allow(Settings.ils).to receive(:request_job).and_return(described_class.to_s)
   end
@@ -42,9 +42,8 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
     subject { described_class.new(request, symphony_client: mock_client) }
 
     let(:user) { build(:non_sso_user) }
-    let(:request) { scan }
-    let(:scan) { create(:scan, :with_holdings_barcodes, user:) }
-    let(:mock_client) { instance_double(SymphonyClient) }
+    let(:request) { create(:page, bib_data: build(:multiple_holdings), barcodes: ['3610512345678', '3610587654321'], user:) }
+    let(:mock_client) { instance_double(SymphonyClient, bib_info: {}) }
     let(:patron) { Symphony::Patron.new({}) }
 
     before do
@@ -53,20 +52,19 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
 
     describe '#execute!' do
       it 'for each barcode place a hold with symphony' do
-        allow_any_instance_of(Symphony::CatalogInfo).to receive(:current_location).and_return('SAL')
         expect(mock_client).to receive(:place_hold).with(
           {
-            fill_by_date: nil, key: 'GREEN', recall_status: 'STANDARD',
-            item: { itemBarcode: '12345678', holdType: 'COPY' },
-            patron_barcode: 'GRE-SCANDELIVER', comment: 'Jane Stanford jstanford@stanford.edu',
+            fill_by_date: nil, key: 'ART', recall_status: 'STANDARD',
+            item: { holdType: 'COPY', itemBarcode: '3610512345678' },
+            patron_barcode: 'HOLD@AR', comment: 'Jane Stanford jstanford@stanford.edu',
             for_group: false, force: true
           }
         ).and_return({}).ordered
         expect(mock_client).to receive(:place_hold).with(
           {
-            fill_by_date: nil, key: 'GREEN', recall_status: 'STANDARD',
-            item: { itemBarcode: '87654321', holdType: 'COPY' },
-            patron_barcode: 'GRE-SCANDELIVER', comment: 'Jane Stanford jstanford@stanford.edu',
+            fill_by_date: nil, key: 'ART', recall_status: 'STANDARD',
+            item: { holdType: 'COPY', itemBarcode: '3610587654321' },
+            patron_barcode: 'HOLD@AR', comment: 'Jane Stanford jstanford@stanford.edu',
             for_group: false, force: true
           }
         ).and_return({}).ordered
@@ -83,10 +81,6 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
                                    'standing' => { 'key' => 'OK' }
                                  }
                                })
-        end
-
-        before do
-          allow(mock_client).to receive(:bib_info).and_return({})
         end
 
         it 'places the request on behalf of the patron' do
@@ -162,7 +156,10 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
         end
 
         context 'when the item is a scan' do
-          let(:request) { scan }
+          let(:request) do
+            create(:scan, :with_holdings_barcodes, origin: 'SAL', origin_location: 'SAL-TEMP', bib_data: build(:scannable_only_holdings),
+                                                   user:)
+          end
 
           it 'does not notify staff' do
             expect do
@@ -197,7 +194,9 @@ RSpec.describe SubmitSymphonyRequestJob, type: :job do
       end
 
       context 'without barcodes' do
-        let(:scan) { create(:scan, :with_holdings, user:) }
+        let(:request) do
+          create(:scan, :with_holdings, origin: 'SAL', origin_location: 'SAL-TEMP', bib_data: build(:scannable_only_holdings), user:)
+        end
 
         it 'places a hold using a callkey' do
           allow_any_instance_of(Symphony::CatalogInfo).to receive(:current_location).and_return('SAL')
