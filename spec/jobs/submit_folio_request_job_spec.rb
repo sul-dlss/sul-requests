@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe SubmitFolioRequestJob do
+RSpec.describe SubmitFolioRequestJob, if: Settings.ils.bib_model == 'Folio::Instance' do
   let(:client) { instance_double(FolioClient, get_item: { 'id' => 4 }, get_service_point: { 'id' => 5 }, create_item_hold: double) }
   let(:expected_date) { DateTime.now.beginning_of_day.utc.iso8601 }
 
@@ -44,6 +44,20 @@ RSpec.describe SubmitFolioRequestJob do
       it 'calls the create_item_hold API method' do
         described_class.perform_now(request.id)
         expect(client).to have_received(:create_item_hold).with('562a5cb0-e998-4ea2-80aa-34ac2b536238', 4, FolioClient::HoldRequest)
+      end
+
+      context 'without barcode (title request)' do
+        before do
+          allow(client).to receive(:create_instance_hold)
+        end
+
+        let(:request) { create(:page_on_order, barcodes: [], user:) }
+
+        it 'calls the create_item_hold API method' do
+          described_class.perform_now(request.id)
+          expect(client).to have_received(:create_instance_hold).with('562a5cb0-e998-4ea2-80aa-34ac2b536238',
+                                                                      'a43e597a-d4b4-50ec-ad16-7fd49920831a', FolioClient::HoldRequest)
+        end
       end
     end
 

@@ -623,5 +623,19 @@ if Settings.ils.bib_model == 'Folio::Instance'
         new(**attributes)
       end
     end
+
+    factory :on_order_instance, class: 'Folio::Instance' do
+      id { 'a43e597a-d4b4-50ec-ad16-7fd49920831a' }
+
+      title { 'HAZARDOUS MATERIALS : MANAGING THE INCIDENT.' }
+
+      format { 'unspecified' }
+
+      items { [] }
+
+      initialize_with do
+        new(**attributes)
+      end
+    end
   end
 end
