@@ -123,6 +123,58 @@ class FolioClient
     folio_graphql_client.instance(hrid:)
   end
 
+  def circulation_rules
+    get_json('/circulation-rules-storage')
+  end
+
+  def request_policies
+    get_json('/request-policy-storage/request-policies', params: { limit: 2_147_483_647 }).fetch('requestPolicies', [])
+  end
+
+  def loan_policies
+    get_json('/loan-policy-storage/loan-policies', params: { limit: 2_147_483_647 }).fetch('loanPolicies', [])
+  end
+
+  def lost_item_fees_policies
+    get_json('/lost-item-fees-policies', params: { limit: 2_147_483_647 }).fetch('lostItemFeePolicies', [])
+  end
+
+  def overdue_fines_policies
+    get_json('/overdue-fines-policies', params: { limit: 2_147_483_647 }).fetch('overdueFinePolicies', [])
+  end
+
+  def patron_notice_policies
+    get_json('/patron-notice-policy-storage/patron-notice-policies', params: { limit: 2_147_483_647 }).fetch('patronNoticePolicies', [])
+  end
+
+  def patron_groups
+    get_json('/groups', params: { limit: 2_147_483_647 }).fetch('usergroups', [])
+  end
+
+  def material_types
+    get_json('/material-types', params: { limit: 2_147_483_647 }).fetch('mtypes', [])
+  end
+
+  def loan_types
+    get_json('/loan-types', params: { limit: 2_147_483_647 }).fetch('loantypes', [])
+  end
+
+  def libraries
+    get_json('/location-units/libraries', params: { limit: 2_147_483_647 }).fetch('loclibs', [])
+  end
+
+  def locations
+    get_json('/locations', params: { limit: 2_147_483_647 }).fetch('locations', [])
+  end
+
+  def campuses
+    get_json('/location-units/campuses', params: { limit: 2_147_483_647 }).fetch('loccamps', [])
+  end
+
+  def institutions
+    get_json('/location-units/institutions', params: { limit: 2_147_483_647 }).fetch('locinsts', [])
+  end
+
   private
 
   def check_response(response, title:, context:)
