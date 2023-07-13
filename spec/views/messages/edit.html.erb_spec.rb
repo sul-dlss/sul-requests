@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'messages/edit', type: :view do
+RSpec.describe 'messages/edit', type: :view do
   before do
     @message = assign(:message, create(:message))
   end

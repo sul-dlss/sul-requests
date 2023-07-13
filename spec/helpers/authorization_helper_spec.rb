@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe AuthorizationHelper do
+RSpec.describe AuthorizationHelper do
   describe '#mediated_locations_for' do
     let(:locations) do
       {

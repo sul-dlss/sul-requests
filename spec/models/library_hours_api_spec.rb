@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe LibraryHoursApi do
+RSpec.describe LibraryHoursApi do
   subject { LibraryHoursApi::Request.new(library, location, range) }
 
   let(:library) { 'green' }

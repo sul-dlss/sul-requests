@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe LibraryHours do
+RSpec.describe LibraryHours do
   let(:library) { 'GREEN' }
   let(:subject) { described_class.new(library) }
   let(:today) { Time.zone.today }

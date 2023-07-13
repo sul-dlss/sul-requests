@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'home/_administration.html.erb' do
+RSpec.describe 'home/_administration.html.erb' do
   before do
     render
   end

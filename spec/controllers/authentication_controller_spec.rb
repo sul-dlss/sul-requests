@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe AuthenticationController do
+RSpec.describe AuthenticationController do
   before do
     request.env['HTTP_REFERER'] = 'https://example.com'
   end

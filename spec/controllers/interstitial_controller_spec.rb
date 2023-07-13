@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe InterstitialController do
+RSpec.describe InterstitialController do
   describe 'show' do
     it 'renders a 500 error if there is no redirect_to parameter' do
       get :show

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe ApplicationHelper do
+RSpec.describe ApplicationHelper do
   describe '#dialog_column_class' do
     it 'returns a string representing the main dialog class' do
       expect(dialog_column_class).to eq 'col-md-6 col-md-offset-3'

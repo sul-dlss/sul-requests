@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe PagingScheduleController do
+RSpec.describe PagingScheduleController do
   describe 'index' do
     describe 'by anonmyous users' do
       it 'is forbidden' do

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'Interstitial page redirect' do
+RSpec.describe 'Interstitial page redirect' do
   pending 'redirects to the page in the redirect_to parameter', js: true do
     # This test isn't working.  I believe the redirect is getting halted in the test harness.
     visit interstitial_path(redirect_to: root_url)

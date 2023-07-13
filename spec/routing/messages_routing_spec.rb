@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe MessagesController, type: :routing do
+RSpec.describe MessagesController, type: :routing do
   describe 'routing' do
     it 'routes to #index' do
       expect(get: '/messages').to route_to('messages#index')

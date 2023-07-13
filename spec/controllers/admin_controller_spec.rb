@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe AdminController do
+RSpec.describe AdminController do
   before do
     stub_current_user(user)
   end

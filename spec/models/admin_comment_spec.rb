@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe AdminComment do
+RSpec.describe AdminComment do
   describe 'validations' do
     it 'a comment is required' do
       expect { described_class.create!(commenter: 'user') }.to raise_error(ActiveRecord::RecordInvalid)

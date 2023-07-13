@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe SULRequests::TokenEncryptor do
+RSpec.describe SULRequests::TokenEncryptor do
   let(:token) { 'token-123' }
   let(:subject) { described_class }
 

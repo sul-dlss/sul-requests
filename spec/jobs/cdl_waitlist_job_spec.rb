@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe CdlWaitlistJob, type: :job do
+RSpec.describe CdlWaitlistJob, type: :job do
   context 'when an item is not checkedout to pseudo patron' do
     let(:checkout) { instance_double(Symphony::CircRecord, patron_barcode: 'abc123') }
 

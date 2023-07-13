@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'cancan/matchers'
 
-describe Ability do
+RSpec.describe Ability do
   subject { described_class.new(user, token) }
 
   let(:admin_comment) { AdminComment.new(request:) }

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'application/_item_selector.html.erb' do
+RSpec.describe 'application/_item_selector.html.erb' do
   let(:user) { create(:sso_user) }
 
   before do

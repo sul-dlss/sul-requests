@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe CdlWaitlistMailer do
+RSpec.describe CdlWaitlistMailer do
   let(:patron_key) { 42 }
   let(:patron) do
     instance_double(Symphony::Patron, email: 'someone@example.com')

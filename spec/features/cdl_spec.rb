@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'CDL' do
+RSpec.describe 'CDL' do
   describe 'availablity api' do
     it 'provides a JSON response' do
       visit cdl_availability_path(barcode: 'abc123')

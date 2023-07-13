@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'shared/_top_navbar.html.erb' do
+RSpec.describe 'shared/_top_navbar.html.erb' do
   before do
     expect(view).to receive_messages(current_user: user)
     render

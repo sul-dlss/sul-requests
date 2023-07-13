@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'User Authorization' do
+RSpec.describe 'User Authorization' do
   describe 'login' do
     it 'is present in the home page and redirects with message' do
       visit root_path

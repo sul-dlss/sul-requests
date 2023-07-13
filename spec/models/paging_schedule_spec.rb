@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe PagingSchedule do
+RSpec.describe PagingSchedule do
   describe '#schedule' do
     it 'returns an array of schedulers' do
       expect(described_class.schedule).to be_present

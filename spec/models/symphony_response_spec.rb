@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe SymphonyResponse do
+RSpec.describe SymphonyResponse do
   subject { described_class.new build(:symphony_scan_with_multiple_items) }
 
   describe '#items_by_barcode' do
