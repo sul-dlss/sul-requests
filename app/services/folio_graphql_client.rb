@@ -99,6 +99,11 @@ class FolioGraphqlClient
                   code
                   discoveryDisplayName
                   name
+                  servicePoints {
+                    id
+                    code
+                    pickupLocation
+                  }
                   library {
                     id
                     code
@@ -130,6 +135,31 @@ class FolioGraphqlClient
     raise data['errors'].pluck('message').join("\n") if data&.key?('errors')
 
     data&.dig('data', 'instances', 0)
+  end
+
+  def service_points
+    data = post_json('/', json:
+    {
+      query:
+    <<~GQL
+      query ServicePoints {
+        servicePoints {
+          pickupLocation
+          code
+          details {
+            isDefaultPickup
+            notes
+          }
+          id
+          discoveryDisplayName
+        }
+      }
+    GQL
+    })
+
+    raise data['errors'].pluck('message').join("\n") if data&.key?('errors')
+
+    data&.dig('data', 'servicePoints')
   end
   # rubocop:enable Metrics/MethodLength
 

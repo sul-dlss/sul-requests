@@ -32,6 +32,10 @@ module Folio
       get_type('circulation_rules').fetch('rulesAsText', '')
     end
 
+    def service_points
+      get_type('service_points').dig('data', 'servicePoints').map { |p| Folio::ServicePoint.from_dynamic(p) }.index_by(&:id)
+    end
+
     def policies
       @policies ||= {
         request: get_type('request_policies').index_by { |p| p['id'] },
@@ -68,7 +72,7 @@ module Folio
     def types_of_interest
       %w[
         request_policies loan_policies overdue_fines_policies lost_item_fees_policies patron_notice_policies
-        patron_groups material_types loan_types institutions campuses libraries locations
+        patron_groups material_types loan_types institutions campuses libraries locations service_points
         circulation_rules
       ]
     end

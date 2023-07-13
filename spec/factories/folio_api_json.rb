@@ -53,6 +53,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
     factory :law_location, parent: :location do
       code { 'LAW-STACKS1' }
       library { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'LAW') }
+      campus { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'LAW') }
     end
 
     factory :eal_sets_location, parent: :location do

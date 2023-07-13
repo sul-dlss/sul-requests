@@ -70,30 +70,48 @@ module Folio
       !mediateable? && !hold_recallable? && any_holdings_pageable?
     end
 
-    def default_pickup_library
-      Settings.default_pickup_library
-    end
-
     def pickup_libraries
-      return default_pickup_libraries if location_restricted_service_point_codes.empty?
+      return (default_pickup_libraries + additional_pickup_libraries).uniq if location_restricted_service_point_codes.empty?
 
       Settings.libraries.keys.select do |key|
         location_restricted_service_point_codes.include? Settings.libraries[key].folio_pickup_service_point_code
       end.map(&:to_s)
     end
 
-    def default_pickup_libraries
-      libraries = Settings.default_pickup_libraries
-      libraries + additional_pickup_libraries
-    end
+    # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+    def default_pickup_library
+      return 'EAST-ASIA' if request.origin_location&.match?(Regexp.union(/^EAL-SETS$/, /^EAL-STKS-/))
 
-    def additional_pickup_libraries
-      return ['MEDIA-MTXT'] if request.holdings.all? { |item| item.effective_location.library.code == 'MEDIA-CENTER' }
+      service_points = Folio::Types.instance.service_points.select do |_k, v|
+        v.is_default_for_campus.present? && v.is_default_for_campus == request.holdings.first&.effective_location&.campus&.code
+      end.values.map(&:code)
 
-      []
+      library = Settings.libraries.keys.find do |key|
+        service_points.include? Settings.libraries[key].folio_pickup_service_point_code
+      end&.to_s
+
+      library || Settings.default_pickup_library
     end
 
     private
+
+    def default_pickup_libraries
+      service_points = Folio::Types.instance.service_points.select { |_k, v| v.is_default_pickup }.values.map(&:code)
+
+      Settings.libraries.keys.select do |key|
+        service_points.include? Settings.libraries[key].folio_pickup_service_point_code
+      end.map(&:to_s)
+    end
+    # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+
+    def additional_pickup_libraries
+      # TODO: if the locations (primary?) service point(s) is a pickup_location, add it to the list
+      # request.holdings.flat_map { |item| item.effective_location.service_points.select { |v| v.pickup_location } }.uniq
+
+      return [request.origin] if Settings.libraries[request.origin]&.folio_pickup_service_point_code
+
+      []
+    end
 
     def location_restricted_service_point_codes
       request.holdings.flat_map do |item|

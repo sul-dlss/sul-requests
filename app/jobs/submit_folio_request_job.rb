@@ -84,7 +84,9 @@ class SubmitFolioRequestJob < ApplicationJob
     def pickup_location_id
       @pickup_location_id ||= begin
         code = Settings.libraries[request.destination].folio_pickup_service_point_code
-        folio_client.get_service_point(code)['id']
+        code ||= Settings.libraries['GREEN'].folio_pickup_service_point_code
+
+        Folio::Types.instance.service_points.values.find { |v| v.code == code }&.id
       end
     end
 
