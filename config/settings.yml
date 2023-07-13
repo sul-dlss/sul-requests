@@ -712,5 +712,22 @@ scannable:
     locations:
       - PAGE-GR
 
+scan_destinations:
+  EAST_ASIA:
+    patron_barcode: 'EAL-SCANREVIEW'
+    folio_pseudopatron: 45873e99-3048-4246-b189-315df10717e5
+
+  GREEN:
+    patron_barcode: 'GRE-SCANDELIVER'
+    folio_pseudopatron: 0ba81714-52d4-4f37-8b4d-f9d929af048d
+    material_types:
+    - book
+    - periodical
+  SAL3:
+    material_types:
+    - book
+    - periodical
+  default: {}
+
 # Aeon external request endpoint (ERE)
 aeon_ere_url: https://stanford.aeon.atlas-sys.com/logon?Action=11&Type=200
