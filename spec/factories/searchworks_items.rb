@@ -13,6 +13,8 @@ if Settings.ils.bib_model == 'SearchworksItem'
     factory :scannable_location, parent: :location
     factory :mmstacks_location, parent: :location
 
+    factory :on_order_instance, parent: :searchworks_item
+
     factory :book_material_type, class: 'OpenStruct'
 
     factory :multimedia_material_type, class: 'OpenStruct'

@@ -3,30 +3,43 @@
 require 'rails_helper'
 
 RSpec.describe SubmitFolioRequestJob do
-  skip unless Settings.ils.request_job == described_class.to_s
-
-  let(:client) { instance_double(FolioClient, get_item: { 'id' => 4 }, get_service_point: { 'id' => 5 }, create_item_hold: double) }
-  let(:expected_date) { DateTime.now.beginning_of_day.utc.iso8601 }
-
   before do
+    skip unless Settings.ils.request_job == described_class.to_s
     allow(Request).to receive(:find).and_return(request)
     allow(FolioClient).to receive(:new).and_return(client)
   end
 
+  let(:client) { instance_double(FolioClient, get_item: { 'id' => 4 }, get_service_point: { 'id' => 5 }, create_item_hold: double) }
+  let(:expected_date) { DateTime.now.beginning_of_day.utc.iso8601 }
+
   context 'with a HoldRecall type request' do
-    let(:request) { create(:hold_recall_with_holdings, barcodes: ['12345678'], user:) }
+    let(:user) { create(:sequence_sso_user) }
+    let(:patron) { Folio::Patron.new({ 'id' => '562a5cb0-e998-4ea2-80aa-34ac2b536238' }) }
+
+    before do
+      allow(request.user).to receive(:patron).and_return(patron)
+    end
 
     context 'with an sso user' do
-      let(:user) { create(:sequence_sso_user) }
-      let(:patron) { Folio::Patron.new({ 'id' => '562a5cb0-e998-4ea2-80aa-34ac2b536238' }) }
-
-      before do
-        allow(request.user).to receive(:patron).and_return(patron)
-      end
+      let(:request) { create(:hold_recall_with_holdings, barcodes: ['12345678'], user:) }
 
       it 'calls the create_item_hold API method' do
         expect { described_class.perform_now(request.id) }.to change { request.folio_command_logs.count }.by(1)
         expect(client).to have_received(:create_item_hold).with('562a5cb0-e998-4ea2-80aa-34ac2b536238', 4, FolioClient::HoldRequest)
+      end
+    end
+
+    context 'without barcode (title request)' do
+      before do
+        allow(client).to receive(:create_instance_hold)
+      end
+
+      let(:request) { create(:hold_on_order, barcodes: [], user:) }
+
+      it 'calls the create_instance_hold API method' do
+        described_class.perform_now(request.id)
+        expect(client).to have_received(:create_instance_hold).with('562a5cb0-e998-4ea2-80aa-34ac2b536238',
+                                                                    'a43e597a-d4b4-50ec-ad16-7fd49920831a', FolioClient::HoldRequest)
       end
     end
   end
@@ -46,20 +59,6 @@ RSpec.describe SubmitFolioRequestJob do
       it 'calls the create_item_hold API method' do
         described_class.perform_now(request.id)
         expect(client).to have_received(:create_item_hold).with('562a5cb0-e998-4ea2-80aa-34ac2b536238', 4, FolioClient::HoldRequest)
-      end
-
-      context 'without barcode (title request)' do
-        before do
-          allow(client).to receive(:create_instance_hold)
-        end
-
-        let(:request) { create(:page_on_order, barcodes: [], user:) }
-
-        it 'calls the create_item_hold API method' do
-          described_class.perform_now(request.id)
-          expect(client).to have_received(:create_instance_hold).with('562a5cb0-e998-4ea2-80aa-34ac2b536238',
-                                                                      'a43e597a-d4b4-50ec-ad16-7fd49920831a', FolioClient::HoldRequest)
-        end
       end
     end
 

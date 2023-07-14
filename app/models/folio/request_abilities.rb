@@ -63,7 +63,8 @@ module Folio
       return false unless Settings.features.hold_recall_service
 
       request.barcode_present? ||
-        all_items_hold_recallable?
+        all_items_hold_recallable? ||
+        request.all_holdings.none?
     end
 
     def pageable?

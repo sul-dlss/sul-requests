@@ -21,4 +21,12 @@ FactoryBot.define do
     needed_date { Time.zone.today }
     bib_data { FactoryBot.build(:sal3_holdings) }
   end
+
+  factory :hold_on_order, parent: :hold_recall do
+    item_id { '1234' }
+    origin { 'ZOMBIE' }
+    origin_location { 'STACKS' }
+    destination { 'ART' }
+    bib_data { build(:on_order_instance) }
+  end
 end
