@@ -37,12 +37,12 @@ if Settings.ils.bib_model == 'Folio::Instance'
 
     factory :scannable_location, parent: :location do
       code { 'SAL3-STACKS' }
-      details { { 'scanServicePoints' => [{ 'code' => 'SAL3' }] } }
+      details { { 'scanServicePointCode' => 'SAL3' } }
     end
 
     factory :sal_temp_location, parent: :location do
       code { 'SAL-TEMP' }
-      details { { 'scanServicePoints' => [{ 'code' => 'GREEN' }] } }
+      details { { 'scanServicePointCode' => 'GREEN' } }
     end
 
     factory :mmstacks_location, parent: :location do

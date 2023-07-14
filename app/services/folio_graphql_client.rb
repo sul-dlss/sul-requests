@@ -120,9 +120,7 @@ class FolioGraphqlClient
                       code
                       name
                     }
-                    scanServicePoints {
-                      code
-                    }
+                    scanServicePointCode
                   }
                 }
                 permanentLoanTypeId
