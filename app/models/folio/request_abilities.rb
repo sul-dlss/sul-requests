@@ -20,9 +20,9 @@ module Folio
 
     def scan_destination
       @scan_destination ||= begin
-        service_point = request.holdings.map { |item| item.effective_location.details['scanServicePoints'] }.flatten.first
+        service_point = request.holdings.filter_map { |item| item.effective_location.details['scanServicePointCode'] }.first
 
-        Settings.scan_destinations[service_point&.dig('code') || :default] || Settings.scan_destinations.default
+        Settings.scan_destinations[service_point || :default] || Settings.scan_destinations.default
       end
     end
 
