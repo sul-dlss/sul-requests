@@ -146,6 +146,7 @@ class FolioGraphqlClient
           code
           details {
             isDefaultPickup
+            isDefaultForCampus
             notes
           }
           id

@@ -33,7 +33,7 @@ module Folio
     end
 
     def service_points
-      get_type('service_points').dig('data', 'servicePoints').map { |p| Folio::ServicePoint.from_dynamic(p) }.index_by(&:id)
+      get_type('service_points').map { |p| Folio::ServicePoint.from_dynamic(p) }.index_by(&:id)
     end
 
     def policies
