@@ -99,6 +99,31 @@ class FolioGraphqlClient
                   code
                   discoveryDisplayName
                   name
+                  servicePoints {
+                    id
+                    code
+                    pickupLocation
+                  }
+                  library {
+                    id
+                    code
+                  }
+                  campus {
+                    id
+                    code
+                  }
+                  details {
+                    pageAeonSite
+                    pageMediationGroupKey
+                    pageServicePoints {
+                      id
+                      code
+                      name
+                    }
+                    scanServicePoints {
+                      code
+                    }
+                  }
                 }
                 permanentLoanTypeId
                 temporaryLoanTypeId
@@ -112,42 +137,29 @@ class FolioGraphqlClient
     data&.dig('data', 'instances', 0)
   end
 
-  def locations
+  def service_points
     data = post_json('/', json:
     {
       query:
-        <<~GQL
-          query LocationsWithRules {
-            locations {
-              id
-              code
-              name
-              details {
-                pageAeonSite
-                pageMediationGroupKey
-                pageServicePoints {
-                  id
-                  code
-                  name
-                }
-                scanServicePoint {
-                  id
-                  code
-                  name
-                }
-                scanPseudopatronBarcode
-                scanMaterialTypes {
-                  id
-                  name
-                }
-              }
-            }
+    <<~GQL
+      query ServicePoints {
+        servicePoints {
+          pickupLocation
+          code
+          details {
+            isDefaultPickup
+            notes
           }
-        GQL
+          id
+          discoveryDisplayName
+        }
+      }
+    GQL
     })
-    raise data['errors'].pluck('message').join("\n") if data.key?('errors')
 
-    data.dig('data', 'locations').map { |l| Folio::Location.from_dynamic(l) }
+    raise data['errors'].pluck('message').join("\n") if data&.key?('errors')
+
+    data&.dig('data', 'servicePoints')
   end
   # rubocop:enable Metrics/MethodLength
 

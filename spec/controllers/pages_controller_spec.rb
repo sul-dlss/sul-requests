@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe PagesController do
-  let(:page) { create(:page) }
   let(:normal_params) do
     { item_id: '1234', origin: 'SAL3', origin_location: 'STACKS', destination: 'ART' }
   end
@@ -11,6 +10,7 @@ RSpec.describe PagesController do
   before do
     allow(controller).to receive_messages(current_user: user)
     allow(Folio::Instance).to receive(:fetch).and_return(Folio::Instance.new(id: '1234'))
+    stub_bib_data_json(build(:single_holding))
   end
 
   describe 'new' do
@@ -183,7 +183,7 @@ RSpec.describe PagesController do
       end
 
       it 'maps checkbox style barcodes correctly' do
-        stub_bib_data_json(:multiple_holdings)
+        stub_bib_data_json(build(:multiple_holdings))
 
         put :create, params: {
           request: {
@@ -220,6 +220,8 @@ RSpec.describe PagesController do
       # NOTE: cannot trigger activejob from this spec to check RequestStatusMailer
 
       context 'create/update' do
+        let(:page) { create(:page, barcodes: ['12345678']) }
+
         it 'raises an error when the honey-pot email field is filled in on create' do
           expect do
             post :create, params: { request: normal_params, email: 'something' }
@@ -246,6 +248,8 @@ RSpec.describe PagesController do
   end
 
   describe 'update' do
+    let(:page) { create(:page, barcodes: ['12345678']) }
+
     describe 'by anonymous users' do
       let(:user) { create(:anon_user) }
 
@@ -280,6 +284,7 @@ RSpec.describe PagesController do
 
     describe 'by superadmins' do
       let(:user) { create(:superadmin_user) }
+      let(:page) { create(:page, barcodes: ['12345678']) }
 
       it 'is allowed to modify page rqeuests' do
         put :update, params: { id: page[:id], request: { needed_date: Time.zone.today + 1.day } }

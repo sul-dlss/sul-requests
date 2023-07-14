@@ -10,32 +10,25 @@ RSpec.describe 'Mediateable' do
       expect(subject).not_to be_mediateable
     end
 
-    it 'returns true if the item is in SPEC-COLL' do
-      subject.origin = 'SPEC-COLL'
-      expect(subject).to be_mediateable
-    end
-
-    it 'returns true if the item is in RUMSEYMAP' do
-      subject.origin = 'RUMSEYMAP'
-      expect(subject).to be_mediateable
-    end
-
     it 'returns true if the item is in SAL3 and PAGE-MP location' do
       subject.origin = 'SAL3'
       subject.origin_location = 'PAGE-MP'
+      subject.bib_data = build(:page_mp_holdings)
       expect(subject).to be_mediateable
     end
 
     describe 'ART Locked Stacks' do
       it 'returns true if the item is in a locked stacks location within ART' do
         subject.origin = 'ART'
-        subject.origin_location = 'ARTLCKO'
+        subject.origin_location = 'ARTLCKL'
+        subject.bib_data = build(:single_mediated_holding)
         expect(subject).to be_mediateable
       end
 
       it 'returns false if the item is in a non-locked stacks location within ART' do
         subject.origin = 'ART'
         subject.origin_location = 'STACKS'
+        subject.bib_data = build(:art_stacks_holding)
         expect(subject).not_to be_mediateable
       end
     end

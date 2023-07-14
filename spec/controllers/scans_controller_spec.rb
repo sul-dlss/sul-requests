@@ -3,13 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe ScansController do
-  let(:scan) { create(:scan, :with_holdings, origin: 'SAL', origin_location: 'STACKS', barcodes: ['12345678']) }
+  let(:scan) { create(:scan, :with_holdings, origin: 'SAL3', origin_location: 'STACKS', barcodes: ['12345678']) }
   let(:scannable_params) do
     { item_id: '12345', origin: 'SAL3', origin_location: 'STACKS' }
   end
 
   before do
-    stub_bib_data_json(:sal3_holdings)
+    stub_bib_data_json(build(:scannable_holdings))
     allow(SubmitScanRequestJob).to receive(:perform_later)
     allow(controller).to receive_messages(current_user: user)
   end
@@ -98,7 +98,7 @@ RSpec.describe ScansController do
       let(:user) { create(:scan_eligible_user) }
 
       before do
-        stub_bib_data_json(:sal3_holding)
+        stub_bib_data_json(build(:scannable_holdings))
 
         post :create, params: {
           request: {
@@ -128,7 +128,7 @@ RSpec.describe ScansController do
       let(:user) { create(:sso_user) }
 
       before do
-        stub_bib_data_json(:sal3_holding)
+        stub_bib_data_json(build(:sal3_holding))
       end
 
       it 'is bounced to a page workflow' do

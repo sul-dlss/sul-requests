@@ -128,6 +128,7 @@ RSpec.describe 'requests/success.html.erb' do
     let(:request) do
       create(
         :scan, :with_holdings,
+        :with_holdings_barcodes,
         user:,
         data: {
           'page_range' => 'Range of pages', 'section_title' => 'Title of section', 'authors' => 'The Author'

@@ -10,7 +10,7 @@ RSpec.describe HoldRecallsController do
 
   before do
     allow(controller).to receive_messages(current_user: user)
-    stub_bib_data_json(:multiple_holdings)
+    stub_bib_data_json(build(:multiple_holdings))
   end
 
   describe 'new' do

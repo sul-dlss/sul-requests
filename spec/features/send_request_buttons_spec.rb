@@ -6,7 +6,8 @@ RSpec.describe 'Send Request Buttons' do
   let(:selected_items) do
     [
       double(:item, callnumber: 'ABC 123', checked_out?: false, processing?: false, missing?: false, hold?: false, on_order?: false,
-                    hold_recallable?: false, barcode: '12345678', type: 'STKS')
+                    hold_recallable?: false, barcode: '12345678', type: 'STKS',
+                    effective_location: build(:location), material_type: build(:book_material_type), loan_type: double(id: nil))
     ]
   end
 
@@ -73,7 +74,7 @@ RSpec.describe 'Send Request Buttons' do
 
   describe 'Scans' do
     before do
-      stub_bib_data_json(:sal3_holdings)
+      stub_bib_data_json(build(:scannable_holdings))
       visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
     end
 
@@ -109,6 +110,10 @@ RSpec.describe 'Send Request Buttons' do
   end
 
   describe 'Mediated Pages' do
+    before do
+      stub_bib_data_json(build(:single_mediated_holding))
+    end
+
     it 'allows users to submit without a SUNet ID' do
       visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
       expect(page).to have_css('a', text: 'I don\'t have a SUNet ID')

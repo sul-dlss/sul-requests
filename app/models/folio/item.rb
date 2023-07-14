@@ -41,25 +41,6 @@ module Folio
     STATUS_NONE
   ].freeze
 
-  Location = Data.define(:id, :campus, :library, :institution, :code, :discovery_display_name, :name) do
-    def self.from_hash(dyn)
-      new(
-        id: dyn.fetch('id'),
-        campus: Campus.new(id: dyn.fetch('campusId')),
-        library: Library.new(id: dyn.fetch('libraryId')),
-        institution: Institution.new(id: dyn.fetch('institutionId')),
-        code: dyn.fetch('code'),
-        discovery_display_name: dyn.fetch('discoveryDisplayName') || dyn.fetch('name'),
-        name: dyn.fetch('name')
-      )
-    end
-  end
-  Library = Data.define(:id)
-  Campus = Data.define(:id)
-  Institution = Data.define(:id)
-  MaterialType = Data.define(:id)
-  LoanType = Data.define(:id)
-
   # Represents an item returned from the /inventory-hierarchy/items-and-holdings Folio API
   # TODO: This wants a "type" attribute, but I don't know how we get the folio version of a holding type.
   #       See https://github.com/sul-dlss/searchworks_traject_indexer/blob/02192452815de3861dcfafb289e1be8e575cb000/lib/traject/config/sirsi_config.rb#L2379
@@ -142,7 +123,7 @@ module Folio
                        dyn['chronology']].filter_map(&:presence).join(' '),
           public_note: dyn.fetch('notes').find { |note| note.dig('itemNoteType', 'name') == 'Public' }&.fetch('note'),
           effective_location: Location.from_hash(dyn.fetch('effectiveLocation')),
-          material_type: MaterialType.new(id: dyn.dig('materialType', 'id')),
+          material_type: MaterialType.new(id: dyn.dig('materialType', 'id'), name: dyn.dig('materialType', 'name')),
           loan_type: LoanType.new(id: dyn.fetch('tempooraryLoanTypeId', dyn.fetch('permanentLoanTypeId'))))
     end
     # rubocop:enable Metrics/AbcSize

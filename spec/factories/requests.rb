@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :request do
     item_id { '123456' }
-    origin { 'BIOLOGY' }
+    origin { 'SAL3' }
     origin_location { 'STACKS' }
     item_title { 'Title for Request 123456' }
     bib_data { FactoryBot.build(:multiple_holdings) }

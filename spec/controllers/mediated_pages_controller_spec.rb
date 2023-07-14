@@ -11,6 +11,7 @@ RSpec.describe MediatedPagesController do
   before do
     allow(controller).to receive_messages(current_user: user)
     allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
+    stub_bib_data_json(build(:searchable_holdings))
   end
 
   describe 'new' do
@@ -169,7 +170,11 @@ RSpec.describe MediatedPagesController do
 
   describe 'update' do
     let(:user) { create(:superadmin_user) }
-    let!(:mediated_page) { create(:mediated_page) }
+    let!(:mediated_page) { create(:mediated_page, barcodes: ['12345678'], bib_data: build(:single_mediated_holding)) }
+
+    before do
+      stub_bib_data_json(build(:single_mediated_holding))
+    end
 
     context 'when successful' do
       it 'returns the json representation of the updated request' do

@@ -8,7 +8,7 @@ RSpec.describe 'Creating an Aeon request', js: true do
 
   before do
     stub_current_user(user)
-    stub_bib_data_json(bib_data)
+    stub_bib_data_json(build(bib_data))
     visit new_aeon_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS')
   end
 

@@ -7,6 +7,7 @@ RSpec.describe 'Status Page' do
 
   before do
     stub_current_user(user)
+    stub_bib_data_json(build(:single_mediated_holding))
   end
 
   describe 'by webuath users' do

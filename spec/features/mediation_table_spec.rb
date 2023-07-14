@@ -8,7 +8,7 @@ RSpec.describe 'Mediation table', js: true do
 
   context 'Library Mediation' do
     before do
-      stub_bib_data_json(:searchable_holdings)
+      stub_bib_data_json(build(:searchable_holdings))
       stub_current_user(create(:superadmin_user))
       stub_symphony_response(ils_response)
 
@@ -116,7 +116,7 @@ RSpec.describe 'Mediation table', js: true do
       let(:ils_response) { build(:symphony_page_with_multiple_items) }
 
       before do
-        stub_bib_data_json(:searchable_holdings)
+        stub_bib_data_json(build(:searchable_holdings))
         allow(Symphony::CatalogInfo).to receive(:find).and_return(double(:current_location, current_location: 'THE-CURRENT-LOCATION'))
         visit(admin_path('ART'))
       end
@@ -431,9 +431,10 @@ RSpec.describe 'Mediation table', js: true do
       end
 
       it 'includes both pending and done requests' do
+        stub_bib_data_json(build(:page_mp_holdings))
         cdate = Time.zone.today - 8.days
-        create(:page_mp_mediated_page, created_at: cdate)
-        req = create(:page_mp_mediated_page, created_at: cdate)
+        create(:page_mp_mediated_page, created_at: cdate, barcodes: ['12345678'])
+        req = create(:page_mp_mediated_page, created_at: cdate, barcodes: ['12345678'])
         req.approved!
         visit admin_path('PAGE-MP')
         page.execute_script("$('input#created_at').prop('value', '#{cdate}')")
@@ -494,7 +495,7 @@ RSpec.describe 'Mediation table', js: true do
 
     before do
       stub_current_user(create(:page_mp_origin_admin_user))
-      stub_bib_data_json(:page_mp_holdings)
+      stub_bib_data_json(build(:page_mp_holdings))
       allow(Symphony::CatalogInfo).to receive(:find).and_return(double(:current_location, current_location: 'SAL3-PAGE-MP'))
       request.save(validate: false)
 

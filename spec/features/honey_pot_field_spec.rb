@@ -6,7 +6,7 @@ RSpec.describe 'Honey Pot Fields' do
   let(:user) { create(:sso_user) }
 
   before do
-    allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(double(:bib_data, title: 'Test title', request_holdings: []))
+    stub_bib_data_json(build(:single_holding))
     stub_current_user(user)
   end
 

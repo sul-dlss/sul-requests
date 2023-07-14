@@ -9,6 +9,16 @@ RSpec.describe 'HoldRecallable' do
 
   describe '#hold_recallable?' do
     context 'when a barcode is provided' do
+      # NOTE: this is a weird test, where the item isn't actually hold/recallable, but the request was sent
+      # with a particular barcode. This is likely because we've got something out of sync with Symphony,
+      # and maybe after FOLIO we can remove this case entirely.
+      let(:all) do
+        [
+          double(:item, barcode: '3610512345', hold_recallable?: false, effective_location: build(:location),
+                        material_type: build(:book_material_type), loan_type: double(id: nil))
+        ]
+      end
+
       it 'is true' do
         request.requested_barcode = '3610512345'
         expect(request).to be_hold_recallable
@@ -24,8 +34,10 @@ RSpec.describe 'HoldRecallable' do
     context 'when all items are hold/recallable' do
       let(:all) do
         [
-          double(:item, hold_recallable?: true),
-          double(:item, hold_recallable?: true)
+          double(:item, barcode: '1', hold_recallable?: true, effective_location: build(:location),
+                        material_type: build(:book_material_type), loan_type: double(id: nil)),
+          double(:item, barcode: '2', hold_recallable?: true, effective_location: build(:location),
+                        material_type: build(:book_material_type), loan_type: double(id: nil))
         ]
       end
 
@@ -37,8 +49,8 @@ RSpec.describe 'HoldRecallable' do
     context 'when some items are not hold/recallable' do
       let(:all) do
         [
-          double(:item, hold_recallable?: true),
-          double(:item, hold_recallable?: false)
+          double(:item, barcode: '1', hold_recallable?: true),
+          double(:item, barcode: '2', hold_recallable?: false)
         ]
       end
 

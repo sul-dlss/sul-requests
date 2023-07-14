@@ -12,6 +12,8 @@ FactoryBot.define do
     destination { 'ART' }
     item_title { 'Title of MediatedPage 1234' }
     needed_date { Time.zone.today }
+    bib_data { build(:single_mediated_holding) }
+    barcodes { ['12345678'] }
     user factory: [:sequence_sso_user]
 
     after(:build) do |request|
@@ -28,6 +30,7 @@ FactoryBot.define do
     destination { 'EARTH-SCI' }
     item_title { 'Title of MediatedPage 1234' }
     needed_date { Time.zone.today }
+    bib_data { build(:page_mp_holdings) }
     user factory: [:sequence_sso_user]
   end
 
@@ -38,6 +41,8 @@ FactoryBot.define do
     destination { 'ART' }
     needed_date { Time.zone.today }
     request_comment { long_comment }
+    bib_data { build(:single_mediated_holding) }
+    barcodes { ['12345678'] }
     user factory: [:sequence_sso_user]
 
     after(:build) do |request|
@@ -66,6 +71,8 @@ FactoryBot.define do
     destination { 'ART' }
     needed_date { Time.zone.today }
     user factory: [:sequence_sso_user]
+    bib_data { build(:single_mediated_holding) }
+    barcodes { ['12345678'] }
 
     after(:build) do |request|
       class << request

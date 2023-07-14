@@ -2,6 +2,33 @@
 
 if Settings.ils.bib_model == 'SearchworksItem'
   FactoryBot.define do
+    factory :location, class: 'OpenStruct'
+    factory :mediated_location, parent: :location
+    factory :page_mp_location, parent: :location
+    factory :page_lp_location, parent: :location
+    factory :page_en_location, parent: :location
+    factory :law_location, parent: :location
+    factory :eal_sets_location, parent: :location
+
+    factory :scannable_location, parent: :location
+    factory :mmstacks_location, parent: :location
+
+    factory :on_order_instance, parent: :searchworks_item
+
+    factory :book_material_type, class: 'OpenStruct'
+
+    factory :multimedia_material_type, class: 'OpenStruct'
+
+    factory :item, class: 'Searchworks::HoldingItem' do
+      type { 'STKS' }
+      barcode { '12345' }
+      callnumber { 'ABC 123' }
+
+      initialize_with do
+        new(attributes.stringify_keys)
+      end
+    end
+
     factory :searchworks_item, class: 'SearchworksItem' do
       initialize_with do
         SearchworksItem.new(attributes.stringify_keys, '1234')
@@ -238,14 +265,14 @@ if Settings.ils.bib_model == 'SearchworksItem'
       end
     end
 
-    factory :sal_holdings, parent: :searchworks_item do
+    factory :scannable_holdings, parent: :searchworks_item do
       title { 'SAL Item Title' }
 
       format { ['Book'] }
 
       holdings do
         [
-          { 'code' => 'SAL',
+          { 'code' => 'SAL3',
             'locations' => [
               { 'code' => 'STACKS',
                 'items' => [
@@ -259,6 +286,45 @@ if Settings.ils.bib_model == 'SearchworksItem'
                   { 'barcode' => '87654321',
                     'callnumber' => 'ABC 321',
                     'type' => 'STKS',
+                    'status' => {
+                      'availability_class' => 'page',
+                      'status_text' => 'Page'
+                    } }
+                ] }
+            ] }
+        ]
+      end
+    end
+
+    factory :page_lp_holdings, parent: :searchworks_item do
+      title { 'PAGE-LP Item Title' }
+
+      format { ['Book'] }
+
+      holdings do
+        [
+          { 'code' => 'SAL3',
+            'locations' => [
+              { 'code' => 'PAGE-LP',
+                'items' => [
+                  { 'barcode' => '12345678',
+                    'callnumber' => 'ABC 123',
+                    'home_location' => 'STACKS',
+                    'type' => 'STKS',
+                    'current_location' => {
+                      'code' => ''
+                    },
+                    'status' => {
+                      'availability_class' => 'page',
+                      'status_text' => 'Page'
+                    } },
+                  { 'barcode' => '87654321',
+                    'callnumber' => 'ABC 321',
+                    'home_location' => 'STACKS',
+                    'type' => 'STKS',
+                    'current_location' => {
+                      'code' => ''
+                    },
                     'status' => {
                       'availability_class' => 'page',
                       'status_text' => 'Page'
@@ -357,6 +423,61 @@ if Settings.ils.bib_model == 'SearchworksItem'
                   { 'barcode' => '67890123',
                     'callnumber' => 'ABC 678',
                     'type' => 'STKS',
+                    'status' => {
+                      'availability_class' => 'available',
+                      'status_text' => 'Available'
+                    } }
+                ] }
+            ] }
+        ]
+      end
+    end
+
+    factory :single_mediated_holding, parent: :searchworks_item do
+      title { 'Item Title' }
+
+      format { ['Book'] }
+
+      holdings do
+        [
+          { 'code' => 'ART',
+            'locations' => [
+              { 'code' => 'ARTLCKL',
+                'items' => [
+                  { 'barcode' => '12345678',
+                    'callnumber' => 'ABC 123',
+                    'type' => 'LCKSTK',
+                    'current_location' => {
+                      'code' => ''
+                    },
+                    'home_location' => 'STACKS',
+                    'status' => {
+                      'availability_class' => 'available',
+                      'status_text' => 'Available'
+                    } }
+                ] }
+            ] }
+        ]
+      end
+    end
+    factory :art_stacks_holding, parent: :searchworks_item do
+      title { 'Item Title' }
+
+      format { ['Book'] }
+
+      holdings do
+        [
+          { 'code' => 'ART',
+            'locations' => [
+              { 'code' => 'STACKS',
+                'items' => [
+                  { 'barcode' => '12345678',
+                    'callnumber' => 'ABC 123',
+                    'type' => 'STKS',
+                    'current_location' => {
+                      'code' => ''
+                    },
+                    'home_location' => 'STACKS',
                     'status' => {
                       'availability_class' => 'available',
                       'status_text' => 'Available'

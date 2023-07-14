@@ -56,11 +56,13 @@ symphony_ils: &symphony_ils
   bib_model: SearchworksItem
   patron_model: Symphony::Patron
   request_job: SubmitSymphonyRequestJob
+  request_abilities_class: RequestAbilities
 
 folio_ils: &folio_ils
   bib_model: Folio::Instance
   patron_model: Folio::Patron
   request_job: SubmitFolioRequestJob
+  request_abilities_class: Folio::RequestAbilities
 
 ils: *symphony_ils # or *folio_ils
 
@@ -72,6 +74,7 @@ folio:
   graphql_url: <%= ENV.fetch('FOLIO_GRAPHQL_URL', 'http://example.com') %>
   tenant: 'sul'
   fee_borrower_patron_group: 985acbb9-f7a7-4f44-9b34-458c02a78fbc
+  standard_patron_group_names: ['staff', 'faculty', 'undergrad', 'graduate']
 
 mailer_host: <%= `echo $HOSTNAME` %>
 searchworks_api: 'https://searchworks.stanford.edu'
@@ -711,6 +714,23 @@ scannable:
       - NH-INHOUSE
     locations:
       - PAGE-GR
+
+scan_destinations:
+  EAST_ASIA:
+    patron_barcode: 'EAL-SCANREVIEW'
+    folio_pseudopatron: 45873e99-3048-4246-b189-315df10717e5
+
+  GREEN:
+    patron_barcode: 'GRE-SCANDELIVER'
+    folio_pseudopatron: 0ba81714-52d4-4f37-8b4d-f9d929af048d
+    material_types:
+    - book
+    - periodical
+  SAL3:
+    material_types:
+    - book
+    - periodical
+  default: {}
 
 # Aeon external request endpoint (ERE)
 aeon_ere_url: https://stanford.aeon.atlas-sys.com/logon?Action=11&Type=200
