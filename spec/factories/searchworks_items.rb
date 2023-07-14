@@ -107,15 +107,15 @@ if Settings.ils.bib_model == 'SearchworksItem'
                     'callnumber' => 'ABC 123',
                     'type' => 'STKS',
                     'status' => {
-                      'availability_class' => 'page',
-                      'status_text' => 'Page'
+                      'availability_class' => 'deliver-from-offsite',
+                      'status_text' => 'Available'
                     } },
                   { 'barcode' => '87654321',
                     'callnumber' => 'ABC 321',
                     'type' => 'STKS',
                     'status' => {
-                      'availability_class' => 'page',
-                      'status_text' => 'Page'
+                      'availability_class' => 'deliver-from-offsite',
+                      'status_text' => 'Available'
                     } }
                 ] }
             ] }
@@ -140,8 +140,8 @@ if Settings.ils.bib_model == 'SearchworksItem'
                     'callnumber' => 'ABC 123',
                     'type' => 'STKS',
                     'status' => {
-                      'availability_class' => 'page',
-                      'status_text' => 'Page'
+                      'availability_class' => 'deliver-from-offsite',
+                      'status_text' => 'Available'
                     } }
                 ] }
             ] }
@@ -167,15 +167,15 @@ if Settings.ils.bib_model == 'SearchworksItem'
                     'callnumber' => 'ABC 123',
                     'type' => 'STKS',
                     'status' => {
-                      'availability_class' => 'page',
-                      'status_text' => 'Page'
+                      'availability_class' => 'deliver-from-offsite',
+                      'status_text' => 'Available'
                     } },
                   { 'barcode' => '87654321',
                     'callnumber' => 'ABC 321',
                     'type' => 'STKS',
                     'status' => {
-                      'availability_class' => 'page',
-                      'status_text' => 'Page'
+                      'availability_class' => 'deliver-from-offsite',
+                      'status_text' => 'Available'
                     } }
                 ] }
             ] }
@@ -198,8 +198,8 @@ if Settings.ils.bib_model == 'SearchworksItem'
                     'callnumber' => 'ABC 321',
                     'type' => 'STKS',
                     'status' => {
-                      'availability_class' => 'page',
-                      'status_text' => 'Page'
+                      'availability_class' => 'deliver-from-offsite',
+                      'status_text' => 'Available'
                     } }
                 ] }
             ] }
@@ -222,15 +222,15 @@ if Settings.ils.bib_model == 'SearchworksItem'
                     'callnumber' => 'ABC 123',
                     'type' => 'STKS',
                     'status' => {
-                      'availability_class' => 'page',
-                      'status_text' => 'Page'
+                      'availability_class' => 'deliver-from-offsite',
+                      'status_text' => 'Available'
                     } },
                   { 'barcode' => '87654321',
                     'callnumber' => 'ABC 321',
                     'type' => 'STKS',
                     'status' => {
-                      'availability_class' => 'page',
-                      'status_text' => 'Page'
+                      'availability_class' => 'deliver-from-offsite',
+                      'status_text' => 'Available'
                     } }
                 ] }
             ] }
@@ -253,15 +253,15 @@ if Settings.ils.bib_model == 'SearchworksItem'
                     'callnumber' => 'ABC 123',
                     'type' => 'STKS',
                     'status' => {
-                      'availability_class' => 'page',
-                      'status_text' => 'Page'
+                      'availability_class' => 'deliver-from-offsite',
+                      'status_text' => 'Available'
                     } },
                   { 'barcode' => '87654321',
                     'callnumber' => 'ABC 321',
                     'type' => 'STKS',
                     'status' => {
-                      'availability_class' => 'page',
-                      'status_text' => 'Page'
+                      'availability_class' => 'deliver-from-offsite',
+                      'status_text' => 'Avalable'
                     } }
                 ] }
             ] }
@@ -288,8 +288,8 @@ if Settings.ils.bib_model == 'SearchworksItem'
                       'code' => ''
                     },
                     'status' => {
-                      'availability_class' => 'page',
-                      'status_text' => 'Page'
+                      'availability_class' => 'deliver-from-offsite',
+                      'status_text' => 'Available'
                     } },
                   { 'barcode' => '87654321',
                     'callnumber' => 'ABC 321',
@@ -299,8 +299,8 @@ if Settings.ils.bib_model == 'SearchworksItem'
                       'code' => ''
                     },
                     'status' => {
-                      'availability_class' => 'page',
-                      'status_text' => 'Page'
+                      'availability_class' => 'deliver-from-offsite',
+                      'status_text' => 'Available'
                     } }
                 ] }
             ] }
@@ -682,7 +682,7 @@ if Settings.ils.bib_model == 'SearchworksItem'
                     'due_date' => '01/01/2015',
                     'type' => 'STKS',
                     'status' => {
-                      'availability_class' => 'page',
+                      'availability_class' => 'deliver-from-offsite',
                       'status_text' => 'Available'
                     } }
                 ] }
