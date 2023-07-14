@@ -3,6 +3,18 @@
 require 'rails_helper'
 
 RSpec.describe 'Requests Delegation' do
+  describe 'non-requestable materials' do
+    it 'is automatically delegated to the page request form' do
+      skip('All searchworks items are pageable') if Settings.ils.bib_model == 'SearchworksItem'
+
+      stub_bib_data_json(build(:green_holdings))
+
+      expect do
+        visit new_request_path(item_id: '12345', origin: 'GREEN', origin_location: 'STACKS')
+      end.to raise_error(PagesController::UnpageableItemError)
+    end
+  end
+
   describe 'non-scannable materials' do
     it 'is automatically delegated to the page request form' do
       stub_bib_data_json(build(:page_lp_holdings))
