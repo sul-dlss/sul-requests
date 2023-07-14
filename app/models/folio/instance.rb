@@ -65,7 +65,7 @@ module Folio
 
     def finding_aid
       @electronic_access.find do |access|
-        access.fetch('materialsSpecification') == 'Finding aid available online'
+        access.fetch('materialsSpecification')&.match?(/Finding aid/i)
       end&.fetch('uri')
     end
 
