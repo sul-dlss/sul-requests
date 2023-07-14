@@ -41,9 +41,6 @@ module Folio
     STATUS_NONE
   ].freeze
 
-  MaterialType = Data.define(:id, :name)
-  LoanType = Data.define(:id)
-
   # Represents an item returned from the /inventory-hierarchy/items-and-holdings Folio API
   # TODO: This wants a "type" attribute, but I don't know how we get the folio version of a holding type.
   #       See https://github.com/sul-dlss/searchworks_traject_indexer/blob/02192452815de3861dcfafb289e1be8e575cb000/lib/traject/config/sirsi_config.rb#L2379
