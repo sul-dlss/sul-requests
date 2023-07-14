@@ -17,9 +17,6 @@ $headings-font-weight: 300;
 $font-size-base: 14px;
 $line-height-base: 1.428571429;
 $font-family-base: 'Source Sans Pro', 'Arial Unicode MS', Helvetica, sans-serif;
-// Reducing screen-sm-min to (now depricated) screen-xs-min pixel size in order
-// to allow the sm/xs threshold to be appropriate for rendering within a modal
-$screen-sm-min: 480px;
 
 @import 'bootstrap-sass/assets/stylesheets/bootstrap/variables';
 

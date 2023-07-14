@@ -165,20 +165,4 @@ RSpec.describe RequestsController do
       )
     end
   end
-
-  describe 'layout setting' do
-    before do
-      stub_bib_data_json(build(:scannable_holdings))
-    end
-
-    it 'defaults to application' do
-      get :new, params: scannable_params
-      expect(response).to render_template(layout: 'application')
-    end
-
-    it 'uses the modal layout when the modal param is set' do
-      get :new, params: scannable_params.merge(modal: true)
-      expect(response).to render_template(layout: 'modal')
-    end
-  end
 end

@@ -17,7 +17,6 @@ Capybara/SpecificMatcher:
     - 'spec/features/admin_requests_spec.rb'
     - 'spec/features/create_mediated_page_request_spec.rb'
     - 'spec/features/create_page_request_spec.rb'
-    - 'spec/features/modal_layout_spec.rb'
     - 'spec/features/pickup_libraries_dropdown_spec.rb'
     - 'spec/features/send_request_buttons_spec.rb'
     - 'spec/helpers/application_helper_spec.rb'
