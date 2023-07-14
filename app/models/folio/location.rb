@@ -11,7 +11,7 @@ module Folio
         code: dyn.fetch('code'),
         discovery_display_name: dyn.fetch('discoveryDisplayName') || dyn.fetch('name'),
         name: dyn.fetch('name'),
-        details: dyn.fetch('details')
+        details: dyn.fetch('details') || {}
       )
     end
   end

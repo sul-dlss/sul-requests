@@ -61,6 +61,11 @@ if Settings.ils.bib_model == 'Folio::Instance'
       library { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'EAST-ASIA') }
     end
 
+    factory :green_location, parent: :location do
+      code { 'GRE-STACKS' }
+      library { Folio::Library.new(id: 'f6b5519e-88d9-413e-924d-9ed96255f72e', code: 'GREEN') }
+    end
+
     factory :book_material_type, class: 'Folio::MaterialType' do
       id { '1a54b431-2e4f-452d-9cae-9cee66c9a892' }
       name { 'book' }
@@ -297,6 +302,27 @@ if Settings.ils.bib_model == 'Folio::Instance'
                 callnumber: 'ABC 321',
                 status: 'Page',
                 effective_location: build(:scannable_location, code: 'SAL3-STACKS'))
+        ]
+      end
+
+      initialize_with do
+        new(**attributes)
+      end
+    end
+
+    factory :green_holdings, class: 'Folio::Instance' do
+      id { '1234' }
+      title { 'Green Item Title' }
+
+      format { ['Book'] }
+
+      items do
+        [
+          build(:item,
+                barcode: '12345678',
+                callnumber: 'ABC 123',
+                status: 'Available',
+                effective_location: build(:green_location))
         ]
       end
 
