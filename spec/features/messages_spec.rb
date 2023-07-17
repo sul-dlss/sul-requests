@@ -128,11 +128,11 @@ RSpec.describe 'Viewing all requests' do
     let(:message) { create(:message) }
 
     before do
-      allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(double(:bib_data, title: 'Test title', request_holdings: []))
+      stub_bib_data_json(build(:single_mediated_holding))
     end
 
     it 'displays the broadcast message' do
-      visit new_mediated_page_path(item_id: '1234', origin: message.library, origin_location: 'STACKS')
+      visit new_mediated_page_path(item_id: '1234', origin: message.library, origin_location: 'ARTLCKL')
       expect(page).to have_content message.text
     end
   end

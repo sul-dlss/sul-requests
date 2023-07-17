@@ -66,6 +66,11 @@ if Settings.ils.bib_model == 'Folio::Instance'
       library { Folio::Library.new(id: 'f6b5519e-88d9-413e-924d-9ed96255f72e', code: 'GREEN') }
     end
 
+    factory :spec_coll_location, parent: :location do
+      code { 'SPEC-STACKS' }
+      details { { 'pageAeonSite' => 'SPECUA' } }
+    end
+
     factory :book_material_type, class: 'Folio::MaterialType' do
       id { '1a54b431-2e4f-452d-9cae-9cee66c9a892' }
       name { 'book' }
@@ -195,12 +200,12 @@ if Settings.ils.bib_model == 'Folio::Instance'
                 barcode: '12345678',
                 callnumber: 'ABC 123',
                 status: 'Page',
-                effective_location: build(:location, code: 'SPEC-STACKS')),
+                effective_location: build(:spec_coll_location)),
           build(:item,
                 barcode: '87654321',
                 callnumber: 'ABC 321',
                 status: 'Page',
-                effective_location: build(:location, code: 'SPEC-STACKS'))
+                effective_location: build(:spec_coll_location))
         ]
       end
 
@@ -224,7 +229,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
                 barcode: '12345678',
                 callnumber: 'ABC 123',
                 status: 'Page',
-                effective_location: build(:location, code: 'SPEC-STACKS'))
+                effective_location: build(:spec_coll_location))
         ]
       end
 
@@ -249,7 +254,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
                 barcode: '12345678',
                 callnumber: 'ABC 123',
                 status: 'Page',
-                effective_location: build(:location, code: 'SPEC-STACKS'))
+                effective_location: build(:spec_coll_location))
         ]
       end
 
@@ -541,44 +546,44 @@ if Settings.ils.bib_model == 'Folio::Instance'
           build(:item,
                 barcode: '12345678',
                 callnumber: 'ABC 123',
-                effective_location: build(:location, code: 'SPEC-STACKS')),
+                effective_location: build(:spec_coll_location)),
           build(:item,
                 barcode: '23456789',
                 callnumber: 'ABC 456',
-                effective_location: build(:location, code: 'SPEC-STACKS')),
+                effective_location: build(:spec_coll_location)),
           build(:item,
                 barcode: '34567890',
                 callnumber: 'ABC 789',
-                effective_location: build(:location, code: 'SPEC-STACKS')),
+                effective_location: build(:spec_coll_location)),
           build(:item,
                 barcode: '45678901',
                 callnumber: 'ABC 012',
-                effective_location: build(:location, code: 'SPEC-STACKS'),
+                effective_location: build(:spec_coll_location),
                 public_note: 'note for 45678901'),
           build(:item,
                 barcode: '56789012',
                 callnumber: 'ABC 345',
-                effective_location: build(:location, code: 'SPEC-STACKS')),
+                effective_location: build(:spec_coll_location)),
           build(:item,
                 barcode: '67890123',
                 callnumber: 'ABC 678',
-                effective_location: build(:location, code: 'SPEC-STACKS')),
+                effective_location: build(:spec_coll_location)),
           build(:item,
                 barcode: '78901234',
                 callnumber: 'ABC 901',
-                effective_location: build(:location, code: 'SPEC-STACKS')),
+                effective_location: build(:spec_coll_location)),
           build(:item,
                 barcode: '89012345',
                 callnumber: 'ABC 234',
-                effective_location: build(:location, code: 'SPEC-STACKS')),
+                effective_location: build(:spec_coll_location)),
           build(:item,
                 barcode: '90123456',
                 callnumber: 'ABC 567',
-                effective_location: build(:location, code: 'SPEC-STACKS')),
+                effective_location: build(:spec_coll_location)),
           build(:item,
                 barcode: '01234567',
                 callnumber: 'ABC 890',
-                effective_location: build(:location, code: 'SPEC-STACKS'))
+                effective_location: build(:spec_coll_location))
         ]
       end
 

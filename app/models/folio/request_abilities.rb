@@ -38,22 +38,11 @@ module Folio
     end
 
     def aeon_pageable?
-      request.holdings.any? { |item| item.effective_location.details['pageAeonSite'] } || aeon_pageable_origin?
-    end
-
-    def aeon_pageable_origin?
-      request.origin == 'SPEC-COLL'
+      request.holdings.any? { |item| item.effective_location.details['pageAeonSite'] }
     end
 
     def aeon_site
       request.holdings.filter_map { |item| item.effective_location.details['pageAeonSite'] }.first || aeon_site_for_origin
-    end
-
-    def aeon_site_for_origin
-      case request.origin
-      when 'SPEC-COLL'
-        'SPECUA'
-      end
     end
 
     # returns a true if any of the following is true
