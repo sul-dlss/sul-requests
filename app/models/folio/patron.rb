@@ -52,8 +52,8 @@ module Folio
       user_info.dig('standing', 'key')
     end
 
-    def good_standing?
-      user_info['active'] && !blocked?
+    def make_request_as_patron?
+      user_info['active']
     end
 
     def first_name

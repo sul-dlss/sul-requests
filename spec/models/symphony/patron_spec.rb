@@ -70,8 +70,8 @@ RSpec.describe Symphony::Patron do
     expect(patron.standing).to eq 'DELINQUENT'
   end
 
-  it 'is in good standing' do
-    expect(patron.good_standing?).to be true
+  it 'makes the request as the patron' do
+    expect(patron.make_request_as_patron?).to be true
   end
 
   it 'is a fee borrower' do
