@@ -8481,29 +8481,6 @@
     }
   },
   {
-    "id": "7c6af6ea-86ca-42a0-94b2-58edad1637a7",
-    "name": "Spec Felton",
-    "code": "SPEC-FELTON",
-    "discoveryDisplayName": "Special Collections Felton Collection",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
-    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
-    "servicePointIds": [
-      "0e924af7-785c-46eb-a5e2-060394822016"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-02-08T23:38:01.449+00:00",
-      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:01.449+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
-    }
-  },
-  {
     "id": "f46a858c-9f5c-4d10-be4a-05d41c3d5065",
     "name": "Spec Frecot",
     "code": "SPEC-FRECOT",
@@ -8512,6 +8489,9 @@
     "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
     "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
     "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
     "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
     "servicePointIds": [
       "0e924af7-785c-46eb-a5e2-060394822016"
@@ -8522,8 +8502,8 @@
     "metadata": {
       "createdDate": "2023-02-08T23:38:01.577+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:01.577+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
+      "updatedDate": "2023-07-17T14:02:26.245+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
     }
   },
   {
@@ -8535,6 +8515,9 @@
     "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
     "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
     "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
     "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
     "servicePointIds": [
       "0e924af7-785c-46eb-a5e2-060394822016"
@@ -8545,8 +8528,8 @@
     "metadata": {
       "createdDate": "2023-02-08T23:38:01.699+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:01.699+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
+      "updatedDate": "2023-07-17T14:02:36.115+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
     }
   },
   {
@@ -8558,6 +8541,9 @@
     "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
     "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
     "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
     "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
     "servicePointIds": [
       "0e924af7-785c-46eb-a5e2-060394822016"
@@ -8568,8 +8554,8 @@
     "metadata": {
       "createdDate": "2023-02-08T23:38:01.826+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:01.826+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
+      "updatedDate": "2023-07-17T14:03:38.581+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
     }
   },
   {
@@ -8581,6 +8567,9 @@
     "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
     "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
     "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
     "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
     "servicePointIds": [
       "0e924af7-785c-46eb-a5e2-060394822016"
@@ -8591,8 +8580,8 @@
     "metadata": {
       "createdDate": "2023-02-08T23:38:02.200+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:02.200+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
+      "updatedDate": "2023-07-17T14:04:28.377+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
     }
   },
   {
@@ -8604,6 +8593,9 @@
     "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
     "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
     "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
     "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
     "servicePointIds": [
       "0e924af7-785c-46eb-a5e2-060394822016"
@@ -8614,8 +8606,8 @@
     "metadata": {
       "createdDate": "2023-02-08T23:38:02.700+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:02.700+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
+      "updatedDate": "2023-07-17T14:05:16.975+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
     }
   },
   {
@@ -8665,29 +8657,6 @@
     }
   },
   {
-    "id": "489980d7-2618-4dc8-8b30-206b8a9f67e0",
-    "name": "Spec Barchas",
-    "code": "SPEC-BARCHAS",
-    "discoveryDisplayName": "Special Collections Barchas Collection",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
-    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
-    "servicePointIds": [
-      "0e924af7-785c-46eb-a5e2-060394822016"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-02-08T23:38:01.332+00:00",
-      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:01.332+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
-    }
-  },
-  {
     "id": "891ca554-5109-419a-bd01-d647944a40ea",
     "name": "Spec Manuscript",
     "code": "SPEC-MANUSCRIPT",
@@ -8696,6 +8665,9 @@
     "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
     "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
     "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
     "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
     "servicePointIds": [
       "0e924af7-785c-46eb-a5e2-060394822016"
@@ -8706,8 +8678,8 @@
     "metadata": {
       "createdDate": "2023-02-08T23:38:01.955+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:01.955+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
+      "updatedDate": "2023-07-17T14:03:49.799+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
     }
   },
   {
@@ -8719,6 +8691,9 @@
     "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
     "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
     "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
     "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
     "servicePointIds": [
       "0e924af7-785c-46eb-a5e2-060394822016"
@@ -8729,8 +8704,8 @@
     "metadata": {
       "createdDate": "2023-02-08T23:38:02.332+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:02.332+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
+      "updatedDate": "2023-07-17T14:04:37.548+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
     }
   },
   {
@@ -8742,6 +8717,9 @@
     "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
     "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
     "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
     "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
     "servicePointIds": [
       "0e924af7-785c-46eb-a5e2-060394822016"
@@ -8752,31 +8730,8 @@
     "metadata": {
       "createdDate": "2023-02-08T23:38:02.837+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:02.837+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
-    }
-  },
-  {
-    "id": "ee3965d1-d19d-49ef-8493-88bac9929121",
-    "name": "Spec Robinson",
-    "code": "SPEC-ROBINSON",
-    "discoveryDisplayName": "Special Collections Robinson Collection",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
-    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
-    "servicePointIds": [
-      "0e924af7-785c-46eb-a5e2-060394822016"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-02-08T23:38:02.960+00:00",
-      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:02.960+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
+      "updatedDate": "2023-07-17T14:05:24.230+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
     }
   },
   {
@@ -8788,6 +8743,9 @@
     "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
     "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
     "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
     "primaryServicePoint": "3a306665-eec7-4a40-8f4d-608585b2a394",
     "servicePointIds": [
       "3a306665-eec7-4a40-8f4d-608585b2a394"
@@ -8798,8 +8756,8 @@
     "metadata": {
       "createdDate": "2023-02-08T23:38:03.453+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:03.453+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
+      "updatedDate": "2023-07-17T14:06:32.479+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
     }
   },
   {
@@ -8811,6 +8769,9 @@
     "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
     "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
     "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
     "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
     "servicePointIds": [
       "0e924af7-785c-46eb-a5e2-060394822016"
@@ -8821,8 +8782,8 @@
     "metadata": {
       "createdDate": "2023-02-08T23:38:03.831+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:03.831+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
+      "updatedDate": "2023-07-17T14:06:55.948+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
     }
   },
   {
@@ -8857,6 +8818,9 @@
     "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
     "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
     "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
     "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
     "servicePointIds": [
       "0e924af7-785c-46eb-a5e2-060394822016"
@@ -8867,8 +8831,8 @@
     "metadata": {
       "createdDate": "2023-02-08T23:38:02.079+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:02.079+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
+      "updatedDate": "2023-07-17T14:04:11.378+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
     }
   },
   {
@@ -8880,6 +8844,9 @@
     "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
     "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
     "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
     "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
     "servicePointIds": [
       "0e924af7-785c-46eb-a5e2-060394822016"
@@ -8890,8 +8857,8 @@
     "metadata": {
       "createdDate": "2023-02-08T23:38:02.447+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:02.447+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
+      "updatedDate": "2023-07-17T14:04:47.409+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
     }
   },
   {
@@ -8903,6 +8870,9 @@
     "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
     "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
     "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
     "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
     "servicePointIds": [
       "0e924af7-785c-46eb-a5e2-060394822016"
@@ -8913,8 +8883,8 @@
     "metadata": {
       "createdDate": "2023-02-08T23:38:02.574+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:02.574+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
+      "updatedDate": "2023-07-17T14:04:56.159+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
     }
   },
   {
@@ -8926,6 +8896,9 @@
     "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
     "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
     "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
     "primaryServicePoint": "3a306665-eec7-4a40-8f4d-608585b2a394",
     "servicePointIds": [
       "3a306665-eec7-4a40-8f4d-608585b2a394"
@@ -8936,8 +8909,8 @@
     "metadata": {
       "createdDate": "2023-02-08T23:38:03.077+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:03.077+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
+      "updatedDate": "2023-07-17T14:05:39.881+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
     }
   },
   {
@@ -8949,6 +8922,9 @@
     "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
     "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
     "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
     "primaryServicePoint": "3a306665-eec7-4a40-8f4d-608585b2a394",
     "servicePointIds": [
       "3a306665-eec7-4a40-8f4d-608585b2a394"
@@ -8959,8 +8935,8 @@
     "metadata": {
       "createdDate": "2023-02-08T23:38:03.330+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:03.330+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
+      "updatedDate": "2023-07-17T14:05:54.800+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
     }
   },
   {
@@ -8972,6 +8948,9 @@
     "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
     "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
     "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
     "primaryServicePoint": "3a306665-eec7-4a40-8f4d-608585b2a394",
     "servicePointIds": [
       "3a306665-eec7-4a40-8f4d-608585b2a394"
@@ -8982,100 +8961,8 @@
     "metadata": {
       "createdDate": "2023-02-08T23:38:03.697+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:03.697+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
-    }
-  },
-  {
-    "id": "d4d319ae-6310-419f-8f90-1b03f952aa44",
-    "name": "Spec Shelved Elsewhere",
-    "code": "SPEC-SEE-OTHER",
-    "discoveryDisplayName": "Special Collections Shelved Elsewhere",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
-    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
-    "servicePointIds": [
-      "0e924af7-785c-46eb-a5e2-060394822016"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-02-08T23:38:03.952+00:00",
-      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:03.952+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
-    }
-  },
-  {
-    "id": "794733b9-5fe8-4294-9143-ae98823e6381",
-    "name": "Spec SAL3 Gunst",
-    "code": "SPEC-SAL3-GUNST",
-    "discoveryDisplayName": "Special Collections Gunst Collection",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
-    "primaryServicePoint": "3a306665-eec7-4a40-8f4d-608585b2a394",
-    "servicePointIds": [
-      "3a306665-eec7-4a40-8f4d-608585b2a394"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-02-08T23:38:03.212+00:00",
-      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:03.212+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
-    }
-  },
-  {
-    "id": "2a539904-d0e3-4220-ba19-2a358c4f22ed",
-    "name": "Spec Tech Services Shadow",
-    "code": "SPEC-TECHSHADOW",
-    "discoveryDisplayName": "Special Collections Tech Services Use",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
-    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
-    "servicePointIds": [
-      "0e924af7-785c-46eb-a5e2-060394822016"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-02-08T23:38:04.649+00:00",
-      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:04.649+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
-    }
-  },
-  {
-    "id": "08e54eef-c972-400e-924f-935c9f2a06ce",
-    "name": "Spec U-Arch Reference",
-    "code": "SPEC-UARCH-REF",
-    "discoveryDisplayName": "University Archives Reference",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
-    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
-    "servicePointIds": [
-      "0e924af7-785c-46eb-a5e2-060394822016"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-02-08T23:38:04.899+00:00",
-      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:04.899+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
+      "updatedDate": "2023-07-17T14:06:47.026+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
     }
   },
   {
@@ -9217,14 +9104,17 @@
     }
   },
   {
-    "id": "e80fb38c-7c31-4be6-8ce8-3922b4a3da57",
-    "name": "Spec Shadowed",
-    "code": "SPEC-SHADOW",
-    "discoveryDisplayName": "Special Collections Shadowed",
+    "id": "2a539904-d0e3-4220-ba19-2a358c4f22ed",
+    "name": "Spec Tech Services Shadow",
+    "code": "SPEC-TECHSHADOW",
+    "discoveryDisplayName": "Special Collections Tech Services Use",
     "isActive": true,
     "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
     "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
     "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
     "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
     "servicePointIds": [
       "0e924af7-785c-46eb-a5e2-060394822016"
@@ -9233,21 +9123,24 @@
 
     ],
     "metadata": {
-      "createdDate": "2023-02-08T23:38:04.082+00:00",
+      "createdDate": "2023-02-08T23:38:04.649+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:04.082+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
+      "updatedDate": "2023-07-17T14:07:40.152+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
     }
   },
   {
-    "id": "0902cbec-8afd-4307-948c-4995a48e160a",
-    "name": "Spec Stacks",
-    "code": "SPEC-STACKS",
-    "discoveryDisplayName": "Special Collections Stacks",
+    "id": "08e54eef-c972-400e-924f-935c9f2a06ce",
+    "name": "Spec U-Arch Reference",
+    "code": "SPEC-UARCH-REF",
+    "discoveryDisplayName": "University Archives Reference",
     "isActive": true,
     "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
     "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
     "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
     "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
     "servicePointIds": [
       "0e924af7-785c-46eb-a5e2-060394822016"
@@ -9256,10 +9149,10 @@
 
     ],
     "metadata": {
-      "createdDate": "2023-02-08T23:38:04.196+00:00",
+      "createdDate": "2023-02-08T23:38:04.899+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:04.196+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
+      "updatedDate": "2023-07-17T14:07:50.053+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
     }
   },
   {
@@ -9378,14 +9271,17 @@
     }
   },
   {
-    "id": "fff717ca-e865-49d8-ada0-6e26883145ca",
-    "name": "Spec Staff Shadow",
-    "code": "SPEC-STAFFSHADOW",
-    "discoveryDisplayName": "Special Collections Staff Use",
+    "id": "e80fb38c-7c31-4be6-8ce8-3922b4a3da57",
+    "name": "Spec Shadowed",
+    "code": "SPEC-SHADOW",
+    "discoveryDisplayName": "Special Collections Shadowed",
     "isActive": true,
     "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
     "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
     "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
     "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
     "servicePointIds": [
       "0e924af7-785c-46eb-a5e2-060394822016"
@@ -9394,21 +9290,24 @@
 
     ],
     "metadata": {
-      "createdDate": "2023-02-08T23:38:04.401+00:00",
+      "createdDate": "2023-02-08T23:38:04.082+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:04.401+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
+      "updatedDate": "2023-07-17T14:07:03.084+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
     }
   },
   {
-    "id": "534d7c0a-d0f4-47f7-aeaf-ff4133203aad",
-    "name": "Spec Taube",
-    "code": "SPEC-TAUBE",
-    "discoveryDisplayName": "Special Collections Taube Collection",
+    "id": "0902cbec-8afd-4307-948c-4995a48e160a",
+    "name": "Spec Stacks",
+    "code": "SPEC-STACKS",
+    "discoveryDisplayName": "Special Collections Stacks",
     "isActive": true,
     "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
     "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
     "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
     "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
     "servicePointIds": [
       "0e924af7-785c-46eb-a5e2-060394822016"
@@ -9417,33 +9316,10 @@
 
     ],
     "metadata": {
-      "createdDate": "2023-02-08T23:38:04.529+00:00",
+      "createdDate": "2023-02-08T23:38:04.196+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:04.529+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
-    }
-  },
-  {
-    "id": "635d2ddc-c7a1-46ce-b46d-336f1384c4dc",
-    "name": "Spec U-Archives",
-    "code": "SPEC-U-ARCHIVES",
-    "discoveryDisplayName": "University Archives",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
-    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
-    "servicePointIds": [
-      "0e924af7-785c-46eb-a5e2-060394822016"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-02-08T23:38:04.771+00:00",
-      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-02-08T23:38:04.771+00:00",
-      "updatedByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec"
+      "updatedDate": "2023-07-17T14:07:18.767+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
     }
   },
   {
@@ -9543,6 +9419,84 @@
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
       "updatedDate": "2023-06-29T21:42:25.797+00:00",
       "updatedByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364"
+    }
+  },
+  {
+    "id": "fff717ca-e865-49d8-ada0-6e26883145ca",
+    "name": "Spec Staff Shadow",
+    "code": "SPEC-STAFFSHADOW",
+    "discoveryDisplayName": "Special Collections Staff Use",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
+    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
+    "servicePointIds": [
+      "0e924af7-785c-46eb-a5e2-060394822016"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-02-08T23:38:04.401+00:00",
+      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
+      "updatedDate": "2023-07-17T14:07:25.545+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
+    }
+  },
+  {
+    "id": "534d7c0a-d0f4-47f7-aeaf-ff4133203aad",
+    "name": "Spec Taube",
+    "code": "SPEC-TAUBE",
+    "discoveryDisplayName": "Special Collections Taube Collection",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
+    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
+    "servicePointIds": [
+      "0e924af7-785c-46eb-a5e2-060394822016"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-02-08T23:38:04.529+00:00",
+      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
+      "updatedDate": "2023-07-17T14:07:32.687+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
+    }
+  },
+  {
+    "id": "635d2ddc-c7a1-46ce-b46d-336f1384c4dc",
+    "name": "Spec U-Archives",
+    "code": "SPEC-U-ARCHIVES",
+    "discoveryDisplayName": "University Archives",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
+    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
+    "servicePointIds": [
+      "0e924af7-785c-46eb-a5e2-060394822016"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-02-08T23:38:04.771+00:00",
+      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
+      "updatedDate": "2023-07-17T14:07:57.021+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
     }
   },
   {
@@ -10657,106 +10611,6 @@
     }
   },
   {
-    "id": "1f3a8d48-2de3-432d-923e-76eb93de9ffc",
-    "name": "Spec SAL3 Rare Books",
-    "code": "SPEC-SAL3-RBC",
-    "discoveryDisplayName": "Special Collections Rare Books Collection",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
-    "details": {
-    },
-    "primaryServicePoint": "3a306665-eec7-4a40-8f4d-608585b2a394",
-    "servicePointIds": [
-      "3a306665-eec7-4a40-8f4d-608585b2a394"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-02-08T23:38:03.577+00:00",
-      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-06-05T18:36:41.768+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
-    }
-  },
-  {
-    "id": "32bebe0c-a235-4689-8f8a-6cc0472e74b1",
-    "name": "Spec Inprocess",
-    "code": "SPEC-INPROCESS",
-    "discoveryDisplayName": "Special Collections Inprocess",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
-    "details": {
-    },
-    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
-    "servicePointIds": [
-      "0e924af7-785c-46eb-a5e2-060394822016"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-06-21T17:04:30.623+00:00",
-      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
-      "updatedDate": "2023-06-21T17:04:30.623+00:00",
-      "updatedByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364"
-    }
-  },
-  {
-    "id": "2065af65-904d-41bb-8db8-35bff753cf64",
-    "name": "Spec Inprocess RWC",
-    "code": "SPEC-INPROCESS-RWC",
-    "discoveryDisplayName": "Special Collections Inprocess",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
-    "details": {
-    },
-    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
-    "servicePointIds": [
-      "0e924af7-785c-46eb-a5e2-060394822016"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-06-21T17:06:24.028+00:00",
-      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
-      "updatedDate": "2023-06-21T17:06:24.028+00:00",
-      "updatedByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364"
-    }
-  },
-  {
-    "id": "c567d73a-898d-4029-8b39-afca5eb79ade",
-    "name": "Spec Inprocess UA",
-    "code": "SPEC-INPROCESS-UA",
-    "discoveryDisplayName": "Special Collections Inprocess",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
-    "details": {
-    },
-    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
-    "servicePointIds": [
-      "0e924af7-785c-46eb-a5e2-060394822016"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-06-21T17:07:54.523+00:00",
-      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
-      "updatedDate": "2023-06-21T17:07:54.523+00:00",
-      "updatedByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364"
-    }
-  },
-  {
     "id": "b0402b41-91a9-4ec3-8c91-47e725e7fdf5",
     "name": "SAL3 PAGE-LP",
     "code": "SAL3-PAGE-LP",
@@ -10860,6 +10714,84 @@
       "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
       "updatedDate": "2023-06-27T21:31:56.377+00:00",
       "updatedByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364"
+    }
+  },
+  {
+    "id": "32bebe0c-a235-4689-8f8a-6cc0472e74b1",
+    "name": "Spec Inprocess",
+    "code": "SPEC-INPROCESS",
+    "discoveryDisplayName": "Special Collections Inprocess",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
+    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
+    "servicePointIds": [
+      "0e924af7-785c-46eb-a5e2-060394822016"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-06-21T17:04:30.623+00:00",
+      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
+      "updatedDate": "2023-07-17T14:02:51.248+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
+    }
+  },
+  {
+    "id": "2065af65-904d-41bb-8db8-35bff753cf64",
+    "name": "Spec Inprocess RWC",
+    "code": "SPEC-INPROCESS-RWC",
+    "discoveryDisplayName": "Special Collections Inprocess",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
+    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
+    "servicePointIds": [
+      "0e924af7-785c-46eb-a5e2-060394822016"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-06-21T17:06:24.028+00:00",
+      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
+      "updatedDate": "2023-07-17T14:03:14.226+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
+    }
+  },
+  {
+    "id": "c567d73a-898d-4029-8b39-afca5eb79ade",
+    "name": "Spec Inprocess UA",
+    "code": "SPEC-INPROCESS-UA",
+    "discoveryDisplayName": "Special Collections Inprocess",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
+    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
+    "servicePointIds": [
+      "0e924af7-785c-46eb-a5e2-060394822016"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-06-21T17:07:54.523+00:00",
+      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
+      "updatedDate": "2023-07-17T14:03:27.504+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
     }
   },
   {
@@ -11315,31 +11247,6 @@
     }
   },
   {
-    "id": "0e4c10cd-c2a0-45d5-a6cc-f94d75fc2f17",
-    "name": "Spec PAGE-FC",
-    "code": "SPEC-PAGE-FC",
-    "discoveryDisplayName": "Special Collections Prep for SAL3",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
-    "details": {
-    },
-    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
-    "servicePointIds": [
-      "0e924af7-785c-46eb-a5e2-060394822016"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-06-30T02:21:33.012+00:00",
-      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
-      "updatedDate": "2023-06-30T02:21:33.012+00:00",
-      "updatedByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364"
-    }
-  },
-  {
     "id": "b38e6346-38bb-4e85-a852-b2975bad1656",
     "name": "Marine Bio PAGE-MA",
     "code": "MAR-PAGE-MA",
@@ -11463,6 +11370,32 @@
       "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
       "updatedDate": "2023-07-12T00:33:00.938+00:00",
       "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
+    }
+  },
+  {
+    "id": "0e4c10cd-c2a0-45d5-a6cc-f94d75fc2f17",
+    "name": "Spec PAGE-FC",
+    "code": "SPEC-PAGE-FC",
+    "discoveryDisplayName": "Special Collections Prep for SAL3",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
+    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
+    "servicePointIds": [
+      "0e924af7-785c-46eb-a5e2-060394822016"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-06-30T02:21:33.012+00:00",
+      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
+      "updatedDate": "2023-07-17T14:05:08.620+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
     }
   },
   {
@@ -12191,31 +12124,6 @@
     }
   },
   {
-    "id": "db2ac904-14ae-4c47-8f12-3ad59f164ef2",
-    "name": "Spec Withdrawn",
-    "code": "SPEC-WITHDRAWN",
-    "discoveryDisplayName": "Special Collections Withdrawn",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
-    "details": {
-    },
-    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
-    "servicePointIds": [
-      "0e924af7-785c-46eb-a5e2-060394822016"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-07-06T18:36:35.351+00:00",
-      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
-      "updatedDate": "2023-07-06T18:36:35.351+00:00",
-      "updatedByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364"
-    }
-  },
-  {
     "id": "03981767-bad4-426c-b052-accc61daeb22",
     "name": "Green Withdrawn",
     "code": "GRE-WITHDRAWN",
@@ -12915,6 +12823,188 @@
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
       "updatedDate": "2023-07-13T18:25:30.133+00:00",
       "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
+    }
+  },
+  {
+    "id": "489980d7-2618-4dc8-8b30-206b8a9f67e0",
+    "name": "Spec Barchas",
+    "code": "SPEC-BARCHAS",
+    "discoveryDisplayName": "Special Collections Barchas Collection",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
+    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
+    "servicePointIds": [
+      "0e924af7-785c-46eb-a5e2-060394822016"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-02-08T23:38:01.332+00:00",
+      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
+      "updatedDate": "2023-07-17T14:02:05.268+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
+    }
+  },
+  {
+    "id": "7c6af6ea-86ca-42a0-94b2-58edad1637a7",
+    "name": "Spec Felton",
+    "code": "SPEC-FELTON",
+    "discoveryDisplayName": "Special Collections Felton Collection",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
+    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
+    "servicePointIds": [
+      "0e924af7-785c-46eb-a5e2-060394822016"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-02-08T23:38:01.449+00:00",
+      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
+      "updatedDate": "2023-07-17T14:02:15.495+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
+    }
+  },
+  {
+    "id": "ee3965d1-d19d-49ef-8493-88bac9929121",
+    "name": "Spec Robinson",
+    "code": "SPEC-ROBINSON",
+    "discoveryDisplayName": "Special Collections Robinson Collection",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
+    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
+    "servicePointIds": [
+      "0e924af7-785c-46eb-a5e2-060394822016"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-02-08T23:38:02.960+00:00",
+      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
+      "updatedDate": "2023-07-17T14:05:32.114+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
+    }
+  },
+  {
+    "id": "794733b9-5fe8-4294-9143-ae98823e6381",
+    "name": "Spec SAL3 Gunst",
+    "code": "SPEC-SAL3-GUNST",
+    "discoveryDisplayName": "Special Collections Gunst Collection",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
+    "primaryServicePoint": "3a306665-eec7-4a40-8f4d-608585b2a394",
+    "servicePointIds": [
+      "3a306665-eec7-4a40-8f4d-608585b2a394"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-02-08T23:38:03.212+00:00",
+      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
+      "updatedDate": "2023-07-17T14:05:48.062+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
+    }
+  },
+  {
+    "id": "1f3a8d48-2de3-432d-923e-76eb93de9ffc",
+    "name": "Spec SAL3 Rare Books",
+    "code": "SPEC-SAL3-RBC",
+    "discoveryDisplayName": "Special Collections Rare Books Collection",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
+    "primaryServicePoint": "3a306665-eec7-4a40-8f4d-608585b2a394",
+    "servicePointIds": [
+      "3a306665-eec7-4a40-8f4d-608585b2a394"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-02-08T23:38:03.577+00:00",
+      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
+      "updatedDate": "2023-07-17T14:06:39.987+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
+    }
+  },
+  {
+    "id": "db2ac904-14ae-4c47-8f12-3ad59f164ef2",
+    "name": "Spec Withdrawn",
+    "code": "SPEC-WITHDRAWN",
+    "discoveryDisplayName": "Special Collections Withdrawn",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
+    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
+    "servicePointIds": [
+      "0e924af7-785c-46eb-a5e2-060394822016"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-07-06T18:36:35.351+00:00",
+      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
+      "updatedDate": "2023-07-17T14:08:08.242+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
+    }
+  },
+  {
+    "id": "d4d319ae-6310-419f-8f90-1b03f952aa44",
+    "name": "Spec Shelved Elsewhere",
+    "code": "SPEC-SEE-OTHER",
+    "discoveryDisplayName": "Special Collections Shelved Elsewhere",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "pageAeonSite": "SPECUA"
+    },
+    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
+    "servicePointIds": [
+      "0e924af7-785c-46eb-a5e2-060394822016"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-02-08T23:38:03.952+00:00",
+      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
+      "updatedDate": "2023-07-17T14:07:10.972+00:00",
+      "updatedByUserId": "247692eb-ab71-417f-8982-1899fb328f4c"
     }
   }
 ]
