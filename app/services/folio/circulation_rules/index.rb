@@ -38,6 +38,7 @@ module Folio
       end
 
       # Rules are included if all of their positive criteria match the search criteria
+      # rubocop:disable Metrics/CyclomaticComplexity
       def positive_match?(rule, search_criteria)
         rule.criteria.all? do |criterium, values|
           values = case values
@@ -50,9 +51,10 @@ module Folio
                    end
 
           # Always treat 'group' criterium (ignored) and the wildcard as matching
-          criterium == 'group' || values == ['*'] || values.any?(search_criteria[criterium])
+          criterium == 'group' || values == ['any'] || values.nil? || values.any?(search_criteria[criterium])
         end
       end
+      # rubocop:enable Metrics/CyclomaticComplexity
     end
   end
 end

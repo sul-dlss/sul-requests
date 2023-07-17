@@ -6,7 +6,7 @@ module Folio
   # accessing the types.
   class Types
     class << self
-      delegate :policies, :circulation_rules, :criteria, :get_type, to: :instance
+      delegate :policies, :circulation_rules, :criteria, :get_type, :locations, :libraries, to: :instance
     end
 
     def self.instance
@@ -20,16 +20,27 @@ module Folio
       @folio_client = folio_client
     end
 
+    # rubocop:disable Metrics/AbcSize
     def sync!
+      @policies = nil
+      @criteria = nil
+
       types_of_interest.each do |type|
         file = cache_dir.join("#{type}.json")
 
         File.write(file, JSON.pretty_generate(folio_client.public_send(type)))
       end
+
+      circulation_rules = folio_client.circulation_rules
+      File.write(cache_dir.join('circulation_rules.txt'), circulation_rules)
+      File.write(cache_dir.join('circulation_rules.csv'),
+                 Folio::CirculationRules::PolicyService.rules(circulation_rules).map(&:to_csv).join)
     end
+    # rubocop:enable Metrics/AbcSize
 
     def circulation_rules
-      get_type('circulation_rules').fetch('rulesAsText', '')
+      file = cache_dir.join('circulation_rules.txt')
+      file.read if file.exist?
     end
 
     def service_points
@@ -54,11 +65,19 @@ module Folio
         'loan-type' => get_type('loan_types').index_by { |p| p['id'] },
         'location-institution' => get_type('institutions').index_by { |p| p['id'] },
         'location-campus' => get_type('campuses').index_by { |p| p['id'] },
-        'location-library' => get_type('libraries').index_by { |p| p['id'] },
-        'location-location' => get_type('locations').index_by { |p| p['id'] }
+        'location-library' => libraries,
+        'location-location' => locations
       }
     end
     # rubocop:enable Metrics/AbcSize
+
+    def libraries
+      @libraries ||= get_type('libraries').index_by { |p| p['id'] }
+    end
+
+    def locations
+      @locations ||= get_type('locations').index_by { |p| p['id'] }
+    end
 
     def get_type(type)
       raise "Unknown type #{type}" unless types_of_interest.include?(type.to_s)
@@ -69,12 +88,24 @@ module Folio
 
     private
 
+    # rubocop:disable Metrics/MethodLength
     def types_of_interest
       %w[
-        request_policies loan_policies overdue_fines_policies lost_item_fees_policies patron_notice_policies
-        patron_groups material_types loan_types institutions campuses libraries locations service_points
-        circulation_rules
+        request_policies
+        loan_policies
+        overdue_fines_policies
+        lost_item_fees_policies
+        patron_notice_policies
+        patron_groups
+        material_types
+        loan_types
+        institutions
+        campuses
+        libraries
+        locations
+        service_points
       ]
     end
+    # rubocop:enable Metrics/MethodLength
   end
 end
