@@ -90,11 +90,7 @@ RSpec.describe RequestsController do
 
     describe 'for mediated pages' do
       let(:request) do
-        create(:request, origin: 'ART', origin_location: 'ARTLCKL', barcodes: ['12345678'], bib_data: build(:single_mediated_holding))
-      end
-
-      before do
-        stub_bib_data_json(build(:single_mediated_holding))
+        build(:request, origin: 'ART', origin_location: 'ARTLCKL', barcodes: ['12345678'], bib_data: build(:single_mediated_holding))
       end
 
       it 'delegates the request object' do
@@ -108,7 +104,9 @@ RSpec.describe RequestsController do
     end
 
     describe 'for aeon pages' do
-      let(:request) { create(:request, origin: 'SPEC-COLL') }
+      let(:request) do
+        build(:request, origin: 'SPEC-COLL', origin_location: 'STACKS', bib_data: build(:special_collections_single_holding))
+      end
 
       it 'delegates the request object' do
         path

@@ -5,7 +5,7 @@ FactoryBot.define do
     text { 'MyText' }
     start_at { '2000-05-19 11:02:38' }
     end_at { '2500-05-19 11:02:38' }
-    library { 'SPEC-COLL' }
+    library { 'ART' }
     request_type { 'page' }
   end
 end
