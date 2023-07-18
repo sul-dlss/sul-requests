@@ -6,7 +6,6 @@
 ###
 class RequestsController < ApplicationController
   include RequestStrongParams
-  include ModalLayout
 
   before_action :capture_email_field
   before_action :modify_item_selector_checkboxes_or_radios, only: :create
@@ -109,7 +108,7 @@ class RequestsController < ApplicationController
   def bounce_request_through_sso
     request_params = request_params_without_user_attrs_or_unselected_barcodes
     create_path = polymorphic_url(
-      [:create, current_request], request_context_params.merge(request: request_params.to_unsafe_h)
+      [:create, current_request], { request: request_params.to_unsafe_h }
     )
 
     referrer = interstitial_path(redirect_to: create_path)
@@ -182,13 +181,8 @@ class RequestsController < ApplicationController
   def redirect_to_success_with_token
     options = {}
     options[:token] = current_request.encrypted_token unless current_request.user.sso_user?
-    options.merge!(request_context_params)
 
     redirect_to polymorphic_path([:successful, current_request], options)
-  end
-
-  def request_context_params
-    { modal: params[:modal] }
   end
 
   def capture_email_field
