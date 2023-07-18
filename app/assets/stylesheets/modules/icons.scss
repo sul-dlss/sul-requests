@@ -19,7 +19,8 @@
     }
   }
 
-  &.page {
+  &.page, // .page is deprecated. https://github.com/sul-dlss/SearchWorks/pull/3268
+  &.deliver-from-offsite {
     @extend .sul-i-truck-1;
 
     &::before {
