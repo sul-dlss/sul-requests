@@ -251,7 +251,7 @@ libraries:
       phone: "(831) 655-6229"
       email: HMS-Library@lists.stanford.edu
     folio_pickup_service_point_code: MARINE-BIO
-    hold_pseudopatron: HOLD@HP
+    hold_pseudopatron: HOLD@MA
     folio_hold_pseudopatron: 1fb12835-2da8-4bc8-becc-3c9500fc3991
     hours:
       library_slug: hopkins
@@ -525,7 +525,7 @@ pageable:
     pickup_libraries: ['LAW']
   - locations:
       - PAGE-MA
-    pickup_libraries: ['MATH-CS']
+    pickup_libraries: ['GREEN', 'HOPKINS']
   - locations:
       - PAGE-MD
     pickup_libraries: ['MUSIC', 'MEDIA-MTXT']
