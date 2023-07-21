@@ -127,16 +127,6 @@
     }
   },
   {
-    "group": "sul-exception",
-    "id": "e30b731d-015b-489a-9c81-939f658b1c62",
-    "metadata": {
-      "createdDate": "2023-02-09T00:40:59.970+00:00",
-      "createdByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
-      "updatedDate": "2023-06-19T20:47:54.269+00:00",
-      "updatedByUserId": "a002aa6e-67ea-496d-9e7d-75ea1eef940f"
-    }
-  },
-  {
     "group": "sul-fee",
     "desc": "SUL Fee borrower",
     "id": "985acbb9-f7a7-4f44-9b34-458c02a78fbc",
@@ -155,16 +145,6 @@
       "createdDate": "2023-02-09T00:40:59.601+00:00",
       "createdByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
       "updatedDate": "2023-06-19T20:48:12.389+00:00",
-      "updatedByUserId": "a002aa6e-67ea-496d-9e7d-75ea1eef940f"
-    }
-  },
-  {
-    "group": "sul-institution",
-    "id": "16f983cc-c0c6-419c-8f01-b90b66b87951",
-    "metadata": {
-      "createdDate": "2023-02-09T00:40:59.850+00:00",
-      "createdByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
-      "updatedDate": "2023-06-19T20:48:20.577+00:00",
       "updatedByUserId": "a002aa6e-67ea-496d-9e7d-75ea1eef940f"
     }
   },
