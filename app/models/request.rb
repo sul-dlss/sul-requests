@@ -29,6 +29,9 @@ class Request < ActiveRecord::Base
   delegate :hold_recallable?, :mediateable?, :pageable?, :aeon_pageable?, :scannable?, :scannable_only?,
            :default_pickup_library, :pickup_libraries, :scan_destination, :aeon_site, to: :request_abilities
 
+  # Only for FOLIO model
+  delegate :default_pickup_service_point, :pickup_service_points, to: :request_abilities
+
   delegate :finding_aid, :finding_aid?, to: :bib_data, allow_nil: true
 
   # Serialized data hash

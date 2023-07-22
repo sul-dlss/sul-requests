@@ -1,5 +1,8 @@
 <div class="alert alert-warning destination-note-callout">
-  <%= render partial: 'destination_selector', locals: { f: f } %>
+  <%
+    partial_name = (Settings.ils.bib_model == 'Folio::Instance')? "destination_selector_folio" : "destination_selector"
+  %>
+  <%= render partial: partial_name, locals: { f: f } %>
 
   <%= render partial: 'needed_date', locals: { f: f } %>
 </div>

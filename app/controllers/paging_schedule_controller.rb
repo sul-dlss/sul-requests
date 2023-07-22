@@ -46,9 +46,27 @@ class PagingScheduleController < ApplicationController
   end
 
   def request_for_schedule
+    destination = params[:destination]
+    destination = map_service_point_to_library(destination) if Settings.ils.bib_model == 'Folio::Instance'
     Request.new(
       origin: params[:origin],
-      destination: params[:destination]
+      destination: destination
     )
   end
+
+  # For FOLIO, destination is specified as service point
+  # Convert service point to library for scheduling and library hours
+  def map_service_point_to_library(service_point_code)
+    libraries = Folio::Types.instance.get_type("libraries")
+    locations = Folio::Types.instance.get_type("locations")
+    service_points = Folio::Types.instance.service_points.values
+    # Find the service point ID based on this service point code
+    service_point_id = service_points.find { |v| v.code == service_point_code }&.id
+    # Find the library id for the location with which this service point is associated
+    library_id = locations.find { |location| location["primaryServicePoint"] == service_point_id }["libraryId"]
+    # Find the library code associated with this library
+    libraries.find{ |library| library["id"] == library_id }["code"]
+  end
+
+ 
 end
