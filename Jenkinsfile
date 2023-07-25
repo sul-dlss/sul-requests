@@ -23,7 +23,7 @@ pipeline {
           export DEPLOY=1
 
           # Load RVM
-          rvm use 3.0.3@sul-requests --create
+          rvm use 3.2.2@sul-requests --create
           gem install bundler
 
           bundle install --without production
