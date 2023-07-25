@@ -4,107 +4,91 @@
 # Helpers for formatting and displaying pickup libraries
 module PickupLibrariesHelper
   # Pickup libraries for Symphony
-  def select_for_pickup_libraries(form)
-    pickup_libraries = form.object.pickup_libraries
-    return unless pickup_libraries.present?
-    select_for_multiple_libraries(form, pickup_libraries) || single_library_markup(form, pickup_libraries.first)
+  def select_for_pickup_destinations(form)
+    pickup_destinations = form.object.pickup_destinations
+    return unless pickup_destinations.present?
+
+    select_for_multiple_destinations(form, pickup_destinations) || single_destination_markup(form, pickup_destinations.first)
   end
 
-  def label_for_pickup_libraries_dropdown(pickup_libraries)
-    if pickup_libraries.many?
+  def label_for_pickup_destinations_dropdown(pickup_destinations)
+    if pickup_destinations.many?
       'Deliver to'
     else
       'Will be delivered to'
     end
   end
 
-  # Service points for FOLIO
-  def select_for_pickup_service_points(form)
-    pickup_service_points = form.object.pickup_service_points
-    return unless pickup_service_points.present?
-
-    select_for_multiple_service_points(form, pickup_service_points) || single_service_point_markup(form, pickup_service_points.first)
-  end
-
   private
 
   # Symphony
-  def select_for_multiple_libraries(form, pickup_libraries)
-    return unless pickup_libraries.length > 1
+  def select_for_multiple_destinations(form, pickup_destinations)
+    return unless pickup_destinations.length > 1
+
     form.select(
       :destination,
-      pickup_libraries_array(pickup_libraries),
+      pickup_destinations_array(pickup_destinations),
       {
-        label: label_for_pickup_libraries_dropdown(pickup_libraries),
-        selected: form.object.destination || form.object.default_pickup_library
+        label: label_for_pickup_destinations_dropdown(pickup_destinations),
+        selected: form.object.destination || form.object.default_pickup_destination
       },
       aria: { controls: 'scheduler-text' },
       data: { 'paging-schedule-updater' => 'true', 'text-selector' => "[data-text-object='#{form.object.object_id}']" }
     )
   end
 
-  def single_library_markup(form, library)
+  def single_destination_markup(form, pickup_destination)
+    destination_label = get_destination_label(pickup_destination)
     <<-HTML
       <div class='form-group'>
         <div class='#{label_column_class} control-label'>
-          #{label_for_pickup_libraries_dropdown([])}
+          #{label_for_pickup_destinations_dropdown([])}
         </div>
         <div class='#{content_column_class} input-like-text'>
-          #{Settings.libraries[library]&.label || library}
+          #{destination_label || pickup_destination}
         </div>
-        #{form.hidden_field :destination, value: library}
+        #{form.hidden_field :destination, value: pickup_destination}
       </div>
     HTML
   end
 
-  def pickup_libraries_array(pickup_libraries)
-    pickup_libraries.map do |k|
-      [Settings.libraries[k]&.label || k, k]
-    end.sort
+  # Get the label, if it exists, for the pickup destination
+  def get_destination_label(pickup_destination)
+    # If FOLIO, get the service point name
+    return get_service_point_name(pickup_destination) if Settings.ils.bib_model == 'Folio::Instance'
+    
+    # If not FOLIO, 
+    Settings.libraries[library]&.label
   end
 
-  # Using service points for FOLIO
-  def select_for_multiple_service_points(form, pickup_service_points)
-    return unless pickup_service_points.length > 1
-
-    form.select(
-      :destination,
-      pickup_service_points_array(pickup_service_points),
-      {
-        label: label_for_pickup_libraries_dropdown(pickup_service_points),
-        selected: form.object.destination || form.object.default_pickup_service_point
-      },
-      aria: { controls: 'scheduler-text' },
-      data: { 'paging-schedule-updater' => 'true', 'text-selector' => "[data-text-object='#{form.object.object_id}']" }
-    )
+  # Return the array of destinations for the dropdown
+  def pickup_destinations_array(pickup_destinations)
+    # If FOLIO
+    return pickup_service_points_array(pickup_destinations) if Settings.ils.bib_model == 'Folio::Instance'
+      
+    pickup_libraries_array(pickup_destinations)
   end
 
-  def single_service_point_markup(form, service_point)
-    <<-HTML
-      <div class='form-group'>
-        <div class='#{label_column_class} control-label'>
-          #{label_for_pickup_libraries_dropdown([])}
-        </div>
-        <div class='#{content_column_class} input-like-text'>
-          #{get_service_point_name(service_point) || service_point}
-        </div>
-        #{form.hidden_field :destination, value: service_point}
-      </div>
-    HTML
-  end
-
+  # FOLIO version
   # Given an array of service point codes
   def pickup_service_points_array(pickup_service_points)
     # We want an array of arrays, with first element being label, second being code
     # First create hash by service point code to enable easier lookup
     service_points_hash = {}
-    Folio::Types.instance.service_points.values.each do |service_point|
+    Folio::Types.instance.service_points.each_value do |service_point|
       service_points_hash[service_point.code] = service_point
-    end 
+    end
     pickup_service_points.map do |code|
       sp = service_points_hash[code]
       [sp.name, code]
     end
+  end
+
+  # Symphony version
+  def pickup_libraries_array(pickup_libraries)
+    pickup_libraries.map do |k|
+      [Settings.libraries[k]&.label || k, k]
+    end.sort
   end
 
   # Get the name for the service point given the code

@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe RequestsHelper do
   include ApplicationHelper
 
-  describe '#select_for_pickup_libraries' do
+  describe '#select_for_pickup_destinations' do
     let(:form) { double('form') }
 
     before do
@@ -25,7 +25,7 @@ RSpec.describe RequestsHelper do
 
       it 'returns library text and a hidden input w/ the destination library' do
         expect(form).to receive(:hidden_field).with(:destination, value: 'ENG').and_return('<hidden_field>')
-        markup = Capybara.string(select_for_pickup_libraries(form))
+        markup = Capybara.string(select_for_pickup_destinations(form))
         expect(markup).to have_css('.form-group .control-label', text: 'Will be delivered to')
         expect(markup).to have_css('.form-group .input-like-text', text: 'Engineering Library (Terman)')
         expect(markup).to have_css('hidden_field')
@@ -37,7 +37,7 @@ RSpec.describe RequestsHelper do
 
       it 'attempts to create a select list' do
         expect(form).to receive(:select).with(any_args).and_return('<select>')
-        expect(select_for_pickup_libraries(form)).to eq '<select>'
+        expect(select_for_pickup_destinations(form)).to eq '<select>'
       end
 
       context 'with a destination' do
@@ -46,19 +46,19 @@ RSpec.describe RequestsHelper do
         it 'defaults to the destination library' do
           expect(form).to receive(:select).with(anything, anything, hash_including(selected: 'ART'), anything)
             .and_return('<select>')
-          expect(select_for_pickup_libraries(form)).to eq '<select>'
+          expect(select_for_pickup_destinations(form)).to eq '<select>'
         end
       end
     end
   end
 
-  describe '#label_for_pickup_libraries_dropdown' do
+  describe '#label_for_pickup_destinations_dropdown' do
     it 'is "Deliver to" when if there are mutliple possiblities' do
-      expect(label_for_pickup_libraries_dropdown(%w(GREEN MUSIC))).to eq 'Deliver to'
+      expect(label_for_pickup_destinations_dropdown(%w(GREEN MUSIC))).to eq 'Deliver to'
     end
 
     it 'is "Will be delivered to" when there is only one possibility' do
-      expect(label_for_pickup_libraries_dropdown(['GREEN'])).to eq 'Will be delivered to'
+      expect(label_for_pickup_destinations_dropdown(['GREEN'])).to eq 'Will be delivered to'
     end
   end
 

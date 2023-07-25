@@ -71,76 +71,34 @@ module Folio
       !mediateable? && !hold_recallable? && any_holdings_pageable?
     end
 
-    def pickup_libraries
-      return (default_pickup_libraries + additional_pickup_libraries).uniq if location_restricted_service_point_codes.empty?
-
-      Settings.libraries.keys.select do |key|
-        location_restricted_service_point_codes.include? Settings.libraries[key].folio_pickup_service_point_code
-      end.map(&:to_s)
-    end
-
     # FOLIO
-    def pickup_service_points
+    def pickup_destinations
       return (default_pickup_service_points + additional_pickup_service_points).uniq if location_restricted_service_point_codes.empty?
 
       location_restricted_service_point_codes
     end
 
     # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-    def default_pickup_library
+    def default_pickup_destination
       return 'EAST-ASIA' if request.origin_location&.match?(Regexp.union(/^EAL-SETS$/, /^EAL-STKS-/))
 
-      service_points = Folio::Types.instance.service_points.select do |_k, v|
-        v.is_default_for_campus.present? && v.is_default_for_campus == request.holdings.first&.effective_location&.campus&.code
-      end.values.map(&:code)
-
-      library = Settings.libraries.keys.find do |key|
-        service_points.include? Settings.libraries[key].folio_pickup_service_point_code
-      end&.to_s
-
-      library || Settings.default_pickup_library
-    end
-
-    # Return default service point code
-    def default_pickup_service_point
-      return 'EAST-ASIA' if request.origin_location&.match?(Regexp.union(/^EAL-SETS$/, /^EAL-STKS-/))
-
-      # Find service point which is default for this particular campus 
-      default_service_point = Folio::Types.instance.service_points.select do |_k, v|
-        v.is_default_for_campus.present? && v.is_default_for_campus == request.holdings.first&.effective_location&.campus&.code
-      end.values.map(&:code)
+      # Find service point which is default for this particular campus
       # Or Settings.default library? Will this cover or do we need to add to it?
-      default_service_point
+      Folio::Types.instance.service_points.select do |_k, v|
+        v.is_default_for_campus.present? && v.is_default_for_campus == request.holdings.first&.effective_location&.campus&.code
+      end.values.map(&:code)
     end
 
     private
 
-    def default_pickup_libraries
-      service_points = Folio::Types.instance.service_points.select { |_k, v| v.is_default_pickup }.values.map(&:code)
-
-      Settings.libraries.keys.select do |key|
-        service_points.include? Settings.libraries[key].folio_pickup_service_point_code
-      end.map(&:to_s)
-    end
-    # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-
-    def additional_pickup_libraries
-      # TODO: if the locations (primary?) service point(s) is a pickup_location, add it to the list
-      # request.holdings.flat_map { |item| item.effective_location.service_points.select { |v| v.pickup_location } }.uniq
-
-      return [request.origin] if Settings.libraries[request.origin]&.folio_pickup_service_point_code
-
-      []
-    end
-
     # Returns default service point codes
     def default_pickup_service_points
-      return Folio::Types.instance.service_points.select { |_k, v| v.is_default_pickup }.values.map(&:code)
+      Folio::Types.instance.service_points.select { |_k, v| v.is_default_pickup }.values.map(&:code)
     end
 
     def additional_pickup_service_points
       # Map library to a service point
-      service_point_code = map_library_to_pickup_service_point(request.origin)
+      service_point_code = map_to_service_point(request.origin)
       service_point_code.nil? ? [] : [service_point_code]
     end
 
@@ -172,20 +130,19 @@ module Folio
     def circulation_rules
       Folio::CirculationRules::PolicyService.instance
     end
-    
+
     # Given a library code, retrieve the primary service point, ensuring pickup location is true
-    def map_library_to_pickup_service_point(library_code)
-      libraries = Folio::Types.instance.get_type("libraries")
-      locations = Folio::Types.instance.get_type("locations")
+    def map_to_service_point(library_code)
+      libraries = Folio::Types.instance.get_type('libraries')
+      locations = Folio::Types.instance.get_type('locations')
       service_points = Folio::Types.instance.service_points.values
       # Find library id for the library with this code
-      library_id = libraries.find{ |library| library["code"] == library_code }["id"]
+      library_id = libraries.find { |library| library['code'] == library_code }['id']
       # Get the associated location and related service point
-      service_point_id = locations.find { |location| location["libraryId"] == library_id }["primaryServicePoint"]
+      service_point_id = locations.find { |location| location['libraryId'] == library_id }['primaryServicePoint']
       # Find the service point ID based on this service point code
       service_point = service_points.find { |v| v.id == service_point_id }
       service_point.pickup_location == true ? service_point.code : nil
     end
-
   end
 end

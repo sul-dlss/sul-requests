@@ -59,11 +59,11 @@ class RequestAbilities
     scannable_location_rule&.destination || {}
   end
 
-  def pickup_libraries
+  def pickup_destinations
     location_rule&.pickup_libraries || Settings.default_pickup_libraries
   end
 
-  def default_pickup_library
+  def default_pickup_destination
     location_rule&.default_pickup_library || Settings.default_pickup_library
   end
 

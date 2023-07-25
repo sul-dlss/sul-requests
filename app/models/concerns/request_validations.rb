@@ -22,14 +22,10 @@ module RequestValidations
 
     errors.add(:destination, 'is not a valid pickup library')
   end
-  
+
   # Based on FOLIO or Symphony, will do different check
   def check_destination(destination)
-    if Settings.ils.bib_model == 'Folio::Instance'
-      pickup_service_points.include?(destination)
-    else
-      pickup_libraries.include?(destination)
-    end
+    pickup_destinations.include?(destination)
   end
 
   def requested_item_is_not_scannable_only
