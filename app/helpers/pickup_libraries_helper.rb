@@ -56,8 +56,8 @@ module PickupLibrariesHelper
   def get_destination_label(pickup_destination)
     # If FOLIO, get the service point name
     return get_service_point_name(pickup_destination) if Settings.ils.bib_model == 'Folio::Instance'
-    
-    # If not FOLIO, 
+
+    # If not FOLIO
     Settings.libraries[library]&.label
   end
 
@@ -65,7 +65,7 @@ module PickupLibrariesHelper
   def pickup_destinations_array(pickup_destinations)
     # If FOLIO
     return pickup_service_points_array(pickup_destinations) if Settings.ils.bib_model == 'Folio::Instance'
-      
+
     pickup_libraries_array(pickup_destinations)
   end
 

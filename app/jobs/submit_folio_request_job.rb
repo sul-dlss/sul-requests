@@ -83,13 +83,17 @@ class SubmitFolioRequestJob < ApplicationJob
 
     def pickup_location_id
       @pickup_location_id ||= begin
-        code = request.destination
-        if Settings.ils.bib_model == 'SearchworksItem'
-          code = Settings.libraries[request.destination].folio_pickup_service_point_code
-          code ||= Settings.libraries['GREEN'].folio_pickup_service_point_code
-        end
-        Folio::Types.instance.service_points.values.find { |v| v.code == code }&.id
+        code = get_service_point_code(request.destination)
+        get_service_point_id(code)
       end
+    end
+
+    def get_service_point_code(destination)
+      return destination if Settings.ils.bib_model == 'Folio::Instance'
+
+      code = Settings.libraries[destination].folio_pickup_service_point_code
+      code ||= Settings.libraries['GREEN'].folio_pickup_service_point_code
+      code
     end
 
     def place_item_hold(item_id:)
@@ -146,7 +150,7 @@ class SubmitFolioRequestJob < ApplicationJob
     end
 
     def find_hold_pseudo_patron_for(key)
-      key = map_service_point_to_library(key) if Settings.ils.bib_model == 'Folio::Instance'
+      key = map_to_library(key) if Settings.ils.bib_model == 'Folio::Instance'
       id = Settings.libraries[key]&.folio_hold_pseudopatron || raise("no hold pseudopatron for '#{key}'")
       build_pseudopatron(id)
     end
@@ -162,16 +166,21 @@ class SubmitFolioRequestJob < ApplicationJob
     # Map request destination service point to library code
     # For FOLIO, destination is specified as service point
     # Convert service point to library for scheduling and library hours
-    def map_service_point_to_library(service_point_code)
-      libraries = Folio::Types.instance.get_type('libraries')
-      locations = Folio::Types.instance.get_type('locations')
-      service_points = Folio::Types.instance.service_points.values
-      # Find the service point ID based on this service point code
-      service_point_id = service_points.find { |v| v.code == service_point_code }&.id
-      # Find the library id for the location with which this service point is associated
-      library_id = locations.find { |location| location['primaryServicePoint'] == service_point_id }['libraryId']
-      # Find the library code associated with this library
-      libraries.find { |library| library['id'] == library_id }['code']
+    def map_to_library(service_point_code)
+      service_point_id = get_service_point_id(service_point_code)
+      library_id = get_library_for_service_point(service_point_id)
+      # Find the library code associated with this library id
+      Folio::Types.instance.get_type('libraries').find { |library| library['id'] == library_id }['code']
+    end
+
+    # Find the service point ID based on this service point code
+    def get_service_point_id(service_point_code)
+      Folio::Types.instance.service_points.values.find { |v| v.code == service_point_code }&.id
+    end
+
+    # Find the library id for the location with which this service point is associated
+    def get_library_for_service_point(service_point_id)
+      Folio::Types.instance.get_type('locations').find { |location| location['primaryServicePoint'] == service_point_id }['libraryId']
     end
   end
 
