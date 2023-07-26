@@ -29,7 +29,6 @@ origin_admin_groups:
   ART: []
   EDUCATION: []
   HOPKINS: []
-  HV-ARCHIVE: []
   RUMSEYMAP: []
   SPEC-COLL: []
 
@@ -40,7 +39,6 @@ mediateable_origins:
   ART: {}
   EDUCATION: {}
   HOPKINS: {}
-  HV-ARCHIVE: {}
   PAGE-MP:
     library_override: EARTH-SCI
   RUMSEYMAP: {}
@@ -235,17 +233,6 @@ libraries:
     hours:
       library_slug: green
       location_slug: library-circulation
-  HOOVER:
-    label: Hoover Library
-    instructions: Items must be requested in advance and viewed on-site.
-    contact_info:
-      phone: "(650) 723-3563"
-      email: hooverarchives@stanford.edu
-    hold_pseudopatron: HOLD@HL
-    folio_hold_pseudopatron: 560fbbf8-35b6-4440-b218-6c4aa6625258
-    hours:
-      library_slug: hoover
-      location_slug: library-circulation
   HOPKINS:
     label: Marine Biology Library (Miller)
     contact_info:
@@ -257,18 +244,6 @@ libraries:
     hours:
       library_slug: hopkins
       location_slug: library-circulation
-  HV-ARCHIVE:
-    label: Hoover Archives
-    instructions: Items must be requested in advance and viewed on-site.
-    contact_info:
-      phone: "(650) 723-3563"
-      email: hooverarchives@stanford.edu
-    folio_pickup_service_point_code: HILA
-    hold_pseudopatron: HOLD@HA
-    folio_hold_pseudopatron: d36cbac2-7ae7-49b3-b786-a389e67a3344
-    hours:
-      library_slug: hila
-      location_slug: reference
   LANE-MED:
     label: Medical Library (Lane)
     hours:
@@ -510,9 +485,6 @@ pageable:
       - PAGE-GR
     pickup_libraries: ['GREEN']
   - locations:
-      - PAGE-HA
-    pickup_libraries: ['HV-ARCHIVE']
-  - locations:
       - PAGE-HP
     pickup_libraries: ['GREEN', 'HOPKINS']
   - locations:
@@ -549,9 +521,6 @@ pageable:
       - PAGE-SP
     pickup_libraries: ['SPEC-COLL']
   # Library-specific pickup libraries
-  - library: HV-ARCHIVE
-    pickup_libraries:
-      - HV-ARCHIVE
   - library: ARS
     pickup_libraries:
       - ARS
