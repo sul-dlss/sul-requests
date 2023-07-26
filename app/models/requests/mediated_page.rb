@@ -49,7 +49,9 @@ class MediatedPage < Request
   end
 
   def notify_mediator!
-    MediationMailer.mediator_notification(self).deliver_later if mediator_notification_email_address.present?
+    return unless mediator_notification_email_address.present? && Settings.features.mediator_email
+
+    MediationMailer.mediator_notification(self).deliver_later
   end
 
   def mediator_notification_email_address
