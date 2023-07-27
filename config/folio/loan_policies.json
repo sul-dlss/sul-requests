@@ -834,31 +834,6 @@
     }
   },
   {
-    "id": "2bc718ef-2440-4254-b8e0-3b0c6724fb61",
-    "name": "1day-norenew-15mingrace",
-    "description": "Loan policy for one-day reserves",
-    "loanable": true,
-    "loansPolicy": {
-      "profileId": "Rolling",
-      "period": {
-        "duration": 1,
-        "intervalId": "Days"
-      },
-      "closedLibraryDueDateManagementId": "END_OF_THE_NEXT_OPEN_DAY",
-      "gracePeriod": {
-        "duration": 15,
-        "intervalId": "Minutes"
-      }
-    },
-    "renewable": false,
-    "metadata": {
-      "createdDate": "2023-02-09T01:05:18.390+00:00",
-      "createdByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
-      "updatedDate": "2023-02-09T01:05:18.390+00:00",
-      "updatedByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2"
-    }
-  },
-  {
     "id": "2aceed44-b986-4362-8d74-1d46e1377761",
     "name": "14day-1renew-1daygrace",
     "description": "Loan policy for periodicals ",
@@ -1031,6 +1006,35 @@
       "createdByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
       "updatedDate": "2023-02-09T01:05:19.018+00:00",
       "updatedByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2"
+    }
+  },
+  {
+    "id": "2bc718ef-2440-4254-b8e0-3b0c6724fb61",
+    "name": "1day-norenew-15mingrace",
+    "description": "Loan policy for one-day reserves",
+    "loanable": true,
+    "loansPolicy": {
+      "profileId": "Rolling",
+      "period": {
+        "duration": 24,
+        "intervalId": "Hours"
+      },
+      "closedLibraryDueDateManagementId": "BEGINNING_OF_THE_NEXT_OPEN_SERVICE_POINT_HOURS",
+      "gracePeriod": {
+        "duration": 15,
+        "intervalId": "Minutes"
+      },
+      "openingTimeOffset": {
+        "duration": 1,
+        "intervalId": "Hours"
+      }
+    },
+    "renewable": false,
+    "metadata": {
+      "createdDate": "2023-02-09T01:05:18.390+00:00",
+      "createdByUserId": "3e2ed889-52f2-45ce-8a30-8767266f07d2",
+      "updatedDate": "2023-07-25T21:48:16.751+00:00",
+      "updatedByUserId": "19d799fa-6dcb-4b57-aa80-ba41ed26cf35"
     }
   },
   {
@@ -1633,6 +1637,42 @@
       "createdByUserId": "19d799fa-6dcb-4b57-aa80-ba41ed26cf35",
       "updatedDate": "2023-07-13T14:51:08.239+00:00",
       "updatedByUserId": "19d799fa-6dcb-4b57-aa80-ba41ed26cf35"
+    }
+  },
+  {
+    "id": "80998a5c-10ae-4eac-82da-1e5aa5df4570",
+    "name": "1year-norenew-7daygrace",
+    "description": "Loan policy for SUL guest patron group.",
+    "loanable": true,
+    "loansPolicy": {
+      "profileId": "Rolling",
+      "period": {
+        "duration": 365,
+        "intervalId": "Days"
+      },
+      "closedLibraryDueDateManagementId": "END_OF_THE_NEXT_OPEN_DAY",
+      "gracePeriod": {
+        "duration": 7,
+        "intervalId": "Days"
+      }
+    },
+    "renewable": false,
+    "requestManagement": {
+      "recalls": {
+        "allowRecallsToExtendOverdueLoans": false
+      },
+      "holds": {
+        "alternateCheckoutLoanPeriod": {
+          "duration": 7,
+          "intervalId": "Days"
+        }
+      }
+    },
+    "metadata": {
+      "createdDate": "2023-07-26T17:55:51.341+00:00",
+      "createdByUserId": "a720559b-ddb3-42cc-b6b9-3b58f63e78de",
+      "updatedDate": "2023-07-26T17:56:45.336+00:00",
+      "updatedByUserId": "a720559b-ddb3-42cc-b6b9-3b58f63e78de"
     }
   }
 ]
