@@ -123,8 +123,16 @@ class FolioGraphqlClient
                     scanServicePointCode
                   }
                 }
+                permanentLocation {
+                  code
+                }
                 permanentLoanTypeId
                 temporaryLoanTypeId
+                holdingsRecord {
+                  effectiveLocation {
+                    code
+                  }
+                }
               }
             }
           }

@@ -28,7 +28,7 @@ module Folio
     end
 
     def items_in_location
-      @items.select { |item| item.effective_location.code == folio_location_code }
+      @items.select { |item| item.home_location == folio_location_code }
     end
   end
 end
