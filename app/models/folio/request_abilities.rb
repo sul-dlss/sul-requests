@@ -70,8 +70,6 @@ module Folio
 
     # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     def default_pickup_library
-      return 'EAST-ASIA' if request.origin_location&.match?(Regexp.union(/^EAL-SETS$/, /^EAL-STKS-/))
-
       service_points = Folio::Types.instance.service_points.select do |_k, v|
         v.is_default_for_campus.present? && v.is_default_for_campus == request.holdings.first&.effective_location&.campus&.code
       end.values.map(&:code)
