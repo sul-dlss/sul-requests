@@ -25,6 +25,31 @@
     }
   },
   {
+    "id": "3ac813ce-d83d-4acb-a626-bfce748a5f93",
+    "name": "Business SAL3 Stacks",
+    "code": "BUS-SAL3-STACKS",
+    "discoveryDisplayName": "Stacks",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "b89563c5-cb66-4de7-b63c-ca4d82e9d856",
+    "libraryId": "f5c58187-3db6-4bda-b1bf-e5f0717e2149",
+    "details": {
+    },
+    "primaryServicePoint": "3a306665-eec7-4a40-8f4d-608585b2a394",
+    "servicePointIds": [
+      "3a306665-eec7-4a40-8f4d-608585b2a394"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-02-08T23:37:13.499+00:00",
+      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
+      "updatedDate": "2023-07-28T16:28:12.544+00:00",
+      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
+    }
+  },
+  {
     "id": "b26d05ad-80a3-460d-8b49-00ddb72593bc",
     "name": "ARS Locked Stacks",
     "code": "ARS-LOCKED",
@@ -221,6 +246,31 @@
       "createdDate": "2023-06-30T02:09:13.713+00:00",
       "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
       "updatedDate": "2023-07-27T09:08:45.948+00:00",
+      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
+    }
+  },
+  {
+    "id": "eca1afe1-b46e-4a5c-9bf2-bdb062a9d690",
+    "name": "HILA SAL3 Stacks",
+    "code": "HILA-SAL3-STACKS",
+    "discoveryDisplayName": "Stacks",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "be6468b8-ed88-4876-93fe-5bdac764959c",
+    "libraryId": "ffe6ea8e-1e14-482f-b3e9-66e05efb04dd",
+    "details": {
+    },
+    "primaryServicePoint": "3a306665-eec7-4a40-8f4d-608585b2a394",
+    "servicePointIds": [
+      "3a306665-eec7-4a40-8f4d-608585b2a394"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-02-08T23:37:31.045+00:00",
+      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
+      "updatedDate": "2023-07-28T16:28:36.285+00:00",
       "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
     }
   },
@@ -1203,31 +1253,6 @@
       "createdDate": "2023-02-08T23:37:12.606+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
       "updatedDate": "2023-07-27T07:20:40.819+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
-    }
-  },
-  {
-    "id": "3ac813ce-d83d-4acb-a626-bfce748a5f93",
-    "name": "Business SAL3 Stacks",
-    "code": "BUS-SAL3-STACKS",
-    "discoveryDisplayName": "Offsite",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "b89563c5-cb66-4de7-b63c-ca4d82e9d856",
-    "libraryId": "f5c58187-3db6-4bda-b1bf-e5f0717e2149",
-    "details": {
-    },
-    "primaryServicePoint": "3a306665-eec7-4a40-8f4d-608585b2a394",
-    "servicePointIds": [
-      "3a306665-eec7-4a40-8f4d-608585b2a394"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-02-08T23:37:13.499+00:00",
-      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-07-27T07:31:06.048+00:00",
       "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
     }
   },
@@ -3436,31 +3461,6 @@
       "createdDate": "2023-02-08T23:37:27.800+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
       "updatedDate": "2023-07-27T09:52:46.038+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
-    }
-  },
-  {
-    "id": "eca1afe1-b46e-4a5c-9bf2-bdb062a9d690",
-    "name": "HILA SAL3 Stacks",
-    "code": "HILA-SAL3-STACKS",
-    "discoveryDisplayName": "Offsite",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "be6468b8-ed88-4876-93fe-5bdac764959c",
-    "libraryId": "ffe6ea8e-1e14-482f-b3e9-66e05efb04dd",
-    "details": {
-    },
-    "primaryServicePoint": "3a306665-eec7-4a40-8f4d-608585b2a394",
-    "servicePointIds": [
-      "3a306665-eec7-4a40-8f4d-608585b2a394"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-02-08T23:37:31.045+00:00",
-      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-07-27T07:49:10.279+00:00",
       "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
     }
   },

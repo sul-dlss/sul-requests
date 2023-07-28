@@ -21,20 +21,6 @@
     "discoveryDisplayName": "Archive of Recorded Sound"
   },
   {
-    "pickupLocation": false,
-    "code": "SAL3",
-    "details": null,
-    "id": "3a306665-eec7-4a40-8f4d-608585b2a394",
-    "discoveryDisplayName": "Stanford Auxiliary Library 3 (SAL3)"
-  },
-  {
-    "pickupLocation": false,
-    "code": "SAL-NEWARK",
-    "details": null,
-    "id": "809716bc-1d3f-4b9e-b747-4fcbaff9d04e",
-    "discoveryDisplayName": "Stanford Auxiliary Library Newark (SAL-Newark)"
-  },
-  {
     "pickupLocation": true,
     "code": "ENG",
     "details": {
@@ -62,6 +48,20 @@
     "details": null,
     "id": "67552bac-7644-4b5d-a973-045b8370f6e6",
     "discoveryDisplayName": "Hoover Library & Archives Reading Room"
+  },
+  {
+    "pickupLocation": false,
+    "code": "SAL-NEWARK",
+    "details": null,
+    "id": "809716bc-1d3f-4b9e-b747-4fcbaff9d04e",
+    "discoveryDisplayName": "SAL Newark (off-campus storage)"
+  },
+  {
+    "pickupLocation": false,
+    "code": "SAL3",
+    "details": null,
+    "id": "3a306665-eec7-4a40-8f4d-608585b2a394",
+    "discoveryDisplayName": "SAL3 (off-campus storage)"
   },
   {
     "pickupLocation": false,
@@ -114,13 +114,6 @@
     "discoveryDisplayName": "SUL Collection Care"
   },
   {
-    "pickupLocation": false,
-    "code": "SAL",
-    "details": null,
-    "id": "6e0748f5-4420-4995-b96e-f7aeb978a45a",
-    "discoveryDisplayName": "Stanford Auxiliary Library (SAL)"
-  },
-  {
     "pickupLocation": true,
     "code": "SPEC",
     "details": null,
@@ -133,6 +126,13 @@
     "details": null,
     "id": "7af3d617-e9e9-4241-8dd7-93827112d3ab",
     "discoveryDisplayName": "Philosophy Library (Tanner)"
+  },
+  {
+    "pickupLocation": false,
+    "code": "SAL",
+    "details": null,
+    "id": "6e0748f5-4420-4995-b96e-f7aeb978a45a",
+    "discoveryDisplayName": "SAL1&2 (on-campus storage)"
   },
   {
     "pickupLocation": false,
@@ -261,6 +261,13 @@
     "discoveryDisplayName": "Law Library (Crown)"
   },
   {
+    "pickupLocation": null,
+    "code": "SULMDCS",
+    "details": null,
+    "id": "e9a88f1d-3ca1-4159-84ce-a400d7f75d56",
+    "discoveryDisplayName": "SUL Metadata Cataloging Shelf"
+  },
+  {
     "pickupLocation": true,
     "code": "LANE-DESK",
     "details": {
@@ -269,13 +276,6 @@
       "notes": null
     },
     "id": "0483c7bd-8e95-4c7b-9704-484b01879b02",
-    "discoveryDisplayName": "Medical Library (Lane)"
-  },
-  {
-    "pickupLocation": null,
-    "code": "SULMDCS",
-    "details": null,
-    "id": "e9a88f1d-3ca1-4159-84ce-a400d7f75d56",
-    "discoveryDisplayName": "SUL Metadata Cataloging Shelf"
+    "discoveryDisplayName": "Lane Medical Library"
   }
 ]

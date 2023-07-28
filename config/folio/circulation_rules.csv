@@ -174,6 +174,7 @@ faculty or staff or fellow,book,,,,,LAW-BASEMENT or LAW-FOLIO-BASEMENT or LAW-LO
 ,periodical,,,,,GRE-RAUB-COLL or GRE-RAUB-NUM,No loan,No requests allowed,Short Term Notices,No fines,$500 lost fee
 ,periodical,,,,,EAR-PROCESSING-AP or EAR-PROCESSING-JC or EAR-PROCESSING-PG or EAR-PROCESSING-TR or EAR-SCANLAB,No loan,Hold only,Default notice,No fines,$500 lost fee
 ,periodical,,,,,EAR-LOCKED-STACKS,7day-1renew-3daygrace,No requests allowed,Short Term Notices,No fines,$500 lost fee
+,newspaper,,,,,SAL3-PAGE-EA or SAL3-PAGE-GR,No loan,Allow paging,Short Term Notices,No fines,$100 lost fee
 ,multimedia,,,,,SCI-ATCIRCDESK,7day-1renew-1daygrace,No requests allowed,Short Term Notices,No fines,$200 lost fee book
 ,multimedia,,,,,SAL3-PAGE-AR or SAL3-PAGE-AS or SAL3-PAGE-EA or SAL3-PAGE-ED or SAL3-PAGE-EN or SAL3-PAGE-ES or SAL3-PAGE-FC or SAL3-PAGE-GR or SAL3-PAGE-LP or SAL3-PAGE-MA or SAL3-PAGE-MD or SAL3-PAGE-MP or SAL3-PAGE-MU or SAL3-PAGE-RM or SAL3-PAGE-SP or SAL3-R-STACKS,No loan,Allow paging,Default notice,No fines,$75 lost fee
 ,multimedia,,,,,MUS-INPROCESS,No loan,Hold only,Default notice,No fines,$400 lost fee
@@ -257,6 +258,7 @@ faculty or staff or fellow,book,,,,,LAW-BASEMENT or LAW-FOLIO-BASEMENT or LAW-LO
 ,book,,,,,LAW-ATCIRCDESK or LAW-CRES or LAW-ELECTRONIC or LAW-INSTRUCTOR or LAW-MANNING or LAW-MEDIA or LAW-MICROTEXT or LAW-NEUKOM or LAW-NEWSPAPERS or LAW-SPECIALCOLLECTIONS,28day-2renew-7daygrace,No requests allowed,Default notice,No fines,$150 lost fee
 ,book,,,,,LAW-BASEMENT or LAW-FOLIO-BASEMENT or LAW-LOCKED or LAW-STACKS1,28day-2renew-7daygrace,Allow All,Default notice,No fines,$150 lost fee
 ,periodical,,,,,,7day-1renew-3daygrace,No requests allowed,Short Term Notices,No fines,$500 lost fee
+,newspaper,,,,,,No loan,Allow paging,Short Term Notices,No fines,$100 lost fee
 ,multimedia,,,,,,No loan,No requests allowed,Default notice,No fines,$225 lost fee
 ,microform,,,,,,No loan,No requests allowed,Default notice,No fines,$5000 lost fee - 1 hr aged to lost
 ,map,,,,,,28day-2renew-7daygrace,Allow hold/recall,Default notice,3.00/21.00 recall overdue fine,$500 lost fee
