@@ -90,12 +90,12 @@ class SymphonyClient
     nil
   end
 
-  def place_hold(**params)
+  def place_hold(**)
     response = authenticated_request(
       '/circulation/holdRecord/placeHold',
       method: :post,
       params: { includeFields: 'holdRecord{*,item{call,bib{title}}}' },
-      **place_hold_params(**params, override_code: Settings.symphony.override)
+      **place_hold_params(**, override_code: Settings.symphony.override)
     )
     JSON.parse(response.body)
   rescue JSON::ParserError, HTTP::Error
@@ -320,8 +320,8 @@ class SymphonyClient
     nil
   end
 
-  def authenticated_request(path, headers: {}, **other)
-    request(path, headers: headers.merge('x-sirs-sessionToken': session_token), **other)
+  def authenticated_request(path, headers: {}, **)
+    request(path, headers: headers.merge('x-sirs-sessionToken': session_token), **)
   end
 
   # rubocop:disable Metrics/AbcSize
