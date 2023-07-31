@@ -185,8 +185,8 @@ class Request < ActiveRecord::Base
     end
   end
 
-  def item_status(id, **opts)
-    ItemStatus.new(self, id, **opts)
+  def item_status(id, **)
+    ItemStatus.new(self, id, **)
   end
 
   def request_abilities

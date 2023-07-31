@@ -2,9 +2,9 @@
 
 # :nodoc:
 class ApplicationJob < ActiveJob::Base
-  def cdl_logger(*args)
+  def cdl_logger(*)
     Rails.logger.tagged('CDL') do
-      Rails.logger.info(*args)
+      Rails.logger.info(*)
     end
   end
 end
