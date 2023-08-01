@@ -52,6 +52,8 @@ class SubmitFolioRequestJob < ApplicationJob
     end
 
     def execute!
+      raise 'System is not yet configured for Folio.' unless Settings.ils.bib_model == 'Folio::Instance'
+
       return place_title_hold if barcodes.blank?
 
       requested_items = barcodes.map do |barcode|

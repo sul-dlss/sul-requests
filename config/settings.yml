@@ -81,7 +81,7 @@ token_encrypt:
 symphony_ils: &symphony_ils
   bib_model: SearchworksItem
   patron_model: Symphony::Patron
-  request_job: SubmitSymphonyRequestJob
+  request_job: SubmitFolioRequestJob
   request_abilities_class: RequestAbilities
   pickup_destination_class: Symphony::PickupDestination
 

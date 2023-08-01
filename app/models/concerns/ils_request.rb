@@ -38,7 +38,7 @@ module IlsRequest
     @ils_response = nil
   end
 
-  # Called by SubmitSymphonyRequestJob
+  # Called by SubmitFolioRequestJob
   def merge_ils_response_data(new_response)
     merged_data = new_response.as_json.with_indifferent_access.tap do |h|
       h['requested_items'] = new_response.items_by_barcode.reverse_merge(ils_response.items_by_barcode).values

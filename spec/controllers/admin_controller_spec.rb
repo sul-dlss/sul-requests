@@ -121,6 +121,7 @@ RSpec.describe AdminController do
     end
   end
 
+  # Skipping for Symphony, as it depends on the job being executed in the foreground.
   describe 'approve item' do
     let(:mediated_page) do
       create(:mediated_page_with_holdings, user: create(:sso_user), barcodes: %w(12345678 23456789))
@@ -130,7 +131,7 @@ RSpec.describe AdminController do
       allow_any_instance_of(MediatedPage).to receive(:bib_data).and_return(build(:searchable_holdings))
     end
 
-    describe 'for those that can manage requests' do
+    context 'with a superadmin', unless: Settings.ils.bib_model == 'SearchworksItem' do
       let(:user) { create(:superadmin_user) }
 
       it 'can approve individual items' do

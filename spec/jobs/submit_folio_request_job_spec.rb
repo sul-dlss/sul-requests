@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe SubmitFolioRequestJob do
   before do
-    skip "Must set Settings.ils.request_job=#{described_class}" unless Settings.ils.request_job == described_class.to_s
+    skip "Must set Settings.ils.request_job=#{described_class}" unless Settings.ils.bib_model == 'Folio::Instance'
     allow(Request).to receive(:find).and_return(request)
     allow(FolioClient).to receive(:new).and_return(client)
   end
@@ -37,10 +37,16 @@ RSpec.describe SubmitFolioRequestJob do
 
       let(:request) { create(:hold_on_order, barcodes: [], user:) }
 
-      it 'calls the create_instance_hold API method' do
+      it 'calls the create_instance_hold API method', if: Settings.ils.bib_model == 'Folio::Instance' do
         described_class.perform_now(request.id)
         expect(client).to have_received(:create_instance_hold).with('562a5cb0-e998-4ea2-80aa-34ac2b536238',
                                                                     'a43e597a-d4b4-50ec-ad16-7fd49920831a', FolioClient::HoldRequest)
+      end
+
+      it 'raises an error (to be re-enqueued)', if: Settings.ils.bib_model != 'Folio::Instance' do
+        expect do
+          described_class.perform_now(request.id)
+        end.to raise_error "System is not yet configured for Folio. `bib_data' is a SearchworksItem"
       end
     end
   end
