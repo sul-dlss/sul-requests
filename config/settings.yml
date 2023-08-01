@@ -137,7 +137,7 @@ libraries:
       phone: (650) 723-9312
       email: soundarchive@stanford.edu
     folio_pickup_service_point_code: ARS
-    reading_room_url: https://library.stanford.edu/ars/using-archive
+    reading_room_url: https://library.stanford.edu/libraries/archive-recorded-sound
     hold_pseudopatron: HOLD@AS
     folio_hold_pseudopatron: a49d08ae-6b9f-4476-b9ce-b8c537b7475b
     hours:
@@ -195,7 +195,7 @@ libraries:
     contact_info:
       phone: (650) 725-3435
       email: eastasialibrary@stanford.edu
-    reading_room_url: https://library.stanford.edu/eal/special-collections-east-asia
+    reading_room_url: https://library.stanford.edu/libraries/east-asia-library
     folio_pickup_service_point_code: EAST-ASIA
     hold_pseudopatron: HOLD@EA
     folio_hold_pseudopatron: 07d963c0-2727-4353-aadd-86a22d1f3999
