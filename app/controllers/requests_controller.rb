@@ -13,12 +13,14 @@ class RequestsController < ApplicationController
 
   load_and_authorize_resource instance_name: :request
 
-  before_action :set_current_request_defaults, :validate_request_type, :redirect_delegatable_requests, only: :new
   before_action :set_current_user_for_request, only: :create, if: :sso_user?
 
   helper_method :current_request, :delegated_request?
 
   def new
+    current_request.assign_attributes(new_params)
+    validate_request_type
+    redirect_to delegated_new_request_path(current_request) unless delegated_request? || current_request.scannable?
   end
 
   def create
@@ -55,12 +57,6 @@ class RequestsController < ApplicationController
     User.new(**user_attributes, ip_address: request.remote_ip) if user_attributes.present?
   end
 
-  def redirect_delegatable_requests
-    return if delegated_request? || current_request.scannable?
-
-    redirect_to delegated_new_request_path(current_request)
-  end
-
   def delegated_request?
     self.class < RequestsController
   end
@@ -71,10 +67,6 @@ class RequestsController < ApplicationController
 
   def set_current_user_for_request
     current_request.user = current_user if current_user.sso_user? && !request_specific_user
-  end
-
-  def set_current_request_defaults
-    current_request.assign_attributes(new_params)
   end
 
   def validate_request_type
