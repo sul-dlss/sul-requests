@@ -17,7 +17,7 @@ module Folio
       return to_enum(:each) unless block
 
       items_in_location.each do |item|
-        yield Folio::ItemWithStatus.new(item).with_status(@request.item_status(item.barcode))
+        yield item.with_status(@request.item_status(item.barcode))
       end
     end
 

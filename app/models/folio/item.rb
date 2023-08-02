@@ -66,6 +66,10 @@ module Folio
     end
     # rubocop:enable Metrics/ParameterLists
 
+    def with_status(status)
+      Folio::ItemWithStatus.new(self).with_status(status)
+    end
+
     # TODO: rename this to 'permanent_location_code' after migration
     def home_location
       permanent_location_code
