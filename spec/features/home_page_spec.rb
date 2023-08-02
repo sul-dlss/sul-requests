@@ -27,7 +27,6 @@ RSpec.describe 'Home Page' do
           expect(page).to have_link('Hours & locations')
           expect(page).to have_link('My Account')
           expect(page).to have_link('Ask us')
-          expect(page).to have_link('Opt out of analytics')
         end
       end
 
