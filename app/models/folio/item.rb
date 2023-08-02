@@ -72,7 +72,11 @@ module Folio
     end
 
     def current_location
-      status_text unless [STATUS_AVAILABLE, STATUS_PAGED].include? status
+      if [STATUS_AVAILABLE, STATUS_PAGED].exclude?(status)
+        status_text
+      elsif permanent_location_code != effective_location&.code
+        effective_location&.code
+      end
     end
 
     def checked_out?
