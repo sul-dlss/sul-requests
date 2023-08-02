@@ -526,7 +526,7 @@ if Settings.ils.bib_model == 'SearchworksItem'
                     'callnumber' => 'ABC 789',
                     'type' => 'LCKSTK',
                     'current_location' => {
-                      'code' => 'THE-CURRENT-LOCATION'
+                      'code' => 'ART-NEWBOOK'
                     },
                     'home_location' => 'STACKS',
                     'status' => {

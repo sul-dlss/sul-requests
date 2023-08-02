@@ -121,6 +121,7 @@ class FolioGraphqlClient
                       name
                     }
                     scanServicePointCode
+                    availabilityClass
                   }
                 }
                 permanentLocation {

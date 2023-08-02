@@ -76,7 +76,11 @@ module Folio
     end
 
     def current_location
-      status_text unless [STATUS_AVAILABLE, STATUS_PAGED].include? status
+      if [STATUS_AVAILABLE, STATUS_PAGED].exclude?(status)
+        status_text
+      elsif permanent_location_code != effective_location&.code
+        effective_location&.code
+      end
     end
 
     def checked_out?
@@ -87,14 +91,18 @@ module Folio
       status == STATUS_ON_ORDER
     end
 
-    # TODO, is this complete?
     def status_class
-      status == STATUS_AVAILABLE ? 'available' : 'unavailable'
+      [availability_class, circ_class].compact.join(' ')
     end
 
-    # TODO, we probably need to handle "Page", which is something Symphony had.
     def status_text
-      status
+      if !circulates?
+        'In-library use'
+      elsif status == STATUS_AVAILABLE
+        'Available'
+      else
+        'Unavailable'
+      end
     end
 
     def processing?
@@ -138,5 +146,29 @@ module Folio
           loan_type: LoanType.new(id: dyn.fetch('tempooraryLoanTypeId', dyn.fetch('permanentLoanTypeId'))))
     end
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+
+    private
+
+    def availability_class
+      if effective_location.details['availabilityClass'] == 'Offsite'
+        'deliver-from-offsite'
+      elsif status == STATUS_AVAILABLE
+        'available'
+      else
+        'unavailable'
+      end
+    end
+
+    def circulates?
+      loan_policy&.fetch('loanable', false)
+    end
+
+    def loan_policy
+      @loan_policy ||= Folio::CirculationRules::PolicyService.instance.item_loan_policy(self)
+    end
+
+    def circ_class
+      'noncirc' unless circulates?
+    end
   end
 end

@@ -11,7 +11,7 @@
     }
   }
 
-  &.noncirc_page {
+  &.noncirc_page, &.noncirc.deliver-from-offsite {
     @extend .sul-i-truck-1;
 
     &::before {
