@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
   <body>
+    <%= render 'migration_message', borrow_direct: false if Settings.features.migration %>
+
     <%= render 'pickup_confirmation' %>
 
     <p>

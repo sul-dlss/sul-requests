@@ -95,6 +95,7 @@ features:
   hold_recall_via_reshare: true
   scan_service: true
   mediator_email: true
+  migration: false
 
 background_jobs:
   enabled: false
