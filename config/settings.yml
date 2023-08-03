@@ -29,7 +29,6 @@ origin_admin_groups:
   ART: []
   EDUCATION: []
   HOPKINS: []
-  HV-ARCHIVE: []
   RUMSEYMAP: []
   SPEC-COLL: []
 
@@ -40,7 +39,6 @@ mediateable_origins:
   ART: {}
   EDUCATION: {}
   HOPKINS: {}
-  HV-ARCHIVE: {}
   PAGE-MP:
     library_override: EARTH-SCI
   RUMSEYMAP: {}
@@ -96,6 +94,7 @@ features:
   hold_recall_service: true
   hold_recall_via_reshare: true
   scan_service: true
+  mediator_email: true
 
 background_jobs:
   enabled: false
@@ -138,7 +137,7 @@ libraries:
       phone: (650) 723-9312
       email: soundarchive@stanford.edu
     folio_pickup_service_point_code: ARS
-    reading_room_url: https://library.stanford.edu/ars/using-archive
+    reading_room_url: https://library.stanford.edu/libraries/archive-recorded-sound
     hold_pseudopatron: HOLD@AS
     folio_hold_pseudopatron: a49d08ae-6b9f-4476-b9ce-b8c537b7475b
     hours:
@@ -196,7 +195,7 @@ libraries:
     contact_info:
       phone: (650) 725-3435
       email: eastasialibrary@stanford.edu
-    reading_room_url: https://library.stanford.edu/eal/special-collections-east-asia
+    reading_room_url: https://library.stanford.edu/libraries/east-asia-library
     folio_pickup_service_point_code: EAST-ASIA
     hold_pseudopatron: HOLD@EA
     folio_hold_pseudopatron: 07d963c0-2727-4353-aadd-86a22d1f3999
@@ -234,40 +233,17 @@ libraries:
     hours:
       library_slug: green
       location_slug: library-circulation
-  HOOVER:
-    label: Hoover Library
-    instructions: Items must be requested in advance and viewed on-site.
-    contact_info:
-      phone: "(650) 723-3563"
-      email: hooverarchives@stanford.edu
-    hold_pseudopatron: HOLD@HL
-    folio_hold_pseudopatron: 560fbbf8-35b6-4440-b218-6c4aa6625258
-    hours:
-      library_slug: hoover
-      location_slug: library-circulation
   HOPKINS:
     label: Marine Biology Library (Miller)
     contact_info:
       phone: "(831) 655-6229"
       email: HMS-Library@lists.stanford.edu
     folio_pickup_service_point_code: MARINE-BIO
-    hold_pseudopatron: HOLD@HP
+    hold_pseudopatron: HOLD@MA
     folio_hold_pseudopatron: 1fb12835-2da8-4bc8-becc-3c9500fc3991
     hours:
       library_slug: hopkins
       location_slug: library-circulation
-  HV-ARCHIVE:
-    label: Hoover Archives
-    instructions: Items must be requested in advance and viewed on-site.
-    contact_info:
-      phone: "(650) 723-3563"
-      email: hooverarchives@stanford.edu
-    folio_pickup_service_point_code: HILA
-    hold_pseudopatron: HOLD@HA
-    folio_hold_pseudopatron: d36cbac2-7ae7-49b3-b786-a389e67a3344
-    hours:
-      library_slug: hila
-      location_slug: reference
   LANE-MED:
     label: Medical Library (Lane)
     hours:
@@ -509,9 +485,6 @@ pageable:
       - PAGE-GR
     pickup_libraries: ['GREEN']
   - locations:
-      - PAGE-HA
-    pickup_libraries: ['HV-ARCHIVE']
-  - locations:
       - PAGE-HP
     pickup_libraries: ['GREEN', 'HOPKINS']
   - locations:
@@ -525,7 +498,7 @@ pageable:
     pickup_libraries: ['LAW']
   - locations:
       - PAGE-MA
-    pickup_libraries: ['MATH-CS']
+    pickup_libraries: ['GREEN', 'HOPKINS']
   - locations:
       - PAGE-MD
     pickup_libraries: ['MUSIC', 'MEDIA-MTXT']
@@ -548,9 +521,6 @@ pageable:
       - PAGE-SP
     pickup_libraries: ['SPEC-COLL']
   # Library-specific pickup libraries
-  - library: HV-ARCHIVE
-    pickup_libraries:
-      - HV-ARCHIVE
   - library: ARS
     pickup_libraries:
       - ARS

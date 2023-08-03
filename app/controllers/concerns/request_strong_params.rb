@@ -5,7 +5,6 @@
 ###
 module RequestStrongParams
   def new_params
-    params.permit(:modal)
     params.require(:origin)
     params.require(:item_id)
     params.require(:origin_location)
@@ -15,7 +14,6 @@ module RequestStrongParams
 
   def create_params
     params.permit(:email)
-    params.permit(:modal)
     @create_params ||= params.require(:request).permit(:item_id, :origin, :origin_location, :destination,
                                                        :needed_date, :estimated_delivery,
                                                        :item_comment, :request_comment,
@@ -28,7 +26,6 @@ module RequestStrongParams
 
   def update_params
     params.permit(:email)
-    params.permit(:modal)
     params.require(:request).permit(:needed_date)
   end
 end

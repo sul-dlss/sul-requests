@@ -117,7 +117,7 @@ RSpec.describe 'Mediation table', js: true do
 
       before do
         stub_bib_data_json(build(:searchable_holdings))
-        allow(Symphony::CatalogInfo).to receive(:find).and_return(double(:current_location, current_location: 'THE-CURRENT-LOCATION'))
+        allow(Symphony::CatalogInfo).to receive(:find).and_return(double(:current_location, current_location: 'ART-NEWBOOK'))
         visit(admin_path('ART'))
       end
 
@@ -127,7 +127,7 @@ RSpec.describe 'Mediation table', js: true do
         end
 
         within('tbody td table') do
-          expect(page).to have_css('td', text: 'THE-CURRENT-LOCATION')
+          expect(page).to have_css('td', text: 'ART-NEWBOOK')
         end
       end
     end

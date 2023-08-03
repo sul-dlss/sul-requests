@@ -61,6 +61,16 @@ if Settings.ils.bib_model == 'Folio::Instance'
       library { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'EAST-ASIA') }
     end
 
+    factory :green_location, parent: :location do
+      code { 'GRE-STACKS' }
+      library { Folio::Library.new(id: 'f6b5519e-88d9-413e-924d-9ed96255f72e', code: 'GREEN') }
+    end
+
+    factory :spec_coll_location, parent: :location do
+      code { 'SPEC-STACKS' }
+      details { { 'pageAeonSite' => 'SPECUA' } }
+    end
+
     factory :book_material_type, class: 'Folio::MaterialType' do
       id { '1a54b431-2e4f-452d-9cae-9cee66c9a892' }
       name { 'book' }
@@ -83,7 +93,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
       type { '' }
       material_type { build(:book_material_type) }
       loan_type { Folio::LoanType.new(id: '') }
-
+      permanent_location_code { 'GRE-STACKS' }
       initialize_with { new(**attributes) }
     end
 
@@ -97,15 +107,18 @@ if Settings.ils.bib_model == 'Folio::Instance'
           build(:item,
                 barcode: '3610512345678',
                 callnumber: 'ABC 123',
-                effective_location: build(:location, code: 'SAL3-STACKS')),
+                effective_location: build(:location, code: 'SAL3-STACKS'),
+                permanent_location_code: 'SAL3-STACKS'),
           build(:item,
                 barcode: '3610587654321',
                 callnumber: 'ABC 321',
-                effective_location: build(:location, code: 'SAL3-STACKS')),
+                effective_location: build(:location, code: 'SAL3-STACKS'),
+                permanent_location_code: 'SAL3-STACKS'),
           build(:item,
                 barcode: '12345679',
                 callnumber: 'ABC 456',
-                effective_location: build(:location, code: 'SAL3-STACKS'))
+                effective_location: build(:location, code: 'SAL3-STACKS'),
+                permanent_location_code: 'SAL3-STACKS')
         ]
       end
 
@@ -124,7 +137,8 @@ if Settings.ils.bib_model == 'Folio::Instance'
           build(:item,
                 barcode: '87654321',
                 callnumber: 'ABC 87654321',
-                effective_location: build(:location, code: 'SAL3-STACKS'))
+                effective_location: build(:location, code: 'SAL3-STACKS'),
+                permanent_location_code: 'SAL3-STACKS')
         ]
       end
 
@@ -145,7 +159,8 @@ if Settings.ils.bib_model == 'Folio::Instance'
           build(:item,
                 barcode: '12345678',
                 callnumber: 'ABC 123',
-                effective_location: build(:location, code: 'SAL3-STACKS'))
+                effective_location: build(:location, code: 'SAL3-STACKS'),
+                permanent_location_code: 'SAL3-STACKS')
         ]
       end
 
@@ -166,6 +181,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
                 barcode: '12345678',
                 callnumber: 'ABC 123',
                 effective_location: build(:sal_temp_location),
+                permanent_location_code: 'SAL-TEMP',
                 type: 'NONCIRC')
         ]
       end
@@ -190,12 +206,14 @@ if Settings.ils.bib_model == 'Folio::Instance'
                 barcode: '12345678',
                 callnumber: 'ABC 123',
                 status: 'Page',
-                effective_location: build(:location, code: 'SPEC-STACKS')),
+                effective_location: build(:spec_coll_location),
+                permanent_location_code: 'SPEC-STACKS'),
           build(:item,
                 barcode: '87654321',
                 callnumber: 'ABC 321',
                 status: 'Page',
-                effective_location: build(:location, code: 'SPEC-STACKS'))
+                effective_location: build(:spec_coll_location),
+                permanent_location_code: 'SPEC-STACKS')
         ]
       end
 
@@ -219,7 +237,8 @@ if Settings.ils.bib_model == 'Folio::Instance'
                 barcode: '12345678',
                 callnumber: 'ABC 123',
                 status: 'Page',
-                effective_location: build(:location, code: 'SPEC-STACKS'))
+                effective_location: build(:spec_coll_location),
+                permanent_location_code: 'SPEC-STACKS')
         ]
       end
 
@@ -244,7 +263,8 @@ if Settings.ils.bib_model == 'Folio::Instance'
                 barcode: '12345678',
                 callnumber: 'ABC 123',
                 status: 'Page',
-                effective_location: build(:location, code: 'SPEC-STACKS'))
+                effective_location: build(:spec_coll_location),
+                permanent_location_code: 'SPEC-STACKS')
         ]
       end
 
@@ -265,12 +285,14 @@ if Settings.ils.bib_model == 'Folio::Instance'
                 barcode: '12345678',
                 callnumber: 'ABC 123',
                 status: 'Page',
-                effective_location: build(:location, code: 'SAL3-STACKS')),
+                effective_location: build(:location, code: 'SAL3-STACKS'),
+                permanent_location_code: 'SAL3-STACKS'),
           build(:item,
                 barcode: '87654321',
                 callnumber: 'ABC 321',
                 status: 'Page',
-                effective_location: build(:location, code: 'SAL3-STACKS'))
+                effective_location: build(:location, code: 'SAL3-STACKS'),
+                permanent_location_code: 'SAL3-STACKS')
         ]
       end
 
@@ -291,12 +313,36 @@ if Settings.ils.bib_model == 'Folio::Instance'
                 barcode: '12345678',
                 callnumber: 'ABC 123',
                 status: 'Page',
-                effective_location: build(:scannable_location, code: 'SAL3-STACKS')),
+                effective_location: build(:scannable_location, code: 'SAL3-STACKS'),
+                permanent_location_code: 'SAL3-STACKS'),
           build(:item,
                 barcode: '87654321',
                 callnumber: 'ABC 321',
                 status: 'Page',
-                effective_location: build(:scannable_location, code: 'SAL3-STACKS'))
+                effective_location: build(:scannable_location, code: 'SAL3-STACKS'),
+                permanent_location_code: 'SAL3-STACKS')
+        ]
+      end
+
+      initialize_with do
+        new(**attributes)
+      end
+    end
+
+    factory :green_holdings, class: 'Folio::Instance' do
+      id { '1234' }
+      title { 'Green Item Title' }
+
+      format { ['Book'] }
+
+      items do
+        [
+          build(:item,
+                barcode: '12345678',
+                callnumber: 'ABC 123',
+                status: 'Available',
+                effective_location: build(:green_location),
+                permanent_location_code: 'GRE-STACKS')
         ]
       end
 
@@ -317,7 +363,8 @@ if Settings.ils.bib_model == 'Folio::Instance'
                 barcode: '12345678',
                 callnumber: 'ABC 123',
                 status: 'Page',
-                effective_location: build(:page_lp_location))
+                effective_location: build(:page_lp_location),
+                permanent_location_code: 'SAL3-PAGE-LP')
         ]
       end
 
@@ -338,12 +385,14 @@ if Settings.ils.bib_model == 'Folio::Instance'
                 barcode: '12345678',
                 callnumber: 'ABC 123',
                 status: 'Page',
-                effective_location: build(:page_mp_location)),
+                effective_location: build(:page_mp_location),
+                permanent_location_code: 'SAL3-PAGE-MP'),
           build(:item,
                 barcode: '87654321',
                 callnumber: 'ABC 321',
                 status: 'Page',
-                effective_location: build(:page_mp_location))
+                effective_location: build(:page_mp_location),
+                permanent_location_code: 'SAL3-PAGE-MP')
         ]
       end
 
@@ -363,28 +412,34 @@ if Settings.ils.bib_model == 'Folio::Instance'
           build(:item,
                 barcode: '12345678',
                 callnumber: 'ABC 123',
-                effective_location: build(:location, code: 'SAL3-STACKS')),
+                effective_location: build(:location, code: 'SAL3-STACKS'),
+                permanent_location_code: 'SAL3-STACKS'),
           build(:item,
                 barcode: '23456789',
                 callnumber: 'ABC 456',
-                effective_location: build(:location, code: 'SAL3-STACKS')),
+                effective_location: build(:location, code: 'SAL3-STACKS'),
+                permanent_location_code: 'SAL3-STACKS'),
           build(:item,
                 barcode: '34567890',
                 callnumber: 'ABC 789',
-                effective_location: build(:location, code: 'SAL3-STACKS')),
+                effective_location: build(:location, code: 'SAL3-STACKS'),
+                permanent_location_code: 'SAL3-STACKS'),
           build(:item,
                 barcode: '45678901',
                 callnumber: 'ABC 012',
                 effective_location: build(:location, code: 'SAL3-STACKS'),
+                permanent_location_code: 'SAL3-STACKS',
                 public_note: 'note for 45678901'),
           build(:item,
                 barcode: '56789012',
                 callnumber: 'ABC 345',
-                effective_location: build(:location, code: 'SAL3-STACKS')),
+                effective_location: build(:location, code: 'SAL3-STACKS'),
+                permanent_location_code: 'SAL3-STACKS'),
           build(:item,
                 barcode: '67890123',
                 callnumber: 'ABC 678',
-                effective_location: build(:location, code: 'SAL3-STACKS'))
+                effective_location: build(:location, code: 'SAL3-STACKS'),
+                permanent_location_code: 'SAL3-STACKS')
         ]
       end
 
@@ -405,6 +460,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
                 barcode: '12345678',
                 callnumber: 'ABC 123',
                 effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                permanent_location_code: 'ART-LOCKED-LARGE',
                 type: 'LCKSTK')
         ]
       end
@@ -426,6 +482,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
                 barcode: '12345678',
                 callnumber: 'ABC 123',
                 effective_location: build(:location, code: 'ART-STACKS'),
+                permanent_location_code: 'ART-STACKS',
                 type: 'STKS')
         ]
       end
@@ -447,54 +504,63 @@ if Settings.ils.bib_model == 'Folio::Instance'
                 barcode: '12345678',
                 callnumber: 'ABC 123',
                 effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                permanent_location_code: 'ART-LOCKED-LARGE',
                 type: 'LCKSTK'),
           build(:item,
                 barcode: '23456789',
                 callnumber: 'ABC 456',
                 effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
                 public_note: 'note for 23456789',
+                permanent_location_code: 'ART-LOCKED-LARGE',
                 type: 'LCKSTK'),
           build(:item,
                 barcode: '34567890',
                 callnumber: 'ABC 789',
-                status: 'THE-CURRENT-LOCATION',
-                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                effective_location: build(:mediated_location, code: 'ART-NEWBOOK'),
+                permanent_location_code: 'ART-LOCKED-LARGE',
                 type: 'LCKSTK'),
           build(:item,
                 barcode: '45678901',
                 callnumber: 'ABC 012',
                 effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                permanent_location_code: 'ART-LOCKED-LARGE',
                 public_note: 'note for 45678901',
                 type: 'LCKSTK'),
           build(:item,
                 barcode: '56789012',
                 callnumber: 'ABC 345',
                 effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                permanent_location_code: 'ART-LOCKED-LARGE',
                 type: 'LCKSTK'),
           build(:item,
                 barcode: '67890123',
                 callnumber: 'ABC 678',
                 effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                permanent_location_code: 'ART-LOCKED-LARGE',
                 type: 'LCKSTK'),
           build(:item,
                 barcode: '78901234',
                 callnumber: 'ABC 901',
                 effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                permanent_location_code: 'ART-LOCKED-LARGE',
                 type: 'LCKSTK'),
           build(:item,
                 barcode: '89012345',
                 callnumber: 'ABC 234',
                 effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                permanent_location_code: 'ART-LOCKED-LARGE',
                 type: 'LCKSTK'),
           build(:item,
                 barcode: '90123456',
                 callnumber: 'ABC 567',
                 effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                permanent_location_code: 'ART-LOCKED-LARGE',
                 type: 'LCKSTK'),
           build(:item,
                 barcode: '01234567',
                 callnumber: 'ABC 890',
                 effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                permanent_location_code: 'ART-LOCKED-LARGE',
                 type: 'LCKSTK')
         ]
       end
@@ -515,44 +581,54 @@ if Settings.ils.bib_model == 'Folio::Instance'
           build(:item,
                 barcode: '12345678',
                 callnumber: 'ABC 123',
-                effective_location: build(:location, code: 'SPEC-STACKS')),
+                effective_location: build(:spec_coll_location),
+                permanent_location_code: 'SPEC-STACKS'),
           build(:item,
                 barcode: '23456789',
                 callnumber: 'ABC 456',
-                effective_location: build(:location, code: 'SPEC-STACKS')),
+                effective_location: build(:spec_coll_location),
+                permanent_location_code: 'SPEC-STACKS'),
           build(:item,
                 barcode: '34567890',
                 callnumber: 'ABC 789',
-                effective_location: build(:location, code: 'SPEC-STACKS')),
+                effective_location: build(:spec_coll_location),
+                permanent_location_code: 'SPEC-STACKS'),
           build(:item,
                 barcode: '45678901',
                 callnumber: 'ABC 012',
-                effective_location: build(:location, code: 'SPEC-STACKS'),
+                effective_location: build(:spec_coll_location),
+                permanent_location_code: 'SPEC-STACKS',
                 public_note: 'note for 45678901'),
           build(:item,
                 barcode: '56789012',
                 callnumber: 'ABC 345',
-                effective_location: build(:location, code: 'SPEC-STACKS')),
+                effective_location: build(:spec_coll_location),
+                permanent_location_code: 'SPEC-STACKS'),
           build(:item,
                 barcode: '67890123',
                 callnumber: 'ABC 678',
-                effective_location: build(:location, code: 'SPEC-STACKS')),
+                effective_location: build(:spec_coll_location),
+                permanent_location_code: 'SPEC-STACKS'),
           build(:item,
                 barcode: '78901234',
                 callnumber: 'ABC 901',
-                effective_location: build(:location, code: 'SPEC-STACKS')),
+                effective_location: build(:spec_coll_location),
+                permanent_location_code: 'SPEC-STACKS'),
           build(:item,
                 barcode: '89012345',
                 callnumber: 'ABC 234',
-                effective_location: build(:location, code: 'SPEC-STACKS')),
+                effective_location: build(:spec_coll_location),
+                permanent_location_code: 'SPEC-STACKS'),
           build(:item,
                 barcode: '90123456',
                 callnumber: 'ABC 567',
-                effective_location: build(:location, code: 'SPEC-STACKS')),
+                effective_location: build(:spec_coll_location),
+                permanent_location_code: 'SPEC-STACKS'),
           build(:item,
                 barcode: '01234567',
                 callnumber: 'ABC 890',
-                effective_location: build(:location, code: 'SPEC-STACKS'))
+                effective_location: build(:spec_coll_location),
+                permanent_location_code: 'SPEC-STACKS')
         ]
       end
 
@@ -572,13 +648,15 @@ if Settings.ils.bib_model == 'Folio::Instance'
           build(:item,
                 barcode: '12345678',
                 callnumber: 'ABC 123',
-                effective_location: build(:location, code: 'SAL3-STACKS')),
+                effective_location: build(:location, code: 'SAL3-STACKS'),
+                permanent_location_code: 'SAL3-STACKS'),
           build(:item,
                 barcode: '87654321',
                 callnumber: 'ABC 321',
                 due_date: '2015-01-01T12:59:00.000+00:00',
                 status: 'Checked out',
-                effective_location: build(:location, code: 'SAL3-STACKS'))
+                effective_location: build(:location, code: 'SAL3-STACKS'),
+                permanent_location_code: 'SAL3-STACKS')
         ]
       end
 
@@ -598,7 +676,8 @@ if Settings.ils.bib_model == 'Folio::Instance'
           build(:item,
                 barcode: '12345678',
                 callnumber: 'ABC 123',
-                effective_location: build(:location, code: 'SAL3-STACKS'))
+                effective_location: build(:location, code: 'SAL3-STACKS'),
+                permanent_location_code: 'SAL3-STACKS')
         ]
       end
 

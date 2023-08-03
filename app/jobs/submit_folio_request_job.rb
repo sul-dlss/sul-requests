@@ -17,6 +17,7 @@ class SubmitFolioRequestJob < ApplicationJob
     response = Command.new(request, logger:, **options).execute!
 
     logger.debug("FOLIO response: #{response}")
+
     request.merge_ils_response_data(FolioResponse.new(response.with_indifferent_access))
     request.save(validate: false) # By placing this request in the ILS, the item is no longer in a requestable state, so avoid validation.
     request.send_approval_status!
@@ -29,7 +30,11 @@ class SubmitFolioRequestJob < ApplicationJob
     Honeybadger.notify('Unable to find Request', conext: { request_id: })
   end
 
-  PsuedoPatron = Data.define(:id, :patron_comments)
+  PsuedoPatron = Data.define(:id, :patron_comments) do
+    def blocked?
+      false
+    end
+  end
 
   # Submit a hold request to FOLIO
   class Command
@@ -55,6 +60,11 @@ class SubmitFolioRequestJob < ApplicationJob
         response = place_item_hold(item_id:)
         { barcode:, msgcode: '209', response: }
       end
+
+      # See if patron was blocked, and record that in the response. This governs the email response,
+      # so that it matches the ILS response from Symphony
+      return { requested_items:, usererr_code: 'u003' } if patron.blocked?
+
       { requested_items: }
     end
 
@@ -136,7 +146,7 @@ class SubmitFolioRequestJob < ApplicationJob
                   when HoldRecall
                     user.patron
                   when Page, MediatedPage
-                    if user.patron&.good_standing?
+                    if user.patron&.make_request_as_patron?
                       user.patron
                     else
                       find_hold_pseudo_patron_for(request.destination)

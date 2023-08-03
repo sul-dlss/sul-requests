@@ -662,13 +662,6 @@ RSpec.describe Request do
       expect(request.default_pickup_library).to eq 'LAW'
     end
 
-    it 'sets an origin location specific default' do
-      request = described_class.new(origin: 'EAST-ASIA', origin_location: 'EAL-SETS',
-                                    bib_data: double(request_holdings: [build(:item, effective_location: build(:eal_sets_location))]))
-
-      expect(request.default_pickup_library).to eq 'EAST-ASIA'
-    end
-
     it 'falls back to a default location' do
       request = described_class.new(origin: 'ART', origin_location: 'STACKS')
 

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe SubmitFolioRequestJob do
   before do
-    skip unless Settings.ils.request_job == described_class.to_s
+    skip "Must set Settings.ils.request_job=#{described_class}" unless Settings.ils.request_job == described_class.to_s
     allow(Request).to receive(:find).and_return(request)
     allow(FolioClient).to receive(:new).and_return(client)
   end
@@ -18,6 +18,7 @@ RSpec.describe SubmitFolioRequestJob do
 
     before do
       allow(request.user).to receive(:patron).and_return(patron)
+      allow(patron).to receive(:blocked?).and_return(false)
     end
 
     context 'with an sso user' do
@@ -59,6 +60,22 @@ RSpec.describe SubmitFolioRequestJob do
       it 'calls the create_item_hold API method' do
         described_class.perform_now(request.id)
         expect(client).to have_received(:create_item_hold).with('562a5cb0-e998-4ea2-80aa-34ac2b536238', 4, FolioClient::HoldRequest)
+      end
+    end
+
+    context 'with an sso user who has blocks' do
+      let(:user) { create(:sequence_sso_user) }
+      let(:patron) { Folio::Patron.new({ 'id' => '562a5cb0-e998-4ea2-80aa-34ac2b536238', 'active' => true }) }
+
+      before do
+        allow(request.user).to receive(:patron).and_return(patron)
+        allow(patron).to receive(:blocked?).and_return(true)
+      end
+
+      it 'calls the create_item_hold API method' do
+        described_class.perform_now(request.id)
+        expect(client).to have_received(:create_item_hold).with('562a5cb0-e998-4ea2-80aa-34ac2b536238', 4, FolioClient::HoldRequest)
+        expect(request.ils_response.usererr_code).to eq 'u003'
       end
     end
 

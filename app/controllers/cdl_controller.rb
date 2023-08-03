@@ -4,8 +4,6 @@
 class CdlController < ApplicationController
   authorize_resource class: false
 
-  include ModalLayout
-
   rescue_from Exceptions::CdlCheckoutError, with: :handle_cdl_error
   rescue_from Exceptions::SymphonyError, with: :handle_symphony_error
 

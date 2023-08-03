@@ -124,7 +124,7 @@ class FolioClient
   end
 
   def circulation_rules
-    get_json('/circulation-rules-storage')
+    get_json('/circulation-rules-storage').fetch('rulesAsText', '')
   end
 
   def request_policies
@@ -185,16 +185,16 @@ class FolioClient
           "status: #{response.status}, #{response.body}"
   end
 
-  def get(path, **kwargs)
-    authenticated_request(path, method: :get, **kwargs)
+  def get(path, **)
+    authenticated_request(path, method: :get, **)
   end
 
-  def post(path, **kwargs)
-    authenticated_request(path, method: :post, **kwargs)
+  def post(path, **)
+    authenticated_request(path, method: :post, **)
   end
 
-  def get_json(path, **kwargs)
-    parse_json(get(path, **kwargs))
+  def get_json(path, **)
+    parse_json(get(path, **))
   end
 
   # @param [Faraday::Response] response

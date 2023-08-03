@@ -36,8 +36,6 @@ module SULRequests
     config.mediator_contact_info = {
       'ART'        => { email: 'sul-requests-art@lists.stanford.edu' },
       'EDUCATION'  => { email: 'sul-requests-education@lists.stanford.edu'},
-      'HV-ARCHIVE' => { email: 'sul-requests-hoover-archive@lists.stanford.edu' },
-      'HOOVER'     => { email: 'sul-requests-hoover-library@lists.stanford.edu' },
       'HOPKINS'    => { email: 'sul-requests-hopkins@lists.stanford.edu' },
       'PAGE-MP'    => { email: 'sul-requests-branner@lists.stanford.edu' },
       'SPEC-COLL'  => { email: 'sul-requests-spec@lists.stanford.edu' },

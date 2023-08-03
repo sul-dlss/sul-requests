@@ -24,20 +24,20 @@ class FolioGraphqlClient
     @tenant = tenant
   end
 
-  def get(path, **kwargs)
-    request(path, method: :get, **kwargs)
+  def get(path, **)
+    request(path, method: :get, **)
   end
 
-  def post(path, **kwargs)
-    request(path, method: :post, **kwargs)
+  def post(path, **)
+    request(path, method: :post, **)
   end
 
-  def get_json(path, **kwargs)
-    parse(get(path, **kwargs))
+  def get_json(path, **)
+    parse(get(path, **))
   end
 
-  def post_json(path, **kwargs)
-    parse(post(path, **kwargs))
+  def post_json(path, **)
+    parse(post(path, **))
   end
 
   # rubocop:disable Metrics/MethodLength
@@ -121,10 +121,19 @@ class FolioGraphqlClient
                       name
                     }
                     scanServicePointCode
+                    availabilityClass
                   }
+                }
+                permanentLocation {
+                  code
                 }
                 permanentLoanTypeId
                 temporaryLoanTypeId
+                holdingsRecord {
+                  effectiveLocation {
+                    code
+                  }
+                }
               }
             }
           }
@@ -146,6 +155,7 @@ class FolioGraphqlClient
           code
           details {
             isDefaultPickup
+            isDefaultForCampus
             notes
           }
           id
@@ -178,11 +188,11 @@ class FolioGraphqlClient
     JSON.parse(response.body)
   end
 
-  def request(path, headers: {}, method: :get, **other)
+  def request(path, headers: {}, method: :get, **)
     HTTP
       .use(instrumentation: { instrumenter: ActiveSupport::Notifications.instrumenter, namespace: 'folio' })
       .headers(default_headers.merge(headers))
-      .request(method, base_url + path, **other)
+      .request(method, base_url + path, **)
   end
 
   def default_headers

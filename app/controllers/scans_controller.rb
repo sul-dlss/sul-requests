@@ -25,7 +25,7 @@ class ScansController < RequestsController
       item_id: @request.item_id,
       # Pulling barcodes from params so they are not transformed
       barcodes: barcode_array_or_selected_hash.is_a?(Array) ? barcode_array_or_selected_hash : barcode_array_or_selected_hash.to_unsafe_h
-    }.merge(request_context_params)
+    }
   end
 
   def validate_request_type

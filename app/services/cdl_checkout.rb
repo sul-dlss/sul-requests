@@ -175,16 +175,16 @@ class CdlCheckout
     Symphony::HoldRecord.new(response&.dig('holdRecord') || {})
   end
 
-  def place_checkout(selected_barcode, **additional_params)
-    response = symphony_client.check_out_item(selected_barcode, Settings.cdl.pseudo_patron_id, **additional_params)
+  def place_checkout(selected_barcode, **)
+    response = symphony_client.check_out_item(selected_barcode, Settings.cdl.pseudo_patron_id, **)
 
     check_for_symphony_errors(response)
 
     response
   end
 
-  def place_renewal(selected_barcode, **additional_params)
-    response = symphony_client.renew_item(selected_barcode, Settings.cdl.pseudo_patron_id, **additional_params)
+  def place_renewal(selected_barcode, **)
+    response = symphony_client.renew_item(selected_barcode, Settings.cdl.pseudo_patron_id, **)
 
     check_for_symphony_errors(response)
 
@@ -239,9 +239,9 @@ class CdlCheckout
     @redis ||= Redis.new(Settings.cdl.redis.to_h)
   end
 
-  def cdl_logger(*args)
+  def cdl_logger(*)
     Rails.logger.tagged('CDL') do
-      Rails.logger.info(*args)
+      Rails.logger.info(*)
     end
   end
 end
