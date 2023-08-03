@@ -11476,6 +11476,31 @@
     }
   },
   {
+    "id": "f48278f9-41ad-4d5f-82d0-258271789969",
+    "name": "Art Courtesy Hold Shelf",
+    "code": "ART-COURTESY-HOLD",
+    "discoveryDisplayName": "Ask at circulation desk",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "2926c7ed-ed36-4385-8503-58cd6cee73e8",
+    "details": {
+    },
+    "primaryServicePoint": "77cd12ac-2de8-4d13-99a0-f6b3b4f4bdca",
+    "servicePointIds": [
+      "77cd12ac-2de8-4d13-99a0-f6b3b4f4bdca"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-02T22:19:24.451+00:00",
+      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
+      "updatedDate": "2023-08-02T22:19:24.451+00:00",
+      "updatedByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364"
+    }
+  },
+  {
     "id": "969dd3ad-2305-443b-b8c4-eb9b7458c1ce",
     "name": "SAL3 Withdrawn Digital Substitute",
     "code": "SAL3-WD-DIGITAL-SUB",
@@ -11955,6 +11980,31 @@
     }
   },
   {
+    "id": "59eba96c-5184-43cb-a5d4-0785ae2179b4",
+    "name": "Art Maintenance Shelf",
+    "code": "ART-PROCESSING",
+    "discoveryDisplayName": "In process",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "2926c7ed-ed36-4385-8503-58cd6cee73e8",
+    "details": {
+    },
+    "primaryServicePoint": "77cd12ac-2de8-4d13-99a0-f6b3b4f4bdca",
+    "servicePointIds": [
+      "77cd12ac-2de8-4d13-99a0-f6b3b4f4bdca"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-02T22:23:49.156+00:00",
+      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
+      "updatedDate": "2023-08-02T22:23:49.156+00:00",
+      "updatedByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364"
+    }
+  },
+  {
     "id": "5c7187f4-d493-43ef-9213-b5e18cc50ae1",
     "name": "Law Withdrawn Digital Substitute",
     "code": "LAW-WD-DIGITAL-SUB",
@@ -12128,6 +12178,31 @@
       "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
       "updatedDate": "2023-08-02T04:42:39.684+00:00",
       "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
+    }
+  },
+  {
+    "id": "5b308b0c-5f92-4944-8f82-b7d03caabd13",
+    "name": "Art VRC",
+    "code": "ART-VRC",
+    "discoveryDisplayName": "In process",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "2926c7ed-ed36-4385-8503-58cd6cee73e8",
+    "details": {
+    },
+    "primaryServicePoint": "77cd12ac-2de8-4d13-99a0-f6b3b4f4bdca",
+    "servicePointIds": [
+      "77cd12ac-2de8-4d13-99a0-f6b3b4f4bdca"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-02T22:26:14.936+00:00",
+      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
+      "updatedDate": "2023-08-02T22:26:14.936+00:00",
+      "updatedByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364"
     }
   },
   {
