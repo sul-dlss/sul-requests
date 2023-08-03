@@ -3,7 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe 'Pickup Libraries Dropdown' do
-  let(:standard_pickup_lib_total) { Settings.default_pickup_libraries.count }
+  let(:is_folio) { (Settings.ils.bib_model == 'Folio::Instance') }
+  let(:folio_pickup_lib_total) { Folio::Types.instance.service_points.select { |_k, v| v.is_default_pickup }.values.length }
+  let(:standard_pickup_lib_total) { is_folio ? folio_pickup_lib_total : Settings.default_pickup_libraries.count }
+  let(:media_library) { is_folio ? 'MEDIA-CENTER' : 'MEDIA-MTXT' }
+  let(:media_label) { is_folio ? 'Media Center' : 'Media Microtext' }
+
   let(:item) do
     build(:item,
           barcode: '3610512345678',
@@ -50,7 +55,7 @@ RSpec.describe 'Pickup Libraries Dropdown' do
         visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
 
         expect(page).to have_css('#request_destination option', count: standard_pickup_lib_total)
-        expect(page).not_to have_css('option', text: 'Media Microtext')
+        expect(page).not_to have_css('option', text: media_label)
       end
     end
 
@@ -64,10 +69,10 @@ RSpec.describe 'Pickup Libraries Dropdown' do
       end
 
       it 'appear in the drop down' do
-        visit new_request_path(item_id: '1234', origin: 'MEDIA-MTXT', origin_location: 'MM-STACKS')
+        visit new_request_path(item_id: '1234', origin: media_library, origin_location: 'MM-STACKS')
 
         expect(page).to have_css('#request_destination option', count: standard_pickup_lib_total + 1)
-        expect(page).to have_css('option', text: 'Media Microtext')
+        expect(page).to have_css('option', text: media_label)
       end
     end
   end
