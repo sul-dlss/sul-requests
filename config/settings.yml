@@ -448,94 +448,124 @@ pageable:
   - locations:
       - PAGE-AR
     pickup_libraries: ['ART', 'SPEC-COLL']
+    mediated: true # TODO: remove after Folio migration
   - locations:
       - PAGE-AS
     pickup_libraries: ['ARS']
+    mediated: true # TODO: remove after Folio migration
   - locations:
       - PAGE-BI
     pickup_libraries: ['BIOLOGY']
+    mediated: true # TODO: remove after Folio migration
   - locations:
       - PAGE-BU
     pickup_libraries: ['BUSINESS']
+    mediated: true # TODO: remove after Folio migration
   - locations:
       - PAGE-CH
     pickup_libraries: ['CHEMCHMENG']
+    mediated: true # TODO: remove after Folio migration
   - locations:
       - PAGE-EA
       - HY-PAGE-EA
       - L-PAGE-EA
       - ND-PAGE-EA
     pickup_libraries: ['EAST-ASIA']
+    mediated: true # TODO: remove after Folio migration
   - locations:
       - PAGE-ED
     pickup_libraries: ['EDUCATION']
+    mediated: true # TODO: remove after Folio migration
   - locations:
       - PAGE-EN
     pickup_libraries: ['ENG']
+    mediated: true # TODO: remove after Folio migration
   - locations:
       - PAGE-ES
     pickup_libraries: ['EARTH-SCI']
+    mediated: true # TODO: remove after Folio migration
   - locations:
       - PAGE-FC
     pickup_libraries:
       - ART
       - MUSIC
       - SPEC-COLL
+    mediated: true # TODO: remove after Folio migration
   - locations:
       - PAGE-GR
     pickup_libraries: ['GREEN']
+    mediated: true # TODO: remove after Folio migration
   - locations:
       - PAGE-HP
     pickup_libraries: ['GREEN', 'HOPKINS']
+    mediated: true # TODO: remove after Folio migration
   - locations:
       - PAGE-IRON
     pickup_libraries: ['BUSINESS']
+    mediated: true # TODO: remove after Folio migration
   - locations:
       - PAGE-LP
     pickup_libraries: ['MUSIC', 'MEDIA-MTXT']
+    mediated: true # TODO: remove after Folio migration
   - locations:
       - PAGE-LW
     pickup_libraries: ['LAW']
+    mediated: true # TODO: remove after Folio migration
   - locations:
       - PAGE-MA
     pickup_libraries: ['GREEN', 'HOPKINS']
+    mediated: true # TODO: remove after Folio migration
   - locations:
       - PAGE-MD
     pickup_libraries: ['MUSIC', 'MEDIA-MTXT']
+    mediated: true # TODO: remove after Folio migration
   - locations:
       - PAGE-MM
     pickup_libraries: ['MEDIA-MTXT']
+    mediated: true # TODO: remove after Folio migration
   - locations:
       - PAGE-MP
     pickup_libraries: ['EARTH-SCI']
+    mediated: true # TODO: remove after Folio migration
   - locations:
       - PAGE-MU
     pickup_libraries: ['MUSIC']
+    mediated: true # TODO: remove after Folio migration
   - locations:
       - PAGE-RM
     pickup_libraries: ['RUMSEYMAP']
+    mediated: true # TODO: remove after Folio migration
   - locations:
       - PAGE-SI
     pickup_libraries: ['SCIENCE']
+    mediated: true # TODO: remove after Folio migration
   - locations:
       - PAGE-SP
     pickup_libraries: ['SPEC-COLL']
+    mediated: true # TODO: remove after Folio migration
   # Library-specific pickup libraries
   - library: ARS
     pickup_libraries:
       - ARS
+    mediated: true # TODO: remove after Folio migration
   # Other request configuration
   - library: LAW
     default_pickup_library: LAW
+    mediated: true # TODO: remove after Folio migration
   - library: MEDIA-MTXT
     additional_pickup_libraries: ['MEDIA-MTXT']
+    mediated: true # TODO: remove after Folio migration
   - locations_match:
       - ^EAL-SETS$
       - ^EAL-STKS-
     default_pickup_library: EAST-ASIA
+    mediated: true # TODO: remove after Folio migration
   - library: SAL3
+    mediated: true # TODO: remove after Folio migration
   - library: SAL
+    mediated: true # TODO: remove after Folio migration
   - library: EDUCATION
+    mediated: true # TODO: remove after Folio migration
   - library:
       - ART
       - BUSINESS
@@ -550,6 +580,7 @@ pageable:
     locations:
       - INPROCESS
       - ON-ORDER
+    mediated: true # TODO: remove after Folio migration
   - library: BUSINESS
     locations:
       - BUS-CMC
@@ -557,6 +588,7 @@ pageable:
       - BUS-TEMP
       - MEDIA
       - STACKS
+    mediated: true # TODO: remove after Folio migration
   - library: EDUCATION
     locations:
       - CURRICULUM
@@ -565,9 +597,11 @@ pageable:
       - PERM-RES
       - STACKS
       - STORAGE
+    mediated: true # TODO: remove after Folio migration
   - library: GREEN
     locations:
       - LOCKED-STK
+    mediated: true # TODO: remove after Folio migration
   - library: HOPKINS
     locations:
       - CHILDRENYA
@@ -579,6 +613,7 @@ pageable:
       - SHELBYSER
       - SHELBYTITL
       - STACKS
+    mediated: true # TODO: remove after Folio migration
   - library: LAW
     locations:
       - BASEMENT
@@ -592,14 +627,17 @@ pageable:
       - VROOMAN
       - VROOMAN-OV
       - WELLNESS
+    mediated: true # TODO: remove after Folio migration
   - library: MEDIA-MTXT
     location:
       - MM-CDCAB
       - MM-OVERSIZ
       - MM-STACKS
+    mediated: true # TODO: remove after Folio migration
   # For any other library... we just allow the request through and hope for the best.. for now.
   - default_pickup_library: GREEN
     send_honeybadger_notice_if_used: true
+    mediated: true # TODO: remove after Folio migration
 
 default_pickup_library: GREEN
 default_pickup_libraries:
