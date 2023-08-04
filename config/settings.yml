@@ -31,6 +31,20 @@ origin_admin_groups:
   HOPKINS: []
   RUMSEYMAP: []
   SPEC-COLL: []
+  # temporary mediated locations for FOLIO migration
+  ARS: []
+  BUSINESS: []
+  EARTH-SCI: []
+  EAST-ASIA: []
+  ENG: []
+  GREEN: []
+  LAW: []
+  MEDIA-MTXT: []
+  MUSIC: []
+  SAL: []
+  SAL3: []
+  SAL-NEWARK: []
+  SCIENCE: []
 
 origin_location_admin_groups:
   PAGE-MP: []
@@ -43,6 +57,20 @@ mediateable_origins:
     library_override: EARTH-SCI
   RUMSEYMAP: {}
   SPEC-COLL: {}
+  # temporary mediated locations for FOLIO migration
+  ARS: {}
+  BUSINESS: {}
+  EARTH-SCI: {}
+  EAST-ASIA: {}
+  ENG: {}
+  GREEN: {}
+  LAW: {}
+  MEDIA-MTXT: {}
+  MUSIC: {}
+  SAL: {}
+  SAL3: {}
+  SAL-NEWARK: {}
+  SCIENCE: {}
 
 contact_email: 'site-admin-sul-requests@lists.stanford.edu'
 
