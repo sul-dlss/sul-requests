@@ -29,6 +29,12 @@ class User < ActiveRecord::Base
     self.library_id = card_number[/\d{5}(\d+)/, 1]
   end
 
+  # Prefer the patron barcode from the ILS, but fall back to the library ID as-provided
+  # so that the system can function when the ILS is offline
+  def barcode
+    patron&.barcode || library_id
+  end
+
   def library_id=(library_id)
     super(library_id.to_s.upcase)
   end
