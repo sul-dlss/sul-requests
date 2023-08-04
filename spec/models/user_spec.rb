@@ -27,6 +27,26 @@ RSpec.describe User do
     end
   end
 
+  describe '#barcode' do
+    it 'uses the library id' do
+      subject.library_id = 'somelibid'
+      expect(subject.barcode).to eq 'SOMELIBID'
+    end
+
+    context 'with a patron' do
+      let(:patron) { instance_double(Symphony::Patron, barcode: '123456789') }
+
+      it 'uses the patron barcode from the ILS' do
+        allow(described_class.patron_model_class).to receive(:find_by).with(sunetid: 'some-user').and_return(patron)
+
+        subject.sunetid = 'some-user'
+        subject.library_id = 'somelibid'
+
+        expect(subject.barcode).to eq '123456789'
+      end
+    end
+  end
+
   describe '#email_address' do
     describe 'for SSO users' do
       before do
