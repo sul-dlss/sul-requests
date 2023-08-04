@@ -564,6 +564,10 @@ RSpec.describe Request do
     describe 'for everybody else' do
       let(:user) { create(:sso_user) }
 
+      before do
+        pending('Page requests are not being approved during the FOLIO migration') if Settings.features.migration
+      end
+
       it 'sends an approval status email' do
         expect do
           subject.send_approval_status!
@@ -589,7 +593,8 @@ RSpec.describe Request do
     end
 
     it 'returns the subset of origin codes that are configured and mediated pages that exist in the database' do
-      expect(described_class.mediateable_origins.to_h.keys).to eq %w(ART PAGE-MP)
+      # SAL3 is temporarily included during the FOLIO migration period
+      expect(described_class.mediateable_origins.to_h.keys).to eq %w(ART PAGE-MP SAL3)
     end
   end
 

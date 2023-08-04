@@ -10,6 +10,10 @@ RSpec.describe Dashboard do
   end
 
   describe 'request type methods' do
+    before do
+      pending('During the migration, we count pages and mediated pages') if Settings.features.migration
+    end
+
     it 'returns the count of the different types of requests' do
       expect(subject.hold_recalls).to eq 0
       expect(subject.mediated_pages).to eq 1

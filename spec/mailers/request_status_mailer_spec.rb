@@ -205,6 +205,8 @@ RSpec.describe RequestStatusMailer do
 
       describe 'failure' do
         before do
+          pending('During the FOLIO migration we are not sending these messages') if Settings.features.migration
+
           allow(request.ils_response).to receive(:all_successful?).and_return false
         end
 
@@ -217,6 +219,8 @@ RSpec.describe RequestStatusMailer do
         let(:request) { create(:page_with_holdings, barcodes: ['3610512345678'], user:) }
 
         before do
+          pending('During the FOLIO migration we are not sending these messages') if Settings.features.migration
+
           stub_symphony_response(build(:symphony_page_with_blocked_user))
         end
 
