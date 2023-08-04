@@ -193,7 +193,7 @@ RSpec.describe MediatedPage do
       it 'sends a mediator email, but does not send a confirmation email' do
         subject.user = create(:library_id_user)
         expect do
-          subject.submit!
+          expect(subject.submit!).to be true
         end.to have_enqueued_mail
       end
     end
@@ -203,7 +203,7 @@ RSpec.describe MediatedPage do
 
       it 'sends a confirmation email and a mediator email' do
         expect do
-          subject.submit!
+          expect(subject.submit!).to be true
         end.to have_enqueued_mail.twice
       end
     end

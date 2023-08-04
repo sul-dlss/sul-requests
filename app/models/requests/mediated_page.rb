@@ -34,6 +34,8 @@ class MediatedPage < Request
     # creating a mediated page should not submit the request to ILS (it needs to wait for approvals)
     send_confirmation!
     notify_mediator!
+
+    true
   end
 
   def all_approved?
