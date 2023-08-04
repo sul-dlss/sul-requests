@@ -23,7 +23,7 @@ class MediatedPagesController < RequestsController
   end
 
   def validate_request_type
-    raise UnmediateableItemError unless current_request.mediateable?
+    raise UnmediateableItemError unless current_request.mediateable? || (current_request.pageable? && params[:action] == 'update')
   end
 
   class UnmediateableItemError < StandardError
