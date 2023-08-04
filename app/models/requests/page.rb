@@ -37,6 +37,12 @@ class Page < (Settings.features.migration ? MediatedPage : Request)
 
   private
 
+  def send_confirmation!
+    return unless Settings.features.migration
+
+    RequestStatusMailer.request_status_for_page(self).deliver_later if notification_email_address.present?
+  end
+
   def mediated_page_validator
     page_validator
   end
