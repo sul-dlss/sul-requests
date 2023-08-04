@@ -19,11 +19,13 @@ class MediatedPagesController < RequestsController
   protected
 
   def update_params
-    params.require(:mediated_page).permit(:approval_status, :needed_date)
+    params.require(:request).permit(:approval_status, :needed_date)
   end
 
   def validate_request_type
-    raise UnmediateableItemError unless current_request.mediateable? || (current_request.pageable? && params[:action] == 'update')
+    return if current_request.mediateable? || (Settings.features.migration && current_request.pageable? && params[:action] == 'update')
+
+    raise UnmediateableItemError
   end
 
   class UnmediateableItemError < StandardError
