@@ -81,6 +81,10 @@ class MediatedPage < Request
     for_origin(origin).where('needed_date > ?', date).distinct.pluck(:needed_date).sort
   end
 
+  def default_needed_date
+    nil
+  end
+
   private
 
   def send_confirmation!

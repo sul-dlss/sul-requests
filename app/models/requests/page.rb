@@ -21,6 +21,16 @@ class Page < Request
     Honeybadger.notify("WARNING: Using default location rule for page #{id} (origin: #{origin}, origin_location: #{origin_location})")
   end
 
+  def default_needed_date
+    [Time.zone.parse('2023-08-31'), Time.zone.now].max
+  end
+
+  def needed_date
+    return super unless Settings.features.migration
+
+    super || default_needed_date
+  end
+
   private
 
   def page_validator
