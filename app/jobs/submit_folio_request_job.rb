@@ -124,7 +124,7 @@ class SubmitFolioRequestJob < ApplicationJob
     end
 
     def expiration_date
-      @expiration_date ||= (request.needed_date || (Time.zone.today + 3.years)).to_time.utc.iso8601
+      @expiration_date ||= ((request.needed_date unless request.is_a?(Page)) || (Time.zone.today + 3.years)).to_time.utc.iso8601
     end
 
     def request_comments

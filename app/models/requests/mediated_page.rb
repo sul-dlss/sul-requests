@@ -34,6 +34,8 @@ class MediatedPage < Request
     # creating a mediated page should not submit the request to ILS (it needs to wait for approvals)
     send_confirmation!
     notify_mediator!
+
+    true
   end
 
   def all_approved?
@@ -77,6 +79,10 @@ class MediatedPage < Request
 
   def self.needed_dates_for_origin_after_date(origin:, date:)
     for_origin(origin).where('needed_date > ?', date).distinct.pluck(:needed_date).sort
+  end
+
+  def default_needed_date
+    nil
   end
 
   private

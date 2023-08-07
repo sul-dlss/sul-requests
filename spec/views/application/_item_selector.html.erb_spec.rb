@@ -6,7 +6,7 @@ RSpec.describe 'application/_item_selector.html.erb' do
   let(:user) { create(:sso_user) }
 
   before do
-    view.bootstrap_form_for(request, url: '/') do |f|
+    view.bootstrap_form_for(request, url: '/', as: :request) do |f|
       @f = f
     end
 
@@ -38,9 +38,9 @@ RSpec.describe 'application/_item_selector.html.erb' do
     it 'shows an item selector' do
       expect(rendered).to have_selector '[data-behavior="item-selector"]'
 
-      expect(rendered).to have_selector 'input[name="mediated_page[barcodes][45678901]"]'
-      expect(rendered).to have_selector 'input[name="mediated_page[barcodes][12345678]"]'
-      expect(rendered).to have_selector 'input[name="mediated_page[barcodes][89012345]"]'
+      expect(rendered).to have_selector 'input[name="request[barcodes][45678901]"]'
+      expect(rendered).to have_selector 'input[name="request[barcodes][12345678]"]'
+      expect(rendered).to have_selector 'input[name="request[barcodes][89012345]"]'
     end
   end
 end

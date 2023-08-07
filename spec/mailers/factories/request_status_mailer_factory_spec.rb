@@ -10,6 +10,10 @@ RSpec.describe RequestStatusMailerFactory do
   end
 
   describe 'user errors' do
+    before do
+      pending('During the FOLIO migration we do not have this information') if Settings.features.migration
+    end
+
     describe 'Error U003' do
       let(:request) { create(:page_with_holdings, symphony_response_data: { usererr_code: 'U003' }) }
 
