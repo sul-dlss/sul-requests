@@ -85,7 +85,7 @@ class SubmitIplcListenerJob < ApplicationJob
     end
 
     def iplc_patron_id
-      request.user.university_id
+      request.user.university_id || request.user.barcode
     end
 
     # Symphony location codes can be converted to ReShare location codes by:
