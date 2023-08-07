@@ -654,18 +654,18 @@ RSpec.describe Request do
     end
   end
 
-  describe '#default_pickup_library' do
+  describe '#default_pickup_destination' do
     it 'sets an origin specific default' do
       request = described_class.new(origin: 'LAW', origin_location: 'STACKS',
                                     bib_data: double(request_holdings: [build(:item, effective_location: build(:law_location))]))
 
-      expect(request.default_pickup_library).to eq 'LAW'
+      expect(request.default_pickup_destination).to eq 'LAW'
     end
 
     it 'falls back to a default location' do
       request = described_class.new(origin: 'ART', origin_location: 'STACKS')
 
-      expect(request.default_pickup_library).to eq 'GREEN'
+      expect(request.default_pickup_destination).to eq 'GREEN'
     end
   end
 end

@@ -58,7 +58,7 @@ module PickupLibrariesHelper
     return get_service_point_name(pickup_destination) if Settings.ils.bib_model == 'Folio::Instance'
 
     # If not FOLIO
-    Settings.libraries[library]&.label
+    Settings.libraries[pickup_destination]&.label
   end
 
   # Return the array of destinations for the dropdown
