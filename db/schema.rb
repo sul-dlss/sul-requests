@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_03_181415) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_07_203550) do
   create_table "admin_comments", force: :cascade do |t|
     t.string "commenter"
     t.string "comment"
@@ -71,6 +71,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_03_181415) do
     t.datetime "updated_at", precision: nil, null: false
     t.string "library_id"
     t.string "student_type"
+    t.string "univ_id"
     t.index ["email"], name: "index_users_on_email"
     t.index ["library_id"], name: "index_users_on_library_id"
     t.index ["sunetid"], name: "unique_users_by_sunetid", unique: true
