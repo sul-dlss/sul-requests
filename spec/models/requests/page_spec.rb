@@ -69,7 +69,7 @@ RSpec.describe Page do
     end
 
     before do
-      expect(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: user.library_id).at_least(:once).and_return(
+      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: user.library_id).at_least(:once).and_return(
         double(exists?: user_exists)
       )
     end
@@ -82,6 +82,10 @@ RSpec.describe Page do
 
     context 'when the library ID does not exist' do
       let(:user_exists) { false }
+
+      before do
+        pending('ILS is not available to look up users during the FOLIO migration') if Settings.features.migration
+      end
 
       it { expect(subject).not_to be_valid }
     end
@@ -110,6 +114,10 @@ RSpec.describe Page do
 
     describe 'for everybody else' do
       let(:user) { create(:sso_user) }
+
+      before do
+        pending('Page requests are not being approved during the FOLIO migration') if Settings.features.migration
+      end
 
       it 'sends an approval status email' do
         expect do

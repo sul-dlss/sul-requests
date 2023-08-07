@@ -49,7 +49,7 @@ Rails.application.routes.draw do
 
   resources :requests, only: :new
   resources :aeon_pages, only: :new
-  resources :pages, concerns: [:creatable_via_get_redirect, :successable, :statusable]
+  resources :pages, concerns: [:admin_commentable, :creatable_via_get_redirect, :successable, :statusable]
   resources :scans, concerns: [:creatable_via_get_redirect, :successable, :statusable]
   resources :mediated_pages, concerns: [:admin_commentable, :creatable_via_get_redirect, :successable, :statusable]
   resources :hold_recalls, concerns: [:creatable_via_get_redirect, :successable, :statusable]

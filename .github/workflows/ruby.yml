@@ -46,3 +46,8 @@ jobs:
       run: bundle exec rake
       env:
         SETTINGS__ILS__BIB_MODEL: SearchworksItem
+    - name: Run tests for Cutover
+      run: bundle exec rake
+      env:
+        SETTINGS__FEATURES__MIGRATION: true
+        SETTINGS__ILS__BIB_MODEL: SearchworksItem

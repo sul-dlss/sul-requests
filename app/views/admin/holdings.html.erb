@@ -1,6 +1,6 @@
 <div class='admin-comments'>
   <div class='button-group'>
-    <%= bootstrap_form_for(@request, remote: true, html: { class: 'mark-as-complete-form', 'data-type': 'json' }) do |f| %>
+    <%= bootstrap_form_for(@request.becomes(MediatedPage), as: :request, remote: true, html: { class: 'mark-as-complete-form', 'data-type': 'json' }) do |f| %>
       <%= f.hidden_field :approval_status, value: 'marked_as_done' %>
       <button class='btn btn-default btn-xs' <%= 'disabled' unless @request.unapproved? %> data-behavior='mark-as-complete'>Mark as done</button>
     <% end %>

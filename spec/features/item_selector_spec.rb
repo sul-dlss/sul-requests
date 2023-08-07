@@ -19,10 +19,6 @@ RSpec.describe 'Item Selector' do
   end
 
   describe 'for multiple items', js: true do
-    before do
-      allow_any_instance_of(MediatedPage).to receive(:item_limit).and_return(5)
-    end
-
     describe 'where there are not enough to be searchable' do
       let(:request_path) { new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS') }
 
@@ -150,12 +146,13 @@ RSpec.describe 'Item Selector' do
     end
 
     describe 'when there are enough to be searchable' do
-      let(:request_path) { new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL') }
-
       before do
+        allow_any_instance_of(MediatedPage).to receive(:item_limit).and_return(5)
         stub_bib_data_json(build(:searchable_holdings))
         visit request_path
       end
+
+      let(:request_path) { new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL') }
 
       it 'limits items using the search box' do
         within('#item-selector') do

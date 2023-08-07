@@ -203,7 +203,7 @@ class SubmitSymphonyRequestJob < ApplicationJob
 
     def generic_request
       {
-        fill_by_date: request.needed_date,
+        fill_by_date:,
         key: request.destination == 'SPEC-COLL' ? 'SPEC-DESK' : request.destination,
         recall_status: patron&.fee_borrower? ? 'NO' : 'STANDARD',
         patron_barcode:,
@@ -211,6 +211,12 @@ class SubmitSymphonyRequestJob < ApplicationJob
         for_group: (request.proxy? || request.user.proxy?),
         force: true
       }
+    end
+
+    def fill_by_date
+      return if request.is_a? Page
+
+      request.needed_date
     end
 
     def place_hold_params
