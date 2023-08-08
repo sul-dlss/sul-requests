@@ -96,7 +96,7 @@ RSpec.describe Folio::Instance do
               "name": "Green Stacks",
               "details": {}
             },
-            "permanentLocation": { "code": "GRE-STACKS" },
+            "permanentLocation": { "id": "uuid", "code": "GRE-STACKS" },
             "holdingsRecord": { "effectiveLocation": { "code": "GRE-STACKS" } },
             "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
             "temporaryLoanTypeId": null
@@ -214,7 +214,7 @@ RSpec.describe Folio::Instance do
                   "name": "Spec U-Archives",
                   "details": {}
                 },
-                "permanentLocation": { "code": "SPEC-STACKS" },
+                "permanentLocation": { "id": "uuid", "code": "SPEC-STACKS" },
                 "holdingsRecord": { "effectiveLocation": { "code": "SPEC-STACKS" } },
                 "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
                 "temporaryLoanTypeId": null
@@ -247,7 +247,7 @@ RSpec.describe Folio::Instance do
                   "name": "Spec SAL3 U-Archives",
                   "details": {}
                 },
-                "permanentLocation": { "code": "SPEC-STACKS" },
+                "permanentLocation": { "id": "uuid", "code": "SPEC-STACKS" },
                 "holdingsRecord": { "effectiveLocation": { "code": "SPEC-STACKS" } },
                 "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
                 "temporaryLoanTypeId": null
@@ -280,7 +280,7 @@ RSpec.describe Folio::Instance do
                   "name": "Spec SAL3 U-Archives",
                   "details": {}
                 },
-                "permanentLocation": { "code": "SPEC-STACKS" },
+                "permanentLocation": { "id": "uuid", "code": "SPEC-STACKS" },
                 "holdingsRecord": { "effectiveLocation": { "code": "SPEC-STACKS" } },
                 "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
                 "temporaryLoanTypeId": null
@@ -313,7 +313,7 @@ RSpec.describe Folio::Instance do
                   "name": "Spec SAL3 U-Archives",
                   "details": {}
                 },
-                "permanentLocation": { "code": "SPEC-STACKS" },
+                "permanentLocation": { "id": "uuid", "code": "SPEC-STACKS" },
                 "holdingsRecord": { "effectiveLocation": { "code": "SPEC-STACKS" } },
                 "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
                 "temporaryLoanTypeId": null

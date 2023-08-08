@@ -37,7 +37,7 @@ RSpec.describe Folio::Item do
               "name": "SAL3 Stacks",
               "details": {}
             },
-            "permanentLocation": { "code": "SAL3-STACKS" },
+            "permanentLocation": { "id": "uuid", "code": "SAL3-STACKS" },
             "holdingsRecord": { "effectiveLocation": { "code": "SAL3-STACKS" } },
             "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
             "temporaryLoanTypeId": null
@@ -84,7 +84,7 @@ RSpec.describe Folio::Item do
               "name": "Green Stacks",
               "details": {}
             },
-            "permanentLocation": { "code": "SAL3-STACKS" },
+            "permanentLocation": { "id": "uuid", "code": "SAL3-STACKS" },
             "holdingsRecord": { "effectiveLocation": { "code": "SAL3-STACKS" } },
             "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
             "temporaryLoanTypeId": null
