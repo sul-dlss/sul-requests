@@ -4,25 +4,29 @@
 #  PagingScheduleEstimate is a module that takes a requested item and can
 #  read the paging schedule configuration and estimate a date of arrival.
 ###
-module PagingSchedule
-  mattr_accessor :schedule do
-    []
-  end
+class PagingSchedule
+  class_attribute :schedule, default: []
+
+  SAL3_COORDINATES = %w[
+    HILA-SAL3-STACKS
+    LANE-SAL3
+    LANE-SAL3X
+    BUS-SAL3-STACKS
+    BUS-SAL3-PAGE-BU
+    SPEC-SAL3-MSS
+  ].freeze
 
   class << self
     def configure(&)
       instance_eval(&)
     end
 
-    def when_paging(to:, from:, before: nil, after: nil, &block)
-      schedule << Scheduler.new(to:, from:, before:, after:, &block)
+    def for(request)
+      new(request).schedule_or_default
     end
 
-    def for(request)
-      schedule_or_default = schedule_for_request(request) || default_schedule(request)
-      raise ScheduleNotFound unless schedule_or_default.present?
-
-      schedule_or_default
+    def when_paging(to:, from:, before: nil, after: nil, &block)
+      schedule << Scheduler.new(to:, from:, before:, after:, &block)
     end
 
     def worst_case_delivery_day
@@ -31,26 +35,44 @@ module PagingSchedule
 
     private
 
-    def schedule_for_request(request)
-      schedule.detect do |sched|
-        sched.from == request.origin &&
-          sched.to == request.destination &&
-          sched.by_time?(request.created_at)
-      end
-    end
-
-    def default_schedule(request)
-      s = schedule.detect do |sched|
-        sched.from == request.origin &&
-          sched.to == :anywhere &&
-          sched.by_time?(request.created_at)
-      end
-      s&.for(request.destination)
-    end
-
     def worst_case_days_later
       schedule.filter_map(&:days_later).max + Settings.worst_case_paging_padding
     end
+  end
+
+  def initialize(request)
+    @request = request
+  end
+
+  def schedule_or_default
+    schedule_for_destination || default_schedule || raise(ScheduleNotFound)
+  end
+
+  private
+
+  attr_reader :request
+
+  delegate :destination, :created_at, to: :request, prefix: 'target'
+
+  def target_origin
+    @target_origin ||= SAL3_COORDINATES.include?(request.origin) ? 'SAL3' : request.origin
+  end
+
+  def schedule_for_destination
+    schedule.detect do |sched|
+      sched.from == target_origin &&
+        sched.to == target_destination &&
+        sched.by_time?(target_created_at)
+    end
+  end
+
+  def default_schedule
+    scheduler = schedule.detect do |sched|
+      sched.from == target_origin &&
+        sched.to == :anywhere &&
+        sched.by_time?(target_created_at)
+    end
+    scheduler&.for(target_destination)
   end
 
   ###

@@ -27,24 +27,40 @@ RSpec.describe PagingSchedule do
   end
 
   describe '#for' do
+    subject(:schedule) { described_class.for(page) }
+
+    let(:page) { build(:page, origin: 'SAL3', destination: 'GREEN') }
+
     it 'returns the schedule for the provided request' do
-      schedule = described_class.for(build(:page, origin: 'SAL3', destination: 'GREEN'))
       expect(schedule).to be_a PagingSchedule::Scheduler
       expect(schedule.from).to eq 'SAL3'
       expect(schedule.to).to eq 'GREEN'
     end
 
-    it 'returns the default/anywhere schedule if the destination is not configured' do
-      schedule = described_class.for(build(:page, origin: 'SAL3', destination: 'SOMEWHERE-ELSE'))
-      expect(schedule).to be_a PagingSchedule::Scheduler
-      expect(schedule.from).to eq 'SAL3'
-      expect(schedule.to).to eq 'SOMEWHERE-ELSE'
+    context 'when the origin is a SAL3 coordinate' do
+      let(:page) { build(:page, origin: 'LANE-SAL3X', destination: 'GREEN') }
+
+      it 'returns the schedule' do
+        expect(schedule.from).to eq 'SAL3'
+        expect(schedule.to).to eq 'GREEN'
+      end
     end
 
-    it 'raises an error when there is no schedule configured found' do
-      expect do
-        described_class.for(build(:page, origin: 'DOES-NOT-EXIST', destination: 'SOMEWHERE-ELSE'))
-      end.to raise_error(PagingSchedule::ScheduleNotFound)
+    context 'when the destination is not configured' do
+      let(:page) { build(:page, origin: 'SAL3', destination: 'SOMEWHERE-ELSE') }
+
+      it 'returns the default/anywhere schedule' do
+        expect(schedule.from).to eq 'SAL3'
+        expect(schedule.to).to eq 'SOMEWHERE-ELSE'
+      end
+    end
+
+    context 'when there is no schedule configured found' do
+      let(:page) { build(:page, origin: 'DOES-NOT-EXIST', destination: 'SOMEWHERE-ELSE') }
+
+      it 'raises an error when there is no schedule configured found' do
+        expect { described_class.for(page) }.to raise_error(PagingSchedule::ScheduleNotFound)
+      end
     end
   end
 
