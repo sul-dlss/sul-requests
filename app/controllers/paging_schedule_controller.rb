@@ -59,9 +59,10 @@ class PagingScheduleController < ApplicationController
   def map_to_library(service_point_code)
     return service_point_code if service_point_code == 'SCAN'
 
-    service_point_id = get_service_point_id(service_point_code)
+    # If the service point does not match, default to GREEN-LOAN
+    code = valid_service_point_code(service_point_code) ? service_point_code : Settings.folio.default_service_point
+    service_point_id = get_service_point_id(code)
     library_id = get_library_for_service_point(service_point_id)
-    return nil if library_id.nil?
 
     # Find the library code associated with this library id
     Folio::Types.instance.get_type('libraries').find { |library| library['id'] == library_id }['code']
@@ -77,4 +78,9 @@ class PagingScheduleController < ApplicationController
     loc = Folio::Types.instance.get_type('locations').find { |location| location['primaryServicePoint'] == service_point_id }
     loc.present? && loc.key?('libraryId') ? loc['libraryId'] : nil
   end
+
+  # Check if valid service point, otherwise default to GREEN
+  def valid_service_point_code(service_point_code)
+    Folio::Types.instance.service_points.values.find { |v| v.code == service_point_code }.present?
+  end 
 end
