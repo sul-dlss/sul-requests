@@ -82,5 +82,5 @@ class PagingScheduleController < ApplicationController
   # Check if valid service point, otherwise default to GREEN
   def valid_service_point_code(service_point_code)
     Folio::Types.instance.service_points.values.find { |v| v.code == service_point_code }.present?
-  end 
+  end
 end
