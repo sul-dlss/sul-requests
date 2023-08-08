@@ -99,10 +99,14 @@ class SubmitFolioRequestJob < ApplicationJob
     end
 
     def get_service_point_code(destination)
-      return destination || Settings.Folio.default_service_point if Settings.ils.bib_model == 'Folio::Instance'
+      # Check if comparable service point code exists, otherwise return default
+      if Settings.ils.bib_model == 'Folio::Instance'
+        code = valid_service_point_code(destination) ? destination : Settings.folio.default_service_point
+      else
+        code = Settings.libraries[destination].folio_pickup_service_point_code
+        code ||= Settings.libraries['GREEN'].folio_pickup_service_point_code
+      end
 
-      code = Settings.libraries[destination].folio_pickup_service_point_code
-      code ||= Settings.libraries['GREEN'].folio_pickup_service_point_code
       code
     end
 
@@ -191,6 +195,11 @@ class SubmitFolioRequestJob < ApplicationJob
     # Find the library id for the location with which this service point is associated
     def get_library_for_service_point(service_point_id)
       Folio::Types.instance.get_type('locations').find { |location| location['primaryServicePoint'] == service_point_id }['libraryId']
+    end
+
+    # Does this service point code exist
+    def valid_service_point_code(service_point_code)
+      Folio::Types.instance.service_points.values.find { |v| v.code == service_point_code }.present?
     end
   end
 

@@ -16,7 +16,7 @@ FactoryBot.define do
     origin { 'SAL3' }
     origin_location { 'STACKS' }
     requested_barcode { '12345678' }
-    destination { 'GREEN' }
+    destination { Settings.ils.bib_model == 'Folio::Instance' ? 'GREEN-LOAN' : 'GREEN' }
     item_title { 'Title of HoldRecall 1234' }
     needed_date { Time.zone.today }
     bib_data { FactoryBot.build(:sal3_holdings) }

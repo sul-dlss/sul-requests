@@ -75,7 +75,7 @@ module Folio
       pickup = Folio::Types.instance.service_points.select do |_k, v|
         v.is_default_for_campus.present? && v.is_default_for_campus == request.holdings.first&.effective_location&.campus&.code
       end.values.map(&:code)
-      pickup.present? ? pickup[0] : 'GREEN-LOAN'
+      pickup.present? ? pickup[0] : Settings.folio.default_service_point
     end
 
     private
