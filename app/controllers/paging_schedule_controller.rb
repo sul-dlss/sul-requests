@@ -57,6 +57,8 @@ class PagingScheduleController < ApplicationController
   # For FOLIO, destination is specified as service point
   # Convert service point to library for scheduling and library hours
   def map_to_library(service_point_code)
+    return service_point_code if service_point_code == 'SCAN'
+
     service_point_id = get_service_point_id(service_point_code)
     library_id = get_library_for_service_point(service_point_id)
     return nil if library_id.nil?

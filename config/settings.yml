@@ -101,6 +101,7 @@ folio:
   tenant: 'sul'
   fee_borrower_patron_group: 985acbb9-f7a7-4f44-9b34-458c02a78fbc
   standard_patron_group_names: ['staff', 'faculty', 'undergrad', 'graduate']
+  default_service_point: 'GREEN-LOAN'
 
 mailer_host: <%= `echo $HOSTNAME` %>
 searchworks_api: 'https://searchworks.stanford.edu'

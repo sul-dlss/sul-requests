@@ -99,7 +99,7 @@ class SubmitFolioRequestJob < ApplicationJob
     end
 
     def get_service_point_code(destination)
-      return destination if Settings.ils.bib_model == 'Folio::Instance'
+      return destination || Settings.Folio.default_service_point if Settings.ils.bib_model == 'Folio::Instance'
 
       code = Settings.libraries[destination].folio_pickup_service_point_code
       code ||= Settings.libraries['GREEN'].folio_pickup_service_point_code
