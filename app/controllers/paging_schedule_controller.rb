@@ -59,6 +59,8 @@ class PagingScheduleController < ApplicationController
   def map_to_library(service_point_code)
     service_point_id = get_service_point_id(service_point_code)
     library_id = get_library_for_service_point(service_point_id)
+    return nil if library_id.nil?
+
     # Find the library code associated with this library id
     Folio::Types.instance.get_type('libraries').find { |library| library['id'] == library_id }['code']
   end
@@ -70,6 +72,7 @@ class PagingScheduleController < ApplicationController
 
   # Find the library id for the location with which this service point is associated
   def get_library_for_service_point(service_point_id)
-    Folio::Types.instance.get_type('locations').find { |location| location['primaryServicePoint'] == service_point_id }['libraryId']
+    loc = Folio::Types.instance.get_type('locations').find { |location| location['primaryServicePoint'] == service_point_id }
+    loc.present? && loc.key?('libraryId') ? loc['libraryId'] : nil
   end
 end

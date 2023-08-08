@@ -5,6 +5,7 @@ require 'rails_helper'
 RSpec.describe Request do
   let(:items) { [] }
   let(:bib_data) { double(:bib_data, title: 'Test title', request_holdings: items) }
+  let(:default_destination) { Settings.ils.bib_model == 'Folio::Instance' ? 'GREEN-LOAN' : 'GREEN' }
 
   before do
     allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(bib_data)
@@ -670,7 +671,7 @@ RSpec.describe Request do
     it 'falls back to a default location' do
       request = described_class.new(origin: 'ART', origin_location: 'STACKS')
 
-      expect(request.default_pickup_destination).to eq 'GREEN'
+      expect(request.default_pickup_destination).to eq default_destination
     end
   end
 end

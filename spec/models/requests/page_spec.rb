@@ -55,11 +55,13 @@ RSpec.describe Page do
 
   describe 'library id validation' do
     let(:user) { create(:library_id_user) }
+    let(:destination) { Settings.ils.bib_model == 'Folio::Instance' ? 'GREEN-LOAN' : 'GREEN' }
+
     let(:subject) do
       described_class.create(
         origin: 'SAL3',
         origin_location: 'STACKS',
-        destination: 'GREEN',
+        destination:,
         item_id: 'abc123',
         item_title: 'foo',
         user:,

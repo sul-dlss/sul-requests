@@ -72,10 +72,10 @@ module Folio
       return 'EAST-ASIA' if request.origin_location&.match?(Regexp.union(/^EAL-SETS$/, /^EAL-STKS-/))
 
       # Find service point which is default for this particular campus
-      # Or Settings.default library? Will this cover or do we need to add to it?
-      Folio::Types.instance.service_points.select do |_k, v|
+      pickup = Folio::Types.instance.service_points.select do |_k, v|
         v.is_default_for_campus.present? && v.is_default_for_campus == request.holdings.first&.effective_location&.campus&.code
       end.values.map(&:code)
+      pickup.present? ? pickup[0] : 'GREEN-LOAN'
     end
 
     private
@@ -129,15 +129,17 @@ module Folio
       service_point_id = get_service_point_for_library(library_id)
       # Find the service point ID based on this service point code
       service_point = get_service_point_by_id(service_point_id)
-      service_point.pickup_location == true ? service_point.code : nil
+      service_point.present? && service_point.pickup_location == true ? service_point.code : nil
     end
 
     def get_library_id(library_code)
-      Folio::Types.instance.get_type('libraries').find { |library| library['code'] == library_code }['id']
+      lib = Folio::Types.instance.get_type('libraries').find { |library| library['code'] == library_code }
+      lib.present? && lib.key?('id') ? lib['id'] : nil
     end
 
     def get_service_point_for_library(library_id)
-      Folio::Types.instance.get_type('locations').find { |location| location['libraryId'] == library_id }['primaryServicePoint']
+      loc = Folio::Types.instance.get_type('locations').find { |location| location['libraryId'] == library_id }
+      loc.present? && loc.key?('primaryServicePoint') ? loc['primaryServicePoint'] : nil?
     end
 
     def get_service_point_by_id(service_point_id)
