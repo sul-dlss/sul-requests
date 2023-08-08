@@ -34,6 +34,10 @@ RSpec.describe 'Paging Schedule' do
   end
 
   describe 'Select dropdown', js: true do
+    before do
+      pending('We are not showing the paging schedule for pages during the migration') if Settings.features.migration
+    end
+
     it 'displays the estimate for the currently selected value and updates it when a new destination is selected' do
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
 
@@ -49,6 +53,8 @@ RSpec.describe 'Paging Schedule' do
 
   describe 'Estimated delivery', js: true do
     before do
+      pending('We are not showing the paging schedule for pages during the migration') if Settings.features.migration
+
       stub_current_user(create(:sso_user))
       stub_symphony_response(build(:symphony_page_with_single_item))
     end
@@ -80,6 +86,10 @@ RSpec.describe 'Paging Schedule' do
       ]
     end
 
+    before do
+      pending('We are not showing the paging schedule for pages during the migration') if Settings.features.migration
+    end
+
     it 'displays an estimate for the single possible destination' do
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'PAGE-EN')
 
@@ -90,6 +100,8 @@ RSpec.describe 'Paging Schedule' do
 
   describe 'form choice page', js: true do
     before do
+      pending('We are not showing the paging schedule for pages during the migration') if Settings.features.migration
+
       stub_bib_data_json(build(:scannable_holdings))
     end
 
