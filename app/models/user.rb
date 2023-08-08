@@ -35,6 +35,12 @@ class User < ActiveRecord::Base
     patron&.barcode || library_id
   end
 
+  # Prefer the patron information from the ILS, but fall back to the univ ID
+  # so that the system can function when the ILS is offline
+  def university_id
+    patron&.university_id || univ_id
+  end
+
   def library_id=(library_id)
     super(library_id.to_s.upcase)
   end
@@ -99,7 +105,7 @@ class User < ActiveRecord::Base
   end
 
   def borrow_direct_eligible?
-    patron.university_id.present?
+    university_id.present?
   end
 
   private
