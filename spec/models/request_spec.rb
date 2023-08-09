@@ -178,6 +178,39 @@ RSpec.describe Request do
     it { is_expected.not_to be_requestable_with_library_id }
   end
 
+  describe '#paging_origin_library' do
+    subject { request.paging_origin_library }
+
+    let(:request) { described_class.new(origin: 'GREEN') }
+
+    context 'when not a folio instance' do
+      it { is_expected.to eq 'GREEN' }
+    end
+
+    context 'when the folio instance' do
+      let(:bib_data) { Folio::Instance.new(id: '12223') } # TODO: this can just use the double after the folio migration
+      let(:items) do
+        [instance_double(Folio::Item, permanent_location:)]
+      end
+
+      before do
+        allow(bib_data).to receive(:items).and_return(items)
+      end
+
+      context 'with pagingSchedule set' do
+        let(:permanent_location) { instance_double(Folio::Location, details: { 'pagingSchedule' => 'SAL3' }) }
+
+        it { is_expected.to eq 'SAL3' }
+      end
+
+      context 'without pagingSchedule set' do
+        let(:permanent_location) { instance_double(Folio::Location, details: {}) }
+
+        it { is_expected.to eq 'GREEN' }
+      end
+    end
+  end
+
   describe '#library_location' do
     it 'returns a library_location object' do
       expect(subject.library_location).to be_a LibraryLocation
