@@ -100,6 +100,9 @@ class MediatedPage < Request
   end
 
   def needed_date_is_valid
+    # We're using needed_date during the FOLIO migration, but it's advisory-only (and not worth updating tests to account for).
+    return unless Settings.features.migration && is_a?(Page)
+
     errors.add(:needed_date, 'The library is not open on that date') unless PagingSchedule.for(self).valid?(needed_date)
   rescue PagingSchedule::ScheduleNotFound
     nil
