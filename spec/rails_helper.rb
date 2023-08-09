@@ -7,11 +7,6 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'capybara/rails'
-require 'selenium-webdriver'
-
-# I think this line can be removed when selenium 4.11 is released
-# See https://github.com/titusfortner/webdrivers/issues/247#issuecomment-1648154088
-Webdrivers::Chromedriver.required_version = '114.0.5735.90'
 
 # Auto require all files in spec/support.
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
