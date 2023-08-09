@@ -88,7 +88,6 @@ group :development, :test do
 
   # selenium-webdriver is used by Capybara for driving "browser" tests
   gem 'selenium-webdriver'
-  gem 'webdrivers'
 
   # Database cleaner allows us to clean the entire database after certain tests
   gem 'database_cleaner'
