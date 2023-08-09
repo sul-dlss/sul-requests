@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ###
-#  PagingScheduleEstimate is a module that takes a requested item and can
+#  PagingSchedule takes a requested item and can
 #  read the paging schedule configuration and estimate a date of arrival.
 ###
 module PagingSchedule

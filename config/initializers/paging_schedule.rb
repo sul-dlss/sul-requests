@@ -208,5 +208,23 @@ Rails.application.config.after_initialize do
       will_arrive after: '10:00am'
       business_days_later 1
     end
+
+    # Lane Medical Library
+    when_paging from: 'LANE-MED', to: 'LANE-MED', before: '9:00am' do
+      will_arrive after: '3:00pm'
+      business_days_later 0
+    end
+    when_paging from: 'LANE-MED', to: 'LANE-MED', after: '9:00am' do
+      will_arrive after: '3:00pm'
+      business_days_later 1
+    end
+    when_paging from: 'LANE-MED', to: :anywhere, before: '9:00am' do
+      will_arrive after: '3:00pm'
+      business_days_later 1
+    end
+    when_paging from: 'LANE-MED', to: :anywhere, after: '9:00am' do
+      will_arrive after: '3:00pm'
+      business_days_later 2
+    end
   end
 end

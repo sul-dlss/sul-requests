@@ -14,14 +14,14 @@ RSpec.describe Folio::Holdings do
                     callnumber: 'XX(14820051.1)',
                     public_note: nil,
                     effective_location: instance_double(Folio::Location),
-                    permanent_location_code:)
+                    permanent_location:)
   end
 
   describe 'Enumerable' do
     subject { holdings.to_a }
 
     context "when the request location doesn't match the effectiveLocation" do
-      let(:permanent_location_code) { 'MUS-RECORDINGS' }
+      let(:permanent_location) { instance_double(Folio::Location, code: 'MUS-RECORDINGS') }
 
       it { is_expected.to eq items }
     end

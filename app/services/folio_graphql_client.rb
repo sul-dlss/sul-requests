@@ -125,6 +125,7 @@ class FolioGraphqlClient
                   }
                 }
                 permanentLocation {
+                  id
                   code
                 }
                 permanentLoanTypeId
