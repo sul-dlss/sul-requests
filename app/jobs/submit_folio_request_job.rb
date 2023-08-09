@@ -38,6 +38,7 @@ class SubmitFolioRequestJob < ApplicationJob
 
   # Submit a hold request to FOLIO
   class Command
+    include Folio::TypesUtils
     attr_reader :request, :folio_client, :barcode, :logger
 
     # @param [Request] request
@@ -175,31 +176,6 @@ class SubmitFolioRequestJob < ApplicationJob
       request.barcodes.select do |barcode|
         @barcode == barcode
       end
-    end
-
-    # Map request destination service point to library code
-    # For FOLIO, destination is specified as service point
-    # Convert service point to library for scheduling and library hours
-    def map_to_library(service_point_code)
-      service_point_id = get_service_point_id(service_point_code)
-      library_id = get_library_for_service_point(service_point_id)
-      # Find the library code associated with this library id
-      Folio::Types.instance.get_type('libraries').find { |library| library['id'] == library_id }['code']
-    end
-
-    # Find the service point ID based on this service point code
-    def get_service_point_id(service_point_code)
-      Folio::Types.instance.service_points.values.find { |v| v.code == service_point_code }&.id
-    end
-
-    # Find the library id for the location with which this service point is associated
-    def get_library_for_service_point(service_point_id)
-      Folio::Types.instance.get_type('locations').find { |location| location['primaryServicePoint'] == service_point_id }['libraryId']
-    end
-
-    # Does this service point code exist
-    def valid_service_point_code(service_point_code)
-      Folio::Types.instance.service_points.values.find { |v| v.code == service_point_code }.present?
     end
   end
 

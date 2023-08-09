@@ -5,6 +5,8 @@ module Folio
   class RequestAbilities
     attr_reader :request
 
+    include Folio::TypesUtils
+
     # @param [Request] request
     def initialize(request)
       @request = request
@@ -119,31 +121,6 @@ module Folio
 
     def circulation_rules
       Folio::CirculationRules::PolicyService.instance
-    end
-
-    # Given a library code, retrieve the primary service point, ensuring pickup location is true
-    def map_to_service_point(library_code)
-      # Find library id for the library with this code
-      library_id = get_library_id(library_code)
-      # Get the associated location and related service point
-      service_point_id = get_service_point_for_library(library_id)
-      # Find the service point ID based on this service point code
-      service_point = get_service_point_by_id(service_point_id)
-      service_point.present? && service_point.pickup_location == true ? service_point.code : nil
-    end
-
-    def get_library_id(library_code)
-      lib = Folio::Types.instance.get_type('libraries').find { |library| library['code'] == library_code }
-      lib.present? && lib.key?('id') ? lib['id'] : nil
-    end
-
-    def get_service_point_for_library(library_id)
-      loc = Folio::Types.instance.get_type('locations').find { |location| location['libraryId'] == library_id }
-      loc.present? && loc.key?('primaryServicePoint') ? loc['primaryServicePoint'] : nil?
-    end
-
-    def get_service_point_by_id(service_point_id)
-      Folio::Types.instance.service_points.values.find { |v| v.id == service_point_id }
     end
   end
 end

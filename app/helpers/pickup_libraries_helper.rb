@@ -3,6 +3,7 @@
 ##
 # Helpers for formatting and displaying pickup libraries
 module PickupLibrariesHelper
+  include Folio::TypesUtils
   # Pickup libraries for Symphony
   def select_for_pickup_destinations(form)
     pickup_destinations = form.object.pickup_destinations
@@ -91,9 +92,4 @@ module PickupLibrariesHelper
     end.sort
   end
 
-  # Get the name for the service point given the code
-  def get_service_point_name(code)
-    # Find the service point with the same code, and return the name
-    Folio::Types.instance.service_points.values.find { |v| v.code == code }&.name
-  end
 end
