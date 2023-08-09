@@ -127,6 +127,9 @@ class FolioGraphqlClient
                 permanentLocation {
                   id
                   code
+                  details {
+                    pagingSchedule
+                  }
                 }
                 permanentLoanTypeId
                 temporaryLoanTypeId

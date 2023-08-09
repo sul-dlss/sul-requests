@@ -8,7 +8,7 @@
 <%= f.text_area :section_title, rows: '3', required: true %>
 <%= f.text_field :authors %>
 
-<div class='form-group' data-scheduler-lookup-url='<%= paging_schedule_path(origin: current_request.origin) %>'>
+<div class='form-group' data-scheduler-lookup-url='<%= paging_schedule_path(origin: current_request.paging_origin_library) %>'>
   <div class='control-label <%= label_column_class %>'>
     Earliest delivery
   </div>
