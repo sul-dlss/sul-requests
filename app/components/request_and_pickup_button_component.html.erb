@@ -9,7 +9,7 @@
         <% if estimate_delivery? %>
           <dl>
             <dt>Earliest delivery</dt>
-            <%= tag.dd data: { single_library_value: single_library_value } do %>
+            <%= tag.dd data: { single_library_value: single_destination_value } do %>
               <%= tag.span data: { scheduler_text: 'true' }, aria: { live: 'polite' }%>
             <% end %>
           </dl>
