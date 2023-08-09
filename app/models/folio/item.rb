@@ -46,12 +46,12 @@ module Folio
   #       See https://github.com/sul-dlss/searchworks_traject_indexer/blob/02192452815de3861dcfafb289e1be8e575cb000/lib/traject/config/sirsi_config.rb#L2379
   # NOTE, barcode and callnumber may be nil. see instance_hrid: 'in00000063826'
   class Item
-    attr_reader :barcode, :status, :type, :callnumber, :public_note, :effective_location, :permanent_location_code, :material_type,
+    attr_reader :barcode, :status, :type, :callnumber, :public_note, :effective_location, :permanent_location, :material_type,
                 :loan_type
 
     # rubocop:disable Metrics/ParameterLists
     def initialize(barcode:, status:, type:, callnumber:, public_note:,
-                   effective_location:, permanent_location_code:, material_type: nil, loan_type: nil,
+                   effective_location:, permanent_location: nil, material_type: nil, loan_type: nil,
                    due_date: nil)
       @barcode = barcode
       @status = status
@@ -59,7 +59,7 @@ module Folio
       @callnumber = callnumber
       @public_note = public_note
       @effective_location = effective_location
-      @permanent_location_code = permanent_location_code
+      @permanent_location = permanent_location || effective_location
       @material_type = material_type
       @loan_type = loan_type
       @due_date = due_date
@@ -72,13 +72,13 @@ module Folio
 
     # TODO: rename this to 'permanent_location_code' after migration
     def home_location
-      permanent_location_code
+      permanent_location.code
     end
 
     def current_location
       if [STATUS_AVAILABLE, STATUS_PAGED].exclude?(status)
         status_text
-      elsif permanent_location_code != effective_location&.code
+      elsif permanent_location.code != effective_location&.code
         effective_location&.code
       end
     end
@@ -140,8 +140,9 @@ module Folio
           public_note: dyn.fetch('notes').find { |note| note.dig('itemNoteType', 'name') == 'Public' }&.fetch('note'),
           effective_location: Location.from_hash(dyn.fetch('effectiveLocation')),
           # fall back to the holding record's effective Location; we're no longer guaranteed an item-level permanent location.
-          permanent_location_code: dyn.fetch('permanentLocation')&.fetch('code') ||
-            dyn.fetch('holdingsRecord').fetch('effectiveLocation')&.fetch('code'),
+          permanent_location: (if dyn['permanentLocation']
+                                 Location.from_hash(dyn.fetch('permanentLocation'))
+                               end) || Location.from_hash(dyn.fetch('effectiveLocation')),
           material_type: MaterialType.new(id: dyn.dig('materialType', 'id'), name: dyn.dig('materialType', 'name')),
           loan_type: LoanType.new(id: dyn.fetch('tempooraryLoanTypeId', dyn.fetch('permanentLoanTypeId'))))
     end
