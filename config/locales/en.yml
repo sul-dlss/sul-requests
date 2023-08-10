@@ -96,6 +96,7 @@ en:
       quick: '%a %b %-d'
       short: '%b %-d %Y'
       long: '%A, %b %-d %Y'
+      numeric: '%m/%d/%Y'
   time:
     am: a
     pm: p

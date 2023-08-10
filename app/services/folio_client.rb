@@ -123,6 +123,8 @@ class FolioClient
     folio_graphql_client.instance(hrid:)
   end
 
+  delegate :due_date, to: :folio_graphql_client
+
   def circulation_rules
     get_json('/circulation-rules-storage').fetch('rulesAsText', '')
   end

@@ -86,6 +86,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
     end
 
     factory :item, class: 'Folio::Item' do
+      id { SecureRandom.uuid }
       barcode { '3610512345678' }
       callnumber { 'ABC 123' }
       status { 'Available' }
@@ -607,7 +608,6 @@ if Settings.ils.bib_model == 'Folio::Instance'
           build(:item,
                 barcode: '87654321',
                 callnumber: 'ABC 321',
-                due_date: '2015-01-01T12:59:00.000+00:00',
                 status: 'Checked out',
                 effective_location: build(:location, code: 'SAL3-STACKS'))
         ]
