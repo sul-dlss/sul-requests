@@ -164,20 +164,34 @@ RSpec.describe RequestsHelper do
   end
 
   describe 'label_for_item_selector_holding' do
-    let(:subject) { Capybara.string(label_for_item_selector_holding(holding)) }
+    let(:subject) { Capybara.string(helper.label_for_item_selector_holding(holding)) }
 
     describe 'checked out items' do
-      let(:holding) do
-        instance_double(Searchworks::HoldingItem,
-                        checked_out?: true, due_date: Time.zone.today)
+      context 'for a Searchworks::HoldingsItem', if: Settings.ils.bib_model == 'SearchworksItem' do
+        let(:holding) do
+          instance_double(Searchworks::HoldingItem,
+                          checked_out?: true, due_date: Time.zone.today)
+        end
+
+        it 'includes the unavailable class' do
+          expect(subject).to have_css('.unavailable')
+        end
+
+        it 'includes the due date' do
+          expect(subject).to have_content("Due #{Time.zone.today}")
+        end
       end
 
-      it 'includes the unavailable class' do
-        expect(subject).to have_css('.unavailable')
-      end
+      context 'for a Folio::Item', if: Settings.ils.bib_model != 'SearchworksItem' do
+        let(:holding) { instance_double(Folio::Item, checked_out?: true, id: '123-123-123') }
 
-      it 'includes the due date' do
-        expect(subject).to have_content("Due #{Time.zone.today}")
+        it 'includes the unavailable class' do
+          expect(subject).to have_css('.unavailable')
+        end
+
+        it 'includes the due date' do
+          expect(subject).to have_css('turbo-frame[src="/due_dates/123-123-123"]')
+        end
       end
     end
 

@@ -10,6 +10,7 @@ RSpec.describe Folio::Item do
       let(:data) do
         <<~JSON
           {
+            "id": "123-123-123",
             "barcode": null,
             "status": {
               "name": "On order"
@@ -52,6 +53,7 @@ RSpec.describe Folio::Item do
       let(:data) do
         <<~JSON
           {
+            "id": "123-123-123",
             "barcode": "36105124065330",
             "status": {
               "name": "Available"
@@ -196,6 +198,7 @@ RSpec.describe Folio::Item do
       let(:data) do
         <<~JSON
           {
+            "id": "123-123-123",
             "status": { "name": "Available" },
             "materialType": { "id": "1a54b431-2e4f-452d-9cae-9cee66c9a892", "name": "book" },
             "permanentLocation": #{gre_stacks},
@@ -215,6 +218,7 @@ RSpec.describe Folio::Item do
       let(:data) do
         <<~JSON
           {
+            "id": "123-123-123",
             "status": { "name": "Available" },
             "materialType": { "id": "1a54b431-2e4f-452d-9cae-9cee66c9a892", "name": "book" },
             "permanentLocation": #{sal3_stacks},
@@ -234,6 +238,7 @@ RSpec.describe Folio::Item do
       let(:data) do
         <<~JSON
           {
+            "id": "123-123-123",
             "status": { "name": "Available" },
             "materialType": { "id": "1a54b431-2e4f-452d-9cae-9cee66c9a892", "name": "book" },
             "permanentLocation": #{page_sp},
@@ -253,6 +258,7 @@ RSpec.describe Folio::Item do
       let(:data) do
         <<~JSON
           {
+            "id": "123-123-123",
             "status": { "name": "Available" },
             "materialType": { "id": "1a54b431-2e4f-452d-9cae-9cee66c9a892", "name": "book" },
             "permanentLocation": #{gre_stacks},
@@ -272,6 +278,7 @@ RSpec.describe Folio::Item do
       let(:data) do
         <<~JSON
           {
+            "id": "123-123-123",
             "status": { "name": "Checked out" },
             "materialType": { "id": "1a54b431-2e4f-452d-9cae-9cee66c9a892", "name": "book" },
             "permanentLocation": #{gre_stacks},
@@ -388,6 +395,7 @@ RSpec.describe Folio::Item do
       let(:data) do
         <<~JSON
           {
+            "id": "123-123-123",
             "status": { "name": "Available" },
             "materialType": { "id": "1a54b431-2e4f-452d-9cae-9cee66c9a892", "name": "book" },
             "permanentLocation": #{gre_stacks},
@@ -407,6 +415,7 @@ RSpec.describe Folio::Item do
       let(:data) do
         <<~JSON
           {
+            "id": "123-123-123",
             "status": { "name": "Available" },
             "materialType": { "id": "1a54b431-2e4f-452d-9cae-9cee66c9a892", "name": "book" },
             "permanentLocation": #{sal3_stacks},
@@ -426,6 +435,7 @@ RSpec.describe Folio::Item do
       let(:data) do
         <<~JSON
           {
+            "id": "123-123-123",
             "status": { "name": "Available" },
             "materialType": { "id": "1a54b431-2e4f-452d-9cae-9cee66c9a892", "name": "book" },
             "permanentLocation": #{page_sp},
@@ -445,6 +455,7 @@ RSpec.describe Folio::Item do
       let(:data) do
         <<~JSON
           {
+            "id": "123-123-123",
             "status": { "name": "Available" },
             "materialType": { "id": "1a54b431-2e4f-452d-9cae-9cee66c9a892", "name": "book" },
             "permanentLocation": #{gre_stacks},
@@ -464,6 +475,7 @@ RSpec.describe Folio::Item do
       let(:data) do
         <<~JSON
           {
+            "id": "123-123-123",
             "status": { "name": "Checked out" },
             "materialType": { "id": "1a54b431-2e4f-452d-9cae-9cee66c9a892", "name": "book" },
             "permanentLocation": #{gre_stacks},

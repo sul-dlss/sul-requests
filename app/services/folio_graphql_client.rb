@@ -41,6 +41,8 @@ class FolioGraphqlClient
   end
 
   # rubocop:disable Metrics/MethodLength
+  # NOTE: While it would be tempting to get dueDate for each item in this query,
+  # we found that it adversely impacts response time when there are a lot of items (see hrid: L284)
   def instance(hrid:)
     data = post_json('/', json:
     {
@@ -71,11 +73,11 @@ class FolioGraphqlClient
                 uri
               }
               items {
+                id
                 barcode
                 status {
                   name
                 }
-                dueDate
                 materialType {
                   id
                   name
@@ -150,6 +152,25 @@ class FolioGraphqlClient
     raise data['errors'].pluck('message').join("\n") if data&.key?('errors')
 
     data&.dig('data', 'instances', 0)
+  end
+
+  def due_date(item_id:)
+    data = post_json('/', json:
+      {
+        query:
+          <<~GQL
+            query DueDate {
+              items(id: "#{item_id}") {
+                id
+                dueDate
+              }
+            }
+          GQL
+      })
+    raise data['errors'].pluck('message').join("\n") if data.key?('errors')
+
+    date = data.dig('data', 'items', 0, 'dueDate')
+    DateTime.parse(date) if date
   end
 
   def service_points

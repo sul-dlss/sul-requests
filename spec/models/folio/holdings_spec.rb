@@ -8,7 +8,8 @@ RSpec.describe Folio::Holdings do
   let(:request) { HoldRecall.new(barcode: '36105237669143', item_id: '14820051', origin: 'MUSIC', origin_location: 'RECORDINGS') }
   let(:items) { [item] }
   let(:item) do
-    Folio::Item.new(barcode: '123',
+    Folio::Item.new(id: '123-123-123',
+                    barcode: '123',
                     status: 'In process',
                     type: 'multimedia',
                     callnumber: 'XX(14820051.1)',

@@ -28,6 +28,7 @@ module Folio
         end,
         electronic_access: json.fetch('electronicAccess', []),
         items: json.fetch('items', []).map { |item| Folio::Item.from_hash(item) }
+        # TODO: maybe instantiate stub items here with basic metadata
       )
     end
     # rubocop:enable Metrics/MethodLength
