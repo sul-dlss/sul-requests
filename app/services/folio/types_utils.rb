@@ -8,7 +8,7 @@ module Folio
     def map_to_library(service_point_code)
       return service_point_code if service_point_code == 'SCAN'
 
-      return nil unless valid_service_point_code(service_point_code)
+      return nil unless valid_service_point_code?(service_point_code)
 
       service_point_id = get_service_point_id(service_point_code)
       library_id = get_library_for_service_point(service_point_id)
@@ -29,7 +29,7 @@ module Folio
     end
 
     # Check if valid service point
-    def valid_service_point_code(service_point_code)
+    def valid_service_point_code?(service_point_code)
       Folio::Types.instance.service_points.values.find { |v| v.code == service_point_code }.present?
     end
 
@@ -51,7 +51,7 @@ module Folio
 
     def get_service_point_for_library(library_id)
       loc = Folio::Types.instance.get_type('locations').find { |location| location['libraryId'] == library_id }
-      loc.present? && loc.key?('primaryServicePoint') ? loc['primaryServicePoint'] : nil?
+      loc.present? && loc.key?('primaryServicePoint') ? loc['primaryServicePoint'] : nil
     end
 
     def get_service_point_by_id(service_point_id)

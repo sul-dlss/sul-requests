@@ -101,14 +101,7 @@ class SubmitFolioRequestJob < ApplicationJob
 
     def get_service_point_code(destination)
       # Check if comparable service point code exists, otherwise return default
-      if Settings.ils.bib_model == 'Folio::Instance'
-        code = valid_service_point_code(destination) ? destination : Settings.folio.default_service_point
-      else
-        code = Settings.libraries[destination].folio_pickup_service_point_code
-        code ||= Settings.libraries['GREEN'].folio_pickup_service_point_code
-      end
-
-      code
+        valid_service_point_code?(destination) ? destination : Settings.folio.default_service_point
     end
 
     def place_item_hold(item_id:)
@@ -165,7 +158,7 @@ class SubmitFolioRequestJob < ApplicationJob
     end
 
     def find_hold_pseudo_patron_for(key)
-      key = map_to_library(key) if Settings.ils.bib_model == 'Folio::Instance'
+      key = map_to_library(key)
       id = Settings.libraries[key]&.folio_hold_pseudopatron || raise("no hold pseudopatron for '#{key}'")
       build_pseudopatron(id)
     end
