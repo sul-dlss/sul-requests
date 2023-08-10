@@ -58,7 +58,7 @@ module Folio
       Folio::Types.instance.service_points.values.find { |v| v.id == service_point_id }
     end
 
-     # Get the name for the service point given the code
+    # Get the name for the service point given the code
     def get_service_point_name(code)
       # Find the service point with the same code, and return the name
       Folio::Types.instance.service_points.values.find { |v| v.code == code }&.name

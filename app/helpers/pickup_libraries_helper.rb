@@ -91,5 +91,4 @@ module PickupLibrariesHelper
       [Settings.libraries[k]&.label || k, k]
     end.sort
   end
-
 end
