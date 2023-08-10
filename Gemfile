@@ -12,7 +12,7 @@ gem 'puma', '~> 5.0' # avoid capybara errors until capybara release; see https:/
 gem 'bootsnap'
 # Use bootstrap_form for easy form building
 gem 'bootstrap_form', '< 4' # pin to < 4 since we are not on bootstrap 4
-# A gem for simple rails invornment specific config
+# A gem for simple rails invironment specific config
 gem 'config'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -23,7 +23,7 @@ gem 'jbuilder', '~> 2.5'
 # CanCanCan is an authorization Gem for rails
 gem 'cancancan'
 # Use faraday for making HTTP requests
-gem 'faraday', '~> 2' # for lirary hours, Illiad, and Folio clients
+gem 'faraday', '~> 2' # for library hours, Illiad, and Folio clients
 gem 'faraday-retry'
 gem 'http' # for Reshare and SymphonyClient
 # Use kaminari for pagination
