@@ -1,4 +1,4 @@
-const dateSelector = require('../../app/assets/javascripts/date_selector.js');
+const dateSelector = require('../../app/javascript/date_selector.js');
 
 const fixture = readFixtures('date_selector.html');
 

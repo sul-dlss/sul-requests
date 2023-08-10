@@ -1,6 +1,6 @@
 /* global alert */
 
-var adminComments = (function() {
+export default (function() {
   var adminCommentFormSelector = '#new_admin_comment';
   var adminCommentListSelector = '[data-behavior="admin-comments-list"]';
   var adminCommentToggleSelector = '[data-behavior="toggle-admin-comment-form"]';

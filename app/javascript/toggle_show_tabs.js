@@ -1,3 +1,5 @@
+import $ from 'jquery'
+
 var toggleShowTabs = (function() {
   var defaultOptions = {
     buttonSelector: '[data-toggle="show"]'

@@ -1,6 +1,6 @@
-const itemSelector = require('../../app/assets/javascripts/item_selector.js');
+const itemSelector = require('../../app/javascript/item_selector.js');
 global.itemSelector = itemSelector;
-const itemSelectorActive = require('../../app/assets/javascripts/item_selector/item_selector_active.js');
+const itemSelectorActive = require('../../app/javascript/item_selector/item_selector_active.js');
 
 const fixture = readFixtures('input_group_selector.html');
 

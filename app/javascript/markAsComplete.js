@@ -1,6 +1,6 @@
 /* global alert */
 
-var markAsComplete = (function() {
+export default (function() {
   var buttonSelector = '[data-behavior="mark-as-complete"]';
 
   return {

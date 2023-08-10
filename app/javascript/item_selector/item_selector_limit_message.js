@@ -1,3 +1,5 @@
+import itemSelector from '../item_selector'
+
 var itemSelectorLimitMessage = (function() {
 
   return $.extend({}, itemSelector, {

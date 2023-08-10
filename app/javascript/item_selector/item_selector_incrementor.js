@@ -1,6 +1,4 @@
-//= require 'item_selector/item_selector_limit'
-//= require 'item_selector/item_selector_limit_message'
-//= require 'item_selector/item_selector_zero_message'
+import itemSelector from '../item_selector'
 
 var itemSelectorIncrementor = (function() {
   return $.extend({}, itemSelector, {

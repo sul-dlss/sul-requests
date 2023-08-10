@@ -1,3 +1,5 @@
+import itemSelector from '../item_selector'
+
 var itemSelectorLimit = (function() {
 
   var selectorLimit = function(_this) {
