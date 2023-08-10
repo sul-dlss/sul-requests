@@ -19,7 +19,7 @@ class RequestAndPickupButtonComponent < ViewComponent::Base
   end
 
   def default_pickup_destination
-    Settings.ils.bib_model == 'Folio::Instance' ? Settings.folio.default_service_point : Settings.default_pickup_library
+    Folio::Destination.default_destination
   end
 
   def single_checked_out_item?

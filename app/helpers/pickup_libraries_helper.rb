@@ -3,8 +3,7 @@
 ##
 # Helpers for formatting and displaying pickup libraries
 module PickupLibrariesHelper
-  include Folio::TypesUtils
-  # Pickup libraries for Symphony
+  # Pickup libraries for FOLIO or Symphony
   def select_for_pickup_destinations(form)
     pickup_destinations = form.object.pickup_destinations
     return unless pickup_destinations.present?
@@ -55,40 +54,13 @@ module PickupLibrariesHelper
 
   # Get the label, if it exists, for the pickup destination
   def get_destination_label(pickup_destination)
-    # If FOLIO, get the service point name
-    return get_service_point_name(pickup_destination) if Settings.ils.bib_model == 'Folio::Instance'
-
-    # If not FOLIO
-    Settings.libraries[pickup_destination]&.label
+    Folio::Destination.new(pickup_destination).display_label
   end
 
   # Return the array of destinations for the dropdown
   def pickup_destinations_array(pickup_destinations)
-    # If FOLIO
-    return pickup_service_points_array(pickup_destinations) if Settings.ils.bib_model == 'Folio::Instance'
-
-    pickup_libraries_array(pickup_destinations)
-  end
-
-  # FOLIO version
-  # Given an array of service point codes
-  def pickup_service_points_array(pickup_service_points)
-    # We want an array of arrays, with first element being label, second being code
-    # First create hash by service point code to enable easier lookup
-    service_points_hash = {}
-    Folio::Types.instance.service_points.each_value do |service_point|
-      service_points_hash[service_point.code] = service_point
-    end
-    pickup_service_points.map do |code|
-      sp = service_points_hash[code]
-      [sp.name, code]
-    end
-  end
-
-  # Symphony version
-  def pickup_libraries_array(pickup_libraries)
-    pickup_libraries.map do |k|
-      [Settings.libraries[k]&.label || k, k]
+    pickup_destinations.map do |k|
+      [get_destination_label(k) || k, k]
     end.sort
   end
 end

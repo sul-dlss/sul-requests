@@ -48,11 +48,10 @@ class PagingScheduleController < ApplicationController
   end
 
   def request_for_schedule
-    destination = params[:destination]
-    destination = map_to_library(destination) if Settings.ils.bib_model == 'Folio::Instance'
+    destination = Folio::Destination.new(params[:destination])
     Request.new(
       origin: params[:origin],
-      destination:
+      destination: destination.paging_code
     )
   end
 end

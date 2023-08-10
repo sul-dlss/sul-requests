@@ -18,7 +18,7 @@ RSpec.describe PickupLibrariesHelper do
     end
 
     it 'sorts the libraries by the name of the library (and not the code)' do
-      pickup_libraries = helper.send(:pickup_libraries_array, libraries)
+      pickup_libraries = helper.send(:pickup_destinations_array, libraries)
 
       expect(pickup_libraries).to eq([['Library 1', 'XYZ'], ['Library 2', 'ABC']])
     end
