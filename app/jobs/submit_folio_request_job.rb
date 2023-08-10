@@ -101,7 +101,7 @@ class SubmitFolioRequestJob < ApplicationJob
 
     def get_service_point_code(destination)
       # Check if comparable service point code exists, otherwise return default
-        valid_service_point_code?(destination) ? destination : Settings.folio.default_service_point
+      valid_service_point_code?(destination) ? destination : Settings.folio.default_service_point
     end
 
     def place_item_hold(item_id:)
