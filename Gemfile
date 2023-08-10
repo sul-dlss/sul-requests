@@ -12,7 +12,7 @@ gem 'puma', '~> 5.0' # avoid capybara errors until capybara release; see https:/
 gem 'bootsnap'
 # Use bootstrap_form for easy form building
 gem 'bootstrap_form', '< 4' # pin to < 4 since we are not on bootstrap 4
-# A gem for simple rails invironment specific config
+# A gem for simple rails environment specific config
 gem 'config'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
