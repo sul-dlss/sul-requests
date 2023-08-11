@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe AuthenticationController do
   before do
-    request.env['HTTP_REFERER'] = 'https://example.com'
+    request.env['HTTP_REFERER'] = 'https://test.host/admin'
   end
 
   describe 'login' do
@@ -15,7 +15,7 @@ RSpec.describe AuthenticationController do
 
     it 'redirects back when there is no provided referrer' do
       get :login
-      expect(response).to redirect_to('https://example.com')
+      expect(response).to redirect_to('https://test.host/admin')
     end
 
     it 'has a flash success message informing the user they logged in' do
