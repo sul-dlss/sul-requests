@@ -1,4 +1,4 @@
-import List from '../list.min'
+import List from 'list.js'
 import itemSelector from '../item_selector'
 
 var itemSelectorFiltering = (function() {

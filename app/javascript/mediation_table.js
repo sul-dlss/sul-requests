@@ -1,5 +1,5 @@
 import $ from 'jquery'
-import List from './list.min'
+import List from 'list.js'
 import adminComments from './adminComments'
 import markAsComplete from './markAsComplete'
 
