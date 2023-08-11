@@ -4,7 +4,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
 
   FactoryBot.define do
     factory :location, class: 'Folio::Location' do
-      id { Folio::Types.get_type('locations').find { |l| l['code'] == code }.fetch('id') }
+      id { Folio::Types.load_cache(type: 'locations').find { |l| l['code'] == code }.fetch('id') }
       code { 'SAL3-STACKS' }
       name { 'Location name' }
       discovery_display_name { 'Discovery display name' }

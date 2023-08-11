@@ -6,7 +6,7 @@ module Folio
   # accessing the types.
   class Types
     class << self
-      delegate  :policies, :circulation_rules, :criteria, :get_type, :locations, :libraries,
+      delegate  :policies, :circulation_rules, :criteria, :load_cache, :locations, :libraries,
                 :map_to_library_code, :map_to_service_point_code, :service_point_name, :service_point_code,
                 :service_point_id, :valid_service_point_code?, to: :instance
     end
@@ -46,27 +46,27 @@ module Folio
     end
 
     def service_points
-      get_type('service_points').map { |p| Folio::ServicePoint.from_dynamic(p) }.index_by(&:id)
+      load_cache(type: 'service_points').map { |p| Folio::ServicePoint.from_dynamic(p) }.index_by(&:id)
     end
 
     def policies
       @policies ||= {
-        request: get_type('request_policies').index_by { |p| p['id'] },
-        loan: get_type('loan_policies').index_by { |p| p['id'] },
-        overdue: get_type('overdue_fines_policies').index_by { |p| p['id'] },
-        'lost-item': get_type('lost_item_fees_policies').index_by { |p| p['id'] },
-        notice: get_type('patron_notice_policies').index_by { |p| p['id'] }
+        request: load_cache(type: 'request_policies').index_by { |p| p['id'] },
+        loan: load_cache(type: 'loan_policies').index_by { |p| p['id'] },
+        overdue: load_cache(type: 'overdue_fines_policies').index_by { |p| p['id'] },
+        'lost-item': load_cache(type: 'lost_item_fees_policies').index_by { |p| p['id'] },
+        notice: load_cache(type: 'patron_notice_policies').index_by { |p| p['id'] }
       }
     end
 
     # rubocop:disable Metrics/AbcSize
     def criteria
       @criteria ||= {
-        'group' => get_type('patron_groups').index_by { |p| p['id'] },
-        'material-type' => get_type('material_types').index_by { |p| p['id'] },
-        'loan-type' => get_type('loan_types').index_by { |p| p['id'] },
-        'location-institution' => get_type('institutions').index_by { |p| p['id'] },
-        'location-campus' => get_type('campuses').index_by { |p| p['id'] },
+        'group' => load_cache(type: 'patron_groups').index_by { |p| p['id'] },
+        'material-type' => load_cache(type: 'material_types').index_by { |p| p['id'] },
+        'loan-type' => load_cache(type: 'loan_types').index_by { |p| p['id'] },
+        'location-institution' => load_cache(type: 'institutions').index_by { |p| p['id'] },
+        'location-campus' => load_cache(type: 'campuses').index_by { |p| p['id'] },
         'location-library' => libraries,
         'location-location' => locations
       }
@@ -74,14 +74,14 @@ module Folio
     # rubocop:enable Metrics/AbcSize
 
     def libraries
-      @libraries ||= get_type('libraries').index_by { |p| p['id'] }
+      @libraries ||= load_cache(type: 'libraries').index_by { |p| p['id'] }
     end
 
     def locations
-      @locations ||= get_type('locations').index_by { |p| p['id'] }
+      @locations ||= load_cache(type: 'locations').index_by { |p| p['id'] }
     end
 
-    def get_type(type)
+    def load_cache(type:)
       raise "Unknown type #{type}" unless types_of_interest.include?(type.to_s)
 
       file = cache_dir.join("#{type}.json")
