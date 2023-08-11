@@ -30,7 +30,7 @@ module Folio
     def scannable_only?
       return false unless scannable?
 
-      !(mediateable? || pageable?)
+      !(mediateable? || pageable? || hold_recallable?)
     end
 
     def mediateable?
