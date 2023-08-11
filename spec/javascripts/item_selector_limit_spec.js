@@ -37,16 +37,15 @@ describe('Item Selector', () => {
       itemSelectorLimit.checkboxes().filter(':nth-child(3)').trigger('click');
       expect(itemSelectorLimit.checkboxes().filter(':checked').length).toBe(3);
 
-      var fourthCheckbox = itemSelectorLimit.checkboxes()
+      const fourthCheckbox = itemSelectorLimit.checkboxes()
                                             .filter(':nth-child(4)');
-      var spy = jest.spyOn(fourthCheckbox, 'click');
-      fourthCheckbox.click();
-      expect(spy).toHaveBeenCalled();
+      fourthCheckbox.trigger('click') // makes no change because we're over the threshold
       expect(itemSelectorLimit.checkboxes().filter(':checked').length).toBe(3);
 
+      // Uncheck the third one so we're under the threshold
       itemSelectorLimit.checkboxes().filter(':nth-child(3)').trigger('click');
       expect(itemSelectorLimit.checkboxes().filter(':checked').length).toBe(2);
-      fourthCheckbox.click();
+      fourthCheckbox.trigger('click') // Increments the number checked as we were under the threshold
       expect(itemSelectorLimit.checkboxes().filter(':checked').length).toBe(3);
     });
 
