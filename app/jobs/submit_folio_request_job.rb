@@ -157,7 +157,7 @@ class SubmitFolioRequestJob < ApplicationJob
     end
 
     def find_hold_pseudo_patron_for(key)
-      key = Folio::Types.instance.map_to_library(key)
+      key = Folio::Types.instance.map_to_library_code(key)
       id = Settings.libraries[key]&.folio_hold_pseudopatron || raise("no hold pseudopatron for '#{key}'")
       build_pseudopatron(id)
     end

@@ -18,13 +18,12 @@ module RequestValidations
   protected
 
   def destination_is_a_pickup_library
-    return if check_destination(destination)
+    return if check_destination?(destination)
 
     errors.add(:destination, 'is not a valid pickup library')
   end
 
-  # Based on FOLIO or Symphony, will do different check
-  def check_destination(destination)
+  def check_destination?(destination)
     pickup_destinations.include?(destination)
   end
 

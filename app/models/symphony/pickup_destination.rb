@@ -8,10 +8,9 @@ module Symphony
       Settings.default_pickup_library
     end
 
-    # @param code: service point or library code
+    # @param destination_code: library code
     def initialize(destination_code)
       @code = destination_code
-      @type = 'Library'
     end
 
     def display_label

@@ -45,7 +45,7 @@ module PickupLibrariesHelper
           #{label_for_pickup_destinations_dropdown([])}
         </div>
         <div class='#{content_column_class} input-like-text'>
-          #{destination_label || pickup_destination}
+          #{destination_label}
         </div>
         #{form.hidden_field :destination, value: pickup_destination}
       </div>
@@ -54,7 +54,7 @@ module PickupLibrariesHelper
 
   # Get the label, if it exists, for the pickup destination
   def destination_label(pickup_destination)
-    destination_abstraction(pickup_destination).display_label
+    Settings.ils.pickup_destination_class.constantize.new(pickup_destination).display_label || pickup_destination
   end
 
   # Return the array of destinations for the dropdown
@@ -62,9 +62,5 @@ module PickupLibrariesHelper
     pickup_destinations.map do |k|
       [destination_label(k) || k, k]
     end.sort
-  end
-
-  def destination_abstraction(destination_code)
-    Settings.ils.pickup_destination_class.constantize.new(destination_code)
   end
 end

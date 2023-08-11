@@ -8,10 +8,9 @@ module Folio
       Settings.folio.default_service_point
     end
 
-    # @param code: service point or library code
+    # @param destination_code: service point code
     def initialize(destination_code)
       @code = destination_code
-      @type = 'ServicePoint'
     end
 
     def display_label
@@ -21,7 +20,7 @@ module Folio
     # For paging scheduling, we must map from service point to library if folio
     # Otherwise, the library code is what we will be receiving
     def paging_code
-      Folio::Types.instance.map_to_library(@code)
+      Folio::Types.instance.map_to_library_code(@code)
     end
   end
 end

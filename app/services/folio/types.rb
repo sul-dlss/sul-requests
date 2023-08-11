@@ -7,7 +7,7 @@ module Folio
   class Types
     class << self
       delegate  :policies, :circulation_rules, :criteria, :get_type, :locations, :libraries,
-                :map_to_library, :map_to_service_point, :service_point_name, :service_point_code,
+                :map_to_library_code, :map_to_service_point_code, :service_point_name, :service_point_code,
                 :service_point_id, :valid_service_point_code?, to: :instance
     end
 
@@ -91,7 +91,7 @@ module Folio
     # Mapping and functions for finding specific information
     # For FOLIO, destination is specified as service point
     # Convert service point to library for scheduling and library hours
-    def map_to_library(service_point_code)
+    def map_to_library_code(service_point_code)
       return service_point_code if service_point_code == 'SCAN'
 
       return nil unless valid_service_point_code?(service_point_code)
@@ -111,16 +111,16 @@ module Folio
     # Find the library id for the location with which this service point is associated
     def library_for_service_point(service_point_id)
       loc = get_type('locations').find { |location| location['primaryServicePoint'] == service_point_id }
-      loc.present? && loc.key?('libraryId') ? loc['libraryId'] : nil
+      loc && loc['libraryId']
     end
 
     # Check if valid service point
     def valid_service_point_code?(service_point_code)
-      service_points.values.find { |v| v.code == service_point_code }.present?
+      service_points.values.any? { |v| v.code == service_point_code }
     end
 
     # Given a library code, retrieve the primary service point, ensuring pickup location is true
-    def map_to_service_point(library_code)
+    def map_to_service_point_code(library_code)
       # Find library id for the library with this code
       library_id = library_id(library_code)
       # Get the associated location and related service point
@@ -137,7 +137,7 @@ module Folio
 
     def service_point_for_library(library_id)
       loc = get_type('locations').find { |location| location['libraryId'] == library_id }
-      loc.present? && loc.key?('primaryServicePoint') ? loc['primaryServicePoint'] : nil
+      loc && loc['primaryServicePoint']
     end
 
     def service_point_by_id(service_point_id)
