@@ -1,4 +1,4 @@
-import List from '../list.min'
+import List from 'list.js'
 import itemSelector from '../item_selector'
 
 var itemSelectorFiltering = (function() {
@@ -10,7 +10,7 @@ var itemSelectorFiltering = (function() {
   return $.extend({}, itemSelector, {
     init: function() {
       var _this = this;
-      $(document).on('turbolinks:load', function(){
+      $(document).on('turbo:load', function(){
         var list = _this.listPlugin();
         _this.setDefaultSort(list);
         _this.clearSearchInputOnFormSubmit(list);

@@ -12,7 +12,7 @@ var dateSelector = (function() {
     init: function(opts) {
       var _this = this;
       _this.options = $.extend(defaultOptions, opts);
-      $(document).on('turbolinks:load', function(){
+      $(document).on('turbo:load', function(){
         _this.setupListeners();
       });
     },

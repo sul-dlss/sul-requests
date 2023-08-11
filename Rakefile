@@ -14,10 +14,6 @@ task default: [
   :spec
 ]
 
-task asset_paths: [:environment] do
-  puts Rails.application.config.assets.paths
-end
-
 task javascript_tests: [:environment] do
   cmd = 'yarn test'
   success = system(cmd)

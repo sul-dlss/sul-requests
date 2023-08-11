@@ -1,5 +1,5 @@
 import $ from 'jquery'
-import List from './list.min'
+import List from 'list.js'
 import adminComments from './adminComments'
 import markAsComplete from './markAsComplete'
 
@@ -23,7 +23,7 @@ var mediationTable = (function() {
     init: function(opts) {
       var _this = this;
       _this.options = $.extend(defaultOptions, opts);
-      $(document).on('turbolinks:load', function(){
+      $(document).on('turbo:load', function(){
         _this.addToggleHoldingsBehavior();
         _this.addSortableColumns();
       });

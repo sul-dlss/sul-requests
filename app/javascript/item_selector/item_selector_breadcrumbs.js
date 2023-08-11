@@ -21,7 +21,7 @@ var itemSelectorBreadcrumbs = (function() {
   return $.extend({}, itemSelector, {
     init: function() {
       var _this = this;
-      $(document).on('turbolinks:load', function(){
+      $(document).on('turbo:load', function(){
         _this.setupDefaultBreadcrumbs();
         _this.addBreadcrumbBehavior();
       });

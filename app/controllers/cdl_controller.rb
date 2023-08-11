@@ -29,7 +29,8 @@ class CdlController < ApplicationController
 
     CdlCheckout.checkin(hold_record_key, current_user)
 
-    redirect_to "#{checkin_params['return_to']}?success=true"
+    # Typically this is sending to mylibrary
+    redirect_to "#{checkin_params['return_to']}?success=true", allow_other_host: true
   end
 
   # rubocop:disable Metrics/AbcSize
@@ -37,7 +38,8 @@ class CdlController < ApplicationController
     checkout = CdlCheckout.checkout(checkout_params['barcode'], checkout_params['id'], current_user)
 
     if checkout[:token]
-      redirect_to "#{checkout_params['return_to']}?token=#{encode_token(checkout[:token])}"
+      # This is typically sending to stacks
+      redirect_to "#{checkout_params['return_to']}?token=#{encode_token(checkout[:token])}", allow_other_host: true
 
       return
     end
@@ -54,7 +56,8 @@ class CdlController < ApplicationController
     payload, _headers = decode_token(renew_params['token'])
     renewal = CdlCheckout.renew(payload['barcode'], payload['aud'], current_user)
 
-    redirect_to "#{renew_params['return_to']}?token=#{encode_token(renewal)}"
+    # This is typically sending to stacks
+    redirect_to "#{renew_params['return_to']}?token=#{encode_token(renewal)}", allow_other_host: true
   end
 
   private
