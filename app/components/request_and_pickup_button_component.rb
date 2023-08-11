@@ -19,7 +19,7 @@ class RequestAndPickupButtonComponent < ViewComponent::Base
   end
 
   def default_pickup_destination
-    Folio::Destination.default_destination
+    Settings.ils.pickup_destination_class.constantize.default_destination
   end
 
   def single_checked_out_item?

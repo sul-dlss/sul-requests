@@ -54,7 +54,7 @@ module PickupLibrariesHelper
 
   # Get the label, if it exists, for the pickup destination
   def get_destination_label(pickup_destination)
-    Folio::Destination.new(pickup_destination).display_label
+    destination_abstraction(pickup_destination).display_label
   end
 
   # Return the array of destinations for the dropdown
@@ -62,5 +62,9 @@ module PickupLibrariesHelper
     pickup_destinations.map do |k|
       [get_destination_label(k) || k, k]
     end.sort
+  end
+
+  def destination_abstraction(destination_code)
+    Settings.ils.pickup_destination_class.constantize.new(destination_code)
   end
 end
