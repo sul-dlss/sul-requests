@@ -11,5 +11,9 @@ module Folio
           is_default_pickup: json.dig('details', 'isDefaultPickup'),
           is_default_for_campus: json.dig('details', 'isDefaultForCampus'))
     end
+
+    def pickup_location?
+      pickup_location == true
+    end
   end
 end

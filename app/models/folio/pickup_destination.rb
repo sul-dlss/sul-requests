@@ -13,14 +13,16 @@ module Folio
       @code = destination_code
     end
 
+    attr_reader :code
+
     def display_label
-      Folio::Types.instance.service_point_name(@code)
+      Folio::Types.service_points.find_by(code:).name
     end
 
     # For paging scheduling, we must map from service point to library if folio
     # Otherwise, the library code is what we will be receiving
     def library_code
-      Folio::Types.instance.map_to_library_code(@code)
+      Folio::Types.map_to_library_code(code)
     end
   end
 end

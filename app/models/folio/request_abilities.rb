@@ -67,22 +67,23 @@ module Folio
       location_restricted_service_point_codes
     end
 
-    # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
+    # Find service point which is default for this particular campus
     def default_pickup_destination
-      # Find service point which is default for this particular campus
-      pickup = Folio::Types.instance.service_points.select do |_k, v|
-        v.is_default_for_campus.present? && v.is_default_for_campus == request.holdings.first&.effective_location&.campus&.code
-      end.values.map(&:code)
-      pickup.present? ? pickup[0] : Settings.folio.default_service_point
+      campus_code = request.holdings.first&.effective_location&.campus&.code
+      service_points = if campus_code
+                         Folio::Types.service_points.where(is_default_for_campus: campus_code).map(&:code)
+                       else
+                         []
+                       end
+      service_points.first || Settings.folio.default_service_point
     end
 
     private
 
     # Returns default service point codes
     def default_pickup_service_points
-      Folio::Types.instance.service_points.select { |_k, v| v.is_default_pickup }.values.map(&:code)
+      Folio::Types.service_points.where(is_default_pickup: true).map(&:code)
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity
 
     def additional_pickup_service_points
       # Map library to a service point

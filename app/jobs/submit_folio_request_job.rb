@@ -94,13 +94,13 @@ class SubmitFolioRequestJob < ApplicationJob
     def pickup_location_id
       @pickup_location_id ||= begin
         code = service_point_code(request.destination)
-        Folio::Types.instance.service_point_id(code)
+        Folio::Types.service_points.find_by(code:)&.id
       end
     end
 
     def service_point_code(destination)
       # Check if comparable service point code exists, otherwise return default
-      return destination if Folio::Types.instance.valid_service_point_code?(destination)
+      return destination if Folio::Types.service_points.find_by(code: destination)
 
       # During cutover and migration, we may still need to depend on the service point defined in settings
       Settings.libraries[destination]&.folio_pickup_service_point_code || Settings.folio.default_service_point
