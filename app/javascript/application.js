@@ -6,8 +6,6 @@ import 'bootstrap-sass'
 import './bootstrap-editable'
 import './bootstrap-editable-rails'
 
-import Turbolinks from 'turbolinks'
-
 import './additional_user_validation_fields'
 import './date_selector'
 import './item_approval'
@@ -52,10 +50,10 @@ $.swap = function (elem, options, callback, args) {
 // normally, we'd put this in its own file, but when we tried
 // that, the functionality broke, and it didn't seem worth spending
 // the time to debug further.
-$(document).on('turbolinks:load', function() {
+$(document).on('turbo:load', function() {
   $('.editable').editable();
   $("[data-toggle='tooltip']").tooltip();
 });
 
 Rails.start()
-Turbolinks.start()
+import "@hotwired/turbo-rails"

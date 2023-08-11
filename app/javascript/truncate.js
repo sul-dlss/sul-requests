@@ -13,7 +13,7 @@ var truncate = (function() {
                 tooltip: false
             };
 
-            $(document).on('turbolinks:load', function() {
+            $(document).on('turbo:load', function() {
                 $("[data-behavior='truncate']").trunk8(trunk8Settings);
 
                 $("[data-behavior='trunk8toggle']").trunk8(trunk8ToggleSettings);

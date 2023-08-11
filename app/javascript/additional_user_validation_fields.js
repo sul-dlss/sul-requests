@@ -11,7 +11,7 @@ var additionalUserValidationFields = (function() {
     init: function(opts) {
       var _this = this;
       _this.options = $.extend(defaultOptions, opts);
-      $(document).on('turbolinks:load', function(){
+      $(document).on('turbo:load', function(){
         if(_this.submitButtons().length > 0) {
           _this.addFormvalidationBehavior();
         }

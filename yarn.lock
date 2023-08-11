@@ -1102,6 +1102,19 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.19.0.tgz#fa5f12c96811cec3233a53bdbf61d1a05ba9018f"
   integrity sha512-jl+NXUjK2StMgqnZnqgNjZuerFG8zQqWXMBZdMMv4W/aO1ZKQaYWZBxTrtWKphkCBVEMh0wMVfGgOd2BjOZqUQ==
 
+"@hotwired/turbo-rails@^7.3.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@hotwired/turbo-rails/-/turbo-rails-7.3.0.tgz#422c21752509f3edcd6c7b2725bbe9e157815f51"
+  integrity sha512-fvhO64vp/a2UVQ3jue9WTc2JisMv9XilIC7ViZmXAREVwiQ2S4UC7Go8f9A1j4Xu7DBI6SbFdqILk5ImqVoqyA==
+  dependencies:
+    "@hotwired/turbo" "^7.3.0"
+    "@rails/actioncable" "^7.0"
+
+"@hotwired/turbo@^7.3.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@hotwired/turbo/-/turbo-7.3.0.tgz#2226000fff1aabda9fd9587474565c9929dbf15d"
+  integrity sha512-Dcu+NaSvHLT7EjrDrkEmH4qET2ZJZ5IcCWmNXxNQTBwlnE5tBZfN6WxZ842n5cHV52DH/AKNirbPBtcEXDLW4g==
+
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@istanbuljs/load-nyc-config/-/load-nyc-config-1.1.0.tgz#fd3db1d59ecf7cf121e80650bb86712f9b55eced"
@@ -1356,6 +1369,11 @@
   version "2.1.8-no-fsevents.3"
   resolved "https://registry.yarnpkg.com/@nicolo-ribaudo/chokidar-2/-/chokidar-2-2.1.8-no-fsevents.3.tgz#323d72dd25103d0c4fbdce89dadf574a787b1f9b"
   integrity sha512-s88O1aVtXftvp5bCPB7WnmXc5IwOZZ7YPuwNPt+GtOOXpPvad1LfbmjYv+qII7zP6RU2QGnqve27dnLycEnyEQ==
+
+"@rails/actioncable@^7.0":
+  version "7.0.7"
+  resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-7.0.7.tgz#03b5faa8642a80211708e8f1754cf424e9228718"
+  integrity sha512-NqHf4XDkeVaNk/r+TBo2aAMkjPyRPEfZkSqCTijfWukW1zTZ2XLDfvFzbpRCuWZ6gxItgoa/FkILZm27HRh2yg==
 
 "@sinclair/typebox@^0.27.8":
   version "0.27.8"
@@ -4550,11 +4568,6 @@ trunk8@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/trunk8/-/trunk8-0.0.1.tgz#710b5614ed3b35a24ee8349769c3cc2a158e9ad5"
   integrity sha512-hp7Se9cqgc0/jcuVVaEe4kAXTFKl+7R2/CkQ9mThA0AzF5RUBTxO9DO6M5FxqymGtC3EEUSEdHEjjj/17TLdsQ==
-
-turbolinks@^5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/turbolinks/-/turbolinks-5.2.0.tgz#e6877a55ea5c1cb3bb225f0a4ae303d6d32ff77c"
-  integrity sha512-pMiez3tyBo6uRHFNNZoYMmrES/IaGgMhQQM+VFF36keryjb5ms0XkVpmKHkfW/4Vy96qiGW3K9bz0tF5sK9bBw==
 
 type-detect@4.0.8:
   version "4.0.8"

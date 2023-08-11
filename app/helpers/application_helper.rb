@@ -11,7 +11,7 @@ module ApplicationHelper
   end
 
   def request_form_html_options
-    { html: { class: @request.class.model_name.param_key.tr('_', '-') } }
+    { html: { class: @request.class.model_name.param_key.tr('_', '-'), data: { turbo: false } } }
   end
 
   def bootstrap_form_layout_options

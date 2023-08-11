@@ -20,13 +20,13 @@
     "jest-fixtures": "^0.6.0"
   },
   "dependencies": {
+    "@hotwired/turbo-rails": "^7.3.0",
     "bootstrap-icons": "^1.10.4",
     "bootstrap-sass": "3.4.1",
     "esbuild": "^0.19.0",
     "jquery": "^3.7.0",
     "rails-ujs": "^5.2.8-1",
     "sass": "^1.57.1",
-    "trunk8": "^0.0.1",
-    "turbolinks": "^5.2.0"
+    "trunk8": "^0.0.1"
   }
 }
