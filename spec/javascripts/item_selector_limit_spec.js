@@ -9,7 +9,7 @@ describe('Item Selector', () => {
     document.body.innerHTML = fixture;
     itemSelector.init();
     itemSelectorLimit.init();
-    $(document).trigger('turbolinks:load');
+    $(document).trigger('turbo:load');
   });
   afterEach(() => {
     $(document).off(); // reset listeners between the tests

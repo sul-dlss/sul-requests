@@ -41,7 +41,7 @@ RSpec.describe 'Creating a page request' do
 
         click_button 'Send request'
 
-        # Verify that the old record was not overwritten when the new request was created
+        # Verify that the old record was NOT overwritten when the new request was created
         expect(User.where(email: 'tcramer1@stanford.edu').count).to eq 2
         expect_to_be_on_success_page
       end
