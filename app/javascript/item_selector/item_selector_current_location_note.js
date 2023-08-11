@@ -1,3 +1,5 @@
+import itemSelector from '../item_selector'
+
 var itemSelectorCurrentLocationNote = (function() {
   return $.extend({}, itemSelector, {
     init: function() {

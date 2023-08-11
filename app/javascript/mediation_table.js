@@ -1,5 +1,7 @@
-/* global adminComments */
-/* global markAsComplete */
+import $ from 'jquery'
+import List from './list.min'
+import adminComments from './adminComments'
+import markAsComplete from './markAsComplete'
 
 var mediationTable = (function() {
   var defaultOptions = {

@@ -1,3 +1,5 @@
+import $ from 'jquery'
+
 var dateSelector = (function() {
   var defaultOptions = {
     mediatedPageFieldSelector: 'input[data-request-type="mediated_page"]',

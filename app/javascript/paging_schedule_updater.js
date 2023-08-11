@@ -1,3 +1,5 @@
+import $ from 'jquery'
+
 var pagingScheduleUpdater = (function() {
 
   var defaultOptions = {

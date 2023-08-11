@@ -2,9 +2,6 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 7.0'
 
-# The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
-gem 'sprockets-rails'
-
 # Use sqlite3 as the database (during local development)
 gem 'sqlite3'
 # Use Puma as the app server
@@ -14,8 +11,6 @@ gem 'bootsnap'
 gem 'bootstrap_form', '< 4' # pin to < 4 since we are not on bootstrap 4
 # A gem for simple rails environment specific config
 gem 'config'
-# Use jquery as the JavaScript library
-gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks', '~> 5.0'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -123,3 +118,7 @@ gem "cssbundling-rails", "~> 1.1"
 
 gem "view_component", "~> 3.0"
 gem "parslet"
+
+gem "jsbundling-rails", "~> 1.1"
+
+gem "sprockets-rails"

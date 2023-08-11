@@ -1,3 +1,5 @@
+import $ from 'jquery'
+
 var noJS = (function() {
   return {
     init: function() {

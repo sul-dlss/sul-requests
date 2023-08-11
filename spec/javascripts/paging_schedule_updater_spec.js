@@ -1,4 +1,4 @@
-const pagingScheduleUpdater = require('../../app/assets/javascripts/paging_schedule_updater.js');
+const pagingScheduleUpdater = require('../../app/javascript/paging_schedule_updater.js');
 
 const fixture_paging_schedule = readFixtures('paging_schedule_elements.html');
 const fixture_no_dropdown_paging_schedule = readFixtures('no_dropdown_paging_schedule.html');

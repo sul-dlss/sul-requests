@@ -1,6 +1,6 @@
-const itemSelector = require('../../app/assets/javascripts/item_selector.js');
+const itemSelector = require('../../app/javascript/item_selector.js');
 global.itemSelector = itemSelector;
-const itemSelectorBreadcrumbs = require('../../app/assets/javascripts/item_selector/item_selector_breadcrumbs.js');
+const itemSelectorBreadcrumbs = require('../../app/javascript/item_selector/item_selector_breadcrumbs.js');
 
 const fixture = readFixtures('no_limit_item_selector.html');
 

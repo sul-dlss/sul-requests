@@ -1,6 +1,6 @@
-const itemSelector = require('../../app/assets/javascripts/item_selector.js');
+const itemSelector = require('../../app/javascript/item_selector.js');
 global.itemSelector = itemSelector;
-const itemSelectorCurrentLocationNote = require('../../app/assets/javascripts/item_selector/item_selector_current_location_note.js');
+const itemSelectorCurrentLocationNote = require('../../app/javascript/item_selector/item_selector_current_location_note.js');
 
 const fixture = readFixtures('checkedout_item_selector.html');
 

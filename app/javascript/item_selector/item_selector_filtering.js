@@ -1,3 +1,6 @@
+import List from '../list.min'
+import itemSelector from '../item_selector'
+
 var itemSelectorFiltering = (function() {
   var listOptions = {
     page: 10000,
