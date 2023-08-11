@@ -142,7 +142,8 @@ module Folio
           # fall back to the holding record's effective Location; we're no longer guaranteed an item-level permanent location.
           permanent_location: (if dyn['permanentLocation']
                                  Location.from_hash(dyn.fetch('permanentLocation'))
-                               end) || Location.from_hash(dyn.fetch('effectiveLocation')),
+                               end) || (Location.from_hash(dyn.dig('holdingsRecord', 'effectiveLocation')) if dyn.dig('holdingsRecord',
+                                                                                                                      'effectiveLocation')),
           material_type: MaterialType.new(id: dyn.dig('materialType', 'id'), name: dyn.dig('materialType', 'name')),
           loan_type: LoanType.new(id: dyn.fetch('tempooraryLoanTypeId', dyn.fetch('permanentLoanTypeId'))))
     end
