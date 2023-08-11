@@ -5,8 +5,6 @@ module Folio
   class RequestAbilities
     attr_reader :request
 
-    include Folio::TypesUtils
-
     # @param [Request] request
     def initialize(request)
       @request = request
@@ -90,7 +88,7 @@ module Folio
 
     def additional_pickup_service_points
       # Map library to a service point
-      service_point_code = map_to_service_point(request.origin)
+      service_point_code = Folio::Types.instance.map_to_service_point(request.origin)
       service_point_code.nil? ? [] : [service_point_code]
     end
 

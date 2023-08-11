@@ -9,7 +9,7 @@ RSpec.describe SubmitFolioRequestJob do
     allow(FolioClient).to receive(:new).and_return(client)
   end
 
-  let(:client) { instance_double(FolioClient, get_item: { 'id' => 4 }, get_service_point: { 'id' => 5 }, create_item_hold: double) }
+  let(:client) { instance_double(FolioClient, get_item: { 'id' => 4 }, ice_point: { 'id' => 5 }, create_item_hold: double) }
   let(:expected_date) { DateTime.now.beginning_of_day.utc.iso8601 }
 
   context 'with a HoldRecall type request' do

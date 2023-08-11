@@ -4,8 +4,6 @@
 #  Controller for returning the paging schedule for async requests
 ###
 class PagingScheduleController < ApplicationController
-  include Folio::TypesUtils
-
   rescue_from PagingSchedule::ScheduleNotFound do
     render plain: 'Schedule not found', status: :not_found
   end

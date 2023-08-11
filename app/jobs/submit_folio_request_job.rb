@@ -38,7 +38,6 @@ class SubmitFolioRequestJob < ApplicationJob
 
   # Submit a hold request to FOLIO
   class Command
-    include Folio::TypesUtils
     attr_reader :request, :folio_client, :barcode, :logger
 
     # @param [Request] request
@@ -94,14 +93,14 @@ class SubmitFolioRequestJob < ApplicationJob
 
     def pickup_location_id
       @pickup_location_id ||= begin
-        code = get_service_point_code(request.destination)
-        get_service_point_id(code)
+        code = service_point_code(request.destination)
+        Folio::Types.intance.service_point_id(code)
       end
     end
 
-    def get_service_point_code(destination)
+    def service_point_code(destination)
       # Check if comparable service point code exists, otherwise return default
-      valid_service_point_code?(destination) ? destination : Settings.folio.default_service_point
+      Folio::Types.instance.valid_service_point_code?(destination) ? destination : Settings.folio.default_service_point
     end
 
     def place_item_hold(item_id:)
@@ -158,7 +157,7 @@ class SubmitFolioRequestJob < ApplicationJob
     end
 
     def find_hold_pseudo_patron_for(key)
-      key = map_to_library(key)
+      key = Folio::Types.instance.map_to_library(key)
       id = Settings.libraries[key]&.folio_hold_pseudopatron || raise("no hold pseudopatron for '#{key}'")
       build_pseudopatron(id)
     end

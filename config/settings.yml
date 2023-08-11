@@ -83,7 +83,7 @@ symphony_ils: &symphony_ils
   patron_model: Symphony::Patron
   request_job: SubmitSymphonyRequestJob
   request_abilities_class: RequestAbilities
-  pickup_destination_class: PickupDestination
+  pickup_destination_class: Symphony::PickupDestination
 
 folio_ils: &folio_ils
   bib_model: Folio::Instance

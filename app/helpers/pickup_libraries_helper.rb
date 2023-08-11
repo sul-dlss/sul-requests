@@ -38,7 +38,7 @@ module PickupLibrariesHelper
   end
 
   def single_destination_markup(form, pickup_destination)
-    destination_label = get_destination_label(pickup_destination)
+    destination_label = destination_label(pickup_destination)
     <<-HTML
       <div class='form-group'>
         <div class='#{label_column_class} control-label'>
@@ -53,14 +53,14 @@ module PickupLibrariesHelper
   end
 
   # Get the label, if it exists, for the pickup destination
-  def get_destination_label(pickup_destination)
+  def destination_label(pickup_destination)
     destination_abstraction(pickup_destination).display_label
   end
 
   # Return the array of destinations for the dropdown
   def pickup_destinations_array(pickup_destinations)
     pickup_destinations.map do |k|
-      [get_destination_label(k) || k, k]
+      [destination_label(k) || k, k]
     end.sort
   end
 
