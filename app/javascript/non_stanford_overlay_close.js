@@ -1,4 +1,5 @@
 /* global iframePostMessage */
+import $ from 'jquery'
 
 var nonStanfordOverlay = (function() {
   var yesSelector = '[data-behavior="close-overlay"]';

@@ -1,3 +1,5 @@
+import $ from 'jquery'
+
 var itemApproval = (function() {
   var defaultOptions = {
     buttonSelector: '[data-behavior="item-approval"]',

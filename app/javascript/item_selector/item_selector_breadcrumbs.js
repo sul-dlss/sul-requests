@@ -1,4 +1,4 @@
-//= require 'item_selector/item_selector_incrementor'
+import itemSelector from '../item_selector'
 
 var itemSelectorBreadcrumbs = (function() {
 

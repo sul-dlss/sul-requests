@@ -1,3 +1,5 @@
+import $ from 'jquery'
+
 var additionalUserValidationFields = (function() {
   var defaultOptions = {
     singleUserFieldSelector: '[data-behavior="single-user-field"]',

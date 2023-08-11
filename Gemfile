@@ -2,9 +2,6 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 7.0'
 
-# The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
-gem 'sprockets-rails'
-
 # Use sqlite3 as the database (during local development)
 gem 'sqlite3'
 # Use Puma as the app server
@@ -12,12 +9,8 @@ gem 'puma', '~> 5.0' # avoid capybara errors until capybara release; see https:/
 gem 'bootsnap'
 # Use bootstrap_form for easy form building
 gem 'bootstrap_form', '< 4' # pin to < 4 since we are not on bootstrap 4
-# Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails'
-# A gem for simple rails invornment specific config
+# A gem for simple rails environment specific config
 gem 'config'
-# Use jquery as the JavaScript library
-gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks', '~> 5.0'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -25,7 +18,7 @@ gem 'jbuilder', '~> 2.5'
 # CanCanCan is an authorization Gem for rails
 gem 'cancancan'
 # Use faraday for making HTTP requests
-gem 'faraday', '~> 2' # for lirary hours, Illiad, and Folio clients
+gem 'faraday', '~> 2' # for library hours, Illiad, and Folio clients
 gem 'faraday-retry'
 gem 'http' # for Reshare and SymphonyClient
 # Use kaminari for pagination
@@ -125,3 +118,7 @@ gem "cssbundling-rails", "~> 1.1"
 
 gem "view_component", "~> 3.0"
 gem "parslet"
+
+gem "jsbundling-rails", "~> 1.1"
+
+gem "sprockets-rails"

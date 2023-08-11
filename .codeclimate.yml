@@ -3,8 +3,6 @@ engines:
     enabled: true
   bundler-audit:
     enabled: true
-  coffelint:
-    enabled: true
   duplication:
     enabled: true
     config:

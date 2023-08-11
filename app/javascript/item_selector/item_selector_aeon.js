@@ -1,3 +1,5 @@
+import itemSelector from '../item_selector'
+
 var itemSelectorAeon = (function () {
 
   return $.extend({}, itemSelector, {

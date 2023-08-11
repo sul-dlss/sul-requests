@@ -1,3 +1,5 @@
+import itemSelector from '../item_selector'
+
 var itemSelectorActive = (function() {
 
   return $.extend({}, itemSelector, {

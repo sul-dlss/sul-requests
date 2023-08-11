@@ -1,3 +1,6 @@
+import itemSelector from './item_selector'
+import additionalUserValidationFields from './additional_user_validation_fields'
+
 var requestFormValidator = (function() {
 
   return $.extend({}, itemSelector, {

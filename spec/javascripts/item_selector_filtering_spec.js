@@ -1,7 +1,7 @@
-const itemSelector = require('../../app/assets/javascripts/item_selector.js');
+const itemSelector = require('../../app/javascript/item_selector.js');
 global.itemSelector = itemSelector;
-const itemSelectorFiltering = require('../../app/assets/javascripts/item_selector/item_selector_filtering.js');
-
+const itemSelectorFiltering = require('../../app/javascript/item_selector/item_selector_filtering.js');
+import List from '../../app/javascript/list.min'
 const fixture = readFixtures('no_limit_item_selector.html');
 
 describe('Item Selector Filtering', () => {
