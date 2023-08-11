@@ -135,7 +135,11 @@ class FolioGraphqlClient
                 temporaryLoanTypeId
                 holdingsRecord {
                   effectiveLocation {
+                    id
                     code
+                    details {
+                      pagingSchedule
+                    }
                   }
                 }
               }
