@@ -8,7 +8,7 @@ module Folio
     class << self
       delegate  :policies, :circulation_rules, :criteria, :get_type,
                 :locations, :libraries, :service_points,
-                :fetch_service_point_by_code, :fetch_library_by_code, to: :instance
+                :fetch_library_by_code, to: :instance
     end
 
     def self.instance
@@ -46,7 +46,7 @@ module Folio
     end
 
     def service_points
-      @service_points ||= get_type('service_points').map { |p| Folio::ServicePoint.from_dynamic(p) }.index_by(&:id)
+      @service_points ||= ServicePointStore.new(get_type('service_points'))
     end
 
     def policies
@@ -86,11 +86,6 @@ module Folio
 
       file = cache_dir.join("#{type}.json")
       JSON.parse(file.read) if file.exist?
-    end
-
-    # Find the service point based on this service point code
-    def fetch_service_point_by_code(service_point_code)
-      Folio::Types.service_points.values.find { |sp| sp.code == service_point_code }
     end
 
     # Find the library based on this library code

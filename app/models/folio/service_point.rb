@@ -29,6 +29,10 @@ module Folio
       @library ||= Folio::Types.libraries[library_id]
     end
 
+    def pickup_location?
+      pickup_location == true
+    end
+
     private
 
     def library_id

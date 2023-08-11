@@ -11,7 +11,7 @@ module Folio
     end
 
     def primary_service_points
-      @primary_service_points ||= locations.pluck('primaryServicePoint').uniq.map { |id| Folio::Types.service_points[id] }
+      @primary_service_points ||= locations.pluck('primaryServicePoint').uniq.map { |id| Folio::Types.service_points.find_by(id:) }
     end
 
     private
