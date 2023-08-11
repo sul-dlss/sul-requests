@@ -14,13 +14,13 @@ describe('Toggling show tabs', function() {
       expect(document.querySelector('#thing-a')).toBeVisible();
       expect(document.querySelector('#thing-b')).not.toBeVisible();
       
-      $('#thing-a a').click();
+      $('#thing-a a').trigger('click');
       
       expect(document.querySelector('#thing-a')).not.toBeVisible();
       expect(document.querySelector('#thing-b')).toBeVisible();
       expect($('#thing-b input')).toEqual($( document.activeElement ));
       
-      $('#thing-b a').click();
+      $('#thing-b a').trigger('click');
       
       expect(document.querySelector('#thing-a')).toBeVisible();
       expect(document.querySelector('#thing-b')).not.toBeVisible();
