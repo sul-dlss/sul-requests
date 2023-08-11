@@ -94,7 +94,7 @@ class SubmitFolioRequestJob < ApplicationJob
     def pickup_location_id
       @pickup_location_id ||= begin
         code = service_point_code(request.destination)
-        Folio::Types.intance.service_point_id(code)
+        Folio::Types.instance.service_point_id(code)
       end
     end
 
