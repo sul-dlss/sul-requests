@@ -635,32 +635,6 @@
     }
   },
   {
-    "id": "bf11ec11-1343-42e3-ad93-163ce3ec1bf4",
-    "name": "SUL TS Cataloging Shelf",
-    "code": "SUL-TS-CATALOGING-SHELF",
-    "discoveryDisplayName": "In process",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "c1a86906-ced0-46cb-8f5b-8cef542bdd00",
-    "details": {
-    },
-    "primaryServicePoint": "0590225b-eea3-4db8-8290-68e99cc898df",
-    "servicePointIds": [
-      "0590225b-eea3-4db8-8290-68e99cc898df",
-      "b6c12686-3adf-4d3d-8f7c-334e971d37ed"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-07-27T20:30:18.270+00:00",
-      "createdByUserId": "4798e9d7-b430-425d-993f-5aabb63a1538",
-      "updatedDate": "2023-07-27T20:31:40.714+00:00",
-      "updatedByUserId": "4798e9d7-b430-425d-993f-5aabb63a1538"
-    }
-  },
-  {
     "id": "cb0275a1-ac7a-4d3b-843a-62e77952f5d2",
     "name": "Green British Docs",
     "code": "GRE-BRIT-DOCS",
@@ -8379,6 +8353,32 @@
     }
   },
   {
+    "id": "32bebe0c-a235-4689-8f8a-6cc0472e74b1",
+    "name": "Spec Inprocess",
+    "code": "SPEC-INPROCESS",
+    "discoveryDisplayName": "In process",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "availabilityClass": "In_process"
+    },
+    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
+    "servicePointIds": [
+      "0e924af7-785c-46eb-a5e2-060394822016"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-06-21T17:04:30.623+00:00",
+      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
+      "updatedDate": "2023-08-11T22:42:14.278+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
+    }
+  },
+  {
     "id": "2680e0fa-90a9-4a38-9042-ad4e7673c94c",
     "name": "Science Reserves",
     "code": "SCI-CRES",
@@ -10241,6 +10241,32 @@
     }
   },
   {
+    "id": "6cf378ff-4f72-40e7-afa0-b897c1bdd085",
+    "name": "SUL TS Collection Care",
+    "code": "SUL-TS-COLLECTIONCARE",
+    "discoveryDisplayName": "In process",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "c1a86906-ced0-46cb-8f5b-8cef542bdd00",
+    "details": {
+      "availabilityClass": "In_process"
+    },
+    "primaryServicePoint": "8896c413-9907-4810-b33d-d1f8761ea1a9",
+    "servicePointIds": [
+      "8896c413-9907-4810-b33d-d1f8761ea1a9"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-02-27T14:15:26.638+00:00",
+      "createdByUserId": "4798e9d7-b430-425d-993f-5aabb63a1538",
+      "updatedDate": "2023-08-11T22:41:37.715+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
+    }
+  },
+  {
     "id": "cd8b738b-2145-40b7-ae4e-99dff34f4b8c",
     "name": "Tanner Lewis Collection",
     "code": "TAN-LEWIS-COLL",
@@ -10275,6 +10301,7 @@
     "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
     "libraryId": "c1a86906-ced0-46cb-8f5b-8cef542bdd00",
     "details": {
+      "availabilityClass": "In_process"
     },
     "primaryServicePoint": "8896c413-9907-4810-b33d-d1f8761ea1a9",
     "servicePointIds": [
@@ -10286,33 +10313,8 @@
     "metadata": {
       "createdDate": "2023-02-08T23:38:05.399+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-07-27T11:47:29.318+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
-    }
-  },
-  {
-    "id": "6cf378ff-4f72-40e7-afa0-b897c1bdd085",
-    "name": "SUL TS Collection Care",
-    "code": "SUL-TS-COLLECTIONCARE",
-    "discoveryDisplayName": "In process",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "c1a86906-ced0-46cb-8f5b-8cef542bdd00",
-    "details": {
-    },
-    "primaryServicePoint": "8896c413-9907-4810-b33d-d1f8761ea1a9",
-    "servicePointIds": [
-      "8896c413-9907-4810-b33d-d1f8761ea1a9"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-02-27T14:15:26.638+00:00",
-      "createdByUserId": "4798e9d7-b430-425d-993f-5aabb63a1538",
-      "updatedDate": "2023-07-27T11:50:33.616+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
+      "updatedDate": "2023-08-11T22:42:00.686+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
     }
   },
   {
@@ -10555,7 +10557,7 @@
     "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
     "libraryId": "c1a86906-ced0-46cb-8f5b-8cef542bdd00",
     "details": {
-      "availabilityClass": "In process"
+      "availabilityClass": "In_process"
     },
     "primaryServicePoint": "0590225b-eea3-4db8-8290-68e99cc898df",
     "servicePointIds": [
@@ -10567,7 +10569,7 @@
     "metadata": {
       "createdDate": "2023-03-16T16:47:44.867+00:00",
       "createdByUserId": "4798e9d7-b430-425d-993f-5aabb63a1538",
-      "updatedDate": "2023-08-10T22:49:13.713+00:00",
+      "updatedDate": "2023-08-11T22:40:12.669+00:00",
       "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
     }
   },
@@ -10849,6 +10851,58 @@
     }
   },
   {
+    "id": "0a28181f-e7b1-42f3-93a9-36c12ab4522f",
+    "name": "SUL TS CC Kasemake",
+    "code": "SUL-TS-CC-KASEMAKE",
+    "discoveryDisplayName": "In process",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "c1a86906-ced0-46cb-8f5b-8cef542bdd00",
+    "details": {
+      "availabilityClass": "In_process"
+    },
+    "primaryServicePoint": "8896c413-9907-4810-b33d-d1f8761ea1a9",
+    "servicePointIds": [
+      "8896c413-9907-4810-b33d-d1f8761ea1a9"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-05-01T18:56:38.019+00:00",
+      "createdByUserId": "4798e9d7-b430-425d-993f-5aabb63a1538",
+      "updatedDate": "2023-08-11T22:41:22.497+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
+    }
+  },
+  {
+    "id": "51d37aaa-dcb5-46ee-a9f1-9310f1737b55",
+    "name": "SUL TS CC Repair",
+    "code": "SUL-TS-CC-REPAIR",
+    "discoveryDisplayName": "Out for repair",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "c1a86906-ced0-46cb-8f5b-8cef542bdd00",
+    "details": {
+      "availabilityClass": "In_process"
+    },
+    "primaryServicePoint": "8896c413-9907-4810-b33d-d1f8761ea1a9",
+    "servicePointIds": [
+      "8896c413-9907-4810-b33d-d1f8761ea1a9"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-05-01T18:51:50.229+00:00",
+      "createdByUserId": "4798e9d7-b430-425d-993f-5aabb63a1538",
+      "updatedDate": "2023-08-11T22:41:27.941+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
+    }
+  },
+  {
     "id": "b0a92ff8-7640-486f-a824-545126e39993",
     "name": "WILL NOT MIGRATE - PILOT - Metadata",
     "code": "PMD",
@@ -10900,56 +10954,6 @@
     }
   },
   {
-    "id": "0a28181f-e7b1-42f3-93a9-36c12ab4522f",
-    "name": "SUL TS CC Kasemake",
-    "code": "SUL-TS-CC-KASEMAKE",
-    "discoveryDisplayName": "In process",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "c1a86906-ced0-46cb-8f5b-8cef542bdd00",
-    "details": {
-    },
-    "primaryServicePoint": "8896c413-9907-4810-b33d-d1f8761ea1a9",
-    "servicePointIds": [
-      "8896c413-9907-4810-b33d-d1f8761ea1a9"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-05-01T18:56:38.019+00:00",
-      "createdByUserId": "4798e9d7-b430-425d-993f-5aabb63a1538",
-      "updatedDate": "2023-07-27T11:49:47.770+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
-    }
-  },
-  {
-    "id": "51d37aaa-dcb5-46ee-a9f1-9310f1737b55",
-    "name": "SUL TS CC Repair",
-    "code": "SUL-TS-CC-REPAIR",
-    "discoveryDisplayName": "Out for repair",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "c1a86906-ced0-46cb-8f5b-8cef542bdd00",
-    "details": {
-    },
-    "primaryServicePoint": "8896c413-9907-4810-b33d-d1f8761ea1a9",
-    "servicePointIds": [
-      "8896c413-9907-4810-b33d-d1f8761ea1a9"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-05-01T18:51:50.229+00:00",
-      "createdByUserId": "4798e9d7-b430-425d-993f-5aabb63a1538",
-      "updatedDate": "2023-07-27T11:50:16.258+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
-    }
-  },
-  {
     "id": "1bad78dc-2688-436f-9bac-cf8c633d8707",
     "name": "HILA Cataloging Backlog",
     "code": "HILA-CAT-BACKLOG",
@@ -10971,31 +10975,6 @@
       "createdDate": "2023-05-03T00:39:35.607+00:00",
       "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
       "updatedDate": "2023-07-27T07:39:38.943+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
-    }
-  },
-  {
-    "id": "ea2778ab-8099-43c9-8f2c-792643268cbd",
-    "name": "SUL TS CC Special Projects",
-    "code": "SUL-TS-CC-SPECIALPROJECTS",
-    "discoveryDisplayName": "In process",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "c1a86906-ced0-46cb-8f5b-8cef542bdd00",
-    "details": {
-    },
-    "primaryServicePoint": "8896c413-9907-4810-b33d-d1f8761ea1a9",
-    "servicePointIds": [
-      "8896c413-9907-4810-b33d-d1f8761ea1a9"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-05-01T18:57:36.037+00:00",
-      "createdByUserId": "4798e9d7-b430-425d-993f-5aabb63a1538",
-      "updatedDate": "2023-07-27T11:50:26.309+00:00",
       "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
     }
   },
@@ -11077,31 +11056,6 @@
     }
   },
   {
-    "id": "5d33dee8-0de3-4903-9863-e17cd6f15e0b",
-    "name": "SUL TS CC Bindery Prep",
-    "code": "SUL-TS-CC-BINDERYPREP",
-    "discoveryDisplayName": "At Bindery",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "c1a86906-ced0-46cb-8f5b-8cef542bdd00",
-    "details": {
-    },
-    "primaryServicePoint": "8896c413-9907-4810-b33d-d1f8761ea1a9",
-    "servicePointIds": [
-      "8896c413-9907-4810-b33d-d1f8761ea1a9"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-02-27T14:15:54.540+00:00",
-      "createdByUserId": "4798e9d7-b430-425d-993f-5aabb63a1538",
-      "updatedDate": "2023-07-27T11:49:27.761+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
-    }
-  },
-  {
     "id": "37ba49c7-7122-4738-a120-58cf6df77f91",
     "name": "SUL TS CC Book Jacket",
     "code": "SUL-TS-CC-BOOKJACKET",
@@ -11111,6 +11065,7 @@
     "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
     "libraryId": "c1a86906-ced0-46cb-8f5b-8cef542bdd00",
     "details": {
+      "availabilityClass": "In_process"
     },
     "primaryServicePoint": "8896c413-9907-4810-b33d-d1f8761ea1a9",
     "servicePointIds": [
@@ -11122,8 +11077,8 @@
     "metadata": {
       "createdDate": "2023-05-01T18:55:38.243+00:00",
       "createdByUserId": "4798e9d7-b430-425d-993f-5aabb63a1538",
-      "updatedDate": "2023-07-27T11:49:36.884+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
+      "updatedDate": "2023-08-11T22:41:15.803+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
     }
   },
   {
@@ -11136,6 +11091,7 @@
     "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
     "libraryId": "c1a86906-ced0-46cb-8f5b-8cef542bdd00",
     "details": {
+      "availabilityClass": "In_process"
     },
     "primaryServicePoint": "0590225b-eea3-4db8-8290-68e99cc898df",
     "servicePointIds": [
@@ -11147,8 +11103,8 @@
     "metadata": {
       "createdDate": "2023-05-03T16:41:45.642+00:00",
       "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
-      "updatedDate": "2023-07-27T11:50:58.764+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
+      "updatedDate": "2023-08-11T22:41:48.829+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
     }
   },
   {
@@ -11382,6 +11338,32 @@
     }
   },
   {
+    "id": "d167b3cc-2f10-47de-ac16-bdc6b4f819dc",
+    "name": "East Asia Inprocess",
+    "code": "EAL-INPROCESS",
+    "discoveryDisplayName": "In process",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "a97665ba-db3c-4f95-91b6-b582cc3080c7",
+    "details": {
+      "availabilityClass": "In_process"
+    },
+    "primaryServicePoint": "58cfd8b4-ee04-4f1a-a74e-4a1771fe5b6b",
+    "servicePointIds": [
+      "58cfd8b4-ee04-4f1a-a74e-4a1771fe5b6b"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-06-28T18:43:49.860+00:00",
+      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
+      "updatedDate": "2023-08-11T22:43:39.185+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
+    }
+  },
+  {
     "id": "1ab2a2be-ccb5-43db-b711-9f1ff3025383",
     "name": "Education Withdrawn Digital Substitute",
     "code": "EDU-WD-DIGITAL-SUB",
@@ -11582,31 +11564,6 @@
     }
   },
   {
-    "id": "be3fc508-9770-441b-a27d-40226baf5093",
-    "name": "SUL TS Conservation Services",
-    "code": "SUL-TS-CONSERVATIONSERVICES",
-    "discoveryDisplayName": "In Conservation Services",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "c1a86906-ced0-46cb-8f5b-8cef542bdd00",
-    "details": {
-    },
-    "primaryServicePoint": "cc46a57e-fbca-4e69-9ab5-78f42c560145",
-    "servicePointIds": [
-      "cc46a57e-fbca-4e69-9ab5-78f42c560145"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-06-01T22:39:11.268+00:00",
-      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
-      "updatedDate": "2023-07-27T11:50:48.400+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
-    }
-  },
-  {
     "id": "a93811d6-a2c9-4ad8-96d1-2cd7f924cd3b",
     "name": "Green CPR Bindery",
     "code": "GRE-CPR-BINDERY",
@@ -11629,6 +11586,32 @@
       "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
       "updatedDate": "2023-08-09T18:41:19.452+00:00",
       "updatedByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364"
+    }
+  },
+  {
+    "id": "1f0e3f18-99d4-4400-95a1-0f55d092f201",
+    "name": "Earth Sci Scanning Lab",
+    "code": "EAR-SCANLAB",
+    "discoveryDisplayName": "In process",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "96630997-201d-49b3-b8d5-e4ba43a6cde8",
+    "details": {
+      "availabilityClass": "In_process"
+    },
+    "primaryServicePoint": "4827ae1d-b8bf-4b90-9e09-d642557893ab",
+    "servicePointIds": [
+      "4827ae1d-b8bf-4b90-9e09-d642557893ab"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-07-01T19:56:12.427+00:00",
+      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
+      "updatedDate": "2023-08-11T22:43:53.732+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
     }
   },
   {
@@ -11655,106 +11638,6 @@
       "createdDate": "2023-02-08T23:37:21.550+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
       "updatedDate": "2023-07-27T10:03:15.304+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
-    }
-  },
-  {
-    "id": "20981666-b567-4124-b18e-f4713823e51f",
-    "name": "Music Inprocess",
-    "code": "MUS-INPROCESS",
-    "discoveryDisplayName": "In process",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "45d4bfcc-439b-4ae3-8c62-a8f975be1d5b",
-    "details": {
-    },
-    "primaryServicePoint": "4d77d74b-271e-421a-91c6-992afa9afb3c",
-    "servicePointIds": [
-      "4d77d74b-271e-421a-91c6-992afa9afb3c"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-06-27T21:31:56.377+00:00",
-      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
-      "updatedDate": "2023-07-27T11:01:13.132+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
-    }
-  },
-  {
-    "id": "32bebe0c-a235-4689-8f8a-6cc0472e74b1",
-    "name": "Spec Inprocess",
-    "code": "SPEC-INPROCESS",
-    "discoveryDisplayName": "In process",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
-    "details": {
-    },
-    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
-    "servicePointIds": [
-      "0e924af7-785c-46eb-a5e2-060394822016"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-06-21T17:04:30.623+00:00",
-      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
-      "updatedDate": "2023-07-27T11:09:23.327+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
-    }
-  },
-  {
-    "id": "2065af65-904d-41bb-8db8-35bff753cf64",
-    "name": "Spec Inprocess RWC",
-    "code": "SPEC-INPROCESS-RWC",
-    "discoveryDisplayName": "In process",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
-    "details": {
-    },
-    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
-    "servicePointIds": [
-      "0e924af7-785c-46eb-a5e2-060394822016"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-06-21T17:06:24.028+00:00",
-      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
-      "updatedDate": "2023-07-27T11:09:36.632+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
-    }
-  },
-  {
-    "id": "c567d73a-898d-4029-8b39-afca5eb79ade",
-    "name": "Spec Inprocess UA",
-    "code": "SPEC-INPROCESS-UA",
-    "discoveryDisplayName": "In process",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
-    "details": {
-    },
-    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
-    "servicePointIds": [
-      "0e924af7-785c-46eb-a5e2-060394822016"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-06-21T17:07:54.523+00:00",
-      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
-      "updatedDate": "2023-07-27T11:09:43.944+00:00",
       "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
     }
   },
@@ -11811,28 +11694,81 @@
     }
   },
   {
-    "id": "d167b3cc-2f10-47de-ac16-bdc6b4f819dc",
-    "name": "East Asia Inprocess",
-    "code": "EAL-INPROCESS",
+    "id": "2065af65-904d-41bb-8db8-35bff753cf64",
+    "name": "Spec Inprocess RWC",
+    "code": "SPEC-INPROCESS-RWC",
     "discoveryDisplayName": "In process",
     "isActive": true,
     "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
     "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "a97665ba-db3c-4f95-91b6-b582cc3080c7",
+    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
     "details": {
+      "availabilityClass": "In_process"
     },
-    "primaryServicePoint": "58cfd8b4-ee04-4f1a-a74e-4a1771fe5b6b",
+    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
     "servicePointIds": [
-      "58cfd8b4-ee04-4f1a-a74e-4a1771fe5b6b"
+      "0e924af7-785c-46eb-a5e2-060394822016"
     ],
     "servicePoints": [
 
     ],
     "metadata": {
-      "createdDate": "2023-06-28T18:43:49.860+00:00",
+      "createdDate": "2023-06-21T17:06:24.028+00:00",
       "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
-      "updatedDate": "2023-07-27T10:24:49.723+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
+      "updatedDate": "2023-08-11T22:42:19.715+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
+    }
+  },
+  {
+    "id": "c567d73a-898d-4029-8b39-afca5eb79ade",
+    "name": "Spec Inprocess UA",
+    "code": "SPEC-INPROCESS-UA",
+    "discoveryDisplayName": "In process",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+    "details": {
+      "availabilityClass": "In_process"
+    },
+    "primaryServicePoint": "0e924af7-785c-46eb-a5e2-060394822016",
+    "servicePointIds": [
+      "0e924af7-785c-46eb-a5e2-060394822016"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-06-21T17:07:54.523+00:00",
+      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
+      "updatedDate": "2023-08-11T22:42:24.370+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
+    }
+  },
+  {
+    "id": "20981666-b567-4124-b18e-f4713823e51f",
+    "name": "Music Inprocess",
+    "code": "MUS-INPROCESS",
+    "discoveryDisplayName": "In process",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "45d4bfcc-439b-4ae3-8c62-a8f975be1d5b",
+    "details": {
+      "availabilityClass": "In_process"
+    },
+    "primaryServicePoint": "4d77d74b-271e-421a-91c6-992afa9afb3c",
+    "servicePointIds": [
+      "4d77d74b-271e-421a-91c6-992afa9afb3c"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-06-27T21:31:56.377+00:00",
+      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
+      "updatedDate": "2023-08-11T22:43:12.132+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
     }
   },
   {
@@ -12439,31 +12375,6 @@
     }
   },
   {
-    "id": "6a0aee81-af95-4240-947f-ec6f930d96d0",
-    "name": "Eng Tech Processor",
-    "code": "ENG-TECH-PROCESSOR",
-    "discoveryDisplayName": "In process",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "5ffbd230-b4fd-409a-8f1c-045f0494c5ef",
-    "details": {
-    },
-    "primaryServicePoint": "d0db91bf-90e7-4036-8e91-721001cf52fc",
-    "servicePointIds": [
-      "d0db91bf-90e7-4036-8e91-721001cf52fc"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-07-01T19:20:32.619+00:00",
-      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
-      "updatedDate": "2023-07-27T11:45:34.985+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
-    }
-  },
-  {
     "id": "0440cbd8-9bb6-4d01-9852-4ba0f76097cc",
     "name": "ARS Special Projects",
     "code": "ARS-SPECIALPROJECTS",
@@ -12512,6 +12423,84 @@
       "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
       "updatedDate": "2023-07-01T18:34:36.210+00:00",
       "updatedByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364"
+    }
+  },
+  {
+    "id": "eb47a6cb-a6d1-47be-aa5a-85b03cdbc6d9",
+    "name": "Media Repair Shelf",
+    "code": "MEDIA-REPAIR-SHELF",
+    "discoveryDisplayName": "In process",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "0acfabb7-0a71-47be-82c0-c0200dd47952",
+    "details": {
+      "availabilityClass": "In_process"
+    },
+    "primaryServicePoint": "943a4850-f0fb-4ffe-83cb-919157ed2117",
+    "servicePointIds": [
+      "943a4850-f0fb-4ffe-83cb-919157ed2117"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-07-01T18:35:43.560+00:00",
+      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
+      "updatedDate": "2023-08-11T22:42:50.381+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
+    }
+  },
+  {
+    "id": "3e600d91-6256-4e93-a3aa-a21792e95baf",
+    "name": "Media Tech Processor",
+    "code": "MEDIA-TECH-PROCESSOR",
+    "discoveryDisplayName": "In process",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "0acfabb7-0a71-47be-82c0-c0200dd47952",
+    "details": {
+      "availabilityClass": "In_process"
+    },
+    "primaryServicePoint": "943a4850-f0fb-4ffe-83cb-919157ed2117",
+    "servicePointIds": [
+      "943a4850-f0fb-4ffe-83cb-919157ed2117"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-07-01T18:22:07.650+00:00",
+      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
+      "updatedDate": "2023-08-11T22:42:57.855+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
+    }
+  },
+  {
+    "id": "6a0aee81-af95-4240-947f-ec6f930d96d0",
+    "name": "Eng Tech Processor",
+    "code": "ENG-TECH-PROCESSOR",
+    "discoveryDisplayName": "In process",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "5ffbd230-b4fd-409a-8f1c-045f0494c5ef",
+    "details": {
+      "availabilityClass": "In_process"
+    },
+    "primaryServicePoint": "d0db91bf-90e7-4036-8e91-721001cf52fc",
+    "servicePointIds": [
+      "d0db91bf-90e7-4036-8e91-721001cf52fc"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-07-01T19:20:32.619+00:00",
+      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
+      "updatedDate": "2023-08-11T22:44:41.452+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
     }
   },
   {
@@ -12586,56 +12575,6 @@
       "createdDate": "2023-07-01T18:45:29.222+00:00",
       "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
       "updatedDate": "2023-07-27T10:03:25.719+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
-    }
-  },
-  {
-    "id": "eb47a6cb-a6d1-47be-aa5a-85b03cdbc6d9",
-    "name": "Media Repair Shelf",
-    "code": "MEDIA-REPAIR-SHELF",
-    "discoveryDisplayName": "In process",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "0acfabb7-0a71-47be-82c0-c0200dd47952",
-    "details": {
-    },
-    "primaryServicePoint": "943a4850-f0fb-4ffe-83cb-919157ed2117",
-    "servicePointIds": [
-      "943a4850-f0fb-4ffe-83cb-919157ed2117"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-07-01T18:35:43.560+00:00",
-      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
-      "updatedDate": "2023-07-27T10:44:32.045+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
-    }
-  },
-  {
-    "id": "3e600d91-6256-4e93-a3aa-a21792e95baf",
-    "name": "Media Tech Processor",
-    "code": "MEDIA-TECH-PROCESSOR",
-    "discoveryDisplayName": "In process",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "0acfabb7-0a71-47be-82c0-c0200dd47952",
-    "details": {
-    },
-    "primaryServicePoint": "943a4850-f0fb-4ffe-83cb-919157ed2117",
-    "servicePointIds": [
-      "943a4850-f0fb-4ffe-83cb-919157ed2117"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-07-01T18:22:07.650+00:00",
-      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
-      "updatedDate": "2023-07-27T10:45:45.595+00:00",
       "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
     }
   },
@@ -12886,31 +12825,6 @@
       "createdDate": "2023-07-05T17:47:25.952+00:00",
       "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
       "updatedDate": "2023-07-27T11:18:18.180+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
-    }
-  },
-  {
-    "id": "1f0e3f18-99d4-4400-95a1-0f55d092f201",
-    "name": "Earth Sci Scanning Lab",
-    "code": "EAR-SCANLAB",
-    "discoveryDisplayName": "In process",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "96630997-201d-49b3-b8d5-e4ba43a6cde8",
-    "details": {
-    },
-    "primaryServicePoint": "4827ae1d-b8bf-4b90-9e09-d642557893ab",
-    "servicePointIds": [
-      "4827ae1d-b8bf-4b90-9e09-d642557893ab"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-07-01T19:56:12.427+00:00",
-      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
-      "updatedDate": "2023-07-27T09:20:03.872+00:00",
       "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
     }
   },
@@ -13238,6 +13152,33 @@
       "createdDate": "2023-06-27T21:34:20.095+00:00",
       "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
       "updatedDate": "2023-08-09T20:37:40.823+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
+    }
+  },
+  {
+    "id": "d3791f62-cc0f-4c6c-a00b-2e39aef0e7f3",
+    "name": "Rumsey Scanning Lab",
+    "code": "RUM-SCANLAB",
+    "discoveryDisplayName": "In process",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "05241c96-6541-41ed-b2ad-61a126d62c2d",
+    "details": {
+      "pageAeonSite": "RUMSEY",
+      "availabilityClass": "In_process"
+    },
+    "primaryServicePoint": "b6987737-1e63-44cc-bfb1-2bcf044adcd7",
+    "servicePointIds": [
+      "b6987737-1e63-44cc-bfb1-2bcf044adcd7"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-07-01T19:16:26.418+00:00",
+      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
+      "updatedDate": "2023-08-11T22:44:07.669+00:00",
       "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
     }
   },
@@ -13814,32 +13755,6 @@
     }
   },
   {
-    "id": "d3791f62-cc0f-4c6c-a00b-2e39aef0e7f3",
-    "name": "Rumsey Scanning Lab",
-    "code": "RUM-SCANLAB",
-    "discoveryDisplayName": "In process",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "05241c96-6541-41ed-b2ad-61a126d62c2d",
-    "details": {
-      "pageAeonSite": "RUMSEY"
-    },
-    "primaryServicePoint": "b6987737-1e63-44cc-bfb1-2bcf044adcd7",
-    "servicePointIds": [
-      "b6987737-1e63-44cc-bfb1-2bcf044adcd7"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-07-01T19:16:26.418+00:00",
-      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
-      "updatedDate": "2023-07-27T10:14:57.026+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
-    }
-  },
-  {
     "id": "56aab2ba-1a38-4b7d-a004-87b2f20bc4bf",
     "name": "Education Shadowed",
     "code": "EDU-SHADOW",
@@ -14405,6 +14320,111 @@
       "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
       "updatedDate": "2023-08-08T20:14:13.361+00:00",
       "updatedByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364"
+    }
+  },
+  {
+    "id": "bf11ec11-1343-42e3-ad93-163ce3ec1bf4",
+    "name": "SUL TS Cataloging Shelf",
+    "code": "SUL-TS-CATALOGING-SHELF",
+    "discoveryDisplayName": "In process",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "c1a86906-ced0-46cb-8f5b-8cef542bdd00",
+    "details": {
+      "availabilityClass": "In_process"
+    },
+    "primaryServicePoint": "0590225b-eea3-4db8-8290-68e99cc898df",
+    "servicePointIds": [
+      "0590225b-eea3-4db8-8290-68e99cc898df",
+      "b6c12686-3adf-4d3d-8f7c-334e971d37ed"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-07-27T20:30:18.270+00:00",
+      "createdByUserId": "4798e9d7-b430-425d-993f-5aabb63a1538",
+      "updatedDate": "2023-08-11T22:41:03.973+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
+    }
+  },
+  {
+    "id": "5d33dee8-0de3-4903-9863-e17cd6f15e0b",
+    "name": "SUL TS CC Bindery Prep",
+    "code": "SUL-TS-CC-BINDERYPREP",
+    "discoveryDisplayName": "At Bindery",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "c1a86906-ced0-46cb-8f5b-8cef542bdd00",
+    "details": {
+      "availabilityClass": "In_process"
+    },
+    "primaryServicePoint": "8896c413-9907-4810-b33d-d1f8761ea1a9",
+    "servicePointIds": [
+      "8896c413-9907-4810-b33d-d1f8761ea1a9"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-02-27T14:15:54.540+00:00",
+      "createdByUserId": "4798e9d7-b430-425d-993f-5aabb63a1538",
+      "updatedDate": "2023-08-11T22:41:10.164+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
+    }
+  },
+  {
+    "id": "ea2778ab-8099-43c9-8f2c-792643268cbd",
+    "name": "SUL TS CC Special Projects",
+    "code": "SUL-TS-CC-SPECIALPROJECTS",
+    "discoveryDisplayName": "In process",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "c1a86906-ced0-46cb-8f5b-8cef542bdd00",
+    "details": {
+      "availabilityClass": "In_process"
+    },
+    "primaryServicePoint": "8896c413-9907-4810-b33d-d1f8761ea1a9",
+    "servicePointIds": [
+      "8896c413-9907-4810-b33d-d1f8761ea1a9"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-05-01T18:57:36.037+00:00",
+      "createdByUserId": "4798e9d7-b430-425d-993f-5aabb63a1538",
+      "updatedDate": "2023-08-11T22:41:32.742+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
+    }
+  },
+  {
+    "id": "be3fc508-9770-441b-a27d-40226baf5093",
+    "name": "SUL TS Conservation Services",
+    "code": "SUL-TS-CONSERVATIONSERVICES",
+    "discoveryDisplayName": "In Conservation Services",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "c1a86906-ced0-46cb-8f5b-8cef542bdd00",
+    "details": {
+      "availabilityClass": "In_process"
+    },
+    "primaryServicePoint": "cc46a57e-fbca-4e69-9ab5-78f42c560145",
+    "servicePointIds": [
+      "cc46a57e-fbca-4e69-9ab5-78f42c560145"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-06-01T22:39:11.268+00:00",
+      "createdByUserId": "7ea853b6-26b6-4e5d-9b52-17b3bc1cb364",
+      "updatedDate": "2023-08-11T22:41:42.929+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
     }
   }
 ]
