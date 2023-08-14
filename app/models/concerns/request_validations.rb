@@ -20,7 +20,7 @@ module RequestValidations
   def destination_is_a_pickup_library
     return if pickup_destinations.include?(destination)
 
-    errors.add(:destination, 'is not a valid pickup destination')
+    errors.add(:destination, 'is not a valid pickup library')
   end
 
   def requested_item_is_not_scannable_only
