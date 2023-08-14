@@ -6,7 +6,9 @@ module Folio
   # accessing the types.
   class Types
     class << self
-      delegate :policies, :circulation_rules, :criteria, :get_type, :locations, :libraries, to: :instance
+      delegate  :policies, :circulation_rules, :criteria, :get_type, :locations, :libraries,
+                :map_to_library_code, :map_to_service_point_code, :service_point_name, :service_point_code,
+                :service_point_id, :valid_service_point_code?, to: :instance
     end
 
     def self.instance
@@ -84,6 +86,68 @@ module Folio
 
       file = cache_dir.join("#{type}.json")
       JSON.parse(file.read) if file.exist?
+    end
+
+    # Mapping and functions for finding specific information
+    # For FOLIO, destination is specified as service point
+    # Convert service point to library for scheduling and library hours
+    def map_to_library_code(service_point_code)
+      return service_point_code if service_point_code == 'SCAN'
+
+      return nil unless valid_service_point_code?(service_point_code)
+
+      service_point_id = service_point_id(service_point_code)
+      library_id = library_for_service_point_id(service_point_id)
+
+      # Find the library code associated with this library id
+      libraries.key?(library_id) ? libraries[library_id]['code'] : nil
+    end
+
+    # Find the service point ID based on this service point code
+    def service_point_id(service_point_code)
+      service_points.values.find { |v| v.code == service_point_code }&.id
+    end
+
+    # Find the library id for the location with which this service point is associated
+    def library_for_service_point_id(service_point_id)
+      loc = locations.values.find { |location| location['primaryServicePoint'] == service_point_id }
+      loc && loc['libraryId']
+    end
+
+    # Check if valid service point
+    def valid_service_point_code?(service_point_code)
+      service_points.values.any? { |v| v.code == service_point_code }
+    end
+
+    # Given a library code, retrieve the primary service point, ensuring pickup location is true
+    def map_to_service_point_code(library_code)
+      # Find library id for the library with this code
+      library_id = library_id(library_code)
+      # Get the associated location and related service point
+      service_point_id = service_point_for_library(library_id)
+      # Find the service point ID based on this service point code
+      service_point = service_point_by_id(service_point_id)
+      service_point.present? && service_point.pickup_location == true ? service_point.code : nil
+    end
+
+    def library_id(library_code)
+      lib = libraries.values.find { |library| library['code'] == library_code }
+      lib && lib['id']
+    end
+
+    def service_point_for_library(library_id)
+      loc = locations.values.find { |location| location['libraryId'] == library_id }
+      loc && loc['primaryServicePoint']
+    end
+
+    def service_point_by_id(service_point_id)
+      service_points.key?(service_point_id) && service_points[service_point_id]
+    end
+
+    # Get the name for the service point given the code
+    def service_point_name(code)
+      # Find the service point with the same code, and return the name
+      service_points.values.find { |v| v.code == code }&.name
     end
 
     private

@@ -46,9 +46,10 @@ class PagingScheduleController < ApplicationController
   end
 
   def request_for_schedule
+    destination = Settings.ils.pickup_destination_class.constantize.new(params[:destination])
     Request.new(
       origin: params[:origin],
-      destination: params[:destination]
+      destination: destination.paging_code
     )
   end
 end

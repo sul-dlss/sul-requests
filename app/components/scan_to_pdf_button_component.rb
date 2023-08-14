@@ -18,7 +18,7 @@ class ScanToPdfButtonComponent < ViewComponent::Base
     @current_request.holdings_object.one? && @current_request.holdings_object.all?(&:checked_out?)
   end
 
-  def single_library_value
+  def single_destination_value
     single_checked_out_item? ? '' : 'SCAN'
   end
 end

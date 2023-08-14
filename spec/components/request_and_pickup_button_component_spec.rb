@@ -10,10 +10,11 @@ RSpec.describe RequestAndPickupButtonComponent, type: :component, unless: Settin
   end
 
   let(:component) { described_class.new(current_request: build(:request)) }
+  let(:destination) { Settings.ils.bib_model == 'Folio::Instance' ? 'GREEN-LOAN' : 'GREEN' }
 
   it 'renders the component' do
     expect(rendered).to have_link 'Request & pickup', href: '/pages/new'
-    expect(rendered).to have_selector 'dd[data-single-library-value="GREEN"]'
+    expect(rendered).to have_selector "dd[data-single-library-value='#{destination}']"
     expect(rendered).to have_selector 'dd span[data-scheduler-text="true"]'
   end
 end

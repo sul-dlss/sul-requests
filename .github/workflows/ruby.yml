@@ -42,6 +42,7 @@ jobs:
         SETTINGS__ILS__PATRON_MODEL: Folio::Patron
         SETTINGS__ILS__REQUEST_JOB: SubmitFolioRequestJob
         SETTINGS__ILS__REQUEST_ABILITIES_CLASS: Folio::RequestAbilities
+        SETTINGS__ILS__PICKUP_DESTINATION_CLASS: Folio::PickupDestination
   tests_symphony:
     runs-on: ubuntu-latest
     strategy:

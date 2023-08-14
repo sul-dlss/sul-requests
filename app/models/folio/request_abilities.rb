@@ -60,47 +60,37 @@ module Folio
       !mediateable? && !hold_recallable? && any_holdings_pageable?
     end
 
-    def pickup_libraries
-      return (default_pickup_libraries + additional_pickup_libraries).uniq if location_restricted_service_point_codes.empty?
+    # FOLIO
+    def pickup_destinations
+      return (default_pickup_service_points + additional_pickup_service_points).uniq if location_restricted_service_point_codes.empty?
 
-      Settings.libraries.keys.select do |key|
-        location_restricted_service_point_codes.include? Settings.libraries[key].folio_pickup_service_point_code
-      end.map(&:to_s)
+      location_restricted_service_point_codes
     end
 
-    # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-    def default_pickup_library
-      service_points = Folio::Types.instance.service_points.select do |_k, v|
+    # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
+    def default_pickup_destination
+      # Find service point which is default for this particular campus
+      pickup = Folio::Types.instance.service_points.select do |_k, v|
         v.is_default_for_campus.present? && v.is_default_for_campus == request.holdings.first&.effective_location&.campus&.code
       end.values.map(&:code)
-
-      library = Settings.libraries.keys.find do |key|
-        service_points.include? Settings.libraries[key].folio_pickup_service_point_code
-      end&.to_s
-
-      library || Settings.default_pickup_library
+      pickup.present? ? pickup[0] : Settings.folio.default_service_point
     end
 
     private
 
-    def default_pickup_libraries
-      service_points = Folio::Types.instance.service_points.select { |_k, v| v.is_default_pickup }.values.map(&:code)
-
-      Settings.libraries.keys.select do |key|
-        service_points.include? Settings.libraries[key].folio_pickup_service_point_code
-      end.map(&:to_s)
+    # Returns default service point codes
+    def default_pickup_service_points
+      Folio::Types.instance.service_points.select { |_k, v| v.is_default_pickup }.values.map(&:code)
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+    # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity
 
-    def additional_pickup_libraries
-      # TODO: if the locations (primary?) service point(s) is a pickup_location, add it to the list
-      # request.holdings.flat_map { |item| item.effective_location.service_points.select { |v| v.pickup_location } }.uniq
-
-      return [request.origin] if Settings.libraries[request.origin]&.folio_pickup_service_point_code
-
-      []
+    def additional_pickup_service_points
+      # Map library to a service point
+      service_point_code = Folio::Types.instance.map_to_service_point_code(request.origin)
+      Array(service_point_code)
     end
 
+    # Retrieve the service points associated with specific locations
     def location_restricted_service_point_codes
       request.holdings.flat_map do |item|
         Array(item.effective_location.details['pageServicePoints']).pluck('code')

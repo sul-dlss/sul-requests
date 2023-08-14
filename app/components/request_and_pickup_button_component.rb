@@ -18,15 +18,15 @@ class RequestAndPickupButtonComponent < ViewComponent::Base
     Settings.features.estimate_delivery && !Settings.features.migration
   end
 
-  def default_pickup_library
-    Settings.default_pickup_library
+  def default_pickup_destination
+    Settings.ils.pickup_destination_class.constantize.default_destination
   end
 
   def single_checked_out_item?
     @current_request.holdings_object.one? && @current_request.holdings_object.all?(&:checked_out?)
   end
 
-  def single_library_value
-    single_checked_out_item? ? '' : default_pickup_library
+  def single_destination_value
+    single_checked_out_item? ? '' : default_pickup_destination
   end
 end

@@ -93,11 +93,17 @@ class SubmitFolioRequestJob < ApplicationJob
 
     def pickup_location_id
       @pickup_location_id ||= begin
-        code = Settings.libraries[request.destination].folio_pickup_service_point_code
-        code ||= Settings.libraries['GREEN'].folio_pickup_service_point_code
-
-        Folio::Types.instance.service_points.values.find { |v| v.code == code }&.id
+        code = service_point_code(request.destination)
+        Folio::Types.instance.service_point_id(code)
       end
+    end
+
+    def service_point_code(destination)
+      # Check if comparable service point code exists, otherwise return default
+      return destination if Folio::Types.instance.valid_service_point_code?(destination)
+
+      # During cutover and migration, we may still need to depend on the service point defined in settings
+      Settings.libraries[destination]&.folio_pickup_service_point_code || Settings.folio.default_service_point
     end
 
     def place_item_hold(item_id:)
@@ -154,6 +160,7 @@ class SubmitFolioRequestJob < ApplicationJob
     end
 
     def find_hold_pseudo_patron_for(key)
+      key = Folio::Types.instance.map_to_library_code(key)
       id = Settings.libraries[key]&.folio_hold_pseudopatron || raise("no hold pseudopatron for '#{key}'")
       build_pseudopatron(id)
     end

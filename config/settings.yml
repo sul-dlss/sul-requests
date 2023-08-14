@@ -83,12 +83,14 @@ symphony_ils: &symphony_ils
   patron_model: Symphony::Patron
   request_job: SubmitSymphonyRequestJob
   request_abilities_class: RequestAbilities
+  pickup_destination_class: Symphony::PickupDestination
 
 folio_ils: &folio_ils
   bib_model: Folio::Instance
   patron_model: Folio::Patron
   request_job: SubmitFolioRequestJob
   request_abilities_class: Folio::RequestAbilities
+  pickup_destination_class: Folio::PickupDestination
 
 ils: *symphony_ils # or *folio_ils
 
@@ -101,6 +103,7 @@ folio:
   tenant: 'sul'
   fee_borrower_patron_group: 985acbb9-f7a7-4f44-9b34-458c02a78fbc
   standard_patron_group_names: ['staff', 'faculty', 'undergrad', 'graduate']
+  default_service_point: 'GREEN-LOAN'
 
 mailer_host: <%= `echo $HOSTNAME` %>
 searchworks_api: 'https://searchworks.stanford.edu'
