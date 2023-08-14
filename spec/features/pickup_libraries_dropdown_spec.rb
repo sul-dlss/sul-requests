@@ -8,7 +8,8 @@ RSpec.describe 'Pickup Libraries Dropdown' do
     build(:item,
           barcode: '3610512345678',
           callnumber: 'ABC 123',
-          effective_location: build(:location, code: 'SAL3-STACKS'))
+          effective_location_id: '1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2')
+          # effective_location: build(:location, code: 'SAL3-STACKS'))
   end
 
   before do
@@ -30,7 +31,8 @@ RSpec.describe 'Pickup Libraries Dropdown' do
         build(:item,
               barcode: '3610512345678',
               callnumber: 'ABC 123',
-              effective_location: build(:page_en_location))
+              effective_location_id: '5a298029-e552-4c32-acfe-3ad6b9d72f91')
+              #effective_location: build(:page_en_location))
       end
 
       it 'simplfies the display of the text of the destination library if there is only one possible' do
@@ -59,7 +61,8 @@ RSpec.describe 'Pickup Libraries Dropdown' do
         build(:item,
               barcode: '3610512345678',
               callnumber: 'ABC 123',
-              effective_location: build(:mmstacks_location),
+              # effective_location: build(:mmstacks_location),
+              effective_location_id: 'b3d15dd8-a053-4c06-93e9-e76e2dc59385',
               material_type: build(:multimedia_material_type))
       end
 

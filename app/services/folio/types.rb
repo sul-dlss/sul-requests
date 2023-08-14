@@ -6,7 +6,7 @@ module Folio
   # accessing the types.
   class Types
     class << self
-      delegate :policies, :circulation_rules, :criteria, :get_type, :locations, :libraries, to: :instance
+      delegate :policies, :circulation_rules, :criteria, :get_type, :locations, :libraries, :campuses, to: :instance
     end
 
     def self.instance
@@ -77,6 +77,10 @@ module Folio
 
     def locations
       @locations ||= get_type('locations').index_by { |p| p['id'] }
+    end
+
+    def campuses
+      @campuses ||= get_type('campuses').index_by { |p| p['id'] }
     end
 
     def get_type(type)

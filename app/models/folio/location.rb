@@ -6,9 +6,13 @@ module Folio
     def self.from_hash(dyn)
       new(
         id: dyn.fetch('id'),
-        campus: (Campus.new(**dyn.fetch('campus')) if dyn['campus']),
-        library: (Library.new(**dyn.fetch('library')) if dyn['library']),
-        institution: (Institution.new(id: dyn.fetch('institutionId')) if dyn['institutionId']),
+        # campus: (Campus.new(**dyn.fetch('campus')) if dyn['campus']),
+        campus: Campus.new(id: dyn.fetch('campusId'), code: Folio::Types.campuses.fetch(dyn.fetch('campusId')).fetch('code')),
+        # library: (Library.new(**dyn.fetch('library')) if dyn['library']),
+        # library: Library.new(id: dyn.fetch('libraryId')),
+        library: Library.new(id: dyn.fetch('libraryId'), code: Folio::Types.libraries.fetch(dyn.fetch('libraryId')).fetch('code')),
+        # institution: (Institution.new(id: dyn.fetch('institutionId')) if dyn['institutionId']),
+        institution: Institution.new(id: dyn.fetch('institutionId')),
         code: dyn.fetch('code'),
         discovery_display_name: dyn['discoveryDisplayName'] || dyn['name'] || dyn.fetch('id'),
         name: dyn['name'],
