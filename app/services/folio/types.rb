@@ -97,10 +97,10 @@ module Folio
       return nil unless valid_service_point_code?(service_point_code)
 
       service_point_id = service_point_id(service_point_code)
-      library_id = library_for_service_point(service_point_id)
+      library_id = library_for_service_point_id(service_point_id)
 
       # Find the library code associated with this library id
-      get_type('libraries').find { |library| library['id'] == library_id }['code']
+      libraries.key?(library_id) ? libraries[library_id]['code'] : nil
     end
 
     # Find the service point ID based on this service point code
@@ -109,8 +109,8 @@ module Folio
     end
 
     # Find the library id for the location with which this service point is associated
-    def library_for_service_point(service_point_id)
-      loc = get_type('locations').find { |location| location['primaryServicePoint'] == service_point_id }
+    def library_for_service_point_id(service_point_id)
+      loc = locations.values.find { |location| location['primaryServicePoint'] == service_point_id }
       loc && loc['libraryId']
     end
 
@@ -131,17 +131,17 @@ module Folio
     end
 
     def library_id(library_code)
-      lib = get_type('libraries').find { |library| library['code'] == library_code }
-      lib.present? && lib.key?('id') ? lib['id'] : nil
+      lib = libraries.values.find { |library| library['code'] == library_code }
+      lib && lib['id']
     end
 
     def service_point_for_library(library_id)
-      loc = get_type('locations').find { |location| location['libraryId'] == library_id }
+      loc = locations.values.find { |location| location['libraryId'] == library_id }
       loc && loc['primaryServicePoint']
     end
 
     def service_point_by_id(service_point_id)
-      service_points.values.find { |v| v.id == service_point_id }
+      service_points.key?(service_point_id) && service_points[service_point_id]
     end
 
     # Get the name for the service point given the code

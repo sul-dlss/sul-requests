@@ -75,7 +75,6 @@ jobs:
       run: bundle exec rake
       env:
         SETTINGS__ILS__BIB_MODEL: SearchworksItem
-        SETTINGS__ILS__PICKUP_DESTINATION_CLASS: Symphony::PickupDestination
   tests_cutover:
     runs-on: ubuntu-latest
     strategy:
