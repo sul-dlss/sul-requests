@@ -73,7 +73,8 @@ class CurrentUser
 
   def ldap_email
     return ldap_email_attribute unless ldap_email_attribute.nil?
-    return "#{user_id}@stanford.edu" if ldap_email_status == 'active'
+
+    "#{user_id}@stanford.edu" if ldap_email_status == 'active'
   end
 
   def ldap_email_attribute
