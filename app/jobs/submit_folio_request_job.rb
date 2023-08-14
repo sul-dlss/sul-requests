@@ -100,7 +100,10 @@ class SubmitFolioRequestJob < ApplicationJob
 
     def service_point_code(destination)
       # Check if comparable service point code exists, otherwise return default
-      Folio::Types.instance.valid_service_point_code?(destination) ? destination : Settings.folio.default_service_point
+      return destination if Folio::Types.instance.valid_service_point_code?(destination)
+
+      # During cutover and migration, we may still need to depend on the service point defined in settings
+      Settings.libraries[destination]&.folio_pickup_service_point_code || Settings.folio.default_service_point
     end
 
     def place_item_hold(item_id:)

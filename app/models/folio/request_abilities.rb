@@ -67,10 +67,8 @@ module Folio
       location_restricted_service_point_codes
     end
 
-    # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+    # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
     def default_pickup_destination
-      return 'EAST-ASIA' if request.origin_location&.match?(Regexp.union(/^EAL-SETS$/, /^EAL-STKS-/))
-
       # Find service point which is default for this particular campus
       pickup = Folio::Types.instance.service_points.select do |_k, v|
         v.is_default_for_campus.present? && v.is_default_for_campus == request.holdings.first&.effective_location&.campus&.code
@@ -84,7 +82,7 @@ module Folio
     def default_pickup_service_points
       Folio::Types.instance.service_points.select { |_k, v| v.is_default_pickup }.values.map(&:code)
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+    # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity
 
     def additional_pickup_service_points
       # Map library to a service point
