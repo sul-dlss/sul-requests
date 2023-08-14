@@ -10,16 +10,7 @@ require 'capybara/rails'
 
 # Auto require all files in spec/support.
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
-Capybara.javascript_driver = :headless_chrome
-
-Capybara.register_driver :headless_chrome do |app|
-  Capybara::Selenium::Driver.load_selenium
-  browser_options = Selenium::WebDriver::Chrome::Options.new.tap do |opts|
-    opts.args << '--headless'
-    opts.args << '--window-size=1000,700'
-  end
-  Capybara::Selenium::Driver.new(app, browser: :chrome, options: browser_options)
-end
+Capybara.javascript_driver = :selenium_chrome_headless
 
 # Set a little higher for github actions, to avoid flappy tests
 Capybara.default_max_wait_time = ENV['CI'] ? 10 : 5

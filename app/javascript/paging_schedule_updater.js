@@ -50,15 +50,19 @@ var pagingScheduleUpdater = (function() {
 
     updatePagingSchedule: function(container, destination, schedulerText) {
       var _this = this;
-      $.ajax({url: _this.schedulerUrl(container, destination)})
-       .done(function(data){
-         _this.updateSchedulerText(schedulerText, data);
-       })
-       .fail(function(){
-         _this.updateSchedulerText(schedulerText, {
-           'text': 'No estimate available'
-         });
-       });
+      fetch(_this.schedulerUrl(container, destination))
+        .then(function(response) {
+            if (!response.ok) {
+                throw Error(response.statusText)
+            }
+            return response;
+        }).then((response) => response.json()
+        ).then((data) => _this.updateSchedulerText(schedulerText, data)
+        ).catch(() => {
+            _this.updateSchedulerText(schedulerText, {
+              'text': 'No estimate available'
+            })
+        })
     },
 
     updateSchedulerText: function(schedulerText, data) {
