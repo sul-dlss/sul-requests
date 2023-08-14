@@ -164,6 +164,22 @@ Rails.application.config.after_initialize do
       will_arrive after: '11:00am'
       business_days_later 1
     end
+    when_paging from: 'MEDIA-MTXT', to: 'MEDIA-CENTER', before: '10:00am' do
+      will_arrive after: '11:00am'
+      business_days_later 0
+    end
+    when_paging from: 'MEDIA-MTXT', to: 'MEDIA-CENTER', before: '2:00pm' do
+      will_arrive after: '3:00pm'
+      business_days_later 0
+    end
+    when_paging from: 'MEDIA-MTXT', to: 'MEDIA-CENTER', before: '5:00pm' do
+      will_arrive after: '6:00pm'
+      business_days_later 0
+    end
+    when_paging from: 'MEDIA-MTXT', to: 'MEDIA-CENTER', after: '5:00pm' do
+      will_arrive after: '11:00am'
+      business_days_later 1
+    end
 
     when_paging from: 'MEDIA-MTXT', to: 'GREEN', before: '10:00am' do
       will_arrive after: '11:00am'
@@ -191,6 +207,16 @@ Rails.application.config.after_initialize do
       business_days_later 2
     end
 
+    when_paging from: 'MEDIA-MTXT', to: 'MARINE-BIO', before: '10:00am' do
+      will_arrive after: '1:00pm'
+      business_days_later 1
+    end
+    when_paging from: 'MEDIA-MTXT', to: 'MARINE-BIO', after: '10:00am' do
+      will_arrive after: '1:00pm'
+      business_days_later 2
+    end
+
+
     when_paging from: 'MEDIA-MTXT', to: :anywhere, before: '3:00pm' do
       will_arrive after: '12:00pm'
       business_days_later 1
@@ -215,6 +241,14 @@ Rails.application.config.after_initialize do
       business_days_later 0
     end
     when_paging from: 'LANE-MED', to: 'LANE-MED', after: '9:00am' do
+      will_arrive after: '3:00pm'
+      business_days_later 1
+    end
+    when_paging from: 'LANE-MED', to: 'LANE-DESK', before: '9:00am' do
+      will_arrive after: '3:00pm'
+      business_days_later 0
+    end
+    when_paging from: 'LANE-MED', to: 'LANE-DESK', after: '9:00am' do
       will_arrive after: '3:00pm'
       business_days_later 1
     end

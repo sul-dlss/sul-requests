@@ -265,6 +265,17 @@ libraries:
     hours:
       library_slug: green
       location_slug: library-circulation
+  MARINE-BIO:
+    label: Marine Biology Library (Miller)
+    contact_info:
+      phone: "(831) 655-6229"
+      email: HMS-Library@lists.stanford.edu
+    folio_pickup_service_point_code: MARINE-BIO
+    hold_pseudopatron: HOLD@MA
+    folio_hold_pseudopatron: 1fb12835-2da8-4bc8-becc-3c9500fc3991
+    hours:
+      library_slug: hopkins
+      location_slug: library-circulation
   HOPKINS:
     label: Marine Biology Library (Miller)
     contact_info:
@@ -310,6 +321,14 @@ libraries:
     hours:
       library_slug: green
       location_slug: media-microtext-center
+  MEDIA-CENTER:
+    label: Media Microtext
+    folio_pickup_service_point_code: MEDIA-CENTER
+    hold_pseudopatron: HOLD@MD
+    folio_hold_pseudopatron: ed513be0-0a8d-4da4-b942-cfad5281d0cf
+    hours:
+      library_slug: green
+      location_slug: media-microtext-center
   MUSIC:
     label: Music Library
     contact_info:
@@ -322,6 +341,19 @@ libraries:
       library_slug: music
       location_slug: library-circulation
   RUMSEYMAP:
+    label: David Rumsey Map Center
+    instructions: Researchers can request to view these materials in the David Rumsey Map Center.
+    contact_info:
+      phone: (650) 498-8698
+      email: rumseymapcenter@stanford.edu
+    folio_pickup_service_point_code: RUMSEY-MAP
+    reading_room_url: https://library.stanford.edu/rumsey/about-center/visitor-policies
+    hold_pseudopatron: HOLD@RM
+    folio_hold_pseudopatron: 462ca8af-7190-4ec8-b73e-468501d3dc4b
+    hours:
+      library_slug: Rumsey
+      location_slug: visitor-access
+  RUMSEY-MAP:
     label: David Rumsey Map Center
     instructions: Researchers can request to view these materials in the David Rumsey Map Center.
     contact_info:
