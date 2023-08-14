@@ -28,7 +28,6 @@ RSpec.describe 'Public Notes', js: true do
       end
 
       first(:button, 'Send request').click
-
       expect_to_be_on_success_page
 
       expect(MediatedPage.last.public_notes).to eq('45678901' => 'note for 45678901', '23456789' => 'note for 23456789')
@@ -37,7 +36,7 @@ RSpec.describe 'Public Notes', js: true do
 end
 
 def fill_in_required_fields
-  wait_for_ajax
+  sleep 1 # The fetch request is about to update #request_needed_date, so give it time to do so.
   min_date = find_by_id('request_needed_date')['min']
   page.execute_script("$('#request_needed_date').prop('value', '#{min_date}')")
 end

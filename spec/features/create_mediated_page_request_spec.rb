@@ -164,7 +164,7 @@ RSpec.describe 'Creating a mediated page request' do
       min_date = date_input['min']
       date_input.set(min_date)
     else
-      wait_for_ajax
+      sleep 1 # The fetch request is about to update #request_needed_date, so give it time to do so.
       min_date = find_by_id('request_needed_date', visible: :all)['min']
       page.execute_script("$('#request_needed_date').prop('value', '#{min_date}')")
     end
