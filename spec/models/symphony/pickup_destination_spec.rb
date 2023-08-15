@@ -23,9 +23,9 @@ RSpec.describe Symphony::PickupDestination do
     end
   end
 
-  describe '#paging_code' do
+  describe '#library_code' do
     it 'returns the library code' do
-      expect(subject.paging_code).to eq 'GREEN'
+      expect(subject.library_code).to eq 'GREEN'
     end
   end
 end

@@ -34,7 +34,7 @@ module PagingSchedule
     def schedule_for_request(request)
       schedule.detect do |sched|
         sched.from == request.origin &&
-          sched.to == request.destination &&
+          sched.to == request.destination_library_code &&
           sched.by_time?(request.created_at)
       end
     end
@@ -45,7 +45,7 @@ module PagingSchedule
           sched.to == :anywhere &&
           sched.by_time?(request.created_at)
       end
-      s&.for(request.destination)
+      s&.for(request.destination_library_code)
     end
 
     def worst_case_days_later
