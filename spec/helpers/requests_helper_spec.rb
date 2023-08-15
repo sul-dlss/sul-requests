@@ -62,12 +62,6 @@ RSpec.describe RequestsHelper do
     end
   end
 
-  describe 'format date' do
-    it 'formats a date' do
-      expect(format_date('2015-04-23 10:12:14')).to eq '2015-04-23 10:12am'
-    end
-  end
-
   describe 'searchworks link' do
     it 'constructs a searchworks link including the passed in html_options' do
       result = '<a data-elt-opt="somebehavior" href="http://searchworks.stanford.edu/view/234">A title</a>'
