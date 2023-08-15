@@ -33,7 +33,7 @@ RSpec.describe Folio::PickupDestination do
     end
   end
 
-  describe '#paging_code' do
+  describe '#library_code' do
     let(:locations_json) do
       <<~JSON
         [
@@ -71,7 +71,7 @@ RSpec.describe Folio::PickupDestination do
     end
 
     it 'returns library code for service point' do
-      expect(subject.paging_code).to eq 'GREEN'
+      expect(subject.library_code).to eq 'GREEN'
     end
   end
 end
