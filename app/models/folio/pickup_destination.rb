@@ -20,7 +20,7 @@ module Folio
     # For paging scheduling, we must map from service point to library if folio
     # For service points which don't map to libraries in FOLIO, will rely on Settings
     def library_code
-      Folio::Types.instance.map_to_library_code(@code) || (Settings.libraries[@code].present? ? @code : nil)
+      Folio::Types.instance.map_to_library_code(@code) || (@code if Settings.libraries[@code].present?)
     end
   end
 end
