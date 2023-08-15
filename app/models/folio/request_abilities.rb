@@ -85,8 +85,11 @@ module Folio
     # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity
 
     def additional_pickup_service_points
-      # Map library to a service point
-      service_point_code = Folio::Types.instance.map_to_service_point_code(request.origin)
+      # Find library id for the library with this code
+      library = Folio::Types.fetch_library_by_code(request.origin)
+      return [] unless library
+
+      service_point_code = library.primary_service_points.find { |sp| sp.pickup_location && !sp.is_default_pickup }&.code
       Array(service_point_code)
     end
 

@@ -93,17 +93,21 @@ class SubmitFolioRequestJob < ApplicationJob
 
     def pickup_location_id
       @pickup_location_id ||= begin
-        code = service_point_code(request.destination)
-        Folio::Types.instance.service_point_id(code)
+        # Check if comparable service point code exists
+        service_point = Folio::Types.fetch_service_point_by_code(request.destination)
+
+        # During cutover and migration, we may still need to depend on the service point defined in settings
+        service_point ||= begin
+          library_service_point = Settings.libraries[request.destination]&.folio_pickup_service_point_code
+          Folio::Types.instance.fetch_service_point_by_code(library_service_point)
+        end
+
+        (service_point || default_service_point).id
       end
     end
 
-    def service_point_code(destination)
-      # Check if comparable service point code exists, otherwise return default
-      return destination if Folio::Types.instance.valid_service_point_code?(destination)
-
-      # During cutover and migration, we may still need to depend on the service point defined in settings
-      Settings.libraries[destination]&.folio_pickup_service_point_code || Settings.folio.default_service_point
+    def default_service_point
+      @default_service_point ||= Folio::Types.instance.fetch_service_point_by_code(Settings.folio.default_service_point)
     end
 
     def place_item_hold(item_id:)
@@ -149,7 +153,7 @@ class SubmitFolioRequestJob < ApplicationJob
                     if user.patron&.make_request_as_patron?
                       user.patron
                     else
-                      find_hold_pseudo_patron_for(request.destination)
+                      find_hold_pseudo_patron_for(request.destination_library_code)
                     end
                   end
     end
@@ -160,7 +164,6 @@ class SubmitFolioRequestJob < ApplicationJob
     end
 
     def find_hold_pseudo_patron_for(key)
-      key = Folio::Types.instance.map_to_library_code(key)
       id = Settings.libraries[key]&.folio_hold_pseudopatron || raise("no hold pseudopatron for '#{key}'")
       build_pseudopatron(id)
     end

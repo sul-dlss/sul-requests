@@ -48,23 +48,12 @@ RSpec.describe Folio::PickupDestination do
       JSON
     end
 
-    let(:libraries_json) do
-      <<~JSON
-        [
-          {
-            "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-            "name": "Green Library",
-            "code": "GREEN",
-            "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5"
-          }
-        ]
-      JSON
-    end
-
     before do
-      allow(Folio::Types.instance).to receive(:libraries).and_return(
-        JSON.parse(libraries_json).index_by { |p| p['id'] }
-      )
+      allow(Folio::Types.instance).to receive(:libraries).and_return({
+                                                                       'f6b5519e-88d9-413e-924d-9ed96255f72e' => Folio::Library.new(
+                                                                         id: 'f6b5519e-88d9-413e-924d-9ed96255f72e', code: 'GREEN'
+                                                                       )
+                                                                     })
       allow(Folio::Types.instance).to receive(:locations).and_return(
         JSON.parse(locations_json).index_by { |p| p['id'] }
       )
