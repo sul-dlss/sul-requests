@@ -265,17 +265,6 @@ libraries:
     hours:
       library_slug: green
       location_slug: library-circulation
-  MARINE-BIO:
-    label: Marine Biology Library (Miller)
-    contact_info:
-      phone: "(831) 655-6229"
-      email: HMS-Library@lists.stanford.edu
-    folio_pickup_service_point_code: MARINE-BIO
-    hold_pseudopatron: HOLD@MA
-    folio_hold_pseudopatron: 1fb12835-2da8-4bc8-becc-3c9500fc3991
-    hours:
-      library_slug: hopkins
-      location_slug: library-circulation
   HOPKINS:
     label: Marine Biology Library (Miller)
     contact_info:
@@ -286,6 +275,10 @@ libraries:
     folio_hold_pseudopatron: 1fb12835-2da8-4bc8-becc-3c9500fc3991
     hours:
       library_slug: hopkins
+      location_slug: library-circulation
+  LANE:
+    hours:
+      library_slug: lane
       location_slug: library-circulation
   LANE-MED:
     label: Medical Library (Lane)
@@ -307,6 +300,10 @@ libraries:
     folio_hold_pseudopatron: 0527e34c-f47b-41e0-aa67-27c7aa27d75f
     hours:
       library_slug: law
+      location_slug: library-circulation
+  MARINE-BIO:
+    hours:
+      library_slug: hopkins
       location_slug: library-circulation
   MATH-CS:
     label: Math & Statistics Library

@@ -20,6 +20,8 @@ module Folio
     # For paging scheduling, we must map from service point to library if folio
     # Otherwise, the library code is what we will be receiving
     def library_code
+      return @code if @code == 'RWC'
+
       Folio::Types.instance.map_to_library_code(@code)
     end
   end
