@@ -172,6 +172,10 @@ class Request < ActiveRecord::Base
     errors[:library_id].present?
   end
 
+  def destination_library_code
+    @destination_library_code ||= Settings.ils.pickup_destination_class.constantize.new(destination).library_code || destination
+  end
+
   class << self
     # The mediateable_origins will make multiple (efficient) database requests
     # in order to return the array of locations that are both configured as mediateable and have existing requests.
