@@ -4,8 +4,6 @@
 #  Helper module for requests related markup
 ###
 module RequestsHelper
-  include PickupLibrariesHelper
-
   def status_text_for_item(item)
     status_text_for_errored_item(item) || i18n_status_text(item)
   end

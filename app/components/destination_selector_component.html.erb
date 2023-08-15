@@ -1,0 +1,24 @@
+<div data-scheduler-lookup-url='<%= paging_schedule_path(origin: form.object.paging_origin_library) %>'>
+  <% if pickup_destinations.one? %>
+    <div class='form-group'>
+      <div class='<%= helpers.label_column_class %> control-label'>
+        Will be delivered to
+      </div>
+      <div class='<%= helpers.content_column_class %> input-like-text'>
+        <%= destination_label(pickup_destinations.first) %>
+      </div>
+      <%= form.hidden_field :destination, value: pickup_destinations.first %>
+    </div>
+  <% elsif pickup_destinations.many? %>
+    <%= form.label :destination, 'Deliver to' %>
+    <%= form.select :destination,
+      pickup_destinations_array(pickup_destinations),
+      {
+        selected: request.destination || request.default_pickup_destination
+      },
+      aria: { controls: 'scheduler-text' },
+      data: { 'paging-schedule-updater' => 'true', 'text-selector' => "[data-text-object='#{request.object_id}']" }
+    %>
+  <% end %>
+  <%= render 'requests/scheduler_text', f: form, current_request: form.object %>
+</div>
