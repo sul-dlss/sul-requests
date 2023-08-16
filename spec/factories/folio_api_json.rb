@@ -4,12 +4,14 @@ if Settings.ils.bib_model == 'Folio::Instance'
 
   FactoryBot.define do
     factory :location, class: 'Folio::Location' do
-      id { Folio::Types.get_type('locations').find { |l| l['code'] == code }.fetch('id') }
+      id { Folio::Types.locations.find_by(code:).id }
       code { 'SAL3-STACKS' }
       name { 'Location name' }
       discovery_display_name { 'Discovery display name' }
       campus { Folio::Campus.new(id: 'uuid', code: 'SUL') }
       library { Folio::Library.new(id: 'uuid', code: 'LIB') }
+      library_id { 'uuid' }
+      primary_service_point_id { nil }
       institution { Folio::Institution.new(id: 'uuid') }
       details { {} }
 

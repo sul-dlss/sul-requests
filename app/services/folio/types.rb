@@ -6,9 +6,8 @@ module Folio
   # accessing the types.
   class Types
     class << self
-      delegate  :policies, :circulation_rules, :criteria, :get_type,
-                :locations, :libraries, :service_points,
-                :fetch_library_by_code, to: :instance
+      delegate  :policies, :circulation_rules, :criteria,
+                :locations, :libraries, :service_points, to: :instance
     end
 
     def self.instance
@@ -67,19 +66,21 @@ module Folio
         'loan-type' => get_type('loan_types').index_by { |p| p['id'] },
         'location-institution' => get_type('institutions').index_by { |p| p['id'] },
         'location-campus' => get_type('campuses').index_by { |p| p['id'] },
-        'location-library' => libraries,
-        'location-location' => locations
+        'location-library' => libraries.all.index_by(&:id),
+        'location-location' => locations.all.index_by(&:id)
       }
     end
     # rubocop:enable Metrics/AbcSize
 
     def libraries
-      @libraries ||= get_type('libraries').map { |l| Folio::Library.new(**l.slice('id', 'code').symbolize_keys) }.index_by(&:id)
+      @libraries ||= LibrariesStore.new(get_type('libraries'))
     end
 
     def locations
-      @locations ||= get_type('locations').index_by { |p| p['id'] }
+      @locations ||= LocationsStore.new(get_type('locations'))
     end
+
+    private
 
     def get_type(type)
       raise "Unknown type #{type}" unless types_of_interest.include?(type.to_s)
@@ -87,13 +88,6 @@ module Folio
       file = cache_dir.join("#{type}.json")
       JSON.parse(file.read) if file.exist?
     end
-
-    # Find the library based on this library code
-    def fetch_library_by_code(library_code)
-      libraries.values.find { |library| library.code == library_code }
-    end
-
-    private
 
     # rubocop:disable Metrics/MethodLength
     def types_of_interest
