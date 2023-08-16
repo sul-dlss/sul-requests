@@ -86,10 +86,6 @@ module RequestsHelper
     item.request_status.user_error_text || item.request_status.text
   end
 
-  def format_date(date)
-    Time.zone.parse(date.to_s).strftime('%Y-%m-%d %I:%M%P')
-  end
-
   def searchworks_link(item_id, item_title, html_options = {})
     link_to item_title, "#{Settings.searchworks_link}/#{item_id}", html_options
   end
