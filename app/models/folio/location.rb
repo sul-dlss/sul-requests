@@ -7,7 +7,7 @@ module Folio
       new(
         id: dyn.fetch('id'),
         campus: (Campus.new(**dyn.fetch('campus')) if dyn['campus']),
-        library: (Library.new(**dyn.fetch('library')) if dyn['library']),
+        library: (Library.new(**dyn.fetch('library').symbolize_keys) if dyn['library']),
         institution: (Institution.new(id: dyn.fetch('institutionId')) if dyn['institutionId']),
         code: dyn.fetch('code'),
         discovery_display_name: dyn['discoveryDisplayName'] || dyn['name'] || dyn.fetch('id'),
@@ -17,7 +17,4 @@ module Folio
     end
     # rubocop:enable Metrics/AbcSize
   end
-  Library = Data.define(:id, :code)
-  Campus = Data.define(:id, :code)
-  Institution = Data.define(:id)
 end
