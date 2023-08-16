@@ -23,8 +23,9 @@ module Folio
       service_point&.name
     end
 
-    # For paging scheduling, we must map from service point to library if folio
-    # For service points which don't map to libraries in FOLIO, will rely on Settings
+    # For paging scheduling, we must map from service point to library if folio.
+    # For service points which don't map to libraries in FOLIO, will rely on Settings.
+    # For example, the RWC service point is not associated with any FOLIO library, but is a valid pickup destination.
     def library_code
       service_point&.library&.code || (@code if Settings.libraries[@code].present?)
     end
