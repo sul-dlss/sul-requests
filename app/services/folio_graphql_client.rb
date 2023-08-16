@@ -155,18 +155,22 @@ class FolioGraphqlClient
   end
 
   def due_date(item_id:)
-    data = post_json('/', json:
-      {
-        query:
-          <<~GQL
-            query DueDate {
-              items(id: "#{item_id}") {
-                id
-                dueDate
+    data = nil
+    ActiveSupport::Notifications.instrument 'graphql.due_date' do
+      data = post_json('/', json:
+        {
+          query:
+            <<~GQL
+              query DueDate {
+                items(id: "#{item_id}") {
+                  id
+                  dueDate
+                }
               }
-            }
-          GQL
-      })
+            GQL
+        })
+    end
+
     raise data['errors'].pluck('message').join("\n") if data.key?('errors')
 
     date = data.dig('data', 'items', 0, 'dueDate')
@@ -229,3 +233,16 @@ class FolioGraphqlClient
                             'okapi_password' => @password })
   end
 end
+
+# Logs graphql calls
+class GraphqlLogSubscriber < ActiveSupport::LogSubscriber
+  def due_date(event)
+    info { "Due_date call (#{event.duration.round(1)}ms)" }
+  end
+
+  def logger
+    ActionController::Base.logger
+  end
+end
+
+GraphqlLogSubscriber.attach_to :graphql
