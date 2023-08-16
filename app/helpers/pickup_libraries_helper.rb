@@ -21,7 +21,6 @@ module PickupLibrariesHelper
 
   private
 
-  # Symphony
   def select_for_multiple_destinations(form, pickup_destinations)
     return unless pickup_destinations.length > 1
 
