@@ -75,9 +75,9 @@ module Folio
       def item_rule(item)
         index.search('material-type' => item.material_type.id,
                      'loan-type' => item.loan_type.id,
-                     'location-institution' => item.effective_location.institution.id,
-                     'location-campus' => item.effective_location.campus.id,
-                     'location-library' => item.effective_location.library.id,
+                     'location-institution' => item.effective_location.institution_id,
+                     'location-campus' => item.effective_location.campus_id,
+                     'location-library' => item.effective_location.library_id,
                      'location-location' => item.effective_location.id)
       end
 

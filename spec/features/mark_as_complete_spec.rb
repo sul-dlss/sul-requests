@@ -17,7 +17,7 @@ RSpec.describe 'Mark As Complete', js: true do
                     current_location: nil,
                     callnumber: 'ABC 123',
                     hold?: true,
-                    effective_location: build(:mediated_location),
+                    effective_location: Folio::Types.locations.find_by(code: 'ART-LOCKED-OVERSIZE'),
                     material_type: build(:book_material_type),
                     loan_type: double(id: nil))
     ]

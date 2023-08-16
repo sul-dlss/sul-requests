@@ -1,16 +1,31 @@
 # frozen_string_literal: true
 
 module Folio
-  Location = Data.define(:id, :campus, :library, :library_id, :institution, :code, :discovery_display_name,
-                         :name, :primary_service_point_id, :details) do
-    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+  # Models a location from Folio
+  class Location
+    # rubocop:disable Metrics/ParameterLists
+    def initialize(id:, campus_id:, library_id:, institution_id:, code:, discovery_display_name:,
+                   name:, primary_service_point_id:, details:)
+      @id = id
+      @library_id = library_id
+      @campus_id = campus_id
+      @institution_id = institution_id
+      @code = code
+      @discovery_display_name = discovery_display_name
+      @name = name
+      @primary_service_point_id = primary_service_point_id
+      @details = details
+    end
+    # rubocop:enable Metrics/ParameterLists
+
+    attr_reader :id, :campus_id, :library_id, :institution_id, :code, :discovery_display_name, :name, :primary_service_point_id, :details
+
     def self.from_hash(dyn)
       new(
         id: dyn.fetch('id'),
-        campus: (Campus.new(**dyn.fetch('campus')) if dyn['campus']),
-        library: (Library.new(**dyn.fetch('library').symbolize_keys) if dyn['library']),
+        campus_id: dyn.fetch('campusId'),
         library_id: dyn['libraryId'] || dyn.dig('library', 'id'),
-        institution: (Institution.new(id: dyn.fetch('institutionId')) if dyn['institutionId']),
+        institution_id: dyn.fetch('institutionId'),
         code: dyn.fetch('code'),
         discovery_display_name: dyn['discoveryDisplayName'] || dyn['name'] || dyn.fetch('id'),
         name: dyn['name'],
@@ -18,6 +33,13 @@ module Folio
         primary_service_point_id: dyn['primaryServicePoint'] # present in every location in json, but not from Graphql
       )
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+
+    def library
+      @library ||= Folio::Types.libraries.find_by(id: library_id)
+    end
+
+    def campus
+      @campus ||= Folio::Types.campuses.find_by(id: campus_id)
+    end
   end
 end

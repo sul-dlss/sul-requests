@@ -18,7 +18,7 @@ RSpec.describe RequestsHelper do
         build(:item,
               barcode: '3610512345678',
               callnumber: 'ABC 123',
-              effective_location: build(:page_en_location))
+              effective_location_id: Folio::Types.locations.find_by(code: 'SAL3-PAGE-EN').id)
       end
 
       let(:bib_data) { double(:bib_data, title: 'Test title', request_holdings: [item]) }

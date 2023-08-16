@@ -97,109 +97,14 @@ RSpec.describe Folio::Item do
   end
 
   describe '#status_class' do
-    let(:gre_stacks) do
-      <<~JSON
-        {
-          "id": "4573e824-9273-4f13-972f-cff7bf504217",
-          "campus": {
-            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-            "code": "SUL"
-          },
-          "library": {
-            "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-            "code": "GREEN"
-          },
-          "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-          "code": "GRE-STACKS",
-          "discoveryDisplayName": "Green Library Stacks",
-          "name": "Green Stacks",
-          "details": {}
-        }
-      JSON
-    end
-
-    let(:page_sp) do
-      <<~JSON
-          {
-          "id": "3cbd5559-5ca9-473e-8d7d-98a67bff29f5",
-          "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-          "libraryId": "ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9",
-          "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-          "code": "SAL3-PAGE-SP",
-          "discoveryDisplayName": "For use in Special Collections Reading Room",
-          "name": "SAL3 PAGE-SP",
-          "servicePoints": [
-            {
-              "id": "3a306665-eec7-4a40-8f4d-608585b2a394",
-              "code": "SAL3",
-              "pickupLocation": false
-            }
-          ],
-          "library": {
-            "id": "ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9",
-            "code": "SAL3"
-          },
-          "campus": {
-            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-            "code": "SUL"
-          },
-          "details": {
-            "pageAeonSite": null,
-            "pageMediationGroupKey": null,
-            "pageServicePoints": [
-              {
-                "id": "0e924af7-785c-46eb-a5e2-060394822016",
-                "code": "SPEC",
-                "name": "Special Collections Desk"
-              }
-            ],
-            "scanServicePointCode": null,
-            "availabilityClass": "Offsite"
-          }
-        }
-      JSON
-    end
-
-    let(:sal3_stacks) do
-      <<~JSON
-        {
-          "id": "1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2",
-          "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-          "libraryId": "ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9",
-          "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-          "code": "SAL3-STACKS",
-          "discoveryDisplayName": "Stacks",
-          "name": "SAL3 Stacks",
-          "servicePoints": [
-            {
-              "id": "3a306665-eec7-4a40-8f4d-608585b2a394",
-              "code": "SAL3",
-              "pickupLocation": false
-            }
-          ],
-          "library": {
-            "id": "ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9",
-            "code": "SAL3"
-          },
-          "campus": {
-            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-            "code": "SUL"
-          },
-          "details": {
-            "availabilityClass": "Offsite"
-          }
-        }
-      JSON
-    end
-
     context 'with a non-circulating item' do
       let(:data) do
         <<~JSON
           {
             "status": { "name": "Available" },
             "materialType": { "id": "1a54b431-2e4f-452d-9cae-9cee66c9a892", "name": "book" },
-            "permanentLocation": #{gre_stacks},
-            "effectiveLocation": #{gre_stacks},
+            "permanentLocationId": "#{Folio::Types.locations.find_by(code: 'GRE-STACKS').id}",
+            "effectiveLocationId": "#{Folio::Types.locations.find_by(code: 'GRE-STACKS').id}",
             "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
             "notes": []
           }
@@ -217,8 +122,8 @@ RSpec.describe Folio::Item do
           {
             "status": { "name": "Available" },
             "materialType": { "id": "1a54b431-2e4f-452d-9cae-9cee66c9a892", "name": "book" },
-            "permanentLocation": #{sal3_stacks},
-            "effectiveLocation": #{sal3_stacks},
+            "permanentLocationId": "#{Folio::Types.locations.find_by(code: 'SAL3-STACKS').id}",
+            "effectiveLocationId": "#{Folio::Types.locations.find_by(code: 'SAL3-STACKS').id}",
             "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
             "notes": []
           }
@@ -236,8 +141,8 @@ RSpec.describe Folio::Item do
           {
             "status": { "name": "Available" },
             "materialType": { "id": "1a54b431-2e4f-452d-9cae-9cee66c9a892", "name": "book" },
-            "permanentLocation": #{page_sp},
-            "effectiveLocation": #{page_sp},
+            "permanentLocationId": "#{Folio::Types.locations.find_by(code: 'SAL3-PAGE-SP').id}",
+            "effectiveLocationId": "#{Folio::Types.locations.find_by(code: 'SAL3-PAGE-SP').id}",
             "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
             "notes": []
           }
@@ -255,8 +160,8 @@ RSpec.describe Folio::Item do
           {
             "status": { "name": "Available" },
             "materialType": { "id": "1a54b431-2e4f-452d-9cae-9cee66c9a892", "name": "book" },
-            "permanentLocation": #{gre_stacks},
-            "effectiveLocation": #{gre_stacks},
+            "permanentLocationId": "#{Folio::Types.locations.find_by(code: 'GRE-STACKS').id}",
+            "effectiveLocationId": "#{Folio::Types.locations.find_by(code: 'GRE-STACKS').id}",
             "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
             "notes": []
           }
@@ -274,8 +179,8 @@ RSpec.describe Folio::Item do
           {
             "status": { "name": "Checked out" },
             "materialType": { "id": "1a54b431-2e4f-452d-9cae-9cee66c9a892", "name": "book" },
-            "permanentLocation": #{gre_stacks},
-            "effectiveLocation": #{gre_stacks},
+            "permanentLocationId": "#{Folio::Types.locations.find_by(code: 'GRE-STACKS').id}",
+            "effectiveLocationId": "#{Folio::Types.locations.find_by(code: 'GRE-STACKS').id}",
             "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
             "notes": []
           }
@@ -289,109 +194,14 @@ RSpec.describe Folio::Item do
   end
 
   describe '#status_text' do
-    let(:gre_stacks) do
-      <<~JSON
-        {
-          "id": "4573e824-9273-4f13-972f-cff7bf504217",
-          "campus": {
-            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-            "code": "SUL"
-          },
-          "library": {
-            "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-            "code": "GREEN"
-          },
-          "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-          "code": "GRE-STACKS",
-          "discoveryDisplayName": "Green Library Stacks",
-          "name": "Green Stacks",
-          "details": {}
-        }
-      JSON
-    end
-
-    let(:page_sp) do
-      <<~JSON
-          {
-          "id": "3cbd5559-5ca9-473e-8d7d-98a67bff29f5",
-          "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-          "libraryId": "ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9",
-          "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-          "code": "SAL3-PAGE-SP",
-          "discoveryDisplayName": "For use in Special Collections Reading Room",
-          "name": "SAL3 PAGE-SP",
-          "servicePoints": [
-            {
-              "id": "3a306665-eec7-4a40-8f4d-608585b2a394",
-              "code": "SAL3",
-              "pickupLocation": false
-            }
-          ],
-          "library": {
-            "id": "ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9",
-            "code": "SAL3"
-          },
-          "campus": {
-            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-            "code": "SUL"
-          },
-          "details": {
-            "pageAeonSite": null,
-            "pageMediationGroupKey": null,
-            "pageServicePoints": [
-              {
-                "id": "0e924af7-785c-46eb-a5e2-060394822016",
-                "code": "SPEC",
-                "name": "Special Collections Desk"
-              }
-            ],
-            "scanServicePointCode": null,
-            "availabilityClass": "Offsite"
-          }
-        }
-      JSON
-    end
-
-    let(:sal3_stacks) do
-      <<~JSON
-        {
-          "id": "1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2",
-          "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-          "libraryId": "ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9",
-          "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-          "code": "SAL3-STACKS",
-          "discoveryDisplayName": "Stacks",
-          "name": "SAL3 Stacks",
-          "servicePoints": [
-            {
-              "id": "3a306665-eec7-4a40-8f4d-608585b2a394",
-              "code": "SAL3",
-              "pickupLocation": false
-            }
-          ],
-          "library": {
-            "id": "ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9",
-            "code": "SAL3"
-          },
-          "campus": {
-            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-            "code": "SUL"
-          },
-          "details": {
-            "availabilityClass": "Offsite"
-          }
-        }
-      JSON
-    end
-
     context 'with a non-circulating item' do
       let(:data) do
         <<~JSON
           {
             "status": { "name": "Available" },
             "materialType": { "id": "1a54b431-2e4f-452d-9cae-9cee66c9a892", "name": "book" },
-            "permanentLocation": #{gre_stacks},
-            "effectiveLocation": #{gre_stacks},
+            "effectiveLocationId": "#{Folio::Types.locations.find_by(code: 'GRE-STACKS').id}",
+            "effectiveLocationId": "#{Folio::Types.locations.find_by(code: 'GRE-STACKS').id}",
             "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
             "notes": []
           }
@@ -409,8 +219,8 @@ RSpec.describe Folio::Item do
           {
             "status": { "name": "Available" },
             "materialType": { "id": "1a54b431-2e4f-452d-9cae-9cee66c9a892", "name": "book" },
-            "permanentLocation": #{sal3_stacks},
-            "effectiveLocation": #{sal3_stacks},
+            "effectiveLocationId": "#{Folio::Types.locations.find_by(code: 'SAL3-STACKS').id}",
+            "effectiveLocationId": "#{Folio::Types.locations.find_by(code: 'SAL3-STACKS').id}",
             "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
             "notes": []
           }
@@ -428,8 +238,8 @@ RSpec.describe Folio::Item do
           {
             "status": { "name": "Available" },
             "materialType": { "id": "1a54b431-2e4f-452d-9cae-9cee66c9a892", "name": "book" },
-            "permanentLocation": #{page_sp},
-            "effectiveLocation": #{page_sp},
+            "effectiveLocationId": "#{Folio::Types.locations.find_by(code: 'SAL3-PAGE-SP').id}",
+            "effectiveLocationId": "#{Folio::Types.locations.find_by(code: 'SAL3-PAGE-SP').id}",
             "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
             "notes": []
           }
@@ -447,8 +257,8 @@ RSpec.describe Folio::Item do
           {
             "status": { "name": "Available" },
             "materialType": { "id": "1a54b431-2e4f-452d-9cae-9cee66c9a892", "name": "book" },
-            "permanentLocation": #{gre_stacks},
-            "effectiveLocation": #{gre_stacks},
+            "effectiveLocationId": "#{Folio::Types.locations.find_by(code: 'GRE-STACKS').id}",
+            "effectiveLocationId": "#{Folio::Types.locations.find_by(code: 'GRE-STACKS').id}",
             "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
             "notes": []
           }
@@ -466,8 +276,8 @@ RSpec.describe Folio::Item do
           {
             "status": { "name": "Checked out" },
             "materialType": { "id": "1a54b431-2e4f-452d-9cae-9cee66c9a892", "name": "book" },
-            "permanentLocation": #{gre_stacks},
-            "effectiveLocation": #{gre_stacks},
+            "effectiveLocationId": "#{Folio::Types.locations.find_by(code: 'GRE-STACKS').id}",
+            "effectiveLocationId": "#{Folio::Types.locations.find_by(code: 'GRE-STACKS').id}",
             "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
             "notes": []
           }

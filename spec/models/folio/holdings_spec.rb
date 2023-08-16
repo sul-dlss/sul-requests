@@ -13,15 +13,15 @@ RSpec.describe Folio::Holdings do
                     type: 'multimedia',
                     callnumber: 'XX(14820051.1)',
                     public_note: nil,
-                    effective_location: instance_double(Folio::Location),
-                    permanent_location:)
+                    effective_location_id: Folio::Types.locations.find_by(code: 'SAL3-PAGE-EN').id,
+                    permanent_location_id:)
   end
 
   describe 'Enumerable' do
     subject { holdings.to_a }
 
     context "when the request location doesn't match the effectiveLocation" do
-      let(:permanent_location) { instance_double(Folio::Location, code: 'MUS-RECORDINGS') }
+      let(:permanent_location_id) { Folio::Types.locations.find_by(code: 'MUS-RECORDINGS').id }
 
       it { is_expected.to eq items }
     end
