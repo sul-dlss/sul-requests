@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Pickup Libraries Dropdown' do
   let(:is_folio) { (Settings.ils.bib_model == 'Folio::Instance') }
-  let(:folio_pickup_lib_total) { Folio::Types.instance.service_points.select { |_k, v| v.is_default_pickup }.values.length }
+  let(:folio_pickup_lib_total) { Folio::Types.service_points.where(is_default_pickup: true).length }
   let(:standard_pickup_lib_total) { is_folio ? folio_pickup_lib_total : Settings.default_pickup_libraries.count }
   let(:media_library) { is_folio ? 'MEDIA-CENTER' : 'MEDIA-MTXT' }
   let(:media_label) { is_folio ? 'Media Center' : 'Media Microtext' }
