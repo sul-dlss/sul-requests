@@ -5,8 +5,8 @@
 # with all the other item data was too slow.
 class DueDatesController < ApplicationController
   def show
-    item_id = params[:id]
-    due_date = FolioClient.new.due_date(item_id:).to_date
-    render partial: 'show', locals: { due_date:, item_id: }
+    instance_id = params[:id]
+    due_dates = FolioClient.new.due_date(instance_id:)
+    render partial: 'show', locals: { due_dates: }
   end
 end

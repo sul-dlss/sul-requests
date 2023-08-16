@@ -47,7 +47,7 @@ module RequestsHelper
       else
         tag.span class: 'status pull-right availability unavailable' do
           # This content is lazily loaded, because the query to get due_date makes the initial query for items take a long time.
-          turbo_frame_tag "due_date_#{holding.id}", src: due_date_path(holding.id)
+          turbo_frame_tag "due_date_#{holding.id}"
         end
       end
     else

@@ -189,8 +189,8 @@ RSpec.describe RequestsHelper do
           expect(subject).to have_css('.unavailable')
         end
 
-        it 'includes the due date' do
-          expect(subject).to have_css('turbo-frame[src="/due_dates/123-123-123"]')
+        it 'includes the destination frame for the due date' do
+          expect(subject).to have_css('turbo-frame[id="due_date_123-123-123"]')
         end
       end
     end

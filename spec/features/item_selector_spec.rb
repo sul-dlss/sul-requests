@@ -309,11 +309,16 @@ RSpec.describe 'Item Selector' do
   end
 
   describe 'checked out items', js: true do
-    let(:graphql_client) { instance_double(FolioGraphqlClient, due_date: DateTime.parse('2015-01-01T00:00:00Z')) }
+    let(:holdings) { build(:checkedout_holdings) }
+    let(:graphql_client) do
+      instance_double(FolioGraphqlClient, due_date: [
+                        { id: holdings.items.second.id, due_date: Date.parse('2015-01-01') }
+                      ])
+    end
 
     before do
-      stub_bib_data_json(build(:checkedout_holdings))
-      allow(FolioGraphqlClient).to receive(:new).and_return(graphql_client)
+      stub_bib_data_json(holdings)
+      allow(FolioGraphqlClient).to receive(:new).and_return(graphql_client) if Settings.ils.bib_model == 'Folio::Instance'
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
     end
 

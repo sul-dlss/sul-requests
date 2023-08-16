@@ -1,3 +1,7 @@
-<%= turbo_frame_tag "due_date_#{item_id}" do %>
-  Due <%= l due_date, format: :numeric %>
+<% due_dates.each do |item_data| %>
+  <turbo-stream action="replace" target="due_date_<%= item_data.fetch(:id) %>">
+    <template>
+      Due <%= l item_data.fetch(:due_date), format: :numeric  %>
+    </template>
+  </turbo-stream>
 <% end %>

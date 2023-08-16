@@ -154,27 +154,31 @@ class FolioGraphqlClient
     data&.dig('data', 'instances', 0)
   end
 
-  def due_date(item_id:)
-    data = nil
-    ActiveSupport::Notifications.instrument 'graphql.due_date' do
-      data = post_json('/', json:
-        {
-          query:
-            <<~GQL
-              query DueDate {
-                items(id: "#{item_id}") {
+  def due_date(instance_id:)
+    data = post_json('/', json:
+      {
+        query:
+          <<~GQL
+            query DueDate {
+              instances(id: "#{instance_id}") {
+                items {
                   id
                   dueDate
                 }
               }
-            GQL
-        })
-    end
+            }
+          GQL
+      })
+
+    return [] unless data
 
     raise data['errors'].pluck('message').join("\n") if data.key?('errors')
 
-    date = data.dig('data', 'items', 0, 'dueDate')
-    DateTime.parse(date) if date
+    data.dig('data', 'instances', 0, 'items').map do |row|
+      next unless row['dueDate']
+      
+      { id: row['id'], due_date: DateTime.parse(row['dueDate']).to_date }
+    end
   end
 
   def service_points

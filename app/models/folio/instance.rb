@@ -58,7 +58,7 @@ module Folio
       contributor&.fetch('name')
     end
 
-    attr_reader :pub_date, :format, :items
+    attr_reader :id, :pub_date, :format, :items
 
     def isbn
       @isbn.join('; ')

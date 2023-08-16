@@ -30,6 +30,22 @@
           <a href="javascript:;" class="sort sort-callnumber btn btn-default pull-left" data-sort="callnumber">Call number <i></i></a>
           <a href="javascript:;" class="sort sort-status btn btn-default pull-right" data-sort="status">Status <i></i></a>
         </div>
+        <% if f.object.bib_data.is_a?(Folio::Instance) # TODO: remove conditional after migration %>
+          <script>
+            document.addEventListener('turbo:load', () => {
+              // Trigger lazy load due dates
+              fetch('<%= due_date_path(f.object.bib_data.id) %>')
+                .then(response => {
+                  if (!response.ok) {
+                    throw new TypeError("Request failed")
+                  }
+                  return response.text()
+                })
+                .then(data => Turbo.renderStreamMessage(data))
+                .catch(error => console.error(error))
+            })
+          </script>
+        <% end %>
         <div id="item-selector" class="item-selector" data-limit-selected-items="<%= f.object.item_limit if f.object.item_limit.to_i > 1 %>" data-counter-target="[data-items-counter='true']">
           <div class='list'>
             <% f.object.all_holdings.sort_by(&:callnumber).each.with_index(1) do |holding, index| %>
