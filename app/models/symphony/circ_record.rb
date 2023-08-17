@@ -37,12 +37,6 @@ module Symphony
       fields.dig('overdue')
     end
 
-    def hold_records
-      Array.wrap(fields.dig('item', 'fields', 'bib', 'fields', 'holdRecordList'))
-           .map { |record| Symphony::HoldRecord.new(record) }
-           .select { |record| record.item_call_key == fields.dig('item', 'fields', 'call', 'key') }
-    end
-
     def patron_barcode
       fields.dig('patron', 'fields', 'barcode')
     end

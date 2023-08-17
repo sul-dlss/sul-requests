@@ -27,35 +27,6 @@ module Symphony
       fields.dig('call', 'key')
     end
 
-    def loan_period
-      loan_period_key = fields.dig('itemCategory3', 'key')
-
-      time, units = loan_period_key&.scan(/^CDL-(\d+)([DHM])$/)&.first
-
-      return 2.hours unless time && units
-
-      case units
-      when 'D'
-        time.to_i.days
-      when 'M'
-        time.to_i.minutes
-      else
-        time.to_i.hours
-      end
-    end
-
-    def cdlable?
-      home_location == 'CDL'
-    end
-
-    def cdl_proxy_hold_item
-      @cdl_proxy_hold_item ||= items(refetch: true).find(&:cdl_preferred_hold?) || fallback_proxy_item
-    end
-
-    def cdl_preferred_hold?
-      fields.dig('itemCategory4', 'key') == 'CDL-HOLDS'
-    end
-
     def items(refetch: false)
       return to_enum(:items, refetch:) unless block_given?
 
@@ -66,20 +37,6 @@ module Symphony
           yield Symphony::CatalogInfo.new(record)
         end
       end
-    end
-
-    def hold_records
-      Array.wrap(fields.dig('bib', 'fields', 'holdRecordList')&.map { |record| Symphony::HoldRecord.new(record) }&.select do |record|
-        callkey == record.item_call_key && record.active?
-      end)
-    end
-
-    private
-
-    def fallback_proxy_item
-      Honeybadger.notify("No CDL preferred hold item for #{barcode}")
-
-      items.select(&:cdlable?).min_by(&:key) || self
     end
   end
 end

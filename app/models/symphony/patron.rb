@@ -38,18 +38,6 @@ module Symphony
       fields.dig('profile', 'key')
     end
 
-    def holds
-      @holds ||= begin
-        records = hold_record_list || Symphony::Patron.find_by(patron_key: key, with_holds: true)&.hold_record_list || []
-
-        records.map { |record| Symphony::HoldRecord.new(record) }
-      end
-    end
-
-    def hold_record_list
-      fields.dig('holdRecordList')
-    end
-
     def fee_borrower?
       profile_key&.starts_with?('MXFEE')
     end
