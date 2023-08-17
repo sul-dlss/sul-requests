@@ -118,7 +118,6 @@ gem "view_component", "~> 3.0"
 gem "parslet"
 
 gem "jsbundling-rails", "~> 1.1"
-
-gem "sprockets-rails"
-
 gem "turbo-rails", "~> 1.4"
+
+gem "propshaft", "~> 0.7.0"
