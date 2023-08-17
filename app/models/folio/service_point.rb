@@ -26,7 +26,7 @@ module Folio
     end
 
     def library
-      @library ||= Folio::Types.libraries[library_id]
+      @library ||= Folio::Types.libraries.find_by(id: library_id)
     end
 
     def pickup_location?
@@ -36,7 +36,7 @@ module Folio
     private
 
     def library_id
-      @library_id ||= Folio::Types.locations.values.find { |location| location['primaryServicePoint'] == id }&.dig('libraryId')
+      @library_id ||= Folio::Types.locations.find_by(primary_service_point_id: id).library_id
     end
   end
 end
