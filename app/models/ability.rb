@@ -95,12 +95,6 @@ class Ability
         # we don't care if the token is invalid
       end
     end
-
-    if Settings.cdl.enabled
-      can :checkin, :cdl if user.sso_user?
-      can :checkout, :cdl if user.sso_user?
-      can :availability, :cdl
-    end
   end
   # rubocop:enable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/MethodLength
 

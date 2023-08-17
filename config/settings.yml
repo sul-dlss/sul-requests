@@ -136,15 +136,6 @@ symws:
   headers: {}
   login_params: {}
 
-cdl:
-  enabled: false
-  pseudo_patron_id: CDL-CHECKEDOUT
-  pseudo_patron_key: abc123
-  jwt:
-    algorithm: 'HS256'
-    secret: secret
-  redis: {}
-
 embed:
   url: https://embed.stanford.edu
 

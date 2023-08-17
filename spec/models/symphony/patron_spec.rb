@@ -81,26 +81,4 @@ RSpec.describe Symphony::Patron do
   it 'has a display name' do
     expect(patron.display_name).to eq 'Student Borrower'
   end
-
-  describe '#holds' do
-    it 're-requests the patron information with holds' do
-      allow(described_class).to receive(:find_by).with(patron_key: '1', with_holds: true).and_return(
-        instance_double(described_class, hold_record_list: [{}, {}, {}])
-      ).once
-
-      expect(patron.holds).to have_attributes(size: 3)
-      expect(patron.holds).to have_attributes(size: 3)
-    end
-
-    describe 'when it already retrieved the holds' do
-      before do
-        patron.fields['holdRecordList'] = [{}, {}, {}]
-      end
-
-      it 'uses the existing data' do
-        expect(described_class).not_to receive(:find_by)
-        expect(patron.holds).to have_attributes(size: 3)
-      end
-    end
-  end
 end
