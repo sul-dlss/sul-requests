@@ -30,15 +30,21 @@ class RequestApprovalStatus
     item_list_with_status.join("\n")
   end
 
+  # rubocop:disable Metrics/AbcSize, Lint/DuplicateBranch
   def item_list_with_status
     request.holdings.map do |item|
-      if request.ils_response.success?(item.barcode)
+      # During the FOLIO migration, we want to show the normal success message
+      # instead of an error message as we're not talking to the ILS.
+      if Settings.features.migration && request.ils_response.blank?
+        succcess_text_for_item(item.callnumber)
+      elsif request.ils_response.success?(item.barcode)
         succcess_text_for_item(item.callnumber)
       else
         error_text_for_item(item)
       end
     end
   end
+  # rubocop:enable Metrics/AbcSize, Lint/DuplicateBranch
 
   def pending?
     request.ils_response.blank?
