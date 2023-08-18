@@ -8,6 +8,7 @@ module Folio
     include Enumerable
 
     # @param [Request] request the users request
+    # @param [Array<Folio::Item>] items
     def initialize(request, items)
       @request = request
       @items = items

@@ -46,13 +46,13 @@ module Folio
   #       See https://github.com/sul-dlss/searchworks_traject_indexer/blob/02192452815de3861dcfafb289e1be8e575cb000/lib/traject/config/sirsi_config.rb#L2379
   # NOTE, barcode and callnumber may be nil. see instance_hrid: 'in00000063826'
   class Item
-    attr_reader :barcode, :status, :type, :callnumber, :public_note, :effective_location, :permanent_location, :material_type,
-                :loan_type
+    attr_reader :id, :barcode, :status, :type, :callnumber, :public_note, :effective_location, :permanent_location,
+                :material_type, :loan_type
 
     # rubocop:disable Metrics/ParameterLists
-    def initialize(barcode:, status:, type:, callnumber:, public_note:,
-                   effective_location:, permanent_location: nil, material_type: nil, loan_type: nil,
-                   due_date: nil)
+    def initialize(id:, barcode:, status:, type:, callnumber:, public_note:,
+                   effective_location:, permanent_location: nil, material_type: nil, loan_type: nil)
+      @id = id
       @barcode = barcode
       @status = status
       @type = type
@@ -62,7 +62,6 @@ module Folio
       @permanent_location = permanent_location || effective_location
       @material_type = material_type
       @loan_type = loan_type
-      @due_date = due_date
     end
     # rubocop:enable Metrics/ParameterLists
 
@@ -113,10 +112,6 @@ module Folio
       status == STATUS_MISSING
     end
 
-    def due_date
-      Time.zone.parse(@due_date).strftime('%m/%d/%Y') if @due_date
-    end
-
     def hold?
       status == STATUS_HOLD
     end
@@ -131,9 +126,9 @@ module Folio
 
     # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     def self.from_hash(dyn)
-      new(barcode: dyn['barcode'],
+      new(id: dyn.fetch('id'),
+          barcode: dyn['barcode'],
           status: dyn.dig('status', 'name'),
-          due_date: dyn['dueDate'],
           type: dyn.dig('materialType', 'name'),
           callnumber: [dyn.dig('effectiveCallNumberComponents', 'callNumber'), dyn['volume'], dyn['enumeration'],
                        dyn['chronology']].filter_map(&:presence).join(' '),

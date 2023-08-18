@@ -37,10 +37,18 @@ module RequestsHelper
     current_request.origin
   end
 
+  # rubocop:disable Metrics/MethodLength
   def label_for_item_selector_holding(holding)
     if holding.checked_out?
-      content_tag :span, class: 'status pull-right availability unavailable' do
-        "Due #{holding.due_date}"
+      if Settings.ils.bib_model == 'SearchworksItem'
+        content_tag :span, class: 'status pull-right availability unavailable' do
+          "Due #{holding.due_date}"
+        end
+      else
+        tag.span class: 'status pull-right availability unavailable' do
+          # This content is lazily loaded, because the query to get due_date makes the initial query for items take a long time.
+          turbo_frame_tag "due_date_#{holding.id}"
+        end
       end
     else
       content_tag :span, class: "status pull-right availability #{holding.status_class}" do
@@ -48,6 +56,7 @@ module RequestsHelper
       end
     end
   end
+  # rubocop:enable Metrics/MethodLength
 
   def request_level_request_status(request = current_request)
     if request.ils_response.usererr_code

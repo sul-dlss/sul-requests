@@ -28,6 +28,7 @@ module Folio
         end,
         electronic_access: json.fetch('electronicAccess', []),
         items: json.fetch('items', []).map { |item| Folio::Item.from_hash(item) }
+        # TODO: maybe instantiate stub items here with basic metadata
       )
     end
     # rubocop:enable Metrics/MethodLength
@@ -57,7 +58,7 @@ module Folio
       contributor&.fetch('name')
     end
 
-    attr_reader :pub_date, :format, :items
+    attr_reader :id, :pub_date, :format, :items
 
     def isbn
       @isbn.join('; ')

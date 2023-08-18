@@ -64,6 +64,7 @@ RSpec.describe Folio::Instance do
         "electronicAccess": [],
         "items": [
           {
+            "id": "57550106-e809-5a43-92da-1503d84dcc18",
             "barcode": "36105124065330",
             "status": {
               "name": "Available"
@@ -182,6 +183,7 @@ RSpec.describe Folio::Instance do
             ],
             "items": [
               {
+                "id": "3593730d-2d84-542c-bb8d-1ecb39fb33fb",
                 "barcode": "6307113-1001",
                 "status": {
                   "name": "Available"
@@ -220,6 +222,7 @@ RSpec.describe Folio::Instance do
                 "temporaryLoanTypeId": null
               },
               {
+                "id": "3593730d-2d84-542c-bb8d-eeeeeeeeee",
                 "barcode": "36105116223418",
                 "status": {
                   "name": "Available"
@@ -253,6 +256,7 @@ RSpec.describe Folio::Instance do
                 "temporaryLoanTypeId": null
               },
               {
+                "id": "3593730d-2d84-542c-bb8d-fffffffffff",
                 "barcode": "36105116223426",
                 "status": {
                   "name": "Available"
@@ -286,6 +290,7 @@ RSpec.describe Folio::Instance do
                 "temporaryLoanTypeId": null
               },
               {
+                "id": "3593730d-2d84-542c-bb8d-aaaaaaaaaaaaa",
                 "barcode": "36105116223434",
                 "status": {
                   "name": "Available"
