@@ -160,11 +160,9 @@ class FolioGraphqlClient
         query:
           <<~GQL
             query DueDate {
-              instances(id: "#{instance_id}") {
-                items {
-                  id
-                  dueDate
-                }
+              availability(id: "#{instance_id}") {
+                id
+                dueDate
               }
             }
           GQL
@@ -174,9 +172,9 @@ class FolioGraphqlClient
 
     raise data['errors'].pluck('message').join("\n") if data.key?('errors')
 
-    data.dig('data', 'instances', 0, 'items').map do |row|
+    data.dig('data', 'availability').map do |row|
       next unless row['dueDate']
-      
+
       { id: row['id'], due_date: DateTime.parse(row['dueDate']).to_date }
     end
   end
@@ -237,16 +235,3 @@ class FolioGraphqlClient
                             'okapi_password' => @password })
   end
 end
-
-# Logs graphql calls
-class GraphqlLogSubscriber < ActiveSupport::LogSubscriber
-  def due_date(event)
-    info { "Due_date call (#{event.duration.round(1)}ms)" }
-  end
-
-  def logger
-    ActionController::Base.logger
-  end
-end
-
-GraphqlLogSubscriber.attach_to :graphql
