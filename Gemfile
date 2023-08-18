@@ -5,7 +5,7 @@ gem 'rails', '~> 7.0'
 # Use sqlite3 as the database (during local development)
 gem 'sqlite3'
 # Use Puma as the app server
-gem 'puma', '~> 5.0' # avoid capybara errors until capybara release; see https://github.com/teamcapybara/capybara/pull/2530
+gem 'puma', '~> 6.0'
 gem 'bootsnap'
 # Use bootstrap_form for easy form building
 gem 'bootstrap_form', '< 4' # pin to < 4 since we are not on bootstrap 4
