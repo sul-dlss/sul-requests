@@ -16,11 +16,15 @@ class SubmitSymphonyRequestJob < ApplicationJob
     return true unless request
 
     logger.info("Started SubmitSymphonyRequestJob for request #{request_id}")
-    response = Command.new(request, **options).execute!
 
-    logger.debug("Symphony response string: #{response}")
-    request.merge_ils_response_data(SymphonyResponse.new(response.with_indifferent_access))
-    request.save
+    unless Settings.features.migration
+      response = Command.new(request, **options).execute!
+
+      logger.debug("Symphony response string: #{response}")
+      request.merge_ils_response_data(SymphonyResponse.new(response.with_indifferent_access))
+      request.save
+    end
+
     request.send_approval_status!
     logger.info("Completed SubmitSymphonyRequestJob for request #{request_id}")
   end
