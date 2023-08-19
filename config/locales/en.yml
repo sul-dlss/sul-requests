@@ -89,6 +89,8 @@ en:
         code_U004: 'Your request could not be processed because your user privileges have expired.'
 
   confirmation_email:
+    request:
+      subject: 'New request needs mediation'
     mediated_page:
       mediator_subject: 'New request needs mediation'
   date:
