@@ -8,6 +8,7 @@ class SubmitFolioRequestJob < ApplicationJob
   # we pass the ActiveRecord identifier to our job, rather than the ActiveRecord reference.
   #   This is recommended as a Sidekiq best practice (https://github.com/mperham/sidekiq/wiki/Best-Practices).
   #   It also helps reduce the size of the Redis database (used by Sidekiq), which stores its data in memory.
+  # rubocop:disable Metrics/AbcSize
   def perform(request_id, options = {})
     request = find_request(request_id)
 
@@ -20,9 +21,10 @@ class SubmitFolioRequestJob < ApplicationJob
 
     request.merge_ils_response_data(FolioResponse.new(response.with_indifferent_access))
     request.save(validate: false) # By placing this request in the ILS, the item is no longer in a requestable state, so avoid validation.
-    request.send_approval_status!
+    request.send_approval_status! unless Settings.features.migration
     logger.info("Completed SubmitFolioRequestJob for request #{request_id}")
   end
+  # rubocop:enable Metrics/AbcSize
 
   def find_request(request_id)
     Request.find(request_id)
