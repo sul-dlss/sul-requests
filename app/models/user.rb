@@ -11,7 +11,17 @@ class User < ActiveRecord::Base
   attr_writer :ldap_group_string, :affiliation
   attr_accessor :ip_address
 
-  delegate :proxy?, :sponsor?, to: :patron, allow_nil: true
+  def proxy?
+    return false if Settings.features.migration
+
+    patron&.proxy?
+  end
+
+  def sponsor?
+    return false if Settings.features.migration
+
+    patron&.sponsor?
+  end
 
   class_attribute :patron_model_class, default: Settings.ils.patron_model&.constantize || Symphony::Patron
 
