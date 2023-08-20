@@ -65,6 +65,8 @@ RSpec.describe 'Creating a page request' do
       stub_current_user(user)
       allow(user).to receive(:sponsor?).and_return(true)
       stub_symphony_response(build(:symphony_page_with_single_item))
+
+      pending('Unable to determine user types during the migration') if Settings.features.migration
     end
 
     it 'allows the user to share with their proxy group' do
