@@ -91,56 +91,12 @@ class FolioGraphqlClient
                     name
                   }
                 }
-                effectiveLocation {
-                  id
-                  campusId
-                  libraryId
-                  institutionId
-                  code
-                  discoveryDisplayName
-                  name
-                  servicePoints {
-                    id
-                    code
-                    pickupLocation
-                  }
-                  library {
-                    id
-                    code
-                  }
-                  campus {
-                    id
-                    code
-                  }
-                  details {
-                    pageAeonSite
-                    pageMediationGroupKey
-                    pageServicePoints {
-                      id
-                      code
-                      name
-                    }
-                    scanServicePointCode
-                    availabilityClass
-                  }
-                }
-                permanentLocation {
-                  id
-                  code
-                  details {
-                    pagingSchedule
-                  }
-                }
+                effectiveLocationId
+                permanentLocationId
                 permanentLoanTypeId
                 temporaryLoanTypeId
                 holdingsRecord {
-                  effectiveLocation {
-                    id
-                    code
-                    details {
-                      pagingSchedule
-                    }
-                  }
+                  effectiveLocationId
                 }
               }
             }

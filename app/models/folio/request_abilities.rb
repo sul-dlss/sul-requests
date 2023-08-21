@@ -60,7 +60,6 @@ module Folio
       !mediateable? && !hold_recallable? && any_holdings_pageable?
     end
 
-    # FOLIO
     def pickup_destinations
       return (default_pickup_service_points + additional_pickup_service_points).uniq if location_restricted_service_point_codes.empty?
 
@@ -97,7 +96,7 @@ module Folio
     # Retrieve the service points associated with specific locations
     def location_restricted_service_point_codes
       request.holdings.flat_map do |item|
-        Array(item.effective_location.details['pageServicePoints']).pluck('code')
+        Array(item.effective_location.details['pageServicePointCodes']&.split(','))
       end.compact.uniq
     end
 

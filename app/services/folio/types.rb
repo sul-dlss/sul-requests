@@ -7,7 +7,7 @@ module Folio
   class Types
     class << self
       delegate  :policies, :circulation_rules, :criteria,
-                :locations, :libraries, :service_points, to: :instance
+                :locations, :libraries, :service_points, :campuses, to: :instance
     end
 
     def self.instance
@@ -46,6 +46,10 @@ module Folio
 
     def service_points
       @service_points ||= ServicePointStore.new(get_type('service_points'))
+    end
+
+    def campuses
+      @campuses ||= CampusesStore.new(get_type('campuses'))
     end
 
     def policies

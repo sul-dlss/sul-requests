@@ -8,69 +8,13 @@ if Settings.ils.bib_model == 'Folio::Instance'
       code { 'SAL3-STACKS' }
       name { 'Location name' }
       discovery_display_name { 'Discovery display name' }
-      campus { Folio::Campus.new(id: 'uuid', code: 'SUL') }
-      library { Folio::Library.new(id: 'uuid', code: 'LIB') }
+      campus_id { 'uuid' }
       library_id { 'uuid' }
       primary_service_point_id { nil }
-      institution { Folio::Institution.new(id: 'uuid') }
+      institution_id { 'uuid' }
       details { {} }
 
       initialize_with { new(**attributes) }
-    end
-
-    factory :mediated_location, parent: :location do
-      details { { 'pageMediationGroupKey' => 'ART', 'pageServicePoints' => [{ 'code' => 'ART' }] } }
-    end
-
-    factory :page_mp_location, parent: :location do
-      code { 'SAL3-PAGE-MP' }
-      details { { 'pageMediationGroupKey' => 'PAGE-MP', 'pageServicePoints' => [{ 'code' => 'EARTH-SCI' }] } }
-    end
-
-    factory :page_lp_location, parent: :location do
-      code { 'SAL3-PAGE-LP' }
-      details { { 'pageServicePoints' => [{ 'code' => 'MUSIC' }, { 'code' => 'MEDIA-CENTER' }] } }
-    end
-
-    factory :page_en_location, parent: :location do
-      code { 'SAL3-PAGE-EN' }
-      details { { 'pageServicePoints' => [{ 'code' => 'ENG' }] } }
-    end
-
-    factory :scannable_location, parent: :location do
-      code { 'SAL3-STACKS' }
-      details { { 'scanServicePointCode' => 'SAL3' } }
-    end
-
-    factory :sal_temp_location, parent: :location do
-      code { 'SAL-TEMP' }
-      details { { 'scanServicePointCode' => 'GREEN' } }
-    end
-
-    factory :mmstacks_location, parent: :location do
-      code { 'MEDIA-CAGE' }
-      library { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'MEDIA-CENTER') }
-    end
-
-    factory :law_location, parent: :location do
-      code { 'LAW-STACKS1' }
-      library { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'LAW') }
-      campus { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'LAW') }
-    end
-
-    factory :eal_sets_location, parent: :location do
-      code { 'EAL-SETS' }
-      library { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'EAST-ASIA') }
-    end
-
-    factory :green_location, parent: :location do
-      code { 'GRE-STACKS' }
-      library { Folio::Library.new(id: 'f6b5519e-88d9-413e-924d-9ed96255f72e', code: 'GREEN') }
-    end
-
-    factory :spec_coll_location, parent: :location do
-      code { 'SPEC-STACKS' }
-      details { { 'pageAeonSite' => 'SPECUA' } }
     end
 
     factory :book_material_type, class: 'Folio::MaterialType' do
@@ -95,7 +39,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
       type { '' }
       material_type { build(:book_material_type) }
       loan_type { Folio::LoanType.new(id: '') }
-      effective_location { build(:location, code: 'GRE-STACKS') }
+      effective_location_id { Folio::Types.locations.find_by(code: 'GRE-STACKS').id }
       initialize_with { new(**attributes) }
     end
 
@@ -109,15 +53,15 @@ if Settings.ils.bib_model == 'Folio::Instance'
           build(:item,
                 barcode: '3610512345678',
                 callnumber: 'ABC 123',
-                effective_location: build(:location, code: 'SAL3-STACKS')),
+                effective_location_id: Folio::Types.locations.find_by(code: 'SAL3-STACKS').id),
           build(:item,
                 barcode: '3610587654321',
                 callnumber: 'ABC 321',
-                effective_location: build(:location, code: 'SAL3-STACKS')),
+                effective_location_id: Folio::Types.locations.find_by(code: 'SAL3-STACKS').id),
           build(:item,
                 barcode: '12345679',
                 callnumber: 'ABC 456',
-                effective_location: build(:location, code: 'SAL3-STACKS'))
+                effective_location_id: Folio::Types.locations.find_by(code: 'SAL3-STACKS').id)
         ]
       end
 
@@ -136,7 +80,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
           build(:item,
                 barcode: '87654321',
                 callnumber: 'ABC 87654321',
-                effective_location: build(:location, code: 'SAL3-STACKS'))
+                effective_location_id: Folio::Types.locations.find_by(code: 'SAL3-STACKS').id)
         ]
       end
 
@@ -157,7 +101,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
           build(:item,
                 barcode: '12345678',
                 callnumber: 'ABC 123',
-                effective_location: build(:location, code: 'SAL3-STACKS'))
+                effective_location_id: Folio::Types.locations.find_by(code: 'SAL3-STACKS').id)
         ]
       end
 
@@ -177,7 +121,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
           build(:item,
                 barcode: '12345678',
                 callnumber: 'ABC 123',
-                effective_location: build(:sal_temp_location),
+                effective_location_id: Folio::Types.locations.find_by(code: 'SAL-TEMP').id,
                 type: 'NONCIRC')
         ]
       end
@@ -202,12 +146,12 @@ if Settings.ils.bib_model == 'Folio::Instance'
                 barcode: '12345678',
                 callnumber: 'ABC 123',
                 status: 'Page',
-                effective_location: build(:spec_coll_location)),
+                effective_location_id: Folio::Types.locations.find_by(code: 'SPEC-STACKS').id),
           build(:item,
                 barcode: '87654321',
                 callnumber: 'ABC 321',
                 status: 'Page',
-                effective_location: build(:spec_coll_location))
+                effective_location_id: Folio::Types.locations.find_by(code: 'SPEC-STACKS').id)
         ]
       end
 
@@ -231,7 +175,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
                 barcode: '12345678',
                 callnumber: 'ABC 123',
                 status: 'Page',
-                effective_location: build(:spec_coll_location))
+                effective_location_id: Folio::Types.locations.find_by(code: 'SPEC-STACKS').id)
         ]
       end
 
@@ -256,7 +200,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
                 barcode: '12345678',
                 callnumber: 'ABC 123',
                 status: 'Page',
-                effective_location: build(:spec_coll_location))
+                effective_location_id: Folio::Types.locations.find_by(code: 'SPEC-STACKS').id)
         ]
       end
 
@@ -277,12 +221,12 @@ if Settings.ils.bib_model == 'Folio::Instance'
                 barcode: '12345678',
                 callnumber: 'ABC 123',
                 status: 'Page',
-                effective_location: build(:location, code: 'SAL3-STACKS')),
+                effective_location_id: Folio::Types.locations.find_by(code: 'SAL3-STACKS').id),
           build(:item,
                 barcode: '87654321',
                 callnumber: 'ABC 321',
                 status: 'Page',
-                effective_location: build(:location, code: 'SAL3-STACKS'))
+                effective_location_id: Folio::Types.locations.find_by(code: 'SAL3-STACKS').id)
         ]
       end
 
@@ -303,12 +247,12 @@ if Settings.ils.bib_model == 'Folio::Instance'
                 barcode: '12345678',
                 callnumber: 'ABC 123',
                 status: 'Page',
-                effective_location: build(:scannable_location, code: 'SAL3-STACKS')),
+                effective_location_id: Folio::Types.locations.find_by(code: 'SAL3-STACKS').id),
           build(:item,
                 barcode: '87654321',
                 callnumber: 'ABC 321',
                 status: 'Page',
-                effective_location: build(:scannable_location, code: 'SAL3-STACKS'))
+                effective_location_id: Folio::Types.locations.find_by(code: 'SAL3-STACKS').id)
         ]
       end
 
@@ -329,7 +273,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
                 barcode: '12345678',
                 callnumber: 'ABC 123',
                 status: 'Available',
-                effective_location: build(:green_location))
+                effective_location_id: Folio::Types.locations.find_by(code: 'GRE-STACKS').id)
         ]
       end
 
@@ -350,7 +294,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
                 barcode: '12345678',
                 callnumber: 'ABC 123',
                 status: 'Page',
-                effective_location: build(:page_lp_location))
+                effective_location_id: Folio::Types.locations.find_by(code: 'SAL3-PAGE-LP').id)
         ]
       end
 
@@ -371,12 +315,13 @@ if Settings.ils.bib_model == 'Folio::Instance'
                 barcode: '12345678',
                 callnumber: 'ABC 123',
                 status: 'Page',
-                effective_location: build(:page_mp_location)),
+                effective_location_id: Folio::Types.locations.find_by(code: 'SAL3-PAGE-MP').id),
+
           build(:item,
                 barcode: '87654321',
                 callnumber: 'ABC 321',
                 status: 'Page',
-                effective_location: build(:page_mp_location))
+                effective_location_id: Folio::Types.locations.find_by(code: 'SAL3-PAGE-MP').id)
         ]
       end
 
@@ -396,28 +341,28 @@ if Settings.ils.bib_model == 'Folio::Instance'
           build(:item,
                 barcode: '12345678',
                 callnumber: 'ABC 123',
-                effective_location: build(:location, code: 'SAL3-STACKS')),
+                effective_location_id: Folio::Types.locations.find_by(code: 'SAL3-STACKS').id),
           build(:item,
                 barcode: '23456789',
                 callnumber: 'ABC 456',
-                effective_location: build(:location, code: 'SAL3-STACKS')),
+                effective_location_id: Folio::Types.locations.find_by(code: 'SAL3-STACKS').id),
           build(:item,
                 barcode: '34567890',
                 callnumber: 'ABC 789',
-                effective_location: build(:location, code: 'SAL3-STACKS')),
+                effective_location_id: Folio::Types.locations.find_by(code: 'SAL3-STACKS').id),
           build(:item,
                 barcode: '45678901',
                 callnumber: 'ABC 012',
-                effective_location: build(:location, code: 'SAL3-STACKS'),
+                effective_location_id: Folio::Types.locations.find_by(code: 'SAL3-STACKS').id,
                 public_note: 'note for 45678901'),
           build(:item,
                 barcode: '56789012',
                 callnumber: 'ABC 345',
-                effective_location: build(:location, code: 'SAL3-STACKS')),
+                effective_location_id: Folio::Types.locations.find_by(code: 'SAL3-STACKS').id),
           build(:item,
                 barcode: '67890123',
                 callnumber: 'ABC 678',
-                effective_location: build(:location, code: 'SAL3-STACKS'))
+                effective_location_id: Folio::Types.locations.find_by(code: 'SAL3-STACKS').id)
         ]
       end
 
@@ -437,7 +382,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
           build(:item,
                 barcode: '12345678',
                 callnumber: 'ABC 123',
-                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                effective_location_id: Folio::Types.locations.find_by(code: 'ART-LOCKED-LARGE').id,
                 type: 'LCKSTK')
         ]
       end
@@ -458,7 +403,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
           build(:item,
                 barcode: '12345678',
                 callnumber: 'ABC 123',
-                effective_location: build(:location, code: 'ART-STACKS'),
+                effective_location_id: Folio::Types.locations.find_by(code: 'ART-STACKS').id,
                 type: 'STKS')
         ]
       end
@@ -479,55 +424,55 @@ if Settings.ils.bib_model == 'Folio::Instance'
           build(:item,
                 barcode: '12345678',
                 callnumber: 'ABC 123',
-                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                effective_location_id: Folio::Types.locations.find_by(code: 'ART-LOCKED-LARGE').id,
                 type: 'LCKSTK'),
           build(:item,
                 barcode: '23456789',
                 callnumber: 'ABC 456',
-                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                effective_location_id: Folio::Types.locations.find_by(code: 'ART-LOCKED-LARGE').id,
                 public_note: 'note for 23456789',
                 type: 'LCKSTK'),
           build(:item,
                 barcode: '34567890',
                 callnumber: 'ABC 789',
-                effective_location: build(:mediated_location, code: 'ART-NEWBOOK'),
-                permanent_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                effective_location_id: Folio::Types.locations.find_by(code: 'ART-LOCKED-MEDIUM-R').id,
+                permanent_location_id: Folio::Types.locations.find_by(code: 'ART-LOCKED-LARGE').id,
                 type: 'LCKSTK'),
           build(:item,
                 barcode: '45678901',
                 callnumber: 'ABC 012',
-                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                effective_location_id: Folio::Types.locations.find_by(code: 'ART-LOCKED-LARGE').id,
                 public_note: 'note for 45678901',
                 type: 'LCKSTK'),
           build(:item,
                 barcode: '56789012',
                 callnumber: 'ABC 345',
-                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                effective_location_id: Folio::Types.locations.find_by(code: 'ART-LOCKED-LARGE').id,
                 type: 'LCKSTK'),
           build(:item,
                 barcode: '67890123',
                 callnumber: 'ABC 678',
-                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                effective_location_id: Folio::Types.locations.find_by(code: 'ART-LOCKED-LARGE').id,
                 type: 'LCKSTK'),
           build(:item,
                 barcode: '78901234',
                 callnumber: 'ABC 901',
-                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                effective_location_id: Folio::Types.locations.find_by(code: 'ART-LOCKED-LARGE').id,
                 type: 'LCKSTK'),
           build(:item,
                 barcode: '89012345',
                 callnumber: 'ABC 234',
-                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                effective_location_id: Folio::Types.locations.find_by(code: 'ART-LOCKED-LARGE').id,
                 type: 'LCKSTK'),
           build(:item,
                 barcode: '90123456',
                 callnumber: 'ABC 567',
-                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                effective_location_id: Folio::Types.locations.find_by(code: 'ART-LOCKED-LARGE').id,
                 type: 'LCKSTK'),
           build(:item,
                 barcode: '01234567',
                 callnumber: 'ABC 890',
-                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+                effective_location_id: Folio::Types.locations.find_by(code: 'ART-LOCKED-LARGE').id,
                 type: 'LCKSTK')
         ]
       end
@@ -548,44 +493,44 @@ if Settings.ils.bib_model == 'Folio::Instance'
           build(:item,
                 barcode: '12345678',
                 callnumber: 'ABC 123',
-                effective_location: build(:spec_coll_location)),
+                effective_location_id: Folio::Types.locations.find_by(code: 'SPEC-STACKS').id),
           build(:item,
                 barcode: '23456789',
                 callnumber: 'ABC 456',
-                effective_location: build(:spec_coll_location)),
+                effective_location_id: Folio::Types.locations.find_by(code: 'SPEC-STACKS').id),
           build(:item,
                 barcode: '34567890',
                 callnumber: 'ABC 789',
-                effective_location: build(:spec_coll_location)),
+                effective_location_id: Folio::Types.locations.find_by(code: 'SPEC-STACKS').id),
           build(:item,
                 barcode: '45678901',
                 callnumber: 'ABC 012',
-                effective_location: build(:spec_coll_location),
+                effective_location_id: Folio::Types.locations.find_by(code: 'SPEC-STACKS').id,
                 public_note: 'note for 45678901'),
           build(:item,
                 barcode: '56789012',
                 callnumber: 'ABC 345',
-                effective_location: build(:spec_coll_location)),
+                effective_location_id: Folio::Types.locations.find_by(code: 'SPEC-STACKS').id),
           build(:item,
                 barcode: '67890123',
                 callnumber: 'ABC 678',
-                effective_location: build(:spec_coll_location)),
+                effective_location_id: Folio::Types.locations.find_by(code: 'SPEC-STACKS').id),
           build(:item,
                 barcode: '78901234',
                 callnumber: 'ABC 901',
-                effective_location: build(:spec_coll_location)),
+                effective_location_id: Folio::Types.locations.find_by(code: 'SPEC-STACKS').id),
           build(:item,
                 barcode: '89012345',
                 callnumber: 'ABC 234',
-                effective_location: build(:spec_coll_location)),
+                effective_location_id: Folio::Types.locations.find_by(code: 'SPEC-STACKS').id),
           build(:item,
                 barcode: '90123456',
                 callnumber: 'ABC 567',
-                effective_location: build(:spec_coll_location)),
+                effective_location_id: Folio::Types.locations.find_by(code: 'SPEC-STACKS').id),
           build(:item,
                 barcode: '01234567',
                 callnumber: 'ABC 890',
-                effective_location: build(:spec_coll_location))
+                effective_location_id: Folio::Types.locations.find_by(code: 'SPEC-STACKS').id)
         ]
       end
 
@@ -605,13 +550,13 @@ if Settings.ils.bib_model == 'Folio::Instance'
           build(:item,
                 barcode: '12345678',
                 callnumber: 'ABC 123',
-                effective_location: build(:location, code: 'SAL3-STACKS')),
+                effective_location_id: Folio::Types.locations.find_by(code: 'SAL3-STACKS').id),
           build(:item,
                 barcode: '87654321',
                 callnumber: 'ABC 321',
                 due_date: '2015-01-01T12:59:00.000+00:00',
                 status: 'Checked out',
-                effective_location: build(:location, code: 'SAL3-STACKS'))
+                effective_location_id: Folio::Types.locations.find_by(code: 'SAL3-STACKS').id)
         ]
       end
 
@@ -631,7 +576,7 @@ if Settings.ils.bib_model == 'Folio::Instance'
           build(:item,
                 barcode: '12345678',
                 callnumber: 'ABC 123',
-                effective_location: build(:location, code: 'SAL3-STACKS'))
+                effective_location_id: Folio::Types.locations.find_by(code: 'SAL3-STACKS').id)
         ]
       end
 

@@ -13,7 +13,7 @@ RSpec.describe 'Pickup Libraries Dropdown' do
     build(:item,
           barcode: '3610512345678',
           callnumber: 'ABC 123',
-          effective_location: build(:location, code: 'SAL3-STACKS'))
+          effective_location_id: Folio::Types.locations.find_by(code: 'SAL3-STACKS').id)
   end
 
   before do
@@ -35,7 +35,7 @@ RSpec.describe 'Pickup Libraries Dropdown' do
         build(:item,
               barcode: '3610512345678',
               callnumber: 'ABC 123',
-              effective_location: build(:page_en_location))
+              effective_location_id: Folio::Types.locations.find_by(code: 'SAL3-PAGE-EN').id)
       end
 
       it 'simplfies the display of the text of the destination library if there is only one possible' do
@@ -64,7 +64,7 @@ RSpec.describe 'Pickup Libraries Dropdown' do
         build(:item,
               barcode: '3610512345678',
               callnumber: 'ABC 123',
-              effective_location: build(:mmstacks_location),
+              effective_location_id: Folio::Types.locations.find_by(code: 'MEDIA-CAGE').id,
               material_type: build(:multimedia_material_type))
       end
 

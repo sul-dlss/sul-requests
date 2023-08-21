@@ -46,20 +46,20 @@ module Folio
   #       See https://github.com/sul-dlss/searchworks_traject_indexer/blob/02192452815de3861dcfafb289e1be8e575cb000/lib/traject/config/sirsi_config.rb#L2379
   # NOTE, barcode and callnumber may be nil. see instance_hrid: 'in00000063826'
   class Item
-    attr_reader :barcode, :status, :type, :callnumber, :public_note, :effective_location, :permanent_location, :material_type,
+    attr_reader :barcode, :status, :type, :callnumber, :public_note, :effective_location_id, :permanent_location_id, :material_type,
                 :loan_type
 
     # rubocop:disable Metrics/ParameterLists
     def initialize(barcode:, status:, type:, callnumber:, public_note:,
-                   effective_location:, permanent_location: nil, material_type: nil, loan_type: nil,
+                   effective_location_id:, permanent_location_id: nil, material_type: nil, loan_type: nil,
                    due_date: nil)
       @barcode = barcode
       @status = status
       @type = type
       @callnumber = callnumber
       @public_note = public_note
-      @effective_location = effective_location
-      @permanent_location = permanent_location || effective_location
+      @effective_location_id = effective_location_id
+      @permanent_location_id = permanent_location_id || effective_location_id
       @material_type = material_type
       @loan_type = loan_type
       @due_date = due_date
@@ -129,7 +129,7 @@ module Folio
       HOLD_RECALL_STATUSES.include?(status)
     end
 
-    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+    # rubocop:disable Metrics/AbcSize
     def self.from_hash(dyn)
       new(barcode: dyn['barcode'],
           status: dyn.dig('status', 'name'),
@@ -138,16 +138,21 @@ module Folio
           callnumber: [dyn.dig('effectiveCallNumberComponents', 'callNumber'), dyn['volume'], dyn['enumeration'],
                        dyn['chronology']].filter_map(&:presence).join(' '),
           public_note: dyn.fetch('notes').find { |note| note.dig('itemNoteType', 'name') == 'Public' }&.fetch('note'),
-          effective_location: Location.from_hash(dyn.fetch('effectiveLocation')),
+          effective_location_id: dyn['effectiveLocationId'],
+          permanent_location_id: dyn['permanentLocationId'] || dyn.dig('holdingsRecord', 'effectiveLocationId'),
           # fall back to the holding record's effective Location; we're no longer guaranteed an item-level permanent location.
-          permanent_location: (if dyn['permanentLocation']
-                                 Location.from_hash(dyn.fetch('permanentLocation'))
-                               end) || (Location.from_hash(dyn.dig('holdingsRecord', 'effectiveLocation')) if dyn.dig('holdingsRecord',
-                                                                                                                      'effectiveLocation')),
           material_type: MaterialType.new(id: dyn.dig('materialType', 'id'), name: dyn.dig('materialType', 'name')),
           loan_type: LoanType.new(id: dyn.fetch('tempooraryLoanTypeId', dyn.fetch('permanentLoanTypeId'))))
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+    # rubocop:enable Metrics/AbcSize
+
+    def permanent_location
+      @permanent_location ||= Folio::Types.locations.find_by(id: permanent_location_id)
+    end
+
+    def effective_location
+      @effective_location ||= Folio::Types.locations.find_by(id: effective_location_id)
+    end
 
     private
 

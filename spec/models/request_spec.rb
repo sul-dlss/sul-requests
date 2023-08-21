@@ -695,8 +695,9 @@ RSpec.describe Request do
 
   describe '#default_pickup_destination' do
     it 'sets an origin specific default' do
+      effective_location_id = Folio::Types.locations.find_by(code: 'LAW-STACKS1').id
       request = described_class.new(origin: 'LAW', origin_location: 'STACKS',
-                                    bib_data: double(request_holdings: [build(:item, effective_location: build(:law_location))]))
+                                    bib_data: double(request_holdings: [build(:item, effective_location_id:)]))
 
       expect(request.default_pickup_destination).to eq 'LAW'
     end

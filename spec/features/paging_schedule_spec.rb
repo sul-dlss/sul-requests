@@ -81,7 +81,7 @@ RSpec.describe 'Paging Schedule' do
       [
         double('item', callnumber: 'ABC 123', processing?: false, missing?: false, hold?: false, on_order?: false, hold_recallable?: false,
                        barcode: '123123124', checked_out?: false, status_class: 'active', status_text: 'Active', public_note: 'huh?',
-                       type: 'STKS', effective_location: build(:page_en_location),
+                       type: 'STKS', effective_location: Folio::Types.locations.find_by(code: 'SAL3-PAGE-EN'),
                        material_type: build(:book_material_type), loan_type: double(id: nil))
       ]
     end
