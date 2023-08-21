@@ -17,17 +17,25 @@ OkComputer::Registry.register 'background_jobs', OkComputer::SidekiqLatencyCheck
 OkComputer::Registry.register 'hours_api', OkComputer::HttpCheck.new("#{Settings.hours_api}/status")
 OkComputer::Registry.register 'sul_illiad', OkComputer::HttpCheck.new(Settings.sul_illiad)
 
-OkComputer.make_optional %w(hours_api sul_illiad)
+OkComputer.make_optional %w[hours_api sul_illiad]
 
-if Settings.symws.url
-  symphony_web_services_url = URI.parse(Settings.symws.url)
-
+if Settings.folio.graphql_url || Settings.folio.okapi_url
+  okapi_uri = URI.parse(Settings.folio.okapi_url)
   OkComputer::Registry.register(
-    'symphony_web_services',
+    'okapi',
     OkComputer::PingCheck.new(
-      symphony_web_services_url.host,
-      symphony_web_services_url.port
+      okapi_uri.host,
+      okapi_uri.port
     )
   )
-  OkComputer.make_optional %w(symphony_web_services)
+
+  graphql_uri = URI.parse(Settings.folio.graphql_url)
+  OkComputer::Registry.register(
+    'graphql',
+    OkComputer::PingCheck.new(
+      graphql_uri.host,
+      graphql_uri.port
+    )
+  )
+  OkComputer.make_optional %w[okapi graphql]
 end
