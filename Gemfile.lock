@@ -211,7 +211,6 @@ GEM
     io-console (0.6.0)
     irb (1.7.4)
       reline (>= 0.3.6)
-    is_it_working (1.1.0)
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
@@ -479,7 +478,6 @@ DEPENDENCIES
   hash_to_hidden_fields
   honeybadger
   http
-  is_it_working
   jbuilder (~> 2.5)
   jsbundling-rails (~> 1.1)
   jwt

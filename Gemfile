@@ -30,9 +30,6 @@ gem 'hash_to_hidden_fields'
 # Use Honeybadger for exception reporting
 gem 'honeybadger'
 
-# Use is_it_working to monitor the application
-gem 'is_it_working'
-
 # Use okcomputer to monitor the application
 gem 'okcomputer'
 
