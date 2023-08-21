@@ -18,6 +18,10 @@ module Folio
       @primary_service_points ||= locations.map(&:primary_service_point_id).uniq.map { |id| Folio::Types.service_points.find_by(id:) }
     end
 
+    def to_h
+      { id:, code: }
+    end
+
     private
 
     def locations
