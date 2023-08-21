@@ -66,8 +66,8 @@ module Folio
         'loan-type' => get_type('loan_types').index_by { |p| p['id'] },
         'location-institution' => get_type('institutions').index_by { |p| p['id'] },
         'location-campus' => get_type('campuses').index_by { |p| p['id'] },
-        'location-library' => libraries.all.index_by(&:id),
-        'location-location' => locations.all.index_by(&:id)
+        'location-library' => libraries.all.index_by(&:id).map { |library| { 'code' => library.code } },
+        'location-location' => locations.all.index_by(&:id).map { |location| { 'code' => location.code } }
       }
     end
     # rubocop:enable Metrics/AbcSize
