@@ -43,7 +43,7 @@ class SymphonyClient
 
       JSON.parse(response.body)['sessionToken']
     rescue JSON::ParserError
-      Honeybadger.notify('Unable to connect to Symphony Web Services.')
+      Honeybadger.notify('Unable to connect to Symphony Web Services.') unless Settings.features.migration
       nil
     end
   end
@@ -257,13 +257,13 @@ class SymphonyClient
     begin
       JSON.parse(response.body)
     rescue JSON::ParserError => e
-      Honeybadger.notify(e)
+      Honeybadger.notify(e) unless Settings.features.migration
     end
 
     # let the specific API methods figure out what fallback to apply
     response
   rescue HTTP::Error => e
-    Honeybadger.notify(e)
+    Honeybadger.notify(e) unless Settings.features.migration
 
     # let the specific API methods figure out what fallback to apply
     raise e

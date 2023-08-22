@@ -12,7 +12,7 @@ module Symphony
       return new(symphony_client.patron_info(patron_key, return_holds: with_holds)) if patron_key.present?
 
       # if no sunet or library_id they are probably a general public (name/email) user. We don't want that case logged.
-      if sunetid || library_id.present?
+      if (sunetid || library_id.present?) && !Settings.features.migration
         Honeybadger.notify("Unable to find patron (looked up by sunetid: #{sunetid} / barcode: #{library_id}")
       end
 
