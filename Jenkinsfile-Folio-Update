@@ -7,7 +7,7 @@ pipeline {
 
   environment {
     OKAPI_URL = credentials('OKAPI_PROD_URL')
-    FOLIO_GRAPHQL_URL = credentials('FOLIO_GRAPHQL_URL')
+    FOLIO_GRAPHQL_URL = credentials('FOLIO_GRAPHQL_PROD_URL')
   }
 
   stages {
