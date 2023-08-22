@@ -177,17 +177,6 @@
     "discoveryDisplayName": "SUL Conservation Services"
   },
   {
-    "pickupLocation": true,
-    "code": "SCIENCE",
-    "details": {
-      "isDefaultPickup": true,
-      "isDefaultForCampus": null,
-      "notes": null
-    },
-    "id": "50ef1036-06d3-48ef-9048-26cabfccf630",
-    "discoveryDisplayName": "Science Library (Li and Ma)"
-  },
-  {
     "pickupLocation": false,
     "code": "EDUCATION",
     "details": null,
@@ -204,6 +193,17 @@
     },
     "id": "958cc062-591c-45de-85c1-0e8672fbbfc5",
     "discoveryDisplayName": "Business Library"
+  },
+  {
+    "pickupLocation": true,
+    "code": "SCIENCE",
+    "details": {
+      "isDefaultPickup": true,
+      "isDefaultForCampus": null,
+      "notes": null
+    },
+    "id": "50ef1036-06d3-48ef-9048-26cabfccf630",
+    "discoveryDisplayName": "Science Library (Li and Ma)"
   },
   {
     "pickupLocation": true,
