@@ -685,31 +685,6 @@
     }
   },
   {
-    "id": "cb0275a1-ac7a-4d3b-843a-62e77952f5d2",
-    "name": "Green British Docs",
-    "code": "GRE-BRIT-DOCS",
-    "discoveryDisplayName": "British Government Documents",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-    "details": {
-    },
-    "primaryServicePoint": "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d",
-    "servicePointIds": [
-      "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-02-08T23:37:24.376+00:00",
-      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-07-27T09:30:52.724+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
-    }
-  },
-  {
     "id": "92da9437-65b9-4aaa-b7ed-e354e9c76587",
     "name": "Business Computer File",
     "code": "BUS-COMPF",
@@ -881,31 +856,6 @@
       "createdDate": "2023-02-08T23:37:10.803+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
       "updatedDate": "2023-07-27T09:00:06.672+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
-    }
-  },
-  {
-    "id": "5c592994-fc71-4cdb-8a1c-60592565fe4b",
-    "name": "Green California Docs",
-    "code": "GRE-CAL-DOCS",
-    "discoveryDisplayName": "California State Documents",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-    "details": {
-    },
-    "primaryServicePoint": "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d",
-    "servicePointIds": [
-      "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-02-08T23:37:24.504+00:00",
-      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-07-27T09:31:26.788+00:00",
       "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
     }
   },
@@ -1608,31 +1558,6 @@
       "createdDate": "2023-02-08T23:37:20.242+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
       "updatedDate": "2023-07-27T09:22:28.014+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
-    }
-  },
-  {
-    "id": "203882d5-acd0-40b6-bc73-1cf8d64832cb",
-    "name": "Green Federal Docs",
-    "code": "GRE-FED-DOCS",
-    "discoveryDisplayName": "US Federal Documents",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-    "details": {
-    },
-    "primaryServicePoint": "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d",
-    "servicePointIds": [
-      "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-02-08T23:37:25.250+00:00",
-      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-07-27T09:35:31.090+00:00",
       "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
     }
   },
@@ -2666,6 +2591,32 @@
     }
   },
   {
+    "id": "435abe6e-ef96-429e-86b2-183705fe4172",
+    "name": "Green Docs Microfiche",
+    "code": "GRE-DOCS-MICROFICHE",
+    "discoveryDisplayName": "Bing Wing lower level: Microform cabinets",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+    "details": {
+      "searchworksGovDocsClassification": "Federal"
+    },
+    "primaryServicePoint": "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d",
+    "servicePointIds": [
+      "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-02-08T23:37:25.004+00:00",
+      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
+      "updatedDate": "2023-08-22T16:35:58.033+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
+    }
+  },
+  {
     "id": "008ba3b9-5737-4c49-9f49-a52e5f1b0e21",
     "name": "Green Circ Desk",
     "code": "GRE-ATCIRCDESK",
@@ -2687,31 +2638,6 @@
       "createdDate": "2023-02-08T23:37:24.122+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
       "updatedDate": "2023-07-27T09:32:44.569+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
-    }
-  },
-  {
-    "id": "435abe6e-ef96-429e-86b2-183705fe4172",
-    "name": "Green Docs Microfiche",
-    "code": "GRE-DOCS-MICROFICHE",
-    "discoveryDisplayName": "Bing Wing lower level: Microform cabinets",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-    "details": {
-    },
-    "primaryServicePoint": "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d",
-    "servicePointIds": [
-      "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-02-08T23:37:25.004+00:00",
-      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-07-27T09:34:17.427+00:00",
       "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
     }
   },
@@ -3241,6 +3167,32 @@
     }
   },
   {
+    "id": "3877c7e2-a658-4431-9d22-9206278b3664",
+    "name": "Green SSRC New Documents",
+    "code": "GRE-SSRC-NEWDOC",
+    "discoveryDisplayName": "Jonsson Social Sciences Reading Room: New documents",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+    "details": {
+      "searchworksGovDocsClassification": "Federal"
+    },
+    "primaryServicePoint": "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d",
+    "servicePointIds": [
+      "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-02-08T23:37:29.231+00:00",
+      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
+      "updatedDate": "2023-08-22T16:36:23.534+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
+    }
+  },
+  {
     "id": "1b3fb003-3ca4-4734-9887-169cb5c7bb04",
     "name": "Green Hohbach Exhibits",
     "code": "GRE-HH-EXHIBIT",
@@ -3341,31 +3293,6 @@
     }
   },
   {
-    "id": "0c1a1c3a-e5f3-45c6-83fb-39c959d87209",
-    "name": "Green SSRC Docs",
-    "code": "GRE-SSRC-DOCS",
-    "discoveryDisplayName": "Jonsson Social Sciences Reading Room: Atrium",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-    "details": {
-    },
-    "primaryServicePoint": "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d",
-    "servicePointIds": [
-      "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-02-08T23:37:28.853+00:00",
-      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-07-27T09:56:21.596+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
-    }
-  },
-  {
     "id": "a0a411d3-6243-49aa-98b0-24374cd8897e",
     "name": "Green SSRC New Book Shelf",
     "code": "GRE-SSRC-NEWBOOK",
@@ -3387,31 +3314,6 @@
       "createdDate": "2023-02-08T23:37:29.106+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
       "updatedDate": "2023-07-27T09:56:49.684+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
-    }
-  },
-  {
-    "id": "3877c7e2-a658-4431-9d22-9206278b3664",
-    "name": "Green SSRC New Documents",
-    "code": "GRE-SSRC-NEWDOC",
-    "discoveryDisplayName": "Jonsson Social Sciences Reading Room: New documents",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-    "details": {
-    },
-    "primaryServicePoint": "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d",
-    "servicePointIds": [
-      "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-02-08T23:37:29.231+00:00",
-      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-07-27T09:57:04.266+00:00",
       "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
     }
   },
@@ -3462,31 +3364,6 @@
       "createdDate": "2023-02-08T23:37:27.051+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
       "updatedDate": "2023-07-27T09:50:35.362+00:00",
-      "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
-    }
-  },
-  {
-    "id": "dd418045-6405-4227-b594-837ae4bacaf9",
-    "name": "Green International Docs",
-    "code": "GRE-INTL-DOCS",
-    "discoveryDisplayName": "International Government Documents",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-    "details": {
-    },
-    "primaryServicePoint": "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d",
-    "servicePointIds": [
-      "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-02-08T23:37:27.425+00:00",
-      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
-      "updatedDate": "2023-07-27T09:51:39.734+00:00",
       "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
     }
   },
@@ -10540,6 +10417,32 @@
     }
   },
   {
+    "id": "203882d5-acd0-40b6-bc73-1cf8d64832cb",
+    "name": "Green Federal Docs",
+    "code": "GRE-FED-DOCS",
+    "discoveryDisplayName": "US Federal Documents",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+    "details": {
+      "searchworksGovDocsClassification": "Federal"
+    },
+    "primaryServicePoint": "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d",
+    "servicePointIds": [
+      "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-02-08T23:37:25.250+00:00",
+      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
+      "updatedDate": "2023-08-22T16:34:12.607+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
+    }
+  },
+  {
     "id": "ad343b04-9fb3-4ac0-b7cd-4d4e0344c52e",
     "name": "Law Technical Services",
     "code": "LAW-TS",
@@ -11098,6 +11001,32 @@
       "createdDate": "2023-02-08T23:37:55.480+00:00",
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
       "updatedDate": "2023-08-01T17:54:05.092+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
+    }
+  },
+  {
+    "id": "cb0275a1-ac7a-4d3b-843a-62e77952f5d2",
+    "name": "Green British Docs",
+    "code": "GRE-BRIT-DOCS",
+    "discoveryDisplayName": "British Government Documents",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+    "details": {
+      "searchworksGovDocsClassification": "British"
+    },
+    "primaryServicePoint": "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d",
+    "servicePointIds": [
+      "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-02-08T23:37:24.376+00:00",
+      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
+      "updatedDate": "2023-08-22T16:34:26.025+00:00",
       "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
     }
   },
@@ -11739,6 +11668,58 @@
     }
   },
   {
+    "id": "5c592994-fc71-4cdb-8a1c-60592565fe4b",
+    "name": "Green California Docs",
+    "code": "GRE-CAL-DOCS",
+    "discoveryDisplayName": "California State Documents",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+    "details": {
+      "searchworksGovDocsClassification": "California"
+    },
+    "primaryServicePoint": "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d",
+    "servicePointIds": [
+      "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-02-08T23:37:24.504+00:00",
+      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
+      "updatedDate": "2023-08-22T16:34:37.654+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
+    }
+  },
+  {
+    "id": "dd418045-6405-4227-b594-837ae4bacaf9",
+    "name": "Green International Docs",
+    "code": "GRE-INTL-DOCS",
+    "discoveryDisplayName": "International Government Documents",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+    "details": {
+      "searchworksGovDocsClassification": "International"
+    },
+    "primaryServicePoint": "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d",
+    "servicePointIds": [
+      "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-02-08T23:37:27.425+00:00",
+      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
+      "updatedDate": "2023-08-22T16:34:54.177+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
+    }
+  },
+  {
     "id": "2065af65-904d-41bb-8db8-35bff753cf64",
     "name": "Spec Inprocess RWC",
     "code": "SPEC-INPROCESS-RWC",
@@ -11868,6 +11849,32 @@
       "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
       "updatedDate": "2023-08-22T04:36:20.621+00:00",
       "updatedByUserId": "9c77fffb-9d40-422c-8742-4c0f79957888"
+    }
+  },
+  {
+    "id": "0c1a1c3a-e5f3-45c6-83fb-39c959d87209",
+    "name": "Green SSRC Docs",
+    "code": "GRE-SSRC-DOCS",
+    "discoveryDisplayName": "Jonsson Social Sciences Reading Room: Atrium",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+    "details": {
+      "searchworksGovDocsClassification": "Federal"
+    },
+    "primaryServicePoint": "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d",
+    "servicePointIds": [
+      "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-02-08T23:37:28.853+00:00",
+      "createdByUserId": "7dc1ae38-1e06-4de9-ac86-568b9a2318ec",
+      "updatedDate": "2023-08-22T16:35:10.930+00:00",
+      "updatedByUserId": "03a6c68a-ffbd-4833-957d-e015f81f50cd"
     }
   },
   {
