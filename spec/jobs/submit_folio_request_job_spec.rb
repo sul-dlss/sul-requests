@@ -84,12 +84,15 @@ RSpec.describe SubmitFolioRequestJob do
 
       before do
         allow(request.user).to receive(:patron).and_return(nil)
+        allow(Folio::Patron).to receive(:find_by).with(library_id: 'HOLD@AR').and_return(
+          instance_double(Folio::Patron, id: 'HOLD@AR-PSEUDO')
+        )
       end
 
       it 'calls the create_item_hold API method' do
         described_class.perform_now(request.id)
         expect(client).to have_received(:create_item_hold) do |id, item_id, request|
-          expect(id).to eq '2bd36e69-1f58-4f6b-9073-e8d932edeed2'
+          expect(id).to eq 'HOLD@AR-PSEUDO'
           expect(item_id).to eq 4
           expect(request.patron_comments).to eq 'Jane Stanford <jstanford@stanford.edu>'
         end
@@ -109,9 +112,16 @@ RSpec.describe SubmitFolioRequestJob do
         )
       end
 
+      before do
+        allow(request.user).to receive(:patron).and_return(nil)
+        allow(Folio::Patron).to receive(:find_by).with(library_id: 'HOLD@AR').and_return(
+          instance_double(Folio::Patron, id: 'HOLD@AR-PSEUDO')
+        )
+      end
+
       it 'calls the create_item_hold API method' do
         expect { described_class.perform_now(request.id) }.to change { request.folio_command_logs.count }.by(1)
-        expect(client).to have_received(:create_item_hold).with('2bd36e69-1f58-4f6b-9073-e8d932edeed2', 4, FolioClient::HoldRequest)
+        expect(client).to have_received(:create_item_hold).with('HOLD@AR-PSEUDO', 4, FolioClient::HoldRequest)
       end
     end
   end
