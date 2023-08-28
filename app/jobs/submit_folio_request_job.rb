@@ -29,7 +29,7 @@ class SubmitFolioRequestJob < ApplicationJob
   def find_request(request_id)
     Request.find(request_id)
   rescue ActiveRecord::RecordNotFound
-    Honeybadger.notify('Unable to find Request', conext: { request_id: })
+    Honeybadger.notify('Unable to find Request', context: { request_id: })
   end
 
   PsuedoPatron = Data.define(:id, :patron_comments) do
