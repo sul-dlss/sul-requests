@@ -166,8 +166,10 @@ class SubmitFolioRequestJob < ApplicationJob
     end
 
     def find_hold_pseudo_patron_for(key)
-      id = Settings.libraries[key]&.folio_hold_pseudopatron || raise("no hold pseudopatron for '#{key}'")
-      build_pseudopatron(id)
+      pseudopatron_barcode = Settings.libraries[key]&.hold_pseudopatron || raise("no hold pseudopatron for '#{key}'")
+      patron = Folio::Patron.find_by(library_id: pseudopatron_barcode)
+
+      build_pseudopatron(patron.id)
     end
 
     def barcodes

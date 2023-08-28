@@ -133,6 +133,13 @@ RSpec.describe AdminController do
     describe 'for those that can manage requests' do
       let(:user) { create(:superadmin_user) }
 
+      before do
+        allow(Folio::Patron).to receive(:find_by).and_call_original
+        allow(Folio::Patron).to receive(:find_by).with(library_id: 'HOLD@AR').and_return(
+          instance_double(Folio::Patron, id: 'HOLD@AR-PSEUDO')
+        )
+      end
+
       it 'can approve individual items' do
         expect(MediatedPage.find(mediated_page.id).request_status_data).to be_blank
         stub_symphony_response(build(:symphony_page_with_single_item))
