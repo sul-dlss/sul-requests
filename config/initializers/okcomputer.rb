@@ -7,7 +7,6 @@ OkComputer.check_in_parallel = true
 Rails.application.config.after_initialize do
   OkComputer::Registry.register 'request_status_mailer', OkComputer::ActionMailerCheck.new(RequestStatusMailer)
 end
-OkComputer::Registry.register 'searchworks_api', OkComputer::HttpCheck.new("#{Settings.searchworks_api}/status")
 OkComputer::Registry.register 'background_jobs', OkComputer::SidekiqLatencyCheck.new('default', 25)
 
 ###
@@ -17,17 +16,30 @@ OkComputer::Registry.register 'background_jobs', OkComputer::SidekiqLatencyCheck
 OkComputer::Registry.register 'hours_api', OkComputer::HttpCheck.new("#{Settings.hours_api}/status")
 OkComputer::Registry.register 'sul_illiad', OkComputer::HttpCheck.new(Settings.sul_illiad)
 
-OkComputer.make_optional %w(hours_api sul_illiad)
-
-if Settings.symws.url
-  symphony_web_services_url = URI.parse(Settings.symws.url)
-
-  OkComputer::Registry.register(
-    'symphony_web_services',
-    OkComputer::PingCheck.new(
-      symphony_web_services_url.host,
-      symphony_web_services_url.port
-    )
-  )
-  OkComputer.make_optional %w(symphony_web_services)
+# Check Folio by calling ping on the client
+class OkapiCheck < OkComputer::Check
+  def check
+    if FolioClient.new.ping
+      mark_message 'Connected to OKAPI'
+    else
+      mark_failure
+      mark_message 'Unable to connect to OKAPI'
+    end
+  end
 end
+
+# Check Folio GraphQL by calling ping on the client
+class GraphqlCheck < OkComputer::Check
+  def check
+    if FolioGraphqlClient.new.ping
+      mark_message 'Connected to Folio GraphQL'
+    else
+      mark_failure
+      mark_message 'Unable to connect to Folio GraphQL'
+    end
+  end
+end
+
+OkComputer::Registry.register('okapi', OkapiCheck.new) if Settings.folio.okapi_url
+OkComputer::Registry.register('graphql', GraphqlCheck.new) if Settings.folio.graphql_url
+OkComputer.make_optional %w[okapi graphql hours_api sul_illiad]
