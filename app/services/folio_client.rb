@@ -175,6 +175,12 @@ class FolioClient
     get_json('/location-units/institutions', params: { limit: 2_147_483_647 }).fetch('locinsts', [])
   end
 
+  def ping
+    session_token.present?
+  rescue HTTP::Error
+    false
+  end
+
   private
 
   def check_response(response, title:, context:)
