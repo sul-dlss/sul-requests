@@ -35,15 +35,7 @@ Metrics/BlockLength:
     - 'spec/factories/**/*'
 
 Metrics/ClassLength:
-  Max: 120
-  Exclude:
-    - 'app/models/request.rb'
-    - 'app/controllers/admin_controller.rb'
-    - 'app/controllers/requests_controller.rb'
-    - 'app/jobs/submit_symphony_request_job.rb'
-    - 'app/services/symphony_client.rb'
-    - 'app/services/folio_client.rb'
-    - 'app/services/folio_graphql_client.rb'
+  Enabled: false
 
 Metrics/MethodLength:
   Exclude:

@@ -78,6 +78,35 @@ class FolioClient
     end
   end
 
+  CirculationRequest = Data.define(:request_level, :request_type, :instance_id, :item_id, :holdings_record_id,
+                                   :requester_id, :fulfillment_preference, :pickup_service_point_id,
+                                   :patron_comments, :request_expiration_date) do
+    def as_json
+      {
+        requestLevel: request_level, requestType: request_type,
+        instanceId: instance_id, itemId: item_id, holdingsRecordId: holdings_record_id,
+        requesterId: requester_id, requestDate: Time.zone.now.utc.iso8601, fulfilmentPreference: fulfillment_preference,
+        pickupServicePointId: pickup_service_point_id,
+        patronComments: patron_comments, requestExpirationDate: request_expiration_date
+      }
+    end
+  end
+
+  def circulation_request_policy(item_type_id:, loan_type_id:, patron_type_id:, location_id:)
+    response = get('/circulation/rules/request-policy', params: { item_type_id:, loan_type_id:, patron_type_id:, location_id: }.as_json)
+    check_response(response, title: 'Request policy', context: { item_type_id:, loan_type_id:, patron_type_id:, location_id: })
+
+    parse_json(response).fetch('requestPolicyId', nil)
+  end
+
+  # @param [HoldRequest] request
+  def create_circulation_request(request)
+    response = post('/circulation/requests', json: request.as_json)
+    check_response(response, title: 'Hold request', context: request.as_json)
+
+    parse_json(response)
+  end
+
   # See https://s3.amazonaws.com/foliodocs/api/mod-patron/p/patron.html#patron_account__id__instance__instanceid__hold_post
   # @example client.create_instance_hold('562a5cb0-e998-4ea2-80aa-34ac2b536238',
   #                                      'cc3d8728-a6b9-45c4-ad0c-432873c3ae47',
@@ -128,7 +157,8 @@ class FolioClient
   end
 
   def request_policies
-    get_json('/request-policy-storage/request-policies', params: { limit: 2_147_483_647 }).fetch('requestPolicies', [])
+    @request_policies ||= get_json('/request-policy-storage/request-policies', params: { limit: 2_147_483_647 }).fetch('requestPolicies',
+                                                                                                                       [])
   end
 
   def loan_policies

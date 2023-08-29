@@ -35,6 +35,10 @@ module Folio
       user_info.fetch('id')
     end
 
+    def patron_group
+      user_info.fetch('patronGroup')
+    end
+
     # always nil for a real patron, but filled in for a PseudoPatron
     def patron_comments; end
 
@@ -45,7 +49,7 @@ module Folio
     end
 
     def fee_borrower?
-      user_info.fetch('patronGroup') == Settings.folio.fee_borrower_patron_group
+      patron_group == Settings.folio.fee_borrower_patron_group
     end
 
     def standing
@@ -98,6 +102,10 @@ module Folio
 
     def blocked?
       patron_blocks.fetch('automatedPatronBlocks').present?
+    end
+
+    def exists?
+      user_info.present?
     end
 
     private
