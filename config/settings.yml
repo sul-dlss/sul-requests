@@ -92,7 +92,7 @@ folio_ils: &folio_ils
   request_abilities_class: Folio::RequestAbilities
   pickup_destination_class: Folio::PickupDestination
 
-ils: *symphony_ils # or *folio_ils
+ils: *folio_ils # or *folio_ils
 
 symphony:
   override: PASSWORD

@@ -75,36 +75,7 @@ jobs:
       run: bundle exec rake
       env:
         SETTINGS__ILS__BIB_MODEL: SearchworksItem
-  tests_cutover:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        ruby: ['3.2']
-    steps:
-    - uses: actions/checkout@v3
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: ${{ matrix.ruby }}
-    - uses: actions/cache@v3
-      with:
-        path: vendor/bundle
-        key: ${{ runner.os }}-gems-202103-${{ hashFiles('**/Gemfile.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-gems-202103
-    - name: Use Node.js 18.15
-      uses: actions/setup-node@v3
-      with:
-        # keep pinned to 18.15 until we upgrade past node 18 to avoid this error in CI: https://github.com/nodejs/node/issues/47563
-        node-version: '18.15'
-    - name: Bundle install
-      run: bundle config path vendor/bundle
-    - name: Install dependencies
-      run: bin/setup
-    - name: Ensure tmp/pids exists
-      run: mkdir -p tmp/pids
-    - name: Run tests for Cutover
-      run: bundle exec rake
-      env:
-        SETTINGS__FEATURES__MIGRATION: true
-        SETTINGS__ILS__BIB_MODEL: SearchworksItem
+        SETTINGS__ILS__PATRON_MODEL: Symphony::Patron
+        SETTINGS__ILS__REQUEST_JOB: SubmitSymphonyRequestJob
+        SETTINGS__ILS__REQUEST_ABILITIES_CLASS: RequestAbilities
+        SETTINGS__ILS__PICKUP_DESTINATION_CLASS: Symphony::PickupDestination
