@@ -123,7 +123,7 @@ borrow_direct:
 features:
   estimate_delivery: true
   hold_recall_service: true
-  hold_recall_via_reshare: true
+  hold_recall_via_reshare: false
   scan_service: true
   mediator_email: true
 
@@ -718,11 +718,9 @@ scannable:
 scan_destinations:
   EAST_ASIA:
     patron_barcode: 'EAL-SCANREVIEW'
-    folio_pseudopatron: 45873e99-3048-4246-b189-315df10717e5
 
   GREEN:
     patron_barcode: 'GRE-SCANDELIVER'
-    folio_pseudopatron: 0ba81714-52d4-4f37-8b4d-f9d929af048d
     material_types:
     - book
     - periodical

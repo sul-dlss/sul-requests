@@ -57,10 +57,7 @@ class SubmitFolioRequestJob < ApplicationJob
       return place_title_hold if barcodes.blank?
 
       requested_items = barcodes.map do |barcode|
-        item_id = folio_client.get_item(barcode)['id']
-        create_log(barcode:, item_id:)
-        response = place_item_hold(item_id:)
-        { barcode:, msgcode: '209', response: }
+        create_item_circulation_request(barcode)
       end
 
       # See if patron was blocked, and record that in the response. This governs the email response,
@@ -78,6 +75,58 @@ class SubmitFolioRequestJob < ApplicationJob
     private
 
     delegate :user, :scan_destination, to: :request
+    delegate :patron_group, to: :patron
+    delegate :request_policies, to: :folio_client
+
+    # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+    def best_request_type(item)
+      allowed_request_types = request_policy(item)&.dig('requestTypes')
+      status = item.dig('status', 'name')
+
+      if Folio::Item::HOLD_RECALL_STATUSES.include?(status) && allowed_request_types.include?('Recall')
+        'Recall'
+      elsif Folio::Item::HOLD_RECALL_STATUSES.include?(status) && allowed_request_types.include?('Hold')
+        'Hold'
+      elsif Folio::Item::PAGEABLE_STATUSES.include?(status) && allowed_request_types.include?('Page')
+        'Page'
+      end
+    end
+    # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+
+    def request_policy(item)
+      applicable_policy_id = folio_client.circulation_request_policy(
+        item_type_id: item['materialTypeId'],
+        loan_type_id: item['temporaryLoanTypeId'] || item['permanentLoanTypeId'],
+        patron_type_id: patron_group,
+        location_id: item['effectiveLocationId']
+      )
+
+      request_policies.find { |policy| policy['id'] == applicable_policy_id }
+    end
+
+    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+    def create_item_circulation_request(barcode)
+      item = folio_client.get_item(barcode)
+      request_type = best_request_type(item)
+      create_log(barcode:, item_id: item['id'])
+
+      request_data = FolioClient::CirculationRequest.new(
+        request_level: 'Item',
+        request_type:,
+        instance_id: request.bib_data.instance_id,
+        item_id: item['id'],
+        holdings_record_id: item['holdingsRecordId'],
+        requester_id: patron_or_proxy_id,
+        fulfillment_preference: 'Hold Shelf',
+        pickup_service_point_id: pickup_location_id,
+        patron_comments: request_comments,
+        request_expiration_date: expiration_date
+      )
+      response = folio_client.create_circulation_request(request_data)
+
+      { barcode:, msgcode: '209', response: }
+    end
+    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
     def place_title_hold
       instance_id = request.bib_data.instance_id
@@ -140,15 +189,21 @@ class SubmitFolioRequestJob < ApplicationJob
     end
 
     def request_comments
-      [patron.patron_comments,
+      [patron_comment,
        ("(PROXY PICKUP OK; request placed by #{patron.display_name} <#{patron.email}>)" if request.proxy?)].compact.join("\n")
+    end
+
+    def patron_comment
+      return if user.patron&.make_request_as_patron? && !request.is_a?(Scan)
+
+      "#{user.name} <#{user.email}>"
     end
 
     # rubocop:disable Metrics/MethodLength
     def patron
       @patron ||= case request
                   when Scan
-                    build_pseudopatron(scan_destination.folio_pseudopatron)
+                    Folio::Patron.find_by(library_id: scan_destination.patron_barcode)
                   when HoldRecall
                     user.patron
                   when Page, MediatedPage
@@ -161,15 +216,10 @@ class SubmitFolioRequestJob < ApplicationJob
     end
     # rubocop:enable Metrics/MethodLength
 
-    def build_pseudopatron(id)
-      PsuedoPatron.new(id:, patron_comments: "#{user.name} <#{user.email}>")
-    end
-
     def find_hold_pseudo_patron_for(key)
       pseudopatron_barcode = Settings.libraries[key]&.hold_pseudopatron || raise("no hold pseudopatron for '#{key}'")
-      patron = Folio::Patron.find_by(library_id: pseudopatron_barcode)
 
-      build_pseudopatron(patron.id)
+      Folio::Patron.find_by(library_id: pseudopatron_barcode)
     end
 
     def barcodes
