@@ -3,7 +3,7 @@
 module Folio
   Location = Data.define(:id, :campus, :library, :library_id, :institution, :code, :discovery_display_name,
                          :name, :primary_service_point_id, :details) do
-    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity
     def self.from_hash(dyn)
       new(
         id: dyn.fetch('id'),
@@ -14,10 +14,10 @@ module Folio
         code: dyn.fetch('code'),
         discovery_display_name: dyn['discoveryDisplayName'] || dyn['name'] || dyn.fetch('id'),
         name: dyn['name'],
-        details: dyn.fetch('details', {}),
+        details: dyn['details'] || {},
         primary_service_point_id: dyn['primaryServicePoint'] # present in every location in json, but not from Graphql
       )
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity
   end
 end
