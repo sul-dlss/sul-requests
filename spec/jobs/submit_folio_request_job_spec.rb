@@ -206,7 +206,7 @@ RSpec.describe SubmitFolioRequestJob do
         allow(client).to receive(:proxy_info).with(proxy_id).and_return(proxy_response)
       end
 
-      it 'calls the create_item_hold API method' do
+      it 'calls the create_circulation_request API method' do
         described_class.perform_now(request.id)
         expect(client).to have_received(:create_circulation_request).with(have_attributes(patron_comments: /PROXY PICKUP OK/))
       end
