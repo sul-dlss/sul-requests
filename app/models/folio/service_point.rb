@@ -39,11 +39,7 @@ module Folio
 
     def library_id
       # Not every service point, e.g .RWC, has an associated location or library
-      location = Folio::Types.locations.find_by(primary_service_point_id: id)
-
-      return if location.nil?
-
-      @library_id ||= location.library_id
+      @library_id ||= Folio::Types.locations.find_by(primary_service_point_id: id)&.library_id
     end
   end
 end
