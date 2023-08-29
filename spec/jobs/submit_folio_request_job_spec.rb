@@ -103,7 +103,7 @@ RSpec.describe SubmitFolioRequestJob do
         allow(patron).to receive(:blocked?).and_return(true)
       end
 
-      it 'calls the create_item_hold API method' do
+      it 'calls the create_circulation_request API method' do
         described_class.perform_now(request.id)
         expect(client).to have_received(:create_circulation_request).with(have_attributes(
                                                                             requester_id: '562a5cb0-e998-4ea2-80aa-34ac2b536238'
