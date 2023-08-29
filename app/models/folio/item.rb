@@ -34,7 +34,7 @@ module Folio
                         SPEC-SAL3-U-ARCHIVES
                         SPEC-SAL3-U-ARCHIVES).freeze
 
-    # Statuses that FOLIO treats as valid for intiating a hold/recall
+    # Statuses that FOLIO treats as valid for initiating a hold/recall
     # See: https://github.com/folio-org/mod-circulation/blob/master/src/main/java/org/folio/circulation/domain/RequestTypeItemStatusWhiteList.java#L71-L94
     HOLD_RECALL_STATUSES = [
       STATUS_CHECKED_OUT,
