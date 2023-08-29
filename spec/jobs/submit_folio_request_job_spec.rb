@@ -152,7 +152,7 @@ RSpec.describe SubmitFolioRequestJob do
         )
       end
 
-      it 'calls the create_item_hold API method' do
+      it 'calls the create_circulation_request API method' do
         expect { described_class.perform_now(request.id) }.to change { request.folio_command_logs.count }.by(1)
         expect(client).to have_received(:create_circulation_request).with(have_attributes(
                                                                             requester_id: 'HOLD@AR-PSEUDO',
