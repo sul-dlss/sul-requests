@@ -35,7 +35,7 @@ RSpec.describe SubmitFolioRequestJob do
     context 'with an sso user' do
       let(:request) { create(:hold_recall_with_holdings_folio, barcodes: ['12345678'], user:) }
 
-      it 'calls the create_item_hold API method' do
+      it 'calls the create_circulation_request API method' do
         expect { described_class.perform_now(request.id) }.to change { request.folio_command_logs.count }.by(1)
         expect(client).to have_received(:create_circulation_request).with(have_attributes(
                                                                             request_type: 'Recall'
