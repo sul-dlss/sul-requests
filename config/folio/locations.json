@@ -1759,56 +1759,6 @@
     }
   },
   {
-    "id": "f565b2b6-e15f-472c-ae0b-2f8e47aee704",
-    "name": "Education Shelved Elsewhere",
-    "code": "EDU-SEE-OTHER",
-    "discoveryDisplayName": "See linked records to request items bound together",
-    "isActive": false,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
-    "libraryId": "87b6c439-dd55-4d27-91d4-eb8552b18bb4",
-    "details": {
-    },
-    "primaryServicePoint": "bd5fd8d9-72f3-4532-b68c-4db88063d16b",
-    "servicePointIds": [
-      "bd5fd8d9-72f3-4532-b68c-4db88063d16b"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-08-10T17:46:00.427+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:00.427+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
-    }
-  },
-  {
-    "id": "521489d5-d17f-4a7a-88ec-8a3d0dbc926e",
-    "name": "Lane Books: DCORE",
-    "code": "LANE-DCORE",
-    "discoveryDisplayName": "DCORE (Downstairs)",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
-    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
-    "details": {
-    },
-    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
-    "servicePointIds": [
-      "0483c7bd-8e95-4c7b-9704-484b01879b02"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-08-10T17:46:00.572+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:00.572+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
-    }
-  },
-  {
     "id": "09bf0882-7c7c-4838-b27c-c2f4ab834016",
     "name": "Earth Sci Map Files",
     "code": "EAR-MAP-FILES",
@@ -1981,6 +1931,32 @@
       "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
       "updatedDate": "2023-08-10T17:46:03.880+00:00",
       "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+    }
+  },
+  {
+    "id": "521489d5-d17f-4a7a-88ec-8a3d0dbc926e",
+    "name": "Lane Books: DCORE",
+    "code": "LANE-DCORE",
+    "discoveryDisplayName": "DCORE (Downstairs)",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
+    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
+    "details": {
+      "discoveryDisplayUrl": "https://med.stanford.edu/diversity/d-core.html"
+    },
+    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
+    "servicePointIds": [
+      "0483c7bd-8e95-4c7b-9704-484b01879b02"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-10T17:46:00.572+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-08-29T02:42:38.383+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
     }
   },
   {
@@ -3420,6 +3396,7 @@
     "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
     "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
     "details": {
+      "discoveryDisplayUrl": "https://lane.stanford.edu/biomed-resources/course-reserves.html"
     },
     "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
     "servicePointIds": [
@@ -3431,8 +3408,8 @@
     "metadata": {
       "createdDate": "2023-08-10T17:46:16.607+00:00",
       "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:16.607+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+      "updatedDate": "2023-08-29T02:42:38.012+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
     }
   },
   {
@@ -3712,31 +3689,6 @@
     }
   },
   {
-    "id": "b7169013-5970-42a4-94a6-54067010127e",
-    "name": "Lane Spec: Arabic Oversize",
-    "code": "LANE-ARASZ",
-    "discoveryDisplayName": "Medical History Center: By appointment only.",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
-    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
-    "details": {
-    },
-    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
-    "servicePointIds": [
-      "0483c7bd-8e95-4c7b-9704-484b01879b02"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-08-10T17:46:20.189+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:20.189+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
-    }
-  },
-  {
     "id": "636e28ad-5526-4444-a336-b323d1e21ce2",
     "name": "Lane Per: Compact",
     "code": "LANE-COM",
@@ -3813,56 +3765,6 @@
     }
   },
   {
-    "id": "574c569c-94a5-4904-8f7b-6ffc0d2f55ce",
-    "name": "Lane Spec: Per Archives",
-    "code": "LANE-PARCH",
-    "discoveryDisplayName": "Medical History Center: By appointment only.",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
-    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
-    "details": {
-    },
-    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
-    "servicePointIds": [
-      "0483c7bd-8e95-4c7b-9704-484b01879b02"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-08-10T17:46:22.815+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:22.815+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
-    }
-  },
-  {
-    "id": "9532a131-63a9-418c-9c3f-5092dbf5a143",
-    "name": "Lane Spec: Vertical File",
-    "code": "LANE-HSFLE",
-    "discoveryDisplayName": "Medical History Center: By appointment only.",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
-    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
-    "details": {
-    },
-    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
-    "servicePointIds": [
-      "0483c7bd-8e95-4c7b-9704-484b01879b02"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-08-10T17:46:22.972+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:22.972+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
-    }
-  },
-  {
     "id": "74b77223-bd65-4ad7-8995-5953c3bfe5cc",
     "name": "Lane Li Ka Shing Center",
     "code": "LANE-LKSC",
@@ -3885,6 +3787,32 @@
       "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
       "updatedDate": "2023-08-10T17:46:23.278+00:00",
       "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+    }
+  },
+  {
+    "id": "9532a131-63a9-418c-9c3f-5092dbf5a143",
+    "name": "Lane Spec: Vertical File",
+    "code": "LANE-HSFLE",
+    "discoveryDisplayName": "Medical History Center: By appointment only.",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
+    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
+    "details": {
+      "discoveryDisplayUrl": "https://lane.stanford.edu/med-history/contact.html"
+    },
+    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
+    "servicePointIds": [
+      "0483c7bd-8e95-4c7b-9704-484b01879b02"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-10T17:46:22.972+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-08-29T02:42:39.101+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
     }
   },
   {
@@ -3934,31 +3862,6 @@
       "createdDate": "2023-08-10T17:46:19.734+00:00",
       "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
       "updatedDate": "2023-08-10T17:46:19.734+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
-    }
-  },
-  {
-    "id": "bef9e4c4-2072-426e-943c-4f0a115c32e0",
-    "name": "Lane Spec: Arabic",
-    "code": "LANE-ARAB",
-    "discoveryDisplayName": "Medical History Center: By appointment only.",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
-    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
-    "details": {
-    },
-    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
-    "servicePointIds": [
-      "0483c7bd-8e95-4c7b-9704-484b01879b02"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-08-10T17:46:20.033+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:20.033+00:00",
       "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
     }
   },
@@ -4063,6 +3966,32 @@
     }
   },
   {
+    "id": "bef9e4c4-2072-426e-943c-4f0a115c32e0",
+    "name": "Lane Spec: Arabic",
+    "code": "LANE-ARAB",
+    "discoveryDisplayName": "Medical History Center: By appointment only.",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
+    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
+    "details": {
+      "discoveryDisplayUrl": "https://lane.stanford.edu/med-history/contact.html"
+    },
+    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
+    "servicePointIds": [
+      "0483c7bd-8e95-4c7b-9704-484b01879b02"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-10T17:46:20.033+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-08-29T02:42:36.637+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
+    }
+  },
+  {
     "id": "9b3b957b-0d72-4407-b0f2-a0099cdd1e3f",
     "name": "Lane Spec: Archives Class",
     "code": "LANE-ARCH",
@@ -4072,6 +4001,7 @@
     "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
     "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
     "details": {
+      "discoveryDisplayUrl": "https://lane.stanford.edu/med-history/contact.html"
     },
     "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
     "servicePointIds": [
@@ -4083,8 +4013,8 @@
     "metadata": {
       "createdDate": "2023-08-10T17:46:21.826+00:00",
       "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:21.826+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+      "updatedDate": "2023-08-29T02:42:37.424+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
     }
   },
   {
@@ -4213,56 +4143,6 @@
     }
   },
   {
-    "id": "02844385-781a-4b71-87d7-64641c87b6e1",
-    "name": "Lane Spec: Periodicals",
-    "code": "LANE-PSPEC",
-    "discoveryDisplayName": "Medical History Center: By appointment only.",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
-    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
-    "details": {
-    },
-    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
-    "servicePointIds": [
-      "0483c7bd-8e95-4c7b-9704-484b01879b02"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-08-10T17:46:29.354+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:29.354+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
-    }
-  },
-  {
-    "id": "5d3bf9e2-eb83-46e9-b2d8-3400ea8d1da3",
-    "name": "Lane Spec: Portraits (Annex)",
-    "code": "LANE-PORT",
-    "discoveryDisplayName": "Medical History Center: By appointment only.",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
-    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
-    "details": {
-    },
-    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
-    "servicePointIds": [
-      "0483c7bd-8e95-4c7b-9704-484b01879b02"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-08-10T17:46:29.513+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:29.513+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
-    }
-  },
-  {
     "id": "4e9821a7-3ded-4428-9dce-9f5462dab0d7",
     "name": "Lane Digital: Access",
     "code": "LANE-EDATA",
@@ -4311,6 +4191,32 @@
       "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
       "updatedDate": "2023-08-10T17:46:35.758+00:00",
       "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+    }
+  },
+  {
+    "id": "02844385-781a-4b71-87d7-64641c87b6e1",
+    "name": "Lane Spec: Periodicals",
+    "code": "LANE-PSPEC",
+    "discoveryDisplayName": "Medical History Center: By appointment only.",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
+    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
+    "details": {
+      "discoveryDisplayUrl": "https://lane.stanford.edu/med-history/contact.html"
+    },
+    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
+    "servicePointIds": [
+      "0483c7bd-8e95-4c7b-9704-484b01879b02"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-10T17:46:29.354+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-08-29T02:42:41.631+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
     }
   },
   {
@@ -4389,31 +4295,6 @@
     }
   },
   {
-    "id": "0b6a8d36-2c4f-4fef-b894-d56c25e94ca0",
-    "name": "Lane Spec: Mini",
-    "code": "LANE-MINI",
-    "discoveryDisplayName": "Medical History Center: By appointment only.",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
-    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
-    "details": {
-    },
-    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
-    "servicePointIds": [
-      "0483c7bd-8e95-4c7b-9704-484b01879b02"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-08-10T17:46:22.679+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:22.679+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
-    }
-  },
-  {
     "id": "5ffcbe91-775f-484e-91a2-e5473ff6c915",
     "name": "Lane New Books",
     "code": "LANE-NEWB",
@@ -4435,31 +4316,6 @@
       "createdDate": "2023-08-10T17:46:25.686+00:00",
       "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
       "updatedDate": "2023-08-10T17:46:25.686+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
-    }
-  },
-  {
-    "id": "d9a0481b-ebc2-4b62-b4b5-7bda2ee5949b",
-    "name": "Lane Spec: Instruments",
-    "code": "LANE-INSTR",
-    "discoveryDisplayName": "Medical History Center: By appointment only.",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
-    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
-    "details": {
-    },
-    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
-    "servicePointIds": [
-      "0483c7bd-8e95-4c7b-9704-484b01879b02"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-08-10T17:46:29.189+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:29.189+00:00",
       "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
     }
   },
@@ -4489,6 +4345,32 @@
     }
   },
   {
+    "id": "0b6a8d36-2c4f-4fef-b894-d56c25e94ca0",
+    "name": "Lane Spec: Mini",
+    "code": "LANE-MINI",
+    "discoveryDisplayName": "Medical History Center: By appointment only.",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
+    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
+    "details": {
+      "discoveryDisplayUrl": "https://lane.stanford.edu/med-history/contact.html"
+    },
+    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
+    "servicePointIds": [
+      "0483c7bd-8e95-4c7b-9704-484b01879b02"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-10T17:46:22.679+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-08-29T02:42:40.266+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
+    }
+  },
+  {
     "id": "d3640ef6-7198-45fd-84ec-d3db9ed16ac6",
     "name": "Lane Spec: Old Class Oversize",
     "code": "LANE-SPOO1",
@@ -4498,6 +4380,7 @@
     "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
     "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
     "details": {
+      "discoveryDisplayUrl": "https://lane.stanford.edu/med-history/contact.html"
     },
     "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
     "servicePointIds": [
@@ -4509,33 +4392,8 @@
     "metadata": {
       "createdDate": "2023-08-10T17:46:34.679+00:00",
       "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:34.679+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
-    }
-  },
-  {
-    "id": "e39233fe-267b-4c5b-aad9-75c2259ba680",
-    "name": "Lane Spec: LC Class",
-    "code": "LANE-SPEC",
-    "discoveryDisplayName": "Medical History Center: By appointment only.",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
-    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
-    "details": {
-    },
-    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
-    "servicePointIds": [
-      "0483c7bd-8e95-4c7b-9704-484b01879b02"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-08-10T17:46:35.184+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:35.184+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+      "updatedDate": "2023-08-29T02:42:44.577+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
     }
   },
   {
@@ -4560,81 +4418,6 @@
       "createdDate": "2023-08-10T17:46:24.708+00:00",
       "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
       "updatedDate": "2023-08-10T17:46:24.708+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
-    }
-  },
-  {
-    "id": "26d1a668-747b-4f1d-a2af-317b37316360",
-    "name": "Lane Spec: Manuscipts",
-    "code": "LANE-MSS",
-    "discoveryDisplayName": "Medical History Center: By appointment only.",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
-    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
-    "details": {
-    },
-    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
-    "servicePointIds": [
-      "0483c7bd-8e95-4c7b-9704-484b01879b02"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-08-10T17:46:24.838+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:24.838+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
-    }
-  },
-  {
-    "id": "3e7d97cd-201e-4e24-bdcc-5be6b238ecad",
-    "name": "Lane Spec: Map Case",
-    "code": "LANE-MAP",
-    "discoveryDisplayName": "Medical History Center: By appointment only.",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
-    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
-    "details": {
-    },
-    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
-    "servicePointIds": [
-      "0483c7bd-8e95-4c7b-9704-484b01879b02"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-08-10T17:46:25.010+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:25.010+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
-    }
-  },
-  {
-    "id": "7b26026a-8162-4053-a1be-fe017f0a6f7d",
-    "name": "Lane Spec: Photofile",
-    "code": "LANE-FOTOF",
-    "discoveryDisplayName": "Medical History Center: By appointment only.",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
-    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
-    "details": {
-    },
-    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
-    "servicePointIds": [
-      "0483c7bd-8e95-4c7b-9704-484b01879b02"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-08-10T17:46:25.156+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:25.156+00:00",
       "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
     }
   },
@@ -4764,15 +4547,16 @@
     }
   },
   {
-    "id": "ce240b25-6a4e-4711-90d7-bfc141c31ebd",
-    "name": "Lane Spec: LC Oversize",
-    "code": "LANE-SPLCO",
+    "id": "3e7d97cd-201e-4e24-bdcc-5be6b238ecad",
+    "name": "Lane Spec: Map Case",
+    "code": "LANE-MAP",
     "discoveryDisplayName": "Medical History Center: By appointment only.",
     "isActive": true,
     "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
     "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
     "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
     "details": {
+      "discoveryDisplayUrl": "https://lane.stanford.edu/med-history/contact.html"
     },
     "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
     "servicePointIds": [
@@ -4782,85 +4566,10 @@
 
     ],
     "metadata": {
-      "createdDate": "2023-08-10T17:46:33.736+00:00",
+      "createdDate": "2023-08-10T17:46:25.010+00:00",
       "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:33.736+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
-    }
-  },
-  {
-    "id": "b3d3a93a-db85-4d91-af1d-53e605d62341",
-    "name": "Lane Spec: LC Oversize - Flat",
-    "code": "LANE-SFLAT",
-    "discoveryDisplayName": "Medical History Center: By appointment only.",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
-    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
-    "details": {
-    },
-    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
-    "servicePointIds": [
-      "0483c7bd-8e95-4c7b-9704-484b01879b02"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-08-10T17:46:34.137+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:34.137+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
-    }
-  },
-  {
-    "id": "156a50fe-b288-447f-82c4-618ba8e4565a",
-    "name": "Lane Spec: Old Class",
-    "code": "LANE-SPOLD",
-    "discoveryDisplayName": "Medical History Center: By appointment only.",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
-    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
-    "details": {
-    },
-    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
-    "servicePointIds": [
-      "0483c7bd-8e95-4c7b-9704-484b01879b02"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-08-10T17:46:34.533+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:34.533+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
-    }
-  },
-  {
-    "id": "12ccfee2-4676-4a82-add3-885defed6440",
-    "name": "Lane Spec: Theses",
-    "code": "LANE-RTHSS",
-    "discoveryDisplayName": "Medical History Center: By appointment only.",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
-    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
-    "details": {
-    },
-    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
-    "servicePointIds": [
-      "0483c7bd-8e95-4c7b-9704-484b01879b02"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-08-10T17:46:34.851+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:34.851+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+      "updatedDate": "2023-08-29T02:42:39.927+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
     }
   },
   {
@@ -4989,15 +4698,16 @@
     }
   },
   {
-    "id": "33e93b8a-7917-4973-865c-7579289f3d04",
-    "name": "Lane Spec: LC Oversize - Folio",
-    "code": "LANE-SFOL",
+    "id": "b3d3a93a-db85-4d91-af1d-53e605d62341",
+    "name": "Lane Spec: LC Oversize - Flat",
+    "code": "LANE-SFLAT",
     "discoveryDisplayName": "Medical History Center: By appointment only.",
     "isActive": true,
     "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
     "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
     "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
     "details": {
+      "discoveryDisplayUrl": "https://lane.stanford.edu/med-history/contact.html"
     },
     "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
     "servicePointIds": [
@@ -5007,10 +4717,36 @@
 
     ],
     "metadata": {
-      "createdDate": "2023-08-10T17:46:35.344+00:00",
+      "createdDate": "2023-08-10T17:46:34.137+00:00",
       "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:35.344+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+      "updatedDate": "2023-08-29T02:42:42.439+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
+    }
+  },
+  {
+    "id": "156a50fe-b288-447f-82c4-618ba8e4565a",
+    "name": "Lane Spec: Old Class",
+    "code": "LANE-SPOLD",
+    "discoveryDisplayName": "Medical History Center: By appointment only.",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
+    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
+    "details": {
+      "discoveryDisplayUrl": "https://lane.stanford.edu/med-history/contact.html"
+    },
+    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
+    "servicePointIds": [
+      "0483c7bd-8e95-4c7b-9704-484b01879b02"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-10T17:46:34.533+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-08-29T02:42:44.234+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
     }
   },
   {
@@ -5060,56 +4796,6 @@
       "createdDate": "2023-08-10T17:46:37.586+00:00",
       "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
       "updatedDate": "2023-08-10T17:46:37.586+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
-    }
-  },
-  {
-    "id": "f6f22ea0-8b88-48ee-a98f-8e41288d3840",
-    "name": "Lane Spec: Reference",
-    "code": "LANE-SREF",
-    "discoveryDisplayName": "Medical History Center: By appointment only.",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
-    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
-    "details": {
-    },
-    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
-    "servicePointIds": [
-      "0483c7bd-8e95-4c7b-9704-484b01879b02"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-08-10T17:46:38.756+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:38.756+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
-    }
-  },
-  {
-    "id": "1564e5df-d1a6-41b7-bd6a-f150c3f8b9bf",
-    "name": "Lane Spec: Storage",
-    "code": "LANE-STRG",
-    "discoveryDisplayName": "Medical History Center: By appointment only.",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
-    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
-    "details": {
-    },
-    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
-    "servicePointIds": [
-      "0483c7bd-8e95-4c7b-9704-484b01879b02"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-08-10T17:46:39.514+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:39.514+00:00",
       "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
     }
   },
@@ -5188,6 +4874,58 @@
       "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
       "updatedDate": "2023-08-22T01:04:13.603+00:00",
       "updatedByUserId": "2f7f4956-c95a-47ba-95f8-395354707b6f"
+    }
+  },
+  {
+    "id": "33e93b8a-7917-4973-865c-7579289f3d04",
+    "name": "Lane Spec: LC Oversize - Folio",
+    "code": "LANE-SFOL",
+    "discoveryDisplayName": "Medical History Center: By appointment only.",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
+    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
+    "details": {
+      "discoveryDisplayUrl": "https://lane.stanford.edu/med-history/contact.html"
+    },
+    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
+    "servicePointIds": [
+      "0483c7bd-8e95-4c7b-9704-484b01879b02"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-10T17:46:35.344+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-08-29T02:42:42.804+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
+    }
+  },
+  {
+    "id": "1564e5df-d1a6-41b7-bd6a-f150c3f8b9bf",
+    "name": "Lane Spec: Storage",
+    "code": "LANE-STRG",
+    "discoveryDisplayName": "Medical History Center: By appointment only.",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
+    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
+    "details": {
+      "discoveryDisplayUrl": "https://lane.stanford.edu/med-history/contact.html"
+    },
+    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
+    "servicePointIds": [
+      "0483c7bd-8e95-4c7b-9704-484b01879b02"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-10T17:46:39.514+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-08-29T02:42:45.969+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
     }
   },
   {
@@ -5392,56 +5130,6 @@
     }
   },
   {
-    "id": "045ee992-0f9e-4079-88b6-1dc77f36e19a",
-    "name": "Lane Spec: AV",
-    "code": "LANE-SPAV",
-    "discoveryDisplayName": "Medical History Center: By appointment only.",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
-    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
-    "details": {
-    },
-    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
-    "servicePointIds": [
-      "0483c7bd-8e95-4c7b-9704-484b01879b02"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-08-10T17:46:38.256+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:38.256+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
-    }
-  },
-  {
-    "id": "49e1fa0c-af79-435c-854a-30c4f0529d73",
-    "name": "Lane Spec: Old Class O - Folio",
-    "code": "LANE-SPOO2",
-    "discoveryDisplayName": "Medical History Center: By appointment only.",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
-    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
-    "details": {
-    },
-    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
-    "servicePointIds": [
-      "0483c7bd-8e95-4c7b-9704-484b01879b02"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-08-10T17:46:38.628+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:38.628+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
-    }
-  },
-  {
     "id": "7bc85f97-61aa-4f4a-a537-3d74b7625c5a",
     "name": "Lane Unmapped",
     "code": "LANE-UNMAPPED",
@@ -5488,31 +5176,6 @@
       "createdDate": "2023-08-10T17:46:39.182+00:00",
       "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
       "updatedDate": "2023-08-10T17:46:39.182+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
-    }
-  },
-  {
-    "id": "49f4d81d-0b29-4872-963c-078c4924cf92",
-    "name": "Lane Spec: Old Class O - Flat",
-    "code": "LANE-SPOO3",
-    "discoveryDisplayName": "Medical History Center: By appointment only.",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
-    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
-    "details": {
-    },
-    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
-    "servicePointIds": [
-      "0483c7bd-8e95-4c7b-9704-484b01879b02"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-08-10T17:46:39.359+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:39.359+00:00",
       "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
     }
   },
@@ -5614,6 +5277,58 @@
       "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
       "updatedDate": "2023-08-10T17:46:42.813+00:00",
       "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+    }
+  },
+  {
+    "id": "49e1fa0c-af79-435c-854a-30c4f0529d73",
+    "name": "Lane Spec: Old Class O - Folio",
+    "code": "LANE-SPOO2",
+    "discoveryDisplayName": "Medical History Center: By appointment only.",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
+    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
+    "details": {
+      "discoveryDisplayUrl": "https://lane.stanford.edu/med-history/contact.html"
+    },
+    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
+    "servicePointIds": [
+      "0483c7bd-8e95-4c7b-9704-484b01879b02"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-10T17:46:38.628+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-08-29T02:42:44.908+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
+    }
+  },
+  {
+    "id": "49f4d81d-0b29-4872-963c-078c4924cf92",
+    "name": "Lane Spec: Old Class O - Flat",
+    "code": "LANE-SPOO3",
+    "discoveryDisplayName": "Medical History Center: By appointment only.",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
+    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
+    "details": {
+      "discoveryDisplayUrl": "https://lane.stanford.edu/med-history/contact.html"
+    },
+    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
+    "servicePointIds": [
+      "0483c7bd-8e95-4c7b-9704-484b01879b02"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-10T17:46:39.359+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-08-29T02:42:45.262+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
     }
   },
   {
@@ -7821,31 +7536,6 @@
     }
   },
   {
-    "id": "d50c3151-3532-4e6d-a1d3-7a8fe6cf4fdc",
-    "name": "Lane Spec: Display",
-    "code": "LANE-WKSTD",
-    "discoveryDisplayName": "Medical History Center: By appointment only.",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
-    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
-    "details": {
-    },
-    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
-    "servicePointIds": [
-      "0483c7bd-8e95-4c7b-9704-484b01879b02"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-08-10T17:47:09.422+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:47:09.422+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
-    }
-  },
-  {
     "id": "920e71ee-5ea3-4934-a878-7fe64b1fc8fc",
     "name": "Science Circ Desk",
     "code": "SCI-ATCIRCDESK",
@@ -7895,6 +7585,32 @@
       "createdDate": "2023-08-10T17:47:10.795+00:00",
       "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
       "updatedDate": "2023-08-24T19:29:10.316+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
+    }
+  },
+  {
+    "id": "d50c3151-3532-4e6d-a1d3-7a8fe6cf4fdc",
+    "name": "Lane Spec: Display",
+    "code": "LANE-WKSTD",
+    "discoveryDisplayName": "Medical History Center: By appointment only.",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
+    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
+    "details": {
+      "discoveryDisplayUrl": "https://lane.stanford.edu/med-history/contact.html"
+    },
+    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
+    "servicePointIds": [
+      "0483c7bd-8e95-4c7b-9704-484b01879b02"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-10T17:47:09.422+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-08-29T02:42:46.306+00:00",
       "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
     }
   },
@@ -11155,7 +10871,7 @@
     "name": "Education Maintenance Shelf",
     "code": "EDU-PROCESSING",
     "discoveryDisplayName": "In process",
-    "isActive": false,
+    "isActive": true,
     "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
     "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
     "libraryId": "87b6c439-dd55-4d27-91d4-eb8552b18bb4",
@@ -11171,8 +10887,8 @@
     "metadata": {
       "createdDate": "2023-08-10T17:47:51.134+00:00",
       "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:47:51.134+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+      "updatedDate": "2023-08-28T17:31:17.055+00:00",
+      "updatedByUserId": "92c1aeb5-87f1-4be1-9f4d-0f90d1203dcc"
     }
   },
   {
@@ -14474,6 +14190,368 @@
       "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
       "updatedDate": "2023-08-28T03:02:43.587+00:00",
       "updatedByUserId": "2f7f4956-c95a-47ba-95f8-395354707b6f"
+    }
+  },
+  {
+    "id": "f565b2b6-e15f-472c-ae0b-2f8e47aee704",
+    "name": "Education Shelved Elsewhere",
+    "code": "EDU-SEE-OTHER",
+    "discoveryDisplayName": "See linked records to request items bound together",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "87b6c439-dd55-4d27-91d4-eb8552b18bb4",
+    "details": {
+    },
+    "primaryServicePoint": "bd5fd8d9-72f3-4532-b68c-4db88063d16b",
+    "servicePointIds": [
+      "bd5fd8d9-72f3-4532-b68c-4db88063d16b"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-10T17:46:00.427+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-08-28T17:32:35.507+00:00",
+      "updatedByUserId": "92c1aeb5-87f1-4be1-9f4d-0f90d1203dcc"
+    }
+  },
+  {
+    "id": "c6d02c27-4da7-472a-a209-0e2f3a390fc1",
+    "name": "Law Catalog Maintenance",
+    "code": "LAW-CATMAINT",
+    "discoveryDisplayName": "Catalog Maintenance",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+    "libraryId": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+    "details": {
+    },
+    "primaryServicePoint": "c9364d5f-6421-4c1a-9010-4ca2bc34efbe",
+    "servicePointIds": [
+      "c9364d5f-6421-4c1a-9010-4ca2bc34efbe"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-28T20:57:44.623+00:00",
+      "createdByUserId": "a8e56e25-3536-4ba6-85bd-be835c4bdb57",
+      "updatedDate": "2023-08-28T20:57:44.623+00:00",
+      "updatedByUserId": "a8e56e25-3536-4ba6-85bd-be835c4bdb57"
+    }
+  },
+  {
+    "id": "aaf03d00-4622-4f06-b292-e99bd6b8b164",
+    "name": "Law Bindery Prep",
+    "code": "LAW-BINDERYPREP",
+    "discoveryDisplayName": "Law Bindery Prep",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "7003123d-ef65-45f6-b469-d2b9839e1bb3",
+    "libraryId": "7e4c05e3-1ce6-427d-b9ce-03464245cd78",
+    "details": {
+      "": ""
+    },
+    "primaryServicePoint": "c9364d5f-6421-4c1a-9010-4ca2bc34efbe",
+    "servicePointIds": [
+      "c9364d5f-6421-4c1a-9010-4ca2bc34efbe"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-28T21:01:33.628+00:00",
+      "createdByUserId": "a8e56e25-3536-4ba6-85bd-be835c4bdb57",
+      "updatedDate": "2023-08-28T21:01:33.628+00:00",
+      "updatedByUserId": "a8e56e25-3536-4ba6-85bd-be835c4bdb57"
+    }
+  },
+  {
+    "id": "b7169013-5970-42a4-94a6-54067010127e",
+    "name": "Lane Spec: Arabic Oversize",
+    "code": "LANE-ARASZ",
+    "discoveryDisplayName": "Medical History Center: By appointment only.",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
+    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
+    "details": {
+      "discoveryDisplayUrl": "https://lane.stanford.edu/med-history/contact.html"
+    },
+    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
+    "servicePointIds": [
+      "0483c7bd-8e95-4c7b-9704-484b01879b02"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-10T17:46:20.189+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-08-29T02:42:37.014+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
+    }
+  },
+  {
+    "id": "7b26026a-8162-4053-a1be-fe017f0a6f7d",
+    "name": "Lane Spec: Photofile",
+    "code": "LANE-FOTOF",
+    "discoveryDisplayName": "Medical History Center: By appointment only.",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
+    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
+    "details": {
+      "discoveryDisplayUrl": "https://lane.stanford.edu/med-history/contact.html"
+    },
+    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
+    "servicePointIds": [
+      "0483c7bd-8e95-4c7b-9704-484b01879b02"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-10T17:46:25.156+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-08-29T02:42:38.748+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
+    }
+  },
+  {
+    "id": "d9a0481b-ebc2-4b62-b4b5-7bda2ee5949b",
+    "name": "Lane Spec: Instruments",
+    "code": "LANE-INSTR",
+    "discoveryDisplayName": "Medical History Center: By appointment only.",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
+    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
+    "details": {
+      "discoveryDisplayUrl": "https://lane.stanford.edu/med-history/contact.html"
+    },
+    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
+    "servicePointIds": [
+      "0483c7bd-8e95-4c7b-9704-484b01879b02"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-10T17:46:29.189+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-08-29T02:42:39.594+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
+    }
+  },
+  {
+    "id": "26d1a668-747b-4f1d-a2af-317b37316360",
+    "name": "Lane Spec: Manuscipts",
+    "code": "LANE-MSS",
+    "discoveryDisplayName": "Medical History Center: By appointment only.",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
+    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
+    "details": {
+      "discoveryDisplayUrl": "https://lane.stanford.edu/med-history/contact.html"
+    },
+    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
+    "servicePointIds": [
+      "0483c7bd-8e95-4c7b-9704-484b01879b02"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-10T17:46:24.838+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-08-29T02:42:40.604+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
+    }
+  },
+  {
+    "id": "574c569c-94a5-4904-8f7b-6ffc0d2f55ce",
+    "name": "Lane Spec: Per Archives",
+    "code": "LANE-PARCH",
+    "discoveryDisplayName": "Medical History Center: By appointment only.",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
+    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
+    "details": {
+      "discoveryDisplayUrl": "https://lane.stanford.edu/med-history/contact.html"
+    },
+    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
+    "servicePointIds": [
+      "0483c7bd-8e95-4c7b-9704-484b01879b02"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-10T17:46:22.815+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-08-29T02:42:40.946+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
+    }
+  },
+  {
+    "id": "5d3bf9e2-eb83-46e9-b2d8-3400ea8d1da3",
+    "name": "Lane Spec: Portraits (Annex)",
+    "code": "LANE-PORT",
+    "discoveryDisplayName": "Medical History Center: By appointment only.",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
+    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
+    "details": {
+      "discoveryDisplayUrl": "https://lane.stanford.edu/med-history/contact.html"
+    },
+    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
+    "servicePointIds": [
+      "0483c7bd-8e95-4c7b-9704-484b01879b02"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-10T17:46:29.513+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-08-29T02:42:41.287+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
+    }
+  },
+  {
+    "id": "12ccfee2-4676-4a82-add3-885defed6440",
+    "name": "Lane Spec: Theses",
+    "code": "LANE-RTHSS",
+    "discoveryDisplayName": "Medical History Center: By appointment only.",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
+    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
+    "details": {
+      "discoveryDisplayUrl": "https://lane.stanford.edu/med-history/contact.html"
+    },
+    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
+    "servicePointIds": [
+      "0483c7bd-8e95-4c7b-9704-484b01879b02"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-10T17:46:34.851+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-08-29T02:42:41.967+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
+    }
+  },
+  {
+    "id": "045ee992-0f9e-4079-88b6-1dc77f36e19a",
+    "name": "Lane Spec: AV",
+    "code": "LANE-SPAV",
+    "discoveryDisplayName": "Medical History Center: By appointment only.",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
+    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
+    "details": {
+      "discoveryDisplayUrl": "https://lane.stanford.edu/med-history/contact.html"
+    },
+    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
+    "servicePointIds": [
+      "0483c7bd-8e95-4c7b-9704-484b01879b02"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-10T17:46:38.256+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-08-29T02:42:43.151+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
+    }
+  },
+  {
+    "id": "e39233fe-267b-4c5b-aad9-75c2259ba680",
+    "name": "Lane Spec: LC Class",
+    "code": "LANE-SPEC",
+    "discoveryDisplayName": "Medical History Center: By appointment only.",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
+    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
+    "details": {
+      "discoveryDisplayUrl": "https://lane.stanford.edu/med-history/contact.html"
+    },
+    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
+    "servicePointIds": [
+      "0483c7bd-8e95-4c7b-9704-484b01879b02"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-10T17:46:35.184+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-08-29T02:42:43.501+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
+    }
+  },
+  {
+    "id": "ce240b25-6a4e-4711-90d7-bfc141c31ebd",
+    "name": "Lane Spec: LC Oversize",
+    "code": "LANE-SPLCO",
+    "discoveryDisplayName": "Medical History Center: By appointment only.",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
+    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
+    "details": {
+      "discoveryDisplayUrl": "https://lane.stanford.edu/med-history/contact.html"
+    },
+    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
+    "servicePointIds": [
+      "0483c7bd-8e95-4c7b-9704-484b01879b02"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-10T17:46:33.736+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-08-29T02:42:43.876+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
+    }
+  },
+  {
+    "id": "f6f22ea0-8b88-48ee-a98f-8e41288d3840",
+    "name": "Lane Spec: Reference",
+    "code": "LANE-SREF",
+    "discoveryDisplayName": "Medical History Center: By appointment only.",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
+    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
+    "details": {
+      "discoveryDisplayUrl": "https://lane.stanford.edu/med-history/contact.html"
+    },
+    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
+    "servicePointIds": [
+      "0483c7bd-8e95-4c7b-9704-484b01879b02"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-10T17:46:38.756+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-08-29T02:42:45.618+00:00",
+      "updatedByUserId": "34101b6c-9b8f-4857-aea7-db617fd0a987"
     }
   }
 ]
