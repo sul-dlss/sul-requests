@@ -26,6 +26,8 @@ module Folio
     end
 
     def library
+      return if library_id.nil?
+
       @library ||= Folio::Types.libraries.find_by(id: library_id)
     end
 
@@ -36,7 +38,8 @@ module Folio
     private
 
     def library_id
-      @library_id ||= Folio::Types.locations.find_by(primary_service_point_id: id).library_id
+      # Not every service point, e.g .RWC, has an associated location or library
+      @library_id ||= Folio::Types.locations.find_by(primary_service_point_id: id)&.library_id
     end
   end
 end
