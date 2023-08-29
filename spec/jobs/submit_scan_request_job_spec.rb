@@ -26,7 +26,7 @@ RSpec.describe SubmitScanRequestJob, type: :job do
       end
     end
 
-    context 'when the scan_destination is not present' do
+    context 'when the scan_destination does not have a barcode' do
       let(:scan) { create(:scan, :without_validations, origin: 'SAL3') }
 
       # SAL3 scans should not be sent to the ILS

@@ -16,6 +16,6 @@ class SubmitScanRequestJob < ApplicationJob
     # This ensures that only scan rules with a destination get sent to the ILS.
     # We no longer want to send SAL3 requests to the ILS as this is handled by the ILLiad integration.
     # SAL1/2 requests still go to the ILS at this time.
-    scan.send_to_ils_later! if scan.scan_destination.present?
+    scan.send_to_ils_later! if scan.scan_destination&.dig(:patron_barcode).present?
   end
 end
