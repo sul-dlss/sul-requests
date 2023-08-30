@@ -11,27 +11,36 @@ RSpec.describe 'hold_recalls/_header.html.erb' do
 
   let(:holdings) { [holding] }
   let(:holding) do
-    Searchworks::HoldingItem.new('barcode' => '123', 'callnumber' => '456', 'type' => 'book',
-                                 'current_location' => { 'code' => current_location_code })
+    Folio::Item.new(
+      barcode: '123',
+      type: 'LC',
+      callnumber: '456',
+      material_type: 'book',
+      permanent_location:,
+      effective_location: effective_location || permanent_location,
+      status:
+    )
   end
+  let(:permanent_location) { {} }
+  let(:effective_location) { nil }
+  let(:status) { 'Available' }
 
   before do
     allow(view).to receive_messages(current_request:)
   end
 
-  context 'with a blank current location' do
-    let(:origin_location) { 'INPROCESS' }
-    let(:current_location_code) { '' }
+  context 'with an in-process item' do
+    let(:status) { 'In process' }
 
-    it 'falls back to the home location' do
+    it 'shows the in-process header' do
       render
       expect(rendered).to have_css('h1', text: 'Request in-process item')
       expect(rendered).not_to have_css('h1', text: 'checked-out')
     end
   end
 
-  context 'when current location is ON-ORDER' do
-    let(:current_location_code) { 'ON-ORDER' }
+  context 'when the item is on-order' do
+    let(:status) { 'On order' }
 
     it 'has the correct header' do
       render
@@ -39,17 +48,8 @@ RSpec.describe 'hold_recalls/_header.html.erb' do
     end
   end
 
-  context 'when current location is INPROCESS' do
-    let(:current_location_code) { 'INPROCESS' }
-
-    it 'has the correct header' do
-      render
-      expect(rendered).to have_css('h1', text: 'Request in-process item')
-    end
-  end
-
-  context 'when current location is checked out' do
-    let(:current_location_code) { 'CHECKEDOUT' }
+  context 'when checked out' do
+    let(:status) { 'Checked out' }
 
     it 'has the correct header' do
       render
@@ -59,15 +59,6 @@ RSpec.describe 'hold_recalls/_header.html.erb' do
 
   context 'when there are no holdings' do
     let(:holdings) { [] }
-
-    it 'falls back to the default title' do
-      render
-      expect(rendered).to have_css('h1', text: 'Request item')
-    end
-  end
-
-  context 'when it is some other location' do
-    let(:current_location_code) { 'SOMETHING-ELSE' }
 
     it 'falls back to the default title' do
       render

@@ -103,7 +103,7 @@ module Folio
 
     def status_text
       if !circulates?
-        'In-library use'
+        'In-library use only'
       elsif status == STATUS_AVAILABLE
         'Available'
       else

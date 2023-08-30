@@ -88,51 +88,65 @@ RSpec.describe RequestsHelper do
   end
 
   describe 'status_text_for_item' do
-    let(:other_item) do
-      instance_double(Searchworks::HoldingItem,
-                      hold?: false,
-                      paged?: false,
-                      home_location: 'STACKS',
-                      request_status: double(errored?: false))
-    end
-    let(:home_location_30) do
-      instance_double(Searchworks::HoldingItem,
-                      hold?: false,
-                      paged?: true,
-                      request_status: double(errored?: false))
-    end
-    let(:current_location_loan) do
-      instance_double(Searchworks::HoldingItem,
-                      hold?: true,
-                      request_status: double(errored?: false))
+    let(:item) do
+      Folio::Item.new(
+        barcode: '123',
+        type: 'LC',
+        callnumber: '456',
+        material_type: 'book',
+        permanent_location: nil,
+        effective_location:,
+        status: item_status
+      ).with_status(request_status)
     end
 
-    context 'from symphony' do
-      let(:error_item) do
-        instance_double(Searchworks::HoldingItem,
-                        request_status: double(
-                          'status',
-                          errored?: true,
-                          user_error_text: 'User is blocked'
-                        ))
+    let(:item_status) { 'Available' }
+    let(:effective_location) { instance_double(Folio::Location, code: 'XYZ') }
+
+    let(:request_status) do
+      double(
+        'status',
+        errored?: false
+      )
+    end
+
+    context 'with a user error' do
+      let(:request_status) do
+        double(
+          'status',
+          errored?: true,
+          user_error_text: 'User is blocked'
+        )
       end
 
       it 'returns the request status text if the item errored' do
-        expect(status_text_for_item(error_item)).to eq 'User is blocked'
+        expect(status_text_for_item(item)).to eq 'User is blocked'
       end
     end
 
-    context 'from i18n' do
-      it 'returns text for page items' do
-        expect(status_text_for_item(home_location_30)).to eq 'Paged'
+    context 'with a paged item' do
+      before do
+        allow(item).to receive(:paged?).and_return(true)
       end
+
+      it 'returns text for page items' do
+        expect(status_text_for_item(item)).to eq 'Paged'
+      end
+    end
+
+    context 'with a held item' do
+      let(:item_status) { 'Awaiting pickup' }
 
       it 'returns text for hold items' do
-        expect(status_text_for_item(current_location_loan)).to eq 'Item is on-site - hold for patron'
+        expect(status_text_for_item(item)).to eq 'Item is on-site - hold for patron'
       end
+    end
 
-      it 'returns text for all other items' do
-        expect(status_text_for_item(other_item)).to eq 'Added to pick list'
+    context 'with other items' do
+      let(:item_status) { 'In process' }
+
+      it 'returns text for hold items' do
+        expect(status_text_for_item(item)).to eq 'Added to pick list'
       end
     end
   end
@@ -141,23 +155,39 @@ RSpec.describe RequestsHelper do
     subject { helper.i18n_location_title_key }
 
     let(:current_request) { double('request', holdings: [holding], origin_location:) }
-    let(:holding) do
-      Searchworks::HoldingItem.new('barcode' => '123', 'callnumber' => '456', 'type' => 'book',
-                                   'current_location' => { 'code' => current_location_code })
-    end
     let(:origin_location) { '' }
 
     before { expect(helper).to receive_messages(current_request:) }
 
     context 'when the the item is in-process' do
-      let(:current_location_code) { 'INPROCESS' }
+      let(:holding) do
+        Folio::Item.new(
+          barcode: '123',
+          type: 'LC',
+          callnumber: '456',
+          material_type: 'book',
+          permanent_location: nil,
+          effective_location: nil,
+          status: 'In process'
+        )
+      end
 
       it { is_expected.to eq 'INPROCESS' }
     end
 
-    context 'when current_location_code is blank' do
-      let(:current_location_code) { '' }
+    context 'when the item is available' do
       let(:origin_location) { 'HOPKINS' }
+      let(:holding) do
+        Folio::Item.new(
+          barcode: '123',
+          type: 'LC',
+          callnumber: '456',
+          material_type: 'book',
+          permanent_location: nil,
+          effective_location: nil,
+          status: 'Available'
+        )
+      end
 
       it { is_expected.to eq 'HOPKINS' }
     end
@@ -168,8 +198,16 @@ RSpec.describe RequestsHelper do
 
     describe 'checked out items' do
       let(:holding) do
-        instance_double(Searchworks::HoldingItem,
-                        checked_out?: true, due_date: Time.zone.today)
+        Folio::Item.new(
+          barcode: '123',
+          type: 'LC',
+          callnumber: '456',
+          material_type: 'book',
+          permanent_location: nil,
+          effective_location: nil,
+          status: 'Checked out',
+          due_date: '2023-08-30'
+        )
       end
 
       it 'includes the unavailable class' do
@@ -177,21 +215,17 @@ RSpec.describe RequestsHelper do
       end
 
       it 'includes the due date' do
-        expect(subject).to have_content("Due #{Time.zone.today}")
+        expect(subject).to have_content('Due 08/30/2023')
       end
     end
 
-    describe 'non checked out items' do
+    describe 'with a in-library use only item' do
       let(:holding) do
-        instance_double(
-          Searchworks::HoldingItem,
-          checked_out?: false,
-          status_class: 'noncirc_page', status_text: 'In-library use only'
-        )
+        build(:page_lp_holdings).items.first
       end
 
       it 'includes the status icon' do
-        expect(subject).to have_css('.noncirc_page')
+        expect(subject).to have_css('.noncirc')
       end
 
       it 'includes the status text' do
