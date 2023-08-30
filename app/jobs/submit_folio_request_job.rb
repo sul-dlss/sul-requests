@@ -199,14 +199,11 @@ class SubmitFolioRequestJob < ApplicationJob
       "#{user.name} <#{user.email}>"
     end
 
-    # rubocop:disable Metrics/MethodLength
     def patron
       @patron ||= case request
                   when Scan
                     Folio::Patron.find_by(library_id: scan_destination.patron_barcode)
-                  when HoldRecall
-                    user.patron
-                  when Page, MediatedPage
+                  when Page, MediatedPage, HoldRecall
                     if user.patron&.make_request_as_patron?
                       user.patron
                     else
@@ -214,7 +211,6 @@ class SubmitFolioRequestJob < ApplicationJob
                     end
                   end
     end
-    # rubocop:enable Metrics/MethodLength
 
     def find_hold_pseudo_patron_for(key)
       pseudopatron_barcode = Settings.libraries[key]&.hold_pseudopatron || raise("no hold pseudopatron for '#{key}'")
