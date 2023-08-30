@@ -277,5 +277,12 @@
     "details": null,
     "id": "e9a88f1d-3ca1-4159-84ce-a400d7f75d56",
     "discoveryDisplayName": "SUL Metadata Cataloging Shelf"
+  },
+  {
+    "pickupLocation": null,
+    "code": "SULDIGITIZATION",
+    "details": null,
+    "id": "68002733-5923-46db-acc7-3d18cbf30870",
+    "discoveryDisplayName": "SUL Digitization Services"
   }
 ]
