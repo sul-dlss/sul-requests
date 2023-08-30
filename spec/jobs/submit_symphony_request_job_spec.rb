@@ -107,7 +107,7 @@ RSpec.describe SubmitSymphonyRequestJob, if: Settings.ils.request_job == 'Submit
           allow(user).to receive(:patron).and_return(nil)
           expect(mock_client).to receive(:place_hold) do |**params|
             expect(params).to include(
-              comment: ' some-sso-user@stanford.edu',
+              comment: 'Some SSO User some-sso-user@stanford.edu',
               patron_barcode: 'HOLD@AR',
               recall_status: 'STANDARD'
             )

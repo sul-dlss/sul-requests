@@ -57,7 +57,7 @@ module Folio
     end
 
     def make_request_as_patron?
-      user_info['active']
+      !expired? && patron_group.present?
     end
 
     def first_name
@@ -81,7 +81,7 @@ module Folio
     end
 
     def expired?
-      !user_info['active']
+      user_info['active'] == false
     end
 
     def proxy?
