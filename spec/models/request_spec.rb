@@ -627,8 +627,7 @@ RSpec.describe Request do
     end
 
     it 'returns the subset of origin codes that are configured and mediated pages that exist in the database' do
-      # SAL3 is temporarily included during the FOLIO migration period
-      expect(described_class.mediateable_origins.to_h.keys).to eq %w(ART PAGE-MP SAL3)
+      expect(described_class.mediateable_origins.to_h.keys).to eq %w(ART PAGE-MP)
     end
   end
 
