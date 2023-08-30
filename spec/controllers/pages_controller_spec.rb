@@ -91,7 +91,7 @@ RSpec.describe PagesController do
 
       it 'is allowed if the library ID field is filled out' do
         allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: '12345').and_return(
-          instance_double(Symphony::Patron, email: nil, exists?: true)
+          instance_double(Folio::Patron, email: nil, exists?: true)
         )
 
         put :create, params: {
@@ -202,7 +202,7 @@ RSpec.describe PagesController do
 
       it 'redirects to success page with token when the sso user supplies a library ID' do
         allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: '5432123').and_return(
-          instance_double(Symphony::Patron, email: nil, exists?: true)
+          instance_double(Folio::Patron, email: nil, exists?: true)
         )
 
         post :create, params: {

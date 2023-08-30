@@ -331,7 +331,7 @@ RSpec.describe Request do
   describe 'nested attributes for' do
     before do
       allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: '12345').and_return(
-        instance_double(Symphony::Patron, exists?: true)
+        instance_double(Folio::Patron, exists?: true)
       )
     end
 
@@ -581,7 +581,7 @@ RSpec.describe Request do
 
     before do
       allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: user.library_id).and_return(
-        instance_double(Symphony::Patron, exists?: true, email: '')
+        instance_double(Folio::Patron, exists?: true, email: '')
       )
     end
 
