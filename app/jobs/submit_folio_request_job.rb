@@ -56,8 +56,8 @@ class SubmitFolioRequestJob < ApplicationJob
     def execute!
       return place_title_hold if barcodes.blank?
 
-      requested_items = barcodes.filter_map do |barcode|
-        create_item_circulation_request(barcode).presence
+      requested_items = barcodes.map do |barcode|
+        create_item_circulation_request(barcode)
       end
 
       # See if patron was blocked, and record that in the response. This governs the email response,
@@ -127,8 +127,8 @@ class SubmitFolioRequestJob < ApplicationJob
 
       { barcode:, msgcode: '209', response: }
       rescue StandardError => e
-        Honeybadger.notify("Circulation item request failed for #{request_id} with #{e}", context: { barcode:, msgcode: '123' })
-        nil
+        Honeybadger.notify("Circulation item request failed for barcode #{barcode} with #{e}")
+        { barcode:, msgcode: '456', response: }
     end
     # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
