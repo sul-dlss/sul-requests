@@ -100,7 +100,7 @@ RSpec.describe Page do
 
     before do
       allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: user.library_id).and_return(
-        instance_double(Symphony::Patron, exists?: true, email: '')
+        instance_double(Folio::Patron, exists?: true, email: '')
       )
     end
 
