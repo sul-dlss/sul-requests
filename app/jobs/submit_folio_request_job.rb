@@ -56,8 +56,8 @@ class SubmitFolioRequestJob < ApplicationJob
     def execute!
       return place_title_hold if barcodes.blank?
 
-      requested_items = barcodes.map do |barcode|
-        create_item_circulation_request(barcode)
+      requested_items = barcodes.filter_map do |barcode|
+        create_item_circulation_request(barcode).presence
       end
 
       # See if patron was blocked, and record that in the response. This governs the email response,
@@ -108,6 +108,7 @@ class SubmitFolioRequestJob < ApplicationJob
     def create_item_circulation_request(barcode)
       item = folio_client.get_item(barcode)
       request_type = best_request_type(item)
+
       create_log(barcode:, item_id: item['id'])
 
       request_data = FolioClient::CirculationRequest.new(
@@ -125,6 +126,9 @@ class SubmitFolioRequestJob < ApplicationJob
       response = folio_client.create_circulation_request(request_data)
 
       { barcode:, msgcode: '209', response: }
+      rescue StandardError
+        Honeybadger.notify("Unable to create circulation item request for #{barcode}", context: { request_id: })
+        nil
     end
     # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
