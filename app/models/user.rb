@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
     patron&.sponsor?
   end
 
-  class_attribute :patron_model_class, default: Settings.ils.patron_model&.constantize || Symphony::Patron
+  class_attribute :patron_model_class, default: Settings.ils.patron_model&.constantize || Folio::Patron
 
   def to_email_string
     if name.present?

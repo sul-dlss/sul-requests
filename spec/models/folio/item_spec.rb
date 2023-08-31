@@ -399,7 +399,7 @@ RSpec.describe Folio::Item do
       end
 
       it 'is noncirc' do
-        expect(item.status_text).to eq('In-library use')
+        expect(item.status_text).to eq('In-library use only')
       end
     end
 
@@ -437,7 +437,7 @@ RSpec.describe Folio::Item do
       end
 
       it 'is deliver-from-offsite AND noncirc' do
-        expect(item.status_text).to eq('In-library use')
+        expect(item.status_text).to eq('In-library use only')
       end
     end
 

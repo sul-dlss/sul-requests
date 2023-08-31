@@ -117,7 +117,6 @@ RSpec.describe 'Mediation table', js: true do
 
       before do
         stub_bib_data_json(build(:searchable_holdings))
-        allow(Symphony::CatalogInfo).to receive(:find).and_return(double(:current_location, current_location: 'ART-NEWBOOK'))
         visit(admin_path('ART'))
       end
 
@@ -137,7 +136,6 @@ RSpec.describe 'Mediation table', js: true do
 
       before do
         allow(Request.ils_job_class).to receive(:perform_now)
-        allow(Symphony::CatalogInfo).to receive(:find).and_return(double(:current_location, current_location: 'ART-LOCKED-LARGE'))
       end
 
       it 'has toggleable rows that display holdings' do
@@ -496,7 +494,6 @@ RSpec.describe 'Mediation table', js: true do
     before do
       stub_current_user(create(:page_mp_origin_admin_user))
       stub_bib_data_json(build(:page_mp_holdings))
-      allow(Symphony::CatalogInfo).to receive(:find).and_return(double(:current_location, current_location: 'SAL3-PAGE-MP'))
       request.save(validate: false)
 
       visit admin_path('PAGE-MP')

@@ -34,7 +34,7 @@ RSpec.describe User do
     end
 
     context 'with a patron' do
-      let(:patron) { instance_double(Symphony::Patron, barcode: '123456789') }
+      let(:patron) { instance_double(Folio::Patron, barcode: '123456789') }
 
       it 'uses the patron barcode from the ILS' do
         allow(described_class.patron_model_class).to receive(:find_by).with(sunetid: 'some-user').and_return(patron)

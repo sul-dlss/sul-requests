@@ -55,8 +55,9 @@ module Folio
     ].freeze
 
     # rubocop:disable Metrics/ParameterLists
-    def initialize(barcode:, status:, type:, callnumber:, public_note:,
-                   effective_location:, permanent_location: nil, material_type: nil, loan_type: nil,
+    def initialize(barcode:, status:, callnumber:,
+                   effective_location:, permanent_location: nil,
+                   type: nil, public_note: nil, material_type: nil, loan_type: nil,
                    due_date: nil)
       @barcode = barcode
       @status = status
@@ -102,7 +103,7 @@ module Folio
 
     def status_text
       if !circulates?
-        'In-library use'
+        'In-library use only'
       elsif status == STATUS_AVAILABLE
         'Available'
       else
