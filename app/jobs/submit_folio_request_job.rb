@@ -126,8 +126,8 @@ class SubmitFolioRequestJob < ApplicationJob
       response = folio_client.create_circulation_request(request_data)
 
       { barcode:, msgcode: '209', response: }
-      rescue StandardError
-        Honeybadger.notify("Unable to create circulation item request for #{barcode}", context: { request_id: })
+      rescue StandardError => e
+        Honeybadger.notify("Circulation item request failed for #{request_id} with #{e}", context: { barcode:, msgcode: '123' })
         nil
     end
     # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
