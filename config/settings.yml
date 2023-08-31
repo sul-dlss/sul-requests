@@ -217,11 +217,13 @@ libraries:
       library_slug: hopkins
       location_slug: library-circulation
   LANE:
+    hold_pseudopatron: HOLD@LN
     hours:
       library_slug: lane
       location_slug: library-circulation
   LANE-MED:
     label: Medical Library (Lane)
+    hold_pseudopatron: HOLD@LN
     hours:
       library_slug: lane
       location_slug: library-circulation
