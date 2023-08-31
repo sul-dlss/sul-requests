@@ -18,7 +18,7 @@ RSpec.describe SubmitFolioRequestJob do
   end
   let(:status) { 'Available' }
   let(:expected_date) { DateTime.now.beginning_of_day.utc.iso8601 }
-  let(:patron_group) { nil }
+  let(:patron_group) { 'bdc2b6d4-5ceb-4a12-ab46-249b9a68473e' } # Undergrad
   let(:circulation_request_policy) { 'policy-id' }
   let(:request_policies) { [{ 'id' => 'policy-id', 'requestTypes' => ['Hold', 'Page', 'Recall'] }] }
 
@@ -68,6 +68,27 @@ RSpec.describe SubmitFolioRequestJob do
                                                                     'a43e597a-d4b4-50ec-ad16-7fd49920831a', FolioClient::HoldRequest)
       end
     end
+
+    context 'with an sso user with no patron group' do
+      let(:user) { create(:sso_user) }
+      let(:request) { create(:hold_recall_with_holdings_folio, barcodes: ['12345678'], user:) }
+      let(:patron_group) { nil }
+
+      before do
+        allow(Folio::Patron).to receive(:find_by).with(library_id: 'HOLD@GR').and_return(
+          instance_double(Folio::Patron, id: 'HOLD@GR-PSEUDO', patron_group:, blocked?: false)
+        )
+      end
+
+      it 'places a hold as the pseudopatron' do
+        described_class.perform_now(request.id)
+        expect(client).to have_received(:create_circulation_request).with(have_attributes(
+                                                                            requester_id: 'HOLD@GR-PSEUDO',
+                                                                            item_id: 4,
+                                                                            patron_comments: 'Some SSO User <some-sso-user@stanford.edu>'
+                                                                          ))
+      end
+    end
   end
 
   context 'with a Page type request' do
@@ -84,7 +105,7 @@ RSpec.describe SubmitFolioRequestJob do
         allow(patron).to receive(:blocked?).and_return(false)
       end
 
-      it 'calls the create_circulation_request API method' do
+      it 'calls the create_circulation_request API method as the patron' do
         described_class.perform_now(request.id)
         expect(client).to have_received(:create_circulation_request).with(have_attributes(
                                                                             requester_id: '562a5cb0-e998-4ea2-80aa-34ac2b536238'
@@ -103,7 +124,7 @@ RSpec.describe SubmitFolioRequestJob do
         allow(patron).to receive(:blocked?).and_return(true)
       end
 
-      it 'calls the create_circulation_request API method' do
+      it 'calls the create_circulation_request API method as the patron' do
         described_class.perform_now(request.id)
         expect(client).to have_received(:create_circulation_request).with(have_attributes(
                                                                             requester_id: '562a5cb0-e998-4ea2-80aa-34ac2b536238'
@@ -122,7 +143,7 @@ RSpec.describe SubmitFolioRequestJob do
         )
       end
 
-      it 'calls the create_circulation_request API method' do
+      it 'calls the create_circulation_request API method using a pseudopatron' do
         described_class.perform_now(request.id)
         expect(client).to have_received(:create_circulation_request).with(have_attributes(
                                                                             requester_id: 'HOLD@AR-PSEUDO',
@@ -131,19 +152,44 @@ RSpec.describe SubmitFolioRequestJob do
                                                                           ))
       end
     end
+
+    context 'with an sso user with no patron group' do
+      let(:user) { create(:sso_user) }
+      let(:patron) do
+        Folio::Patron.new({ 'id' => '562a5cb0-e998-4ea2-80aa-34ac2b536238', 'patronGroup' => nil })
+      end
+
+      before do
+        allow(request.user).to receive(:patron).and_return(patron)
+        allow(Folio::Patron).to receive(:find_by).with(library_id: 'HOLD@AR').and_return(
+          instance_double(Folio::Patron, id: 'HOLD@AR-PSEUDO', patron_group:, blocked?: false)
+        )
+      end
+
+      it 'calls the create_circulation_request API method as the pseudopatron' do
+        described_class.perform_now(request.id)
+        expect(client).to have_received(:create_circulation_request).with(have_attributes(
+                                                                            requester_id: 'HOLD@AR-PSEUDO',
+                                                                            item_id: 4,
+                                                                            patron_comments: 'Some SSO User <some-sso-user@stanford.edu>'
+                                                                          ))
+      end
+    end
   end
 
   context 'with a MediatedPage type request' do
+    let(:request) do
+      create(
+        :mediated_page_with_holdings,
+        user:,
+        barcodes: %w(34567890),
+        created_at: 1.day.from_now,
+        needed_date: Time.zone.now
+      )
+    end
+
     context 'with a non-sso user' do
-      let(:request) do
-        create(
-          :mediated_page_with_holdings,
-          user: create(:non_sso_user, name: 'Jim Doe', email: 'jimdoe@example.com'),
-          barcodes: %w(34567890),
-          created_at: 1.day.from_now,
-          needed_date: Time.zone.now
-        )
-      end
+      let(:user) { create(:non_sso_user, name: 'Jim Doe', email: 'jimdoe@example.com') }
 
       before do
         allow(request.user).to receive(:patron).and_return(nil)
@@ -152,11 +198,34 @@ RSpec.describe SubmitFolioRequestJob do
         )
       end
 
-      it 'calls the create_circulation_request API method' do
+      it 'calls the create_circulation_request API method as the pseudopatron' do
         expect { described_class.perform_now(request.id) }.to change { request.folio_command_logs.count }.by(1)
         expect(client).to have_received(:create_circulation_request).with(have_attributes(
                                                                             requester_id: 'HOLD@AR-PSEUDO',
                                                                             patron_comments: 'Jim Doe <jimdoe@example.com>'
+                                                                          ))
+      end
+    end
+
+    context 'with an sso user with no patron group' do
+      let(:user) { create(:sso_user) }
+      let(:patron) do
+        Folio::Patron.new({ 'id' => '562a5cb0-e998-4ea2-80aa-34ac2b536238', 'patronGroup' => nil })
+      end
+
+      before do
+        allow(request.user).to receive(:patron).and_return(patron)
+        allow(Folio::Patron).to receive(:find_by).with(library_id: 'HOLD@AR').and_return(
+          instance_double(Folio::Patron, id: 'HOLD@AR-PSEUDO', patron_group:, blocked?: false)
+        )
+      end
+
+      it 'calls the create_circulation_request API method as the pseudopatron' do
+        described_class.perform_now(request.id)
+        expect(client).to have_received(:create_circulation_request).with(have_attributes(
+                                                                            requester_id: 'HOLD@AR-PSEUDO',
+                                                                            item_id: 4,
+                                                                            patron_comments: 'Some SSO User <some-sso-user@stanford.edu>'
                                                                           ))
       end
     end
