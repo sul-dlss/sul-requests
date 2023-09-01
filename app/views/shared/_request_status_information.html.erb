@@ -9,7 +9,11 @@
   <% destination_name = LibraryLocation.library_name_by_code(current_request.destination) %>
   <% if destination_name.present? %>
     <dt>
-      <%= label_for_pickup_destinations_dropdown(current_request.pickup_destinations) %>
+      <% if current_request.pickup_destinations.one? %>
+        Will be delivered to
+      <% else %>
+        Deliver to
+      <% end %>
     </dt>
     <dd>
       <%= destination_name %>

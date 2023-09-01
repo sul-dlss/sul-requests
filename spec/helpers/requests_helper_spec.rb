@@ -5,63 +5,6 @@ require 'rails_helper'
 RSpec.describe RequestsHelper do
   include ApplicationHelper
 
-  describe '#select_for_pickup_destinations' do
-    let(:form) { double('form') }
-
-    before do
-      allow(form).to receive_messages(object: request)
-    end
-
-    describe 'single library' do
-      let(:request) { build(:request, origin: 'SAL3', origin_location: 'PAGE-EN', bib_data:) }
-      let(:item) do
-        build(:item,
-              barcode: '3610512345678',
-              callnumber: 'ABC 123',
-              effective_location: build(:page_en_location))
-      end
-
-      let(:bib_data) { double(:bib_data, title: 'Test title', request_holdings: [item]) }
-
-      it 'returns library text and a hidden input w/ the destination library' do
-        expect(form).to receive(:hidden_field).with(:destination, value: 'ENG').and_return('<hidden_field>')
-        markup = Capybara.string(select_for_pickup_destinations(form))
-        expect(markup).to have_css('.form-group .control-label', text: 'Will be delivered to')
-        expect(markup).to have_css('.form-group .input-like-text', text: 'Engineering Library (Terman)')
-        expect(markup).to have_css('hidden_field')
-      end
-    end
-
-    describe 'multiple libraries' do
-      let(:request) { create(:request, origin: 'SAL3', origin_location: 'PAGE-HP') }
-
-      it 'attempts to create a select list' do
-        expect(form).to receive(:select).with(any_args).and_return('<select>')
-        expect(select_for_pickup_destinations(form)).to eq '<select>'
-      end
-
-      context 'with a destination' do
-        let(:request) { create(:request, origin: 'SAL3', destination: 'ART', origin_location: 'PAGE-HP') }
-
-        it 'defaults to the destination library' do
-          expect(form).to receive(:select).with(anything, anything, hash_including(selected: 'ART'), anything)
-            .and_return('<select>')
-          expect(select_for_pickup_destinations(form)).to eq '<select>'
-        end
-      end
-    end
-  end
-
-  describe '#label_for_pickup_destinations_dropdown' do
-    it 'is "Deliver to" when if there are mutliple possiblities' do
-      expect(label_for_pickup_destinations_dropdown(%w(GREEN MUSIC))).to eq 'Deliver to'
-    end
-
-    it 'is "Will be delivered to" when there is only one possibility' do
-      expect(label_for_pickup_destinations_dropdown(['GREEN'])).to eq 'Will be delivered to'
-    end
-  end
-
   describe 'searchworks link' do
     it 'constructs a searchworks link including the passed in html_options' do
       result = '<a data-elt-opt="somebehavior" href="http://searchworks.stanford.edu/view/234">A title</a>'
