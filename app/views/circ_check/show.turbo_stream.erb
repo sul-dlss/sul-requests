@@ -5,5 +5,9 @@
     <% else %>
       <%= render 'toast_failure', item: @item %>
     <% end %>
+
+    <script type="text/javascript">
+      document.getElementById('barcode').value = '';
+    </script>
   </template>
 </turbo-stream>
