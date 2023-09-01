@@ -4,6 +4,8 @@
 #  Controller for handling the Circ Check app page for Access Services.
 ###
 class CircCheckController < ApplicationController
+  layout false
+
   def index; end
 
   def show
