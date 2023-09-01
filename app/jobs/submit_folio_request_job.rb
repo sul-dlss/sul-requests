@@ -75,8 +75,11 @@ class SubmitFolioRequestJob < ApplicationJob
     private
 
     delegate :user, :scan_destination, to: :request
-    delegate :patron_group, to: :patron
     delegate :request_policies, to: :folio_client
+
+    def patron_group
+      patron&.patron_group
+    end
 
     # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     def best_request_type(item)
