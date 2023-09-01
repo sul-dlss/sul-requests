@@ -1,4 +1,4 @@
-<div class="toast show toast-success" role="alert" aria-live="assertive" aria-atomic="true">
+<div id="<%= id %>" class="toast toast-success" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="6000000">
   <div class="toast-header">
     <strong class="me-auto">✅ <%= @item.dig('barcode') %></strong>
     <small class="text-body-secondary">Due: <%= l(@item.dig('dueDate')&.to_date, format: :short) rescue @item.dig('dueDate') %></small>

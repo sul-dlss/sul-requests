@@ -17,6 +17,11 @@
         --bs-toast-bg: rgba(var(--bs-body-bg-rgb), 0.85);
       }
     </style>
+    <script type="">
+      document.addEventListener('hidden.bs.toast', (e) => {
+        e.target.remove();
+      })
+    </script>
   </head>
   <body>
     <header class="bg-dark py-3">
