@@ -1,0 +1,7 @@
+<div class="toast show toast-success" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="toast-header">
+    <strong class="me-auto">✅ <%= @item.dig('barcode') %></strong>
+    <small class="text-body-secondary">Due: <%= l(@item.dig('dueDate')&.to_date, format: :short) rescue @item.dig('dueDate') %></small>
+    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
+</div>

@@ -41,6 +41,30 @@ class FolioGraphqlClient
   end
 
   # rubocop:disable Metrics/MethodLength
+  def circ_check(barcode:)
+    post_json('/', json:
+      {
+        query:
+          <<~GQL
+            query CircCheckByBarcode {#{' '}
+              items(barcode: "#{barcode}") {
+                status {
+                  name
+                }
+                barcode
+                dueDate
+                effectiveCallNumberComponents {
+                  callNumber
+                }
+                instance {
+                  title
+                }
+              }
+            }
+          GQL
+      })
+  end
+
   def instance(hrid:)
     data = post_json('/', json:
     {

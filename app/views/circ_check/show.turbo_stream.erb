@@ -1,0 +1,9 @@
+<turbo-stream action="prepend" target="results">
+  <template>
+    <% if @item.dig('status', 'name') == 'Checked out' %>
+      <%= render 'toast_success', item: @item %>
+    <% else %>
+      <%= render 'toast_failure', item: @item %>
+    <% end %>
+  </template>
+</turbo-stream>
