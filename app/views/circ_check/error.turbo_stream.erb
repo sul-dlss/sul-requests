@@ -1,0 +1,18 @@
+<turbo-stream action="prepend" target="results">
+  <template>
+    <% id = "error_#{Time.zone.now.to_i}" %>
+    <div id="<%= id %>" class="toast toast-failure text-bg-danger" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="6000000">
+      <div class="toast-header border-0 rounded">
+        <strong class="me-auto">⛔ <%= error.message %></strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      bootstrap.Toast.getOrCreateInstance(document.getElementById('<%= id %>')).show();
+      document.getElementById('barcode').value = '';
+
+      document.currentScript.remove();
+    </script>
+  </template>
+</turbo-stream>
