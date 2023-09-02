@@ -18,4 +18,12 @@ FactoryBot.define do
     destination { 'ART' }
     bib_data { build(:multiple_holdings) }
   end
+
+  factory :page_with_single_holding_multiple_items, class: 'Page' do
+    item_id { '1234' }
+    origin { 'SAL3' }
+    origin_location { 'STACKS' }
+    destination { 'ART' }
+    bib_data { build(:single_holding_multiple_items) }
+  end
 end

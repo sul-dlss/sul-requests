@@ -175,6 +175,33 @@ RSpec.describe SubmitFolioRequestJob do
                                                                           ))
       end
     end
+
+    context 'with a mix of failing and successful request items' do
+      let(:user) { create(:sequence_sso_user) }
+      let(:request) { create(:page_with_single_holding_multiple_items, barcodes: ['12345678', '12345679'], user:) }
+      let(:command) { described_class::Command.new(request, logger: Rails.logger) }
+      let(:patron) do
+        Folio::Patron.new({ 'id' => '562a5cb0-e998-4ea2-80aa-34ac2b536238', 'active' => true, 'patronGroup' => patron_group })
+      end
+
+      before do
+        allow(request.user).to receive(:patron).and_return(patron)
+        allow(patron).to receive(:blocked?).and_return(false)
+        # Force one barcode to throw an error
+        allow(client).to receive(:get_item).with('12345678').and_return(nil)
+      end
+
+      it 'receives only one circulation request if the other results in error' do
+        described_class.perform_now(request.id)
+        # only one request should be successful
+        expect(client).to have_received(:create_circulation_request).once
+      end
+
+      it 'returns error msgcode for a circulation request with an error' do
+        circ_request = command.send(:create_item_circulation_request, '12345678')
+        expect(circ_request).to include(barcode: '12345678', msgcode: '456')
+      end
+    end
   end
 
   context 'with a MediatedPage type request' do
