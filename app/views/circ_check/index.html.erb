@@ -32,14 +32,14 @@
         <%= form_with url: '/circ-check' do |form| %>
           <div class="row g-3 align-items-start">
             <div class="col-auto">
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="barcode" name="barcode" aria-describedby="barcodeHelp" autofocus>
-                <label for="barcode">Barcode</label>
+              <div class="input-group">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="barcode" name="barcode" aria-describedby="barcodeHelp" placeholder="36105..." autofocus required>
+                  <label for="barcode">Barcode</label>
+                </div>
+                <button type="submit" class="btn btn-primary">Check</button>
               </div>
               <div id="barcodeHelp" class="form-text">Enter the barcode of the item you want to check.</div>
-            </div>
-            <div class="col-auto">
-              <button type="submit" class="btn btn-primary">Check</button>
             </div>
           </div>
         <% end %>
