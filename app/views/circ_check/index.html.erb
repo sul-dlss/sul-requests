@@ -26,11 +26,11 @@
   </head>
   <body>
     <header class="bg-dark py-3">
-      <div class="container-fluid"><h1 class="fs-4 text-white">SUL Circulation Check</h1></div>
+      <div class="container-fluid"><h1 id="page-title" class="fs-4 text-white">SUL Circulation Check</h1></div>
     </header>
-    <div class="container mt-4">
+    <div class="container mt-4" role="main">
       <turbo-frame id="circForm">
-        <%= form_with url: '/circ-check' do |form| %>
+        <%= form_with url: '/circ-check', html: { aria: { labelledby: '#page-title' } } do |form| %>
           <div class="row g-3 align-items-start">
             <div class="col-auto">
               <div class="input-group">
