@@ -28,6 +28,13 @@
           document.getElementById('results').innerHTML = '';
           document.getElementById('barcode').focus();
         })
+
+        document.getElementById('barcode').closest('form').addEventListener('submit', (e) => {
+          setTimeout(() => {
+            document.getElementById('barcode').value = '';
+            document.getElementById('barcode').focus();
+          }, 1);
+        });
       })
     </script>
   </head>
