@@ -8,4 +8,7 @@
     <p><%= @item.dig('instance', 'title') %></p>
     <p>Call number: <%= @item.dig('effectiveCallNumberComponents', 'callNumber') %></p>
   </div>
+  <audio autoplay preload="auto" src="<%= audio_path("denied_sound.mp3") %>">
+    Your browser does not support the audio element. 
+  </audio>
 </div>
