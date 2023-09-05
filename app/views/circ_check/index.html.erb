@@ -22,6 +22,20 @@
       document.addEventListener('hidden.bs.toast', (e) => {
         e.target.remove();
       })
+
+      window.addEventListener('load', function() {
+        document.getElementById('reset').addEventListener('click', (e) => {
+          document.getElementById('results').innerHTML = '';
+          document.getElementById('barcode').focus();
+        })
+
+        document.getElementById('barcode').closest('form').addEventListener('submit', (e) => {
+          setTimeout(() => {
+            document.getElementById('barcode').value = '';
+            document.getElementById('barcode').focus();
+          }, 1);
+        });
+      })
     </script>
   </head>
   <body>
@@ -39,6 +53,7 @@
                   <label for="barcode">Barcode</label>
                 </div>
                 <button type="submit" class="btn btn-primary">Check</button>
+                <button id="reset" type="reset" class="btn btn-secondary">Reset</button>
               </div>
               <div id="barcodeHelp" class="form-text">Enter the barcode of the item you want to check.</div>
             </div>
