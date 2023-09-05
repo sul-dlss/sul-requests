@@ -653,5 +653,34 @@ if Settings.ils.bib_model == 'Folio::Instance'
         new(**attributes)
       end
     end
+
+    factory :single_holding_multiple_items, class: 'Folio::Instance' do
+      id { '1234' }
+      hrid { 'a1234' }
+      title { 'Multiple Items In Holding Title' }
+      contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
+      pub_date { '2018' }
+
+      format { ['Book'] }
+
+      items do
+        [
+          build(:item,
+                barcode: '12345678',
+                callnumber: 'ABC 123',
+                status: 'Page',
+                effective_location: build(:location, code: 'SAL3-STACKS')),
+          build(:item,
+                barcode: '12345679',
+                callnumber: 'ABC 123',
+                status: 'Page',
+                effective_location: build(:location, code: 'SAL3-STACKS'))
+        ]
+      end
+
+      initialize_with do
+        new(**attributes)
+      end
+    end
   end
 end
