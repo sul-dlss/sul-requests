@@ -16,6 +16,8 @@ class CircCheckController < ApplicationController
     raise "Barcode does not exist: #{params[:barcode]}" unless @item
   end
 
+  private
+
   def render_error(error)
     Honeybadger.notify(error)
     render 'error', locals: { error: }
