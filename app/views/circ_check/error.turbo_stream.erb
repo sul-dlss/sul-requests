@@ -6,6 +6,9 @@
         <strong class="me-auto">⛔ <%= error.message %></strong>
         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
       </div>
+        <audio autoplay preload="auto" src="<%= audio_path('denied_sound.mp3') %>">
+          Your browser does not support the audio element. 
+        </audio>
     </div>
 
     <script type="text/javascript">
