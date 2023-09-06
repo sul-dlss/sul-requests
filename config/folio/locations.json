@@ -6920,32 +6920,6 @@
     }
   },
   {
-    "id": "e0e30813-6c76-4876-8be0-fd9b2a90b7da",
-    "name": "Lane Digital: Periodical 0",
-    "code": "LANE-EPER",
-    "discoveryDisplayName": "Digital: Periodical",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
-    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
-    "details": {
-      "holdingsTypeName": "Electronic"
-    },
-    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
-    "servicePointIds": [
-      "0483c7bd-8e95-4c7b-9704-484b01879b02"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-08-10T17:46:59.492+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T17:46:59.492+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
-    }
-  },
-  {
     "id": "9d0737d0-ee3b-4474-8577-8df64eb1a9d0",
     "name": "Rumsey W7 Stacks Large",
     "code": "RUM-W7-STK-LG",
@@ -6995,6 +6969,32 @@
       "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
       "updatedDate": "2023-08-10T17:47:03.674+00:00",
       "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+    }
+  },
+  {
+    "id": "e0e30813-6c76-4876-8be0-fd9b2a90b7da",
+    "name": "Lane Digital: Periodical",
+    "code": "LANE-EPER",
+    "discoveryDisplayName": "Digital: Periodical",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
+    "libraryId": "5b2c8449-eed6-4bd3-bcef-af1e5a225400",
+    "details": {
+      "holdingsTypeName": "Electronic"
+    },
+    "primaryServicePoint": "0483c7bd-8e95-4c7b-9704-484b01879b02",
+    "servicePointIds": [
+      "0483c7bd-8e95-4c7b-9704-484b01879b02"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-10T17:46:59.492+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-09-05T21:04:23.893+00:00",
+      "updatedByUserId": "ff43bcb5-9f21-4ed3-a28e-d46fab8e382f"
     }
   },
   {
