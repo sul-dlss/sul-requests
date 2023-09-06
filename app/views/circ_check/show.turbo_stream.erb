@@ -1,0 +1,16 @@
+<turbo-stream action="prepend" target="results">
+  <template>
+    <% id = "dom#{@item['barcode']}#{Time.zone.now.to_i}" %>
+    <% if @item.dig('status', 'name') == 'Checked out' %>
+      <%= render 'toast_success', item: @item, id: id %>
+    <% else %>
+      <%= render 'toast_failure', item: @item, id: id %>
+    <% end %>
+
+    <script type="text/javascript">
+      bootstrap.Toast.getOrCreateInstance(document.getElementById('<%= id %>')).show();
+
+      document.currentScript.remove();
+    </script>
+  </template>
+</turbo-stream>

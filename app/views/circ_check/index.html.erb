@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Check Circulation</title>
+    <%= favicon_link_tag 'circcheck_favicon_io/favicon.ico' %>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="description" content="Stanford University Libraries' application check the circulation status of an item" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script type="module">
+      import hotwiredTurbo from 'https://cdn.skypack.dev/@hotwired/turbo';
+    </script>
+    <style>
+      .toast {
+        --bs-toast-max-width: 700px;
+        --bs-toast-header-bg: rgba(var(--bs-body-bg-rgb), 0.85);
+        --bs-toast-bg: rgba(var(--bs-body-bg-rgb), 0.85);
+      }
+    </style>
+    <script type="">
+      document.addEventListener('hidden.bs.toast', (e) => {
+        e.target.remove();
+      })
+
+      window.addEventListener('load', function() {
+        document.getElementById('reset').addEventListener('click', (e) => {
+          document.getElementById('results').innerHTML = '';
+          document.getElementById('barcode').focus();
+        })
+
+        document.getElementById('barcode').closest('form').addEventListener('submit', (e) => {
+          setTimeout(() => {
+            document.getElementById('barcode').value = '';
+            document.getElementById('barcode').focus();
+          }, 1);
+        });
+      })
+    </script>
+    <link rel="prefetch" as="audio" href="<%= audio_path('denied_sound.mp3') %>">
+  </head>
+  <body>
+    <header class="bg-dark py-3">
+      <div class="container-fluid"><h1 id="page-title" class="fs-4 text-white">SUL Circulation Check</h1></div>
+    </header>
+    <div class="container mt-4" role="main">
+      <turbo-frame id="circForm">
+        <%= form_with url: '/circ-check', html: { aria: { labelledby: '#page-title' } } do |form| %>
+          <div class="row g-3 align-items-start">
+            <div class="col-auto">
+              <div class="input-group">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="barcode" name="barcode" aria-describedby="barcodeHelp" placeholder="36105..." autofocus required>
+                  <label for="barcode">Barcode</label>
+                </div>
+                <button type="submit" class="btn btn-primary">Check</button>
+                <button id="reset" type="reset" class="btn btn-secondary">Reset</button>
+              </div>
+              <div id="barcodeHelp" class="form-text">Enter the barcode of the item you want to check.</div>
+            </div>
+          </div>
+        <% end %>
+        <div class="toast-container" id="results">
+        </div>
+      </turbo-frame>
+    </div>
+  </body>
+</html>

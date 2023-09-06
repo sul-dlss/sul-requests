@@ -20,6 +20,9 @@ Rails.application.routes.draw do
   get 'paging_schedule/:origin(/:destination)' => 'paging_schedule#show', as: :paging_schedule
   get 'paging_schedule/:origin/:destination/:date' => 'paging_schedule#open', as: :open_hours
 
+  get 'circ-check' => 'circ_check#index', as: :circ_check
+  post 'circ-check' => 'circ_check#show', as: :circ_check_item
+
   concern :creatable_via_get_redirect do
     collection do
       get 'create', as: :create

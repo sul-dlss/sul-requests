@@ -1,0 +1,14 @@
+<div id="<%= id %>" class="toast toast-failure text-bg-danger" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="6000000">
+  <div class="toast-header">
+    <strong class="me-auto">⛔ <%= @item.dig('barcode') %></strong>
+    <small class="text-body-secondary">Status: <%= @item.dig('status', 'name') %></small>
+    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
+  <div class="toast-body">
+    <p><%= @item.dig('instance', 'title') %></p>
+    <p>Call number: <%= @item.dig('effectiveCallNumberComponents', 'callNumber') %></p>
+  </div>
+  <audio autoplay preload="auto" src="<%= audio_path('denied_sound.mp3') %>">
+    Your browser does not support the audio element. 
+  </audio>
+</div>
