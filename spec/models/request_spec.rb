@@ -73,29 +73,6 @@ RSpec.describe Request do
         )
       end
     end
-
-    context 'when the item is scannable only' do
-      let(:create_request) do
-        described_class.create!(
-          item_id: '123456',
-          origin: 'SAL',
-          origin_location: 'SAL-TEMP'
-        )
-      end
-      let(:items) do
-        # This is just used for Searchworks integration
-        [double(:item, type: 'NONCIRC', code: 'SAL-TEMP', barcode: '12345678')]
-      end
-
-      it 'fails validation' do
-        pending('FOLIO does not have any non-circulating, scannable items') if Settings.ils.bib_model == 'Folio::Instance'
-
-        expect { create_request }.to raise_error(
-          ActiveRecord::RecordInvalid,
-          'Validation failed: This item is for in-library use and not available for Request & pickup.'
-        )
-      end
-    end
   end
 
   describe 'scopes' do

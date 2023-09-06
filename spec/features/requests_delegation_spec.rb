@@ -5,8 +5,6 @@ require 'rails_helper'
 RSpec.describe 'Requests Delegation' do
   describe 'non-requestable materials' do
     it 'is automatically delegated to the page request form' do
-      skip('All searchworks items are pageable') if Settings.ils.bib_model == 'SearchworksItem'
-
       stub_bib_data_json(build(:green_holdings))
 
       expect do
