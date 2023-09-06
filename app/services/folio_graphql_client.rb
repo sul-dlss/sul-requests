@@ -152,7 +152,15 @@ class FolioGraphqlClient
                   id
                   code
                   details {
+                    pageAeonSite
+                    pageMediationGroupKey
+                    pageServicePoints {
+                      id
+                      code
+                      name
+                    }
                     pagingSchedule
+                    scanServicePointCode
                   }
                 }
                 permanentLoanTypeId
@@ -162,7 +170,15 @@ class FolioGraphqlClient
                     id
                     code
                     details {
+                      pageAeonSite
+                      pageMediationGroupKey
+                      pageServicePoints {
+                        id
+                        code
+                        name
+                      }
                       pagingSchedule
+                      scanServicePointCode
                     }
                   }
                 }
