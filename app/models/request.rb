@@ -45,7 +45,7 @@ class Request < ActiveRecord::Base
   belongs_to :user, autosave: true, optional: true
   accepts_nested_attributes_for :user
 
-  class_attribute :bib_model_class, default: Settings.ils.bib_model&.constantize || SearchworksItem
+  class_attribute :bib_model_class, default: Settings.ils.bib_model.constantize
 
   before_create do
     self.item_title ||= bib_data&.title
