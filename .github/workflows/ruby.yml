@@ -24,11 +24,10 @@ jobs:
         key: ${{ runner.os }}-gems-202103-${{ hashFiles('**/Gemfile.lock') }}
         restore-keys: |
           ${{ runner.os }}-gems-202103
-    - name: Use Node.js 18.15
+    - name: Use Node.js 18.17
       uses: actions/setup-node@v3
       with:
-        # keep pinned to 18.15 until we upgrade past node 18 to avoid this error in CI: https://github.com/nodejs/node/issues/47563
-        node-version: '18.15'
+        node-version: '18.17'
     - name: Bundle install
       run: bundle config path vendor/bundle
     - name: Install dependencies
