@@ -1,7 +1,7 @@
 <turbo-stream action="prepend" target="results">
   <template>
     <% id = "dom#{@item['barcode']}#{Time.zone.now.to_i}" %>
-    <% if @item.dig('status', 'name') == 'Checked out' %>
+    <% if @item.dig('status', 'name') == 'Checked out' || @item.dig('status', 'name') == 'Aged to lost' %>
       <%= render 'toast_success', item: @item, id: id %>
     <% else %>
       <%= render 'toast_failure', item: @item, id: id %>

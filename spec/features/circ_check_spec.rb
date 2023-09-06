@@ -34,6 +34,30 @@ RSpec.describe 'Circ Check app', js: true do
     end
   end
 
+  context 'when the barcode is aged to lost' do
+    let(:response) do
+      {
+        data: {
+          items: [{
+            barcode: '1234567890',
+            status: { name: 'Aged to lost' },
+            dueDate: '2020-01-01T12:00:00Z'
+          }]
+        }
+      }
+    end
+
+    it 'shows a success toast' do
+      visit '/circ-check'
+
+      fill_in 'barcode', with: '1234567890'
+      click_button 'Check'
+
+      expect(page).to have_content('✅ 1234567890')
+      expect(page).to have_content('Due: Jan 1 2020')
+    end
+  end
+
   context 'when the barcode is not checked out' do
     let(:response) do
       {
