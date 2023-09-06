@@ -20,7 +20,7 @@ module Folio
 
     def scan_destination
       @scan_destination ||= begin
-        service_point = request.holdings.filter_map { |item| item.effective_location.details['scanServicePointCode'] }.first
+        service_point = request.holdings.filter_map { |item| item.permanent_location.details['scanServicePointCode'] }.first
 
         Settings.scan_destinations[service_point || :default] || Settings.scan_destinations.default
       end
@@ -34,15 +34,15 @@ module Folio
     end
 
     def mediateable?
-      request.holdings.any? { |item| item.effective_location.details['pageMediationGroupKey'] } || aeon_pageable?
+      request.holdings.any? { |item| item.permanent_location.details['pageMediationGroupKey'] } || aeon_pageable?
     end
 
     def aeon_pageable?
-      request.holdings.any? { |item| item.effective_location.details['pageAeonSite'] }
+      request.holdings.any? { |item| item.permanent_location.details['pageAeonSite'] }
     end
 
     def aeon_site
-      request.holdings.filter_map { |item| item.effective_location.details['pageAeonSite'] }.first || aeon_site_for_origin
+      request.holdings.filter_map { |item| item.permanent_location.details['pageAeonSite'] }.first || aeon_site_for_origin
     end
 
     # returns a true if any of the following is true
@@ -69,7 +69,7 @@ module Folio
 
     # Find service point which is default for this particular campus
     def default_pickup_destination
-      campus_code = request.holdings.first&.effective_location&.campus&.code
+      campus_code = request.holdings.first&.permanent_location&.campus&.code
       service_points = if campus_code
                          Folio::Types.service_points.where(is_default_for_campus: campus_code).map(&:code)
                        else
@@ -97,7 +97,7 @@ module Folio
     # Retrieve the service points associated with specific locations
     def location_restricted_service_point_codes
       request.holdings.flat_map do |item|
-        Array(item.effective_location.details['pageServicePoints']).pluck('code')
+        Array(item.permanent_location.details['pageServicePoints']).pluck('code')
       end.compact.uniq
     end
 

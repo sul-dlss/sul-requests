@@ -18,6 +18,7 @@ RSpec.describe RequestsHelper do
         build(:item,
               barcode: '3610512345678',
               callnumber: 'ABC 123',
+              permanent_location: build(:page_en_location),
               effective_location: build(:page_en_location))
       end
 

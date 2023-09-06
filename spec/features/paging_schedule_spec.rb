@@ -7,11 +7,11 @@ RSpec.describe 'Paging Schedule' do
     [
       double('item', callnumber: 'ABC 123', processing?: false, missing?: false, hold?: false, on_order?: false, hold_recallable?: false,
                      barcode: '123123124', checked_out?: false, status_class: 'active', status_text: 'Active', public_note: 'huh?',
-                     type: 'STKS', effective_location: build(:location),
+                     type: 'STKS', effective_location: build(:location), permanent_location: build(:location),
                      material_type: build(:book_material_type), loan_type: double(id: nil)),
       double('item', callnumber: 'ABC 321', processing?: false, missing?: false, hold?: false, on_order?: false, hold_recallable?: false,
                      barcode: '9928812', checked_out?: false, status_class: 'active', status_text: 'Active', public_note: 'huh?',
-                     type: 'STKS', effective_location: build(:location),
+                     type: 'STKS', effective_location: build(:location), permanent_location: build(:location),
                      material_type: build(:book_material_type), loan_type: double(id: nil))
     ]
   end
@@ -81,7 +81,7 @@ RSpec.describe 'Paging Schedule' do
       [
         double('item', callnumber: 'ABC 123', processing?: false, missing?: false, hold?: false, on_order?: false, hold_recallable?: false,
                        barcode: '123123124', checked_out?: false, status_class: 'active', status_text: 'Active', public_note: 'huh?',
-                       type: 'STKS', effective_location: build(:page_en_location),
+                       type: 'STKS', effective_location: build(:page_en_location), permanent_location: build(:page_en_location),
                        material_type: build(:book_material_type), loan_type: double(id: nil))
       ]
     end

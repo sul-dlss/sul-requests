@@ -11,13 +11,13 @@ RSpec.describe 'Mark As Complete', js: true do
     [
       double(:item, barcode: '34567890',
                     request_status:,
-                    permanent_location: 'ART-STACKS',
                     temporary_location: nil,
                     home_location: 'STACKS',
                     current_location: nil,
                     callnumber: 'ABC 123',
                     hold?: true,
                     effective_location: build(:mediated_location),
+                    permanent_location: build(:mediated_location),
                     material_type: build(:book_material_type),
                     loan_type: double(id: nil))
     ]
