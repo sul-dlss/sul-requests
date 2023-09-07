@@ -12,9 +12,12 @@ RSpec.describe 'Send Request Buttons' do
     ]
   end
 
+  let(:instance) do
+    instance_double(Folio::Instance, title: 'Test title', request_holdings: selected_items, items: [])
+  end
+
   before do
-    allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(double(:bib_data, title: 'Test title',
-                                                                                              request_holdings: selected_items))
+    allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(instance)
   end
 
   describe 'as a Stanford user', js: true do

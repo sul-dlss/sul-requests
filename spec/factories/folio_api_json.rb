@@ -1,686 +1,683 @@
 # frozen_string_literal: true
 
-if Settings.ils.bib_model == 'Folio::Instance'
+FactoryBot.define do
+  factory :location, class: 'Folio::Location' do
+    id { Folio::Types.locations.find_by(code:).id }
+    code { 'SAL3-STACKS' }
+    name { 'Location name' }
+    discovery_display_name { 'Discovery display name' }
+    campus { Folio::Campus.new(id: 'uuid', code: 'SUL') }
+    library { Folio::Library.new(id: 'uuid', code: 'LIB') }
+    library_id { 'uuid' }
+    primary_service_point_id { nil }
+    institution { Folio::Institution.new(id: 'uuid') }
+    details { {} }
 
-  FactoryBot.define do
-    factory :location, class: 'Folio::Location' do
-      id { Folio::Types.locations.find_by(code:).id }
-      code { 'SAL3-STACKS' }
-      name { 'Location name' }
-      discovery_display_name { 'Discovery display name' }
-      campus { Folio::Campus.new(id: 'uuid', code: 'SUL') }
-      library { Folio::Library.new(id: 'uuid', code: 'LIB') }
-      library_id { 'uuid' }
-      primary_service_point_id { nil }
-      institution { Folio::Institution.new(id: 'uuid') }
-      details { {} }
+    initialize_with { new(**attributes) }
+  end
 
-      initialize_with { new(**attributes) }
+  factory :mediated_location, parent: :location do
+    details { { 'pageMediationGroupKey' => 'ART', 'pageServicePoints' => [{ 'code' => 'ART' }] } }
+  end
+
+  factory :page_mp_location, parent: :location do
+    code { 'SAL3-PAGE-MP' }
+    details { { 'pageMediationGroupKey' => 'PAGE-MP', 'pageServicePoints' => [{ 'code' => 'EARTH-SCI' }] } }
+  end
+
+  factory :page_lp_location, parent: :location do
+    code { 'SAL3-PAGE-LP' }
+    details { { 'pageServicePoints' => [{ 'code' => 'MUSIC' }, { 'code' => 'MEDIA-CENTER' }] } }
+  end
+
+  factory :page_en_location, parent: :location do
+    code { 'SAL3-PAGE-EN' }
+    details { { 'pageServicePoints' => [{ 'code' => 'ENG' }] } }
+  end
+
+  factory :scannable_location, parent: :location do
+    code { 'SAL3-STACKS' }
+    details { { 'scanServicePointCode' => 'SAL3' } }
+  end
+
+  factory :sal_temp_location, parent: :location do
+    code { 'SAL-TEMP' }
+    details { { 'scanServicePointCode' => 'GREEN' } }
+  end
+
+  factory :mmstacks_location, parent: :location do
+    code { 'MEDIA-CAGE' }
+    library { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'MEDIA-CENTER') }
+  end
+
+  factory :law_location, parent: :location do
+    code { 'LAW-STACKS1' }
+    library { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'LAW') }
+    campus { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'LAW') }
+  end
+
+  factory :eal_sets_location, parent: :location do
+    code { 'EAL-SETS' }
+    library { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'EAST-ASIA') }
+  end
+
+  factory :green_location, parent: :location do
+    code { 'GRE-STACKS' }
+    library { Folio::Library.new(id: 'f6b5519e-88d9-413e-924d-9ed96255f72e', code: 'GREEN') }
+  end
+
+  factory :spec_coll_location, parent: :location do
+    code { 'SPEC-STACKS' }
+    details { { 'pageAeonSite' => 'SPECUA' } }
+  end
+
+  factory :book_material_type, class: 'Folio::MaterialType' do
+    id { '1a54b431-2e4f-452d-9cae-9cee66c9a892' }
+    name { 'book' }
+
+    initialize_with { new(**attributes) }
+  end
+
+  factory :multimedia_material_type, class: 'Folio::MaterialType' do
+    id { '794de86f-ecbc-45ad-b790-f30eb19797ec' }
+    name { 'multimedia' }
+
+    initialize_with { new(**attributes) }
+  end
+
+  factory :item, class: 'Folio::Item' do
+    barcode { '3610512345678' }
+    callnumber { 'ABC 123' }
+    status { 'Available' }
+    public_note { '' }
+    type { '' }
+    material_type { build(:book_material_type) }
+    loan_type { Folio::LoanType.new(id: '') }
+    effective_location { build(:location, code: 'GRE-STACKS') }
+    initialize_with { new(**attributes) }
+  end
+
+  factory :multiple_holdings, class: 'Folio::Instance' do
+    id { '1234' }
+    hrid { 'a1234' }
+    title { 'Item Title' }
+    format { 'Book' }
+    items do
+      [
+        build(:item,
+              barcode: '3610512345678',
+              callnumber: 'ABC 123',
+              effective_location: build(:location, code: 'SAL3-STACKS')),
+        build(:item,
+              barcode: '3610587654321',
+              callnumber: 'ABC 321',
+              effective_location: build(:location, code: 'SAL3-STACKS')),
+        build(:item,
+              barcode: '12345679',
+              callnumber: 'ABC 456',
+              effective_location: build(:location, code: 'SAL3-STACKS'))
+      ]
     end
 
-    factory :mediated_location, parent: :location do
-      details { { 'pageMediationGroupKey' => 'ART', 'pageServicePoints' => [{ 'code' => 'ART' }] } }
+    initialize_with do
+      new(**attributes)
+    end
+  end
+
+  factory :sal3_holding, class: 'Folio::Instance' do
+    id { '12345' }
+    hrid { 'a12345' }
+    title { 'Item Title' }
+    format { 'Book' }
+    items do
+      [
+        build(:item,
+              barcode: '87654321',
+              callnumber: 'ABC 87654321',
+              effective_location: build(:location, code: 'SAL3-STACKS'))
+      ]
     end
 
-    factory :page_mp_location, parent: :location do
-      code { 'SAL3-PAGE-MP' }
-      details { { 'pageMediationGroupKey' => 'PAGE-MP', 'pageServicePoints' => [{ 'code' => 'EARTH-SCI' }] } }
+    initialize_with do
+      new(**attributes)
+    end
+  end
+
+  factory :single_holding, class: 'Folio::Instance' do
+    id { '123' }
+
+    title { 'Item Title' }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              effective_location: build(:location, code: 'SAL3-STACKS'))
+      ]
     end
 
-    factory :page_lp_location, parent: :location do
-      code { 'SAL3-PAGE-LP' }
-      details { { 'pageServicePoints' => [{ 'code' => 'MUSIC' }, { 'code' => 'MEDIA-CENTER' }] } }
+    initialize_with do
+      new(**attributes)
+    end
+  end
+
+  factory :scannable_only_holdings, class: 'Folio::Instance' do
+    id { '1234' }
+    title { 'Item Title' }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              effective_location: build(:sal_temp_location),
+              type: 'NONCIRC')
+      ]
     end
 
-    factory :page_en_location, parent: :location do
-      code { 'SAL3-PAGE-EN' }
-      details { { 'pageServicePoints' => [{ 'code' => 'ENG' }] } }
+    initialize_with do
+      new(**attributes)
+    end
+  end
+
+  factory :special_collections_holdings, class: 'Folio::Instance' do
+    id { '1234' }
+    hrid { 'a1234' }
+    title { 'Special Collections Item Title' }
+    contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
+    pub_date { '2018' }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              status: 'Page',
+              effective_location: build(:spec_coll_location)),
+        build(:item,
+              barcode: '87654321',
+              callnumber: 'ABC 321',
+              status: 'Page',
+              effective_location: build(:spec_coll_location))
+      ]
     end
 
-    factory :scannable_location, parent: :location do
-      code { 'SAL3-STACKS' }
-      details { { 'scanServicePointCode' => 'SAL3' } }
+    initialize_with do
+      new(**attributes)
+    end
+  end
+
+  factory :special_collections_single_holding, class: 'Folio::Instance' do
+    id { '1234' }
+    hrid { 'a1234' }
+    title { 'Special Collections Item Title' }
+    contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
+    pub_date { '2018' }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              status: 'Page',
+              effective_location: build(:spec_coll_location))
+      ]
     end
 
-    factory :sal_temp_location, parent: :location do
-      code { 'SAL-TEMP' }
-      details { { 'scanServicePointCode' => 'GREEN' } }
+    initialize_with do
+      new(**attributes)
+    end
+  end
+
+  factory :special_collections_finding_aid_holdings, class: 'Folio::Instance' do
+    id { '1234' }
+    hrid { 'a1234' }
+    title { 'Special Collections Item Title' }
+    pub_date { '2018' }
+    contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
+    electronic_access { [{ 'uri' => 'http://www.oac.cdlib.org/findaid/ark:/12345/abcdefgh/', 'materialsSpecification' => 'Finding aid available online' }] }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              status: 'Page',
+              effective_location: build(:spec_coll_location))
+      ]
     end
 
-    factory :mmstacks_location, parent: :location do
-      code { 'MEDIA-CAGE' }
-      library { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'MEDIA-CENTER') }
+    initialize_with do
+      new(**attributes)
+    end
+  end
+
+  factory :sal3_holdings, class: 'Folio::Instance' do
+    id { '123456' }
+    title { 'SAL3 Item Title' }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              status: 'Page',
+              effective_location: build(:location, code: 'SAL3-STACKS')),
+        build(:item,
+              barcode: '87654321',
+              callnumber: 'ABC 321',
+              status: 'Page',
+              effective_location: build(:location, code: 'SAL3-STACKS'))
+      ]
     end
 
-    factory :law_location, parent: :location do
-      code { 'LAW-STACKS1' }
-      library { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'LAW') }
-      campus { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'LAW') }
+    initialize_with do
+      new(**attributes)
+    end
+  end
+
+  factory :scannable_holdings, class: 'Folio::Instance' do
+    id { '1234' }
+    title { 'SAL Item Title' }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              status: 'Page',
+              effective_location: build(:scannable_location, code: 'SAL3-STACKS')),
+        build(:item,
+              barcode: '87654321',
+              callnumber: 'ABC 321',
+              status: 'Page',
+              effective_location: build(:scannable_location, code: 'SAL3-STACKS'))
+      ]
     end
 
-    factory :eal_sets_location, parent: :location do
-      code { 'EAL-SETS' }
-      library { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'EAST-ASIA') }
+    initialize_with do
+      new(**attributes)
+    end
+  end
+
+  factory :green_holdings, class: 'Folio::Instance' do
+    id { '1234' }
+    title { 'Green Item Title' }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              status: 'Available',
+              effective_location: build(:green_location))
+      ]
     end
 
-    factory :green_location, parent: :location do
-      code { 'GRE-STACKS' }
-      library { Folio::Library.new(id: 'f6b5519e-88d9-413e-924d-9ed96255f72e', code: 'GREEN') }
+    initialize_with do
+      new(**attributes)
+    end
+  end
+
+  factory :page_lp_holdings, class: 'Folio::Instance' do
+    id { '1234' }
+    title { 'PAGE-LP Item Title' }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              status: 'Page',
+              effective_location: build(:page_lp_location))
+      ]
     end
 
-    factory :spec_coll_location, parent: :location do
-      code { 'SPEC-STACKS' }
-      details { { 'pageAeonSite' => 'SPECUA' } }
+    initialize_with do
+      new(**attributes)
+    end
+  end
+
+  factory :page_mp_holdings, class: 'Folio::Instance' do
+    id { '1234' }
+    title { 'PAGE-MP Item Title' }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              status: 'Page',
+              effective_location: build(:page_mp_location)),
+        build(:item,
+              barcode: '87654321',
+              callnumber: 'ABC 321',
+              status: 'Page',
+              effective_location: build(:page_mp_location))
+      ]
     end
 
-    factory :book_material_type, class: 'Folio::MaterialType' do
-      id { '1a54b431-2e4f-452d-9cae-9cee66c9a892' }
-      name { 'book' }
+    initialize_with do
+      new(**attributes)
+    end
+  end
 
-      initialize_with { new(**attributes) }
+  factory :many_holdings, class: 'Folio::Instance' do
+    id { '1234' }
+    title { 'Item title' }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              effective_location: build(:location, code: 'SAL3-STACKS')),
+        build(:item,
+              barcode: '23456789',
+              callnumber: 'ABC 456',
+              effective_location: build(:location, code: 'SAL3-STACKS')),
+        build(:item,
+              barcode: '34567890',
+              callnumber: 'ABC 789',
+              effective_location: build(:location, code: 'SAL3-STACKS')),
+        build(:item,
+              barcode: '45678901',
+              callnumber: 'ABC 012',
+              effective_location: build(:location, code: 'SAL3-STACKS'),
+              public_note: 'note for 45678901'),
+        build(:item,
+              barcode: '56789012',
+              callnumber: 'ABC 345',
+              effective_location: build(:location, code: 'SAL3-STACKS')),
+        build(:item,
+              barcode: '67890123',
+              callnumber: 'ABC 678',
+              effective_location: build(:location, code: 'SAL3-STACKS'))
+      ]
     end
 
-    factory :multimedia_material_type, class: 'Folio::MaterialType' do
-      id { '794de86f-ecbc-45ad-b790-f30eb19797ec' }
-      name { 'multimedia' }
+    initialize_with do
+      new(**attributes)
+    end
+  end
 
-      initialize_with { new(**attributes) }
+  factory :single_mediated_holding, class: 'Folio::Instance' do
+    id { '1234' }
+    title { 'Item Title' }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+              type: 'LCKSTK')
+      ]
     end
 
-    factory :item, class: 'Folio::Item' do
-      barcode { '3610512345678' }
-      callnumber { 'ABC 123' }
-      status { 'Available' }
-      public_note { '' }
-      type { '' }
-      material_type { build(:book_material_type) }
-      loan_type { Folio::LoanType.new(id: '') }
-      effective_location { build(:location, code: 'GRE-STACKS') }
-      initialize_with { new(**attributes) }
+    initialize_with do
+      new(**attributes)
+    end
+  end
+
+  factory :art_stacks_holding, class: 'Folio::Instance' do
+    id { '1234' }
+    title { 'Item Title' }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              effective_location: build(:location, code: 'ART-STACKS'),
+              type: 'STKS')
+      ]
     end
 
-    factory :multiple_holdings, class: 'Folio::Instance' do
-      id { '1234' }
-      hrid { 'a1234' }
-      title { 'Item Title' }
-      format { 'Book' }
-      items do
-        [
-          build(:item,
-                barcode: '3610512345678',
-                callnumber: 'ABC 123',
-                effective_location: build(:location, code: 'SAL3-STACKS')),
-          build(:item,
-                barcode: '3610587654321',
-                callnumber: 'ABC 321',
-                effective_location: build(:location, code: 'SAL3-STACKS')),
-          build(:item,
-                barcode: '12345679',
-                callnumber: 'ABC 456',
-                effective_location: build(:location, code: 'SAL3-STACKS'))
-        ]
-      end
+    initialize_with do
+      new(**attributes)
+    end
+  end
 
-      initialize_with do
-        new(**attributes)
-      end
+  factory :searchable_holdings, class: 'Folio::Instance' do
+    id { '1234' }
+    title { 'Item Title' }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+              type: 'LCKSTK'),
+        build(:item,
+              barcode: '23456789',
+              callnumber: 'ABC 456',
+              effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+              public_note: 'note for 23456789',
+              type: 'LCKSTK'),
+        build(:item,
+              barcode: '34567890',
+              callnumber: 'ABC 789',
+              effective_location: build(:mediated_location, code: 'ART-NEWBOOK'),
+              permanent_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+              type: 'LCKSTK'),
+        build(:item,
+              barcode: '45678901',
+              callnumber: 'ABC 012',
+              effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+              public_note: 'note for 45678901',
+              type: 'LCKSTK'),
+        build(:item,
+              barcode: '56789012',
+              callnumber: 'ABC 345',
+              effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+              type: 'LCKSTK'),
+        build(:item,
+              barcode: '67890123',
+              callnumber: 'ABC 678',
+              effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+              type: 'LCKSTK'),
+        build(:item,
+              barcode: '78901234',
+              callnumber: 'ABC 901',
+              effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+              type: 'LCKSTK'),
+        build(:item,
+              barcode: '89012345',
+              callnumber: 'ABC 234',
+              effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+              type: 'LCKSTK'),
+        build(:item,
+              barcode: '90123456',
+              callnumber: 'ABC 567',
+              effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+              type: 'LCKSTK'),
+        build(:item,
+              barcode: '01234567',
+              callnumber: 'ABC 890',
+              effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
+              type: 'LCKSTK')
+      ]
     end
 
-    factory :sal3_holding, class: 'Folio::Instance' do
-      id { '12345' }
-      hrid { 'a12345' }
-      title { 'Item Title' }
-      format { 'Book' }
-      items do
-        [
-          build(:item,
-                barcode: '87654321',
-                callnumber: 'ABC 87654321',
-                effective_location: build(:location, code: 'SAL3-STACKS'))
-        ]
-      end
+    initialize_with do
+      new(**attributes)
+    end
+  end
 
-      initialize_with do
-        new(**attributes)
-      end
+  factory :searchable_spec_holdings, class: 'Folio::Instance' do
+    id { '1234' }
+    title { 'Item Title' }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              effective_location: build(:spec_coll_location)),
+        build(:item,
+              barcode: '23456789',
+              callnumber: 'ABC 456',
+              effective_location: build(:spec_coll_location)),
+        build(:item,
+              barcode: '34567890',
+              callnumber: 'ABC 789',
+              effective_location: build(:spec_coll_location)),
+        build(:item,
+              barcode: '45678901',
+              callnumber: 'ABC 012',
+              effective_location: build(:spec_coll_location),
+              public_note: 'note for 45678901'),
+        build(:item,
+              barcode: '56789012',
+              callnumber: 'ABC 345',
+              effective_location: build(:spec_coll_location)),
+        build(:item,
+              barcode: '67890123',
+              callnumber: 'ABC 678',
+              effective_location: build(:spec_coll_location)),
+        build(:item,
+              barcode: '78901234',
+              callnumber: 'ABC 901',
+              effective_location: build(:spec_coll_location)),
+        build(:item,
+              barcode: '89012345',
+              callnumber: 'ABC 234',
+              effective_location: build(:spec_coll_location)),
+        build(:item,
+              barcode: '90123456',
+              callnumber: 'ABC 567',
+              effective_location: build(:spec_coll_location)),
+        build(:item,
+              barcode: '01234567',
+              callnumber: 'ABC 890',
+              effective_location: build(:spec_coll_location))
+      ]
     end
 
-    factory :single_holding, class: 'Folio::Instance' do
-      id { '123' }
+    initialize_with do
+      new(**attributes)
+    end
+  end
 
-      title { 'Item Title' }
+  factory :checkedout_holdings, class: 'Folio::Instance' do
+    id { '1234' }
+    title { 'Checked out item' }
 
-      format { ['Book'] }
+    format { ['Book'] }
 
-      items do
-        [
-          build(:item,
-                barcode: '12345678',
-                callnumber: 'ABC 123',
-                effective_location: build(:location, code: 'SAL3-STACKS'))
-        ]
-      end
-
-      initialize_with do
-        new(**attributes)
-      end
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              effective_location: build(:location, code: 'SAL3-STACKS')),
+        build(:item,
+              barcode: '87654321',
+              callnumber: 'ABC 321',
+              due_date: '2015-01-01T12:59:00.000+00:00',
+              status: 'Checked out',
+              effective_location: build(:location, code: 'SAL3-STACKS'))
+      ]
     end
 
-    factory :scannable_only_holdings, class: 'Folio::Instance' do
-      id { '1234' }
-      title { 'Item Title' }
+    initialize_with do
+      new(**attributes)
+    end
+  end
 
-      format { ['Book'] }
+  factory :sal3_stacks_searchworks_item, class: 'Folio::Instance' do
+    id { '1234' }
+    title { 'SAL3 stacks item' }
 
-      items do
-        [
-          build(:item,
-                barcode: '12345678',
-                callnumber: 'ABC 123',
-                effective_location: build(:sal_temp_location),
-                type: 'NONCIRC')
-        ]
-      end
+    format { ['Book'] }
 
-      initialize_with do
-        new(**attributes)
-      end
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              effective_location: build(:location, code: 'SAL3-STACKS'))
+      ]
     end
 
-    factory :special_collections_holdings, class: 'Folio::Instance' do
-      id { '1234' }
-      hrid { 'a1234' }
-      title { 'Special Collections Item Title' }
-      contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
-      pub_date { '2018' }
+    initialize_with do
+      new(**attributes)
+    end
+  end
 
-      format { ['Book'] }
+  factory :on_order_instance, class: 'Folio::Instance' do
+    id { 'a43e597a-d4b4-50ec-ad16-7fd49920831a' }
 
-      items do
-        [
-          build(:item,
-                barcode: '12345678',
-                callnumber: 'ABC 123',
-                status: 'Page',
-                effective_location: build(:spec_coll_location)),
-          build(:item,
-                barcode: '87654321',
-                callnumber: 'ABC 321',
-                status: 'Page',
-                effective_location: build(:spec_coll_location))
-        ]
-      end
+    title { 'HAZARDOUS MATERIALS : MANAGING THE INCIDENT.' }
 
-      initialize_with do
-        new(**attributes)
-      end
+    format { 'unspecified' }
+
+    items { [] }
+
+    initialize_with do
+      new(**attributes)
+    end
+  end
+
+  factory :single_holding_multiple_items, class: 'Folio::Instance' do
+    id { '1234' }
+    hrid { 'a1234' }
+    title { 'Multiple Items In Holding Title' }
+    contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
+    pub_date { '2018' }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              status: 'Page',
+              effective_location: build(:location, code: 'SAL3-STACKS')),
+        build(:item,
+              barcode: '12345679',
+              callnumber: 'ABC 123',
+              status: 'Page',
+              effective_location: build(:location, code: 'SAL3-STACKS'))
+      ]
     end
 
-    factory :special_collections_single_holding, class: 'Folio::Instance' do
-      id { '1234' }
-      hrid { 'a1234' }
-      title { 'Special Collections Item Title' }
-      contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
-      pub_date { '2018' }
-
-      format { ['Book'] }
-
-      items do
-        [
-          build(:item,
-                barcode: '12345678',
-                callnumber: 'ABC 123',
-                status: 'Page',
-                effective_location: build(:spec_coll_location))
-        ]
-      end
-
-      initialize_with do
-        new(**attributes)
-      end
-    end
-
-    factory :special_collections_finding_aid_holdings, class: 'Folio::Instance' do
-      id { '1234' }
-      hrid { 'a1234' }
-      title { 'Special Collections Item Title' }
-      pub_date { '2018' }
-      contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
-      electronic_access { [{ 'uri' => 'http://www.oac.cdlib.org/findaid/ark:/12345/abcdefgh/', 'materialsSpecification' => 'Finding aid available online' }] }
-
-      format { ['Book'] }
-
-      items do
-        [
-          build(:item,
-                barcode: '12345678',
-                callnumber: 'ABC 123',
-                status: 'Page',
-                effective_location: build(:spec_coll_location))
-        ]
-      end
-
-      initialize_with do
-        new(**attributes)
-      end
-    end
-
-    factory :sal3_holdings, class: 'Folio::Instance' do
-      id { '123456' }
-      title { 'SAL3 Item Title' }
-
-      format { ['Book'] }
-
-      items do
-        [
-          build(:item,
-                barcode: '12345678',
-                callnumber: 'ABC 123',
-                status: 'Page',
-                effective_location: build(:location, code: 'SAL3-STACKS')),
-          build(:item,
-                barcode: '87654321',
-                callnumber: 'ABC 321',
-                status: 'Page',
-                effective_location: build(:location, code: 'SAL3-STACKS'))
-        ]
-      end
-
-      initialize_with do
-        new(**attributes)
-      end
-    end
-
-    factory :scannable_holdings, class: 'Folio::Instance' do
-      id { '1234' }
-      title { 'SAL Item Title' }
-
-      format { ['Book'] }
-
-      items do
-        [
-          build(:item,
-                barcode: '12345678',
-                callnumber: 'ABC 123',
-                status: 'Page',
-                effective_location: build(:scannable_location, code: 'SAL3-STACKS')),
-          build(:item,
-                barcode: '87654321',
-                callnumber: 'ABC 321',
-                status: 'Page',
-                effective_location: build(:scannable_location, code: 'SAL3-STACKS'))
-        ]
-      end
-
-      initialize_with do
-        new(**attributes)
-      end
-    end
-
-    factory :green_holdings, class: 'Folio::Instance' do
-      id { '1234' }
-      title { 'Green Item Title' }
-
-      format { ['Book'] }
-
-      items do
-        [
-          build(:item,
-                barcode: '12345678',
-                callnumber: 'ABC 123',
-                status: 'Available',
-                effective_location: build(:green_location))
-        ]
-      end
-
-      initialize_with do
-        new(**attributes)
-      end
-    end
-
-    factory :page_lp_holdings, class: 'Folio::Instance' do
-      id { '1234' }
-      title { 'PAGE-LP Item Title' }
-
-      format { ['Book'] }
-
-      items do
-        [
-          build(:item,
-                barcode: '12345678',
-                callnumber: 'ABC 123',
-                status: 'Page',
-                effective_location: build(:page_lp_location))
-        ]
-      end
-
-      initialize_with do
-        new(**attributes)
-      end
-    end
-
-    factory :page_mp_holdings, class: 'Folio::Instance' do
-      id { '1234' }
-      title { 'PAGE-MP Item Title' }
-
-      format { ['Book'] }
-
-      items do
-        [
-          build(:item,
-                barcode: '12345678',
-                callnumber: 'ABC 123',
-                status: 'Page',
-                effective_location: build(:page_mp_location)),
-          build(:item,
-                barcode: '87654321',
-                callnumber: 'ABC 321',
-                status: 'Page',
-                effective_location: build(:page_mp_location))
-        ]
-      end
-
-      initialize_with do
-        new(**attributes)
-      end
-    end
-
-    factory :many_holdings, class: 'Folio::Instance' do
-      id { '1234' }
-      title { 'Item title' }
-
-      format { ['Book'] }
-
-      items do
-        [
-          build(:item,
-                barcode: '12345678',
-                callnumber: 'ABC 123',
-                effective_location: build(:location, code: 'SAL3-STACKS')),
-          build(:item,
-                barcode: '23456789',
-                callnumber: 'ABC 456',
-                effective_location: build(:location, code: 'SAL3-STACKS')),
-          build(:item,
-                barcode: '34567890',
-                callnumber: 'ABC 789',
-                effective_location: build(:location, code: 'SAL3-STACKS')),
-          build(:item,
-                barcode: '45678901',
-                callnumber: 'ABC 012',
-                effective_location: build(:location, code: 'SAL3-STACKS'),
-                public_note: 'note for 45678901'),
-          build(:item,
-                barcode: '56789012',
-                callnumber: 'ABC 345',
-                effective_location: build(:location, code: 'SAL3-STACKS')),
-          build(:item,
-                barcode: '67890123',
-                callnumber: 'ABC 678',
-                effective_location: build(:location, code: 'SAL3-STACKS'))
-        ]
-      end
-
-      initialize_with do
-        new(**attributes)
-      end
-    end
-
-    factory :single_mediated_holding, class: 'Folio::Instance' do
-      id { '1234' }
-      title { 'Item Title' }
-
-      format { ['Book'] }
-
-      items do
-        [
-          build(:item,
-                barcode: '12345678',
-                callnumber: 'ABC 123',
-                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
-                type: 'LCKSTK')
-        ]
-      end
-
-      initialize_with do
-        new(**attributes)
-      end
-    end
-
-    factory :art_stacks_holding, class: 'Folio::Instance' do
-      id { '1234' }
-      title { 'Item Title' }
-
-      format { ['Book'] }
-
-      items do
-        [
-          build(:item,
-                barcode: '12345678',
-                callnumber: 'ABC 123',
-                effective_location: build(:location, code: 'ART-STACKS'),
-                type: 'STKS')
-        ]
-      end
-
-      initialize_with do
-        new(**attributes)
-      end
-    end
-
-    factory :searchable_holdings, class: 'Folio::Instance' do
-      id { '1234' }
-      title { 'Item Title' }
-
-      format { ['Book'] }
-
-      items do
-        [
-          build(:item,
-                barcode: '12345678',
-                callnumber: 'ABC 123',
-                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
-                type: 'LCKSTK'),
-          build(:item,
-                barcode: '23456789',
-                callnumber: 'ABC 456',
-                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
-                public_note: 'note for 23456789',
-                type: 'LCKSTK'),
-          build(:item,
-                barcode: '34567890',
-                callnumber: 'ABC 789',
-                effective_location: build(:mediated_location, code: 'ART-NEWBOOK'),
-                permanent_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
-                type: 'LCKSTK'),
-          build(:item,
-                barcode: '45678901',
-                callnumber: 'ABC 012',
-                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
-                public_note: 'note for 45678901',
-                type: 'LCKSTK'),
-          build(:item,
-                barcode: '56789012',
-                callnumber: 'ABC 345',
-                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
-                type: 'LCKSTK'),
-          build(:item,
-                barcode: '67890123',
-                callnumber: 'ABC 678',
-                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
-                type: 'LCKSTK'),
-          build(:item,
-                barcode: '78901234',
-                callnumber: 'ABC 901',
-                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
-                type: 'LCKSTK'),
-          build(:item,
-                barcode: '89012345',
-                callnumber: 'ABC 234',
-                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
-                type: 'LCKSTK'),
-          build(:item,
-                barcode: '90123456',
-                callnumber: 'ABC 567',
-                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
-                type: 'LCKSTK'),
-          build(:item,
-                barcode: '01234567',
-                callnumber: 'ABC 890',
-                effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
-                type: 'LCKSTK')
-        ]
-      end
-
-      initialize_with do
-        new(**attributes)
-      end
-    end
-
-    factory :searchable_spec_holdings, class: 'Folio::Instance' do
-      id { '1234' }
-      title { 'Item Title' }
-
-      format { ['Book'] }
-
-      items do
-        [
-          build(:item,
-                barcode: '12345678',
-                callnumber: 'ABC 123',
-                effective_location: build(:spec_coll_location)),
-          build(:item,
-                barcode: '23456789',
-                callnumber: 'ABC 456',
-                effective_location: build(:spec_coll_location)),
-          build(:item,
-                barcode: '34567890',
-                callnumber: 'ABC 789',
-                effective_location: build(:spec_coll_location)),
-          build(:item,
-                barcode: '45678901',
-                callnumber: 'ABC 012',
-                effective_location: build(:spec_coll_location),
-                public_note: 'note for 45678901'),
-          build(:item,
-                barcode: '56789012',
-                callnumber: 'ABC 345',
-                effective_location: build(:spec_coll_location)),
-          build(:item,
-                barcode: '67890123',
-                callnumber: 'ABC 678',
-                effective_location: build(:spec_coll_location)),
-          build(:item,
-                barcode: '78901234',
-                callnumber: 'ABC 901',
-                effective_location: build(:spec_coll_location)),
-          build(:item,
-                barcode: '89012345',
-                callnumber: 'ABC 234',
-                effective_location: build(:spec_coll_location)),
-          build(:item,
-                barcode: '90123456',
-                callnumber: 'ABC 567',
-                effective_location: build(:spec_coll_location)),
-          build(:item,
-                barcode: '01234567',
-                callnumber: 'ABC 890',
-                effective_location: build(:spec_coll_location))
-        ]
-      end
-
-      initialize_with do
-        new(**attributes)
-      end
-    end
-
-    factory :checkedout_holdings, class: 'Folio::Instance' do
-      id { '1234' }
-      title { 'Checked out item' }
-
-      format { ['Book'] }
-
-      items do
-        [
-          build(:item,
-                barcode: '12345678',
-                callnumber: 'ABC 123',
-                effective_location: build(:location, code: 'SAL3-STACKS')),
-          build(:item,
-                barcode: '87654321',
-                callnumber: 'ABC 321',
-                due_date: '2015-01-01T12:59:00.000+00:00',
-                status: 'Checked out',
-                effective_location: build(:location, code: 'SAL3-STACKS'))
-        ]
-      end
-
-      initialize_with do
-        new(**attributes)
-      end
-    end
-
-    factory :sal3_stacks_searchworks_item, class: 'Folio::Instance' do
-      id { '1234' }
-      title { 'SAL3 stacks item' }
-
-      format { ['Book'] }
-
-      items do
-        [
-          build(:item,
-                barcode: '12345678',
-                callnumber: 'ABC 123',
-                effective_location: build(:location, code: 'SAL3-STACKS'))
-        ]
-      end
-
-      initialize_with do
-        new(**attributes)
-      end
-    end
-
-    factory :on_order_instance, class: 'Folio::Instance' do
-      id { 'a43e597a-d4b4-50ec-ad16-7fd49920831a' }
-
-      title { 'HAZARDOUS MATERIALS : MANAGING THE INCIDENT.' }
-
-      format { 'unspecified' }
-
-      items { [] }
-
-      initialize_with do
-        new(**attributes)
-      end
-    end
-
-    factory :single_holding_multiple_items, class: 'Folio::Instance' do
-      id { '1234' }
-      hrid { 'a1234' }
-      title { 'Multiple Items In Holding Title' }
-      contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
-      pub_date { '2018' }
-
-      format { ['Book'] }
-
-      items do
-        [
-          build(:item,
-                barcode: '12345678',
-                callnumber: 'ABC 123',
-                status: 'Page',
-                effective_location: build(:location, code: 'SAL3-STACKS')),
-          build(:item,
-                barcode: '12345679',
-                callnumber: 'ABC 123',
-                status: 'Page',
-                effective_location: build(:location, code: 'SAL3-STACKS'))
-        ]
-      end
-
-      initialize_with do
-        new(**attributes)
-      end
+    initialize_with do
+      new(**attributes)
     end
   end
 end

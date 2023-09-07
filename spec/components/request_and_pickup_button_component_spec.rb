@@ -10,7 +10,7 @@ RSpec.describe RequestAndPickupButtonComponent, type: :component, unless: Settin
   end
 
   let(:component) { described_class.new(current_request: build(:request)) }
-  let(:destination) { Settings.ils.bib_model == 'Folio::Instance' ? 'GREEN-LOAN' : 'GREEN' }
+  let(:destination) { 'GREEN-LOAN' }
 
   it 'renders the component' do
     expect(rendered).to have_link 'Request & pickup', href: '/pages/new'

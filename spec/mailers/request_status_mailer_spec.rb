@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe RequestStatusMailer do
   describe '#request_status' do
     let(:user) { build(:non_sso_user) }
-    let(:destination) { Settings.ils.bib_model == 'Folio::Instance' ? 'GREEN-LOAN' : 'GREEN' }
+    let(:destination) { 'GREEN-LOAN' }
     let(:request) { build_stubbed(:page, destination:, user:) }
     let(:mailer_method) { :request_status_for_page }
     let(:mail) { described_class.send(mailer_method, request) }

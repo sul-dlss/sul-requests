@@ -4,11 +4,11 @@ require 'rails_helper'
 
 RSpec.describe Request do
   let(:items) { [] }
-  let(:bib_data) { double(:bib_data, title: 'Test title', request_holdings: items) }
-  let(:default_destination) { Settings.ils.bib_model == 'Folio::Instance' ? 'GREEN-LOAN' : 'GREEN' }
+  let(:instance) { instance_double(Folio::Instance, title: 'Test title', request_holdings: items, items: []) }
+  let(:default_destination) { 'GREEN-LOAN' }
 
   before do
-    allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(bib_data)
+    allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(instance)
   end
 
   describe 'validations' do
@@ -166,13 +166,10 @@ RSpec.describe Request do
     end
 
     context 'when the folio instance' do
-      let(:bib_data) { Folio::Instance.new(id: '12223') } # TODO: this can just use the double after the folio migration
+      let(:instance) { instance_double(Folio::Instance, items:) }
+
       let(:items) do
         [instance_double(Folio::Item, permanent_location:)]
-      end
-
-      before do
-        allow(bib_data).to receive(:items).and_return(items)
       end
 
       context 'with pagingSchedule set' do
@@ -448,7 +445,7 @@ RSpec.describe Request do
       expect(create(:request).item_title).to eq 'Title for Request 123456'
     end
 
-    it 'returns the item title from the fetched searchworks record' do
+    it 'returns the item title from the fetched Folio record' do
       allow_any_instance_of(described_class).to receive(:bib_data)
         .and_return(instance_double(described_class.bib_model_class, title: 'A fetched title'))
       expect(described_class.new.item_title).to eq 'A fetched title'

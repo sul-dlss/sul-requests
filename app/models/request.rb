@@ -52,8 +52,6 @@ class Request < ActiveRecord::Base
   end
 
   def paging_origin_library
-    return origin unless bib_data.is_a? Folio::Instance # TODO: remove this line post Folio migration
-
     # items are already limited to a single permanent location, so we can just grab the first one
     bib_data.items.first&.permanent_location&.details&.dig('pagingSchedule') || origin
   end

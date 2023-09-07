@@ -49,7 +49,7 @@ RSpec.describe 'Requests Delegation' do
 
   describe 'scannable only material' do
     it 'disables the link to page the item' do
-      pending('FOLIO does not have any non-circulating, scannable items') if Settings.ils.bib_model == 'Folio::Instance'
+      pending('FOLIO does not have any non-circulating, scannable items')
       stub_bib_data_json(build(:scannable_only_holdings))
       visit new_request_path(item_id: '12345', origin: 'SAL', origin_location: 'SAL-TEMP')
 
