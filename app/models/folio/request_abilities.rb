@@ -42,7 +42,7 @@ module Folio
     end
 
     def aeon_site
-      request.holdings.filter_map { |item| item.permanent_location.details['pageAeonSite'] }.first || aeon_site_for_origin
+      request.holdings.filter_map { |item| item.permanent_location.details['pageAeonSite'] }.first
     end
 
     # returns a true if any of the following is true
