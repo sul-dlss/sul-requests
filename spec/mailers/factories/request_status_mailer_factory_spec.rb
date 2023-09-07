@@ -19,7 +19,7 @@ RSpec.describe RequestStatusMailerFactory do
       let(:request) { create(:page_with_holdings, symphony_response_data: { usererr_code: 'U003' }) }
 
       it 'sends the correct email based on the user error code' do
-        expect(mailer.body.to_s).to include 'We were unable to process your request because your status is BLOCKED'
+        expect(mailer.body.to_s).to include 'Your library account is currently BLOCKED.'
       end
     end
 
