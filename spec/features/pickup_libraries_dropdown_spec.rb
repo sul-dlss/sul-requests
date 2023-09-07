@@ -3,11 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe 'Pickup Libraries Dropdown' do
-  let(:is_folio) { (Settings.ils.bib_model == 'Folio::Instance') }
-  let(:folio_pickup_lib_total) { Folio::Types.service_points.where(is_default_pickup: true).length }
-  let(:standard_pickup_lib_total) { is_folio ? folio_pickup_lib_total : Settings.default_pickup_libraries.count }
-  let(:media_library) { is_folio ? 'MEDIA-CENTER' : 'MEDIA-MTXT' }
-  let(:media_label) { is_folio ? 'Media Center' : 'Media Microtext' }
+  let(:standard_pickup_lib_total) { Folio::Types.service_points.where(is_default_pickup: true).length }
+  let(:media_library) { 'MEDIA-CENTER' }
+  let(:media_label) { 'Media Center' }
 
   let(:item) do
     build(:item,
@@ -16,9 +14,10 @@ RSpec.describe 'Pickup Libraries Dropdown' do
           effective_location: build(:location, code: 'SAL3-STACKS'))
   end
 
+  let(:instance) { instance_double(Folio::Instance, title: 'Test title', request_holdings: [item], items: []) }
+
   before do
-    allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(double(:bib_data, title: 'Test title',
-                                                                                              request_holdings: [item]))
+    allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(instance)
   end
 
   describe 'for multiple libraries' do

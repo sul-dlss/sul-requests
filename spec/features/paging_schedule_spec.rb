@@ -16,9 +16,10 @@ RSpec.describe 'Paging Schedule' do
     ]
   end
 
+  let(:instance) { instance_double(Folio::Instance, title: 'Test title', request_holdings: all_items, items: []) }
+
   before do
-    allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(double(:bib_data, title: 'Test title',
-                                                                                              request_holdings: all_items))
+    allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(instance)
     stub_current_user(create(:superadmin_user))
   end
 

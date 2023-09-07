@@ -55,7 +55,7 @@ RSpec.describe Page do
 
   describe 'library id validation' do
     let(:user) { create(:library_id_user) }
-    let(:destination) { Settings.ils.bib_model == 'Folio::Instance' ? 'GREEN-LOAN' : 'GREEN' }
+    let(:destination) { 'GREEN-LOAN' }
 
     let(:subject) do
       described_class.create(
