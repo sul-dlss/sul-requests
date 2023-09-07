@@ -29,8 +29,8 @@ class MediationMailer < ApplicationMailer
   end
 
   def contact_info
-    Settings.locations[@request.origin_location]&.contact_info ||
-      Settings.libraries[@request.origin]&.contact_info ||
+    Settings.locations[@request.location]&.contact_info ||
+      Settings.libraries[@request.request_location.library]&.contact_info ||
       Settings.libraries['default'].contact_info
   end
 end

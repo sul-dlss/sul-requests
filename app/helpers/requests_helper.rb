@@ -11,7 +11,9 @@ module RequestsHelper
   end
 
   # rubocop:disable Metrics/PerceivedComplexity
+  # rubocop:disable Metrics/CyclomaticComplexity
   # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/AbcSize
   def i18n_location_title_key
     holding = current_request.holdings.first
     if holding
@@ -23,18 +25,24 @@ module RequestsHelper
         'MISSING'
       elsif holding.processing?
         'INPROCESS'
+      elsif current_request.location.present?
+        current_request.location.presence
       else
-        current_request.origin_location.presence
+        current_request.origin_location.presence # Deprecated path
       end
+    elsif current_request.location.present?
+      current_request.location.presence
     elsif (origin_location = current_request.origin_location).present?
-      origin_location
+      origin_location # Deprecated path
     end
   end
   # rubocop:enable Metrics/MethodLength
   # rubocop:enable Metrics/PerceivedComplexity
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/AbcSize
 
   def i18n_library_title_key
-    current_request.origin
+    FolioLocationMap.library_code(location: current_request.location)
   end
 
   def label_for_item_selector_holding(holding)

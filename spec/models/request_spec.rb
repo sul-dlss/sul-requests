@@ -31,8 +31,7 @@ RSpec.describe Request do
       let(:create_request) do
         described_class.create!(
           item_id: '1234',
-          origin: 'SAL3',
-          origin_location: 'STACKS',
+          location: 'SAL3-STACKS',
           barcodes:
         )
       end
@@ -159,7 +158,7 @@ RSpec.describe Request do
   describe '#paging_origin_library' do
     subject { request.paging_origin_library }
 
-    let(:request) { described_class.new(origin: 'GREEN') }
+    let(:request) { described_class.new(location: 'GRE-STACKS') }
 
     context 'when not a folio instance' do
       it { is_expected.to eq 'GREEN' }
@@ -186,9 +185,9 @@ RSpec.describe Request do
     end
   end
 
-  describe '#library_location' do
-    it 'returns a library_location object' do
-      expect(subject.library_location).to be_a LibraryLocation
+  describe '#request_location' do
+    it 'returns a request_location object' do
+      expect(subject.request_location).to be_a RequestLocation
     end
   end
 
@@ -455,7 +454,7 @@ RSpec.describe Request do
   describe '#delegate_request!' do
     before do
       stub_bib_data_json(build(:multiple_holdings))
-      subject.update(origin: 'SAL3', origin_location: 'STACKS')
+      subject.location = 'SAL3-STACKS'
     end
 
     it 'delegates to a mediated page if it is mediateable' do
@@ -601,7 +600,7 @@ RSpec.describe Request do
     end
 
     it 'returns the subset of origin codes that are configured and mediated pages that exist in the database' do
-      expect(described_class.mediateable_origins.to_h.keys).to eq %w(ART PAGE-MP)
+      expect(described_class.mediateable_origins.to_h.keys).to eq %w(ART SAL3-PAGE-MP)
     end
   end
 

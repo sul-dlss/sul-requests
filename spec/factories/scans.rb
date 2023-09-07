@@ -3,8 +3,7 @@
 FactoryBot.define do
   factory :scan do
     item_id { '12345' }
-    origin { 'SAL3' }
-    origin_location { 'STACKS' }
+    location { 'SAL3-STACKS' }
     section_title { 'Section Title for Scan 12345' }
 
     trait :with_item_title do

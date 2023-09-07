@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Folio::Holdings do
   subject(:holdings) { described_class.new(request, items) }
 
-  let(:request) { HoldRecall.new(barcode: '36105237669143', item_id: '14820051', origin: 'MUSIC', origin_location: 'RECORDINGS') }
+  let(:request) { HoldRecall.new(barcode: '36105237669143', item_id: '14820051', location: 'MUS-RECORDINGS') }
   let(:items) { [item] }
   let(:item) do
     Folio::Item.new(barcode: '123',

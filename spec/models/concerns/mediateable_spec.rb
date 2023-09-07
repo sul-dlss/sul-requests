@@ -10,26 +10,33 @@ RSpec.describe 'Mediateable' do
       expect(subject).not_to be_mediateable
     end
 
-    it 'returns true if the item is in SAL3 and PAGE-MP location' do
-      subject.origin = 'SAL3'
-      subject.origin_location = 'PAGE-MP'
+    it 'returns true if the item is in SAL3-PAGE-MP location' do
+      subject.location = 'SAL3-PAGE-MP'
       subject.bib_data = build(:page_mp_holdings)
       expect(subject).to be_mediateable
     end
 
     describe 'ART Locked Stacks' do
-      it 'returns true if the item is in a locked stacks location within ART' do
-        subject.origin = 'ART'
-        subject.origin_location = 'ARTLCKL'
-        subject.bib_data = build(:single_mediated_holding)
-        expect(subject).to be_mediateable
+      context 'when the item is in a locked stacks location' do
+        before do
+          subject.location = 'ART-LOCKED-LARGE'
+          subject.bib_data = build(:single_mediated_holding)
+        end
+
+        it 'returns true' do
+          expect(subject).to be_mediateable
+        end
       end
 
-      it 'returns false if the item is in a non-locked stacks location within ART' do
-        subject.origin = 'ART'
-        subject.origin_location = 'STACKS'
-        subject.bib_data = build(:art_stacks_holding)
-        expect(subject).not_to be_mediateable
+      context 'when the item is in a non-locked stacks location' do
+        before do
+          subject.location = 'ART-STACKS'
+          subject.bib_data = build(:art_stacks_holding)
+        end
+
+        it 'returns false' do
+          expect(subject).not_to be_mediateable
+        end
       end
     end
   end

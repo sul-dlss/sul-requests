@@ -31,7 +31,7 @@ RSpec.describe ScansController do
 
     it 'raises an error when an unscannable item is requested' do
       expect do
-        get :new, params: { item_id: '12345', origin: 'SAL1/2', origin_location: 'STACKS' }
+        get :new, params: { item_id: '12345', location: 'SAL-STACKS' }
       end.to raise_error(ScansController::UnscannableItemError)
     end
   end
@@ -46,7 +46,7 @@ RSpec.describe ScansController do
           login_path(
             referrer: interstitial_path(
               redirect_to: create_scans_url(
-                request: { item_id: '12345', origin: 'GREEN', origin_location: 'STACKS' }
+                request: { item_id: '12345', origin: 'GREEN', origin_location: 'STACKS', location: 'GRE-STACKS' }
               )
             )
           )

@@ -216,11 +216,11 @@ RSpec.describe Ability do
     let(:user) { create(:art_origin_admin_user) }
 
     before do
-      request.origin = 'ART'
-      hold_recall.origin = 'ART'
-      mediated_page.origin = 'ART'
-      page.origin = 'ART'
-      scan.origin = 'ART'
+      request.location = 'ART-LOCKED-SMALL'
+      hold_recall.location = 'ART-LOCKED-SMALL'
+      mediated_page.location = 'ART-LOCKED-SMALL'
+      page.location = 'ART-LOCKED-SMALL'
+      scan.location = 'ART-LOCKED-SMALL'
     end
 
     # can manage libraries that they are an admin of
@@ -243,11 +243,11 @@ RSpec.describe Ability do
     let(:user) { create(:page_mp_origin_admin_user) }
 
     before do
-      request.origin_location = 'PAGE-MP'
-      hold_recall.origin_location = 'PAGE-MP'
-      mediated_page.origin_location = 'PAGE-MP'
-      page.origin_location = 'PAGE-MP'
-      scan.origin_location = 'PAGE-MP'
+      request.location = 'SAL3-PAGE-MP'
+      hold_recall.location = 'SAL3-PAGE-MP'
+      mediated_page.location = 'SAL3-PAGE-MP'
+      page.location = 'SAL3-PAGE-MP'
+      scan.location = 'SAL3-PAGE-MP'
     end
 
     # can manage locations that they are an admin of

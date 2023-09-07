@@ -6,7 +6,7 @@ RSpec.describe MediationMailer do
   describe 'mediator_notification' do
     let(:user) { build(:non_sso_user) }
     let(:request) { create(:mediated_page, user:) }
-    let(:mediator_contact_info) { { request.origin => { email: 'someone@example.com' } } }
+    let(:mediator_contact_info) { { 'ART' => { email: 'someone@example.com' } } }
     before do
       allow(Rails.application.config).to receive(:mediator_contact_info).and_return(mediator_contact_info)
     end

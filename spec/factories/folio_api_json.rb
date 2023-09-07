@@ -359,7 +359,7 @@ FactoryBot.define do
 
   factory :page_mp_holdings, class: 'Folio::Instance' do
     id { '1234' }
-    title { 'PAGE-MP Item Title' }
+    title { 'SAL3-PAGE-MP Item Title' }
 
     format { ['Book'] }
 

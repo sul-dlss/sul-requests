@@ -30,6 +30,7 @@ class Request < ActiveRecord::Base
            :default_pickup_destination, :pickup_destinations, :scan_destination, :aeon_site, to: :request_abilities
 
   delegate :finding_aid, :finding_aid?, to: :bib_data, allow_nil: true
+  delegate :library_settings, to: :request_location
 
   # Serialized data hash
   store :data, accessors: [
@@ -51,17 +52,22 @@ class Request < ActiveRecord::Base
     self.item_title ||= bib_data&.title
   end
 
-  def paging_origin_library
-    # items are already limited to a single permanent location, so we can just grab the first one
-    bib_data.items.first&.permanent_location&.details&.dig('pagingSchedule') || origin
+  after_find do
+    # This converts stored records so that they have a location set.
+    self.location ||= FolioLocationMap.folio_code_for(library_code: origin, home_location: origin_location)
   end
 
-  def library_location
-    @library_location ||= LibraryLocation.new(origin, origin_location)
+  def paging_origin_library
+    # items are already limited to a single permanent location, so we can just grab the first one
+    bib_data.items.first&.permanent_location&.details&.dig('pagingSchedule') || request_location.library
+  end
+
+  def request_location
+    @request_location ||= RequestLocation.new(location)
   end
 
   def active_messages
-    library_location.active_messages.for_type(Message.notification_type(self))
+    request_location.active_messages.for_type(Message.notification_type(self))
   end
 
   # @returns the model class either sourced from SearchWorks or from Folio.
@@ -186,9 +192,11 @@ class Request < ActiveRecord::Base
 
       origins.select do |code, config|
         if config.library_override
-          MediatedPage.exists?(origin_location: code.to_s)
+          MediatedPage.where(origin_location: config.symphony_location).or(MediatedPage.where(location: code)).exists?
         else
-          MediatedPage.exists?(origin: code.to_s)
+          locations = FolioLocationMap.folio_locations(library_code: code)
+          # NOTE: After all the data is migrated to have 'location', we can remove the query for origin/origin_location
+          MediatedPage.where(origin: code).or(MediatedPage.where(location: locations)).exists?
         end
       end
     end

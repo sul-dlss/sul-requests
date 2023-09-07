@@ -50,22 +50,22 @@ class RequestApprovalStatus
     request.ils_response.blank?
   end
 
+  def library_code
+    request.request_location.library.underscore
+  end
+
   private
 
   def request_class_name
     request.class.to_s.underscore
   end
 
-  def request_origin
-    request.origin.underscore
-  end
-
   def pending_text
     text = t(
       :"approval_status.#{request_class_name}.pending",
-      default: [:"approval_status.#{request_origin}.pending", :'approval_status.default.pending']
+      default: [:"approval_status.#{library_code}.pending", :'approval_status.default.pending']
     )
-    text << " #{t("approval_status.#{request_origin}.extra_note", default: '')}"
+    text << " #{t("approval_status.#{library_code}.extra_note", default: '')}"
     text
   end
 
@@ -94,7 +94,7 @@ class RequestApprovalStatus
   def succcess_text_for_item(item)
     t(
       :"approval_status.#{request_class_name}.success",
-      default: [:"approval_status.#{request_origin}.success", :'approval_status.default.success'],
+      default: [:"approval_status.#{library_code}.success", :'approval_status.default.success'],
       item:
     )
   end

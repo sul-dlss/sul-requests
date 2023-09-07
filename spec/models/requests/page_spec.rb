@@ -19,8 +19,7 @@ RSpec.describe Page do
       expect do
         described_class.create!(
           item_id: '1234',
-          origin: 'ART',
-          origin_location: 'ARTLCKL',
+          location: 'ART-LOCKED-LARGE',
           destination: 'ART',
           bib_data: build(:single_mediated_holding)
         )
@@ -29,7 +28,9 @@ RSpec.describe Page do
 
     it 'does not not allow pages to be created with destinations that are not valid pickup libraries of their origin' do
       expect do
-        described_class.create!(item_id: '1234', origin: 'SAL3', origin_location: 'PAGE-LP', destination: 'GREEN',
+        described_class.create!(item_id: '1234',
+                                location: 'SAL3-PAGE-LP',
+                                destination: 'GREEN',
                                 bib_data: build(:page_lp_holdings))
       end.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Destination is not a valid pickup library')
     end
@@ -59,8 +60,7 @@ RSpec.describe Page do
 
     let(:subject) do
       described_class.create(
-        origin: 'SAL3',
-        origin_location: 'STACKS',
+        location: 'SAL3-STACKS',
         destination:,
         item_id: 'abc123',
         item_title: 'foo',

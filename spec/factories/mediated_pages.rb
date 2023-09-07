@@ -7,8 +7,7 @@ LONG
 FactoryBot.define do
   factory :mediated_page do
     item_id { '1234' }
-    origin { 'ART' }
-    origin_location { 'ARTLCKL' }
+    location { 'ART-LOCKED-LARGE' }
     destination { 'ART' }
     item_title { 'Title of MediatedPage 1234' }
     needed_date { Time.zone.today }
@@ -25,8 +24,7 @@ FactoryBot.define do
 
   factory :page_mp_mediated_page, class: 'MediatedPage' do
     item_id { '1234' }
-    origin { 'SAL3' }
-    origin_location { 'PAGE-MP' }
+    location { 'SAL3-PAGE-MP' }
     destination { 'EARTH-SCI' }
     item_title { 'Title of MediatedPage 1234' }
     needed_date { Time.zone.today }
@@ -36,8 +34,7 @@ FactoryBot.define do
 
   factory :mediated_page_with_single_holding, parent: :mediated_page do
     item_id { '12345' }
-    origin { 'ART' }
-    origin_location { 'ARTLCKL' }
+    location { 'ART-LOCKED-LARGE' }
     destination { 'ART' }
     needed_date { Time.zone.today }
     request_comment { long_comment }
@@ -56,8 +53,7 @@ FactoryBot.define do
 
   factory :mediated_page_with_holdings, parent: :mediated_page do
     item_id { '1234' }
-    origin { 'ART' }
-    origin_location { 'ARTLCKL' }
+    location { 'ART-LOCKED-LARGE' }
     destination { 'ART' }
     needed_date { Time.zone.today }
     request_comment { long_comment }
@@ -66,8 +62,7 @@ FactoryBot.define do
   end
 
   factory :mediated_page_with_symphony_errors, class: 'MediatedPage', parent: :request_with_symphony_errors do
-    origin { 'ART' }
-    origin_location { 'ARTLCKL' }
+    location { 'ART-LOCKED-LARGE' }
     destination { 'ART' }
     needed_date { Time.zone.today }
     user factory: [:sequence_sso_user]

@@ -97,22 +97,22 @@ Rails.application.config.after_initialize do
       business_days_later 2
     end
 
-    # Hopkins
-    when_paging from: 'HOPKINS', to: 'GREEN', before: '9:00am' do
+    # MARINE-BIO
+    when_paging from: 'MARINE-BIO', to: 'GREEN', before: '9:00am' do
       will_arrive after: '12:00pm'
       business_days_later 1
     end
     # This is not in the table.
-    when_paging from: 'HOPKINS', to: 'GREEN', after: '9:00am' do
+    when_paging from: 'MARINE-BIO', to: 'GREEN', after: '9:00am' do
       will_arrive after: '12:00pm'
       business_days_later 2
     end
-    when_paging from: 'HOPKINS', to: :anywhere, before: '9:00am' do
+    when_paging from: 'MARINE-BIO', to: :anywhere, before: '9:00am' do
       will_arrive after: '12:00pm'
       business_days_later 2
     end
     # This is not in the table.
-    when_paging from: 'HOPKINS', to: :anywhere, after: '9:00am' do
+    when_paging from: 'MARINE-BIO', to: :anywhere, after: '9:00am' do
       will_arrive after: '12:00pm'
       business_days_later 3
     end
@@ -196,15 +196,6 @@ Rails.application.config.after_initialize do
     when_paging from: 'MEDIA-MTXT', to: 'GREEN', after: '6:30pm' do
       will_arrive after: '11:00am'
       business_days_later 1
-    end
-
-    when_paging from: 'MEDIA-MTXT', to: 'HOPKINS', before: '10:00am' do
-      will_arrive after: '1:00pm'
-      business_days_later 1
-    end
-    when_paging from: 'MEDIA-MTXT', to: 'HOPKINS', after: '10:00am' do
-      will_arrive after: '1:00pm'
-      business_days_later 2
     end
 
     when_paging from: 'MEDIA-MTXT', to: 'MARINE-BIO', before: '10:00am' do

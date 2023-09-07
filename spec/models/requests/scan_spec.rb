@@ -14,8 +14,7 @@ RSpec.describe Scan do
   it 'validates based on if the item is scannable or not' do
     expect do
       described_class.create!(item_id: '1234',
-                              origin: 'GREEN',
-                              origin_location: 'STACKS',
+                              location: 'GRE-STACKS',
                               section_title: 'Some chapter title',
                               item_title: 'foo')
     end.to raise_error(
@@ -27,8 +26,7 @@ RSpec.describe Scan do
     expect do
       described_class.create!(
         item_id: '123456',
-        origin: 'SAL',
-        origin_location: 'SAL-TEMP',
+        location: 'SAL-TEMP',
         section_title: 'Chapter 1',
         item_title: 'foo',
         bib_data: build(:scannable_only_holdings)

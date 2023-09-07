@@ -3,10 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe 'hold_recalls/_header.html.erb' do
-  let(:origin) { 'GREEN' }
-  let(:origin_location) { 'STACKS' }
+  let(:location) { 'GRE-STACKS' }
   let(:current_request) do
-    double('request', origin:, origin_location:, holdings:)
+    instance_double(Request, location:, holdings:)
   end
 
   let(:holdings) { [holding] }

@@ -9,16 +9,39 @@ class FolioLocationMap
 
   class NotFound < StandardError; end
 
-  # @return a tuple of library code and location code
+  # @return a folio location code
   def self.folio_code_for(library_code:, home_location:)
-    library_locations = instance.data.fetch(library_code)
-    library_locations[home_location]
+    locations = instance.translation_data.fetch(library_code)
+    locations[home_location]
   rescue KeyError
     raise NotFound
   end
 
-  def data
-    @data ||= load_map
+  #
+  # @return [Array<String>] a list of folio locations at the given library
+  def self.folio_locations(library_code:)
+    instance.locations.select { |_, v| v == library_code }.keys
+  rescue KeyError
+    raise NotFound
+  end
+
+  # @return the library code for a location code
+  def self.library_code(location:)
+    instance.locations.fetch(location)
+  rescue KeyError
+    raise NotFound, "There is no folio location with the code: '#{location}'"
+  end
+
+  def translation_data
+    @translation_data ||= load_map
+  end
+
+  def library_codes
+    @library_codes ||= load_library_codes
+  end
+
+  def locations
+    @locations ||= load_locations
   end
 
   def load_map
@@ -32,6 +55,20 @@ class FolioLocationMap
 
       result[library_code] ||= {}
       result[library_code][row[0]] = row[2]
+    end
+  end
+
+  def load_locations
+    JSON.parse(Rails.root.join('config/folio/locations.json').read).each_with_object({}) do |location, result|
+      location_code = location.fetch('code')
+      library_id = location.fetch('libraryId')
+      result[location_code] = library_codes[library_id]
+    end
+  end
+
+  def load_library_codes
+    JSON.parse(Rails.root.join('config/folio/libraries.json').read).each_with_object({}) do |library, result|
+      result[library.fetch('id')] = library.fetch('code')
     end
   end
 end

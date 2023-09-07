@@ -13,14 +13,4 @@ RSpec.describe LibraryLocation do
       expect(described_class.library_name_by_code('NOT-A-LIBRARY')).to be_nil
     end
   end
-
-  describe '#folio_location_code' do
-    subject { library_location.folio_location_code }
-
-    let(:library_location) { described_class.new(origin, origin_location) }
-    let(:origin) { 'GREEN' }
-    let(:origin_location) { 'STACKS' }
-
-    it { is_expected.to eq 'GRE-STACKS' }
-  end
 end

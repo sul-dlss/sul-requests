@@ -13,7 +13,7 @@ RSpec.describe RequestsHelper do
     end
 
     describe 'single library' do
-      let(:request) { build(:request, origin: 'SAL3', origin_location: 'PAGE-EN', bib_data:) }
+      let(:request) { build(:request, location: 'SAL3-PAGE-EN', bib_data:) }
       let(:item) do
         build(:item,
               barcode: '3610512345678',
@@ -34,7 +34,7 @@ RSpec.describe RequestsHelper do
     end
 
     describe 'multiple libraries' do
-      let(:request) { create(:request, origin: 'SAL3', origin_location: 'PAGE-HP') }
+      let(:request) { create(:request, location: 'SAL3-PAGE-MA') }
 
       it 'attempts to create a select list' do
         expect(form).to receive(:select).with(any_args).and_return('<select>')
@@ -155,8 +155,8 @@ RSpec.describe RequestsHelper do
   describe 'i18n_location_title_key' do
     subject { helper.i18n_location_title_key }
 
-    let(:current_request) { double('request', holdings: [holding], origin_location:) }
-    let(:origin_location) { '' }
+    let(:current_request) { instance_double(Request, holdings: [holding], location:) }
+    let(:location) { 'SAL3-STACKS' }
 
     before { expect(helper).to receive_messages(current_request:) }
 
@@ -177,7 +177,7 @@ RSpec.describe RequestsHelper do
     end
 
     context 'when the item is available' do
-      let(:origin_location) { 'HOPKINS' }
+      let(:location) { 'MAR-STACKS' }
       let(:holding) do
         Folio::Item.new(
           barcode: '123',
@@ -190,7 +190,7 @@ RSpec.describe RequestsHelper do
         )
       end
 
-      it { is_expected.to eq 'HOPKINS' }
+      it { is_expected.to eq 'MAR-STACKS' }
     end
   end
 

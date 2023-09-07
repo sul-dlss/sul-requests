@@ -68,12 +68,14 @@ class RequestStatusMailer < ApplicationMailer
     )
   end
 
+  # rubocop:disable Metrics/AbcSize
   def contact_info
-    Settings.locations[@request.origin_location]&.contact_info ||
-      Settings.libraries[@request.origin]&.contact_info ||
+    Settings.locations[@request.location]&.contact_info ||
+      Settings.libraries[@request.request_location.library]&.contact_info ||
       Settings.libraries[@request.destination]&.contact_info ||
       Settings.libraries.default.contact_info
   end
+  # rubocop:enable Metrics/AbcSize
 
   def success_url
     if !@request.user.sso_user? && @request.is_a?(TokenEncryptable)

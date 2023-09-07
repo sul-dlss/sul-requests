@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_07_203550) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_07_120641) do
   create_table "admin_comments", force: :cascade do |t|
     t.string "commenter"
     t.string "comment"
@@ -59,6 +59,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_07_203550) do
     t.string "estimated_delivery"
     t.integer "approval_status", default: 0
     t.boolean "via_borrow_direct", default: false
+    t.string "location"
     t.index ["needed_date"], name: "index_requests_on_needed_date"
     t.index ["user_id"], name: "index_requests_on_user_id"
   end
@@ -77,4 +78,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_07_203550) do
     t.index ["sunetid"], name: "unique_users_by_sunetid", unique: true
   end
 
+  add_foreign_key "folio_command_logs", "requests"
 end

@@ -359,7 +359,7 @@ RSpec.describe 'Mediation table', js: true do
 
       it 'retains the origin filter' do
         find('a.btn', text: I18n.l(Time.zone.today + 2.days, format: :quick)).click
-        expect(page).to have_css('tr[data-mediate-request]', count: 2) # would be 3 if the PAGE-MP request was included
+        expect(page).to have_css('tr[data-mediate-request]', count: 2) # would be 3 if the SAL3-PAGE-MP request was included
       end
 
       it 'filters by the selected date' do
@@ -405,7 +405,7 @@ RSpec.describe 'Mediation table', js: true do
         # Capybara thinks the date picker is invisible for some reason
         page.execute_script("$('input#created_at').prop('value', '#{yesterday}')")
         click_button('Go')
-        expect(page).to have_css('tr[data-mediate-request]', count: 2) # would be 3 if the PAGE-MP request was included
+        expect(page).to have_css('tr[data-mediate-request]', count: 2) # would be 3 if the SAL3-PAGE-MP request was included
       end
 
       it 'returns unpaginated results' do
@@ -434,7 +434,7 @@ RSpec.describe 'Mediation table', js: true do
         create(:page_mp_mediated_page, created_at: cdate, barcodes: ['12345678'])
         req = create(:page_mp_mediated_page, created_at: cdate, barcodes: ['12345678'])
         req.approved!
-        visit admin_path('PAGE-MP')
+        visit admin_path('SAL3-PAGE-MP')
         page.execute_script("$('input#created_at').prop('value', '#{cdate}')")
         click_button('Go')
         # there are no mixed approvals
@@ -496,7 +496,7 @@ RSpec.describe 'Mediation table', js: true do
       stub_bib_data_json(build(:page_mp_holdings))
       request.save(validate: false)
 
-      visit admin_path('PAGE-MP')
+      visit admin_path('SAL3-PAGE-MP')
     end
 
     it 'has toggleable rows that display holdings' do
@@ -556,7 +556,7 @@ RSpec.describe 'Mediation table', js: true do
       end
 
       it 'does not include the edit-in-place element' do
-        visit admin_path('PAGE-MP')
+        visit admin_path('SAL3-PAGE-MP')
         expect(page).not_to have_css('a.editable')
       end
     end

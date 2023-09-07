@@ -45,17 +45,16 @@ class Ability
 
     admin_libraries = Settings.origin_admin_groups.to_h.select { |_k, v| user.ldap_groups.intersect?(v) }.keys.map(&:to_s)
     admin_locations = Settings.origin_location_admin_groups.to_h.select { |_k, v| user.ldap_groups.intersect?(v) }.keys.map(&:to_s)
-
     if admin_libraries.any?
       can :manage, LibraryLocation, library: admin_libraries
-      can :create, AdminComment, request: { origin: admin_libraries }
-      can :manage, Request, origin: admin_libraries
+      can :create, AdminComment, request: { request_location: { library: admin_libraries } }
+      can :manage, Request, request_location: { library: admin_libraries }
     end
 
     if admin_locations.any?
       can :manage, LibraryLocation, location: admin_locations
-      can :create, AdminComment, request: { origin_location: admin_locations }
-      can :manage, Request, origin_location: admin_locations
+      can :create, AdminComment, request: { location: admin_locations }
+      can :manage, Request, location: admin_locations
     end
 
     # Anyone can start the process of creating a request, because we haven't (necessarily)

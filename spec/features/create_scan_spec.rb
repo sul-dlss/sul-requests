@@ -51,7 +51,7 @@ RSpec.describe 'Create Scan Request' do
       click_link 'Request the physical item'
 
       expect(page).to have_css('h1#dialogTitle', text: 'Request & pickup service')
-      expect(current_url).to eq new_page_url(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
+      expect(current_url).to eq new_page_url(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS', location: 'SAL3-STACKS')
     end
   end
 end

@@ -18,8 +18,7 @@ RSpec.describe MediatedPage do
     it 'does not allow non-mediated pages to be created' do
       expect do
         described_class.create!(item_id: '1234',
-                                origin: 'GREEN',
-                                origin_location: 'STACKS',
+                                location: 'GRE-STACKS',
                                 destination: 'ART',
                                 needed_date: Time.zone.today + 1.day)
       end.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: This item is not mediatable')
@@ -29,8 +28,7 @@ RSpec.describe MediatedPage do
       expect do
         described_class.create!(item_id: '1234',
                                 barcodes: ['12345678'],
-                                origin: 'ART',
-                                origin_location: 'ARTLCKL',
+                                location: 'ART-LOCKED-LARGE',
                                 destination: 'GREEN',
                                 needed_date: Time.zone.today + 1.day,
                                 bib_data: build(:single_mediated_holding))
@@ -41,8 +39,7 @@ RSpec.describe MediatedPage do
       expect do
         described_class.create!(item_id: '1234',
                                 barcodes: ['12345678'],
-                                origin: 'ART',
-                                origin_location: 'ARTLCKL',
+                                location: 'ART-LOCKED-LARGE',
                                 destination: 'ART',
                                 bib_data: build(:single_mediated_holding))
       end.to raise_error(ActiveRecord::RecordInvalid, "Validation failed: I plan to visit on can't be blank")
@@ -51,8 +48,7 @@ RSpec.describe MediatedPage do
     it 'allows requests to be submitted without a needed_date when not required' do
       expect do
         described_class.create!(item_id: '1234',
-                                origin: 'SAL3',
-                                origin_location: 'PAGE-MP',
+                                location: 'SAL3-PAGE-MP',
                                 user:,
                                 destination: 'EARTH-SCI',
                                 item_title: 'foo',
@@ -115,7 +111,7 @@ RSpec.describe MediatedPage do
     describe 'for_origin' do
       it 'returns the records for a given origin' do
         expect(described_class.for_origin('ART').length).to eq 3
-        expect(described_class.for_origin('PAGE-MP').length).to eq 2
+        expect(described_class.for_origin('SAL3-PAGE-MP').length).to eq 2
       end
     end
   end
@@ -172,8 +168,8 @@ RSpec.describe MediatedPage do
   end
 
   describe '#requires_needed_date?' do
-    it 'is false when the origin location is PAGE-MP' do
-      subject.origin_location = 'PAGE-MP'
+    it 'is false when the location is SAL3-PAGE-MP' do
+      subject.location = 'SAL3-PAGE-MP'
       expect(subject).not_to be_requires_needed_date
     end
 
@@ -183,14 +179,14 @@ RSpec.describe MediatedPage do
   end
 
   describe '#submit!' do
+    let(:subject) { create(:mediated_page) }
+
     it 'does not immediately submit the request to Symphony' do
       expect(Request.ils_job_class).not_to receive(:perform_now)
       subject.submit!
     end
 
     describe 'for library id users' do
-      let!(:subject) { create(:mediated_page) }
-
       it 'sends a mediator email, but does not send a confirmation email' do
         subject.user = create(:library_id_user)
         expect do
@@ -200,8 +196,6 @@ RSpec.describe MediatedPage do
     end
 
     describe 'for everybody else' do
-      let!(:subject) { create(:mediated_page) }
-
       it 'sends a confirmation email and a mediator email' do
         expect do
           expect(subject.submit!).to be true
@@ -223,17 +217,17 @@ RSpec.describe MediatedPage do
 
   describe '#mediator_notification_email_address' do
     it 'fetches email addresses for origin libraires' do
-      subject.origin = 'SPEC-COLL'
+      subject.location = 'SPEC-STACKS'
       expect(
         subject.mediator_notification_email_address
       ).to eq SULRequests::Application.config.mediator_contact_info['SPEC-COLL'][:email]
     end
 
-    it 'fetches email addresses for origin locations' do
-      subject.origin_location = 'PAGE-MP'
+    it 'fetches email addresses for locations' do
+      subject.location = 'SAL3-PAGE-MP'
       expect(
         subject.mediator_notification_email_address
-      ).to eq SULRequests::Application.config.mediator_contact_info['PAGE-MP'][:email]
+      ).to eq SULRequests::Application.config.mediator_contact_info['SAL3-PAGE-MP'][:email]
     end
   end
 
@@ -277,13 +271,13 @@ RSpec.describe MediatedPage do
 
   describe '#needed_dates_for_origin_after_date' do
     before do
-      build(:mediated_page, origin: 'ART', needed_date: Time.zone.today - 2.days).save(validate: false)
-      build(:mediated_page, origin: 'ART', needed_date: Time.zone.today - 1.day).save(validate: false)
-      build(:mediated_page, origin: 'ART', needed_date: Time.zone.today).save(validate: false)
-      build(:mediated_page, origin: 'ART', needed_date: Time.zone.today + 2.days).save(validate: false)
-      build(:mediated_page, origin: 'ART', needed_date: Time.zone.today + 1.day).save(validate: false)
-      build(:mediated_page, origin: 'ART', needed_date: Time.zone.today + 1.day).save(validate: false)
-      build(:mediated_page, origin: 'EDUCATION', needed_date: Time.zone.today + 3.days).save(validate: false)
+      build(:mediated_page, location: 'ART-LOCKED-LARGE', needed_date: Time.zone.today - 2.days).save(validate: false)
+      build(:mediated_page, location: 'ART-LOCKED-LARGE', needed_date: Time.zone.today - 1.day).save(validate: false)
+      build(:mediated_page, location: 'ART-LOCKED-LARGE', needed_date: Time.zone.today).save(validate: false)
+      build(:mediated_page, location: 'ART-LOCKED-LARGE', needed_date: Time.zone.today + 2.days).save(validate: false)
+      build(:mediated_page, location: 'ART-LOCKED-LARGE', needed_date: Time.zone.today + 1.day).save(validate: false)
+      build(:mediated_page, location: 'ART-LOCKED-LARGE', needed_date: Time.zone.today + 1.day).save(validate: false)
+      build(:mediated_page, location: 'EDU-LOCKED', needed_date: Time.zone.today + 3.days).save(validate: false)
     end
 
     let(:dates) { described_class.needed_dates_for_origin_after_date(origin: 'ART', date: Time.zone.today) }

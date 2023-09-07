@@ -16,7 +16,11 @@ class MediatedPage < Request
     where(approval_status: MediatedPage.approval_statuses.except('unapproved').values).needed_date_desc
   }
   scope :archived, -> { where('needed_date < ?', Time.zone.today).order(needed_date: :desc) }
-  scope :for_origin, ->(origin) { where('origin = ? OR origin_location = ?', origin, origin) }
+  scope :for_origin, lambda { |origin|
+    locations = FolioLocationMap.folio_locations(library_code: origin).presence || [origin]
+    # NOTE: After all the data is migrated to have 'location', we can remove the query for origin/origin_location
+    where('origin = ? OR origin_location = ?', origin, origin).or(where(location: locations))
+  }
 
   include TokenEncryptable
 
@@ -25,7 +29,7 @@ class MediatedPage < Request
   end
 
   def requires_needed_date?
-    return false if origin_location == 'PAGE-MP'
+    return false if origin_location == 'PAGE-MP' || location == 'SAL3-PAGE-MP'
 
     true
   end
@@ -57,10 +61,9 @@ class MediatedPage < Request
   end
 
   def mediator_notification_email_address
-    Rails.application.config.mediator_contact_info.fetch(
-      origin,
-      Rails.application.config.mediator_contact_info.fetch(origin_location, {})
-    )[:email]
+    Rails.application.config.mediator_contact_info.fetch(request_location.library) do
+      Rails.application.config.mediator_contact_info.fetch(location, {})
+    end[:email]
   end
 
   def send_approval_status!

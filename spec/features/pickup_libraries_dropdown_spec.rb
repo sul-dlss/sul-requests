@@ -4,7 +4,6 @@ require 'rails_helper'
 
 RSpec.describe 'Pickup Libraries Dropdown' do
   let(:standard_pickup_lib_total) { Folio::Types.service_points.where(is_default_pickup: true).length }
-  let(:media_library) { 'MEDIA-CENTER' }
   let(:media_label) { 'Media Center' }
 
   let(:item) do
@@ -69,7 +68,7 @@ RSpec.describe 'Pickup Libraries Dropdown' do
       end
 
       it 'appear in the drop down' do
-        visit new_request_path(item_id: '1234', origin: media_library, origin_location: 'MM-STACKS')
+        visit new_request_path(item_id: '1234', origin: 'MEDIA-MTXT', origin_location: 'MM-STACKS')
 
         expect(page).to have_css('#request_destination option', count: standard_pickup_lib_total + 1)
         expect(page).to have_css('option', text: media_label)

@@ -6,12 +6,7 @@ RSpec.describe RequestsController do
   let(:scannable_params) do
     { item_id: '12345', origin: 'SAL3', origin_location: 'STACKS' }
   end
-  let(:unscannable_params) do
-    { item_id: '12345', origin: 'SAL3', origin_location: 'PAGE-LP' }
-  end
-  let(:mediated_page_params) do
-    { item_id: '12345', origin: 'ART', origin_location: 'ARTLCKL' }
-  end
+
   let(:hold_recall_params) do
     { item_id: '12345', barcode: '3610512345', origin: 'GREEN', origin_location: 'STACKS' }
   end
@@ -71,19 +66,27 @@ RSpec.describe RequestsController do
     end
 
     describe 'unscannable item' do
+      let(:mediated_page_params) do
+        { item_id: '12345', origin: 'ART', origin_location: 'ARTLCKL' }
+      end
+
       it 'redirects to the new mediated page request form' do
         stub_bib_data_json(build(:single_mediated_holding))
         get :new, params: mediated_page_params
-        expect(response).to redirect_to new_mediated_page_path(mediated_page_params)
+        expect(response).to redirect_to new_mediated_page_path(mediated_page_params.merge(location: 'ART-LOCKED-LARGE'))
       end
     end
 
-    describe 'unmediateable item' do
+    describe 'unmediatable item' do
+      let(:unscannable_params) do
+        { item_id: '12345', origin: 'SAL3', origin_location: 'PAGE-LP' }
+      end
+
       it 'redirects to the new page form' do
         stub_bib_data_json(build(:page_lp_holdings))
 
         get :new, params: unscannable_params
-        expect(response).to redirect_to new_page_path(unscannable_params)
+        expect(response).to redirect_to new_page_path(unscannable_params.merge(location: 'SAL3-PAGE-LP'))
       end
     end
   end
@@ -106,7 +109,7 @@ RSpec.describe RequestsController do
 
     describe 'for mediated pages' do
       let(:request) do
-        build(:request, origin: 'ART', origin_location: 'ARTLCKL', barcodes: ['12345678'], bib_data: build(:single_mediated_holding))
+        build(:request, location: 'ART-LOCKED-LARGE', barcodes: ['12345678'], bib_data: build(:single_mediated_holding))
       end
 
       it 'delegates the request object' do
@@ -121,7 +124,7 @@ RSpec.describe RequestsController do
 
     describe 'for aeon pages' do
       let(:request) do
-        build(:request, origin: 'SPEC-COLL', origin_location: 'STACKS', bib_data: build(:special_collections_single_holding))
+        build(:request, location: 'SPEC-STACKS', bib_data: build(:special_collections_single_holding))
       end
 
       it 'delegates the request object' do

@@ -69,7 +69,7 @@ RSpec.describe 'Send Request Buttons' do
     end
   end
 
-  describe 'for HOPKINS' do
+  describe 'for MARINE-BIO' do
     it 'allows to send request via SSO login or a SUNet ID' do
       visit new_page_path(item_id: '1234', origin: 'HOPKINS', origin_location: 'STACKS')
       expect(page).to have_css('button', text: /Send request.*login with SUNet ID/)

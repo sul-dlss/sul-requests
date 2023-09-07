@@ -47,7 +47,7 @@ RSpec.describe PagesController do
           login_path(
             referrer: interstitial_path(
               redirect_to: create_pages_url(
-                request: { item_id: '1234', origin: 'SAL3', origin_location: 'STACKS', destination: 'ART' }
+                request: { item_id: '1234', origin: 'SAL3', origin_location: 'STACKS', location: 'SAL3-STACKS', destination: 'ART' }
               )
             )
           )
@@ -65,9 +65,11 @@ RSpec.describe PagesController do
           login_path(
             referrer: interstitial_path(
               redirect_to: create_pages_url(
-                request: { item_id: '1234', origin: 'SAL3', origin_location: 'STACKS', destination: 'ART', barcodes: {
-                  '54321' => '1', '98765' => '1'
-                } }
+                request: { item_id: '1234', origin: 'SAL3', origin_location: 'STACKS',
+                           location: 'SAL3-STACKS', destination: 'ART',
+                           barcodes: {
+                             '54321' => '1', '98765' => '1'
+                           } }
               )
             )
           )

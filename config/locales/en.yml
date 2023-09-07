@@ -68,7 +68,7 @@ en:
       success: '%{item}'
     scan:
       success: '%{item}'
-    rumseymap:
+    rumsey_map:
       extra_note: ''
     spec_coll:
       extra_note: ''
@@ -124,8 +124,10 @@ en:
   mediated_pages:
     header:
       default: 'Request on-site access'
-      HOPKINS: 'Request delivery to campus library'
-      PAGE-MP: 'Request delivery to campus library'
+      HOPKINS: 'Request delivery to campus library' # Deprecated
+      PAGE-MP: 'Request delivery to campus library' # Deprecated
+      MARINE-BIO: 'Request delivery to campus library'
+      SAL3-PAGE-MP: 'Request delivery to campus library'
   aeon_pages:
     new:
       header: Request access

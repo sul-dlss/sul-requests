@@ -7,7 +7,8 @@ module RequestValidations
   extend ActiveSupport::Concern
 
   included do
-    validates :item_id, :origin, :origin_location, presence: true
+    validates :item_id, presence: true
+    validate :location_information_exists
     validate :requested_holdings_exist,
              :requested_item_is_not_scannable_only,
              on: :create
@@ -17,8 +18,14 @@ module RequestValidations
 
   protected
 
+  def location_information_exists
+    return if location.present? || (origin.present? && origin_location.present?)
+
+    errors.add(:location, 'must be present')
+  end
+
   def destination_is_a_pickup_library
-    return if pickup_destinations.include?(destination)
+    return if destination && pickup_destinations.include?(destination)
 
     errors.add(:destination, 'is not a valid pickup library')
   end

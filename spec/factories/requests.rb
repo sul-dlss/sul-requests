@@ -3,8 +3,7 @@
 FactoryBot.define do
   factory :request do
     item_id { '123456' }
-    origin { 'SAL3' }
-    origin_location { 'STACKS' }
+    location { 'SAL3-STACKS' }
     item_title { 'Title for Request 123456' }
     bib_data { FactoryBot.build(:multiple_holdings) }
 
@@ -19,22 +18,19 @@ FactoryBot.define do
 
   factory :request_with_holdings, class: 'Request' do
     item_id { '12345' }
-    origin { 'SAL3' }
-    origin_location { 'STACKS' }
+    location { 'SAL3-STACKS' }
     bib_data { FactoryBot.build(:single_holding) }
   end
 
   factory :request_with_multiple_holdings, class: 'Request' do
     item_id { '12345' }
-    origin { 'SAL3' }
-    origin_location { 'STACKS' }
+    location { 'SAL3-STACKS' }
     bib_data { FactoryBot.build(:multiple_holdings) }
   end
 
   factory :request_with_symphony_errors, class: 'Request' do
     item_id { '123456' }
-    origin { 'SAL3' }
-    origin_location { 'STACKS' }
+    location { 'SAL3-STACKS' }
     item_title { 'Title for Request 123456' }
 
     after(:build) do |request|

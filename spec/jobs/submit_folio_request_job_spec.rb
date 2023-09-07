@@ -294,7 +294,7 @@ RSpec.describe SubmitFolioRequestJob do
       let(:user) { create(:non_sso_user, name: 'Jim Doe', email: 'jimdoe@example.com') }
       let(:patron) { nil }
       let(:request) do
-        create(:scan, :with_holdings_barcodes, origin: 'SAL', origin_location: 'SAL-TEMP', bib_data: build(:scannable_only_holdings), user:)
+        create(:scan, :with_holdings_barcodes, location: 'SAL-TEMP', bib_data: build(:scannable_only_holdings), user:)
       end
       let(:item) do
         instance_double(Folio::Item, id: 'abc123-1-1', holdings_record_id: 'abc123-1', barcode: '12345678', status: 'Available',

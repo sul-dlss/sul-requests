@@ -8,7 +8,7 @@ RSpec.describe AuthorizationHelper do
       {
         'SAL3' => double(library_override: false),
         'SPEC-COLL' => double(library_override: false),
-        'PAGE-MP' => double(library_override: 'EARTH-SCI')
+        'SAL3-PAGE-MP' => double(library_override: 'EARTH-SCI')
       }
     end
 
@@ -20,7 +20,7 @@ RSpec.describe AuthorizationHelper do
       let(:user) { build(:superadmin_user) }
 
       it 'returns all the provided locations' do
-        expect(helper.mediated_locations_for(locations)).to include('SAL3', 'SPEC-COLL', 'PAGE-MP')
+        expect(helper.mediated_locations_for(locations)).to include('SAL3', 'SPEC-COLL', 'SAL3-PAGE-MP')
       end
     end
 
@@ -28,7 +28,7 @@ RSpec.describe AuthorizationHelper do
       let(:user) { build(:page_mp_origin_admin_user) }
 
       it 'return just the origin location the user is authorized for' do
-        expect(helper.mediated_locations_for(locations)).to include('PAGE-MP')
+        expect(helper.mediated_locations_for(locations)).to include('SAL3-PAGE-MP')
       end
     end
   end

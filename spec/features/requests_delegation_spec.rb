@@ -19,7 +19,7 @@ RSpec.describe 'Requests Delegation' do
       visit new_request_path(item_id: '12345', origin: 'SAL3', origin_location: 'PAGE-LP')
 
       expect(page).to have_css('h1#dialogTitle', text: 'Request & pickup service')
-      expect(current_url).to eq new_page_url(item_id: '12345', origin: 'SAL3', origin_location: 'PAGE-LP')
+      expect(current_url).to eq new_page_url(item_id: '12345', origin: 'SAL3', origin_location: 'PAGE-LP', location: 'SAL3-PAGE-LP')
     end
   end
 
@@ -29,7 +29,8 @@ RSpec.describe 'Requests Delegation' do
       visit new_request_path(item_id: '12345', origin: 'ART', origin_location: 'ARTLCKL')
 
       expect(page).to have_css('h1#dialogTitle', text: 'Request on-site access')
-      expect(current_url).to eq new_mediated_page_url(item_id: '12345', origin: 'ART', origin_location: 'ARTLCKL')
+      expect(current_url).to eq new_mediated_page_url(item_id: '12345', origin: 'ART', origin_location: 'ARTLCKL',
+                                                      location: 'ART-LOCKED-LARGE')
     end
   end
 
