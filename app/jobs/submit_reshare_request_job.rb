@@ -30,7 +30,7 @@ class SubmitReshareRequestJob < ApplicationJob
   def make_reshare_or_ils_request(request)
     reshare_vufind_item = ReshareVufindWrapper.new(request)
 
-    if request.user.borrow_direct_eligible? && reshare_vufind_item.requestable?
+    if request.user.patron.borrow_direct_eligible? && reshare_vufind_item.requestable?
       request.reshare_vufind_response_data = reshare_vufind_item.as_json
       request.via_borrow_direct = true
       request.save

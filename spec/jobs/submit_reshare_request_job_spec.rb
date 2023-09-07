@@ -4,7 +4,10 @@ require 'rails_helper'
 
 RSpec.describe SubmitReshareRequestJob, type: :job do
   let(:user) { create(:library_id_user) }
-  let(:patron) { instance_double(Folio::Patron, exists?: true, email: nil, university_id: '1234567') }
+  let(:patron) do
+    instance_double(Folio::Patron, exists?: true, email: nil, patron_group_name: 'undergrad',
+                                   patron_group_id: 'bdc2b6d4-5ceb-4a12-ab46-249b9a68473e', borrow_direct_eligible?: true)
+  end
   let(:request) { create(:hold_recall_with_holdings, user:) }
   let(:sw_item) { double('SeachWorksItem', isbn: %w[12345 54321]) }
 
@@ -23,12 +26,10 @@ RSpec.describe SubmitReshareRequestJob, type: :job do
       )
     end
 
-    context 'when the patron does not have a university ID' do
-      before do
-        allow(patron).to receive(:university_id).and_return(nil)
-      end
+    context 'when the patron is not borrow direct eligible' do
+      before { expect(patron).to receive(:borrow_direct_eligible?).and_return(false) }
 
-      it 'sends the request to Symphony' do
+      it 'sends the request to FOLIO' do
         expect(Request.ils_job_class).to receive(:perform_now).with(request.id, {})
 
         subject.perform(request.id)

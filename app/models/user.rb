@@ -114,10 +114,6 @@ class User < ActiveRecord::Base
     @patron ||= patron_model_class.find_by(library_id:) if library_id
   end
 
-  def borrow_direct_eligible?
-    university_id.present?
-  end
-
   private
 
   def notify_honeybadger_of_missing_sso_email!

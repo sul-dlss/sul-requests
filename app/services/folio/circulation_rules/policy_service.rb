@@ -22,7 +22,7 @@ module Folio
       # rubocop:enable Metrics/AbcSize
 
       def self.standard_patron_group_uuids(group_names = Settings.folio.standard_patron_group_names)
-        @standard_patron_group_uuids ||= Folio::Types.criteria['group'].select { |_k, v| group_names.include? v['group'] }.keys
+        @standard_patron_group_uuids ||= Folio::Types.patron_groups.select { |_k, v| group_names.include? v['group'] }.keys
       end
 
       def self.instance

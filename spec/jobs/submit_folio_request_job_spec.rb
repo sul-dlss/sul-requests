@@ -18,13 +18,13 @@ RSpec.describe SubmitFolioRequestJob do
   end
   let(:status) { 'Available' }
   let(:expected_date) { DateTime.now.beginning_of_day.utc.iso8601 }
-  let(:patron_group) { 'bdc2b6d4-5ceb-4a12-ab46-249b9a68473e' } # Undergrad
+  let(:patron_group_id) { 'bdc2b6d4-5ceb-4a12-ab46-249b9a68473e' } # Undergrad
   let(:circulation_request_policy) { 'policy-id' }
   let(:request_policies) { [{ 'id' => 'policy-id', 'requestTypes' => ['Hold', 'Page', 'Recall'] }] }
 
   context 'with a HoldRecall type request' do
     let(:user) { create(:sequence_sso_user) }
-    let(:patron) { Folio::Patron.new({ 'id' => '562a5cb0-e998-4ea2-80aa-34ac2b536238', 'patronGroup' => patron_group }) }
+    let(:patron) { Folio::Patron.new({ 'id' => '562a5cb0-e998-4ea2-80aa-34ac2b536238', 'patronGroup' => patron_group_id }) }
     let(:status) { 'Checked out' }
 
     before do
@@ -72,11 +72,11 @@ RSpec.describe SubmitFolioRequestJob do
     context 'with an sso user with no patron group' do
       let(:user) { create(:sso_user) }
       let(:request) { create(:hold_recall_with_holdings_folio, barcodes: ['12345678'], user:) }
-      let(:patron_group) { nil }
+      let(:patron_group_id) { nil }
 
       before do
         allow(Folio::Patron).to receive(:find_by).with(library_id: 'HOLD@GR').and_return(
-          instance_double(Folio::Patron, id: 'HOLD@GR-PSEUDO', patron_group:, blocked?: false)
+          instance_double(Folio::Patron, id: 'HOLD@GR-PSEUDO', patron_group_id:, blocked?: false)
         )
       end
 
@@ -97,7 +97,7 @@ RSpec.describe SubmitFolioRequestJob do
     context 'with an sso user in good standing' do
       let(:user) { create(:sequence_sso_user) }
       let(:patron) do
-        Folio::Patron.new({ 'id' => '562a5cb0-e998-4ea2-80aa-34ac2b536238', 'active' => true, 'patronGroup' => patron_group })
+        Folio::Patron.new({ 'id' => '562a5cb0-e998-4ea2-80aa-34ac2b536238', 'active' => true, 'patronGroup' => patron_group_id })
       end
 
       before do
@@ -116,7 +116,7 @@ RSpec.describe SubmitFolioRequestJob do
     context 'with an sso user who has blocks' do
       let(:user) { create(:sequence_sso_user) }
       let(:patron) do
-        Folio::Patron.new({ 'id' => '562a5cb0-e998-4ea2-80aa-34ac2b536238', 'active' => true, 'patronGroup' => patron_group })
+        Folio::Patron.new({ 'id' => '562a5cb0-e998-4ea2-80aa-34ac2b536238', 'active' => true, 'patronGroup' => patron_group_id })
       end
 
       before do
@@ -139,7 +139,7 @@ RSpec.describe SubmitFolioRequestJob do
       before do
         allow(request.user).to receive(:patron).and_return(nil)
         allow(Folio::Patron).to receive(:find_by).with(library_id: 'HOLD@AR').and_return(
-          instance_double(Folio::Patron, id: 'HOLD@AR-PSEUDO', patron_group:, blocked?: false)
+          instance_double(Folio::Patron, id: 'HOLD@AR-PSEUDO', patron_group_id:, blocked?: false)
         )
       end
 
@@ -162,7 +162,7 @@ RSpec.describe SubmitFolioRequestJob do
       before do
         allow(request.user).to receive(:patron).and_return(patron)
         allow(Folio::Patron).to receive(:find_by).with(library_id: 'HOLD@AR').and_return(
-          instance_double(Folio::Patron, id: 'HOLD@AR-PSEUDO', patron_group:, blocked?: false)
+          instance_double(Folio::Patron, id: 'HOLD@AR-PSEUDO', patron_group_id:, blocked?: false)
         )
       end
 
@@ -181,7 +181,7 @@ RSpec.describe SubmitFolioRequestJob do
       let(:request) { create(:page_with_single_holding_multiple_items, barcodes: ['12345678', '12345679'], user:) }
       let(:command) { described_class::Command.new(request, logger: Rails.logger) }
       let(:patron) do
-        Folio::Patron.new({ 'id' => '562a5cb0-e998-4ea2-80aa-34ac2b536238', 'active' => true, 'patronGroup' => patron_group })
+        Folio::Patron.new({ 'id' => '562a5cb0-e998-4ea2-80aa-34ac2b536238', 'active' => true, 'patronGroup' => patron_group_id })
       end
 
       before do
@@ -221,7 +221,7 @@ RSpec.describe SubmitFolioRequestJob do
       before do
         allow(request.user).to receive(:patron).and_return(nil)
         allow(Folio::Patron).to receive(:find_by).with(library_id: 'HOLD@AR').and_return(
-          instance_double(Folio::Patron, id: 'HOLD@AR-PSEUDO', patron_group:, blocked?: false)
+          instance_double(Folio::Patron, id: 'HOLD@AR-PSEUDO', patron_group_id:, blocked?: false)
         )
       end
 
@@ -243,7 +243,7 @@ RSpec.describe SubmitFolioRequestJob do
       before do
         allow(request.user).to receive(:patron).and_return(patron)
         allow(Folio::Patron).to receive(:find_by).with(library_id: 'HOLD@AR').and_return(
-          instance_double(Folio::Patron, id: 'HOLD@AR-PSEUDO', patron_group:, blocked?: false)
+          instance_double(Folio::Patron, id: 'HOLD@AR-PSEUDO', patron_group_id:, blocked?: false)
         )
       end
 
@@ -268,7 +268,7 @@ RSpec.describe SubmitFolioRequestJob do
       before do
         allow(Folio::Patron).to receive(:find_by).and_return(nil)
         allow(Folio::Patron).to receive(:find_by).with(library_id: 'GRE-SCANDELIVER').and_return(
-          instance_double(Folio::Patron, id: 'GRE-SCANDELIVER', patron_group:, blocked?: false)
+          instance_double(Folio::Patron, id: 'GRE-SCANDELIVER', patron_group_id:, blocked?: false)
         )
       end
 
@@ -287,7 +287,7 @@ RSpec.describe SubmitFolioRequestJob do
       let(:user) { create(:sequence_sso_user) }
       let(:proxy_id) { '562a5cb0-e998-4ea2-80aa-34ac2b536238' }
       let(:sponsor_id) { '2bd36e69-1f58-4f6b-9073-e8d932edeed2' }
-      let(:patron) { Folio::Patron.new({ 'id' => proxy_id, 'active' => true, 'patronGroup' => patron_group }) }
+      let(:patron) { Folio::Patron.new({ 'id' => proxy_id, 'active' => true, 'patronGroup' => patron_group_id }) }
 
       let(:proxy_response) do
         {
@@ -311,7 +311,7 @@ RSpec.describe SubmitFolioRequestJob do
     context 'with the sponsor' do
       let(:user) { create(:sequence_sso_user) }
       let(:sponsor_id) { '2bd36e69-1f58-4f6b-9073-e8d932edeed2' }
-      let(:patron) { Folio::Patron.new({ 'id' => sponsor_id, 'active' => true, 'patronGroup' => patron_group }) }
+      let(:patron) { Folio::Patron.new({ 'id' => sponsor_id, 'active' => true, 'patronGroup' => patron_group_id }) }
       let(:proxy_response) do
         {}
       end
