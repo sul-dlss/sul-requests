@@ -63,9 +63,9 @@ RSpec.describe RequestsHelper do
     end
   end
 
-  describe 'searchworks link' do
+  describe '#searchworks_link' do
     it 'constructs a searchworks link including the passed in html_options' do
-      result = '<a data-elt-opt="somebehavior" href="http://searchworks.stanford.edu/view/234">A title</a>'
+      result = '<a data-elt-opt="somebehavior" href="https://searchworks.stanford.edu/view/234">A title</a>'
       expect(searchworks_link('234', 'A title', 'data-elt-opt' => 'somebehavior')).to eq result
     end
   end
