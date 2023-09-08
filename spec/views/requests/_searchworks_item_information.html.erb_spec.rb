@@ -26,7 +26,7 @@ RSpec.describe 'requests/_searchworks_item_information.html.erb' do
       render
     end
 
-    it 'displays the API fetched item title in an h2', allow_apis: true do
+    it 'displays the API fetched item title in an h2' do
       expect(rendered).to have_css('h2', text: /When do you need an antacid\? : a burning question/)
     end
   end
