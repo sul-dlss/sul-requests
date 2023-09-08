@@ -35,8 +35,18 @@ module Folio
       user_info.fetch('id')
     end
 
-    def patron_group
+    def patron_group_id
+      # FOLIO APIs return a UUID here
       user_info.fetch('patronGroup')
+    end
+
+    # this returns the full patronGroup object
+    def patron_group
+      Folio::Types.patron_groups[patron_group_id]
+    end
+
+    def patron_group_name
+      patron_group&.dig('group')
     end
 
     # always nil for a real patron, but filled in for a PseudoPatron
@@ -49,7 +59,11 @@ module Folio
     end
 
     def fee_borrower?
-      patron_group == Settings.folio.fee_borrower_patron_group
+      patron_group_name == 'sul-purchased'
+    end
+
+    def borrow_direct_eligible?
+      Settings.folio.borrow_direct_eligible_patron_groups.include?(patron_group_name)
     end
 
     def standing
@@ -57,7 +71,7 @@ module Folio
     end
 
     def make_request_as_patron?
-      !expired? && patron_group.present?
+      !expired? && patron_group_id.present?
     end
 
     def first_name

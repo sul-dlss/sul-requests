@@ -77,8 +77,9 @@ class SubmitFolioRequestJob < ApplicationJob
     delegate :user, :scan_destination, to: :request
     delegate :request_policies, to: :folio_client
 
-    def patron_group
-      patron&.patron_group
+    # prevent delegating to a nil patron
+    def patron_group_id
+      patron&.patron_group_id
     end
 
     # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
@@ -100,7 +101,7 @@ class SubmitFolioRequestJob < ApplicationJob
       applicable_policy_id = folio_client.circulation_request_policy(
         item_type_id: item['materialTypeId'],
         loan_type_id: item['temporaryLoanTypeId'] || item['permanentLoanTypeId'],
-        patron_type_id: patron_group,
+        patron_type_id: patron_group_id,
         location_id: item['effectiveLocationId']
       )
 
