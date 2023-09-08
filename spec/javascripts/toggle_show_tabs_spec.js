@@ -18,7 +18,7 @@ describe('Toggling show tabs', function() {
       
       expect(document.querySelector('#thing-a')).not.toBeVisible();
       expect(document.querySelector('#thing-b')).toBeVisible();
-      expect($('#thing-b input')).toEqual($( document.activeElement ));
+      expect(document.querySelector('#thing-b input')).toHaveFocus();
       
       $('#thing-b a').trigger('click');
       
