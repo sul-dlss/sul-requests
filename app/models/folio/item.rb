@@ -101,10 +101,12 @@ module Folio
       [availability_class, circ_class].compact.join(' ')
     end
 
-    def status_text
-      if !circulates?
-        'In-library use only'
-      elsif status == STATUS_AVAILABLE
+    def status_text(request)
+      if !requestable && temporary_location.present?
+        temporary_location.discovery_display_name
+      elsif !circulates?
+        'In-library use'
+      elsif status == STATUS_AVAILABLE && requestable_with?(request)
         'Available'
       else
         'Unavailable'
@@ -151,7 +153,7 @@ module Folio
                                end) || (Location.from_hash(dyn.dig('holdingsRecord', 'effectiveLocation')) if dyn.dig('holdingsRecord',
                                                                                                                       'effectiveLocation')),
           material_type: MaterialType.new(id: dyn.dig('materialType', 'id'), name: dyn.dig('materialType', 'name')),
-          loan_type: LoanType.new(id: dyn.fetch('tempooraryLoanTypeId', dyn.fetch('permanentLoanTypeId'))))
+          loan_type: LoanType.new(id: dyn.fetch('temporaryLoanTypeId', dyn.fetch('permanentLoanTypeId'))))
     end
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
