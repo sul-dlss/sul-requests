@@ -25,7 +25,7 @@ describe('Item Selector Filtering', () => {
     });
 
     it('is a List', () => {
-      expect(itemSelectorFiltering.listPlugin()).toEqual(jasmine.any(List));
+      expect(itemSelectorFiltering.listPlugin()).toBeInstanceOf(List);
     });
   });
 });
