@@ -32,11 +32,3 @@ features:
   estimate_delivery: true
   hold_recall_service: true
   scan_service: true
-
-symws:
-  url: https://example.com/symws
-  headers:
-      x-sirs-clientID: SymWSTestClient
-  login_params:
-    login: 'fake_user'
-    password: 'some_password'

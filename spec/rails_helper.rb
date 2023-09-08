@@ -34,16 +34,6 @@ Capybara.default_max_wait_time = ENV['CI'] ? 10 : 5
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.maintain_test_schema!
 
-# Module that when included causes RSpec to
-# stup our API requests. We can then explicitly
-# allow them in tests that need them by adding
-# allow_apis: true to the tests themselves
-module DisallowAPIs
-  def self.included(host)
-    host.metadata[:allow_apis] = false
-  end
-end
-
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = Rails.root.join('spec/fixtures')
@@ -63,9 +53,7 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :transaction
   end
 
-  config.include DisallowAPIs
-  config.before(:each, allow_apis: false) do
-    stub_request(:any, %r{https://example.com/symws/.*}).to_return(status: 200, body: '', headers: {})
+  config.before do
     stub_request(:any, %r{http://example.com/.*}).to_return(status: 200, body: '', headers: {})
   end
 

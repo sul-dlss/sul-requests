@@ -90,11 +90,6 @@ features:
 background_jobs:
   enabled: false
 
-symws:
-  url: http://exmample.com/symws
-  headers: {}
-  login_params: {}
-
 embed:
   url: https://embed.stanford.edu
 
