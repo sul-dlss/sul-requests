@@ -82,42 +82,14 @@ class SubmitFolioRequestJob < ApplicationJob
       patron&.patron_group_id
     end
 
-    # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-    def best_request_type(item)
-      allowed_request_types = request_policy(item)&.dig('requestTypes')
-      status = item.dig('status', 'name')
-
-      if Folio::Item::HOLD_RECALL_STATUSES.include?(status) && allowed_request_types.include?('Recall')
-        'Recall'
-      elsif Folio::Item::HOLD_RECALL_STATUSES.include?(status) && allowed_request_types.include?('Hold')
-        'Hold'
-      elsif Folio::Item::PAGEABLE_STATUSES.include?(status) && allowed_request_types.include?('Page')
-        'Page'
-      end
-    end
-    # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-
-    def request_policy(item)
-      applicable_policy_id = folio_client.circulation_request_policy(
-        item_type_id: item['materialTypeId'],
-        loan_type_id: item['temporaryLoanTypeId'] || item['permanentLoanTypeId'],
-        patron_type_id: patron_group_id,
-        location_id: item['effectiveLocationId']
-      )
-
-      request_policies.find { |policy| policy['id'] == applicable_policy_id }
-    end
-
     # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     def create_item_circulation_request(barcode)
       item = folio_client.get_item(barcode)
-      request_type = best_request_type(item)
-
       create_log(barcode:, item_id: item['id'])
 
       request_data = FolioClient::CirculationRequest.new(
         request_level: 'Item',
-        request_type:,
+        request_type: item.best_request_type,
         instance_id: request.bib_data.instance_id,
         item_id: item['id'],
         holdings_record_id: item['holdingsRecordId'],

@@ -101,12 +101,10 @@ module Folio
       [availability_class, circ_class].compact.join(' ')
     end
 
-    def status_text(request)
-      if !requestable && temporary_location.present?
-        temporary_location.discovery_display_name
-      elsif !circulates?
-        'In-library use'
-      elsif status == STATUS_AVAILABLE && requestable_with?(request)
+    def status_text
+      if !circulates?
+        'In-library use only'
+      elsif status == STATUS_AVAILABLE && requestable?
         'Available'
       else
         'Unavailable'
@@ -134,7 +132,25 @@ module Folio
     end
 
     def hold_recallable?
-      HOLD_RECALL_STATUSES.include?(status)
+      HOLD_RECALL_STATUSES.include?(status) && allowed_request_types.include?('Recall')
+    end
+
+    def holdable?
+      HOLD_RECALL_STATUSES.include?(status) && allowed_request_types.include?('Hold')
+    end
+
+    def pageable?
+      PAGEABLE_STATUSES.include?(status) && allowed_request_types.include?('Page')
+    end
+
+    def requestable?
+      hold_recallable? || holdable? || pageable?
+    end
+
+    def best_request_type
+      'Recall' if hold_recallable?
+      'Hold' if holdable?
+      'Page' if pageable?
     end
 
     # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
@@ -162,7 +178,7 @@ module Folio
     def availability_class
       if effective_location.details['availabilityClass'] == 'Offsite'
         'deliver-from-offsite'
-      elsif status == STATUS_AVAILABLE
+      elsif status == STATUS_AVAILABLE && requestable?
         'available'
       else
         'unavailable'
@@ -175,6 +191,14 @@ module Folio
 
     def loan_policy
       @loan_policy ||= Folio::CirculationRules::PolicyService.instance.item_loan_policy(self)
+    end
+
+    def allowed_request_types
+      request_policy&.dig('requestTypes')
+    end
+
+    def request_policy
+      @request_policy ||= Folio::CirculationRules::PolicyService.instance.item_request_policy(self)
     end
 
     def circ_class
