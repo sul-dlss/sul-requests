@@ -19,14 +19,14 @@ FactoryBot.define do
   factory :art_origin_admin_user, class: 'User' do
     sunetid { 'art-admin' }
     after(:build) do |user|
-      user.ldap_group_string = 'ART-TEST-LDAP-GROUP'
+      user.ldap_group_string = 'sul:requests-art'
     end
   end
 
   factory :page_mp_origin_admin_user, class: 'User' do
     sunetid { 'page-mp-admin' }
     after(:build) do |user|
-      user.ldap_group_string = 'PAGE-MP-TEST-LDAP-GROUP'
+      user.ldap_group_string = 'sul:requests-branner'
     end
   end
 

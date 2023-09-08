@@ -26,14 +26,16 @@ scan_pilot_groups:
 
 # LDAP Workgroups for origin specific mediation
 origin_admin_groups:
-  ART: []
-  EDUCATION: []
-  HOPKINS: []
-  RUMSEYMAP: []
-  SPEC-COLL: []
+  ART: ['sul:requests-art']
+  EDUCATION: ['sul:requests-education']
+  HOPKINS: ['sul:requests-hopkins']
+  HV-ARCHIVE: ['sul:requests-hoover-archive']
+  HOOVER: ['sul:requests-hoover-library']
+  RUMSEYMAP: ['sul:requests-rumsey']
+  SPEC-COLL: ['sul:requests-spec']
 
 origin_location_admin_groups:
-  PAGE-MP: []
+  PAGE-MP: ['sul:requests-branner']
 
 mediateable_origins:
   ART: {}

@@ -213,15 +213,14 @@ RSpec.describe Ability do
   end
 
   describe 'an origin library admin' do
-    let(:user) { create(:sso_user) }
+    let(:user) { create(:art_origin_admin_user) }
 
     before do
-      allow(user).to receive_messages(ldap_groups: ['FAKE-ORIGIN-LIBRARY-TEST-LDAP-GROUP'])
-      request.origin = 'FAKE-ORIGIN-LIBRARY'
-      hold_recall.origin = 'FAKE-ORIGIN-LIBRARY'
-      mediated_page.origin = 'FAKE-ORIGIN-LIBRARY'
-      page.origin = 'FAKE-ORIGIN-LIBRARY'
-      scan.origin = 'FAKE-ORIGIN-LIBRARY'
+      request.origin = 'ART'
+      hold_recall.origin = 'ART'
+      mediated_page.origin = 'ART'
+      page.origin = 'ART'
+      scan.origin = 'ART'
     end
 
     # can manage libraries that they are an admin of
@@ -241,15 +240,14 @@ RSpec.describe Ability do
   end
 
   describe 'an origin location admin' do
-    let(:user) { create(:sso_user) }
+    let(:user) { create(:page_mp_origin_admin_user) }
 
     before do
-      allow(user).to receive_messages(ldap_groups: ['FAKE-ORIGIN-LOCATION-TEST-LDAP-GROUP'])
-      request.origin_location = 'FAKE-ORIGIN-LOCATION'
-      hold_recall.origin_location = 'FAKE-ORIGIN-LOCATION'
-      mediated_page.origin_location = 'FAKE-ORIGIN-LOCATION'
-      page.origin_location = 'FAKE-ORIGIN-LOCATION'
-      scan.origin_location = 'FAKE-ORIGIN-LOCATION'
+      request.origin_location = 'PAGE-MP'
+      hold_recall.origin_location = 'PAGE-MP'
+      mediated_page.origin_location = 'PAGE-MP'
+      page.origin_location = 'PAGE-MP'
+      scan.origin_location = 'PAGE-MP'
     end
 
     # can manage locations that they are an admin of
