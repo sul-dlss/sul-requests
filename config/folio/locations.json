@@ -14482,5 +14482,65 @@
       "updatedDate": "2023-08-30T21:26:55.331+00:00",
       "updatedByUserId": "92c1aeb5-87f1-4be1-9f4d-0f90d1203dcc"
     }
+  },
+  {
+    "id": "0d9beb46-dc13-47ed-b11f-e3abd99ac7e5",
+    "name": "SAL3 HY Page to East-Asia",
+    "code": "SAL3-HY-PAGE-EA",
+    "discoveryDisplayName": "Harvard-Yenching collection: Request for pickup at East Asia Library",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9",
+    "details": {
+      "scanMaterialTypeNames": "book,periodical",
+      "scanServicePointCode": "EAST-ASIA",
+      "scanPseudopatronBarcode": "EAL-SCANREVIEW",
+      "availabilityClass": "Offsite",
+      "pageServicePointCodes": "EAST-ASIA"
+    },
+    "primaryServicePoint": "3a306665-eec7-4a40-8f4d-608585b2a394",
+    "servicePointIds": [
+      "3a306665-eec7-4a40-8f4d-608585b2a394"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-09-11T19:30:24.046+00:00",
+      "createdByUserId": "92c1aeb5-87f1-4be1-9f4d-0f90d1203dcc",
+      "updatedDate": "2023-09-11T19:30:24.046+00:00",
+      "updatedByUserId": "92c1aeb5-87f1-4be1-9f4d-0f90d1203dcc"
+    }
+  },
+  {
+    "id": "4d0b258a-8668-4259-bc9a-9422ef72706d",
+    "name": "SAL3 ND Page to East-Asia",
+    "code": "SAL3-ND-PAGE-EA",
+    "discoveryDisplayName": "NDC collection: Request for pickup at East Asia Library",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+    "libraryId": "ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9",
+    "details": {
+      "scanMaterialTypeNames": "book,periodical",
+      "scanServicePointCode": "EAST-ASIA",
+      "scanPseudopatronBarcode": "EAL-SCANREVIEW",
+      "availabilityClass": "Offsite",
+      "pageServicePointCodes": "EAST-ASIA"
+    },
+    "primaryServicePoint": "3a306665-eec7-4a40-8f4d-608585b2a394",
+    "servicePointIds": [
+      "3a306665-eec7-4a40-8f4d-608585b2a394"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-09-11T19:31:08.750+00:00",
+      "createdByUserId": "92c1aeb5-87f1-4be1-9f4d-0f90d1203dcc",
+      "updatedDate": "2023-09-11T19:31:08.750+00:00",
+      "updatedByUserId": "92c1aeb5-87f1-4be1-9f4d-0f90d1203dcc"
+    }
   }
 ]
