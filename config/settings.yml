@@ -78,9 +78,8 @@ folio:
     - visiting-scholar  
 
 mailer_host: <%= `echo $HOSTNAME` %>
-searchworks_api: 'https://searchworks.stanford.edu'
 hours_api: 'https://library-hours.stanford.edu/'
-searchworks_link: 'http://searchworks.stanford.edu/view'
+searchworks_link: 'https://searchworks.stanford.edu/view'
 sul_illiad: 'https://sul-illiad-test.stanford.edu/'
 illiad_api_key: 'AbC123'
 analytics_debug: true

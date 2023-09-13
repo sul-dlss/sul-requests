@@ -82,7 +82,7 @@ module Folio
     end
 
     def view_url
-      [Settings.searchworks_api, 'view', hrid].join('/')
+      [Settings.searchworks_link, hrid].join('/')
     end
 
     def instance_id
