@@ -43,7 +43,7 @@ module SULRequests
     }
 
     config.illiad_nvtgc_map = {
-      default: 'st2',
+      default: 'stf',
       'organization:law' => 'rcj',
       'organization:gsb' => 's7z'
     }
