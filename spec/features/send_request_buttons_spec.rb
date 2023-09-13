@@ -6,11 +6,12 @@ RSpec.describe 'Send Request Buttons' do
   let(:selected_items) do
     [
       double(:item, callnumber: 'ABC 123', checked_out?: false, processing?: false, missing?: false, hold?: false, on_order?: false,
-                    hold_recallable?: false, barcode: '12345678', type: 'STKS',
+                    pageable?: true, mediateable?: mediateable, hold_recallable?: false, barcode: '12345678', type: 'STKS',
                     effective_location: build(:location), permanent_location: build(:location),
                     material_type: build(:book_material_type), loan_type: double(id: nil))
     ]
   end
+  let(:mediateable) { false }
 
   let(:instance) do
     instance_double(Folio::Instance, title: 'Test title', request_holdings: selected_items, items: [])
@@ -114,6 +115,8 @@ RSpec.describe 'Send Request Buttons' do
   end
 
   describe 'Mediated Pages' do
+    let(:mediateable) { true }
+
     before do
       stub_bib_data_json(build(:single_mediated_holding))
     end

@@ -85,14 +85,14 @@ class SubmitFolioRequestJob < ApplicationJob
     # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     def create_item_circulation_request(barcode)
       item = folio_client.get_item(barcode)
-      create_log(barcode:, item_id: item['id'])
+      create_log(barcode:, item_id: item.id)
 
       request_data = FolioClient::CirculationRequest.new(
         request_level: 'Item',
         request_type: item.best_request_type,
         instance_id: request.bib_data.instance_id,
-        item_id: item['id'],
-        holdings_record_id: item['holdingsRecordId'],
+        item_id: item.id,
+        holdings_record_id: item.holdings_record_id,
         requester_id: patron_or_proxy_id,
         fulfillment_preference: 'Hold Shelf',
         pickup_service_point_id: pickup_location_id,

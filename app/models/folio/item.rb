@@ -6,8 +6,8 @@ module Folio
   #       See https://github.com/sul-dlss/searchworks_traject_indexer/blob/02192452815de3861dcfafb289e1be8e575cb000/lib/traject/config/sirsi_config.rb#L2379
   # NOTE, barcode and callnumber may be nil. see instance_hrid: 'in00000063826'
   class Item
-    attr_reader :barcode, :status, :type, :callnumber, :public_note, :effective_location, :permanent_location, :temporary_location,
-                :material_type, :loan_type
+    attr_reader :id, :barcode, :status, :type, :callnumber, :public_note, :effective_location, :permanent_location, :temporary_location,
+                :material_type, :loan_type, :holdings_record_id
 
     # Other statuses that we aren't using include "Unavailable" and "Intellectual item"
     STATUS_CHECKED_OUT = 'Checked out'
@@ -54,11 +54,13 @@ module Folio
       STATUS_RESTRICTED
     ].freeze
 
-    # rubocop:disable Metrics/ParameterLists
+    # rubocop:disable Metrics/ParameterLists, Metrics/MethodLength
     def initialize(barcode:, status:, callnumber:,
                    effective_location:, permanent_location: nil, temporary_location: nil,
                    type: nil, public_note: nil, material_type: nil, loan_type: nil,
-                   due_date: nil)
+                   due_date: nil, id: nil, holdings_record_id: nil)
+      @id = id
+      @holdings_record_id = holdings_record_id
       @barcode = barcode
       @status = status
       @type = type
@@ -71,7 +73,7 @@ module Folio
       @loan_type = loan_type
       @due_date = due_date
     end
-    # rubocop:enable Metrics/ParameterLists
+    # rubocop:enable Metrics/ParameterLists, Metrics/MethodLength
 
     def with_status(status)
       Folio::ItemWithStatus.new(self).with_status(status)
@@ -133,6 +135,10 @@ module Folio
     end
 
     def hold_recallable?
+      recallable? || holdable?
+    end
+
+    def recallable?
       HOLD_RECALL_STATUSES.include?(status) && allowed_request_types.include?('Recall')
     end
 
@@ -144,19 +150,32 @@ module Folio
       PAGEABLE_STATUSES.include?(status) && allowed_request_types.include?('Page')
     end
 
+    def mediateable?
+      permanent_location.details['pageMediationGroupKey'].present? || aeon_pageable?
+    end
+
+    def aeon_pageable?
+      aeon_site.present?
+    end
+
     def requestable?
-      hold_recallable? || holdable? || pageable?
+      hold_recallable? || mediateable? || pageable?
     end
 
     def best_request_type
-      'Recall' if hold_recallable?
+      'Recall' if recallable?
       'Hold' if holdable?
       'Page' if pageable?
     end
 
+    def aeon_site
+      permanent_location.details['pageAeonSite']
+    end
+
     # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity
     def self.from_hash(dyn)
-      new(barcode: dyn['barcode'],
+      new(id: dyn['id'],
+          barcode: dyn['barcode'],
           status: dyn.dig('status', 'name'),
           due_date: dyn['dueDate'],
           type: dyn.dig('materialType', 'name'),
@@ -171,7 +190,8 @@ module Folio
                                                                                                                       'effectiveLocation')),
           temporary_location: (Location.from_hash(dyn.fetch('temporaryLocation')) if dyn['temporaryLocation']),
           material_type: MaterialType.new(id: dyn.dig('materialType', 'id'), name: dyn.dig('materialType', 'name')),
-          loan_type: LoanType.new(id: dyn.fetch('temporaryLoanTypeId', dyn.fetch('permanentLoanTypeId'))))
+          loan_type: LoanType.new(id: dyn.fetch('temporaryLoanTypeId', dyn.fetch('permanentLoanTypeId'))),
+          holdings_record_id: dyn['holdingsRecordId'])
     end
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity
 
@@ -180,7 +200,7 @@ module Folio
     def availability_class
       if effective_location.details['availabilityClass'] == 'Offsite'
         'deliver-from-offsite'
-      elsif status == STATUS_AVAILABLE && requestable?
+      elsif status == STATUS_AVAILABLE
         'available'
       else
         'unavailable'
@@ -196,7 +216,7 @@ module Folio
     end
 
     def allowed_request_types
-      request_policy&.dig('requestTypes')
+      request_policy&.dig('requestTypes') || []
     end
 
     def request_policy

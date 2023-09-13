@@ -5,6 +5,14 @@ require 'rails_helper'
 RSpec.describe Folio::Item do
   subject(:item) { described_class.from_hash(JSON.parse(data)) }
 
+  before do
+    allow(Folio::CirculationRules::PolicyService.instance).to receive(:item_request_policy).and_return(
+      {
+        'requestTypes' => %w[Page Hold Recall]
+      }
+    )
+  end
+
   describe '.from_hash' do
     context 'from a record without a barcode or callnumber' do
       let(:data) do

@@ -11,11 +11,7 @@ module Folio
     end
 
     def scannable?
-      scan_destination.present? && scannable_material_type?
-    end
-
-    def scannable_material_type?
-      request.holdings.all? { |item| scan_destination.material_types.include?(item.material_type.name) }
+      scan_destination.present? && all_items_scannable?
     end
 
     def scan_destination
@@ -34,15 +30,15 @@ module Folio
     end
 
     def mediateable?
-      request.holdings.any? { |item| item.permanent_location.details['pageMediationGroupKey'] } || aeon_pageable?
+      request.holdings.any?(&:mediateable?)
     end
 
     def aeon_pageable?
-      request.holdings.any? { |item| item.permanent_location.details['pageAeonSite'] }
+      request.holdings.any?(&:aeon_pageable?)
     end
 
     def aeon_site
-      request.holdings.filter_map { |item| item.permanent_location.details['pageAeonSite'] }.first
+      request.holdings.filter_map(&:aeon_site).first
     end
 
     # returns a true if any of the following is true
@@ -57,7 +53,7 @@ module Folio
     end
 
     def pageable?
-      !mediateable? && !hold_recallable? && any_holdings_pageable?
+      !mediateable? && !hold_recallable? && any_items_pageable?
     end
 
     # FOLIO
@@ -102,25 +98,21 @@ module Folio
     end
 
     def all_items_hold_recallable?
-      return false unless request.holdings.any?
-      return false unless request.holdings.all?(&:hold_recallable?)
+      return false if request.holdings.none?
 
-      request.holdings.all? do |item|
-        types = item_request_policy(item)
-        types.include?('Hold') || types.include?('Recall')
-      end
+      request.holdings.all?(&:hold_recallable?)
     end
 
-    def item_request_policy(item)
-      circulation_rules.item_request_policy(item)&.dig('requestTypes') || []
+    def any_items_pageable?
+      return false if request.holdings.none?
+
+      request.holdings.any?(&:pageable?)
     end
 
-    def any_holdings_pageable?
-      request.holdings.any? { |item| circulation_rules.item_request_policy(item)&.dig('requestTypes')&.include? 'Page' }
-    end
+    def all_items_scannable?
+      return false if request.holdings.none?
 
-    def circulation_rules
-      Folio::CirculationRules::PolicyService.instance
+      request.holdings.all? { |item| scan_destination.material_types.include?(item.material_type.name) }
     end
   end
 end

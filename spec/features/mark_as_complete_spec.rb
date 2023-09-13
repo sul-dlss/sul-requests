@@ -16,6 +16,8 @@ RSpec.describe 'Mark As Complete', js: true do
                     current_location: nil,
                     callnumber: 'ABC 123',
                     hold?: true,
+                    pageable?: true,
+                    mediateable?: true,
                     effective_location: build(:mediated_location),
                     permanent_location: build(:mediated_location),
                     material_type: build(:book_material_type),

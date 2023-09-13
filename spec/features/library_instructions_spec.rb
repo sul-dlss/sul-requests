@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Library Instructions' do
   let(:selected_items) do
     [double(:item, callnumber: 'ABC 123', barcode: '12345678', checked_out?: true, processing?: false, missing?: false, hold?: false,
-                   on_order?: false, hold_recallable?: true,
+                   on_order?: false, hold_recallable?: true, aeon_pageable?: false, mediateable?: false,
                    effective_location: build(:location), permanent_location: build(:location),
                    material_type: build(:book_material_type), loan_type: double(id: nil))]
   end
