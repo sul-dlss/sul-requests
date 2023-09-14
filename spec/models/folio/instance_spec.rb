@@ -328,6 +328,363 @@ RSpec.describe Folio::Instance do
   end
 
   describe '#holdings' do
-    pending 'not implemented yet'
+    let(:instance_response) do
+      <<~JSON
+        {
+          "id": "a1a88348-363f-5b41-9937-13584daae527",
+          "title": "Stanford Research Institute records, 1947-1966",
+          "identifiers": [
+            {
+              "value": "(OCoLC-M)754864063",
+              "identifierTypeObject": null
+            },
+            {
+              "value": "(OCoLC-I)755035981",
+              "identifierTypeObject": null
+            }
+          ],
+          "instanceType": {
+            "name": "unspecified"
+          },
+          "contributors": [
+            {
+              "name": "Stanford Research Institute",
+              "primary": true
+            }
+          ],
+          "publication": [],
+          "electronicAccess": [
+            {
+              "materialsSpecification": "Finding aid available online",
+              "uri": "http://www.oac.cdlib.org/findaid/ark:/13030/kt7b69s0dh"
+            }
+          ],
+          "items": [
+            {
+              "barcode": "6307113-1001",
+              "status": {
+                "name": "Available"
+              },
+              "materialType": null,
+              "chronology": null,
+              "enumeration": null,
+              "effectiveCallNumberComponents": {
+                "callNumber": "SC0801"
+              },
+              "notes": [
+                {
+                  "note": ".COMMENT. c:pew; removed from 2191 collection",
+                  "itemNoteType": null
+                }
+              ],
+              "effectiveLocation": {
+                "id": "635d2ddc-c7a1-46ce-b46d-336f1384c4dc",
+                "campus": {
+                  "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                  "code": "SUL"
+                },
+                "library": {
+                  "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+                  "code": "SPEC-COLL"
+                },
+                "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+                "code": "SPEC-U-ARCHIVES",
+                "discoveryDisplayName": "University Archives",
+                "name": "Spec U-Archives",
+                "details": {}
+              },
+              "permanentLocation": { "id": "uuid", "code": "SPEC-STACKS" },
+              "holdingsRecord": { "effectiveLocation": { "code": "SPEC-STACKS" } },
+              "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+              "temporaryLoanTypeId": null
+            },
+            {
+              "barcode": "36105116223418",
+              "status": {
+                "name": "Available"
+              },
+              "materialType": null,
+              "chronology": null,
+              "enumeration": "BOX 1",
+              "effectiveCallNumberComponents": {
+                "callNumber": "SC0801"
+              },
+              "notes": [],
+              "effectiveLocation": {
+                "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
+                "campus": {
+                  "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                  "code": "SUL"
+                },
+                "library": {
+                  "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+                  "code": "SPEC-COLL"
+                },
+                "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+                "code": "SPEC-SAL3-U-ARCHIVES",
+                "discoveryDisplayName": "University Archives",
+                "name": "Spec SAL3 U-Archives",
+                "details": {}
+              },
+              "permanentLocation": { "id": "uuid", "code": "SPEC-STACKS" },
+              "holdingsRecord": { "effectiveLocation": { "code": "SPEC-STACKS" } },
+              "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+              "temporaryLoanTypeId": null
+            },
+            {
+              "barcode": "36105116223426",
+              "status": {
+                "name": "Available"
+              },
+              "materialType": null,
+              "chronology": null,
+              "enumeration": "BOX 2",
+              "effectiveCallNumberComponents": {
+                "callNumber": "SC0801"
+              },
+              "notes": [],
+              "effectiveLocation": {
+                "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
+                "campus": {
+                  "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                  "code": "SUL"
+                },
+                "library": {
+                  "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+                  "code": "SPEC-COLL"
+                },
+                "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+                "code": "SPEC-SAL3-U-ARCHIVES",
+                "discoveryDisplayName": "University Archives",
+                "name": "Spec SAL3 U-Archives",
+                "details": {}
+              },
+              "permanentLocation": { "id": "uuid", "code": "SPEC-STACKS" },
+              "holdingsRecord": { "effectiveLocation": { "code": "SPEC-STACKS" } },
+              "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+              "temporaryLoanTypeId": null
+            },
+            {
+              "barcode": "36105116223434",
+              "status": {
+                "name": "Available"
+              },
+              "materialType": null,
+              "chronology": null,
+              "enumeration": "BOX 3",
+              "effectiveCallNumberComponents": {
+                "callNumber": "SC0801"
+              },
+              "notes": [],
+              "effectiveLocation": {
+                "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
+                "campus": {
+                  "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                  "code": "SUL"
+                },
+                "library": {
+                  "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+                  "code": "SPEC-COLL"
+                },
+                "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+                "code": "SPEC-SAL3-U-ARCHIVES",
+                "discoveryDisplayName": "University Archives",
+                "name": "Spec SAL3 U-Archives",
+                "details": {}
+              },
+              "permanentLocation": { "id": "uuid", "code": "SPEC-STACKS" },
+              "holdingsRecord": { "effectiveLocation": { "code": "SPEC-STACKS" } },
+              "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+              "temporaryLoanTypeId": null
+            }
+          ]
+        }
+      JSON
+    end
+
+    it 'returns items' do
+      expect(data.holdings.count).to eq 4
+    end
+
+    context 'with suppressed items' do
+      let(:instance_response) do
+        <<~JSON
+          {
+            "id": "a1a88348-363f-5b41-9937-13584daae527",
+            "title": "Stanford Research Institute records, 1947-1966",
+            "identifiers": [
+              {
+                "value": "(OCoLC-M)754864063",
+                "identifierTypeObject": null
+              },
+              {
+                "value": "(OCoLC-I)755035981",
+                "identifierTypeObject": null
+              }
+            ],
+            "instanceType": {
+              "name": "unspecified"
+            },
+            "contributors": [
+              {
+                "name": "Stanford Research Institute",
+                "primary": true
+              }
+            ],
+            "publication": [],
+            "electronicAccess": [
+              {
+                "materialsSpecification": "Finding aid available online",
+                "uri": "http://www.oac.cdlib.org/findaid/ark:/13030/kt7b69s0dh"
+              }
+            ],
+            "items": [
+              {
+                "barcode": "6307113-1001",
+                "status": {
+                  "name": "Available"
+                },
+                "materialType": null,
+                "chronology": null,
+                "enumeration": null,
+                "effectiveCallNumberComponents": {
+                  "callNumber": "SC0801"
+                },
+                "notes": [
+                  {
+                    "note": ".COMMENT. c:pew; removed from 2191 collection",
+                    "itemNoteType": null
+                  }
+                ],
+                "effectiveLocation": {
+                  "id": "635d2ddc-c7a1-46ce-b46d-336f1384c4dc",
+                  "campus": {
+                    "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                    "code": "SUL"
+                  },
+                  "library": {
+                    "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+                    "code": "SPEC-COLL"
+                  },
+                  "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+                  "code": "SPEC-U-ARCHIVES",
+                  "discoveryDisplayName": "University Archives",
+                  "name": "Spec U-Archives",
+                  "details": {}
+                },
+                "permanentLocation": { "id": "uuid", "code": "SPEC-STACKS" },
+                "holdingsRecord": { "effectiveLocation": { "code": "SPEC-STACKS" } },
+                "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+                "temporaryLoanTypeId": null
+              },
+              {
+                "barcode": "36105116223418",
+                "status": {
+                  "name": "Available"
+                },
+                "materialType": null,
+                "chronology": null,
+                "enumeration": "BOX 1",
+                "effectiveCallNumberComponents": {
+                  "callNumber": "SC0801"
+                },
+                "notes": [],
+                "effectiveLocation": {
+                  "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
+                  "campus": {
+                    "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                    "code": "SUL"
+                  },
+                  "library": {
+                    "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+                    "code": "SPEC-COLL"
+                  },
+                  "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+                  "code": "SPEC-SAL3-U-ARCHIVES",
+                  "discoveryDisplayName": "University Archives",
+                  "name": "Spec SAL3 U-Archives",
+                  "details": {}
+                },
+                "permanentLocation": { "id": "uuid", "code": "SPEC-STACKS" },
+                "holdingsRecord": { "effectiveLocation": { "code": "SPEC-STACKS" } },
+                "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+                "temporaryLoanTypeId": null
+              },
+              {
+                "barcode": "36105116223426",
+                "status": {
+                  "name": "Available"
+                },
+                "materialType": null,
+                "chronology": null,
+                "enumeration": "BOX 2",
+                "effectiveCallNumberComponents": {
+                  "callNumber": "SC0801"
+                },
+                "notes": [],
+                "effectiveLocation": {
+                  "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
+                  "campus": {
+                    "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                    "code": "SUL"
+                  },
+                  "library": {
+                    "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+                    "code": "SPEC-COLL"
+                  },
+                  "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+                  "code": "SPEC-SAL3-U-ARCHIVES",
+                  "discoveryDisplayName": "University Archives",
+                  "name": "Spec SAL3 U-Archives",
+                  "details": {}
+                },
+                "permanentLocation": { "id": "uuid", "code": "SPEC-STACKS" },
+                "holdingsRecord": { "effectiveLocation": { "code": "SPEC-STACKS" } },
+                "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+                "temporaryLoanTypeId": null
+              },
+              {
+                "barcode": "36105116223434",
+                "discoverySuppress": true,
+                "status": {
+                  "name": "Available"
+                },
+                "materialType": null,
+                "chronology": null,
+                "enumeration": "BOX 3",
+                "effectiveCallNumberComponents": {
+                  "callNumber": "SC0801"
+                },
+                "notes": [],
+                "effectiveLocation": {
+                  "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
+                  "campus": {
+                    "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                    "code": "SUL"
+                  },
+                  "library": {
+                    "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+                    "code": "SPEC-COLL"
+                  },
+                  "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+                  "code": "SPEC-SAL3-U-ARCHIVES",
+                  "discoveryDisplayName": "University Archives",
+                  "name": "Spec SAL3 U-Archives",
+                  "details": {}
+                },
+                "permanentLocation": { "id": "uuid", "code": "SPEC-STACKS" },
+                "holdingsRecord": { "effectiveLocation": { "code": "SPEC-STACKS" } },
+                "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+                "temporaryLoanTypeId": null
+              }
+            ]
+          }
+        JSON
+      end
+
+      it 'returns only the unsuppressed items' do
+        expect(data.holdings.count).to eq 3
+      end
+    end
   end
 end

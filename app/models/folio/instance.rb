@@ -57,7 +57,7 @@ module Folio
       contributor&.fetch('name')
     end
 
-    attr_reader :pub_date, :format, :items
+    attr_reader :pub_date, :format
 
     def isbn
       @isbn.join('; ')
@@ -71,6 +71,10 @@ module Folio
 
     def request_holdings(request)
       Folio::Holdings.new(request, items)
+    end
+
+    def items
+      @items.reject(&:suppressed_from_discovery?)
     end
 
     def holdings
