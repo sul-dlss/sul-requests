@@ -7,6 +7,7 @@ RSpec.describe RequestStatusMailerFactory do
 
   before do
     request.user = create(:anon_user)
+    allow(Settings.ils.bib_model.constantize).to receive(:fetch)
   end
 
   describe 'user errors' do

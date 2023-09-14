@@ -3,6 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe Scan do
+  before do
+    allow(Folio::Instance).to receive(:fetch)
+  end
+
   it 'has the properly assigned Rails STI attribute value' do
     expect(subject.type).to eq 'Scan'
   end

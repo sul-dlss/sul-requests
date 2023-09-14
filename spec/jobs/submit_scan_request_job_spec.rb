@@ -5,6 +5,7 @@ require 'rails_helper'
 RSpec.describe SubmitScanRequestJob, type: :job do
   before do
     allow(Request.ils_job_class).to receive(:perform_later)
+    allow(Settings.ils.bib_model.constantize).to receive(:fetch)
   end
 
   context 'when illiad response is success' do

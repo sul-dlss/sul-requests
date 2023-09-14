@@ -7,7 +7,7 @@ RSpec.describe 'Send Request Buttons' do
     [
       double(:item, callnumber: 'ABC 123', checked_out?: false, processing?: false, missing?: false, hold?: false, on_order?: false,
                     pageable?: true, mediateable?: mediateable, hold_recallable?: false, barcode: '12345678', type: 'STKS',
-                    effective_location: build(:location), permanent_location: build(:location),
+                    effective_location: build(:location), permanent_location: build(:location), requestable?: true,
                     material_type: build(:book_material_type), loan_type: double(id: nil))
     ]
   end

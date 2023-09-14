@@ -53,7 +53,7 @@ module Folio
     end
 
     def pageable?
-      !mediateable? && !hold_recallable? && any_items_pageable?
+      !mediateable? && !hold_recallable? && any_items_requestable?
     end
 
     # FOLIO
@@ -107,6 +107,12 @@ module Folio
       return false if request.holdings.none?
 
       request.holdings.any?(&:pageable?)
+    end
+
+    def any_items_requestable?
+      return false if request.holdings.none?
+
+      request.holdings.any?(&:requestable?)
     end
 
     def all_items_scannable?

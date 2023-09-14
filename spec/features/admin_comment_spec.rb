@@ -9,6 +9,7 @@ RSpec.describe 'Admin Comments', js: true do
   end
 
   before do
+    allow(Settings.ils.bib_model.constantize).to receive(:fetch)
     stub_current_user(user)
     create(
       :mediated_page_with_holdings,
