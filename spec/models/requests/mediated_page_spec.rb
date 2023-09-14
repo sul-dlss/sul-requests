@@ -7,6 +7,7 @@ RSpec.describe MediatedPage do
 
   before do
     allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
+    allow(Settings.ils.bib_model.constantize).to receive(:fetch)
   end
 
   it 'has the properly assigned Rails STI attribute value' do

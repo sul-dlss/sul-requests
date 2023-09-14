@@ -16,6 +16,10 @@ RSpec.describe RequestsController do
     { item_id: '12345', barcode: '3610512345', origin: 'GREEN', origin_location: 'STACKS' }
   end
 
+  before do
+    allow(Settings.ils.bib_model.constantize).to receive(:fetch)
+  end
+
   describe '#new' do
     describe 'required parameters' do
       it 'item id, library, and location' do
@@ -40,6 +44,18 @@ RSpec.describe RequestsController do
         expect(assigns[:request].origin_location).to eq 'STACKS'
         expect(assigns[:request].item_id).to eq '12345'
         expect(assigns[:request].requested_barcode).to eq '3610512345'
+      end
+    end
+
+    describe 'nonexistent item' do
+      before do
+        allow(Folio::Instance).to receive(:fetch).and_call_original
+      end
+
+      it 'raises an error' do
+        expect do
+          get(:new, params: { item_id: 'does_not_exist', origin: 'GREEN', origin_location: 'STACKS' })
+        end.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 

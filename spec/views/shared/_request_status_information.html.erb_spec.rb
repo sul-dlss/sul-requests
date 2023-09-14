@@ -7,6 +7,7 @@ RSpec.describe 'shared/_request_status_information.html.erb' do
 
   before do
     allow(view).to receive_messages(current_request: request)
+    allow(Settings.ils.bib_model.constantize).to receive(:fetch)
   end
 
   describe 'display request destination' do

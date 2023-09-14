@@ -10,6 +10,10 @@ RSpec.describe RequestStatusMailer do
     let(:mailer_method) { :request_status_for_page }
     let(:mail) { described_class.send(mailer_method, request) }
 
+    before do
+      allow(Settings.ils.bib_model.constantize).to receive(:fetch)
+    end
+
     describe '#request_status_for_u003' do
       let(:mailer_method) { :request_status_for_u003 }
 

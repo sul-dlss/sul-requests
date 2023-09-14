@@ -3,6 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe HoldRecall do
+  before do
+    allow(Settings.ils.bib_model.constantize).to receive(:fetch)
+  end
+
   describe 'requestable' do
     it { is_expected.not_to be_requestable_with_name_email }
     it { is_expected.to be_requestable_with_library_id }
