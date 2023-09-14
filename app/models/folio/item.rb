@@ -110,7 +110,9 @@ module Folio
     end
 
     def status_text
-      if !circulates?
+      if !requestable? && temporary_location.present?
+        temporary_location.discovery_display_name
+      elsif !circulates?
         'In-library use only'
       elsif status == STATUS_AVAILABLE && requestable?
         'Available'
@@ -206,7 +208,7 @@ module Folio
     def availability_class
       if effective_location.details['availabilityClass'] == 'Offsite'
         'deliver-from-offsite'
-      elsif status == STATUS_AVAILABLE
+      elsif status == STATUS_AVAILABLE && requestable?
         'available'
       else
         'unavailable'

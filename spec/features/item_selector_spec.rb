@@ -371,4 +371,17 @@ RSpec.describe 'Item Selector' do
       end
     end
   end
+
+  context 'when items are in a temporary location' do
+    before do
+      stub_bib_data_json(build(:mixed_crez_holdings))
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
+    end
+
+    it 'shows the temporary location discovery display name as the status text if the item is not requestable' do
+      within('#item-selector') do
+        expect(page).to have_css('.unavailable', text: 'Discovery display name')
+      end
+    end
+  end
 end
