@@ -17,6 +17,10 @@ class RequestsController < ApplicationController
 
   helper_method :current_request, :delegated_request?
 
+  class_attribute :bib_model_class, default: Settings.ils.bib_model.constantize
+
+  rescue_from bib_model_class::NotFound, with: :item_not_found
+
   def new
     current_request.assign_attributes(new_params)
     validate_request_type
@@ -183,5 +187,10 @@ class RequestsController < ApplicationController
   end
 
   class HoneyPotFieldError < StandardError
+  end
+
+  # Re-raise as ActiveRecord::RecordNotFound so we get a 404 in production
+  def item_not_found(exception)
+    raise ActiveRecord::RecordNotFound, exception
   end
 end
