@@ -487,4 +487,67 @@ RSpec.describe Folio::Item do
       end
     end
   end
+
+  describe '#suppressed_from_discovery?' do
+    let(:gre_stacks) do
+      <<~JSON
+        {
+          "id": "4573e824-9273-4f13-972f-cff7bf504217",
+          "campus": {
+            "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+            "code": "SUL"
+          },
+          "library": {
+            "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
+            "code": "GREEN"
+          },
+          "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+          "code": "GRE-STACKS",
+          "discoveryDisplayName": "Green Library Stacks",
+          "name": "Green Stacks",
+          "details": {}
+        }
+      JSON
+    end
+
+    context 'with a suppressed item' do
+      let(:data) do
+        <<~JSON
+          {
+            "discoverySuppress": true,
+            "status": { "name": "Available" },
+            "materialType": { "id": "1a54b431-2e4f-452d-9cae-9cee66c9a892", "name": "book" },
+            "permanentLocation": #{gre_stacks},
+            "effectiveLocation": #{gre_stacks},
+            "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
+            "notes": []
+          }
+        JSON
+      end
+
+      it 'is suppressed' do
+        expect(item.suppressed_from_discovery?).to be(true)
+      end
+    end
+
+    context 'with an unsuppressed item' do
+      let(:data) do
+        <<~JSON
+          {
+            "discoverySuppress": false,
+            "status": { "name": "Available" },
+            "materialType": { "id": "1a54b431-2e4f-452d-9cae-9cee66c9a892", "name": "book" },
+            "permanentLocation": #{gre_stacks},
+            "effectiveLocation": #{gre_stacks},
+            "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
+            "notes": []
+          }
+        JSON
+      end
+
+      it 'is not suppressed' do
+        expect(item.suppressed_from_discovery?).to be(false)
+      end
+    end
+  end
 end

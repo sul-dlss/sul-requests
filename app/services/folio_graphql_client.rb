@@ -96,6 +96,7 @@ class FolioGraphqlClient
               }
               items {
                 barcode
+                discoverySuppress
                 status {
                   name
                 }

@@ -58,7 +58,7 @@ module Folio
     def initialize(barcode:, status:, callnumber:,
                    effective_location:, permanent_location: nil, temporary_location: nil,
                    type: nil, public_note: nil, material_type: nil, loan_type: nil,
-                   due_date: nil, id: nil, holdings_record_id: nil)
+                   due_date: nil, id: nil, holdings_record_id: nil, suppressed_from_discovery: false)
       @id = id
       @holdings_record_id = holdings_record_id
       @barcode = barcode
@@ -72,6 +72,7 @@ module Folio
       @material_type = material_type
       @loan_type = loan_type
       @due_date = due_date
+      @suppressed_from_discovery = suppressed_from_discovery
     end
     # rubocop:enable Metrics/ParameterLists, Metrics/MethodLength
 
@@ -90,6 +91,10 @@ module Folio
       elsif permanent_location.code != effective_location&.code
         effective_location&.code
       end
+    end
+
+    def suppressed_from_discovery?
+      @suppressed_from_discovery
     end
 
     def checked_out?
@@ -176,6 +181,7 @@ module Folio
     def self.from_hash(dyn)
       new(id: dyn['id'],
           barcode: dyn['barcode'],
+          suppressed_from_discovery: dyn['discoverySuppress'],
           status: dyn.dig('status', 'name'),
           due_date: dyn['dueDate'],
           type: dyn.dig('materialType', 'name'),
