@@ -102,6 +102,36 @@ RSpec.describe Folio::Item do
 
       it { is_expected.to be_instance_of described_class }
     end
+
+    context 'from the FOLIO item-storage response' do
+      let(:data) do
+        <<~JSON
+          {
+            "barcode": "36105124065330",
+            "status": {
+              "name": "Available"
+            },
+            "materialTypeId": null,
+            "chronology": null,
+            "enumeration": null,
+            "effectiveCallNumberComponents": {
+              "callNumber": "SB270 .E8 A874 2007"
+            },
+            "notes": [
+              {
+                "note": "EDI receipt; tf:GREEN 07/03/14 batch; tf:SAL 07/28/17 batch",
+                "itemNoteType": null
+              }
+            ],
+            "effectiveLocationId": "4573e824-9273-4f13-972f-cff7bf504217",
+            "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
+            "temporaryLoanTypeId": null
+          }
+        JSON
+      end
+
+      it { is_expected.to be_instance_of described_class }
+    end
   end
 
   describe '#status_class' do
