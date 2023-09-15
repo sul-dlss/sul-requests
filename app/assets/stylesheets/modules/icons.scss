@@ -29,10 +29,7 @@
 
   &.deliver-from-offsite {
     @extend .sul-i-truck-1;
-
-    &::before {
-      color: $sul-available-icon-color;
-    }
+    color: $sul-available-icon-color;
   }
 
   &.unavailable {
