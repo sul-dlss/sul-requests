@@ -108,10 +108,11 @@ module Folio
       [availability_class, circ_class].compact.join(' ')
     end
 
+    # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     def status_text
-      if !requestable? && temporary_location.present?
-        temporary_location.discovery_display_name
-      elsif !circulates?
+      return temporary_location&.discovery_display_name || 'Unavailable' unless requestable?
+
+      if !circulates?
         'In-library use only'
       elsif status == STATUS_AVAILABLE && requestable?
         'Available'
@@ -121,6 +122,7 @@ module Folio
         'Unavailable'
       end
     end
+    # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
     def processing?
       [STATUS_IN_PROCESS, STATUS_IN_PROCESS_NR].include?(status)
