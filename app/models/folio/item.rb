@@ -13,7 +13,6 @@ module Folio
     STATUS_CHECKED_OUT = 'Checked out'
     STATUS_ON_ORDER = 'On order'
     STATUS_AVAILABLE = 'Available'
-    STATUS_HOLD = 'Awaiting pickup'
     STATUS_MISSING = 'Missing'
     STATUS_IN_PROCESS_NR = 'In process (non-requestable)'
     STATUS_IN_PROCESS = 'In process'
@@ -136,7 +135,7 @@ module Folio
     end
 
     def hold?
-      status == STATUS_HOLD
+      status == STATUS_AWAITING_PICKUP
     end
 
     def paged?
