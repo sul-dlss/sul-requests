@@ -11,7 +11,15 @@
     }
   }
 
-  &.noncirc_page, &.noncirc.deliver-from-offsite {
+  &.hold-recall {
+    color: $sul-noncirc-icon-color;
+
+    &::before {
+      content: '⚠️';
+    }
+  }
+
+  &.noncirc.deliver-from-offsite {
     @extend .sul-i-truck-1;
 
     &::before {

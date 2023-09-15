@@ -384,4 +384,17 @@ RSpec.describe 'Item Selector' do
       end
     end
   end
+
+  context 'when items are hold/recallable' do
+    before do
+      stub_bib_data_json(build(:missing_holdings))
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
+    end
+
+    it 'shows the item status as the status text' do
+      within('#item-selector') do
+        expect(page).to have_css('.hold-recall', text: 'Missing')
+      end
+    end
+  end
 end

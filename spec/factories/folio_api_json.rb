@@ -711,4 +711,30 @@ FactoryBot.define do
       new(**attributes)
     end
   end
+
+  factory :missing_holdings, class: 'Folio::Instance' do
+    id { '1234' }
+    title { 'One Missing item' }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              status: 'Missing',
+              effective_location: build(:location, code: 'SAL3-STACKS')),
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 321',
+              status: 'Available',
+              effective_location: build(:location, code: 'SAL3-STACKS'))
+      ]
+    end
+
+    initialize_with do
+      new(**attributes)
+    end
+  end
 end

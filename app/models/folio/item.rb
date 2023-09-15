@@ -116,6 +116,8 @@ module Folio
         'In-library use only'
       elsif status == STATUS_AVAILABLE && requestable?
         'Available'
+      elsif hold_recallable?
+        status
       else
         'Unavailable'
       end
@@ -206,7 +208,9 @@ module Folio
     private
 
     def availability_class
-      if effective_location.details['availabilityClass'] == 'Offsite'
+      if hold_recallable?
+        'hold-recall'
+      elsif effective_location.details['availabilityClass'] == 'Offsite'
         'deliver-from-offsite'
       elsif status == STATUS_AVAILABLE && requestable?
         'available'
