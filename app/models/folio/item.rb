@@ -177,7 +177,7 @@ module Folio
       permanent_location.details['pageAeonSite']
     end
 
-    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity
+    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     def self.from_hash(dyn)
       new(id: dyn['id'],
           barcode: dyn['barcode'],
@@ -188,7 +188,7 @@ module Folio
           callnumber: [dyn.dig('effectiveCallNumberComponents', 'callNumber'), dyn['volume'], dyn['enumeration'],
                        dyn['chronology']].filter_map(&:presence).join(' '),
           public_note: dyn.fetch('notes').find { |note| note.dig('itemNoteType', 'name') == 'Public' }&.fetch('note'),
-          effective_location: Location.from_hash(dyn.fetch('effectiveLocation')),
+          effective_location: (Location.from_hash(dyn.fetch('effectiveLocation')) if dyn['effectiveLocation']),
           # fall back to the holding record's effective Location; we're no longer guaranteed an item-level permanent location.
           permanent_location: (if dyn['permanentLocation']
                                  Location.from_hash(dyn.fetch('permanentLocation'))
@@ -199,7 +199,7 @@ module Folio
           loan_type: LoanType.new(id: dyn.fetch('temporaryLoanTypeId', dyn.fetch('permanentLoanTypeId'))),
           holdings_record_id: dyn['holdingsRecordId'])
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
     private
 
