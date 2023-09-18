@@ -352,4 +352,49 @@ RSpec.describe 'Item Selector' do
     min_date = find_by_id('request_needed_date')['min']
     page.execute_script("$('#request_needed_date').prop('value', '#{min_date}')")
   end
+
+  context 'when some items are not requestable' do
+    before do
+      stub_bib_data_json(build(:mixed_crez_holdings))
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
+    end
+
+    it 'allows selecting the requestable items' do
+      within('#item-selector') do
+        expect(page).to have_field('ABC 123', disabled: false)
+      end
+    end
+
+    it 'disables the checkbox for the non-requestable items' do
+      within('#item-selector') do
+        expect(page).to have_field('ABC 321', disabled: true)
+      end
+    end
+  end
+
+  context 'when items are in a temporary location' do
+    before do
+      stub_bib_data_json(build(:mixed_crez_holdings))
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
+    end
+
+    it 'shows the temporary location discovery display name as the status text if the item is not requestable' do
+      within('#item-selector') do
+        expect(page).to have_css('.unavailable', text: 'Discovery display name')
+      end
+    end
+  end
+
+  context 'when items are hold/recallable' do
+    before do
+      stub_bib_data_json(build(:missing_holdings))
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
+    end
+
+    it 'shows the item status as the status text' do
+      within('#item-selector') do
+        expect(page).to have_css('.hold-recall', text: 'Missing')
+      end
+    end
+  end
 end

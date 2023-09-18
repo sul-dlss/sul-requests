@@ -680,4 +680,61 @@ FactoryBot.define do
       new(**attributes)
     end
   end
+
+  factory :mixed_crez_holdings, class: 'Folio::Instance' do
+    id { '1234' }
+    hrid { 'a1234' }
+    title { 'Mixed CREZ holdings' }
+    contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
+    pub_date { '2018' }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              status: 'Available',
+              effective_location: build(:location, code: 'SAL3-STACKS')),
+        build(:item,
+              barcode: '87654321',
+              callnumber: 'ABC 321',
+              status: 'Available',
+              effective_location: build(:location, code: 'GRE-CRES'),
+              permanent_location: build(:location, code: 'SAL3-STACKS'),
+              temporary_location: build(:location, code: 'GRE-CRES'))
+      ]
+    end
+
+    initialize_with do
+      new(**attributes)
+    end
+  end
+
+  factory :missing_holdings, class: 'Folio::Instance' do
+    id { '1234' }
+    title { 'One Missing item' }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              status: 'Missing',
+              effective_location: build(:location, code: 'SAL3-STACKS')),
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 321',
+              status: 'Available',
+              effective_location: build(:location, code: 'SAL3-STACKS'))
+      ]
+    end
+
+    initialize_with do
+      new(**attributes)
+    end
+  end
 end

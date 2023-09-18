@@ -1,1 +1,3 @@
-<%= barcode.radio_button_without_bootstrap nil, holding.barcode, checked: f.object.requested_holdings.include?(holding), data: { barcode: holding.barcode, callnumber: holding.callnumber } %>
+<%= barcode.radio_button_without_bootstrap nil, holding.barcode, checked:
+f.object.requested_holdings.include?(holding), disabled: !holding.requestable?,
+data: { barcode: holding.barcode, callnumber: holding.callnumber } %>

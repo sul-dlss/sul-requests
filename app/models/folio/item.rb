@@ -13,7 +13,6 @@ module Folio
     STATUS_CHECKED_OUT = 'Checked out'
     STATUS_ON_ORDER = 'On order'
     STATUS_AVAILABLE = 'Available'
-    STATUS_HOLD = 'Awaiting pickup'
     STATUS_MISSING = 'Missing'
     STATUS_IN_PROCESS_NR = 'In process (non-requestable)'
     STATUS_IN_PROCESS = 'In process'
@@ -109,15 +108,21 @@ module Folio
       [availability_class, circ_class].compact.join(' ')
     end
 
+    # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     def status_text
+      return temporary_location&.discovery_display_name || 'Unavailable' unless requestable?
+
       if !circulates?
         'In-library use only'
       elsif status == STATUS_AVAILABLE && requestable?
         'Available'
+      elsif hold_recallable?
+        status
       else
         'Unavailable'
       end
     end
+    # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
     def processing?
       [STATUS_IN_PROCESS, STATUS_IN_PROCESS_NR].include?(status)
@@ -132,7 +137,7 @@ module Folio
     end
 
     def hold?
-      status == STATUS_HOLD
+      status == STATUS_AWAITING_PICKUP
     end
 
     def paged?
@@ -204,9 +209,11 @@ module Folio
     private
 
     def availability_class
-      if effective_location.details['availabilityClass'] == 'Offsite'
+      if hold_recallable?
+        'hold-recall'
+      elsif effective_location.details['availabilityClass'] == 'Offsite'
         'deliver-from-offsite'
-      elsif status == STATUS_AVAILABLE
+      elsif status == STATUS_AVAILABLE && requestable?
         'available'
       else
         'unavailable'

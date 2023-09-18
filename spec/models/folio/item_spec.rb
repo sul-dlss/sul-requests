@@ -320,8 +320,8 @@ RSpec.describe Folio::Item do
         JSON
       end
 
-      it 'is unavailable' do
-        expect(item.status_class).to eq('unavailable')
+      it 'is a hold recall' do
+        expect(item.status_class).to eq('hold-recall')
       end
     end
   end
@@ -512,8 +512,8 @@ RSpec.describe Folio::Item do
         JSON
       end
 
-      it 'is unavailable' do
-        expect(item.status_text).to eq('Unavailable')
+      it 'is checked out' do
+        expect(item.status_text).to eq('Checked out')
       end
     end
   end
