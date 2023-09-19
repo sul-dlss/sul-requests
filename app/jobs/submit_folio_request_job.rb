@@ -103,7 +103,7 @@ class SubmitFolioRequestJob < ApplicationJob
 
       { barcode:, msgcode: '209', response: }
       rescue StandardError => e
-        Honeybadger.notify("Circulation item request failed for barcode #{barcode} with #{e}")
+        Honeybadger.notify(e, error_message: "Circulation item request failed for barcode #{barcode} with #{e}")
         { barcode:, msgcode: '456', response: }
     end
     # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
