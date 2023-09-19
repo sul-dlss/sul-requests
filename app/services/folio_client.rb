@@ -7,6 +7,16 @@ class FolioClient
     content_type: 'application/json'
   }.freeze
 
+  # Handle error responses coming back from FOLIO
+  class Error < StandardError
+    attr_reader :errors
+
+    def initialize(msg, errors = {})
+      super(msg)
+      @errors = errors
+    end
+  end
+
   attr_reader :base_url
 
   delegate :locations, :service_points, to: :folio_graphql_client
@@ -209,6 +219,10 @@ class FolioClient
 
   def check_response(response, title:, context:)
     return if response.success?
+
+    if response.status == 422 && response.headers[Faraday::CONTENT_TYPE].include? { |x| x.match?(/\bjson$/) }
+      raise FolioError, "#{title} request for #{context_string} was not successful", JSON.parse(response.body)
+    end
 
     context_string = context.map { |k, v| "#{k}: #{v}" }.join(', ')
     raise "#{title} request for #{context_string} was not successful. " \
