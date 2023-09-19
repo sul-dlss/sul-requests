@@ -24,8 +24,8 @@ RSpec.describe SubmitFolioRequestJob do
 
     before do
       allow(request.user).to receive(:patron).and_return(patron)
+      allow(request.bib_data).to receive(:items).and_return([item])
       allow(patron).to receive(:blocked?).and_return(false)
-      allow(client).to receive(:get_item).with('12345678').and_return(item)
     end
 
     context 'with an sso user' do
@@ -109,7 +109,7 @@ RSpec.describe SubmitFolioRequestJob do
 
     before do
       allow(request.user).to receive(:patron).and_return(patron)
-      allow(client).to receive(:get_item).with('3610512345678').and_return(item)
+      allow(request.bib_data).to receive(:items).and_return([item])
     end
 
     context 'with an sso user in good standing' do
@@ -203,9 +203,6 @@ RSpec.describe SubmitFolioRequestJob do
 
       before do
         allow(patron).to receive(:blocked?).and_return(false)
-        # Force one barcode to throw an error
-        allow(client).to receive(:get_item).with('12345678').and_return(nil)
-        allow(client).to receive(:get_item).with('12345679').and_return(item)
       end
 
       it 'receives only one circulation request if the other results in error' do
@@ -239,7 +236,7 @@ RSpec.describe SubmitFolioRequestJob do
 
     before do
       allow(request.user).to receive(:patron).and_return(patron)
-      allow(client).to receive(:get_item).with('34567890').and_return(item)
+      allow(request.bib_data).to receive(:items).and_return([item])
     end
 
     context 'with a non-sso user' do
@@ -274,6 +271,7 @@ RSpec.describe SubmitFolioRequestJob do
         allow(Folio::Patron).to receive(:find_by).with(library_id: 'HOLD@AR').and_return(
           instance_double(Folio::Patron, id: 'HOLD@AR-PSEUDO', patron_group_id:, blocked?: false)
         )
+        allow(request.bib_data).to receive(:items).and_return([item])
       end
 
       it 'places a page request for the item as a pseudopatron with patron comments' do
@@ -307,7 +305,7 @@ RSpec.describe SubmitFolioRequestJob do
         allow(Folio::Patron).to receive(:find_by).with(library_id: 'GRE-SCANDELIVER').and_return(
           instance_double(Folio::Patron, id: 'GRE-SCANDELIVER', patron_group_id:, blocked?: false)
         )
-        allow(client).to receive(:get_item).with('12345678').and_return(item)
+        allow(request.bib_data).to receive(:items).and_return([item])
       end
 
       it 'places a hold request for the item as a pseudopatron with patron comments' do
@@ -338,8 +336,8 @@ RSpec.describe SubmitFolioRequestJob do
     before do
       allow(Folio::Patron).to receive(:find_by).and_return(patron)
       allow(client).to receive(:proxy_info).and_return(proxy_response)
-      allow(client).to receive(:get_item).with('3610512345678').and_return(item)
       allow(patron).to receive(:blocked?).and_return(false)
+      allow(request.bib_data).to receive(:items).and_return([item])
     end
 
     context 'as the proxy user' do

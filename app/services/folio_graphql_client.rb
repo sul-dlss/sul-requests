@@ -95,6 +95,7 @@ class FolioGraphqlClient
                 uri
               }
               items {
+                id
                 barcode
                 discoverySuppress
                 status {
@@ -172,6 +173,7 @@ class FolioGraphqlClient
                 permanentLoanTypeId
                 temporaryLoanTypeId
                 holdingsRecord {
+                  id
                   effectiveLocation {
                     id
                     code

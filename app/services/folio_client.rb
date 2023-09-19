@@ -136,14 +136,6 @@ class FolioClient
     parse_json(response)
   end
 
-  def get_item(barcode)
-    response = get_json('/item-storage/items', params: { query: CqlQuery.new(barcode:).to_query })
-    item = response.dig('items', 0)
-    raise "Item not found for barcode #{barcode}" if item.blank?
-
-    Folio::Item.from_hash(item)
-  end
-
   def get_service_point(code)
     response = get_json('/service-points', params: { query: CqlQuery.new(code:).to_query })
 
