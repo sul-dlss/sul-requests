@@ -104,6 +104,9 @@ class SubmitFolioRequestJob < ApplicationJob
       response = folio_client.create_circulation_request(request_data)
 
       { barcode:, msgcode: '209', response: }
+    rescue FolioClient::Error => e
+      Honeybadger.notify(e, error_message: "Circulation item request failed for barcode #{barcode} with #{e}")
+      { barcode:, msgcode: '422', response:, errors: e.errors }
     rescue StandardError => e
       Honeybadger.notify(e, error_message: "Circulation item request failed for barcode #{barcode} with #{e}")
       { barcode:, msgcode: '456', response: }
