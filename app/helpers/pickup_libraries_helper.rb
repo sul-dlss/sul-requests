@@ -19,6 +19,11 @@ module PickupLibrariesHelper
     end
   end
 
+  # Get the label, if it exists, for the pickup destination
+  def destination_label(pickup_destination)
+    Settings.ils.pickup_destination_class.constantize.new(pickup_destination).display_label || pickup_destination
+  end
+
   private
 
   def select_for_multiple_destinations(form, pickup_destinations)
@@ -49,11 +54,6 @@ module PickupLibrariesHelper
         #{form.hidden_field :destination, value: pickup_destination}
       </div>
     HTML
-  end
-
-  # Get the label, if it exists, for the pickup destination
-  def destination_label(pickup_destination)
-    Settings.ils.pickup_destination_class.constantize.new(pickup_destination).display_label || pickup_destination
   end
 
   # Return the array of destinations for the dropdown
