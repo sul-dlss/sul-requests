@@ -1,10 +1,9 @@
+<%# locals: (library_name: 'anywhere', library_code:, request_type:) -%>
 <div class="messages">
-
   <% messages = @messages.select { |m| m.library == library_code && m.request_type == request_type } %>
-  <% library = LibraryLocation.library_name_by_code(library_code).to_s %>
 
   <div>
-    <h2><%= request_type.titleize + " from #{library.presence || 'anywhere'}" %></h2>
+    <h2><%= request_type.titleize + " from #{(library_name if defined?(library_name)) || 'anywhere'}" %></h2>
     <%= link_to_add_message(library_code, request_type) %>
   </div>
 
