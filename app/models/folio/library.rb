@@ -3,15 +3,16 @@
 module Folio
   # Model for FOLIO's library data
   class Library
-    attr_reader :id, :code
+    attr_reader :id, :code, :name
 
     def self.from_dynamic(dyn)
-      new(id: dyn.fetch('id'), code: dyn.fetch('code'))
+      new(id: dyn.fetch('id'), code: dyn.fetch('code'), name: dyn.fetch('name'))
     end
 
-    def initialize(id:, code:)
+    def initialize(id:, code:, name:)
       @id = id
       @code = code
+      @name = name
     end
 
     def primary_service_points

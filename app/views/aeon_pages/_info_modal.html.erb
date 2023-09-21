@@ -1,6 +1,6 @@
 <div id="aeon-info-overlay" class="aeon-overlay">
   <div class="modal-body">
-    <h1 class="dialog-title" id='dialogTitle'><%= t('.header', library: Settings.libraries[i18n_library_title_key].label) %></h1>
+    <h1 class="dialog-title" id='dialogTitle'><%= t('.header', library: LibraryLocation.library_name_by_code(i18n_library_title_key) ) %></h1>
     <p><%= t('.reading_room_info') %></p>
     <h2 class="dialog-how-to"><%= t('.how_to.header') %></h2>
     <p><%= t('.how_to.body') %></p>
@@ -15,7 +15,7 @@
       <% end %>
     </ol>
     <p class="dialog-more-info">
-      <%= t('.more_details_html', library: Settings.libraries[current_request.origin].label, reading_room_url: Settings.libraries[current_request.origin].reading_room_url) %>
+      <%= t('.more_details_html', library: LibraryLocation.library_name_by_code(current_request.origin), reading_room_url: Settings.libraries[current_request.origin].reading_room_url) %>
     </p>
     <div class="dialog-buttons">
       <% if current_request.finding_aid? %>
