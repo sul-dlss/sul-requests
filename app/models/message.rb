@@ -30,6 +30,6 @@ class Message < ActiveRecord::Base
   private
 
   def library_name
-    LibraryLocation.library_name_by_code(library) || library
+    Folio::Types.libraries.find_by(code: library)&.name || library
   end
 end

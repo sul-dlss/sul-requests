@@ -319,19 +319,16 @@ libraries:
     hours:
       library_slug: sal12
       location_slug: operations
-    pageable: true
   SAL3:
     label: SAL3 (off-campus storage)
     hours:
       library_slug: sal3
       location_slug: operations
-    pageable: true
   SAL-NEWARK:
     label: SAL Newark (off-campus storage)
     hours:
       library_slug: newark
       location_slug: operations
-    pageable: true
   SCAN:
     contact_info:
       phone: '(650) 723-3278'

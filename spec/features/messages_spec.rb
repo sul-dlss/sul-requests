@@ -16,7 +16,6 @@ RSpec.describe 'Viewing all requests' do
         expect(page).to have_css('h2', text: /Page from SAL1&2/)
         expect(page).to have_css('h2', text: /Page from SAL3/)
         expect(page).to have_css('h2', text: /Page from SAL Newark/)
-        expect(page).not_to have_css('h2', text: /Page from Green Library/)
       end
     end
 
