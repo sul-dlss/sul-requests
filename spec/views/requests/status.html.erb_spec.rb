@@ -35,7 +35,7 @@ RSpec.describe 'requests/status.html.erb' do
   end
 
   it 'has the destination library' do
-    request.destination = 'GREEN'
+    request.destination = 'GREEN-LOAN'
     render
     expect(rendered).to have_css('dt', text: 'Deliver to')
     expect(rendered).to have_css('dd', text: 'Green Library')
