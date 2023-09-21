@@ -217,10 +217,11 @@ class FolioClient
 
   private
 
+  # rubocop:disable Metrics/AbcSize
   def check_response(response, title:, context:)
     return if response.success?
 
-    if response.status == 422 && response.headers[Faraday::CONTENT_TYPE].include? { |x| x.match?(/\bjson$/) }
+    if response.status == 422 && Array(response.headers[Faraday::CONTENT_TYPE]).any? { |x| x.match?(/\bjson$/) }
       raise FolioError, "#{title} request for #{context_string} was not successful", JSON.parse(response.body)
     end
 
@@ -228,6 +229,7 @@ class FolioClient
     raise "#{title} request for #{context_string} was not successful. " \
           "status: #{response.status}, #{response.body}"
   end
+  # rubocop:enable Metrics/AbcSize
 
   def get(path, **)
     authenticated_request(path, method: :get, **)
