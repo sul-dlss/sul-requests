@@ -173,8 +173,9 @@ module Folio
     end
 
     def best_request_type
-      'Recall' if recallable?
-      'Hold' if holdable?
+      return 'Recall' if recallable?
+      return 'Hold' if holdable?
+
       'Page' if pageable?
     end
 

@@ -285,6 +285,10 @@ RSpec.describe Folio::Item do
       it 'is deliver-from-offsite AND noncirc' do
         expect(item.status_class).to eq('deliver-from-offsite noncirc')
       end
+
+      it 'is pageable' do
+        expect(item.best_request_type).to eq('Page')
+      end
     end
 
     context 'with a circulating item with the status Available' do
@@ -322,6 +326,10 @@ RSpec.describe Folio::Item do
 
       it 'is a hold recall' do
         expect(item.status_class).to eq('hold-recall')
+      end
+
+      it 'is recallable' do
+        expect(item.best_request_type).to eq('Recall')
       end
     end
   end
