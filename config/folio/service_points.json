@@ -284,5 +284,12 @@
     "details": null,
     "id": "68002733-5923-46db-acc7-3d18cbf30870",
     "discoveryDisplayName": "SUL Digitization Services"
+  },
+  {
+    "pickupLocation": null,
+    "code": "MUSICTS",
+    "details": null,
+    "id": "ee18f485-c78b-479c-b131-da1ffe6ce1b8",
+    "discoveryDisplayName": "Music - Tech Services"
   }
 ]
