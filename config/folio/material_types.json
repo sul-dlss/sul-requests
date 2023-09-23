@@ -345,5 +345,16 @@
       "updatedDate": "2023-08-10T18:44:57.911+00:00",
       "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
     }
+  },
+  {
+    "id": "9034b46b-be80-4d4d-aec5-1c261c109b75",
+    "name": "library equipment 4",
+    "source": "local",
+    "metadata": {
+      "createdDate": "2023-09-22T18:02:17.054+00:00",
+      "createdByUserId": "e252d213-8a69-4d26-9826-7de8c943a121",
+      "updatedDate": "2023-09-22T18:02:17.054+00:00",
+      "updatedByUserId": "e252d213-8a69-4d26-9826-7de8c943a121"
+    }
   }
 ]
