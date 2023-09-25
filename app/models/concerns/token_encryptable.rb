@@ -17,10 +17,10 @@ module TokenEncryptable
   end
 
   def encrypted_token
-    @encrypted_token ||= SULRequests::TokenEncryptor.new(to_token).encrypt_and_sign
+    @encrypted_token ||= TokenEncryptor.new(to_token).encrypt_and_sign
   end
 
   def valid_token?(token)
-    SULRequests::TokenEncryptor.new(token).decrypt_and_verify == to_token
+    TokenEncryptor.new(token).decrypt_and_verify == to_token
   end
 end
