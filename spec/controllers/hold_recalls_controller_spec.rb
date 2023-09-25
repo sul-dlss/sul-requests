@@ -37,58 +37,6 @@ RSpec.describe HoldRecallsController do
   end
 
   describe 'create' do
-    pending 'by anonymous users' do
-      let(:user) { create(:anon_user) }
-
-      it 'redirects to the login page passing a referrer param to continue creating the hold recall request' do
-        post :create, params: { request: normal_params }
-        expect(response).to redirect_to(
-          login_path(
-            referrer: interstitial_path(
-              redirect_to: create_hold_recalls_url(
-                request: normal_params
-              )
-            )
-          )
-        )
-      end
-
-      it 'is not allowed if user name and email is filled out' do
-        put :create, params: {
-          request: normal_params.merge(
-            user_attributes: {
-              name: 'Jane Stanford',
-              email: 'jstanford@stanford.edu'
-            }
-          )
-        }
-        expect(response).to have_http_status(:forbidden)
-      end
-
-      it 'is allowed if the library ID field is filled out' do
-        put :create, params: {
-          request: {
-            item_id: '1234',
-            origin: 'SPEC-COLL',
-            origin_location: 'STACKS',
-            destination: 'SPEC-COLL',
-            user_attributes: { library_id: '12345' }
-          }
-        }
-
-        expect(response.location).to match(/#{successful_hold_recall_url(HoldRecall.last)}\?token=/)
-        expect(User.last.library_id).to eq '12345'
-        expect(HoldRecall.last.user).to eq User.last
-      end
-
-      describe 'via get' do
-        it 'raises an error' do
-          get :create, params: { request: normal_params }
-          expect(response).to have_http_status(:forbidden)
-        end
-      end
-    end
-
     describe 'by sso users' do
       let(:user) { create(:sso_user) }
 
