@@ -2,18 +2,18 @@
 
 require 'rails_helper'
 
-RSpec.describe SULRequests::TokenEncryptor do
+RSpec.describe TokenEncryptor do
   let(:token) { 'token-123' }
   let(:subject) { described_class }
 
   it 'throws an error if there is no configured secret' do
     allow_any_instance_of(subject).to receive(:secret).and_return('')
-    expect { subject.new(token) }.to raise_error(SULRequests::TokenEncryptor::InvalidSecret)
+    expect { subject.new(token) }.to raise_error(TokenEncryptor::InvalidSecret)
   end
 
   it 'throws an error if there is no configured salt' do
     allow_any_instance_of(subject).to receive(:salt).and_return('')
-    expect { subject.new(token) }.to raise_error(SULRequests::TokenEncryptor::InvalidSalt)
+    expect { subject.new(token) }.to raise_error(TokenEncryptor::InvalidSalt)
   end
 
   describe '#encrypt_and_sign' do

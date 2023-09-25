@@ -81,7 +81,7 @@ class Ability
 
     if token
       begin
-        token, = SULRequests::TokenEncryptor.new(token).decrypt_and_verify
+        token, = TokenEncryptor.new(token).decrypt_and_verify
 
         if token.starts_with? 'v2/'
           _v, id, _date = token.split('/', 3)
