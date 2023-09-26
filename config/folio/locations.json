@@ -3317,7 +3317,7 @@
     "id": "4952c89e-98ac-4601-a1ec-7dcbe1cfa4b4",
     "name": "Lane Course Reserves",
     "code": "LANE-CRES",
-    "discoveryDisplayName": "Course Reserves: Request at Information Desk",
+    "discoveryDisplayName": "Course Reserves: Request at Lane Information Desk",
     "isActive": true,
     "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
     "campusId": "40b76104-95ea-4360-a2be-5fd887222e2d",
@@ -3336,7 +3336,7 @@
     "metadata": {
       "createdDate": "2023-08-10T17:46:16.607+00:00",
       "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-09-22T20:30:32.164+00:00",
+      "updatedDate": "2023-09-25T20:00:12.236+00:00",
       "updatedByUserId": "92c1aeb5-87f1-4be1-9f4d-0f90d1203dcc"
     }
   },
@@ -12037,32 +12037,6 @@
     }
   },
   {
-    "id": "9523510d-2afa-47fd-8310-eaf8e690479e",
-    "name": "Business Reserves",
-    "code": "BUS-CRES",
-    "discoveryDisplayName": "On reserve: Ask at i-Desk",
-    "isActive": true,
-    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-    "campusId": "b89563c5-cb66-4de7-b63c-ca4d82e9d856",
-    "libraryId": "f5c58187-3db6-4bda-b1bf-e5f0717e2149",
-    "details": {
-      "searchworksTreatTemporaryLocationAsPermanentLocation": "true"
-    },
-    "primaryServicePoint": "958cc062-591c-45de-85c1-0e8672fbbfc5",
-    "servicePointIds": [
-      "958cc062-591c-45de-85c1-0e8672fbbfc5"
-    ],
-    "servicePoints": [
-
-    ],
-    "metadata": {
-      "createdDate": "2023-08-10T17:45:47.449+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-09-22T20:29:37.381+00:00",
-      "updatedByUserId": "92c1aeb5-87f1-4be1-9f4d-0f90d1203dcc"
-    }
-  },
-  {
     "id": "11941fdf-26e7-4413-9b63-483fd555c378",
     "name": "Business PAGE-BU",
     "code": "BUS-PAGE-BU",
@@ -14529,6 +14503,32 @@
       "createdDate": "2023-08-10T17:47:06.928+00:00",
       "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
       "updatedDate": "2023-09-22T21:23:41.388+00:00",
+      "updatedByUserId": "92c1aeb5-87f1-4be1-9f4d-0f90d1203dcc"
+    }
+  },
+  {
+    "id": "9523510d-2afa-47fd-8310-eaf8e690479e",
+    "name": "Business Reserves",
+    "code": "BUS-CRES",
+    "discoveryDisplayName": "On reserve: Ask at Business i-Desk",
+    "isActive": true,
+    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+    "campusId": "b89563c5-cb66-4de7-b63c-ca4d82e9d856",
+    "libraryId": "f5c58187-3db6-4bda-b1bf-e5f0717e2149",
+    "details": {
+      "searchworksTreatTemporaryLocationAsPermanentLocation": "true"
+    },
+    "primaryServicePoint": "958cc062-591c-45de-85c1-0e8672fbbfc5",
+    "servicePointIds": [
+      "958cc062-591c-45de-85c1-0e8672fbbfc5"
+    ],
+    "servicePoints": [
+
+    ],
+    "metadata": {
+      "createdDate": "2023-08-10T17:45:47.449+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-09-25T19:59:17.616+00:00",
       "updatedByUserId": "92c1aeb5-87f1-4be1-9f4d-0f90d1203dcc"
     }
   }
