@@ -4,7 +4,7 @@
     <%= render 'pickup_confirmation' %>
 
     <p>
-      The following item(s) will be delivered to <%= Settings.libraries[@request.destination]&.label || @request.destination %>:<br/>
+      The following item(s) will be delivered to <%= LibraryLocation.library_name_by_code(@request.destination) || @request.destination %>:<br/>
       Title: <%= @request.item_title %>
     </p>
 

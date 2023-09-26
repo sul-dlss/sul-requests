@@ -37,7 +37,8 @@ RSpec.describe Folio::Item do
               },
               "library": {
                 "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-                "code": "SAL3"
+                "code": "SAL3",
+                "name": "SAL3"
               },
               "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
               "code": "SAL3-STACKS",
@@ -84,7 +85,8 @@ RSpec.describe Folio::Item do
               },
               "library": {
                 "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-                "code": "GREEN"
+                "code": "GREEN",
+                "name": "GREEN Library"
               },
               "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
               "code": "GRE-STACKS",
@@ -145,7 +147,8 @@ RSpec.describe Folio::Item do
           },
           "library": {
             "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-            "code": "GREEN"
+            "code": "GREEN",
+            "name": "Green Library"
           },
           "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
           "code": "GRE-STACKS",
@@ -175,7 +178,8 @@ RSpec.describe Folio::Item do
           ],
           "library": {
             "id": "ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9",
-            "code": "SAL3"
+            "code": "SAL3",
+            "name": "SAL3"
           },
           "campus": {
             "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
@@ -217,7 +221,8 @@ RSpec.describe Folio::Item do
           ],
           "library": {
             "id": "ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9",
-            "code": "SAL3"
+            "code": "SAL3",
+            "name": "SAL3"
           },
           "campus": {
             "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
@@ -345,7 +350,8 @@ RSpec.describe Folio::Item do
           },
           "library": {
             "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-            "code": "GREEN"
+            "code": "GREEN",
+            "name": "Green Library"
           },
           "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
           "code": "GRE-STACKS",
@@ -375,7 +381,8 @@ RSpec.describe Folio::Item do
           ],
           "library": {
             "id": "ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9",
-            "code": "SAL3"
+            "code": "SAL3",
+            "name": "SAL3"
           },
           "campus": {
             "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
@@ -417,7 +424,8 @@ RSpec.describe Folio::Item do
           ],
           "library": {
             "id": "ddd3bce1-9f8f-4448-8d6d-b6c1b3907ba9",
-            "code": "SAL3"
+            "code": "SAL3",
+            "name": "SAL3"
           },
           "campus": {
             "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
@@ -537,7 +545,8 @@ RSpec.describe Folio::Item do
           },
           "library": {
             "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-            "code": "GREEN"
+            "code": "GREEN",
+            "name": "Green Library"
           },
           "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
           "code": "GRE-STACKS",

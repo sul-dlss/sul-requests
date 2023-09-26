@@ -24,18 +24,20 @@ class LibraryLocation
   end
 
   class << self
+    # Most library codes used in requests will be FOLIO codes
+    # Settings will be used for the RWC code which has a service point but no FOLIO library associated
     def library_name_by_code(code)
-      all_libraries[code]&.label
+      Folio::Types.libraries.find_by(code:)&.name || Settings.libraries[code]&.label
     end
 
     # This is a super-clunky way to convert data from RailsConfig to something
     # Enumerable, so we can use e.g. #select
-    def all_libraries
+    def all_settings_libraries
       Settings.libraries.map.to_h.with_indifferent_access
     end
 
     def pageable_libraries
-      all_libraries.select { |_, v| v.pageable }
+      all_settings_libraries.select { |_, v| v.pageable }
     end
   end
 end

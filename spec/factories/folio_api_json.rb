@@ -7,7 +7,7 @@ FactoryBot.define do
     name { 'Location name' }
     discovery_display_name { 'Discovery display name' }
     campus { Folio::Campus.new(id: 'uuid', code: 'SUL') }
-    library { Folio::Library.new(id: 'uuid', code: 'LIB') }
+    library { Folio::Library.new(id: 'uuid', code: 'LIB', name: 'library') }
     library_id { 'uuid' }
     primary_service_point_id { nil }
     institution { Folio::Institution.new(id: 'uuid') }
@@ -47,23 +47,23 @@ FactoryBot.define do
 
   factory :mmstacks_location, parent: :location do
     code { 'MEDIA-CAGE' }
-    library { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'MEDIA-CENTER') }
+    library { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'MEDIA-CENTER', name: 'media center') }
   end
 
   factory :law_location, parent: :location do
     code { 'LAW-STACKS1' }
-    library { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'LAW') }
-    campus { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'LAW') }
+    library { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'LAW', name: 'law') }
+    campus { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'LAW', name: 'law') }
   end
 
   factory :eal_sets_location, parent: :location do
     code { 'EAL-SETS' }
-    library { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'EAST-ASIA') }
+    library { Folio::Library.new(id: '0acfabb7-0a71-47be-82c0-c0200dd47952', code: 'EAST-ASIA', name: 'East Asia Library') }
   end
 
   factory :green_location, parent: :location do
     code { 'GRE-STACKS' }
-    library { Folio::Library.new(id: 'f6b5519e-88d9-413e-924d-9ed96255f72e', code: 'GREEN') }
+    library { Folio::Library.new(id: 'f6b5519e-88d9-413e-924d-9ed96255f72e', code: 'GREEN', name: 'Green Library') }
   end
 
   factory :spec_coll_location, parent: :location do
