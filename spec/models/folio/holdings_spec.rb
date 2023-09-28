@@ -13,7 +13,7 @@ RSpec.describe Folio::Holdings do
                     type: 'multimedia',
                     callnumber: 'XX(14820051.1)',
                     public_note: nil,
-                    effective_location: instance_double(Folio::Location),
+                    effective_location: instance_double(Folio::Location, details: {}),
                     permanent_location:)
   end
 
@@ -24,6 +24,32 @@ RSpec.describe Folio::Holdings do
       let(:permanent_location) { instance_double(Folio::Location, code: 'MUS-RECORDINGS') }
 
       it { is_expected.to eq items }
+    end
+  end
+
+  context 'with searchworksTreatTemporaryLocationAsPermanentLocation set' do
+    let(:item) do
+      Folio::Item.new(barcode: '123',
+                      status: 'Available',
+                      type: 'multimedia',
+                      callnumber: 'XX(14820051.1)',
+                      public_note: nil,
+                      effective_location: instance_double(
+                        Folio::Location,
+                        code: 'MUS-CRES',
+                        details: {
+                          'searchworksTreatTemporaryLocationAsPermanentLocation' => 'true'
+                        }
+                      ),
+                      permanent_location: instance_double(Folio::Location, code: 'SAL3-STACKS'))
+    end
+
+    context 'for a request with the permanent location' do
+      let(:request) { Page.new(item_id: '14820051', origin: 'SAL3', origin_location: 'STACKS') }
+
+      it 'excludes items with an effective location that does not match the requested location' do
+        expect(holdings.to_a).to be_blank
+      end
     end
   end
 end

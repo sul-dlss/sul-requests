@@ -148,6 +148,7 @@ class FolioGraphqlClient
                     }
                     scanServicePointCode
                     availabilityClass
+                    searchworksTreatTemporaryLocationAsPermanentLocation
                   }
                 }
                 permanentLocation {
