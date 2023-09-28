@@ -23,11 +23,7 @@ module IlsRequest
 
   # NOTE: symphony_response_data + folio_response_data are stored in the JSON in the "data" column
   def ils_response
-    @ils_response ||= if folio_response_data
-                        FolioResponse.new(folio_response_data || {})
-                      else
-                        SymphonyResponse.new(symphony_response_data || {})
-                      end
+    @ils_response ||= FolioResponse.new(ils_response_data)
   end
 
   def ils_response_data
