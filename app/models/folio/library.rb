@@ -9,7 +9,7 @@ module Folio
       new(id: dyn.fetch('id'), code: dyn.fetch('code'), name: dyn.fetch('name'))
     end
 
-    def initialize(id:, code:, name:)
+    def initialize(id:, code:, name: nil)
       @id = id
       @code = code
       @name = name
