@@ -118,31 +118,6 @@
     }
   },
   {
-    "id": "75bb62f2-def3-44e5-babf-26d9a994c5ca",
-    "name": "3day-norenew-15mingrace",
-    "description": "Loan policy for three-day reserves",
-    "loanable": true,
-    "loansPolicy": {
-      "profileId": "Rolling",
-      "period": {
-        "duration": 1,
-        "intervalId": "Days"
-      },
-      "closedLibraryDueDateManagementId": "END_OF_THE_NEXT_OPEN_DAY",
-      "gracePeriod": {
-        "duration": 15,
-        "intervalId": "Minutes"
-      }
-    },
-    "renewable": false,
-    "metadata": {
-      "createdDate": "2023-08-10T18:49:48.821+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T18:49:48.821+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
-    }
-  },
-  {
     "id": "26c44ee7-5a7d-4832-aa84-febe49a8d2f8",
     "name": "14day-norenew-1daygrace",
     "description": "Loan policy for periodicals ",
@@ -1132,31 +1107,6 @@
     }
   },
   {
-    "id": "d86d2800-73e0-419f-8c7a-9a2aab213477",
-    "name": "2day-norenew-15mingrace",
-    "description": "Loan policy for two-day reserves",
-    "loanable": true,
-    "loansPolicy": {
-      "profileId": "Rolling",
-      "period": {
-        "duration": 2,
-        "intervalId": "Days"
-      },
-      "closedLibraryDueDateManagementId": "END_OF_THE_NEXT_OPEN_DAY",
-      "gracePeriod": {
-        "duration": 15,
-        "intervalId": "Minutes"
-      }
-    },
-    "renewable": false,
-    "metadata": {
-      "createdDate": "2023-08-10T18:49:56.887+00:00",
-      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T18:49:56.887+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
-    }
-  },
-  {
     "id": "7ff30237-d14e-4998-833b-1bc009122b5f",
     "name": "14day-1renew-7daygrace",
     "description": "Loan policy for periodicals e.g., Tanner",
@@ -1742,6 +1692,64 @@
       "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
       "updatedDate": "2023-08-10T18:49:58.305+00:00",
       "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+    }
+  },
+  {
+    "id": "d86d2800-73e0-419f-8c7a-9a2aab213477",
+    "name": "2day-norenew-15mingrace",
+    "description": "Loan policy for two-day reserves",
+    "loanable": true,
+    "loansPolicy": {
+      "profileId": "Rolling",
+      "period": {
+        "duration": 48,
+        "intervalId": "Hours"
+      },
+      "closedLibraryDueDateManagementId": "BEGINNING_OF_THE_NEXT_OPEN_SERVICE_POINT_HOURS",
+      "gracePeriod": {
+        "duration": 15,
+        "intervalId": "Minutes"
+      },
+      "openingTimeOffset": {
+        "duration": 1,
+        "intervalId": "Hours"
+      }
+    },
+    "renewable": false,
+    "metadata": {
+      "createdDate": "2023-08-10T18:49:56.887+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-09-29T18:39:24.067+00:00",
+      "updatedByUserId": "611ed598-2be4-41f1-a241-2f30a362dca9"
+    }
+  },
+  {
+    "id": "75bb62f2-def3-44e5-babf-26d9a994c5ca",
+    "name": "3day-norenew-15mingrace",
+    "description": "Loan policy for three-day reserves",
+    "loanable": true,
+    "loansPolicy": {
+      "profileId": "Rolling",
+      "period": {
+        "duration": 72,
+        "intervalId": "Hours"
+      },
+      "closedLibraryDueDateManagementId": "BEGINNING_OF_THE_NEXT_OPEN_SERVICE_POINT_HOURS",
+      "gracePeriod": {
+        "duration": 15,
+        "intervalId": "Minutes"
+      },
+      "openingTimeOffset": {
+        "duration": 1,
+        "intervalId": "Hours"
+      }
+    },
+    "renewable": false,
+    "metadata": {
+      "createdDate": "2023-08-10T18:49:48.821+00:00",
+      "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
+      "updatedDate": "2023-09-29T18:40:20.370+00:00",
+      "updatedByUserId": "611ed598-2be4-41f1-a241-2f30a362dca9"
     }
   }
 ]
