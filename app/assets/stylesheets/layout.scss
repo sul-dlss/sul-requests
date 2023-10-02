@@ -39,7 +39,9 @@
   #topnav,
   #main-container,
   #sul-footer {
-    width: 750px;
+    max-width: 750px;
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 
@@ -47,7 +49,7 @@
   #topnav,
   #main-container,
   #sul-footer {
-    width: 970px;
+    max-width: 970px;
   }
 }
 
@@ -55,7 +57,7 @@
   #topnav,
   #main-container,
   #sul-footer {
-    width: 1170px;
+    max-width: 1170px;
   }
 }
 

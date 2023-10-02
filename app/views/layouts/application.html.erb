@@ -35,18 +35,25 @@
   </head>
 
   <body>
+    <div id="skip-link">
+      <a href="#main-container" class="sr-only sr-only-focusable">Skip to main content</a>
+    </div>
     <div id="su-wrap"> <!-- #su-wrap start -->
       <div id="su-content"> <!-- #su-content start -->
-        <div id="outer-container" class="container-fluid">
-          <%= render 'shared/top_navbar' %>
-          <section id="main-container" role="main">
-            <%= render 'shared/flashes' %>
-            <%= yield %>
-          </section>
+        <%= render 'shared/top_navbar' %>
+        <%= render 'shared/header_navbar' %>
+        <div id='main-container' role='main' class='container mt-3 mb-3'>
+          <%= content_for(:container_header) %>
+          <%= render '/shared/global_alert' %>
+          <%= render partial: '/shared/flash_msg', layout: 'shared/flash_messages' %>
+          <%= content_for?(:content) ? yield(:content) : yield %>
         </div>
-      </div>
-    </div>
-
-    <%= render 'shared/sul_footer' %>
+      </div> <!-- #su-content end -->
+    </div> <!-- #su-wrap end -->
+    <%= render 'shared/modal' %>
+    <footer role="contentinfo">
+      <%= render 'shared/sul_footer' %>
+      <%= render 'shared/global_footer' %>
+    </footer>
   </body>
 </html>

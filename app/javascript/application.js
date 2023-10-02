@@ -2,7 +2,7 @@
 import './jquery-shim'
 import Rails from 'rails-ujs'
 import './trunk8'
-import 'bootstrap-sass'
+import 'bootstrap'
 
 import './additional_user_validation_fields'
 import './date_selector'

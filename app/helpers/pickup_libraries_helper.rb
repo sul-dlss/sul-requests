@@ -45,7 +45,7 @@ module PickupLibrariesHelper
     destination_label = destination_label(pickup_destination)
     <<-HTML
       <div class='form-group'>
-        <div class='#{label_column_class} control-label'>
+        <div class='#{label_column_class} col-form-label'>
           #{label_for_pickup_destinations_dropdown([])}
         </div>
         <div class='#{content_column_class} input-like-text'>

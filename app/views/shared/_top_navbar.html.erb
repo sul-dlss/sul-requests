@@ -1,23 +1,13 @@
-<div id="topnav-container">
-  <header id="topnav" class="header-logo" role="banner">
-    <%= link_to 'https://library.stanford.edu' do %>
-      <%= content_tag :span, "Stanford University Libraries", class: "sr-only" %>
-      <%= image_tag "sul-logo.svg", class: "sul-logo hidden-xs", alt: "", height: 25 %>
-      <%= image_tag "sul-logo-stacked.svg", class: "sul-logo visible-xs", alt: "", height: 25 %>
-    <% end %>
-
-    <div class="header-links">
+<%= render 'layouts/top_navbar' do %>
+  <ul class="navbar-nav ml-auto">
+    <li class="nav-item">
       <% if current_user.sso_user? %>
-        <%= link_to "#{current_user.sunetid}: Logout", logout_path(referrer: root_path) %>
+        <%= link_to "#{current_user.sunetid}: Logout", logout_path(referrer: root_path), class: 'nav-link' %>
       <% else %>
-        <%= link_to "Login", login_path(referrer: request.original_url) %>
+        <%= link_to "Login", login_path(referrer: request.original_url), class: 'nav-link' %>
       <% end %>
-      <%= link_to "My Account", "https://mylibrary.stanford.edu/" %>
-      <%= link_to "Feedback", "https://searchworks.stanford.edu/feedback", target: '_blank', rel: 'noopener noreferrer'  %>
-    </div>
-
-  </header>
-</div>
-
-<div class="topnav-divider">
-</div>
+    </li>
+    <li class="nav-item"><a class="nav-link" href='https://library.stanford.edu/myaccount'>My Account</a></li>
+    <li class="nav-item"><a class="nav-link" href='https://searchworks.stanford.edu/feedback' target="_blank">Feedback</a></li>
+  </ul>
+<% end %>

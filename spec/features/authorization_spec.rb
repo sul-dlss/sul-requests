@@ -7,7 +7,7 @@ RSpec.describe 'User Authorization' do
     it 'is present in the home page and redirects with message' do
       visit root_path
       click_link 'Login'
-      within('.flashes') do
+      within('.flash_messages') do
         expect(page).to have_css('.alert-success', text: 'You have been successfully logged in.')
       end
     end

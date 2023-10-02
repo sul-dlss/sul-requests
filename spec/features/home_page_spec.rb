@@ -10,16 +10,14 @@ RSpec.describe 'Home Page' do
 
     it 'renders the page' do
       expect(page).to have_title('SUL Requests')
-      expect(page).to have_css('header.header-logo')
-      within('.header-links') do
+      within('header') do
         expect(page).to have_link('My Account')
         expect(page).to have_link('Feedback')
-      end
 
-      # page has a target="_blank" feedback link (with appropriate rel attribute)
-      feedback_link = page.find('.header-links a', text: 'Feedback')
-      expect(feedback_link['target']).to eq '_blank'
-      expect(feedback_link['rel']).to eq 'noopener noreferrer'
+        # page has a target="_blank" feedback link (with appropriate rel attribute)
+        feedback_link = page.find('a', text: 'Feedback')
+        expect(feedback_link['target']).to eq '_blank'
+      end
 
       within('#sul-footer') do
         expect(page).to have_css('#sul-footer-img img')

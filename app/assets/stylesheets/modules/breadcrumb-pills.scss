@@ -8,7 +8,7 @@
   padding: 4px;
 
   .pill-addon {
-    @extend .pull-right;
+    @extend .float-right;
     border-left: 2px solid $breadcrumb-pill-border-color;
     margin-left: 10px;
     padding: 0 5px;

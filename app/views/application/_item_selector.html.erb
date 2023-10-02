@@ -3,7 +3,7 @@
     <% if f.object.barcode_present? || f.object.all_holdings.one? %>
       <% single_item = f.object.requested_holdings.first || f.object.all_holdings.first %>
       <div class='form-group'>
-        <span class='control-label <%= label_column_class %>'>Call number</span>
+        <span class='col-form-label <%= label_column_class %>'>Call number</span>
         <div class='<%= content_column_class %>'>
           <p class="form-control-static">
             <%= single_item.callnumber %>
@@ -20,15 +20,15 @@
       <div id='selected-items-filter' data-behavior='item-selector' data-limit-reached-message="<%= t('sul_requests.limit_reached_message', limit: f.object.item_limit) %>">
         <% if f.object.all_holdings.count >= 10 %>
           <div class='form-group'>
-            <label class='control-label <%= label_column_class %>' for='item-selector-search'>Search item list</label>
+            <label class='col-form-label <%= label_column_class %>' for='item-selector-search'>Search item list</label>
             <div class='<%= content_column_class %>'>
-              <input id='item-selector-search' type='text' class='pull-right search form-control' />
+              <input id='item-selector-search' type='text' class='float-right search form-control' />
             </div>
           </div>
         <% end %>
         <div class='btn-group btn-group-xs sort-headings clearfix'>
-          <a href="javascript:;" class="sort sort-callnumber btn btn-default pull-left" data-sort="callnumber">Call number <i></i></a>
-          <a href="javascript:;" class="sort sort-status btn btn-default pull-right" data-sort="status">Status <i></i></a>
+          <a href="javascript:;" class="sort sort-callnumber btn btn-secondary pull-left" data-sort="callnumber">Call number <i></i></a>
+          <a href="javascript:;" class="sort sort-status btn btn-secondary float-right" data-sort="status">Status <i></i></a>
         </div>
         <div id="item-selector" class="item-selector" data-limit-selected-items="<%= f.object.item_limit if f.object.item_limit.to_i > 1 %>" data-counter-target="[data-items-counter='true']">
           <div class='list'>
@@ -74,7 +74,7 @@
       <div data-behavior='max-items-message'></div>
 
       <div class='form-group'>
-        <span class='control-label <%= label_column_class %> required'>
+        <span class='col-form-label <%= label_column_class %> required'>
           <span data-items-counter='true'><span data-count='true'><%= f.object.requested_holdings.length %></span> items selected</span>
         </span>
         <div class='<%= content_column_class %>'>

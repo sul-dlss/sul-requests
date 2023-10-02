@@ -12,13 +12,13 @@
     display: inline-block;
   }
 
-  @media screen and (max-width: $screen-xs-max) {
+  @media screen and (max-width: breakpoint-min(sm)) {
     .start-at,
     .end-at {
       display: block;
     }
 
-    .control-label {
+    .col-form-label {
       width: 14ch;
     }
   }

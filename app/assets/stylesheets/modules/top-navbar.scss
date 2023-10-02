@@ -1,54 +1,25 @@
-#topnav-container {
-  padding: 2px 0;
-  position: relative;
+#topnav {
+  .nav-item {
+    a {
+      color: $primary;
+      padding-bottom: 2px;
+      text-decoration: none;
+      margin-left: 15px;
+      border-bottom: 3px solid transparent;
 
-  #topnav {
-    background: none;
-    border: 0;
-    display: table;
-    margin-bottom: 0;
-    padding: 2px 0;
-
-    a img {
-      float: left;
-    }
-
-    .header-links {
-      float: right;
-      margin-top: 2px;
-
-      a {
-        border-bottom: 0;
-        color: $sul-topnavbar-link-color;
-        font-weight: normal;
-        margin-left: 15px;
-        padding-bottom: 3px;
-
-        &.first {
-          margin-left: 0;
-        }
+      &.first {
+        margin-left: 0;
       }
 
-      a:hover {
-        border-bottom: 3px solid $sul-topnavbar-link-color;
+      &:hover,
+      &:focus {
+        border-bottom: 3px solid $primary;
       }
     }
-  }
-}
 
-.topnav-divider {
-  background-color: $color-cardinal-red;
-  box-shadow: 0 4px 8px -2px $sul-shadow-color;
-  clear: both;
-  height: 10px;
-  width: 100%;
-}
-
-
-@media screen and (max-width: $screen-xs-max) {
-  #topnav {
-    padding-left: 10px;
-    padding-right: 10px;
-    width: 100%;
+    // Add the border on hover, or when the #feedback-form is open
+    a:hover, a[data-target="#feedback-form"][aria-expanded="true"] {
+      border-bottom: 3px solid $primary;
+    }
   }
 }

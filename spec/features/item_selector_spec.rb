@@ -12,7 +12,7 @@ RSpec.describe 'Item Selector' do
 
     it 'displays the item call number' do
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
-      expect(page).to have_css('.control-label', text: 'Call number')
+      expect(page).to have_css('.col-form-label', text: 'Call number')
       expect(page).to have_css('p', text: 'ABC 123')
       expect(page).not_to have_css('#item-selector')
     end
