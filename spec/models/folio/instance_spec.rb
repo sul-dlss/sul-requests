@@ -88,8 +88,7 @@ RSpec.describe Folio::Instance do
               },
               "library": {
                 "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-                "code": "GREEN",
-                "name": "Green Library"
+                "code": "GREEN"
               },
               "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
               "code": "GRE-STACKS",
@@ -207,8 +206,7 @@ RSpec.describe Folio::Instance do
                   },
                   "library": {
                     "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-                    "code": "SPEC-COLL",
-                    "name": "Special Collections"
+                    "code": "SPEC-COLL"
                   },
                   "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
                   "code": "SPEC-U-ARCHIVES",
@@ -241,8 +239,7 @@ RSpec.describe Folio::Instance do
                   },
                   "library": {
                     "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-                    "code": "SPEC-COLL",
-                    "name": "Special Collections"
+                    "code": "SPEC-COLL"
                   },
                   "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
                   "code": "SPEC-SAL3-U-ARCHIVES",
@@ -275,8 +272,7 @@ RSpec.describe Folio::Instance do
                   },
                   "library": {
                     "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-                    "code": "SPEC-COLL",
-                    "name": "Special Collections"
+                    "code": "SPEC-COLL"
                   },
                   "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
                   "code": "SPEC-SAL3-U-ARCHIVES",
@@ -309,8 +305,7 @@ RSpec.describe Folio::Instance do
                   },
                   "library": {
                     "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-                    "code": "SPEC-COLL",
-                    "name": "Special Collections"
+                    "code": "SPEC-COLL"
                   },
                   "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
                   "code": "SPEC-SAL3-U-ARCHIVES",
@@ -390,8 +385,7 @@ RSpec.describe Folio::Instance do
                 },
                 "library": {
                   "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-                  "code": "SPEC-COLL",
-                  "name": "Special Collections"
+                  "code": "SPEC-COLL"
                 },
                 "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
                 "code": "SPEC-U-ARCHIVES",
@@ -424,8 +418,7 @@ RSpec.describe Folio::Instance do
                 },
                 "library": {
                   "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-                  "code": "SPEC-COLL",
-                  "name": "Special Collections"
+                  "code": "SPEC-COLL"
                 },
                 "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
                 "code": "SPEC-SAL3-U-ARCHIVES",
@@ -458,8 +451,7 @@ RSpec.describe Folio::Instance do
                 },
                 "library": {
                   "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-                  "code": "SPEC-COLL",
-                  "name": "Special Collections"
+                  "code": "SPEC-COLL"
                 },
                 "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
                 "code": "SPEC-SAL3-U-ARCHIVES",
@@ -492,9 +484,7 @@ RSpec.describe Folio::Instance do
                 },
                 "library": {
                   "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-                  "code": "SPEC-COLL",
-                  "name": "Special Collections"
-
+                  "code": "SPEC-COLL"
                 },
                 "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
                 "code": "SPEC-SAL3-U-ARCHIVES",
@@ -574,8 +564,7 @@ RSpec.describe Folio::Instance do
                   },
                   "library": {
                     "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-                    "code": "SPEC-COLL",
-                    "name": "Special Collections"
+                    "code": "SPEC-COLL"
                   },
                   "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
                   "code": "SPEC-U-ARCHIVES",
@@ -608,8 +597,7 @@ RSpec.describe Folio::Instance do
                   },
                   "library": {
                     "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-                    "code": "SPEC-COLL",
-                    "name": "Special Collections"
+                    "code": "SPEC-COLL"
                   },
                   "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
                   "code": "SPEC-SAL3-U-ARCHIVES",
@@ -642,8 +630,7 @@ RSpec.describe Folio::Instance do
                   },
                   "library": {
                     "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-                    "code": "SPEC-COLL",
-                    "name": "Special Collections"
+                    "code": "SPEC-COLL"
                   },
                   "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
                   "code": "SPEC-SAL3-U-ARCHIVES",
@@ -677,8 +664,7 @@ RSpec.describe Folio::Instance do
                   },
                   "library": {
                     "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-                    "code": "SPEC-COLL",
-                    "name": "Special Collections"
+                    "code": "SPEC-COLL"
                   },
                   "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
                   "code": "SPEC-SAL3-U-ARCHIVES",
