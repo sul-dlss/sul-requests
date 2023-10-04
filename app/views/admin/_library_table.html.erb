@@ -14,15 +14,7 @@
     <% collection.each do |request| %>
       <tr data-mediate-request='<%= holdings_admin_path(request) %>' class='<%= cycle('odd', 'even') %>'>
         <td>
-          <a class="mediate-toggle" data-behavior='mediate-toggle' href='javascript:;'>
-            <i class="bi bi-plus-circle"></i>
-          </a>
-          <span data-behavior='all-approved-note' class='label label-success' style='<%= 'display:none;' unless request.approved? %>'>
-            <%= t('.all_approved') %>
-          </span>
-          <span data-behavior='mixed-approved-note' class='label label-warning' style='<%= 'display:none;' unless request.marked_as_done? %>'>
-            <%= t('.all_approved') %>
-          </span>
+          <%= render 'mediate_status', request: request %>
         </td>
         <td class='needed_date'>
           <% if request.needed_date %>

@@ -26,7 +26,9 @@ module MessagesHelper
   def link_to_delete_message(message)
     link_to tag.i(class: 'bi bi-trash') + tag.span(' Delete message'),
             message,
-            method: :delete,
+            data: {
+              turbo_method: :delete
+            },
             class: 'btn
                     btn-sm
                     btn-default

@@ -14,3 +14,11 @@
 #scan-or-deliver .sul-i-truck-1 {
   padding-right: 1ch;
 }
+
+.disable-text {
+  .show-when-disabled { display: none; }
+  &[disabled] .show-when-disabled { display: initial; }
+
+  .show-when-enabled { display: initial; }
+  &[disabled] .show-when-enabled { display: none; }
+}

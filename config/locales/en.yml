@@ -53,7 +53,7 @@ en:
       mediated_pages: 'Mediated pages'
       pages: 'Pages'
       scans: 'Scan requests'
-    library_table:
+    mediate_status:
       all_approved: 'Done'
   approval_status:
     default:

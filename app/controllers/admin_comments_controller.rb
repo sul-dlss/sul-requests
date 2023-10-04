@@ -6,16 +6,19 @@ class AdminCommentsController < ApplicationController
   load_and_authorize_resource :mediated_page
   load_and_authorize_resource :admin_comment, through: :mediated_page
 
-  def create
+  def create # rubocop:disable Metrics:MethodLength
     respond_to do |format|
       if @admin_comment.save
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.append('admin-comments-list', partial: 'admin_comments/admin_comment',
+                                                                          locals: { admin_comment: @admin_comment })
+        end
         format.html { redirect_back notice: 'Comment was successfully created.', fallback_location: root_url }
-        format.json { render json: @admin_comment }
       else
         format.html do
-          redirect_back flash: { error: 'There was an error creating your comment.' }, fallback_location: root_url
+          redirect_back flash: { error: 'There was an error creating your comment.' }, fallback_location: root_url,
+                        status: :unprocessable_entity
         end
-        format.json { render json: { status: :error }, status: :bad_request }
       end
     end
   end
