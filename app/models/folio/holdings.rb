@@ -28,7 +28,13 @@ module Folio
     end
 
     def items_in_location
-      @items.select { |item| item.home_location == folio_location_code }
+      @items.select do |item|
+        if item.effective_location.details['searchworksTreatTemporaryLocationAsPermanentLocation'] == 'true'
+          item.effective_location.code == folio_location_code
+        else
+          item.home_location == folio_location_code
+        end
+      end
     end
   end
 end
