@@ -10,6 +10,7 @@ RSpec.describe Folio::Instance do
     <<~JSON
       {
         "id": "57550106-e809-5a43-92da-1503d84dcc18",
+        "hrid": "a6959652",
         "title": "Coffee / Nebiyu Assefa and Joanna Brown",
         "identifiers": [
           {
@@ -141,6 +142,12 @@ RSpec.describe Folio::Instance do
     subject { data.isbn }
 
     it { is_expected.to eq '9780955506000; 095550600X' }
+  end
+
+  describe '#view_url' do
+    subject { data.view_url }
+
+    it { is_expected.to eq 'https://searchworks.stanford.edu/view/6959652' }
   end
 
   describe '#finding_aid' do
