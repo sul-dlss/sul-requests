@@ -6,7 +6,7 @@ module Folio
     attr_reader :id, :code, :name
 
     def self.from_dynamic(dyn)
-      new(id: dyn.fetch('id'), code: dyn.fetch('code'), name: dyn.fetch('name'))
+      new(id: dyn.fetch('id'), code: dyn.fetch('code'), name: dyn['name'] || dyn['code'])
     end
 
     def initialize(id:, code:, name: nil)

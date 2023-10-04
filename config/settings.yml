@@ -120,50 +120,72 @@ libraries:
       email: greencirc@stanford.edu
     label: Stanford Libraries
   ARS:
+    label: Archive of Recorded Sound
     contact_info:
       phone: (650) 723-9312
       email: soundarchive@stanford.edu
+    folio_pickup_service_point_code: ARS
     reading_room_url: https://library.stanford.edu/libraries/archive-recorded-sound
     hold_pseudopatron: HOLD@AS
     hours:
       library_slug: ars
       location_slug: archive-recorded-sound
   ART:
+    label: Art & Architecture Library (Bowes)
     contact_info:
       phone: "(650) 723-3408"
       email: artlibrary@stanford.edu
+    folio_pickup_service_point_code: ART
     hold_pseudopatron: HOLD@AR
     hours:
       library_slug: art
       location_slug: library-circulation
+  BIOLOGY:
+    label: Biology Library (Falconer)
+    hours:
+      library_slug: falconer
+      location_slug: library-circulation
   BUSINESS:
+    label: Business Library
     contact_info:
       phone: "(650) 725-2055"
       email: gsb_librarycirc@stanford.edu
+    folio_pickup_service_point_code: BUS-IDESK
     hold_pseudopatron: HOLD@BU # NOTE, in FOLIO the name is HOLD@JA
     hours:
       library_slug: business
       location_slug: library-i-desk
+  CHEMCHMENG:
+    label: Chemistry & ChemEng Library (Swain)
+    hours:
+      library_slug: swain
+      location_slug: library-circulation
   CLASSICS:
+    label: Classics Library
     hold_pseudopatron: HOLD@CL
     hours:
       library_slug: classics-library
       location_slug: library-circulation
   EARTH-SCI:
+    label: Earth Sciences Library (Branner)
+    folio_pickup_service_point_code: EARTH-SCI
     hold_pseudopatron: HOLD@ES
     hours:
       library_slug: branner
       location_slug: library-circulation
   EAST-ASIA:
+    label: East Asia Library
     contact_info:
       phone: (650) 725-3435
       email: eastasialibrary@stanford.edu
     reading_room_url: https://library.stanford.edu/libraries/east-asia-library
+    folio_pickup_service_point_code: EAST-ASIA
     hold_pseudopatron: HOLD@EA
     hours:
       library_slug: eal
       location_slug: library-circulation
   EDUCATION:
+    label: Education Library (at SAL1&2)
     instructions: The Education Library is closed for construction. Request items for pickup at another library.
     contact_info:
       phone: "(650) 723-2121"
@@ -174,57 +196,111 @@ libraries:
       location_slug: operations
     iplc_pickup_location_code: STA_GREEN
   ENG:
+    label: Engineering Library (Terman)
+    folio_pickup_service_point_code: ENG
     hold_pseudopatron: HOLD@EN
     hours:
       library_slug: englib
       location_slug: library-circulation
   GREEN:
+    label: Green Library
     contact_info:
       phone: "(650) 723-1493"
       email: greencirc@stanford.edu
+    folio_pickup_service_point_code: GREEN-LOAN
     hold_pseudopatron: HOLD@GR
     hours:
       library_slug: green
+      location_slug: library-circulation
+  HOPKINS:
+    label: Marine Biology Library (Miller)
+    contact_info:
+      phone: "(831) 655-6229"
+      email: HMS-Library@lists.stanford.edu
+    folio_pickup_service_point_code: MARINE-BIO
+    hold_pseudopatron: HOLD@MA
+    hours:
+      library_slug: hopkins
       location_slug: library-circulation
   LANE:
     hold_pseudopatron: HOLD@LN
     hours:
       library_slug: lane
       location_slug: library-circulation
+  LANE-MED:
+    label: Medical Library (Lane)
+    hold_pseudopatron: HOLD@LN
+    hours:
+      library_slug: lane
+      location_slug: library-circulation
+  LATHROP:
+    label: Lathrop Library
+    hours:
+      library_slug: lathrop
+      location_slug: tech-lounge
   LAW:
+    label: Law Library (Crown)
     contact_info:
       phone: "(650) 723-2477"
       email: circulation@law.stanford.edu
+    folio_pickup_service_point_code: LAW
     hold_pseudopatron: HOLD@LW
     hours:
       library_slug: law
       location_slug: library-circulation
   MARINE-BIO:
-    contact_info:
-      phone: "(831) 655-6229"
-      email: HMS-Library@lists.stanford.edu
     hold_pseudopatron: HOLD@MA
     hours:
       library_slug: hopkins
       location_slug: library-circulation
+  MATH-CS:
+    label: Math & Statistics Library
+    hours:
+      library_slug: mathstat
+      location_slug: library-circulation
+  MEDIA-MTXT:
+    label: Media Microtext
+    folio_pickup_service_point_code: MEDIA-CENTER
+    hold_pseudopatron: HOLD@MD
+    hours:
+      library_slug: green
+      location_slug: media-microtext-center
   MEDIA-CENTER:
+    label: Media Microtext
+    folio_pickup_service_point_code: MEDIA-CENTER
     hold_pseudopatron: HOLD@MD
     hours:
       library_slug: green
       location_slug: media-microtext-center
   MUSIC:
+    label: Music Library
     contact_info:
       phone: (650) 723-1211
       email: muslibcirc@stanford.edu
+    folio_pickup_service_point_code: MUSIC
     hold_pseudopatron: HOLD@MU
     hours:
       library_slug: music
       location_slug: library-circulation
-  RUMSEY-MAP:
+  RUMSEYMAP:
+    label: David Rumsey Map Center
     instructions: Researchers can request to view these materials in the David Rumsey Map Center.
     contact_info:
       phone: (650) 498-8698
       email: rumseymapcenter@stanford.edu
+    folio_pickup_service_point_code: RUMSEY-MAP
+    reading_room_url: https://library.stanford.edu/rumsey/about-center/visitor-policies
+    hold_pseudopatron: HOLD@RM
+    hours:
+      library_slug: Rumsey
+      location_slug: visitor-access
+  RUMSEY-MAP:
+    label: David Rumsey Map Center
+    instructions: Researchers can request to view these materials in the David Rumsey Map Center.
+    contact_info:
+      phone: (650) 498-8698
+      email: rumseymapcenter@stanford.edu
+    folio_pickup_service_point_code: RUMSEY-MAP
     reading_room_url: https://library.stanford.edu/rumsey/about-center/visitor-policies
     hold_pseudopatron: HOLD@RM
     hours:
@@ -238,17 +314,20 @@ libraries:
       library_slug: srwc
       location_slug: lobby-desk
   SAL:
+    label: SAL1&2 (on-campus shelving)
     hold_pseudopatron: HOLD@SL
     hours:
       library_slug: sal12
       location_slug: operations
     pageable: true
   SAL3:
+    label: SAL3 (off-campus storage)
     hours:
       library_slug: sal3
       location_slug: operations
     pageable: true
   SAL-NEWARK:
+    label: SAL Newark (off-campus storage)
     hours:
       library_slug: newark
       location_slug: operations
@@ -258,24 +337,29 @@ libraries:
       phone: '(650) 723-3278'
       email: 'scan-and-deliver@stanford.edu'
   SCIENCE:
+    label: Science Library (Li and Ma)
     contact_info:
       phone: "(650) 723-1528"
       email: sciencelibrary@stanford.edu
+    folio_pickup_service_point_code: SCIENCE
     hold_pseudopatron: HOLD@CS
     hours:
       library_slug: science
       location_slug: library-circulation
   SPEC-COLL:
+    label: Special Collections
     instructions: Researchers can request to view these materials in the Special Collections Reading Room. Request materials at least 2 business days in advance. Maximum 5 items per day.
     contact_info:
       phone: "(650) 725-1022"
       email: specialcollections@stanford.edu
+    folio_pickup_service_point_code: SPEC
     reading_room_url: https://library.stanford.edu/spc/using-our-collections
     hold_pseudopatron: HOLD@SP
     hours:
       library_slug: spc
       location_slug: field-reading-room
   TANNER:
+    label: Philosophy Library (Tanner)
     hold_pseudopatron: HOLD@TA
     hours:
       library_slug: philosophy
