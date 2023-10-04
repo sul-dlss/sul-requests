@@ -4,54 +4,24 @@
 #  Class to handle creation of ILLiad OpenURL request
 ###
 class IlliadRequest
-  def initialize(scan)
-    @scan = scan
+  def initialize(request)
+    @request = request
   end
-
-  # rubocop:disable Metrics/MethodLength
-  def illiad_transaction_request
-    {
-      ProcessType: 'Borrowing',
-      RequestType: 'Article',
-      SpecIns: 'Scan and Deliver Request',
-      PhotoJournalTitle: scan_title,
-      PhotoArticleAuthor: @scan.authors,
-      Location: @scan.origin,
-      ReferenceNumber: @scan.origin_location,
-      PhotoArticleTitle: @scan.data[:section_title],
-      PhotoJournalInclusivePages: @scan.data[:page_range],
-      CallNumber: call_number,
-      ILLNumber: ill_number,
-      ItemNumber: item_number,
-      Username: @scan.user.sunetid
-    }.to_json
-  end
-  # rubocop:enable Metrics/MethodLength
 
   def request!
-    faraday_conn_w_req_headers.post('ILLiadWebPlatform/Transaction/', illiad_transaction_request)
+    faraday_conn_w_req_headers.post(
+      'ILLiadWebPlatform/Transaction/',
+      default_params.merge(@request.illiad_request_params).to_json
+    )
   end
 
   private
 
-  def scan_title
-    @scan.bib_data.title
-  end
-
-  def ill_number
-    first_holding.try(:barcode)
-  end
-
-  def item_number
-    first_holding.try(:barcode)
-  end
-
-  def call_number
-    first_holding.try(:callnumber)
-  end
-
-  def first_holding
-    @scan.holdings.first
+  def default_params
+    {
+      Username: @request.user.sunetid,
+      ProcessType: 'Borrowing'
+    }
   end
 
   def faraday_conn_w_req_headers

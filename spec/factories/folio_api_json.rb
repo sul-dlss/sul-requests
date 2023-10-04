@@ -292,6 +292,7 @@ FactoryBot.define do
   factory :scannable_holdings, class: 'Folio::Instance' do
     id { '1234' }
     title { 'SAL Item Title' }
+    contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
 
     format { ['Book'] }
 

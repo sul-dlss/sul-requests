@@ -31,6 +31,24 @@ class Scan < Request
     RequestStatusMailer.request_status_for_scan(self).deliver_later if notification_email_address.present?
   end
 
+  # rubocop:disable Metrics/MethodLength
+  def illiad_request_params
+    {
+      RequestType: 'Article',
+      SpecIns: 'Scan and Deliver Request',
+      PhotoJournalTitle: bib_data.title,
+      PhotoArticleAuthor: bib_data.author,
+      Location: origin,
+      ReferenceNumber: origin_location,
+      PhotoArticleTitle: section_title,
+      PhotoJournalInclusivePages: page_range,
+      CallNumber: holdings.first.try(:callnumber),
+      ILLNumber: holdings.first.try(:barcode),
+      ItemNumber: holdings.first.try(:barcode)
+    }
+  end
+  # rubocop:enable Metrics/MethodLength
+
   private
 
   def requested_item_is_not_scannable_only

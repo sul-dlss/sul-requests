@@ -6,6 +6,7 @@ FactoryBot.define do
     origin { 'SAL3' }
     origin_location { 'STACKS' }
     section_title { 'Section Title for Scan 12345' }
+    page_range { '1-10' }
 
     trait :with_item_title do
       item_title { 'Title for Scan 12345' }
