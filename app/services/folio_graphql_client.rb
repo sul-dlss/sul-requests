@@ -73,6 +73,7 @@ class FolioGraphqlClient
           query InstanceByHrid {
             instances(hrid: "#{hrid}") {
               id
+              hrid
               title
               identifiers {
                 value
