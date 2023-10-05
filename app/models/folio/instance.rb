@@ -16,7 +16,7 @@ module Folio
     end
     # rubocop:enable Style/OptionalBooleanParameter
 
-    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     def self.from_dynamic(json)
       new(
         id: json.fetch('id'),
@@ -24,29 +24,40 @@ module Folio
         title: json.fetch('title', ''),
         contributors: json.fetch('contributors', []),
         pub_date: json.fetch('publication', []).pick('dateOfPublication'),
+        pub_place: json.fetch('publication', []).pick('place'),
+        publisher: json.fetch('publication', []).pick('publisher'),
         format: json.dig('instanceType', 'name'),
         isbn: json.fetch('identifiers', []).filter_map do |identifier|
           identifier.fetch('value') if identifier.dig('identifierTypeObject', 'name') == 'ISBN'
         end,
+        oclcn: json.fetch('identifiers', []).filter_map do |identifier|
+          identifier.fetch('value') if identifier.dig('identifierTypeObject', 'name') == 'OCLC'
+        end,
         electronic_access: json.fetch('electronicAccess', []),
+        edition: json.fetch('editions', []),
         items: json.fetch('items', []).map { |item| Folio::Item.from_hash(item) }
       )
     end
-    # rubocop:enable Metrics/MethodLength
+    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
-    # rubocop:disable Metrics/ParameterLists
-    def initialize(id:, hrid: '', title: '', contributors: [], pub_date: nil, format: nil, isbn: [], electronic_access: [], items: [])
+    # rubocop:disable Metrics/MethodLength, Metrics/ParameterLists
+    def initialize(id:, hrid: '', title: '', contributors: [], pub_date: nil, pub_place: nil, publisher: nil, format: nil,
+                   isbn: [], oclcn: [], electronic_access: [], edition: [], items: [])
       @id = id
       @hrid = hrid
       @title = title
       @contributors = contributors
       @pub_date = pub_date
+      @pub_place = pub_place
+      @publisher = publisher
       @format = format
       @isbn = isbn
+      @oclcn = oclcn
       @electronic_access = electronic_access
+      @edition = edition
       @items = items
     end
-    # rubocop:enable Metrics/ParameterLists
+    # rubocop:enable Metrics/MethodLength, Metrics/ParameterLists
 
     TITLE_AUTHOR_DELIMITER = ' / '
 
@@ -59,10 +70,18 @@ module Folio
       contributor&.fetch('name')
     end
 
-    attr_reader :pub_date, :format
+    attr_reader :pub_date, :pub_place, :publisher, :format
 
     def isbn
       @isbn.join('; ')
+    end
+
+    def oclcn
+      @oclcn.join('; ')
+    end
+
+    def edition
+      @edition.join('; ')
     end
 
     def finding_aid

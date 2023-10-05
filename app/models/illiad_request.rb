@@ -11,7 +11,7 @@ class IlliadRequest
   def request!
     faraday_conn_w_req_headers.post(
       'ILLiadWebPlatform/Transaction/',
-      default_params.merge(@request.illiad_request_params).to_json
+      default_params.merge(@request.illiad_request_params).compact.to_json
     )
   end
 

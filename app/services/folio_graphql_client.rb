@@ -90,7 +90,10 @@ class FolioGraphqlClient
               }
               publication {
                 dateOfPublication
+                place
+                publisher
               }
+              editions
               electronicAccess {
                 materialsSpecification
                 uri
@@ -99,6 +102,7 @@ class FolioGraphqlClient
                 id
                 barcode
                 discoverySuppress
+                volume
                 status {
                   name
                 }

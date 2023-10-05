@@ -121,22 +121,78 @@ RSpec.describe IlliadRequest do
   context 'with a hold/recall' do
     subject { described_class.new(hold) }
 
-    let(:hold) { create(:hold_recall, :with_holdings_barcodes, user:) }
+    let(:hold) { create(:hold_recall_checkedout, user:) }
 
     describe 'request body' do
-      it 'includes the request type'
-      it 'includes the instructions'
-      it 'includes the title'
-      it 'includes the author'
-      it 'includes the ISBN'
-      it 'includes the volume'
-      it 'includes the publisher'
-      it 'includes the place of publication'
-      it 'includes the date of publication'
-      it 'includes the edition'
-      it 'includes the OCLC number'
-      it 'includes the catalog view link'
-      it 'includes the not needed after date'
+      it 'includes the request type' do
+        expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
+        .with(body: /"RequestType":"Loan"/)).to have_been_made
+      end
+
+      it 'includes the instructions' do
+        expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
+        .with(body: %r{"SpecIns":"Hold/Recall Request"})).to have_been_made
+      end
+
+      it 'includes the title' do
+        expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
+        .with(body: /"LoanTitle":"Checked out item"/)).to have_been_made
+      end
+
+      it 'includes the author' do
+        expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
+        .with(body: /"LoanAuthor":"John Q. Public"/)).to have_been_made
+      end
+
+      it 'includes the ISBN' do
+        expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
+        .with(body: /"ISSN":"978-3-16-148410-0"/)).to have_been_made
+      end
+
+      it 'includes the volume' do
+        expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
+        .with(body: /"PhotoJournalVolume":"v. 1"/)).to have_been_made
+      end
+
+      it 'includes the publisher' do
+        expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
+        .with(body: /"LoanPublisher":"Walter de Gruyter GmbH"/)).to have_been_made
+      end
+
+      it 'includes the place of publication' do
+        expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
+        .with(body: /"LoanPlace":"Berlin"/)).to have_been_made
+      end
+
+      it 'includes the date of publication' do
+        expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
+        .with(body: /"LoanDate":"2018"/)).to have_been_made
+      end
+
+      it 'includes the edition' do
+        expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
+        .with(body: /"LoanEdition":"1st ed."/)).to have_been_made
+      end
+
+      it 'includes the OCLC number' do
+        expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
+        .with(body: /"ESPNumber":"\(OCoLC-M\)1294477572"/)).to have_been_made
+      end
+
+      it 'includes the catalog view link' do
+        expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
+        .with(body: %r{"CitedIn":"https://searchworks.stanford.edu/view/1234"})).to have_been_made
+      end
+
+      it 'includes the not needed after date' do
+        expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
+        .with(body: /"NotWantedAfter":"#{Time.zone.today.strftime('%Y-%m-%d')}"/)).to have_been_made
+      end
+
+      it 'includes the pickup location' do
+        expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
+        .with(body: /"ItemInfo4":"GREEN"/)).to have_been_made
+      end
     end
   end
 end
