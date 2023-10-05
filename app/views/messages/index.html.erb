@@ -1,15 +1,15 @@
 <h1>Broadcast messages for request forms</h1>
 
 <div>
+  <%= render partial: 'messages_for_library', locals: { library_code: 'anywhere', request_type: 'scan' } %>
+</div>
+
+<div>
   <%= render partial: 'messages_for_library', locals: { library_code: 'anywhere', request_type: 'page'} %>
 </div>
 
-<% LibraryLocation.pageable_libraries.each do |library_code, config| %>
-  <div class="library-page-<%= library_code %>">
-    <%= render partial: 'messages_for_library', locals: { library_name: config.label, library_code: library_code, request_type: 'page'} %>
+<% Folio::Types.libraries.all.each do |library| %>
+  <div class="library-page-<%= library.code %>">
+    <%= render partial: 'messages_for_library', locals: { library_name: library.name, library_code: library.code, request_type: 'page'} %>
   </div>
 <% end %>
-
-<div>
-  <%= render partial: 'messages_for_library', locals: { library_code: 'anywhere', request_type: 'scan' } %>
-</div>

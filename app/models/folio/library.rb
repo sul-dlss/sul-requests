@@ -3,10 +3,10 @@
 module Folio
   # Model for FOLIO's library data
   class Library
-    attr_reader :id, :code, :name
+    attr_reader :id, :code
 
     def self.from_dynamic(dyn)
-      new(id: dyn.fetch('id'), code: dyn.fetch('code'), name: dyn['name'] || dyn['code'])
+      new(id: dyn.fetch('id'), code: dyn.fetch('code'), name: dyn['name'])
     end
 
     def initialize(id:, code:, name: nil)
@@ -19,6 +19,10 @@ module Folio
       @primary_service_points ||= locations.map(&:primary_service_point_id).uniq.map { |id| Folio::Types.service_points.find_by(id:) }
     end
 
+    def name
+      @name ||= cached_data&.name || code
+    end
+
     def to_h
       { id:, code: }
     end
@@ -27,6 +31,10 @@ module Folio
 
     def locations
       Folio::Types.locations.where(library_id: id)
+    end
+
+    def cached_data
+      @cached_data ||= Folio::Types.libraries.find_by(id:)
     end
   end
 end

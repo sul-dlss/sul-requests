@@ -33,9 +33,5 @@ class LibraryLocation
     def all_libraries
       Settings.libraries.map.to_h.with_indifferent_access
     end
-
-    def pageable_libraries
-      all_libraries.select { |_, v| v.pageable }
-    end
   end
 end
