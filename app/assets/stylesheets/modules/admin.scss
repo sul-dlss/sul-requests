@@ -42,19 +42,3 @@
 .dashboard-table {
   text-align: center;
 }
-
-.editable-date {
-  .icon-arrow-left {
-    @extend .bi;
-    @extend .bi-arrow-left-circle;
-  }
-
-  .icon-arrow-right {
-    @extend .bi;
-    @extend .bi-arrow-right-circle;
-  }
-
-  .active.day {
-    background-color: $color-pantone-403;
-  }
-}

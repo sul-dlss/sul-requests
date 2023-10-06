@@ -3,8 +3,6 @@ import './jquery-shim'
 import Rails from 'rails-ujs'
 import './trunk8'
 import 'bootstrap-sass'
-import './bootstrap-editable'
-import './bootstrap-editable-rails'
 
 import './additional_user_validation_fields'
 import './date_selector'
@@ -51,7 +49,6 @@ $.swap = function (elem, options, callback, args) {
 // that, the functionality broke, and it didn't seem worth spending
 // the time to debug further.
 $(document).on('turbo:load', function() {
-  $('.editable').editable();
   $("[data-toggle='tooltip']").tooltip();
 });
 

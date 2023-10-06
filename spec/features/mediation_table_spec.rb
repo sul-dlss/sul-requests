@@ -524,29 +524,22 @@ RSpec.describe 'Mediation table', js: true do
     end
 
     it 'has a calendar widget for setting "Needed date"' do
+      new_date = Time.zone.today.at_beginning_of_month.next_month
+
       within '.mediation-table tbody' do
-        # confirm that the current value for the "needed date" is displayed correctly
-        expect(page).to have_css('a.editable', text: I18n.l(Time.zone.today, format: :quick), visible: :visible)
-
-        # find the table cell and click the link to open the calendar widget
-        needed_date_table_cell = page.find('td.needed_date')
-        needed_date_link = needed_date_table_cell.find('a')
-        needed_date_link.click
-        expect(page).to have_css('.editable-popup')
-
-        within needed_date_table_cell do
-          page.find('th.next').click # click over to the subsequent month
-          expect(page).to have_css('td.day', visible: :visible) # make sure the calandar day elements have been rendered
-          page.all('td.day').detect { |elt| elt.text == '1' }.click # click the calendar day for the first of the month
-          page.find('button.editable-submit').click # submit the newly chosen date
+        # find the table cell
+        within 'td.needed_date' do
+          # click the link to open the calendar widget
+          click_link I18n.l(Time.zone.today, format: :quick)
+          fill_in 'I plan to visit on', with: new_date
+          click_button 'ok'
         end
       end
 
-      # use rails magic to get a Date object for the first of next month. then confirm that the UI was updated
-      # to show the date selection made above, and that the new selection has been saved to the object in the DB.
-      expected_needed_date = Time.zone.today.at_beginning_of_month.next_month
-      expect(page).to have_css('a.editable', text: I18n.l(expected_needed_date, format: :quick), visible: :visible)
-      expect(request.reload.needed_date).to eq expected_needed_date
+      # confirm that the UI was updated to show the date selection made above,
+      # and that the new selection has been saved to the object in the DB.
+      expect(page).to have_link I18n.l(new_date, format: :quick)
+      expect(request.reload.needed_date).to eq new_date
     end
 
     context 'for requests that do not have a needed date' do
@@ -557,7 +550,7 @@ RSpec.describe 'Mediation table', js: true do
 
       it 'does not include the edit-in-place element' do
         visit admin_path('PAGE-MP')
-        expect(page).not_to have_css('a.editable')
+        expect(page).not_to have_css('.needed_date a')
       end
     end
   end
