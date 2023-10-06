@@ -19,7 +19,7 @@ class MediatedPagesController < RequestsController
   protected
 
   def update_params
-    params.require(:request).permit(:approval_status, :needed_date)
+    params.require(:request).permit(:approval_status)
   end
 
   def validate_request_type
