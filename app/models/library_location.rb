@@ -26,7 +26,7 @@ class LibraryLocation
 
   class << self
     def library_name_by_code(code)
-      all_libraries[code]&.label
+      Folio::Types.libraries.find_by(code:)&.name(fallback_value: nil) || all_libraries[code]&.label
     end
 
     # This is a super-clunky way to convert data from RailsConfig to something

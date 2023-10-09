@@ -132,12 +132,6 @@ class SubmitFolioRequestJob < ApplicationJob
         # Check if comparable service point code exists
         service_point = Folio::Types.service_points.find_by(code: request.destination)
 
-        # During cutover and migration, we may still need to depend on the service point defined in settings
-        service_point ||= begin
-          library_service_point = Settings.libraries[request.destination]&.folio_pickup_service_point_code
-          Folio::Types.service_points.find_by(code: library_service_point)
-        end
-
         (service_point || default_service_point).id
       end
     end
