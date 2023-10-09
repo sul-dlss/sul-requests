@@ -18,9 +18,19 @@ RSpec.describe LibraryLocation do
     subject { library_location.folio_location_code }
 
     let(:library_location) { described_class.new(origin, origin_location) }
-    let(:origin) { 'GREEN' }
-    let(:origin_location) { 'STACKS' }
 
-    it { is_expected.to eq 'GRE-STACKS' }
+    context 'a symphony location' do
+      let(:origin) { 'GREEN' }
+      let(:origin_location) { 'STACKS' }
+
+      it { is_expected.to eq 'GRE-STACKS' }
+    end
+
+    context 'a FOLIO location' do
+      let(:origin) { 'BUSINESS' }
+      let(:origin_location) { 'BUS-CRES' }
+
+      it { is_expected.to eq 'BUS-CRES' }
+    end
   end
 end
