@@ -19,8 +19,8 @@ module Folio
       @primary_service_points ||= locations.map(&:primary_service_point_id).uniq.map { |id| Folio::Types.service_points.find_by(id:) }
     end
 
-    def name
-      @name ||= cached_data&.name || code
+    def name(fallback_value: code)
+      @name ||= cached_data&.name || fallback_value
     end
 
     def to_h
