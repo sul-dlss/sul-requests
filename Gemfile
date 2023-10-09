@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 7.0'
+gem 'rails', '~> 7.0.8'
 
 # Use sqlite3 as the database (during local development)
 gem 'sqlite3'
