@@ -73,7 +73,7 @@ class RequestStatusMailer < ApplicationMailer
   def contact_info
     Settings.locations[@request.origin_location]&.contact_info ||
       Settings.libraries[@request.origin]&.contact_info ||
-      Settings.libraries[@request.destination]&.contact_info ||
+      Settings.libraries[@request.destination_library_code]&.contact_info ||
       Settings.libraries.default.contact_info
   end
 

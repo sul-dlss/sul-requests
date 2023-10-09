@@ -97,7 +97,7 @@ class SubmitIplcListenerJob < ApplicationJob
     # LAW           => STA_LAW
     # EAST-ASIA     => STA_EAST_ASIA
     def iplc_pickup_location_code
-      Settings.libraries[request.destination]&.iplc_pickup_location_code || "STA_#{request.destination.tr('-', '_')}"
+      Settings.libraries[request.destination_library_code]&.iplc_pickup_location_code || "STA_#{request.destination.tr('-', '_')}"
     end
   end
 end
