@@ -33,10 +33,6 @@ module RequestsHelper
   # rubocop:enable Metrics/MethodLength
   # rubocop:enable Metrics/PerceivedComplexity
 
-  def i18n_library_title_key
-    current_request.origin
-  end
-
   def label_for_item_selector_holding(holding)
     if holding.checked_out?
       content_tag :span, class: 'status pull-right availability unavailable' do
