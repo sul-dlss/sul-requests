@@ -16,8 +16,9 @@ class LibraryLocation
   end
 
   # This is the code Folio uses, which is a combination of library & Symphony location
+  # In certain cases, this wasn't a Symphony location, so the location is a FOLIO location (e.g. BUSINESS/BUS-CRES)
   def folio_location_code
-    @folio_location_code ||= FolioLocationMap.folio_code_for(library_code: library, home_location: location)
+    @folio_location_code ||= FolioLocationMap.folio_code_for(library_code: library, home_location: location) || location
   rescue FolioLocationMap::NotFound
     Honeybadger.notify('Location code not found', context: { library:, location: })
     nil
