@@ -5,6 +5,8 @@
 #  been submitted based on either the request type or user error status
 ###
 class RequestStatusMailer < ApplicationMailer
+  helper PickupLibrariesHelper
+
   attr_accessor :custom_from_address
 
   # User is blocked
