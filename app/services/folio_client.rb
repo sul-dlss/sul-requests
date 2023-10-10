@@ -222,7 +222,7 @@ class FolioClient
     return if response.success?
 
     if response.status == 422 && Array(response.headers[Faraday::CONTENT_TYPE]).any? { |x| x.match?(/\bjson$/) }
-      raise FolioError, "#{title} request for #{context_string} was not successful", JSON.parse(response.body)
+      raise FolioClient::Error, "#{title} request for #{context_string} was not successful", JSON.parse(response.body)
     end
 
     context_string = context.map { |k, v| "#{k}: #{v}" }.join(', ')
