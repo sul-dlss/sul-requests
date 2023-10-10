@@ -25,7 +25,7 @@ class MediatedPage < Request
   end
 
   def requires_needed_date?
-    return false if origin_location == 'PAGE-MP'
+    return false if origin_location == 'PAGE-MP' || origin_location == 'SAL3-PAGE-MP'
 
     true
   end
