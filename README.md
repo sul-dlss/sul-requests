@@ -89,24 +89,14 @@ rake rubocop
 ```
 
 ## request lifecycle
-the app is structured around the core `Request` model, which may transform itself into a more specific subclass based on an applicable set of rules.
+the app is structured around the core `Request` model, which may transform itself into a more specific subclass based on an applicable set of rules:
+- `AeonPage`, for items with a permanent location with an `aeonSite` detail
+- `MediatedPage`, for items with a permanent location with a `pageMediationGroupKey` detail
+- `Scan`, for items with a permanent location with a `scanServicePointCode` detail
+- `Paging`, for items with a circulation rule that allows paging
+- `Hold`, for items with a circulation rule that allows holds
 
-`Request`s include an instance of `RequestAbilities`, a container for various methods that support introspection about what the `Request` is for. these methods often reference `LocationRules`, a container for business logic specific to `Request`s. the main `settings.yml` has a large number of settings that set up `LocationRules` for libraries and locations across SUL.
-
-`LocationRules` usually specify the behavior of a `Request` using a combination of several attributes. for example:
-```yaml
-pageable:
-  - library: SAL3
-    locations:
-      - PAGE-EA
-    item_types:
-      - LCKSTK
-    aeon: true
-    aeon_site: EASTASIA
-```
-this rule specifies that an item originating from offsite storage at SAL3 with a location of PAGE-EA and an item type of LCKSTK can be paged. the `aeon` and `aeon_site` attributes are used to specify that the request should be sent to Aeon for processing, with the `aeon_site` attribute specifying which reading room the item will ultimately be delivered to for the patron to access.
-
-all `Request`s are initially submitted using the same route, but the controller will transform the `Request` into a more specific subclass based on its `RequestAbilities` using `Request#delegate_request!`, handing off the request for further processing. in the example above, the `Request` would become an `AeonPage` as a result of the applicable `LocationRule`.
+all `Request`s are initially submitted using the same route, but the controller will transform the `Request` into a more specific subclass based on its `RequestAbilities` using `Request#delegate_request!`, handing off the request for further processing.
 
 `Request`s begin life with a small amount of information about their subject, provided through query parameters: `item_id`, `origin`, and `origin_location`. the `Request` is equipped to look up more information by querying services like the ILS and SearchWorks through various API wrappers (see e.g. `app/models/searchworks_item.rb`). SearchWorks in particular can [respond with JSON](https://searchworks.stanford.edu/view/11548957/availability.json) that lists the holdings for an item, which are used to power the item selector interface so that patrons can choose which items they want to request when multiple options are available.
 ## making requests in development
