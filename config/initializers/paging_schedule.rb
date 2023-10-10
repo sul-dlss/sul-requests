@@ -98,21 +98,21 @@ Rails.application.config.after_initialize do
     end
 
     # Hopkins
-    when_paging from: 'HOPKINS', to: 'GREEN', before: '9:00am' do
+    when_paging from: 'MARINE-BIO', to: 'GREEN', before: '9:00am' do
       will_arrive after: '12:00pm'
       business_days_later 1
     end
     # This is not in the table.
-    when_paging from: 'HOPKINS', to: 'GREEN', after: '9:00am' do
+    when_paging from: 'MARINE-BIO', to: 'GREEN', after: '9:00am' do
       will_arrive after: '12:00pm'
       business_days_later 2
     end
-    when_paging from: 'HOPKINS', to: :anywhere, before: '9:00am' do
+    when_paging from: 'MARINE-BIO', to: :anywhere, before: '9:00am' do
       will_arrive after: '12:00pm'
       business_days_later 2
     end
     # This is not in the table.
-    when_paging from: 'HOPKINS', to: :anywhere, after: '9:00am' do
+    when_paging from: 'MARINE-BIO', to: :anywhere, after: '9:00am' do
       will_arrive after: '12:00pm'
       business_days_later 3
     end
@@ -138,90 +138,64 @@ Rails.application.config.after_initialize do
     end
 
     # Rumsey Map Center
-    when_paging from: 'RUMSEYMAP', to: :anywhere, before: '12:00pm' do
+    when_paging from: 'RUMSEY-MAP', to: :anywhere, before: '12:00pm' do
       will_arrive after: '1:00pm'
       business_days_later 3
     end
-    when_paging from: 'RUMSEYMAP', to: :anywhere, after: '12:00pm' do
+    when_paging from: 'RUMSEY-MAP', to: :anywhere, after: '12:00pm' do
       will_arrive after: '1:00pm'
       business_days_later 3
     end
 
     # Media Microtext
-    when_paging from: 'MEDIA-MTXT', to: 'MEDIA-MTXT', before: '10:00am' do
+    when_paging from: 'MEDIA-CENTER', to: 'MEDIA-CENTER', before: '10:00am' do
       will_arrive after: '11:00am'
       business_days_later 0
     end
-    when_paging from: 'MEDIA-MTXT', to: 'MEDIA-MTXT', before: '2:00pm' do
+    when_paging from: 'MEDIA-CENTER', to: 'MEDIA-CENTER', before: '2:00pm' do
       will_arrive after: '3:00pm'
       business_days_later 0
     end
-    when_paging from: 'MEDIA-MTXT', to: 'MEDIA-MTXT', before: '5:00pm' do
+    when_paging from: 'MEDIA-CENTER', to: 'MEDIA-CENTER', before: '5:00pm' do
       will_arrive after: '6:00pm'
       business_days_later 0
     end
-    when_paging from: 'MEDIA-MTXT', to: 'MEDIA-MTXT', after: '5:00pm' do
-      will_arrive after: '11:00am'
-      business_days_later 1
-    end
-    when_paging from: 'MEDIA-MTXT', to: 'MEDIA-CENTER', before: '10:00am' do
-      will_arrive after: '11:00am'
-      business_days_later 0
-    end
-    when_paging from: 'MEDIA-MTXT', to: 'MEDIA-CENTER', before: '2:00pm' do
-      will_arrive after: '3:00pm'
-      business_days_later 0
-    end
-    when_paging from: 'MEDIA-MTXT', to: 'MEDIA-CENTER', before: '5:00pm' do
-      will_arrive after: '6:00pm'
-      business_days_later 0
-    end
-    when_paging from: 'MEDIA-MTXT', to: 'MEDIA-CENTER', after: '5:00pm' do
+    when_paging from: 'MEDIA-CENTER', to: 'MEDIA-CENTER', after: '5:00pm' do
       will_arrive after: '11:00am'
       business_days_later 1
     end
 
-    when_paging from: 'MEDIA-MTXT', to: 'GREEN', before: '10:00am' do
+    when_paging from: 'MEDIA-CENTER', to: 'GREEN', before: '10:00am' do
       will_arrive after: '11:00am'
       business_days_later 0
     end
-    when_paging from: 'MEDIA-MTXT', to: 'GREEN', before: '2:00pm' do
+    when_paging from: 'MEDIA-CENTER', to: 'GREEN', before: '2:00pm' do
       will_arrive after: '3:00pm'
       business_days_later 0
     end
-    when_paging from: 'MEDIA-MTXT', to: 'GREEN', before: '6:30pm' do
+    when_paging from: 'MEDIA-CENTER', to: 'GREEN', before: '6:30pm' do
       will_arrive after: '7:30pm'
       business_days_later 0
     end
-    when_paging from: 'MEDIA-MTXT', to: 'GREEN', after: '6:30pm' do
+    when_paging from: 'MEDIA-CENTER', to: 'GREEN', after: '6:30pm' do
       will_arrive after: '11:00am'
       business_days_later 1
     end
 
-    when_paging from: 'MEDIA-MTXT', to: 'HOPKINS', before: '10:00am' do
+    when_paging from: 'MEDIA-CENTER', to: 'MARINE-BIO', before: '10:00am' do
       will_arrive after: '1:00pm'
       business_days_later 1
     end
-    when_paging from: 'MEDIA-MTXT', to: 'HOPKINS', after: '10:00am' do
+    when_paging from: 'MEDIA-CENTER', to: 'MARINE-BIO', after: '10:00am' do
       will_arrive after: '1:00pm'
       business_days_later 2
     end
 
-    when_paging from: 'MEDIA-MTXT', to: 'MARINE-BIO', before: '10:00am' do
-      will_arrive after: '1:00pm'
-      business_days_later 1
-    end
-    when_paging from: 'MEDIA-MTXT', to: 'MARINE-BIO', after: '10:00am' do
-      will_arrive after: '1:00pm'
-      business_days_later 2
-    end
-
-
-    when_paging from: 'MEDIA-MTXT', to: :anywhere, before: '3:00pm' do
+    when_paging from: 'MEDIA-CENTER', to: :anywhere, before: '3:00pm' do
       will_arrive after: '12:00pm'
       business_days_later 1
     end
-    when_paging from: 'MEDIA-MTXT', to: :anywhere, after: '3:00pm' do
+    when_paging from: 'MEDIA-CENTER', to: :anywhere, after: '3:00pm' do
       will_arrive after: '12:00pm'
       business_days_later 2
     end
@@ -236,27 +210,27 @@ Rails.application.config.after_initialize do
     end
 
     # Lane Medical Library
-    when_paging from: 'LANE-MED', to: 'LANE-MED', before: '9:00am' do
+    when_paging from: 'LANE', to: 'LANE', before: '9:00am' do
       will_arrive after: '3:00pm'
       business_days_later 0
     end
-    when_paging from: 'LANE-MED', to: 'LANE-MED', after: '9:00am' do
+    when_paging from: 'LANE', to: 'LANE', after: '9:00am' do
       will_arrive after: '3:00pm'
       business_days_later 1
     end
-    when_paging from: 'LANE-MED', to: 'LANE-DESK', before: '9:00am' do
+    when_paging from: 'LANE', to: 'LANE-DESK', before: '9:00am' do
       will_arrive after: '3:00pm'
       business_days_later 0
     end
-    when_paging from: 'LANE-MED', to: 'LANE-DESK', after: '9:00am' do
+    when_paging from: 'LANE', to: 'LANE-DESK', after: '9:00am' do
       will_arrive after: '3:00pm'
       business_days_later 1
     end
-    when_paging from: 'LANE-MED', to: :anywhere, before: '9:00am' do
+    when_paging from: 'LANE', to: :anywhere, before: '9:00am' do
       will_arrive after: '3:00pm'
       business_days_later 1
     end
-    when_paging from: 'LANE-MED', to: :anywhere, after: '9:00am' do
+    when_paging from: 'LANE', to: :anywhere, after: '9:00am' do
       will_arrive after: '3:00pm'
       business_days_later 2
     end

@@ -71,6 +71,7 @@ class Ability
     if user.name_email_user? && !user.library_id_user?
       cannot :create, Page, origin: 'BUSINESS'
       cannot :create, Page, origin: 'MEDIA-MTXT'
+      cannot :create, Page, origin: 'MEDIA-CENTER'
     end
 
     can :create, HoldRecall if user.library_id_user? || user.sso_user?

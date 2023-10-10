@@ -124,7 +124,7 @@ en:
   mediated_pages:
     header:
       default: 'Request on-site access'
-      HOPKINS: 'Request delivery to campus library'
+      MARINE-BIO: 'Request delivery to campus library'
       PAGE-MP: 'Request delivery to campus library'
   aeon_pages:
     new:

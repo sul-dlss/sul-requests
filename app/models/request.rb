@@ -53,11 +53,11 @@ class Request < ActiveRecord::Base
 
   def paging_origin_library
     # items are already limited to a single permanent location, so we can just grab the first one
-    bib_data.items.first&.permanent_location&.details&.dig('pagingSchedule') || origin
+    bib_data.items.first&.permanent_location&.details&.dig('pagingSchedule') || origin_library_code
   end
 
   def library_location
-    @library_location ||= LibraryLocation.new(origin, origin_location)
+    @library_location ||= LibraryLocation.new(origin_library_code, origin_location)
   end
 
   def active_messages
@@ -169,6 +169,26 @@ class Request < ActiveRecord::Base
   def library_id_error?
     errors[:library_id].present?
   end
+
+  # rubocop:disable Metrics/MethodLength
+  # Convert the original origin code to the code used in FOLIO
+  def origin_library_code
+    case origin
+    when 'LANE-MED'
+      'LANE'
+    when 'HOOVER'
+      'HILA'
+    when 'HOPKINS'
+      'MARINE-BIO'
+    when 'MEDIA-MTXT'
+      'MEDIA-CENTER'
+    when 'RUMSEYMAP'
+      'RUMSEY-MAP'
+    else
+      origin
+    end
+  end
+  # rubocop:enable Metrics/MethodLength
 
   def destination_library_code
     @destination_library_code ||= Settings.ils.pickup_destination_class.constantize.new(destination).library_code || destination

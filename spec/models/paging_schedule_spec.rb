@@ -96,7 +96,7 @@ RSpec.describe PagingSchedule do
 
   describe 'estimate integration tests' do
     def earliest_delivery_estimate(from:, to:)
-      request = double(origin: from, destination: to, destination_library_code: to, created_at: Time.zone.now)
+      request = double(origin_library_code: from, destination: to, destination_library_code: to, created_at: Time.zone.now)
       d = PagingSchedule.for(request).earliest_delivery_estimate
       d.estimated_delivery_day_to_destination
     end

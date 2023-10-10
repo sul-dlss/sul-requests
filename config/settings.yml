@@ -28,10 +28,9 @@ scan_pilot_groups:
 origin_admin_groups:
   ART: ['sul:requests-art']
   EDUCATION: ['sul:requests-education']
-  HOPKINS: ['sul:requests-hopkins']
-  HV-ARCHIVE: ['sul:requests-hoover-archive']
-  HOOVER: ['sul:requests-hoover-library']
-  RUMSEYMAP: ['sul:requests-rumsey']
+  MARINE-BIO: ['sul:requests-hopkins']
+  HILA: ['sul:requests-hoover-library']
+  RUMSEY-MAP: ['sul:requests-rumsey']
   SPEC-COLL: ['sul:requests-spec']
 
 origin_location_admin_groups:
@@ -40,10 +39,10 @@ origin_location_admin_groups:
 mediateable_origins:
   ART: {}
   EDUCATION: {}
-  HOPKINS: {}
+  MARINE-BIO: {}
   PAGE-MP:
     library_override: EARTH-SCI
-  RUMSEYMAP: {}
+  RUMSEY-MAP: {}
   SPEC-COLL: {}
 
 contact_email: 'site-admin-sul-requests@lists.stanford.edu'
@@ -75,7 +74,7 @@ folio:
     - staff
     - staff-casual
     - undergrad
-    - visiting-scholar  
+    - visiting-scholar
 
 mailer_host: <%= `echo $HOSTNAME` %>
 hours_api: 'https://library-hours.stanford.edu/'
@@ -212,22 +211,7 @@ libraries:
     hours:
       library_slug: green
       location_slug: library-circulation
-  HOPKINS:
-    label: Marine Biology Library (Miller)
-    contact_info:
-      phone: "(831) 655-6229"
-      email: HMS-Library@lists.stanford.edu
-    folio_pickup_service_point_code: MARINE-BIO
-    hold_pseudopatron: HOLD@MA
-    hours:
-      library_slug: hopkins
-      location_slug: library-circulation
   LANE:
-    hold_pseudopatron: HOLD@LN
-    hours:
-      library_slug: lane
-      location_slug: library-circulation
-  LANE-MED:
     label: Medical Library (Lane)
     hold_pseudopatron: HOLD@LN
     hours:
@@ -249,6 +233,11 @@ libraries:
       library_slug: law
       location_slug: library-circulation
   MARINE-BIO:
+    label: Marine Biology Library (Miller)
+    contact_info:
+      phone: "(831) 655-6229"
+      email: HMS-Library@lists.stanford.edu
+    folio_pickup_service_point_code: MARINE-BIO
     hold_pseudopatron: HOLD@MA
     hours:
       library_slug: hopkins
@@ -258,13 +247,6 @@ libraries:
     hours:
       library_slug: mathstat
       location_slug: library-circulation
-  MEDIA-MTXT:
-    label: Media Microtext
-    folio_pickup_service_point_code: MEDIA-CENTER
-    hold_pseudopatron: HOLD@MD
-    hours:
-      library_slug: green
-      location_slug: media-microtext-center
   MEDIA-CENTER:
     label: Media Microtext
     folio_pickup_service_point_code: MEDIA-CENTER
@@ -282,18 +264,6 @@ libraries:
     hours:
       library_slug: music
       location_slug: library-circulation
-  RUMSEYMAP:
-    label: David Rumsey Map Center
-    instructions: Researchers can request to view these materials in the David Rumsey Map Center.
-    contact_info:
-      phone: (650) 498-8698
-      email: rumseymapcenter@stanford.edu
-    folio_pickup_service_point_code: RUMSEY-MAP
-    reading_room_url: https://library.stanford.edu/rumsey/about-center/visitor-policies
-    hold_pseudopatron: HOLD@RM
-    hours:
-      library_slug: Rumsey
-      location_slug: visitor-access
   RUMSEY-MAP:
     label: David Rumsey Map Center
     instructions: Researchers can request to view these materials in the David Rumsey Map Center.
@@ -385,5 +355,3 @@ scan_destinations:
 
 # Aeon external request endpoint (ERE)
 aeon_ere_url: https://stanford.aeon.atlas-sys.com/logon?Action=11&Type=200
-
-
