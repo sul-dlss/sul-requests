@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe ScansController do
-  let(:scan) { create(:scan, :with_holdings, origin: 'SAL3', origin_location: 'STACKS', barcodes: ['12345678']) }
+  let(:scan) { create(:scan, :with_holdings, origin: 'SAL3', origin_location: 'SAL3-STACKS', barcodes: ['12345678']) }
   let(:scannable_params) do
-    { item_id: '12345', origin: 'SAL3', origin_location: 'STACKS' }
+    { item_id: '12345', origin: 'SAL3', origin_location: 'SAL3-STACKS' }
   end
 
   before do
@@ -25,7 +25,7 @@ RSpec.describe ScansController do
     it 'sets defaults' do
       get :new, params: scannable_params
       expect(assigns[:request].origin).to eq 'SAL3'
-      expect(assigns[:request].origin_location).to eq 'STACKS'
+      expect(assigns[:request].origin_location).to eq 'SAL3-STACKS'
       expect(assigns[:request].item_id).to eq '12345'
     end
 
@@ -41,12 +41,12 @@ RSpec.describe ScansController do
       let(:user) { create(:anon_user) }
 
       it 'redirects to the login page passing a refferrer param to continue creating your request' do
-        post :create, params: { request: { item_id: '12345', origin: 'GREEN', origin_location: 'STACKS' } }
+        post :create, params: { request: { item_id: '12345', origin: 'GREEN', origin_location: 'GRE-STACKS' } }
         expect(response).to redirect_to(
           login_path(
             referrer: interstitial_path(
               redirect_to: create_scans_url(
-                request: { item_id: '12345', origin: 'GREEN', origin_location: 'STACKS' }
+                request: { item_id: '12345', origin: 'GREEN', origin_location: 'GRE-STACKS' }
               )
             )
           )
@@ -58,7 +58,7 @@ RSpec.describe ScansController do
           request: {
             item_id: '12345',
             origin: 'SAL3',
-            origin_location: 'STACKS',
+            origin_location: 'SAL3-STACKS',
             user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }
           }
         }
@@ -70,7 +70,7 @@ RSpec.describe ScansController do
           request: {
             item_id: '12345',
             origin: 'SAL3',
-            origin_location: 'STACKS',
+            origin_location: 'SAL3-STACKS',
             user_attributes: { library_id: '12345' }
           }
         }
@@ -79,7 +79,7 @@ RSpec.describe ScansController do
 
       describe 'via get' do
         it 'is forbidden' do
-          get :create, params: { request: { item_id: '12345', origin: 'GREEN', origin_location: 'STACKS' } }
+          get :create, params: { request: { item_id: '12345', origin: 'GREEN', origin_location: 'GRE-STACKS' } }
           expect(response).to have_http_status(:forbidden)
         end
       end
@@ -104,7 +104,7 @@ RSpec.describe ScansController do
           request: {
             item_id: '12345',
             origin: 'SAL3',
-            origin_location: 'STACKS',
+            origin_location: 'SAL3-STACKS',
             barcodes: ['87654321'],
             section_title: 'Some really important chapter'
           }
@@ -133,7 +133,7 @@ RSpec.describe ScansController do
 
       it 'is bounced to a page workflow' do
         params = {
-          request: { item_id: '12345', origin: 'SAL3', origin_location: 'STACKS', barcodes: { '12345678' => '1' } }
+          request: { item_id: '12345', origin: 'SAL3', origin_location: 'SAL3-STACKS', barcodes: { '12345678' => '1' } }
         }
         post(:create, params:)
         expect(flash[:error]).to include 'Scan-to-PDF not available'

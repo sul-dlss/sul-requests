@@ -15,7 +15,7 @@ RSpec.describe 'Create Scan Request' do
   it 'does not display a destination pickup' do
     stub_current_user(create(:sso_user))
 
-    visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
+    visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'SAL3-STACKS')
 
     expect(page).not_to have_select('request_destination')
     expect(page).not_to have_content('Deliver to')
@@ -24,7 +24,7 @@ RSpec.describe 'Create Scan Request' do
   it 'does not include the highlighted section around destination and needed date' do
     stub_current_user(create(:sso_user))
 
-    visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
+    visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'SAL3-STACKS')
 
     expect(page).not_to have_css('.alert-warning.destination-note-callout')
   end
@@ -35,7 +35,7 @@ RSpec.describe 'Create Scan Request' do
     end
 
     it 'displays a copyright restrictions notice in a collapse' do
-      visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
+      visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'SAL3-STACKS')
 
       expect(page).to have_content 'Notice concerning copyright restrictions'
       expect(page).to have_content 'The copyright law of the United States'
@@ -44,14 +44,14 @@ RSpec.describe 'Create Scan Request' do
 
   describe 'by non SSO user' do
     it 'provides a link to page the item' do
-      visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
+      visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'SAL3-STACKS')
 
       expect(page).to have_link 'Request the physical item'
 
       click_link 'Request the physical item'
 
       expect(page).to have_css('h1#dialogTitle', text: 'Request & pickup service')
-      expect(current_url).to eq new_page_url(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
+      expect(current_url).to eq new_page_url(item_id: '12345', origin: 'SAL3', origin_location: 'SAL3-STACKS')
     end
   end
 end

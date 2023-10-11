@@ -22,7 +22,7 @@ RSpec.describe 'Pickup Libraries Dropdown' do
 
   describe 'for multiple libraries' do
     it 'has a select dropdown to choose the library to deliver to' do
-      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS')
 
       expect(page).to have_select('Deliver to')
 
@@ -39,7 +39,7 @@ RSpec.describe 'Pickup Libraries Dropdown' do
       end
 
       it 'simplfies the display of the text of the destination library if there is only one possible' do
-        visit new_request_path(item_id: '1234', origin: 'SAL3', origin_location: 'PAGE-EN')
+        visit new_request_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-PAGE-EN')
 
         expect(page).not_to have_css('select')
 
@@ -52,7 +52,7 @@ RSpec.describe 'Pickup Libraries Dropdown' do
   describe 'libraries that should include themself in the pickup list' do
     context 'a standard library' do
       it 'does not include the configured library in the drop down' do
-        visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
+        visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS')
 
         expect(page).to have_css('#request_destination option', count: standard_pickup_lib_total)
         expect(page).not_to have_css('option', text: media_label)
@@ -69,7 +69,7 @@ RSpec.describe 'Pickup Libraries Dropdown' do
       end
 
       it 'appear in the drop down' do
-        visit new_request_path(item_id: '1234', origin: media_library, origin_location: 'MM-STACKS')
+        visit new_request_path(item_id: '1234', origin: media_library, origin_location: 'MEDIA-CAGE')
 
         expect(page).to have_css('#request_destination option', count: standard_pickup_lib_total + 1)
         expect(page).to have_css('option', text: media_label)

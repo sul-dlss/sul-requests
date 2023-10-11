@@ -6,7 +6,7 @@ RSpec.describe 'Scannable' do
   subject(:request) { build(:request, origin: library, origin_location: location, bib_data:) }
 
   let(:library) { 'SAL3' }
-  let(:location) { 'STACKS' }
+  let(:location) { 'SAL3-STACKS' }
   let(:item_type) { 'STKS' }
   let(:bib_data) { build(:scannable_holdings) }
 
@@ -26,7 +26,7 @@ RSpec.describe 'Scannable' do
     end
 
     context 'when the location is not scannable' do
-      let(:location) { 'PAGE-LP' }
+      let(:location) { 'SAL3-PAGE-LP' }
       let(:bib_data) { build(:page_lp_holdings) }
 
       it { is_expected.not_to be_scannable }

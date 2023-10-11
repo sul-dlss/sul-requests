@@ -19,7 +19,7 @@ RSpec.describe MediatedPage do
       expect do
         described_class.create!(item_id: '1234',
                                 origin: 'GREEN',
-                                origin_location: 'STACKS',
+                                origin_location: 'GRE-STACKS',
                                 destination: 'ART',
                                 needed_date: Time.zone.today + 1.day)
       end.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: This item is not mediatable')
@@ -30,7 +30,7 @@ RSpec.describe MediatedPage do
         described_class.create!(item_id: '1234',
                                 barcodes: ['12345678'],
                                 origin: 'ART',
-                                origin_location: 'ARTLCKL',
+                                origin_location: 'ART-LOCKED-LARGE',
                                 destination: 'GREEN',
                                 needed_date: Time.zone.today + 1.day,
                                 bib_data: build(:single_mediated_holding))
@@ -42,7 +42,7 @@ RSpec.describe MediatedPage do
         described_class.create!(item_id: '1234',
                                 barcodes: ['12345678'],
                                 origin: 'ART',
-                                origin_location: 'ARTLCKL',
+                                origin_location: 'ART-LOCKED-LARGE',
                                 destination: 'ART',
                                 bib_data: build(:single_mediated_holding))
       end.to raise_error(ActiveRecord::RecordInvalid, "Validation failed: I plan to visit on can't be blank")
@@ -52,7 +52,7 @@ RSpec.describe MediatedPage do
       expect do
         described_class.create!(item_id: '1234',
                                 origin: 'SAL3',
-                                origin_location: 'PAGE-MP',
+                                origin_location: 'SAL3-PAGE-MP',
                                 user:,
                                 destination: 'EARTH-SCI',
                                 item_title: 'foo',
@@ -115,7 +115,7 @@ RSpec.describe MediatedPage do
     describe 'for_origin' do
       it 'returns the records for a given origin' do
         expect(described_class.for_origin('ART').length).to eq 3
-        expect(described_class.for_origin('PAGE-MP').length).to eq 2
+        expect(described_class.for_origin('SAL3-PAGE-MP').length).to eq 2
       end
     end
   end
@@ -177,6 +177,11 @@ RSpec.describe MediatedPage do
       expect(subject).not_to be_requires_needed_date
     end
 
+    it 'is false when the origin location is SAL3-PAGE-MP' do
+      subject.origin_location = 'SAL3-PAGE-MP'
+      expect(subject).not_to be_requires_needed_date
+    end
+
     it 'is true when otherwise' do
       expect(subject).to be_requires_needed_date
     end
@@ -230,10 +235,10 @@ RSpec.describe MediatedPage do
     end
 
     it 'fetches email addresses for origin locations' do
-      subject.origin_location = 'PAGE-MP'
+      subject.origin_location = 'SAL3-PAGE-MP'
       expect(
         subject.mediator_notification_email_address
-      ).to eq SULRequests::Application.config.mediator_contact_info['PAGE-MP'][:email]
+      ).to eq SULRequests::Application.config.mediator_contact_info['SAL3-PAGE-MP'][:email]
     end
   end
 

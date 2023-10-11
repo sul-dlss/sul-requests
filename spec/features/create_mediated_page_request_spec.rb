@@ -14,7 +14,7 @@ RSpec.describe 'Creating a mediated page request' do
 
   describe 'by an anonmyous user' do
     it 'is possible to toggle between login and name-email form', js: true do
-      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
+      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ART-LOCKED-LARGE')
 
       click_link "I don't have a SUNet ID"
 
@@ -30,7 +30,7 @@ RSpec.describe 'Creating a mediated page request' do
     end
 
     it 'is possible if a name and email is filled out', js: true do
-      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
+      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ART-LOCKED-LARGE')
 
       fill_in_required_fields
 
@@ -44,7 +44,7 @@ RSpec.describe 'Creating a mediated page request' do
     end
 
     it 'is possible if a library id is filled out', js: true do
-      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
+      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ART-LOCKED-LARGE')
 
       fill_in_required_fields
 
@@ -69,7 +69,7 @@ RSpec.describe 'Creating a mediated page request' do
     before { stub_current_user(user) }
 
     it 'is possible without filling in any user information' do
-      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
+      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ART-LOCKED-LARGE')
 
       fill_in_required_fields
 
@@ -85,7 +85,7 @@ RSpec.describe 'Creating a mediated page request' do
 
     it 'has a comments field for commentable libraries' do
       skip 'No commentable libraries as of 2022-09-22'
-      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
+      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ART-LOCKED-LARGE')
 
       fill_in_required_fields
 
@@ -100,7 +100,7 @@ RSpec.describe 'Creating a mediated page request' do
     end
 
     it 'does not include a comments for requests that do not get them' do
-      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
+      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ART-LOCKED-LARGE')
 
       expect(page).not_to have_field('Comments')
     end
@@ -110,7 +110,7 @@ RSpec.describe 'Creating a mediated page request' do
     before { stub_current_user(user) }
 
     it 'has a field for the planned date of visit' do
-      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
+      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ART-LOCKED-LARGE')
       date = 1.day.from_now.to_date
 
       fill_in 'I plan to visit on', with: date
@@ -142,7 +142,7 @@ RSpec.describe 'Creating a mediated page request' do
     end
 
     it 'persists to the database' do
-      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
+      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ART-LOCKED-LARGE')
 
       fill_in_required_fields
 

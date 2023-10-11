@@ -17,7 +17,7 @@ RSpec.describe 'Library Instructions' do
   end
 
   it 'returns the library instructions from the Settings' do
-    visit new_request_path(item_id: '12345', origin: 'EDUCATION', origin_location: 'STACKS')
+    visit new_request_path(item_id: '12345', origin: 'EDUCATION', origin_location: 'EDU-STACKS')
     within('p.needed-date-info-block') do
       expect(page).to have_content('The Education Library is closed for construction. Request items for pickup at another library.')
     end

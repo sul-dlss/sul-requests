@@ -15,7 +15,7 @@ RSpec.describe Scan do
     expect do
       described_class.create!(item_id: '1234',
                               origin: 'GREEN',
-                              origin_location: 'STACKS',
+                              origin_location: 'GRE-STACKS',
                               section_title: 'Some chapter title',
                               item_title: 'foo')
     end.to raise_error(

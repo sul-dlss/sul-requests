@@ -53,7 +53,7 @@ RSpec.describe 'Home Page' do
 
     it 'has admin links for the library level mediation' do
       expect(page).to have_link('Art & Architecture Library (Bowes)', href: '/admin/ART')
-      expect(page).to have_link('Earth Sciences Library (Branner)', href: '/admin/PAGE-MP')
+      expect(page).to have_link('Earth Sciences Library (Branner)', href: '/admin/SAL3-PAGE-MP')
     end
   end
 end

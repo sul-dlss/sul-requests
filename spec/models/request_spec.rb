@@ -32,7 +32,7 @@ RSpec.describe Request do
         described_class.create!(
           item_id: '1234',
           origin: 'SAL3',
-          origin_location: 'STACKS',
+          origin_location: 'SAL3-STACKS',
           barcodes:
         )
       end
@@ -62,7 +62,7 @@ RSpec.describe Request do
         described_class.create!(
           item_id: '1234',
           origin: 'GREEN',
-          origin_location: 'STACKS',
+          origin_location: 'SAL3-STACKS',
           needed_date: Time.zone.today - 1.day
         )
       end
@@ -295,7 +295,7 @@ RSpec.describe Request do
 
     context 'when the origin is PAGE-SP' do
       before do
-        request.origin_location = 'PAGE-SP'
+        request.origin_location = 'SAL3-PAGE-SP'
       end
 
       it { is_expected.to eq 5 }
@@ -317,7 +317,7 @@ RSpec.describe Request do
         described_class.create!(
           item_id: '1234',
           origin: 'GREEN',
-          origin_location: 'STACKS'
+          origin_location: 'GRE-STACKS'
         )
         expect(described_class.last.user).to eq User.last
       end
@@ -327,7 +327,7 @@ RSpec.describe Request do
         described_class.create(
           item_id: '1234',
           origin: 'GREEN',
-          origin_location: 'STACKS',
+          origin_location: 'GRE-STACKS',
           user_attributes: {
             name: 'Jane Stanford',
             email: 'jstanford@stanford.edu'
@@ -343,7 +343,7 @@ RSpec.describe Request do
         described_class.create!(
           item_id: '1234',
           origin: 'GREEN',
-          origin_location: 'STACKS',
+          origin_location: 'GRE-STACKS',
           user_attributes: {
             name: 'Jane Stanford',
             email: 'jstanford@stanford.edu'
@@ -359,7 +359,7 @@ RSpec.describe Request do
         described_class.create!(
           item_id: '1234',
           origin: 'GREEN',
-          origin_location: 'STACKS',
+          origin_location: 'GRE-STACKS',
           user_attributes: {
             name: 'Jane Stanford',
             email: 'jstanford@stanford.edu'
@@ -376,7 +376,7 @@ RSpec.describe Request do
         described_class.create!(
           item_id: '1234',
           origin: 'GREEN',
-          origin_location: 'STACKS',
+          origin_location: 'GRE-STACKS',
           user_attributes: {
             library_id: '12345',
             email: 'jstanford@stanford.edu'
@@ -395,7 +395,7 @@ RSpec.describe Request do
           described_class.create!(
             item_id: '1234',
             origin: 'GREEN',
-            origin_location: 'STACKS',
+            origin_location: 'GRE-STACKS',
             user_attributes: {
               name: 'Jane Stanford',
               email: 'jstanford@stanford.edu'
@@ -411,7 +411,7 @@ RSpec.describe Request do
         described_class.create!(
           item_id: '1234',
           origin: 'GREEN',
-          origin_location: 'STACKS',
+          origin_location: 'GRE-STACKS',
           user_attributes: {
             library_id: '12345'
           }
@@ -429,14 +429,14 @@ RSpec.describe Request do
       end
 
       it 'fetches the item title' do
-        described_class.create!(item_id: '2824966', origin: 'GREEN', origin_location: 'STACKS')
+        described_class.create!(item_id: '2824966', origin: 'GREEN', origin_location: 'GRE-STACKS')
         expect(described_class.last.item_title).to eq 'When do you need an antacid? : a burning question'
       end
     end
 
     context 'when the title is present' do
       it 'does not fetch the title' do
-        described_class.create!(item_id: '2824966', origin: 'GREEN', origin_location: 'STACKS', item_title: 'This title')
+        described_class.create!(item_id: '2824966', origin: 'GREEN', origin_location: 'GRE-STACKS', item_title: 'This title')
         expect(described_class.last.item_title).to eq 'This title'
       end
     end
@@ -455,7 +455,7 @@ RSpec.describe Request do
   describe '#delegate_request!' do
     before do
       stub_bib_data_json(build(:multiple_holdings))
-      subject.update(origin: 'SAL3', origin_location: 'STACKS')
+      subject.update(origin: 'SAL3', origin_location: 'SAL3-STACKS')
     end
 
     it 'delegates to a mediated page if it is mediateable' do
@@ -601,7 +601,7 @@ RSpec.describe Request do
     end
 
     it 'returns the subset of origin codes that are configured and mediated pages that exist in the database' do
-      expect(described_class.mediateable_origins.to_h.keys).to eq %w(ART PAGE-MP)
+      expect(described_class.mediateable_origins.to_h.keys).to eq %w(ART SAL3-PAGE-MP)
     end
   end
 
@@ -668,14 +668,14 @@ RSpec.describe Request do
 
   describe '#default_pickup_destination' do
     it 'sets an origin specific default' do
-      request = described_class.new(origin: 'LAW', origin_location: 'STACKS',
+      request = described_class.new(origin: 'LAW', origin_location: 'LAW-STACKS',
                                     bib_data: double(request_holdings: [build(:item, effective_location: build(:law_location))]))
 
       expect(request.default_pickup_destination).to eq 'LAW'
     end
 
     it 'falls back to a default location' do
-      request = described_class.new(origin: 'ART', origin_location: 'STACKS')
+      request = described_class.new(origin: 'ART', origin_location: 'ART-STACKS')
 
       expect(request.default_pickup_destination).to eq default_destination
     end

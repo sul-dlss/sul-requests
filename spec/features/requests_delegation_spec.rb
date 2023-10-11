@@ -8,7 +8,7 @@ RSpec.describe 'Requests Delegation' do
       stub_bib_data_json(build(:green_holdings))
 
       expect do
-        visit new_request_path(item_id: '12345', origin: 'GREEN', origin_location: 'STACKS')
+        visit new_request_path(item_id: '12345', origin: 'GREEN', origin_location: 'GRE-STACKS')
       end.to raise_error(PagesController::UnpageableItemError)
     end
   end
@@ -16,27 +16,27 @@ RSpec.describe 'Requests Delegation' do
   describe 'non-scannable materials' do
     it 'is automatically delegated to the page request form' do
       stub_bib_data_json(build(:page_lp_holdings))
-      visit new_request_path(item_id: '12345', origin: 'SAL3', origin_location: 'PAGE-LP')
+      visit new_request_path(item_id: '12345', origin: 'SAL3', origin_location: 'SAL3-PAGE-LP')
 
       expect(page).to have_css('h1#dialogTitle', text: 'Request & pickup service')
-      expect(current_url).to eq new_page_url(item_id: '12345', origin: 'SAL3', origin_location: 'PAGE-LP')
+      expect(current_url).to eq new_page_url(item_id: '12345', origin: 'SAL3', origin_location: 'SAL3-PAGE-LP')
     end
   end
 
   describe 'mediated page materials' do
     it 'automatically delegate to the mediated page request form' do
       stub_bib_data_json(build(:single_mediated_holding))
-      visit new_request_path(item_id: '12345', origin: 'ART', origin_location: 'ARTLCKL')
+      visit new_request_path(item_id: '12345', origin: 'ART', origin_location: 'ART-LOCKED-LARGE')
 
       expect(page).to have_css('h1#dialogTitle', text: 'Request on-site access')
-      expect(current_url).to eq new_mediated_page_url(item_id: '12345', origin: 'ART', origin_location: 'ARTLCKL')
+      expect(current_url).to eq new_mediated_page_url(item_id: '12345', origin: 'ART', origin_location: 'ART-LOCKED-LARGE')
     end
   end
 
   describe 'scannable materials' do
     it 'is given the opportunity to request a scan or delivery' do
       stub_bib_data_json(build(:scannable_holdings))
-      visit new_request_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
+      visit new_request_path(item_id: '12345', origin: 'SAL3', origin_location: 'SAL3-STACKS')
 
       expect(page).to have_css('h1#dialogTitle', text: 'Request options')
 

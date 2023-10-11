@@ -11,7 +11,7 @@ RSpec.describe 'Item Selector' do
     before { stub_bib_data_json(build(:single_holding)) }
 
     it 'displays the item call number' do
-      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS')
       expect(page).to have_css('.control-label', text: 'Call number')
       expect(page).to have_css('p', text: 'ABC 123')
       expect(page).not_to have_css('#item-selector')
@@ -20,7 +20,7 @@ RSpec.describe 'Item Selector' do
 
   describe 'for multiple items', js: true do
     describe 'where there are not enough to be searchable' do
-      let(:request_path) { new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS') }
+      let(:request_path) { new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS') }
 
       before do
         stub_bib_data_json(build(:multiple_holdings))
@@ -53,7 +53,7 @@ RSpec.describe 'Item Selector' do
 
     describe 'item limits' do
       describe 'for scans' do
-        let(:request_path) { new_scan_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS') }
+        let(:request_path) { new_scan_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS') }
 
         before do
           stub_bib_data_json(build(:scannable_holdings))
@@ -73,7 +73,7 @@ RSpec.describe 'Item Selector' do
       end
 
       describe 'for pages' do
-        let(:request_path) { new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS') }
+        let(:request_path) { new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS') }
 
         before do
           stub_bib_data_json(build(:many_holdings))
@@ -97,7 +97,7 @@ RSpec.describe 'Item Selector' do
       end
 
       describe 'for aeon pages', js: true do
-        let(:request_path) { new_aeon_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'STACKS') }
+        let(:request_path) { new_aeon_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'SPEC-STACKS') }
 
         before do
           stub_bib_data_json(build(:searchable_spec_holdings))
@@ -152,7 +152,7 @@ RSpec.describe 'Item Selector' do
         visit request_path
       end
 
-      let(:request_path) { new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL') }
+      let(:request_path) { new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ART-LOCKED-LARGE') }
 
       it 'limits items using the search box' do
         within('#item-selector') do
@@ -241,7 +241,7 @@ RSpec.describe 'Item Selector' do
     xit 'still limits selections' do
       skip('The CDN we load the date slider from seems to block Travis') if ENV['ci']
 
-      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
+      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ART-LOCKED-LARGE')
 
       fill_in_required_date
 
@@ -279,7 +279,7 @@ RSpec.describe 'Item Selector' do
     end
 
     it 'are addable and removable' do
-      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS')
 
       expect(page).not_to have_css('#breadcrumb-12345678', text: 'ABC 123')
       expect(page).not_to have_css('#breadcrumb-23456789', text: 'ABC 456')
@@ -311,7 +311,7 @@ RSpec.describe 'Item Selector' do
   describe 'checked out items', js: true do
     before do
       stub_bib_data_json(build(:checkedout_holdings))
-      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS')
     end
 
     it 'has the due date' do
@@ -330,7 +330,7 @@ RSpec.describe 'Item Selector' do
   end
 
   describe 'public notes' do
-    let(:request_path) { new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL') }
+    let(:request_path) { new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ART-LOCKED-LARGE') }
 
     before do
       stub_bib_data_json(build(:searchable_holdings))
@@ -356,7 +356,7 @@ RSpec.describe 'Item Selector' do
   context 'when some items are not requestable' do
     before do
       stub_bib_data_json(build(:mixed_crez_holdings))
-      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS')
     end
 
     it 'allows selecting the requestable items' do
@@ -375,7 +375,7 @@ RSpec.describe 'Item Selector' do
   context 'when items are in a temporary location' do
     before do
       stub_bib_data_json(build(:mixed_crez_holdings))
-      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS')
     end
 
     it 'shows the temporary location discovery display name as the status text if the item is not requestable' do
@@ -388,7 +388,7 @@ RSpec.describe 'Item Selector' do
   context 'when items are hold/recallable' do
     before do
       stub_bib_data_json(build(:missing_holdings))
-      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS')
     end
 
     it 'shows the item status as the status text' do

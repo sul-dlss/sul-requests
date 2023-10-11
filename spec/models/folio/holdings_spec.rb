@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Folio::Holdings do
   subject(:holdings) { described_class.new(request, items) }
 
-  let(:request) { HoldRecall.new(barcode: '36105237669143', item_id: '14820051', origin: 'MUSIC', origin_location: 'RECORDINGS') }
+  let(:request) { HoldRecall.new(barcode: '36105237669143', item_id: '14820051', origin: 'MUSIC', origin_location: 'MUS-RECORDINGS') }
   let(:items) { [item] }
   let(:item) do
     Folio::Item.new(barcode: '123',
@@ -45,7 +45,7 @@ RSpec.describe Folio::Holdings do
     end
 
     context 'for a request with the permanent location' do
-      let(:request) { Page.new(item_id: '14820051', origin: 'SAL3', origin_location: 'STACKS') }
+      let(:request) { Page.new(item_id: '14820051', origin: 'SAL3', origin_location: 'SAL3-STACKS') }
 
       it 'excludes items with an effective location that does not match the requested location' do
         expect(holdings.to_a).to be_blank

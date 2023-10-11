@@ -126,6 +126,7 @@ en:
       default: 'Request on-site access'
       MARINE-BIO: 'Request delivery to campus library'
       PAGE-MP: 'Request delivery to campus library'
+      SAL3-PAGE-MP: 'Request delivery to campus library'
   aeon_pages:
     new:
       header: Request access

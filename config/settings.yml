@@ -336,6 +336,10 @@ libraries:
       location_slug: library-circulation
 
 locations:
+  SAL3-PAGE-MP:
+    contact_info:
+      phone: '(650) 723-2746'
+      email: 'brannerlibrary@stanford.edu'
   PAGE-MP:
     contact_info:
       phone: '(650) 723-2746'
