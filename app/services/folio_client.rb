@@ -221,7 +221,7 @@ class FolioClient
   def check_response(response, title:, context:)
     return if response.success?
 
-    if response.status == 422 && Array(response.headers[Faraday::CONTENT_TYPE]).any? { |x| x.match?(/\bjson$/) }
+    if response.status == 422 && Array(response.headers[Faraday::CONTENT_TYPE]).any? { |x| x.match?(/\bjson\b/) }
       raise FolioClient::Error, "#{title} request for #{context_string} was not successful", JSON.parse(response.body)
     end
 
