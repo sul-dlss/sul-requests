@@ -61,7 +61,7 @@ class RequestStatusMailer < ApplicationMailer
 
   def subject
     I18n.t(
-      "request_status_email.#{@request.class.name.underscore}.#{@request.origin}.subject.#{suffix}",
+      "request_status_email.#{@request.class.name.underscore}.#{@request.origin_library_code}.subject.#{suffix}",
       title: @request.item_title,
       default: [
         :"request_status_email.#{@request.class.name.underscore}.subject.#{suffix}",
@@ -72,7 +72,7 @@ class RequestStatusMailer < ApplicationMailer
 
   def contact_info
     Settings.locations[@request.origin_location]&.contact_info ||
-      Settings.libraries[@request.origin]&.contact_info ||
+      Settings.libraries[@request.origin_library_code]&.contact_info ||
       Settings.libraries[@request.destination_library_code]&.contact_info ||
       Settings.libraries.default.contact_info
   end

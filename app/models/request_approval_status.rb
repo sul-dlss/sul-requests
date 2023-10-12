@@ -57,7 +57,7 @@ class RequestApprovalStatus
   end
 
   def request_origin
-    request.origin.underscore
+    request.origin_library_code.underscore
   end
 
   def pending_text

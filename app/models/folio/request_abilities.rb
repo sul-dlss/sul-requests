@@ -83,7 +83,7 @@ module Folio
 
     def additional_pickup_service_points
       # Find library id for the library with this code
-      library = Folio::Types.libraries.find_by(code: request.origin)
+      library = Folio::Types.libraries.find_by(code: request.origin_library_code)
       return [] unless library
 
       service_point_code = library.primary_service_points.find { |sp| sp.pickup_location? && !sp.is_default_pickup }&.code

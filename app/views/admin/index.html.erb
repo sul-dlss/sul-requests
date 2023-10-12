@@ -49,7 +49,7 @@
       <% @requests.each do |request| %>
         <tr>
           <td><%= request.type %></td>
-          <td><%= request.origin %></td>
+          <td><%= request.origin_library_code %></td>
           <td><%= request.destination %></td>
           <td><%= searchworks_link(request.item_id, request.item_title, 'data-behavior' => 'truncate') %></td>
           <td><%= requester_info(request.user) %></td>

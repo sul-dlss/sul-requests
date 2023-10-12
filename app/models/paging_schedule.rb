@@ -33,7 +33,7 @@ module PagingSchedule
 
     def schedule_for_request(request)
       schedule.detect do |sched|
-        sched.from == request.origin &&
+        sched.from == request.origin_library_code &&
           sched.to == request.destination_library_code &&
           sched.by_time?(request.created_at)
       end
@@ -41,7 +41,7 @@ module PagingSchedule
 
     def default_schedule(request)
       s = schedule.detect do |sched|
-        sched.from == request.origin &&
+        sched.from == request.origin_library_code &&
           sched.to == :anywhere &&
           sched.by_time?(request.created_at)
       end

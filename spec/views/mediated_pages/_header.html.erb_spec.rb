@@ -7,7 +7,7 @@ RSpec.describe 'mediated_pages/_header.html.erb' do
   let(:origin_location) { 'STACKS' }
   let(:holdings) { [] }
   let(:current_request) do
-    double('request', origin:, origin_location:, holdings:)
+    double('request', origin_library_code: origin, origin_location:, holdings:)
   end
 
   before do
@@ -15,7 +15,7 @@ RSpec.describe 'mediated_pages/_header.html.erb' do
   end
 
   describe 'library level titles' do
-    let(:origin) { 'HOPKINS' }
+    let(:origin) { 'MARINE-BIO' }
 
     it 'are returned when present' do
       render
