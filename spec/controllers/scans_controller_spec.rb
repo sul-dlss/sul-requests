@@ -10,7 +10,7 @@ RSpec.describe ScansController do
 
   before do
     stub_bib_data_json(build(:scannable_holdings))
-    allow(SubmitScanRequestJob).to receive(:perform_later)
+    allow(SubmitIlliadRequestJob).to receive(:perform_later)
     allow(controller).to receive_messages(current_user: user)
   end
 
@@ -118,7 +118,7 @@ RSpec.describe ScansController do
       end
 
       it 'redirects to the scan success page after a successful illiad request' do
-        expect(SubmitScanRequestJob).to have_received(:perform_later).with(Scan.last)
+        expect(SubmitIlliadRequestJob).to have_received(:perform_later).with(Scan.last.id)
       end
     end
 

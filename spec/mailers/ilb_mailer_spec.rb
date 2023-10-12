@@ -23,7 +23,7 @@ RSpec.describe IlbMailer do
 
     describe 'subject' do
       it 'is the default' do
-        expect(mail.subject).to eq 'Scan request problem, please remediate'
+        expect(mail.subject).to eq 'ILLiad request problem, please remediate'
       end
     end
 

@@ -9,7 +9,7 @@ class IlbMailer < ApplicationMailer
     mail(
       to: Settings.illiad_email_address,
       from: Settings.libraries.default.contact_info.email,
-      subject: 'Scan request problem, please remediate'
+      subject: 'ILLiad request problem, please remediate'
     )
   end
 end
