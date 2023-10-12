@@ -94,7 +94,7 @@ borrow_direct:
 features:
   estimate_delivery: true
   hold_recall_service: true
-  hold_recall_via_reshare: false
+  hold_recall_via: 'reshare'
   scan_service: true
   mediator_email: true
 
@@ -385,5 +385,3 @@ scan_destinations:
 
 # Aeon external request endpoint (ERE)
 aeon_ere_url: https://stanford.aeon.atlas-sys.com/logon?Action=11&Type=200
-
-
