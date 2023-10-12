@@ -243,11 +243,11 @@ RSpec.describe Ability do
     let(:user) { create(:page_mp_origin_admin_user) }
 
     before do
-      request.origin_location = 'PAGE-MP'
-      hold_recall.origin_location = 'PAGE-MP'
-      mediated_page.origin_location = 'PAGE-MP'
-      page.origin_location = 'PAGE-MP'
-      scan.origin_location = 'PAGE-MP'
+      request.origin_location = 'SAL3-PAGE-MP'
+      hold_recall.origin_location = 'SAL3-PAGE-MP'
+      mediated_page.origin_location = 'SAL3-PAGE-MP'
+      page.origin_location = 'SAL3-PAGE-MP'
+      scan.origin_location = 'SAL3-PAGE-MP'
     end
 
     # can manage locations that they are an admin of

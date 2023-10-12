@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe HoldRecallsController do
   let(:hold_recall) { create(:hold_recall) }
   let(:normal_params) do
-    { item_id: '1234', barcode: '36105212925395', origin: 'SAL3', origin_location: 'STACKS', destination: 'GREEN' }
+    { item_id: '1234', barcode: '36105212925395', origin: 'SAL3', origin_location: 'SAL3-STACKS', destination: 'GREEN' }
   end
 
   before do
@@ -24,14 +24,14 @@ RSpec.describe HoldRecallsController do
     it 'sets defaults' do
       get :new, params: normal_params
       expect(assigns[:request].origin).to eq 'SAL3'
-      expect(assigns[:request].origin_location).to eq 'STACKS'
+      expect(assigns[:request].origin_location).to eq 'SAL3-STACKS'
       expect(assigns[:request].item_id).to eq '1234'
       expect(assigns[:request].needed_date).to eq Time.zone.today + 1.year
     end
 
     it 'raises an error if the item is not provided' do
       expect do
-        get :new, params: { item_id: '1234', origin: 'SAL3', origin_location: 'STACKS', destination: 'ART' }
+        get :new, params: { item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS', destination: 'ART' }
       end.to raise_error(HoldRecallsController::NotHoldRecallableError)
     end
   end

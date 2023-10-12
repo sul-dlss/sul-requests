@@ -13,7 +13,7 @@ RSpec.describe RequestsHelper do
     end
 
     describe 'single library' do
-      let(:request) { build(:request, origin: 'SAL3', origin_location: 'PAGE-EN', bib_data:) }
+      let(:request) { build(:request, origin: 'SAL3', origin_location: 'SAL3-PAGE-EN', bib_data:) }
       let(:item) do
         build(:item,
               barcode: '3610512345678',
@@ -34,7 +34,7 @@ RSpec.describe RequestsHelper do
     end
 
     describe 'multiple libraries' do
-      let(:request) { create(:request, origin: 'SAL3', origin_location: 'PAGE-HP') }
+      let(:request) { create(:request, origin: 'SAL3', origin_location: 'SAL3-PAGE-HP') }
 
       it 'attempts to create a select list' do
         expect(form).to receive(:select).with(any_args).and_return('<select>')
@@ -42,7 +42,7 @@ RSpec.describe RequestsHelper do
       end
 
       context 'with a destination' do
-        let(:request) { create(:request, origin: 'SAL3', destination: 'ART', origin_location: 'PAGE-HP') }
+        let(:request) { create(:request, origin: 'SAL3', destination: 'ART', origin_location: 'SAL3-PAGE-HP') }
 
         it 'defaults to the destination library' do
           expect(form).to receive(:select).with(anything, anything, hash_including(selected: 'ART'), anything)
@@ -177,7 +177,7 @@ RSpec.describe RequestsHelper do
     end
 
     context 'when the item is available' do
-      let(:origin_location) { 'HOPKINS' }
+      let(:origin_location) { 'MARINE-BIO' }
       let(:holding) do
         Folio::Item.new(
           barcode: '123',
@@ -190,7 +190,7 @@ RSpec.describe RequestsHelper do
         )
       end
 
-      it { is_expected.to eq 'HOPKINS' }
+      it { is_expected.to eq 'MARINE-BIO' }
     end
   end
 

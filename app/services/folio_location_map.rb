@@ -7,14 +7,9 @@ class FolioLocationMap
   include Singleton
   RENAMES = { 'LANE' => 'LANE-MED' }.freeze
 
-  class NotFound < StandardError; end
-
   # @return a tuple of library code and location code
   def self.folio_code_for(library_code:, home_location:)
-    library_locations = instance.data.fetch(library_code)
-    library_locations[home_location]
-  rescue KeyError
-    raise NotFound
+    instance.data.dig(library_code, home_location)
   end
 
   def data

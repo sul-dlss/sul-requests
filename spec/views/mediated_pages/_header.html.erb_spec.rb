@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'mediated_pages/_header.html.erb' do
   let(:origin) { 'GREEN' }
-  let(:origin_location) { 'STACKS' }
+  let(:origin_location) { 'GRE-STACKS' }
   let(:holdings) { [] }
   let(:current_request) do
     double('request', origin_library_code: origin, origin_location:, holdings:)
@@ -24,7 +24,7 @@ RSpec.describe 'mediated_pages/_header.html.erb' do
   end
 
   describe 'location level titles' do
-    let(:origin_location) { 'PAGE-MP' }
+    let(:origin_location) { 'SAL3-PAGE-MP' }
 
     it 'are returned when present' do
       render

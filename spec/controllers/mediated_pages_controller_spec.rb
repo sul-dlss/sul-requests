@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe MediatedPagesController do
   let(:mediated_page) { create(:mediated_page) }
   let(:normal_params) do
-    { item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL', destination: 'ART' }
+    { item_id: '1234', origin: 'ART', origin_location: 'ART-LOCKED-LARGE', destination: 'ART' }
   end
 
   before do
@@ -25,13 +25,13 @@ RSpec.describe MediatedPagesController do
     it 'sets defaults' do
       get :new, params: normal_params
       expect(assigns[:request].origin).to eq 'ART'
-      expect(assigns[:request].origin_location).to eq 'ARTLCKL'
+      expect(assigns[:request].origin_location).to eq 'ART-LOCKED-LARGE'
       expect(assigns[:request].item_id).to eq '1234'
     end
 
     it 'raises an error if the item is unmediateable' do
       expect do
-        get :new, params: { item_id: '1234', origin: 'GREEN', origin_location: 'STACKS', destination: 'ART' }
+        get :new, params: { item_id: '1234', origin: 'GREEN', origin_location: 'GRE-STACKS', destination: 'ART' }
       end.to raise_error(MediatedPagesController::UnmediateableItemError)
     end
   end
@@ -43,7 +43,7 @@ RSpec.describe MediatedPagesController do
       it 'redirects to the login page passing a referrer param to continue creating the mediated page request' do
         post :create, params: {
           request: {
-            item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL', destination: 'ART'
+            item_id: '1234', origin: 'ART', origin_location: 'ART-LOCKED-LARGE', destination: 'ART'
           }
         }
         expect(response).to redirect_to(
@@ -51,7 +51,7 @@ RSpec.describe MediatedPagesController do
             referrer: interstitial_path(
               redirect_to: create_mediated_pages_url(
                 request: {
-                  item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL', destination: 'ART'
+                  item_id: '1234', origin: 'ART', origin_location: 'ART-LOCKED-LARGE', destination: 'ART'
                 }
               )
             )
@@ -64,7 +64,7 @@ RSpec.describe MediatedPagesController do
           request: {
             item_id: '1234',
             origin: 'ART',
-            origin_location: 'ARTLCKL',
+            origin_location: 'ART-LOCKED-LARGE',
             destination: 'ART',
             needed_date: Time.zone.today + 1.year,
             user_attributes: { name: 'Jane Stanford', email: 'jstanford@stanford.edu' }
@@ -84,7 +84,7 @@ RSpec.describe MediatedPagesController do
           request: {
             item_id: '1234',
             origin: 'ART',
-            origin_location: 'ARTLCKL',
+            origin_location: 'ART-LOCKED-LARGE',
             destination: 'ART',
             needed_date: Time.zone.today + 1.year,
             user_attributes: { library_id: '12345' }
@@ -100,7 +100,7 @@ RSpec.describe MediatedPagesController do
         it 'is forbidden' do
           get :create, params: {
             request: {
-              item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL', destination: 'ART'
+              item_id: '1234', origin: 'ART', origin_location: 'ART-LOCKED-LARGE', destination: 'ART'
             }
           }
           expect(response).to have_http_status(:forbidden)
@@ -116,7 +116,7 @@ RSpec.describe MediatedPagesController do
           request: {
             item_id: '1234',
             origin: 'ART',
-            origin_location: 'ARTLCKL',
+            origin_location: 'ART-LOCKED-LARGE',
             destination: 'ART',
             needed_date: Time.zone.today + 1.year
           }
@@ -132,7 +132,7 @@ RSpec.describe MediatedPagesController do
             request: {
               item_id: '1234',
               origin: 'ART',
-              origin_location: 'ARTLCKL',
+              origin_location: 'ART-LOCKED-LARGE',
               destination: 'ART',
               needed_date: Time.zone.today + 1.year
             }
@@ -148,7 +148,7 @@ RSpec.describe MediatedPagesController do
             request: {
               item_id: '1234',
               origin: 'ART',
-              origin_location: 'ARTLCKL',
+              origin_location: 'ART-LOCKED-LARGE',
               destination: 'ART',
               needed_date: Time.zone.today + 1.year
             }

@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :scan do
     item_id { '12345' }
     origin { 'SAL3' }
-    origin_location { 'STACKS' }
+    origin_location { 'SAL3-STACKS' }
     section_title { 'Section Title for Scan 12345' }
     page_range { '1-10' }
 

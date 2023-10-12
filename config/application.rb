@@ -38,6 +38,7 @@ module SULRequests
       'EDUCATION'  => { email: 'sul-requests-education@lists.stanford.edu'},
       'MARINE-BIO'    => { email: 'sul-requests-hopkins@lists.stanford.edu' },
       'PAGE-MP'    => { email: 'sul-requests-branner@lists.stanford.edu' },
+      'SAL3-PAGE-MP'    => { email: 'sul-requests-branner@lists.stanford.edu' },
       'SPEC-COLL'  => { email: 'sul-requests-spec@lists.stanford.edu' },
       'RUMSEY-MAP'  => { email: 'sul-requests-rumsey@lists.stanford.edu' }
     }

@@ -40,7 +40,7 @@ RSpec.describe 'Paging Schedule' do
     end
 
     it 'displays the estimate for the currently selected value and updates it when a new destination is selected' do
-      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS')
 
       expect(page).to have_select('request_destination', selected: 'Green Library')
 
@@ -61,7 +61,7 @@ RSpec.describe 'Paging Schedule' do
     end
 
     it 'is persisted' do
-      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS')
 
       expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: :visible)
       schedule_text = find('[data-scheduler-text]').text
@@ -93,7 +93,7 @@ RSpec.describe 'Paging Schedule' do
     end
 
     it 'displays an estimate for the single possible destination' do
-      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'PAGE-EN')
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-PAGE-EN')
 
       expect(page).not_to have_select('request_destination')
       expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: :visible)
@@ -108,7 +108,7 @@ RSpec.describe 'Paging Schedule' do
     end
 
     it 'shows the estimated delivery for Green Library' do
-      visit new_request_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
+      visit new_request_path(item_id: '12345', origin: 'SAL3', origin_location: 'SAL3-STACKS')
 
       within('#deliveryDescription') do
         expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: :visible)
@@ -122,7 +122,7 @@ RSpec.describe 'Paging Schedule' do
     end
 
     it 'shows the estimated delivery for the Scanning service' do
-      visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
+      visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'SAL3-STACKS')
 
       expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: :visible)
     end

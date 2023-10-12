@@ -434,7 +434,7 @@ RSpec.describe 'Mediation table', js: true do
         create(:page_mp_mediated_page, created_at: cdate, barcodes: ['12345678'])
         req = create(:page_mp_mediated_page, created_at: cdate, barcodes: ['12345678'])
         req.approved!
-        visit admin_path('PAGE-MP')
+        visit admin_path('SAL3-PAGE-MP')
         page.execute_script("$('input#created_at').prop('value', '#{cdate}')")
         click_button('Go')
         # there are no mixed approvals
@@ -496,7 +496,7 @@ RSpec.describe 'Mediation table', js: true do
       stub_bib_data_json(build(:page_mp_holdings))
       request.save(validate: false)
 
-      visit admin_path('PAGE-MP')
+      visit admin_path('SAL3-PAGE-MP')
     end
 
     it 'has toggleable rows that display holdings' do

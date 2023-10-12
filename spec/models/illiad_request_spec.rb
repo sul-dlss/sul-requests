@@ -113,7 +113,7 @@ RSpec.describe IlliadRequest do
 
       it 'includes the location' do
         expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
-        .with(body: /"ReferenceNumber":"STACKS"/)).to have_been_made
+        .with(body: /"ReferenceNumber":"SAL3-STACKS"/)).to have_been_made
       end
     end
   end

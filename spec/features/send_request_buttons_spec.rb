@@ -25,7 +25,7 @@ RSpec.describe 'Send Request Buttons' do
     before { stub_current_user(create(:sso_user)) }
 
     it 'allows submit' do
-      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS')
 
       click_button 'Send request'
 
@@ -35,7 +35,7 @@ RSpec.describe 'Send Request Buttons' do
 
   describe 'by anonymous user', js: true do
     it 'is possible to toggle between login and name-email form' do
-      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS')
       click_link 'I don\'t have a SUNet ID'
 
       expect(page).to have_field('Name', type: 'text')
@@ -47,7 +47,7 @@ RSpec.describe 'Send Request Buttons' do
     end
 
     it 'disables the submit button (and adds a tooltip) when additional user validation is needed' do
-      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'STACKS')
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS')
       click_link 'I don\'t have a SUNet ID'
 
       expect(page).to have_field('Library ID', type: 'text')
@@ -71,7 +71,7 @@ RSpec.describe 'Send Request Buttons' do
 
   describe 'for HOPKINS' do
     it 'allows to send request via SSO login or a SUNet ID' do
-      visit new_page_path(item_id: '1234', origin: 'HOPKINS', origin_location: 'STACKS')
+      visit new_page_path(item_id: '1234', origin: 'MARINE-BIO', origin_location: 'MAR-STACKS')
       expect(page).to have_css('button', text: /Send request.*login with SUNet ID/)
       expect(page).to have_css('a', text: 'I don\'t have a SUNet ID')
     end
@@ -80,7 +80,7 @@ RSpec.describe 'Send Request Buttons' do
   describe 'Scans' do
     before do
       stub_bib_data_json(build(:scannable_holdings))
-      visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'STACKS')
+      visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'SAL3-STACKS')
     end
 
     it 'only allows to send request via SSO login' do
@@ -95,7 +95,7 @@ RSpec.describe 'Send Request Buttons' do
 
   describe 'HoldRecall', js: true do
     before do
-      visit new_hold_recall_path(item_id: '1234', barcode: '3610512345', origin: 'GREEN', origin_location: 'STACKS')
+      visit new_hold_recall_path(item_id: '1234', barcode: '3610512345', origin: 'GREEN', origin_location: 'GRE-STACKS')
     end
 
     it 'allows to send requests via SUNet ID' do
@@ -122,7 +122,7 @@ RSpec.describe 'Send Request Buttons' do
     end
 
     it 'allows users to submit without a SUNet ID' do
-      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ARTLCKL')
+      visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ART-LOCKED-LARGE')
       expect(page).to have_css('a', text: 'I don\'t have a SUNet ID')
     end
   end

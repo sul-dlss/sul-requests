@@ -7,7 +7,8 @@ module DefaultRequestOptions
   ITEM_LIMITS = {
     'RUMSEY-MAP' => 5,
     'SPEC-COLL' => 5,
-    'PAGE-SP' => 5
+    'PAGE-SP' => 5,
+    'SAL3-PAGE-SP' => 5
   }.freeze
 
   def item_limit

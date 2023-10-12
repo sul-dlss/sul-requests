@@ -4,16 +4,16 @@ require 'rails_helper'
 
 RSpec.describe RequestsController do
   let(:scannable_params) do
-    { item_id: '12345', origin: 'SAL3', origin_location: 'STACKS' }
+    { item_id: '12345', origin: 'SAL3', origin_location: 'SAL3-STACKS' }
   end
   let(:unscannable_params) do
-    { item_id: '12345', origin: 'SAL3', origin_location: 'PAGE-LP' }
+    { item_id: '12345', origin: 'SAL3', origin_location: 'SAL3-PAGE-LP' }
   end
   let(:mediated_page_params) do
-    { item_id: '12345', origin: 'ART', origin_location: 'ARTLCKL' }
+    { item_id: '12345', origin: 'ART', origin_location: 'ART-LOCKED-LARGE' }
   end
   let(:hold_recall_params) do
-    { item_id: '12345', barcode: '3610512345', origin: 'GREEN', origin_location: 'STACKS' }
+    { item_id: '12345', barcode: '3610512345', origin: 'GREEN', origin_location: 'GRE-STACKS' }
   end
 
   before do
@@ -28,7 +28,7 @@ RSpec.describe RequestsController do
         end.to raise_error(ActionController::ParameterMissing)
 
         expect do
-          get(:new, params: { origin: 'GREEN', origin_location: 'STACKS' })
+          get(:new, params: { origin: 'GREEN', origin_location: 'GRE-STACKS' })
         end.to raise_error(ActionController::ParameterMissing)
 
         expect do
@@ -41,7 +41,7 @@ RSpec.describe RequestsController do
       it 'are set' do
         get :new, params: hold_recall_params
         expect(assigns[:request].origin).to eq 'GREEN'
-        expect(assigns[:request].origin_location).to eq 'STACKS'
+        expect(assigns[:request].origin_location).to eq 'GRE-STACKS'
         expect(assigns[:request].item_id).to eq '12345'
         expect(assigns[:request].requested_barcode).to eq '3610512345'
       end
@@ -54,7 +54,7 @@ RSpec.describe RequestsController do
 
       it 'raises an error' do
         expect do
-          get(:new, params: { item_id: 'does_not_exist', origin: 'GREEN', origin_location: 'STACKS' })
+          get(:new, params: { item_id: 'does_not_exist', origin: 'GREEN', origin_location: 'GRE-STACKS' })
         end.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
@@ -106,7 +106,8 @@ RSpec.describe RequestsController do
 
     describe 'for mediated pages' do
       let(:request) do
-        build(:request, origin: 'ART', origin_location: 'ARTLCKL', barcodes: ['12345678'], bib_data: build(:single_mediated_holding))
+        build(:request, origin: 'ART', origin_location: 'ART-LOCKED-LARGE', barcodes: ['12345678'],
+                        bib_data: build(:single_mediated_holding))
       end
 
       it 'delegates the request object' do
@@ -121,7 +122,7 @@ RSpec.describe RequestsController do
 
     describe 'for aeon pages' do
       let(:request) do
-        build(:request, origin: 'SPEC-COLL', origin_location: 'STACKS', bib_data: build(:special_collections_single_holding))
+        build(:request, origin: 'SPEC-COLL', origin_location: 'SPEC-STACKS', bib_data: build(:special_collections_single_holding))
       end
 
       it 'delegates the request object' do

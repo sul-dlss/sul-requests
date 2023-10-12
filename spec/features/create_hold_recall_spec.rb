@@ -15,7 +15,7 @@ RSpec.describe 'Creating a hold recall request' do
         item_id: '1234',
         barcode: '12345678',
         origin: 'SAL3',
-        origin_location: 'STACKS'
+        origin_location: 'SAL3-STACKS'
       )
 
       visit form_path
@@ -34,7 +34,7 @@ RSpec.describe 'Creating a hold recall request' do
         item_id: '1234',
         barcode: '12345678',
         origin: 'SAL3',
-        origin_location: 'STACKS'
+        origin_location: 'SAL3-STACKS'
       )
       click_link "I don't have a SUNet ID"
 
@@ -54,7 +54,7 @@ RSpec.describe 'Creating a hold recall request' do
     end
 
     it 'is possible without filling in any user information' do
-      visit new_hold_recall_path(item_id: '1234', barcode: '12345678', origin: 'SAL3', origin_location: 'STACKS')
+      visit new_hold_recall_path(item_id: '1234', barcode: '12345678', origin: 'SAL3', origin_location: 'SAL3-STACKS')
       first(:button, 'Send request').click
 
       expect(current_url).to eq successful_hold_recall_url(HoldRecall.last)
@@ -62,7 +62,7 @@ RSpec.describe 'Creating a hold recall request' do
     end
 
     it 'stores barcode in the url in the barcodes array' do
-      visit new_hold_recall_path(item_id: '1234', barcode: '12345678', origin: 'SAL3', origin_location: 'STACKS')
+      visit new_hold_recall_path(item_id: '1234', barcode: '12345678', origin: 'SAL3', origin_location: 'SAL3-STACKS')
       first(:button, 'Send request').click
 
       expect(HoldRecall.last.barcodes).to eq ['12345678']
