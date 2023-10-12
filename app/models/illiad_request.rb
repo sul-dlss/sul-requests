@@ -9,20 +9,10 @@ class IlliadRequest
   end
 
   def request!
-    faraday_conn_w_req_headers.post(
-      'ILLiadWebPlatform/Transaction/',
-      default_params.merge(@request.illiad_request_params).compact.to_json
-    )
+    faraday_conn_w_req_headers.post('ILLiadWebPlatform/Transaction/', @request.illiad_request_params.to_json)
   end
 
   private
-
-  def default_params
-    {
-      Username: @request.user.sunetid,
-      ProcessType: 'Borrowing'
-    }
-  end
 
   def faraday_conn_w_req_headers
     Faraday.new(url: Settings.sul_illiad) do |req|

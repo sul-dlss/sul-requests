@@ -49,8 +49,21 @@ RSpec.describe Scan do
 
   describe '#submit!' do
     it 'submits the request to ILLIAD' do
-      expect(SubmitScanRequestJob).to receive(:perform_later)
+      expect(SubmitIlliadRequestJob).to receive(:perform_later)
       subject.submit!
+    end
+
+    context 'when the scan destination has a pseudopatron barcode' do
+      let(:subject) do
+        create(:scan, :with_holdings_barcodes, origin: 'SAL',
+                                               origin_location: 'SAL-TEMP',
+                                               bib_data: build(:scannable_only_holdings))
+      end
+
+      it 'submits the request to the ILS also' do
+        expect(Request.ils_job_class).to receive(:perform_later)
+        subject.submit!
+      end
     end
   end
 
