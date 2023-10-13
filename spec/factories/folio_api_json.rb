@@ -595,7 +595,15 @@ FactoryBot.define do
 
   factory :checkedout_holdings, class: 'Folio::Instance' do
     id { '1234' }
+    hrid { 'a1234' }
     title { 'Checked out item' }
+    contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
+    isbn { ['978-3-16-148410-0'] }
+    oclcn { ['(OCoLC-M)1294477572'] }
+    pub_date { '2018' }
+    pub_place { 'Berlin' }
+    publisher { 'Walter de Gruyter GmbH' }
+    edition { ['1st ed.'] }
 
     format { ['Book'] }
 
@@ -610,6 +618,7 @@ FactoryBot.define do
               callnumber: 'ABC 321',
               due_date: '2015-01-01T12:59:00.000+00:00',
               status: 'Checked out',
+              enumeration: 'T.1 2023',
               effective_location: build(:location, code: 'SAL3-STACKS'))
       ]
     end

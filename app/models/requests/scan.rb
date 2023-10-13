@@ -4,6 +4,8 @@
 #  Request class for requesting materials to be scanned
 ###
 class Scan < Request
+  include Illiadable
+
   validate :scannable_validator
   validates :section_title, presence: true
 
@@ -15,24 +17,20 @@ class Scan < Request
     'SCAN'
   end
 
-  def submit!
-    SubmitScanRequestJob.perform_later(self)
-  end
-
-  def illiad_error?
-    illiad_response_data['Message'].present?
-  end
-
-  def notify_ilb!
-    IlbMailer.ilb_notification(self).deliver_later
-  end
-
   def send_approval_status!
     RequestStatusMailer.request_status_for_scan(self).deliver_later if notification_email_address.present?
   end
 
-  # rubocop:disable Metrics/MethodLength
-  def illiad_request_params
+  def submit!
+    SubmitIlliadRequestJob.perform_later(id)
+
+    # This ensures that only scan rules with a destination get sent to the ILS.
+    # We no longer want to send SAL3 requests to the ILS as this is handled by the ILLiad integration.
+    # SAL1/2 requests still go to the ILS at this time.
+    send_to_ils_later! if scan_destination&.dig(:patron_barcode).present?
+  end
+
+  def special_illiad_request_params
     {
       RequestType: 'Article',
       SpecIns: 'Scan and Deliver Request',
@@ -41,13 +39,9 @@ class Scan < Request
       Location: origin,
       ReferenceNumber: origin_location,
       PhotoArticleTitle: section_title,
-      PhotoJournalInclusivePages: page_range,
-      CallNumber: holdings.first.try(:callnumber),
-      ILLNumber: holdings.first.try(:barcode),
-      ItemNumber: holdings.first.try(:barcode)
+      PhotoJournalInclusivePages: page_range
     }
   end
-  # rubocop:enable Metrics/MethodLength
 
   private
 

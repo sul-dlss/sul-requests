@@ -33,6 +33,16 @@ FactoryBot.define do
     bib_data { FactoryBot.build(:sal3_holdings) }
   end
 
+  factory :hold_recall_checkedout, class: 'HoldRecall' do
+    item_id { '1234' }
+    origin { 'SAL3' }
+    origin_location { 'STACKS' }
+    requested_barcode { '87654321' }
+    destination { 'GREEN' }
+    needed_date { Time.zone.today }
+    bib_data { FactoryBot.build(:checkedout_holdings) }
+  end
+
   factory :hold_on_order, parent: :hold_recall do
     item_id { '1234' }
     origin { 'ZOMBIE' }

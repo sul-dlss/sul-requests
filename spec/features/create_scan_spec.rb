@@ -8,7 +8,7 @@ require 'rails_helper'
 # to the illiad URL passing the create scan URL via GET and that the create scan URL via GET works.
 RSpec.describe 'Create Scan Request' do
   before do
-    allow(SubmitScanRequestJob).to receive(:perform_later)
+    allow(SubmitIlliadRequestJob).to receive(:perform_later)
     stub_bib_data_json(build(:scannable_holdings))
   end
 
