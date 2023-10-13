@@ -1,0 +1,11 @@
+<div id="mediate-status">
+  <a class="mediate-toggle" data-behavior='mediate-toggle' href='javascript:;'>
+    <i class="bi bi-plus-circle"></i>
+  </a>
+  <span data-behavior='all-approved-note' class='label label-success' style='<%= 'display:none;' unless request.approved? %>'>
+    <%= t('.all_approved') %>
+  </span>
+  <span data-behavior='mixed-approved-note' class='label label-warning' style='<%= 'display:none;' unless request.marked_as_done? %>'>
+    <%= t('.all_approved') %>
+  </span>
+</div>

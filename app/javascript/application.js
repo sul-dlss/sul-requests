@@ -1,6 +1,5 @@
 // Entry point for the build script in your package.json
 import './jquery-shim'
-import Rails from 'rails-ujs'
 import './trunk8'
 import 'bootstrap-sass'
 
@@ -52,5 +51,4 @@ $(document).on('turbo:load', function() {
   $("[data-toggle='tooltip']").tooltip();
 });
 
-Rails.start()
 import "@hotwired/turbo-rails"

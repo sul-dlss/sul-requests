@@ -177,12 +177,11 @@ RSpec.describe MediatedPagesController do
     end
 
     context 'when successful' do
-      it 'returns the json representation of the updated request' do
+      it 'marks the mediated page as complete' do
         expect(mediated_page).not_to be_marked_as_done
-        patch :update, params: { id: mediated_page.id, request: { approval_status: 'marked_as_done' } }, format: :json
+        patch :update, params: { id: mediated_page.id, request: { approval_status: 'marked_as_done' } }, as: :turbo_stream
 
         expect(mediated_page.reload).to be_marked_as_done
-        expect(response.parsed_body['id']).to eq mediated_page.id
       end
     end
 
@@ -192,16 +191,9 @@ RSpec.describe MediatedPagesController do
       end
 
       it 'returns an error status code' do
-        patch :update, params: { id: mediated_page.id, request: { marked_as_complete: 'true' } }, format: :json
+        patch :update, params: { id: mediated_page.id, request: { marked_as_complete: 'true' } }
 
-        expect(response).not_to be_successful
-        expect(response).to have_http_status :bad_request
-      end
-
-      it 'returns a small json error message' do
-        patch :update, params: { id: mediated_page.id, request: { marked_as_complete: 'true' } }, format: :json
-
-        expect(response.parsed_body).to eq('status' => 'error')
+        expect(response).to have_http_status :unprocessable_entity
       end
     end
 
@@ -210,7 +202,7 @@ RSpec.describe MediatedPagesController do
       let!(:mediated_page) { create(:mediated_page, user:) }
 
       it 'renders forbidden' do
-        patch :update, params: { id: mediated_page.id, request: { marked_as_complete: 'true' } }, format: :js
+        patch :update, params: { id: mediated_page.id, request: { marked_as_complete: 'true' } }
         expect(response).to have_http_status(:forbidden)
       end
     end

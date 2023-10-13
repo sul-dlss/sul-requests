@@ -1,21 +1,7 @@
-/* global alert */
-
 export default (function() {
   var adminCommentFormSelector = '#new_admin_comment';
-  var adminCommentListSelector = '[data-behavior="admin-comments-list"]';
   var adminCommentToggleSelector = '[data-behavior="toggle-admin-comment-form"]';
   var adminCommentFormCancelButton = '[data-behavior="admin-comment-cancel"]';
-
-  function commentTemplate(comment) {
-    return '<li>' +
-             comment.comment +
-             '<span class="text-muted">' +
-               ' - ' +
-               comment.commenter + ' - ' +
-               comment.created_at +
-              '</span>' +
-           '</li>';
-  }
 
   return {
     init: function(holdingsTable) {
@@ -23,10 +9,6 @@ export default (function() {
       this.form = this.holdingsTable.find(adminCommentFormSelector);
 
       this.addCommentToggleBehavior();
-
-      this.onAjaxSuccess();
-
-      this.onAjaxError();
 
       this.addCancelButtonBehavior();
     },
@@ -36,24 +18,6 @@ export default (function() {
       var commentToggle = _this.holdingsTable.find(adminCommentToggleSelector);
       commentToggle.on('click', function() {
         _this.toggleForm();
-      });
-    },
-
-    onAjaxSuccess: function() {
-      var _this = this;
-      _this.form.on('ajax:success', function(event){
-        const comment = event.detail[0]
-
-        _this.form.find('input[type="text"]').val('');
-        var commentList = _this.holdingsTable.find(adminCommentListSelector);
-
-        commentList.append(commentTemplate(comment));
-      });
-    },
-
-    onAjaxError: function() {
-      this.form.on('ajax:error', function() {
-        alert('There was a problem saving your comment.');
       });
     },
 

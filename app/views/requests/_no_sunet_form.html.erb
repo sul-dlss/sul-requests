@@ -53,12 +53,14 @@
         <%= f.submit(
               'Send request',
               data: {
-                disable_with: 'Send request',
                 additional_user_validation: true
               },
-              class: 'btn btn-md btn-primary btn-full'
-            )
+              class: 'btn btn-md btn-primary btn-full disable-text'
+            ) do
         %>
+          <span class="show-when-enabled">Send request</span>
+          <span class="show-when-disabled">Send request</span>
+        <% end %>
       </div>
 
       <div class='go-back-link'>

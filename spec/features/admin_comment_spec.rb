@@ -41,7 +41,6 @@ RSpec.describe 'Admin Comments', js: true do
       within(first('[data-mediate-request]')) do
         page.find('a.mediate-toggle').click
       end
-
       within('.admin-comments') do
         click_button 'Comment'
         expect(page).to have_css('form#new_admin_comment', visible: :visible)
@@ -51,7 +50,6 @@ RSpec.describe 'Admin Comments', js: true do
 
         fill_in 'Comment', with: 'An admin comment'
         click_button 'OK'
-
         expect(page).to have_css('ul[data-behavior="admin-comments-list"] li', text: 'An admin comment')
       end
     end

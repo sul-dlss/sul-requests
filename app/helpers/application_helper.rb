@@ -32,11 +32,13 @@ module ApplicationHelper
 
   def send_request_via_login_button(text = nil)
     button_tag(
-      text || 'Send request<span class="btn-sub-text">login with SUNet ID</span>'.html_safe,
       id: 'send_request_via_sunet',
-      class: 'btn btn-md btn-primary btn-full',
-      data: { disable_with: 'Send request', additional_user_validation: 'false' }
-    )
+      class: 'btn btn-md btn-primary btn-full disable-text',
+      data: { additional_user_validation: 'false' }
+    ) do
+      tag.span(text || 'Send request<span class="btn-sub-text">login with SUNet ID</span>'.html_safe, class: 'show-when-enabled') +
+        tag.span('Send request', class: 'show-when-disabled')
+    end
   end
 
   def render_markdown(markup)

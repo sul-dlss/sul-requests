@@ -67,7 +67,7 @@ RSpec.describe 'Mark As Complete', js: true do
 
       click_button 'Mark as done'
 
-      wait_for_ajax
+      expect(page).to have_css('[data-behavior="mixed-approved-note"]', visible: :visible)
 
       button = page.find('button', text: 'Mark as done')
       expect(button).to be_disabled

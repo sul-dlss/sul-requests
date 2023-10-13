@@ -6,6 +6,9 @@
   <%= bootstrap_form_for(current_request, **request_form_options) do |f| %>
     <%= render partial: 'hidden_form_fields', locals: { f: f } %>
     <%= render partial: 'application/item_selector', locals: { f: f } %>
-    <%= f.button t('.continue_button'), class: 'btn btn-md btn-primary', type: 'submit', data: { disable_with: 'Send request', additional_user_validation: 'false' } %>
+    <%= f.button class: 'btn btn-md btn-primary disable-text', type: 'submit', data: { additional_user_validation: 'false' } do %>
+      <span class="show-when-enabled"><%= t('.continue_button') %></span>
+      <span class="show-when-disabled">Send request</span>
+    <% end %>
   <% end %>
 </div>
