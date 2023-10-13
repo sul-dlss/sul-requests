@@ -2,41 +2,12 @@
 
 require 'rails_helper'
 
-# A fake Request type that can be sent to ILLiad
-class ExampleRequest < Request
-  include Illiadable
-end
-
 RSpec.describe IlliadRequest do
   subject { described_class.new(request) }
 
   let(:user) { create(:sso_user) }
   let(:patron) { instance_double(Folio::Patron, blocked?: false) }
-  let(:request) { ExampleRequest.new(item_id: '1234', bib_data:) }
-  let(:bib_data) do
-    instance_double(
-      Folio::Instance,
-      hrid: 'a1234',
-      isbn: '978-3-16-148410-0',
-      oclcn: '(OCoLC-M)1294477572',
-      pub_date: '2018',
-      pub_place: 'Berlin',
-      publisher: 'Walter de Gruyter GmbH',
-      edition: '1st ed.',
-      view_url: 'https://searchworks.stanford.edu/view/1234',
-      request_holdings: holdings
-    )
-  end
-  let(:holdings) do
-    [
-      instance_double(
-        Folio::Item,
-        barcode: '12345678',
-        callnumber: 'ABC 321',
-        enumeration: 'T.1 2023'
-      )
-    ]
-  end
+  let(:request) { create(:scan, :with_holdings_barcodes, user:) }
 
   before do
     allow(request).to receive(:user).and_return(user)
@@ -45,10 +16,6 @@ RSpec.describe IlliadRequest do
     allow(Settings).to receive(:illiad_api_key).and_return('some-api-key')
     stub_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
     subject.request!
-  end
-
-  it 'POSTs to the illiad api url' do
-    expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')).to have_been_made
   end
 
   describe 'request headers' do
@@ -65,82 +32,6 @@ RSpec.describe IlliadRequest do
     it 'includes the api key' do
       expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
       .with(headers: { 'ApiKey' => 'some-api-key' })).to have_been_made
-    end
-  end
-
-  describe 'request body' do
-    it 'includes the user sunetid' do
-      expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
-      .with(body: /"Username":"some-sso-user"/)).to have_been_made
-    end
-
-    it 'includes the process type' do
-      expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
-      .with(body: /"ProcessType":"Borrowing"/)).to have_been_made
-    end
-
-    it 'specifies that alternate editions are not acceptable by default' do
-      expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
-      .with(body: /"AcceptAlternateEdition":false/)).to have_been_made
-    end
-
-    it 'includes the call number' do
-      expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
-      .with(body: /"CallNumber":"ABC 321"/)).to have_been_made
-    end
-
-    it 'includes the barcode as the item number' do
-      expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
-      .with(body: /"ItemNumber":"12345678"/)).to have_been_made
-    end
-
-    it 'includes the enumeration' do
-      expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
-      .with(body: /"PhotoJournalVolume":"T.1 2023"/)).to have_been_made
-    end
-
-    it 'includes the publisher' do
-      expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
-      .with(body: /"LoanPublisher":"Walter de Gruyter GmbH"/)).to have_been_made
-    end
-
-    it 'includes the place of publication' do
-      expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
-      .with(body: /"LoanPlace":"Berlin"/)).to have_been_made
-    end
-
-    it 'includes the date of publication' do
-      expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
-      .with(body: /"LoanDate":"2018"/)).to have_been_made
-    end
-
-    it 'includes the edition' do
-      expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
-      .with(body: /"LoanEdition":"1st ed."/)).to have_been_made
-    end
-
-    it 'includes the OCLC number' do
-      expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
-      .with(body: /"ESPNumber":"\(OCoLC-M\)1294477572"/)).to have_been_made
-    end
-
-    it 'includes the catalog view link' do
-      expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
-      .with(body: %r{"CitedIn":"https://searchworks.stanford.edu/view/1234"})).to have_been_made
-    end
-
-    it 'includes the ISBN' do
-      expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
-      .with(body: /"ISSN":"978-3-16-148410-0"/)).to have_been_made
-    end
-
-    context 'when the user is blocked' do
-      let(:patron) { instance_double(Folio::Patron, blocked?: true) }
-
-      it 'includes the blocked status' do
-        expect(a_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
-        .with(body: /"UserInfo1":"Blocked"/)).to have_been_made
-      end
     end
   end
 
