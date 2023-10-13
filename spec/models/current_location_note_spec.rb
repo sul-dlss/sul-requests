@@ -27,7 +27,10 @@ RSpec.describe CurrentLocationNote do
     let(:status) { 'Checked out' }
 
     it { expect(note).to be_present }
-    it { expect(note.to_s).to start_with 'This item is currently in use by another patron' }
+
+    it {
+      expect(note.to_s).to start_with 'This item is currently in use by another patron. We\'ll reach out to partner libraries to secure a copy for you.' # rubocop:disable Layout/LineLength
+    }
   end
 
   context 'when being processed' do
