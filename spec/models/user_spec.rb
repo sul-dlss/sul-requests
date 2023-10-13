@@ -173,7 +173,7 @@ RSpec.describe User do
     end
 
     it 'returns true when the user is in a superadmin group' do
-      allow(subject).to receive_messages(ldap_groups: ['FAKE-TEST-SUPER-ADMIN-GROUP'])
+      allow(subject).to receive_messages(ldap_groups: ['sul:requests-super-admin'])
       expect(subject).to be_super_admin
     end
   end
@@ -184,7 +184,7 @@ RSpec.describe User do
     end
 
     it 'returns true when the user is in a site admin group' do
-      allow(subject).to receive_messages(ldap_groups: ['FAKE-TEST-SITE-ADMIN-GROUP'])
+      allow(subject).to receive_messages(ldap_groups: ['sul:requests-site-admin'])
       expect(subject).to be_site_admin
     end
   end

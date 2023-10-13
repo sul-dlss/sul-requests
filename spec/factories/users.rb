@@ -5,14 +5,14 @@ FactoryBot.define do
     sunetid { 'super-admin' }
     email { 'super-admin@stanford.edu' }
     after(:build) do |user|
-      user.ldap_group_string = 'FAKE-TEST-SUPER-ADMIN-GROUP'
+      user.ldap_group_string = 'sul:requests-super-admin'
     end
   end
 
   factory :site_admin_user, class: 'User' do
     sunetid { 'site-admin' }
     after(:build) do |user|
-      user.ldap_group_string = 'FAKE-TEST-SITE-ADMIN-GROUP'
+      user.ldap_group_string = 'sul:requests-site-admin'
     end
   end
 
