@@ -19,10 +19,5 @@
     <pre class="well"><%= JSON.pretty_generate(current_request.ils_request_command.request_params) %></pre>
     <h4>ILS Response</h4>
     <pre class="well"><%= JSON.pretty_generate(current_request.ils_response_data || {}) %></pre>
-
-    <% if current_request.illiad_response_data.present? %>
-      <h4>Illiad Response</h4>
-      <pre class="well"><%= JSON.pretty_generate(current_request.illiad_response_data) %></pre>
-    <% end %>
   <% end %>
 </div>
