@@ -8,7 +8,7 @@ require 'rails_helper'
 # to the illiad URL passing the create scan URL via GET and that the create scan URL via GET works.
 RSpec.describe 'Create Scan Request' do
   before do
-    allow(SubmitIlliadRequestJob).to receive(:perform_later)
+    allow(SubmitIlliadRequestJob).to receive(:perform_later).and_return(instance_double(SubmitIlliadRequestJob))
     stub_bib_data_json(build(:scannable_holdings))
   end
 
@@ -34,11 +34,25 @@ RSpec.describe 'Create Scan Request' do
       stub_current_user(create(:scan_eligible_user))
     end
 
-    it 'displays a copyright restrictions notice in a collapse' do
+    it 'displays a copyright restrictions notice in a collapse', :js do
       visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'SAL3-STACKS')
 
       expect(page).to have_content 'Notice concerning copyright restrictions'
       expect(page).to have_content 'The copyright law of the United States'
+
+      choose 'ABC 123 Available'
+      fill_in 'Title of article or chapter', with: 'Chapter 1'
+      click_button 'Send request'
+
+      expect(page).to have_css('h1#dialogTitle', text: /We're working on it/)
+      expect(page).to have_css('dl.user-contact-information p.help-block',
+                               text: "(We'll send a copy of this request to your email.)")
+      expect(page).to have_css('h2', text: 'SAL Item Title')
+
+      expect(page).to have_css('dt', text: 'DELIVER TO')
+      expect(page).to have_css('dd', text: 'SCAN')
+
+      expect(page).to have_content('some-eligible-user@stanford.edu')
     end
   end
 

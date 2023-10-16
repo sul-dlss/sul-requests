@@ -21,13 +21,16 @@ class Scan < Request
     RequestStatusMailer.request_status_for_scan(self).deliver_later if notification_email_address.present?
   end
 
+  # Returns true if a background job was enqueued.
   def submit!
-    SubmitIlliadRequestJob.perform_later(id)
+    result = SubmitIlliadRequestJob.perform_later(id)
 
     # This ensures that only scan rules with a destination get sent to the ILS.
     # We no longer want to send SAL3 requests to the ILS as this is handled by the ILLiad integration.
     # SAL1/2 requests still go to the ILS at this time.
-    send_to_ils_later! if scan_destination&.dig(:patron_barcode).present?
+    return result if !result || scan_destination&.dig(:patron_barcode).blank?
+
+    send_to_ils_later!
   end
 
   def special_illiad_request_params

@@ -31,6 +31,7 @@ class RequestsController < ApplicationController
     if current_request.save && current_request.submit!
       redirect_to_success_with_token
     else
+      logger.warn "Unable to save #{current_request.errors.full_messages}"
       flash[:error] = 'There was a problem creating your request.'
       render 'new'
     end
