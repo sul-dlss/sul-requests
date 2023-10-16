@@ -21,7 +21,7 @@ RSpec.describe 'Send Request Buttons' do
     allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(instance)
   end
 
-  describe 'as a Stanford user', js: true do
+  describe 'as a Stanford user', :js do
     before { stub_current_user(create(:sso_user)) }
 
     it 'allows submit' do
@@ -33,7 +33,7 @@ RSpec.describe 'Send Request Buttons' do
     end
   end
 
-  describe 'by anonymous user', js: true do
+  describe 'by anonymous user', :js do
     it 'is possible to toggle between login and name-email form' do
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS')
       click_link 'I don\'t have a SUNet ID'
@@ -93,7 +93,7 @@ RSpec.describe 'Send Request Buttons' do
     end
   end
 
-  describe 'HoldRecall', js: true do
+  describe 'HoldRecall', :js do
     before do
       visit new_hold_recall_path(item_id: '1234', barcode: '3610512345', origin: 'GREEN', origin_location: 'GRE-STACKS')
     end

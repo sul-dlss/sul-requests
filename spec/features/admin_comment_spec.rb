@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Admin Comments', js: true do
+RSpec.describe 'Admin Comments', :js do
   let(:user) { create(:superadmin_user) }
   let(:request_status) do
     instance_double(ItemStatus, approved?: true, errored?: false, approver: 'bob', approval_time: '2023-05-31')

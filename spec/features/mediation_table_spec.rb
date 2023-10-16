@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Mediation table', js: true do
+RSpec.describe 'Mediation table', :js do
   let(:top_level_columns) { 7 }
   let(:short_comment) { 'not a long comment' }
 

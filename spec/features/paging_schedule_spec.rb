@@ -34,7 +34,7 @@ RSpec.describe 'Paging Schedule' do
     end
   end
 
-  describe 'Select dropdown', js: true do
+  describe 'Select dropdown', :js do
     before do
       pending('We are not showing the paging schedule for pages during the migration') if Settings.features.migration
     end
@@ -52,7 +52,7 @@ RSpec.describe 'Paging Schedule' do
     end
   end
 
-  describe 'Estimated delivery', js: true do
+  describe 'Estimated delivery', :js do
     before do
       pending('We are not showing the paging schedule for pages during the migration') if Settings.features.migration
 
@@ -77,7 +77,7 @@ RSpec.describe 'Paging Schedule' do
     end
   end
 
-  describe 'Single library destination', js: true do
+  describe 'Single library destination', :js do
     let(:all_items) do
       [
         double('item', callnumber: 'ABC 123', processing?: false, missing?: false, hold?: false, on_order?: false, hold_recallable?: false,
@@ -100,7 +100,7 @@ RSpec.describe 'Paging Schedule' do
     end
   end
 
-  describe 'form choice page', js: true do
+  describe 'form choice page', :js do
     before do
       pending('We are not showing the paging schedule for pages during the migration') if Settings.features.migration
 
@@ -116,7 +116,7 @@ RSpec.describe 'Paging Schedule' do
     end
   end
 
-  describe 'scan form', js: true do
+  describe 'scan form', :js do
     before do
       stub_bib_data_json(build(:scannable_holdings))
     end

@@ -41,8 +41,7 @@ RSpec.describe IlliadRequest do
   before do
     allow(request).to receive(:user).and_return(user)
     allow(user).to receive(:patron).and_return(patron)
-    allow(Settings).to receive(:sul_illiad).and_return('https://illiad.stanford.edu')
-    allow(Settings).to receive(:illiad_api_key).and_return('some-api-key')
+    allow(Settings).to receive_messages(sul_illiad: 'https://illiad.stanford.edu', illiad_api_key: 'some-api-key')
     stub_request(:post, 'https://illiad.stanford.edu/ILLiadWebPlatform/Transaction/')
     subject.request!
   end

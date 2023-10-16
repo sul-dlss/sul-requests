@@ -18,7 +18,7 @@ RSpec.describe 'Item Selector' do
     end
   end
 
-  describe 'for multiple items', js: true do
+  describe 'for multiple items', :js do
     describe 'where there are not enough to be searchable' do
       let(:request_path) { new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS') }
 
@@ -96,14 +96,14 @@ RSpec.describe 'Item Selector' do
         end
       end
 
-      describe 'for aeon pages', js: true do
+      describe 'for aeon pages', :js do
         let(:request_path) { new_aeon_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'SPEC-STACKS') }
 
         before do
           stub_bib_data_json(build(:searchable_spec_holdings))
 
           visit request_path
-          click_on 'Continue'
+          click_button 'Continue'
         end
 
         describe 'in SPEC-COLL' do
@@ -233,7 +233,7 @@ RSpec.describe 'Item Selector' do
     end
   end
 
-  describe 'when viewed under Back-Forward Cache', js: true do
+  describe 'when viewed under Back-Forward Cache', :js do
     before do
       stub_bib_data_json(build(:searchable_holdings))
     end
@@ -273,7 +273,7 @@ RSpec.describe 'Item Selector' do
     end
   end
 
-  describe 'breadcrumb pills', js: true do
+  describe 'breadcrumb pills', :js do
     before do
       stub_bib_data_json(build(:many_holdings))
     end
@@ -308,7 +308,7 @@ RSpec.describe 'Item Selector' do
     end
   end
 
-  describe 'checked out items', js: true do
+  describe 'checked out items', :js do
     before do
       stub_bib_data_json(build(:checkedout_holdings))
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS')

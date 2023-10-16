@@ -57,7 +57,7 @@ RSpec.configure do |config|
     stub_request(:any, %r{http://example.com/.*}).to_return(status: 200, body: '', headers: {})
   end
 
-  config.before(:each, js: true) do
+  config.before(:each, :js) do
     DatabaseCleaner.strategy = :truncation
   end
 

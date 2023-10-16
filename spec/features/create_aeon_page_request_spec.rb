@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Creating an Aeon request', js: true do
+RSpec.describe 'Creating an Aeon request', :js do
   let(:user) { create(:sso_user) }
   let(:bib_data) { :special_collections_single_holding }
 
@@ -30,7 +30,7 @@ RSpec.describe 'Creating an Aeon request', js: true do
         end
 
         it 'submits the request when dismissed' do
-          click_on 'Continue'
+          click_button 'Continue'
           expect(page.current_host).to eq 'https://stanford.aeon.atlas-sys.com'
         end
       end
@@ -93,14 +93,14 @@ RSpec.describe 'Creating an Aeon request', js: true do
 
         it 'disappears when dismissed' do
           overlay = find_by_id('aeon-info-overlay')
-          click_on 'Continue'
+          click_button 'Continue'
           expect(overlay).not_to be_visible
         end
       end
 
       describe 'item selector' do
         before do
-          click_on 'Continue'
+          click_button 'Continue'
         end
 
         describe 'with no items selected' do
@@ -148,7 +148,7 @@ RSpec.describe 'Creating an Aeon request', js: true do
         end
 
         it 'visits the finding aid when dismissed' do
-          click_on 'Continue'
+          click_link 'Continue'
           expect(page.current_host).to eq 'http://www.oac.cdlib.org'
         end
       end

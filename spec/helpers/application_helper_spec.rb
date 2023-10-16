@@ -71,7 +71,7 @@ RSpec.describe ApplicationHelper do
     let(:user) { build(:sso_user, name: 'Some Body') }
 
     it 'includes the screen reader context' do
-      expect(helper.render_user_information).to have_selector '.sr-only', text: 'You are logged in as'
+      expect(helper.render_user_information).to have_css '.sr-only', text: 'You are logged in as'
     end
 
     it 'includes the email for the user' do

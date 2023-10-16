@@ -44,7 +44,7 @@ RSpec.describe 'Viewing all requests' do
         fill_in 'Display from', with: '01/01/2000'
         fill_in 'through', with: '01/01/2100'
 
-        click_on 'Save'
+        click_button 'Save'
 
         within '.library-page-SAL3' do
           expect(page).to have_content 'This is an important message'
@@ -82,7 +82,7 @@ RSpec.describe 'Viewing all requests' do
         fill_in 'Display from', with: '01/01/2000'
         fill_in 'through', with: '01/01/2100'
 
-        click_on 'Save'
+        click_button 'Save'
 
         within '.library-page-SAL3' do
           expect(page).to have_content 'This is an important message'
