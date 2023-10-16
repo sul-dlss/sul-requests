@@ -19,7 +19,7 @@ RSpec.describe 'application/_item_selector.html.erb' do
       let(:request) { create(:request_with_holdings) }
 
       it 'displays the single barcoded item' do
-        expect(rendered).to have_selector '.form-control-static', text: 'ABC 123'
+        expect(rendered).to have_css '.form-control-static', text: 'ABC 123'
       end
     end
 
@@ -27,7 +27,7 @@ RSpec.describe 'application/_item_selector.html.erb' do
       let(:request) { create(:request_with_multiple_holdings, barcode: '3610512345678') }
 
       it 'displays the single barcoded item' do
-        expect(rendered).to have_selector '.form-control-static', text: 'ABC 123'
+        expect(rendered).to have_css '.form-control-static', text: 'ABC 123'
       end
     end
   end
@@ -36,11 +36,11 @@ RSpec.describe 'application/_item_selector.html.erb' do
     let(:request) { create(:mediated_page_with_holdings) }
 
     it 'shows an item selector' do
-      expect(rendered).to have_selector '[data-behavior="item-selector"]'
+      expect(rendered).to have_css '[data-behavior="item-selector"]'
 
-      expect(rendered).to have_selector 'input[name="request[barcodes][45678901]"]'
-      expect(rendered).to have_selector 'input[name="request[barcodes][12345678]"]'
-      expect(rendered).to have_selector 'input[name="request[barcodes][89012345]"]'
+      expect(rendered).to have_css 'input[name="request[barcodes][45678901]"]'
+      expect(rendered).to have_css 'input[name="request[barcodes][12345678]"]'
+      expect(rendered).to have_css 'input[name="request[barcodes][89012345]"]'
     end
   end
 end

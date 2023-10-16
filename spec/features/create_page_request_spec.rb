@@ -11,7 +11,7 @@ RSpec.describe 'Creating a page request' do
   end
 
   context 'when initiated by an anonmyous user' do
-    it 'is possible if a name and email is filled out', js: true do
+    it 'is possible if a name and email is filled out', :js do
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS')
       click_link "I don't have a SUNet ID"
 
@@ -31,7 +31,7 @@ RSpec.describe 'Creating a page request' do
         User.create!(library_id: '1011', email: 'tcramer1@stanford.edu')
       end
 
-      it 'creates a new user', js: true do
+      it 'creates a new user', :js do
         visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS')
         click_link "I don't have a SUNet ID"
 

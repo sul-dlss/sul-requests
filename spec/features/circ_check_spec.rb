@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Circ Check app', js: true do
+RSpec.describe 'Circ Check app', :js do
   let(:client) { FolioGraphqlClient.new }
 
   before do

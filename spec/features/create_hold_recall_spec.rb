@@ -9,7 +9,7 @@ RSpec.describe 'Creating a hold recall request' do
 
   let(:user) { create(:sso_user) }
 
-  pending 'by an anonmyous user', js: true do
+  pending 'by an anonmyous user', :js do
     it 'requires the library id field' do
       form_path = new_hold_recall_path(
         item_id: '1234',

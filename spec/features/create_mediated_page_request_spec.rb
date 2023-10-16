@@ -13,7 +13,7 @@ RSpec.describe 'Creating a mediated page request' do
   end
 
   describe 'by an anonmyous user' do
-    it 'is possible to toggle between login and name-email form', js: true do
+    it 'is possible to toggle between login and name-email form', :js do
       visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ART-LOCKED-LARGE')
 
       click_link "I don't have a SUNet ID"
@@ -29,7 +29,7 @@ RSpec.describe 'Creating a mediated page request' do
       expect(page).to have_css('a', text: "I don't have a SUNet ID")
     end
 
-    it 'is possible if a name and email is filled out', js: true do
+    it 'is possible if a name and email is filled out', :js do
       visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ART-LOCKED-LARGE')
 
       fill_in_required_fields
@@ -43,7 +43,7 @@ RSpec.describe 'Creating a mediated page request' do
       expect_to_be_on_success_page
     end
 
-    it 'is possible if a library id is filled out', js: true do
+    it 'is possible if a library id is filled out', :js do
       visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ART-LOCKED-LARGE')
 
       fill_in_required_fields

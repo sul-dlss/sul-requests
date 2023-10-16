@@ -33,7 +33,7 @@ RSpec.describe 'Viewing all requests' do
         expect(page).to have_css('td a[data-behavior="truncate"]', text: 'I am Mediated')
         expect(page).to have_css('td a[href="mailto:jane@example.com"]', text: /Jane \(jane@example.com\)/)
 
-        expect(page).to have_selector('table.table-striped', count: 1)
+        expect(page).to have_css('table.table-striped', count: 1)
 
         expect(page).to have_css('th.col-sm-1', text: 'Type')
         expect(page).to have_css('th.col-sm-1', text: 'Origin')
@@ -194,12 +194,12 @@ RSpec.describe 'Viewing all requests' do
             visit admin_path('ART', done: 'true', per_page: 1)
           end
 
-          it 'requests are paginated', js: true do
+          it 'requests are paginated', :js do
             expect(page).to have_css('.pagination')
 
-            click_on 'Next ›'
+            click_link 'Next ›'
 
-            expect(page).to have_selector('.pagination .disabled', text: 'Next ›')
+            expect(page).to have_css('.pagination .disabled', text: 'Next ›')
           end
         end
       end

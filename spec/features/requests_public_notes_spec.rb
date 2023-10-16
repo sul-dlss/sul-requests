@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Public Notes', js: true do
+RSpec.describe 'Public Notes', :js do
   let(:user) { create(:sso_user) }
 
   before do
