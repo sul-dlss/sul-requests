@@ -34,7 +34,7 @@ RSpec.describe 'Create Scan Request' do
       stub_current_user(create(:scan_eligible_user))
     end
 
-    it 'displays a copyright restrictions notice in a collapse', js: true do
+    it 'displays a copyright restrictions notice in a collapse', :js do
       visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'SAL3-STACKS')
 
       expect(page).to have_content 'Notice concerning copyright restrictions'
