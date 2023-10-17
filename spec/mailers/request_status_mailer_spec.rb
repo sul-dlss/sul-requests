@@ -19,7 +19,7 @@ RSpec.describe RequestStatusMailer do
 
       it 'renders the correct email' do
         expect(mail.body.to_s).to include(
-          'We were unable to process your request because your status is BLOCKED.'
+          'Your library account is currently BLOCKED.'
         )
       end
 
@@ -39,16 +39,6 @@ RSpec.describe RequestStatusMailer do
         it 'renders the correct email' do
           expect(mail.body.to_s).to include(
             'Something went wrong and we were unable to process your request'
-          )
-        end
-      end
-
-      context 'when the item is scannable' do
-        let(:request) { create(:scan, :with_holdings_barcodes, :with_item_title, user:) }
-
-        it 'indicates to the user they can request the item be scanned' do
-          expect(mail.body.to_s).to include(
-            'Even though your status is blocked, you are eligible for Scan to PDF.'
           )
         end
       end

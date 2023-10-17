@@ -2,7 +2,11 @@
 <html>
   <body>
     <p>
-      We were unable to process your request because your status is BLOCKED.
+      Your library account is currently BLOCKED. Request assistance by replying to this email, or check MyAccount (<%= link_to('https://mylibrary.stanford.edu/', 'https://mylibrary.stanford.edu/') %>) for more information.
+    </p>
+
+    <p>
+      We will process your request, but your account must be in good standing to pick up the item.
     </p>
 
     <p>
@@ -19,18 +23,6 @@
     <% if @request.data_to_email.present? %>
       <p>
         <%= @request.data_to_email.join('<br/>') %>
-      </p>
-    <% end %>
-
-    <p>
-      Request assistance by replying to this email, or check MyAccount (<%= link_to('https://mylibrary.stanford.edu/', 'https://mylibrary.stanford.edu/') %>) for more information.
-    </p>
-
-    <% if @request.scannable? %>
-      <p>
-        Even though your status is blocked, you are eligible for Scan to PDF.
-        You can request a single article or chapter, up to 50 pages.
-        <%= link_to("#{Settings.searchworks_link}/#{@request.item_id}", "#{Settings.searchworks_link}/#{@request.item_id}") %>
       </p>
     <% end %>
 
