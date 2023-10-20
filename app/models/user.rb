@@ -110,8 +110,13 @@ class User < ActiveRecord::Base
   end
 
   def patron
-    @patron ||= patron_model_class.find_by(sunetid:) if sunetid
-    @patron ||= patron_model_class.find_by(library_id:) if library_id
+    @patron ||= begin
+      if sso_user?
+        patron_model_class.find_by(sunetid:)
+      elsif library_id_user?
+        patron_model_class.find_by(library_id:)
+      end
+    end
   end
 
   private
