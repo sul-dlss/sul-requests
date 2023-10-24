@@ -11,16 +11,7 @@ class HoldRecall < Request
   validates :needed_date, presence: true
 
   def submit!
-    send_to_ils_later! unless user.patron.ilb_eligible?
-
-    case Settings.features.hold_recall_via
-    when 'illiad'
-      SubmitIlliadRequestJob.perform_later(id)
-    when 'reshare'
-      SubmitReshareRequestJob.perform_later(id)
-    else
-      super
-    end
+    user.patron.ilb_eligible? ? submit_ilb_request_job : send_to_ils_later!
   end
 
   def requires_needed_date?
@@ -36,5 +27,18 @@ class HoldRecall < Request
       NotWantedAfter: needed_date.strftime('%Y-%m-%d'),
       ItemInfo4: destination_library_code
     }
+  end
+
+  private
+
+  def submit_ilb_request_job
+    case Settings.features.hold_recall_via
+    when 'illiad'
+      SubmitIlliadRequestJob.perform_later(id)
+    when 'reshare'
+      SubmitReshareRequestJob.perform_later(id)
+    else
+      super
+    end
   end
 end
