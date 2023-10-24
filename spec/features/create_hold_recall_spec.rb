@@ -49,8 +49,15 @@ RSpec.describe 'Creating a hold recall request' do
   end
 
   describe 'by a SSO user' do
+    let(:patron) do
+      instance_double(Folio::Patron, exists?: true, email: nil, patron_group_name: 'faculty',
+                                     patron_group_id: 'bdc2b6d4-5ceb-4a12-ab46-249b9a68473e',
+                                     ilb_eligible?: true)
+    end
+
     before do
       stub_current_user(user)
+      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(sunetid: user.sunetid).and_return(patron)
     end
 
     it 'is possible without filling in any user information' do

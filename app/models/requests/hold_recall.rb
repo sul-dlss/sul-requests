@@ -11,6 +11,8 @@ class HoldRecall < Request
   validates :needed_date, presence: true
 
   def submit!
+    send_to_ils_later! unless user.patron.ilb_eligible?
+
     case Settings.features.hold_recall_via
     when 'illiad'
       SubmitIlliadRequestJob.perform_later(id)
