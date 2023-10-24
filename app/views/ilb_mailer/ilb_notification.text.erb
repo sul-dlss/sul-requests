@@ -8,7 +8,11 @@ However, there was a problem with the ILLiad API request:
 
 You can view the status and details of the request here:
 
-https://requests.stanford.edu/scans/<%= @request.id %>/status
+<% if @request.is_a? HoldRecall %>
+<%= status_hold_recall_url @request %>
+<% elsif @request.is_a? Scan %>
+<%= status_scan_url @request %>
+<% end %>
 
 Systems will try to improve the ILLiad request process, but in the meantime please create a transaction in ILLiad manually for:
 ILLiad Username: <%= @request.user.sunetid %>
