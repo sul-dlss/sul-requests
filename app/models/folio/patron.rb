@@ -62,8 +62,8 @@ module Folio
       patron_group_name == 'sul-purchased'
     end
 
-    def borrow_direct_eligible?
-      Settings.folio.borrow_direct_eligible_patron_groups.include?(patron_group_name)
+    def ilb_eligible?
+      Settings.folio.ilb_eligible_patron_groups.include?(patron_group_name)
     end
 
     def standing

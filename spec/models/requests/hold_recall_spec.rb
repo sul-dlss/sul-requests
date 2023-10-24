@@ -44,4 +44,36 @@ RSpec.describe HoldRecall do
       end
     end
   end
+
+  describe '#submit!' do
+    let(:subject) { create(:hold_recall_with_holdings, user:) }
+    let(:user) { create(:library_id_user) }
+    let(:patron) do
+      instance_double(Folio::Patron, exists?: true, email: nil, patron_group_name: 'faculty',
+                                     patron_group_id: 'bdc2b6d4-5ceb-4a12-ab46-249b9a68473e',
+                                     ilb_eligible?: true)
+    end
+
+    before do
+      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: user.library_id).and_return(patron)
+    end
+
+    it 'submits the request to ILLIAD' do
+      expect(SubmitIlliadRequestJob).to receive(:perform_later)
+      subject.submit!
+    end
+
+    context 'when the patron is not eligible to make illiad requests' do
+      let(:patron) do
+        instance_double(Folio::Patron, exists?: true, email: nil, patron_group_name: 'faculty',
+                                       patron_group_id: 'bdc2b6d4-5ceb-4a12-ab46-249b9a68473e',
+                                       ilb_eligible?: false)
+      end
+
+      it 'submits the request to the ILS' do
+        expect(SubmitFolioRequestJob).to receive(:perform_later)
+        subject.submit!
+      end
+    end
+  end
 end

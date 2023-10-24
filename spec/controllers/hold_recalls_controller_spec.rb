@@ -39,6 +39,15 @@ RSpec.describe HoldRecallsController do
   describe 'create' do
     describe 'by sso users' do
       let(:user) { create(:sso_user) }
+      let(:patron) do
+        instance_double(Folio::Patron, exists?: true, email: nil, patron_group_name: 'faculty',
+                                       patron_group_id: 'bdc2b6d4-5ceb-4a12-ab46-249b9a68473e',
+                                       ilb_eligible?: true)
+      end
+
+      before do
+        allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(sunetid: user.sunetid).and_return(patron)
+      end
 
       it 'is allowed' do
         post :create, params: { request: normal_params }

@@ -53,8 +53,8 @@ RSpec.describe Folio::Patron do
       it { is_expected.to be_fee_borrower }
     end
 
-    describe '#borrow_direct_eligible?' do
-      it { is_expected.not_to be_borrow_direct_eligible }
+    describe '#ilb_eligible?' do
+      it { is_expected.not_to be_ilb_eligible }
     end
 
     describe '#make_request_as_patron?' do
@@ -91,8 +91,8 @@ RSpec.describe Folio::Patron do
         it { is_expected.not_to be_fee_borrower }
       end
 
-      describe '#borrow_direct_eligible?' do
-        it { is_expected.to be_borrow_direct_eligible }
+      describe '#ilb_eligible?' do
+        it { is_expected.to be_ilb_eligible }
       end
     end
   end
