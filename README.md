@@ -14,8 +14,8 @@
 - provides a mechanism for the general public (without an ILS account) to request items with just name and email, specifically to support government documents.
 ## local development
 ### requirements
-- Ruby (tested on 3.0)
-- Rails (tested on 6.1)
+- Ruby (tested on 3.2)
+- Rails (tested on 7.0)
 - a database (tested on sqlite3)
 ## setup
 clone the repository:
