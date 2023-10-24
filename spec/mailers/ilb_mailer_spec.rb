@@ -3,7 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe IlbMailer do
-  let(:request) { create(:scan, :without_validations, :with_item_title, user:) }
+  let(:hold_recall) { create(:hold_recall_with_holdings, user:) }
+  let(:scan) { create(:scan, :without_validations, :with_holdings, user:) }
+  let(:request) { scan }
 
   describe 'ilb_notification' do
     let(:user) { build(:scan_eligible_user) }
@@ -44,12 +46,22 @@ RSpec.describe IlbMailer do
         expect(body).to include(' Section Title for Scan 12345')
       end
 
-      it 'has a link to the request information' do
-        expect(body).to include('https://requests.stanford.edu/scans/1/status')
-      end
-
       it 'has some more information about the user' do
         expect(body).to include('ILLiad Username: some-eligible-user')
+      end
+
+      context 'when the request is a scan' do
+        it 'has a link to the request information' do
+          expect(body).to include('http://example.com/scans/1/status')
+        end
+      end
+
+      context 'when the request is a hold/recall' do
+        let(:request) { hold_recall }
+
+        it 'has a link to the request status' do
+          expect(body).to include('http://example.com/hold_recalls/1/status')
+        end
       end
     end
   end
