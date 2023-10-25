@@ -11,7 +11,7 @@ class HoldRecall < Request
   validates :needed_date, presence: true
 
   def submit!
-    user.patron.ilb_eligible? ? submit_ilb_request_job : send_to_ils_later!
+    ilb_eligible? ? submit_ilb_request_job : send_to_ils_later!
   end
 
   def requires_needed_date?
@@ -30,6 +30,15 @@ class HoldRecall < Request
   end
 
   private
+
+  def ilb_eligible?
+    case Settings.features.hold_recall_via
+    when 'illiad'
+      user.sunetid && user.patron.ilb_eligible?
+    when 'reshare'
+      user.patron.ilb_eligible?
+    end
+  end
 
   def submit_ilb_request_job
     case Settings.features.hold_recall_via
