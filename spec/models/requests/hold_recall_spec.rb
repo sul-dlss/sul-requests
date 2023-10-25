@@ -47,7 +47,7 @@ RSpec.describe HoldRecall do
 
   describe '#submit!' do
     let(:subject) { create(:hold_recall_with_holdings, user:) }
-    let(:user) { create(:library_id_user) }
+    let(:user) { create(:sso_user) }
     let(:patron) do
       instance_double(Folio::Patron, exists?: true, email: nil, patron_group_name: 'faculty',
                                      patron_group_id: 'bdc2b6d4-5ceb-4a12-ab46-249b9a68473e',
@@ -55,7 +55,7 @@ RSpec.describe HoldRecall do
     end
 
     before do
-      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: user.library_id).and_return(patron)
+      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(sunetid: user.sunetid).and_return(patron)
     end
 
     it 'submits the request to ILLIAD' do
@@ -63,11 +63,29 @@ RSpec.describe HoldRecall do
       subject.submit!
     end
 
-    context 'when the patron is not eligible to make illiad requests' do
+    context 'when the patron group is not eligible to make illiad requests' do
       let(:patron) do
-        instance_double(Folio::Patron, exists?: true, email: nil, patron_group_name: 'faculty',
-                                       patron_group_id: 'bdc2b6d4-5ceb-4a12-ab46-249b9a68473e',
+        instance_double(Folio::Patron, exists?: true, email: nil, patron_group_name: 'sul-contractprograms',
+                                       patron_group_id: '8054f883-e23a-415e-b8c8-dab817cf430a',
                                        ilb_eligible?: false)
+      end
+
+      it 'submits the request to the ILS' do
+        expect(SubmitFolioRequestJob).to receive(:perform_later)
+        subject.submit!
+      end
+    end
+
+    context 'when the patron is a library id user' do
+      let(:user) { create(:library_id_user) }
+      let(:patron) do
+        instance_double(Folio::Patron, exists?: true, email: nil, patron_group_name: 'graduate',
+                                       patron_group_id: 'ad0bc554-d5bc-463c-85d1-5562127ae91b',
+                                       ilb_eligible?: true)
+      end
+
+      before do
+        allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: user.library_id).and_return(patron)
       end
 
       it 'submits the request to the ILS' do
