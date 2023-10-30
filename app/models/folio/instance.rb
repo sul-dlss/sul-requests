@@ -77,7 +77,11 @@ module Folio
     end
 
     def oclcn
-      @oclcn.join('; ')
+      return if @oclcn.blank?
+
+      preferred_value = @oclcn.find { |value| value.start_with?('(OCoLC-M)') } || @oclcn.first
+
+      preferred_value.sub(/^\(OCoLC-M\)\s*/, '').sub(/^\(OCoLC\)\s*/, '')
     end
 
     def edition

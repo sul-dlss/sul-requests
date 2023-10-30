@@ -28,13 +28,13 @@ RSpec.describe Folio::Instance do
           {
             "value": "(OCoLC-M)213487023",
             "identifierTypeObject": {
-              "name": "System control number"
+              "name": "OCLC"
             }
           },
           {
             "value": "(OCoLC-I)276038905",
             "identifierTypeObject": {
-              "name": "System control number"
+              "name": "OCLC"
             }
           },
           {
@@ -142,6 +142,12 @@ RSpec.describe Folio::Instance do
     subject { data.isbn }
 
     it { is_expected.to eq '9780955506000; 095550600X' }
+  end
+
+  describe '#oclcn' do
+    subject { data.oclcn }
+
+    it { is_expected.to eq '213487023' }
   end
 
   describe '#view_url' do
