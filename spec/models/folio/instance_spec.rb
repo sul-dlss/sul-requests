@@ -141,7 +141,7 @@ RSpec.describe Folio::Instance do
   describe '#isbn' do
     subject { data.isbn }
 
-    it { is_expected.to eq '9780955506000; 095550600X' }
+    it { is_expected.to eq '9780955506000' }
   end
 
   describe '#view_url' do
