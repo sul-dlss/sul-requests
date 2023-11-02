@@ -73,7 +73,7 @@ module Folio
     attr_reader :pub_date, :pub_place, :publisher, :format
 
     def isbn
-      @isbn.join('; ')
+      @isbn.first
     end
 
     def oclcn
