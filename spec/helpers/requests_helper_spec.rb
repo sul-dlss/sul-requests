@@ -222,7 +222,7 @@ RSpec.describe RequestsHelper do
 
     describe 'with a in-library use only item' do
       let(:holding) do
-        build(:page_lp_holdings).items.first
+        build(:page_en_holdings).items.first
       end
 
       it 'includes the status icon' do
