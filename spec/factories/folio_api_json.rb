@@ -358,6 +358,27 @@ FactoryBot.define do
     end
   end
 
+  factory :page_en_holdings, class: 'Folio::Instance' do
+    id { '1234' }
+    title { 'PAGE-EN Item Title' }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              status: 'Available',
+              effective_location: build(:page_en_location))
+      ]
+    end
+
+    initialize_with do
+      new(**attributes)
+    end
+  end
+
   factory :page_mp_holdings, class: 'Folio::Instance' do
     id { '1234' }
     title { 'PAGE-MP Item Title' }
