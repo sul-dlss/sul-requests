@@ -211,7 +211,7 @@ class FolioClient
 
   def ping
     session_token.present?
-  rescue HTTP::Error
+  rescue Faraday::Error
     false
   end
 
