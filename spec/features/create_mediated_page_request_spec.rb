@@ -16,7 +16,7 @@ RSpec.describe 'Creating a mediated page request' do
     it 'is possible to toggle between login and name-email form', :js do
       visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ART-LOCKED-LARGE')
 
-      click_link "I don't have a SUNet ID"
+      click_on "I don't have a SUNet ID"
 
       expect(page).to have_field('Library ID', type: 'text')
       expect(page).to have_field('Name', type: 'text')
@@ -25,7 +25,7 @@ RSpec.describe 'Creating a mediated page request' do
       expect(page).to have_css('input#request_user_attributes_library_id')
       expect(page.evaluate_script('document.activeElement.id')).to eq 'request_user_attributes_library_id'
 
-      click_link '‹ Go back (show the login option)'
+      click_on '‹ Go back (show the login option)'
       expect(page).to have_css('a', text: "I don't have a SUNet ID")
     end
 
@@ -34,12 +34,12 @@ RSpec.describe 'Creating a mediated page request' do
 
       fill_in_required_fields
 
-      click_link "I don't have a SUNet ID"
+      click_on "I don't have a SUNet ID"
 
       fill_in 'Name', with: 'Jane Stanford'
       fill_in 'Email', with: 'jstanford@stanford.edu'
 
-      click_button 'Send request'
+      click_on 'Send request'
       expect_to_be_on_success_page
     end
 
@@ -48,7 +48,7 @@ RSpec.describe 'Creating a mediated page request' do
 
       fill_in_required_fields
 
-      click_link "I don't have a SUNet ID"
+      click_on "I don't have a SUNet ID"
 
       expect(page).to have_css('input#request_user_attributes_library_id')
       expect(page.evaluate_script('document.activeElement.id')).to eq 'request_user_attributes_library_id'
@@ -57,7 +57,7 @@ RSpec.describe 'Creating a mediated page request' do
       fill_in 'Name', with: 'Jane Stanford'
       fill_in 'Email', with: 'jstanford@stanford.edu'
 
-      click_button 'Send request'
+      click_on 'Send request'
 
       expect(MediatedPage.last.user).to eq User.last
       expect(User.last.library_id).to eq '123456'
@@ -102,7 +102,7 @@ RSpec.describe 'Creating a mediated page request' do
     it 'does not include a comments for requests that do not get them' do
       visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ART-LOCKED-LARGE')
 
-      expect(page).not_to have_field('Comments')
+      expect(page).to have_no_field('Comments')
     end
   end
 

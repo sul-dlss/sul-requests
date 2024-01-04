@@ -33,8 +33,8 @@ RSpec.describe 'home/show' do
     before { render }
 
     it 'does not display page sections' do
-      expect(rendered).not_to have_css('h2', text: 'Administration')
-      expect(rendered).not_to have_css('h2', text: 'Mediation')
+      expect(rendered).to have_no_css('h2', text: 'Administration')
+      expect(rendered).to have_no_css('h2', text: 'Mediation')
     end
 
     it 'displays the access error message' do

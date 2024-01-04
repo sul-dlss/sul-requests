@@ -30,7 +30,7 @@ RSpec.describe 'Admin Comments', :js do
 
       within('.admin-comments') do
         expect(page).to have_css('form#new_admin_comment', visible: :hidden)
-        click_button 'Comment'
+        click_on 'Comment'
         expect(page).to have_css('form#new_admin_comment', visible: :visible)
       end
     end
@@ -43,14 +43,14 @@ RSpec.describe 'Admin Comments', :js do
       end
 
       within('.admin-comments') do
-        click_button 'Comment'
+        click_on 'Comment'
         expect(page).to have_css('form#new_admin_comment', visible: :visible)
 
         expect(page).to have_css('ul[data-behavior="admin-comments-list"]')
-        expect(page).not_to have_css('ul[data-behavior="admin-comments-list"] li')
+        expect(page).to have_no_css('ul[data-behavior="admin-comments-list"] li')
 
         fill_in 'Comment', with: 'An admin comment'
-        click_button 'OK'
+        click_on 'OK'
 
         expect(page).to have_css('ul[data-behavior="admin-comments-list"] li', text: 'An admin comment')
       end
@@ -64,14 +64,14 @@ RSpec.describe 'Admin Comments', :js do
       end
 
       within('.admin-comments') do
-        click_button 'Comment'
+        click_on 'Comment'
         expect(page).to have_css('form#new_admin_comment', visible: :visible)
 
         fill_in 'Comment', with: 'A comment I do not like'
         input = page.find('form#new_admin_comment input[type="text"]')
         expect(input['value']).to eq 'A comment I do not like'
 
-        click_link 'Cancel'
+        click_on 'Cancel'
 
         expect(page).to have_css('form#new_admin_comment', visible: :hidden)
         input = page.find('form#new_admin_comment input[type="text"]', visible: :hidden)

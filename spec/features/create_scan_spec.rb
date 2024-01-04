@@ -17,8 +17,8 @@ RSpec.describe 'Create Scan Request' do
 
     visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'SAL3-STACKS')
 
-    expect(page).not_to have_select('request_destination')
-    expect(page).not_to have_content('Deliver to')
+    expect(page).to have_no_select('request_destination')
+    expect(page).to have_no_content('Deliver to')
   end
 
   it 'does not include the highlighted section around destination and needed date' do
@@ -26,7 +26,7 @@ RSpec.describe 'Create Scan Request' do
 
     visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'SAL3-STACKS')
 
-    expect(page).not_to have_css('.alert-warning.destination-note-callout')
+    expect(page).to have_no_css('.alert-warning.destination-note-callout')
   end
 
   describe 'by an eligible SSO user' do
@@ -42,7 +42,7 @@ RSpec.describe 'Create Scan Request' do
 
       choose 'ABC 123 Available'
       fill_in 'Title of article or chapter', with: 'Chapter 1'
-      click_button 'Send request'
+      click_on 'Send request'
 
       expect(page).to have_css('h1#dialogTitle', text: /We're working on it/)
       expect(page).to have_css('dl.user-contact-information p.help-block',
@@ -62,7 +62,7 @@ RSpec.describe 'Create Scan Request' do
 
       expect(page).to have_link 'Request the physical item'
 
-      click_link 'Request the physical item'
+      click_on 'Request the physical item'
 
       expect(page).to have_css('h1#dialogTitle', text: 'Request & pickup service')
       expect(current_url).to eq new_page_url(item_id: '12345', origin: 'SAL3', origin_location: 'SAL3-STACKS')

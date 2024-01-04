@@ -20,11 +20,11 @@ RSpec.describe 'Creating a hold recall request' do
 
       visit form_path
 
-      click_link "I don't have a SUNet ID"
+      click_on "I don't have a SUNet ID"
 
       expect(find_field('Library ID')['required']).to eq 'required'
 
-      click_button 'Send request'
+      click_on 'Send request'
 
       expect(current_url).to include form_path
     end
@@ -36,11 +36,11 @@ RSpec.describe 'Creating a hold recall request' do
         origin: 'SAL3',
         origin_location: 'SAL3-STACKS'
       )
-      click_link "I don't have a SUNet ID"
+      click_on "I don't have a SUNet ID"
 
       fill_in 'Library ID', with: '1234567891'
 
-      click_button 'Send request'
+      click_on 'Send request'
 
       expect(HoldRecall.last.user).to eq User.last
       expect(User.last.library_id).to eq '1234567891'

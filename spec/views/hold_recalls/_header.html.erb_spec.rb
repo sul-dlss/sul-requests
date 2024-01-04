@@ -35,7 +35,7 @@ RSpec.describe 'hold_recalls/_header.html.erb' do
     it 'shows the in-process header' do
       render
       expect(rendered).to have_css('h1', text: 'Request in-process item')
-      expect(rendered).not_to have_css('h1', text: 'checked-out')
+      expect(rendered).to have_no_css('h1', text: 'checked-out')
     end
   end
 

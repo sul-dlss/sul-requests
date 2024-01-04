@@ -38,9 +38,9 @@ RSpec.describe 'application/_item_selector.html.erb' do
     it 'shows an item selector' do
       expect(rendered).to have_css '[data-behavior="item-selector"]'
 
-      expect(rendered).to have_css 'input[name="request[barcodes][45678901]"]'
-      expect(rendered).to have_css 'input[name="request[barcodes][12345678]"]'
-      expect(rendered).to have_css 'input[name="request[barcodes][89012345]"]'
+      expect(rendered).to have_field 'request[barcodes][45678901]'
+      expect(rendered).to have_field 'request[barcodes][12345678]'
+      expect(rendered).to have_field 'request[barcodes][89012345]'
     end
   end
 end

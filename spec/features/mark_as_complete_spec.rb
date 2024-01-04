@@ -50,7 +50,7 @@ RSpec.describe 'Mark As Complete', :js do
         page.find('a.mediate-toggle').click
       end
 
-      click_button 'Mark as done'
+      click_on 'Mark as done'
 
       expect(page).to have_css('[data-behavior="mixed-approved-note"]', visible: :visible) # to wait for ajax
 
@@ -65,7 +65,7 @@ RSpec.describe 'Mark As Complete', :js do
       button = page.find('button', text: 'Mark as done')
       expect(button).not_to be_disabled
 
-      click_button 'Mark as done'
+      click_on 'Mark as done'
 
       wait_for_ajax
 
@@ -74,13 +74,13 @@ RSpec.describe 'Mark As Complete', :js do
     end
 
     it 'shows the mixed-approval label on the request row' do
-      expect(page).not_to have_css('[data-behavior="mixed-approved-note"]', visible: :visible)
+      expect(page).to have_no_css('[data-behavior="mixed-approved-note"]', visible: :visible)
 
       within(first('[data-mediate-request]')) do
         page.find('a.mediate-toggle').click
       end
 
-      click_button 'Mark as done'
+      click_on 'Mark as done'
 
       expect(page).to have_css('[data-behavior="mixed-approved-note"]', visible: :visible)
     end

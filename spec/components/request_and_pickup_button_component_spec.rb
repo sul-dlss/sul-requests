@@ -14,7 +14,7 @@ RSpec.describe RequestAndPickupButtonComponent, type: :component, unless: Settin
 
   it 'renders the component' do
     expect(rendered).to have_link 'Request & pickup', href: '/pages/new'
-    expect(rendered).to have_selector "dd[data-single-library-value='#{destination}']"
+    expect(rendered).to have_css "dd[data-single-library-value='#{destination}']"
     expect(rendered).to have_css 'dd span[data-scheduler-text="true"]'
   end
 end

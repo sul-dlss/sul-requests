@@ -41,7 +41,7 @@ RSpec.describe 'Pickup Libraries Dropdown' do
       it 'simplfies the display of the text of the destination library if there is only one possible' do
         visit new_request_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-PAGE-EN')
 
-        expect(page).not_to have_css('select')
+        expect(page).to have_no_css('select')
 
         expect(page).to have_css('.form-group .control-label', text: 'Will be delivered to')
         expect(page).to have_css('.form-group .input-like-text', text: 'Engineering Library (Terman)')
@@ -55,7 +55,7 @@ RSpec.describe 'Pickup Libraries Dropdown' do
         visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS')
 
         expect(page).to have_css('#request_destination option', count: standard_pickup_lib_total)
-        expect(page).not_to have_css('option', text: media_label)
+        expect(page).to have_no_css('option', text: media_label)
       end
     end
 
