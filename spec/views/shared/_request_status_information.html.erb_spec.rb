@@ -16,7 +16,7 @@ RSpec.describe 'shared/_request_status_information.html.erb' do
 
       it "doesn't display the 'Deliver to' field" do
         render
-        expect(rendered).not_to have_content('Will be delivered to')
+        expect(rendered).to have_no_content('Will be delivered to')
       end
     end
 

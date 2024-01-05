@@ -30,7 +30,7 @@ RSpec.describe 'Creating an Aeon request', :js do
         end
 
         it 'submits the request when dismissed' do
-          click_button 'Continue'
+          click_on 'Continue'
           expect(page.current_host).to eq 'https://stanford.aeon.atlas-sys.com'
         end
       end
@@ -93,14 +93,14 @@ RSpec.describe 'Creating an Aeon request', :js do
 
         it 'disappears when dismissed' do
           overlay = find_by_id('aeon-info-overlay')
-          click_button 'Continue'
+          click_on 'Continue'
           expect(overlay).not_to be_visible
         end
       end
 
       describe 'item selector' do
         before do
-          click_button 'Continue'
+          click_on 'Continue'
         end
 
         describe 'with no items selected' do
@@ -148,7 +148,7 @@ RSpec.describe 'Creating an Aeon request', :js do
         end
 
         it 'visits the finding aid when dismissed' do
-          click_link 'Continue'
+          click_on 'Continue'
           expect(page.current_host).to eq 'http://www.oac.cdlib.org'
         end
       end

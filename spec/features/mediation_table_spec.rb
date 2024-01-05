@@ -86,7 +86,7 @@ RSpec.describe 'Mediation table', :js do
 
       it 'can open and close long comments independently' do
         expect(page).to have_css('a.trunk8toggle-more', count: 3)
-        expect(page).not_to have_css('a.trunk8toggle-less')
+        expect(page).to have_no_css('a.trunk8toggle-less')
 
         page.first('a.trunk8toggle-more').click
         expect(page).to have_css('a.trunk8toggle-more', count: 2)
@@ -103,7 +103,7 @@ RSpec.describe 'Mediation table', :js do
 
       it 'no truncation or "more" link for short comments' do
         within('td.comment > div[data-behavior="trunk8toggle"]', text: short_comment) do
-          expect(page).not_to have_css('a.trunk8toggle-more')
+          expect(page).to have_no_css('a.trunk8toggle-more')
         end
       end
 
@@ -160,12 +160,12 @@ RSpec.describe 'Mediation table', :js do
         end
 
         within('tbody td table tbody') do
-          expect(page).not_to have_css('tr.approved')
+          expect(page).to have_no_css('tr.approved')
           within(first('tr')) do
             expect(page).to have_css('td button', text: 'Approve')
-            expect(page).not_to have_css('td', text: 'Added to pick list', visible: :visible)
-            expect(page).not_to have_content('super-admin')
-            click_button('Approve')
+            expect(page).to have_no_css('td', text: 'Added to pick list', visible: :visible)
+            expect(page).to have_no_content('super-admin')
+            click_on('Approve')
           end
           expect(page).to have_css('tr.approved')
           expect(page).to have_css('td button', text: 'Approved')
@@ -186,23 +186,23 @@ RSpec.describe 'Mediation table', :js do
 
         expect(page).to have_css('tr.approved')
         expect(page).to have_css('td button', text: 'Approved')
-        expect(page).not_to have_css('.alert') # does not add request level alert
+        expect(page).to have_no_css('.alert') # does not add request level alert
       end
 
       it 'indicates when all items in a request have been approved' do
         within(all('[data-mediate-request]').last) do
-          expect(page).not_to have_css('[data-behavior="all-approved-note"]', text: 'Done')
+          expect(page).to have_no_css('[data-behavior="all-approved-note"]', text: 'Done')
           page.find('a.mediate-toggle').click
         end
 
         within('tbody td table tbody') do
           within(all('tr').first) do
-            click_button('Approve')
+            click_on('Approve')
             expect(page).to have_button('Approve', disabled: true)
           end
 
           within(all('tr').last) do
-            click_button('Approve')
+            click_on('Approve')
             expect(page).to have_button('Approve', disabled: true)
           end
         end
@@ -226,13 +226,13 @@ RSpec.describe 'Mediation table', :js do
       end
 
       it 'has sortable columns' do
-        click_link 'Requested on'
+        click_on 'Requested on'
 
         within '.mediation-table tbody' do
           expect(page).to have_content(/Jane Stanford.*Joe Doe.*Jim Doe/m)
         end
 
-        click_link 'Requested on'
+        click_on 'Requested on'
 
         within '.mediation-table tbody' do
           expect(page).to have_content(/Jim Doe.*Joe Doe.*Jane Stanford/m)
@@ -273,11 +273,11 @@ RSpec.describe 'Mediation table', :js do
           page.find('a.mediate-toggle').click
         end
 
-        expect(page).not_to have_css('.alert.alert-danger', text: /There was a problem with this request/)
+        expect(page).to have_no_css('.alert.alert-danger', text: /There was a problem with this request/)
 
         within('tbody td table tbody') do
           within(all('tr').last) do
-            click_button('Approve')
+            click_on('Approve')
 
             wait_for_ajax
             approval_btn = page.find('button.approval-btn')
@@ -298,9 +298,9 @@ RSpec.describe 'Mediation table', :js do
 
           within('tbody td table tbody') do
             within(all('tr').last) do
-              expect(page).not_to have_css('td', text: 'Item not found in catalog')
+              expect(page).to have_no_css('td', text: 'Item not found in catalog')
               stub_symphony_response(build(:symphony_request_with_mixed_status))
-              click_button('Approve')
+              click_on('Approve')
 
               wait_for_ajax
               expect(page).to have_css('td', text: 'Item not found in catalog')
@@ -354,7 +354,7 @@ RSpec.describe 'Mediation table', :js do
         expect(page).to have_css('a.btn', text: I18n.l(Time.zone.today + 2.days, format: :quick))
         expect(page).to have_css('a.btn', text: I18n.l(Time.zone.today + 4.days, format: :quick))
         expect(page).to have_css('a.btn', text: I18n.l(Time.zone.today + 6.days, format: :quick))
-        expect(page).not_to have_css('a.btn', text: I18n.l(Time.zone.today + 8.days, format: :quick))
+        expect(page).to have_no_css('a.btn', text: I18n.l(Time.zone.today + 8.days, format: :quick))
       end
 
       it 'retains the origin filter' do
@@ -375,7 +375,7 @@ RSpec.describe 'Mediation table', :js do
       it 'returns unpaginated results' do
         visit admin_path('ART', per_page: 1)
         find('a.btn', text: I18n.l(Time.zone.today + 2.days, format: :quick)).click
-        expect(page).not_to have_css('.pagination')
+        expect(page).to have_no_css('.pagination')
       end
     end
   end
@@ -404,15 +404,15 @@ RSpec.describe 'Mediation table', :js do
       it 'retains the origin filter' do
         # Capybara thinks the date picker is invisible for some reason
         page.execute_script("$('input#created_at').prop('value', '#{yesterday}')")
-        click_button('Go')
+        click_on('Go')
         expect(page).to have_css('tr[data-mediate-request]', count: 2) # would be 3 if the PAGE-MP request was included
       end
 
       it 'returns unpaginated results' do
         visit admin_path('ART', per_page: 1)
         page.execute_script("$('input#created_at').prop('value', '#{yesterday}')")
-        click_button('Go')
-        expect(page).not_to have_css('.pagination')
+        click_on('Go')
+        expect(page).to have_no_css('.pagination')
       end
 
       it 'returns requests matching create date only' do
@@ -421,11 +421,11 @@ RSpec.describe 'Mediation table', :js do
         expect(page).to have_css('tr[data-mediate-request] td.created_at', text: today_s, count: 2)
 
         page.execute_script("$('input#created_at').prop('value', '#{yesterday}')")
-        click_button('Go')
+        click_on('Go')
 
         expect(page).to have_css('tr[data-mediate-request] td.created_at', text: yesterday.to_s, count: 2)
-        expect(page).not_to have_css('tr[data-mediate-request] td.created_at', text: older.to_s)
-        expect(page).not_to have_css('tr[data-mediate-request] td.created_at', text: today_s)
+        expect(page).to have_no_css('tr[data-mediate-request] td.created_at', text: older.to_s)
+        expect(page).to have_no_css('tr[data-mediate-request] td.created_at', text: today_s)
       end
 
       it 'includes both pending and done requests' do
@@ -436,9 +436,9 @@ RSpec.describe 'Mediation table', :js do
         req.approved!
         visit admin_path('SAL3-PAGE-MP')
         page.execute_script("$('input#created_at').prop('value', '#{cdate}')")
-        click_button('Go')
+        click_on('Go')
         # there are no mixed approvals
-        expect(page).not_to have_css('td span[data-behavior="mixed-approved-note"][style=""]', visible: :hidden)
+        expect(page).to have_no_css('td span[data-behavior="mixed-approved-note"][style=""]', visible: :hidden)
         my_selector = 'td span[data-behavior="mixed-approved-note"][style="display:none;"]'
         expect(page).to have_css(my_selector, count: 2, visible: :hidden)
         # there is one each all-approved
@@ -454,11 +454,11 @@ RSpec.describe 'Mediation table', :js do
         expect(page).to have_css('input.btn-primary[value="Go"]')
 
         page.execute_script("$('input#created_at').prop('value', '#{yesterday}')")
-        click_button('Go')
+        click_on('Go')
         # correct dates, correct date filter
         expect(page).to have_css('tr[data-mediate-request] td.created_at', text: yesterday.to_s, count: 2)
         expect(page).to have_css('tr[data-mediate-request] td.needed_date', text: today_button_text, count: 2)
-        expect(page).not_to have_css('a.btn-primary')
+        expect(page).to have_no_css('a.btn-primary')
         expect(page).to have_css('input.btn-primary[value="Go"]')
 
         find('a.btn', text: future_s).click
@@ -469,11 +469,11 @@ RSpec.describe 'Mediation table', :js do
         expect(page).to have_css('input.btn-primary[value="Go"]')
 
         page.execute_script("$('input#created_at').prop('value', '#{today_s}')")
-        click_button('Go')
+        click_on('Go')
         expect(page).to have_css('tr[data-mediate-request] td.created_at', text: today_s, count: 2)
         expect(page).to have_css('tr[data-mediate-request] td.needed_date', text: today_button_text)
         expect(page).to have_css('tr[data-mediate-request] td.needed_date', text: future_s)
-        expect(page).not_to have_css('a.btn-primary')
+        expect(page).to have_no_css('a.btn-primary')
         expect(page).to have_css('input.btn-primary[value="Go"]')
       end
     end
@@ -530,9 +530,9 @@ RSpec.describe 'Mediation table', :js do
         # find the table cell
         within 'td.needed_date' do
           # click the link to open the calendar widget
-          click_link I18n.l(Time.zone.today, format: :quick)
+          click_on I18n.l(Time.zone.today, format: :quick)
           fill_in 'I plan to visit on', with: new_date
-          click_button 'ok'
+          click_on 'ok'
         end
       end
 
@@ -550,7 +550,7 @@ RSpec.describe 'Mediation table', :js do
 
       it 'does not include the edit-in-place element' do
         visit admin_path('PAGE-MP')
-        expect(page).not_to have_css('.needed_date a')
+        expect(page).to have_no_css('.needed_date a')
       end
     end
   end

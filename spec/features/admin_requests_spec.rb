@@ -50,18 +50,18 @@ RSpec.describe 'Viewing all requests' do
         expect(page).to have_css('td a', text: 'Mediated pages')
         expect(page).to have_css('td a', text: 'Pages')
 
-        click_link 'Mediated pages'
+        click_on 'Mediated pages'
 
         expect(page).to have_css('td', text: 'Mediated pages [x]')
         expect(page).to have_css('td a', text: 'Pages')
 
-        expect(page).not_to have_css('td a[data-behavior="truncate"]', text: 'An American in Paris')
-        expect(page).not_to have_css('td a[href="mailto:joe@xyz.com"]', text: /Joe \(joe@xyz.com\)/)
+        expect(page).to have_no_css('td a[data-behavior="truncate"]', text: 'An American in Paris')
+        expect(page).to have_no_css('td a[href="mailto:joe@xyz.com"]', text: /Joe \(joe@xyz.com\)/)
 
         expect(page).to have_css('td a[data-behavior="truncate"]', text: 'I am Mediated')
         expect(page).to have_css('td a[href="mailto:jane@example.com"]', text: /Jane \(jane@example.com\)/)
 
-        click_link 'Pages'
+        click_on 'Pages'
 
         expect(page).to have_css('td a', text: 'Mediated pages')
         expect(page).to have_css('td', text: 'Pages [x]')
@@ -69,10 +69,10 @@ RSpec.describe 'Viewing all requests' do
         expect(page).to have_css('td a[data-behavior="truncate"]', text: 'An American in Paris')
         expect(page).to have_css('td a[href="mailto:joe@xyz.com"]', text: /Joe \(joe@xyz.com\)/)
 
-        expect(page).not_to have_css('td a[data-behavior="truncate"]', text: 'I am Mediated')
-        expect(page).not_to have_css('td a[href="mailto:jane@example.com"]', text: /Jane \(jane@example.com\)/)
+        expect(page).to have_no_css('td a[data-behavior="truncate"]', text: 'I am Mediated')
+        expect(page).to have_no_css('td a[href="mailto:jane@example.com"]', text: /Jane \(jane@example.com\)/)
 
-        click_link '[x]'
+        click_on '[x]'
 
         expect(page).to have_css('td a', text: 'Mediated pages')
         expect(page).to have_css('td a', text: 'Pages')
@@ -87,7 +87,7 @@ RSpec.describe 'Viewing all requests' do
           create(:page, created_at: yesterday)
           visit admin_index_path
           fill_in(:created_at, with: yesterday.to_s)
-          click_button('Go')
+          click_on('Go')
         end
 
         it 'has the desired label' do
@@ -100,7 +100,7 @@ RSpec.describe 'Viewing all requests' do
             expect(page).to have_css('tr/td/time', text: yesterday.to_s, count: 2)
           end
           fill_in(:created_at, with: today_s)
-          click_button('Go')
+          click_on('Go')
           within('.table-striped/tbody') do
             expect(page).to have_css('tr', count: 3)
             expect(page).to have_css('tr/td/time', text: today_s, count: 3)
@@ -118,12 +118,12 @@ RSpec.describe 'Viewing all requests' do
           visit admin_index_path(per_page: 1)
           expect(page).to have_css('.pagination')
           fill_in(:created_at, with: yesterday.to_s)
-          click_button('Go')
-          expect(page).not_to have_css('.pagination')
+          click_on('Go')
+          expect(page).to have_no_css('.pagination')
         end
 
         it 'interacts nicely with request filters' do
-          click_link 'Mediated pages'
+          click_on 'Mediated pages'
 
           expect(page).to have_css('td', text: 'Mediated pages [x]')
           expect(page).to have_css('td a', text: 'Pages')
@@ -132,17 +132,17 @@ RSpec.describe 'Viewing all requests' do
             expect(page).to have_css('tr/td/time', text: yesterday.to_s)
             expect(page).to have_css('tr/td/time', text: today_s)
             expect(page).to have_css('tr', text: 'MediatedPage')
-            expect(page).not_to have_css('tr', text: /^Page$/)
+            expect(page).to have_no_css('tr', text: /^Page$/)
           end
 
           fill_in(:created_at, with: yesterday)
-          click_button('Go')
+          click_on('Go')
 
           within('.table-striped/tbody') do
             expect(page).to have_css('tr', count: 2)
             expect(page).to have_css('tr/td/time', text: yesterday.to_s, count: 2)
           end
-          expect(page).not_to have_css('td', text: 'Mediated pages [x]')
+          expect(page).to have_no_css('td', text: 'Mediated pages [x]')
           expect(page).to have_css('td a', text: 'Mediated pages')
         end
       end
@@ -184,7 +184,7 @@ RSpec.describe 'Viewing all requests' do
           before { visit admin_path('ART', per_page: 1) }
 
           it 'requests are not paginated' do
-            expect(page).not_to have_css('.pagination')
+            expect(page).to have_no_css('.pagination')
           end
         end
 
@@ -197,7 +197,7 @@ RSpec.describe 'Viewing all requests' do
           it 'requests are paginated', :js do
             expect(page).to have_css('.pagination')
 
-            click_link 'Next ›'
+            click_on 'Next ›'
 
             expect(page).to have_css('.pagination .disabled', text: 'Next ›')
           end
@@ -214,14 +214,14 @@ RSpec.describe 'Viewing all requests' do
         expect(page).to have_css('a.btn-primary', text: 'All pending')
 
         expect(page).to have_css('a', text: 'All done')
-        expect(page).not_to have_css('a.btn-primary', text: 'All done')
-        click_link 'All done'
+        expect(page).to have_no_css('a.btn-primary', text: 'All done')
+        click_on 'All done'
 
         expect(page).to have_css('h2', text: 'Art & Architecture Library (Bowes)')
         expect(page).to have_css('tbody tr', count: 3)
         expect(page).to have_css('a.btn-primary', text: 'All done')
         expect(page).to have_css('a', text: 'All pending')
-        expect(page).not_to have_css('a.btn-primary', text: 'All pending')
+        expect(page).to have_no_css('a.btn-primary', text: 'All pending')
 
         # requests are sorted properly (in descending needed_date order)
         expected_regex = /#{I18n.l(Time.zone.today - 1.day,
@@ -229,7 +229,7 @@ RSpec.describe 'Viewing all requests' do
                                                               format: :quick)}.*#{I18n.l(Time.zone.today - 3.days, format: :quick)}/m
         expect(page).to have_content(expected_regex)
 
-        click_link 'All pending'
+        click_on 'All pending'
 
         expect(page).to have_css('h2', text: 'Art & Architecture Library (Bowes)')
         expect(page).to have_css('tbody tr', count: 2)

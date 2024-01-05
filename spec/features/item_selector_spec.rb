@@ -14,7 +14,7 @@ RSpec.describe 'Item Selector' do
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS')
       expect(page).to have_css('.control-label', text: 'Call number')
       expect(page).to have_css('p', text: 'ABC 123')
-      expect(page).not_to have_css('#item-selector')
+      expect(page).to have_no_css('#item-selector')
     end
   end
 
@@ -103,7 +103,7 @@ RSpec.describe 'Item Selector' do
           stub_bib_data_json(build(:searchable_spec_holdings))
 
           visit request_path
-          click_button 'Continue'
+          click_on 'Continue'
         end
 
         describe 'in SPEC-COLL' do
@@ -116,12 +116,12 @@ RSpec.describe 'Item Selector' do
               check('ABC 345')
               expect(page).to have_field('ABC 678', disabled: true)
               uncheck('ABC 345')
-              expect(page).not_to have_field('ABC 678', disabled: true)
+              expect(page).to have_no_field('ABC 678', disabled: true)
             end
           end
 
           it 'adds and removes a message about the maximum being reached' do
-            expect(page).not_to have_css('#max-items-reached.alert-danger')
+            expect(page).to have_no_css('#max-items-reached.alert-danger')
             within('#item-selector') do
               check('ABC 123')
               check('ABC 456')
@@ -139,7 +139,7 @@ RSpec.describe 'Item Selector' do
               uncheck('ABC 123')
             end
 
-            expect(page).not_to have_css('#max-items-reached.alert-danger')
+            expect(page).to have_no_css('#max-items-reached.alert-danger')
           end
         end
       end
@@ -223,7 +223,7 @@ RSpec.describe 'Item Selector' do
           check('ABC 901')
         end
 
-        click_button 'Send request'
+        click_on 'Send request'
 
         expect(page).to have_css('dd', text: 'ABC 123')
         expect(page).to have_css('dd', text: 'ABC 456')
@@ -255,7 +255,7 @@ RSpec.describe 'Item Selector' do
 
       expect(page).to have_content('5 items selected')
 
-      click_button 'Send request'
+      click_on 'Send request'
 
       expect_to_be_on_success_page
 
@@ -281,9 +281,9 @@ RSpec.describe 'Item Selector' do
     it 'are addable and removable' do
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS')
 
-      expect(page).not_to have_css('#breadcrumb-12345678', text: 'ABC 123')
-      expect(page).not_to have_css('#breadcrumb-23456789', text: 'ABC 456')
-      expect(page).not_to have_css('#breadcrumb-34567890', text: 'ABC 789')
+      expect(page).to have_no_css('#breadcrumb-12345678', text: 'ABC 123')
+      expect(page).to have_no_css('#breadcrumb-23456789', text: 'ABC 456')
+      expect(page).to have_no_css('#breadcrumb-34567890', text: 'ABC 789')
 
       within('#item-selector') do
         check('ABC 123')
@@ -297,14 +297,14 @@ RSpec.describe 'Item Selector' do
 
       # Click the close button on the breadcrumb pill
       find('#breadcrumb-12345678 .close').click
-      expect(page).not_to have_css('#breadcrumb-12345678', text: 'ABC 123')
+      expect(page).to have_no_css('#breadcrumb-12345678', text: 'ABC 123')
 
       within('#item-selector') do
         expect(find_field('ABC 123')).not_to be_checked
         uncheck('ABC 456')
       end
 
-      expect(page).not_to have_css('#breadcrumb-23456789', text: 'ABC 456')
+      expect(page).to have_no_css('#breadcrumb-23456789', text: 'ABC 456')
     end
   end
 
@@ -322,7 +322,7 @@ RSpec.describe 'Item Selector' do
 
     it 'toggles the checked out note' do
       within('#item-selector') do
-        expect(page).not_to have_css('.current-location-note')
+        expect(page).to have_no_css('.current-location-note')
         find('.unavailable', text: 'Due 01/01/2015').click
         expect(page).to have_css('.current-location-note')
       end

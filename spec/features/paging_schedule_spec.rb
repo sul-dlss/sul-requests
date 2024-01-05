@@ -95,7 +95,7 @@ RSpec.describe 'Paging Schedule' do
     it 'displays an estimate for the single possible destination' do
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-PAGE-EN')
 
-      expect(page).not_to have_select('request_destination')
+      expect(page).to have_no_select('request_destination')
       expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: :visible)
     end
   end

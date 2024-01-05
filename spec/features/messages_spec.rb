@@ -44,7 +44,7 @@ RSpec.describe 'Viewing all requests' do
         fill_in 'Display from', with: '01/01/2000'
         fill_in 'through', with: '01/01/2100'
 
-        click_button 'Save'
+        click_on 'Save'
 
         within '.library-page-SAL3' do
           expect(page).to have_content 'This is an important message'
@@ -82,7 +82,7 @@ RSpec.describe 'Viewing all requests' do
         fill_in 'Display from', with: '01/01/2000'
         fill_in 'through', with: '01/01/2100'
 
-        click_button 'Save'
+        click_on 'Save'
 
         within '.library-page-SAL3' do
           expect(page).to have_content 'This is an important message'
@@ -116,8 +116,8 @@ RSpec.describe 'Viewing all requests' do
 
         expect(Message.count).to be 1
         expect(page).to have_css('.text.alert', text: 'MyText')
-        click_link 'Delete message'
-        expect(page).not_to have_css('.text.alert', text: 'MyText')
+        click_on 'Delete message'
+        expect(page).to have_no_css('.text.alert', text: 'MyText')
         expect(Message.count).to be_zero
       end
     end
