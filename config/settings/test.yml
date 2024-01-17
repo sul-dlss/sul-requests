@@ -1,6 +1,3 @@
-super_admin_groups: ['FAKE-TEST-SUPER-ADMIN-GROUP']
-site_admin_groups: ['FAKE-TEST-SITE-ADMIN-GROUP']
-
 destination_admin_groups:
   FAKE-DESTINATION-LIBRARY: ['FAKE-DESTINATION-LIBRARY-TEST-LDAP-GROUP']
 

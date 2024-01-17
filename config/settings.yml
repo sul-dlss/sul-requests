@@ -1,6 +1,7 @@
 # LDAP Workgroups for site-adminstrators
-super_admin_groups: []
-site_admin_groups: []
+super_admin_groups: ['sul:requests-super-admin']
+site_admin_groups: ['sul:requests-site-admin']
+
 scan_pilot_groups:
   - 'stanford:student'
   - 'stanford:student:postdoc'

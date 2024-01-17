@@ -65,9 +65,7 @@ so your `config/settings/development.local.yml` file might look like:
 ```
 fake_ldap_attributes:
   (your sunet id):
-    eduPersonEntitlement: 'mine:mine'
-
-super_admin_groups: ['mine:mine']
+    eduPersonEntitlement: 'sul:requests-super-admin'
 ```
 
 this will assign you the relevant LDAP attributes when you run a server using `REMOTE_USER=(your sunet id) rails s`.
