@@ -117,8 +117,6 @@ RSpec.describe PagesController do
         end
 
         it 'prompts the user to decide whether the request should be for the proxy' do
-          pending('Unable to determine user types during the migration') if Settings.features.migration
-
           put :create, params: {
             request: {
               item_id: '1234',

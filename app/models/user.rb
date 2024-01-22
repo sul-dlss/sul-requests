@@ -12,14 +12,10 @@ class User < ActiveRecord::Base
   attr_accessor :ip_address
 
   def proxy?
-    return false if Settings.features.migration
-
     patron&.proxy?
   end
 
   def sponsor?
-    return false if Settings.features.migration
-
     patron&.sponsor?
   end
 

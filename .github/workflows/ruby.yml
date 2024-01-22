@@ -34,5 +34,5 @@ jobs:
       run: bin/setup
     - name: Ensure tmp/pids exists
       run: mkdir -p tmp/pids
-    - name: Run tests for FOLIO
+    - name: Run continuous integration tasks
       run: bundle exec rake

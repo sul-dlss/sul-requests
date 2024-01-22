@@ -136,7 +136,6 @@ class RequestsController < ApplicationController
 
   # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
   def check_if_proxy_sponsor
-    return if Settings.features.migration
     return unless current_request.user&.sso_user? && params[:request][:proxy].nil?
 
     return unless current_request.user&.sponsor? || (Settings.ils.patron_model == 'Folio::Patron' && current_request.user&.proxy?)

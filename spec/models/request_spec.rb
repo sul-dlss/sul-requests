@@ -572,10 +572,6 @@ RSpec.describe Request do
     describe 'for everybody else' do
       let(:user) { create(:sso_user) }
 
-      before do
-        pending('Page requests are not being approved during the FOLIO migration') if Settings.features.migration
-      end
-
       it 'sends an approval status email' do
         expect do
           subject.send_approval_status!

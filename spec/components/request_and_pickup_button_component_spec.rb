@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe RequestAndPickupButtonComponent, type: :component, unless: Settings.features.migration do
+RSpec.describe RequestAndPickupButtonComponent, type: :component do
   subject(:rendered) do
     with_controller_class RequestsController do
       render_inline(component)
