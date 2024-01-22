@@ -86,8 +86,6 @@ class RequestStatusMailer < ApplicationMailer
   end
 
   def suffix
-    return 'success' if Settings.features.migration
-
     @suffix ||= if @request.ils_response.all_successful? || @request.via_borrow_direct? || @request.is_a?(MediatedPage)
                   'success'
                 else

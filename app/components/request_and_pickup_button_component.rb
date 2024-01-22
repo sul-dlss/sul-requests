@@ -15,7 +15,7 @@ class RequestAndPickupButtonComponent < ViewComponent::Base
   end
 
   def estimate_delivery?
-    Settings.features.estimate_delivery && !Settings.features.migration
+    Settings.features.estimate_delivery
   end
 
   def default_pickup_destination

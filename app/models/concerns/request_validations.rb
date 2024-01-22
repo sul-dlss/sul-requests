@@ -46,7 +46,7 @@ module RequestValidations
     errors.add(:needed_date, 'Date cannot be earlier than today') if needed_date < Time.zone.today
   end
 
-  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/AbcSize, Metrics/PerceivedComplexity
+  # rubocop:disable Metrics/CyclomaticComplexity
   def library_id_exists
     return unless user
 
@@ -57,10 +57,7 @@ module RequestValidations
     # required when necessary, so if it's blank here, it's not required
     return if user.library_id.blank?
 
-    # If we're in migration-mode, the ILS isn't available to validate the library ID
-    return if Settings.features.migration
-
     errors.add(:library_id, 'This ID was not found in our records') unless user.patron&.exists?
   end
-  # rubocop:enable Metrics/CyclomaticComplexity, Metrics/AbcSize, Metrics/PerceivedComplexity
+  # rubocop:enable Metrics/CyclomaticComplexity
 end

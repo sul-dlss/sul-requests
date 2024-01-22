@@ -21,7 +21,6 @@
       <th class='col-xs-2'>Location</th>
       <th class='col-xs-2'>Current</th>
       <th>Call number / Container</th>
-      <% if Settings.features.migration %><th>Barcode</th><% end %>
       <th>Status</th>
       <th>Approved by</th>
     </tr>
@@ -41,7 +40,6 @@
         <td class='col-xs-2'><%= item.home_location %></td>
         <td class='col-xs-2'><%= current_location_for_mediated_item(item) %></td>
         <td><%= item.callnumber %></td>
-        <% if Settings.features.migration %><td><%= item.barcode %></td><% end %>
         <td><span class='request-status'><%= status_text_for_item(item) %></span></td>
         <td data-behavior='approver-information'>
           <% if item.request_status.approved? %>
