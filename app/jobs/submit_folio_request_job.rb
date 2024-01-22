@@ -164,6 +164,7 @@ class SubmitFolioRequestJob < ApplicationJob
     end
 
     def expiration_date
+      # TODO: Determine if page-checking logic is still needed
       @expiration_date ||= ((request.needed_date unless request.is_a?(Page)) || (Time.zone.today + 3.years)).to_time.utc.iso8601
     end
 
