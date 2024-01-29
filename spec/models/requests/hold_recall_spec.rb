@@ -9,7 +9,7 @@ RSpec.describe HoldRecall do
 
   describe 'requestable' do
     it { is_expected.not_to be_requestable_with_name_email }
-    it { is_expected.to be_requestable_with_library_id }
+    it { is_expected.to be_requestable_with_university_id }
   end
 
   it 'has the properly assigned Rails STI attribute value' do
@@ -17,12 +17,12 @@ RSpec.describe HoldRecall do
   end
 
   describe 'send_approval_status!' do
-    describe 'for library id users' do
-      let(:user) { create(:library_id_user) }
+    describe 'for university id users' do
+      let(:user) { create(:university_id_user) }
       let(:subject) { create(:hold_recall, user:) }
 
       before do
-        allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: user.library_id).at_least(:once).and_return(
+        allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(univ_id: user.univ_id).at_least(:once).and_return(
           double(exists?: true, email: nil)
         )
       end
@@ -76,8 +76,8 @@ RSpec.describe HoldRecall do
       end
     end
 
-    context 'when the patron is a library id user' do
-      let(:user) { create(:library_id_user) }
+    context 'when the patron is a university id user' do
+      let(:user) { create(:university_id_user) }
       let(:patron) do
         instance_double(Folio::Patron, exists?: true, email: nil, patron_group_name: 'graduate',
                                        patron_group_id: 'ad0bc554-d5bc-463c-85d1-5562127ae91b',
@@ -85,7 +85,7 @@ RSpec.describe HoldRecall do
       end
 
       before do
-        allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: user.library_id).and_return(patron)
+        allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(univ_id: user.univ_id).and_return(patron)
       end
 
       it 'submits the request to the ILS' do

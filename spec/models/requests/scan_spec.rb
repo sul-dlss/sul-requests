@@ -38,7 +38,7 @@ RSpec.describe Scan do
 
   describe 'requestable' do
     it { is_expected.not_to be_requestable_with_name_email }
-    it { is_expected.not_to be_requestable_with_library_id }
+    it { is_expected.not_to be_requestable_with_university_id }
   end
 
   describe '#item_limit' do
@@ -68,8 +68,8 @@ RSpec.describe Scan do
   end
 
   describe 'send_approval_status!' do
-    describe 'for library id users' do
-      let(:subject) { create(:scan, :without_validations, user: create(:library_id_user), item_title: 'foo') }
+    describe 'for university id users' do
+      let(:subject) { create(:scan, :without_validations, user: create(:university_id_user), item_title: 'foo') }
 
       it 'does not send an approval status email' do
         expect do

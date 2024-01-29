@@ -6,7 +6,7 @@ module Requestable
     Ability.anonymous.can?(:create, self)
   end
 
-  def requestable_with_library_id?
-    Ability.with_a_library_id.can?(:create, self)
+  def requestable_with_university_id?
+    Ability.with_a_univ_id.can?(:create, self)
   end
 end

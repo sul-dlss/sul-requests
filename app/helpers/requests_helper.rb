@@ -91,8 +91,8 @@ module RequestsHelper
 
     if user.sso_user? || user.email_address.present?
       mail_to user.email_address, user.to_email_string
-    elsif user.library_id_user?
-      user.library_id
+    elsif user.univ_id_user?
+      user.univ_id
     end
   end
 end

@@ -135,7 +135,7 @@ RSpec.describe AdminController do
 
       before do
         allow(Folio::Patron).to receive(:find_by).and_call_original
-        allow(Folio::Patron).to receive(:find_by).with(library_id: 'HOLD@AR').and_return(
+        allow(Folio::Patron).to receive(:find_by).with(univ_id: 'HOLD@AR').and_return(
           instance_double(Folio::Patron, id: 'HOLD@AR-PSEUDO')
         )
       end

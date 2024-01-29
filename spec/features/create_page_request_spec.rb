@@ -10,13 +10,13 @@ RSpec.describe 'Creating a page request' do
     stub_bib_data_json(build(:single_holding))
   end
 
-  context 'when initiated by an anonmyous user' do
+  context 'when initiated by an anonymous user' do
     it 'is possible if a name and email is filled out', :js do
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS')
       click_on "I don't have a SUNet ID"
 
-      expect(page).to have_css('input#request_user_attributes_library_id')
-      expect(page.evaluate_script('document.activeElement.id')).to eq 'request_user_attributes_library_id'
+      expect(page).to have_css('input#request_user_attributes_univ_id')
+      expect(page.evaluate_script('document.activeElement.id')).to eq 'request_user_attributes_univ_id'
 
       fill_in 'Name', with: 'Jane Stanford'
       fill_in 'Email', with: 'jstanford@stanford.edu'
@@ -26,16 +26,16 @@ RSpec.describe 'Creating a page request' do
       expect_to_be_on_success_page
     end
 
-    context 'when both library ID and email are provided by the user' do
+    context 'when both university ID and email are provided by the user' do
       before do
-        User.create!(library_id: '1011', email: 'tcramer1@stanford.edu')
+        User.create!(univ_id: '0123456789', email: 'tcramer1@stanford.edu')
       end
 
       it 'creates a new user', :js do
         visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS')
         click_on "I don't have a SUNet ID"
 
-        fill_in 'Library ID', with: '123456'
+        fill_in 'University ID', with: '1234567890'
         fill_in 'Name', with: 'Tim Cramer'
         fill_in 'Email', with: 'tcramer1@stanford.edu'
 

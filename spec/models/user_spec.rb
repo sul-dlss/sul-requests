@@ -12,41 +12,6 @@ RSpec.describe User do
     end
   end
 
-  describe '#sucard_number=' do
-    it 'sets the library_id omitings the first 5 digits' do
-      expect(subject.library_id).to be_blank
-      subject.sucard_number = '12345987654321'
-      expect(subject.library_id).to eq '987654321'
-    end
-  end
-
-  describe '#library_id' do
-    it 'upcases the library id to match symphony' do
-      subject.library_id = 'somelibid'
-      expect(subject.library_id).to eq 'SOMELIBID'
-    end
-  end
-
-  describe '#barcode' do
-    it 'uses the library id' do
-      subject.library_id = 'somelibid'
-      expect(subject.barcode).to eq 'SOMELIBID'
-    end
-
-    context 'with a patron' do
-      let(:patron) { instance_double(Folio::Patron, barcode: '123456789') }
-
-      it 'uses the patron barcode from the ILS' do
-        allow(described_class.patron_model_class).to receive(:find_by).with(sunetid: 'some-user').and_return(patron)
-
-        subject.sunetid = 'some-user'
-        subject.library_id = 'somelibid'
-
-        expect(subject.barcode).to eq '123456789'
-      end
-    end
-  end
-
   describe '#email_address' do
     describe 'for SSO users' do
       before do
@@ -80,9 +45,9 @@ RSpec.describe User do
       end
     end
 
-    describe 'for library ID users' do
+    describe 'for university ID users' do
       it 'is blank' do
-        subject.library_id = '123456'
+        subject.univ_id = '12345678'
         expect(subject.email_address).to be_blank
       end
     end
@@ -114,9 +79,9 @@ RSpec.describe User do
       end
     end
 
-    describe 'for library id users' do
+    describe 'for university id users' do
       it 'is blank' do
-        subject.library_id = '123456'
+        subject.univ_id = '123456789'
         expect(subject.to_email_string).to be_blank
       end
     end
@@ -144,14 +109,14 @@ RSpec.describe User do
     end
   end
 
-  describe '#library_id_user?' do
-    it 'is true when the user has supplied a library ID' do
-      subject.library_id = '12345'
-      expect(subject).to be_library_id_user
+  describe '#univ_id_user?' do
+    it 'is true when the user has supplied a university ID' do
+      subject.univ_id = '123456789'
+      expect(subject).to be_univ_id_user
     end
 
-    it 'is false when the user has not supplied a library ID' do
-      expect(subject).not_to be_library_id_user
+    it 'is false when the user has not supplied a university ID' do
+      expect(subject).not_to be_univ_id_user
     end
   end
 
@@ -162,7 +127,7 @@ RSpec.describe User do
       expect(subject).to be_name_email_user
     end
 
-    it 'is false when the user has not supplied a library ID' do
+    it 'is false when the user has not supplied a university ID' do
       expect(subject).not_to be_name_email_user
     end
   end

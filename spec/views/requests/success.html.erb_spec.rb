@@ -85,7 +85,7 @@ RSpec.describe 'requests/success.html.erb' do
 
     context 'for requests on behalf of a proxy group' do
       let(:request) { build_stubbed(:page, user:, item_title: 'Test title') }
-      let(:user) { create(:library_id_user, email: 'some-address@example.com') }
+      let(:user) { create(:university_id_user, email: 'some-address@example.com') }
 
       before do
         request.proxy = true

@@ -25,10 +25,10 @@ RSpec.describe 'Status Page' do
   end
 
   describe 'by users with tokens' do
-    let(:user) { create(:library_id_user) }
+    let(:user) { create(:university_id_user) }
 
     before do
-      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: user.library_id).and_return(
+      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(univ_id: user.univ_id).and_return(
         instance_double(Folio::Patron, exists?: true)
       )
     end

@@ -40,12 +40,12 @@ RSpec.describe Page do
       before { subject.origin = 'MEDIA-MTXT' }
 
       it { is_expected.not_to be_requestable_with_name_email }
-      it { is_expected.to be_requestable_with_library_id }
+      it { is_expected.to be_requestable_with_university_id }
     end
 
     context 'other libraries' do
       it { is_expected.to be_requestable_with_name_email }
-      it { is_expected.to be_requestable_with_library_id }
+      it { is_expected.to be_requestable_with_university_id }
     end
   end
 
@@ -53,8 +53,8 @@ RSpec.describe Page do
     expect(subject.type).to eq 'Page'
   end
 
-  describe 'library id validation' do
-    let(:user) { create(:library_id_user) }
+  describe 'university id validation' do
+    let(:user) { create(:university_id_user) }
     let(:destination) { 'GREEN-LOAN' }
 
     let(:subject) do
@@ -71,18 +71,18 @@ RSpec.describe Page do
     end
 
     before do
-      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: user.library_id).at_least(:once).and_return(
+      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(univ_id: user.univ_id).at_least(:once).and_return(
         double(exists?: user_exists)
       )
     end
 
-    context 'when the library ID exists' do
+    context 'when the university ID exists' do
       let(:user_exists) { true }
 
       it { expect(subject).to be_valid }
     end
 
-    context 'when the library ID does not exist' do
+    context 'when the university ID does not exist' do
       let(:user_exists) { false }
 
       it { expect(subject).not_to be_valid }
@@ -95,13 +95,13 @@ RSpec.describe Page do
     let(:user) {}
 
     before do
-      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: user.library_id).and_return(
+      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(univ_id: user.univ_id).and_return(
         instance_double(Folio::Patron, exists?: true, email: '')
       )
     end
 
-    describe 'for library id users' do
-      let(:user) { create(:library_id_user) }
+    describe 'for university id users' do
+      let(:user) { create(:university_id_user) }
 
       it 'does not send an approval status email' do
         expect do

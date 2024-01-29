@@ -105,23 +105,23 @@ class Request < ActiveRecord::Base
 
     case
     when user.sso_user? then User.find_by_sunetid(user.sunetid)
-    when user.library_id_user? then find_existing_library_id_user
+    when user.univ_id_user? then find_existing_univ_id_user
     when user.name_email_user? then find_existing_email_user
     end
   end
 
-  def find_existing_library_id_user
+  def find_existing_univ_id_user
     if user.email
-      User.find_by(library_id: user.library_id, email: user.email)
+      User.find_by(univ_id: user.univ_id, email: user.email)
     else
-      User.find_by_library_id(user.library_id)
+      User.find_by_univ_id(user.univ_id)
     end
   end
 
   def find_existing_email_user
     return unless user.email
 
-    User.find_by(email: user.email, library_id: user.library_id).tap do |u|
+    User.find_by(email: user.email, univ_id: user.univ_id).tap do |u|
       next unless u
 
       u.update(name: user.name)
@@ -166,8 +166,8 @@ class Request < ActiveRecord::Base
     mediateable?
   end
 
-  def library_id_error?
-    errors[:library_id].present?
+  def univ_id_error?
+    errors[:univ_id].present?
   end
 
   # rubocop:disable Metrics/MethodLength

@@ -27,14 +27,6 @@ RSpec.describe CurrentUser do
       expect(subject.ldap_groups).to eq ['ldap:group1', 'ldap:group2']
     end
 
-    it 'has the suCardNumber id from LDAP and translates it to the library_id' do
-      allow_any_instance_of(described_class).to receive_messages(user_id: 'some-user')
-      allow(rails_req).to receive(:env).and_return('suCardNumber' => '12345987654321')
-      expect(subject).to be_a User
-      expect(subject.library_id).to eq '987654321'
-      expect(subject).not_to be_changed
-    end
-
     describe 'email' do
       it 'is the mail from ldap attributes' do
         allow_any_instance_of(described_class).to receive_messages(user_id: 'some-user')

@@ -104,6 +104,9 @@ features:
 background_jobs:
   enabled: false
 
+university_id:
+  help_text: 'This is an 8- to 10-digit number that serves as a replacement for the Library ID that was previously utilized.'
+
 embed:
   url: https://embed.stanford.edu
 

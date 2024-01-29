@@ -75,8 +75,8 @@ RSpec.describe MediatedPagesController do
         expect(MediatedPage.last.user).to eq User.last
       end
 
-      it 'is allowed if the library ID field is filled out' do
-        allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: '12345').and_return(
+      it 'is allowed if the university ID field is filled out' do
+        allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(univ_id: '123456789').and_return(
           instance_double(Folio::Patron, email: nil, exists?: true, proxy?: false)
         )
 
@@ -87,12 +87,12 @@ RSpec.describe MediatedPagesController do
             origin_location: 'ART-LOCKED-LARGE',
             destination: 'ART',
             needed_date: Time.zone.today + 1.year,
-            user_attributes: { library_id: '12345' }
+            user_attributes: { univ_id: '123456789' }
           }
         }
 
         expect(response.location).to match(/#{successful_mediated_page_url(MediatedPage.last)}\?token=/)
-        expect(User.last.library_id).to eq '12345'
+        expect(User.last.univ_id).to eq '123456789'
         expect(MediatedPage.last.user).to eq User.last
       end
 

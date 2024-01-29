@@ -67,8 +67,8 @@ FactoryBot.define do
     email { 'jstanford@stanford.edu' }
   end
 
-  factory :library_id_user, class: 'User' do
-    library_id { '12345678' }
+  factory :university_id_user, class: 'User' do
+    univ_id { '123456789' }
   end
 
   factory :anon_user, class: 'User'

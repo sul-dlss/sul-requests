@@ -45,8 +45,8 @@ var additionalUserValidationFields = (function() {
     fieldsAreValid: function() {
       if (this.groupedUserFields().length > 0) { // If we have a name + email field
         return this.validateGroupUserFields();   // Validate name + email field are filled out only (they are always required when present)
-      } else {                                   // Else, we should only have a Library ID field
-        return this.validateSingleUserFields();  // Validate Library ID field because it should be required.
+      } else {                                   // Else, we should only have a University ID field
+        return this.validateSingleUserFields();  // Validate University ID field because it should be required.
       }
     },
 
@@ -66,7 +66,7 @@ var additionalUserValidationFields = (function() {
 
       if ( field.val().length < field.attr('minlength') ) {
         field[0].setCustomValidity(
-          'Stanford Library ID must have 10 digits (you have entered ' + field.val().length + ' ).'
+          'Stanford University ID must have between 8 and 10 digits (you have entered ' + field.val().length + ' ).'
         );
       } else {
         field[0].setCustomValidity('');
@@ -84,7 +84,7 @@ var additionalUserValidationFields = (function() {
     addTooltipToButtonWrapper: function() {
       this.buttonWrapper().attr('data-toggle', 'tooltip')
                           .attr('data-placement', 'top')
-                          .attr('data-title', 'Enter your Library ID or your name and email to complete you request.')
+                          .attr('data-title', 'Enter your University ID or your name and email to complete you request.')
                           .tooltip();
     },
 

@@ -81,7 +81,7 @@ RSpec.describe SubmitFolioRequestJob do
       let(:pseudopatron) { instance_double(Folio::Patron, id: 'HOLD@GR-PSEUDO', patron_group_id:, blocked?: false) }
 
       before do
-        allow(Folio::Patron).to receive(:find_by).with(library_id: 'HOLD@GR').and_return(pseudopatron)
+        allow(Folio::Patron).to receive(:find_by).with(univ_id: 'HOLD@GR').and_return(pseudopatron)
       end
 
       it 'places a hold for the item as a pseudopatron with patron comment' do
@@ -152,7 +152,7 @@ RSpec.describe SubmitFolioRequestJob do
       let(:patron) { nil }
 
       before do
-        allow(Folio::Patron).to receive(:find_by).with(library_id: 'HOLD@AR').and_return(
+        allow(Folio::Patron).to receive(:find_by).with(univ_id: 'HOLD@AR').and_return(
           instance_double(Folio::Patron, id: 'HOLD@AR-PSEUDO', patron_group_id:, blocked?: false)
         )
       end
@@ -175,7 +175,7 @@ RSpec.describe SubmitFolioRequestJob do
       let(:patron_group_id) { nil }
 
       before do
-        allow(Folio::Patron).to receive(:find_by).with(library_id: 'HOLD@AR').and_return(
+        allow(Folio::Patron).to receive(:find_by).with(univ_id: 'HOLD@AR').and_return(
           instance_double(Folio::Patron, id: 'HOLD@AR-PSEUDO', patron_group_id:, blocked?: false)
         )
       end
@@ -270,7 +270,7 @@ RSpec.describe SubmitFolioRequestJob do
       let(:patron) { nil }
 
       before do
-        allow(Folio::Patron).to receive(:find_by).with(library_id: 'HOLD@AR').and_return(
+        allow(Folio::Patron).to receive(:find_by).with(univ_id: 'HOLD@AR').and_return(
           instance_double(Folio::Patron, id: 'HOLD@AR-PSEUDO', patron_group_id:, blocked?: false)
         )
       end
@@ -294,7 +294,7 @@ RSpec.describe SubmitFolioRequestJob do
 
       before do
         allow(patron).to receive(:blocked?).and_return(false)
-        allow(Folio::Patron).to receive(:find_by).with(library_id: 'HOLD@AR').and_return(
+        allow(Folio::Patron).to receive(:find_by).with(univ_id: 'HOLD@AR').and_return(
           instance_double(Folio::Patron, id: 'HOLD@AR-PSEUDO', patron_group_id:, blocked?: false)
         )
         allow(request.bib_data).to receive(:items).and_return([item])
@@ -328,7 +328,7 @@ RSpec.describe SubmitFolioRequestJob do
       end
 
       before do
-        allow(Folio::Patron).to receive(:find_by).with(library_id: 'GRE-SCANDELIVER').and_return(
+        allow(Folio::Patron).to receive(:find_by).with(univ_id: 'GRE-SCANDELIVER').and_return(
           instance_double(Folio::Patron, id: 'GRE-SCANDELIVER', patron_group_id:, blocked?: false)
         )
         allow(request.bib_data).to receive(:items).and_return([item])
