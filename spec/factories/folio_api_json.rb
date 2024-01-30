@@ -244,7 +244,7 @@ FactoryBot.define do
     title { 'Special Collections Item Title' }
     pub_date { '2018' }
     contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
-    electronic_access { [{ 'uri' => 'http://www.oac.cdlib.org/findaid/ark:/12345/abcdefgh/', 'materialsSpecification' => 'Finding aid available online' }] }
+    electronic_access { [{ 'uri' => 'http://www.oac.cdlib.org/findaid/ark:/13030/tf109n9832/', 'materialsSpecification' => 'Finding aid available online' }] }
 
     format { ['Book'] }
 

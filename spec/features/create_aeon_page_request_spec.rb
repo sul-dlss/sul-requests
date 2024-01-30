@@ -149,7 +149,7 @@ RSpec.describe 'Creating an Aeon request', :js do
 
         it 'visits the finding aid when dismissed' do
           click_on 'Continue'
-          expect(page.current_host).to eq 'http://www.oac.cdlib.org'
+          expect(page.current_host).to eq 'https://oac.cdlib.org'
         end
       end
     end
