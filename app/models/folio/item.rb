@@ -60,7 +60,7 @@ module Folio
                    due_date: nil, id: nil, holdings_record_id: nil, suppressed_from_discovery: false)
       @id = id
       @holdings_record_id = holdings_record_id
-      @barcode = barcode
+      @barcode = barcode.presence || id
       @status = status
       @type = type
       @callnumber = callnumber

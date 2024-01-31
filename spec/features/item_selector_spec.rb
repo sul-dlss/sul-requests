@@ -353,6 +353,30 @@ RSpec.describe 'Item Selector' do
     page.execute_script("$('#request_needed_date').prop('value', '#{min_date}')")
   end
 
+  context 'when some items have empty barcodes' do
+    before do
+      stub_bib_data_json(build(:empty_barcode_holdings))
+      visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS')
+    end
+
+    it 'allows selecting the items with and without barcodes' do
+      within('#item-selector') do
+        check('ABC 123')
+        check('ABC 456')
+      end
+
+      within('#sunetid-form') do
+        click_on 'Send request'
+      end
+
+      expect_to_be_on_success_page
+      expect(page).to have_css('dd', text: 'ABC 123')
+      expect(page).to have_css('dd', text: 'ABC 456')
+
+      expect(Page.last.barcodes).to contain_exactly('12345678', 'uuid-b')
+    end
+  end
+
   context 'when some items are not requestable' do
     before do
       stub_bib_data_json(build(:mixed_crez_holdings))

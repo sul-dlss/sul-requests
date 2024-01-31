@@ -743,6 +743,36 @@ FactoryBot.define do
     end
   end
 
+  factory :empty_barcode_holdings, class: 'Folio::Instance' do
+    id { '1234' }
+    title { 'Empty Barcode Item Title' }
+    contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
+    pub_date { '2018' }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              id: 'uuid-a',
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              status: 'Available',
+              effective_location: build(:location, code: 'SAL3-STACKS')),
+        build(:item,
+              id: 'uuid-b',
+              barcode: '',
+              callnumber: 'ABC 456',
+              status: 'Available',
+              effective_location: build(:location, code: 'SAL3-STACKS'))
+      ]
+    end
+
+    initialize_with do
+      new(**attributes)
+    end
+  end
+
   factory :missing_holdings, class: 'Folio::Instance' do
     id { '1234' }
     title { 'One Missing item' }
