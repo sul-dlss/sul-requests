@@ -4,5 +4,5 @@
 <script type='text/javascript'>
   var div = document.getElementById('redirectNote');
   div.innerHTML = 'Processing...';
-  window.location.href = '<%= @redirect_to %>';
+  window.location.href = '<%= @redirect_to.html_safe %>';
 </script>
