@@ -233,6 +233,20 @@ RSpec.describe RequestsHelper do
         expect(subject).to have_content('In-library use only')
       end
     end
+
+    describe 'with a non-pageable item' do
+      let(:holding) do
+        build(:aged_to_lost_holdings).items.first
+      end
+
+      it 'includes the status icon' do
+        expect(subject).to have_css('.unavailable')
+      end
+
+      it 'includes the status text' do
+        expect(subject).to have_content('Not requestable')
+      end
+    end
   end
 
   describe '#request_level_request_status' do
