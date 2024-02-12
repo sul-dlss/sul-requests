@@ -111,7 +111,7 @@ module Folio
 
     # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     def status_text
-      return temporary_location&.discovery_display_name || 'Unavailable' unless requestable?
+      return temporary_location&.discovery_display_name || 'Not requestable' unless requestable?
 
       if !circulates?
         'In-library use only'
@@ -120,7 +120,7 @@ module Folio
       elsif hold_recallable?
         status
       else
-        'Unavailable'
+        'Not requestable'
       end
     end
     # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
@@ -214,7 +214,7 @@ module Folio
     def availability_class
       if hold_recallable?
         'hold-recall'
-      elsif effective_location.details['availabilityClass'] == 'Offsite'
+      elsif effective_location.details['availabilityClass'] == 'Offsite' && requestable?
         'deliver-from-offsite'
       elsif status == STATUS_AVAILABLE && requestable?
         'available'

@@ -768,4 +768,25 @@ FactoryBot.define do
       new(**attributes)
     end
   end
+
+  factory :aged_to_lost_holdings, class: 'Folio::Instance' do
+    id { '1234' }
+    title { 'One lost item' }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              status: 'Aged to Lost',
+              effective_location: build(:location, code: 'SAL3-STACKS'))
+      ]
+    end
+
+    initialize_with do
+      new(**attributes)
+    end
+  end
 end
