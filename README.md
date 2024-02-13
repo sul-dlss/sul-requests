@@ -25,6 +25,7 @@ git clone git@github.com:sul-dlss/sul-requests.git
 install dependencies:
 ```sh
 bundle install
+yarn install
 ```
 run database migrations:
 ```
