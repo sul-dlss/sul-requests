@@ -7,7 +7,7 @@ module Folio
   # NOTE, barcode and callnumber may be nil. see instance_hrid: 'in00000063826'
   class Item
     attr_reader :id, :barcode, :status, :type, :callnumber, :public_note, :effective_location, :permanent_location, :temporary_location,
-                :material_type, :loan_type, :holdings_record_id, :enumeration
+                :material_type, :loan_type, :holdings_record_id, :enumeration, :callnumber_no_enumeration
 
     # Other statuses that we aren't using include "Unavailable" and "Intellectual item"
     STATUS_CHECKED_OUT = 'Checked out'
@@ -57,7 +57,8 @@ module Folio
     def initialize(barcode:, status:, callnumber:,
                    effective_location:, permanent_location: nil, temporary_location: nil,
                    type: nil, public_note: nil, material_type: nil, loan_type: nil, enumeration: nil,
-                   due_date: nil, id: nil, holdings_record_id: nil, suppressed_from_discovery: false)
+                   due_date: nil, id: nil, holdings_record_id: nil, suppressed_from_discovery: false,
+                   callnumber_no_enumeration: nil)
       @id = id
       @holdings_record_id = holdings_record_id
       @barcode = barcode.presence || id
@@ -71,6 +72,7 @@ module Folio
       @material_type = material_type
       @loan_type = loan_type
       @enumeration = enumeration
+      @callnumber_no_enumeration = callnumber_no_enumeration
       @due_date = due_date
       @suppressed_from_discovery = suppressed_from_discovery
     end
@@ -192,6 +194,7 @@ module Folio
           status: dyn.dig('status', 'name'),
           due_date: dyn['dueDate'],
           enumeration: dyn['enumeration'],
+          callnumber_no_enumeration: dyn.dig('effectiveCallNumberComponents', 'callNumber'),
           type: dyn.dig('materialType', 'name'),
           callnumber: [dyn.dig('effectiveCallNumberComponents', 'callNumber'), dyn['volume'], dyn['enumeration'],
                        dyn['chronology']].filter_map(&:presence).join(' '),

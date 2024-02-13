@@ -27,12 +27,12 @@
           </div>
         <% end %>
         <div class='btn-group btn-group-xs sort-headings clearfix'>
-          <a href="javascript:;" class="sort sort-callnumber btn btn-default pull-left" data-sort="callnumber">Call number <i></i></a>
+          <a href="javascript:;" class="sort sort-callnumber btn btn-default pull-left" data-sort="index">Call number <i></i></a>
           <a href="javascript:;" class="sort sort-status btn btn-default pull-right" data-sort="status">Status <i></i></a>
         </div>
         <div id="item-selector" class="item-selector" data-limit-selected-items="<%= f.object.item_limit if f.object.item_limit.to_i > 1 %>" data-counter-target="[data-items-counter='true']">
           <div class='list'>
-            <% f.object.all_holdings.sort_by(&:callnumber).each.with_index(1) do |holding, index| %>
+            <% sort_holdings(f.object.all_holdings).each.with_index(1) do |holding, index| %>
               <div class='input-group'>
                 <% if f.object.item_limit.to_i == 1 %>
                   <span class='input-group-addon barcode-checkbox'>
@@ -51,7 +51,7 @@
                     <%= label_for_item_selector_holding(holding) %>
                   <% end %>
                 <% end %>
-
+                <span class='index'><%= index %></span>
                 <% if (note = CurrentLocationNote.new(holding)).present? %>
                   <div data-behavior='current-location-note' class='current-location-note'>
                     <%= note %>
