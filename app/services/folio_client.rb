@@ -91,15 +91,25 @@ class FolioClient
   CirculationRequest = Data.define(:request_level, :request_type, :instance_id, :item_id, :holdings_record_id,
                                    :requester_id, :fulfillment_preference, :pickup_service_point_id,
                                    :patron_comments, :request_expiration_date) do
+    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     def as_json
+      # TODO: after Poppy launch delete this logic and add `fulfillmentPreference: fulfillment_preference` directly to the hash.
+      # In versions prior to Poppy there is a typo in FOLIO  ('fulfilment') that we are accounting for here
+      fix_fulfillment_preference = Settings.ils&.folio_version == 'poppy' ? { fulfillmentPreference: fulfillment_preference } : { fulfilmentPreference: fulfillment_preference } # rubocop:disable Layout/LineLength
       {
-        requestLevel: request_level, requestType: request_type,
-        instanceId: instance_id, itemId: item_id, holdingsRecordId: holdings_record_id,
-        requesterId: requester_id, requestDate: Time.zone.now.utc.iso8601, fulfilmentPreference: fulfillment_preference,
+        requestLevel: request_level,
+        requestType: request_type,
+        instanceId: instance_id,
+        itemId: item_id,
+        holdingsRecordId: holdings_record_id,
+        requesterId: requester_id,
+        requestDate: Time.zone.now.utc.iso8601,
         pickupServicePointId: pickup_service_point_id,
-        patronComments: patron_comments, requestExpirationDate: request_expiration_date
-      }
+        patronComments: patron_comments,
+        requestExpirationDate: request_expiration_date
+      }.merge(fix_fulfillment_preference)
     end
+    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
   end
 
   def circulation_request_policy(item_type_id:, loan_type_id:, patron_type_id:, location_id:)
