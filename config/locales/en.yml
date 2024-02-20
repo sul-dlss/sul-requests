@@ -45,7 +45,7 @@ en:
         section_title: 'Title of article or chapter'
     help:
       scan:
-        section_title: 'One article or chapter; maximum 50 pages'
+        section_title: 'Limited to one article/chapter, not to exceed 50 pages or 10% of the work'
   admin:
     index:
       hold_recalls: 'Hold recalls'
