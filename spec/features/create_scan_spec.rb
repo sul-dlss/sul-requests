@@ -37,7 +37,7 @@ RSpec.describe 'Create Scan Request' do
     it 'displays a copyright restrictions notice in a collapse', :js do
       visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'SAL3-STACKS')
 
-      expect(page).to have_content 'Notice concerning copyright restrictions'
+      expect(page).to have_content 'Copyright notice'
       expect(page).to have_content 'The copyright law of the United States'
 
       choose 'ABC 123 Available'
