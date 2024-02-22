@@ -4,5 +4,6 @@
 <script type='text/javascript'>
   var div = document.getElementById('redirectNote');
   div.innerHTML = 'Processing...';
-  window.location.href = '<%= @redirect_to.html_safe %>';
+  const redirectUrl = '<%= @redirect_to %>'.replaceAll('&amp;', '&');
+  window.location.href = redirectUrl;
 </script>
