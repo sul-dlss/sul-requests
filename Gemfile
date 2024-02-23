@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 # Pin rails < 7.1.0 to resolve param rewriting issue; see:
 # https://github.com/sul-dlss/sul-requests/issues/1934 
-gem 'rails', '= 7.1.1'
+gem 'rails', '= 7.1.3.2'
 
 # Use sqlite3 as the database (during local development)
 gem 'sqlite3'
