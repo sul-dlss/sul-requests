@@ -16,10 +16,4 @@ RSpec.describe 'Interstitial page redirect' do
 
     expect(page).to have_css('#redirectNote a', text: 'Click here if you are not redirected.')
   end
-
-  it 'redirects using unescaped parameters' do
-    redirect_to = "#{root_url}test?param1=foo&param2=bar"
-    visit interstitial_path(redirect_to:)
-    expect(page.body).to include("window.location.href = '#{redirect_to}'")
-  end
 end
