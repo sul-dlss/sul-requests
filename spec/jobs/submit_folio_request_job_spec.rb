@@ -216,6 +216,32 @@ RSpec.describe SubmitFolioRequestJob do
         expect(circ_request).to include(barcode: '12345678', msgcode: '456')
       end
     end
+
+    context 'with an item by its uuid (because it has an empty barcode)' do
+      let(:request) do
+        create(:page_with_holdings, barcodes: ['uuid-b'], bib_data: build(:empty_barcode_holdings), user:)
+      end
+
+      let(:item) do
+        instance_double(Folio::Item, id: 'uuid-b', holdings_record_id: 'abc123-1', barcode: 'uuid-b',
+                                     status: 'Available', best_request_type:)
+      end
+
+      before do
+        allow(patron).to receive(:blocked?).and_return(false)
+      end
+
+      it 'places a page request for the item' do
+        described_class.perform_now(request.id)
+        expect(client).to have_received(:create_circulation_request).with(
+          have_attributes(
+            request_type: 'Page',
+            requester_id: patron_id,
+            item_id: 'uuid-b'
+          )
+        )
+      end
+    end
   end
 
   context 'with a MediatedPage type request' do
