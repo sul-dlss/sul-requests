@@ -227,19 +227,18 @@ class FolioClient
 
   private
 
-  # rubocop:disable Metrics/AbcSize
   def check_response(response, title:, context:)
     return if response.success?
+
+    context_string = context.map { |k, v| "#{k}: #{v}" }.join(', ')
 
     if response.status == 422 && Array(response.headers[Faraday::CONTENT_TYPE]).any? { |x| x.match?(/\bjson\b/) }
       raise FolioClient::Error, "#{title} request for #{context_string} was not successful", JSON.parse(response.body)
     end
 
-    context_string = context.map { |k, v| "#{k}: #{v}" }.join(', ')
     raise "#{title} request for #{context_string} was not successful. " \
           "status: #{response.status}, #{response.body}"
   end
-  # rubocop:enable Metrics/AbcSize
 
   def get(path, **)
     authenticated_request(path, method: :get, **)
