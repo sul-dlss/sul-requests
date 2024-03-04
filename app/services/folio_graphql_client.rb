@@ -65,6 +65,115 @@ class FolioGraphqlClient
       })
   end
 
+  def item_values
+    'items {
+      id
+      barcode
+      discoverySuppress
+      volume
+      status {
+        name
+      }
+      dueDate
+      materialType {
+        id
+        name
+      }
+      chronology
+      enumeration
+      effectiveCallNumberComponents {
+        callNumber
+      }
+      boundWithHoldingsPerItem {
+        callNumber
+        instance {
+          title
+          hrid
+        }
+      }
+      notes {
+        note
+        itemNoteType {
+          name
+        }
+      }
+      effectiveLocation {
+        id
+        campusId
+        libraryId
+        institutionId
+        code
+        discoveryDisplayName
+        name
+        servicePoints {
+          id
+          code
+          pickupLocation
+        }
+        library {
+          id
+          code
+        }
+        campus {
+          id
+          code
+        }
+        details {
+          pageAeonSite
+          pageMediationGroupKey
+          pageServicePoints {
+            id
+            code
+            name
+          }
+          scanServicePointCode
+          availabilityClass
+          searchworksTreatTemporaryLocationAsPermanentLocation
+        }
+      }
+      permanentLocation {
+        id
+        code
+        details {
+          pageAeonSite
+          pageMediationGroupKey
+          pageServicePoints {
+            id
+            code
+            name
+          }
+          pagingSchedule
+          scanServicePointCode
+        }
+      }
+      temporaryLocation {
+        id
+        code
+        discoveryDisplayName
+      }
+      permanentLoanTypeId
+      temporaryLoanTypeId
+      holdingsRecord {
+        id
+        effectiveLocation {
+          id
+          code
+          details {
+            pageAeonSite
+            pageMediationGroupKey
+            pageServicePoints {
+              id
+              code
+              name
+            }
+            pagingSchedule
+            scanServicePointCode
+          }
+        }
+      }
+    }'
+  end
+
   def instance(hrid:)
     data = post_json('/', json:
     {
@@ -79,6 +188,22 @@ class FolioGraphqlClient
                 value
                 identifierTypeObject {
                   name
+                }
+              }
+              holdingsRecords {
+                callNumber
+                boundWithItem {
+                  hrid
+                  effectiveCallNumberComponents {
+                    callNumber
+                  }
+                  volume
+                  enumeration
+                  instance {
+                    hrid
+                    title
+                    #{item_values}
+                  }
                 }
               }
               instanceType {
@@ -98,105 +223,7 @@ class FolioGraphqlClient
                 materialsSpecification
                 uri
               }
-              items {
-                id
-                barcode
-                discoverySuppress
-                volume
-                status {
-                  name
-                }
-                dueDate
-                materialType {
-                  id
-                  name
-                }
-                chronology
-                enumeration
-                effectiveCallNumberComponents {
-                  callNumber
-                }
-                notes {
-                  note
-                  itemNoteType {
-                    name
-                  }
-                }
-                effectiveLocation {
-                  id
-                  campusId
-                  libraryId
-                  institutionId
-                  code
-                  discoveryDisplayName
-                  name
-                  servicePoints {
-                    id
-                    code
-                    pickupLocation
-                  }
-                  library {
-                    id
-                    code
-                  }
-                  campus {
-                    id
-                    code
-                  }
-                  details {
-                    pageAeonSite
-                    pageMediationGroupKey
-                    pageServicePoints {
-                      id
-                      code
-                      name
-                    }
-                    scanServicePointCode
-                    availabilityClass
-                    searchworksTreatTemporaryLocationAsPermanentLocation
-                  }
-                }
-                permanentLocation {
-                  id
-                  code
-                  details {
-                    pageAeonSite
-                    pageMediationGroupKey
-                    pageServicePoints {
-                      id
-                      code
-                      name
-                    }
-                    pagingSchedule
-                    scanServicePointCode
-                  }
-                }
-                temporaryLocation {
-                  id
-                  code
-                  discoveryDisplayName
-                }
-                permanentLoanTypeId
-                temporaryLoanTypeId
-                holdingsRecord {
-                  id
-                  effectiveLocation {
-                    id
-                    code
-                    details {
-                      pageAeonSite
-                      pageMediationGroupKey
-                      pageServicePoints {
-                        id
-                        code
-                        name
-                      }
-                      pagingSchedule
-                      scanServicePointCode
-                    }
-                  }
-                }
-              }
+              #{item_values}
             }
           }
         GQL
