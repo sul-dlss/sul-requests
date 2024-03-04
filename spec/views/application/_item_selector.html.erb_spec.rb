@@ -18,16 +18,16 @@ RSpec.describe 'application/_item_selector.html.erb' do
     context 'from the holdings' do
       let(:request) { create(:request_with_holdings) }
 
-      it 'displays the single barcoded item' do
-        expect(rendered).to have_css '.form-control-static', text: 'ABC 123'
+      it 'displays the single call number' do
+        expect(rendered).to have_css '.single-item-callnumber', text: 'ABC 123'
       end
     end
 
     context 'requested via barcode' do
       let(:request) { create(:request_with_multiple_holdings, barcode: '3610512345678') }
 
-      it 'displays the single barcoded item' do
-        expect(rendered).to have_css '.form-control-static', text: 'ABC 123'
+      it 'displays the single call number' do
+        expect(rendered).to have_css '.single-item-callnumber', text: 'ABC 123'
       end
     end
   end
