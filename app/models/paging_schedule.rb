@@ -14,8 +14,8 @@ module PagingSchedule
       instance_eval(&)
     end
 
-    def when_paging(to:, from:, before: nil, after: nil, &block)
-      schedule << Scheduler.new(to:, from:, before:, after:, &block)
+    def when_paging(to:, from:, before: nil, after: nil, &)
+      schedule << Scheduler.new(to:, from:, before:, after:, &)
     end
 
     def for(request)
