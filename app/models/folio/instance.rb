@@ -14,6 +14,46 @@ module Folio
 
       Folio::Instance.from_dynamic(data)
     end
+
+    def self.filter_parent_bound_withs(parent_bound_withs, hrid)
+      return [] unless parent_bound_withs
+
+      parent_bound_withs.flatten.compact.each do |bound_with_record|
+        @filter_parent_bound_withs ||= bound_with_record.dig('instance', 'items').each.map do |item|
+          boundwithhrids = item['boundWithHoldingsPerItem'].filter { |bw| bw.dig('instance', 'hrid') == hrid }.flatten
+          update_item_fields(item, boundwithhrids.first) if boundwithhrids.present?
+        end
+      end
+      @filter_parent_bound_withs.compact
+    end
+
+    def self.update_item_fields(item, holdings_record)
+      item['effectiveCallNumberComponents']['callNumber'] = holdings_record['callNumber']
+      item['volume'] = ''
+      item['enumeration'] = ''
+      item
+    end
+
+    def self.items(json)
+      hrid = json.fetch('hrid', '')
+      parent_bound_withs = parent_bound_withs(json)
+      return json.fetch('items', []).map { |item| Folio::Item.from_hash(item) } unless parent_bound_withs.present? && hrid
+
+      parent_bound_withs = parent_bound_withs.pluck('boundWithItem')
+      items = filter_parent_bound_withs(parent_bound_withs, hrid)
+      items += json['items'] if json['items']
+      items.compact.map { |item| Folio::Item.from_hash(item) }
+    end
+
+    def self.parent_bound_withs(json)
+      json.fetch('holdingsRecords', []).filter { |holding| holding['boundWithItem'] }
+    end
+
+    def self.child_bound_withs(json)
+      return unless json['items']
+
+      json['items'].pluck('boundWithHoldingsPerItem').flatten.compact
+    end
     # rubocop:enable Style/OptionalBooleanParameter
 
     # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
@@ -35,14 +75,17 @@ module Folio
         end,
         electronic_access: json.fetch('electronicAccess', []),
         edition: json.fetch('editions', []),
-        items: json.fetch('items', []).map { |item| Folio::Item.from_hash(item) }
+        items: items(json),
+        parent_bound_withs: parent_bound_withs(json),
+        child_bound_withs: child_bound_withs(json)
       )
     end
+
     # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
     # rubocop:disable Metrics/MethodLength, Metrics/ParameterLists
     def initialize(id:, hrid: '', title: '', contributors: [], pub_date: nil, pub_place: nil, publisher: nil, format: nil,
-                   isbn: [], oclcn: [], electronic_access: [], edition: [], items: [])
+                   isbn: [], oclcn: [], electronic_access: [], edition: [], items: [], parent_bound_withs: [], child_bound_withs: [])
       @id = id
       @hrid = hrid
       @title = title
@@ -56,6 +99,8 @@ module Folio
       @electronic_access = electronic_access
       @edition = edition
       @items = items
+      @parent_bound_withs = parent_bound_withs
+      @child_bound_withs = child_bound_withs
     end
     # rubocop:enable Metrics/MethodLength, Metrics/ParameterLists
 
@@ -70,7 +115,7 @@ module Folio
       contributor&.fetch('name')
     end
 
-    attr_reader :pub_date, :pub_place, :publisher, :format
+    attr_reader :pub_date, :pub_place, :publisher, :format, :parent_bound_withs, :child_bound_withs
 
     def isbn
       @isbn.first

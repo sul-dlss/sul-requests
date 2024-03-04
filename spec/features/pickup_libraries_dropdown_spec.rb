@@ -14,7 +14,10 @@ RSpec.describe 'Pickup Libraries Dropdown' do
           effective_location: build(:location, code: 'SAL3-STACKS'))
   end
 
-  let(:instance) { instance_double(Folio::Instance, title: 'Test title', request_holdings: [item], items: []) }
+  let(:instance) do
+    instance_double(Folio::Instance, title: 'Test title', request_holdings: [item], items: [],
+                                     parent_bound_withs: [], child_bound_withs: [])
+  end
 
   before do
     allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(instance)

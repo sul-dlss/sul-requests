@@ -10,7 +10,10 @@ RSpec.describe 'Library Instructions' do
                    material_type: build(:book_material_type), loan_type: double(id: nil))]
   end
 
-  let(:instance) { instance_double(Folio::Instance, title: 'Test title', request_holdings: selected_items, items: []) }
+  let(:instance) do
+    instance_double(Folio::Instance, title: 'Test title', request_holdings: selected_items, items: [],
+                                     parent_bound_withs: [], child_bound_withs: [])
+  end
 
   before do
     allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(instance)

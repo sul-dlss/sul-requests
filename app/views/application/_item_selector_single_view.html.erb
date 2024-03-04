@@ -1,0 +1,8 @@
+<% if f.object.bound_with? %>
+  <div class="bound-withs">
+      <% is_child = f.object.parent_bound_withs.present? %>
+      <% bound_withs = is_child ? f.object.parent_bound_withs : f.object.child_bound_withs %>
+      <div class="heading">This item is bound<% if is_child %> and shelved<% end %> with</div>
+      <%= render 'item_selector_bound_withs', bound_withs:, is_child: %>
+  </div>
+<% end %>
