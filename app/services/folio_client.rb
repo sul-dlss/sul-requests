@@ -73,11 +73,11 @@ class FolioClient
     get_json("/automated-patron-blocks/#{user_id}")
   end
 
-  # Defines the hold request to Folio
+  # Defines the hold request data for Folio
   # [String] pickup_location_id the UUID of the pickup location
   # [String] patron_comments
   # [Date] expiration_date
-  HoldRequest = Data.define(:pickup_location_id, :patron_comments, :expiration_date) do
+  HoldRequestData = Data.define(:pickup_location_id, :patron_comments, :expiration_date) do
     def as_json
       {
         pickupLocationId: pickup_location_id,
@@ -88,9 +88,9 @@ class FolioClient
     end
   end
 
-  CirculationRequest = Data.define(:request_level, :request_type, :instance_id, :item_id, :holdings_record_id,
-                                   :requester_id, :fulfillment_preference, :pickup_service_point_id,
-                                   :patron_comments, :request_expiration_date) do
+  CirculationRequestData = Data.define(:request_level, :request_type, :instance_id, :item_id, :holdings_record_id,
+                                       :requester_id, :fulfillment_preference, :pickup_service_point_id,
+                                       :patron_comments, :request_expiration_date) do
     # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     def as_json
       # TODO: after Poppy launch delete this logic and add `fulfillmentPreference: fulfillment_preference` directly to the hash.
@@ -119,23 +119,22 @@ class FolioClient
     parse_json(response).fetch('requestPolicyId', nil)
   end
 
-  # @param [HoldRequest] request
-  def create_circulation_request(request)
-    response = post('/circulation/requests', json: request.as_json)
-    check_response(response, title: 'Hold request', context: request.as_json)
-
+  # @param [HoldRequestData] request_data
+  def create_circulation_request(request_data)
+    response = post('/circulation/requests', json: request_data.as_json)
+    check_response(response, title: 'Hold request', context: request_data.as_json)
     parse_json(response)
   end
 
   # See https://s3.amazonaws.com/foliodocs/api/mod-patron/p/patron.html#patron_account__id__instance__instanceid__hold_post
   # @example client.create_instance_hold('562a5cb0-e998-4ea2-80aa-34ac2b536238',
   #                                      'cc3d8728-a6b9-45c4-ad0c-432873c3ae47',
-  #                                      HoldRequest.new)
+  #                                      HoldRequestData.new)
   # @param [String] user_id the UUID of the FOLIO user
   # @param [String] instance_id the UUID of the FOLIO instance
-  # @param [HoldRequest] request
-  def create_instance_hold(user_id, instance_id, request)
-    response = post("/patron/account/#{user_id}/instance/#{instance_id}/hold", json: request.as_json)
+  # @param [HoldRequestData] request_data
+  def create_instance_hold(user_id, instance_id, request_data)
+    response = post("/patron/account/#{user_id}/instance/#{instance_id}/hold", json: request_data.as_json)
     check_response(response, title: 'Hold request', context: { user_id:, instance_id: })
 
     parse_json(response)
@@ -144,12 +143,12 @@ class FolioClient
   # See https://s3.amazonaws.com/foliodocs/api/mod-patron/p/patron.html#patron_account__id__item__itemid__hold_post
   # @example client.create_item_hold('562a5cb0-e998-4ea2-80aa-34ac2b536238',
   #                                  'd9097766-cc5d-5bb5-9173-8e883950380f',
-  #                                  HoldRequest.new)
+  #                                  HoldRequestData.new)
   # @param [String] user_id the UUID of the FOLIO user
   # @param [String] item_id the UUID of the FOLIO item
-  # @param [HoldRequest] request
-  def create_item_hold(user_id, item_id, request)
-    response = post("/patron/account/#{user_id}/item/#{item_id}/hold", json: request.as_json)
+  # @param [HoldRequest] request_data
+  def create_item_hold(user_id, item_id, request_data)
+    response = post("/patron/account/#{user_id}/item/#{item_id}/hold", json: request_data.as_json)
 
     check_response(response, title: 'Hold request', context: { user_id:, item_id: })
 

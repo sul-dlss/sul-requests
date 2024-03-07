@@ -87,7 +87,7 @@ class SubmitFolioRequestJob < ApplicationJob
 
       create_log(barcode:, item_id: item.id)
 
-      request_data = FolioClient::CirculationRequest.new(
+      request_data = FolioClient::CirculationRequestData.new(
         request_level: 'Item',
         request_type: item.best_request_type,
         instance_id: request.bib_data.instance_id,
@@ -120,7 +120,7 @@ class SubmitFolioRequestJob < ApplicationJob
         {
           barcode: instance_id,
           msgcode: '209',
-          response: folio_client.create_instance_hold(patron_or_proxy_id, instance_id, hold_request)
+          response: folio_client.create_instance_hold(patron_or_proxy_id, instance_id, hold_request_data)
         }
       ] }
     end
@@ -143,13 +143,13 @@ class SubmitFolioRequestJob < ApplicationJob
         "Submitting item hold request for user #{patron.id} and item #{item_id} for pickup up at #{pickup_location_id}"
       )
 
-      folio_client.create_item_hold(patron_or_proxy_id, item_id, hold_request)
+      folio_client.create_item_hold(patron_or_proxy_id, item_id, hold_request_data)
     end
 
-    def hold_request
-      FolioClient::HoldRequest.new(pickup_location_id:,
-                                   patron_comments: request_comments,
-                                   expiration_date:)
+    def hold_request_data
+      FolioClient::HoldRequestData.new(pickup_location_id:,
+                                       patron_comments: request_comments,
+                                       expiration_date:)
     end
 
     def patron_or_proxy_id
