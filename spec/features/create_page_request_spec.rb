@@ -115,4 +115,26 @@ RSpec.describe 'Creating a page request' do
       expect(Page.last.barcodes).to eq(%w(3610512345678 3610587654321))
     end
   end
+
+  describe 'single page view, instance has parent bound withs' do
+    before do
+      stub_current_user(user)
+      stub_bib_data_json(build(:single_holding_parent_bound_withs))
+    end
+
+    it 'goes through successfully with parent bound withs' do
+      visit new_page_path(item_id: '12345', origin: 'SAL3', origin_location: 'SAL3-STACKS')
+
+      expect(page).to have_content('Item Title')
+      expect(page).to have_css('.single-item-callnumber', text: 'ABC 123 Vol. 2')
+
+      expect(page).to have_css('.bound-withs .heading', text: 'This item is bound and shelved with')
+      expect(page).to have_css('.bound-with-item .title', text: 'Name of parent record')
+      expect(page).to have_css('.bound-with-item .callnumber', text: 'ABC 123 V. 1')
+
+      click_button('Send request', match: :first)
+
+      expect_to_be_on_success_page
+    end
+  end
 end
