@@ -9,7 +9,7 @@ class InterstitialController < ApplicationController
   layout false
 
   before_action do
-    render(file: 'public/500.html', status: :internal_server_error) unless redirect_param_same_as_host?
+    raise ActionController::Redirecting::UnsafeRedirectError unless redirect_param_same_as_host?
   end
 
   def show
