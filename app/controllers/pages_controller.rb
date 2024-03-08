@@ -14,4 +14,5 @@ class PagesController < RequestsController
 
   class UnpageableItemError < StandardError
   end
+  rescue_from PagesController::UnpageableItemError, with: :item_not_requestable
 end

@@ -193,4 +193,8 @@ class RequestsController < ApplicationController
   def item_not_found(exception)
     raise ActiveRecord::RecordNotFound, exception
   end
+
+  def item_not_requestable
+    render 'item_not_requestable', status: :bad_request
+  end
 end

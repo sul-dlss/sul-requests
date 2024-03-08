@@ -29,9 +29,8 @@ RSpec.describe PagesController do
     end
 
     it 'raises an error when the item is not pageable' do
-      expect do
-        get :new, params: { item_id: '1234', origin: 'SPEC-COLL', origin_location: 'SPEC-SAL-STACKS', destination: 'ART' }
-      end.to raise_error(PagesController::UnpageableItemError)
+      get :new, params: { item_id: '1234', origin: 'SPEC-COLL', origin_location: 'SPEC-SAL-STACKS', destination: 'ART' }
+      expect(response).to have_http_status(:bad_request)
     end
   end
 

@@ -7,9 +7,8 @@ RSpec.describe 'Requests Delegation' do
     it 'is automatically delegated to the page request form' do
       stub_bib_data_json(build(:green_holdings))
 
-      expect do
-        visit new_request_path(item_id: '12345', origin: 'GREEN', origin_location: 'GRE-STACKS')
-      end.to raise_error(PagesController::UnpageableItemError)
+      visit new_request_path(item_id: '12345', origin: 'GREEN', origin_location: 'GRE-STACKS')
+      expect(page).to have_css('h1', text: "Apologies, there's been an error.")
     end
   end
 
