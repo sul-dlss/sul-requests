@@ -69,7 +69,7 @@ RSpec.describe SubmitFolioRequestJob do
       it 'places a title-level hold for the instance as the patron' do
         described_class.perform_now(request.id)
         expect(client).to have_received(:create_instance_hold)
-          .with(patron_id, 'a43e597a-d4b4-50ec-ad16-7fd49920831a', FolioClient::HoldRequest)
+          .with(patron_id, 'a43e597a-d4b4-50ec-ad16-7fd49920831a', FolioClient::HoldRequestData)
       end
     end
 
