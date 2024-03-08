@@ -5,15 +5,15 @@ require 'rails_helper'
 RSpec.describe InterstitialController do
   describe 'show' do
     it 'renders a 500 error if there is no redirect_to parameter' do
-      get :show
-      expect(response).not_to be_successful
-      expect(response).to have_http_status :internal_server_error
+      expect do
+        get :show
+      end.to raise_error(ActionController::Redirecting::UnsafeRedirectError)
     end
 
     it 'renders a 500 error if the redirect_to parameter does not include the original request host' do
-      get :show, params: { redirect_to: 'http://google.com?p=http://test.host' }
-      expect(response).not_to be_successful
-      expect(response).to have_http_status :internal_server_error
+      expect do
+        get :show, params: { redirect_to: 'http://google.com?p=http://test.host' }
+      end.to raise_error(ActionController::Redirecting::UnsafeRedirectError)
     end
 
     it 'successfully responds when the redirect_to parameter is the same host' do
