@@ -164,6 +164,56 @@ FactoryBot.define do
     end
   end
 
+  factory :single_holding_parent_bound_withs, class: 'Folio::Instance' do
+    id { '12345' }
+    title { 'Item Title' }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123 Vol. 2',
+              effective_location: build(:location, code: 'SAL3-STACKS'))
+      ]
+    end
+
+    parent_bound_withs do
+      [
+        { 'callNumber' => 'ABC 123 Vol.2',
+          'boundWithItem' => {
+            'hrid' => '1235_1',
+            'effectiveCallNumberComponents' => { 'callNumber' => 'ABC 123' },
+            'volume' => nil,
+            'enumeration' => 'V. 1',
+            'instance' => {
+              'hrid' => '1234',
+              'title' => 'Name of parent record',
+              'items' => [{
+                'barcode' => '12345678',
+                'effectiveCallNumberComponents' => {
+                  'callNumber' => 'ABC 123'
+                },
+                'effective_location' => build(:location, code: 'SAL3-STACKS'),
+                'boundWithHoldingsPerItem' => [{
+                  'callNumber' => 'ABC 123 Vol. 2',
+                  'instance' => {
+                    'hrid' => '1235',
+                    'title' => 'Bound with child record'
+                  }
+                }]
+              }]
+            }
+          } }
+      ]
+    end
+
+    initialize_with do
+      new(**attributes)
+    end
+  end
+
   factory :scannable_only_holdings, class: 'Folio::Instance' do
     id { '1234' }
     title { 'Item Title' }
