@@ -5,6 +5,7 @@
 ###
 class User < ActiveRecord::Base
   validates :sunetid, uniqueness: true, allow_blank: true
+  validates :univ_id, format: { with: /\A\d{8,10}\z/ }, allow_blank: true
 
   has_many :requests
 
@@ -29,26 +30,10 @@ class User < ActiveRecord::Base
     end
   end
 
-  def sucard_number=(card_number)
-    return unless card_number.present?
-
-    self.library_id = card_number[/\d{5}(\d+)/, 1]
-  end
-
-  # Prefer the patron barcode from the ILS, but fall back to the library ID as-provided
-  # so that the system can function when the ILS is offline
-  def barcode
-    patron&.barcode || library_id
-  end
-
-  # Prefer the patron information from the ILS, but fall back to the univ ID
+  # Prefer the patron university ID from the ILS, but fall back to the univ ID as-provided
   # so that the system can function when the ILS is offline
   def university_id
     patron&.university_id || univ_id
-  end
-
-  def library_id=(library_id)
-    super(library_id.to_s.upcase)
   end
 
   def email_address
@@ -58,8 +43,8 @@ class User < ActiveRecord::Base
       # setting the email attribute for SSO users from LDAP
       notify_honeybadger_of_missing_sso_email!
       "#{sunetid}@stanford.edu"
-    when library_id_user?
-      email_from_symphony
+    when univ_id_user?
+      email_from_ils
     else
       email
     end
@@ -69,8 +54,8 @@ class User < ActiveRecord::Base
     sunetid.present?
   end
 
-  def library_id_user?
-    library_id.present?
+  def univ_id_user?
+    univ_id.present?
   end
 
   def name_email_user?
@@ -99,9 +84,9 @@ class User < ActiveRecord::Base
     (super || '').split(/[|;]/)
   end
 
-  def email_from_symphony
+  def email_from_ils
     self.email ||= begin
-      patron.email if library_id_user? && patron.present?
+      patron.email if univ_id_user? && patron.present?
     end
   end
 
@@ -109,8 +94,8 @@ class User < ActiveRecord::Base
     @patron ||= begin
       if sso_user?
         patron_model_class.find_by(sunetid:)
-      elsif library_id_user?
-        patron_model_class.find_by(library_id:)
+      elsif univ_id_user?
+        patron_model_class.find_by(univ_id:)
       end
     end
   end

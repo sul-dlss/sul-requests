@@ -57,7 +57,7 @@ class RequestsController < ApplicationController
   end
 
   def request_specific_user
-    user_attributes = params.dig(:request, :user_attributes)&.permit(:name, :email, :library_id).to_h.reject { |_k, v| v.blank? }
+    user_attributes = params.dig(:request, :user_attributes)&.permit(:name, :email, :univ_id).to_h.reject { |_k, v| v.blank? }
 
     User.new(**user_attributes, ip_address: request.remote_ip) if user_attributes.present?
   end
@@ -89,8 +89,8 @@ class RequestsController < ApplicationController
     params[:action].to_sym == :create && request.post?
   end
 
-  # if the patron is trying to submit a request and didn't provide a library id or name/email,
-  # authenticate them. Since we only provide the library id or name/email option for requests where
+  # if the patron is trying to submit a request and didn't provide a university id or name/email,
+  # authenticate them. Since we only provide the university id or name/email option for requests where
   # it will succeed, we should only end up here if the request requires authentication.
   #
   # if we ever validate patron data from the ILS, we'll need to add more logic here

@@ -153,7 +153,7 @@ RSpec.describe Request do
 
   describe 'requestable' do
     it { is_expected.not_to be_requestable_with_name_email }
-    it { is_expected.not_to be_requestable_with_library_id }
+    it { is_expected.not_to be_requestable_with_university_id }
   end
 
   describe '#paging_origin_library' do
@@ -304,7 +304,7 @@ RSpec.describe Request do
 
   describe 'nested attributes for' do
     before do
-      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: '12345').and_return(
+      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(univ_id: '12345678').and_return(
         instance_double(Folio::Patron, exists?: true)
       )
     end
@@ -370,26 +370,25 @@ RSpec.describe Request do
       end
 
       it 'does not duplicate user records when both library ID and email is provided' do
-        expect(User.where(library_id: '12345', email: 'jstanford@stanford.edu').length).to eq 0
-        User.create(library_id: '12345', email: 'jstanford@stanford.edu')
-        expect(User.where(library_id: '12345', email: 'jstanford@stanford.edu').length).to eq 1
+        expect(User.where(univ_id: '12345678', email: 'jstanford@stanford.edu').length).to eq 0
+        User.create(univ_id: '12345678', email: 'jstanford@stanford.edu')
+        expect(User.where(univ_id: '12345678', email: 'jstanford@stanford.edu').length).to eq 1
         described_class.create!(
           item_id: '1234',
           origin: 'GREEN',
           origin_location: 'GRE-STACKS',
           user_attributes: {
-            library_id: '12345',
+            univ_id: '12345678',
             email: 'jstanford@stanford.edu'
           }
         )
-        expect(User.where(library_id: '12345', email: 'jstanford@stanford.edu').length).to eq 1
+        expect(User.where(univ_id: '12345678', email: 'jstanford@stanford.edu').length).to eq 1
       end
 
-      it 'does not use existing user records when a name+email is provded' do
-        bad_id = '54321'
-        # User is already created with a bad library ID
-        User.create(library_id: bad_id, email: 'jstanford@stanford.edu')
-        expect(User.where(library_id: bad_id, email: 'jstanford@stanford.edu').length).to eq 1
+      it 'does not use existing user records when a name+email is provided' do
+        # User is already created with a university ID
+        User.create(univ_id: '0123456789', email: 'jstanford@stanford.edu')
+        expect(User.where(univ_id: '0123456789', email: 'jstanford@stanford.edu').length).to eq 1
         # User comes in and just adds a name+email with the same email address as the bad ID
         expect do
           described_class.create!(
@@ -404,19 +403,19 @@ RSpec.describe Request do
         end.to change(User, :count).by(1)
       end
 
-      it 'does not duplicate library ids' do
-        expect(User.where(library_id: '12345').length).to eq 0
-        User.create(library_id: '12345')
-        expect(User.where(library_id: '12345').length).to eq 1
+      it 'does not duplicate univ ids' do
+        expect(User.where(univ_id: '12345678').length).to eq 0
+        User.create(univ_id: '12345678')
+        expect(User.where(univ_id: '12345678').length).to eq 1
         described_class.create!(
           item_id: '1234',
           origin: 'GREEN',
           origin_location: 'GRE-STACKS',
           user_attributes: {
-            library_id: '12345'
+            univ_id: '12345678'
           }
         )
-        expect(User.where(library_id: '12345').length).to eq 1
+        expect(User.where(univ_id: '12345678').length).to eq 1
       end
     end
   end
@@ -520,7 +519,7 @@ RSpec.describe Request do
     end
 
     context 'for proxy requests' do
-      let(:user) { create(:library_id_user) }
+      let(:user) { create(:university_id_user) }
 
       before do
         allow(user).to receive_message_chain(:patron, :proxy_email_address).and_return('some@lists.stanford.edu')
@@ -554,13 +553,13 @@ RSpec.describe Request do
     let(:user) {}
 
     before do
-      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: user.library_id).and_return(
+      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(univ_id: user.univ_id).and_return(
         instance_double(Folio::Patron, exists?: true, email: '')
       )
     end
 
-    describe 'for library id users' do
-      let(:user) { create(:library_id_user) }
+    describe 'for university id users' do
+      let(:user) { create(:university_id_user) }
 
       it 'does not send an approval status email' do
         expect do

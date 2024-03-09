@@ -50,16 +50,16 @@ RSpec.describe 'Send Request Buttons' do
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS')
       click_on 'I don\'t have a SUNet ID'
 
-      expect(page).to have_field('Library ID', type: 'text')
+      expect(page).to have_field('University ID', type: 'text')
       expect(page).to have_field('Name', type: 'text')
       expect(page).to have_field('Email', type: 'email')
 
       expect(page).to have_css('input[value="Send request"][disabled].disabled')
 
-      fill_in 'Library ID', with: '12345'
+      fill_in 'University ID', with: '12345678'
       expect(page).to have_css('input[value="Send request"].disabled')
 
-      fill_in 'Library ID', with: ''
+      fill_in 'University ID', with: ''
       expect(page).to have_css('input[value="Send request"].disabled')
 
       fill_in 'Name', with: 'Jane Stanford'
@@ -102,9 +102,9 @@ RSpec.describe 'Send Request Buttons' do
       expect(page).to have_css('button', text: /Send request.*login with SUNet ID/m)
     end
 
-    it 'allows to send requests via LibraryID' do
+    it 'allows to send requests via University ID' do
       click_on 'I don\'t have a SUNet ID'
-      expect(page).to have_field('Library ID', type: 'text')
+      expect(page).to have_field('University ID', type: 'text')
     end
 
     it 'does not allow to send requests via Name and Email' do

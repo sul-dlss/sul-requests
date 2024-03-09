@@ -106,8 +106,8 @@ RSpec.describe Ability do
       end
     end
 
-    describe 'who fills out the library ID field' do
-      let(:user) { build(:library_id_user) }
+    describe 'who fills out the university ID field' do
+      let(:user) { build(:university_id_user) }
       let(:page) { build(:page, user:) }
       let(:mediated_page) { build(:mediated_page, user:) }
       let(:scan) { build(:scan, :without_validations, user:) }

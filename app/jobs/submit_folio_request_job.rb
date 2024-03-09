@@ -179,7 +179,7 @@ class SubmitFolioRequestJob < ApplicationJob
     def patron
       @patron ||= case request
                   when Scan
-                    Folio::Patron.find_by(library_id: scan_destination.patron_barcode)
+                    Folio::Patron.find_by(univ_id: scan_destination.patron_barcode)
                   when Page, MediatedPage, HoldRecall
                     if user.patron&.make_request_as_patron?
                       user.patron
@@ -192,7 +192,7 @@ class SubmitFolioRequestJob < ApplicationJob
     def find_hold_pseudo_patron_for(key)
       pseudopatron_barcode = Settings.libraries[key]&.hold_pseudopatron || raise("no hold pseudopatron for '#{key}'")
 
-      Folio::Patron.find_by(library_id: pseudopatron_barcode)
+      Folio::Patron.find_by(univ_id: pseudopatron_barcode)
     end
 
     def barcodes

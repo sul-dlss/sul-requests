@@ -73,7 +73,7 @@ RSpec.describe RequestsHelper do
   describe 'requester info' do
     let(:sso_user) { User.create(sunetid: 'jstanford', email: 'jstanford@stanford.edu') }
     let(:non_sso_user) { User.create(name: 'Joe', email: 'joe@xyz.com') }
-    let(:library_id_user) { User.create(library_id: '123456') }
+    let(:university_id_user) { User.create(univ_id: '12345678') }
 
     it 'constructs requester info for SSO user' do
       expect(requester_info(sso_user)).to eq '<a href="mailto:jstanford@stanford.edu">jstanford@stanford.edu</a>'
@@ -84,7 +84,7 @@ RSpec.describe RequestsHelper do
     end
 
     it 'constructs requester info for a library id user' do
-      expect(requester_info(library_id_user)).to eq '123456'
+      expect(requester_info(university_id_user)).to eq '12345678'
     end
   end
 

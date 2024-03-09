@@ -88,8 +88,8 @@ RSpec.describe PagesController do
         expect(Page.last.user).to eq User.last
       end
 
-      it 'is allowed if the library ID field is filled out' do
-        allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: '12345').and_return(
+      it 'is allowed if the university ID field is filled out' do
+        allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(univ_id: '12345678').and_return(
           instance_double(Folio::Patron, email: nil, exists?: true)
         )
 
@@ -99,12 +99,12 @@ RSpec.describe PagesController do
             origin: 'SAL3',
             origin_location: 'SAL3-STACKS',
             destination: 'ART',
-            user_attributes: { library_id: '12345' }
+            user_attributes: { univ_id: '12345678' }
           }
         }
 
         expect(response.location).to match(/#{successful_page_url(Page.last)}\?token=/)
-        expect(User.last.library_id).to eq '12345'
+        expect(User.last.univ_id).to eq '12345678'
         expect(Page.last.user).to eq User.last
       end
 
@@ -197,8 +197,8 @@ RSpec.describe PagesController do
         expect(Page.last.barcodes.sort).to eq(%w(12345679 3610512345678))
       end
 
-      it 'redirects to success page with token when the sso user supplies a library ID' do
-        allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: '5432123').and_return(
+      it 'redirects to success page with token when the sso user supplies a university ID' do
+        allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(univ_id: '54321233').and_return(
           instance_double(Folio::Patron, email: nil, exists?: true)
         )
 
@@ -208,12 +208,12 @@ RSpec.describe PagesController do
             origin: 'SAL3',
             origin_location: 'SAL3-STACKS',
             destination: 'ART',
-            user_attributes: { library_id: '5432123' }
+            user_attributes: { univ_id: '54321233' }
           }
         }
 
         expect(response.location).to match(/#{successful_page_url(Page.last)}\?token=/)
-        expect(Page.last.user.library_id).to eq '5432123'
+        expect(Page.last.user.univ_id).to eq '54321233'
       end
 
       # NOTE: cannot trigger activejob from this spec to check RequestStatusMailer

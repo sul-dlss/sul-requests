@@ -33,11 +33,9 @@ class CurrentUser
     end
   end
 
-  # rubocop:disable Metrics/AbcSize
   def update_ldap_attributes(user)
     user.name = ldap_name
     user.ldap_group_string = ldap_group_string
-    user.sucard_number = ldap_sucard_number
     user.univ_id = ldap_univ_id
     user.affiliation = ldap_affiliation
     user.email = ldap_email
@@ -45,7 +43,6 @@ class CurrentUser
 
     user.save if user.changed?
   end
-  # rubocop:enable Metrics/AbcSize
 
   def ldap_name
     ldap_attributes['displayName']
@@ -57,10 +54,6 @@ class CurrentUser
 
   def ldap_univ_id
     ldap_attributes['suUnivID']
-  end
-
-  def ldap_sucard_number
-    ldap_attributes['suCardNumber']
   end
 
   def ldap_affiliation

@@ -72,7 +72,7 @@ fake_ldap_attributes:
 this will assign you the relevant LDAP attributes when you run a server using `REMOTE_USER=(your sunet id) rails s`.
 
 ### token encryption
-there is a token encryption library that handles encrypting and decrypting tokens given to users who only submit a Name/Email or Library ID for identification purposes. to keep these tokens secure we require a secret and a salt configured of moderate complexity and randomness (`SecureRandom.hex(128)` can be useful). once configured, these keys (or the tokens generated in the app) **MUST NOT** change, otherwise the tokens that users have been given will no longer be valid.
+there is a token encryption library that handles encrypting and decrypting tokens given to users who only submit a Name/Email or University ID for identification purposes. to keep these tokens secure we require a secret and a salt configured of moderate complexity and randomness (`SecureRandom.hex(128)` can be useful). once configured, these keys (or the tokens generated in the app) **MUST NOT** change, otherwise the tokens that users have been given will no longer be valid.
 ## testing
 the test suite (with RuboCop style enforcement) will be run with the default rake task (also run in CI):
 ```sh

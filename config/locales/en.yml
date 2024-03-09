@@ -23,7 +23,7 @@ en:
   activerecord:
     attributes:
       user:
-        library_id: 'Library ID'
+        univ_id: 'University ID'
       request: &request_anchor
         holdings: 'Item(s) requested'
         needed_date: 'Needed on'
@@ -46,6 +46,12 @@ en:
     help:
       scan:
         section_title: 'Limited to one article/chapter, not to exceed 50 pages or 10% of the work'
+    errors:
+      models:
+        user:
+          attributes:
+            univ_id:
+              invalid: 'must be an 8-, 9-, or 10-digit number'
   admin:
     index:
       hold_recalls: 'Hold recalls'

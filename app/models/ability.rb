@@ -12,8 +12,8 @@ class Ability
     @anonymous ||= Ability.new(User.new(name: 'generic', email: 'external-user@example.com'))
   end
 
-  def self.with_a_library_id
-    @with_a_library_id ||= Ability.new(User.new(library_id: '0000000000'))
+  def self.with_a_univ_id
+    @with_a_univ_id ||= Ability.new(User.new(univ_id: '000000000'))
   end
 
   def self.sso
@@ -63,18 +63,18 @@ class Ability
     can :new, Request
 
     # ... but only some types of users can actually submit the request successfully
-    if user.sso_user? || user.library_id_user? || user.name_email_user?
+    if user.sso_user? || user.univ_id_user? || user.name_email_user?
       can :create, MediatedPage
       can :create, Page
     end
 
-    if user.name_email_user? && !user.library_id_user?
+    if user.name_email_user? && !user.univ_id_user?
       cannot :create, Page, origin: 'BUSINESS'
       cannot :create, Page, origin: 'MEDIA-MTXT'
       cannot :create, Page, origin: 'MEDIA-CENTER'
     end
 
-    can :create, HoldRecall if user.library_id_user? || user.sso_user?
+    can :create, HoldRecall if user.univ_id_user? || user.sso_user?
     can :create, Scan if user.super_admin? || in_scan_pilot_group?(user)
 
     # ... and to check the status, you either need to be logged in or include a special token in the URL

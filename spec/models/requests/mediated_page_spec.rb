@@ -168,7 +168,7 @@ RSpec.describe MediatedPage do
 
   describe 'requestable' do
     it { is_expected.to be_requestable_with_name_email }
-    it { is_expected.to be_requestable_with_library_id }
+    it { is_expected.to be_requestable_with_university_id }
   end
 
   describe '#requires_needed_date?' do
@@ -193,11 +193,11 @@ RSpec.describe MediatedPage do
       subject.submit!
     end
 
-    describe 'for library id users' do
+    describe 'for university id users' do
       let!(:subject) { create(:mediated_page) }
 
       it 'sends a mediator email, but does not send a confirmation email' do
-        subject.user = create(:library_id_user)
+        subject.user = create(:university_id_user)
         expect do
           expect(subject.submit!).to be true
         end.to have_enqueued_mail

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe SubmitReshareRequestJob, type: :job do
-  let(:user) { create(:library_id_user) }
+  let(:user) { create(:university_id_user) }
   let(:patron) do
     instance_double(Folio::Patron, exists?: true, email: nil, patron_group_name: 'undergrad',
                                    patron_group_id: 'bdc2b6d4-5ceb-4a12-ab46-249b9a68473e', ilb_eligible?: true)
@@ -13,7 +13,7 @@ RSpec.describe SubmitReshareRequestJob, type: :job do
 
   before do
     Sidekiq.logger.level = Logger::UNKNOWN
-    allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: user.library_id).and_return(patron)
+    allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(univ_id: user.univ_id).and_return(patron)
     allow(request).to receive(:bib_data).and_return(sw_item)
   end
 

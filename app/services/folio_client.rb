@@ -46,10 +46,10 @@ class FolioClient
     response&.dig('users', 0)
   end
 
-  # Return the FOLIO user object given a library id (e.g. barcode)
+  # Return the FOLIO user object given a university ID
   # See https://s3.amazonaws.com/foliodocs/api/mod-users/p/users.html#users__userid__get
-  def login_by_library_id(library_id)
-    response = get_json('/users', params: { query: CqlQuery.new(barcode: library_id).to_query })
+  def login_by_university_id(university_id)
+    response = get_json('/users', params: { query: CqlQuery.new(externalSystemId: university_id).to_query })
     response&.dig('users', 0)
   end
 

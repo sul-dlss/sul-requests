@@ -18,12 +18,12 @@ RSpec.describe 'Creating a mediated page request' do
 
       click_on "I don't have a SUNet ID"
 
-      expect(page).to have_field('Library ID', type: 'text')
+      expect(page).to have_field('University ID', type: 'text')
       expect(page).to have_field('Name', type: 'text')
       expect(page).to have_field('Email', type: 'email')
       expect(page).to have_css('a', text: '‹ Go back (show the login option)')
-      expect(page).to have_css('input#request_user_attributes_library_id')
-      expect(page.evaluate_script('document.activeElement.id')).to eq 'request_user_attributes_library_id'
+      expect(page).to have_css('input#request_user_attributes_univ_id')
+      expect(page.evaluate_script('document.activeElement.id')).to eq 'request_user_attributes_univ_id'
 
       click_on '‹ Go back (show the login option)'
       expect(page).to have_css('a', text: "I don't have a SUNet ID")
@@ -43,24 +43,24 @@ RSpec.describe 'Creating a mediated page request' do
       expect_to_be_on_success_page
     end
 
-    it 'is possible if a library id is filled out', :js do
+    it 'is possible if a university id is filled out', :js do
       visit new_mediated_page_path(item_id: '1234', origin: 'ART', origin_location: 'ART-LOCKED-LARGE')
 
       fill_in_required_fields
 
       click_on "I don't have a SUNet ID"
 
-      expect(page).to have_css('input#request_user_attributes_library_id')
-      expect(page.evaluate_script('document.activeElement.id')).to eq 'request_user_attributes_library_id'
+      expect(page).to have_css('input#request_user_attributes_univ_id')
+      expect(page.evaluate_script('document.activeElement.id')).to eq 'request_user_attributes_univ_id'
 
-      fill_in 'Library ID', with: '123456'
+      fill_in 'University ID', with: '123456789'
       fill_in 'Name', with: 'Jane Stanford'
       fill_in 'Email', with: 'jstanford@stanford.edu'
 
       click_on 'Send request'
 
       expect(MediatedPage.last.user).to eq User.last
-      expect(User.last.library_id).to eq '123456'
+      expect(User.last.univ_id).to eq '123456789'
       expect_to_be_on_success_page
     end
   end

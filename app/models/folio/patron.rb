@@ -4,16 +4,16 @@ module Folio
   # Model for working with FOLIO Patron information
   class Patron
     # rubocop:disable Metrics/CyclomaticComplexity
-    def self.find_by(sunetid: nil, library_id: nil, **_kwargs)
-      # if no sunet or library_id they are probably a general public (name/email) user.
-      return unless sunetid || library_id.present?
+    def self.find_by(sunetid: nil, univ_id: nil, **_kwargs)
+      # if no sunet or univ_id they are probably a general public (name/email) user.
+      return unless sunetid || univ_id.present?
 
       response = folio_client.login_by_sunetid(sunetid) if sunetid.present?
-      response ||= folio_client.login_by_library_id(library_id) if library_id.present?
+      response ||= folio_client.login_by_university_id(univ_id) if univ_id.present?
 
       return new(response) if response.present?
 
-      Honeybadger.notify("Unable to find patron (looked up by sunetid: #{sunetid} / barcode: #{library_id}")
+      Honeybadger.notify("Unable to find patron (looked up by sunetid: #{sunetid} / university ID: #{univ_id}")
 
       nil
     rescue HTTP::Error

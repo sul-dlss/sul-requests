@@ -3,13 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe SubmitIplcListenerJob, type: :job do
-  let(:user) { create(:library_id_user) }
+  let(:user) { create(:university_id_user) }
   let(:request) { create(:hold_recall_with_holdings, user:) }
   let(:sw_item) { double('SeachWorksItem', isbn: %w[12345 54321]) }
 
   before do
     Sidekiq.logger.level = Logger::UNKNOWN
-    allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: user.library_id).at_least(:once).and_return(
+    allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(univ_id: user.univ_id).at_least(:once).and_return(
       double(exists?: true, email: 'patron@example.com')
     )
     allow(request).to receive(:bib_data).and_return(sw_item)

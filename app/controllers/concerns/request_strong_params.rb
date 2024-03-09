@@ -21,7 +21,7 @@ module RequestStrongParams
                                                        :proxy,
                                                        barcodes: {},
                                                        public_notes: {},
-                                                       user_attributes: [:name, :email, :library_id])
+                                                       user_attributes: [:name, :email, :univ_id])
   end
 
   def update_params
