@@ -184,6 +184,19 @@ module Folio
       permanent_location.details['pageAeonSite']
     end
 
+    def self.call_number(dyn)
+      call_number = dyn.dig('effectiveCallNumberComponents', 'callNumber')
+      effective_location_code = dyn.dig('effectiveLocation', 'code')
+
+      if effective_location_code&.include?('SHELBYTITLE')
+        'Shelved by title'
+      elsif effective_location_code&.include?('SCI-SHELBYSERIES')
+        'Shelved by Series title'
+      else
+        call_number
+      end
+    end
+
     # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     def self.from_hash(dyn)
       new(id: dyn['id'],
@@ -193,7 +206,7 @@ module Folio
           due_date: dyn['dueDate'],
           enumeration: dyn['enumeration'],
           type: dyn.dig('materialType', 'name'),
-          callnumber: [dyn.dig('effectiveCallNumberComponents', 'callNumber'), dyn['volume'], dyn['enumeration'],
+          callnumber: [call_number(dyn), dyn['volume'], dyn['enumeration'],
                        dyn['chronology']].filter_map(&:presence).join(' '),
           public_note: dyn.fetch('notes').find { |note| note.dig('itemNoteType', 'name') == 'Public' }&.fetch('note'),
           effective_location: (Location.from_hash(dyn.fetch('effectiveLocation')) if dyn['effectiveLocation']),
