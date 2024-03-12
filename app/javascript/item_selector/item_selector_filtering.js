@@ -4,7 +4,8 @@ import itemSelector from '../item_selector'
 var itemSelectorFiltering = (function() {
   var listOptions = {
     page: 10000,
-    valueNames: ['callnumber', 'status', 'index']
+    valueNames: ['callnumber', 'status', 'index'],
+    searchColumns: ['callnumber', 'status']
   };
 
   return $.extend({}, itemSelector, {
