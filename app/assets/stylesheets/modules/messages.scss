@@ -1,7 +1,7 @@
 .display-dates {
   .form-control {
     display: inline-block;
-    margin-bottom: $form-group-margin-bottom;
+    margin-bottom: 1rem;
     margin-left: 2ch;
     margin-right: 2ch;
     width: auto;
@@ -12,13 +12,13 @@
     display: inline-block;
   }
 
-  @media screen and (max-width: $screen-xs-max) {
+  @media screen and (max-width: breakpoint-min(sm)) {
     .start-at,
     .end-at {
       display: block;
     }
 
-    .control-label {
+    .col-form-label {
       width: 14ch;
     }
   }

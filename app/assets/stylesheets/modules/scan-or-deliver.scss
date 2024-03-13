@@ -17,17 +17,18 @@
   }
 }
 
-.panel-danger {
-  .panel-heading {
+.card-danger {
+  background: $panel-danger-bg;
+
+  .card-header {
     border-bottom: 0;
-    font-size: 1.3em;
+    background: transparent;
+    padding-bottom: 0;
   }
 
-  .panel-body {
-    background: $panel-danger-bg;
-  }
-
-  .panel-title {
+  .card-title {
+    font-size: 1rem;
     font-weight: 500;
+    margin: 0;
   }
 }

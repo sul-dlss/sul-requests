@@ -7,5 +7,5 @@
       or
     <% end %>
   </p>
-  <%= link_to current_user.sso_user? ? 'Request with a different ID' : "I don't have a SUNet ID", '#no-sunetid-form', class: 'btn btn-md btn-default btn-full', data: { toggle: 'show', show: '#no-sunetid-form', hide: '#sunetid-form', focus: 'input[type=text]:visible:first' } %>
+  <%= link_to current_user.sso_user? ? 'Request with a different ID' : "I don't have a SUNet ID", '#no-sunetid-form', class: 'btn btn-md btn-secondary btn-full', data: { toggle: 'show', show: '#no-sunetid-form', hide: '#sunetid-form', focus: 'input[type=text]:visible:first' } %>
 <% end %>

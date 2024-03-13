@@ -8,6 +8,10 @@
   color: $text-color;
 }
 
+.col-form-label {
+  text-align: right;
+}
+
 // This ensures that the login options toggle is viewed
 // as part of the form DOM so that the contentHeight is
 // calculated properly in IE.
@@ -38,8 +42,9 @@ hr {
 
 .required:not([for='request_destination']) {
   &::after {
-    @extend .label;
-    @extend .label-warning;
+    @extend .badge;
+    @extend .badge-warning;
+    color: white;
     content: 'Required';
     display: inline-block;
     margin-left: 5px;
@@ -75,8 +80,8 @@ hr {
  }
 
 .form-control-static {
-  min-height: 0;
-  padding-bottom: 0;
+  @extend .col-form-label;
+  text-align: inherit;
 }
 
 .login-send-group {
@@ -113,4 +118,8 @@ hr {
 .suid-prefix {
   font-weight: bold;
   letter-spacing: 0.1em;
+}
+
+.alert-warning {
+  background-color: $alert-warning-bg;
 }

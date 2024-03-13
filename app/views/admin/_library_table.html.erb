@@ -2,9 +2,9 @@
 <h2><%= LibraryLocation.library_name_by_code(origin) %></h2>
 
 <div>
-  <%= link_to('All pending', admin_path(params[:id]), class: "btn btn-md btn-default #{'btn-primary' unless filtered_by_done? || filtered_by_date? || filtered_by_create_date?}") %>
+  <%= link_to('All pending', admin_path(params[:id]), class: "btn btn-md btn-secondary #{'btn-primary' unless filtered_by_done? || filtered_by_date? || filtered_by_create_date?}") %>
   <%= render 'date_buttons' %>
-  <%= link_to('All done', admin_path(params[:id], done: true), class: "btn btn-md btn-default #{'btn-primary' if filtered_by_done?}") %>
+  <%= link_to('All done', admin_path(params[:id], done: true), class: "btn btn-md btn-secondary #{'btn-primary' if filtered_by_done?}") %>
   <%= render 'shared/jump_to_date', form_path: admin_path %>
 </div>
 
@@ -17,10 +17,10 @@
           <a class="mediate-toggle" data-behavior='mediate-toggle' href='javascript:;'>
             <i class="bi bi-plus-circle"></i>
           </a>
-          <span data-behavior='all-approved-note' class='label label-success' style='<%= 'display:none;' unless request.approved? %>'>
+          <span data-behavior='all-approved-note' class='badge badge-success' style='<%= 'display:none;' unless request.approved? %>'>
             <%= t('.all_approved') %>
           </span>
-          <span data-behavior='mixed-approved-note' class='label label-warning' style='<%= 'display:none;' unless request.marked_as_done? %>'>
+          <span data-behavior='mixed-approved-note' class='badge badge-warning' style='<%= 'display:none;' unless request.marked_as_done? %>'>
             <%= t('.all_approved') %>
           </span>
         </td>

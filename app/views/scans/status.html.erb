@@ -16,8 +16,8 @@
   <% if can? :debug, current_request %>
     <hr />
     <h4>ILS Request</h4>
-    <pre class="well"><%= JSON.pretty_generate(current_request.ils_request_command.request_params) %></pre>
+    <pre class="card p-2"><%= JSON.pretty_generate(current_request.ils_request_command.request_params) %></pre>
     <h4>ILS Response</h4>
-    <pre class="well"><%= JSON.pretty_generate(current_request.ils_response_data || {}) %></pre>
+    <pre class="card p-2"><%= JSON.pretty_generate(current_request.ils_response_data || {}) %></pre>
   <% end %>
 </div>

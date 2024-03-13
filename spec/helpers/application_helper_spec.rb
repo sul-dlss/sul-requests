@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe ApplicationHelper do
   describe '#dialog_column_class' do
     it 'returns a string representing the main dialog class' do
-      expect(dialog_column_class).to eq 'col-md-6 col-md-offset-3'
+      expect(dialog_column_class).to eq 'col-lg-6 offset-lg-3'
     end
   end
 
@@ -29,7 +29,7 @@ RSpec.describe ApplicationHelper do
 
   describe '#label_column_offset_class' do
     it 'is defined to help when offseting non-labeled form elements (e.g. buttons)' do
-      expect(label_column_offset_class).to eq 'col-sm-offset-4'
+      expect(label_column_offset_class).to eq 'offset-sm-4'
     end
   end
 

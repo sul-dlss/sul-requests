@@ -8,7 +8,7 @@ gem 'sqlite3'
 gem 'puma', '~> 6.0'
 gem 'bootsnap'
 # Use bootstrap_form for easy form building
-gem 'bootstrap_form', '< 4' # pin to < 4 since we are not on bootstrap 4
+gem 'bootstrap_form', '~> 4.5'
 # A gem for simple rails environment specific config
 gem 'config'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -21,7 +21,7 @@ gem 'faraday-retry'
 gem 'http' # for Reshare and SymphonyClient
 # Use kaminari for pagination
 gem 'kaminari'
-gem 'kaminari_bootstrap_paginator'
+gem 'bootstrap5-kaminari-views'
 
 gem 'redcarpet'
 

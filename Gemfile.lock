@@ -85,7 +85,12 @@ GEM
     bindex (0.8.1)
     bootsnap (1.18.3)
       msgpack (~> 1.2)
-    bootstrap_form (2.7.0)
+    bootstrap5-kaminari-views (0.0.1)
+      kaminari (>= 0.13)
+      rails (>= 3.1)
+    bootstrap_form (4.5.0)
+      actionpack (>= 5.2)
+      activemodel (>= 5.2)
     borrow_direct (1.2.0)
       httpclient (~> 2.4)
     builder (3.2.4)
@@ -211,8 +216,6 @@ GEM
       activerecord
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
-    kaminari_bootstrap_paginator (0.1.0)
-      rails
     language_server-protocol (3.17.0.3)
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -456,7 +459,8 @@ PLATFORMS
 
 DEPENDENCIES
   bootsnap
-  bootstrap_form (< 4)
+  bootstrap5-kaminari-views
+  bootstrap_form (~> 4.5)
   borrow_direct
   cancancan
   capistrano (~> 3.0)
@@ -480,7 +484,6 @@ DEPENDENCIES
   jsbundling-rails (~> 1.1)
   jwt
   kaminari
-  kaminari_bootstrap_paginator
   listen
   lograge
   mysql2

@@ -25,19 +25,19 @@
     <% if current_request.via_borrow_direct? %>
       <% if current_request.reshare_vufind_response_data %>
         <h4>Vufind Response</h4>
-        <pre class="well"><%= JSON.pretty_generate(current_request.reshare_vufind_response_data || {}) %></pre>
+        <pre class="card p-2"><%= JSON.pretty_generate(current_request.reshare_vufind_response_data || {}) %></pre>
       <% end %>
       <h4>Borrow Direct Response</h4>
-      <pre class="well"><%= JSON.pretty_generate(current_request.borrow_direct_response_data || {}) %></pre>
+      <pre class="card p-2"><%= JSON.pretty_generate(current_request.borrow_direct_response_data || {}) %></pre>
     <% else %>
       <h4>ILS Request</h4>
-      <pre class="well"><%= JSON.pretty_generate(current_request.ils_request_command.request_params) %></pre>
+      <pre class="card p-2"><%= JSON.pretty_generate(current_request.ils_request_command.request_params) %></pre>
       <h4>ILS Response</h4>
-      <pre class="well"><%= JSON.pretty_generate(current_request.ils_response_data || {}) %></pre>
+      <pre class="card p-2"><%= JSON.pretty_generate(current_request.ils_response_data || {}) %></pre>
     <% end %>
     <% if current_request.illiad_response_data.present? %>
       <h4>Illiad Response</h4>
-      <pre class="well"><%= JSON.pretty_generate(current_request.illiad_response_data) %></pre>
+      <pre class="card p-2"><%= JSON.pretty_generate(current_request.illiad_response_data) %></pre>
     <% end %>
   <% end %>
 </div>

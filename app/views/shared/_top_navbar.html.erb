@@ -2,8 +2,8 @@
   <header id="topnav" class="header-logo" role="banner">
     <%= link_to 'https://library.stanford.edu' do %>
       <%= content_tag :span, "Stanford University Libraries", class: "sr-only" %>
-      <%= image_tag "sul-logo.svg", class: "sul-logo hidden-xs", alt: "", height: 25 %>
-      <%= image_tag "sul-logo-stacked.svg", class: "sul-logo visible-xs", alt: "", height: 25 %>
+      <%= image_tag "sul-logo.svg", class: "sul-logo d-none d-md-block", alt: "", height: 25 %>
+      <%= image_tag "sul-logo-stacked.svg", class: "sul-logo d-md-none", alt: "", height: 25 %>
     <% end %>
 
     <div class="header-links">
