@@ -10,9 +10,7 @@ var itemSelectorBreadcrumbs = (function() {
         callnumber,
         extraMarkup,
         '<div class="pill-addon">',
-          '<button type="button" class="close" aria-label="Close">',
-            '<span aria-hidden="true">&times;</span>',
-          '</button>',
+          '<button type="button" class="btn-sm btn-close" aria-label="Close"></button>',
         '</div>',
       '</div>'
     ].join('\n'));
@@ -63,7 +61,7 @@ var itemSelectorBreadcrumbs = (function() {
 
     addBreadcrumbRemoveBehavior: function(pill, item) {
       var _this = this;
-      pill.find('.close').on('click', function() {
+      pill.find('.btn-close').on('click', function() {
         item.prop('checked', false);
         _this.selectorElement()
              .trigger('item-selector:deselected', [item]);

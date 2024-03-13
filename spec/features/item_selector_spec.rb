@@ -296,7 +296,7 @@ RSpec.describe 'Item Selector' do
       expect(page).to have_css('#breadcrumb-34567890', text: 'ABC 789')
 
       # Click the close button on the breadcrumb pill
-      find('#breadcrumb-12345678 .close').click
+      find('#breadcrumb-12345678 .btn-close').click
       expect(page).to have_no_css('#breadcrumb-12345678', text: 'ABC 123')
 
       within('#item-selector') do
