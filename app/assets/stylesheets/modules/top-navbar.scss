@@ -45,7 +45,7 @@
 }
 
 
-@media screen and (max-width: $screen-xs-max) {
+@media screen and (max-width: breakpoint-min(sm)) {
   #topnav {
     padding-left: 10px;
     padding-right: 10px;
