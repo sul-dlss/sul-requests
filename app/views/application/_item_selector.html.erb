@@ -35,7 +35,7 @@
             <% sort_holdings(f.object.all_holdings).each.with_index(1) do |holding, index| %>
               <div class='input-group'>
                 <% if f.object.item_limit.to_i == 1 %>
-                  <span class='input-group-addon barcode-checkbox'>
+                  <span class='input-group-prepend barcode-checkbox'>
                     <%= render partial: 'item_selector_radio_button', locals: { f: f, barcode: barcode, holding: holding, index: index } %>
                   </span>
                   <%= barcode.label "_#{holding.barcode}", class: 'form-control' do %>
@@ -43,7 +43,7 @@
                     <%= label_for_item_selector_holding(holding) %>
                   <% end %>
                 <% else %>
-                  <span class='input-group-addon barcode-checkbox'>
+                  <span class='input-group-prepend barcode-checkbox'>
                     <%= render partial: 'item_selector_checkbox', locals: { f: f, barcode: barcode, holding: holding, index: index } %>
                   </span>
                   <%= barcode.label holding.barcode, class: 'form-control' do %>
