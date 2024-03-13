@@ -21,6 +21,9 @@ $font-family-base: 'Source Sans Pro', 'Arial Unicode MS', Helvetica, sans-serif;
 $font-size-base: 0.875rem;
 $font-size-tiny: ceil(($font-size-base * 0.71)) !default; // ~10px
 
+$focus-ring-color: rgba($info, 0.25);
+$input-focus-border-color: $info;
+
 @import 'bootstrap/scss/functions';
 @import 'bootstrap/scss/variables';
 
