@@ -1,16 +1,15 @@
 @import 'sul-variables';
 
 $primary: $color-cardinal-red;
+$secondary: $color-beige-30;
+$info: $btn-blue-bg;
+
 $brand-primary: $color-cardinal-red;
 $btn-primary-border: darken($brand-primary, 9.8%);
 
 $btn-secondary-color: $btn-beige-color;
 $btn-secondary-bg: $btn-beige-bg;
 $btn-secondary-border: $btn-beige-border;
-
-$btn-info-color: $btn-blue-color;
-$btn-info-bg: $btn-blue-bg;
-$btn-info-border: $btn-blue-border;
 
 $headings-font-weight: 300;
 
