@@ -38,8 +38,8 @@ hr {
 
 .required:not([for='request_destination']) {
   &::after {
-    @extend .label;
-    @extend .label-warning;
+    @extend .badge;
+    @extend .badge-warning;
     content: 'Required';
     display: inline-block;
     margin-left: 5px;
