@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe ApplicationHelper do
   describe '#dialog_column_class' do
     it 'returns a string representing the main dialog class' do
-      expect(dialog_column_class).to eq 'col-md-6 offset-md-3'
+      expect(dialog_column_class).to eq 'col-lg-6 offset-lg-3'
     end
   end
 
