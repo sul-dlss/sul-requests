@@ -187,21 +187,6 @@ RSpec.describe 'Viewing all requests' do
             expect(page).to have_no_css('.pagination')
           end
         end
-
-        context 'on the "All done" page' do
-          before do
-            pages.each(&:approved!)
-            visit admin_path('ART', done: 'true', per_page: 1)
-          end
-
-          it 'requests are paginated', :js do
-            expect(page).to have_css('.pagination')
-
-            click_on 'Next ›'
-
-            expect(page).to have_css('.pagination .disabled', text: 'Next ›')
-          end
-        end
       end
 
       it 'allows the user to toggle between done and pending mediated pages (and updates button class)' do

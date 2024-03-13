@@ -21,7 +21,7 @@ gem 'faraday-retry'
 gem 'http' # for Reshare and SymphonyClient
 # Use kaminari for pagination
 gem 'kaminari'
-gem 'kaminari_bootstrap_paginator'
+gem 'bootstrap5-kaminari-views'
 
 gem 'redcarpet'
 
