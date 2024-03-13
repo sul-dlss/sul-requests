@@ -24,10 +24,10 @@ jobs:
         key: ${{ runner.os }}-gems-202103-${{ hashFiles('**/Gemfile.lock') }}
         restore-keys: |
           ${{ runner.os }}-gems-202103
-    - name: Use Node.js LTS v18
+    - name: Use Node.js v21
       uses: actions/setup-node@v4
       with:
-        node-version: 'lts/iron'
+        node-version: 21
     - name: Bundle install
       run: bundle config path vendor/bundle
     - name: Install dependencies
