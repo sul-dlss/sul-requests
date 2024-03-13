@@ -517,10 +517,8 @@ RSpec.describe 'Mediation table', :js do
     end
 
     it 'has title and status links that open in a new window, with rel="noopener noreferrer"' do
-      expect(page).to have_css('td.title a[target="_blank"]', text: 'Title of MediatedPage 1234')
-      expect(page).to have_css('td.title a[rel="noopener noreferrer"]', text: 'Title of MediatedPage 1234')
-      expect(page).to have_css('td a[target="_blank"]', text: 'Status')
-      expect(page).to have_css('td a[rel="noopener noreferrer"]', text: 'Status')
+      expect(page).to have_css('td.title a[target="_blank"][rel="noopener noreferrer"]', text: /Title of MediatedPage/)
+      expect(page).to have_css('td a[target="_blank"][rel="noopener noreferrer"]', text: 'Status')
     end
 
     it 'has a calendar widget for setting "Needed date"' do
