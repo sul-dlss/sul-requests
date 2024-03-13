@@ -22,13 +22,13 @@
           <div class='form-group'>
             <label class='control-label <%= label_column_class %>' for='item-selector-search'>Search item list</label>
             <div class='<%= content_column_class %>'>
-              <input id='item-selector-search' type='text' class='pull-right search form-control' />
+              <input id='item-selector-search' type='text' class='float-right search form-control' />
             </div>
           </div>
         <% end %>
         <div class='btn-group btn-group-xs sort-headings clearfix'>
-          <a href="javascript:;" class="sort sort-callnumber btn btn-default pull-left" data-sort="index">Call number <i></i></a>
-          <a href="javascript:;" class="sort sort-status btn btn-default pull-right" data-sort="status">Status <i></i></a>
+          <a href="javascript:;" class="sort sort-callnumber btn btn-default float-left" data-sort="index">Call number <i></i></a>
+          <a href="javascript:;" class="sort sort-status btn btn-default float-right" data-sort="status">Status <i></i></a>
         </div>
         <div id="item-selector" class="item-selector" data-limit-selected-items="<%= f.object.item_limit if f.object.item_limit.to_i > 1 %>" data-counter-target="[data-items-counter='true']">
           <div class='list'>
