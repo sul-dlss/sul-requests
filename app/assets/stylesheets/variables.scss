@@ -3,7 +3,7 @@
 $primary: $color-cardinal-red;
 $secondary: $color-beige-30;
 $info: $btn-blue-bg;
-$warning: #f0ad4e;
+$warning: #f0ad4e; // from bootstrap 3
 
 $brand-primary: $color-cardinal-red;
 $btn-primary-border: darken($brand-primary, 9.8%);
@@ -30,6 +30,7 @@ $text-color: $color-black;
 $link-hover-decoration: none;
 $body-bg: $color-beige-05;
 
+$alert-warning-bg: #fcf8e3; // from bootstrap 3
 
 $pagination-active-bg: #696969;
 $pagination-active-border: #696969;
