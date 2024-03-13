@@ -2,6 +2,8 @@
   h3 {
     margin-top: 0;
   }
+
+  margin-bottom: 1rem;
 }
 
 .destination-note-callout {
@@ -36,6 +38,7 @@ hr {
   color: $dark-gray;
   font-size: 1.1em;
   margin: -32px auto 10px;
+  position: relative;
   text-align: center;
   width: 10ch;
 }
@@ -43,7 +46,7 @@ hr {
 .required:not([for='request_destination']) {
   &::after {
     @extend .badge;
-    @extend .badge-warning;
+    @extend .bg-warning;
     color: white;
     content: 'Required';
     display: inline-block;
