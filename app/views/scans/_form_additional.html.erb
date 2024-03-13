@@ -1,4 +1,4 @@
-<div class="form-group">
+<div class="form-group row">
   <%= f.label :page_range, class: "#{label_column_class} col-form-label" %>
   <div class='<%= content_column_class %>'>
     <%= f.text_field_without_bootstrap :page_range, class: 'form-control', aria: { describedby: 'page_range_help_block' } %>
@@ -8,7 +8,7 @@
 <%= f.text_area :section_title, rows: '3', required: true %>
 <%= f.text_field :authors %>
 
-<div class='form-group' data-scheduler-lookup-url='<%= paging_schedule_path(origin: current_request.paging_origin_library) %>'>
+<div class='form-group row' data-scheduler-lookup-url='<%= paging_schedule_path(origin: current_request.paging_origin_library) %>'>
   <div class='col-form-label <%= label_column_class %>'>
     Earliest delivery
   </div>

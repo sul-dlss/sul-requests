@@ -1,5 +1,5 @@
 <% if current_request.requires_needed_date? %>
-  <div class="form-group">
+  <div class="form-group row">
     <%= f.label :needed_date, class: "#{label_column_class} required col-form-label" %>
     <div class='<%= content_column_class %>'>
       <%= f.date_field_without_bootstrap :needed_date, class: 'form-control', required: true, min: Time.zone.today, data: { request_type: current_request.type.underscore } %>
