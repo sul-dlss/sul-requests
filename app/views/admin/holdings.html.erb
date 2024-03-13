@@ -17,9 +17,9 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th class='col-xs-1'>Approve</th>
-      <th class='col-xs-2'>Location</th>
-      <th class='col-xs-2'>Current</th>
+      <th class='col-1'>Approve</th>
+      <th class='col-2'>Location</th>
+      <th class='col-2'>Current</th>
       <th>Call number / Container</th>
       <th>Status</th>
       <th>Approved by</th>
@@ -28,7 +28,7 @@
   <tbody>
     <% @request.holdings.each do |item| %>
       <tr class='<%= cycle('odd', 'even') %> <%= 'approved' if item.request_status.approved? %> <%= 'errored' if item.request_status.errored? %>'>
-        <td class='col-xs-1'>
+        <td>
           <button class="approval-btn btn btn-xs btn-success" data-behavior="item-approval" data-item-approval-url="<%= approve_item_admin_path(@request, item: item.barcode) %>">
             <% if item.request_status.approved? %>
               Approved
@@ -37,8 +37,8 @@
             <% end %>
           </button>
         </td>
-        <td class='col-xs-2'><%= item.home_location %></td>
-        <td class='col-xs-2'><%= current_location_for_mediated_item(item) %></td>
+        <td><%= item.home_location %></td>
+        <td><%= current_location_for_mediated_item(item) %></td>
         <td><%= item.callnumber %></td>
         <td><span class='request-status'><%= status_text_for_item(item) %></span></td>
         <td data-behavior='approver-information'>

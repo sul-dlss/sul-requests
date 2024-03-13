@@ -108,7 +108,7 @@ RSpec.describe 'Mediation table', :js do
       end
 
       it 'column has size in header' do
-        expect(page).to have_css('th.col-sm-3', text: 'Comment')
+        expect(page).to have_css('th.col-3', text: 'Comment')
       end
     end
 
