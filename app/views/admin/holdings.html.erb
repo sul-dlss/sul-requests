@@ -2,10 +2,10 @@
   <div class='button-group'>
     <%= bootstrap_form_for(@request.becomes(MediatedPage), as: :request, remote: true, html: { class: 'mark-as-complete-form', 'data-type': 'json' }) do |f| %>
       <%= f.hidden_field :approval_status, value: 'marked_as_done' %>
-      <button class='btn btn-secondary btn-xs' <%= 'disabled' unless @request.unapproved? %> data-behavior='mark-as-complete'>Mark as done</button>
+      <button class='btn btn-secondary btn-sm' <%= 'disabled' unless @request.unapproved? %> data-behavior='mark-as-complete'>Mark as done</button>
     <% end %>
 
-    <button class='btn btn-secondary btn-xs' data-behavior='toggle-admin-comment-form'>Comment</button>
+    <button class='btn btn-secondary btn-sm' data-behavior='toggle-admin-comment-form'>Comment</button>
   </div>
   <%= render 'admin_comments/form' %>
   <%= render 'admin_comments/comments' %>
@@ -29,7 +29,7 @@
     <% @request.holdings.each do |item| %>
       <tr class='<%= cycle('odd', 'even') %> <%= 'approved' if item.request_status.approved? %> <%= 'errored' if item.request_status.errored? %>'>
         <td>
-          <button class="approval-btn btn btn-xs btn-success" data-behavior="item-approval" data-item-approval-url="<%= approve_item_admin_path(@request, item: item.barcode) %>">
+          <button class="approval-btn btn btn-sm btn-success" data-behavior="item-approval" data-item-approval-url="<%= approve_item_admin_path(@request, item: item.barcode) %>">
             <% if item.request_status.approved? %>
               Approved
             <% else %>
