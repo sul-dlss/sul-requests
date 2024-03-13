@@ -27,6 +27,7 @@
     "jest-environment-jsdom": "^29.6.4",
     "jquery": "^3.7.0",
     "list.js": "^2.3.1",
+    "popper.js": "1",
     "rails-ujs": "^5.2.8-1",
     "sass": "^1.57.1",
     "trunk8": "^0.0.1"
