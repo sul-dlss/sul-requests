@@ -26,3 +26,22 @@
   color: $alert-red;
   font-weight: bold;
 }
+
+.dl-horizontal {
+  @extend .clearfix;
+  margin-top: 0;
+  margin-bottom: 20px;
+
+  dt {
+    float: left;
+    overflow: hidden;
+    text-align: right;
+    text-overflow: ellipsis;
+    width: 174px;
+  }
+
+  dd {
+    margin-left: 194px;
+    max-width: 45em;
+  }
+}
