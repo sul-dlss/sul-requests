@@ -44,6 +44,7 @@ hr {
   &::after {
     @extend .badge;
     @extend .badge-warning;
+    color: white;
     content: 'Required';
     display: inline-block;
     margin-left: 5px;
