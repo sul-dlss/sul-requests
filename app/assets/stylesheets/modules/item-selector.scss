@@ -8,11 +8,11 @@
   }
 
   .sort {
-    line-height: $line-height-computed;
+    line-height: $line-height-base;
 
     i {
       font-size: $font-size-tiny;
-      line-height: $line-height-computed;      
+      line-height: $line-height-base;
       margin-left: 15px;
     }
 
