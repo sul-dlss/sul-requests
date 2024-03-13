@@ -8,6 +8,10 @@
   color: $text-color;
 }
 
+.col-form-label {
+  text-align: right;
+}
+
 // This ensures that the login options toggle is viewed
 // as part of the form DOM so that the contentHeight is
 // calculated properly in IE.
