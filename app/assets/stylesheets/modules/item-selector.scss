@@ -62,11 +62,13 @@
 
   .barcode-checkbox {
     background-color: $btn-secondary-bg;
-    border-color: $btn-secondary-border;
     border-radius: 0;
+    border: 1px solid $btn-secondary-border;
     border-top: 0;
     color: $btn-secondary-color;
-    vertical-align: top;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
   }
 
   .list .input-group:first-child {
