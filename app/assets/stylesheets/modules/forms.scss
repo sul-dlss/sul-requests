@@ -80,8 +80,8 @@ hr {
  }
 
 .form-control-static {
-  min-height: 0;
-  padding-bottom: 0;
+  @extend .col-form-label;
+  text-align: inherit;
 }
 
 .login-send-group {
