@@ -2,20 +2,23 @@
   <%= f.fields_for :barcodes do |barcode| %>
     <% if f.object.barcode_present? || f.object.all_holdings.one? %>
       <% single_item = f.object.requested_holdings.first || f.object.all_holdings.first %>
-      <div class='form-group'>
-        <span class='control-label <%= label_column_class %>'>Call number</span>
-        <div class='<%= content_column_class %>'>
-          <p class="form-control-static">
-            <%= single_item.callnumber %>
-          </p>
-          <% if (note = CurrentLocationNote.new(single_item)).present? %>
-            <p class="single-item-current-location-note">
-              <%= note %>
-            </p>
-          <% end %>
-        </div>
+      <div class="single-item-callnumber">
+        Call number: <%= single_item.callnumber %>
       </div>
       <%= barcode.hidden_field single_item.barcode.present? ? single_item.barcode : 'NO_BARCODE', value: 1 %>
+      <% if f.object.bound_with? %>
+        <div class="bound-withs">
+            <% is_child = f.object.parent_bound_withs.present? %>
+            <% bound_withs = is_child ? f.object.parent_bound_withs : f.object.child_bound_withs %>
+            <strong class="heading">This item is bound<% if is_child %> and shelved<% end %> with</strong>
+            <%= render 'item_selector_bound_withs', bound_withs:, is_child: %>
+        </div>
+      <% end %>
+      <% if (note = CurrentLocationNote.new(single_item)).present? %>
+        <p class="single-item-current-location-note">
+          <%= note %>
+        </p>
+      <% end %>
     <% elsif f.object.all_holdings.many? %>
       <div id='selected-items-filter' data-behavior='item-selector' data-limit-reached-message="<%= t('sul_requests.limit_reached_message', limit: f.object.item_limit) %>">
         <% if f.object.all_holdings.count >= 10 %>

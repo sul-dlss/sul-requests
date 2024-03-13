@@ -65,6 +65,11 @@ hr {
   white-space: nowrap;
 }
 
+.single-item-callnumber {
+  margin: -1em 0 0.5em;
+  color: $color-cardinal-red;
+}
+
 .go-back-link {
   line-height: 3;
 }
@@ -73,11 +78,6 @@ hr {
   color: $dark-gray;
   margin-bottom: 0;
  }
-
-.form-control-static {
-  min-height: 0;
-  padding-bottom: 0;
-}
 
 .login-send-group {
   margin-top: 25px;

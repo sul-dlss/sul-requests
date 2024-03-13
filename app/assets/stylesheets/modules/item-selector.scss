@@ -89,3 +89,28 @@
 .index {
   display: none;
 }
+
+.bound-withs {
+  max-height: 14em;
+  background-color: $fog-light;
+  overflow: scroll;
+  padding: 8px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+
+  ul {
+    margin: 0px;
+  }
+
+  .bound-with-item {
+    padding: 4px 0px;
+  }
+
+  .heading {
+    padding: 8px 0px;
+  }
+
+  li:not(:only-child) {
+    border-top: 1px solid $grayish-yellow;
+  }
+}
