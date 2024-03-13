@@ -30,11 +30,11 @@ module PickupLibrariesHelper
     return unless pickup_destinations.length > 1
 
     form.select(
-      :destination,
-      pickup_destinations_array(pickup_destinations),
+      :destination, pickup_destinations_array(pickup_destinations),
       {
         label: label_for_pickup_destinations_dropdown(pickup_destinations),
-        selected: form.object.destination || form.object.default_pickup_destination
+        selected: form.object.destination || form.object.default_pickup_destination,
+        include_blank: false, required: false
       },
       aria: { controls: 'scheduler-text' },
       data: { 'paging-schedule-updater' => 'true', 'text-selector' => "[data-text-object='#{form.object.object_id}']" }
