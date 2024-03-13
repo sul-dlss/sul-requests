@@ -18,9 +18,9 @@
 
     &.asc,
     &.desc {
-      background-color: darken($btn-default-bg, 10%);
-      border-color: darken($btn-default-border, 12%);
-      color: $btn-default-color;
+      background-color: darken($btn-secondary-bg, 10%);
+      border-color: darken($btn-secondary-border, 12%);
+      color: $btn-secondary-color;
     }
   }
 
@@ -61,17 +61,17 @@
   }
 
   .barcode-checkbox {
-    background-color: $btn-default-bg;
-    border-color: $btn-default-border;
+    background-color: $btn-secondary-bg;
+    border-color: $btn-secondary-border;
     border-radius: 0;
     border-top: 0;
-    color: $btn-default-color;
+    color: $btn-secondary-color;
     vertical-align: top;
   }
 
   .list .input-group:first-child {
     .barcode-checkbox {
-      border-top: 1px solid $btn-default-border;
+      border-top: 1px solid $btn-secondary-border;
     }
   }
 
