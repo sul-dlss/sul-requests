@@ -1,5 +1,6 @@
 @import 'sul-variables';
 
+$primary: $color-cardinal-red;
 $brand-primary: $color-cardinal-red;
 $btn-primary-border: darken($brand-primary, 9.8%);
 
@@ -14,27 +15,25 @@ $btn-info-border: $btn-blue-border;
 $headings-font-weight: 300;
 
 // Sizes
-$font-size-base: 14px;
 $line-height-base: 1.428571429;
 $font-family-base: 'Source Sans Pro', 'Arial Unicode MS', Helvetica, sans-serif;
+
+$font-size-base: 0.875rem;
+$font-size-tiny: ceil(($font-size-base * 0.71)) !default; // ~10px
 
 @import 'bootstrap/scss/functions';
 @import 'bootstrap/scss/variables';
 
-$link-color: $gray-dark;
+$link-color: $gray-900;
 $link-hover-color: $color-black;
 $text-color: $color-black;
 $link-hover-decoration: none;
 $body-bg: $color-beige-05;
 
 
-$font-size-tiny: ceil(($font-size-base * 0.71)) !default; // ~10px
-
 $pagination-active-bg: #696969;
 $pagination-active-border: #696969;
 
 // Panels
 $panel-danger-text: $color-black;
-$panel-danger-bg: $panel-danger-heading-bg;
-
-$dl-horizontal-offset: $component-offset-horizontal + 14px;
+$panel-danger-bg: $red;
