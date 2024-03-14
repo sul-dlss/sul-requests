@@ -35,13 +35,14 @@
       <% if f.object.requestable_with_name_email? %>
         <%= uf.text_field(
               :name,
-              label_class: 'required',
+              label_class: 'col-form-label col required',
+
               data: { behavior: 'grouped-user-field' }
             )
         %>
         <%= uf.email_field(
               :email,
-              label_class: 'required',
+              label_class: 'col-form-label col required',
               data: { behavior: 'grouped-user-field' }
             )
         %>
