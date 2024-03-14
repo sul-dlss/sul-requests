@@ -38,7 +38,7 @@ describe('Item Selector Breadcrumbs', () => {
       itemSelectorBreadcrumbs.addBreadcrumb(firstCheckbox);
 
       itemSelectorBreadcrumbs.breadcrumbContainer()
-                             .find('.breadcrumb-pill .close')
+                             .find('.breadcrumb-pill .btn-close')
                              .trigger('click');
       expect(
         itemSelectorBreadcrumbs.breadcrumbContainer()

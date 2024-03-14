@@ -48,7 +48,7 @@ module ApplicationHelper
   end
 
   def render_user_information
-    '<span class="sr-only">You are logged in as </span>'.html_safe +
+    '<span class="visually-hidden">You are logged in as </span>'.html_safe +
       current_user.email_address
   end
 
