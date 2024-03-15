@@ -36,13 +36,35 @@ module Folio
 
     def self.items(json)
       hrid = json.fetch('hrid', '')
-      parent_bound_withs = parent_bound_withs(json)
-      return json.fetch('items', []).map { |item| Folio::Item.from_hash(item) } unless parent_bound_withs.present? && hrid
+      parent_bound_withs_all_holdings = parent_bound_withs(json)
+      return json.fetch('items', []).map { |item| Folio::Item.from_hash(item) } unless parent_bound_withs_all_holdings.present? && hrid
 
-      parent_bound_withs = parent_bound_withs.pluck('boundWithItem')
+      parent_bound_withs = parent_bound_withs_all_holdings.pluck('boundWithItem')
       items = filter_parent_bound_withs(parent_bound_withs, hrid)
       items += json['items'] if json['items']
-      items.compact.map { |item| Folio::Item.from_hash(item) }
+
+      items.compact.map do |item|
+        matching_bound_with = parent_bound_withs_all_holdings.find { |bound_with| bound_with['boundWithItem']['id'] == item['id'] }
+
+        if matching_bound_with && matching_bound_with&.dig('boundWithItem', 'instance', 'hrid') != hrid
+          item['bound_with_parent'] = matching_bound_with&.dig('boundWithItem', 'instance')
+        end
+
+        matching_bound_with_items = matching_bound_with&.dig('boundWithItem', 'instance', 'items')&.find do |bound_with_item|
+          bound_with_item['id'] == item['id']
+        end
+        matching_bound_with_holdings = matching_bound_with_items&.dig('boundWithHoldingsPerItem')
+
+        item['bound_with_requested_instance_holdings'] = matching_bound_with_holdings&.select do |holding|
+          holding&.dig('instance', 'hrid') == hrid
+        end
+
+        item['bound_with_other_instance_holdings'] = matching_bound_with_holdings&.reject do |holding|
+          holding&.dig('instance', 'hrid') == hrid
+        end
+
+        Folio::Item.from_hash(item)
+      end
     end
 
     def self.parent_bound_withs(json)

@@ -6,8 +6,9 @@ module Folio
   #       See https://github.com/sul-dlss/searchworks_traject_indexer/blob/02192452815de3861dcfafb289e1be8e575cb000/lib/traject/config/sirsi_config.rb#L2379
   # NOTE, barcode and callnumber may be nil. see instance_hrid: 'in00000063826'
   class Item
-    attr_reader :id, :barcode, :status, :type, :callnumber, :public_note, :effective_location, :permanent_location, :temporary_location,
-                :material_type, :loan_type, :holdings_record_id, :enumeration, :callnumber_no_enumeration
+    attr_reader :id, :barcode, :status, :type, :public_note, :effective_location, :permanent_location, :temporary_location,
+                :material_type, :loan_type, :holdings_record_id, :enumeration, :callnumber_no_enumeration, :bound_with_parent,
+                :bound_with_other_instance_holdings, :bound_with_requested_instance_holdings
 
     # Other statuses that we aren't using include "Unavailable" and "Intellectual item"
     STATUS_CHECKED_OUT = 'Checked out'
@@ -57,8 +58,8 @@ module Folio
     def initialize(barcode:, status:, callnumber:,
                    effective_location:, permanent_location: nil, temporary_location: nil,
                    type: nil, public_note: nil, material_type: nil, loan_type: nil, enumeration: nil,
-                   due_date: nil, id: nil, holdings_record_id: nil, suppressed_from_discovery: false,
-                   callnumber_no_enumeration: nil)
+                   due_date: nil, id: nil, holdings_record_id: nil, suppressed_from_discovery: false, callnumber_no_enumeration: nil,
+                   bound_with_parent: nil, bound_with_other_instance_holdings: nil, bound_with_requested_instance_holdings: nil)
       @id = id
       @holdings_record_id = holdings_record_id
       @barcode = barcode.presence || id
@@ -67,6 +68,9 @@ module Folio
       @callnumber = callnumber
       @public_note = public_note
       @effective_location = effective_location
+      @bound_with_parent = bound_with_parent
+      @bound_with_other_instance_holdings = bound_with_other_instance_holdings
+      @bound_with_requested_instance_holdings = bound_with_requested_instance_holdings
       @permanent_location = permanent_location || effective_location
       @temporary_location = temporary_location
       @material_type = material_type
@@ -109,6 +113,20 @@ module Folio
 
     def status_class
       [availability_class, circ_class].compact.join(' ')
+    end
+
+    def bound_with?
+      !!bound_with_requested_instance_holdings || !!bound_with_other_instance_holdings
+    end
+
+    def bound_with_parent?
+      bound_with? && @bound_with_parent.nil?
+    end
+
+    def callnumber
+      return bound_with_requested_instance_holdings.first.callnumber if bound_with? && !bound_with_parent?
+
+      @callnumber
     end
 
     # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
@@ -186,8 +204,28 @@ module Folio
       permanent_location.details['pageAeonSite']
     end
 
+    def self.callnumber_from_hash(data)
+      '' if data.nil?
+
+      [data.dig('effectiveCallNumberComponents', 'callNumber'), data['volume'], data['enumeration'],
+       data['chronology']].filter_map(&:presence).join(' ')
+    end
+
     # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     def self.from_hash(dyn)
+      bound_with_parent = if dyn['bound_with_parent']
+                            BoundwithHolding.new(callnumber: callnumber_from_hash(dyn['bound_with_parent']&.dig('items', 0)),
+                                                 title: dyn['bound_with_parent'].fetch('title', ''))
+                          end
+
+      bound_with_other_instance_holdings = dyn['bound_with_other_instance_holdings']&.map do |holding|
+        BoundwithHolding.new(callnumber: holding.fetch('callNumber', ''), title: holding&.dig('instance', 'title'))
+      end
+
+      bound_with_requested_instance_holdings = dyn['bound_with_requested_instance_holdings']&.map do |holding|
+        BoundwithHolding.new(callnumber: holding.fetch('callNumber', ''), title: holding&.dig('instance', 'title'))
+      end
+
       new(id: dyn['id'],
           barcode: dyn['barcode'],
           suppressed_from_discovery: dyn['discoverySuppress'],
@@ -196,8 +234,7 @@ module Folio
           enumeration: dyn['enumeration'],
           callnumber_no_enumeration: dyn.dig('effectiveCallNumberComponents', 'callNumber'),
           type: dyn.dig('materialType', 'name'),
-          callnumber: [dyn.dig('effectiveCallNumberComponents', 'callNumber'), dyn['volume'], dyn['enumeration'],
-                       dyn['chronology']].filter_map(&:presence).join(' '),
+          callnumber: callnumber_from_hash(dyn),
           public_note: dyn.fetch('notes').find { |note| note.dig('itemNoteType', 'name') == 'Public' }&.fetch('note'),
           effective_location: (Location.from_hash(dyn.fetch('effectiveLocation')) if dyn['effectiveLocation']),
           # fall back to the holding record's effective Location; we're no longer guaranteed an item-level permanent location.
@@ -208,7 +245,10 @@ module Folio
           temporary_location: (Location.from_hash(dyn.fetch('temporaryLocation')) if dyn['temporaryLocation']),
           material_type: MaterialType.new(id: dyn.dig('materialType', 'id'), name: dyn.dig('materialType', 'name')),
           loan_type: LoanType.new(id: dyn.fetch('temporaryLoanTypeId', dyn.fetch('permanentLoanTypeId'))),
-          holdings_record_id: dyn.dig('holdingsRecord', 'id'))
+          holdings_record_id: dyn.dig('holdingsRecord', 'id'),
+          bound_with_parent:,
+          bound_with_other_instance_holdings:,
+          bound_with_requested_instance_holdings:)
     end
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 

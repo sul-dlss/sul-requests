@@ -6,7 +6,9 @@
         <span class='col-form-label <%= label_column_class %>'>Call number</span>
         <div class='<%= content_column_class %>'>
           <p class="form-control-static">
-            <%= single_item.callnumber %>
+            <div class="single-item-callnumber">
+              Call number: <%= single_item.callnumber %>
+            </div>
           </p>
           <% if (note = CurrentLocationNote.new(single_item)).present? %>
             <p class="single-item-current-location-note">
@@ -59,10 +61,13 @@
                   <span class='input-group-prepend barcode-checkbox'>
                     <%= render partial: 'item_selector_checkbox', locals: { f: f, barcode: barcode, holding: holding, index: index } %>
                   </span>
-                  <%= barcode.label holding.barcode, class: 'form-control' do %>
+                  <%= barcode.label holding.barcode, class: "form-control #{'bound-with' if holding.bound_with?}" do %>
                     <span class='callnumber'><%= holding.callnumber %></span>
                     <%= label_for_item_selector_holding(holding) %>
                   <% end %>
+                <% end %>
+                <% if holding.bound_with? %>
+                  <%= render partial: 'item_selector_bound_with_content', locals: { holding: holding } %>
                 <% end %>
                 <span class='index'><%= index %></span>
                 <% if (note = CurrentLocationNote.new(holding)).present? %>

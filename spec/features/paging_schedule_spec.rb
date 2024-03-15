@@ -9,12 +9,14 @@ RSpec.describe 'Paging Schedule' do
                      pageable?: true, mediateable?: false, barcode: '123123124', checked_out?: false, status_class: 'active',
                      enumeration: 'V12 2020', callnumber_no_enumeration: 'ABC 123',
                      status_text: 'Active', public_note: 'huh?', type: 'STKS', effective_location: build(:location), requestable?: true,
-                     permanent_location: build(:location), material_type: build(:book_material_type), loan_type: double(id: nil)),
+                     permanent_location: build(:location), material_type: build(:book_material_type), loan_type: double(id: nil),
+                     bound_with?: false),
       double('item', callnumber: 'ABC 321', processing?: false, missing?: false, hold?: false, on_order?: false, hold_recallable?: false,
                      pageable?: true, mediateable?: false, barcode: '9928812', checked_out?: false, status_class: 'active',
                      enumeration: 'V12 2021', callnumber_no_enumeration: 'ABC 321',
                      status_text: 'Active', public_note: 'huh?', type: 'STKS', effective_location: build(:location), requestable?: true,
-                     permanent_location: build(:location), material_type: build(:book_material_type), loan_type: double(id: nil))
+                     permanent_location: build(:location), material_type: build(:book_material_type), loan_type: double(id: nil),
+                     bound_with?: false)
     ]
   end
 

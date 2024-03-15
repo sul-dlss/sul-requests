@@ -42,7 +42,7 @@
 .item-selector {
   border: 1px solid $item-selector-border-color;
   margin-bottom: 1rem;
-  max-height: 200px;
+  max-height: 400px;
   overflow: auto;
 
   .current-location-note {
@@ -54,6 +54,10 @@
     border-color: $item-selector-border-color;
     border-radius: 0;
     border-top: 0;
+
+    .bound-with {
+      border-bottom: none;
+    }
   }
 
   .input-group.active .form-control {
@@ -114,5 +118,39 @@
 
   li:not(:only-child) {
     border-top: 1px solid $grayish-yellow;
+  }
+}
+
+.bound-with-content {
+  background-color: $accent-fog-light;
+  border: 1px solid $gray-ccc;
+  padding: 10px;
+
+  .bound-with-type {
+    display: block;
+    color: $alert-red;
+    padding-top: 8px;
+  }
+
+  .bound-with-item span {
+    display: block;
+  }
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    &:not(:only-child) {
+      border-top: 1px solid $primary-black-20;
+      padding-top: 4px;
+      padding-bottom: 4px;
+
+      &:first-child {
+        margin-top: 8px;
+      }
+    }
   }
 }

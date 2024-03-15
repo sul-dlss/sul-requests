@@ -193,6 +193,7 @@ class FolioGraphqlClient
               holdingsRecords {
                 callNumber
                 boundWithItem {
+                  id
                   hrid
                   effectiveCallNumberComponents {
                     callNumber

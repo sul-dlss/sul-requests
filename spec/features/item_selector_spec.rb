@@ -231,6 +231,47 @@ RSpec.describe 'Item Selector' do
         expect(page).to have_css('dd', text: 'ABC 901')
       end
     end
+
+    describe 'when one item from an unrequested instance is bound-with that contains a requested holding (child)' do
+      let(:request_path) { new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS') }
+
+      before do
+        stub_bib_data_json(build(:multiple_holdings_with_a_child_boundwith))
+        visit request_path
+      end
+
+      it 'shows the first child in place of the unrequested item' do
+        expect(page).to have_css('.form-control.bound-with .callnumber', text: 'ABC 124')
+      end
+
+      it 'shows that the requested holding is bound with an unrequested item and other requested holdings' do
+        expect(page).to have_css('.bound-with-type', text: 'Bound and shelved with')
+        expect(page).to have_css('.bound-with-content .bound-with-item', text: 'Dogs')
+        expect(page).to have_css('.bound-with-item .callnumber', text: 'XYZ 123')
+        expect(page).to have_css('.bound-with-content .bound-with-item', text: 'Cats')
+        expect(page).to have_css('.bound-with-item .callnumber', text: 'ABC 125')
+      end
+    end
+
+    describe 'when one item from a requested instance is a bound-with (parent)' do
+      let(:request_path) { new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS') }
+
+      before do
+        stub_bib_data_json(build(:multiple_holdings_with_a_parent_boundwith))
+        visit request_path
+      end
+
+      it 'shows both requested and unrequested holdings bound with the item' do
+        expect(page).to have_css('.form-control.bound-with .callnumber', text: 'XYZ 123')
+        expect(page).to have_css('.bound-with-type', text: 'Bound with')
+        expect(page).to have_css('.bound-with-content .bound-with-item', text: 'Cats')
+        expect(page).to have_css('.bound-with-item .callnumber', text: 'ABC 124')
+        expect(page).to have_css('.bound-with-content .bound-with-item', text: 'Birds')
+        expect(page).to have_css('.bound-with-item .callnumber', text: 'GGG 111')
+        expect(page).to have_css('.bound-with-content .bound-with-item', text: 'Lizards')
+        expect(page).to have_css('.bound-with-item .callnumber', text: 'GGG 222')
+      end
+    end
   end
 
   describe 'when viewed under Back-Forward Cache', :js do
