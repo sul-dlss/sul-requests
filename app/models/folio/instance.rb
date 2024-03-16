@@ -28,6 +28,7 @@ module Folio
     end
 
     def self.update_item_fields(item, holdings_record)
+      item['originalEffectiveCallNumber'] = item['effectiveCallNumberComponents']['callNumber']
       item['effectiveCallNumberComponents']['callNumber'] = holdings_record['callNumber']
       item['volume'] = ''
       item['enumeration'] = ''
@@ -47,7 +48,14 @@ module Folio
         matching_bound_with = parent_bound_withs_all_holdings.find { |bound_with| bound_with['boundWithItem']['id'] == item['id'] }
 
         if matching_bound_with && matching_bound_with&.dig('boundWithItem', 'instance', 'hrid') != hrid
-          item['bound_with_parent'] = matching_bound_with&.dig('boundWithItem', 'instance')
+          parent = matching_bound_with&.dig('boundWithItem', 'instance')
+
+          # TODO: This is silly. Once https://github.com/sul-dlss/sul-requests/pull/2030 is in, resolve for real.
+          parent['items'].each do |item|
+            item['effectiveCallNumberComponents']['callNumber'] = item['originalEffectiveCallNumber']
+          end
+
+          item['bound_with_parent'] = parent
         end
 
         matching_bound_with_items = matching_bound_with&.dig('boundWithItem', 'instance', 'items')&.find do |bound_with_item|
