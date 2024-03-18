@@ -86,6 +86,18 @@ class Request < ActiveRecord::Base
     super || bib_data&.title
   end
 
+  def bound_with?
+    child_bound_withs.present? || parent_bound_withs.present?
+  end
+
+  def parent_bound_withs
+    bib_data&.parent_bound_withs
+  end
+
+  def child_bound_withs
+    bib_data&.child_bound_withs
+  end
+
   # This method gets called when saving the user assocation
   # and allows us to make sure we assign the user object if
   # there already is one associated with that email address

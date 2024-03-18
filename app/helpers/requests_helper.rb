@@ -45,6 +45,22 @@ module RequestsHelper
     end
   end
 
+  def label_for_boundwith_holding(holding)
+    holding.bound_with_parent? ? 'Bound with:' : 'Bound and shelved with:'
+  end
+
+  def all_bound_with_holdings(holding)
+    requested_holdings = holding.bound_with_requested_instance_holdings || []
+    other_holdings = holding.bound_with_other_instance_holdings || []
+
+    if holding.bound_with_parent?
+      requested_holdings.sort_by(&:callnumber) + other_holdings.sort_by(&:callnumber)
+    else
+      remainder_of_requested_holdings = requested_holdings.drop(1)
+      [holding.bound_with_parent] + remainder_of_requested_holdings.sort_by(&:callnumber)
+    end
+  end
+
   def request_level_request_status(request = current_request)
     if request.ils_response.usererr_code
       t("symphony_response.failure.code_#{request.ils_response.usererr_code}.alert_html")

@@ -14,6 +14,76 @@ module Folio
 
       Folio::Instance.from_dynamic(data)
     end
+
+    def self.filter_parent_bound_withs(parent_bound_withs, hrid)
+      return [] unless parent_bound_withs
+
+      parent_bound_withs.flatten.compact.each do |bound_with_record|
+        @filter_parent_bound_withs = bound_with_record.dig('instance', 'items').each.map do |item|
+          boundwithhrids = item['boundWithHoldingsPerItem'].filter { |bw| bw.dig('instance', 'hrid') == hrid }.flatten
+          update_item_fields(item, boundwithhrids.first) if boundwithhrids.present?
+        end
+      end
+      @filter_parent_bound_withs.compact
+    end
+
+    def self.update_item_fields(item, holdings_record)
+      item['originalEffectiveCallNumber'] = item['effectiveCallNumberComponents']['callNumber']
+      item['effectiveCallNumberComponents']['callNumber'] = holdings_record['callNumber']
+      item['volume'] = ''
+      item['enumeration'] = ''
+      item
+    end
+
+    def self.items(json)
+      hrid = json.fetch('hrid', '')
+      parent_bound_withs_all_holdings = parent_bound_withs(json)
+      return json.fetch('items', []).map { |item| Folio::Item.from_hash(item) } unless parent_bound_withs_all_holdings.present? && hrid
+
+      parent_bound_withs = parent_bound_withs_all_holdings.pluck('boundWithItem')
+      items = filter_parent_bound_withs(parent_bound_withs, hrid)
+      items += json['items'] if json['items']
+
+      items.compact.map do |item|
+        matching_bound_with = parent_bound_withs_all_holdings.find { |bound_with| bound_with['boundWithItem']['id'] == item['id'] }
+
+        if matching_bound_with && matching_bound_with&.dig('boundWithItem', 'instance', 'hrid') != hrid
+          parent = matching_bound_with&.dig('boundWithItem', 'instance')
+
+          # TODO: This is silly. Once https://github.com/sul-dlss/sul-requests/pull/2030 is in, resolve for real.
+          parent['items'].each do |item|
+            item['effectiveCallNumberComponents']['callNumber'] = item['originalEffectiveCallNumber']
+          end
+
+          item['bound_with_parent'] = parent
+        end
+
+        matching_bound_with_items = matching_bound_with&.dig('boundWithItem', 'instance', 'items')&.find do |bound_with_item|
+          bound_with_item['id'] == item['id']
+        end
+        matching_bound_with_holdings = matching_bound_with_items&.dig('boundWithHoldingsPerItem')
+
+        item['bound_with_requested_instance_holdings'] = matching_bound_with_holdings&.select do |holding|
+          holding&.dig('instance', 'hrid') == hrid
+        end
+
+        item['bound_with_other_instance_holdings'] = matching_bound_with_holdings&.reject do |holding|
+          holding&.dig('instance', 'hrid') == hrid
+        end
+
+        Folio::Item.from_hash(item)
+      end
+    end
+
+    def self.parent_bound_withs(json)
+      json.fetch('holdingsRecords', []).filter { |holding| holding['boundWithItem'] }
+    end
+
+    def self.child_bound_withs(json)
+      return unless json['items']
+
+      json['items'].pluck('boundWithHoldingsPerItem').flatten.compact
+    end
     # rubocop:enable Style/OptionalBooleanParameter
 
     # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
@@ -35,14 +105,17 @@ module Folio
         end,
         electronic_access: json.fetch('electronicAccess', []),
         edition: json.fetch('editions', []),
-        items: json.fetch('items', []).map { |item| Folio::Item.from_hash(item) }
+        items: items(json),
+        parent_bound_withs: parent_bound_withs(json),
+        child_bound_withs: child_bound_withs(json)
       )
     end
+
     # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
     # rubocop:disable Metrics/MethodLength, Metrics/ParameterLists
     def initialize(id:, hrid: '', title: '', contributors: [], pub_date: nil, pub_place: nil, publisher: nil, format: nil,
-                   isbn: [], oclcn: [], electronic_access: [], edition: [], items: [])
+                   isbn: [], oclcn: [], electronic_access: [], edition: [], items: [], parent_bound_withs: [], child_bound_withs: [])
       @id = id
       @hrid = hrid
       @title = title
@@ -56,6 +129,8 @@ module Folio
       @electronic_access = electronic_access
       @edition = edition
       @items = items
+      @parent_bound_withs = parent_bound_withs
+      @child_bound_withs = child_bound_withs
     end
     # rubocop:enable Metrics/MethodLength, Metrics/ParameterLists
 
@@ -70,7 +145,7 @@ module Folio
       contributor&.fetch('name')
     end
 
-    attr_reader :pub_date, :pub_place, :publisher, :format
+    attr_reader :pub_date, :pub_place, :publisher, :format, :parent_bound_withs, :child_bound_withs
 
     def isbn
       @isbn.first

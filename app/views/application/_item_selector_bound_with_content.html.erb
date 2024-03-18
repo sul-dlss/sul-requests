@@ -1,0 +1,11 @@
+<div class='bound-with-content'>
+  <span class='bound-with-type'><%= label_for_boundwith_holding(holding) %></span>
+  <ul>
+    <% all_bound_with_holdings(holding).each do |bound_with_holding| %>
+      <li class="bound-with-item <%= 'parent' if !holding.bound_with_parent? %>">
+        <span class='title'><%= bound_with_holding.title %></span>
+        <span class='callnumber'><%= bound_with_holding.callnumber %></span>
+      </li>
+    <% end %>
+  </ul>
+</div>

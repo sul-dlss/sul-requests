@@ -124,6 +124,84 @@ FactoryBot.define do
     end
   end
 
+  factory :boundwith_holding, class: 'Folio::BoundwithHolding' do
+    title { 'Boundwith Title' }
+    callnumber { 'ABC 456' }
+
+    initialize_with do
+      new(**attributes)
+    end
+  end
+
+  factory :multiple_holdings_with_a_child_boundwith, class: 'Folio::Instance' do
+    id { '1234' }
+    hrid { 'a1234' }
+    title { 'Cats' }
+    format { 'Book' }
+    items do
+      [
+        build(:item,
+              barcode: '3610512345678',
+              callnumber: 'XYZ 123',
+              bound_with_parent: build(:boundwith_holding, callnumber: 'XYZ 123', title: 'Dogs'),
+              bound_with_requested_instance_holdings: [
+                build(:boundwith_holding, callnumber: 'ABC 124', title: 'Cats'),
+                build(:boundwith_holding, callnumber: 'ABC 125', title: 'Cats')
+              ],
+              bound_with_other_instance_holdings: [
+                build(:boundwith_holding, callnumber: 'GGG 111', title: 'Birds')
+              ],
+              effective_location: build(:location, code: 'SAL3-STACKS')),
+        build(:item,
+              barcode: '3610587654321',
+              callnumber: 'ZZZ 321',
+              effective_location: build(:location, code: 'SAL3-STACKS')),
+        build(:item,
+              barcode: '12345679',
+              callnumber: 'ZZZ 456',
+              effective_location: build(:location, code: 'SAL3-STACKS'))
+      ]
+    end
+
+    initialize_with do
+      new(**attributes)
+    end
+  end
+
+  factory :multiple_holdings_with_a_parent_boundwith, class: 'Folio::Instance' do
+    id { '1234' }
+    hrid { 'a1234' }
+    title { 'Cats' }
+    format { 'Book' }
+    items do
+      [
+        build(:item,
+              barcode: '3610512345678',
+              callnumber: 'XYZ 123',
+              bound_with_requested_instance_holdings: [
+                build(:boundwith_holding, callnumber: 'ABC 124', title: 'Cats')
+              ],
+              bound_with_other_instance_holdings: [
+                build(:boundwith_holding, callnumber: 'GGG 111', title: 'Birds'),
+                build(:boundwith_holding, callnumber: 'GGG 222', title: 'Lizards')
+              ],
+              effective_location: build(:location, code: 'SAL3-STACKS')),
+        build(:item,
+              barcode: '3610587654321',
+              callnumber: 'ZZZ 321',
+              effective_location: build(:location, code: 'SAL3-STACKS')),
+        build(:item,
+              barcode: '12345679',
+              callnumber: 'ZZZ 456',
+              effective_location: build(:location, code: 'SAL3-STACKS'))
+      ]
+    end
+
+    initialize_with do
+      new(**attributes)
+    end
+  end
+
   factory :sal3_holding, class: 'Folio::Instance' do
     id { '12345' }
     hrid { 'a12345' }

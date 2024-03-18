@@ -14,7 +14,8 @@ RSpec.describe 'Send Request Buttons' do
   let(:mediateable) { false }
 
   let(:instance) do
-    instance_double(Folio::Instance, title: 'Test title', request_holdings: selected_items, items: [])
+    instance_double(Folio::Instance, title: 'Test title', request_holdings: selected_items, items: [],
+                                     parent_bound_withs: [], child_bound_withs: [])
   end
 
   before do

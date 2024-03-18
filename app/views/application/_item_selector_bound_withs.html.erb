@@ -1,0 +1,12 @@
+<ul class="list-unstyled">
+    <% bound_withs.each do |bound_with| %>
+        <li class="bound-with-item">
+            <% item =  is_child ? bound_with['boundWithItem'] : bound_with %>
+            <% callNumber = is_child ? item['effectiveCallNumberComponents']['callNumber'] : item['callNumber'] %>
+            <div class="title"><%= item['instance']['title'] %></div>
+            <div class="callnumber">
+                <%= callNumber %> <%= item['volume'] %> <%= item['enumeration'] %>
+            </div>
+        </li>
+    <% end %>
+</ul>

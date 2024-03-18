@@ -588,4 +588,142 @@ RSpec.describe Folio::Item do
       end
     end
   end
+
+  describe '#bound_with?' do
+    context 'with an item that is not a bound-with' do
+      let(:data) do
+        <<~JSON
+          {
+            "notes": [],
+            "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
+            "temporaryLoanTypeId": null
+          }
+        JSON
+      end
+
+      it 'is not a bound-with' do
+        expect(item.bound_with?).to be(false)
+      end
+    end
+
+    context 'with an item that is bound-with another holding which is not attached to the requested instance' do
+      let(:data) do
+        <<~JSON
+          {
+            "notes": [],
+            "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
+            "temporaryLoanTypeId": null,
+            "bound_with_other_instance_holdings": [{
+              "callNumber": "A 1.34:138",
+              "instance": { "title": "Another title bound with this item", "hrid": "a378156"}
+            }]
+          }
+        JSON
+      end
+
+      it 'is a bound-with' do
+        expect(item.bound_with?).to be(true)
+      end
+    end
+
+    context 'with an item that is bound-with another holding which is attached to the requested instance' do
+      let(:data) do
+        <<~JSON
+          {
+            "notes": [],
+            "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
+            "temporaryLoanTypeId": null,
+            "bound_with_requested_instance_holdings": [{
+              "callNumber": "A 1.34:138",
+              "instance": { "title": "Another title bound with this item", "hrid": "a378156"}
+            }]
+          }
+        JSON
+      end
+
+      it 'is a bound-with' do
+        expect(item.bound_with?).to be(true)
+      end
+    end
+  end
+
+  describe '#callnumber' do
+    context 'with an item that is not a bound-with' do
+      let(:data) do
+        <<~JSON
+          {
+            "notes": [],
+            "effectiveCallNumberComponents": {
+              "callNumber": "SB270 .E8 A874 2007"
+            },
+            "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
+            "temporaryLoanTypeId": null
+          }
+        JSON
+      end
+
+      it 'uses the item call number' do
+        expect(item.callnumber).to eq('SB270 .E8 A874 2007')
+      end
+    end
+
+    context 'when holdings from the requested instance (children) are bound-with an unrequested item (parent)' do
+      let(:data) do
+        <<~JSON
+          {
+            "notes": [],
+            "effectiveCallNumberComponents": {
+              "callNumber": "A 1.34:81"
+            },
+            "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
+            "temporaryLoanTypeId": null,
+            "bound_with_parent": {
+              "hrid": "a10564224",
+              "title": "Commercial hatchery chick production",
+              "items": [{
+                "effectiveCallNumberComponents": {
+                  "callNumber": "A 1.34:81"
+                }
+              }]
+            },
+            "bound_with_requested_instance_holdings": [{
+              "callNumber": "A 1.34:165",
+              "instance": { "title": "Title 1", "hrid": "a378156"}
+            },{
+              "callNumber": "A 1.34:173",
+              "instance": { "title": "Title 2", "hrid": "a378156"}
+            }]
+          }
+        JSON
+      end
+
+      it 'uses the call number of the first requested holding' do
+        expect(item.callnumber).to eq('A 1.34:165')
+      end
+    end
+
+    context 'when the item is from a requested instance and is a bound-with' do
+      let(:data) do
+        <<~JSON
+          {
+            "notes": [],
+            "effectiveCallNumberComponents": {
+              "callNumber": "A 1.34:219"
+            },
+            "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
+            "temporaryLoanTypeId": null,
+            "bound_with_parent": null,
+            "bound_with_requested_instance_holdings": [{
+              "callNumber": "A 1.34:227",
+              "instance": { "title": "Title 1", "hrid": "a378156"}
+            }]
+          }
+        JSON
+      end
+
+      it 'uses the call number of the item' do
+        expect(item.callnumber).to eq('A 1.34:219')
+      end
+    end
+  end
 end
