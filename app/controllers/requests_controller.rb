@@ -21,6 +21,10 @@ class RequestsController < ApplicationController
 
   rescue_from bib_model_class::NotFound, with: :item_not_found
 
+  before_action only: :new, if: -> { Settings.features.requests_redesign } do
+    redirect_to(new_patron_request_path(current_request))
+  end
+
   def new
     current_request.assign_attributes(new_params)
     validate_request_type
@@ -146,6 +150,7 @@ class RequestsController < ApplicationController
 
   def delegated_new_request_path(request, url_params = nil)
     url_params ||= params.except(:controller, :action).to_unsafe_h
+
     request.delegate_request!
     new_polymorphic_path(request.type.underscore, url_params)
   end
