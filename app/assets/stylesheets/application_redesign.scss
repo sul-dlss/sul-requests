@@ -1,1 +1,67 @@
+$font-family-base: "Source Sans 3", "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-family-serif: "Source Serif Pro", Georgia, Times, Times New Roman, serif;
+
 @import 'bootstrap/scss/bootstrap';
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto+Slab:wght@300;400;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap");
+
+@font-face {
+  font-family: Stanford;
+  src: url(https://www-media.stanford.edu/assets/fonts/stanford.woff) format("woff"), url(https://www-media.stanford.edu/assets/fonts/stanford.ttf) format("truetype");
+  font-weight: 300;
+  font-display: swap
+}
+
+$color-cardinal-red: #8c1515;
+
+/* This selector/rule can be removed after https://github.com/twbs/bootstrap/pull/39098 is released */
+a {
+  text-decoration: var(--bs-link-decoration);
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: var(--bs-link-hover-decoration);
+  }
+}
+
+.bg-cardinal {
+  background-color: $color-cardinal-red;
+}
+
+.su-logo {
+  --bs-link-hover-decoration: none;
+  display: inline-block;
+  font-family: Stanford, $font-family-serif;
+  font-variant-ligatures: discretionary-ligatures;
+  font-feature-settings: "liga";
+  font-weight: 400;
+  font-size: 2.125rem;
+  line-height: 0.75;
+  text-decoration: none;
+}
+
+#su-footer {
+  --bs-link-color-rgb: $white;
+  --bs-link-hover-color-rgb: $white;
+  --bs-link-decoration: none;
+  --bs-link-hover-decoration: underline;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  ul {
+    a {
+      font-size: min(calc(0.825rem + 0.3vw), 1.25rem);
+
+      @include media-breakpoint-down(sm) {
+        font-weight: 600;
+      }
+    }
+  }
+
+  .copyright {
+    font-size: 0.8125rem;
+
+    @include media-breakpoint-up(sm) {
+      font-size: 0.9375rem;
+    }
+  }
+}
