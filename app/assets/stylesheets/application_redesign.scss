@@ -59,13 +59,28 @@ a {
   text-decoration: none;
 }
 
+// Footer and header links don't get underline until you hover
+#sul-header,
+#su-footer {
+  --bs-link-decoration: none;
+  --bs-link-hover-decoration: underline;
+}
+
+// Font smoothing for light text on dark background
+#app-header,
+#su-footer {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#sul-header {
+  --bs-link-color-rgb: $su-cardinal;
+  --bs-link-hover-color-rgb: $su-cardinal;
+}
+
 #su-footer {
   --bs-link-color-rgb: $white;
   --bs-link-hover-color-rgb: $white;
-  --bs-link-decoration: none;
-  --bs-link-hover-decoration: underline;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 
   ul {
     a {
