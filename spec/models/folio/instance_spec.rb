@@ -3,9 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe Folio::Instance do
-  subject(:data) { described_class.fetch(request) }
+  subject(:data) { described_class.fetch('hrid') }
 
-  let(:request) { build(:request) }
   let(:instance_response) do
     <<~JSON
       {

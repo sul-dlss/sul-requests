@@ -63,9 +63,13 @@ class Request < ActiveRecord::Base
     library_location.active_messages.for_type(Message.notification_type(self))
   end
 
-  # @returns the model class either sourced from SearchWorks or from Folio.
+  # @returns the model class either sourced from Folio.
   def bib_data
-    @bib_data ||= bib_model_class.fetch(self)
+    @bib_data ||= begin
+      # Append "a" to the item_id unless it already starts with a letter (e.g. "in00000063826")
+      hrid = item_id.start_with?(/\d/) ? "a#{item_id}" : item_id
+      bib_model_class.fetch(hrid)
+    end
   end
 
   def send_approval_status!

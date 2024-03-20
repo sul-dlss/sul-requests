@@ -5,9 +5,7 @@ module Folio
   class Instance
     class NotFound < StandardError; end
 
-    def self.fetch(request)
-      # Append "a" to the item_id unless it already starts with a letter (e.g. "in00000063826")
-      hrid = request.item_id.start_with?(/\d/) ? "a#{request.item_id}" : request.item_id
+    def self.fetch(hrid)
       data = FolioClient.new.find_instance_by(hrid:)
       raise NotFound, "Instance hrid '#{hrid}' not found" unless data
 
