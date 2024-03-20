@@ -1,2 +1,4 @@
 # ILLiad production base URL for OpenURL Requests
 sul_illiad: 'http://scandeliver.stanford.edu/'
+features:
+  requests_redesign: false

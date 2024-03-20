@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_07_203550) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_18_225555) do
   create_table "admin_comments", force: :cascade do |t|
     t.string "commenter"
     t.string "comment"
@@ -40,6 +40,25 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_07_203550) do
     t.string "request_type"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+  end
+
+  create_table "patron_requests", force: :cascade do |t|
+    t.string "patron_id"
+    t.string "patron_email"
+    t.string "instance_hrid"
+    t.date "needed_date"
+    t.string "service_point_code"
+    t.text "data"
+    t.string "fulfillment_type"
+    t.string "status"
+    t.string "folio_request_id"
+    t.string "origin_location_code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["folio_request_id"], name: "index_patron_requests_on_folio_request_id"
+    t.index ["instance_hrid"], name: "index_patron_requests_on_instance_hrid"
+    t.index ["origin_location_code"], name: "index_patron_requests_on_origin_location_code"
+    t.index ["patron_id"], name: "index_patron_requests_on_patron_id"
   end
 
   create_table "requests", force: :cascade do |t|

@@ -45,6 +45,7 @@ Rails.application.routes.draw do
     resources :admin_comments
   end
 
+  resources :patron_requests, only: [:new, :show, :create]
   resources :requests, only: :new
   resources :aeon_pages, only: :new
   resources :pages, concerns: [:admin_commentable, :creatable_via_get_redirect, :successable, :statusable]
