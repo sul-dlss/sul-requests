@@ -64,6 +64,9 @@ group :development, :test do
   # Call 'binding.break' anywhere in the code to stop execution and get a debugger console
   gem 'debug'
 
+  # Axe for accessibility testing
+  gem 'axe-core-rspec'
+
   # RSpec for testing
   gem 'rspec-rails', '~> 6.0'
 

@@ -80,6 +80,17 @@ GEM
     airbrussh (1.5.1)
       sshkit (>= 1.6.1, != 1.7.0)
     ast (2.4.2)
+    axe-core-api (4.8.2)
+      dumb_delegator
+      virtus
+    axe-core-rspec (4.8.2)
+      axe-core-api
+      dumb_delegator
+      virtus
+    axiom-types (0.1.1)
+      descendants_tracker (~> 0.0.4)
+      ice_nine (~> 0.11.0)
+      thread_safe (~> 0.3, >= 0.3.1)
     base64 (0.2.0)
     bigdecimal (3.1.7)
     bindex (0.8.1)
@@ -127,6 +138,8 @@ GEM
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
     chronic (0.10.2)
+    coercible (1.0.0)
+      descendants_tracker (~> 0.0.1)
     concurrent-ruby (1.2.3)
     config (5.4.0)
       deep_merge (~> 1.2, >= 1.2.1)
@@ -148,6 +161,8 @@ GEM
       irb (~> 1.10)
       reline (>= 0.3.8)
     deep_merge (1.2.2)
+    descendants_tracker (0.0.4)
+      thread_safe (~> 0.3, >= 0.3.1)
     diff-lcs (1.5.1)
     dlss-capistrano (4.4.0)
       capistrano (~> 3.0)
@@ -157,6 +172,7 @@ GEM
     docile (1.4.0)
     domain_name (0.6.20240107)
     drb (2.2.1)
+    dumb_delegator (1.0.0)
     erubi (1.12.0)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
@@ -192,6 +208,7 @@ GEM
     httpclient (2.8.3)
     i18n (1.14.4)
       concurrent-ruby (~> 1.0)
+    ice_nine (0.11.2)
     io-console (0.7.2)
     irb (1.12.0)
       rdoc
@@ -419,6 +436,7 @@ GEM
       net-ssh (>= 2.8.0)
     stringio (3.1.0)
     thor (1.3.1)
+    thread_safe (0.3.6)
     timeout (0.4.1)
     turbo-rails (1.5.0)
       actionpack (>= 6.0.0)
@@ -432,6 +450,10 @@ GEM
       activesupport (>= 5.2.0, < 8.0)
       concurrent-ruby (~> 1.0)
       method_source (~> 1.0)
+    virtus (2.0.0)
+      axiom-types (~> 0.1)
+      coercible (~> 1.0)
+      descendants_tracker (~> 0.0, >= 0.0.3)
     web-console (4.2.1)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -458,6 +480,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  axe-core-rspec
   bootsnap
   bootstrap5-kaminari-views
   bootstrap_form (~> 5.4)
