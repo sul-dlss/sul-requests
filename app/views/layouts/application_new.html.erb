@@ -26,11 +26,11 @@
     <%= javascript_include_tag "application_redesign", "data-turbo-track": "reload", defer: true %>
   </head>
 
-  <body>
+  <body class="d-flex flex-column min-vh-100">
     <header>
       <%= render 'shared/sul_header' %>
     </header>
-    <main class="container">
+    <main class="flex-fill container">
       <%= yield %>
     </main>
     <footer>
