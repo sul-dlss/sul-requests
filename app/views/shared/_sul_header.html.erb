@@ -1,0 +1,34 @@
+<!-- SUL header -->
+<div id="sul-header" class="bg-white text-cardinal py-1 fs-7">
+  <div class="container d-flex flex-column flex-sm-row gap-1 gap-sm-0 justify-content-between align-items-center">
+    <%= link_to 'https://library.stanford.edu' do %>
+      <%= tag.span t('.sul'), class: "visually-hidden" %>
+      <%= image_tag "sul-logo.svg", class: "sul-logo d-none d-md-block", alt: "", height: 25 %>
+      <%= image_tag "sul-logo-stacked.svg", class: "sul-logo d-md-none", alt: "", height: 25 %>
+    <% end %>
+    <nav aria-label="header menu">
+      <ul class="list-unstyled d-flex gap-4 m-0">
+        <li>
+          <% if current_user.sso_user? %>
+            <%= link_to t('.logout', sunetid: current_user.sunetid), logout_path(referrer: root_path) %>
+          <% else %>
+            <%= link_to t('.login'), login_path(referrer: request.original_url) %>
+          <% end %>
+        </li>
+        <li>
+          <%= link_to t('.my_account'), "https://mylibrary.stanford.edu/" %>
+        </li>
+        <li>
+          <%= link_to t('.feedback'), "https://searchworks.stanford.edu/feedback", target: '_blank'  %>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<!-- Application header -->
+<div id="app-header" class="text-white bg-cardinal py-3 d-flex">
+  <div class="container">
+    <%= tag.span t('.application_name'), class: "fs-3" %>
+  </div>
+</div>
