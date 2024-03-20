@@ -5,8 +5,7 @@ module Folio
   class Instance
     class NotFound < StandardError; end
 
-    # rubocop:disable Style/OptionalBooleanParameter
-    def self.fetch(request, _live_lookup = true)
+    def self.fetch(request)
       # Append "a" to the item_id unless it already starts with a letter (e.g. "in00000063826")
       hrid = request.item_id.start_with?(/\d/) ? "a#{request.item_id}" : request.item_id
       data = FolioClient.new.find_instance_by(hrid:)
@@ -14,7 +13,6 @@ module Folio
 
       Folio::Instance.from_dynamic(data)
     end
-    # rubocop:enable Style/OptionalBooleanParameter
 
     # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     def self.from_dynamic(json)

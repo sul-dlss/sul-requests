@@ -13,7 +13,6 @@ class Request < ActiveRecord::Base
 
   attr_reader :requested_barcode
   attr_writer :bib_data
-  attr_accessor :live_lookup
 
   scope :recent, -> { order(created_at: :desc) }
   scope :needed_date_desc, -> { order(needed_date: :desc) }
@@ -66,7 +65,7 @@ class Request < ActiveRecord::Base
 
   # @returns the model class either sourced from SearchWorks or from Folio.
   def bib_data
-    @bib_data ||= bib_model_class.fetch(self, live_lookup)
+    @bib_data ||= bib_model_class.fetch(self)
   end
 
   def send_approval_status!
