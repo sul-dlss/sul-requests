@@ -17,6 +17,10 @@ class RequestsController < ApplicationController
 
   helper_method :current_request, :delegated_request?
 
+  class_attribute :bib_model_class, default: Settings.ils.bib_model.constantize
+
+  rescue_from bib_model_class::NotFound, with: :item_not_found
+
   before_action only: :new, if: -> { Settings.features.requests_redesign } do
     mapped_params = { 'instance_hrid' => new_params[:item_id],
                       'origin_location_code' => params[:origin_location],
