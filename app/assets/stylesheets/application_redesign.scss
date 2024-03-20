@@ -101,6 +101,10 @@ a {
   }
 }
 
+summary.btn::-webkit-details-marker{
+  display: none;
+}
+
 details[open] summary .bi-chevron-right::before {
  transform: rotate(-90deg);
 }
