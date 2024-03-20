@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe Request do
+  subject(:request) { described_class.new(item_id: '1234', origin: 'GREEN', origin_location: 'SAL3-STACKS') }
+
   let(:items) { [] }
   let(:instance) { instance_double(Folio::Instance, title: 'Test title', request_holdings: items, items: []) }
   let(:default_destination) { 'GREEN-LOAN' }
@@ -159,7 +161,7 @@ RSpec.describe Request do
   describe '#paging_origin_library' do
     subject { request.paging_origin_library }
 
-    let(:request) { described_class.new(origin: 'GREEN') }
+    let(:request) { described_class.new(origin: 'GREEN', item_id: '12345') }
 
     context 'when not a folio instance' do
       it { is_expected.to eq 'GREEN' }
@@ -671,7 +673,7 @@ RSpec.describe Request do
     end
 
     it 'falls back to a default location' do
-      request = described_class.new(origin: 'ART', origin_location: 'ART-STACKS')
+      request = described_class.new(item_id: '12345', origin: 'ART', origin_location: 'ART-STACKS')
 
       expect(request.default_pickup_destination).to eq default_destination
     end

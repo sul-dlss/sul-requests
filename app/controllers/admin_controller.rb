@@ -4,9 +4,7 @@
 class AdminController < ApplicationController
   before_action only: [:approve_item, :holdings] do
     authorize! :manage, (
-      @request = MediatedPage.find(params[:id]).tap do |request|
-        request.live_lookup = false
-      end
+      @request = MediatedPage.find(params[:id])
     )
   end
 
