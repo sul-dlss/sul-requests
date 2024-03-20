@@ -1,6 +1,17 @@
 $font-family-base: "Source Sans 3", "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
 $font-family-serif: "Source Serif Pro", Georgia, Times, Times New Roman, serif;
 
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+
+// Create your own map
+$custom-colors: (
+  "cardinal": #8c1515
+);
+
+// Merge the maps
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
 @import 'bootstrap/scss/bootstrap';
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto+Slab:wght@300;400;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap");
 
@@ -11,8 +22,6 @@ $font-family-serif: "Source Serif Pro", Georgia, Times, Times New Roman, serif;
   font-display: swap
 }
 
-$color-cardinal-red: #8c1515;
-
 /* This selector/rule can be removed after https://github.com/twbs/bootstrap/pull/39098 is released */
 a {
   text-decoration: var(--bs-link-decoration);
@@ -21,10 +30,6 @@ a {
   &:focus-visible {
     text-decoration: var(--bs-link-hover-decoration);
   }
-}
-
-.bg-cardinal {
-  background-color: $color-cardinal-red;
 }
 
 .su-logo {
