@@ -8,9 +8,9 @@ class SessionsController < ApplicationController
   # GET /sessions/login_by_library_id
   def login_by_library_id
     if request.env['warden'].authenticate(:library_id)
-      redirect_to summaries_url
+      redirect_after_login
     else
-      redirect_to login_url, alert: t('.alert')
+      redirect_to post_auth_redirect_url, flash: { error: t('.alert') }
     end
   end
 
@@ -21,9 +21,9 @@ class SessionsController < ApplicationController
   # GET /sessions/login_by_sunetid
   def login_by_sunetid
     if request.env['warden'].authenticate(:shibboleth, :development_shibboleth_stub)
-      redirect_to summaries_url
+      redirect_after_login
     else
-      redirect_to root_url, flash: {
+      redirect_to post_auth_redirect_url, flash: {
         error: t('.error_html', mailto: Settings.ACCESS_SERVICES_EMAIL)
       }
     end
@@ -42,5 +42,19 @@ class SessionsController < ApplicationController
     else
       redirect_to root_url
     end
+  end
+
+  private
+
+  def redirect_after_login
+    if params[:referrer]
+      redirect_to post_auth_redirect_url
+    else
+      redirect_back fallback_location: root_url
+    end
+  end
+
+  def post_auth_redirect_url
+    params[:referrer].presence || root_url
   end
 end
