@@ -2,23 +2,6 @@
 
 # :nodoc:
 class SessionsController < ApplicationController
-  before_action :set_home_page_flash_message, only: :index
-
-  # Render the application home page with various login options
-  #
-  # GET /
-  def index
-    @ils_ok = ils_client.ping
-
-    redirect_to summaries_url if current_user?
-  end
-
-  # Render a login form for Barcode + PIN users (Stanford single-sign-on are
-  # authenticated using a different route)
-  #
-  # GET /login
-  def form; end
-
   # Handle login for Barcode + PIN users by authenticating them with the
   # ILS using the Warden configuration.
   #
@@ -59,15 +42,5 @@ class SessionsController < ApplicationController
     else
       redirect_to root_url
     end
-  end
-
-  private
-
-  def set_home_page_flash_message
-    return unless Settings.home_page_flash_message_html
-
-    # rubocop:disable Rails/OutputSafety
-    flash[:success] = Settings.home_page_flash_message_html.html_safe
-    # rubocop:enable Rails/OutputSafety
   end
 end
