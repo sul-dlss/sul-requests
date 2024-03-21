@@ -208,3 +208,13 @@ en:
       mylibrary: My Account
       feedback: Feedback
       application_name: Requests
+  sessions:
+    login_by_library_id:
+      alert: Unable to authenticate.
+    login_by_sunetid:
+      error_html: <p class="h3">Unable to log in. Your SUNet ID is not linked to a library account.</p>
+                  <ul>
+                    <li>You do not need a library account to access Stanford's e-resources.</li>
+                    <li>A library account is created for patrons who are eligible to check out library materials.</li>
+                    <li>If you believe you should have an account, contact <a href="mailto:%{mailto}">Circulation &amp; Privileges</a> for assistance.</li>
+                  </ul>

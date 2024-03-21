@@ -27,7 +27,7 @@ class SessionsController < ApplicationController
     if request.env['warden'].authenticate(:library_id)
       redirect_to summaries_url
     else
-      redirect_to login_url, alert: t('mylibrary.sessions.login_by_library_id.alert')
+      redirect_to login_url, alert: t('.alert')
     end
   end
 
@@ -41,7 +41,7 @@ class SessionsController < ApplicationController
       redirect_to summaries_url
     else
       redirect_to root_url, flash: {
-        error: t('mylibrary.sessions.login_by_sunetid.error_html', mailto: Settings.ACCESS_SERVICES_EMAIL)
+        error: t('.error_html', mailto: Settings.ACCESS_SERVICES_EMAIL)
       }
     end
   end
