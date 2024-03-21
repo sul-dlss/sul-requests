@@ -13,12 +13,9 @@ Rails.application.routes.draw do
   get 'interstitial' => 'interstitial#show', as: :interstitial
 
   # Authorization routes
-  get 'sso/login' => 'authentication#login', as: :login
-  get 'sso/logout' => 'authentication#logout', as: :logout
-
-  get '/sessions/login_by_sunetid', to: 'sessions#login_by_sunetid', as: :login_by_sunetid
+  get 'sso/login', to: 'sessions#login_by_sunetid', as: :login_by_sunetid
+  get 'sso/logout', to: 'sessions#destroy', as: :logout
   post '/sessions/login_by_library_id', to: 'sessions#login_by_library_id', as: :login_by_library_id
-  get '/logout', to: 'sessions#destroy', as: :logout_warden
 
   resources :paging_schedule, only: :index
   get 'paging_schedule/:origin(/:destination)' => 'paging_schedule#show', as: :paging_schedule

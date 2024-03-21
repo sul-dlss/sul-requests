@@ -47,7 +47,7 @@ RSpec.describe MediatedPagesController do
           }
         }
         expect(response).to redirect_to(
-          login_path(
+          login_by_sunetid_path(
             referrer: interstitial_path(
               redirect_to: create_mediated_pages_url(
                 request: {

@@ -43,7 +43,7 @@ RSpec.describe ScansController do
       it 'redirects to the login page passing a refferrer param to continue creating your request' do
         post :create, params: { request: { item_id: '12345', origin: 'GREEN', origin_location: 'GRE-STACKS' } }
         expect(response).to redirect_to(
-          login_path(
+          login_by_sunetid_path(
             referrer: interstitial_path(
               redirect_to: create_scans_url(
                 request: { item_id: '12345', origin: 'GREEN', origin_location: 'GRE-STACKS' }
