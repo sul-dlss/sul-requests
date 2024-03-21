@@ -15,7 +15,7 @@
       <% end %>
     </ol>
     <p class="dialog-more-info">
-      <%= t('.more_details_html', library: LibraryLocation.library_name_by_code(current_request.origin_library_code), reading_room_url: Settings.libraries[current_request.origin_library_code].reading_room_url) %>
+      <%= t('.more_details_html', library: LibraryLocation.library_name_by_code(aeon_reading_room_code), reading_room_url: Settings.libraries[aeon_reading_room_code].reading_room_url) %>
     </p>
     <div class="dialog-buttons">
       <% if current_request.finding_aid? %>
