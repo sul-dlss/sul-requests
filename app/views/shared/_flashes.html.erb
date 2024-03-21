@@ -2,25 +2,25 @@
   <div class="flashes">
     <% if flash[:success] %>
       <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <%= flash[:success] %>
+        <%= flash[:success].html_safe %>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
     <% end %>
     <% if flash[:notice] %>
       <div class="alert alert-info alert-dismissible fade show" role="alert">
-        <%= flash[:notice] %>
+        <%= flash[:notice].html_safe %>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
     <% end %>
     <% if flash[:warning] %>
       <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <%= flash[:warning] %>
+        <%= flash[:warning].html_safe %>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
     <% end %>
     <% if flash[:error] %>
       <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <%= flash[:error] %>
+        <%= flash[:error].html_safe %>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
     <% end %>

@@ -12,7 +12,9 @@ Warden::Strategies.add(:shibboleth) do
       u = { username: uid, patron_key: response['key'] || response['id'], shibboleth: true }
       success!(u)
     else
-      fail!('Could not log in')
+      # even though we didn't find a patron record in the ILS, the Shibboleth auth was successful
+      # so maybe we can do something with that...
+      success!({ username: uid, shibboleth: true })
     end
   end
 
@@ -32,17 +34,19 @@ Warden::Strategies.add(:development_shibboleth_stub) do
     response = FolioClient.new.login_by_sunetid(uid)
 
     if response&.key?('key') || response&.key?('id')
-      u = { username: uid, patron_key: response['key'] || response['id'] }
+      u = { username: uid, patron_key: response['key'] || response['id'], shibboleth: true }
       success!(u)
     else
-      fail!('Could not log in')
+      # even though we didn't find a patron record in the ILS, the Shibboleth auth was successful
+      # so maybe we can do something with that...
+      success!({ username: uid, shibboleth: true })
     end
   end
 
   private
 
   def uid
-    ENV.fetch('uid', nil)
+    ENV.fetch('REMOTE_USER', nil)
   end
 end
 
