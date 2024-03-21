@@ -1,0 +1,29 @@
+<h1>Change PIN</h1>
+<%= form_tag change_pin_path, method: :post do %>
+  <%= hidden_field_tag :token, params['token'] %>
+  <div>
+    Your new PIN must:
+    <ul>
+      <li>be 6-25 characters long</li>
+      <li>use a combination of letters and numbers</li>
+      <li>include no special characters or spaces</li>
+    </ul>
+  </div>
+  <div class="form-group">
+    <%= label_tag :pin, 'New PIN' %>
+    <div class="input-group" data-showpassword="pin">
+      <%= password_field_tag :pin, nil, class: 'form-control', 'aria-describedby': 'libraryIdHelp', autofocus: true, autocomplete: 'off' %>
+      <div class="input-group-append">
+        <button class="btn btn-link" data-visibility disabled>
+          <%= sul_icon(:'sharp-visibility-24px') %>
+        </button>
+        <button class="btn btn-link" data-visibility-off disabled>
+          <%= sul_icon(:'sharp-visibility_off-24px') %>
+        </button>
+      </div>
+    </div>
+    <small id="libraryIdHelp" class="form-text text-muted">Your new PIN</small>
+  </div>
+  <%= submit_tag 'Change PIN', class: 'btn btn-primary' %>
+  <%= link_to 'Cancel', root_url, class: 'btn btn-link' %>
+<% end %>

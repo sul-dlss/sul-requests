@@ -2,6 +2,8 @@
 
 # Calls FOLIO REST endpoints
 class FolioClient
+  class IlsError < StandardError; end
+
   DEFAULT_HEADERS = {
     accept: 'application/json, text/plain',
     content_type: 'application/json'
@@ -252,6 +254,46 @@ class FolioClient
     false
   end
 
+  # Validate a pin for a user
+  # https://s3.amazonaws.com/foliodocs/api/mod-users/p/patronpin.html#patron_pin_verify_post
+  # @param [String] user_id the UUID of the user in FOLIO
+  # @param [String] pin
+  # @return [Boolean] true when successful
+  def validate_patron_pin(user_id, pin)
+    response = post('/patron-pin/verify', json: { id: user_id, pin: })
+    case response.status
+    when 200
+      true
+    when 422
+      false
+    else
+      check_response(response, title: 'Validate pin', context: { user_id: })
+    end
+  end
+
+  # Assign a patron a new PIN using a token that identifies them
+  # https://s3.amazonaws.com/foliodocs/api/mod-users/p/patronpin.html#patron_pin_post
+  # @param [String] token the reset token
+  # @param [String] new_pin the new PIN to assign
+  def change_pin(token, new_pin)
+    patron_key = crypt.decrypt_and_verify(token)
+    # expired tokens evaluate to nil; we want to raise an error instead
+    raise ActiveSupport::MessageEncryptor::InvalidMessage unless patron_key
+
+    response = post('/patron-pin', json: { id: patron_key, pin: new_pin })
+    check_response(response, title: 'Assign pin', context: { user_id: patron_key })
+  end
+
+  # Look up a patron by barcode and return a Patron object
+  # If 'patron_info' is false, don't run the full patron info GraphQL query
+  def find_patron_by_barcode(barcode, patron_info: true)
+    response = get_json('/users', params: { query: CqlQuery.new(barcode:).to_query })
+    user = response.dig('users', 0)
+    raise ActiveRecord::RecordNotFound, "User with barcode #{barcode} not found" unless user
+
+    patron_info ? Folio::Patron.find(user['id']) : Folio::Patron.new({ 'user' => user })
+  end
+
   private
 
   def check_response(response, title:, context:)
@@ -322,5 +364,14 @@ class FolioClient
 
   def folio_graphql_client
     @folio_graphql_client ||= FolioGraphqlClient.new
+  end
+
+  # Encryptor/decryptor for the token used in the PIN reset process
+  def crypt
+    @crypt ||= begin
+      keygen = ActiveSupport::KeyGenerator.new(Rails.application.secret_key_base)
+      key = keygen.generate_key('patron pin reset token', ActiveSupport::MessageEncryptor.key_len)
+      ActiveSupport::MessageEncryptor.new(key)
+    end
   end
 end

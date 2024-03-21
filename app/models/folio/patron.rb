@@ -22,6 +22,12 @@ module Folio
     end
     # rubocop:enable Metrics/CyclomaticComplexity, Metrics/AbcSize, Metrics/PerceivedComplexity
 
+    # pass a FOLIO user uuid and get back a Patron object
+    def self.find(key)
+      patron_info = folio_client.patron_info(key)
+      new(patron_info)
+    end
+
     def self.folio_client
       FolioClient.new
     end
@@ -123,6 +129,11 @@ module Folio
       user_info.present?
     end
 
+    # Generate a PIN reset token for the patron
+    def pin_reset_token
+      crypt.encrypt_and_sign(key, expires_in: 20.minutes)
+    end
+
     private
 
     def patron_blocks
@@ -135,6 +146,15 @@ module Folio
 
     def proxy_group_info
       @proxy_group_info ||= self.class.folio_client.proxy_group_info(id)
+    end
+
+    # Encryptor/decryptor for the token used in the PIN reset process
+    def crypt
+      @crypt ||= begin
+        keygen = ActiveSupport::KeyGenerator.new(Rails.application.secret_key_base)
+        key = keygen.generate_key('patron pin reset token', ActiveSupport::MessageEncryptor.key_len)
+        ActiveSupport::MessageEncryptor.new(key)
+      end
     end
   end
 end

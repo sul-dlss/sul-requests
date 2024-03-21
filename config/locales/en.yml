@@ -220,3 +220,12 @@ en:
                   </ul>
     destroy:
       notice: You have been successfully logged out.
+  change_pin:
+    success_html: <span class="font-weight-bold">Success!</span> Your new PIN is ready to use.
+    invalid_token_html: <span class="font-weight-bold">Sorry!</span> That reset PIN link is invalid or expired. Enter your library ID to request a new link.
+  reset_pin:
+    success_html: <span class="font-weight-bold">Check your email!</span> A PIN reset link has been sent to the address associated with library ID %{library_id}
+    request_failed_html: <span class="font-weight-bold">Sorry!</span> Something went wrong, possibly due to a connection failure. Try again or contact us for help.
+  reset_pins_mailer:
+    reset_pin:
+      subject: Stanford Libraries PIN reset
