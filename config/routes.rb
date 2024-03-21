@@ -16,6 +16,10 @@ Rails.application.routes.draw do
   get 'sso/login' => 'authentication#login', as: :login
   get 'sso/logout' => 'authentication#logout', as: :logout
 
+  get '/sessions/login_by_sunetid', to: 'sessions#login_by_sunetid', as: :login_by_sunetid
+  post '/sessions/login_by_library_id', to: 'sessions#login_by_library_id', as: :login_by_library_id
+  get '/logout', to: 'sessions#destroy', as: :logout
+
   resources :paging_schedule, only: :index
   get 'paging_schedule/:origin(/:destination)' => 'paging_schedule#show', as: :paging_schedule
   get 'paging_schedule/:origin/:destination/:date' => 'paging_schedule#open', as: :open_hours
