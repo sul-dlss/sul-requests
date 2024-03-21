@@ -214,6 +214,7 @@ en:
       application_name: Requests
   sessions:
     university_id:
+      user: 'Library cardholder'
       label: 'Library ID'
       help_text: 'Last 10 digits above the barcode on your library card'
     login_by_university_id:
@@ -229,3 +230,15 @@ en:
       alert: Unable to register visitor.  Both name and email are required.
     destroy:
       notice: You have been successfully logged out.
+  change_pin:
+    title: Change PIN
+    success_html: <span class="fw-bold">Success!</span><br/> Your new PIN is ready to use.
+    invalid_token_html: <span class="fw-bold">Sorry!</span><br/> That reset PIN link is invalid or expired. Enter your library ID to request a new link.
+  reset_pin:
+    title: Request set/reset PIN
+    instructions: Enter your Library ID below and we’ll send you an email with instructions on how to set or reset your PIN.
+    success_html: <span class="fw-bold">Check your email!</span><br/> A PIN reset link has been sent to the address associated with library ID %{university_id}
+    request_failed_html: <span class="fw-bold">Sorry!</span><br/> Something went wrong, possibly due to a connection failure. Try again or contact us for help.
+  reset_pins_mailer:
+    reset_pin:
+      subject: Stanford Libraries PIN reset

@@ -28,6 +28,11 @@ Rails.application.routes.draw do
   get 'circ-check' => 'circ_check#index', as: :circ_check
   post 'circ-check' => 'circ_check#show', as: :circ_check_item
 
+  get 'reset_pin', to: 'reset_pins#index'
+  post 'reset_pin', to: 'reset_pins#reset'
+  get 'change_pin', to: 'reset_pins#change_form', as: :change_pin_with_token
+  post 'change_pin', to: 'reset_pins#change'
+
   concern :creatable_via_get_redirect do
     collection do
       get 'create', as: :create

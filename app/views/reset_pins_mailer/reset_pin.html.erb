@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  </head>
+  <body>
+    <p>
+      This email was sent in response to a request from My Library Account to
+      change the PIN for account <b><%= @patron.barcode %></b>.
+    </p>
+    <p style="font-size: 18pt">
+      <a href="<%= @url %>">Change my PIN</a>
+    </p>
+    <p>
+      If you did not ask to change your PIN, ignore this email. This link will
+      expire in 20 minutes.
+    </p>
+    <p>
+      Questions? Contact the Privileges desk at sul-privileges@stanford.edu or
+      (650) 723-1492.
+    </p>
+  </body>
+</html>
