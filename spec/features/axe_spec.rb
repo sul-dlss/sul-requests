@@ -15,6 +15,11 @@ RSpec.describe 'Accessibility testing', :js do
     expect(page).to be_accessible
   end
 
+  it 'validates the feedback form page' do
+    visit feedback_form_path
+    expect(page).to be_accessible
+  end
+
   def be_accessible
     be_axe_clean
   end

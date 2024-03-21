@@ -120,3 +120,5 @@ gem "jsbundling-rails", "~> 1.1"
 gem "turbo-rails", "~> 1.4"
 
 gem "propshaft", "~> 0.7.0"
+
+gem 'recaptcha'
