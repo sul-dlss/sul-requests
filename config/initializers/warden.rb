@@ -52,7 +52,7 @@ Warden::Strategies.add(:library_id) do
   end
 
   def authenticate!
-    response = ApplicationController.ils_client_class.new.login(params['library_id'], params['pin'])
+    response = FolioClient.new.login_by_library_id_and_pin(params['library_id'], params['pin'])
 
     if response&.key?('patronKey') || response&.key?('id')
       u = { username: params['library_id'], patron_key: response['patronKey'] || response['id'] }
