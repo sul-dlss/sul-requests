@@ -182,6 +182,10 @@ en:
     unlisted: Approved for manual processing
   sul_requests:
     limit_reached_message: "<p>You've reached the maximum of %{limit} items per day.</p><p>Contact the library if you need help prioritizing your selections.</p>"
+    feedback_form:
+      success: Thank you! Your feedback has been sent.
+    feedback_mailer:
+      subject: Feedback from Requests
   symphony_response:
     failure:
       code_U003:

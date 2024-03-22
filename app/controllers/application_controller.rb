@@ -13,7 +13,12 @@ class ApplicationController < ActionController::Base
   def current_user
     @current_user ||= CurrentUser.for(request)
   end
-  helper_method :current_user
+
+  def current_user?
+    current_user.sunetid.present?
+  end
+
+  helper_method :current_user, :current_user?
 
   private
 

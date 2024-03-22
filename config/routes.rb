@@ -61,4 +61,6 @@ Rails.application.routes.draw do
       get :approve_item, as: :approve_item
     end
   end
+  resource :feedback_form, path: 'feedback', only: %I[new, create]
+  get 'feedback' => 'feedback_forms#new'
 end

@@ -5,6 +5,7 @@ require 'rails_helper'
 RSpec.describe 'shared/_sul_header.html.erb' do
   before do
     allow(view).to receive_messages(current_user: user)
+    allow(view).to receive_messages(current_user?: user.sunetid.present?)
     render
   end
 
