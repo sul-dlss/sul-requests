@@ -35,6 +35,11 @@ FactoryBot.define do
     details { { 'pageServicePoints' => [{ 'code' => 'ENG' }] } }
   end
 
+  factory :page_as_location, parent: :location do
+    code { 'SAL3-PAGE-AS' }
+    details { { 'pageAeonSite' => 'ARS' } }
+  end
+
   factory :scannable_location, parent: :location do
     code { 'SAL3-STACKS' }
     details { { 'scanServicePointCode' => 'SAL3' } }
@@ -135,6 +140,25 @@ FactoryBot.define do
               barcode: '87654321',
               callnumber: 'ABC 87654321',
               effective_location: build(:location, code: 'SAL3-STACKS'))
+      ]
+    end
+
+    initialize_with do
+      new(**attributes)
+    end
+  end
+
+  factory :sal3_as_holding, class: 'Folio::Instance' do
+    id { '12345' }
+    hrid { 'a12345' }
+    title { 'Item Title' }
+    format { 'Book' }
+    items do
+      [
+        build(:item,
+              barcode: '87654321',
+              callnumber: 'ABC 87654321',
+              effective_location: build(:page_as_location))
       ]
     end
 

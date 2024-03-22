@@ -9,10 +9,13 @@ RSpec.describe 'Creating an Aeon request', :js do
   before do
     stub_current_user(user)
     stub_bib_data_json(build(bib_data))
-    visit new_aeon_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'SPEC-STACKS')
   end
 
   describe 'info modal' do
+    before do
+      visit new_aeon_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'SPEC-STACKS')
+    end
+
     it 'identifies the library of the item' do
       expect(page).to have_content 'Special Collections access'
     end
@@ -22,7 +25,20 @@ RSpec.describe 'Creating an Aeon request', :js do
     end
   end
 
+  context 'handles info modal display for locations like SAL3-PAGE-AS' do
+    let(:bib_data) { :sal3_as_holding }
+
+    it 'provides a link to the ARS reading room if the origin location is SAL3' do
+      visit new_aeon_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-PAGE-AS')
+      expect(page).to have_link 'Archive of Recorded Sound Reading Room service page', href: 'https://library.stanford.edu/libraries/archive-recorded-sound'
+    end
+  end
+
   context 'with an item without a finding aid' do
+    before do
+      visit new_aeon_page_path(item_id: '1234', origin: 'SPEC-COLL', origin_location: 'SPEC-STACKS')
+    end
+
     context 'with a single holding' do
       describe 'info modal' do
         it 'provides instructions for the user to complete the request' do
