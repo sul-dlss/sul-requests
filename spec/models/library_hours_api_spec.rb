@@ -24,7 +24,7 @@ RSpec.describe LibraryHoursApi do
       allow(Faraday.default_connection).to receive(:get).and_raise(Faraday::ConnectionFailed, '')
     end
 
-    it 'returns a NullResponse' do
+    it 'returns a blank response' do
       expect(subject.json).to be_blank
     end
   end
