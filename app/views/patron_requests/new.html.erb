@@ -1,3 +1,5 @@
+<%= t('.error_html', mailto: Settings.libraries.default.contact_info.email) if sso_user? && current_user.patron.blank? %>
+
 <h1 class="fw-light mt-5">Request</h1>
 <h2 class="text-cardinal my-3">
   <%= current_request.item_title %>

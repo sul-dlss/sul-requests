@@ -23,9 +23,7 @@ class SessionsController < ApplicationController
     if request.env['warden'].authenticate(:shibboleth, :development_shibboleth_stub)
       redirect_after_login
     else
-      redirect_to post_auth_redirect_url, flash: {
-        error: t('.error_html', mailto: Settings.ACCESS_SERVICES_EMAIL)
-      }
+      redirect_to post_auth_redirect_url, flash: { error: t('.alert') }
     end
   end
 
