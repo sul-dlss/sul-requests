@@ -165,10 +165,6 @@ class Request < ActiveRecord::Base
   end
   alias barcode= requested_barcode=
 
-  def check_remote_ip?
-    mediateable?
-  end
-
   def library_id_error?
     errors[:library_id].present?
   end

@@ -582,16 +582,6 @@ RSpec.describe Request do
     end
   end
 
-  describe '#check_remote_ip?' do
-    it 'mediated pages' do
-      expect(create(:mediated_page).check_remote_ip?).to be true
-    end
-
-    it 'non-mediated pages are false' do
-      expect(create(:page)).not_to be_check_remote_ip
-    end
-  end
-
   describe 'mediateable_origins' do
     before do
       create(:mediated_page)
