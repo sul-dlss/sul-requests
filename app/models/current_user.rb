@@ -5,7 +5,7 @@
 class CurrentUser
   attr_reader :request
 
-  delegate :params, to: :request
+  delegate :params, :env, to: :request
 
   def initialize(request)
     @request = request
@@ -17,8 +17,10 @@ class CurrentUser
 
   def user_object
     @user_object ||= begin
-      if user_id.present?
+      if shibboleth?
         sso_user
+      elsif library_id?
+        library_id_user
       else
         anonymous_user
       end
@@ -27,10 +29,24 @@ class CurrentUser
 
   private
 
+  def shibboleth?
+    env['warden']&.user&.dig(:shibboleth)
+  end
+
+  def library_id?
+    return false if shibboleth?
+
+    env['warden']&.user&.dig(:patron_key)
+  end
+
   def sso_user
     User.find_or_create_by(sunetid: user_id).tap do |user|
       update_ldap_attributes(user)
     end
+  end
+
+  def library_id_user
+    User.find_or_create_by(library_id: env['warden'].user[:username])
   end
 
   # rubocop:disable Metrics/AbcSize
@@ -46,6 +62,10 @@ class CurrentUser
     user.save if user.changed?
   end
   # rubocop:enable Metrics/AbcSize
+
+  def ldap_attributes
+    env['warden']&.user&.dig(:ldap_attributes) || {}
+  end
 
   def ldap_name
     ldap_attributes['displayName']
@@ -85,30 +105,11 @@ class CurrentUser
     ldap_attributes['suEmailStatus']
   end
 
-  def ldap_attributes
-    data = request.env
-    data = data.merge(fake_ldap_attributes) if use_fake_ldap_attributes?
-    data
-  end
-
   def anonymous_user
     User.new
   end
 
   def user_id
-    request.env['REMOTE_USER'].presence || ENV.fetch('REMOTE_USER', nil)
-  end
-
-  def fake_ldap_attributes
-    return {} unless user_id && use_fake_ldap_attributes?
-
-    (Settings.fake_ldap_attributes[user_id] || {}).to_hash.stringify_keys
-  end
-
-  # Only allow fake ldap information in development
-  def use_fake_ldap_attributes?
-    Settings.fake_ldap_attributes &&
-      Settings.fake_ldap_attributes[user_id] &&
-      Rails.env.development?
+    env['warden']&.user&.dig(:username)
   end
 end
