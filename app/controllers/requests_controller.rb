@@ -66,7 +66,7 @@ class RequestsController < ApplicationController
   def request_specific_user
     user_attributes = params.dig(:request, :user_attributes)&.permit(:name, :email, :library_id).to_h.reject { |_k, v| v.blank? }
 
-    User.new(**user_attributes, ip_address: request.remote_ip) if user_attributes.present?
+    User.new(**user_attributes) if user_attributes.present?
   end
 
   def delegated_request?

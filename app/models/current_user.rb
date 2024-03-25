@@ -92,7 +92,7 @@ class CurrentUser
   end
 
   def anonymous_user
-    User.new(ip_address: request.remote_ip)
+    User.new
   end
 
   def user_id

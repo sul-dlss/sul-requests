@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe CurrentUser do
   subject { described_class.for(rails_req) }
 
-  let(:rails_req) { double(env: {}, remote_ip: '') }
+  let(:rails_req) { double(env: {}) }
 
   describe '#current_user' do
     it 'returns nil user if there is no user in the environment' do
@@ -46,18 +46,6 @@ RSpec.describe CurrentUser do
         allow_any_instance_of(described_class).to receive_messages(user_id: 'some-user')
         allow(rails_req).to receive(:env).and_return('suEmailStatus' => 'active')
         expect(subject.email).to eq 'some-user@stanford.edu'
-      end
-    end
-
-    describe 'ip address' do
-      it 'is not applied to known sso users as we do not care about their location' do
-        allow_any_instance_of(described_class).to receive_messages(user_id: 'some-user')
-        expect(subject.ip_address).to be_nil
-      end
-
-      it 'is applied to anonymous current users' do
-        allow(rails_req).to receive(:remote_ip).and_return('1.22.333.444')
-        expect(subject.ip_address).to eq '1.22.333.444'
       end
     end
   end
