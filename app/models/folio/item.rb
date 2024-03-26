@@ -95,6 +95,14 @@ module Folio
       end
     end
 
+    def current_location_id
+      if effective_location && permanent_location.code == effective_location.code
+        effective_location.id
+      else
+        permanent_location.id
+      end
+    end
+
     def suppressed_from_discovery?
       @suppressed_from_discovery
     end
@@ -175,8 +183,10 @@ module Folio
       hold_recallable? || mediateable? || pageable?
     end
 
-    def best_request_type
-      return 'Recall' if recallable?
+    def best_request_type(patron = nil)
+      patron_recallable = true
+      patron_recallable = patron.request_type?('Recall', current_location_id) if patron
+      return 'Recall' if recallable? && patron_recallable
       return 'Hold' if holdable?
 
       'Page' if pageable?

@@ -89,7 +89,7 @@ class SubmitFolioRequestJob < ApplicationJob
 
       request_data = FolioClient::CirculationRequestData.new(
         request_level: 'Item',
-        request_type: item.best_request_type,
+        request_type: item.best_request_type(patron),
         instance_id: request.bib_data.instance_id,
         item_id: item.id,
         holdings_record_id: item.holdings_record_id,

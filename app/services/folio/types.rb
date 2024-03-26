@@ -35,7 +35,7 @@ module Folio
       circulation_rules = folio_client.circulation_rules
       File.write(cache_dir.join('circulation_rules.txt'), circulation_rules)
       File.write(cache_dir.join('circulation_rules.csv'),
-                 Folio::CirculationRules::PolicyService.rules(circulation_rules).map(&:to_csv).join)
+                 Folio::CirculationRules::PolicyService.rules(nil, circulation_rules).map(&:to_csv).join)
     end
     # rubocop:enable Metrics/AbcSize
 

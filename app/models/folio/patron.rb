@@ -45,6 +45,23 @@ module Folio
       Folio::Types.patron_groups[patron_group_id]
     end
 
+    def patron_rules(location = nil)
+      policy_service = Folio::CirculationRules::PolicyService.new(group_uuids: [patron_group_id])
+      rules = policy_service.rules
+      return rules unless location
+
+      loc_rules = rules.filter { |elem| elem.criteria.dig('location-location', :or)&.include?(location) }
+      return loc_rules unless loc_rules.length > 1
+
+      loc_rules.filter { |elem| elem.criteria['group'] && elem.criteria['group'] != 'any' }
+    end
+
+    def request_type?(request_type, location = nil)
+      mapped_rules = patron_rules(location).filter_map { |elem| Folio::Types.policies[:request].fetch(elem.policy['request'], nil) }
+      request_types = mapped_rules.pluck('requestTypes').flatten.compact.uniq
+      request_types.include?(request_type)
+    end
+
     def patron_group_name
       patron_group&.dig('group')
     end

@@ -6,8 +6,10 @@ module Folio
     class PolicyService
       # Load the circulation rules file and parse it into a set of ordered rules
       # rubocop:disable Metrics/AbcSize
-      def self.rules(rules_as_text = Folio::Types.circulation_rules)
+      def self.rules(group_uuids, rules_as_text = Folio::Types.circulation_rules)
         rules = Folio::CirculationRules::Transform.new.apply(Folio::CirculationRules::Parser.new.parse(rules_as_text))
+        group_ids = group_uuids || standard_patron_group_uuids
+
         prioritized_rules = rules.map.with_index do |rule, index|
           rule.priority = index
           rule
@@ -16,7 +18,7 @@ module Folio
         prioritized_rules.select do |rule|
           # filter out rules that don't apply to standard patron groups
           rule.criteria['group'].nil? || rule.criteria['group'] == 'any' || rule.criteria.dig('group',
-                                                                                              :or)&.intersect?(standard_patron_group_uuids)
+                                                                                              :or)&.intersect?(group_ids)
         end
       end
       # rubocop:enable Metrics/AbcSize
@@ -29,11 +31,12 @@ module Folio
         @instance ||= new
       end
 
-      attr_reader :rules, :policies
+      attr_reader :rules, :policies, :group_uuids
 
       # Provide custom rules and policies or use the defaults
-      def initialize(rules: nil, policies: nil)
-        @rules = rules || self.class.rules
+      def initialize(rules: nil, policies: nil, group_uuids: nil)
+        @group_uuids = group_uuids
+        @rules = rules || self.class.rules(@group_uuids)
         @policies = policies || Folio::Types.policies
       end
 
