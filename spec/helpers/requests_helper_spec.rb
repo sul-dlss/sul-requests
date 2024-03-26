@@ -249,6 +249,28 @@ RSpec.describe RequestsHelper do
     end
   end
 
+  describe '#aeon_reading_room_code' do
+    describe 'location not in Folio::Types aeon request' do
+      let(:current_request) do
+        build(:request, origin: 'SPEC-COLL', origin_location: 'SPEC-STACKS', bib_data: {})
+      end
+
+      it 'returns original location code' do
+        expect(aeon_reading_room_code).to eq('SPEC-COLL')
+      end
+    end
+
+    describe 'ARS aeon request' do
+      let(:current_request) do
+        build(:request, origin: 'SAL3', origin_location: 'SAL3-PAGE-AS', bib_data: {})
+      end
+
+      it 'returns ARS location code' do
+        expect(aeon_reading_room_code).to eq('ARS')
+      end
+    end
+  end
+
   describe '#request_level_request_status' do
     it 'returns a message for user error codes' do
       stub_symphony_response(build(:symphony_scan_with_multiple_items))

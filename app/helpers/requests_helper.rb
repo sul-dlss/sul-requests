@@ -101,7 +101,10 @@ module RequestsHelper
   # and so should return ARS as the library code for the reading room text block.
   # This logic will be extended in the future to cover any location that has a pageAeonSite value.
   def aeon_reading_room_code
-    details = Folio::Types.locations.find_by(code: current_request.origin_location).details
+    folio_types_location = Folio::Types.locations.find_by(code: current_request.origin_location)
+    return current_request.origin_library_code unless folio_types_location
+
+    details = folio_types_location.details
     details.key?('pageAeonSite') && details['pageAeonSite'] == 'ARS' ? 'ARS' : current_request.origin_library_code
   end
 end
