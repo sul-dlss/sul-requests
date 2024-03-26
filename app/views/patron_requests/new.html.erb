@@ -13,7 +13,7 @@
         <div class="card">
             <h3 class="card-header bg-white">Stanford affiliation</h3>
             <div class="card-body">
-                <button class="btn btn-md btn-primary btn-full btn-cardinal mb-2">Log in with SUNet ID</button>
+                <%= link_to 'Log in with SUNet ID', login_by_sunetid_url(referrer: new_patron_request_path(new_params)), data: { turbo: false }, class: 'btn btn-md btn-primary btn-full btn-cardinal mb-2' %>
                 <p>
                     As a Stanford affiliated faculty member, student, post-doc, fellow, or visiting scholars,
                     you’ve been assigned a SUNet ID, which gives you more request options,
@@ -42,7 +42,8 @@
                 </p>
                 <details>
                     <summary class="btn btn-link p-0">Login with University ID/PIN <i class="bi bi-chevron-right"></i></summary>
-                    <form class="form p-3">
+                    <%= form_tag login_by_library_id_url, method: 'POST', class: 'form p-3', data: { turbo: false } do %>
+                        <%= hidden_field_tag :referrer, new_patron_request_path(new_params) %>
                         <div class="form-group mt-2">
                             <label class="form-label required-label" for="university_id">Library ID</label>
                             <input class="form-control" id="university_id" name="university_id" required />
@@ -62,7 +63,7 @@
                                 Login
                             </button>
                         </div>
-                    </form>
+                    <% end %>
                 </details>
             </div>
         </div>
@@ -80,7 +81,7 @@
                 </a></p>
                 <details>
                     <summary class="btn btn-link p-0">Proceed as visitor <i class="bi bi-chevron-right"></i></summary>
-                    <form class="form p-3">
+                    <%= form_tag new_patron_request_path(new_params), method: 'POST', class: 'form p-3', data: { turbo: false } do %>
                         <div class="form-group mt-2">
                             <label class="form-label required-label" for="name">Name</label>
                             <input class="form-control" id="name" name="name" required />
@@ -94,7 +95,7 @@
                                 Login
                             </button>
                         </div>
-                    </form>
+                    <% end %>
                 </details>
             </div>
         </div>
