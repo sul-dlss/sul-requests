@@ -13,8 +13,9 @@ Rails.application.routes.draw do
   get 'interstitial' => 'interstitial#show', as: :interstitial
 
   # Authorization routes
-  get 'sso/login' => 'authentication#login', as: :login
-  get 'sso/logout' => 'authentication#logout', as: :logout
+  get 'sso/login', to: 'sessions#login_by_sunetid', as: :login_by_sunetid
+  get 'sso/logout', to: 'sessions#destroy', as: :logout
+  post '/sessions/login_by_library_id', to: 'sessions#login_by_library_id', as: :login_by_library_id
 
   resources :paging_schedule, only: :index
   get 'paging_schedule/:origin(/:destination)' => 'paging_schedule#show', as: :paging_schedule
@@ -45,7 +46,12 @@ Rails.application.routes.draw do
     resources :admin_comments
   end
 
-  resources :patron_requests, only: [:new, :show, :create]
+  resources :patron_requests, only: [:new, :show, :create] do
+    collection do
+      post 'new'
+    end
+  end
+
   resources :requests, only: :new
   resources :aeon_pages, only: :new
   resources :pages, concerns: [:admin_commentable, :creatable_via_get_redirect, :successable, :statusable]

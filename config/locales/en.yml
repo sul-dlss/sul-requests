@@ -208,3 +208,15 @@ en:
       mylibrary: My Account
       feedback: Feedback
       application_name: Requests
+  sessions:
+    login_by_library_id:
+      alert: Unable to authenticate.
+    login_by_sunetid:
+      alert: Unable to authenticate.
+      error_html: <p class="h3">Your SUNet ID is not linked to a library account.</p>
+                  <ul>
+                    <li>A library account is created for patrons who are eligible to check out library materials.</li>
+                    <li>If you believe you should have an account, contact <a href="mailto:%{mailto}">Circulation &amp; Privileges</a> for assistance.</li>
+                  </ul>
+    destroy:
+      notice: You have been successfully logged out.

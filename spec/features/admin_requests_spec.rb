@@ -153,7 +153,7 @@ RSpec.describe 'Viewing all requests' do
 
       it 'redirects to the login page' do
         expect_any_instance_of(AdminController).to receive(:redirect_to).with(
-          login_path(referrer: admin_index_url)
+          login_by_sunetid_path(referrer: admin_index_url)
         )
         visit admin_index_path
       end
@@ -227,7 +227,7 @@ RSpec.describe 'Viewing all requests' do
 
     it 'redirects to the login page' do
       expect_any_instance_of(AdminController).to receive(:redirect_to).with(
-        login_path(referrer: admin_url('ART'))
+        login_by_sunetid_path(referrer: admin_url('ART'))
       )
       visit admin_path('ART')
     end

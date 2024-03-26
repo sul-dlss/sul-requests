@@ -39,7 +39,7 @@ RSpec.describe AdminController do
       let(:user) { create(:anon_user) }
 
       it 'redirects to the login page' do
-        expect(get(:index)).to redirect_to(login_path(referrer: admin_index_url))
+        expect(get(:index)).to redirect_to(login_by_sunetid_path(referrer: admin_index_url))
       end
     end
   end
@@ -91,7 +91,7 @@ RSpec.describe AdminController do
 
       it 'redirects to login' do
         expect(get(:show, params: { id: 'SPEC-COLL' })).to redirect_to(
-          login_path(referrer: admin_url('SPEC-COLL'))
+          login_by_sunetid_path(referrer: admin_url('SPEC-COLL'))
         )
       end
     end

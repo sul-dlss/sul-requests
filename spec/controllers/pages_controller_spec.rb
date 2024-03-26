@@ -43,7 +43,7 @@ RSpec.describe PagesController do
           request: { item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS', destination: 'ART' }
         }
         expect(response).to redirect_to(
-          login_path(
+          login_by_sunetid_path(
             referrer: interstitial_path(
               redirect_to: create_pages_url(
                 request: { item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS', destination: 'ART' }
@@ -61,7 +61,7 @@ RSpec.describe PagesController do
         }
 
         expect(response).to redirect_to(
-          login_path(
+          login_by_sunetid_path(
             referrer: interstitial_path(
               redirect_to: create_pages_url(
                 request: { item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS', destination: 'ART', barcodes: {
@@ -346,7 +346,7 @@ RSpec.describe PagesController do
         page = create(:page, user: create(:non_sso_user, email: 'jjstanford@stanford.edu'))
         get :status, params: { id: page[:id] }
         expect(response).to redirect_to(
-          login_path(
+          login_by_sunetid_path(
             referrer: status_page_url(page[:id])
           )
         )

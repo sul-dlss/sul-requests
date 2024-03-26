@@ -106,7 +106,7 @@ class RequestsController < ApplicationController
   end
 
   def rescue_status_pages
-    redirect_to login_path(referrer: request.original_url) unless current_user.sso_user?
+    redirect_to login_by_sunetid_path(referrer: request.original_url) unless current_user.sso_user?
   end
 
   def bounce_request_through_sso
@@ -116,7 +116,7 @@ class RequestsController < ApplicationController
     )
 
     referrer = interstitial_path(redirect_to: create_path)
-    redirect_to login_path(referrer:)
+    redirect_to login_by_sunetid_path(referrer:)
   end
 
   # Strips out undesired parameters when sending the user through our auth service

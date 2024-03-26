@@ -87,6 +87,12 @@ RSpec.configure do |config|
   config.include ViewComponent::TestHelpers, type: :component
   config.include ViewComponent::SystemTestHelpers, type: :component
   config.include Capybara::RSpecMatchers, type: :component
+
+  config.include Warden::Test::Helpers
+  config.include Warden::Test::ControllerHelpers, type: :controller
+  config.after do
+    Warden.test_reset!
+  end
 end
 
 def stub_current_user(user = create(:anon_user))

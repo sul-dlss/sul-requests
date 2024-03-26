@@ -94,6 +94,7 @@ group :development, :test do
   gem 'listen'
 
   gem 'webmock'
+  gem 'warden-rspec-rails'
 end
 
 group :production do
@@ -122,3 +123,4 @@ gem "turbo-rails", "~> 1.4"
 gem "propshaft", "~> 0.7.0"
 
 gem 'recaptcha'
+gem 'warden'

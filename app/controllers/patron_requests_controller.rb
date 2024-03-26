@@ -6,7 +6,7 @@
 class PatronRequestsController < ApplicationController
   layout 'application_new'
   load_and_authorize_resource instance_name: :request
-  helper_method :current_request
+  helper_method :current_request, :new_params
 
   def show; end
 

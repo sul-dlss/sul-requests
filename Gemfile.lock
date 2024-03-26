@@ -455,6 +455,9 @@ GEM
       axiom-types (~> 0.1)
       coercible (~> 1.0)
       descendants_tracker (~> 0.0, >= 0.0.3)
+    warden (1.2.9)
+      rack (>= 2.0.9)
+    warden-rspec-rails (0.3.0)
     web-console (4.2.1)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -534,6 +537,8 @@ DEPENDENCIES
   sqlite3
   turbo-rails (~> 1.4)
   view_component (~> 3.0)
+  warden
+  warden-rspec-rails
   web-console
   webmock
   whenever

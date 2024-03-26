@@ -11,14 +11,14 @@ class ApplicationController < ActionController::Base
   before_action -> { flash.now[:error] &&= flash[:error].html_safe if flash[:html_safe] }
 
   def current_user
-    @current_user ||= CurrentUser.for(request)
+    @current_user ||= request.env['warden']&.user&.user_object || User.new
   end
 
   def current_user?
     current_user.sunetid.present?
   end
 
-  helper_method :current_user, :current_user?
+  helper_method :current_user, :current_user?, :sso_user?
 
   private
 
