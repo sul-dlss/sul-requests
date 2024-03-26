@@ -94,6 +94,7 @@ group :development, :test do
   gem 'listen'
 
   gem 'webmock'
+  gem 'warden-rspec-rails'
 end
 
 group :production do
