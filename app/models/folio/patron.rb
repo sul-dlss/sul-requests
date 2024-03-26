@@ -3,12 +3,13 @@
 module Folio
   # Model for working with FOLIO Patron information
   class Patron
-    # rubocop:disable Metrics/CyclomaticComplexity
-    def self.find_by(sunetid: nil, library_id: nil, **_kwargs)
+    # rubocop:disable Metrics/CyclomaticComplexity, Metrics/AbcSize, Metrics/PerceivedComplexity
+    def self.find_by(sunetid: nil, library_id: nil, patron_key: nil, **_kwargs)
       # if no sunet or library_id they are probably a general public (name/email) user.
-      return unless sunetid || library_id.present?
+      return unless sunetid || library_id.present? || patron_key.present?
 
-      response = folio_client.login_by_sunetid(sunetid) if sunetid.present?
+      response = folio_client.user_info(patron_key) if patron_key.present?
+      response ||= folio_client.login_by_sunetid(sunetid) if sunetid.present?
       response ||= folio_client.login_by_library_id(library_id) if library_id.present?
 
       return new(response) if response.present?
@@ -19,7 +20,7 @@ module Folio
     rescue HTTP::Error
       nil
     end
-    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/CyclomaticComplexity, Metrics/AbcSize, Metrics/PerceivedComplexity
 
     def self.folio_client
       FolioClient.new

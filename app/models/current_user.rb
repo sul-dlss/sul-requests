@@ -42,11 +42,14 @@ class CurrentUser
   def sso_user
     User.find_or_create_by(sunetid: user_id).tap do |user|
       update_ldap_attributes(user)
+      update_folio_attributes(user)
     end
   end
 
   def library_id_user
-    User.find_or_create_by(library_id: env['warden'].user[:username])
+    User.find_or_create_by(library_id: env['warden'].user[:username]) do |user|
+      update_folio_attributes(user)
+    end
   end
 
   # rubocop:disable Metrics/AbcSize
@@ -62,6 +65,10 @@ class CurrentUser
     user.save if user.changed?
   end
   # rubocop:enable Metrics/AbcSize
+
+  def update_folio_attributes(user)
+    user.patron_key = env['warden']&.user&.dig(:patron_key)
+  end
 
   def ldap_attributes
     env['warden']&.user&.dig(:ldap_attributes) || {}
