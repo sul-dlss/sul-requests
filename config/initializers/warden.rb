@@ -1,5 +1,13 @@
 # frozen_string_literal: true
 
+Warden::Manager.serialize_into_session do |current_user|
+  current_user.as_json
+end
+
+Warden::Manager.serialize_from_session do |json|
+  CurrentUser.new(json)
+end
+
 Warden::Strategies.add(:shibboleth) do
   def valid?
     uid.present?
@@ -10,11 +18,11 @@ Warden::Strategies.add(:shibboleth) do
 
     if response&.key?('key') || response&.key?('id')
       u = { username: uid, patron_key: response['key'] || response['id'], shibboleth: true, ldap_attributes: }
-      success!(u)
+      success!(CurrentUser.new(u))
     else
       # even though we didn't find a patron record in the ILS, the Shibboleth auth was successful
       # so maybe we can do something with that...
-      success!({ username: uid, shibboleth: true, ldap_attributes: })
+      success!(CurrentUser.new({ username: uid, shibboleth: true, ldap_attributes: }))
     end
   end
 
@@ -48,11 +56,11 @@ Warden::Strategies.add(:development_shibboleth_stub) do
 
     if response&.key?('key') || response&.key?('id')
       u = { username: uid, patron_key: response['key'] || response['id'], shibboleth: true, ldap_attributes: }
-      success!(u)
+      success!(CurrentUser.new(u))
     else
       # even though we didn't find a patron record in the ILS, the Shibboleth auth was successful
       # so maybe we can do something with that...
-      success!({ username: uid, shibboleth: true, ldap_attributes: })
+      success!(CurrentUser.new({ username: uid, shibboleth: true, ldap_attributes: }))
     end
   end
 
@@ -77,7 +85,7 @@ Warden::Strategies.add(:library_id) do
 
     if response&.key?('patronKey') || response&.key?('id')
       u = { username: params['library_id'], patron_key: response['patronKey'] || response['id'] }
-      success!(u)
+      success!(CurrentUser.new(u))
     else
       fail!('Could not log in')
     end

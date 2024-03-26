@@ -1,18 +1,15 @@
 # frozen_string_literal: true
 
 # get the current User object from the Rails request object
-# Intended to be used as CurrentUser.for(request)
 class CurrentUser
-  attr_reader :request
+  attr_reader :data
 
-  delegate :params, :env, to: :request
-
-  def initialize(request)
-    @request = request
+  def initialize(data)
+    @data = (data || {}).with_indifferent_access
   end
 
-  def self.for(request)
-    new(request).user_object
+  def as_json(*, **, &)
+    data.as_json(*, **, &)
   end
 
   def user_object
@@ -30,13 +27,13 @@ class CurrentUser
   private
 
   def shibboleth?
-    env['warden']&.user&.dig('shibboleth')
+    data['shibboleth']
   end
 
   def library_id?
     return false if shibboleth?
 
-    env['warden']&.user&.dig('patron_key')
+    data['patron_key']
   end
 
   def sso_user
@@ -47,7 +44,7 @@ class CurrentUser
   end
 
   def library_id_user
-    User.find_or_create_by(library_id: env['warden'].user['username']) do |user|
+    User.find_or_create_by(library_id: user_id) do |user|
       update_folio_attributes(user)
     end
   end
@@ -67,11 +64,11 @@ class CurrentUser
   # rubocop:enable Metrics/AbcSize
 
   def update_folio_attributes(user)
-    user.patron_key = env['warden']&.user&.dig('patron_key')
+    user.patron_key = data['patron_key']
   end
 
   def ldap_attributes
-    env['warden']&.user&.dig('ldap_attributes') || {}
+    data['ldap_attributes'] || {}
   end
 
   def ldap_name
@@ -117,6 +114,6 @@ class CurrentUser
   end
 
   def user_id
-    env['warden']&.user&.dig('username')
+    data['username']
   end
 end

@@ -3,12 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe CurrentUser do
-  subject { described_class.for(rails_req) }
+  subject { described_class.new(user&.stringify_keys).user_object }
 
-  let(:rails_req) { double(env: { 'warden' => warden }) }
-  let(:warden) do
-    instance_double(Warden::Proxy, user: user&.stringify_keys)
-  end
   let(:user) { nil }
 
   describe '#current_user' do
