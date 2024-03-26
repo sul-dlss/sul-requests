@@ -34,8 +34,9 @@ class SessionsController < ApplicationController
   #
   # GET /logout
   def destroy
-    needs_shibboleth_logout = current_user&.shibboleth?
+    needs_shibboleth_logout = request.env['warden']&.user&.dig(:shibboleth).present?
     request.env['warden'].logout
+    flash[:notice] = t('.notice')
 
     if needs_shibboleth_logout
       redirect_to '/Shibboleth.sso/Logout'
