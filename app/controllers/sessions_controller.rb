@@ -32,7 +32,7 @@ class SessionsController < ApplicationController
   #
   # GET /logout
   def destroy
-    needs_shibboleth_logout = request.env['warden']&.user&.dig(:shibboleth).present?
+    needs_shibboleth_logout = request.env['warden']&.user&.dig('shibboleth').present?
     request.env['warden'].logout
     flash[:notice] = t('.notice')
 

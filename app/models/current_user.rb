@@ -30,13 +30,13 @@ class CurrentUser
   private
 
   def shibboleth?
-    env['warden']&.user&.dig(:shibboleth)
+    env['warden']&.user&.dig('shibboleth')
   end
 
   def library_id?
     return false if shibboleth?
 
-    env['warden']&.user&.dig(:patron_key)
+    env['warden']&.user&.dig('patron_key')
   end
 
   def sso_user
@@ -47,7 +47,7 @@ class CurrentUser
   end
 
   def library_id_user
-    User.find_or_create_by(library_id: env['warden'].user[:username]) do |user|
+    User.find_or_create_by(library_id: env['warden'].user['username']) do |user|
       update_folio_attributes(user)
     end
   end
@@ -67,11 +67,11 @@ class CurrentUser
   # rubocop:enable Metrics/AbcSize
 
   def update_folio_attributes(user)
-    user.patron_key = env['warden']&.user&.dig(:patron_key)
+    user.patron_key = env['warden']&.user&.dig('patron_key')
   end
 
   def ldap_attributes
-    env['warden']&.user&.dig(:ldap_attributes) || {}
+    env['warden']&.user&.dig('ldap_attributes') || {}
   end
 
   def ldap_name
@@ -117,6 +117,6 @@ class CurrentUser
   end
 
   def user_id
-    env['warden']&.user&.dig(:username)
+    env['warden']&.user&.dig('username')
   end
 end

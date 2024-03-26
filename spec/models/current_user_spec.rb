@@ -7,7 +7,7 @@ RSpec.describe CurrentUser do
 
   let(:rails_req) { double(env: { 'warden' => warden }) }
   let(:warden) do
-    instance_double(Warden::Proxy, user:)
+    instance_double(Warden::Proxy, user: user&.stringify_keys)
   end
   let(:user) { nil }
 

@@ -23,7 +23,7 @@ RSpec.describe SessionsController do
 
   describe 'logout' do
     it 'redirects to the Shibboleth logout page' do
-      warden.set_user({ shibboleth: true })
+      warden.set_user({ 'shibboleth' => true })
       get :destroy
       expect(response).to redirect_to('/Shibboleth.sso/Logout')
     end
