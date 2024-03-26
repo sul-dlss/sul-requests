@@ -2,16 +2,11 @@
 
 require 'rails_helper'
 
-# A fake Request type that can be sent to ILLiad
-class ExampleRequest < Request
-  include Illiadable
-end
-
 RSpec.describe SubmitIlliadRequestJob do
   subject { described_class.new(request_id) }
 
   let(:request_id) { 1 }
-  let(:request) { instance_double(ExampleRequest) }
+  let(:request) { instance_double(Scan) }
   let(:illiad_request) { instance_double(IlliadRequest, request!: illiad_response) }
   let(:illiad_response) { instance_double(Faraday::Response, body: '{"Foo": "Bar"}', success?: true) }
 
