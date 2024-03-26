@@ -506,6 +506,26 @@ RSpec.describe Folio::Item do
       end
     end
 
+    context 'an item with a shelved by title call number' do
+      let(:data) do
+        <<~JSON
+          {
+            "effectiveCallNumberComponents": { "callNumber": "UNCLASSIFIED" },
+            "effectiveLocation": { "id": "82d77fc4-6d63-4de9-a6b9-5056570ce060",
+                                   "code": "MAR-SHELBYTITLE",
+                                   "temporaryLoanTypeId": null,
+                                   "permanentLoanTypeId": null },
+            "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
+            "notes": []
+          }
+        JSON
+      end
+
+      it 'is shelved by title' do
+        expect(item.callnumber).to eq('Shelved by title')
+      end
+    end
+
     context 'with an item that is checked out' do
       let(:data) do
         <<~JSON
