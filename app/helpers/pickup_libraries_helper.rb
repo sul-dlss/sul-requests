@@ -30,11 +30,11 @@ module PickupLibrariesHelper
     return unless pickup_destinations.length > 1
 
     form.select(
-      :destination,
-      pickup_destinations_array(pickup_destinations),
+      :destination, pickup_destinations_array(pickup_destinations),
       {
         label: label_for_pickup_destinations_dropdown(pickup_destinations),
-        selected: form.object.destination || form.object.default_pickup_destination
+        selected: form.object.destination || form.object.default_pickup_destination,
+        include_blank: false, required: false
       },
       aria: { controls: 'scheduler-text' },
       data: { 'paging-schedule-updater' => 'true', 'text-selector' => "[data-text-object='#{form.object.object_id}']" }
@@ -44,8 +44,8 @@ module PickupLibrariesHelper
   def single_destination_markup(form, pickup_destination)
     destination_label = destination_label(pickup_destination)
     <<-HTML
-      <div class='form-group'>
-        <div class='#{label_column_class} control-label'>
+      <div class='form-group row'>
+        <div class='#{label_column_class} col-form-label'>
           #{label_for_pickup_destinations_dropdown([])}
         </div>
         <div class='#{content_column_class} input-like-text'>

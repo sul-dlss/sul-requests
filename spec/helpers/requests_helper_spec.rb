@@ -27,7 +27,7 @@ RSpec.describe RequestsHelper do
       it 'returns library text and a hidden input w/ the destination library' do
         expect(form).to receive(:hidden_field).with(:destination, value: 'ENG').and_return('<hidden_field>')
         markup = Capybara.string(select_for_pickup_destinations(form))
-        expect(markup).to have_css('.form-group .control-label', text: 'Will be delivered to')
+        expect(markup).to have_css('.form-group .col-form-label', text: 'Will be delivered to')
         expect(markup).to have_css('.form-group .input-like-text', text: 'Engineering Library (Terman)')
         expect(markup).to have_css('hidden_field')
       end
@@ -245,6 +245,28 @@ RSpec.describe RequestsHelper do
 
       it 'includes the status text' do
         expect(subject).to have_content('Not requestable')
+      end
+    end
+  end
+
+  describe '#aeon_reading_room_code' do
+    describe 'location not in Folio::Types aeon request' do
+      let(:current_request) do
+        build(:request, origin: 'SPEC-COLL', origin_location: 'SPEC-STACKS', bib_data: {})
+      end
+
+      it 'returns original location code' do
+        expect(aeon_reading_room_code).to eq('SPEC-COLL')
+      end
+    end
+
+    describe 'ARS aeon request' do
+      let(:current_request) do
+        build(:request, origin: 'SAL3', origin_location: 'SAL3-PAGE-AS', bib_data: {})
+      end
+
+      it 'returns ARS location code' do
+        expect(aeon_reading_room_code).to eq('ARS')
       end
     end
   end

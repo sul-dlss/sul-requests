@@ -35,13 +35,13 @@ RSpec.describe 'Viewing all requests' do
 
         expect(page).to have_css('table.table-striped', count: 1)
 
-        expect(page).to have_css('th.col-sm-1', text: 'Type')
-        expect(page).to have_css('th.col-sm-1', text: 'Origin')
-        expect(page).to have_css('th.col-sm-1', text: 'Destination')
-        expect(page).to have_css('th.col-sm-5', text: 'Title')
-        expect(page).to have_css('th.col-sm-2', text: 'Requester')
-        expect(page).to have_css('th.col-sm-1', text: 'Requested on')
-        expect(page).to have_css('th.col-sm-1', text: 'Status')
+        expect(page).to have_css('th.col-1', text: 'Type')
+        expect(page).to have_css('th.col-1', text: 'Origin')
+        expect(page).to have_css('th.col-1', text: 'Destination')
+        expect(page).to have_css('th.col-5', text: 'Title')
+        expect(page).to have_css('th.col-2', text: 'Requester')
+        expect(page).to have_css('th.col-1', text: 'Requested on')
+        expect(page).to have_css('th.col-1', text: 'Status')
       end
 
       it 'allows filtering by request type' do
@@ -153,7 +153,7 @@ RSpec.describe 'Viewing all requests' do
 
       it 'redirects to the login page' do
         expect_any_instance_of(AdminController).to receive(:redirect_to).with(
-          login_path(referrer: admin_index_url)
+          login_by_sunetid_path(referrer: admin_index_url)
         )
         visit admin_index_path
       end
@@ -185,21 +185,6 @@ RSpec.describe 'Viewing all requests' do
 
           it 'requests are not paginated' do
             expect(page).to have_no_css('.pagination')
-          end
-        end
-
-        context 'on the "All done" page' do
-          before do
-            pages.each(&:approved!)
-            visit admin_path('ART', done: 'true', per_page: 1)
-          end
-
-          it 'requests are paginated', :js do
-            expect(page).to have_css('.pagination')
-
-            click_on 'Next ›'
-
-            expect(page).to have_css('.pagination .disabled', text: 'Next ›')
           end
         end
       end
@@ -242,7 +227,7 @@ RSpec.describe 'Viewing all requests' do
 
     it 'redirects to the login page' do
       expect_any_instance_of(AdminController).to receive(:redirect_to).with(
-        login_path(referrer: admin_url('ART'))
+        login_by_sunetid_path(referrer: admin_url('ART'))
       )
       visit admin_path('ART')
     end

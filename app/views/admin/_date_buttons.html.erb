@@ -1,5 +1,5 @@
 <% if @dates.present? %>
   <% @dates.each do |date| %>
-    <%= link_to(l(date, format: :quick), admin_path(params[:id], date: date), class: "btn btn-md btn-default #{'btn-primary' if params[:date].to_s == date.to_s}") %>
+    <%= link_to(l(date, format: :quick), admin_path(params[:id], date: date), class: "btn btn-md btn-secondary #{'btn-primary' if params[:date].to_s == date.to_s}") %>
   <% end %>
 <% end %>

@@ -28,6 +28,10 @@ module SULRequests
     #
     # config.eager_load_paths << Rails.root.join("extras")
 
+    config.middleware.use Warden::Manager do |manager|
+      manager.default_strategies :shibboleth
+    end
+
     require 'token_encryptor'
     # Load all request types automatically
     config.autoload_paths += %W( #{config.root}/app/models/requests #{config.root}/app/mailers/factories )

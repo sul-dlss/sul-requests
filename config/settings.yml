@@ -100,6 +100,7 @@ features:
   hold_recall_via: 'illiad'
   scan_service: true
   mediator_email: true
+  requests_redesign: false
 
 background_jobs:
   enabled: false
@@ -363,3 +364,8 @@ scan_destinations:
 
 # Aeon external request endpoint (ERE)
 aeon_ere_url: https://stanford.aeon.atlas-sys.com/logon?Action=11&Type=200
+RECAPTCHA:
+  SITE_KEY: 6Lc6BAAAAAAAAChqRbQZcn_yyyyyyyyyyyyyyyyy
+  SECRET_KEY: 6Lc6BAAAAAAAAKN3DRm6VA_xxxxxxxxxxxxxxxxx
+EMAIL_TO: yolo@example.com
+HOSTNAME: foo.example.com

@@ -1,0 +1,123 @@
+$font-family-base: "Source Sans 3", "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-family-serif: "Source Serif Pro", Georgia, Times, Times New Roman, serif;
+
+$su-cardinal: #8C1515;
+$su-digital-blue: #006CB8;
+$su-digital-blue-dark: #00548F;
+$su-process-black: #2E2D29;
+
+$primary: $su-digital-blue;
+$link-hover-color: $su-digital-blue-dark;
+$black: $su-process-black;
+
+$headings-font-weight: 400;
+
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import "bootstrap-icons/font/bootstrap-icons";
+
+// Create your own map
+$custom-colors: (
+  "cardinal": $su-cardinal,
+);
+
+// Merge the maps
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+
+@import 'bootstrap/scss/bootstrap';
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto+Slab:wght@300;400;700&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600;1,700&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap");
+
+@font-face {
+  font-family: Stanford;
+  src: url(https://www-media.stanford.edu/assets/fonts/stanford.woff) format("woff"), url(https://www-media.stanford.edu/assets/fonts/stanford.ttf) format("truetype");
+  font-weight: 300;
+  font-display: swap
+}
+
+body {
+  --bs-link-hover-decoration: underline;
+}
+
+/* This selector/rule can be removed after https://github.com/twbs/bootstrap/pull/39098 is released */
+a {
+  text-decoration: var(--bs-link-decoration);
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: var(--bs-link-hover-decoration);
+  }
+}
+
+.su-logo {
+  --bs-link-hover-decoration: none;
+  display: inline-block;
+  font-family: Stanford, $font-family-serif;
+  font-variant-ligatures: discretionary-ligatures;
+  font-feature-settings: "liga";
+  font-weight: 400;
+  font-size: 2.125rem;
+  line-height: 0.75;
+  text-decoration: none;
+}
+
+// Footer and header links don't get underline until you hover
+#sul-header,
+#su-footer {
+  --bs-link-decoration: none;
+  --bs-link-hover-decoration: underline;
+}
+
+// Font smoothing for light text on dark background
+#app-header,
+#su-footer {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#sul-header {
+  --bs-link-color-rgb: $su-cardinal;
+  --bs-link-hover-color-rgb: $su-cardinal;
+}
+
+#su-footer {
+  --bs-link-color-rgb: $white;
+  --bs-link-hover-color-rgb: $white;
+
+  ul {
+    a {
+      font-size: min(calc(0.825rem + 0.3vw), 1.25rem);
+
+      @include media-breakpoint-down(sm) {
+        font-weight: 600;
+      }
+    }
+  }
+
+  .copyright {
+    font-size: 0.8125rem;
+
+    @include media-breakpoint-up(sm) {
+      font-size: 0.9375rem;
+    }
+  }
+}
+
+summary.btn::-webkit-details-marker{
+  display: none;
+}
+
+details[open] summary .bi-chevron-right::before {
+ transform: rotate(-90deg);
+}
+
+summary .bi-chevron-right::before {
+  transition: .25s transform ease;
+  font-weight: 900!important;
+}
+
+.required-label::after {
+    content: '*';
+    color: $su-cardinal;
+    margin-left: 5px;
+}

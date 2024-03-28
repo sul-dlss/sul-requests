@@ -1,0 +1,66 @@
+<% if current_page?(feedback_form_path) %>
+  <h1 class="text-center mt-2">Submit feedback</h1>
+<% end %>
+<%= form_tag feedback_form_path, method: :post, class:"feedback-form" do %>
+  <div class="row mt-4">
+    <div class="offset-md-2 col-md-8 mb-2">
+      <div class="alert alert-info" role="alert">
+        <div class="row">
+          <div class="col-sm-9">
+            Reporting from: <span class="reporting-from-field"><%= root_url %></span>
+            <%# TODO_SW_2024: update to url that is not request.fullpath and is root_url %>
+            <%= hidden_field_tag :url, request.fullpath, class:"reporting-from-field" %>
+          </div>
+          <div class="col-sm-3 text-right">
+            <%= link_to 'Check system status', 'http://library-status.stanford.edu' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <span class="d-none">
+      <%= label_tag(:email_address, 'Ignore this text box. It is used to detect spammers. If you enter anything into this text box, your message will not be sent.') %><br/>
+      <%= email_field_tag :email_address %><br/>
+      <%= hidden_field_tag :user_agent %>
+      <%= hidden_field_tag :viewport %>
+    </span>
+    <div class="offset-md-2 col-md-7">
+      <div class="mb-3 row">
+        <%= label_tag(:message, 'Message', class:"col-md-3 col-form-label text-right") %>
+        <div class="col-md-9">
+          <%= text_area_tag :message, "", rows:"5", class:"form-control", required: true %>
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <%= label_tag(:name, 'Your name', class:"col-md-3 col-form-label text-right") %>
+        <div class="col-md-9">
+          <%= text_field_tag :name, "", class:"form-control", required: true %>
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <%= label_tag(:to, 'Your email', class:"col-md-3 col-form-label text-right") %>
+        <div class="col-md-9">
+          <%= email_field_tag :to, "", class:"form-control", required: true %>
+        </div>
+      </div>
+
+      <% unless current_user? %>
+        <div class="mb-3 row requests-captcha">
+        <div class="col-md-9 offset-md-3">
+            <%= recaptcha_tags %>
+
+            <p>(Stanford users can avoid this Captcha by logging in.)</p>
+        </div>
+        </div>
+      <% end %>
+
+      <div class="mb-3 row">
+        <div class="col-md-9 offset-md-3">
+          <button type="submit" class="btn btn-primary">Send</button>
+          <%= link_to "Cancel", :back, class:"btn", data: {toggle:"collapse", target:"#feedback-form"} %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

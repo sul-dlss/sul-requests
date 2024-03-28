@@ -8,19 +8,19 @@
   }
 
   .sort {
-    line-height: $line-height-computed;
+    line-height: $line-height-base;
 
     i {
       font-size: $font-size-tiny;
-      line-height: $line-height-computed;      
+      line-height: $line-height-base;
       margin-left: 15px;
     }
 
     &.asc,
     &.desc {
-      background-color: darken($btn-default-bg, 10%);
-      border-color: darken($btn-default-border, 12%);
-      color: $btn-default-color;
+      background-color: darken($btn-secondary-bg, 10%);
+      border-color: darken($btn-secondary-border, 12%);
+      color: $btn-secondary-color;
     }
   }
 
@@ -41,7 +41,7 @@
 
 .item-selector {
   border: 1px solid $item-selector-border-color;
-  margin-bottom: $form-group-margin-bottom;
+  margin-bottom: 1rem;
   max-height: 200px;
   overflow: auto;
 
@@ -61,17 +61,19 @@
   }
 
   .barcode-checkbox {
-    background-color: $btn-default-bg;
-    border-color: $btn-default-border;
+    background-color: $btn-secondary-bg;
     border-radius: 0;
+    border: 1px solid $btn-secondary-border;
     border-top: 0;
-    color: $btn-default-color;
-    vertical-align: top;
+    color: $btn-secondary-color;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
   }
 
   .list .input-group:first-child {
     .barcode-checkbox {
-      border-top: 1px solid $btn-default-border;
+      border-top: 1px solid $btn-secondary-border;
     }
   }
 
@@ -86,3 +88,6 @@
   }
 }
 
+.index {
+  display: none;
+}

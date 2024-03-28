@@ -4,10 +4,16 @@ require 'rails_helper'
 
 RSpec.describe 'Sidekiq requests' do
   let(:url) { '/sidekiq' }
+  let(:user) { nil }
+
+  before do
+    login_as(user, run_callbacks: false)
+  end
 
   context 'with superadmin privileges' do
+    let(:user) { instance_double(CurrentUser, user_object: instance_double(User, super_admin?: true)) }
+
     it 'is successful' do
-      allow(CurrentUser).to receive(:for).and_return(double(super_admin?: true))
       expect { get(url) }.to raise_error(RedisClient::CannotConnectError)
     end
   end

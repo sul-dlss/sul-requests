@@ -21,6 +21,13 @@ class RequestsController < ApplicationController
 
   rescue_from bib_model_class::NotFound, with: :item_not_found
 
+  before_action only: :new, if: -> { Settings.features.requests_redesign } do
+    mapped_params = { 'instance_hrid' => new_params[:item_id],
+                      'origin_location_code' => params[:origin_location],
+                      'barcode' => new_params[:barcode] }
+    redirect_to(new_patron_request_path(mapped_params))
+  end
+
   def new
     current_request.assign_attributes(new_params)
     validate_request_type
@@ -59,7 +66,7 @@ class RequestsController < ApplicationController
   def request_specific_user
     user_attributes = params.dig(:request, :user_attributes)&.permit(:name, :email, :library_id).to_h.reject { |_k, v| v.blank? }
 
-    User.new(**user_attributes, ip_address: request.remote_ip) if user_attributes.present?
+    User.new(**user_attributes) if user_attributes.present?
   end
 
   def delegated_request?
@@ -99,7 +106,7 @@ class RequestsController < ApplicationController
   end
 
   def rescue_status_pages
-    redirect_to login_path(referrer: request.original_url) unless current_user.sso_user?
+    redirect_to login_by_sunetid_path(referrer: request.original_url) unless current_user.sso_user?
   end
 
   def bounce_request_through_sso
@@ -109,7 +116,7 @@ class RequestsController < ApplicationController
     )
 
     referrer = interstitial_path(redirect_to: create_path)
-    redirect_to login_path(referrer:)
+    redirect_to login_by_sunetid_path(referrer:)
   end
 
   # Strips out undesired parameters when sending the user through our auth service
@@ -146,6 +153,7 @@ class RequestsController < ApplicationController
 
   def delegated_new_request_path(request, url_params = nil)
     url_params ||= params.except(:controller, :action).to_unsafe_h
+
     request.delegate_request!
     new_polymorphic_path(request.type.underscore, url_params)
   end
@@ -192,5 +200,9 @@ class RequestsController < ApplicationController
   # Re-raise as ActiveRecord::RecordNotFound so we get a 404 in production
   def item_not_found(exception)
     raise ActiveRecord::RecordNotFound, exception
+  end
+
+  def item_not_requestable
+    render 'item_not_requestable', status: :bad_request
   end
 end

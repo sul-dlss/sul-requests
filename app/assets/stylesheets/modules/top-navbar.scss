@@ -23,6 +23,7 @@
         font-weight: normal;
         margin-left: 15px;
         padding-bottom: 3px;
+        text-decoration: none;
 
         &.first {
           margin-left: 0;
@@ -45,7 +46,7 @@
 }
 
 
-@media screen and (max-width: $screen-xs-max) {
+@media screen and (max-width: breakpoint-min(sm)) {
   #topnav {
     padding-left: 10px;
     padding-right: 10px;

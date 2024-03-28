@@ -8,7 +8,7 @@ gem 'sqlite3'
 gem 'puma', '~> 6.0'
 gem 'bootsnap'
 # Use bootstrap_form for easy form building
-gem 'bootstrap_form', '< 4' # pin to < 4 since we are not on bootstrap 4
+gem 'bootstrap_form', '~> 5.4'
 # A gem for simple rails environment specific config
 gem 'config'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -21,7 +21,7 @@ gem 'faraday-retry'
 gem 'http' # for Reshare and SymphonyClient
 # Use kaminari for pagination
 gem 'kaminari'
-gem 'kaminari_bootstrap_paginator'
+gem 'bootstrap5-kaminari-views'
 
 gem 'redcarpet'
 
@@ -64,6 +64,9 @@ group :development, :test do
   # Call 'binding.break' anywhere in the code to stop execution and get a debugger console
   gem 'debug'
 
+  # Axe for accessibility testing
+  gem 'axe-core-rspec'
+
   # RSpec for testing
   gem 'rspec-rails', '~> 6.0'
 
@@ -91,6 +94,7 @@ group :development, :test do
   gem 'listen'
 
   gem 'webmock'
+  gem 'warden-rspec-rails'
 end
 
 group :production do
@@ -117,3 +121,6 @@ gem "jsbundling-rails", "~> 1.1"
 gem "turbo-rails", "~> 1.4"
 
 gem "propshaft", "~> 0.7.0"
+
+gem 'recaptcha'
+gem 'warden'

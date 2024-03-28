@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   has_many :requests
 
   attr_writer :ldap_group_string, :affiliation
-  attr_accessor :ip_address
+  attr_accessor :ip_address, :patron_key
 
   def proxy?
     patron&.proxy?
@@ -107,7 +107,9 @@ class User < ActiveRecord::Base
 
   def patron
     @patron ||= begin
-      if sso_user?
+      if patron_key.present?
+        patron_model_class.find_by(patron_key:)
+      elsif sso_user?
         patron_model_class.find_by(sunetid:)
       elsif library_id_user?
         patron_model_class.find_by(library_id:)

@@ -35,11 +35,11 @@ module RequestsHelper
 
   def label_for_item_selector_holding(holding)
     if holding.checked_out?
-      content_tag :span, class: 'status pull-right availability unavailable' do
+      content_tag :span, class: 'status float-end availability unavailable' do
         "Due #{holding.due_date}"
       end
     else
-      content_tag :span, class: "status pull-right availability #{holding.status_class}" do
+      content_tag :span, class: "status float-end availability #{holding.status_class}" do
         holding.status_text
       end
     end
@@ -94,5 +94,17 @@ module RequestsHelper
     elsif user.library_id_user?
       user.library_id
     end
+  end
+
+  # For the reading room information, we need to check if 'ARS' is in the location details
+  # for the library. An example is SAL3, which should show the ARS reading room information
+  # and so should return ARS as the library code for the reading room text block.
+  # This logic will be extended in the future to cover any location that has a pageAeonSite value.
+  def aeon_reading_room_code
+    folio_types_location = Folio::Types.locations.find_by(code: current_request.origin_location)
+    return current_request.origin_library_code unless folio_types_location
+
+    details = folio_types_location.details
+    details.key?('pageAeonSite') && details['pageAeonSite'] == 'ARS' ? 'ARS' : current_request.origin_library_code
   end
 end

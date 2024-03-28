@@ -53,6 +53,34 @@ class FolioClient
     response&.dig('users', 0)
   end
 
+  # Return the FOLIO user object given a library id (e.g. barcode)
+  # See https://s3.amazonaws.com/foliodocs/api/mod-users/p/users.html#users__userid__get
+  def login_by_library_id_and_pin(library_id, pin)
+    response = get_json('/users', params: { query: CqlQuery.new(barcode: library_id).to_query })
+    user = response&.dig('users', 0)
+
+    return unless user && validate_patron_pin(user['id'], pin)
+
+    user
+  end
+
+  # Validate a pin for a user
+  # https://s3.amazonaws.com/foliodocs/api/mod-users/p/patronpin.html#patron_pin_verify_post
+  # @param [String] user_id the UUID of the user in FOLIO
+  # @param [String] pin
+  # @return [Boolean] true when successful
+  def validate_patron_pin(user_id, pin)
+    response = post('/patron-pin/verify', json: { id: user_id, pin: })
+    case response.status
+    when 200
+      true
+    when 422
+      false
+    else
+      check_response(response, title: 'Validate pin', context: { user_id: })
+    end
+  end
+
   def user_info(user_id)
     get_json("/users/#{CGI.escape(user_id)}")
   end

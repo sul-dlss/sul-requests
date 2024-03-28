@@ -38,7 +38,7 @@ class Ability
 
     can :manage, :all if user.super_admin?
 
-    can :manage, [LibraryLocation, Message, PagingSchedule, Request, AdminComment] if user.site_admin?
+    can :manage, [LibraryLocation, Message, PagingSchedule, Request, AdminComment, PatronRequest] if user.site_admin?
 
     # Adminstrators for origins or destinations should be able to
     # manage requests originating or arriving to their library.
@@ -79,6 +79,9 @@ class Ability
 
     # ... and to check the status, you either need to be logged in or include a special token in the URL
     can :read, [Request, Page, HoldRecall, Scan, MediatedPage], user_id: user.id if user.sso_user?
+
+    can :new, PatronRequest
+    can :create, PatronRequest
 
     if token
       begin

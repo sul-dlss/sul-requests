@@ -13,7 +13,6 @@ class Request < ActiveRecord::Base
 
   attr_reader :requested_barcode
   attr_writer :bib_data
-  attr_accessor :live_lookup
 
   scope :recent, -> { order(created_at: :desc) }
   scope :needed_date_desc, -> { order(needed_date: :desc) }
@@ -64,9 +63,13 @@ class Request < ActiveRecord::Base
     library_location.active_messages.for_type(Message.notification_type(self))
   end
 
-  # @returns the model class either sourced from SearchWorks or from Folio.
+  # @returns the model class either sourced from Folio.
   def bib_data
-    @bib_data ||= bib_model_class.fetch(self, live_lookup)
+    @bib_data ||= begin
+      # Append "a" to the item_id unless it already starts with a letter (e.g. "in00000063826")
+      hrid = item_id.start_with?(/\d/) ? "a#{item_id}" : item_id
+      bib_model_class.fetch(hrid)
+    end
   end
 
   def send_approval_status!
@@ -162,10 +165,6 @@ class Request < ActiveRecord::Base
   end
   alias barcode= requested_barcode=
 
-  def check_remote_ip?
-    mediateable?
-  end
-
   def library_id_error?
     errors[:library_id].present?
   end
@@ -192,6 +191,13 @@ class Request < ActiveRecord::Base
 
   def destination_library_code
     @destination_library_code ||= Settings.ils.pickup_destination_class.constantize.new(destination).library_code || destination
+  end
+
+  def contact_info
+    Settings.locations[origin_location]&.contact_info ||
+      Settings.libraries[origin_library_code]&.contact_info ||
+      Settings.libraries[destination_library_code]&.contact_info ||
+      Settings.libraries.default.contact_info
   end
 
   class << self

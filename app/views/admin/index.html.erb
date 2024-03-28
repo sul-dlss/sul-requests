@@ -36,13 +36,13 @@
   <table class="table table-striped">
     <thead>
       <tr>
-        <th class='col-sm-1'>Type</th>
-        <th class='col-sm-1'>Origin</th>
-        <th class='col-sm-1'>Destination</th>
-        <th class='col-sm-5'>Title</th>
-        <th class='col-sm-2'>Requester</th>
-        <th class='col-sm-1'>Requested on</th>
-        <th class='col-sm-1'>Status</th>
+        <th class='col-1'>Type</th>
+        <th class='col-1'>Origin</th>
+        <th class='col-1'>Destination</th>
+        <th class='col-5'>Title</th>
+        <th class='col-2'>Requester</th>
+        <th class='col-1'>Requested on</th>
+        <th class='col-1'>Status</th>
       </tr>
     </thead>
     <tbody>
@@ -60,6 +60,6 @@
     </tbody>
   </table>
 
-  <%= paginate @requests, theme: 'bootstrap' unless filtered_by_create_date? %>
+  <%= paginate @requests, theme: 'bootstrap-5' unless filtered_by_create_date? %>
 
 </div>

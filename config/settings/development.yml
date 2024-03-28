@@ -4,3 +4,5 @@ token_encrypt:
   salt: 'dcVNcekAYNIFtggdJXQpSkWHBpBVsVsPiRzCFpWbZGLrQtHKSdMBKIWKmYYIZnkbXuMisFlSkHbUmIimKMbjFMVDpfzyIRLvmLYBUparuPAaxYjPzdmFfRGBGgxfvwOR'
 
 mailer_host: 'localhost:3000'
+features:
+  requests_redesign: true

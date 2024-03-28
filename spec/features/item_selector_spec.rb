@@ -12,7 +12,7 @@ RSpec.describe 'Item Selector' do
 
     it 'displays the item call number' do
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS')
-      expect(page).to have_css('.control-label', text: 'Call number')
+      expect(page).to have_css('.col-form-label', text: 'Call number')
       expect(page).to have_css('p', text: 'ABC 123')
       expect(page).to have_no_css('#item-selector')
     end
@@ -296,7 +296,7 @@ RSpec.describe 'Item Selector' do
       expect(page).to have_css('#breadcrumb-34567890', text: 'ABC 789')
 
       # Click the close button on the breadcrumb pill
-      find('#breadcrumb-12345678 .close').click
+      find('#breadcrumb-12345678 .btn-close').click
       expect(page).to have_no_css('#breadcrumb-12345678', text: 'ABC 123')
 
       within('#item-selector') do

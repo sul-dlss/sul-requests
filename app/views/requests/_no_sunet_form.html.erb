@@ -2,8 +2,8 @@
   <div id="no-sunetid-form" aria-hidden="false">
     <%= f.fields_for :user, (current_request.user unless current_request.user && current_request.user.sso_user?) || User.new do |uf| %>
       <% if f.object.requestable_with_library_id? %>
-        <div class="form-group <%= "has-error" if f.object.library_id_error? %>">
-          <%= uf.label :library_id, 'Stanford Library ID', class: "control-label #{label_column_class} #{'required' unless f.object.requestable_with_name_email?}" %>
+        <div class="form-group row <%= "has-error" if f.object.library_id_error? %>">
+          <%= uf.label :library_id, 'Stanford Library ID', class: "col-form-label #{label_column_class} #{'required' unless f.object.requestable_with_name_email?}" %>
           <div class='<%= content_column_class %>'>
             <%= uf.text_field_without_bootstrap(
                   :library_id,
@@ -35,13 +35,14 @@
       <% if f.object.requestable_with_name_email? %>
         <%= uf.text_field(
               :name,
-              label_class: 'required',
+              label_class: 'col-form-label col required',
+
               data: { behavior: 'grouped-user-field' }
             )
         %>
         <%= uf.email_field(
               :email,
-              label_class: 'required',
+              label_class: 'col-form-label col required',
               data: { behavior: 'grouped-user-field' }
             )
         %>

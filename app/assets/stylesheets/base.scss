@@ -1,6 +1,4 @@
 a {
-  border-bottom: 1px dotted $sul-link-border-color;
-
   &.disabled {
     color: $gray-ccc;
     cursor: not-allowed;
@@ -35,13 +33,4 @@ dd {
 label,
 dt {
   font-weight: normal;
-}
-
-button:focus,
-embed:focus,
-input:focus,
-object:focus,
-select:focus,
-textarea:focus {
-  @include tab-focus;
 }

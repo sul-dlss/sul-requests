@@ -4,9 +4,7 @@
 class AdminController < ApplicationController
   before_action only: [:approve_item, :holdings] do
     authorize! :manage, (
-      @request = MediatedPage.find(params[:id]).tap do |request|
-        request.live_lookup = false
-      end
+      @request = MediatedPage.find(params[:id])
     )
   end
 
@@ -130,7 +128,7 @@ class AdminController < ApplicationController
   def rescue_can_can(*)
     return super if sso_user? || params[:action] == 'approve_item'
 
-    redirect_to login_path(referrer: request.original_url)
+    redirect_to login_by_sunetid_path(referrer: request.original_url)
   end
 
   def range_param(default: Time.zone.now.beginning_of_day...Time.zone.now)

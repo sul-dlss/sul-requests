@@ -9,7 +9,7 @@ module MessagesHelper
             [:edit, message],
             class: 'btn
                     btn-sm
-                    btn-default
+                    btn-secondary
                     edit-message'
   end
 
@@ -19,7 +19,7 @@ module MessagesHelper
                              request_type:),
             class: 'btn
                     btn-sm
-                    btn-default
+                    btn-secondary
                     edit-message'
   end
 
@@ -29,7 +29,7 @@ module MessagesHelper
             method: :delete,
             class: 'btn
                     btn-sm
-                    btn-default
+                    btn-secondary
                     edit-message'
   end
 end

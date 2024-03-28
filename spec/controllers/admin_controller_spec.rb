@@ -39,7 +39,7 @@ RSpec.describe AdminController do
       let(:user) { create(:anon_user) }
 
       it 'redirects to the login page' do
-        expect(get(:index)).to redirect_to(login_path(referrer: admin_index_url))
+        expect(get(:index)).to redirect_to(login_by_sunetid_path(referrer: admin_index_url))
       end
     end
   end
@@ -91,7 +91,7 @@ RSpec.describe AdminController do
 
       it 'redirects to login' do
         expect(get(:show, params: { id: 'SPEC-COLL' })).to redirect_to(
-          login_path(referrer: admin_url('SPEC-COLL'))
+          login_by_sunetid_path(referrer: admin_url('SPEC-COLL'))
         )
       end
     end
@@ -112,11 +112,6 @@ RSpec.describe AdminController do
         get :holdings, params: { id: mediated_page.id }
         expect(response).to be_successful
         expect(assigns(:request)).to be_a(MediatedPage)
-      end
-
-      it 'initiates a mediated page object with the live_lookup option set to false' do
-        get :holdings, params: { id: mediated_page.id }
-        expect(assigns(:request).live_lookup).to be false
       end
     end
   end
@@ -155,11 +150,6 @@ RSpec.describe AdminController do
         get :approve_item, params: { id: mediated_page.id, item: '3610512345' }
         expect(response).to have_http_status :internal_server_error
         expect(response).not_to be_successful
-      end
-
-      it 'initiates a mediated page object with the live_lookup option set to false' do
-        get :approve_item, params: { id: mediated_page.id, item: '3610512345' }
-        expect(assigns(:request).live_lookup).to be false
       end
     end
 

@@ -1,24 +1,23 @@
 # frozen_string_literal: true
 
 # get the current User object from the Rails request object
-# Intended to be used as CurrentUser.for(request)
 class CurrentUser
-  attr_reader :request
+  attr_reader :data
 
-  delegate :params, to: :request
-
-  def initialize(request)
-    @request = request
+  def initialize(data)
+    @data = (data || {}).with_indifferent_access
   end
 
-  def self.for(request)
-    new(request).user_object
+  def as_json(*, **, &)
+    data.as_json(*, **, &)
   end
 
   def user_object
     @user_object ||= begin
-      if user_id.present?
+      if shibboleth?
         sso_user
+      elsif library_id?
+        library_id_user
       else
         anonymous_user
       end
@@ -27,9 +26,26 @@ class CurrentUser
 
   private
 
+  def shibboleth?
+    data['shibboleth']
+  end
+
+  def library_id?
+    return false if shibboleth?
+
+    data['patron_key']
+  end
+
   def sso_user
     User.find_or_create_by(sunetid: user_id).tap do |user|
       update_ldap_attributes(user)
+      update_folio_attributes(user)
+    end
+  end
+
+  def library_id_user
+    User.find_or_create_by(library_id: user_id) do |user|
+      update_folio_attributes(user)
     end
   end
 
@@ -46,6 +62,14 @@ class CurrentUser
     user.save if user.changed?
   end
   # rubocop:enable Metrics/AbcSize
+
+  def update_folio_attributes(user)
+    user.patron_key = data['patron_key']
+  end
+
+  def ldap_attributes
+    data['ldap_attributes'] || {}
+  end
 
   def ldap_name
     ldap_attributes['displayName']
@@ -85,30 +109,11 @@ class CurrentUser
     ldap_attributes['suEmailStatus']
   end
 
-  def ldap_attributes
-    data = request.env
-    data = data.merge(fake_ldap_attributes) if use_fake_ldap_attributes?
-    data
-  end
-
   def anonymous_user
-    User.new(ip_address: request.remote_ip)
+    User.new
   end
 
   def user_id
-    request.env['REMOTE_USER'].presence || ENV.fetch('REMOTE_USER', nil)
-  end
-
-  def fake_ldap_attributes
-    return {} unless user_id && use_fake_ldap_attributes?
-
-    (Settings.fake_ldap_attributes[user_id] || {}).to_hash.stringify_keys
-  end
-
-  # Only allow fake ldap information in development
-  def use_fake_ldap_attributes?
-    Settings.fake_ldap_attributes &&
-      Settings.fake_ldap_attributes[user_id] &&
-      Rails.env.development?
+    data['username']
   end
 end

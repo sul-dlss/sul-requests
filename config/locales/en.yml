@@ -182,6 +182,10 @@ en:
     unlisted: Approved for manual processing
   sul_requests:
     limit_reached_message: "<p>You've reached the maximum of %{limit} items per day.</p><p>Contact the library if you need help prioritizing your selections.</p>"
+    feedback_form:
+      success: Thank you! Your feedback has been sent.
+    feedback_mailer:
+      subject: Feedback from Requests
   symphony_response:
     failure:
       code_U003:
@@ -196,3 +200,23 @@ en:
       help_text:
         one: 'Select an item from the list above.'
         other: 'Select one or more items from the list above.'
+  shared:
+    sul_header:
+      sul: Stanford University Libraries
+      login: Login
+      logout: "%{sunetid}: Logout"
+      mylibrary: My Account
+      feedback: Feedback
+      application_name: Requests
+  sessions:
+    login_by_library_id:
+      alert: Unable to authenticate.
+    login_by_sunetid:
+      alert: Unable to authenticate.
+      error_html: <p class="h3">Your SUNet ID is not linked to a library account.</p>
+                  <ul>
+                    <li>A library account is created for patrons who are eligible to check out library materials.</li>
+                    <li>If you believe you should have an account, contact <a href="mailto:%{mailto}">Circulation &amp; Privileges</a> for assistance.</li>
+                  </ul>
+    destroy:
+      notice: You have been successfully logged out.

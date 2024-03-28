@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="description" content="Stanford University Libraries' application to request materials" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+    <title><%= yield(:page_title).blank? ? SULRequests::Application.config.application_name : yield(:page_title)%></title>
+    <%= favicon_link_tag 'favicon.ico' %>
+    <%= stylesheet_link_tag "application_redesign" %>
+    <%= stylesheet_link_tag "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700" %>
+     <!-- Google tag (gtag.js) -->
+     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8H7ZHEYXVM"></script>
+     <script>
+       window.dataLayer = window.dataLayer || [];
+       function gtag(){dataLayer.push(arguments);}
+       // To turn off debug mode, exclude the parameter altogether (cannot just set to false)
+       // See https://support.google.com/analytics/answer/7201382?hl=en#zippy=%2Cgoogle-tag-websites
+       args = <%= Settings.analytics_debug %> ? {"debug_mode": true} : {};
+       gtag('js', new Date());
+       gtag('config', 'G-8H7ZHEYXVM', args);
+     </script>
+    <%= csrf_meta_tags %>
+    <%= content_for(:head) %>
+    <%= javascript_include_tag "application_redesign", "data-turbo-track": "reload", defer: true %>
+  </head>
+
+  <body class="d-flex flex-column min-vh-100">
+    <header>
+      <%= render 'shared/sul_header' %>
+    </header>
+    <main class="flex-fill container">
+      <%= render 'shared/flashes' %>
+      <%= yield %>
+    </main>
+    <footer>
+      <%= render 'shared/su_global_footer' %>
+    </footer>
+  </body>
+</html>

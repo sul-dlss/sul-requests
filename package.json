@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "test": "jest -c jest.config.js",
-    "build:css": "cp -r ./node_modules/bootstrap-icons/font/fonts ./app/assets/builds && sass ./app/assets/stylesheets/application.sass.scss:./app/assets/builds/application.css --no-source-map --load-path=node_modules --load-path=vendor/assets/stylesheets",
+    "build:css": "cp -r ./node_modules/bootstrap-icons/font/fonts ./app/assets/builds && sass ./app/assets/stylesheets/application.sass.scss:./app/assets/builds/application.css --no-source-map --load-path=node_modules --load-path=vendor/assets/stylesheets && sass ./app/assets/stylesheets/application_redesign.scss:./app/assets/builds/application_redesign.css --no-source-map --load-path=node_modules --load-path=vendor/assets/stylesheets",
     "build": "esbuild app/javascript/*.* --define:global=window --bundle --sourcemap --outdir=app/assets/builds --public-path=/assets"
   },
   "devDependencies": {
@@ -21,12 +21,13 @@
   },
   "dependencies": {
     "@hotwired/turbo-rails": "^7.3.0",
+    "bootstrap": "5.3.3",
     "bootstrap-icons": "^1.10.4",
-    "bootstrap-sass": "3.4.1",
     "esbuild": "^0.19.0",
     "jest-environment-jsdom": "^29.6.4",
     "jquery": "^3.7.0",
     "list.js": "^2.3.1",
+    "@popperjs/core": "2",
     "rails-ujs": "^5.2.8-1",
     "sass": "^1.57.1",
     "trunk8": "^0.0.1"

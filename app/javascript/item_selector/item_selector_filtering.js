@@ -4,7 +4,8 @@ import itemSelector from '../item_selector'
 var itemSelectorFiltering = (function() {
   var listOptions = {
     page: 10000,
-    valueNames: ['callnumber', 'status']
+    valueNames: ['callnumber', 'status', 'index'],
+    searchColumns: ['callnumber', 'status']
   };
 
   return $.extend({}, itemSelector, {
@@ -25,7 +26,7 @@ var itemSelectorFiltering = (function() {
       // List.js dynamically injects behavior, so we need to check
       // if the list is sortable before setting the default sort
       if($.isFunction(list.sort)) {
-        list.sort('callnumber', { order: 'asc'});
+        list.sort('index', { order: 'asc'});
       }
     },
 
