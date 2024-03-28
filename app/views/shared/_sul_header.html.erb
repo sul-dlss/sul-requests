@@ -8,13 +8,11 @@
     <% end %>
     <nav aria-label="header menu">
       <ul class="list-unstyled d-flex gap-4 m-0">
-        <li>
-          <% if current_user.sso_user? %>
+        <% if current_user.sso_user? %>
+          <li>
             <%= link_to t('.logout', sunetid: current_user.sunetid), logout_path(referrer: root_path) %>
-          <% else %>
-            <%= link_to t('.login'), login_by_sunetid_path(referrer: request.original_url) %>
-          <% end %>
-        </li>
+          </li>
+        <% end %>
         <li>
           <%= link_to t('.my_account'), "https://mylibrary.stanford.edu/" %>
         </li>
