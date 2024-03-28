@@ -18,7 +18,9 @@ class ApplicationController < ActionController::Base
     current_user.sunetid.present?
   end
 
-  helper_method :current_user, :current_user?, :sso_user?
+  delegate :logged_in?, to: :current_user
+
+  helper_method :current_user, :current_user?, :sso_user?, :logged_in?
 
   private
 

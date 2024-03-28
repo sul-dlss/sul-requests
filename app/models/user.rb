@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
 
   has_many :requests
 
-  attr_writer :ldap_group_string, :affiliation
+  attr_writer :ldap_group_string, :affiliation, :user_group
   attr_accessor :ip_address, :patron_key
 
   def proxy?
@@ -77,6 +77,10 @@ class User < ActiveRecord::Base
     name.present? && email.present?
   end
 
+  def logged_in?
+    sso_user? || library_id_user? || name_email_user?
+  end
+
   def super_admin?
     admin_groups = Settings.super_admin_groups || []
     ldap_groups.intersect?(admin_groups)
@@ -93,6 +97,10 @@ class User < ActiveRecord::Base
 
   def affiliation
     (@affiliation || '').split(/[|;]/)
+  end
+
+  def user_group
+    @user_group || ''
   end
 
   def student_type

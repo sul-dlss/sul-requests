@@ -55,7 +55,8 @@ Warden::Strategies.add(:development_shibboleth_stub) do
     response = FolioClient.new.login_by_sunetid(uid)
 
     if response&.key?('key') || response&.key?('id')
-      u = { username: uid, patron_key: response['key'] || response['id'], shibboleth: true, ldap_attributes: }
+      u = { username: uid, group_id: response['patronGroup'],
+            patron_key: response['key'] || response['id'], shibboleth: true, ldap_attributes: }
       success!(CurrentUser.new(u))
     else
       # even though we didn't find a patron record in the ILS, the Shibboleth auth was successful
@@ -84,7 +85,10 @@ Warden::Strategies.add(:library_id) do
     response = FolioClient.new.login_by_library_id_and_pin(params['library_id'], params['pin'])
 
     if response&.key?('patronKey') || response&.key?('id')
-      u = { username: params['library_id'], patron_key: response['patronKey'] || response['id'] }
+      u = { username: params['library_id'], patron_key: response['patronKey'] || response['id'],
+            name: "#{response['personal']['firstName']} #{response['personal']['lastName']}",
+            group_id: response['patronGroup'], email: response['personal']['email']
+          }
       success!(CurrentUser.new(u))
     else
       fail!('Could not log in')
