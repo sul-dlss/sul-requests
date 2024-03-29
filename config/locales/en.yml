@@ -30,6 +30,8 @@ en:
         request_comment: 'Comment'
         item_comment: 'Item(s) requested'
         user: 'Requested by'
+      patron_request:
+        service_point_code: 'Pickup from'
       hold_recall:
         <<: *request_anchor
         needed_date: 'Not needed after'
@@ -175,6 +177,9 @@ en:
       synchronous_email_notification:
         proxy: "(We'll send a copy of this request to your email and to the designated notification address.)"
         default: "(We'll send a copy of this request to your email.)"
+  patron_requests:
+    new:
+      submit: Submit
   status_text:
     paged: Paged
     hold: Item is on-site - hold for patron

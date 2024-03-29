@@ -10,11 +10,23 @@ class PatronRequestsController < ApplicationController
 
   def show; end
 
+  def login
+    @request = PatronRequest.new(new_params)
+  end
+
   def new
     current_request.assign_attributes(new_params)
   end
 
-  def create; end
+  def create
+    @request.patron_id = current_user.patron.id
+
+    if @request.save
+      redirect_to @request
+    else
+      render 'new'
+    end
+  end
 
   protected
 
@@ -30,6 +42,6 @@ class PatronRequestsController < ApplicationController
   end
 
   def patron_request_params
-    params.require(:patron_request).permit(:patron_email, :instance_hrid, :needed_date, :service_point_code)
+    params.require(:patron_request).permit(:patron_email, :instance_hrid, :origin_location_code, :needed_date, :service_point_code)
   end
 end

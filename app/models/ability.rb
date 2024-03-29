@@ -80,8 +80,9 @@ class Ability
     # ... and to check the status, you either need to be logged in or include a special token in the URL
     can :read, [Request, Page, HoldRecall, Scan, MediatedPage], user_id: user.id if user.sso_user?
 
-    can :new, PatronRequest
-    can :create, PatronRequest
+    can :login, PatronRequest
+    can [:new, :create], PatronRequest if user.patron || user.name_email_user?
+    can :read, [PatronRequest], patron_id: user.patron.id if user.patron
 
     if token
       begin

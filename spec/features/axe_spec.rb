@@ -15,6 +15,19 @@ RSpec.describe 'Accessibility testing', :js do
     expect(page).to be_accessible
   end
 
+  context 'with a user' do
+    let(:user) { instance_double(CurrentUser, user_object: build(:sso_user)) }
+
+    before do
+      login_as(user)
+    end
+
+    it 'validates the request page' do
+      visit new_patron_request_path(instance_hrid: 'a12345', origin_location_code: 'SAL3', step: 'select')
+      expect(page).to be_accessible
+    end
+  end
+
   it 'validates the feedback form page' do
     visit feedback_form_path
     expect(page).to be_accessible

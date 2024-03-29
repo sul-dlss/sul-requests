@@ -48,11 +48,11 @@ Rails.application.routes.draw do
     resources :admin_comments
   end
 
-  resources :patron_requests, only: [:new, :show, :create] do
-    collection do
-      post 'new'
-    end
+  constraints ->(request) { request.params[:step].blank? || request.env['warden'].user.blank? } do
+    get '/patron_requests/new', to: 'patron_requests#login'
   end
+
+  resources :patron_requests, only: [:new, :show, :create]
 
   resources :requests, only: :new
   resources :aeon_pages, only: :new
