@@ -75,9 +75,12 @@ class SubmitFolioRequestJob < ApplicationJob
     delegate :user, :scan_destination, to: :request
     delegate :request_policies, to: :folio_client
 
-    # prevent delegating to a nil patron
-    def patron_group_id
-      patron&.patron_group_id
+    def best_request_type(item)
+      return 'Recall' if item.recallable?(patron)
+      return 'Hold' if item.holdable?(patron)
+      return 'Page' if item.pageable?(patron)
+
+      'Hold'
     end
 
     # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
@@ -89,7 +92,7 @@ class SubmitFolioRequestJob < ApplicationJob
 
       request_data = FolioClient::CirculationRequestData.new(
         request_level: 'Item',
-        request_type: item.best_request_type,
+        request_type: best_request_type(item),
         instance_id: request.bib_data.instance_id,
         item_id: item.id,
         holdings_record_id: item.holdings_record_id,

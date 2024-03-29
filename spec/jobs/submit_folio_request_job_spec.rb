@@ -15,11 +15,10 @@ RSpec.describe SubmitFolioRequestJob do
   end
 
   context 'with a HoldRecall type request' do
-    let(:best_request_type) { 'Recall' }
     let(:user) { create(:sequence_sso_user) }
     let(:item) do
       instance_double(Folio::Item, id: 'abc123-1-1', holdings_record_id: 'abc123-1', barcode: '12345678',
-                                   status: 'Checked out', best_request_type:)
+                                   recallable?: true, holdable?: true, pageable?: true)
     end
 
     before do
@@ -45,7 +44,11 @@ RSpec.describe SubmitFolioRequestJob do
 
     context 'with a user without the recall ability' do
       let(:request) { create(:hold_recall_with_holdings_folio, barcodes: ['12345678'], user:) }
-      let(:best_request_type) { 'Hold' }
+      let(:item) do
+        instance_double(Folio::Item, id: 'abc123-1-1', holdings_record_id: 'abc123-1', barcode: '12345678',
+                                     recallable?: false, holdable?: true, pageable?: true,
+                                     status: 'Checked out')
+      end
 
       it 'places a hold for the item as the patron' do
         expect { described_class.perform_now(request.id) }.to change { request.folio_command_logs.count }.by(1)
@@ -74,8 +77,12 @@ RSpec.describe SubmitFolioRequestJob do
     end
 
     context 'with an sso user with no patron group' do
-      let(:best_request_type) { 'Hold' }
       let(:user) { create(:sso_user) }
+      let(:item) do
+        instance_double(Folio::Item, id: 'abc123-1-1', holdings_record_id: 'abc123-1', barcode: '12345678',
+                                     recallable?: false, holdable?: true, pageable?: true,
+                                     status: 'Checked out')
+      end
       let(:request) { create(:hold_recall_with_holdings_folio, barcodes: ['12345678'], user:) }
       let(:patron_group_id) { nil }
       let(:pseudopatron) { instance_double(Folio::Patron, id: 'HOLD@GR-PSEUDO', patron_group_id:, blocked?: false) }
@@ -99,11 +106,10 @@ RSpec.describe SubmitFolioRequestJob do
   end
 
   context 'with a Page type request' do
-    let(:best_request_type) { 'Page' }
     let(:user) { create(:sequence_sso_user) }
     let(:item) do
       instance_double(Folio::Item, id: 'abc123-1-1', holdings_record_id: 'abc123-1', barcode: '3610512345678',
-                                   status: 'Available', best_request_type:)
+                                   status: 'Available', holdable?: false, recallable?: false, pageable?: true)
     end
     let(:request) { create(:page_with_holdings, barcodes: ['3610512345678'], user:) }
 
@@ -198,7 +204,7 @@ RSpec.describe SubmitFolioRequestJob do
       let(:command) { described_class::Command.new(request, logger: Rails.logger) }
       let(:item) do
         instance_double(Folio::Item, id: 'abc123-1-2', holdings_record_id: 'abc123-1', barcode: '12345679',
-                                     status: 'Available', best_request_type:)
+                                     status: 'Available', holdable?: false, recallable?: false, pageable?: true)
       end
 
       before do
@@ -224,7 +230,7 @@ RSpec.describe SubmitFolioRequestJob do
 
       let(:item) do
         instance_double(Folio::Item, id: 'uuid-b', holdings_record_id: 'abc123-1', barcode: 'uuid-b',
-                                     status: 'Available', best_request_type:)
+                                     status: 'Available', holdable?: false, recallable?: false, pageable?: true)
       end
 
       before do
@@ -245,7 +251,6 @@ RSpec.describe SubmitFolioRequestJob do
   end
 
   context 'with a MediatedPage type request' do
-    let(:best_request_type) { 'Page' }
     let(:request) do
       create(
         :mediated_page_with_holdings,
@@ -257,7 +262,7 @@ RSpec.describe SubmitFolioRequestJob do
     end
     let(:item) do
       instance_double(Folio::Item, id: 'abc123-1-1', holdings_record_id: 'abc123-1', barcode: '34567890', status: 'Available',
-                                   best_request_type:)
+                                   holdable?: false, recallable?: false, pageable?: true)
     end
 
     before do
@@ -316,7 +321,6 @@ RSpec.describe SubmitFolioRequestJob do
 
   context 'with a Scan type request' do
     context 'with a non-sso user' do
-      let(:best_request_type) { 'Hold' }
       let(:user) { create(:non_sso_user, name: 'Jim Doe', email: 'jimdoe@example.com') }
       let(:patron) { nil }
       let(:request) do
@@ -324,7 +328,7 @@ RSpec.describe SubmitFolioRequestJob do
       end
       let(:item) do
         instance_double(Folio::Item, id: 'abc123-1-1', holdings_record_id: 'abc123-1', barcode: '12345678', status: 'Available',
-                                     best_request_type:)
+                                     holdable?: true, recallable?: false)
       end
 
       before do
@@ -349,14 +353,13 @@ RSpec.describe SubmitFolioRequestJob do
   end
 
   context 'with a proxy request (Page)' do
-    let(:best_request_type) { 'Page' }
     let(:user) { create(:sequence_sso_user) }
     let(:request) { create(:page_with_holdings, barcodes: ['3610512345678'], user:, proxy: true) }
     let(:proxy_id) { '562a5cb0-e998-4ea2-80aa-34ac2b536238' }
     let(:sponsor_id) { '2bd36e69-1f58-4f6b-9073-e8d932edeed2' }
     let(:item) do
       instance_double(Folio::Item, id: 'abc123-1-1', holdings_record_id: 'abc123-1', barcode: '3610512345678', status: 'Available',
-                                   best_request_type:)
+                                   pageable?: true, holdable?: false, recallable?: false)
     end
 
     before do

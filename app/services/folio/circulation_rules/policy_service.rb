@@ -5,21 +5,13 @@ module Folio
     # Evaluate the circulation rules to return the appropriate policies for a given item
     class PolicyService
       # Load the circulation rules file and parse it into a set of ordered rules
-      # rubocop:disable Metrics/AbcSize
       def self.rules(rules_as_text = Folio::Types.circulation_rules)
         rules = Folio::CirculationRules::Transform.new.apply(Folio::CirculationRules::Parser.new.parse(rules_as_text))
-        prioritized_rules = rules.map.with_index do |rule, index|
+        rules.map.with_index do |rule, index|
           rule.priority = index
           rule
         end
-
-        prioritized_rules.select do |rule|
-          # filter out rules that don't apply to standard patron groups
-          rule.criteria['group'].nil? || rule.criteria['group'] == 'any' || rule.criteria.dig('group',
-                                                                                              :or)&.intersect?(standard_patron_group_uuids)
-        end
       end
-      # rubocop:enable Metrics/AbcSize
 
       def self.standard_patron_group_uuids(group_names = Settings.folio.standard_patron_group_names)
         @standard_patron_group_uuids ||= Folio::Types.patron_groups.select { |_k, v| group_names.include? v['group'] }.keys
@@ -29,12 +21,13 @@ module Folio
         @instance ||= new
       end
 
-      attr_reader :rules, :policies
+      attr_reader :rules, :policies, :patron_groups
 
       # Provide custom rules and policies or use the defaults
-      def initialize(rules: nil, policies: nil)
+      def initialize(rules: nil, policies: nil, patron_groups: nil)
         @rules = rules || self.class.rules
         @policies = policies || Folio::Types.policies
+        @patron_groups = patron_groups || self.class.standard_patron_group_uuids
       end
 
       def to_debug_s
@@ -78,7 +71,8 @@ module Folio
                      'location-institution' => item.effective_location.institution.id,
                      'location-campus' => item.effective_location.campus.id,
                      'location-library' => item.effective_location.library.id,
-                     'location-location' => item.effective_location.id)
+                     'location-location' => item.effective_location.id,
+                     'group' => @patron_groups)
       end
 
       def index

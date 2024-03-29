@@ -123,6 +123,14 @@ module Folio
       user_info.present?
     end
 
+    def allowed_request_types(item)
+      policy_service.item_request_policy(item)&.dig('requestTypes') || []
+    end
+
+    def policy_service
+      @policy_service ||= Folio::CirculationRules::PolicyService.new(patron_groups: [patron_group_id])
+    end
+
     private
 
     def patron_blocks
