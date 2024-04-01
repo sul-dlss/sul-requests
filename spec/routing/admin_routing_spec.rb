@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe AdminController, type: :routing do
+RSpec.describe AdminController do
   describe 'routing' do
     it 'routes to #index' do
       expect(get: '/admin').to route_to('admin#index')

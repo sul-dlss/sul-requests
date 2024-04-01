@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe SubmitReshareRequestJob, type: :job do
+RSpec.describe SubmitReshareRequestJob do
   let(:user) { create(:library_id_user) }
   let(:patron) do
     instance_double(Folio::Patron, exists?: true, email: nil, patron_group_name: 'undergrad',
