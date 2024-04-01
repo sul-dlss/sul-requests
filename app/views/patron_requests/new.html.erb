@@ -1,4 +1,4 @@
-<% if logged_in? %>
+<% if current_user&.patron %>
   <%= render 'user_header' %>
 <% end %>
 

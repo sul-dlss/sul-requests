@@ -65,9 +65,6 @@ class CurrentUser
 
   def update_folio_attributes(user)
     user.patron_key = data['patron_key']
-    user.name = user.name || data['name']
-    user.email = user.email || data['email']
-    user.user_group = user_group
   end
 
   def ldap_attributes
@@ -96,10 +93,6 @@ class CurrentUser
 
   def ldap_student_type
     ldap_attributes['suStudentType']
-  end
-
-  def user_group
-    Folio::Types.patron_groups[data['group_id']]
   end
 
   def ldap_email
