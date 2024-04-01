@@ -12,6 +12,7 @@ class PatronRequestsController < ApplicationController
 
   def login
     @request = PatronRequest.new(new_params)
+    @guest_can_request = sul_purchased_policy.length.positive?
   end
 
   def new
@@ -29,6 +30,12 @@ class PatronRequestsController < ApplicationController
   end
 
   protected
+
+  def sul_purchased_policy
+    sul_purchased_id = Folio::Types.patron_groups.select { |_k, v| v['group'] == 'sul-purchased' }.keys.first
+    @policy_service ||= Folio::CirculationRules::PolicyService.new(patron_groups: [sul_purchased_id])
+    current_request.bib_data.items.map { |item| @policy_service.item_request_policy(item)&.dig('requestTypes') }.flatten.uniq || []
+  end
 
   def current_request
     @request
