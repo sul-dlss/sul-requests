@@ -32,11 +32,11 @@ class SessionsController < ApplicationController
   #
   # GET /logout
   def destroy
-    needs_shibboleth_logout = request.env['warden']&.user&.dig('shibboleth').present?
+    needs_shib_logout = needs_shibboleth_logout
     request.env['warden'].logout
     flash[:notice] = t('.notice')
 
-    if needs_shibboleth_logout
+    if needs_shib_logout
       redirect_to '/Shibboleth.sso/Logout'
     else
       redirect_to root_url
@@ -44,6 +44,10 @@ class SessionsController < ApplicationController
   end
 
   private
+
+  def needs_shibboleth_logout
+    request.env['warden']&.user&.data&.dig('shibboleth').present?
+  end
 
   def redirect_after_login
     if params[:referrer]
