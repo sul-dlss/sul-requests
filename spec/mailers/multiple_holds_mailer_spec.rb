@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe MultipleHoldsMailer, type: :mailer do
+RSpec.describe MultipleHoldsMailer do
   let(:options) do
     { patron_barcode: 'HOLD@foo' }
   end

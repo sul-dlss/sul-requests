@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'messages/new', type: :view do
+RSpec.describe 'messages/new' do
   before do
     @message = assign(:message, build(:message))
   end

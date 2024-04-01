@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Message, type: :model do
+RSpec.describe Message do
   describe '#active?' do
     it "is not active if it hasn't been scheduled" do
       expect(subject).not_to be_active

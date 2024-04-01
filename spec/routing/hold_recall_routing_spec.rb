@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe HoldRecallsController, type: :routing do
+RSpec.describe HoldRecallsController do
   it 'routes to #new' do
     expect(get: '/hold_recalls/new').to route_to('hold_recalls#new')
   end
