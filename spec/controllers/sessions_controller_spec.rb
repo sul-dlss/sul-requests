@@ -23,13 +23,13 @@ RSpec.describe SessionsController do
 
   describe 'logout' do
     it 'redirects to the Shibboleth logout page' do
-      warden.set_user({ 'shibboleth' => true })
+      warden.set_user(CurrentUser.new({ 'shibboleth' => true }))
       get :destroy
       expect(response).to redirect_to('/Shibboleth.sso/Logout')
     end
 
     it 'has a flash notice message informing the user they logged out' do
-      warden.set_user({})
+      warden.set_user(CurrentUser.new({}))
       get :destroy
       expect(flash[:notice]).to eq 'You have been successfully logged out.'
     end
