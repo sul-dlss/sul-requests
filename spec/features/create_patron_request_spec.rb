@@ -28,6 +28,45 @@ RSpec.describe 'Creating a page request' do
       click_on 'Log in with SUNet ID'
 
       expect { click_on 'Submit' }.to change(PatronRequest, :count).by(1)
+
+      expect(PatronRequest.last).to have_attributes(
+        patron_id: user.patron_key,
+        instance_hrid: 'a1234',
+        origin_location_code: 'SAL3-STACKS'
+      )
+    end
+  end
+
+  context 'with a library ID user' do
+    let(:stub_client) { FolioClient.new }
+    let(:patron) do
+      instance_double(Folio::Patron, id: 'some-lib-id-uuid', display_name: 'A User', exists?: true, email: nil,
+                                     patron_group: { desc: 'courtesy' }, ilb_eligible?: true, blocks: [])
+    end
+
+    before do
+      allow(FolioClient).to receive(:new).and_return(stub_client)
+
+      allow(stub_client).to receive(:login_by_library_id_and_pin).with('12345', '54321').and_return({ 'patronKey' => 'some-lib-id-uuid' })
+      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(patron_key: 'some-lib-id-uuid').and_return(patron)
+    end
+
+    it 'submits the request' do
+      visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+      first('summary').click
+
+      fill_in 'Library ID', with: '12345'
+      fill_in 'PIN', with: '54321'
+
+      click_on 'Login'
+
+      expect { click_on 'Submit' }.to change(PatronRequest, :count).by(1)
+
+      expect(PatronRequest.last).to have_attributes(
+        patron_id: 'some-lib-id-uuid',
+        instance_hrid: 'a1234',
+        origin_location_code: 'SAL3-STACKS'
+      )
     end
   end
 end
