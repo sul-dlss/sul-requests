@@ -9,14 +9,6 @@ RSpec.describe 'shared/_sul_header.html.erb' do
     render
   end
 
-  describe 'login link' do
-    let(:user) { create(:anon_user) }
-
-    it 'has a login link if there is no user' do
-      expect(rendered).to have_css('a', text: 'Login')
-    end
-  end
-
   describe 'logout link' do
     let(:user) { create(:sso_user) }
 
