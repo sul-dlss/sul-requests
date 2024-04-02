@@ -1,3 +1,7 @@
+<% if current_user&.patron %>
+  <%= render 'user_header' %>
+<% end %>
+
 <h1 class="fw-light mt-5 text-cardinal"><%= current_request.item_title %></h1>
 <% if current_request.items_in_location.one? %>
   <div class="my-3 h2">Call number: <%= current_request.items_in_location.first&.callnumber %></div>

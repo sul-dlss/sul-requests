@@ -19,6 +19,7 @@ $headings-font-weight: 400;
 // Create your own map
 $custom-colors: (
   "cardinal": $su-cardinal,
+  "jungle-green": #279989
 );
 
 // Merge the maps
@@ -120,4 +121,13 @@ summary .bi-chevron-right::before {
     content: '*';
     color: $su-cardinal;
     margin-left: 5px;
+}
+
+#user-header-hide:checked + .user-header {
+  display: none;
+}
+
+label[for="user-header-hide"] {
+  margin-left: -1.5em;
+  margin-top: .6em;
 }

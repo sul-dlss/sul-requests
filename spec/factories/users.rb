@@ -34,6 +34,7 @@ FactoryBot.define do
     sunetid { 'some-sso-user' }
     email { 'some-sso-user@stanford.edu' }
     name { 'Some SSO User' }
+    patron_key { 'some-uuid' }
 
     after(:build) do |user|
       class << user

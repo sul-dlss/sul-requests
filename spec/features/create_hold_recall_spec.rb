@@ -57,7 +57,9 @@ RSpec.describe 'Creating a hold recall request' do
 
     before do
       stub_current_user(user)
-      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(sunetid: user.sunetid).and_return(patron)
+      allow(Folio::Patron).to receive(:find_by).and_return(nil)
+      allow(Folio::Patron).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
+      allow(Folio::Patron).to receive(:find_by).with(sunetid: user.sunetid).and_return(patron)
     end
 
     it 'is possible without filling in any user information' do

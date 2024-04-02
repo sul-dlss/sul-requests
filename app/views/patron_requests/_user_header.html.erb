@@ -1,0 +1,20 @@
+<input type="checkbox" id="user-header-hide" class="d-none">
+<div class="user-header mt-4">
+  <label for="user-header-hide" class="btn-close float-end" aria-label="Close"></label>
+  <div class="row border border-radius-4">
+    <div class="col-sm-1 d-flex justify-content-center align-items-center bg-jungle-green text-white">
+      <i class="bi bi-person-circle fs-1"></i>
+    </div>
+    <div class="col-sm-11 p-3">
+      <div class="d-flex align-items-center">
+        <div class="h4">Welcome <%= current_user.patron.display_name %>!</div>
+        <span class="badge ms-2 mb-2 rounded-4 bg-jungle-green">
+          <%= current_user.patron.patron_group['desc'] %>
+        </span>
+      </div>
+      <% current_user.patron.blocks.each do |block| %>
+        <div class="warning small text-cardinal">IMPORTANT! <%= block %></div>
+      <% end %>
+    </div>
+  </div>
+</div>
