@@ -9,13 +9,13 @@ RSpec.describe SessionsController do
 
   describe 'login' do
     it 'redirects back to the provided referrer' do
-      warden.set_user({})
+      allow(request.env['warden']).to receive(:authenticate).and_return(true)
       get :login_by_sunetid, params: { referrer: '/' }
       expect(response).to redirect_to('/')
     end
 
     it 'redirects back when there is no provided referrer' do
-      warden.set_user({})
+      allow(request.env['warden']).to receive(:authenticate).and_return(true)
       get :login_by_sunetid
       expect(response).to redirect_to('https://test.host/admin')
     end
