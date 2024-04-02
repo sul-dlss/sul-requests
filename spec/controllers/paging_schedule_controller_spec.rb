@@ -42,7 +42,7 @@ RSpec.describe PagingScheduleController do
 
       it 'returns the estimate as a string when HTML is requested' do
         get :show, params: { origin: 'SAL3', destination: 'GREEN', format: 'html' }
-        expect(response.body).to eq('{:a=>"a", :b=>"b"}')
+        expect(response.body).to have_content('{:a=>"a", :b=>"b"}')
       end
     end
 

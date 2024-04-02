@@ -22,7 +22,10 @@ class PagingScheduleController < ApplicationController
   def show
     respond_to do |format|
       format.json { render json: @schedule.earliest_delivery_estimate, layout: false }
-      format.html { render plain: @schedule.earliest_delivery_estimate.to_s, layout: false }
+      format.html do
+        turbo_frame = helpers.content_tag('turbo-frame', id: 'earliestAvailable') { @schedule.earliest_delivery_estimate.to_s }
+        render html: turbo_frame, layout: false
+      end
     end
   end
 
