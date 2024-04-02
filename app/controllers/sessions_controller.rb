@@ -2,6 +2,8 @@
 
 # :nodoc:
 class SessionsController < ApplicationController
+  before_action :logout_user, only: [:login_by_library_id, :login_by_sunetid]
+
   # Handle login for Barcode + PIN users by authenticating them with the
   # ILS using the Warden configuration.
   #
@@ -46,7 +48,11 @@ class SessionsController < ApplicationController
   private
 
   def needs_shibboleth_logout
-    request.env['warden']&.user&.data&.dig('shibboleth').present?
+    request.env['warden']&.user&.shibboleth?
+  end
+
+  def logout_user
+    request.env['warden'].logout
   end
 
   def redirect_after_login

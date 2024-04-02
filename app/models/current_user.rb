@@ -24,11 +24,11 @@ class CurrentUser
     end
   end
 
-  private
-
   def shibboleth?
     data['shibboleth']
   end
+
+  private
 
   def library_id?
     return false if shibboleth?
