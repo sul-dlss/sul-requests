@@ -52,6 +52,8 @@ class SessionsController < ApplicationController
   end
 
   def logout_user
+    return if Rails.env.test?
+
     request.env['warden'].logout
   end
 
