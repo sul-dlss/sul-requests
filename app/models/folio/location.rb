@@ -19,5 +19,9 @@ module Folio
       )
     end
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity
+
+    def library
+      to_h[:library] || Folio::Types.libraries.find_by(id: library_id)
+    end
   end
 end

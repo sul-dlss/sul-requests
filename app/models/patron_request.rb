@@ -47,7 +47,7 @@ class PatronRequest < ApplicationRecord
   end
 
   def origin_library_code
-    folio_location&.library&.code || Folio::Types.libraries.find_by(id: folio_location.library_id)&.code
+    folio_location&.library&.code
   end
 
   private
