@@ -15,6 +15,7 @@ class PatronRequestsController < ApplicationController
   end
 
   def new
+    @request.patron_id = current_user.patron&.id
     current_request.assign_attributes(new_params)
   end
 
@@ -43,6 +44,6 @@ class PatronRequestsController < ApplicationController
 
   def patron_request_params
     params.require(:patron_request).permit(:patron_email, :instance_hrid, :origin_location_code, :needed_date, :service_point_code,
-                                           :barcode)
+                                           :barcode, :fulfillment_type)
   end
 end

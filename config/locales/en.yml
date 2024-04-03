@@ -31,7 +31,7 @@ en:
         item_comment: 'Item(s) requested'
         user: 'Requested by'
       patron_request:
-        service_point_code: 'Pickup from'
+        service_point_code: 'Preferred pickup location'
       hold_recall:
         <<: *request_anchor
         needed_date: 'Not needed after'

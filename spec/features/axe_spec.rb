@@ -45,6 +45,7 @@ RSpec.describe 'Accessibility testing', :js do
     let(:patron) do
       instance_double(Folio::Patron, id: user.patron_key, display_name: 'A User', exists?: true, email: nil,
                                      patron_group: { desc: 'faculty' },
+                                     allowed_request_types: ['Hold', 'Recall'],
                                      ilb_eligible?: true, blocks: ['there is a block'])
     end
 
