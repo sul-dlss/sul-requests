@@ -44,7 +44,7 @@ class CurrentUser
   end
 
   def library_id_user
-    User.find_or_create_by(library_id: user_id) do |user|
+    User.find_or_create_by(library_id: user_id).tap do |user|
       update_folio_attributes(user)
     end
   end
