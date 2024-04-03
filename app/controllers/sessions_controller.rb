@@ -2,14 +2,14 @@
 
 # :nodoc:
 class SessionsController < ApplicationController
-  before_action :logout_user, only: [:login_by_library_id, :login_by_sunetid]
+  before_action :logout_user, only: [:login_by_university_id, :login_by_sunetid]
 
-  # Handle login for Barcode + PIN users by authenticating them with the
+  # Handle login for University ID + PIN users by authenticating them with the
   # ILS using the Warden configuration.
   #
-  # GET /sessions/login_by_library_id
-  def login_by_library_id
-    if request.env['warden'].authenticate(:library_id)
+  # GET /sessions/login_by_university_id
+  def login_by_university_id
+    if request.env['warden'].authenticate(:university_id)
       redirect_after_login
     else
       redirect_to post_auth_redirect_url, flash: { error: t('.alert') }
