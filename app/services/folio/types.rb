@@ -84,14 +84,14 @@ module Folio
       @locations ||= LocationsStore.new(get_type('locations'))
     end
 
-    private
-
     def get_type(type)
       raise "Unknown type #{type}" unless types_of_interest.include?(type.to_s)
 
       file = cache_dir.join("#{type}.json")
       JSON.parse(file.read) if file.exist?
     end
+
+    private
 
     # rubocop:disable Metrics/MethodLength
     def types_of_interest

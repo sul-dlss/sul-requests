@@ -151,16 +151,19 @@ module Folio
       recallable? || holdable?
     end
 
-    def recallable?
-      HOLD_RECALL_STATUSES.include?(status) && allowed_request_types.include?('Recall')
+    def recallable?(patron = nil)
+      request_types = patron&.allowed_request_types(self) || allowed_request_types
+      HOLD_RECALL_STATUSES.include?(status) && request_types.include?('Recall')
     end
 
-    def holdable?
-      HOLD_RECALL_STATUSES.include?(status) && allowed_request_types.include?('Hold')
+    def holdable?(patron = nil)
+      request_types = patron&.allowed_request_types(self) || allowed_request_types
+      HOLD_RECALL_STATUSES.include?(status) && request_types.include?('Hold')
     end
 
-    def pageable?
-      PAGEABLE_STATUSES.include?(status) && allowed_request_types.include?('Page')
+    def pageable?(patron = nil)
+      request_types = patron&.allowed_request_types(self) || allowed_request_types
+      PAGEABLE_STATUSES.include?(status) && request_types.include?('Page')
     end
 
     def mediateable?
@@ -173,13 +176,6 @@ module Folio
 
     def requestable?
       hold_recallable? || mediateable? || pageable?
-    end
-
-    def best_request_type
-      return 'Recall' if recallable?
-      return 'Hold' if holdable?
-
-      'Page' if pageable?
     end
 
     def aeon_site

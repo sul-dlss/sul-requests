@@ -7,8 +7,8 @@ module Folio
     def self.from_hash(dyn)
       new(
         id: dyn.fetch('id'),
-        campus: (Campus.new(**dyn.fetch('campus')) if dyn['campus']),
-        library: (Library.new(**dyn.fetch('library').symbolize_keys) if dyn['library']),
+        campus: (Campus.new(**dyn.fetch('campus').slice('id', 'code')) if dyn['campus']),
+        library: (Library.new(**dyn.fetch('library').slice('id', 'code', 'name').symbolize_keys) if dyn['library']),
         library_id: dyn['libraryId'] || dyn.dig('library', 'id'),
         institution: (Institution.new(id: dyn.fetch('institutionId')) if dyn['institutionId']),
         code: dyn.fetch('code'),

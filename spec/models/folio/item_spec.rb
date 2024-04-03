@@ -5,6 +5,8 @@ require 'rails_helper'
 RSpec.describe Folio::Item do
   subject(:item) { described_class.from_hash(JSON.parse(data)) }
 
+  let(:patron) { Folio::Patron.new({ 'id' => 'patron_id', 'patronGroup' => patron_group_id, 'active' => true }) }
+
   before do
     allow(Folio::CirculationRules::PolicyService.instance).to receive(:item_request_policy).and_return(
       {
@@ -282,12 +284,22 @@ RSpec.describe Folio::Item do
         JSON
       end
 
+      let(:patron_group_id) { Folio::Types.patron_groups.select { |_k, v| v['group'] == 'courtesy' }.keys.first }
+
       it 'is deliver-from-offsite AND noncirc' do
         expect(item.status_class).to eq('deliver-from-offsite noncirc')
       end
 
       it 'is pageable' do
-        expect(item.best_request_type).to eq('Page')
+        expect(item.holdable?).to be(false)
+        expect(item.recallable?).to be(false)
+        expect(item.pageable?).to be(true)
+      end
+
+      it 'is pageable for courtsey' do
+        expect(item.holdable?(patron)).to be(false)
+        expect(item.recallable?(patron)).to be(false)
+        expect(item.pageable?(patron)).to be(true)
       end
     end
 
@@ -323,13 +335,19 @@ RSpec.describe Folio::Item do
           }
         JSON
       end
+      let(:patron_group_id) { Folio::Types.patron_groups.select { |_k, v| v['group'] == 'courtesy' }.keys.first }
 
       it 'is a hold recall' do
         expect(item.status_class).to eq('hold-recall')
       end
 
       it 'is recallable' do
-        expect(item.best_request_type).to eq('Recall')
+        expect(item.recallable?).to be(true)
+      end
+
+      it 'is not recallable for courtesy, but is holdable' do
+        expect(item.recallable?(patron)).to be(false)
+        expect(item.holdable?(patron)).to be(true)
       end
     end
   end
