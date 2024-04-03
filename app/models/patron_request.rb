@@ -46,15 +46,51 @@ class PatronRequest < ApplicationRecord
     service_points.first || Settings.folio.default_service_point
   end
 
+  def mediateable?
+    items_in_location.all?(&:mediateable?)
+  end
+
+  def requires_needed_date?
+    return false if origin_location_code == 'PAGE-MP' || origin_location_code == 'SAL3-PAGE-MP'
+
+    true
+  end
+
+  def use_in_library?
+    items_in_location.all? { |item| !item.circulates? }
+  end
+
+  def single_location_label
+    return 'Must be used in library' if mediateable? || use_in_library?
+
+    'Will be delivered to'
+  end
+
+  def destination_location
+    service_point = pickup_destinations.one? ? pickup_destinations.first : default_service_point_code
+    Folio::Types.service_points.find_by(code: service_point)
+  end
+
+  def destination_library_code
+    destination_location&.library&.code
+  end
+
+  def earliest_delivery_estimate
+    paging_info = PagingSchedule.for(self).earliest_delivery_estimate
+    { 'date' => Date.parse(paging_info.to_s), 'display_date' => paging_info.to_s }
+  rescue StandardError
+    { 'date' => Time.zone.today, 'display_date' => 'Could not estimate delievery' }
+  end
+
+  def folio_location
+    @folio_location ||= Folio::Types.locations.find_by(code: origin_location_code) || items_in_location.first&.permanent_location
+  end
+
   def origin_library_code
     folio_location&.library&.code
   end
 
   private
-
-  def folio_location
-    @folio_location ||= Folio::Types.locations.find_by(code: origin_location_code) || items_in_location.first&.permanent_location
-  end
 
   # Returns default service point codes
   def default_pickup_service_points
