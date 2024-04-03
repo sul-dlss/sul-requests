@@ -23,7 +23,7 @@ RSpec.describe 'Creating a page request' do
       login_as(current_user)
     end
 
-    it 'submits the request' do
+    it 'submits the request for pick-up at Green' do
       visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
       click_on 'Log in with SUNet ID'
 
@@ -32,7 +32,24 @@ RSpec.describe 'Creating a page request' do
       expect(PatronRequest.last).to have_attributes(
         patron_id: user.patron_key,
         instance_hrid: 'a1234',
-        origin_location_code: 'SAL3-STACKS'
+        origin_location_code: 'SAL3-STACKS',
+        service_point_code: 'GREEN-LOAN'
+      )
+    end
+
+    it 'allows the patron to choose a pickup location' do
+      visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+      click_on 'Log in with SUNet ID'
+
+      select 'Marine Biology Library', from: 'Pickup from'
+
+      expect { click_on 'Submit' }.to change(PatronRequest, :count).by(1)
+
+      expect(PatronRequest.last).to have_attributes(
+        patron_id: user.patron_key,
+        instance_hrid: 'a1234',
+        origin_location_code: 'SAL3-STACKS',
+        service_point_code: 'MARINE-BIO'
       )
     end
   end
@@ -51,7 +68,7 @@ RSpec.describe 'Creating a page request' do
       allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(patron_key: 'some-lib-id-uuid').and_return(patron)
     end
 
-    it 'submits the request' do
+    it 'submits the request for pickup at Green' do
       visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
       first('summary').click
 
@@ -65,7 +82,8 @@ RSpec.describe 'Creating a page request' do
       expect(PatronRequest.last).to have_attributes(
         patron_id: 'some-lib-id-uuid',
         instance_hrid: 'a1234',
-        origin_location_code: 'SAL3-STACKS'
+        origin_location_code: 'SAL3-STACKS',
+        service_point_code: 'GREEN-LOAN'
       )
     end
   end
