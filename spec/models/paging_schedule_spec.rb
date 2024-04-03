@@ -15,17 +15,6 @@ RSpec.describe PagingSchedule do
     end
   end
 
-  describe '#configure' do
-    it 'adds scheduler items to the schedule array' do
-      expect do
-        described_class.configure do
-          when_paging from: 'SOMEWHERE', to: 'SOMEWHERE-ELSE', before: '10:00am' do
-          end
-        end
-      end.to change { described_class.schedule.count }.by(1)
-    end
-  end
-
   describe '#for' do
     it 'returns the schedule for the provided request' do
       schedule = described_class.for(build(:page, origin: 'SAL3', destination: 'GREEN'))
@@ -57,17 +46,10 @@ RSpec.describe PagingSchedule do
   describe PagingSchedule::Scheduler do
     describe 'will arrive text' do
       let(:scheduler) do
-        described_class.new(to: 'SOMEWHERE', from: 'SOMEWHERE-ELSE') do
-        end
-      end
-
-      it 'returns the before time with the appropriate prefix' do
-        scheduler.will_arrive(before: '10a')
-        expect(scheduler.will_arrive_text).to eq 'before 10a'
+        described_class.new(to: 'SOMEWHERE', from: 'SOMEWHERE-ELSE', will_arrive_after: '12n')
       end
 
       it 'returns the after time with the appropriate prefix' do
-        scheduler.will_arrive(after: '12n')
         expect(scheduler.will_arrive_text).to eq 'after 12n'
       end
     end

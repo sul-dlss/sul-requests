@@ -5,17 +5,11 @@
 #  read the paging schedule configuration and estimate a date of arrival.
 ###
 module PagingSchedule
-  mattr_accessor :schedule do
-    []
-  end
-
   class << self
-    def configure(&)
-      instance_eval(&)
-    end
-
-    def when_paging(to:, from:, before: nil, after: nil, &)
-      schedule << Scheduler.new(to:, from:, before:, after:, &)
+    def schedule
+      @schedule ||= Settings.paging_schedule.map do |sched|
+        PagingSchedule::Scheduler.new(**sched)
+      end
     end
 
     def for(request)
@@ -49,7 +43,7 @@ module PagingSchedule
     end
 
     def worst_case_days_later
-      schedule.filter_map(&:days_later).max + Settings.worst_case_paging_padding
+      schedule.filter_map(&:business_days_later).max + Settings.worst_case_paging_padding
     end
   end
 
@@ -58,17 +52,16 @@ module PagingSchedule
   #  request will take based on the PagingSchedule configuration.
   ###
   class Scheduler
-    attr_reader :to, :from, :before, :after, :days_later, :will_arrive_text
+    attr_reader :to, :from, :before, :after, :business_days_later, :will_arrive_after
 
     # rubocop:disable Metrics/ParameterLists
-    def initialize(to:, from:, before: nil, after: nil, days_later: nil, will_arrive_text: nil, &block)
+    def initialize(to:, from:, before: nil, after: nil, business_days_later: nil, will_arrive_after: nil)
       @to = to
       @from = from
       @before = before
       @after = after
-      @days_later = days_later
-      @will_arrive_text = will_arrive_text
-      @schedule = instance_eval(&block) if block
+      @business_days_later = business_days_later.to_i
+      @will_arrive_after = will_arrive_after
     end
     # rubocop:enable Metrics/ParameterLists
 
@@ -77,25 +70,16 @@ module PagingSchedule
                     from:,
                     before:,
                     after:,
-                    days_later:,
-                    will_arrive_text:)
+                    business_days_later:,
+                    will_arrive_after:)
     end
 
     def earliest_delivery_estimate(time = Time.zone.now)
       Estimate.new(self, time)
     end
 
-    def business_days_later(days)
-      @days_later = days.to_i
-    end
-
-    def will_arrive(options)
-      @will_arrive_text = case
-                          when options[:before]
-                            "before #{options[:before]}"
-                          when options[:after]
-                            "after #{options[:after]}"
-                          end
+    def will_arrive_text
+      @will_arrive_text ||= "after #{will_arrive_after}"
     end
 
     def by_time?(created_at = nil)
@@ -119,12 +103,12 @@ module PagingSchedule
     # Simple class to return estimates
     class Estimate
       attr_accessor :to
-      attr_reader :from, :days_later, :time, :as_of
+      attr_reader :from, :business_days_later, :time, :as_of
 
       def initialize(scheduler, as_of = Time.zone.now)
         @to = scheduler.to
         @from = scheduler.from
-        @days_later = scheduler.days_later
+        @business_days_later = scheduler.business_days_later
         @time = scheduler.will_arrive_text
         @as_of = as_of
       end
@@ -149,7 +133,7 @@ module PagingSchedule
       private
 
       def origin_library_next_business_day
-        LibraryHours.new(from).next_business_day(as_of, days_later)
+        LibraryHours.new(from).next_business_day(as_of, business_days_later)
       end
 
       def destination_library_hours_next_business_day_after_delivery
