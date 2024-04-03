@@ -52,7 +52,7 @@ class SessionsController < ApplicationController
     if needs_shib_logout
       redirect_to '/Shibboleth.sso/Logout'
     else
-      redirect_to root_url
+      redirect_to post_action_redirect_url
     end
   end
 

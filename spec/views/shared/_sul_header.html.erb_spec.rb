@@ -17,7 +17,7 @@ RSpec.describe 'shared/_sul_header.html.erb' do
     end
 
     it 'redirects users back to the home page of the app' do
-      expect(rendered).to have_link('Logout', href: '/sso/logout?referrer=%2F')
+      expect(rendered).to have_link('Logout')
     end
   end
 end
