@@ -5,7 +5,9 @@
 ###
 class PatronRequest < ApplicationRecord
   class_attribute :bib_model_class, default: Settings.ils.bib_model.constantize
-  store :data, accessors: [:barcodes], coder: JSON
+  store :data, accessors: [:barcodes, :folio_request_data, :folio_responses], coder: JSON
+
+  delegate :instance_id, to: :bib_data
 
   def bib_data
     @bib_data ||= begin
@@ -27,6 +29,14 @@ class PatronRequest < ApplicationRecord
         item.home_location == origin_location_code
       end
     end
+  end
+
+  def selected_items
+    items_in_location.select { |x| x.barcode.in?(barcodes) || x.id.in?(barcodes) }
+  end
+
+  def pickup_service_point
+    Folio::Types.service_points.find_by(code: service_point_code)
   end
 
   # FOLIO
@@ -80,5 +90,9 @@ class PatronRequest < ApplicationRecord
     items_in_location.flat_map do |item|
       Array(item.permanent_location.details['pageServicePoints']).pluck('code')
     end.compact.uniq
+  end
+
+  def folio_client
+    FolioClient.new
   end
 end
