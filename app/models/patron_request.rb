@@ -5,6 +5,7 @@
 ###
 class PatronRequest < ApplicationRecord
   class_attribute :bib_model_class, default: Settings.ils.bib_model.constantize
+  store :data, accessors: [:barcodes], coder: JSON
 
   def bib_data
     @bib_data ||= begin
@@ -48,6 +49,10 @@ class PatronRequest < ApplicationRecord
 
   def origin_library_code
     folio_location&.library&.code
+  end
+
+  def barcode=(barcode)
+    self.barcodes = [barcode]
   end
 
   private
