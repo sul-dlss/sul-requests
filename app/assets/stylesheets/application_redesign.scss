@@ -38,6 +38,8 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 
 body {
   --bs-link-hover-decoration: underline;
+  --bs-danger-bg-subtle: rgba(130, 0, 0, 0.1);
+  --bs-danger-border-subtle: rgba(130, 0, 0, 0.1);
 }
 
 /* This selector/rule can be removed after https://github.com/twbs/bootstrap/pull/39098 is released */
