@@ -75,16 +75,17 @@ Warden::Strategies.add(:development_shibboleth_stub) do
   end
 end
 
-Warden::Strategies.add(:library_id) do
+Warden::Strategies.add(:university_id) do
   def valid?
-    params['library_id'].present? && params['pin'].present?
+    params['university_id'].present? && params['pin'].present?
   end
 
   def authenticate!
-    response = FolioClient.new.login_by_library_id_and_pin(params['library_id'], params['pin'])
+    # TODO: change to login_by_university_id when we stop accepting barcodes
+    user = FolioClient.new.login_by_barcode_or_university_id(params['university_id'], params['pin'])
 
-    if response&.key?('patronKey') || response&.key?('id')
-      u = { username: params['library_id'], patron_key: response['patronKey'] || response['id'] }
+    if user&.key?('patronKey') || user&.key?('id')
+      u = { username: params['university_id'], patron_key: user['patronKey'] || user['id'] }
       success!(CurrentUser.new(u))
     else
       fail!('Could not log in')

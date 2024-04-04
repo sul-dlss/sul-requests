@@ -64,7 +64,7 @@ RSpec.describe 'Creating a page request' do
     before do
       allow(FolioClient).to receive(:new).and_return(stub_client)
 
-      allow(stub_client).to receive(:login_by_library_id_and_pin).with('12345', '54321').and_return({ 'patronKey' => 'some-lib-id-uuid' })
+      allow(stub_client).to receive(:login_by_barcode).with('12345', '54321').and_return({ 'patronKey' => 'some-lib-id-uuid' })
       allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(patron_key: 'some-lib-id-uuid').and_return(patron)
     end
 

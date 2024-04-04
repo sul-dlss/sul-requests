@@ -88,7 +88,6 @@ en:
       failure:
         code_U003: 'Your request could not be processed because your user privileges are blocked.'
         code_U004: 'Your request could not be processed because your user privileges have expired.'
-
   confirmation_email:
     request:
       subject: 'New request needs mediation'
@@ -214,7 +213,10 @@ en:
       feedback: Feedback
       application_name: Requests
   sessions:
-    login_by_library_id:
+    university_id:
+      label: 'Library ID'
+      help_text: 'Last 10 digits above the barcode on your library card'
+    login_by_university_id:
       alert: Unable to authenticate.
     login_by_sunetid:
       alert: Unable to authenticate.

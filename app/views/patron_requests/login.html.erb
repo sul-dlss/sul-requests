@@ -44,12 +44,12 @@
                 </p>
                 <details>
                     <summary class="btn btn-link p-0">Login with Library ID/PIN <i class="bi bi-chevron-right"></i></summary>
-                    <%= form_tag login_by_library_id_url, method: 'POST', class: 'form p-3', data: { turbo: false } do %>
+                    <%= form_tag login_by_university_id_url, method: 'POST', class: 'form p-3', data: { turbo: false } do %>
                         <%= hidden_field_tag :referrer, new_patron_request_path(new_params.merge(step: 'select')) %>
                         <div class="form-group mt-2">
-                            <label class="form-label required-label" for="library_id">Library ID</label>
-                            <input class="form-control" id="library_id" name="library_id" required />
-                            <div class="form-text">Last 10 digits above the barcode on your library card</div>
+                            <label class="form-label required-label" for="university_id"><%= t('sessions.university_id.label') %></label>
+                            <input class="form-control" id="university_id" name="university_id" aria-describedby="university-id-help" required />
+                            <div class="form-text" id="university-id-help"><%= t('sessions.university_id.help_text') %></div>
                         </div>
                         <div class="form-group mt-2">
                             <label class="form-label required-label" for="pin">PIN</label>
