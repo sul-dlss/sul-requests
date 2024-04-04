@@ -13,7 +13,7 @@
 
   <div id="earliestAvailableContainer" class="text-cardinal my-4" aria-live="polite">
     Earliest available:
-    <%= turbo_frame_tag('earliestAvailable', src: paging_schedule_url(origin: @request.origin_location_code, destination: f.object.service_point_code || f.object.default_service_point_code), data: { 'patronRequest-target' => 'earliestAvailable'}) do %>
+    <%= turbo_frame_tag('earliestAvailable', src: paging_schedule_url(origin: @request.origin_library_code, destination: f.object.service_point_code || f.object.default_service_point_code), data: { 'patronRequest-target' => 'earliestAvailable'}) do %>
       Loading..
     <% end %>
   </div>

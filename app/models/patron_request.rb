@@ -46,14 +46,14 @@ class PatronRequest < ApplicationRecord
     service_points.first || Settings.folio.default_service_point
   end
 
+  def origin_library_code
+    folio_location&.library&.code
+  end
+
   private
 
   def folio_location
     @folio_location ||= Folio::Types.locations.find_by(code: origin_location_code) || items_in_location.first&.permanent_location
-  end
-
-  def origin_library_code
-    folio_location&.library&.code
   end
 
   # Returns default service point codes

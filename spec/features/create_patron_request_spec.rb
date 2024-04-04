@@ -52,6 +52,36 @@ RSpec.describe 'Creating a page request' do
         service_point_code: 'MARINE-BIO'
       )
     end
+
+    context 'with stubbed paging schedule' do
+      before do
+        travel_to Time.zone.local(2024, 4, 2, 12, 0, 0)
+
+        allow_any_instance_of(LibraryHours).to receive(:open?).and_return(true)
+
+        allow(PagingSchedule).to receive(:schedule).and_return(
+          [
+            PagingSchedule::Scheduler.new(from: 'SAL3', to: 'GREEN', before: '11:59pm', business_days_later: 1, will_arrive_after: '10am'),
+            PagingSchedule::Scheduler.new(from: 'SAL3', to: 'MARINE-BIO', before: '11:59pm', business_days_later: 3,
+                                          will_arrive_after: '4pm')
+          ]
+        )
+      end
+
+      it 'shows the estimated deliver dates', :js do
+        visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+        click_on 'Log in with SUNet ID'
+
+        within '#earliestAvailableContainer' do
+          expect(page).to have_content('Wednesday, Apr 3 2024, after 10am')
+        end
+
+        select 'Marine Biology Library', from: 'Pickup from'
+        within '#earliestAvailableContainer' do
+          expect(page).to have_content('Friday, Apr 5 2024, after 4pm')
+        end
+      end
+    end
   end
 
   context 'with a library ID user' do
