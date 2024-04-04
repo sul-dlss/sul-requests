@@ -1,0 +1,31 @@
+
+<fieldset class="mb-4">
+  <legend class="fs-6"></legend>
+  <div>
+    <%= f.radio_button :fulfillment_type, 'scan', :class => 'form-check-input', :required => true %>
+    <%= f.label :fulfillment_type_scan, :class => 'form-check-label' do %>
+      Email digital scan
+    <% end %>
+    <p class="mt-2 ms-4">
+      Sections of a book or periodical such as a chapter or article can be scanned and
+      delivered to you by email. <strong>The scan cannot exceed 50 pages or 10% of the work,
+      whichever is less.</strong>
+    </p>
+    <div class="text-cardinal ms-4">
+      Earliest expected delivery: <%= f.object.scan_earliest['display_date'] %>
+    </div>
+  </div>
+  <div class="mt-2">
+    <%= f.radio_button :fulfillment_type, 'pickup', :class => 'form-check-input' %>
+    <%= f.label :fulfillment_type_pickup, :class => 'form-check-label' do %>
+      Pickup physical item
+    <% end %>
+    <p class="mt-2 ms-4">Item will be routed to a library that you select for pickup.</p>
+    <div class="text-cardinal ms-4">
+      Earliest expected pickup: <%= f.object.earliest_delivery_estimate['display_date'] %>
+      <% if f.object.destination_location %>
+      at <%= f.object.destination_location.name %>
+      <% end %>
+    </div>
+  </div>
+</fieldset>

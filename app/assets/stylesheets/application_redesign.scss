@@ -40,6 +40,9 @@ body {
   --bs-link-hover-decoration: underline;
   --bs-danger-bg-subtle: rgba(130, 0, 0, 0.1);
   --bs-danger-border-subtle: rgba(130, 0, 0, 0.1);
+  --bs-info-bg-subtle: rgba(0, 84, 143, 0.08);
+  --bs-info-border-subtle: rgba(0, 84, 143, 0.08);
+  --bs-info-text-emphasis: $black;
 }
 
 /* This selector/rule can be removed after https://github.com/twbs/bootstrap/pull/39098 is released */
