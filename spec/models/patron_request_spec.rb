@@ -37,4 +37,12 @@ RSpec.describe PatronRequest do
       expect(request.item_title).to eq('Title')
     end
   end
+
+  describe '#barcode=' do
+    it 'sets the barcodes attribute' do
+      request.barcode = '1234567890'
+
+      expect(request.barcodes).to eq(['1234567890'])
+    end
+  end
 end
