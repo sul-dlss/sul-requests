@@ -22,7 +22,7 @@ class PatronRequestsController < ApplicationController
   def create
     @request.patron_id = current_user.patron.id
 
-    if @request.save
+    if @request.save && @request.submit_to_ils_later
       redirect_to @request
     else
       render 'new'

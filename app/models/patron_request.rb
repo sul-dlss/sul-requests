@@ -9,6 +9,10 @@ class PatronRequest < ApplicationRecord
 
   delegate :instance_id, to: :bib_data
 
+  def submit_to_ils_later
+    SubmitFolioPatronRequestJob.perform_later(@request.id)
+  end
+
   def bib_data
     @bib_data ||= begin
       # Append "a" to the item_id unless it already starts with a letter (e.g. "in00000063826")
