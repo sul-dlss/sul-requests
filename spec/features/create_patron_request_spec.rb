@@ -120,21 +120,10 @@ RSpec.describe 'Creating a page request' do
 
   context 'with a library name+email user' do
     context 'for an item that a purchased account cannot page' do
-      before do
-        allow(Folio::CirculationRules::PolicyService).to receive(:rules).and_return(
-          [
-            Folio::CirculationRules::Rule.new(
-              criteria: [],
-              policy: {
-                'request' => '8a58b9d6-855d-49bb-9a16-8b409e590dfe' # no requests allowed (for anyone)
-              }
-            )
-          ]
-        )
-      end
+      let(:bib_data) { build(:single_holding, items: [build(:item, effective_location: build(:law_location))]) }
 
       it 'shows the user a warning message' do
-        visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+        visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'LAW-STACKS1')
 
         expect(page).to have_content('This item is not available to request for visitors')
       end

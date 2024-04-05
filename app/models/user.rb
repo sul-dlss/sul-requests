@@ -117,7 +117,17 @@ class User < ActiveRecord::Base
     end
   end
 
+  def policy_service
+    @policy_service ||= Folio::CirculationRules::PolicyService.new(patron_groups: [
+                                                                     patron&.patron_group_id || sul_purchased_patron_group_id
+                                                                   ])
+  end
+
   private
+
+  def sul_purchased_patron_group_id
+    @sul_purchased_patron_group_id ||= Folio::Types.patron_groups.select { |_k, v| v['group'] == 'sul-purchased' }.keys.first
+  end
 
   def notify_honeybadger_of_missing_sso_email!
     Honeybadger.notify(
