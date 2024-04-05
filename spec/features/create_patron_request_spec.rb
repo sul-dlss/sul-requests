@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Creating a page request' do
+  include ActiveJob::TestHelper
+
   let(:user) { create(:sso_user) }
   let(:bib_data) { build(:single_holding) }
   let(:patron) do
@@ -51,6 +53,23 @@ RSpec.describe 'Creating a page request' do
         origin_location_code: 'SAL3-STACKS',
         service_point_code: 'MARINE-BIO'
       )
+    end
+
+    it 'enqueues a job to submit the request to FOLIO' do
+      folio_client = FolioClient.new
+      allow(folio_client).to receive(:create_circulation_request)
+      allow(FolioClient).to receive(:new).and_return(folio_client)
+      allow(patron).to receive(:allowed_request_types).and_return(%w[Hold Page Recall])
+
+      visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+      click_on 'Log in with SUNet ID'
+
+      perform_enqueued_jobs do
+        click_on 'Submit'
+      end
+
+      expect(folio_client).to have_received(:create_circulation_request).with(have_attributes(requester_id: patron.id,
+                                                                                              instance_id: bib_data.id))
     end
 
     context 'with stubbed paging schedule' do
