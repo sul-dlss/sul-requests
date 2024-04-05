@@ -5,14 +5,7 @@
 class SubmitFolioPatronRequestJob < ApplicationJob
   queue_as :default
 
-  # we pass the ActiveRecord identifier to our job, rather than the ActiveRecord reference.
-  #   This is recommended as a Sidekiq best practice (https://github.com/mperham/sidekiq/wiki/Best-Practices).
-  #   It also helps reduce the size of the Redis database (used by Sidekiq), which stores its data in memory.
-  def perform(request_id)
-    request = find_request(request_id)
-
-    return true unless request
-
+  def perform(request)
     folio_request_data = generate_folio_request_data(request)
 
     folio_responses = submit_folio_requests!(folio_request_data)
@@ -21,12 +14,6 @@ class SubmitFolioPatronRequestJob < ApplicationJob
   end
 
   private
-
-  def find_request(request_id)
-    PatronRequest.find(request_id)
-  rescue ActiveRecord::RecordNotFound
-    Honeybadger.notify('Unable to find PatronRequest', context: { request_id: })
-  end
 
   def best_request_type(patron, item)
     return 'Recall' if item.recallable?(patron)

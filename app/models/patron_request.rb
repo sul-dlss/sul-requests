@@ -10,7 +10,7 @@ class PatronRequest < ApplicationRecord
   delegate :instance_id, to: :bib_data
 
   def submit_to_ils_later
-    SubmitFolioPatronRequestJob.perform_later(@request.id)
+    SubmitFolioPatronRequestJob.perform_later(self)
   end
 
   def bib_data
