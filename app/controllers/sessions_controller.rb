@@ -2,7 +2,6 @@
 
 # :nodoc:
 class SessionsController < ApplicationController
-
   before_action :logout_user, only: [:login_by_university_id, :login_by_sunetid, :register_visitor]
 
   # Handle login for University ID + PIN users by authenticating them with the
