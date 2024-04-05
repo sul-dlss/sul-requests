@@ -52,6 +52,36 @@ RSpec.describe 'Creating a page request' do
         service_point_code: 'MARINE-BIO'
       )
     end
+
+    context 'with stubbed paging schedule' do
+      before do
+        travel_to Time.zone.local(2024, 4, 2, 12, 0, 0)
+
+        allow_any_instance_of(LibraryHours).to receive(:open?).and_return(true)
+
+        allow(PagingSchedule).to receive(:schedule).and_return(
+          [
+            PagingSchedule::Scheduler.new(from: 'SAL3', to: 'GREEN', before: '11:59pm', business_days_later: 1, will_arrive_after: '10am'),
+            PagingSchedule::Scheduler.new(from: 'SAL3', to: 'MARINE-BIO', before: '11:59pm', business_days_later: 3,
+                                          will_arrive_after: '4pm')
+          ]
+        )
+      end
+
+      it 'shows the estimated deliver dates', :js do
+        visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+        click_on 'Log in with SUNet ID'
+
+        within '#earliestAvailableContainer' do
+          expect(page).to have_content('Wednesday, Apr 3 2024, after 10am')
+        end
+
+        select 'Marine Biology Library', from: 'Pickup from'
+        within '#earliestAvailableContainer' do
+          expect(page).to have_content('Friday, Apr 5 2024, after 4pm')
+        end
+      end
+    end
   end
 
   context 'with a library ID user' do
@@ -64,7 +94,7 @@ RSpec.describe 'Creating a page request' do
     before do
       allow(FolioClient).to receive(:new).and_return(stub_client)
 
-      allow(stub_client).to receive(:login_by_library_id_and_pin).with('12345', '54321').and_return({ 'patronKey' => 'some-lib-id-uuid' })
+      allow(stub_client).to receive(:login_by_barcode).with('12345', '54321').and_return({ 'patronKey' => 'some-lib-id-uuid' })
       allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(patron_key: 'some-lib-id-uuid').and_return(patron)
     end
 
@@ -85,6 +115,29 @@ RSpec.describe 'Creating a page request' do
         origin_location_code: 'SAL3-STACKS',
         service_point_code: 'GREEN-LOAN'
       )
+    end
+  end
+
+  context 'with a library name+email user' do
+    context 'for an item that a purchased account cannot page' do
+      before do
+        allow(Folio::CirculationRules::PolicyService).to receive(:rules).and_return(
+          [
+            Folio::CirculationRules::Rule.new(
+              criteria: [],
+              policy: {
+                'request' => '8a58b9d6-855d-49bb-9a16-8b409e590dfe' # no requests allowed (for anyone)
+              }
+            )
+          ]
+        )
+      end
+
+      it 'shows the user a warning message' do
+        visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+
+        expect(page).to have_content('This item is not available to request for visitors')
+      end
     end
   end
 end

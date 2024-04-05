@@ -5,6 +5,7 @@
 ###
 class PatronRequest < ApplicationRecord
   class_attribute :bib_model_class, default: Settings.ils.bib_model.constantize
+  store :data, accessors: [:barcodes], coder: JSON
 
   def bib_data
     @bib_data ||= begin
@@ -46,14 +47,18 @@ class PatronRequest < ApplicationRecord
     service_points.first || Settings.folio.default_service_point
   end
 
+  def origin_library_code
+    folio_location&.library&.code
+  end
+
+  def barcode=(barcode)
+    self.barcodes = [barcode]
+  end
+
   private
 
   def folio_location
     @folio_location ||= Folio::Types.locations.find_by(code: origin_location_code) || items_in_location.first&.permanent_location
-  end
-
-  def origin_library_code
-    folio_location&.library&.code
   end
 
   # Returns default service point codes

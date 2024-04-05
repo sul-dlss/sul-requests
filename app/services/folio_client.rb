@@ -39,29 +39,71 @@ class FolioClient
     "#<#{self.class.name}:#{object_id}  @base_url=\"#{base_url}\">"
   end
 
-  # Return the FOLIO user object given a sunetid
-  # See https://s3.amazonaws.com/foliodocs/api/mod-users/p/users.html#users__userid__get
+  # Login by barcode or university ID, trying barcode first
+  # TODO: remove once we're no longer using barcodes for auth
+  def login_by_barcode_or_university_id(barcode_or_id, pin)
+    login_by_barcode(barcode_or_id, pin) || login_by_university_id(barcode_or_id, pin)
+  end
+
+  # Find the user by barcode and validate their PIN, returning the user
+  def login_by_barcode(barcode, pin)
+    user = find_user_by_barcode(barcode)
+    user if validate_patron_pin(user['id'], pin)
+  rescue ActiveRecord::RecordNotFound
+    nil
+  end
+
+  # Find the user by university ID and validate their PIN, returning the user
+  def login_by_university_id(university_id, pin)
+    user = find_user_by_university_id(university_id)
+    user if validate_patron_pin(user['id'], pin)
+  rescue ActiveRecord::RecordNotFound
+    nil
+  end
+
+  # Find the user by sunetid and return them; auth handled by Shibboleth
   def login_by_sunetid(sunetid)
-    response = get_json('/users', params: { query: CqlQuery.new(username: sunetid).to_query })
-    response&.dig('users', 0)
+    find_user_by_sunetid(sunetid)
+  rescue ActiveRecord::RecordNotFound
+    nil
   end
 
-  # Return the FOLIO user object given a library id (e.g. barcode)
-  # See https://s3.amazonaws.com/foliodocs/api/mod-users/p/users.html#users__userid__get
-  def login_by_library_id(library_id)
-    response = get_json('/users', params: { query: CqlQuery.new(barcode: library_id).to_query })
-    response&.dig('users', 0)
+  # Find a Folio::Patron by barcode or university ID, trying barcode first
+  # TODO: remove once we're no longer using barcodes for auth
+  def find_patron_by_barcode_or_university_id(barcode_or_id)
+    find_patron_by_barcode(barcode_or_id) || find_patron_by_university_id(barcode_or_id)
   end
 
-  # Return the FOLIO user object given a library id (e.g. barcode)
-  # See https://s3.amazonaws.com/foliodocs/api/mod-users/p/users.html#users__userid__get
-  def login_by_library_id_and_pin(library_id, pin)
-    response = get_json('/users', params: { query: CqlQuery.new(barcode: library_id).to_query })
-    user = response&.dig('users', 0)
+  # Find a Folio::Patron by barcode
+  def find_patron_by_barcode(barcode)
+    Folio::Patron.new(find_user_by_barcode(barcode))
+  rescue ActiveRecord::RecordNotFound
+    Honeybadger.notify("Unable to find patron via barcode: #{barcode}")
+    nil
+  end
 
-    return unless user && validate_patron_pin(user['id'], pin)
+  # Find a Folio::Patron by university ID
+  def find_patron_by_university_id(university_id)
+    Folio::Patron.new(find_user_by_university_id(university_id))
+  rescue ActiveRecord::RecordNotFound
+    Honeybadger.notify("Unable to find patron via university id: #{university_id}")
+    nil
+  end
 
-    user
+  # Find a Folio::Patron by sunetid
+  def find_patron_by_sunetid(sunetid)
+    Folio::Patron.new(find_user_by_sunetid(sunetid))
+  rescue ActiveRecord::RecordNotFound
+    Honeybadger.notify("Unable to find patron via sunetid: #{sunetid}")
+    nil
+  end
+
+  # Find a Folio::Patron by ID
+  def find_patron_by_id(user_id)
+    Folio::Patron.new(find_user_by_id(user_id))
+  rescue ActiveRecord::RecordNotFound
+    Honeybadger.notify("Unable to find patron via id: #{user_id}")
+    nil
   end
 
   # Validate a pin for a user
@@ -79,10 +121,6 @@ class FolioClient
     else
       check_response(response, title: 'Validate pin', context: { user_id: })
     end
-  end
-
-  def user_info(user_id)
-    get_json("/users/#{CGI.escape(user_id)}")
   end
 
   def proxy_group_info(user_id)
@@ -257,6 +295,38 @@ class FolioClient
   end
 
   private
+
+  # Find a user by barcode in FOLIO; raise an error if not found
+  def find_user_by_barcode(barcode)
+    user = get_json('/users', params: { query: CqlQuery.new(barcode:).to_query })&.dig('users', 0)
+    raise ActiveRecord::RecordNotFound, "User with barcode '#{barcode}' not found" unless user
+
+    user
+  end
+
+  # Find a user by university ID (externalSystemId in FOLIO); raise an error if not found
+  def find_user_by_university_id(university_id)
+    user = get_json('/users', params: { query: CqlQuery.new(externalSystemId: university_id).to_query })&.dig('users', 0)
+    raise ActiveRecord::RecordNotFound, "User with externalSystemId '#{university_id}' not found" unless user
+
+    user
+  end
+
+  # Find a user by sunetid (username in FOLIO); raise an error if not found
+  def find_user_by_sunetid(sunetid)
+    user = get_json('/users', params: { query: CqlQuery.new(username: sunetid).to_query })&.dig('users', 0)
+    raise ActiveRecord::RecordNotFound, "User with username '#{sunetid}' not found" unless user
+
+    user
+  end
+
+  # Find a user by ID in FOLIO; raise an error if not found
+  def find_user_by_id(user_id)
+    user = get_json("/users/#{user_id}")
+    raise ActiveRecord::RecordNotFound, "User with id '#{user_id}' not found" unless user
+
+    user
+  end
 
   def check_response(response, title:, context:)
     return if response.success?

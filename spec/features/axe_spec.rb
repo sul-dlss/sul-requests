@@ -12,7 +12,7 @@ RSpec.describe 'Accessibility testing', :js do
   # TODO: add patron_request_path after built out more
   describe 'without user login' do
     it 'validates the home page' do
-      visit new_patron_request_path(instance_hrid: 'a12345', origin_location_code: 'SAL3')
+      visit new_patron_request_path(instance_hrid: 'a12345', origin_location_code: 'SAL3-STACKS')
       expect(page).to be_accessible
     end
 
@@ -30,7 +30,7 @@ RSpec.describe 'Accessibility testing', :js do
     end
 
     it 'validates the request page' do
-      visit new_patron_request_path(instance_hrid: 'a12345', origin_location_code: 'SAL3', step: 'select')
+      visit new_patron_request_path(instance_hrid: 'a12345', origin_location_code: 'SAL3-STACKS', step: 'select')
       expect(page).to be_accessible
     end
   end
@@ -54,7 +54,7 @@ RSpec.describe 'Accessibility testing', :js do
     end
 
     it 'validates the home page' do
-      visit new_patron_request_path(instance_hrid: 'a12345', origin_location_code: 'SAL3', step: 'select')
+      visit new_patron_request_path(instance_hrid: 'a12345', origin_location_code: 'SAL3-STACKS', step: 'select')
       expect(page).to be_accessible
     end
   end
