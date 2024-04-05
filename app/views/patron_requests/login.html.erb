@@ -72,7 +72,7 @@
         <div class="card border-0">
             <h3 class="card-header bg-white border-0">Visitor</h3>
             <div class="card-body pt-0">
-                <% unless @guest_can_request %>
+                <% if Ability.anonymous.cannot? :prepare, @request %>
                     <div class="alert alert-danger text-cardinal">
                         This item is not available to request for visitors. If you have a SUNet ID or library card, please login using one of those methods.
                     </div>
@@ -87,8 +87,8 @@
                     <i class="bi bi-box-arrow-up-right"></i> Visitor access
                 </a></p>
                 <details>
-                    <summary class="btn btn-link p-0<% unless @guest_can_request %> disabled<%end %>">Proceed as visitor <i class="bi bi-chevron-right"></i></summary>
-                    <% if @guest_can_request %>
+                    <summary class="btn btn-link p-0<% if Ability.anonymous.cannot? :prepare, @request %> disabled<%end %>">Proceed as visitor <i class="bi bi-chevron-right"></i></summary>
+                    <% if Ability.anonymous.can? :prepare, @request %>
                         <%= form_tag new_patron_request_path(new_params), method: 'POST', class: 'form p-3', data: { turbo: false } do %>
                             <div class="form-group mt-2">
                                 <label class="form-label required-label" for="name">Name</label>

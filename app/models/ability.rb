@@ -84,6 +84,17 @@ class Ability
     can [:new, :create], PatronRequest if user.patron || user.name_email_user?
     can :read, [PatronRequest], patron_id: user.patron.id if user.patron
 
+    can :request, Folio::Item do |item|
+      allowed_request_types = user.policy_service.item_request_policy(item)&.dig('requestTypes')
+      item.requestable?(request_types: allowed_request_types)
+    end
+
+    can :prepare, PatronRequest do |request|
+      request.items_in_location.any? do |item|
+        can? :request, item
+      end
+    end
+
     if token
       begin
         token, = TokenEncryptor.new(token).decrypt_and_verify

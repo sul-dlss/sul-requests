@@ -147,22 +147,22 @@ module Folio
       PAGE_LOCATIONS.include?(effective_location.code)
     end
 
-    def hold_recallable?
-      recallable? || holdable?
+    def hold_recallable?(*, **)
+      recallable?(*, **) || holdable?(*, **)
     end
 
-    def recallable?(patron = nil)
-      request_types = patron&.allowed_request_types(self) || allowed_request_types
+    def recallable?(patron = nil, request_types: nil)
+      request_types ||= patron&.allowed_request_types(self) || allowed_request_types
       HOLD_RECALL_STATUSES.include?(status) && request_types.include?('Recall')
     end
 
-    def holdable?(patron = nil)
-      request_types = patron&.allowed_request_types(self) || allowed_request_types
+    def holdable?(patron = nil, request_types: nil)
+      request_types ||= patron&.allowed_request_types(self) || allowed_request_types
       HOLD_RECALL_STATUSES.include?(status) && request_types.include?('Hold')
     end
 
-    def pageable?(patron = nil)
-      request_types = patron&.allowed_request_types(self) || allowed_request_types
+    def pageable?(patron = nil, request_types: nil)
+      request_types ||=  patron&.allowed_request_types(self) || allowed_request_types
       PAGEABLE_STATUSES.include?(status) && request_types.include?('Page')
     end
 
@@ -174,8 +174,8 @@ module Folio
       aeon_site.present?
     end
 
-    def requestable?
-      hold_recallable? || mediateable? || pageable?
+    def requestable?(*, **)
+      hold_recallable?(*, **) || mediateable? || pageable?(*, **)
     end
 
     def aeon_site

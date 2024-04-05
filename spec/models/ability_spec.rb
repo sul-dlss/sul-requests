@@ -70,6 +70,17 @@ RSpec.describe Ability do
 
     it { is_expected.not_to be_able_to(:create, admin_comment) }
 
+    context 'with a request for an item that is not requestable by non-affiliates' do
+      let(:request) { PatronRequest.new(instance_hrid: 'a1234', origin_location_code: 'LAW-STACKS1') }
+
+      before do
+        allow(request).to receive(:bib_data).and_return(build(:single_holding,
+                                                              items: [build(:item, effective_location: build(:law_location))]))
+      end
+
+      it { is_expected.not_to be_able_to(:prepare, request) }
+    end
+
     describe 'who fills out a name and email' do
       let(:user) { build(:non_sso_user) }
       let(:page) { build(:page, user:) }
@@ -145,6 +156,19 @@ RSpec.describe Ability do
       it { is_expected.to be_able_to(:status, mediated_page) }
       it { is_expected.to be_able_to(:status, page) }
       it { is_expected.to be_able_to(:status, scan) }
+    end
+
+    context 'with a request for an item that is not requestable by non-affiliates' do
+      let(:request) { PatronRequest.new(instance_hrid: 'a1234', origin_location_code: 'LAW-STACKS1') }
+      let(:patron) { instance_double(Folio::Patron, id: '', patron_group_id: '3684a786-6671-4268-8ed0-9db82ebca60b') }
+
+      before do
+        allow(user).to receive(:patron).and_return(patron)
+        allow(request).to receive(:bib_data).and_return(build(:single_holding,
+                                                              items: [build(:item, effective_location: build(:law_location))]))
+      end
+
+      it { is_expected.to be_able_to(:prepare, request) }
     end
 
     describe 'who did not create the requst' do
