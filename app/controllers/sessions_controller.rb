@@ -2,7 +2,7 @@
 
 # :nodoc:
 class SessionsController < ApplicationController
-  before_action :logout_user, only: [:login_by_library_id, :login_by_sunetid]
+  before_action :logout_user, only: [:login_by_library_id, :login_by_sunetid, :register_visitor]
 
   # Handle login for Barcode + PIN users by authenticating them with the
   # ILS using the Warden configuration.
@@ -23,6 +23,17 @@ class SessionsController < ApplicationController
   # GET /sessions/login_by_sunetid
   def login_by_sunetid
     if request.env['warden'].authenticate(:shibboleth, :development_shibboleth_stub)
+      redirect_after_login
+    else
+      redirect_to post_auth_redirect_url, flash: { error: t('.alert') }
+    end
+  end
+
+  # Handle visitor name and email registration
+  #
+  # GET /sessions/register_visitor
+  def register_visitor
+    if request.env['warden'].authenticate(:register_visitor)
       redirect_after_login
     else
       redirect_to post_auth_redirect_url, flash: { error: t('.alert') }

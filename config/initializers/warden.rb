@@ -91,3 +91,21 @@ Warden::Strategies.add(:library_id) do
     end
   end
 end
+
+# For visitor registration, information does not go through Shibboleth.
+# The only authentication is ensuring the name and email fields are both present.
+Warden::Strategies.add(:register_visitor) do
+  def valid?
+    params['name'].present? || params['patron_email'].present?
+  end
+
+  def authenticate!
+    if params['name'].present? && params['patron_email'].present?
+      u = { name: params['name'], email: params['patron_email'], shibboleth: false }
+      success!(CurrentUser.new(u))
+    else
+      # TODO: Should there be specific wording to this error message?
+      fail!('Please supply both name and email')
+    end
+  end
+end

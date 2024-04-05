@@ -18,6 +18,8 @@ class CurrentUser
         sso_user
       elsif library_id?
         library_id_user
+      elsif name_email_user?
+        name_email_user
       else
         anonymous_user
       end
@@ -36,6 +38,10 @@ class CurrentUser
     data['patron_key']
   end
 
+  def name_email_user?
+    data['name'].present? && data['email'].present?
+  end
+
   def sso_user
     User.find_or_create_by(sunetid: user_id).tap do |user|
       update_ldap_attributes(user)
@@ -47,6 +53,10 @@ class CurrentUser
     User.find_or_create_by(library_id: user_id).tap do |user|
       update_folio_attributes(user)
     end
+  end
+
+  def name_email_user
+    User.new(name: data['name'], email: data['email'])
   end
 
   # rubocop:disable Metrics/AbcSize

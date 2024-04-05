@@ -223,5 +223,7 @@ en:
                     <li>A library account is created for patrons who are eligible to check out library materials.</li>
                     <li>If you believe you should have an account, contact <a href="mailto:%{mailto}">Circulation &amp; Privileges</a> for assistance.</li>
                   </ul>
+    register_visitor:
+      alert: Unable to register visitor.  Both name and email are required.
     destroy:
       notice: You have been successfully logged out.
