@@ -113,8 +113,18 @@ class User < ActiveRecord::Base
         patron_model_class.find_by(sunetid:)
       elsif library_id_user?
         patron_model_class.find_by(library_id:)
+      elsif name_email_user?
+        placeholder_patron
       end
     end
+  end
+
+  def placeholder_patron
+    patron_model_class.new({
+                             'id' => Settings.folio.visitor_placeholder_id,
+                             'personal' => { 'email' => email, 'lastName' => name },
+                             'patronGroup' => sul_purchased_patron_group_id
+                           })
   end
 
   def policy_service

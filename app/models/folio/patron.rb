@@ -111,6 +111,9 @@ module Folio
     end
 
     def blocks
+      # If this is a registered visitor, do not make any calls to FOLIO client and return empty array
+      return [] if visitor_patron?
+
       blocks = patron_blocks.fetch('automatedPatronBlocks')
       blocks.map { |block| construct_message(block['message']) }
     end
@@ -149,6 +152,10 @@ module Folio
 
     def policy_service
       @policy_service ||= Folio::CirculationRules::PolicyService.new(patron_groups: [patron_group_id])
+    end
+
+    def visitor_patron?
+      id == Settings.folio.visitor_placeholder_id
     end
 
     private
