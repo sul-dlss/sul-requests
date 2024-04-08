@@ -14,50 +14,72 @@
     <%= f.hidden_field :barcode, value: f.object.barcodes&.first || (@request.items_in_location.first&.barcode || @request.items_in_location.first&.id) %>
   <% end %>
 
-  <div id="earliestAvailableContainer" class="text-cardinal my-4" aria-live="polite">
-    Earliest available:
-    <% if f.object.pickup_destinations.one? && f.object.earliest_delivery_estimate %>
-      <%= f.object.earliest_delivery_estimate['display_date'] %>
-    <% else %>
-      <%= turbo_frame_tag('earliestAvailable', src: paging_schedule_url(origin: @request.origin_library_code, destination: f.object.service_point_code || f.object.default_service_point_code), data: { 'patronRequest-target' => 'earliestAvailable'}) do %>
-        Loading..
-      <% end %>
-    <% end %>
-  </div>
 
-  <% if f.object.pickup_destinations.many? %>
-    <div class="form-group row mb-3 me-0">
-      <%= f.label :service_point_code, class: 'required-label col-2' %>
-      <%=  f.select(
-      :service_point_code, pickup_destinations_array(f.object.pickup_destinations),
-      {
-        label: label_for_pickup_destinations_dropdown(f.object.pickup_destinations),
-        selected: f.object.service_point_code || f.object.default_service_point_code,
-        include_blank: false, required: false,
-      },
-      data: {
-        action: 'change->patronRequest#updateEarliestAvailable',
-      },
-      aria: {
-        controls: 'earliestAvailableContainer',
-      },
-      class: 'form-select col'
-    ) %>
+  <% if f.object.items_in_location.many? %>
+    <div data-controller="itemselector">
+      Item selector
+
+      <% f.object.items_in_location.each do |item| %>
+        <div><label><input data-itemselector-target="items" data-action="itemselector#change" data-itemselector-id-param="<%= item.id %>" data-itemselector-available-param="true" data-itemselector-label-param="<%= item.callnumber%>" type="checkbox" class="form-check-input" name="barcodes" value="<%= item.barcode || item.id %>"><span class="form-check-label"><%= item.callnumber %></span></label></div>
+      <% end %>
+
+
+      <div>
+        Pickup after: 
+        <div data-itemselector-target="availableItems"></div>
+      </div>
+
+      <div>
+        Items currently checked out or otherwise unavailable
+        <div data-itemselector-target="unavailableItems"></div>
+      </div>
     </div>
   <% else %>
-    <div class="text-cardinal mb-2">
-        <%= f.object.single_location_label %>: <%= f.object.destination_location&.name %>
-    </div>
-    <%= f.hidden_field :service_point_code, :value => f.object.destination_location&.code %>
-
-    <% if f.object.mediateable? %>
-        <p>
-        After submitting your request, you will receive an email confirmation. Additionally, you will be notified by email once the item is ready for your visit.
-        </p>
-        <% if f.object.requires_needed_date? %>
-            <%= f.label :needed_date, 'I plan to visit on:', :class => 'required-label' %>
-            <%= f.date_field :needed_date, :required => true, value:  f.object.earliest_delivery_estimate['date'], min: f.object.earliest_delivery_estimate['date'] %>
+    <div id="earliestAvailableContainer" class="text-cardinal my-4" aria-live="polite">
+      Earliest available:
+      <% if f.object.pickup_destinations.one? && f.object.earliest_delivery_estimate %>
+        <%= f.object.earliest_delivery_estimate['display_date'] %>
+      <% else %>
+        <%= turbo_frame_tag('earliestAvailable', src: paging_schedule_url(origin: @request.origin_library_code, destination: f.object.service_point_code || f.object.default_service_point_code), data: { 'patronRequest-target' => 'earliestAvailable'}) do %>
+          Loading..
         <% end %>
+      <% end %>
+    </div>
+
+    <% if f.object.pickup_destinations.many? %>
+      <div class="form-group row mb-3 me-0">
+        <%= f.label :service_point_code, class: 'required-label col-2' %>
+        <%=  f.select(
+        :service_point_code, pickup_destinations_array(f.object.pickup_destinations),
+        {
+          label: label_for_pickup_destinations_dropdown(f.object.pickup_destinations),
+          selected: f.object.service_point_code || f.object.default_service_point_code,
+          include_blank: false, required: false,
+        },
+        data: {
+          action: 'change->patronRequest#updateEarliestAvailable',
+        },
+        aria: {
+          controls: 'earliestAvailableContainer',
+        },
+        class: 'form-select col'
+      ) %>
+      </div>
+    <% else %>
+      <div class="text-cardinal mb-2">
+          <%= f.object.single_location_label %>: <%= f.object.destination_location&.name %>
+      </div>
+      <%= f.hidden_field :service_point_code, :value => f.object.destination_location&.code %>
+
+      <% if f.object.mediateable? %>
+          <p>
+          After submitting your request, you will receive an email confirmation. Additionally, you will be notified by email once the item is ready for your visit.
+          </p>
+          <% if f.object.requires_needed_date? %>
+              <%= f.label :needed_date, 'I plan to visit on:', :class => 'required-label' %>
+              <%= f.date_field :needed_date, :required => true, value:  f.object.earliest_delivery_estimate['date'], min: f.object.earliest_delivery_estimate['date'] %>
+          <% end %>
+      <% end %>
     <% end %>
   <% end %>
 
