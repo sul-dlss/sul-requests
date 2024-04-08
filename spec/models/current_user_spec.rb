@@ -66,5 +66,21 @@ RSpec.describe CurrentUser do
         end
       end
     end
+
+    context 'with a registered visitor user' do
+      let(:user) do
+        {
+          name: 'some-user',
+          email: 'some-user@stanford.edu',
+          shibboleth: false
+        }
+      end
+
+      it 'returns a user with the name and email information' do
+        expect(subject).to be_a User
+        expect(subject.name).to eq 'some-user'
+        expect(subject.email).to eq 'some-user@stanford.edu'
+      end
+    end
   end
 end
