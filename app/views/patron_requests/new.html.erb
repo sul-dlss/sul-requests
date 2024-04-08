@@ -10,6 +10,9 @@
 <%= form_for(@request, data: { controller: 'patronRequest' }) do |f| %>
   <%= f.hidden_field :instance_hrid %>
   <%= f.hidden_field :origin_location_code %>
+  <% if @request.items_in_location.one? || f.object.barcodes.one? %>
+    <%= f.hidden_field :barcode, value: f.object.barcodes&.first || (@request.items_in_location.first&.barcode || @request.items_in_location.first&.id) %>
+  <% end %>
 
   <div id="earliestAvailableContainer" class="text-cardinal my-4" aria-live="polite">
     Earliest available:

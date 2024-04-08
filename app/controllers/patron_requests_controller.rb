@@ -21,7 +21,7 @@ class PatronRequestsController < ApplicationController
   def create
     @request.patron_id = current_user.patron.id
 
-    if @request.save
+    if @request.save && @request.submit_to_ils_later
       redirect_to @request
     else
       render 'new'
@@ -42,6 +42,7 @@ class PatronRequestsController < ApplicationController
   end
 
   def patron_request_params
-    params.require(:patron_request).permit(:patron_email, :instance_hrid, :origin_location_code, :needed_date, :service_point_code)
+    params.require(:patron_request).permit(:patron_email, :instance_hrid, :origin_location_code, :needed_date, :service_point_code,
+                                           :barcode)
   end
 end

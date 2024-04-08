@@ -66,7 +66,7 @@ module Folio
       contributor&.fetch('name')
     end
 
-    attr_reader :pub_date, :pub_place, :publisher, :format
+    attr_reader :id, :pub_date, :pub_place, :publisher, :format
 
     def isbn
       @isbn.first
