@@ -111,6 +111,9 @@ module Folio
     end
 
     def blocks
+      # If this is a registered visitor, do not make any calls to FOLIO client and return empty array
+      return [] if visitor_patron?
+
       blocks = patron_blocks.fetch('automatedPatronBlocks')
       blocks.map { |block| construct_message(block['message']) }
     end
@@ -167,6 +170,10 @@ module Folio
 
     def proxy_group_info
       @proxy_group_info ||= self.class.folio_client.proxy_group_info(id)
+    end
+
+    def visitor_patron?
+      id == Settings.folio.visitor_placeholder_id
     end
   end
 end

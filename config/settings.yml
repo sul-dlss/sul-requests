@@ -79,6 +79,7 @@ folio:
     - staff-casual
     - undergrad
     - visiting-scholar
+  visitor_placeholder_id: 'visitor'
 
 mailer_host: <%= `echo $HOSTNAME` %>
 hours_api: 'https://library-hours.stanford.edu/'
