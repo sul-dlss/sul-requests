@@ -47,7 +47,7 @@ class PatronRequest < ApplicationRecord
   end
 
   def mediateable?
-    items_in_location.all?(&:mediateable?)
+    items_in_location.any?(&:mediateable?)
   end
 
   def requires_needed_date?
