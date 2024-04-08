@@ -154,6 +154,10 @@ module Folio
       @policy_service ||= Folio::CirculationRules::PolicyService.new(patron_groups: [patron_group_id])
     end
 
+    def visitor_patron?
+      id == Settings.folio.visitor_placeholder_id
+    end
+
     private
 
     def patron_summary
@@ -170,10 +174,6 @@ module Folio
 
     def proxy_group_info
       @proxy_group_info ||= self.class.folio_client.proxy_group_info(id)
-    end
-
-    def visitor_patron?
-      id == Settings.folio.visitor_placeholder_id
     end
   end
 end
