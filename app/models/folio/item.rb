@@ -208,6 +208,10 @@ module Folio
     end
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
+    def circulates?
+      loan_policy&.fetch('loanable', false)
+    end
+
     private
 
     def availability_class
@@ -220,10 +224,6 @@ module Folio
       else
         'unavailable'
       end
-    end
-
-    def circulates?
-      loan_policy&.fetch('loanable', false)
     end
 
     def loan_policy

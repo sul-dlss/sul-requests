@@ -13,8 +13,12 @@
 
   <div id="earliestAvailableContainer" class="text-cardinal my-4" aria-live="polite">
     Earliest available:
-    <%= turbo_frame_tag('earliestAvailable', src: paging_schedule_url(origin: @request.origin_library_code, destination: f.object.service_point_code || f.object.default_service_point_code), data: { 'patronRequest-target' => 'earliestAvailable'}) do %>
-      Loading..
+    <% if f.object.pickup_destinations.one? && f.object.earliest_delivery_estimate %>
+      <%= f.object.earliest_delivery_estimate['display_date'] %>
+    <% else %>
+      <%= turbo_frame_tag('earliestAvailable', src: paging_schedule_url(origin: @request.origin_library_code, destination: f.object.service_point_code || f.object.default_service_point_code), data: { 'patronRequest-target' => 'earliestAvailable'}) do %>
+        Loading..
+      <% end %>
     <% end %>
   </div>
 
@@ -37,6 +41,21 @@
       class: 'form-select col'
     ) %>
     </div>
+  <% else %>
+    <div class="text-cardinal mb-2">
+        <%= f.object.single_location_label %>: <%= f.object.destination_location&.name %>
+    </div>
+    <%= f.hidden_field :service_point_code, :value => f.object.destination_location&.code %>
+
+    <% if f.object.mediateable? %>
+        <p>
+        After submitting your request, you will receive an email confirmation. Additionally, you will be notified by email once the item is ready for your visit.
+        </p>
+        <% if f.object.requires_needed_date? %>
+            <%= f.label :needed_date, 'I plan to visit on:', :class => 'required-label' %>
+            <%= f.date_field :needed_date, :required => true, value:  f.object.earliest_delivery_estimate['date'], min: f.object.earliest_delivery_estimate['date'] %>
+        <% end %>
+    <% end %>
   <% end %>
 
   <div class="form-group d-flex justify-content-end gap-1">
