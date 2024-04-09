@@ -4,17 +4,18 @@ require:
   - rubocop-performance
   - rubocop-rails
   - rubocop-rspec
+  - rubocop-rspec_rails
 
 inherit_from: .rubocop_todo.yml
 
 AllCops:
   Exclude:
-    - 'Gemfile'
-    - 'bin/**/*'
-    - 'db/**/*'
-    - 'config/**/*'
-    - 'spec/spec_helper.rb'
-    - 'vendor/**/*'
+    - "Gemfile"
+    - "bin/**/*"
+    - "db/**/*"
+    - "config/**/*"
+    - "spec/spec_helper.rb"
+    - "vendor/**/*"
   TargetRubyVersion: 3.2
 
 Rails:
@@ -23,23 +24,23 @@ Rails:
 Layout/LineLength:
   Max: 140
   Exclude:
-    - 'spec/mailers/approval_status_mailer_spec.rb'
+    - "spec/mailers/approval_status_mailer_spec.rb"
 
 Lint/MissingSuper:
   Exclude:
-    - 'app/components/**/*.rb'
+    - "app/components/**/*.rb"
 
 Metrics/BlockLength:
   Exclude:
-    - 'spec/models/request_spec.rb'
-    - 'spec/factories/**/*'
+    - "spec/models/request_spec.rb"
+    - "spec/factories/**/*"
 
 Metrics/ClassLength:
   Enabled: false
 
 Metrics/MethodLength:
   Exclude:
-    - 'app/services/symphony_client.rb'
+    - "app/services/symphony_client.rb"
 
 Metrics/ModuleLength:
   Max: 120
@@ -370,15 +371,15 @@ RSpec/SubjectDeclaration: # new in 2.5
   Enabled: true
 RSpec/VerifiedDoubleReference: # new in 2.10.0
   Enabled: true
-RSpec/Rails/AvoidSetupHook: # new in 2.4
+RSpecRails/AvoidSetupHook: # new in 2.4
   Enabled: true
-RSpec/Rails/HaveHttpStatus: # new in 2.12
+RSpecRails/HaveHttpStatus: # new in 2.12
   Enabled: true
-RSpec/Rails/InferredSpecType: # new in 2.14
+RSpecRails/InferredSpecType: # new in 2.14
   Enabled: true
-RSpec/Rails/MinitestAssertions: # new in 2.17
+RSpecRails/MinitestAssertions: # new in 2.17
   Enabled: true
-RSpec/Rails/TravelAround: # new in 2.19
+RSpecRails/TravelAround: # new in 2.19
   Enabled: true
 Performance/BlockGivenWithExplicitBlock: # new in 1.9
   Enabled: true
@@ -534,5 +535,33 @@ RSpec/SpecFilePathFormat: # new in 2.24
   Enabled: true
 RSpec/SpecFilePathSuffix: # new in 2.24
   Enabled: true
-RSpec/Rails/NegationBeValid: # new in 2.23
+RSpecRails/NegationBeValid: # new in 2.23
+  Enabled: true
+Lint/ItWithoutArgumentsInBlock: # new in 1.59
+  Enabled: true
+Lint/LiteralAssignmentInCondition: # new in 1.58
+  Enabled: true
+Style/MapIntoArray: # new in 1.63
+  Enabled: true
+Style/SingleLineDoEndBlock: # new in 1.57
+  Enabled: true
+Style/SuperWithArgsParentheses: # new in 1.58
+  Enabled: true
+Capybara/RedundantWithinFind: # new in 2.20
+  Enabled: true
+FactoryBot/ExcessiveCreateList: # new in 2.25
+  Enabled: true
+Rails/EnvLocal: # new in 2.22
+  Enabled: true
+RSpec/EmptyOutput: # new in 2.29
+  Enabled: true
+RSpec/IsExpectedSpecify: # new in 2.27
+  Enabled: true
+RSpec/RedundantPredicateMatcher: # new in 2.26
+  Enabled: true
+RSpec/RemoveConst: # new in 2.26
+  Enabled: true
+RSpec/RepeatedSubjectCall: # new in 2.27
+  Enabled: true
+RSpec/UndescriptiveLiteralsDescription: # new in 2.29
   Enabled: true

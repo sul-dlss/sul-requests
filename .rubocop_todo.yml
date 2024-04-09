@@ -148,7 +148,7 @@ RSpec/PendingWithoutReason:
 # Offense count: 11
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: Inferences.
-RSpec/Rails/InferredSpecType:
+RSpecRails/InferredSpecType:
   Exclude:
     - 'spec/controllers/messages_controller_spec.rb'
     - 'spec/jobs/submit_iplc_listener_job_spec.rb'
