@@ -1,0 +1,23 @@
+<% if f.object.holdable_recallable_items.any? %>
+<p class="text-cardinal">
+  This item is currently checked out by another patron or otherwise unavailable. 
+</p>
+<fieldset class="mb-4">
+  <legend class="fs-6">Choose your preferred request method:</legend>
+  <div class="mt-2 form-check">
+    <%= f.radio_button :fulfillment_type, 'recall', class: 'form-check-input' %>
+    <%= f.label :fulfillment_type_recall, class: 'form-check-label' do %>
+      Expedite a copy from a partner library
+      <a href="https://library.stanford.edu/services/borrow-and-request#request"><i class="bi bi-box-arrow-up-right"></i> Learn more</a>
+    <% end %>
+  </div>
+  <div class="mt-2 form-check">
+    <%= f.radio_button :fulfillment_type, 'hold', class: 'form-check-input' %>
+    <%= f.label :fulfillment_type_hold, 'Wait for a Stanford copy to become available', class: 'form-check-label' %>
+  </div>
+</fieldset>
+<div class="mb-4">
+  <%= f.label :needed_date, 'Not needed after:', class: 'required-label' %>
+  <%= f.date_field :needed_date, required: true, min: Date.today, class: 'd-block' %>
+</div>
+<% end %>

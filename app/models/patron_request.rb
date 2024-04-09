@@ -109,6 +109,14 @@ class PatronRequest < ApplicationRecord
     self.barcodes = [barcode]
   end
 
+  def holdable_recallable_items
+    @holdable_recallable_items ||= items_in_location.filter { |item| item.recallable?(patron) && item.holdable?(patron) }
+  end
+
+  def patron
+    @patron ||= Folio::Patron.find_by(patron_key: patron_id)
+  end
+
   private
 
   # Returns default service point codes

@@ -61,6 +61,8 @@
     <% end %>
   <% end %>
 
+  <%= render 'request_preferences', f: %>
+
   <div class="form-group d-flex justify-content-end gap-1">
     <%= link_to 'Cancel', new_patron_request_path(instance_hrid: @request.instance_hrid, origin_location_code: @request.origin_location_code), class: 'btn btn-outline-primary' %>
     <%= f.submit t('.submit'), class: 'btn btn-primary' %>

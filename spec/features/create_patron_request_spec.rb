@@ -10,6 +10,7 @@ RSpec.describe 'Creating a page request' do
   let(:patron) do
     instance_double(Folio::Patron, id: user.patron_key, display_name: 'A User', exists?: true, email: nil,
                                    patron_group: { desc: 'faculty' },
+                                   allowed_request_types: ['Hold', 'Recall'],
                                    ilb_eligible?: true, blocks: ['there is a block'])
   end
 
@@ -43,7 +44,7 @@ RSpec.describe 'Creating a page request' do
       visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
       click_on 'Log in with SUNet ID'
 
-      select 'Marine Biology Library', from: 'Pickup from'
+      select 'Marine Biology Library', from: 'Preferred pickup location'
 
       expect { click_on 'Submit' }.to change(PatronRequest, :count).by(1)
 
@@ -95,7 +96,7 @@ RSpec.describe 'Creating a page request' do
           expect(page).to have_content('Wednesday, Apr 3 2024, after 10am')
         end
 
-        select 'Marine Biology Library', from: 'Pickup from'
+        select 'Marine Biology Library', from: 'Preferred pickup location'
         within '#earliestAvailableContainer' do
           expect(page).to have_content('Friday, Apr 5 2024, after 4pm')
         end
@@ -107,6 +108,7 @@ RSpec.describe 'Creating a page request' do
     let(:stub_client) { FolioClient.new }
     let(:patron) do
       instance_double(Folio::Patron, id: 'some-lib-id-uuid', display_name: 'A User', exists?: true, email: nil,
+                                     allowed_request_types: ['Hold'],
                                      patron_group: { desc: 'courtesy' }, ilb_eligible?: true, blocks: [])
     end
 
