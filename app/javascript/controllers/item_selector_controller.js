@@ -39,24 +39,27 @@ export default class extends Controller {
     this.unavailableItemsTarget.innerHTML = this.renderItems(unavailableItems);
 
     if (availableItems.length === 0) {
-      this.availableItemsTarget.parentElement.classList.add('d-none');
+      this.availableItemsTarget.closest('.selected-items-group').classList.add('d-none');
     } else {
-      this.availableItemsTarget.parentElement.classList.remove('d-none');
+      this.availableItemsTarget.closest('.selected-items-group').classList.remove('d-none');
     }
     if (unavailableItems.length === 0) {
-      this.unavailableItemsTarget.parentElement.classList.add('d-none');
+      this.unavailableItemsTarget.closest('.selected-items-group').classList.add('d-none');
     } else {
-      this.unavailableItemsTarget.parentElement.classList.remove('d-none');
+      this.unavailableItemsTarget.closest('.selected-items-group').classList.remove('d-none');
     }
   }
 
   renderItems(items) {
     return items.map((item) => {
       return `
-        <div class="item">
-          ${item.label}
-          <button data-action="${this.identifier}#unchecked" data-${this.identifier}-id-param="${item.id}">Remove</button>
-        </div>
+        <li class="hstack gap-2 border bg-light rounded-pill px-3">
+          <span class="py-2">
+            ${item.label}
+          </span>
+          <span class="vr"></span>
+          <button data-action="${this.identifier}#unchecked" data-${this.identifier}-id-param="${item.id}" type="button" class="btn-close py-2" aria-label="Remove"></button>
+        </li>
       `;
     }).join('');
   }

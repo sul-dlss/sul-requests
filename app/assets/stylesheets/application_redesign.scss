@@ -136,3 +136,8 @@ label[for="user-header-hide"] {
   margin-left: -1.5em;
   margin-top: .6em;
 }
+
+.item-table {
+  max-height: 25rem;
+  overflow-x: auto;
+}
