@@ -117,6 +117,13 @@ class PatronRequest < ApplicationRecord
     @patron ||= Folio::Patron.find_by(patron_key: patron_id)
   end
 
+  def contact_info
+    Settings.locations[origin_location_code]&.contact_info ||
+      Settings.libraries[origin_library_code]&.contact_info ||
+      Settings.libraries[destination_library_code]&.contact_info ||
+      Settings.libraries.default.contact_info
+  end
+
   def scannable?
     scan_service_point.present? && all_items_scannable?
   end

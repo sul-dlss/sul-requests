@@ -1,1 +1,54 @@
-Hello world.
+<h1>We receieved your request</h1>
+
+<div class="row">
+    <div class="col-8">
+        <% if current_user.patron.email %>
+            Expect a confirmation email shortly at <%= current_user.patron.email %>.
+            You will receive an email when the <% (@request.barcodes&.count || 1) == 1 ?  'item is' : 'items are' %> ready.
+        <% end %>
+
+        <% if current_user.patron %>
+            You can also check the status of your request any time at <%= link_to 'My Account', 'https://mylibrary.stanford.edu' %>. 
+        <% end %>
+
+        <h2>Request confirmation</h2>
+        <div>Title: <%= @request.item_title %></div>
+        <% if @request.pickup_service_point %>
+        <div>Preferred pickup location: <%= @request.pickup_service_point.name %></div>
+        <% end %>
+    </div>
+    <div class="col-4">
+        <div class="card">
+            <div class="card-body">
+                <h2>Library resources</h2>
+                <div class="bg-light p-2">
+                    <h3>
+                        <a href="https://mylibrary.stanford.edu"><i class="bi bi-box-arrow-up-right"></i> Log in to My Account</a>
+                    </h3>
+                    <p>
+                      Access information regarding items currently checked out, monitor requests,
+                      and/or outstanding fines.
+                    </p>
+                </div>
+                <h3>Get help</h3>
+                    <ul class="list-unstyled">
+                        <li><i class="bi bi-envelope-fill"></i> <%= mail_to(@request.contact_info[:email], @request.contact_info[:email]) %></li>
+                        <li><i class="bi bi-telephone-fill"></i> Call <%= @request.contact_info[:phone] %></li>
+                    </ul>
+                <h3>Library policies and information</h3>
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="https://library.stanford.edu/services/borrow-and-request" target="_blank">
+                            <i class="bi bi-box-arrow-up-right"></i> Borrow and request
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://library.stanford.edu/borrowdirect" target="_blank">
+                            <i class="bi bi-box-arrow-up-right"></i> Borrow Direct
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
