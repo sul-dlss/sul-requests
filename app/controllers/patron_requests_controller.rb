@@ -5,23 +5,21 @@
 ###
 class PatronRequestsController < ApplicationController
   layout 'application_new'
-  load_and_authorize_resource instance_name: :request
+  load_and_authorize_resource instance_name: :request, new: :login
+  before_action :associate_request_with_patron, only: [:new, :create, :login]
   helper_method :current_request, :new_params
 
   def show; end
 
   def login
-    @request = PatronRequest.new(new_params)
+    current_request.assign_attributes(**new_params)
   end
 
   def new
-    @request.patron_id = current_user.patron&.id
-    current_request.assign_attributes(new_params)
+    current_request.assign_attributes(**new_params)
   end
 
   def create
-    @request.patron_id = current_user.patron.id
-
     if @request.save && @request.submit_to_ils_later
       redirect_to @request
     else
@@ -33,6 +31,10 @@ class PatronRequestsController < ApplicationController
 
   def current_request
     @request
+  end
+
+  def associate_request_with_patron
+    @request.patron = current_user.patron
   end
 
   def new_params

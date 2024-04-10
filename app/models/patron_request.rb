@@ -114,7 +114,12 @@ class PatronRequest < ApplicationRecord
   end
 
   def patron
-    @patron ||= Folio::Patron.find_by(patron_key: patron_id)
+    @patron ||= (Folio::Patron.find_by(patron_key: patron_id) if patron_id)
+  end
+
+  def patron=(patron)
+    self.patron_id = patron&.id
+    @patron = patron
   end
 
   def contact_info
