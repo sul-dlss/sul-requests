@@ -30,4 +30,16 @@ class ApplicationController < ActionController::Base
     logger.debug { "Access denied on #{exception.action} #{exception.subject.inspect}" }
     render status: :forbidden, plain: 'Access to this resource is denied.'
   end
+
+  def redirect_after_action
+    if params[:referrer]
+      redirect_to post_action_redirect_url
+    else
+      redirect_back fallback_location: root_url
+    end
+  end
+
+  def post_action_redirect_url
+    params[:referrer].presence || root_url
+  end
 end

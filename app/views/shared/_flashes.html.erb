@@ -1,28 +1,31 @@
-<% if [flash[:success], flash[:notice], flash[:warning], flash[:error]].any? %>
-  <div class="flashes">
-    <% if flash[:success] %>
-      <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <%= flash[:success] %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
+<div class="flash_messages mt-5">
+  <% [:success, :notice, :error, :alert].each do |type| %>
+    <%- alert_class = case type
+      when :success then "alert-success"
+      when :notice  then "alert-info"
+      when :alert   then "alert-warning"
+      when :error   then "alert-danger"
+      else "alert-#{type}"
+      end
+    -%>
+    <%- alert_icon = case type
+      when :success then "check-circle-fill"
+      when :notice  then "info-circle-fill"
+      when :alert   then "exclamation-triangle-fill"
+      when :error   then "exclamation-triangle-fill"
+      else "alert-#{type}"
+      end
+    -%>
+    <% if flash[type] %>
+      <% Array(flash[type]).each do |message| %>
+        <div class="alert <%=alert_class %> alert-dismissible fade show shadow-sm d-flex gap-3 align-items-center">
+          <i class="bi bi-<%= alert_icon %> fs-3"></i>
+          <div>
+            <%= message.html_safe %>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <% end %>
     <% end %>
-    <% if flash[:notice] %>
-      <div class="alert alert-info alert-dismissible fade show" role="alert">
-        <%= flash[:notice] %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    <% end %>
-    <% if flash[:warning] %>
-      <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <%= flash[:warning] %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    <% end %>
-    <% if flash[:error] %>
-      <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <%= flash[:error] %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    <% end %>
-  </div>
-<% end %>
+  <% end %>
+</div>

@@ -15,6 +15,9 @@ Capybara.javascript_driver = :selenium_chrome_headless
 # Set a little higher for github actions, to avoid flappy tests
 Capybara.default_max_wait_time = ENV['CI'] ? 10 : 5
 
+# Allow selecting capybara elements via aria-label
+Capybara.enable_aria_label = true
+
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
 # run as spec files by default. This means that files in spec/support that end

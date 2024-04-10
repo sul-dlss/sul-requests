@@ -6,3 +6,6 @@ import { application } from "./application"
 
 import PatronRequestController from "./patron_request_controller"
 application.register("patronRequest", PatronRequestController)
+
+import PasswordVisibilityController from "./password_visibility_controller"
+application.register("password-visibility", PasswordVisibilityController)

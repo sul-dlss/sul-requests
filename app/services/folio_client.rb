@@ -2,6 +2,8 @@
 
 # Calls FOLIO REST endpoints
 class FolioClient
+  class IlsError < StandardError; end
+
   DEFAULT_HEADERS = {
     accept: 'application/json, text/plain',
     content_type: 'application/json'
@@ -121,6 +123,19 @@ class FolioClient
     else
       check_response(response, title: 'Validate pin', context: { user_id: })
     end
+  end
+
+  # Assign a patron a new PIN using a token that identifies them
+  # https://s3.amazonaws.com/foliodocs/api/mod-users/p/patronpin.html#patron_pin_post
+  # @param [String] token the reset token
+  # @param [String] new_pin the new PIN to assign
+  def change_pin(token, new_pin)
+    user_id = crypt.decrypt_and_verify(token)
+    # expired tokens evaluate to nil; we want to raise an error instead
+    raise ActiveSupport::MessageEncryptor::InvalidMessage unless user_id
+
+    response = post('/patron-pin', json: { id: user_id, pin: new_pin })
+    check_response(response, title: 'Assign pin', context: { user_id: })
   end
 
   def proxy_group_info(user_id)
@@ -396,5 +411,14 @@ class FolioClient
 
   def folio_graphql_client
     @folio_graphql_client ||= FolioGraphqlClient.new
+  end
+
+  # Encryptor/decryptor for the token used in the PIN reset process
+  def crypt
+    @crypt ||= begin
+      keygen = ActiveSupport::KeyGenerator.new(Rails.application.secret_key_base)
+      key = keygen.generate_key('patron pin reset token', ActiveSupport::MessageEncryptor.key_len)
+      ActiveSupport::MessageEncryptor.new(key)
+    end
   end
 end

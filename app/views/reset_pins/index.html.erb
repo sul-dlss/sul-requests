@@ -1,0 +1,17 @@
+<h1 class="fw-light mt-5"><%= t('sessions.university_id.user') %></h1>
+<h2><%= t('reset_pin.title') %></h2>
+<p><%= t('reset_pin.instructions') %></p>
+<%= form_tag reset_pin_url, method: :post, class: 'mb-5', style: 'max-width: 400px;' do %>
+  <%= hidden_field_tag :referrer, params[:referrer] %>
+  <div class="form-group">
+    <%= label_tag :university_id, t('activerecord.attributes.user.library_id'), class: 'form-label required-label' %>
+    <%= text_field_tag :university_id, nil, class: 'form-control', 'aria-describedby': 'university-id-help', autofocus: true, required: true, minlength: 10, maxlength: 10 %>
+    <div id="university-id-help" class="form-text">
+      <%= t('sessions.university_id.help_text') %>
+    </div>
+  </div>
+  <div class="mt-3 d-flex gap-2 justify-content-end">
+    <%= link_to 'Cancel', params['referrer'], class: 'btn btn-outline-primary text-decoration-none' %>
+    <%= submit_tag 'Set/Reset PIN', class: 'btn btn-primary' %>
+  </div>
+<% end %>

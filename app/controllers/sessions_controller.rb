@@ -10,9 +10,9 @@ class SessionsController < ApplicationController
   # GET /sessions/login_by_university_id
   def login_by_university_id
     if request.env['warden'].authenticate(:university_id)
-      redirect_after_login
+      redirect_after_action
     else
-      redirect_to post_auth_redirect_url, flash: { error: t('.alert') }
+      redirect_to post_action_redirect_url, flash: { error: t('.alert') }
     end
   end
 
@@ -23,9 +23,9 @@ class SessionsController < ApplicationController
   # GET /sessions/login_by_sunetid
   def login_by_sunetid
     if request.env['warden'].authenticate(:shibboleth, :development_shibboleth_stub)
-      redirect_after_login
+      redirect_after_action
     else
-      redirect_to post_auth_redirect_url, flash: { error: t('.alert') }
+      redirect_to post_action_redirect_url, flash: { error: t('.alert') }
     end
   end
 
@@ -34,9 +34,9 @@ class SessionsController < ApplicationController
   # GET /sessions/register_visitor
   def register_visitor
     if request.env['warden'].authenticate(:register_visitor)
-      redirect_after_login
+      redirect_after_action
     else
-      redirect_to post_auth_redirect_url, flash: { error: t('.alert') }
+      redirect_to post_action_redirect_url, flash: { error: t('.alert') }
     end
   end
 
@@ -66,17 +66,5 @@ class SessionsController < ApplicationController
     return if Rails.env.test?
 
     request.env['warden'].logout
-  end
-
-  def redirect_after_login
-    if params[:referrer]
-      redirect_to post_auth_redirect_url
-    else
-      redirect_back fallback_location: root_url
-    end
-  end
-
-  def post_auth_redirect_url
-    params[:referrer].presence || root_url
   end
 end
