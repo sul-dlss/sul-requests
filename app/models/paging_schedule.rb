@@ -12,7 +12,9 @@ module PagingSchedule
       end
     end
 
-    def for(request)
+    def for(request, scan: false)
+      return schedule_for_request_scan(request) if scan
+
       schedule_or_default = schedule_for_request(request) || default_schedule(request)
       raise ScheduleNotFound unless schedule_or_default.present?
 
@@ -29,6 +31,14 @@ module PagingSchedule
       schedule.detect do |sched|
         sched.from == request.origin_library_code &&
           sched.to == request.destination_library_code &&
+          sched.by_time?(request.created_at)
+      end
+    end
+
+    def schedule_for_request_scan(request)
+      schedule.detect do |sched|
+        sched.from == request.origin_library_code &&
+          sched.to == request.scan_code &&
           sched.by_time?(request.created_at)
       end
     end
