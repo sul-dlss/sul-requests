@@ -15,10 +15,12 @@ class SubmitFolioPatronRequestJob < ApplicationJob
 
   private
 
-  def best_request_type(patron, item)
-    return 'Recall' if item.recallable?(patron)
-    return 'Hold' if item.holdable?(patron)
-    return 'Page' if item.pageable?(patron)
+  def best_request_type(request, item)
+    return 'Hold' if Settings.hold_instead_of_recall.include?(item.status) && item.holdable?(request.patron)
+
+    return 'Recall' if item.recallable?(request.patron)
+    return 'Hold' if item.holdable?(request.patron)
+    return 'Page' if item.pageable?(request.patron)
 
     'Hold'
   end
@@ -47,7 +49,7 @@ class SubmitFolioPatronRequestJob < ApplicationJob
 
   def folio_request_data_for_item(patron, request, item)
     FolioClient::CirculationRequestData.new(
-      request_level: 'Item', request_type: best_request_type(patron, item),
+      request_level: 'Item', request_type: best_request_type(request, item),
       instance_id: request.instance_id, item_id: item.id, holdings_record_id: item.holdings_record_id,
       requester_id: patron&.id, fulfillment_preference: 'Hold Shelf', pickup_service_point_id: request.pickup_service_point.id,
       patron_comments: '', request_expiration_date: (Time.zone.today + 3.years).to_time.utc.iso8601
