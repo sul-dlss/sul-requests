@@ -5,7 +5,7 @@
 ###
 class PatronRequest < ApplicationRecord
   class_attribute :bib_model_class, default: Settings.ils.bib_model.constantize
-  store :data, accessors: [:barcodes, :folio_request_data, :folio_responses], coder: JSON
+  store :data, accessors: [:barcodes, :folio_request_data, :folio_responses, :scan_page_range, :scan_authors, :scan_title], coder: JSON
 
   delegate :instance_id, to: :bib_data
 
@@ -90,11 +90,11 @@ class PatronRequest < ApplicationRecord
     destination_location&.library&.code
   end
 
-  def earliest_delivery_estimate
-    paging_info = PagingSchedule.for(self).earliest_delivery_estimate
+  def earliest_delivery_estimate(scan: false)
+    paging_info = PagingSchedule.for(self, scan:).earliest_delivery_estimate
     { 'date' => Date.parse(paging_info.to_s), 'display_date' => paging_info.to_s }
   rescue StandardError
-    { 'date' => Time.zone.today, 'display_date' => 'Could not estimate delievery' }
+    { 'date' => Time.zone.today, 'display_date' => 'Could not estimate' }
   end
 
   def folio_location
@@ -115,6 +115,32 @@ class PatronRequest < ApplicationRecord
 
   def patron
     @patron ||= Folio::Patron.find_by(patron_key: patron_id)
+  end
+
+  def scannable?
+    scan_service_point.present? && all_items_scannable?
+  end
+
+  def scan_service_point
+    @scan_service_point ||= begin
+      service_point = request.holdings.filter_map { |item| item.permanent_location.details['scanServicePointCode'] }.first
+
+      Settings.scan_destinations[service_point || :default] || Settings.scan_destinations.default
+    end
+  end
+
+  def scan_code
+    'SCAN'
+  end
+
+  def all_items_scannable?
+    return false if items_in_location.none?
+
+    items_in_location.all? { |item| scan_service_point.material_types.include?(item.material_type.name) }
+  end
+
+  def scan_earliest
+    earliest_delivery_estimate(scan: true)
   end
 
   private
