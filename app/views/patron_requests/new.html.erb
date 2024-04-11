@@ -25,6 +25,7 @@
             <thead>
               <tr>
                 <th>Call number</th>
+                <th>Status</th>
               </tr>
             </thead>
 
@@ -33,9 +34,12 @@
                 <tr>
                   <td>
                     <label>
-                      <%= check_box_tag 'barcodes[]', value: item.barcode || item.id, class: 'form-check-input', data: { 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': true, 'itemselector-label-param': item.callnumber, action: 'itemselector#change' }%>
+                      <%= check_box_tag 'barcodes[]', value: item.barcode || item.id, class: 'form-check-input', disabled: cannot?(:request, item), data: { 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-label-param': item.callnumber, action: 'itemselector#change' }%>
                       <span class="form-check-label"><%= item.callnumber %></span>
                     </label>
+                  </td>
+                  <td>
+                    <%= label_for_item_selector_holding(item) %>
                   </td>
                 </tr>
               <% end %>
@@ -68,9 +72,13 @@
           </div>
         </div>
 
-        <div class="card selected-items-group bg-light">
-          <span class="text-cardinal">Items currently checked out or otherwise unavailable</span>
-          <ul data-itemselector-target="unavailableItems" class="list-unstyled d-flex flex-wrap gap-2 bg-white p-3"></ul>
+        <div class="card selected-items-group my-3">
+          <div class="card-body bg-light">
+            <span class="text-cardinal">Items currently checked out or otherwise unavailable</span>
+            <ul data-itemselector-target="unavailableItems" class="list-unstyled d-flex flex-wrap gap-2 bg-white p-3"></ul>
+
+            <%= render 'request_preferences', f: %>
+          </div>
         </div>
     </div>
   <% else %>
@@ -96,9 +104,9 @@
             <%= f.date_field :needed_date, :required => true, value:  f.object.earliest_delivery_estimate['date'], min: f.object.earliest_delivery_estimate['date'] %>
         <% end %>
     <% end %>
-  <% end %>
 
-  <%= render 'request_preferences', f: %>
+    <%= render 'request_preferences', f: %>
+  <% end %>
 
   <div class="form-group d-flex justify-content-end gap-1">
     <%= link_to 'Cancel', new_patron_request_path(instance_hrid: @request.instance_hrid, origin_location_code: @request.origin_location_code), class: 'btn btn-outline-primary' %>

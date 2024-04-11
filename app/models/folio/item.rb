@@ -107,6 +107,10 @@ module Folio
       status == STATUS_ON_ORDER
     end
 
+    def available?
+      status == STATUS_AVAILABLE
+    end
+
     def status_class
       [availability_class, circ_class].compact.join(' ')
     end
