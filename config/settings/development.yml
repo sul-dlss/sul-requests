@@ -6,3 +6,4 @@ token_encrypt:
 mailer_host: 'localhost:3000'
 features:
   requests_redesign: true
+fake_ldap_attributes: {}
