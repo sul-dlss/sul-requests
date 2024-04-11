@@ -142,3 +142,22 @@ summary .bi-chevron-right::before {
   opacity: 1;
   width: 4px;
 }
+
+// Accordion in request form
+.accordion-button {
+  border-top-left-radius: var(--bs-accordion-border-radius);
+  border-top-right-radius: var(--bs-accordion-border-radius);
+}
+
+.accordion-button.collapsed {
+  border-bottom-left-radius: var(--bs-accordion-border-radius);
+  border-bottom-right-radius: var(--bs-accordion-border-radius);
+}
+
+.accordion-item {
+  border: var(--bs-accordion-border-width) solid var(--bs-accordion-border-color) !important;
+  border-top-left-radius: var(--bs-accordion-border-radius) !important;
+  border-top-right-radius: var(--bs-accordion-border-radius) !important;
+  border-bottom-left-radius: var(--bs-accordion-border-radius) !important;
+  border-bottom-right-radius: var(--bs-accordion-border-radius) !important;
+}

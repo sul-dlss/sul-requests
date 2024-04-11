@@ -89,6 +89,16 @@ class Ability
       item.requestable?(request_types: allowed_request_types)
     end
 
+    if user.super_admin? || in_scan_pilot_group?(user)
+      can :scan, Folio::Item, &:scannable?
+
+      can :request_scan, PatronRequest do |request|
+        request.items_in_location.any? do |item|
+          can? :scan, item
+        end
+      end
+    end
+
     can :prepare, PatronRequest do |request|
       request.items_in_location.any? do |item|
         can? :request, item
