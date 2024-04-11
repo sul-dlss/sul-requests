@@ -21,7 +21,7 @@ class RequestsController < ApplicationController
 
   rescue_from bib_model_class::NotFound, with: :item_not_found
 
-  before_action only: :new, if: -> { Settings.features.requests_redesign } do
+  before_action only: :new, if: -> { Settings.features.requests_redesign || params[:redesign] } do
     mapped_params = { 'instance_hrid' => new_params[:item_id],
                       'origin_location_code' => params[:origin_location],
                       'barcode' => new_params[:barcode] }
