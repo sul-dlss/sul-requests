@@ -82,6 +82,12 @@ module Folio
       user_info.dig('personal', 'email')
     end
 
+    def patron_description
+      return 'Visitor' if visitor_patron?
+
+      current_user.patron.patron_group['desc']
+    end
+
     def proxy_email_address
       proxy_info&.dig('notificationsTo') || email
     end

@@ -664,3 +664,9 @@ hold_instead_of_recall:
   - 'In process'
   - 'On order'
   - 'In transit'
+
+allowed_visitor_pickups:
+  - 'GREEN-LOAN'
+  - 'ART'
+  - 'EAST-ASIA'
+  - 'LANE-DESK'

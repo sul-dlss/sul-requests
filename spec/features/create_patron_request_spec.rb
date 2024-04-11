@@ -9,7 +9,7 @@ RSpec.describe 'Creating a page request' do
   let(:bib_data) { build(:single_holding) }
   let(:patron) do
     instance_double(Folio::Patron, id: user.patron_key, display_name: 'A User', exists?: true, email: nil,
-                                   patron_group: { desc: 'faculty' },
+                                   patron_description: 'faculty', visitor_patron?: false,
                                    allowed_request_types: ['Hold', 'Recall'],
                                    ilb_eligible?: true, blocks: ['there is a block'])
   end
@@ -108,8 +108,8 @@ RSpec.describe 'Creating a page request' do
     let(:stub_client) { FolioClient.new }
     let(:patron) do
       instance_double(Folio::Patron, id: 'some-lib-id-uuid', display_name: 'A User', exists?: true, email: nil,
-                                     allowed_request_types: ['Hold'],
-                                     patron_group: { desc: 'courtesy' }, ilb_eligible?: true, blocks: [])
+                                     allowed_request_types: ['Hold'], visitor_patron?: false,
+                                     patron_description: 'courtesy', ilb_eligible?: true, blocks: [])
     end
 
     before do
