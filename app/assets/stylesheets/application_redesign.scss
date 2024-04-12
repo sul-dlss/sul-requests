@@ -133,12 +133,12 @@ summary .bi-chevron-right::before {
   display: none;
 }
 
-label[for="user-header-hide"] {
-  margin-left: -1.5em;
-  margin-top: .6em;
-}
-
 .item-table {
   max-height: 25rem;
   overflow-x: auto;
+}
+
+.vr-lg {
+  opacity: 1;
+  width: 4px;
 }
