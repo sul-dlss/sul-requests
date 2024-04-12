@@ -18,21 +18,28 @@
 
   <!-- request type -->
   <% if can?(:request_scan, f.object) && can?(:prepare, f.object)  %>
-    <div class="accordion-item my-4 shadow-sm">
-      <%= render 'accordian_header', title: 'Request type', target: 'request-type' %>
+    <div class="accordion-item my-4 shadow-sm" id="request-type-accordion">
+      <%= render 'accordion_header', title: 'Request type', target: 'request-type' %>
       <div id="request-type" class="accordion-collapse collapse">
         <div class="accordion-body">
           <%= render 'scan_or_pickup', f: %>
-          <%= render 'accordian_continue', target: 'request-type' %>
+          <%= render 'accordion_continue', target: 'request-type' %>
         </div>
       </div>
     </div>
+
+    <% if f.object.items_in_location.one? %>
+      <div class="accordion-item my-4 shadow-sm" id="placeholder2-accordion">
+        <%= render 'accordion_header', title: 'Scan or pickup request', target: 'placeholder2' %>
+      </div>
+    <% end %>
+
   <% end %>
 
   <% if f.object.items_in_location.many? && (can?(:request_scan, f.object) || can?(:prepare, f.object)) %>
     <!-- item selector -->
-    <div class="accordion-item my-4 shadow-sm" data-controller="itemselector">
-      <%= render 'accordian_header', title: 'Select item(s)', target: 'item-selector' %>
+    <div class="accordion-item my-4 shadow-sm" id="item-selector-accordion" data-controller="itemselector">
+      <%= render 'accordion_header', title: 'Select item(s)', target: 'item-selector' %>
       <div id="item-selector" class="accordion-collapse collapse">
         <div class="accordion-body">
           <div class="item-table border m-4">
@@ -64,10 +71,14 @@
       </div>
     </div>
 
+    <div class="accordion-item my-4 shadow-sm" id="placeholder3-accordion">
+      <%= render 'accordion_header', title: 'Scan or pickup request', target: 'placeholder3' %>
+    </div>
+
     <!-- pickup request (multiple items) -->
     <% if can? :prepare, f.object %>
-    <div class="accordion-item my-4 shadow-sm" data-controller="itemselector">
-      <%= render 'accordian_header', title: 'Pickup request', target: 'pickup-multiple' %>
+    <div class="accordion-item my-4 shadow-sm d-none" id="pickup-multiple-accordion" data-controller="itemselector">
+      <%= render 'accordion_header', title: 'Pickup request', target: 'pickup-multiple' %>
       <div id="pickup-multiple" class="accordion-collapse collapse">
         <div class="accordion-body">
           <div class="selected-items-group">
@@ -107,8 +118,8 @@
 
   <!-- pickup request (single item )-->
   <% if f.object.items_in_location.one? && can?(:prepare, f.object) %>
-    <div class="accordion-item my-4 shadow-sm">
-      <%= render 'accordian_header', title: 'Pickup request', target: 'pickup' %>
+    <div class="accordion-item my-4 shadow-sm d-none" id="pickup-accordion">
+      <%= render 'accordion_header', title: 'Pickup request', target: 'pickup' %>
       <div id="pickup" class="accordion-collapse collapse">
         <div class="accordion-body">
           <div id="earliestAvailableContainer" class="text-cardinal mt-4" aria-live="polite">
@@ -143,8 +154,8 @@
 
   <!-- scan request -->
   <% if can? :request_scan, f.object %>
-    <div class="accordion-item my-4 shadow-sm">
-      <%= render 'accordian_header', title: 'Scan request', target: 'scan' %>
+    <div class="accordion-item my-4 shadow-sm d-none" id="scan-accordion">
+      <%= render 'accordion_header', title: 'Scan request', target: 'scan' %>
       <div id="scan" class="accordion-collapse collapse">
         <div class="accordion-body">
           <%= render 'scan_options', f: %>

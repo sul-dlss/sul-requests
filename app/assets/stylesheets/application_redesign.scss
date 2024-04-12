@@ -163,6 +163,10 @@ summary .bi-chevron-right::before {
   border-bottom-right-radius: var(--bs-accordion-border-radius) !important;
 }
 
+.accordion-button, .accordion-header {
+  background-color: $fog-light!important;
+}
+
 .step-number {
   width: 2rem;
   height: 2rem;
@@ -180,9 +184,10 @@ summary .bi-chevron-right::before {
 
   .step-number {
     background-color: $green!important;
+    border-color: $green!important;
   }
 
-  .accordian-title::after {
+  .accordion-title::after {
     content: "Completed";
     background-color: rgba($green, 0.1);;
     padding: 2px 8px;
@@ -193,7 +198,12 @@ summary .bi-chevron-right::before {
 }
 
 .accordion-button[aria-expanded="true"]{
-  .accordian-title::after {
+  .step-number {
+    background-color: $primary!important;
+    border-color: $primary!important;
+  }
+
+  .accordion-title::after {
     content: "In progress";
     background-color: rgba($primary, 0.1);;
     padding: 2px 8px;
