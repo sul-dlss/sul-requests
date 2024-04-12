@@ -94,7 +94,7 @@ class PatronRequest < ApplicationRecord
     paging_info = PagingSchedule.for(self, scan:).earliest_delivery_estimate
     { 'date' => Date.parse(paging_info.to_s), 'display_date' => paging_info.to_s }
   rescue StandardError
-    { 'date' => Time.zone.today, 'display_date' => 'Could not estimate' }
+    { 'date' => Time.zone.today, 'display_date' => 'No date/time estimate' }
   end
 
   def folio_location
