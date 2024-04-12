@@ -2,12 +2,12 @@
   <%= render 'user_header' %>
 <% end %>
 
-<h1 class="fw-light mt-5 text-cardinal"><%= current_request.item_title %></h1>
+<h1 class="mt-4"><%= current_request.item_title %></h1>
 <% if current_request.items_in_location.one? %>
-  <div class="my-3 h2">Call number: <%= current_request.items_in_location.first&.callnumber %></div>
+  <div class="lead fw-normal mb-4">Call number: <%= current_request.items_in_location.first&.callnumber %></div>
 <% end %>
 
-<%= form_for(@request, data: { controller: 'patronRequest' }) do |f| %>
+<%= form_for(@request, data: { controller: 'patronRequest' }, html: { class: 'col-md-8 col-lg-6 col-xl-5' }) do |f| %>
   <%= f.hidden_field :instance_hrid %>
   <%= f.hidden_field :origin_location_code %>
   <% if @request.items_in_location.one? || f.object.barcodes&.one? %>
@@ -82,8 +82,10 @@
         </div>
     </div>
   <% else %>
+    <%= render 'pickup_destination', f: %>
+
     <div id="earliestAvailableContainer" class="text-cardinal my-4" aria-live="polite">
-      Earliest available:
+      Pickup after:
       <% if f.object.pickup_destinations.one? && f.object.earliest_delivery_estimate %>
         <%= f.object.earliest_delivery_estimate['display_date'] %>
       <% else %>
@@ -93,8 +95,6 @@
       <% end %>
     </div>
 
-
-    <%= render 'pickup_destination', f: %>
     <% if f.object.mediateable? %>
         <p>
         After submitting your request, you will receive an email confirmation. Additionally, you will be notified by email once the item is ready for your visit.
