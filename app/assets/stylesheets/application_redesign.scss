@@ -5,6 +5,7 @@ $su-cardinal: #8C1515;
 $su-digital-blue: #006CB8;
 $su-digital-blue-dark: #00548F;
 $su-process-black: #2E2D29;
+$fog-light: #F4F4F4;
 
 $primary: $su-digital-blue;
 $link-hover-color: $su-digital-blue-dark;
@@ -12,7 +13,7 @@ $black: $su-process-black;
 
 $headings-font-weight: 400;
 $headings-line-height: 1.25;
-
+$jungle-green: #279989;
 
 @import 'bootstrap/scss/functions';
 @import 'bootstrap/scss/variables';
@@ -21,7 +22,7 @@ $headings-line-height: 1.25;
 // Create your own map
 $custom-colors: (
   "cardinal": $su-cardinal,
-  "jungle-green": #279989
+  "jungle-green": $jungle-green
 );
 
 // Merge the maps
@@ -160,4 +161,44 @@ summary .bi-chevron-right::before {
   border-top-right-radius: var(--bs-accordion-border-radius) !important;
   border-bottom-left-radius: var(--bs-accordion-border-radius) !important;
   border-bottom-right-radius: var(--bs-accordion-border-radius) !important;
+}
+
+.step-number {
+  width: 2rem;
+  height: 2rem;
+}
+
+
+.accordion-button::after {
+  display: none;
+}
+
+.completed {
+  .edit-button {
+    display: flex!important;
+  }
+
+  .step-number {
+    background-color: $green!important;
+  }
+
+  .accordian-title::after {
+    content: "Completed";
+    background-color: rgba($green, 0.1);;
+    padding: 2px 8px;
+    margin-right: .25rem;
+    border-radius: 32px;
+    color: $green;
+  }
+}
+
+.accordion-button[aria-expanded="true"]{
+  .accordian-title::after {
+    content: "In progress";
+    background-color: rgba($primary, 0.1);;
+    padding: 2px 8px;
+    margin-right: .25rem;
+    border-radius: 32px;
+    color: $primary;
+  }
 }

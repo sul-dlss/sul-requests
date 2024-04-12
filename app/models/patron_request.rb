@@ -5,7 +5,7 @@
 ###
 class PatronRequest < ApplicationRecord
   class_attribute :bib_model_class, default: Settings.ils.bib_model.constantize
-  store :data, accessors: [:barcodes, :folio_request_data, :folio_responses, :scan_page_range, :scan_authors, :scan_title], coder: JSON
+  store :data, accessors: [:barcodes, :folio_request_data, :folio_responses, :scan_page_range, :scan_authors, :scan_title, :request_type], coder: JSON
 
   delegate :instance_id, to: :bib_data
 

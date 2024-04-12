@@ -19,14 +19,11 @@
   <!-- request type -->
   <% if can?(:request_scan, f.object) && can?(:prepare, f.object)  %>
     <div class="accordion-item my-4 shadow-sm">
-      <h2 class="accordion-header">
-        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#request-type" aria-expanded="true" aria-controls="request-type">
-          Request type
-        </button>
-      </h2>
-      <div id="request-type" class="accordion-collapse collapse show">
+      <%= render 'accordian_header', title: 'Request type', target: 'request-type' %>
+      <div id="request-type" class="accordion-collapse collapse">
         <div class="accordion-body">
           <%= render 'scan_or_pickup', f: %>
+          <%= render 'accordian_continue', target: 'request-type' %>
         </div>
       </div>
     </div>
@@ -35,12 +32,8 @@
   <% if f.object.items_in_location.many? && (can?(:request_scan, f.object) || can?(:prepare, f.object)) %>
     <!-- item selector -->
     <div class="accordion-item my-4 shadow-sm" data-controller="itemselector">
-      <h2 class="accordion-header">
-        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#item-selector" aria-expanded="true" aria-controls="item-selector">
-          Select item(s)
-        </button>
-      </h2>
-      <div id="item-selector" class="accordion-collapse collapse show">
+      <%= render 'accordian_header', title: 'Select item(s)', target: 'item-selector' %>
+      <div id="item-selector" class="accordion-collapse collapse">
         <div class="accordion-body">
           <div class="item-table border m-4">
             <table class="table w-75">
@@ -74,12 +67,8 @@
     <!-- pickup request (multiple items) -->
     <% if can? :prepare, f.object %>
     <div class="accordion-item my-4 shadow-sm" data-controller="itemselector">
-      <h2 class="accordion-header">
-        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#pickup-multiple" aria-expanded="true" aria-controls="pickup-multiple">
-          Pickup request
-        </button>
-      </h2>
-      <div id="pickup-multiple" class="accordion-collapse collapse show">
+      <%= render 'accordian_header', title: 'Pickup request', target: 'pickup-multiple' %>
+      <div id="pickup-multiple" class="accordion-collapse collapse">
         <div class="accordion-body">
           <div class="selected-items-group">
             <%= render 'pickup_destination', f: %>
@@ -119,12 +108,8 @@
   <!-- pickup request (single item )-->
   <% if f.object.items_in_location.one? && can?(:prepare, f.object) %>
     <div class="accordion-item my-4 shadow-sm">
-      <h2 class="accordion-header">
-        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#pickup-single" aria-expanded="true" aria-controls="pickup-single">
-          Pickup request
-        </button>
-      </h2>
-      <div id="pickup-single" class="accordion-collapse collapse show">
+      <%= render 'accordian_header', title: 'Pickup request', target: 'pickup' %>
+      <div id="pickup" class="accordion-collapse collapse">
         <div class="accordion-body">
           <div id="earliestAvailableContainer" class="text-cardinal mt-4" aria-live="polite">
             Earliest available:
@@ -159,12 +144,8 @@
   <!-- scan request -->
   <% if can? :request_scan, f.object %>
     <div class="accordion-item my-4 shadow-sm">
-      <h2 class="accordion-header">
-        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#scan-request" aria-expanded="true" aria-controls="scan-request">
-          Scan request
-        </button>
-      </h2>
-      <div id="scan-request" class="accordion-collapse collapse show">
+      <%= render 'accordian_header', title: 'Scan request', target: 'scan' %>
+      <div id="scan" class="accordion-collapse collapse">
         <div class="accordion-body">
           <%= render 'scan_options', f: %>
           <div class="form-group d-flex justify-content-end gap-1 mt-4">
