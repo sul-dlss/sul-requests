@@ -1,28 +1,21 @@
 <%= t('.error_html', mailto: Settings.libraries.default.contact_info.email) if sso_user? && current_user.patron.blank? %>
 
-<h1 class="fw-light mt-5">Request</h1>
-<h2 class="text-cardinal my-3">
+<h1 class="my-3">
   <%= current_request.item_title %>
-</h2>
-<p class="mb-4">Stanford Libraries aims to improve convenience by offering various request services.
-    The availability of these services is contingent upon specific circumstances, including material type,
-    item status (whether it's available, checked out, or otherwise unavailable), the owning library of the item,
-    and your affiliation. Typically, SUNet ID access grants the highest level of privileges, while visitor access
-    offers fewer options.
+</h1>
+<p class="mb-4 lead fw-normal">
+    Stanford Libraries provides various request services for added convenience, but their availability
+    depends on factors such as your affiliation, material type, status, and location. Access through
+    SUNet ID grants broader privileges than library cardholder or visitor access.
 </p>
 <div class="row flex-column flex-sm-row landing-page mb-3">
     <div class="col-sm-6">
         <div class="card">
-            <h3 class="card-header bg-white">Stanford affiliation</h3>
+            <h2 class="card-header bg-white h3">Stanford community</h2>
             <div class="card-body">
                 <%= link_to 'Log in with SUNet ID', login_by_sunetid_url(referrer: new_patron_request_path(new_params.merge(step: 'select'))), data: { turbo: false }, class: 'btn btn-md btn-primary btn-full btn-cardinal mb-2' %>
                 <p>
-                    As a Stanford affiliated faculty member, student, post-doc, fellow, or visiting scholars,
-                    you’ve been assigned a SUNet ID, which gives you more request options,
-                    including scan and deliver to your email address, interlibrary loan, and paging
-                    - a service where a library staff member will retrieve an item from a shelf.
-                    <br>
-                    <strong>This is the recommended path if you have a SUNet ID.</strong>
+                    As a member of the Stanford community, including <b>faculty, students, staff, post-docs, fellows, and visiting scholars</b>, you are issued a SUNet ID. With this ID, you can access more additional services, including requesting items from partner libraries or receiving digital scans via email.
                 </p>
                 <a href="https://library.stanford.edu/services/borrow-and-request" target="_blank">
                     <i class="bi bi-box-arrow-up-right"></i> Review borrow and request policies
@@ -30,9 +23,9 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-6 mt-4 mt-sm-0">
         <div class="card border-0">
-            <h3 class="card-header bg-white border-0">Library card holder</h3>
+            <h2 class="card-header bg-white border-0 h3">Library cardholder</h2>
             <div class="card-body pt-0">
                 <p>If you’ve purchased a library card or received courtesy access,
                 log in with your Library ID and PIN.
@@ -67,8 +60,8 @@
                 </details>
             </div>
         </div>
-        <div class="card border-0">
-            <h3 class="card-header bg-white border-0">Visitor</h3>
+        <div class="card border-0 mt-3 mt-sm-0">
+            <h2 class="card-header bg-white border-0 h3">Visitor</h2>
             <div class="card-body pt-0">
                 <% if Ability.anonymous.cannot? :prepare, @request %>
                     <div class="alert alert-danger text-cardinal">
@@ -76,13 +69,12 @@
                     </div>
                 <% end %>
                 <p>If you don’t have a SUNet ID or a library card, you might still be eligible for visitor access.
-                Visitor access is seven free days each year.
                 Please note that in order to borrow your requested item(s), you must first register for
                 visitor access at one of the following libraries: Green Library,
                 Art and Architecture Library (Bowes) or East Asia Library.
                 </p>
                 <p class="mb-2"><a href="https://library.stanford.edu/visitor-access" target="_blank">
-                    <i class="bi bi-box-arrow-up-right"></i> Visitor access
+                    <i class="bi bi-box-arrow-up-right"></i> Learn more about visitor access
                 </a></p>
                 <details>
 
@@ -100,7 +92,7 @@
                             </div>
                             <div class="d-flex justify-content-end mt-3">
                                 <button type="submit" class="btn btn-outline-cardinal">
-                                    Login
+                                    Continue
                                 </button>
                             </div>
                         <% end %>

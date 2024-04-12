@@ -5,7 +5,7 @@
 ###
 class PagingScheduleController < ApplicationController
   rescue_from PagingSchedule::ScheduleNotFound do
-    turbo_frame = helpers.content_tag('turbo-frame', style: 'display:none', id: 'earliestAvailable') { 'No delievery estimate' }
+    turbo_frame = helpers.content_tag('turbo-frame', style: 'display:none', id: 'earliestAvailable') { 'No date/time estimate' }
     turbo_frame += helpers.content_tag('body') { 'Schedule not found' }
     render html: turbo_frame, layout: false, status: :not_found
   end

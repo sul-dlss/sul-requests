@@ -1,6 +1,6 @@
 <% if f.object.pickup_destinations.many? %>
-    <div class="form-group row mb-3 me-0">
-    <%= f.label :service_point_code, class: 'required-label col-2' %>
+    <div class="form-group mb-3 me-0">
+    <%= f.label :service_point_code, class: 'required-label py-2' %>
     <%=  f.select(
     :service_point_code, pickup_destinations_array(f.object.pickup_destinations),
     {
@@ -14,7 +14,7 @@
     aria: {
         controls: 'earliestAvailableContainer',
     },
-    class: 'form-select col'
+    class: 'form-select'
     ) %>
     </div>
 <% else %>
