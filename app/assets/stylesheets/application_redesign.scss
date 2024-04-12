@@ -6,6 +6,7 @@ $su-digital-blue: #006CB8;
 $su-digital-blue-dark: #00548F;
 $su-process-black: #2E2D29;
 $fog-light: #F4F4F4;
+$su-process-black-50: #979694;
 
 $primary: $su-digital-blue;
 $link-hover-color: $su-digital-blue-dark;
@@ -44,7 +45,12 @@ body {
   --bs-danger-border-subtle: rgba(130, 0, 0, 0.1);
   --bs-info-bg-subtle: rgba(0, 84, 143, 0.08);
   --bs-info-border-subtle: rgba(0, 84, 143, 0.08);
-  --bs-info-text-emphasis: $black;
+  --bs-info-text-emphasis: #{$black};
+  --bs-heading-color: #{$black};
+}
+
+input[type="radio"] {
+  --bs-border-color: #{$su-process-black-50}
 }
 
 /* This selector/rule can be removed after https://github.com/twbs/bootstrap/pull/39098 is released */
@@ -84,8 +90,8 @@ a {
 }
 
 #sul-header {
-  --bs-link-color-rgb: $su-cardinal;
-  --bs-link-hover-color-rgb: $su-cardinal;
+  --bs-link-color-rgb: #{$su-cardinal};
+  --bs-link-hover-color-rgb: #{$su-cardinal};
 }
 
 #su-footer {
@@ -163,6 +169,10 @@ summary .bi-chevron-right::before {
   border-bottom-right-radius: var(--bs-accordion-border-radius) !important;
 }
 
+.accordion-button, .accordion-header {
+  background-color: $fog-light!important;
+}
+
 .step-number {
   width: 2rem;
   height: 2rem;
@@ -180,12 +190,15 @@ summary .bi-chevron-right::before {
 
   .step-number {
     background-color: $green!important;
+    border-color: $green!important;
   }
 
-  .accordian-title::after {
+  .accordion-title::after {
     content: "Completed";
-    background-color: rgba($green, 0.1);;
+    background-color: rgba($green, 0.1);
     padding: 2px 8px;
+    font-size: 1rem;
+    font-weight: normal;
     margin-right: .25rem;
     border-radius: 32px;
     color: $green;
@@ -193,12 +206,25 @@ summary .bi-chevron-right::before {
 }
 
 .accordion-button[aria-expanded="true"]{
-  .accordian-title::after {
+  .step-number {
+    background-color: $primary!important;
+    border-color: $primary!important;
+  }
+
+  .accordion-title::after {
     content: "In progress";
-    background-color: rgba($primary, 0.1);;
+    background-color: rgba($primary, 0.1);
+    font-size: 1rem;
     padding: 2px 8px;
     margin-right: .25rem;
     border-radius: 32px;
+    font-weight: normal;
     color: $primary;
   }
+}
+
+.styled-hr {
+  height: 1px;
+  background-color: $su-process-black-50;
+  margin: 0px 10px;
 }

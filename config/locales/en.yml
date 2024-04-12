@@ -178,7 +178,7 @@ en:
         default: "(We'll send a copy of this request to your email.)"
   patron_requests:
     new:
-      submit: Submit
+      submit: Submit request
   status_text:
     paged: Paged
     hold: Item is on-site - hold for patron

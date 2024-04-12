@@ -36,9 +36,12 @@ class Ability
     alias_action :index, :show, :status, :success, to: :read
     alias_action :edit, to: :update
 
-    can :manage, :all if user.super_admin?
+    can [:create, :read, :update, :destroy], :all if user.super_admin?
 
-    can :manage, [LibraryLocation, Message, PagingSchedule, Request, AdminComment, PatronRequest] if user.site_admin?
+    if user.site_admin?
+      can [:create, :read, :update, :destroy],
+          [LibraryLocation, Message, PagingSchedule, Request, AdminComment, PatronRequest]
+    end
 
     # Adminstrators for origins or destinations should be able to
     # manage requests originating or arriving to their library.
