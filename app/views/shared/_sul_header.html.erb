@@ -8,9 +8,10 @@
     <% end %>
     <nav aria-label="header menu">
       <ul class="list-unstyled d-flex gap-4 m-0">
-        <% if current_user.sso_user? %>
+        <% if current_user.sso_user? || current_user.library_id_user? %>
+          <% logout_path = current_user.site_admin? ? root_path : request.url %>
           <li>
-            <%= link_to t('.logout', sunetid: current_user.sunetid), logout_path(referrer: root_path) %>
+            <%= link_to t('.logout', sunetid: current_user.sunetid || current_user.library_id), logout_path(referrer: logout_path) %>
           </li>
         <% end %>
         <li>
