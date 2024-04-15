@@ -2,7 +2,7 @@
   <%= render 'user_header' %>
 <% end %>
 
-<h1 class="mt-4"><%= current_request.item_title %></h1>
+<h1 class="fw-semibold mt-4"><%= current_request.item_title %></h1>
 <% if current_request.items_in_location.one? %>
   <div class="lead fw-normal mb-4">Call number: <%= current_request.items_in_location.first&.callnumber %></div>
 <% end %>

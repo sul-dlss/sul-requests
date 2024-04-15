@@ -1,4 +1,4 @@
-<h1 class="fw-light mt-5"><%= t('sessions.university_id.user') %></h1>
+<h1 class="fw-semibold mt-5"><%= t('sessions.university_id.user') %></h1>
 <h2><%= t('change_pin.title') %></h2>
 <%= form_tag change_pin_path, method: :post, class: 'mb-5', style: 'max-width: 400px;' do %>
   <%= hidden_field_tag :token, params[:token] %>
