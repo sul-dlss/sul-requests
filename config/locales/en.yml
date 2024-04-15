@@ -240,5 +240,4 @@ en:
     success_html: <span class="fw-bold">Success!</span><br/> A set/reset link and instructions were sent to the email address associated with Library ID %{university_id}.
     request_failed_html: <span class="fw-bold">Sorry!</span><br/> Something went wrong, possibly due to a connection failure. Try again or contact us for help.
   reset_pins_mailer:
-    reset_pin:
-      subject: Stanford Libraries PIN reset
+    subject: Stanford Libraries PIN reset
