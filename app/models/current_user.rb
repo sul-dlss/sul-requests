@@ -30,16 +30,16 @@ class CurrentUser
     data['shibboleth']
   end
 
+  def name_email_user?
+    data['name'].present? && data['email'].present?
+  end
+
   private
 
   def library_id?
     return false if shibboleth?
 
     data['patron_key']
-  end
-
-  def name_email_user?
-    data['name'].present? && data['email'].present?
   end
 
   def sso_user

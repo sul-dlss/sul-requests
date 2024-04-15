@@ -29,7 +29,6 @@ RSpec.describe 'Creating a page request' do
 
     it 'submits the request for pick-up at Green' do
       visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
-      click_on 'Log in with SUNet ID'
 
       expect { click_on 'Submit' }.to change(PatronRequest, :count).by(1)
 
@@ -43,7 +42,6 @@ RSpec.describe 'Creating a page request' do
 
     it 'allows the patron to choose a pickup location' do
       visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
-      click_on 'Log in with SUNet ID'
 
       select 'Marine Biology Library', from: 'Preferred pickup location'
 
@@ -64,7 +62,6 @@ RSpec.describe 'Creating a page request' do
       allow(patron).to receive(:allowed_request_types).and_return(%w[Hold Page Recall])
 
       visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
-      click_on 'Log in with SUNet ID'
 
       perform_enqueued_jobs do
         click_on 'Submit'
@@ -91,7 +88,6 @@ RSpec.describe 'Creating a page request' do
 
       it 'shows the estimated deliver dates', :js do
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
-        click_on 'Log in with SUNet ID'
 
         within '#earliestAvailableContainer' do
           expect(page).to have_content('Wednesday, Apr 3 2024, after 10am')
@@ -154,6 +150,19 @@ RSpec.describe 'Creating a page request' do
         expect(page).to have_content('This item is not requestable at this time')
       end
     end
+
+    context 'when logged in' do
+      let(:current_user) { CurrentUser.new(patron_key: patron.id) }
+
+      before do
+        login_as(current_user)
+      end
+
+      it 'goes directly to the request form' do
+        visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+        expect(page).to have_button 'Submit'
+      end
+    end
   end
 
   context 'with a library name+email user' do
@@ -162,8 +171,20 @@ RSpec.describe 'Creating a page request' do
 
       it 'shows the user a warning message' do
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'LAW-STACKS1')
-
         expect(page).to have_content('This item is not available to request for visitors')
+      end
+    end
+
+    context 'when the user already made a request (logged in)' do
+      let(:current_user) { CurrentUser.new(name: 'A User', email: 'me@example.com') }
+
+      before do
+        login_as(current_user)
+      end
+
+      it 'goes back to login page' do
+        visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+        expect(page).to have_text 'log in with your Library ID and PIN'
       end
     end
   end
