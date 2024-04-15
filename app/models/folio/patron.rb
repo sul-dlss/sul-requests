@@ -160,7 +160,7 @@ module Folio
 
     # Generate a PIN reset token for the patron
     def pin_reset_token
-      crypt.encrypt_and_sign(key, expires_in: 20.minutes)
+      crypt.encrypt_and_sign(id, expires_in: 20.minutes)
     end
 
     private
