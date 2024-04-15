@@ -37,7 +37,7 @@ RSpec.describe 'Reset PIN workflow' do
     end
 
     it 'shows a success message' do
-      expect(page).to have_css '.flash_messages', text: 'Check your email!'
+      expect(page).to have_css '.flash_messages', text: 'Success!'
     end
   end
 
