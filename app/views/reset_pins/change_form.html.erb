@@ -16,7 +16,7 @@
     <div class="input-group" data-controller="password-visibility">
       <%= password_field_tag :pin, nil, class: 'form-control', 'aria-describedby':
       'pin-help', autofocus: true, autocomplete: 'off', data: {
-      'password-visibility-target': 'input', } %>
+      'password-visibility-target': 'input' }, pattern: '[a-zA-Z0-9]{6,25}' %>
       <div class="input-group-append">
         <button
           class="btn btn-link"
