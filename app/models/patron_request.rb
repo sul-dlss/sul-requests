@@ -135,7 +135,7 @@ class PatronRequest < ApplicationRecord
 
   def scan_service_point
     @scan_service_point ||= begin
-      service_point = request.holdings.filter_map { |item| item.permanent_location.details['scanServicePointCode'] }.first
+      service_point = items_in_location.filter_map { |item| item.permanent_location.details['scanServicePointCode'] }.first
 
       Settings.scan_destinations[service_point || :default] || Settings.scan_destinations.default
     end
