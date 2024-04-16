@@ -42,8 +42,24 @@ export default class extends Controller {
     nextitem = (nextitem == 'pickup' || nextitem == 'scan') && formdata.get('patron_request[request_type]') ? formdata.get('patron_request[request_type]') : nextitem;
     var nextstep = document.querySelector(`[data-bs-target='#${nextitem}']`);
 
+    this.barcodes(event.target.id, nextitem)
     this.clickNext(nextstep, accordionbutton);
     event.preventDefault();
+  }
+
+  barcodes(previous, next) {
+    if (previous == 'barcodes' && next == 'pickup') {
+      this.addItems('availableItems');
+      this.addItems('unavailableItems')
+    }
+  }
+
+  addItems(id) {
+    const available = id.indexOf('unavailable') > -1 ? 'false' : 'true';
+    const items = document.querySelectorAll(`[data-itemselector-available-param="${available}"]:checked`);
+    if (items) {
+      document.getElementById(id).innerHTML = this.renderItems(items);
+    }
   }
 
   editForm(event) {
@@ -64,7 +80,8 @@ export default class extends Controller {
     if (accordionbutton) {
       var previoustepnumber = parseInt(accordionbutton.querySelector('.step-number').innerHTML);
       element.querySelector('.step-number').innerHTML = previoustepnumber + 1;
-      document.querySelector(`#placeholder${previoustepnumber + 1}-accordion`).classList.add('d-none');
+      const placeholder = document.querySelector(`#placeholder${previoustepnumber + 1}-accordion`);
+      if (placeholder){ placeholder.classList.add('d-none'); }
     } else {
       const accordions = Array.from(document.querySelectorAll('.accordion-item'));
       const currentelement = accordions.findIndex( x => x.id === accordionid  );
@@ -82,5 +99,19 @@ export default class extends Controller {
     const url = new URL(this.earliestAvailableTarget.src + "/../" + event.currentTarget.value);
 
     this.earliestAvailableTarget.src = url;
+  }
+
+  renderItems(items) {
+    return Array.from(items).map((item) => {
+      return `
+        <li class="hstack gap-2 border bg-light rounded-pill px-3">
+          <span class="py-2">
+            ${item.dataset.itemselectorLabelParam}
+          </span>
+          <span class="vr"></span>
+          <button data-action="#unchecked" data-itemselector-id-param="${item.dataset.itemselectorIdParam}" type="button" class="btn-close py-2" aria-label="Remove"></button>
+        </li>
+      `;
+    }).join('');
   }
 }

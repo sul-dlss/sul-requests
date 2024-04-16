@@ -38,9 +38,9 @@
 
   <% if f.object.items_in_location.many? && (can?(:request_scan, f.object) || can?(:prepare, f.object)) %>
     <!-- item selector -->
-    <div class="accordion-item my-4 shadow-sm" id="item-selector-accordion" data-controller="itemselector">
-      <%= render 'accordion_header', title: 'Select item(s)', target: 'item-selector' %>
-      <div id="item-selector" class="accordion-collapse collapse">
+    <div class="accordion-item my-4 shadow-sm" id="barcodes-accordion">
+      <%= render 'accordion_header', title: 'Select item(s)', target: 'barcodes' %>
+      <div id="barcodes" class="accordion-collapse collapse">
         <div class="accordion-body">
           <div class="item-table border m-4">
             <table class="table w-75">
@@ -55,7 +55,7 @@
                   <tr>
                     <td>
                       <label>
-                        <%= check_box_tag 'barcodes[]', value: item.barcode || item.id, class: 'form-check-input', disabled: cannot?(:request, item), data: { 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-label-param': item.callnumber, action: 'itemselector#change' }%>
+                        <%= f.check_box 'barcodes', value: item.barcode || item.id, class: 'form-check-input', disabled: cannot?(:request, item), data: { 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-label-param': item.callnumber }%>
                         <span class="form-check-label"><%= item.callnumber %></span>
                       </label>
                     </td>
@@ -67,6 +67,7 @@
               </tbody>
             </table>
           </div>
+          <%= render 'accordion_continue', target: 'barcodes' %>
         </div>
       </div>
     </div>
@@ -77,9 +78,9 @@
 
     <!-- pickup request (multiple items) -->
     <% if can? :prepare, f.object %>
-    <div class="accordion-item my-4 shadow-sm d-none" id="pickup-multiple-accordion" data-controller="itemselector">
-      <%= render 'accordion_header', title: 'Pickup request', target: 'pickup-multiple' %>
-      <div id="pickup-multiple" class="accordion-collapse collapse">
+    <div class="accordion-item my-4 shadow-sm d-none" id="pickup-accordion">
+      <%= render 'accordion_header', title: 'Pickup request', target: 'pickup' %>
+      <div id="pickup" class="accordion-collapse collapse">
         <div class="accordion-body">
           <div class="selected-items-group">
             <%= render 'pickup_destination', f: %>
@@ -95,14 +96,16 @@
                       <% end %>
                     <% end %>
                 </div>
-                <ul data-itemselector-target="availableItems" class="list-unstyled d-flex flex-wrap gap-2 bg-white p-3"></ul>
+                <ul id="availableItems" class="list-unstyled d-flex flex-wrap gap-2 bg-white p-3">
+                
+                </ul>
               </div>
             </div>
           </div>
           <div class="card selected-items-group my-3">
             <div class="card-body bg-light">
               <span class="text-cardinal">Items currently checked out or otherwise unavailable</span>
-              <ul data-itemselector-target="unavailableItems" class="list-unstyled d-flex flex-wrap gap-2 bg-white p-3"></ul>
+              <ul id="unavailableItems" class="list-unstyled d-flex flex-wrap gap-2 bg-white p-3"></ul>
               <%= render 'request_preferences', f: %>
             </div>
           </div>
