@@ -10,6 +10,7 @@ RSpec.describe 'Creating a page request' do
   let(:patron) do
     instance_double(Folio::Patron, id: user.patron_key, display_name: 'A User', exists?: true, email: nil,
                                    patron_description: 'faculty', visitor_patron?: false,
+                                   patron_group_id: '503a81cd-6c26-400f-b620-14c08943697c',
                                    allowed_request_types: ['Hold', 'Recall'],
                                    ilb_eligible?: true, blocks: ['there is a block'])
   end
@@ -109,6 +110,7 @@ RSpec.describe 'Creating a page request' do
     let(:patron) do
       instance_double(Folio::Patron, id: 'some-lib-id-uuid', display_name: 'A User', exists?: true, email: nil,
                                      allowed_request_types: ['Hold'], visitor_patron?: false,
+                                     patron_group_id: '985acbb9-f7a7-4f44-9b34-458c02a78fbc',
                                      patron_description: 'courtesy', ilb_eligible?: true, blocks: [])
     end
 
@@ -136,6 +138,21 @@ RSpec.describe 'Creating a page request' do
         origin_location_code: 'SAL3-STACKS',
         service_point_code: 'GREEN-LOAN'
       )
+    end
+
+    context 'when circ rules prevent any request on the item for the patron' do
+      let(:bib_data) { build(:single_holding, items: [build(:item, effective_location: build(:law_location))]) }
+
+      it 'goes to a dead-end page' do
+        visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'LAW-STACKS1')
+        first('summary').click
+
+        fill_in 'Library ID', with: '12345'
+        fill_in 'PIN', with: '54321'
+
+        click_on 'Login'
+        expect(page).to have_content('This item is not requestable at this time')
+      end
     end
   end
 

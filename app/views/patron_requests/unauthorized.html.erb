@@ -1,0 +1,22 @@
+<% if current_user&.patron %> <%= render 'user_header' %> <% end %>
+
+<h1 class="fw-semibold mt-4"><%= current_request.item_title %></h1>
+<% if current_request.items_in_location.one? %>
+<div class="lead fw-normal mb-4">
+  Call number: <%= current_request.items_in_location.first&.callnumber %>
+</div>
+<% end %>
+
+<div class="alert alert-danger shadow-sm d-flex gap-3 align-items-center mt-4">
+  <i class="bi bi-exclamation-triangle-fill fs-3"></i>
+  <div>
+    <span class="fw-bold">
+      Oops! This item is not requestable at this time.
+    </span>
+    <br />
+    <span>
+      <%- contact_info = current_request.contact_info -%>
+      Please contact <%= mail_to(contact_info[:email], contact_info[:email]) %> or call <%= contact_info[:phone] %> for assistance.
+    </span>
+  </div>
+</div>

@@ -17,6 +17,7 @@ class PatronRequestsController < ApplicationController
 
   def new
     current_request.assign_attributes(**new_params)
+    render 'unauthorized' unless can? :prepare, current_request
   end
 
   def create
