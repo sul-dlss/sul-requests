@@ -1,7 +1,7 @@
 <h1 class="fw-semibold mt-5"><%= t('sessions.university_id.user') %></h1>
 <h2><%= t('reset_pin.title') %></h2>
 <p><%= t('reset_pin.instructions') %></p>
-<%= form_tag reset_pin_url, method: :post, class: 'mb-5', style: 'max-width: 400px;' do %>
+<%= form_tag reset_pin_url, method: :post, class: 'mb-5 col col-md-6 col-lg-4' do %>
   <%= hidden_field_tag :referrer, params[:referrer] %>
   <div class="form-group">
     <%= label_tag :university_id, t('activerecord.attributes.user.library_id'), class: 'form-label required-label' %>
