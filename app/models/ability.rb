@@ -36,11 +36,15 @@ class Ability
     alias_action :index, :show, :status, :success, to: :read
     alias_action :edit, to: :update
 
-    can [:create, :read, :update, :destroy], :all if user.super_admin?
+    if user.super_admin?
+      can :manage, :site
+      can [:create, :read, :update, :destroy], :all
+      can :manage, [LibraryLocation, Message, PagingSchedule, Request, AdminComment]
+    end
 
     if user.site_admin?
-      can [:create, :read, :update, :destroy],
-          [LibraryLocation, Message, PagingSchedule, Request, AdminComment, PatronRequest]
+      can :manage, [LibraryLocation, Message, PagingSchedule, Request, AdminComment]
+      can [:create, :read, :update, :destroy], [PatronRequest]
     end
 
     # Adminstrators for origins or destinations should be able to
