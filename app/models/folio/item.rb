@@ -170,6 +170,10 @@ module Folio
       PAGEABLE_STATUSES.include?(status) && request_types.include?('Page')
     end
 
+    def scannable?
+      scan_service_point.present? && scan_service_point.material_types.include?(material_type.name)
+    end
+
     def mediateable?
       permanent_location.details['pageMediationGroupKey'].present? || aeon_pageable?
     end
@@ -244,6 +248,12 @@ module Folio
 
     def circ_class
       'noncirc' unless circulates?
+    end
+
+    def scan_service_point
+      return unless permanent_location.details['scanServicePointCode']
+
+      Settings.scan_destinations[permanent_location.details['scanServicePointCode']]
     end
   end
 end

@@ -36,9 +36,16 @@ class Ability
     alias_action :index, :show, :status, :success, to: :read
     alias_action :edit, to: :update
 
-    can :manage, :all if user.super_admin?
+    if user.super_admin?
+      can :manage, :site
+      can [:create, :read, :update, :destroy], :all
+      can :manage, [LibraryLocation, Message, PagingSchedule, Request, AdminComment]
+    end
 
-    can :manage, [LibraryLocation, Message, PagingSchedule, Request, AdminComment, PatronRequest] if user.site_admin?
+    if user.site_admin?
+      can :manage, [LibraryLocation, Message, PagingSchedule, Request, AdminComment]
+      can [:create, :read, :update, :destroy], [PatronRequest]
+    end
 
     # Adminstrators for origins or destinations should be able to
     # manage requests originating or arriving to their library.
@@ -87,6 +94,16 @@ class Ability
     can :request, Folio::Item do |item|
       allowed_request_types = user.policy_service.item_request_policy(item)&.dig('requestTypes')
       item.requestable?(request_types: allowed_request_types)
+    end
+
+    if user.super_admin? || in_scan_pilot_group?(user)
+      can :scan, Folio::Item, &:scannable?
+
+      can :request_scan, PatronRequest do |request|
+        request.items_in_location.any? do |item|
+          can? :scan, item
+        end
+      end
     end
 
     can :prepare, PatronRequest do |request|

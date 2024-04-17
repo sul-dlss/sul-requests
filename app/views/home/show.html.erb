@@ -9,7 +9,7 @@
   </p>
 </div>
 
-<% if can? :manage, Request.new %>
+<% if can? :manage, :site %>
   <%= render 'administration' %>
 <% end %>
 
@@ -17,6 +17,6 @@
 
 <% if origins.present? %>
   <%= render partial: 'mediation', locals: { locations: origins } %>
-<% elsif cannot?(:manage, Request.new) %>
+<% elsif cannot?(:manage, :site) %>
   <p class="access-error">You do not have access</p>
 <% end %>

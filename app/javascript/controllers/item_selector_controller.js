@@ -54,11 +54,11 @@ export default class extends Controller {
     return items.map((item) => {
       return `
         <li class="hstack gap-2 border bg-light rounded-pill px-3">
-          <span class="py-2">
+          <span class="py-1">
             ${item.label}
           </span>
           <span class="vr"></span>
-          <button data-action="${this.identifier}#unchecked" data-${this.identifier}-id-param="${item.id}" type="button" class="btn-close py-2" aria-label="Remove"></button>
+          <button data-action="${this.identifier}#unchecked" data-${this.identifier}-id-param="${item.id}" type="button" class="btn-close py-1" aria-label="Remove"></button>
         </li>
       `;
     }).join('');
