@@ -58,10 +58,6 @@ module Folio
       Settings.folio.ilb_eligible_patron_groups.include?(patron_group_name)
     end
 
-    def standing
-      user_info.dig('standing', 'key')
-    end
-
     def make_request_as_patron?
       !expired? && patron_group_id.present?
     end
@@ -83,17 +79,11 @@ module Folio
     end
 
     def patron_description
-      return 'Visitor' if visitor_patron?
-
       patron_group['desc']
     end
 
     def proxy_email_address
       proxy_info&.dig('notificationsTo') || email
-    end
-
-    def expired?
-      user_info['active'] == false
     end
 
     def proxy?
@@ -117,9 +107,6 @@ module Folio
     end
 
     def blocks
-      # If this is a registered visitor, do not make any calls to FOLIO client and return empty array
-      return [] if visitor_patron?
-
       blocks = patron_blocks.fetch('automatedPatronBlocks')
       blocks.map { |block| construct_message(block['message']) }
     end
@@ -136,6 +123,29 @@ module Folio
       end
     end
 
+    def exists?
+      user_info.present?
+    end
+
+    def allowed_request_types(item)
+      policy_service.item_request_policy(item)&.dig('requestTypes') || []
+    end
+
+    # Generate a PIN reset token for the patron
+    def pin_reset_token
+      crypt.encrypt_and_sign(id, expires_in: 20.minutes)
+    end
+
+    private
+
+    def standing
+      user_info.dig('standing', 'key')
+    end
+
+    def expired?
+      user_info['active'] == false
+    end
+
     def fines
       patron_summary['totalCharges']['amount']
     end
@@ -148,28 +158,9 @@ module Folio
       patron_summary['loans'].map { |loan| (loan['dueDate'].to_datetime - DateTime.now).negative? }
     end
 
-    def exists?
-      user_info.present?
-    end
-
-    def allowed_request_types(item)
-      policy_service.item_request_policy(item)&.dig('requestTypes') || []
-    end
-
     def policy_service
       @policy_service ||= Folio::CirculationRules::PolicyService.new(patron_groups: [patron_group_id])
     end
-
-    def visitor_patron?
-      id == Settings.folio.visitor_placeholder_id
-    end
-
-    # Generate a PIN reset token for the patron
-    def pin_reset_token
-      crypt.encrypt_and_sign(id, expires_in: 20.minutes)
-    end
-
-    private
 
     def patron_summary
       @patron_summary ||= self.class.folio_client.patron_summary(id)

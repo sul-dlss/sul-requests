@@ -95,28 +95,5 @@ RSpec.describe Folio::Patron do
         it { is_expected.to be_ilb_eligible }
       end
     end
-
-    context 'when the patron is a registered visitor' do
-      let(:patron_group_id) { '985acbb9-f7a7-4f44-9b34-458c02a78fbc' } # sul-purchased
-      let(:fields) do
-        {
-          'id' => Settings.folio.visitor_placeholder_id,
-          'personal' => { 'email' => 'test@test.com', 'lastName' => 'test' },
-          'patronGroup' => patron_group_id
-        }
-      end
-
-      describe '#blocks' do
-        it 'returns empty blocks array for registered visitor' do
-          expect(subject.blocks).to be_empty
-        end
-      end
-
-      describe '#visitor_patron?' do
-        it 'returns true for the method checking if the user is a registered visitor' do
-          expect(subject.visitor_patron?).to be true
-        end
-      end
-    end
   end
 end

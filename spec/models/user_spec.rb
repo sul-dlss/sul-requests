@@ -190,19 +190,13 @@ RSpec.describe User do
   end
 
   describe '#patron' do
-    let(:fields) do
-      {
-        'id' => Settings.folio.visitor_placeholder_id,
-        'personal' => { 'email' => subject.email, 'lastName' => subject.name },
-        'patronGroup' => '985acbb9-f7a7-4f44-9b34-458c02a78fbc'
-      }
+    before do
+      subject.name = 'jstanford'
+      subject.email = 'jstanford@stanford.edu'
     end
 
     it 'returns placeholder patron for name email user' do
-      subject.name = 'jstanford'
-      subject.email = 'jstanford@stanford.edu'
-
-      expect(subject.patron.user_info).to eq(fields)
+      expect(subject.patron).to have_attributes(id: nil, display_name: 'jstanford', email: 'jstanford@stanford.edu', blocks: [])
     end
   end
 end

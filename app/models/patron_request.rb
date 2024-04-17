@@ -49,7 +49,7 @@ class PatronRequest < ApplicationRecord
     destinations = (default_pickup_service_points + additional_pickup_service_points).uniq if location_restricted_service_point_codes.empty?
     destinations ||= location_restricted_service_point_codes
 
-    return destinations.select { |destination| Settings.allowed_visitor_pickups.include?(destination) } if patron.visitor_patron?
+    return destinations.select { |destination| Settings.allowed_visitor_pickups.include?(destination) } unless patron
 
     destinations
   end

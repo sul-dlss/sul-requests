@@ -119,24 +119,10 @@ class User < ActiveRecord::Base
     end
   end
 
-  def placeholder_patron
-    patron_model_class.new({
-                             'id' => Settings.folio.visitor_placeholder_id,
-                             'personal' => { 'email' => email, 'lastName' => name },
-                             'patronGroup' => sul_purchased_patron_group_id
-                           })
-  end
-
-  def policy_service
-    @policy_service ||= Folio::CirculationRules::PolicyService.new(patron_groups: [
-                                                                     patron&.patron_group_id || sul_purchased_patron_group_id
-                                                                   ])
-  end
-
   private
 
-  def sul_purchased_patron_group_id
-    @sul_purchased_patron_group_id ||= Folio::Types.patron_groups.select { |_k, v| v['group'] == 'sul-purchased' }.keys.first
+  def placeholder_patron
+    @placeholder_patron ||= Folio::NullPatron.new(self)
   end
 
   def notify_honeybadger_of_missing_sso_email!
