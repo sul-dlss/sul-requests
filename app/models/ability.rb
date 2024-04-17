@@ -85,7 +85,7 @@ class Ability
     can :read, [PatronRequest], patron_id: user.patron.id if user.patron
 
     can :request, Folio::Item do |item|
-      allowed_request_types = user.policy_service.item_request_policy(item)&.dig('requestTypes')
+      allowed_request_types = user.patron&.allowed_request_types(item) || []
       item.requestable?(request_types: allowed_request_types)
     end
 
