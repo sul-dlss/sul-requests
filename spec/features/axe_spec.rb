@@ -24,9 +24,17 @@ RSpec.describe 'Accessibility testing', :js do
 
   context 'with a user' do
     let(:user) { instance_double(CurrentUser, user_object: build(:sso_user)) }
+    let(:patron) do
+      instance_double(Folio::Patron, id: user.user_object.patron_key, display_name: 'A User', exists?: true, email: nil,
+                                     patron_description: 'faculty',
+                                     visitor_patron?: false,
+                                     allowed_request_types: ['Hold', 'Recall'],
+                                     ilb_eligible?: true, blocks: ['there is a block'])
+    end
 
     before do
       login_as(user)
+      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(patron_key: user.user_object.patron_key).and_return(patron)
     end
 
     it 'validates the request page' do
@@ -44,7 +52,8 @@ RSpec.describe 'Accessibility testing', :js do
     let(:user) { build(:sso_user) }
     let(:patron) do
       instance_double(Folio::Patron, id: user.patron_key, display_name: 'A User', exists?: true, email: nil,
-                                     patron_group: { desc: 'faculty' },
+                                     patron_description: 'faculty',
+                                     visitor_patron?: false,
                                      allowed_request_types: ['Hold', 'Recall'],
                                      ilb_eligible?: true, blocks: ['there is a block'])
     end

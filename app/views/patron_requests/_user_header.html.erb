@@ -5,7 +5,7 @@
       <div class="d-flex flex-grow-1 justify-content-center align-items-center">
         <i class="bi bi-person-circle fs-2"></i>
         <span class="text-uppercase d-block d-sm-none text-white mx-2">
-          <%= current_user.patron.patron_group['desc'] %>
+          <%= current_user.patron.patron_description %>
         </span>
       </div>
       <label for="user-header-hide" class="btn-close justify-self-end m-2 d-block d-sm-none" aria-label="Close"></label>
@@ -15,7 +15,7 @@
         <div class="h4 mb-0">Welcome, <%= current_user.patron.display_name %>!</div>
         <div class="vr vr-lg bg-jungle-green d-none d-sm-block"></div>
         <span class="text-uppercase d-none d-sm-block">
-          <%= current_user.patron.patron_group['desc'] %>
+          <%= current_user.patron.patron_description %>
         </span>
       </div>
       <% current_user.patron.blocks.each do |block| %>
