@@ -85,7 +85,7 @@ module Folio
     def patron_description
       return 'Visitor' if visitor_patron?
 
-      current_user.patron.patron_group['desc']
+      patron_group['desc']
     end
 
     def proxy_email_address
