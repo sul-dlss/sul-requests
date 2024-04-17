@@ -7,23 +7,32 @@ export default class extends Controller {
     const form = this.element;
     const accordionbuttons = this.accordionButtonTargets;
 
-    if (accordionbuttons.length == 1){
-      form.classList.remove('accordion');
-      const accordion = document.querySelector(`${accordionbuttons[0].dataset.bsTarget}-accordion`);
-      accordion.classList.remove('d-none');
-      accordion.classList.remove('shadow-sm');
-      accordion.querySelector('.accordion-header').remove();
-      const formitem = document.querySelector(`${accordionbuttons[0].dataset.bsTarget}`);
-      formitem.classList.remove('collapse')
+    if (accordionbuttons.length == 1) {
+      this.removeAccordionStyling();
     } else {
-      accordionbuttons.forEach((accordionbutton, index) => {
-        accordionbutton.getElementsByClassName('step-number')[0].innerHTML = index + 1;
-        if (index == 0) {
-          accordionbutton.removeAttribute('disabled');
-          accordionbutton.click();
-        }
-      });
+      this.renumberSteps();
+      this.accordionButtonTargets[0].removeAttribute('disabled');
+      this.accordionButtonTargets[0].click();
     }
+  }
+
+  removeAccordionStyling() {
+    this.element.classList.remove('accordion');
+
+    const accordionbutton = this.accordionButtonTargets[0];
+    const accordion = document.querySelector(`${accordionbutton.dataset.bsTarget}-accordion`);
+    accordion.classList.remove('d-none');
+    accordion.classList.remove('shadow-sm');
+    accordion.querySelector('.accordion-header').remove();
+
+    const formitem = document.querySelector(`${accordionbutton.dataset.bsTarget}`);
+    formitem.classList.remove('collapse')
+  }
+
+  renumberSteps() {
+    this.accordionButtonTargets.forEach((accordionbutton, index) => {
+      accordionbutton.getElementsByClassName('step-number')[0].innerHTML = index + 1;
+    });
   }
 
   nextStep(event) {
