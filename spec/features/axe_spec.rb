@@ -4,6 +4,8 @@ require 'rails_helper'
 require 'axe-rspec'
 
 RSpec.describe 'Accessibility testing', :js do
+  let(:user) { build(:sso_user) }
+
   before do
     allow(Folio::Instance).to receive(:fetch).with('a12345').and_return(build(:sal3_holding))
   end
@@ -23,13 +25,14 @@ RSpec.describe 'Accessibility testing', :js do
   end
 
   context 'with a user' do
-    let(:user) { instance_double(CurrentUser, user_object: build(:sso_user)) }
+    let(:user) { instance_double(CurrentUser, user_object: build(:sso_user), shibboleth?: true) }
     let(:patron) do
       instance_double(Folio::Patron, id: user.user_object.patron_key, display_name: 'A User', exists?: true, email: nil,
+                                     patron_group_id: '503a81cd-6c26-400f-b620-14c08943697c',
                                      patron_description: 'faculty',
                                      visitor_patron?: false,
                                      allowed_request_types: ['Hold', 'Recall'],
-                                     ilb_eligible?: true, blocks: ['there is a block'])
+                                     ilb_eligible?: true, blocks: [])
     end
 
     before do
@@ -48,10 +51,11 @@ RSpec.describe 'Accessibility testing', :js do
     expect(page).to be_accessible
   end
 
-  describe 'with a blocked user login' do
+  context 'with a blocked user login' do
     let(:user) { build(:sso_user) }
     let(:patron) do
       instance_double(Folio::Patron, id: user.patron_key, display_name: 'A User', exists?: true, email: nil,
+                                     patron_group_id: '503a81cd-6c26-400f-b620-14c08943697c',
                                      patron_description: 'faculty',
                                      visitor_patron?: false,
                                      allowed_request_types: ['Hold', 'Recall'],
