@@ -36,17 +36,17 @@ export default class extends Controller {
   }
 
   nextStep(event) {
-    const step = 'patron_request[' + event.target.id + ']';
+    const step = 'patron_request[' + event.params.step + ']';
     const formdata = new FormData(this.element);
     const nextstepid = formdata.get(step.replace('-', '_'));
     if (!nextstepid) { return }
 
-    const accordionbutton = document.querySelector(`[data-bs-target='#${event.target.id}']`);
+    const accordionbutton = document.querySelector(`[data-bs-target='#${event.params.step}']`);
     accordionbutton.parentElement.classList.add('completed');
     accordionbutton.click();
     accordionbutton.setAttribute('disabled', '');
     const accordions = Array.from(document.querySelectorAll('.accordion-item:not([id*="placeholder"])'));
-    const current = accordions.findIndex( x => x.id.indexOf(event.target.id) > -1  );
+    const current = accordions.findIndex( x => x.id.indexOf(event.params.step) > -1  );
     var nextitem = accordions.at(current+1).id.split('-accordion')[0];
     nextitem = (nextitem == 'pickup' || nextitem == 'scan') && formdata.get('patron_request[request_type]') ? formdata.get('patron_request[request_type]') : nextitem;
     var nextstep = document.querySelector(`[data-bs-target='#${nextitem}']`);
