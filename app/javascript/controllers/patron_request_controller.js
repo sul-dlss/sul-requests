@@ -1,11 +1,11 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ['earliestAvailable']
+  static targets = ['earliestAvailable', 'accordionButton']
 
   connect() {
-    const form = document.getElementById('new_patron_request');
-    const accordionbuttons = form.querySelectorAll('.accordion-button');
+    const form = this.element;
+    const accordionbuttons = this.accordionButtonTargets;
 
     if (accordionbuttons.length == 1){
       form.classList.remove('accordion');
@@ -28,7 +28,7 @@ export default class extends Controller {
 
   nextStep(event) {
     const step = 'patron_request[' + event.target.id + ']';
-    const formdata = new FormData(event.target.closest("form"));
+    const formdata = new FormData(this.element);
     const nextstepid = formdata.get(step.replace('-', '_'));
     if (!nextstepid) { return }
 
