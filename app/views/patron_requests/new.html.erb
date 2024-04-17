@@ -54,15 +54,16 @@
               </thead>
               <tbody>
                 <% f.object.items_in_location.each do |item| %>
+                  <% not_requestable = cannot?(:request, item) %>
                   <tr>
                     <td>
                       <label>
-                        <%= f.check_box 'barcodes', value: item.barcode || item.id, class: 'form-check-input', disabled: cannot?(:request, item), data: { 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-label-param': item.callnumber, action: 'itemselector#change' }%>
+                        <%= f.check_box 'barcodes', value: item.barcode || item.id, class: 'form-check-input', disabled: not_requestable, data: { 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-label-param': item.callnumber, action: 'itemselector#change' }%>
                         <span class="form-check-label"><%= item.callnumber %></span>
                       </label>
                     </td>
                     <td>
-                      <%= label_for_item_selector_holding(item) %>
+                      <%= requests_patron_item_selector_label(item, not_requestable:) %>
                     </td>
                   </tr>
                 <% end %>

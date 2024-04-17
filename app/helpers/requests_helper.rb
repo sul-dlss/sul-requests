@@ -45,6 +45,38 @@ module RequestsHelper
     end
   end
 
+  def requests_patron_item_selector_label(item, not_requestable: false)
+    status_class = item.checked_out? || not_requestable ? 'unavailable' : item.status_class
+    status_text = if not_requestable
+                    item.status_text == 'Not requestable' ? item.status_text : "Not requestable / #{item.status_text}"
+                  else
+                    item.status_text
+                  end
+    content_tag :span, class: "status float-end availability #{status_class}" do
+      availability_bootstrap_icon(status_class) + status_text
+    end
+  end
+
+  # rubocop:disable Metrics/MethodLength
+  def availability_bootstrap_icon(css_class)
+    case css_class
+    when 'available'
+      content_tag(:i, '', class: 'bi bi-check text-success')
+    when 'unavailable'
+      content_tag(:i, '', class: 'bi bi-x text-danger')
+    when 'noncirc deliver-from-offsite'
+      content_tag(:i, '', class: 'bi bi-truck text-warning p-1')
+    when 'deliver-from-offsite'
+      content_tag(:i, '', class: 'bi bi-truck text-success p-1')
+    when 'hold-recall'
+      content_tag(:i, '', class: 'bi bi-exclamation-triangle text-warning')
+    else
+      ''
+    end
+  end
+
+  # rubocop:enable Metrics/MethodLength
+
   def request_level_request_status(request = current_request)
     if request.ils_response.usererr_code
       t("symphony_response.failure.code_#{request.ils_response.usererr_code}.alert_html")
