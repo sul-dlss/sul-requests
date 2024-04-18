@@ -95,9 +95,9 @@ en:
       mediator_subject: "New request needs mediation"
   date:
     formats:
-      quick: "%a %b %-d"
-      short: "%b %-d %Y"
-      long: "%A, %b %-d %Y"
+      quick: '%a %b %-d'
+      short: '%b %-d, %Y'
+      long: '%A, %b %-d, %Y'
   time:
     am: a
     pm: p

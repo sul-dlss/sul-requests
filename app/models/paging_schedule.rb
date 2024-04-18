@@ -132,7 +132,7 @@ module PagingSchedule
       end
 
       def to_s
-        "#{I18n.l(estimated_delivery_day_to_destination, format: :long)}, #{time}"
+        "#{I18n.l(estimated_delivery_day_to_destination, format: :long)} #{time}"
       end
 
       def estimated_delivery_day_to_destination

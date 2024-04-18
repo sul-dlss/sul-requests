@@ -140,7 +140,7 @@ module Folio
     end
 
     def due_date
-      Time.zone.parse(@due_date).strftime('%m/%d/%Y') if @due_date
+      I18n.l(Time.zone.parse(@due_date).to_date, format: :short) if @due_date
     end
 
     def hold?

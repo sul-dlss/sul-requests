@@ -48,7 +48,7 @@ RSpec.describe 'Viewing all requests' do
 
         within '.library-page-SAL3' do
           expect(page).to have_content 'This is an important message'
-          expect(page).to have_content 'Active Jan 1 2000 through Jan 1 2100'
+          expect(page).to have_content 'Active Jan 1, 2000 through Jan 1, 2100'
         end
       end
     end
@@ -86,7 +86,7 @@ RSpec.describe 'Viewing all requests' do
 
         within '.library-page-SAL3' do
           expect(page).to have_content 'This is an important message'
-          expect(page).to have_content 'Active Jan 1 2000 through Jan 1 2100'
+          expect(page).to have_content 'Active Jan 1, 2000 through Jan 1, 2100'
         end
       end
     end

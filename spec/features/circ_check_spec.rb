@@ -30,7 +30,7 @@ RSpec.describe 'Circ Check app', :js do
       click_on 'Check'
 
       expect(page).to have_content('✅ 1234567890')
-      expect(page).to have_content('Due: Jan 1 2020')
+      expect(page).to have_content('Due: Jan 1, 2020')
     end
   end
 
@@ -54,7 +54,7 @@ RSpec.describe 'Circ Check app', :js do
       click_on 'Check'
 
       expect(page).to have_content('✅ 1234567890')
-      expect(page).to have_content('Due: Jan 1 2020')
+      expect(page).to have_content('Due: Jan 1, 2020')
     end
   end
 
