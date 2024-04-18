@@ -33,8 +33,8 @@
     </div>
 
     <% if f.object.items_in_location.one? %>
-      <div class="accordion-item my-4 shadow-sm step-placeholder accordion-step-<%= current_step = (scan_or_pickup_step ||= step_enum.next) %>" id="multioption-placeholder" data-patronRequest-forRequestType="none" data-patronRequest-target="accordion">
-        <%= render 'accordion_header', title: 'Scan or pickup request', target: 'multioption-placeholder', step_number: current_step %>
+      <div class="accordion-item my-4 shadow-sm step-placeholder accordion-step-<%= current_step = (scan_or_pickup_step ||= step_enum.next) %>" id="scan-or-pickup-placeholder" data-patronRequest-forRequestType="none" data-patronRequest-target="accordion">
+        <%= render 'accordion_header', title: 'Scan or pickup request', target: 'scan-or-pickup-placeholder', step_number: current_step %>
       </div>
     <% end %>
 
@@ -77,8 +77,8 @@
       </div>
     </div>
 
-    <div class="accordion-item my-4 shadow-sm step-placeholder accordion-step-<%= current_step = (scan_or_pickup_step ||= step_enum.next) %>" id="multioption-placeholder" data-patronRequest-forRequestType="none" data-patronRequest-target="accordion">
-      <%= render 'accordion_header', title: scan_pickup ? 'Scan or pickup request' : 'Pickup request', target: 'multioption-placeholder', step_number: current_step %>
+    <div class="accordion-item my-4 shadow-sm step-placeholder accordion-step-<%= current_step = (scan_or_pickup_step ||= step_enum.next) %>" id="scan-or-pickup-placeholder" data-patronRequest-forRequestType="none" data-patronRequest-target="accordion">
+      <%= render 'accordion_header', title: scan_pickup ? 'Scan or pickup request' : 'Pickup request', target: 'scan-or-pickup-placeholder', step_number: current_step %>
     </div>
 
     <!-- pickup request (multiple items) -->
