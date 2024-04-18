@@ -10,6 +10,18 @@ export default class extends Controller {
     }
   }
 
+  updateType(event) {
+    const requestType = event.target.value;
+
+    this.accordionTargets.filter(e => e.dataset.patronrequestForrequesttype).forEach(el => {
+      if (el.dataset.patronrequestForrequesttype == requestType) {
+        el.classList.remove('d-none');
+      } else {
+        el.classList.add('d-none');
+      }
+    });
+  }
+
   removeAccordionStyling() {
     this.element.classList.remove('accordion');
 
@@ -27,16 +39,11 @@ export default class extends Controller {
     accordionbutton.parentElement.classList.add('completed');
 
     // figure out what the next step is:
-    const accordions = this.accordionTargets.filter(e => !e.classList.contains('step-placeholder'));
+    const accordions = this.accordionTargets.filter(e => !e.classList.contains('step-placeholder') && !e.classList.contains('d-none'));
     const current = accordions.findIndex( x => x == accordion);
-    var nextitem = accordions.at(current+1).id.split('-accordion')[0];
+    var nextitem = accordions.at(current+1);
 
-    // ... but the pickup or scan step varies based on data in the form:
-    const formdata = new FormData(this.element);
-    nextitem = (nextitem == 'pickup' || nextitem == 'scan') && formdata.get('patron_request[request_type]') ? formdata.get('patron_request[request_type]') : nextitem;
-    var nextstep = document.querySelector(`#${nextitem}`);
-
-    this.showStep(nextstep);
+    this.showStep(nextitem.querySelector('.accordion-collapse'));
     event.preventDefault();
   }
 
@@ -56,17 +63,7 @@ export default class extends Controller {
 
     Collapse.getOrCreateInstance(accordionCollapseElement).show();
 
-    if (accordionitem.dataset.patronrequestPlaceholder) {
-      this.element.querySelector(accordionitem.dataset.patronrequestPlaceholder).classList.add('d-none');
-      this.element.querySelectorAll(`[data-patronRequest-placeholder="${accordionitem.dataset.patronrequestPlaceholder}"]`).forEach(el => { el != accordionitem && el.classList.add('d-none') });
-    }
-
-    this.accordionTargets.slice(this.accordionTargets.indexOf(accordionitem) + 1).forEach(el => {
-      if (el.dataset.patronrequestPlaceholder && !el.classList.contains('d-none')) {
-        el.classList.add('d-none');
-        this.element.querySelector(el.dataset.patronrequestPlaceholder).classList.remove('d-none');
-      }
-
+    this.accordionTargets.slice(this.accordionTargets.indexOf(accordionitem)).forEach(el => {
       el.classList.remove('completed');
     });
   }
