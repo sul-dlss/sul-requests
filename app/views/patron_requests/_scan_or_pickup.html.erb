@@ -2,7 +2,7 @@
 <fieldset class="mb-4">
   <legend class="fs-6"></legend>
   <div>
-    <%= f.radio_button :request_type, 'scan', :class => 'form-check-input', :required => true %>
+    <%= f.radio_button :request_type, 'scan', :class => 'form-check-input', :required => true, data: { action: 'patronRequest#updateType' } %>
     <%= f.label :request_type_scan, :class => 'form-check-label ms-1' do %>
       Email digital scan
     <% end %>
@@ -16,7 +16,7 @@
     </div>
   </div>
   <div class="mt-4">
-    <%= f.radio_button :request_type, 'pickup', :class => 'form-check-input' %>
+    <%= f.radio_button :request_type, 'pickup', :class => 'form-check-input', data: { action: 'patronRequest#updateType' } %>
     <%= f.label :request_type_pickup, :class => 'form-check-label ms-1' do %>
       Pickup physical item
     <% end %>
