@@ -76,14 +76,15 @@
         </div>
       </div>
     </div>
-
-    <div class="accordion-item my-4 shadow-sm step-placeholder accordion-step-<%= current_step = (scan_or_pickup_step ||= step_enum.next) %>" id="scan-or-pickup-placeholder" data-patronRequest-forRequestType="none" data-patronRequest-target="accordion">
-      <%= render 'accordion_header', title: scan_pickup ? 'Scan or pickup request' : 'Pickup request', target: 'scan-or-pickup-placeholder', step_number: current_step %>
-    </div>
+    <% if scan_pickup %>
+      <div class="accordion-item my-4 shadow-sm step-placeholder accordion-step-<%= current_step = (scan_or_pickup_step ||= step_enum.next) %>" id="scan-or-pickup-placeholder" data-patronRequest-forRequestType="none" data-patronRequest-target="accordion">
+        <%= render 'accordion_header', title: scan_pickup ? 'Scan or pickup request' : 'Pickup request', target: 'scan-or-pickup-placeholder', step_number: current_step %>
+      </div>
+    <% end %>
 
     <!-- pickup request (multiple items) -->
     <% if can? :prepare, f.object %>
-    <div class="accordion-item my-4 shadow-sm d-none accordion-step-<%= current_step = (scan_or_pickup_step ||= step_enum.next) %>" id="pickup-accordion" data-patronRequest-forRequestType="pickup" data-patronRequest-target="accordion">
+    <div class="accordion-item my-4 shadow-sm <%= scan_pickup ? 'd-none' : '' %> accordion-step-<%= current_step = (scan_or_pickup_step ||= step_enum.next) %>" id="pickup-accordion" data-patronRequest-forRequestType="pickup" data-patronRequest-target="accordion">
       <%= render 'accordion_header', title: 'Pickup request', target: 'pickup', step_number: current_step %>
       <div id="pickup" class="accordion-collapse collapse <%= 'show' if current_step == 1 %>" data-bs-parent="#<%= f.id %>">
         <div class="accordion-body">
@@ -136,7 +137,7 @@
 
   <!-- pickup request (single item )-->
   <% if f.object.items_in_location.one? && can?(:prepare, f.object) %>
-    <div class="accordion-item my-4 shadow-sm d-none accordion-step-<%= current_step = (scan_or_pickup_step ||= step_enum.next) %>" id="pickup-accordion" data-patronRequest-forRequestType="pickup" data-patronRequest-target="accordion">
+    <div class="accordion-item my-4 shadow-sm <%= scan_pickup ? 'd-none' : '' %> accordion-step-<%= current_step = (scan_or_pickup_step ||= step_enum.next) %>" id="pickup-accordion" data-patronRequest-forRequestType="pickup" data-patronRequest-target="accordion">
       <%= render 'accordion_header', title: 'Pickup request', target: 'pickup', step_number: current_step %>
       <div id="pickup" class="accordion-collapse collapse <%= 'show' if current_step == 1 %>" data-bs-parent="#<%= f.id %>">
         <div class="accordion-body">
@@ -172,7 +173,7 @@
 
   <!-- scan request (single or multiitem) -->
   <% if can? :request_scan, f.object %>
-    <div class="accordion-item my-4 shadow-sm d-none accordion-step-<%= current_step = (scan_or_pickup_step ||= step_enum.next) %>" id="scan-accordion" data-patronRequest-forRequestType="scan" data-patronRequest-target="accordion">
+    <div class="accordion-item my-4 shadow-sm <%= scan_pickup ? 'd-none' : '' %> accordion-step-<%= current_step = (scan_or_pickup_step ||= step_enum.next) %>" id="scan-accordion" data-patronRequest-forRequestType="scan" data-patronRequest-target="accordion">
       <%= render 'accordion_header', title: 'Scan request', target: 'scan', step_number: current_step %>
       <div id="scan" class="accordion-collapse collapse <%= 'show' if current_step == 1 %>" data-bs-parent="#<%= f.id %>">
         <div class="accordion-body">
