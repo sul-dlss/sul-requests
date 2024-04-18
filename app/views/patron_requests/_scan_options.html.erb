@@ -1,36 +1,41 @@
-<div class="row">
-<div class="col-6 alert alert-info">
-  Copyright notice
-  <div>
-  The copyright law of the United States (title 17, United States Code) 
-  governs the making of photocopies or other reproductions of copyrighted material.
-  Under certain conditions specified in the law, libraries and archives are authorized
-  to furnish a photocopy or other reproduction. One of these specific conditions is that
-  the photocopy or reproduction is not to be “used for any purpose other than private study,
-  scholarship, or research.” If a user makes a request for, or later uses, a photocopy or
-  reproduction for purposes in excess of “fair use,” that user may be liable for copyright infringement.
-  Stanford Libraries reserves the right to refuse to accept a copying order if, in its judgment,
-  fulfillment of the order would involve violation of copyright law.
-</div>
-</div>
-<div class="col-6">
-  <div class="text-cardinal">
-    Earliest expected delivery: <%= f.object.scan_earliest['display_date'] %>
+<div class="row p-3 gap-3 flex-column flex-md-row">
+  <div class="col alert alert-info">
+    Copyright notice
+    <br />
+    The copyright law of the United States (title 17, United States Code)
+    governs the making of photocopies or other reproductions of copyrighted
+    material. Under certain conditions specified in the law, libraries and
+    archives are authorized to furnish a photocopy or other reproduction. One of
+    these specific conditions is that the photocopy or reproduction is not to be
+    "used for any purpose other than private study, scholarship, or research."
+    If a user makes a request for, or later uses, a photocopy or reproduction
+    for purposes in excess of "fair use," that user may be liable for copyright
+    infringement. Stanford Libraries reserves the right to refuse to accept a
+    copying order if, in its judgment, fulfillment of the order would involve
+    violation of copyright law.
   </div>
-  <div class="mt-2">
-    <%= f.label :scan_page_range, 'Page range', :class => 'required-label' %>
-    <%= f.text_field :scan_page_range, :required => true, :class => 'd-block  w-100' %>
-    <div class="form-text">Examples: '1-15, 25-30' or '249-275, Index'</div>
+  <div class="col pe-0">
+    <div class="text-cardinal">
+      Earliest expected delivery: <%= f.object.scan_earliest['display_date'] %>
+    </div>
+    <div class="mt-2">
+      <%= f.label :scan_page_range, 'Page range', :class => 'required-label
+      py-2' %> <%= f.text_field :scan_page_range, :required => true, :class =>
+      'd-block w-100' %>
+      <div class="form-text">Examples: '1-15, 25-30' or '249-275, Index'</div>
+    </div>
+    <div class="mt-2">
+      <%= f.label :scan_title, 'Title of article or chapter', :class =>
+      'required-label py-2' %> <%= f.text_area :scan_title, :required => true,
+      :class => 'd-block w-100', :rows => 3 %>
+      <div class="form-text">
+        Limited to one article/chapter, not to exceed 50 pages or 10% of the
+        work
+      </div>
+    </div>
+    <div class="mt-2">
+      <%= f.label :scan_authors, 'Author(s)', :class => 'py-2' %> <%=
+      f.text_field :scan_authors, :class => 'd-block w-100' %>
+    </div>
   </div>
-  <div class="mt-2">
-    <%= f.label :scan_title, 'Title of article or chapter', :class => 'required-label' %>
-    <%= f.text_area :scan_title, :required => true, :class => 'd-block  w-100', :rows => 3 %>
-    <div class="form-text">Limited to one article/chapter, not to exceed 50 pages or 10% of the work</div>
-  </div>
-  <div class="mt-2">
-    <%= f.label :scan_authors, 'Author(s)' %>
-    <%= f.text_field :scan_authors, :class => 'd-block  w-100' %>
-  </div>
-</div>
-
 </div>

@@ -7,7 +7,7 @@
 </div>
 <% end %>
 
-<div class="alert alert-danger shadow-sm d-flex gap-3 align-items-center mt-4">
+<div class="alert alert-danger shadow-sm d-flex gap-3 align-items-center mt-4 col-lg-8">
   <i class="bi bi-exclamation-triangle-fill fs-3"></i>
   <div>
     <span class="fw-bold">
@@ -16,7 +16,7 @@
     <br />
     <span>
       <%- contact_info = current_request.contact_info -%>
-      Please contact <%= mail_to(contact_info[:email], contact_info[:email]) %> or call <%= contact_info[:phone] %> for assistance.
+      Please contact <%= mail_to(contact_info[:email], contact_info[:email], class: 'alert-link') %> or call <%= contact_info[:phone] %> for assistance.
     </span>
   </div>
 </div>
