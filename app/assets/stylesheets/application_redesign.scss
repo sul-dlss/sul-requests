@@ -151,16 +151,6 @@ summary .bi-chevron-right::before {
 }
 
 // Accordion in request form
-.accordion-button {
-  border-top-left-radius: var(--bs-accordion-border-radius);
-  border-top-right-radius: var(--bs-accordion-border-radius);
-}
-
-.accordion-button.collapsed {
-  border-bottom-left-radius: var(--bs-accordion-border-radius);
-  border-bottom-right-radius: var(--bs-accordion-border-radius);
-}
-
 .accordion-item {
   border: var(--bs-accordion-border-width) solid var(--bs-accordion-border-color) !important;
   border-top-left-radius: var(--bs-accordion-border-radius) !important;
@@ -170,7 +160,20 @@ summary .bi-chevron-right::before {
 }
 
 .accordion-button, .accordion-header {
-  background-color: $fog-light!important;
+  background-color: $fog-light !important;
+  border-top-left-radius: var(--bs-accordion-border-radius) !important;
+  border-top-right-radius: var(--bs-accordion-border-radius) !important;
+  border-bottom-left-radius: var(--bs-accordion-border-radius) !important;
+  border-bottom-right-radius: var(--bs-accordion-border-radius) !important;
+}
+
+.accordion-button:not(.collapsed) {
+  box-shadow: none !important;
+}
+
+.accordion-button[aria-expanded=true] {
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
 }
 
 .step-number {
