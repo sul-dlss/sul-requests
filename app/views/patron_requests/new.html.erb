@@ -89,9 +89,9 @@
             <%= render 'pickup_destination', f: %>
             <div class="card">
               <div class="card-body bg-light">
-                <div class="card-title text-cardinal d-flex justify-content-between align-items-center">
+                <div class="d-flex justify-content-between align-items-center mb-3">
                     <div class="text-black fw-semibold">Available items</div>
-                    <div>
+                    <div class="text-cardinal">
                       Pickup:
                       <span class="fw-bold">
                         <% if f.object.pickup_destinations.one? && f.object.earliest_delivery_estimate %>
@@ -104,13 +104,13 @@
                       </span>
                     </div>
                 </div>
-                <ul data-itemselector-target="availableItems" class="list-unstyled d-flex flex-wrap gap-2 bg-white p-3"></ul>
+                <ul data-itemselector-target="availableItems" class="list-unstyled d-flex flex-wrap gap-2 bg-white p-3 m-0"></ul>
               </div>
             </div>
           </div>
           <div class="card selected-items-group my-3">
             <div class="card-body bg-light">
-              <div class="d-flex justify-content-between align-items-center mb-2">
+              <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="text-black fw-semibold">Items currently checked out or otherwise unavailable.</div>
                 <div class="text-cardinal">Pickup: No date/time estimate</div>
               </div>
