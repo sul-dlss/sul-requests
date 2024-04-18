@@ -8,7 +8,7 @@ class ExampleRequest < Request
 end
 
 RSpec.describe IlliadRequest do
-  subject { described_class.new(request) }
+  subject { described_class.new(request.illiad_request_params) }
 
   let(:user) { create(:sso_user) }
   let(:patron) { instance_double(Folio::Patron, blocked?: false) }

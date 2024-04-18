@@ -11,13 +11,13 @@ RSpec.describe SubmitIlliadRequestJob do
   subject { described_class.new(request_id) }
 
   let(:request_id) { 1 }
-  let(:request) { instance_double(ExampleRequest) }
+  let(:request) { instance_double(ExampleRequest, illiad_request_params: { a: 1 }) }
   let(:illiad_request) { instance_double(IlliadRequest, request!: illiad_response) }
   let(:illiad_response) { instance_double(Faraday::Response, body: '{"Foo": "Bar"}', success?: true) }
 
   before do
     allow(Request).to receive(:find).with(request_id).and_return(request)
-    allow(IlliadRequest).to receive(:new).with(request).and_return(illiad_request)
+    allow(IlliadRequest).to receive(:new).with({ a: 1 }).and_return(illiad_request)
     allow(request).to receive(:update)
     allow(request).to receive(:illiad_error?).and_return(false)
   end

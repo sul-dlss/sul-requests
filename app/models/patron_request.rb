@@ -5,13 +5,18 @@
 ###
 class PatronRequest < ApplicationRecord
   class_attribute :bib_model_class, default: Settings.ils.bib_model.constantize
-  store :data, accessors: [:barcodes, :folio_request_data, :folio_responses, :scan_page_range, :scan_authors, :scan_title, :request_type],
-               coder: JSON
+  store :data, accessors: [
+    :barcodes, :folio_request_data, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title, :request_type
+  ], coder: JSON
 
   delegate :instance_id, to: :bib_data
 
-  def submit_to_ils_later
-    SubmitFolioPatronRequestJob.perform_later(self)
+  def submit_later
+    if request_type == 'scan'
+      submit_scan_to_illiad_later
+    else
+      submit_to_ils_later
+    end
   end
 
   def bib_data
@@ -163,6 +168,40 @@ class PatronRequest < ApplicationRecord
     earliest_delivery_estimate(scan: true)
   end
 
+  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+  def illiad_request_params(item)
+    {
+      ProcessType: 'Borrowing',
+      AcceptAlternateEdition: false,
+      Username: patron.username,
+      UserInfo1: patron.blocked? ? 'Blocked' : nil,
+      ISSN: bib_data.isbn,
+      LoanPublisher: bib_data.publisher,
+      LoanPlace: bib_data.pub_place,
+      LoanDate: bib_data.pub_date,
+      LoanEdition: bib_data.edition,
+      ESPNumber: bib_data.oclcn,
+      CitedIn: bib_data.view_url,
+      CallNumber: item&.callnumber,
+      ILLNumber: item&.barcode,
+      ItemNumber: item&.barcode,
+      PhotoJournalVolume: item&.enumeration,
+      RequestType: 'Article',
+      SpecIns: 'Scan and Deliver Request',
+      PhotoJournalTitle: bib_data.title,
+      PhotoArticleAuthor: bib_data.author,
+      Location: origin_library_code,
+      ReferenceNumber: origin_location_code,
+      PhotoArticleTitle: scan_title,
+      PhotoJournalInclusivePages: scan_page_range
+    }
+  end
+  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+
+  def notify_ilb!
+    # TODO?
+  end
+
   private
 
   # Returns default service point codes
@@ -188,5 +227,13 @@ class PatronRequest < ApplicationRecord
 
   def folio_client
     FolioClient.new
+  end
+
+  def submit_to_ils_later
+    SubmitFolioPatronRequestJob.perform_later(self)
+  end
+
+  def submit_scan_to_illiad_later
+    SubmitIlliadPatronRequestJob.perform_later(self)
   end
 end

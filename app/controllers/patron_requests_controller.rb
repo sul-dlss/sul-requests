@@ -25,7 +25,7 @@ class PatronRequestsController < ApplicationController
   end
 
   def create
-    if @request.save && @request.submit_to_ils_later
+    if @request.save && @request.submit_later
       redirect_to @request
     else
       render 'new'

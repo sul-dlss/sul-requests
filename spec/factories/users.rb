@@ -57,6 +57,7 @@ FactoryBot.define do
   factory :scan_eligible_user, class: 'User' do
     sunetid { 'some-eligible-user' }
     email { 'some-eligible-user@stanford.edu' }
+    patron_key { 'some-uuid' }
 
     after(:build) do |user|
       user.affiliation = Settings.scan_pilot_groups.first
