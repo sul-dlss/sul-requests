@@ -15,9 +15,17 @@
     violation of copyright law.
   </div>
   <div class="col pe-0">
-    <div class="text-cardinal">
-      Earliest expected delivery: <%= f.object.scan_earliest['display_date'] %>
-    </div>
+    <% if f.object.items_in_location.many? %>
+      <div class="text-cardinal pb-1">
+        <span class="d-none" data-itemselector-target="availableScanItemEstimate">Earliest expected delivery: <%= f.object.scan_earliest['display_date'] %></span>
+        <span class="d-none" data-itemselector-target="unavailableScanItemEstimate">No date/time estimate</span>
+      </div>
+      <ul data-itemselector-target="scanItem" class="list-unstyled d-flex flex-wrap gap-2 bg-white m-0 me-3"></ul>
+    <% else %>
+      <div class="text-cardinal">
+        Earliest expected delivery: <%= f.object.scan_earliest['display_date'] %>
+      </div>
+    <% end %>
     <div class="mt-2">
       <%= f.label :scan_page_range, 'Page range', :class => 'required-label
       py-2' %> <%= f.text_field :scan_page_range, :required => true, :class =>

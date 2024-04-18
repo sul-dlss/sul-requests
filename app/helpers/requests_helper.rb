@@ -66,11 +66,11 @@ module RequestsHelper
     when 'unavailable'
       content_tag(:i, '', class: 'bi bi-x fs-4 align-middle text-danger')
     when 'deliver-from-offsite noncirc'
-      content_tag(:i, '', class: 'bi bi-truck fs-5 align-middle text-warning p-1')
+      content_tag(:i, '', class: 'bi bi-truck fs-5 align-middle text-warning m-1')
     when 'deliver-from-offsite'
-      content_tag(:i, '', class: 'bi bi-truck fs-5 align-middle text-success p-1')
+      content_tag(:i, '', class: 'bi bi-truck fs-5 align-middle text-success m-1')
     when 'hold-recall'
-      content_tag(:i, '', class: 'bi bi-exclamation-triangle align-middle fs-5 text-warning')
+      content_tag(:i, '', class: 'bi bi-exclamation-triangle align-middle m-1 fs-5 text-warning')
     else
       ''
     end

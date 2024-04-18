@@ -10,7 +10,7 @@ RSpec.describe 'Accessibility testing', :js do
     allow(Folio::Instance).to receive(:fetch).with('a12345').and_return(build(:sal3_holding))
   end
 
-  # TODO: once user login is avaliable add user mocks
+  # TODO: once user login is available add user mocks
   # TODO: add patron_request_path after built out more
   describe 'without user login' do
     it 'validates the home page' do
