@@ -10,6 +10,13 @@ export default class extends Controller {
     }
   }
 
+  showItemSelector(event) {
+    if (event.detail.selectedItems.length == 0) {
+      const acc = this.accordionTargets.find(e => e.id == 'barcodes-accordion').querySelector('.accordion-collapse');
+      if (!acc.classList.contains('show')) this.showStep(acc);
+    }
+  }
+
   updateType(event) {
     const requestType = event.target.value;
 
@@ -29,6 +36,17 @@ export default class extends Controller {
     accordion.classList.remove('d-none');
     accordion.classList.remove('shadow-sm');
     accordion.querySelector('.accordion-header').remove();
+  }
+
+  previousStep(event) {
+    const accordion = event.target.closest('.accordion-item');
+
+    // figure out what the last step is:
+    const accordions = this.accordionTargets.filter(e => !e.classList.contains('step-placeholder') && !e.classList.contains('d-none'));
+    const current = accordions.findIndex( x => x == accordion);
+    var previousitem = accordions.at(current-1) || accordions[0];
+
+    this.showStep(previousitem.querySelector('.accordion-collapse'));
   }
 
   nextStep(event) {

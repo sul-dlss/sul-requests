@@ -12,6 +12,8 @@ export default class extends Controller {
     } else {
       this.selectedItemsValue = this.selectedItemsValue.filter((item) => item.id !== event.params.id);
     }
+
+    this.dispatch('change', { detail: { selectedItems: this.selectedItemsValue }});
   }
 
   unchecked(event) {
@@ -21,6 +23,8 @@ export default class extends Controller {
     if (target) target.checked = false;
 
     this.selectedItemsValue = this.selectedItemsValue.filter((item) => item.id !== event.params.id);
+
+    this.dispatch('change', { detail: { selectedItems: this.selectedItemsValue }});
   }
 
   selectedItemsValueChanged() {
