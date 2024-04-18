@@ -40,7 +40,7 @@
 
   <% end %>
 
-  <div data-controller="itemselector">
+  <div data-controller="itemselector" data-action="itemselector:change->patronRequest#showItemSelector">
   <% if f.object.items_in_location.many? && (can?(:request_scan, f.object) || can?(:prepare, f.object)) %>
     <!-- item selector -->
     <div class="accordion-item my-4 shadow-sm accordion-step-<%= current_step = step_enum.next %>" id="barcodes-accordion" data-patronRequest-target="accordion">
