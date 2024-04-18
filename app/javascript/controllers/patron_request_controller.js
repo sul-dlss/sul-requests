@@ -7,9 +7,6 @@ export default class extends Controller {
   connect() {
     if (this.accordionTargets.length == 1) {
       this.removeAccordionStyling();
-    } else {
-      this.renumberVisibleSteps();
-      Collapse.getOrCreateInstance(this.accordionTargets[0].querySelector('.accordion-collapse')).show();
     }
   }
 
@@ -20,14 +17,6 @@ export default class extends Controller {
     accordion.classList.remove('d-none');
     accordion.classList.remove('shadow-sm');
     accordion.querySelector('.accordion-header').remove();
-
-    Collapse.getOrCreateInstance(this.accordionTargets[0].querySelector('.accordion-collapse')).show();
-  }
-
-  renumberVisibleSteps() {
-    this.accordionTargets.filter(element => (!element.classList.contains('d-none'))).forEach((accordion, index) => {
-      accordion.getElementsByClassName('step-number')[0].innerHTML = index + 1;
-    });
   }
 
   nextStep(event) {
@@ -80,8 +69,6 @@ export default class extends Controller {
 
       el.classList.remove('completed');
     });
-
-    this.renumberVisibleSteps();
   }
 
   async updateEarliestAvailable(event) {
