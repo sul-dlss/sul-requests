@@ -1,4 +1,4 @@
 <div class="alert alert-danger error">
   <h1>Apologies, there's been an error.</h1>
-  <p><%= current_request.item_title %> cannot be requested at this time. If you have questions or need help finding an item, please contact us by email at <%= mail_to(current_request.contact_info[:email], current_request.contact_info[:email]) %> or call at <%= current_request.contact_info[:phone] %>.</p>
+  <p><%= current_request.item_title %> cannot be requested at this time. If you have questions or need help finding an item, please contact us by email at <%= mail_to(current_request.contact_info[:email], current_request.contact_info[:email], class: 'alert-link') %> or call at <%= current_request.contact_info[:phone] %>.</p>
 </div>

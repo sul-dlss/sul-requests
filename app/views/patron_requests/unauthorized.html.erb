@@ -16,7 +16,7 @@
     <br />
     <span>
       <%- contact_info = current_request.contact_info -%>
-      Please contact <%= mail_to(contact_info[:email], contact_info[:email]) %> or call <%= contact_info[:phone] %> for assistance.
+      Please contact <%= mail_to(contact_info[:email], contact_info[:email], class: 'alert-link') %> or call <%= contact_info[:phone] %> for assistance.
     </span>
   </div>
 </div>
