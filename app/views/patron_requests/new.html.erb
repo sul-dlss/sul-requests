@@ -37,9 +37,9 @@
 
   <% end %>
 
-  <div data-controller="itemselector">
   <% if f.object.items_in_location.many? && (can?(:request_scan, f.object) || can?(:prepare, f.object)) %>
     <!-- item selector -->
+    <div data-controller="itemselector">
     <div class="accordion-item my-4 shadow-sm" id="barcodes-accordion">
       <%= render 'accordion_header', title: 'Select item(s)', target: 'barcodes' %>
       <div id="barcodes" class="accordion-collapse collapse">
@@ -129,8 +129,8 @@
       </div>
     </div>
     <% end %>
-  <% end %>
   </div>
+  <% end %>
 
   <!-- pickup request (single item )-->
   <% if f.object.items_in_location.one? && can?(:prepare, f.object) %>
