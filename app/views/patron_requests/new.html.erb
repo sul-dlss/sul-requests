@@ -7,7 +7,7 @@
   <div class="lead fw-normal mb-4">Call number: <%= current_request.items_in_location.first&.callnumber %></div>
 <% end %>
 
-<%= form_for(@request, data: { controller: 'patronRequest' }, html: { class: 'col-md-8 accordion' }) do |f| %>
+<%= form_for(@request, data: { controller: 'patronRequest' }, html: { class: 'col-lg-8 accordion' }) do |f| %>
   <%= f.hidden_field :instance_hrid %>
   <%= f.hidden_field :origin_location_code %>
   <% if @request.items_in_location.one? || f.object.barcodes&.one? %>
