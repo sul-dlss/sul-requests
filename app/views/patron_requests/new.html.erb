@@ -44,25 +44,25 @@
       <%= render 'accordion_header', title: 'Select item(s)', target: 'barcodes' %>
       <div id="barcodes" class="accordion-collapse collapse">
         <div class="accordion-body">
-          <div class="item-table border m-4">
-            <table class="table w-75">
+          <div class="item-table m-4">
+            <table class="table mb-0 border">
               <thead>
                 <tr>
-                  <th>Call number</th>
-                  <th>Status</th>
+                  <th class="text-start">Call number</th>
+                  <th class="text-end">Status</th>
                 </tr>
               </thead>
               <tbody>
                 <% f.object.items_in_location.each do |item| %>
                   <% not_requestable = cannot?(:request, item) %>
                   <tr>
-                    <td>
+                    <td class="align-middle">
                       <label>
                         <%= f.check_box 'barcodes', value: item.barcode || item.id, class: 'form-check-input', disabled: not_requestable, data: { 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-label-param': item.callnumber, action: 'itemselector#change' }%>
-                        <span class="form-check-label"><%= item.callnumber %></span>
+                        <span class="form-check-label ms-1"><%= item.callnumber %></span>
                       </label>
                     </td>
-                    <td>
+                    <td class="align-middle">
                       <%= requests_patron_item_selector_label(item, not_requestable:) %>
                     </td>
                   </tr>
