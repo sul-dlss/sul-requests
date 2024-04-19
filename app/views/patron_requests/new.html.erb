@@ -18,6 +18,18 @@
   <% end %>
 
   <!-- proxy -->
+  <% if current_request.proxy_group_names.present? %>
+    <div class="accordion-item my-4 shadow-sm accordion-step-<%= current_step = step_enum.next %>" id="proxy-accordion" data-patronRequest-target="accordion">
+      <%= render 'accordion_header', title: 'Proxy/Sponsor', target: 'proxy', step_number: current_step, expanded: current_step == 1 %>
+
+      <div id="proxy" class="accordion-collapse collapse <%= 'show' if current_step == 1 %>" data-bs-parent="#<%= f.id %>" data-bs-parent="#<%= f.id %>">
+        <div class="accordion-body">
+          <%= render 'proxy', f: %>
+          <%= render 'accordion_continue', target: 'proxy' %>
+        </div>
+      </div>
+    </div>
+  <% end %>
 
   <!-- request type -->
   <% scan_pickup = can?(:request_scan, f.object) && can?(:prepare, f.object) %>

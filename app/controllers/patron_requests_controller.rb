@@ -55,6 +55,6 @@ class PatronRequestsController < ApplicationController
 
   def patron_request_params
     params.require(:patron_request).permit(:patron_email, :instance_hrid, :origin_location_code, :needed_date, :service_point_code,
-                                           :barcode, :fulfillment_type)
+                                           :barcode, :fulfillment_type, :proxy)
   end
 end
