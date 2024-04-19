@@ -99,6 +99,26 @@ RSpec.describe 'Creating a page request' do
         end
       end
     end
+
+    context 'when the user does not have an account in FOLIO' do
+      let(:current_user) { CurrentUser.new(username: user.sunetid, shibboleth: true) }
+      let(:patron) { Folio::NullPatron.new(user) }
+
+      before do
+        allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(sunetid: user.sunetid).and_return(patron)
+        login_as(current_user)
+      end
+
+      it 'redirects to the login page' do
+        visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+        expect(page).to have_text 'log in with your Library ID and PIN'
+      end
+
+      it 'shows an error message' do
+        visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+        expect(page).to have_content('Your SUNet ID is not linked to a library account')
+      end
+    end
   end
 
   context 'with a library ID user' do
@@ -146,7 +166,7 @@ RSpec.describe 'Creating a page request' do
 
       let(:bib_data) { build(:single_holding, items: [build(:item, effective_location: build(:law_location))]) }
 
-      it 'goes to a dead-end page' do
+      it 'goes to a dead-end page', :js do
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'LAW-STACKS1')
         first('summary').click
 

@@ -88,7 +88,7 @@ class Ability
     can :read, [Request, Page, HoldRecall, Scan, MediatedPage], user_id: user.id if user.sso_user?
 
     can :login, PatronRequest
-    can [:new, :create], PatronRequest if user.patron || user.name_email_user?
+    can [:new, :create], PatronRequest
     can :read, [PatronRequest], patron_id: user.patron.id if user.patron
 
     can :request, Folio::Item do |item|

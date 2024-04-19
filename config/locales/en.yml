@@ -23,122 +23,122 @@ en:
   activerecord:
     attributes:
       user:
-        library_id: 'Library ID'
+        library_id: "Library ID"
       request: &request_anchor
-        holdings: 'Item(s) requested'
-        needed_date: 'Needed on'
-        request_comment: 'Comment'
-        item_comment: 'Item(s) requested'
-        user: 'Requested by'
+        holdings: "Item(s) requested"
+        needed_date: "Needed on"
+        request_comment: "Comment"
+        item_comment: "Item(s) requested"
+        user: "Requested by"
       patron_request:
-        service_point_code: 'Preferred pickup location'
+        service_point_code: "Preferred pickup location"
       hold_recall:
         <<: *request_anchor
-        needed_date: 'Not needed after'
+        needed_date: "Not needed after"
       mediated_page:
         <<: *request_anchor
-        needed_date: 'I plan to visit on'
+        needed_date: "I plan to visit on"
       page:
         <<: *request_anchor
       scan:
         <<: *request_anchor
-        authors: 'Author(s)'
-        page_range: 'Page range'
-        section_title: 'Title of article or chapter'
+        authors: "Author(s)"
+        page_range: "Page range"
+        section_title: "Title of article or chapter"
     help:
       scan:
-        section_title: 'Limited to one article/chapter, not to exceed 50 pages or 10% of the work'
+        section_title: "Limited to one article/chapter, not to exceed 50 pages or 10% of the work"
   admin:
     index:
-      hold_recalls: 'Hold recalls'
-      mediated_pages: 'Mediated pages'
-      pages: 'Pages'
-      scans: 'Scan requests'
+      hold_recalls: "Hold recalls"
+      mediated_pages: "Mediated pages"
+      pages: "Pages"
+      scans: "Scan requests"
     library_table:
-      all_approved: 'Done'
+      all_approved: "Done"
   approval_status:
     default:
-      error: 'Attention: %{callnumber} %{error_text}'
-      extra_note: ''
-      pending: 'Pending.'
-      success: '%{item}'
+      error: "Attention: %{callnumber} %{error_text}"
+      extra_note: ""
+      pending: "Pending."
+      success: "%{item}"
     hold_recall:
-      success: '%{item}'
+      success: "%{item}"
     mediated_page:
-      pending: 'Waiting for approval.'
-      success: '%{item}'
+      pending: "Waiting for approval."
+      success: "%{item}"
     scan:
-      success: '%{item}'
+      success: "%{item}"
     rumseymap:
-      extra_note: ''
+      extra_note: ""
     spec_coll:
-      extra_note: ''
+      extra_note: ""
   request_status_email:
     mediated_page:
       SPEC-COLL:
         subject:
-          success: "Request received: \"%{title}\""
+          success: 'Request received: "%{title}"'
       subject:
         success: 'Request is pending approval ("%{title}")'
     request:
       subject:
-        success: "We received your request for \"%{title}\""
-        failure: "Attention needed: There is a problem with your request (\"%{title}\")"
+        success: 'We received your request for "%{title}"'
+        failure: 'Attention needed: There is a problem with your request ("%{title}")'
     request_status:
       failure:
-        code_U003: 'Your request could not be processed because your user privileges are blocked.'
-        code_U004: 'Your request could not be processed because your user privileges have expired.'
+        code_U003: "Your request could not be processed because your user privileges are blocked."
+        code_U004: "Your request could not be processed because your user privileges have expired."
   confirmation_email:
     request:
-      subject: 'New request needs mediation'
+      subject: "New request needs mediation"
     mediated_page:
-      mediator_subject: 'New request needs mediation'
+      mediator_subject: "New request needs mediation"
   date:
     formats:
-      quick: '%a %b %-d'
-      short: '%b %-d %Y'
-      long: '%A, %b %-d %Y'
+      quick: "%a %b %-d"
+      short: "%b %-d %Y"
+      long: "%A, %b %-d %Y"
   time:
     am: a
     pm: p
     formats:
-      short: '%Y-%m-%d %l.%M%P'
-      formal: '%A, %b %-d %Y at %l:%M%P'
-      time_only: '%l:%M%P %Z'
+      short: "%Y-%m-%d %l.%M%P"
+      formal: "%A, %b %-d %Y at %l:%M%P"
+      time_only: "%l:%M%P %Z"
   forms:
     labels:
       SAL-NEWARK:
-        item_comment: 'Volumes/issues'
+        item_comment: "Volumes/issues"
   hold_recalls:
     header:
-      CHECKEDOUT: 'Request checked-out item'
-      default: 'Request item'
-      INPROCESS: 'Request in-process item'
-      MISSING: 'Request missing item'
-      ON-ORDER: 'Request on-order item'
+      CHECKEDOUT: "Request checked-out item"
+      default: "Request item"
+      INPROCESS: "Request in-process item"
+      MISSING: "Request missing item"
+      ON-ORDER: "Request on-order item"
   helpers:
     submit:
       message:
-        create: 'Save'
-        update: 'Save'
+        create: "Save"
+        update: "Save"
   mediated_pages:
     header:
-      default: 'Request on-site access'
-      MARINE-BIO: 'Request delivery to campus library'
-      PAGE-MP: 'Request delivery to campus library'
-      SAL3-PAGE-MP: 'Request delivery to campus library'
+      default: "Request on-site access"
+      MARINE-BIO: "Request delivery to campus library"
+      PAGE-MP: "Request delivery to campus library"
+      SAL3-PAGE-MP: "Request delivery to campus library"
   aeon_pages:
     new:
       header: Request access
       continue_button: Continue to complete request
     info_modal:
-      header: '%{library} access'
+      header: "%{library} access"
       reading_room_info: Restricted items are made available for use in the Reading Room. They cannot be checked out from the library or borrowed via Interlibrary Loan.
       how_to:
         header: How does it work?
         body: On-site and digital access requests are managed by Aeon, an archives and special collections system. If you haven’t already created a Stanford Aeon special collections research account, you will need to do so as part of the request process. Once you have an Aeon account, you will be able to check the status of requests, edit or cancel requests, create a new appointment or edit an existing appointment, and review your request history.
       steps:
-        header: 'To make a request:'
+        header: "To make a request:"
         single_vol_html: |
           <li>Log in to your Stanford Aeon user account (or create one)</li>
           <li>Complete the request form</li>
@@ -202,8 +202,8 @@ en:
   application:
     item_selector:
       help_text:
-        one: 'Select an item from the list above.'
-        other: 'Select one or more items from the list above.'
+        one: "Select an item from the list above."
+        other: "Select one or more items from the list above."
   shared:
     sul_header:
       sul: Stanford University Libraries
@@ -214,18 +214,14 @@ en:
       application_name: Requests
   sessions:
     university_id:
-      user: 'Library cardholder'
-      label: 'Library ID'
-      help_text: 'Last 10 digits above the barcode on your library card'
+      user: "Library cardholder"
+      label: "Library ID"
+      help_text: "Last 10 digits above the barcode on your library card"
     login_by_university_id:
       alert: Unable to authenticate.
     login_by_sunetid:
       alert: Unable to authenticate.
-      error_html: <p class="h3">Your SUNet ID is not linked to a library account.</p>
-                  <ul>
-                    <li>A library account is created for patrons who are eligible to check out library materials.</li>
-                    <li>If you believe you should have an account, contact <a href="mailto:%{mailto}">Circulation &amp; Privileges</a> for assistance.</li>
-                  </ul>
+      error_html: <span class="fw-bold">Your SUNet ID is not linked to a library account.</span><br/> A library account is created for patrons who are eligible to check out library materials. If you believe you should have an account, contact the Privileges desk at <a href="mailto:sul-privileges@stanford.edu" class="alert-link">sul-privileges@stanford.edu</a> or (650) 723-1492 for assistance.
     register_visitor:
       alert: Unable to register visitor.  Both name and email are required.
     destroy:

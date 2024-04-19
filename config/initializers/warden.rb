@@ -8,7 +8,8 @@ Warden::Manager.serialize_from_session do |json|
   CurrentUser.new(json)
 end
 
-Warden::Strategies.add(:shibboleth) do
+# Warden authentication strategy for Shibboleth SSO
+class ShibbolethStrategy < Warden::Strategies::Base
   def valid?
     uid.present?
   end
@@ -20,8 +21,8 @@ Warden::Strategies.add(:shibboleth) do
       u = { username: uid, patron_key: response['key'] || response['id'], shibboleth: true, ldap_attributes: }
       success!(CurrentUser.new(u))
     else
-      # even though we didn't find a patron record in the ILS, the Shibboleth auth was successful
-      # so maybe we can do something with that...
+      # If we didn't find an associated FOLIO account, the lookup in User will
+      # result in a NullPatron, which gets handled in the controller instead
       success!(CurrentUser.new({ username: uid, shibboleth: true, ldap_attributes: }))
     end
   end
@@ -46,22 +47,11 @@ Warden::Strategies.add(:shibboleth) do
   end
 end
 
-Warden::Strategies.add(:development_shibboleth_stub) do
+# Warden authentication strategy for Shibboleth SSO in development
+# set fake_ldap_attributes and pass REMOTE_USER when running to configure
+class DevelopmentShibbolethStrategy < ShibbolethStrategy
   def valid?
     Rails.env.development? && uid.present?
-  end
-
-  def authenticate!
-    response = FolioClient.new.login_by_sunetid(uid)
-
-    if response&.key?('key') || response&.key?('id')
-      u = { username: uid, patron_key: response['key'] || response['id'], shibboleth: true, ldap_attributes: }
-      success!(CurrentUser.new(u))
-    else
-      # even though we didn't find a patron record in the ILS, the Shibboleth auth was successful
-      # so maybe we can do something with that...
-      success!(CurrentUser.new({ username: uid, shibboleth: true, ldap_attributes: }))
-    end
   end
 
   private
@@ -74,6 +64,10 @@ Warden::Strategies.add(:development_shibboleth_stub) do
     (Settings.fake_ldap_attributes[uid] || {}).to_hash.stringify_keys
   end
 end
+
+Warden::Strategies.add(:shibboleth, ShibbolethStrategy)
+
+Warden::Strategies.add(:development_shibboleth_stub, DevelopmentShibbolethStrategy)
 
 Warden::Strategies.add(:university_id) do
   def valid?
