@@ -66,6 +66,12 @@ module RequestsHelper
     end
   end
 
+  def callnumber_label(item)
+    return '(no call number)' if item.callnumber.blank?
+
+    item.callnumber
+  end
+
   # rubocop:disable Metrics/MethodLength
   def availability_bootstrap_icon(css_class)
     case css_class

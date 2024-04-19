@@ -4,7 +4,13 @@
 
 <h1 class="fw-semibold mt-4"><%= current_request.item_title %></h1>
 <% if current_request.items_in_location.one? %>
-  <div class="lead fw-normal mb-4">Call number: <%= current_request.items_in_location.first&.callnumber %></div>
+  <% single_item = current_request.items_in_location.first %>
+  <div class="lead fw-normal mb-4">Call number: <%= callnumber_label(single_item) %></div>
+  <% if single_item.public_note %>
+    <span class="text-cardinal d-block ms-4">
+      <%= single_item.public_note %>
+    </span>
+  <% end %>
 <% end %>
 
 <%= form_for(@request, data: { controller: 'patronRequest' }, html: { class: 'col-lg-8 accordion' }) do |f| %>
@@ -65,7 +71,12 @@
                   <td class="align-middle">
                     <label>
                       <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: cannot?(:request, item), data: { required: true, 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-duequeueinfo-param': queue_length_display(item),  'itemselector-label-param': item.callnumber, action: 'itemselector#change' } }, item.barcode || item.id, "" %>
-                      <span class="form-check-label ms-1"><%= item.callnumber %></span>
+                      <span class="form-check-label ms-1"><%= callnumber_label(item) %></span>
+                      <% if item.public_note %>
+                        <span class="text-cardinal d-block ms-4 mt-1">
+                          <%= item.public_note %>
+                        </span>
+                      <% end %>
                     </label>
                   </td>
                   <td class="align-middle">
