@@ -1,27 +1,28 @@
 <input type="checkbox" id="user-header-hide" class="d-none">
 <div class="user-header border-0 mt-4 col-lg-8">
-  <div class="d-flex flex-column flex-sm-row border-radius-4 border shadow-sm">
-    <div class="d-flex p-2 bg-jungle-green text-white" data-bs-theme="dark">
-      <div class="d-flex flex-grow-1 justify-content-center align-items-center">
-        <i class="bi bi-person-circle fs-2"></i>
-        <span class="text-uppercase d-block d-sm-none text-white mx-2">
-          <%= current_user.patron.patron_description %>
-        </span>
-      </div>
-      <label for="user-header-hide" class="btn-close justify-self-end m-2 d-block d-sm-none" aria-label="Close"></label>
-    </div>
+  <% blocked = current_user.patron.blocked? %>
+  <div class="d-flex border-radius-4 border shadow-sm">
+    <% border_color = blocked ? 'warning' : 'jungle-green' %>
+    <div class="vr vr-lg bg-<%=border_color%>"></div>
+    <% if blocked %>
+      <div class="bi bi-exclamation-circle-fill display-6 col-1 ms-3 align-self-center text-<%= border_color %>"></div>
+    <% end %>
     <div class="p-3 flex-grow-1">
       <div class="d-flex align-items-center gap-2">
         <div class="h4 mb-0">Welcome, <%= current_user.patron.display_name %>!</div>
-        <div class="vr vr-lg bg-jungle-green d-none d-sm-block"></div>
-        <span class="text-uppercase d-none d-sm-block">
+        <div class="vr vr-lg bg-su-process-black-50"></div>
+        <span class="text-uppercase">
           <%= current_user.patron.patron_description %>
         </span>
       </div>
-      <% current_user.patron.blocks.each do |block| %>
-        <div class="warning small text-cardinal">IMPORTANT! <%= block %></div>
+      <% if blocked %>
+      <div class="small">
+        <strong>Be advised that your library account is currently restricted</strong>
+        due <%= current_user.patron.block_reasons.join(" and ") %>. <strong>You can still place a request;</strong>
+        however, your borrowing privileges will remain suspended until <%= current_user.patron.fix_block_message %>.
+      </div>
       <% end %>
     </div>
-    <label for="user-header-hide" class="btn-close justify-self-end m-2 d-none d-sm-block" aria-label="Close"></label>
+    <label for="user-header-hide" class="btn-close justify-self-end m-2" aria-label="Close"></label>
   </div>
 </div>

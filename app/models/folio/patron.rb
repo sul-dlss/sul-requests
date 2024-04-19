@@ -110,21 +110,13 @@ module Folio
       patron_blocks.fetch('automatedPatronBlocks').present?
     end
 
-    def blocks
-      blocks = patron_blocks.fetch('automatedPatronBlocks')
-      blocks.map { |block| construct_message(block['message']) }
+    def block_reasons
+      blocks = patron_blocks.fetch('automatedPatronBlocks', [])
+      blocks.map { |block| block['message'].include?('fine') ? 'fines' : 'overdue items' }
     end
 
-    def construct_message(message)
-      base_messaging = 'You can request these items, but the request will not be fufilled until you'
-      case message
-      when /fines/
-        "You have #{number_of_fines} outstanding fines. #{base_messaging} pay your outstanding balance of $#{format('%.2f', fines)}"
-      when /overdue/
-        "You have #{overdue_items.length} overdue items. #{base_messaging} pay for or return these items."
-      else
-        message
-      end
+    def fix_block_message
+      block_reasons.map { |br| br == 'fines' ? 'the fines are cleared' : 'the overdue items are returned' }.join(' and ')
     end
 
     def exists?
@@ -150,24 +142,8 @@ module Folio
       user_info['active'] == false
     end
 
-    def fines
-      patron_summary['totalCharges']['amount']
-    end
-
-    def number_of_fines
-      patron_summary['totalChargesCount']
-    end
-
-    def overdue_items
-      patron_summary['loans'].map { |loan| (loan['dueDate'].to_datetime - DateTime.now).negative? }
-    end
-
     def policy_service
       @policy_service ||= Folio::CirculationRules::PolicyService.new(patron_groups: [patron_group_id])
-    end
-
-    def patron_summary
-      @patron_summary ||= self.class.folio_client.patron_summary(id)
     end
 
     def patron_blocks

@@ -23,7 +23,8 @@ $jungle-green: #279989;
 // Create your own map
 $custom-colors: (
   "cardinal": $su-cardinal,
-  "jungle-green": $jungle-green
+  "jungle-green": $jungle-green,
+  "su-process-black-50": $su-process-black-50
 );
 
 // Merge the maps
@@ -47,6 +48,7 @@ body {
   --bs-info-border-subtle: rgba(0, 84, 143, 0.08);
   --bs-info-text-emphasis: #{$black};
   --bs-heading-color: #{$black};
+  --bs-warning-rgb: 233, 131, 0;
 }
 
 input[type="radio"] {
