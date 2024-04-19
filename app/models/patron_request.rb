@@ -6,17 +6,17 @@
 class PatronRequest < ApplicationRecord
   class_attribute :bib_model_class, default: Settings.ils.bib_model.constantize
   store :data, accessors: [
-    :barcodes, :folio_request_data, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title, :request_type
+    :barcodes, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title, :request_type
   ], coder: JSON
 
   delegate :instance_id, to: :bib_data
 
+  def scan?
+    request_type == 'scan'
+  end
+
   def submit_later
-    if request_type == 'scan'
-      submit_scan_to_illiad_later
-    else
-      submit_to_ils_later
-    end
+    SubmitPatronRequestJob.perform_later(self)
   end
 
   def bib_data
@@ -42,7 +42,11 @@ class PatronRequest < ApplicationRecord
   end
 
   def selected_items
-    items_in_location.select { |x| x.barcode.in?(barcodes) || x.id.in?(barcodes) }
+    items = items_in_location.select { |x| x.barcode.in?(barcodes) || x.id.in?(barcodes) }
+
+    return items.first(1) if request_type == 'scan'
+
+    items
   end
 
   def pickup_service_point
@@ -170,7 +174,7 @@ class PatronRequest < ApplicationRecord
 
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   def illiad_request_params(item)
-    {
+    default_values = {
       ProcessType: 'Borrowing',
       AcceptAlternateEdition: false,
       Username: patron.username,
@@ -185,16 +189,30 @@ class PatronRequest < ApplicationRecord
       CallNumber: item&.callnumber,
       ILLNumber: item&.barcode,
       ItemNumber: item&.barcode,
-      PhotoJournalVolume: item&.enumeration,
-      RequestType: 'Article',
-      SpecIns: 'Scan and Deliver Request',
-      PhotoJournalTitle: bib_data.title,
-      PhotoArticleAuthor: bib_data.author,
-      Location: origin_library_code,
-      ReferenceNumber: origin_location_code,
-      PhotoArticleTitle: scan_title,
-      PhotoJournalInclusivePages: scan_page_range
+      PhotoJournalVolume: item&.enumeration
     }
+
+    if request_type == 'scan'
+      return default_values.merge({
+                                    RequestType: 'Article',
+                                    SpecIns: 'Scan and Deliver Request',
+                                    PhotoJournalTitle: bib_data.title,
+                                    PhotoArticleAuthor: bib_data.author,
+                                    Location: origin_library_code,
+                                    ReferenceNumber: origin_location_code,
+                                    PhotoArticleTitle: scan_title,
+                                    PhotoJournalInclusivePages: scan_page_range
+                                  })
+    end
+
+    default_values.merge({
+                           RequestType: 'Loan',
+                           SpecIns: 'Hold/Recall Request',
+                           LoanTitle: bib_data.title,
+                           LoanAuthor: bib_data.author,
+                           NotWantedAfter: needed_date.strftime('%Y-%m-%d'),
+                           ItemInfo4: destination_library_code
+                         })
   end
   # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
@@ -227,13 +245,5 @@ class PatronRequest < ApplicationRecord
 
   def folio_client
     FolioClient.new
-  end
-
-  def submit_to_ils_later
-    SubmitFolioPatronRequestJob.perform_later(self)
-  end
-
-  def submit_scan_to_illiad_later
-    SubmitIlliadPatronRequestJob.perform_later(self)
   end
 end

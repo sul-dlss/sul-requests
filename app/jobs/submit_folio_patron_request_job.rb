@@ -5,12 +5,17 @@
 class SubmitFolioPatronRequestJob < ApplicationJob
   queue_as :default
 
-  def perform(request)
-    folio_request_data = generate_folio_request_data(request)
+  def perform(request, item_id)
+    patron = Folio::Patron.find_by(patron_key: request.patron_id) if request&.patron_id
 
-    folio_responses = submit_folio_requests!(folio_request_data)
+    item = request.selected_items.find { |x| x.id == item_id }
+    return unless item
 
-    request.update(folio_request_data:, folio_responses:)
+    request_data = folio_request_data_for_item(patron, request, item)
+
+    response = submit_folio_requests!(request_data)
+
+    response.merge(request_data:)
   end
 
   private
@@ -25,26 +30,16 @@ class SubmitFolioPatronRequestJob < ApplicationJob
     'Hold'
   end
 
-  def submit_folio_requests!(folio_request_data)
-    folio_request_data.map do |item_request|
-      response = folio_client.create_circulation_request(item_request)
+  def submit_folio_requests!(item_request)
+    response = folio_client.create_circulation_request(item_request)
 
-      { id: item_request.item_id, response: }
-    rescue FolioClient::Error => e
-      Honeybadger.notify(e, error_message: "Circulation item request failed for item #{item_request.item_id} with #{e}")
-      { id: item_request.item_id, errors: e.errors }
-    rescue StandardError => e
-      Honeybadger.notify(e, error_message: "Circulation item request failed for item #{item_request.item_id} with #{e}")
-      { id: item_request.item_id }
-    end
-  end
-
-  def generate_folio_request_data(request)
-    patron = Folio::Patron.find_by(patron_key: request.patron_id) if request&.patron_id
-
-    request.selected_items.map do |item|
-      folio_request_data_for_item(patron, request, item)
-    end
+    { response: }
+  rescue FolioClient::Error => e
+    Honeybadger.notify(e, error_message: "Circulation item request failed for item #{item_request.item_id} with #{e}")
+    { errors: e.errors }
+  rescue StandardError => e
+    Honeybadger.notify(e, error_message: "Circulation item request failed for item #{item_request.item_id} with #{e}")
+    {}
   end
 
   def folio_request_data_for_item(patron, request, item)
