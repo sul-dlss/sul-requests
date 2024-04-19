@@ -190,6 +190,8 @@ class PatronRequest < ApplicationRecord
   # Check if the user has selected "yes" on the form with respect to proxy permission
   def proxy?
     proxy == 'share'
+  end
+
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   def illiad_request_params(item)
     default_values = {
