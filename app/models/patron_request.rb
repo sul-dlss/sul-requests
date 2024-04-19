@@ -172,7 +172,6 @@ class PatronRequest < ApplicationRecord
     earliest_delivery_estimate(scan: true)
   end
 
-<<<<<<< HEAD
   # Return list of names of individuals who are proxies for this id
   def proxy_group_names
     return [] unless patron.sponsor?
@@ -191,7 +190,6 @@ class PatronRequest < ApplicationRecord
   # Check if the user has selected "yes" on the form with respect to proxy permission
   def proxy?
     proxy == 'share'
-=======
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   def illiad_request_params(item)
     default_values = {
@@ -238,7 +236,6 @@ class PatronRequest < ApplicationRecord
 
   def notify_ilb!
     # TODO?
->>>>>>> main
   end
 
   private
