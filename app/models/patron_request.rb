@@ -109,6 +109,10 @@ class PatronRequest < ApplicationRecord
     folio_location&.library&.code
   end
 
+  def barcodes=(arr)
+    super(arr.compact_blank)
+  end
+
   def barcode=(barcode)
     self.barcodes = [barcode]
   end
