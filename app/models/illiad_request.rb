@@ -4,12 +4,12 @@
 #  Class to handle creation of ILLiad OpenURL request
 ###
 class IlliadRequest
-  def initialize(request)
-    @request = request
+  def initialize(illiad_request_params)
+    @illiad_request_params = illiad_request_params
   end
 
   def request!
-    faraday_conn_w_req_headers.post('ILLiadWebPlatform/Transaction/', @request.illiad_request_params.to_json)
+    faraday_conn_w_req_headers.post('ILLiadWebPlatform/Transaction/', @illiad_request_params.to_json)
   end
 
   private
