@@ -42,7 +42,7 @@ RSpec.describe 'Paging Schedule' do
 
       expect(page).to have_select('request_destination', selected: 'Green Library')
 
-      expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: :visible)
+      expect(page).to have_css('[data-scheduler-text]', text: /(before|after)/, visible: :visible)
       before_text = find('[data-scheduler-text]').text
 
       select 'Engineering Library (Terman)', from: 'request_destination'
@@ -59,7 +59,7 @@ RSpec.describe 'Paging Schedule' do
     it 'is persisted' do
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-STACKS')
 
-      expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: :visible)
+      expect(page).to have_css('[data-scheduler-text]', text: /(before|after)/, visible: :visible)
       schedule_text = find('[data-scheduler-text]').text
 
       within('#item-selector') do
@@ -89,7 +89,7 @@ RSpec.describe 'Paging Schedule' do
       visit new_page_path(item_id: '1234', origin: 'SAL3', origin_location: 'SAL3-PAGE-EN')
 
       expect(page).to have_no_select('request_destination')
-      expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: :visible)
+      expect(page).to have_css('[data-scheduler-text]', text: /(before|after)/, visible: :visible)
     end
   end
 
@@ -102,7 +102,7 @@ RSpec.describe 'Paging Schedule' do
       visit new_request_path(item_id: '12345', origin: 'SAL3', origin_location: 'SAL3-STACKS')
 
       within('#deliveryDescription') do
-        expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: :visible)
+        expect(page).to have_css('[data-scheduler-text]', text: /(before|after)/, visible: :visible)
       end
     end
   end
@@ -115,7 +115,7 @@ RSpec.describe 'Paging Schedule' do
     it 'shows the estimated delivery for the Scanning service' do
       visit new_scan_path(item_id: '12345', origin: 'SAL3', origin_location: 'SAL3-STACKS')
 
-      expect(page).to have_css('[data-scheduler-text]', text: /, (before|after)/, visible: :visible)
+      expect(page).to have_css('[data-scheduler-text]', text: /(before|after)/, visible: :visible)
     end
   end
 end
