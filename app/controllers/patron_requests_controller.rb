@@ -18,6 +18,10 @@ class PatronRequestsController < ApplicationController
   def new
     current_request.assign_attributes(**new_params)
     render 'unauthorized' unless can? :prepare, current_request
+    return unless sunetid_without_folio_account?
+
+    flash.now[:error] = t('sessions.login_by_sunetid.error_html')
+    render 'login'
   end
 
   def create
@@ -36,6 +40,10 @@ class PatronRequestsController < ApplicationController
 
   def associate_request_with_patron
     @request.patron = current_user.patron
+  end
+
+  def sunetid_without_folio_account?
+    current_user.sso_user? && current_user.patron.is_a?(Folio::NullPatron)
   end
 
   def new_params

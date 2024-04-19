@@ -1,82 +1,89 @@
 import { Controller } from "@hotwired/stimulus"
+import { Collapse } from "bootstrap"
 
 export default class extends Controller {
-  static targets = ['earliestAvailable', 'accordionButton']
+  static targets = ['earliestAvailable', 'accordion']
 
   connect() {
-    const form = this.element;
-    const accordionbuttons = this.accordionButtonTargets;
-
-    if (accordionbuttons.length == 1){
-      form.classList.remove('accordion');
-      const accordion = document.querySelector(`${accordionbuttons[0].dataset.bsTarget}-accordion`);
-      accordion.classList.remove('d-none');
-      accordion.classList.remove('shadow-sm');
-      accordion.querySelector('.accordion-header').remove();
-      const formitem = document.querySelector(`${accordionbuttons[0].dataset.bsTarget}`);
-      formitem.classList.remove('collapse')
-    } else {
-      accordionbuttons.forEach((accordionbutton, index) => {
-        accordionbutton.getElementsByClassName('step-number')[0].innerHTML = index + 1;
-        if (index == 0) {
-          accordionbutton.removeAttribute('disabled');
-          accordionbutton.click();
-        }
-      });
+    if (this.accordionTargets.length == 1) {
+      this.removeAccordionStyling();
     }
   }
 
+  showItemSelector(event) {
+    if (event.detail.selectedItems.length == 0) {
+      const acc = this.accordionTargets.find(e => e.id == 'barcodes-accordion').querySelector('.accordion-collapse');
+      if (!acc.classList.contains('show')) this.showStep(acc);
+    }
+  }
+
+  updateType(event) {
+    const requestType = event.target.value;
+
+    this.accordionTargets.filter(e => e.dataset.patronrequestForrequesttype).forEach(el => {
+      if (el.dataset.patronrequestForrequesttype == requestType) {
+        el.classList.remove('d-none');
+      } else {
+        el.classList.add('d-none');
+      }
+    });
+  }
+
+  removeAccordionStyling() {
+    this.element.classList.remove('accordion');
+
+    const accordion = this.accordionTargets[0];
+    accordion.classList.remove('d-none');
+    accordion.classList.remove('shadow-sm');
+    accordion.querySelector('.accordion-header').remove();
+  }
+
+  previousStep(event) {
+    const accordion = event.target.closest('.accordion-item');
+
+    // figure out what the last step is:
+    const accordions = this.accordionTargets.filter(e => !e.classList.contains('step-placeholder') && !e.classList.contains('d-none'));
+    const current = accordions.findIndex( x => x == accordion);
+    var previousitem = accordions.at(current-1) || accordions[0];
+
+    this.showStep(previousitem.querySelector('.accordion-collapse'));
+  }
+
   nextStep(event) {
-    const step = 'patron_request[' + event.target.id + ']';
-    const formdata = new FormData(this.element);
-    const nextstepid = formdata.get(step.replace('-', '_'));
-    if (!nextstepid) { return }
+    const accordion = event.target.closest('.accordion-item');
 
-    const accordionbutton = document.querySelector(`[data-bs-target='#${event.target.id}']`);
+    // mark the current step as completed
+    const accordionbutton = accordion.querySelector('.accordion-header');
     accordionbutton.parentElement.classList.add('completed');
-    accordionbutton.click();
-    accordionbutton.setAttribute('disabled', '');
-    const accordions = Array.from(document.querySelectorAll('.accordion-item:not([id*="placeholder"])'));
-    const current = accordions.findIndex( x => x.id.indexOf(event.target.id) > -1  );
-    var nextitem = accordions.at(current+1).id.split('-accordion')[0];
-    nextitem = (nextitem == 'pickup' || nextitem == 'scan') && formdata.get('patron_request[request_type]') ? formdata.get('patron_request[request_type]') : nextitem;
-    var nextstep = document.querySelector(`[data-bs-target='#${nextitem}']`);
 
-    this.clickNext(nextstep, accordionbutton);
+    // figure out what the next step is:
+    const accordions = this.accordionTargets.filter(e => !e.classList.contains('step-placeholder') && !e.classList.contains('d-none'));
+    const current = accordions.findIndex( x => x == accordion);
+    var nextitem = accordions.at(current+1);
+
+    this.showStep(nextitem.querySelector('.accordion-collapse'));
     event.preventDefault();
   }
 
   editForm(event) {
     event.target.parentElement.classList.remove('completed');
-    document.querySelectorAll('.accordion-item').forEach(accordion => {
-      accordion.querySelector('.accordion-button').setAttribute('disabled', '');
-    })
-    document.querySelector('.show').classList.remove('show');
-    this.clickNext(event.target.parentElement.querySelector('.accordion-button'));
+    this.showStep(event.target.closest('.accordion-item').querySelector('.accordion-collapse'));
+
     event.preventDefault();
   }
 
-  clickNext(element, accordionbutton=false) {
-    element.removeAttribute('disabled');
-    const accordionid = element.dataset.bsTarget.replace('#', '') + '-accordion'
-    document.querySelector(`#${accordionid}`).classList.remove('d-none')
-    element.click();
-    if (accordionbutton) {
-      var previoustepnumber = parseInt(accordionbutton.querySelector('.step-number').innerHTML);
-      element.querySelector('.step-number').innerHTML = previoustepnumber + 1;
-      const placeholder = document.querySelector(`#placeholder${previoustepnumber + 1}-accordion`);
-      if (placeholder){ placeholder.classList.add('d-none'); }
-    } else {
-      const accordions = Array.from(document.querySelectorAll('.accordion-item'));
-      const currentelement = accordions.findIndex( x => x.id === accordionid  );
-      accordions.slice(currentelement+1).forEach(accordion => {
-        if (accordion.id.indexOf('placeholder') > -1) {
-          accordion.classList.remove('d-none');
-        } else {
-          accordion.classList.add('d-none');
-        }
-      })
-    }
+  // show the next step in the request form. Bootstrap will toggle the other steps closed,
+  // and we have to do some bookkeeping with the placeholder elements to hide them (if the non-placeholder step is visible)
+  // or show them (if we've stepped back)
+  showStep(accordionCollapseElement) {
+    const accordionitem = accordionCollapseElement.closest('.accordion-item');
+    accordionitem.classList.remove('d-none');
+
+    Collapse.getOrCreateInstance(accordionCollapseElement).show();
+
+    this.accordionTargets.slice(this.accordionTargets.indexOf(accordionitem)).forEach(el => {
+      el.classList.remove('completed');
+    });
   }
 
   async updateEarliestAvailable(event) {
