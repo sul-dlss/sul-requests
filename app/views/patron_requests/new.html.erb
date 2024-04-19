@@ -40,9 +40,9 @@
 
   <% end %>
 
-  <div data-controller="itemselector" data-action="itemselector:change->patronRequest#showItemSelector">
   <% if f.object.items_in_location.many? && (can?(:request_scan, f.object) || can?(:prepare, f.object)) %>
-    <!-- item selector -->
+  <!-- item selector -->
+  <div data-controller="itemselector" data-action="itemselector:change->patronRequest#showItemSelector">
     <div class="accordion-item my-4 shadow-sm accordion-step-<%= current_step = step_enum.next %>" id="barcodes-accordion" data-patronRequest-target="accordion">
       <%= render 'accordion_header', title: 'Select item(s)', target: 'barcodes', step_number: current_step, expanded: current_step == 1 %>
       <div id="barcodes" class="accordion-collapse collapse <%= 'show' if current_step == 1 %>" data-bs-parent="#<%= f.id %>">
@@ -132,8 +132,8 @@
       </div>
     </div>
     <% end %>
-  <% end %>
   </div>
+  <% end %>
 
   <!-- pickup request (single item )-->
   <% if f.object.items_in_location.one? && can?(:prepare, f.object) %>
