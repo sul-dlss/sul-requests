@@ -13,7 +13,7 @@ class SubmitIlliadRequestJob < ApplicationJob
 
   def perform(request_id)
     request = Request.find(request_id)
-    response = IlliadRequest.new(request).request!
+    response = IlliadRequest.new(request.illiad_request_params).request!
 
     if response.success?
       request.update(illiad_response_data: JSON.parse(response.body).select { |_, value| value.present? } || {})

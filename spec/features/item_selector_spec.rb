@@ -316,14 +316,14 @@ RSpec.describe 'Item Selector' do
 
     it 'has the due date' do
       within('#item-selector') do
-        expect(page).to have_css('.unavailable', text: 'Due 01/01/2015')
+        expect(page).to have_css('.unavailable', text: 'Due Jan 1, 2015')
       end
     end
 
     it 'toggles the checked out note' do
       within('#item-selector') do
         expect(page).to have_no_css('.current-location-note')
-        find('.unavailable', text: 'Due 01/01/2015').click
+        find('.unavailable', text: 'Due Jan 1, 2015').click
         expect(page).to have_css('.current-location-note')
       end
     end

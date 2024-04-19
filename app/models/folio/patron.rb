@@ -27,6 +27,10 @@ module Folio
       user_info.fetch('id')
     end
 
+    def username
+      user_info.fetch('username')
+    end
+
     def patron_group_id
       # FOLIO APIs return a UUID here
       user_info.fetch('patronGroup')

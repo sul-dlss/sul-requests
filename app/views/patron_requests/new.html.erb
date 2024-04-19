@@ -73,7 +73,7 @@
                   <tr>
                     <td class="align-middle">
                       <label>
-                        <%= f.check_box 'barcodes', value: item.barcode || item.id, class: 'form-check-input', disabled: not_requestable, data: { 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-label-param': item.callnumber, action: 'itemselector#change' }%>
+                        <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: cannot?(:request, item), data: { 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-label-param': item.callnumber, action: 'itemselector#change' } }, item.barcode || item.id, "" %>
                         <span class="form-check-label ms-1"><%= item.callnumber %></span>
                       </label>
                     </td>

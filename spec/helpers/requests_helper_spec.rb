@@ -216,7 +216,7 @@ RSpec.describe RequestsHelper do
       end
 
       it 'includes the due date' do
-        expect(subject).to have_content('Due 08/30/2023')
+        expect(subject).to have_content('Due Aug 30, 2023')
       end
     end
 

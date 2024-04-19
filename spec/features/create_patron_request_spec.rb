@@ -8,11 +8,11 @@ RSpec.describe 'Creating a page request' do
   let(:user) { create(:sso_user) }
   let(:bib_data) { build(:single_holding) }
   let(:patron) do
-    instance_double(Folio::Patron, id: user.patron_key, display_name: 'A User', exists?: true, email: nil,
+    instance_double(Folio::Patron, id: user.patron_key, username: 'auser', display_name: 'A User', exists?: true, email: nil,
                                    patron_description: 'faculty',
                                    patron_group_id: '503a81cd-6c26-400f-b620-14c08943697c',
                                    allowed_request_types: ['Hold', 'Recall', 'Page'],
-                                   ilb_eligible?: true, blocks: ['there is a block'])
+                                   ilb_eligible?: true, blocked?: true, blocks: ['there is a block'])
   end
 
   before do
@@ -71,6 +71,32 @@ RSpec.describe 'Creating a page request' do
                                                                                               instance_id: bib_data.id))
     end
 
+    context 'for a scan' do
+      let(:bib_data) { build(:scannable_holdings) }
+      let(:user) { create(:scan_eligible_user) }
+
+      before do
+        allow(current_user).to receive(:user_object).and_return(user)
+      end
+
+      it 'submits the scan request', :js do
+        visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+
+        choose 'Email digital scan'
+        click_on 'Continue'
+        check 'ABC 123'
+        click_on 'Continue'
+        expect(page).to have_content 'Copyright notice'
+        fill_in 'Page range', with: '1-15'
+        fill_in 'Title of article or chapter', with: 'Some title'
+
+        expect do
+          click_on 'Submit'
+          expect(page).to have_content 'We receieved your scan request'
+        end.to change(PatronRequest, :count).by(1)
+      end
+    end
+
     context 'with stubbed paging schedule' do
       before do
         travel_to Time.zone.local(2024, 4, 2, 12, 0, 0)
@@ -90,12 +116,12 @@ RSpec.describe 'Creating a page request' do
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
 
         within '#earliestAvailableContainer' do
-          expect(page).to have_content('Wednesday, Apr 3 2024, after 10am')
+          expect(page).to have_content('Wednesday, Apr 3, 2024 after 10am')
         end
 
         select 'Marine Biology Library', from: 'Preferred pickup location'
         within '#earliestAvailableContainer' do
-          expect(page).to have_content('Friday, Apr 5 2024, after 4pm')
+          expect(page).to have_content('Friday, Apr 5, 2024 after 4pm')
         end
       end
     end
