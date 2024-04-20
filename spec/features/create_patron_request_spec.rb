@@ -154,7 +154,7 @@ RSpec.describe 'Creating a page request' do
       instance_double(Folio::Patron, id: 'some-lib-id-uuid', display_name: 'A User', exists?: true, email: nil,
                                      allowed_request_types: ['Hold', 'Page'],
                                      patron_group_id: '985acbb9-f7a7-4f44-9b34-458c02a78fbc',
-                                     patron_description: 'courtesy', ilb_eligible?: true, blocks: [],  all_proxy_group_info: [])
+                                     patron_description: 'courtesy', ilb_eligible?: true, blocks: [], all_proxy_group_info: [])
     end
 
     before do
