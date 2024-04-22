@@ -1,9 +1,9 @@
-<h1 class="fw-semibold">We receieved your <%= @request.request_type == 'scan' ? 'scan' : 'pickup' %> request</h1>
+<h1 class="fw-semibold">We receieved your <%= @request.request_type == 'scan' ? 'scan' : 'pickup' %> request!</h1>
 
-<div class="row">
-    <div class="col-8">
+<div class="row mt-4">
+    <div class="col-7">
         <% if current_user.patron.email %>
-            Expect a confirmation email shortly at <%= current_user.patron.email %>.
+            Expect a confirmation email shortly at <%= mail_to current_user.patron.email %>.
         <% end %>
 
         <% if @request.request_type == 'scan' %>
@@ -15,37 +15,41 @@
             <% end %>
         <% end %>
 
-        <h2>Request confirmation</h2>
-        <div>Title: <%= @request.item_title %></div>
+        <hr />
+
+        <h2 class="my-4">Request confirmation</h2>
+        <dl class="dl-inline">
+            <div><dt>Item:</dt><dd><%= @request.item_title %></dd></div>
         <% if @request.request_type == 'scan' %>
-            <div>Pages: <%= @request.scan_page_range %></div>
-            <div>Chapter/article: <%= @request.scan_title %></div>
-            <div>Authors: <%= @request.scan_authors %></div>
+            <div><dt>Pages:</dt><dd><%= @request.scan_page_range %></dd></div>
+            <div><dt>Chapter/article:</dt><dd><%= @request.scan_title %></dd></div>
+            <div><dt>Authors:</dt><dd><%= @request.scan_authors %></dd></div>
         <% else %>
             <% if @request.pickup_service_point &&  %>
-            <div>Preferred pickup location: <%= @request.pickup_service_point.name %></div>
+            <div><dt>Preferred pickup location:</dt><dd><%= @request.pickup_service_point.name %></dd></div>
             <% end %>
         <% end %>
+        </dl>
     </div>
-    <div class="col-4">
+    <div class="offset-1 col-4">
         <div class="card">
             <div class="card-body">
-                <h2>Library resources</h2>
+                <h2 class="h5 fw-semibold">Library resources</h2>
                 <div class="bg-light p-2">
-                    <h3>
+                    <h3 class="h6">
                         <a href="https://mylibrary.stanford.edu"><i class="bi bi-box-arrow-up-right"></i> Log in to My Account</a>
                     </h3>
-                    <p>
+                    <p class="mb-0">
                       Access information regarding items currently checked out, monitor requests,
                       and/or outstanding fines.
                     </p>
                 </div>
-                <h3>Get help</h3>
+                <h3 class="h6 fw-semibold mt-3">Get help</h3>
                     <ul class="list-unstyled">
                         <li><i class="bi bi-envelope-fill"></i> <%= mail_to(@request.contact_info[:email], @request.contact_info[:email]) %></li>
                         <li><i class="bi bi-telephone-fill"></i> Call <%= @request.contact_info[:phone] %></li>
                     </ul>
-                <h3>Library policies and information</h3>
+                <h3 class="h6 fw-semibold mt-3">Library policies and information</h3>
                 <ul class="list-unstyled">
                     <li>
                         <a href="https://library.stanford.edu/services/borrow-and-request" target="_blank">
