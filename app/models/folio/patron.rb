@@ -132,6 +132,11 @@ module Folio
       crypt.encrypt_and_sign(id, expires_in: 20.minutes)
     end
 
+    # Get all the proxies for this id, and not just the first one
+    def all_proxy_group_info
+      @all_proxy_group_info ||= self.class.folio_client.all_proxy_group_info(id)
+    end
+
     private
 
     def standing

@@ -13,7 +13,8 @@ RSpec.describe 'Creating a page request' do
                                    patron_group_id: '503a81cd-6c26-400f-b620-14c08943697c',
                                    allowed_request_types: ['Hold', 'Recall', 'Page'],
                                    blocked?: true, fix_block_message: ['how to fix block'],
-                                   ilb_eligible?: true, block_reasons: ['there is a block'])
+                                   ilb_eligible?: true, block_reasons: ['there is a block'],
+                                   all_proxy_group_info: [])
   end
 
   before do
@@ -155,7 +156,7 @@ RSpec.describe 'Creating a page request' do
                                      allowed_request_types: ['Hold', 'Page'],
                                      patron_group_id: '985acbb9-f7a7-4f44-9b34-458c02a78fbc',
                                      blocked?: false, fix_block_message: [],
-                                     patron_description: 'courtesy', ilb_eligible?: true, block_reasons: [])
+                                     patron_description: 'courtesy', ilb_eligible?: true, block_reasons: [], all_proxy_group_info: [])
     end
 
     before do
@@ -190,7 +191,7 @@ RSpec.describe 'Creating a page request' do
                                        allowed_request_types: [], blocked?: false,
                                        patron_group_id: '985acbb9-f7a7-4f44-9b34-458c02a78fbc',
                                        fix_block_message: [],
-                                       patron_description: 'courtesy', ilb_eligible?: true, block_reasons: [])
+                                       patron_description: 'courtesy', ilb_eligible?: true, block_reasons: [], all_proxy_group_info: [])
       end
 
       let(:bib_data) { build(:single_holding, items: [build(:item, effective_location: build(:law_location))]) }
