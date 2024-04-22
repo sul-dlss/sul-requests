@@ -24,6 +24,10 @@
             <div><dt>Pages:</dt><dd><%= @request.scan_page_range %></dd></div>
             <div><dt>Chapter/article:</dt><dd><%= @request.scan_title %></dd></div>
             <div><dt>Authors:</dt><dd><%= @request.scan_authors %></dd></div>
+
+            <% if @request.estimated_delivery %>
+                <div><dt>Earliest expected delivery:</dt><dd><%= @request.estimated_delivery %></dd></div>
+            <% end %>
         <% else %>
             <% if @request.pickup_service_point &&  %>
             <div><dt>Preferred pickup location:</dt><dd><%= @request.pickup_service_point.name %></dd></div>
