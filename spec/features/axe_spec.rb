@@ -31,7 +31,8 @@ RSpec.describe 'Accessibility testing', :js do
                                      patron_group_id: '503a81cd-6c26-400f-b620-14c08943697c',
                                      patron_description: 'faculty',
                                      allowed_request_types: ['Hold', 'Recall'],
-                                     ilb_eligible?: true, blocks: [])
+                                     blocked?: false,
+                                     ilb_eligible?: true, block_reasons: [])
     end
 
     before do
@@ -50,7 +51,8 @@ RSpec.describe 'Accessibility testing', :js do
                                        patron_group_id: nil,
                                        patron_description: 'faculty',
                                        allowed_request_types: ['Hold', 'Recall'],
-                                       ilb_eligible?: true, blocks: ['there is a block'])
+                                       blocked?: false,
+                                       ilb_eligible?: true, block_reasons: ['fines'])
       end
 
       it 'validates the request page' do

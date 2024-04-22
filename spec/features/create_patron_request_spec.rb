@@ -12,7 +12,8 @@ RSpec.describe 'Creating a page request' do
                                    patron_description: 'faculty',
                                    patron_group_id: '503a81cd-6c26-400f-b620-14c08943697c',
                                    allowed_request_types: ['Hold', 'Recall', 'Page'],
-                                   ilb_eligible?: true, blocked?: true, blocks: ['there is a block'],
+                                   blocked?: true, fix_block_message: ['how to fix block'],
+                                   ilb_eligible?: true, block_reasons: ['there is a block'],
                                    all_proxy_group_info: [])
   end
 
@@ -154,7 +155,8 @@ RSpec.describe 'Creating a page request' do
       instance_double(Folio::Patron, id: 'some-lib-id-uuid', display_name: 'A User', exists?: true, email: nil,
                                      allowed_request_types: ['Hold', 'Page'],
                                      patron_group_id: '985acbb9-f7a7-4f44-9b34-458c02a78fbc',
-                                     patron_description: 'courtesy', ilb_eligible?: true, blocks: [], all_proxy_group_info: [])
+                                     blocked?: false, fix_block_message: [],
+                                     patron_description: 'courtesy', ilb_eligible?: true, block_reasons: [], all_proxy_group_info: [])
     end
 
     before do
@@ -186,9 +188,10 @@ RSpec.describe 'Creating a page request' do
     context 'when circ rules prevent any request on the item for the patron' do
       let(:patron) do
         instance_double(Folio::Patron, id: 'some-lib-id-uuid', display_name: 'A User', exists?: true, email: nil,
-                                       allowed_request_types: [],
+                                       allowed_request_types: [], blocked?: false,
                                        patron_group_id: '985acbb9-f7a7-4f44-9b34-458c02a78fbc',
-                                       patron_description: 'courtesy', ilb_eligible?: true, blocks: [], all_proxy_group_info: [])
+                                       fix_block_message: [],
+                                       patron_description: 'courtesy', ilb_eligible?: true, block_reasons: [], all_proxy_group_info: [])
       end
 
       let(:bib_data) { build(:single_holding, items: [build(:item, effective_location: build(:law_location))]) }
