@@ -237,3 +237,14 @@ summary .bi-chevron-right::before {
 .pill-close {
   font-size: .6rem;
 }
+
+.dl-inline {
+  dt {
+    display: inline;
+    margin-right: $spacer * 0.5;
+  }
+
+  dd {
+    display: inline;
+  }
+}
