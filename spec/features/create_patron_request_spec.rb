@@ -86,7 +86,7 @@ RSpec.describe 'Creating a page request' do
 
         choose 'Email digital scan'
         click_on 'Continue'
-        check 'ABC 123'
+        choose 'ABC 123'
         click_on 'Continue'
         expect(page).to have_content 'Copyright notice'
         fill_in 'Page range', with: '1-15'

@@ -39,7 +39,7 @@
       <div id="request-type" class="accordion-collapse collapse <%= 'show' if current_step == 1 %>" data-bs-parent="#<%= f.id %>" data-bs-parent="#<%= f.id %>">
         <div class="accordion-body">
           <%= render 'scan_or_pickup', f: %>
-          <%= render 'accordion_continue', target: 'request-type' %>
+          <%= render 'accordion_continue' %>
         </div>
       </div>
     </div>
@@ -52,10 +52,10 @@
 
   <% end %>
 
-  <% if f.object.items_in_location.many? && (can?(:request_scan, f.object) || can?(:prepare, f.object)) %>
   <!-- item selector -->
-  <div data-controller="itemselector" data-action="itemselector:change->patronRequest#showItemSelector">
-    <div class="accordion-item my-4 shadow-sm accordion-step-<%= current_step = step_enum.next %>" id="barcodes-accordion" data-patronRequest-target="accordion">
+  <% if f.object.items_in_location.many? && (can?(:request_scan, f.object) || can?(:prepare, f.object)) %>
+    <div data-controller="itemselector" data-action="itemselector:change->patronRequest#showItemSelector">
+    <div class="accordion-item my-4 shadow-sm accordion-step-<%= current_step = step_enum.next %>" data-switch-selector=true id="barcodes-accordion" data-patronRequest-target="accordion">
       <%= render 'accordion_header', title: 'Select item(s)', target: 'barcodes', step_number: current_step, expanded: current_step == 1 %>
       <div id="barcodes" class="accordion-collapse collapse <%= 'show' if current_step == 1 %>" data-bs-parent="#<%= f.id %>">
         <div class="accordion-body">
@@ -85,7 +85,7 @@
               </tbody>
             </table>
           </div>
-          <%= render 'accordion_continue', target: 'barcodes' %>
+          <%= render 'accordion_continue' %>
         </div>
       </div>
     </div>
@@ -145,8 +145,24 @@
       </div>
     </div>
     <% end %>
-  </div>
   <% end %>
+
+  <!-- scan request (single or multiitem) -->
+  <% if can? :request_scan, f.object %>
+    <div class="accordion-item my-4 shadow-sm <%= scan_pickup ? 'd-none' : '' %> accordion-step-<%= current_step = (scan_or_pickup_step ||= step_enum.next) %>" id="scan-accordion" data-patronRequest-forRequestType="scan" data-patronRequest-target="accordion">
+      <%= render 'accordion_header', title: 'Scan request', target: 'scan', step_number: current_step %>
+      <div id="scan" class="accordion-collapse collapse <%= 'show' if current_step == 1 %>" data-bs-parent="#<%= f.id %>">
+        <div class="accordion-body">
+          <%= render 'scan_options', f: %>
+          <div class="form-group d-flex justify-content-end gap-1">
+            <%= link_to 'Cancel', new_patron_request_path(instance_hrid: @request.instance_hrid, origin_location_code: @request.origin_location_code), class: 'btn btn-outline-primary' %>
+            <%= f.submit t('.submit'), class: 'btn btn-primary' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  </div>
 
   <!-- pickup request (single item )-->
   <% if f.object.items_in_location.one? && can?(:prepare, f.object) %>
@@ -184,19 +200,5 @@
     </div>
   <% end %>
 
-  <!-- scan request (single or multiitem) -->
-  <% if can? :request_scan, f.object %>
-    <div class="accordion-item my-4 shadow-sm <%= scan_pickup ? 'd-none' : '' %> accordion-step-<%= current_step = (scan_or_pickup_step ||= step_enum.next) %>" id="scan-accordion" data-patronRequest-forRequestType="scan" data-patronRequest-target="accordion">
-      <%= render 'accordion_header', title: 'Scan request', target: 'scan', step_number: current_step %>
-      <div id="scan" class="accordion-collapse collapse <%= 'show' if current_step == 1 %>" data-bs-parent="#<%= f.id %>">
-        <div class="accordion-body">
-          <%= render 'scan_options', f: %>
-          <div class="form-group d-flex justify-content-end gap-1">
-            <%= link_to 'Cancel', new_patron_request_path(instance_hrid: @request.instance_hrid, origin_location_code: @request.origin_location_code), class: 'btn btn-outline-primary' %>
-            <%= f.submit t('.submit'), class: 'btn btn-primary' %>
-          </div>
-        </div>
-      </div>
-    </div>
-  <% end %>
+  
 <% end %>

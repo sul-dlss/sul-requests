@@ -20,6 +20,17 @@ export default class extends Controller {
   updateType(event) {
     const requestType = event.target.value;
 
+    var nextitem = this.findNextAccordion(event.target.closest('.accordion-item'));
+    if (nextitem && nextitem.dataset.switchSelector) {
+      const searchtype = requestType == 'scan' ? 'checkbox' : 'radio'
+      const switchtype = requestType == 'scan' ? 'radio' : 'checkbox'
+      const items = nextitem.querySelectorAll(`input[type="${searchtype}"]`);
+      items.forEach(elem => {
+        elem.type = switchtype;
+      })
+    }
+
+
     this.accordionTargets.filter(e => e.dataset.patronrequestForrequesttype).forEach(el => {
       if (el.dataset.patronrequestForrequesttype == requestType) {
         el.classList.remove('d-none');
@@ -56,13 +67,17 @@ export default class extends Controller {
     const accordionbutton = accordion.querySelector('.accordion-header');
     accordionbutton.parentElement.classList.add('completed');
 
-    // figure out what the next step is:
-    const accordions = this.accordionTargets.filter(e => !e.classList.contains('step-placeholder') && !e.classList.contains('d-none'));
-    const current = accordions.findIndex( x => x == accordion);
-    var nextitem = accordions.at(current+1);
+    var nextitem = this.findNextAccordion(accordion);
 
     this.showStep(nextitem.querySelector('.accordion-collapse'));
     event.preventDefault();
+  }
+
+  findNextAccordion(accordion) {
+    // figure out what the next step is:
+    const accordions = this.accordionTargets.filter(e => !e.classList.contains('step-placeholder') && !e.classList.contains('d-none'));
+    const current = accordions.findIndex( x => x == accordion);
+    return accordions.at(current+1);
   }
 
   editForm(event) {
