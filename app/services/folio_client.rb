@@ -138,12 +138,19 @@ class FolioClient
     check_response(response, title: 'Assign pin', context: { user_id: })
   end
 
-  def proxy_group_info(user_id)
+  # We sometimes want the full list of proxies and not just the first one
+  def all_proxy_group_info(user_id)
     response = get_json('/proxiesfor', params: { query: CqlQuery.new(userId: user_id).to_query })
 
-    response.dig('proxiesFor', 0)
+    response['proxiesFor']
   end
 
+  # Get proxies for this user id and return the first one
+  def proxy_group_info(user_id)
+    all_proxy_group_info(user_id)[0]
+  end
+
+  # For whom is this user id a proxy?
   def proxy_info(user_id)
     response = get_json('/proxiesfor', params: { query: CqlQuery.new(proxyUserId: user_id).to_query })
 
