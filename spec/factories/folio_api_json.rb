@@ -91,6 +91,7 @@ FactoryBot.define do
   end
 
   factory :item, class: 'Folio::Item' do
+    id { '0ce74882-9e05-57e7-9a4e-d81821e06874' }
     barcode { '3610512345678' }
     callnumber { 'ABC 123' }
     status { 'Available' }
