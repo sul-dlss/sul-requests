@@ -57,12 +57,15 @@ export default class extends Controller {
   renderItems(items) {
     return items.map((item) => {
       return `
-        <li class="hstack gap-2 border bg-light rounded-pill px-3">
-          <span class="py-1">
-            ${item.label}
+        <li class="d-flex gap-2">
+          <span class="hstack gap-2 border bg-light rounded-pill px-3">
+            <span class="py-1">
+              ${item.label}
+            </span>
+            <span class="vr"></span>
+            <button data-action="${this.identifier}#unchecked" data-${this.identifier}-id-param="${item.id}" type="button" class="btn-close py-1" aria-label="Remove"></button>
           </span>
-          <span class="vr"></span>
-          <button data-action="${this.identifier}#unchecked" data-${this.identifier}-id-param="${item.id}" type="button" class="btn-close py-1" aria-label="Remove"></button>
+          ${item.duedate ? `<span class="text-cardinal d-block align-self-center">Checked out - Due ${item.duedate}</span>` : ''}
         </li>
       `;
     }).join('');
