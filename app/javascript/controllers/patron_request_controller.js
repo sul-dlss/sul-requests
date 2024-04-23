@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import { Collapse } from "bootstrap"
 
 export default class extends Controller {
-  static targets = ['earliestAvailable', 'accordion']
+  static targets = ['earliestAvailable', 'accordion', 'destination']
 
   connect() {
     if (this.accordionTargets.length == 1) {
@@ -80,6 +80,13 @@ export default class extends Controller {
 
   nextStep(event) {
     const accordion = event.target.closest('.accordion-item');
+    const formData = new FormData(accordion.closest('form'));
+
+// Don't allow moving to the next step unless all required fields are completed
+    if (Array.from(accordion.querySelectorAll('[required], [data-required]')).find(x => formData.getAll(x.name).every(x => !x))) {
+      event.preventDefault();
+      return;
+    }
 
     // mark the current step as completed
     const accordionbutton = accordion.querySelector('.accordion-header');
@@ -121,7 +128,8 @@ export default class extends Controller {
 
   async updateEarliestAvailable(event) {
     const url = new URL(this.earliestAvailableTarget.src + "/../" + event.currentTarget.value);
-
+    const destinationName = event.target.selectedOptions[0].textContent;
     this.earliestAvailableTarget.src = url;
+    this.destinationTarget.textContent = destinationName;
   }
 }

@@ -73,7 +73,7 @@
                   <tr>
                     <td class="align-middle">
                       <label>
-                        <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: cannot?(:request, item), data: { 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-duedate-param': item.due_date, 'itemselector-label-param': item.callnumber, action: 'itemselector#change' } }, item.barcode || item.id, "" %>
+                        <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: cannot?(:request, item), data: { required: true, 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-duedate-param': item.due_date, 'itemselector-label-param': item.callnumber, action: 'itemselector#change' } }, item.barcode || item.id, "" %>
                         <span class="form-check-label ms-1"><%= item.callnumber %></span>
                       </label>
                     </td>
@@ -105,7 +105,7 @@
             <%= render 'pickup_destination', f: %>
             <div class="card">
               <div class="card-body bg-light rounded">
-                <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="d-flex flex-column flex-lg-row align-items-start justify-content-lg-between align-items-lg-center mb-3 gap-2 gap-lg-0">
                     <div class="text-black fw-semibold">Available items</div>
                     <div class="text-cardinal">
                       Pickup:
@@ -118,6 +118,10 @@
                           <% end %>
                         <% end %>
                       </span>
+                      <span> at </span>
+                      <span data-patronRequest-target="destination">
+                        <%= f.object.destination_location&.name %>
+                      </span>
                     </div>
                 </div>
                 <ul data-itemselector-target="availableItems" class="list-unstyled d-flex flex-wrap gap-2 bg-white p-3 m-0"></ul>
@@ -126,12 +130,12 @@
           </div>
           <div class="card selected-items-group my-3">
             <div class="card-body bg-light rounded">
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <div class="text-black fw-semibold">Items currently checked out or otherwise unavailable.</div>
+              <div class="d-flex flex-column flex-lg-row align-items-start justify-content-lg-between align-items-lg-center mb-3 gap-2 gap-lg-0">
+                <div class="text-black fw-semibold">Items currently checked out or otherwise unavailable</div>
                 <div class="text-cardinal">Pickup: No date/time estimate</div>
               </div>
               <div class="bg-white">
-                <ul data-itemselector-target="unavailableItems" class="list-unstyled d-flex flex-wrap gap-2 p-3"></ul>
+                <ul data-itemselector-target="unavailableItems" class="list-unstyled d-flex flex-wrap gap-2 p-3 m-0"></ul>
                 <hr class="styled-hr">
                 <%= render 'request_preferences', f: %>
               </div>
