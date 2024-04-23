@@ -19,7 +19,7 @@
       Do you want to share this request with your proxies?
     </div>
      <div class="mt-2">
-        <%= f.radio_button :proxy, 'share', :class => 'form-check-input' %>
+        <%= f.radio_button :proxy, 'share', :class => 'form-check-input', required: true %>
         <%= f.label :proxy_share, :class => 'form-check-label ms-1' do %>
         Yes, share this request with my proxies.
         <% end %>
