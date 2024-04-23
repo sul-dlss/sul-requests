@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import { Collapse } from "bootstrap"
 
 export default class extends Controller {
-  static targets = ['earliestAvailable', 'accordion']
+  static targets = ['earliestAvailable', 'accordion', 'destination']
 
   connect() {
     if (this.accordionTargets.length == 1) {
@@ -121,7 +121,8 @@ export default class extends Controller {
 
   async updateEarliestAvailable(event) {
     const url = new URL(this.earliestAvailableTarget.src + "/../" + event.currentTarget.value);
-
+    const destinationName = event.target.selectedOptions[0].textContent;
     this.earliestAvailableTarget.src = url;
+    this.destinationTarget.textContent = destinationName;
   }
 }
