@@ -112,11 +112,11 @@ module Folio
 
     def block_reasons
       blocks = patron_blocks.fetch('automatedPatronBlocks', [])
-      blocks.map { |block| block['message'].include?('fine') ? 'fines' : 'overdue items' }
+      blocks.map { |block| block['message'].include?('fine') ? 'outstanding fines' : 'overdue items' }
     end
 
     def fix_block_message
-      block_reasons.map { |br| br == 'fines' ? 'the fines are cleared' : 'the overdue items are returned' }.join(' and ')
+      block_reasons.map { |br| br == 'outstanding fines' ? 'the fines are cleared' : 'the overdue items are returned' }.join(' and ')
     end
 
     def exists?
