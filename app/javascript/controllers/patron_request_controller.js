@@ -82,6 +82,7 @@ export default class extends Controller {
     const accordion = event.target.closest('.accordion-item');
     const formData = new FormData(accordion.closest('form'));
 
+// Don't allow moving to the next step unless all required fields are completed
     if (Array.from(accordion.querySelectorAll('[required], [data-required]')).find(x => formData.getAll(x.name).every(x => !x))) {
       event.preventDefault();
       return;
