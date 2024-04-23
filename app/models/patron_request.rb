@@ -7,10 +7,14 @@ class PatronRequest < ApplicationRecord
   class_attribute :bib_model_class, default: Settings.ils.bib_model.constantize
   store :data, accessors: [
     :barcodes, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title, :request_type,
-    :proxy
+    :proxy, :estimated_delivery
   ], coder: JSON
 
   delegate :instance_id, to: :bib_data
+
+  before_create do
+    self.estimated_delivery = earliest_delivery_estimate(scan: scan?)&.dig('display_date')
+  end
 
   def scan?
     request_type == 'scan'
