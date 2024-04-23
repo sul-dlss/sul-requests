@@ -99,6 +99,45 @@ RSpec.describe 'Creating a page request' do
       end
     end
 
+    context 'for an item that can be paged or scanned', :js do
+      let(:bib_data) { build(:scannable_holdings) }
+      let(:user) { create(:scan_eligible_user) }
+
+      before do
+        allow(current_user).to receive(:user_object).and_return(user)
+      end
+
+      it 'allows paging' do
+        visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+
+        choose 'Pickup physical item'
+        click_on 'Continue'
+        check 'ABC 123'
+        click_on 'Continue'
+        expect do
+          click_on 'Submit'
+          expect(page).to have_content 'We receieved your pickup request'
+        end.to change(PatronRequest, :count).by(1)
+      end
+
+      it 'allows scanning' do
+        visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+
+        choose 'Email digital scan'
+        click_on 'Continue'
+        choose 'ABC 123'
+        click_on 'Continue'
+        expect(page).to have_content 'Copyright notice'
+        fill_in 'Page range', with: '1-15'
+        fill_in 'Title of article or chapter', with: 'Some title'
+
+        expect do
+          click_on 'Submit'
+          expect(page).to have_content 'We receieved your scan request'
+        end.to change(PatronRequest, :count).by(1)
+      end
+    end
+
     context 'with stubbed paging schedule' do
       before do
         travel_to Time.zone.local(2024, 4, 2, 12, 0, 0)

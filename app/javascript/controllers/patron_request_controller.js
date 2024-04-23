@@ -34,9 +34,27 @@ export default class extends Controller {
     this.accordionTargets.filter(e => e.dataset.patronrequestForrequesttype).forEach(el => {
       if (el.dataset.patronrequestForrequesttype == requestType) {
         el.classList.remove('d-none');
+        this.enableRequiredInputs(el);
       } else {
         el.classList.add('d-none');
+        this.disableRequiredInputs(el);
       }
+    });
+  }
+
+  // Temporarily disable required inputs that are children of the given element
+  // This is used to prevent validation errors when hidden/unused inputs are required
+  // The initial required state of the inputs is preserved via a data attribute
+  disableRequiredInputs(element) {
+    element.querySelectorAll('[required]').forEach(input => {
+      input.dataset.required = true;
+      input.removeAttribute('required');
+    });
+  }
+
+  enableRequiredInputs(element) {
+    element.querySelectorAll('[data-required]').forEach(input => {
+      input.setAttribute('required', 'required');
     });
   }
 
