@@ -1,4 +1,4 @@
-<h1 class="fw-semibold">We receieved your <%= @request.request_type == 'scan' ? 'scan' : 'pickup' %> request!</h1>
+<h1 class="fw-semibold">We receieved your <%= @request.request_type == 'scan' ? 'scan' : @request.mediateable? ? '' : 'pickup' %> request!</h1>
 
 <div class="row mt-4">
     <div class="col-7">
@@ -10,7 +10,7 @@
             The digital scan will be sent to your email as a PDF when it's ready.
         <% else %>
             You will receive an email when the <%= (@request.barcodes&.count || 1) == 1 ?  'item is' : 'items are' %> ready.
-            <% if current_user.patron %>
+            <% if current_user.patron && !@request.mediateable? %>
                 You can also check the status of your request any time at <%= link_to 'My Account', 'https://mylibrary.stanford.edu' %>.
             <% end %>
         <% end %>
@@ -29,7 +29,7 @@
                 <div><dt>Earliest expected delivery:</dt><dd><%= @request.estimated_delivery %></dd></div>
             <% end %>
         <% else %>
-            <% if @request.pickup_service_point &&  %>
+            <% if @request.pickup_service_point && !@request.mediateable? %>
             <div><dt>Preferred pickup location:</dt><dd><%= @request.pickup_service_point.name %></dd></div>
             <% end %>
         <% end %>

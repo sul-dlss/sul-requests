@@ -5,7 +5,10 @@
 class SubmitPatronRequestJob < ApplicationJob
   queue_as :default
 
-  def perform(patron_request) # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/AbcSize
+  def perform(patron_request)
+    return convert_to_mediated_page(patron_request) if patron_request.mediateable?
+
     ilb_items, folio_items = patron_request.selected_items.partition do |item|
       send_to_illiad?(patron_request, item)
     end
@@ -20,6 +23,7 @@ class SubmitPatronRequestJob < ApplicationJob
 
     patron_request.update(illiad_response_data:, folio_responses:)
   end
+  # rubocop:enable Metrics/AbcSize
 
   private
 
@@ -47,5 +51,19 @@ class SubmitPatronRequestJob < ApplicationJob
       Folio::Item::STATUS_ON_ORDER,
       Folio::Item::STATUS_IN_TRANSIT
     ].freeze
+  end
+
+  def convert_to_mediated_page(patron_request)
+    MediatedPage.create!(
+      needed_date: patron_request.needed_date,
+      origin: patron_request.origin_library_code,
+      destination: patron_request.service_point_code,
+      origin_location: patron_request.origin_location_code,
+      item_id: patron_request.instance_hrid,
+      user: patron_request.patron.user,
+      item_title: patron_request.item_title,
+      barcodes: patron_request.barcodes,
+      estimated_delivery: patron_request.estimated_delivery
+    )
   end
 end

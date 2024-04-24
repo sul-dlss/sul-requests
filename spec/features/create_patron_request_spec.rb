@@ -99,6 +99,34 @@ RSpec.describe 'Creating a page request' do
       end
     end
 
+    context 'for a mediated page' do
+      let(:bib_data) { build(:single_mediated_holding) }
+
+      before do
+        allow(patron).to receive(:user).and_return(user)
+      end
+
+      it 'creates a mediated page request', :js do
+        visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'ART-LOCKED-LARGE')
+
+        expect do
+          perform_enqueued_jobs do
+            click_on 'Submit'
+            expect(page).to have_content 'We receieved your request'
+          end
+        end.to change(MediatedPage, :count).by(1)
+
+        expect(MediatedPage.last).to have_attributes(
+          origin: 'ART',
+          origin_location: 'ART-LOCKED-LARGE',
+          item_id: 'a1234',
+          user:,
+          barcodes: ['12345678'],
+          item_title: 'Item Title'
+        )
+      end
+    end
+
     context 'for an item that can be paged or scanned', :js do
       let(:bib_data) { build(:scannable_holdings) }
       let(:user) { create(:scan_eligible_user) }
