@@ -59,7 +59,7 @@
               </tr>
             </thead>
             <tbody>
-              <% f.object.items_in_location.each do |item| %>
+              <% sort_holdings(f.object.items_in_location).each do |item| %>
                 <% not_requestable = cannot?(:request, item) %>
                 <tr>
                   <td class="align-middle">
