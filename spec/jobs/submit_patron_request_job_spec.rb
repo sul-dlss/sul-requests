@@ -74,17 +74,15 @@ RSpec.describe SubmitPatronRequestJob do
   context 'when the item is a recall' do
     before do
       allow(request).to receive_messages(request_type: 'recall', fulfillment_type: 'recall')
+      allow(bib_data.items[0]).to receive_messages(
+        hold_recallable?: true,
+        status: Folio::Item::STATUS_IN_PROCESS
+      )
     end
 
-    context 'when the item has a recallable status' do
-      before do
-        allow(bib_data.items[0]).to receive(:status).and_return(Folio::Item::STATUS_IN_PROCESS)
-      end
-
-      it 'requests items via FOLIO' do
-        described_class.perform_now(request)
-        expect(SubmitFolioPatronRequestJob).to have_received(:perform_now).with(request, bib_data.items[0].id)
-      end
+    it 'requests items via FOLIO' do
+      described_class.perform_now(request)
+      expect(SubmitFolioPatronRequestJob).to have_received(:perform_now).with(request, bib_data.items[0].id)
     end
 
     context 'when the item is not in an easily recallable status' do
@@ -99,7 +97,14 @@ RSpec.describe SubmitPatronRequestJob do
     end
 
     context 'when the item has a request queue' do
-      it 'requests items via ILLiad', pending: 'https://github.com/sul-dlss/sul-requests/issues/2234'
+      before do
+        allow(bib_data.items[0]).to receive(:queue_length).and_return(1)
+      end
+
+      it 'requests items via ILLiad' do
+        described_class.perform_now(request)
+        expect(SubmitIlliadPatronRequestJob).to have_received(:perform_now).with(request, bib_data.items[0].id)
+      end
     end
   end
 end
