@@ -109,7 +109,7 @@ class PatronRequest < ApplicationRecord
   end
 
   def earliest_delivery_estimate(scan: false)
-    if items_in_location&.first&.status == 'Available'
+    if items_in_location&.first&.available?
       paging_info = PagingSchedule.for(self, scan:).earliest_delivery_estimate
       { 'date' => Date.parse(paging_info.to_s), 'display_date' => paging_info.to_s }
     else
