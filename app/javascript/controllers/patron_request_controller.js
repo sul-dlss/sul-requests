@@ -27,6 +27,7 @@ export default class extends Controller {
       const items = nextitem.querySelectorAll(`input[type="${searchtype}"]`);
       items.forEach(elem => {
         elem.type = switchtype;
+        if (switchtype == 'radio') { elem.checked = false };
       })
     }
 
