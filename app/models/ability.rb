@@ -112,6 +112,12 @@ class Ability
       end
     end
 
+    if user.library_id_user? || user.sso_user?
+      can :prepare, PatronRequest do |request|
+        request.bib_data.items.none?
+      end
+    end
+
     if token
       begin
         token, = TokenEncryptor.new(token).decrypt_and_verify

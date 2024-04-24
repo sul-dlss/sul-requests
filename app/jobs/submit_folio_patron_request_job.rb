@@ -42,16 +42,12 @@ class SubmitFolioPatronRequestJob < ApplicationJob
     {}
   end
 
-  def request_comments(patron, request)
-    [("(PROXY PICKUP OK; request placed by #{patron.display_name} <#{patron.email}>)" if request.proxy?)].compact.join("\n")
-  end
-
   def folio_request_data_for_item(patron, request, item)
     FolioClient::CirculationRequestData.new(
       request_level: 'Item', request_type: best_request_type(request, item),
       instance_id: request.instance_id, item_id: item.id, holdings_record_id: item.holdings_record_id,
       requester_id: patron&.id, fulfillment_preference: 'Hold Shelf', pickup_service_point_id: request.pickup_service_point.id,
-      patron_comments: request_comments(patron, request), request_expiration_date: (Time.zone.today + 3.years).to_time.utc.iso8601
+      patron_comments: request.request_comments, request_expiration_date: (Time.zone.today + 3.years).to_time.utc.iso8601
     )
   end
 
