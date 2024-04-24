@@ -1,14 +1,15 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
+import { Toast } from 'bootstrap';
 
 export default class extends Controller {
-  static targets = ['items', 'availableItems', 'unavailableItems', 'scanItem', 'unavailableScanItemEstimate', 'availableScanItemEstimate']
+  static targets = ['items', 'toast', 'availableItems', 'unavailableItems', 'scanItem', 'unavailableScanItemEstimate', 'availableScanItemEstimate']
   static values = { selectedItems: Array }
 
   connect() { }
 
   change(event) {
-    if (event.currentTarget.checked) {
-      if (event.target.type == 'radio') {
+    if (event.currentTarget.checked || event.params.checked) {
+      if (this.itemsTarget.type == 'radio') {
         this.selectedItemsValue = [event.params];
       } else {
         this.selectedItemsValue = this.selectedItemsValue.concat([event.params]);
@@ -26,9 +27,26 @@ export default class extends Controller {
     const target = this.itemsTargets.find((item) => item.dataset.itemselectorIdParam === event.params.id)
     if (target) target.checked = false;
 
+    const targetItem = this.selectedItemsValue.find((item) => item.id == event.params.id)
+
     this.selectedItemsValue = this.selectedItemsValue.filter((item) => item.id !== event.params.id);
 
+    if (this.selectedItemsValue.length > 0) this.showRemovalToast(targetItem);
+
     this.dispatch('change', { detail: { selectedItems: this.selectedItemsValue }});
+  }
+
+  undo(event) {
+    event.preventDefault();
+
+    this.itemsTargets.find((item) => item.dataset.itemselectorIdParam === event.params.id).click();
+    Toast.getOrCreateInstance(this.toastTarget).hide();
+  }
+
+  showRemovalToast(item) {
+    this.toastTarget.querySelector('.btn').dataset.itemselectorIdParam = item.id;
+
+    Toast.getOrCreateInstance(this.toastTarget).show();
   }
 
   selectedItemsValueChanged() {
@@ -77,7 +95,7 @@ export default class extends Controller {
               ${item.label}
             </small>
             <span class="vr"></span>
-            <button data-action="${this.identifier}#unchecked" data-${this.identifier}-id-param="${item.id}" type="button" class="btn-close py-1 pill-close" aria-label="Remove"></button>
+            <button data-action="${this.identifier}#unchecked" data-${this.identifier}-id-param="${item.id}" type="button" class="btn-close py-1 pill-close" aria-label="Remove ${item.label}"></button>
           </span>
           ${item.duedate ? `<span class="text-cardinal d-block align-self-center">Checked out - Due ${item.duedate}</span>` : ''}
         </li>
