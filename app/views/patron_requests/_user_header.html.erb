@@ -18,8 +18,13 @@
       <% if blocked %>
       <div class="small">
         <strong>Be advised that your library account is currently restricted</strong>
-        due <%= current_user.patron.block_reasons.join(" and ") %>. <strong>You can still place a request;</strong>
+        due to <%= current_user.patron.block_reasons.join(" and ") %>. <strong>You can still place a request;</strong>
         however, your borrowing privileges will remain suspended until <%= current_user.patron.fix_block_message %>.
+      </div>
+      <div>
+        <%= link_to 'https://mylibrary.stanford.edu' do %>
+          <i class="bi bi-box-arrow-up-right"></i> Learn more at My Library Account
+        <% end %>
       </div>
       <% end %>
     </div>
