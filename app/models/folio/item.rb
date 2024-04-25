@@ -214,7 +214,7 @@ module Folio
           material_type: MaterialType.new(id: dyn.dig('materialType', 'id'), name: dyn.dig('materialType', 'name')),
           loan_type: LoanType.new(id: dyn.fetch('temporaryLoanTypeId', dyn.fetch('permanentLoanTypeId'))),
           holdings_record_id: dyn.dig('holdingsRecord', 'id'),
-          queue_length: dyn.fetch('queueTotalLength'))
+          queue_length: dyn.fetch('queueTotalLength', nil))
     end
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
