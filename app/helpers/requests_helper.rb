@@ -45,12 +45,12 @@ module RequestsHelper
     end
   end
 
-  def queue_length_display(item)
+  def queue_length_display(item, prefix: nil)
     return '' if item.available?
 
     item_status = item.checked_out? ? "Checked out - Due #{item.due_date}" : item.status
     wait_list = item.queue_length.zero? ? 'No waitlist' : 'There is a waitlist ahead of your request'
-    "#{item_status} | #{wait_list}"
+    "#{prefix}#{item_status} | #{wait_list}"
   end
 
   def requests_patron_item_selector_label(item, not_requestable: false)
