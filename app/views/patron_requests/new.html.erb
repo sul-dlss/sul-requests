@@ -188,8 +188,8 @@
             After submitting your request, you will receive an email confirmation. Additionally, you will be notified by email once the item is ready for your visit.
             </p>
             <% if f.object.requires_needed_date? %>
-                <%= f.label :needed_date, 'I plan to visit on:', :class => 'required-label' %>
-                <%= f.date_field :needed_date, :required => true, value:  f.object.earliest_delivery_estimate['date'], min: f.object.earliest_delivery_estimate['date'] %>
+                <%= f.label :needed_date, 'I plan to visit on:', :class => 'required-label py-2' %>
+                <%= f.date_field :needed_date, :required => true, value:  f.object.earliest_delivery_estimate['date'], min: f.object.earliest_delivery_estimate['date'], class: 'd-block rounded border' %>
             <% end %>
         <% end %>
         <%= render 'request_preferences', f: %>
