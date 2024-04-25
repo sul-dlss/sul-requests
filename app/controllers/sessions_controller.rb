@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
     if request.env['warden'].authenticate(:university_id)
       redirect_after_action
     else
-      redirect_to post_action_redirect_url, flash: { error: t('.alert') }
+      redirect_to post_action_redirect_url, flash: { error: t('.alert_html') }
     end
   end
 
