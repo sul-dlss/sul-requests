@@ -74,6 +74,7 @@ RSpec.describe Folio::Instance do
             "effectiveCallNumberComponents": {
               "callNumber": "SB270 .E8 A874 2007"
             },
+            "queueTotalLength": 0,
             "notes": [
               {
                 "note": "EDI receipt; tf:GREEN 07/03/14 batch; tf:SAL 07/28/17 batch",
@@ -198,6 +199,7 @@ RSpec.describe Folio::Instance do
                 "status": {
                   "name": "Available"
                 },
+                "queueTotalLength": 0,
                 "materialType": null,
                 "chronology": null,
                 "enumeration": null,
@@ -236,6 +238,7 @@ RSpec.describe Folio::Instance do
                 "status": {
                   "name": "Available"
                 },
+                "queueTotalLength": 0,
                 "materialType": null,
                 "chronology": null,
                 "enumeration": "BOX 1",
@@ -269,6 +272,7 @@ RSpec.describe Folio::Instance do
                 "status": {
                   "name": "Available"
                 },
+                "queueTotalLength": 0,
                 "materialType": null,
                 "chronology": null,
                 "enumeration": "BOX 2",
@@ -302,6 +306,7 @@ RSpec.describe Folio::Instance do
                 "status": {
                   "name": "Available"
                 },
+                "queueTotalLength": 0,
                 "materialType": null,
                 "chronology": null,
                 "enumeration": "BOX 3",
@@ -377,6 +382,7 @@ RSpec.describe Folio::Instance do
               "status": {
                 "name": "Available"
               },
+              "queueTotalLength": 0,
               "materialType": null,
               "chronology": null,
               "enumeration": null,
@@ -415,6 +421,7 @@ RSpec.describe Folio::Instance do
               "status": {
                 "name": "Available"
               },
+              "queueTotalLength": 0,
               "materialType": null,
               "chronology": null,
               "enumeration": "BOX 1",
@@ -448,6 +455,7 @@ RSpec.describe Folio::Instance do
               "status": {
                 "name": "Available"
               },
+              "queueTotalLength": 0,
               "materialType": null,
               "chronology": null,
               "enumeration": "BOX 2",
@@ -481,6 +489,7 @@ RSpec.describe Folio::Instance do
               "status": {
                 "name": "Available"
               },
+              "queueTotalLength": 0,
               "materialType": null,
               "chronology": null,
               "enumeration": "BOX 3",
@@ -556,6 +565,7 @@ RSpec.describe Folio::Instance do
                 "status": {
                   "name": "Available"
                 },
+                "queueTotalLength": 0,
                 "materialType": null,
                 "chronology": null,
                 "enumeration": null,
@@ -594,6 +604,7 @@ RSpec.describe Folio::Instance do
                 "status": {
                   "name": "Available"
                 },
+                "queueTotalLength": 0,
                 "materialType": null,
                 "chronology": null,
                 "enumeration": "BOX 1",
@@ -627,6 +638,7 @@ RSpec.describe Folio::Instance do
                 "status": {
                   "name": "Available"
                 },
+                "queueTotalLength": 0,
                 "materialType": null,
                 "chronology": null,
                 "enumeration": "BOX 2",
@@ -661,6 +673,7 @@ RSpec.describe Folio::Instance do
                 "status": {
                   "name": "Available"
                 },
+                "queueTotalLength": 0,
                 "materialType": null,
                 "chronology": null,
                 "enumeration": "BOX 3",

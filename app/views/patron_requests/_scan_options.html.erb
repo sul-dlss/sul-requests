@@ -23,7 +23,7 @@
       <ul data-itemselector-target="scanItem" class="list-unstyled d-flex flex-wrap gap-2 bg-white m-0 me-3"></ul>
     <% else %>
       <div class="text-cardinal">
-        Earliest expected delivery: <%= f.object.scan_earliest['display_date'] %>
+        Earliest expected delivery: <%= f.object.scan_earliest['display_date'] %> - <%= queue_length_display(f.object.items_in_location.first) %>
       </div>
     <% end %>
     <div class="mt-2">

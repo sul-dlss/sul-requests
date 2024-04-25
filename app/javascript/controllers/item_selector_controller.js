@@ -97,7 +97,7 @@ export default class extends Controller {
             <span class="vr"></span>
             <button data-action="${this.identifier}#unchecked" data-${this.identifier}-id-param="${item.id}" type="button" class="btn-close py-1 pill-close" aria-label="Remove ${item.label}"></button>
           </span>
-          ${item.duedate ? `<span class="text-cardinal d-block align-self-center">Checked out - Due ${item.duedate}</span>` : ''}
+          ${item.duequeueinfo ? `<span class="text-cardinal d-block align-self-center">${item.duequeueinfo}</span>` : ''}
         </li>
       `;
     }).join('');
