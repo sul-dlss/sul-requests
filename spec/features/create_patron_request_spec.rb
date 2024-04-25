@@ -213,7 +213,7 @@ RSpec.describe 'Creating a page request' do
 
       it 'redirects to the login page' do
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
-        expect(page).to have_text 'log in with your Library ID and PIN'
+        expect(page).to have_text 'Login with Library ID/PIN'
       end
 
       it 'shows an error message' do
@@ -315,7 +315,7 @@ RSpec.describe 'Creating a page request' do
 
       it 'goes back to login page' do
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
-        expect(page).to have_text 'log in with your Library ID and PIN'
+        expect(page).to have_text 'Login with Library ID/PIN'
       end
     end
   end
