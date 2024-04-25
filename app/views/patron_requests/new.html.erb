@@ -38,7 +38,7 @@
     <% end %>
 
     <% if f.object.items_in_location.one? %>
-      <%= render AccordionStepComponent.new(id: 'scan-or-pickup-placeholder', form_id: f.id, step_index: step_enum.next, data: { 'patronrequest-forRequestType': 'none' }) do |c| %>
+      <%= render AccordionStepComponent.new(id: 'scan-or-pickup-placeholder', form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'none' }) do |c| %>
         <% c.with_title.with_content('Scan or pickup request') %>
       <% end %>
     <% end %>
