@@ -16,7 +16,7 @@
         </span>
       </div>
       <% if blocked %>
-      <div class="small">
+      <div class="small my-2">
         <strong>Be advised that your library account is currently restricted</strong>
         due to <%= current_user.patron.block_reasons.join(" and ") %>. <strong>You can still place a request;</strong>
         however, your borrowing privileges will remain suspended until <%= current_user.patron.fix_block_message %>.
