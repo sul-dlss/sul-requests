@@ -8,6 +8,7 @@ export default class extends Controller {
     if (this.accordionTargets.length == 1) {
       this.removeAccordionStyling();
     }
+    this.element.reset();
   }
 
   showItemSelector(event) {
