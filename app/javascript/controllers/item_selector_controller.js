@@ -18,6 +18,14 @@ export default class extends Controller {
       this.selectedItemsValue = this.selectedItemsValue.filter((item) => item.id !== event.params.id);
     }
 
+    // Enable/disable sending hidden params to Aeon
+    const aeonCallNumberInput = event.currentTarget.nextElementSibling;
+    const aeonBarcodeInput = aeonCallNumberInput.nextElementSibling;
+    const aeonRequestIndexInput = aeonBarcodeInput.nextElementSibling;
+    aeonCallNumberInput.toggleAttribute('disabled');
+    aeonBarcodeInput.toggleAttribute('disabled');
+    aeonRequestIndexInput.toggleAttribute('disabled');
+
     this.dispatch('change', { detail: { selectedItems: this.selectedItemsValue }});
   }
 

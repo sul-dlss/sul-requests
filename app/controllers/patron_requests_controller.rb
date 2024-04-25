@@ -25,6 +25,8 @@ class PatronRequestsController < ApplicationController
   end
 
   def create
+    redirect_to current_request.finding_aid if current_request.aeon_page? && current_request.finding_aid?
+
     if @request.save && @request.submit_later
       redirect_to @request
     else
