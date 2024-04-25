@@ -7,7 +7,7 @@ module Folio
   # NOTE, barcode and callnumber may be nil. see instance_hrid: 'in00000063826'
   class Item
     attr_reader :id, :barcode, :status, :type, :callnumber, :public_note, :effective_location, :permanent_location, :temporary_location,
-                :material_type, :loan_type, :holdings_record_id, :enumeration, :callnumber_no_enumeration
+                :material_type, :loan_type, :holdings_record_id, :enumeration, :callnumber_no_enumeration, :queue_length
 
     # Other statuses that we aren't using include "Unavailable" and "Intellectual item"
     STATUS_CHECKED_OUT = 'Checked out'
@@ -53,12 +53,12 @@ module Folio
       STATUS_RESTRICTED
     ].freeze
 
-    # rubocop:disable Metrics/ParameterLists, Metrics/MethodLength
+    # rubocop:disable Metrics/ParameterLists, Metrics/MethodLength, Metrics/AbcSize
     def initialize(barcode:, status:, callnumber:,
                    effective_location:, permanent_location: nil, temporary_location: nil,
                    type: nil, public_note: nil, material_type: nil, loan_type: nil, enumeration: nil,
                    due_date: nil, id: nil, holdings_record_id: nil, suppressed_from_discovery: false,
-                   callnumber_no_enumeration: nil)
+                   callnumber_no_enumeration: nil, queue_length: nil)
       @id = id
       @holdings_record_id = holdings_record_id
       @barcode = barcode.presence || id
@@ -74,9 +74,10 @@ module Folio
       @enumeration = enumeration
       @callnumber_no_enumeration = callnumber_no_enumeration
       @due_date = due_date
+      @queue_length = queue_length
       @suppressed_from_discovery = suppressed_from_discovery
     end
-    # rubocop:enable Metrics/ParameterLists, Metrics/MethodLength
+    # rubocop:enable Metrics/ParameterLists, Metrics/MethodLength, Metrics/AbcSize
 
     def with_status(status)
       Folio::ItemWithStatus.new(self).with_status(status)
@@ -212,7 +213,8 @@ module Folio
           temporary_location: (Location.from_hash(dyn.fetch('temporaryLocation')) if dyn['temporaryLocation']),
           material_type: MaterialType.new(id: dyn.dig('materialType', 'id'), name: dyn.dig('materialType', 'name')),
           loan_type: LoanType.new(id: dyn.fetch('temporaryLoanTypeId', dyn.fetch('permanentLoanTypeId'))),
-          holdings_record_id: dyn.dig('holdingsRecord', 'id'))
+          holdings_record_id: dyn.dig('holdingsRecord', 'id'),
+          queue_length: dyn.fetch('queueTotalLength', nil))
     end
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 

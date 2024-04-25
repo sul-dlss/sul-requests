@@ -31,6 +31,7 @@ RSpec.describe Folio::Item do
               "callNumber": null
             },
             "notes": [],
+            "queueTotalLength": 0,
             "effectiveLocation": {
               "id": "1146c4fa-5798-40e1-9b8e-92ee4c9f2ee2",
               "campus": {
@@ -66,6 +67,7 @@ RSpec.describe Folio::Item do
             "status": {
               "name": "Available"
             },
+            "queueTotalLength": 0,
             "materialType": null,
             "chronology": null,
             "enumeration": null,
@@ -113,6 +115,7 @@ RSpec.describe Folio::Item do
             "status": {
               "name": "Available"
             },
+            "queueTotalLength": 0,
             "materialTypeId": null,
             "chronology": null,
             "enumeration": null,

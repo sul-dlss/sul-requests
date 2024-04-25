@@ -106,6 +106,7 @@ class FolioGraphqlClient
                 status {
                   name
                 }
+                queueTotalLength
                 dueDate
                 materialType {
                   id

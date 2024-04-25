@@ -64,7 +64,7 @@
                 <tr>
                   <td class="align-middle">
                     <label>
-                      <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: cannot?(:request, item), data: { required: true, 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-duedate-param': item.due_date, 'itemselector-label-param': item.callnumber, action: 'itemselector#change' } }, item.barcode || item.id, "" %>
+                      <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: cannot?(:request, item), data: { required: true, 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-duequeueinfo-param': queue_length_display(item),  'itemselector-label-param': item.callnumber, action: 'itemselector#change' } }, item.barcode || item.id, "" %>
                       <span class="form-check-label ms-1"><%= item.callnumber %></span>
                     </label>
                   </td>
@@ -169,7 +169,7 @@
             <%= turbo_frame_tag('earliestAvailable', src: paging_schedule_url(origin: @request.origin_library_code, destination: f.object.service_point_code || f.object.default_service_point_code), data: { 'patronRequest-target' => 'earliestAvailable'}) do %>
               Loading..
             <% end %>
-          <% end %>
+          <% end %> - <%= queue_length_display(f.object.items_in_location.first) %>
         </div>
         <%= render 'pickup_destination', f: %>
         <% if f.object.mediateable? %>
