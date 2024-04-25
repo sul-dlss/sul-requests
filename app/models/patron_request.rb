@@ -108,9 +108,17 @@ class PatronRequest < ApplicationRecord
     destination_location&.library&.code
   end
 
+  def any_items_avaliable?
+    items_in_location.any?(&:available?)
+  end
+
   def earliest_delivery_estimate(scan: false)
-    paging_info = PagingSchedule.for(self, scan:).earliest_delivery_estimate
-    { 'date' => Date.parse(paging_info.to_s), 'display_date' => paging_info.to_s }
+    if any_items_avaliable?
+      paging_info = PagingSchedule.for(self, scan:).earliest_delivery_estimate
+      { 'date' => Date.parse(paging_info.to_s), 'display_date' => paging_info.to_s }
+    else
+      { 'date' => Time.zone.today, 'display_date' => 'No date/time estimate' }
+    end
   rescue StandardError
     { 'date' => Time.zone.today, 'display_date' => 'No date/time estimate' }
   end
