@@ -104,6 +104,7 @@ RSpec.describe 'Creating a page request' do
 
       before do
         allow(patron).to receive(:user).and_return(user)
+        allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
       end
 
       it 'creates a mediated page request', :js do
