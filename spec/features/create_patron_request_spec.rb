@@ -94,7 +94,7 @@ RSpec.describe 'Creating a page request' do
 
         expect do
           click_on 'Submit'
-          expect(page).to have_content 'We receieved your scan request'
+          expect(page).to have_content 'We received your scan request'
         end.to change(PatronRequest, :count).by(1)
       end
     end
@@ -113,7 +113,7 @@ RSpec.describe 'Creating a page request' do
         expect do
           perform_enqueued_jobs do
             click_on 'Submit'
-            expect(page).to have_content 'We receieved your request'
+            expect(page).to have_content 'We received your request'
           end
         end.to change(MediatedPage, :count).by(1)
 
@@ -145,7 +145,7 @@ RSpec.describe 'Creating a page request' do
         click_on 'Continue'
         expect do
           click_on 'Submit'
-          expect(page).to have_content 'We receieved your pickup request'
+          expect(page).to have_content 'We received your pickup request'
         end.to change(PatronRequest, :count).by(1)
       end
 
@@ -162,7 +162,7 @@ RSpec.describe 'Creating a page request' do
 
         expect do
           click_on 'Submit'
-          expect(page).to have_content 'We receieved your scan request'
+          expect(page).to have_content 'We received your scan request'
         end.to change(PatronRequest, :count).by(1)
       end
     end
