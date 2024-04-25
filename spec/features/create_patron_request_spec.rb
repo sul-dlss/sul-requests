@@ -308,17 +308,15 @@ RSpec.describe 'Creating a page request' do
       end
     end
 
-    context 'when the user already made a request (logged in)' do
-      let(:current_user) { CurrentUser.new(name: 'A User', email: 'me@example.com') }
-
-      before do
-        login_as(current_user)
-      end
-
-      it 'goes back to login page' do
-        visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
-        expect(page).to have_text 'Login with Library ID/PIN'
-      end
+    it 'logs the user out before creating a request', :js do
+      visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+      find('summary', text: 'Proceed as visitor').click
+      fill_in 'Name', with: 'My Name'
+      fill_in 'Email', with: 'me@example.com'
+      click_on 'Continue'
+      click_on 'Submit'
+      visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+      expect(page).to have_text 'Login with Library ID/PIN'
     end
   end
 end
