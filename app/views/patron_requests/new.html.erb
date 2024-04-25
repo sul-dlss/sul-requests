@@ -180,7 +180,7 @@
             <%= turbo_frame_tag('earliestAvailable', src: paging_schedule_url(origin: @request.origin_library_code, destination: f.object.service_point_code || f.object.default_service_point_code), data: { 'patronRequest-target' => 'earliestAvailable'}) do %>
               Loading..
             <% end %>
-          <% end %> - <%= queue_length_display(f.object.items_in_location.first) %>
+          <% end %> <%= queue_length_display(f.object.items_in_location.first, prefix: ' - ') %>
         </div>
         <%= render 'pickup_destination', f: %>
         <% if f.object.mediateable? %>
