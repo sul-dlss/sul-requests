@@ -176,10 +176,12 @@
           Earliest available:
           <% if f.object.pickup_destinations.one? && f.object.earliest_delivery_estimate %>
             <%= f.object.earliest_delivery_estimate['display_date'] %>
-          <% else %>
+          <% elsif f.object.any_items_avaliable? %>
             <%= turbo_frame_tag('earliestAvailable', src: paging_schedule_url(origin: @request.origin_library_code, destination: f.object.service_point_code || f.object.default_service_point_code), data: { 'patronRequest-target' => 'earliestAvailable'}) do %>
               Loading..
             <% end %>
+          <% else %>
+            No date/time estimate
           <% end %> <%= queue_length_display(f.object.items_in_location.first, prefix: ' - ') %>
         </div>
         <%= render 'pickup_destination', f: %>
