@@ -16,11 +16,13 @@
   </div>
   <div class="col pe-0">
     <% if f.object.items_in_location.many? %>
-      <div class="text-cardinal pb-1">
-        <span class="d-none" data-itemselector-target="availableScanItemEstimate">Earliest expected delivery: <%= f.object.scan_earliest['display_date'] %></span>
-        <span class="d-none" data-itemselector-target="unavailableScanItemEstimate">No date/time estimate</span>
-      </div>
       <ul data-itemselector-target="scanItem" class="list-unstyled d-flex flex-wrap gap-2 bg-white m-0 me-3"></ul>
+      <div class="text-cardinal pb-1 mt-2">
+        <span class="d-none" data-itemselector-target="availableScanItemEstimate">Earliest expected delivery: <%= f.object.scan_earliest['display_date'] %></span>
+        <span class="d-none" data-itemselector-target="unavailableScanItemEstimate">Earliest expected delivery: No date/time estimate
+        <div id="item-status" class="mt-2 d-none"></div>
+        </span>
+      </div>
     <% else %>
       <div class="text-cardinal">
         Earliest expected delivery: <%= f.object.scan_earliest['display_date'] %> <%= queue_length_display(f.object.items_in_location.first, prefix: ' - ') %>

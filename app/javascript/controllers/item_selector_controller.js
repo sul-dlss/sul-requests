@@ -65,12 +65,19 @@ export default class extends Controller {
     this.unavailableItemsTarget.innerHTML = this.renderItems(unavailableItems);
 
     if (availableItems.length && this.targets.find('scanItem')) {
-      this.scanItemTarget.innerHTML = this.renderItems(availableItems);
+      this.scanItemTarget.innerHTML = this.renderItems(availableItems, true);
       this.unavailableScanItemEstimateTarget.classList.add('d-none');
       this.availableScanItemEstimateTarget.classList.remove('d-none');
-    } else if (this.targets.find('scanItem')) {
-      this.scanItemTarget.innerHTML = this.renderItems(unavailableItems);
+    } else if (unavailableItems.length && this.targets.find('scanItem')) {
+      this.scanItemTarget.innerHTML = this.renderItems(unavailableItems, true);
       this.unavailableScanItemEstimateTarget.classList.remove('d-none');
+      const itemstatus = this.unavailableScanItemEstimateTarget.querySelector('#item-status');
+      if (unavailableItems[0].duequeueinfo) {
+        itemstatus.innerHTML = `Item status: ${unavailableItems[0].duequeueinfo}`
+        itemstatus.classList.remove('d-none');
+      } else {
+        itemstatus.classList.add('d-none');
+      }
       this.availableScanItemEstimateTarget.classList.add('d-none');
     }
 
@@ -86,7 +93,7 @@ export default class extends Controller {
     }
   }
 
-  renderItems(items) {
+  renderItems(items, scan=false) {
     return items.map((item) => {
       return `
         <li class="d-flex gap-2 w-100">
@@ -97,7 +104,7 @@ export default class extends Controller {
             <span class="vr"></span>
             <button data-action="${this.identifier}#unchecked" data-${this.identifier}-id-param="${item.id}" type="button" class="btn-close py-1 pill-close" aria-label="Remove ${item.label}"></button>
           </span>
-          ${item.duequeueinfo ? `<span class="text-cardinal d-block align-self-center">${item.duequeueinfo}</span>` : ''}
+          ${item.duequeueinfo && !scan ? `<span class="text-cardinal d-block align-self-center">${item.duequeueinfo}</span>` : ''}
         </li>
       `;
     }).join('');
