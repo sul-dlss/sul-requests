@@ -74,7 +74,7 @@
                 <tr id="row-<%= index %>" data-sortby-status="<%= item.status_text.downcase.gsub(' ', '_') %>" data-sortby-callnumber="<%= index %>" >
                   <td class="align-middle">
                     <label>
-                      <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: cannot?(:request, item), data: { required: true, 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-duequeueinfo-param': queue_length_display(item),  'itemselector-label-param': item.callnumber, action: 'itemselector#change' } }, item.barcode || item.id, "" %>
+                      <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: cannot?(:request, item), data: { required: true, 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-duequeueinfo-param': queue_length_display(item),  'itemselector-label-param': callnumber_label(item), action: 'itemselector#change' } }, item.barcode || item.id, "" %>
                       <span class="form-check-label ms-1"><%= callnumber_label(item) %></span>
                       <% if item.public_note %>
                         <span class="text-cardinal d-block ms-4 mt-1">
