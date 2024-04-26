@@ -25,7 +25,8 @@
       </div>
     <% else %>
       <div class="text-cardinal">
-        Earliest expected delivery: <%= f.object.scan_earliest['display_date'] %> <%= queue_length_display(f.object.items_in_location.first, prefix: ' - ') %>
+        Earliest expected delivery: <%= f.object.scan_earliest['display_date'] %>
+        <div class="mt-1"><%= queue_length_display(f.object.items_in_location.first, prefix: 'Item status: ') %></div>
       </div>
     <% end %>
     <div class="mt-2">
