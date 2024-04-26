@@ -186,7 +186,10 @@
             <% end %>
           <% else %>
             No date/time estimate
-          <% end %> <%= queue_length_display(f.object.items_in_location.first, prefix: ' - ') %>
+          <% end %>
+          <div>
+            <%= queue_length_display(f.object.items_in_location.first, prefix: 'Item status: ') %>
+          </div>
         </div>
         <%= render 'pickup_destination', f: %>
         <% if f.object.mediateable? %>
