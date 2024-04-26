@@ -218,12 +218,12 @@ en:
       label: "Library ID"
       help_text: "Last 10 digits above the barcode on your library card"
     login_by_university_id:
-      alert: Unable to authenticate.
+      alert_html: <span class="fw-bold">Login error!</span><br />Please verify your credentials and try again. If you continue to experience problems, contact the Privileges desk at <a href="mailto:sul-privileges@stanford.edu" class="alert-link">sul-privileges@stanford.edu</a> or call (650) 723-1492 for assistance.
     login_by_sunetid:
       alert: Unable to authenticate.
-      error_html: <span class="fw-bold">Your SUNet ID is not linked to a library account.</span><br/> A library account is created for patrons who are eligible to check out library materials. If you believe you should have an account, contact the Privileges desk at <a href="mailto:sul-privileges@stanford.edu" class="alert-link">sul-privileges@stanford.edu</a> or (650) 723-1492 for assistance.
+      error_html: <span class="fw-bold">Your SUNet ID is not linked to a library account.</span><br/> A library account is created for patrons who are eligible to check out library materials. If you believe you should have an account, contact the Privileges desk at <a href="mailto:sul-privileges@stanford.edu" class="alert-link">sul-privileges@stanford.edu</a> or call (650) 723-1492 for assistance.
     register_visitor:
-      alert: Unable to register visitor.  Both name and email are required.
+      alert: Unable to register visitor. Both name and email are required.
     destroy:
       notice: You have been successfully logged out.
   change_pin:

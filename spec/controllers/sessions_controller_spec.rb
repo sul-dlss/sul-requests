@@ -23,7 +23,7 @@ RSpec.describe SessionsController do
     it 'displays error flash message if the registered visitor does not authenticate' do
       allow(request.env['warden']).to receive(:authenticate).and_return(false)
       get :register_visitor, params: { referrer: '/' }
-      expect(flash[:error]).to eq 'Unable to register visitor.  Both name and email are required.'
+      expect(flash[:error]).to eq 'Unable to register visitor. Both name and email are required.'
     end
 
     it 'redirects back when there is no provided referrer' do
