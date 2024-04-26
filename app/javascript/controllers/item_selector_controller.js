@@ -7,6 +7,22 @@ export default class extends Controller {
 
   connect() { }
 
+  filter(event) {
+    const filterText = event.currentTarget.value;
+
+    if (filterText.length == 0) {
+      this.itemsTargets.forEach(i => i.closest('tr').classList.remove('d-none'))
+    } else {
+      this.itemsTargets.forEach(i => {
+        if(!i.closest('td').innerText.toLowerCase().includes(filterText.toLowerCase())) {
+          i.closest('tr').classList.add('d-none')
+        } else {
+          i.closest('tr').classList.remove('d-none')
+        }
+      })
+    }
+  }
+
   change(event) {
     if (event.currentTarget.checked || event.params.checked) {
       if (this.itemsTarget.type == 'radio') {

@@ -56,6 +56,12 @@
     <%= render AccordionStepComponent.new(id: 'barcodes', step_index: step_enum.next, form_id: f.id, data: { 'switch-selector': true }) do |c| %>
       <% c.with_title.with_content('Select item(s)') %>
       <% c.with_body do %>
+        <% if f.object.items_in_location.length >= 10 %>
+          <div>
+            <label for="item-selector-search" class="my-2">Search item list</label>
+            <input id="item-selector-search" type="search" incremental data-action="input->itemselector#filter" class="form-control w-75" />
+          </div>
+        <% end %>
         <div class="item-table my-4">
           <table class="table mb-0 border" data-controller="table" data-table-field-value="Callnumber" data-table-asc-value="true">
             <thead>
