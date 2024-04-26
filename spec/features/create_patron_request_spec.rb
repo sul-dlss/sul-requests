@@ -171,9 +171,6 @@ RSpec.describe 'Creating a page request' do
     end
 
     context 'with stubbed paging schedule' do
-      # FIXME
-      skip('flappy') if ENV['CI']
-
       before do
         travel_to Time.zone.local(2024, 4, 2, 12, 0, 0)
 
@@ -189,6 +186,9 @@ RSpec.describe 'Creating a page request' do
       end
 
       it 'shows the estimated deliver dates', :js do
+        # FIXME
+        skip('flappy') if ENV['CI']
+
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
 
         within '#earliestAvailableContainer' do
