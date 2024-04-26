@@ -19,6 +19,8 @@ RSpec.describe 'Creating a page request' do
 
   before do
     stub_bib_data_json(bib_data)
+    # this line prevents ArgumentError: SMTP To address may not be blank
+    ActionMailer::Base.perform_deliveries = false
   end
 
   context 'with an SSO user' do

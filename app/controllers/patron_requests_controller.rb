@@ -9,7 +9,9 @@ class PatronRequestsController < ApplicationController
   before_action :associate_request_with_patron, only: [:new, :create, :login]
   helper_method :current_request, :new_params
 
-  def show; end
+  def show
+    PatronRequestMailer.confirmation_email(@request).deliver_later
+  end
 
   def login
     current_request.assign_attributes(**new_params)
