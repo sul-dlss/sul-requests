@@ -89,7 +89,7 @@ export default class extends Controller {
   renderItems(items) {
     return items.map((item) => {
       return `
-        <li class="d-flex gap-2">
+        <li class="d-flex gap-2 w-100">
           <span class="hstack gap-2 border bg-light rounded-pill px-3">
             <small class="py-1">
               ${item.label}
