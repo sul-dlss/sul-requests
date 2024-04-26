@@ -21,8 +21,9 @@ class SubmitFolioPatronRequestJob < ApplicationJob
   private
 
   def best_request_type(request, item)
-    return 'Hold' if Settings.hold_instead_of_recall.include?(item.status) && item.holdable?(request.patron)
-
+    if (Settings.hold_instead_of_recall.include?(item.status) || request.fulfillment_type == 'hold') && item.holdable?(request.patron)
+      return 'Hold'
+    end
     return 'Recall' if item.recallable?(request.patron)
     return 'Hold' if item.holdable?(request.patron)
     return 'Page' if item.pageable?(request.patron)
