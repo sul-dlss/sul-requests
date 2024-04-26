@@ -43,25 +43,6 @@ export default class extends Controller {
     Toast.getOrCreateInstance(this.toastTarget).hide();
   }
 
-  sort(event) {
-    const target = event.target.tagName == 'BUTTON' ? event.target.parentElement : event.target;
-    const sortby = target.dataset.sortfield;
-    const isAsc = target.dataset.sortasc == 'true' ? true : false;
-    target.dataset.sortasc = !isAsc;
-    this.element.querySelector('[aria-sort]').removeAttribute('aria-sort')
-    target.setAttribute('aria-sort', isAsc ? 'descending' : 'ascending')
-    const rows = this.element.querySelectorAll("[id^='row']");
-    const sorting = Array.from(rows).sort((a, b) => {
-      return (this.getSortField(a, sortby) < this.getSortField(b, sortby) ? -1 : 1) * (isAsc ? 1 : -1)
-    });
-    this.element.querySelector('tbody').innerHTML = sorting.map(elem => elem.outerHTML).join("");
-    event.preventDefault();
-  }
-
-  getSortField(element, sortby) {
-    return element.dataset[`sortby${sortby}`];
-  }
-
   showRemovalToast(item) {
     this.toastTarget.querySelector('.btn').dataset.itemselectorIdParam = item.id;
 
