@@ -60,14 +60,18 @@
           <table class="table mb-0 border">
             <thead>
               <tr>
-                <th class="text-start">Call number</th>
-                <th class="text-end">Status</th>
+                <th aria-sort="ascending" class="text-start" data-sortAsc=true data-sortfield="Callnumber" data-action='click->itemselector#sort'>
+                  <button class="btn btn-link pe-0 text-decoration-none text-black">Call number</button>
+                </th>
+                <th class="text-end" data-sortfield="Status" data-sortAsc=true data-action='click->itemselector#sort'>
+                  <button class="btn btn-link pe-0 text-decoration-none text-black">Status</button>
+                </th>
               </tr>
             </thead>
             <tbody>
-              <% sort_holdings(f.object.items_in_location).each do |item| %>
+              <% sort_holdings(f.object.items_in_location).each_with_index do |item, index| %>
                 <% not_requestable = cannot?(:request, item) %>
-                <tr>
+                <tr id="row-<%= index %>" data-sortby-status="<%= item.status_text.downcase.gsub(' ', '_') %>" data-sortby-callnumber="<%= index %>" >
                   <td class="align-middle">
                     <label>
                       <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: cannot?(:request, item), data: { required: true, 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-duequeueinfo-param': queue_length_display(item),  'itemselector-label-param': item.callnumber, action: 'itemselector#change' } }, item.barcode || item.id, "" %>

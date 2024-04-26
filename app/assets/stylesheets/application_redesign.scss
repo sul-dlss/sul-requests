@@ -265,3 +265,19 @@ label.btn-close {
 #patron_request_needed_date {
   padding: 0.375rem 0.75rem;
 }
+
+[data-sortasc=false]::after {
+  content: "\F235";
+  font-family: 'bootstrap-icons';
+  font-size: 1rem;
+  vertical-align: middle;
+  margin-left: 1px;
+}
+
+[data-sortasc=true]::after {
+  content: "\F229";
+  font-family: 'bootstrap-icons';
+  font-size: 1rem;
+  vertical-align: middle;
+  margin-left: 1px;
+}
