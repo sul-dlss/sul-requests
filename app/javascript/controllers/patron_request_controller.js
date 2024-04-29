@@ -95,6 +95,7 @@ export default class extends Controller {
     accordionbutton.parentElement.classList.add('completed');
 
     var nextitem = this.findNextAccordion(accordion);
+    if (!nextitem) return;
 
     this.showStep(nextitem.querySelector('.accordion-collapse'));
     event.preventDefault();

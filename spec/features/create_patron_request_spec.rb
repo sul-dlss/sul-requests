@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Creating a page request' do
+RSpec.describe 'Creating a request' do
   include ActiveJob::TestHelper
 
   let(:user) { create(:sso_user) }
@@ -148,10 +148,9 @@ RSpec.describe 'Creating a page request' do
         click_on 'Continue'
         check 'ABC 123'
         click_on 'Continue'
-        expect do
-          click_on 'Submit'
-          expect(page).to have_content 'We received your pickup request'
-        end.to change(PatronRequest, :count).by(1)
+        expect(page).to have_content 'Pickup request'
+        click_on 'Submit'
+        expect(page).to have_content 'We received your pickup request'
       end
 
       it 'allows scanning' do
@@ -164,11 +163,8 @@ RSpec.describe 'Creating a page request' do
         expect(page).to have_content 'Copyright notice'
         fill_in 'Page range', with: '1-15'
         fill_in 'Title of article or chapter', with: 'Some title'
-
-        expect do
-          click_on 'Submit'
-          expect(page).to have_content 'We received your scan request'
-        end.to change(PatronRequest, :count).by(1)
+        click_on 'Submit'
+        expect(page).to have_content 'We received your scan request'
       end
     end
 

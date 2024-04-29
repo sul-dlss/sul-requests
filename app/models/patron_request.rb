@@ -10,7 +10,7 @@ class PatronRequest < ApplicationRecord
     :proxy, :estimated_delivery
   ], coder: JSON
 
-  delegate :instance_id, to: :bib_data
+  delegate :instance_id, :finding_aid, :finding_aid?, to: :bib_data
 
   before_create do
     self.estimated_delivery = earliest_delivery_estimate(scan: scan?)&.dig('display_date')
@@ -18,6 +18,20 @@ class PatronRequest < ApplicationRecord
 
   def scan?
     request_type == 'scan'
+  end
+
+  def aeon_page?
+    items_in_location.any?(&:aeon_pageable?)
+  end
+
+  def aeon_site
+    items_in_location.filter_map(&:aeon_site).first
+  end
+
+  def aeon_form_target
+    return unless aeon_page?
+
+    finding_aid? ? finding_aid : Settings.aeon_ere_url
   end
 
   def submit_later

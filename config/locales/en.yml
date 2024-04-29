@@ -158,7 +158,7 @@ en:
           <li>Complete the request form</li>
           <li>For on-site requests, create an appointment so we know when you’re planning to arrive</li>
           <li>Submit your request</li>
-      more_details_html: 'For more details, visit the <a href="%{reading_room_url}">%{library} Reading Room service page <span class="bi bi-link-45deg" aria-hidden="true"></span></a>'
+      more_details_html: 'For more details, visit the <a href="%{reading_room_url}">%{library} Reading Room service page <span class="bi bi-box-arrow-up-right" aria-hidden="true"></span></a>.'
       continue_button: Continue
       cancel_button: Cancel
   multiple_holds_notification:
