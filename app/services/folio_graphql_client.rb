@@ -103,6 +103,7 @@ class FolioGraphqlClient
                 barcode
                 discoverySuppress
                 volume
+                queueTotalLength
                 status {
                   name
                 }
