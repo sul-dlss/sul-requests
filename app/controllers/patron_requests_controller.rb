@@ -7,8 +7,6 @@ class PatronRequestsController < ApplicationController
   layout 'application_new'
   load_and_authorize_resource instance_name: :request, new: :login
   before_action :associate_request_with_patron, only: [:new, :create, :login]
-  # force visitors to re-authenticate on each request
-  before_action :logout_user, only: [:new], if: -> { current_user.name_email_user? }
   helper_method :current_request, :new_params
 
   def show
