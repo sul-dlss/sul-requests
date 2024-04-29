@@ -5,9 +5,10 @@
 class SubmitPatronRequestJob < ApplicationJob
   queue_as :default
 
-  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def perform(patron_request)
     return convert_to_mediated_page(patron_request) if patron_request.mediateable?
+    return place_title_hold(patron_request) if patron_request.barcodes.blank?
 
     ilb_items, folio_items = patron_request.selected_items.partition do |item|
       send_to_illiad?(patron_request, item)
@@ -23,7 +24,7 @@ class SubmitPatronRequestJob < ApplicationJob
 
     patron_request.update(illiad_response_data:, folio_responses:)
   end
-  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   private
 
@@ -65,5 +66,18 @@ class SubmitPatronRequestJob < ApplicationJob
       barcodes: patron_request.barcodes,
       estimated_delivery: patron_request.estimated_delivery
     )
+  end
+
+  def place_title_hold(patron_request)
+    hold_request_data = FolioClient::HoldRequestData.new(pickup_location_id: patron_request.pickup_service_point.id,
+                                                         patron_comments: patron_request.request_comments,
+                                                         expiration_date: patron_request.needed_date.to_time.utc.iso8601)
+    folio_response = folio_client.create_instance_hold(patron_request.patron.id, patron_request.instance_hrid, hold_request_data)
+
+    patron_request.update(folio_responses: [folio_response])
+  end
+
+  def folio_client
+    @folio_client ||= FolioClient.new
   end
 end

@@ -253,6 +253,10 @@ class PatronRequest < ApplicationRecord
     # TODO?
   end
 
+  def request_comments
+    [("(PROXY PICKUP OK; request placed by #{patron.display_name} <#{patron.email}>)" if proxy?)].compact.join("\n")
+  end
+
   private
 
   # Returns default service point codes
