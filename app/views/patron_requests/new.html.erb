@@ -23,22 +23,26 @@
   <% scan_or_pickup_step = nil %>
   <%= f.hidden_field :instance_hrid %>
   <%= f.hidden_field :origin_location_code %>
-  <%= f.hidden_field :aeon_system_id, name: 'SystemID', value: 'sul-requests'  %>
-  <%= f.hidden_field :aeon_request_form, name: 'WebRequestForm', value: 'GenericRequestMonograph' %>
-  <%= f.hidden_field :aeon_document_type, name: 'DocumentType', value: 'Monograph' %>
-  <%= f.hidden_field :aeon_site, name: 'Site', value: f.object.aeon_site %>
-  <%= f.hidden_field :aeon_location, name: 'Location', value: f.object.origin_location_code %>
-  <%= f.hidden_field :aeon_title, name: 'ItemTitle', value: f.object.bib_data.title %>
-  <%= f.hidden_field :aeon_author, name: 'ItemAuthor', value: f.object.bib_data.author %>
-  <%= f.hidden_field :aeon_date, name: 'ItemDate', value: f.object.bib_data.pub_date %>
-  <%= f.hidden_field :aeon_link, name: 'ItemInfo1', value: f.object.bib_data.view_url %>
+  <% if current_request.aeon_page? %>
+    <%= f.hidden_field :aeon_system_id, name: 'SystemID', value: 'sul-requests'  %>
+    <%= f.hidden_field :aeon_request_form, name: 'WebRequestForm', value: 'GenericRequestMonograph' %>
+    <%= f.hidden_field :aeon_document_type, name: 'DocumentType', value: 'Monograph' %>
+    <%= f.hidden_field :aeon_site, name: 'Site', value: f.object.aeon_site %>
+    <%= f.hidden_field :aeon_location, name: 'Location', value: f.object.origin_location_code %>
+    <%= f.hidden_field :aeon_title, name: 'ItemTitle', value: f.object.bib_data.title %>
+    <%= f.hidden_field :aeon_author, name: 'ItemAuthor', value: f.object.bib_data.author %>
+    <%= f.hidden_field :aeon_date, name: 'ItemDate', value: f.object.bib_data.pub_date %>
+    <%= f.hidden_field :aeon_link, name: 'ItemInfo1', value: f.object.bib_data.view_url %>
+  <% end %>
   <% if @request.items_in_location.one? || f.object.barcodes&.one? %>
     <% single_item = @request.items_in_location.first %>
     <% single_barcode = f.object.barcodes&.first || (single_item&.barcode || single_item&.id) %>
-    <%= f.hidden_field :aeon_request_index, name: 'Request', value: 1 %>
-    <%= f.hidden_field :aeon_callnumber, name: 'CallNumber_1', value: single_item.callnumber %>
-    <%= f.hidden_field :aeon_barcode, name: 'ItemNumber_1', value: single_barcode %>
     <%= f.hidden_field :barcode, value: single_barcode %>
+    <% if current_request.aeon_page? %>
+      <%= f.hidden_field :aeon_request_index, name: 'Request', value: 1 %>
+      <%= f.hidden_field :aeon_callnumber, name: 'CallNumber_1', value: single_item.callnumber %>
+      <%= f.hidden_field :aeon_barcode, name: 'ItemNumber_1', value: single_barcode %>
+    <% end %>
   <% end %>
 
   <!-- aeon items usage note -->
@@ -111,9 +115,11 @@
                   <td class="align-middle">
                     <label>
                       <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: cannot?(:request, item), data: { required: true, 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-duequeueinfo-param': queue_length_display(item),  'itemselector-label-param': callnumber_label(item), action: 'itemselector#change' } }, item.barcode || item.id, "" %>
-                      <%= f.hidden_field "aeon_callnumber_#{item.callnumber}", disabled: true, name: "CallNumber_#{index}", value: item.callnumber %>
-                      <%= f.hidden_field "aeon_barcode_#{item.barcode}", disabled: true, name: "ItemNumber_#{index}", value: item.barcode %>
-                      <%= f.hidden_field "aeon_request_#{index}", disabled: true, name: 'Request', value: index %>
+                      <% if current_request.aeon_page? %>
+                        <%= f.hidden_field "aeon_callnumber_#{item.callnumber}", disabled: true, name: "CallNumber_#{index}", value: item.callnumber %>
+                        <%= f.hidden_field "aeon_barcode_#{item.barcode}", disabled: true, name: "ItemNumber_#{index}", value: item.barcode %>
+                        <%= f.hidden_field "aeon_request_#{index}", disabled: true, name: 'Request', value: index %>
+                      <% end %>
                       <span class="form-check-label ms-1"><%= callnumber_label(item) %></span>
                       <% if item.public_note %>
                         <span class="text-cardinal d-block ms-4 mt-1">
