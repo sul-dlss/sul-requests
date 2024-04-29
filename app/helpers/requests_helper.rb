@@ -75,7 +75,7 @@ module RequestsHelper
   # rubocop:disable Metrics/MethodLength
   def availability_bootstrap_icon(css_class)
     case css_class
-    when 'available'
+    when 'available', 'available noncirc'
       content_tag(:i, '', class: 'bi bi-check align-middle fs-5 text-success')
     when 'unavailable'
       content_tag(:i, '', class: 'bi bi-x fs-4 align-middle text-danger')
