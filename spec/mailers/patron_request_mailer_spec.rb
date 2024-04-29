@@ -9,7 +9,8 @@ RSpec.describe PatronRequestMailer do
                                    allowed_request_types: ['Page'])
   end
   let(:request) do
-    PatronRequest.new(instance_hrid: 'a12345', patron:, barcodes: ['12345678'], origin_location_code: 'SAL3-STACKS', request_type:)
+    PatronRequest.new(instance_hrid: 'a12345', patron_email: patron.email, patron:, barcodes: ['12345678'],
+                      origin_location_code: 'SAL3-STACKS', request_type:)
   end
 
   before do

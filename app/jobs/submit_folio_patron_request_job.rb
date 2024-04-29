@@ -47,9 +47,23 @@ class SubmitFolioPatronRequestJob < ApplicationJob
     FolioClient::CirculationRequestData.new(
       request_level: 'Item', request_type: best_request_type(request, item),
       instance_id: request.instance_id, item_id: item.id, holdings_record_id: item.holdings_record_id,
-      requester_id: patron&.id, fulfillment_preference: 'Hold Shelf', pickup_service_point_id: request.pickup_service_point.id,
+      requester_id: patron_or_proxy_id(patron, request), fulfillment_preference: 'Hold Shelf',
+      pickup_service_point_id: request.pickup_service_point.id,
       patron_comments: request.request_comments, request_expiration_date: (Time.zone.today + 3.years).to_time.utc.iso8601
     )
+  end
+
+  def patron_or_proxy_id(patron, request)
+    if request.proxy? && patron.proxy?
+      patron.proxy_sponsor_user_id
+    else
+      request.patron_id ? patron.id : find_hold_pseudo_patron_for(request.destination_library_code)
+    end
+  end
+
+  def find_hold_pseudo_patron_for(key)
+    pseudopatron_barcode = Settings.libraries[key]&.hold_pseudopatron || raise("no hold pseudopatron for '#{key}'")
+    Folio::Patron.find_by(library_id: pseudopatron_barcode)
   end
 
   def folio_client

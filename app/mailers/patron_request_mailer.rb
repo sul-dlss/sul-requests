@@ -8,7 +8,7 @@ class PatronRequestMailer < ApplicationMailer
   def confirmation_email(patron_request)
     @request = patron_request
     mail(
-      to: @request.patron.email,
+      to: @request.patron_email,
       from: from_address,
       subject: "#{@request.item_title} - Stanford University Libraries request confirmation"
     )

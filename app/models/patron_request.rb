@@ -7,7 +7,7 @@ class PatronRequest < ApplicationRecord
   class_attribute :bib_model_class, default: Settings.ils.bib_model.constantize
   store :data, accessors: [
     :barcodes, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title, :request_type,
-    :proxy, :estimated_delivery
+    :proxy, :estimated_delivery, :patron_name
   ], coder: JSON
 
   delegate :instance_id, :finding_aid, :finding_aid?, to: :bib_data
@@ -268,6 +268,8 @@ class PatronRequest < ApplicationRecord
   end
 
   def request_comments
+    return "#{data['patron_name']} <#{patron_email}>" unless patron
+
     [("(PROXY PICKUP OK; request placed by #{patron.display_name} <#{patron.email}>)" if proxy?)].compact.join("\n")
   end
 

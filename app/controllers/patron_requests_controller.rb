@@ -48,6 +48,8 @@ class PatronRequestsController < ApplicationController
 
   def associate_request_with_patron
     @request.patron = current_user.patron
+    @request.patron_name = current_user.patron.display_name
+    @request.patron_email = current_user.email
   end
 
   def sunetid_without_folio_account?

@@ -196,7 +196,7 @@ RSpec.describe User do
     end
 
     it 'returns placeholder patron for name email user' do
-      expect(subject.patron).to have_attributes(id: nil, display_name: 'jstanford', email: 'jstanford@stanford.edu', blocks: [])
+      expect(subject.patron).to have_attributes(id: nil, display_name: 'jstanford', email: 'jstanford@stanford.edu', block_reasons: [])
     end
   end
 end
