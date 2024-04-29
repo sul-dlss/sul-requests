@@ -69,13 +69,16 @@ Rails.application.configure do
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter = :resque
-  # config.active_job.queue_name_prefix = "sul_requests_production"    
+  # config.active_job.queue_name_prefix = "sul_requests_production"
 
   if Settings.background_jobs && Settings.background_jobs.enabled == true
     config.active_job.queue_adapter = :sidekiq
   end
 
   config.action_mailer.perform_caching = false
+
+  # Make sure URL helpers in emails work
+  config.action_mailer.default_url_options = { host: Settings.mailer_host, protocol: 'https' }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
