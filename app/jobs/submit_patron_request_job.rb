@@ -36,6 +36,7 @@ class SubmitPatronRequestJob < ApplicationJob
   #     The item has an existing request queue (TODO: https://github.com/sul-dlss/sul-requests/issues/2234)
   def send_to_illiad?(patron_request, item)
     return true if patron_request.scan?
+    return true if item.status == Folio::Item::STATUS_AGED_TO_LOST
     return false unless patron_request.patron.ilb_eligible?
     return false if item.status.in?(folio_recall_statuses)
 
