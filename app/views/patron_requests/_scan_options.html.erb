@@ -20,13 +20,10 @@
       <div class="text-cardinal pb-1 mt-2">
         <span class="d-none" data-itemselector-target="availableScanItemEstimate">Earliest expected delivery: <%= f.object.scan_earliest['display_date'] %></span>
         <span class="d-none" data-itemselector-target="unavailableScanItemEstimate">Earliest expected delivery: No date/time estimate
-        <div id="item-status" class="mt-2 d-none"></div>
-        </span>
       </div>
     <% else %>
       <div class="text-cardinal">
         Earliest expected delivery: <%= f.object.scan_earliest['display_date'] %>
-        <div class="mt-1"><%= queue_length_display(f.object.items_in_location.first, prefix: 'Item status: ') %></div>
       </div>
     <% end %>
     <div class="mt-2">

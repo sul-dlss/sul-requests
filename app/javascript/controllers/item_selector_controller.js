@@ -90,13 +90,6 @@ export default class extends Controller {
     } else if (unavailableItems.length && this.targets.find('scanItem')) {
       this.scanItemTarget.innerHTML = this.renderItems(unavailableItems, true);
       this.unavailableScanItemEstimateTarget.classList.remove('d-none');
-      const itemstatus = this.unavailableScanItemEstimateTarget.querySelector('#item-status');
-      if (unavailableItems[0].duequeueinfo) {
-        itemstatus.innerHTML = `Item status: ${unavailableItems[0].duequeueinfo}`
-        itemstatus.classList.remove('d-none');
-      } else {
-        itemstatus.classList.add('d-none');
-      }
       this.availableScanItemEstimateTarget.classList.add('d-none');
     }
 
