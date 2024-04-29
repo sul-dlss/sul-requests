@@ -110,7 +110,7 @@ class PatronRequest < ApplicationRecord
   def single_location_label
     return 'Must be used in library' if mediateable? || use_in_library?
 
-    'Will be delivered to'
+    'Pickup location'
   end
 
   def destination_location

@@ -18,8 +18,8 @@
     ) %>
     </div>
 <% else %>
-    <div class="text-cardinal mb-2">
-        <%= f.object.single_location_label %>: <%= f.object.destination_location&.name %>
+    <div class="mb-2">
+        <strong><%= f.object.single_location_label %>:</strong> <%= f.object.destination_location&.name %>
     </div>
     <%= f.hidden_field :service_point_code, :value => f.object.destination_location&.code %>
 <% end %>

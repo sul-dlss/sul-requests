@@ -282,7 +282,7 @@
     <%= render AccordionStepComponent.new(request: @request, id: 'pickup', classes: [('d-none' if scan_pickup)], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'pickup' }, submit: true) do |c| %>
       <% c.with_title.with_content('Pickup request') %>
       <% c.with_body do %>
-        <div id="earliestAvailableContainer" class="text-cardinal mt-4" aria-live="polite">
+        <div id="earliestAvailableContainer" class="text-cardinal mb-3" aria-live="polite">
           Earliest available:
           <% if f.object.pickup_destinations.one? && f.object.earliest_delivery_estimate %>
             <%= f.object.earliest_delivery_estimate['display_date'] %>
