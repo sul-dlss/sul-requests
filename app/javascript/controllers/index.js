@@ -12,3 +12,6 @@ application.register("password-visibility", PasswordVisibilityController)
 
 import ItemSelectorController from "./item_selector_controller"
 application.register("itemselector", ItemSelectorController)
+
+import TableController from "./table_controller"
+application.register("table", TableController)

@@ -7,6 +7,22 @@ export default class extends Controller {
 
   connect() { }
 
+  filter(event) {
+    const filterText = event.currentTarget.value;
+
+    if (filterText.length == 0) {
+      this.itemsTargets.forEach(i => i.closest('tr').classList.remove('d-none'))
+    } else {
+      this.itemsTargets.forEach(i => {
+        if(!i.closest('td').innerText.toLowerCase().includes(filterText.toLowerCase())) {
+          i.closest('tr').classList.add('d-none')
+        } else {
+          i.closest('tr').classList.remove('d-none')
+        }
+      })
+    }
+  }
+
   change(event) {
     if (event.currentTarget.checked || event.params.checked) {
       if (this.itemsTarget.type == 'radio') {
@@ -41,25 +57,6 @@ export default class extends Controller {
 
     this.itemsTargets.find((item) => item.dataset.itemselectorIdParam === event.params.id).click();
     Toast.getOrCreateInstance(this.toastTarget).hide();
-  }
-
-  sort(event) {
-    const target = event.target.tagName == 'BUTTON' ? event.target.parentElement : event.target;
-    const sortby = target.dataset.sortfield;
-    const isAsc = target.dataset.sortasc == 'true' ? true : false;
-    target.dataset.sortasc = !isAsc;
-    this.element.querySelector('[aria-sort]').removeAttribute('aria-sort')
-    target.setAttribute('aria-sort', isAsc ? 'descending' : 'ascending')
-    const rows = this.element.querySelectorAll("[id^='row']");
-    const sorting = Array.from(rows).sort((a, b) => {
-      return (this.getSortField(a, sortby) < this.getSortField(b, sortby) ? -1 : 1) * (isAsc ? 1 : -1)
-    });
-    this.element.querySelector('tbody').innerHTML = sorting.map(elem => elem.outerHTML).join("");
-    event.preventDefault();
-  }
-
-  getSortField(element, sortby) {
-    return element.dataset[`sortby${sortby}`];
   }
 
   showRemovalToast(item) {
