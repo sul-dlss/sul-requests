@@ -20,7 +20,9 @@ export default class extends Controller {
 
   updateType(event) {
     const requestType = event.target.value;
-    this.element.querySelector('[data-controller="itemselector"]').dataset.itemselectorRequestTypeValue = requestType;
+
+    const itemSelector = this.element.querySelector('[data-controller="itemselector"]');
+    if (itemSelector) itemSelector.dataset.itemselectorRequestTypeValue = requestType;
 
     this.accordionTargets.filter(e => e.dataset.patronrequestForrequesttype).forEach(el => {
       if (el.dataset.patronrequestForrequesttype == requestType) {
