@@ -35,7 +35,7 @@ class SubmitPatronRequestJob < ApplicationJob
   #   The item can be recalled, AND
   #     The item has a status indicating it won't be available soon, OR
   #     The item has an existing request queue
-  def send_to_illiad?(patron_request, item)
+  def send_to_illiad?(patron_request, item) # rubocop:disable Metrics/CyclomaticComplexity
     return true if patron_request.scan?
     return false unless patron_request.patron&.ilb_eligible?
     return true if item.status == Folio::Item::STATUS_AGED_TO_LOST
