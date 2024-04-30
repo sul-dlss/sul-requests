@@ -59,7 +59,7 @@ class PatronRequestsController < ApplicationController
   end
 
   def sunetid_without_folio_account?
-    current_user.sso_user? && current_user.patron.is_a?(Folio::NullPatron)
+    current_user.sso_user? && current_user.patron.blank?
   end
 
   def new_params
