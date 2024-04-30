@@ -158,4 +158,12 @@ module RequestsHelper
     details = folio_types_location.details
     details.key?('pageAeonSite') && details['pageAeonSite'] == 'ARS' ? 'ARS' : current_request.origin_library_code
   end
+
+  # Get the name of the reading room where Aeon items will be prepared for use.
+  # A custom name can be set in the settings for each library; otherwise the
+  # default is the library name followed by "Reading Room".
+  def aeon_reading_room_name
+    library = Settings.libraries[aeon_reading_room_code] || Settings.libraries.default
+    library.reading_room_label || "#{library['label']} Reading Room"
+  end
 end
