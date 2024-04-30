@@ -7,6 +7,7 @@ FactoryBot.define do
     name { 'Location name' }
     discovery_display_name { 'Discovery display name' }
     campus { Folio::Campus.new(id: 'uuid', code: 'SUL') }
+    campus_id { 'uuid' }
     library { Folio::Library.new(id: 'uuid', code: 'LIB') }
     library_id { 'uuid' }
     primary_service_point_id { nil }

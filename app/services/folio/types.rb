@@ -7,7 +7,7 @@ module Folio
   class Types
     class << self
       delegate  :policies, :circulation_rules, :criteria,
-                :locations, :libraries, :service_points, :patron_groups, to: :instance
+                :locations, :libraries, :campuses, :service_points, :patron_groups, to: :instance
     end
 
     def self.instance
@@ -82,6 +82,12 @@ module Folio
 
     def locations
       @locations ||= LocationsStore.new(get_type('locations'))
+    end
+
+    def campuses
+      @campuses ||= get_type('campuses').map do |c|
+        Folio::Campus.new(**c.slice('id', 'code').symbolize_keys)
+      end
     end
 
     def get_type(type)
