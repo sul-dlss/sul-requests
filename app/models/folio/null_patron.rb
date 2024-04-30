@@ -19,21 +19,21 @@ module Folio
       @email || user.email
     end
 
-    def patron_description
-      'Visitor'
-    end
-
     # this returns the full patronGroup object
     def patron_group
-      Folio::Types.patron_groups[sul_purchased_patron_group_id]
+      @patron_group ||= Folio::Types.patron_groups.values.find { |v| v['group'] == 'visitor' }
+    end
+
+    def patron_description
+      patron_group['desc']
     end
 
     def patron_group_id
-      @patron_group_id ||= Folio::Types.patron_groups.select { |_k, v| v['group'] == 'sul-purchased' }.keys.first
+      patron_group['id']
     end
 
     def patron_group_name
-      patron_group&.dig('group')
+      patron_group['group']
     end
 
     def patron_comments
@@ -41,7 +41,7 @@ module Folio
     end
 
     def allowed_request_types(item)
-      (policy_service.item_request_policy(item)&.dig('requestTypes') || []) & ['Page']
+      policy_service.item_request_policy(item)&.dig('requestTypes') || []
     end
 
     def policy_service
