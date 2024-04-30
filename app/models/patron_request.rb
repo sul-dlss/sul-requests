@@ -69,7 +69,7 @@ class PatronRequest < ApplicationRecord
   end
 
   def pickup_service_point
-    Folio::Types.service_points.find_by(code: service_point_code)
+    selected_pickup_service_point || default_pickup_service_point
   end
 
   # FOLIO
@@ -113,13 +113,8 @@ class PatronRequest < ApplicationRecord
     'Pickup location'
   end
 
-  def destination_location
-    service_point = pickup_destinations.one? ? pickup_destinations.first : default_service_point_code
-    Folio::Types.service_points.find_by(code: service_point)
-  end
-
   def destination_library_code
-    destination_location&.library&.code
+    pickup_service_point&.library&.code
   end
 
   def destination_library_pseudopatron_code
@@ -285,6 +280,17 @@ class PatronRequest < ApplicationRecord
   end
 
   private
+
+  def selected_pickup_service_point
+    @selected_pickup_service_point ||= Folio::Types.service_points.find_by(code: service_point_code) if service_point_code.present?
+  end
+
+  def default_pickup_service_point
+    @default_pickup_service_point ||= begin
+      service_point = pickup_destinations.one? ? pickup_destinations.first : default_service_point_code
+      Folio::Types.service_points.find_by(code: service_point)
+    end
+  end
 
   # Returns default service point codes
   def default_pickup_service_points

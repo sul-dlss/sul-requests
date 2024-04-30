@@ -9,7 +9,7 @@ RSpec.describe PatronRequest do
   let(:bib_data) { instance_double(Folio::Instance, title: 'Title') }
 
   before do
-    allow(Folio::Instance).to receive(:fetch).with('a12345').and_return(bib_data)
+    allow(Folio::Instance).to receive(:fetch).with(request.instance_hrid).and_return(bib_data)
   end
 
   describe '#bib_data' do
@@ -65,6 +65,40 @@ RSpec.describe PatronRequest do
       request.barcode = '1234567890'
 
       expect(request.barcodes).to eq(['1234567890'])
+    end
+  end
+
+  describe '#pickup_service_point' do
+    let(:bib_data) { build(:sal3_holdings) }
+
+    context 'after the user has selected a service point' do
+      let(:attr) { { service_point_code: 'GREEN-LOAN' } }
+
+      it 'returns the selected service point' do
+        expect(request.pickup_service_point).to have_attributes(name: 'Green Library')
+      end
+    end
+
+    context 'with an item that must be picked up at a particular service point' do
+      let(:bib_data) { build(:single_mediated_holding) }
+      let(:attr) { { origin_location_code: 'ART-LOCKED-LARGE' } }
+
+      it 'returns the service point' do
+        expect(request.pickup_service_point).to have_attributes(name: 'Art & Architecture Library (Bowes)')
+      end
+    end
+
+    context 'with a law item' do
+      let(:attr) { { instance_hrid: 'a123', origin_location_code: 'LAW-STACKS1' } }
+      let(:bib_data) { build(:single_law_holding) }
+
+      it 'returns the law service point by default' do
+        expect(request.pickup_service_point).to have_attributes(name: 'Law Library (Crown)')
+      end
+    end
+
+    it 'returns the default service point' do
+      expect(request.pickup_service_point).to have_attributes(name: 'Green Library')
     end
   end
 
