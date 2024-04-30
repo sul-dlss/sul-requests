@@ -326,6 +326,7 @@ libraries:
       email: specialcollections@stanford.edu
     folio_pickup_service_point_code: SPEC
     reading_room_url: https://library.stanford.edu/spc/using-our-collections
+    reading_room_label: Special Collections & University Archives Reading Room
     hold_pseudopatron: HOLD@SP
     hours:
       library_slug: spc
