@@ -42,10 +42,6 @@ class PatronRequestsController < ApplicationController
     @request
   end
 
-  def logout_user
-    request.env['warden'].logout
-  end
-
   def associate_request_with_patron
     @request.patron = current_user.patron
   end
