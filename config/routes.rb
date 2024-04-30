@@ -55,7 +55,7 @@ Rails.application.routes.draw do
     resources :admin_comments
   end
 
-  constraints ->(request) { request.env['warden'].user.blank? || request.env['warden'].user.name_email_user? } do
+  constraints ->(request) { request.env['warden'].user.blank? || (request.params[:step].blank? && request.env['warden'].user.name_email_user?)} do
     get '/patron_requests/new', to: 'patron_requests#login'
   end
 

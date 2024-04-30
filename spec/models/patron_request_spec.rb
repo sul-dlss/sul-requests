@@ -3,9 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe PatronRequest do
-  subject(:request) { described_class.new(**attr) }
+  subject(:request) { described_class.new(instance_hrid: 'a12345', **attr) }
 
   let(:attr) { {} }
+  let(:bib_data) { instance_double(Folio::Instance, title: 'Title') }
+
+  before do
+    allow(Folio::Instance).to receive(:fetch).with('a12345').and_return(bib_data)
+  end
 
   describe '#bib_data' do
     let(:bib_data) { instance_double(Folio::Instance) }
@@ -25,14 +30,31 @@ RSpec.describe PatronRequest do
     end
   end
 
-  describe '#item_title' do
-    let(:attr) { { instance_hrid: 'a12345' } }
-    let(:bib_data) { instance_double(Folio::Instance, title: 'Title') }
+  describe '#scan?' do
+    let(:attr) { { request_type: 'scan' } }
 
-    before do
-      allow(Folio::Instance).to receive(:fetch).with('a12345').and_return(bib_data)
+    it { is_expected.to be_scan }
+  end
+
+  describe '#aeon_page?' do
+    let(:attr) { { instance_hrid: 'a12345', origin_location_code: 'SAL3-PAGE-AS' } }
+    let(:bib_data) { build(:sal3_as_holding) }
+
+    it 'is true if the holding location has an aeon site' do
+      expect(request.aeon_page?).to be true
     end
+  end
 
+  describe '#aeon_site' do
+    let(:attr) { { instance_hrid: 'a12345', origin_location_code: 'SAL3-PAGE-AS' } }
+    let(:bib_data) { build(:sal3_as_holding) }
+
+    it 'returns the aeon site for the holding location' do
+      expect(request.aeon_site).to eq 'ARS'
+    end
+  end
+
+  describe '#item_title' do
     it 'returns the title of the bib data' do
       expect(request.item_title).to eq('Title')
     end
@@ -51,7 +73,7 @@ RSpec.describe PatronRequest do
     let(:patron_two) { instance_double(Folio::Patron, id: 'proxy2', display_name: 'Proxy Two') }
 
     it 'retrieves the names of the proxy user ids correctly' do
-      request.patron = instance_double(Folio::Patron, id: 'sponsor')
+      request.patron = instance_double(Folio::Patron, id: 'sponsor', display_name: 'Sponsor', email: nil)
       stub_client = FolioClient.new
       allow(FolioClient).to receive(:new).and_return(stub_client)
       allow(stub_client).to receive(:find_patron_by_id).with('proxy1').and_return(patron_one)

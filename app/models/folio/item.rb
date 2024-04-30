@@ -14,6 +14,11 @@ module Folio
     STATUS_ON_ORDER = 'On order'
     STATUS_AVAILABLE = 'Available'
     STATUS_MISSING = 'Missing'
+    STATUS_AGED_TO_LOST = 'Aged to lost'
+    STATUS_DECLARED_LOST = 'Declared lost'
+    STATUS_CLAIMED_RETURNED = 'Claimed returned'
+    STATUS_LOST_AND_PAID = 'Lost and paid'
+    STATUS_LONG_MISSING = 'Long missing'
     STATUS_IN_PROCESS_NR = 'In process (non-requestable)'
     STATUS_AGED_TO_LOST = 'Aged to lost'
     STATUS_IN_PROCESS = 'In process'
@@ -60,7 +65,7 @@ module Folio
                    effective_location:, permanent_location: nil, temporary_location: nil,
                    type: nil, public_note: nil, material_type: nil, loan_type: nil, enumeration: nil,
                    due_date: nil, id: nil, holdings_record_id: nil, suppressed_from_discovery: false,
-                   callnumber_no_enumeration: nil, queue_length: nil)
+                   callnumber_no_enumeration: nil, queue_length: 0)
       @id = id
       @holdings_record_id = holdings_record_id
       @barcode = barcode.presence || id
@@ -216,7 +221,7 @@ module Folio
           material_type: MaterialType.new(id: dyn.dig('materialType', 'id'), name: dyn.dig('materialType', 'name')),
           loan_type: LoanType.new(id: dyn.fetch('temporaryLoanTypeId', dyn.fetch('permanentLoanTypeId'))),
           holdings_record_id: dyn.dig('holdingsRecord', 'id'),
-          queue_length: dyn.fetch('queueTotalLength', nil))
+          queue_length: dyn.fetch('queueTotalLength', 0))
     end
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 

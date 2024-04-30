@@ -7,10 +7,10 @@ class PatronRequest < ApplicationRecord
   class_attribute :bib_model_class, default: Settings.ils.bib_model.constantize
   store :data, accessors: [
     :barcodes, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title, :request_type,
-    :proxy, :estimated_delivery
+    :proxy, :estimated_delivery, :patron_name
   ], coder: JSON
 
-  delegate :instance_id, to: :bib_data
+  delegate :instance_id, :finding_aid, :finding_aid?, to: :bib_data
 
   before_create do
     self.estimated_delivery = earliest_delivery_estimate(scan: scan?)&.dig('display_date')
@@ -18,6 +18,20 @@ class PatronRequest < ApplicationRecord
 
   def scan?
     request_type == 'scan'
+  end
+
+  def aeon_page?
+    items_in_location.any?(&:aeon_pageable?)
+  end
+
+  def aeon_site
+    items_in_location.filter_map(&:aeon_site).first
+  end
+
+  def aeon_form_target
+    return unless aeon_page?
+
+    finding_aid? ? finding_aid : Settings.aeon_ere_url
   end
 
   def submit_later
@@ -96,7 +110,7 @@ class PatronRequest < ApplicationRecord
   def single_location_label
     return 'Must be used in library' if mediateable? || use_in_library?
 
-    'Will be delivered to'
+    'Pickup location'
   end
 
   def destination_location
@@ -106,6 +120,13 @@ class PatronRequest < ApplicationRecord
 
   def destination_library_code
     destination_location&.library&.code
+  end
+
+  def destination_library_pseudopatron_code
+    @destination_library_pseudopatron_code ||= begin
+      pseudopatron_barcode = Settings.libraries[destination_library_code]&.hold_pseudopatron || raise("no hold pseudopatron for '#{key}'")
+      Folio::Patron.find_by(library_id: pseudopatron_barcode)
+    end
   end
 
   def any_items_avaliable?
@@ -145,10 +166,14 @@ class PatronRequest < ApplicationRecord
 
   def patron
     @patron ||= (Folio::Patron.find_by(patron_key: patron_id) if patron_id)
+    @patron ||= Folio::NullPatron.new(display_name: patron_name, email: patron_email)
   end
 
   def patron=(patron)
-    self.patron_id = patron&.id
+    self.patron_id = patron.id
+    self.patron_name = patron.display_name
+    self.patron_email = patron.email
+
     @patron = patron
   end
 
@@ -187,6 +212,8 @@ class PatronRequest < ApplicationRecord
 
   # Return list of names of individuals who are proxies for this id
   def proxy_group_names
+    return nil if patron.is_a?(Folio::NullPatron)
+
     # Return display name for any proxies where 'requestForSponser' is yes.
     patron.all_proxy_group_info.filter_map do |info|
       return nil unless info['requestForSponsor'].downcase == 'yes'
@@ -249,6 +276,12 @@ class PatronRequest < ApplicationRecord
 
   def notify_ilb!
     # TODO?
+  end
+
+  def request_comments
+    return "#{data['patron_name']} <#{patron_email}>" unless patron
+
+    [("(PROXY PICKUP OK; request placed by #{patron.display_name} <#{patron.email}>)" if proxy?)].compact.join("\n")
   end
 
   private

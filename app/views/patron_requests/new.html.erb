@@ -13,18 +13,58 @@
   <% end %>
 <% end %>
 
-<%= form_for(@request, data: { controller: 'patronRequest' }, html: { class: 'col-lg-8 accordion' }) do |f| %>
+<%= form_for(@request,
+             data: { controller: 'patronRequest' },
+             html: { class: 'col-lg-8 accordion' },
+             url: current_request.aeon_page? ? current_request.aeon_form_target : patron_requests_path(request: current_request),
+             method: current_request.finding_aid? ? 'GET' : 'POST') do |f| %>
   <% step_enum = Enumerator.new { |y| n = 0; loop { y << (n += 1) } } %>
   <% current_step = nil %>
   <% scan_or_pickup_step = nil %>
   <%= f.hidden_field :instance_hrid %>
   <%= f.hidden_field :origin_location_code %>
+  <% if current_request.aeon_page? %>
+    <%= f.hidden_field :aeon_system_id, name: 'SystemID', value: 'sul-requests'  %>
+    <%= f.hidden_field :aeon_request_form, name: 'WebRequestForm', value: 'GenericRequestMonograph' %>
+    <%= f.hidden_field :aeon_document_type, name: 'DocumentType', value: 'Monograph' %>
+    <%= f.hidden_field :aeon_site, name: 'Site', value: f.object.aeon_site %>
+    <%= f.hidden_field :aeon_location, name: 'Location', value: f.object.origin_location_code %>
+    <%= f.hidden_field :aeon_title, name: 'ItemTitle', value: f.object.bib_data.title %>
+    <%= f.hidden_field :aeon_author, name: 'ItemAuthor', value: f.object.bib_data.author %>
+    <%= f.hidden_field :aeon_date, name: 'ItemDate', value: f.object.bib_data.pub_date %>
+    <%= f.hidden_field :aeon_link, name: 'ItemInfo1', value: f.object.bib_data.view_url %>
+  <% end %>
   <% if @request.items_in_location.one? || f.object.barcodes&.one? %>
-    <%= f.hidden_field :barcode, value: f.object.barcodes&.first || (@request.items_in_location.first&.barcode || @request.items_in_location.first&.id) %>
+    <% single_item = @request.items_in_location.first %>
+    <% single_barcode = f.object.barcodes&.first || (single_item&.barcode || single_item&.id) %>
+    <%= f.hidden_field :barcode, value: single_barcode %>
+    <% if current_request.aeon_page? %>
+      <%= f.hidden_field :aeon_request_index, name: 'Request', value: 1 %>
+      <%= f.hidden_field :aeon_callnumber, name: 'CallNumber_1', value: single_item.callnumber %>
+      <%= f.hidden_field :aeon_barcode, name: 'ItemNumber_1', value: single_barcode %>
+    <% end %>
+  <% end %>
+
+  <!-- aeon items usage note -->
+  <% if current_request.aeon_page? %>
+  <div class="alert alert-warning alert-dismissible shadow-sm d-flex gap-3 align-items-center mt-3">
+    <i class="bi bi-exclamation-triangle-fill fs-3"></i>
+    <div>
+      <span class="fw-bold">
+        <%= t('aeon_pages.info_modal.header', library: LibraryLocation.library_name_by_code(aeon_reading_room_code)) %>
+      </span>
+      <br/>
+      <span>
+        <%= t('aeon_pages.info_modal.reading_room_info') %>
+        <%= t('aeon_pages.info_modal.more_details_html', library: LibraryLocation.library_name_by_code(aeon_reading_room_code), reading_room_url: Settings.libraries[aeon_reading_room_code].reading_room_url) %>
+      </span>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
   <% end %>
 
   <!-- proxy -->
-  <% if current_request.proxy_group_names.present? %>
+  <% if current_request.proxy_group_names.present? && !current_request.aeon_page? %>
     <%= render AccordionStepComponent.new(id: 'proxy', step_index: step_enum.next, form_id: f.id) do |c| %>
       <% c.with_title.with_content('Proxy/Sponsor') %>
       <% c.with_body do %>
@@ -51,30 +91,41 @@
   <% end %>
 
   <!-- item selector -->
-  <% if f.object.items_in_location.many? && (can?(:request_scan, f.object) || can?(:prepare, f.object)) %>
+  <% if f.object.items_in_location.many? && (can?(:request_scan, f.object) || can?(:prepare, f.object)) && !current_request.finding_aid? %>
     <div data-controller="itemselector" data-action="itemselector:change->patronRequest#showItemSelector">
     <%= render AccordionStepComponent.new(id: 'barcodes', step_index: step_enum.next, form_id: f.id, data: { 'switch-selector': true }) do |c| %>
       <% c.with_title.with_content('Select item(s)') %>
       <% c.with_body do %>
+        <% if f.object.items_in_location.length >= 10 %>
+          <div>
+            <label for="item-selector-search" class="my-2">Search item list</label>
+            <input id="item-selector-search" type="search" incremental data-action="input->itemselector#filter" class="form-control w-75" />
+          </div>
+        <% end %>
         <div class="item-table my-4">
-          <table class="table mb-0 border">
+          <table class="table mb-0 border" data-controller="table" data-table-field-value="Callnumber" data-table-asc-value="true">
             <thead>
               <tr>
-                <th aria-sort="ascending" class="text-start" data-sortAsc=true data-sortfield="Callnumber" data-action='click->itemselector#sort'>
-                  <button class="btn btn-link pe-0 text-decoration-none text-black">Call number</button>
+                <th data-table-target="header" aria-sort="ascending" class="text-start" data-table-field-param="Callnumber" data-action='click->table#sort'>
+                  <button type="button" class="btn btn-link pe-0 text-decoration-none text-black">Call number</button>
                 </th>
-                <th class="text-end" data-sortfield="Status" data-sortAsc=true data-action='click->itemselector#sort'>
-                  <button class="btn btn-link pe-0 text-decoration-none text-black">Status</button>
+                <th data-table-target="header" class="text-end" data-table-field-param="Status" data-action='click->table#sort'>
+                  <button type="button" class="btn btn-link pe-0 text-decoration-none text-black">Status</button>
                 </th>
               </tr>
             </thead>
             <tbody>
-              <% sort_holdings(f.object.items_in_location).each_with_index do |item, index| %>
+              <% sort_holdings(f.object.items_in_location).each.with_index(1) do |item, index| %>
                 <% not_requestable = cannot?(:request, item) %>
-                <tr id="row-<%= index %>" data-sortby-status="<%= item.status_text.downcase.gsub(' ', '_') %>" data-sortby-callnumber="<%= index %>" >
+                <tr data-sortby-status="<%= item.status_text.downcase.gsub(' ', '_') %>" data-sortby-callnumber="<%= index %>" >
                   <td class="align-middle">
                     <label>
                       <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: cannot?(:request, item), data: { required: true, 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-duequeueinfo-param': queue_length_display(item),  'itemselector-label-param': callnumber_label(item), action: 'itemselector#change' } }, item.barcode || item.id, "" %>
+                      <% if current_request.aeon_page? %>
+                        <%= f.hidden_field "aeon_callnumber_#{item.callnumber}", disabled: true, name: "CallNumber_#{index}", value: item.callnumber %>
+                        <%= f.hidden_field "aeon_barcode_#{item.barcode}", disabled: true, name: "ItemNumber_#{index}", value: item.barcode %>
+                        <%= f.hidden_field "aeon_request_#{index}", disabled: true, name: 'Request', value: index %>
+                      <% end %>
                       <span class="form-check-label ms-1"><%= callnumber_label(item) %></span>
                       <% if item.public_note %>
                         <span class="text-cardinal d-block ms-4 mt-1">
@@ -101,7 +152,7 @@
     <% end %>
 
     <!-- pickup request (multiple items) -->
-    <% if can? :prepare, f.object %>
+    <% if can?(:prepare, f.object) && !current_request.aeon_page? %>
       <%= render AccordionStepComponent.new(request: @request, id: 'pickup', classes: [('d-none' if scan_pickup)], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'pickup' }, submit: true) do |c| %>
         <% c.with_title.with_content('Pickup request') %>
         <% c.with_body do %>
@@ -112,7 +163,7 @@
                 <div class="d-flex flex-column flex-xl-row align-items-start justify-content-xl-between align-items-xl-center mb-3 gap-2 gap-xl-0">
                     <div class="text-black fw-semibold">Available items</div>
                     <div class="text-cardinal">
-                      Pickup:
+                      Pickup after:
                       <span class="fw-bold">
                         <% if f.object.pickup_destinations.one? && f.object.earliest_delivery_estimate %>
                           <%= f.object.earliest_delivery_estimate['display_date'] %>
@@ -136,7 +187,7 @@
             <div class="card-body bg-light rounded">
               <div class="d-flex flex-column flex-xl-row align-items-start justify-content-xl-between align-items-xl-center mb-3 gap-2 gap-xl-0">
                 <div class="text-black fw-semibold">Items currently checked out or otherwise unavailable</div>
-                <div class="text-cardinal">Pickup: No date/time estimate</div>
+                <div class="text-cardinal">Pickup after: No date/time estimate</div>
               </div>
               <div class="bg-white">
                 <ul data-itemselector-target="unavailableItems" class="list-unstyled d-flex flex-wrap gap-2 p-3 m-0"></ul>
@@ -169,14 +220,69 @@
       <% end %>
     <% end %>
   <% end %>
+
+  <!-- aeon request -->
+  <% if current_request.aeon_page? %>
+    <%= render AccordionStepComponent.new(
+      request: @request,
+      id: 'aeon',
+      step_index: f.object.items_in_location.many? ? 2 : 1,
+      form_id: f.id,
+      data: { 'patronrequest-forRequestType': 'aeon' },
+      submit: true,
+      submit_text: t('aeon_pages.new.continue_button'),
+      cancel: f.object.items_in_location.many?) do |c| %>
+      <% c.with_title.with_content('Aeon request') %>
+      <% c.with_body do %>
+        <% if f.object.items_in_location.many? %>
+        <div class="selected-items-group">
+          <div class="card">
+            <div class="card-body bg-light rounded">
+              <div class="d-flex flex-column flex-xl-row align-items-start justify-content-xl-between align-items-xl-center mb-3 gap-2 gap-xl-0">
+                <div class="text-black fw-semibold">Selected items</div>
+                  <div class="text-cardinal">
+                    <span data-patronRequest-target="destination">
+                      <%= LibraryLocation.library_name_by_code(aeon_reading_room_code) %>
+                    </span>
+                  </div>
+              </div>
+              <ul data-itemselector-target="availableItems" class="list-unstyled d-flex flex-wrap gap-2 bg-white p-3 m-0"></ul>
+            </div>
+          </div>
+        </div>
+        <div class="card selected-items-group my-3">
+          <div class="card-body bg-light rounded">
+            <div class="d-flex flex-column flex-xl-row align-items-start justify-content-xl-between align-items-xl-center mb-3 gap-2 gap-xl-0">
+              <div class="text-black fw-semibold">Unavailable items</div>
+            </div>
+            <div class="bg-white">
+              <ul data-itemselector-target="unavailableItems" class="list-unstyled d-flex flex-wrap gap-2 p-3 m-0"></ul>
+            </div>
+          </div>
+        </div>
+        <% end %>
+        <div class="mt-3">
+          <p><%= t('aeon_pages.info_modal.how_to.body') %></p>
+          <p><%= t('aeon_pages.info_modal.steps.header') %></p>
+          <ol class="dialog-steps">
+            <% if current_request.finding_aid? %>
+              <%= t('aeon_pages.info_modal.steps.finding_aid_html') %>
+            <% else %>
+              <%= t('aeon_pages.info_modal.steps.single_vol_html') %>
+            <% end %>
+          </ol>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
   </div>
 
   <!-- pickup request (single item )-->
-  <% if f.object.items_in_location.one? && can?(:prepare, f.object) %>
+  <% if f.object.items_in_location.one? && can?(:prepare, f.object) && !current_request.aeon_page? %>
     <%= render AccordionStepComponent.new(request: @request, id: 'pickup', classes: [('d-none' if scan_pickup)], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'pickup' }, submit: true) do |c| %>
       <% c.with_title.with_content('Pickup request') %>
       <% c.with_body do %>
-        <div id="earliestAvailableContainer" class="text-cardinal mt-4" aria-live="polite">
+        <div id="earliestAvailableContainer" class="text-cardinal mb-3" aria-live="polite">
           Earliest available:
           <% if f.object.pickup_destinations.one? && f.object.earliest_delivery_estimate %>
             <%= f.object.earliest_delivery_estimate['display_date'] %>

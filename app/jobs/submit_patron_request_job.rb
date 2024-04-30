@@ -5,9 +5,10 @@
 class SubmitPatronRequestJob < ApplicationJob
   queue_as :default
 
-  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def perform(patron_request)
     return convert_to_mediated_page(patron_request) if patron_request.mediateable?
+    return place_title_hold(patron_request) if patron_request.barcodes.blank?
 
     ilb_items, folio_items = patron_request.selected_items.partition do |item|
       send_to_illiad?(patron_request, item)
@@ -23,7 +24,7 @@ class SubmitPatronRequestJob < ApplicationJob
 
     patron_request.update(illiad_response_data:, folio_responses:)
   end
-  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   private
 
@@ -33,24 +34,29 @@ class SubmitPatronRequestJob < ApplicationJob
   #   The request is a recall, AND
   #   The item can be recalled, AND
   #     The item has a status indicating it won't be available soon, OR
-  #     The item has an existing request queue (TODO: https://github.com/sul-dlss/sul-requests/issues/2234)
+  #     The item has an existing request queue
   def send_to_illiad?(patron_request, item)
     return true if patron_request.scan?
-    return false unless patron_request.patron.ilb_eligible?
+    return false unless patron_request.patron&.ilb_eligible?
     return true if item.status == Folio::Item::STATUS_AGED_TO_LOST
-    return false if item.status.in?(folio_recall_statuses)
+    return false unless patron_request.fulfillment_type == 'recall'
+    return false unless item.hold_recallable?(patron_request.patron)
 
-    patron_request.fulfillment_type == 'recall' &&
-      item.hold_recallable?(patron_request.patron)
+    item.status.in?(illiad_recall_statuses) || item.queue_length.positive?
   end
 
-  # If an item has one of these statuses it's OK to request it via FOLIO;
-  # otherwise, try ILLiad first for a faster delivery
-  def folio_recall_statuses
+  # If an item has one of these statuses the patron won't get it anytime soon
+  # from FOLIO, so try ILLiad
+  def illiad_recall_statuses
     [
-      Folio::Item::STATUS_IN_PROCESS,
-      Folio::Item::STATUS_ON_ORDER,
-      Folio::Item::STATUS_IN_TRANSIT
+      Folio::Item::STATUS_CHECKED_OUT,
+      Folio::Item::STATUS_MISSING,
+      Folio::Item::STATUS_AGED_TO_LOST,
+      Folio::Item::STATUS_CLAIMED_RETURNED,
+      Folio::Item::STATUS_DECLARED_LOST,
+      Folio::Item::STATUS_LONG_MISSING,
+      Folio::Item::STATUS_LOST_AND_PAID,
+      Folio::Item::STATUS_PAGED
     ].freeze
   end
 
@@ -66,5 +72,18 @@ class SubmitPatronRequestJob < ApplicationJob
       barcodes: patron_request.barcodes,
       estimated_delivery: patron_request.estimated_delivery
     )
+  end
+
+  def place_title_hold(patron_request)
+    hold_request_data = FolioClient::HoldRequestData.new(pickup_location_id: patron_request.pickup_service_point.id,
+                                                         patron_comments: patron_request.request_comments,
+                                                         expiration_date: patron_request.needed_date.to_time.utc.iso8601)
+    folio_response = folio_client.create_instance_hold(patron_request.patron.id, patron_request.instance_hrid, hold_request_data)
+
+    patron_request.update(folio_responses: [folio_response])
+  end
+
+  def folio_client
+    @folio_client ||= FolioClient.new
   end
 end

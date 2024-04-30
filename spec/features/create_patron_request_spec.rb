@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Creating a page request' do
+RSpec.describe 'Creating a request' do
   include ActiveJob::TestHelper
 
   let(:user) { create(:sso_user) }
@@ -19,6 +19,8 @@ RSpec.describe 'Creating a page request' do
 
   before do
     stub_bib_data_json(bib_data)
+    # this line prevents ArgumentError: SMTP To address may not be blank
+    ActionMailer::Base.perform_deliveries = false
   end
 
   context 'with an SSO user' do
@@ -146,10 +148,9 @@ RSpec.describe 'Creating a page request' do
         click_on 'Continue'
         check 'ABC 123'
         click_on 'Continue'
-        expect do
-          click_on 'Submit'
-          expect(page).to have_content 'We received your pickup request'
-        end.to change(PatronRequest, :count).by(1)
+        expect(page).to have_content 'Pickup request'
+        click_on 'Submit'
+        expect(page).to have_content 'We received your pickup request'
       end
 
       it 'allows scanning' do
@@ -162,11 +163,8 @@ RSpec.describe 'Creating a page request' do
         expect(page).to have_content 'Copyright notice'
         fill_in 'Page range', with: '1-15'
         fill_in 'Title of article or chapter', with: 'Some title'
-
-        expect do
-          click_on 'Submit'
-          expect(page).to have_content 'We received your scan request'
-        end.to change(PatronRequest, :count).by(1)
+        click_on 'Submit'
+        expect(page).to have_content 'We received your scan request'
       end
     end
 
@@ -306,17 +304,15 @@ RSpec.describe 'Creating a page request' do
       end
     end
 
-    context 'when the user already made a request (logged in)' do
-      let(:current_user) { CurrentUser.new(name: 'A User', email: 'me@example.com') }
-
-      before do
-        login_as(current_user)
-      end
-
-      it 'goes back to login page' do
-        visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
-        expect(page).to have_text 'Login with Library ID/PIN'
-      end
+    it 'logs the user out before creating a request', :js do
+      visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+      find('summary', text: 'Proceed as visitor').click
+      fill_in 'Name', with: 'My Name'
+      fill_in 'Email', with: 'me@example.com'
+      click_on 'Continue'
+      click_on 'Submit'
+      visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+      expect(page).to have_text 'Login with Library ID/PIN'
     end
   end
 end

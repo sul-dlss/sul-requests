@@ -6,12 +6,10 @@ class SubmitFolioPatronRequestJob < ApplicationJob
   queue_as :default
 
   def perform(request, item_id)
-    patron = Folio::Patron.find_by(patron_key: request.patron_id) if request&.patron_id
-
     item = request.selected_items.find { |x| x.id == item_id }
     return unless item
 
-    request_data = folio_request_data_for_item(patron, request, item)
+    request_data = folio_request_data_for_item(request, item)
 
     response = submit_folio_requests!(request_data)
 
@@ -21,8 +19,9 @@ class SubmitFolioPatronRequestJob < ApplicationJob
   private
 
   def best_request_type(request, item)
-    return 'Hold' if Settings.hold_instead_of_recall.include?(item.status) && item.holdable?(request.patron)
-
+    if (Settings.hold_instead_of_recall.include?(item.status) || request.fulfillment_type == 'hold') && item.holdable?(request.patron)
+      return 'Hold'
+    end
     return 'Recall' if item.recallable?(request.patron)
     return 'Hold' if item.holdable?(request.patron)
     return 'Page' if item.pageable?(request.patron)
@@ -42,17 +41,22 @@ class SubmitFolioPatronRequestJob < ApplicationJob
     {}
   end
 
-  def request_comments(patron, request)
-    [("(PROXY PICKUP OK; request placed by #{patron.display_name} <#{patron.email}>)" if request.proxy?)].compact.join("\n")
-  end
-
-  def folio_request_data_for_item(patron, request, item)
+  def folio_request_data_for_item(request, item)
     FolioClient::CirculationRequestData.new(
       request_level: 'Item', request_type: best_request_type(request, item),
       instance_id: request.instance_id, item_id: item.id, holdings_record_id: item.holdings_record_id,
-      requester_id: patron&.id, fulfillment_preference: 'Hold Shelf', pickup_service_point_id: request.pickup_service_point.id,
-      patron_comments: request_comments(patron, request), request_expiration_date: (Time.zone.today + 3.years).to_time.utc.iso8601
+      requester_id: patron_or_proxy_id(request), fulfillment_preference: 'Hold Shelf',
+      pickup_service_point_id: request.pickup_service_point.id,
+      patron_comments: request.request_comments, request_expiration_date: (Time.zone.today + 3.years).to_time.utc.iso8601
     )
+  end
+
+  def patron_or_proxy_id(request)
+    if request.proxy? && request.patron.proxy?
+      request.patron.proxy_sponsor_user_id
+    else
+      request.patron&.id || request.destination_library_pseudopatron_code
+    end
   end
 
   def folio_client
