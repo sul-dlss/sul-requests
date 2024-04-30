@@ -8,7 +8,10 @@ RSpec.describe SubmitPatronRequestJob do
                                    blocked?: false, ilb_eligible?: true,
                                    allowed_request_types: ['Hold', 'Recall', 'Page'])
   end
-  let(:request) { PatronRequest.new(instance_hrid: 'a12345', patron:, barcodes: ['12345678'], origin_location_code: 'SAL3-STACKS') }
+  let(:request) do
+    PatronRequest.create(request_type: 'pickup', instance_hrid: 'a12345', patron:, barcodes: ['12345678'],
+                         origin_location_code: 'SAL3-STACKS')
+  end
   let(:bib_data) { build(:single_holding) }
 
   before do
@@ -30,7 +33,7 @@ RSpec.describe SubmitPatronRequestJob do
 
   context 'when the request is sent to ILLiad' do
     before do
-      allow(request).to receive(:request_type).and_return('scan')
+      request.request_type = 'scan'
     end
 
     it 'stores ILLiad data in the request' do
@@ -41,7 +44,7 @@ RSpec.describe SubmitPatronRequestJob do
 
   context 'when the request is a scan' do
     before do
-      allow(request).to receive(:request_type).and_return('scan')
+      request.request_type = 'scan'
     end
 
     it 'requests items via ILLiad' do
@@ -51,10 +54,6 @@ RSpec.describe SubmitPatronRequestJob do
   end
 
   context 'when the request is a page' do
-    before do
-      allow(request).to receive(:request_type).and_return('page')
-    end
-
     it 'requests items via FOLIO' do
       described_class.perform_now(request)
       expect(SubmitFolioPatronRequestJob).to have_received(:perform_now).with(request, bib_data.items[0].id)
@@ -74,7 +73,7 @@ RSpec.describe SubmitPatronRequestJob do
 
   context 'when the item is a recall' do
     before do
-      allow(request).to receive_messages(request_type: 'recall', fulfillment_type: 'recall')
+      allow(request).to receive_messages(fulfillment_type: 'recall')
       allow(bib_data.items[0]).to receive_messages(
         hold_recallable?: true,
         status: Folio::Item::STATUS_IN_PROCESS

@@ -24,7 +24,8 @@ RSpec.describe 'Creating a request' do
   end
 
   context 'with an SSO user' do
-    let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true) }
+    let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true, ldap_attributes:) }
+    let(:ldap_attributes) { {} }
 
     before do
       allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
@@ -78,6 +79,7 @@ RSpec.describe 'Creating a request' do
     context 'for a scan' do
       let(:bib_data) { build(:scannable_holdings) }
       let(:user) { create(:scan_eligible_user) }
+      let(:ldap_attributes) { { suAffiliation: Settings.scan_pilot_groups.first } }
 
       before do
         allow(current_user).to receive(:user_object).and_return(user)
@@ -133,6 +135,7 @@ RSpec.describe 'Creating a request' do
     context 'for an item that can be paged or scanned', :js do
       let(:bib_data) { build(:scannable_holdings) }
       let(:user) { create(:scan_eligible_user) }
+      let(:ldap_attributes) { { suAffiliation: Settings.scan_pilot_groups.first } }
 
       before do
         allow(current_user).to receive(:user_object).and_return(user)

@@ -94,6 +94,8 @@
         <% c.with_title.with_content('Scan or pickup request') %>
       <% end %>
     <% end %>
+  <% else %>
+    <%= f.hidden_field :request_type, value: can?(:request_scan, f.object) ? 'scan' : 'pickup' %>
   <% end %>
 
   <!-- item selector -->

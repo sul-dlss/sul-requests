@@ -12,6 +12,13 @@ class PatronRequest < ApplicationRecord
 
   delegate :instance_id, :finding_aid, :finding_aid?, to: :bib_data
 
+  validates :instance_hrid, presence: true
+  validates :request_type, inclusion: { in: %w[scan pickup] }
+  validates :scan_page_range, presence: true, on: :create, if: :scan?
+  validates :scan_title, presence: true, on: :create, if: :scan?
+  validate :pickup_service_point_is_valid, on: :create, unless: :scan?
+  validate :needed_date_is_valid, on: :create
+
   before_create do
     self.estimated_delivery = earliest_delivery_estimate(scan: scan?)&.dig('display_date')
   end
@@ -98,9 +105,9 @@ class PatronRequest < ApplicationRecord
   end
 
   def requires_needed_date?
-    return false if origin_location_code == 'PAGE-MP' || origin_location_code == 'SAL3-PAGE-MP'
+    return false if mediateable? && (origin_location_code == 'PAGE-MP' || origin_location_code == 'SAL3-PAGE-MP')
 
-    true
+    mediateable? || selected_items.any? { |item| item.recallable?(patron) || item.holdable?(patron) }
   end
 
   def use_in_library?
@@ -308,5 +315,19 @@ class PatronRequest < ApplicationRecord
 
   def library_location
     @library_location ||= LibraryLocation.new(origin_library_code, origin_location_code)
+  end
+
+  def pickup_service_point_is_valid
+    return if pickup_service_point.code.in? pickup_destinations
+
+    errors.add(:service_point_code, 'is not a valid pickup library')
+  end
+
+  def needed_date_is_valid
+    return unless requires_needed_date?
+
+    return errors.add(:needed_date, 'Date cannot be blank') if needed_date.blank?
+
+    errors.add(:needed_date, 'Date cannot be earlier than today') if needed_date < Time.zone.today
   end
 end
