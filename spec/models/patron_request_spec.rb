@@ -60,6 +60,21 @@ RSpec.describe PatronRequest do
     end
   end
 
+  describe '#selected_items' do
+    let(:attr) { { instance_hrid: 'a123456', origin_location_code: 'SAL3-STACKS' } }
+    let(:bib_data) { build(:scannable_holdings) }
+
+    it 'returns the items with matching barcodes' do
+      request.assign_attributes(barcodes: ['12345678'])
+      expect(request.selected_items).to contain_exactly(have_attributes(callnumber: 'ABC 123'))
+    end
+
+    it 'returns items with matching item ids' do
+      request.assign_attributes(barcodes: ['2'])
+      expect(request.selected_items).to contain_exactly(have_attributes(callnumber: 'ABC 321'))
+    end
+  end
+
   describe '#barcode=' do
     it 'sets the barcodes attribute' do
       request.barcode = '1234567890'
