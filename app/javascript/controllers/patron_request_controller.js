@@ -20,18 +20,7 @@ export default class extends Controller {
 
   updateType(event) {
     const requestType = event.target.value;
-
-    var nextitem = this.findNextAccordion(event.target.closest('.accordion-item'));
-    if (nextitem && nextitem.dataset.switchSelector) {
-      const searchtype = requestType == 'scan' ? 'checkbox' : 'radio'
-      const switchtype = requestType == 'scan' ? 'radio' : 'checkbox'
-      const items = nextitem.querySelectorAll(`input[type="${searchtype}"]`);
-      items.forEach(elem => {
-        elem.type = switchtype;
-        if (switchtype == 'radio') { elem.checked = false };
-      })
-    }
-
+    this.element.querySelector('[data-controller="itemselector"]').dataset.itemselectorRequestTypeValue = requestType;
 
     this.accordionTargets.filter(e => e.dataset.patronrequestForrequesttype).forEach(el => {
       if (el.dataset.patronrequestForrequesttype == requestType) {
