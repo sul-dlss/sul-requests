@@ -10,7 +10,7 @@ RSpec.describe 'Creating an Aeon patron request', :js do
     instance_double(Folio::Patron, id: user.patron_key, username: 'auser', display_name: 'A User', exists?: true, email: nil,
                                    patron_description: 'faculty',
                                    patron_group_id: '503a81cd-6c26-400f-b620-14c08943697c',
-                                   blocked?: false, all_proxy_group_info: [],
+                                   blocked?: false, proxy_group_names: [],
                                    allowed_request_types: ['Hold', 'Recall', 'Page'])
   end
 
