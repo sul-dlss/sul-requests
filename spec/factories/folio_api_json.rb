@@ -7,6 +7,7 @@ FactoryBot.define do
     name { 'Location name' }
     discovery_display_name { 'Discovery display name' }
     campus { Folio::Campus.new(id: 'uuid', code: 'SUL') }
+    campus_id { 'uuid' }
     library { Folio::Library.new(id: 'uuid', code: 'LIB') }
     library_id { 'uuid' }
     primary_service_point_id { nil }
@@ -181,6 +182,27 @@ FactoryBot.define do
               barcode: '12345678',
               callnumber: 'ABC 123',
               effective_location: build(:location, code: 'SAL3-STACKS'))
+      ]
+    end
+
+    initialize_with do
+      new(**attributes)
+    end
+  end
+
+  factory :single_law_holding, class: 'Folio::Instance' do
+    id { '123' }
+
+    title { 'Item Title' }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              effective_location: build(:law_location))
       ]
     end
 

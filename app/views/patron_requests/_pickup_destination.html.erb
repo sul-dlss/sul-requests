@@ -19,7 +19,7 @@
     </div>
 <% else %>
     <div class="mb-2">
-        <strong><%= f.object.single_location_label %>:</strong> <%= f.object.destination_location&.name %>
+        <strong><%= f.object.single_location_label %>:</strong> <%= f.object.pickup_service_point&.name %>
     </div>
-    <%= f.hidden_field :service_point_code, :value => f.object.destination_location&.code %>
+    <%= f.hidden_field :service_point_code, :value => f.object.pickup_service_point&.code %>
 <% end %>
