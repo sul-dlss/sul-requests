@@ -92,7 +92,7 @@
 
   <!-- item selector -->
   <% if f.object.items_in_location.many? && (can?(:request_scan, f.object) || can?(:prepare, f.object)) && !current_request.finding_aid? %>
-    <div data-controller="itemselector" data-action="itemselector:change->patronRequest#showItemSelector">
+    <div data-controller="itemselector" data-itemselector-request-type-value="pickup" data-action="itemselector:change->patronRequest#showItemSelector">
     <%= render AccordionStepComponent.new(id: 'barcodes', step_index: step_enum.next, form_id: f.id, data: { 'switch-selector': true }) do |c| %>
       <% c.with_title.with_content('Select item(s)') %>
       <% c.with_body do %>
@@ -175,7 +175,7 @@
                       </span>
                       <span> at </span>
                       <span data-patronRequest-target="destination">
-                        <%= f.object.destination_location&.name %>
+                        <%= f.object.pickup_service_point&.name %>
                       </span>
                     </div>
                 </div>
@@ -241,9 +241,7 @@
               <div class="d-flex flex-column flex-xl-row align-items-start justify-content-xl-between align-items-xl-center mb-3 gap-2 gap-xl-0">
                 <div class="text-black fw-semibold">Selected items</div>
                   <div class="text-cardinal">
-                    <span data-patronRequest-target="destination">
-                      <%= LibraryLocation.library_name_by_code(aeon_reading_room_code) %>
-                    </span>
+                    <span data-patronRequest-target="destination">Use in: <%= aeon_reading_room_name %></span>
                   </div>
               </div>
               <ul data-itemselector-target="availableItems" class="list-unstyled d-flex flex-wrap gap-2 bg-white p-3 m-0"></ul>

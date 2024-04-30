@@ -7,6 +7,7 @@ FactoryBot.define do
     name { 'Location name' }
     discovery_display_name { 'Discovery display name' }
     campus { Folio::Campus.new(id: 'uuid', code: 'SUL') }
+    campus_id { 'uuid' }
     library { Folio::Library.new(id: 'uuid', code: 'LIB') }
     library_id { 'uuid' }
     primary_service_point_id { nil }
@@ -189,6 +190,27 @@ FactoryBot.define do
     end
   end
 
+  factory :single_law_holding, class: 'Folio::Instance' do
+    id { '123' }
+
+    title { 'Item Title' }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              effective_location: build(:law_location))
+      ]
+    end
+
+    initialize_with do
+      new(**attributes)
+    end
+  end
+
   factory :scannable_only_holdings, class: 'Folio::Instance' do
     id { '1234' }
     title { 'Item Title' }
@@ -324,11 +346,13 @@ FactoryBot.define do
     items do
       [
         build(:item,
+              id: '1',
               barcode: '12345678',
               callnumber: 'ABC 123',
               status: 'Available',
               effective_location: build(:scannable_location, code: 'SAL3-STACKS')),
         build(:item,
+              id: '2',
               barcode: '87654321',
               callnumber: 'ABC 321',
               status: 'Available',

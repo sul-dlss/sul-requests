@@ -32,14 +32,27 @@ RSpec.describe 'Creating an Aeon patron request', :js do
     it 'provides a link to the reading room info for the library of the item' do
       expect(page).to have_link 'Special Collections Reading Room service page', href: 'https://library.stanford.edu/spc/using-our-collections'
     end
-  end
 
-  context 'handles reading room info display for locations like SAL3-PAGE-AS' do
-    let(:bib_data) { :sal3_as_holding }
+    context 'when the item is in SAL3 but will be paged to a reading room' do
+      let(:bib_data) { :sal3_as_holding }
 
-    it 'provides a link to the ARS reading room if the origin location is SAL3' do
-      visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-PAGE-AS')
-      expect(page).to have_link 'Archive of Recorded Sound Reading Room service page', href: 'https://library.stanford.edu/libraries/archive-recorded-sound'
+      it 'provides a link to the appropriate reading room' do
+        visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-PAGE-AS')
+        expect(page).to have_link 'Archive of Recorded Sound Reading Room service page', href: 'https://library.stanford.edu/libraries/archive-recorded-sound'
+      end
+    end
+
+    context 'when there are multiple items' do
+      let(:bib_data) { :special_collections_holdings }
+
+      it 'identifies the reading room where the items will be prepared' do
+        visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SPEC-STACKS')
+        click_on 'Continue'
+        check 'patron_request_barcodes_12345678'
+        check 'patron_request_barcodes_87654321'
+        click_on 'Continue'
+        expect(page).to have_content 'Use in: Special Collections & University Archives Reading Room'
+      end
     end
   end
 
