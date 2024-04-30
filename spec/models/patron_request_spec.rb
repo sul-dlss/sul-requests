@@ -9,7 +9,7 @@ RSpec.describe PatronRequest do
   let(:bib_data) { instance_double(Folio::Instance, title: 'Title') }
 
   before do
-    allow(Folio::Instance).to receive(:fetch).with('a12345').and_return(bib_data)
+    allow(Folio::Instance).to receive(:fetch).with(request.instance_hrid).and_return(bib_data)
   end
 
   describe '#bib_data' do
@@ -57,6 +57,21 @@ RSpec.describe PatronRequest do
   describe '#item_title' do
     it 'returns the title of the bib data' do
       expect(request.item_title).to eq('Title')
+    end
+  end
+
+  describe '#selected_items' do
+    let(:attr) { { instance_hrid: 'a123456', origin_location_code: 'SAL3-STACKS' } }
+    let(:bib_data) { build(:scannable_holdings) }
+
+    it 'returns the items with matching barcodes' do
+      request.assign_attributes(barcodes: ['12345678'])
+      expect(request.selected_items).to contain_exactly(have_attributes(callnumber: 'ABC 123'))
+    end
+
+    it 'returns items with matching item ids' do
+      request.assign_attributes(barcodes: ['2'])
+      expect(request.selected_items).to contain_exactly(have_attributes(callnumber: 'ABC 321'))
     end
   end
 

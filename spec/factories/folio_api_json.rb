@@ -324,11 +324,13 @@ FactoryBot.define do
     items do
       [
         build(:item,
+              id: '1',
               barcode: '12345678',
               callnumber: 'ABC 123',
               status: 'Available',
               effective_location: build(:scannable_location, code: 'SAL3-STACKS')),
         build(:item,
+              id: '2',
               barcode: '87654321',
               callnumber: 'ABC 321',
               status: 'Available',
