@@ -51,7 +51,7 @@ RSpec.describe PatronRequest do
     let(:patron_two) { instance_double(Folio::Patron, id: 'proxy2', display_name: 'Proxy Two') }
 
     it 'retrieves the names of the proxy user ids correctly' do
-      request.patron = instance_double(Folio::Patron, id: 'sponsor')
+      request.patron = instance_double(Folio::Patron, id: 'sponsor', display_name: 'Sponsor', email: nil)
       stub_client = FolioClient.new
       allow(FolioClient).to receive(:new).and_return(stub_client)
       allow(stub_client).to receive(:find_patron_by_id).with('proxy1').and_return(patron_one)

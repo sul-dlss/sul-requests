@@ -4,7 +4,8 @@ require 'rails_helper'
 
 RSpec.describe SubmitPatronRequestJob do
   let(:patron) do
-    instance_double(Folio::Patron, id: 'patron_id', username: 'username', blocked?: false, ilb_eligible?: true,
+    instance_double(Folio::Patron, id: 'patron_id', username: 'username', display_name: '', email: '',
+                                   blocked?: false, ilb_eligible?: true,
                                    allowed_request_types: ['Hold', 'Recall', 'Page'])
   end
   let(:request) { PatronRequest.new(instance_hrid: 'a12345', patron:, barcodes: ['12345678'], origin_location_code: 'SAL3-STACKS') }

@@ -5,7 +5,8 @@ require 'rails_helper'
 RSpec.describe PatronRequestMailer do
   let(:mail) { described_class.confirmation_email(request) }
   let(:patron) do
-    instance_double(Folio::Patron, id: '', email: 'test@test.com', patron_group_id: '3684a786-6671-4268-8ed0-9db82ebca60b',
+    instance_double(Folio::Patron, id: '', display_name: 'Test', email: 'test@test.com',
+                                   patron_group_id: '3684a786-6671-4268-8ed0-9db82ebca60b',
                                    allowed_request_types: ['Page'])
   end
   let(:request) do
