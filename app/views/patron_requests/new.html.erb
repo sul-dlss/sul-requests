@@ -226,7 +226,7 @@
     <%= render AccordionStepComponent.new(
       request: @request,
       id: 'aeon',
-      step_index: f.object.items_in_location.many? ? 2 : 1,
+      step_index: step_enum.next,
       form_id: f.id,
       data: { 'patronrequest-forRequestType': 'aeon' },
       submit: true,
@@ -234,7 +234,7 @@
       cancel: f.object.items_in_location.many?) do |c| %>
       <% c.with_title.with_content('Aeon request') %>
       <% c.with_body do %>
-        <% if f.object.items_in_location.many? %>
+        <% if f.object.items_in_location.many? && !current_request.finding_aid? %>
         <div class="selected-items-group">
           <div class="card">
             <div class="card-body bg-light rounded">
