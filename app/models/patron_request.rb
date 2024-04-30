@@ -122,6 +122,13 @@ class PatronRequest < ApplicationRecord
     destination_location&.library&.code
   end
 
+  def destination_library_pseudopatron_code
+    @destination_library_pseudopatron_code ||= begin
+      pseudopatron_barcode = Settings.libraries[destination_library_code]&.hold_pseudopatron || raise("no hold pseudopatron for '#{key}'")
+      Folio::Patron.find_by(library_id: pseudopatron_barcode)
+    end
+  end
+
   def any_items_avaliable?
     items_in_location.any?(&:available?)
   end
@@ -163,7 +170,10 @@ class PatronRequest < ApplicationRecord
   end
 
   def patron=(patron)
-    self.patron_id = patron&.id
+    self.patron_id = patron.id
+    self.patron_name = patron.display_name
+    self.patron_email = patron.email
+
     @patron = patron
   end
 
