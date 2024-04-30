@@ -1,5 +1,11 @@
 <h1 class="fw-semibold">We received your <%= @request.request_type == 'scan' ? 'scan' : @request.mediateable? ? '' : 'pickup' %> request!</h1>
 
+<% if current_request.active_messages.any? %>
+  <div class="alert alert-warning alert-dismissible" role="alert">
+    <%= render current_request.active_messages %>
+  </div>
+<% end %>
+
 <div class="row mt-4">
     <div class="col-7">
         <% if current_user.patron.email %>

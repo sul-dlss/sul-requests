@@ -2,6 +2,12 @@
   <%= render 'user_header' %>
 <% end %>
 
+<% if current_request.active_messages.any? %>
+  <div class="alert alert-warning alert-dismissible" role="alert">
+    <%= render current_request.active_messages %>
+  </div>
+<% end %>
+
 <h1 class="fw-semibold mt-4"><%= current_request.item_title %></h1>
 <% if current_request.items_in_location.one? %>
   <% single_item = current_request.items_in_location.first %>

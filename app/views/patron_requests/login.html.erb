@@ -1,6 +1,13 @@
 <h1 class="fw-semibold my-3">
   <%= current_request.item_title %>
 </h1>
+
+<% if @request.active_messages.any? %>
+  <div class="alert alert-warning alert-dismissible" role="alert">
+    <%= render @request.active_messages %>
+  </div>
+<% end %>
+
 <p class="mb-4 lead fw-normal">
     Stanford Libraries provides various request services for added convenience, but their availability
     depends on factors such as your affiliation, material type, status, and location. Access through
