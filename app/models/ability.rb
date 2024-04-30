@@ -87,8 +87,18 @@ class Ability
     # ... and to check the status, you either need to be logged in or include a special token in the URL
     can :read, [Request, Page, HoldRecall, Scan, MediatedPage], user_id: user.id if user.sso_user?
 
-    can :login, PatronRequest
-    can [:new, :create], PatronRequest
+    can :new, PatronRequest
+    can :create, PatronRequest do |request|
+      request.selected_items.all? { |item| can?((request.scan? ? :scan : :request), item) }
+    end
+
+    # anyone can create title-level requests
+    can :create, PatronRequest do |request|
+      request.selected_items.none?
+    end
+
+    # anyone can start to create an Aeon page
+    can :create, PatronRequest, &:aeon_page?
     can :read, [PatronRequest], patron_id: user.patron.id if user.patron
 
     can :request, Folio::Item do |item|

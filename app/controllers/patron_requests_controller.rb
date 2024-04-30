@@ -5,11 +5,12 @@
 ###
 class PatronRequestsController < ApplicationController
   layout 'application_new'
-  load_and_authorize_resource instance_name: :request, new: :login
+  load_and_authorize_resource instance_name: :request
   skip_authorize_resource only: :new
   before_action :assign_new_attributes, only: [:new]
   before_action :authorize_new_request, only: [:new]
   before_action :associate_request_with_patron, only: [:new, :create]
+  before_action :redirect_aeon_pages, only: [:create]
   helper_method :current_request, :new_params
 
   def show; end
@@ -19,8 +20,6 @@ class PatronRequestsController < ApplicationController
   end
 
   def create
-    redirect_to current_request.finding_aid if current_request.aeon_page? && current_request.finding_aid?
-
     if @request.save && @request.submit_later
       redirect_to @request
     else
@@ -46,6 +45,12 @@ class PatronRequestsController < ApplicationController
     flash.now[:error] = t('sessions.login_by_sunetid.error_html') if sunetid_without_folio_account?
 
     render 'login'
+  end
+
+  def redirect_aeon_pages
+    return unless current_request.aeon_page? && current_request.finding_aid?
+
+    redirect_to current_request.finding_aid
   end
 
   def current_request
