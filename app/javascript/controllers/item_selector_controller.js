@@ -3,7 +3,7 @@ import { Toast } from 'bootstrap';
 
 export default class extends Controller {
   static targets = ['items', 'toast', 'availableItems', 'unavailableItems', 'scanItem', 'unavailableScanItemEstimate', 'availableScanItemEstimate']
-  static values = { selectedItems: Array }
+  static values = { requestType: String, selectedItems: Array }
 
   connect() { }
 
@@ -71,6 +71,15 @@ export default class extends Controller {
     this.toastTarget.querySelector('.btn').dataset.itemselectorIdParam = item.id;
 
     Toast.getOrCreateInstance(this.toastTarget).show();
+  }
+
+  requestTypeValueChanged(value) {
+    const switchtype = value == 'scan' ? 'radio' : 'checkbox'
+
+    this.itemsTargets.forEach(elem => {
+      elem.type = switchtype;
+      if (switchtype == 'radio') { elem.checked = false };
+    })
   }
 
   selectedItemsValueChanged() {
