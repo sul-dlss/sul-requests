@@ -162,7 +162,10 @@ class PatronRequest < ApplicationRecord
   end
 
   def patron=(patron)
-    self.patron_id = patron&.id
+    self.patron_id = patron.id
+    self.patron_name = patron.display_name
+    self.patron_email = patron.email
+
     @patron = patron
   end
 
