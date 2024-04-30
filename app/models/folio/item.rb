@@ -20,6 +20,7 @@ module Folio
     STATUS_LOST_AND_PAID = 'Lost and paid'
     STATUS_LONG_MISSING = 'Long missing'
     STATUS_IN_PROCESS_NR = 'In process (non-requestable)'
+    STATUS_AGED_TO_LOST = 'Aged to lost'
     STATUS_IN_PROCESS = 'In process'
     STATUS_AWAITING_PICKUP = 'Awaiting pickup'
     STATUS_AWAITING_DELIVERY = 'Awaiting delivery'
@@ -50,6 +51,7 @@ module Folio
       STATUS_ON_ORDER,
       STATUS_IN_PROCESS,
       STATUS_RESTRICTED,
+      STATUS_AGED_TO_LOST,
       STATUS_NONE
     ].freeze
 
