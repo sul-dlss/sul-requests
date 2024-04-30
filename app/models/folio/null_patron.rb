@@ -5,14 +5,18 @@ module Folio
   class NullPatron
     attr_reader :user
 
-    delegate :email, to: :user
-
-    def initialize(user)
+    def initialize(user = nil, display_name: nil, email: nil)
       @user = user
+      @display_name = display_name
+      @email = email
     end
 
     def display_name
-      user.name
+      @display_name || user.name
+    end
+
+    def email
+      @email || user.email
     end
 
     def patron_description

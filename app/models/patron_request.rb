@@ -159,6 +159,7 @@ class PatronRequest < ApplicationRecord
 
   def patron
     @patron ||= (Folio::Patron.find_by(patron_key: patron_id) if patron_id)
+    @patron ||= Folio::NullPatron.new(display_name: patron_name, email: patron_email)
   end
 
   def patron=(patron)
