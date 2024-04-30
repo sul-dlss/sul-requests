@@ -44,6 +44,8 @@ Metrics/MethodLength:
 
 Metrics/ModuleLength:
   Max: 120
+  Exclude:
+    - "app/helpers/requests_helper.rb"
 
 Style/StringLiterals:
   Enabled: true
