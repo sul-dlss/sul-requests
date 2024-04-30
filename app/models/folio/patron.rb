@@ -105,6 +105,19 @@ module Folio
       proxy_group_info.present?
     end
 
+    # Return list of names of individuals who are proxies for this id
+    def proxy_group_names
+      # Return display name for any proxies where 'requestForSponser' is yes.
+      @proxy_group_names ||= all_proxy_group_info.filter_map do |info|
+        return nil unless info['requestForSponsor'].downcase == 'yes'
+
+        # Find the patron corresponding to the Folio user id for the proxy
+        proxy_patron = self.class.folio_client.find_patron_by_id(info['proxyUserId'])
+        # If we find the corresponding FOLIO patron for the proxy, return the display name
+        (proxy_patron.present? && proxy_patron&.display_name) || nil
+      end
+    end
+
     def proxy_sponsor_user_id
       proxy_info&.dig('userId')
     end
@@ -139,12 +152,12 @@ module Folio
       crypt.encrypt_and_sign(id, expires_in: 20.minutes)
     end
 
+    private
+
     # Get all the proxies for this id, and not just the first one
     def all_proxy_group_info
       @all_proxy_group_info ||= self.class.folio_client.all_proxy_group_info(id)
     end
-
-    private
 
     def standing
       user_info.dig('standing', 'key')

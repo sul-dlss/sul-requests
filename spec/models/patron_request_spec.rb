@@ -116,23 +116,4 @@ RSpec.describe PatronRequest do
       expect(request.pickup_service_point).to have_attributes(name: 'Green Library')
     end
   end
-
-  describe '#proxy_group_names' do
-    let(:patron_one) { instance_double(Folio::Patron, id: 'proxy1', display_name: 'Proxy One') }
-    let(:patron_two) { instance_double(Folio::Patron, id: 'proxy2', display_name: 'Proxy Two') }
-
-    it 'retrieves the names of the proxy user ids correctly' do
-      request.patron = instance_double(Folio::Patron, id: 'sponsor', display_name: 'Sponsor', email: nil)
-      stub_client = FolioClient.new
-      allow(FolioClient).to receive(:new).and_return(stub_client)
-      allow(stub_client).to receive(:find_patron_by_id).with('proxy1').and_return(patron_one)
-      allow(stub_client).to receive(:find_patron_by_id).with('proxy2').and_return(patron_two)
-      allow(request.patron).to receive_messages(
-        sponsor?: true,
-        all_proxy_group_info: [{ 'proxyUserId' => 'proxy1', 'requestForSponsor' => 'Yes' },
-                               { 'proxyUserId' => 'proxy2', 'requestForSponsor' => 'Yes' }]
-      )
-      expect(request.proxy_group_names.length).to eq 2
-    end
-  end
 end

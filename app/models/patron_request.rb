@@ -209,21 +209,6 @@ class PatronRequest < ApplicationRecord
     earliest_delivery_estimate(scan: true)
   end
 
-  # Return list of names of individuals who are proxies for this id
-  def proxy_group_names
-    return nil if patron.blank?
-
-    # Return display name for any proxies where 'requestForSponser' is yes.
-    patron.all_proxy_group_info.filter_map do |info|
-      return nil unless info['requestForSponsor'].downcase == 'yes'
-
-      # Find the patron corresponding to the Folio user id for the proxy
-      proxy_patron = folio_client.find_patron_by_id(info['proxyUserId'])
-      # If we find the corresponding FOLIO patron for the proxy, return the display name
-      (proxy_patron.present? && proxy_patron&.display_name) || nil
-    end
-  end
-
   # Check if the user has selected "yes" on the form with respect to proxy permission
   def proxy?
     proxy == 'share'

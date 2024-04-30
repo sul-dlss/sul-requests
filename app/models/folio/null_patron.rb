@@ -52,6 +52,10 @@ module Folio
       []
     end
 
+    def proxy_group_names
+      []
+    end
+
     def present?
       false
     end

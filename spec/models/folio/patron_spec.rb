@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Folio::Patron do
   subject(:patron) do
     described_class.new(
-      fields
+      fields.stringify_keys
     )
   end
 
@@ -94,6 +94,26 @@ RSpec.describe Folio::Patron do
       describe '#ilb_eligible?' do
         it { is_expected.to be_ilb_eligible }
       end
+    end
+  end
+
+  describe '#proxy_group_names' do
+    let(:fields) { { id: 'sponsor', personal: { firstName: 'Sponsor' } } }
+    let(:patron_one) { instance_double(described_class, id: 'proxy1', display_name: 'Proxy One') }
+    let(:patron_two) { instance_double(described_class, id: 'proxy2', display_name: 'Proxy Two') }
+
+    it 'retrieves the names of the proxy user ids correctly' do
+      stub_client = FolioClient.new
+      allow(FolioClient).to receive(:new).and_return(stub_client)
+      allow(stub_client).to receive(:find_patron_by_id).with('proxy1').and_return(patron_one)
+      allow(stub_client).to receive(:find_patron_by_id).with('proxy2').and_return(patron_two)
+      allow(stub_client).to receive(:all_proxy_group_info).with('sponsor').and_return([
+                                                                                        { 'proxyUserId' => 'proxy1',
+                                                                                          'requestForSponsor' => 'Yes' },
+                                                                                        { 'proxyUserId' => 'proxy2',
+                                                                                          'requestForSponsor' => 'Yes' }
+                                                                                      ])
+      expect(patron.proxy_group_names.length).to eq 2
     end
   end
 end
