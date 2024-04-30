@@ -12,9 +12,7 @@ class PatronRequestsController < ApplicationController
   before_action :associate_request_with_patron, only: [:new, :create]
   helper_method :current_request, :new_params
 
-  def show
-    PatronRequestMailer.confirmation_email(@request).deliver_later
-  end
+  def show; end
 
   def new
     render 'unauthorized' unless can? :prepare, current_request
