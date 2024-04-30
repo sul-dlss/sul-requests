@@ -147,6 +147,10 @@ class PatronRequest < ApplicationRecord
     folio_location&.library&.code
   end
 
+  def active_messages
+    library_location.active_messages.for_type(scan? ? 'scan' : 'page')
+  end
+
   def barcodes=(arr)
     super(arr.compact_blank)
   end
@@ -315,5 +319,9 @@ class PatronRequest < ApplicationRecord
 
   def folio_client
     FolioClient.new
+  end
+
+  def library_location
+    @library_location ||= LibraryLocation.new(origin_library_code, origin_location_code)
   end
 end
