@@ -40,9 +40,9 @@ class PatronRequestsController < ApplicationController
   # for each request.
   #
   # Aeon pages never need authentication, because Aeon will handle that as part of its request flow.
-  def authorize_new_request
+  def authorize_new_request # rubocop:disable Metrics/AbcSize
     return if current_user.patron.present?
-    return if params[:step].present?
+    return if params[:step].present? && current_user.patron.email.present?
     return if current_request.aeon_page?
 
     flash.now[:error] = t('sessions.login_by_sunetid.error_html') if sunetid_without_folio_account?
