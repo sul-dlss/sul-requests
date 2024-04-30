@@ -105,6 +105,7 @@ sul-purchased or courtesy or program-short-term or sul-contractprograms or lane-
 graduate or postdoctoral,book,,,,,SAL3-HY-PAGE-EA or SAL3-ND-PAGE-EA,1qtr-3renew-7daygrace,Allow All,Default notice,3.00/21.00 recall overdue fine,$75 lost fee
 staff or staff-casual or fellow,book,,,,,SAL3-HY-PAGE-EA or SAL3-ND-PAGE-EA,1yearfixed-2renew-7daygrace,Allow All,Default notice,3.00/21.00 recall overdue fine,$75 lost fee
 faculty,book,,,,,SAL3-HY-PAGE-EA or SAL3-ND-PAGE-EA,1yearfixed-2renew-7daygrace,Allow All,Default notice,No fines,$75 lost fee
+visitor,book,,,,,SAL3-STACKS,No loan,Allow paging/hold,Default notice,No fines,$75 lost fee
 sul-guest,book,,,,,SAL3-STACKS,1year-norenew-7daygrace,Allow paging/hold,Default notice,No fines,$75 lost fee
 sul-purchased or courtesy or program-short-term or sul-contractprograms or lane-hospital staff,book,,,,,SAL3-STACKS,28day-2renew-7daygrace,Allow paging/hold,Default notice,No fines,$75 lost fee
 graduate or postdoctoral,book,,,,,SAL3-STACKS,1qtr-3renew-7daygrace,Allow All,Default notice,3.00/21.00 recall overdue fine,$75 lost fee
