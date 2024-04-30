@@ -6,24 +6,18 @@
 class PatronRequestsController < ApplicationController
   layout 'application_new'
   load_and_authorize_resource instance_name: :request, new: :login
-  before_action :associate_request_with_patron, only: [:new, :create, :login]
+  skip_authorize_resource only: :new
+  before_action :assign_new_attributes, only: [:new]
+  before_action :authorize_new_request, only: [:new]
+  before_action :associate_request_with_patron, only: [:new, :create]
   helper_method :current_request, :new_params
 
   def show
     PatronRequestMailer.confirmation_email(@request).deliver_later
   end
 
-  def login
-    current_request.assign_attributes(**new_params)
-  end
-
   def new
-    current_request.assign_attributes(**new_params)
     render 'unauthorized' unless can? :prepare, current_request
-    return unless sunetid_without_folio_account?
-
-    flash.now[:error] = t('sessions.login_by_sunetid.error_html')
-    render 'login'
   end
 
   def create
@@ -37,6 +31,24 @@ class PatronRequestsController < ApplicationController
   end
 
   protected
+
+  def assign_new_attributes
+    current_request.assign_attributes(**new_params)
+  end
+
+  # SSO or library-id users don't need to re-login, but name/email users always need to provide their information
+  # for each request.
+  #
+  # Aeon pages never need authentication, because Aeon will handle that as part of its request flow.
+  def authorize_new_request
+    return if current_user.patron.present?
+    return if params[:step].present?
+    return if current_request.aeon_page?
+
+    flash.now[:error] = t('sessions.login_by_sunetid.error_html') if sunetid_without_folio_account?
+
+    render 'login'
+  end
 
   def current_request
     @request

@@ -315,4 +315,15 @@ RSpec.describe 'Creating a request' do
       expect(page).to have_text 'Login with Library ID/PIN'
     end
   end
+
+  context 'with an aeon request' do
+    let(:bib_data) { build(:sal3_as_holding) }
+
+    it 'sends the user over to Aeon' do
+      visit new_patron_request_path(instance_hrid: 'a12345', origin_location_code: 'SAL3-PAGE-AS')
+
+      expect(page).to have_content 'Aeon request'
+      expect(page).to have_button 'Continue to complete request'
+    end
+  end
 end
