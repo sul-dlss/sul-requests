@@ -212,7 +212,7 @@ class PatronRequest < ApplicationRecord
 
   # Return list of names of individuals who are proxies for this id
   def proxy_group_names
-    return nil if patron.is_a?(Folio::NullPatron)
+    return nil if patron.blank?
 
     # Return display name for any proxies where 'requestForSponser' is yes.
     patron.all_proxy_group_info.filter_map do |info|

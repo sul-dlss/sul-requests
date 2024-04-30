@@ -52,6 +52,14 @@ module Folio
       []
     end
 
+    def present?
+      false
+    end
+
+    def blank?
+      true
+    end
+
     # define the remaining methods of Folio::Patron
     (Folio::Patron.instance_methods(false) - instance_methods(false)).each do |method|
       define_method(method) do |*, **|
