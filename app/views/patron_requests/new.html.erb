@@ -122,9 +122,9 @@
                     <label>
                       <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: cannot?(:request, item), data: { required: true, 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-duequeueinfo-param': queue_length_display(item),  'itemselector-label-param': callnumber_label(item), action: 'itemselector#change' } }, item.barcode || item.id, "" %>
                       <% if current_request.aeon_page? %>
-                        <%= f.hidden_field "aeon_callnumber_#{item.callnumber}", disabled: true, name: "CallNumber_#{index}", value: item.callnumber %>
-                        <%= f.hidden_field "aeon_barcode_#{item.barcode}", disabled: true, name: "ItemNumber_#{index}", value: item.barcode %>
-                        <%= f.hidden_field "aeon_request_#{index}", disabled: true, name: 'Request', value: index %>
+                        <%= f.hidden_field "aeon_callnumber_#{item.callnumber}", disabled: true, name: "CallNumber_#{index}", value: item.callnumber, data: { toggle: true } %>
+                        <%= f.hidden_field "aeon_barcode_#{item.barcode}", disabled: true, name: "ItemNumber_#{index}", value: item.barcode, data: { toggle: true } %>
+                        <%= f.hidden_field "aeon_request_#{index}", disabled: true, name: 'Request', value: index, data: { toggle: true } %>
                       <% end %>
                       <span class="form-check-label ms-1"><%= callnumber_label(item) %></span>
                       <% if item.public_note %>

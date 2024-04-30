@@ -35,12 +35,7 @@ export default class extends Controller {
     }
 
     // Enable/disable sending hidden params to Aeon
-    const aeonCallNumberInput = event.currentTarget.nextElementSibling;
-    const aeonBarcodeInput = aeonCallNumberInput.nextElementSibling;
-    const aeonRequestIndexInput = aeonBarcodeInput.nextElementSibling;
-    aeonCallNumberInput.toggleAttribute('disabled');
-    aeonBarcodeInput.toggleAttribute('disabled');
-    aeonRequestIndexInput.toggleAttribute('disabled');
+    event.currentTarget.closest('td').querySelectorAll('[data-toggle]').forEach(e => e.toggleAttribute('disabled'));
 
     this.dispatch('change', { detail: { selectedItems: this.selectedItemsValue }});
   }
