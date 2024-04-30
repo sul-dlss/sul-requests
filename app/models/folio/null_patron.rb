@@ -44,7 +44,7 @@ module Folio
       @policy_service ||= Folio::CirculationRules::PolicyService.new(patron_groups: [patron_group_id])
     end
 
-    def blocks
+    def block_reasons
       []
     end
 
