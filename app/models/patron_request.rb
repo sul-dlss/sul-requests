@@ -272,7 +272,7 @@ class PatronRequest < ApplicationRecord
   end
 
   def request_comments
-    return "#{data['patron_name']} <#{patron_email}>" unless patron
+    return "#{patron_name} <#{patron_email}>" if patron.blank?
 
     [("(PROXY PICKUP OK; request placed by #{patron.display_name} <#{patron.email}>)" if proxy?)].compact.join("\n")
   end

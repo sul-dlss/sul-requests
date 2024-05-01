@@ -36,6 +36,12 @@ RSpec.describe PatronRequest do
     it { is_expected.to be_scan }
   end
 
+  describe '#proxy?' do
+    let(:attr) { { proxy: 'share' } }
+
+    it { is_expected.to be_proxy }
+  end
+
   describe '#aeon_page?' do
     let(:attr) { { instance_hrid: 'a12345', origin_location_code: 'SAL3-PAGE-AS' } }
     let(:bib_data) { build(:sal3_as_holding) }
@@ -245,6 +251,56 @@ RSpec.describe PatronRequest do
 
     it 'is the FOLIO library code for the origin of the material' do
       expect(request.origin_library_code).to eq('SAL3')
+    end
+  end
+
+  describe '#patron' do
+    context 'with a patron' do
+      let(:attr) { { patron_id: 'uuid' } }
+      let(:patron) { instance_double(Folio::Patron) }
+
+      before do
+        allow(Folio::Patron).to receive(:find_by).with(patron_key: 'uuid').and_return(patron)
+      end
+
+      it 'returns the FOLIO patron for the request' do
+        expect(request.patron).to eq patron
+      end
+    end
+
+    context 'with a name/email user' do
+      let(:attr) { { patron_name: 'Test', patron_email: 'test@example.com' } }
+
+      it 'create a NullPatron from the stored attributes' do
+        expect(request.patron).to have_attributes(blank?: true, display_name: 'Test', email: 'test@example.com')
+      end
+    end
+  end
+
+  describe '#patron=' do
+    let(:patron) { instance_double(Folio::Patron, id: 'uuid', display_name: 'Test', email: 'test@example.com') }
+
+    it 'stores patron information with the request' do
+      request.patron = patron
+
+      expect(request).to have_attributes(patron_id: 'uuid', patron_name: 'Test', patron_email: 'test@example.com')
+    end
+  end
+
+  describe '#request_comments' do
+    let(:attr) { { patron_name: 'Test', patron_email: 'test@example.com' } }
+
+    it 'includes the visitor contact information' do
+      expect(request.request_comments).to eq 'Test <test@example.com>'
+    end
+
+    context 'with a request shared with a proxy group' do
+      let(:attr) { { patron:, proxy: 'share' } }
+      let(:patron) { instance_double(Folio::Patron, id: 'uuid', display_name: 'Test', email: 'test@example.com') }
+
+      it 'includes a comment for the pickup service point staff' do
+        expect(request.request_comments).to include 'PROXY PICKUP OK'
+      end
     end
   end
 end
