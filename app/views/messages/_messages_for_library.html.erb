@@ -1,20 +1,22 @@
 <%# locals: (library_name: 'anywhere', library_code:, request_type:) -%>
-<div class="messages">
+<div class="messages my-3">
   <% messages = @messages.select { |m| m.library == library_code && m.request_type == request_type } %>
 
-  <div>
-    <h2><%= request_type.titleize + " from #{(library_name if defined?(library_name)) || 'anywhere'}" %></h2>
+  <div class="d-flex align-items-center gap-2">
+    <h2 class="h5 my-0"><%= request_type.titleize + " from #{(library_name if defined?(library_name)) || 'anywhere'}" %></h2>
     <%= link_to_add_message(library_code, request_type) %>
   </div>
 
   <% messages.each do |message| %>
-    <h2><%= message.title %></h2>
-    <%= link_to_edit_message(message) %>
-    <%= link_to_delete_message(message) %>
+    <div class="d-flex align-items-center mt-3 gap-2">
+      <h2 class="h6 my-0"><%= message.title %></h2>
+      <%= link_to_edit_message(message) %>
+      <%= link_to_delete_message(message) %>
+    </div>
 
     <div class="message">
       <% if message.scheduled? %>
-        <div class="status <%= 'active' if message.active? %>">
+        <div class="status <%= 'active' if message.active? %> <%= 'text-jungle-green' if message.active? %>">
         <% if message.active? %>
           Active <%= time_tag message.start_at.to_date, :short %> through <%= time_tag message.end_at.to_date, :short %>
         <% else %>

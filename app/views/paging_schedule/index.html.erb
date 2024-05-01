@@ -1,7 +1,7 @@
-<h1>Paging schedule</h1>
+<h1 class="fw-semibold">Paging schedule</h1>
 <% @paging_schedule.group_by(&:from).each do |from, schedules| %>
   <div>
-    <h2><%= from %></h2>
+    <h2 class="h5 text-cardinal text-uppercase"><%= from %></h2>
     <% schedules.each do |schedule| %>
       <div>
         When paging to <%= schedule.to %> <%= "before #{schedule.before}" if schedule.before %>

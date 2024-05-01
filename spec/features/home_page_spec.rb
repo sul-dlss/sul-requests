@@ -10,7 +10,7 @@ RSpec.describe 'Home Page' do
 
     it 'renders the page' do
       expect(page).to have_title('SUL Requests')
-      expect(page).to have_css('header.header-logo')
+      expect(page).to have_css('.sul-logo')
       within('.header-links') do
         expect(page).to have_link('My Account')
         expect(page).to have_link('Feedback')
