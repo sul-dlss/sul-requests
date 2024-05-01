@@ -69,9 +69,26 @@ RSpec.describe PatronRequest do
       expect(request.selected_items).to contain_exactly(have_attributes(callnumber: 'ABC 123'))
     end
 
+    it 'returns all the items with matching barcodes' do
+      request.assign_attributes(barcodes: ['87654321', '12345678'])
+
+      expect(request.selected_items).to contain_exactly(
+        have_attributes(callnumber: 'ABC 321'),
+        have_attributes(callnumber: 'ABC 123')
+      )
+    end
+
     it 'returns items with matching item ids' do
       request.assign_attributes(barcodes: ['2'])
       expect(request.selected_items).to contain_exactly(have_attributes(callnumber: 'ABC 321'))
+    end
+
+    context 'for a scan' do
+      it 'returns the first item' do
+        request.assign_attributes(request_type: 'scan', barcodes: ['12345678', '87654321'])
+
+        expect(request.selected_items).to contain_exactly(have_attributes(callnumber: 'ABC 123'))
+      end
     end
   end
 
@@ -114,6 +131,32 @@ RSpec.describe PatronRequest do
 
     it 'returns the default service point' do
       expect(request.pickup_service_point).to have_attributes(name: 'Green Library')
+    end
+  end
+
+  describe '#pickup_destinations' do
+    let(:bib_data) { build(:sal3_holdings) }
+
+    it 'includes all the default pickup service points from FOLIO' do
+      expect(request.pickup_destinations).to include('GREEN-LOAN', 'SCIENCE', 'ART', 'MUSIC')
+    end
+
+    context 'with an item from an origin library that is not a default pickup service point' do
+      let(:bib_data) { build(:mmstacks_holding) }
+      let(:attr) { { instance_hrid: 'a123', origin_location_code: 'MEDIA-CAGE' } }
+
+      it 'also includes the service point from the origin library' do
+        expect(request.pickup_destinations).to include('MEDIA-CENTER')
+      end
+    end
+
+    context 'with a location-restricted page' do
+      let(:bib_data) { build(:page_lp_holdings) }
+      let(:attr) { { instance_hrid: 'a1234', origin_location_code: 'SAL3-PAGE-LP' } }
+
+      it 'only includes the allowed service points' do
+        expect(request.pickup_destinations).to contain_exactly('MEDIA-CENTER', 'MUSIC')
+      end
     end
   end
 end
