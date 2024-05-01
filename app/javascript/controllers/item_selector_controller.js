@@ -139,6 +139,8 @@ export default class extends Controller {
     if (unavailableItems.length === 0) {
       unavailableItemsGroup.classList.add('d-none');
       this.disableRequiredInputs(unavailableItemsGroup);
+      const event = new CustomEvent('noUnailableItems', { detail: { target: unavailableItemsGroup } });
+      document.dispatchEvent(event);
     } else {
       unavailableItemsGroup.classList.remove('d-none');
       this.enableRequiredInputs(unavailableItemsGroup);

@@ -8,7 +8,33 @@ export default class extends Controller {
     if (this.accordionTargets.length == 1) {
       this.removeAccordionStyling();
     }
+    // This is for when a user is in an accordion and unchecks all unavailable items
+    document.addEventListener('noUnailableItems', (event) => {
+      this.enableNextButton(event.detail);
+    })
+
+    this.accordionTargets.forEach(accord => {
+      this.enableNextButton(accord);
+    })
     this.element.reset();
+  }
+
+  emptyFields(accordion) {
+    const formData = new FormData(accordion.closest('form'));
+    const requiredFields = Array.from(accordion.querySelectorAll('[required],[data-required]'));
+    const visibleFields = requiredFields.filter(field => field.offsetHeight > 0);
+    return visibleFields.find(x => formData.getAll(x.name).every(x => !x))
+  }
+
+  enableNextButton(event) {
+    const accord = event.target ? event.target.closest('.accordion-item') : event;
+    const accordbutton = accord.querySelector('[data-next-step-button]');
+
+    if (!this.emptyFields(accord) && accordbutton) {
+      accordbutton.disabled = false;
+    } else if (accordbutton) {
+      accordbutton.disabled = true;
+    }
   }
 
   showItemSelector(event) {
@@ -83,10 +109,9 @@ export default class extends Controller {
 
   nextStep(event) {
     const accordion = event.target.closest('.accordion-item');
-    const formData = new FormData(accordion.closest('form'));
 
 // Don't allow moving to the next step unless all required fields are completed
-    if (Array.from(accordion.querySelectorAll('[required], [data-required]')).find(x => formData.getAll(x.name).every(x => !x))) {
+    if (this.emptyFields(accordion)) {
       event.preventDefault();
       return;
     }
@@ -127,7 +152,10 @@ export default class extends Controller {
 
     this.accordionTargets.slice(this.accordionTargets.indexOf(accordionitem)).forEach(el => {
       el.classList.remove('completed');
+      const nextbutton = el.querySelector('[data-next-step-button]');
+      if (nextbutton) { nextbutton.disabled = true; }
     });
+    this.enableNextButton(accordionCollapseElement);
   }
 
   async updateEarliestAvailable(event) {
