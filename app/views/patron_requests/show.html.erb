@@ -1,4 +1,4 @@
-<h1 class="fw-semibold">We received your <%= @request.request_type == 'scan' ? 'scan' : @request.mediateable? ? '' : 'pickup' %> request!</h1>
+<h1 class="fw-semibold">We received your <%= @patron_request.request_type == 'scan' ? 'scan' : @patron_request.mediateable? ? '' : 'pickup' %> request!</h1>
 
 <% if current_request.active_messages.any? %>
   <div class="alert alert-warning alert-dismissible mt-4" role="alert">
@@ -12,11 +12,11 @@
             Expect a confirmation email shortly at <%= mail_to current_user.patron.email %>.
         <% end %>
 
-        <% if @request.request_type == 'scan' %>
+        <% if @patron_request.request_type == 'scan' %>
             The digital scan will be sent to your email as a PDF when it's ready.
         <% else %>
-            You will receive an email when the <%= (@request.barcodes&.count || 1) == 1 ?  'item is' : 'items are' %> ready.
-            <% if current_user.patron && !@request.mediateable? %>
+            You will receive an email when the <%= (@patron_request.barcodes&.count || 1) == 1 ?  'item is' : 'items are' %> ready.
+            <% if current_user.patron && !@patron_request.mediateable? %>
                 You can also check the status of your request any time at <%= link_to 'My Account', 'https://mylibrary.stanford.edu' %>.
             <% end %>
         <% end %>
@@ -25,18 +25,18 @@
 
         <h2 class="my-4">Request confirmation</h2>
         <dl class="dl-inline">
-            <div><dt>Item:</dt><dd><%= @request.item_title %></dd></div>
-        <% if @request.request_type == 'scan' %>
-            <div><dt>Pages:</dt><dd><%= @request.scan_page_range %></dd></div>
-            <div><dt>Chapter/article:</dt><dd><%= @request.scan_title %></dd></div>
-            <div><dt>Authors:</dt><dd><%= @request.scan_authors %></dd></div>
+            <div><dt>Item:</dt><dd><%= @patron_request.item_title %></dd></div>
+        <% if @patron_request.request_type == 'scan' %>
+            <div><dt>Pages:</dt><dd><%= @patron_request.scan_page_range %></dd></div>
+            <div><dt>Chapter/article:</dt><dd><%= @patron_request.scan_title %></dd></div>
+            <div><dt>Authors:</dt><dd><%= @patron_request.scan_authors %></dd></div>
 
-            <% if @request.estimated_delivery %>
-                <div><dt>Earliest expected delivery:</dt><dd><%= @request.estimated_delivery %></dd></div>
+            <% if @patron_request.estimated_delivery %>
+                <div><dt>Earliest expected delivery:</dt><dd><%= @patron_request.estimated_delivery %></dd></div>
             <% end %>
         <% else %>
-            <% if @request.pickup_service_point && !@request.mediateable? %>
-            <div><dt>Preferred pickup location:</dt><dd><%= @request.pickup_service_point.name %></dd></div>
+            <% if @patron_request.pickup_service_point && !@patron_request.mediateable? %>
+            <div><dt>Preferred pickup location:</dt><dd><%= @patron_request.pickup_service_point.name %></dd></div>
             <% end %>
         <% end %>
         </dl>
@@ -56,8 +56,8 @@
                 </div>
                 <h3 class="h6 fw-semibold mt-3">Get help</h3>
                     <ul class="list-unstyled">
-                        <li><i class="bi bi-envelope-fill"></i> <%= mail_to(@request.contact_info[:email], @request.contact_info[:email]) %></li>
-                        <li><i class="bi bi-telephone-fill"></i> Call <%= @request.contact_info[:phone] %></li>
+                        <li><i class="bi bi-envelope-fill"></i> <%= mail_to(@patron_request.contact_info[:email], @patron_request.contact_info[:email]) %></li>
+                        <li><i class="bi bi-telephone-fill"></i> Call <%= @patron_request.contact_info[:phone] %></li>
                     </ul>
                 <h3 class="h6 fw-semibold mt-3">Library policies and information</h3>
                 <ul class="list-unstyled">

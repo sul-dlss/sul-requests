@@ -269,6 +269,23 @@ class PatronRequest < ApplicationRecord
     finding_aid? ? finding_aid : Settings.aeon_ere_url
   end
 
+  # For the reading room information, we need to check if 'ARS' is in the location details
+  # for the library. An example is SAL3, which should show the ARS reading room information
+  # and so should return ARS as the library code for the reading room text block.
+  # This logic will be extended in the future to cover any location that has a pageAeonSite value.
+  def aeon_reading_room_code
+    details = folio_location.details
+    details.key?('pageAeonSite') && details['pageAeonSite'] == 'ARS' ? 'ARS' : origin_library_code
+  end
+
+  # Get the name of the reading room where Aeon items will be prepared for use.
+  # A custom name can be set in the settings for each library; otherwise the
+  # default is the library name followed by "Reading Room".
+  def aeon_reading_room_name
+    library = Settings.libraries[aeon_reading_room_code] || Settings.libraries.default
+    library.reading_room_label || "#{library['label']} Reading Room"
+  end
+
   # Scan stuff
   def scannable?
     scan_service_point.present? && all_items_scannable?
