@@ -68,6 +68,8 @@ class PatronRequest < ApplicationRecord
   end
 
   def selected_items
+    return [] unless barcodes&.any?
+
     items = items_in_location.select { |x| x.barcode.in?(barcodes) || x.id.in?(barcodes) }
 
     return items.first(1) if request_type == 'scan'
@@ -273,6 +275,11 @@ class PatronRequest < ApplicationRecord
     return "#{data['patron_name']} <#{patron_email}>" unless patron
 
     [("(PROXY PICKUP OK; request placed by #{patron.display_name} <#{patron.email}>)" if proxy?)].compact.join("\n")
+  end
+
+  def service_point_code=(value)
+    @selected_pickup_service_point = nil
+    super
   end
 
   private

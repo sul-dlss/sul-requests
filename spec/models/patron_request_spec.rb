@@ -159,4 +159,54 @@ RSpec.describe PatronRequest do
       end
     end
   end
+
+  describe '#mediateable?' do
+    let(:bib_data) { build(:single_mediated_holding) }
+    let(:attr) { { instance_hrid: 'a1234', origin_location_code: 'ART-LOCKED-LARGE' } }
+
+    it { is_expected.to be_mediateable }
+  end
+
+  describe '#requires_needed_date?' do
+    context 'with a mediated item' do
+      let(:bib_data) { build(:single_mediated_holding) }
+      let(:attr) { { instance_hrid: 'a1234', origin_location_code: 'ART-LOCKED-LARGE' } }
+
+      it { is_expected.to be_requires_needed_date }
+    end
+
+    context 'with a PAGE-MP mediated item' do
+      let(:bib_data) { build(:page_mp_holdings) }
+      let(:attr) { { instance_hrid: 'a1234', origin_location_code: 'SAL3-PAGE-MP' } }
+
+      it { is_expected.not_to be_requires_needed_date }
+    end
+
+    context 'with a recall' do
+      let(:bib_data) { build(:checkedout_holdings) }
+      let(:attr) { { instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS', barcode: '87654321' } }
+
+      it { is_expected.to be_requires_needed_date }
+    end
+
+    context 'with an ordinary item' do
+      let(:bib_data) { build(:checkedout_holdings) }
+      let(:attr) { { instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS', barcode: '12345678' } }
+
+      it { is_expected.not_to be_requires_needed_date }
+    end
+  end
+
+  describe '#destination_library_code' do
+    let(:bib_data) { build(:sal3_holdings) }
+    let(:attr) { { origin_location_code: 'SAL3-STACKS' } }
+
+    it 'is the library code for the service desk' do
+      request.service_point_code = 'GREEN-LOAN'
+      expect(request.destination_library_code).to eq 'GREEN'
+
+      request.service_point_code = 'MUSIC'
+      expect(request.destination_library_code).to eq 'MUSIC'
+    end
+  end
 end
