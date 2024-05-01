@@ -100,6 +100,14 @@ RSpec.describe PatronRequest do
     end
   end
 
+  describe '#barcodes=' do
+    it 'removes blank barcodes (possibly present in form submissions)' do
+      request.barcodes = ['1234567890', '', '123']
+
+      expect(request.barcodes).to eq(['1234567890', '123'])
+    end
+  end
+
   describe '#pickup_service_point' do
     let(:bib_data) { build(:sal3_holdings) }
 
@@ -219,6 +227,24 @@ RSpec.describe PatronRequest do
       allow(Folio::Patron).to receive(:find_by).with(library_id: 'HOLD@GR').and_return(pseudo)
       request.service_point_code = 'GREEN-LOAN'
       expect(request.destination_library_pseudopatron).to eq pseudo
+    end
+  end
+
+  describe '#folio_location' do
+    let(:bib_data) { build(:sal3_holdings) }
+    let(:attr) { { origin_location_code: 'SAL3-STACKS' } }
+
+    it 'is the FOLIO location for the origin of the material' do
+      expect(request.folio_location).to have_attributes(name: 'SAL3 Stacks')
+    end
+  end
+
+  describe '#origin_library_code' do
+    let(:bib_data) { build(:sal3_holdings) }
+    let(:attr) { { origin_location_code: 'SAL3-STACKS' } }
+
+    it 'is the FOLIO library code for the origin of the material' do
+      expect(request.origin_library_code).to eq('SAL3')
     end
   end
 end
