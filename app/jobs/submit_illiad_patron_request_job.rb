@@ -15,13 +15,19 @@ class SubmitIlliadPatronRequestJob < ApplicationJob
 
     if response.success?
       illiad_response_data = JSON.parse(response.body).select { |_, value| value.present? } || {}
-      patron_request.notify_ilb! if illiad_response_data['Message'].present?
+      notify_ilb(patron_request, illiad_response_data) if illiad_response_data['Message'].present?
 
       illiad_response_data
     else
-      patron_request.notify_ilb!
+      notify_ilb(patron_request)
       nil
     end
   end
   # rubocop:enable Metrics/AbcSize
+
+  private
+
+  def notify_ilb(patron_request, illiad_response = nil)
+    IlbMailer.failed_ilb_notification(patron_request, illiad_response).deliver_later
+  end
 end

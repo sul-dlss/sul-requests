@@ -12,4 +12,15 @@ class IlbMailer < ApplicationMailer
       subject: 'ILLiad request problem, please remediate'
     )
   end
+
+  def failed_ilb_notification(patron_request, illiad_response = nil)
+    @patron_request = patron_request
+    @illiad_response = illiad_response
+
+    mail(
+      to: Settings.illiad_email_address,
+      from: Settings.libraries.default.contact_info.email,
+      subject: 'ILLiad request problem, please remediate'
+    )
+  end
 end
