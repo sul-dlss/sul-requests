@@ -126,8 +126,8 @@ class PatronRequest < ApplicationRecord
     pickup_service_point&.library&.code
   end
 
-  def destination_library_pseudopatron_code
-    @destination_library_pseudopatron_code ||= begin
+  def destination_library_pseudopatron
+    @destination_library_pseudopatron ||= begin
       pseudopatron_barcode = Settings.libraries[destination_library_code]&.hold_pseudopatron || raise("no hold pseudopatron for '#{key}'")
       Folio::Patron.find_by(library_id: pseudopatron_barcode)
     end
@@ -279,6 +279,7 @@ class PatronRequest < ApplicationRecord
 
   def service_point_code=(value)
     @selected_pickup_service_point = nil
+    @destination_library_pseudopatron = nil
     super
   end
 

@@ -209,4 +209,16 @@ RSpec.describe PatronRequest do
       expect(request.destination_library_code).to eq 'MUSIC'
     end
   end
+
+  describe '#destination_library_pseudopatron' do
+    let(:bib_data) { build(:sal3_holdings) }
+    let(:attr) { { origin_location_code: 'SAL3-STACKS' } }
+    let(:pseudo) { instance_double(Folio::Patron, id: 'uuid') }
+
+    it 'is the pseudopatron associated with the pickup library' do
+      allow(Folio::Patron).to receive(:find_by).with(library_id: 'HOLD@GR').and_return(pseudo)
+      request.service_point_code = 'GREEN-LOAN'
+      expect(request.destination_library_pseudopatron).to eq pseudo
+    end
+  end
 end
