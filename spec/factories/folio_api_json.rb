@@ -190,6 +190,27 @@ FactoryBot.define do
     end
   end
 
+  factory :mmstacks_holding, class: 'Folio::Instance' do
+    id { '123' }
+
+    title { 'Item Title' }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              barcode: '12345678',
+              callnumber: 'ABC 123',
+              effective_location: build(:mmstacks_location))
+      ]
+    end
+
+    initialize_with do
+      new(**attributes)
+    end
+  end
+
   factory :single_law_holding, class: 'Folio::Instance' do
     id { '123' }
 
