@@ -58,10 +58,6 @@ FactoryBot.define do
     sunetid { 'some-eligible-user' }
     email { 'some-eligible-user@stanford.edu' }
     patron_key { 'some-uuid' }
-
-    after(:build) do |user|
-      user.affiliation = Settings.scan_pilot_groups.first
-    end
   end
 
   factory :non_sso_user, class: 'User' do

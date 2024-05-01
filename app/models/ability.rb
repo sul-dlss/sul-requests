@@ -148,6 +148,6 @@ class Ability
   # rubocop:enable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/MethodLength
 
   def in_scan_pilot_group?(user)
-    user.affiliation.any? { |g| Settings.scan_pilot_groups.include? g }
+    Settings.folio.scan_pilot_groups.include?(user.patron.patron_group_name)
   end
 end
