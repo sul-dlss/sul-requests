@@ -3,13 +3,13 @@
   <legend class="fs-6 required-label">Select processing method <a href="https://library.stanford.edu/services/borrow-and-request#request" class="ms-2"><i class="bi bi-box-arrow-up-right"></i> Learn more</a>
   </legend>
   <div class="mt-2 form-check">
-    <%= f.radio_button :fulfillment_type, 'recall', class: 'form-check-input' %>
+    <%= f.radio_button :fulfillment_type, 'recall', class: 'form-check-input', required: true %>
     <%= f.label :fulfillment_type_recall, class: 'form-check-label' do %>
       Expedite a copy from a partner library
     <% end %>
   </div>
   <div class="mt-2 form-check">
-    <%= f.radio_button :fulfillment_type, 'hold', class: 'form-check-input' %>
+    <%= f.radio_button :fulfillment_type, 'hold', class: 'form-check-input', required: true %>
     <%= f.label :fulfillment_type_hold, 'Wait for a Stanford copy to become available', class: 'form-check-label' %>
   </div>
 </fieldset>
