@@ -6,11 +6,11 @@
 ###
 class PatronRequestMailer < ApplicationMailer
   def confirmation_email(patron_request)
-    @request = patron_request
+    @patron_request = patron_request
     mail(
-      to: @request.patron_email,
+      to: @patron_request.patron_email,
       from: from_address,
-      subject: "#{@request.item_title} - Stanford University Libraries request confirmation"
+      subject: "#{@patron_request.item_title} - Stanford University Libraries request confirmation"
     )
   end
 
@@ -19,8 +19,8 @@ class PatronRequestMailer < ApplicationMailer
   end
 
   def contact_info
-    Settings.libraries[@request.origin_library_code]&.contact_info ||
-      Settings.libraries[@request.destination_library_code]&.contact_info ||
+    Settings.libraries[@patron_request.origin_library_code]&.contact_info ||
+      Settings.libraries[@patron_request.destination_library_code]&.contact_info ||
       Settings.libraries.default.contact_info || { email: 'sul-requests-support@stanford.edu' }
   end
 end
