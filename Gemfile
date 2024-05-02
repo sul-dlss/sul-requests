@@ -95,6 +95,8 @@ group :development, :test do
 
   gem 'webmock'
   gem 'warden-rspec-rails'
+
+  gem 'timecop'
 end
 
 group :production do

@@ -132,9 +132,6 @@ RSpec.describe 'Creating a request' do
       end
 
       it 'allows paging' do
-        # FIXME
-        skip('flappy') if ENV['CI']
-
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
 
         choose 'Pickup physical item'
@@ -163,7 +160,7 @@ RSpec.describe 'Creating a request' do
 
     context 'with stubbed paging schedule' do
       before do
-        travel_to Time.zone.local(2024, 4, 2, 12, 0, 0)
+        Timecop.travel(Time.zone.local(2024, 4, 2, 12, 0, 0))
 
         allow_any_instance_of(LibraryHours).to receive(:open?).and_return(true)
 
@@ -176,10 +173,11 @@ RSpec.describe 'Creating a request' do
         )
       end
 
-      it 'shows the estimated deliver dates', :js do
-        # FIXME
-        skip('flappy') if ENV['CI']
+      after do
+        Timecop.return
+      end
 
+      it 'shows the estimated deliver dates', :js do
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
 
         within '#earliestAvailableContainer' do
