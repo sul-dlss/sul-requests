@@ -127,12 +127,11 @@ module Folio
     end
 
     def blocked?
-      patron_blocks.fetch('automatedPatronBlocks').present?
+      patron_blocks.present?
     end
 
     def block_reasons
-      blocks = patron_blocks.fetch('automatedPatronBlocks', [])
-      blocks.map { |block| block['message'].include?('fine') ? 'outstanding fines' : 'overdue items' }
+      patron_blocks.map { |block| block['message'].include?('fine') ? 'outstanding fines' : 'overdue items' }
     end
 
     def fix_block_message
@@ -156,6 +155,7 @@ module Folio
 
     # Get all the proxies for this id, and not just the first one
     def all_proxy_group_info
+      @all_proxy_group_info ||= user_info.dig('stubs', 'all_proxy_group_info') # used for stubbing
       @all_proxy_group_info ||= self.class.folio_client.all_proxy_group_info(id)
     end
 
@@ -172,14 +172,17 @@ module Folio
     end
 
     def patron_blocks
-      @patron_blocks ||= self.class.folio_client.patron_blocks(id)
+      @patron_blocks ||= user_info.dig('stubs', 'patron_blocks') # used for stubbing
+      @patron_blocks ||= self.class.folio_client.patron_blocks(id).fetch('automatedPatronBlocks', [])
     end
 
     def proxy_info
+      @proxy_info ||= user_info.dig('stubs', 'proxy_info') # used for stubbing
       @proxy_info ||= self.class.folio_client.proxy_info(id)
     end
 
     def proxy_group_info
+      @proxy_group_info ||= user_info.dig('stubs', 'proxy_group_info') # used for stubbing
       @proxy_group_info ||= self.class.folio_client.proxy_group_info(id)
     end
 

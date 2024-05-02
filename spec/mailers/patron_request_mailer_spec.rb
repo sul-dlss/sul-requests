@@ -4,11 +4,7 @@ require 'rails_helper'
 
 RSpec.describe PatronRequestMailer do
   let(:mail) { described_class.confirmation_email(request) }
-  let(:patron) do
-    instance_double(Folio::Patron, id: '', display_name: 'Test', email: 'test@test.com',
-                                   patron_group_id: '3684a786-6671-4268-8ed0-9db82ebca60b',
-                                   allowed_request_types: ['Page'])
-  end
+  let(:patron) { build(:patron) }
   let(:request) do
     PatronRequest.new(instance_hrid: 'a12345', patron_email: patron.email, patron:, barcodes: ['12345678'],
                       origin_location_code: 'SAL3-STACKS', request_type:)
@@ -24,7 +20,7 @@ RSpec.describe PatronRequestMailer do
 
     it 'tests pickup confirmation email' do
       expect(mail.subject).to eq('Item Title - Stanford University Libraries request confirmation')
-      expect(mail.to).to eq(['test@test.com'])
+      expect(mail.to).to eq(['test@example.com'])
       expect(mail.from).to eq(['greencirc@stanford.edu'])
       expect(mail.body).to include('We received your pickup request!')
       expect(mail.body).to include('Item: Item Title')
@@ -36,7 +32,7 @@ RSpec.describe PatronRequestMailer do
 
     it 'tests scan confirmation email' do
       expect(mail.subject).to eq('Item Title - Stanford University Libraries request confirmation')
-      expect(mail.to).to eq(['test@test.com'])
+      expect(mail.to).to eq(['test@example.com'])
       expect(mail.from).to eq(['greencirc@stanford.edu'])
       expect(mail.body).to include('We received your scan request!')
       expect(mail.body).to include('Item: Item Title')
