@@ -285,3 +285,7 @@ label.btn-close {
   vertical-align: middle;
   margin-left: 1px;
 }
+
+.alert > p:last-of-type {
+  margin-bottom: 0;
+}

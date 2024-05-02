@@ -3,7 +3,7 @@
 </h1>
 
 <% if @request.active_messages.any? %>
-  <div class="alert alert-warning alert-dismissible" role="alert">
+  <div class="alert alert-warning alert-dismissible mt-4" role="alert">
     <%= render @request.active_messages %>
   </div>
 <% end %>
