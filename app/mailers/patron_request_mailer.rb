@@ -15,12 +15,6 @@ class PatronRequestMailer < ApplicationMailer
   end
 
   def from_address
-    %("Stanford Libraries Requests" <#{contact_info[:email]}>)
-  end
-
-  def contact_info
-    Settings.libraries[@patron_request.origin_library_code]&.contact_info ||
-      Settings.libraries[@patron_request.destination_library_code]&.contact_info ||
-      Settings.libraries.default.contact_info || { email: 'sul-requests-support@stanford.edu' }
+    %("Stanford Libraries Requests" <#{@patron_request.contact_info[:email] || 'sul-requests-support@stanford.edu'}>)
   end
 end
