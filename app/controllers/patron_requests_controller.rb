@@ -5,7 +5,7 @@
 ###
 class PatronRequestsController < ApplicationController
   layout 'application_new'
-  load_and_authorize_resource instance_name: :request
+  load_and_authorize_resource
   skip_authorize_resource only: :new
   before_action :assign_new_attributes, only: [:new]
   before_action :authorize_new_request, only: [:new]
@@ -16,12 +16,12 @@ class PatronRequestsController < ApplicationController
   def show; end
 
   def new
-    render 'unauthorized' unless can? :prepare, current_request
+    render 'unauthorized' unless can? :prepare, @patron_request
   end
 
   def create
-    if @request.save && @request.submit_later
-      redirect_to @request
+    if @patron_request.save && @patron_request.submit_later
+      redirect_to @patron_request
     else
       render 'new'
     end
@@ -29,8 +29,12 @@ class PatronRequestsController < ApplicationController
 
   protected
 
+  def current_request
+    @patron_request
+  end
+
   def assign_new_attributes
-    current_request.assign_attributes(**new_params)
+    @patron_request.assign_attributes(**new_params)
   end
 
   # SSO or library-id users don't need to re-login, but name/email users always need to provide their information
@@ -40,7 +44,7 @@ class PatronRequestsController < ApplicationController
   def authorize_new_request # rubocop:disable Metrics/AbcSize
     return if current_user.patron.present?
     return if params[:step].present? && current_user.patron.email.present?
-    return if current_request.aeon_page?
+    return if @patron_request.aeon_page?
 
     flash.now[:error] = t('sessions.login_by_sunetid.error_html') if sunetid_without_folio_account?
 
@@ -48,17 +52,13 @@ class PatronRequestsController < ApplicationController
   end
 
   def redirect_aeon_pages
-    return unless current_request.aeon_page? && current_request.finding_aid?
+    return unless @patron_request.aeon_page? && @patron_request.finding_aid?
 
-    redirect_to current_request.finding_aid
-  end
-
-  def current_request
-    @request
+    redirect_to @patron_request.finding_aid
   end
 
   def associate_request_with_patron
-    @request.patron = current_user.patron
+    @patron_request.patron = current_user.patron
   end
 
   def sunetid_without_folio_account?

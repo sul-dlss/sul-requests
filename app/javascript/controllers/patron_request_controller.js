@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import { Collapse } from "bootstrap"
 
 export default class extends Controller {
-  static targets = ['earliestAvailable', 'accordion', 'destination']
+  static targets = ['earliestAvailable', 'accordion', 'destination', 'proxyScanWarning']
 
   connect() {
     if (this.accordionTargets.length == 1) {
@@ -33,6 +33,16 @@ export default class extends Controller {
         this.disableRequiredInputs(el);
       }
     });
+  }
+
+  updateProxy(event) {
+    if (!this.hasProxyScanWarningTarget) return;
+
+    if (event.target.value == 'share') {
+      this.proxyScanWarningTarget.classList.remove('d-none')
+    } else {
+      this.proxyScanWarningTarget.classList.add('d-none')
+    }
   }
 
   // Temporarily disable required inputs that are children of the given element

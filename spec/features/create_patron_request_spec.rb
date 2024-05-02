@@ -7,15 +7,7 @@ RSpec.describe 'Creating a request' do
 
   let(:user) { create(:sso_user) }
   let(:bib_data) { build(:single_holding) }
-  let(:patron) do
-    instance_double(Folio::Patron, id: user.patron_key, username: 'auser', display_name: 'A User', exists?: true, email: nil,
-                                   patron_description: 'faculty',
-                                   patron_group_id: '503a81cd-6c26-400f-b620-14c08943697c',
-                                   allowed_request_types: ['Hold', 'Recall', 'Page'],
-                                   blocked?: true, fix_block_message: ['how to fix block'],
-                                   ilb_eligible?: true, block_reasons: ['there is a block'],
-                                   proxy_group_names: [])
-  end
+  let(:patron) { build(:patron) }
 
   before do
     stub_bib_data_json(bib_data)
@@ -79,7 +71,6 @@ RSpec.describe 'Creating a request' do
     context 'for a scan' do
       let(:bib_data) { build(:scannable_holdings) }
       let(:user) { create(:scan_eligible_user) }
-      let(:ldap_attributes) { { suAffiliation: Settings.scan_pilot_groups.first } }
 
       before do
         allow(current_user).to receive(:user_object).and_return(user)
@@ -135,7 +126,6 @@ RSpec.describe 'Creating a request' do
     context 'for an item that can be paged or scanned', :js do
       let(:bib_data) { build(:scannable_holdings) }
       let(:user) { create(:scan_eligible_user) }
-      let(:ldap_attributes) { { suAffiliation: Settings.scan_pilot_groups.first } }
 
       before do
         allow(current_user).to receive(:user_object).and_return(user)
@@ -227,11 +217,7 @@ RSpec.describe 'Creating a request' do
   context 'with a library ID user' do
     let(:stub_client) { FolioClient.new }
     let(:patron) do
-      instance_double(Folio::Patron, id: 'some-lib-id-uuid', display_name: 'A User', exists?: true, email: nil,
-                                     allowed_request_types: ['Hold', 'Page'],
-                                     patron_group_id: '985acbb9-f7a7-4f44-9b34-458c02a78fbc',
-                                     blocked?: false, fix_block_message: [],
-                                     patron_description: 'courtesy', ilb_eligible?: true, block_reasons: [], proxy_group_names: [])
+      build(:library_id_patron)
     end
 
     before do
@@ -261,14 +247,6 @@ RSpec.describe 'Creating a request' do
     end
 
     context 'when circ rules prevent any request on the item for the patron' do
-      let(:patron) do
-        instance_double(Folio::Patron, id: 'some-lib-id-uuid', display_name: 'A User', exists?: true, email: nil,
-                                       allowed_request_types: [], blocked?: false,
-                                       patron_group_id: '985acbb9-f7a7-4f44-9b34-458c02a78fbc',
-                                       fix_block_message: [],
-                                       patron_description: 'courtesy', ilb_eligible?: true, block_reasons: [], proxy_group_names: [])
-      end
-
       let(:bib_data) { build(:single_holding, items: [build(:item, effective_location: build(:law_location))]) }
 
       it 'goes to a dead-end page', :js do

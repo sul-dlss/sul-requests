@@ -29,7 +29,7 @@ RSpec.describe 'Status Page' do
 
     before do
       allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: user.library_id).and_return(
-        instance_double(Folio::Patron, id: nil, exists?: true)
+        instance_double(Folio::Patron, id: nil, exists?: true, patron_group_name: 'sul-purchased')
       )
     end
 

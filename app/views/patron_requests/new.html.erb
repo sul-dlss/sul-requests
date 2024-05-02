@@ -2,15 +2,15 @@
   <%= render 'user_header' %>
 <% end %>
 
-<% if current_request.active_messages.any? %>
-  <div class="alert alert-warning alert-dismissible" role="alert">
-    <%= render current_request.active_messages %>
+<% if @patron_request.active_messages.any? %>
+  <div class="alert alert-warning alert-dismissible mt-4" role="alert">
+    <%= render @patron_request.active_messages %>
   </div>
 <% end %>
 
-<h1 class="fw-semibold mt-4"><%= current_request.item_title %></h1>
-<% if current_request.items_in_location.one? %>
-  <% single_item = current_request.items_in_location.first %>
+<h1 class="fw-semibold mt-4"><%= @patron_request.item_title %></h1>
+<% if @patron_request.items_in_location.one? %>
+  <% single_item = @patron_request.items_in_location.first %>
   <div class="lead fw-normal mb-4">Call number: <%= callnumber_label(single_item) %></div>
   <% if single_item.public_note %>
     <span class="text-cardinal d-block ms-4">
@@ -19,17 +19,17 @@
   <% end %>
 <% end %>
 
-<%= form_for(@request,
+<%= form_for(@patron_request,
              data: { controller: 'patronRequest' },
              html: { class: 'col-lg-8 accordion' },
-             url: current_request.aeon_page? ? current_request.aeon_form_target : patron_requests_path(request: current_request),
-             method: current_request.finding_aid? ? 'GET' : 'POST') do |f| %>
+             url: @patron_request.aeon_page? ? @patron_request.aeon_form_target : patron_requests_path,
+             method: @patron_request.finding_aid? ? 'GET' : 'POST') do |f| %>
   <% step_enum = Enumerator.new { |y| n = 0; loop { y << (n += 1) } } %>
   <% current_step = nil %>
   <% scan_or_pickup_step = nil %>
   <%= f.hidden_field :instance_hrid %>
   <%= f.hidden_field :origin_location_code %>
-  <% if current_request.aeon_page? %>
+  <% if f.object.aeon_page? %>
     <%= f.hidden_field :aeon_system_id, name: 'SystemID', value: 'sul-requests'  %>
     <%= f.hidden_field :aeon_request_form, name: 'WebRequestForm', value: 'GenericRequestMonograph' %>
     <%= f.hidden_field :aeon_document_type, name: 'DocumentType', value: 'Monograph' %>
@@ -40,11 +40,11 @@
     <%= f.hidden_field :aeon_date, name: 'ItemDate', value: f.object.bib_data.pub_date %>
     <%= f.hidden_field :aeon_link, name: 'ItemInfo1', value: f.object.bib_data.view_url %>
   <% end %>
-  <% if @request.items_in_location.one? || f.object.barcodes&.one? %>
-    <% single_item = @request.items_in_location.first %>
+  <% if f.object.items_in_location.one? || f.object.barcodes&.one? %>
+    <% single_item = f.object.items_in_location.first %>
     <% single_barcode = f.object.barcodes&.first || (single_item&.barcode || single_item&.id) %>
     <%= f.hidden_field :barcode, value: single_barcode %>
-    <% if current_request.aeon_page? %>
+    <% if f.object.aeon_page? %>
       <%= f.hidden_field :aeon_request_index, name: 'Request', value: 1 %>
       <%= f.hidden_field :aeon_callnumber, name: 'CallNumber_1', value: single_item.callnumber %>
       <%= f.hidden_field :aeon_barcode, name: 'ItemNumber_1', value: single_barcode %>
@@ -52,17 +52,17 @@
   <% end %>
 
   <!-- aeon items usage note -->
-  <% if current_request.aeon_page? %>
+  <% if f.object.aeon_page? %>
   <div class="alert alert-warning alert-dismissible shadow-sm d-flex gap-3 align-items-center mt-3">
     <i class="bi bi-exclamation-triangle-fill fs-3"></i>
     <div>
       <span class="fw-bold">
-        <%= t('aeon_pages.info_modal.header', library: LibraryLocation.library_name_by_code(aeon_reading_room_code)) %>
+        <%= t('aeon_pages.info_modal.header', library: LibraryLocation.library_name_by_code(f.object.aeon_reading_room_code)) %>
       </span>
       <br/>
       <span>
         <%= t('aeon_pages.info_modal.reading_room_info') %>
-        <%= t('aeon_pages.info_modal.more_details_html', library: LibraryLocation.library_name_by_code(aeon_reading_room_code), reading_room_url: Settings.libraries[aeon_reading_room_code].reading_room_url) %>
+        <%= t('aeon_pages.info_modal.more_details_html', library: LibraryLocation.library_name_by_code(f.object.aeon_reading_room_code), reading_room_url: Settings.libraries[f.object.aeon_reading_room_code].reading_room_url) %>
       </span>
     </div>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -70,7 +70,7 @@
   <% end %>
 
   <!-- proxy -->
-  <% if current_request.patron.proxy_group_names.any? && !current_request.aeon_page? %>
+  <% if f.object.patron.proxy_group_names.any? && !f.object.aeon_page? %>
     <%= render AccordionStepComponent.new(id: 'proxy', step_index: step_enum.next, form_id: f.id) do |c| %>
       <% c.with_title.with_content('Proxy/Sponsor') %>
       <% c.with_body do %>
@@ -99,7 +99,7 @@
   <% end %>
 
   <!-- item selector -->
-  <% if f.object.items_in_location.many? && (can?(:request_scan, f.object) || can?(:prepare, f.object)) && !current_request.finding_aid? %>
+  <% if f.object.items_in_location.many? && (can?(:request_scan, f.object) || can?(:prepare, f.object)) && !f.object.finding_aid? %>
     <div data-controller="itemselector" data-itemselector-request-type-value="pickup" data-action="itemselector:change->patronRequest#showItemSelector">
     <%= render AccordionStepComponent.new(id: 'barcodes', step_index: step_enum.next, form_id: f.id, data: { 'switch-selector': true }) do |c| %>
       <% c.with_title.with_content('Select item(s)') %>
@@ -129,7 +129,7 @@
                   <td class="align-middle">
                     <label>
                       <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: cannot?(:request, item), data: { required: true, 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-duequeueinfo-param': queue_length_display(item),  'itemselector-label-param': callnumber_label(item), action: 'itemselector#change' } }, item.barcode || item.id, "" %>
-                      <% if current_request.aeon_page? %>
+                      <% if f.object.aeon_page? %>
                         <%= f.hidden_field "aeon_callnumber_#{item.callnumber}", disabled: true, name: "CallNumber_#{index}", value: item.callnumber, data: { toggle: true } %>
                         <%= f.hidden_field "aeon_barcode_#{item.barcode}", disabled: true, name: "ItemNumber_#{index}", value: item.barcode, data: { toggle: true } %>
                         <%= f.hidden_field "aeon_request_#{index}", disabled: true, name: 'Request', value: index, data: { toggle: true } %>
@@ -160,8 +160,8 @@
     <% end %>
 
     <!-- pickup request (multiple items) -->
-    <% if can?(:prepare, f.object) && !current_request.aeon_page? %>
-      <%= render AccordionStepComponent.new(request: @request, id: 'pickup', classes: [('d-none' if scan_pickup)], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'pickup' }, submit: true) do |c| %>
+    <% if can?(:prepare, f.object) && !f.object.aeon_page? %>
+      <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', classes: [('d-none' if scan_pickup)], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'pickup' }, submit: true) do |c| %>
         <% c.with_title.with_content('Pickup request') %>
         <% c.with_body do %>
           <div class="selected-items-group">
@@ -176,7 +176,7 @@
                         <% if f.object.pickup_destinations.one? && f.object.earliest_delivery_estimate %>
                           <%= f.object.earliest_delivery_estimate['display_date'] %>
                         <% else %>
-                          <%= turbo_frame_tag('earliestAvailable', src: paging_schedule_url(origin: @request.origin_library_code, destination: f.object.service_point_code || f.object.default_service_point_code), data: { 'patronRequest-target' => 'earliestAvailable'}) do %>
+                          <%= turbo_frame_tag('earliestAvailable', src: paging_schedule_url(origin: f.object.origin_library_code, destination: f.object.service_point_code || f.object.default_service_point_code), data: { 'patronRequest-target' => 'earliestAvailable'}) do %>
                             Loading..
                           <% end %>
                         <% end %>
@@ -221,7 +221,7 @@
 
   <!-- scan request (single or multiitem) -->
   <% if can? :request_scan, f.object %>
-    <%= render AccordionStepComponent.new(request: @request, id: 'scan', classes: [('d-none' if scan_pickup)], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'scan' }, submit: true) do |c| %>
+    <%= render AccordionStepComponent.new(request: f.object, id: 'scan', classes: [('d-none' if scan_pickup)], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'scan' }, submit: true) do |c| %>
       <% c.with_title.with_content('Scan request') %>
       <% c.with_body do %>
         <%= render 'scan_options', f: %>
@@ -230,9 +230,9 @@
   <% end %>
 
   <!-- aeon request -->
-  <% if current_request.aeon_page? %>
+  <% if f.object.aeon_page? %>
     <%= render AccordionStepComponent.new(
-      request: @request,
+      request: f.object,
       id: 'aeon',
       step_index: step_enum.next,
       form_id: f.id,
@@ -242,14 +242,14 @@
       cancel: f.object.items_in_location.many?) do |c| %>
       <% c.with_title.with_content('Aeon request') %>
       <% c.with_body do %>
-        <% if f.object.items_in_location.many? && !current_request.finding_aid? %>
+        <% if f.object.items_in_location.many? && !f.object.finding_aid? %>
         <div class="selected-items-group">
           <div class="card">
             <div class="card-body bg-light rounded">
               <div class="d-flex flex-column flex-xl-row align-items-start justify-content-xl-between align-items-xl-center mb-3 gap-2 gap-xl-0">
                 <div class="text-black fw-semibold">Selected items</div>
                   <div class="text-cardinal">
-                    <span data-patronRequest-target="destination">Use in: <%= aeon_reading_room_name %></span>
+                    <span data-patronRequest-target="destination">Use in: <%= f.object.aeon_reading_room_name %></span>
                   </div>
               </div>
               <ul data-itemselector-target="availableItems" class="list-unstyled d-flex flex-wrap gap-2 bg-white p-3 m-0"></ul>
@@ -271,7 +271,7 @@
           <p><%= t('aeon_pages.info_modal.how_to.body') %></p>
           <p><%= t('aeon_pages.info_modal.steps.header') %></p>
           <ol class="dialog-steps">
-            <% if current_request.finding_aid? %>
+            <% if f.object.finding_aid? %>
               <%= t('aeon_pages.info_modal.steps.finding_aid_html') %>
             <% else %>
               <%= t('aeon_pages.info_modal.steps.single_vol_html') %>
@@ -284,8 +284,8 @@
   </div>
 
   <!-- pickup request (single item )-->
-  <% if (f.object.items_in_location.one? || f.object.title_only?) && can?(:prepare, f.object) && !current_request.aeon_page? %>
-    <%= render AccordionStepComponent.new(request: @request, id: 'pickup', classes: [('d-none' if scan_pickup)], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'pickup' }, submit: true) do |c| %>
+  <% if (f.object.items_in_location.one? || f.object.title_only?) && can?(:prepare, f.object) && !f.object.aeon_page? %>
+    <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', classes: [('d-none' if scan_pickup)], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'pickup' }, submit: true) do |c| %>
       <% c.with_title.with_content('Pickup request') %>
       <% c.with_body do %>
         <div id="earliestAvailableContainer" class="text-cardinal mb-3" aria-live="polite">
@@ -293,7 +293,7 @@
           <% if f.object.pickup_destinations.one? && f.object.earliest_delivery_estimate %>
             <%= f.object.earliest_delivery_estimate['display_date'] %>
           <% elsif f.object.any_items_avaliable? %>
-            <%= turbo_frame_tag('earliestAvailable', src: paging_schedule_url(origin: @request.origin_library_code, destination: f.object.service_point_code || f.object.default_service_point_code), data: { 'patronRequest-target' => 'earliestAvailable'}) do %>
+            <%= turbo_frame_tag('earliestAvailable', src: paging_schedule_url(origin: f.object.origin_library_code, destination: f.object.service_point_code || f.object.default_service_point_code), data: { 'patronRequest-target' => 'earliestAvailable'}) do %>
               Loading..
             <% end %>
           <% else %>

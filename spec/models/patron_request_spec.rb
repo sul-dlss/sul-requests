@@ -36,6 +36,12 @@ RSpec.describe PatronRequest do
     it { is_expected.to be_scan }
   end
 
+  describe '#proxy?' do
+    let(:attr) { { proxy: 'share' } }
+
+    it { is_expected.to be_proxy }
+  end
+
   describe '#aeon_page?' do
     let(:attr) { { instance_hrid: 'a12345', origin_location_code: 'SAL3-PAGE-AS' } }
     let(:bib_data) { build(:sal3_as_holding) }
@@ -100,6 +106,14 @@ RSpec.describe PatronRequest do
     end
   end
 
+  describe '#barcodes=' do
+    it 'removes blank barcodes (possibly present in form submissions)' do
+      request.barcodes = ['1234567890', '', '123']
+
+      expect(request.barcodes).to eq(['1234567890', '123'])
+    end
+  end
+
   describe '#pickup_service_point' do
     let(:bib_data) { build(:sal3_holdings) }
 
@@ -156,6 +170,136 @@ RSpec.describe PatronRequest do
 
       it 'only includes the allowed service points' do
         expect(request.pickup_destinations).to contain_exactly('MEDIA-CENTER', 'MUSIC')
+      end
+    end
+  end
+
+  describe '#mediateable?' do
+    let(:bib_data) { build(:single_mediated_holding) }
+    let(:attr) { { instance_hrid: 'a1234', origin_location_code: 'ART-LOCKED-LARGE' } }
+
+    it { is_expected.to be_mediateable }
+  end
+
+  describe '#requires_needed_date?' do
+    context 'with a mediated item' do
+      let(:bib_data) { build(:single_mediated_holding) }
+      let(:attr) { { instance_hrid: 'a1234', origin_location_code: 'ART-LOCKED-LARGE' } }
+
+      it { is_expected.to be_requires_needed_date }
+    end
+
+    context 'with a PAGE-MP mediated item' do
+      let(:bib_data) { build(:page_mp_holdings) }
+      let(:attr) { { instance_hrid: 'a1234', origin_location_code: 'SAL3-PAGE-MP' } }
+
+      it { is_expected.not_to be_requires_needed_date }
+    end
+
+    context 'with a recall' do
+      let(:bib_data) { build(:checkedout_holdings) }
+      let(:attr) { { instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS', barcode: '87654321' } }
+
+      it { is_expected.to be_requires_needed_date }
+    end
+
+    context 'with an ordinary item' do
+      let(:bib_data) { build(:checkedout_holdings) }
+      let(:attr) { { instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS', barcode: '12345678' } }
+
+      it { is_expected.not_to be_requires_needed_date }
+    end
+  end
+
+  describe '#destination_library_code' do
+    let(:bib_data) { build(:sal3_holdings) }
+    let(:attr) { { origin_location_code: 'SAL3-STACKS' } }
+
+    it 'is the library code for the service desk' do
+      request.service_point_code = 'GREEN-LOAN'
+      expect(request.destination_library_code).to eq 'GREEN'
+
+      request.service_point_code = 'MUSIC'
+      expect(request.destination_library_code).to eq 'MUSIC'
+    end
+  end
+
+  describe '#destination_library_pseudopatron' do
+    let(:bib_data) { build(:sal3_holdings) }
+    let(:attr) { { origin_location_code: 'SAL3-STACKS' } }
+    let(:pseudo) { instance_double(Folio::Patron, id: 'uuid') }
+
+    it 'is the pseudopatron associated with the pickup library' do
+      allow(Folio::Patron).to receive(:find_by).with(library_id: 'HOLD@GR').and_return(pseudo)
+      request.service_point_code = 'GREEN-LOAN'
+      expect(request.destination_library_pseudopatron).to eq pseudo
+    end
+  end
+
+  describe '#folio_location' do
+    let(:bib_data) { build(:sal3_holdings) }
+    let(:attr) { { origin_location_code: 'SAL3-STACKS' } }
+
+    it 'is the FOLIO location for the origin of the material' do
+      expect(request.folio_location).to have_attributes(name: 'SAL3 Stacks')
+    end
+  end
+
+  describe '#origin_library_code' do
+    let(:bib_data) { build(:sal3_holdings) }
+    let(:attr) { { origin_location_code: 'SAL3-STACKS' } }
+
+    it 'is the FOLIO library code for the origin of the material' do
+      expect(request.origin_library_code).to eq('SAL3')
+    end
+  end
+
+  describe '#patron' do
+    context 'with a patron' do
+      let(:attr) { { patron_id: 'uuid' } }
+      let(:patron) { instance_double(Folio::Patron) }
+
+      before do
+        allow(Folio::Patron).to receive(:find_by).with(patron_key: 'uuid').and_return(patron)
+      end
+
+      it 'returns the FOLIO patron for the request' do
+        expect(request.patron).to eq patron
+      end
+    end
+
+    context 'with a name/email user' do
+      let(:attr) { { patron_name: 'Test', patron_email: 'test@example.com' } }
+
+      it 'create a NullPatron from the stored attributes' do
+        expect(request.patron).to have_attributes(blank?: true, display_name: 'Test', email: 'test@example.com')
+      end
+    end
+  end
+
+  describe '#patron=' do
+    let(:patron) { instance_double(Folio::Patron, id: 'uuid', display_name: 'Test', email: 'test@example.com') }
+
+    it 'stores patron information with the request' do
+      request.patron = patron
+
+      expect(request).to have_attributes(patron_id: 'uuid', patron_name: 'Test', patron_email: 'test@example.com')
+    end
+  end
+
+  describe '#request_comments' do
+    let(:attr) { { patron_name: 'Test', patron_email: 'test@example.com' } }
+
+    it 'includes the visitor contact information' do
+      expect(request.request_comments).to eq 'Test <test@example.com>'
+    end
+
+    context 'with a request shared with a proxy group' do
+      let(:attr) { { patron:, proxy: 'share' } }
+      let(:patron) { instance_double(Folio::Patron, id: 'uuid', display_name: 'Test', email: 'test@example.com') }
+
+      it 'includes a comment for the pickup service point staff' do
+        expect(request.request_comments).to include 'PROXY PICKUP OK'
       end
     end
   end

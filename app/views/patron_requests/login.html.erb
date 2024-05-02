@@ -1,10 +1,10 @@
 <h1 class="fw-semibold my-3">
-  <%= current_request.item_title %>
+  <%= @patron_request.item_title %>
 </h1>
 
-<% if @request.active_messages.any? %>
-  <div class="alert alert-warning alert-dismissible" role="alert">
-    <%= render @request.active_messages %>
+<% if @patron_request.active_messages.any? %>
+  <div class="alert alert-warning alert-dismissible mt-4" role="alert">
+    <%= render @patron_request.active_messages %>
   </div>
 <% end %>
 
@@ -67,7 +67,7 @@
         <div class="card border-0 mt-3 mt-sm-0">
             <h2 class="card-header bg-white border-0 h3">Visitor</h2>
             <div class="card-body pt-0">
-                <% if Ability.anonymous.cannot? :prepare, @request %>
+                <% if Ability.anonymous.cannot? :prepare, @patron_request %>
                     <div class="alert alert-danger text-cardinal">
                         This item is not available to request for visitors. If you have a SUNet ID or library card, please login using one of those methods.
                     </div>
@@ -82,8 +82,8 @@
                 </a></p>
                 <details>
 
-                    <summary class="btn btn-link p-0<% if Ability.anonymous.cannot? :prepare, @request %> disabled<%end %>">Proceed as visitor <i class="bi bi-chevron-right"></i></summary>
-                    <% if Ability.anonymous.can? :prepare, @request %>
+                    <summary class="btn btn-link p-0<% if Ability.anonymous.cannot? :prepare, @patron_request %> disabled<%end %>">Proceed as visitor <i class="bi bi-chevron-right"></i></summary>
+                    <% if Ability.anonymous.can? :prepare, @patron_request %>
                         <%= form_tag register_visitor_url, method: 'POST', class: 'form p-3', data: { turbo: false } do %>
                             <%= hidden_field_tag :referrer, new_patron_request_path(new_params.merge(step: 'select')) %>
                             <div class="form-group mt-2">

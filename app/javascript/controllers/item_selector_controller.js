@@ -118,14 +118,14 @@ export default class extends Controller {
     return items.map((item) => {
       return `
         <li class="d-flex gap-2 w-100">
-          <span class="hstack gap-2 border bg-light rounded-pill px-3">
+          <span class="hstack gap-2 border bg-light rounded-pill px-3 flex-shrink-0">
             <small class="py-1">
               ${item.label}
             </small>
             <span class="vr"></span>
             <button data-action="${this.identifier}#unchecked" data-${this.identifier}-id-param="${item.id}" type="button" class="btn-close py-1 pill-close" aria-label="Remove ${item.label}"></button>
           </span>
-          ${item.duequeueinfo && !scan ? `<span class="text-cardinal d-block align-self-center">${item.duequeueinfo}</span>` : ''}
+          ${item.duequeueinfo && !scan ? `<span class="text-cardinal d-block align-self-center flex-shrink-2">${item.duequeueinfo}</span>` : ''}
         </li>
       `;
     }).join('');

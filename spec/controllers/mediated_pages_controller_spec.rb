@@ -77,7 +77,7 @@ RSpec.describe MediatedPagesController do
 
       it 'is allowed if the library ID field is filled out' do
         allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: '12345').and_return(
-          instance_double(Folio::Patron, id: nil, email: nil, exists?: true, proxy?: false)
+          instance_double(Folio::Patron, id: nil, email: nil, exists?: true, proxy?: false, patron_group_name: 'sul-purchased')
         )
 
         put :create, params: {

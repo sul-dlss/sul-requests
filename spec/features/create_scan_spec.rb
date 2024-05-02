@@ -30,8 +30,12 @@ RSpec.describe 'Create Scan Request' do
   end
 
   describe 'by an eligible SSO user' do
+    let(:patron) { build(:pilot_group_patron) }
+    let(:user) { create(:scan_eligible_user) }
+
     before do
-      stub_current_user(create(:scan_eligible_user))
+      stub_current_user(user)
+      allow(user).to receive(:patron).and_return(patron)
     end
 
     it 'displays a copyright restrictions notice in a collapse', :js do

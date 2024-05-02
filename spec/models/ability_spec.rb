@@ -161,7 +161,8 @@ RSpec.describe Ability do
     context 'with a request for an item that is not requestable by non-affiliates' do
       let(:request) { PatronRequest.new(instance_hrid: 'a1234', origin_location_code: 'LAW-STACKS1') }
       let(:patron) do
-        instance_double(Folio::Patron, id: '', patron_group_id: '3684a786-6671-4268-8ed0-9db82ebca60b', allowed_request_types: ['Page'])
+        instance_double(Folio::Patron, id: '', patron_group_id: '3684a786-6671-4268-8ed0-9db82ebca60b',
+                                       patron_group_name: 'staff', allowed_request_types: ['Page'])
       end
 
       before do
@@ -195,13 +196,20 @@ RSpec.describe Ability do
 
     describe 'who is in the scan and deliver pilot group' do
       let(:user) { create(:scan_eligible_user) }
+      let(:patron) { build(:pilot_group_patron) }
+
+      before do
+        allow(user).to receive(:patron).and_return(patron)
+      end
 
       it { is_expected.to be_able_to(:create, scan) }
     end
 
     describe 'who is a student' do
+      let(:patron) { build(:student_patron) }
+
       before do
-        user.affiliation = 'stanford:student'
+        allow(user).to receive(:patron).and_return(patron)
       end
 
       it { is_expected.to be_able_to(:create, scan) }
