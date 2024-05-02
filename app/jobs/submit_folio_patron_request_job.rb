@@ -55,7 +55,7 @@ class SubmitFolioPatronRequestJob < ApplicationJob
     if request.proxy? && request.patron.proxy?
       request.patron.proxy_sponsor_user_id
     else
-      request.patron&.id || request.destination_library_pseudopatron_code
+      request.patron&.id || request.destination_library_pseudopatron&.id
     end
   end
 
