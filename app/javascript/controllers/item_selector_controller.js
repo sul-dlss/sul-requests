@@ -1,11 +1,35 @@
 import { Controller } from "@hotwired/stimulus";
 import { Toast } from 'bootstrap';
 
+function camelize(value) {
+  return value.replace(/(?:[_-])([a-z0-9])/g, (_, char) => char.toUpperCase())
+}
+
+function typecast(value) {
+  try {
+    return JSON.parse(value)
+  } catch (o_O) {
+    return value
+  }
+}
+
 export default class extends Controller {
   static targets = ['items', 'toast', 'availableItems', 'unavailableItems', 'scanItem', 'unavailableScanItemEstimate', 'availableScanItemEstimate']
   static values = { requestType: String, selectedItems: Array }
 
   connect() { }
+
+  itemsTargetConnected(element) {
+    if (!element.checked) return;
+
+    const params = this.getStimulusParams(element);
+
+    if (element.type == 'radio') {
+      this.selectedItemsValue = [params];
+    } else if (!this.selectedItemsValue.find((item) => item.id == params.id)) {
+      this.selectedItemsValue = this.selectedItemsValue.concat([params]);
+    }
+  }
 
   filter(event) {
     const filterText = event.currentTarget.value;
@@ -129,5 +153,20 @@ export default class extends Controller {
         </li>
       `;
     }).join('');
+  }
+
+  getStimulusParams(element) {
+    const params = {}
+    const pattern = new RegExp(`^data-${this.identifier}-(.+)-param$`, "i")
+
+    for (const { name, value } of Array.from(element.attributes)) {
+      const match = name.match(pattern)
+      const key = match && match[1]
+      if (key) {
+        params[camelize(key)] = typecast(value)
+      }
+    }
+
+    return params;
   }
 }
