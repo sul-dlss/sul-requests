@@ -88,7 +88,7 @@ class PatronRequest < ApplicationRecord
   # the origin location if it's public-facing, or the destination library if it's not.
   # @return [Hash] phone + email
 
-  # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
   def contact_info
     return Settings.libraries[scan_code]&.contact_info if request_type == 'scan'
 
@@ -98,7 +98,7 @@ class PatronRequest < ApplicationRecord
       Settings.libraries.default.contact_info
   end
 
-  # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
   # @return [Folio::ServicePoint] the selected (or default) service point for pickup
   def pickup_service_point
