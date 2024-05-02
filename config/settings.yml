@@ -2,29 +2,6 @@
 super_admin_groups: ['sul:requests-super-admin']
 site_admin_groups: ['sul:requests-site-admin']
 
-scan_pilot_groups:
-  - 'stanford:student'
-  - 'stanford:student:postdoc'
-  - 'stanford:student:incoming'
-  - 'stanford:student:contingent'
-  - 'stanford:faculty'
-  - 'stanford:faculty:onleave'
-  - 'stanford:faculty:emeritus'
-  - 'stanford:faculty:otherteaching'
-  - 'stanford:faculty:affiliate'
-  - 'stanford:faculty:slac'
-  - 'stanford:faculty:retired'
-  - 'stanford:faculty:nonactive'
-  - 'stanford:staff'
-  - 'stanford:staff:academic'
-  - 'stanford:staff:onleave'
-  - 'stanford:staff:emeritus'
-  - 'stanford:staff:otherteaching'
-  - 'stanford:staff:affiliate'
-  - 'stanford:affiliate:fellow'
-  - 'stanford:affiliate:visitscholarvs'
-  - 'stanford:affiliate:visitscholarvt'
-
 # LDAP Workgroups for origin specific mediation
 origin_admin_groups:
   ART: ['sul:requests-art']
@@ -69,6 +46,17 @@ folio:
   standard_patron_group_names: ['staff', 'faculty', 'undergrad', 'graduate']
   default_service_point: 'GREEN-LOAN'
   ilb_eligible_patron_groups:
+    - courtesy
+    - faculty
+    - fellow
+    - graduate
+    - lane-resident
+    - postdoctoral
+    - staff
+    - staff-casual
+    - undergrad
+    - visiting-scholar
+  scan_pilot_groups:
     - courtesy
     - faculty
     - fellow

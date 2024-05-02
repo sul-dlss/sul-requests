@@ -31,6 +31,18 @@ FactoryBot.define do
     patronGroup { '985acbb9-f7a7-4f44-9b34-458c02a78fbc' }
   end
 
+  factory :pilot_group_patron, parent: :patron do
+    id { 'some-lib-id-uuid' }
+    group = Folio::Types.patron_groups.values.select { |groupval| groupval['group'] == Settings.folio.scan_pilot_groups.first }
+    patronGroup { group.first['id'] }
+  end
+
+  factory :student_patron, parent: :patron do
+    id { 'some-lib-id-uuid' }
+    group = Folio::Types.patron_groups.values.select { |groupval| groupval['group'] == 'undergrad' }
+    patronGroup { group.first['id'] }
+  end
+
   factory :blocked_patron, parent: :patron do
     stubs do
       {

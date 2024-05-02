@@ -71,7 +71,6 @@ RSpec.describe 'Creating a request' do
     context 'for a scan' do
       let(:bib_data) { build(:scannable_holdings) }
       let(:user) { create(:scan_eligible_user) }
-      let(:ldap_attributes) { { suAffiliation: Settings.scan_pilot_groups.first } }
 
       before do
         allow(current_user).to receive(:user_object).and_return(user)
@@ -127,7 +126,6 @@ RSpec.describe 'Creating a request' do
     context 'for an item that can be paged or scanned', :js do
       let(:bib_data) { build(:scannable_holdings) }
       let(:user) { create(:scan_eligible_user) }
-      let(:ldap_attributes) { { suAffiliation: Settings.scan_pilot_groups.first } }
 
       before do
         allow(current_user).to receive(:user_object).and_return(user)

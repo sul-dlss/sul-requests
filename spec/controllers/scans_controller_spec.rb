@@ -96,9 +96,12 @@ RSpec.describe ScansController do
 
     describe 'by eligible users' do
       let(:user) { create(:scan_eligible_user) }
+      let(:patron) { build(:pilot_group_patron) }
 
       before do
         stub_bib_data_json(build(:scannable_holdings))
+
+        allow(user).to receive(:patron).and_return(patron)
 
         post :create, params: {
           request: {
