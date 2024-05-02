@@ -50,6 +50,9 @@
       <%= f.hidden_field :aeon_barcode, name: 'ItemNumber_1', value: single_barcode %>
     <% end %>
   <% end %>
+  <%# only allow submitting on enter if the final submit button is focused %>
+  <%# see: https://stackoverflow.com/a/51507806 %>
+  <button type="submit" disabled style="display: none" aria-hidden="true"></button>
 
   <!-- aeon items usage note -->
   <% if f.object.aeon_page? %>
