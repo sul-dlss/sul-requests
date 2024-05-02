@@ -368,10 +368,6 @@ class PatronRequest < ApplicationRecord
   end
   # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
-  def notify_ilb!
-    # TODO?
-  end
-
   # @!endgroup
 
   private

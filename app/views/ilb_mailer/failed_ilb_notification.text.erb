@@ -1,0 +1,25 @@
+On <%= l @patron_request.created_at, format: :short %>, <%= @patron_request.patron.display_name %> <<%= @patron_request.patron.email %>> requested the following:
+
+https://searchworks.stanford.edu/view/<%= @patron_request.instance_hrid %>
+
+However, there was a problem with the ILLiad API request:
+
+<%= @illiad_response&.dig('Message') %>
+
+<% if @patron_request.scan? %>
+  Title:
+  <%= @patron_request.scan_title %>
+
+  Author(s):
+  <%= @patron_request.scan_authors %>
+
+  Page range:
+  <%= @patron_request.scan_page_range %>
+<% end %>
+
+You can view the status and details of the request here:
+
+<%= url_for(@patron_request) %>
+
+Systems will try to improve the ILLiad request process, but in the meantime please create a transaction in ILLiad manually for:
+ILLiad Username: <%= @patron_request.patron.username %>
