@@ -89,7 +89,7 @@
       <% end %>
     <% end %>
 
-    <% if f.object.title_only? || f.object.items_in_location.one? %>
+    <% if f.object.items_in_location.one? %>
       <%= render AccordionStepComponent.new(id: 'scan-or-pickup-placeholder', form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'none' }) do |c| %>
         <% c.with_title.with_content('Scan or pickup request') %>
       <% end %>
@@ -128,7 +128,7 @@
                 <tr data-sortby-status="<%= item.status_text.downcase.gsub(' ', '_') %>" data-sortby-callnumber="<%= index %>" >
                   <td class="align-middle">
                     <label>
-                      <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: cannot?(:request, item), data: { required: true, 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-duequeueinfo-param': queue_length_display(item),  'itemselector-label-param': callnumber_label(item), action: 'itemselector#change' } }, item.barcode || item.id, "" %>
+                      <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: cannot?(:request, item), data: { required: true, 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-duequeueinfo-param': queue_length_display(instance, item),  'itemselector-label-param': callnumber_label(item), action: 'itemselector#change' } }, item.barcode || item.id, "" %>
                       <% if f.object.aeon_page? %>
                         <%= f.hidden_field "aeon_callnumber_#{item.callnumber}", disabled: true, name: "CallNumber_#{index}", value: item.callnumber, data: { toggle: true } %>
                         <%= f.hidden_field "aeon_barcode_#{item.barcode}", disabled: true, name: "ItemNumber_#{index}", value: item.barcode, data: { toggle: true } %>
@@ -314,11 +314,8 @@
             <% end %>
         <% end %>
          <% if f.object.title_only? %>
-            <!--p>
-            After submitting your request, you will receive an email confirmation. Additionally, you will be notified by email once the item is ready for your visit.
-            </p-->
             <%= f.label :needed_date, 'Not needed after:', :class => 'required-label py-2' %>
-            <%= f.date_field :needed_date, :required => true, value: f.object.title_request_expiration_date,  min: f.object.title_request_expiration_date, class: 'd-block rounded border' %>
+            <%= f.date_field :needed_date, :required => true, value: f.object.earliest_delivery_estimate['date'],  min: f.object.earliest_delivery_estimate['date'], class: 'd-block rounded border' %>
         <% end %>
         <%= render 'request_preferences', f: %>
       <% end %>
