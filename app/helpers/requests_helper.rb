@@ -45,7 +45,9 @@ module RequestsHelper
     end
   end
 
-  def queue_length_display(item, prefix: nil)
+  def queue_length_display(item, prefix: nil, title_only: false)
+    return "#{prefix}On Order | No waitlist" if title_only
+
     return '' if item.available?
 
     item_status = item.checked_out? ? "Checked out - Due #{item.due_date}" : item.status

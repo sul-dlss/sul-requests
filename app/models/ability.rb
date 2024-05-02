@@ -110,8 +110,13 @@ class Ability
       can :scan, Folio::Item, &:scannable?
 
       can :request_scan, PatronRequest do |request|
-        request.items_in_location.any? do |item|
-          can? :scan, item
+        # For title level requests, follow a different path to assess scannability
+        if request.title_only?
+          request.title_only_scannable?
+        else
+          request.items_in_location.any? do |item|
+            can? :scan, item
+          end
         end
       end
     end

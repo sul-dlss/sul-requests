@@ -89,7 +89,7 @@
       <% end %>
     <% end %>
 
-    <% if f.object.items_in_location.one? %>
+    <% if f.object.title_only? || f.object.items_in_location.one? %>
       <%= render AccordionStepComponent.new(id: 'scan-or-pickup-placeholder', form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'none' }) do |c| %>
         <% c.with_title.with_content('Scan or pickup request') %>
       <% end %>
@@ -220,6 +220,8 @@
   <% end %>
 
   <!-- scan request (single or multiitem) -->
+  SCAN?
+  <%= (can? :request_scan, f.object).to_s %>
   <% if can? :request_scan, f.object %>
     <%= render AccordionStepComponent.new(request: @request, id: 'scan', classes: [('d-none' if scan_pickup)], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'scan' }, submit: true) do |c| %>
       <% c.with_title.with_content('Scan request') %>
@@ -284,7 +286,7 @@
   </div>
 
   <!-- pickup request (single item )-->
-  <% if f.object.items_in_location.one? && can?(:prepare, f.object) && !current_request.aeon_page? %>
+  <% if (f.object.items_in_location.one? || f.object.title_only?) && can?(:prepare, f.object) && !current_request.aeon_page? %>
     <%= render AccordionStepComponent.new(request: @request, id: 'pickup', classes: [('d-none' if scan_pickup)], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'pickup' }, submit: true) do |c| %>
       <% c.with_title.with_content('Pickup request') %>
       <% c.with_body do %>
@@ -300,7 +302,7 @@
             No date/time estimate
           <% end %>
           <div>
-            <%= queue_length_display(f.object.items_in_location.first, prefix: 'Item status: ') %>
+            <%= queue_length_display(f.object.items_in_location.first, prefix: 'Item status: ', title_only: f.object.title_only?) %>
           </div>
         </div>
         <%= render 'pickup_destination', f: %>
@@ -312,6 +314,13 @@
                 <%= f.label :needed_date, 'I plan to visit on:', :class => 'required-label py-2' %>
                 <%= f.date_field :needed_date, :required => true, value:  f.object.earliest_delivery_estimate['date'], min: f.object.earliest_delivery_estimate['date'], class: 'd-block rounded border' %>
             <% end %>
+        <% end %>
+         <% if f.object.title_only? %>
+            <!--p>
+            After submitting your request, you will receive an email confirmation. Additionally, you will be notified by email once the item is ready for your visit.
+            </p-->
+            <%= f.label :needed_date, 'Not needed after:', :class => 'required-label py-2' %>
+            <%= f.date_field :needed_date, :required => true, value: f.object.title_request_expiration_date,  min: f.object.title_request_expiration_date, class: 'd-block rounded border' %>
         <% end %>
         <%= render 'request_preferences', f: %>
       <% end %>

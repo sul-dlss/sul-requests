@@ -67,6 +67,11 @@ class PatronRequest < ApplicationRecord
     end
   end
 
+  # When we have no items, but the record is still available in SearchWorks for request
+  def title_only?
+    bib_data.items.empty?
+  end
+
   def selected_items
     items = items_in_location.select { |x| x.barcode.in?(barcodes) || x.id.in?(barcodes) }
 
@@ -146,6 +151,10 @@ class PatronRequest < ApplicationRecord
     { 'date' => Time.zone.today, 'display_date' => 'No date/time estimate' }
   end
 
+  def title_request_expiration_date
+    Time.zone.today + 1.year
+  end
+
   def folio_location
     @folio_location ||= Folio::Types.locations.find_by(code: origin_location_code) || items_in_location.first&.permanent_location
   end
@@ -192,6 +201,11 @@ class PatronRequest < ApplicationRecord
 
   def scannable?
     scan_service_point.present? && all_items_scannable?
+  end
+
+  def title_only_scannable?
+    # TO DO: Add logic
+    true
   end
 
   def scan_service_point
