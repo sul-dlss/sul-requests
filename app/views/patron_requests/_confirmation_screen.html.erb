@@ -13,7 +13,7 @@
         <% end %>
 
         <% if @patron_request.request_type == 'scan' %>
-            The digital scan will be sent to your email as a PDF when it's ready.
+          You will receive an email when your PDF scan is ready to be downloaded from your interlibrary loan account.
         <% else %>
             <% if current_user %>
               You will receive an email when the <%= (@patron_request.barcodes&.count || 1) == 1 ?  'item is' : 'items are' %> ready.
