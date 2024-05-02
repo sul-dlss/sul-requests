@@ -203,11 +203,6 @@ class PatronRequest < ApplicationRecord
     scan_service_point.present? && all_items_scannable?
   end
 
-  def title_only_scannable?
-    # TO DO: Add logic
-    true
-  end
-
   def scan_service_point
     @scan_service_point ||= begin
       service_point = items_in_location.filter_map { |item| item.permanent_location.details['scanServicePointCode'] }.first

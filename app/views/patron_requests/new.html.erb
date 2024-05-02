@@ -2,6 +2,7 @@
   <%= render 'user_header' %>
 <% end %>
 
+<%=current_request.bib_data.inspect %>
 <% if current_request.active_messages.any? %>
   <div class="alert alert-warning alert-dismissible" role="alert">
     <%= render current_request.active_messages %>
@@ -220,8 +221,6 @@
   <% end %>
 
   <!-- scan request (single or multiitem) -->
-  SCAN?
-  <%= (can? :request_scan, f.object).to_s %>
   <% if can? :request_scan, f.object %>
     <%= render AccordionStepComponent.new(request: @request, id: 'scan', classes: [('d-none' if scan_pickup)], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'scan' }, submit: true) do |c| %>
       <% c.with_title.with_content('Scan request') %>
