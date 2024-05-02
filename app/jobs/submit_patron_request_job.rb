@@ -63,17 +63,17 @@ class SubmitPatronRequestJob < ApplicationJob
   end
 
   def convert_to_mediated_page(patron_request)
-    MediatedPage.create!(
+    page = MediatedPage.create!(
       needed_date: patron_request.needed_date,
-      origin: patron_request.origin_library_code,
+      origin: patron_request.origin_library_code, origin_location: patron_request.origin_location_code,
       destination: patron_request.service_point_code,
-      origin_location: patron_request.origin_location_code,
       item_id: patron_request.instance_hrid,
       user: patron_request.patron.user,
       item_title: patron_request.item_title,
       barcodes: patron_request.barcodes,
       estimated_delivery: patron_request.estimated_delivery
     )
+    page.notify_mediator!
   end
 
   def place_title_hold(patron_request)
