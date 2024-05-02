@@ -36,9 +36,11 @@ export default class extends Controller {
   }
 
   updateProxy(event) {
-    if (this.proxyScanWarningTarget && event.target.value == 'share') {
+    if (!this.hasProxyScanWarningTarget) return;
+
+    if (event.target.value == 'share') {
       this.proxyScanWarningTarget.classList.remove('d-none')
-    } else if (this.proxyScanWarningTarget) {
+    } else {
       this.proxyScanWarningTarget.classList.add('d-none')
     }
   }
