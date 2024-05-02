@@ -15,6 +15,6 @@
 </fieldset>
 <div class="p-3 pt-0">
   <%= f.label :needed_date, 'Not needed after', class: 'required-label py-2' %>
-  <%= f.date_field :needed_date, required: true, min: Date.today, class: 'd-block rounded border' %>
+  <%= f.date_field :needed_date, required: true, min: Date.today, value: Time.zone.today + 1.year, class: 'd-block rounded border' %>
 </div>
 <% end %>
