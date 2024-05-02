@@ -2,7 +2,6 @@
   <%= render 'user_header' %>
 <% end %>
 
-<%=current_request.bib_data.inspect %>
 <% if current_request.active_messages.any? %>
   <div class="alert alert-warning alert-dismissible" role="alert">
     <%= render current_request.active_messages %>

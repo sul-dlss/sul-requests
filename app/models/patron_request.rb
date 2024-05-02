@@ -67,7 +67,7 @@ class PatronRequest < ApplicationRecord
     end
   end
 
-  # When we have no items, but the record is still available in SearchWorks for request
+  # When we have no items, but the record is still available for requesting
   def title_only?
     bib_data.items.empty?
   end

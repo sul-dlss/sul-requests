@@ -46,7 +46,7 @@ module RequestsHelper
   end
 
   def queue_length_display(item, prefix: nil, title_only: false)
-    return "#{prefix}On Order | No waitlist" if title_only
+    return "#{prefix}On order | No waitlist" if title_only
 
     return '' if item.available?
 
