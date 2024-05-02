@@ -339,7 +339,6 @@ locations:
 scan_destinations:
   EAST_ASIA:
     patron_barcode: 'EAL-SCANREVIEW'
-
   GREEN:
     patron_barcode: 'GRE-SCANDELIVER'
     material_types:
