@@ -52,7 +52,6 @@ class PatronRequest < ApplicationRecord
 
   # Check if the user has selected a sponsor on the form for making the request on behalf of their sponsor
   def for_sponsor?
-    debugger
     for_sponsor == 'share'
   end
   # @!endgroup
