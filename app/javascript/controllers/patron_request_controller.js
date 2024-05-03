@@ -131,6 +131,8 @@ export default class extends Controller {
   }
 
   async updateEarliestAvailable(event) {
+    if (!this.hasEarliestAvailableTarget) return;
+
     const url = new URL(this.earliestAvailableTarget.src + "/../" + event.currentTarget.value);
     const destinationName = event.target.selectedOptions[0].textContent;
     this.earliestAvailableTarget.src = url;

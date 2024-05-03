@@ -13,8 +13,5 @@
     <%= f.label :fulfillment_type_hold, 'Wait for a Stanford copy to become available', class: 'form-check-label' %>
   </div>
 </fieldset>
-<div class="p-3 pt-0">
-  <%= f.label :needed_date, 'Not needed after', class: 'required-label py-2' %>
-  <%= f.date_field :needed_date, required: true, min: Date.today, value: Time.zone.today + 1.year, class: 'd-block rounded border' %>
-</div>
+<%= render 'not_needed_after_date', f: %>
 <% end %>

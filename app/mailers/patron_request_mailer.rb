@@ -5,6 +5,7 @@
 #  been submitted
 ###
 class PatronRequestMailer < ApplicationMailer
+  helper :requests
   def confirmation_email(patron_request)
     @patron_request = patron_request
     mail(

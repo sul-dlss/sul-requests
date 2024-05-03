@@ -1,0 +1,7 @@
+<% if messages.any? %>
+  <div class="alert alert-warning alert-dismissible mt-4 d-flex justify-content-start align-items-center" role="alert">
+    <i class="bi bi-exclamation-triangle-fill me-2 text-warning fs-4"></i>
+    <%= render messages %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% end %>

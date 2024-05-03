@@ -7,7 +7,7 @@ class PatronRequest < ApplicationRecord
   class_attribute :bib_model_class, default: Settings.ils.bib_model.constantize
   store :data, accessors: [
     :barcodes, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title, :request_type,
-    :proxy, :estimated_delivery, :patron_name
+    :proxy, :estimated_delivery, :patron_name, :item_title
   ], coder: JSON
 
   delegate :instance_id, :finding_aid, :finding_aid?, to: :bib_data
@@ -20,6 +20,7 @@ class PatronRequest < ApplicationRecord
   validate :needed_date_is_valid, on: :create
 
   before_create do
+    self.item_title = bib_data&.title
     self.estimated_delivery = earliest_delivery_estimate(scan: scan?)&.dig('display_date')
   end
 
@@ -158,7 +159,7 @@ class PatronRequest < ApplicationRecord
 
   # @return [String] the title of the item
   def item_title
-    bib_data&.title
+    super || bib_data&.title
   end
 
   # Item stuff
@@ -200,8 +201,6 @@ class PatronRequest < ApplicationRecord
     if any_items_avaliable?
       paging_info = PagingSchedule.for(self, scan:).earliest_delivery_estimate
       { 'date' => Date.parse(paging_info.to_s), 'display_date' => paging_info.to_s }
-    elsif title_only?
-      { 'date' => Time.zone.today + 1.year, 'display_date' => 'No date/time estimate' }
     else
       { 'date' => Time.zone.today, 'display_date' => 'No date/time estimate' }
     end
@@ -229,7 +228,7 @@ class PatronRequest < ApplicationRecord
   end
 
   def single_location_label
-    return 'Must be used in library' if mediateable? || use_in_library?
+    return 'In library use only' if mediateable? || use_in_library?
 
     'Pickup location'
   end
