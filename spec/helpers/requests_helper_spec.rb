@@ -301,7 +301,7 @@ RSpec.describe RequestsHelper do
     it 'correctly returns a waitlist message with checked out status' do
       allow(item).to receive_messages(checked_out?: true, queue_length: 2)
       expect(queue_length_display(item, prefix: 'Item status: ',
-                                        title_only: false)).to eq 'Item status: Checked out - Due Jul 1, 2024 | There is a waitlist ahead of your request'
+                                        title_only: false)).to eq 'Item status: Checked out - Due Jul 1, 2024 | There is a waitlist ahead of your request' # rubocop:disable Layout/LineLength
     end
   end
 end
