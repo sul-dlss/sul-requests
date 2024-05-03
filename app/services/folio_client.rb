@@ -152,9 +152,14 @@ class FolioClient
 
   # For whom is this user id a proxy?
   def proxy_info(user_id)
+    all_proxy_info(user_id)[0]
+  end
+
+  # We sometimes want the full list of sponsors for which this user is a proxy and not just the first one
+  def all_proxy_info(user_id)
     response = get_json('/proxiesfor', params: { query: CqlQuery.new(proxyUserId: user_id).to_query })
 
-    response.dig('proxiesFor', 0)
+    response['proxiesFor']
   end
 
   def patron_blocks(user_id)

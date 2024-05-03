@@ -5,6 +5,10 @@
     <div class="alert alert-warning d-flex align-items-center d-none" data-patronRequest-target='proxyScanWarning'>
       <i class="bi bi-exclamation-triangle-fill me-2 text-warning fs-4"></i>Please be advised that scans are not sent to proxies.
     </div>
+  <% elsif current_request.patron.sponsor_names.any? %>
+    <div class="alert alert-warning d-flex align-items-center d-none" data-patronRequest-target='sponsorScanWarning'>
+      <i class="bi bi-exclamation-triangle-fill me-2 text-warning fs-4"></i>Please be advised that scans are not sent to the sponsor.
+    </div>
   <% end %>
   <div>
     <%= f.radio_button :request_type, 'scan', :class => 'form-check-input', :required => true, data: { action: 'patronRequest#updateType' } %>

@@ -118,6 +118,19 @@ module Folio
       end
     end
 
+    # Return list of names of individuals who are sponsors for this id
+    def sponsor_names
+      # Return display name for any proxies where 'requestForSponser' is yes.
+      @sponsor_names ||= all_proxy_info.filter_map do |info|
+        return nil unless info['requestForSponsor'].downcase == 'yes'
+
+        # Find the patron corresponding to the Folio user id for the sponsor
+        sponsor_patron = self.class.folio_client.find_patron_by_id(info['userId'])
+        # If we find the corresponding FOLIO patron for the sponsor, return the display name
+        (sponsor_patron.present? && sponsor_patron&.display_name) || nil
+      end
+    end
+
     def proxy_sponsor_user_id
       proxy_info&.dig('userId')
     end
@@ -157,6 +170,12 @@ module Folio
     def all_proxy_group_info
       @all_proxy_group_info ||= user_info.dig('stubs', 'all_proxy_group_info') # used for stubbing
       @all_proxy_group_info ||= self.class.folio_client.all_proxy_group_info(id)
+    end
+
+    # Get all the sponsors for which this patron is a proxy
+    def all_proxy_info
+      @all_proxy_info ||= user_info.dig('stubs', 'all_proxy_info') # used for stubbing
+      @all_proxy_info ||= self.class.folio_client.all_proxy_info(id)
     end
 
     def standing

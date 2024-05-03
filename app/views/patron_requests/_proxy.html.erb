@@ -1,34 +1,7 @@
 <div class="row p-3 gap-3 flex-column flex-md-row">
-  <div class="col alert alert-info">
-    We noticed your library account has designated proxies, individuals authorized to place requests and borrow 
-    materals on your behalf.  Sharing this request enables them to track its status.  Your library proxies are: 
-    <div class="mt-2">
-        <ul>
-        <%
-            f.object.patron.proxy_group_names.sort.each do |proxy_group_name|
-        %>
-            <li><%=proxy_group_name %></li>
-        <%
-            end
-        %>
-        </ul>
-    </div>
-  </div>
-  <div class="col pe-0">
-    <div class="mt-2">
-      Do you want to share this request with your proxies?
-    </div>
-     <div class="mt-2">
-        <%= f.radio_button :proxy, 'share', :class => 'form-check-input', required: true, data: { action: 'patronRequest#updateProxy' } %>
-        <%= f.label :proxy_share, :class => 'form-check-label ms-1 d-inline' do %>
-        Yes, share this request with my proxies.
-        <% end %>
-    </div>
-    <div class="mt-2">
-        <%= f.radio_button :proxy, 'noshare', :class => 'form-check-input', data: { action: 'patronRequest#updateProxy' } %>
-        <%= f.label :proxy_noshare, :class => 'form-check-label ms-1 d-inline' do %>
-        No, this request is just for me.
-        <% end %>
-    </div>
-  </div>
+  <% if f.object.patron.proxy_group_names.any? %>
+    <%= render 'list_proxies_form', f: %>
+  <% elsif f.object.patron.sponsor_names.any? %>
+    <%= render 'list_sponsors_form', f: %>
+  <% end %>
 </div>

@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import { Collapse } from "bootstrap"
 
 export default class extends Controller {
-  static targets = ['earliestAvailable', 'accordion', 'destination', 'proxyScanWarning']
+  static targets = ['earliestAvailable', 'accordion', 'destination', 'proxyScanWarning', 'sponsorScanWarning', 'selectSponsor', 'sponsorRadioButton']
 
   connect() {
     if (this.accordionTargets.length == 1) {
@@ -42,6 +42,29 @@ export default class extends Controller {
       this.proxyScanWarningTarget.classList.remove('d-none')
     } else {
       this.proxyScanWarningTarget.classList.add('d-none')
+    }
+  }
+
+  // When the user selects that the request is for a sponsor, make scan warning visible in scan section
+  updateForSponsor(event) {
+    if (!this.hasSponsorScanWarningTarget) return;
+
+    if (event.target.value == 'share') {
+      this.sponsorScanWarningTarget.classList.remove('d-none')
+    } else {
+      this.sponsorScanWarningTarget.classList.add('d-none')
+    }
+
+  }
+
+  // When the user says the request is for a sponsor, display the sponsor selection list
+  toggleDisplaySponsorList(event) {
+    if(event.target.value == 'share') {
+      this.selectSponsorTarget.classList.remove('d-none')
+    } else {
+      this.selectSponsorTarget.classList.add('d-none')
+      //this.event.target.checked = false
+      this.sponsorRadioButtonTarget.checked = false
     }
   }
 
