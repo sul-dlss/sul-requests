@@ -147,7 +147,7 @@ export default class extends Controller {
               ${item.label}
             </small>
             <span class="vr"></span>
-            <button data-action="${this.identifier}#unchecked" data-${this.identifier}-id-param="${item.id}" type="button" class="btn-close py-1 pill-close" aria-label="Remove ${item.label}"></button>
+            <button data-action="${this.identifier}#unchecked analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Remove" data-${this.identifier}-id-param="${item.id}" type="button" class="btn-close py-1 pill-close" aria-label="Remove ${item.label}"></button>
           </span>
           ${item.duequeueinfo && !scan ? `<span class="text-cardinal d-block align-self-center flex-shrink-2">${item.duequeueinfo}</span>` : ''}
         </li>

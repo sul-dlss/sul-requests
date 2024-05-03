@@ -35,7 +35,7 @@
                         <i class="bi bi-box-arrow-up-right"></i> Learn about library card holder access
                     </a>
                 </p>
-                <details>
+                <details data-action="analytics#send" data-analytics-action-param="Library ID" data-analytics-category-param="Login">
                     <summary class="btn btn-link p-0">Login with Library ID/PIN <i class="bi bi-chevron-right"></i></summary>
                     <%= form_tag login_by_university_id_url, method: 'POST', class: 'form p-3', data: { turbo: false } do %>
                         <%= hidden_field_tag :referrer, new_patron_request_path(new_params.merge(step: 'select')) %>
@@ -76,7 +76,7 @@
                 <p class="mb-2"><a href="https://library.stanford.edu/visitor-access" target="_blank">
                     <i class="bi bi-box-arrow-up-right"></i> Learn more about visitor access
                 </a></p>
-                <details>
+                <details data-action="analytics#send" data-analytics-action-param="Library ID" data-analytics-category-param="Login">
 
                     <summary class="btn btn-link p-0<% if Ability.anonymous.cannot? :prepare, @patron_request %> disabled<%end %>">Proceed as visitor <i class="bi bi-chevron-right"></i></summary>
                     <% if Ability.anonymous.can? :prepare, @patron_request %>
