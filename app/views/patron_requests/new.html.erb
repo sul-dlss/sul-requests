@@ -167,8 +167,9 @@
       <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', classes: [('d-none' if scan_pickup)], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'pickup' }, submit: true) do |c| %>
         <% c.with_title.with_content('Pickup request') %>
         <% c.with_body do %>
+          <%= render 'pickup_destination', f: %>
+
           <div class="selected-items-group">
-            <%= render 'pickup_destination', f: %>
             <div class="card">
               <div class="card-body bg-light rounded">
                 <div class="d-flex flex-column flex-xl-row align-items-start justify-content-xl-between align-items-xl-center mb-3 gap-2 gap-xl-0">
