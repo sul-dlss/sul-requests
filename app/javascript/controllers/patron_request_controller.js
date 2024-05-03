@@ -19,8 +19,12 @@ export default class extends Controller {
     return Array.from(accordion.querySelectorAll('[required],input[name="patron_request[barcodes][]"]')).find(x => formData.getAll(x.name).every(x => !x))
   }
 
+  enableAnyNextButtons(event) {
+    event.target.querySelectorAll('.accordion-item').forEach(accord => this.enableNextButton(accord));
+  }
+
   enableNextButton(event) {
-    const accord = event.target ? event.target.closest('.accordion-item') : event;
+    const accord = event.currentTarget ? event.currentTarget.closest('.accordion-item') : event;
     const accordbutton = accord.querySelector('[data-next-step-button]');
     if (!this.emptyFields(accord) && accordbutton) {
       accordbutton.disabled = false;
@@ -34,6 +38,10 @@ export default class extends Controller {
       const acc = this.accordionTargets.find(e => e.id == 'barcodes-accordion').querySelector('.accordion-collapse');
       if (!acc.classList.contains('show')) this.showStep(acc);
     }
+
+    this.accordionTargets.forEach(accord => {
+      this.enableNextButton(accord);
+    })
   }
 
   updateType(event) {

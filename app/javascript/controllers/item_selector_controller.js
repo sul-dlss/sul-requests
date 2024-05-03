@@ -143,6 +143,8 @@ export default class extends Controller {
       unavailableItemsGroup.classList.remove('d-none');
       this.enableRequiredInputs(unavailableItemsGroup);
     }
+
+    this.dispatch('changed', { detail: { selectedItems: this.selectedItemsValue }});
   }
 
   renderItems(items, scan=false) {
