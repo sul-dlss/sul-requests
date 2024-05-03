@@ -23,7 +23,7 @@ RSpec.describe PatronRequestMailer do
       expect(mail.to).to eq(['test@example.com'])
       expect(mail.from).to eq(['greencirc@stanford.edu'])
       expect(mail.body).to include('We received your pickup request!')
-      expect(mail.body).to include('<dt>Item:</dt><dd>Item Title</dd>')
+      expect(mail.body).to include('<dt>Title:</dt><dd>Item Title</dd>')
     end
   end
 
@@ -35,7 +35,7 @@ RSpec.describe PatronRequestMailer do
       expect(mail.to).to eq(['test@example.com'])
       expect(mail.from).to eq(['scan-and-deliver@stanford.edu'])
       expect(mail.body).to include('We received your scan request!')
-      expect(mail.body).to include('<dt>Item:</dt><dd>Item Title</dd>')
+      expect(mail.body).to include('<dt>Title:</dt><dd>Item Title</dd>')
     end
   end
 end
