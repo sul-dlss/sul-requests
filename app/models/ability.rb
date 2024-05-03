@@ -97,7 +97,7 @@ class Ability
 
     # anyone can create title-level requests
     can :create, PatronRequest do |request|
-      request.selected_items.none?
+      request.bib_data.items.none?
     end
 
     # anyone can start to create an Aeon page
