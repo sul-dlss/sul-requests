@@ -5,19 +5,25 @@
 ###
 class PatronRequestsController < ApplicationController
   layout 'application_new'
-  load_and_authorize_resource
-  skip_authorize_resource only: :new
+
+  check_authorization
+
+  load_resource
   before_action :assign_new_attributes, only: [:new]
   before_action :authorize_new_request, only: [:new]
+  authorize_resource
+
   before_action :associate_request_with_patron, only: [:new, :create]
   before_action :redirect_aeon_pages, only: [:create]
   helper_method :current_request, :new_params
 
+  rescue_from CanCan::AccessDenied do |_exception|
+    render 'unauthorized', status: :forbidden
+  end
+
   def show; end
 
-  def new
-    render 'unauthorized' unless can? :prepare, @patron_request
-  end
+  def new; end
 
   def create
     if @patron_request.save && @patron_request.submit_later
@@ -42,9 +48,7 @@ class PatronRequestsController < ApplicationController
   #
   # Aeon pages never need authentication, because Aeon will handle that as part of its request flow.
   def authorize_new_request # rubocop:disable Metrics/AbcSize
-    return if current_user.patron.present?
-    return if params[:step].present? && current_user.patron.email.present?
-    return if @patron_request.aeon_page?
+    return if current_user.patron.present? || (params[:step].present? && current_user.patron.email.present?) || @patron_request.aeon_page?
 
     flash.now[:error] = t('sessions.login_by_sunetid.error_html') if sunetid_without_folio_account?
 
