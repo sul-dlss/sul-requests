@@ -1,9 +1,7 @@
 <h1 class="fw-semibold">We received your <%= @patron_request.request_type == 'scan' ? 'scan' : @patron_request.mediateable? ? '' : 'pickup' %> request!</h1>
 
 <% if current_request && current_request.active_messages.any? %>
-  <div class="alert alert-warning alert-dismissible mt-4" role="alert">
-    <%= render current_request.active_messages %>
-  </div>
+  <%= render 'messages', messages: current_request.active_messages %>
 <% end %>
 
 <div class="row mt-4">

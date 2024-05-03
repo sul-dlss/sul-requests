@@ -2,11 +2,7 @@
   <%= render 'user_header' %>
 <% end %>
 
-<% if @patron_request.active_messages.any? %>
-  <div class="alert alert-warning alert-dismissible mt-4" role="alert">
-    <%= render @patron_request.active_messages %>
-  </div>
-<% end %>
+<%= render 'messages', messages: @patron_request.active_messages %>
 
 <h1 class="fw-semibold mt-4"><%= @patron_request.item_title %></h1>
 <% if @patron_request.items_in_location.one? %>
