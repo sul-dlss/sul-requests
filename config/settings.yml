@@ -46,25 +46,19 @@ folio:
   standard_patron_group_names: ['staff', 'faculty', 'undergrad', 'graduate']
   default_service_point: 'GREEN-LOAN'
   ilb_eligible_patron_groups:
-    - courtesy
     - faculty
     - fellow
     - graduate
-    - lane-resident
     - postdoctoral
     - staff
-    - staff-casual
     - undergrad
     - visiting-scholar
   scan_pilot_groups:
-    - courtesy
     - faculty
     - fellow
     - graduate
-    - lane-resident
     - postdoctoral
     - staff
-    - staff-casual
     - undergrad
     - visiting-scholar
 
