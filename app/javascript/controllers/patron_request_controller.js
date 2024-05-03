@@ -8,10 +8,12 @@ export default class extends Controller {
     if (this.accordionTargets.length == 1) {
       this.removeAccordionStyling();
     }
-    this.accordionTargets.forEach(accord => {
-      this.enableNextButton(accord);
-    })
+
     this.element.reset();
+  }
+
+  accordionTargetConnected(element) {
+    this.enableNextButton(element);
   }
 
   emptyFields(accordion) {
