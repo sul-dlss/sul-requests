@@ -126,15 +126,22 @@ export default class extends Controller {
       this.availableScanItemEstimateTarget.classList.add('d-none');
     }
 
+    const availableItemsGroup = this.availableItemsTarget.closest('.selected-items-group');
+    const unavailableItemsGroup = this.unavailableItemsTarget.closest('.selected-items-group');
+
     if (availableItems.length === 0) {
-      this.availableItemsTarget.closest('.selected-items-group').classList.add('d-none');
+      availableItemsGroup.classList.add('d-none');
+      this.disableRequiredInputs(availableItemsGroup);
     } else {
-      this.availableItemsTarget.closest('.selected-items-group').classList.remove('d-none');
+      availableItemsGroup.classList.remove('d-none');
+      this.enableRequiredInputs(availableItemsGroup);
     }
     if (unavailableItems.length === 0) {
-      this.unavailableItemsTarget.closest('.selected-items-group').classList.add('d-none');
+      unavailableItemsGroup.classList.add('d-none');
+      this.disableRequiredInputs(unavailableItemsGroup);
     } else {
-      this.unavailableItemsTarget.closest('.selected-items-group').classList.remove('d-none');
+      unavailableItemsGroup.classList.remove('d-none');
+      this.enableRequiredInputs(unavailableItemsGroup);
     }
   }
 
@@ -168,5 +175,21 @@ export default class extends Controller {
     }
 
     return params;
+  }
+
+  // Temporarily disable required inputs that are children of the given element
+  // This is used to prevent validation errors when hidden/unused inputs are required
+  // The initial required state of the inputs is preserved via a data attribute
+  disableRequiredInputs(element) {
+    element.querySelectorAll('[required]').forEach(input => {
+      input.dataset.required = true;
+      input.removeAttribute('required');
+    });
+  }
+
+  enableRequiredInputs(element) {
+    element.querySelectorAll('[data-required]').forEach(input => {
+      input.setAttribute('required', 'required');
+    });
   }
 }
