@@ -8,26 +8,26 @@
 
 <div class="row mt-4">
     <div class="col-7">
-        <% if current_user && current_user.patron.email %>
-            Expect a confirmation email shortly at <%= mail_to current_user.patron.email %>.
-        <% end %>
+        <div class="lead">
+            <% if current_user && current_user.patron.email %>
+                Expect a confirmation email shortly at <span class="fw-semibold"><%=  current_user.patron.email %></span>.
+            <% end %>
 
-        <% if @patron_request.request_type == 'scan' %>
-          You will receive an email when your PDF scan is ready to be downloaded from your interlibrary loan account.
-        <% else %>
-            <% if current_user %>
-              You will receive an email when the <%= (@patron_request.barcodes&.count || 1) == 1 ?  'item is' : 'items are' %> ready.
+            <% if @patron_request.request_type == 'scan' %>
+            You will receive an email when your PDF scan is ready to be downloaded from your interlibrary loan account.
+            <% else %>
+                <% if (current_user && current_user.patron) || (@patron_request.patron.patron_group_name != 'visitor') && !@patron_request.mediateable? %>
+                    You can also check the status of your request any time at <%= link_to 'My Account', 'https://mylibrary.stanford.edu' %>.
+                <% end %>
+                You will receive an email when the <%= (@patron_request.barcodes&.count || 1) == 1 ?  'item is' : 'items are' %> ready.
             <% end %>
-            <% if (current_user && current_user.patron) || (@patron_request.patron.patron_group_name != 'visitor') && !@patron_request.mediateable? %>
-                You can also check the status of your request any time at <%= link_to 'My Account', 'https://mylibrary.stanford.edu' %>.
-            <% end %>
-        <% end %>
+        </div>
 
         <hr />
 
         <h2 class="my-4">Request confirmation</h2>
         <dl class="dl-inline">
-            <div><dt>Item:</dt><dd><%= @patron_request.item_title %></dd></div>
+            <div><dt>Title:</dt><dd><%= @patron_request.item_title %></dd></div>
         <% if @patron_request.request_type == 'scan' %>
             <div><dt>Pages:</dt><dd><%= @patron_request.scan_page_range %></dd></div>
             <div><dt>Chapter/article:</dt><dd><%= @patron_request.scan_title %></dd></div>
@@ -37,8 +37,51 @@
                 <div><dt>Earliest expected delivery:</dt><dd><%= @patron_request.estimated_delivery %></dd></div>
             <% end %>
         <% else %>
-            <% if @patron_request.pickup_service_point && !@patron_request.mediateable? %>
-            <div><dt>Preferred pickup location:</dt><dd><%= @patron_request.pickup_service_point.name %></dd></div>
+            <% if @patron_request.pickup_service_point %>
+            <div><dt><%= @patron_request.single_location_label %>:</dt><dd><%= @patron_request.pickup_service_point.name %></dd></div>
+            <% end %>
+            <% requested_items = @patron_request.mediateable? ? {} : @patron_request.selected_items.group_by(&:available?) %>
+            <% if requested_items[true].present? %>
+                <hr>
+                <div class="mb-2">
+                    <span class="fw-bold">Pickup after:</span> <%= @patron_request.estimated_delivery %>
+                </div>
+                <ul class="list-unstyled">
+                    <% requested_items[true].each do |avail_item| %>
+                        <li><%= callnumber_label(avail_item) %></li>
+                    <% end %>
+                </ul>
+            <% end %>
+            <% if requested_items[false].present? %>
+                <hr>
+                <div class="mb-2">
+                    <span class="fw-bold">Pickup after:</span> Notified by email
+                </div>
+                <ul class="list-unstyled">
+                    <% requested_items[false].each do |avail_item| %>
+                        <li><%= callnumber_label(avail_item) %></li>
+                    <% end %>
+                </ul>
+            <% end %>
+            <% if @patron_request.needed_date %>
+                <div>
+                    <dt>
+                        <% if @patron_request.mediateable? %>
+                            I plan to visit on:
+                        <% else %>Not needed after:<% end %>
+                    </dt>
+                    <dd>
+                        <%= l @patron_request.needed_date, format: :short %>
+                    </dd>
+                </div>
+            <% end %>
+            <% if @patron_request.fulfillment_type %>
+                <div>
+                    <dt>Processing method:</dt>
+                    <dd>
+                        <%= @patron_request.fulfillment_type == 'hold' ? 'Wait for a Stanford copy to become available' : 'Expedite a copy from a partner library' %>
+                    </dd>
+                </div>
             <% end %>
         <% end %>
         </dl>
