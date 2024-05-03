@@ -14,8 +14,16 @@
             <% if @patron_request.request_type == 'scan' %>
             You will receive an email when your PDF scan is ready to be downloaded from your interlibrary loan account.
             <% else %>
-                <% if (current_user && current_user.patron) || (@patron_request.patron.patron_group_name != 'visitor') && !@patron_request.mediateable? %>
-                    You can also check the status of your request any time at <%= link_to 'My Account', 'https://mylibrary.stanford.edu' %>.
+                <% if @patron_request.mediateable? %>
+                    A librarian will review and approve your request for restricted-use materials, or contact you.
+                    Approvals typically happen 1-3 business days before your planned visit date.
+                <% end %>
+                <% if (current_user && current_user.patron) || (@patron_request.patron.patron_group_name != 'visitor') %>
+                    <% if @patron_request.mediateable? %>
+                        Once approved, you can view the status of your request in
+                    <% else %>
+                        You can also check the status of your request any time at
+                    <% end %><%= link_to ' My Account', 'https://mylibrary.stanford.edu' %>.
                 <% end %>
                 You will receive an email when the <%= (@patron_request.barcodes&.count || 1) == 1 ?  'item is' : 'items are' %> ready.
             <% end %>

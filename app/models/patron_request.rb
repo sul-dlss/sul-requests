@@ -222,7 +222,7 @@ class PatronRequest < ApplicationRecord
   end
 
   def single_location_label
-    return 'Must be used in library' if mediateable? || use_in_library?
+    return 'In library use only' if mediateable? || use_in_library?
 
     'Pickup location'
   end

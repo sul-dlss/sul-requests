@@ -303,16 +303,24 @@
             <%= queue_length_display(f.object.items_in_location.first, prefix: 'Item status: ') %>
           </div>
         </div>
-        <%= render 'pickup_destination', f: %>
         <% if f.object.mediateable? %>
-            <p>
-            After submitting your request, you will receive an email confirmation. Additionally, you will be notified by email once the item is ready for your visit.
-            </p>
+            <div class="alert alert-info d-flex" role="alert">
+              <div class="bi bi-info-circle-fill d-flex justify-content-center display-6 col-1 ms-3 align-self-center text-primary"></div>
+              <div class="p-3 flex-grow-1">
+                <div class="d-flex align-items-center gap-2">
+                  <div>
+                  <span class="fw-semibold d-block">Restricted-use</span>
+                  A librarian will review and approve your request, or contact you. Approvals typically happen 1-3 business days before your planned visit date.
+                  </div>
+                </div>
+              </div>
+            </div>
             <% if f.object.requires_needed_date? %>
                 <%= f.label :needed_date, 'I plan to visit on:', :class => 'required-label py-2' %>
-                <%= f.date_field :needed_date, :required => true, value:  f.object.earliest_delivery_estimate['date'], min: f.object.earliest_delivery_estimate['date'], class: 'd-block rounded border' %>
+                <%= f.date_field :needed_date, :required => true, value:  f.object.earliest_delivery_estimate['date'], min: f.object.earliest_delivery_estimate['date'], class: 'd-block rounded border mt-4' %>
             <% end %>
         <% end %>
+        <%= render 'pickup_destination', f: %>
         <%= render 'request_preferences', f: %>
       <% end %>
     <% end %>
