@@ -163,11 +163,12 @@ RSpec.describe 'Creating a request' do
         Timecop.travel(Time.zone.local(2024, 4, 2, 12, 0, 0))
 
         allow_any_instance_of(LibraryHours).to receive(:open?).and_return(true)
+        allow_any_instance_of(LibraryHours).to receive(:next_business_day).and_return(Date.parse('2024-04-03'))
 
         allow(PagingSchedule).to receive(:schedule).and_return(
           [
             PagingSchedule::Scheduler.new(from: 'SAL3', to: 'GREEN', before: '11:59pm', business_days_later: 1, will_arrive_after: '10am'),
-            PagingSchedule::Scheduler.new(from: 'SAL3', to: 'MARINE-BIO', before: '11:59pm', business_days_later: 3,
+            PagingSchedule::Scheduler.new(from: 'SAL3', to: 'MARINE-BIO', before: '11:59pm', business_days_later: 1,
                                           will_arrive_after: '4pm')
           ]
         )
@@ -186,7 +187,7 @@ RSpec.describe 'Creating a request' do
 
         select 'Marine Biology Library', from: 'Preferred pickup location'
         within '#earliestAvailableContainer' do
-          expect(page).to have_content('Friday, Apr 5, 2024 after 4pm')
+          expect(page).to have_content('Wednesday, Apr 3, 2024 after 4pm')
         end
       end
     end
