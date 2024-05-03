@@ -16,7 +16,7 @@ export default class extends Controller {
 
   emptyFields(accordion) {
     const formData = new FormData(accordion.closest('form'));
-    return Array.from(accordion.querySelectorAll('[required], [data-required]')).find(x => formData.getAll(x.name).every(x => !x))
+    return Array.from(accordion.querySelectorAll('[required],input[name="patron_request[barcodes][]"]')).find(x => formData.getAll(x.name).every(x => !x))
   }
 
   enableNextButton(event) {
