@@ -26,7 +26,7 @@
     <%= javascript_include_tag "application_redesign", "data-turbo-track": "reload", defer: true %>
   </head>
 
-  <body class="d-flex flex-column min-vh-100">
+  <body class="d-flex flex-column min-vh-100" data-controller="analytics">
     <header>
       <%= render 'shared/sul_header' %>
     </header>

@@ -110,7 +110,7 @@
         <% if f.object.items_in_location.length >= 10 %>
           <div>
             <label for="item-selector-search" class="my-2">Search item list</label>
-            <input id="item-selector-search" type="search" incremental data-action="input->itemselector#filter" class="form-control w-75" />
+            <input id="item-selector-search" type="search" incremental data-action="input->itemselector#filter analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Filter" class="form-control w-75" />
           </div>
         <% end %>
         <div class="item-table my-4">
@@ -118,10 +118,10 @@
             <thead>
               <tr>
                 <th data-table-target="header" aria-sort="ascending" class="text-start" data-table-field-param="Callnumber" data-action='click->table#sort'>
-                  <button type="button" class="btn btn-link pe-0 text-decoration-none text-black">Call number</button>
+                  <button type="button" class="btn btn-link pe-0 text-decoration-none text-black" data-action="analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Sort/Call number">Call number</button>
                 </th>
                 <th data-table-target="header" class="text-end" data-table-field-param="Status" data-action='click->table#sort'>
-                  <button type="button" class="btn btn-link pe-0 text-decoration-none text-black">Status</button>
+                  <button type="button" class="btn btn-link pe-0 text-decoration-none text-black" data-action="analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Sort/Status">Status</button>
                 </th>
               </tr>
             </thead>
@@ -215,7 +215,7 @@
     <div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true" data-itemSelector-target="toast">
       <div class="d-flex">
         <div class="toast-body">You successfully removed an item.</div>
-        <button type="button" class="btn btn-text text-uppercase" data-action="itemselector#undo">Undo</button>
+        <button type="button" class="btn btn-text text-uppercase" data-action="itemselector#undo analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Undo">Undo</button>
         <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
       </div>
     </div>
