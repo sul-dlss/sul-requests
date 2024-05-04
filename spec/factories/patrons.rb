@@ -17,7 +17,8 @@ FactoryBot.define do
         patron_blocks: [],
         proxy_info: {},
         proxy_group_info: {},
-        all_proxy_group_info: {}
+        all_proxy_group_info: {},
+        all_proxy_info: {}
       }
     end
 
@@ -57,7 +58,8 @@ FactoryBot.define do
         ],
         proxy_info: {},
         proxy_group_info: {},
-        all_proxy_group_info: {}
+        all_proxy_group_info: {},
+        all_proxy_info: {}
       }
     end
   end

@@ -11,7 +11,7 @@ RSpec.describe 'Creating an Aeon patron request', :js do
                                    patron_description: 'faculty',
                                    patron_group_name: 'faculty',
                                    patron_group_id: '503a81cd-6c26-400f-b620-14c08943697c',
-                                   blocked?: false, proxy_group_names: [],
+                                   blocked?: false, proxy_group_names: [], sponsor_names: [],
                                    allowed_request_types: ['Hold', 'Recall', 'Page'])
   end
 
