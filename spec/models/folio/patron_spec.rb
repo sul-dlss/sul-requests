@@ -128,11 +128,11 @@ RSpec.describe Folio::Patron do
       allow(stub_client).to receive(:find_patron_by_id).with('sponsor1').and_return(sponsor_one)
       allow(stub_client).to receive(:find_patron_by_id).with('sponsor2').and_return(sponsor_two)
       allow(stub_client).to receive(:all_proxy_info).with('proxy').and_return([
-                                                                                        { 'userId' => 'sponsor1',
-                                                                                          'requestForSponsor' => 'Yes' },
-                                                                                        { 'userId' => 'sponsor2',
-                                                                                          'requestForSponsor' => 'Yes' }
-                                                                                      ])
+                                                                                { 'userId' => 'sponsor1',
+                                                                                  'requestForSponsor' => 'Yes' },
+                                                                                { 'userId' => 'sponsor2',
+                                                                                  'requestForSponsor' => 'Yes' }
+                                                                              ])
       expect(patron.sponsor_names.length).to eq 2
     end
   end
