@@ -148,6 +148,34 @@ RSpec.describe PatronRequest do
     end
   end
 
+  describe '#default_service_point_code' do
+    context 'for a location-restricted page' do
+      let(:bib_data) { build(:page_en_holdings) }
+      let(:attr) { { instance_hrid: 'a1234', origin_location_code: 'SAL3-PAGE-EN' } }
+
+      it 'returns the only service point for the location' do
+        expect(request.default_service_point_code).to eq 'ENG'
+      end
+    end
+
+    context 'with a law item' do
+      let(:attr) { { instance_hrid: 'a123', origin_location_code: 'LAW-STACKS1' } }
+      let(:bib_data) { build(:single_law_holding) }
+
+      it 'returns the law service point by default' do
+        expect(request.default_service_point_code).to eq 'LAW'
+      end
+    end
+
+    context 'with an ordinary SAL3 item' do
+      let(:bib_data) { build(:sal3_holdings) }
+
+      it 'returns GREEN-LOAN by default' do
+        expect(request.default_service_point_code).to eq 'GREEN-LOAN'
+      end
+    end
+  end
+
   describe '#pickup_destinations' do
     let(:bib_data) { build(:sal3_holdings) }
 

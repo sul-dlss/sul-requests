@@ -136,14 +136,12 @@ class PatronRequest < ApplicationRecord
 
   # Find service point which is default for this particular campus
   # @return [Folio::ServicePoint]
-  def default_service_point_code
-    campus_code = folio_location&.campus&.code
-    service_points = if campus_code
-                       Folio::Types.service_points.where(is_default_for_campus: campus_code).map(&:code)
-                     else
-                       []
-                     end
-    service_points.first || Settings.folio.default_service_point
+  def default_service_point_code(allowed_service_points: pickup_destinations)
+    @default_service_point_code ||= if default_service_point_for_campus.in? allowed_service_points
+                                      default_service_point_for_campus
+                                    else
+                                      allowed_service_points.first
+                                    end
   end
 
   # @!endgroup
@@ -431,6 +429,16 @@ class PatronRequest < ApplicationRecord
   # @return [LibraryLocation]
   def library_location
     @library_location ||= LibraryLocation.new(origin_library_code, origin_location_code)
+  end
+
+  def default_service_point_for_campus
+    campus_code = folio_location&.campus&.code
+    service_points = if campus_code
+                       Folio::Types.service_points.where(is_default_for_campus: campus_code).map(&:code)
+                     else
+                       []
+                     end
+    service_points.first || Settings.folio.default_service_point
   end
 
   # Validate that the chosen service point is a valid pickup location for the items
