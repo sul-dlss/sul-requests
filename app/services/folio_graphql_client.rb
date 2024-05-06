@@ -33,11 +33,15 @@ class FolioGraphqlClient
   end
 
   def get_json(path, **)
-    parse(get(path, **))
+    with_retries do
+      parse(get(path, **))
+    end
   end
 
   def post_json(path, **)
-    parse(post(path, **))
+    with_retries do
+      parse(post(path, **))
+    end
   end
 
   # rubocop:disable Metrics/MethodLength
@@ -262,5 +266,20 @@ class FolioGraphqlClient
   def default_headers
     DEFAULT_HEADERS.merge({ 'User-Agent': 'FolioGraphqlClient', 'okapi_username' => @username,
                             'okapi_password' => @password })
+  end
+
+  def with_retries(retries = 5)
+    try = 0
+
+    begin
+      yield
+    rescue JSON::ParserError, HTTP::Error => e
+      Honeybadger.notify(e)
+      try += 1
+
+      sleep(rand(2**try))
+
+      try <= retries ? retry : raise
+    end
   end
 end
