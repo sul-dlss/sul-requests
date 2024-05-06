@@ -27,13 +27,13 @@
     <% end %>
     <div class="mt-2">
       <%= f.label :scan_page_range, 'Page range', :class => 'py-2' %>
-      <%= f.text_field :scan_page_range, :class => 'd-block w-100' %>
+      <%= f.text_field :scan_page_range, :class => 'form-control' %>
       <div class="form-text">Examples: '1-15, 25-30' or '249-275, Index'</div>
     </div>
     <div class="mt-2">
       <%= f.label :scan_title, 'Title of article or chapter', :class =>
       'required-label py-2' %> <%= f.text_area :scan_title, :required => true,
-      :class => 'd-block w-100', :rows => 3 %>
+      :class => 'form-control', :rows => 3 %>
       <div class="form-text">
         Limited to one article/chapter, not to exceed 50 pages or 10% of the
         work
@@ -41,7 +41,7 @@
     </div>
     <div class="mt-2">
       <%= f.label :scan_authors, 'Author(s)', :class => 'py-2' %> <%=
-      f.text_field :scan_authors, :class => 'd-block w-100' %>
+      f.text_field :scan_authors, :class => 'form-control' %>
     </div>
   </div>
 </div>
