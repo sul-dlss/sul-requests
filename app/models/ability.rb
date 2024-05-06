@@ -87,14 +87,17 @@ class Ability
     # ... and to check the status, you either need to be logged in or include a special token in the URL
     can :read, [Request, Page, HoldRecall, Scan, MediatedPage], user_id: user.id if user.sso_user?
 
-    can :new, PatronRequest
+    can :new, PatronRequest do |request|
+      request.aeon_page? || can?(:request_pickup, request) || can?(:request_scan, request)
+    end
+
     can :create, PatronRequest do |request|
       request.selected_items.all? { |item| can?((request.scan? ? :scan : :request), item) }
     end
 
     # anyone can create title-level requests
     can :create, PatronRequest do |request|
-      request.selected_items.none?
+      request.bib_data.items.none?
     end
 
     # anyone can start to create an Aeon page
@@ -116,14 +119,14 @@ class Ability
       end
     end
 
-    can :prepare, PatronRequest do |request|
+    can :request_pickup, PatronRequest do |request|
       request.items_in_location.any? do |item|
         can? :request, item
       end
     end
 
     if user.library_id_user? || user.sso_user?
-      can :prepare, PatronRequest do |request|
+      can :request_pickup, PatronRequest do |request|
         request.bib_data.items.none?
       end
     end
