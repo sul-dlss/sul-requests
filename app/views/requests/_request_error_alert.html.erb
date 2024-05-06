@@ -1,6 +1,0 @@
-<% if current_request.ils_response.any_error? %>
-  <div class='alert alert-danger'>
-    <span class='requested-by'><%= current_request.user.to_email_string %></span>
-    <%= request_level_request_status %>
-  </div>
-<% end %>

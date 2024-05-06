@@ -5,7 +5,7 @@ OkComputer.mount_at = 'status'
 OkComputer.check_in_parallel = true
 
 Rails.application.config.after_initialize do
-  OkComputer::Registry.register 'request_status_mailer', OkComputer::ActionMailerCheck.new(RequestStatusMailer)
+  OkComputer::Registry.register 'patron_request_mailer', OkComputer::ActionMailerCheck.new(PatronRequestMailer)
 end
 OkComputer::Registry.register 'background_jobs', OkComputer::SidekiqLatencyCheck.new('default', 25)
 

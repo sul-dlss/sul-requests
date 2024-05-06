@@ -1,4 +1,4 @@
-<%= bootstrap_form_for(@message, bootstrap_form_layout_options) do |f| %>
+<%= bootstrap_form_for(@message, layout: :horizontal, label_col: 'col-sm-4', control_col: 'col-sm-8') do |f| %>
   <% if @message.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(message.errors.count, "error") %> prohibited this message from being saved:</h2>

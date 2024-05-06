@@ -6,37 +6,8 @@ module ApplicationHelper
     'col-lg-6 offset-lg-3'
   end
 
-  def request_form_options
-    { as: :request }.merge(bootstrap_form_layout_options).merge(request_form_html_options)
-  end
-
-  def request_form_html_options
-    { html: { class: @request.class.model_name.param_key.tr('_', '-'), data: { turbo: false } } }
-  end
-
-  def bootstrap_form_layout_options
-    { layout: :horizontal, label_col: label_column_class, control_col: content_column_class }
-  end
-
-  def label_column_class
-    'col-sm-4'
-  end
-
   def label_column_offset_class
     'offset-sm-4'
-  end
-
-  def content_column_class
-    'col-sm-8'
-  end
-
-  def send_request_via_login_button(text = nil)
-    button_tag(
-      text || 'Send request<span class="btn-sub-text">login with SUNet ID</span>'.html_safe,
-      id: 'send_request_via_sunet',
-      class: 'btn btn-md btn-primary btn-full',
-      data: { disable_with: 'Send request', additional_user_validation: 'false' }
-    )
   end
 
   def render_markdown(markup)
@@ -45,15 +16,6 @@ module ApplicationHelper
 
   def time_tag(dt, format = :default, attr: {})
     content_tag :time, l(dt, format:), attr.merge(datetime: dt) if dt
-  end
-
-  def render_user_information
-    '<span class="visually-hidden">You are logged in as </span>'.html_safe +
-      current_user.email_address
-  end
-
-  def request_params
-    params.except(:controller, :action).to_unsafe_h
   end
 
   def sort_holdings(holdings_object)

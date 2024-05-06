@@ -131,7 +131,7 @@ RSpec.describe 'Viewing all requests' do
     end
 
     it 'displays the broadcast message' do
-      visit new_mediated_page_path(item_id: '1234', origin: message.library, origin_location: 'ART-LOCKED-LARGE')
+      visit new_request_path(item_id: '1234', origin: message.library, origin_location: 'ART-LOCKED-LARGE')
       expect(page).to have_content message.text
     end
   end
