@@ -34,6 +34,11 @@ class PatronRequest < ApplicationRecord
     super(arr.compact_blank)
   end
 
+  # Evaluate if this is a title only request
+  def title_only?
+    bib_data.items.empty?
+  end
+
   # Clean up memoized variables that depend on the service point code
   def service_point_code=(value)
     @selected_pickup_service_point = nil
