@@ -90,11 +90,13 @@ export default class extends Controller {
   toggleDisplaySponsorList(event) {
     if(event.target.value == 'share') {
       this.selectSponsorTarget.classList.remove('d-none')
-      this.sponsorRadioButtonTarget.required = true
+      this.sponsorRadioButtonTargets.forEach(sponsorRadioButton => { sponsorRadioButton.required = true })
     } else {
       this.selectSponsorTarget.classList.add('d-none')
-      this.sponsorRadioButtonTarget.checked = false
-      this.sponsorRadioButtonTarget.required = false
+      this.sponsorRadioButtonTargets.forEach(sponsorRadioButton => {
+        sponsorRadioButton.required = false
+        sponsorRadioButton.checked = false
+      })
     }
   }
 
