@@ -371,7 +371,7 @@ class PatronRequest < ApplicationRecord
 
     default_values.merge({
                            RequestType: 'Loan',
-                           SpecIns: 'Hold/Recall Request',
+                           SpecIns: 'SearchWorks Request',
                            LoanTitle: bib_data.title,
                            LoanAuthor: bib_data.author,
                            NotWantedAfter: needed_date.strftime('%Y-%m-%d'),
