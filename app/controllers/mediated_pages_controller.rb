@@ -4,8 +4,6 @@
 #  Controller to handle particular behaviors for MediatedPage type requests
 ###
 class MediatedPagesController < RequestsController
-  before_action :check_if_proxy_sponsor, only: :create
-
   def update
     respond_to do |format|
       if current_request.update(update_params)

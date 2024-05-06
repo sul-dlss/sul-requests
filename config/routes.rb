@@ -12,8 +12,6 @@ Rails.application.routes.draw do
   require 'sidekiq_constraint'
   mount Sidekiq::Web => '/sidekiq', constraints: SidekiqConstraint.new
 
-  get 'interstitial' => 'interstitial#show', as: :interstitial
-
   # Authorization routes
   get 'sso/login', to: 'sessions#login_by_sunetid', as: :login_by_sunetid
   get 'sso/logout', to: 'sessions#destroy', as: :logout
@@ -33,18 +31,6 @@ Rails.application.routes.draw do
   get 'change_pin', to: 'reset_pins#change_form', as: :change_pin_with_token
   post 'change_pin', to: 'reset_pins#change'
 
-  concern :creatable_via_get_redirect do
-    collection do
-      get 'create', as: :create
-    end
-  end
-
-  concern :successable do
-    member do
-      get :success, as: :successful
-    end
-  end
-
   concern :statusable do
     member do
       get :status, as: :status
@@ -57,14 +43,13 @@ Rails.application.routes.draw do
 
   resources :patron_requests, only: [:new, :show, :create]
 
-  resources :requests, only: :new
-  resources :aeon_pages, only: :new
-  resources :pages, concerns: [:admin_commentable, :creatable_via_get_redirect, :successable, :statusable]
-  resources :scans, concerns: [:creatable_via_get_redirect, :successable, :statusable]
-  resources :mediated_pages, concerns: [:admin_commentable, :creatable_via_get_redirect, :successable, :statusable] do
+  resources :requests, only: [:new], concerns: [:statusable]
+  resources :pages, controller: :requests, only: [], concerns: [:statusable]
+  resources :scans, controller: :requests,only: [], concerns: [:statusable]
+  resources :mediated_pages, only: [:update], concerns: [:admin_commentable, :statusable] do
     resource :needed_date, only: [:edit, :update, :show]
   end
-  resources :hold_recalls, concerns: [:creatable_via_get_redirect, :successable, :statusable]
+  resources :hold_recalls, controller: :requests,only: [], concerns: [:statusable]
 
   get 'admin/old_requests' => 'admin#old_requests_index', as: :old_requests
 

@@ -1,3 +1,0 @@
-<%= barcode.check_box_without_bootstrap holding.barcode, { checked: f.object.requested_holdings.include?(holding), name: "CallNumber_#{index}", value: holding.callnumber, data: { barcode: holding.barcode, callnumber: holding.callnumber } }, holding.callnumber, nil %>
-<%= f.hidden_field "_aeon_barcode_#{holding.barcode}", disabled: !f.object.requested_holdings.include?(holding), name: "ItemNumber_#{index}", value: holding.barcode, class: 'aeon_barcode' %>
-<%= f.hidden_field "_aeon_request_#{index}", disabled: !f.object.requested_holdings.include?(holding), name: 'Request', value: index, class: 'aeon_request_index' %>
