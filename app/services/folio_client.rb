@@ -351,13 +351,13 @@ class FolioClient
     user
   end
 
-  def check_response(response, title:, context:)
+  def check_response(response, title:, context:) # rubocop:disable Metrics/AbcSize
     return if response.success?
 
     context_string = context.map { |k, v| "#{k}: #{v}" }.join(', ')
 
     if response.status == 422 && Array(response.headers[Faraday::CONTENT_TYPE]).any? { |x| x.match?(/\bjson\b/) }
-      raise FolioClient::Error, "#{title} request for #{context_string} was not successful", JSON.parse(response.body)
+      raise FolioClient::Error.new("#{title} request for #{context_string} was not successful", JSON.parse(response.body))
     end
 
     raise "#{title} request for #{context_string} was not successful. " \
