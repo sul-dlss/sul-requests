@@ -14,7 +14,6 @@ class PatronRequest < ApplicationRecord
 
   validates :instance_hrid, presence: true
   validates :request_type, inclusion: { in: %w[scan pickup] }
-  validates :scan_page_range, presence: true, on: :create, if: :scan?
   validates :scan_title, presence: true, on: :create, if: :scan?
   validate :pickup_service_point_is_valid, on: :create, unless: :scan?
   validate :needed_date_is_valid, on: :create
