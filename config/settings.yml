@@ -46,25 +46,19 @@ folio:
   standard_patron_group_names: ['staff', 'faculty', 'undergrad', 'graduate']
   default_service_point: 'GREEN-LOAN'
   ilb_eligible_patron_groups:
-    - courtesy
     - faculty
     - fellow
     - graduate
-    - lane-resident
     - postdoctoral
     - staff
-    - staff-casual
     - undergrad
     - visiting-scholar
   scan_pilot_groups:
-    - courtesy
     - faculty
     - fellow
     - graduate
-    - lane-resident
     - postdoctoral
     - staff
-    - staff-casual
     - undergrad
     - visiting-scholar
 
@@ -515,17 +509,59 @@ paging_schedule:
     will_arrive_after: '9:00 am'
     business_days_later: 2
 
-  # Business (PAGE-IRON). This location can only be paged to BUSINESS
+  # Business
   - from: 'BUSINESS'
     to: 'BUSINESS'
+    before: '8:30 am'
+    will_arrive_after: '9:00 am'
+    business_days_later: 0
+  - from: 'BUSINESS'
+    to: 'BUSINESS'
+    after: '8:30 am'
+    will_arrive_after: '9:00 am'
+    business_days_later: 1
+  - from: 'BUSINESS'
+    to: 'MARINE-BIO'
+    before: '8:30 am'
+    will_arrive_after: '1:00 pm'
+    business_days_later: 1
+  - from: 'BUSINESS'
+    to: 'MARINE-BIO'
+    after: '8:30 am'
+    will_arrive_after: '1:00 pm'
+    business_days_later: 2
+  - from: 'BUSINESS'
+    to: :anywhere
+    before: '8:30 am'
+    will_arrive_after: '12:00 pm'
+    business_days_later: 1
+  - from: 'BUSINESS'
+    to: :anywhere
+    after: '8:30 am'
+    will_arrive_after: '12:00 pm'
+    business_days_later: 2
+
+  # Law
+  - from: 'LAW'
+    to: 'LAW'
     before: '12:00 pm'
     will_arrive_after: '3:00 pm'
     business_days_later: 1
-  - from: 'BUSINESS'
-    to: 'BUSINESS'
+  - from: 'LAW'
+    to: 'LAW'
     after: '12:00 pm'
     will_arrive_after: '3:00 pm'
     business_days_later: 2
+  - from: 'LAW'
+    to: :anywhere
+    before: '12:00 pm'
+    will_arrive_after: '3:00 pm'
+    business_days_later: 2
+  - from: 'LAW'
+    to: :anywhere
+    after: '12:00 pm'
+    will_arrive_after: '3:00 pm'
+    business_days_later: 3
 
   # Rumsey Map Center
   - from: 'RUMSEY-MAP'

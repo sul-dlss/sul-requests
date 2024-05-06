@@ -171,7 +171,7 @@ RSpec.describe Ability do
                                                               items: [build(:item, effective_location: build(:law_location))]))
       end
 
-      it { is_expected.to be_able_to(:prepare, request) }
+      it { is_expected.to be_able_to(:new, request) }
     end
 
     describe 'who did not create the requst' do

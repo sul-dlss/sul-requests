@@ -306,4 +306,61 @@ RSpec.describe 'Creating a request' do
       expect(page).to have_button 'Continue to complete request'
     end
   end
+
+  context 'with multiple items to pick from', :js do
+    let(:bib_data) { build(:checkedout_holdings) }
+
+    let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true, ldap_attributes:) }
+    let(:ldap_attributes) { {} }
+
+    before do
+      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
+      login_as(current_user)
+    end
+
+    it 'allows the user to page the available item' do
+      visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+
+      expect(page).to have_css 'h2', text: 'Select item(s)'
+      check 'ABC 123'
+      click_on 'Continue'
+      expect do
+        click_on 'Submit request'
+        expect(page).to have_content 'We received your pickup request'
+      end.to change(PatronRequest, :count).by(1)
+
+      expect(PatronRequest.last).to have_attributes(barcodes: ['12345678'])
+    end
+
+    it 'allows the user to hold/recall the checked out item' do
+      visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+
+      expect(page).to have_css 'h2', text: 'Select item(s)'
+      check 'ABC 321'
+      click_on 'Continue'
+      choose 'Wait for a Stanford copy to become available'
+      expect do
+        click_on 'Submit request'
+        expect(page).to have_content 'We received your pickup request'
+      end.to change(PatronRequest, :count).by(1)
+
+      expect(PatronRequest.last).to have_attributes(barcodes: ['87654321'], fulfillment_type: 'hold')
+    end
+
+    it 'allows the user to select both items' do
+      visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+
+      expect(page).to have_css 'h2', text: 'Select item(s)'
+      check 'ABC 123'
+      check 'ABC 321'
+      click_on 'Continue'
+      choose 'Wait for a Stanford copy to become available'
+      expect do
+        click_on 'Submit request'
+        expect(page).to have_content 'We received your pickup request'
+      end.to change(PatronRequest, :count).by(1)
+
+      expect(PatronRequest.last).to have_attributes(barcodes: ['12345678', '87654321'], fulfillment_type: 'hold')
+    end
+  end
 end
