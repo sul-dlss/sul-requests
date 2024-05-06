@@ -284,11 +284,7 @@
   </div>
 
   <!-- pickup request (single item )-->
-<<<<<<< HEAD
-  <% if (f.object.items_in_location.one? || f.object.title_only?) && can?(:prepare, f.object) && !f.object.aeon_page? %>
-=======
-  <% if f.object.items_in_location.one? && can?(:request_pickup, f.object) && !f.object.aeon_page? %>
->>>>>>> main
+  <% if (f.object.items_in_location.one? || f.object.title_only?) && can?(:request_pickup, f.object) && !f.object.aeon_page? %>
     <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', classes: [('d-none' if scan_pickup)], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'pickup' }, submit: true) do |c| %>
       <% c.with_title.with_content('Pickup request') %>
       <% c.with_body do %>
