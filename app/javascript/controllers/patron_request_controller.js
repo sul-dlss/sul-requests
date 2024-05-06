@@ -131,11 +131,14 @@ export default class extends Controller {
   }
 
   async updateEarliestAvailable(event) {
-    if (!this.hasEarliestAvailableTarget) return;
+    if (this.hasEarliestAvailableTarget) {
+      const url = new URL(this.earliestAvailableTarget.src + "/../" + event.currentTarget.value);
+      this.earliestAvailableTarget.src = url;
+    }
 
-    const url = new URL(this.earliestAvailableTarget.src + "/../" + event.currentTarget.value);
-    const destinationName = event.target.selectedOptions[0].textContent;
-    this.earliestAvailableTarget.src = url;
-    this.destinationTarget.textContent = destinationName;
+    if (this.hasDestinationTarget) {
+      const destinationName = event.target.selectedOptions[0].textContent;
+      this.destinationTarget.textContent = destinationName;
+    }
   }
 }
