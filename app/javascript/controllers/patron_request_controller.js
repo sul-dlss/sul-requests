@@ -86,12 +86,17 @@ export default class extends Controller {
   }
 
   // When the user says the request is for a sponsor, display the sponsor selection list
+  // Also require a sponsor selection only if the user selects that the request is for a sponsor. 
   toggleDisplaySponsorList(event) {
     if(event.target.value == 'share') {
       this.selectSponsorTarget.classList.remove('d-none')
+      this.sponsorRadioButtonTargets.forEach(sponsorRadioButton => { sponsorRadioButton.required = true })
     } else {
       this.selectSponsorTarget.classList.add('d-none')
-      this.sponsorRadioButtonTarget.checked = false
+      this.sponsorRadioButtonTargets.forEach(sponsorRadioButton => {
+        sponsorRadioButton.required = false
+        sponsorRadioButton.checked = false
+      })
     }
   }
 
