@@ -79,7 +79,7 @@
   <% end %>
 
   <!-- request type -->
-  <% scan_pickup = can?(:request_scan, f.object) && can?(:prepare, f.object) %>
+  <% scan_pickup = can?(:request_scan, f.object) && can?(:request_pickup, f.object) %>
   <% if scan_pickup %>
     <%= render AccordionStepComponent.new(id: 'request-type', step_index: step_enum.next, form_id: f.id) do |c| %>
       <% c.with_title.with_content('Request type') %>
@@ -98,7 +98,7 @@
   <% end %>
 
   <!-- item selector -->
-  <% if f.object.items_in_location.many? && (can?(:request_scan, f.object) || can?(:prepare, f.object)) && !f.object.finding_aid? %>
+  <% if f.object.items_in_location.many? && (can?(:request_scan, f.object) || can?(:request_pickup, f.object)) && !f.object.finding_aid? %>
     <div data-controller="itemselector" data-itemselector-request-type-value="pickup" data-action="itemselector:change->patronRequest#showItemSelector">
     <%= render AccordionStepComponent.new(id: 'barcodes', step_index: step_enum.next, form_id: f.id, data: { 'switch-selector': true }) do |c| %>
       <% c.with_title.with_content('Select item(s)') %>
@@ -127,7 +127,7 @@
                 <tr data-sortby-status="<%= item.status_text.downcase.gsub(' ', '_') %>" data-sortby-callnumber="<%= index %>" >
                   <td class="align-middle">
                     <label>
-                      <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: cannot?(:request, item), data: { required: true, 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-duequeueinfo-param': queue_length_display(item),  'itemselector-label-param': callnumber_label(item), action: 'itemselector#change' } }, item.barcode || item.id, "" %>
+                      <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: cannot?(:request, item), data: { 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-duequeueinfo-param': queue_length_display(item),  'itemselector-label-param': callnumber_label(item), action: 'itemselector#change' } }, item.barcode || item.id, "" %>
                       <% if f.object.aeon_page? %>
                         <%= f.hidden_field "aeon_callnumber_#{item.callnumber}", disabled: true, name: "CallNumber_#{index}", value: item.callnumber, data: { toggle: true } %>
                         <%= f.hidden_field "aeon_barcode_#{item.barcode}", disabled: true, name: "ItemNumber_#{index}", value: item.barcode, data: { toggle: true } %>
@@ -159,8 +159,8 @@
     <% end %>
 
     <!-- pickup request (multiple items) -->
-    <% if can?(:prepare, f.object) && !f.object.aeon_page? %>
-      <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', classes: [('d-none' if scan_pickup)], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'pickup' }, submit: true) do |c| %>
+    <% if can?(:request_pickup, f.object) && !f.object.aeon_page? %>
+      <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', classes: [('d-none' if scan_pickup)], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'pickup', action: 'itemselector:changed@document->patronRequest#enableAnyNextButtons' }, submit: true) do |c| %>
         <% c.with_title.with_content('Pickup request') %>
         <% c.with_body do %>
           <%= render 'pickup_destination', f: %>
@@ -170,7 +170,7 @@
               <div class="card-body bg-light rounded">
                 <div class="d-flex flex-column flex-xl-row align-items-start justify-content-xl-between align-items-xl-center mb-3 gap-2 gap-xl-0">
                     <div class="text-black fw-semibold">Available items</div>
-                    <div class="text-cardinal">
+                    <div id="earliestAvailableContainer" aria-live="polite" class="text-cardinal">
                       Pickup after:
                       <span class="fw-bold">
                         <% if f.object.pickup_destinations.one? && f.object.earliest_delivery_estimate %>
@@ -284,7 +284,7 @@
   </div>
 
   <!-- pickup request (single item )-->
-  <% if f.object.items_in_location.one? && can?(:prepare, f.object) && !f.object.aeon_page? %>
+  <% if (f.object.items_in_location.one? || f.object.title_only?) && can?(:request_pickup, f.object) && !f.object.aeon_page? %>
     <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', classes: [('d-none' if scan_pickup)], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'pickup' }, submit: true) do |c| %>
       <% c.with_title.with_content('Pickup request') %>
       <% c.with_body do %>
@@ -300,7 +300,7 @@
             No date/time estimate
           <% end %>
           <div>
-            <%= queue_length_display(f.object.items_in_location.first, prefix: 'Item status: ') %>
+            <%= queue_length_display(f.object.items_in_location.first, prefix: 'Item status: ', title_only: f.object.title_only?) %>
           </div>
         </div>
         <% if f.object.mediateable? %>
@@ -319,6 +319,9 @@
                 <%= f.label :needed_date, 'I plan to visit on:', :class => 'required-label py-2' %>
                 <%= f.date_field :needed_date, :required => true, value:  f.object.earliest_delivery_estimate['date'], min: f.object.earliest_delivery_estimate['date'], class: 'd-block rounded border mt-4' %>
             <% end %>
+        <% end %>
+         <% if f.object.title_only? %>
+           <%= render 'not_needed_after_date', f: %>
         <% end %>
         <%= render 'pickup_destination', f: %>
         <%= render 'request_preferences', f: %>

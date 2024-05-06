@@ -286,4 +286,22 @@ RSpec.describe RequestsHelper do
       ).to include('There was a problem with one or more of your items below')
     end
   end
+
+  describe '#queue_length_display' do
+    let(:item) do
+      build(:item,
+            due_date: 'Jul 1, 2024',
+            status: 'Checked out')
+    end
+
+    it 'returns no waitlist display when no items present in request' do
+      expect(queue_length_display(nil, prefix: nil, title_only: true)).to eq 'On order | No waitlist'
+    end
+
+    it 'correctly returns a waitlist message with checked out status' do
+      allow(item).to receive_messages(checked_out?: true, queue_length: 2)
+      expect(queue_length_display(item, prefix: 'Item status: ',
+                                        title_only: false)).to eq 'Item status: Checked out - Due Jul 1, 2024 | There is a waitlist ahead of your request' # rubocop:disable Layout/LineLength
+    end
+  end
 end

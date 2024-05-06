@@ -48,7 +48,8 @@ RSpec.describe 'Creating an Aeon patron request', :js do
 
       it 'identifies the reading room where the items will be prepared' do
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SPEC-STACKS')
-        click_on 'Continue'
+        expect(page).to have_button('Continue', disabled: true)
+
         check 'patron_request_barcodes_12345678'
         check 'patron_request_barcodes_87654321'
         click_on 'Continue'
@@ -124,17 +125,15 @@ RSpec.describe 'Creating an Aeon patron request', :js do
       let(:bib_data) { :special_collections_holdings }
 
       describe 'item selector' do
-        before do
-          click_on 'Continue'
-        end
-
         describe 'with no items selected' do
           it 'disables request indices' do
+            expect(page).to have_button('Continue', disabled: true)
             expect(page).to have_field(type: 'hidden', name: 'Request', with: '1', disabled: true)
             expect(page).to have_field(type: 'hidden', name: 'Request', with: '2', disabled: true)
           end
 
           it 'disables item barcodes' do
+            expect(page).to have_button('Continue', disabled: true)
             expect(page).to have_field(type: 'hidden', name: 'ItemNumber_1', with: '12345678', disabled: true)
             expect(page).to have_field(type: 'hidden', name: 'ItemNumber_2', with: '87654321', disabled: true)
           end

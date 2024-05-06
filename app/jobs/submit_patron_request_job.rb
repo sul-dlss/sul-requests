@@ -80,7 +80,8 @@ class SubmitPatronRequestJob < ApplicationJob
     hold_request_data = FolioClient::HoldRequestData.new(pickup_location_id: patron_request.pickup_service_point.id,
                                                          patron_comments: patron_request.request_comments,
                                                          expiration_date: patron_request.needed_date.to_time.utc.iso8601)
-    folio_response = folio_client.create_instance_hold(patron_request.patron.id, patron_request.instance_hrid, hold_request_data)
+
+    folio_response = folio_client.create_instance_hold(patron_request.patron.id, patron_request.instance_id, hold_request_data)
 
     patron_request.update(folio_responses: [folio_response])
   end
