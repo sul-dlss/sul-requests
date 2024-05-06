@@ -116,4 +116,24 @@ RSpec.describe Folio::Patron do
       expect(patron.proxy_group_names.length).to eq 2
     end
   end
+
+  describe '#sponsor_names' do
+    let(:fields) { { id: 'proxy', personal: { firstName: 'Proxy' } } }
+    let(:sponsor_one) { instance_double(described_class, id: 'sponsor1', display_name: 'Sponsor One') }
+    let(:sponsor_two) { instance_double(described_class, id: 'sponsor2', display_name: 'Sponsor Two') }
+
+    it 'retrieves the names of the sponsor user ids correctly' do
+      stub_client = FolioClient.new
+      allow(FolioClient).to receive(:new).and_return(stub_client)
+      allow(stub_client).to receive(:find_patron_by_id).with('sponsor1').and_return(sponsor_one)
+      allow(stub_client).to receive(:find_patron_by_id).with('sponsor2').and_return(sponsor_two)
+      allow(stub_client).to receive(:all_proxy_info).with('proxy').and_return([
+                                                                                { 'userId' => 'sponsor1',
+                                                                                  'requestForSponsor' => 'Yes' },
+                                                                                { 'userId' => 'sponsor2',
+                                                                                  'requestForSponsor' => 'Yes' }
+                                                                              ])
+      expect(patron.sponsor_names.length).to eq 2
+    end
+  end
 end

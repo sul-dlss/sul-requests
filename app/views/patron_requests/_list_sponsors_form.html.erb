@@ -1,0 +1,36 @@
+  <div class="col alert alert-info">
+    We noticed that you are a designated proxy for one or more sponsors, allowing you to place requests and borrow materials 
+    on their behalf.  
+    
+  </div>
+  <div class="col pe-0">
+    <div class="mt-2">
+      Is this request for yourself or on behalf of a sponsor?
+    </div>
+     <div class="mt-2">
+        <%= f.radio_button :for_sponsor, 'noshare', :class => 'form-check-input', data: { action: 'patronRequest#updateForSponsor patronRequest#toggleDisplaySponsorList' } %>
+        <%= f.label :for_sponsor_noshare, :class => 'form-check-label ms-1 d-inline' do %>
+       This is for myself. 
+        <% end %>
+    </div>
+     <div class="mt-2">
+        <%= f.radio_button :for_sponsor, 'share', :class => 'form-check-input', required: true, data: { action: 'patronRequest#updateForSponsor patronRequest#toggleDisplaySponsorList' } %>
+        <%= f.label :for_sponsor_share, :class => 'form-check-label ms-1 d-inline' do %>
+        This is for a sponsor. 
+        <% end %>
+    </div>
+    <div data-patronRequest-target='selectSponsor' class="d-none">
+        <div class="mt-4">
+        Select a sponsor: 
+        </div>
+        <div class="mt-2">
+            <div class="mt-2">
+                <% f.object.patron.sponsor_names.sort.each do |sponsor_name| %>  
+                    <%= f.radio_button :for_sponsor_name, sponsor_name, :class => 'form-check-input', required: true, data: { 'patronRequest-target': 'sponsorRadioButton'} %>
+                    <%= f.label :for_sponsor_name, sponsor_name, :class => 'form-check-label ms-1 d-inline' %>
+                <% end %>
+            </div>
+        </div>
+    </div>
+    
+  </div>

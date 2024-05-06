@@ -7,7 +7,7 @@ class PatronRequest < ApplicationRecord
   class_attribute :bib_model_class, default: Settings.ils.bib_model.constantize
   store :data, accessors: [
     :barcodes, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title, :request_type,
-    :proxy, :estimated_delivery, :patron_name, :item_title
+    :proxy, :for_sponsor, :for_sponsor_name, :estimated_delivery, :patron_name, :item_title
   ], coder: JSON
 
   delegate :instance_id, :finding_aid, :finding_aid?, to: :bib_data
@@ -53,6 +53,11 @@ class PatronRequest < ApplicationRecord
   # Check if the user has selected "yes" on the form with respect to proxy permission
   def proxy?
     proxy == 'share'
+  end
+
+  # Check if the user has selected a sponsor on the form for making the request on behalf of their sponsor
+  def for_sponsor?
+    for_sponsor == 'share'
   end
   # @!endgroup
 
@@ -257,7 +262,8 @@ class PatronRequest < ApplicationRecord
   def request_comments
     return "#{patron_name} <#{patron_email}>" if patron.blank?
 
-    [("(PROXY PICKUP OK; request placed by #{patron.display_name} <#{patron.email}>)" if proxy?)].compact.join("\n")
+    [("(PROXY PICKUP OK; request placed by #{patron.display_name} <#{patron.email}>)" if proxy?),
+     ("(PROXY PICKUP OK; request placed for #{for_sponsor_name}" if for_sponsor?)].compact.join("\n")
   end
 
   # @!endgroup

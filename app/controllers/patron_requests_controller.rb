@@ -78,6 +78,7 @@ class PatronRequestsController < ApplicationController
 
   def patron_request_params
     params.require(:patron_request).permit(:patron_email, :instance_hrid, :origin_location_code, :needed_date, :service_point_code, :proxy,
+                                           :for_sponsor_name, :for_sponsor,
                                            :fulfillment_type, :request_type,
                                            :scan_page_range, :scan_authors, :scan_title,
                                            :barcode, barcodes: [])
