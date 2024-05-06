@@ -19,6 +19,10 @@ class PatronRequest < ApplicationRecord
   validate :pickup_service_point_is_valid, on: :create, unless: :scan?
   validate :needed_date_is_valid, on: :create
 
+  scope :obsolete, lambda { |date|
+    where('(created_at < ?) AND (needed_date IS NULL OR needed_date < ?)', date, date)
+  }
+
   before_create do
     self.item_title = bib_data&.title
     self.estimated_delivery = earliest_delivery_estimate(scan: scan?)&.dig('display_date')
