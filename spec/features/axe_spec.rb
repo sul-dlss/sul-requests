@@ -76,6 +76,32 @@ RSpec.describe 'Accessibility testing', :js do
     end
   end
 
+  context 'for a scan' do
+    let(:bib_data) { build(:scannable_holdings) }
+    let(:user) { create(:scan_eligible_user) }
+    let(:patron) { build(:patron) }
+    let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true, ldap_attributes:) }
+    let(:ldap_attributes) { {} }
+
+    before do
+      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
+      login_as(current_user)
+      allow(current_user).to receive(:user_object).and_return(user)
+    end
+
+    it 'validates the scan form' do
+      visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+
+      expect(page).to be_accessible
+      choose 'Email digital scan'
+      click_on 'Continue'
+      expect(page).to be_accessible
+      choose 'ABC 123'
+      click_on 'Continue'
+      expect(page).to be_accessible
+    end
+  end
+
   it 'validates the feedback form page' do
     visit feedback_form_path
     expect(page).to be_accessible
