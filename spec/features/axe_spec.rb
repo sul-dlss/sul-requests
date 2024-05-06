@@ -5,9 +5,10 @@ require 'axe-rspec'
 
 RSpec.describe 'Accessibility testing', :js do
   let(:user_object) { build(:sso_user) }
+  let(:bib_data) { build(:sal3_holding) }
 
   before do
-    allow(Folio::Instance).to receive(:fetch).with('a12345').and_return(build(:sal3_holding))
+    stub_bib_data_json(bib_data)
   end
 
   # TODO: once user login is available add user mocks
@@ -45,6 +46,59 @@ RSpec.describe 'Accessibility testing', :js do
         visit new_patron_request_path(instance_hrid: 'a12345', origin_location_code: 'SAL3-STACKS', step: 'select')
         expect(page).to be_accessible
       end
+    end
+  end
+
+  context 'with multiple items to pick from' do
+    let(:bib_data) { build(:checkedout_holdings) }
+
+    let(:user) { create(:sso_user) }
+    let(:patron) { build(:patron) }
+    let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true, ldap_attributes:) }
+    let(:ldap_attributes) { {} }
+
+    before do
+      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
+      login_as(current_user)
+    end
+
+    it 'validates the multi-item selector steps' do
+      visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+
+      expect(page).to be_accessible
+
+      check 'ABC 123'
+      click_on 'Continue'
+      expect(page).to be_accessible
+
+      click_on 'Submit request'
+      expect(page).to be_accessible
+    end
+  end
+
+  context 'for a scan' do
+    let(:bib_data) { build(:scannable_holdings) }
+    let(:user) { create(:scan_eligible_user) }
+    let(:patron) { build(:patron) }
+    let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true, ldap_attributes:) }
+    let(:ldap_attributes) { {} }
+
+    before do
+      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
+      login_as(current_user)
+      allow(current_user).to receive(:user_object).and_return(user)
+    end
+
+    it 'validates the scan form' do
+      visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+
+      expect(page).to be_accessible
+      choose 'Email digital scan'
+      click_on 'Continue'
+      expect(page).to be_accessible
+      choose 'ABC 123'
+      click_on 'Continue'
+      expect(page).to be_accessible
     end
   end
 

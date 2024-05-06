@@ -170,7 +170,7 @@
               <div class="card-body bg-light rounded">
                 <div class="d-flex flex-column flex-xl-row align-items-start justify-content-xl-between align-items-xl-center mb-3 gap-2 gap-xl-0">
                     <div class="text-black fw-semibold">Available items</div>
-                    <div class="text-cardinal">
+                    <div id="earliestAvailableContainer" aria-live="polite" class="text-cardinal">
                       Pickup after:
                       <span class="fw-bold">
                         <% if f.object.pickup_destinations.one? && f.object.earliest_delivery_estimate %>
