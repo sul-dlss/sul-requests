@@ -150,7 +150,7 @@ export default class extends Controller {
   renderItems(items, scan=false) {
     return items.map((item) => {
       return `
-        <li class="d-flex gap-2 w-100">
+        <li class="d-flex gap-2 w-100 align-items-baseline">
           <span class="itemselector-callnumber-pill bg-light rounded-pill border">
             <span class="callnumber">
               ${item.label}
