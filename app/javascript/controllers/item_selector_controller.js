@@ -149,12 +149,11 @@ export default class extends Controller {
     return items.map((item) => {
       return `
         <li class="d-flex gap-2 w-100">
-          <span class="hstack gap-2 border bg-light rounded-pill px-3 flex-shrink-0">
-            <small class="py-1">
+          <span class="itemselector-callnumber-pill bg-light rounded-pill border">
+            <span class="callnumber">
               ${item.label}
-            </small>
-            <span class="vr"></span>
-            <button data-action="${this.identifier}#unchecked analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Remove" data-${this.identifier}-id-param="${item.id}" type="button" class="btn-close py-1 pill-close" aria-label="Remove ${item.label}"></button>
+            </span>
+            <button data-action="${this.identifier}#unchecked analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Remove" data-${this.identifier}-id-param="${item.id}" type="button" class="btn-close py-0 pill-close" aria-label="Remove ${item.label}"></button>
           </span>
           ${item.duequeueinfo && !scan ? `<span class="text-cardinal d-block align-self-center flex-shrink-2">${item.duequeueinfo}</span>` : ''}
         </li>

@@ -289,3 +289,19 @@ label.btn-close {
 .alert > p:last-of-type {
   margin-bottom: 0;
 }
+
+.itemselector-callnumber-pill {
+  gap: 0.35rem;
+  display: inline-flex;
+  align-items: center;
+  padding-left: 0.55rem;
+  padding-right: 0.45rem;
+
+  .callnumber {
+    border-inline-end: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color);
+    font-size: 0.875em;
+    line-height: 1.45em;
+    padding-block: 0.1rem;
+    padding-inline-end: 0.45rem;
+  }
+}
