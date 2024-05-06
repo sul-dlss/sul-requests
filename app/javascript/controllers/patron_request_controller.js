@@ -63,7 +63,6 @@ export default class extends Controller {
       this.selectSponsorTarget.classList.remove('d-none')
     } else {
       this.selectSponsorTarget.classList.add('d-none')
-      //this.event.target.checked = false
       this.sponsorRadioButtonTarget.checked = false
     }
   }
