@@ -3,8 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe PatronRequest do
-  subject(:request) { described_class.new(instance_hrid: 'a12345', **attr) }
+  subject(:request) { described_class.new(instance_hrid: 'a12345', patron:, **attr) }
 
+  let(:patron) { build(:patron) }
   let(:attr) { {} }
   let(:bib_data) { instance_double(Folio::Instance, title: 'Title') }
 
@@ -256,7 +257,7 @@ RSpec.describe PatronRequest do
 
   describe '#patron' do
     context 'with a patron' do
-      let(:attr) { { patron_id: 'uuid' } }
+      let(:attr) { { patron_id: 'uuid', patron: nil } }
       let(:patron) { instance_double(Folio::Patron) }
 
       before do
@@ -269,7 +270,7 @@ RSpec.describe PatronRequest do
     end
 
     context 'with a name/email user' do
-      let(:attr) { { patron_name: 'Test', patron_email: 'test@example.com' } }
+      let(:attr) { { patron_name: 'Test', patron_email: 'test@example.com', patron: nil } }
 
       it 'create a NullPatron from the stored attributes' do
         expect(request.patron).to have_attributes(blank?: true, display_name: 'Test', email: 'test@example.com')
@@ -288,7 +289,7 @@ RSpec.describe PatronRequest do
   end
 
   describe '#request_comments' do
-    let(:attr) { { patron_name: 'Test', patron_email: 'test@example.com' } }
+    let(:attr) { { patron: nil, patron_name: 'Test', patron_email: 'test@example.com' } }
 
     it 'includes the visitor contact information' do
       expect(request.request_comments).to eq 'Test <test@example.com>'

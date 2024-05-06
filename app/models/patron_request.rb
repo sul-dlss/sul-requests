@@ -129,7 +129,7 @@ class PatronRequest < ApplicationRecord
     end
     destinations ||= location_restricted_service_point_codes
 
-    return destinations.select { |destination| Settings.allowed_visitor_pickups.include?(destination) } unless patron
+    return destinations.select { |destination| Settings.allowed_visitor_pickups.include?(destination) } if patron.blank?
 
     destinations
   end
@@ -251,9 +251,11 @@ class PatronRequest < ApplicationRecord
   # Also set patron information directly on this request; mostly used for visitors without
   # FOLIO accounts, but could also be useful for mediated pages or debugging.
   def patron=(patron)
-    self.patron_id = patron.id
-    self.patron_name = patron.display_name
-    self.patron_email = patron.email
+    if patron
+      self.patron_id = patron.id
+      self.patron_name = patron.display_name
+      self.patron_email = patron.email
+    end
 
     @patron = patron
   end
