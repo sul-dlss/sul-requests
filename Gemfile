@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '~> 7.1.3'
 
 # Use sqlite3 as the database (during local development)
-gem 'sqlite3'
+gem 'sqlite3', '~> 1.4'
 # Use Puma as the app server
 gem 'puma', '~> 6.0'
 gem 'bootsnap'
