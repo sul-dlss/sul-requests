@@ -1,6 +1,6 @@
 <% if f.object.holdable_recallable_items.any? %>
 <fieldset class="mb-4 p-3 pb-0">
-  <legend class="fs-6 required-label">Select processing method <a href="https://library.stanford.edu/services/borrow-and-request#request" class="ms-2"><i class="bi bi-box-arrow-up-right"></i> Learn more</a>
+  <legend class="fs-6 required-label">Select processing method <a href="https://library.stanford.edu/services/borrow-and-request#request" class="ms-2" target="_blank"><i class="bi bi-box-arrow-up-right"></i> Learn more <span class="visually-hidden">about request services</span></a>
   </legend>
   <div class="mt-2 form-check">
     <%= f.radio_button :fulfillment_type, 'recall', class: 'form-check-input', required: true %>
