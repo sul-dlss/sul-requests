@@ -332,6 +332,12 @@ RSpec.describe 'Creating a request' do
       expect(PatronRequest.last).to have_attributes(barcodes: ['12345678'])
     end
 
+    it 'filters down to a single form when barcode in parameters' do
+      visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS', barcode: '12345678')
+
+      expect(page).to have_button 'Submit'
+    end
+
     it 'allows the user to hold/recall the checked out item' do
       visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
 

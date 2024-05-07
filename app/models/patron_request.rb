@@ -166,9 +166,17 @@ class PatronRequest < ApplicationRecord
 
   # Item stuff
 
+  def barcode_filtered_items
+    if barcodes.present?
+      bib_data.items.select { |x| x.barcode.in?(barcodes) || x.id.in?(barcodes) }
+    else
+      bib_data.items
+    end
+  end
+
   # @return [Array<Folio::Item>] the items in the origin location
   def items_in_location
-    @items_in_location ||= bib_data.items.select do |item|
+    @items_in_location ||= barcode_filtered_items.select do |item|
       if item.effective_location.details['searchworksTreatTemporaryLocationAsPermanentLocation'] == 'true'
         item.effective_location.code == origin_location_code
       else
