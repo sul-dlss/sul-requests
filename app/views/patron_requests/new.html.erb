@@ -317,7 +317,7 @@
             </div>
             <% if f.object.requires_needed_date? %>
                 <%= f.label :needed_date, 'I plan to visit on:', :class => 'required-label py-2' %>
-                <%= f.date_field :needed_date, :required => true, value:  f.object.earliest_delivery_estimate['date'], min: f.object.earliest_delivery_estimate['date'], class: 'd-block rounded border mt-4' %>
+                <%= f.date_field :needed_date, :required => true, value:  f.object.earliest_delivery_estimate['date'], min: f.object.earliest_delivery_estimate['date'], class: 'd-block rounded border mb-4' %>
             <% end %>
         <% end %>
          <% if f.object.title_only? %>
