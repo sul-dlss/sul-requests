@@ -1,0 +1,65 @@
+<h1>Requests dashboard</h1>
+
+<table class='table dashboard-table'>
+  <tr>
+    <% @dashboard.metrics.each do |metric| %>
+      <td class='col-sm-<%= 12 / @dashboard.metrics.length %>'>
+        <h3><%= @dashboard.send(metric) %></h3>
+      </td>
+    <% end %>
+  </tr>
+  <tfoot>
+    <tr>
+      <% @dashboard.metrics.each do |metric| %>
+        <td>
+          <span class='text-muted'>
+            <%=
+              # if the metric is selected, give an [x] link to go back to the unfiltered request
+              # list.  otherwise, give a link to the filtered list for the request type.
+              if filter_metric == metric
+                (t(".#{metric}") + " ").html_safe + link_to('[x]', old_requests_path)
+              else
+                link_to(t(".#{metric}"), old_requests_path(metric: metric))
+              end
+            %>
+          </span>
+        </td>
+      <% end %>
+    </tr>
+  </tfoot>
+</table>
+
+<div class='admin-requests'>
+  <h2>Recent Requests</h2>
+  <%= render 'shared/jump_to_date', form_path: old_requests_path %>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th class='col-1'>Type</th>
+        <th class='col-1'>Origin</th>
+        <th class='col-1'>Destination</th>
+        <th class='col-5'>Title</th>
+        <th class='col-2'>Requester</th>
+        <th class='col-1'>Requested on</th>
+        <th class='col-1'>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @requests.each do |request| %>
+        <tr>
+          <td><%= request.type %></td>
+          <td><%= request.origin_library_code %></td>
+          <td><%= request.destination %></td>
+          <td><%= searchworks_link(request.item_id, request.item_title, 'data-behavior' => 'truncate') %></td>
+          <td><%= requester_info(request.user) %></td>
+          <td><%= time_tag(request.created_at, :short) %></td>
+          <td><%= link_to('Status', polymorphic_path([:status, request])) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= paginate @requests, theme: 'bootstrap-5' unless filtered_by_create_date? %>
+
+</div>

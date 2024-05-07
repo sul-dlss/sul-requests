@@ -11,6 +11,11 @@ class AdminController < ApplicationController
   before_action :load_and_authorize_library_location, only: [:show]
 
   def index
+    authorize! :admin, PatronRequest.new
+    @requests = dashboard_patron_requests
+  end
+
+  def old_requests_index
     authorize! :manage, Request.new
     @dashboard = Dashboard.new
     @requests = dashboard_requests
@@ -67,6 +72,14 @@ class AdminController < ApplicationController
       dashboard_create_date_filtered_requests
     else
       dashboard_recent_requests
+    end
+  end
+
+  def dashboard_patron_requests
+    if filtered_by_create_date?
+      PatronRequest.for_create_date(params[:created_at])
+    else
+      PatronRequest.recent.page(page).per(per_page)
     end
   end
 

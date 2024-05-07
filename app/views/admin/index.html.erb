@@ -1,34 +1,5 @@
 <h1>Requests dashboard</h1>
 
-<table class='table dashboard-table'>
-  <tr>
-    <% @dashboard.metrics.each do |metric| %>
-      <td class='col-sm-<%= 12 / @dashboard.metrics.length %>'>
-        <h3><%= @dashboard.send(metric) %></h3>
-      </td>
-    <% end %>
-  </tr>
-  <tfoot>
-    <tr>
-      <% @dashboard.metrics.each do |metric| %>
-        <td>
-          <span class='text-muted'>
-            <%=
-              # if the metric is selected, give an [x] link to go back to the unfiltered request
-              # list.  otherwise, give a link to the filtered list for the request type.
-              if filter_metric == metric
-                (t(".#{metric}") + " ").html_safe + link_to('[x]', admin_index_path)
-              else
-                link_to(t(".#{metric}"), admin_index_path(metric: metric))
-              end
-            %>
-          </span>
-        </td>
-      <% end %>
-    </tr>
-  </tfoot>
-</table>
-
 <div class='admin-requests'>
   <h2>Recent Requests</h2>
   <%= render 'shared/jump_to_date', form_path: admin_index_path %>
@@ -37,9 +8,9 @@
     <thead>
       <tr>
         <th class='col-1'>Type</th>
-        <th class='col-1'>Origin</th>
+        <th class='col-2'>Origin</th>
         <th class='col-1'>Destination</th>
-        <th class='col-5'>Title</th>
+        <th class='col-4'>Title</th>
         <th class='col-2'>Requester</th>
         <th class='col-1'>Requested on</th>
         <th class='col-1'>Status</th>
@@ -49,12 +20,12 @@
       <% @requests.each do |request| %>
         <tr>
           <td><%= request.type %></td>
-          <td><%= request.origin_library_code %></td>
-          <td><%= request.destination %></td>
-          <td><%= searchworks_link(request.item_id, request.item_title, 'data-behavior' => 'truncate') %></td>
-          <td><%= requester_info(request.user) %></td>
+          <td><%= request.origin_location_code %></td>
+          <td><%= request.service_point_code %></td>
+          <td><%= searchworks_link(request.instance_hrid, request.item_title, 'data-behavior' => 'truncate') %></td>
+          <td><%= "#{request.patron_name} <#{request.patron_email}>" %></td>
           <td><%= time_tag(request.created_at, :short) %></td>
-          <td><%= link_to('Status', polymorphic_path([:status, request])) %></td>
+          <td><%= link_to('Status', url_for(request)) %></td>
         </tr>
       <% end %>
     </tbody>

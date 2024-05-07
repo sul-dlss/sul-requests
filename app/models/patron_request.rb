@@ -18,6 +18,11 @@ class PatronRequest < ApplicationRecord
   validate :pickup_service_point_is_valid, on: :create, unless: :scan?
   validate :needed_date_is_valid, on: :create
 
+  scope :recent, -> { order(created_at: :desc) }
+  scope :for_create_date, lambda { |date|
+    where(created_at: Time.zone.parse(date).all_day)
+  }
+
   before_create do
     self.item_title = bib_data&.title
     self.estimated_delivery = earliest_delivery_estimate(scan: scan?)&.dig('display_date')
@@ -43,6 +48,18 @@ class PatronRequest < ApplicationRecord
     @selected_pickup_service_point = nil
     @destination_library_pseudopatron = nil
     super
+  end
+
+  def type
+    return 'Scan' if scan?
+
+    if fulfillment_type == 'hold'
+      'Hold'
+    elsif fulfillment_type == 'recall'
+      'Recall'
+    else
+      'Page'
+    end
   end
 
   def scan?

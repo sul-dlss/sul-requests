@@ -40,11 +40,13 @@ class Ability
       can :manage, :site
       can [:create, :read, :update, :destroy], :all
       can :manage, [LibraryLocation, Message, PagingSchedule, Request, AdminComment]
+      can :admin, PatronRequest
     end
 
     if user.site_admin?
       can :manage, [LibraryLocation, Message, PagingSchedule, Request, AdminComment]
       can [:create, :read, :update, :destroy], [PatronRequest]
+      can :admin, PatronRequest
     end
 
     # Adminstrators for origins or destinations should be able to
