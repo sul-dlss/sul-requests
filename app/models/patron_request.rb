@@ -229,10 +229,11 @@ class PatronRequest < ApplicationRecord
     items_in_location.all? { |item| !item.circulates? }
   end
 
-  def single_location_label
+  def location_label
     return 'In library use only' if mediateable? || use_in_library?
+    return 'Pickup location' if pickup_destinations.one?
 
-    'Pickup location'
+    'Preferred pickup location'
   end
 
   # @!endgroup
