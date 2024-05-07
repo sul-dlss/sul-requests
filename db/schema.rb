@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_07_151737) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_07_220758) do
   create_table "admin_comments", force: :cascade do |t|
     t.string "commenter"
     t.string "comment"
@@ -57,10 +57,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_07_151737) do
     t.string "origin_location_code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "mediation_status"
+    t.string "request_type"
     t.index ["folio_request_id"], name: "index_patron_requests_on_folio_request_id"
     t.index ["instance_hrid"], name: "index_patron_requests_on_instance_hrid"
+    t.index ["mediation_status"], name: "index_patron_requests_on_mediation_status"
+    t.index ["needed_date"], name: "index_patron_requests_on_needed_date"
     t.index ["origin_location_code"], name: "index_patron_requests_on_origin_location_code"
     t.index ["patron_id"], name: "index_patron_requests_on_patron_id"
+    t.index ["request_type"], name: "index_patron_requests_on_request_type"
   end
 
   create_table "requests", force: :cascade do |t|

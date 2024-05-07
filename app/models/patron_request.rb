@@ -6,7 +6,7 @@
 class PatronRequest < ApplicationRecord
   class_attribute :bib_model_class, default: Settings.ils.bib_model.constantize
   store :data, accessors: [
-    :barcodes, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title, :request_type,
+    :barcodes, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title,
     :proxy, :for_sponsor, :for_sponsor_name, :estimated_delivery, :patron_name, :item_title, :requested_barcodes, :item_mediation_data
   ], coder: JSON
 
