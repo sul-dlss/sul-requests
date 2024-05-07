@@ -22,7 +22,7 @@ RSpec.describe 'Viewing all requests' do
       end
 
       it 'lists data in a table' do
-        visit admin_index_path
+        visit old_requests_path
 
         expect(page).to have_css('td a[data-behavior="truncate"]', text: 'Fourth symphony. [Op. 51].')
         expect(page).to have_css('td a[href="mailto:jstanford@stanford.edu"]', text: /jstanford@stanford.edu/)
@@ -45,7 +45,7 @@ RSpec.describe 'Viewing all requests' do
       end
 
       it 'allows filtering by request type' do
-        visit admin_index_path
+        visit old_requests_path
 
         expect(page).to have_css('td a', text: 'Mediated pages')
         expect(page).to have_css('td a', text: 'Pages')
@@ -85,7 +85,7 @@ RSpec.describe 'Viewing all requests' do
         before do
           create(:page_mp_mediated_page, created_at: yesterday)
           create(:page, created_at: yesterday)
-          visit admin_index_path
+          visit old_requests_path
           fill_in(:created_at, with: yesterday.to_s)
           click_on('Go')
         end
@@ -115,7 +115,7 @@ RSpec.describe 'Viewing all requests' do
         end
 
         it 'is not paginated' do
-          visit admin_index_path(per_page: 1)
+          visit old_requests_path(per_page: 1)
           expect(page).to have_css('.pagination')
           fill_in(:created_at, with: yesterday.to_s)
           click_on('Go')
@@ -153,9 +153,9 @@ RSpec.describe 'Viewing all requests' do
 
       it 'redirects to the login page' do
         expect_any_instance_of(AdminController).to receive(:redirect_to).with(
-          login_by_sunetid_path(referrer: admin_index_url)
+          login_by_sunetid_path(referrer: old_requests_url)
         )
-        visit admin_index_path
+        visit old_requests_path
       end
     end
   end

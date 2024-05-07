@@ -182,12 +182,12 @@ RSpec.describe 'Creating a request' do
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
 
         within '#earliestAvailableContainer' do
-          expect(page).to have_content('Wednesday, Apr 3, 2024 after 10am')
+          expect(page).to have_content('Wednesday, Apr 3, 2024, 10am')
         end
 
         select 'Marine Biology Library', from: 'Preferred pickup location'
         within '#earliestAvailableContainer' do
-          expect(page).to have_content('Wednesday, Apr 3, 2024 after 4pm')
+          expect(page).to have_content('Wednesday, Apr 3, 2024, 4pm')
         end
       end
     end
@@ -361,6 +361,13 @@ RSpec.describe 'Creating a request' do
       end.to change(PatronRequest, :count).by(1)
 
       expect(PatronRequest.last).to have_attributes(barcodes: ['12345678', '87654321'], fulfillment_type: 'hold')
+    end
+
+    it 'filters down to a single form when barcode in parameters' do
+      visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS', barcode: '12345678')
+
+      expect(page).to have_no_css 'h2', text: 'Select item(s)'
+      expect(page).to have_button 'Submit'
     end
   end
 end

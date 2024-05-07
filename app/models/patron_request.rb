@@ -7,20 +7,23 @@ class PatronRequest < ApplicationRecord
   class_attribute :bib_model_class, default: Settings.ils.bib_model.constantize
   store :data, accessors: [
     :barcodes, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title, :request_type,
-    :proxy, :for_sponsor, :for_sponsor_name, :estimated_delivery, :patron_name, :item_title
+    :proxy, :for_sponsor, :for_sponsor_name, :estimated_delivery, :patron_name, :item_title, :requested_barcodes
   ], coder: JSON
 
   delegate :instance_id, :finding_aid, :finding_aid?, to: :bib_data
 
   validates :instance_hrid, presence: true
   validates :request_type, inclusion: { in: %w[scan pickup] }
-  validates :scan_page_range, presence: true, on: :create, if: :scan?
   validates :scan_title, presence: true, on: :create, if: :scan?
   validate :pickup_service_point_is_valid, on: :create, unless: :scan?
   validate :needed_date_is_valid, on: :create
 
   scope :obsolete, lambda { |date|
     where('(created_at < ?) AND (needed_date IS NULL OR needed_date < ?)', date, date)
+  }
+  scope :recent, -> { order(created_at: :desc) }
+  scope :for_create_date, lambda { |date|
+    where(created_at: Time.zone.parse(date).all_day)
   }
 
   before_create do
@@ -50,6 +53,18 @@ class PatronRequest < ApplicationRecord
     super
   end
 
+  def type
+    return 'Scan' if scan?
+
+    if fulfillment_type == 'hold'
+      'Hold'
+    elsif fulfillment_type == 'recall'
+      'Recall'
+    else
+      'Page'
+    end
+  end
+
   def scan?
     request_type == 'scan'
   end
@@ -70,7 +85,7 @@ class PatronRequest < ApplicationRecord
   # Get the FOLIO location object for the origin location code
   # @return [Folio::Location]
   def folio_location
-    @folio_location ||= Folio::Types.locations.find_by(code: origin_location_code) || items_in_location.first&.permanent_location
+    @folio_location ||= Folio::Types.locations.find_by(code: origin_location_code) || selectable_items.first&.permanent_location
   end
 
   # @deprecated Used by the paging schedule; new code should use folio_location instead
@@ -182,6 +197,15 @@ class PatronRequest < ApplicationRecord
     end
   end
 
+  # @return [Array<Folio::Item>] the items the patron can select from (based on the location or the barcodes passed in initially)
+  def selectable_items
+    if requested_barcodes&.any?
+      items_in_location.select { |x| x.barcode&.in?(requested_barcodes) || x.id.in?(requested_barcodes) }
+    else
+      items_in_location
+    end
+  end
+
   # @return [Array<Folio::Item>] the items the patron has selected
   def selected_items
     return [] unless barcodes&.any?
@@ -195,12 +219,12 @@ class PatronRequest < ApplicationRecord
 
   # @return [Array<Folio::Item>] the items that are holdable and recallable by the patron
   def holdable_recallable_items
-    @holdable_recallable_items ||= items_in_location.filter { |item| item.recallable?(patron) && item.holdable?(patron) }
+    @holdable_recallable_items ||= selectable_items.filter { |item| item.recallable?(patron) && item.holdable?(patron) }
   end
 
   # @return [Boolean] whether any items are available (e.g. for paging, so we can estimate delivery dates)
   def any_items_avaliable?
-    items_in_location.any?(&:available?)
+    selectable_items.any?(&:available?)
   end
 
   # @return [Hash] the earliest delivery estimate for the request
@@ -217,7 +241,7 @@ class PatronRequest < ApplicationRecord
 
   # @return [Boolean] whether the request should be mediated before being placed in FOLIO
   def mediateable?
-    items_in_location.any?(&:mediateable?)
+    selectable_items.any?(&:mediateable?)
   end
 
   # Paging requests don't require a needed date, however most mediated pages need to know when
@@ -231,13 +255,14 @@ class PatronRequest < ApplicationRecord
   end
 
   def use_in_library?
-    items_in_location.all? { |item| !item.circulates? }
+    selectable_items.all? { |item| !item.circulates? }
   end
 
-  def single_location_label
+  def location_label
     return 'In library use only' if mediateable? || use_in_library?
+    return 'Pickup location' if pickup_destinations.one?
 
-    'Pickup location'
+    'Preferred pickup location'
   end
 
   # @!endgroup
@@ -277,12 +302,12 @@ class PatronRequest < ApplicationRecord
   # A request is fulfilled through Aeon if any of the items are "Aeon pageable" (e.g. are in
   # a location with a `pageAeonSite` detail)
   def aeon_page?
-    items_in_location.any?(&:aeon_pageable?)
+    selectable_items.any?(&:aeon_pageable?)
   end
 
   # @return [String] the Aeon site code for the items in the request
   def aeon_site
-    items_in_location.filter_map(&:aeon_site).first
+    selectable_items.filter_map(&:aeon_site).first
   end
 
   def aeon_form_target
@@ -315,7 +340,7 @@ class PatronRequest < ApplicationRecord
 
   def scan_service_point
     @scan_service_point ||= begin
-      service_point = items_in_location.filter_map { |item| item.permanent_location.details['scanServicePointCode'] }.first
+      service_point = selectable_items.filter_map { |item| item.permanent_location.details['scanServicePointCode'] }.first
 
       Settings.scan_destinations[service_point || :default] || Settings.scan_destinations.default
     end
@@ -326,9 +351,9 @@ class PatronRequest < ApplicationRecord
   end
 
   def all_items_scannable?
-    return false if items_in_location.none?
+    return false if selectable_items.none?
 
-    items_in_location.all? { |item| scan_service_point.material_types.include?(item.material_type.name) }
+    selectable_items.all? { |item| scan_service_point.material_types.include?(item.material_type.name) }
   end
 
   def scan_earliest
@@ -422,7 +447,7 @@ class PatronRequest < ApplicationRecord
   # Some items are are restricted to specific service points (e.g. PAGE-LP goes to MUSIC or MEDIA-CENTER only).
   # @return [Array<String>]
   def location_restricted_service_point_codes
-    items_in_location.flat_map do |item|
+    selectable_items.flat_map do |item|
       Array(item.permanent_location.details['pageServicePoints']).pluck('code')
     end.compact.uniq
   end

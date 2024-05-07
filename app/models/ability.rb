@@ -40,11 +40,13 @@ class Ability
       can :manage, :site
       can [:create, :read, :update, :destroy], :all
       can :manage, [LibraryLocation, Message, PagingSchedule, Request, AdminComment]
+      can :admin, PatronRequest
     end
 
     if user.site_admin?
       can :manage, [LibraryLocation, Message, PagingSchedule, Request, AdminComment]
       can [:create, :read, :update, :destroy], [PatronRequest]
+      can :admin, PatronRequest
     end
 
     # Adminstrators for origins or destinations should be able to
@@ -113,14 +115,14 @@ class Ability
       can :scan, Folio::Item, &:scannable?
 
       can :request_scan, PatronRequest do |request|
-        request.items_in_location.any? do |item|
+        request.selectable_items.any? do |item|
           can? :scan, item
         end
       end
     end
 
     can :request_pickup, PatronRequest do |request|
-      request.items_in_location.any? do |item|
+      request.selectable_items.any? do |item|
         can? :request, item
       end
     end
