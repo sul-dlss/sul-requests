@@ -182,12 +182,12 @@ RSpec.describe 'Creating a request' do
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
 
         within '#earliestAvailableContainer' do
-          expect(page).to have_content('Wednesday, Apr 3, 2024 after 10am')
+          expect(page).to have_content('Wednesday, Apr 3, 2024, 10am')
         end
 
         select 'Marine Biology Library', from: 'Preferred pickup location'
         within '#earliestAvailableContainer' do
-          expect(page).to have_content('Wednesday, Apr 3, 2024 after 4pm')
+          expect(page).to have_content('Wednesday, Apr 3, 2024, 4pm')
         end
       end
     end

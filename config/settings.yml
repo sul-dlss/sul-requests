@@ -357,255 +357,255 @@ paging_schedule:
   # SAL3
   - from: 'SAL3'
     to: 'GREEN'
-    before: '12:00 pm'
-    will_arrive_after: '10:00 am'
+    before: '12 pm'
+    will_arrive_after: '10 am'
     business_days_later: 1
   - from: 'SAL3'
     to: 'GREEN'
-    after: '12:00 pm'
-    will_arrive_after: '10:00 am'
+    after: '12 pm'
+    will_arrive_after: '10 am'
     business_days_later: 2
   # Scan (based on SAL3 -> GREEN with added days)
   - from: 'SAL3'
     to: 'SCAN'
     before: '11:55 am'
-    will_arrive_after: '3:00 pm'
+    will_arrive_after: '3 pm'
     business_days_later: 1
   - from: 'SAL3'
     to: 'SCAN'
     after: '11:55 am'
-    will_arrive_after: '12:00 pm'
+    will_arrive_after: '12 pm'
     business_days_later: 2
   - from: 'SAL3'
     to: :anywhere
-    before: '12:00 pm'
-    will_arrive_after: '4:00 pm'
+    before: '12 pm'
+    will_arrive_after: '4 pm'
     business_days_later: 1
   - from: 'SAL3'
     to: :anywhere
-    after: '12:00 pm'
-    will_arrive_after: '4:00 pm'
+    after: '12 pm'
+    will_arrive_after: '4 pm'
     business_days_later: 2
 
   # SAL Newark
   - from: 'SAL-NEWARK'
     to: 'GREEN'
-    before: '10:00 am'
+    before: '10 am'
     will_arrive_after: '4:30 pm'
     business_days_later: 1
   - from: 'SAL-NEWARK'
     to: 'GREEN'
-    after: '10:00 am'
+    after: '10 am'
     will_arrive_after: '4:30 pm'
     business_days_later: 2
   - from: 'SAL-NEWARK'
     to: :anywhere
-    before: '10:00 am'
+    before: '10 am'
     will_arrive_after: '4:30 pm'
     business_days_later: 2
   - from: 'SAL-NEWARK'
     to: :anywhere
-    after: '10:00 am'
+    after: '10 am'
     will_arrive_after: '4:30 pm'
     business_days_later: 3
 
   # SAL 1/2
   - from: 'SAL'
     to: 'GREEN'
-    before: '1:00 pm'
+    before: '1 pm'
     will_arrive_after: '4:30 pm'
     business_days_later: 0
   - from: 'SAL'
     to: 'GREEN'
-    after: '1:00 pm'
-    will_arrive_after: '1:00 pm'
+    after: '1 pm'
+    will_arrive_after: '1 pm'
     business_days_later: 1
   - from: 'SAL'
     to: 'SCAN'
-    before: '1:00 pm'
-    will_arrive_after: '6:00 pm'
+    before: '1 pm'
+    will_arrive_after: '6 pm'
     business_days_later: 1
   - from: 'SAL'
     to: 'SCAN'
-    after: '1:00 pm'
-    will_arrive_after: '6:00 pm'
+    after: '1 pm'
+    will_arrive_after: '6 pm'
     business_days_later: 2
   - from: 'SAL'
     to: :anywhere
-    before: '1:00 pm'
+    before: '1 pm'
     will_arrive_after: '4:30 pm'
     business_days_later: 1
   - from: 'SAL'
     to: :anywhere
-    after: '1:00 pm'
+    after: '1 pm'
     will_arrive_after: '4:30 pm'
     business_days_later: 2
 
   # Education (at SAL 1/2)
   - from: 'EDUCATION'
     to: 'GREEN'
-    before: '1:00 pm'
+    before: '1 pm'
     will_arrive_after: '4:30 pm'
     business_days_later: 0
   - from: 'EDUCATION'
     to: 'GREEN'
-    after: '1:00 pm'
-    will_arrive_after: '1:00 pm'
+    after: '1 pm'
+    will_arrive_after: '1 pm'
     business_days_later: 1
   - from: 'EDUCATION'
     to: 'SCAN'
-    before: '1:00 pm'
-    will_arrive_after: '6:00 pm'
+    before: '1 pm'
+    will_arrive_after: '6 pm'
     business_days_later: 1
   - from: 'EDUCATION'
     to: 'SCAN'
-    after: '1:00 pm'
-    will_arrive_after: '6:00 pm'
+    after: '1 pm'
+    will_arrive_after: '6 pm'
     business_days_later: 2
   - from: 'EDUCATION'
     to: :anywhere
-    before: '1:00 pm'
+    before: '1 pm'
     will_arrive_after: '4:30 pm'
     business_days_later: 1
   - from: 'EDUCATION'
     to: :anywhere
-    after: '1:00 pm'
+    after: '1 pm'
     will_arrive_after: '4:30 pm'
     business_days_later: 2
 
   # Hopkins
   - from: 'MARINE-BIO'
     to: 'GREEN'
-    before: '9:00 am'
-    will_arrive_after: '12:00 pm'
+    before: '9 am'
+    will_arrive_after: '12 pm'
     business_days_later: 1
   # This is not in the table.
   - from: 'MARINE-BIO'
     to: 'GREEN'
-    after: '9:00 am'
-    will_arrive_after: '12:00 pm'
+    after: '9 am'
+    will_arrive_after: '12 pm'
     business_days_later: 2
   - from: 'MARINE-BIO'
     to: :anywhere
-    before: '9:00 am'
-    will_arrive_after: '12:00 pm'
+    before: '9 am'
+    will_arrive_after: '12 pm'
     business_days_later: 2
   # This is not in the table.
   - from: 'MARINE-BIO'
     to: :anywhere
-    after: '9:00 am'
-    will_arrive_after: '12:00 pm'
+    after: '9 am'
+    will_arrive_after: '12 pm'
     business_days_later: 3
 
   # Special Collections
   - from: 'SPEC-COLL'
     to: 'SPEC-COLL'
-    before: '10:00 am'
-    will_arrive_after: '9:00 am'
+    before: '10 am'
+    will_arrive_after: '9 am'
     business_days_later: 1
   - from: 'SPEC-COLL'
     to: 'SPEC-COLL'
-    after: '10:00 am'
-    will_arrive_after: '9:00 am'
+    after: '10 am'
+    will_arrive_after: '9 am'
     business_days_later: 2
 
   # Business
   - from: 'BUSINESS'
     to: 'BUSINESS'
     before: '8:30 am'
-    will_arrive_after: '9:00 am'
+    will_arrive_after: '9 am'
     business_days_later: 0
   - from: 'BUSINESS'
     to: 'BUSINESS'
     after: '8:30 am'
-    will_arrive_after: '9:00 am'
+    will_arrive_after: '9 am'
     business_days_later: 1
   - from: 'BUSINESS'
     to: 'MARINE-BIO'
     before: '8:30 am'
-    will_arrive_after: '1:00 pm'
+    will_arrive_after: '1 pm'
     business_days_later: 1
   - from: 'BUSINESS'
     to: 'MARINE-BIO'
     after: '8:30 am'
-    will_arrive_after: '1:00 pm'
+    will_arrive_after: '1 pm'
     business_days_later: 2
   - from: 'BUSINESS'
     to: :anywhere
     before: '8:30 am'
-    will_arrive_after: '12:00 pm'
+    will_arrive_after: '12 pm'
     business_days_later: 1
   - from: 'BUSINESS'
     to: :anywhere
     after: '8:30 am'
-    will_arrive_after: '12:00 pm'
+    will_arrive_after: '12 pm'
     business_days_later: 2
 
   # Law
   - from: 'LAW'
     to: 'LAW'
-    before: '12:00 pm'
-    will_arrive_after: '3:00 pm'
+    before: '12 pm'
+    will_arrive_after: '3 pm'
     business_days_later: 1
   - from: 'LAW'
     to: 'LAW'
-    after: '12:00 pm'
-    will_arrive_after: '3:00 pm'
+    after: '12 pm'
+    will_arrive_after: '3 pm'
     business_days_later: 2
   - from: 'LAW'
     to: :anywhere
-    before: '12:00 pm'
-    will_arrive_after: '3:00 pm'
+    before: '12 pm'
+    will_arrive_after: '3 pm'
     business_days_later: 2
   - from: 'LAW'
     to: :anywhere
-    after: '12:00 pm'
-    will_arrive_after: '3:00 pm'
+    after: '12 pm'
+    will_arrive_after: '3 pm'
     business_days_later: 3
 
   # Rumsey Map Center
   - from: 'RUMSEY-MAP'
     to: :anywhere
-    before: '12:00 pm'
-    will_arrive_after: '1:00 pm'
+    before: '12 pm'
+    will_arrive_after: '1 pm'
     business_days_later: 3
   - from: 'RUMSEY-MAP'
     to: :anywhere
-    after: '12:00 pm'
-    will_arrive_after: '1:00 pm'
+    after: '12 pm'
+    will_arrive_after: '1 pm'
     business_days_later: 3
 
   # Media Microtext
   - from: 'MEDIA-CENTER'
     to: 'MEDIA-CENTER'
-    before: '10:00 am'
-    will_arrive_after: '11:00 am'
+    before: '10 am'
+    will_arrive_after: '11 am'
     business_days_later: 0
   - from: 'MEDIA-CENTER'
     to: 'MEDIA-CENTER'
-    before: '2:00 pm'
-    will_arrive_after: '3:00 pm'
+    before: '2 pm'
+    will_arrive_after: '3 pm'
     business_days_later: 0
   - from: 'MEDIA-CENTER'
     to: 'MEDIA-CENTER'
-    before: '5:00 pm'
-    will_arrive_after: '6:00 pm'
+    before: '5 pm'
+    will_arrive_after: '6 pm'
     business_days_later: 0
   - from: 'MEDIA-CENTER'
     to: 'MEDIA-CENTER'
-    after: '5:00 pm'
-    will_arrive_after: '11:00 am'
+    after: '5 pm'
+    will_arrive_after: '11 am'
     business_days_later: 1
 
   - from: 'MEDIA-CENTER'
     to: 'GREEN'
-    before: '10:00 am'
-    will_arrive_after: '11:00 am'
+    before: '10 am'
+    will_arrive_after: '11 am'
     business_days_later: 0
   - from: 'MEDIA-CENTER'
     to: 'GREEN'
-    before: '2:00 pm'
-    will_arrive_after: '3:00 pm'
+    before: '2 pm'
+    will_arrive_after: '3 pm'
     business_days_later: 0
   - from: 'MEDIA-CENTER'
     to: 'GREEN'
@@ -615,72 +615,72 @@ paging_schedule:
   - from: 'MEDIA-CENTER'
     to: 'GREEN'
     after: '6:30 pm'
-    will_arrive_after: '11:00 am'
+    will_arrive_after: '11 am'
     business_days_later: 1
 
   - from: 'MEDIA-CENTER'
     to: 'MARINE-BIO'
-    before: '10:00 am'
-    will_arrive_after: '1:00 pm'
+    before: '10 am'
+    will_arrive_after: '1 pm'
     business_days_later: 1
   - from: 'MEDIA-CENTER'
     to: 'MARINE-BIO'
-    after: '10:00 am'
-    will_arrive_after: '1:00 pm'
+    after: '10 am'
+    will_arrive_after: '1 pm'
     business_days_later: 2
 
   - from: 'MEDIA-CENTER'
     to: :anywhere
-    before: '3:00 pm'
-    will_arrive_after: '12:00 pm'
+    before: '3 pm'
+    will_arrive_after: '12 pm'
     business_days_later: 1
   - from: 'MEDIA-CENTER'
     to: :anywhere
-    after: '3:00 pm'
-    will_arrive_after: '12:00 pm'
+    after: '3 pm'
+    will_arrive_after: '12 pm'
     business_days_later: 2
 
   - from: 'ART'
     to: 'ART'
-    before: '12:00 pm'
-    will_arrive_after: '2:00 pm'
+    before: '12 pm'
+    will_arrive_after: '2 pm'
     business_days_later: 0
   - from: 'ART'
     to: 'ART'
-    after: '12:00 pm'
-    will_arrive_after: '10:00 am'
+    after: '12 pm'
+    will_arrive_after: '10 am'
     business_days_later: 1
 
   # Lane Medical Library
   - from: 'LANE'
     to: 'LANE'
-    before: '9:00 am'
-    will_arrive_after: '3:00 pm'
+    before: '9 am'
+    will_arrive_after: '3 pm'
     business_days_later: 0
   - from: 'LANE'
     to: 'LANE'
-    after: '9:00 am'
-    will_arrive_after: '3:00 pm'
+    after: '9 am'
+    will_arrive_after: '3 pm'
     business_days_later: 1
   - from: 'LANE'
     to: 'LANE-DESK'
-    before: '9:00 am'
-    will_arrive_after: '3:00 pm'
+    before: '9 am'
+    will_arrive_after: '3 pm'
     business_days_later: 0
   - from: 'LANE'
     to: 'LANE-DESK'
-    after: '9:00 am'
-    will_arrive_after: '3:00 pm'
+    after: '9 am'
+    will_arrive_after: '3 pm'
     business_days_later: 1
   - from: 'LANE'
     to: :anywhere
-    before: '9:00 am'
-    will_arrive_after: '3:00 pm'
+    before: '9 am'
+    will_arrive_after: '3 pm'
     business_days_later: 1
   - from: 'LANE'
     to: :anywhere
-    after: '9:00 am'
-    will_arrive_after: '3:00 pm'
+    after: '9 am'
+    will_arrive_after: '3 pm'
     business_days_later: 2
 
 hold_instead_of_recall:
