@@ -66,6 +66,8 @@ Rails.application.routes.draw do
   end
   resources :hold_recalls, concerns: [:creatable_via_get_redirect, :successable, :statusable]
 
+  get 'admin/old_requests' => 'admin#old_requests_index', as: :old_requests
+
   resources :admin, only: [:index, :show] do
     member do
       get :holdings, as: :holdings
