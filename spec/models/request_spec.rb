@@ -13,70 +13,6 @@ RSpec.describe Request do
     allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(instance)
   end
 
-  describe 'validations' do
-    it 'requires the basic set of information to be present' do
-      expect do
-        described_class.create!(
-          item_id: '1234',
-          origin: 'GREEN'
-        )
-      end.to raise_error(ActiveRecord::RecordInvalid)
-    end
-
-    context 'when barcodes are provided' do
-      before do
-        stub_bib_data_json(build(:multiple_holdings))
-      end
-
-      let(:items) { [double('item', barcode: '3610512345678')] }
-
-      let(:create_request) do
-        described_class.create!(
-          item_id: '1234',
-          origin: 'SAL3',
-          origin_location: 'SAL3-STACKS',
-          barcodes:
-        )
-      end
-
-      context 'when one of the requested barcodes does not exist in the ILS' do
-        let(:barcodes) { %w(9999999 3610512345678) }
-
-        it 'fails to validate' do
-          expect { create_request }.to raise_error(
-            ActiveRecord::RecordInvalid, 'Validation failed: A selected item is not located in the requested location'
-          )
-        end
-      end
-
-      context 'when the barcodes exists in the ILS' do
-        let(:barcodes) { %w(3610512345678) }
-
-        it 'passes validation' do
-          create_request
-          expect(described_class.last.barcodes).to eq %w(3610512345678)
-        end
-      end
-    end
-
-    context 'when a needed_date is provided and it is before today' do
-      let(:create_request) do
-        described_class.create!(
-          item_id: '1234',
-          origin: 'GREEN',
-          origin_location: 'SAL3-STACKS',
-          needed_date: Time.zone.today - 1.day
-        )
-      end
-
-      it 'fails validation' do
-        expect { create_request }.to raise_error(
-          ActiveRecord::RecordInvalid, 'Validation failed: Needed on Date cannot be earlier than today'
-        )
-      end
-    end
-  end
-
   describe 'scopes' do
     describe '.for_date' do
       before do
@@ -151,11 +87,6 @@ RSpec.describe Request do
       request.save!
       expect(request.admin_comments).to eq([admin_comment])
     end
-  end
-
-  describe 'requestable' do
-    it { is_expected.not_to be_requestable_with_name_email }
-    it { is_expected.not_to be_requestable_with_library_id }
   end
 
   describe '#paging_origin_library' do
@@ -267,40 +198,6 @@ RSpec.describe Request do
 
       expect(subject.data_to_email_s).to include('Author(s):')
       expect(subject.data_to_email_s).to include('Authors')
-    end
-  end
-
-  describe '#item_limit' do
-    subject { request.item_limit }
-
-    let(:request) { described_class.new }
-
-    context 'when there is no configured item limit' do
-      it { is_expected.to be_nil }
-    end
-
-    context 'when the origin is SPEC-COLL' do
-      before do
-        request.origin = 'SPEC-COLL'
-      end
-
-      it { is_expected.to eq 5 }
-    end
-
-    context 'when the origin is RUMSEYMAP' do
-      before do
-        request.origin = 'RUMSEYMAP'
-      end
-
-      it { is_expected.to eq 5 }
-    end
-
-    context 'when the origin is PAGE-SP' do
-      before do
-        request.origin_location = 'SAL3-PAGE-SP'
-      end
-
-      it { is_expected.to eq 5 }
     end
   end
 

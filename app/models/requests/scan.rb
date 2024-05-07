@@ -4,11 +4,6 @@
 #  Request class for requesting materials to be scanned
 ###
 class Scan < Request
-  include Illiadable
-
-  validate :scannable_validator
-  validates :section_title, presence: true
-
   def item_limit
     1
   end
@@ -22,37 +17,5 @@ class Scan < Request
   end
 
   # Returns true if a background job was enqueued.
-  def submit!
-    result = SubmitIlliadRequestJob.perform_later(id)
-
-    # This ensures that only scan rules with a destination get sent to the ILS.
-    # We no longer want to send SAL3 requests to the ILS as this is handled by the ILLiad integration.
-    # SAL1/2 requests still go to the ILS at this time.
-    return result if !result || scan_destination&.dig(:patron_barcode).blank?
-
-    send_to_ils_later!
-  end
-
-  def special_illiad_request_params
-    {
-      RequestType: 'Article',
-      SpecIns: 'Scan and Deliver Request',
-      PhotoJournalTitle: bib_data.title,
-      PhotoArticleAuthor: bib_data.author,
-      Location: origin,
-      ReferenceNumber: origin_location,
-      PhotoArticleTitle: section_title,
-      PhotoJournalInclusivePages: page_range
-    }
-  end
-
-  private
-
-  def requested_item_is_not_scannable_only
-    # leave blank so scannable only validations are not run for scans
-  end
-
-  def scannable_validator
-    errors.add(:base, 'This item is not scannable') unless scannable?
-  end
+  def submit!; end
 end

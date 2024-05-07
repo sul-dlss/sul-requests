@@ -6,9 +6,9 @@
 ###
 class Request < ActiveRecord::Base
   include Holdings
-  include Requestable
-  include DefaultRequestOptions
-  include RequestValidations
+  def requires_needed_date?
+    false
+  end
   include IlsRequest
 
   attr_reader :requested_barcode
@@ -164,10 +164,6 @@ class Request < ActiveRecord::Base
     @requested_barcode = barcode if barcode.present?
   end
   alias barcode= requested_barcode=
-
-  def library_id_error?
-    errors[:library_id].present?
-  end
 
   # rubocop:disable Metrics/MethodLength
   # Convert the original origin code to the code used in FOLIO
