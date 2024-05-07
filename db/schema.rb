@@ -10,13 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_18_225555) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_07_151737) do
   create_table "admin_comments", force: :cascade do |t|
     t.string "commenter"
     t.string "comment"
     t.integer "request_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.string "request_type", default: "Request"
+    t.index ["request_type", "request_id"], name: "index_admin_comments_on_request_type_and_request_id"
   end
 
   create_table "folio_command_logs", force: :cascade do |t|
