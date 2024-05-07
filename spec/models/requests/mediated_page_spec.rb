@@ -14,53 +14,6 @@ RSpec.describe MediatedPage do
     expect(subject.type).to eq 'MediatedPage'
   end
 
-  describe 'validation' do
-    it 'does not allow non-mediated pages to be created' do
-      expect do
-        described_class.create!(item_id: '1234',
-                                origin: 'GREEN',
-                                origin_location: 'GRE-STACKS',
-                                destination: 'ART',
-                                needed_date: Time.zone.today + 1.day)
-      end.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: This item is not mediatable')
-    end
-
-    it 'does not not allow pages to be created with destinations that are not valid pickup libraries of their origin' do
-      expect do
-        described_class.create!(item_id: '1234',
-                                barcodes: ['12345678'],
-                                origin: 'ART',
-                                origin_location: 'ART-LOCKED-LARGE',
-                                destination: 'GREEN',
-                                needed_date: Time.zone.today + 1.day,
-                                bib_data: build(:single_mediated_holding))
-      end.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Destination is not a valid pickup library')
-    end
-
-    it 'does not allow requests to be submitted without a needed_date when required' do
-      expect do
-        described_class.create!(item_id: '1234',
-                                barcodes: ['12345678'],
-                                origin: 'ART',
-                                origin_location: 'ART-LOCKED-LARGE',
-                                destination: 'ART',
-                                bib_data: build(:single_mediated_holding))
-      end.to raise_error(ActiveRecord::RecordInvalid, "Validation failed: I plan to visit on can't be blank")
-    end
-
-    it 'allows requests to be submitted without a needed_date when not required' do
-      expect do
-        described_class.create!(item_id: '1234',
-                                origin: 'SAL3',
-                                origin_location: 'SAL3-PAGE-MP',
-                                user:,
-                                destination: 'EARTH-SCI',
-                                item_title: 'foo',
-                                bib_data: build(:page_mp_holdings))
-      end.not_to raise_error
-    end
-  end
-
   describe 'scopes' do
     before do
       build(
@@ -163,27 +116,6 @@ RSpec.describe MediatedPage do
     it 'adds the user email address to the token' do
       subject.user = build(:non_sso_user)
       expect(subject.to_token(version: 1)).to match(/jstanford@stanford.edu$/)
-    end
-  end
-
-  describe 'requestable' do
-    it { is_expected.to be_requestable_with_name_email }
-    it { is_expected.to be_requestable_with_library_id }
-  end
-
-  describe '#requires_needed_date?' do
-    it 'is false when the origin location is PAGE-MP' do
-      subject.origin_location = 'PAGE-MP'
-      expect(subject).not_to be_requires_needed_date
-    end
-
-    it 'is false when the origin location is SAL3-PAGE-MP' do
-      subject.origin_location = 'SAL3-PAGE-MP'
-      expect(subject).not_to be_requires_needed_date
-    end
-
-    it 'is true when otherwise' do
-      expect(subject).to be_requires_needed_date
     end
   end
 

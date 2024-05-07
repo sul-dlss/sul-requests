@@ -6,12 +6,6 @@
 class MediatedPage < Request
   enum approval_status: { unapproved: 0, marked_as_done: 1, approved: 2 }
 
-  validate :mediated_page_validator
-  validates :destination, presence: true
-  validate :needed_date_is_required
-  validate :destination_is_a_pickup_library
-  validate :needed_date_is_valid, on: :create, if: :requires_needed_date?
-
   scope :completed, lambda {
     where(approval_status: MediatedPage.approval_statuses.except('unapproved').values).needed_date_desc
   }
@@ -22,12 +16,6 @@ class MediatedPage < Request
 
   def token_encryptor_attributes
     super << user.email
-  end
-
-  def requires_needed_date?
-    return false if origin_location == 'PAGE-MP' || origin_location == 'SAL3-PAGE-MP'
-
-    true
   end
 
   def submit!
@@ -89,19 +77,5 @@ class MediatedPage < Request
 
   def send_confirmation!
     RequestStatusMailer.request_status_for_mediatedpage(self).deliver_later if notification_email_address.present?
-  end
-
-  def needed_date_is_required
-    errors.add(:needed_date, "can't be blank") if needed_date.blank? && requires_needed_date?
-  end
-
-  def mediated_page_validator
-    errors.add(:base, 'This item is not mediatable') unless mediateable?
-  end
-
-  def needed_date_is_valid
-    errors.add(:needed_date, 'The library is not open on that date') unless PagingSchedule.for(self).valid?(needed_date)
-  rescue PagingSchedule::ScheduleNotFound
-    nil
   end
 end
