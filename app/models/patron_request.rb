@@ -13,7 +13,7 @@ class PatronRequest < ApplicationRecord
   delegate :instance_id, :finding_aid, :finding_aid?, to: :bib_data
 
   validates :instance_hrid, presence: true
-  validates :request_type, inclusion: { in: %w[scan pickup] }
+  validates :request_type, inclusion: { in: %w[scan pickup mediated] }
   validates :scan_title, presence: true, on: :create, if: :scan?
   validate :pickup_service_point_is_valid, on: :create, unless: :scan?
   validate :needed_date_is_valid, on: :create
@@ -25,6 +25,7 @@ class PatronRequest < ApplicationRecord
   has_many :admin_comments, as: :request, dependent: :delete_all
 
   before_create do
+    self.request_type = 'mediated' if mediateable?
     self.item_title = bib_data&.title
     self.estimated_delivery = earliest_delivery_estimate(scan: scan?)&.dig('display_date')
   end
