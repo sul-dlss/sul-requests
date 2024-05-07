@@ -39,7 +39,7 @@ class Request < ActiveRecord::Base
   ], coder: JSON
   serialize :barcodes, Array
 
-  has_many :admin_comments
+  has_many :admin_comments, as: :request
   has_many :folio_command_logs
   belongs_to :user, autosave: true, optional: true
   accepts_nested_attributes_for :user

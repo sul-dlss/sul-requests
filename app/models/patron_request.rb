@@ -22,6 +22,7 @@ class PatronRequest < ApplicationRecord
   scope :for_create_date, lambda { |date|
     where(created_at: Time.zone.parse(date).all_day)
   }
+  has_many :admin_comments, as: :request, dependent: :delete_all
 
   before_create do
     self.item_title = bib_data&.title
