@@ -44,7 +44,7 @@
             <% end %>
         <% else %>
             <% if @patron_request.pickup_service_point %>
-            <div><dt><%= @patron_request.single_location_label %>:</dt><dd><%= @patron_request.pickup_service_point.name %></dd></div>
+            <div><dt><%= @patron_request.location_label %>:</dt><dd><%= @patron_request.pickup_service_point.name %></dd></div>
             <% end %>
             <% requested_items = @patron_request.mediateable? ? {} : @patron_request.selected_items.group_by(&:available?) %>
             <% if requested_items[true].present? %>

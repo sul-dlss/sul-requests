@@ -24,6 +24,7 @@ RSpec.describe PatronRequestMailer do
       expect(mail.from).to eq(['greencirc@stanford.edu'])
       expect(mail.body).to include('We received your pickup request!')
       expect(mail.body).to include('<dt>Title:</dt><dd>Item Title</dd>')
+      expect(mail.body).to include('In library use only')
     end
   end
 
