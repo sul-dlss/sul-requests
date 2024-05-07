@@ -6,7 +6,7 @@
       <div>
         When paging to <%= schedule.to %> <%= "before #{schedule.before}" if schedule.before %>
          <%= "after #{schedule.after}" if schedule.after %>
-        the item will arrive <%= schedule.will_arrive_text %> <%= pluralize(schedule.business_days_later, 'day') %> later
+        the item will arrive after <%= schedule.will_arrive_text %> <%= pluralize(schedule.business_days_later, 'day') %> later
       </div>
     <% end %>
   </div>

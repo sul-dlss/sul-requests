@@ -89,7 +89,7 @@ module PagingSchedule
     end
 
     def will_arrive_text
-      @will_arrive_text ||= "after #{will_arrive_after}"
+      @will_arrive_text ||= will_arrive_after
     end
 
     def by_time?(created_at = nil)
@@ -132,7 +132,7 @@ module PagingSchedule
       end
 
       def to_s
-        "#{I18n.l(estimated_delivery_day_to_destination, format: :long)} #{time}"
+        "#{I18n.l(estimated_delivery_day_to_destination, format: :long)}, #{time}"
       end
 
       def estimated_delivery_day_to_destination

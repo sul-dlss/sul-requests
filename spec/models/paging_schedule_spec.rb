@@ -50,7 +50,7 @@ RSpec.describe PagingSchedule do
       end
 
       it 'returns the after time with the appropriate prefix' do
-        expect(scheduler.will_arrive_text).to eq 'after 12n'
+        expect(scheduler.will_arrive_text).to eq '12n'
       end
     end
 
