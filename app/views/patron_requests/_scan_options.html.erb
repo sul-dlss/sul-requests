@@ -14,7 +14,7 @@
     violation of copyright law.
   </div>
   <div class="col pe-0">
-    <% if f.object.items_in_location.many? %>
+    <% if f.object.selectable_items.many? %>
       <ul data-itemselector-target="scanItem" class="list-unstyled d-flex flex-wrap gap-2 bg-white m-0 me-3"></ul>
       <div class="text-cardinal pb-1 mt-2">
         <span class="d-none" data-itemselector-target="availableScanItemEstimate">Earliest expected delivery: <%= f.object.scan_earliest['display_date'] %></span>

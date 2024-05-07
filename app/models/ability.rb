@@ -113,14 +113,14 @@ class Ability
       can :scan, Folio::Item, &:scannable?
 
       can :request_scan, PatronRequest do |request|
-        request.items_in_location.any? do |item|
+        request.selectable_items.any? do |item|
           can? :scan, item
         end
       end
     end
 
     can :request_pickup, PatronRequest do |request|
-      request.items_in_location.any? do |item|
+      request.selectable_items.any? do |item|
         can? :request, item
       end
     end

@@ -5,8 +5,8 @@
 <%= render 'messages', messages: @patron_request.active_messages %>
 
 <h1 class="fw-semibold mt-4"><%= @patron_request.item_title %></h1>
-<% if @patron_request.items_in_location.one? %>
-  <% single_item = @patron_request.items_in_location.first %>
+<% if @patron_request.selectable_items.one? %>
+  <% single_item = @patron_request.selectable_items.first %>
   <div class="lead fw-normal mb-4">Call number: <%= callnumber_label(single_item) %></div>
   <% if single_item.public_note %>
     <span class="text-cardinal d-block ms-4">
@@ -36,8 +36,8 @@
     <%= f.hidden_field :aeon_date, name: 'ItemDate', value: f.object.bib_data.pub_date %>
     <%= f.hidden_field :aeon_link, name: 'ItemInfo1', value: f.object.bib_data.view_url %>
   <% end %>
-  <% if f.object.items_in_location.one? || f.object.barcodes&.one? %>
-    <% single_item = f.object.items_in_location.first %>
+  <% if f.object.selectable_items.one? || f.object.barcodes&.one? %>
+    <% single_item = f.object.selectable_items.first %>
     <% single_barcode = f.object.barcodes&.first || (single_item&.barcode || single_item&.id) %>
     <%= f.hidden_field :barcode, value: single_barcode %>
     <% if f.object.aeon_page? %>
@@ -88,7 +88,7 @@
       <% end %>
     <% end %>
 
-    <% if f.object.items_in_location.one? %>
+    <% if f.object.selectable_items.one? %>
       <%= render AccordionStepComponent.new(id: 'scan-or-pickup-placeholder', form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'none' }) do |c| %>
         <% c.with_title.with_content('Scan or pickup request') %>
       <% end %>
@@ -98,12 +98,12 @@
   <% end %>
 
   <!-- item selector -->
-  <% if f.object.items_in_location.many? && (can?(:request_scan, f.object) || can?(:request_pickup, f.object)) && !f.object.finding_aid? %>
+  <% if f.object.selectable_items.many? && (can?(:request_scan, f.object) || can?(:request_pickup, f.object)) && !f.object.finding_aid? %>
     <div data-controller="itemselector" data-itemselector-request-type-value="pickup" data-action="itemselector:change->patronRequest#showItemSelector">
     <%= render AccordionStepComponent.new(id: 'barcodes', step_index: step_enum.next, form_id: f.id, data: { 'switch-selector': true }) do |c| %>
       <% c.with_title.with_content('Select item(s)') %>
       <% c.with_body do %>
-        <% if f.object.items_in_location.length >= 10 %>
+        <% if f.object.selectable_items.length >= 10 %>
           <div>
             <label for="item-selector-search" class="my-2">Search item list</label>
             <input id="item-selector-search" type="search" incremental data-action="input->itemselector#filter analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Filter" class="form-control w-75" />
@@ -122,7 +122,7 @@
               </tr>
             </thead>
             <tbody>
-              <% sort_holdings(f.object.items_in_location).each.with_index(1) do |item, index| %>
+              <% sort_holdings(f.object.selectable_items).each.with_index(1) do |item, index| %>
                 <% not_requestable = cannot?(:request, item) %>
                 <tr data-sortby-status="<%= item.status_text.downcase.gsub(' ', '_') %>" data-sortby-callnumber="<%= index %>" >
                   <td class="align-middle">
@@ -239,10 +239,10 @@
       data: { 'patronrequest-forRequestType': 'aeon' },
       submit: true,
       submit_text: t('aeon_pages.new.continue_button'),
-      cancel: f.object.items_in_location.many?) do |c| %>
+      cancel: f.object.selectable_items.many?) do |c| %>
       <% c.with_title.with_content('Aeon request') %>
       <% c.with_body do %>
-        <% if f.object.items_in_location.many? && !f.object.finding_aid? %>
+        <% if f.object.selectable_items.many? && !f.object.finding_aid? %>
         <div class="selected-items-group">
           <div class="card">
             <div class="card-body bg-light rounded">
@@ -284,7 +284,7 @@
   </div>
 
   <!-- pickup request (single item )-->
-  <% if (f.object.items_in_location.one? || f.object.title_only?) && can?(:request_pickup, f.object) && !f.object.aeon_page? %>
+  <% if (f.object.selectable_items.one? || f.object.title_only?) && can?(:request_pickup, f.object) && !f.object.aeon_page? %>
     <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', classes: [('d-none' if scan_pickup)], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'pickup' }, submit: true) do |c| %>
       <% c.with_title.with_content('Pickup request') %>
       <% c.with_body do %>
@@ -300,7 +300,7 @@
             No date/time estimate
           <% end %>
           <div>
-            <%= queue_length_display(f.object.items_in_location.first, prefix: 'Item status: ', title_only: f.object.title_only?) %>
+            <%= queue_length_display(f.object.selectable_items.first, prefix: 'Item status: ', title_only: f.object.title_only?) %>
           </div>
         </div>
         <% if f.object.mediateable? %>

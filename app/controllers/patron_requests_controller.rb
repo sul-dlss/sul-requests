@@ -73,7 +73,7 @@ class PatronRequestsController < ApplicationController
     params.require(:instance_hrid)
     params.require(:origin_location_code)
 
-    params.permit(:instance_hrid, :origin_location_code, :barcode)
+    params.permit(:instance_hrid, :origin_location_code).to_h.merge(requested_barcodes: Array(params[:barcode]))
   end
 
   def patron_request_params
