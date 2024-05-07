@@ -320,11 +320,11 @@
                 <%= f.date_field :needed_date, :required => true, value:  f.object.earliest_delivery_estimate['date'], min: f.object.earliest_delivery_estimate['date'], class: 'd-block rounded border mt-4' %>
             <% end %>
         <% end %>
-         <% if f.object.title_only? %>
-           <%= render 'not_needed_after_date', f: %>
-        <% end %>
         <%= render 'pickup_destination', f: %>
         <%= render 'request_preferences', f: %>
+        <% if f.object.title_only? %>
+          <%= render 'not_needed_after_date', f: %>
+        <% end %>
       <% end %>
     <% end %>
   <% end %>
