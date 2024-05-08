@@ -45,6 +45,10 @@ RSpec.describe AdminController do
   end
 
   describe 'show' do
+    before do
+      create(:mediated_patron_request_with_holdings, barcodes: %w(123456))
+    end
+
     describe 'for super admin' do
       let(:user) { create(:superadmin_user) }
 
@@ -101,55 +105,41 @@ RSpec.describe AdminController do
     describe 'for super admins' do
       let(:user) { create(:superadmin_user) }
       let(:mediated_page) do
-        create(:mediated_page_with_holdings, user: create(:non_sso_user), barcodes: %w(12345678 23456789))
+        create(:mediated_patron_request_with_holdings, barcodes: %w(12345678 23456789))
       end
 
       before do
-        allow_any_instance_of(MediatedPage).to receive(:bib_data).and_return(build(:searchable_holdings))
+        allow_any_instance_of(PatronRequest).to receive(:bib_data).and_return(build(:searchable_holdings))
       end
 
       it 'returns the holdings table markup' do
         get :holdings, params: { id: mediated_page.id }
         expect(response).to be_successful
-        expect(assigns(:request)).to be_a(MediatedPage)
+        expect(assigns(:request)).to be_a(PatronRequest)
       end
     end
   end
 
   describe 'approve item' do
     let(:mediated_page) do
-      create(:mediated_page_with_holdings, user: create(:sso_user), barcodes: %w(12345678 23456789))
+      create(:mediated_patron_request_with_holdings, barcodes: %w(12345678 23456789))
     end
 
     before do
-      allow_any_instance_of(MediatedPage).to receive(:bib_data).and_return(build(:searchable_holdings))
+      allow_any_instance_of(PatronRequest).to receive(:bib_data).and_return(build(:searchable_holdings))
     end
 
     describe 'for those that can manage requests' do
       let(:user) { create(:superadmin_user) }
 
-      before do
-        allow(Folio::Patron).to receive(:find_by).and_call_original
-        allow(Folio::Patron).to receive(:find_by).with(library_id: 'HOLD@AR').and_return(
-          instance_double(Folio::Patron, id: 'HOLD@AR-PSEUDO')
-        )
-      end
-
       it 'can approve individual items' do
-        expect(MediatedPage.find(mediated_page.id).request_status_data).to be_blank
-        stub_symphony_response(build(:symphony_page_with_single_item))
+        expect(PatronRequest.find(mediated_page.id).item_mediation_data).to be_blank
         get :approve_item, params: { id: mediated_page.id, item: '3610512345' }
         expect(response).to be_successful
 
         expect(
-          MediatedPage.find(mediated_page.id).request_status_data['3610512345']['approved']
+          PatronRequest.find(mediated_page.id).item_mediation_data['3610512345']['approved']
         ).to be true
-      end
-
-      it 'returns a 500 when the item cannot be approved' do
-        get :approve_item, params: { id: mediated_page.id, item: '3610512345' }
-        expect(response).to have_http_status :internal_server_error
-        expect(response).not_to be_successful
       end
     end
 

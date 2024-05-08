@@ -306,3 +306,22 @@ label.btn-close {
     text-wrap: nowrap;
   }
 }
+
+#mediation-table {
+  .mediate-toggle {
+    border-bottom: 0;
+
+    i {
+      @extend .bi-plus-circle-fill;
+      font-size: 18px;
+    }
+  }
+
+  .expanded {
+    .mediate-toggle {
+      i {
+        @extend .bi-dash-circle-fill;
+      }
+    }
+  }
+}

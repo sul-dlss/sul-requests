@@ -69,8 +69,6 @@ module RequestsHelper
     Settings.aeon_ere_url
   end
 
-  private
-
   def i18n_status_text(item)
     case
     when item.hold?
@@ -81,6 +79,8 @@ module RequestsHelper
       t('status_text.other')
     end
   end
+
+  private
 
   def status_text_for_errored_item(item)
     return unless item.request_status.errored?

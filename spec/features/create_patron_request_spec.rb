@@ -110,16 +110,9 @@ RSpec.describe 'Creating a request' do
             click_on 'Submit'
             expect(page).to have_content 'We received your request'
           end
-        end.to change(MediatedPage, :count).by(1)
+        end.to change(PatronRequest, :count).by(1)
 
-        expect(MediatedPage.last).to have_attributes(
-          origin: 'ART',
-          origin_location: 'ART-LOCKED-LARGE',
-          item_id: 'a1234',
-          user:,
-          barcodes: ['12345678'],
-          item_title: 'Item Title'
-        )
+        expect(PatronRequest.last).to have_attributes(request_type: 'mediated')
       end
     end
 

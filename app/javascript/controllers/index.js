@@ -16,6 +16,11 @@ application.register("itemselector", ItemSelectorController)
 import TableController from "./table_controller"
 application.register("table", TableController)
 
-
 import AnalyticsController from "./analytics_controller"
 application.register("analytics", AnalyticsController)
+
+import MediationController from "./mediation_controller"
+application.register("mediation", MediationController)
+
+import FormController from "./form_controller"
+application.register("form", FormController)

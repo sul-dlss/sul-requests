@@ -1,14 +1,12 @@
-On <%= l @request.created_at, format: :short %>, <%= @request.user.to_email_string %> requested the following:
+On <%= l @request.created_at, format: :short %>, <%= "#{@request.patron_name} <#{@request.patron_email}>" %> requested the following:
 
 <%= @request.item_title %>
 
 Item(s) requested:
-  <%= @request.holdings.map(&:callnumber).join("\n  ") %>
-
-<%= @request.data_to_email_s %>
+  <%= @request.selected_items.map(&:callnumber).join("\n  ") %>
 
 <% if @request.needed_date.present? %>
-<%= "#{@request.class.human_attribute_name(:needed_date)}: #{l @request.needed_date, format: :quick}" %>
+  I plan to visit on: <%= l @request.needed_date, format: :quick %>
 <% end %>
 
 Login to view and approve the request at <%= @mediation_url %>

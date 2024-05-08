@@ -1,8 +1,8 @@
-<%= turbo_frame_tag [:mediated_page, @mediated_page.id, :needed_date] do %>
-  <%= form_with model: @mediated_page, url: mediated_page_needed_date_path(@mediated_page) do |f| %>
+<%= turbo_frame_tag [:patron_request, @patron_request.id, :needed_date] do %>
+  <%= form_with model: @patron_request, url: patron_request_needed_date_path(@patron_request) do |f| %>
     <%= f.label :needed_date, class: 'visually-hidden' %>
     <%= f.date_field :needed_date %>
     <%= f.submit 'ok', class: 'btn btn-primary' %>
-    <%= link_to 'cancel', mediated_page_needed_date_path(@mediated_page), class: 'btn btn-secondary' %>
+    <%= link_to 'cancel', patron_request_needed_date_path(@patron_request), class: 'btn btn-secondary' %>
   <% end %>
 <% end %>
