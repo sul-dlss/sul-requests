@@ -1,4 +1,4 @@
 <%= bootstrap_form_tag(url: form_path, method: 'get', layout: :inline, :html => {class: "float-end"}) do |f| %>
   <%= f.date_field(:created_at, value: params[:created_at] || Time.zone.today, control_class: 'form-control d-inline-block w-auto', label: 'Find by date requested: &nbsp;'.html_safe, 'data-behavior': 'admin-date-picker') %>
-  <%= f.primary "Go" %>
+  <%= f.primary "Go", class: 'btn btn-cardinal' %>
 <% end %>

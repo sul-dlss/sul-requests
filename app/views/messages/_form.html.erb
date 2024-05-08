@@ -1,4 +1,4 @@
-<%= bootstrap_form_for(@message, layout: :horizontal, label_col: 'col-sm-4', control_col: 'col-sm-8') do |f| %>
+<%= form_for(@message, layout: :horizontal, label_col: 'col-sm-4', control_col: 'col-sm-8') do |f| %>
   <% if @message.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(message.errors.count, "error") %> prohibited this message from being saved:</h2>
@@ -11,22 +11,24 @@
     </div>
   <% end %>
 
-  <%= f.text_area :text, hide_label: true, control_col: "col-sm-12", rows: 5 %>
-  <div class="display-dates">
-    <div class="start-at">
-      <%= f.label :start_at, "Display from", class: 'col-form-label' %>
-      <%= f.text_field_without_bootstrap :start_at, value: (f.object.start_at || Time.now).to_date, type: :date, class: 'form-control' %>
-    </div>
-    <div class="end-at">
-      <%= f.label :end_at, "through", class: 'col-form-label' %>
-      <%= f.text_field_without_bootstrap :end_at, value: (f.object.start_at || (Time.now + 1.day)).to_date, type: :date, class: 'form-control' %>
-    </div>
+  <%= f.label :text, class: 'visually-hidden' %>
+  <%= f.text_area :text, hide_label: true, class: "col-sm-12", rows: 5 %>
+  <div class="display-dates d-flex gap-2">
+      <div class="d-inline-flex gap-2 align-items-center">
+        <%= f.label :start_at, "Display from", class: 'col-form-label' %>
+        <%= f.text_field :start_at, value: (f.object.start_at || Time.now).to_date, type: :date, class: 'rounded border p-2' %>
+      </div>
+
+      <div class="d-inline-flex gap-2 align-items-center">
+        <%= f.label :end_at, "through", class: 'col-form-label' %>
+        <%= f.text_field :end_at, value: (f.object.start_at || (Time.now + 1.day)).to_date, type: :date, class: 'rounded border p-2' %>
+      </div>
   </div>
   <%= f.hidden_field :library %>
   <%= f.hidden_field :request_type %>
 
   <div class="actions">
-    <%= f.primary %>
+    <%= f.submit class: 'btn btn-primary btn-cardinal' %>
     <%= link_to "Cancel", messages_path %>
   </div>
 <% end %>

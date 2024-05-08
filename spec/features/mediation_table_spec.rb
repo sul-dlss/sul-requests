@@ -451,7 +451,7 @@ RSpec.describe 'Mediation table', :js do
 
         # All pending is primary, have right requests
         expect(page).to have_css('a.btn-primary', text: 'All pending')
-        expect(page).to have_css('input.btn-primary[value="Go"]')
+        expect(page).to have_css('input[value="Go"]')
 
         page.execute_script("$('input#created_at').prop('value', '#{yesterday}')")
         click_on('Go')
@@ -459,14 +459,14 @@ RSpec.describe 'Mediation table', :js do
         expect(page).to have_css('tr[data-mediate-request] td.created_at', text: yesterday.to_s, count: 2)
         expect(page).to have_css('tr[data-mediate-request] td.needed_date', text: today_button_text, count: 2)
         expect(page).to have_no_css('a.btn-primary')
-        expect(page).to have_css('input.btn-primary[value="Go"]')
+        expect(page).to have_css('input[value="Go"]')
 
         find('a.btn', text: future_s).click
         # correct dates, correct date filter
         expect(page).to have_css('tr[data-mediate-request] td.created_at', text: today_s)
         expect(page).to have_css('tr[data-mediate-request] td.needed_date', text: future_s)
         expect(page).to have_css('a.btn-primary', text: future_s)
-        expect(page).to have_css('input.btn-primary[value="Go"]')
+        expect(page).to have_css('input[value="Go"]')
 
         page.execute_script("$('input#created_at').prop('value', '#{today_s}')")
         click_on('Go')
@@ -474,7 +474,7 @@ RSpec.describe 'Mediation table', :js do
         expect(page).to have_css('tr[data-mediate-request] td.needed_date', text: today_button_text)
         expect(page).to have_css('tr[data-mediate-request] td.needed_date', text: future_s)
         expect(page).to have_no_css('a.btn-primary')
-        expect(page).to have_css('input.btn-primary[value="Go"]')
+        expect(page).to have_css('input[value="Go"]')
       end
     end
   end
