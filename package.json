@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "test": "jest -c jest.config.js",
-    "build:css": "cp -r ./node_modules/bootstrap-icons/font/fonts ./app/assets/builds && sass ./app/assets/stylesheets/application.sass.scss:./app/assets/builds/application.css --no-source-map --load-path=node_modules --load-path=vendor/assets/stylesheets && sass ./app/assets/stylesheets/application_redesign.scss:./app/assets/builds/application_redesign.css --no-source-map --load-path=node_modules --load-path=vendor/assets/stylesheets",
+    "build:css": "cp -r ./node_modules/bootstrap-icons/font/fonts ./app/assets/builds && sass ./app/assets/stylesheets/application_redesign.scss:./app/assets/builds/application_redesign.css --no-source-map --load-path=node_modules --load-path=vendor/assets/stylesheets",
     "build": "esbuild app/javascript/*.* --define:global=window --bundle --sourcemap --outdir=app/assets/builds --public-path=/assets"
   },
   "devDependencies": {

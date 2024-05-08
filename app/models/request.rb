@@ -9,7 +9,6 @@ class Request < ActiveRecord::Base
   def requires_needed_date?
     false
   end
-  include IlsRequest
 
   attr_reader :requested_barcode
   attr_writer :bib_data
@@ -72,9 +71,7 @@ class Request < ActiveRecord::Base
     end
   end
 
-  def send_approval_status!
-    RequestStatusMailerFactory.for(self).deliver_later if notification_email_address.present?
-  end
+  def send_approval_status!; end
 
   def delegate_request!
     case
@@ -152,9 +149,7 @@ class Request < ActiveRecord::Base
       user&.email_address
   end
 
-  def submit!
-    send_to_ils_later!
-  end
+  def submit!; end
 
   def barcode_present?
     requested_barcode.present?
@@ -196,6 +191,14 @@ class Request < ActiveRecord::Base
       Settings.libraries.default.contact_info
   end
 
+  # NOTE: symphony_response_data + folio_response_data are stored in the JSON in the "data" column
+  def ils_response
+    @ils_response ||= if folio_response_data
+                        FolioResponse.new(folio_response_data || {})
+                      else
+                        SymphonyResponse.new(symphony_response_data || {})
+                      end
+  end
   class << self
     # The mediateable_origins will make multiple (efficient) database requests
     # in order to return the array of locations that are both configured as mediateable and have existing requests.

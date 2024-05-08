@@ -8,10 +8,6 @@ RSpec.describe ItemStatus do
   let(:request) { create(:mediated_page_with_single_holding) }
   let(:barcode) { '3610512345' }
 
-  before do
-    allow(Request.ils_job_class).to receive(:perform_now)
-  end
-
   describe '#status_object' do
     it 'fetches the status object from the request_status_data hash' do
       expect(subject.send(:status_object)).to eq(
@@ -42,31 +38,6 @@ RSpec.describe ItemStatus do
       expect(status['approval_time']).not_to be_nil
     end
 
-    it 'triggers a request to symphony when an item is approved' do
-      expect(request).to receive(:save!)
-      expect(Request.ils_job_class).to receive(:perform_now).with(request.id, { barcode: })
-      subject.approve!('jstanford')
-    end
-
-    context 'persisting data' do
-      let(:request) { create(:mediated_page) }
-      let(:response) { build(:symphony_page_with_single_item) }
-
-      it 'reloads the record to ensure that any serialized attributes are updated' do
-        stub_bib_data_json(build(:single_mediated_holding))
-
-        allow(Request.ils_job_class).to receive(:perform_now).with(request.id, { barcode: })
-
-        expect do
-          # Here we operate on a separate instance of this database record.
-          # This illustrates what happens in perform_now where it isn't using the same instance of the Request object
-          Request.find(request.id).update!(symphony_response_data: response)
-
-          subject.approve!('jstanford')
-        end.to change(request, :symphony_response_data).from(nil).to(response)
-      end
-    end
-
     describe 'request approval status' do
       context 'when all items are not approved' do
         before { expect(request).to receive(:all_approved?).and_return(false) }
@@ -86,16 +57,6 @@ RSpec.describe ItemStatus do
           subject.approve!('jstanford')
           expect(request).to be_approved
         end
-      end
-    end
-
-    describe 'with an unsuccessful symphony request' do
-      let(:request) { create(:request_with_holdings) }
-
-      it 'does not persist any changes if the symphony response is not successful' do
-        stub_symphony_response(build(:symphony_request_with_all_errored_items))
-        expect(request).not_to receive(:save!)
-        expect(subject.approve!('jstanford')).to be_nil
       end
     end
   end

@@ -447,38 +447,6 @@ RSpec.describe Request do
     end
   end
 
-  describe 'send_approval_status!' do
-    subject(:request) { create(:page, user:) }
-
-    let(:user) {}
-
-    before do
-      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(library_id: user.library_id).and_return(
-        instance_double(Folio::Patron, exists?: true, email: '')
-      )
-    end
-
-    describe 'for library id users' do
-      let(:user) { create(:library_id_user) }
-
-      it 'does not send an approval status email' do
-        expect do
-          subject.send_approval_status!
-        end.not_to have_enqueued_mail
-      end
-    end
-
-    describe 'for everybody else' do
-      let(:user) { create(:sso_user) }
-
-      it 'sends an approval status email' do
-        expect do
-          subject.send_approval_status!
-        end.to have_enqueued_mail(RequestStatusMailer)
-      end
-    end
-  end
-
   describe 'mediateable_origins' do
     before do
       create(:mediated_page)
@@ -487,67 +455,6 @@ RSpec.describe Request do
 
     it 'returns the subset of origin codes that are configured and mediated pages that exist in the database' do
       expect(described_class.mediateable_origins.to_h.keys).to eq %w(ART SAL3-PAGE-MP)
-    end
-  end
-
-  describe '#submit!' do
-    it 'submits the request to Symphony' do
-      expect(described_class.ils_job_class).to receive(:perform_later)
-      subject.submit!
-    end
-  end
-
-  describe '#send_to_ils!' do
-    it 'submits the request to Symphony' do
-      expect(described_class.ils_job_class).to receive(:perform_later).with(subject.id, { a: 1 })
-      subject.send_to_ils_later! a: 1
-    end
-  end
-
-  describe '#ils_request_command' do
-    it 'provides access to the raw request object' do
-      expect(subject.ils_request_command).to be_a described_class.ils_job_class.command
-    end
-  end
-
-  describe '#merge_ils_response_data' do
-    before do
-      subject.symphony_response_data = build(:symphony_scan_with_multiple_items)
-    end
-
-    it 'uses any new request-level data' do
-      subject.merge_ils_response_data SymphonyResponse.new(req_type: 'SCAN',
-                                                           usererr_code: 'USERBLOCKED',
-                                                           usererr_text: 'User is Blocked')
-
-      expect(subject.ils_response.usererr_code).to eq 'USERBLOCKED'
-      expect(subject.ils_response.usererr_text).to eq 'User is Blocked'
-    end
-
-    it 'preserves old item-level data' do
-      subject.merge_ils_response_data SymphonyResponse.new(req_type: 'SCAN',
-                                                           requested_items: [
-                                                             {
-                                                               'barcode' => '987654321',
-                                                               'msgcode' => '209',
-                                                               'text' => 'Hold placed'
-                                                             },
-                                                             {
-                                                               'barcode' => '12345678901234z',
-                                                               'msgcode' => '209',
-                                                               'text' => 'Hold placed'
-                                                             }
-                                                           ])
-
-      item_status = subject.ils_response.items_by_barcode
-      expect(item_status['987654321']).to be_present
-      expect(item_status['987654321']['msgcode']).to eq '209'
-
-      expect(item_status['12345678901234z']).to be_present
-      expect(item_status['12345678901234z']['msgcode']).to eq '209'
-
-      expect(item_status['36105212920537']).to be_present
-      expect(item_status['36105212920537']['msgcode']).to eq 'S001'
     end
   end
 
