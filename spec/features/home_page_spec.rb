@@ -11,34 +11,16 @@ RSpec.describe 'Home Page' do
     it 'renders the page' do
       expect(page).to have_title('SUL Requests')
       expect(page).to have_css('.sul-logo')
-      within('.header-links') do
-        expect(page).to have_link('My Account')
-        expect(page).to have_link('Feedback')
-      end
+      expect(page).to have_link('My Account')
+      expect(page).to have_link('Feedback')
 
-      # page has a target="_blank" feedback link (with appropriate rel attribute)
-      feedback_link = page.find('.header-links a', text: 'Feedback')
-      expect(feedback_link['target']).to eq '_blank'
-      expect(feedback_link['rel']).to eq 'noopener noreferrer'
-
-      within('#sul-footer') do
-        expect(page).to have_css('#sul-footer-img img')
-        within('#sul-footer-links') do
-          expect(page).to have_link('Hours & locations')
-          expect(page).to have_link('My Account')
-          expect(page).to have_link('Ask us')
-        end
-      end
-
-      within('#global-footer') do
-        expect(page).to have_css('#bottom-logo img')
-        within('#bottom-text') do
-          expect(page).to have_link('Stanford Home')
-          expect(page).to have_link('Maps & Directions')
-          expect(page).to have_link('Search Stanford')
-          expect(page).to have_link('Terms of Use')
-          expect(page).to have_link('Emergency Info')
-        end
+      within('#su-footer') do
+        expect(page).to have_css('.su-logo')
+        expect(page).to have_link('Stanford Home')
+        expect(page).to have_link('Maps & Directions')
+        expect(page).to have_link('Search Stanford')
+        expect(page).to have_link('Terms of Use')
+        expect(page).to have_link('Emergency Info')
       end
     end
   end
