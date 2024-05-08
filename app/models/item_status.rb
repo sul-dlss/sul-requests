@@ -58,10 +58,6 @@ class ItemStatus
   end
 
   def approve!(user, approval_time = nil)
-    @request.send_to_ils_now!(barcode: @id)
-    reload_request # reloading to get any attributes saved to the database above
-    return unless ils_item_successful?
-
     self.status_object = {
       approved: true,
       approval_time: (approval_time || Time.zone.now).to_s,
