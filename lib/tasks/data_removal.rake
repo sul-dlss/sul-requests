@@ -7,5 +7,7 @@ namespace :data_removal do
     raise 'Date is too recent' if t > 1.month.ago
 
     Request.obsolete(t).delete_all
+
+    PatronRequest.obsolete(t).delete_all
   end
 end

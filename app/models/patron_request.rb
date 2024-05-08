@@ -18,6 +18,9 @@ class PatronRequest < ApplicationRecord
   validate :pickup_service_point_is_valid, on: :create, unless: :scan?
   validate :needed_date_is_valid, on: :create
 
+  scope :obsolete, lambda { |date|
+    where('(created_at < ?) AND (needed_date IS NULL OR needed_date < ?)', date, date)
+  }
   scope :recent, -> { order(created_at: :desc) }
   scope :for_create_date, lambda { |date|
     where(created_at: Time.zone.parse(date).all_day)
