@@ -12,30 +12,27 @@
   <%= render 'table_header' %>
   <tbody class='list'>
     <% collection.each do |request| %>
-      <tr data-mediate-request='<%= holdings_admin_path(request) %>' class='<%= cycle('odd', 'even') %>'>
+      <tr id="<%= "req_#{request.id}" %>" data-controller="mediation" data-mediate-request='<%= holdings_admin_path(request) %>' class='<%= cycle('odd', 'even') %>'>
         <td>
-          <a class="mediate-toggle" data-behavior='mediate-toggle' href='javascript:;'>
+          <button class="btn mediate-toggle" data-action="mediation#toggleHoldings" aria-label="Toggle">
             <i class="bi bi-plus-circle"></i>
-          </a>
-          <span data-behavior='all-approved-note' class='badge badge-success' style='<%= 'display:none;' unless request.approved? %>'>
-            <%= t('.all_approved') %>
-          </span>
-          <span data-behavior='mixed-approved-note' class='badge badge-warning' style='<%= 'display:none;' unless request.marked_as_done? %>'>
-            <%= t('.all_approved') %>
+          </button>
+          <span id="<%= "req_#{request.id}_note" %>">
+            <%= render 'approved_note', request: %>
           </span>
         </td>
         <td class='needed_date'>
           <% if request.needed_date %>
             <span data-toggle='tooltip' data-placement='left' title="edit 'Needed on' date">
-              <%= render 'needed_dates/display', mediated_page: request %>
+              <%= render 'needed_dates/display', patron_request: request %>
             </span>
           <% end %>
         </td>
-        <td class='title'><%= searchworks_link(request.item_id, request.item_title, target: '_blank', rel: 'noopener noreferrer', 'data-behavior' => 'truncate') %></td>
-        <td class='requester'><%= requester_info(request.user) %></td>
+        <td class='title' ><%= searchworks_link(request.instance_hrid, request.item_title, target: '_blank', rel: 'noopener noreferrer', 'data-behavior' => 'truncate') %></td>
+        <td class='requester'><%= "#{request.patron_name} <#{request.patron_email}>" %></td>
         <td class='created_at'><%= time_tag(request.created_at, :short) %></td>
-        <td class='comment'><div data-behavior='trunk8toggle'><%= request.request_comment %></div></td>
-        <td><%= link_to('Status', polymorphic_path([:status, request]), target: '_blank', rel: 'noopener noreferrer') %></td>
+        <td class='comment'><div data-behavior='trunk8toggle'><%= request.request_comments %></div></td>
+        <td><%= link_to('Status', url_for(request), target: '_blank', rel: 'noopener noreferrer') %></td>
       </tr>
     <% end %>
   </tbody>

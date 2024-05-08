@@ -13,7 +13,7 @@ class PatronRequest < ApplicationRecord
   delegate :instance_id, :finding_aid, :finding_aid?, to: :bib_data
 
   validates :instance_hrid, presence: true
-  validates :request_type, inclusion: { in: %w[scan pickup mediated] }
+  validates :request_type, inclusion: { in: %w[scan pickup mediated mediated/approved mediated/done] }
   validates :scan_title, presence: true, on: :create, if: :scan?
   validate :pickup_service_point_is_valid, on: :create, unless: :scan?
   validate :needed_date_is_valid, on: :create
@@ -21,14 +21,28 @@ class PatronRequest < ApplicationRecord
   scope :obsolete, lambda { |date|
     where('(created_at < ?) AND (needed_date IS NULL OR needed_date < ?)', date, date)
   }
+  scope :mediated, -> { where(request_type: ['mediated', 'mediated/approved', 'mediated/done']) }
+  scope :unapproved, -> { where(request_type: ['mediated']) }
+  scope :completed, lambda {
+    where(request_type: ['mediated/approved', 'mediated/done']).order(needed_date: :desc)
+  }
+  scope :archived, -> { where('needed_date < ?', Time.zone.today).order(needed_date: :desc) }
+  scope :for_origin, lambda { |origin|
+                       where(origin_location_code: [origin, *(Folio::Types.libraries.find_by(code: origin)&.locations&.map(&:code) || [])])
+                     }
+
+  scope :for_date, ->(date) { where(needed_date: date) }
+
   scope :recent, -> { order(created_at: :desc) }
   scope :for_create_date, lambda { |date|
     where(created_at: Time.zone.parse(date).all_day)
   }
   has_many :admin_comments, as: :request, dependent: :delete_all
 
+  attr_writer :bib_data
+
   before_create do
-    self.request_type = 'mediated' if mediateable?
+    self.request_type = 'mediated' if mediateable? && !request_type.start_with?('mediated')
     self.item_title = bib_data&.title
     self.estimated_delivery = earliest_delivery_estimate(scan: scan?)&.dig('display_date')
   end
@@ -79,6 +93,14 @@ class PatronRequest < ApplicationRecord
   # Check if the user has selected a sponsor on the form for making the request on behalf of their sponsor
   def for_sponsor?
     for_sponsor == 'share'
+  end
+
+  def folio_responses
+    super || {}
+  end
+
+  def item_mediation_data
+    super || {}
   end
   # @!endgroup
 
@@ -411,6 +433,59 @@ class PatronRequest < ApplicationRecord
   end
   # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
+  # @!endgroup
+  # @!group Mediated pages
+
+  # return [Array<Date>] the next N dates that have requests for the origin location
+  def self.needed_dates_for_origin_after_date(origin:, date:, count: 3)
+    mediated.for_origin(origin).where('needed_date > ?', date).distinct.pluck(:needed_date).sort.take(count)
+  end
+
+  def unapproved?
+    request_type == 'mediated'
+  end
+
+  def approved?
+    request_type == 'mediated/approved'
+  end
+
+  def marked_as_done?
+    request_type == 'mediated/done'
+  end
+
+  # @return Hash
+  def item_status(item_id)
+    item_mediation_data[item_id] || {}
+  end
+
+  def update_item_status(item_id, **status)
+    update(item_mediation_data: item_mediation_data.merge({ item_id => item_status(item_id).merge(status) }))
+
+    update(request_type: 'mediated/approved') if selected_items.all? { |x| item_status(x.id)['approved'] }
+  end
+
+  # Mark the specified item as approved and submit the request to FOLIO
+  def approve_item(item_id, approver:)
+    update_item_status(item_id, approved: true, approver: approver.sunetid,
+                                approved_at: Time.zone.now)
+
+    folio_response = SubmitFolioPatronRequestJob.perform_now(self, item_id)
+
+    update(folio_responses: folio_responses.merge(item_id => folio_response))
+  end
+
+  def notify_mediator!
+    return unless mediator_notification_email_address.present? && Settings.features.mediator_email
+
+    MediationMailer.mediator_notification(self).deliver_later
+  end
+
+  def mediator_notification_email_address
+    Rails.application.config.mediator_contact_info.fetch(
+      origin_library_code,
+      Rails.application.config.mediator_contact_info.fetch(origin_location_code, {})
+    )[:email]
+  end
   # @!endgroup
 
   private

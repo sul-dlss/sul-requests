@@ -168,8 +168,8 @@ RSpec.describe 'Viewing all requests' do
       end
 
       # rubocop:disable RSpec/LetSetup
-      let!(:pages) { create_list(:mediated_page, 2) }
-      let!(:other_pages) { create_list(:page_mp_mediated_page, 1) }
+      let!(:pages) { create_list(:mediated_patron_request, 2) }
+      let!(:other_pages) { create_list(:page_mp_mediated_patron_request, 1) }
       # rubocop:enable RSpec/LetSetup
 
       it 'lists all the mediated pages for the given library' do
@@ -190,9 +190,9 @@ RSpec.describe 'Viewing all requests' do
       end
 
       it 'allows the user to toggle between done and pending mediated pages (and updates button class)' do
-        build(:mediated_page, approval_status: :approved, needed_date: Time.zone.today - 2.days).save(validate: false)
-        build(:mediated_page, approval_status: :approved, needed_date: Time.zone.today - 3.days).save(validate: false)
-        build(:mediated_page, approval_status: :approved, needed_date: Time.zone.today - 1.day).save(validate: false)
+        build(:mediated_patron_request, request_type: 'mediated/approved', needed_date: Time.zone.today - 2.days).save(validate: false)
+        build(:mediated_patron_request, request_type: 'mediated/approved', needed_date: Time.zone.today - 3.days).save(validate: false)
+        build(:mediated_patron_request, request_type: 'mediated/approved', needed_date: Time.zone.today - 1.day).save(validate: false)
         visit admin_path('ART')
 
         expect(page).to have_css('tbody tr', count: 2)

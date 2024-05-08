@@ -27,11 +27,11 @@ module Folio
       { id:, code: }
     end
 
-    private
-
     def locations
       Folio::Types.locations.where(library_id: id)
     end
+
+    private
 
     def cached_data
       @cached_data ||= Folio::Types.libraries.find_by(id:)

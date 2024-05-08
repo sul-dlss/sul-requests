@@ -32,6 +32,7 @@ en:
         user: "Requested by"
       patron_request:
         service_point_code: "Preferred pickup location"
+        needed_date: "Needed on"
       hold_recall:
         <<: *request_anchor
         needed_date: "Not needed after"
@@ -54,7 +55,7 @@ en:
       mediated_pages: "Mediated pages"
       pages: "Pages"
       scans: "Scan requests"
-    library_table:
+    approved_note:
       all_approved: "Done"
   approval_status:
     default:

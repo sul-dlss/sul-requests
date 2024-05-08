@@ -9,11 +9,10 @@ RSpec.describe 'Admin Comments', :js do
   end
 
   before do
-    allow(Settings.ils.bib_model.constantize).to receive(:fetch)
+    allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(instance_double(Folio::Instance, items: []))
     stub_current_user(user)
     create(
-      :mediated_page_with_holdings,
-      user: create(:non_sso_user, name: 'Jim Doe ', email: 'jimdoe@example.com'),
+      :mediated_patron_request_with_holdings,
       barcodes: %w(34567890),
       created_at: 1.day.from_now
     )
@@ -22,9 +21,7 @@ RSpec.describe 'Admin Comments', :js do
 
   describe 'toggling admin comment form' do
     it 'begins with the form closed and allows the form to be toggled open' do
-      within(first('[data-mediate-request]')) do
-        page.find('a.mediate-toggle').click
-      end
+      click_on 'Toggle'
 
       expect(page).to have_css('.admin-comments')
 
@@ -38,9 +35,7 @@ RSpec.describe 'Admin Comments', :js do
 
   describe 'saving comments' do
     it 'updates the page with the saved comment' do
-      within(first('[data-mediate-request]')) do
-        page.find('a.mediate-toggle').click
-      end
+      click_on 'Toggle'
 
       within('.admin-comments') do
         click_on 'Comment'
@@ -59,9 +54,7 @@ RSpec.describe 'Admin Comments', :js do
 
   describe 'cancel button' do
     it 'clears and hides the form' do
-      within(first('[data-mediate-request]')) do
-        page.find('a.mediate-toggle').click
-      end
+      click_on 'Toggle'
 
       within('.admin-comments') do
         click_on 'Comment'

@@ -4,9 +4,8 @@ require 'rails_helper'
 
 RSpec.describe MediationMailer do
   describe 'mediator_notification' do
-    let(:user) { build(:non_sso_user) }
-    let(:request) { create(:mediated_page, user:) }
-    let(:mediator_contact_info) { { request.origin => { email: 'someone@example.com' } } }
+    let(:request) { create(:mediated_patron_request) }
+    let(:mediator_contact_info) { { request.origin_library_code => { email: 'someone@example.com' } } }
     before do
       allow(Rails.application.config).to receive(:mediator_contact_info).and_return(mediator_contact_info)
     end
@@ -25,7 +24,7 @@ RSpec.describe MediationMailer do
       end
 
       describe 'location specific' do
-        let(:request) { create(:page_mp_mediated_page, user:) }
+        let(:request) { create(:page_mp_mediated_patron_request) }
 
         it 'is the configured from address for the origin' do
           expect(mail.from).to eq ['brannerlibrary@stanford.edu']
@@ -41,14 +40,14 @@ RSpec.describe MediationMailer do
 
     describe 'body' do
       let(:request) do
-        create(:mediated_page_with_holdings, barcodes: ['12345678'], user:)
+        create(:mediated_patron_request_with_holdings, barcodes: ['12345678'])
       end
 
       let(:body) { mail.body.to_s }
 
       it 'has the date' do
         date_str = I18n.l(request.created_at, format: :short)
-        expect(body).to include "On #{date_str}, Jane Stanford (jstanford@stanford.edu) requested the following:"
+        expect(body).to include "On #{date_str}, Test User <test@example.com> requested the following:"
       end
 
       it 'has the title' do
