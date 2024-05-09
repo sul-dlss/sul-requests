@@ -199,6 +199,11 @@ class Request < ActiveRecord::Base
                         SymphonyResponse.new(symphony_response_data || {})
                       end
   end
+
+  def ils_response_data
+    folio_response_data || symphony_response_data || {}
+  end
+
   class << self
     # The mediateable_origins will make multiple (efficient) database requests
     # in order to return the array of locations that are both configured as mediateable and have existing requests.
