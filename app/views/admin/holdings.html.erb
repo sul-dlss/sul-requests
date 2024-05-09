@@ -1,6 +1,6 @@
 <turbo-frame id="req_<%= @request.id %>-holdings">
   <div class='admin-comments'>
-    <div class='btn-group gap-2'>
+    <div class='d-flex gap-2'>
       <%= form_for(@request, url: mark_as_done_admin_path(@request), as: :request, html: { class: 'mark-as-complete-form', 'data-type': 'json' }) do |f| %>
         <%= f.hidden_field :approval_status, value: 'marked_as_done' %>
         <button class='btn btn-secondary btn-sm' <%= 'disabled' unless @request.unapproved? %> data-behavior='mark-as-complete'>Mark as done</button>
