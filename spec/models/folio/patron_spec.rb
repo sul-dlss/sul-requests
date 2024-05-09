@@ -97,7 +97,7 @@ RSpec.describe Folio::Patron do
     end
   end
 
-  describe '#proxy_group_names' do
+  describe '#proxies' do
     let(:fields) { { id: 'sponsor', personal: { firstName: 'Sponsor' } } }
     let(:patron_one) { instance_double(described_class, id: 'proxy1', display_name: 'Proxy One') }
     let(:patron_two) { instance_double(described_class, id: 'proxy2', display_name: 'Proxy Two') }
@@ -107,17 +107,17 @@ RSpec.describe Folio::Patron do
       allow(FolioClient).to receive(:new).and_return(stub_client)
       allow(stub_client).to receive(:find_patron_by_id).with('proxy1').and_return(patron_one)
       allow(stub_client).to receive(:find_patron_by_id).with('proxy2').and_return(patron_two)
-      allow(stub_client).to receive(:all_proxy_group_info).with('sponsor').and_return([
-                                                                                        { 'proxyUserId' => 'proxy1',
-                                                                                          'requestForSponsor' => 'Yes' },
-                                                                                        { 'proxyUserId' => 'proxy2',
-                                                                                          'requestForSponsor' => 'Yes' }
-                                                                                      ])
-      expect(patron.proxy_group_names.length).to eq 2
+      allow(stub_client).to receive(:proxies).with(userId: 'sponsor').and_return([
+                                                                                   { 'proxyUserId' => 'proxy1',
+                                                                                     'requestForSponsor' => 'Yes' },
+                                                                                   { 'proxyUserId' => 'proxy2',
+                                                                                     'requestForSponsor' => 'Yes' }
+                                                                                 ])
+      expect(patron.proxies.length).to eq 2
     end
   end
 
-  describe '#sponsor_names' do
+  describe '#sponsors' do
     let(:fields) { { id: 'proxy', personal: { firstName: 'Proxy' } } }
     let(:sponsor_one) { instance_double(described_class, id: 'sponsor1', display_name: 'Sponsor One') }
     let(:sponsor_two) { instance_double(described_class, id: 'sponsor2', display_name: 'Sponsor Two') }
@@ -127,13 +127,13 @@ RSpec.describe Folio::Patron do
       allow(FolioClient).to receive(:new).and_return(stub_client)
       allow(stub_client).to receive(:find_patron_by_id).with('sponsor1').and_return(sponsor_one)
       allow(stub_client).to receive(:find_patron_by_id).with('sponsor2').and_return(sponsor_two)
-      allow(stub_client).to receive(:all_proxy_info).with('proxy').and_return([
-                                                                                { 'userId' => 'sponsor1',
-                                                                                  'requestForSponsor' => 'Yes' },
-                                                                                { 'userId' => 'sponsor2',
-                                                                                  'requestForSponsor' => 'Yes' }
-                                                                              ])
-      expect(patron.sponsor_names.length).to eq 2
+      allow(stub_client).to receive(:proxies).with(proxyUserId: 'proxy').and_return([
+                                                                                      { 'userId' => 'sponsor1',
+                                                                                        'requestForSponsor' => 'Yes' },
+                                                                                      { 'userId' => 'sponsor2',
+                                                                                        'requestForSponsor' => 'Yes' }
+                                                                                    ])
+      expect(patron.sponsors.length).to eq 2
     end
   end
 end

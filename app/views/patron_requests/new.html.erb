@@ -69,7 +69,7 @@
   <% end %>
 
   <!-- proxy -->
-  <% if ( f.object.patron.proxy_group_names&.any? || f.object.patron.sponsor_names&.any? ) && !f.object.aeon_page? %>
+  <% if (f.object.patron.proxy? || f.object.patron.sponsor?) && !f.object.aeon_page? %>
     <%= render AccordionStepComponent.new(id: 'proxy', step_index: step_enum.next, form_id: f.id) do |c| %>
       <% c.with_title.with_content('Proxy/Sponsor') %>
       <% c.with_body do %>

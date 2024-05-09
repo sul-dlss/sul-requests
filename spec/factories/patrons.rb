@@ -15,10 +15,8 @@ FactoryBot.define do
     stubs do
       {
         patron_blocks: [],
-        proxy_info: {},
-        proxy_group_info: {},
-        all_proxy_group_info: {},
-        all_proxy_info: {}
+        proxies: [],
+        sponsors: []
       }
     end
 
@@ -62,10 +60,8 @@ FactoryBot.define do
             message: 'Patron has reached maximum allowed outstanding fee/fine balance for his/her patron group'
           }
         ],
-        proxy_info: {},
-        proxy_group_info: {},
-        all_proxy_group_info: {},
-        all_proxy_info: {}
+        proxies: [],
+        sponsors: []
       }
     end
   end

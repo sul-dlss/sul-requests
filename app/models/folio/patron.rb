@@ -93,41 +93,45 @@ module Folio
       patron_group['desc']
     end
 
+    # @deprecated
     def proxy_email_address
-      proxy_info&.dig('notificationsTo') || email
+      sponsors&.first&.notifications_to || email
+    end
+
+    # @deprecated
+    def notifications_to
+      user_info['notificationsTo']
     end
 
     def proxy?
-      proxy_info.present?
+      sponsors.any?
     end
 
     def sponsor?
-      proxy_group_info.present?
+      proxies.any?
     end
 
-    # Return list of names of individuals who are proxies for this id
-    def proxy_group_names
+    # Return list of proxies that can act as behalf of this patron
+    def proxies
       # Return display name for any proxies where 'requestForSponser' is yes.
-      @proxy_group_names ||= all_proxy_group_info.filter_map do |info|
-        return nil unless info['requestForSponsor'].downcase == 'yes'
+      @proxies ||= proxies_of_response.filter_map do |info|
+        next nil unless info['requestForSponsor'].downcase == 'yes'
 
         # Find the patron corresponding to the Folio user id for the proxy
         proxy_patron = self.class.folio_client.find_patron_by_id(info['proxyUserId'])
-        # If we find the corresponding FOLIO patron for the proxy, return the display name
-        (proxy_patron.present? && proxy_patron&.display_name) || nil
+        proxy_patron.presence
       end
     end
 
-    # Return list of names of individuals who are sponsors for this id
-    def sponsor_names
+    # Return list of sponsors this patron acts as a proxy for
+    def sponsors
       # Return display name for any proxies where 'requestForSponser' is yes.
-      @sponsor_names ||= all_proxy_info.filter_map do |info|
-        return nil unless info['requestForSponsor'].downcase == 'yes'
+      @sponsors ||= sponsors_for_response.filter_map do |info|
+        next nil unless info['requestForSponsor'].downcase == 'yes'
 
         # Find the patron corresponding to the Folio user id for the sponsor
         sponsor_patron = self.class.folio_client.find_patron_by_id(info['userId'])
-        # If we find the corresponding FOLIO patron for the sponsor, return the display name
-        (sponsor_patron.present? && sponsor_patron&.display_name) || nil
+        sponsor_patron.presence
       end
     end
 
@@ -137,6 +141,11 @@ module Folio
 
     def university_id
       user_info['externalSystemId']
+    end
+
+    # @deprecated
+    def proxy_sponsor_user_id
+      sponsors.first.id
     end
 
     def blocked?
@@ -166,16 +175,16 @@ module Folio
 
     private
 
-    # Get all the proxies for this id, and not just the first one
-    def all_proxy_group_info
-      @all_proxy_group_info ||= user_info.dig('stubs', 'all_proxy_group_info') # used for stubbing
-      @all_proxy_group_info ||= self.class.folio_client.all_proxy_group_info(id)
+    # Get all the sponsors for this patron
+    def sponsors_for_response
+      @sponsors_for_response ||= user_info.dig('stubs', 'sponsors') # used for stubbing
+      @sponsors_for_response ||= self.class.folio_client.proxies(proxyUserId: id)
     end
 
-    # Get all the sponsors for which this patron is a proxy
-    def all_proxy_info
-      @all_proxy_info ||= user_info.dig('stubs', 'all_proxy_info') # used for stubbing
-      @all_proxy_info ||= self.class.folio_client.all_proxy_info(id)
+    # Get all the proxies of this patron
+    def proxies_of_response
+      @proxies_of_response ||= user_info.dig('stubs', 'proxies') # used for stubbing
+      @proxies_of_response ||= self.class.folio_client.proxies(userId: id)
     end
 
     def standing
@@ -193,16 +202,6 @@ module Folio
     def patron_blocks
       @patron_blocks ||= user_info.dig('stubs', 'patron_blocks') # used for stubbing
       @patron_blocks ||= self.class.folio_client.patron_blocks(id).fetch('automatedPatronBlocks', [])
-    end
-
-    def proxy_info
-      @proxy_info ||= user_info.dig('stubs', 'proxy_info') # used for stubbing
-      @proxy_info ||= self.class.folio_client.proxy_info(id)
-    end
-
-    def proxy_group_info
-      @proxy_group_info ||= user_info.dig('stubs', 'proxy_group_info') # used for stubbing
-      @proxy_group_info ||= self.class.folio_client.proxy_group_info(id)
     end
 
     # Encryptor/decryptor for the token used in the PIN reset process

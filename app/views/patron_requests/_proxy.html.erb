@@ -1,7 +1,7 @@
 <div class="row p-3 gap-3 flex-column flex-md-row">
-  <% if f.object.patron.proxy_group_names.any? %>
+  <% if f.object.patron.sponsor? %>
     <%= render 'list_proxies_form', f: %>
-  <% elsif f.object.patron.sponsor_names.any? %>
+  <% elsif f.object.patron.proxy? %>
     <%= render 'list_sponsors_form', f: %>
   <% end %>
 </div>
