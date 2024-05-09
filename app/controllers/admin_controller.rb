@@ -2,8 +2,6 @@
 
 # Controller to handle mediations for admins
 class AdminController < ApplicationController
-  layout 'application_new'
-
   before_action only: [:approve_item, :holdings, :mark_as_done, :comment] do
     authorize! :admin, (
       @request = PatronRequest.find(params[:id])
