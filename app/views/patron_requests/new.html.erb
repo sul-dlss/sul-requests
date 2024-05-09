@@ -164,6 +164,7 @@
         <% c.with_title.with_content('Pickup request') %>
         <% c.with_body do %>
           <%= render 'pickup_destination', f: %>
+          <%= render 'not_needed_after_date', f: f if f.object.mediateable? && f.object.requires_needed_date? %>
 
           <div class="selected-items-group">
             <div class="card">
@@ -201,6 +202,9 @@
                 <ul data-itemselector-target="unavailableItems" class="list-unstyled d-flex flex-wrap gap-2 p-3 m-0"></ul>
                 <hr class="styled-hr">
                 <%= render 'request_preferences', f: %>
+                <% if f.object.holdable_recallable_items.any? && !f.object.mediateable? %>
+                  <%= render 'not_needed_after_date', f: %>
+                <% end %>
               </div>
             </div>
           </div>
@@ -315,14 +319,10 @@
                 </div>
               </div>
             </div>
-            <% if f.object.requires_needed_date? %>
-                <%= f.label :needed_date, 'I plan to visit on:', :class => 'required-label py-2' %>
-                <%= f.date_field :needed_date, :required => true, value:  f.object.earliest_delivery_estimate['date'], min: f.object.earliest_delivery_estimate['date'], class: 'd-block rounded border mb-4' %>
-            <% end %>
         <% end %>
         <%= render 'pickup_destination', f: %>
         <%= render 'request_preferences', f: %>
-        <% if f.object.title_only? %>
+        <% if f.object.holdable_recallable_items.any? || f.object.requires_needed_date? || f.object.title_only? %>
           <%= render 'not_needed_after_date', f: %>
         <% end %>
       <% end %>

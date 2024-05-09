@@ -116,6 +116,35 @@ RSpec.describe 'Creating a request' do
       end
     end
 
+    context 'for a mediated page with an item selector' do
+      let(:bib_data) { build(:searchable_holdings) }
+
+      before do
+        allow(patron).to receive(:user).and_return(user)
+        allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
+      end
+
+      it 'creates a mediated page request', :js do
+        visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'ART-LOCKED-LARGE')
+
+        expect(page).to have_css 'h2', text: 'Select item(s)'
+        check 'ABC 123'
+        check 'ABC 456'
+        click_on 'Continue'
+
+        fill_in 'I plan to visit on:', with: Time.zone.tomorrow
+
+        expect do
+          perform_enqueued_jobs do
+            click_on 'Submit'
+            expect(page).to have_content 'We received your request'
+          end
+        end.to change(PatronRequest, :count).by(1)
+
+        expect(PatronRequest.last).to have_attributes(request_type: 'mediated')
+      end
+    end
+
     context 'for an item that can be paged or scanned', :js do
       let(:bib_data) { build(:scannable_holdings) }
       let(:user) { create(:scan_eligible_user) }

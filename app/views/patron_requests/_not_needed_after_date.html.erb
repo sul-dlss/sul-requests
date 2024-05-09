@@ -1,4 +1,9 @@
 <div class="p-3 pt-0">
-    <%= f.label :needed_date, 'Not needed after', class: 'required-label py-2' %>
-    <%= f.date_field :needed_date, required: true, min: Date.today, value: Time.zone.today + 1.year, class: 'form-control' %>
+    <% if f.object.mediateable? %>
+        <%= f.label :needed_date, 'I plan to visit on:', class: 'required-label py-2' %>
+        <%= f.date_field :needed_date, required: true, min: f.object.earliest_delivery_estimate['date'], value: f.object.earliest_delivery_estimate['date'], class: 'form-control' %>
+    <% else %>
+        <%= f.label :needed_date, 'Not needed after', class: 'required-label py-2' %>
+        <%= f.date_field :needed_date, required: true, min: Date.today, value: Time.zone.today + 1.year, class: 'form-control' %>
+    <% end %>
 </div>
