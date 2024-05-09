@@ -48,10 +48,8 @@ Rails.application.routes.draw do
   resources :requests, only: [:new], concerns: [:statusable]
   resources :pages, controller: :requests, only: [], concerns: [:statusable]
   resources :scans, controller: :requests,only: [], concerns: [:statusable]
-  resources :mediated_pages, only: [:update], concerns: [:admin_commentable, :statusable] do
-    resource :needed_date, only: [:edit, :update, :show]
-  end
-  resources :hold_recalls, controller: :requests,only: [], concerns: [:statusable]
+  resources :mediated_pages, controller: :requests, only: [], concerns: [:statusable]
+  resources :hold_recalls, controller: :requests, only: [], concerns: [:statusable]
 
   get 'admin/old_requests' => 'admin#old_requests_index', as: :old_requests
 
