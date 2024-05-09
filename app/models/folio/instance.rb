@@ -95,7 +95,7 @@ module Folio
     end
 
     def items
-      holdings_records.flat_map(&:items).reject(&:suppressed_from_discovery?)
+      (holdings_records.flat_map(&:items) + holdings_records.filter_map(&:bound_with_item)).reject(&:suppressed_from_discovery?)
     end
 
     def holdings_records

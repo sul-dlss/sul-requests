@@ -3,7 +3,7 @@
 module Folio
   # Represents a holdings record in Folio.
   class HoldingsRecord
-    attr_reader :call_number, :instance, :items, :bound_with_item
+    attr_reader :call_number, :instance, :items
 
     def initialize(call_number:, instance: nil, bound_with_item: nil, items: [], suppressed_from_discovery: false)
       @call_number = call_number
@@ -11,6 +11,10 @@ module Folio
       @bound_with_item = bound_with_item
       @suppressed_from_discovery = suppressed_from_discovery
       @items = items
+    end
+
+    def bound_with_item
+      @bound_with_item&.with_bound_with_child_holdings_record(self)
     end
 
     def suppressed_from_discovery?

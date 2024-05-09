@@ -119,6 +119,18 @@ class FolioGraphqlClient
                 }
                 items {
                   #{item_fields}
+
+                  boundWithHoldingsPerItem {
+                    callNumber
+                    instance {
+                      id
+                      title
+                      hrid
+                      instanceType {
+                        name
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -255,17 +267,6 @@ class FolioGraphqlClient
             }
             pagingSchedule
             scanServicePointCode
-          }
-        }
-      }
-      boundWithHoldingsPerItem {
-        callNumber
-        instance {
-          id
-          title
-          hrid
-          instanceType {
-            name
           }
         }
       }

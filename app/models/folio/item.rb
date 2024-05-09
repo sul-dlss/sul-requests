@@ -7,7 +7,8 @@ module Folio
   # NOTE, barcode and callnumber may be nil. see instance_hrid: 'in00000063826'
   class Item
     attr_reader :id, :barcode, :status, :type, :public_note, :effective_location, :permanent_location, :temporary_location,
-                :material_type, :loan_type, :holdings_record_id, :enumeration, :base_callnumber, :full_enumeration, :queue_length
+                :material_type, :loan_type, :holdings_record_id, :enumeration, :base_callnumber, :full_enumeration, :queue_length,
+                :instance, :bound_with_holdings_per_item, :bound_with_child_holdings_record
 
     # Other statuses that we aren't using include "Unavailable" and "Intellectual item"
     STATUS_CHECKED_OUT = 'Checked out'
@@ -90,6 +91,11 @@ module Folio
 
     def with_status(status)
       Folio::ItemWithStatus.new(self).with_status(status)
+    end
+
+    def with_bound_with_child_holdings_record(holdings_record)
+      @bound_with_child_holdings_record = holdings_record
+      self
     end
 
     # TODO: rename this to 'permanent_location_code' after migration

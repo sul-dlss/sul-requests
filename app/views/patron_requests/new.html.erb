@@ -9,11 +9,39 @@
 <h1 class="fw-semibold mt-4"><%= @patron_request.item_title %></h1>
 <% if @patron_request.selectable_items.one? %>
   <% single_item = @patron_request.selectable_items.first %>
-  <div class="lead fw-normal mb-4">Call number: <%= callnumber_label(single_item) %></div>
+  <% unless single_item.instance && single_item.instance&.hrid != @patron_request.instance_hrid %>
+    <div class="lead fw-normal mb-4">Call number: <%= callnumber_label(single_item) %></div>
+  <% end %>
   <% if single_item.public_note %>
     <span class="text-cardinal d-block ms-4">
       <%= single_item.public_note %>
     </span>
+  <% end %>
+
+  <% if single_item.bound_with_holdings_per_item.any? && (single_item.instance.nil? || single_item.instance&.hrid == @patron_request.instance_hrid) %>
+    <div class="card col-lg-8 shadow-sm">
+      <div class="card-header h6 bg-light">This item is bound with:</div>
+      <ul class="list-group list-group-flush">
+        <% single_item.bound_with_holdings_per_item.each do |bound_with_child| %>
+          <li class="list-group-item d-flex bg-light">
+            <span class="me-auto"><%= bound_with_child.instance.title %></span>
+            <span><%= bound_with_child.call_number %></span>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if single_item.instance && single_item.instance&.hrid != @patron_request.instance_hrid %>
+    <div class="lead fw-normal mb-4">Call number: <%= @patron_request.bib_data.holdings_records.first.call_number %></div>
+
+    <div class="card col-lg-8 shadow-sm">
+      <div class="card-header h6 bg-light">This item is bound and shelved by:</div>
+      <div class="card-body bg-light">
+        <div><%= single_item.instance.title %></div>
+        <div>Call number: <%= callnumber_label(single_item) %></div>
+      </div>
+    </div>
   <% end %>
 <% end %>
 
@@ -127,7 +155,7 @@
               <% sort_holdings(f.object.selectable_items).each.with_index(1) do |item, index| %>
                 <% not_requestable = cannot?(:request, item) %>
                 <tr data-sortby-status="<%= item.status_text.downcase.gsub(' ', '_') %>" data-sortby-callnumber="<%= index %>" >
-                  <td class="align-middle">
+                  <td>
                     <label>
                       <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: cannot?(:request, item), data: { 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-duequeueinfo-param': queue_length_display(item),  'itemselector-label-param': callnumber_label(item), action: 'itemselector#change' } }, item.barcode || item.id, "" %>
                       <% if f.object.aeon_page? %>
@@ -135,15 +163,38 @@
                         <%= f.hidden_field "aeon_barcode_#{item.barcode}", disabled: true, name: "ItemNumber_#{index}", value: item.barcode, data: { toggle: true } %>
                         <%= f.hidden_field "aeon_request_#{index}", disabled: true, name: 'Request', value: index, data: { toggle: true } %>
                       <% end %>
-                      <span class="form-check-label ms-1"><%= callnumber_label(item) %></span>
-                      <% if item.public_note %>
-                        <span class="text-cardinal d-block ms-4 mt-1">
-                          <%= item.public_note %>
-                        </span>
-                      <% end %>
+                      <span class="form-check-label ms-1"><%= item&.bound_with_child_holdings_record&.call_number || callnumber_label(item) %></span>
                     </label>
+                    <% if item.public_note %>
+                      <span class="text-cardinal d-block ms-4 mt-1">
+                        <%= item.public_note %>
+                      </span>
+                    <% end %>
+
+                    <% if item.bound_with_holdings_per_item.any? %>
+                      <span class="d-block mt-2 ms-4 py-2 bg-light">
+                        <span class="ms-3 text-cardinal">Bound with:</div>
+
+                        <ul class="list-group list-group-flush">
+                          <% item.bound_with_holdings_per_item.each do |bound_with_child| %>
+                            <li class="list-group-item bg-light">
+                              <span class="d-block"><%= bound_with_child.instance.title %></span>
+                              <span class="d-block"><%= bound_with_child.call_number %></span>
+                            </li>
+                          <% end %>
+                        </ul>
+                      </span>
+                    <% end %>
+
+                    <% if item.instance&.hrid %>
+                      <span class="d-block ms-4 mt-2 px-3 py-2 bg-light">
+                        <span class="text-cardinal">Bound with and shelved by:</span>
+                        <span class="d-block"><%= item.instance.title %></span>
+                        <span class="d-block"><%= callnumber_label(item) %></span>
+                      </span>
+                    <% end %>
                   </td>
-                  <td class="align-middle text-end">
+                  <td class="text-end">
                     <%= requests_patron_item_selector_label(item, not_requestable:) %>
                   </td>
                 </tr>
