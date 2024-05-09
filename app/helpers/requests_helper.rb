@@ -28,7 +28,7 @@ module RequestsHelper
                     item.status_text
                   end
     due_date = item.checked_out? ? content_tag(:span, "Due #{item.due_date}", class: 'ms-1 text-danger') : ''
-    content_tag :span, class: "status float-end availability #{status_class}" do
+    content_tag :span, class: "status availability #{status_class}" do
       availability_bootstrap_icon(status_class) + status_text + due_date
     end
   end
