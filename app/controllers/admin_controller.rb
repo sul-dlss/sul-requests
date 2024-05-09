@@ -152,21 +152,6 @@ class AdminController < ApplicationController
     redirect_to login_by_sunetid_path(referrer: request.original_url)
   end
 
-  def range_param(default: Time.zone.now.beginning_of_day...Time.zone.now)
-    from = (params[:from] && Time.zone.parse(params[:from])) || default.first
-    to = (params[:to] && Time.zone.parse(params[:to])) || default.last
-
-    from...to
-  end
-
-  def request_has_items_approved_within_range?(request, range)
-    request.item_statuses.select do |item_status|
-      item_status.approved? &&
-        item_status.approval_time &&
-        range.cover?(Time.zone.parse(item_status.approval_time))
-    end
-  end
-
   def load_and_authorize_library_location
     @library_location = if Settings.mediateable_origins.dig(params[:id], :library_override)
                           LibraryLocation.new(Settings.mediateable_origins.dig(params[:id], :library_override), params[:id])
