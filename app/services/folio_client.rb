@@ -178,7 +178,7 @@ class FolioClient
         itemId: item_id,
         holdingsRecordId: holdings_record_id,
         requesterId: requester_id,
-        proxyUserId: proxy_user_id,
+        proxyUserId: (proxy_user_id unless proxy_user_id == requester_id),
         requestDate: Time.zone.now.utc.iso8601,
         pickupServicePointId: pickup_service_point_id,
         patronComments: patron_comments,
