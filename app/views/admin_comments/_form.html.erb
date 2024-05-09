@@ -1,8 +1,0 @@
-<%= form_with([@request, AdminComment.new]) do |f| %>
-  <%= f.label :comment, class: 'visually-hidden' %>
-  <%= f.text_field :comment, class: 'admin-comment-input' %>
-  <%= f.submit 'OK' %>
-  <a class='btn btn-text' data-behavior='admin-comment-cancel' href='javscript:;'>
-    Cancel
-  </a>
-<% end %>
