@@ -107,10 +107,14 @@ class PatronRequest < ApplicationRecord
 
   # @!group Origin + destination accessors
 
-  # Get the FOLIO location object for the origin location code
+  # Get the FOLIO location object for the origin location code. We prefer to use the location data stored with this application,
+  # but if it's not available, we fall back to what we get from the FOLIO API.
   # @return [Folio::Location]
   def folio_location
-    @folio_location ||= Folio::Types.locations.find_by(code: origin_location_code) || selectable_items.first&.permanent_location
+    @folio_location ||= begin
+      l = Folio::Types.locations.find_by(code: origin_location_code)
+      l || (bib_data.items.find { |i| i.effective_location.code == origin_location_code } || bib_data.items.first)&.effective_location
+    end
   end
 
   # @deprecated Used by the paging schedule; new code should use folio_location instead
@@ -215,9 +219,9 @@ class PatronRequest < ApplicationRecord
   def items_in_location
     @items_in_location ||= bib_data.items.select do |item|
       if item.effective_location.details['searchworksTreatTemporaryLocationAsPermanentLocation'] == 'true'
-        item.effective_location.code == origin_location_code
+        item.effective_location.code.in? salient_folio_locations.map(&:code)
       else
-        item.home_location == origin_location_code
+        item.home_location.in? salient_folio_locations.map(&:code)
       end
     end
   end
@@ -538,6 +542,15 @@ class PatronRequest < ApplicationRecord
   # @return [LibraryLocation]
   def library_location
     @library_location ||= LibraryLocation.new(origin_library_code, origin_location_code)
+  end
+
+  # For the purposes of showing the items in the "location", we also combine locations with the same
+  # discovery display names (e.g. SPEC-MANUSCRIPT, SPEC-SAL3-MSS, etc).
+  # @return [Array<Folio::Location>]
+  def salient_folio_locations
+    @salient_folio_locations ||= [folio_location] | Folio::Types.locations.all.select do |x|
+                                                      x.discovery_display_name == folio_location.discovery_display_name
+                                                    end
   end
 
   def default_service_point_for_campus

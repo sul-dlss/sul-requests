@@ -99,6 +99,23 @@ RSpec.describe PatronRequest do
     end
   end
 
+  describe '#items_in_location' do
+    let(:attr) { { instance_hrid: 'a12345', origin_location_code: 'SPEC-MANUSCRIPT' } }
+    let(:bib_data) do
+      build(:sal3_holdings, items: [
+              build(:item, callnumber: 'MSS-10-item', effective_location: build(:location, code: 'SPEC-MSS-10')),
+              build(:item, callnumber: 'MSS-20-item', effective_location: build(:location, code: 'SPEC-MSS-20'))
+            ])
+    end
+
+    it 'returns all the items in the location' do
+      expect(request.items_in_location).to contain_exactly(
+        have_attributes(callnumber: 'MSS-10-item'),
+        have_attributes(callnumber: 'MSS-20-item')
+      )
+    end
+  end
+
   describe '#barcode=' do
     it 'sets the barcodes attribute' do
       request.barcode = '1234567890'
