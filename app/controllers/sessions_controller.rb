@@ -33,7 +33,7 @@ class SessionsController < ApplicationController
   #
   # GET /sessions/register_visitor
   def register_visitor
-    if request.env['warden'].authenticate(:register_visitor)
+    if (!Rails.env.production? || verify_recaptcha) && request.env['warden'].authenticate(:register_visitor)
       redirect_after_action
     else
       redirect_to post_action_redirect_url, flash: { error: t('.alert') }
