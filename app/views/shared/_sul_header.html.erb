@@ -13,6 +13,10 @@
           <li>
             <%= link_to t('.logout', sunetid: current_user.sunetid || current_user.library_id), logout_path(referrer: logout_path) %>
           </li>
+        <% else %>
+          <li>
+            <%= link_to 'Staff login', login_by_sunetid_path(referrer: request.original_url) %>
+          </li>
         <% end %>
         <li>
           <%= link_to t('.my_account'), "https://mylibrary.stanford.edu/" %>
