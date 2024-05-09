@@ -65,7 +65,7 @@ module Folio
                    type: nil, public_note: nil, material_type: nil, loan_type: nil, enumeration: nil,
                    full_enumeration: nil,
                    due_date: nil, id: nil, holdings_record_id: nil, suppressed_from_discovery: false,
-                   base_callnumber: nil, queue_length: 0)
+                   base_callnumber: nil, queue_length: 0, instance: nil, bound_with_holdings_per_item: [])
       @id = id
       @holdings_record_id = holdings_record_id
       @barcode = barcode.presence || id
@@ -83,6 +83,8 @@ module Folio
       @due_date = due_date
       @queue_length = queue_length
       @suppressed_from_discovery = suppressed_from_discovery
+      @instance = instance
+      @bound_with_holdings_per_item = bound_with_holdings_per_item
     end
     # rubocop:enable Metrics/ParameterLists, Metrics/MethodLength, Metrics/AbcSize
 
@@ -210,6 +212,8 @@ module Folio
           status: dyn.dig('status', 'name'),
           due_date: dyn['dueDate'],
           enumeration: dyn['enumeration'],
+          instance: (Folio::Instance.from_dynamic(dyn['instance']) if dyn['instance']),
+          bound_with_holdings_per_item: dyn['boundWithHoldingsPerItem']&.map { |v| Folio::HoldingsRecord.from_hash(v) } || [],
           base_callnumber: dyn.dig('effectiveCallNumberComponents', 'callNumber'),
           type: dyn.dig('materialType', 'name'),
           full_enumeration: [dyn['volume'], dyn['enumeration'],

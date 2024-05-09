@@ -102,105 +102,23 @@ class FolioGraphqlClient
                 materialsSpecification
                 uri
               }
-              items {
-                id
-                barcode
+              holdingsRecords {
+                callNumber
                 discoverySuppress
-                volume
-                queueTotalLength
-                status {
-                  name
-                }
-                queueTotalLength
-                dueDate
-                materialType {
-                  id
-                  name
-                }
-                chronology
-                enumeration
-                effectiveCallNumberComponents {
-                  callNumber
-                }
-                notes {
-                  note
-                  itemNoteType {
-                    name
-                  }
-                }
-                effectiveLocation {
-                  id
-                  campusId
-                  libraryId
-                  institutionId
-                  code
-                  discoveryDisplayName
-                  name
-                  servicePoints {
+                boundWithItem {
+                  #{item_fields}
+
+                  instance {
                     id
-                    code
-                    pickupLocation
-                  }
-                  library {
-                    id
-                    code
-                  }
-                  campus {
-                    id
-                    code
-                  }
-                  details {
-                    pageAeonSite
-                    pageMediationGroupKey
-                    pageServicePoints {
-                      id
-                      code
+                    hrid
+                    title
+                    instanceType {
                       name
                     }
-                    scanServicePointCode
-                    availabilityClass
-                    searchworksTreatTemporaryLocationAsPermanentLocation
                   }
                 }
-                permanentLocation {
-                  id
-                  code
-                  details {
-                    pageAeonSite
-                    pageMediationGroupKey
-                    pageServicePoints {
-                      id
-                      code
-                      name
-                    }
-                    pagingSchedule
-                    scanServicePointCode
-                  }
-                }
-                temporaryLocation {
-                  id
-                  code
-                  discoveryDisplayName
-                }
-                permanentLoanTypeId
-                temporaryLoanTypeId
-                holdingsRecord {
-                  id
-                  effectiveLocation {
-                    id
-                    code
-                    details {
-                      pageAeonSite
-                      pageMediationGroupKey
-                      pageServicePoints {
-                        id
-                        code
-                        name
-                      }
-                      pagingSchedule
-                      scanServicePointCode
-                    }
-                  }
+                items {
+                  #{item_fields}
                 }
               }
             }
@@ -237,7 +155,122 @@ class FolioGraphqlClient
 
     data&.dig('data', 'servicePoints')
   end
+
   # rubocop:enable Metrics/MethodLength
+  def item_fields
+    <<-GQL
+      id
+      barcode
+      discoverySuppress
+      volume
+      queueTotalLength
+      status {
+        name
+      }
+      queueTotalLength
+      dueDate
+      materialType {
+        id
+        name
+      }
+      chronology
+      enumeration
+      effectiveCallNumberComponents {
+        callNumber
+      }
+      notes {
+        note
+        itemNoteType {
+          name
+        }
+      }
+      effectiveLocation {
+        id
+        campusId
+        libraryId
+        institutionId
+        code
+        discoveryDisplayName
+        name
+        servicePoints {
+          id
+          code
+          pickupLocation
+        }
+        library {
+          id
+          code
+        }
+        campus {
+          id
+          code
+        }
+        details {
+          pageAeonSite
+          pageMediationGroupKey
+          pageServicePoints {
+            id
+            code
+            name
+          }
+          scanServicePointCode
+          availabilityClass
+          searchworksTreatTemporaryLocationAsPermanentLocation
+        }
+      }
+      permanentLocation {
+        id
+        code
+        details {
+          pageAeonSite
+          pageMediationGroupKey
+          pageServicePoints {
+            id
+            code
+            name
+          }
+          pagingSchedule
+          scanServicePointCode
+        }
+      }
+      temporaryLocation {
+        id
+        code
+        discoveryDisplayName
+      }
+      permanentLoanTypeId
+      temporaryLoanTypeId
+      holdingsRecord {
+        id
+        effectiveLocation {
+          id
+          code
+          details {
+            pageAeonSite
+            pageMediationGroupKey
+            pageServicePoints {
+              id
+              code
+              name
+            }
+            pagingSchedule
+            scanServicePointCode
+          }
+        }
+      }
+      boundWithHoldingsPerItem {
+        callNumber
+        instance {
+          id
+          title
+          hrid
+          instanceType {
+            name
+          }
+        }
+      }
+    GQL
+  end
 
   def ping
     # Every GraphQL server supports the trivial query that asks for the "type name" of the top-level query

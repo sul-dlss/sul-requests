@@ -31,14 +31,14 @@ module Folio
         end,
         electronic_access: json.fetch('electronicAccess', []),
         edition: json.fetch('editions', []),
-        items: json.fetch('items', []).map { |item| Folio::Item.from_hash(item) }
+        holdings_records: json.fetch('holdingsRecords', []).map { |hr| Folio::HoldingsRecord.from_hash(hr) }
       )
     end
     # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
     # rubocop:disable Metrics/MethodLength, Metrics/ParameterLists
     def initialize(id:, hrid: '', title: '', contributors: [], pub_date: nil, pub_place: nil, publisher: nil, format: nil,
-                   isbn: [], oclcn: [], electronic_access: [], edition: [], items: [])
+                   isbn: [], oclcn: [], electronic_access: [], edition: [], holdings_records: [])
       @id = id
       @hrid = hrid
       @title = title
@@ -51,7 +51,7 @@ module Folio
       @oclcn = oclcn
       @electronic_access = electronic_access
       @edition = edition
-      @items = items
+      @holdings_records = holdings_records
     end
     # rubocop:enable Metrics/MethodLength, Metrics/ParameterLists
 
@@ -95,7 +95,11 @@ module Folio
     end
 
     def items
-      @items.reject(&:suppressed_from_discovery?)
+      holdings_records.flat_map(&:items).reject(&:suppressed_from_discovery?)
+    end
+
+    def holdings_records
+      @holdings_records.reject(&:suppressed_from_discovery?)
     end
 
     def holdings
