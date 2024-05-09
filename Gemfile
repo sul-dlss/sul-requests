@@ -23,8 +23,6 @@ gem 'bootstrap5-kaminari-views'
 
 gem 'redcarpet'
 
-gem 'hash_to_hidden_fields'
-
 # Use Honeybadger for exception reporting
 gem 'honeybadger'
 
