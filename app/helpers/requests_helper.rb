@@ -36,7 +36,15 @@ module RequestsHelper
   def callnumber_label(item)
     return '(no call number)' if item.callnumber.blank?
 
-    item.callnumber
+    location_code = item.effective_location&.code || ''
+
+    if location_code.include?('SHELBYTITLE')
+      'Shelved by title'
+    elsif location_code.include?('SCI-SHELBYSERIES')
+      'Shelved by Series title'
+    else
+      item.callnumber
+    end
   end
 
   # rubocop:disable Metrics/MethodLength

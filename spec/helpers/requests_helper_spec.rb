@@ -121,4 +121,26 @@ RSpec.describe RequestsHelper do
                                         title_only: false)).to eq 'Item status: Checked out - Due Jul 1, 2024 | There is a waitlist ahead of your request' # rubocop:disable Layout/LineLength
     end
   end
+
+  describe '#callnumber_label' do
+    it 'returns "(no call number)" when the item has no call number' do
+      item = build(:item, callnumber: nil)
+      expect(callnumber_label(item)).to eq '(no call number)'
+    end
+
+    it 'returns "Shelved by title" when the item is shelved by title' do
+      item = build(:item, effective_location: build(:location, code: 'MAR-SHELBYTITLE'))
+      expect(callnumber_label(item)).to eq 'Shelved by title'
+    end
+
+    it 'returns "Shelved by Series title" when the item is shelved by series title' do
+      item = build(:item, effective_location: build(:location, code: 'SCI-SHELBYSERIES'))
+      expect(callnumber_label(item)).to eq 'Shelved by Series title'
+    end
+
+    it 'returns the call number when the item has a call number' do
+      item = build(:item, callnumber: 'AB123')
+      expect(callnumber_label(item)).to eq 'AB123'
+    end
+  end
 end
