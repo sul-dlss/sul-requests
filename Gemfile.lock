@@ -100,9 +100,6 @@ GEM
     bootstrap5-kaminari-views (0.0.1)
       kaminari (>= 0.13)
       rails (>= 3.1)
-    bootstrap_form (5.4.0)
-      actionpack (>= 6.1)
-      activemodel (>= 6.1)
     borrow_direct (1.2.0)
       httpclient (~> 2.4)
     builder (3.2.4)
@@ -498,7 +495,6 @@ DEPENDENCIES
   axe-core-rspec
   bootsnap
   bootstrap5-kaminari-views
-  bootstrap_form (~> 5.4)
   borrow_direct
   cancancan
   capistrano (~> 3.0)

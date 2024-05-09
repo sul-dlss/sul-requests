@@ -7,8 +7,6 @@ gem 'sqlite3', '~> 1.4'
 # Use Puma as the app server
 gem 'puma', '~> 6.0'
 gem 'bootsnap'
-# Use bootstrap_form for easy form building
-gem 'bootstrap_form', '~> 5.4'
 # A gem for simple rails environment specific config
 gem 'config'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
