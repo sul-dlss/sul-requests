@@ -115,7 +115,7 @@ module Folio
     def proxies
       # Return display name for any proxies where 'requestForSponser' is yes.
       @proxies ||= proxies_of_response.filter_map do |info|
-        next nil unless info['requestForSponsor'].downcase == 'yes'
+        next nil unless info['requestForSponsor']&.downcase == 'yes'
 
         # Find the patron corresponding to the Folio user id for the proxy
         proxy_patron = self.class.find_by(patron_key: info['proxyUserId'])
@@ -127,7 +127,7 @@ module Folio
     def sponsors
       # Return display name for any proxies where 'requestForSponser' is yes.
       @sponsors ||= sponsors_for_response.filter_map do |info|
-        next nil unless info['requestForSponsor'].downcase == 'yes'
+        next nil unless info['requestForSponsor']&.downcase == 'yes'
 
         # Find the patron corresponding to the Folio user id for the sponsor
         sponsor_patron = self.class.find_by(patron_key: info['userId'])
