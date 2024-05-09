@@ -71,10 +71,6 @@ worst_case_paging_padding: 3
 stanford_ips:
   singletons: []
   ranges: []
-borrow_direct:
-  api_key: an-api-key
-  iplc_listener_url: https://iplc-listener.reshare.indexdata.com/iplc
-  reshare_vufind_url: https://borrowdirect.reshare.indexdata.com
 features:
   estimate_delivery: true
   hold_recall_service: true

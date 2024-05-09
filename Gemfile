@@ -40,9 +40,6 @@ gem 'web-console', group: :development
 # Specify Nokogiri to address security concerns
 gem 'nokogiri', '>= 1.7.1'
 
-# borrow_drect gem is used to attempt to submit requests for Hold/Recalls before sending to symphony
-gem 'borrow_direct'
-
 # rack is a webserver interface used by rails.
 gem 'rack'
 
