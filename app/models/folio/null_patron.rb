@@ -52,7 +52,11 @@ module Folio
       []
     end
 
-    def proxy_group_names
+    def sponsors
+      []
+    end
+
+    def proxies
       []
     end
 

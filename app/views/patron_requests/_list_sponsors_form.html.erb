@@ -25,9 +25,9 @@
         </div>
         <div class="mt-2">
             <div class="mt-2">
-                <% f.object.patron.sponsor_names.sort.each do |sponsor_name| %>  
-                    <%= f.radio_button :for_sponsor_name, sponsor_name, :class => 'form-check-input', data: { 'patronRequest-target': 'sponsorRadioButton'} %>
-                    <%= f.label :for_sponsor_name, sponsor_name, :class => 'form-check-label ms-1 d-inline' %>
+                <% f.object.patron.sponsors.sort_by(&:display_name).each do |sponsor| %>
+                    <%= f.radio_button :for_sponsor_id, sponsor.id, class: 'form-check-input', data: { 'patronRequest-target': 'sponsorRadioButton'} %>
+                    <%= f.label :for_sponsor_id, sponsor.display_name, value: sponsor.id, class: 'form-check-label ms-1 d-inline' %>
                 <% end %>
             </div>
         </div>

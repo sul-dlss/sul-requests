@@ -4,9 +4,9 @@
     <div class="mt-2">
         <ul>
         <%
-            f.object.patron.proxy_group_names.sort.each do |proxy_group_name|
+            f.object.patron.proxies.sort.each do |proxy|
         %>
-            <li><%=proxy_group_name %></li>
+            <li><%= proxy.display_name %></li>
         <%
             end
         %>

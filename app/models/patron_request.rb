@@ -7,7 +7,7 @@ class PatronRequest < ApplicationRecord
   class_attribute :bib_model_class, default: Settings.ils.bib_model.constantize
   store :data, accessors: [
     :barcodes, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title,
-    :proxy, :for_sponsor, :for_sponsor_name, :estimated_delivery, :patron_name, :item_title, :requested_barcodes, :item_mediation_data
+    :proxy, :for_sponsor, :for_sponsor_id, :estimated_delivery, :patron_name, :item_title, :requested_barcodes, :item_mediation_data
   ], coder: JSON
 
   delegate :instance_id, :finding_aid, :finding_aid?, to: :bib_data
@@ -17,6 +17,7 @@ class PatronRequest < ApplicationRecord
   validates :scan_title, presence: true, on: :create, if: :scan?
   validate :pickup_service_point_is_valid, on: :create, unless: :scan?
   validate :needed_date_is_valid, on: :create
+  validate :for_sponsor_id_is_valid, on: :create
 
   scope :obsolete, lambda { |date|
     where('(created_at < ?) AND (needed_date IS NULL OR needed_date < ?)', date, date)
@@ -316,7 +317,7 @@ class PatronRequest < ApplicationRecord
     return "#{patron_name} <#{patron_email}>" if patron.blank?
 
     [("(PROXY PICKUP OK; request placed by #{patron.display_name} <#{patron.email}>)" if proxy?),
-     ("(PROXY PICKUP OK; request placed for #{for_sponsor_name}" if for_sponsor?)].compact.join("\n")
+     ("(PROXY PICKUP OK; request placed by #{patron.display_name} <#{patron.email}>" if for_sponsor?)].compact.join("\n")
   end
 
   # @!endgroup
@@ -563,5 +564,11 @@ class PatronRequest < ApplicationRecord
     return errors.add(:needed_date, 'Date cannot be blank') if needed_date.blank?
 
     errors.add(:needed_date, 'Date cannot be earlier than today') if needed_date < Time.zone.today
+  end
+
+  def for_sponsor_id_is_valid
+    return unless for_sponsor_id && for_sponsor?
+
+    errors.add(:for_sponsor_id, 'Invalid sponsor') unless patron.sponsors.any? { |sponsor| sponsor.id == for_sponsor_id }
   end
 end
