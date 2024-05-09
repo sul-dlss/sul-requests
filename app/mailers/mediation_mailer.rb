@@ -22,14 +22,14 @@ class MediationMailer < ApplicationMailer
 
   def subject
     I18n.t(
-      "confirmation_email.#{@request.class.name.underscore}.mediator_subject",
+      'confirmation_email.mediated_page.mediator_subject',
       title: @request.item_title,
       default: I18n.t('confirmation_email.request.subject')
     )
   end
 
   def contact_info
-    Settings.locations[@request.origin_location]&.contact_info ||
+    Settings.locations[@request.origin_location_code]&.contact_info ||
       Settings.libraries[@request.origin_library_code]&.contact_info ||
       Settings.libraries['default'].contact_info
   end

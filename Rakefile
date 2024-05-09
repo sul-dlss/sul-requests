@@ -9,19 +9,6 @@ require File.expand_path('../config/application', __FILE__)
 Rails.application.load_tasks
 
 task default: [
-  :javascript_tests,
   :rubocop,
   :spec
 ]
-
-task javascript_tests: [:environment] do
-  cmd = 'yarn test'
-  success = system(cmd)
-
-  if success
-    puts 'JavaScript tests passed'
-  else
-    puts 'JavaScript tests failed'
-    exit(1)
-  end
-end

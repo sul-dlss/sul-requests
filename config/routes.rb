@@ -41,15 +41,15 @@ Rails.application.routes.draw do
     resources :admin_comments
   end
 
-  resources :patron_requests, only: [:new, :show, :create]
+  resources :patron_requests, only: [:new, :show, :create], concerns: [:admin_commentable] do
+    resource :needed_date, only: [:edit, :update, :show]
+  end
 
   resources :requests, only: [:new], concerns: [:statusable]
   resources :pages, controller: :requests, only: [], concerns: [:statusable]
   resources :scans, controller: :requests,only: [], concerns: [:statusable]
-  resources :mediated_pages, only: [:update], concerns: [:admin_commentable, :statusable] do
-    resource :needed_date, only: [:edit, :update, :show]
-  end
-  resources :hold_recalls, controller: :requests,only: [], concerns: [:statusable]
+  resources :mediated_pages, controller: :requests, only: [], concerns: [:statusable]
+  resources :hold_recalls, controller: :requests, only: [], concerns: [:statusable]
 
   get 'admin/old_requests' => 'admin#old_requests_index', as: :old_requests
 
@@ -57,6 +57,8 @@ Rails.application.routes.draw do
     member do
       get :holdings, as: :holdings
       get :approve_item, as: :approve_item
+      patch :mark_as_done, as: :mark_as_done
+      post :comment, as: :comment
     end
   end
   resource :feedback_form, path: 'feedback', only: %I[new, create]

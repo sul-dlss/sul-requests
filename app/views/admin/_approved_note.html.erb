@@ -1,0 +1,9 @@
+<% if request.approved? %>
+  <span data-behavior='all-approved-note' class='badge badge-success bg-success'>
+    <%= t('.all_approved') %>
+  </span>
+<% elsif request.marked_as_done? %>
+  <span data-behavior='mixed-approved-note' class='badge badge-warning bg-warning'>
+    <%= t('.all_approved') %>
+  </span>
+<% end %>

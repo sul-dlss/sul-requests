@@ -38,15 +38,16 @@ class Ability
 
     if user.super_admin?
       can :manage, :site
+      can :read, :admin
       can [:create, :read, :update, :destroy], :all
       can :manage, [LibraryLocation, Message, PagingSchedule, Request, AdminComment]
       can [:admin, :debug], PatronRequest
     end
 
     if user.site_admin?
+      can :read, :admin
       can :manage, [LibraryLocation, Message, PagingSchedule, Request, AdminComment]
-      can [:create, :read, :update, :destroy], [PatronRequest]
-      can [:admin, :debug], PatronRequest
+      can [:admin, :debug, :create, :read, :update, :destroy], PatronRequest
     end
 
     # Adminstrators for origins or destinations should be able to
@@ -56,15 +57,21 @@ class Ability
     admin_locations = Settings.origin_location_admin_groups.to_h.select { |_k, v| user.ldap_groups.intersect?(v) }.keys.map(&:to_s)
 
     if admin_libraries.any?
+      can :read, :admin
       can :manage, LibraryLocation, library: admin_libraries
       can :create, AdminComment, request: { origin: admin_libraries }
       can :manage, Request, origin: admin_libraries
+      can [:admin, :read, :update], PatronRequest do |request|
+        request.origin_library_code.in?(admin_libraries)
+      end
     end
 
     if admin_locations.any?
+      can :read, :admin
       can :manage, LibraryLocation, location: admin_locations
       can :create, AdminComment, request: { origin_location: admin_locations }
       can :manage, Request, origin_location: admin_locations
+      can [:admin, :read, :update], PatronRequest, origin_location_code: admin_locations
     end
 
     # Anyone can start the process of creating a request, because we haven't (necessarily)

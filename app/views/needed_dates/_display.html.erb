@@ -1,3 +1,3 @@
-<%= turbo_frame_tag [:mediated_page, mediated_page.id, :needed_date] do %>
-  <%= link_to(l(mediated_page.needed_date, format: :quick), edit_mediated_page_needed_date_path(mediated_page)) %>
+<%= turbo_frame_tag [:patron_request, patron_request.id, :needed_date] do %>
+  <%= link_to(l(patron_request.needed_date, format: :quick), edit_patron_request_needed_date_path(patron_request)) %>
 <% end %>

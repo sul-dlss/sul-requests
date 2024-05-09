@@ -4,8 +4,6 @@
 #  Controller to handle feedback from app
 ###
 class FeedbackFormsController < ApplicationController
-  layout 'application_new'
-
   def new; end
 
   def create

@@ -6,9 +6,9 @@ FactoryBot.define do
     username { 'test ' }
     personal do
       {
-        'firstName' => 'Test',
-        'lastName' => 'User',
-        'email' => 'test@example.com'
+        'firstName' => first_name,
+        'lastName' => last_name,
+        'email' => email
       }
     end
     patronGroup { '503a81cd-6c26-400f-b620-14c08943697c' }
@@ -24,6 +24,12 @@ FactoryBot.define do
 
     initialize_with do
       new(attributes.deep_stringify_keys)
+    end
+
+    transient do
+      first_name { 'Test' }
+      last_name { 'User' }
+      email { 'test@example.com' }
     end
   end
 

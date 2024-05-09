@@ -4,8 +4,6 @@
 #  Controller to handle patron requests (e.g. hold/recall, page, scans, etc)
 ###
 class PatronRequestsController < ApplicationController
-  layout 'application_new'
-
   check_authorization
 
   load_resource

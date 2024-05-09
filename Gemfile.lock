@@ -100,11 +100,6 @@ GEM
     bootstrap5-kaminari-views (0.0.1)
       kaminari (>= 0.13)
       rails (>= 3.1)
-    bootstrap_form (5.4.0)
-      actionpack (>= 6.1)
-      activemodel (>= 6.1)
-    borrow_direct (1.2.0)
-      httpclient (~> 2.4)
     builder (3.2.4)
     bundler-audit (0.9.1)
       bundler (>= 1.2.0, < 3)
@@ -195,9 +190,6 @@ GEM
       rake
     globalid (1.2.1)
       activesupport (>= 6.1)
-    hash_to_hidden_fields (2.0.2)
-      actionpack (>= 3)
-      rack (>= 1.2)
     hashdiff (1.1.0)
     honeybadger (5.8.0)
     http (5.2.0)
@@ -209,7 +201,6 @@ GEM
     http-cookie (1.0.5)
       domain_name (~> 0.5)
     http-form_data (2.3.0)
-    httpclient (2.8.3)
     i18n (1.14.5)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
@@ -498,8 +489,6 @@ DEPENDENCIES
   axe-core-rspec
   bootsnap
   bootstrap5-kaminari-views
-  bootstrap_form (~> 5.4)
-  borrow_direct
   cancancan
   capistrano (~> 3.0)
   capistrano-bundler
@@ -515,7 +504,6 @@ DEPENDENCIES
   factory_bot_rails (~> 6.2.0)
   faraday (~> 2)
   faraday-retry
-  hash_to_hidden_fields
   honeybadger
   http
   jbuilder (~> 2.5)

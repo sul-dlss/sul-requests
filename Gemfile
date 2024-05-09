@@ -7,8 +7,6 @@ gem 'sqlite3', '~> 1.4'
 # Use Puma as the app server
 gem 'puma', '~> 6.0'
 gem 'bootsnap'
-# Use bootstrap_form for easy form building
-gem 'bootstrap_form', '~> 5.4'
 # A gem for simple rails environment specific config
 gem 'config'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -25,8 +23,6 @@ gem 'bootstrap5-kaminari-views'
 
 gem 'redcarpet'
 
-gem 'hash_to_hidden_fields'
-
 # Use Honeybadger for exception reporting
 gem 'honeybadger'
 
@@ -41,9 +37,6 @@ gem 'web-console', group: :development
 
 # Specify Nokogiri to address security concerns
 gem 'nokogiri', '>= 1.7.1'
-
-# borrow_drect gem is used to attempt to submit requests for Hold/Recalls before sending to symphony
-gem 'borrow_direct'
 
 # rack is a webserver interface used by rails.
 gem 'rack'

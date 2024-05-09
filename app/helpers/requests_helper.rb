@@ -28,7 +28,7 @@ module RequestsHelper
                     item.status_text
                   end
     due_date = item.checked_out? ? content_tag(:span, "Due #{item.due_date}", class: 'ms-1 text-danger') : ''
-    content_tag :span, class: "status float-end availability #{status_class}" do
+    content_tag :span, class: "status availability #{status_class}" do
       availability_bootstrap_icon(status_class) + status_text + due_date
     end
   end
@@ -65,12 +65,6 @@ module RequestsHelper
     RequestApprovalStatus.new(request:).to_html
   end
 
-  def aeon_pages_path(*)
-    Settings.aeon_ere_url
-  end
-
-  private
-
   def i18n_status_text(item)
     case
     when item.hold?
@@ -81,6 +75,8 @@ module RequestsHelper
       t('status_text.other')
     end
   end
+
+  private
 
   def status_text_for_errored_item(item)
     return unless item.request_status.errored?

@@ -2,16 +2,16 @@
 
 # Controller to handle mediations for admins
 class AdminController < ApplicationController
-  before_action only: [:approve_item, :holdings] do
-    authorize! :manage, (
-      @request = MediatedPage.find(params[:id])
+  before_action only: [:approve_item, :holdings, :mark_as_done, :comment] do
+    authorize! :admin, (
+      @request = PatronRequest.find(params[:id])
     )
   end
 
   before_action :load_and_authorize_library_location, only: [:show]
 
   def index
-    authorize! :admin, PatronRequest.new
+    authorize! :read, :admin
     @requests = dashboard_patron_requests
   end
 
@@ -24,6 +24,8 @@ class AdminController < ApplicationController
   def show
     @dates = next_three_days_with_requests
     @mediated_pages = mediated_pages
+
+    authorize! :admin, @mediated_pages.first || PatronRequest.new
   end
 
   def holdings
@@ -31,14 +33,19 @@ class AdminController < ApplicationController
   end
 
   def approve_item
-    status = @request.item_status(params[:item])
-    status.approve!(current_user.sunetid) unless status.approved?
+    @request.approve_item(params[:item], approver: current_user)
 
-    if @request.ils_response.success?(params[:item])
-      render json: status, layout: false
-    else
-      render json: status, layout: false, status: :internal_server_error
-    end
+    render 'holdings', layout: false
+  end
+
+  def mark_as_done
+    @request.update(request_type: 'mediated/done')
+    render 'holdings', layout: false
+  end
+
+  def comment
+    @request.admin_comments.create(create_comment_params)
+    render 'holdings', layout: false
   end
 
   private
@@ -104,7 +111,7 @@ class AdminController < ApplicationController
   end
 
   def completed_mediated_pages
-    origin_filtered_mediated_pages.completed.page(page).per(per_page).order(needed_date: 'desc', created_at: 'desc')
+    PatronRequest.completed.page(page).per(per_page).order(needed_date: 'desc', created_at: 'desc')
   end
 
   def date_filtered_mediated_pages
@@ -116,11 +123,11 @@ class AdminController < ApplicationController
   end
 
   def pending_mediated_pages
-    origin_filtered_mediated_pages.unapproved.order(needed_date: 'asc', created_at: 'desc')
+    PatronRequest.for_origin(params[:id]).unapproved.order(needed_date: 'asc', created_at: 'desc')
   end
 
   def origin_filtered_mediated_pages
-    MediatedPage.for_origin(params[:id])
+    PatronRequest.mediated.for_origin(params[:id])
   end
 
   def page
@@ -132,31 +139,17 @@ class AdminController < ApplicationController
   end
 
   def next_three_days_with_requests
-    MediatedPage.needed_dates_for_origin_after_date(
+    PatronRequest.mediated.needed_dates_for_origin_after_date(
       origin: params[:id],
-      date: Time.zone.today
-    ).take(3)
+      date: Time.zone.today,
+      count: 3
+    )
   end
 
   def rescue_can_can(*)
     return super if sso_user? || params[:action] == 'approve_item'
 
     redirect_to login_by_sunetid_path(referrer: request.original_url)
-  end
-
-  def range_param(default: Time.zone.now.beginning_of_day...Time.zone.now)
-    from = (params[:from] && Time.zone.parse(params[:from])) || default.first
-    to = (params[:to] && Time.zone.parse(params[:to])) || default.last
-
-    from...to
-  end
-
-  def request_has_items_approved_within_range?(request, range)
-    request.item_statuses.select do |item_status|
-      item_status.approved? &&
-        item_status.approval_time &&
-        range.cover?(Time.zone.parse(item_status.approval_time))
-    end
   end
 
   def load_and_authorize_library_location
@@ -167,5 +160,9 @@ class AdminController < ApplicationController
                         end
 
     authorize! :manage, @library_location
+  end
+
+  def create_comment_params
+    params.require(:admin_comment).permit(:comment).to_h.merge(commenter: current_user.sunetid)
   end
 end
