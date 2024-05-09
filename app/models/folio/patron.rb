@@ -118,7 +118,7 @@ module Folio
         next nil unless info['requestForSponsor'].downcase == 'yes'
 
         # Find the patron corresponding to the Folio user id for the proxy
-        proxy_patron = self.class.folio_client.find_patron_by_id(info['proxyUserId'])
+        proxy_patron = self.class.find_by(patron_key: info['proxyUserId'])
         proxy_patron.presence
       end
     end
@@ -130,7 +130,7 @@ module Folio
         next nil unless info['requestForSponsor'].downcase == 'yes'
 
         # Find the patron corresponding to the Folio user id for the sponsor
-        sponsor_patron = self.class.folio_client.find_patron_by_id(info['userId'])
+        sponsor_patron = self.class.find_by(patron_key: info['userId'])
         sponsor_patron.presence
       end
     end
