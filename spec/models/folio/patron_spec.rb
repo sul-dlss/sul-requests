@@ -55,6 +55,18 @@ RSpec.describe Folio::Patron do
 
     describe '#ilb_eligible?' do
       it { is_expected.not_to be_ilb_eligible }
+
+      context 'in an eligible patron group' do
+        let(:fields) { super().merge('patronGroup' => 'bdc2b6d4-5ceb-4a12-ab46-249b9a68473e') }
+
+        it { is_expected.to be_ilb_eligible }
+      end
+
+      context 'without a username' do
+        let(:fields) { super().merge('patronGroup' => 'bdc2b6d4-5ceb-4a12-ab46-249b9a68473e').except('username') }
+
+        it { is_expected.not_to be_ilb_eligible }
+      end
     end
 
     describe '#make_request_as_patron?' do

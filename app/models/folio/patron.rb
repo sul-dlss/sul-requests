@@ -35,7 +35,7 @@ module Folio
     end
 
     def username
-      user_info.fetch('username')
+      user_info['username']
     end
 
     def patron_group_id
@@ -66,7 +66,7 @@ module Folio
     end
 
     def ilb_eligible?
-      Settings.folio.ilb_eligible_patron_groups.include?(patron_group_name)
+      username && Settings.folio.ilb_eligible_patron_groups.include?(patron_group_name)
     end
 
     def make_request_as_patron?
