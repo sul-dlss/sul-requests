@@ -164,7 +164,7 @@ class FolioClient
   end
 
   CirculationRequestData = Data.define(:request_level, :request_type, :instance_id, :item_id, :holdings_record_id,
-                                       :requester_id, :fulfillment_preference, :pickup_service_point_id,
+                                       :requester_id, :proxy_user_id, :fulfillment_preference, :pickup_service_point_id,
                                        :patron_comments, :request_expiration_date) do
     # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     def as_json
@@ -178,6 +178,7 @@ class FolioClient
         itemId: item_id,
         holdingsRecordId: holdings_record_id,
         requesterId: requester_id,
+        proxyUserId: proxy_user_id,
         requestDate: Time.zone.now.utc.iso8601,
         pickupServicePointId: pickup_service_point_id,
         patronComments: patron_comments,

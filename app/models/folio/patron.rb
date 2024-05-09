@@ -135,10 +135,6 @@ module Folio
       end
     end
 
-    def proxy_sponsor_user_id
-      proxy_info&.dig('userId')
-    end
-
     def university_id
       user_info['externalSystemId']
     end
