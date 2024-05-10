@@ -64,6 +64,7 @@ class SubmitPatronRequestJob < ApplicationJob
 
   def convert_to_mediated_page(patron_request)
     patron_request.notify_mediator!
+    PatronRequestMailer.confirmation_email(patron_request).deliver_later
   end
 
   def place_title_hold(patron_request)
@@ -74,6 +75,7 @@ class SubmitPatronRequestJob < ApplicationJob
     folio_response = folio_client.create_instance_hold(patron_request.patron.id, patron_request.instance_id, hold_request_data)
 
     patron_request.update(folio_responses: [folio_response])
+    PatronRequestMailer.confirmation_email(patron_request).deliver_later
   end
 
   def folio_client
