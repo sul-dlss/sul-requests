@@ -86,7 +86,3 @@ end
 def stub_current_user(user = create(:anon_user))
   allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
 end
-
-def expect_to_be_on_success_page
-  expect(page).to have_css('h1#dialogTitle', text: /We're working on it/)
-end
