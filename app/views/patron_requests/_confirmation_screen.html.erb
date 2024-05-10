@@ -46,28 +46,41 @@
             <% if @patron_request.pickup_service_point %>
             <div><dt><%= @patron_request.location_label %>:</dt><dd><%= @patron_request.pickup_service_point.name %></dd></div>
             <% end %>
-            <% requested_items = @patron_request.mediateable? ? {} : @patron_request.selected_items.group_by(&:available?) %>
-            <% if requested_items[true].present? %>
+
+            <% if @patron_request.mediateable? %>
                 <hr>
                 <div class="mb-2">
-                    <span class="fw-bold">Pickup after:</span> <%= @patron_request.estimated_delivery %>
+                    <span class="fw-bold">Item(s) requested:</span>
                 </div>
                 <ul class="list-unstyled">
-                    <% requested_items[true].each do |avail_item| %>
+                    <% @patron_request.selected_items.each do |avail_item| %>
                         <li><%= callnumber_label(avail_item) %></li>
                     <% end %>
                 </ul>
-            <% end %>
-            <% if requested_items[false].present? %>
-                <hr>
-                <div class="mb-2">
-                    <span class="fw-bold">Pickup after:</span> Notified by email
-                </div>
-                <ul class="list-unstyled">
-                    <% requested_items[false].each do |avail_item| %>
-                        <li><%= callnumber_label(avail_item) %></li>
-                    <% end %>
-                </ul>
+            <% else %>
+                <% available_items, unavailable_items = @patron_request.selected_items.partition(&:available?) %>
+                <% if available_items.any? %>
+                    <hr>
+                    <div class="mb-2">
+                        <span class="fw-bold">Pickup after:</span> <%= @patron_request.estimated_delivery %>
+                    </div>
+                    <ul class="list-unstyled">
+                        <% available_items.each do |avail_item| %>
+                            <li><%= callnumber_label(avail_item) %></li>
+                        <% end %>
+                    </ul>
+                <% end %>
+                <% if unavailable_items.any? %>
+                    <hr>
+                    <div class="mb-2">
+                        <span class="fw-bold">Pickup after:</span> Notified by email
+                    </div>
+                    <ul class="list-unstyled">
+                        <% unavailable_items.each do |avail_item| %>
+                            <li><%= callnumber_label(avail_item) %></li>
+                        <% end %>
+                    </ul>
+                <% end %>
             <% end %>
             <% if @patron_request.needed_date %>
                 <div>
