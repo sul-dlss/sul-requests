@@ -2,9 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Creating a request' do
-  include ActiveJob::TestHelper
-
+RSpec.describe 'Creating a request', :js do
   let(:user) { create(:sso_user) }
   let(:bib_data) { build(:single_holding) }
   let(:patron) { build(:patron) }
@@ -13,6 +11,10 @@ RSpec.describe 'Creating a request' do
     stub_bib_data_json(bib_data)
     # this line prevents ArgumentError: SMTP To address may not be blank
     ActionMailer::Base.perform_deliveries = false
+  end
+
+  after do
+    logout
   end
 
   context 'with an SSO user' do
@@ -27,7 +29,12 @@ RSpec.describe 'Creating a request' do
     it 'submits the request for pick-up at Green' do
       visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
 
-      expect { click_on 'Submit' }.to change(PatronRequest, :count).by(1)
+      expect do
+        perform_enqueued_jobs do
+          click_on 'Submit request'
+        end
+        expect(page).to have_content 'We received your pickup request'
+      end.to change(PatronRequest, :count).by(1)
 
       expect(PatronRequest.last).to have_attributes(
         patron_id: user.patron_key,
@@ -42,7 +49,12 @@ RSpec.describe 'Creating a request' do
 
       select 'Marine Biology Library', from: 'Preferred pickup location'
 
-      expect { click_on 'Submit' }.to change(PatronRequest, :count).by(1)
+      expect do
+        perform_enqueued_jobs do
+          click_on 'Submit request'
+        end
+        expect(page).to have_content 'We received your pickup request'
+      end.to change(PatronRequest, :count).by(1)
 
       expect(PatronRequest.last).to have_attributes(
         patron_id: user.patron_key,
@@ -61,9 +73,9 @@ RSpec.describe 'Creating a request' do
       visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
 
       perform_enqueued_jobs do
-        click_on 'Submit'
+        click_on 'Submit request'
+        expect(page).to have_content 'We received your pickup request'
       end
-
       expect(folio_client).to have_received(:create_circulation_request).with(have_attributes(requester_id: patron.id,
                                                                                               instance_id: bib_data.id))
     end
@@ -76,7 +88,7 @@ RSpec.describe 'Creating a request' do
         allow(current_user).to receive(:user_object).and_return(user)
       end
 
-      it 'submits the scan request', :js do
+      it 'submits the scan request' do
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
 
         choose 'Email digital scan'
@@ -88,7 +100,9 @@ RSpec.describe 'Creating a request' do
         fill_in 'Title of article or chapter', with: 'Some title'
 
         expect do
-          click_on 'Submit'
+          perform_enqueued_jobs do
+            click_on 'Submit request'
+          end
           expect(page).to have_content 'We received your scan request'
         end.to change(PatronRequest, :count).by(1)
       end
@@ -102,12 +116,12 @@ RSpec.describe 'Creating a request' do
         allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
       end
 
-      it 'creates a mediated page request', :js do
+      it 'creates a mediated page request' do
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'ART-LOCKED-LARGE')
 
         expect do
           perform_enqueued_jobs do
-            click_on 'Submit'
+            click_on 'Submit request'
             expect(page).to have_content 'We received your request'
           end
         end.to change(PatronRequest, :count).by(1)
@@ -118,10 +132,12 @@ RSpec.describe 'Creating a request' do
 
     context 'for a mediated page with an item selector' do
       let(:bib_data) { build(:searchable_holdings) }
+      let(:today) { Time.zone.today }
 
       before do
         allow(patron).to receive(:user).and_return(user)
         allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
+        allow_any_instance_of(PagingSchedule::Scheduler).to receive(:earliest_delivery_estimate).and_return({ date: today.to_date })
       end
 
       it 'creates a mediated page request', :js do
@@ -132,11 +148,11 @@ RSpec.describe 'Creating a request' do
         check 'ABC 456'
         click_on 'Continue'
 
-        fill_in 'I plan to visit on:', with: Time.zone.tomorrow
+        fill_in 'I plan to visit on:', with: today.next_week(:monday)
 
         expect do
           perform_enqueued_jobs do
-            click_on 'Submit'
+            click_on 'Submit request'
             expect(page).to have_content 'We received your request'
           end
         end.to change(PatronRequest, :count).by(1)
@@ -145,7 +161,7 @@ RSpec.describe 'Creating a request' do
       end
     end
 
-    context 'for an item that can be paged or scanned', :js do
+    context 'for an item that can be paged or scanned' do
       let(:bib_data) { build(:scannable_holdings) }
       let(:user) { create(:scan_eligible_user) }
 
@@ -161,7 +177,9 @@ RSpec.describe 'Creating a request' do
         check 'ABC 123'
         click_on 'Continue'
         expect(page).to have_content 'Pickup request'
-        click_on 'Submit'
+        perform_enqueued_jobs do
+          click_on 'Submit request'
+        end
         expect(page).to have_content 'We received your pickup request'
       end
 
@@ -175,7 +193,9 @@ RSpec.describe 'Creating a request' do
         expect(page).to have_content 'Copyright notice'
         fill_in 'Page range', with: '1-15'
         fill_in 'Title of article or chapter', with: 'Some title'
-        click_on 'Submit'
+        perform_enqueued_jobs do
+          click_on 'Submit request'
+        end
         expect(page).to have_content 'We received your scan request'
       end
     end
@@ -200,7 +220,7 @@ RSpec.describe 'Creating a request' do
         Timecop.return
       end
 
-      it 'shows the estimated deliver dates', :js do
+      it 'shows the estimated deliver dates' do
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
 
         within '#earliestAvailableContainer' do
@@ -249,7 +269,9 @@ RSpec.describe 'Creating a request' do
     end
 
     it 'submits the request for pickup at Green' do
+      logout
       visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+      expect(page).to have_css 'summary', text: 'Login with Library ID/PIN'
       first('summary').click
 
       fill_in 'Library ID', with: '12345'
@@ -257,7 +279,12 @@ RSpec.describe 'Creating a request' do
 
       click_on 'Login'
 
-      expect { click_on 'Submit' }.to change(PatronRequest, :count).by(1)
+      expect do
+        perform_enqueued_jobs do
+          click_on 'Submit request'
+        end
+        expect(page).to have_content 'We received your pickup request'
+      end.to change(PatronRequest, :count).by(1)
 
       expect(PatronRequest.last).to have_attributes(
         patron_id: 'some-lib-id-uuid',
@@ -270,8 +297,10 @@ RSpec.describe 'Creating a request' do
     context 'when circ rules prevent any request on the item for the patron' do
       let(:bib_data) { build(:single_holding, items: [build(:item, effective_location: build(:law_location))]) }
 
-      it 'goes to a dead-end page', :js do
+      it 'goes to a dead-end page' do
+        logout
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'LAW-STACKS1')
+        expect(page).to have_css 'summary', text: 'Login with Library ID/PIN'
         first('summary').click
 
         fill_in 'Library ID', with: '12345'
@@ -291,12 +320,12 @@ RSpec.describe 'Creating a request' do
 
       it 'goes directly to the request form' do
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
-        expect(page).to have_button 'Submit'
+        expect(page).to have_button 'Submit request'
       end
     end
   end
 
-  context 'with a library name+email user' do
+  context 'with a name+email user' do
     context 'for an item that a purchased account cannot page' do
       let(:bib_data) { build(:single_holding, items: [build(:item, effective_location: build(:law_location))]) }
 
@@ -306,13 +335,17 @@ RSpec.describe 'Creating a request' do
       end
     end
 
-    it 'logs the user out before creating a request', :js do
+    it 'logs the user out before creating a request' do
       visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+      expect(page).to have_css 'summary', text: 'Proceed as visitor'
       find('summary', text: 'Proceed as visitor').click
       fill_in 'Name', with: 'My Name'
       fill_in 'Email', with: 'me@example.com'
       click_on 'Continue'
-      click_on 'Submit'
+      perform_enqueued_jobs do
+        click_on 'Submit request'
+      end
+
       visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
       expect(page).to have_text 'Login with Library ID/PIN'
     end
@@ -324,12 +357,12 @@ RSpec.describe 'Creating a request' do
     it 'sends the user over to Aeon' do
       visit new_patron_request_path(instance_hrid: 'a12345', origin_location_code: 'SAL3-PAGE-AS')
 
-      expect(page).to have_content 'Aeon request'
+      expect(page).to have_content 'On-site and digital access requests are managed by Aeon'
       expect(page).to have_button 'Continue to complete request'
     end
   end
 
-  context 'with multiple items to pick from', :js do
+  context 'with multiple items to pick from' do
     let(:bib_data) { build(:checkedout_holdings) }
 
     let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true, ldap_attributes:) }
@@ -347,7 +380,9 @@ RSpec.describe 'Creating a request' do
       check 'ABC 123'
       click_on 'Continue'
       expect do
-        click_on 'Submit request'
+        perform_enqueued_jobs do
+          click_on 'Submit request'
+        end
         expect(page).to have_content 'We received your pickup request'
       end.to change(PatronRequest, :count).by(1)
 
@@ -362,7 +397,9 @@ RSpec.describe 'Creating a request' do
       click_on 'Continue'
       choose 'Wait for a Stanford copy to become available'
       expect do
-        click_on 'Submit request'
+        perform_enqueued_jobs do
+          click_on 'Submit request'
+        end
         expect(page).to have_content 'We received your pickup request'
       end.to change(PatronRequest, :count).by(1)
 
@@ -378,7 +415,9 @@ RSpec.describe 'Creating a request' do
       click_on 'Continue'
       choose 'Wait for a Stanford copy to become available'
       expect do
-        click_on 'Submit request'
+        perform_enqueued_jobs do
+          click_on 'Submit request'
+        end
         expect(page).to have_content 'We received your pickup request'
       end.to change(PatronRequest, :count).by(1)
 

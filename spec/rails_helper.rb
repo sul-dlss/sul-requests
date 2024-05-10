@@ -47,32 +47,12 @@ RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
-  config.use_transactional_fixtures = false
+  config.use_transactional_fixtures = true
 
   config.include ActiveSupport::Testing::TimeHelpers
 
-  config.before(:suite) do
-    DatabaseCleaner.clean_with(:truncation)
-  end
-
-  config.before do
-    DatabaseCleaner.strategy = :transaction
-  end
-
   config.before do
     stub_request(:any, %r{http://example.com/.*}).to_return(status: 200, body: '', headers: {})
-  end
-
-  config.before(:each, :js) do
-    DatabaseCleaner.strategy = :truncation
-  end
-
-  config.before do
-    DatabaseCleaner.start
-  end
-
-  config.after do
-    DatabaseCleaner.clean
   end
 
   # RSpec Rails can automatically mix in different behaviours to your tests
@@ -91,6 +71,7 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 
   config.include ActiveSupport::Testing::TimeHelpers
+  config.include ActiveJob::TestHelper, type: :feature
 
   config.include ViewComponent::TestHelpers, type: :component
   config.include ViewComponent::SystemTestHelpers, type: :component
@@ -105,8 +86,4 @@ end
 
 def stub_current_user(user = create(:anon_user))
   allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
-end
-
-def expect_to_be_on_success_page
-  expect(page).to have_css('h1#dialogTitle', text: /We're working on it/)
 end
