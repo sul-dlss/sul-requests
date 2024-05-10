@@ -71,6 +71,7 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 
   config.include ActiveSupport::Testing::TimeHelpers
+  config.include ActiveJob::TestHelper, type: :feature
 
   config.include ViewComponent::TestHelpers, type: :component
   config.include ViewComponent::SystemTestHelpers, type: :component
