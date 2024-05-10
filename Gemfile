@@ -72,9 +72,6 @@ group :development, :test do
   # selenium-webdriver is used by Capybara for driving "browser" tests
   gem 'selenium-webdriver'
 
-  # Database cleaner allows us to clean the entire database after certain tests
-  gem 'database_cleaner'
-
   # Rubocop is a static code analyzer to enforce style.
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
