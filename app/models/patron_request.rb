@@ -91,9 +91,11 @@ class PatronRequest < ApplicationRecord
   end
 
   def type
-    return 'Scan' if scan?
-
-    if fulfillment_type == 'hold'
+    if scan?
+      'Scan'
+    elsif request_type == 'mediated'
+      'Mediated page'
+    elsif fulfillment_type == 'hold'
       'Hold'
     elsif fulfillment_type == 'recall'
       'Recall'
