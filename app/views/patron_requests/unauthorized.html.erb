@@ -1,3 +1,5 @@
+<% content_for :page_title do %>Request: <%= @patron_request.item_title %><% end %>
+
 <% if current_user&.patron %> <%= render 'user_header' %> <% end %>
 
 <h1 class="fw-semibold mt-4"><%= @patron_request.item_title %></h1>

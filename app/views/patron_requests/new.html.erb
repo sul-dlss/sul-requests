@@ -1,3 +1,5 @@
+<% content_for :page_title do %>Request: <%= @patron_request.item_title %><% end %>
+
 <% unless current_user&.patron&.blank? %>
   <%= render 'user_header' %>
 <% end %>

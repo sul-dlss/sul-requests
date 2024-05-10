@@ -6,7 +6,7 @@
     <meta name="description" content="Stanford University Libraries' application to request materials" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-    <title><%= yield(:page_title).blank? ? SULRequests::Application.config.application_name : yield(:page_title)%></title>
+    <title><%= yield(:page_title).blank? ? t('shared.default_page_title') : yield(:page_title) %></title>
     <%= favicon_link_tag 'favicon.ico' %>
     <%= stylesheet_link_tag "application_redesign" %>
     <%= stylesheet_link_tag "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700" %>
