@@ -49,7 +49,7 @@ class SessionsController < ApplicationController
     request.env['warden'].logout
     flash[:notice] = t('.notice')
 
-    if needs_shib_logout
+    if needs_shib_logout && !Rails.env.development?
       redirect_to '/Shibboleth.sso/Logout'
     else
       redirect_to post_action_redirect_url
