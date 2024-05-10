@@ -13,6 +13,10 @@ RSpec.describe 'Creating a request', :js do
     ActionMailer::Base.perform_deliveries = false
   end
 
+  after do
+    logout
+  end
+
   context 'with an SSO user' do
     let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true, ldap_attributes:) }
     let(:ldap_attributes) { {} }
@@ -265,6 +269,7 @@ RSpec.describe 'Creating a request', :js do
     end
 
     it 'submits the request for pickup at Green' do
+      logout
       visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
       expect(page).to have_css 'summary', text: 'Login with Library ID/PIN'
       first('summary').click
@@ -293,6 +298,7 @@ RSpec.describe 'Creating a request', :js do
       let(:bib_data) { build(:single_holding, items: [build(:item, effective_location: build(:law_location))]) }
 
       it 'goes to a dead-end page' do
+        logout
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'LAW-STACKS1')
         expect(page).to have_css 'summary', text: 'Login with Library ID/PIN'
         first('summary').click
@@ -319,7 +325,7 @@ RSpec.describe 'Creating a request', :js do
     end
   end
 
-  context 'with a library name+email user' do
+  context 'with a name+email user' do
     context 'for an item that a purchased account cannot page' do
       let(:bib_data) { build(:single_holding, items: [build(:item, effective_location: build(:law_location))]) }
 
