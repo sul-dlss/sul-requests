@@ -48,6 +48,26 @@ class PatronRequest < ApplicationRecord
     self.estimated_delivery = earliest_delivery_estimate(scan: scan?)&.dig('display_date')
   end
 
+  class << self
+    # The mediateable_origins will make multiple (efficient) database requests
+    # in order to return the array of locations that are both configured as mediateable and have existing requests.
+    # Another alternative would be to use (origin_admin_groups & uniq.pluck(:origin)).present? but that will result
+    # in a SELECT DISTINCT which could get un-performant with a large table of requests.
+    def mediateable_origins
+      # This is a super-clunky way to convert data from RailsConfig to something
+      # Enumerable, so we can use e.g. #select
+      origins = Settings.mediateable_origins.map.to_h.with_indifferent_access
+
+      origins.select do |code, config|
+        if config.library_override
+          PatronRequest.mediated.exists?(origin_location_code: code.to_s)
+        else
+          PatronRequest.mediated.for_origin(code.to_s).any?
+        end
+      end
+    end
+  end
+
   # @!group Attribute methods
   def barcode=(barcode)
     self.barcodes = [barcode]

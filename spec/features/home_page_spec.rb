@@ -27,8 +27,8 @@ RSpec.describe 'Home Page' do
 
   describe 'mediation section' do
     before do
-      create(:mediated_page)
-      create(:page_mp_mediated_page)
+      create(:mediated_patron_request)
+      create(:page_mp_mediated_patron_request)
       stub_current_user(create(:superadmin_user))
       visit root_path
     end

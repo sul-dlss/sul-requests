@@ -447,17 +447,6 @@ RSpec.describe Request do
     end
   end
 
-  describe 'mediateable_origins' do
-    before do
-      create(:mediated_page)
-      create(:page_mp_mediated_page)
-    end
-
-    it 'returns the subset of origin codes that are configured and mediated pages that exist in the database' do
-      expect(described_class.mediateable_origins.to_h.keys).to eq %w(ART SAL3-PAGE-MP)
-    end
-  end
-
   describe '#default_pickup_destination' do
     it 'sets an origin specific default' do
       request = described_class.new(origin: 'LAW', origin_location: 'LAW-STACKS',
