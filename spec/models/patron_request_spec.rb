@@ -13,6 +13,17 @@ RSpec.describe PatronRequest do
     allow(Folio::Instance).to receive(:fetch).with(request.instance_hrid).and_return(bib_data)
   end
 
+  describe 'mediateable_origins' do
+    before do
+      create(:mediated_patron_request)
+      create(:page_mp_mediated_patron_request)
+    end
+
+    it 'returns the subset of origin codes that are configured and mediated pages that exist in the database' do
+      expect(described_class.mediateable_origins.to_h.keys).to eq %w[ART SAL3-PAGE-MP]
+    end
+  end
+
   describe '#bib_data' do
     let(:bib_data) { instance_double(Folio::Instance) }
 

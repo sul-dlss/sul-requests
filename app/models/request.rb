@@ -204,26 +204,6 @@ class Request < ActiveRecord::Base
     folio_response_data || symphony_response_data || {}
   end
 
-  class << self
-    # The mediateable_origins will make multiple (efficient) database requests
-    # in order to return the array of locations that are both configured as mediateable and have existing requests.
-    # Another alternative would be to use (origin_admin_groups & uniq.pluck(:origin)).present? but that will result
-    # in a SELECT DISTINCT which could get un-performant with a large table of requests.
-    def mediateable_origins
-      # This is a super-clunky way to convert data from RailsConfig to something
-      # Enumerable, so we can use e.g. #select
-      origins = Settings.mediateable_origins.map.to_h.with_indifferent_access
-
-      origins.select do |code, config|
-        if config.library_override
-          MediatedPage.exists?(origin_location: code.to_s)
-        else
-          MediatedPage.exists?(origin: code.to_s)
-        end
-      end
-    end
-  end
-
   def item_status(id, **)
     ItemStatus.new(self, id, **)
   end
