@@ -24,3 +24,6 @@ application.register("mediation", MediationController)
 
 import FormController from "./form_controller"
 application.register("form", FormController)
+
+import RememberController from "./remember_controller"
+application.register("remember", RememberController)
