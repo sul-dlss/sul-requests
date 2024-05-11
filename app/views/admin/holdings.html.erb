@@ -47,7 +47,7 @@
               </a>
             <% end %>
           </td>
-          <td><%= item.home_location %></td>
+          <td><%= @request.folio_location&.name || @request.origin_location_code %></td>
           <td><%= current_location_for_mediated_item(item) %></td>
           <td><%= item.callnumber %></td>
           <td><%= i18n_status_text(item) if @request.folio_responses[item.id].present? %></td>

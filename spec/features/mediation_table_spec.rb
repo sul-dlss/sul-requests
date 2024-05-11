@@ -82,13 +82,14 @@ RSpec.describe 'Mediation table', :js do
         visit(admin_path('ART'))
       end
 
-      it 'is fetched from Symphony' do
+      it 'is fetched from the ILS' do
         within(all('[data-mediate-request]').first) do
           click_on 'Toggle'
         end
 
         within('tbody td table') do
-          expect(page).to have_css('td', text: 'ART-NEWBOOK')
+          puts page.body
+          expect(page).to have_css('td', text: 'Art Locked Stacks Large')
         end
       end
     end
@@ -110,7 +111,7 @@ RSpec.describe 'Mediation table', :js do
         expect(page).to have_css("tbody td[colspan='#{top_level_columns}'] table")
         within("tbody td[colspan='#{top_level_columns}'] table") do
           expect(page).to have_css('td .btn', text: 'Approve', count: 2)
-          expect(page).to have_css('td', text: 'ART-LOCKED-LARGE', count: 2)
+          expect(page).to have_css('td', text: 'Art Locked Stacks Large', count: 2)
           expect(page).to have_css('td', text: 'ABC 123')
           expect(page).to have_css('td', text: 'ABC 456')
         end
@@ -350,7 +351,7 @@ RSpec.describe 'Mediation table', :js do
       expect(page).to have_css("tbody td[colspan='#{top_level_columns}'] table")
       within("tbody td[colspan='#{top_level_columns}'] table") do
         expect(page).to have_css('td .btn', text: 'Approve', count: 2)
-        expect(page).to have_css('td', text: 'SAL3-PAGE-MP', count: 2)
+        expect(page).to have_css('td', text: 'SAL3 PAGE-MP', count: 2)
         expect(page).to have_css('td', text: 'ABC 123')
         expect(page).to have_css('td', text: 'ABC 321')
       end
