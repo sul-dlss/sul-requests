@@ -307,7 +307,7 @@
             <%= queue_length_display(f.object.selectable_items.first, prefix: 'Item status: ', title_only: f.object.title_only?) %>
           </div>
         </div>
-        <% if f.object.mediateable? %>
+        <% if f.object.mediateable? && f.object.requires_needed_date? %>
             <div class="alert alert-info d-flex" role="alert">
               <div class="bi bi-info-circle-fill d-flex justify-content-center display-6 col-1 ms-3 align-self-center text-primary"></div>
               <div class="p-3 flex-grow-1">
