@@ -7,7 +7,7 @@
                 Expect a confirmation email shortly at <span class="fw-semibold"><%=  current_user.patron.email %></span>.
             <% end %>
 
-            <% if (current_user && current_user.patron) || (@patron_request.patron.patron_group_name != 'visitor') %>
+            <% if @patron_request.patron.present? %>
                 <% if @patron_request.mediateable? %>
                     Once approved, you can view the status of your request in
                 <% else %>
