@@ -3,9 +3,7 @@
 <div class="row mt-4">
     <div class="col-7">
         <div class="lead">
-            <% if current_user && current_user.patron.email %>
-                Expect a confirmation email shortly at <span class="fw-semibold"><%=  current_user.patron.email %></span>.
-            <% end %>
+            <%= yield %>
 
             <% if @patron_request.patron.present? %>
                 <% if @patron_request.mediateable? %>
