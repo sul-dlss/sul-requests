@@ -151,11 +151,16 @@ class PatronRequest < ApplicationRecord
     pickup_service_point&.library&.code
   end
 
+  # @return [String] the library ID for the destination's pseudopatron
+  def destination_library_pseudopatron_library_id
+    Settings.libraries[destination_library_code]&.hold_pseudopatron
+  end
+
   # Used when placing requests for users without a FOLIO patron account (e.g. name/email users)
   # @return [Folio::Patron] the pseudopatron for the destination pickup location
   def destination_library_pseudopatron
     @destination_library_pseudopatron ||= begin
-      pseudopatron_barcode = Settings.libraries[destination_library_code]&.hold_pseudopatron || raise("no hold pseudopatron for '#{key}'")
+      pseudopatron_barcode = destination_library_pseudopatron_library_id || raise("no hold pseudopatron for '#{key}'")
       Folio::Patron.find_by(library_id: pseudopatron_barcode)
     end
   end

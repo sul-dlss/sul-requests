@@ -13,6 +13,8 @@ class SubmitFolioPatronRequestJob < ApplicationJob
 
     response = submit_folio_requests!(request_data)
 
+    handle_folio_errors(response, request, item) if response['errors']
+
     response.merge(request_data:)
   end
 
@@ -63,5 +65,14 @@ class SubmitFolioPatronRequestJob < ApplicationJob
 
   def folio_client
     @folio_client ||= FolioClient.new
+  end
+
+  def handle_folio_errors(response, request, item)
+    case # rubocop:disable Style/EmptyCaseCondition
+    # Multiple pseudo-patron requests for the same item need staff to manually process the item
+    when request.patron&.id.nil? && response.dig('errors', 'errors', 0,
+                                                 'message') == 'This requester already has an open request for this item'
+      MultipleHoldsMailer.multiple_holds_notification(request, item).deliver_now
+    end
   end
 end

@@ -1,0 +1,8 @@
+Multiple <%= @patron_request.destination_library_pseudopatron_library_id %> pages for the following item:
+Item ID: <%= @item.barcode %>
+Item Library: <%= @patron_request.folio_location&.name || @patron_request.origin_location_code %>
+Catkey: <%= @patron_request.instance_hrid %>
+Volumes/Issues: ALERT!! MULTIPLE REQUESTS BY NON-STANFORD USERS FOR THIS ITEM. 
+User Name: <%= @patron_request.patron_name %>
+User Email: <%= @patron_request.patron_email %>
+Pickup Lib: <%= @patron_request.pickup_service_point&.name || @patron_request.service_point_code %>
