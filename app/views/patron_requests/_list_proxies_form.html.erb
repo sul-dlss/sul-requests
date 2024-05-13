@@ -4,7 +4,7 @@
     <div class="mt-2">
         <ul>
         <%
-            f.object.patron.proxies.sort.each do |proxy|
+            f.object.patron.proxies.sort_by(&:display_name).each do |proxy|
         %>
             <li><%= proxy.display_name %></li>
         <%
