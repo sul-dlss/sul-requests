@@ -1,5 +1,10 @@
 <% content_for :page_title do %>Request confirmation: <%= @patron_request.item_title %><% end %>
 
+
+<% if @patron_request.active_messages.any? %>
+  <%= render 'messages', messages: @patron_request.active_messages %>
+<% end %>
+
 <%= render 'confirmation_screen' %>
 
 <% if can? :debug, @patron_request %>
