@@ -1,15 +1,16 @@
-<%= render 'confirmation_screen' %>
+<% content_for :page_title do %>Request confirmation: <%= @patron_request.item_title %><% end %>
 
+<%= render 'confirmation_screen' %>
 
 <% if can? :debug, @patron_request %>
   <hr />
   <% if current_request.folio_responses.present? %>
     <h4>ILS Response</h4>
-    <pre class="card p-2"><%= JSON.pretty_generate(current_request.folio_responses || {}) %></pre>
+    <pre class="card p-2"><%= JSON.pretty_generate(@patron_request.folio_responses || {}) %></pre>
   <% end %>
 
   <% if current_request.illiad_response_data.present? %>
     <h4>Illiad Response</h4>
-    <pre class="card p-2"><%= JSON.pretty_generate(current_request.illiad_response_data) %></pre>
+    <pre class="card p-2"><%= JSON.pretty_generate(@patron_request.illiad_response_data) %></pre>
   <% end %>
 <% end %>

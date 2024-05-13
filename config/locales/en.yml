@@ -206,8 +206,9 @@ en:
         one: "Select an item from the list above."
         other: "Select one or more items from the list above."
   shared:
+    default_page_title: "Requests : Stanford Libraries"
     sul_header:
-      sul: Stanford University Libraries
+      sul: Stanford Libraries
       login: Login
       logout: "%{sunetid}: Logout"
       mylibrary: My Account
