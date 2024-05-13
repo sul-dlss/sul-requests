@@ -40,12 +40,12 @@ module Folio
 
     def patron_group_id
       # FOLIO APIs return a UUID here
-      user_info.fetch('patronGroup')
+      user_info['patronGroup']
     end
 
     # this returns the full patronGroup object
     def patron_group
-      Folio::Types.patron_groups[patron_group_id]
+      Folio::Types.patron_groups[patron_group_id] if patron_group_id
     end
 
     def patron_group_name
