@@ -143,4 +143,60 @@ RSpec.describe RequestsHelper do
       expect(callnumber_label(item)).to eq 'AB123'
     end
   end
+
+  describe '#request_status_emoji' do
+    let(:patron_request) { build(:page_patron_request, folio_responses:, illiad_response_data:) }
+    let(:folio_responses) { nil }
+    let(:illiad_response_data) { nil }
+
+    context 'when folio_responses and illiad_response_data are blank' do
+      it 'returns 🔄' do
+        expect(request_status_emoji(patron_request)).to eq '🔄'
+      end
+    end
+
+    context 'when folio_responses mixed' do
+      let(:folio_responses) do
+        { 'some-uuid' => { 'response' => { 'status' => 'Open' } }, 'another-uuuid' => { 'response' => { 'status' => 'Open' } } }
+      end
+
+      context 'when all folio_responses have status starting with "Open"' do
+        it 'returns 🟢 with the first status as title' do
+          expect(request_status_emoji(patron_request)).to eq '<span title="Open">🟢</span>'
+        end
+      end
+
+      context 'when all folio_responses have status starting with "Closed"' do
+        let(:folio_responses) do
+          { 'response1' => { 'response' => { 'status' => 'Closed' } }, 'response2' => { 'response' => { 'status' => 'Closed' } } }
+        end
+
+        it 'returns 🚫 with the first status as title' do
+          expect(request_status_emoji(patron_request)).to eq '<span title="Closed">🚫</span>'
+        end
+      end
+
+      context 'when folio_responses have non-blank statuses' do
+        let(:folio_responses) do
+          { 'some-uuid' => { 'response' => { 'status' => 'Open' } }, 'another-uuuid' => { 'response' => { 'status' => 'Closed' } } }
+        end
+
+        it 'returns 🟡 with unique statuses joined by ";" as title' do
+          expect(request_status_emoji(patron_request)).to eq '<span title="Open; Closed">🟡</span>'
+        end
+      end
+
+      context 'when folio_responses have an error' do
+        let(:folio_responses) do
+          { 'response1' => { 'response' => { 'status' => 'Open' } },
+            'response2' => { 'errors' => { 'errors' => [{ 'message' => message }] } } }
+        end
+        let(:message) { 'This requester currently has this item on loan. ' }
+
+        it 'returns 🔴 with unique error messages' do
+          expect(request_status_emoji(patron_request)).to eq tag.span('🔴', title: message)
+        end
+      end
+    end
+  end
 end
