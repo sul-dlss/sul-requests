@@ -339,11 +339,22 @@ class PatronRequest < ApplicationRecord
   end
 
   # @return [String] comments to include in the FOLIO request
-  def request_comments
-    return "#{patron_name} <#{patron_email}>" if patron.blank?
+  def request_comments # rubocop:disable Metrics/AbcSize
+    return "#{patron_name} <#{patron_email}>" if patron.blank? || patron.expired?
 
     [("(PROXY PICKUP OK; request placed by #{patron.display_name} <#{patron.email}>)" if proxy?),
      ("(PROXY PICKUP OK; request placed by #{patron.display_name} <#{patron.email}>" if for_sponsor?)].compact.join("\n")
+  end
+
+  # @return [String] the patron (or pseudopatron) to use to place the request
+  def requester_patron_id
+    if for_sponsor?
+      for_sponsor_id
+    elsif patron.expired?
+      destination_library_pseudopatron&.id
+    else
+      patron&.id || destination_library_pseudopatron&.id
+    end
   end
 
   # @!endgroup

@@ -65,4 +65,8 @@ FactoryBot.define do
       }
     end
   end
+
+  factory :expired_patron, parent: :patron do
+    active { false }
+  end
 end

@@ -38,14 +38,11 @@ module Folio
       user_info['username']
     end
 
-    def patron_group_id
-      # FOLIO APIs return a UUID here
-      user_info['patronGroup']
-    end
-
     # this returns the full patronGroup object
     def patron_group
-      Folio::Types.patron_groups[patron_group_id] if patron_group_id
+      @patron_group ||= Folio::NullPatron.visitor_patron_group if expired?
+      @patron_group ||= Folio::Types.patron_groups[patron_group_id] if patron_group_id
+      @patron_group ||= Folio::NullPatron.visitor_patron_group
     end
 
     def patron_group_name
@@ -61,16 +58,12 @@ module Folio
       user_info['barcode']
     end
 
-    def fee_borrower?
-      patron_group_name == 'sul-purchased'
-    end
-
     def ilb_eligible?
-      username && Settings.folio.ilb_eligible_patron_groups.include?(patron_group_name)
+      username && Settings.folio.ilb_eligible_patron_groups.include?(patron_group_name) && !expired?
     end
 
     def make_request_as_patron?
-      !expired? && patron_group_id.present?
+      !expired? && patron_group.present?
     end
 
     def first_name
@@ -169,7 +162,16 @@ module Folio
       crypt.encrypt_and_sign(id, expires_in: 20.minutes)
     end
 
+    def expired?
+      user_info['active'] == false
+    end
+
     private
+
+    def patron_group_id
+      # FOLIO APIs return a UUID here
+      user_info['patronGroup']
+    end
 
     # Get all the sponsors for this patron
     def sponsors_for_response
@@ -187,12 +189,8 @@ module Folio
       user_info.dig('standing', 'key')
     end
 
-    def expired?
-      user_info['active'] == false
-    end
-
     def policy_service
-      @policy_service ||= Folio::CirculationRules::PolicyService.new(patron_groups: [patron_group_id])
+      @policy_service ||= Folio::CirculationRules::PolicyService.new(patron_groups: [patron_group['id']])
     end
 
     def patron_blocks

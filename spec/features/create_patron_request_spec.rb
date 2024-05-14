@@ -431,4 +431,41 @@ RSpec.describe 'Creating a request', :js do
       expect(page).to have_button 'Submit'
     end
   end
+
+  context 'with an expired patron' do
+    let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true, ldap_attributes:) }
+    let(:patron) { build(:expired_patron) }
+    let(:ldap_attributes) { {} }
+
+    before do
+      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
+      login_as(current_user)
+    end
+
+    context 'for a scan-eligible item' do
+      let(:bib_data) { build(:scannable_holdings) }
+      let(:user) { create(:scan_eligible_user) }
+
+      before do
+        allow(current_user).to receive(:user_object).and_return(user)
+        allow(Folio::Patron).to receive(:find_by).with(library_id: 'HOLD@GR').and_return(instance_double(Folio::Patron, id: 'hold-gr-uuid'))
+      end
+
+      it 'does not have the option to scan and places a request by a pseudopatron' do
+        visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+
+        expect(page).to have_no_text 'Email digital scan'
+        check 'ABC 123'
+        click_on 'Continue'
+        expect do
+          perform_enqueued_jobs do
+            click_on 'Submit request'
+          end
+          expect(page).to have_content 'We received your pickup request!'
+        end.to change(PatronRequest, :count).by(1)
+
+        expect(PatronRequest.last).to have_attributes requester_patron_id: 'hold-gr-uuid'
+      end
+    end
+  end
 end

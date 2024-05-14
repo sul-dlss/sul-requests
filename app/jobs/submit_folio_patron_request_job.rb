@@ -45,20 +45,12 @@ class SubmitFolioPatronRequestJob < ApplicationJob
     FolioClient::CirculationRequestData.new(
       request_level: 'Item', request_type: best_request_type(request, item),
       instance_id: request.instance_id, item_id: item.id, holdings_record_id: item.holdings_record_id,
-      requester_id: patron_or_proxy_id(request), proxy_user_id: (if request.for_sponsor?
+      requester_id: request.requester_patron_id, proxy_user_id: (if request.for_sponsor?
                                                                    request.patron&.id
                                                                  end), fulfillment_preference: 'Hold Shelf',
       pickup_service_point_id: request.pickup_service_point.id,
       patron_comments: request.request_comments, request_expiration_date: (Time.zone.today + 3.years).to_time.utc.iso8601
     )
-  end
-
-  def patron_or_proxy_id(request)
-    if request.for_sponsor?
-      request.for_sponsor_id
-    else
-      request.patron&.id || request.destination_library_pseudopatron&.id
-    end
   end
 
   def folio_client

@@ -49,10 +49,6 @@ RSpec.describe Folio::Patron do
       }
     end
 
-    describe '#fee_borrower?' do
-      it { is_expected.to be_fee_borrower }
-    end
-
     describe '#ilb_eligible?' do
       it { is_expected.not_to be_ilb_eligible }
 
@@ -98,10 +94,6 @@ RSpec.describe Folio::Patron do
 
     context 'when the patron is an undergrad' do
       let(:patron_group_id) { 'bdc2b6d4-5ceb-4a12-ab46-249b9a68473e' } # undergrad
-
-      describe '#fee_borrower?' do
-        it { is_expected.not_to be_fee_borrower }
-      end
 
       describe '#ilb_eligible?' do
         it { is_expected.to be_ilb_eligible }
