@@ -688,3 +688,6 @@ allowed_visitor_pickups:
   - 'ART'
   - 'EAST-ASIA'
   - 'LANE-DESK'
+  - 'MEDIA-CENTER'
+  - 'SPEC'
+  - 'RUMSEY-MAP'
