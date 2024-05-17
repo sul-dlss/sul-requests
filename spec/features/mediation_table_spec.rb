@@ -88,7 +88,6 @@ RSpec.describe 'Mediation table', :js do
         end
 
         within('tbody td table') do
-          puts page.body
           expect(page).to have_css('td', text: 'Art Locked Stacks Large')
         end
       end
