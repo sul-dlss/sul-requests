@@ -50,7 +50,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_14_175606) do
     t.string "instance_hrid"
     t.date "needed_date"
     t.string "service_point_code"
-    t.text "data"
+    t.text "data", limit: 4294967295
     t.string "fulfillment_type"
     t.string "status"
     t.string "folio_request_id"
