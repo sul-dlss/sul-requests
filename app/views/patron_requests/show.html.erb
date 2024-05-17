@@ -1,6 +1,15 @@
 <% content_for :page_title do %>Request confirmation: <%= @patron_request.item_title %><% end %>
 
-<%= render 'confirmation_screen' %>
+
+<% if @patron_request.active_messages.any? %>
+  <%= render 'messages', messages: @patron_request.active_messages %>
+<% end %>
+
+<%= render 'confirmation_screen' do %>
+  <% if @patron_request.patron.email %>
+    Expect a confirmation email shortly at <span class="fw-semibold"><%= @patron_request.patron.email %></span>.
+  <% end %>
+<% end%>
 
 <% if can? :debug, @patron_request %>
   <hr />

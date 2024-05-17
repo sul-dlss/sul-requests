@@ -194,10 +194,9 @@ class PatronRequest < ApplicationRecord
   #
   # @return [Array<String>] the list of service point codes that are valid for this request
   def pickup_destinations
-    if location_restricted_service_point_codes.empty?
-      destinations = (default_pickup_service_points_codes + additional_pickup_service_points_codes).uniq
-    end
-    destinations ||= location_restricted_service_point_codes
+    return location_restricted_service_point_codes if location_restricted_service_point_codes.any?
+
+    destinations = (default_pickup_service_points_codes + additional_pickup_service_points_codes).uniq
 
     return destinations.select { |destination| Settings.allowed_visitor_pickups.include?(destination) } if patron.blank?
 

@@ -5,7 +5,7 @@
 class SubmitPatronRequestJob < ApplicationJob
   queue_as :default
 
-  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
   def perform(patron_request)
     return convert_to_mediated_page(patron_request) if patron_request.mediateable?
     return place_title_hold(patron_request) if patron_request.barcodes.blank?
@@ -15,10 +15,14 @@ class SubmitPatronRequestJob < ApplicationJob
     end
 
     illiad_response_data = ilb_items.each_with_object({}) do |item, responses|
+      next if patron_request.illiad_response_data&.dig(item.id)
+
       responses[item.id] = SubmitIlliadPatronRequestJob.perform_now(patron_request, item.id)
     end
 
     folio_responses = folio_items.each_with_object({}) do |item, responses|
+      next if patron_request.folio_responses&.dig(item.id, 'response', 'status')
+
       responses[item.id] = SubmitFolioPatronRequestJob.perform_now(patron_request, item.id)
     end
 
@@ -26,7 +30,7 @@ class SubmitPatronRequestJob < ApplicationJob
 
     PatronRequestMailer.confirmation_email(patron_request).deliver_later
   end
-  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
   private
 

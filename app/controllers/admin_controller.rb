@@ -111,7 +111,7 @@ class AdminController < ApplicationController
   end
 
   def completed_mediated_pages
-    PatronRequest.completed.page(page).per(per_page).order(needed_date: 'desc', created_at: 'desc')
+    PatronRequest.for_origin(params[:id]).completed.page(page).per(per_page).order(needed_date: 'desc', created_at: 'desc')
   end
 
   def date_filtered_mediated_pages

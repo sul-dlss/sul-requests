@@ -84,6 +84,30 @@ module RequestsHelper
     end
   end
 
+  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+  def request_status_emoji(patron_request)
+    return '🔄' if patron_request.folio_responses.blank? && patron_request.illiad_response_data.blank?
+    return unless patron_request.folio_responses&.any?
+
+    statuses = patron_request.folio_responses.values.map { |response| response.dig('response', 'status') }
+
+    case
+    when statuses.all? { |x| x&.start_with? 'Open' }
+      tag.span '🟢', title: statuses.first
+    when statuses.all? { |x| x&.start_with? 'Closed' }
+      tag.span '🚫', title: statuses.first
+    when statuses.none?(&:blank?)
+      tag.span '🟡', title: statuses.uniq.join('; ')
+    else
+      errors = patron_request.folio_responses.values.filter_map do |response|
+        response.dig('errors', 'errors', 0, 'message')
+      end
+
+      tag.span('🔴', title: errors.uniq.join('; '))
+    end
+  end
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+
   private
 
   def status_text_for_errored_item(item)

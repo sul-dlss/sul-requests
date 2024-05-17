@@ -229,6 +229,23 @@ RSpec.describe PatronRequest do
         expect(request.pickup_destinations).to contain_exactly('MEDIA-CENTER', 'MUSIC')
       end
     end
+
+    context 'for a visitor' do
+      let(:patron) { build(:visitor_patron) }
+
+      it 'restricts the default pickup service points' do
+        expect(request.pickup_destinations).to contain_exactly('LANE-DESK', 'EAST-ASIA', 'ART', 'GREEN-LOAN')
+      end
+
+      context 'with a location-restricted page' do
+        let(:bib_data) { build(:page_lp_holdings) }
+        let(:attr) { { instance_hrid: 'a1234', origin_location_code: 'SAL3-PAGE-LP' } }
+
+        it 'still includes the allowed service points' do
+          expect(request.pickup_destinations).to contain_exactly('MEDIA-CENTER', 'MUSIC')
+        end
+      end
+    end
   end
 
   describe '#mediateable?' do

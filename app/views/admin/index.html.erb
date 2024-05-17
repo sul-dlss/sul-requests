@@ -25,7 +25,10 @@
           <td><%= searchworks_link(request.instance_hrid, request.item_title, 'data-behavior' => 'truncate') %></td>
           <td><%= "#{request.patron_name} <#{request.patron_email}>" %></td>
           <td><%= time_tag(request.created_at, :short) %></td>
-          <td><%= link_to('Status', url_for(request)) %></td>
+          <td>
+            <%= request_status_emoji(request) %>
+            <%= link_to('Status', url_for(request)) %>
+          </td>
         </tr>
       <% end %>
     </tbody>
