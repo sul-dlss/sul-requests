@@ -1,17 +1,11 @@
 <h1 class="fw-semibold">We received your <%= @patron_request.request_type == 'scan' ? 'scan' : @patron_request.mediateable? ? '' : 'pickup' %> request!</h1>
 
-<% if current_request && current_request.active_messages.any? %>
-  <%= render 'messages', messages: current_request.active_messages %>
-<% end %>
-
 <div class="row mt-4">
     <div class="col-7">
         <div class="lead">
-            <% if current_user && current_user.patron.email %>
-                Expect a confirmation email shortly at <span class="fw-semibold"><%=  current_user.patron.email %></span>.
-            <% end %>
+            <%= yield %>
 
-            <% if (current_user && current_user.patron) || (@patron_request.patron.patron_group_name != 'visitor') %>
+            <% if @patron_request.patron.present? %>
                 <% if @patron_request.mediateable? %>
                     Once approved, you can view the status of your request in
                 <% else %>
