@@ -95,7 +95,13 @@ module Folio
     end
 
     def items
-      (holdings_records.flat_map(&:items) + holdings_records.filter_map(&:bound_with_item)).reject(&:suppressed_from_discovery?)
+      @items ||= begin
+        actual_items = holdings_records.flat_map(&:items)
+        actual_items_ids = actual_items.map(&:id)
+        bound_with_items = holdings_records.filter_map(&:bound_with_item).reject { |x| x.id.in? actual_items_ids }
+
+        (actual_items + bound_with_items).reject(&:suppressed_from_discovery?)
+      end
     end
 
     def holdings_records
