@@ -66,6 +66,10 @@ FactoryBot.define do
     end
   end
 
+  factory :expired_patron, parent: :patron do
+    active { false }
+  end
+
   factory :visitor_patron, class: 'Folio::NullPatron' do
     display_name { 'Visitor' }
     email { 'visitor@example.com' }

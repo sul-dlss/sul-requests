@@ -370,10 +370,59 @@ RSpec.describe PatronRequest do
 
     context 'with a request shared with a proxy group' do
       let(:attr) { { patron:, proxy: 'share' } }
-      let(:patron) { instance_double(Folio::Patron, id: 'uuid', display_name: 'Test', email: 'test@example.com') }
+      let(:patron) { instance_double(Folio::Patron, id: 'uuid', display_name: 'Test', email: 'test@example.com', expired?: false) }
 
       it 'includes a comment for the pickup service point staff' do
         expect(request.request_comments).to include 'PROXY PICKUP OK'
+      end
+    end
+  end
+
+  describe '#requester_patron_id' do
+    context 'with a patron' do
+      let(:attr) { { patron: } }
+      let(:patron) { build(:patron, id: 'some-uuid') }
+
+      it 'is the patron id' do
+        expect(request.requester_patron_id).to eq 'some-uuid'
+      end
+    end
+
+    context 'with an expired patron' do
+      let(:attr) { { patron:, service_point_code: 'GREEN-LOAN' } }
+      let(:patron) { build(:expired_patron, id: 'some-uuid') }
+
+      before do
+        allow(Folio::Patron).to receive(:find_by).with(library_id: 'HOLD@GR').and_return(instance_double(Folio::Patron, id: 'pseudo-id'))
+      end
+
+      it 'is the pseudopatron id' do
+        expect(request.requester_patron_id).to eq 'pseudo-id'
+      end
+    end
+
+    context 'with a missing patron' do
+      let(:attr) { { patron: nil, service_point_code: 'GREEN-LOAN' } }
+
+      before do
+        allow(Folio::Patron).to receive(:find_by).with(library_id: 'HOLD@GR').and_return(instance_double(Folio::Patron, id: 'pseudo-id'))
+      end
+
+      it 'is the pseudopatron id' do
+        expect(request.requester_patron_id).to eq 'pseudo-id'
+      end
+    end
+
+    context 'with request placed by a proxy for the sponsor' do
+      let(:attr) { { patron:, for_sponsor_id: 'sponsor-uuid', for_sponsor: 'share' } }
+      let(:patron) { build(:patron, id: 'some-uuid') }
+
+      before do
+        allow(Folio::Patron).to receive(:find_by).with(library_id: 'HOLD@GR').and_return(instance_double(Folio::Patron, id: 'pseudo-id'))
+      end
+
+      it 'is the sponsor id' do
+        expect(request.requester_patron_id).to eq 'sponsor-uuid'
       end
     end
   end
