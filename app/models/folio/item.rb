@@ -219,7 +219,11 @@ module Folio
           due_date: dyn['dueDate'],
           enumeration: dyn['enumeration'],
           instance: (Folio::Instance.from_dynamic(dyn['instance']) if dyn['instance']),
-          bound_with_holdings_per_item: dyn['boundWithHoldingsPerItem']&.map { |v| Folio::HoldingsRecord.from_hash(v) } || [],
+          bound_with_holdings_per_item: dyn['boundWithHoldingsPerItem']&.filter_map do |v|
+            next if v['id'].present? && v['id'] == dyn.dig('holdingsRecord', 'id')
+
+            Folio::HoldingsRecord.from_hash(v)
+          end || [],
           base_callnumber: dyn.dig('effectiveCallNumberComponents', 'callNumber'),
           type: dyn.dig('materialType', 'name'),
           full_enumeration: [dyn['volume'], dyn['enumeration'],

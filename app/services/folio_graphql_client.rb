@@ -103,6 +103,7 @@ class FolioGraphqlClient
                 uri
               }
               holdingsRecords {
+                id
                 callNumber
                 discoverySuppress
                 boundWithItem {
@@ -121,6 +122,7 @@ class FolioGraphqlClient
                   #{item_fields}
 
                   boundWithHoldingsPerItem {
+                    id
                     callNumber
                     instance {
                       id
