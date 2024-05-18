@@ -79,7 +79,7 @@ faculty,periodical,,,,,EAR-LOCKED-STACKS,28day-2renew-7daygrace,No requests allo
 sul-purchased or courtesy or program-short-term or sul-contractprograms or sul-guest or lane-hospital staff,periodical,,,,,EAR-ATCIRCDESK,28day-norenew-7daygrace,Hold only,Default notice,No fines,$500 lost fee
 faculty,periodical,,,,,EAR-ATCIRCDESK,28day-norenew-7daygrace,Allow hold/recall,Default notice,No fines,$500 lost fee
 visitor,multimedia,,,,,SAL3-PAGE-MU-CIRC,No loan,Allow paging,Default notice,No fines,$225 lost fee
-sul-purchased,multimedia,,,,,SAL3-PAGE-MU-CIRC,No loan,No requests allowed,Default notice,No fines,$225 lost fee
+sul-purchased,multimedia,,,,,SAL3-PAGE-MU-CIRC,No loan,Allow paging,Default notice,No fines,$225 lost fee
 courtesy or program-short-term or sul-contractprograms or sul-guest or lane-hospital staff,multimedia,,,,,SAL3-PAGE-MU-CIRC,28day-2renew-7daygrace,Allow paging/hold,Default notice,No fines,$225 lost fee
 faculty,multimedia,,,,,SAL3-PAGE-MU-CIRC,28day-2renew-7daygrace,Allow All,Default notice,No fines,$225 lost fee
 visitor,multimedia,,,,,SAL3-PAGE-MP,No loan,No requests allowed,Default notice,No fines,$500 lost fee
