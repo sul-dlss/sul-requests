@@ -25,7 +25,7 @@
         <% single_item.bound_with_holdings_per_item.each do |bound_with_child| %>
           <li class="list-group-item d-flex bg-light">
             <span class="me-auto"><%= bound_with_child.instance.title %></span>
-            <span><%= bound_with_child.call_number %></span>
+            <span class="text-nowrap"><%= bound_with_child.call_number %></span>
           </li>
         <% end %>
       </ul>
