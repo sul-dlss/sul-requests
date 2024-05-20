@@ -20,7 +20,7 @@
 
   <% if single_item.bound_with_holdings_per_item.any? && (single_item.instance.nil? || single_item.instance&.hrid == @patron_request.instance_hrid) %>
     <div class="card col-lg-8 shadow-sm">
-      <div class="card-header h6 bg-light">This item is bound with:</div>
+      <div class="card-header h6 bg-light">This item is bound with</div>
       <ul class="list-group list-group-flush">
         <% single_item.bound_with_holdings_per_item.each do |bound_with_child| %>
           <li class="list-group-item d-flex bg-light">
@@ -36,7 +36,7 @@
     <div class="lead fw-normal mb-4">Call number: <%= @patron_request.bib_data.holdings_records.first.call_number %></div>
 
     <div class="card col-lg-8 shadow-sm">
-      <div class="card-header h6 bg-light">This item is bound and shelved by:</div>
+      <div class="card-header h6 bg-light">This item is bound and shelved with</div>
       <div class="card-body bg-light">
         <div><%= single_item.instance.title %></div>
         <div>Call number: <%= callnumber_label(single_item) %></div>
@@ -173,7 +173,7 @@
 
                     <% if item.bound_with_holdings_per_item.any? %>
                       <span class="d-block mt-2 ms-4 py-2 bg-light">
-                        <span class="ms-3 text-cardinal">Bound with:</div>
+                        <span class="ms-3 text-cardinal">Bound with</div>
 
                         <ul class="list-group list-group-flush">
                           <% item.bound_with_holdings_per_item.each do |bound_with_child| %>
@@ -188,7 +188,7 @@
 
                     <% if item.instance&.hrid %>
                       <span class="d-block ms-4 mt-2 px-3 py-2 bg-light">
-                        <span class="text-cardinal">Bound with and shelved by:</span>
+                        <span class="text-cardinal">Bound with and shelved with</span>
                         <span class="d-block"><%= item.instance.title %></span>
                         <span class="d-block"><%= callnumber_label(item) %></span>
                       </span>
