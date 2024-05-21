@@ -7,6 +7,8 @@
 class PatronRequestMailer < ApplicationMailer
   helper :requests
   def confirmation_email(patron_request)
+    return unless patron_request.patron_email
+
     @patron_request = patron_request
     mail(
       to: @patron_request.patron_email,
