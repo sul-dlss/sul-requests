@@ -28,7 +28,7 @@ class SubmitPatronRequestJob < ApplicationJob
 
     patron_request.update(illiad_response_data:, folio_responses:)
 
-    PatronRequestMailer.confirmation_email(patron_request).deliver_later
+    PatronRequestMailer.confirmation_email(patron_request)&.deliver_later
   end
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
