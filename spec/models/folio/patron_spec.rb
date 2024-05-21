@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Folio::Patron do
   subject(:patron) do
     described_class.new(
-      fields.stringify_keys
+      fields.deep_stringify_keys
     )
   end
 
@@ -102,41 +102,99 @@ RSpec.describe Folio::Patron do
   end
 
   describe '#proxies' do
-    let(:fields) { { id: 'sponsor', personal: { firstName: 'Sponsor' } } }
+    let(:fields) do
+      {
+        id: 'sponsor',
+        personal: { firstName: 'Sponsor' },
+        stubs: {
+          proxies: [
+            {
+              proxyUserId: 'proxy1',
+              requestForSponsor: 'Yes',
+              status: 'Active'
+            },
+            {
+              proxyUserId: 'proxy2',
+              requestForSponsor: 'Yes',
+              status: 'Active'
+            },
+            {
+              proxyUserId: 'proxy-expired',
+              requestForSponsor: 'Yes',
+              expirationDate: '2023-05-20T00:13:20.324+00:00',
+              status: 'Active'
+            },
+            {
+              proxyUserId: 'proxy-inactive',
+              requestForSponsor: 'Yes',
+              expirationDate: '2051-05-20T00:13:20.324+00:00',
+              status: 'Inactive'
+            }
+          ]
+        }
+      }
+    end
     let(:patron_one) { instance_double(described_class, id: 'proxy1', display_name: 'Proxy One') }
     let(:patron_two) { instance_double(described_class, id: 'proxy2', display_name: 'Proxy Two') }
 
-    it 'retrieves the names of the proxy user ids correctly' do
-      stub_client = FolioClient.new
+    let(:stub_client) { FolioClient.new }
+
+    before do
       allow(FolioClient).to receive(:new).and_return(stub_client)
+    end
+
+    it 'retrieves the names of the proxy user ids correctly' do
       allow(stub_client).to receive(:find_patron_by_id).with('proxy1').and_return(patron_one)
       allow(stub_client).to receive(:find_patron_by_id).with('proxy2').and_return(patron_two)
-      allow(stub_client).to receive(:proxies).with(userId: 'sponsor').and_return([
-                                                                                   { 'proxyUserId' => 'proxy1',
-                                                                                     'requestForSponsor' => 'Yes' },
-                                                                                   { 'proxyUserId' => 'proxy2',
-                                                                                     'requestForSponsor' => 'Yes' }
-                                                                                 ])
+
       expect(patron.proxies.length).to eq 2
     end
   end
 
   describe '#sponsors' do
-    let(:fields) { { id: 'proxy', personal: { firstName: 'Proxy' } } }
+    let(:fields) do
+      {
+        id: 'proxy',
+        personal: { firstName: 'Proxy' },
+        stubs: {
+          sponsors: [
+            {
+              userId: 'sponsor1',
+              requestForSponsor: 'Yes',
+              status: 'Active'
+            },
+            {
+              userId: 'sponsor2',
+              requestForSponsor: 'Yes',
+              status: 'Active'
+            },
+            {
+              userId: 'sponsor-expired',
+              requestForSponsor: 'Yes',
+              expirationDate: '2023-05-20T00:13:20.324+00:00',
+              status: 'Active'
+            },
+            {
+              userId: 'sponsor-inactive',
+              requestForSponsor: 'Yes',
+              expirationDate: '2051-05-20T00:13:20.324+00:00',
+              status: 'Inactive'
+            }
+          ]
+        }
+      }
+    end
     let(:sponsor_one) { instance_double(described_class, id: 'sponsor1', display_name: 'Sponsor One') }
     let(:sponsor_two) { instance_double(described_class, id: 'sponsor2', display_name: 'Sponsor Two') }
+    let(:stub_client) { FolioClient.new }
+
+    before do
+      allow(FolioClient).to receive(:new).and_return(stub_client)
+    end
 
     it 'retrieves the names of the sponsor user ids correctly' do
-      stub_client = FolioClient.new
-      allow(FolioClient).to receive(:new).and_return(stub_client)
       allow(stub_client).to receive(:find_patron_by_id).with('sponsor1').and_return(sponsor_one)
       allow(stub_client).to receive(:find_patron_by_id).with('sponsor2').and_return(sponsor_two)
-      allow(stub_client).to receive(:proxies).with(proxyUserId: 'proxy').and_return([
-                                                                                      { 'userId' => 'sponsor1',
-                                                                                        'requestForSponsor' => 'Yes' },
-                                                                                      { 'userId' => 'sponsor2',
-                                                                                        'requestForSponsor' => 'Yes' }
-                                                                                    ])
       expect(patron.sponsors.length).to eq 2
     end
   end
