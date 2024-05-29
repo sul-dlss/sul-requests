@@ -24,16 +24,10 @@ RSpec.describe ApplicationHelper do
   describe '#sort_holdings_records' do
     let(:all_items) do
       [
-        double('item', callnumber: 'ABC 123', processing?: false, missing?: false, hold?: false, on_order?: false, hold_recallable?: false,
-                       pageable?: true, mediateable?: false, barcode: '123123124', checked_out?: false, status_class: 'active',
-                       enumeration: rec_one_enumeration, callnumber_no_enumeration: 'ABC 123',
-                       status_text: 'Active', public_note: 'huh?', type: 'STKS', effective_location: build(:location), requestable?: true,
-                       permanent_location: build(:location), material_type: build(:book_material_type), loan_type: double(id: nil)),
-        double('item', callnumber: 'ABC 123', processing?: false, missing?: false, hold?: false, on_order?: false, hold_recallable?: false,
-                       pageable?: true, mediateable?: false, barcode: '9928812', checked_out?: false, status_class: 'active',
-                       enumeration: rec_two_enumeration, callnumber_no_enumeration: 'ABC 123',
-                       status_text: 'Active', public_note: 'huh?', type: 'STKS', effective_location: build(:location), requestable?: true,
-                       permanent_location: build(:location), material_type: build(:book_material_type), loan_type: double(id: nil))
+        build(:item, base_callnumber: 'ABC 123', full_enumeration: rec_one_enumeration, enumeration: rec_one_enumeration,
+                     barcode: '123123124'),
+        build(:item, base_callnumber: 'ABC 123', full_enumeration: rec_two_enumeration, enumeration: rec_two_enumeration,
+                     barcode: '9928812')
       ]
     end
     let(:sorted_holdings) { sort_holdings(all_items) }

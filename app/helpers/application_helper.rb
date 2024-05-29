@@ -48,17 +48,17 @@ module ApplicationHelper
   def digit_match(item)
     enumeration = item.enumeration
     defaultvalues = { year: 4000, volume: 0, volume_letter: '' }
-    return [item.callnumber_no_enumeration] unless enumeration
+    return [item.base_callnumber] unless enumeration
 
     enumeration_numbers = item.enumeration.split(/\D+/)
 
-    return [item.callnumber_no_enumeration] if enumeration_numbers.empty?
+    return [item.base_callnumber] if enumeration_numbers.empty?
 
     month = enumeration_month(enumeration)
     enum_y_v = enumeration_year_volume(enumeration_numbers, defaultvalues, enumeration)
 
     # sorts by callnumber without year, volume, sorts year desc, volume asc, volume letter asc (28A, 28B), and month descending
-    [item.callnumber_no_enumeration, -enum_y_v[:year], enum_y_v[:volume], enum_y_v[:volume_letter], -month]
+    [item.base_callnumber, -enum_y_v[:year], enum_y_v[:volume], enum_y_v[:volume_letter], -month]
   end
 
   private

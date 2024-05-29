@@ -33,17 +33,15 @@ module RequestsHelper
     end
   end
 
-  def callnumber_label(item)
-    return '(no call number)' if item.callnumber.blank?
+  def callnumber_label(item) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+    location_code = item.effective_location&.code
 
-    location_code = item.effective_location&.code || ''
-
-    if location_code.include?('SHELBYTITLE')
-      'Shelved by title'
-    elsif location_code.include?('SCI-SHELBYSERIES')
-      'Shelved by Series title'
+    if location_code&.include?('SHELBYTITLE')
+      ['Shelved by title', item.full_enumeration].filter_map(&:presence).join(' ')
+    elsif location_code&.include?('SCI-SHELBYSERIES')
+      ['Shelved by Series title', item.full_enumeration].filter_map(&:presence).join(' ')
     else
-      item.callnumber
+      item.callnumber.presence || '(no call number)'
     end
   end
 

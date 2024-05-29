@@ -11,7 +11,7 @@ RSpec.describe Folio::Holdings do
     Folio::Item.new(barcode: '123',
                     status: 'In process',
                     type: 'multimedia',
-                    callnumber: 'XX(14820051.1)',
+                    base_callnumber: 'XX(14820051.1)',
                     public_note: nil,
                     effective_location: instance_double(Folio::Location, details: {}),
                     permanent_location:)
@@ -32,7 +32,7 @@ RSpec.describe Folio::Holdings do
       Folio::Item.new(barcode: '123',
                       status: 'Available',
                       type: 'multimedia',
-                      callnumber: 'XX(14820051.1)',
+                      base_callnumber: 'XX(14820051.1)',
                       public_note: nil,
                       effective_location: instance_double(
                         Folio::Location,

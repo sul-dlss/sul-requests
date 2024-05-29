@@ -45,7 +45,7 @@ RSpec.describe RequestsHelper do
       Folio::Item.new(
         barcode: '123',
         type: 'LC',
-        callnumber: '456',
+        base_callnumber: '456',
         material_type: 'book',
         permanent_location: nil,
         effective_location:,
@@ -124,7 +124,7 @@ RSpec.describe RequestsHelper do
 
   describe '#callnumber_label' do
     it 'returns "(no call number)" when the item has no call number' do
-      item = build(:item, callnumber: nil)
+      item = build(:item, base_callnumber: nil)
       expect(callnumber_label(item)).to eq '(no call number)'
     end
 
@@ -139,7 +139,7 @@ RSpec.describe RequestsHelper do
     end
 
     it 'returns the call number when the item has a call number' do
-      item = build(:item, callnumber: 'AB123')
+      item = build(:item, base_callnumber: 'AB123')
       expect(callnumber_label(item)).to eq 'AB123'
     end
   end
