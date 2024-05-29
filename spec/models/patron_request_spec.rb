@@ -114,8 +114,8 @@ RSpec.describe PatronRequest do
     let(:attr) { { instance_hrid: 'a12345', origin_location_code: 'SPEC-MANUSCRIPT' } }
     let(:bib_data) do
       build(:sal3_holdings, items: [
-              build(:item, callnumber: 'MSS-10-item', effective_location: build(:location, code: 'SPEC-MSS-10')),
-              build(:item, callnumber: 'MSS-20-item', effective_location: build(:location, code: 'SPEC-MSS-20'))
+              build(:item, base_callnumber: 'MSS-10-item', effective_location: build(:location, code: 'SPEC-MSS-10')),
+              build(:item, base_callnumber: 'MSS-20-item', effective_location: build(:location, code: 'SPEC-MSS-20'))
             ])
     end
 

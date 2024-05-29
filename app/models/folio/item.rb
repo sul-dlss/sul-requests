@@ -6,8 +6,8 @@ module Folio
   #       See https://github.com/sul-dlss/searchworks_traject_indexer/blob/02192452815de3861dcfafb289e1be8e575cb000/lib/traject/config/sirsi_config.rb#L2379
   # NOTE, barcode and callnumber may be nil. see instance_hrid: 'in00000063826'
   class Item
-    attr_reader :id, :barcode, :status, :type, :callnumber, :public_note, :effective_location, :permanent_location, :temporary_location,
-                :material_type, :loan_type, :holdings_record_id, :enumeration, :callnumber_no_enumeration, :queue_length
+    attr_reader :id, :barcode, :status, :type, :public_note, :effective_location, :permanent_location, :temporary_location,
+                :material_type, :loan_type, :holdings_record_id, :enumeration, :base_callnumber, :full_enumeration, :queue_length
 
     # Other statuses that we aren't using include "Unavailable" and "Intellectual item"
     STATUS_CHECKED_OUT = 'Checked out'
@@ -60,17 +60,17 @@ module Folio
     ].freeze
 
     # rubocop:disable Metrics/ParameterLists, Metrics/MethodLength, Metrics/AbcSize
-    def initialize(barcode:, status:, callnumber:,
+    def initialize(barcode:, status:,
                    effective_location:, permanent_location: nil, temporary_location: nil,
                    type: nil, public_note: nil, material_type: nil, loan_type: nil, enumeration: nil,
+                   full_enumeration: nil,
                    due_date: nil, id: nil, holdings_record_id: nil, suppressed_from_discovery: false,
-                   callnumber_no_enumeration: nil, queue_length: 0)
+                   base_callnumber: nil, queue_length: 0)
       @id = id
       @holdings_record_id = holdings_record_id
       @barcode = barcode.presence || id
       @status = status
       @type = type
-      @callnumber = callnumber
       @public_note = public_note
       @effective_location = effective_location
       @permanent_location = permanent_location || effective_location
@@ -78,7 +78,8 @@ module Folio
       @material_type = material_type
       @loan_type = loan_type
       @enumeration = enumeration
-      @callnumber_no_enumeration = callnumber_no_enumeration
+      @full_enumeration = full_enumeration
+      @base_callnumber = base_callnumber
       @due_date = due_date
       @queue_length = queue_length
       @suppressed_from_discovery = suppressed_from_discovery
@@ -137,6 +138,10 @@ module Folio
       end
     end
     # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+
+    def callnumber
+      @callnumber ||= [base_callnumber.presence, full_enumeration.presence].compact.join(' ')
+    end
 
     def processing?
       [STATUS_IN_PROCESS, STATUS_IN_PROCESS_NR].include?(status)
@@ -205,10 +210,10 @@ module Folio
           status: dyn.dig('status', 'name'),
           due_date: dyn['dueDate'],
           enumeration: dyn['enumeration'],
-          callnumber_no_enumeration: dyn.dig('effectiveCallNumberComponents', 'callNumber'),
+          base_callnumber: dyn.dig('effectiveCallNumberComponents', 'callNumber'),
           type: dyn.dig('materialType', 'name'),
-          callnumber: [dyn.dig('effectiveCallNumberComponents', 'callNumber'), dyn['volume'], dyn['enumeration'],
-                       dyn['chronology']].filter_map(&:presence).join(' '),
+          full_enumeration: [dyn['volume'], dyn['enumeration'],
+                             dyn['chronology']].filter_map(&:presence).join(' '),
           public_note: dyn.fetch('notes').find { |note| note.dig('itemNoteType', 'name') == 'Public' }&.fetch('note'),
           effective_location: (Location.from_hash(dyn.fetch('effectiveLocation')) if dyn['effectiveLocation']),
           # fall back to the holding record's effective Location; we're no longer guaranteed an item-level permanent location.

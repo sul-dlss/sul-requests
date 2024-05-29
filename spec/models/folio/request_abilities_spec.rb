@@ -14,7 +14,7 @@ RSpec.describe Folio::RequestAbilities do
         [
           build(:item,
                 barcode: '12345678',
-                callnumber: 'ABC 123',
+                base_callnumber: 'ABC 123',
                 permanent_location: build(:mediated_location))
         ]
       end
@@ -29,7 +29,7 @@ RSpec.describe Folio::RequestAbilities do
         [
           build(:item,
                 barcode: '12345678',
-                callnumber: 'ABC 123',
+                base_callnumber: 'ABC 123',
                 permanent_location: build(:location, code: 'SAL3-STACKS'))
         ]
       end
@@ -46,7 +46,7 @@ RSpec.describe Folio::RequestAbilities do
         [
           build(:item,
                 barcode: '12345678',
-                callnumber: 'ABC 123',
+                base_callnumber: 'ABC 123',
                 permanent_location: build(:spec_coll_location))
         ]
       end
@@ -61,7 +61,7 @@ RSpec.describe Folio::RequestAbilities do
         [
           build(:item,
                 barcode: '12345678',
-                callnumber: 'ABC 123',
+                base_callnumber: 'ABC 123',
                 permanent_location: build(:location, code: 'SAL3-STACKS'))
         ]
       end
@@ -78,7 +78,7 @@ RSpec.describe Folio::RequestAbilities do
         [
           build(:item,
                 barcode: '12345678',
-                callnumber: 'ABC 123',
+                base_callnumber: 'ABC 123',
                 permanent_location: build(:page_lp_location))
         ]
       end
@@ -93,7 +93,7 @@ RSpec.describe Folio::RequestAbilities do
         [
           build(:item,
                 barcode: '12345678',
-                callnumber: 'ABC 123',
+                base_callnumber: 'ABC 123',
                 effective_location: build(:location, code: 'SAL3-STACKS'),
                 permanent_location: build(:page_lp_location))
         ]

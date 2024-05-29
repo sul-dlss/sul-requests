@@ -94,7 +94,8 @@ FactoryBot.define do
   factory :item, class: 'Folio::Item' do
     id { '0ce74882-9e05-57e7-9a4e-d81821e06874' }
     barcode { '3610512345678' }
-    callnumber { 'ABC 123' }
+    base_callnumber { 'ABC 123' }
+    full_enumeration { '' }
     status { 'Available' }
     public_note { '' }
     type { '' }
@@ -113,15 +114,15 @@ FactoryBot.define do
       [
         build(:item,
               barcode: '3610512345678',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               effective_location: build(:location, code: 'SAL3-STACKS')),
         build(:item,
               barcode: '3610587654321',
-              callnumber: 'ABC 321',
+              base_callnumber: 'ABC 321',
               effective_location: build(:location, code: 'SAL3-STACKS')),
         build(:item,
               barcode: '12345679',
-              callnumber: 'ABC 456',
+              base_callnumber: 'ABC 456',
               effective_location: build(:location, code: 'SAL3-STACKS'))
       ]
     end
@@ -140,7 +141,7 @@ FactoryBot.define do
       [
         build(:item,
               barcode: '87654321',
-              callnumber: 'ABC 87654321',
+              base_callnumber: 'ABC 87654321',
               effective_location: build(:location, code: 'SAL3-STACKS'))
       ]
     end
@@ -159,7 +160,7 @@ FactoryBot.define do
       [
         build(:item,
               barcode: '87654321',
-              callnumber: 'ABC 87654321',
+              base_callnumber: 'ABC 87654321',
               effective_location: build(:page_as_location))
       ]
     end
@@ -180,7 +181,7 @@ FactoryBot.define do
       [
         build(:item,
               barcode: '12345678',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               effective_location: build(:location, code: 'SAL3-STACKS'))
       ]
     end
@@ -201,7 +202,7 @@ FactoryBot.define do
       [
         build(:item,
               barcode: '12345678',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               effective_location: build(:mmstacks_location))
       ]
     end
@@ -222,7 +223,7 @@ FactoryBot.define do
       [
         build(:item,
               barcode: '12345678',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               effective_location: build(:law_location))
       ]
     end
@@ -242,7 +243,7 @@ FactoryBot.define do
       [
         build(:item,
               barcode: '12345678',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               effective_location: build(:sal_temp_location),
               type: 'NONCIRC')
       ]
@@ -266,12 +267,12 @@ FactoryBot.define do
       [
         build(:item,
               barcode: '12345678',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               status: 'Available',
               effective_location: build(:spec_coll_location)),
         build(:item,
               barcode: '87654321',
-              callnumber: 'ABC 321',
+              base_callnumber: 'ABC 321',
               status: 'Available',
               effective_location: build(:spec_coll_location))
       ]
@@ -295,7 +296,7 @@ FactoryBot.define do
       [
         build(:item,
               barcode: '12345678',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               status: 'Available',
               effective_location: build(:spec_coll_location))
       ]
@@ -320,7 +321,7 @@ FactoryBot.define do
       [
         build(:item,
               barcode: '12345678',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               status: 'Available',
               effective_location: build(:spec_coll_location))
       ]
@@ -341,12 +342,12 @@ FactoryBot.define do
       [
         build(:item,
               barcode: '12345678',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               status: 'Available',
               effective_location: build(:location, code: 'SAL3-STACKS')),
         build(:item,
               barcode: '87654321',
-              callnumber: 'ABC 321',
+              base_callnumber: 'ABC 321',
               status: 'Available',
               effective_location: build(:location, code: 'SAL3-STACKS'))
       ]
@@ -369,13 +370,13 @@ FactoryBot.define do
         build(:item,
               id: '1',
               barcode: '12345678',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               status: 'Available',
               effective_location: build(:scannable_location, code: 'SAL3-STACKS')),
         build(:item,
               id: '2',
               barcode: '87654321',
-              callnumber: 'ABC 321',
+              base_callnumber: 'ABC 321',
               status: 'Available',
               effective_location: build(:scannable_location, code: 'SAL3-STACKS'))
       ]
@@ -396,7 +397,7 @@ FactoryBot.define do
       [
         build(:item,
               barcode: '12345678',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               status: 'Available',
               effective_location: build(:green_location))
       ]
@@ -417,7 +418,7 @@ FactoryBot.define do
       [
         build(:item,
               barcode: '12345678',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               status: 'Available',
               effective_location: build(:page_lp_location))
       ]
@@ -438,7 +439,7 @@ FactoryBot.define do
       [
         build(:item,
               barcode: '12345678',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               status: 'Available',
               effective_location: build(:page_en_location))
       ]
@@ -459,12 +460,12 @@ FactoryBot.define do
       [
         build(:item,
               barcode: '12345678',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               status: 'Available',
               effective_location: build(:page_mp_location)),
         build(:item,
               barcode: '87654321',
-              callnumber: 'ABC 321',
+              base_callnumber: 'ABC 321',
               status: 'Available',
               effective_location: build(:page_mp_location))
       ]
@@ -485,28 +486,28 @@ FactoryBot.define do
       [
         build(:item,
               barcode: '12345678',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               effective_location: build(:location, code: 'SAL3-STACKS')),
         build(:item,
               barcode: '23456789',
-              callnumber: 'ABC 456',
+              base_callnumber: 'ABC 456',
               effective_location: build(:location, code: 'SAL3-STACKS')),
         build(:item,
               barcode: '34567890',
-              callnumber: 'ABC 789',
+              base_callnumber: 'ABC 789',
               effective_location: build(:location, code: 'SAL3-STACKS')),
         build(:item,
               barcode: '45678901',
-              callnumber: 'ABC 012',
+              base_callnumber: 'ABC 012',
               effective_location: build(:location, code: 'SAL3-STACKS'),
               public_note: 'note for 45678901'),
         build(:item,
               barcode: '56789012',
-              callnumber: 'ABC 345',
+              base_callnumber: 'ABC 345',
               effective_location: build(:location, code: 'SAL3-STACKS')),
         build(:item,
               barcode: '67890123',
-              callnumber: 'ABC 678',
+              base_callnumber: 'ABC 678',
               effective_location: build(:location, code: 'SAL3-STACKS'))
       ]
     end
@@ -526,7 +527,7 @@ FactoryBot.define do
       [
         build(:item,
               barcode: '12345678',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
               type: 'LCKSTK')
       ]
@@ -547,7 +548,7 @@ FactoryBot.define do
       [
         build(:item,
               barcode: '12345678',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               effective_location: build(:location, code: 'ART-STACKS'),
               type: 'STKS')
       ]
@@ -569,64 +570,64 @@ FactoryBot.define do
         build(:item,
               id: 'a',
               barcode: '12345678',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
               type: 'LCKSTK'),
         build(:item,
               id: 'b',
               barcode: '23456789',
-              callnumber: 'ABC 456',
+              base_callnumber: 'ABC 456',
               effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
               public_note: 'note for 23456789',
               type: 'LCKSTK'),
         build(:item,
               id: 'c',
               barcode: '34567890',
-              callnumber: 'ABC 789',
+              base_callnumber: 'ABC 789',
               effective_location: build(:mediated_location, code: 'ART-NEWBOOK'),
               permanent_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
               type: 'LCKSTK'),
         build(:item,
               id: 'd',
               barcode: '45678901',
-              callnumber: 'ABC 012',
+              base_callnumber: 'ABC 012',
               effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
               public_note: 'note for 45678901',
               type: 'LCKSTK'),
         build(:item,
               id: 'e',
               barcode: '56789012',
-              callnumber: 'ABC 345',
+              base_callnumber: 'ABC 345',
               effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
               type: 'LCKSTK'),
         build(:item,
               id: 'f',
               barcode: '67890123',
-              callnumber: 'ABC 678',
+              base_callnumber: 'ABC 678',
               effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
               type: 'LCKSTK'),
         build(:item,
               id: 'g',
               barcode: '78901234',
-              callnumber: 'ABC 901',
+              base_callnumber: 'ABC 901',
               effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
               type: 'LCKSTK'),
         build(:item,
               id: 'h',
               barcode: '89012345',
-              callnumber: 'ABC 234',
+              base_callnumber: 'ABC 234',
               effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
               type: 'LCKSTK'),
         build(:item,
               id: 'i',
               barcode: '90123456',
-              callnumber: 'ABC 567',
+              base_callnumber: 'ABC 567',
               effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
               type: 'LCKSTK'),
         build(:item,
               id: 'j',
               barcode: '01234567',
-              callnumber: 'ABC 890',
+              base_callnumber: 'ABC 890',
               effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
               type: 'LCKSTK')
       ]
@@ -647,44 +648,44 @@ FactoryBot.define do
       [
         build(:item,
               barcode: '12345678',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               effective_location: build(:spec_coll_location)),
         build(:item,
               barcode: '23456789',
-              callnumber: 'ABC 456',
+              base_callnumber: 'ABC 456',
               effective_location: build(:spec_coll_location)),
         build(:item,
               barcode: '34567890',
-              callnumber: 'ABC 789',
+              base_callnumber: 'ABC 789',
               effective_location: build(:spec_coll_location)),
         build(:item,
               barcode: '45678901',
-              callnumber: 'ABC 012',
+              base_callnumber: 'ABC 012',
               effective_location: build(:spec_coll_location),
               public_note: 'note for 45678901'),
         build(:item,
               barcode: '56789012',
-              callnumber: 'ABC 345',
+              base_callnumber: 'ABC 345',
               effective_location: build(:spec_coll_location)),
         build(:item,
               barcode: '67890123',
-              callnumber: 'ABC 678',
+              base_callnumber: 'ABC 678',
               effective_location: build(:spec_coll_location)),
         build(:item,
               barcode: '78901234',
-              callnumber: 'ABC 901',
+              base_callnumber: 'ABC 901',
               effective_location: build(:spec_coll_location)),
         build(:item,
               barcode: '89012345',
-              callnumber: 'ABC 234',
+              base_callnumber: 'ABC 234',
               effective_location: build(:spec_coll_location)),
         build(:item,
               barcode: '90123456',
-              callnumber: 'ABC 567',
+              base_callnumber: 'ABC 567',
               effective_location: build(:spec_coll_location)),
         build(:item,
               barcode: '01234567',
-              callnumber: 'ABC 890',
+              base_callnumber: 'ABC 890',
               effective_location: build(:spec_coll_location))
       ]
     end
@@ -712,11 +713,11 @@ FactoryBot.define do
       [
         build(:item,
               barcode: '12345678',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               effective_location: build(:location, code: 'SAL3-STACKS')),
         build(:item,
               barcode: '87654321',
-              callnumber: 'ABC 321',
+              base_callnumber: 'ABC 321',
               due_date: '2015-01-01T12:59:00.000+00:00',
               status: 'Checked out',
               enumeration: 'T.1 2023',
@@ -739,7 +740,7 @@ FactoryBot.define do
       [
         build(:item,
               barcode: '12345678',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               effective_location: build(:location, code: 'SAL3-STACKS'))
       ]
     end
@@ -776,12 +777,12 @@ FactoryBot.define do
       [
         build(:item,
               barcode: '12345678',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               status: 'Available',
               effective_location: build(:location, code: 'SAL3-STACKS')),
         build(:item,
               barcode: '12345679',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               status: 'Available',
               effective_location: build(:location, code: 'SAL3-STACKS'))
       ]
@@ -805,12 +806,12 @@ FactoryBot.define do
       [
         build(:item,
               barcode: '12345678',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               status: 'Available',
               effective_location: build(:location, code: 'SAL3-STACKS')),
         build(:item,
               barcode: '87654321',
-              callnumber: 'ABC 321',
+              base_callnumber: 'ABC 321',
               status: 'Available',
               effective_location: build(:location, code: 'GRE-CRES'),
               permanent_location: build(:location, code: 'SAL3-STACKS'),
@@ -836,13 +837,13 @@ FactoryBot.define do
         build(:item,
               id: 'uuid-a',
               barcode: '12345678',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               status: 'Available',
               effective_location: build(:location, code: 'SAL3-STACKS')),
         build(:item,
               id: 'uuid-b',
               barcode: '',
-              callnumber: 'ABC 456',
+              base_callnumber: 'ABC 456',
               status: 'Available',
               effective_location: build(:location, code: 'SAL3-STACKS'))
       ]
@@ -863,12 +864,12 @@ FactoryBot.define do
       [
         build(:item,
               barcode: '12345678',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               status: 'Missing',
               effective_location: build(:location, code: 'SAL3-STACKS')),
         build(:item,
               barcode: '12345678',
-              callnumber: 'ABC 321',
+              base_callnumber: 'ABC 321',
               status: 'Available',
               effective_location: build(:location, code: 'SAL3-STACKS'))
       ]
@@ -889,7 +890,7 @@ FactoryBot.define do
       [
         build(:item,
               barcode: '12345678',
-              callnumber: 'ABC 123',
+              base_callnumber: 'ABC 123',
               status: 'Aged to Lost',
               effective_location: build(:location, code: 'SAL3-STACKS'))
       ]
