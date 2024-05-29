@@ -78,7 +78,7 @@ class SubmitPatronRequestJob < ApplicationJob
 
     folio_response = folio_client.create_instance_hold(patron_request.patron.id, patron_request.instance_id, hold_request_data)
 
-    patron_request.update(folio_responses: [folio_response])
+    patron_request.update(folio_responses: { nil => folio_response })
     PatronRequestMailer.confirmation_email(patron_request).deliver_later
   end
 
