@@ -98,6 +98,7 @@ RSpec.describe 'Creating a request', :js do
         expect(page).to have_content 'Copyright notice'
         fill_in 'Page range', with: '1-15'
         fill_in 'Title of article or chapter', with: 'Some title'
+        fill_in 'Author(s)', with: 'Some author'
 
         expect do
           perform_enqueued_jobs do
@@ -105,6 +106,11 @@ RSpec.describe 'Creating a request', :js do
           end
           expect(page).to have_content 'We received your scan request'
         end.to change(PatronRequest, :count).by(1)
+
+        expect(PatronRequest.last).to have_attributes(
+          scan_title: 'Some title',
+          scan_authors: 'Some author'
+        )
       end
     end
 
