@@ -456,7 +456,7 @@ class PatronRequest < ApplicationRecord
                                     RequestType: 'Article',
                                     SpecIns: 'Scan and Deliver Request',
                                     PhotoJournalTitle: bib_data.title,
-                                    PhotoArticleAuthor: bib_data.author,
+                                    PhotoArticleAuthor: scan_authors,
                                     Location: origin_library_code,
                                     ReferenceNumber: origin_location_code,
                                     PhotoArticleTitle: scan_title,

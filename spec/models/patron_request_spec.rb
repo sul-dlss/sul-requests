@@ -426,4 +426,27 @@ RSpec.describe PatronRequest do
       end
     end
   end
+
+  describe '#illiad_request_params' do
+    let(:bib_data) { build(:scannable_holdings) }
+    let(:item) { bib_data.items.first }
+
+    context 'when request type is scan' do
+      let(:attr) { { request_type:, scan_authors:, scan_title:, scan_page_range:, origin_location_code: 'SAL3-STACKS' } }
+      let(:request_type) { 'scan' }
+      let(:scan_authors) { 'Scan Authors' }
+      let(:scan_title) { 'Scan Title' }
+      let(:scan_page_range) { '1-10' }
+
+      it 'returns the correct ILLiad request params for scan request' do
+        expect(request.illiad_request_params(item)).to include(
+          RequestType: 'Article',
+          ItemNumber: item.barcode,
+          PhotoArticleTitle: scan_title,
+          PhotoJournalInclusivePages: scan_page_range,
+          PhotoArticleAuthor: scan_authors
+        )
+      end
+    end
+  end
 end
