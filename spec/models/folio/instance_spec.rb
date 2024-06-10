@@ -348,16 +348,27 @@ RSpec.describe Folio::Instance do
     let(:instance_response) do
       <<~JSON
         {
-          "id": "a1a88348-363f-5b41-9937-13584daae527",
+          "id": "039f3c69-e115-5494-b036-5716fce3996e",
+          "hrid": "a6307113",
           "title": "Stanford Research Institute records, 1947-1966",
           "identifiers": [
             {
+              "value": "(Sirsi) a6307113",
+              "identifierTypeObject": {
+                "name": "System control number"
+              }
+            },
+            {
               "value": "(OCoLC-M)754864063",
-              "identifierTypeObject": null
+              "identifierTypeObject": {
+                "name": "OCLC"
+              }
             },
             {
               "value": "(OCoLC-I)755035981",
-              "identifierTypeObject": null
+              "identifierTypeObject": {
+                "name": "OCLC"
+              }
             }
           ],
           "instanceType": {
@@ -370,153 +381,322 @@ RSpec.describe Folio::Instance do
             }
           ],
           "publication": [],
+          "editions": [],
           "electronicAccess": [
             {
               "materialsSpecification": "Finding aid available online",
               "uri": "http://www.oac.cdlib.org/findaid/ark:/13030/kt7b69s0dh"
             }
           ],
-          "items": [
+          "holdingsRecords": [
             {
-              "barcode": "6307113-1001",
-              "status": {
-                "name": "Available"
-              },
-              "queueTotalLength": 0,
-              "materialType": null,
-              "chronology": null,
-              "enumeration": null,
-              "effectiveCallNumberComponents": {
-                "callNumber": "SC0801"
-              },
-              "notes": [
+              "callNumber": "SC0801",
+              "discoverySuppress": null,
+              "boundWithItem": null,
+              "items": [
                 {
-                  "note": ".COMMENT. c:pew; removed from 2191 collection",
-                  "itemNoteType": null
+                  "id": "4c5546cc-be22-5e2a-b8d6-5f5ade86b545",
+                  "barcode": "6307113-1001",
+                  "discoverySuppress": false,
+                  "volume": null,
+                  "queueTotalLength": 0,
+                  "status": {
+                    "name": "Available"
+                  },
+                  "dueDate": null,
+                  "materialType": {
+                    "id": "1a54b431-2e4f-452d-9cae-9cee66c9a892",
+                    "name": "book"
+                  },
+                  "chronology": null,
+                  "enumeration": null,
+                  "effectiveCallNumberComponents": {
+                    "callNumber": "SC0801"
+                  },
+                  "notes": [
+                    {
+                      "note": ".COMMENT. c:pew; removed from 2191 collection",
+                      "itemNoteType": {
+                        "name": "Tech Staff"
+                      }
+                    }
+                  ],
+                  "effectiveLocation": {
+                    "id": "635d2ddc-c7a1-46ce-b46d-336f1384c4dc",
+                    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+                    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+                    "code": "SPEC-U-ARCHIVES",
+                    "discoveryDisplayName": "University Archives",
+                    "name": "Spec U-Archives",
+                    "servicePoints": [
+                      {
+                        "id": "0e924af7-785c-46eb-a5e2-060394822016",
+                        "code": "SPEC",
+                        "pickupLocation": true
+                      }
+                    ],
+                    "library": {
+                      "id": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+                      "code": "SPEC-COLL"
+                    },
+                    "campus": {
+                      "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                      "code": "SUL"
+                    },
+                    "details": {
+                      "pageAeonSite": "SPECUA",
+                      "pageMediationGroupKey": null,
+                      "pageServicePoints": [],
+                      "scanServicePointCode": null,
+                      "availabilityClass": null,
+                      "searchworksTreatTemporaryLocationAsPermanentLocation": null
+                    }
+                  },
+                  "permanentLocation": null,
+                  "temporaryLocation": null,
+                  "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+                  "temporaryLoanTypeId": null,
+                  "holdingsRecord": {
+                    "id": "e7279a91-f912-5f8b-a420-f082e542e3cc",
+                    "effectiveLocation": {
+                      "id": "635d2ddc-c7a1-46ce-b46d-336f1384c4dc",
+                      "code": "SPEC-U-ARCHIVES",
+                      "details": {
+                        "pageAeonSite": "SPECUA",
+                        "pageMediationGroupKey": null,
+                        "pageServicePoints": [],
+                        "pagingSchedule": null,
+                        "scanServicePointCode": null
+                      }
+                    }
+                  },
+                  "boundWithHoldingsPerItem": []
                 }
-              ],
-              "effectiveLocation": {
-                "id": "635d2ddc-c7a1-46ce-b46d-336f1384c4dc",
-                "campus": {
-                  "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-                  "code": "SUL"
-                },
-                "library": {
-                  "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-                  "code": "SPEC-COLL"
-                },
-                "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-                "code": "SPEC-U-ARCHIVES",
-                "discoveryDisplayName": "University Archives",
-                "name": "Spec U-Archives",
-                "details": {}
-              },
-              "permanentLocation": { "id": "uuid", "code": "SPEC-STACKS" },
-              "holdingsRecord": { "effectiveLocation": { "code": "SPEC-STACKS" } },
-              "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
-              "temporaryLoanTypeId": null
+              ]
             },
             {
-              "barcode": "36105116223418",
-              "status": {
-                "name": "Available"
-              },
-              "queueTotalLength": 0,
-              "materialType": null,
-              "chronology": null,
-              "enumeration": "BOX 1",
-              "effectiveCallNumberComponents": {
-                "callNumber": "SC0801"
-              },
-              "notes": [],
-              "effectiveLocation": {
-                "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
-                "campus": {
-                  "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-                  "code": "SUL"
+              "callNumber": "SC0801",
+              "discoverySuppress": false,
+              "boundWithItem": null,
+              "items": [
+                {
+                  "id": "86029649-5bc9-5ee5-8a46-bede3e1e7c8e",
+                  "barcode": "36105116223434",
+                  "discoverySuppress": false,
+                  "volume": null,
+                  "queueTotalLength": 0,
+                  "status": {
+                    "name": "Available"
+                  },
+                  "dueDate": null,
+                  "materialType": {
+                    "id": "69edaa1b-e40b-4f1c-8cb5-4b615ac6a664",
+                    "name": "archival"
+                  },
+                  "chronology": null,
+                  "enumeration": "BOX 3",
+                  "effectiveCallNumberComponents": {
+                    "callNumber": "SC0801"
+                  },
+                  "notes": [],
+                  "effectiveLocation": {
+                    "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
+                    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+                    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+                    "code": "SPEC-SAL3-U-ARCHIVES",
+                    "discoveryDisplayName": "University Archives",
+                    "name": "Spec SAL3 U-Archives",
+                    "servicePoints": [
+                      {
+                        "id": "3a306665-eec7-4a40-8f4d-608585b2a394",
+                        "code": "SAL3",
+                        "pickupLocation": false
+                      }
+                    ],
+                    "library": {
+                      "id": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+                      "code": "SPEC-COLL"
+                    },
+                    "campus": {
+                      "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                      "code": "SUL"
+                    },
+                    "details": {
+                      "pageAeonSite": "SPECUA",
+                      "pageMediationGroupKey": null,
+                      "pageServicePoints": [],
+                      "scanServicePointCode": null,
+                      "availabilityClass": null,
+                      "searchworksTreatTemporaryLocationAsPermanentLocation": null
+                    }
+                  },
+                  "permanentLocation": null,
+                  "temporaryLocation": null,
+                  "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+                  "temporaryLoanTypeId": null,
+                  "holdingsRecord": {
+                    "id": "ff3f34d8-8d01-5317-bbf3-d8d265ca06fc",
+                    "effectiveLocation": {
+                      "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
+                      "code": "SPEC-SAL3-U-ARCHIVES",
+                      "details": {
+                        "pageAeonSite": "SPECUA",
+                        "pageMediationGroupKey": null,
+                        "pageServicePoints": [],
+                        "pagingSchedule": null,
+                        "scanServicePointCode": null
+                      }
+                    }
+                  },
+                  "boundWithHoldingsPerItem": []
                 },
-                "library": {
-                  "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-                  "code": "SPEC-COLL"
+                {
+                  "id": "d721f44c-f37c-5cfc-b1b9-d4a45e49de3a",
+                  "barcode": "36105116223418",
+                  "discoverySuppress": false,
+                  "volume": null,
+                  "queueTotalLength": 0,
+                  "status": {
+                    "name": "Available"
+                  },
+                  "dueDate": null,
+                  "materialType": {
+                    "id": "69edaa1b-e40b-4f1c-8cb5-4b615ac6a664",
+                    "name": "archival"
+                  },
+                  "chronology": null,
+                  "enumeration": "BOX 1",
+                  "effectiveCallNumberComponents": {
+                    "callNumber": "SC0801"
+                  },
+                  "notes": [],
+                  "effectiveLocation": {
+                    "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
+                    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+                    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+                    "code": "SPEC-SAL3-U-ARCHIVES",
+                    "discoveryDisplayName": "University Archives",
+                    "name": "Spec SAL3 U-Archives",
+                    "servicePoints": [
+                      {
+                        "id": "3a306665-eec7-4a40-8f4d-608585b2a394",
+                        "code": "SAL3",
+                        "pickupLocation": false
+                      }
+                    ],
+                    "library": {
+                      "id": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+                      "code": "SPEC-COLL"
+                    },
+                    "campus": {
+                      "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                      "code": "SUL"
+                    },
+                    "details": {
+                      "pageAeonSite": "SPECUA",
+                      "pageMediationGroupKey": null,
+                      "pageServicePoints": [],
+                      "scanServicePointCode": null,
+                      "availabilityClass": null,
+                      "searchworksTreatTemporaryLocationAsPermanentLocation": null
+                    }
+                  },
+                  "permanentLocation": null,
+                  "temporaryLocation": null,
+                  "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+                  "temporaryLoanTypeId": null,
+                  "holdingsRecord": {
+                    "id": "ff3f34d8-8d01-5317-bbf3-d8d265ca06fc",
+                    "effectiveLocation": {
+                      "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
+                      "code": "SPEC-SAL3-U-ARCHIVES",
+                      "details": {
+                        "pageAeonSite": "SPECUA",
+                        "pageMediationGroupKey": null,
+                        "pageServicePoints": [],
+                        "pagingSchedule": null,
+                        "scanServicePointCode": null
+                      }
+                    }
+                  },
+                  "boundWithHoldingsPerItem": []
                 },
-                "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-                "code": "SPEC-SAL3-U-ARCHIVES",
-                "discoveryDisplayName": "University Archives",
-                "name": "Spec SAL3 U-Archives",
-                "details": {}
-              },
-              "permanentLocation": { "id": "uuid", "code": "SPEC-STACKS" },
-              "holdingsRecord": { "effectiveLocation": { "code": "SPEC-STACKS" } },
-              "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
-              "temporaryLoanTypeId": null
-            },
-            {
-              "barcode": "36105116223426",
-              "status": {
-                "name": "Available"
-              },
-              "queueTotalLength": 0,
-              "materialType": null,
-              "chronology": null,
-              "enumeration": "BOX 2",
-              "effectiveCallNumberComponents": {
-                "callNumber": "SC0801"
-              },
-              "notes": [],
-              "effectiveLocation": {
-                "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
-                "campus": {
-                  "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-                  "code": "SUL"
-                },
-                "library": {
-                  "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-                  "code": "SPEC-COLL"
-                },
-                "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-                "code": "SPEC-SAL3-U-ARCHIVES",
-                "discoveryDisplayName": "University Archives",
-                "name": "Spec SAL3 U-Archives",
-                "details": {}
-              },
-              "permanentLocation": { "id": "uuid", "code": "SPEC-STACKS" },
-              "holdingsRecord": { "effectiveLocation": { "code": "SPEC-STACKS" } },
-              "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
-              "temporaryLoanTypeId": null
-            },
-            {
-              "barcode": "36105116223434",
-              "status": {
-                "name": "Available"
-              },
-              "queueTotalLength": 0,
-              "materialType": null,
-              "chronology": null,
-              "enumeration": "BOX 3",
-              "effectiveCallNumberComponents": {
-                "callNumber": "SC0801"
-              },
-              "notes": [],
-              "effectiveLocation": {
-                "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
-                "campus": {
-                  "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-                  "code": "SUL"
-                },
-                "library": {
-                  "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-                  "code": "SPEC-COLL"
-                },
-                "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-                "code": "SPEC-SAL3-U-ARCHIVES",
-                "discoveryDisplayName": "University Archives",
-                "name": "Spec SAL3 U-Archives",
-                "details": {}
-              },
-              "permanentLocation": { "id": "uuid", "code": "SPEC-STACKS" },
-              "holdingsRecord": { "effectiveLocation": { "code": "SPEC-STACKS" } },
-              "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
-              "temporaryLoanTypeId": null
+                {
+                  "id": "abd43d76-e798-5c35-877d-3598e4e49f54",
+                  "barcode": "36105116223426",
+                  "discoverySuppress": false,
+                  "volume": null,
+                  "queueTotalLength": 0,
+                  "status": {
+                    "name": "Available"
+                  },
+                  "dueDate": null,
+                  "materialType": {
+                    "id": "69edaa1b-e40b-4f1c-8cb5-4b615ac6a664",
+                    "name": "archival"
+                  },
+                  "chronology": null,
+                  "enumeration": "BOX 2",
+                  "effectiveCallNumberComponents": {
+                    "callNumber": "SC0801"
+                  },
+                  "notes": [],
+                  "effectiveLocation": {
+                    "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
+                    "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                    "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+                    "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+                    "code": "SPEC-SAL3-U-ARCHIVES",
+                    "discoveryDisplayName": "University Archives",
+                    "name": "Spec SAL3 U-Archives",
+                    "servicePoints": [
+                      {
+                        "id": "3a306665-eec7-4a40-8f4d-608585b2a394",
+                        "code": "SAL3",
+                        "pickupLocation": false
+                      }
+                    ],
+                    "library": {
+                      "id": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+                      "code": "SPEC-COLL"
+                    },
+                    "campus": {
+                      "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                      "code": "SUL"
+                    },
+                    "details": {
+                      "pageAeonSite": "SPECUA",
+                      "pageMediationGroupKey": null,
+                      "pageServicePoints": [],
+                      "scanServicePointCode": null,
+                      "availabilityClass": null,
+                      "searchworksTreatTemporaryLocationAsPermanentLocation": null
+                    }
+                  },
+                  "permanentLocation": null,
+                  "temporaryLocation": null,
+                  "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+                  "temporaryLoanTypeId": null,
+                  "holdingsRecord": {
+                    "id": "ff3f34d8-8d01-5317-bbf3-d8d265ca06fc",
+                    "effectiveLocation": {
+                      "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
+                      "code": "SPEC-SAL3-U-ARCHIVES",
+                      "details": {
+                        "pageAeonSite": "SPECUA",
+                        "pageMediationGroupKey": null,
+                        "pageServicePoints": [],
+                        "pagingSchedule": null,
+                        "scanServicePointCode": null
+                      }
+                    }
+                  },
+                  "boundWithHoldingsPerItem": []
+                }
+              ]
             }
           ]
         }
@@ -531,16 +711,27 @@ RSpec.describe Folio::Instance do
       let(:instance_response) do
         <<~JSON
           {
-            "id": "a1a88348-363f-5b41-9937-13584daae527",
+            "id": "039f3c69-e115-5494-b036-5716fce3996e",
+            "hrid": "a6307113",
             "title": "Stanford Research Institute records, 1947-1966",
             "identifiers": [
               {
+                "value": "(Sirsi) a6307113",
+                "identifierTypeObject": {
+                  "name": "System control number"
+                }
+              },
+              {
                 "value": "(OCoLC-M)754864063",
-                "identifierTypeObject": null
+                "identifierTypeObject": {
+                  "name": "OCLC"
+                }
               },
               {
                 "value": "(OCoLC-I)755035981",
-                "identifierTypeObject": null
+                "identifierTypeObject": {
+                  "name": "OCLC"
+                }
               }
             ],
             "instanceType": {
@@ -553,154 +744,322 @@ RSpec.describe Folio::Instance do
               }
             ],
             "publication": [],
+            "editions": [],
             "electronicAccess": [
               {
                 "materialsSpecification": "Finding aid available online",
                 "uri": "http://www.oac.cdlib.org/findaid/ark:/13030/kt7b69s0dh"
               }
             ],
-            "items": [
+            "holdingsRecords": [
               {
-                "barcode": "6307113-1001",
-                "status": {
-                  "name": "Available"
-                },
-                "queueTotalLength": 0,
-                "materialType": null,
-                "chronology": null,
-                "enumeration": null,
-                "effectiveCallNumberComponents": {
-                  "callNumber": "SC0801"
-                },
-                "notes": [
+                "callNumber": "SC0801",
+                "discoverySuppress": null,
+                "boundWithItem": null,
+                "items": [
                   {
-                    "note": ".COMMENT. c:pew; removed from 2191 collection",
-                    "itemNoteType": null
+                    "id": "4c5546cc-be22-5e2a-b8d6-5f5ade86b545",
+                    "barcode": "6307113-1001",
+                    "discoverySuppress": false,
+                    "volume": null,
+                    "queueTotalLength": 0,
+                    "status": {
+                      "name": "Available"
+                    },
+                    "dueDate": null,
+                    "materialType": {
+                      "id": "1a54b431-2e4f-452d-9cae-9cee66c9a892",
+                      "name": "book"
+                    },
+                    "chronology": null,
+                    "enumeration": null,
+                    "effectiveCallNumberComponents": {
+                      "callNumber": "SC0801"
+                    },
+                    "notes": [
+                      {
+                        "note": ".COMMENT. c:pew; removed from 2191 collection",
+                        "itemNoteType": {
+                          "name": "Tech Staff"
+                        }
+                      }
+                    ],
+                    "effectiveLocation": {
+                      "id": "635d2ddc-c7a1-46ce-b46d-336f1384c4dc",
+                      "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                      "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+                      "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+                      "code": "SPEC-U-ARCHIVES",
+                      "discoveryDisplayName": "University Archives",
+                      "name": "Spec U-Archives",
+                      "servicePoints": [
+                        {
+                          "id": "0e924af7-785c-46eb-a5e2-060394822016",
+                          "code": "SPEC",
+                          "pickupLocation": true
+                        }
+                      ],
+                      "library": {
+                        "id": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+                        "code": "SPEC-COLL"
+                      },
+                      "campus": {
+                        "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                        "code": "SUL"
+                      },
+                      "details": {
+                        "pageAeonSite": "SPECUA",
+                        "pageMediationGroupKey": null,
+                        "pageServicePoints": [],
+                        "scanServicePointCode": null,
+                        "availabilityClass": null,
+                        "searchworksTreatTemporaryLocationAsPermanentLocation": null
+                      }
+                    },
+                    "permanentLocation": null,
+                    "temporaryLocation": null,
+                    "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+                    "temporaryLoanTypeId": null,
+                    "holdingsRecord": {
+                      "id": "e7279a91-f912-5f8b-a420-f082e542e3cc",
+                      "effectiveLocation": {
+                        "id": "635d2ddc-c7a1-46ce-b46d-336f1384c4dc",
+                        "code": "SPEC-U-ARCHIVES",
+                        "details": {
+                          "pageAeonSite": "SPECUA",
+                          "pageMediationGroupKey": null,
+                          "pageServicePoints": [],
+                          "pagingSchedule": null,
+                          "scanServicePointCode": null
+                        }
+                      }
+                    },
+                    "boundWithHoldingsPerItem": []
                   }
-                ],
-                "effectiveLocation": {
-                  "id": "635d2ddc-c7a1-46ce-b46d-336f1384c4dc",
-                  "campus": {
-                    "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-                    "code": "SUL"
-                  },
-                  "library": {
-                    "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-                    "code": "SPEC-COLL"
-                  },
-                  "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-                  "code": "SPEC-U-ARCHIVES",
-                  "discoveryDisplayName": "University Archives",
-                  "name": "Spec U-Archives",
-                  "details": {}
-                },
-                "permanentLocation": { "id": "uuid", "code": "SPEC-STACKS" },
-                "holdingsRecord": { "effectiveLocation": { "code": "SPEC-STACKS" } },
-                "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
-                "temporaryLoanTypeId": null
+                ]
               },
               {
-                "barcode": "36105116223418",
-                "status": {
-                  "name": "Available"
-                },
-                "queueTotalLength": 0,
-                "materialType": null,
-                "chronology": null,
-                "enumeration": "BOX 1",
-                "effectiveCallNumberComponents": {
-                  "callNumber": "SC0801"
-                },
-                "notes": [],
-                "effectiveLocation": {
-                  "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
-                  "campus": {
-                    "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-                    "code": "SUL"
+                "callNumber": "SC0801",
+                "discoverySuppress": false,
+                "boundWithItem": null,
+                "items": [
+                  {
+                    "id": "86029649-5bc9-5ee5-8a46-bede3e1e7c8e",
+                    "barcode": "36105116223434",
+                    "discoverySuppress": false,
+                    "volume": null,
+                    "queueTotalLength": 0,
+                    "status": {
+                      "name": "Available"
+                    },
+                    "dueDate": null,
+                    "materialType": {
+                      "id": "69edaa1b-e40b-4f1c-8cb5-4b615ac6a664",
+                      "name": "archival"
+                    },
+                    "chronology": null,
+                    "enumeration": "BOX 3",
+                    "effectiveCallNumberComponents": {
+                      "callNumber": "SC0801"
+                    },
+                    "notes": [],
+                    "effectiveLocation": {
+                      "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
+                      "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                      "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+                      "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+                      "code": "SPEC-SAL3-U-ARCHIVES",
+                      "discoveryDisplayName": "University Archives",
+                      "name": "Spec SAL3 U-Archives",
+                      "servicePoints": [
+                        {
+                          "id": "3a306665-eec7-4a40-8f4d-608585b2a394",
+                          "code": "SAL3",
+                          "pickupLocation": false
+                        }
+                      ],
+                      "library": {
+                        "id": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+                        "code": "SPEC-COLL"
+                      },
+                      "campus": {
+                        "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                        "code": "SUL"
+                      },
+                      "details": {
+                        "pageAeonSite": "SPECUA",
+                        "pageMediationGroupKey": null,
+                        "pageServicePoints": [],
+                        "scanServicePointCode": null,
+                        "availabilityClass": null,
+                        "searchworksTreatTemporaryLocationAsPermanentLocation": null
+                      }
+                    },
+                    "permanentLocation": null,
+                    "temporaryLocation": null,
+                    "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+                    "temporaryLoanTypeId": null,
+                    "holdingsRecord": {
+                      "id": "ff3f34d8-8d01-5317-bbf3-d8d265ca06fc",
+                      "effectiveLocation": {
+                        "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
+                        "code": "SPEC-SAL3-U-ARCHIVES",
+                        "details": {
+                          "pageAeonSite": "SPECUA",
+                          "pageMediationGroupKey": null,
+                          "pageServicePoints": [],
+                          "pagingSchedule": null,
+                          "scanServicePointCode": null
+                        }
+                      }
+                    },
+                    "boundWithHoldingsPerItem": []
                   },
-                  "library": {
-                    "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-                    "code": "SPEC-COLL"
+                  {
+                    "id": "d721f44c-f37c-5cfc-b1b9-d4a45e49de3a",
+                    "barcode": "36105116223418",
+                    "discoverySuppress": false,
+                    "volume": null,
+                    "queueTotalLength": 0,
+                    "status": {
+                      "name": "Available"
+                    },
+                    "dueDate": null,
+                    "materialType": {
+                      "id": "69edaa1b-e40b-4f1c-8cb5-4b615ac6a664",
+                      "name": "archival"
+                    },
+                    "chronology": null,
+                    "enumeration": "BOX 1",
+                    "effectiveCallNumberComponents": {
+                      "callNumber": "SC0801"
+                    },
+                    "notes": [],
+                    "effectiveLocation": {
+                      "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
+                      "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                      "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+                      "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+                      "code": "SPEC-SAL3-U-ARCHIVES",
+                      "discoveryDisplayName": "University Archives",
+                      "name": "Spec SAL3 U-Archives",
+                      "servicePoints": [
+                        {
+                          "id": "3a306665-eec7-4a40-8f4d-608585b2a394",
+                          "code": "SAL3",
+                          "pickupLocation": false
+                        }
+                      ],
+                      "library": {
+                        "id": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+                        "code": "SPEC-COLL"
+                      },
+                      "campus": {
+                        "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                        "code": "SUL"
+                      },
+                      "details": {
+                        "pageAeonSite": "SPECUA",
+                        "pageMediationGroupKey": null,
+                        "pageServicePoints": [],
+                        "scanServicePointCode": null,
+                        "availabilityClass": null,
+                        "searchworksTreatTemporaryLocationAsPermanentLocation": null
+                      }
+                    },
+                    "permanentLocation": null,
+                    "temporaryLocation": null,
+                    "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+                    "temporaryLoanTypeId": null,
+                    "holdingsRecord": {
+                      "id": "ff3f34d8-8d01-5317-bbf3-d8d265ca06fc",
+                      "effectiveLocation": {
+                        "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
+                        "code": "SPEC-SAL3-U-ARCHIVES",
+                        "details": {
+                          "pageAeonSite": "SPECUA",
+                          "pageMediationGroupKey": null,
+                          "pageServicePoints": [],
+                          "pagingSchedule": null,
+                          "scanServicePointCode": null
+                        }
+                      }
+                    },
+                    "boundWithHoldingsPerItem": []
                   },
-                  "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-                  "code": "SPEC-SAL3-U-ARCHIVES",
-                  "discoveryDisplayName": "University Archives",
-                  "name": "Spec SAL3 U-Archives",
-                  "details": {}
-                },
-                "permanentLocation": { "id": "uuid", "code": "SPEC-STACKS" },
-                "holdingsRecord": { "effectiveLocation": { "code": "SPEC-STACKS" } },
-                "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
-                "temporaryLoanTypeId": null
-              },
-              {
-                "barcode": "36105116223426",
-                "status": {
-                  "name": "Available"
-                },
-                "queueTotalLength": 0,
-                "materialType": null,
-                "chronology": null,
-                "enumeration": "BOX 2",
-                "effectiveCallNumberComponents": {
-                  "callNumber": "SC0801"
-                },
-                "notes": [],
-                "effectiveLocation": {
-                  "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
-                  "campus": {
-                    "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-                    "code": "SUL"
-                  },
-                  "library": {
-                    "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-                    "code": "SPEC-COLL"
-                  },
-                  "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-                  "code": "SPEC-SAL3-U-ARCHIVES",
-                  "discoveryDisplayName": "University Archives",
-                  "name": "Spec SAL3 U-Archives",
-                  "details": {}
-                },
-                "permanentLocation": { "id": "uuid", "code": "SPEC-STACKS" },
-                "holdingsRecord": { "effectiveLocation": { "code": "SPEC-STACKS" } },
-                "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
-                "temporaryLoanTypeId": null
-              },
-              {
-                "barcode": "36105116223434",
-                "discoverySuppress": true,
-                "status": {
-                  "name": "Available"
-                },
-                "queueTotalLength": 0,
-                "materialType": null,
-                "chronology": null,
-                "enumeration": "BOX 3",
-                "effectiveCallNumberComponents": {
-                  "callNumber": "SC0801"
-                },
-                "notes": [],
-                "effectiveLocation": {
-                  "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
-                  "campus": {
-                    "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
-                    "code": "SUL"
-                  },
-                  "library": {
-                    "id": "f6b5519e-88d9-413e-924d-9ed96255f72e",
-                    "code": "SPEC-COLL"
-                  },
-                  "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
-                  "code": "SPEC-SAL3-U-ARCHIVES",
-                  "discoveryDisplayName": "University Archives",
-                  "name": "Spec SAL3 U-Archives",
-                  "details": {}
-                },
-                "permanentLocation": { "id": "uuid", "code": "SPEC-STACKS" },
-                "holdingsRecord": { "effectiveLocation": { "code": "SPEC-STACKS" } },
-                "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
-                "temporaryLoanTypeId": null
+                  {
+                    "id": "abd43d76-e798-5c35-877d-3598e4e49f54",
+                    "barcode": "36105116223426",
+                    "discoverySuppress": true,
+                    "volume": null,
+                    "queueTotalLength": 0,
+                    "status": {
+                      "name": "Available"
+                    },
+                    "dueDate": null,
+                    "materialType": {
+                      "id": "69edaa1b-e40b-4f1c-8cb5-4b615ac6a664",
+                      "name": "archival"
+                    },
+                    "chronology": null,
+                    "enumeration": "BOX 2",
+                    "effectiveCallNumberComponents": {
+                      "callNumber": "SC0801"
+                    },
+                    "notes": [],
+                    "effectiveLocation": {
+                      "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
+                      "campusId": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                      "libraryId": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+                      "institutionId": "8d433cdd-4e8f-4dc1-aa24-8a4ddb7dc929",
+                      "code": "SPEC-SAL3-U-ARCHIVES",
+                      "discoveryDisplayName": "University Archives",
+                      "name": "Spec SAL3 U-Archives",
+                      "servicePoints": [
+                        {
+                          "id": "3a306665-eec7-4a40-8f4d-608585b2a394",
+                          "code": "SAL3",
+                          "pickupLocation": false
+                        }
+                      ],
+                      "library": {
+                        "id": "5b61a365-6b39-408c-947d-f8861a7ba8ae",
+                        "code": "SPEC-COLL"
+                      },
+                      "campus": {
+                        "id": "c365047a-51f2-45ce-8601-e421ca3615c5",
+                        "code": "SUL"
+                      },
+                      "details": {
+                        "pageAeonSite": "SPECUA",
+                        "pageMediationGroupKey": null,
+                        "pageServicePoints": [],
+                        "scanServicePointCode": null,
+                        "availabilityClass": null,
+                        "searchworksTreatTemporaryLocationAsPermanentLocation": null
+                      }
+                    },
+                    "permanentLocation": null,
+                    "temporaryLocation": null,
+                    "permanentLoanTypeId": "52d7b849-b6d8-4fb3-b2ab-a9b0eb41b6fd",
+                    "temporaryLoanTypeId": null,
+                    "holdingsRecord": {
+                      "id": "ff3f34d8-8d01-5317-bbf3-d8d265ca06fc",
+                      "effectiveLocation": {
+                        "id": "150b8273-b10b-4907-b43f-a3d4f89bc79f",
+                        "code": "SPEC-SAL3-U-ARCHIVES",
+                        "details": {
+                          "pageAeonSite": "SPECUA",
+                          "pageMediationGroupKey": null,
+                          "pageServicePoints": [],
+                          "pagingSchedule": null,
+                          "scanServicePointCode": null
+                        }
+                      }
+                    },
+                    "boundWithHoldingsPerItem": []
+                  }
+                ]
               }
             ]
           }

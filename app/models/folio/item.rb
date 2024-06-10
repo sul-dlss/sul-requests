@@ -7,7 +7,8 @@ module Folio
   # NOTE, barcode and callnumber may be nil. see instance_hrid: 'in00000063826'
   class Item
     attr_reader :id, :barcode, :status, :type, :public_note, :effective_location, :permanent_location, :temporary_location,
-                :material_type, :loan_type, :holdings_record_id, :enumeration, :base_callnumber, :full_enumeration, :queue_length
+                :material_type, :loan_type, :holdings_record_id, :enumeration, :base_callnumber, :full_enumeration, :queue_length,
+                :instance, :bound_with_holdings_per_item, :bound_with_child_holdings_record
 
     # Other statuses that we aren't using include "Unavailable" and "Intellectual item"
     STATUS_CHECKED_OUT = 'Checked out'
@@ -65,7 +66,7 @@ module Folio
                    type: nil, public_note: nil, material_type: nil, loan_type: nil, enumeration: nil,
                    full_enumeration: nil,
                    due_date: nil, id: nil, holdings_record_id: nil, suppressed_from_discovery: false,
-                   base_callnumber: nil, queue_length: 0)
+                   base_callnumber: nil, queue_length: 0, instance: nil, bound_with_holdings_per_item: [])
       @id = id
       @holdings_record_id = holdings_record_id
       @barcode = barcode.presence || id
@@ -83,11 +84,18 @@ module Folio
       @due_date = due_date
       @queue_length = queue_length
       @suppressed_from_discovery = suppressed_from_discovery
+      @instance = instance
+      @bound_with_holdings_per_item = bound_with_holdings_per_item
     end
     # rubocop:enable Metrics/ParameterLists, Metrics/MethodLength, Metrics/AbcSize
 
     def with_status(status)
       Folio::ItemWithStatus.new(self).with_status(status)
+    end
+
+    def with_bound_with_child_holdings_record(holdings_record)
+      @bound_with_child_holdings_record = holdings_record
+      self
     end
 
     # TODO: rename this to 'permanent_location_code' after migration
@@ -210,6 +218,12 @@ module Folio
           status: dyn.dig('status', 'name'),
           due_date: dyn['dueDate'],
           enumeration: dyn['enumeration'],
+          instance: (Folio::Instance.from_dynamic(dyn['instance']) if dyn['instance']),
+          bound_with_holdings_per_item: dyn['boundWithHoldingsPerItem']&.filter_map do |v|
+            next if v['id'].present? && v['id'] == dyn.dig('holdingsRecord', 'id')
+
+            Folio::HoldingsRecord.from_hash(v)
+          end || [],
           base_callnumber: dyn.dig('effectiveCallNumberComponents', 'callNumber'),
           type: dyn.dig('materialType', 'name'),
           full_enumeration: [dyn['volume'], dyn['enumeration'],

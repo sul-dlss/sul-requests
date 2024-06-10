@@ -105,7 +105,25 @@ FactoryBot.define do
     initialize_with { new(**attributes) }
   end
 
-  factory :multiple_holdings, class: 'Folio::Instance' do
+  factory :holdings_record, class: 'Folio::HoldingsRecord' do
+    call_number { 'ABC 123' }
+    items { [] }
+    suppressed_from_discovery { false }
+
+    initialize_with { new(**attributes) }
+  end
+
+  factory :instance, class: 'Folio::Instance' do
+    id { '1234' }
+    title { 'Item Title' }
+    format { 'Book' }
+    holdings_records { [build(:holdings_record, items:)] }
+    items { [build(:item)] }
+
+    initialize_with { new(**attributes.except(:items)) }
+  end
+
+  factory :multiple_holdings, parent: :instance do
     id { '1234' }
     hrid { 'a1234' }
     title { 'Item Title' }
@@ -126,13 +144,9 @@ FactoryBot.define do
               effective_location: build(:location, code: 'SAL3-STACKS'))
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :sal3_holding, class: 'Folio::Instance' do
+  factory :sal3_holding, parent: :instance do
     id { '12345' }
     hrid { 'a12345' }
     title { 'Item Title' }
@@ -145,13 +159,9 @@ FactoryBot.define do
               effective_location: build(:location, code: 'SAL3-STACKS'))
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :sal3_as_holding, class: 'Folio::Instance' do
+  factory :sal3_as_holding, parent: :instance do
     id { '12345' }
     hrid { 'a12345' }
     title { 'Item Title' }
@@ -164,13 +174,9 @@ FactoryBot.define do
               effective_location: build(:page_as_location))
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :single_holding, class: 'Folio::Instance' do
+  factory :single_holding, parent: :instance do
     id { '123' }
 
     title { 'Item Title' }
@@ -185,13 +191,9 @@ FactoryBot.define do
               effective_location: build(:location, code: 'SAL3-STACKS'))
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :mmstacks_holding, class: 'Folio::Instance' do
+  factory :mmstacks_holding, parent: :instance do
     id { '123' }
 
     title { 'Item Title' }
@@ -206,13 +208,9 @@ FactoryBot.define do
               effective_location: build(:mmstacks_location))
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :single_law_holding, class: 'Folio::Instance' do
+  factory :single_law_holding, parent: :instance do
     id { '123' }
 
     title { 'Item Title' }
@@ -227,13 +225,9 @@ FactoryBot.define do
               effective_location: build(:law_location))
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :scannable_only_holdings, class: 'Folio::Instance' do
+  factory :scannable_only_holdings, parent: :instance do
     id { '1234' }
     title { 'Item Title' }
 
@@ -248,13 +242,9 @@ FactoryBot.define do
               type: 'NONCIRC')
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :special_collections_holdings, class: 'Folio::Instance' do
+  factory :special_collections_holdings, parent: :instance do
     id { '1234' }
     hrid { 'a1234' }
     title { 'Special Collections Item Title' }
@@ -277,13 +267,9 @@ FactoryBot.define do
               effective_location: build(:spec_coll_location))
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :special_collections_single_holding, class: 'Folio::Instance' do
+  factory :special_collections_single_holding, parent: :instance do
     id { '1234' }
     hrid { 'a1234' }
     title { 'Special Collections Item Title' }
@@ -301,13 +287,9 @@ FactoryBot.define do
               effective_location: build(:spec_coll_location))
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :special_collections_finding_aid_holdings, class: 'Folio::Instance' do
+  factory :special_collections_finding_aid_holdings, parent: :instance do
     id { '1234' }
     hrid { 'a1234' }
     title { 'Special Collections Item Title' }
@@ -326,13 +308,9 @@ FactoryBot.define do
               effective_location: build(:spec_coll_location))
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :sal3_holdings, class: 'Folio::Instance' do
+  factory :sal3_holdings, parent: :instance do
     id { '123456' }
     title { 'SAL3 Item Title' }
 
@@ -352,13 +330,9 @@ FactoryBot.define do
               effective_location: build(:location, code: 'SAL3-STACKS'))
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :scannable_holdings, class: 'Folio::Instance' do
+  factory :scannable_holdings, parent: :instance do
     id { '1234' }
     title { 'SAL Item Title' }
     contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
@@ -381,13 +355,9 @@ FactoryBot.define do
               effective_location: build(:scannable_location, code: 'SAL3-STACKS'))
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :green_holdings, class: 'Folio::Instance' do
+  factory :green_holdings, parent: :instance do
     id { '1234' }
     title { 'Green Item Title' }
 
@@ -402,13 +372,9 @@ FactoryBot.define do
               effective_location: build(:green_location))
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :page_lp_holdings, class: 'Folio::Instance' do
+  factory :page_lp_holdings, parent: :instance do
     id { '1234' }
     title { 'PAGE-LP Item Title' }
 
@@ -423,13 +389,9 @@ FactoryBot.define do
               effective_location: build(:page_lp_location))
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :page_en_holdings, class: 'Folio::Instance' do
+  factory :page_en_holdings, parent: :instance do
     id { '1234' }
     title { 'PAGE-EN Item Title' }
 
@@ -444,13 +406,9 @@ FactoryBot.define do
               effective_location: build(:page_en_location))
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :page_mp_holdings, class: 'Folio::Instance' do
+  factory :page_mp_holdings, parent: :instance do
     id { '1234' }
     title { 'PAGE-MP Item Title' }
 
@@ -470,13 +428,9 @@ FactoryBot.define do
               effective_location: build(:page_mp_location))
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :many_holdings, class: 'Folio::Instance' do
+  factory :many_holdings, parent: :instance do
     id { '1234' }
     title { 'Item title' }
 
@@ -511,13 +465,9 @@ FactoryBot.define do
               effective_location: build(:location, code: 'SAL3-STACKS'))
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :single_mediated_holding, class: 'Folio::Instance' do
+  factory :single_mediated_holding, parent: :instance do
     id { '1234' }
     title { 'Item Title' }
 
@@ -532,13 +482,9 @@ FactoryBot.define do
               type: 'LCKSTK')
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :art_stacks_holding, class: 'Folio::Instance' do
+  factory :art_stacks_holding, parent: :instance do
     id { '1234' }
     title { 'Item Title' }
 
@@ -553,13 +499,9 @@ FactoryBot.define do
               type: 'STKS')
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :searchable_holdings, class: 'Folio::Instance' do
+  factory :searchable_holdings, parent: :instance do
     id { '1234' }
     title { 'Item Title' }
 
@@ -632,13 +574,9 @@ FactoryBot.define do
               type: 'LCKSTK')
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :searchable_spec_holdings, class: 'Folio::Instance' do
+  factory :searchable_spec_holdings, parent: :instance do
     id { '1234' }
     title { 'Item Title' }
 
@@ -689,13 +627,9 @@ FactoryBot.define do
               effective_location: build(:spec_coll_location))
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :checkedout_holdings, class: 'Folio::Instance' do
+  factory :checkedout_holdings, parent: :instance do
     id { '1234' }
     hrid { 'a1234' }
     title { 'Checked out item' }
@@ -724,13 +658,9 @@ FactoryBot.define do
               effective_location: build(:location, code: 'SAL3-STACKS'))
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :sal3_stacks_searchworks_item, class: 'Folio::Instance' do
+  factory :sal3_stacks_searchworks_item, parent: :instance do
     id { '1234' }
     title { 'SAL3 stacks item' }
 
@@ -744,13 +674,9 @@ FactoryBot.define do
               effective_location: build(:location, code: 'SAL3-STACKS'))
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :on_order_instance, class: 'Folio::Instance' do
+  factory :on_order_instance, parent: :instance do
     id { 'a43e597a-d4b4-50ec-ad16-7fd49920831a' }
 
     title { 'HAZARDOUS MATERIALS : MANAGING THE INCIDENT.' }
@@ -758,13 +684,9 @@ FactoryBot.define do
     format { 'unspecified' }
 
     items { [] }
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :single_holding_multiple_items, class: 'Folio::Instance' do
+  factory :single_holding_multiple_items, parent: :instance do
     id { '1234' }
     hrid { 'a1234' }
     title { 'Multiple Items In Holding Title' }
@@ -787,13 +709,9 @@ FactoryBot.define do
               effective_location: build(:location, code: 'SAL3-STACKS'))
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :mixed_crez_holdings, class: 'Folio::Instance' do
+  factory :mixed_crez_holdings, parent: :instance do
     id { '1234' }
     hrid { 'a1234' }
     title { 'Mixed CREZ holdings' }
@@ -818,13 +736,9 @@ FactoryBot.define do
               temporary_location: build(:location, code: 'GRE-CRES'))
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :empty_barcode_holdings, class: 'Folio::Instance' do
+  factory :empty_barcode_holdings, parent: :instance do
     id { '1234' }
     title { 'Empty Barcode Item Title' }
     contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
@@ -848,13 +762,9 @@ FactoryBot.define do
               effective_location: build(:location, code: 'SAL3-STACKS'))
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :missing_holdings, class: 'Folio::Instance' do
+  factory :missing_holdings, parent: :instance do
     id { '1234' }
     title { 'One Missing item' }
 
@@ -874,13 +784,9 @@ FactoryBot.define do
               effective_location: build(:location, code: 'SAL3-STACKS'))
       ]
     end
-
-    initialize_with do
-      new(**attributes)
-    end
   end
 
-  factory :aged_to_lost_holdings, class: 'Folio::Instance' do
+  factory :aged_to_lost_holdings, parent: :instance do
     id { '1234' }
     title { 'One lost item' }
 
@@ -894,10 +800,6 @@ FactoryBot.define do
               status: 'Aged to Lost',
               effective_location: build(:location, code: 'SAL3-STACKS'))
       ]
-    end
-
-    initialize_with do
-      new(**attributes)
     end
   end
 end
