@@ -99,8 +99,8 @@ faculty,map,,,,,SAL3-PAGE-MP,1qtr-3renew-7daygrace,Allow All,Default notice,No f
 any,map,,,,,SAL-TEMP or SAL-LOCKED-PAGE-EA or SAL-PAGE or SAL-PAGE-EA or SAL-PAGE-GR,No loan,Allow paging,Default notice,No fines,$75 lost fee
 graduate or postdoctoral,map,,,,,EAR-LOCKED-MAPS or EAR-LOCKED-STACKS,2hour-norenew-15mingrace,No requests allowed,Default notice,No fines,$5000 lost fee - 1 hr aged to lost
 faculty,map,,,,,EAR-LOCKED-MAPS or EAR-LOCKED-STACKS,2hour-norenew-15mingrace,No requests allowed,Default notice,No fines,$5000 lost fee - 1 hr aged to lost
-sul-purchased or courtesy or program-short-term or sul-contractprograms or lane-hospital staff,map,,,,,EAR-ATLASES or EAR-MEZZANINE or EAR-STORAGE or EAR-MAP-CASES or EAR-MAP-FILES,28day-2renew-7daygrace,Hold only,Default notice,No fines,$500 lost fee
-faculty,map,,,,,EAR-ATLASES or EAR-MEZZANINE or EAR-STORAGE or EAR-MAP-CASES or EAR-MAP-FILES,1qtr-3renew-7daygrace,Allow hold/recall,Default notice,No fines,$500 lost fee
+sul-purchased or courtesy or program-short-term or sul-contractprograms or lane-hospital staff,map,,,,,EAR-ATLASES or EAR-FOLIO or EAR-MEZZANINE or EAR-STORAGE or EAR-MAP-CASES or EAR-MAP-FILES,28day-2renew-7daygrace,Hold only,Default notice,No fines,$500 lost fee
+faculty,map,,,,,EAR-ATLASES or EAR-FOLIO or EAR-MEZZANINE or EAR-STORAGE or EAR-MAP-CASES or EAR-MAP-FILES,1qtr-3renew-7daygrace,Allow hold/recall,Default notice,No fines,$500 lost fee
 sul-purchased,game,,,,,MEDIA-CAGE,No loan,No requests allowed,Default notice,No fines,$75 lost fee
 sul-purchased,portable device 1,,,,,MUS-RECORDINGS,No loan,No requests allowed,Default notice,No fines,$150 lost fee
 sul-purchased,portable device 1,,,,,ENG-MAKERBAR,No loan,No requests allowed,Default notice,No fines,$250 lost fee
@@ -211,11 +211,11 @@ sul-purchased,book,,,,,EAR-LOCKED-STACKS or EAR-STOR-LOCKED,No loan,No requests 
 faculty,book,,,,,EAR-LOCKED-STACKS or EAR-STOR-LOCKED,28day-2renew-7daygrace,No requests allowed,Default notice,No fines,$500 lost fee
 sul-guest,book,,,,,EAR-ATCIRCDESK,1year-norenew-7daygrace,Hold only,28-day notice,3.00/21.00 recall overdue fine,$500 lost fee
 sul-purchased or courtesy or program-short-term or sul-contractprograms or lane-hospital staff,book,,,,,EAR-ATCIRCDESK,28day-2renew-7daygrace,Hold only,Default notice,No fines,$500 lost fee
-sul-guest,book,,,,,EAR-BIB-INDEX or EAR-MAP-CASES or EAR-MAP-FILES or EAR-MEZZANINE or EAR-STACKS or EAR-STOR-MAPS or EAR-STORAGE or EAR-TECH-REPORTS or EAR-MICROTEXT or EAR-SGC,1year-norenew-7daygrace,Hold only,28-day notice,3.00/21.00 recall overdue fine,$500 lost fee
-courtesy or program-short-term or sul-contractprograms or sul-purchased or lane-hospital staff,book,,,,,EAR-BIB-INDEX or EAR-MAP-CASES or EAR-MAP-FILES or EAR-MEZZANINE or EAR-STACKS or EAR-STOR-MAPS or EAR-STORAGE or EAR-TECH-REPORTS or EAR-MICROTEXT or EAR-SGC,28day-2renew-7daygrace,Hold only,Default notice,No fines,$500 lost fee
-undergrad or graduate or postdoctoral,book,,,,,EAR-BIB-INDEX or EAR-MAP-CASES or EAR-MAP-FILES or EAR-MEZZANINE or EAR-STACKS or EAR-STOR-MAPS or EAR-STORAGE or EAR-TECH-REPORTS or EAR-MICROTEXT or EAR-SGC,1qtr-3renew-7daygrace,Allow hold/recall,Default notice,3.00/21.00 recall overdue fine,$500 lost fee
-staff or staff-casual or fellow,book,,,,,EAR-BIB-INDEX or EAR-MAP-CASES or EAR-MAP-FILES or EAR-MEZZANINE or EAR-STACKS or EAR-STOR-MAPS or EAR-STORAGE or EAR-TECH-REPORTS or EAR-MICROTEXT or EAR-SGC,1yearfixed-2renew-7daygrace,Allow hold/recall,28-day notice,3.00/21.00 recall overdue fine,$500 lost fee
-faculty,book,,,,,EAR-BIB-INDEX or EAR-MAP-CASES or EAR-MAP-FILES or EAR-MEZZANINE or EAR-STACKS or EAR-STOR-MAPS or EAR-STORAGE or EAR-TECH-REPORTS or EAR-MICROTEXT or EAR-SGC,1yearfixed-2renew-7daygrace,Allow hold/recall,28-day notice,No fines,$500 lost fee
+sul-guest,book,,,,,EAR-BIB-INDEX or EAR-FOLIO or EAR-MAP-CASES or EAR-MAP-FILES or EAR-MEZZANINE or EAR-STACKS or EAR-STOR-MAPS or EAR-STORAGE or EAR-TECH-REPORTS or EAR-MICROTEXT or EAR-SGC,1year-norenew-7daygrace,Hold only,28-day notice,3.00/21.00 recall overdue fine,$500 lost fee
+courtesy or program-short-term or sul-contractprograms or sul-purchased or lane-hospital staff,book,,,,,EAR-BIB-INDEX or EAR-FOLIO or EAR-MAP-CASES or EAR-MAP-FILES or EAR-MEZZANINE or EAR-STACKS or EAR-STOR-MAPS or EAR-STORAGE or EAR-TECH-REPORTS or EAR-MICROTEXT or EAR-SGC,28day-2renew-7daygrace,Hold only,Default notice,No fines,$500 lost fee
+undergrad or graduate or postdoctoral,book,,,,,EAR-BIB-INDEX or EAR-FOLIO or EAR-MAP-CASES or EAR-MAP-FILES or EAR-MEZZANINE or EAR-STACKS or EAR-STOR-MAPS or EAR-STORAGE or EAR-TECH-REPORTS or EAR-MICROTEXT or EAR-SGC,1qtr-3renew-7daygrace,Allow hold/recall,Default notice,3.00/21.00 recall overdue fine,$500 lost fee
+staff or staff-casual or fellow,book,,,,,EAR-BIB-INDEX or EAR-FOLIO or EAR-MAP-CASES or EAR-MAP-FILES or EAR-MEZZANINE or EAR-STACKS or EAR-STOR-MAPS or EAR-STORAGE or EAR-TECH-REPORTS or EAR-MICROTEXT or EAR-SGC,1yearfixed-2renew-7daygrace,Allow hold/recall,28-day notice,3.00/21.00 recall overdue fine,$500 lost fee
+faculty,book,,,,,EAR-BIB-INDEX or EAR-FOLIO or EAR-MAP-CASES or EAR-MAP-FILES or EAR-MEZZANINE or EAR-STACKS or EAR-STOR-MAPS or EAR-STORAGE or EAR-TECH-REPORTS or EAR-MICROTEXT or EAR-SGC,1yearfixed-2renew-7daygrace,Allow hold/recall,28-day notice,No fines,$500 lost fee
 visitor,book,,,,,ART-LOCKED-MEDIUM or ART-LOCKED-LARGE or ART-LOCKED-OVERSIZE or ART-LOCKED-SMALL or ART-LOCKED-LARGE-R or ART-LOCKED-MEDIUM-R or ART-LOCKED-OVERSIZE-R or ART-LOCKED-SMALL-R,No loan,Allow paging,Default notice,No fines,$800 lost fee
 sul-guest,book,,,,,ART-FOLIO or ART-STACKS,1year-norenew-7daygrace,Hold only,28-day notice,3.00/21.00 recall overdue fine,$150 lost fee
 sul-purchased or courtesy or program-short-term or sul-contractprograms or lane-hospital staff,book,,,,,ART-FOLIO or ART-STACKS,28day-2renew-7daygrace,Hold only,Default notice,No fines,$150 lost fee
@@ -349,7 +349,7 @@ any,book,,,,HILA,,No loan,Allow hold/recall,Default notice,3.00/21.00 recall ove
 ,map,,,,,MAR-ATLASES or MAR-MAPS,No loan,No requests allowed,Default notice,No fines,$150 lost fee
 ,map,,,,,EAR-PROCESSING-AP or EAR-PROCESSING-JC or EAR-PROCESSING-CIRCLS or EAR-PROCESSING-MAP-OFFICE or EAR-PROCESSING-TR or EAR-SCANLAB,No loan,Hold only,Default notice,No fines,$500 lost fee
 ,map,,,,,EAR-LOCKED-MAPS or EAR-LOCKED-STACKS,No loan,No requests allowed,Short Term Notices,No fines,$5000 lost fee - 1 hr aged to lost
-,map,,,,,EAR-ATLASES or EAR-MEZZANINE or EAR-STORAGE or EAR-MAP-CASES or EAR-MAP-FILES,28day-2renew-7daygrace,Allow hold/recall,Default notice,3.00/21.00 recall overdue fine,$500 lost fee
+,map,,,,,EAR-ATLASES or EAR-FOLIO or EAR-MEZZANINE or EAR-STORAGE or EAR-MAP-CASES or EAR-MAP-FILES,28day-2renew-7daygrace,Allow hold/recall,Default notice,3.00/21.00 recall overdue fine,$500 lost fee
 ,game,,,,,MEDIA-CAGE,14day-2renew-3daygrace,No requests allowed,Default notice,No fines,$75 lost fee
 ,game,,,,,ENG-GAMES,14day-2renew-3daygrace,No requests allowed,Default notice,No fines,$100 lost fee
 ,game,,,,,EAR-ATCIRCDESK,14day-2renew-3daygrace,No requests allowed,Default notice,No fines,$50 lost fee
@@ -398,7 +398,7 @@ any,book,,,,HILA,,No loan,Allow hold/recall,Default notice,3.00/21.00 recall ove
 ,book,,,,,EAR-PROCESSING-AP or EAR-PROCESSING-JC or EAR-PROCESSING-CIRCLS or EAR-PROCESSING-TR or EAR-SPECIALPROJECTS or EAR-SCANLAB,No loan,Hold only,Default notice,3.00/21.00 recall overdue fine,$500 lost fee
 ,book,,,,,EAR-LOCKED-STACKS or EAR-STOR-LOCKED,7day-1renew-3daygrace,No requests allowed,Short Term Notices,No fines,$500 lost fee
 ,book,,,,,EAR-ATCIRCDESK,28day-2renew-7daygrace,Allow hold/recall,Default notice,3.00/21.00 recall overdue fine,$500 lost fee
-,book,,,,,EAR-BIB-INDEX or EAR-MAP-CASES or EAR-MAP-FILES or EAR-MEZZANINE or EAR-STACKS or EAR-STOR-MAPS or EAR-STORAGE or EAR-TECH-REPORTS or EAR-MICROTEXT or EAR-SGC,28day-2renew-7daygrace,Allow hold/recall,Default notice,3.00/21.00 recall overdue fine,$500 lost fee
+,book,,,,,EAR-BIB-INDEX or EAR-FOLIO or EAR-MAP-CASES or EAR-MAP-FILES or EAR-MEZZANINE or EAR-STACKS or EAR-STOR-MAPS or EAR-STORAGE or EAR-TECH-REPORTS or EAR-MICROTEXT or EAR-SGC,28day-2renew-7daygrace,Allow hold/recall,Default notice,3.00/21.00 recall overdue fine,$500 lost fee
 ,book,,,,,ART-COURTESY-HOLD or ART-VRC,No loan,Hold only,Default notice,No fines,$150 lost fee
 ,book,,,,,ART-EXHIBIT or ART-PROCESSING-LOCKED,No loan,No requests allowed,Default notice,No fines,$150 lost fee
 ,book,,,,,ART-NEWBOOK,7day-1renew-3daygrace,No requests allowed,Short Term Notices,No fines,$150 lost fee
