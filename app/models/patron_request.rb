@@ -27,7 +27,7 @@ class PatronRequest < ApplicationRecord
   scope :completed, lambda {
     where(request_type: ['mediated/approved', 'mediated/done']).order(needed_date: :desc)
   }
-  scope :archived, -> { where('needed_date < ?', Time.zone.today).order(needed_date: :desc) }
+  scope :archived, -> { where(needed_date: ...Time.zone.today).order(needed_date: :desc) }
   scope :for_origin, lambda { |origin|
                        where(origin_location_code: [origin, *(Folio::Types.libraries.find_by(code: origin)&.locations&.map(&:code) || [])])
                      }
