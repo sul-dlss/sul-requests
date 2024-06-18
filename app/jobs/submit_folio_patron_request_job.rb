@@ -51,7 +51,9 @@ class SubmitFolioPatronRequestJob < ApplicationJob
                                                                    request.patron&.id
                                                                  end), fulfillment_preference: 'Hold Shelf',
       pickup_service_point_id: request.pickup_service_point.id,
-      patron_comments: request.request_comments, request_expiration_date: (Time.zone.today + 3.years).to_time.utc.iso8601
+      patron_comments: request.request_comments, request_expiration_date: (Time.zone.today + 3.years).to_time.utc.iso8601,
+      # TODO: remove key/value after poppy launch
+      poppy_request: folio_client.poppy?
     )
   end
 
