@@ -163,14 +163,32 @@ class FolioClient
     end
   end
 
+  # TODO: after Poppy launch delete this method
+  def okapi_version
+    @okapi_version ||= begin
+      response = get('/_/version')
+      check_response(response, title: 'Okapi version', context: {})
+      # response.body is a string
+      response.body
+    end
+  end
+
+  # TODO: after Poppy launch delete this method
+  # Prior to poppy, the Okapi version was 4.14.12 in production
+  def poppy?
+    okapi_version == '5.2.0'
+  end
+
+  # TODO: after Poppy launch delete poppy key
   CirculationRequestData = Data.define(:request_level, :request_type, :instance_id, :item_id, :holdings_record_id,
                                        :requester_id, :proxy_user_id, :fulfillment_preference, :pickup_service_point_id,
-                                       :patron_comments, :request_expiration_date) do
+                                       :patron_comments, :request_expiration_date,
+                                       :poppy_request) do
     # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     def as_json
       # TODO: after Poppy launch delete this logic and add `fulfillmentPreference: fulfillment_preference` directly to the hash.
-      # In versions prior to Poppy there is a typo in FOLIO  ('fulfilment') that we are accounting for here
-      fix_fulfillment_preference = Settings.ils&.folio_version == 'poppy' ? { fulfillmentPreference: fulfillment_preference } : { fulfilmentPreference: fulfillment_preference } # rubocop:disable Layout/LineLength
+      # In versions prior to Poppy there is a typo in FOLIO ('fulfilment') that we are accounting for here
+      fix_fulfillment_preference = poppy_request ? { fulfillmentPreference: fulfillment_preference } : { fulfilmentPreference: fulfillment_preference } # rubocop:disable Layout/LineLength
       {
         requestLevel: request_level,
         requestType: request_type,
