@@ -9,7 +9,7 @@ class MediatedPage < Request
   scope :completed, lambda {
     where(approval_status: MediatedPage.approval_statuses.except('unapproved').values).needed_date_desc
   }
-  scope :archived, -> { where('needed_date < ?', Time.zone.today).order(needed_date: :desc) }
+  scope :archived, -> { where(needed_date: ...Time.zone.today).order(needed_date: :desc) }
   scope :for_origin, ->(origin) { where('origin = ? OR origin_location = ?', origin, origin) }
 
   include TokenEncryptable
