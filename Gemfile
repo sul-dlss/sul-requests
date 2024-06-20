@@ -67,7 +67,7 @@ group :development, :test do
   gem 'capybara'
 
   # factory_bot_rails for creating fixtures in tests
-  gem 'factory_bot_rails', '~> 6.2.0' # Pinned until https://github.com/thoughtbot/factory_bot_rails/issues/433 is resolved
+  gem 'factory_bot_rails', '~> 6.4'
 
   # selenium-webdriver is used by Capybara for driving "browser" tests
   gem 'selenium-webdriver'
