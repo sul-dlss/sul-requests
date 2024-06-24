@@ -51,6 +51,13 @@
   },
   {
     "pickupLocation": true,
+    "code": "cd1",
+    "details": null,
+    "id": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "discoveryDisplayName": "Circulation Desk -- Hallway"
+  },
+  {
+    "pickupLocation": true,
     "code": "EARTH-SCI",
     "details": {
       "isDefaultPickup": true,
@@ -223,6 +230,13 @@
     "details": null,
     "id": "bd5fd8d9-72f3-4532-b68c-4db88063d16b",
     "discoveryDisplayName": "Education Library (Cubberley)"
+  },
+  {
+    "pickupLocation": true,
+    "code": "cd2",
+    "details": null,
+    "id": "c4c90014-c8c9-4ade-8f24-b5e313319f4b",
+    "discoveryDisplayName": "Circulation Desk -- Back Entrance"
   },
   {
     "pickupLocation": false,
