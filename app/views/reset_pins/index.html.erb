@@ -5,7 +5,7 @@
   <%= hidden_field_tag :referrer, params[:referrer] %>
   <div class="form-group">
     <%= label_tag :university_id, t('activerecord.attributes.user.library_id'), class: 'form-label required-label' %>
-    <%= text_field_tag :university_id, nil, class: 'form-control', 'aria-describedby': 'university-id-help', autofocus: true, required: true, minlength: 10, maxlength: 10 %>
+    <%= text_field_tag :university_id, nil, class: 'form-control', 'aria-describedby': 'university-id-help', autofocus: true, required: true %>
     <div id="university-id-help" class="form-text">
       <%= t('sessions.university_id.help_text') %>
     </div>
