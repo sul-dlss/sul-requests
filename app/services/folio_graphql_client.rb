@@ -48,10 +48,13 @@ class FolioGraphqlClient
   def circ_check(barcode:)
     post_json('/', json:
       {
+        variables: {
+          barcode:
+        },
         query:
           <<~GQL
-            query CircCheckByBarcode {#{' '}
-              items(barcode: "#{barcode}") {
+            query CircCheckByBarcode($barcode: [String]) {
+              items(barcode: $barcode) {
                 status {
                   name
                 }
@@ -72,10 +75,13 @@ class FolioGraphqlClient
   def instance(hrid:)
     data = post_json('/', json:
     {
+      variables: {
+        hrid:
+      },
       query:
         <<~GQL
-          query InstanceByHrid {
-            instances(hrid: "#{hrid}") {
+          query InstanceByHrid($hrid: [String]) {
+            instances(hrid: $hrid) {
               id
               hrid
               title
