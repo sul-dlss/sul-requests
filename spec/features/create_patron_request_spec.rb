@@ -348,6 +348,9 @@ RSpec.describe 'Creating a request', :js do
       fill_in 'Name', with: 'My Name'
       fill_in 'Email', with: 'me@example.com'
       click_on 'Continue'
+
+      expect(page).to have_button 'Submit request'
+
       perform_enqueued_jobs do
         click_on 'Submit request'
       end
