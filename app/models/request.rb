@@ -36,7 +36,7 @@ class Request < ActiveRecord::Base
     :reshare_vufind_response_data, :borrow_direct_response_data,
     :illiad_response_data
   ], coder: JSON
-  serialize :barcodes, Array
+  serialize :barcodes, type: Array
 
   has_many :admin_comments, as: :request
   has_many :folio_command_logs
