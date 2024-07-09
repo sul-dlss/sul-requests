@@ -39,6 +39,9 @@ class PatronRequestsController < ApplicationController
 
   def assign_new_attributes
     @patron_request.assign_attributes(**new_params)
+    # This validation prevents an injection attack in GraphQL. Ideally, this would be a model validation,
+    # but there are other validations that require first running a GraphQL query.
+    raise ActionController::BadRequest unless /\A(a|L|in)?\d+\z/.match?(new_params[:instance_hrid])
   end
 
   # SSO or library-id users don't need to re-login, but name/email users always need to provide their information
