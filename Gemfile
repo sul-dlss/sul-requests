@@ -120,3 +120,4 @@ gem "propshaft", "~> 0.7.0"
 
 gem 'recaptcha'
 gem 'warden'
+gem 'rack-attack'
