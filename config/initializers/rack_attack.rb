@@ -14,7 +14,7 @@
 # counted by rack-attack and this throttle may be activated too
 # quickly. If so, enable the condition to exclude them from tracking.
 
-Rack::Attack.throttle("requests/new", limit: 30, period: 1.minute) do |req|
+Rack::Attack.throttle("requests/new", limit: 10, period: 1.minute) do |req|
   route = begin
     Rails.application.routes.recognize_path(req.path) || {}
   rescue StandardError
@@ -23,7 +23,7 @@ Rack::Attack.throttle("requests/new", limit: 30, period: 1.minute) do |req|
   req.ip if (route[:controller] == 'patron_requests' || route[:controller] == 'requests') && route[:action] == 'new'
 end
 
-Rack::Attack.throttle("requests/create", limit: 10, period: 1.minute) do |req|
+Rack::Attack.throttle("requests/create", limit: 5, period: 1.minute) do |req|
   route = begin
     Rails.application.routes.recognize_path(req.path) || {}
   rescue StandardError
