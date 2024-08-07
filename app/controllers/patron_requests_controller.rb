@@ -7,6 +7,7 @@ class PatronRequestsController < ApplicationController
   check_authorization
 
   load_resource
+  before_action :validate_instance_hrid, only: [:new]
   before_action :assign_new_attributes, only: [:new]
   before_action :authorize_new_request, only: [:new]
   authorize_resource
@@ -80,5 +81,9 @@ class PatronRequestsController < ApplicationController
                                            :fulfillment_type, :request_type,
                                            :scan_page_range, :scan_authors, :scan_title,
                                            :barcode, barcodes: [])
+  end
+
+  def validate_instance_hrid
+    raise ActionController::BadRequest unless /\A\w+\z/.match?(new_params[:instance_hrid])
   end
 end
