@@ -44,6 +44,7 @@ any,any,,,,BUSINESS,BUS-CRES,8 hour - overnight - no renew,No requests allowed,C
 visitor,any,,,,,EDU-PROCESSING or GRE-PROCESSING or GRE-TECH-PROCESSOR or SUL-PAGEABLE-LOC,No loan,No requests allowed,Default notice,No fines,$250 lost fee
 visitor,any,,,,,SUL-TS-PROCESSING,No loan,No requests allowed,Default notice,No fines,$250 lost fee
 visitor,any,,,,,ARS-INPROCESS or ART-PROCESSING-SERIALS or ART-PROCESSING-LOCKED or ART-VRC or EAR-PROCESSING-AP or EAR-PROCESSING-JC or EAR-PROCESSING-CIRCLS or EAR-PROCESSING-TR or EAL-INPROCESS or ENG-TECH-PROCESSOR or GRE-CPR-BINDERY or GRE-REPAIR-EVALUATION or MEDIA-REPAIR-SHELF or MEDIA-TECH-PROCESSOR or MEDIA-SER-PROCESSING or MUS-INPROCESS or SUL-CATALOGING or SUL-COLLECTIONCARE or SUL-TS-CC-BINDERYPREP or SUL-TS-CC-BOOKJACKET or SUL-TS-CC-KASEMAKE or SUL-TS-CC-REPAIR or SUL-TS-CC-SPECIALPROJECTS or SUL-TS-COLLECTIONCARE or SUL-TS-MAINTENANCE,No loan,No requests allowed,Default notice,No fines,$250 lost fee
+any,any,,,,,LANE-DCORE,28day-2renew-7daygrace,Allow All,Default notice,3.00/21.00 recall overdue fine,$100 lost fee
 any,any,,,,,LANE-NEWB,28day-2renew-7daygrace,Allow paging/hold,Default notice,3.00/21.00 recall overdue fine,$250 lost fee
 any,any,,,,,LANE-SAL3X,12hour-norenew-15mingrace,Allow paging,Default notice,3.00/21.00 recall overdue fine,$250 lost fee
 any,any,,,,,LANE-SOMCC,28day-2renew-7daygrace,Allow All,Default notice,3.00/21.00 recall overdue fine,$250 lost fee
