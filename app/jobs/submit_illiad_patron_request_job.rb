@@ -6,7 +6,6 @@ class SubmitIlliadPatronRequestJob < ApplicationJob
   queue_as :default
   retry_on Faraday::ConnectionFailed
 
-  # rubocop:disable Metrics/AbcSize
   def perform(patron_request, item_id)
     item = patron_request.selected_items.find { |x| x.id == item_id }
     return unless item
@@ -14,7 +13,7 @@ class SubmitIlliadPatronRequestJob < ApplicationJob
     response = IlliadRequest.new(patron_request.illiad_request_params(item)).request!
 
     if response.success?
-      illiad_response_data = JSON.parse(response.body).select { |_, value| value.present? } || {}
+      illiad_response_data = JSON.parse(response.body).compact_blank || {}
       notify_ilb(patron_request, illiad_response_data) if illiad_response_data['Message'].present?
 
       illiad_response_data
@@ -23,7 +22,6 @@ class SubmitIlliadPatronRequestJob < ApplicationJob
       nil
     end
   end
-  # rubocop:enable Metrics/AbcSize
 
   private
 

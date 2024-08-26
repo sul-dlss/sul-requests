@@ -10,7 +10,7 @@ require 'capybara/rails'
 require 'timecop'
 
 # Auto require all files in spec/support.
-Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+Rails.root.glob('spec/support/**/*.rb').each { |f| require f }
 Capybara.javascript_driver = :selenium_chrome_headless
 
 # Set a little higher for github actions, to avoid flappy tests
