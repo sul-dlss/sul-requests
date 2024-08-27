@@ -137,6 +137,7 @@ sul-purchased or visitor,library equipment 1,,,,,ENG-MAKERBAR,No loan,No request
 sul-purchased or visitor,accessories 2,,,,,MEDIA-ATCIRCDESK,No loan,No requests allowed,Short Term Notices,No fines,$150 lost fee
 visitor,accessories 1,,,,,MUS-RECORDINGS,No loan,No requests allowed,Short Term Notices,No fines,$100 lost fee - 1 hr aged to lost
 sul-purchased or visitor,accessories 1,,,,,MEDIA-ATCIRCDESK,No loan,No requests allowed,Short Term Notices,No fines,$100 lost fee - 1 hr aged to lost
+sul-purchased or visitor,accessories 1,,,,,EAR-ATCIRCDESK,No loan,No requests allowed,Short Term Notices,No fines,$100 lost fee - 1 hr aged to lost
 visitor,book,,,,,TAN-NEWBOOK,No loan,No requests allowed,Default notice,No fines,$75 lost fee
 courtesy or program-short-term or sul-contractprograms,book,,,,,TAN-NEWBOOK,28day-2renew-7daygrace,Hold only,Default notice,No fines,$75 lost fee
 sul-purchased or sul-guest or lane-hospital staff,book,,,,,TAN-NEWBOOK,No loan,No requests allowed,Default notice,No fines,$75 lost fee
