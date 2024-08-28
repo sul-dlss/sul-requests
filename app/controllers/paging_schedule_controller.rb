@@ -53,6 +53,7 @@ class PagingScheduleController < ApplicationController
   def request_for_schedule
     Request.new(
       origin: params[:origin],
+      origin_location: params[:origin_location],
       destination: params[:destination]
     )
   end

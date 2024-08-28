@@ -35,6 +35,14 @@ RSpec.describe PagingSchedule do
         described_class.for(build(:page, origin: 'DOES-NOT-EXIST', destination: 'SOMEWHERE-ELSE'))
       end.to raise_error(PagingSchedule::ScheduleNotFound)
     end
+
+    it 'raises an error if the location is probably sending via ILLiad' do
+      page = build(:page, origin: 'SAL3', destination: 'GREEN')
+      allow(page).to receive(:folio_location).and_return(double(pages_prefer_to_send_via_illiad?: true))
+      expect do
+        described_class.for(page)
+      end.to raise_error(PagingSchedule::ScheduleNotFound)
+    end
   end
 
   describe '.worst_case_delivery_day' do

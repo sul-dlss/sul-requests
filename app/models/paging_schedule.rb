@@ -17,6 +17,7 @@ module PagingSchedule
 
       schedule_or_default = schedule_for_request(request) || default_schedule(request)
       raise ScheduleNotFound unless schedule_or_default.present?
+      raise ScheduleNotFound if request.folio_location&.pages_prefer_to_send_via_illiad?
 
       schedule_or_default
     end

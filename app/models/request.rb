@@ -58,6 +58,12 @@ class Request < ActiveRecord::Base
     @library_location ||= LibraryLocation.new(origin, origin_location)
   end
 
+  # Get the FOLIO location object for the origin location code.
+  # @return [Folio::Location]
+  def folio_location
+    @folio_location ||= Folio::Types.locations.find_by(code: library_location.folio_location_code)
+  end
+
   def active_messages
     library_location.active_messages.for_type(Message.notification_type(self))
   end

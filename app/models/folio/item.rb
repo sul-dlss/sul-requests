@@ -210,6 +210,10 @@ module Folio
       permanent_location.details['pageAeonSite']
     end
 
+    def illiad_preferred?
+      permanent_location.pages_prefer_to_send_via_illiad?
+    end
+
     # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     def self.from_hash(dyn)
       new(id: dyn['id'],
