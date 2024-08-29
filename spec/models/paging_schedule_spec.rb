@@ -17,14 +17,14 @@ RSpec.describe PagingSchedule do
 
   describe '#for' do
     it 'returns the schedule for the provided request' do
-      schedule = described_class.for(build(:page, origin: 'SAL3', destination: 'GREEN'))
+      schedule = described_class.for(from: nil, to: 'GREEN', library_code: 'SAL3')
       expect(schedule).to be_a PagingSchedule::Scheduler
       expect(schedule.from).to eq 'SAL3'
       expect(schedule.to).to eq 'GREEN'
     end
 
     it 'returns the default/anywhere schedule if the destination is not configured' do
-      schedule = described_class.for(build(:page, origin: 'SAL3', destination: 'SOMEWHERE-ELSE'))
+      schedule = described_class.for(from: nil, to: 'SOMEWHERE-ELSE', library_code: 'SAL3')
       expect(schedule).to be_a PagingSchedule::Scheduler
       expect(schedule.from).to eq 'SAL3'
       expect(schedule.to).to eq 'SOMEWHERE-ELSE'
@@ -32,15 +32,15 @@ RSpec.describe PagingSchedule do
 
     it 'raises an error when there is no schedule configured found' do
       expect do
-        described_class.for(build(:page, origin: 'DOES-NOT-EXIST', destination: 'SOMEWHERE-ELSE'))
+        described_class.for(from: nil, library_code: 'DOES-NOT-EXIST', to: 'SOMEWHERE-ELSE')
       end.to raise_error(PagingSchedule::ScheduleNotFound)
     end
 
     it 'raises an error if the location is probably sending via ILLiad' do
-      page = build(:page, origin: 'SAL3', destination: 'GREEN')
-      allow(page).to receive(:folio_location).and_return(double(pages_prefer_to_send_via_illiad?: true))
+      folio_location = instance_double(Folio::Location, library: instance_double(Folio::Library, code: 'SAL3'),
+                                                        pages_prefer_to_send_via_illiad?: true)
       expect do
-        described_class.for(page)
+        described_class.for(from: folio_location, to: 'GREEN')
       end.to raise_error(PagingSchedule::ScheduleNotFound)
     end
   end
@@ -86,8 +86,7 @@ RSpec.describe PagingSchedule do
 
   describe 'estimate integration tests' do
     def earliest_delivery_estimate(from:, to:)
-      request = double(origin_library_code: from, destination: to, destination_library_code: to, created_at: Time.zone.now)
-      d = PagingSchedule.for(request).earliest_delivery_estimate
+      d = PagingSchedule.for(from: nil, library_code: from, to:).earliest_delivery_estimate
       d.estimated_delivery_day_to_destination
     end
 
