@@ -11,7 +11,7 @@ class PagingScheduleController < ApplicationController
   end
 
   before_action only: [:show, :open] do
-    render plain: 'Locations not found', status: :not_found unless params[:origin].present? && params[:destination].present?
+    render plain: 'Locations not found', status: :not_found unless params[:origin_library].present? && params[:destination].present?
   end
 
   before_action :load_schedule, only: [:show, :open]
@@ -47,13 +47,22 @@ class PagingScheduleController < ApplicationController
   private
 
   def load_schedule
-    @schedule = PagingSchedule.for(request_for_schedule)
+    @schedule = PagingSchedule.for(from: origin_location, to: destination_library_code, library_code: fallback_library_code)
   end
 
-  def request_for_schedule
-    Request.new(
-      origin: params[:origin],
-      destination: params[:destination]
-    )
+  def origin_location
+    @origin_location ||= Folio::Types.locations.find_by(code: params[:origin_location])
+  end
+
+  def destination_library_code
+    params[:destination]
+  end
+
+  def fallback_library_code
+    return origin_location.library.code if origin_location.present?
+
+    Honeybadger.notify('PagingScheduleController#load_schedule: origin_location not found', context: { params: })
+
+    params[:origin_library]
   end
 end

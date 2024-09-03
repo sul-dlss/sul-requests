@@ -4,7 +4,7 @@
 #  PagingSchedule takes a requested item and can
 #  read the paging schedule configuration and estimate a date of arrival.
 ###
-module PagingSchedule
+class PagingSchedule
   class << self
     def schedule
       @schedule ||= Settings.paging_schedule.map do |sched|
@@ -12,49 +12,78 @@ module PagingSchedule
       end
     end
 
-    def for(request, scan: false)
-      return schedule_for_request_scan(request) if scan
+    def for(from:, to:, scan: false, library_code: nil)
+      instance = new(from:, to:, library_code:)
 
-      schedule_or_default = schedule_for_request(request) || default_schedule(request)
-      raise ScheduleNotFound unless schedule_or_default.present?
-
-      schedule_or_default
+      if scan
+        instance.schedule_for_request_scan
+      else
+        instance.schedule_for_request
+      end
     end
 
     def worst_case_delivery_day
       (Time.zone.today + worst_case_days_later.days)
     end
 
-    private
-
-    def schedule_for_request(request)
-      schedule.detect do |sched|
-        sched.from == request.origin_library_code &&
-          sched.to == request.destination_library_code &&
-          sched.by_time?(request.created_at)
-      end
-    end
-
-    def schedule_for_request_scan(request)
-      schedule.detect do |sched|
-        sched.from == request.origin_library_code &&
-          sched.to == request.scan_code &&
-          sched.by_time?(request.created_at)
-      end
-    end
-
-    def default_schedule(request)
-      s = schedule.detect do |sched|
-        sched.from == request.origin_library_code &&
-          sched.to == :anywhere &&
-          sched.by_time?(request.created_at)
-      end
-      s&.for(request.destination_library_code)
-    end
-
     def worst_case_days_later
       schedule.filter_map(&:business_days_later).max + Settings.worst_case_paging_padding
     end
+  end
+
+  attr_reader :from, :to, :library_code, :time
+
+  def initialize(from:, to:, time: nil, library_code: nil)
+    @from = from
+    @to = to
+    @library_code = library_code
+    @time = time || Time.zone.now
+  end
+
+  def schedule
+    self.class.schedule
+  end
+
+  def schedule_for_request
+    schedule_or_default = schedule_for_destination || default_schedule
+
+    raise ScheduleNotFound unless schedule_or_default.present?
+    raise ScheduleNotFound if from&.pages_prefer_to_send_via_illiad?
+
+    schedule_or_default
+  end
+
+  def schedule_for_request_scan
+    schedule.detect do |sched|
+      sched.from == origin_library_code &&
+        sched.to == destination_library_code &&
+        sched.by_time?(time)
+    end
+  end
+
+  def schedule_for_destination
+    schedule.detect do |sched|
+      sched.from == origin_library_code &&
+        sched.to == destination_library_code &&
+        sched.by_time?(time)
+    end
+  end
+
+  def default_schedule
+    s = schedule.detect do |sched|
+      sched.from == origin_library_code &&
+        sched.to == :anywhere &&
+        sched.by_time?(time)
+    end
+    s&.for(to)
+  end
+
+  def origin_library_code
+    from&.library&.code || @library_code
+  end
+
+  def destination_library_code
+    @destination_library_code ||= Settings.ils.pickup_destination_class.constantize.new(to).library_code || to
   end
 
   ###
@@ -92,8 +121,7 @@ module PagingSchedule
       @will_arrive_text ||= will_arrive_after
     end
 
-    def by_time?(created_at = nil)
-      created_at ||= Time.zone.now
+    def by_time?(created_at)
       case
       when before
         created_at < Time.zone.parse(before)

@@ -189,7 +189,7 @@ export default class extends Controller {
 
   async updateEarliestAvailable(event) {
     if (this.hasEarliestAvailableTarget) {
-      const url = new URL(this.earliestAvailableTarget.src + "/../" + event.currentTarget.value);
+      const url = new URL(this.earliestAvailableTarget.src.replace(/\/to\/[^/\?]+/, '/to/' + event.currentTarget.value));
       this.earliestAvailableTarget.src = url;
     }
 
