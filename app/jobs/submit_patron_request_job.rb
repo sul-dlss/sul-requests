@@ -44,10 +44,9 @@ class SubmitPatronRequestJob < ApplicationJob
   def send_to_illiad?(patron_request, item) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     return true if patron_request.scan?
     return false unless patron_request.patron&.ilb_eligible?
-    return true if item.status == Folio::Item::STATUS_AGED_TO_LOST
+    return true if item.status == Folio::Item::STATUS_AGED_TO_LOST || item.illiad_preferred?
     return false unless patron_request.fulfillment_type == 'recall'
     return false unless item.hold_recallable?(patron_request.patron)
-    return true if item.illiad_preferred?
 
     item.status.in?(illiad_recall_statuses) || item.queue_length.positive?
   end
