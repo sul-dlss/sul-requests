@@ -228,6 +228,7 @@ class FolioGraphqlClient
         details {
           pageAeonSite
           pageMediationGroupKey
+          pagePreferSendIlliad
           pageServicePoints {
             id
             code
@@ -244,6 +245,7 @@ class FolioGraphqlClient
         details {
           pageAeonSite
           pageMediationGroupKey
+          pagePreferSendIlliad
           pageServicePoints {
             id
             code
@@ -268,6 +270,7 @@ class FolioGraphqlClient
           details {
             pageAeonSite
             pageMediationGroupKey
+            pagePreferSendIlliad
             pageServicePoints {
               id
               code
