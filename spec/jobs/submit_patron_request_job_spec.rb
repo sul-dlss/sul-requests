@@ -105,6 +105,20 @@ RSpec.describe SubmitPatronRequestJob do
       end
     end
 
+    context 'when a pageable item is in a library that we prefer to send to ILLiad' do
+      before do
+        allow(bib_data.items[0]).to receive_messages(
+          hold_recallable?: false,
+          illiad_preferred?: true
+        )
+      end
+
+      it 'requests items via ILLiad' do
+        described_class.perform_now(request)
+        expect(SubmitIlliadPatronRequestJob).to have_received(:perform_now).with(request, bib_data.items[0].id)
+      end
+    end
+
     context 'when the item has a request queue' do
       before do
         allow(bib_data.items[0]).to receive(:queue_length).and_return(1)
