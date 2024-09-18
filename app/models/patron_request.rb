@@ -470,7 +470,7 @@ class PatronRequest < ApplicationRecord
                            SpecIns: 'SearchWorks Request',
                            LoanTitle: bib_data.title,
                            LoanAuthor: bib_data.author,
-                           NotWantedAfter: needed_date.strftime('%Y-%m-%d'),
+                           NotWantedAfter: (needed_date || 1.year.from_now).strftime('%Y-%m-%d'),
                            ItemInfo4: destination_library_code
                          })
   end
