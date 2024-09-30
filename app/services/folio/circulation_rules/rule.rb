@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'csv'
-
 module Folio
   module CirculationRules
     # A circulation rule that applies a policy when its criteria are met
