@@ -24,7 +24,7 @@ class AccordionStepComponent < ViewComponent::Base
     @form_id = form_id
     @submit = submit
     @cancel = cancel
-    @request = request
+    @item_request = request
     @submit_text = submit_text
   end
   # rubocop:enable Metrics/ParameterLists
@@ -44,4 +44,6 @@ class AccordionStepComponent < ViewComponent::Base
   def cancel?
     @cancel
   end
+
+  delegate :instance_hrid, :origin_location_code, to: :@item_request
 end
