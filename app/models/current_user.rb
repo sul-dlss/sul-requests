@@ -8,8 +8,8 @@ class CurrentUser
     @data = (data || {}).with_indifferent_access
   end
 
-  def as_json(*, **, &)
-    data.as_json(*, **, &)
+  def as_json(...)
+    data.as_json(...)
   end
 
   def user_object
