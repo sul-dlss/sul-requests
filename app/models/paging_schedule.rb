@@ -175,7 +175,8 @@ class PagingSchedule
       end
 
       def destination_library_hours_next_business_day_after_delivery
-        LibraryHours.new(to).next_business_day(origin_library_next_business_day)
+        to_code = Settings.libraries[to] ? to : Folio::Types.service_points.find_by(code: to)&.library&.code
+        LibraryHours.new(to_code).next_business_day(origin_library_next_business_day)
       end
     end
   end
