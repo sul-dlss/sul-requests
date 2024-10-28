@@ -23,6 +23,13 @@ RSpec.describe PagingSchedule do
       expect(schedule.to).to eq 'GREEN'
     end
 
+    it 'maps GREEN-LOAN to GREEN returns the schedule for the provided request' do
+      schedule = described_class.for(from: nil, to: 'GREEN-LOAN', library_code: 'SAL3')
+      expect(schedule).to be_a PagingSchedule::Scheduler
+      expect(schedule.from).to eq 'SAL3'
+      expect(schedule.to).to eq 'GREEN'
+    end
+
     it 'returns the default/anywhere schedule if the destination is not configured' do
       schedule = described_class.for(from: nil, to: 'SOMEWHERE-ELSE', library_code: 'SAL3')
       expect(schedule).to be_a PagingSchedule::Scheduler
