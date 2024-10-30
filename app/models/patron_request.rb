@@ -147,8 +147,9 @@ class PatronRequest < ApplicationRecord
 
   # @deprecated Used by the paging schedule; new code should use pickup_service_point instead
   # @return [String] the code of the destination pickup location
+  # fallback to code because RWC doesn't have an associated library but is still valid pickup location
   def destination_library_code
-    pickup_service_point&.library&.code
+    pickup_service_point&.library&.code || pickup_service_point&.code
   end
 
   # @return [String] the library ID for the destination's pseudopatron
