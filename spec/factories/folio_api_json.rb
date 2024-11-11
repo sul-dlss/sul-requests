@@ -802,4 +802,19 @@ FactoryBot.define do
       ]
     end
   end
+
+  factory :bound_with_child_holding, parent: :instance do
+    id { '1234' }
+    title { 'One bound-with child' }
+
+    holdings_records { [build(:holdings_record, bound_with_item: bound_with_parent_item)] }
+
+    transient do
+      bound_with_parent_instance { build(:instance, title: 'Bound with parent', id: '9876') }
+      bound_with_parent_item do
+        build(:item, instance: bound_with_parent_instance, barcode: '12345678', base_callnumber: 'ABC 123',
+                     effective_location: build(:location, code: 'SAL3-STACKS'))
+      end
+    end
+  end
 end
