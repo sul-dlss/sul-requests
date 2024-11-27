@@ -46,13 +46,20 @@ class SubmitFolioPatronRequestJob < ApplicationJob
   def folio_request_data_for_item(request, item) # rubocop:disable Metrics/AbcSize
     FolioClient::CirculationRequestData.new(
       request_level: 'Item', request_type: best_request_type(request, item),
-      instance_id: request.instance_id, item_id: item.id, holdings_record_id: item.holdings_record_id,
+      instance_id: item.instance&.id || request.instance_id, item_id: item.id, holdings_record_id: item.holdings_record_id,
       requester_id: request.requester_patron_id, proxy_user_id: (if request.for_sponsor?
                                                                    request.patron&.id
                                                                  end), fulfillment_preference: 'Hold Shelf',
       pickup_service_point_id: request.pickup_service_point.id,
-      patron_comments: request.request_comments, request_expiration_date: (Time.zone.today + 3.years).to_time.utc.iso8601
+      patron_comments: patron_comments(request, item), request_expiration_date: (Time.zone.today + 3.years).to_time.utc.iso8601
     )
+  end
+
+  def patron_comments(request, item)
+    [request.request_comments,
+     (if item.instance&.id && item.instance&.id != request.instance_id
+        { bound_with_child_instance_id: request.instance_id }.to_json
+      end)].compact.join("\n")
   end
 
   def folio_client

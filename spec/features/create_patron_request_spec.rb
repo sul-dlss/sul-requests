@@ -80,6 +80,27 @@ RSpec.describe 'Creating a request', :js do
                                                                                               instance_id: bib_data.id))
     end
 
+    context 'for a bound-with item' do
+      let(:bib_data) { build(:bound_with_child_holding) }
+
+      it 'submits the request for the bound-with parent instance' do
+        folio_client = FolioClient.new
+        allow(folio_client).to receive(:create_circulation_request)
+        allow(FolioClient).to receive(:new).and_return(folio_client)
+        allow(patron).to receive(:allowed_request_types).and_return(%w[Hold Page Recall])
+
+        visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+
+        perform_enqueued_jobs do
+          click_on 'Submit request'
+          expect(page).to have_content 'We received your pickup request'
+          expect(page).to have_content 'This item is bound with other items and is shelved under the title Bound with parent (ABC 123)'
+        end
+        expect(folio_client).to have_received(:create_circulation_request).with(have_attributes(requester_id: patron.id,
+                                                                                                instance_id: '9876'))
+      end
+    end
+
     context 'for a scan' do
       let(:bib_data) { build(:scannable_holdings) }
       let(:user) { create(:scan_eligible_user) }

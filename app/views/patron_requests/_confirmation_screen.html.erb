@@ -25,6 +25,28 @@
 
         <hr />
 
+        <% @patron_request.selected_items.select(&:bound_with_child_holdings_record).each do |item| %>
+            <div class="alert alert-warning d-flex align-items-center gap-3">
+                <i class="bi bi-exclamation-triangle-fill me-2 text-warning fs-1"></i>
+
+                <div>
+                    <div class="fw-bold mb-2">Important!</div>
+
+                    <p>
+                        <% if @patron_request.selected_items.one? %>
+                            This item
+                        <% else %>
+                            The item <i><%= @patron_request.bib_data.title %></i> (<%= item.bound_with_child_holdings_record.call_number %>)
+                        <% end %> is bound with other items and is shelved under the title <i><%= item.instance.title %></i> (<%= item.callnumber %>).
+                    </p>
+
+                    <p class="mb-0 fw-bold">
+                        Be advised that all subsequent correspondence will reference this title. The item you requested will be included with it.
+                    </p>
+                </div>
+            </div>
+        <% end %>
+
         <h2 class="my-4">Request confirmation</h2>
         <dl class="dl-inline">
             <div><dt>Title:</dt><dd><%= @patron_request.item_title %></dd></div>
