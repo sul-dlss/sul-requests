@@ -148,6 +148,10 @@ class FolioClient
     get_json("/automated-patron-blocks/#{user_id}")
   end
 
+  def patron_summary(user_id)
+    get_json("/patron/account/#{user_id}", params: { includeLoans: true, includeHolds: true })
+  end
+
   # Defines the hold request data for Folio
   # [String] pickup_location_id the UUID of the pickup location
   # [String] patron_comments
