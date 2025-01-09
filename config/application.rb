@@ -45,6 +45,7 @@ module SULRequests
     config.mediator_contact_info = {
       'ART'        => { email: 'sul-requests-art@lists.stanford.edu' },
       'EDUCATION'  => { email: 'sul-requests-education@lists.stanford.edu'},
+      'GRE-HH-SVA'    => { email: 'sul-requests-sva@lists.stanford.edu' },
       'MARINE-BIO'    => { email: 'sul-requests-hopkins@lists.stanford.edu' },
       'PAGE-MP'    => { email: 'sul-requests-branner@lists.stanford.edu' },
       'SAL3-PAGE-MP'    => { email: 'sul-requests-branner@lists.stanford.edu' },

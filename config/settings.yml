@@ -14,10 +14,13 @@ origin_admin_groups:
 origin_location_admin_groups:
   PAGE-MP: ['sul:requests-branner']
   SAL3-PAGE-MP: ['sul:requests-branner']
+  GRE-HH-SVA: ['sul:requests-sva']
 
 mediateable_origins:
   ART: {}
   EDUCATION: {}
+  GRE-HH-SVA:
+    library_override: SVA
   MARINE-BIO: {}
   PAGE-MP:
     library_override: EARTH-SCI
@@ -285,6 +288,16 @@ libraries:
     contact_info:
       phone: '(650) 723-3278'
       email: 'scan-and-deliver@stanford.edu'
+  SVA:
+    label: Silicon Valley Archives
+    contact_info:
+      phone: "(650) 723-1493"
+      email: svarchives@stanford.edu
+    folio_pickup_service_point_code: GREEN-LOAN
+    hold_pseudopatron: HOLD@GR
+    hours:
+      library_slug: green
+      location_slug: library-circulation
   SCIENCE:
     label: Science Library (Li and Ma)
     contact_info:
@@ -316,6 +329,10 @@ libraries:
       location_slug: library-circulation
 
 locations:
+  GRE-HH-SVA:
+    contact_info:
+      phone: "(650) 723-1493"
+      email: svarchives@stanford.edu
   SAL3-PAGE-MP:
     contact_info:
       phone: '(650) 723-2746'
@@ -634,6 +651,22 @@ paging_schedule:
     after: '3 pm'
     will_arrive_after: '12 pm'
     business_days_later: 2
+
+  - from: 'GREEN'
+    to: 'GREEN'
+    before: '10 am'
+    will_arrive_after: '11 am'
+    business_days_later: 0
+  - from: 'GREENR'
+    to: 'GREEN'
+    before: '2 pm'
+    will_arrive_after: '3:00 pm'
+    business_days_later: 0
+  - from: GREEN'
+    to: 'GREEN'
+    after: '2 pm'
+    will_arrive_after: '11 am'
+    business_days_later: 1
 
   - from: 'ART'
     to: 'ART'
