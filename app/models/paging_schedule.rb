@@ -12,8 +12,8 @@ class PagingSchedule
       end
     end
 
-    def for(from:, to:, scan: false, library_code: nil)
-      instance = new(from:, to:, library_code:)
+    def for(scan: false, **)
+      instance = new(**)
 
       if scan
         instance.schedule_for_request_scan
