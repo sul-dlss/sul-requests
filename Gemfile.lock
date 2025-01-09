@@ -436,10 +436,10 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.13.1)
     simplecov_json_formatter (0.1.4)
-    sqlite3 (1.7.3)
+    sqlite3 (2.5.0)
       mini_portile2 (~> 2.8.0)
-    sqlite3 (1.7.3-x86_64-darwin)
-    sqlite3 (1.7.3-x86_64-linux)
+    sqlite3 (2.5.0-x86_64-darwin)
+    sqlite3 (2.5.0-x86_64-linux-gnu)
     sshkit (1.23.2)
       base64
       net-scp (>= 1.1.2)
@@ -551,7 +551,7 @@ DEPENDENCIES
   selenium-webdriver
   sidekiq (~> 7.1)
   simplecov
-  sqlite3 (~> 1.4)
+  sqlite3 (~> 2.5)
   stimulus-rails
   timecop
   turbo-rails (~> 1.4)
