@@ -67,7 +67,7 @@ pipeline {
           export DEPLOY=1
 
           # Load RVM
-          rvm use 3.0.3@sul-requests --create
+          rvm use 3.3.1@sul-requests --create
           gem install bundler
 
           bundle install --without production
@@ -111,7 +111,7 @@ pipeline {
           export DEPLOY=1
 
           # Load RVM
-          rvm use 3.0.3@sul-requests --create
+          rvm use 3.3.1@sul-requests --create
           gem install bundler
 
           bundle install --without production
@@ -156,7 +156,7 @@ pipeline {
           export REVISION=$TAG_NAME
 
           # Load RVM
-          rvm use 3.0.3@sul-requests --create
+          rvm use 3.3.1@sul-requests --create
           gem install bundler
 
           bundle install --without production
