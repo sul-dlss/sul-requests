@@ -77,6 +77,17 @@ FactoryBot.define do
     details { { 'pageAeonSite' => 'SPECUA' } }
   end
 
+  factory :prefer_illiad_location, parent: :location do
+    code { 'SAL-PAGE-GR' }
+    details { { 'pagePreferSendIlliad' => 'true' } }
+  end
+
+  factory :paging_schedule_override_location, parent: :location do
+    code { 'GRE-HH-SVA' }
+    library { Folio::Library.new(id: 'f6b5519e-88d9-413e-924d-9ed96255f72e', code: 'GREEN') }
+    details { { 'pagingSchedule' => 'SVA' } }
+  end
+
   factory :book_material_type, class: 'Folio::MaterialType' do
     id { '1a54b431-2e4f-452d-9cae-9cee66c9a892' }
     name { 'book' }

@@ -79,7 +79,7 @@ class PagingSchedule
   end
 
   def origin_library_code
-    from&.library&.code || @library_code
+    from&.paging_schedule_origin_library_code || @library_code
   end
 
   def destination_library_code
@@ -127,6 +127,8 @@ class PagingSchedule
         created_at < Time.zone.parse(before)
       when after
         created_at >= Time.zone.parse(after)
+      else # the schedule doesn't specify before/after
+        true
       end
     end
 
