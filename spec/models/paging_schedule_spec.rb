@@ -44,11 +44,23 @@ RSpec.describe PagingSchedule do
     end
 
     it 'raises an error if the location is probably sending via ILLiad' do
-      folio_location = instance_double(Folio::Location, library: instance_double(Folio::Library, code: 'SAL3'),
-                                                        pages_prefer_to_send_via_illiad?: true)
+      folio_location = build(:prefer_illiad_location)
+
       expect do
         described_class.for(from: folio_location, to: 'GREEN')
       end.to raise_error(PagingSchedule::ScheduleNotFound)
+    end
+
+    it 'allows the location to specify the origin library code (if it is different from the actual FOLIO library)' do
+      folio_location = build(:paging_schedule_override_location)
+
+      allow(described_class).to receive(:schedule).and_return([PagingSchedule::Scheduler.new(from: 'SVA', to: 'GREEN',
+                                                                                             business_days_later: 1)])
+
+      schedule = described_class.for(from: folio_location, to: 'GREEN-LOAN')
+      expect(schedule).to be_a PagingSchedule::Scheduler
+      expect(schedule.from).to eq 'SVA'
+      expect(schedule.to).to eq 'GREEN'
     end
   end
 

@@ -32,5 +32,9 @@ module Folio
     def pages_prefer_to_send_via_illiad?
       details['pagePreferSendIlliad'] == 'true'
     end
+
+    def paging_schedule_origin_library_code
+      details['pagingSchedule'] || library&.code
+    end
   end
 end
