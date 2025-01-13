@@ -134,14 +134,14 @@ export default class extends Controller {
       this.disableRequiredInputs(availableItemsGroup);
     } else {
       availableItemsGroup.classList.remove('d-none');
-      this.enableRequiredInputs(availableItemsGroup);
+      if (this.requestType == 'pickup') this.enableRequiredInputs(availableItemsGroup);
     }
     if (unavailableItems.length === 0) {
       unavailableItemsGroup.classList.add('d-none');
       this.disableRequiredInputs(unavailableItemsGroup);
     } else {
       unavailableItemsGroup.classList.remove('d-none');
-      this.enableRequiredInputs(unavailableItemsGroup);
+      if (this.requestType == 'pickup') this.enableRequiredInputs(unavailableItemsGroup);
     }
 
     this.dispatch('changed', { detail: { selectedItems: this.selectedItemsValue }});
