@@ -306,7 +306,7 @@ class PatronRequest < ApplicationRecord
   # a date so staff can expire old requests.
   # @return [Boolean] whether the request requires a needed date from the patron
   def requires_needed_date?
-    return false if mediateable? && (origin_location_code == 'PAGE-MP' || origin_location_code == 'SAL3-PAGE-MP')
+    return false if mediateable? && ['PAGE-MP', 'SAL3-PAGE-MP'].include?(origin_location_code)
 
     mediateable? || selected_items.any? { |item| item.recallable?(patron) || item.holdable?(patron) }
   end
