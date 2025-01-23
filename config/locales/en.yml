@@ -134,7 +134,7 @@ en:
       continue_button: Continue to complete request
     info_modal:
       header: "%{library} access"
-      reading_room_info: Restricted items are made available for use in the Reading Room. They cannot be checked out from the library or borrowed via Interlibrary Loan.
+      reading_room_info: Special Collections items are made available for use in the Reading Room. They cannot be checked out from the library or borrowed via Interlibrary Loan.
       how_to:
         header: How does it work?
         body: On-site and digital access requests are managed by Aeon, an archives and special collections system. If you haven’t already created a Stanford Aeon special collections research account, you will need to do so as part of the request process. Once you have an Aeon account, you will be able to check the status of requests, edit or cancel requests, create a new appointment or edit an existing appointment, and review your request history.
