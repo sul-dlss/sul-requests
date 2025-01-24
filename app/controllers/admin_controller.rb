@@ -9,6 +9,7 @@ class AdminController < ApplicationController
   end
 
   before_action :load_and_authorize_library_location, only: [:show]
+  rescue_from CanCan::AccessDenied, with: :rescue_can_can
 
   def index
     authorize! :read, :admin
@@ -146,8 +147,8 @@ class AdminController < ApplicationController
     )
   end
 
-  def rescue_can_can(*)
-    return super if sso_user? || params[:action] == 'approve_item'
+  def rescue_can_can(error)
+    raise error if sso_user? || params[:action] == 'approve_item'
 
     redirect_to login_by_sunetid_path(referrer: request.original_url)
   end

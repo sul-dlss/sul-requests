@@ -7,8 +7,6 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  rescue_from CanCan::AccessDenied, with: :rescue_can_can
-
   before_action -> { flash.now[:error] &&= flash[:error].html_safe if flash[:html_safe] }
 
   def current_user
@@ -25,11 +23,6 @@ class ApplicationController < ActionController::Base
 
   def sso_user?
     current_user.sso_user?
-  end
-
-  def rescue_can_can(exception)
-    logger.debug { "Access denied on #{exception.action} #{exception.subject.inspect}" }
-    render status: :forbidden, plain: 'Access to this resource is denied.'
   end
 
   def redirect_after_action

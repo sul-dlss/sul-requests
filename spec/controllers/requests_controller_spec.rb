@@ -12,7 +12,7 @@ RSpec.describe RequestsController do
     context 'by sso users' do
       let(:user) { create(:sso_user) }
 
-      it 'is successful if they have the are the creator of the record' do
+      it 'is successful if they are the creator of the record' do
         page = create(:page, user:)
         get :status, params: { id: page[:id] }
         expect(response).to be_successful
@@ -20,8 +20,7 @@ RSpec.describe RequestsController do
 
       it 'is forbidden when the user is already authenticated but does not have access to the request' do
         page = create(:page)
-        get :status, params: { id: page[:id] }
-        expect(response).to have_http_status(:forbidden)
+        expect { get :status, params: { id: page[:id] } }.to raise_error(CanCan::AccessDenied)
       end
     end
 

@@ -2,6 +2,10 @@
 
 # Handle application errors
 class ErrorsController < ApplicationController
+  def forbidden
+    render(status: :forbidden)
+  end
+
   def not_found
     render(status: :not_found)
   end

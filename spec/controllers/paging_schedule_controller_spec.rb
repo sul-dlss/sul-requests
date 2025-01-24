@@ -6,8 +6,7 @@ RSpec.describe PagingScheduleController do
   describe 'index' do
     describe 'by anonmyous users' do
       it 'is forbidden' do
-        get :index
-        expect(response).to have_http_status(:forbidden)
+        expect { get :index }.to raise_error(CanCan::AccessDenied)
       end
     end
 

@@ -12,6 +12,7 @@ class RequestsController < ApplicationController
   class_attribute :bib_model_class, default: Settings.ils.bib_model.constantize
 
   rescue_from bib_model_class::NotFound, with: :item_not_found
+  rescue_from CanCan::AccessDenied, with: :rescue_can_can
 
   def new
     mapped_params = { 'instance_hrid' => new_params[:item_id],
@@ -41,9 +42,9 @@ class RequestsController < ApplicationController
   end
 
   def rescue_can_can(exception)
-    return rescue_status_pages || super if params[:action].to_sym == :status
+    return rescue_status_pages || raise(exception) if params[:action].to_sym == :status
 
-    super
+    raise(exception)
   end
 
   def rescue_status_pages
