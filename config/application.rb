@@ -58,5 +58,9 @@ module SULRequests
       'organization:law' => 'rcj',
       'organization:gsb' => 's7z'
     }
+
+    config.action_dispatch.rescue_responses.merge!({
+      'CanCan::AccessDenied' => :forbidden
+    })
   end
 end

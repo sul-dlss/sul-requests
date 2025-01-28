@@ -20,7 +20,8 @@ RSpec.describe 'Sidekiq requests' do
 
   context 'without superadmin privileges' do
     it 'raises an access denied error' do
-      expect { get(url) }.to raise_error(ActionController::RoutingError)
+      get(url)
+      expect(response).to have_http_status(:not_found)
     end
   end
 end
