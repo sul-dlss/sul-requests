@@ -40,8 +40,6 @@ module SULRequests
 
     config.scanning_library_proxy = { 'SCAN' => 'GREEN' }
 
-    config.no_user_privs_codes = ['U003', 'U004']
-
     config.mediator_contact_info = {
       'ART'        => { email: 'sul-requests-art@lists.stanford.edu' },
       'EDUCATION'  => { email: 'sul-requests-education@lists.stanford.edu'},
@@ -51,12 +49,6 @@ module SULRequests
       'SAL3-PAGE-MP'    => { email: 'sul-requests-branner@lists.stanford.edu' },
       'SPEC-COLL'  => { email: 'sul-requests-spec@lists.stanford.edu' },
       'RUMSEY-MAP'  => { email: 'sul-requests-rumsey@lists.stanford.edu' }
-    }
-
-    config.illiad_nvtgc_map = {
-      default: 'stf',
-      'organization:law' => 'rcj',
-      'organization:gsb' => 's7z'
     }
   end
 end
