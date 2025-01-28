@@ -82,9 +82,6 @@ features:
   mediator_email: true
   requests_redesign: false
 
-background_jobs:
-  enabled: false
-
 embed:
   url: https://embed.stanford.edu
 
