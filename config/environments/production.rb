@@ -68,12 +68,8 @@ Rails.application.configure do
   # config.cache_store = :mem_cache_store
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
-  # config.active_job.queue_adapter = :resque
+  config.active_job.queue_adapter = :sidekiq
   # config.active_job.queue_name_prefix = "sul_requests_production"
-
-  if Settings.background_jobs && Settings.background_jobs.enabled == true
-    config.active_job.queue_adapter = :sidekiq
-  end
 
   config.action_mailer.perform_caching = false
 
