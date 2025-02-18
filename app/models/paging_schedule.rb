@@ -40,9 +40,7 @@ class PagingSchedule
     @time = time || Time.zone.now
   end
 
-  def schedule
-    self.class.schedule
-  end
+  delegate :schedule, to: :class
 
   def schedule_for_request
     schedule_or_default = schedule_for_destination || default_schedule
