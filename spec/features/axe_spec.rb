@@ -18,11 +18,6 @@ RSpec.describe 'Accessibility testing', :js do
       visit new_patron_request_path(instance_hrid: 'a12345', origin_location_code: 'SAL3-STACKS')
       expect(page).to be_accessible
     end
-
-    it 'validates the feedback form page' do
-      visit feedback_form_path
-      expect(page).to be_accessible
-    end
   end
 
   context 'with a user' do

@@ -21,19 +21,17 @@
         <li>
           <%= link_to t('.my_account'), "https://mylibrary.stanford.edu/" %>
         </li>
-        <% unless current_page?(feedback_form_path) %>
-          <li>
-            <%= link_to "#feedback-form", role: 'button', data: {'bs-toggle':"collapse", 'bs-target':"#feedback-form"} do %>
-              Feedback
-            <% end %>
-          </li>
-        <% end %>
+        <li>
+          <%= link_to "#feedback-form", role: 'button', data: {'bs-toggle':"collapse", 'bs-target':"#feedback-form"} do %>
+            Feedback
+          <% end %>
+        </li>
       </ul>
     </nav>
   </div>
 </div>
 <div id="feedback-form" class="feedback-form-container collapse">
-    <%= render template: 'feedback_forms/new' unless current_page?(feedback_form_path) %>
+    <%= render 'feedback_forms/new' %>
 </div>
 <!-- Application header -->
 <div id="app-header" class="text-white bg-cardinal py-3 d-flex">
