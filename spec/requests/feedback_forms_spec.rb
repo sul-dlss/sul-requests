@@ -2,13 +2,13 @@
 
 require 'rails_helper'
 
-RSpec.describe 'FeedbackForm', type: :feature do
+RSpec.describe 'The feedback form', type: :feature do
   let(:current_user?) { false }
   let(:user) { create(:sso_user) }
 
   context 'when not logged in' do
     it 'reCAPTCHA challenge is present' do
-      visit feedback_path
+      visit root_path
       expect(page).to have_css '.requests-captcha'
     end
   end
@@ -19,7 +19,7 @@ RSpec.describe 'FeedbackForm', type: :feature do
     end
 
     it 'reCAPTCHA challenge is NOT present' do
-      visit feedback_path
+      visit root_path
       expect(page).to have_no_css '.requests-captcha'
     end
 
