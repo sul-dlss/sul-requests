@@ -329,3 +329,19 @@ label.btn-close {
 .status.availability {
   text-wrap: nowrap;
 }
+
+// Temporary styles copied from the component library. Remove after moving to the component library.
+.navbar-logo {
+  overflow: hidden;
+  text-indent: 100%;
+  white-space: nowrap;
+  width: 250px;
+
+  &.polychrome {
+    background-color: transparent;
+    mask-image: none;
+    background-image: url("https://cdn.jsdelivr.net/gh/sul-dlss/component-library@v2025-02-20/styles/StanfordLibraries-logo-poly.svg");
+    background-repeat: no-repeat;
+    background-position: 0 center;
+  }
+}
