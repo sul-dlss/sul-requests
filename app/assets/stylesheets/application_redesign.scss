@@ -330,12 +330,18 @@ label.btn-close {
   text-wrap: nowrap;
 }
 
+// Temporary styles copied from the component library. Remove after moving to the component library.
 .navbar-logo {
-  background-color: #{$su-cardinal};
-  mask-image: url("https://cdn.jsdelivr.net/gh/sul-dlss/component-library@v2025-01-10/styles/StanfordLibraries-logo.svg");
-  mask-repeat: no-repeat;
-  mask-position: 0 center;
   overflow: hidden;
   text-indent: 100%;
   white-space: nowrap;
+  width: 250px;
+
+  &.polychrome {
+    background-color: transparent;
+    mask-image: none;
+    background-image: url("https://cdn.jsdelivr.net/gh/sul-dlss/component-library@v2025-02-20/styles/StanfordLibraries-logo-poly.svg");
+    background-repeat: no-repeat;
+    background-position: 0 center;
+  }
 }
