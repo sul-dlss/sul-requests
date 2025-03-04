@@ -61,6 +61,5 @@ Rails.application.routes.draw do
       post :comment, as: :comment
     end
   end
-  resource :feedback_form, path: 'feedback', only: %I[new, create]
-  get 'feedback' => 'feedback_forms#new'
+  resource :feedback_form, path: 'feedback', only: :create
 end
