@@ -25,6 +25,10 @@ module Folio
           is_default_for_campus: json.dig('details', 'isDefaultForCampus'))
     end
 
+    def cant_pick_up
+      Array(Settings.libraries[library&.code]&.cant_pick_up)
+    end
+
     def library
       return if library_id.nil?
 
