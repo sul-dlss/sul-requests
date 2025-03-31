@@ -25,6 +25,10 @@ module Folio
           is_default_for_campus: json.dig('details', 'isDefaultForCampus'))
     end
 
+    def unpermitted_pickup_groups
+      Array(Settings.libraries[library&.code]&.unpermitted_pickup_groups)
+    end
+
     def library
       return if library_id.nil?
 

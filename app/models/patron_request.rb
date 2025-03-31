@@ -550,7 +550,9 @@ class PatronRequest < ApplicationRecord
   # Returns default service point codes for all requests
   # @return [Array<String>]
   def default_pickup_service_points_codes
-    Folio::Types.service_points.where(is_default_pickup: true).map(&:code)
+    Folio::Types.service_points.where(is_default_pickup: true).reject do |service_point|
+      service_point.unpermitted_pickup_groups.include?(patron.patron_group_name)
+    end.map(&:code)
   end
 
   # Some origin locations (e.g. MEDIA-CENTER) are not a default pickup location, but patrons
