@@ -42,6 +42,12 @@ FactoryBot.define do
     patronGroup { group.first['id'] }
   end
 
+  factory :purchased_patron, parent: :patron do
+    id { 'some-lib-id-uuid' }
+    group = Folio::Types.patron_groups.values.select { |groupval| groupval['group'] == 'sul-purchased' }
+    patronGroup { group.first['id'] }
+  end
+
   factory :student_patron, parent: :patron do
     id { 'some-lib-id-uuid' }
     group = Folio::Types.patron_groups.values.select { |groupval| groupval['group'] == 'undergrad' }

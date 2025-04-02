@@ -209,7 +209,7 @@ class PatronRequest < ApplicationRecord
       if patron.blank?
         Settings.allowed_visitor_pickups.exclude?(destination.code)
       else
-        destination.cant_pick_up.include?(patron.patron_group_name)
+        destination.unpermitted_pickup_groups.include?(patron.patron_group_name)
       end
     end
 

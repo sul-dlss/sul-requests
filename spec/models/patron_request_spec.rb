@@ -230,6 +230,14 @@ RSpec.describe PatronRequest do
       end
     end
 
+    context 'for a sul-purchased patron' do
+      let(:patron) { build(:purchased_patron) }
+
+      it 'restricts the pickup service points' do
+        expect(request.pickup_destinations).not_to include('LANE-DESK')
+      end
+    end
+
     context 'for a visitor' do
       let(:patron) { build(:visitor_patron) }
 
