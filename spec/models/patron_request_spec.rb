@@ -125,6 +125,22 @@ RSpec.describe PatronRequest do
         have_attributes(callnumber: 'MSS-20-item')
       )
     end
+
+    context 'across libraries' do
+      let(:attr) { { instance_hrid: 'a12345', origin_location_code: 'SAL3-STACKS' } }
+      let(:bib_data) do
+        build(:sal3_holdings, items: [
+                build(:item, base_callnumber: 'SAL-STACKS-item', effective_location: build(:location, code: 'SAL-STACKS')),
+                build(:item, base_callnumber: 'SAL3-STACKS-item', effective_location: build(:location, code: 'SAL3-STACKS'))
+              ])
+      end
+
+      it 'returns only the items in the requested library, even if the location text matches' do
+        expect(request.items_in_location).to contain_exactly(
+          have_attributes(callnumber: 'SAL3-STACKS-item')
+        )
+      end
+    end
   end
 
   describe '#barcode=' do
