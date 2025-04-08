@@ -588,7 +588,8 @@ class PatronRequest < ApplicationRecord
   # @return [Array<Folio::Location>]
   def salient_folio_locations
     @salient_folio_locations ||= [folio_location] | Folio::Types.locations.all.select do |x|
-                                                      x.discovery_display_name == folio_location.discovery_display_name
+                                                      x.library_id == folio_location.library_id &&
+                                                        x.discovery_display_name == folio_location.discovery_display_name
                                                     end
   end
 
