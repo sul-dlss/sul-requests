@@ -254,6 +254,25 @@ RSpec.describe Folio::Item do
       end
     end
 
+    context 'with aged to lost item' do
+      let(:data) do
+        <<~JSON
+          {
+            "status": { "name": "Aged to lost" },
+            "materialType": { "id": "1a54b431-2e4f-452d-9cae-9cee66c9a892", "name": "book" },
+            "permanentLocation": #{sal3_stacks},
+            "effectiveLocation": #{sal3_stacks},
+            "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
+            "notes": []
+          }
+        JSON
+      end
+
+      it 'is hold-recall' do
+        expect(item.status_class).to eq('hold-recall')
+      end
+    end
+
     context 'with a paged item' do
       let(:data) do
         <<~JSON
@@ -486,6 +505,25 @@ RSpec.describe Folio::Item do
 
       it 'is deliver-from-offsite' do
         expect(item.status_text).to eq('Available')
+      end
+    end
+
+    context 'with aged to lost item' do
+      let(:data) do
+        <<~JSON
+          {
+            "status": { "name": "Aged to lost" },
+            "materialType": { "id": "1a54b431-2e4f-452d-9cae-9cee66c9a892", "name": "book" },
+            "permanentLocation": #{sal3_stacks},
+            "effectiveLocation": #{sal3_stacks},
+            "permanentLoanTypeId": "2b94c631-fca9-4892-a730-03ee529ffe27",
+            "notes": []
+          }
+        JSON
+      end
+
+      it 'is hold-recall' do
+        expect(item.status_text).to eq('Checked out')
       end
     end
 
