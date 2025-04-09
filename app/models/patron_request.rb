@@ -196,18 +196,26 @@ class PatronRequest < ApplicationRecord
   # - the default service points for any request
   # - a service point associated with the origin library (e.g. MEDIA-CENTER, which is not a default pickup location)
   # But some items are restricted to specific service points.
-  # Finally, visitors are restricted to a subset of service points.
+  # Visitors and some patron groups are restricted to a subset of service points.
   #
   # @return [Array<String>] the list of service point codes that are valid for this request
+  # rubocop:disable Metrics/AbcSize
   def pickup_destinations
-    return location_restricted_service_point_codes if location_restricted_service_point_codes.any?
+    return location_restricted_service_points.map(&:code) if location_restricted_service_points.any?
 
-    destinations = (default_pickup_service_points_codes + additional_pickup_service_points_codes).uniq
+    item_pickup_destinations = (default_pickup_service_points + additional_pickup_service_points).uniq(&:code)
 
-    return destinations.select { |destination| Settings.allowed_visitor_pickups.include?(destination) } if patron.blank?
+    eligible_destinations = item_pickup_destinations.reject do |destination|
+      if patron.blank?
+        Settings.allowed_visitor_pickups.exclude?(destination.code)
+      else
+        destination.unpermitted_pickup_groups.include?(patron.patron_group_name)
+      end
+    end
 
-    destinations
+    eligible_destinations.map(&:code)
   end
+  # rubocop:enable Metrics/AbcSize
 
   # Find service point which is default for this particular campus
   # @return [Folio::ServicePoint]
@@ -547,30 +555,34 @@ class PatronRequest < ApplicationRecord
     end
   end
 
-  # Returns default service point codes for all requests
+  # Returns default service points for all requests
   # @return [Array<String>]
-  def default_pickup_service_points_codes
-    Folio::Types.service_points.where(is_default_pickup: true).map(&:code)
+  def default_pickup_service_points
+    Folio::Types.service_points.where(is_default_pickup: true)
   end
 
   # Some origin locations (e.g. MEDIA-CENTER) are not a default pickup location, but patrons
   # should be able to pick up the items are the origin.
   # @return [Array<String>]
-  def additional_pickup_service_points_codes
+  def additional_pickup_service_points
     # Find library id for the library with this code
     library = Folio::Types.libraries.find_by(code: origin_library_code)
     return [] unless library
 
-    service_point_code = library.primary_service_points.find { |sp| sp.pickup_location? && !sp.is_default_pickup }&.code
-    Array(service_point_code)
+    service_point = library.primary_service_points.find { |sp| sp.pickup_location? && !sp.is_default_pickup }
+    Array(service_point)
   end
 
   # Some items are are restricted to specific service points (e.g. PAGE-LP goes to MUSIC or MEDIA-CENTER only).
   # @return [Array<String>]
-  def location_restricted_service_point_codes
-    selectable_items.flat_map do |item|
+  def location_restricted_service_points
+    codes = selectable_items.flat_map do |item|
       Array(item.permanent_location.details['pageServicePoints']).pluck('code')
     end.compact.uniq
+
+    codes.map do |code|
+      Folio::Types.service_points.find_by(code: code)
+    end
   end
 
   # @return [FolioClient]
