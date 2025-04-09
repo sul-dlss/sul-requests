@@ -11,6 +11,17 @@ require 'timecop'
 
 # Auto require all files in spec/support.
 Rails.root.glob('spec/support/**/*.rb').each { |f| require f }
+
+# Working around https://github.com/teamcapybara/capybara/issues/2800
+Capybara.register_driver :selenium_chrome_headless do |app|
+  browser_options = Selenium::WebDriver::Chrome::Options.new
+  browser_options.add_argument('--headless=new')
+  browser_options.add_argument('--window-size=1920,1080')
+  browser_options.add_argument('--disable-background-timer-throttling')
+  browser_options.add_argument('--disable-backgrounding-occluded-windows')
+  browser_options.add_argument('--disable-renderer-backgrounding')
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: browser_options)
+end
 Capybara.javascript_driver = :selenium_chrome_headless
 
 # Set a little higher for github actions, to avoid flappy tests
