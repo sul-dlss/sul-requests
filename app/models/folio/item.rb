@@ -116,7 +116,7 @@ module Folio
     end
 
     def checked_out?
-      status == STATUS_CHECKED_OUT
+      [STATUS_CHECKED_OUT, STATUS_AGED_TO_LOST].include?(status)
     end
 
     def on_order?
@@ -140,7 +140,7 @@ module Folio
       elsif status == STATUS_AVAILABLE && requestable?
         'Available'
       elsif hold_recallable?
-        status
+        checked_out? ? STATUS_CHECKED_OUT : status
       else
         'Not requestable'
       end
