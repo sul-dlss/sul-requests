@@ -11,6 +11,8 @@ RSpec.describe 'Creating a request', :js do
     stub_bib_data_json(bib_data)
     # this line prevents ArgumentError: SMTP To address may not be blank
     ActionMailer::Base.perform_deliveries = false
+
+    allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(patron_key: 'generic').and_return(build(:patron))
   end
 
   after do
@@ -334,7 +336,7 @@ RSpec.describe 'Creating a request', :js do
         fill_in 'PIN', with: '54321'
 
         click_on 'Login'
-        expect(page).to have_content('This item is not requestable at this time')
+        expect(page).to have_content('This item is not available to request for Stanford Libraries cardholders.')
       end
     end
 

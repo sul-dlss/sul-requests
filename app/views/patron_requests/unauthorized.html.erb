@@ -1,4 +1,5 @@
 <% content_for :page_title do %>Request: <%= @patron_request.item_title %><% end %>
+<%- contact_info = @patron_request.contact_info -%>
 
 <% if current_user&.patron %> <%= render 'user_header' %> <% end %>
 
@@ -9,16 +10,21 @@
 </div>
 <% end %>
 
-<div class="alert alert-danger shadow-sm d-flex gap-3 align-items-center mt-4 col-lg-8">
-  <i class="bi bi-exclamation-triangle-fill fs-3"></i>
-  <div>
-    <span class="fw-bold">
-      Oops! This item is not requestable at this time.
-    </span>
-    <br />
-    <span>
-      <%- contact_info = @patron_request.contact_info -%>
-      Please contact <%= mail_to(contact_info[:email], contact_info[:email], class: 'alert-link') %> or call <%= contact_info[:phone] %> for assistance.
-    </span>
+<% if Ability.faculty.can?(:request_pickup, @patron_request) # if a "faculty" patron could have requested it or there aren't pickup locations available... it's probably the patron group %>
+  <div class="alert alert-danger text-cardinal mt-4 col-lg-8">
+    This item is not available to request for <i><%= current_user&.patron&.patron_group&.dig('desc')&.sub(/cardholders?\.?$/, '') || 'Stanford Libraries' %></i> cardholders. If you have questions about library access, please contact <%= mail_to(contact_info[:email], contact_info[:email], class: 'alert-link') %> or call <%= contact_info[:phone] %> for assistance.
   </div>
-</div>
+<% else %>
+  <div class="alert alert-danger shadow-sm d-flex gap-3 align-items-center mt-4 col-lg-8">
+    <i class="bi bi-exclamation-triangle-fill fs-3"></i>
+    <div>
+      <span class="fw-bold">
+        Oops! This item is not requestable at this time.
+      </span>
+      <br />
+      <span>
+        Please contact <%= mail_to(contact_info[:email], contact_info[:email], class: 'alert-link') %> or call <%= contact_info[:phone] %> for assistance.
+      </span>
+    </div>
+  </div>
+<% end %>

@@ -20,6 +20,10 @@ class Ability
     @sso ||= Ability.new(NullUser.new(sunetid: 'generic'))
   end
 
+  def self.faculty
+    @faculty ||= Ability.new(NullUser.new(sunetid: 'generic', placeholder_patron_group: 'faculty'))
+  end
+
   # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/MethodLength
   # The CanCan DSL requires a complex initialization method
   def initialize(user, token = nil)
@@ -130,7 +134,7 @@ class Ability
 
     can :request_pickup, PatronRequest do |request|
       request.selectable_items.any? do |item|
-        can? :request, item
+        can?(:request, item)
       end
     end
 
