@@ -219,6 +219,16 @@ RSpec.describe PatronRequest do
         expect(request.default_service_point_code).to eq 'GREEN-LOAN'
       end
     end
+
+    context 'for a sul-purchased patron' do
+      let(:attr) { { instance_hrid: 'a123', origin_location_code: 'LAW-STACKS1' } }
+      let(:bib_data) { build(:single_law_holding) }
+      let(:patron) { build(:purchased_patron) }
+
+      it 'returns GREEN-LOAN by default (because the patron cannot access Law)' do
+        expect(request.default_service_point_code).to eq 'GREEN-LOAN'
+      end
+    end
   end
 
   describe '#pickup_destinations' do

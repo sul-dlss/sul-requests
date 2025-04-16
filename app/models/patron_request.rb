@@ -222,6 +222,8 @@ class PatronRequest < ApplicationRecord
   def default_service_point_code(allowed_service_points: pickup_destinations)
     @default_service_point_code ||= if default_service_point_for_campus.in? allowed_service_points
                                       default_service_point_for_campus
+                                    elsif Settings.folio.default_service_point.in? allowed_service_points
+                                      Settings.folio.default_service_point
                                     else
                                       allowed_service_points.first
                                     end
