@@ -139,7 +139,7 @@ libraries:
     hours:
       library_slug: business
       location_slug: library-i-desk
-    unpermitted_pickup_groups: [lane-guest, law-alumni, law-guest, sul-guest, sul-purchased, sul-contractprograms, sul-short-term, visitor, staff]
+    unpermitted_pickup_groups: [lane-guest, law-alumni, law-guest, sul-guest, sul-purchased, sul-contractprograms, sul-short-term, visitor]
   CHEMCHMENG:
     label: Chemistry & ChemEng Library (Swain)
     hours:
@@ -203,7 +203,7 @@ libraries:
     hours:
       library_slug: lane
       location_slug: library-circulation
-    unpermitted_pickup_groups: [bus-guest, law-alumni, law-guest, sul-contractprograms, sul-guest, sul-purchased, sul-short-term, staff]
+    unpermitted_pickup_groups: [bus-guest, law-alumni, law-guest, sul-contractprograms, sul-guest, sul-purchased, sul-short-term]
   LATHROP:
     label: Lathrop Library
     hours:
@@ -219,7 +219,7 @@ libraries:
     hours:
       library_slug: law
       location_slug: library-circulation
-    unpermitted_pickup_groups: [lane-guest, bus-guest, sul-guest, sul-contractprograms, sul-purchased, sul-short-term, visitor, staff]
+    unpermitted_pickup_groups: [lane-guest, bus-guest, sul-guest, sul-contractprograms, sul-purchased, sul-short-term, visitor]
   MARINE-BIO:
     label: Marine Biology Library (Miller)
     contact_info:
