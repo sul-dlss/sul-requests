@@ -9,10 +9,11 @@ module Folio
 
     attr_reader :user
 
-    def initialize(user = nil, display_name: nil, email: nil)
+    def initialize(user = nil, display_name: nil, email: nil, patron_group_name: nil)
       @user = user
       @display_name = display_name
       @email = email
+      @patron_group_name = patron_group_name || 'visitor'
     end
 
     def display_name
@@ -25,6 +26,7 @@ module Folio
 
     # this returns the full patronGroup object
     def patron_group
+      @patron_group ||= Folio::Types.patron_groups.values.find { |v| v['group'] == @patron_group_name }
       @patron_group ||= self.class.visitor_patron_group
     end
 

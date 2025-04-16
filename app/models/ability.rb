@@ -9,15 +9,15 @@ class Ability
   include CanCan::Ability
 
   def self.anonymous
-    @anonymous ||= Ability.new(User.new(name: 'generic', email: 'external-user@example.com'))
+    @anonymous ||= Ability.new(NullUser.new(name: 'generic', email: 'external-user@example.com'))
   end
 
   def self.with_a_library_id
-    @with_a_library_id ||= Ability.new(User.new(library_id: '0000000000'))
+    @with_a_library_id ||= Ability.new(NullUser.new(library_id: '0000000000'))
   end
 
   def self.sso
-    @sso ||= Ability.new(User.new(sunetid: 'generic'))
+    @sso ||= Ability.new(NullUser.new(sunetid: 'generic'))
   end
 
   # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/MethodLength
@@ -94,7 +94,7 @@ class Ability
     can :create, Scan if user.super_admin? || in_scan_pilot_group?(user)
 
     # ... and to check the status, you either need to be logged in or include a special token in the URL
-    can :read, [Request, Page, HoldRecall, Scan, MediatedPage], user_id: user.id if user.sso_user?
+    can :read, [Request, Page, HoldRecall, Scan, MediatedPage], user_id: user.id if user.sso_user? && user.id
 
     can :new, PatronRequest do |request|
       request.aeon_page? || can?(:request_pickup, request) || can?(:request_scan, request)
