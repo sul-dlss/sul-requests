@@ -105,7 +105,7 @@ class Ability
     end
 
     can :create, PatronRequest do |request|
-      request.selected_items.all? { |item| can?((request.scan? ? :scan : :request), item) }
+      request.selected_items.all? { |item| request.scan? ? can?(:scan, item) : can?(:request, item) }
     end
 
     # anyone can create title-level requests
