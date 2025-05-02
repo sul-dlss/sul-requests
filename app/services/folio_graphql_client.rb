@@ -72,7 +72,7 @@ class FolioGraphqlClient
       })
   end
 
-  def instance(hrid:)
+  def instance_data(hrid:)
     data = post_json('/', json:
     {
       variables: {
@@ -150,6 +150,37 @@ class FolioGraphqlClient
     data&.dig('data', 'instances', 0)
   end
 
+  def availability(id:)
+    data = post_json('/', json:
+    {
+      variables: {
+        id:
+      },
+      query:
+      <<~GQL
+        query RTACAvailability($id: String) {
+          availability(id: $id) {
+            id
+            dueDate
+          }
+        }
+      GQL
+    })
+    raise data['errors'].pluck('message').join("\n") if data&.key?('errors')
+
+    data&.dig('data', 'availability')
+  end
+
+  def instance(hrid:)
+    instance_data = instance_data(hrid:)
+    id = instance_data&.dig('id')
+    return instance_data unless id
+
+    availability_data = availability(id:)
+    instance_data = merge_availability_into_instance(instance_data:, availability_data:, items_key: 'boundWithItem')
+    merge_availability_into_instance(instance_data:, availability_data:, items_key: 'items')
+  end
+
   def service_points
     data = post_json('/', json:
     {
@@ -187,7 +218,6 @@ class FolioGraphqlClient
       status {
         name
       }
-      dueDate
       materialType {
         id
         name
@@ -310,6 +340,22 @@ class FolioGraphqlClient
   def default_headers
     DEFAULT_HEADERS.merge({ 'User-Agent': 'FolioGraphqlClient', 'okapi_username' => @username,
                             'okapi_password' => @password })
+  end
+
+  def merge_availability_into_instance(instance_data:, availability_data:, items_key:, records_key: 'holdingsRecords')
+    return instance_data if instance_data.nil? || availability_data.nil?
+
+    availability_by_id = availability_data.index_by { |item| item['id'] }
+
+    Array(instance_data[records_key]).each do |record|
+      Array(record[items_key]).each do |item|
+        if item['id'] && (item_availability = availability_by_id[item['id']])
+          item.merge!(item_availability.except('id'))
+        end
+      end
+    end
+
+    instance_data
   end
 
   def with_retries(retries = 5)
