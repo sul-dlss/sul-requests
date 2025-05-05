@@ -166,6 +166,14 @@ module Folio
       user_info['active'] == false
     end
 
+    def holds
+      patron_summary['holds']
+    end
+
+    def loans
+      patron_summary['loans']
+    end
+
     private
 
     def valid_proxy_relation?(info)
@@ -199,6 +207,11 @@ module Folio
 
     def policy_service
       @policy_service ||= Folio::CirculationRules::PolicyService.new(patron_groups: [patron_group['id']])
+    end
+
+    def patron_summary
+      @patron_summary ||= user_info.dig('stubs', 'patron_summary') # used for stubbing
+      @patron_summary ||= self.class.folio_client.patron_summary(id)
     end
 
     def patron_blocks
