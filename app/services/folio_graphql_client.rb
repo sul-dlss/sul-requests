@@ -214,7 +214,7 @@ class FolioGraphqlClient
       barcode
       discoverySuppress
       volume
-      queueTotalLength
+      # queueTotalLength # Fixing to 0 for experimentation.
       status {
         name
       }
@@ -342,6 +342,7 @@ class FolioGraphqlClient
                             'okapi_password' => @password })
   end
 
+  # rubocop:disable Metrics/AbcSize
   def merge_availability_into_instance(instance_data:, availability_data:, items_key:, records_key: 'holdingsRecords')
     return instance_data if instance_data.nil? || availability_data.nil?
 
@@ -352,11 +353,14 @@ class FolioGraphqlClient
         if item['id'] && (item_availability = availability_by_id[item['id']])
           item.merge!(item_availability.except('id'))
         end
+        # Add queueTotalLength 0 to experiment with the query time difference if we could get this another way.
+        item['queueTotalLength'] = 0
       end
     end
 
     instance_data
   end
+  # rubocop:enable Metrics/AbcSize
 
   def with_retries(retries = 5)
     try = 0

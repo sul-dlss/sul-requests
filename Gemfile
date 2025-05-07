@@ -88,7 +88,9 @@ group :development, :test do
 
   gem 'webmock'
   gem 'warden-rspec-rails'
-
+  gem 'rack-mini-profiler', '~> 3.0'
+  gem 'memory_profiler'
+  gem 'stackprof'
   gem 'timecop'
 end
 
