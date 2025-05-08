@@ -11,6 +11,10 @@ class ApplicationController < ActionController::Base
 
   before_action -> { flash.now[:error] &&= flash[:error].html_safe if flash[:html_safe] }
 
+  before_action do
+    Rack::MiniProfiler.authorize_request if Rails.env.development?
+  end
+
   def current_user
     @current_user ||= request.env['warden']&.user&.user_object || User.new
   end
