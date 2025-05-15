@@ -24,6 +24,22 @@ RSpec.describe Folio::RequestAbilities do
       end
     end
 
+    context 'with an item in a mediated location but in process' do
+      let(:holdings) do
+        [
+          build(:item,
+                barcode: '12345678',
+                base_callnumber: 'ABC 123',
+                status: 'In process (non-requestable)',
+                permanent_location: build(:mediated_location))
+        ]
+      end
+
+      it 'is not mediateable' do
+        expect(abilities.mediateable?).to be false
+      end
+    end
+
     context 'with an item in SAL3' do
       let(:holdings) do
         [

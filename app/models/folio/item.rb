@@ -195,7 +195,7 @@ module Folio
     end
 
     def mediateable?
-      permanent_location.details['pageMediationGroupKey'].present? || aeon_pageable?
+      status != STATUS_IN_PROCESS_NR && (permanent_location.details['pageMediationGroupKey'].present? || aeon_pageable?)
     end
 
     def aeon_pageable?
