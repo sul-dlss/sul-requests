@@ -342,21 +342,34 @@ class FolioGraphqlClient
                             'okapi_password' => @password })
   end
 
+  # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
   def merge_availability_into_instance(instance_data:, availability_data:, items_key:, records_key: 'holdingsRecords')
     return instance_data if instance_data.nil? || availability_data.nil?
 
     availability_by_id = availability_data.index_by { |item| item['id'] }
+    failed_item_ids = []
 
     Array(instance_data[records_key]).each do |record|
       Array(record[items_key]).each do |item|
-        if item['id'] && (item_availability = availability_by_id[item['id']])
+        next unless item['id']
+
+        if (item_availability = availability_by_id[item['id']])
           item.merge!(item_availability.except('id'))
+        else
+          # RTAC does not return data in some cases. E.g., when an item is on order. Only report failures that have user impact.
+          failed_item_ids << item['id'] unless item['discoverySuppress']
         end
       end
     end
 
+    if failed_item_ids.any?
+      Honeybadger.notify('Failed to find and merge RTAC availability for items',
+                         context: { instance_id: instance_data['id'], failed_item_ids: })
+    end
+
     instance_data
   end
+  # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
 
   def with_retries(retries = 5)
     try = 0

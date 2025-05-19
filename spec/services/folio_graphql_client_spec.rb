@@ -16,8 +16,12 @@ RSpec.describe FolioGraphqlClient do
         'id' => instance_id,
         'hrid' => hrid,
         'title' => 'Test Title',
-        'holdingsRecords' => [{ 'items' => [{ 'id' => item_b, 'barcode' => '123' }, { 'id' => item_a, 'barcode' => '456' }],
-                                'boundWithItem' => [{ 'id' => item_c, 'barcode' => '789' }] }]
+        'holdingsRecords' => [{ 'items' => [
+                                  { 'id' => item_b, 'barcode' => '123', 'discoverySuppress' => false },
+                                  { 'id' => item_a, 'barcode' => '456', 'discoverySuppress' => false },
+                                  { 'id' => 'e706d422-58de-5a66-86f6-ea7148ecf755', 'discoverySuppress' => true }
+                                ],
+                                'boundWithItem' => [{ 'id' => item_c, 'barcode' => '789', 'discoverySuppress' => false }] }]
       }
     end
 
@@ -45,6 +49,28 @@ RSpec.describe FolioGraphqlClient do
       expect(bound_with_items).to include(hash_including('id' => item_c, 'dueDate' => '2022-09-12T11:12:00Z'))
       expect(bound_with_items).not_to include(hash_including('id' => item_a))
       expect(bound_with_items).not_to include(hash_including('id' => item_b))
+    end
+
+    context 'when availability data is missing for a suppressed item' do
+      it 'does not notify Honeybadger' do
+        expect(Honeybadger).not_to receive(:notify)
+        client.instance(hrid:)
+      end
+    end
+
+    context 'when availability data is missing for a non-suppressed item' do
+      let(:availability_data) do
+        [
+          { 'id' => item_a, 'dueDate' => '2018-06-01T11:12:00Z' },
+          { 'id' => item_c, 'dueDate' => '2022-09-12T11:12:00Z' }
+        ]
+      end
+
+      it 'notifies Honeybadger' do
+        expect(Honeybadger).to receive(:notify).with('Failed to find and merge RTAC availability for items',
+                                                     context: { instance_id: instance_id, failed_item_ids: [item_b] })
+        client.instance(hrid:)
+      end
     end
   end
 end
