@@ -21,7 +21,7 @@ class FolioClient
 
   attr_reader :base_url
 
-  delegate :locations, :service_points, to: :folio_graphql_client
+  delegate :service_points, to: :folio_graphql_client
 
   def initialize(url: Settings.folio.okapi_url, tenant: Settings.folio.tenant)
     uri = URI.parse(url)
