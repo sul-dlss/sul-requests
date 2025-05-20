@@ -33,13 +33,11 @@ RSpec.describe User do
       expect(subject.barcode).to eq 'SOMELIBID'
     end
 
-    context 'with a patron' do
-      let(:patron) { instance_double(Folio::Patron, barcode: '123456789') }
+    context 'returns the library id from FOLIO' do
+      let(:patron) { instance_double(Folio::Patron, library_id: '123456789') }
 
       it 'uses the patron barcode from the ILS' do
-        allow(described_class.patron_model_class).to receive(:find_by).with(sunetid: 'some-user').and_return(patron)
-
-        subject.sunetid = 'some-user'
+        allow(described_class.patron_model_class).to receive(:find_by).and_return(patron)
         subject.library_id = 'somelibid'
 
         expect(subject.barcode).to eq '123456789'
