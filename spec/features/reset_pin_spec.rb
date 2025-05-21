@@ -9,7 +9,7 @@ RSpec.describe 'Reset PIN workflow' do
       Folio::Patron,
       email: 'jdoe@stanford.edu',
       display_name: 'J Doe',
-      barcode: '123',
+      library_id: '123',
       pin_reset_token: 'foo'
     )
   end

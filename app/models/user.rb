@@ -35,10 +35,10 @@ class User < ActiveRecord::Base
     self.library_id = card_number[/\d{5}(\d+)/, 1]
   end
 
-  # Prefer the patron barcode from the ILS, but fall back to the library ID as-provided
+  # Prefer the patron id from the ILS, but fall back to the library ID as-provided
   # so that the system can function when the ILS is offline
   def barcode
-    patron&.barcode || library_id
+    patron&.library_id || library_id
   end
 
   # Prefer the patron information from the ILS, but fall back to the univ ID

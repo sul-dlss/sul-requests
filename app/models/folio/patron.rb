@@ -52,6 +52,10 @@ module Folio
     # always nil for a real patron, but filled in for a PseudoPatron
     def patron_comments; end
 
+    def library_id
+      university_id || barcode
+    end
+
     # TODO: I belive we added this for parity with Symphony::Patron, but I don't think we will need it.
     # @deprecated
     def barcode

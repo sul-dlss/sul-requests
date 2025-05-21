@@ -6,7 +6,7 @@
   <body>
     <p>
       This email was sent in response to a request from Requests to
-      change the PIN for account <b><%= @patron.barcode %></b>.
+      change the PIN for account <b><%= @patron.library_id %></b>.
     </p>
     <p style="font-size: 18pt">
       <%= link_to 'Change my PIN', @url.html_safe %>
