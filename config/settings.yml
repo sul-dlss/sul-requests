@@ -727,3 +727,6 @@ allowed_visitor_pickups:
   - 'MEDIA-CENTER'
   - 'SPEC'
   - 'RUMSEY-MAP'
+
+throttling:
+  redis_url:
