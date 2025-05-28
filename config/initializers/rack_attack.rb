@@ -13,6 +13,9 @@
 # Note: If you're serving assets through rack, those requests may be
 # counted by rack-attack and this throttle may be activated too
 # quickly. If so, enable the condition to exclude them from tracking.
+
+Rack::Attack.cache.store = ActiveSupport::Cache::RedisCacheStore.new(url: Settings.throttling.redis_url) if Settings.throttling.redis_url
+
 Rack::Attack.throttle("requests/new", limit: 10, period: 1.minute) do |req|
   route = begin
     Rails.application.routes.recognize_path(req.path) || {}
