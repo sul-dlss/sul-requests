@@ -218,7 +218,7 @@ en:
     university_id:
       user: "Library cardholder"
       label: "Library ID"
-      help_text: "Last 10 digits above the barcode on your library card"
+      help_text: Nine digit number below your name
     login_by_university_id:
       alert_html: <span class="fw-bold">Login error!</span><br />Please verify your credentials and try again. If you continue to experience problems, contact the Privileges desk at <a href="mailto:sul-privileges@stanford.edu" class="alert-link">sul-privileges@stanford.edu</a> or call (650) 723-1492 for assistance.
     login_by_sunetid:
