@@ -49,7 +49,7 @@ class FolioClient
 
   # Find the user by barcode and validate their PIN, returning the user
   def login_by_barcode(barcode, pin)
-    user = find_user_by_barcode(barcode) || find_user_by_legacy_barcode(barcode)
+    user = find_user_by_legacy_barcode(barcode)
 
     return if user.blank?
 
@@ -79,7 +79,7 @@ class FolioClient
 
   # Find a Folio::Patron by barcode
   def find_patron_by_barcode(barcode)
-    user = find_user_by_barcode(barcode) || find_user_by_legacy_barcode(barcode)
+    user = find_user_by_legacy_barcode(barcode)
 
     if user.blank?
       Honeybadger.notify("Unable to find patron via barcode: #{barcode}")
@@ -313,11 +313,6 @@ class FolioClient
   end
 
   private
-
-  # Find a user by barcode in FOLIO; raise an error if not found
-  def find_user_by_barcode(barcode)
-    get_json('/users', params: { query: CqlQuery.new(barcode:).to_query })&.dig('users', 0)
-  end
 
   # Find a user by legacy barcode in FOLIO; raise an error if not found
   def find_user_by_legacy_barcode(barcode)
