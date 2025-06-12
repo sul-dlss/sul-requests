@@ -730,3 +730,10 @@ allowed_visitor_pickups:
 
 throttling:
   redis_url:
+
+patron_request_type_mapping:
+  scan: Scan
+  mediated: Mediated page
+  hold: Hold
+  recall: Recall
+  page: Page
