@@ -48,6 +48,42 @@ RSpec.describe PatronRequest do
     it { is_expected.to be_scan }
   end
 
+  describe '#type' do
+    context 'request type scan' do
+      let(:attr) { { request_type: 'scan' } }
+
+      it { expect(request.type).to eq 'Scan' }
+    end
+
+    context 'request type mediated' do
+      let(:attr) { { request_type: 'mediated' } }
+
+      it { expect(request.type).to eq 'Mediated page' }
+    end
+
+    context 'request type pickup' do
+      let(:attr) { { request_type: 'pickup' } }
+
+      context 'has fufillment type recall' do
+        let(:attr) { { fulfillment_type: 'recall' } }
+
+        it { expect(request.type).to eq 'Recall' }
+      end
+
+      context 'has fufillment type hold' do
+        let(:attr) { { fulfillment_type: 'hold' } }
+
+        it { expect(request.type).to eq 'Hold' }
+      end
+
+      context 'has fufillment type nil' do
+        let(:attr) { { fulfillment_type: nil } }
+
+        it { expect(request.type).to eq 'Page' }
+      end
+    end
+  end
+
   describe '#proxy?' do
     let(:attr) { { proxy: 'share' } }
 

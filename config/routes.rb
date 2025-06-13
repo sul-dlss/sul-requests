@@ -23,6 +23,8 @@ Rails.application.routes.draw do
   get 'paging_schedule/from/:origin_library(/to/:destination)' => 'paging_schedule#show', as: :paging_schedule
   get 'paging_schedule/from/:origin_library/to/:destination/:date' => 'paging_schedule#open', as: :open_hours
 
+  match 'reports', to: 'reports#index', via: [:get], as: :reports
+
   get 'circ-check' => 'circ_check#index', as: :circ_check
   post 'circ-check' => 'circ_check#show', as: :circ_check_item
 

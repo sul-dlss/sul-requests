@@ -1,0 +1,30 @@
+<h1>Build a Report</h1>
+<%= form_with(url: reports_path(format: :csv), method: 'get') do |f| %>
+  <div class="form-group mb-3">
+    <%= f.label :start_date, 'Time period:' %>
+    <%= f.date_field(:start_date, value: params[:start_date] || Time.zone.today, class: 'form-control d-inline-block w-auto') %>
+    <%= f.date_field(:end_date, value: params[:end_date] || Time.zone.today, class: 'form-control d-inline-block w-auto') %>
+  </div>
+  <div class="form-group mb-3">
+     <%= f.label :request_type, 'Request type:' %><br>
+     <% Settings.patron_request_type_mapping.each do |type, label| %>
+      <%= check_box_tag "request_type[]", type, params['request_type']&.include?(type.to_s), id: "request_type_#{type}" %>
+      <%= label_tag "request_type_#{type}", label %><br>
+    <% end %>
+  </div>
+  <div class="form-group mb-3">
+     <%= f.label :or, 'Origin Library:' %><br>
+     <% @origin_libraries.each do |library| %>
+      <%= check_box_tag "origin_library_code[]", library.code, params['origin_library_code']&.include?(library.code), id: "origin_library_code_#{library.code}" %>
+      <%= label_tag "origin_library_code#{library}", library.name %><br>
+    <% end %>
+  </div>
+  <div class="form-group mb-3">
+     <%= f.label :or, 'Destination Library:' %><br>
+     <% @destination_libraries.each do |library| %>
+      <%= check_box_tag "service_point_code[]", library.code, params['service_point_code']&.include?(library.code), id: "service_point_code_#{library.code}" %>
+      <%= label_tag "service_point_code_#{library}", library.name %><br>
+    <% end %>
+  </div>
+  <%= f.submit "Build report", class: 'btn btn-cardinal' %>
+<% end %>
