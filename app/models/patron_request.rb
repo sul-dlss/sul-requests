@@ -91,17 +91,9 @@ class PatronRequest < ApplicationRecord
   end
 
   def type
-    if scan?
-      'Scan'
-    elsif request_type == 'mediated'
-      'Mediated page'
-    elsif fulfillment_type == 'hold'
-      'Hold'
-    elsif fulfillment_type == 'recall'
-      'Recall'
-    else
-      'Page'
-    end
+    Settings.patron_request_type_mapping[request_type] ||
+      Settings.patron_request_type_mapping[fulfillment_type] ||
+      Settings.patron_request_type_mapping['page']
   end
 
   def scan?
