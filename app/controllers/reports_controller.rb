@@ -37,7 +37,7 @@ class ReportsController < ApplicationController
 
     @data = @data.where(service_point_code: params['service_point_code']) if params['service_point_code']
 
-    @data = @data.select { |record| params['request_type'].include?(record.type.downcase) } if params['request_type']
+    @data = @data.select { |record| params['request_type'].include?(record.type) } if params['request_type']
 
     @data = @data.select { |record| params['origin_library_code'].include?(record.origin_library_code) } if params['origin_library_code']
     @data

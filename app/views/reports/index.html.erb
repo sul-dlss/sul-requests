@@ -8,7 +8,7 @@
   <div class="form-group mb-3">
      <%= f.label :request_type, 'Request type:' %><br>
      <% Settings.patron_request_type_mapping.each do |type, label| %>
-      <%= check_box_tag "request_type[]", type, params['request_type']&.include?(type.to_s), id: "request_type_#{type}" %>
+      <%= check_box_tag "request_type[]", label, id: "request_type_#{type}" %>
       <%= label_tag "request_type_#{type}", label %><br>
     <% end %>
   </div>
