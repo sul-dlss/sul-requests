@@ -8,8 +8,8 @@ RSpec.describe 'Creating an Aeon patron request', :js do
   let(:bib_data) { :special_collections_single_holding }
   let(:patron) do
     instance_double(Folio::Patron, id: user.patron_key, username: 'auser', display_name: 'A User', exists?: true, email: nil,
-                                   patron_description: 'faculty',
-                                   patron_group_name: 'faculty',
+                                   patron_description: 'faculty', loans: [],
+                                   patron_group_name: 'faculty', holds: [],
                                    blocked?: false, proxies: [], sponsors: [], sponsor?: false, proxy?: false,
                                    allowed_request_types: ['Hold', 'Recall', 'Page'])
   end
