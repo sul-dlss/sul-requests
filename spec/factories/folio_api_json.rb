@@ -306,7 +306,12 @@ FactoryBot.define do
     title { 'Special Collections Item Title' }
     pub_date { '2018' }
     contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
-    electronic_access { [{ 'uri' => 'http://www.oac.cdlib.org/findaid/ark:/13030/tf109n9832/', 'materialsSpecification' => 'Finding aid available online' }] }
+    electronic_access do
+      [
+        { 'uri' => 'http://www.oac.cdlib.org/findaid/ark:/13030/tf109n9832/', 'materialsSpecification' => 'Finding aid available online' },
+        { 'uri' => 'https://archives.stanford.edu/findingaid/ark:/22236/s1060cff19-35d7-4ca7-83cc-37009f6324b8', 'materialsSpecification' => 'Finding aid available online' }
+      ]
+    end
 
     format { ['Book'] }
 
