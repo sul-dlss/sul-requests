@@ -56,6 +56,13 @@ REMOTE_USER=yoursunetid bin/dev
 
 See below for configuration needed to tie your SUNet ID to the appropriate permissions for testing.
 
+You will also need to connect with FolioGraphQL.
+You need to run a local instance of https://github.com/sul-dlss/folio-graphql.
+Follow the README in that repository to launch the server at localhost:4000 and configure the request headers.
+
+Back in the Requests app, set the FOLIO_GRAPHQL_URL environment variable to `http://<fgqlUsername>:<fgqlPassword>@localhost:4000`
+
+
 ## Configuration
 
 Configuration is handled via the [config](https://github.com/rubyconfig/config) gem. you can create a `config/settings/development.local.yml` file to use while developing, which will be ignored by git.
