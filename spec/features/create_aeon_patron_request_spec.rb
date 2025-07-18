@@ -166,12 +166,12 @@ RSpec.describe 'Creating an Aeon patron request', :js do
       let(:bib_data) { :special_collections_finding_aid_holdings }
 
       it 'provides instructions for the user to complete the request' do
-        expect(page).to have_content 'Review the Collection Guide in the Online Archive of California'
+        expect(page).to have_content 'Review the Collection Guide in external archival repository'
       end
 
-      it 'visits the finding aid when dismissed' do
+      it 'visits the Stanford finding if one exists' do
         click_on 'Continue'
-        expect(page.current_host).to eq 'https://oac.cdlib.org'
+        expect(page.current_host).to eq 'https://archives.stanford.edu'
       end
     end
   end

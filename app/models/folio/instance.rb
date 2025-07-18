@@ -85,9 +85,18 @@ module Folio
     end
 
     def finding_aid
-      @electronic_access.find do |access|
-        access.fetch('materialsSpecification')&.match?(/Finding aid/i)
-      end&.fetch('uri')
+      stanford = @electronic_access.find do |access|
+        access.fetch('materialsSpecification', '').match?(/Finding aid/i) &&
+          access.fetch('uri', '').include?('archives.stanford.edu')
+      end
+
+      oac = @electronic_access.find do |access|
+        access.fetch('materialsSpecification', '').match?(/Finding aid/i) &&
+          access.fetch('uri', '').include?('oac.cdlib.org')
+      end
+
+      # Prefer Stanford finding aids over OAC
+      (stanford || oac)&.fetch('uri')
     end
 
     def request_holdings(request)
