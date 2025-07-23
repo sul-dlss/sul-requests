@@ -86,12 +86,12 @@ module Folio
 
     def finding_aid
       stanford = @electronic_access.find do |access|
-        access.fetch('materialsSpecification', '').match?(/Finding aid/i) &&
+        access.fetch('materialsSpecification', '')&.match?(/Finding aid/i) &&
           access.fetch('uri', '').include?('archives.stanford.edu')
       end
 
       oac = @electronic_access.find do |access|
-        access.fetch('materialsSpecification', '').match?(/Finding aid/i) &&
+        access.fetch('materialsSpecification', '')&.match?(/Finding aid/i) &&
           access.fetch('uri', '').include?('oac.cdlib.org')
       end
 
