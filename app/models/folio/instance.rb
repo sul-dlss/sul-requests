@@ -85,15 +85,8 @@ module Folio
     end
 
     def finding_aid
-      stanford = @electronic_access.find do |access|
-        access.fetch('materialsSpecification', '').match?(/Finding aid/i) &&
-          access.fetch('uri', '').include?('archives.stanford.edu')
-      end
-
-      oac = @electronic_access.find do |access|
-        access.fetch('materialsSpecification', '').match?(/Finding aid/i) &&
-          access.fetch('uri', '').include?('oac.cdlib.org')
-      end
+      stanford = finding_aid_match('archives.stanford.edu')
+      oac = finding_aid_match('oac.cdlib.org')
 
       # Prefer Stanford finding aids over OAC
       (stanford || oac)&.fetch('uri')
@@ -135,6 +128,18 @@ module Folio
 
     def hrid
       @hrid.start_with?(/a\d/) ? @hrid.sub(/^a/, '') : @hrid
+    end
+
+    private
+
+    def finding_aid_match(host)
+      @electronic_access.find do |access|
+        material = access['materialsSpecification']
+        uri = access['uri']
+
+        material&.match?(/Finding aid/i) &&
+          uri&.include?(host)
+      end
     end
   end
 end
