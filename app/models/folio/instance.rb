@@ -58,7 +58,9 @@ module Folio
     TITLE_AUTHOR_DELIMITER = ' / '
 
     def title(delimiter: TITLE_AUTHOR_DELIMITER)
-      @title.split(delimiter).first
+      # we need rpartition for titles with / in them
+      # rpartition returns ["", "", "string"] if there is no match
+      @title.rpartition(delimiter).reject(&:empty?).first
     end
 
     def author
