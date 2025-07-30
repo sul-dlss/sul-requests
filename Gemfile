@@ -61,7 +61,7 @@ group :development, :test do
   gem 'axe-core-rspec'
 
   # RSpec for testing
-  gem 'rspec-rails', '~> 7.1'
+  gem 'rspec-rails', '~> 8.0'
 
   # Capybara for feature/integration tests
   gem 'capybara'
