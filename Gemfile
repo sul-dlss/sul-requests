@@ -50,7 +50,7 @@ gem 'net-smtp', require: false
 
 gem 'jwt'
 gem 'redis', '~> 4.8'
-gem 'sidekiq', '~> 7.1'
+gem 'sidekiq', '~> 8.0'
 gem 'whenever', require: false # Work around https://github.com/javan/whenever/issues/831
 
 group :development, :test do
