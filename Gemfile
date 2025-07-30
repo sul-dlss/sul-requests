@@ -109,7 +109,7 @@ end
 
 gem "cssbundling-rails", "~> 1.1"
 
-gem "view_component", "~> 3.0"
+gem "view_component", "~> 4.0"
 gem "parslet"
 
 gem "jsbundling-rails", "~> 1.1"
