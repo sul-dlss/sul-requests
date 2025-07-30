@@ -4,7 +4,7 @@
 #  Request class for making page requests that require mediation
 ###
 class MediatedPage < Request
-  enum approval_status: { unapproved: 0, marked_as_done: 1, approved: 2 }
+  enum :approval_status, { unapproved: 0, marked_as_done: 1, approved: 2 }
 
   scope :completed, lambda {
     where(approval_status: MediatedPage.approval_statuses.except('unapproved').values).needed_date_desc
