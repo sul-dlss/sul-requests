@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ###
-#  Enables one to update the needed date property on a MediatedPage request.
+#  Enables one to update the needed date property on a mediated request.
 ###
 class NeededDatesController < ApplicationController
   load_and_authorize_resource :patron_request

@@ -67,10 +67,6 @@ module RequestsHelper
 
   # rubocop:enable Metrics/MethodLength
 
-  def request_approval_status(request = current_request)
-    RequestApprovalStatus.new(request:).to_html
-  end
-
   def i18n_status_text(item)
     case
     when item.hold?

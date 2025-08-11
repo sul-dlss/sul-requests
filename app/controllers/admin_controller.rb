@@ -15,12 +15,6 @@ class AdminController < ApplicationController
     @requests = dashboard_patron_requests
   end
 
-  def old_requests_index
-    authorize! :manage, Request.new
-    @dashboard = Dashboard.new
-    @requests = dashboard_requests
-  end
-
   def show
     @dates = next_three_days_with_requests
     @mediated_pages = mediated_pages

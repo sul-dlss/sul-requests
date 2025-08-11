@@ -30,9 +30,8 @@ module SULRequests
       manager.default_strategies :shibboleth
     end
 
-    require 'token_encryptor'
     # Load all request types automatically
-    config.autoload_paths += %W( #{config.root}/app/models/requests #{config.root}/app/mailers/factories )
+    config.autoload_paths += %W(#{config.root}/app/mailers/factories )
 
     config.time_zone = 'Pacific Time (US & Canada)'
 
