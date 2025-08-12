@@ -51,7 +51,7 @@ class SubmitFolioPatronRequestJob < ApplicationJob
                                                                    request.patron&.id
                                                                  end), fulfillment_preference: 'Hold Shelf',
       pickup_service_point_id: request.pickup_service_point.id,
-      patron_comments: patron_comments(request, item), request_expiration_date: (Time.zone.today + 3.years).to_time.utc.iso8601
+      patron_comments: patron_comments(request, item), request_expiration_date: request.needed_date&.to_time.utc.iso8601 || (Time.zone.today + 3.years).to_time.utc.iso8601
     )
   end
 

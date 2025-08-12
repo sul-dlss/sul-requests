@@ -280,6 +280,11 @@ class PatronRequest < ApplicationRecord
     @holdable_recallable_items ||= selectable_items.filter { |item| item.recallable?(patron) && item.holdable?(patron) }
   end
 
+  # @return [Array<Folio::Item>] the items that are holdable or recallable by the patron
+  def holdable_or_recallable_items
+    @holdable_or_recallable_items ||= selectable_items.filter { |item| item.recallable?(patron) || item.holdable?(patron) }
+  end
+
   # @return [Boolean] whether any items are available (e.g. for paging, so we can estimate delivery dates)
   def any_items_avaliable?
     selectable_items.any?(&:available?)
