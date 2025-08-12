@@ -94,10 +94,6 @@ module Folio
       (stanford || oac)&.fetch('uri')
     end
 
-    def request_holdings(request)
-      Folio::Holdings.new(request, items)
-    end
-
     def items
       @items ||= begin
         actual_items = holdings_records.flat_map(&:items)

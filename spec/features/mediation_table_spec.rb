@@ -10,7 +10,6 @@ RSpec.describe 'Mediation table', :js do
     before do
       stub_bib_data_json(build(:searchable_holdings))
       stub_current_user(create(:superadmin_user))
-      stub_symphony_response(ils_response)
 
       # create some pending requests
       create(
@@ -75,8 +74,6 @@ RSpec.describe 'Mediation table', :js do
     end
 
     describe 'current location' do
-      let(:ils_response) { build(:symphony_page_with_multiple_items) }
-
       before do
         stub_bib_data_json(build(:searchable_holdings))
         visit(admin_path('ART'))
@@ -94,8 +91,6 @@ RSpec.describe 'Mediation table', :js do
     end
 
     context 'when the symphony response is successful' do
-      let(:ils_response) { build(:symphony_page_with_multiple_items) }
-
       before do
         allow(SubmitFolioPatronRequestJob).to receive(:perform_now).and_return({ 'status' => 'ok' })
       end

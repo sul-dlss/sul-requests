@@ -54,7 +54,6 @@ en:
       hold_recalls: "Hold recalls"
       mediated_pages: "Mediated pages"
       pages: "Pages"
-      scans: "Scan requests"
     approved_note:
       all_approved: "Done"
   approval_status:

@@ -93,22 +93,6 @@ Several settings exist that govern the relationship between user workgroups in L
 - `origin_location_admin_groups` has location codes configured with an array of LDAP workgroups that can manage requests originating from that location.
 - `destination_admin_groups` has library codes configured with an array of LDAP workgroups that can manage requests being sent to that library.
 
-### Token encryption
-
-There is a token encryption library that handles encrypting and decrypting tokens given to users who only submit a Name/Email or Library ID for identification purposes.
-
-```yml
-token_encrypt:
-  secret: ""
-  salt: ""
-```
-
-To keep these tokens secure, we require a secret and a salt configured of moderate complexity and randomness (`SecureRandom.hex(128)` can be useful).
-
-In development, these can be left alone, since they are set to empty strings by default. In production, they are controlled via `shared_configs`.
-
-Once configured, these keys (or the tokens generated in the app) **MUST NOT** change, otherwise the tokens that users have been given will no longer be valid.
-
 ## Testing
 
 The test suite (with RuboCop style enforcement) will be run with the default rake task (also run in CI):

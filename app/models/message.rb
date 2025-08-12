@@ -18,13 +18,8 @@ class Message < ActiveRecord::Base
     "#{request_type.titleize} from #{library_name}"
   end
 
-  def self.notification_type(request)
-    case request
-    when Scan
-      'scan'
-    else
-      'page'
-    end
+  def self.notification_type(_request)
+    'page'
   end
 
   private
