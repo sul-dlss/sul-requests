@@ -282,6 +282,34 @@ RSpec.describe 'Creating a request', :js do
         expect(page).to have_content('Your SUNet ID is not linked to a library account')
       end
     end
+
+    context 'for an item with temporary location' do
+      let(:bib_data) { build(:temporary_location_holdings) }
+
+      it 'allows user to request an item with needed by date' do
+        visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+
+        choose 'Pickup physical item'
+        click_on 'Continue'
+        expect(page).to have_text('Not needed after')
+        needed_date = Date.parse(page.find_by_id('patron_request_needed_date').value)
+
+        expect do
+          perform_enqueued_jobs do
+            click_on 'Submit request'
+          end
+          expect(page).to have_content 'We received your pickup request'
+          expect(page).to have_text "Not needed after: #{needed_date.strftime('%b %d, %Y')}"
+        end.to change(PatronRequest, :count).by(1)
+
+        expect(PatronRequest.last).to have_attributes(
+          patron_id: user.patron_key,
+          instance_hrid: 'a1234',
+          origin_location_code: 'SAL3-STACKS',
+          needed_date: needed_date
+        )
+      end
+    end
   end
 
   context 'with a library ID user' do

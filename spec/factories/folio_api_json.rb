@@ -754,6 +754,28 @@ FactoryBot.define do
     end
   end
 
+  factory :temporary_location_holdings, parent: :instance do
+    id { '1234' }
+    hrid { 'a1234' }
+    title { 'Temporary location holdings' }
+    contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
+    pub_date { '2018' }
+
+    format { ['Book'] }
+
+    items do
+      [
+        build(:item,
+              barcode: '87654321',
+              base_callnumber: 'ABC 321',
+              status: 'In transit',
+              effective_location: build(:location, code: 'GRE-TECH-PROCESSOR'),
+              permanent_location: build(:scannable_location, code: 'SAL3-STACKS'),
+              temporary_location: build(:location, code: 'GRE-TECH-PROCESSOR'))
+      ]
+    end
+  end
+
   factory :empty_barcode_holdings, parent: :instance do
     id { '1234' }
     title { 'Empty Barcode Item Title' }
