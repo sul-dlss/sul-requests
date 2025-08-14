@@ -375,7 +375,7 @@
         <% end %>
         <%= render 'pickup_destination', f: %>
         <%= render 'request_preferences', f: %>
-        <% if f.object.holdable_recallable_items.any? || f.object.requires_needed_date? || f.object.title_only? %>
+        <% if f.object.holdable_or_recallable_items.any? || f.object.requires_needed_date? || f.object.title_only? %>
           <%= render 'not_needed_after_date', f: %>
         <% end %>
       <% end %>

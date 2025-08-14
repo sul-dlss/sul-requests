@@ -518,5 +518,15 @@ RSpec.describe PatronRequest do
         )
       end
     end
+
+    describe '#holdable_or_recallable_items' do
+      let(:bib_data) { build(:temporary_location_holdings) }
+      let(:request_type) { 'pickup' }
+      let(:attr) { { instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS' } }
+
+      it 'returns true for request where any of the items are holdable' do
+        expect(request.holdable_or_recallable_items.length).to eq 1
+      end
+    end
   end
 end
