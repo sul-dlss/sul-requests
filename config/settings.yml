@@ -347,6 +347,9 @@ locations:
 scan_destinations:
   EAST-ASIA:
     patron_barcode: 'EAL-SCANREVIEW'
+    material_types:
+    - book
+    - periodical
   GREEN:
     patron_barcode: 'GRE-SCANDELIVER'
     material_types:
