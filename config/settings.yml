@@ -345,7 +345,7 @@ locations:
       email: 'brannerlibrary@stanford.edu'
 
 scan_destinations:
-  EAST_ASIA:
+  EAST-ASIA:
     patron_barcode: 'EAL-SCANREVIEW'
   GREEN:
     patron_barcode: 'GRE-SCANDELIVER'
