@@ -299,7 +299,7 @@ RSpec.describe 'Creating a request', :js do
             click_on 'Submit request'
           end
           expect(page).to have_content 'We received your pickup request'
-          expect(page).to have_text "Not needed after: #{needed_date.strftime('%b %d, %Y')}"
+          expect(page).to have_text "Not needed after: #{needed_date.strftime('%b %-d, %Y')}"
         end.to change(PatronRequest, :count).by(1)
 
         expect(PatronRequest.last).to have_attributes(
