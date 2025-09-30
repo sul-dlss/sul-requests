@@ -1,25 +1,26 @@
-<h1 class="fw-semibold">We received your <%= @patron_request.request_type == 'scan' ? 'scan' : @patron_request.mediateable? ? '' : 'pickup' %> request!</h1>
+<h1 class="fw-semibold">We received your <%= @patron_request.request_type == 'scan' ? 'scan' : @patron_request.mediateable? ? '' : 'library item' %> request!</h1>
 
 <div class="row mt-4">
     <div class="col-7">
         <div class="lead">
             <%= yield %>
 
-            <% if @patron_request.patron.present? %>
-                <% if @patron_request.mediateable? %>
-                    Once approved, you can view the status of your request in
-                <% else %>
-                    You can also check the status of your request any time at
-                <% end %><%= link_to ' My Account', 'https://mylibrary.stanford.edu' %>.
-            <% end %>
             <% if @patron_request.request_type == 'scan' %>
                 We'll notify you by email once your scan request is ready. Remember to download the PDF within 30 days of notification.
-            <% else %>
-                <% if @patron_request.mediateable? %>
-                    A librarian will review and approve your request for restricted-use materials, or contact you.
-                    Approvals typically happen 1-3 business days before your planned visit date.
+            <% elsif @patron_request.mediateable? %>
+                A librarian will review and approve your request for restricted-use materials, or contact you.
+                Approvals typically happen 1-3 business days before your planned visit date.
+
+                <% if @patron_request.patron.present? %>
+                  Once approved, you can view the status of your request in <%= link_to ' MyAccount', 'https://mylibrary.stanford.edu' %>.
                 <% end %>
+
                 You will receive an email when the <%= (@patron_request.barcodes&.count || 1) == 1 ?  'item is' : 'items are' %> ready.
+            <% else %>
+                You will be notified by email when the <%= (@patron_request.barcodes&.count || 1) == 1 ?  'item is' : 'items are' %> ready for pickup.
+                <% if @patron_request.patron.present? %>
+                  You can also check the status of your request any time at <%= link_to ' MyAccount', 'https://mylibrary.stanford.edu' %>.
+                <% end %>
             <% end %>
         </div>
 
