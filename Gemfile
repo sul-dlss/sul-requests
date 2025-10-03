@@ -121,5 +121,6 @@ gem "propshaft", "~> 0.7.0"
 gem 'recaptcha'
 gem 'warden'
 gem 'rack-attack'
+gem 'bot_challenge_page'
 
 gem "csv", "~> 3.3"
