@@ -6,6 +6,8 @@
 class PatronRequestsController < ApplicationController
   check_authorization
 
+  bot_challenge only: [:new]
+
   load_resource
   before_action :assign_new_attributes, only: [:new]
   before_action :authorize_new_request, only: [:new]
