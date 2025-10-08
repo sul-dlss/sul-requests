@@ -18,8 +18,6 @@ class AdminController < ApplicationController
   def show
     @dates = next_three_days_with_requests
     @mediated_pages = mediated_pages
-
-    authorize! :admin, @mediated_pages.first || PatronRequest.new
   end
 
   def holdings
