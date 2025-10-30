@@ -458,36 +458,61 @@ paging_schedule:
     will_arrive_after: '4:30 pm'
     business_days_later: 2
 
-  # Education (at SAL 1/2)
+  # Education
   - from: 'EDUCATION'
-    to: 'GREEN'
-    before: '1 pm'
-    will_arrive_after: '4:30 pm'
+    to: 'EDUCATION'
+    before: '9 am'
+    will_arrive_after: '10:00 am'
     business_days_later: 0
   - from: 'EDUCATION'
-    to: 'GREEN'
-    after: '1 pm'
-    will_arrive_after: '1 pm'
+    to: 'EDUCATION'
+    before: '2 pm'
+    will_arrive_after: '3:00 pm'
+    business_days_later: 0
+  - from: 'EDUCATION'
+    to: 'EDUCATION'
+    after: '2 pm'
+    will_arrive_after: '10 am'
     business_days_later: 1
   - from: 'EDUCATION'
+    to: 'GREEN'
+    before: '9 am'
+    will_arrive_after: '3 pm'
+    business_days_later: 1
+  - from: 'EDUCATION'
+    to: 'GREEN'
+    after: '9 am'
+    will_arrive_after: '3 pm'
+    business_days_later: 2
+  - from: 'EDUCATION'
+    to: 'MARINE-BIO'
+    before: '9 am'
+    will_arrive_after: '3 pm'
+    business_days_later: 2
+  - from: 'EDUCATION'
+    to: 'MARINE-BIO'
+    after: '9 am'
+    will_arrive_after: '3 pm'
+    business_days_later: 3
+  - from: 'EDUCATION'
     to: 'SCAN'
-    before: '1 pm'
+    before: '9 am'
     will_arrive_after: '6 pm'
     business_days_later: 1
   - from: 'EDUCATION'
     to: 'SCAN'
-    after: '1 pm'
+    after: '9 am'
     will_arrive_after: '6 pm'
     business_days_later: 2
   - from: 'EDUCATION'
     to: :anywhere
-    before: '1 pm'
-    will_arrive_after: '4:30 pm'
+    before: '9 am'
+    will_arrive_after: '3 pm'
     business_days_later: 1
   - from: 'EDUCATION'
     to: :anywhere
-    after: '1 pm'
-    will_arrive_after: '4:30 pm'
+    after: '9 am'
+    will_arrive_after: '3 pm'
     business_days_later: 2
 
   # Hopkins
