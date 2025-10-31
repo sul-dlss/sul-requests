@@ -1,8 +1,9 @@
 <h1 class="fw-semibold">Requests dashboard</h1>
 
 <div class='admin-requests'>
+  <%= render SearchFormComponent.new(form_url: admin_index_path, searchable: true, classes: 'd-inline-flex gap-2 align-items-start flex-wrap') %>
+
   <h2 class="h4 text-cardinal">Recent Requests</h2>
-  <%= render 'shared/jump_to_date', form_path: admin_index_path %>
 
   <table class="table table-striped">
     <thead>
@@ -34,6 +35,6 @@
     </tbody>
   </table>
 
-  <%= paginate @requests, theme: 'bootstrap-5' unless filtered_by_create_date? %>
+  <%= paginate @requests, theme: 'bootstrap-5' unless filtered? %>
 
 </div>
