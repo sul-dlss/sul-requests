@@ -45,4 +45,28 @@ class ApplicationController < ActionController::Base
   def post_action_redirect_url
     params[:referrer].presence || root_url
   end
+
+  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+  def search_patron_request
+    patron_request = PatronRequest
+    if params['start_date']
+      start_date = Date.parse(params['start_date'])
+      end_date = Date.parse(params['end_date'])
+      patron_request = patron_request.where(created_at: start_date.beginning_of_day..end_date.end_of_day)
+    end
+
+    patron_request = patron_request.where(service_point_code: params['service_point_code']) if params['service_point_code']
+
+    patron_request = patron_request.select { |record| params['request_type'].include?(record.type) } if params['request_type']
+
+    if params['origin_library_code']
+      patron_request = patron_request.select do |record|
+        params['origin_library_code'].include?(record.origin_library_code)
+      end
+    end
+
+    patron_request
+  end
+
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 end
