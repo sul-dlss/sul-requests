@@ -13,6 +13,12 @@ class AdminController < ApplicationController
   def index
     authorize! :read, :admin
     @requests = dashboard_patron_requests
+    respond_to do |format|
+      format.html {} # for rails
+      format.csv do
+        send_data(generate_csv, filename: "requests_dashboard_#{Time.zone.today.strftime('%Y-%m-%d')}.csv", type: 'text/csv')
+      end
+    end
   end
 
   def show
@@ -42,6 +48,22 @@ class AdminController < ApplicationController
 
   private
 
+  def generate_csv
+    CSV.generate do |csv|
+      csv << %w[year month day type origin destination title requester]
+      @requests.each do |row|
+        csv << csv_row(row)
+      end
+    end
+  end
+
+  def csv_row(row) # rubocop:disable Metrics/AbcSize
+    [row.created_at.year, row.created_at.month, row.created_at.day,
+     row.type, row.folio_location&.name || row.origin_location_code,
+     row.pickup_service_point&.name || row.service_point_code,
+     row.item_title, row.patron_email || row.patron_name || row.patron_id]
+  end
+
   def filtered_by_done?
     params[:done] == 'true'
   end
@@ -52,10 +74,15 @@ class AdminController < ApplicationController
   end
   helper_method :filtered_by_date?
 
-  def filtered_by_create_date?
-    params[:created_at].present?
+  def filtered?
+    filter_params.any? { |key| params.key?(key) }
   end
-  helper_method :filtered_by_create_date?
+
+  def filter_params
+    [:start_date, :end_date, :type, :origin_library_code, :service_point_code, :created_at]
+  end
+
+  helper_method :filtered?
 
   def filter_metric
     params[:metric].to_sym if params[:metric].present?
@@ -67,7 +94,7 @@ class AdminController < ApplicationController
   end
 
   def dashboard_requests
-    if filtered_by_create_date?
+    if filtered?
       dashboard_create_date_filtered_requests
     else
       dashboard_recent_requests
@@ -75,8 +102,8 @@ class AdminController < ApplicationController
   end
 
   def dashboard_patron_requests
-    if filtered_by_create_date?
-      PatronRequest.for_create_date(params[:created_at])
+    if filtered?
+      PatronRequestSearch.call(params)
     else
       PatronRequest.recent.page(page).per(per_page)
     end
@@ -95,7 +122,7 @@ class AdminController < ApplicationController
       completed_mediated_pages
     elsif filtered_by_date?
       date_filtered_mediated_pages
-    elsif filtered_by_create_date?
+    elsif filtered?
       create_date_filtered_mediated_pages
     else
       pending_mediated_pages
