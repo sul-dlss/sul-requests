@@ -76,7 +76,7 @@ module Folio
         policy.map { |k, _v| "=> #{k}: #{policy_name(k)}" }.join("\n")
       end
 
-      def criteria_name(key)
+      def criteria_name(key) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
         value = criteria[key]
 
         type_map = self.class.type_debug_string[key] || ->(uuid) { uuid }
