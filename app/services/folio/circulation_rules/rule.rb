@@ -83,7 +83,11 @@ module Folio
 
         case value
         when Hash
-          value[:or].map { |uuid| type_map.call(uuid) || uuid }.join(' or ')
+          if value[:or]
+            value[:or].map { |uuid| type_map.call(uuid) || uuid }&.join(' or ')
+          else
+            "NOT #{value.dig(:not, :or).map { |uuid| type_map.call(uuid) || uuid }&.join(' or ')}"
+          end
         else
           type_map.call(value) || value
         end
