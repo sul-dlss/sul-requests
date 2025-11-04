@@ -218,9 +218,13 @@
     "discoveryDisplayName": "SUL Metadata"
   },
   {
-    "pickupLocation": false,
+    "pickupLocation": true,
     "code": "EDUCATION",
-    "details": null,
+    "details": {
+      "isDefaultPickup": true,
+      "isDefaultForCampus": null,
+      "notes": null
+    },
     "id": "bd5fd8d9-72f3-4532-b68c-4db88063d16b",
     "discoveryDisplayName": "Education Library (Cubberley)"
   },
