@@ -3,7 +3,7 @@
 
 <div class="d-flex flex-wrap">
   <div class="me-md-auto">
-    <%= link_to('All pending', admin_path(params[:id]), class: "btn btn-md #{ filtered_by_done? || filtered_by_date? || filtered_by_create_date? ? 'btn-secondary' : 'btn-primary'}") %>
+    <%= link_to('All pending', admin_path(params[:id]), class: "btn btn-md #{ filtered_by_done? || filtered_by_date? || filtered? ? 'btn-secondary' : 'btn-primary'}") %>
     <%= render 'date_buttons' %>
     <%= link_to('All done', admin_path(params[:id], done: true), class: "btn btn-md #{filtered_by_done? ? 'btn-primary' : 'btn-secondary' }") %>
   </div>
