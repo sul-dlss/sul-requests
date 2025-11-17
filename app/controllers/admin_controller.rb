@@ -58,12 +58,12 @@ class AdminController < ApplicationController
   helper_method :filtered_by_create_date?
 
   def filter_metric
-    params[:metric].to_sym if params[:metric].present?
+    params[:metric].presence&.to_sym
   end
   helper_method :filter_metric
 
   def filter_type
-    params[:metric].classify if params[:metric].present?
+    params[:metric].presence&.classify
   end
 
   def dashboard_requests
