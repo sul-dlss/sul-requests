@@ -17,7 +17,6 @@ faculty or fellow or staff or staff-casual,book,Course reserves,,,BUSINESS,,1yea
 pseudopatron,any,any,,,BUSINESS,,6month-norenew-7daygrace,Allow All,Default notice,No fines,$250 lost fee
 lane-guest or law-alumni or law-guest or sul-guest or sul-contractprograms or program-short-term,any,any,,,BUSINESS,,No loan,No requests allowed,Default notice,No fines,$100 lost fee
 bus-guest or lane-guest or law-alumni or law-guest,any,any,,SUL,,,No loan,No requests allowed,Default notice,No fines,$75 lost fee
-pseudopatron,NOT game,any,,SUL,,,6month-norenew-7daygrace,Allow All,Default notice,No fines,No-lost-fee
 faculty,any,4-hour reserve,,SUL,,,4hour-norenew-15mingrace,No requests allowed,Course reserves,No fines,$230 reserves lost fee
 faculty,any,3-hour reserve,,SUL,,,3hour-norenew-15mingrace,No requests allowed,Course reserves,No fines,$230 reserves lost fee
 faculty,any,2-hour reserve,,SUL,,,2hour-norenew-15mingrace,No requests allowed,Course reserves,No fines,$230 reserves lost fee
@@ -36,6 +35,7 @@ pseudopatron,,28-day reserve,,,LANE,,12hour-norenew-15mingrace,No requests allow
 ,any,2-hour reserve,,,LANE,,2hour-norenew-15mingrace,No requests allowed,Course reserves,1.00/30.00 hourly fine,$250 lost fee
 ,accessories 1 or game,8-hour reserve,,,BUSINESS,,8 hour - due at end of day - no renew,No requests allowed,Short Term Notices,3.00/21.00 recall overdue fine,$100 lost fee - 1 hr aged to lost
 ,book,Course reserves,,,BUSINESS,,28day-2renew-7daygrace,Allow paging,Default notice,3.00/21.00 recall overdue fine,$100 lost fee
+pseudopatron,,any,,SUL,,,6month-norenew-7daygrace,Allow All,Default notice,No fines,No-lost-fee
 ,any,4-hour reserve,,SUL,,,4hour-norenew-15mingrace,No requests allowed,Course reserves,1.00/30.00 hourly fine,$230 reserves lost fee
 ,any,3-hour reserve,,SUL,,,3hour-norenew-15mingrace,No requests allowed,Course reserves,1.00/30.00 hourly fine,$230 reserves lost fee
 ,any,2-hour reserve,,SUL,,,2hour-norenew-15mingrace,No requests allowed,Course reserves,1.00/30.00 hourly fine,$230 reserves lost fee
@@ -503,7 +503,7 @@ any,book,,,,HILA,,No loan,Allow hold/recall,Default notice,3.00/21.00 recall ove
 ,book,,,,,ENG-PERMRES,7day-1renew-3daygrace,No requests allowed,Short Term Notices,No fines,$225 lost fee
 ,book,,,,,ENG-JEDI or ENG-SCIFI or ENG-STACKS,28day-2renew-7daygrace,Allow hold/recall,Default notice,3.00/21.00 recall overdue fine,$150 lost fee
 ,book,,,,,EDU-NEWBOOK,14day-norenew-1daygrace,Allow hold/recall,Short Term Notices,No fines,$75 lost fee
-,book,,,,,EDU-EXHIBIT,28day-2renew-7daygrace,Allow paging/hold,Default notice,No fines,$75 lost fee
+,book,,,,,EDU-EXHIBIT,28day-2renew-7daygrace,Allow All,Default notice,No fines,$75 lost fee
 ,book,,,,,EDU-CURRICULUM or EDU-CURRSTOR or EDU-OVERSIZE or EDU-STACKS,28day-2renew-7daygrace,Allow All,Default notice,3.00/21.00 recall overdue fine,$75 lost fee
 ,book,,,,,EAL-EXHIBIT,No loan,Hold only,Default notice,No fines,$500 lost fee
 ,book,,,,,EAL-CHINESE or EAL-FOLIO-CHINESE or EAL-FOLIO-JAPANESE or EAL-FOLIO-KOREAN or EAL-JAPANESE or EAL-KOREAN or EAL-SETS,28day-2renew-7daygrace,Allow hold/recall,Default notice,3.00/21.00 recall overdue fine,$75 lost fee
