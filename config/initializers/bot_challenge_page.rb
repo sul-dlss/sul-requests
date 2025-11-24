@@ -19,7 +19,7 @@ BotChallengePage.configure do |config|
   # Exempt logged-in users.
   config.skip_when = lambda do |_config|
       Settings.turnstile.safelist.map { |cidr| IPAddr.new(cidr) }.any? { |range| request.remote_ip.in?(range) } ||
-      Settings.turnstile.allowed_user_agents.any? { |x| request.user_agent.include?(x) } ||
+      Settings.turnstile.allowed_user_agents.include?(request.user_agent) ||
       current_user?
   end
 
