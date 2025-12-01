@@ -54,6 +54,7 @@ gem 'sidekiq', '~> 8.0'
 gem 'whenever', require: false # Work around https://github.com/javan/whenever/issues/831
 
 group :development, :test do
+  gem 'bundler-audit'
   # Call 'binding.break' anywhere in the code to stop execution and get a debugger console
   gem 'debug'
 

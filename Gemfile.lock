@@ -105,6 +105,9 @@ GEM
       http (~> 5.2)
       rails (>= 7.1, < 8.2)
     builder (3.3.0)
+    bundler-audit (0.9.3)
+      bundler (>= 1.2.0)
+      thor (~> 1.0)
     cancancan (3.6.1)
     capistrano (3.19.2)
       airbrussh (>= 1.0.0)
@@ -516,6 +519,7 @@ DEPENDENCIES
   bootsnap
   bootstrap5-kaminari-views
   bot_challenge_page
+  bundler-audit
   cancancan
   capistrano (~> 3.0)
   capistrano-bundler
