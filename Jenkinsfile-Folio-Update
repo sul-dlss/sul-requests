@@ -11,7 +11,7 @@ pipeline {
   }
 
   stages {
-    stage('harvest') {
+    stage('harvest -prod') {
       steps {
         checkout scm
 
@@ -24,7 +24,7 @@ pipeline {
           rvm use 3.4.1@sul-requests --create
           gem install bundler
 
-          bundle install --without production
+          bundle config set without 'production'
 
           # Harvest
           bin/rake folio:update_types_cache || exit 1
@@ -34,6 +34,41 @@ pipeline {
           git add config/folio
           git commit -m "Update FOLIO types" &&
           git push git@github.com:sul-dlss/sul-requests.git folio-policies-update &&
+          hub pull-request -f -m "Update FOLIO types" --base main
+          echo 'Done!'
+          '''
+        }
+      }
+    }
+
+    stage('harvest -test') {
+      environment {
+        OKAPI_URL = credentials('OKAPI_TEST_URL')
+      }
+
+      steps {
+        checkout scm
+
+        sshagent (['sul-devops-team']){
+          sh '''#!/bin/bash -l
+          export PATH=/ci/home/bin:$PATH
+          export HUB_CONFIG=/ci/home/config/hub
+
+          # Load RVM
+          rvm use 3.4.1@sul-requests --create
+          gem install bundler
+
+          bundle config set without 'production'
+          bundle install
+
+          # Harvest -test
+          SETTINGS__FOLIO__CONFIG_SET=test bin/rake folio:update_types_cache || exit 1
+
+          # Make a PR
+          git checkout -B folio-policies-update-test
+          git add config/folio
+          git commit -m "Update FOLIO types" &&
+          git push git@github.com:sul-dlss/SearchWorks.git folio-policies-update-test &&
           hub pull-request -f -m "Update FOLIO types" --base main
           echo 'Done!'
           '''

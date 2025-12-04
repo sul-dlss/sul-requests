@@ -44,6 +44,7 @@ folio:
   okapi_url: <%= ENV.fetch('OKAPI_URL', 'http://example.com') %>
   graphql_url: <%= ENV.fetch('FOLIO_GRAPHQL_URL', 'http://example.com') %>
   tenant: 'sul'
+  config_set: prod
   standard_patron_group_names: ['staff', 'faculty', 'undergrad', 'graduate']
   default_service_point: 'GREEN-LOAN'
   ilb_eligible_patron_groups:
