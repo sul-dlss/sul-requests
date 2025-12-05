@@ -249,7 +249,7 @@ faculty,book,,,,,ENG-JEDI or ENG-SCIFI or ENG-STACKS,1yearfixed-4renew-7daygrace
 any,book,,,,,EDU-LOCKED,No loan,Allow paging/hold,Default notice,No fines,$75 lost fee
 any,book,,,,,EDU-REF,No loan,No requests allowed,Default notice,No fines,$75 lost fee
 visitor,book,,,,,EDU-NEWBOOK,No loan,Allow paging,Default notice,No fines,$75 lost fee
-sul-purchased or program-short-term or sul-contractprograms or sul-guest or lane-hospital staff,book,,,,,EDU-NEWBOOK,14day-norenew-1daygrace,Allow paging/hold,Short Term Notices,No fines,$75 lost fee
+sul-purchased or program-short-term or sul-contractprograms or sul-guest or lane-hospital staff,book,,,,,EDU-NEWBOOK,14day-norenew-1daygrace,Allow paging/hold,Default notice,No fines,$75 lost fee
 visitor,book,,,,,EDU-EXHIBIT,No loan,No requests allowed,Default notice,No fines,$75 lost fee
 visitor,book,,,,,EDU-CURRICULUM or EDU-CURRSTOR or EDU-OVERSIZE or EDU-STACKS,No loan,Allow paging,Default notice,No fines,$75 lost fee
 sul-guest,book,,,,,EDU-CURRICULUM or EDU-CURRSTOR or EDU-OVERSIZE or EDU-STACKS,1year-norenew-7daygrace,Allow paging/hold,Qtrly/Annual notice,No fines,$75 lost fee
