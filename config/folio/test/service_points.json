@@ -1,0 +1,295 @@
+[
+  {
+    "pickupLocation": true,
+    "code": "LANE-DESK",
+    "details": {
+      "isDefaultPickup": true,
+      "isDefaultForCampus": "MED",
+      "notes": null
+    },
+    "id": "0483c7bd-8e95-4c7b-9704-484b01879b02",
+    "discoveryDisplayName": "Lane Medical Library"
+  },
+  {
+    "pickupLocation": false,
+    "code": "SULTS",
+    "details": null,
+    "id": "0590225b-eea3-4db8-8290-68e99cc898df",
+    "discoveryDisplayName": "SUL Technical Services"
+  },
+  {
+    "pickupLocation": false,
+    "code": "LAWBC",
+    "details": null,
+    "id": "0939d005-3e55-46d4-ab36-6f9099675876",
+    "discoveryDisplayName": "Law Course Reserves Cabinet"
+  },
+  {
+    "pickupLocation": true,
+    "code": "SPEC",
+    "details": null,
+    "id": "0e924af7-785c-46eb-a5e2-060394822016",
+    "discoveryDisplayName": "Special Collections & University Archives Reading Room"
+  },
+  {
+    "pickupLocation": true,
+    "code": "MARINE-BIO",
+    "details": {
+      "isDefaultPickup": true,
+      "isDefaultForCampus": null,
+      "notes": null
+    },
+    "id": "17721adb-638d-417c-85a4-280c67c0d0a9",
+    "discoveryDisplayName": "Marine Biology Library (Miller)"
+  },
+  {
+    "pickupLocation": false,
+    "code": "SAL3",
+    "details": null,
+    "id": "3a306665-eec7-4a40-8f4d-608585b2a394",
+    "discoveryDisplayName": "SAL3 (off-campus storage)"
+  },
+  {
+    "pickupLocation": true,
+    "code": "EARTH-SCI",
+    "details": {
+      "isDefaultPickup": true,
+      "isDefaultForCampus": null,
+      "notes": null
+    },
+    "id": "4827ae1d-b8bf-4b90-9e09-d642557893ab",
+    "discoveryDisplayName": "Earth Sciences Library (Branner)"
+  },
+  {
+    "pickupLocation": true,
+    "code": "MUSIC",
+    "details": {
+      "isDefaultPickup": true,
+      "isDefaultForCampus": null,
+      "notes": null
+    },
+    "id": "4d77d74b-271e-421a-91c6-992afa9afb3c",
+    "discoveryDisplayName": "Music Library"
+  },
+  {
+    "pickupLocation": true,
+    "code": "SCIENCE",
+    "details": {
+      "isDefaultPickup": true,
+      "isDefaultForCampus": null,
+      "notes": null
+    },
+    "id": "50ef1036-06d3-48ef-9048-26cabfccf630",
+    "discoveryDisplayName": "Science Library (Li and Ma)"
+  },
+  {
+    "pickupLocation": true,
+    "code": "EAST-ASIA",
+    "details": {
+      "isDefaultPickup": true,
+      "isDefaultForCampus": null,
+      "notes": null
+    },
+    "id": "58cfd8b4-ee04-4f1a-a74e-4a1771fe5b6b",
+    "discoveryDisplayName": "East Asia Library"
+  },
+  {
+    "pickupLocation": false,
+    "code": "HILA",
+    "details": null,
+    "id": "67552bac-7644-4b5d-a973-045b8370f6e6",
+    "discoveryDisplayName": "Hoover Library & Archives Reading Room"
+  },
+  {
+    "pickupLocation": null,
+    "code": "SULDIGITIZATION",
+    "details": null,
+    "id": "68002733-5923-46db-acc7-3d18cbf30870",
+    "discoveryDisplayName": "SUL Digitization Services"
+  },
+  {
+    "pickupLocation": false,
+    "code": "GREEN-BING",
+    "details": null,
+    "id": "6a7f9353-cc07-46de-8186-9b5b1eb24fc4",
+    "discoveryDisplayName": "Green Library Bing Wing"
+  },
+  {
+    "pickupLocation": false,
+    "code": "SAL",
+    "details": null,
+    "id": "6e0748f5-4420-4995-b96e-f7aeb978a45a",
+    "discoveryDisplayName": "SAL1&2 (on-campus storage)"
+  },
+  {
+    "pickupLocation": true,
+    "code": "ART",
+    "details": {
+      "isDefaultPickup": true,
+      "isDefaultForCampus": null,
+      "notes": null
+    },
+    "id": "77cd12ac-2de8-4d13-99a0-f6b3b4f4bdca",
+    "discoveryDisplayName": "Art & Architecture Library (Bowes)"
+  },
+  {
+    "pickupLocation": true,
+    "code": "TANNER",
+    "details": null,
+    "id": "7af3d617-e9e9-4241-8dd7-93827112d3ab",
+    "discoveryDisplayName": "Philosophy Library (Tanner)"
+  },
+  {
+    "pickupLocation": false,
+    "code": "Online",
+    "details": null,
+    "id": "7c5abc9f-f3d7-4856-b8d7-6712462ca007",
+    "discoveryDisplayName": "Online"
+  },
+  {
+    "pickupLocation": false,
+    "code": "SULACQ",
+    "details": null,
+    "id": "80177cef-a09c-4f32-b439-a6b59620cafe",
+    "discoveryDisplayName": "SUL Acquisitions"
+  },
+  {
+    "pickupLocation": false,
+    "code": "SAL-NEWARK",
+    "details": null,
+    "id": "809716bc-1d3f-4b9e-b747-4fcbaff9d04e",
+    "discoveryDisplayName": "SAL Newark (off-campus storage)"
+  },
+  {
+    "pickupLocation": false,
+    "code": "SULCC",
+    "details": null,
+    "id": "8896c413-9907-4810-b33d-d1f8761ea1a9",
+    "discoveryDisplayName": "SUL Collection Care"
+  },
+  {
+    "pickupLocation": false,
+    "code": "CLASSICS",
+    "details": null,
+    "id": "8bb5d494-263f-42f0-9a9f-70451530d8a3",
+    "discoveryDisplayName": "Classics Library"
+  },
+  {
+    "pickupLocation": true,
+    "code": "MEDIA-CENTER",
+    "details": null,
+    "id": "943a4850-f0fb-4ffe-83cb-919157ed2117",
+    "discoveryDisplayName": "Green Library Media Center"
+  },
+  {
+    "pickupLocation": true,
+    "code": "BUS-IDESK",
+    "details": {
+      "isDefaultPickup": true,
+      "isDefaultForCampus": "GSB",
+      "notes": null
+    },
+    "id": "958cc062-591c-45de-85c1-0e8672fbbfc5",
+    "discoveryDisplayName": "Business Library"
+  },
+  {
+    "pickupLocation": true,
+    "code": "GREEN-LOAN",
+    "details": {
+      "isDefaultPickup": true,
+      "isDefaultForCampus": "SUL",
+      "notes": null
+    },
+    "id": "a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d",
+    "discoveryDisplayName": "Green Library"
+  },
+  {
+    "pickupLocation": true,
+    "code": "RUMSEY-MAP",
+    "details": null,
+    "id": "b6987737-1e63-44cc-bfb1-2bcf044adcd7",
+    "discoveryDisplayName": "David Rumsey Map Center"
+  },
+  {
+    "pickupLocation": false,
+    "code": "SULMD",
+    "details": null,
+    "id": "b6c12686-3adf-4d3d-8f7c-334e971d37ed",
+    "discoveryDisplayName": "SUL Metadata"
+  },
+  {
+    "pickupLocation": false,
+    "code": "EDUCATION",
+    "details": null,
+    "id": "bd5fd8d9-72f3-4532-b68c-4db88063d16b",
+    "discoveryDisplayName": "Education Library (Cubberley)"
+  },
+  {
+    "pickupLocation": false,
+    "code": "LAWTS",
+    "details": null,
+    "id": "c9364d5f-6421-4c1a-9010-4ca2bc34efbe",
+    "discoveryDisplayName": "Law - Tech Services"
+  },
+  {
+    "pickupLocation": false,
+    "code": "SULCONSER",
+    "details": null,
+    "id": "cc46a57e-fbca-4e69-9ab5-78f42c560145",
+    "discoveryDisplayName": "SUL Conservation Services"
+  },
+  {
+    "pickupLocation": true,
+    "code": "ENG",
+    "details": {
+      "isDefaultPickup": true,
+      "isDefaultForCampus": null,
+      "notes": null
+    },
+    "id": "d0db91bf-90e7-4036-8e91-721001cf52fc",
+    "discoveryDisplayName": "Engineering Library (Terman)"
+  },
+  {
+    "pickupLocation": false,
+    "code": "SULMDCS",
+    "details": null,
+    "id": "e9a88f1d-3ca1-4159-84ce-a400d7f75d56",
+    "discoveryDisplayName": "SUL Metadata Cataloging Shelf"
+  },
+  {
+    "pickupLocation": null,
+    "code": "MUSICTS",
+    "details": null,
+    "id": "ee18f485-c78b-479c-b131-da1ffe6ce1b8",
+    "discoveryDisplayName": "Music - Tech Services"
+  },
+  {
+    "pickupLocation": true,
+    "code": "LAW",
+    "details": {
+      "isDefaultPickup": true,
+      "isDefaultForCampus": "LAW",
+      "notes": null
+    },
+    "id": "ef1ea792-b2bb-49a2-8747-94376b64a74d",
+    "discoveryDisplayName": "Law Library (Crown)"
+  },
+  {
+    "pickupLocation": true,
+    "code": "ARS",
+    "details": null,
+    "id": "faa81922-3da8-4086-a7fa-977d7d3e7977",
+    "discoveryDisplayName": "Archive of Recorded Sound"
+  },
+  {
+    "pickupLocation": true,
+    "code": "RWC",
+    "details": {
+      "isDefaultPickup": true,
+      "isDefaultForCampus": null,
+      "notes": null
+    },
+    "id": "fc8598ae-df78-4ba4-be0d-0451c489ac30",
+    "discoveryDisplayName": "Academy Hall (SRWC)"
+  }
+]
