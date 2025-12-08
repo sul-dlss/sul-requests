@@ -44,6 +44,7 @@ pipeline {
     stage('harvest -test') {
       environment {
         OKAPI_URL = credentials('OKAPI_TEST_URL')
+        FOLIO_GRAPHQL_URL = credentials('FOLIO_GRAPHQL_URL')
       }
 
       steps {
