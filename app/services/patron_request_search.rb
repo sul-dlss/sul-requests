@@ -27,7 +27,7 @@ class PatronRequestSearch
 
     start_date = Date.parse(params['start_date'])
     end_date = Date.parse(params['end_date'])
-    patron_request.where(created_at: start_date.beginning_of_day..end_date.end_of_day)
+    search_list.where(created_at: start_date.beginning_of_day..end_date.end_of_day)
   end
 
   def filter_results(search_list, param, field)
