@@ -136,7 +136,7 @@ GEM
     config (5.6.1)
       deep_merge (~> 1.2, >= 1.2.1)
       ostruct
-    connection_pool (3.0.2)
+    connection_pool (2.5.5)
     crack (1.0.1)
       bigdecimal
       rexml
@@ -523,6 +523,7 @@ DEPENDENCIES
   capistrano-shared_configs
   capybara
   config
+  connection_pool (~> 2.5)
   cssbundling-rails (~> 1.1)
   csv (~> 3.3)
   debug
