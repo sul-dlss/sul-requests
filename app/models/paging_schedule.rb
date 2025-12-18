@@ -54,7 +54,7 @@ class PagingSchedule
   def schedule_for_request_scan
     schedule.detect do |sched|
       sched.from == origin_library_code &&
-        sched.to == destination_library_code &&
+        sched.to == 'SCAN' &&
         sched.by_time?(time)
     end
   end
