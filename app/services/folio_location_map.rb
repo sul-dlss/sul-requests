@@ -17,14 +17,14 @@ class FolioLocationMap
   def load_map
     CSV.parse(Rails.root.join('lib/translation_maps/locations.tsv').read, col_sep: "\t")
        .each_with_object({}) do |row, result|
-      library_code = row[1]
-      library_code = RENAMES.fetch(library_code, library_code)
+         library_code = row[1]
+         library_code = RENAMES.fetch(library_code, library_code)
 
-      # SAL3's CDL/ONORDER/INPROCESS locations are all mapped so SAL3-STACKS
-      next if row[2] == 'SAL3-STACKS' && row[0] != 'STACKS'
+         # SAL3's CDL/ONORDER/INPROCESS locations are all mapped so SAL3-STACKS
+         next if row[2] == 'SAL3-STACKS' && row[0] != 'STACKS'
 
-      result[library_code] ||= {}
-      result[library_code][row[0]] = row[2]
+         result[library_code] ||= {}
+         result[library_code][row[0]] = row[2]
     end
   end
 end
