@@ -688,12 +688,12 @@ paging_schedule:
     before: '10 am'
     will_arrive_after: '11 am'
     business_days_later: 0
-  - from: 'GREENR'
+  - from: 'GREEN'
     to: 'GREEN'
     before: '2 pm'
     will_arrive_after: '3:00 pm'
     business_days_later: 0
-  - from: GREEN'
+  - from: 'GREEN'
     to: 'GREEN'
     after: '2 pm'
     will_arrive_after: '11 am'
