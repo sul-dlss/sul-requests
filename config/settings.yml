@@ -370,7 +370,6 @@ RECAPTCHA:
 EMAIL_TO: yolo@example.com
 HOSTNAME: foo.example.com
 
-
 paging_schedule:
   # SAL3
   - from: 'SAL3'
@@ -395,6 +394,16 @@ paging_schedule:
     will_arrive_after: '12 pm'
     business_days_later: 2
   - from: 'SAL3'
+    to: 'MARINE-BIO'
+    before: '12 pm'
+    will_arrive_after: '10 am'
+    business_days_later: 8
+  - from: 'SAL3'
+    to: 'MARINE-BIO'
+    after: '12 pm'
+    will_arrive_after: '10 am'
+    business_days_later: 8
+  - from: 'SAL3'
     to: :anywhere
     before: '12 pm'
     will_arrive_after: '4 pm'
@@ -405,59 +414,47 @@ paging_schedule:
     will_arrive_after: '4 pm'
     business_days_later: 2
 
-  # SAL Newark
-  - from: 'SAL-NEWARK'
-    to: 'GREEN'
-    before: '10 am'
-    will_arrive_after: '4:30 pm'
-    business_days_later: 1
-  - from: 'SAL-NEWARK'
-    to: 'GREEN'
-    after: '10 am'
-    will_arrive_after: '4:30 pm'
-    business_days_later: 2
-  - from: 'SAL-NEWARK'
-    to: :anywhere
-    before: '10 am'
-    will_arrive_after: '4:30 pm'
-    business_days_later: 2
-  - from: 'SAL-NEWARK'
-    to: :anywhere
-    after: '10 am'
-    will_arrive_after: '4:30 pm'
-    business_days_later: 3
-
   # SAL 1/2
   - from: 'SAL'
     to: 'GREEN'
     before: '1 pm'
     will_arrive_after: '4:30 pm'
-    business_days_later: 0
+    business_days_later: 2
   - from: 'SAL'
     to: 'GREEN'
     after: '1 pm'
     will_arrive_after: '1 pm'
-    business_days_later: 1
+    business_days_later: 3
   - from: 'SAL'
     to: 'SCAN'
     before: '1 pm'
     will_arrive_after: '6 pm'
-    business_days_later: 1
+    business_days_later: 3
   - from: 'SAL'
     to: 'SCAN'
     after: '1 pm'
     will_arrive_after: '6 pm'
-    business_days_later: 2
+    business_days_later: 4
+  - from: 'SAL'
+    to: 'MARINE-BIO'
+    before: '12 pm'
+    will_arrive_after: '10 am'
+    business_days_later: 8
+  - from: 'SAL'
+    to: 'MARINE-BIO'
+    after: '12 pm'
+    will_arrive_after: '10 am'
+    business_days_later: 8
   - from: 'SAL'
     to: :anywhere
     before: '1 pm'
     will_arrive_after: '4:30 pm'
-    business_days_later: 1
+    business_days_later: 2
   - from: 'SAL'
     to: :anywhere
     after: '1 pm'
     will_arrive_after: '4:30 pm'
-    business_days_later: 2
+    business_days_later: 3
 
   # Education
   - from: 'EDUCATION'
@@ -476,26 +473,6 @@ paging_schedule:
     will_arrive_after: '10 am'
     business_days_later: 1
   - from: 'EDUCATION'
-    to: 'GREEN'
-    before: '9 am'
-    will_arrive_after: '3 pm'
-    business_days_later: 1
-  - from: 'EDUCATION'
-    to: 'GREEN'
-    after: '9 am'
-    will_arrive_after: '3 pm'
-    business_days_later: 2
-  - from: 'EDUCATION'
-    to: 'MARINE-BIO'
-    before: '9 am'
-    will_arrive_after: '3 pm'
-    business_days_later: 2
-  - from: 'EDUCATION'
-    to: 'MARINE-BIO'
-    after: '9 am'
-    will_arrive_after: '3 pm'
-    business_days_later: 3
-  - from: 'EDUCATION'
     to: 'SCAN'
     before: '9 am'
     will_arrive_after: '6 pm'
@@ -505,6 +482,16 @@ paging_schedule:
     after: '9 am'
     will_arrive_after: '6 pm'
     business_days_later: 2
+  - from: 'EDUCATION'
+    to: 'MARINE-BIO'
+    before: '9 am'
+    will_arrive_after: '3 pm'
+    business_days_later: 8
+  - from: 'EDUCATION'
+    to: 'MARINE-BIO'
+    after: '9 am'
+    will_arrive_after: '3 pm'
+    business_days_later: 8
   - from: 'EDUCATION'
     to: :anywhere
     before: '9 am'
@@ -516,29 +503,136 @@ paging_schedule:
     will_arrive_after: '3 pm'
     business_days_later: 2
 
+  # ENG
+  - from: 'ENG'
+    to: 'ENG'
+    before: '9 am'
+    will_arrive_after: '11 am'
+    business_days_later: 0
+  - from: 'ENG'
+    to: 'ENG'
+    after: '9 am'
+    will_arrive_after: '11 am'
+    business_days_later: 1
+  - from: 'ENG'
+    to: 'SCAN'
+    before: '9 am'
+    will_arrive_after: '6 pm'
+    business_days_later: 1
+  - from: 'ENG'
+    to: 'SCAN'
+    after: '9 am'
+    will_arrive_after: '6 pm'
+    business_days_later: 2
+  - from: 'ENG'
+    to: 'MARINE-BIO'
+    before: '9 am'
+    will_arrive_after: '3 pm'
+    business_days_later: 8
+  - from: 'ENG'
+    to: 'MARINE-BIO'
+    after: '9 am'
+    will_arrive_after: '3 pm'
+    business_days_later: 8
+  - from: 'ENG'
+    to: :anywhere
+    before: '9 am'
+    will_arrive_after: '3 pm'
+    business_days_later: 1
+  - from: 'ENG'
+    to: :anywhere
+    after: '9 am'
+    will_arrive_after: '3 pm'
+    business_days_later: 2
+
+  # GREEN
+  - from: 'GREEN'
+    to: 'GREEN'
+    before: '7 am'
+    will_arrive_after: '10:00 am'
+    business_days_later: 0
+  - from: 'GREEN'
+    to: 'GREEN'
+    before: '2 pm'
+    will_arrive_after: '4:00 pm'
+    business_days_later: 0
+  - from: 'GREEN'
+    to: 'GREEN'
+    after: '2 pm'
+    will_arrive_after: '10 am'
+    business_days_later: 1
+  - from: 'GREEN'
+    to: 'SCAN'
+    before: '2 pm'
+    will_arrive_after: '6 pm'
+    business_days_later: 1
+  - from: 'GREEN'
+    to: 'SCAN'
+    after: '2 pm'
+    will_arrive_after: '6 pm'
+    business_days_later: 2
+  - from: 'GREEN'
+    to: 'MARINE-BIO'
+    before: '2 pm'
+    will_arrive_after: '10 am'
+    business_days_later: 7
+  - from: 'GREEN'
+    to: 'MARINE-BIO'
+    after: '2 pm'
+    will_arrive_after: '10 am'
+    business_days_later: 7
+  - from: 'GREEN'
+    to: :anywhere
+    before: '7 am'
+    will_arrive_after: '4 pm'
+    business_days_later: 1
+  - from: 'GREEN'
+    to: :anywhere
+    after: '7 am'
+    will_arrive_after: '4 pm'
+    business_days_later: 2
+
   # Hopkins
   - from: 'MARINE-BIO'
-    to: 'GREEN'
+    to: 'MARINE-BIO'
     before: '9 am'
-    will_arrive_after: '12 pm'
+    will_arrive_after: '11 am'
+    business_days_later: 0
+  - from: 'MARINE-BIO'
+    to: 'MARINE-BIO'
+    after: '9 am'
+    will_arrive_after: '11 am'
     business_days_later: 1
-  # This is not in the table.
+  - from: 'MARINE-BIO'
+    to: 'SCAN'
+    before: '9 am'
+    will_arrive_after: '6 pm'
+    business_days_later: 1
+  - from: 'MARINE-BIO'
+    to: 'SCAN'
+    after: '9 am'
+    will_arrive_after: '6 pm'
+    business_days_later: 2
+  - from: 'MARINE-BIO'
+    to: 'GREEN'
+    before: '9 am'
+    will_arrive_after: '3 pm'
+    business_days_later: 7
   - from: 'MARINE-BIO'
     to: 'GREEN'
     after: '9 am'
-    will_arrive_after: '12 pm'
-    business_days_later: 2
+    will_arrive_after: '3 pm'
+    business_days_later: 7
   - from: 'MARINE-BIO'
     to: :anywhere
     before: '9 am'
-    will_arrive_after: '12 pm'
-    business_days_later: 2
-  # This is not in the table.
+    will_arrive_after: '3 pm'
+    business_days_later: 8
   - from: 'MARINE-BIO'
     to: :anywhere
     after: '9 am'
-    will_arrive_after: '12 pm'
-    business_days_later: 3
+    will_arrive_after: '3 pm'
+    business_days_later: 8
 
   # Special Collections
   - from: 'SPEC-COLL'
@@ -566,13 +660,13 @@ paging_schedule:
   - from: 'BUSINESS'
     to: 'MARINE-BIO'
     before: '8:30 am'
-    will_arrive_after: '1 pm'
-    business_days_later: 1
+    will_arrive_after: '10 am'
+    business_days_later: 7
   - from: 'BUSINESS'
     to: 'MARINE-BIO'
     after: '8:30 am'
-    will_arrive_after: '1 pm'
-    business_days_later: 2
+    will_arrive_after: '10 am'
+    business_days_later: 8
   - from: 'BUSINESS'
     to: :anywhere
     before: '8:30 am'
@@ -595,6 +689,16 @@ paging_schedule:
     after: '12 pm'
     will_arrive_after: '3 pm'
     business_days_later: 2
+  - from: 'LAW'
+    to: 'MARINE-BIO'
+    before: '12 pm'
+    will_arrive_after: '10 am'
+    business_days_later: 8
+  - from: 'LAW'
+    to: 'MARINE-BIO'
+    after: '12 pm'
+    will_arrive_after: '10 am'
+    business_days_later: 8
   - from: 'LAW'
     to: :anywhere
     before: '12 pm'
@@ -639,7 +743,6 @@ paging_schedule:
     after: '5 pm'
     will_arrive_after: '11 am'
     business_days_later: 1
-
   - from: 'MEDIA-CENTER'
     to: 'GREEN'
     before: '10 am'
@@ -660,55 +763,236 @@ paging_schedule:
     after: '6:30 pm'
     will_arrive_after: '11 am'
     business_days_later: 1
-
   - from: 'MEDIA-CENTER'
     to: 'MARINE-BIO'
     before: '10 am'
-    will_arrive_after: '1 pm'
-    business_days_later: 1
+    will_arrive_after: '10 am'
+    business_days_later: 7
   - from: 'MEDIA-CENTER'
     to: 'MARINE-BIO'
     after: '10 am'
-    will_arrive_after: '1 pm'
-    business_days_later: 2
-
+    will_arrive_after: '10 am'
+    business_days_later: 7
   - from: 'MEDIA-CENTER'
     to: :anywhere
     before: '3 pm'
-    will_arrive_after: '12 pm'
+    will_arrive_after: '3 pm'
     business_days_later: 1
   - from: 'MEDIA-CENTER'
     to: :anywhere
     after: '3 pm'
-    will_arrive_after: '12 pm'
+    will_arrive_after: '3 pm'
     business_days_later: 2
 
-  - from: 'GREEN'
-    to: 'GREEN'
-    before: '10 am'
-    will_arrive_after: '11 am'
-    business_days_later: 0
-  - from: 'GREEN'
-    to: 'GREEN'
-    before: '2 pm'
-    will_arrive_after: '3:00 pm'
-    business_days_later: 0
-  - from: 'GREEN'
-    to: 'GREEN'
-    after: '2 pm'
-    will_arrive_after: '11 am'
-    business_days_later: 1
-
+  # ART
   - from: 'ART'
     to: 'ART'
     before: '12 pm'
-    will_arrive_after: '2 pm'
+    will_arrive_after: '3 pm'
     business_days_later: 0
   - from: 'ART'
     to: 'ART'
     after: '12 pm'
-    will_arrive_after: '10 am'
+    will_arrive_after: '3 pm'
     business_days_later: 1
+  - from: 'ART'
+    to: 'SCAN'
+    before: '12 pm'
+    will_arrive_after: '6 pm'
+    business_days_later: 1
+  - from: 'ART'
+    to: 'SCAN'
+    after: '12 pm'
+    will_arrive_after: '6 pm'
+    business_days_later: 2
+  - from: 'ART'
+    to: 'MARINE-BIO'
+    before: '8:30 am'
+    will_arrive_after: '10 am'
+    business_days_later: 7
+  - from: 'ART'
+    to: 'MARINE-BIO'
+    after: '8:30 am'
+    will_arrive_after: '10 am'
+    business_days_later: 8
+  - from: 'ART'
+    to: :anywhere
+    before: '12 pm'
+    will_arrive_after: '3 pm'
+    business_days_later: 1
+  - from: 'ART'
+    to: :anywhere
+    after: '12 pm'
+    will_arrive_after: '3 pm'
+    business_days_later: 2
+
+  # EARTH-SCI
+  - from: 'EARTH-SCI'
+    to: 'EARTH-SCI'
+    before: '9 am'
+    will_arrive_after: '11 am'
+    business_days_later: 0
+  - from: 'EARTH-SCI'
+    to: 'EARTH-SCI'
+    after: '9 am'
+    will_arrive_after: '11 am'
+    business_days_later: 1
+  - from: 'EARTH-SCI'
+    to: 'SCAN'
+    before: '12 pm'
+    will_arrive_after: '6 pm'
+    business_days_later: 1
+  - from: 'EARTH-SCI'
+    to: 'SCAN'
+    after: '12 pm'
+    will_arrive_after: '6 pm'
+    business_days_later: 2
+  - from: 'EARTH-SCI'
+    to: 'MARINE-BIO'
+    before: '8:30 am'
+    will_arrive_after: '10 am'
+    business_days_later: 7
+  - from: 'EARTH-SCI'
+    to: 'MARINE-BIO'
+    after: '8:30 am'
+    will_arrive_after: '10 am'
+    business_days_later: 8
+  - from: 'EARTH-SCI'
+    to: :anywhere
+    before: '12 pm'
+    will_arrive_after: '3 pm'
+    business_days_later: 1
+  - from: 'EARTH-SCI'
+    to: :anywhere
+    after: '12 pm'
+    will_arrive_after: '3 pm'
+    business_days_later: 2
+
+  # EAL
+  - from: 'EAST-ASIA'
+    to: 'EAST-ASIA'
+    before: '8 am'
+    will_arrive_after: '12 pm'
+    business_days_later: 0
+  - from: 'EAST-ASIA'
+    to: 'EAST-ASIA'
+    after: '8 am'
+    will_arrive_after: '12 pm'
+    business_days_later: 1
+  - from: 'EAST-ASIA'
+    to: 'SCAN'
+    before: '8 am'
+    will_arrive_after: '6 pm'
+    business_days_later: 1
+  - from: 'EAST-ASIA'
+    to: 'SCAN'
+    after: '8 am'
+    will_arrive_after: '6 pm'
+    business_days_later: 2
+  - from: 'EAST-ASIA'
+    to: 'MARINE-BIO'
+    before: '8 am'
+    will_arrive_after: '10 am'
+    business_days_later: 7
+  - from: 'EAST-ASIA'
+    to: 'MARINE-BIO'
+    after: '8 am'
+    will_arrive_after: '10 am'
+    business_days_later: 8
+  - from: 'EAST-ASIA'
+    to: :anywhere
+    before: '8 am'
+    will_arrive_after: '3 pm'
+    business_days_later: 1
+  - from: 'EAST-ASIA'
+    to: :anywhere
+    after: '8 am'
+    will_arrive_after: '3 pm'
+    business_days_later: 2
+
+  # MUSIC
+  - from: 'MUSIC'
+    to: 'MUSIC'
+    before: '9 am'
+    will_arrive_after: '11 am'
+    business_days_later: 0
+  - from: 'MUSIC'
+    to: 'MUSIC'
+    after: '9 am'
+    will_arrive_after: '11 am'
+    business_days_later: 1
+  - from: 'MUSIC'
+    to: 'SCAN'
+    before: '9 am'
+    will_arrive_after: '6 pm'
+    business_days_later: 1
+  - from: 'MUSIC'
+    to: 'SCAN'
+    after: '9 am'
+    will_arrive_after: '6 pm'
+    business_days_later: 2
+  - from: 'MUSIC'
+    to: 'MARINE-BIO'
+    before: '9 am'
+    will_arrive_after: '3 pm'
+    business_days_later: 8
+  - from: 'MUSIC'
+    to: 'MARINE-BIO'
+    after: '9 am'
+    will_arrive_after: '10 am'
+    business_days_later: 8
+  - from: 'MUSIC'
+    to: :anywhere
+    before: '9 am'
+    will_arrive_after: '3 pm'
+    business_days_later: 1
+  - from: 'MUSIC'
+    to: :anywhere
+    after: '9 am'
+    will_arrive_after: '3 pm'
+    business_days_later: 2
+
+  # ENG
+  - from: 'SCIENCE'
+    to: 'SCIENCE'
+    before: '9 am'
+    will_arrive_after: '11 am'
+    business_days_later: 0
+  - from: 'SCIENCE'
+    to: 'SCIENCE'
+    after: '9 am'
+    will_arrive_after: '11 am'
+    business_days_later: 1
+  - from: 'SCIENCE'
+    to: 'SCAN'
+    before: '9 am'
+    will_arrive_after: '6 pm'
+    business_days_later: 1
+  - from: 'SCIENCE'
+    to: 'SCAN'
+    after: '9 am'
+    will_arrive_after: '6 pm'
+    business_days_later: 2
+  - from: 'SCIENCE'
+    to: 'MARINE-BIO'
+    before: '9 am'
+    will_arrive_after: '3 pm'
+    business_days_later: 8
+  - from: 'SCIENCE'
+    to: 'MARINE-BIO'
+    after: '9 am'
+    will_arrive_after: '3 pm'
+    business_days_later: 8
+  - from: 'SCIENCE'
+    to: :anywhere
+    before: '9 am'
+    will_arrive_after: '3 pm'
+    business_days_later: 1
+  - from: 'SCIENCE'
+    to: :anywhere
+    after: '9 am'
+    will_arrive_after: '3 pm'
+    business_days_later: 2
 
   # Lane Medical Library
   - from: 'LANE'
@@ -731,6 +1015,16 @@ paging_schedule:
     after: '9 am'
     will_arrive_after: '3 pm'
     business_days_later: 1
+  - from: 'LANE'
+    to: 'MARINE-BIO'
+    before: '9 am'
+    will_arrive_after: '10 am'
+    business_days_later: 8
+  - from: 'LANE'
+    to: 'LANE-DESK'
+    after: '9 am'
+    will_arrive_after: '10 am'
+    business_days_later: 8
   - from: 'LANE'
     to: :anywhere
     before: '9 am'
