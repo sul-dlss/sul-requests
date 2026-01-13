@@ -11,6 +11,10 @@ class LibraryHours
     library_hours(from: date).open?
   end
 
+  def business_days(from, min_open_days: 1)
+    library_hours(from:, business_days: min_open_days).open_hours
+  end
+
   def next_business_day(from, n = 0)
     library_hours(from:, business_days: n + 1).open_hours.last.try(:day)
   end
