@@ -70,7 +70,6 @@ searchworks_link: 'https://searchworks.stanford.edu/view'
 sul_illiad: 'https://sul-illiad-test.stanford.edu/'
 illiad_api_key: 'AbC123'
 analytics_debug: true
-worst_case_paging_padding: 3
 stanford_ips:
   singletons: []
   ranges: []
@@ -385,6 +384,116 @@ RECAPTCHA:
   SECRET_KEY: 6Lc6BAAAAAAAAKN3DRm6VA_xxxxxxxxxxxxxxxxx
 EMAIL_TO: yolo@example.com
 HOSTNAME: foo.example.com
+
+
+# paging schedule:
+# when the request comes in
+# next time for pulls
+# staff packing delay
+# next time mailroom pickup
+# next time mailroom sorts
+# next time mailroom delivers
+# check minimum transit days / staff processing time
+# + unpacking/staff checkin delay
+
+# scan schedule:
+# next time for pulls
+# staff packing delay
+# mail room times if needed
+# scan processing time
+scan:
+  GREEN: {}
+  MARINE-BIO: {}
+  SAL3:
+    scan_processing_days: 1
+    scan_schedule:
+      - 12pm
+      - 3pm
+  # BUSINESS:
+  # LAW:
+  # LANE:
+  default: # mail room delays to GREEN
+    scan_processing_days: 1
+    scan_schedule: 6pm
+
+mailroom: # M-F
+  sorted_by:
+    - 7:30am
+    - 8:14am # SAL3
+    - 10:45am
+    - 3pm
+  GREEN:
+    - 7:30am
+    - 8:15am
+    - 10:45am
+  SAL: 4pm
+  SAL3: 8:13am
+  ENG: 8:45am
+  SCIENCE: 8:45am
+  ART: 9am
+  EARTH-SCI: 9:15am
+  LANE: 9:15am
+  RWC: 9:30am
+  MUSIC: 9:45am
+  LAW: 9:45am
+  TANNER: 10:15am
+  BUSINESS: 10:15am
+  EDUCATION: 11am
+  SPEC-COLL: 1:30pm
+  EAST-ASIA: 1:30pm
+  LATHROP: 1:30pm
+  MARINE-BIO: 12pm # MARINE-BIO: MWF, 3pm pickup from MARINE-BIO, TTh pickup from GREEN
+  # Check GRE-STACKS to MARINE-BIO on 1/12
+  # Green at 3pm
+  # mail room gets 7:30
+  # courier gets on T
+  # couriers delivers W @ 5
+  # MARINE-BIO available Th 9am
+
+  # MEDIA-CENTER to GREEN is funny
+
+library_pull_schedule:
+  ART: 12pm
+  BUSINESS: 8:30am
+  EARTH-SCI: 9am
+  EAST-ASIA: 8am
+  EDUCATION:
+    - 9am
+    - 2pm
+  ENG: 9am
+  GREEN:
+    - 7:30am
+    - 3pm
+  LANE: 9am
+  LAW: 12pm
+  MARINE-BIO: 9am
+  MEDIA-CENTER:
+    - 10am
+    - 2pm
+    - 5pm
+  MUSIC: 9am
+  RUMSEY-MAP: 12pm
+  SAL: 1pm
+  SAL3: 11:55am
+  SCIENCE: 9am
+  SPEC-COLL: 10am
+
+library_staff_checkin_schedule:
+  LAW: 3pm
+
+minimum_library_processing_days:
+  SAL: 2
+  RUMSEY-MAP: 3
+  SPEC-COLL: 1
+
+hold_shelf_staff_checkin_delay_hours:
+  default: 2
+  EDUCATION: 1
+  MEDIA-CENTER: 1
+  LANE: 6
+  GREEN: 3
+  MARINE-BIO: 5
+  SAL3: 0
 
 paging_schedule:
   # SAL3

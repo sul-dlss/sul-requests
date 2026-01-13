@@ -88,6 +88,10 @@ module LibraryHoursApi
       data['open']
     end
 
+    def range
+      Time.zone.parse(data['opens_at'])..Time.zone.parse(data['closes_at'])
+    end
+
     def day
       Time.zone.parse(data['opens_at']).to_date
     end
