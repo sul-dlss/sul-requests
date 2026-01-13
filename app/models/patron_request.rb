@@ -413,12 +413,12 @@ class PatronRequest < ApplicationRecord
     scan_service_point.present? && all_items_scannable?
   end
 
-  def scan_service_point
-    @scan_service_point ||= begin
-      service_point = selectable_items.filter_map { |item| item.permanent_location.details['scanServicePointCode'] }.first
+  def scan_service_point_code
+    @scan_service_point_code ||= selectable_items.filter_map { |item| item.permanent_location.details['scanServicePointCode'] }.first
+  end
 
-      Settings.scan_destinations[service_point || :default] || Settings.scan_destinations.default
-    end
+  def scan_service_point
+    @scan_service_point ||= Settings.scan_destinations[scan_service_point_code || :default] || Settings.scan_destinations.default
   end
 
   def scan_code
