@@ -48,7 +48,7 @@ FactoryBot.define do
 
   factory :sal_temp_location, parent: :location do
     code { 'SAL-TEMP' }
-    details { { 'scanServicePointCode' => 'GREEN' } }
+    details { { 'scanServicePointCode' => 'GREEN-LOAN' } }
   end
 
   factory :mmstacks_location, parent: :location do
@@ -70,6 +70,7 @@ FactoryBot.define do
   factory :green_location, parent: :location do
     code { 'GRE-STACKS' }
     library { Folio::Library.new(id: 'f6b5519e-88d9-413e-924d-9ed96255f72e', code: 'GREEN') }
+    details { { 'scanServicePointCode' => 'GREEN-LOAN' } }
   end
 
   factory :spec_coll_location, parent: :location do

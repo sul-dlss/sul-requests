@@ -346,21 +346,30 @@ locations:
       email: 'brannerlibrary@stanford.edu'
 
 scan_destinations:
-  EAST-ASIA:
-    patron_barcode: 'EAL-SCANREVIEW'
-    material_types:
-    - book
-    - periodical
-  GREEN:
-    patron_barcode: 'GRE-SCANDELIVER'
+  BUSINESS: {}
+    # staff_email: ''
+  LAW: {}
+    # staff_email: ''
+  LANE: {}
+    # staff_email: ''
+  MARINE-BIO:
+    ilb: true
+    # pseudopatron_barcode: 'MAR-SCANDELIVER'
     material_types:
     - book
     - periodical
   SAL3:
+    ilb: true
     material_types:
     - book
     - periodical
-  default: {}
+  default:
+    ilb: true
+    pseudopatron_barcode: 'GRE-SCANDELIVER'
+    service_point_code: 'GREEN-LOAN'
+    material_types:
+    - book
+    - periodical
 
 # Aeon external request endpoint (ERE)
 aeon_ere_url: https://stanford.aeon.atlas-sys.com/logon?Action=11&Type=200
