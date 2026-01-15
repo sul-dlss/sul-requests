@@ -1,31 +1,22 @@
 $font-family-base: "Source Sans 3", "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
 $font-family-serif: "Source Serif Pro", Georgia, Times, Times New Roman, serif;
 
-$su-cardinal: #8C1515;
-$su-digital-blue: #006CB8;
-$su-digital-blue-dark: #00548F;
-$su-process-black: #2E2D29;
-$fog-light: #F4F4F4;
-$su-process-black-50: #979694;
-
-$primary: $su-digital-blue;
-$link-hover-color: $su-digital-blue-dark;
-$black: $su-process-black;
+$primary: #006CB8;
+$link-hover-color: #00548F;
 
 $headings-font-weight: 400;
 $headings-line-height: 1.25;
-$jungle-green: #279989;
-$su-poppy: 233, 131, 0;
 
 @import 'bootstrap/scss/functions';
 @import 'bootstrap/scss/variables';
 @import "bootstrap-icons/font/bootstrap-icons";
+@import url("https://cdn.jsdelivr.net/gh/sul-dlss/component-library@v2025-12-19/styles/sul.css");
 
 // Create your own map
 $custom-colors: (
-  "cardinal": $su-cardinal,
-  "jungle-green": $jungle-green,
-  "su-process-black-50": $su-process-black-50
+  "cardinal": #8F1414,
+  "jungle-green": #279989,
+  "su-process-black-50": #979694,
 );
 
 // Merge the maps
@@ -47,16 +38,16 @@ body {
   --bs-danger-border-subtle: rgba(130, 0, 0, 0.1);
   --bs-info-bg-subtle: rgba(0, 84, 143, 0.08);
   --bs-info-border-subtle: rgba(0, 84, 143, 0.08);
-  --bs-info-text-emphasis: #{$black};
-  --bs-heading-color: #{$black};
-  --bs-warning-rgb: #{$su-poppy};
-  --bs-warning-bg-subtle: rgba(#{$su-poppy}, 0.1);
-  --bs-warning-border-subtle: rgba(#{$su-poppy}, 1);
+  --bs-info-text-emphasis:var(--stanford-black);
+  --bs-heading-color: var(--stanford-black);
+  --bs-warning-rgb: var(--stanford-poppy-rgb);
+  --bs-warning-bg-subtle: rgba(var(--stanford-poppy-rgb), 0.1);
+  --bs-warning-border-subtle: rgba(var(--stanford-poppy-rgb), 1);
   --bs-warning-text-emphasis: black;
 }
 
 input[type="radio"] {
-  --bs-border-color: #{$su-process-black-50}
+  --bs-border-color: var(--stanford-50-black);
 }
 
 /* This selector/rule can be removed after https://github.com/twbs/bootstrap/pull/39098 is released */
@@ -81,46 +72,21 @@ a {
   text-decoration: none;
 }
 
-// Footer and header links don't get underline until you hover
-#sul-header,
-#su-footer {
+// header links don't get underline until you hover
+#sul-header {
   --bs-link-decoration: none;
   --bs-link-hover-decoration: underline;
 }
 
 // Font smoothing for light text on dark background
-#app-header,
-#su-footer {
+#app-header {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 #sul-header {
-  --bs-link-color-rgb: #{$su-cardinal};
-  --bs-link-hover-color-rgb: #{$su-cardinal};
-}
-
-#su-footer {
-  --bs-link-color-rgb: $white;
-  --bs-link-hover-color-rgb: $white;
-
-  ul {
-    a {
-      font-size: min(calc(0.825rem + 0.3vw), 1.25rem);
-
-      @include media-breakpoint-down(sm) {
-        font-weight: 600;
-      }
-    }
-  }
-
-  .copyright {
-    font-size: 0.8125rem;
-
-    @include media-breakpoint-up(sm) {
-      font-size: 0.9375rem;
-    }
-  }
+  --bs-link-color-rgb: var(--stanford-cardinal-rgb);
+  --bs-link-hover-color-rgb: var(--stanford-cardinal-rgb);
 }
 
 summary.btn::-webkit-details-marker{
@@ -138,7 +104,7 @@ summary .bi-chevron-right::before {
 
 .required-label::after {
     content: '*';
-    color: $su-cardinal;
+    color: var(--stanford-cardinal);
     margin-left: 5px;
 }
 
@@ -166,7 +132,7 @@ summary .bi-chevron-right::before {
 }
 
 .accordion-button, .accordion-header {
-  background-color: $fog-light !important;
+  background-color: var(--stanford-fog-light) !important;
   border-top-left-radius: var(--bs-accordion-border-radius) !important;
   border-top-right-radius: var(--bs-accordion-border-radius) !important;
   border-bottom-left-radius: var(--bs-accordion-border-radius) !important;
@@ -198,8 +164,8 @@ summary .bi-chevron-right::before {
   }
 
   .step-number {
-    background-color: $green!important;
-    border-color: $green!important;
+    background-color: var(--bs-green)!important;
+    border-color: var(--bs-green)!important;
   }
 
   .accordion-title::after {
@@ -210,7 +176,7 @@ summary .bi-chevron-right::before {
     font-weight: normal;
     margin-right: .25rem;
     border-radius: 32px;
-    color: $green;
+    color: var(--bs-green);
   }
 }
 
@@ -234,7 +200,7 @@ summary .bi-chevron-right::before {
 
 .styled-hr {
   height: 1px;
-  background-color: $su-process-black-50;
+  background-color: var(--stanford-50-black);
   margin: 0px 10px;
 }
 
