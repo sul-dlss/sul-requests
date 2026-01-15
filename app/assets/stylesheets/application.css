@@ -1,42 +1,43 @@
-$font-family-base: "Source Sans 3", "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+/* $font-family-base: "Source Sans 3", "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
 $font-family-serif: "Source Serif Pro", Georgia, Times, Times New Roman, serif;
 
-$su-cardinal: #8C1515;
-$su-digital-blue: #006CB8;
-$su-digital-blue-dark: #00548F;
-$su-process-black: #2E2D29;
-$fog-light: #F4F4F4;
-$su-process-black-50: #979694;
-
-$primary: $su-digital-blue;
-$link-hover-color: $su-digital-blue-dark;
-$black: $su-process-black;
+$primary: #006CB8;
+$link-hover-color: #00548F;
 
 $headings-font-weight: 400;
-$headings-line-height: 1.25;
-$jungle-green: #279989;
-$su-poppy: 233, 131, 0;
+$headings-line-height: 1.25; */
 
-@import 'bootstrap/scss/functions';
-@import 'bootstrap/scss/variables';
-@import "bootstrap-icons/font/bootstrap-icons";
+@layer framework, components;
+@import url("https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css")
+layer(framework);
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css")
+layer(framework);
+@import url("https://cdn.jsdelivr.net/gh/sul-dlss/component-library@v2026-01-27/styles/sul.css")
+layer(components);
 
-// Create your own map
-$custom-colors: (
-  "cardinal": $su-cardinal,
-  "jungle-green": $jungle-green,
-  "su-process-black-50": $su-process-black-50
-);
+.bg-su-process-black-50 {
+  background-color: rgba(var(--stanford-process-black-50-rgb), 1);
+}
+.bg-jungle-green {
+  background-color: rgba(var(--stanford-jungle-green-rgb), 1);
+}
 
-// Merge the maps
-$theme-colors: map-merge($theme-colors, $custom-colors);
+.text-jungle-green {
+  color: rgba(var(--stanford-jungle-green-rgb), 1);
+}
 
-@import 'bootstrap/scss/bootstrap';
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto+Slab:wght@300;400;700&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600;1,700&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap");
+.bg-cardinal {
+  background-color: rgba(var(--stanford-cardinal-rgb), 1);
+}
+
+.text-cardinal {
+  color: rgba(var(--stanford-cardinal-rgb), 1);
+}
+
 
 @font-face {
-  font-family: Stanford;
-  src: url(https://www-media.stanford.edu/assets/fonts/stanford.woff) format("woff"), url(https://www-media.stanford.edu/assets/fonts/stanford.ttf) format("truetype");
+  font-family: "Stanford";
+  src: url("https://www-media.stanford.edu/assets/fonts/stanford.woff") format("woff"), url("https://www-media.stanford.edu/assets/fonts/stanford.ttf") format("truetype");
   font-weight: 300;
   font-display: swap
 }
@@ -47,16 +48,17 @@ body {
   --bs-danger-border-subtle: rgba(130, 0, 0, 0.1);
   --bs-info-bg-subtle: rgba(0, 84, 143, 0.08);
   --bs-info-border-subtle: rgba(0, 84, 143, 0.08);
-  --bs-info-text-emphasis: #{$black};
-  --bs-heading-color: #{$black};
-  --bs-warning-rgb: #{$su-poppy};
-  --bs-warning-bg-subtle: rgba(#{$su-poppy}, 0.1);
-  --bs-warning-border-subtle: rgba(#{$su-poppy}, 1);
+  --bs-info-text-emphasis:var(--stanford-black);
+  --bs-heading-color: var(--stanford-black);
+  --bs-warning-rgb: var(--stanford-poppy-rgb);
+  --bs-warning-bg-subtle: rgba(var(--stanford-poppy-rgb), 0.1);
+  --bs-warning-border-subtle: rgba(var(--stanford-poppy-rgb), 1);
   --bs-warning-text-emphasis: black;
+  --bs-green-rgb: 25, 135, 84;
 }
 
 input[type="radio"] {
-  --bs-border-color: #{$su-process-black-50}
+  --bs-border-color: var(--stanford-50-black);
 }
 
 /* This selector/rule can be removed after https://github.com/twbs/bootstrap/pull/39098 is released */
@@ -72,7 +74,7 @@ a {
 .su-logo {
   --bs-link-hover-decoration: none;
   display: inline-block;
-  font-family: Stanford, $font-family-serif;
+  font-family: Stanford, "Source Serif Pro", Georgia, Times, "Times New Roman", serif;
   font-variant-ligatures: discretionary-ligatures;
   font-feature-settings: "liga";
   font-weight: 400;
@@ -81,46 +83,21 @@ a {
   text-decoration: none;
 }
 
-// Footer and header links don't get underline until you hover
-#sul-header,
-#su-footer {
+ /* header links don't get underline until you hover */
+#sul-header {
   --bs-link-decoration: none;
   --bs-link-hover-decoration: underline;
 }
 
-// Font smoothing for light text on dark background
-#app-header,
-#su-footer {
+/* Font smoothing for light text on dark background */
+#app-header {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 #sul-header {
-  --bs-link-color-rgb: #{$su-cardinal};
-  --bs-link-hover-color-rgb: #{$su-cardinal};
-}
-
-#su-footer {
-  --bs-link-color-rgb: $white;
-  --bs-link-hover-color-rgb: $white;
-
-  ul {
-    a {
-      font-size: min(calc(0.825rem + 0.3vw), 1.25rem);
-
-      @include media-breakpoint-down(sm) {
-        font-weight: 600;
-      }
-    }
-  }
-
-  .copyright {
-    font-size: 0.8125rem;
-
-    @include media-breakpoint-up(sm) {
-      font-size: 0.9375rem;
-    }
-  }
+  --bs-link-color-rgb: var(--stanford-cardinal-rgb);
+  --bs-link-hover-color-rgb: var(--stanford-cardinal-rgb);
 }
 
 summary.btn::-webkit-details-marker{
@@ -137,9 +114,9 @@ summary .bi-chevron-right::before {
 }
 
 .required-label::after {
-    content: '*';
-    color: $su-cardinal;
-    margin-left: 5px;
+  content: '*';
+  color: var(--stanford-cardinal);
+  margin-left: 5px;
 }
 
 #user-header-hide:checked + .user-header {
@@ -156,7 +133,7 @@ summary .bi-chevron-right::before {
   width: 4px;
 }
 
-// Accordion in request form
+/* Accordion in request form */
 .accordion-item {
   border: var(--bs-accordion-border-width) solid var(--bs-accordion-border-color) !important;
   border-top-left-radius: var(--bs-accordion-border-radius) !important;
@@ -166,7 +143,7 @@ summary .bi-chevron-right::before {
 }
 
 .accordion-button, .accordion-header {
-  background-color: $fog-light !important;
+  background-color: var(--stanford-fog-light) !important;
   border-top-left-radius: var(--bs-accordion-border-radius) !important;
   border-top-right-radius: var(--bs-accordion-border-radius) !important;
   border-bottom-left-radius: var(--bs-accordion-border-radius) !important;
@@ -198,43 +175,43 @@ summary .bi-chevron-right::before {
   }
 
   .step-number {
-    background-color: $green!important;
-    border-color: $green!important;
+    background-color: var(--bs-green)!important;
+    border-color: var(--bs-green)!important;
   }
 
   .accordion-title::after {
     content: "Completed";
-    background-color: rgba($green, 0.1);
+    background-color: rgba(var(--bs-green-rgb), 0.1);
     padding: 2px 8px;
     font-size: 1rem;
     font-weight: normal;
     margin-right: .25rem;
     border-radius: 32px;
-    color: $green;
+    color: var(--bs-green);
   }
 }
 
 .accordion-button[aria-expanded="true"]{
   .step-number {
-    background-color: $primary!important;
-    border-color: $primary!important;
+    background-color: var(--stanford-digital-blue)!important;
+    border-color: var(--stanford-digital-blue)!important;
   }
 
   .accordion-title::after {
     content: "In progress";
-    background-color: rgba($primary, 0.1);
+    background-color: rgba(var(--stanford-digital-blue-rgb), 0.1);
     font-size: 1rem;
     padding: 2px 8px;
     margin-right: .25rem;
     border-radius: 32px;
     font-weight: normal;
-    color: $primary;
+    color: var(--stanford-digital-blue);
   }
 }
 
 .styled-hr {
   height: 1px;
-  background-color: $su-process-black-50;
+  background-color: var(--stanford-50-black);
   margin: 0px 10px;
 }
 
@@ -245,7 +222,7 @@ summary .bi-chevron-right::before {
 .dl-inline {
   dt {
     display: inline;
-    margin-right: $spacer * 0.5;
+    margin-right: 0.5rem;
   }
 
   dd {
@@ -261,7 +238,7 @@ label.btn-close {
 #patron_request_needed_date {
   width: 100%;
 
-  @include media-breakpoint-up(lg) {
+  @media (min-width: 992px) {
     width: 50%;
   }
 }
@@ -311,16 +288,19 @@ label.btn-close {
   .mediate-toggle {
     border-bottom: 0;
 
+    i::before {
+      content: "\F4F9";
+    }
+
     i {
-      @extend .bi-plus-circle-fill;
       font-size: 18px;
     }
   }
 
   .expanded {
     .mediate-toggle {
-      i {
-        @extend .bi-dash-circle-fill;
+      i::before {
+        content: "\F2E5";
       }
     }
   }
@@ -330,18 +310,3 @@ label.btn-close {
   text-wrap: nowrap;
 }
 
-// Temporary styles copied from the component library. Remove after moving to the component library.
-.navbar-logo {
-  overflow: hidden;
-  text-indent: 100%;
-  white-space: nowrap;
-  width: 250px;
-
-  &.polychrome {
-    background-color: transparent;
-    mask-image: none;
-    background-image: url("https://cdn.jsdelivr.net/gh/sul-dlss/component-library@v2025-02-20/styles/StanfordLibraries-logo-poly.svg");
-    background-repeat: no-repeat;
-    background-position: 0 center;
-  }
-}
