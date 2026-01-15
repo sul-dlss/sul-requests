@@ -47,7 +47,8 @@ class PagingScheduleController < ApplicationController
   private
 
   def load_schedule
-    @schedule = PagingSchedule.for(from: origin_location, to: destination_library_code, library_code: fallback_library_code)
+    @schedule = PagingSchedule.new(from: origin_location, to: destination_library_code,
+                                   library_code: fallback_library_code)
   end
 
   def origin_location

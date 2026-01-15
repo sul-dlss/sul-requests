@@ -9,6 +9,7 @@ class SubmitPatronRequestJob < ApplicationJob
   def perform(patron_request)
     return convert_to_mediated_page(patron_request) if patron_request.mediateable?
     return place_title_hold(patron_request) if patron_request.barcodes.blank?
+    return perform_scan_request(patron_request) if patron_request.scan?
 
     ilb_items, folio_items = patron_request.selected_items.partition do |item|
       send_to_illiad?(patron_request, item)
@@ -24,6 +25,36 @@ class SubmitPatronRequestJob < ApplicationJob
       next if patron_request.folio_responses&.dig(item.id, 'response', 'status')
 
       responses[item.id] = SubmitFolioPatronRequestJob.perform_now(patron_request, item.id)
+    end
+
+    patron_request.update(illiad_response_data:, folio_responses:)
+
+    PatronRequestMailer.confirmation_email(patron_request)&.deliver_later
+  end
+
+  def perform_scan_request(patron_request)
+    ilb_items, scan_email_items = patron_request.selected_items.partition do |_item|
+      patron_request.scan_service_point.ilb
+    end
+
+    folio_items = patron_request.selected_items.select do |_item|
+      patron_request.scan_service_point&.pseudopatron_barcode.present?
+    end
+
+    illiad_response_data = ilb_items.each_with_object({}) do |item, responses|
+      next if patron_request.illiad_response_data&.dig(item.id)
+
+      responses[item.id] = SubmitIlliadPatronRequestJob.perform_now(patron_request, item.id)
+    end
+
+    _email_response_data = scan_email_items.each do |item|
+      PatronRequestMailer.staff_scan_email(patron_request, item.id)&.deliver_later
+    end
+
+    folio_responses = folio_items.each_with_object({}) do |item, responses|
+      next if patron_request.folio_responses&.dig(item.id, 'response', 'status')
+
+      responses[item.id] = SubmitFolioScanRequestJob.perform_now(patron_request, item.id)
     end
 
     patron_request.update(illiad_response_data:, folio_responses:)

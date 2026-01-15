@@ -293,7 +293,7 @@ class PatronRequest < ApplicationRecord
   # @return [Hash] the earliest delivery estimate for the request
   def earliest_delivery_estimate(scan: false)
     if any_items_avaliable?
-      paging_info = PagingSchedule.for(from: folio_location, to: default_service_point_code, time: created_at,
+      paging_info = PagingSchedule.new(from: folio_location, to: default_service_point_code, time: created_at,
                                        scan:).earliest_delivery_estimate
       { 'date' => Date.parse(paging_info.to_s), 'display_date' => paging_info.to_s }
     else
@@ -413,12 +413,12 @@ class PatronRequest < ApplicationRecord
     scan_service_point.present? && all_items_scannable?
   end
 
-  def scan_service_point
-    @scan_service_point ||= begin
-      service_point = selectable_items.filter_map { |item| item.permanent_location.details['scanServicePointCode'] }.first
+  def scan_service_point_code
+    @scan_service_point_code ||= selectable_items.filter_map { |item| item.permanent_location.details['scanServicePointCode'] }.first
+  end
 
-      Settings.scan_destinations[service_point || :default] || Settings.scan_destinations.default
-    end
+  def scan_service_point
+    @scan_service_point ||= Settings.scan_destinations[scan_service_point_code || :default] || Settings.scan_destinations.default
   end
 
   def scan_code

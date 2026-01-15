@@ -16,6 +16,7 @@ RSpec.describe SubmitPatronRequestJob do
     stub_bib_data_json(bib_data)
     allow(SubmitIlliadPatronRequestJob).to receive(:perform_now).and_return('illiad_response')
     allow(SubmitFolioPatronRequestJob).to receive(:perform_now).and_return('folio_response')
+    allow(SubmitFolioScanRequestJob).to receive(:perform_now).and_return('folio_response')
   end
 
   context 'when the request is sent to FOLIO' do
@@ -45,9 +46,35 @@ RSpec.describe SubmitPatronRequestJob do
       request.request_type = 'scan'
     end
 
+    let(:bib_data) { build(:scannable_holdings) }
+
+    it 'requests items via ILLiad only' do
+      described_class.perform_now(request)
+      expect(SubmitIlliadPatronRequestJob).to have_received(:perform_now).with(request, bib_data.items[0].id)
+      expect(SubmitFolioScanRequestJob).not_to have_received(:perform_now)
+    end
+  end
+
+  context 'when the request is a scan for material in e.g. Green' do
+    before do
+      allow(SubmitFolioScanRequestJob).to receive(:perform_now).and_return('folio_response')
+    end
+
+    let(:request) do
+      PatronRequest.create(request_type: 'scan', instance_hrid: 'a1234', patron:, barcodes: ['12345678'],
+                           origin_location_code: 'GRE-STACKS', scan_title: 'Test Scan')
+    end
+
+    let(:bib_data) { build(:green_holdings) }
+
     it 'requests items via ILLiad' do
       described_class.perform_now(request)
       expect(SubmitIlliadPatronRequestJob).to have_received(:perform_now).with(request, bib_data.items[0].id)
+    end
+
+    it 'requests items via FOLIO' do
+      described_class.perform_now(request)
+      expect(SubmitFolioScanRequestJob).to have_received(:perform_now)
     end
   end
 
