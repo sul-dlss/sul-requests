@@ -124,9 +124,9 @@
     <div class="offset-1 col-4">
         <div class="card">
             <div class="card-body">
-                <h2 class="h5 fw-semibold">Library resources</h2>
+                <h2 class="h3 fw-semibold">Library resources</h2>
                 <div class="bg-light p-2">
-                    <h3 class="h6">
+                    <h3 class="h4">
                         <a href="https://mylibrary.stanford.edu"><i class="bi bi-box-arrow-up-right"></i> Log in to My Account</a>
                     </h3>
                     <p class="mb-0">
@@ -134,12 +134,12 @@
                       and/or outstanding fines.
                     </p>
                 </div>
-                <h3 class="h6 fw-semibold mt-3">Get help</h3>
+                <h3 class="h4 fw-semibold mt-3">Get help</h3>
                     <ul class="list-unstyled">
                         <li><i class="bi bi-envelope-fill"></i> <%= mail_to(@patron_request.contact_info[:email], @patron_request.contact_info[:email]) %></li>
                         <li><i class="bi bi-telephone-fill"></i> Call <%= @patron_request.contact_info[:phone] %></li>
                     </ul>
-                <h3 class="h6 fw-semibold mt-3">Library policies and information</h3>
+                <h3 class="h4 fw-semibold mt-3">Library policies and information</h3>
                 <ul class="list-unstyled">
                     <li>
                         <a href="https://library.stanford.edu/services/borrow-and-request" target="_blank">

@@ -14,9 +14,9 @@
 <div class="row flex-column flex-sm-row landing-page mb-3">
     <div class="col-sm-6">
         <div class="card">
-            <h2 class="card-header bg-white h3">Stanford community</h2>
+            <h2 class="card-header bg-white h1">Stanford community</h2>
             <div class="card-body">
-                <%= link_to 'Log in with SUNet ID', login_by_sunetid_url(referrer: new_patron_request_path(new_params.merge(step: 'select'))), data: { turbo: false }, class: 'btn btn-md btn-primary btn-full btn-cardinal mb-2' %>
+                <%= link_to 'Log in with SUNet ID', login_by_sunetid_url(referrer: new_patron_request_path(new_params.merge(step: 'select'))), data: { turbo: false }, class: 'btn btn-md btn-secondary btn-full btn-cardinal mb-2' %>
                 <p>
                     As a member of the Stanford community, including <b>faculty, students, staff, post-docs, fellows, and visiting scholars</b>, you are issued a SUNet ID. With this ID, you can access more additional services, including requesting items from partner libraries or receiving digital scans via email.
                 </p>
@@ -28,7 +28,7 @@
     </div>
     <div class="col-sm-6 mt-4 mt-sm-0">
         <div class="card border-0">
-            <h2 class="card-header bg-white border-0 h3">Library cardholder</h2>
+            <h2 class="card-header bg-white border-0 h1">Library cardholder</h2>
             <div class="card-body pt-0">
                 <p>If you have an alumni library account, purchased or received courtesy access, or are a staff member at Stanford Hospital or Lucile Packard Children’s Hospital Stanford, please log in using your Library ID and PIN.
                 </p>
@@ -63,7 +63,7 @@
             </div>
         </div>
         <div class="card border-0 mt-3 mt-sm-0">
-            <h2 class="card-header bg-white border-0 h3">Visitor</h2>
+            <h2 class="card-header bg-white border-0 h1">Visitor</h2>
             <div class="card-body pt-0">
                 <% if Ability.anonymous.cannot? :new, @patron_request %>
                     <div class="alert alert-danger text-cardinal">
