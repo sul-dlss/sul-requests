@@ -7,7 +7,7 @@ class LibraryHours
     @cache = {}
   end
 
-  def next_schedule_for(library_code, after: time)
+  def next_schedule_for(library_code, after: nil)
     data = if @cache[library_code].nil?
              @cache[library_code] = fetch_schedule_for_library(library_code, after: after)
            elsif @cache[library_code].last&.last&.after?(after)
@@ -19,7 +19,7 @@ class LibraryHours
     data.select { |range| range.first >= after.beginning_of_day }
   end
 
-  def business_days_for(library_code, after: time)
+  def business_days_for(library_code, after: nil)
     next_schedule_for(library_code, after: after).map { |range| range.first.beginning_of_day }
   end
 
@@ -29,7 +29,7 @@ class LibraryHours
 
   private
 
-  def fetch_schedule_for_library(library_code, after: time, min_open_days: 7)
+  def fetch_schedule_for_library(library_code, after: nil, min_open_days: 7)
     library_hours(library_code, from: after.to_date, business_days: min_open_days).open_hours.filter_map do |d|
       d&.range
     end
