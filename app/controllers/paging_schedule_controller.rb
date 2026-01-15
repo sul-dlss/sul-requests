@@ -18,7 +18,6 @@ class PagingScheduleController < ApplicationController
 
   def index
     authorize! :manage, PagingSchedule
-    @paging_schedule = PagingSchedule.schedule
   end
 
   def show

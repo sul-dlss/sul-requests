@@ -89,7 +89,8 @@ class PagingSchedule
     from&.details&.[]('scanServicePointCode') || 'GREEN'
   end
 
-  # Does the material bypass the mailroom and go directly to the destination library (because it's already there, or staff just walk it over)
+  # Does the material bypass the mailroom and go directly to the destination library (because it's already there,
+  # or staff just walk it over)
   def directly_delivered?
     origin_library_code == destination_library_code || (origin_library_code == 'MEDIA-CENTER' && destination_library_code == 'GREEN')
   end
@@ -180,7 +181,7 @@ class PagingSchedule
     # The MARINE-BIO courier drops off material there on Mondays, Wednesdays, and Fridays at 5pm
     steps[:courier_delivery_to_mar] = [steps[:mailroom_sort].next_occurring(:monday),
                                        steps[:mailroom_sort].next_occurring(:wednesday),
-                                       steps[:mailroom_sort].next_occurring(:friday)].min.change(hour: 17, min: 0, sec: 0)
+                                       steps[:mailroom_sort].next_occurring(:friday)].min
 
     destination_delivery_open_days = business_days_for(destination_library_code, after: steps[:courier_delivery_to_mar])
     steps[:delivered_to_destination] = next_action_time(destination_delivery_open_days,
@@ -200,9 +201,9 @@ class PagingSchedule
     # Some (mainly special collections) locations also need some minimum processing days before the material is ready for pickup
     minimum_processing_time = Settings.minimum_library_processing_days[origin_library_code]&.days
     if minimum_processing_time && (steps[:staff_processed] - steps[:shelf_pull]) < minimum_processing_time
-      destination_processing_business_days = business_days_for(destination_library_code, after: steps[:shelf_pull])
+      destination_business_days = business_days_for(destination_library_code, after: steps[:shelf_pull])
       steps[:ready] =
-        destination_processing_business_days[Settings.minimum_library_processing_days[origin_library_code]].change(hour: steps[:staff_processed].hour)
+        destination_business_days[Settings.minimum_library_processing_days[origin_library_code]].change(hour: steps[:staff_processed].hour)
     end
 
     # And some locations make the material available only at certain times
