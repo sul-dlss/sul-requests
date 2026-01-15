@@ -5,168 +5,107 @@
 #  read the paging schedule configuration and estimate a date of arrival.
 ###
 class PagingSchedule
-  class << self
-    def schedule
-      @schedule ||= Settings.paging_schedule.map do |sched|
-        PagingSchedule::Scheduler.new(**sched)
-      end
-    end
+  attr_reader :from, :to, :time, :library_hours
 
-    def for(**)
-      instance = new(**)
-      instance.schedule_for_request
-    end
-
-    def worst_case_delivery_day
-      (Time.zone.today + worst_case_days_later.days)
-    end
-
-    def worst_case_days_later
-      schedule.filter_map(&:business_days_later).max + Settings.worst_case_paging_padding
-    end
-  end
-
-  attr_reader :from, :to, :time
-
-  def initialize(from:, to:, time: nil, library_code: nil)
+  def initialize(from:, to:, time: nil, library_code: nil, library_hours: LibraryHours.new)
     @from = from
     @to = to
     @origin_library_code = library_code
     @time = time || Time.zone.now
+    @library_hours = library_hours
   end
 
-  delegate :schedule, to: :class
+  delegate :business_days_for, to: :library_hours
+
+  def valid?(date)
+    scheduled_date = schedule_for_request[:completed].to_date
+
+    scheduled_date >= date && library_hours.open?(destination_library_code, on: date)
+  rescue ScheduleNotFound
+    false
+  end
 
   def earliest_delivery_estimate
     Estimate.new(self, as_of: time)
   end
 
-  # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
-  def schedule_for_request(details: false)
+  def schedule_for_request # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    # We don't estimate schedules for items that patrons have requested to be sent via ILLiad
     raise ScheduleNotFound if from&.pages_prefer_to_send_via_illiad?
-    return schedule_for_request_scan(details:) if to == 'SCAN'
 
-    steps = { meta: { from: origin_library_code, to: to }, request: time }
+    @schedule_for_request ||= begin
+      steps = { meta: { from: origin_library_code, to: to }, request: time }
 
-    # paging schedule:
-    # when the request comes in
+      # All requests start with physically pulling items from the shelf
+      shelf_pull_for_origin_library(steps)
 
-    # figure out when the next shelf pull happens
-    pull_schedule = Array(Settings.library_pull_schedule[origin_library_code])
-    origin_open_days = origin_library_hours.business_days(time, min_open_days: 2).filter_map { |d| d&.day&.to_time }
-    steps[:shelf_pull] = next_action_time(origin_open_days, pull_schedule, after: time)
+      # Next, items need to transit to the destination library (directly, via mailroom, or via courier)
+      direct_delivery_to_destination_library(steps)
+      courier_delivery_to_green(steps)
+      mailroom_processing_from_origin_library(steps)
+      courier_delivery_to_branch(steps)
 
-    if origin_library_code == destination_library_code || (origin_library_code == 'MEDIA-CENTER' && destination_library_code == 'GREEN')
-      # direct delivery without mailroom processing
-      steps[:mailroom_delivery] = steps[:shelf_pull]
-    else
-      # add a little time for staff packing?
-      steps[:ready_to_ship] = steps[:shelf_pull].advance(minutes: 5)
+      if scan?
+        steps[:meta][:via] = destination_library_code
 
-      if origin_library_code == 'MARINE-BIO'
-        steps[:courier_delivery_to_green] = [steps[:ready_to_ship].next_occurring(:tuesday),
-                                             steps[:ready_to_ship].next_occurring(:thursday)].min.change(hour: 12, min: 0, sec: 0)
-      end
-
-      shipped = steps[:courier_delivery_to_green] || steps[:ready_to_ship]
-
-      # get the next 3 business days after the ready-to-ship time for the mailroom
-      mailroom_open_days = LibraryHours.new('GREEN').business_days(shipped, min_open_days: 7).filter_map do |d|
-        d&.day&.to_time
-      end.reject(&:on_weekend?)
-
-      steps[:mailroom_pickup] = next_action_time(mailroom_open_days, Settings.mailroom[origin_library_code], after: shipped)
-
-      steps[:mailroom_sort] = next_action_time(mailroom_open_days, Settings.mailroom.sorted_by, after: steps[:mailroom_pickup])
-
-      if destination_library_code == 'MARINE-BIO'
-        steps[:courier_delivery_to_mar] = [steps[:mailroom_sort].next_occurring(:monday),
-                                           steps[:mailroom_sort].next_occurring(:wednesday),
-                                           steps[:mailroom_sort].next_occurring(:friday)].min.change(hour: 17, min: 0, sec: 0)
-
-        destination_delivery_open_days = destination_library_hours.business_days(steps[:courier_delivery_to_mar],
-                                                                                 min_open_days: 2).filter_map do |d|
-          d&.day&.to_time
-        end
-        steps[:mailroom_delivery] = next_action_time(destination_delivery_open_days,
-                                                     Settings.mailroom[destination_library_code], after: steps[:courier_delivery_to_mar])
+        # Scanning needs some processing time once it arrives to do the actual work
+        scan_processing_time(steps)
       else
-        destination_delivery_open_days = destination_library_hours.business_days(steps[:mailroom_sort],
-                                                                                 min_open_days: 2).filter_map do |d|
-          d&.day&.to_time
-        end
-        steps[:mailroom_delivery] = next_action_time(mailroom_open_days & destination_delivery_open_days,
-                                                     Settings.mailroom[destination_library_code], after: steps[:mailroom_sort])
+        # Once at the destination library, some staff processing needs to happen before it's available
+        staff_processing_at_destination_library(steps)
+
+        # ... and the library has to be open for the patron to pick it up
+        material_made_available_to_the_patron(steps)
       end
 
-    end
+      steps[:completed] = steps[:scan_delivered] || steps[:available_at_destination]
 
-    # add constant unpacking/staff checkin delay / schedule
-    checkin_processing_hours = Settings.hold_shelf_staff_checkin_delay_hours[destination_library_code] || Settings.hold_shelf_staff_checkin_delay_hours.default
-    steps[:staff_processed] = steps[:mailroom_delivery].advance(hours: checkin_processing_hours)
-    # account for minimum transit days / staff processing time
-
-    if Settings.minimum_library_processing_days[origin_library_code] && (steps[:staff_processed] - steps[:shelf_pull] < Settings.minimum_library_processing_days[origin_library_code].days)
-      steps[:ready] = steps[:shelf_pull] + Settings.minimum_library_processing_days[origin_library_code].days
-    elsif Settings.library_staff_checkin_schedule[destination_library_code]
-      destination_open_days = destination_library_hours.business_days(steps[:staff_processed],
-                                                                      min_open_days: 3).filter_map do |d|
-        d&.day&.to_time
-      end
-
-      steps[:ready] = next_action_time(destination_open_days,
-                                       Settings.library_staff_checkin_schedule[destination_library_code],
-                                       after: steps[:staff_processed])
-    else
-      steps[:ready] = steps[:staff_processed]
-    end
-
-    # check destination opening hours, or punt to the next business day
-    steps[:available_to_patron] = next_open_time_after(destination_library_hours, steps[:ready])
-
-    if details
       steps
-    else
-      steps[:available_to_patron]
     end
   end
 
-  def next_open_time_after(library_hours, after_time)
-    destination_library_hours = library_hours.business_days(after_time, min_open_days: 2)
+  private
 
-    if destination_library_hours.first.range.cover?(after_time + 5.minutes)
-      after_time
-    elsif destination_library_hours.first.range.begin.after?(after_time)
-      destination_library_hours.first.range.begin
-    else
-      destination_library_hours.second.range.begin
-    end
+  # Library code the material is originating from (often the FOLIO library of the location, but there are some exceptions...)
+  def origin_library_code
+    from&.paging_schedule_origin_library_code || @origin_library_code
   end
 
-  def schedule_for_request_scan(details: false)
-    # scan schedule:
-    scan_destination_library_code = from.details['scanServicePointCode'] || 'GREEN'
-    steps = PagingSchedule.new(from: from, to: scan_destination_library_code, time: time).schedule_for_request(details: true)
-    steps[:meta][:for] = 'SCAN'
+  # Library code the material is being physically sent to
+  def destination_library_code
+    return scan_destination_library_code if scan?
 
-    steps[:scan_processed] =
-      steps[:available_to_patron] + (Settings.scan[scan_destination_library_code]&.scan_processing_days || Settings.scan.default.scan_processing_days).days
-    scan_destination_library_hours = LibraryHours.new(scan_destination_library_code).business_days(steps[:scan_processed],
-                                                                                                   min_open_days: 3).filter_map do |d|
-      d&.day&.to_time
-    end
-
-    steps[:scan_delivered] = next_action_time(scan_destination_library_hours,
-                                              Settings.scan[scan_destination_library_code]&.scan_schedule || Settings.scan.default.scan_schedule, after: steps[:scan_processed])
-
-    if details
-      steps
-    else
-      steps[:scan_delivered]
-    end
+    @destination_library_code ||= Settings.ils.pickup_destination_class.constantize.new(to).library_code || to
   end
-  # rubocop:enable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
 
+  def scan?
+    to == 'SCAN'
+  end
+
+  # Library that handles scanning the material
+  def scan_destination_library_code
+    return unless scan?
+
+    from&.details&.[]('scanServicePointCode') || 'GREEN'
+  end
+
+  # Does the material bypass the mailroom and go directly to the destination library (because it's already there, or staff just walk it over)
+  def directly_delivered?
+    origin_library_code == destination_library_code || (origin_library_code == 'MEDIA-CENTER' && destination_library_code == 'GREEN')
+  end
+
+  # Business days for mailroom operations (currently pretending it's just Green's hours)
+  # TODO: consider adding library hours for mailroom operations?
+  def business_days_for_mailroom_operations(after: time)
+    business_days_for('GREEN', after: after).reject(&:on_weekend?)
+  end
+
+  # TODO: check assumption that scanning usually happens on weekdays
+  def scan_destination_library_hours(after: time)
+    business_days_for(scan_destination_library_code, after: after).reject(&:on_weekend?)
+  end
+
+  # Figure out when the next action occurs (e.g. on a day when the location is open, at some scheduled time)
   def next_action_time(open_days, scheduled_times, after: time)
     action_times = Array(scheduled_times).flat_map do |scheduled_time|
       parsed_time = Time.zone.parse(scheduled_time)
@@ -176,25 +115,135 @@ class PagingSchedule
     action_times.select { |t| t == after || t.after?(after) }.min
   end
 
-  def origin_library_code
-    from&.paging_schedule_origin_library_code || @origin_library_code
+  ##
+  # Workflow steps
+  ##
+
+  # Step 1: Physically pulling material from the shelves at the origin library
+  def shelf_pull_for_origin_library(steps, after: time)
+    pull_schedule = Array(Settings.library_pull_schedule[origin_library_code])
+    origin_open_days = business_days_for(origin_library_code, after: after)
+    steps[:shelf_pull] = next_action_time(origin_open_days, pull_schedule, after: after)
   end
 
-  def destination_library_code
-    @destination_library_code ||= Settings.ils.pickup_destination_class.constantize.new(to).library_code || to
+  # Step 2a: Some shelf pulls are immediately available at the destination library without further processing
+  #          (e.g. because the origin and destination are the same library)
+  def direct_delivery_to_destination_library(steps)
+    return unless directly_delivered?
+
+    steps[:ready_for_mailroom_pickup] = steps[:shelf_pull]
+    steps[:delivered_to_destination] = steps[:shelf_pull]
   end
 
-  def origin_library_hours
-    @origin_library_hours ||= LibraryHours.new(origin_library_code)
+  # Step 2b: Shelf-pulls from MARINE-BIO need to get couriered to the Green mailroom for processing
+  def courier_delivery_to_green(steps)
+    return if steps[:delivered_to_destination].present?
+    return unless origin_library_code == 'MARINE-BIO'
+
+    # The MARINE-BIO courier drops material off at Green on Tuesdays and Thursdays at noon
+    steps[:courier_delivery_to_green] = [steps[:shelf_pull].next_occurring(:tuesday),
+                                         steps[:shelf_pull].next_occurring(:thursday)].min.change(hour: 12, min: 0, sec: 0)
+    steps[:ready_for_mailroom_pickup] = steps[:courier_delivery_to_green]
   end
 
-  def destination_library_hours
-    @destination_library_hours ||= LibraryHours.new(destination_library_code)
+  # Step 2c: If the material wasn't directly delivered, the mailroom needs to pick it up from origin,
+  #          sort it, and deliver it to the destination library.
+  def mailroom_processing_from_origin_library(steps) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    return if steps[:delivered_to_destination].present?
+
+    # add a little time for staff packing?
+    steps[:ready_for_mailroom_pickup] ||= steps[:shelf_pull].advance(minutes: 5)
+
+    mailroom_open_days = business_days_for_mailroom_operations(after: steps[:ready_for_mailroom_pickup])
+    steps[:mailroom_pickup] =
+      next_action_time(mailroom_open_days,
+                       Settings.mailroom[origin_library_code], after: steps[:ready_for_mailroom_pickup])
+
+    mailroom_open_days = business_days_for_mailroom_operations(after: steps[:mailroom_pickup])
+    steps[:mailroom_sort] = next_action_time(mailroom_open_days, Settings.mailroom.sorted_by, after: steps[:mailroom_pickup])
+
+    return if destination_library_code == 'MARINE-BIO'
+
+    mailroom_open_days = business_days_for_mailroom_operations(after: steps[:mailroom_sort])
+    destination_delivery_open_days = business_days_for(destination_library_code, after: steps[:mailroom_sort])
+    steps[:mailroom_delivery] = next_action_time(mailroom_open_days & destination_delivery_open_days,
+                                                 Settings.mailroom[destination_library_code], after: steps[:mailroom_sort])
+
+    steps[:delivered_to_destination] = steps[:mailroom_delivery]
   end
 
-  def destination_library_hours_next_business_day_after_delivery
-    to_code = Settings.libraries[to] ? to : Folio::Types.service_points.find_by(code: to)&.library&.code
-    LibraryHours.new(to_code).next_business_day(origin_library_next_business_day)
+  # Step 2d: ... but the MARINE-BIO courier needs to pick it up from the mailroom and deliver it there
+  def courier_delivery_to_branch(steps) # rubocop:disable Metrics/AbcSize
+    return if steps[:delivered_to_destination].present?
+    return unless destination_library_code == 'MARINE-BIO'
+
+    # The MARINE-BIO courier drops off material there on Mondays, Wednesdays, and Fridays at 5pm
+    steps[:courier_delivery_to_mar] = [steps[:mailroom_sort].next_occurring(:monday),
+                                       steps[:mailroom_sort].next_occurring(:wednesday),
+                                       steps[:mailroom_sort].next_occurring(:friday)].min.change(hour: 17, min: 0, sec: 0)
+
+    destination_delivery_open_days = business_days_for(destination_library_code, after: steps[:courier_delivery_to_mar])
+    steps[:delivered_to_destination] = next_action_time(destination_delivery_open_days,
+                                                        Settings.mailroom[destination_library_code], after: steps[:courier_delivery_to_mar])
+  end
+
+  # Step 3a + b + c: Once the material is delivered to the destination library, there's some staff processing that happens
+  #         before it's ready for pickup
+  def staff_processing_at_destination_library(steps) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    # Each location needs a little bit of time to check in the material after delivery
+    checkin_processing_hours = Settings.hold_shelf_staff_checkin_delay_hours[destination_library_code] ||
+                               Settings.hold_shelf_staff_checkin_delay_hours.default
+    steps[:staff_processed] = steps[:delivered_to_destination].advance(hours: checkin_processing_hours)
+
+    steps[:ready] = steps[:staff_processed]
+
+    # Some (mainly special collections) locations also need some minimum processing days before the material is ready for pickup
+    minimum_processing_time = Settings.minimum_library_processing_days[origin_library_code]&.days
+    if minimum_processing_time && (steps[:staff_processed] - steps[:shelf_pull]) < minimum_processing_time
+      destination_processing_business_days = business_days_for(destination_library_code, after: steps[:shelf_pull])
+      steps[:ready] =
+        destination_processing_business_days[Settings.minimum_library_processing_days[origin_library_code]].change(hour: steps[:staff_processed].hour)
+    end
+
+    # And some locations make the material available only at certain times
+    if Settings.library_staff_checkin_schedule[destination_library_code]
+      destination_open_days = business_days_for(destination_library_code, after: steps[:ready])
+
+      steps[:ready] = next_action_time(destination_open_days,
+                                       Settings.library_staff_checkin_schedule[destination_library_code],
+                                       after: steps[:ready])
+    end
+
+    steps[:ready]
+  end
+
+  # Step 4: Adjust the estimated availability time to make sure the library is actually open so the patron can pick it up
+  def material_made_available_to_the_patron(steps)
+    after_time = steps[:ready]
+
+    # check destination opening hours, or punt to the next business day
+    destination_library_hours = library_hours.next_schedule_for(destination_library_code, after: after_time)
+    # If the material arrives at the destination (and the destination is meaningfully open) we can make it available the same day...
+    still_open_on_current_business_day = destination_library_hours.find { |d| d.cover?(after_time + 15.minutes) }
+
+    steps[:available_at_destination] = if still_open_on_current_business_day
+                                         after_time
+                                       else
+                                         # Otherwise delay the estimate to the next opening time
+                                         destination_library_hours.map(&:begin).find { |d| d.after?(after_time) } || after_time
+                                       end
+  end
+
+  # SCAN-specific processing time: adding scan processing days and delivery schedule
+  def scan_processing_time(steps) # rubocop:disable Metrics/AbcSize
+    scan_processing_time = (
+      Settings.scan[scan_destination_library_code]&.scan_processing_days || Settings.scan.default.scan_processing_days
+    ).days
+    steps[:scan_processed] = steps[:delivered_to_destination] + scan_processing_time
+
+    scheduled_scan_times = Settings.scan[scan_destination_library_code]&.scan_schedule || Settings.scan.default.scan_schedule
+    steps[:scan_delivered] =
+      next_action_time(scan_destination_library_hours(after: steps[:scan_processed]), scheduled_scan_times, after: steps[:scan_processed])
   end
 
   # Formatted estimate for delivery
@@ -224,6 +273,7 @@ class PagingSchedule
       schedule_for_request.to_date
     end
 
+    # Round up the scheduled delivery time to the next hour
     def estimated_delivery_time_to_destination
       return schedule_for_request.strftime('%-I:%M %p') if schedule_for_request.min.zero?
 
@@ -231,7 +281,7 @@ class PagingSchedule
     end
 
     def schedule_for_request
-      @schedule_for_request ||= paging_schedule.schedule_for_request
+      @schedule_for_request ||= paging_schedule.schedule_for_request[:completed]
     end
   end
 

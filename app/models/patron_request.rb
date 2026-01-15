@@ -293,8 +293,8 @@ class PatronRequest < ApplicationRecord
   # @return [Hash] the earliest delivery estimate for the request
   def earliest_delivery_estimate(scan: false)
     if any_items_avaliable?
-      paging_info = PagingSchedule.for(from: folio_location, to: default_service_point_code, time: created_at,
-                                       scan:).earliest_delivery_estimate
+      paging_info = PagingSchedule.new(from: folio_location, to: scan ? 'SCAN' : default_service_point_code,
+                                       time: created_at).earliest_delivery_estimate
       { 'date' => Date.parse(paging_info.to_s), 'display_date' => paging_info.to_s }
     else
       { 'date' => Time.zone.today, 'display_date' => 'No date/time estimate' }
