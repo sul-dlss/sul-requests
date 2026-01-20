@@ -17,6 +17,17 @@ class PatronRequestMailer < ApplicationMailer
     )
   end
 
+  def staff_scan_email(patron_request, item_id)
+    @patron_request = patron_request
+    @item = patron_request.selected_items.find { |i| i.id == item_id }
+
+    mail(
+      to: patron_request.scan_service_point&.contact_email || Settings.scan_destinations.default.contact_email,
+      from: from_address,
+      subject: "Scan Request for #{@item.title} (#{@item.barcode})"
+    )
+  end
+
   def from_address
     %("Stanford Libraries Requests" <#{@patron_request.contact_info[:email] || 'sul-requests-support@stanford.edu'}>)
   end
