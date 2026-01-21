@@ -358,6 +358,13 @@ scan_destinations:
     material_types:
     - book
     - periodical
+  GREEN:
+    ilb: true
+    pseudopatron_barcode: 'GRE-SCANDELIVER'
+    service_point_code: 'GREEN-LOAN'
+    material_types:
+    - book
+    - periodical
   SAL3:
     ilb: true
     material_types:
