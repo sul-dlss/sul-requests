@@ -111,9 +111,9 @@ visitor,multimedia,,,,,MUS-EXHIBIT or MUS-INPROCESS,No loan,No requests allowed,
 visitor,multimedia,,,,,MUS-R-STACKS,No loan,No requests allowed,Default notice,No fines,$400 lost fee
 faculty or graduate or postdoctoral or staff or staff-casual or fellow,multimedia,,,,,MUS-R-STACKS,7day-1renew-3daygrace,No requests allowed,Default notice,No fines,$400 lost fee
 sul-purchased or visitor,multimedia,,,,,MUS-PERMRES,No loan,No requests allowed,Default notice,No fines,$225 lost fee
-visitor,multimedia,,,,,MUS-RECORDINGS,No loan,No requests allowed,Default notice,No fines,$225 lost fee
-courtesy or program-short-term or sul-contractprograms or sul-guest or lane-hospital staff,multimedia,,,,,MUS-RECORDINGS,28day-2renew-7daygrace,Hold only,Default notice,No fines,$225 lost fee
-faculty,multimedia,,,,,MUS-RECORDINGS,28day-2renew-7daygrace,Allow All,Default notice,No fines,$225 lost fee
+visitor,multimedia,,,,,MUS-RECORDINGS or MUS-RECORDINGS-DISPLAY,No loan,No requests allowed,Default notice,No fines,$225 lost fee
+courtesy or program-short-term or sul-contractprograms or sul-guest or lane-hospital staff,multimedia,,,,,MUS-RECORDINGS or MUS-RECORDINGS-DISPLAY,28day-2renew-7daygrace,Hold only,Default notice,No fines,$225 lost fee
+faculty,multimedia,,,,,MUS-RECORDINGS or MUS-RECORDINGS-DISPLAY,28day-2renew-7daygrace,Allow All,Default notice,No fines,$225 lost fee
 visitor,multimedia,,,,,MEDIA-REPAIR-SHELF or MEDIA-TECH-PROCESSOR,No loan,No requests allowed,Default notice,No fines,$75 lost fee
 visitor,multimedia,,,,,MEDIA-EXHIBIT,No loan,No requests allowed,Default notice,No fines,$30 lost fee
 sul-purchased or courtesy or program-short-term or sul-contractprograms or sul-guest or lane-hospital staff,multimedia,,,,,MEDIA-EXHIBIT,7day-1renew-3daygrace,Allow paging/hold,Default notice,No fines,$30 lost fee
@@ -448,7 +448,7 @@ any,book,,,,HILA,,No loan,Allow hold/recall,Default notice,3.00/21.00 recall ove
 ,multimedia,,,,,MUS-R-STACKS,No loan,No requests allowed,Default notice,No fines,$400 lost fee
 ,multimedia,,,,,MUS-LOCKED or MUS-REF,No loan,No requests allowed,Default notice,No fines,$500 lost fee
 ,multimedia,,,,,MUS-PERMRES,4hour-norenew-1hourgrace,No requests allowed,Default notice,No fines,$225 lost fee
-,multimedia,,,,,MUS-RECORDINGS,28day-2renew-7daygrace,Allow All,Default notice,3.00/21.00 recall overdue fine,$225 lost fee
+,multimedia,,,,,MUS-RECORDINGS or MUS-RECORDINGS-DISPLAY,28day-2renew-7daygrace,Allow All,Default notice,3.00/21.00 recall overdue fine,$225 lost fee
 ,multimedia,,,,,MEDIA-REPAIR-SHELF or MEDIA-TECH-PROCESSOR,No loan,Hold only,Default notice,No fines,$30 lost fee
 ,multimedia,,,,,MEDIA-EXHIBIT,7day-1renew-3daygrace,Allow All,Default notice,No fines,$30 lost fee
 ,multimedia,,,,,GRE-SSRC-SSDS or GRE-SSRC-DATA,No loan,No requests allowed,Default notice,No fines,$75 lost fee
