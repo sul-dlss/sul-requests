@@ -72,7 +72,8 @@ sul-purchased or courtesy or program-short-term or sul-contractprograms or sul-g
 staff or staff-casual or fellow,score,,,,,SAL3-PAGE-MU-CIRC,1yearfixed-2renew-7daygrace,Allow All,Qtrly/Annual notice,3.00/21.00 recall overdue fine,$65 lost fee
 faculty,score,,,,,SAL3-PAGE-MU-CIRC,1yearfixed-2renew-7daygrace,Allow All,Qtrly/Annual notice,No fines,$65 lost fee
 visitor,score,,,,,SAL3-STACKS,No loan,Allow paging,Default notice,No fines,$75 lost fee
-sul-purchased or courtesy or program-short-term or sul-contractprograms or sul-guest or lane-hospital staff,score,,,,,SAL3-STACKS,28day-2renew-7daygrace,Allow paging/hold,Default notice,3.00/21.00 recall overdue fine,$75 lost fee
+sul-guest,score,,,,,SAL3-STACKS,28day-2renew-7daygrace,Allow paging/hold,Default notice,3.00/21.00 recall overdue fine,$75 lost fee
+sul-purchased or courtesy or program-short-term or sul-contractprograms or lane-hospital staff,score,,,,,SAL3-STACKS,28day-2renew-7daygrace,Allow paging/hold,Default notice,3.00/21.00 recall overdue fine,$75 lost fee
 graduate or postdoctoral,score,,,,,SAL3-STACKS,1qtr-3renew-7daygrace,Allow All,Qtrly/Annual notice,3.00/21.00 recall overdue fine,$75 lost fee
 undergrad,score,,,,,SAL3-STACKS,1qtr-3renew-7daygrace,Allow All,Qtrly/Annual notice,3.00/21.00 recall overdue fine,$65 lost fee
 staff or staff-casual or fellow,score,,,,,SAL3-STACKS,1yearfixed-2renew-7daygrace,Allow All,Qtrly/Annual notice,3.00/21.00 recall overdue fine,$75 lost fee
@@ -112,7 +113,8 @@ visitor,multimedia,,,,,MUS-R-STACKS,No loan,No requests allowed,Default notice,N
 faculty or graduate or postdoctoral or staff or staff-casual or fellow,multimedia,,,,,MUS-R-STACKS,7day-1renew-3daygrace,No requests allowed,Default notice,No fines,$400 lost fee
 sul-purchased or visitor,multimedia,,,,,MUS-PERMRES,No loan,No requests allowed,Default notice,No fines,$225 lost fee
 visitor,multimedia,,,,,MUS-RECORDINGS or MUS-RECORDINGS-DISPLAY,No loan,No requests allowed,Default notice,No fines,$225 lost fee
-courtesy or program-short-term or sul-contractprograms or sul-guest or lane-hospital staff,multimedia,,,,,MUS-RECORDINGS or MUS-RECORDINGS-DISPLAY,28day-2renew-7daygrace,Hold only,Default notice,No fines,$225 lost fee
+sul-guest,multimedia,,,,,MUS-RECORDINGS or MUS-RECORDINGS-DISPLAY,28day-2renew-7daygrace,Hold only,Default notice,No fines,$225 lost fee
+courtesy or program-short-term or sul-contractprograms or lane-hospital staff,multimedia,,,,,MUS-RECORDINGS or MUS-RECORDINGS-DISPLAY,28day-2renew-7daygrace,Hold only,Default notice,No fines,$225 lost fee
 faculty,multimedia,,,,,MUS-RECORDINGS or MUS-RECORDINGS-DISPLAY,28day-2renew-7daygrace,Allow All,Default notice,No fines,$225 lost fee
 visitor,multimedia,,,,,MEDIA-REPAIR-SHELF or MEDIA-TECH-PROCESSOR,No loan,No requests allowed,Default notice,No fines,$75 lost fee
 visitor,multimedia,,,,,MEDIA-EXHIBIT,No loan,No requests allowed,Default notice,No fines,$30 lost fee
@@ -206,7 +208,7 @@ visitor,book,,,,,MUS-EXHIBIT or MUS-INPROCESS or MUS-PROCESSING-CIRC,No loan,No 
 graduate or postdoctoral or staff or staff-casual or fellow,book,,,,,MUS-R-STACKS or MUS-R-OVERSIZE or MUS-R-MINIATURE,7day-1renew-3daygrace,No requests allowed,Default notice,No fines,$65 lost fee
 faculty,book,,,,,MUS-R-STACKS or MUS-R-OVERSIZE or MUS-R-MINIATURE,7day-1renew-3daygrace,No requests allowed,Default notice,No fines,$65 lost fee
 visitor,book,,,,,MUS-FLAT or MUS-OVERSIZE or MUS-MINIATURE or MUS-SCORES or MUS-STACKS,No loan,No requests allowed,Default notice,No fines,$65 lost fee
-sul-guest,book,,,,,MUS-FLAT or MUS-OVERSIZE or MUS-MINIATURE or MUS-SCORES or MUS-STACKS,1year-norenew-7daygrace,Hold only,Qtrly/Annual notice,No fines,$65 lost fee
+sul-guest,book,,,,,MUS-FLAT or MUS-OVERSIZE or MUS-MINIATURE or MUS-SCORES or MUS-STACKS,1year-norenew-7daygrace,Allow paging/hold,Qtrly/Annual notice,No fines,$65 lost fee
 program-short-term or sul-contractprograms or lane-hospital staff or lane-resident,book,,,,,MUS-FLAT or MUS-OVERSIZE or MUS-MINIATURE or MUS-SCORES or MUS-STACKS,28day-norenew-7daygrace,Hold only,Default notice,No fines,$65 lost fee
 courtesy or sul-purchased,book,,,,,MUS-FLAT or MUS-OVERSIZE or MUS-MINIATURE or MUS-SCORES or MUS-STACKS,1qtr-3renew-7daygrace,Hold only,Default notice,No fines,$65 lost fee
 staff or staff-casual or fellow,book,,,,,MUS-FLAT or MUS-OVERSIZE or MUS-MINIATURE or MUS-SCORES or MUS-STACKS,1yearfixed-2renew-7daygrace,Allow All,Qtrly/Annual notice,3.00/21.00 recall overdue fine,$65 lost fee
