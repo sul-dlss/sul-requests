@@ -1,14 +1,46 @@
 <h1 class="fw-semibold">Paging schedule</h1>
-<% @paging_schedule.group_by(&:from).each do |from, schedules| %>
-  <div>
-    <h2 class="h5 text-cardinal text-uppercase"><%= from %></h2>
-    <% schedules.each do |schedule| %>
-      <div>
-        When paging to <%= schedule.to %> <%= "before #{schedule.before}" if schedule.before %>
-         <%= "after #{schedule.after}" if schedule.after %>
-        the item will arrive after <%= schedule.will_arrive_text %> <%= pluralize(schedule.business_days_later, 'day') %> later
-      </div>
-    <% end %>
+
+<%= form_with method: 'GET', class: 'bg-light p-3' do |f| %>
+  <div class="row g-3 mb-3 align-items-center">
+    <div class="col-1 text-end">
+      <%= f.label 'Origin', for: 'origin_location', class: 'col-form-label' %>
+    </div>
+    <div class="col-auto">
+      <%= f.select 'origin_location', options_for_select(Folio::Types.locations.data.map(&:code).sort, params[:origin_location] || 'SAL3-STACKS'), class: 'form-select' %>
+    </div>
   </div>
 
+  <div class="row g-3 mb-3 align-items-center">
+    <div class="col-1 text-end">
+      <%= f.label 'Destination', for: 'destination', class: 'col-form-label' %>
+    </div>
+
+    <div class="col-auto">
+      <%= f.select 'destination', options_for_select((Folio::Types.service_points.data.select(&:pickup_location).map(&:code).sort + ['SCAN']), params[:destination] || 'GREEN-LOAN'), class: 'form-select' %>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-3 align-items-center">
+    <div class="col-1 text-end">
+      <%= f.label 'Date', for: 'date', class: 'form-label' %>
+    </div>
+    <div class="col-auto">
+      <%= f.datetime_field 'date', value: params[:date] || Time.zone.now.beginning_of_hour %>
+    </div>
+  </div>
+
+  <%= f.submit 'Get schedule', class: 'btn btn-primary' %>
+<% end %>
+
+<% if @schedule %>
+  <div class="mt-4">
+    <div class="mb-3"><strong>Earliest delivery estimate: </strong> <%= @schedule.earliest_delivery_estimate %></div>
+
+    <strong>Details:</strong>
+    <ul>
+      <% @schedule.schedule_for_request.except(:meta).map do |key, time| %>
+        <li><%= key%>: <%= l time, format: :formal %></li>
+      <% end %>
+    </ul>
+  </div>
 <% end %>

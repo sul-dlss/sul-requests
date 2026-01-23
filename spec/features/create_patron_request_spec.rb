@@ -232,7 +232,8 @@ RSpec.describe 'Creating a request', :js do
         allow(PagingSchedule).to receive(:new).with(
           from: have_attributes(code: 'SAL3-STACKS'),
           library_code: 'SAL3',
-          to: 'GREEN-LOAN'
+          to: 'GREEN-LOAN',
+          time: nil
         ).and_return(
           instance_double(
             PagingSchedule, earliest_delivery_estimate: 'Wednesday, Apr 3, 2024, 10am'
@@ -242,7 +243,8 @@ RSpec.describe 'Creating a request', :js do
         allow(PagingSchedule).to receive(:new).with(
           from: have_attributes(code: 'SAL3-STACKS'),
           library_code: 'SAL3',
-          to: 'MARINE-BIO'
+          to: 'MARINE-BIO',
+          time: nil
         ).and_return(
           instance_double(
             PagingSchedule, earliest_delivery_estimate: 'Wednesday, Apr 3, 2024, 4pm'
