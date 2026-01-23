@@ -13,7 +13,7 @@ class SubmitFolioScanRequestJob < SubmitFolioPatronRequestJob
       instance_id: item.instance&.id || request.instance_id, item_id: item.id, holdings_record_id: item.holdings_record_id,
       requester_id: scan_pseudopatron_id(request),
       proxy_user_id: nil, fulfillment_preference: 'Hold Shelf',
-      pickup_service_point_id: pickup_service_point(request).id,
+      pickup_service_point_id: pickup_service_point_id(request),
       patron_comments: patron_comments(request, item),
       request_expiration_date: expiration_date(request)
     )
@@ -23,8 +23,8 @@ class SubmitFolioScanRequestJob < SubmitFolioPatronRequestJob
     request.scan_service_point&.pseudopatron_barcode || Settings.scan_destinations.default.pseudopatron_barcode
   end
 
-  def pickup_service_point(request)
-    service_point_code = request.scan_service_point_code || Settings.scan_destinations.default.service_point_code
-    Folio::Types.service_points.find_by(code: service_point_code)
+  def pickup_service_point_id(request)
+    service_point_code = request.scan_service_point&.service_point_code || Settings.scan_destinations.default.service_point_code
+    Folio::Types.service_points.find_by(code: service_point_code)&.id
   end
 end
