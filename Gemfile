@@ -116,7 +116,7 @@ gem "jsbundling-rails", "~> 1.1"
 gem "turbo-rails", "~> 1.4"
 gem 'stimulus-rails'
 
-gem "propshaft", "~> 0.7.0"
+gem "propshaft", "~> 1.3"
 
 gem 'recaptcha'
 gem 'warden'
