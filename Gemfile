@@ -113,7 +113,7 @@ gem "view_component", "~> 4.0"
 gem "parslet"
 
 gem "jsbundling-rails", "~> 1.1"
-gem "turbo-rails", "~> 1.4"
+gem "turbo-rails", "~> 2.0"
 gem 'stimulus-rails'
 
 gem "propshaft", "~> 1.3"
