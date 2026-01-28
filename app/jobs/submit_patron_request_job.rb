@@ -34,7 +34,7 @@ class SubmitPatronRequestJob < ApplicationJob
 
   def perform_scan_request(patron_request)
     ilb_items, scan_email_items = patron_request.selected_items.partition do |_item|
-      patron_request.scan_service_point.ilb
+      patron_request.scan_service_point&.ilb
     end
 
     folio_items = patron_request.selected_items.select do |_item|

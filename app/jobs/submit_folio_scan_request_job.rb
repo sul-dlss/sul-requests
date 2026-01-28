@@ -20,7 +20,9 @@ class SubmitFolioScanRequestJob < SubmitFolioPatronRequestJob
   end
 
   def scan_pseudopatron_id(request)
-    request.scan_service_point&.pseudopatron_barcode || Settings.scan_destinations.default.pseudopatron_barcode
+    pseudopatron_barcode = request.scan_service_point&.pseudopatron_barcode || Settings.scan_destinations.default.pseudopatron_barcode
+
+    Folio::Patron.find_by(library_id: pseudopatron_barcode)&.id
   end
 
   def pickup_service_point_id(request)

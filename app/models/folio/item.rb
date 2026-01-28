@@ -284,7 +284,7 @@ module Folio
     def scan_service_point
       return unless permanent_location.details['scanServicePointCode']
 
-      Settings.scan_destinations[permanent_location.details['scanServicePointCode']]
+      Settings.scan_destinations[permanent_location.details['scanServicePointCode']] || Settings.scan_destinations.default
     end
   end
 end

@@ -418,7 +418,9 @@ class PatronRequest < ApplicationRecord
   end
 
   def scan_service_point
-    @scan_service_point ||= Settings.scan_destinations[scan_service_point_code || :default] || Settings.scan_destinations.default
+    return unless scan_service_point_code
+
+    @scan_service_point ||= Settings.scan_destinations[scan_service_point_code] || Settings.scan_destinations.default
   end
 
   def scan_code
