@@ -16,7 +16,8 @@ FactoryBot.define do
       {
         patron_blocks: [],
         proxies: [],
-        sponsors: []
+        sponsors: [],
+        patron_summary: { holds: [], loans: [] }
       }
     end
 
@@ -67,7 +68,8 @@ FactoryBot.define do
           }
         ],
         proxies: [],
-        sponsors: []
+        sponsors: [],
+        patron_summary: { holds: [], loans: [] }
       }
     end
   end
