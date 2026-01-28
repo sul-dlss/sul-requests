@@ -178,9 +178,8 @@ class PagingSchedule
     return if steps[:delivered_to_destination].present?
     return unless destination_library_code == 'MARINE-BIO'
 
-    # The MARINE-BIO courier drops off material there on Mondays, Wednesdays, and Fridays at 5pm
-    steps[:courier_delivery_to_mar] = [steps[:mailroom_sort].next_occurring(:monday),
-                                       steps[:mailroom_sort].next_occurring(:wednesday),
+    # The MARINE-BIO courier goes to Hopinks on Mondays (pickup only), Wednesdays, and Fridays at 5pm
+    steps[:courier_delivery_to_mar] = [steps[:mailroom_sort].next_occurring(:wednesday),
                                        steps[:mailroom_sort].next_occurring(:friday)].min
 
     destination_delivery_open_days = business_days_for(destination_library_code, after: steps[:courier_delivery_to_mar])
