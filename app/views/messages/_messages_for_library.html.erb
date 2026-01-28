@@ -3,13 +3,13 @@
   <% messages = @messages.select { |m| m.library == library_code && m.request_type == request_type } %>
 
   <div class="d-flex align-items-center gap-2">
-    <h2 class="h5 my-0"><%= request_type.titleize + " from #{(library_name if defined?(library_name)) || 'anywhere'}" %></h2>
+    <h2 class="h3 my-0"><%= request_type.titleize + " from #{(library_name if defined?(library_name)) || 'anywhere'}" %></h2>
     <%= link_to_add_message(library_code, request_type) %>
   </div>
 
   <% messages.each do |message| %>
     <div class="d-flex align-items-center mt-3 gap-2">
-      <h2 class="h6 my-0"><%= message.title %></h2>
+      <h2 class="my-0"><%= message.title %></h2>
       <%= link_to_edit_message(message) %>
       <%= link_to_delete_message(message) %>
     </div>
