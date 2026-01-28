@@ -25,6 +25,9 @@ class OkapiCheck < OkComputer::Check
       mark_failure
       mark_message 'Unable to connect to OKAPI'
     end
+  rescue # FolioClient raises when response is not 200
+    mark_failure
+    mark_message 'OKAPI not responding with 200'
   end
 end
 
