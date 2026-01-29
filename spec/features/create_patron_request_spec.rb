@@ -13,6 +13,8 @@ RSpec.describe 'Creating a request', :js do
     ActionMailer::Base.perform_deliveries = false
 
     allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(patron_key: 'generic').and_return(build(:patron))
+    allow_any_instance_of(PagingSchedule).to receive(:valid?).with(anything).and_return(true)
+    allow_any_instance_of(PagingSchedule).to receive(:earliest_delivery_estimate).and_return({})
   end
 
   after do
