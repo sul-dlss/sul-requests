@@ -14,10 +14,9 @@ RSpec.describe PagingScheduleController do
     describe 'by site admins' do
       before { stub_current_user(create(:site_admin_user)) }
 
-      it 'assigns the paging_schedule instance variable' do
+      it 'is allowed' do
         get :index
         expect(response).to be_successful
-        expect(assigns(:paging_schedule)).to be_a Array
       end
     end
   end
@@ -25,7 +24,7 @@ RSpec.describe PagingScheduleController do
   describe 'show' do
     describe 'when an estimate is present' do
       before do
-        expect(PagingSchedule).to receive_messages(for: estimate)
+        expect(PagingSchedule).to receive_messages(new: estimate)
       end
 
       let(:estimate) { double(earliest_delivery_estimate: { a: 'a', b: 'b' }) }
@@ -57,7 +56,7 @@ RSpec.describe PagingScheduleController do
 
     describe 'when there is no schedule found' do
       before do
-        expect(PagingSchedule).to receive(:for).and_raise(PagingSchedule::ScheduleNotFound)
+        expect(PagingSchedule).to receive(:new).and_raise(PagingSchedule::ScheduleNotFound)
       end
 
       it 'responds with a 404 error' do
@@ -80,7 +79,7 @@ RSpec.describe PagingScheduleController do
 
     context 'for a pageable day' do
       before do
-        expect(PagingSchedule).to receive_messages(for: estimate)
+        expect(PagingSchedule).to receive_messages(new: estimate)
       end
 
       let(:estimate) { double(valid?: true) }
@@ -95,7 +94,7 @@ RSpec.describe PagingScheduleController do
 
     context 'for a non-pageable day' do
       before do
-        expect(PagingSchedule).to receive_messages(for: estimate)
+        expect(PagingSchedule).to receive_messages(new: estimate)
       end
 
       let(:estimate) { double(valid?: false) }

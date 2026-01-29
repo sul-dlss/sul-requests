@@ -18,7 +18,8 @@ class PagingScheduleController < ApplicationController
 
   def index
     authorize! :manage, PagingSchedule
-    @paging_schedule = PagingSchedule.schedule
+
+    load_schedule if params[:origin_location].present? && params[:destination].present?
   end
 
   def show
@@ -47,7 +48,8 @@ class PagingScheduleController < ApplicationController
   private
 
   def load_schedule
-    @schedule = PagingSchedule.for(from: origin_location, to: destination_library_code, library_code: fallback_library_code)
+    @schedule = PagingSchedule.new(from: origin_location, to: destination_library_code,
+                                   library_code: fallback_library_code, time: params[:date] ? Time.zone.parse(params[:date]) : nil)
   end
 
   def origin_location
