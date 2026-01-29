@@ -1,12 +1,12 @@
 <%= form_with(url: form_url, method: 'get', class: classes, data: { turbo: false }) do |f| %>
   <div class="form-group mb-3">
-    <%= f.label :start_date, 'Time period:' %>
-    <%= f.date_field(:start_date, value: params[:start_date] || 1.year.ago, class: 'form-control d-inline-block w-auto') %>
+    <%= f.label :start_date, 'Time period:', class: 'form-label' %>
+    <%= f.date_field(:start_date, value: params[:start_date] || 1.year.ago, class: 'form-control d-inline-block w-auto') %> - 
     <%= f.date_field(:end_date, value: params[:end_date] || Time.zone.today, class: 'form-control d-inline-block w-auto') %>
   </div>
   <div class="form-group mb-3">
     <% if searchable %>
-      <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
         Request Type
       </button>
     <% else %>
@@ -23,7 +23,7 @@
   </div>
   <div class="form-group mb-3">
     <% if searchable %>
-      <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
         Origin Library
       </button>
     <% else %>
@@ -40,7 +40,7 @@
   </div>
   <div class="form-group mb-3">
     <% if searchable %>
-      <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
         Destination Library
       </button>
     <% else %>
@@ -57,7 +57,7 @@
   </div>
 
   <% if searchable %>
-    <%= f.submit "Filter", class: 'btn btn-outline-cardinal' %>
+    <%= f.submit "Filter", class: 'btn btn-cardinal' %>
   <% end %>
-  <%= f.button "Download CSV", name: "format", value: "csv", class: "btn btn-cardinal" %>
+  <%= f.button "Download CSV", name: "format", value: "csv", class: "btn btn-outline-cardinal" %>
 <% end %>
