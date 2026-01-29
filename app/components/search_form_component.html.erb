@@ -58,6 +58,7 @@
 
   <% if searchable %>
     <%= f.submit "Filter", class: 'btn btn-cardinal' %>
+  <% else %>
+    <%= f.button "Download CSV", name: "format", value: "csv", class: "btn btn-cardinal" %>
   <% end %>
-  <%= f.button "Download CSV", name: "format", value: "csv", class: "btn btn-outline-cardinal" %>
 <% end %>
