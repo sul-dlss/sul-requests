@@ -44,10 +44,6 @@ module Folio
       file.read if file.exist?
     end
 
-    def service_points
-      @service_points ||= ServicePointStore.new(get_type('service_points'))
-    end
-
     def policies
       @policies ||= {
         request: get_type('request_policies').index_by { |p| p['id'] },
@@ -70,24 +66,26 @@ module Folio
         'loan-type' => get_type('loan_types').index_by { |p| p['id'] },
         'location-institution' => get_type('institutions').index_by { |p| p['id'] },
         'location-campus' => get_type('campuses').index_by { |p| p['id'] },
-        'location-library' => libraries.all.index_by(&:id).transform_values(&:to_h).transform_values(&:with_indifferent_access),
-        'location-location' => locations.all.index_by(&:id).transform_values(&:to_h).transform_values(&:with_indifferent_access)
+        'location-library' => libraries.index_by(&:id).transform_values(&:to_h).transform_values(&:with_indifferent_access),
+        'location-location' => locations.index_by(&:id).transform_values(&:to_h).transform_values(&:with_indifferent_access)
       }
     end
     # rubocop:enable Metrics/AbcSize
 
     def libraries
-      @libraries ||= LibrariesStore.new(get_type('libraries'))
+      @libraries ||= TypeStore.new(Folio::Library, get_type('libraries'))
     end
 
     def locations
-      @locations ||= LocationsStore.new(get_type('locations'))
+      @locations ||= TypeStore.new(Folio::Location, get_type('locations'))
     end
 
     def campuses
-      @campuses ||= get_type('campuses').map do |c|
-        Folio::Campus.new(**c.slice('id', 'code').symbolize_keys)
-      end
+      @campuses ||= TypeStore.new(Folio::Campus, get_type('campuses'))
+    end
+
+    def service_points
+      @service_points ||= TypeStore.new(Folio::ServicePoint, get_type('service_points'))
     end
 
     def get_type(type)
