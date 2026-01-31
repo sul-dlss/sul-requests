@@ -1,19 +1,19 @@
 <%= form_with(url: form_url, method: 'get', class: classes, data: { turbo: false }) do |f| %>
   <div class="form-group mb-3">
-    <%= f.label :start_date, 'Time period:' %>
-    <%= f.date_field(:start_date, value: params[:start_date] || 1.year.ago, class: 'form-control d-inline-block w-auto') %>
+    <%= f.label :start_date, 'Time period:', class: 'form-label' %>
+    <%= f.date_field(:start_date, value: params[:start_date] || 1.year.ago, class: 'form-control d-inline-block w-auto') %> - 
     <%= f.date_field(:end_date, value: params[:end_date] || Time.zone.today, class: 'form-control d-inline-block w-auto') %>
   </div>
   <div class="form-group mb-3">
     <% if searchable %>
-      <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
         Request Type
       </button>
     <% else %>
       <%= f.label :request_type, 'Request type:' %>
     <% end %>
     <ul class="<%= searchable ? 'dropdown-menu' : 'list-unstyled' %>">
-      <% Settings.patron_request_type_mapping.each do |type, label| %>
+      <% Settings.patron_request_type_mapping.sort_by { |type, label| label }.each do |type, label| %>
         <li class="<%= searchable ? 'dropdown-item' : '' %>">
           <%= check_box_tag "request_type[]", label, params['request_type']&.include?(label), id: "request_type_#{type}" %>
           <%= label_tag "request_type_#{type}", label %>
@@ -23,14 +23,14 @@
   </div>
   <div class="form-group mb-3">
     <% if searchable %>
-      <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
         Origin Library
       </button>
     <% else %>
       <%= f.label :origin_library, 'Origin Library:' %>
     <% end %>
     <ul class="<%= searchable ? 'dropdown-menu' : 'list-unstyled' %>">
-     <% origin_libraries.each do |library| %>
+     <% origin_libraries.sort_by(&:code).each do |library| %>
       <li class="<%= searchable ? 'dropdown-item' : '' %>">
         <%= check_box_tag "origin_library_code[]", library.code, params['origin_library_code']&.include?(library.code), id: "origin_library_code_#{library.code}" %>
         <%= label_tag "origin_library_code_#{library.code}", library.name %>
@@ -40,14 +40,14 @@
   </div>
   <div class="form-group mb-3">
     <% if searchable %>
-      <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
         Destination Library
       </button>
     <% else %>
       <%= f.label :service_point, 'Destination Library:' %>
     <% end %>
     <ul class="<%= searchable ? 'dropdown-menu' : 'list-unstyled' %>">
-     <% destination_libraries.each do |library| %>
+     <% destination_libraries.sort_by(&:code).each do |library| %>
       <li class="<%= searchable ? 'dropdown-item' : '' %>">
         <%= check_box_tag "service_point_code[]", library.code, params['service_point_code']&.include?(library.code), id: "service_point_code_#{library.code}" %>
         <%= label_tag "service_point_code_#{library.code}", library.name %>
@@ -57,7 +57,8 @@
   </div>
 
   <% if searchable %>
-    <%= f.submit "Go", class: 'btn btn-outline-cardinal' %>
+    <%= f.submit "Filter", class: 'btn btn-cardinal' %>
+  <% else %>
+    <%= f.button "Download CSV", name: "format", value: "csv", class: "btn btn-cardinal" %>
   <% end %>
-  <%= f.button "Download CSV", name: "format", value: "csv", class: "btn btn-cardinal" %>
 <% end %>
