@@ -8,7 +8,7 @@ class AdminController < ApplicationController
     )
   end
 
-  before_action :load_and_authorize_library_location, only: [:show]
+  before_action :authorize_library_location, only: [:show]
 
   def index
     authorize! :read, :admin
@@ -171,14 +171,14 @@ class AdminController < ApplicationController
     redirect_to login_by_sunetid_path(referrer: request.original_url)
   end
 
-  def load_and_authorize_library_location
-    @library_location = if Settings.mediateable_origins.dig(params[:id], :library_override)
-                          LibraryLocation.new(Settings.mediateable_origins.dig(params[:id], :library_override), params[:id])
-                        else
-                          LibraryLocation.new(params[:id])
-                        end
+  def authorize_library_location
+    library_location = if Settings.mediateable_origins.dig(params[:id], :library_override)
+                         LibraryLocation.new(Settings.mediateable_origins.dig(params[:id], :library_override), params[:id])
+                       else
+                         LibraryLocation.new(params[:id])
+                       end
 
-    authorize! :manage, @library_location
+    authorize! :manage, library_location
   end
 
   def create_comment_params
