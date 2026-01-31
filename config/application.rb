@@ -22,7 +22,8 @@ module SULRequests
   class Application < Rails::Application
     config.application_name = 'SUL Requests'
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.0
+    config.load_defaults 8.1
+    Rails.application.config.action_dispatch.cookies_serializer = :hybrid
 
     config.exceptions_app = self.routes
 
