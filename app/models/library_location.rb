@@ -23,13 +23,7 @@ class LibraryLocation
 
   class << self
     def library_name_by_code(code)
-      Folio::Types.libraries.find_by(code:)&.name(fallback_value: nil) || all_libraries[code]&.label
-    end
-
-    # This is a super-clunky way to convert data from RailsConfig to something
-    # Enumerable, so we can use e.g. #select
-    def all_libraries
-      Settings.libraries.map.to_h.with_indifferent_access
+      Folio::Types.libraries.find_by(code:)&.name(fallback_value: nil) || Settings.libraries[code]&.label || code
     end
   end
 end
