@@ -141,7 +141,6 @@ RSpec.describe 'Creating a request', :js do
       let(:bib_data) { build(:single_mediated_holding) }
 
       before do
-        allow(patron).to receive(:user).and_return(user)
         allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
       end
 
@@ -164,7 +163,6 @@ RSpec.describe 'Creating a request', :js do
       let(:today) { Time.zone.today }
 
       before do
-        allow(patron).to receive(:user).and_return(user)
         allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
         allow_any_instance_of(PagingSchedule::Scheduler).to receive(:earliest_delivery_estimate).and_return({ date: today.to_date })
       end

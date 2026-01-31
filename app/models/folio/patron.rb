@@ -23,13 +23,6 @@ module Folio
       @user_info = fields
     end
 
-    def user
-      @user ||= User.find_by(sunetid: username) ||
-                User.find_by(library_id: university_id) ||
-                User.find_by(library_id: barcode) ||
-                User.create(sunetid: username, library_id: unversity_id, name: display_name, email:)
-    end
-
     def id
       user_info.fetch('id')
     end
