@@ -13,6 +13,8 @@ RSpec.describe 'Creating a request', :js do
     ActionMailer::Base.perform_deliveries = false
 
     allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(patron_key: 'generic').and_return(build(:patron))
+    allow_any_instance_of(PagingSchedule).to receive(:valid?).with(anything).and_return(true)
+    allow_any_instance_of(PagingSchedule).to receive(:earliest_delivery_estimate).and_return({})
   end
 
   after do
@@ -141,7 +143,7 @@ RSpec.describe 'Creating a request', :js do
       let(:bib_data) { build(:single_mediated_holding) }
 
       before do
-        allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
+        allow_any_instance_of(PagingSchedule).to receive(:valid?).with(anything).and_return(true)
       end
 
       it 'creates a mediated page request' do
@@ -163,8 +165,8 @@ RSpec.describe 'Creating a request', :js do
       let(:today) { Time.zone.today }
 
       before do
-        allow_any_instance_of(PagingSchedule::Scheduler).to receive(:valid?).with(anything).and_return(true)
-        allow_any_instance_of(PagingSchedule::Scheduler).to receive(:earliest_delivery_estimate).and_return({ date: today.to_date })
+        allow_any_instance_of(PagingSchedule).to receive(:valid?).with(anything).and_return(true)
+        allow_any_instance_of(PagingSchedule).to receive(:earliest_delivery_estimate).and_return({ date: today.to_date })
       end
 
       it 'creates a mediated page request', :js do
@@ -229,22 +231,27 @@ RSpec.describe 'Creating a request', :js do
 
     context 'with stubbed paging schedule' do
       before do
-        Timecop.travel(Time.zone.local(2024, 4, 2, 12, 0, 0))
-
-        allow_any_instance_of(LibraryHours).to receive(:open?).and_return(true)
-        allow_any_instance_of(LibraryHours).to receive(:next_business_day).and_return(Date.parse('2024-04-03'))
-
-        allow(PagingSchedule).to receive(:schedule).and_return(
-          [
-            PagingSchedule::Scheduler.new(from: 'SAL3', to: 'GREEN', before: '11:59pm', business_days_later: 1, will_arrive_after: '10am'),
-            PagingSchedule::Scheduler.new(from: 'SAL3', to: 'MARINE-BIO', before: '11:59pm', business_days_later: 1,
-                                          will_arrive_after: '4pm')
-          ]
+        allow(PagingSchedule).to receive(:new).with(
+          from: have_attributes(code: 'SAL3-STACKS'),
+          library_code: 'SAL3',
+          to: 'GREEN-LOAN',
+          time: nil
+        ).and_return(
+          instance_double(
+            PagingSchedule, earliest_delivery_estimate: 'Wednesday, Apr 3, 2024, 10am'
+          )
         )
-      end
 
-      after do
-        Timecop.return
+        allow(PagingSchedule).to receive(:new).with(
+          from: have_attributes(code: 'SAL3-STACKS'),
+          library_code: 'SAL3',
+          to: 'MARINE-BIO',
+          time: nil
+        ).and_return(
+          instance_double(
+            PagingSchedule, earliest_delivery_estimate: 'Wednesday, Apr 3, 2024, 4pm'
+          )
+        )
       end
 
       it 'shows the estimated deliver dates' do

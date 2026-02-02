@@ -3,41 +3,41 @@
 # LibraryHours is responsbile for determining
 # if a library is open on a given day
 class LibraryHours
-  def initialize(library_code)
-    @library = library_code
+  def initialize
+    @cache = {}
   end
 
-  def open?(date)
-    library_hours(from: date).open?
+  def next_schedule_for(library_code, after: nil)
+    data = if @cache[library_code].nil?
+             @cache[library_code] = fetch_schedule_for_library(library_code, after: after)
+           elsif @cache[library_code].last&.last&.after?(after)
+             @cache[library_code]
+           else
+             @cache[library_code] += fetch_schedule_for_library(library_code, after: after)
+           end
+
+    data.select { |range| range.first >= after.beginning_of_day }
   end
 
-  def next_business_day(from, n = 0)
-    library_hours(from:, business_days: n + 1).open_hours.last.try(:day)
+  def business_days_for(library_code, after: nil)
+    next_schedule_for(library_code, after: after).map { |range| range.first.beginning_of_day }
+  end
+
+  def open?(library_code, on:)
+    business_days_for(library_code, after: on).any? { |d| d.to_date == on.to_date }
   end
 
   private
 
-  def library_hours(range = {})
-    LibraryHoursApi.get(library_slug, location_slug, range)
+  def fetch_schedule_for_library(library_code, after: nil, min_open_days: 7)
+    library_hours(library_code, from: after.to_date, business_days: min_open_days).open_hours.filter_map do |d|
+      d&.range
+    end
   end
 
-  def library
-    config.scanning_library_proxy[@library] || @library
-  end
+  def library_hours(library_code, **)
+    location_map = Settings.libraries[library_code]&.hours
 
-  def library_slug
-    location_map[:library_slug]
-  end
-
-  def location_slug
-    location_map[:location_slug]
-  end
-
-  def location_map
-    Settings.libraries[library]&.hours
-  end
-
-  def config
-    SULRequests::Application.config
+    LibraryHoursApi.get(location_map[:library_slug], location_map[:location_slug], **)
   end
 end

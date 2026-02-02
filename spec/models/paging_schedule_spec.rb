@@ -3,224 +3,150 @@
 require 'rails_helper'
 
 RSpec.describe PagingSchedule do
-  describe '#schedule' do
-    it 'returns an array of schedulers' do
-      expect(described_class.schedule).to be_present
-      expect(described_class.schedule).to be_a Array
-      expect(
-        described_class.schedule.all? do |schedule|
-          schedule.is_a?(PagingSchedule::Scheduler)
-        end
-      ).to be true
+  subject(:schedule) { described_class.new(from: Folio::Types.locations.find_by(code: from), to:, time: request_time, library_hours: stub_library_hours) }
+
+  let(:request_time) { Time.zone.parse('2026-01-12 10:00 AM') }
+
+  let(:mar_schedule) do
+    [
+      (Time.zone.parse('2026-01-12 9:00 AM'))..(Time.zone.parse('2026-01-12 05:00 PM')),
+      (Time.zone.parse('2026-01-13 9:00 AM'))..(Time.zone.parse('2026-01-13 05:00 PM')),
+      (Time.zone.parse('2026-01-14 9:00 AM'))..(Time.zone.parse('2026-01-14 05:00 PM')),
+      (Time.zone.parse('2026-01-15 9:00 AM'))..(Time.zone.parse('2026-01-15 05:00 PM')),
+      (Time.zone.parse('2026-01-16 9:00 AM'))..(Time.zone.parse('2026-01-16 05:00 PM')),
+      (Time.zone.parse('2026-01-20 9:00 AM'))..(Time.zone.parse('2026-01-20 05:00 PM'))
+    ]
+  end
+  let(:art_schedule) do
+    [
+      (Time.zone.parse('2026-01-12 9:00 AM'))..(Time.zone.parse('2026-01-12 07:00 PM')),
+      (Time.zone.parse('2026-01-13 9:00 AM'))..(Time.zone.parse('2026-01-13 07:00 PM')),
+      (Time.zone.parse('2026-01-14 9:00 AM'))..(Time.zone.parse('2026-01-14 07:00 PM')),
+      (Time.zone.parse('2026-01-15 9:00 AM'))..(Time.zone.parse('2026-01-15 07:00 PM')),
+      (Time.zone.parse('2026-01-16 9:00 AM'))..(Time.zone.parse('2026-01-16 05:00 PM')),
+      (Time.zone.parse('2026-01-20 9:00 AM'))..(Time.zone.parse('2026-01-20 07:00 PM'))
+    ]
+  end
+  let(:sal3_schedule) do
+    [
+      (Time.zone.parse('2026-01-12 8:00 AM'))..(Time.zone.parse('2026-01-12 05:00 PM')),
+      (Time.zone.parse('2026-01-13 8:00 AM'))..(Time.zone.parse('2026-01-13 05:00 PM')),
+      (Time.zone.parse('2026-01-14 8:00 AM'))..(Time.zone.parse('2026-01-14 05:00 PM')),
+      (Time.zone.parse('2026-01-15 8:00 AM'))..(Time.zone.parse('2026-01-15 05:00 PM')),
+      (Time.zone.parse('2026-01-16 8:00 AM'))..(Time.zone.parse('2026-01-16 05:00 PM')),
+      (Time.zone.parse('2026-01-20 8:00 AM'))..(Time.zone.parse('2026-01-20 05:00 PM'))
+    ]
+  end
+  let(:green_schedule) do
+    [
+      (Time.zone.parse('2026-01-12 8:00 AM'))..(Time.zone.parse('2026-01-12 11:59 PM')),
+      (Time.zone.parse('2026-01-13 8:00 AM'))..(Time.zone.parse('2026-01-13 11:59 PM')),
+      (Time.zone.parse('2026-01-14 8:00 AM'))..(Time.zone.parse('2026-01-14 11:59 PM')),
+      (Time.zone.parse('2026-01-15 8:00 AM'))..(Time.zone.parse('2026-01-15 11:59 PM')),
+      (Time.zone.parse('2026-01-16 8:00 AM'))..(Time.zone.parse('2026-01-16 11:59 PM')),
+      (Time.zone.parse('2026-01-17 8:00 AM'))..(Time.zone.parse('2026-01-17 07:00 PM')),
+      (Time.zone.parse('2026-01-18 12:00 PM'))..(Time.zone.parse('2026-01-18 11:59 PM')),
+      (Time.zone.parse('2026-01-20 8:00 AM'))..(Time.zone.parse('2026-01-20 11:59 PM')),
+      (Time.zone.parse('2026-01-21 8:00 AM'))..(Time.zone.parse('2026-01-21 11:59 PM'))
+    ]
+  end
+
+  let(:stub_library_hours) { instance_double(LibraryHours) }
+
+  before do
+    allow(stub_library_hours).to receive(:next_schedule_for) do |library_code|
+      case library_code
+      when 'GREEN'
+        green_schedule
+      when 'SAL3'
+        sal3_schedule
+      when 'ART'
+        art_schedule
+      when 'MARINE-BIO'
+        mar_schedule
+      end
+    end
+
+    allow(stub_library_hours).to receive(:business_days_for) do |library_code|
+      stub_library_hours.next_schedule_for(library_code).map { |range| range.first.beginning_of_day }
     end
   end
 
-  describe '#for' do
-    it 'returns the schedule for the provided request' do
-      schedule = described_class.for(from: nil, to: 'GREEN', library_code: 'SAL3')
-      expect(schedule).to be_a PagingSchedule::Scheduler
-      expect(schedule.from).to eq 'SAL3'
-      expect(schedule.to).to eq 'GREEN'
-    end
+  describe '#schedule_for_request' do
+    context 'paging from SAL3 to GREEN' do
+      let(:from) { 'SAL3-STACKS' }
+      let(:to) { 'GREEN' }
 
-    it 'maps GREEN-LOAN to GREEN returns the schedule for the provided request' do
-      schedule = described_class.for(from: nil, to: 'GREEN-LOAN', library_code: 'SAL3')
-      expect(schedule).to be_a PagingSchedule::Scheduler
-      expect(schedule.from).to eq 'SAL3'
-      expect(schedule.to).to eq 'GREEN'
-    end
-
-    it 'returns the default/anywhere schedule if the destination is not configured' do
-      schedule = described_class.for(from: nil, to: 'SOMEWHERE-ELSE', library_code: 'SAL3')
-      expect(schedule).to be_a PagingSchedule::Scheduler
-      expect(schedule.from).to eq 'SAL3'
-      expect(schedule.to).to eq 'SOMEWHERE-ELSE'
-    end
-
-    it 'raises an error when there is no schedule configured found' do
-      expect do
-        described_class.for(from: nil, library_code: 'DOES-NOT-EXIST', to: 'SOMEWHERE-ELSE')
-      end.to raise_error(PagingSchedule::ScheduleNotFound)
-    end
-
-    it 'raises an error if the location is probably sending via ILLiad' do
-      folio_location = build(:prefer_illiad_location)
-
-      expect do
-        described_class.for(from: folio_location, to: 'GREEN')
-      end.to raise_error(PagingSchedule::ScheduleNotFound)
-    end
-
-    it 'allows the location to specify the origin library code (if it is different from the actual FOLIO library)' do
-      folio_location = build(:paging_schedule_override_location)
-
-      allow(described_class).to receive(:schedule).and_return([PagingSchedule::Scheduler.new(from: 'SVA', to: 'GREEN',
-                                                                                             business_days_later: 1)])
-
-      schedule = described_class.for(from: folio_location, to: 'GREEN-LOAN')
-      expect(schedule).to be_a PagingSchedule::Scheduler
-      expect(schedule.from).to eq 'SVA'
-      expect(schedule.to).to eq 'GREEN'
-    end
-  end
-
-  describe '.worst_case_delivery_day' do
-    it 'is no more than 6 days away' do
-      pending 'MARINE-BIO courier deliveries have a massive worst-case delivery time'
-      expect(described_class.worst_case_delivery_day).to eq Time.zone.today + 6.days
-    end
-  end
-
-  describe PagingSchedule::Scheduler do
-    describe 'will arrive text' do
-      let(:scheduler) do
-        described_class.new(to: 'SOMEWHERE', from: 'SOMEWHERE-ELSE', will_arrive_after: '12n')
-      end
-
-      it 'returns the after time with the appropriate prefix' do
-        expect(scheduler.will_arrive_text).to eq '12n'
+      it 'arrives in GREEN the next day' do
+        expect(schedule.schedule_for_request).to include(completed: Time.zone.parse('2026-01-13 11:15 AM'))
       end
     end
 
-    describe '#by_time?' do
-      let(:before_scheduler) do
-        described_class.new(to: 'SOMEWHERE', from: 'SOMEWHERE-ELSE', before: '12:00pm') do
-        end
-      end
-      let(:after_scheduler) do
-        described_class.new(to: 'SOMEWHERE', from: 'SOMEWHERE-ELSE', after: '12:00pm') do
-        end
-      end
+    context 'paging from SAL3 to GREEN on Friday before the cut-off' do
+      let(:from) { 'SAL3-STACKS' }
+      let(:to) { 'GREEN' }
+      let(:request_time) { Time.zone.parse('2026-01-16 10:00 AM') }
 
-      it 'handles before attributes correctly' do
-        expect(before_scheduler.by_time?(Time.zone.parse('11:00am'))).to be true
-        expect(before_scheduler.by_time?(Time.zone.parse('1:00pm'))).to be false
-      end
-
-      it 'handles after attributes correctly' do
-        expect(after_scheduler.by_time?(Time.zone.parse('11:00am'))).to be false
-        expect(after_scheduler.by_time?(Time.zone.parse('1:00pm'))).to be true
-      end
-    end
-  end
-
-  describe 'estimate integration tests' do
-    def earliest_delivery_estimate(from:, to:)
-      d = PagingSchedule.for(from: nil, library_code: from, to:).earliest_delivery_estimate
-      d.estimated_delivery_day_to_destination
-    end
-
-    context 'shipping from SAL3 to GREEN' do
-      context 'received before noon' do
-        context 'when both the origin and destination are open' do
-          before do
-            data = {
-              'data' => {
-                'attributes' => {
-                  'hours' => [
-                    { 'open' => true, 'opens_at' => '2015-10-08' },
-                    { 'open' => true, 'opens_at' => '2015-10-09' }
-                  ]
-                }
-              }
-            }
-
-            response = LibraryHoursApi::Response.new(data)
-            allow(LibraryHoursApi).to receive(:get).with('sal3', 'operations', anything).and_return(response)
-            allow(LibraryHoursApi).to receive(:get).with('green', 'library-circulation', anything).and_return(response)
-          end
-
-          it 'takes a single day' do
-            travel_to Time.zone.parse('2015-10-08T11:59:59') do
-              expect(earliest_delivery_estimate(from: 'SAL3', to: 'GREEN')).to eq Date.parse('2015-10-09')
-            end
-          end
-        end
-      end
-
-      context 'received after noon' do
-        context 'when the origin and destination are closed for the weekend' do
-          before do
-            data = {
-              'data' => {
-                'attributes' => {
-                  'hours' => [
-                    { 'open' => true, 'opens_at' => '2015-10-08' },
-                    { 'open' => true, 'opens_at' => '2015-10-09' },
-                    { 'open' => false, 'opens_at' => '2015-10-10' },
-                    { 'open' => false, 'opens_at' => '2015-10-11' },
-                    { 'open' => true, 'opens_at' => '2015-10-12' }
-                  ]
-                }
-              }
-            }
-
-            response = LibraryHoursApi::Response.new(data)
-            allow(LibraryHoursApi).to receive(:get).with('sal3', 'operations', anything).and_return(response)
-            allow(LibraryHoursApi).to receive(:get).with('green', 'library-circulation', anything).and_return(response)
-          end
-
-          it 'takes 2 business days' do
-            travel_to Time.zone.parse('2015-10-08T12:00:01') do
-              expect(earliest_delivery_estimate(from: 'SAL3', to: 'GREEN')).to eq Date.parse('2015-10-12')
-            end
-          end
-        end
+      it 'arrives in GREEN the next business day' do
+        expect(schedule.schedule_for_request).to include(completed: Time.zone.parse('2026-01-20 11:15 AM'))
       end
     end
 
-    context 'shipping from SAL to GREEN' do
-      context 'received before 1pm' do
-        context 'when both the origin and destination are open' do
-          before do
-            data = {
-              'data' => {
-                'attributes' => {
-                  'hours' => [
-                    { 'open' => true, 'opens_at' => '2015-10-08' }
-                  ]
-                }
-              }
-            }
+    context 'paging from SAL3 to GREEN on Friday after the cut-off' do
+      let(:from) { 'SAL3-STACKS' }
+      let(:to) { 'GREEN' }
+      let(:request_time) { Time.zone.parse('2026-01-16 10:00 PM') }
 
-            response = LibraryHoursApi::Response.new(data)
-            allow(LibraryHoursApi).to receive(:get).with('sal12', 'operations', anything).and_return(response)
-            allow(LibraryHoursApi).to receive(:get).with('green', 'library-circulation', anything).and_return(response)
-          end
-
-          it 'is same-day service' do
-            travel_to Time.zone.parse('2015-10-08T11:59:59') do
-              expect(earliest_delivery_estimate(from: 'SAL', to: 'GREEN')).to eq Date.parse('2015-10-08')
-            end
-          end
-        end
+      it 'arrives in GREEN a day later' do
+        expect(schedule.schedule_for_request).to include(completed: Time.zone.parse('2026-01-21 11:15 AM'))
       end
+    end
 
-      context 'received after 1pm' do
-        context 'when the origin and destination are both open' do
-          before do
-            data = {
-              'data' => {
-                'attributes' => {
-                  'hours' => [
-                    { 'open' => true, 'opens_at' => '2015-10-08' },
-                    { 'open' => true, 'opens_at' => '2015-10-09' }
-                  ]
-                }
-              }
-            }
+    context 'paging from GREEN TO GREEN' do
+      let(:from) { 'GRE-STACKS' }
+      let(:to) { 'GREEN' }
 
-            response = LibraryHoursApi::Response.new(data)
-            allow(LibraryHoursApi).to receive(:get).with('sal12', 'operations', anything).and_return(response)
-            allow(LibraryHoursApi).to receive(:get).with('green', 'library-circulation', anything).and_return(response)
-          end
+      it 'arrives in GREEN the same day' do
+        expect(schedule.schedule_for_request).to include(completed: Time.zone.parse('2026-01-12 6:00 PM'))
+      end
+    end
 
-          it 'arrives the next day' do
-            travel_to Time.zone.parse('2015-10-08T12:00:01') do
-              expect(earliest_delivery_estimate(from: 'SAL', to: 'GREEN')).to eq Date.parse('2015-10-09')
-            end
-          end
-        end
+    context 'paging from ART TO GREEN' do
+      let(:from) { 'ART-STACKS' }
+      let(:to) { 'GREEN' }
+
+      it 'arrives in GREEN the next day' do
+        expect(schedule.schedule_for_request).to include(completed: Time.zone.parse('2026-01-13 1:45 PM'))
+      end
+    end
+
+    context 'paging from ART TO GREEN after the cut-off' do
+      let(:from) { 'ART-STACKS' }
+      let(:to) { 'GREEN' }
+      let(:request_time) { Time.zone.parse('2026-01-12 1:00 PM') }
+
+      it 'arrives in GREEN the following day' do
+        expect(schedule.schedule_for_request).to include(completed: Time.zone.parse('2026-01-14 1:45 PM'))
+      end
+    end
+
+    context 'paging from GREEN to MARINE-BIO' do
+      let(:from) { 'GRE-STACKS' }
+      let(:to) { 'MARINE-BIO' }
+      let(:request_time) { Time.zone.parse('2026-01-12 9:00 AM') }
+
+      it 'arrives in MARINE-BIO at Wednesday EOD (available Thursday)' do
+        expect(schedule.schedule_for_request).to include(completed: Time.zone.parse('2026-01-15 09:00 AM'))
+      end
+    end
+
+    context 'paging from MARINE-BIO to GREEN' do
+      let(:from) { 'MAR-STACKS' }
+      let(:to) { 'GREEN' }
+      let(:request_time) { Time.zone.parse('2026-01-12 9:00 AM') }
+
+      it 'arrives in GREEN on Wednesday (having arrived in the mailroom on Tuesday)' do
+        expect(schedule.schedule_for_request).to include(completed: Time.zone.parse('2026-01-14 10:30 AM'))
       end
     end
   end
