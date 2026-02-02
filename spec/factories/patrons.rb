@@ -38,20 +38,20 @@ FactoryBot.define do
 
   factory :pilot_group_patron, parent: :patron do
     id { 'some-lib-id-uuid' }
-    group = Folio::Types.patron_groups.values.select { |groupval| groupval['group'] == Settings.folio.scan_pilot_groups.first }
-    patronGroup { group.first['id'] }
+    group = Folio::Types.patron_groups.find_by(group: Settings.folio.scan_pilot_groups.first)
+    patronGroup { group.id }
   end
 
   factory :purchased_patron, parent: :patron do
     id { 'some-lib-id-uuid' }
-    group = Folio::Types.patron_groups.values.select { |groupval| groupval['group'] == 'sul-purchased' }
-    patronGroup { group.first['id'] }
+    group = Folio::Types.patron_groups.find_by(group: 'sul-purchased')
+    patronGroup { group.id }
   end
 
   factory :student_patron, parent: :patron do
     id { 'some-lib-id-uuid' }
-    group = Folio::Types.patron_groups.values.select { |groupval| groupval['group'] == 'undergrad' }
-    patronGroup { group.first['id'] }
+    group = Folio::Types.patron_groups.find_by(group: 'undergrad')
+    patronGroup { group.id }
   end
 
   factory :blocked_patron, parent: :patron do

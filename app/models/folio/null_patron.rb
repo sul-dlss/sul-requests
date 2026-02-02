@@ -4,7 +4,7 @@ module Folio
   # Model for working with FOLIO Patron information
   class NullPatron
     def self.visitor_patron_group
-      Folio::Types.patron_groups.values.find { |v| v['group'] == 'visitor' }
+      Folio::Types.patron_groups.find_by(group: 'visitor')
     end
 
     attr_reader :user
@@ -26,16 +26,16 @@ module Folio
 
     # this returns the full patronGroup object
     def patron_group
-      @patron_group ||= Folio::Types.patron_groups.values.find { |v| v['group'] == @patron_group_name }
+      @patron_group ||= Folio::Types.patron_groups.find_by(group: @patron_group_name)
       @patron_group ||= self.class.visitor_patron_group
     end
 
     def patron_description
-      patron_group['desc']
+      patron_group.desc
     end
 
     def patron_group_name
-      patron_group['group']
+      patron_group.group
     end
 
     def patron_comments
@@ -80,7 +80,7 @@ module Folio
     private
 
     def patron_group_id
-      patron_group['id']
+      patron_group.id
     end
   end
 end
