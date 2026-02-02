@@ -4,7 +4,7 @@ module Folio
   Location = Data.define(:id, :campus, :campus_id, :library, :library_id, :institution, :code, :discovery_display_name,
                          :name, :primary_service_point_id, :details) do
     # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity
-    def self.from_hash(dyn)
+    def self.from_dynamic(dyn)
       new(
         id: dyn.fetch('id'),
         campus: (Campus.new(**dyn.fetch('campus').slice('id', 'code')) if dyn['campus']),
@@ -22,7 +22,7 @@ module Folio
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity
 
     def campus
-      to_h[:campus] || Folio::Types.campuses.find { |c| c.id == campus_id }
+      to_h[:campus] || Folio::Types.campuses.find_by(id: campus_id)
     end
 
     def library

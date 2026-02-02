@@ -21,7 +21,7 @@ RSpec.describe Folio::CirculationRules::PolicyService do
                             end.slice('id', 'name'))
       end
       let(:effective_location) do
-        Folio::Location.from_hash(
+        Folio::Location.from_dynamic(
           Folio::Types.instance.get_type('locations').find { |t| t['code'] == 'SAL3-STACKS' }.merge(
             'institution' => Folio::Types.instance.get_type('institutions').find { |t| t['code'] == 'SU' },
             'campus' => Folio::Types.instance.get_type('campuses').find { |t| t['code'] == 'SUL' },
@@ -48,7 +48,7 @@ RSpec.describe Folio::CirculationRules::PolicyService do
                             end.slice('id', 'name'))
       end
       let(:effective_location) do
-        Folio::Location.from_hash(
+        Folio::Location.from_dynamic(
           Folio::Types.instance.get_type('locations').find { |t| t['code'] == 'SAL3-PAGE-GR' }.merge(
             'institution' => Folio::Types.instance.get_type('institutions').find { |t| t['code'] == 'SU' },
             'campus' => Folio::Types.instance.get_type('campuses').find { |t| t['code'] == 'SUL' },
@@ -75,7 +75,7 @@ RSpec.describe Folio::CirculationRules::PolicyService do
                             end.slice('id', 'name'))
       end
       let(:effective_location) do
-        Folio::Location.from_hash(
+        Folio::Location.from_dynamic(
           Folio::Types.instance.get_type('locations').find { |t| t['code'] == 'BUS-CRES' }.merge(
             'institution' => Folio::Types.instance.get_type('institutions').find { |t| t['code'] == 'SU' },
             'campus' => Folio::Types.instance.get_type('campuses').find { |t| t['code'] == 'GSB' },
@@ -124,7 +124,7 @@ RSpec.describe Folio::CirculationRules::PolicyService do
         allow(item).to receive_messages(
           material_type: Folio::MaterialType.new(id: 'multimedia', name: 'Multimedia'),
           loan_type: Folio::LoanType.new(id: '7hour'),
-          effective_location: Folio::Location.from_hash(
+          effective_location: Folio::Location.from_dynamic(
             Folio::Types.instance.get_type('locations').find { |t| t['code'] == 'MEDIA-CAGE' }.merge(
               'institution' => Folio::Types.instance.get_type('institutions').find { |t| t['code'] == 'SU' },
               'campus' => Folio::Types.instance.get_type('campuses').find { |t| t['code'] == 'SUL' },
@@ -146,7 +146,7 @@ RSpec.describe Folio::CirculationRules::PolicyService do
         allow(item).to receive_messages(
           material_type: Folio::MaterialType.new(id: 'book', name: 'Book'),
           loan_type: Folio::LoanType.new(id: '7day'),
-          effective_location: Folio::Location.from_hash(
+          effective_location: Folio::Location.from_dynamic(
             Folio::Types.instance.get_type('locations').find { |t| t['code'] == 'MEDIA-STACKS' }.merge(
               'institution' => Folio::Types.instance.get_type('institutions').find { |t| t['code'] == 'SU' },
               'campus' => Folio::Types.instance.get_type('campuses').find { |t| t['code'] == 'SUL' },
@@ -168,7 +168,7 @@ RSpec.describe Folio::CirculationRules::PolicyService do
         allow(item).to receive_messages(
           material_type: Folio::MaterialType.new(id: 'book', name: 'Book'),
           loan_type: Folio::LoanType.new(id: '12hour'),
-          effective_location: Folio::Location.from_hash(
+          effective_location: Folio::Location.from_dynamic(
             Folio::Types.instance.get_type('locations').find { |t| t['code'] == 'GRE-STACKS' }.merge(
               'institution' => Folio::Types.instance.get_type('institutions').find { |t| t['code'] == 'SU' },
               'campus' => Folio::Types.instance.get_type('campuses').find { |t| t['code'] == 'SUL' },
@@ -188,7 +188,7 @@ RSpec.describe Folio::CirculationRules::PolicyService do
         allow(item).to receive_messages(
           material_type: Folio::MaterialType.new(id: 'microform', name: 'Microform'),
           loan_type: Folio::LoanType.new(id: '12hour'),
-          effective_location: Folio::Location.from_hash(
+          effective_location: Folio::Location.from_dynamic(
             Folio::Types.instance.get_type('locations').find { |t| t['code'] == 'MEDIA-STACKS' }.merge(
               'institution' => Folio::Types.instance.get_type('institutions').find { |t| t['code'] == 'SU' },
               'campus' => Folio::Types.instance.get_type('campuses').find { |t| t['code'] == 'SUL' },
@@ -208,7 +208,7 @@ RSpec.describe Folio::CirculationRules::PolicyService do
         allow(item).to receive_messages(
           material_type: Folio::MaterialType.new(id: 'book', name: 'Books'),
           loan_type: Folio::LoanType.new(id: '7day'),
-          effective_location: Folio::Location.from_hash(
+          effective_location: Folio::Location.from_dynamic(
             Folio::Types.instance.get_type('locations').find { |t| t['code'] == 'GRE-STACKS' }.merge(
               'institution' => Folio::Types.instance.get_type('institutions').find { |t| t['code'] == 'SU' },
               'campus' => Folio::Types.instance.get_type('campuses').find { |t| t['code'] == 'SUL' },
@@ -228,7 +228,7 @@ RSpec.describe Folio::CirculationRules::PolicyService do
         allow(item).to receive_messages(
           material_type: Folio::MaterialType.new(id: 'multimedia', name: 'Multimedia'),
           loan_type: Folio::LoanType.new(id: 'rr'),
-          effective_location: Folio::Location.from_hash(
+          effective_location: Folio::Location.from_dynamic(
             Folio::Types.instance.get_type('locations').find { |t| t['code'] == 'ARS-REF' }.merge(
               'institution' => Folio::Types.instance.get_type('institutions').find { |t| t['code'] == 'SU' },
               'campus' => Folio::Types.instance.get_type('campuses').find { |t| t['code'] == 'SUL' },
@@ -303,7 +303,7 @@ RSpec.describe Folio::CirculationRules::PolicyService do
       allow(item).to receive_messages(
         material_type: Folio::MaterialType.new(id: 'book', name: 'Books'),
         loan_type: Folio::LoanType.new(id: 'can-circ'),
-        effective_location: Folio::Location.from_hash(
+        effective_location: Folio::Location.from_dynamic(
           Folio::Types.instance.get_type('locations').find { |t| t['code'] == 'GRE-STACKS' }.merge(
             'institution' => Folio::Types.instance.get_type('institutions').find { |t| t['code'] == 'SU' },
             'campus' => Folio::Types.instance.get_type('campuses').find { |t| t['code'] == 'SUL' },
