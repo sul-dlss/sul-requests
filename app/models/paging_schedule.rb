@@ -158,7 +158,7 @@ class PagingSchedule
     mailroom_open_days = business_days_for_mailroom_operations(after: steps[:ready_for_mailroom_pickup])
     steps[:mailroom_pickup] =
       next_action_time(mailroom_open_days,
-                       Settings.mailroom[origin_library_code], after: steps[:ready_for_mailroom_pickup])
+                       Settings.mailroom[origin_library_code] || Settings.mailroom.default, after: steps[:ready_for_mailroom_pickup])
 
     mailroom_open_days = business_days_for_mailroom_operations(after: steps[:mailroom_pickup])
     steps[:mailroom_sort] = next_action_time(mailroom_open_days, Settings.mailroom.sorted_by, after: steps[:mailroom_pickup])
