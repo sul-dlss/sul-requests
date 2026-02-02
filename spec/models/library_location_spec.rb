@@ -13,8 +13,8 @@ RSpec.describe LibraryLocation do
       expect(described_class.library_name_by_code('RWC')).to eq 'Academy Hall (SRWC)'
     end
 
-    it 'returns nil when there is no configured library' do
-      expect(described_class.library_name_by_code('NOT-A-LIBRARY')).to be_nil
+    it 'returns the code when there is no configured library' do
+      expect(described_class.library_name_by_code('NOT-A-LIBRARY')).to eq 'NOT-A-LIBRARY'
     end
   end
 end
