@@ -8,10 +8,15 @@ RSpec.describe SubmitFolioScanRequestJob do
   end
   let(:bib_data) { build(:single_holding) }
   let(:stub_client) { instance_double(FolioClient).as_null_object }
+  let(:pseudopatron) do
+    instance_double(Folio::Patron, id: 'GRE-SCANDELIVER-UUID')
+  end
 
   before do
     stub_bib_data_json(bib_data)
     allow(FolioClient).to receive(:new).and_return(stub_client)
+
+    allow(stub_client).to receive(:find_patron_by_barcode_or_university_id).with('GRE-SCANDELIVER').and_return(pseudopatron)
   end
 
   context 'when the request is a scan for material in e.g. Green' do
@@ -27,7 +32,7 @@ RSpec.describe SubmitFolioScanRequestJob do
 
       expect(stub_client).to have_received(:create_circulation_request).with(
         have_attributes(request_type: 'Page',
-                        requester_id: 'GRE-SCANDELIVER',
+                        requester_id: 'GRE-SCANDELIVER-UUID',
                         pickup_service_point_id: 'a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d')
       )
     end
