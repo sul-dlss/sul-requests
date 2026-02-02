@@ -44,12 +44,14 @@ class Ability
       can :manage, :site
       can :read, :admin
       can [:create, :read, :update, :destroy], :all
-      can :manage, [LibraryLocation, Message, PagingSchedule, AdminComment]
+      can :mediate, PatronRequest, request_type: %w[mediated mediated/approved mediated/done]
+      can :manage, [Message, PagingSchedule, AdminComment]
       can [:admin, :debug], PatronRequest
     end
 
     if user.site_admin?
       can :read, :admin
+      can :mediate, PatronRequest, request_type: %w[mediated mediated/approved mediated/done]
       can :manage, [LibraryLocation, Message, PagingSchedule, AdminComment]
       can [:admin, :debug, :create, :read, :update, :destroy], PatronRequest
     end
@@ -62,20 +64,20 @@ class Ability
 
     if admin_libraries.any?
       can :read, :admin
-      can :manage, LibraryLocation, library: admin_libraries
+      admin_libraries_locations = admin_libraries.flat_map { |origin| Folio::Types.libraries.find_by(code: origin)&.locations&.map(&:code) || [] }
+      can :mediate, PatronRequest, origin_location_code: admin_libraries_locations.uniq,
+                                   request_type: %w[mediated mediated/approved mediated/done]
       can :create, AdminComment, request: { origin_location_code: admin_libraries.flat_map do |x|
         Folio::LibrariesStore.find_by(code: x)&.locations&.map(&:code) || []
       rescue StandardError
         []
       end }
-      can [:admin, :read, :update], PatronRequest do |request|
-        request.origin_library_code.in?(admin_libraries)
-      end
+      can [:admin, :read, :update], PatronRequest, origin_location_code: admin_libraries_locations.uniq
     end
 
     if admin_locations.any?
       can :read, :admin
-      can :manage, LibraryLocation, location: admin_locations
+      can :mediate, PatronRequest, origin_location_code: admin_locations, request_type: %w[mediated mediated/approved mediated/done]
       can :create, AdminComment, request: { origin_location_code: admin_locations }
       can [:admin, :read, :update], PatronRequest, origin_location_code: admin_locations
     end

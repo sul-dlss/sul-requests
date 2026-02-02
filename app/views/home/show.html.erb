@@ -13,7 +13,7 @@
   <%= render 'administration' %>
 <% end %>
 
-<% origins = mediated_locations_for(PatronRequest.mediateable_origins) %>
+<% origins = mediateable_origins %>
 
 <% if origins.present? %>
   <%= render partial: 'mediation', locals: { locations: origins } %>
