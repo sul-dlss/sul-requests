@@ -37,7 +37,7 @@ RSpec.describe User do
       let(:patron) { instance_double(Folio::Patron, library_id: '123456789') }
 
       it 'uses the patron barcode from the ILS' do
-        allow(described_class.patron_model_class).to receive(:find_by).and_return(patron)
+        allow(Folio::Patron).to receive(:find_by).and_return(patron)
         subject.library_id = 'somelibid'
 
         expect(subject.barcode).to eq '123456789'

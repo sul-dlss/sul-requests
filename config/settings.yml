@@ -35,11 +35,6 @@ token_encrypt:
   secret: ''
   salt: ''
 
-ils:
-  bib_model: Folio::Instance
-  patron_model: Folio::Patron
-  pickup_destination_class: Folio::PickupDestination
-
 folio:
   okapi_url: <%= ENV.fetch('OKAPI_URL', 'http://example.com') %>
   graphql_url: <%= ENV.fetch('FOLIO_GRAPHQL_URL', 'http://example.com') %>

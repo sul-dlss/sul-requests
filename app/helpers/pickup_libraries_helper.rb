@@ -13,7 +13,7 @@ module PickupLibrariesHelper
 
   # Get the label, if it exists, for the pickup destination
   def destination_label(pickup_destination)
-    Settings.ils.pickup_destination_class.constantize.new(pickup_destination).display_label || pickup_destination
+    Folio::PickupDestination.new(pickup_destination).display_label || pickup_destination
   end
 
   private

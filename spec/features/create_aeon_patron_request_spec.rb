@@ -15,7 +15,7 @@ RSpec.describe 'Creating an Aeon patron request', :js do
   end
 
   before do
-    allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
+    allow(Folio::Patron).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
     login_as(current_user)
     stub_bib_data_json(build(bib_data))
   end

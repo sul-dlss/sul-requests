@@ -9,7 +9,7 @@ RSpec.describe 'Admin Comments', :js do
   end
 
   before do
-    allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(instance_double(Folio::Instance, items: []))
+    allow(Folio::Instance).to receive(:fetch).and_return(instance_double(Folio::Instance, items: []))
     stub_current_user(user)
     create(
       :mediated_patron_request_with_holdings,
