@@ -17,6 +17,6 @@ class NeededDatesController < ApplicationController
   protected
 
   def needed_date_params
-    params.require(:patron_request).permit(:needed_date)
+    params.expect(patron_request: [:needed_date])
   end
 end

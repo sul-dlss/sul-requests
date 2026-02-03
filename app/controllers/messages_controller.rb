@@ -59,6 +59,6 @@ class MessagesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def message_params
-    params.require(:message).permit(:text, :start_at, :end_at, :library, :request_type)
+    params.expect(message: [:text, :start_at, :end_at, :library, :request_type])
   end
 end

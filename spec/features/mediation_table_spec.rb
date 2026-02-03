@@ -80,7 +80,7 @@ RSpec.describe 'Mediation table', :js do
       end
 
       it 'is fetched from the ILS' do
-        within(all('[data-mediate-request]').first) do
+        within(first('[data-mediate-request]')) do
           click_on 'Toggle'
         end
 
@@ -141,7 +141,7 @@ RSpec.describe 'Mediation table', :js do
         end
 
         within('tbody td table tbody') do
-          within(all('tr').first) do
+          within(first('tr')) do
             click_on('Approve')
           end
         end
@@ -383,6 +383,8 @@ RSpec.describe 'Mediation table', :js do
 
       it 'does not include the edit-in-place element' do
         visit admin_path('PAGE-MP')
+
+        expect(page).to have_content 'Request mediation'
         expect(page).to have_no_css('.needed_date a')
       end
     end

@@ -492,8 +492,8 @@ RSpec.describe 'Creating a request', :js do
     it 'filters down to a single form when barcode in parameters' do
       visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS', barcode: '12345678')
 
-      expect(page).to have_no_css 'h2', text: 'Select item(s)'
       expect(page).to have_button 'Submit'
+      expect(page).to have_no_css 'h2', text: 'Select item(s)'
     end
   end
 
@@ -519,6 +519,7 @@ RSpec.describe 'Creating a request', :js do
       it 'does not have the option to scan and places a request by a pseudopatron' do
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
 
+        expect(page).to have_content 'ABC 123'
         expect(page).to have_no_text 'Email digital scan'
         check 'ABC 123'
         click_on 'Continue'
