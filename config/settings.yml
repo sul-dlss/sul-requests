@@ -421,8 +421,10 @@ mailroom: # M-F
     - 7:30am
     - 8:15am
     - 10:45am
-  MEDIA-CENTER:
-    - 10am
+  MEDIA-CENTER: # Same as GREEN
+    - 7:30am
+    - 8:15am
+    - 10:45am
   SAL: 4pm
   SAL3: 8:13am
   ENG: 8:45am
@@ -465,9 +467,9 @@ library_pull_schedule:
   LAW: 12pm
   MARINE-BIO: 9am
   MEDIA-CENTER:
-    - 10am
-    - 2pm
-    - 5pm
+    - 11am
+    - 3pm
+    - 10pm
   MUSIC: 9am
   RUMSEY-MAP: 12pm
   SAL: 1pm
