@@ -12,7 +12,7 @@ RSpec.describe 'Creating a request', :js do
     # this line prevents ArgumentError: SMTP To address may not be blank
     ActionMailer::Base.perform_deliveries = false
 
-    allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(patron_key: 'generic').and_return(build(:patron))
+    allow(Folio::Patron).to receive(:find_by).with(patron_key: 'generic').and_return(build(:patron))
     allow_any_instance_of(PagingSchedule).to receive(:valid?).with(anything).and_return(true)
     allow_any_instance_of(PagingSchedule).to receive(:earliest_delivery_estimate).and_return({})
   end
@@ -26,7 +26,7 @@ RSpec.describe 'Creating a request', :js do
     let(:ldap_attributes) { {} }
 
     before do
-      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
+      allow(Folio::Patron).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
       login_as(current_user)
     end
 
@@ -273,7 +273,7 @@ RSpec.describe 'Creating a request', :js do
       let(:patron) { Folio::NullPatron.new(user) }
 
       before do
-        allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(sunetid: user.sunetid).and_return(patron)
+        allow(Folio::Patron).to receive(:find_by).with(sunetid: user.sunetid).and_return(patron)
         login_as(current_user)
       end
 
@@ -327,7 +327,7 @@ RSpec.describe 'Creating a request', :js do
       allow(FolioClient).to receive(:new).and_return(stub_client)
 
       allow(stub_client).to receive(:login_by_barcode).with('12345', '54321').and_return({ 'patronKey' => 'some-lib-id-uuid' })
-      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(patron_key: 'some-lib-id-uuid').and_return(patron)
+      allow(Folio::Patron).to receive(:find_by).with(patron_key: 'some-lib-id-uuid').and_return(patron)
     end
 
     it 'submits the request for pickup at Green' do
@@ -434,7 +434,7 @@ RSpec.describe 'Creating a request', :js do
     let(:ldap_attributes) { {} }
 
     before do
-      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
+      allow(Folio::Patron).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
       login_as(current_user)
     end
 
@@ -503,7 +503,7 @@ RSpec.describe 'Creating a request', :js do
     let(:ldap_attributes) { {} }
 
     before do
-      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
+      allow(Folio::Patron).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
       login_as(current_user)
     end
 

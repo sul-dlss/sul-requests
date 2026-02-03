@@ -22,8 +22,8 @@ RSpec.describe 'Mark As Complete', :js do
   end
 
   before do
-    allow(Settings.ils.bib_model.constantize).to receive(:fetch).and_return(double(:bib_data, title: 'Test title',
-                                                                                              items: selected_items))
+    allow(Folio::Instance).to receive(:fetch).and_return(double(:bib_data, title: 'Test title',
+                                                                           items: selected_items))
     stub_current_user(user)
   end
 

@@ -31,7 +31,7 @@ RSpec.describe 'Accessibility testing', :js do
 
     before do
       login_as(user)
-      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(patron_key: user_object.patron_key).and_return(patron)
+      allow(Folio::Patron).to receive(:find_by).with(patron_key: user_object.patron_key).and_return(patron)
     end
 
     it 'validates the request page' do
@@ -58,7 +58,7 @@ RSpec.describe 'Accessibility testing', :js do
     let(:ldap_attributes) { {} }
 
     before do
-      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
+      allow(Folio::Patron).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
       login_as(current_user)
     end
 
@@ -84,7 +84,7 @@ RSpec.describe 'Accessibility testing', :js do
     let(:ldap_attributes) { {} }
 
     before do
-      allow(Settings.ils.patron_model.constantize).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
+      allow(Folio::Patron).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
       login_as(current_user)
       allow(current_user).to receive(:user_object).and_return(user)
     end

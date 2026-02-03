@@ -75,7 +75,7 @@ class PagingSchedule
   def destination_library_code
     return scan_destination_library_code if scan?
 
-    @destination_library_code ||= Settings.ils.pickup_destination_class.constantize.new(to).library_code || to
+    @destination_library_code ||= Folio::PickupDestination.new(to).library_code || to
   end
 
   def scan?
