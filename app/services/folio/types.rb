@@ -55,13 +55,13 @@ module Folio
     end
 
     def patron_groups
-      get_type('patron_groups').index_by { |p| p['id'] }
+      @patron_groups ||= TypeStore.new(Folio::PatronGroup, get_type('patron_groups'))
     end
 
     # rubocop:disable Metrics/AbcSize
     def criteria
       @criteria ||= {
-        'group' => patron_groups,
+        'group' => patron_groups.index_by { |p| p['id'] },
         'material-type' => get_type('material_types').index_by { |p| p['id'] },
         'loan-type' => get_type('loan_types').index_by { |p| p['id'] },
         'location-institution' => get_type('institutions').index_by { |p| p['id'] },
