@@ -61,5 +61,8 @@ module SULRequests
       'SPEC-COLL'  => { email: 'sul-requests-spec@lists.stanford.edu' },
       'RUMSEY-MAP'  => { email: 'sul-requests-rumsey@lists.stanford.edu' }
     }
+
+    config.lookbook.preview_paths = ["spec/component_previews"]
+    config.view_component.previews.paths << "spec/component_previews"
   end
 end

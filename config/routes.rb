@@ -66,4 +66,9 @@ Rails.application.routes.draw do
   end
   resource :feedback_form, path: 'feedback', only: %I[new create]
   get 'feedback' => 'feedback_forms#new'
+
+
+  Rails.application.routes.draw do
+    mount Lookbook::Engine, at: "/lookbook"
+  end
 end

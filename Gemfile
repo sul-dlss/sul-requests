@@ -86,6 +86,9 @@ group :development, :test do
   # listen is used by bootsnap to listen to file changes
   gem 'listen'
 
+  # enables live reload for Lookbook in development
+  gem "actioncable"
+
   gem 'webmock'
   gem 'warden-rspec-rails'
 end
@@ -108,6 +111,7 @@ end
 gem "cssbundling-rails", "~> 1.1"
 
 gem "view_component", "~> 4.0"
+gem "lookbook"
 gem "parslet"
 
 gem "jsbundling-rails", "~> 1.1"
