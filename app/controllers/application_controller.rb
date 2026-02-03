@@ -38,7 +38,7 @@ class ApplicationController < ActionController::Base
     if params[:referrer]
       redirect_to post_action_redirect_url
     else
-      redirect_back fallback_location: root_url
+      redirect_back_or_to(root_url)
     end
   end
 

@@ -34,7 +34,9 @@ module Folio
     private
 
     def cached_data
-      @cached_data ||= Folio::Types.libraries.find_by(id:)
+      return @cached_data if defined?(@cached_data)
+
+      @cached_data = Folio::Types.libraries.find_by(id:)
     end
   end
 end

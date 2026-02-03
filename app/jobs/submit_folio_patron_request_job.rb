@@ -56,7 +56,7 @@ class SubmitFolioPatronRequestJob < ApplicationJob
   end
 
   def expiration_date(request)
-    request.needed_date&.to_time&.utc&.iso8601 || (Time.zone.today + 3.years).to_time.utc.iso8601
+    (request.needed_date || (Time.zone.today + 3.years)).to_time.utc.iso8601
   end
 
   def patron_comments(request, item)

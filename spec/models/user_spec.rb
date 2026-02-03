@@ -62,10 +62,12 @@ RSpec.describe User do
         end
 
         it 'Notifies the exception handling service' do
-          expect(Honeybadger).to receive(:notify).with(
+          allow(Honeybadger).to receive(:notify)
+          expect(subject.email_address).to eq 'jstanford@stanford.edu'
+
+          expect(Honeybadger).to have_received(:notify).with(
             'SSO User being created without an email address. Using jstanford@stanford.edu instead.'
           )
-          expect(subject.email_address).to eq 'jstanford@stanford.edu'
         end
       end
     end

@@ -45,20 +45,19 @@ class SessionsController < ApplicationController
   #
   # GET /logout
   def destroy
-    needs_shib_logout = needs_shibboleth_logout
+    redirect_path = needs_shibboleth_logout? ? '/Shibboleth.sso/Logout' : post_action_redirect_url
+
     request.env['warden'].logout
     flash[:notice] = t('.notice')
 
-    if needs_shib_logout && !Rails.env.development?
-      redirect_to '/Shibboleth.sso/Logout'
-    else
-      redirect_to post_action_redirect_url
-    end
+    redirect_to redirect_path
   end
 
   private
 
-  def needs_shibboleth_logout
+  def needs_shibboleth_logout?
+    return false if Rails.env.development?
+
     request.env['warden']&.user&.shibboleth?
   end
 

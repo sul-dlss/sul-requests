@@ -16,7 +16,9 @@ module Folio
     end
 
     def service_point
-      @service_point ||= Folio::Types.service_points.find_by(code:)
+      return @service_point if defined?(@service_point)
+
+      @service_point = Folio::Types.service_points.find_by(code:)
     end
 
     def display_label
