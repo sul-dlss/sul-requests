@@ -9,7 +9,7 @@ module Folio
       return folio_client.find_patron_by_sunetid(sunetid) if sunetid.present?
 
       nil
-    rescue HTTP::Error
+    rescue HTTP::Error, FolioClient::Error
       nil
     end
 
