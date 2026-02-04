@@ -15,6 +15,17 @@ layer(framework);
 @import url("https://cdn.jsdelivr.net/gh/sul-dlss/component-library@v2026-01-27/styles/sul.css")
 layer(components);
 
+:root {
+  --stanford-jungle-green-rgb: 39, 153, 137;
+  --stanford-process-black-50-rgb: 151, 150, 148;
+
+  --bs-danger: #dc3545;
+  --bs-danger-rgb: 220, 53, 69;
+  --bs-danger-text-emphasis: #58151c;
+  --bs-danger-bg-subtle: #f8d7da;
+  --bs-danger-border-subtle: #f1aeb5;
+}
+
 .bg-su-process-black-50 {
   background-color: rgba(var(--stanford-process-black-50-rgb), 1);
 }
@@ -162,10 +173,15 @@ summary .bi-chevron-right::before {
 .step-number {
   width: 2rem;
   height: 2rem;
+
+  background-color: var(--bs-gray-600);
 }
 
-
 .accordion-button::after {
+  display: none;
+}
+
+.edit-button {
   display: none;
 }
 
@@ -310,3 +326,24 @@ label.btn-close {
   text-wrap: nowrap;
 }
 
+#pre-footer {
+  background-color: var(--stanford-stone-light);
+}
+
+/* Restore the upstream bootstrap behavior that the component library broke. */
+.alert-link {
+  font-weight: 700;
+}
+
+/* Restore the upstream bootstrap danger alert color. */
+.alert-danger {
+  color: rgb(88, 21, 28);
+}
+
+/* Restore disabled primary button styling from upstream bootstrap. */
+.btn-primary {
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: #006CB8;
+  --bs-btn-disabled-border-color: #006CB8;
+  --bs-btn-disabled-opacity: 0.65;
+}

@@ -3,7 +3,7 @@
 
 <% if current_user&.patron %> <%= render 'user_header' %> <% end %>
 
-<h1 class="fw-semibold mt-4"><%= @patron_request.item_title %></h1>
+<h1 class="fw-semibold mt-4 fs-1"><%= @patron_request.item_title %></h1>
 <% if @patron_request.selectable_items.one? %>
 <div class="lead fw-normal mb-4">
   Call number: <%= @patron_request.selectable_items.first&.callnumber %>

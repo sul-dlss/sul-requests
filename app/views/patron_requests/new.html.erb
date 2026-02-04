@@ -6,7 +6,7 @@
 
 <%= render 'messages', messages: @patron_request.active_messages %>
 
-<h1 class="fw-semibold mt-4"><%= @patron_request.item_title %></h1>
+<h1 class="fw-semibold mt-4 fs-1"><%= @patron_request.item_title %></h1>
 <% if @patron_request.selectable_items.one? %>
   <% single_item = @patron_request.selectable_items.first %>
   <% unless single_item.instance && single_item.instance&.hrid != @patron_request.instance_hrid %>
