@@ -324,3 +324,8 @@ label.btn-close {
 .alert-link {
   font-weight: 700;
 }
+
+/* Restore the upstream bootstrap danger alert color. */
+.alert-danger {
+  color: rgb(88, 21, 28);
+}
