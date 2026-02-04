@@ -26,7 +26,9 @@ module Folio
 
     # this returns the full patronGroup object
     def patron_group
-      @patron_group ||= Folio::Types.patron_groups.find_by(group: @patron_group_name)
+      return @patron_group if defined?(@patron_group)
+
+      @patron_group = Folio::Types.patron_groups.find_by(group: @patron_group_name)
       @patron_group ||= self.class.visitor_patron_group
     end
 
