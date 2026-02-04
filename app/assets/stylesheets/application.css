@@ -162,8 +162,9 @@ summary .bi-chevron-right::before {
 .step-number {
   width: 2rem;
   height: 2rem;
-}
 
+  background-color: var(--bs-gray-600);
+}
 
 .accordion-button::after {
   display: none;
