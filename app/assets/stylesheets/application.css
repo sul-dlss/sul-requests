@@ -311,3 +311,6 @@ label.btn-close {
   text-wrap: nowrap;
 }
 
+#pre-footer {
+  background-color: var(--stanford-stone-light);
+}
