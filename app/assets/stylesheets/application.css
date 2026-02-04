@@ -175,6 +175,10 @@ summary .bi-chevron-right::before {
   display: none;
 }
 
+.edit-button {
+  display: none;
+}
+
 .completed {
   .edit-button {
     display: flex!important;
