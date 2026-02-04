@@ -1,5 +1,5 @@
 <%= form_with(url: form_path, method: 'get') do |f| %>
   <%= f.label :created_at, 'Find by date requested:' %>
   <%= f.date_field(:created_at, value: params[:created_at] || Time.zone.today, class: 'form-control d-inline-block w-auto') %>
-  <%= f.submit "Go", class: 'btn btn-cardinal' %>
+  <%= f.submit "Go", class: 'btn btn-secondary' %>
 <% end %>

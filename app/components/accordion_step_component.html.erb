@@ -1,12 +1,11 @@
 <%= tag.div id: "#{id}-accordion", class: %w[accordion-item my-4 shadow-sm].append("accordion-step-#{step_index}").concat(@classes), data: data.merge('patronRequest-target': 'accordion') do %>
   <div class="accordion-header d-flex">
     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#<%= id %>" aria-expanded="<%= expanded? ? 'true' : 'false' %>" aria-controls="<%= id %>" disabled>
-      <div class="step-number d-flex justify-content-center align-items-center rounded-circle border border-secondary p-2 me-2 bg-secondary text-white"><%= step_index %></div>
-
+      <div class="step-number d-flex justify-content-center align-items-center rounded-circle border p-2 me-2 text-white"><%= step_index %></div>
       <h2 class="accordion-title fw-semibold fs-5 mb-0">
         <%= title %>
       </h2>
-      <button class="btn btn-link d-none edit-button align-items-center" data-action="click->patronRequest#editForm analytics#send" data-analytics-category-param="Accordion" data-analytics-action-param="Edit" aria-controls="<%= id %>">
+      <button class="btn btn-link edit-button align-items-center" data-action="click->patronRequest#editForm analytics#send" data-analytics-category-param="Accordion" data-analytics-action-param="Edit" aria-controls="<%= id %>">
         <i class="bi bi-pencil me-1"></i> Edit
       </button>
     </button>

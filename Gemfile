@@ -105,8 +105,6 @@ group :deployment do
   gem 'dlss-capistrano'
 end
 
-gem "cssbundling-rails", "~> 1.1"
-
 gem "view_component", "~> 4.0"
 gem "parslet"
 

@@ -108,6 +108,6 @@ RSpec.describe 'Accessibility testing', :js do
   end
 
   def be_accessible
-    be_axe_clean
+    be_axe_clean.with_options({ preload: false })
   end
 end
