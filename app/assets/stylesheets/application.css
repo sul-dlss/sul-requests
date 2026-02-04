@@ -333,3 +333,11 @@ label.btn-close {
 .alert-danger {
   color: rgb(88, 21, 28);
 }
+
+/* Restore disabled primary button styling from upstream bootstrap. */
+.btn-primary {
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: #006CB8;
+  --bs-btn-disabled-border-color: #006CB8;
+  --bs-btn-disabled-opacity: 0.65;
+}
