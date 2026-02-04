@@ -15,6 +15,11 @@ layer(framework);
 @import url("https://cdn.jsdelivr.net/gh/sul-dlss/component-library@v2026-01-27/styles/sul.css")
 layer(components);
 
+:root {
+  --stanford-jungle-green-rgb: 39, 153, 137;
+  --stanford-process-black-50-rgb: 151, 150, 148;
+}
+
 .bg-su-process-black-50 {
   background-color: rgba(var(--stanford-process-black-50-rgb), 1);
 }
