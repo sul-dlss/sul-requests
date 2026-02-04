@@ -274,6 +274,39 @@ class PatronRequest < ApplicationRecord
     items
   end
 
+  def on_account?(item = nil)
+    return instances_on_account if selectable_items.none?
+
+    items_on_account(item)
+  end
+
+  def instances_on_account
+    requests = 'request' if account_has_instance?(patron.holds)
+    loans = 'loan' if account_has_instance?(patron.loans)
+    [requests, loans].compact.join(' and ')
+  end
+
+  def items_on_account(item)
+    requests = 'request' if account_has_item?(item, patron.holds)
+    loans = 'loan' if account_has_item?(item, patron.loans)
+    [requests, loans].compact.join(' and ')
+  end
+
+  def account_has_instance?(instance_list)
+    return false unless selectable_items.none? && instance_list.present?
+
+    instanceids = instance_list.map { |elem| elem['item']['instanceId'] }
+    instanceids.include?(instance_id)
+  end
+
+  def account_has_item?(item, item_list)
+    return false unless (item || selectable_items.one?) && item_list.present?
+
+    itemid = item ? item.id : selectable_items.first.id
+    itemids = item_list.map { |elem| elem['item']['itemId'] }
+    itemids.include?(itemid)
+  end
+
   # @return [Array<Folio::Item>] the items that are holdable and recallable by the patron
   def holdable_recallable_items
     @holdable_recallable_items ||= selectable_items.filter { |item| item.recallable?(patron) && item.holdable?(patron) }

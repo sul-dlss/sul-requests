@@ -1,0 +1,9 @@
+<% if type.present? %>
+  <div class="alert alert-warning alert-dismissible shadow-sm d-flex gap-3 align-items-center">
+    <i class="bi bi-exclamation-triangle-fill fs-3 text-warning"></i>
+    <div>
+      Please be aware that there is already a <%= type %> for this title in our system under your name.
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% end %>
