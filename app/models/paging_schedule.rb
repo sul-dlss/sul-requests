@@ -125,6 +125,8 @@ class PagingSchedule
     pull_schedule = Array(Settings.library_pull_schedule[origin_library_code])
     origin_open_days = business_days_for(origin_library_code, after: after)
     steps[:shelf_pull] = next_action_time(origin_open_days, pull_schedule, after: after)
+
+    raise ScheduleNotFound unless steps[:shelf_pull]
   end
 
   # Step 2a: Some shelf pulls are immediately available at the destination library without further processing
