@@ -500,6 +500,7 @@ allowed_visitor_pickups:
   - 'EAST-ASIA'
   - 'LANE-DESK'
   - 'MEDIA-CENTER'
+  - 'MUSIC'
   - 'SPEC'
   - 'RUMSEY-MAP'
 
