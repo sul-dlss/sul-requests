@@ -20,7 +20,7 @@
                 <p>
                     As a member of the Stanford community, including <b>faculty, students, staff, post-docs, fellows, and visiting scholars</b>, you are issued a SUNet ID. With this ID, you can access more additional services, including requesting items from partner libraries or receiving digital scans via email.
                 </p>
-                <a href="https://library.stanford.edu/services/borrow-and-request" target="_blank">
+                <a href="https://library.stanford.edu/services/borrow-and-request" target="_blank" class="su-underline">
                     <i class="bi bi-box-arrow-up-right"></i> Review borrow and request policies
                 </a>
             </div>
@@ -33,12 +33,12 @@
                 <p>If you have an alumni library account, purchased or received courtesy access, or are a staff member at Stanford Hospital or Lucile Packard Children’s Hospital Stanford, please log in using your Library ID and PIN.
                 </p>
                 <p class="mb-2">
-                    <a href="https://library.stanford.edu/visitor-access" target="_blank">
+                    <a href="https://library.stanford.edu/visitor-access" target="_blank" class="su-underline">
                         <i class="bi bi-box-arrow-up-right"></i> Learn about library card holder access
                     </a>
                 </p>
                 <details data-action="analytics#send" data-analytics-action-param="Library ID" data-analytics-category-param="Login">
-                    <summary class="btn btn-link p-0">Login with Library ID/PIN <i class="bi bi-chevron-right"></i></summary>
+                    <summary class="btn btn-link p-0 su-underline">Login with Library ID/PIN <i class="bi bi-chevron-right"></i></summary>
                     <%= form_tag login_by_university_id_url, method: 'POST', class: 'form p-3', data: { turbo: false } do %>
                         <%= hidden_field_tag :referrer, new_patron_request_path(new_params.merge(step: 'select')) %>
                         <div class="form-group mt-2">
@@ -50,7 +50,7 @@
                             <label class="form-label required-label" for="pin">PIN</label>
                             <input class="form-control" type="password" id="pin" name="pin" required/>
                             <div class="form-text">
-                                <%= link_to "Forgot your PIN? Don't have one yet?", reset_pin_url(referrer: request.original_url) %>
+                                <%= link_to "Forgot your PIN? Don't have one yet?", reset_pin_url(referrer: request.original_url), class: 'su-underline' %>
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">
@@ -75,12 +75,12 @@
                 visitor access at one of the following libraries: Green Library,
                 Art and Architecture Library (Bowes) or East Asia Library.
                 </p>
-                <p class="mb-2"><a href="https://library.stanford.edu/visitor-access" target="_blank">
+                <p class="mb-2"><a href="https://library.stanford.edu/visitor-access" target="_blank" class="su-underline">
                     <i class="bi bi-box-arrow-up-right"></i> Learn more about visitor access
                 </a></p>
                 <details data-action="analytics#send" data-analytics-action-param="Library ID" data-analytics-category-param="Login">
 
-                    <summary class="btn btn-link p-0<% if Ability.anonymous.cannot? :new, @patron_request %> disabled<%end %>">Proceed as visitor <i class="bi bi-chevron-right"></i></summary>
+                    <summary class="btn btn-link p-0<% if Ability.anonymous.cannot? :new, @patron_request %> disabled<% else %> su-underline<% end %>">Proceed as visitor <i class="bi bi-chevron-right"></i></summary>
                     <% if Ability.anonymous.can? :new, @patron_request %>
                         <%= form_tag register_visitor_url, method: 'POST', class: 'form p-3', data: { turbo: false } do %>
                             <%= hidden_field_tag :referrer, new_patron_request_path(new_params.merge(step: 'select')) %>
