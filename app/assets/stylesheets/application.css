@@ -319,3 +319,8 @@ label.btn-close {
 #pre-footer {
   background-color: var(--stanford-stone-light);
 }
+
+/* Restore the upstream bootstrap behavior that the component library broke. */
+.alert-link {
+  font-weight: 700;
+}
