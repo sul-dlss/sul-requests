@@ -304,7 +304,7 @@ RSpec.describe PatronRequest do
       let(:patron) { build(:visitor_patron) }
 
       it 'restricts the default pickup service points' do
-        expect(request.pickup_destinations).to contain_exactly('LANE-DESK', 'EAST-ASIA', 'ART', 'GREEN-LOAN')
+        expect(request.pickup_destinations).to contain_exactly('LANE-DESK', 'EAST-ASIA', 'ART', 'GREEN-LOAN', 'MUSIC')
       end
 
       context 'with a location-restricted page' do
