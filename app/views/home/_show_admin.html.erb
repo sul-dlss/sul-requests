@@ -1,0 +1,22 @@
+<h1>Request management</h1>
+
+<div>
+  <p class="sub-title">
+    Administration and mediation tasks for page, scan, and hold/recall requests from SearchWorks.
+  </p>
+  <p>
+    Contact <%= mail_to Settings.contact_email %> if you have questions about your access to these options.
+  </p>
+</div>
+
+<% if can? :manage, :site %>
+  <%= render 'administration' %>
+<% end %>
+
+<% origins = mediated_locations_for(PatronRequest.mediateable_origins) %>
+
+<% if origins.present? %>
+  <%= render partial: 'mediation', locals: { locations: origins } %>
+<% elsif cannot?(:manage, :site) %>
+  <p class="access-error">You do not have access</p>
+<% end %>
