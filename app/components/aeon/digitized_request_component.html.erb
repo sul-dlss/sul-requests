@@ -1,0 +1,17 @@
+<div class="card mb-4">
+  <div class="card-header">
+    Digitization header
+  </div>
+  <div class="card-body">
+    <h2 class="h3"><%= request.data['itemTitle'] %></h2>
+    <div class="d-flex">
+      <div class="me-4"><replace_with_icon><%= request.data['documentType'] %></div>
+      <div class="me-4">Call number: <%= request.data['callNumber'] %></div>
+      <div><%= request.data['itemInfo1'] %></div>
+    </div>
+  </div>
+  <div class="card-footer border-0 bg-white d-flex fs-14">
+    <div class="me-4">Request #<%= request.data['transactionNumber'] %></div>
+    <div>Date added/modified: <%= request.data['transactionDate'] %></div>
+  </div>
+</div>

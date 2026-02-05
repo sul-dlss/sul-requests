@@ -48,7 +48,7 @@ Rails.application.routes.draw do
     resource :needed_date, only: [:edit, :update, :show]
   end
 
-  resources :requests, only: [:new], concerns: [:statusable]
+  resources :requests, only: [:new, :index], concerns: [:statusable]
   resources :pages, controller: :requests, only: [], concerns: [:statusable]
   resources :scans, controller: :requests,only: [], concerns: [:statusable]
   resources :mediated_pages, controller: :requests, only: [], concerns: [:statusable]

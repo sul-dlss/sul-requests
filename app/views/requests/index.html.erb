@@ -1,0 +1,14 @@
+<h1>Submitted requests</h1>
+
+<% if current_user&.aeon&.requests %>
+  <% current_user.aeon.requests.each do |request| %>
+    <%# This might need to change but we still have to figure out  %>
+    <% if request.data['appointment'] %>
+      <%= render Aeon::AppointmentRequestComponent.new(request:) %>
+    <% else %>
+      <%= render Aeon::DigitizedRequestComponent.new(request:) %>
+    <% end %>
+  <% end %>
+<% else %>
+You don't have an aeon account
+<% end %>
