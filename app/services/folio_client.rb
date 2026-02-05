@@ -389,7 +389,7 @@ class FolioClient
       response = request('/authn/login', json: { username: @username, password: @password }, method: :post)
       raise Error, response.body unless response.success?
 
-      response['x-okapi-token']
+      response['x-okapi-token'] || parse_json(response)&.dig('okapiToken')
     end
   end
 
