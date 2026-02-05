@@ -4,6 +4,8 @@
 #  Old requests controller that redirects new requests to the PatronRequestsController
 ###
 class RequestsController < ApplicationController
+  def index; end
+
   def new
     mapped_params = { 'instance_hrid' => new_params[:item_id],
                       'origin_location_code' => new_params[:origin_location],
