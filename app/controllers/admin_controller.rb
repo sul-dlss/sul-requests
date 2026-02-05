@@ -14,7 +14,7 @@ class AdminController < ApplicationController
     authorize! :read, :admin
     @requests = dashboard_patron_requests
     respond_to do |format|
-      format.html {} # for rails
+      format.html { @requests = @requests.page(page).per(per_page) } # for rails
       format.csv do
         send_data(generate_csv, filename: "requests_dashboard_#{Time.zone.today.strftime('%Y-%m-%d')}.csv", type: 'text/csv')
       end
@@ -105,7 +105,7 @@ class AdminController < ApplicationController
     if filtered?
       PatronRequestSearch.call(params)
     else
-      PatronRequest.recent.page(page).per(per_page)
+      PatronRequest.recent
     end
   end
 
