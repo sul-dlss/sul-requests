@@ -64,7 +64,7 @@ class Ability
       can :read, :admin
       can :manage, LibraryLocation, library: admin_libraries
       can :create, AdminComment, request: { origin_location_code: admin_libraries.flat_map do |x|
-        Folio::LibrariesStore.find_by(code: x)&.locations&.map(&:code) || []
+        Folio::Types.libraries.find_by(code: x)&.locations&.map(&:code) || []
       rescue StandardError
         []
       end }
