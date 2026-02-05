@@ -67,6 +67,10 @@ class User < ActiveRecord::Base
     sunetid.present?
   end
 
+  def aeon_username
+    email_address if sso_user?
+  end
+
   def library_id_user?
     library_id.present?
   end
