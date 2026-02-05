@@ -3,8 +3,8 @@
 module Aeon
   # Model for working with Aeon user information
   class User
-    def self.find_by(email:, type: 'Default')
-      aeon_client.find_sso_user(username: email) if type == 'Default'
+    def self.find_by(email_address:, sso: true)
+      aeon_client.find_sso_user(username: email_address) if sso
     end
 
     def self.aeon_client

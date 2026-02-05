@@ -67,10 +67,6 @@ class User < ActiveRecord::Base
     sunetid.present?
   end
 
-  def aeon_username
-    email_address if sso_user?
-  end
-
   def library_id_user?
     library_id.present?
   end
@@ -105,6 +101,12 @@ class User < ActiveRecord::Base
     self.email ||= begin
       patron.email if library_id_user? && patron.present?
     end
+  end
+
+  def aeon
+    return @aeon if defined?(@aeon)
+
+    @aeon = Aeon::User.find_by(email_address:, sso: sso_user?)
   end
 
   def patron
