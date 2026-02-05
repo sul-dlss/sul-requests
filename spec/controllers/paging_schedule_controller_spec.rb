@@ -56,7 +56,7 @@ RSpec.describe PagingScheduleController do
 
     describe 'when there is no schedule found' do
       before do
-        expect(PagingSchedule).to receive(:new).and_raise(PagingSchedule::ScheduleNotFound)
+        allow(PagingSchedule).to receive(:new).and_raise(PagingSchedule::ScheduleNotFound)
       end
 
       it 'responds with a 404 error' do
@@ -79,7 +79,7 @@ RSpec.describe PagingScheduleController do
 
     context 'for a pageable day' do
       before do
-        expect(PagingSchedule).to receive_messages(new: estimate)
+        allow(PagingSchedule).to receive_messages(new: estimate)
       end
 
       let(:estimate) { double(valid?: true) }
@@ -94,7 +94,7 @@ RSpec.describe PagingScheduleController do
 
     context 'for a non-pageable day' do
       before do
-        expect(PagingSchedule).to receive_messages(new: estimate)
+        allow(PagingSchedule).to receive_messages(new: estimate)
       end
 
       let(:estimate) { double(valid?: false) }

@@ -35,11 +35,6 @@ token_encrypt:
   secret: ''
   salt: ''
 
-ils:
-  bib_model: Folio::Instance
-  patron_model: Folio::Patron
-  pickup_destination_class: Folio::PickupDestination
-
 folio:
   okapi_url: <%= ENV.fetch('OKAPI_URL', 'http://example.com') %>
   graphql_url: <%= ENV.fetch('FOLIO_GRAPHQL_URL', 'http://example.com') %>
@@ -372,6 +367,11 @@ scan_destinations:
 
 # Aeon external request endpoint (ERE)
 aeon_ere_url: https://stanford.aeon.atlas-sys.com/logon?Action=11&Type=200
+
+# Aeon API settings. `api_key` is also required.
+aeon:
+  api_url: https://stanford-dev.aeon.atlas-sys.com/aeonapi
+
 RECAPTCHA:
   SITE_KEY: 6Lc6BAAAAAAAAChqRbQZcn_yyyyyyyyyyyyyyyyy
   SECRET_KEY: 6Lc6BAAAAAAAAKN3DRm6VA_xxxxxxxxxxxxxxxxx
@@ -421,8 +421,10 @@ mailroom: # M-F
     - 7:30am
     - 8:15am
     - 10:45am
-  MEDIA-CENTER:
-    - 10am
+  MEDIA-CENTER: # Same as GREEN
+    - 7:30am
+    - 8:15am
+    - 10:45am
   SAL: 4pm
   SAL3: 8:13am
   ENG: 8:45am
@@ -465,9 +467,9 @@ library_pull_schedule:
   LAW: 12pm
   MARINE-BIO: 9am
   MEDIA-CENTER:
-    - 10am
-    - 2pm
-    - 5pm
+    - 11am
+    - 3pm
+    - 10pm
   MUSIC: 9am
   RUMSEY-MAP: 12pm
   SAL: 1pm
@@ -503,6 +505,7 @@ allowed_visitor_pickups:
   - 'EAST-ASIA'
   - 'LANE-DESK'
   - 'MEDIA-CENTER'
+  - 'MUSIC'
   - 'SPEC'
   - 'RUMSEY-MAP'
 

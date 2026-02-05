@@ -306,7 +306,7 @@ RSpec.describe Folio::Item do
         JSON
       end
 
-      let(:patron_group_id) { Folio::Types.patron_groups.select { |_k, v| v['group'] == 'courtesy' }.keys.first }
+      let(:patron_group_id) { Folio::Types.patron_groups.find_by(group: 'courtesy').id }
 
       it 'is deliver-from-offsite AND noncirc' do
         expect(item.status_class).to eq('deliver-from-offsite noncirc')
@@ -357,7 +357,7 @@ RSpec.describe Folio::Item do
           }
         JSON
       end
-      let(:patron_group_id) { Folio::Types.patron_groups.select { |_k, v| v['group'] == 'courtesy' }.keys.first }
+      let(:patron_group_id) { Folio::Types.patron_groups.find_by(group: 'courtesy').id }
 
       it 'is a hold recall' do
         expect(item.status_class).to eq('hold-recall')

@@ -387,7 +387,7 @@ class FolioClient
   def session_token
     @session_token ||= begin
       response = request('/authn/login', json: { username: @username, password: @password }, method: :post)
-      raise response.body unless response.success?
+      raise Error, response.body unless response.success?
 
       response['x-okapi-token']
     end

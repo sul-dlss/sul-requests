@@ -29,10 +29,11 @@
   <body class="d-flex flex-column min-vh-100" data-controller="analytics">
     <header>
       <%= render 'shared/sul_header' %>
+
       <!-- Application header -->
       <div id="app-header" class="text-white bg-cardinal py-3 d-flex">
         <div class="container">
-          <%= tag.span t('.application_name'), class: "fs-3" %>
+          <%= tag.span 'My Library Account', class: "fs-3" %>
         </div>
       </div>
     </header>
@@ -40,6 +41,8 @@
       <%= render 'shared/flashes' %>
       <%= yield %>
     </main>
-    <%= render 'shared/su_global_footer' %>
+    <footer>
+      <%= render 'shared/su_global_footer' %>
+    </footer>
   </body>
 </html>

@@ -9,7 +9,7 @@ module Folio
       return folio_client.find_patron_by_sunetid(sunetid) if sunetid.present?
 
       nil
-    rescue HTTP::Error
+    rescue HTTP::Error, FolioClient::Error
       nil
     end
 
@@ -34,12 +34,12 @@ module Folio
     # this returns the full patronGroup object
     def patron_group
       @patron_group ||= Folio::NullPatron.visitor_patron_group if expired?
-      @patron_group ||= Folio::Types.patron_groups[patron_group_id] if patron_group_id
+      @patron_group ||= Folio::Types.patron_groups.find_by(id: patron_group_id) if patron_group_id
       @patron_group ||= Folio::NullPatron.visitor_patron_group
     end
 
     def patron_group_name
-      patron_group&.dig('group')
+      patron_group&.group
     end
 
     # always nil for a real patron, but filled in for a PseudoPatron
@@ -80,7 +80,7 @@ module Folio
     end
 
     def patron_description
-      patron_group['desc']
+      patron_group.desc
     end
 
     # @deprecated
@@ -195,7 +195,7 @@ module Folio
     end
 
     def policy_service
-      @policy_service ||= Folio::CirculationRules::PolicyService.new(patron_groups: [patron_group['id']])
+      @policy_service ||= Folio::CirculationRules::PolicyService.new(patron_groups: [patron_group.id])
     end
 
     def patron_blocks

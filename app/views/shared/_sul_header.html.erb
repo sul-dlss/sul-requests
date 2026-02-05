@@ -5,7 +5,7 @@
     <a
       class="mb-0 navbar-brand navbar-logo polychrome"
       href="https://library.stanford.edu"
-      >Stanford University Libraries</a
+      aria-label="Stanford University Libraries"></a
     >
     <nav aria-label="header menu">
       <ul class="list-unstyled d-flex gap-4 m-0">
@@ -35,10 +35,4 @@
 </div>
 <div id="feedback-form" class="feedback-form-container collapse">
     <%= render template: 'feedback_forms/new' unless current_page?(feedback_form_path) %>
-</div>
-<!-- Application header -->
-<div id="app-header" class="text-white bg-cardinal py-3 d-flex">
-  <div class="container">
-    <%= tag.span t('.application_name'), class: "fs-3" %>
-  </div>
 </div>

@@ -32,7 +32,11 @@ module Folio
     def library
       return if library_id.nil?
 
-      @library ||= Folio::Types.libraries.find_by(id: library_id)
+      if defined?(@library)
+        @library
+      else
+        @library = Folio::Types.libraries.find_by(id: library_id)
+      end
     end
 
     def pickup_location?

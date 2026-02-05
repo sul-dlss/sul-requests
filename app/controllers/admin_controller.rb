@@ -182,6 +182,6 @@ class AdminController < ApplicationController
   end
 
   def create_comment_params
-    params.require(:admin_comment).permit(:comment).to_h.merge(commenter: current_user.sunetid)
+    params.expect(admin_comment: [:comment]).to_h.merge(commenter: current_user.sunetid)
   end
 end

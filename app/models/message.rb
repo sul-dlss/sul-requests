@@ -7,7 +7,7 @@ class Message < ActiveRecord::Base
   scope :for_type, ->(type) { where(request_type: type) }
 
   def active?(date = Time.zone.now)
-    start_at <= date && end_at >= date if scheduled?
+    date.between?(start_at, end_at) if scheduled?
   end
 
   def scheduled?

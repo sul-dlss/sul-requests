@@ -3,7 +3,7 @@
 
 <% if current_user&.patron %> <%= render 'user_header' %> <% end %>
 
-<h1 class="fw-semibold mt-4"><%= @patron_request.item_title %></h1>
+<h1 class="fw-semibold mt-4 fs-1"><%= @patron_request.item_title %></h1>
 <% if @patron_request.selectable_items.one? %>
 <div class="lead fw-normal mb-4">
   Call number: <%= @patron_request.selectable_items.first&.callnumber %>
@@ -12,7 +12,7 @@
 
 <% if Ability.faculty.can?(:request_pickup, @patron_request) # if a "faculty" patron could have requested it or there aren't pickup locations available... it's probably the patron group %>
   <div class="alert alert-danger text-cardinal mt-4 col-lg-8">
-    This item is not available to request for <i><%= current_user&.patron&.patron_group&.dig('desc')&.sub(/cardholders?\.?$/, '') || 'Stanford Libraries' %></i> cardholders. If you have questions about library access, please contact <%= mail_to(contact_info[:email], contact_info[:email], class: 'alert-link') %> or call <%= contact_info[:phone] %> for assistance.
+    This item is not available to request for <i><%= current_user&.patron&.patron_group&.desc&.sub(/cardholders?\.?$/, '') || 'Stanford Libraries' %></i> cardholders. If you have questions about library access, please contact <%= mail_to(contact_info[:email], contact_info[:email], class: 'alert-link') %> or call <%= contact_info[:phone] %> for assistance.
   </div>
 <% else %>
   <div class="alert alert-danger shadow-sm d-flex gap-3 align-items-center mt-4 col-lg-8">

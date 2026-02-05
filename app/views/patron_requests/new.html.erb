@@ -6,7 +6,7 @@
 
 <%= render 'messages', messages: @patron_request.active_messages %>
 
-<h1 class="fw-semibold mt-4"><%= @patron_request.item_title %></h1>
+<h1 class="fw-semibold mt-4 fs-1"><%= @patron_request.item_title %></h1>
 <% if @patron_request.selectable_items.one? %>
   <% single_item = @patron_request.selectable_items.first %>
   <% unless single_item.instance && single_item.instance&.hrid != @patron_request.instance_hrid %>
@@ -20,7 +20,7 @@
 
   <% if single_item.bound_with_holdings_per_item.any? && (single_item.instance.nil? || single_item.instance&.hrid == @patron_request.instance_hrid) %>
     <div class="card col-lg-8 shadow-sm">
-      <div class="card-header h6 bg-light">This item is bound with</div>
+      <div class="card-header h4 bg-light">This item is bound with</div>
       <ul class="list-group list-group-flush">
         <% single_item.bound_with_holdings_per_item.each do |bound_with_child| %>
           <li class="list-group-item d-flex bg-light">
@@ -36,7 +36,7 @@
     <div class="lead fw-normal mb-4">Call number: <%= @patron_request.bib_data.holdings_records.first.call_number %></div>
 
     <div class="card col-lg-8 shadow-sm">
-      <div class="card-header h6 bg-light">This item is bound and shelved with</div>
+      <div class="card-header h4 bg-light">This item is bound and shelved with</div>
       <div class="card-body bg-light">
         <div><%= single_item.instance.title %></div>
         <div>Call number: <%= callnumber_label(single_item) %></div>

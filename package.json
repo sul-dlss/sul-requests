@@ -7,7 +7,6 @@
   "private": true,
   "scripts": {
     "test": "jest -c jest.config.js",
-    "build:css": "cp -r ./node_modules/bootstrap-icons/font/fonts ./app/assets/builds && sass ./app/assets/stylesheets/application.scss:./app/assets/builds/application.css --no-source-map --load-path=node_modules --load-path=vendor/assets/stylesheets",
     "build": "esbuild app/javascript/*.* --define:global=window --bundle --sourcemap --outdir=app/assets/builds --public-path=/assets"
   },
   "devDependencies": {
@@ -30,7 +29,6 @@
     "jquery": "^3.7.0",
     "list.js": "^2.3.1",
     "rails-ujs": "^5.2.8-1",
-    "sass": "^1.57.1",
     "trunk8": "^0.0.1"
   }
 }

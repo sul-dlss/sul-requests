@@ -53,7 +53,9 @@ class PagingScheduleController < ApplicationController
   end
 
   def origin_location
-    @origin_location ||= Folio::Types.locations.find_by(code: params[:origin_location])
+    return @origin_location if defined?(@origin_location)
+
+    @origin_location = Folio::Types.locations.find_by(code: params[:origin_location])
   end
 
   def destination_library_code

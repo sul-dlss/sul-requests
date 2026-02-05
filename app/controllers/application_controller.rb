@@ -4,7 +4,11 @@
 class ApplicationController < ActionController::Base
   include BotChallengePage::Controller
 
-  layout 'application'
+  if Settings.features.requests_redesign
+    layout 'application_redesign'
+  else
+    layout 'application'
+  end
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
@@ -38,7 +42,7 @@ class ApplicationController < ActionController::Base
     if params[:referrer]
       redirect_to post_action_redirect_url
     else
-      redirect_back fallback_location: root_url
+      redirect_back_or_to(root_url)
     end
   end
 
