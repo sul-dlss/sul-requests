@@ -4,7 +4,9 @@ module Aeon
   # Model for working with Aeon user information
   class User
     def self.find_by(email_address:, sso: true)
-      aeon_client.find_sso_user(username: email_address) if sso
+      aeon_user = aeon_client.find_user(username: email_address)
+
+      aeon_user if sso && aeon_user.sso_auth?
     end
 
     def self.aeon_client
