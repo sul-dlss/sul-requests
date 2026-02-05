@@ -181,5 +181,5 @@ For items with finding aids, the user will first be redirected to the Online Arc
 
 - [SPEC request via aeon](http://localhost:3000/patron_requests/new?instance_hrid=4103002&origin_location_code=SPEC-SAL3-U-ARCHIVES)
 - [EAST-ASIA request via aeon](http://localhost:3000/patron_requests/new?instance_hrid=12062439&origin_location_code=EAL-LOCKED-OVERSIZE)
-- [SPEC request via aeon; multiple items](http://localhost:3000/patron_requests/new?instance_hrid=11912879&origin_location_code=SPEC-SAL3-U-ARCHIVES)
-- [SPEC request with finding aid via OAC](http://localhost:3000/patron_requests/new?instance_hrid=4086059&origin_location_code=SPEC-U-ARCHIVES)
+- [SPEC request via aeon; multiple items](http://localhost:3000/patron_requests/new?instance_hrid=139855&origin_location_code=SPEC-SAL3-RBC)
+- [SPEC request with finding aid via Archives](http://localhost:3000/patron_requests/new?instance_hrid=4086059&origin_location_code=SPEC-U-ARCHIVES)
