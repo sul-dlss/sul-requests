@@ -17,6 +17,21 @@ class AeonClient
     "#<#{self.class.name}:#{object_id} @base_url=\"#{@base_url}\">"
   end
 
+  def find_sso_user(username:)
+    response = get("Users/#{CGI.escape(username)}")
+    case response.status
+    when 200
+      aeon_user = Aeon::User.new(parse_json(response))
+      raise NotFoundError, "No Aeon account found for #{username}" unless aeon_user.sso_auth?
+
+      aeon_user
+    when 404
+      raise NotFoundError, "No Aeon account found for #{username}"
+    else
+      raise "Aeon API error: #{response.status}"
+    end
+  end
+
   # Fetch requests for a user by their Aeon username
   # @param username [String] the user's Aeon username
   # @return [Array<Aeon::Request>]
