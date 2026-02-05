@@ -433,6 +433,7 @@ mailroom: # M-F
   EARTH-SCI: 9:15am
   LANE: 9:15am
   RWC: 9:30am
+  ARS: 9:45am
   MUSIC: 9:45am
   LAW: 9:45am
   TANNER: 10:15am
@@ -452,6 +453,7 @@ mailroom: # M-F
   # MEDIA-CENTER to GREEN is funny
 
 library_pull_schedule:
+  ARS: 9am
   ART: 12pm
   BUSINESS: 8:30am
   EARTH-SCI: 9am
