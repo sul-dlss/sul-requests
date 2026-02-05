@@ -37,7 +37,7 @@ class AeonClient
 
     case response.status
     when 200
-      parse_json(response).map { |data| Aeon::Request.new(data) }
+      parse_json(response).map { |data| Aeon::Request.from_dynamic(data) }
     when 404
       raise NotFoundError, "No Aeon account found for #{username}"
     else
