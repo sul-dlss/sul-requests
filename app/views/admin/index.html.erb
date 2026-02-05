@@ -3,11 +3,14 @@
 <div class='admin-requests'>
   <%= render SearchFormComponent.new(form_url: admin_index_path, searchable: true, classes: 'd-inline-flex gap-2 align-items-start flex-wrap') %>
 
-  <% if filtered? %>
-    <h2 class="text-cardinal">Filtered Requests</h2>
-  <% else %>
-    <h2 class="text-cardinal">Recent Requests</h2>
-  <% end %>
+  <div class="d-flex justify-content-between">
+    <% if filtered? %>
+      <h2 class="text-cardinal">Filtered Requests</h2>
+    <% else %>
+      <h2 class="text-cardinal">Recent Requests</h2>
+    <% end %>
+    <%= link_to 'Export CSV', admin_index_path(request.query_parameters.merge(format: :csv)), class: 'btn btn-outline-secondary' %>
+  </div>
 
   <table class="table table-striped">
     <thead>
