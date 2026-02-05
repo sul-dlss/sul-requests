@@ -9,6 +9,10 @@ module Aeon
       @data = data
     end
 
+    def aeon_link
+      data['itemInfo1']
+    end
+
     def author
       data['itemAuthor']
     end
