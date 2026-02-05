@@ -103,6 +103,12 @@ class User < ActiveRecord::Base
     end
   end
 
+  def aeon
+    return @aeon if defined?(@aeon)
+
+    @aeon = Aeon::User.find_by(email_address:, sso: sso_user?)
+  end
+
   def patron
     @patron ||= begin
       folio_patron = if patron_key.present?
