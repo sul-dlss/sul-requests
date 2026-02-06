@@ -2,9 +2,12 @@
 
 <% if current_user&.aeon&.requests %>
   <% current_user.aeon.requests.each do |request| %>
-    <%# This might need to change but we still have to figure out  %>
-    <%= render Aeon::DigitizedRequestComponent.new(request:) %>
+    <% if request.digitized_request %>
+      <%= render Aeon::DigitizedRequestComponent.new(request:) %>
+    <% else %>
+      <%# Non digitized code %>
+    <% end %>
   <% end %>
 <% else %>
-You don't have an aeon account
+  You don't have an aeon account
 <% end %>
