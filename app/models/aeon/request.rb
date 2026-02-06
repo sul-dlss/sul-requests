@@ -3,50 +3,38 @@
 module Aeon
   # Wraps an Aeon request record
   class Request
-    attr_reader :data
+    attr_reader :aeon_link, :author, :call_number, :creation_date,
+                :document_type, :location, :title, :transaction_date,
+                :transaction_number, :transaction_status
 
-    def initialize(data)
-      @data = data
+    def self.from_dynamic(dyn) # rubocop:disable Metrics/MethodLength
+      new(
+        aeon_link: dyn['itemInfo1'],
+        author: dyn['itemAuthor'],
+        call_number: dyn['callNumber'],
+        creation_date: Time.zone.parse(dyn.fetch('creationDate')),
+        document_type: dyn['documentType'],
+        location: dyn['location'],
+        title: dyn['itemTitle'],
+        transaction_date: Time.zone.parse(dyn.fetch('transactionDate')),
+        transaction_number: dyn['transactionNumber'],
+        transaction_status: dyn['transactionStatus']
+      )
     end
 
-    def aeon_link
-      data['itemInfo1']
-    end
-
-    def author
-      data['itemAuthor']
-    end
-
-    def call_number
-      data['callNumber']
-    end
-
-    def creation_date
-      Time.zone.parse(data['creationDate']) if data['creationDate']
-    end
-
-    def document_type
-      data['documentType']
-    end
-
-    def location
-      data['location']
-    end
-
-    def title
-      data['itemTitle']
-    end
-
-    def transaction_date
-      Time.zone.parse(data['transactionDate']) if data['transactionDate']
-    end
-
-    def transaction_number
-      data['transactionNumber']
-    end
-
-    def transaction_status
-      data['transactionStatus']
+    def initialize(aeon_link: nil, author: nil, call_number: nil, creation_date: nil, # rubocop:disable Metrics/ParameterLists
+                   document_type: nil, location: nil, title: nil, transaction_date: nil,
+                   transaction_number: nil, transaction_status: nil)
+      @aeon_link = aeon_link
+      @author = author
+      @call_number = call_number
+      @creation_date = creation_date
+      @document_type = document_type
+      @location = location
+      @title = title
+      @transaction_date = transaction_date
+      @transaction_number = transaction_number
+      @transaction_status = transaction_status
     end
   end
 end

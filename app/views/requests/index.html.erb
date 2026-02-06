@@ -3,11 +3,7 @@
 <% if current_user&.aeon&.requests %>
   <% current_user.aeon.requests.each do |request| %>
     <%# This might need to change but we still have to figure out  %>
-    <% if request.data['appointment'] %>
-      <%= render Aeon::AppointmentRequestComponent.new(request:) %>
-    <% else %>
-      <%= render Aeon::DigitizedRequestComponent.new(request:) %>
-    <% end %>
+    <%= render Aeon::DigitizedRequestComponent.new(request:) %>
   <% end %>
 <% else %>
 You don't have an aeon account
