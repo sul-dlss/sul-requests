@@ -54,8 +54,6 @@ Rails.application.routes.draw do
   resources :mediated_pages, controller: :requests, only: [], concerns: [:statusable]
   resources :hold_recalls, controller: :requests, only: [], concerns: [:statusable]
 
-  get 'admin/old_requests' => 'admin#old_requests_index', as: :old_requests
-
   resources :admin, only: [:index, :show] do
     member do
       get :holdings, as: :holdings

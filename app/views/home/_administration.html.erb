@@ -1,7 +1,7 @@
 <section class="home-page-section">
   <h2>Administration</h2>
   <ul>
-    <li><%= link_to 'Requests dashboard', admin_index_path %> (<%= link_to 'Older requests', old_requests_path %>)</li>
+    <li><%= link_to 'Requests dashboard', admin_index_path %></li>
     <li><%= link_to "Requests job queue", main_app.sidekiq_web_path %></li>
     <li><%= link_to "Broadcast messages", messages_path %> </li>
     <li><%= link_to "Paging schedule", paging_schedule_index_path %> </li>
