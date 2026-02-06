@@ -1,0 +1,193 @@
+{
+  "photoduplicationStatuses": [],
+  "transactionStatuses": [
+    {
+      "id": 2,
+      "name": "Submitted by User"
+    },
+    {
+      "id": 3,
+      "name": "Re-Submitted by User"
+    },
+    {
+      "id": 4,
+      "name": "Submitted by Staff"
+    },
+    {
+      "id": 5,
+      "name": "Awaiting User Review"
+    },
+    {
+      "id": 6,
+      "name": "Awaiting Future Request Processing"
+    },
+    {
+      "id": 8,
+      "name": "Awaiting Request Processing"
+    },
+    {
+      "id": 11,
+      "name": "In Item Retrieval"
+    },
+    {
+      "id": 12,
+      "name": "Item Checked Out"
+    },
+    {
+      "id": 14,
+      "name": "Item On Hold"
+    },
+    {
+      "id": 16,
+      "name": "Remove from Hold"
+    },
+    {
+      "id": 17,
+      "name": "Awaiting Item Reshelving"
+    },
+    {
+      "id": 18,
+      "name": "Item Reshelved"
+    },
+    {
+      "id": 22,
+      "name": "In Photoduplication"
+    },
+    {
+      "id": 26,
+      "name": "Request Merged"
+    },
+    {
+      "id": 28,
+      "name": "Cancelled by User"
+    },
+    {
+      "id": 30,
+      "name": "Cancelled by Staff"
+    },
+    {
+      "id": 32,
+      "name": "Request Finished"
+    },
+    {
+      "id": 36,
+      "name": "In Cataloging"
+    },
+    {
+      "id": 37,
+      "name": "On Exhibit - Internal"
+    },
+    {
+      "id": 38,
+      "name": "In Conservation"
+    },
+    {
+      "id": 39,
+      "name": "Item Checked Out to Staff"
+    },
+    {
+      "id": 40,
+      "name": "In DPG - Green"
+    },
+    {
+      "id": 41,
+      "name": "In DPG - Outsource"
+    },
+    {
+      "id": 42,
+      "name": "In DPG - SRWC"
+    },
+    {
+      "id": 43,
+      "name": "In SMPL - SRWC"
+    },
+    {
+      "id": 44,
+      "name": "In SMPL - Outsource"
+    },
+    {
+      "id": 45,
+      "name": "In BDPL - SRWC"
+    },
+    {
+      "id": 46,
+      "name": "In BDPL - Outsource"
+    },
+    {
+      "id": 47,
+      "name": "SAL3 Request"
+    },
+    {
+      "id": 48,
+      "name": "Submitted to SAL3"
+    },
+    {
+      "id": 49,
+      "name": "Awaiting Delivery from SAL3"
+    },
+    {
+      "id": 50,
+      "name": "Awaiting Return to SAL3"
+    },
+    {
+      "id": 51,
+      "name": "Error Processing SAL3 Request"
+    },
+    {
+      "id": 52,
+      "name": "In Transit from SAL3"
+    },
+    {
+      "id": 53,
+      "name": "In Transit to Conservation"
+    },
+    {
+      "id": 54,
+      "name": "In Transit to SPEC Cataloging"
+    },
+    {
+      "id": 55,
+      "name": "Staff process interrupted"
+    },
+    {
+      "id": 56,
+      "name": "On Exhibit - External"
+    },
+    {
+      "id": 57,
+      "name": "In Transit to DPG"
+    },
+    {
+      "id": 58,
+      "name": "Awaiting ILS Data Import"
+    },
+    {
+      "id": 59,
+      "name": "Awaiting Manual Data Import"
+    },
+    {
+      "id": 62,
+      "name": "In Archives Workroom Green West 301"
+    },
+    {
+      "id": 63,
+      "name": "In Spec Workroom Green West 202"
+    },
+    {
+      "id": 65,
+      "name": "In RWC Processing"
+    },
+    {
+      "id": 75,
+      "name": "In Transit to SMPL  - SRWC"
+    },
+    {
+      "id": 76,
+      "name": "Awaiting Email Response"
+    },
+    {
+      "id": 77,
+      "name": "Awaiting Email From User"
+    }
+  ]
+}
