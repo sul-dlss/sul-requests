@@ -30,7 +30,7 @@ class FeedbackFormsController < ApplicationController
       errors << 'You have filled in a field that makes you appear as a spammer.' \
                 'Please follow the directions for the individual form fields.'
     end
-    if params[:user_agent] =~ url_regex || params[:viewport] =~ url_regex
+    if params[:user_agent].to_s =~ url_regex || params[:viewport].to_s =~ url_regex
       errors << 'Your message appears to be spam, and has not been sent.'
     end
     errors
