@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_14_175606) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_06_002343) do
   create_table "admin_comments", force: :cascade do |t|
     t.string "commenter"
     t.string "comment"
@@ -47,6 +47,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_14_175606) do
   create_table "patron_requests", force: :cascade do |t|
     t.string "patron_id"
     t.string "patron_email"
+    t.string "display_type"
     t.string "instance_hrid"
     t.date "needed_date"
     t.string "service_point_code"
@@ -59,6 +60,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_14_175606) do
     t.datetime "updated_at", null: false
     t.string "mediation_status"
     t.string "request_type"
+    t.index ["display_type"], name: "index_patron_requests_on_display_type"
     t.index ["folio_request_id"], name: "index_patron_requests_on_folio_request_id"
     t.index ["instance_hrid"], name: "index_patron_requests_on_instance_hrid"
     t.index ["mediation_status"], name: "index_patron_requests_on_mediation_status"

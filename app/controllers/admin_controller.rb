@@ -14,7 +14,7 @@ class AdminController < ApplicationController
     authorize! :read, :admin
     @requests = dashboard_patron_requests
     respond_to do |format|
-      format.html {} # for rails
+      format.html { @requests = @requests.page(page).per(per_page) } # for rails
       format.csv do
         send_data(generate_csv, filename: "requests_dashboard_#{Time.zone.today.strftime('%Y-%m-%d')}.csv", type: 'text/csv')
       end
@@ -59,7 +59,7 @@ class AdminController < ApplicationController
 
   def csv_row(row) # rubocop:disable Metrics/AbcSize
     [row.created_at.year, row.created_at.month, row.created_at.day,
-     row.type, row.folio_location&.name || row.origin_location_code,
+     row.display_type, row.folio_location&.name || row.origin_location_code,
      row.pickup_service_point&.name || row.service_point_code,
      row.item_title, row.patron_email || row.patron_name || row.patron_id]
   end
@@ -105,7 +105,7 @@ class AdminController < ApplicationController
     if filtered?
       PatronRequestSearch.call(params)
     else
-      PatronRequest.recent.page(page).per(per_page)
+      PatronRequest.recent
     end
   end
 

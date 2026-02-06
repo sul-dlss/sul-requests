@@ -3,7 +3,14 @@
 <div class='admin-requests'>
   <%= render SearchFormComponent.new(form_url: admin_index_path, searchable: true, classes: 'd-inline-flex gap-2 align-items-start flex-wrap') %>
 
-  <h2 class="text-cardinal">Recent Requests</h2>
+  <div class="d-flex justify-content-between">
+    <% if filtered? %>
+      <h2 class="text-cardinal">Filtered Requests</h2>
+    <% else %>
+      <h2 class="text-cardinal">Recent Requests</h2>
+    <% end %>
+    <%= link_to 'Export CSV', admin_index_path(request.query_parameters.merge(format: :csv)), class: 'btn btn-outline-secondary' %>
+  </div>
 
   <table class="table table-striped">
     <thead>
@@ -20,7 +27,7 @@
     <tbody>
       <% @requests.each do |request| %>
         <tr>
-          <td><%= request.type %></td>
+          <td><%= request.display_type %></td>
           <td><%= request.folio_location&.name || request.origin_location_code %></td>
           <td><%= request.pickup_service_point&.name || request.service_point_code %></td>
           <td><%= searchworks_link(request.instance_hrid, request.item_title, 'data-behavior' => 'truncate') %></td>
@@ -35,6 +42,6 @@
     </tbody>
   </table>
 
-  <%= paginate @requests, theme: 'bootstrap-5' unless filtered? %>
+  <%= paginate @requests, theme: 'bootstrap-5' %>
 
 </div>

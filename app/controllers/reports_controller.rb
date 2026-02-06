@@ -33,7 +33,7 @@ class ReportsController < ApplicationController
 
   def record_data(records)
     service_point_codes, types = records.map do |record|
-      [record.service_point_code, record.type]
+      [record.service_point_code, record.display_type]
     end.transpose
     [service_point_codes.uniq.compact.join(', '), types.uniq.compact.join(', ')]
   end

@@ -4,14 +4,14 @@ require 'rails_helper'
 
 RSpec.describe PatronRequestSearch do
   describe '#call' do
-    subject { described_class.call(ActionController::Parameters.new(request_type: ['Page'])) }
+    subject { described_class.call({ request_type: ['Page'] }.with_indifferent_access) }
 
     before do
-      mock_all = [build(:page_patron_request), build(:page_patron_request), build(:mediated_patron_request)]
-
-      allow(PatronRequest).to receive(:all).and_return(mock_all)
+      create(:page_patron_request)
+      create(:page_patron_request)
+      create(:mediated_patron_request)
     end
 
-    it { is_expected.to have_attributes(length: 2) }
+    it { is_expected.to have_attributes(count: 2) }
   end
 end
