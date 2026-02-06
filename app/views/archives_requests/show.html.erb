@@ -1,0 +1,115 @@
+<div class="container mt-4">
+  <h1>Archives Request</h1>
+  <% if @ead_fields %>
+    <div class="card mb-4">
+      <div class="card-header">
+        <h2>Collection Information</h2>
+      </div>
+      <div class="card-body">
+        <p>Title: <%= @ead_fields[:title] || 'Not available' %></p>
+        <p>Identifier: <%= @ead_fields[:identifier] || 'Not available' %></p>
+        <p>Repository: <%= @ead_fields[:repository] || 'Not available' %></p>
+        <p>Date Range: 1962-2018</p>
+        <p>Extent: <%= @ead_fields[:extent] || 'Not available' %></p>
+        <p>Creator: <%= @ead_fields[:creator] || 'Not available' %></p>
+        <p>Languages: <%= @ead_fields[:languages] || 'Not available' %></p>
+        <p>Conditions Governing Use: <%= @ead_fields[:conditions_governing_use] || 'Not available' %></p>
+        <p>Conditions Governing Access: <%= @ead_fields[:conditions_governing_access] || 'Not available' %></p>
+        <p>Cite As: <%= @ead_fields[:cite_as] || 'Not available' %></p>
+        <p>Source URL: <%= @ead_url %></p>
+      </div>
+    </div>
+    <% if @ead_fields[:repository_contact] %>
+      <div class="card mb-4">
+        <div class="card-header">
+          <h2>Repository Contact Information</h2>
+        </div>
+        <div class="card-body">
+          <% if @ead_fields[:repository] %>
+            <p><strong><%= @ead_fields[:repository] %></strong></p>
+          <% end %>
+          <% if @ead_fields[:repository_contact][:address] %>
+            <p>
+              <% @ead_fields[:repository_contact][:address].each do |line| %>
+                <%= line %><br>
+              <% end %>
+            </p>
+          <% end %>
+          <% if @ead_fields[:repository_contact][:email] %>
+            <p>
+              Email: <a href="mailto:<%= @ead_fields[:repository_contact][:email] %>"><%= @ead_fields[:repository_contact][:email] %></a>
+            </p>
+          <% end %>
+          <% if @ead_fields[:repository_contact][:website] %>
+            <p>
+              Website: <a href="<%= @ead_fields[:repository_contact][:website] %>" target="_blank"><%= @ead_fields[:repository_contact][:website] %></a>
+            </p>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+    <% if @ead_fields[:series_and_subseries]&.any? %>
+      <div class="card mb-4" data-controller="archives-series">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h2>Collection Contents</h2>
+          <div>
+            <button class="btn btn-sm btn-outline-secondary" data-action="click->archives-series#expandAll">Expand All</button>
+            <button class="btn btn-sm btn-outline-secondary" data-action="click->archives-series#collapseAll">Collapse All</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <%# Loop through each series in the collection %>
+          <% @ead_fields[:series_and_subseries].each_with_index do |series, index| %>
+            <div class="mb-4">
+              <%# Collapsible series header %>
+              <%= link_to "#series-#{index}", 
+                  class: "series-header text-decoration-none text-dark d-block",
+                  data: { bs_toggle: 'collapse' },
+                  aria: { expanded: false, controls: "series-#{index}" } do %>
+                <h5 class="d-inline"><%= series[:title] %></h5>
+              <% end %>
+              <%# Collapsible series content %>
+              <div id="series-<%= index %>" class="collapse series-content" data-archives-series-target="content">
+                <% if series[:items]&.any? %>
+                  <% current_box = nil %>
+                  <% series[:items].each do |item| %>
+                    <% if item[:containers] %>
+                      <%# Find the box container %>
+                      <% box_info = item[:containers].find { |c| c[:type] == 'Box' } %>
+                      <%# When box changes, close previous list and start new box section %>
+                      <% if box_info && box_info[:value] != current_box %>
+                        <% current_box = box_info[:value] %>
+                        <%# Close previous box's item list if this isn't the first box %>
+                        <% unless current_box.nil? %>
+                        </ul>
+                      <% end %>
+                      <%# Display box header %>
+                      <div class="mt-3 mb-2"><strong>Box <%= current_box %></strong></div>
+                      <%# Open list for this box's items %>
+                      <ul class="list-unstyled ms-4">
+                      <% end %>
+                      <li class="mb-1">
+                        <% folder_info = item[:containers].find { |c| c[:type] == 'Folder' } %>
+                        <% if folder_info %>
+                          <small class="text-muted">Folder <%= folder_info[:value] %>:</small>
+                        <% end %>
+                        <%= item[:title] %>
+                      </li>
+                    <% else %>
+                      <%# Items without containers %>
+                      <li class="mb-1"><%= item[:title] %></li>
+                    <% end %>
+                  <% end %>
+                  <%# Close the final box's item list %>
+                  <% if current_box %>
+                  </ul>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+</div>
