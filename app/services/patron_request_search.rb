@@ -14,10 +14,10 @@ class PatronRequestSearch
 
   def call
     patron_request = PatronRequest
+    patron_request = search_request_type(patron_request)
     patron_request = search_date_range(patron_request)
     patron_request = search_origin_library(patron_request)
-    patron_request = search_destination_service_point(patron_request)
-    search_request_type(patron_request)
+    search_destination_service_point(patron_request)
   end
 
   def search_date_range(patron_request)
@@ -42,27 +42,9 @@ class PatronRequestSearch
     patron_request.where(service_point_code: params['service_point_code'])
   end
 
-  def search_request_type(patron_request) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
+  def search_request_type(patron_request)
     return patron_request unless params['request_type']
 
-    filtered_request = patron_request.where(request_type: params['request_type'].flat_map do |type|
-      case type
-      when 'Mediated page'
-        ['mediated', 'mediated/approved', 'mediated/done']
-      when 'Hold', 'Recall', 'Page'
-        'pickup'
-      else
-        type.downcase
-      end
-    end)
-
-    fulfillment_types = []
-
-    fulfillment_types << nil if params['request_type']&.include?('Page')
-    fulfillment_types << 'hold' if params['request_type']&.include?('Hold')
-    fulfillment_types << 'recall' if params['request_type']&.include?('Recall')
-    filtered_request = filtered_request.where(fulfillment_type: fulfillment_types) if fulfillment_types.length.positive?
-
-    filtered_request
+    patron_request.where(display_type: params['request_type'])
   end
 end

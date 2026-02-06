@@ -43,6 +43,7 @@ class PatronRequest < ApplicationRecord
 
   before_create do
     self.request_type = 'mediated' if mediateable? && !request_type.start_with?('mediated')
+    self.display_type = calculate_display_type
     self.item_title = bib_data&.title
     self.estimated_delivery = earliest_delivery_estimate(scan: scan?)&.dig('display_date')
   end
@@ -89,7 +90,11 @@ class PatronRequest < ApplicationRecord
     super
   end
 
-  def type
+  def display_type
+    super || calculate_display_type
+  end
+
+  def calculate_display_type
     Settings.patron_request_type_mapping[request_type] ||
       Settings.patron_request_type_mapping[fulfillment_type] ||
       Settings.patron_request_type_mapping['page']

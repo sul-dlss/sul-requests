@@ -59,7 +59,7 @@ class AdminController < ApplicationController
 
   def csv_row(row) # rubocop:disable Metrics/AbcSize
     [row.created_at.year, row.created_at.month, row.created_at.day,
-     row.type, row.folio_location&.name || row.origin_location_code,
+     row.display_type, row.folio_location&.name || row.origin_location_code,
      row.pickup_service_point&.name || row.service_point_code,
      row.item_title, row.patron_email || row.patron_name || row.patron_id]
   end

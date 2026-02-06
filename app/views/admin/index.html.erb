@@ -27,7 +27,7 @@
     <tbody>
       <% @requests.each do |request| %>
         <tr>
-          <td><%= request.type %></td>
+          <td><%= request.display_type %></td>
           <td><%= request.folio_location&.name || request.origin_location_code %></td>
           <td><%= request.pickup_service_point&.name || request.service_point_code %></td>
           <td><%= searchworks_link(request.instance_hrid, request.item_title, 'data-behavior' => 'truncate') %></td>
