@@ -3,6 +3,8 @@
 module Aeon
   # Model for working with Aeon user information
   class User
+    attr_reader :username
+
     def self.find_by(email_address:, sso: true)
       aeon_user = aeon_client.find_user(username: email_address)
 
@@ -13,22 +15,21 @@ module Aeon
       AeonClient.new
     end
 
-    attr_reader :user_info
-
-    def initialize(fields = {})
-      @user_info = fields
+    def self.from_dynamic(dyn)
+      new(username: dyn['username'], auth_type: dyn['authType'])
     end
 
-    def username
-      user_info['username']
-    end
-
-    def auth_type
-      user_info['authType']
+    def initialize(username:, auth_type:)
+      @username = username
+      @auth_type = auth_type
     end
 
     def sso_auth?
-      auth_type == 'Default'
+      @auth_type == 'Default'
+    end
+
+    def appointments
+      self.class.aeon_client.appointments_for(username:)
     end
 
     def requests
