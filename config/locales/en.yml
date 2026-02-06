@@ -50,10 +50,6 @@ en:
       scan:
         section_title: "Limited to one article/chapter, not to exceed 50 pages or 10% of the work"
   admin:
-    old_requests_index:
-      hold_recalls: "Hold recalls"
-      mediated_pages: "Mediated pages"
-      pages: "Pages"
     approved_note:
       all_approved: "Done"
   approval_status:
