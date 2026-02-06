@@ -4,9 +4,7 @@ import { Collapse } from "bootstrap"
 export default class extends Controller {
   static targets = ["content"]
 
-  connect() {
-    console.log("ArchivesSeriesController connected");
-  }
+  connect() {}
 
   expandAll(event) {
     event.preventDefault()
