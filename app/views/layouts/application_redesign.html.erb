@@ -27,17 +27,30 @@
   </head>
 
   <body class="d-flex flex-column min-vh-100" data-controller="analytics">
+    <nav id="skip-link" class="visually-hidden-focusable" aria-label="Skip links">
+      <div class="container-xl">
+        <a href="#main" class="element-invisible element-focusable" data-turbo="false">Skip to main content</a>
+      </div>
+    </nav>
     <header>
-      <%= render 'shared/sul_header' %>
+      <div class="identity-bar">
+        <div class="container">
+          <a class="su-brand-bar__logo" href="https://www.stanford.edu">Stanford University</a>
+        </div>
+      </div>
+      <%= render 'shared/sul_header_redesign' %>
 
       <!-- Application header -->
       <div id="app-header" class="text-white bg-cardinal py-3 d-flex">
-        <div class="container">
-          <%= tag.span 'My Library Account', class: "fs-3" %>
+        <div class="container d-flex align-items-center gap-2 flex-grow-1">
+          <span class="rosette-logo me-1 align-self-start flex-shrink-0" aria-hidden="true"></span>
+          <div class="h1 my-0">
+            <%= tag.span 'My Library Account', class: 'text-white fs-2' %>
+          </div>
         </div>
       </div>
     </header>
-    <main class="flex-fill container my-3">
+    <main id="main" class="flex-fill container my-3">
       <%= render 'shared/flashes' %>
       <%= yield %>
     </main>
