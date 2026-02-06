@@ -47,10 +47,8 @@ class EadClient
   # @return [Nokogiri::XML::Document] Parsed XML document without namespace
   def parse_xml(xml_content)
     doc = Nokogiri::XML(xml_content)
-
-    # Strip namespace using XSLT transformation for simpler XPath queries
-    transformed_xml = namespace_removal_xslt.transform(doc).to_xml
-    Nokogiri::XML(transformed_xml)
+    doc.remove_namespaces!
+    doc
   rescue Nokogiri::XML::SyntaxError => e
     raise "Invalid XML format: #{e.message}"
   end
@@ -79,14 +77,6 @@ class EadClient
   end
 
   private
-
-  ##
-  # Loads the XSLT stylesheet for removing namespaces from EAD XML
-  def namespace_removal_xslt
-    @namespace_removal_xslt ||= Nokogiri::XSLT(
-      Rails.root.join('app/xslt/ead_remove_namespace.xsl').read
-    )
-  end
 
   def extract_title(doc)
     doc.xpath('//titleproper').first&.text&.strip
