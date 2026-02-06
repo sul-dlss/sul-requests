@@ -4,8 +4,7 @@ module Aeon
   # Wraps an Aeon appointment record
   class Appointment
     attr_reader :id, :username, :reading_room_id, :start_time, :stop_time,
-                :name, :available_to_proxies, :appointment_status,
-                :reading_room, :creation_date
+                :name, :appointment_status, :reading_room, :creation_date
 
     def self.from_dynamic(dyn) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       new(
@@ -35,6 +34,10 @@ module Aeon
       @appointment_status = appointment_status
       @reading_room = reading_room
       @creation_date = creation_date
+    end
+
+    def available_to_proxies?
+      @available_to_proxies
     end
   end
 end

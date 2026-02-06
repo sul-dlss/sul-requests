@@ -3,9 +3,8 @@
 module Aeon
   # Wraps an Aeon request record
   class Request
-    attr_reader :aeon_link, :appointment, :appointment_id, :author,
-                :call_number, :creation_date, :document_type, :location,
-                :title, :transaction_date, :transaction_number, :transaction_status
+    attr_reader :aeon_link, :appointment, :appointment_id, :author, :call_number, :creation_date, :document_type,
+                :location, :title, :transaction_date, :transaction_number, :transaction_status
 
     def self.from_dynamic(dyn) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       new(

@@ -62,7 +62,19 @@ RSpec.describe Aeon::Appointment do
 
     it 'parses reading room policies' do
       policies = appointment.reading_room.policies
-      expect(policies.first).to have_attributes(id: 4, appointment_required: true)
+      expect(policies.first).to have_attributes(id: 4, reading_room_id: 5)
+    end
+  end
+
+  describe '#available_to_proxies?' do
+    it 'returns true when available_to_proxies' do
+      request = described_class.new(available_to_proxies: true)
+      expect(request).to be_available_to_proxies
+    end
+
+    it 'returns false when not available_to_proxies' do
+      request = described_class.new
+      expect(request).not_to be_available_to_proxies
     end
   end
 end

@@ -3,11 +3,8 @@
 module Aeon
   # Wraps an Aeon reading room policy record
   class ReadingRoomPolicy
-    attr_reader :id, :reading_room_id, :user_status, :appointment_required,
-                :appointment_min_lead_days, :appointment_max_lead_days,
-                :request_min_lead_days, :request_max_lead_days,
-                :auto_confirm_appointments, :appointment_reminder_days,
-                :notify_appointment_received
+    attr_reader :id, :reading_room_id, :user_status, :appointment_min_lead_days, :appointment_max_lead_days,
+                :request_min_lead_days, :request_max_lead_days, :appointment_reminder_days
 
     def self.from_dynamic(dyn) # rubocop:disable Metrics/MethodLength
       new(
@@ -41,6 +38,18 @@ module Aeon
       @auto_confirm_appointments = auto_confirm_appointments
       @appointment_reminder_days = appointment_reminder_days
       @notify_appointment_received = notify_appointment_received
+    end
+
+    def appointment_required?
+      @appointment_required
+    end
+
+    def auto_confirm_appointments?
+      @auto_confirm_appointments
+    end
+
+    def notify_appointment_received?
+      @notify_appointment_received
     end
   end
 end

@@ -3,10 +3,8 @@
 module Aeon
   # Wraps an Aeon reading room record
   class ReadingRoom
-    attr_reader :id, :name, :available_seats, :time_zone_id,
-                :min_appointment_length, :max_appointment_length,
-                :appointment_padding, :appointment_increment, :last_modified_time,
-                :sites, :open_hours, :policies
+    attr_reader :id, :name, :available_seats, :time_zone_id, :min_appointment_length, :max_appointment_length,
+                :appointment_padding, :appointment_increment, :last_modified_time, :sites, :open_hours, :policies
 
     def self.from_dynamic(dyn) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       new(
