@@ -1,0 +1,28 @@
+<div class="card mb-4">
+  <div class="card-header">
+    <%= status_text %>
+  </div>
+  <div class="card-body">
+    <h2 class="h3"><%= title %></h2>
+    <div class="d-flex">
+      <div class="me-4">
+        <replace_with_icon><%= document_type %><% if date %> (<%= date %>)<% end %>
+      </div>
+      <div class="me-4">Call number: <%= call_number %></div>
+      <% if searchworks_link %>
+        <div><a href="<%= searchworks_link %>" class="su-underline">View in SearchWorks<i class="ms-1 bi bi-arrow-up-right"></i></a></div>
+      <% end %>
+    </div>
+    <% if format_info %>
+      <div class="mt-2">
+        <span class="p-1 bg-stanford-10-black fw-semibold">
+          <%= format_info %>
+        </span>
+      </div>
+    <% end %>
+  </div>
+  <div class="card-footer border-0 bg-white d-flex fs-14">
+    <div class="me-4">Request #<%= transaction_number %></div>
+    <div>Date added/modified: <%= transaction_date.strftime("%B %-d, %Y %I:%M %p") %></div>
+  </div>
+</div>

@@ -1,0 +1,79 @@
+Frequently used,Aeon ID,Name,Web Display Name,"Behind-the-scenes processing ""State"" (e.g. Queue)",Included in request limits?,Queue Type
+,1,thesis,,thesis,,Transaction
+,2,Submitted by User,,Submitted by User,,Transaction
+,3,Re-Submitted by User,,Re-Submitted by User,,Transaction
+,4,Submitted by Staff,,Submitted by Staff,,Transaction
+★★★,5,Awaiting User Review,needs user review,Awaiting User Review,,Transaction
+❓,6,Awaiting Future Request Processing,request pending,Awaiting Future Request Processing,yes,Transaction
+★,7,Awaiting Order Submittal,awaiting completion of digitization request,Awaiting Order Submittal,,Photoduplication
+★★★,8,Awaiting Request Processing,request received,Awaiting Request Processing,yes,Transaction
+,9,Awaiting Order Processing,awaiting processing of digitization request,Awaiting Order Processing,,Photoduplication
+,10,Awaiting Activity Processing,awaiting staff processing,Awaiting Activity Processing,,Transaction
+★★,11,In Item Retrieval,being retrieved,In Item Retrieval,yes,Transaction
+★★,12,Item Checked Out,in use,Item Checked Out,yes,Transaction
+,13,Item Checked Out to Activity,in use,Item Checked Out to Activity,,Transaction
+★★★,14,Item On Hold,ready for use,Item On Hold,yes,Transaction
+★★★,15,Item On Hold for Activity,ready for use,Item On Hold for Activity,,Transaction
+,16,Remove from Hold,,Remove from Hold,,Transaction
+★,17,Awaiting Item Reshelving,being reshelved,Awaiting Item Reshelving,,Transaction
+,18,Item Reshelved,being reshelved,Item Reshelved,,Transaction
+,19,Awaiting Item Delivery,being reshelved,Awaiting Item Delivery,,Photoduplication
+,20,Awaiting Order Approval,awaiting approval for digitization,Awaiting Order Approval,,Photoduplication
+,21,Awaiting Order Payment,awaiting payment for digitization,Awaiting Order Payment,,Photoduplication
+,22,In Photoduplication,being digitized,In Photoduplication,,Transaction
+,23,Item Delivered,ready for use,Item Delivered,,Photoduplication
+,24,Cloned from Request,,Cloned from Request,,Transaction
+,25,Cloned To Request,,Cloned To Request,,Transaction
+,26,Request Merged,,Request Merged,,Transaction
+,27,Order Merged,,Order Merged,,Photoduplication
+,28,Cancelled by User,request cancelled,Cancelled by User,,Transaction
+,29,Order Cancelled by User,digitization request cancelled,Order Cancelled by User,,Photoduplication
+,30,Cancelled by Staff,request cancelled by staff,Cancelled by Staff,,Transaction
+,31,Order Cancelled by Staff,digitization request cancelled by staff,Order Cancelled by Staff,,Photoduplication
+,32,Request Finished,reqeust completed,Request Finished,,Transaction
+,33,Order Finished,digitization complete,Order Finished,,Photoduplication
+,34,Request In Processing,awaiting approval,Request In Processing,,Transaction
+,35,Imported from Legacy System,,Imported from Legacy System,,Transaction
+,⬇️ Custom statuses created for our instance ⬇️,,,,,
+,36,In Cataloging,in Cataloging,Item Checked Out,,Transaction
+,37,On Exhibit - Internal,on exhibit,Item Checked Out,,Transaction
+★★★,38,In Conservation,in Conservation Services,Item Checked Out,,Transaction
+,39,Item Checked Out to Staff,in use by staff,Item Checked Out,,Transaction
+,40,In DPG - Green,in Digitization Services,In Photoduplication,,Transaction
+,41,In DPG - Outsource,in Digitization Services,In Photoduplication,,Transaction
+,42,In DPG - SRWC,in Digitization Services,In Photoduplication,,Transaction
+,43,In SMPL - SRWC,in Digitization Services,In Photoduplication,,Transaction
+,44,In SMPL - Outsource,in Digitization Services,In Photoduplication,,Transaction
+,45,In DBPL - SRWC,in Digitization Services,In Photoduplication,,Transaction
+,46,In DBPL - Outsource,in Digitization Services,In Photoduplication,,Transaction
+,47,SAL3 Request,request received,Awaiting Request Processing,yes,Transaction
+,48,Submitted to SAL3,In Item Retrieval,In Item Retrieval,yes,Transaction
+,49,Awaiting Delivery from SAL3,being retrieved,In Item Retrieval,yes,Transaction
+,50,Awaiting Return to SAL3,awaiting reshelving,Awaiting Item Reshelving,,Transaction
+,51,Error Processing SAL3 Request,being retrieved,In Item Reshelving,yes,Transaction
+,52,In Transit from SAL3,being retrieved,In Item Reshelving,yes,Transaction
+,53,In Transit to Conservation,awaiting conservation treatment,Awaiting Request Processing,,Transaction
+,54,In Transit to SPEC Cataloging,awaiting cataloging,Awaiting Request Processing,,Transaction
+,55,Staff process interrupted,processing interrupted,Awaiting Request Processing,,Transaction
+,56,On Exhibit - External,on exhibit,Item Checked Out,,Transaction
+,57,In Transit to DPG,in transit to digitization services,Awaiting Request Processing,,Transaction
+,58,Awaiting ILS Data Import,awaiting approval,Awaiting Request Processing,yes,Transaction
+,59,Awaiting Manual Data Import,awaiting approval,Awaiting Request Processing,yes,Transaction
+,60,SAL3 Activity Request,awaiting approval,Awaiting Request Processing,,Transaction
+,61,In Exhibit Prep Room Green West 302,in Exhibit Prep,Item Checked Out to Activity,,Transaction
+,62,In Archives Workroom Green West 301,in University Archives workroom,item On Hold,,Transaction
+,63,In Spec Workroom Green West 202,in Special Collections workroom,item On Hold,,Transaction
+,64,RBC Teaching and Research materials Fall & Winte,RBC Fall & Winter Class Material,Item On Hold for Activity,,Transaction
+,65,In RWC Processing,awaiting processing,Item Checked Out,,Transaction
+,66,Activity - In Conservation,in Conservation Services,Item Checked Out for Activity,,Transaction
+,67,Activity - In Archives workroom Green West 301,in University Archives workroom,Item On Hold for Activity,,Transaction
+,68,Activity - In RWC Processing,awaiting processing,Item Checked out for Activity,,Transaction
+,69,Activity - In Cataloging,in Cataloging,Item Checked Out to Activity,,Transaction
+,70,Activity - In Spec Workroom Green West 202,in Special Collections workroom,Item Checked Out to Activity,,Transaction
+,71,Activity - In Transit to Conservation,awaiting conservation treatment,Awaiting Activity Processing,,Transaction
+,72,Activity - In Transit to Spec Cataloging,awaiting cataloging,Awaiting Activity Processing,,Transaction
+,73,Activity - Item checked out to staff,in use by staff,Item Checked Out to Activity,,Transaction
+,74,Activity - Staff process interrupted,processing interrupted,Awaiting Activity Processing,,Transaction
+,75,In Transit to SMPL - SRWC,in Transit to SMPL - SRWC,Item Checked Out to Activity,,Transaction
+,76,Awaiting Email Response,awaiting email response,Awaiting Fututre Request Processing,,Transaction
+,77,Awaiting Email From User,awaiting email from user,Awaiting User Review,,Transaction
