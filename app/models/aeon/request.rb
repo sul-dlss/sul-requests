@@ -58,8 +58,16 @@ module Aeon
       appointment_id.present?
     end
 
+    def created_at
+      creation_date
+    end
+
     def digitized_request?
       @shipping_option == 'Electronic Delivery'
+    end
+
+    def updated_at
+      transaction_date
     end
   end
 end

@@ -1,9 +1,9 @@
 <h1>Submitted requests</h1>
 
-<% if current_user&.aeon&.requests %>
-  <% current_user.aeon.requests.each do |request| %>
+<% if @requests.present? %>
+  <% @requests.each do |request| %>
     <%= render Aeon::RequestComponent.new(request:) %>
   <% end %>
 <% else %>
-  You don't have an aeon account
+You have no submitted requests
 <% end %>

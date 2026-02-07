@@ -4,7 +4,9 @@
 #  Old requests controller that redirects new requests to the PatronRequestsController
 ###
 class RequestsController < ApplicationController
-  def index; end
+  def index
+    @requests = UserRequestAggregator.new(current_user).all
+  end
 
   def new
     mapped_params = { 'instance_hrid' => new_params[:item_id],
