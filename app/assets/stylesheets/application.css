@@ -45,6 +45,10 @@ layer(components);
   --bs-dark-rgb: var(--stanford-cardinal-rgb);
 }
 
+.bg-stanford-10-black {
+  background-color: var(--stanford-10-black);
+}
+
 
 .text-cardinal {
   color: rgba(var(--stanford-cardinal-rgb), 1);
