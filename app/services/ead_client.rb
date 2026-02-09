@@ -10,45 +10,28 @@ require 'nokogiri'
 ##
 # Service class for fetching and parsing EAD XML files
 class EadClient
-  attr_reader :url
+  attr_reader :url, :doc
 
-  def initialize(url)
-    @url = url
-  end
-
-  ##
-  # Fetches the EAD XML from the provided URL and parses it
-  # @return [Nokogiri::XML::Document] Parsed XML document
-  def fetch_and_parse
-    xml_content = fetch_xml
-    parse_xml(xml_content)
-  end
-
-  ##
-  # Fetches raw XML content from the URL
-  # @return [String] Raw XML content
-  def fetch_xml
+  def self.fetch(url)
     response = Faraday.get(url)
 
     raise "Failed to fetch EAD XML: HTTP #{response.code}" unless response.success?
 
-    response.body
+    doc = Nokogiri::XML(response.body)
+    doc.remove_namespaces!
+
+    new(doc, url: url)
   rescue URI::InvalidURIError => e
     raise "Invalid URL provided: #{e.message}"
   rescue StandardError => e
     raise "Error fetching EAD XML: #{e.message}"
-  end
-
-  ##
-  # Parses XML content using Nokogiri and removes namespace
-  # @param xml_content [String] Raw XML string
-  # @return [Nokogiri::XML::Document] Parsed XML document without namespace
-  def parse_xml(xml_content)
-    doc = Nokogiri::XML(xml_content)
-    doc.remove_namespaces!
-    doc
   rescue Nokogiri::XML::SyntaxError => e
     raise "Invalid XML format: #{e.message}"
+  end
+
+  def initialize(doc, url: nil)
+    @doc = doc
+    @url = url
   end
 
   ##
@@ -56,8 +39,6 @@ class EadClient
   # This is a placeholder for XSLT transformation
   # @return [Hash] Extracted data fields
   def extract_fields
-    doc = fetch_and_parse
-
     {
       title: extract_title(doc),
       identifier: extract_identifier(doc),
