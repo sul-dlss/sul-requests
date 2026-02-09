@@ -17,8 +17,7 @@ class ArchivesRequestsController < ApplicationController
     end
 
     begin
-      ead_client = EadClient.fetch(@ead_url)
-      @ead_fields = ead_client.extract_fields
+      @ead = EadClient.fetch(@ead_url)
     rescue StandardError => e
       Rails.logger.error("Error fetching EAD: #{e.message}")
       flash[:error] = "Unable to fetch archives data: #{e.message}"

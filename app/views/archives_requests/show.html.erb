@@ -6,49 +6,49 @@
       <h2>Collection Information</h2>
     </div>
     <div class="card-body">
-      <p>Title: <%= @ead_fields[:title] || 'Not available' %></p>
-      <p>Identifier: <%= @ead_fields[:identifier] || 'Not available' %></p>
-      <p>Repository: <%= @ead_fields[:repository] || 'Not available' %></p>
+      <p>Title: <%= @ead.title || 'Not available' %></p>
+      <p>Identifier: <%= @ead.identifier || 'Not available' %></p>
+      <p>Repository: <%= @ead.repository || 'Not available' %></p>
       <p>Date Range: 1962-2018</p>
-      <p>Extent: <%= @ead_fields[:extent] || 'Not available' %></p>
-      <p>Creator: <%= @ead_fields[:creator] || 'Not available' %></p>
-      <p>Languages: <%= @ead_fields[:languages] || 'Not available' %></p>
-      <p>Conditions Governing Use: <%= @ead_fields[:conditions_governing_use] || 'Not available' %></p>
-      <p>Conditions Governing Access: <%= @ead_fields[:conditions_governing_access] || 'Not available' %></p>
-      <p>Cite As: <%= @ead_fields[:cite_as] || 'Not available' %></p>
+      <p>Extent: <%= @ead.extent || 'Not available' %></p>
+      <p>Creator: <%= @ead.creator || 'Not available' %></p>
+      <p>Languages: <%= @ead.languages || 'Not available' %></p>
+      <p>Conditions Governing Use: <%= @ead.conditions_governing_use || 'Not available' %></p>
+      <p>Conditions Governing Access: <%= @ead.conditions_governing_access || 'Not available' %></p>
+      <p>Cite As: <%= @ead.cite_as || 'Not available' %></p>
       <p>Source URL: <%= @ead_url %></p>
     </div>
   </div>
-  <% if @ead_fields[:repository_contact] %>
+  <% if @ead.repository_contact %>
     <div class="card mb-4">
       <div class="card-header">
         <h2>Repository Contact Information</h2>
       </div>
       <div class="card-body">
-        <% if @ead_fields[:repository] %>
-          <p><strong><%= @ead_fields[:repository] %></strong></p>
+        <% if @ead.repository %>
+          <p><strong><%= @ead.repository %></strong></p>
         <% end %>
-        <% if @ead_fields[:repository_contact][:address] %>
+        <% if @ead.repository_contact[:address] %>
           <p>
-            <% @ead_fields[:repository_contact][:address].each do |line| %>
+            <% @ead.repository_contact[:address].each do |line| %>
               <%= line %><br>
             <% end %>
           </p>
         <% end %>
-        <% if @ead_fields[:repository_contact][:email] %>
+        <% if @ead.repository_contact[:email] %>
           <p>
-            Email: <a href="mailto:<%= @ead_fields[:repository_contact][:email] %>"><%= @ead_fields[:repository_contact][:email] %></a>
+            Email: <a href="mailto:<%= @ead.repository_contact[:email] %>"><%= @ead.repository_contact[:email] %></a>
           </p>
         <% end %>
-        <% if @ead_fields[:repository_contact][:website] %>
+        <% if @ead.repository_contact[:website] %>
           <p>
-            Website: <a href="<%= @ead_fields[:repository_contact][:website] %>" target="_blank"><%= @ead_fields[:repository_contact][:website] %></a>
+            Website: <a href="<%= @ead.repository_contact[:website] %>" target="_blank"><%= @ead.repository_contact[:website] %></a>
           </p>
         <% end %>
       </div>
     </div>
   <% end %>
-  <% if @ead_fields[:series_and_subseries]&.any? %>
+  <% if @ead.series_and_subseries&.any? %>
     <div class="card mb-4" data-controller="archives-series">
       <div class="card-header d-flex justify-content-between align-items-center">
         <h2>Collection Contents</h2>
@@ -59,7 +59,7 @@
       </div>
       <div class="card-body">
         <%# Loop through each series in the collection %>
-        <% @ead_fields[:series_and_subseries].each_with_index do |series, index| %>
+        <% @ead.series_and_subseries.each_with_index do |series, index| %>
           <div class="mb-4">
             <%# Collapsible series header %>
             <%= link_to "#series-#{index}", 
