@@ -5,6 +5,9 @@
 class EadClient
   attr_reader :url, :doc
 
+  class Error < StandardError
+  end
+
   def self.fetch(url)
     response = Faraday.get(url)
 
@@ -15,10 +18,10 @@ class EadClient
 
     Ead::Document.new(doc, url: url)
   rescue URI::InvalidURIError => e
-    raise "Invalid URL provided: #{e.message}"
+    raise EadClient::Error, "Invalid URL provided: #{e.message}"
   rescue StandardError => e
-    raise "Error fetching EAD XML: #{e.message}"
+    raise EadClient::Error, "Error fetching EAD XML: #{e.message}"
   rescue Nokogiri::XML::SyntaxError => e
-    raise "Invalid XML format: #{e.message}"
+    raise EadClient::Error, "Invalid XML format: #{e.message}"
   end
 end
