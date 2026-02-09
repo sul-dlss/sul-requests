@@ -133,26 +133,34 @@ module Ead
           # Only include leaf items (not containers)
           next if item_is_container
 
-          item_data = {
+          Item.new(
             title: item_node.xpath('did/unittitle').first&.text&.strip,
             level: item_level,
             containers: containers(item_node),
             date: item_node.xpath('did/unitdate').first&.text&.strip,
             id: item_node.xpath('did/unitid').first&.text&.strip
-          }
-
-          item_data
+          )
         end
 
         series_data = {
           title: c01_node.xpath('did/unittitle').first&.text&.strip,
           level: level || 'series',
-          items: items.reject { |item| item[:title].nil? }
+          items: items.reject { |item| item.title.nil? }
         }
 
         next unless series_data[:title]
 
         series_data
+      end
+    end
+
+    Item = Data.define(:title, :level, :containers, :date, :id) do
+      def box
+        containers&.find { |c| c[:type] == 'Box' }&.dig(:value)
+      end
+
+      def folder
+        containers&.find { |c| c[:type] == 'Folder' }&.dig(:value)
       end
     end
 
