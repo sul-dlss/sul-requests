@@ -7,6 +7,7 @@ export default class extends Controller {
   connect() {}
 
   expandAll(event) {
+    event.stopPropagation()
     event.preventDefault()
     this.contentTargets.forEach(el => {
       const bsCollapse = Collapse.getOrCreateInstance(el)
@@ -15,6 +16,7 @@ export default class extends Controller {
   }
 
   collapseAll(event) {
+    event.stopPropagation()
     event.preventDefault()
     this.contentTargets.forEach(el => {
       const bsCollapse = Collapse.getOrCreateInstance(el)
