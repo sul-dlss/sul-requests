@@ -5,7 +5,6 @@
 # rubocop:disable Metrics/MethodLength
 # rubocop:disable Metrics/CyclomaticComplexity
 
-require 'net/http'
 require 'nokogiri'
 
 ##
@@ -29,10 +28,9 @@ class EadClient
   # Fetches raw XML content from the URL
   # @return [String] Raw XML content
   def fetch_xml
-    uri = URI.parse(url)
-    response = Net::HTTP.get_response(uri)
+    response = Faraday.get(url)
 
-    raise "Failed to fetch EAD XML: HTTP #{response.code}" unless response.is_a?(Net::HTTPSuccess)
+    raise "Failed to fetch EAD XML: HTTP #{response.code}" unless response.success?
 
     response.body
   rescue URI::InvalidURIError => e
