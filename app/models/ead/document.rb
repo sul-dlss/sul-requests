@@ -110,13 +110,11 @@ module Ead
     def series_and_subseries
       return @series_and_subseries if defined?(@series_and_subseries)
 
-      # Match components that are containers (series, subseries) or have child components
-      series_list = []
-
       # Get top-level components (c01)
       c01_nodes = doc.xpath('//dsc/c01')
 
-      c01_nodes.each do |c01_node|
+      # Extract components that are containers (series, subseries) or have child components
+      @series_and_subseries = c01_nodes.filter_map do |c01_node|
         # Check if this is a container component (series, subseries, recordgrp, subgrp)
         # OR has child c0* nodes
         level = c01_node['level']
@@ -126,14 +124,8 @@ module Ead
 
         next unless is_container
 
-        series_data = {
-          title: c01_node.xpath('did/unittitle').first&.text&.strip,
-          level: level || 'series',
-          items: []
-        }
-
         # Extract all descendant items (c02, c03, etc.) that are not containers
-        c01_node.xpath('.//*[starts-with(name(), "c0")]').each do |item_node|
+        items = c01_node.xpath('.//*[starts-with(name(), "c0")]').filter_map do |item_node|
           item_level = item_node['level']
           item_has_children = item_node.xpath('.//*[starts-with(name(), "c0")]').any?
           item_is_container = %w[series subseries recordgrp subgrp].include?(item_level) || item_has_children
@@ -148,13 +140,20 @@ module Ead
             date: item_node.xpath('did/unitdate').first&.text&.strip,
             id: item_node.xpath('did/unitid').first&.text&.strip
           }
-          series_data[:items] << item_data if item_data[:title]
+
+          item_data
         end
 
-        series_list << series_data if series_data[:title]
-      end
+        series_data = {
+          title: c01_node.xpath('did/unittitle').first&.text&.strip,
+          level: level || 'series',
+          items: items.reject { |item| item[:title].nil? }
+        }
 
-      @series_and_subseries = series_list
+        next unless series_data[:title]
+
+        series_data
+      end
     end
 
     private
