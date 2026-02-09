@@ -38,12 +38,12 @@
         <% end %>
         <% if @ead.repository_contact[:email] %>
           <p>
-            Email: <a href="mailto:<%= @ead.repository_contact[:email] %>"><%= @ead.repository_contact[:email] %></a>
+            Email: <%= mail_to @ead.repository_contact[:email] %>
           </p>
         <% end %>
         <% if @ead.repository_contact[:website] %>
           <p>
-            Website: <a href="<%= @ead.repository_contact[:website] %>" target="_blank"><%= @ead.repository_contact[:website] %></a>
+            Website: <%= link_to @ead.repository_contact[:website], target: '_blank' %>
           </p>
         <% end %>
       </div>
