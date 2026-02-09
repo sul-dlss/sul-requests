@@ -65,6 +65,8 @@ Rails.application.routes.draw do
   resource :feedback_form, path: 'feedback', only: %I[new create]
   get 'feedback' => 'feedback_forms#new'
 
+  # Archives requests route - handles EAD XML from archives.stanford.edu
+  get 'archives_requests' => 'archives_requests#show', as: :archives_request
 
   Rails.application.routes.draw do
     mount Lookbook::Engine, at: "/lookbook"

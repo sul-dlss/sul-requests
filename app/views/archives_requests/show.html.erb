@@ -1,0 +1,107 @@
+<div class="container mt-4">
+  <h1>Archives Request</h1>
+
+  <div class="card mb-4">
+    <div class="card-header">
+      <h2>Collection Information</h2>
+    </div>
+    <div class="card-body">
+      <p>Title: <%= @ead.title || 'Not available' %></p>
+      <p>Identifier: <%= @ead.identifier || 'Not available' %></p>
+      <p>Repository: <%= @ead.repository || 'Not available' %></p>
+      <%# TODO: <p>Date Range: 1962-2018</p> %>
+      <p>Extent: <%= @ead.extent || 'Not available' %></p>
+      <p>Creator: <%= @ead.creator || 'Not available' %></p>
+      <p>Languages: <%= @ead.languages || 'Not available' %></p>
+      <p>Conditions Governing Use: <%= @ead.conditions_governing_use || 'Not available' %></p>
+      <p>Conditions Governing Access: <%= @ead.conditions_governing_access || 'Not available' %></p>
+      <p>Cite As: <%= @ead.cite_as || 'Not available' %></p>
+      <p>Source URL: <%= @ead_url %></p>
+    </div>
+  </div>
+
+  <% if @ead.repository_contact %>
+    <div class="card mb-4">
+      <div class="card-header">
+        <h2>Repository Contact Information</h2>
+      </div>
+      <div class="card-body">
+        <% if @ead.repository %>
+          <p><strong><%= @ead.repository %></strong></p>
+        <% end %>
+        <% if @ead.repository_contact[:address] %>
+          <p>
+            <% @ead.repository_contact[:address].each do |line| %>
+              <%= line %><br>
+            <% end %>
+          </p>
+        <% end %>
+        <% if @ead.repository_contact[:email] %>
+          <p>
+            Email: <%= mail_to @ead.repository_contact[:email] %>
+          </p>
+        <% end %>
+        <% if @ead.repository_contact[:website] %>
+          <p>
+            Website: <%= link_to @ead.repository_contact[:website], target: '_blank' %>
+          </p>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @ead.series_and_subseries&.any? %>
+    <div class="card mb-4" data-controller="archives-series">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h2>Collection Contents</h2>
+        <div>
+          <button class="btn btn-sm btn-outline-secondary" data-action="click->archives-series#expandAll">Expand All</button>
+          <button class="btn btn-sm btn-outline-secondary" data-action="click->archives-series#collapseAll">Collapse All</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <%# Loop through each series in the collection %>
+        <% @ead.series_and_subseries.each_with_index do |series, index| %>
+          <div class="mb-4">
+            <%# Collapsible series header %>
+            <%= link_to "#series-#{index}", 
+                class: "series-header text-decoration-none text-dark d-block",
+                data: { bs_toggle: 'collapse' },
+                aria: { expanded: false, controls: "series-#{index}" } do %>
+              <h5 class="d-inline"><%= series[:title] %></h5>
+            <% end %>
+
+            <%# Collapsible series content %>
+            <div id="series-<%= index %>" class="collapse series-content" data-archives-series-target="content">
+              <% if series[:items]&.any? %>
+                <% series[:items].slice_when { |item_a, item_b| item_a.box != item_b.box}.each do |items| %>
+                  <% if items.first.box %>
+                      <%# Display box header %>
+                      <div class="mt-3 mb-2"><strong>Box <%= items.first.box %></strong></div>
+                      <%# Open list for this box's items %>
+                      <ul class="list-unstyled ms-4">
+                        <% items.each do |item| %>
+                          <li class="mb-1">
+                            <% folder_info = item.folder %>
+                            <% if folder_info %>
+                              <small class="text-muted">Folder <%= item.folder %>:</small>
+                            <% end %>
+                            <%= item.title %>
+                          </li>
+                        <% end %>
+                      </ul>
+                  <% else %>
+                    <%# Items without containers %>
+                    <% items.each do |item| %>
+                      <li class="mb-1"><%= item.title %></li>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
