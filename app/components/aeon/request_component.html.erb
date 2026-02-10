@@ -1,8 +1,15 @@
 <div class="request card mb-4">
   <div class="card-header fw-semibold p-3 ps-2">
-    <span class="rounded-pill <%= status_class %>">
+    <span class="rounded-pill <%= status %>">
       <i class="bi bi-<%= status_icon %> align-middle me-1"></i><%= status_text %>
     </span>
+    <% if appointment? %>
+    <span class="appointment-details ms-3">
+      <span class="fw-bold text-green"><%= appointment_date %></span>
+      <span class="fw-normal text-nowrap text-green"><%= appointment_time_range %></span>
+      <span class="fw-normal text-nowrap text-green"><%= appointment_reading_room_name %></span>
+    </span>
+    <% end %>
   </div>
   <div class="card-body">
     <h2 class="h3"><%= title %></h2>

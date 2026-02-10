@@ -72,7 +72,7 @@ FactoryBot.define do
     pages { nil }
     shipping_option { nil }
     volume { nil }
-    aeon_link { nil }
+    aeon_link { 'https://searchworks.stanford.edu/view/12345678' }
     date { nil }
     appointment_id { 23 }
     appointment { build(:aeon_appointment) }
