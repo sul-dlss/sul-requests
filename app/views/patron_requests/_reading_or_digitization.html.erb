@@ -1,0 +1,19 @@
+
+<fieldset class="mb-4">
+  <!-- Proxy sponsor section which we may not need-->
+  <div>
+    <%= f.radio_button :request_type, 'reading', :class => 'form-check-input', :required => true, data: { action: 'patronRequest#updateType' } %>
+    <%= f.label :request_type_reading, :class => 'form-check-label ms-1' do %>
+      Reading room appointment     <span class="text-cardinal ms-4 mt-1">
+        Earliest appointment available: Tuesday, Feb 18, 2026
+      </span>
+    <% end %>
+
+  </div>
+  <div class="mt-4">
+    <%= f.radio_button :request_type, 'digitization', :class => 'form-check-input', data: { action: 'patronRequest#updateType' } %>
+    <%= f.label :request_type_digitization, :class => 'form-check-label ms-1' do %>
+      Digitization
+    <% end %>
+  </div>
+</fieldset>
