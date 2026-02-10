@@ -32,7 +32,7 @@ module Aeon
     end
 
     def requests
-      self.class.aeon_client.requests_for(username:)
+      @requests ||= self.class.aeon_client.requests_for(username:)
     end
   end
 end
