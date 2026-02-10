@@ -6,10 +6,10 @@ module Folio
     Rule = Struct.new(:criteria, :policy, :indent, :line, :priority) do
       include Comparable
 
-      # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
+      # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
       def self.type_debug_string
         {
-          'group' => ->(v) { Folio::Types.criteria['group']&.dig(v, 'group') },
+          'group' => ->(v) { Folio::Types.criteria['group']&.dig(v)&.group },
           'material-type' => ->(v) { Folio::Types.criteria['material-type']&.dig(v, 'name') },
           'loan-type' => ->(v) { Folio::Types.criteria['loan-type']&.dig(v, 'name') },
           'location-institution' => ->(v) { Folio::Types.criteria['location-institution']&.dig(v, 'code') },
@@ -18,7 +18,7 @@ module Folio
           'location-location' => ->(v) { Folio::Types.criteria['location-location']&.dig(v, 'code') }
         }
       end
-      # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity
+      # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
       # Rules are sorted by priority
       def <=>(other)
