@@ -1,6 +1,8 @@
 <div class="request card mb-4">
-  <div class="card-header">
-    <%= status_text %>
+  <div class="card-header fw-semibold p-3 ps-2">
+    <span class="rounded-pill <%= status_class %>">
+      <i class="bi bi-<%= status_icon %> align-middle me-1"></i><%= status_text %>
+    </span>
   </div>
   <div class="card-body">
     <h2 class="h3"><%= title %></h2>

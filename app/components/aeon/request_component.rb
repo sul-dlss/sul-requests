@@ -30,5 +30,19 @@ module Aeon
       status = Aeon::Status.find_by(id: transaction_status)
       status['Web Display Name'] || status['Name']
     end
+
+    def status_class
+      'pending'
+      # need to add a check for pending vs completed. other option is completed
+    end
+
+    def status_icon
+      case status_class
+      when 'pending'
+        'clock'
+      when 'completed'
+        'check2-circle'
+      end
+    end
   end
 end
