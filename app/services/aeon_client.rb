@@ -50,7 +50,7 @@ class AeonClient
     when 200
       response.body.map { |data| Aeon::Request.from_dynamic(data) }
     when 404
-      raise NotFoundError, "No Aeon requests found for #{username}"
+      []
     else
       raise "Aeon API error: #{response.status}"
     end
