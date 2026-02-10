@@ -371,6 +371,7 @@ aeon_ere_url: https://stanford.aeon.atlas-sys.com/logon?Action=11&Type=200
 # Aeon API settings. `api_key` is also required.
 aeon:
   api_url: https://stanford-dev.aeon.atlas-sys.com/aeonapi
+  api_key: ~
 
 RECAPTCHA:
   SITE_KEY: 6Lc6BAAAAAAAAChqRbQZcn_yyyyyyyyyyyyyyyyy
