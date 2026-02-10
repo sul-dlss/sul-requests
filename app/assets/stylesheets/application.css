@@ -371,4 +371,19 @@ label.btn-close {
   .card-header {
     --bs-card-border-color: var(--stanford-20-black);
   }
+
+  .rounded-pill {
+    padding: 4px 12px;
+  }
+
+  .pending {
+    color: var(--stanford-digital-blue-dark);
+    background-color: rgba(var(--stanford-digital-blue-rgb), 0.1);
+  }
+
+  .completed {
+    color: var(--stanford-digital-green);
+    background-color: rgba(var(--stanford-digital-green-rgb), 0.1);
+  }
 }
+
