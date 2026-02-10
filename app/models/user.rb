@@ -106,7 +106,12 @@ class User < ActiveRecord::Base
   def aeon
     return @aeon if defined?(@aeon)
 
-    @aeon = Aeon::User.find_by(email_address:, sso: sso_user?)
+    # only handle SSO users until we have a better way to link other users to their Aeon accounts
+    return unless sso_user?
+
+    @aeon = Aeon::User.find_by(email_address:)
+  rescue AeonClient::NotFoundError
+    @aeon = AeonClient.new.create_user(username: email_address, auth_type: 'Default')
   end
 
   def patron
