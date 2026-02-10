@@ -7,11 +7,11 @@
         <% if current_user.sso_user? || current_user.library_id_user? %>
           <% logout_path = current_user.site_admin? ? root_path : request.url %>
           <li class="nav-item">
-            <%= link_to t('.logout', sunetid: current_user.sunetid || current_user.library_id), logout_path(referrer: logout_path), class: 'nav-link' %>
+            <%= link_to t('shared.sul_header.logout', sunetid: current_user.sunetid || current_user.library_id), logout_path(referrer: logout_path), class: 'nav-link' %>
           </li>
         <% else %>
           <li class="nav-item">
-            <%= link_to 'Login', login_by_sunetid_path(referrer: request.original_url), class: 'nav-link' %>
+            <%= link_to t('shared.sul_header.login'), login_by_sunetid_path(referrer: request.original_url), class: 'nav-link' %>
           </li>
         <% end %>
         <% unless current_page?(feedback_form_path) %>
