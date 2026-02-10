@@ -68,13 +68,13 @@ RSpec.describe Aeon::Appointment do
 
   describe '#available_to_proxies?' do
     it 'returns true when available_to_proxies' do
-      request = described_class.new(available_to_proxies: true)
-      expect(request).to be_available_to_proxies
+      appointment = build(:aeon_appointment, available_to_proxies: true)
+      expect(appointment).to be_available_to_proxies
     end
 
     it 'returns false when not available_to_proxies' do
-      request = described_class.new
-      expect(request).not_to be_available_to_proxies
+      appointment = build(:aeon_appointment, available_to_proxies: false)
+      expect(appointment).not_to be_available_to_proxies
     end
   end
 end
