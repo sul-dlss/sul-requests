@@ -128,8 +128,8 @@
   <% end %>
 
   <!-- item selector -->
+  <div data-controller="itemselector" data-itemselector-request-type-value="pickup" data-action="itemselector:change->patronRequest#showItemSelector">
   <% if f.object.selectable_items.many? && (can?(:request_scan, f.object) || can?(:request_pickup, f.object)) && !f.object.finding_aid? %>
-    <div data-controller="itemselector" data-itemselector-request-type-value="pickup" data-action="itemselector:change->patronRequest#showItemSelector">
     <%= render AccordionStepComponent.new(id: 'barcodes', step_index: step_enum.next, form_id: f.id, data: { 'switch-selector': true }) do |c| %>
       <% c.with_title.with_content('Select item(s)') %>
       <% c.with_body do %>
@@ -173,7 +173,7 @@
 
                     <% if item.bound_with_holdings_per_item.any? %>
                       <span class="d-block mt-2 ms-4 py-2 bg-light">
-                        <span class="ms-3 text-cardinal">Bound with</div>
+                        <span class="ms-3 text-cardinal">Bound with</span>
 
                         <ul class="list-group list-group-flush">
                           <% item.bound_with_holdings_per_item.each do |bound_with_child| %>
@@ -265,15 +265,15 @@
       <% end %>
     <% end %>
 
-  <div class="toast-container position-fixed bottom-0 end-0 p-3">
-    <div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true" data-itemSelector-target="toast">
-      <div class="d-flex">
-        <div class="toast-body">You successfully removed an item.</div>
-        <button type="button" class="btn btn-text text-uppercase" data-action="itemselector#undo analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Undo">Undo</button>
-        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true" data-itemSelector-target="toast">
+        <div class="d-flex">
+          <div class="toast-body">You successfully removed an item.</div>
+          <button type="button" class="btn btn-text text-uppercase" data-action="itemselector#undo analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Undo">Undo</button>
+          <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
       </div>
     </div>
-  </div>
   <% end %>
 
   <!-- scan request (single or multiitem) -->
