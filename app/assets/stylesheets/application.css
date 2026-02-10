@@ -356,3 +356,7 @@ label.btn-close {
   --bs-btn-disabled-border-color: #006CB8;
   --bs-btn-disabled-opacity: 0.65;
 }
+
+.series-header[aria-expanded="true"] .bi-chevron-right::before {
+ transform: rotate(90deg);
+}
