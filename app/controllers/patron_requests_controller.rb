@@ -16,7 +16,7 @@ class PatronRequestsController < ApplicationController
   authorize_resource
 
   before_action :associate_request_with_patron, only: [:new, :create]
-  before_action :redirect_aeon_pages, only: [:create]
+  # before_action :redirect_aeon_pages, only: [:create]
   helper_method :current_request, :new_params
 
   rescue_from CanCan::AccessDenied do |_exception|
@@ -25,14 +25,21 @@ class PatronRequestsController < ApplicationController
 
   def show; end
 
-  def new; end
-
-  def create
-    if @patron_request.save && @patron_request.submit_later
-      redirect_to @patron_request
+  def new
+    if Settings.features.requests_redesign 
+      render 'new_redesign'
     else
       render 'new'
     end
+  end
+
+  def create
+    puts "--->>>CREATE"
+    #if @patron_request.save && @patron_request.submit_later
+    #  redirect_to @patron_request
+    #else
+    #  render 'new'
+    #end
   end
 
   protected
