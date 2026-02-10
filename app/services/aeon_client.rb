@@ -29,6 +29,17 @@ class AeonClient
     end
   end
 
+  def create_user(username:, auth_type: 'Default')
+    response = post('Users', { username:, authType: auth_type })
+
+    case response.status
+    when 201
+      Aeon::User.new(response.body)
+    else
+      raise "Aeon API error: #{response.status}"
+    end
+  end
+
   # Fetch requests for a user by their Aeon username
   # @param username [String] the user's Aeon username
   # @return [Array<Aeon::Request>]
@@ -51,9 +62,13 @@ class AeonClient
     connection.get(path, params)
   end
 
+  def post(path, body, **)
+    connection.post(path, body, content_type: 'application/json', **)
+  end
 
   def connection
     @connection ||= Faraday.new(@base_url) do |builder|
+      builder.request :json
       builder.request :retry, max: 4, interval: 1, backoff_factor: 2
       builder.response :json
 
