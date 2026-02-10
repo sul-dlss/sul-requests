@@ -21,7 +21,7 @@ class AeonClient
     response = get("Users/#{CGI.escape(username)}")
     case response.status
     when 200
-      Aeon::User.new(parse_json(response))
+      Aeon::User.new(response.body)
     when 404
       raise NotFoundError, "No Aeon account found for #{username}"
     else
@@ -37,9 +37,9 @@ class AeonClient
 
     case response.status
     when 200
-      parse_json(response).map { |data| Aeon::Request.from_dynamic(data) }
+      response.body.map { |data| Aeon::Request.from_dynamic(data) }
     when 404
-      raise NotFoundError, "No Aeon account found for #{username}"
+      raise NotFoundError, "No Aeon requests found for #{username}"
     else
       raise "Aeon API error: #{response.status}"
     end
@@ -51,19 +51,12 @@ class AeonClient
     connection.get(path, params)
   end
 
-  def get_json(path, **)
-    parse_json(get(path, **))
-  end
-
-  def parse_json(response)
-    return nil if response.body.empty?
-
-    JSON.parse(response.body)
-  end
 
   def connection
     @connection ||= Faraday.new(@base_url) do |builder|
       builder.request :retry, max: 4, interval: 1, backoff_factor: 2
+      builder.response :json
+
       default_headers.each do |k, v|
         builder.headers[k] = v
       end
