@@ -360,3 +360,15 @@ label.btn-close {
 .series-header[aria-expanded="true"] .bi-chevron-right::before {
  transform: rotate(90deg);
 }
+
+.request.card {
+  --bs-card-cap-bg: white;
+  --bs-border-radius: 0.25rem;
+  --bs-card-border-color: var(--stanford-10-black);
+
+  box-shadow: 0px 4px 4px 0px #00000040;
+
+  .card-header {
+    --bs-card-border-color: var(--stanford-20-black);
+  }
+}
