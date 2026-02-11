@@ -7,7 +7,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   retry_on Faraday::ConnectionFailed
 
   def perform(patron_request)
-    patron_request.aeon_request
+    aeon_request = patron_request.aeon_request
   end
 
   # def notify_ilb(patron_request, aeon_response = nil)
