@@ -1,16 +1,28 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 8.1.0'
-
+gem 'rails', '~> 8.1.2'
+# The modern asset pipeline for Rails [https://github.com/rails/propshaft]
+gem "propshaft"
 # Use sqlite3 as the database (during local development)
-gem 'sqlite3', '~> 2.5'
+gem 'sqlite3', '>= 2.1'
 # Use Puma as the app server
-gem 'puma', '~> 6.0'
-gem 'bootsnap'
-# A gem for simple rails environment specific config
-gem 'config'
+gem 'puma', '>= 5.0'
+# Bundle and transpile JavaScript in Rails with bun, esbuild, rollup.js, or Webpack.
+gem "jsbundling-rails", "~> 1.1"
+# Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
+gem "turbo-rails"
+# Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
+gem "stimulus-rails"
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
+
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem "tzinfo-data", platforms: %i[ windows jruby ]
+# Reduces boot times through caching; required in config/boot.rb
+gem 'bootsnap'
+
+# A gem for simple rails environment specific config
+gem 'config'
 # CanCanCan is an authorization Gem for rails
 gem 'cancancan'
 # Use faraday for making HTTP requests
@@ -55,7 +67,7 @@ gem 'whenever', require: false # Work around https://github.com/javan/whenever/i
 
 group :development, :test do
   # Call 'binding.break' anywhere in the code to stop execution and get a debugger console
-  gem 'debug'
+  gem 'debug', platforms: %i[ mri windows ], require: "debug/prelude"
 
   # Axe for accessibility testing
   gem 'axe-core-rspec'
@@ -113,12 +125,6 @@ end
 gem "view_component", "~> 4.0"
 gem "lookbook"
 gem "parslet"
-
-gem "jsbundling-rails", "~> 1.1"
-gem "turbo-rails", "~> 2.0"
-gem 'stimulus-rails'
-
-gem "propshaft", "~> 1.3"
 
 gem 'recaptcha'
 gem 'warden'
