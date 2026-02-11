@@ -9,16 +9,14 @@
   <div class="card bg-light d-flex flex-row">
     <div class="bg-secondary-subtle w-25"></div>
     <div class="card-body p-2">
-      <a href="<%= aeon_requests_path %>">
-        <h2 class="card-title fs-5 mb-1">Requests</h2>
-      </a>
+      <h2 class="card-title fs-5 mb-1"><%= link_to 'Requests', aeon_requests_path, class: 'fw-semibold' %></h2>
       <p>Journal articles, eBooks, and more from the Library's digital subscriptions</p>
     </div>
   </div>
   <div class="card bg-light d-flex flex-row">
     <div class="bg-secondary-subtle w-25"></div>
     <div class="card-body p-2">
-      <h2 class="card-title fs-5 mb-1">Appointments</h2>
+      <h2 class="card-title fs-5 mb-1"><%= link_to 'Appointments', aeon_appointments_path, class: 'fw-semibold' %></h2>
       <p>Journal articles, eBooks, and more from the Library's digital subscriptions</p>
     </div>
   </div>

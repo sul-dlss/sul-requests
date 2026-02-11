@@ -1,0 +1,32 @@
+<div class="appointment card shadow mb-4">
+  <div class="card-header p-3 pb-1 bg-body border-0">
+    <h2 class="card-title h3">
+      <span class=""><i class="bi bi-calendar me-2"></i><%= appointment_date %></span>
+      <i class="bi bi-dot mx-2"></i>
+      <span class=""><%= appointment_reading_room_name %></span>
+    </h2>
+  </div>
+  <div class="card-body">
+    <div class="card border-light">
+      <h3 class="card-header text-green border-light"><%= appointment_time_range %></h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          <% appointment.requests.each do |request| %>
+            <li class="list-group-item">
+              <h4><%= request.title %></h4>
+              <div class="d-flex flex-row align-items-center">
+                <div class="me-4">Call number: <%= request.call_number %></div>
+
+              <% if request.volume %>
+                <span class="p-1 px-2 bg-stanford-10-black fw-semibold">
+                  <%= request.volume %>
+                </span>
+              <% end %>
+              </div>
+            </li>
+          <% end %>    
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
