@@ -5,7 +5,7 @@ module Aeon
   class Request
     attr_reader :aeon_link, :appointment, :appointment_id, :author, :call_number,
                 :creation_date, :date, :document_type, :format, :pages,
-                :location, :shipping_option, :title, :transaction_date,
+                :location, :shipping_option, :start_time, :stop_time, :title, :transaction_date,
                 :transaction_number, :transaction_status, :volume
 
     def self.from_dynamic(dyn) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
@@ -22,6 +22,8 @@ module Aeon
         shipping_option: dyn['shippingOption'],
         location: dyn['location'],
         pages: dyn['itemInfo5'],
+        start_time: dyn['startTime'],
+        stop_time: dyn['stopTime'],
         title: dyn['itemTitle'],
         transaction_date: Time.zone.parse(dyn.fetch('transactionDate')),
         transaction_number: dyn['transactionNumber'],
@@ -30,10 +32,10 @@ module Aeon
       )
     end
 
-    def initialize(aeon_link: nil, appointment: nil, appointment_id: nil, # rubocop:disable Metrics/ParameterLists, Metrics/MethodLength
+    def initialize(aeon_link: nil, appointment: nil, appointment_id: nil, # rubocop:disable Metrics/AbcSize, Metrics/ParameterLists, Metrics/MethodLength
                    author: nil, call_number: nil, creation_date: nil, date: nil,
                    document_type: nil, format: nil, location: nil, pages: nil,
-                   shipping_option: nil, title: nil, transaction_date: nil,
+                   shipping_option: nil, start_time: nil, stop_time: nil, title: nil, transaction_date: nil,
                    transaction_number: nil, transaction_status: nil, volume: nil)
       @aeon_link = aeon_link
       @appointment = appointment
@@ -47,6 +49,8 @@ module Aeon
       @location = location
       @pages = pages
       @shipping_option = shipping_option
+      @start_time = start_time
+      @stop_time = stop_time
       @title = title
       @transaction_date = transaction_date
       @transaction_number = transaction_number

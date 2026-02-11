@@ -10,20 +10,20 @@ module Aeon
       new(
         id: dyn['id'],
         username: dyn['username'],
-        reading_room_id: dyn['readingRoomID'],
         start_time: dyn['startTime'] && Time.zone.parse(dyn['startTime']),
         stop_time: dyn['stopTime'] && Time.zone.parse(dyn['stopTime']),
         name: dyn['name'],
         available_to_proxies: dyn['availableToProxies'],
         appointment_status: dyn['appointmentStatus'],
         reading_room: dyn['readingRoom'] ? ReadingRoom.from_dynamic(dyn['readingRoom']) : nil,
+        reading_room_id: dyn['readingRoomID'],
         creation_date: Time.zone.parse(dyn.fetch('creationDate'))
       )
     end
 
-    def initialize(id: nil, username: nil, reading_room_id: nil, start_time: nil, # rubocop:disable Metrics/ParameterLists
+    def initialize(id: nil, username: nil, start_time: nil, # rubocop:disable Metrics/ParameterLists
                    stop_time: nil, name: nil, available_to_proxies: nil,
-                   appointment_status: nil, reading_room: nil, creation_date: nil)
+                   appointment_status: nil, reading_room: nil, reading_room_id: nil, creation_date: nil)
       @id = id
       @username = username
       @reading_room_id = reading_room_id
@@ -33,11 +33,16 @@ module Aeon
       @available_to_proxies = available_to_proxies
       @appointment_status = appointment_status
       @reading_room = reading_room
+      @reading_room_id = reading_room_id
       @creation_date = creation_date
     end
 
     def available_to_proxies?
       @available_to_proxies
+    end
+
+    def reading_room?
+      reading_room_id.present?
     end
   end
 end

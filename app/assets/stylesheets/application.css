@@ -33,6 +33,10 @@ layer(components);
   background-color: rgba(var(--stanford-jungle-green-rgb), 1);
 }
 
+.text-green {
+  color: var(--stanford-digital-green);
+}
+
 .text-jungle-green {
   color: rgba(var(--stanford-jungle-green-rgb), 1);
 }
@@ -384,6 +388,12 @@ label.btn-close {
   .completed {
     color: var(--stanford-digital-green);
     background-color: rgba(var(--stanford-digital-green-rgb), 0.1);
+  }
+
+  .appointment-details > * + *::before {
+    content: "•";
+    margin-left: 0.125rem;
+    margin-right: 0.375rem;
   }
 }
 
