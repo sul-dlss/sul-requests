@@ -1,3 +1,3 @@
 <h1 class="mb-4">Reading room appointments</h1>
 
-<%= render Aeon::AppointmentComponent.with_collection(@appointments) %>
+<%= render Aeon::AppointmentGroupComponent.with_collection(Aeon::AppointmentGrouping.from_appointments(@appointments)) %>
