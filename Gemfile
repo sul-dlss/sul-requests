@@ -81,6 +81,8 @@ group :development, :test do
   gem 'rubocop-rspec', require: false
   gem 'rubocop-rspec_rails', require: false
 
+  gem 'herb', '~> 0.8.9'
+
   gem 'rails-controller-testing'
 
   # listen is used by bootsnap to listen to file changes

@@ -3,7 +3,7 @@
     <div class='d-flex gap-2'>
       <%= form_for(@request, url: mark_as_done_admin_path(@request), as: :request, html: { class: 'mark-as-complete-form', 'data-type': 'json' }) do |f| %>
         <%= f.hidden_field :approval_status, value: 'marked_as_done' %>
-        <button class='btn btn-secondary btn-sm' <%= 'disabled' unless @request.unapproved? %> data-behavior='mark-as-complete'>Mark as done</button>
+        <%= tag.button 'Mark as done', class: 'btn b tn-secondary btn-sm', data: { behavior: 'mark-as-complete' }, disabled: !@request.unapproved? %>
       <% end %>
 
       <button class='btn btn-secondary btn-sm' data-bs-toggle="collapse" data-bs-target="#req_<%= @request.id %>_collapseCommentForm" aria-expanded="false" aria-controls="req_<%= @request.id %>_collapseCommentForm">Comment</button>
@@ -61,7 +61,7 @@
       <% end %>
     </tbody>
   </table>
-  <turbo-stream action="update" target="<%= "req_#{@request.id}_note" %>" %>
+  <turbo-stream action="update" target="<%= "req_#{@request.id}_note" %>">
     <template>
       <%= render 'approved_note', request: @request %>
     </template>
