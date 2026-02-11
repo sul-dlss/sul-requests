@@ -32,5 +32,11 @@ module Aeon
     def requests
       @requests ||= self.class.aeon_client.requests_for(username:)
     end
+
+    def appointments
+      @appointments ||= self.class.aeon_client.appointments_for(username:).each do |appointment|
+        appointment.requests = requests.select { |request| request.appointment_id == appointment.id }
+      end
+    end
   end
 end
