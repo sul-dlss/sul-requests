@@ -6,7 +6,7 @@ module Aeon
     attr_reader :aeon_link, :appointment, :appointment_id, :author, :call_number,
                 :creation_date, :date, :document_type, :format, :pages,
                 :location, :shipping_option, :start_time, :stop_time, :title, :transaction_date,
-                :transaction_number, :transaction_status, :volume
+                :transaction_number, :transaction_status, :volume, :site
 
     def self.from_dynamic(dyn) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       new(
@@ -28,7 +28,8 @@ module Aeon
         transaction_date: Time.zone.parse(dyn.fetch('transactionDate')),
         transaction_number: dyn['transactionNumber'],
         transaction_status: dyn['transactionStatus'],
-        volume: dyn['itemVolume']
+        volume: dyn['itemVolume'],
+        site: dyn['site']
       )
     end
 
@@ -36,7 +37,7 @@ module Aeon
                    author: nil, call_number: nil, creation_date: nil, date: nil,
                    document_type: nil, format: nil, location: nil, pages: nil,
                    shipping_option: nil, start_time: nil, stop_time: nil, title: nil, transaction_date: nil,
-                   transaction_number: nil, transaction_status: nil, volume: nil)
+                   transaction_number: nil, transaction_status: nil, volume: nil, site: nil)
       @aeon_link = aeon_link
       @appointment = appointment
       @appointment_id = appointment_id
@@ -56,6 +57,7 @@ module Aeon
       @transaction_number = transaction_number
       @transaction_status = transaction_status
       @volume = volume
+      @site = site
     end
 
     def appointment?
