@@ -395,5 +395,9 @@ label.btn-close {
     margin-left: 0.125rem;
     margin-right: 0.375rem;
   }
+
+  .card-footer {
+    color: var(--stanford-80-black);
+  }
 }
 

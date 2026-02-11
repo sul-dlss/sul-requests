@@ -70,5 +70,10 @@ module Aeon
     def appointment_reading_room_name
       appointment.reading_room&.name if appointment?
     end
+
+    def thumbnail?
+      # TODO: fill in data
+      [true, false].sample
+    end
   end
 end
