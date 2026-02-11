@@ -190,9 +190,9 @@ GEM
     globalid (1.3.0)
       activesupport (>= 6.1)
     hashdiff (1.2.1)
-    herb (0.8.9)
-    herb (0.8.9-x86_64-darwin)
-    herb (0.8.9-x86_64-linux-gnu)
+    herb (0.8.10)
+    herb (0.8.10-x86_64-darwin)
+    herb (0.8.10-x86_64-linux-gnu)
     honeybadger (6.3.0)
       logger
       ostruct
@@ -324,7 +324,7 @@ GEM
       date
       stringio
     public_suffix (7.0.2)
-    puma (6.6.1)
+    puma (7.2.0)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.2.4)
@@ -567,11 +567,11 @@ DEPENDENCIES
   nokogiri (>= 1.7.1)
   okcomputer
   parslet
-  propshaft (~> 1.3)
-  puma (~> 6.0)
+  propshaft
+  puma (>= 5.0)
   rack
   rack-attack
-  rails (~> 8.1.0)
+  rails (~> 8.1.2)
   rails-controller-testing
   recaptcha
   redcarpet
@@ -587,9 +587,10 @@ DEPENDENCIES
   selenium-webdriver
   sidekiq (~> 8.0)
   simplecov
-  sqlite3 (~> 2.5)
+  sqlite3 (>= 2.1)
   stimulus-rails
-  turbo-rails (~> 2.0)
+  turbo-rails
+  tzinfo-data
   view_component (~> 4.0)
   warden
   warden-rspec-rails
