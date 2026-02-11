@@ -15,11 +15,15 @@ module Aeon
     attr_reader :appointments
 
     def initialize(appointments)
-      @appointments = appointments
+      @appointments = appointments.sort_by { |appt| appt.start_time || Time.zone.now }
     end
 
     def date
       first.start_time.to_date
+    end
+
+    def requests
+      appointments.flat_map(&:requests)
     end
   end
 end

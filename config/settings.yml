@@ -372,6 +372,7 @@ aeon_ere_url: https://stanford.aeon.atlas-sys.com/logon?Action=11&Type=200
 aeon:
   api_url: https://stanford-dev.aeon.atlas-sys.com/aeonapi
   api_key: ~
+  default_daily_item_limit: 5
 
 RECAPTCHA:
   SITE_KEY: 6Lc6BAAAAAAAAChqRbQZcn_yyyyyyyyyyyyyyyyy
