@@ -68,6 +68,10 @@ class PatronRequest < ApplicationRecord
     end
   end
 
+  def aeon_request
+    aeon_page? ? create_aeon_request : nil
+  end
+
   # @!group Attribute methods
   def barcode=(barcode)
     self.barcodes = [barcode]
@@ -230,6 +234,10 @@ class PatronRequest < ApplicationRecord
   # @!group FOLIO instance + items
   def submit_later
     SubmitPatronRequestJob.perform_later(self)
+  end
+
+  def submit_aeon_request
+    SubmitAeonPatronRequestJob.perform_now(self)
   end
 
   # @return [Folio::Instance]
@@ -641,4 +649,18 @@ class PatronRequest < ApplicationRecord
 
     errors.add(:for_sponsor_id, 'Invalid sponsor') unless patron.sponsors.any? { |sponsor| sponsor.id == for_sponsor_id }
   end
+
+  # Create aeon request based on what we receive
+  # rubocop:disable Metrics/CyclomaticComplexity,Metrics/AbcSize
+  def create_aeon_request
+    call_number = selectable_items.one? || f.object.barcodes&.one? ? selectable_items.first.callnumber : nil
+
+    # Need to create appointment as well
+    Aeon::Request.new(aeon_link: bib_data&.view_url, appointment: nil, appointment_id: nil,
+                      author: bib_data&.author, call_number: call_number, creation_date: nil, date: bib_data&.pub_date,
+                      document_type: 'Monograph', format: nil, location: origin_location_code, pages: nil,
+                      shipping_option: nil, title: bib_data&.title, transaction_date: nil,
+                      transaction_number: nil, transaction_status: nil, volume: nil)
+  end
+  # rubocop:enable Metrics/CyclomaticComplexity,Metrics/AbcSize
 end
