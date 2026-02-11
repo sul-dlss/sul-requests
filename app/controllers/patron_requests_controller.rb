@@ -26,7 +26,7 @@ class PatronRequestsController < ApplicationController
   def show; end
 
   def new
-    if Settings.features.requests_redesign 
+    if Settings.features.requests_redesign
       render 'new_redesign'
     else
       render 'new'
@@ -34,12 +34,16 @@ class PatronRequestsController < ApplicationController
   end
 
   def create
-    puts "--->>>CREATE"
-    #if @patron_request.save && @patron_request.submit_later
-    #  redirect_to @patron_request
-    #else
-    #  render 'new'
-    #end
+    Rails.logger.debug '--->>>CREATE'
+    if @patron_request.aeon_page?
+      Rails.logger.debug 'AEON PAGE!!'
+      # process aeon page
+      @patron_request.submit_aeon_request
+    elsif @patron_request.save && @patron_request.submit_later
+      redirect_to @patron_request
+    else
+      render 'new'
+    end
   end
 
   protected
@@ -64,11 +68,11 @@ class PatronRequestsController < ApplicationController
     render 'login'
   end
 
-  def redirect_aeon_pages
-    return unless @patron_request.aeon_page? && @patron_request.finding_aid?
+  # def redirect_aeon_pages
+  #   return unless @patron_request.aeon_page? && @patron_request.finding_aid?
 
-    redirect_to @patron_request.finding_aid
-  end
+  #   redirect_to @patron_request.finding_aid
+  # end
 
   def associate_request_with_patron
     @patron_request.patron = current_user.patron
