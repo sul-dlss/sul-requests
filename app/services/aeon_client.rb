@@ -125,6 +125,30 @@ class AeonClient
     end
   end
 
+  def find_queue(id:, type:)
+    return unless id && type
+
+    queues.find { |q| q.type == type && q.id == id }
+  end
+
+  def queues
+    cached = Rails.cache.read('aeon/queues')
+    return cached if cached
+
+    response = get('Queues')
+    case response.status
+    when 200
+      queues = response.body.map { |data| Aeon::Queue.from_dynamic(data['queue']) }
+      # Queues are the valid states a request can be in. This information is critical
+      # for nearly every request operation. They are generally static, but are
+      # updatable by library staff via the Aeon customization manager.
+      Rails.cache.write('aeon/queues', queues, expires_in: 1.hour)
+      queues
+    else
+      raise "Aeon API error: #{response.status}"
+    end
+  end
+
   private
 
   def get(path, params: nil)
