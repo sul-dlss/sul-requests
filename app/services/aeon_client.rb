@@ -56,6 +56,19 @@ class AeonClient
     end
   end
 
+  def appointments_for(username:, context: 'both', pending_only: true)
+    response = get("Users/#{CGI.escape(username)}/appointments", params: { context: context, pendingOnly: pending_only })
+
+    case response.status
+    when 200
+      response.body.map { |data| Aeon::Appointment.from_dynamic(data) }
+    when 404
+      []
+    else
+      raise "Aeon API error: #{response.status}"
+    end
+  end
+
   private
 
   def get(path, params: nil)

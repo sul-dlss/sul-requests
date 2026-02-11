@@ -6,6 +6,8 @@ module Aeon
     attr_reader :id, :username, :reading_room_id, :start_time, :stop_time,
                 :name, :appointment_status, :reading_room, :creation_date
 
+    attr_accessor :requests
+
     def self.from_dynamic(dyn) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       new(
         id: dyn['id'],
