@@ -108,6 +108,41 @@ class AeonClient
     end
   end
 
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/Metrics/ParameterLists
+
+  # Submit an archives request to Aeon
+  # @param username [String] the user's Aeon username, which is an email
+  def submit_archives_request(username:, title:, author: nil, call_number: nil, volume: nil,
+                              aeon_link: nil, shipping_option: nil, identifier: nil,
+                              repository: nil)
+    aeon_payload = {
+      username:,
+      itemTitle: title,
+      itemAuthor: author,
+      callNumber: call_number,
+      itemVolume: volume,
+      itemInfo1: aeon_link,
+      shippingOption: shipping_option,
+      eadNumber: identifier,
+      # TODO: this will print "Department of Special Collections and University Archives" as the site
+      # currently Aeon is using codes such as SPECUA. We need to implement that mapping.
+      site: repository,
+      webRequestForm: 'SUL Requests'
+    }.compact # Remove nil values
+
+    response = post('Requests/create', aeon_payload)
+
+    case response.status
+    when 201
+      response.body
+    else
+      raise "Aeon API error: #{response.status} - #{response.body}"
+    end
+  end
+  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/Metrics/ParameterLists
+
   private
 
   def get(path, params: nil)
