@@ -1,8 +1,23 @@
 <%= form_with(model: @appointment, class: 'container') do |f| %>
   <div class="row mb-3"><span class="col-2"><%= f.label :name %>:</span><span class="col"><%= f.text_field :name %></span></div>
-  <div class="row mb-3"><span class="col-2"><%= f.label :reading_room_id, 'Reading room' %>:</span><span class="col"><%= f.select :reading_room_id, @reading_rooms.map { |rr| [rr.name, rr.id] } %></span></div>
-  <div class="row mb-3"><span class="col-2"><%= f.label :start_time %>:</span><span class="col"><%= f.datetime_field :start_time %></span></div>
-  <div class="row mb-3"><span class="col-2"><%= f.label :end_time %>:</span><span class="col"><%= f.datetime_field :end_time %></span></div>
+
+  <% if @appointment.reading_room_id %>
+    <div class="row mb-3"><span class="col-2">Reading room:</span><span class="col"><%= @appointment.reading_room.name %></span></div>
+  <% else %>
+    <div class="row mb-3"><span class="col-2"><%= f.label :reading_room_id, 'Reading room' %>:</span><span class="col"><%= f.select :reading_room_id, @reading_rooms.map { |rr| [rr.name, rr.id] } %></span></div>
+  <% end %>
+
+  <div class="row mb-2"><span class="col-2"><%= f.label :date %>:</span><span class="col"><%= f.date_field :date, required: true %></span></div>
+  <div class="row mb-2"><span class="col-2"><%= f.label :start_time %>:</span><span class="col"><%= f.time_field :start_time, required: true %></span></div>
+
+  <fieldset class="mb-3">
+    <legend class="fs-6">Duration:</legend>
+
+    <% [30.minutes, 1.hour, 1.5.hours, 2.hours, 3.hours, 4.hours].each do |duration| %>
+      <%= f.radio_button :duration, duration.to_i, class: 'btn-check', checked: (@appointment.start_time && @appointment.stop_time ? (@appointment.stop_time - @appointment.start_time) : 30.minutes) == duration %>
+      <%= f.label "duration_#{duration.to_i}", duration.inspect, class: 'btn' %>
+    <% end %>
+  </fieldset>
 
   <%= link_to 'Cancel', aeon_appointments_path, class: 'btn btn-outline-primary' %>
   <%= f.submit class: 'btn btn-primary' %>

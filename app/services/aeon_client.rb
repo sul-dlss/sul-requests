@@ -69,11 +69,11 @@ class AeonClient
     end
   end
 
-  def create_appointment(username:, start_time:, end_time:, name:, reading_room_id:) # rubocop:disable Metrics/MethodLength
+  def create_appointment(username:, start_time:, stop_time:, name:, reading_room_id:) # rubocop:disable Metrics/MethodLength
     response = post('Appointments', {
                       username:,
                       startTime: start_time.iso8601,
-                      stopTime: end_time.iso8601,
+                      stopTime: stop_time.iso8601,
                       name:,
                       readingRoomID: reading_room_id
                     })
