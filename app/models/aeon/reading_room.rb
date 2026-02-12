@@ -40,5 +40,9 @@ module Aeon
       @open_hours = open_hours
       @policies = policies
     end
+
+    def daily_item_limit
+      Settings.aeon.default_daily_item_limit
+    end
   end
 end

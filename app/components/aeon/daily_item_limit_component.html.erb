@@ -1,0 +1,13 @@
+<div class="daily-item-limit">
+  <span class="me-2">Daily item limit: <%= count %>/<%= limit %></span>
+
+  <small aria-hidden="true">
+    <% filled_dots.times do %>
+      <%= tag.i class: "bi bi-circle-fill #{dot_used_class}" %>
+    <% end %>
+
+    <% (total_dots - filled_dots).times do %>
+      <%= tag.i class: 'bi bi-circle-fill text-light' %>
+    <% end %>
+  </small>
+</div>

@@ -1,10 +1,11 @@
 <div class="appointment card shadow mb-4">
-  <div class="card-header p-3 pb-1 bg-body border-0">
+  <div class="card-header p-3 pb-1 bg-body border-0 d-flex flex-row justify-content-between">
     <h2 class="card-title h3">
       <span class=""><i class="bi bi-calendar me-2"></i><%= appointment_date %></span>
       <i class="bi bi-dot mx-2"></i>
       <span class=""><%= appointment_reading_room_name %></span>
     </h2>
+    <%= render Aeon::DailyItemLimitComponent.from_appointment_group(appointment_group) %>
   </div>
   <div class="card-body">
     <%= render Aeon::AppointmentComponent.with_collection(appointment_group.appointments) %>
