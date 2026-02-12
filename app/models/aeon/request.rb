@@ -67,5 +67,9 @@ module Aeon
     def digitized_request?
       @shipping_option == 'Electronic Delivery'
     end
+
+    def draft?
+      transaction_status == 5
+    end
   end
 end

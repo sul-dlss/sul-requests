@@ -157,6 +157,11 @@ en:
       more_details_html: 'For more details, visit the <a class="fw-semibold" href="%{reading_room_url}">%{library} Reading Room service page <span class="bi bi-box-arrow-up-right" aria-hidden="true"></span></a>.'
       continue_button: Continue
       cancel_button: Cancel
+  aeon_requests:
+    index:
+      header:
+        submitted: Submitted requests
+        draft: Draft requests
   multiple_holds_notification:
     subject: "Multiple pages for %{patron_barcode}"
   requests:
