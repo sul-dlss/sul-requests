@@ -7,6 +7,8 @@ class AeonRequestsController < ApplicationController
   helper_method :type_param
 
   def index
+    authorize! :read, Aeon::Request
+
     @aeon_requests = (current_user&.aeon&.requests || []).select do |request|
       case type_param
       when 'submitted'

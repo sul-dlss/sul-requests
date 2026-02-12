@@ -5,6 +5,8 @@
 ###
 class AeonAppointmentsController < ApplicationController
   def index
+    authorize! :read, Aeon::Appointment
+
     @appointments = (current_user&.aeon&.appointments || []).reject(&:canceled?)
   end
 
