@@ -54,5 +54,13 @@ module Aeon
     def sort_key
       start_time || 100.years.from_now
     end
+
+    def canceled?
+      appointment_status == 'Cancelled'
+    end
+
+    def to_model = self
+    def model_name = ActiveModel::Name.new(self.class)
+    def persisted? = id.present?
   end
 end

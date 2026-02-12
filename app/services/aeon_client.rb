@@ -69,6 +69,45 @@ class AeonClient
     end
   end
 
+  def create_appointment(username:, start_time:, end_time:, name:, reading_room_id:) # rubocop:disable Metrics/MethodLength
+    response = post('Appointments', {
+                      username:,
+                      startTime: start_time.iso8601,
+                      stopTime: end_time.iso8601,
+                      name:,
+                      readingRoomID: reading_room_id
+                    })
+
+    case response.status
+    when 201
+      Aeon::Appointment.from_dynamic(response.body)
+    else
+      raise "Aeon API error: #{response.status}"
+    end
+  end
+
+  def cancel_appointment(appointment_id)
+    response = delete("Appointments/#{appointment_id}")
+
+    case response.status
+    when 204, 404
+      true
+    else
+      raise "Aeon API error: #{response.status}"
+    end
+  end
+
+  def reading_rooms
+    response = get('ReadingRooms')
+
+    case response.status
+    when 200
+      response.body.map { |data| Aeon::ReadingRoom.from_dynamic(data) }
+    else
+      raise "Aeon API error: #{response.status}"
+    end
+  end
+
   private
 
   def get(path, params: nil)
@@ -77,6 +116,10 @@ class AeonClient
 
   def post(path, body, **)
     connection.post(path, body, content_type: 'application/json', **)
+  end
+
+  def delete(path, params: nil)
+    connection.delete(path, params:)
   end
 
   def connection

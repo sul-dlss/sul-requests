@@ -60,3 +60,6 @@ RSpec/MultipleExpectations:
 
 FactoryBot/FactoryAssociationWithStrategy:
   Enabled: false
+
+Rails/I18nLocaleTexts:
+  Enabled: false
