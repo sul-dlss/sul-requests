@@ -69,11 +69,11 @@ class AeonClient
     end
   end
 
-  def create_appointment(username:, start_time:, end_time:, name:, reading_room_id:) # rubocop:disable Metrics/MethodLength
+  def create_appointment(username:, start_time:, stop_time:, name:, reading_room_id:) # rubocop:disable Metrics/MethodLength
     response = post('Appointments', {
                       username:,
                       startTime: start_time.iso8601,
-                      stopTime: end_time.iso8601,
+                      stopTime: stop_time.iso8601,
                       name:,
                       readingRoomID: reading_room_id
                     })
@@ -92,6 +92,23 @@ class AeonClient
     case response.status
     when 204, 404
       true
+    else
+      raise "Aeon API error: #{response.status}"
+    end
+  end
+
+  def update_appointment(appointment_id, name:, start_time:, stop_time:) # rubocop:disable Metrics/MethodLength
+    json_patch = [
+      { op: 'replace', path: '/name', value: name },
+      { op: 'replace', path: '/startTime', value: start_time.iso8601 },
+      { op: 'replace', path: '/stopTime', value: stop_time.iso8601 }
+    ]
+
+    response = patch("Appointments/#{appointment_id}", json_patch)
+
+    case response.status
+    when 200, 204
+      Aeon::Appointment.from_dynamic(response.body)
     else
       raise "Aeon API error: #{response.status}"
     end
@@ -116,6 +133,10 @@ class AeonClient
 
   def post(path, body, **)
     connection.post(path, body, content_type: 'application/json', **)
+  end
+
+  def patch(path, body, **)
+    connection.patch(path, body, content_type: 'application/json', **)
   end
 
   def delete(path, params: nil)

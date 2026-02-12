@@ -1,11 +1,3 @@
 <h1>New appointment</h1>
 
-<%= form_with(model: @appointment, class: 'container') do |f| %>
-  <div class="row mb-3"><span class="col-2"><%= f.label :name %>:</span><span class="col"><%= f.text_field :name %></span></div>
-  <div class="row mb-3"><span class="col-2"><%= f.label :reading_room_id, 'Reading room' %>:</span><span class="col"><%= f.select :reading_room_id, @reading_rooms.map { |rr| [rr.name, rr.id] } %></span></div>
-  <div class="row mb-3"><span class="col-2"><%= f.label :start_time %>:</span><span class="col"><%= f.datetime_field :start_time %></span></div>
-  <div class="row mb-3"><span class="col-2"><%= f.label :end_time %>:</span><span class="col"><%= f.datetime_field :end_time %></span></div>
-
-  <%= link_to 'Cancel', aeon_appointments_path, class: 'btn btn-outline-primary' %>
-  <%= f.submit class: 'btn btn-primary' %>
-<% end %>
+<%= render 'form' %>

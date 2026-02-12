@@ -4,10 +4,13 @@
 #  Controller for displaying Aeon appointments for a user
 ###
 class AeonAppointmentsController < ApplicationController
+  before_action :load_appointments
+  before_action :load_appointment, only: [:edit, :update, :destroy]
+
   def index
     authorize! :read, Aeon::Appointment
 
-    @appointments = (current_user&.aeon&.appointments || []).reject(&:canceled?)
+    @appointments = @appointments.reject(&:canceled?)
   end
 
   def new
@@ -17,12 +20,23 @@ class AeonAppointmentsController < ApplicationController
     @appointment = Aeon::Appointment.new
   end
 
-  def create # rubocop:disable Metrics/AbcSize
+  def edit
+    authorize! :update, @appointment
+  end
+
+  def create # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     authorize! :create, Aeon::Appointment
 
+    start_time = Time.zone.parse("#{create_params[:date]}T#{create_params[:start_time]}")
+    stop_time = if create_params[:stop_time]
+                  Time.zone.parse("#{create_params[:date]}T#{create_params[:stop_time]}")
+                else
+                  start_time + create_params[:duration].to_i.seconds
+                end
+
     AeonClient.new.create_appointment(
-      start_time: Time.zone.parse(create_params[:start_time]),
-      end_time: Time.zone.parse(create_params[:end_time]),
+      start_time: start_time,
+      stop_time: stop_time,
       name: create_params[:name],
       reading_room_id: create_params[:reading_room_id],
       username: current_user.aeon.username
@@ -31,15 +45,42 @@ class AeonAppointmentsController < ApplicationController
     redirect_to aeon_appointments_path, notice: 'Appointment created successfully'
   end
 
-  def destroy
-    @appointment = current_user.aeon.appointments.find { |appt| appt.id == params[:id] }
+  def update # rubocop:disable Metrics/AbcSize
+    authorize! :update, @appointment
+    start_time = Time.zone.parse("#{create_params[:date]}T#{create_params[:start_time]}")
+    stop_time = if create_params[:stop_time]
+                  Time.zone.parse("#{create_params[:date]}T#{create_params[:stop_time]}")
+                else
+                  start_time + create_params[:duration].to_i.seconds
+                end
 
+    AeonClient.new.update_appointment(params[:id], name: update_params[:name], start_time: start_time, stop_time: stop_time)
+
+    redirect_to aeon_appointments_path, notice: 'Appointment created successfully'
+  end
+
+  def destroy
+    authorize! :delete, @appointment
     AeonClient.new.cancel_appointment(params[:id])
 
     redirect_to aeon_appointments_path, notice: 'Appointment cancelled successfully'
   end
 
+  private
+
+  def load_appointments
+    @appointments = current_user&.aeon&.appointments || []
+  end
+
+  def load_appointment
+    @appointment = @appointments.find { |appt| appt.id == params[:id].to_i }
+  end
+
   def create_params
-    params.expect(aeon_appointment: [:start_time, :end_time, :name, :reading_room_id])
+    params.expect(aeon_appointment: [:date, :start_time, :stop_time, :duration, :name, :reading_room_id])
+  end
+
+  def update_params
+    params.expect(aeon_appointment: [:date, :start_time, :stop_time, :duration, :name])
   end
 end
