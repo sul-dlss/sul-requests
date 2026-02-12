@@ -41,33 +41,15 @@
       <%= render 'shared/sul_header_redesign' %>
 
       <!-- Application header -->
-      <div class="masthead bg-dark bg-cardinal sky-dark">
-        <div class="container">
-          <div class="d-flex flex-wrap align-items-end pt-3 pb-1 pb-md-3 gap-2">
-            <div class="d-flex align-items-end gap-2 flex-grow-1">
-              <span class="rosette-logo me-1 align-self-start flex-shrink-0" aria-hidden="true"></span>
-              <div class="me-1 flex-grow-1">
-                <div class="h1 my-0">
-                  <a href="/">My Library Account</a>
-                </div>
-              </div>
-            </div>
-            <div class="navbars ms-md-auto bg-dark">
-              <nav class="collapse navbar-collapse align-items-start justify-content-md-end navbar-expand-md d-md-flex flex-column flex-md-row" aria-label="browse" id="user-util-collapse">
-                <hr class="d-md-none text-white vw-100 my-0">
-                <ul class="navbar-nav justify-content-md-end gap-0 gap-md-4 w-100 fw-semibold">
-                  <li class="nav-item">
-                    <%= link_to 'Requests', aeon_requests_url, class: 'nav-link fw-semibold' %>
-                  </li>
-                  <li class="nav-item">
-                    <%= link_to 'Appointments', aeon_appointments_url, class: 'nav-link fw-semibold' %>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-          </div>
-        </div>
-      </div>
+      <%= render ApplicationMastheadComponent.new(application_name: 'My Library Account', classes: 'bg-dark bg-cardinal') do |component| %>
+        <% component.with_nav_item do %>
+          <%= link_to 'Requests', aeon_requests_url, class: 'nav-link fw-semibold' %>
+        <% end %>
+
+         <% component.with_nav_item do %>
+          <%= link_to 'Appointments', aeon_appointments_url, class: 'nav-link fw-semibold' %>
+        <% end %>
+      <% end %>
     </header>
     <main id="main" class="flex-fill container my-3">
       <%= render 'shared/flashes' %>
