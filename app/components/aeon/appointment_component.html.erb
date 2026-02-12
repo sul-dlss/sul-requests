@@ -1,6 +1,7 @@
 <div class="card border-light">
   <div class="card-header border-light d-flex justify-content-start gap-3">
     <h3 class="text-green card-title mb-0"><%= appointment_time_range %></h3>
+    <%= link_to 'Edit', edit_aeon_appointment_path(appointment.id) %>
     <%= link_to aeon_appointment_path(appointment.id), data: { turbo_method: :delete }, aria: { label: 'Delete'} do %>
       <i class="bi bi-trash"></i>
     <% end %>

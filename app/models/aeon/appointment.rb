@@ -59,6 +59,8 @@ module Aeon
       appointment_status == 'Cancelled'
     end
 
+    def to_param = id.to_s
+    def to_key = id.to_s
     def to_model = self
     def model_name = ActiveModel::Name.new(self.class)
     def persisted? = id.present?

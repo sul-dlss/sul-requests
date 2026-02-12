@@ -7,17 +7,21 @@
     <div class="row mb-3"><span class="col-2"><%= f.label :reading_room_id, 'Reading room' %>:</span><span class="col"><%= f.select :reading_room_id, @reading_rooms.map { |rr| [rr.name, rr.id] } %></span></div>
   <% end %>
 
-  <div class="row mb-2"><span class="col-2"><%= f.label :date %>:</span><span class="col"><%= f.date_field :date, required: true %></span></div>
+  <div class="row mb-2"><span class="col-2"><%= f.label :date %>:</span><span class="col"><%= f.date_field :date, required: true, value: @appointment.start_time&.to_date %></span></div>
   <div class="row mb-2"><span class="col-2"><%= f.label :start_time %>:</span><span class="col"><%= f.time_field :start_time, required: true %></span></div>
 
-  <fieldset class="mb-3">
-    <legend class="fs-6">Duration:</legend>
+  <% if @appointment.start_time && @appointment.stop_time && !(@appointment.stop_time - @appointment.start_time).in?([30.minutes, 1.hour, 1.5.hours, 2.hours, 3.hours, 4.hours]) %>
+    <div class="row mb-3"><span class="col-2"><%= f.label :stop_time %>:</span><span class="col"><%= f.time_field :stop_time, required: true %></span></div>
+  <% else %>
+    <fieldset class="mb-3">
+      <legend class="fs-6">Duration:</legend>
 
-    <% [30.minutes, 1.hour, 1.5.hours, 2.hours, 3.hours, 4.hours].each do |duration| %>
-      <%= f.radio_button :duration, duration.to_i, class: 'btn-check', checked: (@appointment.start_time && @appointment.stop_time ? (@appointment.stop_time - @appointment.start_time) : 30.minutes) == duration %>
-      <%= f.label "duration_#{duration.to_i}", duration.inspect, class: 'btn' %>
-    <% end %>
-  </fieldset>
+      <% [30.minutes, 1.hour, 1.5.hours, 2.hours, 3.hours, 4.hours].each do |duration| %>
+        <%= f.radio_button :duration, duration.to_i, class: 'btn-check', checked: (@appointment.start_time && @appointment.stop_time ? (@appointment.stop_time - @appointment.start_time) : 30.minutes) == duration %>
+        <%= f.label "duration_#{duration.to_i}", duration.inspect, class: 'btn' %>
+      <% end %>
+    </fieldset>
+  <% end %>
 
   <%= link_to 'Cancel', aeon_appointments_path, class: 'btn btn-outline-primary' %>
   <%= f.submit class: 'btn btn-primary' %>

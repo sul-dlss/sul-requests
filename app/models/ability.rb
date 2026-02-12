@@ -99,7 +99,7 @@ class Ability
 
     if user.sso_user?
       can :read, Aeon::Request
-      can [:read, :create], Aeon::Appointment
+      can :manage, Aeon::Appointment
     end
 
     can :request, Folio::Item do |item|
