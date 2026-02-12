@@ -23,6 +23,10 @@ module Aeon
       )
     end
 
+    def self.all
+      @all ||= AeonClient.new.reading_rooms
+    end
+
     def initialize(id: nil, name: nil, available_seats: nil, time_zone_id: nil, # rubocop:disable Metrics/MethodLength, Metrics/ParameterLists
                    min_appointment_length: nil, max_appointment_length: nil,
                    appointment_padding: nil, appointment_increment: nil, last_modified_time: nil,
