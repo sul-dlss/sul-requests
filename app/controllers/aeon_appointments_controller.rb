@@ -5,7 +5,7 @@
 ###
 class AeonAppointmentsController < ApplicationController
   def index
-    @appointments = current_user&.aeon&.appointments
+    @appointments = (current_user&.aeon&.appointments || []).reject(&:canceled?)
   end
 
   def new
@@ -27,6 +27,14 @@ class AeonAppointmentsController < ApplicationController
     )
 
     redirect_to aeon_appointments_path, notice: 'Appointment created successfully'
+  end
+
+  def destroy
+    @appointment = current_user.aeon.appointments.find { |appt| appt.id == params[:id] }
+
+    AeonClient.new.cancel_appointment(params[:id])
+
+    redirect_to aeon_appointments_path, notice: 'Appointment cancelled successfully'
   end
 
   def create_params

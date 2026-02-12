@@ -51,6 +51,10 @@ module Aeon
       @requests ||= []
     end
 
+    def canceled?
+      appointment_status == 'Cancelled'
+    end
+
     def to_model = self
     def model_name = ActiveModel::Name.new(self.class)
     def persisted? = id.present?

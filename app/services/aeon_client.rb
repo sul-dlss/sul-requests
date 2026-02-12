@@ -86,6 +86,17 @@ class AeonClient
     end
   end
 
+  def cancel_appointment(appointment_id)
+    response = delete("Appointments/#{appointment_id}")
+
+    case response.status
+    when 204, 404
+      true
+    else
+      raise "Aeon API error: #{response.status}"
+    end
+  end
+
   def reading_rooms
     response = get('ReadingRooms')
 
@@ -105,6 +116,10 @@ class AeonClient
 
   def post(path, body, **)
     connection.post(path, body, content_type: 'application/json', **)
+  end
+
+  def delete(path, params: nil)
+    connection.delete(path, params:)
   end
 
   def connection
