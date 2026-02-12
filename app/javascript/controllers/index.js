@@ -33,3 +33,5 @@ application.register("archives-series", ArchivesSeriesController)
 
 import AppointmentController from "./appointment_controller"
 application.register("appointment", AppointmentController)
+import ArchivesRequestController from "./archives_request_controller"
+application.register("archives-request", ArchivesRequestController)
