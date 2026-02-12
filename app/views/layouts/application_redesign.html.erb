@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description" content="Stanford University Libraries' application to request materials" />
+    <meta name="description" content="Stanford University Libraries' application to request materials">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
     <title><%= yield(:page_title).blank? ? t('shared.default_page_title') : yield(:page_title) %></title>
@@ -42,18 +42,20 @@
 
       <!-- Application header -->
       <%= render ApplicationMastheadComponent.new(application_name: 'My Library Account', classes: 'bg-dark bg-cardinal') do |component| %>
-        <% component.with_nav_item(classes: ['dropdown']) do %>
-          <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Requests
-          </a>
-          <ul class="dropdown-menu">
-            <li><%= link_to 'Draft requests', aeon_requests_url(type: 'draft'), class: 'dropdown-item' %></li>
-            <li><%= link_to 'Submitted requests', aeon_requests_url, class: 'dropdown-item' %></li>
-          </ul>
-        <% end %>
+        <% if sso_user? %>
+          <% component.with_nav_item(classes: ['dropdown']) do %>
+            <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Requests
+            </a>
+            <ul class="dropdown-menu">
+              <li><%= link_to 'Draft requests', aeon_requests_url(type: 'draft'), class: 'dropdown-item' %></li>
+              <li><%= link_to 'Submitted requests', aeon_requests_url, class: 'dropdown-item' %></li>
+            </ul>
+          <% end %>
 
-         <% component.with_nav_item do %>
-          <%= link_to 'Appointments', aeon_appointments_url, class: 'nav-link fw-semibold' %>
+          <% component.with_nav_item do %>
+            <%= link_to 'Appointments', aeon_appointments_url, class: 'nav-link fw-semibold' %>
+          <% end %>
         <% end %>
       <% end %>
     </header>

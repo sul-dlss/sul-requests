@@ -97,7 +97,10 @@ class Ability
     can :create, PatronRequest, &:aeon_page?
     can :read, [PatronRequest], patron_id: user.patron.id if user.patron
 
-    can :create, Aeon::Appointment if user.email_address
+    if user.sso_user?
+      can :read, Aeon::Request
+      can [:read, :create], Aeon::Appointment
+    end
 
     can :request, Folio::Item do |item|
       allowed_request_types = user.patron&.allowed_request_types(item) || []
