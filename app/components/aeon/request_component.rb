@@ -5,8 +5,9 @@ module Aeon
   class RequestComponent < ViewComponent::Base
     attr_reader :request
 
-    delegate :appointment?, :appointment, :aeon_link, :pages, :volume, :format, :title, :date, :document_type, :call_number,
-             :transaction_status, :transaction_date, :transaction_number, :completed?, :submitted?, :digital?, to: :request
+    delegate :appointment?, :appointment, :aeon_link, :pages, :volume, :format, :title,
+             :date, :document_type, :call_number, :transaction_status, :transaction_date,
+             :transaction_number, :editable?, :completed?, :submitted?, :digital?, to: :request
 
     def initialize(request:)
       @request = request
