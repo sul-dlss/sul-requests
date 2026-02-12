@@ -1,3 +1,6 @@
-<h1 class="mb-4">Reading room appointments</h1>
+<div class="d-flex align-items-center gap-3 mb-3">
+  <h1>Reading room appointments</h1>
+  <%= link_to 'Create new appointment', new_aeon_appointment_path, class: 'btn btn-primary' %>
+</div>
 
 <%= render Aeon::AppointmentGroupComponent.with_collection(Aeon::AppointmentGrouping.from_appointments(@appointments)) %>

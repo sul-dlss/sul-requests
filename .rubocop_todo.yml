@@ -268,15 +268,6 @@ Rails/HelperInstanceVariable:
   Exclude:
     - 'app/helpers/application_helper.rb'
 
-# Offense count: 10
-Rails/I18nLocaleTexts:
-  Exclude:
-    - 'app/controllers/admin_comments_controller.rb'
-    - 'app/controllers/authentication_controller.rb'
-    - 'app/controllers/messages_controller.rb'
-    - 'app/controllers/requests_controller.rb'
-    - 'app/mailers/ilb_mailer.rb'
-
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
 Rails/IndexBy:
