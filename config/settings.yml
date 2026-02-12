@@ -342,10 +342,12 @@ locations:
 scan_destinations:
   BUSINESS: ~
     # staff_email: ''
-  LAW: ~
-    # staff_email: ''
-  LANE: ~
-    # staff_email: ''
+  LAW:
+    pseudopatron_barcode: LAW-SCANDELIVER
+    staff_email: circulation@law.stanford.edu
+  LANE:
+    pseudopatron_barcode: LANE-SCANDELIVER
+    staff_email: LaneAskUs@stanford.edu
   MARINE-BIO: ~
     # ilb: true
     # pseudopatron_barcode: 'MAR-SCANDELIVER'
