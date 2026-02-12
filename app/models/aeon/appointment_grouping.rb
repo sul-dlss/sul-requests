@@ -5,7 +5,7 @@ module Aeon
   class AppointmentGrouping
     def self.from_appointments(appointments)
       appointments.group_by { |appt| [appt.reading_room&.id, appt.start_time.to_date] }.each_value.map do |group|
-        new(group)
+        new(group.sort_by(&:sort_key))
       end
     end
 
@@ -15,7 +15,7 @@ module Aeon
     attr_reader :appointments
 
     def initialize(appointments)
-      @appointments = appointments.sort_by { |appt| appt.start_time || Time.zone.now }
+      @appointments = appointments
     end
 
     def date

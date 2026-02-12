@@ -51,6 +51,10 @@ module Aeon
       @requests ||= []
     end
 
+    def sort_key
+      start_time || 100.years.from_now
+    end
+
     def canceled?
       appointment_status == 'Cancelled'
     end
