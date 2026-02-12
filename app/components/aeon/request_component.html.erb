@@ -1,37 +1,46 @@
 <div class="request card mb-4">
-  <div class="card-header fw-semibold p-3 ps-2">
-    <span class="rounded-pill <%= status %>">
-      <i class="bi bi-<%= status_icon %> align-middle me-1"></i><%= status_text %>
+  <div class="card-header fw-semibold p-3 ps-2 d-flex gap-1 flex-wrap align-items-md-center">
+    <span>
+      <span class="rounded-pill <%= status %>">
+        <i class="bi bi-<%= status_icon %> align-middle me-1"></i><%= status_text %>
+      </span>
     </span>
     <% if appointment? %>
-    <span class="appointment-details ms-3">
+    <span class="appointment-details ms-1">
       <span class="fw-bold text-green"><%= appointment_date %></span>
       <span class="fw-normal text-nowrap text-green"><%= appointment_time_range %></span>
       <span class="fw-normal text-nowrap text-green"><%= appointment_reading_room_name %></span>
     </span>
     <% end %>
   </div>
-  <div class="card-body">
-    <h2 class="h3"><%= title %></h2>
-    <div class="d-flex">
-      <div class="me-4">
-        <i replace_with_icon></i><%= document_type %><% if date %> (<%= date %>)<% end %>
+  <div class="card-body d-flex justify-content-between">
+    <div class="metadata">
+      <h2 class="h3"><%= title %></h2>
+      <div class="d-flex gap-sm-3 flex-sm-row flex-column">
+        <div>
+          <i replace_with_icon></i><%= document_type %><% if date %> (<%= date %>)<% end %>
+        </div>
+        <div>Call number: <%= call_number %></div>
+        <% if searchworks_link %>
+          <div><a href="<%= searchworks_link %>" class="su-underline">View in SearchWorks<i class="ms-1 bi bi-arrow-up-right"></i></a></div>
+        <% end %>
       </div>
-      <div class="me-4">Call number: <%= call_number %></div>
-      <% if searchworks_link %>
-        <div><a href="<%= searchworks_link %>" class="su-underline">View in SearchWorks<i class="ms-1 bi bi-arrow-up-right"></i></a></div>
+      <% if format_info %>
+        <div class="mt-2">
+          <span class="p-1 bg-stanford-10-black fw-semibold">
+            <%= format_info %>
+          </span>
+        </div>
       <% end %>
     </div>
-    <% if format_info %>
-      <div class="mt-2">
-        <span class="p-1 bg-stanford-10-black fw-semibold">
-          <%= format_info %>
-        </span>
+    <% if thumbnail? %>
+      <div>
+        <img src="" style="background-color: gray; height: 110px; width: 80px;">
       </div>
     <% end %>
   </div>
-  <div class="card-footer border-0 bg-white d-flex fs-14">
-    <div class="me-4">Request #<%= transaction_number %></div>
+  <div class="card-footer border-0 bg-white fs-14 d-flex gap-sm-3 flex-sm-row flex-column">
+    <div>Request #<%= transaction_number %></div>
     <div>Date added/modified: <%= transaction_date.strftime("%B %-d, %Y %I:%M %p") %></div>
   </div>
 </div>
