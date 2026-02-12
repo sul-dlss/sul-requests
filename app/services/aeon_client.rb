@@ -114,6 +114,17 @@ class AeonClient
     end
   end
 
+  def available_appointments(reading_room_id:, date:)
+    response = get("ReadingRooms/#{reading_room_id}/AvailableAppointments/#{date.iso8601}")
+
+    case response.status
+    when 200
+      response.body.map { |data| Aeon::AvailableAppointment.from_dynamic(data) }
+    else
+      raise "Aeon API error: #{response.status}"
+    end
+  end
+
   def reading_rooms
     response = get('ReadingRooms')
 

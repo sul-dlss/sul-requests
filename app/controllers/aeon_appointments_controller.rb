@@ -20,6 +20,12 @@ class AeonAppointmentsController < ApplicationController
     @appointment = Aeon::Appointment.new
   end
 
+  def available
+    @selected_time = params[:selected]
+    @available_appointments = AeonClient.new.available_appointments(reading_room_id: params.expect(:reading_room_id),
+                                                                    date: Date.parse(params.expect(:date)))
+  end
+
   def edit
     authorize! :update, @appointment
   end
