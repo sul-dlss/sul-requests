@@ -8,6 +8,31 @@ class SubmitAeonPatronRequestJob < ApplicationJob
 
   def perform(patron_request)
     aeon_request = patron_request.aeon_request
+    username = patron_request.patron.username
+    submit_aeon_request(username, aeon_request)
+  end
+
+  def map_json(username, aeon_request) 
+    {
+      "callNumber": aeon_request.call_number,
+      "documentType": aeon_request.document_type,
+      "format": aeon_request.format,
+      "itemAuthor": aeon_request.author,
+      "itemDate": aeon_request.date,
+      "itemTitle": aeon_request.title,
+      "location": aeon_request.location,
+      "scheduledDate": "2026-02-18T20:35:38.200Z",
+      "webRequestForm": "GenericRequestMonograph",
+      "username": username,
+      "creationDate": "2026-02-11T20:35:38.200Z",
+      "systemID": "sul-requests",
+      "itemInfo1": aeon_request.aeon_link
+    }.to_json
+  end
+
+  def submit_aeon_request(username, aeon_request)
+    submit_json = map_json(username, aeon_request)
+    puts submit_json
   end
 
   # def notify_ilb(patron_request, aeon_response = nil)
