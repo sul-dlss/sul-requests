@@ -54,7 +54,11 @@ Rails.application.routes.draw do
   resources :mediated_pages, controller: :requests, only: [], concerns: [:statusable]
   resources :hold_recalls, controller: :requests, only: [], concerns: [:statusable]
   resources :aeon_requests, only: [:index]
-  resources :aeon_appointments
+  resources :aeon_appointments do
+    collection do
+      get "available/:reading_room_id/:date", to: 'aeon_appointments#available', as: :available
+    end
+  end
 
   resources :admin, only: [:index, :show] do
     member do

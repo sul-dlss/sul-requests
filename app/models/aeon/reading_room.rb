@@ -48,5 +48,13 @@ module Aeon
     def daily_item_limit
       Settings.aeon.default_daily_item_limit
     end
+
+    def available_appointments(date, **)
+      AeonClient.new.available_appointments(reading_room_id: id, date: date, **)
+    end
+
+    def next_appointment
+      @next_appointment ||= available_appointments(Time.zone.now.to_date, include_next_available: true)&.first
+    end
   end
 end

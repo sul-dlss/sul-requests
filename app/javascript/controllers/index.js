@@ -30,3 +30,6 @@ application.register("remember", RememberController)
 
 import ArchivesSeriesController from "./archives_series_controller"
 application.register("archives-series", ArchivesSeriesController)
+
+import AppointmentController from "./appointment_controller"
+application.register("appointment", AppointmentController)
