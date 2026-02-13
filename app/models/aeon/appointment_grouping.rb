@@ -25,5 +25,13 @@ module Aeon
     def requests
       appointments.flat_map(&:requests)
     end
+
+    def total_requests_count
+      requests.count
+    end
+
+    def reading_room_limit
+      reading_room&.daily_item_limit || -1
+    end
   end
 end

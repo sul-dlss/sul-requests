@@ -4,24 +4,15 @@
 #  Controller for displaying Aeon requests for a user
 ###
 class AeonRequestsController < ApplicationController
-  helper_method :type_param
-
-  def index
+  def drafts
     authorize! :read, Aeon::Request
 
-    @aeon_requests = (current_user&.aeon&.requests || []).select do |request|
-      case type_param
-      when 'submitted'
-        !request.draft?
-      when 'draft'
-        request.draft?
-      end
-    end
+    @aeon_requests = current_user&.aeon&.draft_requests || []
   end
 
-  def type_param
-    (params[:type] || 'submitted').tap do |type|
-      raise ActionController::RoutingError, "Invalid type parameter: #{params[:type]}" unless %w[submitted draft].include?(type)
-    end
+  def submitted
+    authorize! :read, Aeon::Request
+
+    @aeon_requests = current_user&.aeon&.submitted_requests || []
   end
 end

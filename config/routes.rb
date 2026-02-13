@@ -53,7 +53,14 @@ Rails.application.routes.draw do
   resources :scans, controller: :requests,only: [], concerns: [:statusable]
   resources :mediated_pages, controller: :requests, only: [], concerns: [:statusable]
   resources :hold_recalls, controller: :requests, only: [], concerns: [:statusable]
-  resources :aeon_requests, only: [:index]
+
+  resources :aeon_requests, only: [] do
+    collection do
+      get :submitted, as: :submitted
+      get :drafts, as: :draft
+    end
+  end
+
   resources :aeon_appointments do
     collection do
       get "available/:reading_room_id/:date", to: 'aeon_appointments#available', as: :available

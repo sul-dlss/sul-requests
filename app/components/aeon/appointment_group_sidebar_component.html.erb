@@ -1,0 +1,13 @@
+<div class="appointment card mb-2">
+  <div class="card-header p-3 pb-1 bg-body border-0 d-flex flex-column align-items-center">
+    <h3 class="card-title h4">
+      <span><i class="bi bi-calendar me-2"></i><%= appointment_date %></span>
+      <i class="bi bi-dot mx-1"></i>
+      <span><%= appointment_reading_room_name %></span>
+    </h3>
+    <small><%= render Aeon::DailyItemLimitComponent.from_appointment_group(appointment_group) %></small>
+  </div>
+  <ul class="list-group my-2">
+    <%= render Aeon::AppointmentBriefComponent.with_collection(appointment_group.appointments, hide_item_count_badge: appointment_group.appointments.one?, total_item_limit_percentage: (appointment_group.total_requests_count / appointment_group.reading_room_limit.to_f)) %>
+  </ul>
+</div>

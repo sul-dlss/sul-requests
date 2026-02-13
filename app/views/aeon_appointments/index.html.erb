@@ -3,4 +3,4 @@
   <%= link_to 'Create new appointment', new_aeon_appointment_path, class: 'btn btn-primary' %>
 </div>
 
-<%= render Aeon::AppointmentGroupComponent.with_collection(Aeon::AppointmentGrouping.from_appointments(@appointments)) %>
+<%= render Aeon::AppointmentGroupComponent.with_collection(Aeon::AppointmentGrouping.from_appointments(@appointments), group_classes: %w[shadow mb-4]) %>

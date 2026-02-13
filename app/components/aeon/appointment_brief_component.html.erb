@@ -1,0 +1,9 @@
+<li class="mx-3 d-flex justify-content-between align-items-center">
+  <h4 class="card-title mb-0 fw-normal"><i class="bi bi-clock me-1"></i> <%= appointment_time_range %></h4>
+
+  <div>
+    <% unless hide_item_count_badge? %>
+      <span class="rounded-pill px-2 fs-6 <%= badge_classes %>"><%= appointment.requests.count %><span class="visually-hidden"> items</span></span>
+    <% end %>
+  </div>
+</li>
