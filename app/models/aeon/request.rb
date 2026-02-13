@@ -111,11 +111,11 @@ module Aeon
     end
 
     def photoduplication_queue
-      self.class.aeon_client.find_queue(id: photoduplication_status, type: :photoduplication)
+      @photoduplication_queue ||= self.class.aeon_client.find_queue(id: photoduplication_status, type: :photoduplication)
     end
 
     def transaction_queue
-      self.class.aeon_client.find_queue(id: transaction_status, type: :transaction)
+      @transaction_queue ||= self.class.aeon_client.find_queue(id: transaction_status, type: :transaction)
     end
   end
 end
