@@ -7,7 +7,7 @@ module Aeon
 
     delegate :appointment?, :appointment, :aeon_link, :pages, :volume, :format, :title,
              :date, :document_type, :call_number, :transaction_status, :transaction_date,
-             :transaction_number, :editable?, :completed?, :submitted?, :digital?, to: :request
+             :transaction_number, :draft?, :editable?, :completed?, :submitted?, :digital?, :physical?, :scan_delivered?, to: :request
 
     def initialize(request:)
       @request = request
@@ -38,25 +38,31 @@ module Aeon
       'Reading room use'
     end
 
-    def status
-      if completed?
-        :completed
-      else
+    def status_class
+      if completed? || scan_delivered? || (submitted? && appointment?)
+        :ready
+      elsif submitted?
         :pending
+      else
+        :draft
       end
     end
 
     def status_icon
-      case status
+      case status_class
       when :pending
         'clock'
-      when :completed
+      when :ready
         'check2-circle'
       end
     end
 
     def appointment_date
       appointment.start_time.strftime('%b %-d, %Y') if appointment?
+    end
+
+    def show_appointment?
+      appointment? && !draft?
     end
 
     def appointment_time_range
