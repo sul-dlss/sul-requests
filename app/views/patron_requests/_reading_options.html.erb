@@ -7,7 +7,14 @@
     <div> Hours: Monday - Friday, 9-5 </div>
     <div> <%= f.object.aeon_reading_room_code %> </div>
   </div>
-  Appointment
 
-  Additional Information
+  <div class='mt-3'>
+    Appointment placeholder
+  </div>
+
+  <div class='mt-3 mb-2'>
+      <%= f.label :aeon_additional_info, 'Additional Information', :class => 'fw-bold py-2' %>
+      <%= f.text_field :aeon_additional_info, :class => 'form-control' %>
+  </div>
+
 </div>

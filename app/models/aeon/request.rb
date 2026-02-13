@@ -6,7 +6,7 @@ module Aeon
     attr_reader :aeon_link, :appointment, :appointment_id, :author, :call_number,
                 :creation_date, :date, :document_type, :format, :pages, :photoduplication_status,
                 :location, :shipping_option, :start_time, :stop_time, :title, :transaction_date,
-                :transaction_number, :transaction_status, :volume, :site
+                :transaction_number, :transaction_status, :volume, :site, :special_request
 
     def self.aeon_client
       AeonClient.new
@@ -34,7 +34,8 @@ module Aeon
         transaction_number: dyn['transactionNumber'],
         transaction_status: dyn['transactionStatus'],
         volume: dyn['itemVolume'],
-        site: dyn['site']
+        site: dyn['site'],
+        special_request: dyn['specialRequest']
       )
     end
 
@@ -42,7 +43,7 @@ module Aeon
                    author: nil, call_number: nil, creation_date: nil, date: nil,
                    document_type: nil, format: nil, location: nil, pages: nil, photoduplication_status: nil,
                    shipping_option: nil, start_time: nil, stop_time: nil, title: nil, transaction_date: nil,
-                   transaction_number: nil, transaction_status: nil, volume: nil, site: nil)
+                   transaction_number: nil, transaction_status: nil, volume: nil, site: nil, special_request: nil)
       @aeon_link = aeon_link
       @appointment = appointment
       @appointment_id = appointment_id
@@ -64,6 +65,7 @@ module Aeon
       @transaction_status = transaction_status
       @volume = volume
       @site = site
+      @special_request = special_request
     end
 
     def appointment?
