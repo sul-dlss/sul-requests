@@ -8,6 +8,6 @@
     <small><%= render Aeon::DailyItemLimitComponent.from_appointment_group(appointment_group) %></small>
   </div>
   <ul class="list-group my-2">
-    <%= render Aeon::AppointmentBriefComponent.with_collection(appointment_group.appointments, total_item_limit_percentage: (appointment_group.total_requests_count / appointment_group.reading_room_limit.to_f)) %>
+    <%= render Aeon::AppointmentBriefComponent.with_collection(appointment_group.appointments, hide_item_count_badge: appointment_group.appointments.one?, total_item_limit_percentage: (appointment_group.total_requests_count / appointment_group.reading_room_limit.to_f)) %>
   </ul>
 </div>
