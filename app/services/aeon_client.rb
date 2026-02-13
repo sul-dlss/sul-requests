@@ -114,8 +114,9 @@ class AeonClient
     end
   end
 
-  def available_appointments(reading_room_id:, date:)
-    response = get("ReadingRooms/#{reading_room_id}/AvailableAppointments/#{date.iso8601}")
+  def available_appointments(reading_room_id:, date:, include_next_available: false)
+    response = get("ReadingRooms/#{reading_room_id}/AvailableAppointments/#{date.iso8601}",
+                   params: { getNextAvailable: include_next_available })
 
     case response.status
     when 200

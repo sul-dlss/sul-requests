@@ -39,7 +39,7 @@
       <% end %>
     </fieldset>
 
-    <turbo-frame id="available_appointments" data-action="turbo:frame-load->appointment#applyDurationFilter" data-appointment-target="availability" src="<%= available_aeon_appointments_url(@appointment.reading_room_id, @appointment.date, selected: @appointment.start_time.strftime('%-I:%M %p')) if @appointment.reading_room_id && @appointment.date %>">
+    <turbo-frame id="available_appointments" data-action="turbo:frame-load->appointment#applyDurationFilter" data-appointment-target="availability" src="<%= available_aeon_appointments_url(@appointment.reading_room_id, @appointment.date || Time.zone.now.iso8601, selected: @appointment.start_time.strftime('%-I:%M %p')) if @appointment.reading_room_id %>">
       <fieldset class="mb-3">
         <legend class="fs-6 fw-semibold">Available time slots</legend>
         <% if @appointment.reading_room_id && @appointment.date %>

@@ -22,8 +22,9 @@ class AeonAppointmentsController < ApplicationController
 
   def available
     @selected_time = params[:selected]
+    @date = Date.parse(params.expect(:date))
     @available_appointments = AeonClient.new.available_appointments(reading_room_id: params.expect(:reading_room_id),
-                                                                    date: Date.parse(params.expect(:date)))
+                                                                    date: @date, include_next_available: true)
   end
 
   def edit

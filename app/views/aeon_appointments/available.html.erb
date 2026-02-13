@@ -2,9 +2,13 @@
   <turbo-frame id="available_appointments">
     <fieldset class="mb-3">
       <legend class="fs-6 fw-semibold">Available time slots</legend>
-      <% @available_appointments.each do |appointment| %>
+      <% @available_appointments.select { |x| x.start_time.to_date == @date }.each do |appointment| %>
         <%= f.radio_button :start_time, appointment.start_time.strftime('%-I:%M %p'), id: "aeon_appointment_start_time_#{appointment.start_time.to_i}", data: { maximum_appointment_length: appointment.maximum_appointment_length }, class: 'btn-check', checked: @selected_time == appointment.start_time.strftime('%-I:%M %p') %>
         <%= f.label "start_time_#{appointment.start_time.to_i}", appointment.start_time.strftime('%-I:%M %p'), class: 'btn' %>
+      <% end %>
+
+      <% if next_appt  = @available_appointments.find { |x| x.start_time.to_date > @date } %>
+        There are no appointments on <%= @date.strftime('%m/%d/%Y') %>. The next available appointment is on <%= next_appt.start_time.strftime('%m/%d/%Y') %>.
       <% end %>
     </fieldset>
   </turbo-frame>
