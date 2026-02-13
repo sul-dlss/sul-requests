@@ -1,4 +1,4 @@
-<div class="request card mb-4">
+<div id="request-<%= transaction_number %>" class="request card mb-4">
   <div class="card-header fw-semibold p-3 ps-2 d-flex gap-1 flex-row align-items-md-center justify-content-between">
     <div class="d-flex flex-wrap gap-1">
       <span>
@@ -14,11 +14,36 @@
       </span>
       <% end %>
     </div>
-    <% if appointment&.editable? %>
-      <div class="text-nowrap">
+    <div class="d-flex text-nowrap align-items-baseline align-self-start">
+      <% if appointment&.editable? %>
         <a class="btn btn-link su-underline" href="#replace_me"><i class="bi bi-pencil-fill me-1"></i>Edit request</a>
+      <% end %>
+      <button class="btn btn-link su-underline" type="submit" aria-label="delete <%= title %> request" data-bs-toggle="modal" data-bs-target="#delete-<%= transaction_number %>">
+        <i class="bi bi-trash"></i>
+      </button>
+      <!-- Delete modal -->
+      <div class="modal fade" id="delete-<%= transaction_number %>" tabindex="-1" aria-labelledby="title-<%= transaction_number %>" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2 class="modal-title" id="title-<%= transaction_number %>">Delete request?</h2>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body fw-normal">
+              <div><span class="fw-bold">Title:</span> <%= title %></div>
+              <div><span class="fw-bold">Request:</span> <%= status_text %> (<%= format_info %>)</div>
+              <div class="mt-2 fw-bold">This action cannot be undone.</div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
+              <form action="<%= aeon_request_path(transaction_number) %>" method="DELETE">
+                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Yes - Delete</button>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
-    <% end %>
+    </div>
   </div>
   <div class="card-body d-flex justify-content-between">
     <div class="metadata">

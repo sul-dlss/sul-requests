@@ -161,6 +161,10 @@ class AeonClient
     end
   end
 
+  def delete_request(transaction_number:)
+    post("Requests/#{transaction_number}/route", { newStatus: 'Cancelled by User' })
+  end
+
   private
 
   def get(path, params: nil)
