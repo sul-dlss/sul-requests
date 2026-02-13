@@ -1,0 +1,5 @@
+<h1>Submitted requests</h1>
+
+<% @aeon_requests.each do |request| %>
+  <%= render Aeon::RequestComponent.new(request:) %>
+<% end %>

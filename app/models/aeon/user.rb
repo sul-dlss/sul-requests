@@ -33,6 +33,14 @@ module Aeon
       @requests ||= self.class.aeon_client.requests_for(username:)
     end
 
+    def draft_requests
+      requests.select(&:draft?)
+    end
+
+    def submitted_requests
+      requests.reject(&:draft?)
+    end
+
     def appointments
       @appointments ||= self.class.aeon_client.appointments_for(username:).sort_by(&:sort_key).each do |appointment|
         appointment.requests = requests.select { |request| request.appointment_id == appointment.id }

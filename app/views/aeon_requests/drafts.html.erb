@@ -1,4 +1,4 @@
-<h1><%= t(type_param, scope: 'aeon_requests.index.header') %></h1>
+<h1>Draft requests</h1>
 
 <% @aeon_requests.each do |request| %>
   <%= render Aeon::RequestComponent.new(request:) %>
