@@ -15,4 +15,11 @@ class AeonRequestsController < ApplicationController
 
     @aeon_requests = current_user&.aeon&.submitted_requests || []
   end
+
+  def destroy
+    AeonClient.new.delete_request(transaction_number: params[:id])
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.remove(params[:id]) }
+    end
+  end
 end
