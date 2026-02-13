@@ -81,16 +81,6 @@ module Aeon
       digital? && in_completed_queue?
     end
 
-    def editable?
-      return false unless appointment?
-
-      # creates a date based on reading room policy of how many days before the appointment is editable
-      # i.e. aeon returns 5. This gets the Time 5 days from now.
-      latest_edit_date = @appointment.reading_room.policies.first.appointment_min_lead_days.days.from_now
-
-      @appointment.start_time.after?(latest_edit_date)
-    end
-
     def draft?
       transaction_queue&.draft?
     end
