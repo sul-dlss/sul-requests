@@ -11,6 +11,8 @@ class AeonAppointmentsController < ApplicationController
     authorize! :read, Aeon::Appointment
 
     @appointments = @appointments.reject(&:canceled?)
+
+    request.variant = :sidebar if params[:variant] == 'sidebar'
   end
 
   def new

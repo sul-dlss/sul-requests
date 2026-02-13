@@ -1,5 +1,20 @@
 <h1>Draft requests</h1>
 
-<% @aeon_requests.each do |request| %>
-  <%= render Aeon::RequestComponent.new(request:) %>
-<% end %>
+<div class="container">
+  <div class="row">
+    <div class="col-8 pe-5">
+      <% @aeon_requests.each do |request| %>
+        <%= render Aeon::RequestComponent.new(request:) %>
+      <% end %>
+    </div>
+    <div class="col-4">
+      <turbo-frame src="<%= aeon_appointments_path(variant: 'sidebar') %>" id="aeon-appointments" class="d-block" data-turbo="false">
+        <div class="d-flex align-items-center justify-content-center" style="height: 200px;">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </turbo-frame>
+    </div>
+  </div>
+</div>

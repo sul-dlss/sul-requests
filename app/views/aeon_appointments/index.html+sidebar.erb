@@ -1,0 +1,6 @@
+<turbo-frame id="aeon-appointments">
+  <h2 class="text-center mb-3">Reading room appointments</h2>
+  <p class="text-center"><i class="bi bi-info-circle me-1"></i> For complete management, visit <%= link_to 'Appointments', aeon_appointments_path, class: 'su-underline' %></p>
+
+  <%= render Aeon::AppointmentGroupSidebarComponent.with_collection(Aeon::AppointmentGrouping.from_appointments(@appointments)) %>
+</turbo-frame>

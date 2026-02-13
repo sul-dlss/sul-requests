@@ -5,8 +5,10 @@ module Aeon
   class AppointmentGroupComponent < ViewComponent::Base
     attr_reader :appointment_group
 
-    def initialize(appointment_group:)
+    def initialize(appointment_group:, group_classes: [], header_classes: %w[d-flex flex-row justify-content-between])
       @appointment_group = appointment_group
+      @group_classes = group_classes
+      @header_classes = header_classes
     end
 
     def appointment_date
