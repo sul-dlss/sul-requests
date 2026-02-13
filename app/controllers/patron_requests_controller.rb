@@ -94,6 +94,6 @@ class PatronRequestsController < ApplicationController
                                    :for_sponsor_id, :for_sponsor,
                                    :fulfillment_type, :request_type,
                                    :scan_page_range, :scan_authors, :scan_title,
-                                   :barcode, { barcodes: [] }])
+                                   :barcode, { barcodes: [] }, :aeon_additional_info])
   end
 end

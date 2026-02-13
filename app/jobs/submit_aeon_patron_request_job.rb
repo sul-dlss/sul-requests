@@ -7,6 +7,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   retry_on Faraday::ConnectionFailed
 
   def perform(patron_request)
+    puts patron_request.inspect
     aeon_request = patron_request.aeon_request
     username = patron_request.patron.username
     submit_aeon_request(username, aeon_request)
@@ -26,13 +27,16 @@ class SubmitAeonPatronRequestJob < ApplicationJob
       "username": username,
       "creationDate": "2026-02-11T20:35:38.200Z",
       "systemID": "sul-requests",
-      "itemInfo1": aeon_request.aeon_link
-    }.to_json
+      "itemInfo1": aeon_request.aeon_link,
+      "specialRequest": aeon_request.special_request,
+      "site": aeon_request.site
+    }.compact.to_json
   end
 
   def submit_aeon_request(username, aeon_request)
-    submit_json = map_json(username, aeon_request)
-    puts submit_json
+    puts "display submit json"
+    aeon_payload = map_json(username, aeon_request)
+    puts aeon_payload.to_s
   end
 
   # def notify_ilb(patron_request, aeon_response = nil)
