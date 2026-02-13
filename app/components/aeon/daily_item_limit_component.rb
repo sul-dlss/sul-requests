@@ -6,7 +6,7 @@ module Aeon
     attr_reader :count, :limit
 
     def self.from_appointment_group(appointment_group)
-      new(count: appointment_group.requests.count, limit: appointment_group.reading_room&.daily_item_limit)
+      new(count: appointment_group.total_requests_count, limit: appointment_group.reading_room_limit)
     end
 
     def initialize(count:, limit:)
