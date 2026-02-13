@@ -6,7 +6,7 @@ module Aeon
     attr_reader :request
 
     delegate :appointment?, :appointment, :aeon_link, :pages, :volume, :format, :title, :date, :document_type, :call_number,
-             :transaction_status, :transaction_date, :transaction_number, to: :request
+             :transaction_status, :transaction_date, :transaction_number, :completed?, :submitted?, :digital?, to: :request
 
     def initialize(request:)
       @request = request
@@ -27,21 +27,22 @@ module Aeon
     end
 
     def status_text
-      return 'Reading room appointment' if appointment?
+      if digital?
+        return 'Digitization ready' if completed?
+        return 'Digitization pending' if submitted?
 
-      status = Aeon::Status.find_by(id: transaction_status)
-      status['Web Display Name'] || status['Name']
-    end
+        return 'Digitization'
+      end
 
-    def complete?
-      # There will be additional logic here.
-      appointment?
+      'Reading room use'
     end
 
     def status
-      return :completed if complete?
-
-      :pending
+      if completed?
+        :completed
+      else
+        :pending
+      end
     end
 
     def status_icon

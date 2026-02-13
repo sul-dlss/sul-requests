@@ -6,6 +6,7 @@ RSpec.describe Aeon::RequestComponent, type: :component do
   let(:request) { build(:aeon_request) }
 
   before do
+    allow(request).to receive(:completed?).and_return(true)
     render_inline(described_class.new(request:))
   end
 
