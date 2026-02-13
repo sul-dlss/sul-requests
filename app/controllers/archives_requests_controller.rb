@@ -20,8 +20,7 @@ class ArchivesRequestsController < ApplicationController
     # Fetch EAD data to get the actual collection information
     @ead = EadClient.fetch(params[:ead_url])
 
-    username = current_user.sunetid.present? ? "#{current_user.sunetid}@stanford.edu" : current_user.email
-    # volumes = params[:volumes]&.reject(&:blank?)
+    username = current_user.email_address
     volumes = params[:volumes]&.reject(&:blank?)&.map { |json_str| JSON.parse(json_str) }
 
     # Submit each volume request and collect results
@@ -62,8 +61,7 @@ class ArchivesRequestsController < ApplicationController
       aeon_link: @ead.collection_permalink,
       shipping_option: params[:shipping_option],
       identifier: @ead.identifier,
-      site: params[:site],
-      repository: @ead.repository_contact&.dig(:publisher) || @ead.repository
+      repository: @ead.repository
     )
   end
 

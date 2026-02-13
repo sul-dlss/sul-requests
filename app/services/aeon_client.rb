@@ -8,6 +8,13 @@ class AeonClient
     accept: 'application/json'
   }.freeze
 
+  # Maps from the value in EAD to Aeon's valid site codes
+  REPOSITORY_TO_SITE_CODE = {
+    'Department of Special Collections and University Archives' => 'SPECUA',
+    'Archive of Recorded Sound' => 'ARS',
+    'East Asia Library' => 'EASTASIA'
+  }.freeze
+
   def initialize(url: Settings.aeon.api_url, api_key: Settings.aeon.api_key)
     @base_url = url
     @api_key = api_key
@@ -177,9 +184,7 @@ class AeonClient
       itemInfo1: aeon_link,
       shippingOption: shipping_option,
       eadNumber: identifier,
-      # TODO: this will print "Department of Special Collections and University Archives" as the site
-      # currently Aeon is using codes such as SPECUA. We need to implement that mapping.
-      site: repository,
+      site: map_repository_to_site_code(repository),
       webRequestForm: 'SUL Requests'
     }.compact # Remove nil values
 
@@ -227,5 +232,12 @@ class AeonClient
 
   def default_headers
     DEFAULT_HEADERS.merge({ 'X-AEON-API-KEY': @api_key })
+  end
+
+  def map_repository_to_site_code(repository)
+    return nil unless repository
+
+    # TODO: Fallback to SPECUA? Other logic?
+    REPOSITORY_TO_SITE_CODE[repository] || 'SPECUA'
   end
 end
