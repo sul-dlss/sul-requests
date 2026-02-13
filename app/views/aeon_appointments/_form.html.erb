@@ -14,10 +14,9 @@
     <% end %>
   </div>
 
-
   <div class="mb-3">
     <%= f.label :date, class: 'd-block fw-semibold' %>
-    <%= f.date_field :date, required: true, data: { action: 'appointment#refreshAvailability' } %>
+    <%= f.date_field :date, required: true, data: { action: 'appointment#refreshAvailability' }, min: (@appointment.reading_room.next_appointment.start_time.to_date.iso8601 if @appointment.reading_room&.next_appointment) %>
   </div>
 
   <% if @appointment.start_time && @appointment.stop_time && (!@appointment.start_time.min.in?([0,15,30,45]) || !(@appointment.stop_time - @appointment.start_time).in?([30.minutes, 1.hour, 1.5.hours, 2.hours, 3.hours, 4.hours])) %>
