@@ -38,8 +38,9 @@ module Aeon
         transaction_date: Time.zone.parse(dyn.fetch('transactionDate')),
         transaction_number: dyn['transactionNumber'],
         transaction_status: dyn['transactionStatus'],
-        username: dyn['username'],
-        volume: dyn['itemVolume']
+        volume: dyn['itemVolume'],
+        site: dyn['site'],
+        special_request: dyn['specialRequest']
       )
     end
 
@@ -69,9 +70,9 @@ module Aeon
       @transaction_date = transaction_date
       @transaction_number = transaction_number
       @transaction_status = transaction_status
-      @username = username
       @volume = volume
       @site = site
+      @special_request = special_request
     end
 
     def appointment?
