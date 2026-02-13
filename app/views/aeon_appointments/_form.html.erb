@@ -10,7 +10,7 @@
       <div><%= @appointment.reading_room.name %><%= f.hidden_field :reading_room_id %></div>
     <% else %>
       <%= f.label :reading_room_id, 'Reading room', class: 'd-block fw-semibold' %>
-      <%= f.select :reading_room_id, @reading_rooms.map { |rr| [rr.name, rr.id] }, data: { action: 'appointment#refreshAvailability' } %>
+      <%= f.select :reading_room_id, @reading_rooms.map { |rr| [rr.name, rr.id] }, { include_blank: true }, data: { action: 'change->appointment#refreshAvailability change->appointment#refreshDateMetadata' } %>
     <% end %>
   </div>
 
