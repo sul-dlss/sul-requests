@@ -404,3 +404,7 @@ label.btn-close {
 #available_appointments .btn-check[disabled]+.btn {
   display: none;
 }
+
+.aeon-form-notice {
+  background-color: rgba(var(--stanford-digital-blue-dark-rgb), 0.08)
+}
