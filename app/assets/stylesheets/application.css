@@ -485,3 +485,6 @@ label.btn-close {
     color: var(--bs-link-color);
   }
 }
+.aeon-form-notice {
+  background-color: rgba(var(--stanford-digital-blue-dark-rgb), 0.08)
+}
