@@ -374,6 +374,7 @@ aeon_ere_url: https://stanford.aeon.atlas-sys.com/logon?Action=11&Type=200
 aeon:
   api_url: https://stanford-dev.aeon.atlas-sys.com/aeonapi
   api_key: ~
+  cancelled_status: 28
   days_to_persist_completed_digital_requests_as_submitted: 3
   default_daily_item_limit: 5
   queue_names:

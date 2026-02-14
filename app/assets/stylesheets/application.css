@@ -409,3 +409,7 @@ label.btn-close {
 #available_appointments .btn-check[disabled]+.btn {
   display: none;
 }
+
+.modal-dialog {
+  margin-top: 45%;
+}

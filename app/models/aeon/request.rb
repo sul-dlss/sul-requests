@@ -107,6 +107,10 @@ module Aeon
       !digital?
     end
 
+    def active?
+      (@transaction_status != Settings.aeon.cancelled_status) && !draft?
+    end
+
     private
 
     def within_persist_completed_request_as_submitted_period?
