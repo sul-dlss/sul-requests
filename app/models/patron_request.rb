@@ -7,7 +7,7 @@ class PatronRequest < ApplicationRecord
   store :data, accessors: [
     :barcodes, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title,
     :proxy, :for_sponsor, :for_sponsor_id, :estimated_delivery, :patron_name, :item_title, :requested_barcodes, :item_mediation_data,
-    :aeon_additional_info
+    :aeon_additional_info, :aeon_publication, :aeon_pages
   ], coder: JSON
 
   delegate :instance_id, :finding_aid, :finding_aid?, to: :bib_data
@@ -656,7 +656,6 @@ class PatronRequest < ApplicationRecord
   def create_aeon_request
     call_number = selectable_items.one? || f.object.barcodes&.one? ? selectable_items.first.callnumber : nil
 
-    puts "Special Request? #{aeon_additional_info}"
     # Need to create appointment as well
     Aeon::Request.new(aeon_link: bib_data&.view_url, appointment: nil, appointment_id: nil,
                       author: bib_data&.author, call_number: call_number, creation_date: nil, date: bib_data&.pub_date,
