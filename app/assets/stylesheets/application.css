@@ -380,12 +380,17 @@ label.btn-close {
     padding: 4px 12px;
   }
 
+  .draft {
+    color: var(--stanford-black);
+    background-color: var(--stanford-10-black);
+  }
+
   .pending {
     color: var(--stanford-digital-blue-dark);
     background-color: rgba(var(--stanford-digital-blue-rgb), 0.1);
   }
 
-  .completed {
+  .ready {
     color: var(--stanford-digital-green);
     background-color: rgba(var(--stanford-digital-green-rgb), 0.1);
   }

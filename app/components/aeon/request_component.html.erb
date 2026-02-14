@@ -2,11 +2,11 @@
   <div class="card-header fw-semibold p-3 ps-2 d-flex gap-1 flex-row align-items-md-center justify-content-between">
     <div class="d-flex flex-wrap gap-1">
       <span>
-        <span class="rounded-pill <%= status %>">
+        <span class="rounded-pill <%= status_class %>">
           <i class="bi bi-<%= status_icon %> align-middle me-1"></i><%= status_text %>
         </span>
       </span>
-      <% if appointment? %>
+      <% if show_appointment? %>
       <span class="appointment-details ms-1">
         <span class="fw-bold text-green"><%= appointment_date %></span>
         <span class="fw-normal text-nowrap text-green"><%= appointment_time_range %></span>

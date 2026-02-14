@@ -117,6 +117,8 @@ module Aeon
     end
 
     def in_completed_queue?
+      return false if draft?
+
       photoduplication_queue&.completed? || transaction_queue&.completed?
     end
 
