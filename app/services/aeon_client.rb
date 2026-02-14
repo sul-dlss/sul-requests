@@ -166,6 +166,17 @@ class AeonClient
     end
   end
 
+  def submit_searchworks_request(aeon_payload)
+    response = post('Requests/create', aeon_payload)
+
+    case response.status
+    when 201
+      response.body
+    else
+      raise "Aeon API error: #{response.status} - #{response.body}"
+    end
+  end
+
   private
 
   def get(path, params: nil)
