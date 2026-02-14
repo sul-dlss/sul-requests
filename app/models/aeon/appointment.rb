@@ -63,6 +63,14 @@ module Aeon
       appointment_status == 'Cancelled'
     end
 
+    def edit_policy
+      reading_room.policies.first.appointment_min_lead_days
+    end
+
+    def editable?
+      start_time.after?(edit_policy.days.from_now)
+    end
+
     def to_param = id.to_s
     def to_key = id.to_s
     def to_model = self

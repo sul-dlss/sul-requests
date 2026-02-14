@@ -58,6 +58,10 @@ layer(components);
   color: rgba(var(--stanford-cardinal-rgb), 1);
 }
 
+.text-digital-red {
+  color: var(--stanford-digital-red);
+}
+
 
 @font-face {
   font-family: "Stanford";

@@ -7,21 +7,30 @@
     <% end %>
   </div>
   <div class="card-body">
-    <ul class="list-group list-group-flush">
-      <% appointment.requests.each do |request| %>
-        <li class="list-group-item">
-          <h4><%= request.title %></h4>
-          <div class="d-flex flex-row align-items-center">
-            <div class="me-4">Call number: <%= request.call_number %></div>
+    <% if appointment.requests.present? %>
+      <ul class="list-group list-group-flush">
+        <% appointment.requests.each do |request| %>
+          <li class="list-group-item">
+            <h4><%= request.title %></h4>
+            <div class="d-flex flex-row align-items-center">
+              <div class="me-4">Call number: <%= request.call_number %></div>
 
-          <% if request.volume %>
-            <span class="p-1 px-2 bg-stanford-10-black fw-semibold">
-              <%= request.volume %>
-            </span>
-          <% end %>
-          </div>
-        </li>
-      <% end %>
-    </ul>
+            <% if request.volume %>
+              <span class="p-1 px-2 bg-stanford-10-black fw-semibold">
+                <%= request.volume %>
+              </span>
+            <% end %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <div role="alert" class="d-flex align-items-center text-digital-red">
+        <div role="img" aria-label="Danger icon" class="bi bi-exclamation-triangle-fill fs-3 me-3 align-self-center d-flex justify-content-center"></div>
+        <div>
+          No items have been requested for this appointment. It will be canceled <%= @appointment.edit_policy %> days before your scheduled visit date if no requests are submitted.
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>
