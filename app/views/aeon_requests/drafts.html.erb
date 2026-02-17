@@ -3,7 +3,7 @@
 <div class="container">
   <div class="row">
     <div class="col-8 pe-5">
-      <%= render Aeon::RequestComponent.with_collection(@aeon_requests) %>
+      <%= render Aeon::RequestGroupComponent.with_collection(Aeon::RequestGrouping.from_requests(@aeon_requests)) %>
     </div>
     <div class="col-4">
       <turbo-frame src="<%= aeon_appointments_path(variant: 'sidebar') %>" id="aeon-appointments" class="d-block" data-turbo="false">
