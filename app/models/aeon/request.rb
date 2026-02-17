@@ -83,22 +83,22 @@ module Aeon
       digital? && in_completed_queue?
     end
 
-    def canceled?
+    def cancelled?
       return false if draft?
 
-      photoduplication_queue&.canceled? || transaction_queue&.canceled?
+      photoduplication_queue&.cancelled? || transaction_queue&.cancelled?
     end
 
     def draft?
       if digital?
-        photoduplication_queue.draft?
+        photoduplication_queue&.draft?
       else
         transaction_queue&.draft?
       end
     end
 
     def submitted?
-      !draft? && !canceled? && !completed?
+      !draft? && !cancelled? && !completed?
     end
 
     def digital?
@@ -110,7 +110,11 @@ module Aeon
     end
 
     def destroyable?(user)
-      user.aeon.submitted_requests.map(&:transaction_number).include?(transaction_number)
+      user.aeon.requests.map(&:transaction_number).include?(transaction_number)
+    end
+
+    def writable?(user)
+      destroyable?(user) && (cancelled? || appointment.editable?)
     end
 
     private

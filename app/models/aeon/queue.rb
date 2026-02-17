@@ -42,8 +42,8 @@ module Aeon
       @queue_type.downcase.to_sym
     end
 
-    def canceled?
-      canceled_queue_names&.include?(queue_name)
+    def cancelled?
+      cancelled_queue_names&.include?(queue_name)
     end
 
     def draft?
@@ -56,8 +56,8 @@ module Aeon
 
     private
 
-    def canceled_queue_names
-      Settings.aeon.queue_names.canceled[type]
+    def cancelled_queue_names
+      Settings.aeon.queue_names.cancelled[type]
     end
 
     def completed_queue_names

@@ -54,10 +54,11 @@ Rails.application.routes.draw do
   resources :mediated_pages, controller: :requests, only: [], concerns: [:statusable]
   resources :hold_recalls, controller: :requests, only: [], concerns: [:statusable]
 
-  resources :aeon_requests, only: [:destroy] do
+  resources :aeon_requests, only: [:destroy, :update] do
     collection do
       get :submitted, as: :submitted
       get :drafts, as: :draft
+      get :cancelled, as: :cancelled
     end
   end
 

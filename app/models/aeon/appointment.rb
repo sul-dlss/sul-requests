@@ -59,7 +59,7 @@ module Aeon
       start_time || 100.years.from_now
     end
 
-    def canceled?
+    def cancelled?
       appointment_status == 'Cancelled'
     end
 

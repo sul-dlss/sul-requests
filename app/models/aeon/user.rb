@@ -41,6 +41,10 @@ module Aeon
       requests.select(&:submitted?)
     end
 
+    def cancelled_requests
+      requests.select(&:cancelled?)
+    end
+
     def appointments
       @appointments ||= self.class.aeon_client.appointments_for(username:).sort_by(&:sort_key).each do |appointment|
         appointment.requests = requests.select { |request| request.appointment_id == appointment.id }
