@@ -79,8 +79,7 @@ Rails.application.routes.draw do
   get 'feedback' => 'feedback_forms#new'
 
   # Archives requests route - handles EAD XML from archives.stanford.edu
-  get 'archives_requests' => 'archives_requests#show', as: :archives_request
-  post 'archives_requests/submit_to_aeon' => 'archives_requests#submit_to_aeon', as: :submit_to_aeon
+  resources :archives_requests, only: [:new, :create]
 
   Rails.application.routes.draw do
     mount Lookbook::Engine, at: "/lookbook"

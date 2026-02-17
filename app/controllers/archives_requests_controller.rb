@@ -10,13 +10,13 @@
 class ArchivesRequestsController < ApplicationController
   rescue_from EadClient::Error, with: :handle_ead_client_error
 
-  def show
+  def new
     @ead = EadClient.fetch(ead_url_param)
     @ead_url = ead_url_param
   end
 
   # This is the action triggered by the form submission to create an Aeon request.
-  def submit_to_aeon
+  def create
     # Fetch EAD data to get the actual collection information
     @ead = EadClient.fetch(params[:ead_url])
 
@@ -44,7 +44,7 @@ class ArchivesRequestsController < ApplicationController
       flash[:warning] = "#{successes_count} succeeded, #{failures.count} failed: #{failures.pluck(:volume).join(', ')}"
     end
 
-    redirect_to archives_request_path(value: params[:ead_url])
+    redirect_to new_archives_request_path(value: params[:ead_url])
   end
 
   private

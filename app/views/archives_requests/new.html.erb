@@ -18,7 +18,7 @@
           <p>Source URL: <%= @ead_url %></p>
         </div>
       </div>
-      <%= form_with id: 'archives-request', url: submit_to_aeon_path, class: 'accordion', data: { controller: 'patronRequest archives-request', turbo: false } do |f| %>
+      <%= form_with id: 'archives-request', url: archives_requests_path, class: 'accordion', data: { controller: 'patronRequest archives-request', turbo: false } do |f| %>
         <%= render AccordionStepComponent.new(id: 'request_type', step_index: step_enum.next, form_id: f.id) do |component| %>
           <% component.with_title.with_content('Request type') %>
           <% component.with_body do %>
