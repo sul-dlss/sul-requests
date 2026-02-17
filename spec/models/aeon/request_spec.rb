@@ -53,6 +53,18 @@ RSpec.describe Aeon::Request do
       request = build(:aeon_request, transaction_status: 8)
       expect(request).not_to be_draft
     end
+
+    context 'with a digitization request' do
+      it 'returns false when the digitization process has been initiated' do
+        draft_tranaction_queue = Aeon::Queue.new(id: 5, queue_name: 'Awaiting User Review', queue_type: 'Transaction')
+        in_progress_digital_queue = Aeon::Queue.new(id: 9, queue_name: 'Awaiting Order Processing', queue_type: 'Photoduplication')
+        allow(aeon_client).to receive(:find_queue).with(id: 5, type: :transaction).and_return(draft_tranaction_queue)
+        allow(aeon_client).to receive(:find_queue).with(id: 9, type: :photoduplication).and_return(in_progress_digital_queue)
+
+        request = build(:aeon_request, :digitized, transaction_status: 5, photoduplication_status: 9)
+        expect(request).not_to be_draft
+      end
+    end
   end
 
   describe '#completed?' do
@@ -86,12 +98,13 @@ RSpec.describe Aeon::Request do
 
     it 'persists recently completed digital requests as submitted' do
       completed_queue = Aeon::Queue.new(id: 75, queue_name: 'Awaiting Item Reshelving', queue_type: 'Transaction')
+      photo_queue = Aeon::Queue.new(id: 23, queue_name: 'Item Delivered', queue_type: 'Photoduplication')
       allow(aeon_client).to receive(:find_queue).with(id: 75, type: :transaction).and_return(completed_queue)
-      allow(aeon_client).to receive(:find_queue).with(id: nil, type: :photoduplication).and_return(nil)
+      allow(aeon_client).to receive(:find_queue).with(id: 23, type: :photoduplication).and_return(photo_queue)
 
       request = build(:aeon_request, :digitized,
                       transaction_status: 75,
-                      photoduplication_status: nil,
+                      photoduplication_status: 23,
                       transaction_date: 1.day.ago)
       expect(request).not_to be_completed
       expect(request).to be_submitted
@@ -125,10 +138,11 @@ RSpec.describe Aeon::Request do
   describe '#scan_delivered?' do
     it 'returns true for a digital request in a completed queue' do
       completed_queue = Aeon::Queue.new(id: 75, queue_name: 'Awaiting Item Reshelving', queue_type: 'Transaction')
+      photo_queue = Aeon::Queue.new(id: 23, queue_name: 'Item Delivered', queue_type: 'Photoduplication')
       allow(aeon_client).to receive(:find_queue).with(id: 75, type: :transaction).and_return(completed_queue)
-      allow(aeon_client).to receive(:find_queue).with(id: nil, type: :photoduplication).and_return(nil)
+      allow(aeon_client).to receive(:find_queue).with(id: 23, type: :photoduplication).and_return(photo_queue)
 
-      request = build(:aeon_request, :digitized, transaction_status: 75, photoduplication_status: nil)
+      request = build(:aeon_request, :digitized, transaction_status: 75, photoduplication_status: 23)
       expect(request).to be_scan_delivered
     end
 
