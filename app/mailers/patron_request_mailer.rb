@@ -22,7 +22,7 @@ class PatronRequestMailer < ApplicationMailer
     @item = patron_request.selected_items.find { |i| i.id == item_id }
 
     mail(
-      to: patron_request.scan_service_point&.contact_email || Settings.scan_destinations.default.contact_email,
+      to: patron_request.scan_service_point&.staff_email || Settings.libraries.default.contact_info.email,
       from: from_address,
       subject: "Scan Request for #{@patron_request.item_title} (#{@item.barcode})"
     )
