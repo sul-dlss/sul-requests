@@ -385,7 +385,7 @@ aeon:
   days_to_persist_completed_digital_requests_as_submitted: 3
   default_daily_item_limit: 5
   queue_names:
-    canceled:
+    cancelled:
       photoduplication:
         - Order Cancelled by User
         - Order Cancelled by Staff

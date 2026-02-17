@@ -1,0 +1,6 @@
+<div class="container">
+  <h1>Cancelled requests</h1>
+  <% @aeon_requests.each do |request| %>
+    <%= render Aeon::RequestComponent.new(request:) %>
+  <% end %>
+</div>

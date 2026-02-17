@@ -200,8 +200,8 @@ class AeonClient
   # rubocop:enable Metrics/MethodLength
   # rubocop:enable Metrics/Metrics/ParameterLists
 
-  def delete_request(transaction_number:)
-    post("Requests/#{transaction_number}/route", { newStatus: 'Cancelled by User' })
+  def update_request(transaction_number:, status:)
+    post("Requests/#{transaction_number}/route", { newStatus: status })
   end
 
   private

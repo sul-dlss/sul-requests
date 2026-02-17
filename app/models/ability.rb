@@ -101,6 +101,10 @@ class Ability
       request.destroyable?(user)
     end
 
+    can :write, Aeon::Request do |request|
+      request.writable?(user)
+    end
+
     if user.sso_user?
       can :read, Aeon::Request
       can :manage, Aeon::Appointment
