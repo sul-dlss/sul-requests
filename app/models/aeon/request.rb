@@ -27,6 +27,7 @@ module Aeon
         location: dyn['location'],
         pages: dyn['itemInfo5'],
         photoduplication_status: dyn['photoduplicationStatus'],
+        photoduplication_date: Time.zone.parse(dyn.fetch('transactionDate')),
         start_time: dyn['startTime'],
         stop_time: dyn['stopTime'],
         title: dyn['itemTitle'],
@@ -40,7 +41,7 @@ module Aeon
 
     def initialize(aeon_link: nil, appointment: nil, appointment_id: nil, # rubocop:disable Metrics/AbcSize, Metrics/ParameterLists, Metrics/MethodLength
                    author: nil, call_number: nil, creation_date: nil, date: nil,
-                   document_type: nil, format: nil, location: nil, pages: nil, photoduplication_status: nil,
+                   document_type: nil, format: nil, location: nil, pages: nil, photoduplication_status: nil, photoduplication_date: nil,
                    shipping_option: nil, start_time: nil, stop_time: nil, title: nil, transaction_date: nil,
                    transaction_number: nil, transaction_status: nil, volume: nil, site: nil)
       @aeon_link = aeon_link
@@ -55,6 +56,7 @@ module Aeon
       @location = location
       @pages = pages
       @photoduplication_status = photoduplication_status
+      @photoduplication_date = photoduplication_date
       @shipping_option = shipping_option
       @start_time = start_time
       @stop_time = stop_time
@@ -88,7 +90,11 @@ module Aeon
     end
 
     def draft?
-      transaction_queue&.draft?
+      if digital?
+        photoduplication_queue.draft?
+      else
+        transaction_queue&.draft?
+      end
     end
 
     def submitted?
@@ -96,7 +102,7 @@ module Aeon
     end
 
     def digital?
-      shipping_option == 'Electronic Delivery'
+      shipping_option == 'Electronic Delivery' && photoduplication_status.present?
     end
 
     def physical?

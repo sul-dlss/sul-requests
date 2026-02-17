@@ -62,6 +62,8 @@ FactoryBot.define do
     transaction_number { 307 }
     transaction_status { 8 }
     transaction_date { Time.zone.parse('2024-03-11T23:35:01.23Z') }
+    photoduplication_status { nil }
+    photoduplication_date { nil }
     creation_date { Time.zone.parse('2024-03-11T18:42:51.95Z') }
     title { 'Throwing a sinker ball at 94 mpg with wicked movement' }
     author { nil }
@@ -86,6 +88,8 @@ FactoryBot.define do
 
     trait :digitized do
       shipping_option { 'Electronic Delivery' }
+      photoduplication_status { 9 }
+      photoduplication_date { Time.zone.parse('2024-03-12T12:44:01.23Z') }
       appointment_id { nil }
       appointment { nil }
     end
