@@ -81,12 +81,18 @@ module Aeon
       digital? && in_completed_queue?
     end
 
+    def canceled?
+      return false if draft?
+
+      photoduplication_queue&.canceled? || transaction_queue&.canceled?
+    end
+
     def draft?
       transaction_queue&.draft?
     end
 
     def submitted?
-      !draft? && !completed?
+      !draft? && !canceled? && !completed?
     end
 
     def digital?

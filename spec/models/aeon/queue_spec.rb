@@ -33,6 +33,18 @@ RSpec.describe Aeon::Queue do
     end
   end
 
+  describe '#canceled?' do
+    it 'returns true when queue_name is in the configured canceled list' do
+      queue = described_class.new(id: 5, queue_name: 'Cancelled by User', queue_type: 'Transaction')
+      expect(queue).to be_canceled
+    end
+
+    it 'returns false for a non-canceled queue' do
+      queue = described_class.new(id: 8, queue_name: 'Awaiting Request Processing', queue_type: 'Transaction')
+      expect(queue).not_to be_canceled
+    end
+  end
+
   describe '#draft?' do
     it 'returns true when queue_name is in the configured draft list' do
       queue = described_class.new(id: 5, queue_name: 'Awaiting User Review', queue_type: 'Transaction')

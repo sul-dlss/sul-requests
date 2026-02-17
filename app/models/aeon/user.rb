@@ -38,7 +38,7 @@ module Aeon
     end
 
     def submitted_requests
-      requests.reject(&:draft?)
+      requests.select(&:submitted?)
     end
 
     def appointments
