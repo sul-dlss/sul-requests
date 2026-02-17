@@ -23,7 +23,7 @@ class AeonRequestsController < ApplicationController
   end
 
   def update
-    authorize! :write, aeon_request
+    authorize! :update, aeon_request
 
     AeonClient.new.update_request(transaction_number: params[:id], status: 'Submitted by User')
     respond_to do |format|
