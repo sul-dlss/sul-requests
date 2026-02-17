@@ -91,7 +91,7 @@ module Aeon
 
     def draft?
       if digital?
-        photoduplication_queue.draft?
+        photoduplication_queue&.draft?
       else
         transaction_queue&.draft?
       end

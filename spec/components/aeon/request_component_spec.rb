@@ -3,6 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe Aeon::RequestComponent, type: :component do
+  before do
+    allow_any_instance_of(AeonClient).to receive(:queues).and_return([])
+  end
+
   let(:request) { build(:aeon_request) }
 
   context 'digitization requests' do
