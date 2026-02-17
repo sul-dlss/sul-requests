@@ -1,0 +1,7 @@
+<% if one? %>
+  <%= render Aeon::RequestComponent.new(request: first_request) %>
+<% else %>
+  <div class="card-group">
+    <%= render Aeon::RequestComponent.with_collection(request_group.requests) %>
+  </div>
+<% end %>

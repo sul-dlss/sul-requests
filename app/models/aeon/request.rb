@@ -123,6 +123,10 @@ module Aeon
       reference_number || transaction_number
     end
 
+    def coelesce_key
+      reference_number || transaction_number
+    end
+
     private
 
     def within_persist_completed_request_as_submitted_period?
