@@ -109,6 +109,10 @@ module Aeon
       !digital?
     end
 
+    def destroyable?(user)
+      user.aeon.submitted_requests.map(&:transaction_number).include?(transaction_number)
+    end
+
     private
 
     def within_persist_completed_request_as_submitted_period?

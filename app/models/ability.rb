@@ -97,6 +97,10 @@ class Ability
     can :create, PatronRequest, &:aeon_page?
     can :read, [PatronRequest], patron_id: user.patron.id if user.patron
 
+    can :destroy, Aeon::Request do |request|
+      request.destroyable?(user)
+    end
+
     if user.sso_user?
       can :read, Aeon::Request
       can :manage, Aeon::Appointment
