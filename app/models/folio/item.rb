@@ -191,7 +191,7 @@ module Folio
     end
 
     def scannable?
-      scan_service_point.present? && scan_service_point.material_types.include?(material_type.name)
+      scan_service_point.present? && scan_service_point.material_types&.include?(material_type.name)
     end
 
     def mediateable?

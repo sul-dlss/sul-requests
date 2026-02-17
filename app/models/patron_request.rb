@@ -434,7 +434,7 @@ class PatronRequest < ApplicationRecord
   def all_items_scannable?
     return false if selectable_items.none?
 
-    selectable_items.all? { |item| scan_service_point.material_types.include?(item.material_type.name) }
+    selectable_items.all? { |item| scan_service_point.material_types&.include?(item.material_type.name) }
   end
 
   def scan_earliest
