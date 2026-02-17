@@ -21,7 +21,13 @@ module Ead
     end
 
     def identifier
-      @identifier ||= doc.xpath('//unitid').first&.text&.strip
+      @identifier ||= doc.xpath('//unitid[not(@type)]').first&.text&.strip
+    end
+
+    # Note, OAC populates this value with the archives.stanford.edu permalink
+    # This means we aren't distinguishing/tracking traffic from OAC
+    def collection_permalink
+      @collection_permalink ||= doc.xpath('//eadid/@url').first&.value&.strip
     end
 
     def repository

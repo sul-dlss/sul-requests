@@ -8,6 +8,13 @@ class AeonClient
     accept: 'application/json'
   }.freeze
 
+  # Maps from the value in EAD to Aeon's valid site codes
+  REPOSITORY_TO_SITE_CODE = {
+    'Department of Special Collections and University Archives' => 'SPECUA',
+    'Archive of Recorded Sound' => 'ARS',
+    'East Asia Library' => 'EASTASIA'
+  }.freeze
+
   def initialize(url: Settings.aeon.api_url, api_key: Settings.aeon.api_key)
     @base_url = url
     @api_key = api_key
@@ -160,6 +167,38 @@ class AeonClient
       raise "Aeon API error: #{response.status}"
     end
   end
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/Metrics/ParameterLists
+
+  # Submit an archives request to Aeon
+  # @param username [String] the user's Aeon username, which is an email
+  def submit_archives_request(username:, title:, author: nil, call_number: nil, volume: nil,
+                              aeon_link: nil, shipping_option: nil, identifier: nil,
+                              repository: nil)
+    aeon_payload = {
+      username:,
+      itemTitle: title,
+      itemAuthor: author,
+      callNumber: call_number,
+      itemVolume: volume,
+      itemInfo1: aeon_link,
+      shippingOption: shipping_option,
+      eadNumber: identifier,
+      site: map_repository_to_site_code(repository),
+      webRequestForm: 'SUL Requests'
+    }.compact # Remove nil values
+
+    response = post('Requests/create', aeon_payload)
+
+    case response.status
+    when 201
+      response.body
+    else
+      raise "Aeon API error: #{response.status} - #{response.body}"
+    end
+  end
+  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/Metrics/ParameterLists
 
   private
 
@@ -193,5 +232,12 @@ class AeonClient
 
   def default_headers
     DEFAULT_HEADERS.merge({ 'X-AEON-API-KEY': @api_key })
+  end
+
+  def map_repository_to_site_code(repository)
+    return nil unless repository
+
+    # TODO: Fallback to SPECUA? Other logic?
+    REPOSITORY_TO_SITE_CODE[repository] || 'SPECUA'
   end
 end
