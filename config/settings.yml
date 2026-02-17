@@ -344,12 +344,14 @@ scan_destinations:
     # staff_email: ''
   LAW:
     pseudopatron_barcode: LAW-SCANDELIVER
+    service_point_code: 'LAW'
     staff_email: circulation@law.stanford.edu
     material_types:
     - book
     - periodical
   LANE:
     pseudopatron_barcode: LANE-SCANDELIVER
+    service_point_code: 'LANE-DESK'
     staff_email: LaneAskUs@stanford.edu
     material_types:
     - book
