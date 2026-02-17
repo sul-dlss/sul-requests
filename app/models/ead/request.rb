@@ -4,7 +4,7 @@ module Ead
   ##
   # Model for EAD-based requests
   class Request
-    attr_reader :user, :ead, :items, :shipping_option
+    attr_reader :user, :ead, :items, :request_data
 
     # Maps from the value in EAD to Aeon's valid site codes
     REPOSITORY_TO_SITE_CODE = {
@@ -15,11 +15,11 @@ module Ead
 
     delegate :title, :creator, :call_number, :identifier, :repository, :collection_permalink, to: :ead
 
-    def initialize(user:, ead:, items: [], shipping_option: nil)
+    def initialize(user:, ead:, items: [], **request_data)
       @user = user
       @ead = ead
       @items = items
-      @shipping_option = shipping_option
+      @request_data = request_data
     end
 
     def create_aeon_requests!
@@ -59,10 +59,11 @@ module Ead
         item_subtitle: nil,
         item_title: title,
         item_volume: volume['subseries'],
-        shipping_option: shipping_option,
+        shipping_option: nil,
         site: site,
         special_request: nil,
-        username: user.email_address
+        username: user.email_address,
+        **request_data
       )
     end
 
