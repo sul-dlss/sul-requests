@@ -24,7 +24,7 @@ class PatronRequestMailer < ApplicationMailer
     mail(
       to: patron_request.scan_service_point&.contact_email || Settings.scan_destinations.default.contact_email,
       from: from_address,
-      subject: "Scan Request for #{@item.title} (#{@item.barcode})"
+      subject: "Scan Request for #{@patron_request.item_title} (#{@item.barcode})"
     )
   end
 
