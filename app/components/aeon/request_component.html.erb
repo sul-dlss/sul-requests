@@ -16,7 +16,7 @@
     </div>
     <div class="d-flex text-nowrap align-items-baseline align-self-start">
       <% if request.cancelled? %>
-        <form action="<%= aeon_request_path(transaction_number) %>" method="PATCH">
+        <form action="<%= resubmit_aeon_request_path(transaction_number) %>" method="PATCH">
           <button type="submit" class="btn btn-link su-underline" aria-label="resubmit request"><i class="bi bi-arrow-clockwise"></i> Resubmit</button>
         </form>
       <% else %>

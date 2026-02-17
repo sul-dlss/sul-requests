@@ -101,7 +101,7 @@ class Ability
       request.destroyable?(user)
     end
 
-    can :write, Aeon::Request do |request|
+    can :update, Aeon::Request do |request|
       request.writable?(user)
     end
 
