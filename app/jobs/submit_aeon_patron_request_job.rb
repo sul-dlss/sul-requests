@@ -12,25 +12,30 @@ class SubmitAeonPatronRequestJob < ApplicationJob
     submit_aeon_request(username, aeon_request)
   end
 
-  def map_json(username, aeon_request) 
+  # rubocop:disable Metrics/MethodLength
+  def map_json(username, aeon_request)
     {
-      "callNumber": aeon_request.call_number,
-      "documentType": aeon_request.document_type,
-      "format": aeon_request.format,
-      "itemAuthor": aeon_request.author,
-      "itemDate": aeon_request.date,
-      "itemTitle": aeon_request.title,
-      "location": aeon_request.location,
-      "scheduledDate": "2026-02-20T20:35:38.200Z",
-      "webRequestForm": "GenericRequestMonograph",
-      "username": username,
-      "creationDate": "2026-02-17T20:35:38.200Z",
-      "systemID": "sul-requests",
-      "itemInfo1": aeon_request.aeon_link,
-      "specialRequest": aeon_request.special_request,
-      "site": aeon_request.site
+      callNumber: aeon_request.call_number,
+      documentType: aeon_request.document_type,
+      format: aeon_request.format,
+      itemAuthor: aeon_request.author,
+      itemDate: aeon_request.date,
+      itemTitle: aeon_request.title,
+      location: aeon_request.location,
+      scheduledDate: '2026-02-20T20:35:38.200Z',
+      webRequestForm: 'GenericRequestMonograph',
+      username: username,
+      creationDate: '2026-02-17T20:35:38.200Z',
+      systemID: 'sul-requests',
+      itemInfo1: aeon_request.aeon_link,
+      specialRequest: aeon_request.special_request,
+      site: aeon_request.site,
+      shippingOption: aeon_request.shipping_option,
+      itemInfo5: aeon_request.pages,
+      forPublication: aeon_request.publication
     }.compact.to_json
   end
+  # rubocop:enable Metrics/MethodLength
 
   def submit_aeon_request(username, aeon_request)
     aeon_payload = map_json(username, aeon_request)

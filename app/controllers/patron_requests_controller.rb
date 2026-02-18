@@ -34,10 +34,10 @@ class PatronRequestsController < ApplicationController
   end
 
   def create
-    Rails.logger.debug '--->>>CREATE'
     if @patron_request.aeon_page?
-      Rails.logger.debug 'AEON PAGE!!'
-      # process aeon page
+      Rails.logger.debug 'Patron request includes'
+      Rails.logger.debug @patron_request.inspect
+      Rails.logger.debug { "PARAMS #{params}" }
       @patron_request.submit_aeon_request
     elsif @patron_request.save && @patron_request.submit_later
       redirect_to @patron_request
@@ -94,6 +94,8 @@ class PatronRequestsController < ApplicationController
                                    :for_sponsor_id, :for_sponsor,
                                    :fulfillment_type, :request_type,
                                    :scan_page_range, :scan_authors, :scan_title,
-                                   :barcode, { barcodes: [] }, :aeon_additional_info, :aeon_publication, :aeon_pages])
+                                   :aeon_reading_special, :aeon_digitization_special,
+                                   :aeon_publication, :aeon_pages, :aeon_terms,
+                                   :barcode, { barcodes: [] }])
   end
 end
