@@ -5,7 +5,7 @@ module Aeon
   class Request
     attr_reader :item_url, :appointment, :appointment_id, :author, :call_number,
                 :creation_date, :date, :document_type, :format, :pages, :photoduplication_status,
-                :publication, :location, :shipping_option, :site, :special_request, :start_time, :stop_time, 
+                :publication, :location, :shipping_option, :site, :special_request, :start_time, :stop_time,
                 :title, :transaction_date, :transaction_number, :transaction_status, :volume
 
     def self.aeon_client
@@ -37,7 +37,6 @@ module Aeon
         transaction_number: dyn['transactionNumber'],
         transaction_status: dyn['transactionStatus'],
         volume: dyn['itemVolume'],
-        site: dyn['site'],
         special_request: dyn['specialRequest'],
         publication: dyn['forPublication']
       )
