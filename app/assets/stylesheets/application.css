@@ -413,3 +413,28 @@ label.btn-close {
 #available_appointments .btn-check[disabled]+.btn {
   display: none;
 }
+
+.loading-overlay {
+  display: none;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: #F5F5F5;
+  }
+  100% {
+    background-color: #E2E2E2;
+  }
+}
+
+#available_appointments[busy=""] {
+  .loading-overlay {
+    display: flex;
+    animation: skeleton-loading 1s linear infinite alternate;
+    margin-top: -1rem;
+  }
+
+  fieldset > *:not(legend) {
+    display: none;
+  }
+}

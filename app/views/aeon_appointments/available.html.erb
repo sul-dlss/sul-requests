@@ -8,8 +8,11 @@
       <% end %>
 
       <% if next_appt  = @available_appointments.find { |x| x.start_time.to_date > @date } %>
-        There are no appointments on <%= @date.strftime('%m/%d/%Y') %>. The next available appointment is on <%= next_appt.start_time.strftime('%m/%d/%Y') %>.
+        <div>
+          There are no appointments on <%= @date.strftime('%m/%d/%Y') %>. The next available appointment is on <%= next_appt.start_time.strftime('%m/%d/%Y') %>.
+        </div>
       <% end %>
     </fieldset>
+    <div class="loading-overlay p-2 mb-2" aria-hidden="true">Loading...</div>
   </turbo-frame>
 <% end %>
