@@ -21,11 +21,13 @@
         </form>
       <% else %>
         <% if appointment&.editable? %>
-          <a class="btn btn-link su-underline" href="#replace_me"><i class="bi bi-pencil-fill me-1"></i>Edit request</a>
+          <a class="btn btn-link su-underline p-0 me-sm-2" href="#replace_me">
+            <i class="bi bi-pencil-fill me-1 align-middle"></i><span class="d-none d-sm-inline">Edit request</span>
+          </a>
         <% end %>
         <% if helpers.can? :destroy, request %>
-          <button class="btn btn-link su-underline" type="submit" aria-label="delete <%= title %> request" data-bs-toggle="modal" data-bs-target="#delete-<%= transaction_number %>">
-            <i class="bi bi-trash"></i>
+          <button class="btn btn-link su-underline p-0" type="submit" aria-label="delete <%= title %> request" data-bs-toggle="modal" data-bs-target="#delete-<%= transaction_number %>">
+            <i class="bi bi-trash align-middle"></i>
           </button>
         <% end %>
       <% end %>
