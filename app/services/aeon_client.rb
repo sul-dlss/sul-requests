@@ -37,7 +37,7 @@ class AeonClient
   end
 
   def create_user(username:, auth_type: 'Default')
-    response = post('Users', { username:, authType: auth_type })
+    response = post('Users', { username:, authType: auth_type, cleared: 'No' })
 
     case response.status
     when 201
