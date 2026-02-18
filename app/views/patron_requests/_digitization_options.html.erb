@@ -11,23 +11,25 @@
 
   <div>
     <div class='mt-3'>
-      Requested pages
+      <%= f.label :aeon_pages, 'Requested pages', :class => 'fw-bold py-2 redesign-required-label' %>
+      <%= f.text_field :aeon_pages, :class => 'form-control', :required => true %>
     </div>
     <div class='mt-3 d-flex'>
       <div class='fw-bold me-2'>Is this for publication? </div>
       <%= f.radio_button :aeon_publication, 'Yes', :class => 'form-check-input', :required => true %>
-      <%= f.label :aeon_publication, :class => 'form-check-label ms-1' do %>
+      <%= f.label :aeon_publication, :class => 'form-check-label ms-2 me-3' do %>
         Yes
       <% end %>
 
       <%= f.radio_button :aeon_publication, 'No', :class => 'form-check-input', :required => true %>
-      <%= f.label :aeon_publication, :class => 'form-check-label ms-1' do %>
+      <%= f.label :aeon_publication, :class => 'form-check-label ms-2 me-3' do %>
         No
       <% end %>
     </div>
     <div class='mt-3 mb-2'>
-      <%= f.label :aeon_additional_info, 'Additional Information', :class => 'fw-bold py-2' %>
-      <%= f.text_field :aeon_additional_info, :class => 'form-control' %>
+      <%= f.label :aeon_digitization_special, 'Additional Information', :class => 'fw-bold py-2' %>
+      <%= f.text_area :aeon_digitization_special, :class => 'form-control', :rows => 3 %>
+      <small class='text-cardinal mt-4'>Limit 255 characters.</small> 
     </div>
   </div>
 </div>

@@ -5,10 +5,10 @@ module Aeon
   class Request
     attr_reader :item_url, :appointment, :appointment_id, :author, :call_number,
                 :creation_date, :date, :document_type, :format, :pages, :photoduplication_status,
-                :location, :reference_number, :shipping_option, :site,
-                :start_time, :stop_time, :title, :transaction_date,
+                :publication, :location, :reference_number, :shipping_option, :site,
+                :special_request, :start_time, :stop_time, :title, :transaction_date,
                 :transaction_number, :transaction_status, :username, :volume
-
+    
     def self.aeon_client
       AeonClient.new
     end
@@ -39,8 +39,8 @@ module Aeon
         transaction_number: dyn['transactionNumber'],
         transaction_status: dyn['transactionStatus'],
         volume: dyn['itemVolume'],
-        site: dyn['site'],
-        special_request: dyn['specialRequest']
+        special_request: dyn['specialRequest'],
+        publication: dyn['forPublication']
       )
     end
 
@@ -50,6 +50,10 @@ module Aeon
                    reference_number: nil, shipping_option: nil, start_time: nil, stop_time: nil, title: nil, transaction_date: nil,
                    transaction_number: nil, transaction_status: nil, username: nil, volume: nil, site: nil)
       @item_url = item_url
+                   shipping_option: nil, start_time: nil, stop_time: nil, title: nil, transaction_date: nil,
+                   transaction_number: nil, transaction_status: nil, volume: nil, site: nil, special_request: nil,
+                   publication: nil)
+      @aeon_link = aeon_link
       @appointment = appointment
       @appointment_id = appointment_id
       @author = author
@@ -73,6 +77,7 @@ module Aeon
       @volume = volume
       @site = site
       @special_request = special_request
+      @publication = publication
     end
 
     def appointment?
