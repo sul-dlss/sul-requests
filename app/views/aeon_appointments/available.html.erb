@@ -1,6 +1,6 @@
 <%= form_with(model: Aeon::Appointment.new) do |f| %>
   <turbo-frame id="available_appointments">
-    <fieldset class="mb-3">
+    <fieldset class="mb-3" data-appointment-target="fieldset" data-max-slot="<%= @appointment_lengths.max %>" data-min-slot="<%= @appointment_lengths.min %>">
       <legend class="fs-6 fw-semibold">Available time slots</legend>
       <% @available_appointments.select { |x| x.start_time.to_date == @date }.each do |appointment| %>
         <%= f.radio_button :start_time, appointment.start_time.strftime('%-I:%M %p'), id: "aeon_appointment_start_time_#{appointment.start_time.to_i}", data: { maximum_appointment_length: appointment.maximum_appointment_length }, class: 'btn-check', checked: @selected_time == appointment.start_time.strftime('%-I:%M %p') %>

@@ -27,7 +27,7 @@ class AeonAppointmentsController < ApplicationController
     @date = Date.parse(params.expect(:date))
     @available_appointments = AeonClient.new.available_appointments(reading_room_id: params.expect(:reading_room_id),
                                                                     date: @date, include_next_available: true)
-
+    @appointment_lengths = @available_appointments.map(&:maximum_appointment_length)
     respond_to do |format|
       format.html
       format.json
