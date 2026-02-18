@@ -10,6 +10,13 @@
 class ArchivesRequestsController < ApplicationController
   rescue_from EadClient::Error, with: :handle_ead_client_error
 
+  # Maps from the value in EAD to Aeon's valid site codes
+  REPOSITORY_TO_SITE_CODE = {
+    'Department of Special Collections and University Archives' => 'SPECUA',
+    'Archive of Recorded Sound' => 'ARS',
+    'East Asia Library' => 'EASTASIA'
+  }.freeze
+
   def new
     @ead = EadClient.fetch(ead_url_param)
     @ead_url = ead_url_param
@@ -61,8 +68,15 @@ class ArchivesRequestsController < ApplicationController
       aeon_link: @ead.collection_permalink,
       shipping_option: params[:shipping_option],
       identifier: @ead.identifier,
-      repository: @ead.repository
+      site: map_repository_to_site_code(@ead.repository)
     )
+  end
+
+  def map_repository_to_site_code(repository)
+    return nil unless repository
+
+    # TODO: Fallback to SPECUA? Other logic?
+    REPOSITORY_TO_SITE_CODE[repository] || 'SPECUA'
   end
 
   def ead_url_param
