@@ -5,7 +5,7 @@ module Aeon
   class RequestComponent < ViewComponent::Base
     attr_reader :request
 
-    delegate :appointment?, :appointment, :aeon_link, :pages, :volume, :format, :title,
+    delegate :appointment?, :appointment, :item_url, :pages, :volume, :format, :title,
              :date, :document_type, :call_number, :transaction_status, :transaction_date,
              :transaction_number, :draft?, :editable?, :completed?, :submitted?, :digital?, :physical?, :scan_delivered?, to: :request
 
@@ -13,10 +13,10 @@ module Aeon
       @request = request
     end
 
-    def searchworks_link
-      return unless aeon_link&.include?('searchworks')
+    def searchworks_url
+      return unless item_url&.include?('searchworks')
 
-      aeon_link
+      item_url
     end
 
     def format_info

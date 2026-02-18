@@ -65,7 +65,7 @@ class ArchivesRequestsController < ApplicationController
       author: @ead.creator,
       call_number: "#{@ead.identifier} #{volume['series']}",
       volume: volume['subseries'],
-      aeon_link: @ead.collection_permalink,
+      item_url: @ead.collection_permalink,
       shipping_option: params[:shipping_option],
       identifier: @ead.identifier,
       site: map_repository_to_site_code(@ead.repository)
