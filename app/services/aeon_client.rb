@@ -160,38 +160,38 @@ class AeonClient
       raise "Aeon API error: #{response.status}"
     end
   end
-  # rubocop:disable Metrics/MethodLength
-  # rubocop:disable Metrics/Metrics/ParameterLists
+
+  CreateRequestData = Data.define(:call_number, :ead_number, :item_author, :item_citation, :item_date, :item_info1, :item_info2,
+                                  :item_info3, :item_info4, :item_info5, :item_subtitle, :item_title, :item_volume,
+                                  :shipping_option, :site, :special_request, :username) do
+    def as_json # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+      {
+        callNumber: call_number,
+        eadNumber: ead_number,
+        itemAuthor: item_author,
+        itemCitation: item_citation,
+        itemDate: item_date,
+        itemInfo1: item_info1,
+        itemInfo2: item_info2,
+        itemInfo3: item_info3,
+        itemInfo4: item_info4,
+        itemInfo5: item_info5,
+        itemSubTitle: item_subtitle,
+        itemTitle: item_title,
+        itemVolume: item_volume,
+        shippingOption: shipping_option,
+        site: site,
+        specialRequest: special_request,
+        username: username,
+        webRequestForm: 'SUL Requests'
+      }.compact
+    end
+  end
 
   # Submit an archives request to Aeon
   # @param username [String] the user's Aeon username, which is an email
-  def submit_archives_request(username:, title:, author: nil, call_number: nil, volume: nil,
-                              item_url: nil, shipping_option: nil, identifier: nil,
-                              site: nil, citation: nil, date: nil,
-                              info_2: nil, info_3: nil, info_4: nil, info_5: nil,
-                              sub_title: nil, special_request: nil)
-    aeon_payload = {
-      callNumber: call_number,
-      eadNumber: identifier,
-      itemAuthor: author,
-      itemCitation: citation,
-      itemDate: date,
-      itemInfo1: item_url,
-      itemInfo2: info_2,
-      itemInfo3: info_3,
-      itemInfo4: info_4,
-      itemInfo5: info_5,
-      itemSubTitle: sub_title,
-      itemTitle: title,
-      itemVolume: volume,
-      shippingOption: shipping_option,
-      site: site,
-      specialRequest: special_request,
-      username:,
-      webRequestForm: 'SUL Requests'
-    }.compact # Remove nil values
-
-    response = post('Requests/create', aeon_payload)
+  def create_request(aeon_payload)
+    response = post('Requests/create', aeon_payload.as_json)
 
     case response.status
     when 201
@@ -200,8 +200,6 @@ class AeonClient
       raise "Aeon API error: #{response.status} - #{response.body}"
     end
   end
-  # rubocop:enable Metrics/MethodLength
-  # rubocop:enable Metrics/Metrics/ParameterLists
 
   def update_request(transaction_number:, status:)
     post("Requests/#{transaction_number}/route", { newStatus: status })
