@@ -30,6 +30,8 @@ RSpec.describe 'Requesting an item from an EAD', :js do
     click_button 'Continue'
 
     click_link 'Computers and Typesetting'
+    click_link 'Legal size documents'
+
     check 'Box 12'
     click_button 'Continue'
 
