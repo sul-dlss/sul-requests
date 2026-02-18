@@ -11,7 +11,12 @@
       <ul class="list-group list-group-flush">
         <% appointment.requests.each do |request| %>
           <li class="list-group-item">
-            <h4><%= request.title %></h4>
+            <h4>
+              <%= request.title %>
+              <% if request.draft? %>
+                <span class="text-warning ms-2"><i class="bi bi-exclamation-triangle me-1"></i>Draft</span>
+              <% end %>
+            </h4>
             <div class="d-flex flex-row align-items-center">
               <div class="me-4">Call number: <%= request.call_number %></div>
 
