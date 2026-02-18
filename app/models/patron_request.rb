@@ -7,7 +7,7 @@ class PatronRequest < ApplicationRecord
   store :data, accessors: [
     :barcodes, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title,
     :proxy, :for_sponsor, :for_sponsor_id, :estimated_delivery, :patron_name, :item_title, :requested_barcodes, :item_mediation_data,
-    :aeon_additional_info, :aeon_publication, :aeon_pages
+    :aeon_reading_special, :aeon_digitization_special, :aeon_publication, :aeon_pages, :aeon_terms
   ], coder: JSON
 
   delegate :instance_id, :finding_aid, :finding_aid?, to: :bib_data
@@ -117,6 +117,15 @@ class PatronRequest < ApplicationRecord
   # Check if the user has selected a sponsor on the form for making the request on behalf of their sponsor
   def for_sponsor?
     for_sponsor == 'share'
+  end
+
+  # For aeon types
+  def aeon_reading_room?
+    request_type == 'reading'
+  end
+
+  def aeon_digitization?
+    request_type == 'digitization'
   end
 
   def folio_responses
@@ -652,17 +661,20 @@ class PatronRequest < ApplicationRecord
   end
 
   # Create aeon request based on what we receive
-  # rubocop:disable Metrics/CyclomaticComplexity,Metrics/AbcSize
+  # rubocop:disable Metrics/CyclomaticComplexity,Metrics/AbcSize,Metrics/PerceivedComplexity
   def create_aeon_request
     call_number = selectable_items.one? || f.object.barcodes&.one? ? selectable_items.first.callnumber : nil
 
     # Need to create appointment as well
     Aeon::Request.new(aeon_link: bib_data&.view_url, appointment: nil, appointment_id: nil,
                       author: bib_data&.author, call_number: call_number, creation_date: nil, date: bib_data&.pub_date,
-                      document_type: 'Monograph', format: nil, location: origin_location_code, pages: nil,
-                      shipping_option: nil, title: bib_data&.title, transaction_date: nil,
-                      transaction_number: nil, transaction_status: nil, volume: nil, 
-                      site: aeon_site, special_request: aeon_additional_info)
+                      document_type: 'Monograph', format: nil, location: origin_location_code,
+                      shipping_option: aeon_digitization? ? 'Electronic Delivery' : nil,
+                      title: bib_data&.title, transaction_date: nil,
+                      transaction_number: nil, transaction_status: nil, volume: nil,
+                      site: aeon_site, special_request: aeon_digitization? ? aeon_digitization_special : aeon_reading_special,
+                      pages: aeon_digitization? ? aeon_pages : nil,
+                      publication: aeon_digitization? ? (aeon_publication == 'Yes') : nil)
   end
-  # rubocop:enable Metrics/CyclomaticComplexity,Metrics/AbcSize
+  # rubocop:enable Metrics/CyclomaticComplexity,Metrics/AbcSize,Metrics/PerceivedComplexity
 end
