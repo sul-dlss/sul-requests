@@ -166,7 +166,7 @@ class AeonClient
   # Submit an archives request to Aeon
   # @param username [String] the user's Aeon username, which is an email
   def submit_archives_request(username:, title:, author: nil, call_number: nil, volume: nil,
-                              aeon_link: nil, shipping_option: nil, identifier: nil,
+                              item_url: nil, shipping_option: nil, identifier: nil,
                               site: nil, citation: nil, date: nil,
                               info_2: nil, info_3: nil, info_4: nil, info_5: nil,
                               sub_title: nil, special_request: nil)
@@ -176,7 +176,7 @@ class AeonClient
       itemAuthor: author,
       itemCitation: citation,
       itemDate: date,
-      itemInfo1: aeon_link,
+      itemInfo1: item_url,
       itemInfo2: info_2,
       itemInfo3: info_3,
       itemInfo4: info_4,

@@ -61,8 +61,8 @@
           <i replace_with_icon></i><%= document_type %><% if date %> (<%= date %>)<% end %>
         </div>
         <div>Call number: <%= call_number %></div>
-        <% if searchworks_link %>
-          <div><a href="<%= searchworks_link %>" class="su-underline">View in SearchWorks<i class="ms-1 bi bi-arrow-up-right"></i></a></div>
+        <% if searchworks_url %>
+          <div><a href="<%= searchworks_url %>" class="su-underline">View in SearchWorks<i class="ms-1 bi bi-arrow-up-right"></i></a></div>
         <% end %>
       </div>
       <% if format_info %>

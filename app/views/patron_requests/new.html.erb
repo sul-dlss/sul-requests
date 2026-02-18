@@ -64,7 +64,7 @@
     <%= f.hidden_field :aeon_title, name: 'ItemTitle', value: f.object.bib_data.title %>
     <%= f.hidden_field :aeon_author, name: 'ItemAuthor', value: f.object.bib_data.author %>
     <%= f.hidden_field :aeon_date, name: 'ItemDate', value: f.object.bib_data.pub_date %>
-    <%= f.hidden_field :aeon_link, name: 'ItemInfo1', value: f.object.bib_data.view_url %>
+    <%= f.hidden_field :item_url, name: 'ItemInfo1', value: f.object.bib_data.view_url %>
   <% end %>
   <% if f.object.selectable_items.one? || f.object.barcodes&.one? %>
     <% single_item = f.object.selectable_items.first %>

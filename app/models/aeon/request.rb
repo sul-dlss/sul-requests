@@ -3,7 +3,7 @@
 module Aeon
   # Wraps an Aeon request record
   class Request
-    attr_reader :aeon_link, :appointment, :appointment_id, :author, :call_number,
+    attr_reader :item_url, :appointment, :appointment_id, :author, :call_number,
                 :creation_date, :date, :document_type, :format, :pages, :photoduplication_status,
                 :location, :shipping_option, :site, :start_time, :stop_time, :title, :transaction_date,
                 :transaction_number, :transaction_status, :username, :volume
@@ -14,7 +14,7 @@ module Aeon
 
     def self.from_dynamic(dyn) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       new(
-        aeon_link: dyn['itemInfo1'],
+        item_url: dyn['itemInfo1'],
         appointment: dyn['appointment'] ? Appointment.from_dynamic(dyn['appointment']) : nil,
         appointment_id: dyn['appointmentID'],
         author: dyn['itemAuthor'],
@@ -40,12 +40,12 @@ module Aeon
       )
     end
 
-    def initialize(aeon_link: nil, appointment: nil, appointment_id: nil, # rubocop:disable Metrics/AbcSize, Metrics/ParameterLists, Metrics/MethodLength
+    def initialize(item_url: nil, appointment: nil, appointment_id: nil, # rubocop:disable Metrics/AbcSize, Metrics/ParameterLists, Metrics/MethodLength
                    author: nil, call_number: nil, creation_date: nil, date: nil,
                    document_type: nil, format: nil, location: nil, pages: nil, photoduplication_status: nil, photoduplication_date: nil,
                    shipping_option: nil, start_time: nil, stop_time: nil, title: nil, transaction_date: nil,
                    transaction_number: nil, transaction_status: nil, username: nil, volume: nil, site: nil)
-      @aeon_link = aeon_link
+      @item_url = item_url
       @appointment = appointment
       @appointment_id = appointment_id
       @author = author
