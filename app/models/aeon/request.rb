@@ -5,8 +5,8 @@ module Aeon
   class Request
     attr_reader :aeon_link, :appointment, :appointment_id, :author, :call_number,
                 :creation_date, :date, :document_type, :format, :pages, :photoduplication_status,
-                :location, :shipping_option, :start_time, :stop_time, :title, :transaction_date,
-                :transaction_number, :transaction_status, :volume, :site
+                :location, :shipping_option, :site, :start_time, :stop_time, :title, :transaction_date,
+                :transaction_number, :transaction_status, :username, :volume
 
     def self.aeon_client
       AeonClient.new
@@ -26,16 +26,17 @@ module Aeon
         shipping_option: dyn['shippingOption'],
         location: dyn['location'],
         pages: dyn['itemInfo5'],
-        photoduplication_status: dyn['photoduplicationStatus'],
         photoduplication_date: Time.zone.parse(dyn.fetch('transactionDate')),
+        photoduplication_status: dyn['photoduplicationStatus'],
+        site: dyn['site'],
         start_time: dyn['startTime'],
         stop_time: dyn['stopTime'],
         title: dyn['itemTitle'],
         transaction_date: Time.zone.parse(dyn.fetch('transactionDate')),
         transaction_number: dyn['transactionNumber'],
         transaction_status: dyn['transactionStatus'],
-        volume: dyn['itemVolume'],
-        site: dyn['site']
+        username: dyn['username'],
+        volume: dyn['itemVolume']
       )
     end
 
@@ -43,7 +44,7 @@ module Aeon
                    author: nil, call_number: nil, creation_date: nil, date: nil,
                    document_type: nil, format: nil, location: nil, pages: nil, photoduplication_status: nil, photoduplication_date: nil,
                    shipping_option: nil, start_time: nil, stop_time: nil, title: nil, transaction_date: nil,
-                   transaction_number: nil, transaction_status: nil, volume: nil, site: nil)
+                   transaction_number: nil, transaction_status: nil, username: nil, volume: nil, site: nil)
       @aeon_link = aeon_link
       @appointment = appointment
       @appointment_id = appointment_id
@@ -64,6 +65,7 @@ module Aeon
       @transaction_date = transaction_date
       @transaction_number = transaction_number
       @transaction_status = transaction_status
+      @username = username
       @volume = volume
       @site = site
     end
@@ -109,12 +111,8 @@ module Aeon
       !digital?
     end
 
-    def destroyable?(user)
-      user.aeon.requests.map(&:transaction_number).include?(transaction_number)
-    end
-
-    def writable?(user)
-      destroyable?(user) && (cancelled? || appointment.editable?)
+    def writable?
+      cancelled? || appointment.editable?
     end
 
     private

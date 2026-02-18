@@ -97,12 +97,10 @@ class Ability
     can :create, PatronRequest, &:aeon_page?
     can :read, [PatronRequest], patron_id: user.patron.id if user.patron
 
-    can :destroy, Aeon::Request do |request|
-      request.destroyable?(user)
-    end
+    can :destroy, Aeon::Request, username: user.email_address
 
     can :update, Aeon::Request do |request|
-      request.writable?(user)
+      request.username == user.email_address && request.writable?
     end
 
     if user.sso_user?
