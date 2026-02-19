@@ -45,7 +45,7 @@ module SULRequests
     end
 
     # Load all request types automatically
-    config.autoload_paths += %W(#{config.root}/app/mailers/factories )
+    config.autoload_paths += %W(#{config.root}/app/mailers/factories #{config.root}/app/models/abilities)
 
     config.time_zone = 'Pacific Time (US & Canada)'
 
