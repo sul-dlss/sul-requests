@@ -11,18 +11,15 @@ module Aeon
       AeonClient.new
     end
 
-    attr_reader :user_info
-
-    def initialize(fields = {})
-      @user_info = fields
+    def self.from_dynamic(data)
+      new(username: data['username'], auth_type: data['authType'])
     end
 
-    def username
-      user_info['username']
-    end
+    attr_reader :username, :auth_type
 
-    def auth_type
-      user_info['authType']
+    def initialize(username:, auth_type: nil)
+      @username = username
+      @auth_type = auth_type
     end
 
     def sso_auth?
