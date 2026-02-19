@@ -13,6 +13,7 @@ module Aeon
     end
 
     def self.from_dynamic(dyn) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+      photoduplication_date = dyn['photoduplicationDate'].presence
       new(
         item_url: dyn['itemInfo1'],
         appointment: dyn['appointment'] ? Appointment.from_dynamic(dyn['appointment']) : nil,
@@ -26,7 +27,7 @@ module Aeon
         shipping_option: dyn['shippingOption'],
         location: dyn['location'],
         pages: dyn['itemInfo5'],
-        photoduplication_date: Time.zone.parse(dyn.fetch('photoduplicationDate')),
+        photoduplication_date: photoduplication_date ? Time.zone.parse(photoduplication_date) : nil,
         photoduplication_status: dyn['photoduplicationStatus'],
         site: dyn['site'],
         start_time: dyn['startTime'],
