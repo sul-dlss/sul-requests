@@ -2,7 +2,8 @@
 
 # Client for the Aeon API
 class AeonClient
-  class NotFoundError < StandardError; end
+  class ApiError < StandardError; end
+  class NotFoundError < ApiError; end
 
   DEFAULT_HEADERS = {
     accept: 'application/json'
@@ -25,7 +26,7 @@ class AeonClient
     when 404
       raise NotFoundError, "No Aeon account found for #{username}"
     else
-      raise "Aeon API error: #{response.status}"
+      raise Error, "Aeon API error: #{response.status}"
     end
   end
 
@@ -36,7 +37,7 @@ class AeonClient
     when 201
       Aeon::User.new(response.body)
     else
-      raise "Aeon API error: #{response.status}"
+      raise ApiError, "Aeon API error: #{response.status}"
     end
   end
 
@@ -52,7 +53,7 @@ class AeonClient
     when 404
       []
     else
-      raise "Aeon API error: #{response.status}"
+      raise ApiError, "Aeon API error: #{response.status}"
     end
   end
 
@@ -65,7 +66,7 @@ class AeonClient
     when 404
       []
     else
-      raise "Aeon API error: #{response.status}"
+      raise ApiError, "Aeon API error: #{response.status}"
     end
   end
 
@@ -82,7 +83,7 @@ class AeonClient
     when 201
       Aeon::Appointment.from_dynamic(response.body)
     else
-      raise "Aeon API error: #{response.status}"
+      raise ApiError, "Aeon API error: #{response.status}"
     end
   end
 
@@ -93,7 +94,7 @@ class AeonClient
     when 204, 404
       true
     else
-      raise "Aeon API error: #{response.status}"
+      raise ApiError, "Aeon API error: #{response.status}"
     end
   end
 
@@ -110,7 +111,7 @@ class AeonClient
     when 200, 204
       Aeon::Appointment.from_dynamic(response.body)
     else
-      raise "Aeon API error: #{response.status}"
+      raise ApiError, "Aeon API error: #{response.status}"
     end
   end
 
@@ -122,7 +123,7 @@ class AeonClient
     when 200
       response.body.map { |data| Aeon::AvailableAppointment.from_dynamic(data) }
     else
-      raise "Aeon API error: #{response.status}"
+      raise ApiError, "Aeon API error: #{response.status}"
     end
   end
 
@@ -133,7 +134,7 @@ class AeonClient
     when 200
       response.body.map { |data| Aeon::ReadingRoom.from_dynamic(data) }
     else
-      raise "Aeon API error: #{response.status}"
+      raise ApiError, "Aeon API error: #{response.status}"
     end
   end
 
@@ -157,7 +158,7 @@ class AeonClient
       Rails.cache.write('aeon/queues', queues, expires_in: 1.hour)
       queues
     else
-      raise "Aeon API error: #{response.status}"
+      raise ApiError, "Aeon API error: #{response.status}"
     end
   end
 
@@ -197,7 +198,7 @@ class AeonClient
     when 201
       response.body
     else
-      raise "Aeon API error: #{response.status} - #{response.body}"
+      raise ApiError, "Aeon API error: #{response.status} - #{response.body}"
     end
   end
 
