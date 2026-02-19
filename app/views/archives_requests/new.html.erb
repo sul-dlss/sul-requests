@@ -138,25 +138,29 @@
         <% end %>
       <% end %>
     </div>
-    <div class="col-4">
+    <aside class="col-4">
       <h2>Contact information</h2>
       <div>
         <% if @ead.repository %>
-          <h3><%= link_to @ead.repository, @ead.repository_contact[:website] %></h3>
+          <h3>
+            <%= link_to @ead.repository_contact[:website] do  %>
+              <%= @ead.repository %><i class="bi bi-arrow-up-right ms-1"></i>
+            <% end %>
+          </h3>
         <% end %>
         <% if @ead.repository_contact[:address] %>
           <p>
-            <% @ead.repository_contact[:address].each do |line| %>
-              <%= line %><br>
+            <% @ead.repository_contact[:address].each_with_index do |line, index| %>
+              <div <% if index == 0 %>class="fw-semibold"<% end %>><%= line %></div>
             <% end %>
           </p>
         <% end %>
         <% if @ead.repository_contact[:email] %>
           <p>
-            Email: <%= mail_to @ead.repository_contact[:email] %>
+            <span class="fw-semibold">Email: </span><%= mail_to @ead.repository_contact[:email] %>
           </p>
         <% end %>
       </div>
-    </div>
+    </aside>
   </div>
 </div>
