@@ -41,6 +41,20 @@ class AeonClient
     handle_response(response, as_class: Aeon::Request, not_found: [])
   end
 
+  # Submit an archives request to Aeon
+  # @param aeon_payload [CreateRequestData]
+  def create_request(aeon_payload)
+    response = post('Requests/create', aeon_payload.as_json)
+
+    handle_response(response, as_class: Aeon::Request)
+  end
+
+  def update_request_route(transaction_number:, status:)
+    response = post("Requests/#{transaction_number}/route", { newStatus: status })
+
+    handle_response(response, as_class: Aeon::Request)
+  end
+
   def appointments_for(username:, context: 'both', pending_only: true)
     response = get("Users/#{CGI.escape(username)}/appointments", params: { context: context, pendingOnly: pending_only })
 
@@ -136,20 +150,6 @@ class AeonClient
         webRequestForm: 'SUL Requests'
       }.compact
     end
-  end
-
-  # Submit an archives request to Aeon
-  # @param username [String] the user's Aeon username, which is an email
-  def create_request(aeon_payload)
-    response = post('Requests/create', aeon_payload.as_json)
-
-    handle_response(response, as_class: Aeon::Request)
-  end
-
-  def update_request(transaction_number:, status:)
-    response = post("Requests/#{transaction_number}/route", { newStatus: status })
-
-    handle_response(response, as_class: Aeon::Request)
   end
 
   private
