@@ -1,10 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/PerceivedComplexity
-# rubocop:disable Metrics/AbcSize
-# rubocop:disable Metrics/MethodLength
-# rubocop:disable Metrics/CyclomaticComplexity
-
 ##
 # Controller for handling archives requests with EAD XML data
 class ArchivesRequestsController < ApplicationController
@@ -15,6 +10,7 @@ class ArchivesRequestsController < ApplicationController
     @ead_url = ead_url_param
   end
 
+  # rubocop:disable Metrics/PerceivedComplexity, Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity
   # This is the action triggered by the form submission to create an Aeon request.
   def create
     # Fetch EAD data to get the actual collection information
@@ -39,6 +35,7 @@ class ArchivesRequestsController < ApplicationController
 
     redirect_to new_archives_request_path(value: params[:ead_url])
   end
+  # rubocop:enable Metrics/PerceivedComplexity, Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity
 
   private
 
@@ -53,8 +50,3 @@ class ArchivesRequestsController < ApplicationController
     render 'error'
   end
 end
-
-# rubocop:enable Metrics/PerceivedComplexity
-# rubocop:enable Metrics/AbcSize
-# rubocop:enable Metrics/MethodLength
-# rubocop:enable Metrics/CyclomaticComplexity
