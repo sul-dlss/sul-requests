@@ -499,3 +499,13 @@ label.btn-close {
   margin-left: 5px;
   font-weight: normal;
 }
+
+/* Distinguish from accordion item since javascript uses that specifically */
+.accordion-sub-item {
+  border: var(--bs-accordion-border-width) solid var(--bs-accordion-border-color) !important;
+  border-top-left-radius: var(--bs-accordion-border-radius) !important;
+  border-top-right-radius: var(--bs-accordion-border-radius) !important;
+  border-bottom-left-radius: var(--bs-accordion-border-radius) !important;
+  border-bottom-right-radius: var(--bs-accordion-border-radius) !important;
+  padding: 0px;
+}

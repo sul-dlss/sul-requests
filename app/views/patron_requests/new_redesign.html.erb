@@ -134,8 +134,8 @@
     <% end %>
   
     <!-- item selector -->
-    <% if f.object.selectable_items.many? && (can?(:request_scan, f.object) || can?(:request_pickup, f.object)) && !f.object.finding_aid? %>
-      <div data-controller="itemselector" data-itemselector-request-type-value="pickup" data-action="itemselector:change->patronRequest#showItemSelector">
+    <% if f.object.selectable_items.many? && (can?(:request_scan, f.object) || can?(:request_pickup, f.object) || f.object.aeon_page?) %>
+      <div data-controller="itemselector" data-itemselector-request-type-value="pickup" data-action="itemselector:change->patronRequest#showItemSelector itemselector:change->patronRequest#updateAeonOptions">
       <%= render AccordionStepComponent.new(id: 'barcodes', step_index: step_enum.next, form_id: f.id, data: { 'switch-selector': true }) do |c| %>
         <% c.with_title.with_content('Select item(s)') %>
         <% c.with_body do %>
