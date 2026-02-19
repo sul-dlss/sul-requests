@@ -63,11 +63,6 @@ RSpec.configure do |config|
     end
   end
 
-  config.before(:each, type: :feature) do
-    stub_request(:get, %r{https://example.com/symws/catalog/item/barcode/.*}).
-      to_return(status: 200, body: "", headers: {})
-  end
-
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = ".rspec_status"
 
