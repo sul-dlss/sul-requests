@@ -1,8 +1,9 @@
 import { Controller } from "@hotwired/stimulus"
+import { toBeRequired } from "@testing-library/jest-dom/matchers";
 import { Collapse } from "bootstrap"
 
 export default class extends Controller {
-  static targets = ['earliestAvailable', 'accordion', 'destination', 'proxyScanWarning', 'sponsorScanWarning', 'selectSponsor', 'sponsorRadioButton']
+  static targets = ['earliestAvailable', 'accordion', 'destination', 'proxyScanWarning', 'sponsorScanWarning', 'selectSponsor', 'sponsorRadioButton', 'digitization']
 
   connect() {
     if (this.accordionTargets.length == 1) {
@@ -197,5 +198,43 @@ export default class extends Controller {
       const destinationName = event.target.selectedOptions[0].textContent;
       this.destinationTarget.textContent = destinationName;
     }
+  }
+
+  // When items are selected or deselected, update the Aeon reading and digitization options
+  // accordingly
+  updateAeonOptions(event) {
+    var selectedItems = event.detail.selectedItems
+    console.log(selectedItems)
+    console.log(this.digitizationTargets.length)
+    // Hide and disable all digitization options
+    this.hideAllDigitizationOptions()
+    const _this = this
+    event.detail.selectedItems.forEach(selectedItem => { 
+      var callnumber = selectedItem.label 
+      _this.showDigitizationOption(callnumber)
+    })
+  }
+
+  hideAllDigitizationOptions() {
+    var _this = this
+    this.digitizationTargets.forEach(digitizationTarget => {
+      // Also disable required inputs so that the next/continue button will work
+      // when the visible/enabled sections' required inputs have been filled out
+      _this.disableRequiredInputs(digitizationTarget)
+      digitizationTarget.querySelectorAll("input, textarea").forEach(element => {
+        element.disabled = true
+      })
+      digitizationTarget.classList.add('d-none')
+    })
+  }
+
+  showDigitizationOption(callnumber) {
+    var digitizationTarget = this.digitizationTargets.find(t => t.dataset.callnumber == callnumber)
+    this.enableRequiredInputs(digitizationTarget)
+    digitizationTarget.querySelectorAll("input, textarea").forEach(element => {
+      element.disabled = false
+    })
+
+    digitizationTarget.classList.remove('d-none')
   }
 }

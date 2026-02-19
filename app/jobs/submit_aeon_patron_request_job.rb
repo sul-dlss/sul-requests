@@ -7,9 +7,11 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   retry_on Faraday::ConnectionFailed
 
   def perform(patron_request)
-    aeon_request = patron_request.aeon_request
+    aeon_requests = patron_request.aeon_requests
     username = patron_request.patron.email
-    submit_aeon_request(username, aeon_request)
+    aeon_requests.each do |aeon_request|
+      submit_aeon_request(username, aeon_request)
+    end
   end
 
   # rubocop:disable Metrics/MethodLength

@@ -7,7 +7,7 @@ class PatronRequest < ApplicationRecord
   store :data, accessors: [
     :barcodes, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title,
     :proxy, :for_sponsor, :for_sponsor_id, :estimated_delivery, :patron_name, :item_title, :requested_barcodes, :item_mediation_data,
-    :aeon_reading_special, :aeon_digitization_special, :aeon_publication, :aeon_pages, :aeon_terms
+    :aeon_reading_special, :aeon_item, :aeon_terms
   ], coder: JSON
 
   delegate :instance_id, :finding_aid, :finding_aid?, to: :bib_data
@@ -69,8 +69,8 @@ class PatronRequest < ApplicationRecord
     end
   end
 
-  def aeon_request
-    aeon_page? ? create_aeon_request : nil
+  def aeon_requests
+    aeon_page? ? create_aeon_requests : []
   end
 
   # @!group Attribute methods
@@ -661,20 +661,29 @@ class PatronRequest < ApplicationRecord
   end
 
   # Create aeon request based on what we receive
-  # rubocop:disable Metrics/CyclomaticComplexity,Metrics/AbcSize,Metrics/PerceivedComplexity
-  def create_aeon_request
-    call_number = selectable_items.one? || f.object.barcodes&.one? ? selectable_items.first.callnumber : nil
+  # rubocop:disable Metrics/AbcSize
+  def create_aeon_requests
+    shipping_option = aeon_digitization? ? 'Electronic Delivery' : nil
+    selected_items.map do |selected_item|
+      callnumber = selected_item.callnumber
+      special_request = aeon_digitization? ? aeon_item[callnumber]['digitization_special'] : aeon_reading_special
+      pages = aeon_digitization? ? aeon_item[callnumber]['pages'] : nil
+      publication = aeon_digitization? ? (aeon_item[callnumber]['publication'] == 'Yes') : nil
+      create_single_aeon_request(callnumber:, shipping_option:, pages:, publication:,
+                                 special_request:)
+    end
+  end
+  # rubocop:enable Metrics/AbcSize
 
-    # Need to create appointment as well
+  def create_single_aeon_request(callnumber:, shipping_option: nil, pages: nil, publication: nil, special_request: nil)
     Aeon::Request.new(aeon_link: bib_data&.view_url, appointment: nil, appointment_id: nil,
-                      author: bib_data&.author, call_number: call_number, creation_date: nil, date: bib_data&.pub_date,
+                      author: bib_data&.author, call_number: callnumber, creation_date: nil, date: bib_data&.pub_date,
                       document_type: 'Monograph', format: nil, location: origin_location_code,
-                      shipping_option: aeon_digitization? ? 'Electronic Delivery' : nil,
+                      shipping_option: shipping_option,
                       title: bib_data&.title, transaction_date: nil,
                       transaction_number: nil, transaction_status: nil, volume: nil,
-                      site: aeon_site, special_request: aeon_digitization? ? aeon_digitization_special : aeon_reading_special,
-                      pages: aeon_digitization? ? aeon_pages : nil,
-                      publication: aeon_digitization? ? (aeon_publication == 'Yes') : nil)
+                      site: aeon_site, special_request: special_request,
+                      pages: pages,
+                      publication: publication)
   end
-  # rubocop:enable Metrics/CyclomaticComplexity,Metrics/AbcSize,Metrics/PerceivedComplexity
 end
