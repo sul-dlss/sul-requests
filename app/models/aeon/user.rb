@@ -47,5 +47,7 @@ module Aeon
         appointment.requests = requests.select { |request| !request.cancelled? && request.appointment_id == appointment.id }
       end
     end
+
+    def persisted? = true
   end
 end
