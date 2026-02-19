@@ -12,14 +12,6 @@ class Ability
     @anonymous ||= Ability.new(NullUser.new(name: 'generic', email: 'external-user@example.com'))
   end
 
-  def self.with_a_library_id
-    @with_a_library_id ||= Ability.new(NullUser.new(library_id: '0000000000'))
-  end
-
-  def self.sso
-    @sso ||= Ability.new(NullUser.new(sunetid: 'generic'))
-  end
-
   def self.faculty
     @faculty ||= Ability.new(NullUser.new(sunetid: 'generic', placeholder_patron_group: 'faculty'))
   end
