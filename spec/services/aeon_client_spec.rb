@@ -71,4 +71,44 @@ RSpec.describe AeonClient do
       expect(requests).to eq([])
     end
   end
+
+  describe '#create_request' do
+    it 'submits a request and returns the created request' do
+      payload = AeonClient::CreateRequestData.with_defaults.with(
+        username: 'jdoe',
+        item_title: 'Test Request'
+      )
+
+      stub_request(:post, 'https://aeon.example.com/api/Requests/create')
+        .with(body: payload.as_json.to_json)
+        .to_return(status: 201,
+                   body: { transactionNumber: '123', creationDate: '2024-01-01T12:00:00Z',
+                           transactionDate: '2024-01-01T12:00:00Z',
+                           username: 'jdoe' }.to_json,
+                   headers: { 'Content-Type' => 'application/json' })
+
+      request = client.create_request(payload)
+
+      expect(request).to be_a(Aeon::Request)
+      expect(request.transaction_number).to eq('123')
+    end
+  end
+
+  describe '#update_request_route' do
+    it 'sends a route update and returns the updated request' do
+      stub_request(:post, 'https://aeon.example.com/api/Requests/123/route')
+        .with(body: { newStatus: 'Cancelled by user' }.to_json)
+        .to_return(status: 200,
+                   body: { transactionNumber: '123', creationDate: '2024-01-01T12:00:00Z',
+                           transactionDate: '2024-01-01T12:00:00Z',
+                           username: 'jdoe', transactionStatus: 'Cancelled by user' }.to_json,
+                   headers: { 'Content-Type' => 'application/json' })
+
+      request = client.update_request_route(transaction_number: '123', status: 'Cancelled by user')
+
+      expect(request).to be_a(Aeon::Request)
+      expect(request.transaction_number).to eq('123')
+      expect(request.transaction_status).to eq('Cancelled by user')
+    end
+  end
 end

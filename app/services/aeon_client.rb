@@ -42,7 +42,7 @@ class AeonClient
   end
 
   # Submit an archives request to Aeon
-  # @param aeon_payload [CreateRequestData]
+  # @param aeon_payload [AeonClient::CreateRequestData]
   def create_request(aeon_payload)
     response = post('Requests/create', aeon_payload.as_json)
 
@@ -149,6 +149,17 @@ class AeonClient
         username: username,
         webRequestForm: 'SUL Requests'
       }.compact
+    end
+
+    def self.with_defaults
+      new(
+        call_number: nil, ead_number: nil,
+        item_author: nil, item_citation: nil, item_date: nil,
+        item_info1: nil, item_info2: nil, item_info3: nil, item_info4: nil, item_info5: nil,
+        item_subtitle: nil, item_title: nil, item_volume: nil,
+        shipping_option: nil, site: nil, special_request: nil,
+        username: nil
+      )
     end
   end
 
