@@ -26,7 +26,7 @@ module Aeon
         shipping_option: dyn['shippingOption'],
         location: dyn['location'],
         pages: dyn['itemInfo5'],
-        photoduplication_date: Time.zone.parse(dyn.fetch('transactionDate')),
+        photoduplication_date: Time.zone.parse(dyn.fetch('photoduplicationDate')),
         photoduplication_status: dyn['photoduplicationStatus'],
         site: dyn['site'],
         start_time: dyn['startTime'],
