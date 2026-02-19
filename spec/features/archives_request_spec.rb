@@ -9,7 +9,8 @@ RSpec.describe 'Requesting an item from an EAD', :js do
     login_as(current_user)
 
     allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
-    allow(AeonClient.new).to receive_messages(find_reading_room: instance_double(Aeon::ReadingRoom, id: 1),
+
+    allow(AeonClient.new).to receive_messages(reading_rooms: [instance_double(Aeon::ReadingRoom, id: 1, sites: ['SPECUA'])],
                                               available_appointments: [instance_double(Aeon::AvailableAppointment,
                                                                                        start_time: DateTime.new(2026, 2, 19),
                                                                                        maximum_appointment_length: 210.minutes)])

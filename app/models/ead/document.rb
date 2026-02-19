@@ -74,10 +74,6 @@ module Ead
                                        doc.xpath('//accessrestrict').first&.text&.strip
     end
 
-    def library
-      doc.xpath('//publicationstmt/publisher').first&.text&.strip
-    end
-
     def cite_as
       # citation information
       @cite_as ||= doc.xpath('//prefercite/p').first&.text&.strip ||

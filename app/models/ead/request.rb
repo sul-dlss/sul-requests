@@ -31,6 +31,17 @@ module Ead
       end
     end
 
+    def site
+      return nil unless repository
+
+      # TODO: Fallback to SPECUA? Other logic?
+      REPOSITORY_TO_SITE_CODE[repository] || 'SPECUA'
+    end
+
+    def reading_room
+      @reading_room ||= aeon_client.reading_rooms.find { |rr| rr.sites.include?(site) }
+    end
+
     private
 
     def as_aeon_create_request_data(volume) # rubocop:disable Metrics/MethodLength
@@ -40,7 +51,7 @@ module Ead
         item_author: creator,
         item_citation: nil,
         item_date: nil,
-        item_info1: @ead.collection_permalink,
+        item_info1: collection_permalink,
         item_info2: nil,
         item_info3: nil,
         item_info4: nil,
@@ -49,17 +60,10 @@ module Ead
         item_title: title,
         item_volume: volume['subseries'],
         shipping_option: shipping_option,
-        site: map_repository_to_site_code(repository),
+        site: site,
         special_request: nil,
         username: user.email_address
       )
-    end
-
-    def map_repository_to_site_code(repository)
-      return nil unless repository
-
-      # TODO: Fallback to SPECUA? Other logic?
-      REPOSITORY_TO_SITE_CODE[repository] || 'SPECUA'
     end
 
     def aeon_client
