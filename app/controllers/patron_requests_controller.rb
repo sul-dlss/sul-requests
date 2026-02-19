@@ -16,7 +16,7 @@ class PatronRequestsController < ApplicationController
   authorize_resource
 
   before_action :associate_request_with_patron, only: [:new, :create]
-  # before_action :redirect_aeon_pages, only: [:create]
+  before_action :redirect_aeon_pages, only: [:create]
   helper_method :current_request, :new_params
 
   rescue_from CanCan::AccessDenied do |_exception|
@@ -68,11 +68,13 @@ class PatronRequestsController < ApplicationController
     render 'login'
   end
 
-  # def redirect_aeon_pages
-  #   return unless @patron_request.aeon_page? && @patron_request.finding_aid?
+  def redirect_aeon_pages
+    return if Settings.features.requests_redesign
 
-  #   redirect_to @patron_request.finding_aid
-  # end
+    return unless @patron_request.aeon_page? && @patron_request.finding_aid?
+
+    redirect_to @patron_request.finding_aid
+  end
 
   def associate_request_with_patron
     @patron_request.patron = current_user.patron
@@ -94,8 +96,7 @@ class PatronRequestsController < ApplicationController
                                    :for_sponsor_id, :for_sponsor,
                                    :fulfillment_type, :request_type,
                                    :scan_page_range, :scan_authors, :scan_title,
-                                   :aeon_reading_special, :aeon_digitization_special,
-                                   :aeon_publication, :aeon_pages, :aeon_terms,
-                                   :barcode, { barcodes: [] }])
+                                   :aeon_reading_special, :aeon_terms,
+                                   :barcode, { barcodes: [] }, { aeon_item: {} }])
   end
 end
