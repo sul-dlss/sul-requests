@@ -4,7 +4,7 @@
 #  Controller for displaying Aeon appointments for a user
 ###
 class AeonAppointmentsController < ApplicationController
-  before_action :load_appointments
+  before_action :load_appointments, except: [:available]
   before_action :load_appointment, only: [:edit, :update, :destroy]
 
   def index

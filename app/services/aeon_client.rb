@@ -109,6 +109,11 @@ class AeonClient
     handle_response(response, as_class: Aeon::ReadingRoom, not_found: [])
   end
 
+  def find_reading_room(repository:)
+    site_code = map_repository_to_site_code(repository)
+    reading_rooms.find { |rr| rr.sites.include?(site_code) }
+  end
+
   def find_queue(id:, type:)
     return unless id && type
 
