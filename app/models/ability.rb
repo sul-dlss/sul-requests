@@ -129,7 +129,7 @@ class Ability
       end
     end
 
-    if user.library_id_user? || user.sso_user?
+    if user.library_id_user? || user.sso_user? # rubocop:disable Style/GuardClause
       can :request_pickup, PatronRequest do |request|
         request.bib_data.items.none?
       end

@@ -7,8 +7,7 @@ class MessagesController < ApplicationController
 
   # GET /messages
   # GET /messages.json
-  def index
-  end
+  def index; end
 
   # GET /messages/new
   def new
@@ -17,8 +16,7 @@ class MessagesController < ApplicationController
   end
 
   # GET /messages/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /messages
   # POST /messages.json

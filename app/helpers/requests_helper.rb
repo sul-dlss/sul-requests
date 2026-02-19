@@ -68,10 +68,9 @@ module RequestsHelper
   # rubocop:enable Metrics/MethodLength
 
   def i18n_status_text(item)
-    case
-    when item.hold?
+    if item.hold?
       t('status_text.hold')
-    when item.paged?
+    elsif item.paged?
       t('status_text.paged')
     else
       t('status_text.other')
@@ -85,12 +84,11 @@ module RequestsHelper
 
     statuses = patron_request.folio_responses.values.map { |response| response.dig('response', 'status') }
 
-    case
-    when statuses.all? { |x| x&.start_with? 'Open' }
+    if statuses.all? { |x| x&.start_with? 'Open' }
       tag.span '🟢', title: statuses.first
-    when statuses.all? { |x| x&.start_with? 'Closed' }
+    elsif statuses.all? { |x| x&.start_with? 'Closed' }
       tag.span '🚫', title: statuses.first
-    when statuses.none?(&:blank?)
+    elsif statuses.none?(&:blank?)
       tag.span '🟡', title: statuses.uniq.join('; ')
     else
       errors = patron_request.folio_responses.values.filter_map do |response|

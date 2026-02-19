@@ -13,17 +13,15 @@ class CurrentUser
   end
 
   def user_object
-    @user_object ||= begin
-      if shibboleth?
-        sso_user
-      elsif library_id?
-        library_id_user
-      elsif name_email_user?
-        name_email_user
-      else
-        anonymous_user
-      end
-    end
+    @user_object ||= if shibboleth?
+                       sso_user
+                     elsif library_id?
+                       library_id_user
+                     elsif name_email_user?
+                       name_email_user
+                     else
+                       anonymous_user
+                     end
   end
 
   def shibboleth?

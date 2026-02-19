@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
   end
 
   def sucard_number=(card_number)
-    return unless card_number.present?
+    return if card_number.blank?
 
     self.library_id = card_number[/\d{5}(\d+)/, 1]
   end
@@ -50,13 +50,12 @@ class User < ActiveRecord::Base
   end
 
   def email_address
-    case
-    when sso_user? && !email
+    if sso_user? && !email
       # Fallback for users who were created before we started
       # setting the email attribute for SSO users from LDAP
       notify_honeybadger_of_missing_sso_email!
       "#{sunetid}@stanford.edu"
-    when library_id_user?
+    elsif library_id_user?
       email_from_symphony
     else
       email
@@ -98,9 +97,7 @@ class User < ActiveRecord::Base
   end
 
   def email_from_symphony
-    self.email ||= begin
-      patron.email if library_id_user? && patron.present?
-    end
+    self.email ||= (patron.email if library_id_user? && patron.present?)
   end
 
   def aeon
@@ -134,8 +131,10 @@ class User < ActiveRecord::Base
   end
 
   def notify_honeybadger_of_missing_sso_email!
+    return unless new_record?
+
     Honeybadger.notify(
       "SSO User being created without an email address. Using #{sunetid}@stanford.edu instead."
-    ) if new_record?
+    )
   end
 end
