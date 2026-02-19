@@ -7,8 +7,7 @@ class ArchivesRequestsController < ApplicationController
 
   def new
     @ead = EadClient.fetch(ead_url_param)
-    @ead_url = ead_url_param
-    @reading_room = AeonClient.new.find_reading_room(repository: @ead.library)
+    @ead_request = Ead::Request.new(user: current_user, ead: @ead)
   end
 
   # rubocop:disable Metrics/PerceivedComplexity, Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity

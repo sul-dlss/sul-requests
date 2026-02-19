@@ -15,7 +15,7 @@
           <p>Conditions Governing Use: <%= @ead.conditions_governing_use || 'Not available' %></p>
           <p>Conditions Governing Access: <%= @ead.conditions_governing_access || 'Not available' %></p>
           <p>Cite As: <%= @ead.cite_as || 'Not available' %></p>
-          <p>Source URL: <%= @ead_url %></p>
+          <p>Source URL: <%= @ead.url %></p>
         </div>
       </div>
       <%= form_with id: 'archives-request', url: archives_requests_path, class: 'accordion', data: { controller: 'patronRequest archives-request', turbo: false } do |f| %>
@@ -31,7 +31,7 @@
                 <% end %>
                 <span class="text-cardinal ms-2 mt-1">
                   Earliest appointment available:
-                  <turbo-frame id="earliest_appointment" src="/aeon_appointments/available/<%= @reading_room.id %>/<%= Date.today %>"></turbo-frame>
+                  <turbo-frame id="earliest_appointment" src="/aeon_appointments/available/<%= @ead_request.reading_room&.id %>/<%= Date.today %>"></turbo-frame>
                 </span>
               </div>
               <div class="mt-4">
@@ -133,7 +133,7 @@
                 </dd>
               </dl>
             </div>
-            <%= f.hidden_field :ead_url, value: @ead_url %>
+            <%= f.hidden_field :ead_url, value: @ead.url %>
           <% end %>
         <% end %>
       <% end %>
