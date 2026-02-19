@@ -30,6 +30,16 @@ module Ead
       @collection_permalink ||= doc.xpath('//eadid/@url').first&.value&.strip
     end
 
+    def date
+      @date ||= begin
+        inclusive = doc.xpath('/ead/archdesc/did/unitdate[@type="inclusive"]').map { |x| x.text.strip }.join(', ')
+        bulk = doc.xpath('/ead/archdesc/did/unitdate[@type="bulk"]').map { |x| x.text.strip }.join(', ')
+        other = doc.xpath('/ead/archdesc/did/unitdate[not(@type)]').map { |x| x.text.strip }.join(', ')
+
+        [inclusive, bulk, other].compact.reject(&:empty?).join(', ').presence
+      end
+    end
+
     def repository
       @repository ||= doc.xpath('//repository/corpname').first&.text&.strip
     end
