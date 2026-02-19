@@ -3,6 +3,8 @@
 ##
 # Controller for handling archives requests with EAD XML data
 class ArchivesRequestsController < ApplicationController
+  include AeonController
+
   rescue_from EadClient::Error, with: :handle_ead_client_error
 
   def new

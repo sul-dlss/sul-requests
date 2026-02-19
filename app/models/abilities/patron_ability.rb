@@ -6,6 +6,14 @@
 class PatronAbility
   include CanCan::Ability
 
+  def self.faculty
+    @faculty ||= PatronAbility.new(NullUser.new(sunetid: 'generic', placeholder_patron_group: 'faculty').patron)
+  end
+
+  def self.anonymous
+    @anonymous ||= PatronAbility.new(NullUser.new(name: 'generic', email: 'external-user@example.com').patron)
+  end
+
   # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/MethodLength
   # The CanCan DSL requires a complex initialization method
   def initialize(folio_patron)

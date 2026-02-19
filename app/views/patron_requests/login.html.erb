@@ -43,12 +43,12 @@
                         <%= hidden_field_tag :referrer, new_patron_request_path(new_params.merge(step: 'select')) %>
                         <div class="form-group mt-2">
                             <label class="form-label required-label" for="university_id"><%= t('sessions.university_id.label') %></label>
-                            <input class="form-control" id="university_id" name="university_id" aria-describedby="university-id-help" required />
+                            <input class="form-control" id="university_id" name="university_id" aria-describedby="university-id-help" required>
                             <div class="form-text" id="university-id-help"><%= t('sessions.university_id.help_text') %></div>
                         </div>
                         <div class="form-group mt-2">
                             <label class="form-label required-label" for="pin">PIN</label>
-                            <input class="form-control" type="password" id="pin" name="pin" required/>
+                            <input class="form-control" type="password" id="pin" name="pin" required>
                             <div class="form-text">
                                 <%= link_to "Forgot your PIN? Don't have one yet?", reset_pin_url(referrer: request.original_url), class: 'su-underline' %>
                             </div>
@@ -65,7 +65,7 @@
         <div class="card border-0 mt-3 mt-sm-0">
             <h2 class="card-header bg-white fw-normal border-0 h1">Visitor</h2>
             <div class="card-body pt-0">
-                <% if Ability.anonymous.cannot? :new, @patron_request %>
+                <% if PatronAbility.anonymous.cannot? :new, @patron_request %>
                     <div class="alert alert-danger text-cardinal">
                         This item is not available to request for visitors. If you have a SUNet ID or library card, please login using one of those methods.
                     </div>
@@ -80,17 +80,17 @@
                 </a></p>
                 <details data-action="analytics#send" data-analytics-action-param="Library ID" data-analytics-category-param="Login">
 
-                    <summary class="btn btn-link p-0<% if Ability.anonymous.cannot? :new, @patron_request %> disabled<% else %> su-underline<% end %>">Proceed as visitor <i class="bi bi-chevron-right"></i></summary>
-                    <% if Ability.anonymous.can? :new, @patron_request %>
+                    <summary class="btn btn-link p-0<% if PatronAbility.anonymous.cannot? :new, @patron_request %> disabled<% else %> su-underline<% end %>">Proceed as visitor <i class="bi bi-chevron-right"></i></summary>
+                    <% if PatronAbility.anonymous.can? :new, @patron_request %>
                         <%= form_tag register_visitor_url, method: 'POST', class: 'form p-3', data: { turbo: false } do %>
                             <%= hidden_field_tag :referrer, new_patron_request_path(new_params.merge(step: 'select')) %>
                             <div class="form-group mt-2">
                                 <label class="form-label required-label" for="name">Name</label>
-                                <input class="form-control" id="name" name="name" required />
+                                <input class="form-control" id="name" name="name" required>
                             </div>
                             <div class="form-group mt-2">
                                 <label class="form-label required-label" for="patron_email">Email</label>
-                                <input class="form-control" id="patron_email" name="patron_email" type="email" required/>
+                                <input class="form-control" id="patron_email" name="patron_email" type="email" required>
                             </div>
                             <div class="form-group mt-2">
                                 <%= recaptcha_tags %>
