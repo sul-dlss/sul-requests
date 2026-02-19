@@ -31,7 +31,7 @@
                 <% end %>
                 <span class="text-cardinal ms-2 mt-1">
                   Earliest appointment available:
-                  <turbo-frame id="earliest_appointment" src="/aeon_appointments/available/<%= @ead_request.reading_room&.id %>/<%= Date.today %>"></turbo-frame>
+                  <%= turbo_frame_tag 'earliest_appointment', src: available_aeon_appointments_path(@ead_request.reading_room&.id, Date.today) %>
                 </span>
               </div>
               <div class="mt-4">
