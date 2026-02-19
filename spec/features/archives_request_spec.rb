@@ -9,6 +9,10 @@ RSpec.describe 'Requesting an item from an EAD', :js do
     login_as(current_user)
 
     allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
+    allow(AeonClient.new).to receive_messages(find_reading_room: instance_double(Aeon::ReadingRoom, id: 1),
+                                              available_appointments: [instance_double(Aeon::AvailableAppointment,
+                                                                                       start_time: DateTime.new(2026, 2, 19),
+                                                                                       maximum_appointment_length: 210.minutes)])
   end
 
   let(:user) { create(:sso_user) }
@@ -27,6 +31,9 @@ RSpec.describe 'Requesting an item from an EAD', :js do
     expect(page).to have_content('Knuth (Donald E.) papers')
 
     choose 'Reading room appointment'
+
+    expect(page).to have_content('Earliest appointment available: Thursday, Feb 19, 2026')
+
     click_button 'Continue'
 
     click_link 'Computers and Typesetting'
