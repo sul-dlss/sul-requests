@@ -19,6 +19,6 @@ class Ability
   def self.new(user)
     user ||= User.new
 
-    SiteAbility.new(user).merge(PatronAbility.new(user)).merge(AeonAbility.new(user))
+    SiteAbility.new(user).merge(PatronAbility.new(user.patron)).merge(AeonAbility.new(user.aeon))
   end
 end

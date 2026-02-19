@@ -7,22 +7,21 @@ class AeonAbility
   include CanCan::Ability
 
   # The CanCan DSL requires a complex initialization method
-  def initialize(user)
+  def initialize(aeon_user)
     # Clearing CanCan's default aliased actions
     # because we _don't_ want to alias new to create
     clear_aliased_actions
     alias_action :index, :show, to: :read
     alias_action :edit, to: :update
 
-    # anyone can start to create an Aeon page
-    can [:new, :create], PatronRequest, &:aeon_page?
+    return unless aeon_user.persisted?
 
-    can :destroy, Aeon::Request, username: user.email_address
+    can [:new, :create], Aeon::Request
+
+    can :destroy, Aeon::Request, username: aeon_user.username
     can :update, Aeon::Request do |request|
-      request.username == user.email_address && request.writable?
+      request.username == aeon_user.username && request.writable?
     end
-
-    return unless user.sso_user?
 
     can :read, Aeon::Request
     can :manage, Aeon::Appointment

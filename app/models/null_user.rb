@@ -63,6 +63,10 @@ class NullUser
     placeholder_patron
   end
 
+  def aeon
+    @aeon ||= Aeon::NullUser.new
+  end
+
   private
 
   def placeholder_patron
