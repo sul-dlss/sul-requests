@@ -63,6 +63,11 @@ RSpec.configure do |config|
     end
   end
 
+  config.before(:each) do
+    stub_request(:get, %r{#{Settings.aeon.api_url}/Users/.*}).
+      to_return(status: 404, body: "", headers: {})
+  end
+
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = ".rspec_status"
 

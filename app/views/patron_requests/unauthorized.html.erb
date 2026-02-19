@@ -10,7 +10,7 @@
 </div>
 <% end %>
 
-<% if Ability.faculty.can?(:request_pickup, @patron_request) # if a "faculty" patron could have requested it or there aren't pickup locations available... it's probably the patron group %>
+<% if PatronAbility.faculty.can?(:request_pickup, @patron_request) # if a "faculty" patron could have requested it or there aren't pickup locations available... it's probably the patron group %>
   <div class="alert alert-danger text-cardinal mt-4 col-lg-8">
     This item is not available to request for <i><%= current_user&.patron&.patron_group&.desc&.sub(/cardholders?\.?$/, '') || 'Stanford Libraries' %></i> cardholders. If you have questions about library access, please contact <%= mail_to(contact_info[:email], contact_info[:email], class: 'alert-link') %> or call <%= contact_info[:phone] %> for assistance.
   </div>
@@ -21,7 +21,7 @@
       <span class="fw-bold">
         Oops! This item is not requestable at this time.
       </span>
-      <br />
+      <br>
       <span>
         Please contact <%= mail_to(contact_info[:email], contact_info[:email], class: 'alert-link') %> or call <%= contact_info[:phone] %> for assistance.
       </span>

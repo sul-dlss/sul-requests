@@ -3,9 +3,13 @@
 ##
 # Controller for handling archives requests with EAD XML data
 class ArchivesRequestsController < ApplicationController
+  include AeonController
+
   rescue_from EadClient::Error, with: :handle_ead_client_error
 
   def new
+    authorize! :new, Aeon::Request
+
     @ead = EadClient.fetch(ead_url_param)
     @ead_url = ead_url_param
     @ead_request = Ead::Request.new(user: current_user, ead: @ead)
@@ -14,6 +18,8 @@ class ArchivesRequestsController < ApplicationController
   # rubocop:disable Metrics/PerceivedComplexity, Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity
   # This is the action triggered by the form submission to create an Aeon request.
   def create
+    authorize! :create, Aeon::Request
+
     # Fetch EAD data to get the actual collection information
     @ead = EadClient.fetch(params[:ead_url])
 

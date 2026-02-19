@@ -43,12 +43,14 @@ RSpec.describe Ability do
   end
 
   describe 'a SSO user' do
+    subject { PatronAbility.new(user.patron) }
+
     let(:user) { create(:sso_user) }
 
     context 'with a request for an item that is not requestable by non-affiliates' do
       let(:request) { PatronRequest.new(instance_hrid: 'a1234', origin_location_code: 'LAW-STACKS1') }
       let(:patron) do
-        instance_double(Folio::Patron, id: '', patron_group_name: 'staff', allowed_request_types: ['Page'])
+        instance_double(Folio::Patron, id: '123', patron_group_name: 'staff', allowed_request_types: ['Page'])
       end
 
       before do

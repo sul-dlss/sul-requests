@@ -23,7 +23,9 @@ RSpec.describe 'Requesting an item from an EAD', :js do
     Nokogiri::XML(File.read('spec/fixtures/sc0097.xml')).tap(&:remove_namespaces!)
   end
 
-  let(:stub_aeon_client) { instance_double(AeonClient, create_request: { success: true }) }
+  let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
+
+  let(:stub_aeon_client) { instance_double(AeonClient, find_user: aeon_user, create_request: { success: true }) }
 
   it 'allows the user to submit a request for an item from an EAD' do
     visit new_archives_request_path(value: 'http://example.com/ead.xml')

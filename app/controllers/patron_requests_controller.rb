@@ -4,6 +4,8 @@
 #  Controller to handle patron requests (e.g. hold/recall, page, scans, etc)
 ###
 class PatronRequestsController < ApplicationController
+  include FolioController
+
   check_authorization
 
   bot_challenge only: [:new]

@@ -4,6 +4,8 @@
 #  Controller for displaying Aeon requests for a user
 ###
 class AeonRequestsController < ApplicationController
+  include AeonController
+
   def drafts
     authorize! :read, Aeon::Request
 
