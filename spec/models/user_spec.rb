@@ -199,4 +199,30 @@ RSpec.describe User do
       expect(subject.patron).to have_attributes(id: nil, display_name: 'jstanford', email: 'jstanford@stanford.edu', block_reasons: [])
     end
   end
+
+  describe '#aeon' do
+    context 'for non-SSO users' do
+      it 'returns a NullUser (until we have a better idea how to authenticate them...)' do
+        expect(subject.aeon).to have_attributes(persisted?: false)
+      end
+    end
+
+    context 'for SSO users' do
+      before do
+        subject.sunetid = 'jstanford'
+      end
+
+      it 'returns a NullUser when there is no Aeon account' do
+        allow(Aeon::User).to receive(:find_by).and_raise(AeonClient::NotFoundError)
+
+        expect(subject.aeon).to have_attributes(persisted?: false)
+      end
+
+      it 'returns an Aeon::User when there is an Aeon account' do
+        allow(Aeon::User).to receive(:find_by).and_return(Aeon::User.new(username: 'jstanford', auth_type: 'Default'))
+
+        expect(subject.aeon).to have_attributes(username: 'jstanford', auth_type: 'Default', persisted?: true)
+      end
+    end
+  end
 end
