@@ -29,8 +29,9 @@
                 <%= f.label :request_type_pickup, :class => 'form-check-label ms-1' do %>
                   Reading room appointment
                 <% end %>
-                <span class="text-cardinal ms-4 mt-1">
+                <span class="text-cardinal ms-2 mt-1">
                   Earliest appointment available:
+                  <%= turbo_frame_tag 'earliest_appointment', src: available_aeon_appointments_path(@ead_request.reading_room&.id, Date.today) %>
                 </span>
               </div>
               <div class="mt-4">

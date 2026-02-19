@@ -8,6 +8,7 @@ class ArchivesRequestsController < ApplicationController
   def new
     @ead = EadClient.fetch(ead_url_param)
     @ead_url = ead_url_param
+    @ead_request = Ead::Request.new(user: current_user, ead: @ead)
   end
 
   # rubocop:disable Metrics/PerceivedComplexity, Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity

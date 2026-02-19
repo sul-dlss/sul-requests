@@ -15,4 +15,7 @@
     </fieldset>
     <div class="loading-overlay p-2 mb-2" aria-hidden="true">Loading...</div>
   </turbo-frame>
+  <turbo-frame id="earliest_appointment">
+    <%= @available_appointments.first.start_time.strftime('%A, %b %e, %Y') if @available_appointments %>
+  </turbo-frame>
 <% end %>
