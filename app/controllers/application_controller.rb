@@ -15,8 +15,6 @@ class ApplicationController < ActionController::Base
 
   rescue_from CanCan::AccessDenied, with: :rescue_can_can
 
-  before_action -> { flash.now[:error] &&= flash[:error].html_safe if flash[:html_safe] }
-
   def current_user
     @current_user ||= request.env['warden']&.user&.user_object || User.new
   end

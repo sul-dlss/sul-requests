@@ -11,7 +11,7 @@ module ApplicationHelper
   end
 
   def render_markdown(markup)
-    markdown_renderer.render(markup).html_safe
+    markdown_renderer.render(markup).html_safe # rubocop:disable Rails/OutputSafety
   end
 
   def time_tag(dt, format = :default, attr: {})

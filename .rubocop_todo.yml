@@ -6,19 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowedMethods, AllowedPatterns.
-Lint/AmbiguousBlockAssociation:
-  Exclude:
-    - 'spec/models/library_hours_api_spec.rb'
-
-# Offense count: 1
-# Configuration parameters: AllowComments, AllowEmptyLambdas.
-Lint/EmptyBlock:
-  Exclude:
-    - 'spec/models/library_hours_api_spec.rb'
-
 # Offense count: 8
 # Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns.
 Metrics/MethodLength:
@@ -140,38 +127,9 @@ Rails/ApplicationRecord:
     - 'app/models/user.rb'
 
 # Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: NilOrEmpty, NotPresent, UnlessPresent.
-Rails/Blank:
-  Exclude:
-    - 'app/models/user.rb'
-
-# Offense count: 1
 Rails/HasManyOrHasOneDependent:
   Exclude:
     - 'app/models/user.rb'
-
-# Offense count: 2
-Rails/OutputSafety:
-  Exclude:
-    - 'app/controllers/application_controller.rb'
-    - 'app/helpers/application_helper.rb'
-
-# Offense count: 3
-# This cop supports safe autocorrection (--autocorrect).
-Style/EmptyCaseCondition:
-  Exclude:
-    - 'app/helpers/requests_helper.rb'
-    - 'app/models/user.rb'
-
-# Offense count: 3
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: compact, expanded
-Style/EmptyMethod:
-  Exclude:
-    - 'app/controllers/home_controller.rb'
-    - 'app/controllers/messages_controller.rb'
 
 # Offense count: 2
 # This cop supports safe autocorrection (--autocorrect).
@@ -179,19 +137,6 @@ Style/ExpandPathArguments:
   Exclude:
     - 'Rakefile'
     - 'spec/rails_helper.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: MinBodyLength, AllowConsecutiveConditionals.
-Style/GuardClause:
-  Exclude:
-    - 'app/models/ability.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Style/MultilineIfModifier:
-  Exclude:
-    - 'app/models/user.rb'
 
 # Offense count: 16
 # This cop supports safe autocorrection (--autocorrect).
@@ -204,13 +149,6 @@ Style/PercentLiteralDelimiters:
     - 'spec/features/mark_as_complete_spec.rb'
     - 'spec/features/mediation_table_spec.rb'
     - 'spec/helpers/requests_helper_spec.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-Style/RedundantBegin:
-  Exclude:
-    - 'app/models/current_user.rb'
-    - 'app/models/user.rb'
 
 # Offense count: 17
 # This cop supports safe autocorrection (--autocorrect).

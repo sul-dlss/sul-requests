@@ -5,6 +5,5 @@
 class HomeController < ApplicationController
   bot_challenge
 
-  def show
-  end
+  def show; end
 end

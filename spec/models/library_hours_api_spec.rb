@@ -15,7 +15,7 @@ RSpec.describe LibraryHoursApi do
     end
 
     it 'returns an empty hash' do
-      expect(subject.json).to be {}
+      expect(subject.json).to(eq({}))
     end
   end
 
