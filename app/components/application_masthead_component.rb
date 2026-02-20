@@ -4,6 +4,8 @@
 class ApplicationMastheadComponent < ViewComponent::Base
   attr_reader :application_name, :classes
 
+  delegate :current_user, to: :helpers
+
   renders_many :nav_items, lambda { |classes: [], &block|
     tag.li(class: ['nav-item'] + Array(classes), &block)
   }

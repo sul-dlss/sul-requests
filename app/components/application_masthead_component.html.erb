@@ -1,4 +1,4 @@
-<%= tag.div class: (['masthead'] + classes) do %>
+<%= tag.div class: (['masthead'] + classes), data: { turbo_prefetch: false } do %>
   <div class="container">
     <div class="d-flex flex-wrap align-items-end pt-3 pb-1 pb-md-3 gap-2">
       <div class="d-flex align-items-end gap-2 flex-grow-1">
@@ -10,11 +10,30 @@
         </div>
       </div>
       <div class="navbars ms-md-auto bg-dark">
-        <nav class="align-items-start justify-content-md-end navbar-expand-sm d-md-flex flex-column flex-md-row" id="user-util-collapse">
-          <hr class="d-md-none text-white vw-100 my-0">
-          <ul class="navbar-nav justify-content-md-end gap-2 gap-sm-4 w-100 fw-semibold">
+        <nav class="collapse navbar-collapse align-items-start justify-content-md-end navbar-expand-md d-md-flex flex-column flex-md-row" aria-label="browse" id="user-util-collapse">
+          <ul class="navbar-nav justify-content-md-end gap-0 gap-md-4 w-100 fw-semibold">
             <% nav_items.each do |nav_item| %>
               <%= nav_item %>
+            <% end %>
+          </ul>
+          <hr class="d-md-none text-white vw-100 my-0">
+          <ul class="navbar-nav d-md-none gap-0 w-100">
+            <% if current_user.sso_user? || current_user.library_id_user? %>
+              <% logout_path = current_user.site_admin? ? root_path : request.url %>
+              <li class="nav-item">
+                <%= link_to t('shared.sul_header.logout', sunetid: current_user.sunetid || current_user.library_id), logout_path(referrer: logout_path), class: 'nav-link' %>
+              </li>
+            <% else %>
+              <li class="nav-item">
+                <%= link_to t('shared.sul_header.login'), login_by_sunetid_path(referrer: request.original_url), class: 'nav-link' %>
+              </li>
+            <% end %>
+            <% unless current_page?(feedback_form_path) %>
+              <li class="nav-item">
+                <%= link_to "#feedback-form", role: 'button', data: {'bs-toggle':"collapse", 'bs-target':"#feedback-form"}, class: 'nav-link' do %>
+                  Feedback
+                <% end %>
+              </li>
             <% end %>
           </ul>
         </nav>
@@ -22,3 +41,6 @@
     </div>
   </div>
 <% end %>
+<div id="feedback-form" class="feedback-form-container collapse">
+  <%= render template: 'feedback_forms/new' unless current_page?(feedback_form_path) %>
+</div>

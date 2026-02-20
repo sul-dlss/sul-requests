@@ -1,8 +1,11 @@
 <!-- SUL header -->
-<div id="sul-header" class="navbar navbar-expand bg-dark bg-cardinal py-1 fs-7" data-turbo-prefetch="false">
-  <div class="container d-flex flex-column flex-sm-row gap-1 gap-sm-0 justify-content-between align-items-center">
-    <a class="mb-0 navbar-brand navbar-logo" href="https://library.stanford.edu" aria-label="Stanford University Libraries"></a>
-    <nav aria-label="header menu">
+<nav class="navbar navbar-expand-md bg-dark bg-cardinal" data-turbo-prefetch="false">
+  <div class="container">
+    <a class="mb-0 navbar-brand navbar-logo" href="https://library.stanford.edu" aria-label="Stanford University Libraries"></a>    <nav aria-label="header menu">
+    <button class="navbar-toggler navbar-toggler-right collapsed" type="button" data-toggle="collapse" data-bs-toggle="collapse" data-target="#user-util-collapse" data-bs-target="#user-util-collapse" aria-controls="user-util-collapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="d-md-block d-none">
       <ul class="navbar-nav">
         <% if current_user.sso_user? || current_user.library_id_user? %>
           <% logout_path = current_user.site_admin? ? root_path : request.url %>
@@ -22,9 +25,6 @@
           </li>
         <% end %>
       </ul>
-    </nav>
+    </div>
   </div>
-</div>
-<div id="feedback-form" class="feedback-form-container collapse">
-    <%= render template: 'feedback_forms/new' unless current_page?(feedback_form_path) %>
-</div>
+</nav>
