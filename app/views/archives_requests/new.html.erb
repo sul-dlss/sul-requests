@@ -75,7 +75,7 @@
                     <% end %>
                     <%# Collapsible series content %>
                     <div id="series-<%= index %>" class="collapse series-content ps-1" data-archives-series-target="content">
-                      <%= render partial: 'series_contents', locals: { contents: series[:contents], f: f, parent_title: series[:title], series_title: series[:title] } %>
+                      <%= render partial: 'series_contents', locals: { contents: Ead::DisplayGroup.build_display_groups(series[:contents]), f: f, parent_title: series[:title], series_title: series[:title] } %>
                     </div>
                   </div>
                 <% end %>
