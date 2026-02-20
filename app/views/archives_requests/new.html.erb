@@ -71,12 +71,12 @@
                         data: { bs_toggle: 'collapse' },
                         aria: { expanded: false, controls: "series-#{index}" } do %>
                       <i class="bi bi-chevron-right"></i>
-                      <span class="series-title"><%= series[:title] %></span>
-                      <span class="badge bg-light text-dark fw-normal"><%= series[:contents].count %></span>
+                      <span class="series-title"><%= series.title %></span>
+                      <span class="badge bg-light text-dark fw-normal"><%= series.contents.count %></span>
                     <% end %>
                     <%# Collapsible series content %>
                     <div id="series-<%= index %>" class="collapse series-content ps-1" data-archives-series-target="content">
-                      <%= render partial: 'series_contents', locals: { contents: Ead::DisplayGroup.build_display_groups(series[:contents]), f: f, parent_title: series[:title], series_title: series[:title] } %>
+                      <%= render partial: 'series_contents', locals: { contents: Ead::DisplayGroup.build_display_groups(series.contents), f: f, parent_title: series.full_title, series_title: series.full_title } %>
                     </div>
                   </div>
                 <% end %>
