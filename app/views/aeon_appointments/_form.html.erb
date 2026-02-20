@@ -1,4 +1,4 @@
-<%= form_with(model: @appointment, data: { controller: 'appointment' }) do |f| %>
+<%= form_with(model: @appointment, id: 'appointment-form', data: { controller: 'appointment', turbo_frame: '_top' }) do |f| %>
   <div class="mb-3">
     <%= f.label :name, class: 'd-block fw-semibold' %>
     <%= f.text_field :name %>
@@ -54,7 +54,4 @@
       <div class="loading-overlay p-2 mb-2" aria-hidden="true">Loading...</div>
     </turbo-frame>
   <% end %>
-
-  <%= link_to 'Cancel', aeon_appointments_path, class: 'btn btn-outline-primary' %>
-  <%= f.submit class: 'btn btn-primary' %>
 <% end %>
