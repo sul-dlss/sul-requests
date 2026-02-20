@@ -10,6 +10,7 @@ RSpec.describe 'archives_requests/_series_contents.html.erb' do
     allow(view).to receive_messages(volume_value: '{}', volume_checkbox_id: 'test-checkbox-id', collapsible_content_id: 'test-content-id')
   end
 
+  # rubocop:disable RSpec/ExampleLength
   context 'with container items' do
     it 'displays a collapsible container group with all items' do
       item1 = Ead::Document::Item.new(
@@ -27,9 +28,10 @@ RSpec.describe 'archives_requests/_series_contents.html.erb' do
         id: 'item-2'
       )
       items = [item1, item2]
+      display_groups = Ead::DisplayGroup.build_display_groups(items)
 
       render partial: 'archives_requests/series_contents',
-             locals: { contents: items, f: form_builder, parent_title: parent_title, series_title: parent_title }
+             locals: { contents: display_groups, f: form_builder, parent_title: parent_title, series_title: parent_title }
 
       # Should have container label with badge showing count
       expect(rendered).to have_css('.form-check-label', text: 'Box 9')
@@ -58,9 +60,10 @@ RSpec.describe 'archives_requests/_series_contents.html.erb' do
         id: 'item-4'
       )
       items = [item1, item2]
+      display_groups = Ead::DisplayGroup.build_display_groups(items)
 
       render partial: 'archives_requests/series_contents',
-             locals: { contents: items, f: form_builder, parent_title: parent_title, series_title: parent_title }
+             locals: { contents: display_groups, f: form_builder, parent_title: parent_title, series_title: parent_title }
 
       # Should have individual checkboxes for each item
       expect(rendered).to have_css('.form-check-label', text: 'Standalone Item 1')
@@ -89,9 +92,10 @@ RSpec.describe 'archives_requests/_series_contents.html.erb' do
         contents: subseries_items
       }
       items = [subseries]
+      display_groups = Ead::DisplayGroup.build_display_groups(items)
 
       render partial: 'archives_requests/series_contents',
-             locals: { contents: items, f: form_builder, parent_title: parent_title, series_title: parent_title }
+             locals: { contents: display_groups, f: form_builder, parent_title: parent_title, series_title: parent_title }
 
       # Should have subseries header with title and badge
       expect(rendered).to have_css('span', text: 'Subseries A')
@@ -102,4 +106,5 @@ RSpec.describe 'archives_requests/_series_contents.html.erb' do
       expect(rendered).to have_css('.collapse')
     end
   end
+  # rubocop:enable RSpec/ExampleLength
 end

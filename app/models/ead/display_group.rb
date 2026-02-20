@@ -18,10 +18,10 @@ module Ead
     Subseries = Data.define(:title, :contents)
 
     # This method can build 3 types of groups:
-    # 1. :item_container: multiple items sharing the same top container (e.g., Box 9).
+    # 1. ItemContainer: multiple items sharing the same top container (e.g., Box 9).
     # "container" is identified in Ead::Document by the presence of <container> elements and refers to physical containers.
-    # 2. :individual_item: These are leaf nodes in the EAD hierarchy that don't have a physical container.
-    # 3. :subseries: This is an intellectual grouping in the EAD not tied to physical containers. Each subseries gets its own group.
+    # 2. ItemWithoutContainer: These are leaf nodes in the EAD hierarchy that don't have a physical container.
+    # 3. Subseries: This is an intellectual grouping in the EAD not tied to physical containers. Each subseries gets its own group.
     def build # rubocop:disable Metrics/AbcSize
       # Build display groups preserving original order
       @contents.group_by { |c| c.try(:top_container) || c.object_id }.each_value.map do |group|

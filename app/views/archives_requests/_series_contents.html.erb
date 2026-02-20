@@ -1,7 +1,7 @@
 <%# 
-  Recursively render series contents (Items or nested subseries)
-  - Items within containers: consolidate all items for that container, and render a checkbox for group
-  - Individual items without containers: render individually with checkboxes
+  Recursively render series contents
+  - ItemContainer: consolidate all items for that container, and render a checkbox for group
+  - ItemWithoutContainer: render individually with checkboxes
   - Subseries: render as collapsible header with recursive call. No checkbox for subseries itself, only for items within it.
 %>
 <% contents.each_with_index do |display_group, group_index| %>

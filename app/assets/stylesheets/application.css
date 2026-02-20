@@ -440,9 +440,12 @@ label.btn-close {
 }
 
 /* EAD Item selector styles */
-.series-title {
-  font-size: 1.125rem; 
-}
-.form-check-label {
-  color: var(--bs-link-color);
+
+#items {
+  .series-title {
+    font-size: 1.125rem; 
+  }
+  .form-check-label {
+    color: var(--bs-link-color);
+  }
 }
