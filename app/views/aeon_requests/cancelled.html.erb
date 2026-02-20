@@ -1,4 +1,4 @@
 <div class="container">
   <h1>Cancelled requests</h1>
-  <%= render Aeon::RequestComponent.with_collection(@aeon_requests) %>
+  <%= render Aeon::RequestGroupComponent.with_collection(Aeon::RequestGrouping.from_requests(@aeon_requests)) %>
 </div>
