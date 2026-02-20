@@ -5,8 +5,8 @@ module Aeon
   class Request
     attr_reader :item_url, :appointment, :appointment_id, :author, :call_number,
                 :creation_date, :date, :document_type, :format, :pages, :photoduplication_status,
-                :location, :shipping_option, :site, :start_time, :stop_time, :title, :transaction_date,
-                :transaction_number, :transaction_status, :username, :volume
+                :publication, :location, :shipping_option, :site, :special_request, :start_time, :stop_time,
+                :title, :transaction_date, :transaction_number, :transaction_status, :volume
 
     def self.aeon_client
       AeonClient.new
@@ -36,8 +36,9 @@ module Aeon
         transaction_date: Time.zone.parse(dyn.fetch('transactionDate')),
         transaction_number: dyn['transactionNumber'],
         transaction_status: dyn['transactionStatus'],
-        username: dyn['username'],
-        volume: dyn['itemVolume']
+        volume: dyn['itemVolume'],
+        special_request: dyn['specialRequest'],
+        publication: dyn['forPublication']
       )
     end
 
@@ -45,8 +46,9 @@ module Aeon
                    author: nil, call_number: nil, creation_date: nil, date: nil,
                    document_type: nil, format: nil, location: nil, pages: nil, photoduplication_status: nil, photoduplication_date: nil,
                    shipping_option: nil, start_time: nil, stop_time: nil, title: nil, transaction_date: nil,
-                   transaction_number: nil, transaction_status: nil, username: nil, volume: nil, site: nil)
-      @item_url = item_url
+                   transaction_number: nil, transaction_status: nil, volume: nil, site: nil, special_request: nil,
+                   publication: nil)
+      @aeon_link = aeon_link
       @appointment = appointment
       @appointment_id = appointment_id
       @author = author
@@ -66,9 +68,10 @@ module Aeon
       @transaction_date = transaction_date
       @transaction_number = transaction_number
       @transaction_status = transaction_status
-      @username = username
       @volume = volume
       @site = site
+      @special_request = special_request
+      @publication = publication
     end
 
     def appointment?
