@@ -15,16 +15,7 @@ class ShibbolethStrategy < Warden::Strategies::Base
   end
 
   def authenticate!
-    response = FolioClient.new.login_by_sunetid(uid)
-
-    if response&.key?('key') || response&.key?('id')
-      u = { username: uid, patron_key: response['key'] || response['id'], shibboleth: true, ldap_attributes: }
-      success!(CurrentUser.new(u))
-    else
-      # If we didn't find an associated FOLIO account, the lookup in User will
-      # result in a NullPatron, which gets handled in the controller instead
-      success!(CurrentUser.new({ username: uid, shibboleth: true, ldap_attributes: }))
-    end
+    success!(CurrentUser.new({ username: uid, shibboleth: true, ldap_attributes: }))
   end
 
   private
