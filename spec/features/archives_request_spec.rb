@@ -45,6 +45,10 @@ RSpec.describe 'Requesting an item from an EAD', :js do
     check 'Box 12'
     click_button 'Continue'
 
+    # In the Appointment step
+    click_button 'Continue'
+
+    # In the (temporary) review step
     click_button 'Submit to Aeon'
 
     expect(page).to have_content('All 1 request(s) submitted successfully!')

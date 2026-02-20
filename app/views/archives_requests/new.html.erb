@@ -84,7 +84,35 @@
             <% end %>
           <% end %>
         <% end %>
-        <%= render AccordionStepComponent.new(id: 'submit', step_index: step_enum.next, form_id: f.id, submit: true, submit_text: 'Submit to Aeon', cancel: false) do |component| %>
+
+        <%= render AccordionStepComponent.new(id: 'scan-or-pickup-placeholder', form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'none' }) do |c| %>
+          <% c.with_title.with_content('Appointment or Digitization') %>
+        <% end %>
+
+        <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', classes: ['d-none'], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'pickup' }) do |c| %>
+          <% c.with_title.with_content('Appointment') %>
+          <% c.with_body do %>
+            TODO: Appointment
+          <% end %>
+        <% end %>
+
+        <%= render AccordionStepComponent.new(request: f.object, id: 'scan', classes: ['d-none'], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'scan' }) do |c| %>
+          <% c.with_title.with_content('Digitization') %>
+
+          <% c.with_body do %>
+            TODO: Digitization
+          <% end %>
+        <% end %>
+
+        <%= render AccordionStepComponent.new(request: f.object, id: 'terms', classes: ['d-none'], step_index: step_enum.next, form_id: f.id, data: { 'patronrequest-forRequestType': 'scan' }) do |c| %>
+          <% c.with_title.with_content('Terms') %>
+
+          <% c.with_body do %>
+            TODO: Terms
+          <% end %>
+        <% end %>
+
+        <%= render AccordionStepComponent.new(id: 'submit', step_index: '-', form_id: f.id, submit: true, submit_text: 'Submit to Aeon', cancel: false) do |component| %>
           <% component.with_title.with_content('Review and submit') %>
           <% component.with_body do %>
             <div class="mb-4">
@@ -132,7 +160,7 @@
       <div>
         <% if @ead.repository %>
           <h3>
-            <%= link_to @ead.repository_contact[:website] do  %>
+            <%= link_to @ead.repository_contact[:website] do %>
               <%= @ead.repository %><i class="bi bi-arrow-up-right ms-1"></i>
             <% end %>
           </h3>
