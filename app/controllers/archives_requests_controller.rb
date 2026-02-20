@@ -24,7 +24,11 @@ class ArchivesRequestsController < ApplicationController
     @ead = EadClient.fetch(params[:ead_url])
 
     items = params[:volumes]&.reject(&:blank?)&.map { |json_str| JSON.parse(json_str) }
-    @request = Ead::Request.new(user: current_user, ead: @ead, items:, shipping_option: params[:shipping_option])
+    @request = Ead::Request.new(user: current_user,
+                                ead: @ead,
+                                items:,
+                                shipping_option: params[:shipping_option],
+                                reference_number: "UUID:#{request.uuid}")
 
     results = @request.create_aeon_requests!
 
