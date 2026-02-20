@@ -6,16 +6,24 @@
       <div class="card mb-4 bg-light rounded-0 border-0">
         <div class="card-body">
           <h2><%= @ead.title || 'Not available' %></h2>
-          <p>Identifier: <%= @ead.identifier || 'Not available' %></p>
-          <p>Repository: <%= @ead.repository || 'Not available' %></p>
-          <%# TODO: <p>Date Range: 1962-2018</p> %>
-          <p>Extent: <%= @ead.extent || 'Not available' %></p>
-          <p>Creator: <%= @ead.creator || 'Not available' %></p>
-          <p>Languages: <%= @ead.languages || 'Not available' %></p>
-          <p>Conditions Governing Use: <%= @ead.conditions_governing_use || 'Not available' %></p>
-          <p>Conditions Governing Access: <%= @ead.conditions_governing_access || 'Not available' %></p>
-          <p>Cite As: <%= @ead.cite_as || 'Not available' %></p>
-          <p>Source URL: <%= @ead_url %></p>
+          <div class="d-flex gap-md-3 flex-md-row flex-column">
+            <span>Archive/Manuscript (<%= @ead.date %>)</span>
+            <span>Call number: <%= @ead.identifier %></span>
+            <span>
+              <%= link_to @ead.collection_permalink, class: 'su-underline' do %>
+                View in Archival Collections at Stanford <i class="bi bi-arrow-up-right"></i>
+              <% end %>
+            </span>
+          </div>
+          <% if @ead.creator %>
+            <div class="mt-2">
+              <%= @ead.creator %>
+            </div>
+          <% end %>
+          <% if @ead.extent %>
+            <hr class="my-1">
+            <div><b>Extent: </b><%= @ead.extent %></div>
+          <% end %>
         </div>
       </div>
       <%= form_with id: 'archives-request', url: archives_requests_path, class: 'accordion', data: { controller: 'patronRequest archives-request', turbo: false } do |f| %>
