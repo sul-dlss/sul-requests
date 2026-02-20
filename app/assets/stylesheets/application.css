@@ -438,3 +438,14 @@ label.btn-close {
     display: none;
   }
 }
+
+/* EAD Item selector styles */
+
+#items {
+  .series-title {
+    font-size: 1.125rem; 
+  }
+  .form-check-label {
+    color: var(--bs-link-color);
+  }
+}

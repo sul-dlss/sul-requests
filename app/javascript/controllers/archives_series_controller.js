@@ -19,8 +19,10 @@ export default class extends Controller {
     event.stopPropagation()
     event.preventDefault()
     this.contentTargets.forEach(el => {
-      const bsCollapse = Collapse.getOrCreateInstance(el)
-      bsCollapse.hide()
+      if (el.classList.contains('show')) {
+        const bsCollapse = Collapse.getOrCreateInstance(el)
+        bsCollapse.hide()
+      }
     })
   }
 }
