@@ -22,17 +22,17 @@ module Ead
     # "container" is identified in Ead::Document by the presence of <container> elements and refers to physical containers.
     # 2. ItemWithoutContainer: These are leaf nodes in the EAD hierarchy that don't have a physical container.
     # 3. Subseries: This is an intellectual grouping in the EAD not tied to physical containers. Each subseries gets its own group.
-    def build # rubocop:disable Metrics/AbcSize
+    def build
       # Build display groups preserving original order
-      @contents.group_by { |c| c.try(:top_container) || c.object_id }.each_value.map do |group|
+      @contents.group_by(&:coalesce_key).each_value.map do |group|
         c = group.first
 
-        if c.try(:top_container).present?
+        if c.top_container
           ItemContainer.new(name: c.top_container, contents: group)
-        elsif c.is_a?(Ead::Document::Item)
-          ItemWithoutContainer.new(title: c.title)
+        elsif c.contents.any?
+          Subseries.new(title: c.full_title, contents: Ead::DisplayGroup.build_display_groups(c.contents))
         else
-          Subseries.new(title: c[:title], contents: Ead::DisplayGroup.build_display_groups(c[:contents]))
+          ItemWithoutContainer.new(title: c.title)
         end
       end
     end
