@@ -7,7 +7,7 @@
     </h2>
     <%= render Aeon::DailyItemLimitComponent.from_appointment_group(appointment_group) %>
   </div>
-  <div class="card-body">
+  <div class="card-body d-flex flex-column gap-3">
     <%= render Aeon::AppointmentComponent.with_collection(appointment_group.appointments) %>
   </div>
 </div>
