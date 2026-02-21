@@ -10,9 +10,7 @@
     <% 
       container_name = display_group.name
       group = display_group.contents
-      # Use container name as subseries if we're directly under the series (no subseries nesting)
-      subseries_name = parent_title == series_title ? container_name : parent_title
-      checkbox_id = volume_checkbox_id(series_title: series_title, subseries_name: subseries_name)
+      checkbox_id = volume_checkbox_id(series_title: series_title, subseries_name: container_name)
       content_id = "container-items-#{checkbox_id}"
     %>
     <div class="mt-3 mb-2 d-flex align-items-start gap-2">
@@ -27,7 +25,7 @@
       <%= f.check_box :volumes, 
             { multiple: true, class: 'form-check-input mt-1', id: checkbox_id, 
               data: { action: 'change->archives-request#updateVolumesDisplay' } }, 
-            volume_value(series_title: series_title, subseries_name: subseries_name), 
+            volume_value(series_title: series_title, subseries_name: container_name),
             nil %>
       <div class="flex-grow-1">
         <%= label_tag checkbox_id, container_name, class: 'form-check-label' %>
