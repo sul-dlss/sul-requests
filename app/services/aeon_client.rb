@@ -125,13 +125,15 @@ class AeonClient
     end
   end
 
-  CreateRequestData = Data.define(:call_number, :ead_number, :item_author, :item_citation, :item_date, :item_info1, :item_info2,
+  CreateRequestData = Data.define(:call_number, :ead_number, :for_publication,
+                                  :item_author, :item_citation, :item_date, :item_info1, :item_info2,
                                   :item_info3, :item_info4, :item_info5, :item_subtitle, :item_title, :item_volume,
                                   :reference_number, :shipping_option, :site, :special_request, :username) do
     def as_json # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       {
         callNumber: call_number,
         eadNumber: ead_number,
+        forPublication: for_publication,
         itemAuthor: item_author,
         itemCitation: item_citation,
         itemDate: item_date,
@@ -154,7 +156,7 @@ class AeonClient
 
     def self.with_defaults
       new(
-        call_number: nil, ead_number: nil,
+        call_number: nil, ead_number: nil, for_publication: nil,
         item_author: nil, item_citation: nil, item_date: nil,
         item_info1: nil, item_info2: nil, item_info3: nil, item_info4: nil, item_info5: nil,
         item_subtitle: nil, item_title: nil, item_volume: nil, reference_number: nil,
