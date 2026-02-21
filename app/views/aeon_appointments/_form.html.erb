@@ -33,12 +33,14 @@
       <legend class="fs-6 fw-semibold">Duration</legend>
 
       <% [30.minutes, 1.hour, 1.5.hours, 2.hours, 3.hours, 4.hours].each do |duration| %>
-        <%= f.radio_button :duration, duration.to_i, class: 'btn-check', checked: (@appointment.start_time && @appointment.stop_time ? (@appointment.stop_time - @appointment.start_time) : 30.minutes) == duration, data: { action: 'appointment#applyDurationFilter' } %>
-        <%= f.label "duration_#{duration.to_i}", duration.inspect, class: 'btn' %>
+        <span class="duration-selector" data-appointment-target="duration" data-seconds="<%= duration %>">
+          <%= f.radio_button :duration, duration.to_i, class: 'btn-check', checked: (@appointment.start_time && @appointment.stop_time ? (@appointment.stop_time - @appointment.start_time) : 30.minutes) == duration, data: { action: 'appointment#applyDurationFilter' } %>
+          <%= f.label "duration_#{duration.to_i}", duration.inspect, class: 'btn' %>
+        </span>
       <% end %>
     </fieldset>
 
-    <turbo-frame id="available_appointments" data-action="turbo:frame-load->appointment#applyDurationFilter" data-appointment-target="availability" src="<%= available_aeon_appointments_url(@appointment.reading_room_id, @appointment.date || Time.zone.now.iso8601, selected: @appointment.start_time.strftime('%-I:%M %p')) if @appointment.reading_room_id %>">
+    <turbo-frame id="available_appointments" data-action="turbo:frame-load->appointment#applyDurationFilter turbo:frame-load->appointment#filterDurationFields" data-appointment-target="availability" src="<%= available_aeon_appointments_url(@appointment.reading_room_id, @appointment.date || Time.zone.now.iso8601, selected: @appointment.start_time.strftime('%-I:%M %p')) if @appointment.reading_room_id %>">
       <fieldset class="mb-3">
         <legend class="fs-6 fw-semibold">Available time slots</legend>
         <% if @appointment.reading_room_id && @appointment.date %>

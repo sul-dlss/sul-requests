@@ -1,10 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["availability"]
-
-  connect() {
-  }
+  static targets = ["availability", "duration", "fieldset"]
 
   async refreshDateMetadata() {
     const formData = new FormData(this.element);
@@ -26,6 +23,17 @@ export default class extends Controller {
     } catch (error) {
       console.error("Error fetching availability data:", error);
     }
+  }
+
+  filterDurationFields() {
+    const data = this.fieldsetTarget.dataset;
+    const maxDuration = data.maxSlot;
+    const minDuration = data.minSlot;
+    this.durationTargets.forEach((duration) => {
+      const seconds = parseInt(duration.dataset.seconds);
+      if (maxDuration < seconds || minDuration > seconds) { duration.classList.add('d-none') }
+      else { duration.classList.remove('d-none') }
+    });
   }
 
   refreshAvailability() {
