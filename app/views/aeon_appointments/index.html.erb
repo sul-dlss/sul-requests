@@ -1,6 +1,15 @@
 <div class="d-flex align-items-center gap-3 mb-3">
   <h1>Reading room appointments</h1>
-  <%= link_to 'Create new appointment', new_aeon_appointment_path, class: 'btn btn-primary' %>
+  <%= link_to 'Create new appointment', new_aeon_appointment_path, class: 'btn btn-primary', data: { turbo_frame: 'appointment_modal_content' } %>
 </div>
 
 <%= render Aeon::AppointmentGroupComponent.with_collection(Aeon::AppointmentGrouping.from_appointments(@appointments), group_classes: %w[shadow mb-4]) %>
+
+<div id="appointment-modal" class="modal fade" tabindex="-1" aria-hidden="true" data-controller="modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <turbo-frame id="appointment_modal_content" data-modal-target="frame">
+      </turbo-frame>
+    </div>
+  </div>
+</div>

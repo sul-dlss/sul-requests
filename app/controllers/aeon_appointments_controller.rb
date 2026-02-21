@@ -22,6 +22,7 @@ class AeonAppointmentsController < ApplicationController
 
     @reading_rooms = Aeon::ReadingRoom.all
     @appointment = Aeon::Appointment.new
+    request.variant = :modal if turbo_frame_request?
   end
 
   def available
@@ -38,6 +39,7 @@ class AeonAppointmentsController < ApplicationController
 
   def edit
     authorize! :update, @appointment
+    request.variant = :modal if turbo_frame_request?
   end
 
   def create # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
