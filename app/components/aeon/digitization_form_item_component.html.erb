@@ -1,0 +1,39 @@
+<div class="accordion-item" data-content-id="<%= dom_id %>" data-fields-base-name="<%= base_name %>">
+  <div class="accordion-header">
+    <button class="accordion-button d-flex justify-content-between" type="button" data-bs-toggle="collapse" data-bs-target="#content_<%= dom_id %>" aria-expanded="false" aria-controls="content_<%= dom_id %>">
+      <%= title %>
+      <i class="bi bi-chevron-right"></i>
+    </button>
+  </div>
+  <div id="content_<%= dom_id %>" class="accordion-collapse collapse">
+    <%= fields_for base_name do |f| %>
+      <%= f.hidden_field 'id', value: dom_id if dom_id %>
+      <%= f.hidden_field 'series', value: series if series %>
+      <%= f.hidden_field 'subseries', value: subseries if subseries %>
+      <div class="accordion-body">
+        <div class="mb-3">
+          <%= f.label :requested_pages, class: 'form-label fw-semibold' %>
+          <%= f.text_field :requested_pages, class: 'form-control' %>
+        </div>
+
+        <div class="mb-3">
+          <fieldset>
+            <legend class="form-label fs-6 mb-1 fw-semibold">Is this for publication?</legend>
+            <span class="me-3">
+              <%= f.radio_button :for_publication, 'yes' %>
+              <%= f.label :for_publication_yes, 'Yes' %>
+            </span>
+
+            <%= f.radio_button :for_publication, 'no' %>
+            <%= f.label :for_publication_no, 'No' %>
+          </fieldset>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :additional_information, class: 'form-label fw-semibold' %>
+          <%= f.text_area :additional_information, class: 'form-control' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

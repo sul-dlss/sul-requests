@@ -92,7 +92,13 @@
           <% c.with_title.with_content('Digitization') %>
 
           <% c.with_body do %>
-            TODO: Digitization
+
+            <div class="accordion" data-archives-request-target="digitizationItems">
+            </div>
+
+            <template data-archives-request-target="digitizationTemplate">
+              <%= render Aeon::DigitizationFormItemComponent.new(title: '__TITLE__', dom_id: '__DOMID__', base_name: 'items[__DOMID__]') %>
+            </template>
           <% end %>
         <% end %>
 

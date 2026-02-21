@@ -23,7 +23,11 @@ class ArchivesRequestsController < ApplicationController
     # Fetch EAD data to get the actual collection information
     @ead = EadClient.fetch(params[:ead_url])
 
-    items = params[:volumes]&.reject(&:blank?)&.map { |json_str| JSON.parse(json_str) }
+    # Items formatted as hierarchical form parameters
+    items = params[:items].values if params[:items].present?
+
+    # Items formatted as JSON-encoded data on e.g. the checkboxes
+    items ||= params[:volumes]&.reject(&:blank?)&.map { |json_str| JSON.parse(json_str) }
     @request = Ead::Request.new(user: current_user,
                                 ead: @ead,
                                 items:,

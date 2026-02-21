@@ -1,7 +1,20 @@
 import { Controller } from "@hotwired/stimulus"
 
+function camelize(value) {
+  return value.replace(/(?:[_-])([a-z0-9])/g, (_, char) => char.toUpperCase())
+}
+
+function typecast(value) {
+  try {
+    return JSON.parse(value)
+  } catch (o_O) {
+    return value
+  }
+}
+
 export default class extends Controller {
-  static targets = ["volumesDisplay", "requestTypeDisplay"]
+  static targets = ['items', "volumesDisplay", "requestTypeDisplay", "digitizationItems", "digitizationTemplate"]
+  static values = { selectedItems: Array }
 
   updateVolumesDisplay(event) {
     if (!this.hasVolumesDisplayTarget) return;
@@ -19,11 +32,81 @@ export default class extends Controller {
     }
   }
 
+  itemsTargetConnected(element) {
+    if (!element.checked) return;
+
+    const params = this.getStimulusParams(element);
+
+    if (element.type == 'radio') {
+      this.selectedItemsValue = [params];
+    } else if (!this.selectedItemsValue.find((item) => item.id == params.id)) {
+      this.selectedItemsValue = this.selectedItemsValue.concat([params]);
+    }
+  }
+
+  itemChanged(event) {
+    if (event.currentTarget.checked || event.params.checked) {
+      if (this.itemsTarget.type == 'radio') {
+        this.selectedItemsValue = [event.params];
+      } else {
+        this.selectedItemsValue = this.selectedItemsValue.concat([event.params]);
+      }
+    } else {
+      this.selectedItemsValue = this.selectedItemsValue.filter((item) => item.id !== event.params.id);
+    }
+
+    this.dispatch('change', { detail: { selectedItems: this.selectedItemsValue }});
+  }
+
+  selectedItemsValueChanged(value, previousValue) {
+    const removed = (previousValue || []).filter(item => !value.find(v => v.id == item.id));
+    const added = value.filter(item => !(previousValue || []).find(v => v.id == item.id));
+
+    removed.forEach(item => {
+      this.element.querySelectorAll(`[data-content-id="${item.id}"]`).forEach(e => e.remove());
+    });
+
+    added.forEach(item => {
+      const template = this.digitizationTemplateTarget;
+      const element = document.importNode(template.content, true);
+      const rootNode = element.querySelector('div');
+      rootNode.dataset.contentId = item.id;
+      rootNode.dataset.fieldsBaseName = rootNode.dataset.fieldsBaseName.replace('__DOMID__', item.id);
+      rootNode.innerHTML = rootNode.innerHTML.replace(/__TITLE__/g, `${item.series} > ${item.subseries}`).replace(/__DOMID__/g, item.id);
+
+      const baseName = rootNode.dataset.fieldsBaseName;
+      Object.entries(item).forEach(([key, value]) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = `${baseName}[${key}]`;
+        input.value = value;
+
+        rootNode.appendChild(input);
+      });
+      this.digitizationItemsTarget.appendChild(element);
+    });
+  }
+
   updateRequestType(event) {
     if (!this.hasRequestTypeDisplayTarget) return;
 
     const label = event.target.labels[0]?.textContent.trim() || event.target.value;
     this.requestTypeDisplayTarget.textContent = label;
     this.requestTypeDisplayTarget.classList.remove('text-muted');
+  }
+
+  getStimulusParams(element) {
+    const params = {}
+    const pattern = new RegExp(`^data-${this.identifier}-(.+)-param$`, "i")
+
+    for (const { name, value } of Array.from(element.attributes)) {
+      const match = name.match(pattern)
+      const key = match && match[1]
+      if (key) {
+        params[camelize(key)] = typecast(value)
+      }
+    }
+
+    return params;
   }
 }
