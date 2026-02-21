@@ -4,11 +4,11 @@ module Aeon
   # Wraps an Aeon request record
   class Request
     attr_reader :item_url, :appointment, :appointment_id, :author, :call_number,
-                :creation_date, :date, :document_type, :format, :pages, :photoduplication_status,
+                :creation_date, :date, :document_type, :format, :item_number, :pages, :photoduplication_status,
                 :publication, :location, :reference_number, :shipping_option, :site,
                 :special_request, :start_time, :stop_time, :title, :transaction_date,
                 :transaction_number, :transaction_status, :username, :volume
-    
+  
     def self.aeon_client
       AeonClient.new
     end
@@ -25,6 +25,7 @@ module Aeon
         date: dyn['itemDate'],
         document_type: dyn['documentType'],
         format: dyn['format'],
+        item_number: dyn['itemNumber'],
         shipping_option: dyn['shippingOption'],
         location: dyn['location'],
         pages: dyn['itemInfo5'],
@@ -46,14 +47,11 @@ module Aeon
 
     def initialize(item_url: nil, appointment: nil, appointment_id: nil, # rubocop:disable Metrics/AbcSize, Metrics/ParameterLists, Metrics/MethodLength
                    author: nil, call_number: nil, creation_date: nil, date: nil,
-                   document_type: nil, format: nil, location: nil, pages: nil, photoduplication_status: nil, photoduplication_date: nil,
+                   document_type: nil, format: nil, item_number: nil, location: nil, pages: nil, photoduplication_status: nil, photoduplication_date: nil,
                    reference_number: nil, shipping_option: nil, start_time: nil, stop_time: nil, title: nil, transaction_date: nil,
-                   transaction_number: nil, transaction_status: nil, username: nil, volume: nil, site: nil)
+                   transaction_number: nil, transaction_status: nil, username: nil, volume: nil, site: nil,
+                   special_request: nil, publication: nil)
       @item_url = item_url
-                   shipping_option: nil, start_time: nil, stop_time: nil, title: nil, transaction_date: nil,
-                   transaction_number: nil, transaction_status: nil, volume: nil, site: nil, special_request: nil,
-                   publication: nil)
-      @aeon_link = aeon_link
       @appointment = appointment
       @appointment_id = appointment_id
       @author = author
@@ -62,6 +60,7 @@ module Aeon
       @date = date
       @document_type = document_type
       @format = format
+      @item_number = item_number
       @location = location
       @pages = pages
       @photoduplication_status = photoduplication_status
