@@ -7,64 +7,40 @@
       <li>Some requests may require a fee. If payment appliesm a staff member will contact youto review the 
       cost and confirm whether you wish to proceed.</li>
     </ul>
-  </div>
-
-  <% if f.object.selectable_items.one? %>
-    <div>
-      <div class='mt-3'>
-        <%= f.label :aeon_pages, 'Requested pages', :class => 'fw-bold py-2 redesign-required-label' %>
-        <%= f.text_field :aeon_pages, :id=> "aeon_pages", :class => 'form-control', :required => true %>
-      </div>
-      <div class='mt-3 d-flex'>
-        <div class='fw-bold me-2'>Is this for publication? </div>
-        <%= f.radio_button :aeon_publication, 'Yes', :class => 'form-check-input' %>
-        <%= f.label :aeon_publication, :id=> "aeon_publication", :class => 'form-check-label ms-2 me-3' do %>
-          Yes
-        <% end %>
-
-        <%= f.radio_button :aeon_publication, 'No', :class => 'form-check-input' %>
-        <%= f.label :aeon_publication, :id=> "aeon_publication", :class => 'form-check-label ms-2 me-3' do %>
-          No
-        <% end %>
-      </div>
-      <div class='mt-3 mb-2'>
-        <%= f.label :aeon_digitization_special, 'Additional Information', :class => 'fw-bold py-2' %>
-        <%= f.text_area :aeon_digitization_special, :id=> "aeon_digitization_special", :class => 'form-control', :rows => 3 %>
-        <small class='text-cardinal mt-4'>Limit 255 characters.</small> 
-      </div>
-    </div>
-  <% else %>
-    
-    <% f.object.selectable_items.each do |selectable_item| %>
-      <%= fields_for "patron_request[aeon_item][#{selectable_item.callnumber}]" do |field| %>
-        <div class='accordion-sub-item' data-callnumber="<%= selectable_item.callnumber %>" data-patronRequest-target='digitization'>
-          <div class="accordion-header d-flex">
-            <div class='p-2 fw-bold'><%= selectable_item.callnumber %></div>
-          </div>
-          <div class='mx-3 my-1'>
-            <div class='mt-3'>
-              <%= field.label :pages, 'Requested pages', :class => 'fw-bold py-2 redesign-required-label' %>
-              <%= field.text_field :pages, :disabled => true, :class => 'form-control', :required => true %>
-            </div>
-            <div class='mt-3 d-flex'>
-              <div class='fw-bold me-2'>Is this for publication? </div>
-              <%= field.radio_button :publication, 'Yes', :disabled => true, :class => 'form-check-input'   %>
-              <%= field.label :publication, :class => 'form-check-label ms-2 me-3' do %>
-                Yes
-              <% end %>
-
-              <%= field.radio_button :publication, 'No', :disabled => true, :class => 'form-check-input' %>
-              <%= field.label :publication, :disabled => true, :class => 'form-check-label ms-2 me-3' do %>
-                No
-              <% end %>
-            </div>
-            <div class='mt-3 mb-2'>
-              <%= field.label :digitization_special, 'Additional Information', :class => 'fw-bold py-2' %>
-              <%= field.text_area :digitization_special, :disabled => true, :class => 'form-control', :rows => 3 %>
-              <small class='text-cardinal mt-4'>Limit 255 characters.</small> 
-            </div>
-          </div>
+  </div>    
+  <% sort_holdings(f.object.selectable_items).each do |selectable_item| %>
+    <%= fields_for "patron_request[aeon_item][#{selectable_item.callnumber}]" do |field| %>
+      <% if f.object.selectable_items.many? %>
+      <div class='accordion-sub-item' data-callnumber="<%= selectable_item.callnumber %>" data-patronRequest-target='digitization'>
+        <div class="accordion-header d-flex">
+          <div class='p-2 fw-bold'><%= selectable_item.callnumber %></div>
         </div>
+        <div class='mx-3 my-1'>
+          <% end %>
+          <div class='mt-3'>
+            <%= field.label :pages, 'Requested pages', :class => 'fw-bold py-2 redesign-required-label' %>
+            <%= field.text_field :pages, :class => 'form-control', :required => true, :disabled => f.object.selectable_items.many? %>
+          </div>
+          <div class='mt-3 d-flex'>
+            <div class='fw-bold me-2'>Is this for publication? </div>
+            <%= field.radio_button :publication, 'Yes', :class => 'form-check-input', :disabled => f.object.selectable_items.many?   %>
+            <%= field.label :publication, :class => 'form-check-label ms-2 me-3' do %>
+              Yes
+            <% end %>
+
+            <%= field.radio_button :publication, 'No', :disabled => true, :class => 'form-check-input', :disabled => f.object.selectable_items.many? %>
+            <%= field.label :publication, :class => 'form-check-label ms-2 me-3' do %>
+              No
+            <% end %>
+          </div>
+          <div class='mt-3 mb-2'>
+            <%= field.label :digitization_special, 'Additional Information', :class => 'fw-bold py-2' %>
+            <%= field.text_area :digitization_special, :class => 'form-control', :rows => 3 , :disabled => f.object.selectable_items.many? %>
+            <small class='text-cardinal mt-4'>Limit 255 characters.</small> 
+          </div>
+      <% if f.object.selectable_items.many? %>    
+        </div>
+      </div>
       <% end %>
     <% end %>
   <% end %>

@@ -35,9 +35,6 @@ class PatronRequestsController < ApplicationController
 
   def create
     if @patron_request.aeon_page?
-      Rails.logger.debug 'Patron request includes'
-      Rails.logger.debug @patron_request.inspect
-      Rails.logger.debug { "PARAMS #{params}" }
       @patron_request.submit_aeon_request
     elsif @patron_request.save && @patron_request.submit_later
       redirect_to @patron_request
