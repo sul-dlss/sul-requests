@@ -60,4 +60,42 @@ RSpec.describe 'Requesting an item from an EAD', :js do
                                                                       site: 'SPECUA'
                                                                     ))
   end
+
+  context 'with a digitization request' do
+    it 'allows the user to submit a request with details about the portion of the item to be digitized' do # rubocop:disable RSpec/ExampleLength
+      visit new_archives_request_path(value: 'http://example.com/ead.xml')
+
+      expect(page).to have_content('New request')
+      expect(page).to have_content('Knuth (Donald E.) papers')
+
+      choose 'Digitization'
+
+      click_button 'Continue'
+
+      click_link 'Computers and Typesetting'
+      click_link 'Legal size documents'
+      check 'Box 12'
+      click_button 'Continue'
+
+      click_button 'Box 12'
+      fill_in 'Requested pages', with: 'Pages 1-10'
+      fill_in 'Additional information', with: 'Testing only'
+      click_button 'Continue'
+
+      check 'I agree to these terms'
+      click_button 'Continue'
+
+      click_button 'Submit to Aeon'
+
+      expect(page).to have_content('All 1 request(s) submitted successfully!')
+      expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
+                                                                        username: user.email_address,
+                                                                        item_info5: 'Pages 1-10',
+                                                                        item_volume: 'Box 12',
+                                                                        special_request: 'Testing only',
+                                                                        call_number: 'SC0097 Computers and Typesetting',
+                                                                        site: 'SPECUA'
+                                                                      ))
+    end
+  end
 end

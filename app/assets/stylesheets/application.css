@@ -372,7 +372,8 @@ label.btn-close {
   --bs-btn-disabled-opacity: 0.65;
 }
 
-.series-header[aria-expanded="true"] .bi-chevron-right::before {
+.series-header[aria-expanded="true"] .bi-chevron-right::before,
+.accordion-button[aria-expanded="true"] .bi-chevron-right::before {
  transform: rotate(90deg);
 }
 
