@@ -5,6 +5,7 @@
 ###
 class AeonRequestsController < ApplicationController
   include AeonController
+  include AeonSortable
 
   def drafts
     authorize! :read, Aeon::Request
@@ -21,7 +22,7 @@ class AeonRequestsController < ApplicationController
   def submitted
     authorize! :read, Aeon::Request
 
-    @aeon_requests = current_user&.aeon&.submitted_requests || []
+    @aeon_requests = sort_aeon_requests(current_user&.aeon&.submitted_requests || [])
   end
 
   def resubmit
