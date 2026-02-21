@@ -13,7 +13,7 @@ function typecast(value) {
 }
 
 export default class extends Controller {
-  static targets = ['items', "volumesDisplay", "requestTypeDisplay", "digitizationItems", "digitizationTemplate"]
+  static targets = ['items', "volumesDisplay", "requestTypeDisplay", "digitizationItems", "digitizationTemplate", "appointmentItems", "appointmentTemplate"]
   static values = { selectedItems: Array }
 
   updateVolumesDisplay(event) {
@@ -58,32 +58,57 @@ export default class extends Controller {
     this.dispatch('change', { detail: { selectedItems: this.selectedItemsValue }});
   }
 
+  appendDigitizationItem(item) {
+    // Create the digitization section
+    const template = this.digitizationTemplateTarget;
+    const element = document.importNode(template.content, true);
+    const rootNode = element.querySelector('div');
+    rootNode.dataset.contentId = item.id;
+    rootNode.dataset.fieldsBaseName = rootNode.dataset.fieldsBaseName.replace('__DOMID__', item.id);
+    rootNode.innerHTML = rootNode.innerHTML.replace(/__TITLE__/g, `${item.series} > ${item.subseries}`).replace(/__DOMID__/g, item.id);
+    return this.digitizationItemsTarget.appendChild(rootNode);
+  }
+
+  appendAppointmentItem(item) {
+    const template = this.appointmentTemplateTarget;
+    const element = document.importNode(template.content, true);
+    const rootNode = element.querySelector('div');
+    rootNode.dataset.contentId = item.id;
+    rootNode.dataset.fieldsBaseName = rootNode.dataset.fieldsBaseName.replace('__DOMID__', item.id);
+    rootNode.innerHTML = rootNode.innerHTML.replace(/__TITLE__/g, `${item.series} > ${item.subseries}`).replace(/__DOMID__/g, item.id);
+    this.appointmentItemsTarget.appendChild(rootNode);
+  }
+
   selectedItemsValueChanged(value, previousValue) {
     const removed = (previousValue || []).filter(item => !value.find(v => v.id == item.id));
     const added = value.filter(item => !(previousValue || []).find(v => v.id == item.id));
 
     removed.forEach(item => {
+      // remove the digitization section, physical item section, and hidden inputs for the item
       this.element.querySelectorAll(`[data-content-id="${item.id}"]`).forEach(e => e.remove());
     });
 
-    added.forEach(item => {
-      const template = this.digitizationTemplateTarget;
-      const element = document.importNode(template.content, true);
-      const rootNode = element.querySelector('div');
-      rootNode.dataset.contentId = item.id;
-      rootNode.dataset.fieldsBaseName = rootNode.dataset.fieldsBaseName.replace('__DOMID__', item.id);
-      rootNode.innerHTML = rootNode.innerHTML.replace(/__TITLE__/g, `${item.series} > ${item.subseries}`).replace(/__DOMID__/g, item.id);
 
-      const baseName = rootNode.dataset.fieldsBaseName;
+
+    added.forEach(item => {
+      const digitizationItem = this.appendDigitizationItem(item);
+      this.appendAppointmentItem(item);
+
+      // Create hidden inputs for the rst of the item's data
+      const baseName = digitizationItem.dataset.fieldsBaseName;
+      const hiddenContainer = document.createElement('div');
+      hiddenContainer.classList.add('d-none');
+      hiddenContainer.dataset.contentId = item.id;
+
       Object.entries(item).forEach(([key, value]) => {
         const input = document.createElement('input');
         input.type = 'hidden';
         input.name = `${baseName}[${key}]`;
         input.value = value;
 
-        rootNode.appendChild(input);
+        hiddenContainer.appendChild(input);
       });
-      this.digitizationItemsTarget.appendChild(element);
+      this.element.appendChild(hiddenContainer);
     });
   }
 

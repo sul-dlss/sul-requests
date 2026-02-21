@@ -25,7 +25,7 @@
       <%= f.check_box :volumes, 
             { multiple: true, class: 'form-check-input mt-1', id: checkbox_id, 
               data: { action: 'change->archives-request#itemChanged change->archives-request#updateVolumesDisplay', 'archives-request-target': 'items', 'archives-request-series-param': series_title, 'archives-request-subseries-param': container_name, 'archives-request-id-param': checkbox_id } },
-            volume_value(series_title: (series_title || container_name), subseries_name: container_name), 
+            checkbox_id,
             nil %>
       <div class="flex-grow-1">
         <%= label_tag checkbox_id, container_name, class: 'form-check-label' %>
