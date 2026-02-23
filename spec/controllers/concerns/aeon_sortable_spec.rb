@@ -122,4 +122,57 @@ RSpec.describe AeonSortable do
       end
     end
   end
+
+  describe '#available_aeon_sort_options' do
+    let(:filterable_controller_class) do
+      Class.new(ApplicationController) do
+        include AeonFilterable
+        include AeonSortable
+      end
+    end
+
+    let(:filterable_controller) { filterable_controller_class.new }
+    let(:sort_param) { nil }
+
+    before do
+      allow(filterable_controller).to receive(:params)
+        .and_return(ActionController::Parameters.new(sort: sort_param, filter: filter_param))
+    end
+
+    context 'without a filter' do
+      let(:filter_param) { nil }
+
+      it 'includes all sort options' do
+        expect(filterable_controller.send(:available_aeon_sort_options).keys)
+          .to eq %w[request_type title date_added date_modified appointment_time]
+      end
+    end
+
+    context 'with the digitization filter' do
+      let(:filter_param) { 'digitization' }
+
+      it 'excludes request_type and appointment_time' do
+        expect(filterable_controller.send(:available_aeon_sort_options).keys)
+          .to eq %w[title date_added date_modified]
+      end
+    end
+
+    context 'with the reading_room filter' do
+      let(:filter_param) { 'reading_room' }
+
+      it 'excludes request_type but includes appointment_time' do
+        expect(filterable_controller.send(:available_aeon_sort_options).keys)
+          .to eq %w[title date_added date_modified appointment_time]
+      end
+    end
+
+    context 'when sort param is unavailable for current filter' do
+      let(:sort_param) { 'appointment_time' }
+      let(:filter_param) { 'digitization' }
+
+      it 'falls back to default sort' do
+        expect(filterable_controller.send(:current_aeon_sort)).to eq 'date_added'
+      end
+    end
+  end
 end
