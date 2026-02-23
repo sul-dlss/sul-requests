@@ -7,7 +7,7 @@ class PatronRequest < ApplicationRecord
   store :data, accessors: [
     :barcodes, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title,
     :proxy, :for_sponsor, :for_sponsor_id, :estimated_delivery, :patron_name, :item_title, :requested_barcodes, :item_mediation_data,
-    :aeon_reading_special, :aeon_item, :aeon_terms
+    :aeon_reading_special, :aeon_item, :aeon_terms]
   ], coder: JSON
 
   delegate :instance_id, :finding_aid, :finding_aid?, to: :bib_data
@@ -664,7 +664,6 @@ class PatronRequest < ApplicationRecord
   # rubocop:disable Metrics/AbcSize
   def create_aeon_requests
     shipping_option = aeon_digitization? ? 'Electronic Delivery' : nil
-    puts bib_data.pub_date.inspect
     selected_items.map do |selected_item|
       callnumber = selected_item.callnumber
       special_request = aeon_digitization? ? aeon_item[callnumber]['digitization_special'] : aeon_reading_special

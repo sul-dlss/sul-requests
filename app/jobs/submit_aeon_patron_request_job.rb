@@ -46,6 +46,6 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   def submit_aeon_request(username, aeon_request)
     aeon_payload = map_json(username, aeon_request)
 
-    # AeonClient.new.submit_searchworks_request(aeon_payload)
+    AeonClient.new.submit_searchworks_request(aeon_payload)
   end
 end

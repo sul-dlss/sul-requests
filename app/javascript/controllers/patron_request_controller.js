@@ -3,7 +3,7 @@ import { toBeRequired } from "@testing-library/jest-dom/matchers";
 import { Collapse } from "bootstrap"
 
 export default class extends Controller {
-  static targets = ['earliestAvailable', 'accordion', 'destination', 'proxyScanWarning', 'sponsorScanWarning', 'selectSponsor', 'sponsorRadioButton', 'digitization']
+  static targets = ['earliestAvailable', 'accordion', 'destination', 'proxyScanWarning', 'sponsorScanWarning', 'selectSponsor', 'sponsorRadioButton', 'digitization', 'reading']
 
   connect() {
     if (this.accordionTargets.length == 1) {
@@ -201,18 +201,27 @@ export default class extends Controller {
   }
 
   // When items are selected or deselected, update the Aeon reading and digitization options
-  // accordingly
+  // accordingly, if digitization is the request type that is currently selected
   updateAeonOptions(event) {
-    var selectedItems = event.detail.selectedItems
-    console.log(selectedItems)
-    console.log(this.digitizationTargets.length)
+    const selectedItems = event.detail.selectedItems
+
+    const requestType = this.element.querySelector('input[name="patron_request[request_type]"]:checked').value
+    const _this = this
+
+
     // Hide and disable all digitization options
     this.hideAllDigitizationOptions()
-    const _this = this
-    event.detail.selectedItems.forEach(selectedItem => { 
-      var callnumber = selectedItem.label 
-      _this.showDigitizationOption(callnumber)
-    })
+    if(requestType == 'digitization') {
+      event.detail.selectedItems.forEach(selectedItem => { 
+        var callnumber = selectedItem.label 
+        _this.showDigitizationOption(callnumber)
+      })
+    } else if(requestType == 'reading'){
+      event.detail.selectedItems.forEach(selectedItem => { 
+        var callnumber = selectedItem.label 
+        _this.showReadingOption(callnumber)
+      })
+    }
   }
 
   hideAllDigitizationOptions() {
@@ -229,12 +238,18 @@ export default class extends Controller {
   }
 
   showDigitizationOption(callnumber) {
-    var digitizationTarget = this.digitizationTargets.find(t => t.dataset.callnumber == callnumber)
+    const digitizationTarget = this.digitizationTargets.find(t => t.dataset.callnumber == callnumber)
     this.enableRequiredInputs(digitizationTarget)
     digitizationTarget.querySelectorAll("input, textarea").forEach(element => {
       element.disabled = false
     })
 
     digitizationTarget.classList.remove('d-none')
+  }
+
+  showReadingOption(callnumber) {
+    const readingTarget = this.readingTargets.find(t => t.dataset.callnumber == callnumber)
+  
+    readingTarget.classList.remove('d-none')
   }
 }
