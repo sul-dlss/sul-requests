@@ -8,7 +8,7 @@ module Aeon
                 :publication, :location, :reference_number, :shipping_option, :site,
                 :special_request, :start_time, :stop_time, :title, :transaction_date,
                 :transaction_number, :transaction_status, :username, :volume
-  
+
     def self.aeon_client
       AeonClient.new
     end
@@ -39,6 +39,7 @@ module Aeon
         transaction_date: Time.zone.parse(dyn.fetch('transactionDate')),
         transaction_number: dyn['transactionNumber'],
         transaction_status: dyn['transactionStatus'],
+        username: dyn['username'],
         volume: dyn['itemVolume'],
         special_request: dyn['specialRequest'],
         publication: dyn['forPublication']
@@ -47,7 +48,8 @@ module Aeon
 
     def initialize(item_url: nil, appointment: nil, appointment_id: nil, # rubocop:disable Metrics/AbcSize, Metrics/ParameterLists, Metrics/MethodLength
                    author: nil, call_number: nil, creation_date: nil, date: nil,
-                   document_type: nil, format: nil, item_number: nil, location: nil, pages: nil, photoduplication_status: nil, photoduplication_date: nil,
+                   document_type: nil, format: nil, item_number: nil, location: nil, pages: nil,
+                   photoduplication_status: nil, photoduplication_date: nil,
                    reference_number: nil, shipping_option: nil, start_time: nil, stop_time: nil, title: nil, transaction_date: nil,
                    transaction_number: nil, transaction_status: nil, username: nil, volume: nil, site: nil,
                    special_request: nil, publication: nil)
@@ -73,6 +75,7 @@ module Aeon
       @transaction_date = transaction_date
       @transaction_number = transaction_number
       @transaction_status = transaction_status
+      @username = username
       @volume = volume
       @site = site
       @special_request = special_request
