@@ -37,20 +37,14 @@ export default class extends Controller {
 
     const params = this.getStimulusParams(element);
 
-    if (element.type == 'radio') {
-      this.selectedItemsValue = [params];
-    } else if (!this.selectedItemsValue.find((item) => item.id == params.id)) {
+    if (!this.selectedItemsValue.find((item) => item.id == params.id)) {
       this.selectedItemsValue = this.selectedItemsValue.concat([params]);
     }
   }
 
   itemChanged(event) {
     if (event.currentTarget.checked || event.params.checked) {
-      if (this.itemsTarget.type == 'radio') {
-        this.selectedItemsValue = [event.params];
-      } else {
-        this.selectedItemsValue = this.selectedItemsValue.concat([event.params]);
-      }
+      this.selectedItemsValue = this.selectedItemsValue.concat([event.params]);
     } else {
       this.selectedItemsValue = this.selectedItemsValue.filter((item) => item.id !== event.params.id);
     }
