@@ -10,7 +10,7 @@
     <% 
       container_name = display_group.name
       group = display_group.contents
-      checkbox_id = volume_checkbox_id(series_title: series_title, subseries_name: container_name)
+      checkbox_id = volume_checkbox_id(series_title: series_title || container_name, subseries_name: container_name)
       content_id = "container-items-#{checkbox_id}"
     %>
     <div class="mt-3 mb-2 d-flex align-items-start gap-2">
@@ -25,7 +25,7 @@
       <%= f.check_box :volumes, 
             { multiple: true, class: 'form-check-input mt-1', id: checkbox_id, 
               data: { action: 'change->archives-request#updateVolumesDisplay' } }, 
-            volume_value(series_title: series_title, subseries_name: container_name),
+            volume_value(series_title: (series_title || container_name), subseries_name: container_name),
             nil %>
       <div class="flex-grow-1">
         <%= label_tag checkbox_id, container_name, class: 'form-check-label' %>
@@ -48,13 +48,13 @@
   <% elsif display_group.is_a?(Ead::DisplayGroup::ItemWithoutContainer) %>
     <%# Individual item without container - gets its own checkbox %>
     <% 
-      checkbox_id = volume_checkbox_id(series_title: series_title, subseries_name: display_group.title)
+      checkbox_id = volume_checkbox_id(series_title: series_title || container_name, subseries_name: display_group.title)
     %>
     <div class="mt-3 mb-2">
       <%= f.check_box :volumes, 
             { multiple: true, class: 'form-check-input me-2', id: checkbox_id, 
               data: { action: 'change->archives-request#updateVolumesDisplay' } }, 
-              volume_value(series_title: series_title, subseries_name: display_group.title),
+              volume_value(series_title: series_title || container_name, subseries_name: display_group.title),
             nil %>
       <%= label_tag checkbox_id, display_group.title, class: 'form-check-label' %>
     </div>
@@ -63,24 +63,24 @@
     <% 
       subseries_id = collapsible_content_id(
         prefix: 'subseries',
-        series_title: parent_title,
+        series_title: parent_title || display_group.title,
         item_name: display_group.title,
         index: group_index
       )
     %>
-    <div class="mt-3 mb-2 ms-2">
+    <div class="mt-3 mb-2">
       <%# Subseries header (collapsible) %>
       <%= link_to "##{subseries_id}", 
             class: 'series-header btn btn-link text-decoration-none text-start p-0 mb-2 d-flex align-items-center gap-2',
             data: { bs_toggle: 'collapse' },
             aria: { expanded: false, controls: subseries_id } do %>
         <i class="bi bi-chevron-right"></i>
-        <span><%= display_group.title %></span>
+        <span class="<%= 'series-title' if series_title.nil? %>"><%= display_group.title %></span>
         <span class="badge bg-light text-dark fw-normal"><%= display_group.contents.count %></span>
       <% end %>
       <%# Subseries content (recursive) %>
       <div id="<%= subseries_id %>" class="collapse ms-3" data-archives-series-target="content">
-        <%= render partial: 'series_contents', locals: { contents: display_group.contents, f: f, parent_title: display_group.title, series_title: series_title } %>
+        <%= render partial: 'series_contents', locals: { contents: display_group.contents, f: f, parent_title: display_group.title, series_title: series_title || display_group.title } %>
       </div>
     </div>
   <% end %>
