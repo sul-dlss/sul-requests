@@ -1,6 +1,9 @@
-<div class="d-flex flex-wrap gap-2 justify-content-between">
+<div class="d-flex flex-wrap gap-2 justify-content-between mb-3">
   <h1>Submitted requests</h1>
-  <%= render 'sort_dropdown' %>
+  <div class="d-flex flex-wrap gap-2">
+    <%= render 'sort_dropdown' %>
+    <%= render 'filter_dropdown' %>
+  </div>
 </div>
 
 <%= render Aeon::RequestComponent.with_collection(@aeon_requests) %>
