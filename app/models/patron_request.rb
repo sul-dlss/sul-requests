@@ -7,7 +7,7 @@ class PatronRequest < ApplicationRecord
   store :data, accessors: [
     :barcodes, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title,
     :proxy, :for_sponsor, :for_sponsor_id, :estimated_delivery, :patron_name, :item_title, :requested_barcodes, :item_mediation_data,
-    :aeon_reading_special, :aeon_item, :aeon_terms]
+    :aeon_reading_special, :aeon_item, :aeon_terms
   ], coder: JSON
 
   delegate :instance_id, :finding_aid, :finding_aid?, to: :bib_data
@@ -669,17 +669,17 @@ class PatronRequest < ApplicationRecord
       special_request = aeon_digitization? ? aeon_item[callnumber]['digitization_special'] : aeon_reading_special
       pages = aeon_digitization? ? aeon_item[callnumber]['pages'] : nil
       publication = aeon_digitization? ? (aeon_item[callnumber]['publication'] == 'Yes') : nil
-      item_number = selected_item.barcode
-      create_single_aeon_request(callnumber:, item_number:, shipping_option:, pages:, publication:,
-                                 special_request:)
+      create_single_aeon_request(selected_item, shipping_option:, pages:, publication:,
+                                                special_request:)
     end
   end
   # rubocop:enable Metrics/AbcSize
 
-  def create_single_aeon_request(callnumber: nil, item_number: nil, shipping_option: nil, pages: nil, publication: nil, special_request: nil)
+  def create_single_aeon_request(selected_item, shipping_option: nil, pages: nil, publication: nil,
+                                 special_request: nil)
     Aeon::Request.new(item_url: bib_data&.view_url, appointment: nil, appointment_id: nil,
-                      author: bib_data&.author, call_number: callnumber, creation_date: nil, date: bib_data&.pub_date,
-                      document_type: 'Monograph', format: nil, item_number: item_number,
+                      author: bib_data&.author, call_number: selected_item.callnumber, creation_date: nil, date: bib_data&.pub_date,
+                      document_type: 'Monograph', format: nil, item_number: selected_item.barcode,
                       location: origin_location_code, shipping_option: shipping_option,
                       title: bib_data&.title, transaction_date: nil,
                       transaction_number: nil, transaction_status: nil, volume: nil,

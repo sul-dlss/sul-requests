@@ -15,10 +15,10 @@ class SubmitAeonPatronRequestJob < ApplicationJob
     end
   end
 
-  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   # Once reading room logic for appointments is implemented, this mapping
   # should also contain scheduledDate, appointment id, appointment,
-  # and reading room id. 
+  # and reading room id.
   def map_json(username, aeon_request)
     {
       callNumber: aeon_request.call_number,
@@ -41,7 +41,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
       itemNumber: aeon_request.item_number
     }.compact.to_json
   end
-  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
   def submit_aeon_request(username, aeon_request)
     aeon_payload = map_json(username, aeon_request)
