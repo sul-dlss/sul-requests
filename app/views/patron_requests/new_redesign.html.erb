@@ -7,30 +7,29 @@
   <%= render 'messages', messages: @patron_request.active_messages %>
   
   <% if @patron_request.aeon_page? %>
-  <div class="mt-4">
-    <h1> New request </h1> 
-  </div>
-  <div class="accordion-header pt-4 pb-5 px-3 mb-4">
-    <h3 class="fw-semibold fs-1"><%= @patron_request.item_title %></h3>
-   
-    <% if @patron_request.selectable_items.one? %>
-       
-          <% single_item = @patron_request.selectable_items.first %>
-          
-          <% unless single_item.instance && single_item.instance&.hrid != @patron_request.instance_hrid %>
-            <div class="d-flex flex-row mb-2">
-              <div class="fw-normal me-3"><%= single_item.material_type.name.upcase_first %> (<%= @patron_request.bib_data.pub_date %>)</div>
-              <div class="fw-normal me-3">Call number: <%= callnumber_label(single_item) %></div>
-              <div class="fw-normal"><a href="<%= @patron_request.bib_data.view_url %>" class="su-underline">View in SearchWorks<i class="ms-1 bi bi-arrow-up-right"></i></a></div>
-            </div>
-            <div class="d-flex flex-row">
-              <div class="fw-normal me-2"><%= @patron_request.bib_data.author %></div>
-            </div>
-          <% end %>
+    <div class="mt-4">
+      <h1> New request </h1> 
+    </div>
+    <div class="accordion-header pt-4 pb-5 px-3 mb-4">
+      <h3 class="fw-semibold fs-1"><%= @patron_request.item_title %></h3>
+    
+      <% if @patron_request.selectable_items.one? %>
         
-    <% end %>
-   
-  </div>
+            <% single_item = @patron_request.selectable_items.first %>
+            
+            <% unless single_item.instance && single_item.instance&.hrid != @patron_request.instance_hrid %>
+              <div class="d-flex flex-row mb-2">
+                <div class="fw-normal me-3"><%= single_item.material_type.name.upcase_first %> (<%= @patron_request.bib_data.pub_date %>)</div>
+                <div class="fw-normal me-3">Call number: <%= callnumber_label(single_item) %></div>
+                <div class="fw-normal"><a href="<%= @patron_request.bib_data.view_url %>" class="su-underline">View in SearchWorks<i class="ms-1 bi bi-arrow-up-right"></i></a></div>
+              </div>
+              <div class="d-flex flex-row">
+                <div class="fw-normal me-2"><%= @patron_request.bib_data.author %></div>
+              </div>
+            <% end %>
+        
+      <% end %>
+    </div>
   <% else %>
       <h1 class="fw-semibold mt-4 fs-1"><%= @patron_request.item_title %></h1>
 <% if @patron_request.selectable_items.one? %>
@@ -287,33 +286,34 @@
       <% end %>
     <% end %>
 
-    <!-- aeon reading room request -->
-    <!-- removed any 'can do this' part for both -->
-    <%= render AccordionStepComponent.new(request: f.object, id: 'reading', classes: [('d-none' if f.object.aeon_page?)], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'reading' }, submit: true) do |c| %>
-      <% c.with_title.with_content('Reading room') %>
-      <% c.with_body do %>
-        <%= render 'reading_options', f: %>
+    <% if f.object.aeon_page? %>
+      <!-- aeon reading room request -->
+      <!-- removed any 'can do this' part for both -->
+      <%= render AccordionStepComponent.new(request: f.object, id: 'reading', classes: [('d-none' if f.object.aeon_page?)], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'reading' }, submit: true) do |c| %>
+        <% c.with_title.with_content('Reading room') %>
+        <% c.with_body do %>
+          <%= render 'reading_options', f: %>
+        <% end %>
+      <% end %>
+
+      <!-- aeon digitization request -->
+    
+      <%= render AccordionStepComponent.new(request: f.object, id: 'digitization', classes: [('d-none' if f.object.aeon_page?)], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'digitization' }) do |c| %>
+        <% c.with_title.with_content('Digitization') %>
+        <% c.with_body do %>
+          <%= render 'digitization_options', f: %>
+        <% end %>
+      <% end %>
+
+      <!-- Digitization terms, only shows up for digitization -->
+
+      <%= render AccordionStepComponent.new(request: f.object, id: 'terms', classes: [('d-none' if f.object.aeon_page?)], step_index: step_enum.next, form_id: f.id, data: { 'patronrequest-forRequestType': 'digitization' }, submit: true) do |c| %>
+        <% c.with_title.with_content('Terms') %>
+        <% c.with_body do %>
+          <%= render 'digitization_terms', f: %>
+        <% end %>
       <% end %>
     <% end %>
-
-    <!-- aeon digitization request -->
-    <%= render AccordionStepComponent.new(request: f.object, id: 'digitization', classes: [('d-none' if f.object.aeon_page?)], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'digitization' }) do |c| %>
-      <% c.with_title.with_content('Digitization') %>
-      <% c.with_body do %>
-        <%= render 'digitization_options', f: %>
-      <% end %>
-    <% end %>
-
-    <!-- Digitization terms, only shows up for digitization -->
-
-    <%= render AccordionStepComponent.new(request: f.object, id: 'terms', classes: [('d-none' if f.object.aeon_page?)], step_index: step_enum.next, form_id: f.id, data: { 'patronrequest-forRequestType': 'digitization' }, submit: true) do |c| %>
-      <% c.with_title.with_content('Terms') %>
-      <% c.with_body do %>
-        <%= render 'digitization_terms', f: %>
-      <% end %>
-    <% end %>
-  
-    <!-- previously held aeon request -->
     </div>
   
     <!-- pickup request (single item )-->
