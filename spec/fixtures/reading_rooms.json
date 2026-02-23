@@ -1,0 +1,252 @@
+[
+  {
+    "id": 1,
+    "name": "Rumsey Reading Room",
+    "availableSeats": 4,
+    "timeZoneID": "Pacific Standard Time",
+    "minAppointmentLength": 15,
+    "maxAppointmentLength": 240,
+    "appointmentPadding": 0,
+    "appointmentIncrement": 15,
+    "lastModifiedTime": "2022-08-30T18:08:23.79Z",
+    "sites": [
+      "RUMSEY"
+    ],
+    "openHours": [
+      {
+        "dayOfWeek": 1,
+        "dayName": "Monday",
+        "openTime": "13:00:00",
+        "closeTime": "16:30:00"
+      },
+      {
+        "dayOfWeek": 2,
+        "dayName": "Tuesday",
+        "openTime": "13:00:00",
+        "closeTime": "16:30:00"
+      },
+      {
+        "dayOfWeek": 3,
+        "dayName": "Wednesday",
+        "openTime": "13:00:00",
+        "closeTime": "16:30:00"
+      },
+      {
+        "dayOfWeek": 4,
+        "dayName": "Thursday",
+        "openTime": "13:00:00",
+        "closeTime": "16:30:00"
+      },
+      {
+        "dayOfWeek": 5,
+        "dayName": "Friday",
+        "openTime": "13:00:00",
+        "closeTime": "16:30:00"
+      }
+    ],
+    "policies": [
+      {
+        "id": 1,
+        "readingRoomID": 1,
+        "userStatus": null,
+        "appointmentRequired": true,
+        "appointmentMinLeadDays": 3,
+        "appointmentMaxLeadDays": 365,
+        "requestMinLeadDays": 3,
+        "requestMaxLeadDays": 365,
+        "autoConfirmAppointments": false,
+        "appointmentReminderDays": -1,
+        "notifyAppointmentReceived": true
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Archive of Recorded Sound",
+    "availableSeats": 3,
+    "timeZoneID": "Pacific Standard Time",
+    "minAppointmentLength": 30,
+    "maxAppointmentLength": 180,
+    "appointmentPadding": 0,
+    "appointmentIncrement": 30,
+    "lastModifiedTime": "2022-09-01T21:39:10.49Z",
+    "sites": [
+      "ARS"
+    ],
+    "openHours": [
+      {
+        "dayOfWeek": 1,
+        "dayName": "Monday",
+        "openTime": "09:00:00",
+        "closeTime": "15:00:00"
+      },
+      {
+        "dayOfWeek": 2,
+        "dayName": "Tuesday",
+        "openTime": "09:00:00",
+        "closeTime": "15:00:00"
+      },
+      {
+        "dayOfWeek": 3,
+        "dayName": "Wednesday",
+        "openTime": "09:00:00",
+        "closeTime": "15:00:00"
+      },
+      {
+        "dayOfWeek": 4,
+        "dayName": "Thursday",
+        "openTime": "09:00:00",
+        "closeTime": "11:00:00"
+      },
+      {
+        "dayOfWeek": 4,
+        "dayName": "Thursday",
+        "openTime": "12:00:00",
+        "closeTime": "15:00:00"
+      },
+      {
+        "dayOfWeek": 5,
+        "dayName": "Friday",
+        "openTime": "09:00:00",
+        "closeTime": "15:00:00"
+      }
+    ],
+    "policies": [
+      {
+        "id": 2,
+        "readingRoomID": 2,
+        "userStatus": null,
+        "appointmentRequired": true,
+        "appointmentMinLeadDays": 5,
+        "appointmentMaxLeadDays": 365,
+        "requestMinLeadDays": 5,
+        "requestMaxLeadDays": 365,
+        "autoConfirmAppointments": false,
+        "appointmentReminderDays": -1,
+        "notifyAppointmentReceived": true
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "East Asia Library Special Collections",
+    "availableSeats": 5,
+    "timeZoneID": "Pacific Standard Time",
+    "minAppointmentLength": 15,
+    "maxAppointmentLength": 180,
+    "appointmentPadding": 0,
+    "appointmentIncrement": 15,
+    "lastModifiedTime": "2022-08-19T02:11:49.8Z",
+    "sites": [
+      "EASTASIA"
+    ],
+    "openHours": [
+      {
+        "dayOfWeek": 1,
+        "dayName": "Monday",
+        "openTime": "09:00:00",
+        "closeTime": "17:00:00"
+      },
+      {
+        "dayOfWeek": 2,
+        "dayName": "Tuesday",
+        "openTime": "09:00:00",
+        "closeTime": "17:00:00"
+      },
+      {
+        "dayOfWeek": 3,
+        "dayName": "Wednesday",
+        "openTime": "09:00:00",
+        "closeTime": "17:00:00"
+      },
+      {
+        "dayOfWeek": 4,
+        "dayName": "Thursday",
+        "openTime": "09:00:00",
+        "closeTime": "17:00:00"
+      },
+      {
+        "dayOfWeek": 5,
+        "dayName": "Friday",
+        "openTime": "09:00:00",
+        "closeTime": "17:00:00"
+      }
+    ],
+    "policies": [
+      {
+        "id": 3,
+        "readingRoomID": 3,
+        "userStatus": null,
+        "appointmentRequired": false,
+        "appointmentMinLeadDays": 7,
+        "appointmentMaxLeadDays": 365,
+        "requestMinLeadDays": 7,
+        "requestMaxLeadDays": 365,
+        "autoConfirmAppointments": false,
+        "appointmentReminderDays": -1,
+        "notifyAppointmentReceived": true
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Field Reading Room",
+    "availableSeats": 15,
+    "timeZoneID": "Pacific Standard Time",
+    "minAppointmentLength": 30,
+    "maxAppointmentLength": 480,
+    "appointmentPadding": 0,
+    "appointmentIncrement": 15,
+    "lastModifiedTime": "2026-02-12T18:24:02.85Z",
+    "sites": [
+      "SPECUA"
+    ],
+    "openHours": [
+      {
+        "dayOfWeek": 1,
+        "dayName": "Monday",
+        "openTime": "09:00:00",
+        "closeTime": "16:45:00"
+      },
+      {
+        "dayOfWeek": 2,
+        "dayName": "Tuesday",
+        "openTime": "09:00:00",
+        "closeTime": "16:45:00"
+      },
+      {
+        "dayOfWeek": 3,
+        "dayName": "Wednesday",
+        "openTime": "09:00:00",
+        "closeTime": "16:45:00"
+      },
+      {
+        "dayOfWeek": 4,
+        "dayName": "Thursday",
+        "openTime": "09:00:00",
+        "closeTime": "16:45:00"
+      },
+      {
+        "dayOfWeek": 5,
+        "dayName": "Friday",
+        "openTime": "09:00:00",
+        "closeTime": "16:45:00"
+      }
+    ],
+    "policies": [
+      {
+        "id": 4,
+        "readingRoomID": 5,
+        "userStatus": null,
+        "appointmentRequired": true,
+        "appointmentMinLeadDays": 5,
+        "appointmentMaxLeadDays": 365,
+        "requestMinLeadDays": 5,
+        "requestMaxLeadDays": 365,
+        "autoConfirmAppointments": false,
+        "appointmentReminderDays": -1,
+        "notifyAppointmentReceived": true
+      }
+    ]
+  }
+]

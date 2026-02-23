@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ead xmlns="urn:isbn:1-931666-22-9" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:isbn:1-931666-22-9 http://www.loc.gov/ead/ead.xsd">
+  <eadheader countryencoding="iso3166-1" dateencoding="iso8601" findaidstatus="edited-full-draft" langencoding="iso639-2b" repositoryencoding="iso15511">
+    <eadid countrycode="US" mainagencycode="US-CSt" url="https://archives.stanford.edu/findingaid/ark:/22236/s12276746a-49be-41e1-9603-ebb45a5de63c">a0112.xml</eadid>
+    <filedesc>
+      <titlestmt>
+        <titleproper type="filing">Pehrson (Elmer Walter) Photograph Album</titleproper>
+        <titleproper>Guide to the Elmer Walter Pehrson Photograph Album <num>A0112</num></titleproper>
+        <author>University Archives staff</author>
+      </titlestmt>
+      <publicationstmt>
+        <publisher>Department of Special Collections and University Archives</publisher>
+        <p>
+          <date>October 2010; last updated February 2025</date>
+        </p>
+        <address>
+          <addressline>Green Library</addressline>
+          <addressline>557 Escondido Mall</addressline>
+          <addressline>Stanford, California 94305-6064</addressline>
+          <addressline>specialcollections@stanford.edu</addressline>
+          <addressline>URL: <extptr xlink:href="https://library.stanford.edu/libraries/special-collections" xlink:show="new" xlink:title="https://library.stanford.edu/libraries/special-collections" xlink:type="simple"/></addressline>
+        </address>
+      </publicationstmt>
+      <notestmt>
+        <note>
+          <p>This encoded finding aid is compliant with Stanford EAD Best Practice Guidelines, Version 1.0.</p>
+        </note>
+      </notestmt>
+    </filedesc>
+    <profiledesc>
+      <creation>This finding aid was produced using ArchivesSpace on <date>2026-02-06 00:04:52 -0800</date>.</creation>
+      <langusage>Finding aid written in English</langusage>
+      <descrules>Describing Archives: A Content Standard</descrules>
+    </profiledesc>
+  </eadheader>
+  <archdesc level="collection">
+    <did>
+      <repository>
+        <corpname>Department of Special Collections and University Archives</corpname>
+      </repository>
+      <unittitle>Elmer Walter Pehrson photograph album</unittitle>
+      <origination label="Creator">
+        <persname rules="aacr" source="ingest">Pehrson, Elmer Walter.</persname>
+      </origination>
+      <unitid>A0112</unitid>
+      <unitid type="ark">
+        <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s12276746a-49be-41e1-9603-ebb45a5de63c" xlink:show="new">Archival Resource Key</extref>
+      </unitid>
+      <physdesc altrender="whole">
+        <extent altrender="materialtype spaceoccupied">0.5 Linear Feet</extent>
+      </physdesc>
+      <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1906/1957" type="inclusive">1906-1957</unitdate>
+      <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1914/1918" type="bulk">1914-1918</unitdate>
+      <physloc id="aspace_802fd9d367c19a5b28a6dc6a0caa9a0e">Special Collections and University Archives materials are stored offsite and must be paged three business days in advance. For more information on paging collections, see the department's website: https://library.stanford.edu/libraries/special-collections.</physloc>
+      <langmaterial><language langcode="eng" scriptcode="Latn">English</language>
+.    </langmaterial>
+    </did>
+    <accessrestrict id="aspace_01093439b5365aca19c3acbeab38009f">
+      <head>Conditions Governing Access</head>
+      <p>Materials are open for research use. Audio-visual materials are not available in original format and must be reformatted to a digital use copy.</p>
+    </accessrestrict>
+    <userestrict id="aspace_3d6be217b1ec1639936320df8815199b">
+      <head>Conditions Governing Use</head>
+      <p>While University Archives is the owner of the physical and/or digital items, permission to examine collection materials is not an authorization to publish. These materials are made available for use in research, teaching, and private study. Any transmission or reproduction beyond that allowed by fair use requires permission from the owners of rights, heir(s) or assigns.</p>
+    </userestrict>
+    <bioghist id="aspace_ea1b4d17eb08447b87fd691e97274a9f">
+      <head>Biographical / Historical</head>
+      <p>Elmer Walter Pehrson earned his AB in geology in 1918 at Stanford University and his mining engineer's degree in 1920. He served with the Corps of Engineers, U.S. Army, in 1918. Prior to joining the U.S. Bureau of Mines in 1928, he worked in the west as a mining engineer.</p>
+    </bioghist>
+    <scopecontent id="aspace_e055204c3adf88d1fe7df2bfe945eb1c">
+      <head>Scope and Contents</head>
+      <p>The photograph album, kept during his four years at Stanford, includes images of faculty (James Perrin Smith, Cyrus Fisher Tolman, David Starr Jordan, John Casper Branner, Austin Flint Rogers, and Hayes Wilson Young); Geology and Mining Society group portraits; dorm rooms in Encina Hall; several Frosh-Soph Tie-Up events; Roughs Day; bonfires during Big Game; the Assay Lab on campus; 1918 graduation; individual students; and summer hikes (or possibly surveying trips). There are also images of family, Pehrson's military unit, and several from his early jobs. Other items in the album include an original ink sketch by L. Mabel Lawson "Mumm's the Word" (a coed in a champagne class); sketches by Monk Antrim from the CHAPARRAL; and dance cards from Encina At-Homes 1917-18. Other items in the collection include correspondence re jobs, 1920-23; clippings, 1943-50; a photo of Pehrson, 1954; and a copy of THE MOST POPULAR COLLEGE SONGS (1906).</p>
+    </scopecontent>
+    <acqinfo id="aspace_669c449207ce49a728661b9595cd58d2">
+      <head>Immediate Source of Acquisition</head>
+      <p>Gift of Marilyn Hindle, 2007</p>
+    </acqinfo>
+    <prefercite id="aspace_bf263056f5dcc0bf4c6fb07f04bb7a5d">
+      <head>Preferred Citation</head>
+      <p>[identification of item] Elmer Walter Pehrson Photograph Album (A0112). Department of Special Collections and University Archives, Stanford University Libraries, Stanford, Calif.</p>
+    </prefercite>
+    <controlaccess>
+      <subject source="lcsh">College students -- California</subject>
+      <occupation source="lcsh">Geologists.</occupation>
+      <genreform source="aat">Photoprints.</genreform>
+      <corpname rules="dacs" source="ingest">Stanford University. Class of 1918</corpname>
+      <persname authfilenumber="http://id.loc.gov/authorities/names/n86065265" rules="aacr" source="naf">Branner, John Casper, 1850-1922</persname>
+      <persname rules="aacr" source="ingest">Young, Hayes W.</persname>
+      <persname rules="aacr" source="naf">Jordan, David Starr</persname>
+      <persname rules="aacr" source="ingest">Pehrson, Elmer Walter.</persname>
+      <persname rules="aacr">Tolman, C. F. (Cyrus Fisher)</persname>
+      <persname rules="aacr" source="ingest">Smith, James Perrin</persname>
+      <persname rules="aacr" source="ingest">Rogers, Austin Flint</persname>
+    </controlaccess>
+    <dsc>
+      <c01 id="aspace_ref8_cg9" level="file">
+        <did>
+          <unittitle>Photograph Album</unittitle>
+          <unitid type="ark">
+            <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1defae977-839d-46a8-9a99-2031ecb224bc" xlink:show="new">Archival Resource Key</extref>
+          </unitid>
+          <container id="aspace_4a0cbd2d9bb51bf6988285f0a72b6fb7" label="Mixed Materials" type="Box">1</container>
+        </did>
+      </c01>
+    </dsc>
+  </archdesc>
+</ead>
