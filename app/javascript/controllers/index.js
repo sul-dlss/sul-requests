@@ -5,7 +5,7 @@
 import { application } from "./application"
 
 import PatronRequestController from "./patron_request_controller"
-application.register("patronRequest", PatronRequestController)
+application.register("patron-request", PatronRequestController)
 
 import PasswordVisibilityController from "./password_visibility_controller"
 application.register("password-visibility", PasswordVisibilityController)
