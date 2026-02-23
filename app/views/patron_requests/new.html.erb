@@ -46,7 +46,7 @@
 <% end %>
 
 <%= form_for(@patron_request,
-             data: { controller: 'patronRequest' },
+             data: { controller: 'patron-request' },
              html: { class: 'col-lg-8 accordion' },
              url: @patron_request.aeon_page? ? @patron_request.aeon_form_target : patron_requests_path,
              method: @patron_request.finding_aid? ? 'GET' : 'POST') do |f| %>
@@ -128,7 +128,7 @@
   <% end %>
 
   <!-- item selector -->
-  <div data-controller="itemselector" data-itemselector-request-type-value="pickup" data-action="itemselector:change->patronRequest#showItemSelector">
+  <div data-controller="itemselector" data-itemselector-request-type-value="pickup" data-action="itemselector:change->patron-request#showItemSelector">
   <% if f.object.selectable_items.many? && (can?(:request_scan, f.object) || can?(:request_pickup, f.object)) && !f.object.finding_aid? %>
     <%= render AccordionStepComponent.new(id: 'barcodes', step_index: step_enum.next, form_id: f.id, data: { 'switch-selector': true }) do |c| %>
       <% c.with_title.with_content('Select item(s)') %>
@@ -213,7 +213,7 @@
 
     <!-- pickup request (multiple items) -->
     <% if can?(:request_pickup, f.object) && !f.object.aeon_page? %>
-      <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', classes: [('d-none' if scan_pickup)], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'pickup', action: 'itemselector:changed@document->patronRequest#enableAnyNextButtons' }, submit: true) do |c| %>
+      <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', classes: [('d-none' if scan_pickup)], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'pickup', action: 'itemselector:changed@document->patron-request#enableAnyNextButtons' }, submit: true) do |c| %>
         <% c.with_title.with_content('Pickup request') %>
         <% c.with_body do %>
           <%= render 'pickup_destination', f: %>
@@ -230,13 +230,13 @@
                         <% if f.object.pickup_destinations.one? && f.object.earliest_delivery_estimate %>
                           <%= f.object.earliest_delivery_estimate['display_date'] %>
                         <% else %>
-                          <%= turbo_frame_tag('earliestAvailable', src: paging_schedule_url(origin_library: f.object.origin_library_code, origin_location: f.object.origin_location_code, destination: f.object.service_point_code || f.object.default_service_point_code), data: { 'patronRequest-target' => 'earliestAvailable'}) do %>
+                          <%= turbo_frame_tag('earliestAvailable', src: paging_schedule_url(origin_library: f.object.origin_library_code, origin_location: f.object.origin_location_code, destination: f.object.service_point_code || f.object.default_service_point_code), data: { 'patron-request-target' => 'earliestAvailable'}) do %>
                             Loading..
                           <% end %>
                         <% end %>
                       </span>
                       <span> at </span>
-                      <span data-patronRequest-target="destination">
+                      <span data-patron-request-target="destination">
                         <%= f.object.pickup_service_point&.name %>
                       </span>
                     </div>
@@ -306,7 +306,7 @@
               <div class="d-flex flex-column flex-xl-row align-items-start justify-content-xl-between align-items-xl-center mb-3 gap-2 gap-xl-0">
                 <div class="text-black fw-semibold">Selected items</div>
                   <div class="text-cardinal">
-                    <span data-patronRequest-target="destination">Use in: <%= f.object.aeon_reading_room_name %></span>
+                    <span data-patron-request-target="destination">Use in: <%= f.object.aeon_reading_room_name %></span>
                   </div>
               </div>
               <ul data-itemselector-target="availableItems" class="list-unstyled d-flex flex-wrap gap-2 bg-white p-3 m-0"></ul>
@@ -350,7 +350,7 @@
           <% if f.object.pickup_destinations.one? && f.object.earliest_delivery_estimate %>
             <%= f.object.earliest_delivery_estimate['display_date'] %>
           <% elsif f.object.any_items_avaliable? %>
-            <%= turbo_frame_tag('earliestAvailable', src: paging_schedule_url(origin_library: f.object.origin_library_code, origin_location: f.object.origin_location_code, destination: f.object.service_point_code || f.object.default_service_point_code), data: { 'patronRequest-target' => 'earliestAvailable'}) do %>
+            <%= turbo_frame_tag('earliestAvailable', src: paging_schedule_url(origin_library: f.object.origin_library_code, origin_location: f.object.origin_location_code, destination: f.object.service_point_code || f.object.default_service_point_code), data: { 'patron-request-target' => 'earliestAvailable'}) do %>
               Loading..
             <% end %>
           <% else %>

@@ -2,16 +2,16 @@
 <fieldset class="mb-4">
   <legend class="fs-6"></legend>
   <% if f.object.patron.sponsor? %>
-    <div class="alert alert-warning d-flex align-items-center d-none" data-patronRequest-target='proxyScanWarning'>
+    <div class="alert alert-warning d-flex align-items-center d-none" data-patron-request-target="proxyScanWarning">
       <i class="bi bi-exclamation-triangle-fill me-2 text-warning fs-4"></i>Please be advised that scans are not sent to proxies.
     </div>
   <% elsif f.object.patron.proxy? %>
-    <div class="alert alert-warning d-flex align-items-center d-none" data-patronRequest-target='sponsorScanWarning'>
+    <div class="alert alert-warning d-flex align-items-center d-none" data-patron-request-target="sponsorScanWarning">
       <i class="bi bi-exclamation-triangle-fill me-2 text-warning fs-4"></i>Please be advised that scans are not sent to the sponsor.
     </div>
   <% end %>
   <div>
-    <%= f.radio_button :request_type, 'scan', :class => 'form-check-input', :required => true, data: { action: 'patronRequest#updateType' } %>
+    <%= f.radio_button :request_type, 'scan', :class => 'form-check-input', :required => true, data: { action: 'patron-request#updateType' } %>
     <%= f.label :request_type_scan, :class => 'form-check-label ms-1' do %>
       Email digital scan
     <% end %>
@@ -25,7 +25,7 @@
     </div>
   </div>
   <div class="mt-4">
-    <%= f.radio_button :request_type, 'pickup', :class => 'form-check-input', data: { action: 'patronRequest#updateType' } %>
+    <%= f.radio_button :request_type, 'pickup', :class => 'form-check-input', data: { action: 'patron-request#updateType' } %>
     <%= f.label :request_type_pickup, :class => 'form-check-label ms-1' do %>
       Pickup physical item
     <% end %>
