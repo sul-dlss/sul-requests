@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'archives_requests/_series_contents.html.erb' do
-  let(:form_builder) { instance_double(ActionView::Helpers::FormBuilder, check_box: '') }
+  let(:form_builder) { instance_double(ActionView::Helpers::FormBuilder, check_box: '', object: instance_double(Ead::Request, items: [])) }
   let(:parent_title) { 'Test Series' }
 
   before do

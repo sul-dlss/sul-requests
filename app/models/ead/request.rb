@@ -4,7 +4,9 @@ module Ead
   ##
   # Model for EAD-based requests
   class Request
-    attr_reader :user, :ead, :items, :request_data
+    include ActiveModel::Model
+
+    attr_reader :user, :ead, :params, :reference_number
 
     # Maps from the value in EAD to Aeon's valid site codes
     REPOSITORY_TO_SITE_CODE = {
@@ -13,21 +15,25 @@ module Ead
       'East Asia Library' => 'EASTASIA'
     }.freeze
 
-    delegate :title, :creator, :call_number, :identifier, :repository, :collection_permalink, to: :ead
+    delegate :title, :creator, :call_number, :identifier, :repository, :collection_permalink, :url, to: :ead
 
-    def initialize(user:, ead:, items: [], **request_data)
+    def initialize(user:, ead:, params: {}, reference_number: nil)
       @user = user
       @ead = ead
-      @items = items
-      @request_data = request_data
+      @params = params
+      @reference_number = reference_number
+    end
+
+    def appointments
+      @appointments ||= user.aeon.appointments.select { |appt| appt.reading_room.sites.include?(site) }
     end
 
     def create_aeon_requests!
-      items.map do |volume|
-        aeon_client.create_request(as_aeon_create_request_data(volume))
-        { volume: volume, success: true }
+      params[:items].map do |volume_params|
+        aeon_client.create_request(as_aeon_create_request_data(volume_params))
+        { volume: volume_params, success: true }
       rescue StandardError => e
-        { volume: volume, success: false, error: e.message }
+        { volume: volume_params, success: false, error: e.message }
       end
     end
 
@@ -42,13 +48,21 @@ module Ead
       @reading_room ||= aeon_client.reading_rooms.find { |rr| rr.sites.include?(site) }
     end
 
+    def request_type
+      params[:request_type]
+    end
+
+    def items
+      params[:items] || []
+    end
+
     private
 
-    def as_aeon_create_request_data(volume) # rubocop:disable Metrics/MethodLength
+    def as_aeon_create_request_data(volume_params) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
       AeonClient::CreateRequestData.new(
-        call_number: "#{identifier} #{volume['series']}",
+        call_number: "#{identifier} #{volume_params['series']}",
         ead_number: identifier,
-        for_publication: volume['for_publication'] == 'yes',
+        for_publication: volume_params['for_publication'] == 'yes',
         item_author: creator,
         item_citation: nil,
         item_date: nil,
@@ -56,15 +70,15 @@ module Ead
         item_info2: nil,
         item_info3: nil,
         item_info4: nil,
-        item_info5: volume['requested_pages'],
+        item_info5: volume_params['requested_pages'],
         item_subtitle: nil,
         item_title: title,
-        item_volume: volume['subseries'],
-        shipping_option: nil,
+        item_volume: volume_params['subseries'],
+        reference_number: reference_number,
+        shipping_option: params[:request_type] == 'scan' ? 'Electronic Delivery' : nil,
         site: site,
-        special_request: volume['additional_information'],
-        username: user.email_address,
-        **request_data
+        special_request: volume_params['additional_information'],
+        username: user.email_address
       )
     end
 

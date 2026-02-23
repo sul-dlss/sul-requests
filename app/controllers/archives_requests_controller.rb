@@ -11,9 +11,7 @@ class ArchivesRequestsController < ApplicationController
     authorize! :new, Aeon::Request
 
     @ead = EadClient.fetch(ead_url_param)
-    @ead_url = ead_url_param
-    @ead_request = Ead::Request.new(user: current_user, ead: @ead)
-    @appointments = current_user.aeon.appointments.select { |appt| appt.reading_room.sites.include?(@ead_request.site) }
+    @ead_request = Ead::Request.new(user: current_user, ead: @ead, params: (params[:ead_request] ? new_params : {}))
   end
 
   # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
@@ -22,15 +20,11 @@ class ArchivesRequestsController < ApplicationController
     authorize! :create, Aeon::Request
 
     # Fetch EAD data to get the actual collection information
-    @ead = EadClient.fetch(params[:ead_url])
-
-    # Items formatted as hierarchical form parameters
-    items = params[:items].values if params[:items].present?
+    @ead = EadClient.fetch(new_params[:ead_url])
 
     @request = Ead::Request.new(user: current_user,
                                 ead: @ead,
-                                items:,
-                                shipping_option: params[:shipping_option],
+                                params: new_params,
                                 reference_number: "UUID:#{request.uuid}")
 
     results = @request.create_aeon_requests!
@@ -47,11 +41,20 @@ class ArchivesRequestsController < ApplicationController
       flash[:warning] = "#{successes.count} succeeded, #{failures.count} failed: #{failures.pluck(:volume).join(', ')}"
     end
 
-    redirect_to new_archives_request_path(value: params[:ead_url])
+    redirect_to new_archives_request_path(value: new_params[:ead_url])
   end
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   private
+
+  def new_params
+    item_keys = params.dig(:ead_request, :items)&.keys || []
+    item_values = [:series, :for_publication, :subseries, :requested_pages, :additional_information]
+
+    params.expect(ead_request: [:ead_url, :request_type, { volumes: [], items: item_keys.index_with { item_values } }]).tap do |p|
+      p['items'] = p['items'].values if p['items'].respond_to?(:values)
+    end
+  end
 
   def ead_url_param
     # Handle both 'value' and 'Value' params for compatibility (Aeon currently accepts Value)

@@ -23,7 +23,7 @@
       <% end %>
       <%# Checkbox to select entire container %>
       <%= f.check_box :volumes, 
-            { multiple: true, class: 'form-check-input mt-1', id: checkbox_id, 
+            { multiple: true, class: 'form-check-input mt-1', id: checkbox_id, checked: f.object.items.any? { |item| series_title == item[:series] && container_name == item[:subseries] } ,
               data: { action: 'change->archives-request#itemChanged change->archives-request#updateVolumesDisplay', 'archives-request-target': 'items', 'archives-request-series-param': series_title, 'archives-request-subseries-param': container_name, 'archives-request-id-param': checkbox_id } },
             checkbox_id,
             nil %>

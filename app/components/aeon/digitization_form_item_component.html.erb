@@ -12,8 +12,8 @@
       <%= f.hidden_field 'subseries', value: subseries if subseries %>
       <div class="accordion-body">
         <div class="mb-3">
-          <%= f.label :requested_pages, class: 'form-label fw-semibold' %>
-          <%= f.text_field :requested_pages, class: 'form-control' %>
+          <%= f.label :requested_pages, class: 'form-label fw-semibold redesign-required-label' %>
+          <%= f.text_field :requested_pages, class: 'form-control', required: true %>
         </div>
 
         <div class="mb-3">

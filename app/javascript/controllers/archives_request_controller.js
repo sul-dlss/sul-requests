@@ -14,7 +14,7 @@ function typecast(value) {
 
 export default class extends Controller {
   static targets = ['items', "volumesDisplay", "requestTypeDisplay", "digitizationItems", "digitizationTemplate", "appointmentItems", "appointmentTemplate"]
-  static values = { selectedItems: Array }
+  static values = { selectedItems: Array, requestType: String }
 
   updateVolumesDisplay(event) {
     if (!this.hasVolumesDisplayTarget) return;
@@ -60,6 +60,8 @@ export default class extends Controller {
     rootNode.dataset.contentId = item.id;
     rootNode.dataset.fieldsBaseName = rootNode.dataset.fieldsBaseName.replace('__DOMID__', item.id);
     rootNode.innerHTML = rootNode.innerHTML.replace(/__TITLE__/g, `${item.series} > ${item.subseries}`).replace(/__DOMID__/g, item.id);
+
+    if (this.requestTypeValue != 'scan') this.disableRequiredInputs(rootNode);
     return this.digitizationItemsTarget.appendChild(rootNode);
   }
 
@@ -70,6 +72,9 @@ export default class extends Controller {
     rootNode.dataset.contentId = item.id;
     rootNode.dataset.fieldsBaseName = rootNode.dataset.fieldsBaseName.replace('__DOMID__', item.id);
     rootNode.innerHTML = rootNode.innerHTML.replace(/__TITLE__/g, `${item.series} > ${item.subseries}`).replace(/__DOMID__/g, item.id);
+
+    if (this.requestTypeValue == 'scan') this.disableRequiredInputs(rootNode);
+
     this.appointmentItemsTarget.appendChild(rootNode);
   }
 
@@ -112,6 +117,8 @@ export default class extends Controller {
     const label = event.target.labels[0]?.textContent.trim() || event.target.value;
     this.requestTypeDisplayTarget.textContent = label;
     this.requestTypeDisplayTarget.classList.remove('text-muted');
+
+    this.requestTypeValue = event.target.value;
   }
 
   getStimulusParams(element) {
@@ -127,5 +134,15 @@ export default class extends Controller {
     }
 
     return params;
+  }
+
+  // Temporarily disable required inputs that are children of the given element
+  // This is used to prevent validation errors when hidden/unused inputs are required
+  // The initial required state of the inputs is preserved via a data attribute
+  disableRequiredInputs(element) {
+    element.querySelectorAll('[required]').forEach(input => {
+      input.dataset.required = true;
+      input.removeAttribute('required');
+    });
   }
 }
