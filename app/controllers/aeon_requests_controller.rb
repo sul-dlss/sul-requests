@@ -5,23 +5,25 @@
 ###
 class AeonRequestsController < ApplicationController
   include AeonController
+  include AeonFilterable
+  include AeonSortable
 
   def drafts
     authorize! :read, Aeon::Request
 
-    @aeon_requests = current_user&.aeon&.draft_requests || []
+    @aeon_requests = sort_aeon_requests(filter_aeon_requests(current_user&.aeon&.draft_requests || []))
   end
 
   def cancelled
     authorize! :read, Aeon::Request
 
-    @aeon_requests = current_user&.aeon&.cancelled_requests || []
+    @aeon_requests = sort_aeon_requests(filter_aeon_requests(current_user&.aeon&.cancelled_requests || []))
   end
 
   def submitted
     authorize! :read, Aeon::Request
 
-    @aeon_requests = current_user&.aeon&.submitted_requests || []
+    @aeon_requests = sort_aeon_requests(filter_aeon_requests(current_user&.aeon&.submitted_requests || []))
   end
 
   def resubmit

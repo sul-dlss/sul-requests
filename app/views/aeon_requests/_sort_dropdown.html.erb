@@ -1,0 +1,14 @@
+<div class="dropdown">
+  <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <%= AeonSortable::SORT_OPTIONS[current_aeon_sort][:label] %>
+  </button>
+  <ul class="dropdown-menu" role="menu">
+    <% available_aeon_sort_options.each do |key, option| %>
+      <li>
+        <%= link_to url_for(request.query_parameters.merge(sort: key)), class: "dropdown-item #{'active' if current_aeon_sort == key}" do %>
+          <%= option[:label] %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</div>
