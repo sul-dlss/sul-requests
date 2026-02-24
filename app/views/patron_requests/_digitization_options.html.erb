@@ -11,7 +11,7 @@
   <% sort_holdings(f.object.selectable_items).each do |selectable_item| %>
     <%= fields_for "patron_request[aeon_item][#{selectable_item.callnumber}]" do |field| %>
       <% if f.object.selectable_items.many? %>
-      <div class='accordion-sub-item' data-callnumber="<%= selectable_item.callnumber %>" data-patronRequest-target='digitization'>
+      <div class='accordion-sub-item' data-callnumber="<%= selectable_item.callnumber %>" data-patron-request-target='digitization'>
         <div class="accordion-header d-flex">
           <div class='p-2 fw-bold'><%= selectable_item.callnumber %></div>
         </div>
