@@ -13,6 +13,7 @@ class ArchivesRequestsController < ApplicationController
     @ead = EadClient.fetch(ead_url_param)
     @ead_url = ead_url_param
     @ead_request = Ead::Request.new(user: current_user, ead: @ead)
+    @appointments = current_user.aeon.appointments.select { |appt| appt.reading_room.sites.include?(@ead_request.site) }
   end
 
   # rubocop:disable Metrics/AbcSize, Metrics/MethodLength

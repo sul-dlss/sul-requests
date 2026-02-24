@@ -9,59 +9,75 @@ RSpec.describe 'Requesting an item from an EAD', :js do
     login_as(current_user)
 
     allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
+    allow(aeon_user).to receive(:appointments).and_return([
+                                                            instance_double(Aeon::Appointment,
+                                                                            start_time: DateTime.new(2026, 2, 19, 12, 0, 0),
+                                                                            stop_time: DateTime.new(2026, 2, 19, 13, 0, 0),
+                                                                            id: 1,
+                                                                            requests: [instance_double(Aeon::Request)],
+                                                                            reading_room: reading_rooms.last),
+                                                            instance_double(Aeon::Appointment,
+                                                                            start_time: DateTime.new(2026, 2, 20, 13, 0, 0),
+                                                                            stop_time: DateTime.new(2026, 2, 20, 14, 0, 0),
+                                                                            id: 1,
+                                                                            requests: [instance_double(Aeon::Request)],
+                                                                            reading_room: reading_rooms.first)
+                                                          ])
 
-    allow(AeonClient.new).to receive_messages(reading_rooms: [instance_double(Aeon::ReadingRoom, id: 1, sites: ['SPECUA'])],
+    allow(AeonClient.new).to receive_messages(reading_rooms:,
                                               available_appointments: [instance_double(Aeon::AvailableAppointment,
                                                                                        start_time: DateTime.new(2026, 2, 19),
                                                                                        maximum_appointment_length: 210.minutes)])
   end
 
+  let(:reading_rooms) { JSON.load_file('spec/fixtures/reading_rooms.json').map { |room| Aeon::ReadingRoom.from_dynamic(room) } }
+
   let(:user) { create(:sso_user) }
   let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true, ldap_attributes: {}) }
-
-  let(:eadxml) do
-    Nokogiri::XML(File.read('spec/fixtures/sc0097.xml')).tap(&:remove_namespaces!)
-  end
 
   let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
 
   let(:stub_aeon_client) { instance_double(AeonClient, find_user: aeon_user, create_request: { success: true }) }
 
-  it 'allows the user to submit a request for an item from an EAD' do
-    visit new_archives_request_path(value: 'http://example.com/ead.xml')
+  context 'with multi item ead' do
+    let(:eadxml) do
+      Nokogiri::XML(File.read('spec/fixtures/sc0097.xml')).tap(&:remove_namespaces!)
+    end
 
-    expect(page).to have_content('New request')
-    expect(page).to have_content('Knuth (Donald E.) papers')
+    it 'allows the user to submit a request for an EAD item' do
+      visit new_archives_request_path(value: 'http://example.com/ead.xml')
 
-    choose 'Reading room appointment'
+      expect(page).to have_content('New request')
+      expect(page).to have_content('Knuth (Donald E.) papers')
 
-    expect(page).to have_content('Earliest appointment available: Thursday, Feb 19, 2026')
+      choose 'Reading room appointment'
 
-    click_button 'Continue'
+      expect(page).to have_content('Earliest appointment available: Thursday, Feb 19, 2026')
 
-    click_link 'Computers and Typesetting'
-    click_link 'Legal size documents'
+      click_button 'Continue'
 
-    check 'Box 12'
-    click_button 'Continue'
+      click_link 'Computers and Typesetting'
+      click_link 'Legal size documents'
 
-    # In the Appointment step
-    click_button 'Continue'
+      check 'Box 12'
+      click_button 'Continue'
 
-    # In the (temporary) review step
-    click_button 'Submit to Aeon'
+      # In the Appointment step
+      click_button 'Continue'
 
-    expect(page).to have_content('All 1 request(s) submitted successfully!')
+      # In the (temporary) review step
+      click_button 'Submit to Aeon'
 
-    expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
-                                                                      username: user.email_address,
-                                                                      call_number: 'SC0097 Computers and Typesetting',
-                                                                      item_volume: 'Box 12',
-                                                                      site: 'SPECUA'
-                                                                    ))
-  end
+      expect(page).to have_content('All 1 request(s) submitted successfully!')
 
-  context 'with a digitization request' do
+      expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
+                                                                        username: user.email_address,
+                                                                        call_number: 'SC0097 Computers and Typesetting',
+                                                                        item_volume: 'Box 12',
+                                                                        site: 'SPECUA'
+                                                                      ))
+    end
+
     it 'allows the user to submit a request with details about the portion of the item to be digitized' do # rubocop:disable RSpec/ExampleLength
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
 
@@ -96,6 +112,31 @@ RSpec.describe 'Requesting an item from an EAD', :js do
                                                                         call_number: 'SC0097 Computers and Typesetting',
                                                                         site: 'SPECUA'
                                                                       ))
+    end
+  end
+
+  context 'with single item ead' do
+    let(:eadxml) do
+      Nokogiri::XML(File.read('spec/fixtures/a0112.xml')).tap(&:remove_namespaces!)
+    end
+
+    it 'shows list of users relevant appointments' do
+      visit new_archives_request_path(value: 'http://example.com/ead.xml')
+
+      expect(page).to have_content('New request')
+      expect(page).to have_content('Pehrson (Elmer Walter) Photograph Album')
+
+      choose 'Reading room appointment'
+
+      expect(page).to have_content('Earliest appointment available: Thursday, Feb 19, 2026')
+
+      click_button 'Continue'
+
+      # In the Appointment step
+      expect(page).to have_content('Field Reading Room')
+      expect(page).to have_content('Hours: Monday - Friday, 9:00 - 4:45 PM')
+      expect(page).to have_content('Appointments must be scheduled at least 5 business days in advance. Maximum of 5 items per day.')
+      expect(find('select[name="appointment"]').all('option').map(&:text)).to eq ['', 'Feb 19, 2026 ● 12:00 PM - 1:00 PM (1 item)']
     end
   end
 end

@@ -53,6 +53,25 @@ module Aeon
       AeonClient.new.available_appointments(reading_room_id: id, date: date, **)
     end
 
+    def grouped_hours
+      @grouped_hours = {}
+      @open_hours.each do |oh|
+        hour_str = "#{Time.zone.parse(oh.open_time).strftime('%l:%M')} - #{Time.zone.parse(oh.close_time).strftime('%l:%M %p')}"
+        if @grouped_hours.key?(hour_str)
+          @grouped_hours[hour_str].push(oh.day_name)
+        else
+          @grouped_hours[hour_str] = [oh.day_name]
+        end
+      end
+      @grouped_hours
+    end
+
+    def human_readable_hours
+      grouped_hours.map do |hours, days|
+        "#{days.first} - #{days.last}, #{hours}"
+      end.join(', ')
+    end
+
     def next_appointment
       @next_appointment ||= available_appointments(Time.zone.now.to_date, include_next_available: true)&.first
     end
