@@ -26,7 +26,7 @@
           <% end %>
         </div>
       </div>
-      <%= form_with id: 'archives-request', url: archives_requests_path, class: 'accordion', data: { controller: 'patron-request archives-request', turbo: false } do |f| %>
+      <%= form_with id: 'archives-request', model: @ead_request, url: archives_requests_path, class: 'accordion', data: { controller: 'patron-request archives-request', turbo: false } do |f| %>
         <%= render AccordionStepComponent.new(id: 'request_type', step_index: step_enum.next, form_id: f.id) do |component| %>
           <% component.with_title.with_content('Request type') %>
           <% component.with_body do %>
@@ -77,11 +77,11 @@
           <% end %>
         <% end %>
 
-        <%= render AccordionStepComponent.new(id: 'scan-or-pickup-placeholder', form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'none' }) do |c| %>
+        <%= render AccordionStepComponent.new(id: 'scan-or-pickup-placeholder', classes: [('d-none' if f.object.request_type)], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'none' }) do |c| %>
           <% c.with_title.with_content('Appointment or Digitization') %>
         <% end %>
 
-        <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', classes: ['d-none'], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'pickup' }) do |c| %>
+        <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', classes: [('d-none' if  f.object.request_type.blank? || f.object.request_type == 'scan')], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'pickup' }) do |c| %>
           <% c.with_title.with_content('Reading room use') %>
           <% c.with_body do %>
             <div class="d-flex flex-column mb-2">
@@ -99,7 +99,7 @@
               <div class="d-inline-flex align-items-center gap-1 flex-column flex-md-row ">
                 <select name="appointment" class="form-select" required>
                   <option disabled selected></option>
-                  <% @appointments.each do | appointment | %>
+                  <% @ead_request.appointments.each do | appointment | %>
                     <option value="<%= appointment.id %>">
                       <%= appointment.start_time.strftime('%b %d, %Y') %> ● <%= appointment.start_time.strftime('%l:%M %p -') %><%= appointment.stop_time.strftime('%l:%M %p') %>
                       (<%= pluralize(appointment.requests.length, "item") %>)
@@ -114,13 +114,13 @@
               </ul>
 
               <template data-archives-request-target="appointmentTemplate">
-                <%= render Aeon::AppointmentFormItemComponent.new(title: '__TITLE__', dom_id: '__DOMID__', base_name: 'items[__DOMID__]') %>
+                <%= render Aeon::AppointmentFormItemComponent.new(title: '__TITLE__', dom_id: '__DOMID__', base_name: 'ead_request[items][__DOMID__]') %>
               </template>
             <% end %>
           <% end %>
         <% end %>
 
-        <%= render AccordionStepComponent.new(request: f.object, id: 'scan', classes: ['d-none'], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'scan' }) do |c| %>
+        <%= render AccordionStepComponent.new(request: f.object, id: 'scan', classes: [('d-none' unless f.object.request_type == 'scan')], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'scan' }) do |c| %>
           <% c.with_title.with_content('Digitization') %>
 
           <% c.with_body do %>
@@ -129,7 +129,7 @@
             </div>
 
             <template data-archives-request-target="digitizationTemplate">
-              <%= render Aeon::DigitizationFormItemComponent.new(title: '__TITLE__', dom_id: '__DOMID__', base_name: 'items[__DOMID__]') %>
+              <%= render Aeon::DigitizationFormItemComponent.new(title: '__TITLE__', dom_id: '__DOMID__', base_name: 'ead_request[items][__DOMID__]') %>
             </template>
           <% end %>
         <% end %>
@@ -166,7 +166,7 @@
                 </dd>
               </dl>
             </div>
-            <%= f.hidden_field :ead_url, value: @ead_url %>
+            <%= f.hidden_field :ead_url, value: @ead_request.url %>
           <% end %>
         <% end %>
         <div class="card mb-4 bg-light rounded-0 border-0">

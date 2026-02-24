@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Requesting an item from an EAD', :js do
   before do
-    allow(EadClient).to receive(:fetch).and_return(Ead::Document.new(eadxml))
+    allow(EadClient).to receive(:fetch).and_return(Ead::Document.new(eadxml, url: 'whatever'))
 
     login_as(current_user)
 
