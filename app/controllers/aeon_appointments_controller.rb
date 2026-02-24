@@ -40,6 +40,8 @@ class AeonAppointmentsController < ApplicationController
 
   def edit
     authorize! :update, @appointment
+
+    request.variant = :modal if params[:modal]
   end
 
   def create # rubocop:disable Metrics/AbcSize,Metrics/MethodLength

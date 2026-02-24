@@ -34,4 +34,16 @@ RSpec.describe 'Appointments', :js do
       expect(page).to have_no_css '#modal'
     end
   end
+
+  describe 'edit appointment modal' do
+    it 'opens and closes the edit appointment modal' do
+      click_on 'Edit'
+      within '#modal' do
+        expect(page).to have_content 'Edit appointment'
+        expect(page).to have_content 'Field Reading Room'
+        click_on 'Cancel'
+      end
+      expect(page).to have_no_css '#modal'
+    end
+  end
 end
