@@ -63,6 +63,12 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       click_button 'Continue'
 
       # In the Appointment step
+      select 'Feb 19', from: 'Select an appointment'
+
+      # Input isn't triggered by Capbayara, this works fine with a user/keyboard interaction
+      # this allows the continue button to be enabled.
+      page.execute_script("document.querySelector('select').dispatchEvent(new Event('input', { bubbles: true }))")
+
       click_button 'Continue'
 
       # In the (temporary) review step

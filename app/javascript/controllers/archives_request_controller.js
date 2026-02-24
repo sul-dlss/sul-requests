@@ -72,7 +72,6 @@ export default class extends Controller {
     rootNode.dataset.contentId = item.id;
     rootNode.dataset.fieldsBaseName = rootNode.dataset.fieldsBaseName.replace('__DOMID__', item.id);
     rootNode.innerHTML = rootNode.innerHTML.replace(/__TITLE__/g, `${item.series} > ${item.subseries}`).replace(/__DOMID__/g, item.id);
-
     if (this.requestTypeValue == 'scan') this.disableRequiredInputs(rootNode);
 
     this.appointmentItemsTarget.appendChild(rootNode);
