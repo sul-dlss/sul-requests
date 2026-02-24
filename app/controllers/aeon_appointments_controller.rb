@@ -22,6 +22,8 @@ class AeonAppointmentsController < ApplicationController
 
     @reading_rooms = Aeon::ReadingRoom.all
     @appointment = Aeon::Appointment.new
+
+    request.variant = :modal if params[:modal]
   end
 
   def available

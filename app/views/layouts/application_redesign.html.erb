@@ -26,7 +26,7 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
   </head>
 
-  <body class="d-flex flex-column min-vh-100" data-controller="analytics">
+  <body class="d-flex flex-column min-vh-100" data-controller="analytics modal">
     <nav id="skip-link" class="visually-hidden-focusable" aria-label="Skip links">
       <div class="container-xl">
         <a href="#main" class="element-invisible element-focusable" data-turbo="false">Skip to main content</a>
@@ -63,6 +63,13 @@
     <main id="main" class="flex-fill container my-3">
       <%= render 'shared/flashes' %>
       <%= yield %>
+      <% unless request.variant == :modal %>
+        <div id="modal" class="modal" tabindex="-1" data-modal-target="frame">
+          <div class="modal-dialog">
+            <turbo-frame id="modal-contents" class="modal-content" target="_top"></turbo-frame>
+          </div>
+        </div>
+      <% end %>
     </main>
     <footer>
       <%= render 'shared/su_global_footer' %>
