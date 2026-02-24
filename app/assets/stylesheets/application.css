@@ -446,6 +446,34 @@ label.btn-close {
   }
 }
 
+.duration-selector, #available_appointments {
+  .btn {
+    border-color: var(--stanford-30-black);
+  }
+
+  .btn-check:checked + .btn {
+    border-color: var(--stanford-digital-blue);
+    background-color: var(--stanford-digital-blue);
+    color: white;
+  }
+
+  .btn-check:checked + .btn::before {
+    content: "\f633"; /* check-lg icon */
+    display: inline-block;
+    font-family: "bootstrap-icons";
+    font-size: .85rem;
+    margin-right: 0.25rem;
+    text-decoration: none;
+    vertical-align: middle;
+  }
+}
+
+/* Available time slots get fixed widths to line up in uniform rows/columns */
+#available_appointments .btn {
+  width: 6rem;
+  text-align: center;
+}
+
 /* EAD Item selector styles */
 
 #items {
