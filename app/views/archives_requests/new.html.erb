@@ -94,7 +94,6 @@
               </span>
               <span class="text-digital-red">Appointments must be scheduled at least <%= @ead_request.reading_room.policies.first.appointment_min_lead_days %> business days in advance. Maximum of 5 items per day.</span>
             </div>
-            TODO: Multi-Appointment
             <% if @ead.series_and_subseries&.one? %>
               <div class="d-inline-flex align-items-center gap-1 flex-column flex-md-row ">
                 <select name="appointment" class="form-select" required>
@@ -114,7 +113,7 @@
               </ul>
 
               <template data-archives-request-target="appointmentTemplate">
-                <%= render Aeon::AppointmentFormItemComponent.new(title: '__TITLE__', dom_id: '__DOMID__', base_name: 'ead_request[items][__DOMID__]') %>
+                <%= render Aeon::AppointmentFormItemComponent.new(title: '__TITLE__', dom_id: '__DOMID__', base_name: 'ead_request[items][__DOMID__]', appointments: @ead_request.appointments) %>
               </template>
             <% end %>
           <% end %>

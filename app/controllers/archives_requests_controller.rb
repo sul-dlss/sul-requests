@@ -49,7 +49,7 @@ class ArchivesRequestsController < ApplicationController
 
   def new_params
     item_keys = params.dig(:ead_request, :items)&.keys || []
-    item_values = [:series, :for_publication, :subseries, :requested_pages, :additional_information]
+    item_values = [:series, :for_publication, :subseries, :requested_pages, :additional_information, :appointment_id]
 
     params.expect(ead_request: [:ead_url, :request_type, { volumes: [], items: item_keys.index_with { item_values } }]).tap do |p|
       p['items'] = p['items'].values if p['items'].respond_to?(:values)

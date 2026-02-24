@@ -62,6 +62,7 @@ module Ead
       AeonClient::CreateRequestData.new(
         call_number: "#{identifier} #{volume_params['series']}",
         ead_number: identifier,
+        appointment_id: volume_params['appointment_id'].to_i,
         for_publication: volume_params['for_publication'] == 'yes',
         item_author: creator,
         item_citation: nil,

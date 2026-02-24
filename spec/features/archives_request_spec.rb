@@ -63,6 +63,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       click_button 'Continue'
 
       # In the Appointment step
+      select 'Feb 19', from: 'Select an appointment'
       click_button 'Continue'
 
       # In the (temporary) review step
