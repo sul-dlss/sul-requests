@@ -31,48 +31,49 @@
       <% end %>
     </div>
   <% else %>
-      <h1 class="fw-semibold mt-4 fs-1"><%= @patron_request.item_title %></h1>
-<% if @patron_request.selectable_items.one? %>
-  <% single_item = @patron_request.selectable_items.first %>
-  <% unless single_item.instance && single_item.instance&.hrid != @patron_request.instance_hrid %>
-    <div class="lead fw-normal mb-4">Call number: <%= callnumber_label(single_item) %></div>
-  <% end %>
-  <% if single_item.public_note %>
-    <span class="text-cardinal d-block ms-4">
-      <%= single_item.public_note %>
-    </span>
+    <h1 class="fw-semibold mt-4 fs-1"><%= @patron_request.item_title %></h1>
+    <% if @patron_request.selectable_items.one? %>
+      <% single_item = @patron_request.selectable_items.first %>
+      <% unless single_item.instance && single_item.instance&.hrid != @patron_request.instance_hrid %>
+        <div class="lead fw-normal mb-4">Call number: <%= callnumber_label(single_item) %></div>
+      <% end %>
+      <% if single_item.public_note %>
+        <span class="text-cardinal d-block ms-4">
+          <%= single_item.public_note %>
+        </span>
+      <% end %>
+
+      <% if single_item.bound_with_holdings_per_item.any? && (single_item.instance.nil? || single_item.instance&.hrid == @patron_request.instance_hrid) %>
+        <div class="card col-lg-8 shadow-sm">
+          <div class="card-header h4 bg-light">This item is bound with</div>
+          <ul class="list-group list-group-flush">
+            <% single_item.bound_with_holdings_per_item.each do |bound_with_child| %>
+              <li class="list-group-item d-flex bg-light">
+                <span class="me-auto"><%= bound_with_child.instance.title %></span>
+                <span class="text-nowrap"><%= bound_with_child.call_number %></span>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <% if single_item.instance && single_item.instance&.hrid != @patron_request.instance_hrid %>
+        <div class="lead fw-normal mb-4">Call number: <%= @patron_request.bib_data.holdings_records.first.call_number %></div>
+
+        <div class="card col-lg-8 shadow-sm">
+          <div class="card-header h4 bg-light">This item is bound and shelved with</div>
+          <div class="card-body bg-light">
+            <div><%= single_item.instance.title %></div>
+            <div>Call number: <%= callnumber_label(single_item) %></div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+
   <% end %>
 
-  <% if single_item.bound_with_holdings_per_item.any? && (single_item.instance.nil? || single_item.instance&.hrid == @patron_request.instance_hrid) %>
-    <div class="card col-lg-8 shadow-sm">
-      <div class="card-header h4 bg-light">This item is bound with</div>
-      <ul class="list-group list-group-flush">
-        <% single_item.bound_with_holdings_per_item.each do |bound_with_child| %>
-          <li class="list-group-item d-flex bg-light">
-            <span class="me-auto"><%= bound_with_child.instance.title %></span>
-            <span class="text-nowrap"><%= bound_with_child.call_number %></span>
-          </li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <% if single_item.instance && single_item.instance&.hrid != @patron_request.instance_hrid %>
-    <div class="lead fw-normal mb-4">Call number: <%= @patron_request.bib_data.holdings_records.first.call_number %></div>
-
-    <div class="card col-lg-8 shadow-sm">
-      <div class="card-header h4 bg-light">This item is bound and shelved with</div>
-      <div class="card-body bg-light">
-        <div><%= single_item.instance.title %></div>
-        <div>Call number: <%= callnumber_label(single_item) %></div>
-      </div>
-    </div>
-  <% end %>
-<% end %>
-  <% end %>
-  
   <%= form_for(@patron_request,
-               data: { controller: 'patronRequest' },
+               data: { controller: 'patron-request' },
                html: { class: 'col-lg-8 accordion' },
                url: patron_requests_path,
                method: 'POST') do |f| %>
@@ -134,7 +135,7 @@
   
     <!-- item selector -->
     <% if f.object.selectable_items.many? && (can?(:request_scan, f.object) || can?(:request_pickup, f.object) || f.object.aeon_page?) %>
-      <div data-controller="itemselector" data-itemselector-request-type-value="pickup" data-action="itemselector:change->patronRequest#showItemSelector itemselector:change->patronRequest#updateAeonOptions">
+      <div data-controller="itemselector" data-itemselector-request-type-value="pickup" data-action="itemselector:change->patron-request#showItemSelector itemselector:change->patron-request#updateAeonOptions">
       <%= render AccordionStepComponent.new(id: 'barcodes', step_index: step_enum.next, form_id: f.id, data: { 'switch-selector': true }) do |c| %>
         <% c.with_title.with_content('Select item(s)') %>
         <% c.with_body do %>
@@ -213,7 +214,7 @@
   
       <!-- pickup request (multiple items) -->
       <% if can?(:request_pickup, f.object) %>
-        <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', classes: [('d-none' if scan_pickup)], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'pickup', action: 'itemselector:changed@document->patronRequest#enableAnyNextButtons' }, submit: true) do |c| %>
+        <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', classes: [('d-none' if scan_pickup)], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'pickup', action: 'itemselector:changed@document->patron-request#enableAnyNextButtons' }, submit: true) do |c| %>
           <% c.with_title.with_content('Pickup request') %>
           <% c.with_body do %>
             <%= render 'pickup_destination', f: %>
@@ -230,13 +231,13 @@
                           <% if f.object.pickup_destinations.one? && f.object.earliest_delivery_estimate %>
                             <%= f.object.earliest_delivery_estimate['display_date'] %>
                           <% else %>
-                            <%= turbo_frame_tag('earliestAvailable', src: paging_schedule_url(origin_library: f.object.origin_library_code, origin_location: f.object.origin_location_code, destination: f.object.service_point_code || f.object.default_service_point_code), data: { 'patronRequest-target' => 'earliestAvailable'}) do %>
+                            <%= turbo_frame_tag('earliestAvailable', src: paging_schedule_url(origin_library: f.object.origin_library_code, origin_location: f.object.origin_location_code, destination: f.object.service_point_code || f.object.default_service_point_code), data: { 'patron-request-target' => 'earliestAvailable'}) do %>
                               Loading..
                             <% end %>
                           <% end %>
                         </span>
                         <span> at </span>
-                        <span data-patronRequest-target="destination">
+                        <span data-patron-request-target="destination">
                           <%= f.object.pickup_service_point&.name %>
                         </span>
                       </div>
@@ -314,7 +315,8 @@
         <% end %>
       <% end %>
     <% end %>
-    </div>
+    <!-- end if aeon digitization page -->
+  </div>
   
     <!-- pickup request (single item )-->
     <% if (f.object.selectable_items.one? || f.object.title_only?) && can?(:request_pickup, f.object) && !f.object.aeon_page? %>
@@ -326,7 +328,7 @@
             <% if f.object.pickup_destinations.one? && f.object.earliest_delivery_estimate %>
               <%= f.object.earliest_delivery_estimate['display_date'] %>
             <% elsif f.object.any_items_avaliable? %>
-              <%= turbo_frame_tag('earliestAvailable', src: paging_schedule_url(origin_library: f.object.origin_library_code, origin_location: f.object.origin_location_code, destination: f.object.service_point_code || f.object.default_service_point_code), data: { 'patronRequest-target' => 'earliestAvailable'}) do %>
+              <%= turbo_frame_tag('earliestAvailable', src: paging_schedule_url(origin_library: f.object.origin_library_code, origin_location: f.object.origin_location_code, destination: f.object.service_point_code || f.object.default_service_point_code), data: { 'patron-request-target' => 'earliestAvailable'}) do %>
                 Loading..
               <% end %>
             <% else %>

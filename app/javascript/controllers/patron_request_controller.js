@@ -1,5 +1,4 @@
 import { Controller } from "@hotwired/stimulus"
-import { toBeRequired } from "@testing-library/jest-dom/matchers";
 import { Collapse } from "bootstrap"
 
 export default class extends Controller {
