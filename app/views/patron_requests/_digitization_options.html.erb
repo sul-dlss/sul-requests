@@ -8,15 +8,17 @@
       cost and confirm whether you wish to proceed.</li>
     </ul>
   </div>    
+  <% accordion_class = f.object.selectable_items.many? ? 'accordion-sub-item' : 'p-0' %>
+  <% field_class = f.object.selectable_items.many? ? 'mx-3 my-1' : 'm-0' %>
   <% sort_holdings(f.object.selectable_items).each do |selectable_item| %>
     <%= fields_for "patron_request[aeon_item][#{selectable_item.callnumber}]" do |field| %>
-      <% if f.object.selectable_items.many? %>
-      <div class='accordion-sub-item' data-callnumber="<%= selectable_item.callnumber %>" data-patron-request-target='digitization'>
+      <div class="<%= accordion_class %>" data-callnumber="<%= selectable_item.callnumber %>" data-patron-request-target='digitization'>
+        <% if f.object.selectable_items.many? %>
         <div class="accordion-header d-flex">
           <div class='p-2 fw-bold'><%= selectable_item.callnumber %></div>
         </div>
-        <div class='mx-3 my-1'>
-          <% end %>
+        <% end %>
+        <div class='<%= field_class %>'>
           <div class='mt-3'>
             <%= field.label :pages, 'Requested pages', :class => 'fw-bold py-2 redesign-required-label' %>
             <%= field.text_field :pages, :class => 'form-control', :required => true, :disabled => f.object.selectable_items.many? %>
@@ -38,10 +40,8 @@
             <%= field.text_area :digitization_special, :class => 'form-control', :rows => 3 , :disabled => f.object.selectable_items.many? %>
             <small class='text-cardinal mt-4'>Limit 255 characters.</small> 
           </div>
-      <% if f.object.selectable_items.many? %>    
         </div>
       </div>
-      <% end %>
     <% end %>
   <% end %>
 </div>

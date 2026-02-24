@@ -5,46 +5,70 @@
 <% end %>
 
 <%= render 'messages', messages: @patron_request.active_messages %>
+<% if @patron_request.aeon_page? %>
+  <div class="mt-4">
+    <h1> New request </h1> 
+  </div>
+  <div class="accordion-header pt-4 pb-5 px-3 mb-4">
+    <h3 class="fw-semibold fs-1"><%= @patron_request.item_title %></h3>
+  
+    <% if @patron_request.selectable_items.one? %>
+      
+          <% single_item = @patron_request.selectable_items.first %>
+          
+          <% unless single_item.instance && single_item.instance&.hrid != @patron_request.instance_hrid %>
+            <div class="d-flex flex-row mb-2">
+              <div class="fw-normal me-3"><%= single_item.material_type.name.upcase_first %> (<%= @patron_request.bib_data.pub_date %>)</div>
+              <div class="fw-normal me-3">Call number: <%= callnumber_label(single_item) %></div>
+              <div class="fw-normal"><a href="<%= @patron_request.bib_data.view_url %>" class="su-underline">View in SearchWorks<i class="ms-1 bi bi-arrow-up-right"></i></a></div>
+            </div>
+            <div class="d-flex flex-row">
+              <div class="fw-normal me-2"><%= @patron_request.bib_data.author %></div>
+            </div>
+          <% end %>
+      
+    <% end %>
+  </div>
+<% else %>
+  <h1 class="fw-semibold mt-4 fs-1"><%= @patron_request.item_title %></h1>
+  <% if @patron_request.selectable_items.one? %>
+    <% single_item = @patron_request.selectable_items.first %>
+    <% unless single_item.instance && single_item.instance&.hrid != @patron_request.instance_hrid %>
+      <div class="lead fw-normal mb-4">Call number: <%= callnumber_label(single_item) %></div>
+    <% end %>
+    <% if single_item.public_note %>
+      <span class="text-cardinal d-block ms-4">
+        <%= single_item.public_note %>
+      </span>
+    <% end %>
 
-<h1 class="fw-semibold mt-4 fs-1"><%= @patron_request.item_title %></h1>
-<% if @patron_request.selectable_items.one? %>
-  <% single_item = @patron_request.selectable_items.first %>
-  <% unless single_item.instance && single_item.instance&.hrid != @patron_request.instance_hrid %>
-    <div class="lead fw-normal mb-4">Call number: <%= callnumber_label(single_item) %></div>
-  <% end %>
-  <% if single_item.public_note %>
-    <span class="text-cardinal d-block ms-4">
-      <%= single_item.public_note %>
-    </span>
-  <% end %>
-
-  <% if single_item.bound_with_holdings_per_item.any? && (single_item.instance.nil? || single_item.instance&.hrid == @patron_request.instance_hrid) %>
-    <div class="card col-lg-8 shadow-sm">
-      <div class="card-header h4 bg-light">This item is bound with</div>
-      <ul class="list-group list-group-flush">
-        <% single_item.bound_with_holdings_per_item.each do |bound_with_child| %>
-          <li class="list-group-item d-flex bg-light">
-            <span class="me-auto"><%= bound_with_child.instance.title %></span>
-            <span class="text-nowrap"><%= bound_with_child.call_number %></span>
-          </li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <% if single_item.instance && single_item.instance&.hrid != @patron_request.instance_hrid %>
-    <div class="lead fw-normal mb-4">Call number: <%= @patron_request.bib_data.holdings_records.first.call_number %></div>
-
-    <div class="card col-lg-8 shadow-sm">
-      <div class="card-header h4 bg-light">This item is bound and shelved with</div>
-      <div class="card-body bg-light">
-        <div><%= single_item.instance.title %></div>
-        <div>Call number: <%= callnumber_label(single_item) %></div>
+    <% if single_item.bound_with_holdings_per_item.any? && (single_item.instance.nil? || single_item.instance&.hrid == @patron_request.instance_hrid) %>
+      <div class="card col-lg-8 shadow-sm">
+        <div class="card-header h4 bg-light">This item is bound with</div>
+        <ul class="list-group list-group-flush">
+          <% single_item.bound_with_holdings_per_item.each do |bound_with_child| %>
+            <li class="list-group-item d-flex bg-light">
+              <span class="me-auto"><%= bound_with_child.instance.title %></span>
+              <span class="text-nowrap"><%= bound_with_child.call_number %></span>
+            </li>
+          <% end %>
+        </ul>
       </div>
-    </div>
+    <% end %>
+
+    <% if single_item.instance && single_item.instance&.hrid != @patron_request.instance_hrid %>
+      <div class="lead fw-normal mb-4">Call number: <%= @patron_request.bib_data.holdings_records.first.call_number %></div>
+
+      <div class="card col-lg-8 shadow-sm">
+        <div class="card-header h4 bg-light">This item is bound and shelved with</div>
+        <div class="card-body bg-light">
+          <div><%= single_item.instance.title %></div>
+          <div>Call number: <%= callnumber_label(single_item) %></div>
+        </div>
+      </div>
+    <% end %>
   <% end %>
 <% end %>
-<h2>OLD</h2>
 <%= form_for(@patron_request,
              data: { controller: 'patron-request' },
              html: { class: 'col-lg-8 accordion' },
