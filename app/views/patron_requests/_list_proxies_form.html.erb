@@ -18,13 +18,13 @@
       Do you want to share this request with your proxies?
     </div>
      <div class="mt-2">
-        <%= f.radio_button :proxy, 'share', :class => 'form-check-input', required: true, data: { action: 'patronRequest#updateProxy' } %>
+        <%= f.radio_button :proxy, 'share', :class => 'form-check-input', required: true, data: { action: 'patron-request#updateProxy' } %>
         <%= f.label :proxy_share, :class => 'form-check-label ms-1 d-inline' do %>
         Yes, share this request with my proxies.
         <% end %>
     </div>
     <div class="mt-2">
-        <%= f.radio_button :proxy, 'noshare', :class => 'form-check-input', data: { action: 'patronRequest#updateProxy' } %>
+        <%= f.radio_button :proxy, 'noshare', :class => 'form-check-input', data: { action: 'patron-request#updateProxy' } %>
         <%= f.label :proxy_noshare, :class => 'form-check-label ms-1 d-inline' do %>
         No, this request is just for me.
         <% end %>

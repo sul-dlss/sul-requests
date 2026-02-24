@@ -26,14 +26,14 @@
           <% end %>
         </div>
       </div>
-      <%= form_with id: 'archives-request', url: archives_requests_path, class: 'accordion', data: { controller: 'patronRequest archives-request', turbo: false } do |f| %>
+      <%= form_with id: 'archives-request', url: archives_requests_path, class: 'accordion', data: { controller: 'patron-request archives-request', turbo: false } do |f| %>
         <%= render AccordionStepComponent.new(id: 'request_type', step_index: step_enum.next, form_id: f.id) do |component| %>
           <% component.with_title.with_content('Request type') %>
           <% component.with_body do %>
             <fieldset class="mb-4">
               <div>
                 <!--TODO: refactor out #updateType in a new JS controller. Or pick one. This is wrong -->
-                <%= f.radio_button :request_type, 'pickup', :class => 'form-check-input', :required => true, data: { action: 'patronRequest#updateType archives-request#updateRequestType' } %>
+                <%= f.radio_button :request_type, 'pickup', :class => 'form-check-input', :required => true, data: { action: 'patron-request#updateType archives-request#updateRequestType' } %>
                 <%= f.label :request_type_pickup, :class => 'form-check-label ms-1' do %>
                   Reading room appointment
                 <% end %>
@@ -43,7 +43,7 @@
                 </span>
               </div>
               <div class="mt-4">
-                <%= f.radio_button :request_type, 'scan', :class => 'form-check-input', data: { action: 'patronRequest#updateType archives-request#updateRequestType' } %>
+                <%= f.radio_button :request_type, 'scan', :class => 'form-check-input', data: { action: 'patron-request#updateType archives-request#updateRequestType' } %>
                 <%= f.label :request_type_scan, :class => 'form-check-label ms-1' do %>
                   Digitization
                 <% end %>
@@ -71,23 +71,7 @@
                   <button class="btn btn-link su-underline" data-action="click->archives-series#collapseAll">Collapse all</button>
                 </div>
                 <%# Loop through each series in the collection %>
-                <% @ead.series_and_subseries.each_with_index do |series, index| %>
-                  <div class="mb-2 mt-3">
-                    <%# Collapsible series header %>
-                    <%= link_to "#series-#{index}", 
-                        class: "series-header text-decoration-none d-flex align-items-center gap-2",
-                        data: { bs_toggle: 'collapse' },
-                        aria: { expanded: false, controls: "series-#{index}" } do %>
-                      <i class="bi bi-chevron-right"></i>
-                      <span class="series-title"><%= series[:title] %></span>
-                      <span class="badge bg-light text-dark fw-normal"><%= series[:contents].count %></span>
-                    <% end %>
-                    <%# Collapsible series content %>
-                    <div id="series-<%= index %>" class="collapse series-content ps-1" data-archives-series-target="content">
-                      <%= render partial: 'series_contents', locals: { contents: Ead::DisplayGroup.build_display_groups(series[:contents]), f: f, parent_title: series[:title], series_title: series[:title] } %>
-                    </div>
-                  </div>
-                <% end %>
+                <%= render partial: 'series_contents', locals: { contents: Ead::DisplayGroup.build_display_groups(@ead.series_and_subseries), f: f, series_title: nil, parent_title: nil } %>
               </div>
             <% end %>
           <% end %>

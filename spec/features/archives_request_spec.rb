@@ -56,6 +56,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
     expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
                                                                       username: user.email_address,
                                                                       call_number: 'SC0097 Computers and Typesetting',
+                                                                      item_volume: 'Box 12',
                                                                       site: 'SPECUA'
                                                                     ))
   end

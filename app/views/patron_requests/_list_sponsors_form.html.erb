@@ -8,25 +8,25 @@
       Is this request for yourself or on behalf of a sponsor?
     </div>
      <div class="mt-2">
-        <%= f.radio_button :for_sponsor, 'noshare', :class => 'form-check-input', data: { action: 'patronRequest#updateForSponsor patronRequest#toggleDisplaySponsorList' } %>
+        <%= f.radio_button :for_sponsor, 'noshare', :class => 'form-check-input', data: { action: 'patron-request#updateForSponsor patron-request#toggleDisplaySponsorList' } %>
         <%= f.label :for_sponsor_noshare, :class => 'form-check-label ms-1 d-inline' do %>
        This is for myself. 
         <% end %>
     </div>
      <div class="mt-2">
-        <%= f.radio_button :for_sponsor, 'share', :class => 'form-check-input', required: true, data: { action: 'patronRequest#updateForSponsor patronRequest#toggleDisplaySponsorList' } %>
+        <%= f.radio_button :for_sponsor, 'share', :class => 'form-check-input', required: true, data: { action: 'patron-request#updateForSponsor patron-request#toggleDisplaySponsorList' } %>
         <%= f.label :for_sponsor_share, :class => 'form-check-label ms-1 d-inline' do %>
         This is for a sponsor. 
         <% end %>
     </div>
-    <div data-patronRequest-target='selectSponsor' class="d-none">
+    <div data-patron-request-target="selectSponsor" class="d-none">
         <div class="mt-4">
         Select a sponsor: 
         </div>
         <div class="mt-2">
             <div class="mt-2">
                 <% f.object.patron.sponsors.sort_by(&:display_name).each do |sponsor| %>
-                    <%= f.radio_button :for_sponsor_id, sponsor.id, class: 'form-check-input', data: { 'patronRequest-target': 'sponsorRadioButton'} %>
+                    <%= f.radio_button :for_sponsor_id, sponsor.id, class: 'form-check-input', data: { 'patron-request-target': 'sponsorRadioButton'} %>
                     <%= f.label :for_sponsor_id, sponsor.display_name, value: sponsor.id, class: 'form-check-label ms-1 d-inline' %>
                 <% end %>
             </div>
