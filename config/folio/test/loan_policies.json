@@ -1,5 +1,30 @@
 [
   {
+    "id": "05422f40-2db3-4311-971a-5d5935bf5033",
+    "name": "26week-norenew-7daygrace",
+    "description": "Loan policy for ILL materials loaned to Stanford users for 26 weeks",
+    "loanable": true,
+    "loansPolicy": {
+      "profileId": "Rolling",
+      "period": {
+        "duration": 12,
+        "intervalId": "Weeks"
+      },
+      "closedLibraryDueDateManagementId": "END_OF_THE_NEXT_OPEN_DAY",
+      "gracePeriod": {
+        "duration": 7,
+        "intervalId": "Days"
+      }
+    },
+    "renewable": false,
+    "metadata": {
+      "createdDate": "2026-02-06T01:56:26.548+00:00",
+      "createdByUserId": "e252d213-8a69-4d26-9826-7de8c943a121",
+      "updatedDate": "2026-02-06T01:56:26.548+00:00",
+      "updatedByUserId": "e252d213-8a69-4d26-9826-7de8c943a121"
+    }
+  },
+  {
     "id": "07115e75-c4a9-4ef0-b013-dba184251041",
     "name": "7day-norenew-1daygrace",
     "description": "7-day loan (Art periodicals and Business Permanent Reserves)",
@@ -133,6 +158,31 @@
       "createdByUserId": "611ed598-2be4-41f1-a241-2f30a362dca9",
       "updatedDate": "2024-03-20T17:44:20.126+00:00",
       "updatedByUserId": "611ed598-2be4-41f1-a241-2f30a362dca9"
+    }
+  },
+  {
+    "id": "258404de-52ee-4808-b0ab-a4113eb9995e",
+    "name": "8week-norenew-7daygrace",
+    "description": "Loan policy for ILL materials loaned to Stanford users for 8 weeks",
+    "loanable": true,
+    "loansPolicy": {
+      "profileId": "Rolling",
+      "period": {
+        "duration": 8,
+        "intervalId": "Weeks"
+      },
+      "closedLibraryDueDateManagementId": "END_OF_THE_NEXT_OPEN_DAY",
+      "gracePeriod": {
+        "duration": 7,
+        "intervalId": "Days"
+      }
+    },
+    "renewable": false,
+    "metadata": {
+      "createdDate": "2026-02-06T01:55:18.012+00:00",
+      "createdByUserId": "e252d213-8a69-4d26-9826-7de8c943a121",
+      "updatedDate": "2026-02-06T01:55:18.012+00:00",
+      "updatedByUserId": "e252d213-8a69-4d26-9826-7de8c943a121"
     }
   },
   {
@@ -318,6 +368,76 @@
     }
   },
   {
+    "id": "3ab49d1c-91a4-43f8-8560-0caf745768d9",
+    "name": "1qtr-7renew-7daygrace",
+    "description": "Loan policy for monos owned by SUL loaned to grad students",
+    "loanable": true,
+    "loansPolicy": {
+      "profileId": "Fixed",
+      "closedLibraryDueDateManagementId": "CURRENT_DUE_DATE",
+      "gracePeriod": {
+        "duration": 7,
+        "intervalId": "Days"
+      },
+      "fixedDueDateScheduleId": "d4b65d46-2637-4310-9b96-6d03d867f506"
+    },
+    "renewable": true,
+    "renewalsPolicy": {
+      "unlimited": false,
+      "numberAllowed": 7.0
+    },
+    "requestManagement": {
+      "recalls": {
+        "minimumGuaranteedLoanPeriod": {
+          "duration": 1,
+          "intervalId": "Days"
+        },
+        "recallReturnInterval": {
+          "duration": 7,
+          "intervalId": "Days"
+        },
+        "allowRecallsToExtendOverdueLoans": false
+      },
+      "holds": {
+        "alternateCheckoutLoanPeriod": {
+          "duration": 7,
+          "intervalId": "Days"
+        }
+      }
+    },
+    "metadata": {
+      "createdDate": "2025-09-15T14:40:50.804+00:00",
+      "createdByUserId": "e252d213-8a69-4d26-9826-7de8c943a121",
+      "updatedDate": "2025-09-15T14:40:50.804+00:00",
+      "updatedByUserId": "e252d213-8a69-4d26-9826-7de8c943a121"
+    }
+  },
+  {
+    "id": "3e5943fc-7d5c-464c-a014-4cee3733ea8f",
+    "name": "4week-norenew-7daygrace",
+    "description": "Loan policy for ILL materials loaned to Stanford users for 4 weeks",
+    "loanable": true,
+    "loansPolicy": {
+      "profileId": "Rolling",
+      "period": {
+        "duration": 4,
+        "intervalId": "Weeks"
+      },
+      "closedLibraryDueDateManagementId": "END_OF_THE_NEXT_OPEN_DAY",
+      "gracePeriod": {
+        "duration": 7,
+        "intervalId": "Days"
+      }
+    },
+    "renewable": false,
+    "metadata": {
+      "createdDate": "2026-02-06T01:54:03.053+00:00",
+      "createdByUserId": "e252d213-8a69-4d26-9826-7de8c943a121",
+      "updatedDate": "2026-02-06T01:54:03.053+00:00",
+      "updatedByUserId": "e252d213-8a69-4d26-9826-7de8c943a121"
+    }
+  },
+  {
     "id": "3efe7693-3357-4f9b-999d-a271f86019b0",
     "name": "28day-2renew-7daygrace",
     "description": "Loan policy for Edu, Green, Lane and Law materials",
@@ -367,27 +487,50 @@
     }
   },
   {
-    "id": "43198de5-f56a-4a53-a0bd-5a324418967a",
-    "name": "One Hour",
+    "id": "465c7cff-78db-4303-b3b1-d7cdb3036ee6",
+    "name": "test five day",
     "loanable": true,
     "loansPolicy": {
       "profileId": "Rolling",
       "period": {
-        "duration": 1,
-        "intervalId": "Hours"
+        "duration": 5,
+        "intervalId": "Days"
       },
-      "closedLibraryDueDateManagementId": "CURRENT_DUE_DATE_TIME"
+      "closedLibraryDueDateManagementId": "CURRENT_DUE_DATE",
+      "gracePeriod": {
+        "duration": 3,
+        "intervalId": "Days"
+      }
     },
     "renewable": true,
     "renewalsPolicy": {
-      "unlimited": false,
-      "numberAllowed": 3.0,
-      "renewFromId": "SYSTEM_DATE",
-      "differentPeriod": false
+      "numberAllowed": 1.0,
+      "renewFromId": "CURRENT_DUE_DATE"
+    },
+    "requestManagement": {
+      "recalls": {
+        "minimumGuaranteedLoanPeriod": {
+          "duration": 1,
+          "intervalId": "Days"
+        },
+        "recallReturnInterval": {
+          "duration": 3,
+          "intervalId": "Days"
+        },
+        "allowRecallsToExtendOverdueLoans": false
+      },
+      "holds": {
+        "alternateCheckoutLoanPeriod": {
+          "duration": 3,
+          "intervalId": "Days"
+        }
+      }
     },
     "metadata": {
-      "createdDate": "2023-08-09T20:35:29.414+00:00",
-      "updatedDate": "2024-11-28T01:48:02.061+00:00"
+      "createdDate": "2026-02-12T17:59:26.047+00:00",
+      "createdByUserId": "611ed598-2be4-41f1-a241-2f30a362dca9",
+      "updatedDate": "2026-02-12T17:59:26.047+00:00",
+      "updatedByUserId": "611ed598-2be4-41f1-a241-2f30a362dca9"
     }
   },
   {
@@ -587,6 +730,51 @@
     }
   },
   {
+    "id": "6f7d77e8-1def-4e17-a160-3c4065ac3ef3",
+    "name": "1yearfixed-4renew-7daygrace",
+    "description": "Loan policy for monographs owned by SUL loaned to faculty.",
+    "loanable": true,
+    "loansPolicy": {
+      "profileId": "Fixed",
+      "closedLibraryDueDateManagementId": "END_OF_THE_NEXT_OPEN_DAY",
+      "gracePeriod": {
+        "duration": 7,
+        "intervalId": "Days"
+      },
+      "fixedDueDateScheduleId": "277410e1-2908-4e2b-bf96-ac81b4aedad4"
+    },
+    "renewable": true,
+    "renewalsPolicy": {
+      "unlimited": false,
+      "numberAllowed": 4.0
+    },
+    "requestManagement": {
+      "recalls": {
+        "minimumGuaranteedLoanPeriod": {
+          "duration": 1,
+          "intervalId": "Days"
+        },
+        "recallReturnInterval": {
+          "duration": 7,
+          "intervalId": "Days"
+        },
+        "allowRecallsToExtendOverdueLoans": false
+      },
+      "holds": {
+        "alternateCheckoutLoanPeriod": {
+          "duration": 7,
+          "intervalId": "Days"
+        }
+      }
+    },
+    "metadata": {
+      "createdDate": "2025-09-15T14:39:59.046+00:00",
+      "createdByUserId": "e252d213-8a69-4d26-9826-7de8c943a121",
+      "updatedDate": "2025-09-15T14:39:59.046+00:00",
+      "updatedByUserId": "e252d213-8a69-4d26-9826-7de8c943a121"
+    }
+  },
+  {
     "id": "6fe9c4bd-5f5a-4749-bf89-2aade9a6b5dd",
     "name": "2hour-1renew-15mingrace",
     "description": "2-hour loan (e.g., Music permres, EAS expensive locked stacks)",
@@ -750,54 +938,9 @@
     }
   },
   {
-    "id": "797669a3-2c64-4c49-9460-04f474fb2249",
-    "name": "1yearfixed-4renew-7daygrace",
-    "description": "Loan policy for monographs owned by SUL loaned to faculty.",
-    "loanable": true,
-    "loansPolicy": {
-      "profileId": "Fixed",
-      "closedLibraryDueDateManagementId": "END_OF_THE_NEXT_OPEN_DAY",
-      "gracePeriod": {
-        "duration": 7,
-        "intervalId": "Days"
-      },
-      "fixedDueDateScheduleId": "277410e1-2908-4e2b-bf96-ac81b4aedad4"
-    },
-    "renewable": true,
-    "renewalsPolicy": {
-      "unlimited": false,
-      "numberAllowed": 4.0
-    },
-    "requestManagement": {
-      "recalls": {
-        "minimumGuaranteedLoanPeriod": {
-          "duration": 1,
-          "intervalId": "Days"
-        },
-        "recallReturnInterval": {
-          "duration": 7,
-          "intervalId": "Days"
-        },
-        "allowRecallsToExtendOverdueLoans": false
-      },
-      "holds": {
-        "alternateCheckoutLoanPeriod": {
-          "duration": 7,
-          "intervalId": "Days"
-        }
-      }
-    },
-    "metadata": {
-      "createdDate": "2025-09-15T15:40:25.591+00:00",
-      "createdByUserId": "e252d213-8a69-4d26-9826-7de8c943a121",
-      "updatedDate": "2025-09-15T15:40:25.591+00:00",
-      "updatedByUserId": "e252d213-8a69-4d26-9826-7de8c943a121"
-    }
-  },
-  {
     "id": "7f292279-7184-4426-a93f-19a661334621",
     "name": "14day-2renew-3daygrace",
-    "description": "Games - at th emoment for ENG",
+    "description": "Loan policy for board games owned by Edu, Eng, Green.",
     "loanable": true,
     "loansPolicy": {
       "profileId": "Rolling",
@@ -833,8 +976,8 @@
     "metadata": {
       "createdDate": "2023-08-10T18:50:00.302+00:00",
       "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2023-08-10T18:50:00.302+00:00",
-      "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+      "updatedDate": "2025-11-26T17:39:58.203+00:00",
+      "updatedByUserId": "e252d213-8a69-4d26-9826-7de8c943a121"
     }
   },
   {
@@ -1035,7 +1178,7 @@
     "metadata": {
       "createdDate": "2023-08-10T18:49:58.305+00:00",
       "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2025-09-15T15:45:11.821+00:00",
+      "updatedDate": "2025-09-15T15:45:09.668+00:00",
       "updatedByUserId": "e252d213-8a69-4d26-9826-7de8c943a121"
     }
   },
@@ -1215,51 +1358,6 @@
     }
   },
   {
-    "id": "a97ece89-3ea0-45b5-b206-592c2c9759c3",
-    "name": "1qtr-7renew-7daygrace",
-    "description": "Loan policy for monos owned by SUL loaned to grad students",
-    "loanable": true,
-    "loansPolicy": {
-      "profileId": "Fixed",
-      "closedLibraryDueDateManagementId": "CURRENT_DUE_DATE",
-      "gracePeriod": {
-        "duration": 7,
-        "intervalId": "Days"
-      },
-      "fixedDueDateScheduleId": "d4b65d46-2637-4310-9b96-6d03d867f506"
-    },
-    "renewable": true,
-    "renewalsPolicy": {
-      "unlimited": false,
-      "numberAllowed": 7.0
-    },
-    "requestManagement": {
-      "recalls": {
-        "minimumGuaranteedLoanPeriod": {
-          "duration": 1,
-          "intervalId": "Days"
-        },
-        "recallReturnInterval": {
-          "duration": 7,
-          "intervalId": "Days"
-        },
-        "allowRecallsToExtendOverdueLoans": false
-      },
-      "holds": {
-        "alternateCheckoutLoanPeriod": {
-          "duration": 7,
-          "intervalId": "Days"
-        }
-      }
-    },
-    "metadata": {
-      "createdDate": "2025-09-15T15:39:54.205+00:00",
-      "createdByUserId": "e252d213-8a69-4d26-9826-7de8c943a121",
-      "updatedDate": "2025-09-15T15:40:40.328+00:00",
-      "updatedByUserId": "e252d213-8a69-4d26-9826-7de8c943a121"
-    }
-  },
-  {
     "id": "ab1b859d-c11a-4dbd-8e05-fbbd8eeac2b8",
     "name": "14day-norenew-15mingrace",
     "description": "Loan policy for 14-day reserves",
@@ -1330,7 +1428,7 @@
     "metadata": {
       "createdDate": "2023-08-10T18:49:55.827+00:00",
       "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
-      "updatedDate": "2025-09-15T15:42:13.362+00:00",
+      "updatedDate": "2025-09-15T15:45:45.418+00:00",
       "updatedByUserId": "e252d213-8a69-4d26-9826-7de8c943a121"
     }
   },
@@ -1388,6 +1486,31 @@
       "createdByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766",
       "updatedDate": "2023-08-10T18:49:53.062+00:00",
       "updatedByUserId": "58d0aaf6-dcda-4d5e-92da-012e6b7dd766"
+    }
+  },
+  {
+    "id": "bae47de7-c724-48cd-aadf-106caee4305e",
+    "name": "12week-norenew-7daygrace",
+    "description": "Loan policy for ILL materials loaned to Stanford users for 12 weeks",
+    "loanable": true,
+    "loansPolicy": {
+      "profileId": "Rolling",
+      "period": {
+        "duration": 12,
+        "intervalId": "Weeks"
+      },
+      "closedLibraryDueDateManagementId": "END_OF_THE_NEXT_OPEN_DAY",
+      "gracePeriod": {
+        "duration": 7,
+        "intervalId": "Days"
+      }
+    },
+    "renewable": false,
+    "metadata": {
+      "createdDate": "2026-02-06T01:56:00.100+00:00",
+      "createdByUserId": "e252d213-8a69-4d26-9826-7de8c943a121",
+      "updatedDate": "2026-02-06T01:56:00.100+00:00",
+      "updatedByUserId": "e252d213-8a69-4d26-9826-7de8c943a121"
     }
   },
   {
@@ -1745,7 +1868,7 @@
     },
     "metadata": {
       "createdDate": "2023-08-09T20:35:35.015+00:00",
-      "updatedDate": "2024-11-28T01:48:02.071+00:00"
+      "updatedDate": "2026-01-28T23:15:21.566+00:00"
     }
   },
   {

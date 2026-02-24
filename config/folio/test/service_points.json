@@ -43,11 +43,25 @@
     "discoveryDisplayName": "Marine Biology Library (Miller)"
   },
   {
+    "pickupLocation": true,
+    "code": "interimsp",
+    "details": null,
+    "id": "32c6f0c7-26e4-4350-8c29-1e11c2e3efc4",
+    "discoveryDisplayName": "Interim service point"
+  },
+  {
     "pickupLocation": false,
     "code": "SAL3",
     "details": null,
     "id": "3a306665-eec7-4a40-8f4d-608585b2a394",
     "discoveryDisplayName": "SAL3 (off-campus storage)"
+  },
+  {
+    "pickupLocation": true,
+    "code": "cd1",
+    "details": null,
+    "id": "3a40852d-49fd-4df2-a1f9-6e2641a6e91f",
+    "discoveryDisplayName": "Circulation Desk -- Hallway"
   },
   {
     "pickupLocation": true,
@@ -218,11 +232,22 @@
     "discoveryDisplayName": "SUL Metadata"
   },
   {
-    "pickupLocation": false,
+    "pickupLocation": true,
     "code": "EDUCATION",
-    "details": null,
+    "details": {
+      "isDefaultPickup": true,
+      "isDefaultForCampus": null,
+      "notes": null
+    },
     "id": "bd5fd8d9-72f3-4532-b68c-4db88063d16b",
     "discoveryDisplayName": "Education Library (Cubberley)"
+  },
+  {
+    "pickupLocation": true,
+    "code": "cd2",
+    "details": null,
+    "id": "c4c90014-c8c9-4ade-8f24-b5e313319f4b",
+    "discoveryDisplayName": "Circulation Desk -- Back Entrance"
   },
   {
     "pickupLocation": false,
