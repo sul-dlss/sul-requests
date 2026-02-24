@@ -4,6 +4,9 @@
 
 import { application } from "./application"
 
+import AccordionFormController from "./accordion_form_controller"
+application.register("accordion-form", AccordionFormController)
+
 import PatronRequestController from "./patron_request_controller"
 application.register("patron-request", PatronRequestController)
 

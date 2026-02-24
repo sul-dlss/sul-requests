@@ -46,7 +46,7 @@
 <% end %>
 
 <%= form_for(@patron_request,
-             data: { controller: 'patron-request' },
+             data: { controller: 'patron-request accordion-form' },
              html: { class: 'col-lg-8 accordion' },
              url: @patron_request.aeon_page? ? @patron_request.aeon_form_target : patron_requests_path,
              method: @patron_request.finding_aid? ? 'GET' : 'POST') do |f| %>
@@ -56,7 +56,7 @@
   <%= f.hidden_field :instance_hrid %>
   <%= f.hidden_field :origin_location_code %>
   <% if f.object.aeon_page? %>
-    <%= f.hidden_field :aeon_system_id, name: 'SystemID', value: 'sul-requests'  %>
+    <%= f.hidden_field :aeon_system_id, name: 'SystemID', value: 'sul-requests' %>
     <%= f.hidden_field :aeon_request_form, name: 'WebRequestForm', value: 'GenericRequestMonograph' %>
     <%= f.hidden_field :aeon_document_type, name: 'DocumentType', value: 'Monograph' %>
     <%= f.hidden_field :aeon_site, name: 'Site', value: f.object.aeon_site %>
@@ -88,7 +88,7 @@
       <span class="fw-bold">
         <%= t('aeon_pages.info_modal.header', library: LibraryLocation.library_name_by_code(f.object.aeon_reading_room_code)) %>
       </span>
-      <br/>
+      <br>
       <span>
         <%= t('aeon_pages.info_modal.reading_room_info') %>
         <%= t('aeon_pages.info_modal.more_details_html', library: LibraryLocation.library_name_by_code(f.object.aeon_reading_room_code), reading_room_url: Settings.libraries[f.object.aeon_reading_room_code].reading_room_url) %>
@@ -136,17 +136,17 @@
         <% if f.object.selectable_items.length >= 10 %>
           <div>
             <label for="item-selector-search" class="my-2">Search item list</label>
-            <input id="item-selector-search" type="search" incremental data-action="input->itemselector#filter analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Filter" class="form-control w-75" />
+            <input id="item-selector-search" type="search" incremental data-action="input->itemselector#filter analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Filter" class="form-control w-75">
           </div>
         <% end %>
         <div class="item-table my-4">
           <table class="table mb-0 border" data-controller="table" data-table-field-value="Callnumber" data-table-asc-value="true">
             <thead>
               <tr>
-                <th data-table-target="header" aria-sort="ascending" class="text-start" data-table-field-param="Callnumber" data-action='click->table#sort'>
+                <th data-table-target="header" aria-sort="ascending" class="text-start" data-table-field-param="Callnumber" data-action="click->table#sort">
                   <button type="button" class="btn btn-link pe-0 text-decoration-none text-black" data-action="analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Sort/Call number">Call number</button>
                 </th>
-                <th data-table-target="header" class="text-end" data-table-field-param="Status" data-action='click->table#sort'>
+                <th data-table-target="header" class="text-end" data-table-field-param="Status" data-action="click->table#sort">
                   <button type="button" class="btn btn-link pe-0 text-decoration-none text-black" data-action="analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Sort/Status">Status</button>
                 </th>
               </tr>
@@ -213,7 +213,7 @@
 
     <!-- pickup request (multiple items) -->
     <% if can?(:request_pickup, f.object) && !f.object.aeon_page? %>
-      <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', classes: [('d-none' if scan_pickup)], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'pickup', action: 'itemselector:changed@document->patron-request#enableAnyNextButtons' }, submit: true) do |c| %>
+      <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', classes: [('d-none' if scan_pickup)], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'pickup', action: 'itemselector:changed@document->accordion-form#enableAnyNextButtons' }, submit: true) do |c| %>
         <% c.with_title.with_content('Pickup request') %>
         <% c.with_body do %>
           <%= render 'pickup_destination', f: %>
