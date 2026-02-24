@@ -48,6 +48,7 @@ module Ead
       AeonClient::CreateRequestData.new(
         call_number: "#{identifier} #{volume['series']}",
         ead_number: identifier,
+        for_publication: volume['for_publication'] == 'yes',
         item_author: creator,
         item_citation: nil,
         item_date: nil,
@@ -55,13 +56,13 @@ module Ead
         item_info2: nil,
         item_info3: nil,
         item_info4: nil,
-        item_info5: nil,
+        item_info5: volume['requested_pages'],
         item_subtitle: nil,
         item_title: title,
         item_volume: volume['subseries'],
         shipping_option: nil,
         site: site,
-        special_request: nil,
+        special_request: volume['additional_information'],
         username: user.email_address,
         **request_data
       )

@@ -15,7 +15,7 @@ class ArchivesRequestsController < ApplicationController
     @ead_request = Ead::Request.new(user: current_user, ead: @ead)
   end
 
-  # rubocop:disable Metrics/PerceivedComplexity, Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   # This is the action triggered by the form submission to create an Aeon request.
   def create
     authorize! :create, Aeon::Request
@@ -23,7 +23,9 @@ class ArchivesRequestsController < ApplicationController
     # Fetch EAD data to get the actual collection information
     @ead = EadClient.fetch(params[:ead_url])
 
-    items = params[:volumes]&.reject(&:blank?)&.map { |json_str| JSON.parse(json_str) }
+    # Items formatted as hierarchical form parameters
+    items = params[:items].values if params[:items].present?
+
     @request = Ead::Request.new(user: current_user,
                                 ead: @ead,
                                 items:,
@@ -46,7 +48,7 @@ class ArchivesRequestsController < ApplicationController
 
     redirect_to new_archives_request_path(value: params[:ead_url])
   end
-  # rubocop:enable Metrics/PerceivedComplexity, Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   private
 

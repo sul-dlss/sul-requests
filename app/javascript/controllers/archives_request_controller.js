@@ -1,7 +1,20 @@
 import { Controller } from "@hotwired/stimulus"
 
+function camelize(value) {
+  return value.replace(/(?:[_-])([a-z0-9])/g, (_, char) => char.toUpperCase())
+}
+
+function typecast(value) {
+  try {
+    return JSON.parse(value)
+  } catch (o_O) {
+    return value
+  }
+}
+
 export default class extends Controller {
-  static targets = ["volumesDisplay", "requestTypeDisplay"]
+  static targets = ['items', "volumesDisplay", "requestTypeDisplay", "digitizationItems", "digitizationTemplate", "appointmentItems", "appointmentTemplate"]
+  static values = { selectedItems: Array }
 
   updateVolumesDisplay(event) {
     if (!this.hasVolumesDisplayTarget) return;
@@ -19,11 +32,100 @@ export default class extends Controller {
     }
   }
 
+  itemsTargetConnected(element) {
+    if (!element.checked) return;
+
+    const params = this.getStimulusParams(element);
+
+    if (!this.selectedItemsValue.find((item) => item.id == params.id)) {
+      this.selectedItemsValue = this.selectedItemsValue.concat([params]);
+    }
+  }
+
+  itemChanged(event) {
+    if (event.currentTarget.checked || event.params.checked) {
+      this.selectedItemsValue = this.selectedItemsValue.concat([event.params]);
+    } else {
+      this.selectedItemsValue = this.selectedItemsValue.filter((item) => item.id !== event.params.id);
+    }
+
+    this.dispatch('change', { detail: { selectedItems: this.selectedItemsValue }});
+  }
+
+  appendDigitizationItem(item) {
+    // Create the digitization section
+    const template = this.digitizationTemplateTarget;
+    const element = document.importNode(template.content, true);
+    const rootNode = element.querySelector('div');
+    rootNode.dataset.contentId = item.id;
+    rootNode.dataset.fieldsBaseName = rootNode.dataset.fieldsBaseName.replace('__DOMID__', item.id);
+    rootNode.innerHTML = rootNode.innerHTML.replace(/__TITLE__/g, `${item.series} > ${item.subseries}`).replace(/__DOMID__/g, item.id);
+    return this.digitizationItemsTarget.appendChild(rootNode);
+  }
+
+  appendAppointmentItem(item) {
+    const template = this.appointmentTemplateTarget;
+    const element = document.importNode(template.content, true);
+    const rootNode = element.querySelector('div');
+    rootNode.dataset.contentId = item.id;
+    rootNode.dataset.fieldsBaseName = rootNode.dataset.fieldsBaseName.replace('__DOMID__', item.id);
+    rootNode.innerHTML = rootNode.innerHTML.replace(/__TITLE__/g, `${item.series} > ${item.subseries}`).replace(/__DOMID__/g, item.id);
+    this.appointmentItemsTarget.appendChild(rootNode);
+  }
+
+  selectedItemsValueChanged(value, previousValue) {
+    const removed = (previousValue || []).filter(item => !value.find(v => v.id == item.id));
+    const added = value.filter(item => !(previousValue || []).find(v => v.id == item.id));
+
+    removed.forEach(item => {
+      // remove the digitization section, physical item section, and hidden inputs for the item
+      this.element.querySelectorAll(`[data-content-id="${item.id}"]`).forEach(e => e.remove());
+    });
+
+
+
+    added.forEach(item => {
+      const digitizationItem = this.appendDigitizationItem(item);
+      this.appendAppointmentItem(item);
+
+      // Create hidden inputs for the rst of the item's data
+      const baseName = digitizationItem.dataset.fieldsBaseName;
+      const hiddenContainer = document.createElement('div');
+      hiddenContainer.classList.add('d-none');
+      hiddenContainer.dataset.contentId = item.id;
+
+      Object.entries(item).forEach(([key, value]) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = `${baseName}[${key}]`;
+        input.value = value;
+
+        hiddenContainer.appendChild(input);
+      });
+      this.element.appendChild(hiddenContainer);
+    });
+  }
+
   updateRequestType(event) {
     if (!this.hasRequestTypeDisplayTarget) return;
 
     const label = event.target.labels[0]?.textContent.trim() || event.target.value;
     this.requestTypeDisplayTarget.textContent = label;
     this.requestTypeDisplayTarget.classList.remove('text-muted');
+  }
+
+  getStimulusParams(element) {
+    const params = {}
+    const pattern = new RegExp(`^data-${this.identifier}-(.+)-param$`, "i")
+
+    for (const { name, value } of Array.from(element.attributes)) {
+      const match = name.match(pattern)
+      const key = match && match[1]
+      if (key) {
+        params[camelize(key)] = typecast(value)
+      }
+    }
+
+    return params;
   }
 }

@@ -84,7 +84,13 @@
         <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', classes: ['d-none'], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'pickup' }) do |c| %>
           <% c.with_title.with_content('Appointment') %>
           <% c.with_body do %>
-            TODO: Appointment
+
+            <ul class="list-unstyled" data-archives-request-target="appointmentItems">
+            </ul>
+
+            <template data-archives-request-target="appointmentTemplate">
+              <%= render Aeon::AppointmentFormItemComponent.new(title: '__TITLE__', dom_id: '__DOMID__', base_name: 'items[__DOMID__]') %>
+            </template>
           <% end %>
         <% end %>
 
@@ -92,7 +98,13 @@
           <% c.with_title.with_content('Digitization') %>
 
           <% c.with_body do %>
-            TODO: Digitization
+
+            <div class="accordion" data-archives-request-target="digitizationItems">
+            </div>
+
+            <template data-archives-request-target="digitizationTemplate">
+              <%= render Aeon::DigitizationFormItemComponent.new(title: '__TITLE__', dom_id: '__DOMID__', base_name: 'items[__DOMID__]') %>
+            </template>
           <% end %>
         <% end %>
 
