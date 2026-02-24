@@ -509,3 +509,7 @@ label.btn-close {
   border-bottom-right-radius: var(--bs-accordion-border-radius) !important;
   padding: 0px;
 }
+
+.accordion-item:last-child .next-item {
+  display: none;
+}

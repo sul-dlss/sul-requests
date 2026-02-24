@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { Collapse } from "bootstrap"
 
 function camelize(value) {
   return value.replace(/(?:[_-])([a-z0-9])/g, (_, char) => char.toUpperCase())
@@ -86,8 +87,6 @@ export default class extends Controller {
       this.element.querySelectorAll(`[data-content-id="${item.id}"]`).forEach(e => e.remove());
     });
 
-
-
     added.forEach(item => {
       const digitizationItem = this.appendDigitizationItem(item);
       this.appendAppointmentItem(item);
@@ -108,6 +107,12 @@ export default class extends Controller {
       });
       this.element.appendChild(hiddenContainer);
     });
+
+    if (!this.digitizationItemsTarget.querySelector('[data-content-id] .accordion-collapse.show')) {
+      const first = this.digitizationItemsTarget.querySelector('[data-content-id] .accordion-collapse');
+
+      if (first) Collapse.getOrCreateInstance(first).show();
+    }
   }
 
   updateRequestType(event) {
@@ -144,5 +149,21 @@ export default class extends Controller {
       input.dataset.required = true;
       input.removeAttribute('required');
     });
+  }
+
+  nextItem(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const currentItem = event.target.closest('[data-content-id]');
+    const nextItem = currentItem.nextElementSibling;
+
+    const currentCollapse = currentItem.querySelector('.accordion-collapse');
+    const nextCollapse = nextItem?.querySelector('.accordion-collapse');
+
+    if (currentCollapse && nextCollapse) {
+      Collapse.getOrCreateInstance(currentCollapse).hide();
+      Collapse.getOrCreateInstance(nextCollapse).show();
+    }
   }
 }
