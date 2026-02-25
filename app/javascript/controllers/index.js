@@ -42,5 +42,5 @@ application.register("archives-request", ArchivesRequestController)
 import ModalController from "./modal_controller"
 application.register("modal", ModalController)
 
-import DigitizationItemController from "./digitization_item_controller"
-application.register("digitization-item", DigitizationItemController)
+import SelectedItemFormController from "./selected_item_form_controller"
+application.register("selected-item-form", SelectedItemFormController)
