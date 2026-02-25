@@ -26,6 +26,8 @@ class PatronRequestsController < ApplicationController
   def show; end
 
   def new
+    request.variant = :aeon if @patron_request.aeon_page?
+
     if Settings.features.requests_redesign
       render 'new_redesign'
     else
