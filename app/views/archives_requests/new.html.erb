@@ -51,7 +51,8 @@
             </fieldset>
           <% end %>
         <% end %>
-        <% if @ead.series_and_subseries&.many? %>
+
+        <% if @ead.series_and_subseries.any? %>
           <%= render AccordionStepComponent.new(id: 'items', step_index: step_enum.next, form_id: f.id) do |component| %>
             <% component.with_title.with_content('Items') %>
             <% component.with_body do %>
