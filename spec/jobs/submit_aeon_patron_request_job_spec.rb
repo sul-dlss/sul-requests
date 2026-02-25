@@ -12,9 +12,11 @@ RSpec.describe SubmitAeonPatronRequestJob do
                          origin_location_code: 'SPEC-STACKS', data:)
   end
   let(:bib_data) { build(:special_collections_single_holding) }
+  let(:stub_aeon_client) { instance_double(AeonClient, create_request: {}) }
 
   before do
     stub_bib_data_json(bib_data)
+    allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
   end
 
   context 'when the request is a digitization request' do
@@ -27,26 +29,26 @@ RSpec.describe SubmitAeonPatronRequestJob do
       }
     end
 
-    describe '#map_json' do
+    describe '#perform_now' do
       it 'correctly maps the Aeon request object to an Aeon client payload' do
-        mapped_json = described_class.new.map_json('aeon_username', request.aeon_requests.first)
-        expect(JSON.parse(mapped_json)).to match(hash_including(
-                                                   'callNumber' => 'ABC 123',
-                                                   'documentType' => 'Monograph',
-                                                   'forPublication' => false,
-                                                   'itemAuthor' => 'John Q. Public',
-                                                   'itemInfo1' => 'https://searchworks.stanford.edu/view/1234',
-                                                   'itemInfo5' => '23',
-                                                   'itemNumber' => '12345678',
-                                                   'itemTitle' => 'Special Collections Item Title',
-                                                   'location' => 'SPEC-STACKS',
-                                                   'site' => 'SPECUA',
-                                                   'shippingOption' => 'Electronic Delivery',
-                                                   'specialRequest' => 'info',
-                                                   'systemID' => 'sul-requests',
-                                                   'username' => 'aeon_username',
-                                                   'webRequestForm' => 'GenericRequestMonograph'
-                                                 ))
+        described_class.perform_now(request, username: 'aeon_username')
+
+        expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
+                                                                          call_number: 'ABC 123',
+                                                                          document_type: 'Monograph',
+                                                                          for_publication: false,
+                                                                          item_author: 'John Q. Public',
+                                                                          item_info1: 'https://searchworks.stanford.edu/view/1234',
+                                                                          item_info5: '23',
+                                                                          item_number: '12345678',
+                                                                          item_title: 'Special Collections Item Title',
+                                                                          location: 'SPEC-STACKS',
+                                                                          site: 'SPECUA',
+                                                                          shipping_option: 'Electronic Delivery',
+                                                                          special_request: 'info',
+                                                                          username: 'aeon_username',
+                                                                          web_request_form: 'GenericRequestMonograph'
+                                                                        ))
       end
     end
   end
