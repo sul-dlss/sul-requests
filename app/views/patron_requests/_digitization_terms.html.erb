@@ -27,7 +27,7 @@
     and photographs) and the right to deny a digitization request.
   </p>
   <div class="mt-2 px-3 py-2 bg-light">
-    <%= f.check_box :aeon_terms, required: true %>
+    <%= f.check_box :aeon_terms, { required: true }, 1, nil %>
     <%= f.label "aeon_terms", 'I agree to these terms', class:'fw-bold redesign-required-label' %>
     <br>
     By checking this box, you acknowledge and agree to comply with the policies and regulations above.
