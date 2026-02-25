@@ -30,7 +30,7 @@
         <%= render AccordionStepComponent.new(id: 'request_type', step_index: step_enum.next, form_id: f.id) do |component| %>
           <% component.with_title.with_content('Request type') %>
           <% component.with_body do %>
-            <fieldset class="mb-4">
+            <fieldset class="ps-2">
               <div>
                 <!--TODO: refactor out #updateType in a new JS controller. Or pick one. This is wrong -->
                 <%= f.radio_button :request_type, 'pickup', :class => 'form-check-input', :required => true, data: { action: 'archives-request#updateRequestType' } %>
@@ -42,7 +42,7 @@
                   <%= turbo_frame_tag 'earliest_appointment', src: available_aeon_appointments_path(@ead_request.reading_room&.id, Date.today) %>
                 </span>
               </div>
-              <div class="mt-4">
+              <div class="mt-2">
                 <%= f.radio_button :request_type, 'scan', :class => 'form-check-input', data: { action: 'archives-request#updateRequestType' } %>
                 <%= f.label :request_type_scan, :class => 'form-check-label ms-1' do %>
                   Digitization
