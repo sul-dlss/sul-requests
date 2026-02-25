@@ -44,7 +44,7 @@ RSpec.describe SubmitAeonPatronRequestJob do
                                                    'shippingOption' => 'Electronic Delivery',
                                                    'specialRequest' => 'info',
                                                    'systemID' => 'sul-requests',
-                                                   'username' => 'test@example.com',
+                                                   'username' => 'aeon_username',
                                                    'webRequestForm' => 'GenericRequestMonograph'
                                                  ))
       end
