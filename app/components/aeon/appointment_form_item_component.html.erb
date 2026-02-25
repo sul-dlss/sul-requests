@@ -2,6 +2,9 @@
   <div class="d-flex align-items-center">
     <i class="fs-4 bi bi-circle me-2" data-selected-item-form-target="status"></i>
     <span class="text-black fw-semibold"><%= title %></span>
+    <button class="btn btn-link p-0 ps-1" data-action="archives-request#deleteItem" data-delete-id="<%= dom_id %>" aria-label="Delete <%= title %>">
+      <i class="bi bi-trash"></i>
+    </button>
   </div>
   <select name="<%= base_name %>[appointment_id]" class="form-select" aria-label="Select an appointment" required>
   <option disabled selected></option>
