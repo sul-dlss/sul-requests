@@ -26,6 +26,15 @@ layer(components);
   --bs-danger-border-subtle: #f1aeb5;
 }
 
+.accordion {
+  --bs-accordion-active-bg: var(--stanford-fog-light);
+  --bs-accordion-btn-bg: var(--stanford-fog-light);
+
+  .accordion-header {
+    background-color: var(--bs-accordion-btn-bg);
+  }
+}
+
 .bg-su-process-black-50 {
   background-color: rgba(var(--stanford-process-black-50-rgb), 1);
 }
@@ -171,7 +180,6 @@ summary .bi-chevron-right::before {
 }
 
 .accordion-button, .accordion-header {
-  background-color: var(--stanford-fog-light) !important;
   border-top-left-radius: var(--bs-accordion-border-radius) !important;
   border-top-right-radius: var(--bs-accordion-border-radius) !important;
   border-bottom-left-radius: var(--bs-accordion-border-radius) !important;
@@ -501,4 +509,27 @@ label.btn-close {
 
 .accordion-item:last-child .next-item {
   display: none;
+}
+
+.digitization-accordion .accordion-item:only-child {
+  --bs-accordion-border-width: 0;
+  --bs-accordion-active-bg: transparent;
+  --bs-accordion-btn-bg: transparent;
+
+  .accordion-button {
+    background-color: transparent;
+    border-width: 0;
+  }
+
+  .status-icon, .disclosure-icon {
+    display: none;
+  }
+
+  .item-title {
+    background-color: var(--stanford-fog-light);
+    padding-bottom: 4px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 4px;
+  }
 }
