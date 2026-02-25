@@ -29,7 +29,7 @@ RSpec.describe SubmitAeonPatronRequestJob do
 
     describe '#map_json' do
       it 'correctly maps the Aeon request object to an Aeon client payload' do
-        mapped_json = described_class.new.map_json(request.patron.email, request.aeon_requests.first)
+        mapped_json = described_class.new.map_json('aeon_username', request.aeon_requests.first)
         expect(JSON.parse(mapped_json)).to match(hash_including(
                                                    'callNumber' => 'ABC 123',
                                                    'documentType' => 'Monograph',

@@ -246,8 +246,8 @@ class PatronRequest < ApplicationRecord
     SubmitPatronRequestJob.perform_later(self)
   end
 
-  def submit_aeon_request
-    SubmitAeonPatronRequestJob.perform_now(self)
+  def submit_aeon_request(username:)
+    SubmitAeonPatronRequestJob.perform_now(self, username:)
   end
 
   # @return [Folio::Instance]

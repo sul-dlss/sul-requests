@@ -6,9 +6,8 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   queue_as :default
   retry_on Faraday::ConnectionFailed
 
-  def perform(patron_request)
+  def perform(patron_request, username:)
     aeon_requests = patron_request.aeon_requests
-    username = patron_request.patron.email
 
     aeon_requests.each do |aeon_request|
       submit_aeon_request(username, aeon_request)
