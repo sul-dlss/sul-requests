@@ -26,8 +26,8 @@
           </a>
         <% end %>
         <% if helpers.can? :destroy, request %>
-          <button class="btn btn-link su-underline p-0" type="submit" aria-label="delete <%= title %> request" data-bs-toggle="modal" data-bs-target="#delete-<%= transaction_number %>">
-            <i class="bi bi-trash align-middle"></i>
+          <button class="btn btn-link su-underline p-0" type="submit" data-bs-toggle="modal" data-bs-target="#delete-<%= transaction_number %>">
+            <i class="bi bi-trash align-middle"></i><span class="visually-hidden">Delete <%= title %> request</span>
           </button>
         <% end %>
       <% end %>

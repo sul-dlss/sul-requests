@@ -19,7 +19,7 @@
             class: 'series-header btn btn-sm btn-link text-decoration-none p-0 ms-2',
             data: { bs_toggle: 'collapse' },
             aria: { expanded: false, controls: content_id } do %>
-        <i class="bi bi-chevron-right"></i>
+        <i class="bi bi-chevron-right disclosure-icon"></i>
       <% end %>
       <%# Checkbox to select entire container %>
       <%= f.check_box :volumes, 
@@ -74,7 +74,7 @@
             class: 'series-header btn btn-link text-decoration-none text-start p-0 mb-2 d-flex align-items-center gap-2',
             data: { bs_toggle: 'collapse' },
             aria: { expanded: false, controls: subseries_id } do %>
-        <i class="bi bi-chevron-right"></i>
+        <i class="bi bi-chevron-right disclosure-icon"></i>
         <span class="<%= 'series-title' if series_title.nil? %>"><%= display_group.title %></span>
         <span class="badge bg-light text-dark fw-normal"><%= display_group.contents.count %></span>
       <% end %>

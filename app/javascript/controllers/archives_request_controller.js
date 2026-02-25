@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import { Collapse } from "bootstrap"
+import sanitizeHtml from 'sanitize-html';
 
 function camelize(value) {
   return value.replace(/(?:[_-])([a-z0-9])/g, (_, char) => char.toUpperCase())
@@ -53,6 +54,14 @@ export default class extends Controller {
     this.dispatch('change', { detail: { selectedItems: this.selectedItemsValue }});
   }
 
+  formatItemTitle(item) {
+    const segments = [];
+    if (item.series) segments.push(item.series);
+    if (item.subseries) segments.push(item.subseries);
+
+    return segments.join('<i class="bi bi-chevron-right mx-1"></i>');
+  }
+
   appendDigitizationItem(item) {
     // Create the digitization section
     const template = this.digitizationTemplateTarget;
@@ -60,7 +69,7 @@ export default class extends Controller {
     const rootNode = element.querySelector('div');
     rootNode.dataset.contentId = item.id;
     rootNode.dataset.fieldsBaseName = rootNode.dataset.fieldsBaseName.replace('__DOMID__', item.id);
-    rootNode.innerHTML = rootNode.innerHTML.replace(/__TITLE__/g, `${item.series} > ${item.subseries}`).replace(/__DOMID__/g, item.id);
+    rootNode.innerHTML = rootNode.innerHTML.replace(/__TITLE__/g, this.formatItemTitle(item)).replace(/__DOMID__/g, item.id);
 
     if (this.requestTypeValue != 'scan') this.disableRequiredInputs(rootNode);
     return this.digitizationItemsTarget.appendChild(rootNode);
@@ -72,7 +81,7 @@ export default class extends Controller {
     const rootNode = element.querySelector('div');
     rootNode.dataset.contentId = item.id;
     rootNode.dataset.fieldsBaseName = rootNode.dataset.fieldsBaseName.replace('__DOMID__', item.id);
-    rootNode.innerHTML = rootNode.innerHTML.replace(/__TITLE__/g, `${item.series} > ${item.subseries}`).replace(/__DOMID__/g, item.id);
+    rootNode.innerHTML = rootNode.innerHTML.replace(/__TITLE__/g, this.formatItemTitle(item)).replace(/__DOMID__/g, item.id);
     if (this.requestTypeValue == 'scan') this.disableRequiredInputs(rootNode);
 
     this.appointmentItemsTarget.appendChild(rootNode);

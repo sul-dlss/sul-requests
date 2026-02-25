@@ -38,7 +38,7 @@
                     </a>
                 </p>
                 <details data-action="analytics#send" data-analytics-action-param="Library ID" data-analytics-category-param="Login">
-                    <summary class="btn btn-link p-0 su-underline">Login with Library ID/PIN <i class="bi bi-chevron-right"></i></summary>
+                    <summary class="btn btn-link p-0 su-underline">Login with Library ID/PIN <i class="bi bi-chevron-right disclosure-icon"></i></summary>
                     <%= form_tag login_by_university_id_url, method: 'POST', class: 'form p-3', data: { turbo: false } do %>
                         <%= hidden_field_tag :referrer, new_patron_request_path(new_params.merge(step: 'select')) %>
                         <div class="form-group mt-2">
@@ -80,7 +80,7 @@
                 </a></p>
                 <details data-action="analytics#send" data-analytics-action-param="Library ID" data-analytics-category-param="Login">
 
-                    <summary class="btn btn-link p-0<% if PatronAbility.anonymous.cannot? :new, @patron_request %> disabled<% else %> su-underline<% end %>">Proceed as visitor <i class="bi bi-chevron-right"></i></summary>
+                    <summary class="btn btn-link p-0<% if PatronAbility.anonymous.cannot? :new, @patron_request %> disabled<% else %> su-underline<% end %>">Proceed as visitor <i class="bi bi-chevron-right disclosure-icon"></i></summary>
                     <% if PatronAbility.anonymous.can? :new, @patron_request %>
                         <%= form_tag register_visitor_url, method: 'POST', class: 'form p-3', data: { turbo: false } do %>
                             <%= hidden_field_tag :referrer, new_patron_request_path(new_params.merge(step: 'select')) %>

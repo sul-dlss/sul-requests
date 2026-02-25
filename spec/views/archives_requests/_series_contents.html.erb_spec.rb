@@ -102,7 +102,7 @@ RSpec.describe 'archives_requests/_series_contents.html.erb' do
       expect(rendered).to have_css('.badge', text: '1')
 
       # Should have collapse structure with chevron icon
-      expect(rendered).to have_css('i.bi-chevron-right')
+      expect(rendered).to have_css('i.bi-chevron-right.disclosure-icon')
       expect(rendered).to have_css('.collapse')
     end
   end
