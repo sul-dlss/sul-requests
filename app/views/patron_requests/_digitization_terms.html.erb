@@ -1,5 +1,5 @@
 <div>
-  <div class="p-0 my-1 fw-bold">Copyright and permission to publish</div>
+  <div class="p-0 my-2 fw-semibold">Copyright and permission to publish</div>
   <p>
     In addition to appropriately citing materials, the user will comply with copyright law (Title 17, U.S. Code). 
     Permission of the copyright hlder may be required for use, publication (including posting materials on publicly 
@@ -11,12 +11,12 @@
     The user agrees to indemnify Stanford University from any claim relating to the publication of
     materials from the Stanford University Libraries.
   </p>
-  <div class="p-0 my-1 fw-bold">Photography</div>
+  <div class="p-0 my-2 fw-semibold">Photography</div>
   <p>
     Photography of collections is generally permitted. Permissions, practices, and equipment allowances
     may vary by reading room and collection. Please consult the reading room staff for further information.
   </p>
-  <div class="p-0 my-1 fw-bold">Reproduction requests</div>
+  <div class="p-0 my-2 fw-semibold">Reproduction requests</div>
   <p>
     Digitization requests will be mediated through reading room staff. Some digitization requests may be 
     completed at a cost to the researcher, while others may be provided free of charge. More information can be found on the
@@ -26,10 +26,11 @@
     The libraries reserve the right to review materials before a digital copy is made (including scans, digital copies,
     and photographs) and the right to deny a digitization request.
   </p>
-  <div class="mt-2 px-3 py-2 bg-light">
+  <div class="mt-2 px-3 py-2 bg-light d-flex flex-row justify-content-start align-items-baseline gap-2">
     <%= f.check_box :aeon_terms, { required: true }, 1, nil %>
-    <%= f.label "aeon_terms", 'I agree to these terms', class:'fw-bold redesign-required-label' %>
-    <br>
-    By checking this box, you acknowledge and agree to comply with the policies and regulations above.
+    <div>
+      <%= f.label "aeon_terms", 'I agree to these terms', class:'fw-bold redesign-required-label d-block' %>
+      By checking this box, you acknowledge and agree to comply with the policies and regulations above.
+    </div>
   </div>
 </div>

@@ -141,11 +141,11 @@ summary.btn::-webkit-details-marker{
   display: none;
 }
 
-details[open] summary .bi-chevron-right::before {
+details[open] summary .disclosure-icon::before {
  transform: rotate(-90deg);
 }
 
-summary .bi-chevron-right::before {
+summary .disclosure-icon::before {
   transition: .25s transform ease;
   font-weight: 900!important;
 }
@@ -373,8 +373,8 @@ label.btn-close {
   --bs-btn-disabled-opacity: 0.65;
 }
 
-.series-header[aria-expanded="true"] .bi-chevron-right::before,
-.accordion-button[aria-expanded="true"] .bi-chevron-right::before {
+.series-header[aria-expanded="true"] .disclosure-icon::before,
+.accordion-button[aria-expanded="true"] .disclosure-icon::before {
  transform: rotate(90deg);
 }
 

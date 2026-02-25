@@ -1,11 +1,11 @@
 <% step_enum = Enumerator.new { |y| n = 0; loop { y << (n += 1) } } %>
 <div class="container mt-4">
-  <h1>New request</h1>
+  <h1 class="mb-4">New request</h1>
   <div class="row">
     <div class="col-8">
       <div class="card mb-4 bg-light rounded-0 border-0">
         <div class="card-body">
-          <h2><%= @ead.title || 'Not available' %></h2>
+          <h2 class="fs-4"><%= @ead.title || 'Not available' %></h2>
           <div class="d-flex gap-md-3 flex-md-row flex-column">
             <span>Archive/Manuscript (<%= @ead.date %>)</span>
             <span>Call number: <%= @ead.identifier %></span>
@@ -21,8 +21,8 @@
             </div>
           <% end %>
           <% if @ead.extent %>
-            <hr class="my-1">
-            <div><b>Extent: </b><%= @ead.extent %></div>
+            <hr class="my-2">
+            <div><b class="fw-semibold">Extent: </b><%= @ead.extent %></div>
           <% end %>
         </div>
       </div>
@@ -30,7 +30,7 @@
         <%= render AccordionStepComponent.new(id: 'request_type', step_index: step_enum.next, form_id: f.id) do |component| %>
           <% component.with_title.with_content('Request type') %>
           <% component.with_body do %>
-            <fieldset class="mb-4">
+            <fieldset class="ps-2">
               <div>
                 <!--TODO: refactor out #updateType in a new JS controller. Or pick one. This is wrong -->
                 <%= f.radio_button :request_type, 'pickup', :class => 'form-check-input', :required => true, data: { action: 'archives-request#updateRequestType' } %>
@@ -42,7 +42,7 @@
                   <%= turbo_frame_tag 'earliest_appointment', src: available_aeon_appointments_path(@ead_request.reading_room&.id, Date.today) %>
                 </span>
               </div>
-              <div class="mt-4">
+              <div class="mt-2">
                 <%= f.radio_button :request_type, 'scan', :class => 'form-check-input', data: { action: 'archives-request#updateRequestType' } %>
                 <%= f.label :request_type_scan, :class => 'form-check-label ms-1' do %>
                   Digitization
@@ -51,7 +51,8 @@
             </fieldset>
           <% end %>
         <% end %>
-        <% if @ead.series_and_subseries&.many? %>
+
+        <% if @ead.series_and_subseries.any? %>
           <%= render AccordionStepComponent.new(id: 'items', step_index: step_enum.next, form_id: f.id) do |component| %>
             <% component.with_title.with_content('Items') %>
             <% component.with_body do %>
