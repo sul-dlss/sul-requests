@@ -25,10 +25,19 @@ class PatronRequestsController < ApplicationController
 
   def show; end
 
-  def new; end
+  def new
+    if Settings.features.requests_redesign
+      render 'new_redesign'
+    else
+      render 'new'
+    end
+  end
 
   def create
-    if @patron_request.save && @patron_request.submit_later
+    if Settings.features.requests_redesign && @patron_request.aeon_page?
+      @patron_request.submit_aeon_request(username: current_user.aeon.username)
+      redirect_to @patron_request
+    elsif @patron_request.save && @patron_request.submit_later
       redirect_to @patron_request
     else
       render 'new'
@@ -58,6 +67,8 @@ class PatronRequestsController < ApplicationController
   end
 
   def redirect_aeon_pages
+    return if Settings.features.requests_redesign
+
     return unless @patron_request.aeon_page? && @patron_request.finding_aid?
 
     redirect_to @patron_request.finding_aid
@@ -83,6 +94,7 @@ class PatronRequestsController < ApplicationController
                                    :for_sponsor_id, :for_sponsor,
                                    :fulfillment_type, :request_type,
                                    :scan_page_range, :scan_authors, :scan_title,
-                                   :barcode, { barcodes: [] }])
+                                   :aeon_reading_special, :aeon_terms,
+                                   :barcode, { barcodes: [] }, { aeon_item: {} }])
   end
 end

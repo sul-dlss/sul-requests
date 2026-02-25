@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import { Collapse } from "bootstrap"
 
 export default class extends Controller {
-  static targets = ['earliestAvailable', 'accordion', 'destination', 'proxyScanWarning', 'sponsorScanWarning', 'selectSponsor', 'sponsorRadioButton']
+  static targets = ['earliestAvailable', 'accordion', 'destination', 'proxyScanWarning', 'sponsorScanWarning', 'selectSponsor', 'sponsorRadioButton', 'digitization', 'reading']
 
   connect() {
     if (this.accordionTargets.length == 1) {
@@ -197,5 +197,58 @@ export default class extends Controller {
       const destinationName = event.target.selectedOptions[0].textContent;
       this.destinationTarget.textContent = destinationName;
     }
+  }
+
+  // When items are selected or deselected, update the Aeon reading and digitization options
+  // accordingly, if digitization is the request type that is currently selected
+  updateAeonOptions(event) {
+    const selectedItems = event.detail.selectedItems
+
+    const requestType = this.element.querySelector('input[name="patron_request[request_type]"]:checked').value
+    const _this = this
+
+
+    // Hide and disable all digitization options
+    this.hideAllDigitizationOptions()
+    if(requestType == 'digitization') {
+      event.detail.selectedItems.forEach(selectedItem => { 
+        var callnumber = selectedItem.label 
+        _this.showDigitizationOption(callnumber)
+      })
+    } else if(requestType == 'reading'){
+      event.detail.selectedItems.forEach(selectedItem => { 
+        var callnumber = selectedItem.label 
+        _this.showReadingOption(callnumber)
+      })
+    }
+  }
+
+  hideAllDigitizationOptions() {
+    var _this = this
+    this.digitizationTargets.forEach(digitizationTarget => {
+      // Also disable required inputs so that the next/continue button will work
+      // when the visible/enabled sections' required inputs have been filled out
+      _this.disableRequiredInputs(digitizationTarget)
+      digitizationTarget.querySelectorAll("input, textarea").forEach(element => {
+        element.disabled = true
+      })
+      digitizationTarget.classList.add('d-none')
+    })
+  }
+
+  showDigitizationOption(callnumber) {
+    const digitizationTarget = this.digitizationTargets.find(t => t.dataset.callnumber == callnumber)
+    this.enableRequiredInputs(digitizationTarget)
+    digitizationTarget.querySelectorAll("input, textarea").forEach(element => {
+      element.disabled = false
+    })
+
+    digitizationTarget.classList.remove('d-none')
+  }
+
+  showReadingOption(callnumber) {
+    const readingTarget = this.readingTargets.find(t => t.dataset.callnumber == callnumber)
+  
+    readingTarget.classList.remove('d-none')
   }
 }
