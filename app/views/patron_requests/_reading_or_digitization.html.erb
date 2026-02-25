@@ -4,8 +4,10 @@
   <div>
     <%= f.radio_button :request_type, 'reading', :class => 'form-check-input', :required => true, data: { action: 'patron-request#updateType' } %>
     <%= f.label :request_type_reading, :class => 'form-check-label ms-1' do %>
-      Reading room appointment     <span class="text-cardinal ms-4 mt-1">
-        Earliest appointment available: Tuesday, Feb 18, 2026
+      Reading room appointment
+      <span class="text-cardinal ms-2 mt-1">
+        Earliest appointment available:
+        <%= turbo_frame_tag 'earliest_appointment', src: available_aeon_appointments_path(f.object.aeon_reading_room&.id, Date.today) %>
       </span>
     <% end %>
 
