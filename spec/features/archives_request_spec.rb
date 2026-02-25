@@ -142,6 +142,9 @@ RSpec.describe 'Requesting an item from an EAD', :js do
 
       click_button 'Continue'
 
+      check 'Box 1'
+      click_button 'Continue'
+
       # In the Appointment step
       expect(page).to have_content('Field Reading Room')
       expect(page).to have_content('Hours: Monday - Friday, 9:00 - 4:45 PM')
