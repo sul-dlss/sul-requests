@@ -80,7 +80,7 @@
 
 <!-- aeon reading room request -->
 <!-- removed any 'can do this' part for both -->
-<%= render AccordionStepComponent.new(request: f.object, id: 'reading', classes: [('d-none' if f.object.aeon_page?)], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'reading' }, submit: true) do |c| %>
+<%= render AccordionStepComponent.new(request: f.object, id: 'reading', classes: ['d-none'], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'reading' }, submit: true) do |c| %>
   <% c.with_title.with_content('Reading room') %>
   <% c.with_body do %>
     <%= render 'reading_options', f: %>
@@ -89,7 +89,7 @@
 
 <!-- aeon digitization request -->
 
-<%= render AccordionStepComponent.new(request: f.object, id: 'digitization', classes: [('d-none' if f.object.aeon_page?)], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'digitization' }) do |c| %>
+<%= render AccordionStepComponent.new(request: f.object, id: 'digitization', classes: ['d-none'], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'digitization' }) do |c| %>
   <% c.with_title.with_content('Digitization') %>
   <% c.with_body do %>
     <%= render 'digitization_options', f: %>
@@ -98,7 +98,7 @@
 
 <!-- Digitization terms, only shows up for digitization -->
 
-<%= render AccordionStepComponent.new(request: f.object, id: 'terms', classes: [('d-none' if f.object.aeon_page?)], step_index: step_enum.next, form_id: f.id, data: { 'patronrequest-forRequestType': 'digitization' }, submit: true) do |c| %>
+<%= render AccordionStepComponent.new(request: f.object, id: 'terms', classes: ['d-none'], step_index: step_enum.next, form_id: f.id, data: { 'patronrequest-forRequestType': 'digitization' }, submit: true) do |c| %>
   <% c.with_title.with_content('Terms') %>
   <% c.with_body do %>
     <%= render 'digitization_terms', f: %>
