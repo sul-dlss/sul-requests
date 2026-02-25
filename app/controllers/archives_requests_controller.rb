@@ -7,6 +7,10 @@ class ArchivesRequestsController < ApplicationController
 
   rescue_from EadClient::Error, with: :handle_ead_client_error
 
+  def show
+    @aeon_requests = Aeon::RequestGrouping.new(current_user.aeon.requests.select { |x| x.reference_number == "UUID:#{params[:id]}" })
+  end
+
   def new
     authorize! :new, Aeon::Request
 
@@ -41,7 +45,7 @@ class ArchivesRequestsController < ApplicationController
       flash[:warning] = "#{successes.count} succeeded, #{failures.count} failed: #{failures.pluck(:volume).join(', ')}"
     end
 
-    redirect_to new_archives_request_path(value: new_params[:ead_url])
+    redirect_to archives_request_path(request.uuid)
   end
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
