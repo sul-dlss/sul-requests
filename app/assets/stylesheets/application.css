@@ -147,13 +147,6 @@ summary .bi-chevron-right::before {
   margin-left: 5px;
 }
 
-.redesign-required-label::after {
-  content: '*required';
-  color: var(--stanford-cardinal);
-  margin-left: 5px;
-  font-weight: normal;
-}
-
 #user-header-hide:checked + .user-header {
   display: none;
 }
