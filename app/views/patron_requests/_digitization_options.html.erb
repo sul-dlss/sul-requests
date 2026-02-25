@@ -1,13 +1,6 @@
 <div class="row p-3 gap-3 flex-column flex-md-row">
-  <div class="aeon-form-notice p-3">
-    <span class="fw-bold">Notice</span>
-    <ul>
-      <li>Please be as specific as possible with your request.</li>
-      <li>All orders will be delivered electronically unless otherwise requested.</li>
-      <li>Some requests may require a fee. If payment appliesm a staff member will contact you to review the 
-      cost and confirm whether you wish to proceed.</li>
-    </ul>
-  </div>    
+  <%= render 'digitization_notice' %>
+
   <% accordion_class = f.object.selectable_items.many? ? 'accordion-sub-item' : 'p-0' %>
   <% field_class = f.object.selectable_items.many? ? 'mx-3 my-1' : 'm-0' %>
   <% sort_holdings(f.object.selectable_items).each do |selectable_item| %>
