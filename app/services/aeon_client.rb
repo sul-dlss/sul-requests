@@ -130,33 +130,35 @@ class AeonClient
                                   :item_info3, :item_info4, :item_info5, :item_number, :item_subtitle, :item_title, :item_volume,
                                   :location, :web_request_form,
                                   :reference_number, :shipping_option, :site, :special_request, :system_id, :username) do
-    def as_json # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    def omission = '…'
+
+    def as_json # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
       {
         appointmentId: appointment_id,
-        callNumber: call_number,
-        eadNumber: ead_number,
+        callNumber: call_number&.truncate(255, omission:),
+        eadNumber: ead_number&.truncate(255, omission:),
         forPublication: for_publication,
-        format: format,
-        itemAuthor: item_author,
-        itemCitation: item_citation,
-        itemDate: item_date,
-        itemInfo1: item_info1,
-        itemInfo2: item_info2,
-        itemInfo3: item_info3,
-        itemInfo4: item_info4,
-        itemInfo5: item_info5,
-        item_number: item_number,
-        itemSubTitle: item_subtitle,
-        itemTitle: item_title,
-        itemVolume: item_volume,
-        location: location,
-        referenceNumber: reference_number,
-        shippingOption: shipping_option,
+        format: format&.truncate(255, omission:),
+        itemAuthor: item_author&.truncate(255, omission:),
+        itemCitation: item_citation&.truncate(255, omission:),
+        itemDate: item_date&.truncate(50, omission:),
+        itemInfo1: item_info1&.truncate(255, omission:),
+        itemInfo2: item_info2&.truncate(255, omission:),
+        itemInfo3: item_info3&.truncate(255, omission:),
+        itemInfo4: item_info4&.truncate(255, omission:),
+        itemInfo5: item_info5&.truncate(255, omission:),
+        item_number: item_number&.truncate(50, omission:),
+        itemSubTitle: item_subtitle&.truncate(255, omission:),
+        itemTitle: item_title&.truncate(255, omission:),
+        itemVolume: item_volume&.truncate(255, omission:),
+        location: location&.truncate(255, omission:),
+        referenceNumber: reference_number&.truncate(50, omission:),
+        shippingOption: shipping_option&.truncate(255, omission:),
         site: site,
-        specialRequest: special_request,
+        specialRequest: special_request&.truncate(255, omission:),
         system_id: system_id,
-        username: username,
-        webRequestForm: web_request_form || 'SUL Requests'
+        username: username&.truncate(50, omission:),
+        webRequestForm: web_request_form&.truncate(100, omission:) || 'SUL Requests'
       }.compact
     end
 
