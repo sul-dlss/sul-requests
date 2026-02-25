@@ -99,7 +99,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       check 'Box 12'
       click_button 'Continue'
 
-      click_button 'Box 12'
+      expect(page).to have_content('Requested pages')
       fill_in 'Requested pages', with: 'Pages 1-10'
       fill_in 'Additional information', with: 'Testing only'
       click_button 'Continue'
