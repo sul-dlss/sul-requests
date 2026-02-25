@@ -73,7 +73,7 @@
 <% end %>
 
 <%= form_for(@patron_request,
-            data: { controller: 'patron-request' },
+            data: { controller: 'patron-request archives-request' },
             html: { class: 'col-lg-8 accordion' },
             url: patron_requests_path,
             method: 'POST') do |f| %>
@@ -147,7 +147,12 @@
         </div>
       <% end %>
       <div class="item-table my-4">
+        <% if f.object.aeon_page? %>
+        <table class="table mb-0 border" data-action='change->archives-request#itemChanged change->archives-request#updateVolumesDisplay' data-archives-request-target='items' data-archives-request-series-param='Callnumber'>
+        <% else %>
         <table class="table mb-0 border" data-controller="table" data-table-field-value="Callnumber" data-table-asc-value="true">
+        <% end %>
+        
           <thead>
             <tr>
               <th data-table-target="header" aria-sort="ascending" class="text-start" data-table-field-param="Callnumber" data-action='click->table#sort'>
@@ -303,7 +308,12 @@
   <%= render AccordionStepComponent.new(request: f.object, id: 'digitization', classes: [('d-none' if f.object.aeon_page?)], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'digitization' }) do |c| %>
     <% c.with_title.with_content('Digitization') %>
     <% c.with_body do %>
-      <%= render 'digitization_options', f: %>
+      <div class="accordion" data-archives-request-target="digitizationItems">
+      </div>
+
+      <template data-archives-request-target="digitizationTemplate">
+        <%= render Aeon::DigitizationFormItemComponent.new(title: '__TITLE__', dom_id: '__DOMID__', base_name: 'items[__DOMID__]') %>
+      </template>
     <% end %>
   <% end %>
 
