@@ -20,8 +20,8 @@ module Aeon
     end
 
     def format_info
-      return "Pages: #{pages}" if pages
-      return "Item: #{volume}" if volume
+      return "Pages: #{pages}" if pages.present?
+      return "Item: #{volume}" if volume.present?
       return "Format: #{format}" if format
 
       nil
