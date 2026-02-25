@@ -1,35 +1,35 @@
-<div class="row p-3 gap-3 flex-column flex-md-row">
-  <div class='p-0 my-1 fw-bold'>Copyright and permission to publish</div>
-  <div class='my-1'>
+<div>
+  <div class="p-0 my-1 fw-bold">Copyright and permission to publish</div>
+  <p>
     In addition to appropriately citing materials, the user will comply with copyright law (Title 17, U.S. Code). 
     Permission of the copyright hlder may be required for use, publication (including posting materials on publicly 
     available websites), or reproduction. Useres acknowledge that they are solely responsible for determining
     the copyright status of the materials they use and for obtaining any necessary permissions from the
     copyright owner
-  </div>
-  <div class='my-1'>
+  </p>
+  <p>
     The user agrees to indemnify Stanford University from any claim relating to the publication of
     materials from the Stanford University Libraries.
-  </div>
-  <div class='p-0 my-1 fw-bold'>Photography</div>
-  <div class='my-1'>
+  </p>
+  <div class="p-0 my-1 fw-bold">Photography</div>
+  <p>
     Photography of collections is generally permitted. Permissions, practices, and equipment allowances
     may vary by reading room and collection. Please consult the reading room staff for further information.
-  </div>
-  <div class='p-0 my-1 fw-bold'>Reproduction requests</div>
-  <div class='my-1'>
+  </p>
+  <div class="p-0 my-1 fw-bold">Reproduction requests</div>
+  <p>
     Digitization requests will be mediated through reading room staff. Some digitization requests may be 
     completed at a cost to the researcher, while others may be provided free of charge. More information can be found on the
     policy page for each reading room (linked above).
-  </div>
-  <div class='my-1'>
+  </p>
+  <p>
     The libraries reserve the right to review materials before a digital copy is made (including scans, digital copies,
     and photographs) and the right to deny a digitization request.
-  </div>
-  <div class='my-1 p-3 terms-agree'>
-          <%= check_box_tag "aeon_terms", 'agree', required: true, id: "aeon_terms" %>
-          <%= label_tag "aeon_terms", 'I agree to these terms', class:'fw-bold redesign-required-label' %>
-          <br/>
-          By checking this box, you acknowledge and agree to comply with the policies and regulations above.
+  </p>
+  <div class="mt-2 px-3 py-2 bg-light">
+    <%= f.check_box :aeon_terms, required: true %>
+    <%= f.label "aeon_terms", 'I agree to these terms', class:'fw-bold redesign-required-label' %>
+    <br>
+    By checking this box, you acknowledge and agree to comply with the policies and regulations above.
   </div>
 </div>

@@ -482,10 +482,6 @@ label.btn-close {
   background-color: rgba(var(--stanford-digital-blue-dark-rgb), 0.08)
 }
 
-.terms-agree {
-  background-color: var(--stanford-fog-light)
-}
-
 .redesign-required-label::after {
   content: '*required';
   color: var(--stanford-cardinal);
