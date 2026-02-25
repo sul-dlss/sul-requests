@@ -1,0 +1,74 @@
+<%= render AccordionStepComponent.new(id: 'barcodes', step_index: step_enum.next, form_id: f.id, data: { 'switch-selector': true }) do |c| %>
+  <% c.with_title.with_content('Select item(s)') %>
+  <% c.with_body do %>
+    <% if f.object.selectable_items.length >= 10 %>
+      <div>
+        <label for="item-selector-search" class="my-2">Search item list</label>
+        <input id="item-selector-search" type="search" incremental data-action="input->itemselector#filter analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Filter" class="form-control w-75">
+      </div>
+    <% end %>
+    <div class="item-table my-4">
+      <table class="table mb-0 border" data-controller="table" data-table-field-value="Callnumber" data-table-asc-value="true">
+        <thead>
+          <tr>
+            <th data-table-target="header" aria-sort="ascending" class="text-start" data-table-field-param="Callnumber" data-action="click->table#sort">
+              <button type="button" class="btn btn-link pe-0 text-decoration-none text-black" data-action="analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Sort/Call number">Call number</button>
+            </th>
+            <th data-table-target="header" class="text-end" data-table-field-param="Status" data-action="click->table#sort">
+              <button type="button" class="btn btn-link pe-0 text-decoration-none text-black" data-action="analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Sort/Status">Status</button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% sort_holdings(f.object.selectable_items).each.with_index(1) do |item, index| %>
+            <% not_requestable = cannot?(:request, item) %>
+            <tr data-sortby-status="<%= item.status_text.downcase.gsub(' ', '_') %>" data-sortby-callnumber="<%= index %>" >
+              <td>
+                <label>
+                  <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: cannot?(:request, item), data: { 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-duequeueinfo-param': queue_length_display(item),  'itemselector-label-param': callnumber_label(item), action: 'itemselector#change' } }, item.barcode || item.id, "" %>
+                    <% if f.object.aeon_page? %>
+                    <%= f.hidden_field "aeon_callnumber_#{item.callnumber}", disabled: true, name: "CallNumber_#{index}", value: item.callnumber, data: { toggle: true } %>
+                    <%= f.hidden_field "aeon_barcode_#{item.barcode}", disabled: true, name: "ItemNumber_#{index}", value: item.barcode, data: { toggle: true } %>
+                    <%= f.hidden_field "aeon_request_#{index}", disabled: true, name: 'Request', value: index, data: { toggle: true } %>
+                  <% end %>
+                  <span class="form-check-label ms-1"><%= item&.bound_with_child_holdings_record&.call_number || callnumber_label(item) %></span>
+                </label>
+                <% if item.public_note %>
+                  <span class="text-cardinal d-block ms-4 mt-1">
+                    <%= item.public_note %>
+                  </span>
+                <% end %>
+
+                <% if item.bound_with_holdings_per_item.any? %>
+                  <span class="d-block mt-2 ms-4 py-2 bg-light">
+                    <span class="ms-3 text-cardinal">Bound with</span>
+
+                    <ul class="list-group list-group-flush">
+                      <% item.bound_with_holdings_per_item.each do |bound_with_child| %>
+                        <li class="list-group-item bg-light">
+                          <span class="d-block"><%= bound_with_child.instance.title %></span>
+                          <span class="d-block"><%= bound_with_child.call_number %></span>
+                        </li>
+                      <% end %>
+                    </ul>
+                  </span>
+                <% end %>
+
+                <% if item.instance&.hrid %>
+                  <span class="d-block ms-4 mt-2 px-3 py-2 bg-light">
+                    <span class="text-cardinal">Bound with and shelved with</span>
+                    <span class="d-block"><%= item.instance.title %></span>
+                    <span class="d-block"><%= callnumber_label(item) %></span>
+                  </span>
+                <% end %>
+              </td>
+              <td class="text-end">
+                <%= requests_patron_item_selector_label(item, not_requestable:) %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+<% end %>
