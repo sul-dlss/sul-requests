@@ -11,11 +11,11 @@ export default class extends Controller {
     if (this.emptyFields()) {
       this.statusTarget.classList.remove('bi-check2-circle', 'text-green');
       this.statusTarget.classList.add('bi-circle');
-      this.nextButtonTarget.disabled = true;
+      if (this.hasNextButtonTarget) this.nextButtonTarget.disabled = true;
     } else {
       this.statusTarget.classList.remove('bi-circle');
       this.statusTarget.classList.add('bi-check2-circle', 'text-green');
-      this.nextButtonTarget.disabled = false;
+      if (this.hasNextButtonTarget) this.nextButtonTarget.disabled = false;
     }
   }
 

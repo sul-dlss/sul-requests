@@ -1,8 +1,8 @@
-<div data-controller="digitization-item" data-action="input->digitization-item#updateStatus" class="accordion-item mb-3" data-content-id="<%= dom_id %>" data-fields-base-name="<%= base_name %>">
+<div data-controller="selected-item-form" data-action="input->selected-item-form#updateStatus" class="accordion-item mb-3" data-content-id="<%= dom_id %>" data-fields-base-name="<%= base_name %>">
   <div class="accordion-header">
     <button class="accordion-button d-flex justify-content-between" type="button" data-bs-toggle="collapse" data-bs-target="#content_<%= dom_id %>" aria-expanded="false" aria-controls="content_<%= dom_id %>">
       <div class="d-flex align-items-center">
-        <i class="fs-4 bi bi-circle me-2" data-digitization-item-target="status"></i>
+        <i class="fs-4 bi bi-circle me-2" data-selected-item-form-target="status"></i>
         <span class="text-black fw-semibold"><%= title %></span>
       </div>
       <i class="bi bi-chevron-right"></i>
@@ -39,7 +39,7 @@
         </div>
 
         <div class="d-flex justify-content-end">
-          <button class="next-item btn btn-sm btn-primary" data-digitization-item-target="nextButton" data-action="archives-request#nextItem">Next item</button>
+          <button class="next-item btn btn-sm btn-primary" data-selected-item-form-target="nextButton" data-action="archives-request#nextItem">Next item</button>
         </div>
       </div>
     <% end %>
