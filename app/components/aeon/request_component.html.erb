@@ -41,7 +41,7 @@
             </div>
             <div class="modal-body fw-normal">
               <div><span class="fw-bold">Title:</span> <%= title %></div>
-              <div><span class="fw-bold">Request:</span> <%= status_text %> (<%= format_info %>)</div>
+              <div><span class="fw-bold">Request:</span> <%= status_text %><% if format_info %> (<%= format_info %>)<% end %></div>
               <div class="mt-2 fw-bold">This action cannot be undone.</div>
             </div>
             <div class="modal-footer">
