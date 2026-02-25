@@ -1,3 +1,12 @@
-<div class="bg-light p-2" data-content-id="<%= dom_id %>" data-fields-base-name="<%= base_name %>">
-  <%= title %>
+<div class="bg-light border rounded mb-2 p-2 d-flex gap-4 text-nowrap align-items-center" data-content-id="<%= dom_id %>" data-fields-base-name="<%= base_name %>">
+  <div><%= title %></div>
+  <select name="<%= base_name %>[appointment_id]" class="form-select" aria-label="Select an appointment" required>
+  <option disabled selected></option>
+  <% appointments.each do | appointment | %>
+    <option value="<%= appointment.id %>">
+      <%= appointment.start_time.strftime('%b %d, %Y') %> ● <%= appointment.start_time.strftime('%l:%M %p -') %><%= appointment.stop_time.strftime('%l:%M %p') %>
+      (<%= pluralize(appointment.requests.length, "item") %>)
+    </option>
+  <% end %>
+</select>
 </div>
