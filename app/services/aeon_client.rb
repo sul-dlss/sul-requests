@@ -125,15 +125,17 @@ class AeonClient
     end
   end
 
-  CreateRequestData = Data.define(:call_number, :ead_number, :for_publication,
+  CreateRequestData = Data.define(:call_number, :document_type, :ead_number, :for_publication, :format,
                                   :item_author, :item_citation, :item_date, :item_info1, :item_info2,
-                                  :item_info3, :item_info4, :item_info5, :item_subtitle, :item_title, :item_volume,
-                                  :reference_number, :shipping_option, :site, :special_request, :username) do
+                                  :item_info3, :item_info4, :item_info5, :item_number, :item_subtitle, :item_title, :item_volume,
+                                  :location, :web_request_form,
+                                  :reference_number, :shipping_option, :site, :special_request, :system_id, :username) do
     def as_json # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       {
         callNumber: call_number,
         eadNumber: ead_number,
         forPublication: for_publication,
+        format: format,
         itemAuthor: item_author,
         itemCitation: item_citation,
         itemDate: item_date,
@@ -142,38 +144,30 @@ class AeonClient
         itemInfo3: item_info3,
         itemInfo4: item_info4,
         itemInfo5: item_info5,
+        item_number: item_number,
         itemSubTitle: item_subtitle,
         itemTitle: item_title,
         itemVolume: item_volume,
+        location: location,
         referenceNumber: reference_number,
         shippingOption: shipping_option,
         site: site,
         specialRequest: special_request,
+        system_id: system_id,
         username: username,
-        webRequestForm: 'SUL Requests'
+        webRequestForm: web_request_form || 'SUL Requests'
       }.compact
     end
 
     def self.with_defaults
       new(
-        call_number: nil, ead_number: nil, for_publication: nil,
+        call_number: nil, document_type: nil, ead_number: nil, format: nil, for_publication: nil,
         item_author: nil, item_citation: nil, item_date: nil,
-        item_info1: nil, item_info2: nil, item_info3: nil, item_info4: nil, item_info5: nil,
-        item_subtitle: nil, item_title: nil, item_volume: nil, reference_number: nil,
-        shipping_option: nil, site: nil, special_request: nil,
+        item_info1: nil, item_info2: nil, item_info3: nil, item_info4: nil, item_info5: nil, item_number: nil,
+        item_subtitle: nil, item_title: nil, item_volume: nil, location: nil, reference_number: nil,
+        shipping_option: nil, site: nil, special_request: nil, system_id: nil, web_request_form: 'SUL Requests',
         username: nil
       )
-    end
-  end
-
-  def submit_searchworks_request(aeon_payload)
-    response = post('Requests/create', aeon_payload)
-
-    case response.status
-    when 201
-      response.body
-    else
-      raise "Aeon API error: #{response.status} - #{response.body}"
     end
   end
 

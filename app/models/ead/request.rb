@@ -58,20 +58,14 @@ module Ead
 
     private
 
-    def as_aeon_create_request_data(volume_params) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
-      AeonClient::CreateRequestData.new(
+    def as_aeon_create_request_data(volume_params) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+      AeonClient::CreateRequestData.with_defaults.with(
         call_number: "#{identifier} #{volume_params['series']}",
         ead_number: identifier,
         for_publication: volume_params['for_publication'] == 'yes',
         item_author: creator,
-        item_citation: nil,
-        item_date: nil,
         item_info1: collection_permalink,
-        item_info2: nil,
-        item_info3: nil,
-        item_info4: nil,
         item_info5: volume_params['requested_pages'],
-        item_subtitle: nil,
         item_title: title,
         item_volume: volume_params['subseries'],
         reference_number: reference_number,

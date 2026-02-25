@@ -10,41 +10,37 @@ class SubmitAeonPatronRequestJob < ApplicationJob
     aeon_requests = patron_request.aeon_requests
 
     aeon_requests.each do |aeon_request|
-      submit_aeon_request(username, aeon_request)
+      submit_aeon_request(as_aeon_create_request_data(username, aeon_request))
     end
   end
 
-  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
   # Once reading room logic for appointments is implemented, this mapping
   # should also contain scheduledDate, appointment id, appointment,
   # and reading room id.
-  def map_json(username, aeon_request)
-    {
-      callNumber: aeon_request.call_number,
-      documentType: aeon_request.document_type,
+  def as_aeon_create_request_data(username, aeon_request)
+    AeonClient::CreateRequestData.with_defaults.with(
+      call_number: aeon_request.call_number,
+      document_type: aeon_request.document_type,
       format: aeon_request.format,
-      itemAuthor: aeon_request.author,
-      itemDate: aeon_request.date,
-      itemTitle: aeon_request.title,
+      item_author: aeon_request.author,
+      item_date: aeon_request.date,
+      item_title: aeon_request.title,
       location: aeon_request.location,
-      webRequestForm: 'GenericRequestMonograph',
+      web_request_form: 'GenericRequestMonograph',
       username: username,
-      creationDate: Time.now.utc.iso8601,
-      systemID: 'sul-requests',
-      itemInfo1: aeon_request.item_url,
-      specialRequest: aeon_request.special_request,
+      item_info1: aeon_request.item_url,
+      special_request: aeon_request.special_request,
       site: aeon_request.site,
-      shippingOption: aeon_request.shipping_option,
-      itemInfo5: aeon_request.pages,
-      forPublication: aeon_request.publication,
-      itemNumber: aeon_request.item_number
-    }.compact.to_json
+      shipping_option: aeon_request.shipping_option,
+      item_info5: aeon_request.pages,
+      for_publication: aeon_request.publication,
+      item_number: aeon_request.item_number
+    )
   end
-  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+  # rubocop:enable Metrics/MethodLength
 
-  def submit_aeon_request(username, aeon_request)
-    aeon_payload = map_json(username, aeon_request)
-
-    AeonClient.new.submit_searchworks_request(aeon_payload)
+  def submit_aeon_request(aeon_payload)
+    AeonClient.new.create_request(aeon_payload)
   end
 end
