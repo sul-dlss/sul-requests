@@ -14,7 +14,7 @@ function typecast(value) {
 }
 
 export default class extends Controller {
-  static targets = ['items', "volumesDisplay", "requestTypeDisplay", "digitizationItems", "digitizationTemplate", "appointmentItems", "appointmentTemplate"]
+  static targets = ["items", "volumesDisplay", "requestTypeDisplay", "digitizationItems", "digitizationTemplate", "appointmentItems", "appointmentTemplate"]
   static values = { selectedItems: Array, requestType: String }
 
   updateVolumesDisplay(event) {
@@ -150,6 +150,31 @@ export default class extends Controller {
       input.removeAttribute('required');
     });
   }
+
+  deleteItem(event) {
+    event.preventDefault();
+    const deleteId = event.currentTarget.dataset.deleteId;
+
+    // uncheck item from previous accordion
+    const target = this.itemsTargets.find((item) => item.dataset.archivesRequestIdParam === deleteId)
+    if (target) target.checked = false;
+
+    // remove select items from value list
+    this.selectedItemsValue = this.selectedItemsValue.filter((item) => item.id !== deleteId);
+
+    // go back to item selector if all selected items deleted
+    if (this.selectedItemsValue.length == 0) {
+      this.showItemSelector()
+    }
+  }
+
+  showItemSelector() {
+    const accordionController = this.application.getControllerForElementAndIdentifier(this.element, 'accordion-form');
+    accordionController.goto('items-accordion');
+
+    accordionController.reenableNextButtons();
+  }
+
 
   nextItem(event) {
     event.preventDefault();
