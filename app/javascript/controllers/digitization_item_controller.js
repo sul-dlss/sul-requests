@@ -1,15 +1,21 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["status"]
+  static targets = ["status", "nextButton"]
+
+  connect() {
+    this.updateStatus();
+  }
 
   updateStatus() {
     if (this.emptyFields()) {
       this.statusTarget.classList.remove('bi-check2-circle', 'text-green');
       this.statusTarget.classList.add('bi-circle');
+      this.nextButtonTarget.disabled = true;
     } else {
       this.statusTarget.classList.remove('bi-circle');
       this.statusTarget.classList.add('bi-check2-circle', 'text-green');
+      this.nextButtonTarget.disabled = false;
     }
   }
 
