@@ -26,14 +26,14 @@
           <% end %>
         </div>
       </div>
-      <%= form_with id: 'archives-request', model: @ead_request, url: archives_requests_path, class: 'accordion', data: { controller: 'patron-request archives-request', turbo: false } do |f| %>
+      <%= form_with id: 'archives-request', model: @ead_request, url: archives_requests_path, class: 'accordion', data: { controller: 'accordion-form archives-request', turbo: false } do |f| %>
         <%= render AccordionStepComponent.new(id: 'request_type', step_index: step_enum.next, form_id: f.id) do |component| %>
           <% component.with_title.with_content('Request type') %>
           <% component.with_body do %>
             <fieldset class="mb-4">
               <div>
                 <!--TODO: refactor out #updateType in a new JS controller. Or pick one. This is wrong -->
-                <%= f.radio_button :request_type, 'pickup', :class => 'form-check-input', :required => true, data: { action: 'patron-request#updateType archives-request#updateRequestType' } %>
+                <%= f.radio_button :request_type, 'pickup', :class => 'form-check-input', :required => true, data: { action: 'archives-request#updateRequestType' } %>
                 <%= f.label :request_type_pickup, :class => 'form-check-label ms-1' do %>
                   Reading room appointment
                 <% end %>
@@ -43,7 +43,7 @@
                 </span>
               </div>
               <div class="mt-4">
-                <%= f.radio_button :request_type, 'scan', :class => 'form-check-input', data: { action: 'patron-request#updateType archives-request#updateRequestType' } %>
+                <%= f.radio_button :request_type, 'scan', :class => 'form-check-input', data: { action: 'archives-request#updateRequestType' } %>
                 <%= f.label :request_type_scan, :class => 'form-check-label ms-1' do %>
                   Digitization
                 <% end %>

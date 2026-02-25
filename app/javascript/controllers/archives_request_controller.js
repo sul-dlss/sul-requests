@@ -118,6 +118,7 @@ export default class extends Controller {
     this.requestTypeDisplayTarget.classList.remove('text-muted');
 
     this.requestTypeValue = event.target.value;
+    this.element.dataset.accordionFormTypeValue = event.target.value;
   }
 
   getStimulusParams(element) {

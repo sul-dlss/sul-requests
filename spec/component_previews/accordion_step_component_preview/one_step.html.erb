@@ -1,0 +1,10 @@
+<form class="accordion" data-controller="accordion-form">
+  <%= render AccordionStepComponent.new(
+      id: 'step-1',
+      step_index: 1
+    ) do |component|
+      component.with_title { 'Step 1' }
+      component.with_body { tag.div 'This is the body content for step 1.', class: 'row p-3 gap-3 flex-column flex-md-row' }
+    end
+  %>
+</form>
