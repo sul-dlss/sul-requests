@@ -1,62 +1,66 @@
-<%= form_with(model: @appointment, data: { controller: 'appointment' }) do |f| %>
-  <div class="mb-3">
-    <%= f.label :name, class: 'd-block fw-semibold' %>
-    <%= f.text_field :name %>
-  </div>
+<%= form_with(model: @appointment, class: "appointment-form", data: { controller: 'appointment' }) do |f| %>
+  <div class="modal-body">
+    <div class="mb-3 d-flex gap-4 flex-sm-row flex-column">
+      <div>
+        <% if @appointment.reading_room_id %>
+          <div class="fw-semibold">Reading room:</div>
+          <div><%= @appointment.reading_room.name %><%= f.hidden_field :reading_room_id %></div>
+        <% else %>
+          <%= f.label :reading_room_id, 'Reading room', class: 'd-block fw-semibold redesign-required-label' %>
+          <%= f.select :reading_room_id, @reading_rooms.map { |rr| [rr.name, rr.id] }, { include_blank: true }, data: { action: 'change->appointment#refreshAvailability change->appointment#refreshDateMetadata' }, class: 'bg-white border rounded px-2 py-1' %>
+        <% end %>
+      </div>
+      <div class="alert alert-info">
+        <b>Important:</b> Materials must be used in the reading room of the repository that holds them.
+      </div>
+    </div>
 
-  <div class="mb-3">
-    <% if @appointment.reading_room_id %>
-      <div class="fw-semibold">Reading room:</div>
-      <div><%= @appointment.reading_room.name %><%= f.hidden_field :reading_room_id %></div>
+    <div class="mb-3">
+      <%= f.label :date, class: 'd-block fw-semibold redesign-required-label' %>
+      <%= f.date_field :date, required: true, data: { action: 'appointment#refreshAvailability' }, min: (@appointment.reading_room.next_appointment.start_time.to_date.iso8601 if @appointment.reading_room&.next_appointment), class: 'border rounded px-2 py-1' %>
+    </div>
+
+    <% if @appointment.start_time && @appointment.stop_time && (!@appointment.start_time.min.in?([0,15,30,45]) || !(@appointment.stop_time - @appointment.start_time).in?([30.minutes, 1.hour, 1.5.hours, 2.hours, 3.hours, 4.hours])) %>
+      <div class="mb-3">
+        <%= f.label :start_time, class: 'd-block fw-semibold' %>
+        <%= f.time_field :start_time, required: true %>
+      </div>
+      <div class="mb-3">
+        <%= f.label :stop_time, class: 'd-block fw-semibold' %>
+        <%= f.time_field :stop_time, required: true %>
+      </div>
     <% else %>
-      <%= f.label :reading_room_id, 'Reading room', class: 'd-block fw-semibold' %>
-      <%= f.select :reading_room_id, @reading_rooms.map { |rr| [rr.name, rr.id] }, { include_blank: true }, data: { action: 'change->appointment#refreshAvailability change->appointment#refreshDateMetadata' } %>
+      <fieldset class="mb-3">
+        <legend class="fs-6 fw-semibold redesign-required-label">Duration</legend>
+
+        <div class="d-flex flex-wrap gap-3">
+        <% [30.minutes, 1.hour, 1.5.hours, 2.hours, 3.hours, 4.hours].each do |duration| %>
+          <span class="duration-selector" data-appointment-target="duration" data-seconds="<%= duration %>">
+            <%= f.radio_button :duration, duration.to_i, class: 'btn-check', checked: (@appointment.start_time && @appointment.stop_time ? (@appointment.stop_time - @appointment.start_time) : 30.minutes) == duration, data: { action: 'appointment#applyDurationFilter' } %>
+            <%= f.label "duration_#{duration.to_i}", duration.inspect, class: 'btn border' %>
+          </span>
+        <% end %>
+        </div>
+      </fieldset>
+
+      <turbo-frame id="available_appointments" data-action="turbo:frame-load->appointment#applyDurationFilter turbo:frame-load->appointment#filterDurationFields" data-appointment-target="availability" src="<%= available_aeon_appointments_url(@appointment.reading_room_id, @appointment.date || Time.zone.now.iso8601, selected: @appointment.start_time.strftime('%-I:%M %p')) if @appointment.reading_room_id %>">
+        <fieldset class="mb-3">
+          <legend class="fs-6 fw-semibold">Available time slots</legend>
+          <% if @appointment.reading_room_id && @appointment.date %>
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          <% else %>
+            <div class="alert alert-info">Select a date and reading room to see available appointments.</div>
+          <% end %>
+        </fieldset>
+        <div class="loading-overlay p-2 mb-2" aria-hidden="true">Loading...</div>
+      </turbo-frame>
     <% end %>
   </div>
 
-  <div class="mb-3">
-    <%= f.label :date, class: 'd-block fw-semibold' %>
-    <%= f.date_field :date, required: true, data: { action: 'appointment#refreshAvailability' }, min: (@appointment.reading_room.next_appointment.start_time.to_date.iso8601 if @appointment.reading_room&.next_appointment) %>
+  <div class="modal-footer">
+    <%= link_to 'Cancel', aeon_appointments_path, class: 'btn btn-outline-primary', data: { 'bs-dismiss': 'modal' } %>
+    <%= f.submit 'Save', class: 'ms-2 btn btn-primary' %>
   </div>
-
-  <% if @appointment.start_time && @appointment.stop_time && (!@appointment.start_time.min.in?([0,15,30,45]) || !(@appointment.stop_time - @appointment.start_time).in?([30.minutes, 1.hour, 1.5.hours, 2.hours, 3.hours, 4.hours])) %>
-    <div class="mb-3">
-      <%= f.label :start_time, class: 'd-block fw-semibold' %>
-      <%= f.time_field :start_time, required: true %>
-    </div>
-    <div class="mb-3">
-      <%= f.label :stop_time, class: 'd-block fw-semibold' %>
-      <%= f.time_field :stop_time, required: true %>
-    </div>
-  <% else %>
-    <fieldset class="mb-3">
-      <legend class="fs-6 fw-semibold">Duration</legend>
-
-      <div class="d-flex flex-wrap gap-3">
-      <% [30.minutes, 1.hour, 1.5.hours, 2.hours, 3.hours, 4.hours].each do |duration| %>
-        <span class="duration-selector" data-appointment-target="duration" data-seconds="<%= duration %>">
-          <%= f.radio_button :duration, duration.to_i, class: 'btn-check', checked: (@appointment.start_time && @appointment.stop_time ? (@appointment.stop_time - @appointment.start_time) : 30.minutes) == duration, data: { action: 'appointment#applyDurationFilter' } %>
-          <%= f.label "duration_#{duration.to_i}", duration.inspect, class: 'btn' %>
-        </span>
-      <% end %>
-      </div>
-    </fieldset>
-
-    <turbo-frame id="available_appointments" data-action="turbo:frame-load->appointment#applyDurationFilter turbo:frame-load->appointment#filterDurationFields" data-appointment-target="availability" src="<%= available_aeon_appointments_url(@appointment.reading_room_id, @appointment.date || Time.zone.now.iso8601, selected: @appointment.start_time.strftime('%-I:%M %p')) if @appointment.reading_room_id %>">
-      <fieldset class="mb-3">
-        <legend class="fs-6 fw-semibold">Available time slots</legend>
-        <% if @appointment.reading_room_id && @appointment.date %>
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        <% else %>
-          <div class="alert alert-info">Select a date and reading room to see available appointments.</div>
-        <% end %>
-      </fieldset>
-      <div class="loading-overlay p-2 mb-2" aria-hidden="true">Loading...</div>
-    </turbo-frame>
-  <% end %>
-
-  <%= link_to 'Cancel', aeon_appointments_path, class: 'btn btn-outline-primary', data: { 'bs-dismiss': 'modal' } %>
-  <%= f.submit class: 'btn btn-primary' %>
 <% end %>

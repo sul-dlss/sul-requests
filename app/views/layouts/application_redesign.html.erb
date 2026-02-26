@@ -65,7 +65,7 @@
       <%= yield %>
       <% unless request.variant == :modal %>
         <div id="modal" class="modal" tabindex="-1" data-modal-target="frame">
-          <div class="modal-dialog">
+          <div class="modal-dialog modal-lg">
             <turbo-frame id="modal-contents" class="modal-content" target="_top"></turbo-frame>
           </div>
         </div>
