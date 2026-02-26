@@ -104,8 +104,8 @@ FactoryBot.define do
   end
 
   factory :item, class: 'Folio::Item' do
-    id { '0ce74882-9e05-57e7-9a4e-d81821e06874' }
-    barcode { '3610512345678' }
+    sequence(:id) { |n| "0ce74882-9e05-57e7-9a4e-d81821e#{n.to_s.rjust(5, '0')}" } # rubocop:disable FactoryBot/IdSequence
+    sequence(:barcode) { |n| "36105123#{n.to_s.rjust(5, '0')}" }
     base_callnumber { 'ABC 123' }
     full_enumeration { '' }
     status { 'Available' }

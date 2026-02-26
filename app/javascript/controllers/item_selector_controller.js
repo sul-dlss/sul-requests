@@ -14,7 +14,7 @@ function typecast(value) {
 }
 
 export default class extends Controller {
-  static targets = ['items', 'toast', 'availableItems', 'unavailableItems', 'scanItem', 'unavailableScanItemEstimate', 'availableScanItemEstimate', 'selectedItems']
+  static targets = ['items', 'toast', 'selectedItems']
   static values = { requestType: String, selectedItems: Array }
 
   connect() { }
@@ -102,65 +102,19 @@ export default class extends Controller {
   }
 
   selectedItemsValueChanged(value, previousValue) {
-
-    this.selectedItemsValueChangedGood(value, previousValue);
-
-    if (!this.hasAvailableItemsTarget || !this.hasUnavailableItemsTarget) return;
-    let availableItems = [];
-    let unavailableItems = [];
-
-    this.selectedItemsValue.forEach((item) => {
-      if (item.available === true) {
-        availableItems.push(item);
-      } else {
-        unavailableItems.push(item);
-      }
-    });
-
-    this.availableItemsTarget.innerHTML = this.renderItems(availableItems);
-    this.unavailableItemsTarget.innerHTML = this.renderItems(unavailableItems);
-
-    if (availableItems.length && this.targets.find('scanItem')) {
-      this.scanItemTarget.innerHTML = this.renderItems(availableItems, true);
-      this.unavailableScanItemEstimateTarget.classList.add('d-none');
-      this.availableScanItemEstimateTarget.classList.remove('d-none');
-    } else if (unavailableItems.length && this.targets.find('scanItem')) {
-      this.scanItemTarget.innerHTML = this.renderItems(unavailableItems, true);
-      this.unavailableScanItemEstimateTarget.classList.remove('d-none');
-      this.availableScanItemEstimateTarget.classList.add('d-none');
-    }
-
-    const availableItemsGroup = this.availableItemsTarget.closest('.selected-items-group');
-    const unavailableItemsGroup = this.unavailableItemsTarget.closest('.selected-items-group');
-
-    if (availableItems.length === 0) {
-      availableItemsGroup.classList.add('d-none');
-      this.disableRequiredInputs(availableItemsGroup);
-    } else {
-      availableItemsGroup.classList.remove('d-none');
-      if (this.requestType == 'pickup') this.enableRequiredInputs(availableItemsGroup);
-    }
-    if (unavailableItems.length === 0) {
-      unavailableItemsGroup.classList.add('d-none');
-      this.disableRequiredInputs(unavailableItemsGroup);
-    } else {
-      unavailableItemsGroup.classList.remove('d-none');
-      if (this.requestType == 'pickup') this.enableRequiredInputs(unavailableItemsGroup);
-    }
-
-    this.dispatch('changed', { detail: { selectedItems: this.selectedItemsValue } });
-  }
-
-  selectedItemsValueChangedGood(value, previousValue) {
     const removed = (previousValue || []).filter(item => !value.find(v => v.id == item.id));
     const added = value.filter(item => !(previousValue || []).find(v => v.id == item.id));
 
     removed.forEach(item => {
       // remove the digitization section, physical item section, and hidden inputs for the item
-      this.element.querySelectorAll(`[data-content-id="${item.id}"]`).forEach(e => e.remove());
+      this.element.querySelectorAll(`[data-content-id="${item.id}"]:not([data-toggle-disabled])`).forEach(e => e.remove());
+
+      this.element.querySelectorAll(`[data-content-id="${item.id}"][data-toggle-disabled]`).forEach(e => this.disableInputs(e));
     });
 
     added.forEach(item => {
+      this.element.querySelectorAll(`[data-content-id="${item.id}"][data-toggle-disabled]`).forEach(e => this.enableInputs(e));
+
       this.selectedItemsTargets.forEach(target => {
         if (target.dataset.statusFilter && target.dataset.statusFilter !== item.status) return;
 
@@ -169,11 +123,15 @@ export default class extends Controller {
           const element = document.importNode(template.content, true);
           const rootNode = element.querySelector('[data-content-id]');
           rootNode.dataset.contentId = item.id;
-          rootNode.innerHTML = rootNode.innerHTML.replace(/__LABEL__/g, item.label).replace(/__ID__/g, item.id);
+
+          for (const [key, value] of Object.entries(item)) {
+            rootNode.innerHTML = rootNode.innerHTML.replace(new RegExp(`__${key.toUpperCase()}__`, 'g'), value);
+          };
+
           target.appendChild(rootNode);
         }
       })
-    })
+    });
 
     this.selectedItemsTargets.forEach(target => {
       const itemGroup = target.closest('.selected-items-container')
@@ -184,23 +142,9 @@ export default class extends Controller {
         itemGroup.classList.remove('d-none');
         this.enableRequiredInputs(itemGroup);
       }
-    })
-  }
+    });
 
-  renderItems(items, scan = false) {
-    return items.map((item) => {
-      return `
-        <li class="d-flex gap-2 w-100 align-items-baseline">
-          <span class="itemselector-callnumber-pill bg-light rounded-pill border">
-            <span class="callnumber">
-              ${item.label}
-            </span>
-            <button data-action="${this.identifier}#unchecked analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Remove" data-${this.identifier}-id-param="${item.id}" type="button" class="btn-close py-0 pill-close" aria-label="Remove ${item.label}"></button>
-          </span>
-          ${item.duequeueinfo && !scan ? `<span class="text-cardinal d-block align-self-center flex-shrink-2">${item.duequeueinfo}</span>` : ''}
-        </li>
-      `;
-    }).join('');
+    this.dispatch('changed', { detail: { selectedItems: value } });
   }
 
   getStimulusParams(element) {
@@ -231,6 +175,18 @@ export default class extends Controller {
   enableRequiredInputs(element) {
     element.querySelectorAll('[data-required]').forEach(input => {
       input.setAttribute('required', 'required');
+    });
+  }
+
+  disableInputs(element) {
+    element.querySelectorAll('[data-toggle]').forEach(input => {
+      input.addAttribute('disabled');
+    });
+  }
+
+  enableInputs(element) {
+    element.querySelectorAll('[data-toggle]').forEach(input => {
+      input.removeAttribute('disabled');
     });
   }
 }
