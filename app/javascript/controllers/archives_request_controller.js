@@ -56,8 +56,8 @@ export default class extends Controller {
 
   formatItemTitle(item) {
     const segments = [];
-    if (item.series) segments.push(item.series);
-    if (item.subseries) segments.push(item.subseries);
+    if (item.series) segments.push(sanitizeHtml(item.series));
+    if (item.subseries) segments.push(sanitizeHtml(item.subseries));
 
     return segments.join('<i class="bi bi-chevron-right mx-1"></i>');
   }
