@@ -61,6 +61,7 @@
 
 <!-- item selector -->
 
+<% if f.object.selectable_items.many? %>
 <div data-controller="itemselector" data-itemselector-request-type-value="pickup" data-action="itemselector:change->patron-request#showItemSelector itemselector:change->patron-request#updateAeonOptions">
 
   <%= render 'item_selector', f: f, step_enum: step_enum %>
@@ -75,6 +76,7 @@
     </div>
   </div>
 </div>
+<% end %>
 
 <!-- aeon reading room request -->
 <!-- removed any 'can do this' part for both -->
