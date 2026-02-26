@@ -102,6 +102,7 @@ export default class extends Controller {
   }
 
   selectedItemsValueChanged() {
+    if (!this.hasAvailableItemsTarget || !this.hasUnavailableItemsTarget) return;
     let availableItems = [];
     let unavailableItems = [];
 
