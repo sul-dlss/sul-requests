@@ -60,7 +60,7 @@
       <h2 class="h3"><%= title %></h2>
       <div class="d-flex gap-sm-3 flex-sm-row flex-column">
         <div>
-          <i replace_with_icon></i><%= document_type %><% if date %> (<%= date %>)<% end %>
+          <%= render Icons::DocumentBox1Component.new %><%= document_type %><% if date %> (<%= date %>)<% end %>
         </div>
         <div>Call number: <%= call_number %></div>
         <% if searchworks_url %>

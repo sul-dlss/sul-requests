@@ -7,7 +7,10 @@
         <div class="card-body">
           <h2 class="fs-4"><%= @ead.title || 'Not available' %></h2>
           <div class="d-flex gap-md-3 flex-md-row flex-column">
-            <span>Archive/Manuscript (<%= @ead.date %>)</span>
+            <span>
+              <%= render Icons::DocumentBox1Component.new classes: 'me-1 align-text-bottom' %>
+              Archive/Manuscript (<%= @ead.date %>)
+            </span>
             <span>Call number: <%= @ead.identifier %></span>
             <span>
               <%= link_to @ead.collection_permalink, class: 'su-underline' do %>
