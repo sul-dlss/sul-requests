@@ -13,9 +13,9 @@
 
 <% if can? :debug, @patron_request %>
   <hr />
-  <% if current_request.folio_responses.present? %>
+  <% if @patron_request.folio_api_responses.present? %>
     <h4>ILS Response</h4>
-    <pre class="card p-2"><%= JSON.pretty_generate(@patron_request.folio_responses || {}) %></pre>
+    <pre class="card p-2"><%= JSON.pretty_generate(@patron_request.folio_api_responses.map(&:as_json)) %></pre>
   <% end %>
 
   <% if current_request.illiad_response_data.present? %>

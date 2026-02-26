@@ -13,9 +13,10 @@ class SubmitFolioPatronRequestJob < ApplicationJob
 
     response = submit_folio_requests!(request_data)
 
-    handle_folio_errors(response, request, item) if response['errors']
+    handle_folio_errors(response, request, item) if response&.dig('errors')
 
-    response.merge(request_data:)
+    request.folio_api_responses.where(item_id: item_id).delete_all
+    request.folio_api_responses.create(item_id: item_id, request_data:, response_data: response)
   end
 
   private
@@ -32,12 +33,10 @@ class SubmitFolioPatronRequestJob < ApplicationJob
   end
 
   def submit_folio_requests!(item_request)
-    response = folio_client.create_circulation_request(item_request)
-
-    { response: }
+    folio_client.create_circulation_request(item_request)
   rescue FolioClient::Error => e
     Honeybadger.notify(e, error_message: "Circulation item request failed for item #{item_request.item_id} with #{e}")
-    { errors: e.errors }
+    e.errors
   rescue StandardError => e
     Honeybadger.notify(e, error_message: "Circulation item request failed for item #{item_request.item_id} with #{e}")
     {}
@@ -73,7 +72,7 @@ class SubmitFolioPatronRequestJob < ApplicationJob
   def handle_folio_errors(response, request, item)
     case # rubocop:disable Style/EmptyCaseCondition
     # Multiple pseudo-patron requests for the same item need staff to manually process the item
-    when request.patron&.id.nil? && response.dig('errors', 'errors', 0,
+    when request.patron&.id.nil? && response.dig('errors', 0,
                                                  'message') == 'This requester already has an open request for this item'
       MultipleHoldsMailer.multiple_holds_notification(request, item).deliver_now
     end

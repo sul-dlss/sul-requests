@@ -90,9 +90,11 @@ RSpec.describe 'Mediation table', :js do
       end
     end
 
-    context 'when the symphony response is successful' do
+    context 'when the FOLIO response is successful' do
       before do
-        allow(SubmitFolioPatronRequestJob).to receive(:perform_now).and_return({ 'status' => 'ok' })
+        stub_folio_client = instance_double(FolioClient, find_patron_by_id: build(:patron))
+        allow(FolioClient).to receive(:new).and_return(stub_folio_client)
+        allow(stub_folio_client).to receive(:create_circulation_request).and_return({ 'status' => 'ok' })
       end
 
       it 'has toggleable rows that display holdings' do
@@ -148,6 +150,7 @@ RSpec.describe 'Mediation table', :js do
 
         expect(page).to have_content 'Approved'
 
+        sleep 1
         within('tbody td table tbody') do
           within(all('tr').last) do
             click_on('Approve')

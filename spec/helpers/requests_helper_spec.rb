@@ -145,8 +145,8 @@ RSpec.describe RequestsHelper do
   end
 
   describe '#request_status_emoji' do
-    let(:patron_request) { build(:page_patron_request, folio_responses:, illiad_response_data:) }
-    let(:folio_responses) { nil }
+    let(:patron_request) { build(:page_patron_request, folio_api_responses:, illiad_response_data:) }
+    let(:folio_api_responses) { [] }
     let(:illiad_response_data) { nil }
 
     context 'when folio_responses and illiad_response_data are blank' do
@@ -156,8 +156,11 @@ RSpec.describe RequestsHelper do
     end
 
     context 'when folio_responses mixed' do
-      let(:folio_responses) do
-        { 'some-uuid' => { 'response' => { 'status' => 'Open' } }, 'another-uuuid' => { 'response' => { 'status' => 'Open' } } }
+      let(:folio_api_responses) do
+        [
+          build(:folio_api_response, item_id: 'some-uuid', response_data: { 'status' => 'Open' }),
+          build(:folio_api_response, item_id: 'another-uuid', response_data: { 'status' => 'Open' })
+        ]
       end
 
       context 'when all folio_responses have status starting with "Open"' do
@@ -167,8 +170,11 @@ RSpec.describe RequestsHelper do
       end
 
       context 'when all folio_responses have status starting with "Closed"' do
-        let(:folio_responses) do
-          { 'response1' => { 'response' => { 'status' => 'Closed' } }, 'response2' => { 'response' => { 'status' => 'Closed' } } }
+        let(:folio_api_responses) do
+          [
+            build(:folio_api_response, item_id: 'response1', response_data: { 'status' => 'Closed' }),
+            build(:folio_api_response, item_id: 'response2', response_data: { 'status' => 'Closed' })
+          ]
         end
 
         it 'returns 🚫 with the first status as title' do
@@ -177,8 +183,11 @@ RSpec.describe RequestsHelper do
       end
 
       context 'when folio_responses have non-blank statuses' do
-        let(:folio_responses) do
-          { 'some-uuid' => { 'response' => { 'status' => 'Open' } }, 'another-uuuid' => { 'response' => { 'status' => 'Closed' } } }
+        let(:folio_api_responses) do
+          [
+            build(:folio_api_response, item_id: 'some-uuid', response_data: { 'status' => 'Open' }),
+            build(:folio_api_response, item_id: 'another-uuid', response_data: { 'status' => 'Closed' })
+          ]
         end
 
         it 'returns 🟡 with unique statuses joined by ";" as title' do
@@ -187,9 +196,11 @@ RSpec.describe RequestsHelper do
       end
 
       context 'when folio_responses have an error' do
-        let(:folio_responses) do
-          { 'response1' => { 'response' => { 'status' => 'Open' } },
-            'response2' => { 'errors' => { 'errors' => [{ 'message' => message }] } } }
+        let(:folio_api_responses) do
+          [
+            build(:folio_api_response, item_id: 'response1', response_data: { 'status' => 'Closed' }),
+            build(:folio_api_response, item_id: 'response2', response_data: { 'errors' => [{ 'message' => message }] })
+          ]
         end
         let(:message) { 'This requester currently has this item on loan. ' }
 

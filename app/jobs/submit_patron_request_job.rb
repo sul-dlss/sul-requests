@@ -21,13 +21,13 @@ class SubmitPatronRequestJob < ApplicationJob
       responses[item.id] = SubmitIlliadPatronRequestJob.perform_now(patron_request, item.id)
     end
 
-    folio_responses = folio_items.each_with_object({}) do |item, responses|
-      next if patron_request.folio_responses&.dig(item.id, 'response', 'status')
+    folio_items.each do |item|
+      next if patron_request.folio_api_responses.any? { |r| r.item_id == item.id && r.response_data&.dig('status') }
 
-      responses[item.id] = SubmitFolioPatronRequestJob.perform_now(patron_request, item.id)
+      SubmitFolioPatronRequestJob.perform_now(patron_request, item.id)
     end
 
-    patron_request.update(illiad_response_data:, folio_responses:)
+    patron_request.update(illiad_response_data:)
 
     PatronRequestMailer.confirmation_email(patron_request)&.deliver_later
   end
@@ -51,13 +51,13 @@ class SubmitPatronRequestJob < ApplicationJob
       PatronRequestMailer.staff_scan_email(patron_request, item.id)&.deliver_later
     end
 
-    folio_responses = folio_items.each_with_object({}) do |item, responses|
-      next if patron_request.folio_responses&.dig(item.id, 'response', 'status')
+    folio_items.each do |item|
+      next if patron_request.folio_api_responses.any? { |r| r.item_id == item.id && r.response_data&.dig('status') }
 
-      responses[item.id] = SubmitFolioScanRequestJob.perform_now(patron_request, item.id)
+      SubmitFolioScanRequestJob.perform_now(patron_request, item.id)
     end
 
-    patron_request.update(illiad_response_data:, folio_responses:)
+    patron_request.update(illiad_response_data:)
 
     PatronRequestMailer.confirmation_email(patron_request)&.deliver_later
   end
@@ -102,14 +102,15 @@ class SubmitPatronRequestJob < ApplicationJob
     PatronRequestMailer.confirmation_email(patron_request).deliver_later
   end
 
-  def place_title_hold(patron_request)
+  def place_title_hold(patron_request) # rubocop:disable Metrics/AbcSize
     hold_request_data = FolioClient::HoldRequestData.new(pickup_location_id: patron_request.pickup_service_point.id,
                                                          patron_comments: patron_request.request_comments,
                                                          expiration_date: patron_request.needed_date.to_time.utc.iso8601)
 
     folio_response = folio_client.create_instance_hold(patron_request.patron.id, patron_request.instance_id, hold_request_data)
 
-    patron_request.update(folio_responses: { nil => folio_response })
+    patron_request.folio_api_responses.where(item_id: nil).delete_all
+    patron_request.folio_api_responses.create(item_id: nil, request_data: hold_request_data.to_h, response_data: folio_response)
     PatronRequestMailer.confirmation_email(patron_request).deliver_later
   end
 

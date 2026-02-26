@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_06_002343) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_26_162645) do
   create_table "admin_comments", force: :cascade do |t|
     t.string "comment"
     t.string "commenter"
@@ -19,6 +19,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_06_002343) do
     t.string "request_type", default: "Request"
     t.datetime "updated_at", precision: nil, null: false
     t.index ["request_type", "request_id"], name: "index_admin_comments_on_request_type_and_request_id"
+  end
+
+  create_table "api_responses", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "item_id"
+    t.integer "patron_request_id", null: false
+    t.binary "request_data"
+    t.binary "response_data"
+    t.string "type"
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_api_responses_on_item_id"
+    t.index ["patron_request_id"], name: "index_api_responses_on_patron_request_id"
   end
 
   create_table "folio_command_logs", force: :cascade do |t|
@@ -104,4 +116,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_06_002343) do
     t.index ["library_id"], name: "index_users_on_library_id"
     t.index ["sunetid"], name: "unique_users_by_sunetid", unique: true
   end
+
+  add_foreign_key "api_responses", "patron_requests"
 end

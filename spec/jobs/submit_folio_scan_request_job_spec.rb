@@ -15,6 +15,7 @@ RSpec.describe SubmitFolioScanRequestJob do
   before do
     stub_bib_data_json(bib_data)
     allow(FolioClient).to receive(:new).and_return(stub_client)
+    allow(stub_client).to receive(:create_circulation_request).and_return({})
 
     allow(stub_client).to receive(:find_patron_by_barcode_or_university_id).with('GRE-SCANDELIVER').and_return(pseudopatron)
   end
