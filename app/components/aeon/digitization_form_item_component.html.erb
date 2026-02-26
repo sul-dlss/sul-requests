@@ -34,8 +34,11 @@
 
         <div class="mb-3">
           <%= f.label :additional_information, class: 'form-label fw-semibold' %>
-          <%= f.text_area :additional_information, class: 'form-control', maxlength: 255 %>
-          <p class="form-text text-secondary">Limit 255 characters.</p>
+          <%= f.text_area :additional_information, class: 'form-control', maxlength: 255, data: { action: "input->selected-item-form#updateCharCounter"} %>
+          <p class="form-text text-secondary d-flex justify-content-between">
+            <span>Limit 255 characters.</span>
+            <span data-selected-item-form-target="charCounter"></span>
+          </p>
         </div>
 
         <div class="d-flex justify-content-end">

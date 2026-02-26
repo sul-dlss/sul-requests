@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["status", "nextButton"]
+  static targets = ["status", "nextButton", "charCounter"]
 
   connect() {
     this.updateStatus();
@@ -19,6 +19,13 @@ export default class extends Controller {
     }
   }
 
+  updateCharCounter(event) {
+    const currentChars = event.currentTarget.value.length;
+    const maxChars = event.currentTarget.maxLength;
+    const charClass = maxChars - currentChars < 10 ? 'text-cardinal' : 'text-green';
+    this.charCounterTarget.innerHTML = `${currentChars}/${maxChars}`;
+    this.charCounterTarget.classList = `fs-14 ${charClass}`;
+  }
 
   emptyFields() {
     const formData = new FormData(this.element.closest('form'));
