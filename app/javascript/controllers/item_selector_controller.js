@@ -14,7 +14,7 @@ function typecast(value) {
 }
 
 export default class extends Controller {
-  static targets = ['items', 'toast', 'availableItems', 'unavailableItems', 'scanItem', 'unavailableScanItemEstimate', 'availableScanItemEstimate']
+  static targets = ['items', 'toast', 'availableItems', 'unavailableItems', 'scanItem', 'unavailableScanItemEstimate', 'availableScanItemEstimate', 'selectedItems']
   static values = { requestType: String, selectedItems: Array }
 
   connect() { }
@@ -38,7 +38,7 @@ export default class extends Controller {
       this.itemsTargets.forEach(i => i.closest('tr').classList.remove('d-none'))
     } else {
       this.itemsTargets.forEach(i => {
-        if(!i.closest('td').innerText.toLowerCase().includes(filterText.toLowerCase())) {
+        if (!i.closest('td').innerText.toLowerCase().includes(filterText.toLowerCase())) {
           i.closest('tr').classList.add('d-none')
         } else {
           i.closest('tr').classList.remove('d-none')
@@ -61,7 +61,7 @@ export default class extends Controller {
     // Enable/disable sending hidden params to Aeon
     event.currentTarget.closest('td').querySelectorAll('[data-toggle]').forEach(e => e.toggleAttribute('disabled'));
 
-    this.dispatch('change', { detail: { selectedItems: this.selectedItemsValue }});
+    this.dispatch('change', { detail: { selectedItems: this.selectedItemsValue } });
   }
 
   unchecked(event) {
@@ -76,7 +76,7 @@ export default class extends Controller {
 
     if (this.selectedItemsValue.length > 0) this.showRemovalToast(targetItem);
 
-    this.dispatch('change', { detail: { selectedItems: this.selectedItemsValue }});
+    this.dispatch('change', { detail: { selectedItems: this.selectedItemsValue } });
   }
 
   undo(event) {
@@ -101,7 +101,10 @@ export default class extends Controller {
     })
   }
 
-  selectedItemsValueChanged() {
+  selectedItemsValueChanged(value, previousValue) {
+
+    this.selectedItemsValueChangedGood(value, previousValue);
+
     if (!this.hasAvailableItemsTarget || !this.hasUnavailableItemsTarget) return;
     let availableItems = [];
     let unavailableItems = [];
@@ -145,10 +148,46 @@ export default class extends Controller {
       if (this.requestType == 'pickup') this.enableRequiredInputs(unavailableItemsGroup);
     }
 
-    this.dispatch('changed', { detail: { selectedItems: this.selectedItemsValue }});
+    this.dispatch('changed', { detail: { selectedItems: this.selectedItemsValue } });
   }
 
-  renderItems(items, scan=false) {
+  selectedItemsValueChangedGood(value, previousValue) {
+    const removed = (previousValue || []).filter(item => !value.find(v => v.id == item.id));
+    const added = value.filter(item => !(previousValue || []).find(v => v.id == item.id));
+
+    removed.forEach(item => {
+      // remove the digitization section, physical item section, and hidden inputs for the item
+      this.element.querySelectorAll(`[data-content-id="${item.id}"]`).forEach(e => e.remove());
+    });
+
+    added.forEach(item => {
+      this.selectedItemsTargets.forEach(target => {
+        if (target.dataset.statusFilter && target.dataset.statusFilter !== item.status) return;
+
+        let template = document.querySelector(target.dataset.template);
+        if (template) {
+          const element = document.importNode(template.content, true);
+          const rootNode = element.querySelector('[data-content-id]');
+          rootNode.dataset.contentId = item.id;
+          rootNode.innerHTML = rootNode.innerHTML.replace(/__LABEL__/g, item.label).replace(/__ID__/g, item.id);
+          target.appendChild(rootNode);
+        }
+      })
+    })
+
+    this.selectedItemsTargets.forEach(target => {
+      const itemGroup = target.closest('.selected-items-container')
+      if (!target.querySelector('[data-content-id]')) {
+        itemGroup.classList.add('d-none');
+        this.disableRequiredInputs(itemGroup);
+      } else {
+        itemGroup.classList.remove('d-none');
+        this.enableRequiredInputs(itemGroup);
+      }
+    })
+  }
+
+  renderItems(items, scan = false) {
     return items.map((item) => {
       return `
         <li class="d-flex gap-2 w-100 align-items-baseline">
