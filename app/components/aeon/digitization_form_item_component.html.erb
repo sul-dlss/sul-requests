@@ -2,8 +2,8 @@
   <div class="accordion-header">
     <button class="accordion-button d-flex justify-content-between" type="button" data-bs-toggle="collapse" data-bs-target="#content_<%= dom_id %>" aria-expanded="false" aria-controls="content_<%= dom_id %>">
       <div class="d-flex align-items-center">
-        <i class="fs-4 bi bi-circle me-2" data-selected-item-form-target="status"></i>
-        <span class="text-black fw-semibold"><%= title %></span>
+        <i class="fs-4 bi bi-circle me-2 status-icon" data-selected-item-form-target="status"></i>
+        <span class="text-black fw-semibold item-title"><%= title %></span>
       </div>
       <i class="bi bi-chevron-right disclosure-icon"></i>
     </button>
@@ -16,7 +16,7 @@
       <div class="accordion-body">
         <div class="mb-3">
           <%= f.label :requested_pages, class: 'form-label fw-semibold redesign-required-label' %>
-          <%= f.text_field :requested_pages, class: 'form-control', required: true %>
+          <%= f.text_field :requested_pages, placeholder: 'e.g. 100-150, 167, 170-180 or Chapter 5', class: 'form-control', required: true %>
         </div>
 
         <div class="mb-3">
