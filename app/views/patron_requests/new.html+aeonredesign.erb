@@ -6,18 +6,23 @@
 
 <%= render 'messages', messages: @patron_request.active_messages %>
   
-<div class="mt-4">
-  <h1> New request </h1>
-</div>
+<div class="container mt-4">
+<h1 class="mb-4"> New request </h1>
 
-<div class="accordion-header p-3 pt-4 mb-4">
+<div class="row">
+  <div class="col-8">
+<div class="card mb-4 bg-light rounded-0 border-0">
+  <div class="card-body">
   <h3 class="fw-semibold fs-5"><%= @patron_request.item_title %></h3>
 
   <% single_item = @patron_request.selectable_items.first %>
 
   <% unless single_item.instance && single_item.instance&.hrid != @patron_request.instance_hrid %>
     <div class="d-flex flex-row mb-2">
-      <div class="fw-normal me-3"><%= single_item.material_type.name.upcase_first %> (<%= @patron_request.bib_data.pub_date %>)</div>
+      <div class="fw-normal me-3">
+        <%= single_item.material_type.name.upcase_first %>
+        <% if @patron_request.bib_data.pub_date.present? %> (<%= @patron_request.bib_data.pub_date %>)<% end %>
+      </div>
       <div class="fw-normal me-3">Call number: <%= single_item.base_callnumber %></div>
       <div class="fw-normal"><a href="<%= @patron_request.bib_data.view_url %>" class="su-underline">View in SearchWorks<i class="ms-1 bi bi-arrow-up-right"></i></a></div>
     </div>
@@ -25,11 +30,12 @@
       <div class="fw-normal me-2"><%= @patron_request.bib_data.author %></div>
     </div>
   <% end %>
+  </div>
 </div>
 
 <%= form_for(@patron_request,
             data: { controller: 'patron-request accordion-form' },
-            html: { class: 'col-lg-8 accordion' },
+            html: { class: 'accordion' },
             url: patron_requests_path,
             method: 'POST') do |f| %>
 <% step_enum = Enumerator.new { |y| n = 0; loop { y << (n += 1) } } %>
@@ -105,3 +111,9 @@
   <% end %>
 <% end %>
 <% end %>
+</div>
+<aside class="col-4">
+  <h2>Contact information</h2>
+</aside>
+</div>
+</div>
