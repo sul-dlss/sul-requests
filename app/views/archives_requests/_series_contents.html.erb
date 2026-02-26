@@ -29,7 +29,7 @@
             nil %>
       <div class="flex-grow-1">
         <%= label_tag checkbox_id, container_name, class: 'form-check-label' %>
-        <span class="badge bg-light text-dark fw-normal"><%= group.count %></span>
+        <span class="badge bg-dark-subtle text-dark fw-normal rounded-pill"><%= group.count %></span>
         <%# Collapsible list of items in this container %>
         <div id="<%= content_id %>" class="collapse" data-archives-series-target="content">
           <ul class="list-unstyled ms-2 my-2">
