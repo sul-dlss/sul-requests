@@ -2,13 +2,14 @@ import { Controller } from "@hotwired/stimulus"
 import { Collapse } from "bootstrap"
 
 export default class extends Controller {
-  static targets = ['accordion']
+  static targets = ['accordion', 'stepNumber']
   static values = { type: { type: String, default: '' } }
 
   connect() {
     if (this.accordionTargets.length == 1) {
       this.removeAccordionStyling();
     }
+    this.renumberSteps()
   }
 
   typeValueChanged() {
@@ -23,6 +24,8 @@ export default class extends Controller {
         this.disableRequiredInputs(accord);
       }
     });
+
+    this.renumberSteps()
   }
 
   accordionTargetConnected(element) {
@@ -156,5 +159,20 @@ export default class extends Controller {
     element.querySelectorAll('[data-required]').forEach(input => {
       input.setAttribute('required', 'required');
     });
+  }
+
+  renumberSteps() {
+    const visibleAccordions = this.accordionTargets.filter(
+      e => !e.classList.contains('step-placeholder') && !e.classList.contains('d-none')
+    )
+
+    visibleAccordions.forEach((accordion, index) => {
+      const stepNumber = this.stepNumberTargets.find(target =>
+        accordion.contains(target)
+      )
+      if (stepNumber) {
+        stepNumber.textContent = index + 1
+      }
+    })
   }
 }
