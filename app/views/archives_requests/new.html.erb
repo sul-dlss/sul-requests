@@ -59,17 +59,17 @@
               <div data-controller="archives-series">
                 <%# TODO: why is the icon not orange %>
                 <div class="alert alert-warning alert-dismissible shadow-sm d-flex align-items-center">
-                  <div role="img" aria-label="Warning icon" class="bi bi-exclamation-triangle-fill fs-3 me-3"></div>
+                  <div role="img" aria-label="Warning icon" class="bi bi-exclamation-triangle-fill text-warning fs-3 me-3"></div>
                   <div class="text-body">
                     <div>Due to limited space in our reading rooms, you can request up to 5 items per day.</div>
                   </div>
                   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 <p>Use checkboxes to select items. When a digital version is available without additional processing, a link to access it appears next to the item.</p>
-                <div>
+                <div class="mb-2">
                   <!--TODO: pull out text into template?-->
-                  <button class="btn btn-link ps-0 su-underline" data-action="click->archives-series#expandAll">Expand all (see full content list)</button>
-                  <button class="btn btn-link su-underline" data-action="click->archives-series#collapseAll">Collapse all</button>
+                  <button class="btn btn-link ps-0 su-underline" data-action="click->archives-series#expandAll"><i class="bi bi-chevron-double-right me-1"></i>Expand all (see full content list)</button>
+                  <button class="btn btn-link su-underline" data-action="click->archives-series#collapseAll"><i class="bi bi-chevron-double-down me-1"></i>Collapse all</button>
                 </div>
                 <%# Loop through each series in the collection %>
                 <%= render partial: 'series_contents', locals: { contents: Ead::DisplayGroup.build_display_groups(@ead.series_and_subseries), f: f, series_title: nil, parent_title: nil } %>
