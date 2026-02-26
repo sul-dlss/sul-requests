@@ -8,9 +8,9 @@
   <div class='mt-3'>
     <% if f.object.selectable_items.many? %>
       <% sort_holdings(f.object.selectable_items).each do |selectable_item| %>
-        <%= fields_for "patron_request[aeon_item][#{selectable_item.callnumber}]" do |field| %>
+        <%= fields_for "patron_request[aeon_item][#{selectable_item.id}]" do |field| %>
           
-          <div class='accordion-button d-none' data-callnumber="<%= selectable_item.callnumber %>" data-patron-request-target='reading'>
+          <div class="accordion-button d-none" data-id="<%= selectable_item.id %>" data-patron-request-target="reading">
             <div>
               <%= selectable_item.callnumber %>
             </div>

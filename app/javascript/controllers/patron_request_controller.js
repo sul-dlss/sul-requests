@@ -93,13 +93,13 @@ export default class extends Controller {
     this.hideAllDigitizationOptions()
     if(requestType == 'digitization') {
       event.detail.selectedItems.forEach(selectedItem => { 
-        var callnumber = selectedItem.label 
-        _this.showDigitizationOption(callnumber)
+        var id = selectedItem.id
+        _this.showDigitizationOption(id)
       })
     } else if(requestType == 'reading'){
       event.detail.selectedItems.forEach(selectedItem => { 
-        var callnumber = selectedItem.label 
-        _this.showReadingOption(callnumber)
+        var id = selectedItem.id
+        _this.showReadingOption(id)
       })
     }
   }
@@ -117,8 +117,8 @@ export default class extends Controller {
     })
   }
 
-  showDigitizationOption(callnumber) {
-    const digitizationTarget = this.digitizationTargets.find(t => t.dataset.callnumber == callnumber)
+  showDigitizationOption(id) {
+    const digitizationTarget = this.digitizationTargets.find(t => t.dataset.id == id)
     this.enableRequiredInputs(digitizationTarget)
     digitizationTarget.querySelectorAll("input, textarea").forEach(element => {
       element.disabled = false
@@ -127,8 +127,8 @@ export default class extends Controller {
     digitizationTarget.classList.remove('d-none')
   }
 
-  showReadingOption(callnumber) {
-    const readingTarget = this.readingTargets.find(t => t.dataset.callnumber == callnumber)
+  showReadingOption(id) {
+    const readingTarget = this.readingTargets.find(t => t.dataset.id == id)
   
     readingTarget.classList.remove('d-none')
   }
