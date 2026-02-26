@@ -18,8 +18,8 @@
     <pre class="card p-2"><%= JSON.pretty_generate(@patron_request.folio_api_responses.map(&:as_json)) %></pre>
   <% end %>
 
-  <% if current_request.illiad_response_data.present? %>
+  <% if current_request.illiad_api_responses.present? %>
     <h4>Illiad Response</h4>
-    <pre class="card p-2"><%= JSON.pretty_generate(@patron_request.illiad_response_data) %></pre>
+    <pre class="card p-2"><%= JSON.pretty_generate(@patron_request.illiad_api_responses.map(&:as_json)) %></pre>
   <% end %>
 <% end %>

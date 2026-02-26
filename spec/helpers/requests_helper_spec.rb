@@ -145,9 +145,9 @@ RSpec.describe RequestsHelper do
   end
 
   describe '#request_status_emoji' do
-    let(:patron_request) { build(:page_patron_request, folio_api_responses:, illiad_response_data:) }
+    let(:patron_request) { build(:page_patron_request, folio_api_responses:, illiad_api_responses:) }
     let(:folio_api_responses) { [] }
-    let(:illiad_response_data) { nil }
+    let(:illiad_api_responses) { [] }
 
     context 'when folio_responses and illiad_response_data are blank' do
       it 'returns 🔄' do

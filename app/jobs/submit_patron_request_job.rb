@@ -15,10 +15,10 @@ class SubmitPatronRequestJob < ApplicationJob
       send_to_illiad?(patron_request, item)
     end
 
-    illiad_response_data = ilb_items.each_with_object({}) do |item, responses|
-      next if patron_request.illiad_response_data&.dig(item.id)
+    ilb_items.each do |item|
+      next if patron_request.illiad_api_responses.any? { |r| r.item_id == item.id && r.response_data }
 
-      responses[item.id] = SubmitIlliadPatronRequestJob.perform_now(patron_request, item.id)
+      SubmitIlliadPatronRequestJob.perform_now(patron_request, item.id)
     end
 
     folio_items.each do |item|
@@ -26,8 +26,6 @@ class SubmitPatronRequestJob < ApplicationJob
 
       SubmitFolioPatronRequestJob.perform_now(patron_request, item.id)
     end
-
-    patron_request.update(illiad_response_data:)
 
     PatronRequestMailer.confirmation_email(patron_request)&.deliver_later
   end
@@ -41,10 +39,10 @@ class SubmitPatronRequestJob < ApplicationJob
       patron_request.scan_service_point&.pseudopatron_barcode.present?
     end
 
-    illiad_response_data = ilb_items.each_with_object({}) do |item, responses|
-      next if patron_request.illiad_response_data&.dig(item.id)
+    ilb_items.each do |item|
+      next if patron_request.illiad_api_responses.any? { |r| r.item_id == item.id && r.response_data }
 
-      responses[item.id] = SubmitIlliadPatronRequestJob.perform_now(patron_request, item.id)
+      SubmitIlliadPatronRequestJob.perform_now(patron_request, item.id)
     end
 
     _email_response_data = scan_email_items.each do |item|
@@ -56,8 +54,6 @@ class SubmitPatronRequestJob < ApplicationJob
 
       SubmitFolioScanRequestJob.perform_now(patron_request, item.id)
     end
-
-    patron_request.update(illiad_response_data:)
 
     PatronRequestMailer.confirmation_email(patron_request)&.deliver_later
   end
