@@ -28,7 +28,7 @@ RSpec.describe 'Appointments', :js do
       click_on 'Create new appointment'
       expect(page).to have_css '#modal'
       within '#modal' do
-        expect(page).to have_content 'New appointment'
+        expect(page).to have_content 'Create new appointment'
         click_on 'Cancel'
       end
       expect(page).to have_no_css '#modal'

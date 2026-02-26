@@ -436,6 +436,11 @@ label.btn-close {
   }
 }
 
+/* This can't go inline or display: none for when the turbo-frame is loading won't work */
+.appointment-slots {
+  display: flex;
+}
+
 #available_appointments[busy=""] {
   .loading-overlay {
     display: flex;
@@ -448,13 +453,11 @@ label.btn-close {
   }
 }
 
-.duration-selector, #available_appointments {
-  .btn {
-    border-color: var(--stanford-30-black);
-  }
+.appointment-form {
+  --bs-border-color: var(--stanford-50-black);
 
   .btn-check:checked + .btn {
-    border-color: var(--stanford-digital-blue);
+    --bs-border-color: var(--stanford-digital-blue);
     background-color: var(--stanford-digital-blue);
     color: white;
   }
@@ -485,9 +488,6 @@ label.btn-close {
   .form-check-label {
     color: var(--bs-link-color);
   }
-}
-.aeon-form-notice {
-  background-color: rgba(var(--stanford-digital-blue-dark-rgb), 0.08)
 }
 
 .redesign-required-label::after {
