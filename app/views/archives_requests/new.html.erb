@@ -60,14 +60,6 @@
             <% component.with_title.with_content('Items') %>
             <% component.with_body do %>
               <div data-controller="archives-series">
-                <%# TODO: why is the icon not orange %>
-                <div class="alert alert-warning alert-dismissible shadow-sm d-flex align-items-center">
-                  <div role="img" aria-label="Warning icon" class="bi bi-exclamation-triangle-fill text-warning fs-3 me-3"></div>
-                  <div class="text-body">
-                    <div>Due to limited space in our reading rooms, you can request up to 5 items per day.</div>
-                  </div>
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
                 <p>Use checkboxes to select items. When a digital version is available without additional processing, a link to access it appears next to the item.</p>
                 <div class="mb-2">
                   <!--TODO: pull out text into template?-->
@@ -96,7 +88,14 @@
               <span class="mb-2">
                 Hours: <%= @ead_request.reading_room.human_readable_hours %>
               </span>
-              <span class="text-digital-red">Appointments must be scheduled at least <%= @ead_request.reading_room.policies.first.appointment_min_lead_days %> business days in advance. Maximum of 5 items per day.</span>
+            </div>
+
+            <div class="alert alert-warning alert-dismissible shadow-sm d-flex align-items-center">
+              <div role="img" aria-label="Warning icon" class="bi bi-exclamation-triangle-fill text-warning fs-3 me-3"></div>
+              <div class="text-body">
+                <div>Appointments must be scheduled at least <%= @ead_request.reading_room.policies.first.appointment_min_lead_days %> business days in advance. Maximum of 5 items per day.</div>
+              </div>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             <% if @ead.series_and_subseries&.one? %>
               <div class="d-inline-flex align-items-center gap-1 flex-column flex-md-row ">
