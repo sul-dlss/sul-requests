@@ -111,4 +111,18 @@ RSpec.describe AeonClient do
       expect(request.transaction_status).to eq('Cancelled by user')
     end
   end
+
+  describe AeonClient::CreateRequestData do
+    it 'truncates long field data to fit Aeon API limits' do
+      expect(described_class.with_defaults.with(
+        call_number: 'A' * 300,
+        ead_number: 'B' * 300,
+        item_author: 'C' * 300
+      ).as_json).to include(
+        callNumber: "#{'A' * 254}…",
+        eadNumber: "#{'B' * 254}…",
+        itemAuthor: "#{'C' * 254}…"
+      )
+    end
+  end
 end
