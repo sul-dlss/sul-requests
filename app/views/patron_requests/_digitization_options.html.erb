@@ -18,18 +18,18 @@
           </div>
           <div class="mt-3 d-flex">
             <div class="fw-bold me-2">Is this for publication? </div>
-            <%= field.radio_button :publication, 'Yes', :class => 'form-check-input', :disabled => f.object.selectable_items.many? %>
-            <%= field.label :publication, :class => 'form-check-label ms-2 me-3' do %>
+            <%= field.radio_button :publication, 'Yes', class: 'form-check-input', disabled: f.object.selectable_items.many? %>
+            <%= field.label :publication_yes, class: 'form-check-label ms-2 me-3' do %>
               Yes
             <% end %>
 
-            <%= field.radio_button :publication, 'No', :disabled => true, :class => 'form-check-input', :disabled => f.object.selectable_items.many? %>
-            <%= field.label :publication, :class => 'form-check-label ms-2 me-3' do %>
+            <%= field.radio_button :publication, 'No', class: 'form-check-input', disabled: f.object.selectable_items.many? %>
+            <%= field.label :publication_no, class: 'form-check-label ms-2 me-3' do %>
               No
             <% end %>
           </div>
           <div class="mt-3 mb-2">
-            <%= field.label :digitization_special, 'Additional Information', :class => 'fw-bold py-2' %>
+            <%= field.label :digitization_special, 'Additional information', :class => 'fw-bold py-2' %>
             <%= field.text_area :digitization_special, :class => 'form-control', :rows => 3 , :disabled => f.object.selectable_items.many? %>
             <small class="text-cardinal mt-4">Limit 255 characters.</small> 
           </div>
