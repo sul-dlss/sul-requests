@@ -61,9 +61,23 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       click_button 'Continue'
 
       fill_in 'Requested pages', with: 'Pages 1-10'
+      choose 'Yes'
+      fill_in 'Additional information', with: 'Testing only'
 
       click_button 'Continue'
       check 'I agree to these terms'
+
+      expect(page).to have_button 'Submit request'
+    end
+
+    it 'allows the user to submit a reading room request' do
+      choose 'Reading room appointment'
+
+      click_button 'Continue'
+
+      fill_in 'Additional information', with: 'Testing only'
+
+      expect(page).to have_button 'Submit request'
     end
   end
 
