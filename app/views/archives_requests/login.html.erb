@@ -1,0 +1,26 @@
+<% content_for :page_title do %>Request: <%= @ead.title %><% end %>
+
+<h1 class="fw-semibold my-3 fs-1">
+  <%= @ead.title %>
+</h1>
+<p class="mb-4 lead fw-normal">
+    Stanford Libraries provides various request services for added convenience, but their availability
+    depends on factors such as your affiliation, material type, status, and location. Access through
+    SUNet ID grants broader privileges than library cardholder or visitor access.
+</p>
+<div class="row flex-column flex-sm-row landing-page mb-3">
+  <div class="col-sm-6">
+      <div class="card">
+          <h2 class="card-header bg-white fw-normal h1">Stanford community</h2>
+          <div class="card-body">
+              <%= link_to 'Log in with SUNet ID', login_by_sunetid_url(referrer: request.original_url), data: { turbo: false }, class: 'btn btn-md btn-secondary btn-full mb-2' %>
+              <p>
+                  As a member of the Stanford community, including <b>faculty, students, staff, post-docs, fellows, and visiting scholars</b>, you are issued a SUNet ID. With this ID, you can access more additional services, including requesting items from partner libraries or receiving digital scans via email.
+              </p>
+              <a href="https://library.stanford.edu/services/borrow-and-request" target="_blank" class="su-underline">
+                  <i class="bi bi-box-arrow-up-right"></i> Review borrow and request policies
+              </a>
+          </div>
+      </div>
+  </div>
+</div>

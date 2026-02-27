@@ -151,4 +151,18 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       expect(find('select[name="appointment"]').all('option').map(&:text)).to eq ['', 'Feb 19, 2026 ● 12:00 PM - 1:00 PM (1 item)']
     end
   end
+
+  context 'without a logged in user' do
+    let(:current_user) { CurrentUser.new({}) }
+    let(:eadxml) do
+      Nokogiri::XML(File.read('spec/fixtures/a0112.xml')).tap(&:remove_namespaces!)
+    end
+
+    it 'shows login page' do
+      visit new_archives_request_path(value: 'http://example.com/ead.xml')
+
+      expect(page).to have_content('Pehrson (Elmer Walter) Photograph Album')
+      expect(page).to have_content('Log in with SUNet ID')
+    end
+  end
 end

@@ -12,10 +12,11 @@ class ArchivesRequestsController < ApplicationController
   end
 
   def new
-    authorize! :new, Aeon::Request
-
     @ead = EadClient.fetch(ead_url_param)
     @ead_request = Ead::Request.new(user: current_user, ead: @ead, params: (params[:ead_request] ? new_params : {}))
+    return if can?(:new, Aeon::Request)
+
+    render 'login'
   end
 
   # This is the action triggered by the form submission to create an Aeon request.
