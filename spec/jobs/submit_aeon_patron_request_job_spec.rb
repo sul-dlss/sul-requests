@@ -53,4 +53,83 @@ RSpec.describe SubmitAeonPatronRequestJob do
       end
     end
   end
+
+  describe '#create_aeon_requests' do
+    let(:attr) do
+      {
+        instance_hrid: 'a1234', origin_location_code: 'SPEC-STACKS',
+        request_type:,
+        data:
+      }
+    end
+
+    context 'with single item digitization request' do
+      let(:bib_data) { build(:special_collections_single_holding) }
+      let(:request_type) { 'digitization' }
+      let(:data) do
+        {
+          barcodes: ['12345678'], aeon_item: {
+            'ABC 123': { requested_pages: '23', for_publication: 'no', additional_information: 'info' }
+          }
+        }
+      end
+
+      it 'creates an aeon request with digitization fields' do
+        described_class.perform_now(request)
+
+        expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
+                                                                          special_request: 'info',
+                                                                          item_info5: '23',
+                                                                          for_publication: false,
+                                                                          shipping_option: 'Electronic Delivery'
+                                                                        ))
+      end
+    end
+
+    context 'with single item reading room request' do
+      let(:bib_data) { build(:special_collections_single_holding) }
+      let(:request_type) { 'reading' }
+      let(:data) do
+        {
+          barcodes: ['12345678'], aeon_reading_special: 'Some info'
+        }
+      end
+
+      it 'creates an aeon request with reading room fields' do
+        described_class.perform_now(request)
+
+        expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
+                                                                          special_request: 'Some info',
+                                                                          shipping_option: nil
+                                                                        ))
+      end
+    end
+
+    context 'with multi item digitization request' do
+      let(:bib_data) { build(:special_collections_holdings) }
+      let(:request_type) { 'digitization' }
+      let(:data) do
+        {
+          barcodes: %w[12345678 87654321], aeon_item: {
+            'ABC 123': { requested_pages: '23', for_publication: 'No', additional_information: 'info' },
+            'ABC 321': { requested_pages: '32', for_publication: 'Yes', additional_information: 'more info' }
+          }
+        }
+      end
+
+      it 'creates multiple aeon requests with digitization fields' do
+        described_class.perform_now(request)
+
+        expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
+                                                                          item_info5: '23', special_request: 'info'
+                                                                        ))
+
+        expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
+                                                                          for_publication: true,
+                                                                          item_info5: '32',
+                                                                          special_request: 'more info'
+                                                                        ))
+      end
+    end
+  end
 end

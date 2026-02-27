@@ -78,10 +78,6 @@ class PatronRequest < ApplicationRecord
     folio_api_responses.find { |x| x.item_id == item_id }
   end
 
-  def aeon_requests
-    aeon_page? ? create_aeon_requests : []
-  end
-
   # @!group Attribute methods
   def barcode=(barcode)
     self.barcodes = [barcode]
@@ -667,34 +663,5 @@ class PatronRequest < ApplicationRecord
     return unless for_sponsor_id && for_sponsor?
 
     errors.add(:for_sponsor_id, 'Invalid sponsor') unless patron.sponsors.any? { |sponsor| sponsor.id == for_sponsor_id }
-  end
-
-  # Create aeon request based on what we receive
-  # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
-  def create_aeon_requests
-    shipping_option = aeon_digitization? ? 'Electronic Delivery' : nil
-    selected_items.map do |selected_item|
-      callnumber = selected_item.callnumber
-      special_request = aeon_digitization? ? aeon_item[callnumber]['additional_information'] : aeon_reading_special
-      pages = aeon_digitization? ? aeon_item[callnumber]['requested_pages'] : nil
-      publication = aeon_digitization? ? (aeon_item[callnumber]['for_publication'] == 'Yes') : nil
-      appointment_id = aeon_digitization? ? nil : aeon_item&.dig(callnumber, 'appointment_id')
-      create_single_aeon_request(selected_item, shipping_option:, pages:, publication:,
-                                                special_request:, appointment_id:)
-    end
-  end
-  # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity
-
-  def create_single_aeon_request(selected_item, shipping_option: nil, pages: nil, publication: nil, # rubocop:disable Metrics/ParameterLists
-                                 special_request: nil, appointment_id: nil)
-    Aeon::Request.new(item_url: bib_data&.view_url, appointment: nil, appointment_id:,
-                      author: bib_data&.author, call_number: selected_item.callnumber, creation_date: nil, date: bib_data&.pub_date,
-                      document_type: 'Monograph', format: nil, item_number: selected_item.barcode,
-                      location: origin_location_code, shipping_option: shipping_option,
-                      title: bib_data&.title, transaction_date: nil,
-                      transaction_number: nil, transaction_status: nil, volume: nil,
-                      site: aeon_site, special_request: special_request,
-                      pages: pages, username: user.aeon.username,
-                      publication: publication)
   end
 end
