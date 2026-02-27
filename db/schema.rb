@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_27_200720) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_27_200721) do
   create_table "admin_comments", force: :cascade do |t|
     t.string "comment"
     t.string "commenter"
@@ -31,19 +31,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_200720) do
     t.datetime "updated_at", null: false
     t.index ["item_id"], name: "index_api_responses_on_item_id"
     t.index ["patron_request_id"], name: "index_api_responses_on_patron_request_id"
-  end
-
-  create_table "folio_command_logs", force: :cascade do |t|
-    t.string "barcode", null: false
-    t.datetime "created_at", null: false
-    t.date "expiration_date", null: false
-    t.string "item_id", null: false
-    t.string "patron_comments"
-    t.string "pickup_location_id", null: false
-    t.integer "request_id", null: false
-    t.datetime "updated_at", null: false
-    t.string "user_id", null: false
-    t.index ["request_id"], name: "index_folio_command_logs_on_request_id"
   end
 
   create_table "messages", force: :cascade do |t|
