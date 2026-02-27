@@ -34,7 +34,10 @@
 </div>
 
 <%= form_for(@patron_request,
-            data: { controller: 'patron-request accordion-form' },
+            data: {
+              controller: 'patron-request accordion-form itemselector',
+              action: 'itemselector:change->patron-request#showItemSelector itemselector:changed->accordion-form#typeValueChanged'
+            },
             html: { class: 'accordion' },
             url: patron_requests_path,
             method: 'POST') do |f| %>
@@ -68,8 +71,6 @@
 <!-- item selector -->
 
 <% if f.object.selectable_items.many? %>
-<div data-controller="itemselector" data-itemselector-request-type-value="pickup" data-action="itemselector:change->patron-request#showItemSelector itemselector:change->patron-request#updateAeonOptions">
-
   <%= render 'item_selector', f: f, step_enum: step_enum %>
 
   <div class="toast-container position-fixed bottom-0 end-0 p-3">
@@ -81,7 +82,6 @@
       </div>
     </div>
   </div>
-</div>
 <% end %>
 
 <!-- aeon reading room request -->

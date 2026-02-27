@@ -667,23 +667,24 @@ class PatronRequest < ApplicationRecord
   end
 
   # Create aeon request based on what we receive
-  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
   def create_aeon_requests
     shipping_option = aeon_digitization? ? 'Electronic Delivery' : nil
     selected_items.map do |selected_item|
       callnumber = selected_item.callnumber
-      special_request = aeon_digitization? ? aeon_item[callnumber]['digitization_special'] : aeon_reading_special
-      pages = aeon_digitization? ? aeon_item[callnumber]['pages'] : nil
-      publication = aeon_digitization? ? (aeon_item[callnumber]['publication'] == 'Yes') : nil
+      special_request = aeon_digitization? ? aeon_item[callnumber]['additional_information'] : aeon_reading_special
+      pages = aeon_digitization? ? aeon_item[callnumber]['requested_pages'] : nil
+      publication = aeon_digitization? ? (aeon_item[callnumber]['for_publication'] == 'Yes') : nil
+      appointment_id = aeon_digitization? ? nil : aeon_item&.dig(callnumber, 'appointment_id')
       create_single_aeon_request(selected_item, shipping_option:, pages:, publication:,
-                                                special_request:)
+                                                special_request:, appointment_id:)
     end
   end
-  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity
 
-  def create_single_aeon_request(selected_item, shipping_option: nil, pages: nil, publication: nil,
-                                 special_request: nil)
-    Aeon::Request.new(item_url: bib_data&.view_url, appointment: nil, appointment_id: nil,
+  def create_single_aeon_request(selected_item, shipping_option: nil, pages: nil, publication: nil, # rubocop:disable Metrics/ParameterLists
+                                 special_request: nil, appointment_id: nil)
+    Aeon::Request.new(item_url: bib_data&.view_url, appointment: nil, appointment_id:,
                       author: bib_data&.author, call_number: selected_item.callnumber, creation_date: nil, date: bib_data&.pub_date,
                       document_type: 'Monograph', format: nil, item_number: selected_item.barcode,
                       location: origin_location_code, shipping_option: shipping_option,

@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ['earliestAvailable', 'destination', 'proxyScanWarning', 'sponsorScanWarning', 'selectSponsor', 'sponsorRadioButton', 'digitization', 'reading']
+  static targets = ['earliestAvailable', 'destination', 'proxyScanWarning', 'sponsorScanWarning', 'selectSponsor', 'sponsorRadioButton', 'digitizationItems']
 
   connect() {
     this.element.reset();
@@ -17,6 +17,12 @@ export default class extends Controller {
 
     if (event.detail.selectedItems.length == 0) {
       accordionController.goto('barcodes-accordion');
+    }
+
+    if (!this.digitizationItemsTarget.querySelector('[data-content-id] .accordion-collapse.show')) {
+      const first = this.digitizationItemsTarget.querySelector('[data-content-id] .accordion-collapse');
+
+      if (first) Collapse.getOrCreateInstance(first).show();
     }
 
     accordionController.reenableNextButtons();
@@ -93,59 +99,6 @@ export default class extends Controller {
       const destinationName = event.target.selectedOptions[0].textContent;
       this.destinationTarget.textContent = destinationName;
     }
-  }
-
-  // When items are selected or deselected, update the Aeon reading and digitization options
-  // accordingly, if digitization is the request type that is currently selected
-  updateAeonOptions(event) {
-    const selectedItems = event.detail.selectedItems
-
-    const requestType = this.element.querySelector('input[name="patron_request[request_type]"]:checked').value
-    const _this = this
-
-
-    // Hide and disable all digitization options
-    this.hideAllDigitizationOptions()
-    if(requestType == 'digitization') {
-      event.detail.selectedItems.forEach(selectedItem => { 
-        var id = selectedItem.id
-        _this.showDigitizationOption(id)
-      })
-    } else if(requestType == 'reading'){
-      event.detail.selectedItems.forEach(selectedItem => { 
-        var id = selectedItem.id
-        _this.showReadingOption(id)
-      })
-    }
-  }
-
-  hideAllDigitizationOptions() {
-    var _this = this
-    this.digitizationTargets.forEach(digitizationTarget => {
-      // Also disable required inputs so that the next/continue button will work
-      // when the visible/enabled sections' required inputs have been filled out
-      _this.disableRequiredInputs(digitizationTarget)
-      digitizationTarget.querySelectorAll("input, textarea").forEach(element => {
-        element.disabled = true
-      })
-      digitizationTarget.classList.add('d-none')
-    })
-  }
-
-  showDigitizationOption(id) {
-    const digitizationTarget = this.digitizationTargets.find(t => t.dataset.id == id)
-    this.enableRequiredInputs(digitizationTarget)
-    digitizationTarget.querySelectorAll("input, textarea").forEach(element => {
-      element.disabled = false
-    })
-
-    digitizationTarget.classList.remove('d-none')
-  }
-
-  showReadingOption(id) {
-    const readingTarget = this.readingTargets.find(t => t.dataset.id == id)
-  
-    readingTarget.classList.remove('d-none')
   }
 
   // Temporarily disable required inputs that are children of the given element
