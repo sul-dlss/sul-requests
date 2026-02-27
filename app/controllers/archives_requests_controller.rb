@@ -19,7 +19,7 @@ class ArchivesRequestsController < ApplicationController
   end
 
   # This is the action triggered by the form submission to create an Aeon request.
-  def create
+  def create # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     authorize! :create, Aeon::Request
 
     # Fetch EAD data to get the actual collection information
@@ -32,8 +32,18 @@ class ArchivesRequestsController < ApplicationController
 
     results = @request.create_aeon_requests!
 
-    # Separate successes and failures
-    @successes, @failures = results.partition { |r| r[:success] }
+    successes, failures = results.partition { |r| r[:success] }
+
+    # Set appropriate flash message based on results
+    if failures.empty?
+      flash[:notice] = "All #{successes.count} request(s) submitted successfully!"
+    elsif successes.empty?
+      flash[:error] = "All requests failed: #{failures.map { |f| "#{f[:volume]} (#{f[:error]})" }.join('; ')}"
+    else
+      flash[:warning] = "#{successes.count} succeeded, #{failures.count} failed: #{failures.pluck(:volume).join(', ')}"
+    end
+
+    redirect_to archives_request_path(request.uuid)
   end
 
   private
