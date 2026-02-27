@@ -59,8 +59,6 @@ RSpec.configure do |config|
   # instead of true.
   config.use_transactional_fixtures = true
 
-  config.include ActiveSupport::Testing::TimeHelpers
-
   config.before do
     stub_request(:any, %r{http://example.com/.*}).to_return(status: 200, body: '', headers: {})
   end
