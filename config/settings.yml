@@ -70,7 +70,6 @@ stanford_ips:
   ranges: []
 features:
   estimate_delivery: true
-  scan_service: true
   mediator_email: true
   requests_redesign: false
 
