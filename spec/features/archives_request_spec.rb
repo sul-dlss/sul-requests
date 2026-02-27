@@ -74,8 +74,9 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       page.execute_script("document.querySelector('select').dispatchEvent(new Event('input', { bubbles: true }))")
       click_button 'Submit to Aeon'
 
-      # TODO: Submissions tests, submissions page will continue to change so skipping for now
-      # expect(page).to have_content('All 1 request(s) submitted successfully!')
+      # TODO: Finish stubbing out the Aeon flow so we have items to look at
+      # expect(page).to have_content('We received your reading room access request')
+      expect(page).to have_content('All 1 request(s) submitted successfully!')
 
       expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
                                                                         username: user.email_address,
@@ -108,8 +109,10 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       check 'I agree to these terms'
       click_button 'Submit to Aeon'
 
-      # TODO: Submissions tests, submissions page will continue to change so skipping for now
-      # expect(page).to have_content('All 1 request(s) submitted successfully!')
+      # TODO: Finish stubbing out the Aeon flow so we have items to look at
+      # expect(page).to have_content('We received your digitization request')
+      expect(page).to have_content('All 1 request(s) submitted successfully!')
+
       expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
                                                                         username: user.email_address,
                                                                         item_info5: 'Pages 1-10',
