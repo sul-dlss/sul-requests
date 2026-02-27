@@ -142,19 +142,14 @@ RSpec.describe 'Mediation table', :js do
           click_on 'Toggle'
         end
 
-        within('tbody td table tbody') do
-          within(first('tr')) do
-            click_on('Approve')
-          end
+        within('tbody td table tbody tr:first-child') do
+          click_on('Approve')
         end
 
         expect(page).to have_content 'Approved'
 
-        sleep 1
-        within('tbody td table tbody') do
-          within(all('tr').last) do
-            click_on('Approve')
-          end
+        within('tbody td table tbody tr:last-child') do
+          click_on('Approve')
         end
 
         within(all('[data-mediate-request]').last) do
