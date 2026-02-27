@@ -143,10 +143,11 @@ module Ead
       end
 
       def self.hierarchical?(node)
-        # Check if this component is hierarchical (not a leaf node)
-        # [series subseries recordgrp subgrp] check taken from old XSLT
-        level = node['level']
-        %w[series subseries recordgrp subgrp].include?(level) || child_components(node).any?
+        # A node is hierarchical only if it actually has child components.
+        # The level attribute alone (series, subseries, etc.) may not be sufficient?
+        # A series-level node with no children is effectively a leaf item
+        # and should be treated as requestable.
+        child_components(node).any?
       end
 
       # child_components refers to immediate child/first descendents
@@ -218,6 +219,14 @@ module Ead
       ].freeze
 
       Container = Data.define(:type, :value)
+
+      def digital_only?
+        containers.empty? && node.xpath('did/dao').any?
+      end
+
+      def extref_href
+        node.at_xpath('did/unitid[@type="ark"]/extref/@href')&.value
+      end
 
       def box
         containers&.find { |c| c.type == 'Box' }&.value
