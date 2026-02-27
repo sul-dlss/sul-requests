@@ -29,7 +29,7 @@
           <% end %>
         </div>
       </div>
-      <%= form_with id: 'archives-request', model: @ead_request, url: archives_requests_path, class: 'accordion', html: { autocomplete: "off" }, data: { controller: 'accordion-form item-selector archives-request', action: 'item-selector:changed->archives-request#onSelectedItemsValueChanged item-selector:changed->accordion-form#typeValueChanged', turbo: false } do |f| %>
+      <%= form_with id: 'archives-request', model: @ead_request, url: archives_requests_path, class: 'accordion', html: { autocomplete: "off" }, data: { controller: 'accordion-form item-selector archives-request', action: 'item-selector:changed->archives-request#onSelectedItemsValueChanged item-selector:changed->accordion-form#typeValueChanged item-selector:changed->accordion-form#reenableNextButtons', turbo: false } do |f| %>
         <%= f.hidden_field :ead_url, value: @ead_request.url %>
         <%= render AccordionStepComponent.new(id: 'request_type', step_index: step_enum.next, form_id: f.id) do |component| %>
           <% component.with_title.with_content('Request type') %>
