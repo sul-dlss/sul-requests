@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus";
 import { Toast } from 'bootstrap';
+import sanitizeHtml from 'sanitize-html';
 
 function camelize(value) {
   return value.replace(/(?:[_-])([a-z0-9])/g, (_, char) => char.toUpperCase())
@@ -15,9 +16,18 @@ function typecast(value) {
 
 export default class extends Controller {
   static targets = ['items', 'toast', 'selectedItems']
-  static values = { requestType: String, selectedItems: Array }
+  static values = { itemLimit: { type: Number, default: -1 }, requestType: String, selectedItems: Array }
 
   connect() { }
+
+  itemLimitValueChanged() {
+    const switchtype = this.itemLimitValue == 1 ? 'radio' : 'checkbox';
+
+    this.itemsTargets.forEach(elem => {
+      elem.type = switchtype;
+      if (switchtype == 'radio') { elem.checked = false };
+    })
+  }
 
   itemsTargetConnected(element) {
     if (!element.checked) return;
@@ -58,9 +68,6 @@ export default class extends Controller {
       this.selectedItemsValue = this.selectedItemsValue.filter((item) => item.id !== event.params.id);
     }
 
-    // Enable/disable sending hidden params to Aeon
-    event.currentTarget.closest('td').querySelectorAll('[data-toggle]').forEach(e => e.toggleAttribute('disabled'));
-
     this.dispatch('change', { detail: { selectedItems: this.selectedItemsValue } });
   }
 
@@ -87,18 +94,17 @@ export default class extends Controller {
   }
 
   showRemovalToast(item) {
+    if (!this.hasToastTarget) return;
+
     this.toastTarget.querySelector('.btn').dataset.itemselectorIdParam = item.id;
 
     Toast.getOrCreateInstance(this.toastTarget).show();
   }
 
-  requestTypeValueChanged(value) {
-    const switchtype = value == 'scan' ? 'radio' : 'checkbox'
+  formatItemTitle(item) {
+    if (!item.titleParts) return item.label;
 
-    this.itemsTargets.forEach(elem => {
-      elem.type = switchtype;
-      if (switchtype == 'radio') { elem.checked = false };
-    })
+    return item.titleParts.map(e => sanitizeHtml(e)).join('<i class="bi bi-chevron-right mx-1"></i>');
   }
 
   selectedItemsValueChanged(value, previousValue) {
@@ -127,21 +133,11 @@ export default class extends Controller {
           for (const [key, value] of Object.entries(item)) {
             rootNode.innerHTML = rootNode.innerHTML.replace(new RegExp(`__${key.toUpperCase()}__`, 'g'), value);
           };
+          rootNode.innerHTML = rootNode.innerHTML.replace(new RegExp(`__TITLE__`, 'g'), this.formatItemTitle(item));
 
           target.appendChild(rootNode);
         }
       })
-    });
-
-    this.selectedItemsTargets.forEach(target => {
-      const itemGroup = target.closest('.selected-items-container')
-      if (!target.querySelector('[data-content-id]')) {
-        itemGroup.classList.add('d-none');
-        this.disableRequiredInputs(itemGroup);
-      } else {
-        itemGroup.classList.remove('d-none');
-        this.enableRequiredInputs(itemGroup);
-      }
     });
 
     this.dispatch('changed', { detail: { selectedItems: value } });
@@ -160,22 +156,6 @@ export default class extends Controller {
     }
 
     return params;
-  }
-
-  // Temporarily disable required inputs that are children of the given element
-  // This is used to prevent validation errors when hidden/unused inputs are required
-  // The initial required state of the inputs is preserved via a data attribute
-  disableRequiredInputs(element) {
-    element.querySelectorAll('[required]').forEach(input => {
-      input.dataset.required = true;
-      input.removeAttribute('required');
-    });
-  }
-
-  enableRequiredInputs(element) {
-    element.querySelectorAll('[data-required]').forEach(input => {
-      input.setAttribute('required', 'required');
-    });
   }
 
   disableInputs(element) {

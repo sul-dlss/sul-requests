@@ -29,9 +29,8 @@
           <% end %>
         </div>
       </div>
-      <%= form_with id: 'archives-request', model: @ead_request, url: archives_requests_path, class: 'accordion', data: { controller: 'accordion-form archives-request', turbo: false } do |f| %>
+      <%= form_with id: 'archives-request', model: @ead_request, url: archives_requests_path, class: 'accordion', data: { controller: 'accordion-form itemselector archives-request', action: 'itemselector:changed->archives-request#onSelectedItemsValueChanged itemselector:changed->accordion-form#typeValueChanged', turbo: false } do |f| %>
         <%= f.hidden_field :ead_url, value: @ead_request.url %>
-
         <%= render AccordionStepComponent.new(id: 'request_type', step_index: step_enum.next, form_id: f.id) do |component| %>
           <% component.with_title.with_content('Request type') %>
           <% component.with_body do %>
@@ -114,11 +113,11 @@
                 <div><button class="btn btn-primary text-nowrap"><i class="bi bi-calendar-plus me-1"></i>Create Appointment</button></div>
               </div>
             <% else %>
-              <ul class="list-unstyled" data-archives-request-target="appointmentItems">
+              <ul class="list-unstyled selected-items-container" data-itemselector-target="selectedItems" data-template="#appointmentTemplate">
               </ul>
 
-              <template data-archives-request-target="appointmentTemplate">
-                <%= render Aeon::AppointmentFormItemComponent.new(title: '__TITLE__', dom_id: '__DOMID__', base_name: 'ead_request[items][__DOMID__]', appointments: @ead_request.appointments) %>
+              <template id="appointmentTemplate">
+                <%= render Aeon::AppointmentFormItemComponent.new(title: '__TITLE__', dom_id: '__ID__', base_name: 'ead_request[items][__ID__]', appointments: @ead_request.appointments) %>
               </template>
             <% end %>
           <% end %>
@@ -130,11 +129,11 @@
           <% c.with_body do %>
             <%= render 'patron_requests/digitization_notice' %>
 
-            <div class="accordion digitization-accordion" data-archives-request-target="digitizationItems">
+            <div class="accordion digitization-accordion selected-items-container" data-archives-request-target="digitizationItems" data-itemselector-target="selectedItems" data-template="#digitizationTemplate">
             </div>
 
-            <template data-archives-request-target="digitizationTemplate">
-              <%= render Aeon::DigitizationFormItemComponent.new(title: '__TITLE__', dom_id: '__DOMID__', base_name: 'ead_request[items][__DOMID__]') %>
+            <template id="digitizationTemplate">
+              <%= render Aeon::DigitizationFormItemComponent.new(title: '__TITLE__', dom_id: '__ID__', base_name: 'ead_request[items][__ID__]') %>
             </template>
           <% end %>
         <% end %>

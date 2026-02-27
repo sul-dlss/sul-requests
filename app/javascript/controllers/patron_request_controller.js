@@ -22,6 +22,20 @@ export default class extends Controller {
     accordionController.reenableNextButtons();
   }
 
+  showHideItemGroups(event) {
+    const itemGroups = this.element.querySelectorAll('.selected-items-container');
+
+    Array.from(itemGroups).forEach(itemGroup => {
+      if (!itemGroup.querySelector('[data-content-id]')) {
+        itemGroup.classList.add('d-none');
+        this.disableRequiredInputs(itemGroup);
+      } else {
+        itemGroup.classList.remove('d-none');
+        this.enableRequiredInputs(itemGroup);
+      }
+    });
+  }
+
   updateType(event) {
     const requestType = event.target.value;
 
@@ -29,6 +43,7 @@ export default class extends Controller {
     if (itemSelector) itemSelector.dataset.itemselectorRequestTypeValue = requestType;
 
     this.element.dataset.accordionFormTypeValue = requestType;
+    this.element.dataset.itemselectorItemLimitValue = requestType == 'scan' ? 1 : -1;
   }
 
   updateProxy(event) {
