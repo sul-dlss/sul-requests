@@ -95,6 +95,14 @@ RSpec.describe AeonClient do
   end
 
   describe '#update_request_route' do
+    before do
+      stub_request(:get, 'https://aeon.example.com/api/Requests/123/routes')
+        .to_return(status: 200,
+                   body: { transactionStatuses: [{ name: 'Cancelled by user' }, { name: 'Approved' }],
+                           photoduplicationStatuses: [] }.to_json,
+                   headers: { 'Content-Type' => 'application/json' })
+    end
+
     it 'sends a route update and returns the updated request' do
       stub_request(:post, 'https://aeon.example.com/api/Requests/123/route')
         .with(body: { newStatus: 'Cancelled by user' }.to_json)
@@ -109,6 +117,14 @@ RSpec.describe AeonClient do
       expect(request).to be_a(Aeon::Request)
       expect(request.transaction_number).to eq('123')
       expect(request.transaction_status).to eq('Cancelled by user')
+    end
+
+    context 'with an invalid next step' do
+      it 'raises a BadRequestError' do
+        expect do
+          client.update_request_route(transaction_number: '123', status: 'Some invalid status')
+        end.to raise_error(AeonClient::BadRequestError)
+      end
     end
   end
 

@@ -153,5 +153,9 @@ module Aeon
     def transaction_queue
       @transaction_queue ||= self.class.aeon_client.find_queue(id: transaction_status, type: :transaction)
     end
+
+    def possible_routes
+      @possible_routes ||= self.class.aeon_client.possible_routes(transaction_number: transaction_number)
+    end
   end
 end

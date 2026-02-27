@@ -4,6 +4,7 @@
 class AeonClient
   class ApiError < StandardError; end
   class NotFoundError < ApiError; end
+  class BadRequestError < ApiError; end
 
   DEFAULT_HEADERS = {
     accept: 'application/json'
@@ -50,9 +51,24 @@ class AeonClient
   end
 
   def update_request_route(transaction_number:, status:)
+    # validate status is one of the allowed values
+    valid_routes = request_routes(transaction_number:).transaction_statuses
+    unless valid_routes.any? { |route| route['name'] == status }
+      raise BadRequestError,
+            "Invalid status '#{status}' for request route. Valid next statuses are: #{valid_routes.pluck('name').join(', ')}"
+    end
+
     response = post("Requests/#{transaction_number}/route", { newStatus: status })
 
     handle_response(response, as_class: Aeon::Request)
+  end
+
+  def request_routes(transaction_number:)
+    response = get("Requests/#{transaction_number}/routes")
+
+    handle_response(response, not_found: Aeon::PossibleRoutes.new) do |body|
+      Aeon::PossibleRoutes.from_dynamic(body)
+    end
   end
 
   def appointments_for(username:, context: 'both', pending_only: true)
