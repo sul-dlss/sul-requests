@@ -13,7 +13,7 @@
 
   <div class="d-flex gap-sm-3 flex-sm-row flex-column">
     <div>
-      <i replace_with_icon></i><%= @aeon_requests.document_type %><% if @aeon_requests.date %> (<%= @aeon_requests.date %>)<% end %>
+      <%= render Icons::DocumentBox1Component.new classes: 'me-1 align-text-bottom' %><%= @aeon_requests.document_type %><% if @aeon_requests.date %> (<%= @aeon_requests.date %>)<% end %>
     </div>
     <div>Call number: <%= @aeon_requests.call_number %></div>
     <% if @aeon_requests.item_url&.match?('searchworks') %>
