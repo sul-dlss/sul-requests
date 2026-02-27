@@ -70,7 +70,6 @@ stanford_ips:
   ranges: []
 features:
   estimate_delivery: true
-  hold_recall_via: 'illiad'
   scan_service: true
   mediator_email: true
   requests_redesign: false
