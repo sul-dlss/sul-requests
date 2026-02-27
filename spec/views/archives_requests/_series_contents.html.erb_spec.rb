@@ -13,20 +13,22 @@ RSpec.describe 'archives_requests/_series_contents.html.erb' do
   # rubocop:disable RSpec/ExampleLength
   context 'with container items' do
     it 'displays a collapsible container group with all items' do
-      item1 = Ead::Document::Item.new(
-        title: 'Item 1',
-        level: 'file',
-        containers: [{ type: 'Box', value: '9' }, { type: 'Folder', value: '1' }],
-        date: nil,
-        id: 'item-1'
-      )
-      item2 = Ead::Document::Item.new(
-        title: 'Item 2',
-        level: 'file',
-        containers: [{ type: 'Box', value: '9' }, { type: 'Folder', value: '2' }],
-        date: nil,
-        id: 'item-2'
-      )
+      item1 = instance_double(Ead::Document::Item,
+                              coalesce_key: 'Box 9',
+                              top_container: 'Box 9',
+                              folder: 'Folder 1',
+                              title: 'Item 1',
+                              level: 'file',
+                              date: nil,
+                              id: 'item-1')
+      item2 = instance_double(Ead::Document::Item,
+                              coalesce_key: 'Box 9',
+                              top_container: 'Box 9',
+                              folder: 'Folder 2',
+                              title: 'Item 2',
+                              level: 'file',
+                              date: nil,
+                              id: 'item-2')
       items = [item1, item2]
       display_groups = Ead::DisplayGroup.build_display_groups(items)
 
@@ -45,20 +47,24 @@ RSpec.describe 'archives_requests/_series_contents.html.erb' do
 
   context 'with individual items (no container)' do
     it 'displays each item with its own checkbox' do
-      item1 = Ead::Document::Item.new(
-        title: 'Standalone Item 1',
-        level: 'file',
-        containers: [],
-        date: nil,
-        id: 'item-3'
-      )
-      item2 = Ead::Document::Item.new(
-        title: 'Standalone Item 2',
-        level: 'file',
-        containers: [],
-        date: nil,
-        id: 'item-4'
-      )
+      item1 = instance_double(Ead::Document::Item,
+                              coalesce_key: 1,
+                              full_title: 'Standalone Item 1',
+                              title: 'Standalone Item 1',
+                              level: 'file',
+                              top_container: nil,
+                              contents: [],
+                              date: nil,
+                              id: 'item-3')
+      item2 = instance_double(Ead::Document::Item,
+                              coalesce_key: 2,
+                              full_title: 'Standalone Item 2',
+                              title: 'Standalone Item 2',
+                              level: 'file',
+                              top_container: nil,
+                              contents: [],
+                              date: nil,
+                              id: 'item-4')
       items = [item1, item2]
       display_groups = Ead::DisplayGroup.build_display_groups(items)
 
@@ -77,20 +83,25 @@ RSpec.describe 'archives_requests/_series_contents.html.erb' do
   context 'with subseries' do
     it 'displays a collapsible subseries header with recursive content' do
       subseries_items = [
-        Ead::Document::Item.new(
-          title: 'Subseries Item',
-          level: 'file',
-          containers: [{ type: 'Box', value: '1' }],
-          date: nil,
-          id: 'item-5'
-        )
+        instance_double(Ead::Document::Item,
+                        coalesce_key: 'Box 1',
+                        title: 'Subseries Item',
+                        level: 'file',
+                        top_container: 'Box 1',
+                        folder: nil,
+                        date: nil,
+                        id: 'item-5')
       ]
 
-      subseries = {
-        title: 'Subseries A',
-        level: 'subseries',
-        contents: subseries_items
-      }
+      subseries = instance_double(Ead::Document::Node,
+                                  coalesce_key: 1234,
+                                  top_container: nil,
+                                  full_title: 'Subseries A',
+                                  title: 'Subseries A',
+                                  date: nil,
+                                  level: 'subseries',
+                                  contents: subseries_items,
+                                  id: nil)
       items = [subseries]
       display_groups = Ead::DisplayGroup.build_display_groups(items)
 

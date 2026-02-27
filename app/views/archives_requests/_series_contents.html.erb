@@ -48,13 +48,13 @@
   <% elsif display_group.is_a?(Ead::DisplayGroup::ItemWithoutContainer) %>
     <%# Individual item without container - gets its own checkbox %>
     <% 
-      checkbox_id = volume_checkbox_id(series_title: series_title || container_name, subseries_name: display_group.title)
+      checkbox_id = volume_checkbox_id(series_title: series_title || display_group.title, subseries_name: display_group.title)
     %>
     <div class="mb-2">
       <%= f.check_box :volumes, 
             { multiple: true, class: 'form-check-input me-2', id: checkbox_id, 
               data: { action: 'change->archives-request#updateVolumesDisplay' } }, 
-              volume_value(series_title: series_title || container_name, subseries_name: display_group.title),
+              volume_value(series_title: series_title || display_group.title, subseries_name: display_group.title),
             nil %>
       <%= label_tag checkbox_id, display_group.title, class: 'form-check-label' %>
     </div>

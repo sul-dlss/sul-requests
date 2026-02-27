@@ -129,106 +129,127 @@ module Ead
       # Get top-level components (c01)
       c01_nodes = doc.xpath('//dsc/c01')
 
-      @series_and_subseries = c01_nodes.filter_map do |c01_node|
-        process_component(c01_node)
-      end
+      @series_and_subseries = c01_nodes.map { |node| Node.from(node) }.select(&:displayable?)
     end
 
-    # Recursively process a component node (c01, c02, c03, etc.)
-    def process_component(node)
-      level = node['level']
-
-      # Build title with date
-      title_text = node.xpath('did/unittitle').first&.text&.strip
-      date_text = node.xpath('did/unitdate').first&.text&.strip
-      full_title = [title_text, date_text].compact.reject(&:empty?).join(', ')
-
-      return nil if full_title.empty?
-
-      if hierarchical?(node)
-        # This node is hierarchical (series/subseries) - process its immediate child components
-        children = child_components(node)
-        items_and_subseries = children.filter_map do |child_node|
-          process_component(child_node)
+    # Node represents a c0* component in the EAD hierarchy. It can be a series, subseries, or file depending on its level and children.
+    class Node
+      def self.from(node)
+        if hierarchical?(node)
+          new(node)
+        else
+          Item.new(node, default_level: 'file')
         end
+      end
 
-        {
-          title: full_title,
-          level: level || 'series',
-          contents: items_and_subseries.compact
-        }
-      else
-        # This is a leaf component (file-level item, possibly with physical containers)
-        Item.new(
-          title: title_text,
-          level: level || 'file',
-          containers: containers(node),
-          date: date_text,
-          id: node.xpath('did/unitid').first&.text&.strip
-        )
+      def self.hierarchical?(node)
+        # Check if this component is hierarchical (not a leaf node)
+        # [series subseries recordgrp subgrp] check taken from old XSLT
+        level = node['level']
+        %w[series subseries recordgrp subgrp].include?(level) || child_components(node).any?
+      end
+
+      # child_components refers to immediate child/first descendents
+      def self.child_components(node)
+        node&.xpath("./*[starts-with(name(), 'c0')]") || []
+      end
+
+      attr_reader :node, :default_level
+
+      def initialize(node, default_level: 'series')
+        @node = node
+        @default_level = default_level
+      end
+
+      def id
+        @node.xpath('did/unitid').first&.text&.strip
+      end
+
+      def title
+        @node.xpath('did/unittitle').first&.text&.strip
+      end
+
+      def date
+        @node.xpath('did/unitdate').first&.text&.strip
+      end
+
+      def full_title
+        [title, date].compact.reject(&:empty?).join(', ')
+      end
+
+      def level
+        @node['level'] || default_level
+      end
+
+      def displayable?
+        title.present? || date.present?
+      end
+
+      def contents
+        @contents ||= child_components.map { |x| Node.from(x) }.select(&:displayable?)
+      end
+
+      def top_container
+        nil
+      end
+
+      def coalesce_key
+        top_container || object_id
+      end
+
+      private
+
+      def child_components
+        self.class.child_components(@node)
       end
     end
 
-    # This list is taken directly from Aeon's XSLT
-    # It identifies container levels appropriate for request submission.
-    PARENT_CONTAINER_TYPES = %w[
-      Box Carton Case Folder Frame Object Page Reel Volume Half-Box Flat-Box
-      Othertype Items Othercontainertype Computer_Media Drawer Bin Cassette
-      Map-Case Tube Map-Folder Box-Folder Compact_Disc Audiocassette Model
-      Oversize-Box Map-Tube Oversize-Folder Item Roll Tray Videodisc Oversize
-      Card-Box Flatbox-Small Flatbox-Large Disc Binder
-    ].freeze
+    # Item represents a leaf node in the EAD hierarchy (e.g. without child components).
+    # It may have container information (e.g. Box + Folder).
+    class Item < Node
+      # This list is taken directly from Aeon's XSLT
+      # It identifies container levels appropriate for request submission.
+      PARENT_CONTAINER_TYPES = %w[
+        Box Carton Case Folder Frame Object Page Reel Volume Half-Box Flat-Box
+        Othertype Items Othercontainertype Computer_Media Drawer Bin Cassette
+        Map-Case Tube Map-Folder Box-Folder Compact_Disc Audiocassette Model
+        Oversize-Box Map-Tube Oversize-Folder Item Roll Tray Videodisc Oversize
+        Card-Box Flatbox-Small Flatbox-Large Disc Binder
+      ].freeze
 
-    # Item is a leaf component that may belong inside physical containers (Box, Folder) but has no child components in the hierarchy
-    Item = Data.define(:title, :level, :containers, :date, :id) do
+      Container = Data.define(:type, :value)
+
       def box
-        containers&.find { |c| c[:type] == 'Box' }&.dig(:value)
+        containers&.find { |c| c.type == 'Box' }&.value
       end
 
       def folder
-        containers&.find { |c| c[:type] == 'Folder' }&.dig(:value)
+        containers&.find { |c| c.type == 'Folder' }&.value
       end
 
       def top_container
         return nil unless containers
 
-        top = containers.find { |c| PARENT_CONTAINER_TYPES.include?(c[:type]) }
+        top = containers.find { |c| PARENT_CONTAINER_TYPES.include?(c.type) }
         return nil unless top
 
         # e.g. Folder 1
-        "#{top[:type]} #{top[:value]}"
+        "#{top.type} #{top.value}"
       end
-    end
 
-    private
+      private
 
-    def hierarchical?(node)
-      # Check if this component is hierarchical (not a leaf node)
-      # [series subseries recordgrp subgrp] check taken from old XSLT
-      level = node['level']
-      %w[series subseries recordgrp subgrp].include?(level) || child_components(node).any?
-    end
-
-    # child_components refers to immediate child/first descendents
-    def child_components(node)
-      node.xpath("./*[starts-with(name(), 'c0')]")
-    end
-
-    # all descendant c-level nodes (c01, c02, c03, etc.)
-    def descendant_components(node)
-      node.xpath('.//*[starts-with(name(), "c0")]')
-    end
-
-    # This refers to <container> elements within the <did> of leaf nodes
-    def containers(node)
-      # Extract container information (Box, Folder, etc.)
-      containers = node.xpath('did/container').map do |container|
-        {
-          type: container['type']&.capitalize,
-          value: container.text.strip
-        }
+      def containers
+        @containers ||= begin
+          container_nodes = node.xpath('did/container')
+          container_nodes.map do |container|
+            Container.new(
+              type: container['type']&.capitalize,
+              value: container.text.strip
+            )
+          end
+        end
       end
-      containers.any? ? containers : nil
     end
   end
 end
