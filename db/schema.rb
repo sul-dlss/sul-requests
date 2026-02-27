@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_26_162645) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_27_200720) do
   create_table "admin_comments", force: :cascade do |t|
     t.string "comment"
     t.string "commenter"
@@ -80,27 +80,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_26_162645) do
     t.index ["origin_location_code"], name: "index_patron_requests_on_origin_location_code"
     t.index ["patron_id"], name: "index_patron_requests_on_patron_id"
     t.index ["request_type"], name: "index_patron_requests_on_request_type"
-  end
-
-  create_table "requests", force: :cascade do |t|
-    t.integer "approval_status", default: 0
-    t.text "barcodes"
-    t.datetime "created_at", precision: nil, null: false
-    t.text "data"
-    t.string "destination"
-    t.string "estimated_delivery"
-    t.string "item_id"
-    t.text "item_title"
-    t.date "needed_date"
-    t.string "origin"
-    t.string "origin_location"
-    t.string "status"
-    t.string "type"
-    t.datetime "updated_at", precision: nil, null: false
-    t.integer "user_id"
-    t.boolean "via_borrow_direct", default: false
-    t.index ["needed_date"], name: "index_requests_on_needed_date"
-    t.index ["user_id"], name: "index_requests_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
