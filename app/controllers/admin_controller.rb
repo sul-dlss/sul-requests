@@ -93,28 +93,12 @@ class AdminController < ApplicationController
     params[:metric].presence&.classify
   end
 
-  def dashboard_requests
-    if filtered?
-      dashboard_create_date_filtered_requests
-    else
-      dashboard_recent_requests
-    end
-  end
-
   def dashboard_patron_requests
     if filtered?
       PatronRequestSearch.call(params)
     else
       PatronRequest.recent
     end
-  end
-
-  def dashboard_create_date_filtered_requests
-    Request.for_create_date(params[:created_at]).for_type(filter_type)
-  end
-
-  def dashboard_recent_requests
-    @dashboard.recent_requests(page, per_page).for_type(filter_type)
   end
 
   def mediated_pages
