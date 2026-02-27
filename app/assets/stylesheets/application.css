@@ -490,6 +490,10 @@ label.btn-close {
   }
 }
 
+.disclosure-icon {
+  font-size: 1rem;
+}
+
 .redesign-required-label::after {
   content: '*required';
   color: var(--stanford-cardinal);
