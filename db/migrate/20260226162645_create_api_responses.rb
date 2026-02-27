@@ -17,14 +17,16 @@ class CreateApiResponses < ActiveRecord::Migration[8.1]
             FolioApiResponse.create!(
               item_id: item_id,
               request_data: folio_response['request_data'],
-              response_data: folio_response['response'] || folio_response['errors'] || folio_response.except('request_data')
+              response_data: folio_response['response'] || folio_response['errors'] || folio_response.except('request_data'),
+              patron_request_id: patron_request.id
             )
           end
 
           patron_request.illiad_response_data&.each do |item_id, illiad_response|
             IlliadApiResponse.create!(
               item_id: item_id,
-              response_data: illiad_response
+              response_data: illiad_response,
+              patron_request_id: patron_request.id
             )
           end
         end
