@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { Collapse } from "bootstrap"
 
 export default class extends Controller {
   static targets = ["status", "nextButton", "charCounter"]
@@ -30,5 +31,21 @@ export default class extends Controller {
   emptyFields() {
     const formData = new FormData(this.element.closest('form'));
     return Array.from(this.element.querySelectorAll('[required]')).find(x => formData.getAll(x.name).every(x => !x))
+  }
+
+  nextItem(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const currentItem = event.target.closest('[data-content-id]');
+    const nextItem = currentItem.nextElementSibling;
+
+    const currentCollapse = currentItem.querySelector('.accordion-collapse');
+    const nextCollapse = nextItem?.querySelector('.accordion-collapse');
+
+    if (currentCollapse && nextCollapse) {
+      Collapse.getOrCreateInstance(currentCollapse).hide();
+      Collapse.getOrCreateInstance(nextCollapse).show();
+    }
   }
 }

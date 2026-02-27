@@ -15,7 +15,7 @@ function typecast(value) {
 }
 
 export default class extends Controller {
-  static targets = ['items', 'toast', 'selectedItems']
+  static targets = ['item', 'toast', 'selectedItems']
   static values = { itemLimit: { type: Number, default: -1 }, requestType: String, selectedItems: Array }
 
   connect() { }
@@ -23,13 +23,13 @@ export default class extends Controller {
   itemLimitValueChanged() {
     const switchtype = this.itemLimitValue == 1 ? 'radio' : 'checkbox';
 
-    this.itemsTargets.forEach(elem => {
+    this.itemTargets.forEach(elem => {
       elem.type = switchtype;
       if (switchtype == 'radio') { elem.checked = false };
     })
   }
 
-  itemsTargetConnected(element) {
+  itemTargetConnected(element) {
     if (!element.checked) return;
 
     const params = this.getStimulusParams(element);
@@ -45,9 +45,9 @@ export default class extends Controller {
     const filterText = event.currentTarget.value;
 
     if (filterText.length == 0) {
-      this.itemsTargets.forEach(i => i.closest('tr').classList.remove('d-none'))
+      this.itemTargets.forEach(i => i.closest('tr').classList.remove('d-none'))
     } else {
-      this.itemsTargets.forEach(i => {
+      this.itemTargets.forEach(i => {
         if (!i.closest('td').innerText.toLowerCase().includes(filterText.toLowerCase())) {
           i.closest('tr').classList.add('d-none')
         } else {
@@ -59,7 +59,7 @@ export default class extends Controller {
 
   change(event) {
     if (event.currentTarget.checked || event.params.checked) {
-      if (this.itemsTarget.type == 'radio') {
+      if (this.itemLimitValue == 1) {
         this.selectedItemsValue = [event.params];
       } else {
         this.selectedItemsValue = this.selectedItemsValue.concat([event.params]);
@@ -67,36 +67,28 @@ export default class extends Controller {
     } else {
       this.selectedItemsValue = this.selectedItemsValue.filter((item) => item.id !== event.params.id);
     }
-
-    this.dispatch('change', { detail: { selectedItems: this.selectedItemsValue } });
   }
 
-  unchecked(event) {
+  remove(event) {
     event.preventDefault();
 
-    const target = this.itemsTargets.find((item) => item.dataset.itemselectorIdParam === event.params.id)
-    if (target) target.checked = false;
-
     const targetItem = this.selectedItemsValue.find((item) => item.id == event.params.id)
-
     this.selectedItemsValue = this.selectedItemsValue.filter((item) => item.id !== event.params.id);
 
     if (this.selectedItemsValue.length > 0) this.showRemovalToast(targetItem);
-
-    this.dispatch('change', { detail: { selectedItems: this.selectedItemsValue } });
   }
 
   undo(event) {
     event.preventDefault();
 
-    this.itemsTargets.find((item) => item.dataset.itemselectorIdParam === event.params.id).click();
+    this.selectedItemsValue = this.selectedItemsValue.concat([event.params.payload]);
     Toast.getOrCreateInstance(this.toastTarget).hide();
   }
 
   showRemovalToast(item) {
     if (!this.hasToastTarget) return;
 
-    this.toastTarget.querySelector('.btn').dataset.itemselectorIdParam = item.id;
+    this.toastTarget.querySelector('.btn').dataset.itemselectorPayloadParam = JSON.stringify(item);
 
     Toast.getOrCreateInstance(this.toastTarget).show();
   }
@@ -116,10 +108,16 @@ export default class extends Controller {
       this.element.querySelectorAll(`[data-content-id="${item.id}"]:not([data-toggle-disabled])`).forEach(e => e.remove());
 
       this.element.querySelectorAll(`[data-content-id="${item.id}"][data-toggle-disabled]`).forEach(e => this.disableInputs(e));
+
+      const target = this.itemTargets.find((checkbox) => checkbox.dataset.itemselectorIdParam === item.id)
+      if (target) target.checked = false;
     });
 
     added.forEach(item => {
       this.element.querySelectorAll(`[data-content-id="${item.id}"][data-toggle-disabled]`).forEach(e => this.enableInputs(e));
+
+      const target = this.itemTargets.find((checkbox) => checkbox.dataset.itemselectorIdParam === item.id)
+      if (target) target.checked = true;
 
       this.selectedItemsTargets.forEach(target => {
         if (target.dataset.statusFilter && target.dataset.statusFilter !== item.status) return;
@@ -140,7 +138,7 @@ export default class extends Controller {
       })
     });
 
-    this.dispatch('changed', { detail: { selectedItems: value } });
+    this.dispatch('changed', { detail: { selectedItems: value, previousValue: previousValue } });
   }
 
   getStimulusParams(element) {
@@ -160,7 +158,7 @@ export default class extends Controller {
 
   disableInputs(element) {
     element.querySelectorAll('[data-toggle]').forEach(input => {
-      input.addAttribute('disabled');
+      input.setAttribute('disabled', '');
     });
   }
 

@@ -36,7 +36,7 @@
 <%= form_for(@patron_request,
             data: {
               controller: 'patron-request accordion-form itemselector',
-              action: 'itemselector:change->patron-request#showItemSelector itemselector:changed->accordion-form#typeValueChanged'
+              action: 'itemselector:changed->patron-request#showItemSelector itemselector:changed->accordion-form#typeValueChanged'
             },
             html: { class: 'accordion' },
             url: patron_requests_path,

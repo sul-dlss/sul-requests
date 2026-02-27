@@ -46,7 +46,7 @@
 <% end %>
 
 <%= form_for(@patron_request,
-             data: { controller: 'patron-request accordion-form itemselector', action: 'itemselector:change->patron-request#showItemSelector itemselector:changed->patron-request#showHideItemGroups itemselector:changed->accordion-form#typeValueChanged' },
+             data: { controller: 'patron-request accordion-form itemselector', action: 'itemselector:changed->patron-request#showItemSelector itemselector:changed->patron-request#showHideItemGroups itemselector:changed->accordion-form#typeValueChanged' },
              html: { class: 'col-lg-8 accordion' },
              url: patron_requests_path,
              method: 'POST') do |f| %>
@@ -160,7 +160,7 @@
                 <span class="callnumber">
                   __LABEL__
                 </span>
-                <button data-action="itemselector#unchecked" data-itemselector-id-param="__ID__" type="button" class="btn-close py-0 pill-close">
+                <button data-action="itemselector#remove" data-itemselector-id-param="__ID__" type="button" class="btn-close py-0 pill-close">
                   <span class="visually-hidden">Remove __LABEL__</span>
                 </button>
               </span>

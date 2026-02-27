@@ -5,7 +5,7 @@
       <tr>
         <td>
           <label>
-            <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: false, data: { 'itemselector-target': 'items', 'itemselector-id-param': 'uuid-1', 'itemselector-status-param': 'unavailable',  'itemselector-label-param': 'Label 1', action: 'itemselector#change' } }, 'ABC 1', "" %>
+            <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: false, data: { 'itemselector-target': 'item', 'itemselector-id-param': 'uuid-1', 'itemselector-status-param': 'unavailable',  'itemselector-label-param': 'Label 1', action: 'itemselector#change' } }, 'ABC 1', "" %>
             Label 1
           </label>
         </td>
@@ -13,7 +13,7 @@
       <tr>
         <td>
           <label>
-            <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: false, data: { 'itemselector-target': 'items', 'itemselector-id-param': 'uuid-2', 'itemselector-status-param': 'available',  'itemselector-label-param': 'Label 2', action: 'itemselector#change' } }, 'ABC 2', "" %>
+            <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: false, data: { 'itemselector-target': 'item', 'itemselector-id-param': 'uuid-2', 'itemselector-status-param': 'available',  'itemselector-label-param': 'Label 2', action: 'itemselector#change' } }, 'ABC 2', "" %>
             Label 2
           </label>
         </td>
@@ -21,7 +21,7 @@
       <tr>
         <td>
           <label>
-            <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: false, data: { 'itemselector-target': 'items', 'itemselector-id-param': 'uuid-3', 'itemselector-status-param': 'available',  'itemselector-label-param': 'Label 3', action: 'itemselector#change' } }, 'ABC 3', "" %>
+            <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: false, data: { 'itemselector-target': 'item', 'itemselector-id-param': 'uuid-3', 'itemselector-status-param': 'available',  'itemselector-label-param': 'Label 3', action: 'itemselector#change' } }, 'ABC 3', "" %>
             Label 3
           </label>
         </td>
@@ -37,7 +37,7 @@
       </div>
     </div>
   </div>
-  <br/>
+  <br>
   <div>
     <div class="selected-items-container">
       <h2>Selections Template Available</h2>
@@ -46,7 +46,7 @@
     </div>
     <div class="selected-items-container">
       <h2>Selections Template Unavailable</h2>
-      <%= f.text_area 'text', { required: true }  %>
+      <%= f.text_area 'text', { required: true } %>
       <div data-itemselector-target="selectedItems" data-template="#selectedItemsTemplate" data-status-filter="unavailable">
       </div>
     </div>
@@ -56,7 +56,7 @@
           <span class="callnumber">
             __LABEL__
           </span>
-          <button data-action="itemselector#unchecked" data-itemselector-id-param="__ID__" type="button" class="btn-close py-0 pill-close" aria-label="Remove __LABEL__"></button>
+          <button data-action="itemselector#remove" data-itemselector-id-param="__ID__" type="button" class="btn-close py-0 pill-close" aria-label="Remove __LABEL__"></button>
         </span>
       </li>
     </template>

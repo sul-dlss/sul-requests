@@ -25,7 +25,7 @@
       <%- checked = f.object.items.any? { |item| series_title == item[:series] && container_name == item[:subseries] } %>
       <%= f.check_box :volumes, 
             { multiple: true, class: 'form-check-input mt-1', id: checkbox_id, checked: checked,
-              data: { action: 'itemselector#change', 'itemselector-target': 'items', 'itemselector-title-parts-param': [series_title, container_name].to_json, 'itemselector-id-param': checkbox_id } },
+              data: { action: 'itemselector#change', 'itemselector-target': 'item', 'itemselector-title-parts-param': [series_title, container_name].to_json, 'itemselector-id-param': checkbox_id } },
             checkbox_id,
             nil %>
       <%= tag.div class: 'd-none', data: { 'content-id': checkbox_id, 'toggle-disabled': true } do %>
@@ -67,7 +67,7 @@
       <% end %>
       <%= f.check_box :volumes, 
             { multiple: true, class: "form-check-input mt-1 #{'ms-2' unless nested}", id: checkbox_id, 
-              data: { action: 'itemselector#change', 'itemselector-target': 'items', 'itemselector-title-parts-param': [series_title || display_group.title, display_group.title], 'itemselector-id-param': checkbox_id } },
+              data: { action: 'itemselector#change', 'itemselector-target': 'item', 'itemselector-title-parts-param': [series_title || display_group.title, display_group.title], 'itemselector-id-param': checkbox_id } },
               volume_value(series_title: series_title || display_group.title, subseries_name: display_group.title),
             nil %>
 

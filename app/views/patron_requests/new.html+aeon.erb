@@ -46,7 +46,7 @@
 <% end %>
 
 <%= form_for(@patron_request,
-             data: { controller: 'patron-request accordion-form itemselector', action: 'itemselector:change->patron-request#showItemSelector itemselector:changed->patron-request#showHideItemGroups itemselector:changed->accordion-form#typeValueChanged' },
+             data: { controller: 'patron-request accordion-form itemselector', action: 'itemselector:changed->patron-request#showItemSelector itemselector:changed->patron-request#showHideItemGroups itemselector:changed->accordion-form#typeValueChanged' },
              html: { class: 'col-lg-8 accordion' },
              url: @patron_request.aeon_form_target,
              method: @patron_request.finding_aid? ? 'GET' : 'POST') do |f| %>
@@ -93,7 +93,7 @@
   </div>
 
   <!-- item selector -->
-  <div data-controller="itemselector" data-itemselector-request-type-value="pickup" data-action="itemselector:change->patron-request#showItemSelector">
+  <div data-controller="itemselector" data-itemselector-request-type-value="pickup" data-action="itemselector:changed->patron-request#showItemSelector">
   <% if f.object.selectable_items.many? && (can?(:request_scan, f.object) || can?(:request_pickup, f.object)) && !f.object.finding_aid? %>
     <%= render 'item_selector', f: f, step_enum: step_enum %>
 
@@ -151,7 +151,7 @@
             <span class="callnumber">
               __LABEL__
             </span>
-            <button data-action="itemselector#unchecked" data-itemselector-id-param="__ID__" type="button" class="btn-close py-0 pill-close">
+            <button data-action="itemselector#remove" data-itemselector-id-param="__ID__" type="button" class="btn-close py-0 pill-close">
               <span class="visually-hidden">Remove __LABEL__</span>
             </button>
           </span>

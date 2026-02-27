@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { Collapse } from "bootstrap"
 
 export default class extends Controller {
   static targets = ['earliestAvailable', 'destination', 'proxyScanWarning', 'sponsorScanWarning', 'selectSponsor', 'sponsorRadioButton', 'digitizationItems']
@@ -15,7 +16,7 @@ export default class extends Controller {
   showItemSelector(event) {
     const accordionController = this.application.getControllerForElementAndIdentifier(this.element, 'accordion-form');
 
-    if (event.detail.selectedItems.length == 0) {
+    if (event.detail.selectedItems.length == 0 && (event.detail.previousValue || []).length > 0) {
       accordionController.goto('barcodes-accordion');
     }
 

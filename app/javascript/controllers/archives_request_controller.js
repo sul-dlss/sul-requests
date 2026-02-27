@@ -25,7 +25,7 @@ export default class extends Controller {
     }
 
     // go back to item selector if all selected items deleted
-    if (event.detail.selectedItems.length == 0) {
+    if (event.detail.selectedItems.length == 0 && (event.detail.previousValue || []).length > 0) {
       this.showItemSelector()
     }
   }
@@ -57,21 +57,5 @@ export default class extends Controller {
     accordionController.goto('items-accordion');
 
     accordionController.reenableNextButtons();
-  }
-
-  nextItem(event) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    const currentItem = event.target.closest('[data-content-id]');
-    const nextItem = currentItem.nextElementSibling;
-
-    const currentCollapse = currentItem.querySelector('.accordion-collapse');
-    const nextCollapse = nextItem?.querySelector('.accordion-collapse');
-
-    if (currentCollapse && nextCollapse) {
-      Collapse.getOrCreateInstance(currentCollapse).hide();
-      Collapse.getOrCreateInstance(nextCollapse).show();
-    }
   }
 }

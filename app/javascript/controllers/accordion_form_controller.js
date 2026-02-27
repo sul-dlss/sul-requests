@@ -58,17 +58,6 @@ export default class extends Controller {
     }
   }
 
-  showItemSelector(event) {
-    if (event.detail.selectedItems.length == 0) {
-      const acc = this.accordionTargets.find(e => e.id == 'barcodes-accordion').querySelector('.accordion-collapse');
-      if (!acc.classList.contains('show')) this.show(acc);
-    }
-
-    this.accordionTargets.forEach(accord => {
-      this.enableNextButton(accord);
-    })
-  }
-
   removeAccordionStyling() {
     this.element.classList.remove('accordion');
 
