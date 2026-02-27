@@ -30,7 +30,7 @@ export default class extends Controller {
 
   emptyFields() {
     const formData = new FormData(this.element.closest('form'));
-    return Array.from(this.element.querySelectorAll('[required]')).find(x => formData.getAll(x.name).every(x => !x))
+    return Array.from(this.element.querySelectorAll('[required],[data-required')).find(x => formData.getAll(x.name).every(x => !x))
   }
 
   nextItem(event) {
