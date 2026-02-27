@@ -24,7 +24,7 @@ RSpec.describe SubmitAeonPatronRequestJob do
     let(:data) do
       {
         barcodes: ['12345678'], aeon_item: {
-          'ABC 123': { pages: '23', publication: 'no', digitization_special: 'info' }
+          'ABC 123': { requested_pages: '23', for_publication: 'no', additional_information: 'info' }
         }
       }
     end

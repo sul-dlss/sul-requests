@@ -75,6 +75,13 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
       click_button 'Continue'
 
+      # In the Appointment step
+      select 'Feb 19', from: 'Select an appointment'
+
+      # Input isn't triggered by Capbayara, this works fine with a user/keyboard interaction
+      # this allows the continue button to be enabled.
+      page.execute_script("document.querySelector('select').dispatchEvent(new Event('input', { bubbles: true }))")
+
       fill_in 'Additional information', with: 'Testing only'
 
       expect(page).to have_button 'Submit request'

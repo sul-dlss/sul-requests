@@ -1,29 +1,28 @@
 <div class="row p-3 gap-3 flex-column flex-md-row">
   <div>
     <div>
-      <span class='fw-bold'><%= f.object.aeon_reading_room_name %></span>
+      <span class="fw-bold"><%= f.object.aeon_reading_room_name %></span>
     </div>
   </div>
 
-  <div class='mt-3'>
-    <% if f.object.selectable_items.many? %>
-      <% sort_holdings(f.object.selectable_items).each do |selectable_item| %>
-        <%= fields_for "patron_request[aeon_item][#{selectable_item.id}]" do |field| %>
-          
-          <div class="accordion-button d-none" data-id="<%= selectable_item.id %>" data-patron-request-target="reading">
-            <div>
-              <%= selectable_item.callnumber %>
-            </div>
-          </div>
-        <% end %>
+  <% appointments = current_user.aeon.appointments.select { |appt| appt.reading_room.sites.include?(f.object.aeon_site) } %>
+
+  <div class="mt-3">
+    <ul class="list-unstyled selected-items-container" data-item-selector-target="selectedItems" data-template="#appointmentTemplate">
+      <% if f.object.selectable_items.one? %>
+        <%= render Aeon::AppointmentFormItemComponent.new(title: f.object.selectable_items.first.callnumber, dom_id: f.object.selectable_items.first.id, base_name: "patron_request[aeon_item][#{f.object.selectable_items.first.id}]", appointments: appointments) %>
       <% end %>
-    <% end %>
+    </ul>
+
+    <template id="appointmentTemplate">
+      <%= render Aeon::AppointmentFormItemComponent.new(title: '__TITLE__', dom_id: '__ID__', base_name: 'patron_request[aeon_item][__ID__]', appointments: appointments) %>
+    </template>
   </div>
 
-  <div class='mt-3 mb-2'>
+  <div class="mt-3 mb-2">
     <%= f.label :aeon_reading_special, 'Additional information', :class => 'fw-bold py-2' %>
     <%= f.text_area :aeon_reading_special, :class => 'form-control', :rows => 3 %>
-    <small class='text-cardinal mt-4'>Limit 255 characters.</small> 
+    <small class="text-cardinal mt-4">Limit 255 characters.</small>
   </div>
 
 </div>

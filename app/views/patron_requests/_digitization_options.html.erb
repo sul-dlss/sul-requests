@@ -1,40 +1,13 @@
 <div class="row p-3 gap-3 flex-column flex-md-row">
   <%= render 'digitization_notice' %>
 
-  <% accordion_class = f.object.selectable_items.many? ? 'accordion-sub-item' : 'p-0' %>
-  <% field_class = f.object.selectable_items.many? ? 'mx-3 my-1' : 'm-0' %>
-  <% sort_holdings(f.object.selectable_items).each do |selectable_item| %>
-    <%= fields_for "patron_request[aeon_item][#{selectable_item.id}]" do |field| %>
-      <div class="<%= accordion_class %>" data-id="<%= selectable_item.id %>" data-patron-request-target="digitization">
-        <% if f.object.selectable_items.many? %>
-        <div class="accordion-header d-flex">
-          <div class="p-2 fw-bold"><%= selectable_item.callnumber %></div>
-        </div>
-        <% end %>
-        <div class="<%= field_class %>">
-          <div class="mt-3">
-            <%= field.label :pages, 'Requested pages', :class => 'fw-bold py-2 redesign-required-label' %>
-            <%= field.text_field :pages, :class => 'form-control', :required => true, :disabled => f.object.selectable_items.many? %>
-          </div>
-          <div class="mt-3 d-flex">
-            <div class="fw-bold me-2">Is this for publication? </div>
-            <%= field.radio_button :publication, 'Yes', class: 'form-check-input', disabled: f.object.selectable_items.many? %>
-            <%= field.label :publication_yes, class: 'form-check-label ms-2 me-3' do %>
-              Yes
-            <% end %>
-
-            <%= field.radio_button :publication, 'No', class: 'form-check-input', disabled: f.object.selectable_items.many? %>
-            <%= field.label :publication_no, class: 'form-check-label ms-2 me-3' do %>
-              No
-            <% end %>
-          </div>
-          <div class="mt-3 mb-2">
-            <%= field.label :digitization_special, 'Additional information', :class => 'fw-bold py-2' %>
-            <%= field.text_area :digitization_special, :class => 'form-control', :rows => 3 , :disabled => f.object.selectable_items.many? %>
-            <small class="text-cardinal mt-4">Limit 255 characters.</small> 
-          </div>
-        </div>
-      </div>
+  <div class="accordion digitization-accordion selected-items-container" data-patron-request-target="digitizationItems" data-item-selector-target="selectedItems" data-template="#digitizationTemplate">
+    <% if f.object.selectable_items.one? %>
+      <%= render Aeon::DigitizationFormItemComponent.new(title: f.object.selectable_items.first.callnumber, dom_id: f.object.selectable_items.first.id, base_name: "patron_request[aeon_item][#{f.object.selectable_items.first.id}]", collapsed: false) %>
     <% end %>
-  <% end %>
+  </div>
+
+  <template id="digitizationTemplate">
+    <%= render Aeon::DigitizationFormItemComponent.new(title: '__TITLE__', dom_id: '__ID__', base_name: 'patron_request[aeon_item][__ID__]') %>
+  </template>
 </div>

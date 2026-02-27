@@ -34,7 +34,10 @@
 </div>
 
 <%= form_for(@patron_request,
-            data: { controller: 'patron-request accordion-form' },
+            data: {
+              controller: 'patron-request accordion-form item-selector',
+              action: 'item-selector:changed->patron-request#showItemSelector item-selector:changed->accordion-form#typeValueChanged'
+            },
             html: { class: 'accordion' },
             url: patron_requests_path,
             method: 'POST') do |f| %>
@@ -68,20 +71,17 @@
 <!-- item selector -->
 
 <% if f.object.selectable_items.many? %>
-<div data-controller="itemselector" data-itemselector-request-type-value="pickup" data-action="itemselector:change->patron-request#showItemSelector itemselector:change->patron-request#updateAeonOptions">
-
   <%= render 'item_selector', f: f, step_enum: step_enum %>
 
   <div class="toast-container position-fixed bottom-0 end-0 p-3">
-    <div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true" data-itemSelector-target="toast">
+    <div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true" data-item-selector-target="toast">
       <div class="d-flex">
         <div class="toast-body">You successfully removed an item.</div>
-        <button type="button" class="btn btn-text text-uppercase" data-action="itemselector#undo analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Undo">Undo</button>
+        <button type="button" class="btn btn-text text-uppercase" data-action="item-selector#undo analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Undo">Undo</button>
         <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
       </div>
     </div>
   </div>
-</div>
 <% end %>
 
 <!-- aeon reading room request -->

@@ -22,11 +22,19 @@
         <i class="bi bi-chevron-right disclosure-icon"></i>
       <% end %>
       <%# Checkbox to select entire container %>
+      <%- checked = f.object.items.any? { |item| series_title == item[:series] && container_name == item[:subseries] } %>
       <%= f.check_box :volumes, 
-            { multiple: true, class: 'form-check-input mt-1', id: checkbox_id, checked: f.object.items.any? { |item| series_title == item[:series] && container_name == item[:subseries] } ,
-              data: { action: 'change->archives-request#itemChanged', 'archives-request-target': 'items', 'archives-request-series-param': series_title, 'archives-request-subseries-param': container_name, 'archives-request-id-param': checkbox_id } },
+            { multiple: true, class: 'form-check-input mt-1', id: checkbox_id, checked: checked,
+              data: { action: 'item-selector#change', 'item-selector-target': 'item', 'item-selector-title-parts-param': [series_title, container_name].to_json, 'item-selector-id-param': checkbox_id } },
             checkbox_id,
             nil %>
+      <%= tag.div class: 'd-none', data: { 'content-id': checkbox_id, 'toggle-disabled': true } do %>
+        <%= fields_for "ead_request[items][#{checkbox_id}]" do |f| %>
+          <%= f.hidden_field :id, disabled: !checked, value: checkbox_id, data: { toggle: true } %>
+          <%= f.hidden_field :series, disabled: !checked, value: series_title, data: { toggle: true } %>
+          <%= f.hidden_field :subseries, disabled: !checked, value: container_name, data: { toggle: true } %>
+        <% end %>
+      <% end %>
       <div class="flex-grow-1">
         <%= label_tag checkbox_id, container_name, class: 'form-check-label' %>
         <span class="badge bg-dark-subtle text-dark fw-normal rounded-pill"><%= group.count %></span>
@@ -58,9 +66,18 @@
         </span>
       <% end %>
       <%= f.check_box :volumes, 
-            { multiple: true, class: "form-check-input mt-1 #{'ms-2' unless nested}", id: checkbox_id },
+            { multiple: true, class: "form-check-input mt-1 #{'ms-2' unless nested}", id: checkbox_id, 
+              data: { action: 'item-selector#change', 'item-selector-target': 'item', 'item-selector-title-parts-param': [series_title || display_group.title, display_group.title], 'item-selector-id-param': checkbox_id } },
               volume_value(series_title: series_title || display_group.title, subseries_name: display_group.title),
             nil %>
+
+      <%= tag.div class: 'd-none', data: { contentId: checkbox_id, toggleDisabled: true } do %>
+        <%= fields_for "ead_request[items][#{checkbox_id}]" do |f| %>
+          <%= f.hidden_field :id, disabled: !checked, value: checkbox_id, data: { toggle: true } %>
+          <%= f.hidden_field :series, disabled: !checked, value: series_title || container_name, data: { toggle: true } %>
+          <%= f.hidden_field :subseries, disabled: !checked, value: display_group.title, data: { toggle: true } %>
+        <% end %>
+      <% end %>
       <%= label_tag checkbox_id, display_group.title, class: 'form-check-label' %>
     </div>
   <% elsif display_group.is_a?(Ead::DisplayGroup::Subseries) %>

@@ -4,7 +4,7 @@
     <% if f.object.selectable_items.length >= 10 %>
       <div>
         <label for="item-selector-search" class="my-2">Search item list</label>
-        <input id="item-selector-search" type="search" incremental data-action="input->itemselector#filter analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Filter" class="form-control w-75">
+        <input id="item-selector-search" type="search" incremental data-action="input->item-selector#filter analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Filter" class="form-control w-75">
       </div>
     <% end %>
     <div class="item-table my-4">
@@ -25,11 +25,13 @@
             <tr data-sortby-status="<%= item.status_text.downcase.gsub(' ', '_') %>" data-sortby-callnumber="<%= index %>" >
               <td>
                 <label>
-                  <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: cannot?(:request, item), data: { 'itemselector-target': 'items', 'itemselector-id-param': item.id, 'itemselector-available-param': item.available?, 'itemselector-duequeueinfo-param': queue_length_display(item),  'itemselector-label-param': callnumber_label(item), action: 'itemselector#change' } }, item.barcode || item.id, "" %>
-                    <% if f.object.aeon_page? %>
-                    <%= f.hidden_field "aeon_callnumber_#{item.callnumber}", disabled: true, name: "CallNumber_#{index}", value: item.callnumber, data: { toggle: true } %>
-                    <%= f.hidden_field "aeon_barcode_#{item.barcode}", disabled: true, name: "ItemNumber_#{index}", value: item.barcode, data: { toggle: true } %>
-                    <%= f.hidden_field "aeon_request_#{index}", disabled: true, name: 'Request', value: index, data: { toggle: true } %>
+                  <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: cannot?(:request, item), data: { 'item-selector-target': 'item', 'item-selector-id-param': item.id, 'item-selector-status-param': item.available? ? 'available' : 'unavailable', 'item-selector-duequeueinfo-param': queue_length_display(item), 'item-selector-label-param': callnumber_label(item), action: 'item-selector#change' } }, item.barcode || item.id, "" %>
+                  <% if f.object.aeon_page? %>
+                    <%= tag.div class: 'd-none', data: { 'content-id': item.id, 'toggle-disabled': true } do %>
+                      <%= f.hidden_field "aeon_callnumber_#{item.callnumber}", disabled: true, name: "CallNumber_#{index}", value: item.callnumber, data: { toggle: true } %>
+                      <%= f.hidden_field "aeon_barcode_#{item.barcode}", disabled: true, name: "ItemNumber_#{index}", value: item.barcode, data: { toggle: true } %>
+                      <%= f.hidden_field "aeon_request_#{index}", disabled: true, name: 'Request', value: index, data: { toggle: true } %>
+                    <% end %>
                   <% end %>
                   <span class="form-check-label ms-1"><%= item&.bound_with_child_holdings_record&.call_number || callnumber_label(item) %></span>
                 </label>

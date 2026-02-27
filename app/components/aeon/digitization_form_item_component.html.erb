@@ -1,6 +1,6 @@
-<div data-controller="selected-item-form" data-action="input->selected-item-form#updateStatus" class="accordion-item mb-3" data-content-id="<%= dom_id %>" data-fields-base-name="<%= base_name %>">
+<div data-controller="selected-item-form" data-action="input->selected-item-form#updateStatus" class="accordion-item mb-3" data-content-id="<%= dom_id %>">
   <div class="accordion-header">
-    <button class="accordion-button d-flex justify-content-between" type="button" data-bs-toggle="collapse" data-bs-target="#content_<%= dom_id %>" aria-expanded="false" aria-controls="content_<%= dom_id %>">
+    <button class="accordion-button d-flex justify-content-between" type="button" data-bs-toggle="collapse" data-bs-target="#content_<%= dom_id %>" aria-expanded="<%= collapsed? ? 'false' : 'true' %>%" aria-controls="content_<%= dom_id %>">
       <div class="d-flex align-items-center">
         <i class="fs-4 bi bi-circle me-2 status-icon" data-selected-item-form-target="status"></i>
         <span class="text-black fw-semibold item-title"><%= title %></span>
@@ -8,11 +8,8 @@
       <i class="bi bi-chevron-right disclosure-icon"></i>
     </button>
   </div>
-  <div id="content_<%= dom_id %>" class="accordion-collapse collapse">
+  <div id="content_<%= dom_id %>" class="accordion-collapse <%= 'collapse' if collapsed? %>">
     <%= fields_for base_name do |f| %>
-      <%= f.hidden_field 'id', value: dom_id if dom_id %>
-      <%= f.hidden_field 'series', value: series if series %>
-      <%= f.hidden_field 'subseries', value: subseries if subseries %>
       <div class="accordion-body">
         <div class="mb-3">
           <%= f.label :requested_pages, class: 'form-label fw-semibold redesign-required-label' %>
@@ -42,7 +39,7 @@
         </div>
 
         <div class="d-flex justify-content-end">
-          <button class="next-item btn btn-sm btn-primary" data-selected-item-form-target="nextButton" data-action="archives-request#nextItem">Next item</button>
+          <button class="next-item btn btn-sm btn-primary" data-selected-item-form-target="nextButton" data-action="selected-item-form#nextItem">Next item</button>
         </div>
       </div>
     <% end %>

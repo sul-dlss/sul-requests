@@ -46,7 +46,7 @@
 <% end %>
 
 <%= form_for(@patron_request,
-             data: { controller: 'patron-request accordion-form' },
+             data: { controller: 'patron-request accordion-form item-selector', action: 'item-selector:changed->patron-request#showItemSelector item-selector:changed->patron-request#showHideItemGroups item-selector:changed->accordion-form#typeValueChanged' },
              html: { class: 'col-lg-8 accordion' },
              url: patron_requests_path,
              method: 'POST') do |f| %>
@@ -94,7 +94,6 @@
   <% end %>
 
   <!-- item selector -->
-  <div data-controller="itemselector" data-itemselector-request-type-value="pickup" data-action="itemselector:change->patron-request#showItemSelector">
   <% if f.object.selectable_items.many? && (can?(:request_scan, f.object) || can?(:request_pickup, f.object)) %>
     <%= render 'item_selector', f: f, step_enum: step_enum %>
 
@@ -106,13 +105,13 @@
 
     <!-- pickup request (multiple items) -->
     <% if can?(:request_pickup, f.object) %>
-      <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', classes: [('d-none' if scan_pickup)], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'pickup', action: 'itemselector:changed@document->accordion-form#enableAnyNextButtons' }, submit: true) do |c| %>
+      <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', classes: [('d-none' if scan_pickup)], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'pickup', action: 'item-selector:changed@document->accordion-form#enableAnyNextButtons' }, submit: true) do |c| %>
         <% c.with_title.with_content('Pickup request') %>
         <% c.with_body do %>
           <%= render 'pickup_destination', f: %>
           <%= render 'not_needed_after_date', f: f if f.object.mediateable? && f.object.requires_needed_date? %>
 
-          <div class="selected-items-group">
+          <div class="selected-items-group selected-items-container">
             <div class="card">
               <div class="card-body bg-light rounded">
                 <div class="d-flex flex-column flex-xl-row align-items-start justify-content-xl-between align-items-xl-center mb-3 gap-2 gap-xl-0">
@@ -134,18 +133,18 @@
                       </span>
                     </div>
                 </div>
-                <ul data-itemselector-target="availableItems" class="list-unstyled d-flex flex-wrap gap-2 bg-white p-3 m-0"></ul>
+                <ul data-item-selector-target="selectedItems" data-template="#selectedItemsTemplate" data-status-filter="available" class="list-unstyled d-flex flex-wrap gap-2 bg-white p-3 m-0"></ul>
               </div>
             </div>
           </div>
-          <div class="card selected-items-group my-3">
+          <div class="card selected-items-group my-3 selected-items-container">
             <div class="card-body bg-light rounded">
               <div class="d-flex flex-column flex-xl-row align-items-start justify-content-xl-between align-items-xl-center mb-3 gap-2 gap-xl-0">
                 <div class="text-black fw-semibold">Items currently checked out or otherwise unavailable</div>
                 <div class="text-cardinal">Pickup after: No date/time estimate</div>
               </div>
               <div class="bg-white">
-                <ul data-itemselector-target="unavailableItems" class="list-unstyled d-flex flex-wrap gap-2 p-3 m-0"></ul>
+                <ul data-item-selector-target="selectedItems" data-template="#selectedItemsTemplate" data-status-filter="unavailable" class="list-unstyled d-flex flex-wrap gap-2 p-3 m-0"></ul>
                 <hr class="styled-hr">
                 <%= render 'request_preferences', f: %>
                 <% if f.object.holdable_recallable_items.any? && !f.object.mediateable? %>
@@ -154,15 +153,29 @@
               </div>
             </div>
           </div>
+
+          <template id="selectedItemsTemplate">
+            <li class="d-flex gap-2 w-100 align-items-baseline" data-content-id="__ID__">
+              <span class="item-selector-callnumber-pill bg-light rounded-pill border">
+                <span class="callnumber">
+                  __LABEL__
+                </span>
+                <button data-action="item-selector#remove" data-item-selector-id-param="__ID__" type="button" class="btn-close py-0 pill-close">
+                  <span class="visually-hidden">Remove __LABEL__</span>
+                </button>
+              </span>
+              <span class="text-cardinal d-block align-self-center flex-shrink-2">__DUEQUEUEINFO__</span>
+            </li>
+          </template>
         <% end %>
       <% end %>
     <% end %>
 
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
-      <div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true" data-itemSelector-target="toast">
+      <div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true" data-item-selector-target="toast">
         <div class="d-flex">
           <div class="toast-body">You successfully removed an item.</div>
-          <button type="button" class="btn btn-text text-uppercase" data-action="itemselector#undo analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Undo">Undo</button>
+          <button type="button" class="btn btn-text text-uppercase" data-action="item-selector#undo analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Undo">Undo</button>
           <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
       </div>
@@ -178,7 +191,6 @@
       <% end %>
     <% end %>
   <% end %>
-  </div>
 
   <!-- pickup request (single item )-->
   <% if (f.object.selectable_items.one? || f.object.title_only?) && can?(:request_pickup, f.object) %>

@@ -1,0 +1,64 @@
+<%= form_with url: '#',  data: { controller: 'item-selector', turbo: false } do |f| %>
+  <h2>Item Selection </h2>
+  <table>
+    <tbody>
+      <tr>
+        <td>
+          <label>
+            <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: false, data: { 'item-selector-target': 'item', 'item-selector-id-param': 'uuid-1', 'item-selector-status-param': 'unavailable',  'item-selector-label-param': 'Label 1', action: 'item-selector#change' } }, 'ABC 1', "" %>
+            Label 1
+          </label>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label>
+            <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: false, data: { 'item-selector-target': 'item', 'item-selector-id-param': 'uuid-2', 'item-selector-status-param': 'available',  'item-selector-label-param': 'Label 2', action: 'item-selector#change' } }, 'ABC 2', "" %>
+            Label 2
+          </label>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label>
+            <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: false, data: { 'item-selector-target': 'item', 'item-selector-id-param': 'uuid-3', 'item-selector-status-param': 'available',  'item-selector-label-param': 'Label 3', action: 'item-selector#change' } }, 'ABC 3', "" %>
+            Label 3
+          </label>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true" data-item-selector-target="toast">
+      <div class="d-flex">
+        <div class="toast-body">You successfully removed an item.</div>
+        <button type="button" class="btn btn-text text-uppercase" data-action="item-selector#undo">Undo</button>
+        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div>
+    <div class="selected-items-container">
+      <h2>Selections Template Available</h2>
+      <div data-item-selector-target="selectedItems" data-template="#selectedItemsTemplate" data-status-filter="available">
+      </div>
+    </div>
+    <div class="selected-items-container">
+      <h2>Selections Template Unavailable</h2>
+      <%= f.text_area 'text', { required: true } %>
+      <div data-item-selector-target="selectedItems" data-template="#selectedItemsTemplate" data-status-filter="unavailable">
+      </div>
+    </div>
+    <template id="selectedItemsTemplate">
+      <li class="d-flex gap-2 w-100 align-items-baseline" data-content-id="__ID__">
+        <span class="item-selector-callnumber-pill bg-light rounded-pill border">
+          <span class="callnumber">
+            __LABEL__
+          </span>
+          <button data-action="item-selector#remove" data-item-selector-id-param="__ID__" type="button" class="btn-close py-0 pill-close" aria-label="Remove __LABEL__"></button>
+        </span>
+      </li>
+    </template>
+  </div>
+<% end %>

@@ -545,7 +545,7 @@ RSpec.describe PatronRequest do
       let(:data) do
         {
           barcodes: ['12345678'], aeon_item: {
-            'ABC 123': { pages: '23', publication: 'no', digitization_special: 'info' }
+            'ABC 123': { requested_pages: '23', for_publication: 'no', additional_information: 'info' }
           }
         }
       end
@@ -583,8 +583,8 @@ RSpec.describe PatronRequest do
       let(:data) do
         {
           barcodes: ['12345678', '87654321'], aeon_item: {
-            'ABC 123': { pages: '23', publication: 'No', digitization_special: 'info' },
-            'ABC 321': { pages: '32', publication: 'Yes', digitization_special: 'more info' }
+            'ABC 123': { requested_pages: '23', for_publication: 'No', additional_information: 'info' },
+            'ABC 321': { requested_pages: '32', for_publication: 'Yes', additional_information: 'more info' }
           }
         }
       end
