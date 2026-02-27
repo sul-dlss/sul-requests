@@ -42,4 +42,10 @@ FactoryBot.define do
     patron { build(:patron) }
     bib_data { build(:searchable_holdings) }
   end
+
+  factory :folio_api_response, class: 'FolioApiResponse' do
+    item_id { 'some-uuid' }
+    request_data { {} }
+    response_data { { 'response' => { 'status' => 'Open' } } }
+  end
 end

@@ -19,30 +19,6 @@ RSpec.describe SubmitPatronRequestJob do
     allow(SubmitFolioScanRequestJob).to receive(:perform_now).and_return('folio_response')
   end
 
-  context 'when the request is sent to FOLIO' do
-    before do
-      allow(request).to receive(:request_type).and_return('page')
-    end
-
-    it 'stores FOLIO data in the request' do
-      described_class.perform_now(request)
-      expect(request.folio_responses).to eq(bib_data.items[0].id => 'folio_response')
-    end
-  end
-
-  context 'when the request is sent to ILLiad' do
-    before do
-      request.request_type = 'scan'
-    end
-
-    let(:bib_data) { build(:scannable_holdings) }
-
-    it 'stores ILLiad data in the request' do
-      described_class.perform_now(request)
-      expect(request.illiad_response_data).to eq(bib_data.items[0].id => 'illiad_response')
-    end
-  end
-
   context 'when the request is a scan' do
     before do
       request.request_type = 'scan'

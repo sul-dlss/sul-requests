@@ -4,6 +4,9 @@
 #  Main Request class for Requests WC.
 ###
 class PatronRequest < ApplicationRecord
+  has_many :folio_api_responses, dependent: :delete_all
+  has_many :illiad_api_responses, dependent: :delete_all
+
   store :data, accessors: [
     :barcodes, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title,
     :proxy, :for_sponsor, :for_sponsor_id, :estimated_delivery, :patron_name, :item_title, :requested_barcodes, :item_mediation_data,
@@ -69,6 +72,10 @@ class PatronRequest < ApplicationRecord
     end
   end
 
+  def folio_api_response_for(item_id)
+    folio_api_responses.find { |x| x.item_id == item_id }
+  end
+
   def aeon_requests
     aeon_page? ? create_aeon_requests : []
   end
@@ -126,10 +133,6 @@ class PatronRequest < ApplicationRecord
 
   def aeon_digitization?
     request_type == 'digitization'
-  end
-
-  def folio_responses
-    super || {}
   end
 
   def item_mediation_data
@@ -550,9 +553,7 @@ class PatronRequest < ApplicationRecord
     update_item_status(item_id, approved: true, approver: approver.sunetid,
                                 approved_at: Time.zone.now)
 
-    folio_response = SubmitFolioPatronRequestJob.perform_now(self, item_id)
-
-    update(folio_responses: folio_responses.merge(item_id => folio_response))
+    SubmitFolioPatronRequestJob.perform_now(self, item_id)
   end
 
   def notify_mediator!

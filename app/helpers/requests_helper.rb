@@ -79,10 +79,10 @@ module RequestsHelper
 
   # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
   def request_status_emoji(patron_request)
-    return '🔄' if patron_request.folio_responses.blank? && patron_request.illiad_response_data.blank?
-    return unless patron_request.folio_responses&.any?
+    return '🔄' if patron_request.folio_api_responses.none? && patron_request.illiad_response_data.blank?
+    return unless patron_request.folio_api_responses.any?
 
-    statuses = patron_request.folio_responses.values.map { |response| response.dig('response', 'status') }
+    statuses = patron_request.folio_api_responses.map { |response| response.response_data&.dig('status') }
 
     if statuses.all? { |x| x&.start_with? 'Open' }
       tag.span '🟢', title: statuses.first
@@ -91,8 +91,8 @@ module RequestsHelper
     elsif statuses.none?(&:blank?)
       tag.span '🟡', title: statuses.uniq.join('; ')
     else
-      errors = patron_request.folio_responses.values.filter_map do |response|
-        response.dig('errors', 'errors', 0, 'message')
+      errors = patron_request.folio_api_responses.filter_map do |response|
+        response.response_data&.dig('errors', 0, 'message')
       end
 
       tag.span('🔴', title: errors.uniq.join('; '))
