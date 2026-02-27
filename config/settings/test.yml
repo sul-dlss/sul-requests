@@ -18,6 +18,5 @@ background_jobs:
   enabled: false
 
 features:
-  estimate_delivery: true
   hold_recall_service: true
   scan_service: true
