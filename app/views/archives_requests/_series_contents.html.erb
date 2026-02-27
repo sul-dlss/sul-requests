@@ -75,7 +75,7 @@
         <% if display_group.href.present? %>
         <%= link_to display_group.href, target: '_blank', rel: 'noopener noreferrer' do %>
           <%= display_group.title %>
-          <i class="ms-1 bi bi-arrow-up-right"></i>
+          <%= render Icons::OnlineComponent.new classes: 'ms-1 align-text-bottom text-digital-blue' %>
         <% end %>
         <% else %>
           <%= display_group.title %>
