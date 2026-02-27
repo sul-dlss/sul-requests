@@ -113,7 +113,32 @@
 <% end %>
 </div>
 <aside class="col-4">
+  <% library_code = @patron_request.origin_library_code %>
+  <% library = Settings.libraries[library_code] %>
+  <% if library %>
   <h2>Contact information</h2>
+  <div>
+      <h3>
+        <% if library.reading_room_url %>
+          <%= link_to library.reading_room_url do %>
+            <%= library.label %><i class="bi bi-arrow-up-right ms-1"></i>
+          <% end %>
+        <% else %>
+          <%= library.label %>
+        <% end %>
+      </h3>
+      <% if library.contact_info&.phone %>
+        <p class="mb-1">
+          <span class="fw-semibold">Phone: </span><%= library.contact_info.phone %>
+        </p>
+      <% end %>
+      <% if library.contact_info&.email %>
+        <p>
+          <span class="fw-semibold">Email: </span><%= mail_to library.contact_info.email %>
+        </p>
+      <% end %>
+  </div>
+  <% end %>
 </aside>
 </div>
 </div>
