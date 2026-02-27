@@ -308,13 +308,13 @@ class PatronRequest < ApplicationRecord
   end
 
   # @return [Boolean] whether any items are available (e.g. for paging, so we can estimate delivery dates)
-  def any_items_avaliable?
+  def any_items_available?
     selectable_items.any?(&:available?)
   end
 
   # @return [Hash] the earliest delivery estimate for the request
   def earliest_delivery_estimate(scan: false)
-    if any_items_avaliable?
+    if any_items_available?
       paging_info = PagingSchedule.new(from: folio_location, to: scan ? 'SCAN' : default_service_point_code,
                                        time: created_at).earliest_delivery_estimate
       { 'date' => Date.parse(paging_info.to_s), 'display_date' => paging_info.to_s }

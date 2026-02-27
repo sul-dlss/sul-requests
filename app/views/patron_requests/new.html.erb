@@ -189,7 +189,7 @@
           Earliest available:
           <% if f.object.pickup_destinations.one? && f.object.earliest_delivery_estimate %>
             <%= f.object.earliest_delivery_estimate['display_date'] %>
-          <% elsif f.object.any_items_avaliable? %>
+          <% elsif f.object.any_items_available? %>
             <%= turbo_frame_tag('earliestAvailable', src: paging_schedule_url(origin_library: f.object.origin_library_code, origin_location: f.object.origin_location_code, destination: f.object.service_point_code || f.object.default_service_point_code), data: { 'patron-request-target' => 'earliestAvailable'}) do %>
               Loading..
             <% end %>
