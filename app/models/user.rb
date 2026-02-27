@@ -6,8 +6,6 @@
 class User < ActiveRecord::Base
   validates :sunetid, uniqueness: true, allow_blank: true
 
-  has_many :requests
-
   attr_writer :ldap_group_string, :affiliation
   attr_accessor :ip_address, :patron_key
 
