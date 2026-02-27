@@ -32,7 +32,7 @@ class PatronRequestsController < ApplicationController
 
   def create
     if Settings.features.requests_redesign && @patron_request.aeon_page?
-      @patron_request.submit_aeon_request(username: current_user.aeon.username)
+      @patron_request.submit_aeon_request
       redirect_to @patron_request
     elsif @patron_request.save && @patron_request.submit_later
       redirect_to @patron_request
@@ -73,6 +73,7 @@ class PatronRequestsController < ApplicationController
 
   def associate_request_with_patron
     @patron_request.patron = current_user.patron
+    @patron_request.user = current_user if current_user.persisted?
   end
 
   def sunetid_without_folio_account?
