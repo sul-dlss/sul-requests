@@ -46,7 +46,7 @@ module Ead
 
     def build_leaf_group(item)
       if item.respond_to?(:digital_only?) && item.digital_only?
-        DigitalItem.new(title: item.title, href: item.extref_href)
+        DigitalItem.new(title: item.full_title, href: item.extref_href)
       else
         ItemWithoutContainer.new(title: item.title)
       end
