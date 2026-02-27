@@ -69,7 +69,6 @@ stanford_ips:
   singletons: []
   ranges: []
 features:
-  estimate_delivery: true
   hold_recall_service: true
   hold_recall_via: 'illiad'
   scan_service: true
