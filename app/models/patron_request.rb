@@ -17,9 +17,9 @@ class PatronRequest < ApplicationRecord
   delegate :instance_id, :finding_aid, :finding_aid?, to: :bib_data
 
   validates :instance_hrid, presence: true
-  validates :request_type, inclusion: { in: %w[digitization reading scan pickup mediated mediated/approved mediated/done] }
-  validates :scan_title, presence: true, on: :create, if: :scan?
-  validate :pickup_service_point_is_valid, on: :create, unless: :scan?
+  validates :request_type, inclusion: { in: %w[scan pickup mediated mediated/approved mediated/done] }
+  validates :scan_title, presence: true, on: :create, if: :folio_scan?
+  validate :pickup_service_point_is_valid, on: :create, if: :folio_pickup?
   validate :needed_date_is_valid, on: :create
   validate :for_sponsor_id_is_valid, on: :create
 
@@ -129,11 +129,15 @@ class PatronRequest < ApplicationRecord
 
   # For aeon types
   def aeon_reading_room?
-    request_type == 'reading'
+    aeon_page? && !scan?
+  end
+
+  def folio_scan?
+    scan? && !aeon_page?
   end
 
   def aeon_digitization?
-    request_type == 'digitization'
+    aeon_page? && scan?
   end
 
   def item_mediation_data
@@ -296,7 +300,7 @@ class PatronRequest < ApplicationRecord
 
     items = items_in_location.select { |x| x.barcode.in?(barcodes) || x.id.in?(barcodes) }
 
-    return items.first(1) if request_type == 'scan'
+    return items.first(1) if request_type == 'scan' && !aeon_page?
 
     items
   end
@@ -404,7 +408,9 @@ class PatronRequest < ApplicationRecord
   # A request is fulfilled through Aeon if any of the items are "Aeon pageable" (e.g. are in
   # a location with a `pageAeonSite` detail)
   def aeon_page?
-    selectable_items.any?(&:aeon_pageable?)
+    return @aeon_page if defined?(@aeon_page)
+
+    @aeon_page ||= selectable_items.any?(&:aeon_pageable?)
   end
 
   # @return [String] the Aeon site code for the items in the request
@@ -645,6 +651,10 @@ class PatronRequest < ApplicationRecord
                        []
                      end
     service_points.first || Settings.folio.default_service_point
+  end
+
+  def folio_pickup?
+    !aeon_page? && !scan?
   end
 
   # Validate that the chosen service point is a valid pickup location for the items

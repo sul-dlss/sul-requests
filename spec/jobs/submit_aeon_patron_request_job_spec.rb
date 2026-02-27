@@ -20,7 +20,7 @@ RSpec.describe SubmitAeonPatronRequestJob do
   end
 
   context 'when the request is a digitization request' do
-    let(:request_type) { 'digitization' }
+    let(:request_type) { 'scan' }
     let(:data) do
       {
         barcodes: ['12345678'], aeon_item: {
