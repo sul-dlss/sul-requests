@@ -6,6 +6,7 @@
 class PatronRequest < ApplicationRecord
   has_many :folio_api_responses, dependent: :delete_all
   has_many :illiad_api_responses, dependent: :delete_all
+  has_many :aeon_api_responses, dependent: :delete_all
 
   store :data, accessors: [
     :barcodes, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title,
