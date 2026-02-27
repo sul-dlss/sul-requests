@@ -17,7 +17,7 @@ class PatronRequest < ApplicationRecord
   delegate :instance_id, :finding_aid, :finding_aid?, to: :bib_data
 
   validates :instance_hrid, presence: true
-  validates :request_type, inclusion: { in: %w[scan pickup mediated mediated/approved mediated/done] }
+  validates :request_type, inclusion: { in: %w[digitization reading scan pickup mediated mediated/approved mediated/done] }
   validates :scan_title, presence: true, on: :create, if: :scan?
   validate :pickup_service_point_is_valid, on: :create, unless: :scan?
   validate :needed_date_is_valid, on: :create
@@ -47,7 +47,7 @@ class PatronRequest < ApplicationRecord
   attr_writer :bib_data
 
   before_create do
-    self.request_type = 'mediated' if mediateable? && !request_type.start_with?('mediated')
+    self.request_type = 'mediated' if mediateable? && !request_type.start_with?('mediated') && !aeon_page?
     self.display_type = calculate_display_type
     self.item_title = bib_data&.title
     self.estimated_delivery = earliest_delivery_estimate(scan: scan?)&.dig('display_date')
@@ -339,6 +339,7 @@ class PatronRequest < ApplicationRecord
   # a date so staff can expire old requests.
   # @return [Boolean] whether the request requires a needed date from the patron
   def requires_needed_date?
+    return false if aeon_page?
     return false if mediateable? && ['PAGE-MP', 'SAL3-PAGE-MP'].include?(origin_location_code)
 
     mediateable? || selected_items.any? { |item| item.recallable?(patron) || item.holdable?(patron) }
