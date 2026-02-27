@@ -33,7 +33,7 @@ RSpec.describe 'archives_requests/_series_contents.html.erb' do
       display_groups = Ead::DisplayGroup.build_display_groups(items)
 
       render partial: 'archives_requests/series_contents',
-             locals: { contents: display_groups, f: form_builder, parent_title: parent_title, series_title: parent_title }
+             locals: { contents: display_groups, f: form_builder, parent_title: parent_title, series_title: parent_title, nested: false }
 
       # Should have container label with badge showing count
       expect(rendered).to have_css('.form-check-label', text: 'Box 9')
@@ -69,7 +69,7 @@ RSpec.describe 'archives_requests/_series_contents.html.erb' do
       display_groups = Ead::DisplayGroup.build_display_groups(items)
 
       render partial: 'archives_requests/series_contents',
-             locals: { contents: display_groups, f: form_builder, parent_title: parent_title, series_title: parent_title }
+             locals: { contents: display_groups, f: form_builder, parent_title: parent_title, series_title: parent_title, nested: false }
 
       # Should have individual checkboxes for each item
       expect(rendered).to have_css('.form-check-label', text: 'Standalone Item 1')
@@ -106,7 +106,7 @@ RSpec.describe 'archives_requests/_series_contents.html.erb' do
       display_groups = Ead::DisplayGroup.build_display_groups(items)
 
       render partial: 'archives_requests/series_contents',
-             locals: { contents: display_groups, f: form_builder, parent_title: parent_title, series_title: parent_title }
+             locals: { contents: display_groups, f: form_builder, parent_title: parent_title, series_title: parent_title, nested: false }
 
       # Should have subseries header with title and badge
       expect(rendered).to have_css('span', text: 'Subseries A')

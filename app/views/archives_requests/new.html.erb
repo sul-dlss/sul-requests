@@ -67,7 +67,7 @@
                   <button class="btn btn-link su-underline" data-action="click->archives-series#collapseAll"><i class="bi bi-chevron-double-down me-1"></i>Collapse all</button>
                 </div>
                 <%# Loop through each series in the collection %>
-                <%= render partial: 'series_contents', locals: { contents: Ead::DisplayGroup.build_display_groups(@ead.series_and_subseries), f: f, series_title: nil, parent_title: nil } %>
+                <%= render partial: 'series_contents', locals: { contents: Ead::DisplayGroup.build_display_groups(@ead.series_and_subseries), f: f, series_title: nil, parent_title: nil, nested: false } %>
               </div>
             <% end %>
           <% end %>
