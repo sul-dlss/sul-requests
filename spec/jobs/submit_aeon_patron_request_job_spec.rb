@@ -8,8 +8,8 @@ RSpec.describe SubmitAeonPatronRequestJob do
   end
 
   let(:request) do
-    PatronRequest.create(request_type:, instance_hrid: 'a1234', patron:, barcodes: ['12345678'],
-                         origin_location_code: 'SPEC-STACKS', data:)
+    PatronRequest.create!(request_type:, instance_hrid: 'a1234', patron:, barcodes: ['12345678'],
+                          origin_location_code: 'SPEC-STACKS', data:)
   end
   let(:bib_data) { build(:special_collections_single_holding) }
   let(:stub_aeon_client) { instance_double(AeonClient, create_request: {}) }
