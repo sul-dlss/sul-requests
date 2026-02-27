@@ -73,6 +73,7 @@ class PatronRequestsController < ApplicationController
 
   def associate_request_with_patron
     @patron_request.patron = current_user.patron
+    @patron_request.user = current_user if current_user.persisted?
   end
 
   def sunetid_without_folio_account?

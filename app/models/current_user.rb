@@ -53,8 +53,9 @@ class CurrentUser
     end
   end
 
+  # We haven't authenticated name/email users in any way, so we just create a new user for each session.
   def name_email_user
-    User.new(name: data['name'], email: data['email'])
+    User.create(name: data['name'], email: data['email'])
   end
 
   # rubocop:disable Metrics/AbcSize

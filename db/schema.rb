@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_27_200721) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_27_201158) do
   create_table "admin_comments", force: :cascade do |t|
     t.string "comment"
     t.string "commenter"
@@ -56,12 +56,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_200721) do
     t.string "request_type"
     t.string "service_point_code"
     t.datetime "updated_at", null: false
+    t.integer "user_id"
     t.index ["display_type"], name: "index_patron_requests_on_display_type"
     t.index ["instance_hrid"], name: "index_patron_requests_on_instance_hrid"
     t.index ["needed_date"], name: "index_patron_requests_on_needed_date"
     t.index ["origin_location_code"], name: "index_patron_requests_on_origin_location_code"
     t.index ["patron_id"], name: "index_patron_requests_on_patron_id"
     t.index ["request_type"], name: "index_patron_requests_on_request_type"
+    t.index ["user_id"], name: "index_patron_requests_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -79,4 +81,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_200721) do
   end
 
   add_foreign_key "api_responses", "patron_requests"
+  add_foreign_key "patron_requests", "users"
 end
