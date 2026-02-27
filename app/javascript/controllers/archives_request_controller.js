@@ -15,24 +15,8 @@ function typecast(value) {
 }
 
 export default class extends Controller {
-  static targets = ["items", "volumesDisplay", "requestTypeDisplay", "digitizationItems", "digitizationTemplate", "appointmentItems", "appointmentTemplate"]
+  static targets = ["items", "digitizationItems", "digitizationTemplate", "appointmentItems", "appointmentTemplate"]
   static values = { selectedItems: Array, requestType: String }
-
-  updateVolumesDisplay(event) {
-    if (!this.hasVolumesDisplayTarget) return;
-
-    // Get all checked volume checkboxes
-    const checkedBoxes = this.element.querySelectorAll('input[name="volumes[]"]:checked');
-    
-    if (checkedBoxes.length === 0) {
-      this.volumesDisplayTarget.innerHTML = '<li class="text-muted">No items selected</li>';
-    } else {
-      const listItems = Array.from(checkedBoxes)
-        .map(cb => `<li>${cb.value}</li>`)
-        .join('');
-      this.volumesDisplayTarget.innerHTML = listItems;
-    }
-  }
 
   itemsTargetConnected(element) {
     if (!element.checked) return;
@@ -125,12 +109,8 @@ export default class extends Controller {
   }
 
   updateRequestType(event) {
-    if (!this.hasRequestTypeDisplayTarget) return;
 
     const label = event.target.labels[0]?.textContent.trim() || event.target.value;
-    this.requestTypeDisplayTarget.textContent = label;
-    this.requestTypeDisplayTarget.classList.remove('text-muted');
-
     this.requestTypeValue = event.target.value;
     this.element.dataset.accordionFormTypeValue = event.target.value;
   }
