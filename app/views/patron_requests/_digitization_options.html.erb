@@ -1,7 +1,7 @@
 <div class="row p-3 gap-3 flex-column flex-md-row">
   <%= render 'digitization_notice' %>
 
-  <div class="accordion digitization-accordion selected-items-container" data-patron-request-target="digitizationItems" data-itemselector-target="selectedItems" data-template="#digitizationTemplate">
+  <div class="accordion digitization-accordion selected-items-container" data-patron-request-target="digitizationItems" data-item-selector-target="selectedItems" data-template="#digitizationTemplate">
     <% if f.object.selectable_items.one? %>
       <%= render Aeon::DigitizationFormItemComponent.new(title: f.object.selectable_items.first.callnumber, dom_id: f.object.selectable_items.first.id, base_name: "patron_request[aeon_item][#{f.object.selectable_items.first.id}]", collapsed: false) %>
     <% end %>

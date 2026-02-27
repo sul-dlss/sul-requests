@@ -29,7 +29,7 @@
           <% end %>
         </div>
       </div>
-      <%= form_with id: 'archives-request', model: @ead_request, url: archives_requests_path, class: 'accordion', data: { controller: 'accordion-form itemselector archives-request', action: 'itemselector:changed->archives-request#onSelectedItemsValueChanged itemselector:changed->accordion-form#typeValueChanged', turbo: false } do |f| %>
+      <%= form_with id: 'archives-request', model: @ead_request, url: archives_requests_path, class: 'accordion', data: { controller: 'accordion-form item-selector archives-request', action: 'item-selector:changed->archives-request#onSelectedItemsValueChanged item-selector:changed->accordion-form#typeValueChanged', turbo: false } do |f| %>
         <%= f.hidden_field :ead_url, value: @ead_request.url %>
         <%= render AccordionStepComponent.new(id: 'request_type', step_index: step_enum.next, form_id: f.id) do |component| %>
           <% component.with_title.with_content('Request type') %>
@@ -113,7 +113,7 @@
                 <div><button class="btn btn-primary text-nowrap"><i class="bi bi-calendar-plus me-1"></i>Create Appointment</button></div>
               </div>
             <% else %>
-              <ul class="list-unstyled selected-items-container" data-itemselector-target="selectedItems" data-template="#appointmentTemplate">
+              <ul class="list-unstyled selected-items-container" data-item-selector-target="selectedItems" data-template="#appointmentTemplate">
               </ul>
 
               <template id="appointmentTemplate">
@@ -129,7 +129,7 @@
           <% c.with_body do %>
             <%= render 'patron_requests/digitization_notice' %>
 
-            <div class="accordion digitization-accordion selected-items-container" data-archives-request-target="digitizationItems" data-itemselector-target="selectedItems" data-template="#digitizationTemplate">
+            <div class="accordion digitization-accordion selected-items-container" data-archives-request-target="digitizationItems" data-item-selector-target="selectedItems" data-template="#digitizationTemplate">
             </div>
 
             <template id="digitizationTemplate">

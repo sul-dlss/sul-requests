@@ -16,13 +16,13 @@
   <div class="col pe-0">
     <% if f.object.selectable_items.many? %>
       <div class="selected-items-container">
-        <ul data-itemselector-target="selectedItems" data-template="#selectedScanItemsTemplate" data-status-filter="available" class="list-unstyled d-flex flex-wrap gap-2 bg-white m-0 me-3"></ul>
+        <ul data-item-selector-target="selectedItems" data-template="#selectedScanItemsTemplate" data-status-filter="available" class="list-unstyled d-flex flex-wrap gap-2 bg-white m-0 me-3"></ul>
         <div class="text-cardinal pb-1 mt-2">
           <span>Earliest expected delivery: <%= f.object.scan_earliest['display_date'] %></span>
         </div>
       </div>
       <div class="selected-items-container">
-        <ul data-itemselector-target="selectedItems" data-template="#selectedScanItemsTemplate" data-status-filter="unavailable" class="list-unstyled d-flex flex-wrap gap-2 bg-white m-0 me-3"></ul>
+        <ul data-item-selector-target="selectedItems" data-template="#selectedScanItemsTemplate" data-status-filter="unavailable" class="list-unstyled d-flex flex-wrap gap-2 bg-white m-0 me-3"></ul>
         <div class="text-cardinal pb-1 mt-2">
           <span>Earliest expected delivery: No date/time estimate</span>
         </div>
@@ -30,11 +30,11 @@
 
       <template id="selectedScanItemsTemplate">
         <li class="d-flex gap-2 w-100 align-items-baseline" data-content-id="__ID__">
-          <span class="itemselector-callnumber-pill bg-light rounded-pill border">
+          <span class="item-selector-callnumber-pill bg-light rounded-pill border">
             <span class="callnumber">
               __LABEL__
             </span>
-            <button data-action="itemselector#remove" data-itemselector-id-param="__ID__" type="button" class="btn-close py-0 pill-close">
+            <button data-action="item-selector#remove" data-item-selector-id-param="__ID__" type="button" class="btn-close py-0 pill-close">
               <span class="visually-hidden">Remove __LABEL__</span>
             </button>
           </span>

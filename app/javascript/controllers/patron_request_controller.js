@@ -46,11 +46,11 @@ export default class extends Controller {
   updateType(event) {
     const requestType = event.target.value;
 
-    const itemSelector = this.element.querySelector('[data-controller="itemselector"]');
-    if (itemSelector) itemSelector.dataset.itemselectorRequestTypeValue = requestType;
+    const itemSelector = this.element.querySelector('[data-controller="item-selector"]');
+    if (itemSelector) itemSelector.dataset.itemSelectorRequestTypeValue = requestType;
 
     this.element.dataset.accordionFormTypeValue = requestType;
-    this.element.dataset.itemselectorItemLimitValue = requestType == 'scan' ? 1 : -1;
+    this.element.dataset.itemSelectorItemLimitValue = requestType == 'scan' ? 1 : -1;
   }
 
   updateProxy(event) {

@@ -46,7 +46,7 @@
 <% end %>
 
 <%= form_for(@patron_request,
-             data: { controller: 'patron-request accordion-form itemselector', action: 'itemselector:changed->patron-request#showItemSelector itemselector:changed->patron-request#showHideItemGroups itemselector:changed->accordion-form#typeValueChanged' },
+             data: { controller: 'patron-request accordion-form item-selector', action: 'item-selector:changed->patron-request#showItemSelector item-selector:changed->patron-request#showHideItemGroups item-selector:changed->accordion-form#typeValueChanged' },
              html: { class: 'col-lg-8 accordion' },
              url: patron_requests_path,
              method: 'POST') do |f| %>
@@ -105,7 +105,7 @@
 
     <!-- pickup request (multiple items) -->
     <% if can?(:request_pickup, f.object) %>
-      <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', classes: [('d-none' if scan_pickup)], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'pickup', action: 'itemselector:changed@document->accordion-form#enableAnyNextButtons' }, submit: true) do |c| %>
+      <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', classes: [('d-none' if scan_pickup)], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'pickup', action: 'item-selector:changed@document->accordion-form#enableAnyNextButtons' }, submit: true) do |c| %>
         <% c.with_title.with_content('Pickup request') %>
         <% c.with_body do %>
           <%= render 'pickup_destination', f: %>
@@ -133,7 +133,7 @@
                       </span>
                     </div>
                 </div>
-                <ul data-itemselector-target="selectedItems" data-template="#selectedItemsTemplate" data-status-filter="available" class="list-unstyled d-flex flex-wrap gap-2 bg-white p-3 m-0"></ul>
+                <ul data-item-selector-target="selectedItems" data-template="#selectedItemsTemplate" data-status-filter="available" class="list-unstyled d-flex flex-wrap gap-2 bg-white p-3 m-0"></ul>
               </div>
             </div>
           </div>
@@ -144,7 +144,7 @@
                 <div class="text-cardinal">Pickup after: No date/time estimate</div>
               </div>
               <div class="bg-white">
-                <ul data-itemselector-target="selectedItems" data-template="#selectedItemsTemplate" data-status-filter="unavailable" class="list-unstyled d-flex flex-wrap gap-2 p-3 m-0"></ul>
+                <ul data-item-selector-target="selectedItems" data-template="#selectedItemsTemplate" data-status-filter="unavailable" class="list-unstyled d-flex flex-wrap gap-2 p-3 m-0"></ul>
                 <hr class="styled-hr">
                 <%= render 'request_preferences', f: %>
                 <% if f.object.holdable_recallable_items.any? && !f.object.mediateable? %>
@@ -156,11 +156,11 @@
 
           <template id="selectedItemsTemplate">
             <li class="d-flex gap-2 w-100 align-items-baseline" data-content-id="__ID__">
-              <span class="itemselector-callnumber-pill bg-light rounded-pill border">
+              <span class="item-selector-callnumber-pill bg-light rounded-pill border">
                 <span class="callnumber">
                   __LABEL__
                 </span>
-                <button data-action="itemselector#remove" data-itemselector-id-param="__ID__" type="button" class="btn-close py-0 pill-close">
+                <button data-action="item-selector#remove" data-item-selector-id-param="__ID__" type="button" class="btn-close py-0 pill-close">
                   <span class="visually-hidden">Remove __LABEL__</span>
                 </button>
               </span>
@@ -172,10 +172,10 @@
     <% end %>
 
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
-      <div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true" data-itemSelector-target="toast">
+      <div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true" data-item-selector-target="toast">
         <div class="d-flex">
           <div class="toast-body">You successfully removed an item.</div>
-          <button type="button" class="btn btn-text text-uppercase" data-action="itemselector#undo analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Undo">Undo</button>
+          <button type="button" class="btn btn-text text-uppercase" data-action="item-selector#undo analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Undo">Undo</button>
           <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
       </div>

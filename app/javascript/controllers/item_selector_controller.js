@@ -88,7 +88,7 @@ export default class extends Controller {
   showRemovalToast(item) {
     if (!this.hasToastTarget) return;
 
-    this.toastTarget.querySelector('.btn').dataset.itemselectorPayloadParam = JSON.stringify(item);
+    this.toastTarget.querySelector('.btn').dataset.itemSelectorPayloadParam = JSON.stringify(item);
 
     Toast.getOrCreateInstance(this.toastTarget).show();
   }
@@ -109,14 +109,14 @@ export default class extends Controller {
 
       this.element.querySelectorAll(`[data-content-id="${item.id}"][data-toggle-disabled]`).forEach(e => this.disableInputs(e));
 
-      const target = this.itemTargets.find((checkbox) => checkbox.dataset.itemselectorIdParam === item.id)
+      const target = this.itemTargets.find((checkbox) => checkbox.dataset.itemSelectorIdParam === item.id)
       if (target) target.checked = false;
     });
 
     added.forEach(item => {
       this.element.querySelectorAll(`[data-content-id="${item.id}"][data-toggle-disabled]`).forEach(e => this.enableInputs(e));
 
-      const target = this.itemTargets.find((checkbox) => checkbox.dataset.itemselectorIdParam === item.id)
+      const target = this.itemTargets.find((checkbox) => checkbox.dataset.itemSelectorIdParam === item.id)
       if (target) target.checked = true;
 
       this.selectedItemsTargets.forEach(target => {

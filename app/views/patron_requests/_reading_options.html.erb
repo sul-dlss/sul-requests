@@ -8,7 +8,7 @@
   <% appointments = current_user.aeon.appointments.select { |appt| appt.reading_room.sites.include?(f.object.aeon_site) } %>
 
   <div class="mt-3">
-    <ul class="list-unstyled selected-items-container" data-itemselector-target="selectedItems" data-template="#appointmentTemplate">
+    <ul class="list-unstyled selected-items-container" data-item-selector-target="selectedItems" data-template="#appointmentTemplate">
       <% if f.object.selectable_items.one? %>
         <%= render Aeon::AppointmentFormItemComponent.new(title: f.object.selectable_items.first.callnumber, dom_id: f.object.selectable_items.first.id, base_name: "patron_request[aeon_item][#{f.object.selectable_items.first.id}]", appointments: appointments) %>
       <% end %>
