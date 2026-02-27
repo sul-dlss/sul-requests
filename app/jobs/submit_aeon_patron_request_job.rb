@@ -10,7 +10,11 @@ class SubmitAeonPatronRequestJob < ApplicationJob
     aeon_requests = patron_request.aeon_requests
 
     aeon_requests.each do |aeon_request|
-      submit_aeon_request(as_aeon_create_request_data(username, aeon_request))
+      request = as_aeon_create_request_data(username, aeon_request)
+      response = submit_aeon_request(request)
+
+      patron_request.aeon_api_responses.where(item_id: nil).delete_all
+      patron_request.aeon_api_responses.create(item_id: nil, request_data: request.as_json, response_data: response)
     end
   end
 
