@@ -6,11 +6,11 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   queue_as :default
   retry_on Faraday::ConnectionFailed
 
-  def perform(patron_request, username:)
+  def perform(patron_request)
     aeon_requests = patron_request.aeon_requests
 
     aeon_requests.each do |aeon_request|
-      submit_aeon_request(as_aeon_create_request_data(username, aeon_request))
+      submit_aeon_request(as_aeon_create_request_data(aeon_request))
     end
   end
 
@@ -18,7 +18,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   # Once reading room logic for appointments is implemented, this mapping
   # should also contain scheduledDate, appointment id, appointment,
   # and reading room id.
-  def as_aeon_create_request_data(username, aeon_request)
+  def as_aeon_create_request_data(aeon_request)
     AeonClient::CreateRequestData.with_defaults.with(
       call_number: aeon_request.call_number,
       document_type: aeon_request.document_type,
@@ -28,7 +28,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
       item_title: aeon_request.title,
       location: aeon_request.location,
       web_request_form: 'GenericRequestMonograph',
-      username: username,
+      username: aeon_request.username,
       item_info1: aeon_request.item_url,
       special_request: aeon_request.special_request,
       site: aeon_request.site,

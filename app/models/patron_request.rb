@@ -251,8 +251,8 @@ class PatronRequest < ApplicationRecord
     SubmitPatronRequestJob.perform_later(self)
   end
 
-  def submit_aeon_request(username:)
-    SubmitAeonPatronRequestJob.perform_now(self, username:)
+  def submit_aeon_request
+    SubmitAeonPatronRequestJob.perform_now(self)
   end
 
   # @return [Folio::Instance]
@@ -694,7 +694,7 @@ class PatronRequest < ApplicationRecord
                       title: bib_data&.title, transaction_date: nil,
                       transaction_number: nil, transaction_status: nil, volume: nil,
                       site: aeon_site, special_request: special_request,
-                      pages: pages,
+                      pages: pages, username: user.aeon.username,
                       publication: publication)
   end
 end

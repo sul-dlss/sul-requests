@@ -9,10 +9,11 @@ RSpec.describe SubmitAeonPatronRequestJob do
 
   let(:request) do
     PatronRequest.create(request_type:, instance_hrid: 'a1234', patron:, barcodes: ['12345678'],
-                         origin_location_code: 'SPEC-STACKS', data:)
+                         origin_location_code: 'SPEC-STACKS', data:, user: build(:sso_user))
   end
   let(:bib_data) { build(:special_collections_single_holding) }
-  let(:stub_aeon_client) { instance_double(AeonClient, create_request: {}) }
+  let(:stub_aeon_client) { instance_double(AeonClient, find_user: stub_aeon_user, create_request: {}) }
+  let(:stub_aeon_user) { instance_double(Aeon::User, username: 'aeon_user') }
 
   before do
     stub_bib_data_json(bib_data)
@@ -31,7 +32,7 @@ RSpec.describe SubmitAeonPatronRequestJob do
 
     describe '#perform_now' do
       it 'correctly maps the Aeon request object to an Aeon client payload' do
-        described_class.perform_now(request, username: 'aeon_username')
+        described_class.perform_now(request)
 
         expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
                                                                           call_number: 'ABC 123',
@@ -46,7 +47,7 @@ RSpec.describe SubmitAeonPatronRequestJob do
                                                                           site: 'SPECUA',
                                                                           shipping_option: 'Electronic Delivery',
                                                                           special_request: 'info',
-                                                                          username: 'aeon_username',
+                                                                          username: 'aeon_user',
                                                                           web_request_form: 'GenericRequestMonograph'
                                                                         ))
       end
