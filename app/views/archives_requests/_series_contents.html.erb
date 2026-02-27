@@ -24,7 +24,7 @@
       <%# Checkbox to select entire container %>
       <%= f.check_box :volumes, 
             { multiple: true, class: 'form-check-input mt-1', id: checkbox_id, checked: f.object.items.any? { |item| series_title == item[:series] && container_name == item[:subseries] } ,
-              data: { action: 'change->archives-request#itemChanged change->archives-request#updateVolumesDisplay', 'archives-request-target': 'items', 'archives-request-series-param': series_title, 'archives-request-subseries-param': container_name, 'archives-request-id-param': checkbox_id } },
+              data: { action: 'change->archives-request#itemChanged', 'archives-request-target': 'items', 'archives-request-series-param': series_title, 'archives-request-subseries-param': container_name, 'archives-request-id-param': checkbox_id } },
             checkbox_id,
             nil %>
       <div class="flex-grow-1">
@@ -58,8 +58,7 @@
         </span>
       <% end %>
       <%= f.check_box :volumes, 
-            { multiple: true, class: "form-check-input mt-1 #{'ms-2' unless nested}", id: checkbox_id, 
-              data: { action: 'change->archives-request#updateVolumesDisplay' } }, 
+            { multiple: true, class: "form-check-input mt-1 #{'ms-2' unless nested}", id: checkbox_id },
               volume_value(series_title: series_title || display_group.title, subseries_name: display_group.title),
             nil %>
       <%= label_tag checkbox_id, display_group.title, class: 'form-check-label' %>

@@ -30,6 +30,8 @@
         </div>
       </div>
       <%= form_with id: 'archives-request', model: @ead_request, url: archives_requests_path, class: 'accordion', data: { controller: 'accordion-form archives-request', turbo: false } do |f| %>
+        <%= f.hidden_field :ead_url, value: @ead_request.url %>
+
         <%= render AccordionStepComponent.new(id: 'request_type', step_index: step_enum.next, form_id: f.id) do |component| %>
           <% component.with_title.with_content('Request type') %>
           <% component.with_body do %>
@@ -77,7 +79,7 @@
           <% c.with_title.with_content('Appointment or Digitization') %>
         <% end %>
 
-        <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', classes: [('d-none' if  f.object.request_type.blank? || f.object.request_type == 'scan')], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'pickup' }) do |c| %>
+        <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', submit: true, submit_text: 'Submit to Aeon', cancel: false, classes: [('d-none' if  f.object.request_type.blank? || f.object.request_type == 'scan')], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'pickup' }) do |c| %>
           <% c.with_title.with_content('Reading room use') %>
           <% c.with_body do %>
             <div class="d-flex flex-column mb-2">
@@ -137,7 +139,7 @@
           <% end %>
         <% end %>
 
-        <%= render AccordionStepComponent.new(request: f.object, id: 'terms', classes: ['d-none'], step_index: step_enum.next, form_id: f.id, data: { 'patronrequest-forRequestType': 'scan' }) do |c| %>
+        <%= render AccordionStepComponent.new(request: f.object, id: 'terms', classes: ['d-none'], step_index: step_enum.next, submit: true, submit_text: 'Submit to Aeon', cancel: false, form_id: f.id, data: { 'patronrequest-forRequestType': 'scan' }) do |c| %>
           <% c.with_title.with_content('Terms') %>
 
           <% c.with_body do %>
@@ -145,33 +147,6 @@
           <% end %>
         <% end %>
 
-        <%= render AccordionStepComponent.new(id: 'submit', step_index: '-', form_id: f.id, submit: true, submit_text: 'Submit to Aeon', cancel: false) do |component| %>
-          <% component.with_title.with_content('Review and submit') %>
-          <% component.with_body do %>
-            <div class="mb-4">
-              <h4 class="fs-6 fw-bold mb-3">Request Summary</h4>
-              <dl class="row">
-                <dt class="col-sm-4">Collection:</dt>
-                <dd class="col-sm-8"><%= @ead.title %></dd>
-                <dt class="col-sm-4">Identifier:</dt>
-                <dd class="col-sm-8"><%= @ead.identifier %></dd>
-                <dt class="col-sm-4">Repository:</dt>
-                <dd class="col-sm-8"><%= @ead.repository %></dd>
-                <dt class="col-sm-4">Request type:</dt>
-                <dd class="col-sm-8">
-                  <span data-archives-request-target="requestTypeDisplay" class="text-muted">Select a request type above</span>
-                </dd>
-                <dt class="col-sm-4">Selected items:</dt>
-                <dd class="col-sm-8">
-                  <ul data-archives-request-target="volumesDisplay" class="list-unstyled mb-0">
-                    <li class="text-muted">No items selected</li>
-                  </ul>
-                </dd>
-              </dl>
-            </div>
-            <%= f.hidden_field :ead_url, value: @ead_request.url %>
-          <% end %>
-        <% end %>
         <div class="card mb-4 bg-light rounded-0 border-0">
           <div class="card-body d-flex justify-content-end">
             <!--TODO: wire these up.-->
