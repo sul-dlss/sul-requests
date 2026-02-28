@@ -67,6 +67,10 @@ layer(components);
   color: rgba(var(--stanford-cardinal-rgb), 1);
 }
 
+.text-digital-blue {
+  color: var(--stanford-digital-blue);
+}
+
 .text-digital-red {
   color: var(--stanford-digital-red);
 }

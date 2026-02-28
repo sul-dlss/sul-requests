@@ -17,17 +17,21 @@ RSpec.describe 'archives_requests/_series_contents.html.erb' do
                               coalesce_key: 'Box 9',
                               top_container: 'Box 9',
                               folder: 'Folder 1',
+                              full_title: 'Item 1',
                               title: 'Item 1',
                               level: 'file',
                               date: nil,
+                              digital_content?: false,
                               id: 'item-1')
       item2 = instance_double(Ead::Document::Item,
                               coalesce_key: 'Box 9',
                               top_container: 'Box 9',
                               folder: 'Folder 2',
+                              full_title: 'Item 2',
                               title: 'Item 2',
                               level: 'file',
                               date: nil,
+                              digital_content?: false,
                               id: 'item-2')
       items = [item1, item2]
       display_groups = Ead::DisplayGroup.build_display_groups(items)
@@ -85,11 +89,13 @@ RSpec.describe 'archives_requests/_series_contents.html.erb' do
       subseries_items = [
         instance_double(Ead::Document::Item,
                         coalesce_key: 'Box 1',
+                        full_title: 'Subseries Item',
                         title: 'Subseries Item',
                         level: 'file',
                         top_container: 'Box 1',
                         folder: nil,
                         date: nil,
+                        digital_content?: false,
                         id: 'item-5')
       ]
 

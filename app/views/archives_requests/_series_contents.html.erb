@@ -46,7 +46,14 @@
                 <% if item.folder %>
                   <small class="text-muted">Folder <%= item.folder %>:</small>
                 <% end %>
-                <%= item.title %>
+                <% if item.digital_content? %>
+                  <%= link_to item.extref_href, target: '_blank', rel: 'noopener noreferrer' do %>
+                    <%= item.full_title %>
+                    <%= render Icons::OnlineComponent.new classes: 'ms-1 align-text-bottom text-digital-blue' %>
+                  <% end %>
+                <% else %>
+                  <%= item.full_title %>
+                <% end %>
               </li>
             <% end %>
           </ul>
@@ -79,6 +86,25 @@
         <% end %>
       <% end %>
       <%= label_tag checkbox_id, display_group.title, class: 'form-check-label' %>
+    </div>
+  <% elsif display_group.is_a?(Ead::DisplayGroup::DigitalItem) %>
+    <%# Digital-only item (DAO without physical container) - show as link, no checkbox %>
+    <div class="mb-2 d-flex align-items-start gap-2">
+      <% if nested %>
+        <span class="btn btn-sm p-0 ms-2 invisible" aria-hidden="true">
+          <i class="bi bi-chevron-right disclosure-icon"></i>
+        </span>
+      <% end %>
+      <span class="<%= 'ms-2' unless nested %>">
+        <% if display_group.href.present? %>
+          <%= link_to display_group.href, target: '_blank', rel: 'noopener noreferrer' do %>
+            <%= display_group.title %>
+            <%= render Icons::OnlineComponent.new classes: 'ms-1 align-text-bottom text-digital-blue' %>
+          <% end %>
+        <% else %>
+          <%= display_group.title %>
+        <% end %>
+      </span>
     </div>
   <% elsif display_group.is_a?(Ead::DisplayGroup::Subseries) %>
     <%# Subseries (intellectual/non-physical hierarchical grouping) %>
