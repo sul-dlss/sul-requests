@@ -38,7 +38,14 @@
                 <% if item.folder %>
                   <small class="text-muted">Folder <%= item.folder %>:</small>
                 <% end %>
-                <%= item.full_title %>
+                <% if item.digital_content? %>
+                  <%= link_to item.extref_href, target: '_blank', rel: 'noopener noreferrer' do %>
+                    <%= item.full_title %>
+                    <%= render Icons::OnlineComponent.new classes: 'ms-1 align-text-bottom text-digital-blue' %>
+                  <% end %>
+                <% else %>
+                  <%= item.full_title %>
+                <% end %>
               </li>
             <% end %>
           </ul>
@@ -73,10 +80,10 @@
       <% end %>
       <span class="<%= 'ms-2' unless nested %>">
         <% if display_group.href.present? %>
-        <%= link_to display_group.href, target: '_blank', rel: 'noopener noreferrer' do %>
-          <%= display_group.title %>
-          <%= render Icons::OnlineComponent.new classes: 'ms-1 align-text-bottom text-digital-blue' %>
-        <% end %>
+          <%= link_to display_group.href, target: '_blank', rel: 'noopener noreferrer' do %>
+            <%= display_group.title %>
+            <%= render Icons::OnlineComponent.new classes: 'ms-1 align-text-bottom text-digital-blue' %>
+          <% end %>
         <% else %>
           <%= display_group.title %>
         <% end %>

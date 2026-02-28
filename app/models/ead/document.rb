@@ -220,8 +220,12 @@ module Ead
 
       Container = Data.define(:type, :value)
 
+      def digital_content?
+        node.xpath('did/dao').any?
+      end
+
       def digital_only?
-        containers.empty? && node.xpath('did/dao').any?
+        containers.empty? && digital_content?
       end
 
       def extref_href
