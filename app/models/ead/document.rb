@@ -143,10 +143,6 @@ module Ead
       end
 
       def self.hierarchical?(node)
-        # A node is hierarchical only if it actually has child components.
-        # The level attribute alone (series, subseries, etc.) may not be sufficient?
-        # A series-level node with no children is effectively a leaf item
-        # and should be treated as requestable.
         child_components(node).any?
       end
 
