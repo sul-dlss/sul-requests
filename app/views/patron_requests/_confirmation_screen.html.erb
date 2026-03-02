@@ -36,7 +36,7 @@
                         <% if @patron_request.selected_items.one? %>
                             This item
                         <% else %>
-                            The item <i><%= @patron_request.bib_data.title %></i> (<%= item.bound_with_child_holdings_record.call_number %>)
+                            The item <i><%= @patron_request.item_title %></i> (<%= item.bound_with_child_holdings_record.call_number %>)
                         <% end %> is bound with other items and is shelved under the title <i><%= item.instance.title %></i> (<%= item.callnumber %>).
                     </p>
 

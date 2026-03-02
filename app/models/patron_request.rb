@@ -266,6 +266,10 @@ class PatronRequest < ApplicationRecord
     super || bib_data&.title
   end
 
+  def view_url
+    [Settings.searchworks_link, instance_hrid.sub(/^a/, '')].join('/')
+  end
+
   # Item stuff
 
   # @return [Array<Folio::Item>] the items in the origin location
@@ -488,7 +492,7 @@ class PatronRequest < ApplicationRecord
       LoanDate: bib_data.pub_date,
       LoanEdition: bib_data.edition,
       ESPNumber: bib_data.oclcn,
-      CitedIn: bib_data.view_url,
+      CitedIn: view_url,
       CallNumber: item&.callnumber,
       ILLNumber: item&.barcode,
       ItemNumber: item&.barcode,

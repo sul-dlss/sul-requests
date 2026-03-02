@@ -116,10 +116,6 @@ module Folio
       finding_aid.present?
     end
 
-    def view_url
-      [Settings.searchworks_link, hrid].join('/')
-    end
-
     def instance_id
       @id
     end
