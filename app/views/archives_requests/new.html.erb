@@ -92,9 +92,9 @@
                 </span>
               </div>
               <% if @ead.series_and_subseries&.many? %>
-                <a class="btn btn-primary" data-action="modal#open" href="/aeon_appointments/new">
+                <%= link_to new_aeon_appointment_path(reading_room_id: @ead_request.reading_room.id ), class: 'btn btn-primary', data: { action: 'modal#open' } do %>
                   <i class="bi bi-calendar-plus me-1"></i>Create new appointment
-                </a>
+                <% end %>
               <% end %>
             </div>
 
