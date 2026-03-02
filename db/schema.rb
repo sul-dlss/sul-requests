@@ -24,7 +24,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_201158) do
   create_table "api_responses", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "item_id"
-    t.integer "patron_request_id", null: false
+    t.bigint "patron_request_id", null: false
     t.binary "request_data"
     t.binary "response_data"
     t.string "type"
@@ -45,7 +45,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_201158) do
 
   create_table "patron_requests", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.text "data"
+    t.text "data", limit: 4294967295
     t.string "display_type"
     t.string "fulfillment_type"
     t.string "instance_hrid"
@@ -56,7 +56,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_201158) do
     t.string "request_type"
     t.string "service_point_code"
     t.datetime "updated_at", null: false
-    t.integer "user_id"
+    t.bigint "user_id"
     t.index ["display_type"], name: "index_patron_requests_on_display_type"
     t.index ["instance_hrid"], name: "index_patron_requests_on_instance_hrid"
     t.index ["needed_date"], name: "index_patron_requests_on_needed_date"
