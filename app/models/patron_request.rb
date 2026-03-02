@@ -6,6 +6,7 @@
 class PatronRequest < ApplicationRecord
   has_many :folio_api_responses, dependent: :delete_all
   has_many :illiad_api_responses, dependent: :delete_all
+  has_many :aeon_api_responses, dependent: :delete_all
 
   store :data, accessors: [
     :barcodes, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title,
@@ -17,8 +18,8 @@ class PatronRequest < ApplicationRecord
 
   validates :instance_hrid, presence: true
   validates :request_type, inclusion: { in: %w[scan pickup mediated mediated/approved mediated/done] }
-  validates :scan_title, presence: true, on: :create, if: :scan?
-  validate :pickup_service_point_is_valid, on: :create, unless: :scan?
+  validates :scan_title, presence: true, on: :create, if: :folio_scan?
+  validate :pickup_service_point_is_valid, on: :create, if: :folio_pickup?
   validate :needed_date_is_valid, on: :create
   validate :for_sponsor_id_is_valid, on: :create
 
@@ -46,7 +47,7 @@ class PatronRequest < ApplicationRecord
   attr_writer :bib_data
 
   before_create do
-    self.request_type = 'mediated' if mediateable? && !request_type.start_with?('mediated')
+    self.request_type = 'mediated' if mediateable? && !request_type.start_with?('mediated') && !aeon_page?
     self.display_type = calculate_display_type
     self.item_title = bib_data&.title
     self.estimated_delivery = earliest_delivery_estimate(scan: scan?)&.dig('display_date')
@@ -128,11 +129,15 @@ class PatronRequest < ApplicationRecord
 
   # For aeon types
   def aeon_reading_room?
-    request_type == 'reading'
+    aeon_page? && !scan?
+  end
+
+  def folio_scan?
+    scan? && !aeon_page?
   end
 
   def aeon_digitization?
-    request_type == 'digitization'
+    aeon_page? && scan?
   end
 
   def item_mediation_data
@@ -295,7 +300,7 @@ class PatronRequest < ApplicationRecord
 
     items = items_in_location.select { |x| x.barcode.in?(barcodes) || x.id.in?(barcodes) }
 
-    return items.first(1) if request_type == 'scan'
+    return items.first(1) if request_type == 'scan' && !aeon_page?
 
     items
   end
@@ -338,6 +343,7 @@ class PatronRequest < ApplicationRecord
   # a date so staff can expire old requests.
   # @return [Boolean] whether the request requires a needed date from the patron
   def requires_needed_date?
+    return false if aeon_page?
     return false if mediateable? && ['PAGE-MP', 'SAL3-PAGE-MP'].include?(origin_location_code)
 
     mediateable? || selected_items.any? { |item| item.recallable?(patron) || item.holdable?(patron) }
@@ -402,7 +408,9 @@ class PatronRequest < ApplicationRecord
   # A request is fulfilled through Aeon if any of the items are "Aeon pageable" (e.g. are in
   # a location with a `pageAeonSite` detail)
   def aeon_page?
-    selectable_items.any?(&:aeon_pageable?)
+    return @aeon_page if defined?(@aeon_page)
+
+    @aeon_page ||= selectable_items.any?(&:aeon_pageable?)
   end
 
   # @return [String] the Aeon site code for the items in the request
@@ -645,6 +653,10 @@ class PatronRequest < ApplicationRecord
     service_points.first || Settings.folio.default_service_point
   end
 
+  def folio_pickup?
+    !aeon_page? && !scan?
+  end
+
   # Validate that the chosen service point is a valid pickup location for the items
   def pickup_service_point_is_valid
     return if pickup_service_point.code.in? pickup_destinations
@@ -672,7 +684,7 @@ class PatronRequest < ApplicationRecord
   def create_aeon_requests
     shipping_option = aeon_digitization? ? 'Electronic Delivery' : nil
     selected_items.map do |selected_item|
-      callnumber = selected_item.callnumber
+      callnumber = selected_item.id
       special_request = aeon_digitization? ? aeon_item[callnumber]['additional_information'] : aeon_reading_special
       pages = aeon_digitization? ? aeon_item[callnumber]['requested_pages'] : nil
       publication = aeon_digitization? ? (aeon_item[callnumber]['for_publication'] == 'Yes') : nil

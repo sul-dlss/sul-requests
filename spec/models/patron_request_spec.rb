@@ -541,11 +541,11 @@ RSpec.describe PatronRequest do
 
     context 'with single item digitization request' do
       let(:bib_data) { build(:special_collections_single_holding) }
-      let(:request_type) { 'digitization' }
+      let(:request_type) { 'scan' }
       let(:data) do
         {
           barcodes: ['12345678'], aeon_item: {
-            'ABC 123': { requested_pages: '23', for_publication: 'no', additional_information: 'info' }
+            bib_data.items.first.id => { requested_pages: '23', for_publication: 'no', additional_information: 'info' }
           }
         }
       end
@@ -562,7 +562,7 @@ RSpec.describe PatronRequest do
 
     context 'with single item reading room request' do
       let(:bib_data) { build(:special_collections_single_holding) }
-      let(:request_type) { 'reading' }
+      let(:request_type) { 'pickup' }
       let(:data) do
         {
           barcodes: ['12345678'], aeon_reading_special: 'Some info'
@@ -579,12 +579,12 @@ RSpec.describe PatronRequest do
 
     context 'with multi item digitization request' do
       let(:bib_data) { build(:special_collections_holdings) }
-      let(:request_type) { 'digitization' }
+      let(:request_type) { 'scan' }
       let(:data) do
         {
           barcodes: ['12345678', '87654321'], aeon_item: {
-            'ABC 123': { requested_pages: '23', for_publication: 'No', additional_information: 'info' },
-            'ABC 321': { requested_pages: '32', for_publication: 'Yes', additional_information: 'more info' }
+            bib_data.items.first.id => { requested_pages: '23', for_publication: 'No', additional_information: 'info' },
+            bib_data.items.last.id => { requested_pages: '32', for_publication: 'Yes', additional_information: 'more info' }
           }
         }
       end

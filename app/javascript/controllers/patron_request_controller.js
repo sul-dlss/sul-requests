@@ -4,6 +4,8 @@ import { Collapse } from "bootstrap"
 export default class extends Controller {
   static targets = ['earliestAvailable', 'destination', 'proxyScanWarning', 'sponsorScanWarning', 'selectSponsor', 'sponsorRadioButton', 'digitizationItems']
 
+  static values = { type: String }
+
   connect() {
     this.element.reset();
   }
@@ -50,7 +52,7 @@ export default class extends Controller {
     if (itemSelector) itemSelector.dataset.itemSelectorRequestTypeValue = requestType;
 
     this.element.dataset.accordionFormTypeValue = requestType;
-    this.element.dataset.itemSelectorItemLimitValue = requestType == 'scan' ? 1 : -1;
+    this.element.dataset.itemSelectorItemLimitValue = this.typeValue != 'aeon' && requestType == 'scan' ? 1 : -1;
   }
 
   updateProxy(event) {

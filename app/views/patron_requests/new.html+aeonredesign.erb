@@ -36,7 +36,8 @@
 <%= form_for(@patron_request,
             data: {
               controller: 'patron-request accordion-form item-selector',
-              action: 'item-selector:changed->patron-request#showItemSelector item-selector:changed->accordion-form#typeValueChanged'
+              action: 'item-selector:changed->patron-request#showItemSelector item-selector:changed->accordion-form#typeValueChanged',
+              'patron-request-type-value': 'aeon',
             },
             html: { class: 'accordion' },
             url: patron_requests_path,
@@ -86,7 +87,7 @@
 
 <!-- aeon reading room request -->
 <!-- removed any 'can do this' part for both -->
-<%= render AccordionStepComponent.new(request: f.object, id: 'reading', classes: ['d-none'], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'reading' }, submit: true) do |c| %>
+<%= render AccordionStepComponent.new(request: f.object, id: 'reading', classes: ['d-none'], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'pickup' }, submit: true) do |c| %>
   <% c.with_title.with_content('Reading room') %>
   <% c.with_body do %>
     <%= render 'reading_options', f: %>
@@ -95,7 +96,7 @@
 
 <!-- aeon digitization request -->
 
-<%= render AccordionStepComponent.new(request: f.object, id: 'digitization', classes: ['d-none'], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'digitization' }) do |c| %>
+<%= render AccordionStepComponent.new(request: f.object, id: 'digitization', classes: ['d-none'], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'scan' }) do |c| %>
   <% c.with_title.with_content('Digitization') %>
   <% c.with_body do %>
     <%= render 'digitization_options', f: %>
@@ -104,7 +105,7 @@
 
 <!-- Digitization terms, only shows up for digitization -->
 
-<%= render AccordionStepComponent.new(request: f.object, id: 'terms', classes: ['d-none'], step_index: step_enum.next, form_id: f.id, data: { 'patronrequest-forRequestType': 'digitization' }, submit: true) do |c| %>
+<%= render AccordionStepComponent.new(request: f.object, id: 'terms', classes: ['d-none'], step_index: step_enum.next, form_id: f.id, data: { 'patronrequest-forRequestType': 'scan' }, submit: true) do |c| %>
   <% c.with_title.with_content('Terms') %>
   <% c.with_body do %>
     <%= render 'digitization_terms', f: %>

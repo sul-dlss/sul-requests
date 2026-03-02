@@ -67,7 +67,13 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       click_button 'Continue'
       check 'I agree to these terms'
 
-      expect(page).to have_button 'Submit request'
+      click_button 'Submit request'
+
+      expect(page).to have_content 'We received your scan request!'
+
+      expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
+                                                                        call_number: 'ABC 123'
+                                                                      ))
     end
 
     it 'allows the user to submit a reading room request' do
@@ -84,7 +90,13 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
       fill_in 'Additional information', with: 'Testing only'
 
-      expect(page).to have_button 'Submit request'
+      click_button 'Submit request'
+
+      expect(page).to have_content 'We received your request!'
+
+      expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
+                                                                        call_number: 'ABC 123'
+                                                                      ))
     end
   end
 
@@ -92,12 +104,32 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
     let(:bib_data) { :special_collections_holdings }
 
     it 'allows the user to submit a digitization request' do
-      expect(page).to have_content 'Request type'
-      expect(page).to have_content 'Select item(s)'
-
       choose 'Digitization'
-
       click_button 'Continue'
+
+      check 'ABC 123'
+      check 'ABC 321'
+      click_button 'Continue'
+
+      fill_in 'Requested pages', with: 'Pages 1-10'
+      choose 'Yes'
+      click_button 'Next item'
+      fill_in 'Requested pages', with: 'Pages 11-20'
+      choose 'No'
+      click_button 'Continue'
+
+      check 'I agree to these terms'
+
+      click_button 'Submit request'
+
+      expect(page).to have_content 'We received your scan request!'
+      expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
+                                                                        call_number: 'ABC 123'
+                                                                      ))
+
+      expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
+                                                                        call_number: 'ABC 321'
+                                                                      ))
     end
   end
 end
