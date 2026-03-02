@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
   let(:user) { create(:sso_user) }
   let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true, ldap_attributes: {}) }
-  let(:bib_data) { :special_collections_single_holding }
+  let(:folio_instance) { :special_collections_single_holding }
   let(:patron) do
     instance_double(Folio::Patron, id: user.patron_key, username: 'auser', display_name: 'A User', exists?: true, email: nil,
                                    patron_description: 'faculty',
@@ -27,7 +27,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
   before do
     allow(Folio::Patron).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
     login_as(current_user)
-    stub_bib_data_json(build(bib_data))
+    stub_folio_instance_json(build(folio_instance))
     allow(Settings.features).to receive(:requests_redesign).and_return(true)
     login_as(current_user)
 
@@ -103,7 +103,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
   end
 
   context 'with multiple holdings' do
-    let(:bib_data) { :special_collections_holdings }
+    let(:folio_instance) { :special_collections_holdings }
 
     it 'allows the user to submit a digitization request' do
       choose 'Digitization'

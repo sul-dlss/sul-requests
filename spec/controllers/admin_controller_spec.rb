@@ -109,7 +109,7 @@ RSpec.describe AdminController do
       end
 
       before do
-        allow_any_instance_of(PatronRequest).to receive(:bib_data).and_return(build(:searchable_holdings))
+        allow_any_instance_of(PatronRequest).to receive(:folio_instance).and_return(build(:searchable_holdings))
       end
 
       it 'returns the holdings table markup' do
@@ -126,7 +126,7 @@ RSpec.describe AdminController do
     end
 
     before do
-      allow_any_instance_of(PatronRequest).to receive(:bib_data).and_return(build(:searchable_holdings))
+      allow_any_instance_of(PatronRequest).to receive(:folio_instance).and_return(build(:searchable_holdings))
     end
 
     describe 'for those that can manage requests' do

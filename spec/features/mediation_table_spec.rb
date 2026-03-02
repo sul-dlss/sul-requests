@@ -8,7 +8,7 @@ RSpec.describe 'Mediation table', :js do
 
   context 'Library Mediation' do
     before do
-      stub_bib_data_json(build(:searchable_holdings))
+      stub_folio_instance_json(build(:searchable_holdings))
       stub_current_user(create(:superadmin_user))
 
       # create some pending requests
@@ -75,7 +75,7 @@ RSpec.describe 'Mediation table', :js do
 
     describe 'current location' do
       before do
-        stub_bib_data_json(build(:searchable_holdings))
+        stub_folio_instance_json(build(:searchable_holdings))
         visit(admin_path('ART'))
       end
 
@@ -266,7 +266,7 @@ RSpec.describe 'Mediation table', :js do
       end
 
       it 'includes both pending and done requests' do
-        stub_bib_data_json(build(:page_mp_holdings))
+        stub_folio_instance_json(build(:page_mp_holdings))
         cdate = Time.zone.today - 8.days
         create(:page_mp_mediated_patron_request, created_at: cdate, barcodes: ['12345678'])
         create(:page_mp_mediated_patron_request, request_type: 'mediated/approved', created_at: cdate, barcodes: ['12345678'])
@@ -326,7 +326,7 @@ RSpec.describe 'Mediation table', :js do
 
     before do
       stub_current_user(create(:page_mp_origin_admin_user))
-      stub_bib_data_json(build(:page_mp_holdings))
+      stub_folio_instance_json(build(:page_mp_holdings))
       request.save(validate: false)
 
       visit admin_path('SAL3-PAGE-MP')

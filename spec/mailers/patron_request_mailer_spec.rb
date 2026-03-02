@@ -11,8 +11,8 @@ RSpec.describe PatronRequestMailer do
   end
 
   before do
-    allow(request).to receive_messages(patron:, bib_data: build(:single_holding,
-                                                                items: [build(:item, effective_location: build(:law_location))]))
+    allow(request).to receive_messages(patron:, folio_instance: build(:single_holding,
+                                                                      items: [build(:item, effective_location: build(:law_location))]))
   end
 
   context 'pickup request_type' do

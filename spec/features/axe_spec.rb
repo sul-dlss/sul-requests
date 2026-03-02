@@ -5,10 +5,10 @@ require 'axe-rspec'
 
 RSpec.describe 'Accessibility testing', :js do
   let(:user_object) { build(:sso_user) }
-  let(:bib_data) { build(:sal3_holding) }
+  let(:folio_instance) { build(:sal3_holding) }
 
   before do
-    stub_bib_data_json(bib_data)
+    stub_folio_instance_json(folio_instance)
   end
 
   # TODO: once user login is available add user mocks
@@ -50,7 +50,7 @@ RSpec.describe 'Accessibility testing', :js do
   end
 
   context 'with multiple items to pick from' do
-    let(:bib_data) { build(:checkedout_holdings) }
+    let(:folio_instance) { build(:checkedout_holdings) }
 
     let(:user) { create(:sso_user) }
     let(:patron) { build(:patron) }
@@ -77,7 +77,7 @@ RSpec.describe 'Accessibility testing', :js do
   end
 
   context 'for a scan' do
-    let(:bib_data) { build(:scannable_holdings) }
+    let(:folio_instance) { build(:scannable_holdings) }
     let(:user) { create(:scan_eligible_user) }
     let(:patron) { build(:patron) }
     let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true, ldap_attributes:) }

@@ -33,7 +33,7 @@
   <% end %>
 
   <% if single_item.instance && single_item.instance&.hrid != @patron_request.instance_hrid %>
-    <div class="lead fw-normal mb-4">Call number: <%= @patron_request.bib_data.holdings_records.first.call_number %></div>
+    <div class="lead fw-normal mb-4">Call number: <%= @patron_request.folio_instance.holdings_records.first.call_number %></div>
 
     <div class="card col-lg-8 shadow-sm">
       <div class="card-header h4 bg-light">This item is bound and shelved with</div>
@@ -60,9 +60,9 @@
   <%= f.hidden_field :aeon_document_type, name: 'DocumentType', value: 'Monograph' %>
   <%= f.hidden_field :aeon_site, name: 'Site', value: f.object.aeon_site %>
   <%= f.hidden_field :aeon_location, name: 'Location', value: f.object.origin_location_code %>
-  <%= f.hidden_field :aeon_title, name: 'ItemTitle', value: f.object.bib_data.title %>
-  <%= f.hidden_field :aeon_author, name: 'ItemAuthor', value: f.object.bib_data.author %>
-  <%= f.hidden_field :aeon_date, name: 'ItemDate', value: f.object.bib_data.pub_date %>
+  <%= f.hidden_field :aeon_title, name: 'ItemTitle', value: f.object.folio_instance.title %>
+  <%= f.hidden_field :aeon_author, name: 'ItemAuthor', value: f.object.folio_instance.author %>
+  <%= f.hidden_field :aeon_date, name: 'ItemDate', value: f.object.folio_instance.pub_date %>
   <%= f.hidden_field :item_url, name: 'ItemInfo1', value: f.object.view_url %>
   <% if f.object.selectable_items.one? || f.object.barcodes&.one? %>
     <% single_item = f.object.selectable_items.first %>

@@ -36,7 +36,7 @@ class PatronAbility
 
     # anyone can create title-level requests
     can :create, PatronRequest do |request|
-      request.bib_data.items.none?
+      request.folio_instance.items.none?
     end
 
     can :read, [PatronRequest], patron_id: folio_patron.id if folio_patron
@@ -54,7 +54,7 @@ class PatronAbility
 
     if folio_patron.id || folio_patron.patron_group_name != 'visitor'
       can :request_pickup, PatronRequest do |request|
-        request.bib_data.items.none?
+        request.folio_instance.items.none?
       end
     end
 

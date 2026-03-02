@@ -6,7 +6,7 @@ FactoryBot.define do
     instance_hrid { 'a12345' }
     origin_location_code { 'SAL3-STACKS' }
     service_point_code { 'GREEN-LOAN' }
-    bib_data { build(:sal3_holding) }
+    folio_instance { build(:sal3_holding) }
     barcodes { ['87654321'] }
     patron { build(:patron) }
   end
@@ -17,7 +17,7 @@ FactoryBot.define do
     origin_location_code { 'ART-LOCKED-LARGE' }
     service_point_code { 'ART' }
     needed_date { Time.zone.today }
-    bib_data { build(:single_mediated_holding) }
+    folio_instance { build(:single_mediated_holding) }
     barcodes { ['12345678'] }
     patron { build(:patron) }
   end
@@ -29,7 +29,7 @@ FactoryBot.define do
     service_point_code { 'EARTH-SCI' }
     item_title { 'Title of MediatedPage 1234' }
     needed_date { Time.zone.today }
-    bib_data { build(:page_mp_holdings) }
+    folio_instance { build(:page_mp_holdings) }
     patron { build(:patron) }
   end
 
@@ -40,7 +40,7 @@ FactoryBot.define do
     service_point_code { 'ART' }
     needed_date { Time.zone.today }
     patron { build(:patron) }
-    bib_data { build(:searchable_holdings) }
+    folio_instance { build(:searchable_holdings) }
   end
 
   factory :folio_api_response, class: 'FolioApiResponse' do

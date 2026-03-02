@@ -127,7 +127,7 @@ RSpec.describe 'Viewing all requests' do
     let(:message) { create(:message) }
 
     before do
-      stub_bib_data_json(build(:single_mediated_holding))
+      stub_folio_instance_json(build(:single_mediated_holding))
     end
 
     it 'displays the broadcast message' do
