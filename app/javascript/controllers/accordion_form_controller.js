@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import { Collapse } from "bootstrap"
+import scrollIntoView from 'scroll-into-view-if-needed';
 
 export default class extends Controller {
   static targets = ['accordion']
@@ -108,11 +109,18 @@ export default class extends Controller {
   // show the next step in the request form. Bootstrap will toggle the other steps closed,
   // and we have to do some bookkeeping with the placeholder elements to hide them (if the non-placeholder step is visible)
   // or show them (if we've stepped back)
-  show(accordionCollapseElement) {
+  show(accordionCollapseElement, accordionTransitionTimeMs = 350) {
     const accordionitem = accordionCollapseElement.closest('.accordion-item');
     accordionitem.classList.remove('d-none');
 
     Collapse.getOrCreateInstance(accordionCollapseElement).show();
+
+    window.setTimeout(() => {
+      const scrollTarget = accordionitem.querySelector('.accordion-header') || accordionitem;
+
+      console.log('scrolling to', scrollTarget);
+      scrollIntoView(scrollTarget, { behavior: 'smooth', block: 'start', scrollMode: 'if-needed' });
+    }, accordionTransitionTimeMs + 20);
 
     this.accordionTargets.slice(this.accordionTargets.indexOf(accordionitem)).forEach(el => {
       el.classList.remove('completed');
