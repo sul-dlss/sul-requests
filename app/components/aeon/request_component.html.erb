@@ -58,7 +58,7 @@
   <div class="card-body d-flex justify-content-between">
     <div class="metadata">
       <h2 class="h3"><%= title %></h2>
-      <div class="d-flex gap-sm-3 flex-sm-row flex-column">
+      <div class="d-flex gap-sm-3 flex-sm-row flex-wrap flex-column">
         <div>
           <%= render Icons::DocumentBox1Component.new %><%= document_type %><% if date %> (<%= date %>)<% end %>
         </div>
