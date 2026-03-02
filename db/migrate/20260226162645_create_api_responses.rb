@@ -5,7 +5,7 @@ class CreateApiResponses < ActiveRecord::Migration[8.1]
       t.string :item_id, index: true
       t.binary :request_data
       t.binary :response_data
-      t.references :patron_request, null: false, foreign_key: true
+      t.references :patron_request, type: :bigint, null: false, foreign_key: true
 
       t.timestamps
     end
