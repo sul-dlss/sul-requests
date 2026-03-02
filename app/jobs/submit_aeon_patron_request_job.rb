@@ -22,7 +22,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   # Once reading room logic for appointments is implemented, this mapping
   # should also contain scheduledDate, appointment id, appointment,
   # and reading room id.
-  def as_aeon_create_request_data(patron_request, item) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+  def as_aeon_create_request_data(patron_request, item) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity
     AeonClient::CreateRequestData.with_defaults.with(
       call_number: item.callnumber,
       document_type: 'Monograph',
@@ -33,7 +33,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
       location: patron_request.origin_location_code,
       web_request_form: 'GenericRequestMonograph',
       username: patron_request.user.aeon.username,
-      item_info1: patron_request.bib_data&.view_url,
+      item_info1: patron_request.view_url,
       special_request: patron_request.aeon_item&.dig(item.id, 'additional_information') || patron_request.aeon_reading_special,
       site: patron_request.aeon_site,
       shipping_option: patron_request.aeon_digitization? ? 'Electronic Delivery' : nil,
