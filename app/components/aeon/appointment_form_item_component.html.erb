@@ -6,13 +6,13 @@
       <i class="bi bi-trash"></i><span class="visually-hidden"> Delete <%= title %></span>
     </button>
   </div>
-  <select name="<%= base_name %>[appointment_id]" class="form-select" aria-label="Select an appointment" required>
-  <option disabled selected></option>
-  <% appointments.each do | appointment | %>
-    <option value="<%= appointment.id %>">
-      <%= appointment.start_time.strftime('%b %d, %Y') %> ● <%= appointment.start_time.strftime('%l:%M %p -') %><%= appointment.stop_time.strftime('%l:%M %p') %>
-      (<%= pluralize(appointment.requests.length, "item") %>)
-    </option>
-  <% end %>
-</select>
+  <select name="<%= base_name %>[appointment_id]" class="form-select appt_dropdown" aria-label="Select an appointment" required>
+    <option disabled selected></option>
+    <% appointments.each do | appointment | %>
+      <option value="<%= appointment.id %>">
+        <%= appointment.start_time.strftime('%b %d, %Y') %> ● <%= appointment.start_time.strftime('%l:%M %p -') %><%= appointment.stop_time.strftime('%l:%M %p') %>
+        (<%= pluralize(appointment.requests.length, "item") %>)
+      </option>
+    <% end %>
+  </select>
 </div>
