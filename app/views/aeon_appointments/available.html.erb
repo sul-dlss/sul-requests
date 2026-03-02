@@ -16,6 +16,7 @@
       <% end %>
     </fieldset>
     <div class="loading-overlay p-2 mb-2" aria-hidden="true">Loading...</div>
+    <div class="alert alert-info select">Select a date and reading room to see available appointments.</div>
   </turbo-frame>
   <turbo-frame id="earliest_appointment">
     <%= @available_appointments.first.start_time.strftime('%A, %b %e, %Y') if @available_appointments %>

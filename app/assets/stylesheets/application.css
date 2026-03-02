@@ -453,6 +453,21 @@ label.btn-close {
   }
 }
 
+
+#available_appointments .alert {
+  display: none;
+}
+
+/* Show alert when turbo-frame src isn't set because form doesn't have all required fields */
+#available_appointments:not([src]), #available_appointments[src=""] {
+  fieldset > *:not(legend) {
+    display: none;
+  }
+  .alert {
+    display: block;
+  }
+}
+
 .appointment-form {
   --bs-border-color: var(--stanford-50-black);
 

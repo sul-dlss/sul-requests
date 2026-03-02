@@ -7,7 +7,7 @@
           <div><%= @appointment.reading_room.name %><%= f.hidden_field :reading_room_id %></div>
         <% else %>
           <%= f.label :reading_room_id, 'Reading room', class: 'd-block fw-semibold redesign-required-label' %>
-          <%= f.select :reading_room_id, @reading_rooms.map { |rr| [rr.name, rr.id] }, { include_blank: true }, data: { action: 'change->appointment#refreshAvailability change->appointment#refreshDateMetadata' }, class: 'bg-white border rounded px-2 py-1' %>
+          <%= f.select :reading_room_id, @reading_rooms.map { |rr| [rr.name, rr.id] }, { include_blank: true }, data: { action: 'change->appointment#resetFields change->appointment#refreshAvailability change->appointment#refreshDateMetadata' }, class: 'bg-white border rounded px-2 py-1' %>
         <% end %>
       </div>
       <div class="alert alert-info">
@@ -50,10 +50,9 @@
             <div class="spinner-border text-primary" role="status">
               <span class="visually-hidden">Loading...</span>
             </div>
-          <% else %>
-            <div class="alert alert-info">Select a date and reading room to see available appointments.</div>
           <% end %>
         </fieldset>
+        <div class="alert alert-info select">Select a date and reading room to see available appointments.</div>
         <div class="loading-overlay p-2 mb-2" aria-hidden="true">Loading...</div>
       </turbo-frame>
     <% end %>
