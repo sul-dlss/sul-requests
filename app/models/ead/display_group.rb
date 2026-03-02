@@ -38,9 +38,17 @@ module Ead
       if c.top_container
         ItemContainer.new(name: c.top_container, contents: group)
       elsif c.contents.any?
-        Subseries.new(title: c.full_title, contents: Ead::DisplayGroup.build_display_groups(c.contents))
+        build_hierarchical_group(c)
       else
         build_leaf_group(c)
+      end
+    end
+
+    def build_hierarchical_group(node)
+      if all_leaves_containerless?(node.contents)
+        ItemContainer.new(name: node.full_title, contents: node.contents)
+      else
+        Subseries.new(title: node.full_title, contents: Ead::DisplayGroup.build_display_groups(node.contents))
       end
     end
 
@@ -50,6 +58,10 @@ module Ead
       else
         ItemWithoutContainer.new(title: item.title)
       end
+    end
+
+    def all_leaves_containerless?(contents)
+      contents.all? { |node| node.is_a?(Ead::Document::Item) && node.top_container.nil? }
     end
   end
 end

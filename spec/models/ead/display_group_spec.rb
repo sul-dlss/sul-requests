@@ -60,6 +60,49 @@ RSpec.describe Ead::DisplayGroup do
       expect(groups.first).to be_a(Ead::DisplayGroup::ItemWithoutContainer)
     end
 
+    it 'creates an ItemContainer when a hierarchical node has only containerless leaf children' do
+      item = build_node(<<~XML)
+        <c01 level="series">
+          <did>
+            <unittitle>Kentucky Lincoln facsimiles</unittitle>
+            <unitdate>1850-1860</unitdate>
+          </did>
+          <c02 level="file">
+            <did><unittitle>Letter 1</unittitle></did>
+          </c02>
+          <c02 level="file">
+            <did><unittitle>Letter 2</unittitle></did>
+          </c02>
+        </c01>
+      XML
+
+      groups = described_class.build_display_groups([item])
+      expect(groups.first).to be_a(Ead::DisplayGroup::ItemContainer)
+      expect(groups.first.name).to eq('Kentucky Lincoln facsimiles, 1850-1860')
+      expect(groups.first.contents.size).to eq(2)
+    end
+
+    it 'creates a Subseries when a hierarchical node has nested hierarchy' do
+      item = build_node(<<~XML)
+        <c01 level="series">
+          <did><unittitle>Papers</unittitle></did>
+          <c02 level="subseries">
+            <did><unittitle>Correspondence</unittitle></did>
+            <c03 level="file">
+              <did>
+                <unittitle>Letter</unittitle>
+                <container type="Box">1</container>
+              </did>
+            </c03>
+          </c02>
+        </c01>
+      XML
+
+      groups = described_class.build_display_groups([item])
+      expect(groups.first).to be_a(Ead::DisplayGroup::Subseries)
+      expect(groups.first.title).to eq('Papers')
+    end
+
     it 'creates an ItemContainer for items with a physical container' do
       item = build_node(<<~XML)
         <c02 level="file">
