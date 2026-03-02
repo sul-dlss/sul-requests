@@ -21,6 +21,8 @@ class AeonAppointmentsController < ApplicationController
     authorize! :create, Aeon::Appointment
 
     @reading_rooms = Aeon::ReadingRoom.all
+    @reading_rooms = @reading_rooms.select { |rr| rr.id == params[:reading_room_id].to_i } if params[:reading_room_id]
+
     @appointment = Aeon::Appointment.new
 
     request.variant = :modal if params[:modal]

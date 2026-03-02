@@ -5,6 +5,9 @@
         <% if @appointment.reading_room_id %>
           <div class="fw-semibold">Reading room:</div>
           <div><%= @appointment.reading_room.name %><%= f.hidden_field :reading_room_id %></div>
+        <% elsif @reading_rooms.one? %>
+          <div class="fw-semibold">Reading room:</div>
+          <div><%= @reading_rooms.first.name %><%= f.hidden_field :reading_room_id, value: @reading_rooms.first.id %></div>
         <% else %>
           <%= f.label :reading_room_id, 'Reading room', class: 'd-block fw-semibold redesign-required-label' %>
           <%= f.select :reading_room_id, @reading_rooms.map { |rr| [rr.name, rr.id] }, { include_blank: true }, data: { action: 'change->appointment#resetFields change->appointment#refreshAvailability change->appointment#refreshDateMetadata' }, class: 'bg-white border rounded px-2 py-1' %>
