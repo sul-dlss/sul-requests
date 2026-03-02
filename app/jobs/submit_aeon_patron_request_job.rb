@@ -29,7 +29,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
       format: nil,
       item_author: patron_request.bib_data&.author,
       item_date: patron_request.bib_data&.pub_date,
-      item_title: patron_request.bib_data&.title,
+      item_title: patron_request.item_title,
       location: patron_request.origin_location_code,
       web_request_form: 'GenericRequestMonograph',
       username: patron_request.user.aeon.username,
