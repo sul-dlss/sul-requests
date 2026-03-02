@@ -11,7 +11,7 @@ class FeedbackFormsController < ApplicationController
 
     respond_to do |format|
       format.json { render json: feedback_flash_messages }
-      format.html { redirect_to params[:url], flash: feedback_flash_messages }
+      format.html { redirect_to params[:url] || root_url, flash: feedback_flash_messages }
     end
   end
 
