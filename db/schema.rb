@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_26_162645) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_27_162645) do
   create_table "admin_comments", force: :cascade do |t|
     t.string "comment"
     t.string "commenter"
@@ -60,22 +60,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_26_162645) do
     t.datetime "created_at", null: false
     t.text "data"
     t.string "display_type"
-    t.string "folio_request_id"
     t.string "fulfillment_type"
     t.string "instance_hrid"
-    t.string "mediation_status"
     t.date "needed_date"
     t.string "origin_location_code"
     t.string "patron_email"
     t.string "patron_id"
     t.string "request_type"
     t.string "service_point_code"
-    t.string "status"
     t.datetime "updated_at", null: false
     t.index ["display_type"], name: "index_patron_requests_on_display_type"
-    t.index ["folio_request_id"], name: "index_patron_requests_on_folio_request_id"
     t.index ["instance_hrid"], name: "index_patron_requests_on_instance_hrid"
-    t.index ["mediation_status"], name: "index_patron_requests_on_mediation_status"
     t.index ["needed_date"], name: "index_patron_requests_on_needed_date"
     t.index ["origin_location_code"], name: "index_patron_requests_on_origin_location_code"
     t.index ["patron_id"], name: "index_patron_requests_on_patron_id"
