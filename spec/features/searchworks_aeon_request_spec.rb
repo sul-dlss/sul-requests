@@ -71,6 +71,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
       expect(page).to have_content 'We received your scan request!'
 
+      perform_enqueued_jobs
       expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
                                                                         call_number: 'ABC 123'
                                                                       ))
@@ -94,6 +95,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
       expect(page).to have_content 'We received your request!'
 
+      perform_enqueued_jobs
       expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
                                                                         call_number: 'ABC 123'
                                                                       ))
@@ -123,6 +125,8 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       click_button 'Submit request'
 
       expect(page).to have_content 'We received your scan request!'
+
+      perform_enqueued_jobs
       expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
                                                                         call_number: 'ABC 123'
                                                                       ))

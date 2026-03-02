@@ -252,10 +252,6 @@ class PatronRequest < ApplicationRecord
     SubmitPatronRequestJob.perform_later(self)
   end
 
-  def submit_aeon_request
-    SubmitAeonPatronRequestJob.perform_now(self)
-  end
-
   # @return [Folio::Instance]
   def bib_data
     @bib_data ||= begin
