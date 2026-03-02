@@ -1,9 +1,16 @@
 <div class="row p-3 gap-3 flex-column flex-md-row">
-  <div>
-    <div>
-      <span class="fw-bold"><%= f.object.aeon_reading_room_name %></span>
+  <div class="d-flex flex-row justify-content-between align-items-start gap-2">
+    <div class="d-flex flex-column mb-2">
+      <span class="fw-semibold">
+        <i class="bi bi-geo-alt-fill"></i>
+        <%= f.object.aeon_reading_room_name %>
+      </span>
     </div>
+    <%= link_to new_aeon_appointment_path(reading_room_id: f.object.aeon_reading_room.id ), class: 'btn btn-primary', data: { action: 'modal#open' } do %>
+      <i class="bi bi-calendar-plus me-1"></i>Create new appointment
+    <% end %>
   </div>
+
 
   <% appointments = current_user.aeon.appointments.select { |appt| appt.reading_room.sites.include?(f.object.aeon_site) } %>
 
