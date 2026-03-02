@@ -81,14 +81,21 @@
         <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', submit: true, submit_text: 'Submit to Aeon', cancel: false, classes: [('d-none' if  f.object.request_type.blank? || f.object.request_type == 'scan')], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'pickup' }) do |c| %>
           <% c.with_title.with_content('Reading room use') %>
           <% c.with_body do %>
-            <div class="d-flex flex-column mb-2">
-              <span class="fw-semibold">
-                <i class="bi bi-geo-alt-fill"></i>
-                <%= @ead_request.reading_room.name %>
-              </span>
-              <span class="mb-2">
-                Hours: <%= @ead_request.reading_room.human_readable_hours %>
-              </span>
+            <div class="d-flex flex-row justify-content-between align-items-start gap-2">
+              <div class="d-flex flex-column mb-2">
+                <span class="fw-semibold">
+                  <i class="bi bi-geo-alt-fill"></i>
+                  <%= @ead_request.reading_room.name %>
+                </span>
+                <span class="mb-2">
+                  Hours: <%= @ead_request.reading_room.human_readable_hours %>
+                </span>
+              </div>
+              <% if @ead.series_and_subseries&.many? %>
+                <a class="btn btn-primary" data-action="modal#open" href="/aeon_appointments/new">
+                  <i class="bi bi-calendar-plus me-1"></i>Create new appointment
+                </a>
+              <% end %>
             </div>
 
             <div class="alert alert-warning alert-dismissible shadow-sm d-flex align-items-center">

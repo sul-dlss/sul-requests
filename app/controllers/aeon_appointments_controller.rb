@@ -54,7 +54,7 @@ class AeonAppointmentsController < ApplicationController
                   start_time + create_params[:duration].to_i.seconds
                 end
 
-    AeonClient.new.create_appointment(
+    @new_appointment = AeonClient.new.create_appointment(
       start_time: start_time,
       stop_time: stop_time,
       name: create_params[:name],
@@ -62,7 +62,10 @@ class AeonAppointmentsController < ApplicationController
       username: current_user.aeon.username
     )
 
-    redirect_to aeon_appointments_path, notice: 'Appointment created successfully'
+    respond_to do |format|
+      format.html { redirect_to aeon_appointments_path, notice: 'Appointment created successfully' }
+      format.turbo_stream
+    end
   end
 
   def update # rubocop:disable Metrics/AbcSize
