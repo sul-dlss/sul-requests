@@ -5,26 +5,21 @@
 class ArchivesRequestsController < ApplicationController
   include AeonController
 
+  before_action :load_ead, only: [:new, :create]
   rescue_from EadClient::Error, with: :handle_ead_client_error
+  before_action :authorize_new_request, only: [:new]
 
   def show
     @aeon_requests = Aeon::RequestGrouping.new(current_user.aeon.requests.select { |x| x.reference_number == "UUID:#{params[:id]}" })
   end
 
   def new
-    @ead = EadClient.fetch(ead_url_param)
     @ead_request = Ead::Request.new(user: current_user, ead: @ead, params: (params[:ead_request] ? new_params : {}))
-    return if can?(:new, Aeon::Request)
-
-    render 'login'
   end
 
   # This is the action triggered by the form submission to create an Aeon request.
   def create # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     authorize! :create, Aeon::Request
-
-    # Fetch EAD data to get the actual collection information
-    @ead = EadClient.fetch(new_params[:ead_url])
 
     @request = Ead::Request.new(user: current_user,
                                 ead: @ead,
@@ -49,6 +44,12 @@ class ArchivesRequestsController < ApplicationController
 
   private
 
+  def authorize_new_request
+    return render 'login' unless current_user.email_address
+
+    authorize! :new, Aeon::Request
+  end
+
   def new_params
     item_keys = params.dig(:ead_request, :items)&.keys || []
     item_values = [:series, :for_publication, :subseries, :requested_pages, :additional_information, :appointment_id]
@@ -58,7 +59,12 @@ class ArchivesRequestsController < ApplicationController
     end
   end
 
+  def load_ead
+    @ead = EadClient.fetch(ead_url_param)
+  end
+
   def ead_url_param
+    return params.dig(:ead_request, :ead_url) if params[:ead_request]
     # Handle both 'value' and 'Value' params for compatibility (Aeon currently accepts Value)
     return params.require(:Value) if params[:Value].present?
 
