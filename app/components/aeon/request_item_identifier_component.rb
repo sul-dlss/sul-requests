@@ -5,6 +5,8 @@ module Aeon
   class RequestItemIdentifierComponent < ViewComponent::Base
     attr_reader :request
 
+    delegate :ead?, :volume, to: :request
+
     def initialize(request:)
       @request = request
     end
@@ -15,6 +17,10 @@ module Aeon
       return call_number unless prefix.present? && call_number&.start_with?(prefix)
 
       call_number.delete_prefix(prefix)
+    end
+
+    def container
+      volume if ead? && volume.present?
     end
 
     def render?

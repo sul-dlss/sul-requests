@@ -1,0 +1,44 @@
+<% if requests.one? && !requests.first.multi_item_selector? %>
+  <%= render Aeon::RequestComponent.new(request: requests.first) %>
+<% else %>
+<div class="request-group request card mb-4">
+  <div class="card-header fw-semibold p-3 ps-2 d-flex gap-1 flex-row align-items-md-center justify-content-between">
+    <div class="d-flex flex-wrap gap-1">
+      <span class="rounded-pill <%= status_class %>">
+        <%= status_text %>
+      </span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="metadata">
+      <h2 class="h3"><%= title %></h2>
+      <div class="d-flex gap-sm-3 flex-sm-row flex-wrap flex-column">
+        <div>
+          <%= render Icons::DocumentBox1Component.new %><%= document_type %><% unless date.blank? %> (<%= date %>)<% end %>
+        </div>
+        <% if ead_number %>
+          <div>Call number: <%= ead_number %></div>
+        <% end %>
+        <%= render Aeon::RequestLinkComponent.new(request: requests.first) %>
+      </div>
+      <ul class="list-group list-group-flush">
+        <% requests.each do |request| %>
+          <li id="<%= dom_id(request) %>" class="list-group-item px-0">
+            <div class="d-flex flex-row align-items-center justify-content-between">
+              <div class="d-flex gap-3">
+                <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
+                <%= render Aeon::RequestItemDetailComponent.new(request:) %>
+              </div>
+              <%= render Aeon::RequestActionsComponent.new(request:) %>
+            </div>
+            <div class="pt-2 fs-14 d-flex gap-sm-3 flex-sm-row flex-column">
+              <div>Request #<%= request.transaction_number %></div>
+              <div>Date added/modified: <%= request.transaction_date.strftime("%B %-d, %Y %I:%M %p") %></div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>
+<% end %>

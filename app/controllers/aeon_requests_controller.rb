@@ -13,7 +13,8 @@ class AeonRequestsController < ApplicationController
   def drafts
     authorize! :read, Aeon::Request
 
-    @aeon_requests = sort_aeon_requests(filter_aeon_requests(current_user&.aeon&.draft_requests || []))
+    requests = sort_aeon_requests(filter_aeon_requests(current_user&.aeon&.draft_requests || []))
+    @aeon_request_groups = Aeon::RequestGrouping.from_requests(requests)
   end
 
   def cancelled
