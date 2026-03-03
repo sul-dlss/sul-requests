@@ -8,6 +8,7 @@ class AeonAppointmentsController < ApplicationController
 
   before_action :load_appointments, except: [:available]
   before_action :load_appointment, only: [:edit, :update, :destroy]
+  before_action :load_reading_rooms, only: [:new, :available]
 
   def index
     authorize! :read, Aeon::Appointment
@@ -20,9 +21,6 @@ class AeonAppointmentsController < ApplicationController
   def new
     authorize! :create, Aeon::Appointment
 
-    @reading_rooms = Aeon::ReadingRoom.all
-    @reading_rooms = @reading_rooms.select { |rr| rr.id == params[:reading_room_id].to_i } if params[:reading_room_id]
-
     @appointment = Aeon::Appointment.new
 
     request.variant = :modal if params[:modal]
@@ -31,6 +29,7 @@ class AeonAppointmentsController < ApplicationController
   def available
     @selected_time = params[:selected]
     @date = Date.parse(params.expect(:date))
+
     @available_appointments = AeonClient.new.available_appointments(reading_room_id: params.expect(:reading_room_id),
                                                                     date: @date, include_next_available: true)
     @appointment_lengths = @available_appointments.map(&:maximum_appointment_length)
@@ -92,6 +91,14 @@ class AeonAppointmentsController < ApplicationController
   end
 
   private
+
+  def load_reading_rooms
+    @reading_rooms = Aeon::ReadingRoom.all
+
+    return unless params[:reading_room_id]
+
+    @reading_room = @reading_rooms.find { |rr| rr.id == params[:reading_room_id].to_i }
+  end
 
   def load_appointments
     @appointments = current_user&.aeon&.appointments || []

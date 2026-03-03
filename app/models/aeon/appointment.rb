@@ -28,7 +28,6 @@ module Aeon
                    appointment_status: nil, reading_room: nil, reading_room_id: nil, creation_date: nil)
       @id = id
       @username = username
-      @reading_room_id = reading_room_id
       @start_time = start_time
       @stop_time = stop_time
       @name = name
