@@ -80,10 +80,6 @@ class PatronRequest < ApplicationRecord
   end
 
   # @!group Attribute methods
-  def barcode=(barcode)
-    self.barcodes = [barcode]
-  end
-
   # Remove any empty strings from the barcodes array
   def barcodes=(arr)
     super(arr.compact_blank)
