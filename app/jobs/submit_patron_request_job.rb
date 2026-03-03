@@ -9,7 +9,7 @@ class SubmitPatronRequestJob < ApplicationJob
   def perform(patron_request)
     return SubmitAeonPatronRequestJob.perform_now(patron_request) if Settings.features.requests_redesign && patron_request.aeon_page?
     return convert_to_mediated_page(patron_request) if patron_request.mediateable?
-    return place_title_hold(patron_request) if patron_request.barcodes.blank?
+    return place_title_hold(patron_request) if patron_request.selected_items.blank?
     return perform_scan_request(patron_request) if patron_request.scan?
 
     ilb_items, folio_items = patron_request.selected_items.partition do |item|
