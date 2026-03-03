@@ -34,8 +34,8 @@ RSpec.describe Ability do
       let(:request) { PatronRequest.new(instance_hrid: 'a1234', origin_location_code: 'LAW-STACKS1') }
 
       before do
-        allow(request).to receive(:bib_data).and_return(build(:single_holding,
-                                                              items: [build(:item, effective_location: build(:law_location))]))
+        allow(request).to receive(:folio_instance).and_return(build(:single_holding,
+                                                                    items: [build(:item, effective_location: build(:law_location))]))
       end
 
       it { is_expected.not_to be_able_to(:prepare, request) }
@@ -55,8 +55,8 @@ RSpec.describe Ability do
 
       before do
         allow(user).to receive(:patron).and_return(patron)
-        allow(request).to receive(:bib_data).and_return(build(:single_holding,
-                                                              items: [build(:item, effective_location: build(:law_location))]))
+        allow(request).to receive(:folio_instance).and_return(build(:single_holding,
+                                                                    items: [build(:item, effective_location: build(:law_location))]))
       end
 
       it { is_expected.to be_able_to(:new, request) }

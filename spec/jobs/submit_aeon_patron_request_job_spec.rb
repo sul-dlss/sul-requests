@@ -11,12 +11,12 @@ RSpec.describe SubmitAeonPatronRequestJob do
     PatronRequest.create!(request_type:, instance_hrid: 'a1234', patron:, barcodes: ['12345678'],
                           origin_location_code: 'SPEC-STACKS', data:, user: build(:sso_user))
   end
-  let(:bib_data) { build(:special_collections_single_holding) }
+  let(:folio_instance) { build(:special_collections_single_holding) }
   let(:stub_aeon_client) { instance_double(AeonClient, find_user: stub_aeon_user, create_request: {}) }
   let(:stub_aeon_user) { instance_double(Aeon::User, username: 'aeon_user') }
 
   before do
-    stub_bib_data_json(bib_data)
+    stub_folio_instance_json(folio_instance)
     allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
   end
 
@@ -25,7 +25,7 @@ RSpec.describe SubmitAeonPatronRequestJob do
     let(:data) do
       {
         barcodes: ['12345678'], aeon_item: {
-          bib_data.items.first.id => { requested_pages: '23', for_publication: 'no', additional_information: 'info' }
+          folio_instance.items.first.id => { requested_pages: '23', for_publication: 'no', additional_information: 'info' }
         }
       }
     end
@@ -64,12 +64,12 @@ RSpec.describe SubmitAeonPatronRequestJob do
     end
 
     context 'with single item digitization request' do
-      let(:bib_data) { build(:special_collections_single_holding) }
+      let(:folio_instance) { build(:special_collections_single_holding) }
       let(:request_type) { 'scan' }
       let(:data) do
         {
           barcodes: ['12345678'], aeon_item: {
-            bib_data.items.first.id => { requested_pages: '23', for_publication: 'no', additional_information: 'info' }
+            folio_instance.items.first.id => { requested_pages: '23', for_publication: 'no', additional_information: 'info' }
           }
         }
       end
@@ -87,7 +87,7 @@ RSpec.describe SubmitAeonPatronRequestJob do
     end
 
     context 'with single item reading room request' do
-      let(:bib_data) { build(:special_collections_single_holding) }
+      let(:folio_instance) { build(:special_collections_single_holding) }
       let(:request_type) { 'pickup' }
       let(:data) do
         {
@@ -106,13 +106,13 @@ RSpec.describe SubmitAeonPatronRequestJob do
     end
 
     context 'with multi item digitization request' do
-      let(:bib_data) { build(:special_collections_holdings) }
+      let(:folio_instance) { build(:special_collections_holdings) }
       let(:request_type) { 'scan' }
       let(:data) do
         {
           barcodes: %w[12345678 87654321], aeon_item: {
-            bib_data.items.first.id => { requested_pages: '23', for_publication: 'No', additional_information: 'info' },
-            bib_data.items.last.id => { requested_pages: '32', for_publication: 'Yes', additional_information: 'more info' }
+            folio_instance.items.first.id => { requested_pages: '23', for_publication: 'No', additional_information: 'info' },
+            folio_instance.items.last.id => { requested_pages: '32', for_publication: 'Yes', additional_information: 'more info' }
           }
         }
       end

@@ -4,11 +4,11 @@ require 'rails_helper'
 
 RSpec.describe 'Creating a request', :js do
   let(:user) { create(:sso_user) }
-  let(:bib_data) { build(:single_holding) }
+  let(:folio_instance) { build(:single_holding) }
   let(:patron) { build(:patron) }
 
   before do
-    stub_bib_data_json(bib_data)
+    stub_folio_instance_json(folio_instance)
     # this line prevents ArgumentError: SMTP To address may not be blank
     ActionMailer::Base.perform_deliveries = false
 
@@ -81,11 +81,11 @@ RSpec.describe 'Creating a request', :js do
         expect(page).to have_content 'We received your pickup request'
       end
       expect(folio_client).to have_received(:create_circulation_request).with(have_attributes(requester_id: patron.id,
-                                                                                              instance_id: bib_data.id))
+                                                                                              instance_id: folio_instance.id))
     end
 
     context 'for a bound-with item' do
-      let(:bib_data) { build(:bound_with_child_holding) }
+      let(:folio_instance) { build(:bound_with_child_holding) }
 
       it 'submits the request for the bound-with parent instance' do
         folio_client = FolioClient.new
@@ -106,7 +106,7 @@ RSpec.describe 'Creating a request', :js do
     end
 
     context 'for a scan' do
-      let(:bib_data) { build(:scannable_holdings) }
+      let(:folio_instance) { build(:scannable_holdings) }
       let(:user) { create(:scan_eligible_user) }
 
       before do
@@ -140,7 +140,7 @@ RSpec.describe 'Creating a request', :js do
     end
 
     context 'for a mediated page' do
-      let(:bib_data) { build(:single_mediated_holding) }
+      let(:folio_instance) { build(:single_mediated_holding) }
 
       before do
         allow_any_instance_of(PagingSchedule).to receive(:valid?).with(anything).and_return(true)
@@ -161,7 +161,7 @@ RSpec.describe 'Creating a request', :js do
     end
 
     context 'for a mediated page with an item selector' do
-      let(:bib_data) { build(:searchable_holdings) }
+      let(:folio_instance) { build(:searchable_holdings) }
       let(:today) { Time.zone.today }
 
       before do
@@ -191,7 +191,7 @@ RSpec.describe 'Creating a request', :js do
     end
 
     context 'for an item that can be paged or scanned' do
-      let(:bib_data) { build(:scannable_holdings) }
+      let(:folio_instance) { build(:scannable_holdings) }
       let(:user) { create(:scan_eligible_user) }
 
       before do
@@ -289,7 +289,7 @@ RSpec.describe 'Creating a request', :js do
     end
 
     context 'for an item with temporary location' do
-      let(:bib_data) { build(:temporary_location_holdings) }
+      let(:folio_instance) { build(:temporary_location_holdings) }
 
       it 'allows user to request an item with needed by date' do
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
@@ -357,7 +357,7 @@ RSpec.describe 'Creating a request', :js do
     end
 
     context 'when circ rules prevent any request on the item for the patron' do
-      let(:bib_data) { build(:single_holding, items: [build(:item, effective_location: build(:law_location))]) }
+      let(:folio_instance) { build(:single_holding, items: [build(:item, effective_location: build(:law_location))]) }
 
       it 'goes to a dead-end page' do
         logout
@@ -389,7 +389,7 @@ RSpec.describe 'Creating a request', :js do
 
   context 'with a name+email user' do
     context 'for an item that a purchased account cannot page' do
-      let(:bib_data) { build(:single_holding, items: [build(:item, effective_location: build(:law_location))]) }
+      let(:folio_instance) { build(:single_holding, items: [build(:item, effective_location: build(:law_location))]) }
 
       it 'shows the user a warning message' do
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'LAW-STACKS1')
@@ -417,7 +417,7 @@ RSpec.describe 'Creating a request', :js do
   end
 
   context 'with an aeon request' do
-    let(:bib_data) { build(:sal3_as_holding) }
+    let(:folio_instance) { build(:sal3_as_holding) }
 
     it 'sends the user over to Aeon' do
       visit new_patron_request_path(instance_hrid: 'a12345', origin_location_code: 'SAL3-PAGE-AS')
@@ -428,7 +428,7 @@ RSpec.describe 'Creating a request', :js do
   end
 
   context 'with multiple items to pick from' do
-    let(:bib_data) { build(:checkedout_holdings) }
+    let(:folio_instance) { build(:checkedout_holdings) }
 
     let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true, ldap_attributes:) }
     let(:ldap_attributes) { {} }
@@ -508,7 +508,7 @@ RSpec.describe 'Creating a request', :js do
     end
 
     context 'for a scan-eligible item' do
-      let(:bib_data) { build(:scannable_holdings) }
+      let(:folio_instance) { build(:scannable_holdings) }
       let(:user) { create(:scan_eligible_user) }
 
       before do

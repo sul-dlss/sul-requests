@@ -16,7 +16,7 @@ class PatronRequest < ApplicationRecord
     :aeon_reading_special, :aeon_item, :aeon_terms
   ], coder: JSON
 
-  delegate :instance_id, :finding_aid, :finding_aid?, to: :bib_data
+  delegate :instance_id, :finding_aid, :finding_aid?, to: :folio_instance
 
   validates :instance_hrid, presence: true
   validates :request_type, inclusion: { in: %w[scan pickup mediated mediated/approved mediated/done] }
@@ -46,12 +46,12 @@ class PatronRequest < ApplicationRecord
   }
   has_many :admin_comments, as: :request, dependent: :delete_all
 
-  attr_writer :bib_data
+  attr_writer :folio_instance
 
   before_create do
     self.request_type = 'mediated' if mediateable? && !request_type.start_with?('mediated') && !aeon_page?
     self.display_type = calculate_display_type
-    self.item_title = bib_data&.title
+    self.item_title = folio_instance&.title
     self.estimated_delivery = earliest_delivery_estimate(scan: scan?)&.dig('display_date')
   end
 
@@ -91,7 +91,7 @@ class PatronRequest < ApplicationRecord
 
   # Evaluate if this is a title only request
   def title_only?
-    bib_data.items.empty?
+    folio_instance.items.empty?
   end
 
   # Clean up memoized variables that depend on the service point code
@@ -151,7 +151,9 @@ class PatronRequest < ApplicationRecord
   def folio_location
     @folio_location ||= begin
       l = Folio::Types.locations.find_by(code: origin_location_code)
-      l || (bib_data.items.find { |i| i.effective_location.code == origin_location_code } || bib_data.items.first)&.effective_location
+      l || (folio_instance.items.find do |i|
+        i.effective_location.code == origin_location_code
+      end || folio_instance.items.first)&.effective_location
     end
   end
 
@@ -253,8 +255,8 @@ class PatronRequest < ApplicationRecord
   end
 
   # @return [Folio::Instance]
-  def bib_data
-    @bib_data ||= begin
+  def folio_instance
+    @folio_instance ||= begin
       # Append "a" to the item_id unless it already starts with a letter (e.g. "in00000063826")
       hrid = instance_hrid.start_with?(/\d/) ? "a#{instance_hrid}" : instance_hrid
       Folio::Instance.fetch(hrid)
@@ -263,7 +265,7 @@ class PatronRequest < ApplicationRecord
 
   # @return [String] the title of the item
   def item_title
-    super || bib_data&.title
+    super || folio_instance&.title
   end
 
   def view_url
@@ -274,7 +276,7 @@ class PatronRequest < ApplicationRecord
 
   # @return [Array<Folio::Item>] the items in the origin location
   def items_in_location
-    @items_in_location ||= bib_data.items.select do |item|
+    @items_in_location ||= folio_instance.items.select do |item|
       if item.effective_location.details['searchworksTreatTemporaryLocationAsPermanentLocation'] == 'true'
         item.effective_location.code.in? salient_folio_locations.map(&:code)
       else
@@ -486,12 +488,12 @@ class PatronRequest < ApplicationRecord
       AcceptAlternateEdition: false,
       Username: patron.username,
       UserInfo1: patron.blocked? ? 'Blocked' : nil,
-      ISSN: bib_data.isbn,
-      LoanPublisher: bib_data.publisher,
-      LoanPlace: bib_data.pub_place,
-      LoanDate: bib_data.pub_date,
-      LoanEdition: bib_data.edition,
-      ESPNumber: bib_data.oclcn,
+      ISSN: folio_instance.isbn,
+      LoanPublisher: folio_instance.publisher,
+      LoanPlace: folio_instance.pub_place,
+      LoanDate: folio_instance.pub_date,
+      LoanEdition: folio_instance.edition,
+      ESPNumber: folio_instance.oclcn,
       CitedIn: view_url,
       CallNumber: item&.callnumber,
       ILLNumber: item&.barcode,
@@ -503,7 +505,7 @@ class PatronRequest < ApplicationRecord
       return default_values.merge({
                                     RequestType: 'Article',
                                     SpecIns: 'Scan and Deliver Request',
-                                    PhotoJournalTitle: bib_data.title,
+                                    PhotoJournalTitle: folio_instance.title,
                                     PhotoArticleAuthor: scan_authors,
                                     Location: origin_library_code,
                                     ReferenceNumber: origin_location_code,
@@ -515,8 +517,8 @@ class PatronRequest < ApplicationRecord
     default_values.merge({
                            RequestType: 'Loan',
                            SpecIns: 'SearchWorks Request',
-                           LoanTitle: bib_data.title,
-                           LoanAuthor: bib_data.author,
+                           LoanTitle: folio_instance.title,
+                           LoanAuthor: folio_instance.author,
                            NotWantedAfter: (needed_date || 1.year.from_now).strftime('%Y-%m-%d'),
                            ItemInfo4: destination_library_code
                          })

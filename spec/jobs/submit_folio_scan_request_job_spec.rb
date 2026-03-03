@@ -6,14 +6,14 @@ RSpec.describe SubmitFolioScanRequestJob do
   let(:patron) do
     build(:patron)
   end
-  let(:bib_data) { build(:single_holding) }
+  let(:folio_instance) { build(:single_holding) }
   let(:stub_client) { instance_double(FolioClient).as_null_object }
   let(:pseudopatron) do
     instance_double(Folio::Patron, id: 'GRE-SCANDELIVER-UUID')
   end
 
   before do
-    stub_bib_data_json(bib_data)
+    stub_folio_instance_json(folio_instance)
     allow(FolioClient).to receive(:new).and_return(stub_client)
     allow(stub_client).to receive(:create_circulation_request).and_return({})
 
@@ -26,10 +26,10 @@ RSpec.describe SubmitFolioScanRequestJob do
                            origin_location_code: 'GRE-STACKS', scan_title: 'Test Scan')
     end
 
-    let(:bib_data) { build(:green_holdings) }
+    let(:folio_instance) { build(:green_holdings) }
 
     it 'pages items in FOLIO' do
-      described_class.perform_now(request, bib_data.items[0].id)
+      described_class.perform_now(request, folio_instance.items[0].id)
 
       expect(stub_client).to have_received(:create_circulation_request).with(
         have_attributes(request_type: 'Page',

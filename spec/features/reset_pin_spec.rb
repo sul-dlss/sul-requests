@@ -13,11 +13,11 @@ RSpec.describe 'Reset PIN workflow' do
       pin_reset_token: 'foo'
     )
   end
-  let(:bib_data) { build(:single_holding) }
+  let(:folio_instance) { build(:single_holding) }
   let(:request_path) { new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS') }
 
   before do
-    stub_bib_data_json(bib_data)
+    stub_folio_instance_json(folio_instance)
     allow(FolioClient).to receive(:new).and_return(mock_client)
   end
 

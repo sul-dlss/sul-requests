@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Creating an Aeon patron request', :js do
   let(:user) { create(:sso_user) }
   let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true) }
-  let(:bib_data) { :special_collections_single_holding }
+  let(:folio_instance) { :special_collections_single_holding }
   let(:patron) do
     instance_double(Folio::Patron, id: user.patron_key, username: 'auser', display_name: 'A User', exists?: true, email: nil,
                                    patron_description: 'faculty',
@@ -17,7 +17,7 @@ RSpec.describe 'Creating an Aeon patron request', :js do
   before do
     allow(Folio::Patron).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
     login_as(current_user)
-    stub_bib_data_json(build(bib_data))
+    stub_folio_instance_json(build(folio_instance))
   end
 
   describe 'reading room info' do
@@ -34,7 +34,7 @@ RSpec.describe 'Creating an Aeon patron request', :js do
     end
 
     context 'when the item is in SAL3 but will be paged to a reading room' do
-      let(:bib_data) { :sal3_as_holding }
+      let(:folio_instance) { :sal3_as_holding }
 
       it 'provides a link to the appropriate reading room' do
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-PAGE-AS')
@@ -43,7 +43,7 @@ RSpec.describe 'Creating an Aeon patron request', :js do
     end
 
     context 'when there are multiple items' do
-      let(:bib_data) { :special_collections_holdings }
+      let(:folio_instance) { :special_collections_holdings }
 
       it 'identifies the reading room where the items will be prepared' do
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SPEC-STACKS')
@@ -121,7 +121,7 @@ RSpec.describe 'Creating an Aeon patron request', :js do
     end
 
     describe 'with multiple holdings' do
-      let(:bib_data) { :special_collections_holdings }
+      let(:folio_instance) { :special_collections_holdings }
 
       describe 'item selector' do
         describe 'with no items selected' do
@@ -163,7 +163,7 @@ RSpec.describe 'Creating an Aeon patron request', :js do
     end
 
     describe 'for an item with a finding aid' do
-      let(:bib_data) { :special_collections_finding_aid_holdings }
+      let(:folio_instance) { :special_collections_finding_aid_holdings }
 
       it 'provides instructions for the user to complete the request' do
         expect(page).to have_content 'Review the Collection Guide in external archival repository'

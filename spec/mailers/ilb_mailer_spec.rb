@@ -11,10 +11,10 @@ RSpec.describe IlbMailer do
   let(:patron) do
     build(:patron, personal: { firstName: 'Test', lastName: 'User', email: 'some-eligible-user@stanford.edu' }.deep_stringify_keys)
   end
-  let(:bib_data) { build(:sal3_holdings) }
+  let(:folio_instance) { build(:sal3_holdings) }
 
   before do
-    allow(Folio::Instance).to receive(:fetch).with(patron_request.instance_hrid).and_return(bib_data)
+    allow(Folio::Instance).to receive(:fetch).with(patron_request.instance_hrid).and_return(folio_instance)
     allow(patron_request).to receive(:to_model).and_return(patron_request)
   end
 
