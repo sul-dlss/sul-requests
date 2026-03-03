@@ -29,7 +29,7 @@ module Ead
     end
 
     def appointments
-      @appointments ||= user.aeon.appointments.select { |appt| appt.reading_room.sites.include?(site) }
+      @appointments ||= user.aeon.appointments.select { |appt| appt.reading_room.sites.include?(aeon_site) }
     end
 
     def create_aeon_requests!
@@ -41,15 +41,15 @@ module Ead
       end
     end
 
-    def site
+    def aeon_site
       return nil unless repository
 
       # TODO: Fallback to SPECUA? Other logic?
       REPOSITORY_TO_SITE_CODE[repository] || 'SPECUA'
     end
 
-    def reading_room
-      @reading_room ||= aeon_client.reading_rooms.find { |rr| rr.sites.include?(site) }
+    def aeon_reading_room
+      @aeon_reading_room ||= aeon_client.reading_rooms.find { |rr| rr.sites.include?(aeon_site) }
     end
 
     def request_type
@@ -75,7 +75,7 @@ module Ead
         item_volume: volume_params['subseries'],
         reference_number: reference_number,
         shipping_option: params[:request_type] == 'scan' ? 'Electronic Delivery' : nil,
-        site: site,
+        site: aeon_site,
         special_request: volume_params['additional_information'],
         username: user.email_address
       )
