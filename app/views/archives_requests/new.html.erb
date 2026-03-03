@@ -5,32 +5,32 @@
     <div class="col-8">
       <div class="card mb-4 bg-light rounded-0 border-0">
         <div class="card-body">
-          <h2 class="fs-4"><%= @ead.title || 'Not available' %></h2>
+          <h2 class="fs-4"><%= @ead_request.ead_doc.title || 'Not available' %></h2>
           <div class="d-flex gap-md-3 flex-md-row flex-column">
             <span>
               <%= render Icons::DocumentBox1Component.new classes: 'me-1 align-text-bottom' %>
-              Archive/Manuscript (<%= @ead.date %>)
+              Archive/Manuscript (<%= @ead_request.ead_doc.date %>)
             </span>
-            <span>Call number: <%= @ead.identifier %></span>
+            <span>Call number: <%= @ead_request.ead_doc.identifier %></span>
             <span>
-              <%= link_to @ead.collection_permalink, class: 'su-underline' do %>
+              <%= link_to @ead_request.ead_doc.collection_permalink, class: 'su-underline' do %>
                 View in Archival Collections at Stanford <i class="bi bi-arrow-up-right"></i>
               <% end %>
             </span>
           </div>
-          <% if @ead.creator %>
+          <% if @ead_request.ead_doc.creator %>
             <div class="mt-2">
-              <%= @ead.creator %>
+              <%= @ead_request.ead_doc.creator %>
             </div>
           <% end %>
-          <% if @ead.extent %>
+          <% if @ead_request.ead_doc.extent %>
             <hr class="my-2">
-            <div><b class="fw-semibold">Extent: </b><%= @ead.extent %></div>
+            <div><b class="fw-semibold">Extent: </b><%= @ead_request.ead_doc.extent %></div>
           <% end %>
         </div>
       </div>
       <%= form_with id: 'archives-request', model: @ead_request, url: archives_requests_path, class: 'accordion', html: { autocomplete: "off" }, data: { controller: 'accordion-form item-selector archives-request', action: 'item-selector:changed->archives-request#onSelectedItemsValueChanged item-selector:changed->accordion-form#typeValueChanged item-selector:changed->accordion-form#reenableNextButtons', turbo: false } do |f| %>
-        <%= f.hidden_field :ead_url, value: @ead_request.url %>
+        <%= f.hidden_field :ead_url %>
         <%= render AccordionStepComponent.new(id: 'request_type', step_index: step_enum.next, form_id: f.id) do |component| %>
           <% component.with_title.with_content('Request type') %>
           <% component.with_body do %>
@@ -56,7 +56,7 @@
           <% end %>
         <% end %>
 
-        <% if @ead.series_and_subseries.any? %>
+        <% if @ead_request.ead_doc.series_and_subseries.any? %>
           <%= render AccordionStepComponent.new(id: 'items', step_index: step_enum.next, form_id: f.id) do |component| %>
             <% component.with_title.with_content('Items') %>
             <% component.with_body do %>
@@ -68,7 +68,7 @@
                   <button class="btn btn-link su-underline" data-action="click->archives-series#collapseAll"><i class="bi bi-chevron-double-down me-1"></i>Collapse all</button>
                 </div>
                 <%# Loop through each series in the collection %>
-                <%= render partial: 'series_contents', locals: { contents: Ead::DisplayGroup.build_display_groups(@ead.series_and_subseries), f: f, series_title: nil, parent_title: nil, nested: false } %>
+                <%= render partial: 'series_contents', locals: { contents: Ead::DisplayGroup.build_display_groups(@ead_request.ead_doc.series_and_subseries), f: f, series_title: nil, parent_title: nil, nested: false } %>
               </div>
             <% end %>
           <% end %>
@@ -91,7 +91,7 @@
                   Hours: <%= @ead_request.reading_room.human_readable_hours %>
                 </span>
               </div>
-              <% if @ead.series_and_subseries&.many? %>
+              <% if @ead_request.ead_doc.series_and_subseries&.many? %>
                 <%= link_to new_aeon_appointment_path(reading_room_id: @ead_request.reading_room.id ), class: 'btn btn-primary', data: { action: 'modal#open' } do %>
                   <i class="bi bi-calendar-plus me-1"></i>Create new appointment
                 <% end %>
@@ -105,7 +105,7 @@
               </div>
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <% if @ead.series_and_subseries&.one? %>
+            <% if @ead_request.ead_doc.series_and_subseries&.one? %>
               <div class="d-inline-flex align-items-center gap-1 flex-column flex-md-row ">
                 <select name="appointment" class="form-select" required>
                   <option disabled selected></option>
@@ -157,23 +157,23 @@
     <aside class="col-4">
       <h2>Contact information</h2>
       <div>
-        <% if @ead.repository %>
+        <% if @ead_request.ead_doc.repository %>
           <h3>
-            <%= link_to @ead.repository_contact[:website] do %>
-              <%= @ead.repository %><i class="bi bi-arrow-up-right ms-1"></i>
+            <%= link_to @ead_request.ead_doc.repository_contact[:website] do %>
+              <%= @ead_request.ead_doc.repository %><i class="bi bi-arrow-up-right ms-1"></i>
             <% end %>
           </h3>
         <% end %>
-        <% if @ead.repository_contact[:address] %>
+        <% if @ead_request.ead_doc.repository_contact[:address] %>
           <p>
-            <% @ead.repository_contact[:address].each_with_index do |line, index| %>
+            <% @ead_request.ead_doc.repository_contact[:address].each_with_index do |line, index| %>
               <div <% if index == 0 %>class="fw-semibold"<% end %>><%= line %></div>
             <% end %>
           </p>
         <% end %>
-        <% if @ead.repository_contact[:email] %>
+        <% if @ead_request.ead_doc.repository_contact[:email] %>
           <p>
-            <span class="fw-semibold">Email: </span><%= mail_to @ead.repository_contact[:email] %>
+            <span class="fw-semibold">Email: </span><%= mail_to @ead_request.ead_doc.repository_contact[:email] %>
           </p>
         <% end %>
       </div>
