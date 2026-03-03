@@ -16,6 +16,8 @@
             (<%= pluralize(appointment.requests.length, "item") %>)
           </option>
         <% end %>
+
+        <% if appointments.blank? %> <% end %>
       <% end %>
       <span class="create-appointment-section">
         <span class="fw-semibold mx-2">OR</span>

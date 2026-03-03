@@ -547,6 +547,7 @@ label.btn-close {
   }
 }
 
+#reading:has(.appointments-item:only-child),
 #pickup:has(.appointments-item:only-child) {
   .hide-when-1-item {
     display: none;
