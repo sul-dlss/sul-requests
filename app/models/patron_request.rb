@@ -13,17 +13,17 @@ class PatronRequest < ApplicationRecord
   store :data, accessors: [
     :barcodes, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title,
     :proxy, :for_sponsor, :for_sponsor_id, :estimated_delivery, :patron_name, :item_title, :requested_barcodes, :item_mediation_data,
-    :aeon_reading_special, :aeon_item, :aeon_terms
+    :aeon_reading_special, :aeon_item, :aeon_terms, :ead_url
   ], coder: JSON
 
   delegate :instance_id, :finding_aid, :finding_aid?, to: :folio_instance
 
-  validates :instance_hrid, presence: true
   validates :request_type, inclusion: { in: %w[scan pickup mediated mediated/approved mediated/done] }
   validates :scan_title, presence: true, on: :create, if: :folio_scan?
   validate :pickup_service_point_is_valid, on: :create, if: :folio_pickup?
   validate :needed_date_is_valid, on: :create
   validate :for_sponsor_id_is_valid, on: :create
+  validate :data_source_id_is_valid
 
   scope :obsolete, lambda { |date|
     where('(created_at < ?) AND (needed_date IS NULL OR needed_date < ?)', date, date)
@@ -242,6 +242,10 @@ class PatronRequest < ApplicationRecord
                                       allowed_service_points.first
                                     end
   end
+
+  # @!endgroup
+
+  # @!group EAD data
 
   # @!endgroup
 
@@ -675,5 +679,11 @@ class PatronRequest < ApplicationRecord
     return unless for_sponsor_id && for_sponsor?
 
     errors.add(:for_sponsor_id, 'Invalid sponsor') unless patron.sponsors.any? { |sponsor| sponsor.id == for_sponsor_id }
+  end
+
+  def data_source_id_is_valid
+    return if instance_hrid.present? || ead_url.present?
+
+    errors.add(:instance_id, 'Either a FOLIO instance HRID or an EAD URL must be provided')
   end
 end
