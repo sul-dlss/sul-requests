@@ -44,6 +44,8 @@ class ArchivesRequestsController < ApplicationController
   end
 
   def new_params
+    return {} unless params[:ead_request]
+
     item_keys = params.dig(:ead_request, :items)&.keys || []
     item_values = [:series, :for_publication, :subseries, :requested_pages, :additional_information, :appointment_id]
 
@@ -53,8 +55,8 @@ class ArchivesRequestsController < ApplicationController
   end
 
   def load_ead_request
-    @ead_request = Ead::Request.new(user: current_user, ead_url: ead_url_param, params: (params[:ead_request] ? new_params : {}),
-                                    reference_number: "UUID:#{request.uuid}")
+    @ead_request = PatronRequest.new(user: current_user, ead_url: ead_url_param,
+                                     **new_params.to_h.transform_keys({ items: :aeon_item, volumes: :barcodes }.with_indifferent_access))
   end
 
   def ead_url_param

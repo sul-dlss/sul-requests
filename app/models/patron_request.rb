@@ -256,6 +256,8 @@ class PatronRequest < ApplicationRecord
 
   # @return [Folio::Instance]
   def folio_instance
+    return unless instance_hrid
+
     @folio_instance ||= begin
       # Append "a" to the item_id unless it already starts with a letter (e.g. "in00000063826")
       hrid = instance_hrid.start_with?(/\d/) ? "a#{instance_hrid}" : instance_hrid
@@ -417,7 +419,11 @@ class PatronRequest < ApplicationRecord
 
   # @return [String] the Aeon site code for the items in the request
   def aeon_site
-    selectable_items.filter_map(&:aeon_site).first
+    if ead_doc
+      Ead::Request::REPOSITORY_TO_SITE_CODE[ead_doc.repository] || 'SPECUA'
+    else
+      selectable_items.filter_map(&:aeon_site).first
+    end
   end
 
   def aeon_form_target
@@ -447,6 +453,12 @@ class PatronRequest < ApplicationRecord
   def aeon_reading_room_name
     library = Settings.libraries[aeon_reading_room_code] || Settings.libraries.default
     library.reading_room_label || "#{library['label']} Reading Room"
+  end
+
+  def ead_doc
+    return unless ead_url
+
+    @ead_doc ||= EadClient.fetch(ead_url)
   end
 
   # Scan stuff

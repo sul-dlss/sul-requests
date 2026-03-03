@@ -5,7 +5,7 @@
     <div class="col-8">
       <%= render EadBibHeaderComponent.new(ead: @ead_request.ead_doc) %>
 
-      <%= form_with id: 'archives-request', model: @ead_request, url: archives_requests_path, class: 'accordion', html: { autocomplete: "off" }, data: { controller: 'accordion-form item-selector patron-request', action: 'item-selector:changed->patron-request#showItemSelector item-selector:changed->accordion-form#typeValueChanged item-selector:changed->accordion-form#reenableNextButtons', 'patron-request-type-value': 'aeon', turbo: false } do |f| %>
+      <%= form_with id: 'archives-request', scope: 'ead_request', model: @ead_request, url: archives_requests_path, class: 'accordion', html: { autocomplete: "off" }, data: { controller: 'accordion-form item-selector patron-request', action: 'item-selector:changed->patron-request#showItemSelector item-selector:changed->accordion-form#typeValueChanged item-selector:changed->accordion-form#reenableNextButtons', 'patron-request-type-value': 'aeon', turbo: false } do |f| %>
         <%= f.hidden_field :ead_url %>
         <%= render AccordionStepComponent.new(id: 'request_type', step_index: step_enum.next, form_id: f.id) do |component| %>
           <% component.with_title.with_content('Request type') %>
