@@ -22,7 +22,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   # Once reading room logic for appointments is implemented, this mapping
   # should also contain scheduledDate, appointment id, appointment,
   # and reading room id.
-  def as_aeon_create_request_data(patron_request, item) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity
+  def as_aeon_create_request_data(patron_request, item) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     AeonClient::CreateRequestData.with_defaults.with(
       appointment_id: patron_request.aeon_item&.dig(item.id, 'appointment_id')&.to_i,
       call_number: item.callnumber,
