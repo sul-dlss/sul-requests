@@ -1,20 +1,28 @@
-<li data-controller="selected-item-form" data-action="input->selected-item-form#updateStatus" class="bg-light border rounded mb-2 p-2 d-flex gap-4 text-nowrap align-items-center flex-wrap flex-md-nowrap" data-content-id="<%= dom_id %>">
+<li data-controller="selected-item-form" data-action="input->selected-item-form#updateStatus" class="appointments-item rounded mb-2 p-2 d-flex column-gap-4 row-gap-2 text-nowrap align-items-center flex-wrap flex-md-nowrap" data-content-id="<%= dom_id %>">
   <div class="d-flex align-items-center">
-    <i class="fs-4 bi bi-circle me-2" data-selected-item-form-target="status"></i>
-    <span class="text-black fw-semibold"><%= title %></span>
-    <button class="btn btn-link p-0 ps-1" data-action="item-selector#remove" data-item-selector-id-param="<%= dom_id %>">
+    <i class="fs-4 bi bi-circle me-2 selected-item-status" data-selected-item-form-target="status"></i>
+    <span class="text-black fw-semibold selected-item-title"><%= title %></span>
+    <button class="btn btn-link p-0 ps-1 selected-item-remove" data-action="item-selector#remove" data-item-selector-id-param="<%= dom_id %>">
       <i class="bi bi-trash"></i><span class="visually-hidden"> Delete <%= title %></span>
     </button>
   </div>
   <%= fields_for base_name do |f| %>
-    <%= f.label :appointment_id, 'Appointment', class: 'visually-hidden' %>
-    <%= f.select :appointment_id, [], {}, { class: 'form-select appt_dropdown', required: true } do %>
-      <% appointments.each do | appointment | %>
-        <option value="<%= appointment.id %>">
-          <%= appointment.start_time.strftime('%b %d, %Y') %> ● <%= appointment.start_time.strftime('%l:%M %p -') %><%= appointment.stop_time.strftime('%l:%M %p') %>
-          (<%= pluralize(appointment.requests.length, "item") %>)
-        </option>
+    <%= f.label :appointment_id, 'Appointment', class: 'form-label fw-semibold redesign-required-label' %>
+    <span class="d-inline-flex flex-row">
+      <%= f.select :appointment_id, [], {}, { class: 'form-select appt_dropdown', required: true } do %>
+        <% appointments.each do | appointment | %>
+          <option value="<%= appointment.id %>">
+            <%= appointment.start_time.strftime('%b %d, %Y') %> ● <%= appointment.start_time.strftime('%l:%M %p -') %><%= appointment.stop_time.strftime('%l:%M %p') %>
+            (<%= pluralize(appointment.requests.length, "item") %>)
+          </option>
+        <% end %>
       <% end %>
-    <% end %>
+      <span class="create-appointment-section">
+        <span class="fw-semibold mx-2">OR</span>
+        <%= link_to new_aeon_appointment_path, class: 'btn btn-primary btn-sm', data: { action: 'modal#open' } do %>
+          <i class="bi bi-calendar-plus me-1"></i>Create new appointment
+        <% end %>
+      </span>
+    </span>
   <% end %>
 </li>
