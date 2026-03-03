@@ -90,6 +90,6 @@ class PatronRequestsController < ApplicationController
                                    :fulfillment_type, :request_type,
                                    :scan_page_range, :scan_authors, :scan_title,
                                    :aeon_reading_special, :aeon_terms,
-                                   :barcode, { barcodes: [] }, { aeon_item: {} }])
+                                   { barcodes: [] }, { aeon_item: {} }])
   end
 end

@@ -50,7 +50,7 @@
 <% if f.object.selectable_items.one? || f.object.barcodes&.one? %>
   <% single_item = f.object.selectable_items.first %>
   <% single_barcode = f.object.barcodes&.first || (single_item&.barcode || single_item&.id) %>
-  <%= f.hidden_field :barcode, value: single_barcode %>
+  <%= f.hidden_field :barcodes, multiple: true, value: single_barcode %>
 <% end %>
 <%# only allow submitting on enter if the final submit button is focused %>
 <%# see: https://stackoverflow.com/a/51507806 %>

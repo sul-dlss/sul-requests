@@ -19,11 +19,11 @@
                     A librarian will review and approve your request for restricted-use materials, or contact you.
                     Approvals typically happen 1-3 business days before your planned visit date.
                 <% end %>
-                You will receive an email when the <%= (@patron_request.barcodes&.count || 1) == 1 ?  'item is' : 'items are' %> ready.
+                You will receive an email when the <%= @patron_request.selected_items.one? ?  'item is' : 'items are' %> ready.
             <% end %>
         </div>
 
-        <hr />
+        <hr>
 
         <% @patron_request.selected_items.select(&:bound_with_child_holdings_record).each do |item| %>
             <div class="alert alert-warning d-flex align-items-center gap-3">

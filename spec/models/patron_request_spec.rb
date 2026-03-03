@@ -179,14 +179,6 @@ RSpec.describe PatronRequest do
     end
   end
 
-  describe '#barcode=' do
-    it 'sets the barcodes attribute' do
-      request.barcode = '1234567890'
-
-      expect(request.barcodes).to eq(['1234567890'])
-    end
-  end
-
   describe '#barcodes=' do
     it 'removes blank barcodes (possibly present in form submissions)' do
       request.barcodes = ['1234567890', '', '123']
@@ -348,14 +340,14 @@ RSpec.describe PatronRequest do
 
     context 'with a recall' do
       let(:folio_instance) { build(:checkedout_holdings) }
-      let(:attr) { { instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS', barcode: '87654321' } }
+      let(:attr) { { instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS', barcodes: ['87654321'] } }
 
       it { is_expected.to be_requires_needed_date }
     end
 
     context 'with an ordinary item' do
       let(:folio_instance) { build(:checkedout_holdings) }
-      let(:attr) { { instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS', barcode: '12345678' } }
+      let(:attr) { { instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS', barcodes: ['12345678'] } }
 
       it { is_expected.not_to be_requires_needed_date }
     end
