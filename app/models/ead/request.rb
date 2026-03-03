@@ -56,7 +56,7 @@ module Ead
       params[:request_type]
     end
 
-    def items
+    def selected_items
       params[:items] || []
     end
 
