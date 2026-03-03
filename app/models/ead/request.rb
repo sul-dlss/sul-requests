@@ -6,7 +6,7 @@ module Ead
   class Request
     include ActiveModel::Model
 
-    attr_reader :user, :ead, :params, :reference_number
+    attr_reader :user, :ead_url, :params, :reference_number
 
     # Maps from the value in EAD to Aeon's valid site codes
     REPOSITORY_TO_SITE_CODE = {
@@ -15,13 +15,17 @@ module Ead
       'East Asia Library' => 'EASTASIA'
     }.freeze
 
-    delegate :title, :creator, :call_number, :identifier, :repository, :collection_permalink, :url, to: :ead
+    delegate :title, :creator, :call_number, :identifier, :repository, :collection_permalink, :url, to: :ead_doc
 
-    def initialize(user:, ead:, params: {}, reference_number: nil)
+    def initialize(user:, ead_url:, params: {}, reference_number: nil)
       @user = user
-      @ead = ead
+      @ead_url = ead_url
       @params = params
       @reference_number = reference_number
+    end
+
+    def ead_doc
+      @ead_doc ||= EadClient.fetch(ead_url)
     end
 
     def appointments

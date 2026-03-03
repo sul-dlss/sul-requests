@@ -5,28 +5,21 @@
 class ArchivesRequestsController < ApplicationController
   include AeonController
 
-  before_action :load_ead, only: [:new, :create]
-  rescue_from EadClient::Error, with: :handle_ead_client_error
+  before_action :load_ead_request, only: [:new, :create]
   before_action :authorize_new_request, only: [:new]
+  rescue_from EadClient::Error, with: :handle_ead_client_error
 
   def show
     @aeon_requests = Aeon::RequestGrouping.new(current_user.aeon.requests.select { |x| x.reference_number == "UUID:#{params[:id]}" })
   end
 
-  def new
-    @ead_request = Ead::Request.new(user: current_user, ead: @ead, params: (params[:ead_request] ? new_params : {}))
-  end
+  def new; end
 
   # This is the action triggered by the form submission to create an Aeon request.
-  def create # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+  def create # rubocop:disable Metrics/AbcSize
     authorize! :create, Aeon::Request
 
-    @request = Ead::Request.new(user: current_user,
-                                ead: @ead,
-                                params: new_params,
-                                reference_number: "UUID:#{request.uuid}")
-
-    results = @request.create_aeon_requests!
+    results = @ead_request.create_aeon_requests!
 
     successes, failures = results.partition { |r| r[:success] }
 
@@ -59,8 +52,9 @@ class ArchivesRequestsController < ApplicationController
     end
   end
 
-  def load_ead
-    @ead = EadClient.fetch(ead_url_param)
+  def load_ead_request
+    @ead_request = Ead::Request.new(user: current_user, ead_url: ead_url_param, params: (params[:ead_request] ? new_params : {}),
+                                    reference_number: "UUID:#{request.uuid}")
   end
 
   def ead_url_param
