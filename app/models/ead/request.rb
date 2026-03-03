@@ -28,10 +28,6 @@ module Ead
       @ead_doc ||= EadClient.fetch(ead_url)
     end
 
-    def appointments
-      @appointments ||= user.aeon.appointments.select { |appt| appt.reading_room.sites.include?(aeon_site) }
-    end
-
     def create_aeon_requests!
       params[:items].map do |volume_params|
         aeon_client.create_request(as_aeon_create_request_data(volume_params))
