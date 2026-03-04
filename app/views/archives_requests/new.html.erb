@@ -43,7 +43,7 @@
                 <% end %>
                 <span class="text-cardinal ms-2 mt-1">
                   Earliest appointment available:
-                  <%= turbo_frame_tag 'earliest_appointment', src: available_aeon_appointments_path(@ead_request.reading_room&.id, Date.today) %>
+                  <%= turbo_frame_tag 'earliest_appointment', src: available_aeon_appointments_path(@ead_request.aeon_reading_room&.id, Date.today) %>
                 </span>
               </div>
               <div class="mt-2">
@@ -81,12 +81,12 @@
         <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', submit: true, submit_text: 'Submit to Aeon', cancel: false, classes: [('d-none' if  f.object.request_type.blank? || f.object.request_type == 'scan')], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'pickup' }) do |c| %>
           <% c.with_title.with_content('Reading room use') %>
           <% c.with_body do %>
-            <%= render Aeon::ReadingRoomBriefComponent.new(reading_room: @ead_request.reading_room) %>
+            <%= render Aeon::ReadingRoomBriefComponent.new(reading_room: @ead_request.aeon_reading_room) %>
 
             <div class="alert alert-warning alert-dismissible shadow-sm d-flex align-items-center">
               <div role="img" aria-label="Warning icon" class="bi bi-exclamation-triangle-fill text-warning fs-3 me-3"></div>
               <div class="text-body">
-                <div>Appointments must be scheduled at least <%= @ead_request.reading_room.policies.first.appointment_min_lead_days %> business days in advance. Maximum of 5 items per day.</div>
+                <div>Appointments must be scheduled at least <%= @ead_request.aeon_reading_room.policies.first.appointment_min_lead_days %> business days in advance. Maximum of 5 items per day.</div>
               </div>
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
@@ -95,7 +95,7 @@
             </ul>
 
             <template id="appointmentTemplate">
-              <%= render Aeon::AppointmentFormItemComponent.new(title: '__TITLE__', dom_id: '__ID__', base_name: 'ead_request[items][__ID__]', reading_room_id: @ead_request.reading_room.id, appointments: @ead_request.appointments) %>
+              <%= render Aeon::AppointmentFormItemComponent.new(title: '__TITLE__', dom_id: '__ID__', base_name: 'ead_request[items][__ID__]', reading_room_id: @ead_request.aeon_reading_room.id, appointments: @ead_request.appointments) %>
             </template>
           <% end %>
         <% end %>
