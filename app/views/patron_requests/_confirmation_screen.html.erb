@@ -1,4 +1,4 @@
-<h1 class="fw-semibold fs-1">We received your <%= @patron_request.request_type == 'scan' ? 'scan' : @patron_request.mediateable? ? '' : 'pickup' %> request!</h1>
+<h1 class="fw-semibold fs-1">We received your <%= @patron_request.request_type == 'scan' ? 'scan' : (@patron_request.mediateable? || @patron_request.aeon_page?) ? '' : 'pickup' %> request!</h1>
 
 <div class="row mt-4">
     <div class="col-7">
@@ -63,7 +63,7 @@
             <div><dt><%= @patron_request.location_label %>:</dt><dd><%= @patron_request.pickup_service_point.name %></dd></div>
             <% end %>
 
-            <% if @patron_request.mediateable? %>
+            <% if @patron_request.mediateable? || @patron_request.aeon_page? %>
                 <hr>
                 <div class="mb-2">
                     <span class="fw-bold">Item(s) requested:</span>
