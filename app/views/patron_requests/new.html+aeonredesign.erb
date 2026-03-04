@@ -63,11 +63,6 @@
   <% end %>
 <% end %>
 
-<% if f.object.selectable_items.one? %>
-  <%= render AccordionStepComponent.new(id: 'reading-or-digitization-placeholder', form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'none' }) do |c| %>
-    <% c.with_title.with_content('Appointment or digitization') %>
-  <% end %>
-<% end %>
 
 <!-- item selector -->
 
@@ -83,6 +78,10 @@
       </div>
     </div>
   </div>
+<% end %>
+
+<%= render AccordionStepComponent.new(id: 'scan-or-pickup-placeholder', classes: [('d-none' if f.object.request_type)], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'none' }) do |c| %>
+  <% c.with_title.with_content('Appointment or Digitization') %>
 <% end %>
 
 <!-- aeon reading room request -->
