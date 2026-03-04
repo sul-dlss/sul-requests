@@ -128,7 +128,7 @@
       <% end %>
       <%# Subseries content (recursive) %>
       <div id="<%= subseries_id %>" class="collapse mt-2 ms-3" data-archives-series-target="content">
-        <%= render partial: 'series_contents', locals: { contents: display_group.contents, f: f, parent_title: display_group.title, series_title: series_title || display_group.title, nested: true } %>
+        <%= render partial: 'archives_requests/series_contents', locals: { contents: display_group.contents, f: f, parent_title: display_group.title, series_title: series_title || display_group.title, nested: true } %>
       </div>
     </div>
   <% end %>

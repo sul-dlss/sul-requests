@@ -27,7 +27,7 @@ class PatronRequestsController < ApplicationController
 
   def new
     request.variant = :aeon if @patron_request.aeon_page?
-    request.variant = :aeonredesign if @patron_request.aeon_page? && Settings.features.requests_redesign
+    request.variant = :aeonredesign if (@patron_request.ead_url || @patron_request.aeon_page?) && Settings.features.requests_redesign
   end
 
   def create
@@ -78,10 +78,15 @@ class PatronRequestsController < ApplicationController
   end
 
   def new_params
-    params.require(:instance_hrid)
-    params.require(:origin_location_code)
+    if params[:value] || params[:Value]
+      ead_url = params[:value] || params[:Value]
+    else
+      params.require(:instance_hrid)
+      params.require(:origin_location_code)
+    end
 
-    params.permit(:instance_hrid, :origin_location_code).to_h.merge(requested_barcodes: Array(params[:barcode]))
+    params.permit(:instance_hrid, :origin_location_code).to_h.merge(requested_barcodes: Array(params[:barcode]),
+                                                                    ead_url: ead_url)
   end
 
   def patron_request_params
@@ -89,7 +94,7 @@ class PatronRequestsController < ApplicationController
                                    :for_sponsor_id, :for_sponsor,
                                    :fulfillment_type, :request_type,
                                    :scan_page_range, :scan_authors, :scan_title,
-                                   :aeon_reading_special, :aeon_terms,
+                                   :aeon_reading_special, :aeon_terms, :ead_url,
                                    { barcodes: [] }, { aeon_item: {} }])
   end
 end

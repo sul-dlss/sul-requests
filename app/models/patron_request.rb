@@ -182,7 +182,7 @@ class PatronRequest < ApplicationRecord
 
   # @return [Array<Message>] Location-specific broadcast messages that impact this request
   def active_messages
-    library_location.active_messages.for_type(scan? ? 'scan' : 'page')
+    library_location&.active_messages&.for_type(scan? ? 'scan' : 'page') || []
   end
 
   # Figure out the best contact info for the patron to use for this request; usually
@@ -289,6 +289,8 @@ class PatronRequest < ApplicationRecord
 
   # @return [Array<Folio::Item>] the items the patron can select from (based on the location or the barcodes passed in initially)
   def selectable_items
+    return [] if ead_url
+
     if requested_barcodes&.any?
       items_in_location.select { |x| x.barcode&.in?(requested_barcodes) || x.id.in?(requested_barcodes) }
     else
@@ -439,6 +441,10 @@ class PatronRequest < ApplicationRecord
     return unless aeon_page?
 
     finding_aid? ? finding_aid : Settings.aeon_ere_url
+  end
+
+  def ead_url
+    super || (finding_aid if instance_hrid)
   end
 
   def aeon_reading_room
@@ -653,6 +659,8 @@ class PatronRequest < ApplicationRecord
 
   # @return [LibraryLocation]
   def library_location
+    return unless folio_instance
+
     @library_location ||= LibraryLocation.new(origin_library_code, origin_location_code)
   end
 
