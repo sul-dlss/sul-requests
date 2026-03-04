@@ -419,10 +419,17 @@ class PatronRequest < ApplicationRecord
     @aeon_page ||= selectable_items.any?(&:aeon_pageable?)
   end
 
+  # Maps from the value in EAD to Aeon's valid site codes
+  REPOSITORY_TO_SITE_CODE = {
+    'Department of Special Collections and University Archives' => 'SPECUA',
+    'Archive of Recorded Sound' => 'ARS',
+    'East Asia Library' => 'EASTASIA'
+  }.freeze
+
   # @return [String] the Aeon site code for the items in the request
   def aeon_site
     if ead_doc
-      Ead::Request::REPOSITORY_TO_SITE_CODE[ead_doc.repository] || 'SPECUA'
+      REPOSITORY_TO_SITE_CODE[ead_doc.repository] || 'SPECUA'
     else
       selectable_items.filter_map(&:aeon_site).first
     end
