@@ -10,29 +10,23 @@ class ArchivesRequestsController < ApplicationController
   rescue_from EadClient::Error, with: :handle_ead_client_error
 
   def show
-    @aeon_requests = Aeon::RequestGrouping.new(current_user.aeon.requests.select { |x| x.reference_number == "UUID:#{params[:id]}" })
+    @patron_request = current_user.patron_requests.find(params[:id])
+    @aeon_requests = Aeon::RequestGrouping.new(current_user.aeon.requests.select do |x|
+      x.reference_number == @patron_request.to_global_id.to_s
+    end)
   end
 
   def new; end
 
   # This is the action triggered by the form submission to create an Aeon request.
-  def create # rubocop:disable Metrics/AbcSize
+  def create
     authorize! :create, Aeon::Request
 
-    results = @ead_request.create_aeon_requests!
+    @ead_request.save!
 
-    successes, failures = results.partition { |r| r[:success] }
+    @ead_request.submit_later
 
-    # Set appropriate flash message based on results
-    if failures.empty?
-      flash[:notice] = "All #{successes.count} request(s) submitted successfully!"
-    elsif successes.empty?
-      flash[:error] = "All requests failed: #{failures.map { |f| "#{f[:volume]} (#{f[:error]})" }.join('; ')}"
-    else
-      flash[:warning] = "#{successes.count} succeeded, #{failures.count} failed: #{failures.pluck(:volume).join(', ')}"
-    end
-
-    redirect_to archives_request_path(request.uuid)
+    redirect_to archives_request_path(@ead_request.id)
   end
 
   private

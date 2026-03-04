@@ -414,6 +414,8 @@ class PatronRequest < ApplicationRecord
   def aeon_page?
     return @aeon_page if defined?(@aeon_page)
 
+    return true if ead_url.present?
+
     @aeon_page ||= selectable_items.any?(&:aeon_pageable?)
   end
 
