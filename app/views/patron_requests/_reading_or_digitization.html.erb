@@ -1,7 +1,7 @@
 
 <fieldset class="ps-2">
   <div>
-    <%= f.radio_button :request_type, 'pickup', class: 'form-check-input', required: true, data: { action: 'patron-request#updateType' } %>
+    <%= f.radio_button :request_type, 'pickup', class: 'form-check-input', required: true, data: { action: 'update-request-type#updateType' } %>
     <%= f.label :request_type_pickup, class: 'form-check-label ms-1' do %>
       Reading room appointment
     <% end %>
@@ -12,7 +12,7 @@
 
   </div>
   <div class="mt-2">
-    <%= f.radio_button :request_type, 'scan', class: 'form-check-input', data: { action: 'patron-request#updateType' } %>
+    <%= f.radio_button :request_type, 'scan', class: 'form-check-input', data: { action: 'update-request-type#updateType' } %>
     <%= f.label :request_type_scan, class: 'form-check-label ms-1' do %>
       Digitization
     <% end %>

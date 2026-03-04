@@ -29,10 +29,6 @@ export default class extends Controller {
     }
   }
 
-  updateRequestType(event) {
-    this.element.dataset.accordionFormTypeValue = event.target.value;
-  }
-
   showItemSelector() {
     const accordionController = this.application.getControllerForElementAndIdentifier(this.element, 'accordion-form');
     accordionController.goto('items-accordion');

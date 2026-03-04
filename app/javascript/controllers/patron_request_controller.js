@@ -45,16 +45,6 @@ export default class extends Controller {
     });
   }
 
-  updateType(event) {
-    const requestType = event.target.value;
-
-    const itemSelector = this.element.querySelector('[data-controller="item-selector"]');
-    if (itemSelector) itemSelector.dataset.itemSelectorRequestTypeValue = requestType;
-
-    this.element.dataset.accordionFormTypeValue = requestType;
-    this.element.dataset.itemSelectorItemLimitValue = this.typeValue != 'aeon' && requestType == 'scan' ? 1 : -1;
-  }
-
   updateProxy(event) {
     if (!this.hasProxyScanWarningTarget) return;
 

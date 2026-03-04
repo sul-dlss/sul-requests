@@ -44,3 +44,6 @@ application.register("modal", ModalController)
 
 import SelectedItemFormController from "./selected_item_form_controller"
 application.register("selected-item-form", SelectedItemFormController)
+
+import UpdateRequestTypeController from "./update_request_type_controller"
+application.register("update-request-type", UpdateRequestTypeController)

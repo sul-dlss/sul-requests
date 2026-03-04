@@ -35,7 +35,7 @@
 
 <%= form_for(@patron_request,
             data: {
-              controller: 'patron-request accordion-form item-selector',
+              controller: 'patron-request accordion-form item-selector update-request-type',
               action: 'item-selector:changed->patron-request#showItemSelector item-selector:changed->accordion-form#typeValueChanged',
               'patron-request-type-value': 'aeon',
             },

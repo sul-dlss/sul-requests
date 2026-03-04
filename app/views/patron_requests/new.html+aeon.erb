@@ -46,7 +46,7 @@
 <% end %>
 
 <%= form_for(@patron_request,
-             data: { controller: 'patron-request accordion-form item-selector', action: 'item-selector:changed->patron-request#showItemSelector item-selector:changed->patron-request#showHideItemGroups item-selector:changed->accordion-form#typeValueChanged' },
+             data: { controller: 'patron-request accordion-form item-selector update-request-type', action: 'item-selector:changed->patron-request#showItemSelector item-selector:changed->patron-request#showHideItemGroups item-selector:changed->accordion-form#typeValueChanged' },
              html: { class: 'col-lg-8 accordion' },
              url: @patron_request.aeon_form_target,
              method: @patron_request.finding_aid? ? 'GET' : 'POST') do |f| %>
