@@ -580,6 +580,12 @@ label.btn-close {
   }
 }
 
+/* .flex-md-nowrap */
+@media (min-width: 768px) {
+  .appointments-container .appointments-item:not(:only-child) {
+    flex-wrap: nowrap;
+  }
+
 .appointments-container .appointments-item:only-child {
   .selected-item-status, .selected-item-remove {
     display: none;
