@@ -9,16 +9,10 @@
   <%= fields_for base_name do |f| %>
     <%= f.label :appointment_id, 'Appointment', class: 'form-label fw-semibold redesign-required-label' %>
     <span class="d-inline-flex flex-row">
-      <%= f.select :appointment_id, [], {}, { class: 'form-select appt_dropdown', required: true } do %>
-        <% appointments.each do | appointment | %>
-          <option value="<%= appointment.id %>">
-            <%= appointment.start_time.strftime('%b %d, %Y') %> ● <%= appointment.start_time.strftime('%l:%M %p -') %><%= appointment.stop_time.strftime('%l:%M %p') %>
-            (<%= pluralize(appointment.requests.length, "item") %>)
-          </option>
-        <% end %>
-
-        <% if appointments.blank? %> <% end %>
-      <% end %>
+      <%= f.select :appointment_id,
+          appointments.map { |a| ["#{a.start_time.strftime('%b %d, %Y')} ● #{a.start_time.strftime('%l:%M %p -')}#{a.stop_time.strftime('%l:%M %p')} (#{pluralize(a.requests.length, 'item')})", a.id] },
+          { prompt: placeholder },
+          { class: 'form-select appt_dropdown', required: true } %>
       <span class="create-appointment-section">
         <span class="fw-semibold mx-2">OR</span>
         <%= link_to new_appointment_path, class: 'btn btn-primary btn-sm', data: { action: 'modal#open' } do %>
