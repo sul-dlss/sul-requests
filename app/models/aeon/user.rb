@@ -43,7 +43,7 @@ module Aeon
     end
 
     def appointments
-      @appointments ||= self.class.aeon_client.appointments_for(username:).sort_by(&:sort_key).each do |appointment|
+      @appointments ||= self.class.aeon_client.appointments_for(username:).sort_by(&:sort_key).reject(&:cancelled?).each do |appointment|
         appointment.requests = requests.select { |request| !request.cancelled? && request.appointment_id == appointment.id }
       end
     end
