@@ -1,9 +1,8 @@
 
-<fieldset class="mb-4">
-  <!-- Proxy sponsor section which we may not need-->
+<fieldset class="ps-2">
   <div>
-    <%= f.radio_button :request_type, 'pickup', :class => 'form-check-input', :required => true, data: { action: 'patron-request#updateType' } %>
-    <%= f.label :request_type_pickup, :class => 'form-check-label ms-1' do %>
+    <%= f.radio_button :request_type, 'pickup', class: 'form-check-input', required: true, data: { action: 'patron-request#updateType' } %>
+    <%= f.label :request_type_pickup, class: 'form-check-label ms-1' do %>
       Reading room appointment
     <% end %>
     <span class="text-cardinal ms-2 mt-1">
@@ -12,9 +11,9 @@
     </span>
 
   </div>
-  <div class="mt-4">
-    <%= f.radio_button :request_type, 'scan', :class => 'form-check-input', data: { action: 'patron-request#updateType' } %>
-    <%= f.label :request_type_scan, :class => 'form-check-label ms-1' do %>
+  <div class="mt-2">
+    <%= f.radio_button :request_type, 'scan', class: 'form-check-input', data: { action: 'patron-request#updateType' } %>
+    <%= f.label :request_type_scan, class: 'form-check-label ms-1' do %>
       Digitization
     <% end %>
   </div>
