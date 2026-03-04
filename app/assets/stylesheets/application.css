@@ -102,6 +102,10 @@ input[type="radio"] {
   --bs-border-color: var(--stanford-50-black);
 }
 
+.form-check-input {
+  --bs-border-color: var(--stanford-50-black);
+}
+
 /* This selector/rule can be removed after https://github.com/twbs/bootstrap/pull/39098 is released */
 a {
   text-decoration: var(--bs-link-decoration);
