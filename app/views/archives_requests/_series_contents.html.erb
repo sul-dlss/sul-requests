@@ -29,7 +29,7 @@
             checkbox_id,
             nil %>
       <%= tag.div class: 'd-none', data: { 'content-id': checkbox_id, 'toggle-disabled': true } do %>
-        <%= fields_for "ead_request[items][#{checkbox_id}]" do |f| %>
+        <%= fields_for "patron_request[items][#{checkbox_id}]" do |f| %>
           <%= f.hidden_field :id, disabled: !checked, value: checkbox_id, data: { toggle: true } %>
           <%= f.hidden_field :series, disabled: !checked, value: series_title, data: { toggle: true } %>
           <%= f.hidden_field :subseries, disabled: !checked, value: container_name, data: { toggle: true } %>
@@ -79,7 +79,7 @@
             nil %>
 
       <%= tag.div class: 'd-none', data: { contentId: checkbox_id, toggleDisabled: true } do %>
-        <%= fields_for "ead_request[items][#{checkbox_id}]" do |f| %>
+        <%= fields_for "patron_request[items][#{checkbox_id}]" do |f| %>
           <%= f.hidden_field :id, disabled: !checked, value: checkbox_id, data: { toggle: true } %>
           <%= f.hidden_field :series, disabled: !checked, value: series_title || container_name, data: { toggle: true } %>
           <%= f.hidden_field :subseries, disabled: !checked, value: display_group.title, data: { toggle: true } %>

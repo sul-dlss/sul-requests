@@ -3,9 +3,9 @@
   <h1 class="mb-4">New request</h1>
   <div class="row">
     <div class="col-8">
-      <%= render EadBibHeaderComponent.new(ead: @ead_request.ead_doc) %>
+      <%= render EadBibHeaderComponent.new(ead: @patron_request.ead_doc) %>
 
-      <%= form_with id: 'archives-request', scope: 'ead_request', model: @ead_request, url: archives_requests_path, class: 'accordion', html: { autocomplete: "off" }, data: { controller: 'accordion-form item-selector patron-request', action: 'item-selector:changed->patron-request#showItemSelector item-selector:changed->accordion-form#typeValueChanged item-selector:changed->accordion-form#reenableNextButtons', 'patron-request-type-value': 'aeon', turbo: false } do |f| %>
+      <%= form_with id: 'archives-request', model: @patron_request, url: archives_requests_path, class: 'accordion', html: { autocomplete: "off" }, data: { controller: 'accordion-form item-selector patron-request', action: 'item-selector:changed->patron-request#showItemSelector item-selector:changed->accordion-form#typeValueChanged item-selector:changed->accordion-form#reenableNextButtons', 'patron-request-type-value': 'aeon', turbo: false } do |f| %>
         <%= f.hidden_field :ead_url %>
         <%= render AccordionStepComponent.new(id: 'request_type', step_index: step_enum.next, form_id: f.id) do |component| %>
           <% component.with_title.with_content('Request type') %>
@@ -14,7 +14,7 @@
           <% end %>
         <% end %>
 
-        <% if @ead_request.ead_doc.series_and_subseries.any? %>
+        <% if @patron_request.ead_doc.series_and_subseries.any? %>
           <%= render AccordionStepComponent.new(id: 'items', step_index: step_enum.next, form_id: f.id) do |component| %>
             <% component.with_title.with_content('Items') %>
             <% component.with_body do %>
@@ -26,7 +26,7 @@
                   <button class="btn btn-link su-underline" data-action="click->archives-series#collapseAll"><i class="bi bi-chevron-double-down me-1"></i>Collapse all</button>
                 </div>
                 <%# Loop through each series in the collection %>
-                <%= render partial: 'series_contents', locals: { contents: Ead::DisplayGroup.build_display_groups(@ead_request.ead_doc.series_and_subseries), f: f, series_title: nil, parent_title: nil, nested: false } %>
+                <%= render partial: 'series_contents', locals: { contents: Ead::DisplayGroup.build_display_groups(@patron_request.ead_doc.series_and_subseries), f: f, series_title: nil, parent_title: nil, nested: false } %>
               </div>
             <% end %>
           <% end %>
@@ -39,12 +39,12 @@
         <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', submit: true, submit_text: 'Submit to Aeon', cancel: false, classes: [('d-none' if  f.object.request_type.blank? || f.object.request_type == 'scan')], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'pickup' }) do |c| %>
           <% c.with_title.with_content('Reading room use') %>
           <% c.with_body do %>
-            <%= render Aeon::ReadingRoomBriefComponent.new(reading_room: @ead_request.aeon_reading_room) %>
+            <%= render Aeon::ReadingRoomBriefComponent.new(reading_room: @patron_request.aeon_reading_room) %>
 
             <div class="alert alert-warning alert-dismissible shadow-sm d-flex align-items-center">
               <div role="img" aria-label="Warning icon" class="bi bi-exclamation-triangle-fill text-warning fs-3 me-3"></div>
               <div class="text-body">
-                <div>Appointments must be scheduled at least <%= @ead_request.aeon_reading_room.policies.first.appointment_min_lead_days %> business days in advance. Maximum of 5 items per day.</div>
+                <div>Appointments must be scheduled at least <%= @patron_request.aeon_reading_room.policies.first.appointment_min_lead_days %> business days in advance. Maximum of 5 items per day.</div>
               </div>
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
@@ -53,7 +53,7 @@
             </ul>
 
             <template id="appointmentTemplate">
-              <%= render Aeon::AppointmentFormItemComponent.new(title: '__TITLE__', dom_id: '__ID__', base_name: 'ead_request[items][__ID__]', reading_room_id: @ead_request.aeon_reading_room.id, appointments: current_user.aeon.appointments_for(site: @ead_request.aeon_site)) %>
+              <%= render Aeon::AppointmentFormItemComponent.new(title: '__TITLE__', dom_id: '__ID__', base_name: 'patron_request[items][__ID__]', reading_room_id: @patron_request.aeon_reading_room.id, appointments: current_user.aeon.appointments_for(site: @patron_request.aeon_site)) %>
             </template>
           <% end %>
         <% end %>
@@ -68,7 +68,7 @@
             </div>
 
             <template id="digitizationTemplate">
-              <%= render Aeon::DigitizationFormItemComponent.new(title: '__TITLE__', dom_id: '__ID__', base_name: 'ead_request[items][__ID__]') %>
+              <%= render Aeon::DigitizationFormItemComponent.new(title: '__TITLE__', dom_id: '__ID__', base_name: 'patron_request[items][__ID__]') %>
             </template>
           <% end %>
         <% end %>
@@ -85,23 +85,23 @@
     <aside class="col-4">
       <h2>Contact information</h2>
       <div>
-        <% if @ead_request.ead_doc.repository %>
+        <% if @patron_request.ead_doc.repository %>
           <h3>
-            <%= link_to @ead_request.ead_doc.repository_contact[:website] do %>
-              <%= @ead_request.ead_doc.repository %><i class="bi bi-arrow-up-right ms-1"></i>
+            <%= link_to @patron_request.ead_doc.repository_contact[:website] do %>
+              <%= @patron_request.ead_doc.repository %><i class="bi bi-arrow-up-right ms-1"></i>
             <% end %>
           </h3>
         <% end %>
-        <% if @ead_request.ead_doc.repository_contact[:address] %>
+        <% if @patron_request.ead_doc.repository_contact[:address] %>
           <p>
-            <% @ead_request.ead_doc.repository_contact[:address].each_with_index do |line, index| %>
+            <% @patron_request.ead_doc.repository_contact[:address].each_with_index do |line, index| %>
               <div <% if index == 0 %>class="fw-semibold"<% end %>><%= line %></div>
             <% end %>
           </p>
         <% end %>
-        <% if @ead_request.ead_doc.repository_contact[:email] %>
+        <% if @patron_request.ead_doc.repository_contact[:email] %>
           <p>
-            <span class="fw-semibold">Email: </span><%= mail_to @ead_request.ead_doc.repository_contact[:email] %>
+            <span class="fw-semibold">Email: </span><%= mail_to @patron_request.ead_doc.repository_contact[:email] %>
           </p>
         <% end %>
       </div>
