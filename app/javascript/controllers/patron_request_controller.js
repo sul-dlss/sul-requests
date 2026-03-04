@@ -22,7 +22,7 @@ export default class extends Controller {
       accordionController.goto('barcodes-accordion');
     }
 
-    if (!this.digitizationItemsTarget.querySelector('[data-content-id] .accordion-collapse.show')) {
+    if (this.hasDigitizationItemsTarget && !this.digitizationItemsTarget.querySelector('[data-content-id] .accordion-collapse.show')) {
       const first = this.digitizationItemsTarget.querySelector('[data-content-id] .accordion-collapse');
 
       if (first) Collapse.getOrCreateInstance(first).show();
