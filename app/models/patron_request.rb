@@ -331,6 +331,8 @@ class PatronRequest < ApplicationRecord
 
   # @return [Boolean] whether the request should be mediated before being placed in FOLIO
   def mediateable?
+    return false if aeon_page?
+
     selectable_items.any?(&:mediateable?)
   end
 
