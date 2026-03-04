@@ -6,6 +6,8 @@
 class PatronRequestsController < ApplicationController
   include FolioController
 
+  rescue_from EadClient::Error, with: :handle_ead_client_error
+
   check_authorization
 
   bot_challenge only: [:new]
@@ -32,7 +34,11 @@ class PatronRequestsController < ApplicationController
 
   def create
     if @patron_request.save && @patron_request.submit_later
-      redirect_to @patron_request
+      if @patron_request.ead_url.present?
+        redirect_to archives_request_path(@patron_request)
+      else
+        redirect_to @patron_request
+      end
     else
       render 'new'
     end
@@ -52,10 +58,12 @@ class PatronRequestsController < ApplicationController
   # for each request.
   #
   # Aeon pages never need authentication, because Aeon will handle that as part of its request flow.
-  def authorize_new_request # rubocop:disable Metrics/AbcSize
-    return if current_user.patron.present? || (params[:step].present? && current_user.patron.email.present?) || @patron_request.aeon_page?
+  def authorize_new_request # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+    return if @patron_request.aeon_page? && (current_user.email_address || !Settings.features.requests_redesign)
 
-    flash.now[:error] = t('sessions.login_by_sunetid.error_html') if sunetid_without_folio_account?
+    return if current_user.patron.present? || (params[:step].present? && current_user.patron.email.present?)
+
+    flash.now[:error] = t('sessions.login_by_sunetid.error_html') if sunetid_without_folio_account? && !@patron_request.aeon_page?
 
     render 'login'
   end
@@ -77,7 +85,7 @@ class PatronRequestsController < ApplicationController
     current_user.sso_user? && current_user.patron.blank?
   end
 
-  def new_params
+  def new_params # rubocop:disable Metrics/AbcSize
     if params[:value] || params[:Value]
       ead_url = params[:value] || params[:Value]
     else
@@ -96,5 +104,9 @@ class PatronRequestsController < ApplicationController
                                    :scan_page_range, :scan_authors, :scan_title,
                                    :aeon_reading_special, :aeon_terms, :ead_url,
                                    { barcodes: [] }, { aeon_item: {} }])
+  end
+
+  def handle_ead_client_error
+    render 'ead_error'
   end
 end

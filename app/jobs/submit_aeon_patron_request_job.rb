@@ -20,7 +20,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   end
 
   def perform_ead_request(patron_request)
-    patron_request.aeon_item.each do |volume_params|
+    patron_request.aeon_item.each_value do |volume_params|
       request = as_aeon_create_ead_request_data(patron_request, volume_params)
       response = submit_aeon_request(request)
 

@@ -51,7 +51,7 @@ class PatronRequest < ApplicationRecord
   before_create do
     self.request_type = 'mediated' if mediateable? && !request_type.start_with?('mediated') && !aeon_page?
     self.display_type = calculate_display_type
-    self.item_title = folio_instance&.title
+    self.item_title = folio_instance&.title || ead_doc&.title
     self.estimated_delivery = earliest_delivery_estimate(scan: scan?)&.dig('display_date')
   end
 
@@ -256,7 +256,7 @@ class PatronRequest < ApplicationRecord
 
   # @return [Folio::Instance]
   def folio_instance
-    return unless instance_hrid
+    return if instance_hrid.blank?
 
     @folio_instance ||= begin
       # Append "a" to the item_id unless it already starts with a letter (e.g. "in00000063826")
@@ -267,7 +267,7 @@ class PatronRequest < ApplicationRecord
 
   # @return [String] the title of the item
   def item_title
-    super || folio_instance&.title
+    super || folio_instance&.title || ead_doc&.title
   end
 
   def view_url
@@ -289,7 +289,7 @@ class PatronRequest < ApplicationRecord
 
   # @return [Array<Folio::Item>] the items the patron can select from (based on the location or the barcodes passed in initially)
   def selectable_items
-    return [] if ead_url
+    return [] if ead_url.present?
 
     if requested_barcodes&.any?
       items_in_location.select { |x| x.barcode&.in?(requested_barcodes) || x.id.in?(requested_barcodes) }
@@ -443,9 +443,7 @@ class PatronRequest < ApplicationRecord
     finding_aid? ? finding_aid : Settings.aeon_ere_url
   end
 
-  def ead_url
-    super || (finding_aid if instance_hrid)
-  end
+  def volumes = barcodes
 
   def aeon_reading_room
     return unless aeon_site

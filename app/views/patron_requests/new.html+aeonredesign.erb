@@ -56,7 +56,7 @@
   <% single_barcode = f.object.barcodes&.first || (single_item&.barcode || single_item&.id) %>
   <%= f.hidden_field :barcodes, multiple: true, value: single_barcode %>
 <% end %>
-<%= f.hidden_field :ead_url %>
+<%= f.hidden_field :ead_url if f.object.ead_url.present? %>
 <%# only allow submitting on enter if the final submit button is focused %>
 <%# see: https://stackoverflow.com/a/51507806 %>
 <button type="submit" disabled style="display: none" aria-hidden="true"></button>
@@ -137,7 +137,28 @@
 </div>
 <aside class="col-4">
   <% if @patron_request.ead_doc %>
-
+    <h2>Contact information</h2>
+    <div>
+      <% if @patron_request.ead_doc.repository %>
+        <h3>
+          <%= link_to @patron_request.ead_doc.repository_contact[:website] do %>
+            <%= @patron_request.ead_doc.repository %><i class="bi bi-arrow-up-right ms-1"></i>
+          <% end %>
+        </h3>
+      <% end %>
+      <% if @patron_request.ead_doc.repository_contact[:address] %>
+        <p>
+          <% @patron_request.ead_doc.repository_contact[:address].each_with_index do |line, index| %>
+            <div <% if index == 0 %>class="fw-semibold"<% end %>><%= line %></div>
+          <% end %>
+        </p>
+      <% end %>
+      <% if @patron_request.ead_doc.repository_contact[:email] %>
+        <p>
+          <span class="fw-semibold">Email: </span><%= mail_to @patron_request.ead_doc.repository_contact[:email] %>
+        </p>
+      <% end %>
+    </div>
   <% else %>
     <% library_code = @patron_request.origin_library_code %>
     <% library = Settings.libraries[library_code] %>

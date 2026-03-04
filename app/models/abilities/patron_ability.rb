@@ -36,7 +36,7 @@ class PatronAbility
 
     # anyone can create title-level requests
     can :create, PatronRequest do |request|
-      request.folio_instance.items.none?
+      request.folio_instance&.items&.none?
     end
 
     can :read, [PatronRequest], patron_id: folio_patron.id if folio_patron

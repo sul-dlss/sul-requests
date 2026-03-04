@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Requesting an item from an EAD', :js do
   before do
+    allow(Settings.features).to receive(:requests_redesign).and_return(true)
     allow(EadClient).to receive(:fetch).and_return(Ead::Document.new(eadxml, url: 'whatever'))
 
     login_as(current_user)
@@ -72,7 +73,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       # Input isn't triggered by Capbayara, this works fine with a user/keyboard interaction
       # this allows the continue button to be enabled.
       page.execute_script("document.querySelector('select').dispatchEvent(new Event('input', { bubbles: true }))")
-      click_button 'Submit to Aeon'
+      click_button 'Submit request'
 
       expect(page).to have_content('We received your reading room access request')
 
@@ -106,7 +107,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       click_button 'Continue'
 
       check 'I agree to these terms'
-      click_button 'Submit to Aeon'
+      click_button 'Submit request'
 
       expect(page).to have_content('We received your digitization request')
 
