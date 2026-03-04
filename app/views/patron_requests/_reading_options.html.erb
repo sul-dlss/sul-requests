@@ -1,7 +1,7 @@
 <div class="row p-3 gap-3 flex-column flex-md-row">
   <%= render Aeon::ReadingRoomBriefComponent.new(reading_room: f.object.aeon_reading_room) %>
 
-  <% appointments = current_user.aeon.appointments.select { |appt| appt.reading_room.sites.include?(f.object.aeon_site) } %>
+  <% appointments = current_user.aeon.appointments_for(site: f.object.aeon_site) %>
 
   <div class="mt-3">
     <ul class="appointments-container list-unstyled selected-items-container" data-item-selector-target="selectedItems" data-template="#appointmentTemplate">

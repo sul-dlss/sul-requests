@@ -48,6 +48,10 @@ module Aeon
       end
     end
 
+    def appointments_for(site:)
+      appointments.select { |appt| appt.reading_room.sites.include?(site) }
+    end
+
     def persisted? = true
   end
 end
