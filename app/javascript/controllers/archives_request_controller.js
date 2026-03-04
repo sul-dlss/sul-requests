@@ -14,8 +14,7 @@ function typecast(value) {
 }
 
 export default class extends Controller {
-  static targets = ["items", "requestTypeDisplay", "digitizationItems"]
-  static values = { selectedItems: Array, requestType: String }
+  static targets = ["digitizationItems"]
 
   onSelectedItemsValueChanged(event) {
     if (!this.digitizationItemsTarget.querySelector('[data-content-id] .accordion-collapse.show')) {
@@ -31,25 +30,7 @@ export default class extends Controller {
   }
 
   updateRequestType(event) {
-
-    const label = event.target.labels[0]?.textContent.trim() || event.target.value;
-    this.requestTypeValue = event.target.value;
     this.element.dataset.accordionFormTypeValue = event.target.value;
-  }
-
-  getStimulusParams(element) {
-    const params = {}
-    const pattern = new RegExp(`^data-${this.identifier}-(.+)-param$`, "i")
-
-    for (const { name, value } of Array.from(element.attributes)) {
-      const match = name.match(pattern)
-      const key = match && match[1]
-      if (key) {
-        params[camelize(key)] = typecast(value)
-      }
-    }
-
-    return params;
   }
 
   showItemSelector() {
