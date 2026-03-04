@@ -1,4 +1,4 @@
-<%= turbo_stream.after_all ".appt_dropdown [disabled]" do %>
+<%= turbo_stream.after_all '.appt_dropdown [value=""]' do %>
     <option value="<%= @new_appointment.id %>">
       <%= @new_appointment.start_time.strftime('%b %d, %Y') %> ● <%= @new_appointment.start_time.strftime('%l:%M %p -') %><%= @new_appointment.stop_time.strftime('%l:%M %p') %>
       (<%= pluralize(@new_appointment.requests.length, "item") %>) (New!)
