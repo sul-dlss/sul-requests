@@ -29,30 +29,12 @@
           <% end %>
         </div>
       </div>
-      <%= form_with id: 'archives-request', model: @ead_request, url: archives_requests_path, class: 'accordion', html: { autocomplete: "off" }, data: { controller: 'accordion-form item-selector archives-request', action: 'item-selector:changed->archives-request#onSelectedItemsValueChanged item-selector:changed->accordion-form#typeValueChanged item-selector:changed->accordion-form#reenableNextButtons', turbo: false } do |f| %>
+      <%= form_with id: 'archives-request', model: @ead_request, url: archives_requests_path, class: 'accordion', html: { autocomplete: "off" }, data: { controller: 'accordion-form item-selector patron-request', action: 'item-selector:changed->patron-request#showItemSelector item-selector:changed->accordion-form#typeValueChanged item-selector:changed->accordion-form#reenableNextButtons', 'patron-request-type-value': 'aeon', turbo: false } do |f| %>
         <%= f.hidden_field :ead_url %>
         <%= render AccordionStepComponent.new(id: 'request_type', step_index: step_enum.next, form_id: f.id) do |component| %>
           <% component.with_title.with_content('Request type') %>
           <% component.with_body do %>
-            <fieldset class="ps-2">
-              <div>
-                <!--TODO: refactor out #updateType in a new JS controller. Or pick one. This is wrong -->
-                <%= f.radio_button :request_type, 'pickup', :class => 'form-check-input', :required => true, data: { action: 'archives-request#updateRequestType' } %>
-                <%= f.label :request_type_pickup, :class => 'form-check-label ms-1' do %>
-                  Reading room appointment
-                <% end %>
-                <span class="text-cardinal ms-2 mt-1">
-                  Earliest appointment available:
-                  <%= turbo_frame_tag 'earliest_appointment', src: available_aeon_appointments_path(@ead_request.aeon_reading_room&.id, Date.today) %>
-                </span>
-              </div>
-              <div class="mt-2">
-                <%= f.radio_button :request_type, 'scan', :class => 'form-check-input', data: { action: 'archives-request#updateRequestType' } %>
-                <%= f.label :request_type_scan, :class => 'form-check-label ms-1' do %>
-                  Digitization
-                <% end %>
-              </div>
-            </fieldset>
+            <%= render 'patron_requests/reading_or_digitization', f: f %>
           <% end %>
         <% end %>
 
@@ -106,7 +88,7 @@
           <% c.with_body do %>
             <%= render 'patron_requests/digitization_notice' %>
 
-            <div class="accordion digitization-accordion selected-items-container" data-archives-request-target="digitizationItems" data-item-selector-target="selectedItems" data-template="#digitizationTemplate">
+            <div class="accordion digitization-accordion selected-items-container" data-patron-request-target="digitizationItems" data-item-selector-target="selectedItems" data-template="#digitizationTemplate">
             </div>
 
             <template id="digitizationTemplate">
