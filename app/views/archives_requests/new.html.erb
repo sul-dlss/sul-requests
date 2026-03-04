@@ -3,32 +3,8 @@
   <h1 class="mb-4">New request</h1>
   <div class="row">
     <div class="col-8">
-      <div class="card mb-4 bg-light rounded-0 border-0">
-        <div class="card-body">
-          <h2 class="fs-4"><%= @ead_request.ead_doc.title || 'Not available' %></h2>
-          <div class="d-flex gap-md-3 flex-md-row flex-column">
-            <span>
-              <%= render Icons::DocumentBox1Component.new classes: 'me-1 align-text-bottom' %>
-              Archive/Manuscript (<%= @ead_request.ead_doc.date %>)
-            </span>
-            <span>Call number: <%= @ead_request.ead_doc.identifier %></span>
-            <span>
-              <%= link_to @ead_request.ead_doc.collection_permalink, class: 'su-underline' do %>
-                View in Archival Collections at Stanford <i class="bi bi-arrow-up-right"></i>
-              <% end %>
-            </span>
-          </div>
-          <% if @ead_request.ead_doc.creator %>
-            <div class="mt-2">
-              <%= @ead_request.ead_doc.creator %>
-            </div>
-          <% end %>
-          <% if @ead_request.ead_doc.extent %>
-            <hr class="my-2">
-            <div><b class="fw-semibold">Extent: </b><%= @ead_request.ead_doc.extent %></div>
-          <% end %>
-        </div>
-      </div>
+      <%= render EadBibHeaderComponent.new(ead: @ead_request.ead_doc) %>
+
       <%= form_with id: 'archives-request', model: @ead_request, url: archives_requests_path, class: 'accordion', html: { autocomplete: "off" }, data: { controller: 'accordion-form item-selector patron-request', action: 'item-selector:changed->patron-request#showItemSelector item-selector:changed->accordion-form#typeValueChanged item-selector:changed->accordion-form#reenableNextButtons', 'patron-request-type-value': 'aeon', turbo: false } do |f| %>
         <%= f.hidden_field :ead_url %>
         <%= render AccordionStepComponent.new(id: 'request_type', step_index: step_enum.next, form_id: f.id) do |component| %>
