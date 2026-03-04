@@ -9,12 +9,12 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   def perform(patron_request)
     return unless patron_request.aeon_page?
 
-    patron_request.selected_items.each do |item|
-      request = as_aeon_create_request_data(patron_request, item)
+    patron_request.selected_items.each do |folio_item|
+      request = as_aeon_create_request_data(patron_request, folio_item, patron_request.aeon_item&.dig(folio_item.id) || {})
       response = submit_aeon_request(request)
 
-      patron_request.aeon_api_responses.where(item_id: nil).delete_all
-      patron_request.aeon_api_responses.create(item_id: nil, request_data: request.as_json, response_data: response)
+      patron_request.aeon_api_responses.where(item_id: folio_item.id).delete_all
+      patron_request.aeon_api_responses.create(item_id: folio_item.id, request_data: request.as_json, response_data: response)
     end
   end
 
@@ -22,10 +22,10 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   # Once reading room logic for appointments is implemented, this mapping
   # should also contain scheduledDate, appointment id, appointment,
   # and reading room id.
-  def as_aeon_create_request_data(patron_request, item) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+  def as_aeon_create_request_data(patron_request, folio_item, volume_params) # rubocop:disable Metrics/AbcSize
     AeonClient::CreateRequestData.with_defaults.with(
-      appointment_id: patron_request.aeon_item&.dig(item.id, 'appointment_id')&.to_i,
-      call_number: item.callnumber,
+      appointment_id: volume_params['appointment_id'].to_i,
+      call_number: folio_item.callnumber,
       document_type: 'Monograph',
       format: nil,
       item_author: patron_request.folio_instance&.author,
@@ -35,12 +35,12 @@ class SubmitAeonPatronRequestJob < ApplicationJob
       web_request_form: 'GenericRequestMonograph',
       username: patron_request.user.aeon.username,
       item_info1: patron_request.view_url,
-      special_request: patron_request.aeon_item&.dig(item.id, 'additional_information') || patron_request.aeon_reading_special,
+      special_request: volume_params['additional_information'] || patron_request.aeon_reading_special,
       site: patron_request.aeon_site,
       shipping_option: patron_request.aeon_digitization? ? 'Electronic Delivery' : nil,
-      item_info5: patron_request.aeon_item&.dig(item.id, 'requested_pages'),
-      for_publication: patron_request.aeon_item&.dig(item.id, 'for_publication') == 'Yes',
-      item_number: item.barcode
+      item_info5: volume_params['requested_pages'],
+      for_publication: volume_params['for_publication'] == 'Yes',
+      item_number: folio_item.barcode
     )
   end
   # rubocop:enable Metrics/MethodLength
