@@ -547,6 +547,10 @@ label.btn-close {
   }
 }
 
+.appointments-item {
+  flex-wrap: wrap;
+}
+
 #reading:has(.appointments-item:only-child),
 #pickup:has(.appointments-item:only-child) {
   .hide-when-1-item {
@@ -577,6 +581,10 @@ label.btn-close {
 
   .create-appointment-section {
     display: none;
+  }
+
+  @media (min-width: 768px) {
+    flex-wrap: nowrap;
   }
 }
 
