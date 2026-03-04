@@ -118,21 +118,13 @@
 
 <!-- aeon digitization request -->
 
-<%= render AccordionStepComponent.new(request: f.object, id: 'digitization', classes: ['d-none'], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'scan' }) do |c| %>
+<%= render AccordionStepComponent.new(request: f.object, id: 'digitization', classes: ['d-none'], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'scan' }, submit: true) do |c| %>
   <% c.with_title.with_content('Digitization') %>
   <% c.with_body do %>
     <%= render 'digitization_options', f: %>
   <% end %>
 <% end %>
 
-<!-- Digitization terms, only shows up for digitization -->
-
-<%= render AccordionStepComponent.new(request: f.object, id: 'terms', classes: ['d-none'], step_index: step_enum.next, form_id: f.id, data: { 'patronrequest-forRequestType': 'scan' }, submit: true) do |c| %>
-  <% c.with_title.with_content('Terms') %>
-  <% c.with_body do %>
-    <%= render 'digitization_terms', f: %>
-  <% end %>
-<% end %>
 <% end %>
 </div>
 <aside class="col-4">
