@@ -91,10 +91,8 @@
                   Hours: <%= @ead_request.reading_room.human_readable_hours %>
                 </span>
               </div>
-              <% if @ead_request.ead_doc.series_and_subseries&.many? %>
-                <%= link_to new_aeon_appointment_path(reading_room_id: @ead_request.reading_room.id ), class: 'btn btn-primary', data: { action: 'modal#open' } do %>
-                  <i class="bi bi-calendar-plus me-1"></i>Create new appointment
-                <% end %>
+              <%= link_to new_aeon_appointment_path(reading_room_id: @ead_request.reading_room.id ), class: 'btn btn-primary hide-when-1-item', data: { action: 'modal#open' } do %>
+                <i class="bi bi-calendar-plus me-1"></i>Create new appointment
               <% end %>
             </div>
 
@@ -105,28 +103,13 @@
               </div>
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <% if @ead_request.ead_doc.series_and_subseries&.one? %>
-              <div class="d-inline-flex align-items-center gap-1 flex-column flex-md-row ">
-                <select name="appointment" class="form-select" required>
-                  <option disabled selected></option>
-                  <% @ead_request.appointments.each do | appointment | %>
-                    <option value="<%= appointment.id %>">
-                      <%= appointment.start_time.strftime('%b %d, %Y') %> ● <%= appointment.start_time.strftime('%l:%M %p -') %><%= appointment.stop_time.strftime('%l:%M %p') %>
-                      (<%= pluralize(appointment.requests.length, "item") %>)
-                    </option>
-                  <% end %>
-                </select>
-                <div class="fw-semibold">OR</div>
-                <div><button class="btn btn-primary text-nowrap"><i class="bi bi-calendar-plus me-1"></i>Create Appointment</button></div>
-              </div>
-            <% else %>
-              <ul class="list-unstyled selected-items-container" data-item-selector-target="selectedItems" data-template="#appointmentTemplate">
-              </ul>
 
-              <template id="appointmentTemplate">
-                <%= render Aeon::AppointmentFormItemComponent.new(title: '__TITLE__', dom_id: '__ID__', base_name: 'ead_request[items][__ID__]', appointments: @ead_request.appointments) %>
-              </template>
-            <% end %>
+            <ul class="appointments-container list-unstyled selected-items-container" data-item-selector-target="selectedItems" data-template="#appointmentTemplate">
+            </ul>
+
+            <template id="appointmentTemplate">
+              <%= render Aeon::AppointmentFormItemComponent.new(title: '__TITLE__', dom_id: '__ID__', base_name: 'ead_request[items][__ID__]', reading_room_id: @ead_request.reading_room.id, appointments: @ead_request.appointments) %>
+            </template>
           <% end %>
         <% end %>
 

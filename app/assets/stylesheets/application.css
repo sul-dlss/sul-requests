@@ -546,3 +546,55 @@ label.btn-close {
     padding-top: 4px;
   }
 }
+
+#reading:has(.appointments-item:only-child),
+#pickup:has(.appointments-item:only-child) {
+  .hide-when-1-item {
+    display: none;
+  }
+}
+
+.appointments-container .appointments-item:not(:only-child) {
+  /* .border */
+  border: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+
+  /* .bg-light */
+  --bs-bg-opacity: 1;
+  background: rgba(var(--bs-light-rgb),var(--bs-bg-opacity)) !important;
+
+  label {
+    /* .visually-hidden */
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border:0 !important;
+    position:absolute !important
+  }
+
+  .create-appointment-section {
+    display: none;
+  }
+}
+
+.appointments-container .appointments-item:only-child {
+  .selected-item-status, .selected-item-remove {
+    display: none;
+  }
+
+  label {
+    width: 100%;
+  }
+
+  .selected-item-title {
+    background-color: var(--stanford-fog-light);
+    padding-bottom: 4px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 4px;
+    margin-bottom: 1rem;
+  }
+}
