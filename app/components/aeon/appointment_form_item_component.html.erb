@@ -6,7 +6,7 @@
       <i class="bi bi-trash"></i><span class="visually-hidden"> Delete <%= title %></span>
     </button>
   </div>
-  <%= fields_for base_name do |f| %>
+  <%= fields_for base_name, object do |f| %>
     <%= f.label :appointment_id, 'Appointment', class: 'form-label fw-semibold redesign-required-label' %>
     <span class="d-inline-flex flex-row">
       <%= f.select :appointment_id,

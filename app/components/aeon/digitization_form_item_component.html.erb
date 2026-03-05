@@ -9,7 +9,7 @@
     </button>
   </div>
   <div id="content_<%= dom_id %>" class="accordion-collapse <%= 'collapse' if collapsed? %>">
-    <%= fields_for base_name do |f| %>
+    <%= fields_for base_name, object do |f| %>
       <div class="accordion-body">
         <div class="mb-3">
           <%= f.label :requested_pages, class: 'form-label fw-semibold redesign-required-label' %>
