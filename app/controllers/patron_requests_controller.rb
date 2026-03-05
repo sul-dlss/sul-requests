@@ -36,7 +36,8 @@ class PatronRequestsController < ApplicationController
 
   def new
     request.variant = :aeon if @patron_request.aeon_page?
-    request.variant = :aeonredesign if (@patron_request.ead_url || @patron_request.aeon_page?) && Settings.features.requests_redesign
+    request.variant = :aeonredesign if @patron_request.aeon_page? && Settings.features.requests_redesign
+    request.variant = :ead if @patron_request.ead_url
   end
 
   def create
