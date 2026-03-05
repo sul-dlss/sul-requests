@@ -5,9 +5,9 @@
         </form>
       <% else %>
         <% if helpers.can? :edit, request %>
-          <a class="btn btn-link su-underline p-0 me-sm-2" href="#replace_me">
+          <%= link_to edit_aeon_request_path(request), class: 'btn btn-link su-underline p-0 me-sm-2' do %>
             <i class="bi bi-pencil-fill me-1 align-middle"></i><span class="d-none d-sm-inline">Edit request</span>
-          </a>
+          <% end %>
         <% end %>
         <% if helpers.can? :destroy, request %>
           <button class="btn btn-link su-underline p-0" type="submit" data-bs-toggle="modal" data-bs-target="#delete-<%= transaction_number %>">
