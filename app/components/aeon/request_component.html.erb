@@ -13,6 +13,7 @@
         <span class="fw-normal text-nowrap text-green"><%= appointment_reading_room_name %></span>
       </span>
       <% end %>
+      <%= render Aeon::RequestMissingInformationComponent.new(request:) %>
     </div>
     <%= render Aeon::RequestActionsComponent.new(request:) %>
   </div>
