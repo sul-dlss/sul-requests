@@ -84,10 +84,6 @@ module Aeon
       @publication = publication
     end
 
-    def editable?
-      draft? || appointment&.editable?
-    end
-
     def appointment?
       appointment_id.present?
     end

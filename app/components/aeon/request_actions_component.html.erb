@@ -4,7 +4,7 @@
           <button type="submit" class="btn btn-link su-underline" aria-label="resubmit request"><i class="bi bi-arrow-clockwise"></i> Resubmit</button>
         </form>
       <% else %>
-        <% if request&.editable? %>
+        <% if helpers.can? :edit, request %>
           <a class="btn btn-link su-underline p-0 me-sm-2" href="#replace_me">
             <i class="bi bi-pencil-fill me-1 align-middle"></i><span class="d-none d-sm-inline">Edit request</span>
           </a>
