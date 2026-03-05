@@ -3,6 +3,8 @@
 module Aeon
   # Wraps an Aeon request record
   class Request
+    include ActiveModel::Model
+
     attr_reader :item_url, :appointment, :appointment_id, :author, :call_number,
                 :creation_date, :date, :document_type, :format, :item_number, :pages, :photoduplication_status,
                 :publication, :location, :reference_number, :shipping_option, :site,
@@ -126,6 +128,9 @@ module Aeon
     def coalesce_key
       reference_number || transaction_number
     end
+
+    def id = transaction_number
+    def persisted? = id.present?
 
     private
 
