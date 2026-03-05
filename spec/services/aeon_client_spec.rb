@@ -74,7 +74,7 @@ RSpec.describe AeonClient do
 
   describe '#create_request' do
     it 'submits a request and returns the created request' do
-      payload = AeonClient::CreateRequestData.with_defaults.with(
+      payload = AeonClient::RequestData.with_defaults.with(
         username: 'jdoe',
         item_title: 'Test Request'
       )
@@ -112,7 +112,7 @@ RSpec.describe AeonClient do
     end
   end
 
-  describe AeonClient::CreateRequestData do
+  describe AeonClient::RequestData do
     it 'truncates long field data to fit Aeon API limits' do
       expect(described_class.with_defaults.with(
         call_number: 'A' * 300,

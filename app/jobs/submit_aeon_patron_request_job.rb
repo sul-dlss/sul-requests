@@ -32,7 +32,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   end
 
   def as_aeon_create_ead_request_data(patron_request, volume_params) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-    AeonClient::CreateRequestData.with_defaults.with(
+    AeonClient::RequestData.with_defaults.with(
       call_number: "#{patron_request.ead_doc.identifier} #{volume_params['series']}",
       ead_number: patron_request.ead_doc.identifier,
       appointment_id: volume_params['appointment_id'].to_i,
@@ -55,7 +55,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   # should also contain scheduledDate, appointment id, appointment,
   # and reading room id.
   def as_aeon_create_request_data(patron_request, folio_item, volume_params) # rubocop:disable Metrics/AbcSize
-    AeonClient::CreateRequestData.with_defaults.with(
+    AeonClient::RequestData.with_defaults.with(
       appointment_id: volume_params['appointment_id'].to_i,
       call_number: folio_item.callnumber,
       document_type: 'Monograph',

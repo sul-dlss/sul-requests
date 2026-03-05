@@ -41,8 +41,8 @@ class AeonClient
     handle_response(response, as_class: Aeon::Request, not_found: [])
   end
 
-  # Submit an archives request to Aeon
-  # @param aeon_payload [AeonClient::CreateRequestData]
+  # Submit a new request to Aeon
+  # @param aeon_payload [AeonClient::RequestData]
   def create_request(aeon_payload)
     response = post('Requests/create', aeon_payload.as_json)
 
@@ -125,11 +125,11 @@ class AeonClient
     end
   end
 
-  CreateRequestData = Data.define(:call_number, :document_type, :ead_number, :for_publication, :format,
-                                  :item_author, :item_citation, :item_date, :item_info1, :item_info2, :appointment_id,
-                                  :item_info3, :item_info4, :item_info5, :item_number, :item_subtitle, :item_title, :item_volume,
-                                  :location, :web_request_form,
-                                  :reference_number, :shipping_option, :site, :special_request, :system_id, :username) do
+  RequestData = Data.define(:call_number, :document_type, :ead_number, :for_publication, :format,
+                            :item_author, :item_citation, :item_date, :item_info1, :item_info2, :appointment_id,
+                            :item_info3, :item_info4, :item_info5, :item_number, :item_subtitle, :item_title, :item_volume,
+                            :location, :web_request_form,
+                            :reference_number, :shipping_option, :site, :special_request, :system_id, :username) do
     def omission = '…'
 
     def as_json # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
