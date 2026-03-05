@@ -148,7 +148,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       expect(page).to have_content('Field Reading Room')
       expect(page).to have_content('Hours: Monday - Friday, 9:00 - 4:45 PM')
       expect(page).to have_content('Appointments must be scheduled at least 5 business days in advance. Maximum of 5 items per day.')
-      expect(find('select').all('option').map(&:text)).to eq ['', 'Feb 19, 2026 ● 12:00 PM - 1:00 PM (1 item)']
+      expect(find('select').all('option').map(&:text)).to eq ['Select existing appointment', 'Feb 19, 2026 ● 12:00 PM - 1:00 PM (1 item)']
     end
   end
 
