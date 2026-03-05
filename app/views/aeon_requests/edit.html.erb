@@ -1,0 +1,9 @@
+<%= form_with(model: @aeon_request) do |f| %>
+  <% if f.object.digital? %>
+    <%= render Aeon::DigitizationFormItemComponent.new(title: 'Title', dom_id: 'edit_aeon_item_request', object: nil, base_name: 'aeon_request[item]', series: nil, subseries: nil, collapsed: false) %>
+  <% else %>
+
+  <% end %>
+
+  <%= f.submit %>
+<% end %>

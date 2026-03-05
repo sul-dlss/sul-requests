@@ -47,9 +47,10 @@ class AeonRequestsController < ApplicationController
     AeonClient.new.update_request(
       @aeon_request.transaction_number,
       AeonClient::RequestData.with_defaults.with(
-        for_publication: aeon_request_params.dig(:item, :for_publication) == 'Yes',
-        item_info5: aeon_request_params.dig(:item, :requested_pages),
-        special_request: aeon_request_params.dig(:item, :additional_information)
+        appointment_id: aeon_request_params[:appointment_id]&.to_i,
+        for_publication: aeon_request_params[:for_publication] == 'Yes',
+        item_info5: aeon_request_params[:requested_pages],
+        special_request: aeon_request_params[:additional_information]
       )
     )
   end
