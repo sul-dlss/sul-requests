@@ -15,7 +15,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
       response = submit_aeon_request(request)
 
       patron_request.aeon_api_responses.where(item_id: folio_item.id).delete_all
-      patron_request.aeon_api_responses.create(item_id: folio_item.id, request_data: request.as_json, response_data: response)
+      patron_request.aeon_api_responses.create(item_id: folio_item.id, request_data: request.as_json, response_data: response.as_json)
     end
   end
 
@@ -27,7 +27,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
       item_id = "#{request.call_number} #{request.item_volume}"
 
       patron_request.aeon_api_responses.where(item_id: item_id).delete_all
-      patron_request.aeon_api_responses.create(item_id: item_id, request_data: request.as_json, response_data: response)
+      patron_request.aeon_api_responses.create(item_id: item_id, request_data: request.as_json, response_data: response.as_json)
     end
   end
 
