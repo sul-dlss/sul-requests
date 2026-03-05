@@ -105,7 +105,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       fill_in 'Requested pages', with: 'Pages 1-10'
       fill_in 'Additional information', with: 'Testing only'
 
-      click_button 'Submit to Aeon'
+      click_button 'Submit request'
 
       expect(page).to have_content('We received your digitization request')
 
