@@ -93,7 +93,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       expect(page).to have_content('Knuth (Donald E.) papers')
 
       choose 'Digitization'
-
+      check 'I agree to these terms'
       click_button 'Continue'
 
       click_link 'Computers and Typesetting'
@@ -104,9 +104,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       expect(page).to have_content('Requested pages')
       fill_in 'Requested pages', with: 'Pages 1-10'
       fill_in 'Additional information', with: 'Testing only'
-      click_button 'Continue'
 
-      check 'I agree to these terms'
       click_button 'Submit request'
 
       expect(page).to have_content('We received your digitization request')

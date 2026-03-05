@@ -57,15 +57,13 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       expect(page).to have_no_content 'Select item'
 
       choose 'Digitization'
+      check 'I agree to these terms'
 
       click_button 'Continue'
 
       fill_in 'Requested pages', with: 'Pages 1-10'
       choose 'Yes'
       fill_in 'Additional information', with: 'Testing only'
-
-      click_button 'Continue'
-      check 'I agree to these terms'
 
       click_button 'Submit request'
 
@@ -107,6 +105,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
     it 'allows the user to submit a digitization request' do
       choose 'Digitization'
+      check 'I agree to these terms'
       click_button 'Continue'
 
       check 'ABC 123'
@@ -118,9 +117,6 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       click_button 'Next item'
       fill_in 'Requested pages', with: 'Pages 11-20'
       choose 'No'
-      click_button 'Continue'
-
-      check 'I agree to these terms'
 
       click_button 'Submit request'
 
