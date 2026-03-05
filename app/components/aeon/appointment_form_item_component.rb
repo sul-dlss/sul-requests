@@ -18,5 +18,13 @@ module Aeon
     def new_appointment_path
       new_aeon_appointment_path(reading_room_id: @reading_room_id)
     end
+
+    def placeholder
+      if appointments.any?
+        'Select existing appointment'
+      else
+        ''
+      end
+    end
   end
 end
