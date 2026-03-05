@@ -8,6 +8,8 @@ class AeonRequestsController < ApplicationController
   include AeonFilterable
   include AeonSortable
 
+  before_action :load_aeon_request, only: [:destroy, :resubmit]
+
   def drafts
     authorize! :read, Aeon::Request
 
@@ -27,7 +29,7 @@ class AeonRequestsController < ApplicationController
   end
 
   def resubmit
-    authorize! :update, aeon_request
+    authorize! :update, @aeon_request
 
     AeonClient.new.update_request_route(transaction_number: params[:id], status: 'Submitted by User')
     respond_to do |format|
@@ -36,7 +38,7 @@ class AeonRequestsController < ApplicationController
   end
 
   def destroy
-    authorize! :destroy, aeon_request
+    authorize! :destroy, @aeon_request
 
     AeonClient.new.update_request_route(transaction_number: params[:id], status: 'Cancelled by User')
     respond_to do |format|
@@ -46,7 +48,7 @@ class AeonRequestsController < ApplicationController
 
   private
 
-  def aeon_request
-    current_user.aeon.requests.find { |request| request.transaction_number == params[:id].to_i }
+  def load_aeon_request
+    @aeon_request = current_user.aeon.requests.find { |request| request.transaction_number == params[:id].to_i }
   end
 end
