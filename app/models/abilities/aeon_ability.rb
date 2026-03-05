@@ -20,7 +20,7 @@ class AeonAbility
 
     can :destroy, Aeon::Request, username: aeon_user.username
     can :update, Aeon::Request do |request|
-      request.username == aeon_user.username && request.writable?
+      request.username == aeon_user.username && (request.editable? || request.cancelled?)
     end
 
     can :read, Aeon::Request

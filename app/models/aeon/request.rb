@@ -85,7 +85,7 @@ module Aeon
     end
 
     def editable?
-      (digital? && draft?) || appointment&.editable?
+      draft? || appointment&.editable?
     end
 
     def appointment?
@@ -123,10 +123,6 @@ module Aeon
 
     def physical?
       !digital?
-    end
-
-    def writable?
-      cancelled? || editable?
     end
 
     def coalesce_key
