@@ -74,7 +74,7 @@ RSpec.describe AeonClient do
 
   describe '#create_request' do
     it 'submits a request and returns the created request' do
-      payload = AeonClient::CreateRequestData.with_defaults.with(
+      payload = AeonClient::RequestData.with_defaults.with(
         username: 'jdoe',
         item_title: 'Test Request'
       )
@@ -112,7 +112,7 @@ RSpec.describe AeonClient do
     end
   end
 
-  describe AeonClient::CreateRequestData do
+  describe AeonClient::RequestData do
     it 'truncates long field data to fit Aeon API limits' do
       expect(described_class.with_defaults.with(
         call_number: 'A' * 300,
@@ -123,6 +123,22 @@ RSpec.describe AeonClient do
         eadNumber: "#{'B' * 254}…",
         itemAuthor: "#{'C' * 254}…"
       )
+    end
+
+    describe '#as_patch_json' do
+      it 'formats the data for a PATCH request' do
+        data = described_class.with_defaults.with(
+          call_number: 'Call123',
+          ead_number: 'B' * 300,
+          item_author: 'Author Name'
+        )
+
+        expect(data.as_patch_json).to contain_exactly(
+          { op: 'replace', path: '/callNumber', value: 'Call123' },
+          { op: 'replace', path: '/eadNumber', value: "#{'B' * 254}…" },
+          { op: 'replace', path: '/itemAuthor', value: 'Author Name' }
+        )
+      end
     end
   end
 end
