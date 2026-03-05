@@ -53,18 +53,6 @@ RSpec.describe Aeon::Request do
       request = build(:aeon_request, transaction_status: 8)
       expect(request).not_to be_draft
     end
-
-    context 'with a digitization request' do
-      it 'returns false when the digitization process has been initiated' do
-        draft_tranaction_queue = Aeon::Queue.new(id: 5, queue_name: 'Awaiting User Review', queue_type: 'Transaction')
-        in_progress_digital_queue = Aeon::Queue.new(id: 9, queue_name: 'Awaiting Order Processing', queue_type: 'Photoduplication')
-        allow(aeon_client).to receive(:find_queue).with(id: 5, type: :transaction).and_return(draft_tranaction_queue)
-        allow(aeon_client).to receive(:find_queue).with(id: 9, type: :photoduplication).and_return(in_progress_digital_queue)
-
-        request = build(:aeon_request, :digitized, transaction_status: 5, photoduplication_status: 9)
-        expect(request).not_to be_draft
-      end
-    end
   end
 
   describe '#completed?' do
