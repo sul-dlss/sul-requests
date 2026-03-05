@@ -62,6 +62,9 @@ layer(components);
   background-color: var(--stanford-10-black);
 }
 
+.bg-fog-light {
+  background-color: var(--stanford-fog-light);
+}
 
 .text-cardinal {
   color: rgba(var(--stanford-cardinal-rgb), 1);
@@ -608,5 +611,21 @@ label.btn-close {
     padding-right: 8px;
     padding-top: 4px;
     margin-bottom: 1rem;
+  }
+}
+
+.confirmation {
+  .card {
+    --bs-card-spacer-y: 0;
+    --bs-card-spacer-x: 0;
+  }
+
+  .accordion {
+    --bs-accordion-border-width: 0;
+    --bs-accordion-border-radius: 0;
+  }
+  
+  .accordion-item {
+    border-bottom: 1px solid var(--stanford-20-black)!important;
   }
 }
