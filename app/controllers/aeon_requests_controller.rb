@@ -41,7 +41,7 @@ class AeonRequestsController < ApplicationController
     authorize! :update, @aeon_request
   end
 
-  def update
+  def update # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     authorize! :update, @aeon_request
 
     AeonClient.new.update_request(
@@ -53,6 +53,9 @@ class AeonRequestsController < ApplicationController
         special_request: aeon_request_params[:additional_information]
       )
     )
+
+    aeon_requests_path = @aeon_request.draft? ? drafts_aeon_requests_path : submitted_aeon_requests_path
+    redirect_to aeon_requests_path, notice: 'Request was successfully updated.'
   end
 
   def destroy
@@ -71,6 +74,6 @@ class AeonRequestsController < ApplicationController
   end
 
   def aeon_request_params
-    params.expect(aeon_request: { item: [:requested_pages, :for_publication, :additional_information] })
+    params.expect(aeon_request: [:appointment_id, :requested_pages, :for_publication, :additional_information])
   end
 end

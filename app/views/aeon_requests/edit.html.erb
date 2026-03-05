@@ -1,9 +1,11 @@
 <%= form_with(model: @aeon_request) do |f| %>
   <% if f.object.digital? %>
-    <%= render Aeon::DigitizationFormItemComponent.new(title: 'Title', dom_id: 'edit_aeon_item_request', object: nil, base_name: 'aeon_request[item]', series: nil, subseries: nil, collapsed: false) %>
+    <%= render Aeon::DigitizationFormItemComponent.new(title: f.object.volume, dom_id: 'edit_aeon_item_request', object: f.object, base_name: 'aeon_request', series: nil, subseries: nil, collapsed: false) %>
   <% else %>
-
+    <ul id="reading" class="appointments-container list-unstyled">
+      <%= render Aeon::AppointmentFormItemComponent.new(title: f.object.call_number, dom_id: 'edit_aeon_item_request', object: f.object, base_name: 'aeon_request', series: nil, subseries: nil, reading_room_id: f.object.reading_room.id, appointments: current_user.aeon.appointments_for(site: f.object.site)) %>
+    </ul>
   <% end %>
 
-  <%= f.submit %>
+  <%= f.submit class: 'btn btn-primary' %>
 <% end %>
