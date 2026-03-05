@@ -299,8 +299,8 @@ class PatronRequest < ApplicationRecord
   end
 
   # @return [Array<Folio::Item>] the items the patron has selected
-  def selected_items
-    return [] unless barcodes&.any?
+  def selected_items # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity
+    return [] unless barcodes&.any? && ead_url.blank?
 
     items = items_in_location.select { |x| x.barcode.in?(barcodes) || x.id.in?(barcodes) }
 
@@ -442,8 +442,6 @@ class PatronRequest < ApplicationRecord
 
     finding_aid? ? finding_aid : Settings.aeon_ere_url
   end
-
-  def volumes = barcodes
 
   def aeon_reading_room
     return unless aeon_site

@@ -23,7 +23,7 @@
       <% end %>
       <%# Checkbox to select entire container %>
       <%- checked = f.object.selected_items.any? { |item| series_title == item[:series] && container_name == item[:subseries] } %>
-      <%= f.check_box :volumes, 
+      <%= f.check_box :barcodes,
             { multiple: true, class: 'form-check-input mt-1', id: checkbox_id, checked: checked,
               data: { action: 'item-selector#change', 'item-selector-target': 'item', 'item-selector-title-parts-param': [series_title, container_name].to_json, 'item-selector-id-param': checkbox_id } },
             checkbox_id,
@@ -72,7 +72,7 @@
           <i class="bi bi-chevron-right disclosure-icon"></i>
         </span>
       <% end %>
-      <%= f.check_box :volumes, 
+      <%= f.check_box :barcodes,
             { multiple: true, class: "form-check-input mt-1 #{'ms-2' unless nested}", id: checkbox_id, 
               data: { action: 'item-selector#change', 'item-selector-target': 'item', 'item-selector-title-parts-param': [series_title || display_group.title, display_group.title], 'item-selector-id-param': checkbox_id } },
               volume_value(series_title: series_title || display_group.title, subseries_name: display_group.title),
