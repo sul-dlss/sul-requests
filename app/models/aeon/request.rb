@@ -104,11 +104,7 @@ module Aeon
     end
 
     def draft?
-      if digital?
-        photoduplication_queue.nil? || photoduplication_queue&.draft?
-      else
-        transaction_queue.nil? || transaction_queue&.draft?
-      end
+      transaction_queue.nil? || transaction_queue&.draft?
     end
 
     def submitted?
