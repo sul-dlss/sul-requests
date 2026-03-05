@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'archives_requests/_series_contents.html.erb' do
+RSpec.describe 'patron_requests/_ead_series_contents.html.erb' do
   let(:form_builder) { instance_double(ActionView::Helpers::FormBuilder, check_box: '', object: instance_double(PatronRequest, selected_items: [])) }
   let(:parent_title) { 'Test Series' }
 
@@ -36,7 +36,7 @@ RSpec.describe 'archives_requests/_series_contents.html.erb' do
       items = [item1, item2]
       display_groups = Ead::DisplayGroup.build_display_groups(items)
 
-      render partial: 'archives_requests/series_contents',
+      render partial: 'patron_requests/ead_series_contents',
              locals: { contents: display_groups, f: form_builder, parent_title: parent_title, series_title: parent_title, nested: false }
 
       # Should have container label with badge showing count
@@ -72,7 +72,7 @@ RSpec.describe 'archives_requests/_series_contents.html.erb' do
       items = [item1, item2]
       display_groups = Ead::DisplayGroup.build_display_groups(items)
 
-      render partial: 'archives_requests/series_contents',
+      render partial: 'patron_requests/ead_series_contents',
              locals: { contents: display_groups, f: form_builder, parent_title: parent_title, series_title: parent_title, nested: false }
 
       # Should have individual checkboxes for each item
@@ -111,7 +111,7 @@ RSpec.describe 'archives_requests/_series_contents.html.erb' do
       items = [subseries]
       display_groups = Ead::DisplayGroup.build_display_groups(items)
 
-      render partial: 'archives_requests/series_contents',
+      render partial: 'patron_requests/ead_series_contents',
              locals: { contents: display_groups, f: form_builder, parent_title: parent_title, series_title: parent_title, nested: false }
 
       # Should have subseries header with title and badge

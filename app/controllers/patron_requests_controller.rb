@@ -25,7 +25,14 @@ class PatronRequestsController < ApplicationController
     render 'unauthorized', status: :forbidden
   end
 
-  def show; end
+  def show
+    if @patron_request.aeon_page? && Settings.features.requests_redesign # rubocop:disable Style/GuardClause
+      @aeon_requests = Aeon::RequestGrouping.new(current_user.aeon.requests.select do |x|
+        x.reference_number == @patron_request.to_global_id.to_s
+      end)
+      request.variant = :aeon
+    end
+  end
 
   def new
     request.variant = :aeon if @patron_request.aeon_page?
@@ -34,11 +41,7 @@ class PatronRequestsController < ApplicationController
 
   def create
     if @patron_request.save && @patron_request.submit_later
-      if @patron_request.ead_url.present?
-        redirect_to archives_request_path(@patron_request)
-      else
-        redirect_to @patron_request
-      end
+      redirect_to @patron_request
     else
       render 'new'
     end
