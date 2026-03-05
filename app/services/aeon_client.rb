@@ -49,6 +49,14 @@ class AeonClient
     handle_response(response, as_class: Aeon::Request)
   end
 
+  # Submit a request patch to Aeon
+  # @param aeon_payload [AeonClient::RequestData]
+  def update_request(transaction_number, aeon_payload)
+    response = patch("Requests/#{transaction_number}", aeon_payload.as_patch_json)
+
+    handle_response(response, as_class: Aeon::Request)
+  end
+
   def update_request_route(transaction_number:, status:)
     response = post("Requests/#{transaction_number}/route", { newStatus: status })
 
@@ -160,6 +168,12 @@ class AeonClient
         username: username&.truncate(50, omission:),
         webRequestForm: web_request_form&.truncate(100, omission:) || 'SUL Requests'
       }.compact
+    end
+
+    def as_patch_json
+      as_json.except(:webRequestForm).compact.map do |k, v|
+        { op: 'replace', path: "/#{k}", value: v }
+      end
     end
 
     def self.with_defaults
