@@ -22,3 +22,12 @@
     <% end %>
   </div>
 <% end %>
+
+<% if can? :debug, @patron_request %>
+  <hr>
+
+  <h2>Aeon Response</h2>
+  <% @patron_request.aeon_api_responses.each do |r| %>
+    <pre class="card p-2"><%= JSON.pretty_generate(r.as_json) %></pre>
+  <% end %>
+<% end %>
