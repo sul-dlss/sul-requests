@@ -23,13 +23,13 @@
       <% end %>
       <%# Checkbox to select entire container %>
       <%- checked = f.object.selected_items.any? { |item| series_title == item[:series] && container_name == item[:subseries] } %>
-      <%= f.check_box :volumes, 
+      <%= f.check_box :barcodes,
             { multiple: true, class: 'form-check-input mt-1', id: checkbox_id, checked: checked,
               data: { action: 'item-selector#change', 'item-selector-target': 'item', 'item-selector-title-parts-param': [series_title, container_name].to_json, 'item-selector-id-param': checkbox_id } },
             checkbox_id,
             nil %>
       <%= tag.div class: 'd-none', data: { 'content-id': checkbox_id, 'toggle-disabled': true } do %>
-        <%= fields_for "ead_request[items][#{checkbox_id}]" do |f| %>
+        <%= fields_for "patron_request[aeon_item][#{checkbox_id}]" do |f| %>
           <%= f.hidden_field :id, disabled: !checked, value: checkbox_id, data: { toggle: true } %>
           <%= f.hidden_field :series, disabled: !checked, value: series_title, data: { toggle: true } %>
           <%= f.hidden_field :subseries, disabled: !checked, value: container_name, data: { toggle: true } %>
@@ -72,14 +72,14 @@
           <i class="bi bi-chevron-right disclosure-icon"></i>
         </span>
       <% end %>
-      <%= f.check_box :volumes, 
+      <%= f.check_box :barcodes,
             { multiple: true, class: "form-check-input mt-1 #{'ms-2' unless nested}", id: checkbox_id, 
               data: { action: 'item-selector#change', 'item-selector-target': 'item', 'item-selector-title-parts-param': [series_title || display_group.title, display_group.title], 'item-selector-id-param': checkbox_id } },
               volume_value(series_title: series_title || display_group.title, subseries_name: display_group.title),
             nil %>
 
       <%= tag.div class: 'd-none', data: { contentId: checkbox_id, toggleDisabled: true } do %>
-        <%= fields_for "ead_request[items][#{checkbox_id}]" do |f| %>
+        <%= fields_for "patron_request[aeon_item][#{checkbox_id}]" do |f| %>
           <%= f.hidden_field :id, disabled: !checked, value: checkbox_id, data: { toggle: true } %>
           <%= f.hidden_field :series, disabled: !checked, value: series_title || container_name, data: { toggle: true } %>
           <%= f.hidden_field :subseries, disabled: !checked, value: display_group.title, data: { toggle: true } %>
@@ -128,7 +128,7 @@
       <% end %>
       <%# Subseries content (recursive) %>
       <div id="<%= subseries_id %>" class="collapse mt-2 ms-3" data-archives-series-target="content">
-        <%= render partial: 'series_contents', locals: { contents: display_group.contents, f: f, parent_title: display_group.title, series_title: series_title || display_group.title, nested: true } %>
+        <%= render partial: 'ead_series_contents', locals: { contents: display_group.contents, f: f, parent_title: display_group.title, series_title: series_title || display_group.title, nested: true } %>
       </div>
     </div>
   <% end %>

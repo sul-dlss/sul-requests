@@ -13,17 +13,17 @@ class PatronRequest < ApplicationRecord
   store :data, accessors: [
     :barcodes, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title,
     :proxy, :for_sponsor, :for_sponsor_id, :estimated_delivery, :patron_name, :item_title, :requested_barcodes, :item_mediation_data,
-    :aeon_reading_special, :aeon_item, :aeon_terms
+    :aeon_reading_special, :aeon_item, :aeon_terms, :ead_url
   ], coder: JSON
 
   delegate :instance_id, :finding_aid, :finding_aid?, to: :folio_instance
 
-  validates :instance_hrid, presence: true
   validates :request_type, inclusion: { in: %w[scan pickup mediated mediated/approved mediated/done] }
   validates :scan_title, presence: true, on: :create, if: :folio_scan?
   validate :pickup_service_point_is_valid, on: :create, if: :folio_pickup?
   validate :needed_date_is_valid, on: :create
   validate :for_sponsor_id_is_valid, on: :create
+  validate :data_source_id_is_valid
 
   scope :obsolete, lambda { |date|
     where('(created_at < ?) AND (needed_date IS NULL OR needed_date < ?)', date, date)
@@ -51,7 +51,7 @@ class PatronRequest < ApplicationRecord
   before_create do
     self.request_type = 'mediated' if mediateable? && !request_type.start_with?('mediated') && !aeon_page?
     self.display_type = calculate_display_type
-    self.item_title = folio_instance&.title
+    self.item_title = folio_instance&.title || ead_doc&.title
     self.estimated_delivery = earliest_delivery_estimate(scan: scan?)&.dig('display_date')
   end
 
@@ -182,7 +182,7 @@ class PatronRequest < ApplicationRecord
 
   # @return [Array<Message>] Location-specific broadcast messages that impact this request
   def active_messages
-    library_location.active_messages.for_type(scan? ? 'scan' : 'page')
+    library_location&.active_messages&.for_type(scan? ? 'scan' : 'page') || []
   end
 
   # Figure out the best contact info for the patron to use for this request; usually
@@ -245,6 +245,10 @@ class PatronRequest < ApplicationRecord
 
   # @!endgroup
 
+  # @!group EAD data
+
+  # @!endgroup
+
   # @!group FOLIO instance + items
   def submit_later
     SubmitPatronRequestJob.perform_later(self)
@@ -252,6 +256,8 @@ class PatronRequest < ApplicationRecord
 
   # @return [Folio::Instance]
   def folio_instance
+    return if instance_hrid.blank?
+
     @folio_instance ||= begin
       # Append "a" to the item_id unless it already starts with a letter (e.g. "in00000063826")
       hrid = instance_hrid.start_with?(/\d/) ? "a#{instance_hrid}" : instance_hrid
@@ -261,7 +267,7 @@ class PatronRequest < ApplicationRecord
 
   # @return [String] the title of the item
   def item_title
-    super || folio_instance&.title
+    super || folio_instance&.title || ead_doc&.title
   end
 
   def view_url
@@ -283,6 +289,8 @@ class PatronRequest < ApplicationRecord
 
   # @return [Array<Folio::Item>] the items the patron can select from (based on the location or the barcodes passed in initially)
   def selectable_items
+    return [] if ead_url.present?
+
     if requested_barcodes&.any?
       items_in_location.select { |x| x.barcode&.in?(requested_barcodes) || x.id.in?(requested_barcodes) }
     else
@@ -291,8 +299,8 @@ class PatronRequest < ApplicationRecord
   end
 
   # @return [Array<Folio::Item>] the items the patron has selected
-  def selected_items
-    return [] unless barcodes&.any?
+  def selected_items # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity
+    return [] unless barcodes&.any? && ead_url.blank?
 
     items = items_in_location.select { |x| x.barcode.in?(barcodes) || x.id.in?(barcodes) }
 
@@ -408,12 +416,25 @@ class PatronRequest < ApplicationRecord
   def aeon_page?
     return @aeon_page if defined?(@aeon_page)
 
+    return true if ead_url.present?
+
     @aeon_page ||= selectable_items.any?(&:aeon_pageable?)
   end
 
+  # Maps from the value in EAD to Aeon's valid site codes
+  REPOSITORY_TO_SITE_CODE = {
+    'Department of Special Collections and University Archives' => 'SPECUA',
+    'Archive of Recorded Sound' => 'ARS',
+    'East Asia Library' => 'EASTASIA'
+  }.freeze
+
   # @return [String] the Aeon site code for the items in the request
   def aeon_site
-    selectable_items.filter_map(&:aeon_site).first
+    if ead_doc
+      REPOSITORY_TO_SITE_CODE[ead_doc.repository] || 'SPECUA'
+    else
+      selectable_items.filter_map(&:aeon_site).first
+    end
   end
 
   def aeon_form_target
@@ -443,6 +464,12 @@ class PatronRequest < ApplicationRecord
   def aeon_reading_room_name
     library = Settings.libraries[aeon_reading_room_code] || Settings.libraries.default
     library.reading_room_label || "#{library['label']} Reading Room"
+  end
+
+  def ead_doc
+    return unless ead_url
+
+    @ead_doc ||= EadClient.fetch(ead_url)
   end
 
   # Scan stuff
@@ -628,6 +655,8 @@ class PatronRequest < ApplicationRecord
 
   # @return [LibraryLocation]
   def library_location
+    return unless folio_instance
+
     @library_location ||= LibraryLocation.new(origin_library_code, origin_location_code)
   end
 
@@ -675,5 +704,11 @@ class PatronRequest < ApplicationRecord
     return unless for_sponsor_id && for_sponsor?
 
     errors.add(:for_sponsor_id, 'Invalid sponsor') unless patron.sponsors.any? { |sponsor| sponsor.id == for_sponsor_id }
+  end
+
+  def data_source_id_is_valid
+    return if instance_hrid.present? || ead_url.present?
+
+    errors.add(:instance_id, 'Either a FOLIO instance HRID or an EAD URL must be provided')
   end
 end

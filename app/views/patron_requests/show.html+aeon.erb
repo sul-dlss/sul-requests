@@ -1,14 +1,15 @@
+
+<% if @patron_request.request_type == 'scan' %>
+  <h1>We received your digitization request!</h1>
+
+  <div class="bg-light p-2 fs-5 mb-4">We'll email you when your files are ready.</div>
+<% else %>
+  <h1>We received your reading room access request!</h1>
+
+  <div class="bg-light p-2 fs-5 mb-4">Please review Reading room policies before arriving for your appointment.</div>
+<% end %>
+
 <% if @aeon_requests.any? %>
-  <% if @aeon_requests.shipping_option == 'Electronic Delivery' %>
-    <h1>We received your digitization request!</h1>
-
-    <div class="bg-light p-2 fs-5 mb-4">We'll email you when your files are ready.</div>
-  <% else %>
-    <h1>We received your reading room access request!</h1>
-
-    <div class="bg-light p-2 fs-5 mb-4">Please review Reading room policies before arriving for your appointment.</div>
-  <% end %>
-
   <h2><%= @aeon_requests.title %></h2>
 
   <div class="d-flex gap-sm-3 flex-sm-row flex-column">
