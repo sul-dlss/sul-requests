@@ -84,6 +84,10 @@ module Aeon
       @publication = publication
     end
 
+    def editable?
+      (digital? && draft?) || appointment&.editable?
+    end
+
     def appointment?
       appointment_id.present?
     end
@@ -122,7 +126,7 @@ module Aeon
     end
 
     def writable?
-      cancelled? || appointment.editable?
+      cancelled? || editable?
     end
 
     def coalesce_key
