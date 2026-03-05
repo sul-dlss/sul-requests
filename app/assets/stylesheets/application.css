@@ -524,7 +524,7 @@ label.btn-close {
   font-weight: normal;
 }
 
-.accordion-item:last-child .next-item {
+.selected-items-container .accordion-item:last-child .next-item {
   display: none;
 }
 
