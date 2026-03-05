@@ -10,7 +10,7 @@
     <%= f.label :appointment_id, 'Appointment', class: 'form-label fw-semibold redesign-required-label' %>
     <span class="d-inline-flex flex-row">
       <%= f.select :appointment_id,
-          appointments.map { |a| ["#{a.start_time.strftime('%b %d, %Y')} ● #{a.start_time.strftime('%l:%M %p -')}#{a.stop_time.strftime('%l:%M %p')} (#{pluralize(a.requests.length, 'item')})", a.id] },
+          appointments.select(&:editable?).map { |a| ["#{a.start_time.strftime('%b %d, %Y')} ● #{a.start_time.strftime('%l:%M %p -')}#{a.stop_time.strftime('%l:%M %p')} (#{pluralize(a.requests.length, 'item')})", a.id] },
           { prompt: placeholder },
           { class: 'form-select appt_dropdown', required: true } %>
       <span class="create-appointment-section">
