@@ -105,9 +105,9 @@ module Aeon
 
     def draft?
       if digital?
-        photoduplication_queue&.draft?
+        photoduplication_queue.nil? || photoduplication_queue&.draft?
       else
-        transaction_queue&.draft?
+        transaction_queue.nil? || transaction_queue&.draft?
       end
     end
 
@@ -116,7 +116,7 @@ module Aeon
     end
 
     def digital?
-      shipping_option == 'Electronic Delivery' && photoduplication_status.present?
+      shipping_option == 'Electronic Delivery'
     end
 
     def physical?
