@@ -75,7 +75,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       page.execute_script("document.querySelector('select').dispatchEvent(new Event('input', { bubbles: true }))")
       click_button 'Submit request'
 
-      expect(page).to have_content('We received your reading room access request')
+      expect(page).to have_css('.confirmation')
 
       perform_enqueued_jobs
       expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
@@ -107,7 +107,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
 
       click_button 'Submit request'
 
-      expect(page).to have_content('We received your digitization request')
+      expect(page).to have_css('.confirmation')
 
       perform_enqueued_jobs
       expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(

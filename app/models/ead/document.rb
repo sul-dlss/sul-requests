@@ -24,10 +24,16 @@ module Ead
       @identifier ||= doc.xpath('//unitid[not(@type)]').first&.text&.strip
     end
 
+    alias call_number identifier
+
+    def document_type
+      'Archive/Manuscript'
+    end
+
     # Note, OAC populates this value with the archives.stanford.edu permalink
     # This means we aren't distinguishing/tracking traffic from OAC
-    def collection_permalink
-      @collection_permalink ||= doc.xpath('//eadid/@url').first&.value&.strip
+    def item_url
+      @item_url ||= doc.xpath('//eadid/@url').first&.value&.strip
     end
 
     def date
@@ -48,11 +54,11 @@ module Ead
       @extent ||= doc.xpath('//physdesc/extent').first&.text&.strip
     end
 
-    def creator
-      # Try multiple XPaths for creator/origination
-      @creator ||= doc.xpath('//origination/persname').first&.text&.strip ||
-                   doc.xpath('//origination/corpname').first&.text&.strip ||
-                   doc.xpath('//origination').first&.text&.strip
+    def author
+      # Try multiple XPaths for author/origination
+      @author ||= doc.xpath('//origination/persname').first&.text&.strip ||
+                  doc.xpath('//origination/corpname').first&.text&.strip ||
+                  doc.xpath('//origination').first&.text&.strip
     end
 
     def languages

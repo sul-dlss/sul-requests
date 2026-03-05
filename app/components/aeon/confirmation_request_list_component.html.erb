@@ -1,0 +1,35 @@
+
+<div class="border rounded p-3 mb-2">
+  <h2 class="h3 mb-3"><%= title %></h2>
+  <ul class="list-unstyled">
+    <% requests.each_with_index do |request, index| %>
+      <li class="accordion accordion-flush">
+        <div class="accordion-item">
+          <div class="accordion-header bg-white accordion-button px-0 collapsed d-flex align-items-center justify-content-between" type="button" data-bs-toggle="collapse" data-bs-target="#<%= accordion_name(index) %>" aria-expanded="false" aria-controls="<%= accordion_name(index) %>" id="<%= accordion_name(index) %>Heading">
+            <div>
+              <span class="px-2 bg-fog-light fw-semibold">
+                <%= request.call_number %><i class="bi bi-chevron-right"></i><%= request.volume %>
+              </span>
+              <span class="ms-2 fs-14">Request #<%= request.transaction_number %></span>
+            </div>
+            <div>
+              <% if request.appointment %>
+              <span><%= request.appointment.start_time.strftime("%b %d, %Y") %></span><i class="bi bi-dot"></i><span><%= request.appointment.start_time.strftime("%H:%M %P") %> - <%= request.appointment.stop_time.strftime("%H:%M %P") %></span>
+              <% elsif request.pages %>
+                Pages <%= request.pages %>
+              <% end %>
+            </div>
+          </div>
+          <div id="<%= accordion_name(index) %>" class="accordion-collapse collapse" aria-labelledby="<%= accordion_name(index) %>Heading">
+            <div class="accordion-body">
+              <%= request.special_request %>
+              <% unless request.special_request.present? %>
+                No special requests
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+</div>
