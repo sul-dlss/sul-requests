@@ -448,18 +448,18 @@ label.btn-close {
 }
 
 /* This can't go inline or display: none for when the turbo-frame is loading won't work */
-.appointment-slots {
+.appointment-slots, .duration-selectors {
   display: flex;
 }
 
-#available_appointments[busy=""] {
+#available_appointments:not(.form-incomplete)[busy=""] {
   .loading-overlay {
     display: flex;
     animation: skeleton-loading 1s linear infinite alternate;
     margin-top: -1rem;
   }
 
-  fieldset > *:not(legend) {
+  fieldset > *:not(legend):not(.duration-selectors) {
     display: none;
   }
 }
@@ -470,7 +470,7 @@ label.btn-close {
 }
 
 /* Show alert when turbo-frame src isn't set because form doesn't have all required fields */
-#available_appointments:not([src]), #available_appointments[src=""] {
+#available_appointments.form-incomplete {
   fieldset > *:not(legend) {
     display: none;
   }

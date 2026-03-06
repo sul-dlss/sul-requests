@@ -53,23 +53,36 @@ export default class extends Controller {
 
     const date = formData.get('aeon_appointment[date]');
     const readingRoomId = formData.get('aeon_appointment[reading_room_id]');
-    const start_time = formData.get('aeon_appointment[start_time]');
+    const startTime = formData.get('aeon_appointment[start_time]');
+    const apptDuration = formData.get('aeon_appointment[duration]');
 
     if (!date || !readingRoomId) return;
 
-    this.availabilityTarget.src = `/aeon_appointments/available/${readingRoomId}/${date}?selected=${start_time}`
+    this.availabilityTarget.src = `/aeon_appointments/available/${readingRoomId}/${date}?selected=${startTime}&duration=${apptDuration}`
   }
 
   resetFields() {
     this.element.querySelector('input[type=date]').value = '';
-    this.availabilityTarget.src = '';
+    const checkedDuration = document.querySelector('[name="aeon_appointment[duration]"]:checked');
+    if (checkedDuration) checkedDuration.checked = false;
+    this.updateFormStatus();
+  }
+
+  updateFormStatus() {
+  const formData = new FormData(this.element);
+    if (!formData.get('aeon_appointment[duration]') || !formData.get('aeon_appointment[date]') || !formData.get('aeon_appointment[reading_room_id]')) {
+      this.availabilityTarget.classList.add('form-incomplete');
+    } else {
+      this.availabilityTarget.classList.remove('form-incomplete');
+    }
   }
 
   applyDurationFilter() {
     const formData = new FormData(this.element);
     const apptDuration = formData.get('aeon_appointment[duration]');
+    this.updateFormStatus();
 
-    this.element.querySelectorAll('[name="aeon_appointment[start_time]"]').forEach((radio) => {
+    this.element.querySelectorAll('[name="aeon_appointment[start_time]"]:not([type="hidden"])').forEach((radio) => {
       const slotLength = radio.dataset.maximumAppointmentLength;
 
       if (parseInt(slotLength) >= parseInt(apptDuration)) {
