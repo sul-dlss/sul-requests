@@ -4,6 +4,7 @@
 class AccordionStepComponent < ViewComponent::Base
   renders_one :title
   renders_one :body
+  renders_one :footer
 
   attr_reader :step_index, :id, :classes, :data, :patron_request_data, :form_id, :request
 
