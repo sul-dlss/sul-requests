@@ -46,7 +46,8 @@ class SubmitAeonPatronRequestJob < ApplicationJob
       shipping_option: patron_request.request_type == 'scan' ? 'Electronic Delivery' : nil,
       site: patron_request.aeon_site,
       special_request: volume_params['additional_information'],
-      username: patron_request.user.email_address
+      username: patron_request.user.email_address,
+      web_request_form: 'multiple'
     )
   end
 
@@ -64,7 +65,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
       item_date: patron_request.folio_instance&.pub_date,
       item_title: patron_request.item_title,
       location: patron_request.origin_location_code,
-      web_request_form: 'GenericRequestMonograph',
+      web_request_form: patron_request.selectable_items.many? ? 'multiple' : 'single',
       username: patron_request.user.aeon.username,
       item_info1: patron_request.view_url,
       special_request: volume_params['additional_information'] || patron_request.aeon_reading_special,
