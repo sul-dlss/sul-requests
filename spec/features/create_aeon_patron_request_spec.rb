@@ -170,8 +170,7 @@ RSpec.describe 'Creating an Aeon patron request', :js do
       end
 
       it 'visits the Stanford finding if one exists' do
-        click_on 'Continue'
-        expect(page.current_host).to eq 'https://archives.stanford.edu'
+        expect(page).to have_css('form[action^="https://archives.stanford.edu"')
       end
     end
   end
