@@ -155,7 +155,7 @@ class AeonClient
         itemInfo3: item_info3&.truncate(255, omission:),
         itemInfo4: item_info4&.truncate(255, omission:),
         itemInfo5: item_info5&.truncate(255, omission:),
-        item_number: item_number&.truncate(50, omission:),
+        itemNumber: item_number&.truncate(50, omission:),
         itemSubTitle: item_subtitle&.truncate(255, omission:),
         itemTitle: item_title&.truncate(255, omission:),
         itemVolume: item_volume&.truncate(255, omission:),
