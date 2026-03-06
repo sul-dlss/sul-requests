@@ -121,10 +121,6 @@ module Aeon
       !digital?
     end
 
-    def writable?
-      cancelled? || appointment.editable?
-    end
-
     def coalesce_key
       reference_number || transaction_number
     end
