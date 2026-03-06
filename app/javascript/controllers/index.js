@@ -45,3 +45,6 @@ application.register("modal", ModalController)
 
 import SelectedItemFormController from "./selected_item_form_controller"
 application.register("selected-item-form", SelectedItemFormController)
+
+import StatusCounterController from "./status_counter_controller"
+application.register("status-counter", StatusCounterController)
