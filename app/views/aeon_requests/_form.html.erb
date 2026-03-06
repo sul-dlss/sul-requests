@@ -1,0 +1,17 @@
+<%= form_with(model: @aeon_request, data: { turbo: true }) do |f| %>
+  <div class="modal-body">
+    <% if f.object.digital? %>
+      <%= render Aeon::DigitizationFormItemComponent.new(title: f.object.volume, dom_id: 'edit_aeon_item_request', object: f.object, base_name: 'aeon_request', series: nil, subseries: nil, collapsed: false) %>
+    <% else %>
+      <ul id="reading" class="appointments-container list-unstyled">
+        <%= render Aeon::AppointmentFormItemComponent.new(title: f.object.call_number, dom_id: 'edit_aeon_item_request', object: f.object, base_name: 'aeon_request', series: nil, subseries: nil, reading_room_id: f.object.reading_room.id, appointments: current_user.aeon.appointments_for(site: f.object.site)) %>
+      </ul>
+    <% end %>
+  </div>
+
+
+  <div class="modal-footer">
+    <%= link_to 'Cancel', aeon_appointments_path, class: 'btn btn-outline-primary', data: { 'bs-dismiss': 'modal' } %>
+    <%= f.submit class: 'btn btn-primary', data: { 'bs-dismiss': 'modal' } %>
+  </div>
+<% end %>
