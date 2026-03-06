@@ -63,13 +63,13 @@
     <main id="main" class="flex-fill container my-3">
       <%= render 'shared/flashes' %>
       <%= yield %>
-      <% unless request.variant == :modal %>
-        <div id="modal" class="modal" tabindex="-1" data-modal-target="frame">
+      <template id="modal-template" data-modal-target="template">
+        <div class="modal" tabindex="-1">
           <div class="modal-dialog modal-lg">
-            <turbo-frame id="modal-contents" class="modal-content" target="_top"></turbo-frame>
+            <turbo-frame class="modal-content" target="_top"></turbo-frame>
           </div>
         </div>
-      <% end %>
+      </template>
     </main>
     <footer>
       <%= render 'shared/su_global_footer' %>

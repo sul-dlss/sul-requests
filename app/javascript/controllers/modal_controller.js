@@ -2,26 +2,38 @@ import { Controller } from "@hotwired/stimulus"
 import { Modal } from "bootstrap"
 
 export default class extends Controller {
-  static targets = ["frame"]
-
-  frameTargetConnected() {
-    this.modal = new Modal(this.frameTarget)
-  }
-
-  frameTargetDisconnected() {
-    this.modal.dispose()
-    this.modal = null
-  }
+  static targets = ["template", "frame"]
 
   open(event) {
     event.preventDefault()
     event.stopPropagation()
-    this.modal.show()
+
+    const modal = this.createModal()
+    // this.modal.show()
     const url = new URL(event.currentTarget.href)
 
     // append modal=true to the URL so that the server can respond with the appropriate variant
-    url.searchParams.set("modal", "true")
+    url.searchParams.set("modal", modal.querySelector("turbo-frame").id)
 
-    this.frameTarget.querySelector("turbo-frame").src = url.toString()
+    modal.querySelector("turbo-frame").src = url.toString()
+  }
+
+  createModal() {
+    const template = this.templateTarget
+    const modal = template.content.cloneNode(true).querySelector(".modal")
+    document.body.appendChild(modal)
+    modal.querySelector("turbo-frame").id = `modal-${Date.now()}`
+    const bsModal = new Modal(modal)
+    bsModal.show()
+
+    modal.addEventListener("hidden.bs.modal", () => {
+      // pause to allow any final actions before removing the modal from the DOM.
+      setTimeout(() => {
+        bsModal.dispose()
+        modal.remove()
+      }, 1000)
+    })
+
+    return modal;
   }
 }
