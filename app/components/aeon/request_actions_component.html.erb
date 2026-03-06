@@ -30,9 +30,9 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
-              <form action="<%= aeon_request_path(transaction_number) %>" method="DELETE">
+              <%= form_with url: aeon_request_path(transaction_number), method: 'delete' do %>
                 <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Yes - Delete</button>
-              </form>
+              <% end %>
             </div>
           </div>
         </div>
