@@ -20,6 +20,18 @@ module Aeon
       new_aeon_appointment_path(reading_room_id: @reading_room_id)
     end
 
+    def appointment_options_for_select # rubocop:disable Metrics/AbcSize
+      options_for_select(
+        appointments.select(&:editable?).sort_by(&:sort_key).map do |a|
+          [
+            "#{a.start_time.strftime('%b %d, %Y')} ● #{a.start_time.strftime('%l:%M %p -')}#{a.stop_time.strftime('%l:%M %p')} (#{pluralize(
+              a.requests.length, 'item'
+            )})", a.id, { data: { 'sort-key' => a.sort_key.to_s } }
+          ]
+        end
+      )
+    end
+
     def placeholder
       if appointments.any?
         'Select existing appointment'
