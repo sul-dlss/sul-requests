@@ -35,7 +35,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
     AeonClient::RequestData.with_defaults.with(
       call_number: "#{patron_request.ead_doc.identifier} #{volume_params['series']}",
       ead_number: patron_request.ead_doc.identifier,
-      appointment_id: volume_params['appointment_id'].to_i,
+      appointment_id: volume_params['appointment_id'].presence&.to_i,
       for_publication: volume_params['for_publication'] == 'yes',
       item_author: patron_request.ead_doc.author,
       item_info1: patron_request.ead_doc.item_url,
@@ -56,7 +56,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   # and reading room id.
   def as_aeon_create_request_data(patron_request, folio_item, volume_params) # rubocop:disable Metrics/AbcSize
     AeonClient::RequestData.with_defaults.with(
-      appointment_id: volume_params['appointment_id'].to_i,
+      appointment_id: volume_params['appointment_id'].presence&.to_i,
       call_number: folio_item.callnumber,
       document_type: 'Monograph',
       format: nil,
