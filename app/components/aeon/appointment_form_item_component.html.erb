@@ -12,7 +12,7 @@
       <%= f.select :appointment_id,
           appointment_options_for_select,
           { prompt: placeholder },
-          { class: 'form-select appt_dropdown', required: true, data: { controller: 'appointment-select' } } %>
+          { class: 'form-select appt_dropdown', data: { controller: 'appointment-select', 'required-for-submit': true } } %>
       <span class="create-appointment-section">
         <span class="fw-semibold mx-2">OR</span>
         <%= link_to new_appointment_path, class: 'btn btn-primary btn-sm', data: { action: 'modal#open' } do %>
