@@ -39,12 +39,14 @@ class AeonRequestsController < ApplicationController
 
   def edit
     authorize! :update, @aeon_request
+
+    request.variant = :modal if params[:modal]
   end
 
   def update # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     authorize! :update, @aeon_request
 
-    AeonClient.new.update_request(
+    new_request = AeonClient.new.update_request(
       @aeon_request.transaction_number,
       AeonClient::RequestData.with_defaults.with(
         appointment_id: aeon_request_params[:appointment_id]&.to_i,
@@ -54,8 +56,13 @@ class AeonRequestsController < ApplicationController
       )
     )
 
-    aeon_requests_path = @aeon_request.draft? ? drafts_aeon_requests_path : submitted_aeon_requests_path
-    redirect_to aeon_requests_path, notice: 'Request was successfully updated.'
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.replace(new_request, Aeon::RequestComponent.new(request: new_request)) }
+      format.html do
+        aeon_requests_path = new_request.draft? ? drafts_aeon_requests_path : submitted_aeon_requests_path
+        redirect_to aeon_requests_path, notice: 'Request was successfully updated.'
+      end
+    end
   end
 
   def destroy
@@ -63,7 +70,7 @@ class AeonRequestsController < ApplicationController
 
     AeonClient.new.update_request_route(transaction_number: params[:id], status: 'Cancelled by User')
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.remove("request-#{params[:id]}") }
+      format.turbo_stream { render turbo_stream: turbo_stream.remove(@aeon_request) }
     end
   end
 
