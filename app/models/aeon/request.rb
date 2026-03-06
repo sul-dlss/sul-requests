@@ -128,6 +128,14 @@ module Aeon
     def id = transaction_number
     def persisted? = id.present?
 
+    def requested_pages = pages
+    def for_publication = publication ? 'yes' : 'no'
+    def additional_information = special_request
+
+    def reading_room
+      @reading_room ||= AeonClient.new.reading_rooms.find { |rr| rr.sites.include?(site) }
+    end
+
     private
 
     def within_persist_completed_request_as_submitted_period?

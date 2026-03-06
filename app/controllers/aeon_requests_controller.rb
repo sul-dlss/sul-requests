@@ -8,7 +8,7 @@ class AeonRequestsController < ApplicationController
   include AeonFilterable
   include AeonSortable
 
-  before_action :load_aeon_request, only: [:destroy, :resubmit]
+  before_action :load_aeon_request, only: [:edit, :update, :destroy, :resubmit]
 
   def drafts
     authorize! :read, Aeon::Request
@@ -37,6 +37,27 @@ class AeonRequestsController < ApplicationController
     end
   end
 
+  def edit
+    authorize! :update, @aeon_request
+  end
+
+  def update # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    authorize! :update, @aeon_request
+
+    AeonClient.new.update_request(
+      @aeon_request.transaction_number,
+      AeonClient::RequestData.with_defaults.with(
+        appointment_id: aeon_request_params[:appointment_id]&.to_i,
+        for_publication: aeon_request_params[:for_publication] == 'Yes',
+        item_info5: aeon_request_params[:requested_pages],
+        special_request: aeon_request_params[:additional_information]
+      )
+    )
+
+    aeon_requests_path = @aeon_request.draft? ? drafts_aeon_requests_path : submitted_aeon_requests_path
+    redirect_to aeon_requests_path, notice: 'Request was successfully updated.'
+  end
+
   def destroy
     authorize! :destroy, @aeon_request
 
@@ -50,5 +71,9 @@ class AeonRequestsController < ApplicationController
 
   def load_aeon_request
     @aeon_request = current_user.aeon.requests.find { |request| request.transaction_number == params[:id].to_i }
+  end
+
+  def aeon_request_params
+    params.expect(aeon_request: [:appointment_id, :requested_pages, :for_publication, :additional_information])
   end
 end
