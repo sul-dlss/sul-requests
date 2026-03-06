@@ -136,6 +136,11 @@ module Aeon
       @reading_room ||= AeonClient.new.reading_rooms.find { |rr| rr.sites.include?(site) }
     end
 
+    def multi_item_selector?
+      # Assuming multi-item selection for legacy Aeon requests seems a better default.
+      @web_request_form != 'single'
+    end
+
     private
 
     def within_persist_completed_request_as_submitted_period?
