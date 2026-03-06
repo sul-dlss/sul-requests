@@ -78,6 +78,23 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   # rubocop:enable Metrics/MethodLength
 
   def submit_aeon_request(aeon_payload)
-    AeonClient.new.create_request(aeon_payload)
+    response = aeon_client.create_request(aeon_payload)
+
+    return response if complete?(aeon_payload)
+
+    aeon_client.update_request_route(transaction_number: response.transaction_number,
+                                     status: Settings.aeon.queue_names.draft.transaction.first)
+  end
+
+  def aeon_client
+    @aeon_client ||= AeonClient.new
+  end
+
+  def complete?(payload)
+    if payload.shipping_option == 'Electronic Delivery'
+      payload.item_info5.present?
+    else
+      payload.appointment_id.present?
+    end
   end
 end
