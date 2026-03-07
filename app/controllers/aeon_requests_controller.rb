@@ -31,7 +31,7 @@ class AeonRequestsController < ApplicationController
   def resubmit
     authorize! :update, @aeon_request
 
-    AeonClient.new.update_request_route(transaction_number: params[:id], status: 'Submitted by User')
+    aeon_client.update_request_route(transaction_number: params[:id], status: 'Submitted by User')
     respond_to do |format|
       format.turbo_stream { render turbo_stream: turbo_stream.remove("request-#{params[:id]}") }
     end
@@ -46,7 +46,7 @@ class AeonRequestsController < ApplicationController
   def update # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     authorize! :update, @aeon_request
 
-    new_request = AeonClient.new.update_request(
+    new_request = aeon_client.update_request(
       @aeon_request.transaction_number,
       AeonClient::RequestData.with_defaults.with(
         appointment_id: aeon_request_params[:appointment_id]&.to_i,
@@ -68,7 +68,7 @@ class AeonRequestsController < ApplicationController
   def destroy
     authorize! :destroy, @aeon_request
 
-    AeonClient.new.update_request_route(transaction_number: params[:id], status: 'Cancelled by User')
+    aeon_client.update_request_route(transaction_number: params[:id], status: 'Cancelled by User')
     respond_to do |format|
       format.turbo_stream { render turbo_stream: turbo_stream.remove(@aeon_request) }
     end

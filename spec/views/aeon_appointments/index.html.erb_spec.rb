@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'aeon_appointments/index.html.erb' do
   before do
+    allow(controller).to receive_messages(current_user: build(:sso_user))
     assign(:appointments, appointments)
     render
   end

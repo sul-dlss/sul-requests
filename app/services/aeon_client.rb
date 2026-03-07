@@ -188,6 +188,15 @@ class AeonClient
     end
   end
 
+  # Special payload for removing an appointment from a request
+  class DeleteAppointmentRequestData
+    def as_patch_json
+      [
+        { op: 'remove', path: '/appointmentId' }
+      ]
+    end
+  end
+
   private
 
   def get(path, params: nil)
