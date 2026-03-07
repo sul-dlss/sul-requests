@@ -19,21 +19,7 @@
         <%= render Aeon::RequestLinkComponent.new(request: requests.first) %>
       </div>
       <ul class="list-group list-group-flush">
-        <% requests.each do |request| %>
-          <li id="<%= dom_id(request) %>" class="list-group-item px-0">
-            <div class="d-flex flex-row align-items-center justify-content-between">
-              <div class="d-flex gap-3">
-                <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
-                <%= render Aeon::RequestItemDetailComponent.new(request:) %>
-              </div>
-              <%= render Aeon::RequestActionsComponent.new(request:) %>
-            </div>
-            <div class="pt-2 fs-14 d-flex gap-sm-3 flex-sm-row flex-column">
-              <div>Request #<%= request.transaction_number %></div>
-              <div>Date added/modified: <%= request.transaction_date.strftime("%B %-d, %Y %I:%M %p") %></div>
-            </div>
-          </li>
-        <% end %>
+        <%= render Aeon::RequestGroupItemComponent.with_collection(requests) %>
       </ul>
     </div>
   </div>
