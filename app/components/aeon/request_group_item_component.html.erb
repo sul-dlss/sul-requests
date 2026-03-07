@@ -1,4 +1,4 @@
-<li id="<%= dom_id(request) %>" class="list-group-item px-0">
+<li id="<%= dom_id(request) %>" class="list-group-item px-0" data-empty-remove-target="item">
   <div class="d-flex flex-row align-items-center justify-content-between">
     <div class="d-flex gap-3">
       <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
