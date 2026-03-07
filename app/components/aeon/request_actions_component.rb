@@ -18,5 +18,9 @@ module Aeon
         'Reading room use'
       end
     end
+
+    def include_bulk_actions
+      @request.draft? && (helpers.can? :edit, @request)
+    end
   end
 end
