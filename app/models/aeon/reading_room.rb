@@ -5,6 +5,18 @@ module Aeon
   class ReadingRoom
     include ActiveModel::Model
 
+    def self.aeon_client
+      AeonClient.new
+    end
+
+    def self.all
+      @all ||= aeon_client.reading_rooms
+    end
+
+    def self.find_by(site:)
+      all.find { |rr| rr.sites.include?(site) }
+    end
+
     attr_accessor :id, :name, :available_seats, :time_zone_id, :min_appointment_length, :max_appointment_length,
                   :appointment_padding, :appointment_increment, :last_modified_time, :sites, :open_hours, :policies
 
@@ -23,10 +35,6 @@ module Aeon
         open_hours: Array(dyn['openHours']).map { |h| ReadingRoomOpenHours.from_dynamic(h) },
         policies: Array(dyn['policies']).map { |p| ReadingRoomPolicy.from_dynamic(p) }
       )
-    end
-
-    def self.all
-      @all ||= AeonClient.new.reading_rooms
     end
 
     def daily_item_limit

@@ -24,10 +24,6 @@ module Aeon
     # other attributes
     attr_accessor :format, :location, :special_request, :username
 
-    def self.aeon_client
-      AeonClient.new
-    end
-
     def self.from_dynamic(dyn) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       photoduplication_date = dyn['photoduplicationDate'].presence
       new(
@@ -124,7 +120,9 @@ module Aeon
     end
 
     def reading_room
-      @reading_room ||= AeonClient.new.reading_rooms.find { |rr| rr.sites.include?(site) }
+      return @reading_room if defined?(@reading_room)
+
+      @reading_room = Aeon::ReadingRoom.find_by(site: site)
     end
 
     def multi_item_selector?
@@ -148,11 +146,15 @@ module Aeon
     end
 
     def photoduplication_queue
-      @photoduplication_queue ||= self.class.aeon_client.find_queue(id: photoduplication_status, type: :photoduplication)
+      return @photoduplication_queue if defined?(@photoduplication_queue)
+
+      @photoduplication_queue = Aeon::Queue.find_by(id: photoduplication_status, type: :photoduplication)
     end
 
     def transaction_queue
-      @transaction_queue ||= self.class.aeon_client.find_queue(id: transaction_status, type: :transaction)
+      return @transaction_queue if defined?(@transaction_queue)
+
+      @transaction_queue = Aeon::Queue.find_by(id: transaction_status)
     end
   end
 end
