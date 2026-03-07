@@ -54,7 +54,7 @@ Rails.application.routes.draw do
   resources :mediated_pages, controller: :requests, only: [], concerns: [:statusable]
   resources :hold_recalls, controller: :requests, only: [], concerns: [:statusable]
 
-  resources :aeon_requests, only: [:destroy] do
+  resources :aeon_requests, only: [:edit, :destroy, :update] do
     collection do
       get :submitted, as: :submitted
       get :drafts, as: :draft
@@ -84,7 +84,7 @@ Rails.application.routes.draw do
   get 'feedback' => 'feedback_forms#new'
 
   # Archives requests route - handles EAD XML from archives.stanford.edu
-  resources :archives_requests, only: [:new, :create, :show]
+  get 'archives_requests/new', to: 'patron_requests#new', as: :new_archives_request
 
   Rails.application.routes.draw do
     mount Lookbook::Engine, at: "/lookbook"

@@ -12,7 +12,7 @@ RSpec.describe SubmitAeonPatronRequestJob do
                           origin_location_code: 'SPEC-STACKS', data:, user: build(:sso_user))
   end
   let(:folio_instance) { build(:special_collections_single_holding) }
-  let(:stub_aeon_client) { instance_double(AeonClient, find_user: stub_aeon_user, create_request: {}) }
+  let(:stub_aeon_client) { instance_double(AeonClient, find_user: stub_aeon_user, create_request: Aeon::Request.new, update_request_route: nil) }
   let(:stub_aeon_user) { instance_double(Aeon::User, username: 'aeon_user') }
 
   before do
@@ -48,7 +48,7 @@ RSpec.describe SubmitAeonPatronRequestJob do
                                                                           shipping_option: 'Electronic Delivery',
                                                                           special_request: 'info',
                                                                           username: 'aeon_user',
-                                                                          web_request_form: 'GenericRequestMonograph'
+                                                                          web_request_form: 'single'
                                                                         ))
       end
     end

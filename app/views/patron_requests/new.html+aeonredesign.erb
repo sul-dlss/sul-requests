@@ -9,29 +9,11 @@
 <div class="container mt-4">
 <h1 class="mb-4"> New request </h1>
 
+
 <div class="row">
   <div class="col-8">
-<div class="card mb-4 bg-light rounded-0 border-0">
-  <div class="card-body">
-  <h3 class="fw-semibold fs-5"><%= @patron_request.item_title %></h3>
 
-  <% single_item = @patron_request.selectable_items.first %>
-
-  <% unless single_item.instance && single_item.instance&.hrid != @patron_request.instance_hrid %>
-    <div class="d-flex flex-row mb-2">
-      <div class="fw-normal me-3">
-        <%= single_item.material_type.name.upcase_first %>
-        <% if @patron_request.folio_instance.pub_date.present? %> (<%= @patron_request.folio_instance.pub_date %>)<% end %>
-      </div>
-      <div class="fw-normal me-3">Call number: <%= single_item.base_callnumber %></div>
-      <div class="fw-normal"><a href="<%= @patron_request.view_url %>" class="su-underline">View in SearchWorks<i class="ms-1 bi bi-arrow-up-right"></i></a></div>
-    </div>
-    <div class="d-flex flex-row">
-      <div class="fw-normal me-2"><%= @patron_request.folio_instance.author %></div>
-    </div>
-  <% end %>
-  </div>
-</div>
+  <%= render RecordHeaderComponent.new(patron_request: @patron_request) %>
 
 <%= form_for(@patron_request,
             data: {
@@ -52,6 +34,7 @@
   <% single_barcode = f.object.barcodes&.first || (single_item&.barcode || single_item&.id) %>
   <%= f.hidden_field :barcodes, multiple: true, value: single_barcode %>
 <% end %>
+<%= f.hidden_field :ead_url if f.object.ead_url.present? %>
 <%# only allow submitting on enter if the final submit button is focused %>
 <%# see: https://stackoverflow.com/a/51507806 %>
 <button type="submit" disabled style="display: none" aria-hidden="true"></button>
@@ -66,18 +49,36 @@
 
 <!-- item selector -->
 
-<% if f.object.selectable_items.many? %>
-  <%= render 'item_selector', f: f, step_enum: step_enum %>
+<% if f.object.ead_doc %>
+  <%= render AccordionStepComponent.new(id: 'items', step_index: step_enum.next, form_id: f.id) do |component| %>
+    <% component.with_title.with_content('Items') %>
+    <% component.with_body do %>
+      <div data-controller="archives-series">
+        <p>Use checkboxes to select items. When a digital version is available without additional processing, a link to access it appears next to the item.</p>
+        <div class="mb-2">
+          <!--TODO: pull out text into template?-->
+          <button class="btn btn-link ps-0 su-underline" data-action="click->archives-series#expandAll"><i class="bi bi-chevron-double-right me-1"></i>Expand all (see full content list)</button>
+          <button class="btn btn-link su-underline" data-action="click->archives-series#collapseAll"><i class="bi bi-chevron-double-down me-1"></i>Collapse all</button>
+        </div>
+        <%# Loop through each series in the collection %>
+        <%= render partial: 'ead_series_contents', locals: { contents: Ead::DisplayGroup.build_display_groups(f.object.ead_doc.series_and_subseries), f: f, series_title: nil, parent_title: nil, nested: false } %>
+      </div>
+    <% end %>
+  <% end %>
+<% else %>
+  <% if f.object.selectable_items.many? %>
+    <%= render 'item_selector', f: f, step_enum: step_enum %>
 
-  <div class="toast-container position-fixed bottom-0 end-0 p-3">
-    <div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true" data-item-selector-target="toast">
-      <div class="d-flex">
-        <div class="toast-body">You successfully removed an item.</div>
-        <button type="button" class="btn btn-text text-uppercase" data-action="item-selector#undo analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Undo">Undo</button>
-        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true" data-item-selector-target="toast">
+        <div class="d-flex">
+          <div class="toast-body">You successfully removed an item.</div>
+          <button type="button" class="btn btn-text text-uppercase" data-action="item-selector#undo analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Undo">Undo</button>
+          <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
       </div>
     </div>
-  </div>
+  <% end %>
 <% end %>
 
 <%= render AccordionStepComponent.new(id: 'scan-or-pickup-placeholder', classes: [('d-none' if f.object.request_type)], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'none' }) do |c| %>
@@ -86,58 +87,87 @@
 
 <!-- aeon reading room request -->
 <!-- removed any 'can do this' part for both -->
-<%= render AccordionStepComponent.new(request: f.object, id: 'reading', classes: ['d-none'], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'pickup' }, submit: true) do |c| %>
+<%= render AccordionStepComponent.new(request: f.object, id: 'reading', classes: ['d-none'], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { controller: 'status-counter', action: 'selected-item-form:status-changed->status-counter#update', 'patronrequest-forRequestType': 'pickup' }, submit: true) do |c| %>
   <% c.with_title.with_content('Reading room') %>
   <% c.with_body do %>
     <%= render 'reading_options', f: %>
+  <% end %>
+  <% c.with_footer do %>
+    <span class="px-2 py-1" data-status-counter-target="counter">
+      0 complete
+      0 drafts
+    </span>
   <% end %>
 <% end %>
 
 <!-- aeon digitization request -->
 
-<%= render AccordionStepComponent.new(request: f.object, id: 'digitization', classes: ['d-none'], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { 'patronrequest-forRequestType': 'scan' }) do |c| %>
+<%= render AccordionStepComponent.new(request: f.object, id: 'digitization', classes: ['d-none'], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { controller: 'status-counter', action: 'selected-item-form:status-changed->status-counter#update', 'patronrequest-forRequestType': 'scan' }, submit: true) do |c| %>
   <% c.with_title.with_content('Digitization') %>
   <% c.with_body do %>
     <%= render 'digitization_options', f: %>
   <% end %>
-<% end %>
-
-<!-- Digitization terms, only shows up for digitization -->
-
-<%= render AccordionStepComponent.new(request: f.object, id: 'terms', classes: ['d-none'], step_index: step_enum.next, form_id: f.id, data: { 'patronrequest-forRequestType': 'scan' }, submit: true) do |c| %>
-  <% c.with_title.with_content('Terms') %>
-  <% c.with_body do %>
-    <%= render 'digitization_terms', f: %>
+  <% c.with_footer do %>
+    <span class="px-2 py-1" data-status-counter-target="counter">
+      0 complete
+      0 drafts
+    </span>
   <% end %>
 <% end %>
+
 <% end %>
 </div>
 <aside class="col-4">
-  <% library_code = @patron_request.origin_library_code %>
-  <% library = Settings.libraries[library_code] %>
-  <% if library %>
-  <h2>Contact information</h2>
-  <div>
-      <h3>
-        <% if library.reading_room_url %>
-          <%= link_to library.reading_room_url do %>
-            <%= library.label %><i class="bi bi-arrow-up-right ms-1"></i>
+  <% if @patron_request.ead_doc %>
+    <h2>Contact information</h2>
+    <div>
+      <% if @patron_request.ead_doc.repository %>
+        <h3>
+          <%= link_to @patron_request.ead_doc.repository_contact[:website] do %>
+            <%= @patron_request.ead_doc.repository %><i class="bi bi-arrow-up-right ms-1"></i>
           <% end %>
-        <% else %>
-          <%= library.label %>
-        <% end %>
-      </h3>
-      <% if library.contact_info&.phone %>
-        <p class="mb-1">
-          <span class="fw-semibold">Phone: </span><%= library.contact_info.phone %>
-        </p>
+        </h3>
       <% end %>
-      <% if library.contact_info&.email %>
+      <% if @patron_request.ead_doc.repository_contact[:address] %>
         <p>
-          <span class="fw-semibold">Email: </span><%= mail_to library.contact_info.email %>
+          <% @patron_request.ead_doc.repository_contact[:address].each_with_index do |line, index| %>
+            <div <% if index == 0 %>class="fw-semibold"<% end %>><%= line %></div>
+          <% end %>
         </p>
       <% end %>
-  </div>
+      <% if @patron_request.ead_doc.repository_contact[:email] %>
+        <p>
+          <span class="fw-semibold">Email: </span><%= mail_to @patron_request.ead_doc.repository_contact[:email] %>
+        </p>
+      <% end %>
+    </div>
+  <% else %>
+    <% library_code = @patron_request.origin_library_code %>
+    <% library = Settings.libraries[library_code] %>
+    <% if library %>
+    <h2>Contact information</h2>
+    <div>
+        <h3>
+          <% if library.reading_room_url %>
+            <%= link_to library.reading_room_url do %>
+              <%= library.label %><i class="bi bi-arrow-up-right ms-1"></i>
+            <% end %>
+          <% else %>
+            <%= library.label %>
+          <% end %>
+        </h3>
+        <% if library.contact_info&.phone %>
+          <p class="mb-1">
+            <span class="fw-semibold">Phone: </span><%= library.contact_info.phone %>
+          </p>
+        <% end %>
+        <% if library.contact_info&.email %>
+          <p>
+            <span class="fw-semibold">Email: </span><%= mail_to library.contact_info.email %>
+          </p>
+        <% end %>
+    </div>
+    <% end %>
   <% end %>
 </aside>
 </div>

@@ -3,6 +3,7 @@ import { Collapse } from "bootstrap"
 
 export default class extends Controller {
   static targets = ["status", "nextButton", "charCounter"]
+  static values = { status: String }
 
   connect() {
     this.updateStatus();
@@ -10,6 +11,14 @@ export default class extends Controller {
 
   updateStatus() {
     if (this.emptyFields()) {
+      this.statusValue = 'incomplete';
+    } else {
+      this.statusValue = 'complete';
+    }
+  }
+
+  statusValueChanged() {
+    if (this.statusValue === 'incomplete') {
       this.statusTarget.classList.remove('bi-check2-circle', 'text-green');
       this.statusTarget.classList.add('bi-circle');
       if (this.hasNextButtonTarget) this.nextButtonTarget.disabled = true;
@@ -18,6 +27,8 @@ export default class extends Controller {
       this.statusTarget.classList.add('bi-check2-circle', 'text-green');
       if (this.hasNextButtonTarget) this.nextButtonTarget.disabled = false;
     }
+
+    this.dispatch('status-changed', { detail: { status: this.statusValue } });
   }
 
   updateCharCounter(event) {
@@ -30,7 +41,7 @@ export default class extends Controller {
 
   emptyFields() {
     const formData = new FormData(this.element.closest('form'));
-    return Array.from(this.element.querySelectorAll('[required],[data-required]')).find(x => formData.getAll(x.name).every(x => !x))
+    return Array.from(this.element.querySelectorAll('[required],[data-required],[data-required-for-submit]')).find(x => formData.getAll(x.name).every(x => !x))
   }
 
   nextItem(event) {

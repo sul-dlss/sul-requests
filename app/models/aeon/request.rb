@@ -3,8 +3,10 @@
 module Aeon
   # Wraps an Aeon request record
   class Request
+    include ActiveModel::Model
+
     attr_reader :item_url, :appointment, :appointment_id, :author, :call_number,
-                :creation_date, :date, :document_type, :format, :item_number, :pages, :photoduplication_status,
+                :creation_date, :date, :document_type, :ead_number, :format, :item_number, :pages, :photoduplication_status,
                 :publication, :location, :reference_number, :shipping_option, :site,
                 :special_request, :start_time, :stop_time, :title, :transaction_date,
                 :transaction_number, :transaction_status, :username, :volume
@@ -24,6 +26,7 @@ module Aeon
         creation_date: Time.zone.parse(dyn.fetch('creationDate')),
         date: dyn['itemDate'],
         document_type: dyn['documentType'],
+        ead_number: dyn['eadNumber'],
         format: dyn['format'],
         item_number: dyn['itemNumber'],
         shipping_option: dyn['shippingOption'],
@@ -42,17 +45,18 @@ module Aeon
         username: dyn['username'],
         volume: dyn['itemVolume'],
         special_request: dyn['specialRequest'],
-        publication: dyn['forPublication']
+        publication: dyn['forPublication'],
+        web_request_form: dyn['webRequestForm']
       )
     end
 
     def initialize(item_url: nil, appointment: nil, appointment_id: nil, # rubocop:disable Metrics/AbcSize, Metrics/ParameterLists, Metrics/MethodLength
                    author: nil, call_number: nil, creation_date: nil, date: nil,
-                   document_type: nil, format: nil, item_number: nil, location: nil, pages: nil,
+                   document_type: nil, ead_number: nil, format: nil, item_number: nil, location: nil, pages: nil,
                    photoduplication_status: nil, photoduplication_date: nil,
                    reference_number: nil, shipping_option: nil, start_time: nil, stop_time: nil, title: nil, transaction_date: nil,
                    transaction_number: nil, transaction_status: nil, username: nil, volume: nil, site: nil,
-                   special_request: nil, publication: nil)
+                   special_request: nil, publication: nil, web_request_form: nil)
       @item_url = item_url
       @appointment = appointment
       @appointment_id = appointment_id
@@ -61,6 +65,7 @@ module Aeon
       @creation_date = creation_date
       @date = date
       @document_type = document_type
+      @ead_number = ead_number
       @format = format
       @item_number = item_number
       @location = location
@@ -80,6 +85,7 @@ module Aeon
       @site = site
       @special_request = special_request
       @publication = publication
+      @web_request_form = web_request_form
     end
 
     def appointment?
@@ -104,11 +110,7 @@ module Aeon
     end
 
     def draft?
-      if digital?
-        photoduplication_queue&.draft?
-      else
-        transaction_queue&.draft?
-      end
+      transaction_queue.nil? || transaction_queue&.draft?
     end
 
     def submitted?
@@ -116,19 +118,31 @@ module Aeon
     end
 
     def digital?
-      shipping_option == 'Electronic Delivery' && photoduplication_status.present?
+      shipping_option == 'Electronic Delivery'
     end
 
     def physical?
       !digital?
     end
 
-    def writable?
-      cancelled? || appointment.editable?
-    end
-
     def coalesce_key
       reference_number || transaction_number
+    end
+
+    def id = transaction_number
+    def persisted? = id.present?
+
+    def requested_pages = pages
+    def for_publication = publication ? 'yes' : 'no'
+    def additional_information = special_request
+
+    def reading_room
+      @reading_room ||= AeonClient.new.reading_rooms.find { |rr| rr.sites.include?(site) }
+    end
+
+    def multi_item_selector?
+      # Assuming multi-item selection for legacy Aeon requests seems a better default.
+      @web_request_form != 'single'
     end
 
     private

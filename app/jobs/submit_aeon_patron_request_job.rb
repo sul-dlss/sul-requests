@@ -6,16 +6,49 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   queue_as :default
   retry_on Faraday::ConnectionFailed
 
-  def perform(patron_request)
+  def perform(patron_request) # rubocop:disable Metrics/AbcSize
     return unless patron_request.aeon_page?
+    return perform_ead_request(patron_request) if patron_request.ead_url.present?
 
     patron_request.selected_items.each do |folio_item|
       request = as_aeon_create_request_data(patron_request, folio_item, patron_request.aeon_item&.dig(folio_item.id) || {})
       response = submit_aeon_request(request)
 
       patron_request.aeon_api_responses.where(item_id: folio_item.id).delete_all
-      patron_request.aeon_api_responses.create(item_id: folio_item.id, request_data: request.as_json, response_data: response)
+      patron_request.aeon_api_responses.create(item_id: folio_item.id, request_data: request.as_json, response_data: response.as_json)
     end
+  end
+
+  def perform_ead_request(patron_request)
+    patron_request.aeon_item.each_value do |volume_params|
+      request = as_aeon_create_ead_request_data(patron_request, volume_params)
+      response = submit_aeon_request(request)
+
+      item_id = "#{request.call_number} #{request.item_volume}"
+
+      patron_request.aeon_api_responses.where(item_id: item_id).delete_all
+      patron_request.aeon_api_responses.create(item_id: item_id, request_data: request.as_json, response_data: response.as_json)
+    end
+  end
+
+  def as_aeon_create_ead_request_data(patron_request, volume_params) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+    AeonClient::RequestData.with_defaults.with(
+      call_number: "#{patron_request.ead_doc.identifier} #{volume_params['series']}",
+      ead_number: patron_request.ead_doc.identifier,
+      appointment_id: volume_params['appointment_id'].presence&.to_i,
+      for_publication: volume_params['for_publication'] == 'yes',
+      item_author: patron_request.ead_doc.author,
+      item_info1: patron_request.ead_doc.item_url,
+      item_info5: volume_params['requested_pages'],
+      item_title: patron_request.ead_doc.title,
+      item_volume: volume_params['subseries'],
+      reference_number: patron_request.to_global_id.to_s,
+      shipping_option: patron_request.request_type == 'scan' ? 'Electronic Delivery' : nil,
+      site: patron_request.aeon_site,
+      special_request: volume_params['additional_information'],
+      username: patron_request.user.email_address,
+      web_request_form: 'multiple'
+    )
   end
 
   # rubocop:disable Metrics/MethodLength
@@ -23,8 +56,8 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   # should also contain scheduledDate, appointment id, appointment,
   # and reading room id.
   def as_aeon_create_request_data(patron_request, folio_item, volume_params) # rubocop:disable Metrics/AbcSize
-    AeonClient::CreateRequestData.with_defaults.with(
-      appointment_id: volume_params['appointment_id'].to_i,
+    AeonClient::RequestData.with_defaults.with(
+      appointment_id: volume_params['appointment_id'].presence&.to_i,
       call_number: folio_item.callnumber,
       document_type: 'Monograph',
       format: nil,
@@ -32,7 +65,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
       item_date: patron_request.folio_instance&.pub_date,
       item_title: patron_request.item_title,
       location: patron_request.origin_location_code,
-      web_request_form: 'GenericRequestMonograph',
+      web_request_form: patron_request.selectable_items.many? ? 'multiple' : 'single',
       username: patron_request.user.aeon.username,
       item_info1: patron_request.view_url,
       special_request: volume_params['additional_information'] || patron_request.aeon_reading_special,
@@ -46,6 +79,23 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   # rubocop:enable Metrics/MethodLength
 
   def submit_aeon_request(aeon_payload)
-    AeonClient.new.create_request(aeon_payload)
+    response = aeon_client.create_request(aeon_payload)
+
+    return response if complete?(aeon_payload)
+
+    aeon_client.update_request_route(transaction_number: response.transaction_number,
+                                     status: Settings.aeon.queue_names.draft.transaction.first)
+  end
+
+  def aeon_client
+    @aeon_client ||= AeonClient.new
+  end
+
+  def complete?(payload)
+    if payload.shipping_option == 'Electronic Delivery'
+      payload.item_info5.present?
+    else
+      payload.appointment_id.present?
+    end
   end
 end

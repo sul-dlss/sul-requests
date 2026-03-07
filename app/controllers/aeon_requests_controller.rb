@@ -8,6 +8,8 @@ class AeonRequestsController < ApplicationController
   include AeonFilterable
   include AeonSortable
 
+  before_action :load_aeon_request, only: [:edit, :update, :destroy, :resubmit]
+
   def drafts
     authorize! :read, Aeon::Request
 
@@ -27,7 +29,7 @@ class AeonRequestsController < ApplicationController
   end
 
   def resubmit
-    authorize! :update, aeon_request
+    authorize! :update, @aeon_request
 
     AeonClient.new.update_request_route(transaction_number: params[:id], status: 'Submitted by User')
     respond_to do |format|
@@ -35,18 +37,50 @@ class AeonRequestsController < ApplicationController
     end
   end
 
+  def edit
+    authorize! :update, @aeon_request
+
+    request.variant = :modal if params[:modal]
+  end
+
+  def update # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    authorize! :update, @aeon_request
+
+    new_request = AeonClient.new.update_request(
+      @aeon_request.transaction_number,
+      AeonClient::RequestData.with_defaults.with(
+        appointment_id: aeon_request_params[:appointment_id]&.to_i,
+        for_publication: aeon_request_params[:for_publication] == 'Yes',
+        item_info5: aeon_request_params[:requested_pages],
+        special_request: aeon_request_params[:additional_information]
+      )
+    )
+
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.replace(new_request, Aeon::RequestComponent.new(request: new_request)) }
+      format.html do
+        aeon_requests_path = new_request.draft? ? drafts_aeon_requests_path : submitted_aeon_requests_path
+        redirect_to aeon_requests_path, notice: 'Request was successfully updated.'
+      end
+    end
+  end
+
   def destroy
-    authorize! :destroy, aeon_request
+    authorize! :destroy, @aeon_request
 
     AeonClient.new.update_request_route(transaction_number: params[:id], status: 'Cancelled by User')
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.remove("request-#{params[:id]}") }
+      format.turbo_stream { render turbo_stream: turbo_stream.remove(@aeon_request) }
     end
   end
 
   private
 
-  def aeon_request
-    current_user.aeon.requests.find { |request| request.transaction_number == params[:id].to_i }
+  def load_aeon_request
+    @aeon_request = current_user.aeon.requests.find { |request| request.transaction_number == params[:id].to_i }
+  end
+
+  def aeon_request_params
+    params.expect(aeon_request: [:appointment_id, :requested_pages, :for_publication, :additional_information])
   end
 end

@@ -37,8 +37,14 @@ application.register("archives-series", ArchivesSeriesController)
 import AppointmentController from "./appointment_controller"
 application.register("appointment", AppointmentController)
 
+import AppointmentSelectController from "./appointment_select_controller"
+application.register("appointment-select", AppointmentSelectController)
+
 import ModalController from "./modal_controller"
 application.register("modal", ModalController)
 
 import SelectedItemFormController from "./selected_item_form_controller"
 application.register("selected-item-form", SelectedItemFormController)
+
+import StatusCounterController from "./status_counter_controller"
+application.register("status-counter", StatusCounterController)

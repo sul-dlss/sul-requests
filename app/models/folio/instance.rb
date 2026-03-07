@@ -69,9 +69,26 @@ module Folio
     end
 
     attr_reader :id, :pub_date, :pub_place, :publisher, :format
+    alias date pub_date
 
     def isbn
       @isbn.first
+    end
+
+    def single_item
+      items&.first
+    end
+
+    def call_number
+      single_item&.base_callnumber
+    end
+
+    def document_type
+      single_item&.type
+    end
+
+    def item_url
+      "https://searchworks.stanford.edu/view/#{hrid}"
     end
 
     def oclcn

@@ -6,13 +6,13 @@
       <i class="bi bi-trash"></i><span class="visually-hidden"> Delete <%= title %></span>
     </button>
   </div>
-  <%= fields_for base_name do |f| %>
+  <%= fields_for base_name, object do |f| %>
     <%= f.label :appointment_id, 'Appointment', class: 'form-label fw-semibold redesign-required-label' %>
     <span class="d-inline-flex flex-row">
       <%= f.select :appointment_id,
-          appointments.map { |a| ["#{a.start_time.strftime('%b %d, %Y')} ● #{a.start_time.strftime('%l:%M %p -')}#{a.stop_time.strftime('%l:%M %p')} (#{pluralize(a.requests.length, 'item')})", a.id] },
+          appointment_options_for_select,
           { prompt: placeholder },
-          { class: 'form-select appt_dropdown', required: true } %>
+          { class: 'form-select appt_dropdown', data: { controller: 'appointment-select', 'required-for-submit': true } } %>
       <span class="create-appointment-section">
         <span class="fw-semibold mx-2">OR</span>
         <%= link_to new_appointment_path, class: 'btn btn-primary btn-sm', data: { action: 'modal#open' } do %>

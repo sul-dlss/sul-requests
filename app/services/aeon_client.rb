@@ -41,10 +41,18 @@ class AeonClient
     handle_response(response, as_class: Aeon::Request, not_found: [])
   end
 
-  # Submit an archives request to Aeon
-  # @param aeon_payload [AeonClient::CreateRequestData]
+  # Submit a new request to Aeon
+  # @param aeon_payload [AeonClient::RequestData]
   def create_request(aeon_payload)
     response = post('Requests/create', aeon_payload.as_json)
+
+    handle_response(response, as_class: Aeon::Request)
+  end
+
+  # Submit a request patch to Aeon
+  # @param aeon_payload [AeonClient::RequestData]
+  def update_request(transaction_number, aeon_payload)
+    response = patch("Requests/#{transaction_number}", aeon_payload.as_patch_json)
 
     handle_response(response, as_class: Aeon::Request)
   end
@@ -125,11 +133,11 @@ class AeonClient
     end
   end
 
-  CreateRequestData = Data.define(:call_number, :document_type, :ead_number, :for_publication, :format,
-                                  :item_author, :item_citation, :item_date, :item_info1, :item_info2, :appointment_id,
-                                  :item_info3, :item_info4, :item_info5, :item_number, :item_subtitle, :item_title, :item_volume,
-                                  :location, :web_request_form,
-                                  :reference_number, :shipping_option, :site, :special_request, :system_id, :username) do
+  RequestData = Data.define(:call_number, :document_type, :ead_number, :for_publication, :format,
+                            :item_author, :item_citation, :item_date, :item_info1, :item_info2, :appointment_id,
+                            :item_info3, :item_info4, :item_info5, :item_number, :item_subtitle, :item_title, :item_volume,
+                            :location, :web_request_form,
+                            :reference_number, :shipping_option, :site, :special_request, :system_id, :username) do
     def omission = '…'
 
     def as_json # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
@@ -147,7 +155,7 @@ class AeonClient
         itemInfo3: item_info3&.truncate(255, omission:),
         itemInfo4: item_info4&.truncate(255, omission:),
         itemInfo5: item_info5&.truncate(255, omission:),
-        item_number: item_number&.truncate(50, omission:),
+        itemNumber: item_number&.truncate(50, omission:),
         itemSubTitle: item_subtitle&.truncate(255, omission:),
         itemTitle: item_title&.truncate(255, omission:),
         itemVolume: item_volume&.truncate(255, omission:),
@@ -160,6 +168,12 @@ class AeonClient
         username: username&.truncate(50, omission:),
         webRequestForm: web_request_form&.truncate(100, omission:) || 'SUL Requests'
       }.compact
+    end
+
+    def as_patch_json
+      as_json.except(:webRequestForm).compact.map do |k, v|
+        { op: 'replace', path: "/#{k}", value: v }
+      end
     end
 
     def self.with_defaults

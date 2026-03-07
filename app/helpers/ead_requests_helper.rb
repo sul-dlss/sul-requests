@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Helpers used in views/archives_requests for rendering EAD data and generating form values/IDs
-module ArchivesRequestsHelper
+module EadRequestsHelper
   # Generate a volume value hash for form submission
   def volume_value(series_title:, subseries_name:)
     {

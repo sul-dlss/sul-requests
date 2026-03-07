@@ -37,12 +37,16 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
                                                            start_time: DateTime.new(2026, 2, 19, 12, 0, 0),
                                                            stop_time: DateTime.new(2026, 2, 19, 13, 0, 0),
                                                            id: 1,
+                                                           editable?: true,
+                                                           sort_key: 2,
                                                            requests: [instance_double(Aeon::Request)],
                                                            reading_room: reading_rooms.last),
                                            instance_double(Aeon::Appointment,
                                                            start_time: DateTime.new(2026, 2, 20, 13, 0, 0),
                                                            stop_time: DateTime.new(2026, 2, 20, 14, 0, 0),
                                                            id: 1,
+                                                           editable?: true,
+                                                           sort_key: 2,
                                                            requests: [instance_double(Aeon::Request)],
                                                            reading_room: reading_rooms.first)
                                          ],
@@ -57,6 +61,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       expect(page).to have_no_content 'Select item'
 
       choose 'Digitization'
+      check 'I agree to these terms'
 
       click_button 'Continue'
 
@@ -64,12 +69,9 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       choose 'Yes'
       fill_in 'Additional information', with: 'Testing only'
 
-      click_button 'Continue'
-      check 'I agree to these terms'
-
       click_button 'Submit request'
 
-      expect(page).to have_content 'We received your scan request!'
+      expect(page).to have_content 'We received your digitization request!'
 
       perform_enqueued_jobs
       expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
@@ -93,7 +95,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
       click_button 'Submit request'
 
-      expect(page).to have_content 'We received your request!'
+      expect(page).to have_content 'We received your reading room access request!'
 
       perform_enqueued_jobs
       expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
@@ -107,6 +109,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
     it 'allows the user to submit a digitization request' do
       choose 'Digitization'
+      check 'I agree to these terms'
       click_button 'Continue'
 
       check 'ABC 123'
@@ -118,13 +121,10 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       click_button 'Next item'
       fill_in 'Requested pages', with: 'Pages 11-20'
       choose 'No'
-      click_button 'Continue'
-
-      check 'I agree to these terms'
 
       click_button 'Submit request'
 
-      expect(page).to have_content 'We received your scan request!'
+      expect(page).to have_content 'We received your digitization request!'
 
       perform_enqueued_jobs
       expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(

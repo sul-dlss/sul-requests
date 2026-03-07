@@ -53,6 +53,10 @@ module Aeon
       AeonClient.new.available_appointments(reading_room_id: id, date: date, **)
     end
 
+    def day_only_appointments?
+      Settings.aeon.day_only_appointments.include?(sites.first)
+    end
+
     def grouped_hours
       @grouped_hours = {}
       @open_hours.each do |oh|

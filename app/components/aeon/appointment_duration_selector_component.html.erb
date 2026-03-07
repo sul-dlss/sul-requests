@@ -1,0 +1,12 @@
+<fieldset class="mb-3">
+  <legend class="fs-6 fw-semibold redesign-required-label">Duration</legend>
+
+  <div class="d-flex flex-wrap gap-3">
+  <% [30.minutes, 1.hour, 1.5.hours, 2.hours, 3.hours, 4.hours].each do |duration| %>
+    <span class="duration-selector" data-appointment-target="duration" data-seconds="<%= duration %>">
+      <%= form.radio_button :duration, duration.to_i, class: 'btn-check', checked: selected == duration.to_i, data: { action: 'appointment#applyDurationFilter' } %>
+      <%= form.label "duration_#{duration.to_i}", duration.inspect, class: 'btn border' %>
+    </span>
+  <% end %>
+  </div>
+</fieldset>

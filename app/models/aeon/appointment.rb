@@ -3,6 +3,8 @@
 module Aeon
   # Wraps an Aeon appointment record
   class Appointment
+    include ActiveModel::Model
+
     attr_reader :id, :username, :reading_room_id, :start_time, :stop_time,
                 :name, :appointment_status, :reading_room, :creation_date
 
@@ -28,7 +30,6 @@ module Aeon
                    appointment_status: nil, reading_room: nil, reading_room_id: nil, creation_date: nil)
       @id = id
       @username = username
-      @reading_room_id = reading_room_id
       @start_time = start_time
       @stop_time = stop_time
       @name = name
@@ -71,10 +72,6 @@ module Aeon
       start_time.after?(edit_policy.days.from_now)
     end
 
-    def to_param = id.to_s
-    def to_key = id.to_s
-    def to_model = self
-    def model_name = ActiveModel::Name.new(self.class)
     def persisted? = id.present?
   end
 end
