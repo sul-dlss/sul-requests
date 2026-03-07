@@ -1,6 +1,3 @@
-<% if requests.one? && !requests.first.multi_item_selector? %>
-  <%= render Aeon::RequestComponent.new(request: requests.first) %>
-<% else %>
 <div class="request-group request card mb-4">
   <div class="card-header fw-semibold p-3 ps-2 d-flex gap-1 flex-row align-items-md-center justify-content-between">
     <div class="d-flex flex-wrap gap-1">
@@ -41,4 +38,3 @@
     </div>
   </div>
 </div>
-<% end %>

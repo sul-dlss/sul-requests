@@ -9,7 +9,13 @@
         </div>
       </div>
 
-      <%= render Aeon::RequestGroupComponent.with_collection(@aeon_request_groups) %>
+      <% @aeon_request_groups.each do |requests_in_group| %>
+        <% if requests_in_group.one? && !requests_in_group.first.multi_item_selector? %>
+          <%= render Aeon::RequestComponent.new(request: requests_in_group.first) %>
+        <% else %>
+          <%= render Aeon::RequestGroupComponent.new(request_group: requests_in_group) %>
+        <% end %>
+      <% end %>
     </div>
     <div class="col-4">
       <turbo-frame src="<%= aeon_appointments_path(variant: 'sidebar') %>" id="aeon-appointments" class="d-block" data-turbo="false">
