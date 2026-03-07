@@ -1,9 +1,10 @@
-<div class="container">
+<div class="container" data-controller="draft-request">
   <div class="row">
     <div class="col-8 pe-5">
       <div class="d-flex flex-wrap gap-2 justify-content-between mb-3">
         <h1>Draft requests</h1>
         <div class="d-flex flex-wrap gap-2">
+          <%= render 'delete_drafts_button' %>
           <%= render 'sort_dropdown' %>
           <%= render 'filter_dropdown' %>
         </div>

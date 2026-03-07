@@ -51,3 +51,6 @@ application.register("status-counter", StatusCounterController)
 
 import EmptyRemoveController from "./empty_remove_controller"
 application.register("empty-remove", EmptyRemoveController)
+
+import DraftRequestController from "./draft_request_controller"
+application.register("draft-request", DraftRequestController)
