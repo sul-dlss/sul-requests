@@ -48,3 +48,6 @@ application.register("selected-item-form", SelectedItemFormController)
 
 import StatusCounterController from "./status_counter_controller"
 application.register("status-counter", StatusCounterController)
+
+import DraftRequestController from "./draft_request_controller"
+application.register("draft-request", DraftRequestController)
