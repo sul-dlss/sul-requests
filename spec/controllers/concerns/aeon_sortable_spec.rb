@@ -14,7 +14,7 @@ RSpec.describe AeonSortable do
 
   let(:request_a_with_appointment) do
     build(:aeon_request,
-          title: 'Apples',
+          item_title: 'Apples',
           creation_date: now - 1.day,
           transaction_date: now - 3.days,
           appointment: build(:aeon_appointment, start_time: now + 1.day))
@@ -22,14 +22,14 @@ RSpec.describe AeonSortable do
 
   let(:request_b_digitial) do
     build(:aeon_request, :digitized,
-          title: 'Bananas',
+          item_title: 'Bananas',
           creation_date: now - 2.days,
           transaction_date: now - 1.day)
   end
 
   let(:request_c_with_appointment) do
     build(:aeon_request,
-          title: 'Carrots',
+          item_title: 'Carrots',
           creation_date: now,
           transaction_date: now - 2.days,
           appointment: build(:aeon_appointment, start_time: now + 3.days))
