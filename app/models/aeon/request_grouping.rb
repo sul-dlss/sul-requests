@@ -12,7 +12,9 @@ module Aeon
     delegate :shipping_option, :appointment, :call_number, :date, :digital?, :document_type, :ead_number, :title, to: :first
 
     def self.from_requests(requests)
-      requests.group_by { |r| [r.title, r.digital?] }.values.map { |group| new(group) }
+      multi, single = requests.partition(&:multi_item_selector?)
+      groups = multi.group_by { |r| [r.title, r.digital?] }.values.map { |group| new(group) }
+      groups + single.map { |r| new([r]) }
     end
 
     def initialize(requests)
