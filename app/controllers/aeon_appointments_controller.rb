@@ -81,15 +81,10 @@ class AeonAppointmentsController < ApplicationController
     redirect_to aeon_appointments_path, notice: 'Appointment created successfully'
   end
 
-  def destroy # rubocop:disable Metrics/AbcSize
+  def destroy
     authorize! :delete, @appointment
 
-    @appointment.requests.each do |request|
-      aeon_client.update_request(request.transaction_number, AeonClient::DeleteAppointmentRequestData.new)
-      aeon_client.update_request_route(transaction_number: request.transaction_number,
-                                       status: Settings.aeon.queue_names.draft.transaction.first)
-    end
-    aeon_client.cancel_appointment(params[:id])
+    CancelAeonAppointmentJob.perform_now(@appointment)
 
     redirect_to aeon_appointments_path, notice: 'Appointment cancelled successfully'
   end
