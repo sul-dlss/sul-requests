@@ -54,6 +54,7 @@ FactoryBot.define do
     appointment_status { 'Confirmed' }
     reading_room { build(:aeon_reading_room) }
     creation_date { Time.zone.parse('2024-03-11T18:33:48.103Z') }
+    requests { [] }
 
     initialize_with { new(**attributes) }
   end
