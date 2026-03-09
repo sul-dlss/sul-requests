@@ -274,6 +274,12 @@ class PatronRequest < ApplicationRecord
     folio_instance&.item_url || ead_doc&.item_url
   end
 
+  def aeon_web_request_form
+    return 'multiple' unless folio_instance
+
+    selectable_items.many? ? 'multiple' : 'single'
+  end
+
   # Item stuff
 
   # @return [Array<Folio::Item>] the items in the origin location
