@@ -1,7 +1,7 @@
-<turbo-frame id="modal-contents">
+<%= turbo_frame_tag params[:modal] do %>
   <div class="modal-header">
     <h1 class="mb-0">Create new appointment</h1>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
   </div>
   <%= render 'form' %>
-</turbo-frame>
+<% end %>
