@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus";
 import { Toast } from 'bootstrap';
-import sanitizeHtml from 'sanitize-html';
+import DOMPurify from "dompurify";
 
 function camelize(value) {
   return value.replace(/(?:[_-])([a-z0-9])/g, (_, char) => char.toUpperCase())
@@ -96,7 +96,7 @@ export default class extends Controller {
   formatItemTitle(item) {
     if (!item.titleParts) return item.label;
 
-    return item.titleParts.map(e => sanitizeHtml(e)).join('<i class="bi bi-chevron-right mx-1"></i>');
+    return item.titleParts.map(e => DOMPurify.sanitize(e)).join('<i class="bi bi-chevron-right mx-1"></i>');
   }
 
   selectedItemsValueChanged(value, previousValue) {
