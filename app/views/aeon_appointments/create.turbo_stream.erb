@@ -1,6 +1,3 @@
-<%= turbo_stream.after_all '.appt_dropdown [value=""]' do %>
-    <option data-appointment-select-target="option" data-sort-key="<%= @new_appointment.sort_key %>" value="<%= @new_appointment.id %>">
-      <%= @new_appointment.start_time.strftime('%b %d, %Y') %> ● <%= @new_appointment.start_time.strftime('%l:%M %p -') %><%= @new_appointment.stop_time.strftime('%l:%M %p') %>
-      (<%= pluralize(@new_appointment.requests.length, "item") %>) (New!)
-    </option>
+<%= turbo_stream.after_all '.appt-dropdown li:last-child' do %>
+  <%= render Aeon::AppointmentOptionComponent.new(appointment: @new_appointment, data: { 'appointment-select-target': 'option' }) %>
 <% end %>
