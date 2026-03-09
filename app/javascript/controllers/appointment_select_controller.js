@@ -17,6 +17,18 @@ export default class extends Controller {
     new Dropdown(this.element).hide();
   }
 
+  updateItemCounts() {
+    this.element.querySelectorAll('[data-count]').forEach(option => {
+      const baseCount = parseInt(option.dataset.count);
+
+      const formCount = this.element.closest('#reading-accordion').querySelectorAll("input[value='" + option.dataset.appointmentId + "']").length;
+
+      const newCount = baseCount + formCount;
+
+      option.innerHTML = newCount + " item" + ((newCount) !== 1 ? "s" : "");
+    });
+  }
+
   selectItem(element) {
     this.element.querySelector('.selected')?.classList?.remove('selected');
     element.classList.add('selected');
@@ -25,6 +37,8 @@ export default class extends Controller {
     this.inputTarget.dispatchEvent(new Event('input', { bubbles: true }));
 
     this.updateSelected();
+
+    this.dispatch('change', { detail: { value: this.inputTarget.value } });
   }
 
   updateSelected() {

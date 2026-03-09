@@ -4,7 +4,7 @@
         <%= appointment.start_time.strftime('%b %d, %Y') %>
         <i class="bi bi-dot"></i>
         <%= "#{appointment.start_time.strftime('%l:%M %p -')}#{appointment.stop_time.strftime('%l:%M %p')}" %>
-        <span class="badge rounded-pill text-bg-light fw-normal">
+        <span class="badge rounded-pill text-bg-light fw-normal" data-count="<%= appointment.requests.length %>" data-appointment-id="<%= appointment.id %>">
           <%= pluralize(appointment.requests.length, 'item') %>
         </span>
       </span>
