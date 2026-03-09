@@ -5,88 +5,70 @@ module Aeon
   class Request
     include ActiveModel::Model
 
-    attr_reader :item_url, :appointment, :appointment_id, :author, :call_number,
-                :creation_date, :date, :document_type, :ead_number, :format, :item_number, :pages, :photoduplication_status,
-                :publication, :location, :reference_number, :shipping_option, :site,
-                :special_request, :start_time, :stop_time, :title, :transaction_date,
-                :transaction_number, :transaction_status, :username, :volume
+    # appointment attributes
+    attr_accessor :appointment, :appointment_id
 
-    def self.aeon_client
-      AeonClient.new
-    end
+    # identifiers
+    attr_accessor :call_number, :ead_number, :reference_number, :site
+
+    # request attributes
+    attr_accessor :creation_date, :document_type, :transaction_number, :web_request_form, :start_time, :stop_time
+
+    # queues
+    attr_accessor :shipping_option, :photoduplication_status, :photoduplication_date, :transaction_status, :transaction_date
+
+    # item attributes
+    attr_accessor :item_author, :item_date, :item_number, :item_title, :item_volume,
+                  :item_info1, :item_info2, :item_info3, :item_info4, :item_info5
+
+    # other attributes
+    attr_accessor :format, :location, :special_request, :username
 
     def self.from_dynamic(dyn) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       photoduplication_date = dyn['photoduplicationDate'].presence
       new(
-        item_url: dyn['itemInfo1'],
         appointment: dyn['appointment'] ? Appointment.from_dynamic(dyn['appointment']) : nil,
         appointment_id: dyn['appointmentID'],
-        author: dyn['itemAuthor'],
         call_number: dyn['callNumber'],
         creation_date: Time.zone.parse(dyn.fetch('creationDate')),
-        date: dyn['itemDate'],
         document_type: dyn['documentType'],
         ead_number: dyn['eadNumber'],
-        format: dyn['format'],
+        format: dyn['format'].presence,
+        for_publication: dyn['forPublication'],
+        item_author: dyn['itemAuthor'],
+        item_date: dyn['itemDate'],
+        item_info1: dyn['itemInfo1'],
+        item_info5: dyn['itemInfo5'],
         item_number: dyn['itemNumber'],
-        shipping_option: dyn['shippingOption'],
+        item_title: dyn['itemTitle'],
+        item_volume: dyn['itemVolume'].presence,
         location: dyn['location'],
-        pages: dyn['itemInfo5'],
         photoduplication_date: photoduplication_date ? Time.zone.parse(photoduplication_date) : nil,
         photoduplication_status: dyn['photoduplicationStatus'],
         reference_number: dyn['referenceNumber'],
+        shipping_option: dyn['shippingOption'],
         site: dyn['site'],
+        special_request: dyn['specialRequest'].presence,
         start_time: dyn['startTime'],
         stop_time: dyn['stopTime'],
-        title: dyn['itemTitle'],
         transaction_date: Time.zone.parse(dyn.fetch('transactionDate')),
         transaction_number: dyn['transactionNumber'],
         transaction_status: dyn['transactionStatus'],
         username: dyn['username'],
-        volume: dyn['itemVolume'],
-        special_request: dyn['specialRequest'],
-        publication: dyn['forPublication'],
         web_request_form: dyn['webRequestForm']
       )
     end
 
-    def initialize(item_url: nil, appointment: nil, appointment_id: nil, # rubocop:disable Metrics/AbcSize, Metrics/ParameterLists, Metrics/MethodLength
-                   author: nil, call_number: nil, creation_date: nil, date: nil,
-                   document_type: nil, ead_number: nil, format: nil, item_number: nil, location: nil, pages: nil,
-                   photoduplication_status: nil, photoduplication_date: nil,
-                   reference_number: nil, shipping_option: nil, start_time: nil, stop_time: nil, title: nil, transaction_date: nil,
-                   transaction_number: nil, transaction_status: nil, username: nil, volume: nil, site: nil,
-                   special_request: nil, publication: nil, web_request_form: nil)
-      @item_url = item_url
-      @appointment = appointment
-      @appointment_id = appointment_id
-      @author = author
-      @call_number = call_number
-      @creation_date = creation_date
-      @date = date
-      @document_type = document_type
-      @ead_number = ead_number
-      @format = format
-      @item_number = item_number
-      @location = location
-      @pages = pages
-      @photoduplication_status = photoduplication_status
-      @photoduplication_date = photoduplication_date
-      @reference_number = reference_number
-      @shipping_option = shipping_option
-      @start_time = start_time
-      @stop_time = stop_time
-      @title = title
-      @transaction_date = transaction_date
-      @transaction_number = transaction_number
-      @transaction_status = transaction_status
-      @username = username
-      @volume = volume
-      @site = site
-      @special_request = special_request
-      @publication = publication
-      @web_request_form = web_request_form
-    end
+    alias_attribute :id, :transaction_number
+    alias_attribute :item_url, :item_info1
+    alias_attribute :pages, :item_info5
+    alias_attribute :requested_pages, :item_info5
+    alias_attribute :author, :item_author
+    alias_attribute :date, :item_date
+    alias_attribute :title, :item_title
+    alias_attribute :volume, :item_volume
+    alias_attribute :publication, :for_publication
+    alias_attribute :additional_information, :special_request
 
     def appointment?
       appointment_id.present?
@@ -129,15 +111,18 @@ module Aeon
       reference_number || transaction_number
     end
 
-    def id = transaction_number
     def persisted? = id.present?
 
-    def requested_pages = pages
-    def for_publication = publication ? 'yes' : 'no'
-    def additional_information = special_request
+    def for_publication = @for_publication ? 'yes' : 'no'
+
+    def for_publication=(value)
+      @for_publication = ActiveModel::Type::Boolean.new.cast(value)
+    end
 
     def reading_room
-      @reading_room ||= AeonClient.new.reading_rooms.find { |rr| rr.sites.include?(site) }
+      return @reading_room if defined?(@reading_room)
+
+      @reading_room = Aeon::ReadingRoom.find_by(site: site)
     end
 
     def multi_item_selector?
@@ -161,11 +146,15 @@ module Aeon
     end
 
     def photoduplication_queue
-      @photoduplication_queue ||= self.class.aeon_client.find_queue(id: photoduplication_status, type: :photoduplication)
+      return @photoduplication_queue if defined?(@photoduplication_queue)
+
+      @photoduplication_queue = Aeon::Queue.find_by(id: photoduplication_status, type: :photoduplication)
     end
 
     def transaction_queue
-      @transaction_queue ||= self.class.aeon_client.find_queue(id: transaction_status, type: :transaction)
+      return @transaction_queue if defined?(@transaction_queue)
+
+      @transaction_queue = Aeon::Queue.find_by(id: transaction_status)
     end
   end
 end

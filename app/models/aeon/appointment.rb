@@ -5,8 +5,8 @@ module Aeon
   class Appointment
     include ActiveModel::Model
 
-    attr_reader :id, :username, :reading_room_id, :start_time, :stop_time,
-                :name, :appointment_status, :reading_room, :creation_date
+    attr_accessor :id, :username, :reading_room_id, :start_time, :stop_time,
+                  :name, :appointment_status, :reading_room, :creation_date, :available_to_proxies
 
     attr_writer :requests
 
@@ -23,21 +23,6 @@ module Aeon
         reading_room_id: dyn['readingRoomID'],
         creation_date: Time.zone.parse(dyn.fetch('creationDate'))
       )
-    end
-
-    def initialize(id: nil, username: nil, start_time: nil, # rubocop:disable Metrics/ParameterLists
-                   stop_time: nil, name: nil, available_to_proxies: nil,
-                   appointment_status: nil, reading_room: nil, reading_room_id: nil, creation_date: nil)
-      @id = id
-      @username = username
-      @start_time = start_time
-      @stop_time = stop_time
-      @name = name
-      @available_to_proxies = available_to_proxies
-      @appointment_status = appointment_status
-      @reading_room = reading_room
-      @reading_room_id = reading_room_id
-      @creation_date = creation_date
     end
 
     def available_to_proxies?

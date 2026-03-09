@@ -3,8 +3,22 @@
 module Aeon
   # Wraps an Aeon reading room record
   class ReadingRoom
-    attr_reader :id, :name, :available_seats, :time_zone_id, :min_appointment_length, :max_appointment_length,
-                :appointment_padding, :appointment_increment, :last_modified_time, :sites, :open_hours, :policies
+    include ActiveModel::Model
+
+    def self.aeon_client
+      AeonClient.new
+    end
+
+    def self.all
+      @all ||= aeon_client.reading_rooms
+    end
+
+    def self.find_by(site:)
+      all.find { |rr| rr.sites.include?(site) }
+    end
+
+    attr_accessor :id, :name, :available_seats, :time_zone_id, :min_appointment_length, :max_appointment_length,
+                  :appointment_padding, :appointment_increment, :last_modified_time, :sites, :open_hours, :policies
 
     def self.from_dynamic(dyn) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       new(
@@ -21,28 +35,6 @@ module Aeon
         open_hours: Array(dyn['openHours']).map { |h| ReadingRoomOpenHours.from_dynamic(h) },
         policies: Array(dyn['policies']).map { |p| ReadingRoomPolicy.from_dynamic(p) }
       )
-    end
-
-    def self.all
-      @all ||= AeonClient.new.reading_rooms
-    end
-
-    def initialize(id: nil, name: nil, available_seats: nil, time_zone_id: nil, # rubocop:disable Metrics/MethodLength, Metrics/ParameterLists
-                   min_appointment_length: nil, max_appointment_length: nil,
-                   appointment_padding: nil, appointment_increment: nil, last_modified_time: nil,
-                   sites: [], open_hours: [], policies: [])
-      @id = id
-      @name = name
-      @available_seats = available_seats
-      @time_zone_id = time_zone_id
-      @min_appointment_length = min_appointment_length
-      @max_appointment_length = max_appointment_length
-      @appointment_padding = appointment_padding
-      @appointment_increment = appointment_increment
-      @last_modified_time = last_modified_time
-      @sites = sites
-      @open_hours = open_hours
-      @policies = policies
     end
 
     def daily_item_limit
@@ -79,5 +71,7 @@ module Aeon
     def next_appointment
       @next_appointment ||= available_appointments(Time.zone.now.to_date, include_next_available: true)&.first
     end
+
+    def persisted? = id.present?
   end
 end

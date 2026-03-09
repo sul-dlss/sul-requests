@@ -65,17 +65,17 @@ FactoryBot.define do
     photoduplication_status { nil }
     photoduplication_date { nil }
     creation_date { Time.zone.parse('2024-03-11T18:42:51.95Z') }
-    title { 'Throwing a sinker ball at 94 mpg with wicked movement' }
-    author { nil }
+    item_title { 'Throwing a sinker ball at 94 mpg with wicked movement' }
+    item_author { nil }
     call_number { nil }
     document_type { nil }
     format { nil }
     location { nil }
-    pages { nil }
+    item_info5 { nil }
     shipping_option { nil }
-    volume { nil }
-    item_url { 'https://searchworks.stanford.edu/view/12345678' }
-    date { nil }
+    item_volume { nil }
+    item_info1 { 'https://searchworks.stanford.edu/view/12345678' }
+    item_date { nil }
     appointment_id { 23 }
     appointment { build(:aeon_appointment) }
 

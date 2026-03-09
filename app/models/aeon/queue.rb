@@ -5,6 +5,14 @@ module Aeon
   class Queue
     attr_accessor :id, :queue_name, :display_name, :state_code, :internal_code
 
+    def self.aeon_client
+      AeonClient.new
+    end
+
+    def self.find_by(id:, type: :transaction)
+      aeon_client.find_queue(id: id, type: type)
+    end
+
     def self.from_dynamic(dyn)
       new(
         id: dyn['id'],
