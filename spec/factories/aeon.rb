@@ -78,6 +78,7 @@ FactoryBot.define do
     item_date { nil }
     appointment_id { 23 }
     appointment { build(:aeon_appointment) }
+    web_request_form { 'single' }
 
     initialize_with { new(**attributes) }
 
