@@ -5,42 +5,11 @@ module Aeon
   class RequestComponent < ViewComponent::Base
     attr_reader :request
 
-    delegate :appointment?, :appointment, :title,
-             :date, :document_type, :call_number, :transaction_status, :transaction_date,
-             :transaction_number, :draft?, :completed?, :submitted?, :digital?, :physical?, :scan_delivered?, to: :request
+    delegate :appointment, :appointment?, :call_number, :date, :document_type,
+             :draft?, :title, :transaction_date, :transaction_number, :transaction_status, to: :request
 
     def initialize(request:)
       @request = request
-    end
-
-    def status_text
-      if digital?
-        return 'Digitization ready' if completed?
-        return 'Digitization pending' if submitted?
-
-        return 'Digitization'
-      end
-
-      'Reading room use'
-    end
-
-    def status_class
-      if completed? || scan_delivered? || (submitted? && appointment?)
-        :ready
-      elsif submitted?
-        :pending
-      else
-        :draft
-      end
-    end
-
-    def status_icon
-      case status_class
-      when :pending
-        'clock'
-      when :ready
-        'check2-circle'
-      end
     end
 
     def appointment_date

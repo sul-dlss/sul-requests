@@ -78,6 +78,9 @@ layer(components);
   color: var(--stanford-digital-red);
 }
 
+.text-plum-dark {
+    color: rgba(var(--stanford-plum-dark-rgb), 1);
+}
 
 @font-face {
   font-family: "Stanford";
@@ -404,14 +407,14 @@ label.btn-close {
     padding: 4px 12px;
   }
 
-  .draft {
+  .cancelled, .draft {
     color: var(--stanford-black);
     background-color: var(--stanford-10-black);
   }
 
   .pending {
-    color: var(--stanford-digital-blue-dark);
-    background-color: rgba(var(--stanford-digital-blue-rgb), 0.1);
+    color: rgba(var(--stanford-plum-dark-rgb), 1);
+    background-color: rgba(var(--stanford-plum-rgb), 0.1);
   }
 
   .ready {
