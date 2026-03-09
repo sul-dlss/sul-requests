@@ -16,5 +16,9 @@ module Aeon
 
       "#{start} - #{stop} (#{appointment.start_time.zone})"
     end
+
+    def appointment_date
+      appointment.start_time.strftime('%b %-d, %Y')
+    end
   end
 end
