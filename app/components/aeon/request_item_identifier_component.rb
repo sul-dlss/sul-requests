@@ -12,19 +12,28 @@ module Aeon
     end
 
     def call_number
-      call_number = request.call_number
-      prefix = request.ead_number
-      return call_number unless prefix.present? && call_number&.start_with?(prefix)
-
-      call_number.delete_prefix(prefix)
+      @call_number ||= strip_ead_prefix(request.call_number)
     end
 
     def container
       volume if ead? && volume.present?
     end
 
+    def separator?
+      call_number.present? && container.present?
+    end
+
     def render?
-      request.multi_item_selector?
+      request.multi_item_selector? && (call_number.present? || container.present?)
+    end
+
+    private
+
+    def strip_ead_prefix(call_num)
+      prefix = request.ead_number
+      return call_num unless prefix.present? && call_num&.start_with?(prefix)
+
+      call_num.delete_prefix(prefix)
     end
   end
 end

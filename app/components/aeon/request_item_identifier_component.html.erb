@@ -1,6 +1,5 @@
 <span class="p-1 bg-fog-light fw-semibold">
   <%= call_number %>
-  <% if container.present? %>
-    <i class="bi bi-chevron-right"></i><%= container %>
-  <% end %>
+  <% if separator? %><i class="bi bi-chevron-right"></i><% end %>
+  <%= container %>
 </span>
