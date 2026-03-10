@@ -83,6 +83,21 @@ class AeonRequestsController < ApplicationController
     end
   end
 
+  def destroy_multiple
+    authorize! :destroy, @aeon_request
+
+    puts "DESTROY MULTIPLE"
+    ids = params[:ids]
+    ids.each do |id|
+      puts id
+      # aeon_client.update_request_route(transaction_number: id, status: 'Cancelled by User')
+      # respond_to do |format|
+      #   format.turbo_stream { render turbo_stream: turbo_stream.remove(@aeon_request) }
+      # end
+
+    end
+  end
+
   private
 
   def load_aeon_request

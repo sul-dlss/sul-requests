@@ -633,3 +633,8 @@ label.btn-close {
     }
   }
 }
+
+
+.modal-draft-request:last-child {
+  border-bottom: 0px;
+}
