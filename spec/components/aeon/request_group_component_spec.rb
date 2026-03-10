@@ -32,7 +32,7 @@ RSpec.describe Aeon::RequestGroupComponent, type: :component do
     end
   end
 
-  context 'with ead requests' do
+  context 'with submitted ead requests' do
     let(:first_request) do
       build(:aeon_request, call_number: 'SC0097 The Art of Computer Programming', ead_number: 'SC0097',
                            title: 'Donald E. Knuth papers', transaction_number: 100, volume: 'Box 1', web_request_form:)
@@ -44,14 +44,16 @@ RSpec.describe Aeon::RequestGroupComponent, type: :component do
     let(:request_group) { Aeon::RequestGrouping.new([first_request, second_request]) }
 
     before do
-      allow(first_request).to receive_messages(draft?: true)
-      allow(second_request).to receive_messages(draft?: true)
+      allow(first_request).to receive_messages(cancelled?: false, completed?: false, draft?: false, submitted?: true)
+      allow(second_request).to receive_messages(cancelled?: false, completed?: false, draft?: false, submitted?: true)
       render_inline(described_class.new(request_group:))
     end
 
     it 'renders information about each request' do
       expect(page).to have_css 'h2', text: 'Donald E. Knuth papers', count: 1
       expect(page).to have_content 'The Art of Computer Programming', count: 2
+      expect(page).to have_content 'Mar 11, 2024', count: 2
+      expect(page).to have_content '1 pm - 1:15 pm (PDT)', count: 2
       expect(page).to have_content 'SC0097', count: 1
       expect(page).to have_content 'Box 1'
       expect(page).to have_content 'Box 2'

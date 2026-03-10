@@ -4,13 +4,7 @@
       <div class="d-flex flex-wrap gap-1 align-items-center">
         <%= render Aeon::RequestStatusPillComponent.new(request:) %>
         <%= render Aeon::RequestStatusMessageComponent.new(request:) %>
-        <% if show_appointment? %>
-        <span class="appointment-details ms-1">
-          <span class="fw-bold text-green"><%= appointment_date %></span>
-          <span class="fw-normal text-nowrap text-green"><%= appointment_time_range %></span>
-          <span class="fw-normal text-nowrap text-green"><%= appointment_reading_room_name %></span>
-        </span>
-        <% end %>
+        <%= render Aeon::RequestAppointmentTimeComponent.new(request:) %>
       </div>
       <%= render Aeon::RequestActionsComponent.new(request:) %>
     </div>
