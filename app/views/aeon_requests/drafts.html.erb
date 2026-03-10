@@ -28,4 +28,23 @@
       </turbo-frame>
     </div>
   </div>
+  <div class="modal fade" id="delete-bulk" tabindex="-1" aria-labelledby="title-delete-bulk"  aria-hidden="true" data-draft-request-target="deleteModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" id="title-delete-bulk">Delete draft requests?</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body fw-normal">
+          Content
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
+          <%= form_with url: destroy_multiple_aeon_requests_path, id: 'delete-bulk-form', method: 'delete', data: { 'draft-request-target': 'deleteForm' } do %>
+            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Yes - Delete</button>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
