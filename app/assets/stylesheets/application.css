@@ -576,7 +576,7 @@ label.btn-close {
   --bs-bg-opacity: 1;
   background: rgba(var(--bs-light-rgb),var(--bs-bg-opacity)) !important;
 
-  label {
+  .possibly-visually-hidden-appointments-label {
     /* .visually-hidden */
     width: 1px !important;
     height: 1px !important;
@@ -593,9 +593,9 @@ label.btn-close {
     display: none;
   }
 
-  @media (min-width: 768px) {
+  /* @media (min-width: 768px) {
     flex-wrap: nowrap;
-  }
+  } */
 }
 
 .appointments-container .appointments-item:only-child {
@@ -630,5 +630,22 @@ label.btn-close {
   
   .accordion-item {
     border-bottom: 1px solid var(--stanford-20-black)!important;
+  }
+}
+
+.custom-select {
+  .selected {
+    background-color: var(--bs-primary-bg-subtle);
+    &::before {
+      content: "\f633"; /* check-lg icon */
+      display: inline-block;
+      font-family: "bootstrap-icons";
+      margin-right: 0.25rem;
+      text-decoration: none;
+      vertical-align: middle;
+      position: absolute;
+      left: 0.3rem;
+      margin-top:0.5rem;
+    }
   }
 }

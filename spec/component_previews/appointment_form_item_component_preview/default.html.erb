@@ -1,0 +1,26 @@
+<% 
+    appointments = [
+      FactoryBot.build(:aeon_appointment, id: 1, start_time: Time.zone.now + 8.days, requests: 5.times.map { FactoryBot.build(:aeon_request) }),
+      FactoryBot.build(:aeon_appointment, id: 2, start_time: Time.zone.now + 12.days, requests: [FactoryBot.build(:aeon_request)]),
+      FactoryBot.build(:aeon_appointment, id: 3, start_time: Time.zone.now + 32.days)
+    ]
+
+%>
+<form id="reading-accordion">
+  <ul id="reading" class="appointments-container list-unstyled">
+    <%= 
+      render Aeon::AppointmentFormItemComponent.new(
+        title: 'Item 1',
+        dom_id: 'item_1',
+        appointments: appointments
+      ) %>
+
+
+    <%= 
+      render Aeon::AppointmentFormItemComponent.new(
+        title: 'Item 2',
+        dom_id: 'item_2',
+        appointments: appointments
+      ) %>
+  </ul>
+</form>

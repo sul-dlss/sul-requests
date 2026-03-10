@@ -72,11 +72,9 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       click_button 'Continue'
 
       # In the Appointment step
-      select 'Feb 19', from: 'Appointment'
+      click_button 'Select existing appointment'
+      click_button 'Feb 19'
 
-      # Input isn't triggered by Capbayara, this works fine with a user/keyboard interaction
-      # this allows the continue button to be enabled.
-      page.execute_script("document.querySelector('select').dispatchEvent(new Event('input', { bubbles: true }))")
       click_button 'Submit request'
 
       expect(page).to have_css('.confirmation')
@@ -149,7 +147,10 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       expect(page).to have_content('Field Reading Room')
       expect(page).to have_content('Hours: Monday - Friday, 9:00 - 4:45 PM')
       expect(page).to have_content('Appointments must be scheduled at least 5 business days in advance. Maximum of 5 items per day.')
-      expect(find('select').all('option').map(&:text)).to eq ['Select existing appointment', 'Feb 19, 2026 ● 12:00 PM - 1:00 PM (1 item)']
+
+      # In the Appointment step
+      click_button 'Select existing appointment'
+      click_button 'Feb 19'
     end
   end
 
