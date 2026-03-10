@@ -19,7 +19,7 @@ export default class extends Controller {
     const accordionController = this.application.getControllerForElementAndIdentifier(this.element, 'accordion-form');
 
     if (event.detail.selectedItems.length == 0 && (event.detail.previousValue || []).length > 0) {
-      accordionController.goto('barcodes-accordion');
+      accordionController.goto('items-accordion');
     }
 
     if (this.hasDigitizationItemsTarget && !this.digitizationItemsTarget.querySelector('[data-content-id] .accordion-collapse.show')) {

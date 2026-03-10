@@ -118,7 +118,6 @@ export default class extends Controller {
     window.setTimeout(() => {
       const scrollTarget = accordionitem.querySelector('.accordion-header') || accordionitem;
 
-      console.log('scrolling to', scrollTarget);
       scrollIntoView(scrollTarget, { behavior: 'smooth', block: 'start', scrollMode: 'if-needed' });
     }, accordionTransitionTimeMs + 20);
 
