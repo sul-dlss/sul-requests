@@ -5,7 +5,8 @@ module Aeon
   class RequestGroupComponent < ViewComponent::Base
     attr_reader :request_group
 
-    delegate :title, :call_number, :document_type, :date, :digital?, :ead_number, :requests, to: :request_group
+    delegate :appointment?, :title, :call_number, :document_type, :date, :ead_number, :reading_room_name, :requests,
+             :submitted?, to: :request_group
 
     def initialize(request_group:)
       @request_group = request_group
@@ -13,14 +14,6 @@ module Aeon
 
     def render?
       requests.present?
-    end
-
-    def status_class
-      'draft'
-    end
-
-    def status_text
-      digital? ? 'Digitization' : 'Reading room use'
     end
   end
 end

@@ -1,4 +1,8 @@
 <% case status_level %>
 <% when :warning %>
 <i class="bi bi-exclamation-triangle-fill align-middle ms-2 text-digital-red"></i><span class="text-digital-red fw-normal"><%= status_message %></span>
+<% when :pending %>
+<span class="ms-2 text-plum-dark fw-normal"><%= status_message %></span>
+<% else %>
+<span class="ms-2 fw-normal"><%= status_message %></span>
 <% end %>

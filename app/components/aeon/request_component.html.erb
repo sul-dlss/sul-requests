@@ -2,11 +2,7 @@
   <div id="request-<%= transaction_number %>" class="request card mb-4">
     <div class="card-header fw-semibold p-3 ps-2 d-flex gap-1 flex-row align-items-md-center justify-content-between">
       <div class="d-flex flex-wrap gap-1 align-items-center">
-        <span>
-          <span class="rounded-pill <%= status_class %>">
-            <i class="bi bi-<%= status_icon %> align-middle me-1"></i><%= status_text %>
-          </span>
-        </span>
+        <%= render Aeon::RequestStatusPillComponent.new(request:) %>
         <%= render Aeon::RequestStatusMessageComponent.new(request:) %>
         <% if show_appointment? %>
         <span class="appointment-details ms-1">

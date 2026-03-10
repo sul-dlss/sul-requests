@@ -26,7 +26,8 @@ class AeonRequestsController < ApplicationController
   def submitted
     authorize! :read, Aeon::Request
 
-    @aeon_requests = sort_aeon_requests(filter_aeon_requests(current_user&.aeon&.submitted_requests || []))
+    requests = sort_aeon_requests(filter_aeon_requests(current_user&.aeon&.submitted_requests || []))
+    @aeon_request_groups = Aeon::RequestGrouping.from_requests(requests)
   end
 
   def resubmit

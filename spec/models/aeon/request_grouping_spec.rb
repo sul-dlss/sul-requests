@@ -58,4 +58,30 @@ RSpec.describe Aeon::RequestGrouping do
       end
     end
   end
+
+  describe '#status_request' do
+    context 'when the group is not digital' do
+      let(:request) { build(:aeon_request) }
+      let(:grouping) { described_class.new([request]) }
+
+      it 'returns the first request' do
+        expect(grouping.status_request).to eq(request)
+      end
+    end
+
+    context 'when the group is digital and submitted with a mix of ready and pending' do
+      let(:delivered) { build(:aeon_request, :digitized) }
+      let(:pending) { build(:aeon_request, :digitized) }
+      let(:grouping) { described_class.new([delivered, pending]) }
+
+      before do
+        allow(delivered).to receive_messages(submitted?: true, scan_delivered?: true)
+        allow(pending).to receive_messages(submitted?: true, scan_delivered?: false)
+      end
+
+      it 'returns the pending request' do
+        expect(grouping.status_request).to eq(pending)
+      end
+    end
+  end
 end

@@ -5,7 +5,7 @@ module Aeon
   class RequestStatusMessageComponent < ViewComponent::Base
     attr_reader :request
 
-    delegate :digital?, :draft?, to: :request
+    delegate :cancelled?, :digital?, :draft?, :physical?, :scan_delivered?, to: :request
 
     def initialize(request:)
       @request = request
@@ -16,18 +16,36 @@ module Aeon
     end
 
     def status_level
-      return unless draft?
-
-      :warning
+      if draft?
+        :warning
+      elsif digital? && !scan_delivered?
+        :pending
+      else
+        :ready
+      end
     end
 
     def status_message
+      draft_status_message || submitted_status_message
+    end
+
+    def draft_status_message
       return unless draft?
 
       if digital?
         'Pages/instructions not specified'
       else
         'Not scheduled'
+      end
+    end
+
+    def submitted_status_message
+      return unless digital? && !cancelled?
+
+      if scan_delivered?
+        'Delivered by email'
+      else
+        "We'll email you when your files are ready."
       end
     end
   end
