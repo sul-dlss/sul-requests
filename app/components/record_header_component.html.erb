@@ -7,7 +7,7 @@
           <%= render Icons::DocumentBox1Component.new classes: 'me-1 align-text-bottom' %>
         <% end %>
         <%= record.document_type.upcase_first %>
-        <% if record.date %> (<%= record.date %>)<% end %>
+        <% if record.date.present? %> (<%= record.date %>)<% end %>
       </span>
       <span>Call number: <%= record.call_number %></span>
       <span>
