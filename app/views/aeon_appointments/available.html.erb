@@ -2,7 +2,7 @@
   <turbo-frame id="available_appointments">
     <% if @reading_room.day_only_appointments? %>
       <% if @available_appointments.first&.start_time&.to_date == @date %>
-        <%= f.hidden_field :start_time, value: @available_appointments.first.start_time.strftime('%-I:%M %p') %>
+        <%= f.hidden_field :start_time, value: l(@available_appointments.first.start_time, format: :time_only) %>
         <%= f.hidden_field :duration, value: @available_appointments.first.maximum_appointment_length.to_i %>
       <% end %>
     <% else %>
@@ -11,8 +11,8 @@
         <legend class="fs-6 fw-semibold redesign-required-label">Available time slots</legend>
         <div class="flex-wrap gap-3 appointment-slots">
         <% @available_appointments.select { |x| x.start_time.to_date == @date }.each do |appointment| %>
-          <%= f.radio_button :start_time, appointment.start_time.strftime('%-I:%M %p'), required: true, id: "aeon_appointment_start_time_#{appointment.start_time.to_i}", data: { maximum_appointment_length: appointment.maximum_appointment_length }, class: 'btn-check', checked: @selected_time == appointment.start_time.strftime('%-I:%M %p') %>
-          <%= f.label "start_time_#{appointment.start_time.to_i}", appointment.start_time.strftime('%-I:%M %p'), class: 'btn border' %>
+          <%= f.radio_button :start_time, l(appointment.start_time, format: :time_only), required: true, id: "aeon_appointment_start_time_#{appointment.start_time.to_i}", data: { maximum_appointment_length: appointment.maximum_appointment_length }, class: 'btn-check', checked: @selected_time == l(appointment.start_time, format: :time_only) %>
+          <%= f.label "start_time_#{appointment.start_time.to_i}", l(appointment.start_time, format: :time_only), class: 'btn border' %>
         <% end %>
         </div>
       </fieldset>
@@ -21,7 +21,7 @@
     <% end %>
     <% if next_appt = @available_appointments.find { |x| x.start_time.to_date > @date } %>
       <div>
-        There are no appointments on <%= @date.strftime('%m/%d/%Y') %>. The next available appointment is on <%= next_appt.start_time.strftime('%m/%d/%Y') %>.
+        There are no appointments on <%= l(@date, format: :short) %>. The next available appointment is on <%= l(next_appt.start_time, format: :date_only) %>.
       </div>
     <% end %>
   </turbo-frame>

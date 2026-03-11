@@ -10,15 +10,14 @@ module Aeon
     end
 
     def appointment_time_range
-      format = '%-l:%M %P'
-      start = appointment.start_time.strftime(format).sub(':00', '')
-      stop = appointment.stop_time.strftime(format).sub(':00', '')
+      start = l(appointment.start_time, format: :time_only).sub(':00', '')
+      stop = l(appointment.stop_time, format: :time_only).sub(':00', '')
 
       "#{start} - #{stop} (#{appointment.start_time.zone})"
     end
 
     def appointment_date
-      appointment.start_time.strftime('%b %-d, %Y')
+      l(appointment.start_time, format: :date_only)
     end
   end
 end

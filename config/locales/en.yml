@@ -95,12 +95,12 @@ en:
       short: '%b %-d, %Y'
       long: '%A, %b %-d, %Y'
   time:
-    am: a
-    pm: p
     formats:
       short: "%Y-%m-%d %l.%M%P"
+      full: "%B %-d, %Y %l:%M %P"
       formal: "%A, %b %-d %Y at %l:%M%P"
-      time_only: "%l:%M%P %Z"
+      date_only: "%b %-d, %Y"
+      time_only: "%-l:%M %P"
   forms:
     labels:
       SAL-NEWARK:

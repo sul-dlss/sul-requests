@@ -7,11 +7,11 @@ class AppointmentTimeRangeComponent < ViewComponent::Base
   end
 
   def date
-    @appointment.start_time.strftime('%b %-d, %Y')
+    l(@appointment.start_time, format: :date_only)
   end
 
   def time_range
-    "#{@appointment.start_time.strftime('%l:%M %p')} - #{@appointment.stop_time.strftime('%l:%M %p')}"
+    "#{l(@appointment.start_time, format: :time_only)} - #{l(@appointment.stop_time, format: :time_only)}"
   end
 
   def call
