@@ -5,9 +5,6 @@
         <% if @appointment.reading_room_id %>
           <div class="fw-semibold">Reading room:</div>
           <div><%= @appointment.reading_room.name %><%= f.hidden_field :reading_room_id %></div>
-        <% elsif @reading_room %>
-          <div class="fw-semibold">Reading room:</div>
-          <div><%= @reading_room.name %><%= f.hidden_field :reading_room_id, value: @reading_room.id %></div>
         <% else %>
           <%= f.label :reading_room_id, 'Reading room', class: 'd-block fw-semibold redesign-required-label' %>
           <%= f.select :reading_room_id, @reading_rooms.map { |rr| [rr.name, rr.id] }, { include_blank: true }, data: { action: 'change->appointment#resetFields change->appointment#refreshAvailability change->appointment#refreshDateMetadata' }, class: 'bg-white border rounded px-2 py-1' %>
@@ -33,8 +30,8 @@
         <%= f.time_field :stop_time, required: true %>
       </div>
     <% else %>
-      <turbo-frame id="available_appointments" <% unless @appointment.id %>class="form-incomplete"<% end %> data-action="turbo:frame-load->appointment#applyDurationFilter turbo:frame-load->appointment#filterDurationFields" data-appointment-target="availability" src="<%= available_aeon_appointments_url(@appointment.reading_room_id, @appointment.date || Time.zone.now.iso8601, selected: @appointment.start_time.strftime('%-I:%M %p')) if @appointment.reading_room_id %>">
-        <% unless @reading_room&.day_only_appointments? || @appointment&.reading_room&.day_only_appointments? %>
+      <turbo-frame id="available_appointments" <% unless @appointment.id %>class="form-incomplete"<% end %> data-action="turbo:frame-load->appointment#applyDurationFilter turbo:frame-load->appointment#filterDurationFields" data-appointment-target="availability" src="<%= available_aeon_appointments_url(@appointment.reading_room_id, @appointment.date || Time.zone.now.iso8601, selected: @appointment.start_time&.strftime('%-I:%M %p')) if @appointment.reading_room_id %>">
+        <% unless @appointment&.reading_room&.day_only_appointments? %>
           <%= render Aeon::AppointmentDurationSelectorComponent.new(form: f, selected: (@appointment.start_time && @appointment.stop_time ? (@appointment.stop_time - @appointment.start_time).to_i : '')) %>
 
           <fieldset class="mb-3">
