@@ -117,58 +117,6 @@
 
 <% end %>
 </div>
-<aside class="col-4">
-  <% if @patron_request.ead_doc %>
-    <h2>Contact information</h2>
-    <div>
-      <% if @patron_request.ead_doc.repository %>
-        <h3>
-          <%= link_to @patron_request.ead_doc.repository_contact[:website] do %>
-            <%= @patron_request.ead_doc.repository %><i class="bi bi-arrow-up-right ms-1"></i>
-          <% end %>
-        </h3>
-      <% end %>
-      <% if @patron_request.ead_doc.repository_contact[:address] %>
-        <p>
-          <% @patron_request.ead_doc.repository_contact[:address].each_with_index do |line, index| %>
-            <div <% if index == 0 %>class="fw-semibold"<% end %>><%= line %></div>
-          <% end %>
-        </p>
-      <% end %>
-      <% if @patron_request.ead_doc.repository_contact[:email] %>
-        <p>
-          <span class="fw-semibold">Email: </span><%= mail_to @patron_request.ead_doc.repository_contact[:email] %>
-        </p>
-      <% end %>
-    </div>
-  <% else %>
-    <% library_code = @patron_request.origin_library_code %>
-    <% library = Settings.libraries[library_code] %>
-    <% if library %>
-    <h2>Contact information</h2>
-    <div>
-        <h3>
-          <% if library.reading_room_url %>
-            <%= link_to library.reading_room_url do %>
-              <%= library.label %><i class="bi bi-arrow-up-right ms-1"></i>
-            <% end %>
-          <% else %>
-            <%= library.label %>
-          <% end %>
-        </h3>
-        <% if library.contact_info&.phone %>
-          <p class="mb-1">
-            <span class="fw-semibold">Phone: </span><%= library.contact_info.phone %>
-          </p>
-        <% end %>
-        <% if library.contact_info&.email %>
-          <p>
-            <span class="fw-semibold">Email: </span><%= mail_to library.contact_info.email %>
-          </p>
-        <% end %>
-    </div>
-    <% end %>
-  <% end %>
-</aside>
+<%= render 'contact_aside' %>
 </div>
 </div>

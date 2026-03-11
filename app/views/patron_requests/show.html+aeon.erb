@@ -1,33 +1,57 @@
-<div class="confirmation">
-  <% if @patron_request.request_type == 'scan' %>
-    <h1>We received your digitization request!</h1>
+<div class="row">
+  <div class="confirmation col-8">
+    <% if @patron_request.request_type == 'scan' %>
+      <h1>We received your digitization request!</h1>
 
-    <div class="bg-light p-2 fs-5 mb-4">We'll email you when your files are ready.</div>
-  <% else %>
-    <h1>We received your reading room access request!</h1>
+      <div class="bg-light p-2 fs-5 mb-4">We'll email you when your files are ready.</div>
+    <% else %>
+      <h1>We received your reading room access request!</h1>
 
-    <div class="bg-light p-2 fs-5 mb-4">Please review Reading room policies before arriving for your appointment.</div>
-  <% end %>
+      <div class="bg-light p-2 fs-5 mb-4">Please review Reading room policies before arriving for your appointment.</div>
+    <% end %>
 
-  <%= render RecordHeaderComponent.new(patron_request: @patron_request, classes: 'mt-4') %>
+    <%= render RecordHeaderComponent.new(patron_request: @patron_request, classes: 'mt-4') %>
 
-  <div class="confirmation">
-    <% if @aeon_requests.any? %>
-      <% if @aeon_requests.reading_room_name %>
-        <div class="mb-4">
-          <h2><i class="bi bi-geo-alt-fill"></i><%= @aeon_requests.reading_room_name %></h2>
-        </div>
+    <div class="confirmation">
+      <% if @aeon_requests.any? %>
+        <% if @aeon_requests.reading_room_name %>
+          <div class="mb-4">
+            <h2><i class="bi bi-geo-alt-fill"></i><%= @aeon_requests.reading_room_name %></h2>
+          </div>
+        <% end %>
+        <% if @aeon_requests.first&.multi_item_selector? %>
+          <%= render Aeon::ConfirmationRequestListComponent.new(requests: @aeon_requests.submitted_requests, digitization: @aeon_requests.digitization? ) %>
+          <%= render Aeon::ConfirmationRequestListComponent.new(requests: @aeon_requests.draft_requests, digitization: @aeon_requests.digitization?, drafts: true) %>
+        <% else %>
+          <% request = @aeon_requests.first %>
+          <% if request.appointment %>
+            <div class="mb-3">
+              <h2>Appointment</h2>
+              <i class="bi bi-calendar me-2"></i><%= render AppointmentTimeRangeComponent.new(appointment: request.appointment) %>
+            </div>
+          <% elsif request.pages.present? %>
+            <div class="mb-3">
+              <h2>Pages</h2>
+              <i class="bi bi-file-earmark me-2"></i><%= request.pages %>
+            </div>
+          <% end %>
+          <% if request.special_request %>
+            <div class="mb-3">
+              <h2>Additional Information</h2>
+              <%= request.special_request %>
+            </div>
+          <% end %>
+        <% end %>
       <% end %>
-      <%= render Aeon::ConfirmationRequestListComponent.new(requests: @aeon_requests.submitted_requests, digitization: @aeon_requests.digitization? ) %>
-      <%= render Aeon::ConfirmationRequestListComponent.new(requests: @aeon_requests.draft_requests, digitization: @aeon_requests.digitization?, drafts: true) %>
+    </div>
+    <% if can? :debug, @patron_request %>
+      <hr>
+
+      <h2>Aeon Response</h2>
+      <% @patron_request.aeon_api_responses.each do |r| %>
+        <pre class="card p-2"><%= JSON.pretty_generate(r.as_json) %></pre>
+      <% end %>
     <% end %>
   </div>
-  <% if can? :debug, @patron_request %>
-    <hr>
-
-    <h2>Aeon Response</h2>
-    <% @patron_request.aeon_api_responses.each do |r| %>
-      <pre class="card p-2"><%= JSON.pretty_generate(r.as_json) %></pre>
-    <% end %>
-  <% end %>
+  <%= render 'contact_aside' %>
 </div>
