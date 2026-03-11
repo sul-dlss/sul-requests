@@ -10,7 +10,7 @@
       <div class="bg-light p-2 fs-5 mb-4">Please review Reading room policies before arriving for your appointment.</div>
     <% end %>
 
-    <%= render RecordHeaderComponent.new(patron_request: @patron_request, classes: 'mt-4') %>
+    <%= render RecordHeaderComponent.new(patron_request: @patron_request, classes: 'mt-4 mb-4') %>
 
     <div class="confirmation">
       <% if @aeon_requests.any? %>

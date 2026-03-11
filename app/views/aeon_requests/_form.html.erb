@@ -1,6 +1,7 @@
 <%= form_with(model: @aeon_request, data: { turbo: true }) do |f| %>
   <div class="modal-body">
     <% if f.object.digital? %>
+      <%= render 'patron_requests/digitization_notice' %>
       <%= render Aeon::DigitizationFormItemComponent.new(title: f.object.volume, dom_id: 'edit_aeon_item_request', object: f.object, base_name: 'aeon_request', series: nil, subseries: nil, collapsed: false) %>
     <% else %>
       <ul id="reading" class="appointments-container list-unstyled">
@@ -12,6 +13,6 @@
 
   <div class="modal-footer">
     <%= link_to 'Cancel', aeon_appointments_path, class: 'btn btn-outline-primary', data: { 'bs-dismiss': 'modal' } %>
-    <%= f.submit class: 'btn btn-primary', data: { 'bs-dismiss': 'modal' } %>
+    <%= f.submit 'Submit request', class: 'btn btn-primary', data: { 'bs-dismiss': 'modal' } %>
   </div>
 <% end %>
