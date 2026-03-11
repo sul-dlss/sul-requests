@@ -19,7 +19,7 @@ class AeonAppointmentsController < ApplicationController
   def new
     authorize! :create, Aeon::Appointment
 
-    @appointment = Aeon::Appointment.new
+    @appointment = Aeon::Appointment.new reading_room_id: @reading_room&.id, reading_room: @reading_room
 
     request.variant = :modal if params[:modal]
   end
