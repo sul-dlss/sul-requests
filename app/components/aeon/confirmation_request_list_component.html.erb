@@ -14,7 +14,7 @@
             </div>
             <div>
               <% if request.appointment %>
-              <span><%= request.appointment.start_time.strftime("%b %d, %Y") %></span><i class="bi bi-dot"></i><span><%= request.appointment.start_time.strftime("%H:%M %P") %> - <%= request.appointment.stop_time.strftime("%H:%M %P") %></span>
+                <%= render AppointmentTimeRangeComponent.new(appointment: request.appointment) %>
               <% elsif request.pages %>
                 Pages <%= request.pages %>
               <% end %>

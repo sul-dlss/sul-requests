@@ -1,9 +1,7 @@
 <%= tag.li class: 'position-relative', data: @data.merge('sort-key' => appointment.sort_key.to_s, value: appointment.id) do %>
   <button class="dropdown-item p-0 ps-4 pe-2 py-2 my-1" data-action="appointment-select#select">
       <span class="label-value">
-        <%= appointment.start_time.strftime('%b %d, %Y') %>
-        <i class="bi bi-dot"></i>
-        <%= "#{appointment.start_time.strftime('%l:%M %p -')}#{appointment.stop_time.strftime('%l:%M %p')}" %>
+        <%= render AppointmentTimeRangeComponent.new(appointment:) %>
         <span class="badge rounded-pill text-bg-light fw-normal" data-count="<%= appointment.requests.length %>" data-appointment-id="<%= appointment.id %>">
           <%= pluralize(appointment.requests.length, 'item') %>
         </span>

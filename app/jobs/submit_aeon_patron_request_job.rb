@@ -73,6 +73,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
       shipping_option: patron_request.aeon_digitization? ? 'Electronic Delivery' : nil,
       item_info5: volume_params['requested_pages'],
       for_publication: volume_params['for_publication'] == 'Yes',
+      reference_number: patron_request.to_global_id.to_s,
       item_number: folio_item.barcode
     )
   end
