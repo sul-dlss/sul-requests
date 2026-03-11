@@ -12,7 +12,7 @@ module Aeon
     attr_accessor :call_number, :ead_number, :reference_number, :site
 
     # request attributes
-    attr_accessor :creation_date, :document_type, :transaction_number, :web_request_form, :start_time, :stop_time
+    attr_accessor :creation_date, :document_type, :transaction_number, :web_request_form
 
     # queues
     attr_accessor :shipping_option, :photoduplication_status, :photoduplication_date, :transaction_status, :transaction_date
@@ -49,8 +49,6 @@ module Aeon
         shipping_option: dyn['shippingOption'],
         site: dyn['site'],
         special_request: dyn['specialRequest'].presence,
-        start_time: dyn['startTime'],
-        stop_time: dyn['stopTime'],
         transaction_date: Time.zone.parse(dyn.fetch('transactionDate')),
         transaction_number: dyn['transactionNumber'],
         transaction_status: dyn['transactionStatus'],
