@@ -1,8 +1,10 @@
 <%= form_with(model: Aeon::Appointment.new) do |f| %>
   <turbo-frame id="available_appointments">
     <% if @reading_room.day_only_appointments? %>
+      <% if @available_appointments.first&.start_time&.to_date == @date %>
         <%= f.hidden_field :start_time, value: @available_appointments.first.start_time.strftime('%-I:%M %p') %>
         <%= f.hidden_field :duration, value: @available_appointments.first.maximum_appointment_length.to_i %>
+      <% end %>
     <% else %>
       <%= render Aeon::AppointmentDurationSelectorComponent.new(form: f, selected:  params['duration'].to_i) %>
       <fieldset class="mb-3" data-appointment-target="fieldset" data-max-slot="<%= @appointment_lengths.max %>" data-min-slot="<%= @appointment_lengths.min %>">
@@ -24,6 +26,6 @@
     <% end %>
   </turbo-frame>
   <turbo-frame id="earliest_appointment">
-    <%= @available_appointments.first.start_time.strftime('%A, %b %e, %Y') if @available_appointments %>
+    <%= @available_appointments.first.start_time.strftime('%A, %b %e, %Y') if @available_appointments.first %>
   </turbo-frame>
 <% end %>
