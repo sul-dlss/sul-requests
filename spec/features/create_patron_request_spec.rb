@@ -497,6 +497,37 @@ RSpec.describe 'Creating a request', :js do
     end
   end
 
+  context 'with multiple scannable items where one is checked out' do
+    let(:folio_instance) do
+      build(:checkedout_holdings, items: [
+              build(:item, barcode: '12345678', base_callnumber: 'ABC 123',
+                           effective_location: build(:scannable_location)),
+              build(:item, barcode: '87654321', base_callnumber: 'ABC 321',
+                           due_date: '2015-01-01T12:59:00.000+00:00', status: 'Checked out',
+                           effective_location: build(:scannable_location))
+            ])
+    end
+    let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true, ldap_attributes:) }
+    let(:ldap_attributes) { {} }
+
+    before do
+      allow(Folio::Patron).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
+      login_as(current_user)
+    end
+
+    it 'enables the submit button when selecting only the available item after choosing pickup' do
+      visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+
+      choose 'Pickup'
+      click_on 'Continue'
+
+      check 'ABC 123'
+      click_on 'Continue'
+
+      expect(page).to have_button 'Submit request', disabled: false
+    end
+  end
+
   context 'with an expired patron' do
     let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true, ldap_attributes:) }
     let(:patron) { build(:expired_patron) }
