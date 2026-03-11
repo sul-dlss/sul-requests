@@ -539,6 +539,10 @@ label.btn-close {
   --bs-accordion-active-bg: transparent;
   --bs-accordion-btn-bg: transparent;
 
+  .selected-item-remove {
+    display: none;
+  }
+
   .accordion-button {
     background-color: transparent;
     border-width: 0;
