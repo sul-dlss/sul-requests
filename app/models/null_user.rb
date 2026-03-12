@@ -57,7 +57,7 @@ class NullUser
   def ldap_groups = []
   def affiliation = []
   def student_type = []
-  def email_from_symphony = nil
+  def email_from_folio = nil
 
   def patron
     placeholder_patron

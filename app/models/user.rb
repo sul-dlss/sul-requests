@@ -56,7 +56,7 @@ class User < ActiveRecord::Base
       notify_honeybadger_of_missing_sso_email!
       "#{sunetid}@stanford.edu"
     elsif library_id_user?
-      email_from_symphony
+      email_from_folio
     else
       email
     end
@@ -96,7 +96,7 @@ class User < ActiveRecord::Base
     (super || '').split(/[|;]/)
   end
 
-  def email_from_symphony
+  def email_from_folio
     self.email ||= (patron.email if library_id_user? && patron.present?)
   end
 
