@@ -64,6 +64,7 @@
     <%# Individual item without container - gets its own checkbox %>
     <% 
       checkbox_id = volume_checkbox_id(series_title: series_title || display_group.title, subseries_name: display_group.title)
+      checked = f.object.selected_items.any? { |item| (series_title || display_group.title) == item[:series] && display_group.title == item[:subseries] }
     %>
     <div class="mb-2 d-flex align-items-start gap-2">
       <% if nested %>
@@ -73,15 +74,14 @@
         </span>
       <% end %>
       <%= f.check_box :barcodes,
-            { multiple: true, class: "form-check-input mt-1 #{'ms-2' unless nested}", id: checkbox_id, 
+            { multiple: true, class: "form-check-input mt-1 #{'ms-2' unless nested}", id: checkbox_id, checked: checked,
               data: { action: 'item-selector#change', 'item-selector-target': 'item', 'item-selector-title-parts-param': [series_title || display_group.title, display_group.title], 'item-selector-id-param': checkbox_id } },
               volume_value(series_title: series_title || display_group.title, subseries_name: display_group.title),
             nil %>
-
-      <%= tag.div class: 'd-none', data: { contentId: checkbox_id, toggleDisabled: true } do %>
+      <%= tag.div class: 'd-none', data: { 'content-id': checkbox_id, 'toggle-disabled': true } do %>
         <%= fields_for "patron_request[aeon_item][#{checkbox_id}]" do |f| %>
           <%= f.hidden_field :id, disabled: !checked, value: checkbox_id, data: { toggle: true } %>
-          <%= f.hidden_field :series, disabled: !checked, value: series_title || container_name, data: { toggle: true } %>
+          <%= f.hidden_field :series, disabled: !checked, value: series_title || display_group.title, data: { toggle: true } %>
           <%= f.hidden_field :subseries, disabled: !checked, value: display_group.title, data: { toggle: true } %>
         <% end %>
       <% end %>
