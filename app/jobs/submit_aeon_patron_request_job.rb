@@ -31,11 +31,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
     end
   end
 
-<<<<<<< HEAD
   def common_aeon_data_from_patron_request(patron_request, volume_params) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-=======
-  def common_aeon_data_from_patron_request(patron_request, volume_params)
->>>>>>> 67fcaf7e (add common volume params)
     AeonClient::RequestData.with_defaults.with(
       appointment_id: volume_params['appointment_id'].presence&.to_i,
       for_publication: volume_params['for_publication'] == 'yes',
