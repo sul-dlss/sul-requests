@@ -8,14 +8,27 @@ export default class extends Controller {
     event.preventDefault()
     event.stopPropagation()
 
+    const containingModal = event.currentTarget.closest('.modal');
+
     const modal = this.createModal()
-    // this.modal.show()
     const url = new URL(event.currentTarget.href)
 
     // append modal=true to the URL so that the server can respond with the appropriate variant
     url.searchParams.set("modal", modal.querySelector("turbo-frame").id)
 
     modal.querySelector("turbo-frame").src = url.toString()
+
+    if (containingModal) {
+      containingModal.classList.add("d-none");
+      let backdrop;
+      if (containingModal.nextSibling.classList.contains("modal-backdrop")) backdrop = containingModal.nextSibling;
+      backdrop?.classList?.add("d-none");
+
+      modal.addEventListener("hidden.bs.modal", () => {
+        containingModal.classList.remove("d-none");
+        backdrop?.classList?.remove("d-none");
+      }, { once: true });
+    }
   }
 
   createModal() {
