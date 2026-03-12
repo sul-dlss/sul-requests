@@ -63,8 +63,10 @@ module Aeon
 
         if open_hours_with_same_times.one?
           OpenHoursDisplay.new(day_range: first.day_name, hours: format_hours(first))
-        else
+        elsif (open_hours_with_same_times.last.day_of_week - open_hours_with_same_times.first.day_of_week) < open_hours_with_same_times.count # rubocop:disable Layout/LineLength
           OpenHoursDisplay.new(day_range: "#{first.day_name} - #{last.day_name}", hours: format_hours(first))
+        else
+          OpenHoursDisplay.new(day_range: open_hours_with_same_times.map(&:day_name).to_sentence, hours: format_hours(first))
         end
       end
 
