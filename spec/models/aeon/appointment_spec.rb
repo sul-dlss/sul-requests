@@ -57,7 +57,7 @@ RSpec.describe Aeon::Appointment do
 
     it 'parses reading room open hours' do
       hours = appointment.reading_room.open_hours
-      expect(hours.first).to have_attributes(day_name: 'Monday', open_time: '09:00:00')
+      expect(hours.first).to have_attributes(day_name: 'Monday', open_time: an_object_having_attributes(hour: 9, min: 0))
     end
 
     it 'parses reading room policies' do
