@@ -10,7 +10,7 @@ export default class extends Controller {
 
     const containingModal = event.currentTarget.closest('.modal');
 
-    const modal = this.createModal()
+    const modal = this.createModal({backdrop: containingModal == null})
     const url = new URL(event.currentTarget.href)
 
     // append modal=true to the URL so that the server can respond with the appropriate variant
@@ -20,23 +20,19 @@ export default class extends Controller {
 
     if (containingModal) {
       containingModal.classList.add("d-none");
-      let backdrop;
-      if (containingModal.nextSibling.classList.contains("modal-backdrop")) backdrop = containingModal.nextSibling;
-      backdrop?.classList?.add("d-none");
 
       modal.addEventListener("hidden.bs.modal", () => {
         containingModal.classList.remove("d-none");
-        backdrop?.classList?.remove("d-none");
       }, { once: true });
     }
   }
 
-  createModal() {
+  createModal(options) {
     const template = this.templateTarget
     const modal = template.content.cloneNode(true).querySelector(".modal")
     document.body.appendChild(modal)
     modal.querySelector("turbo-frame").id = `modal-${Date.now()}`
-    const bsModal = new Modal(modal)
+    const bsModal = new Modal(modal, options)
     bsModal.show()
 
     modal.addEventListener("hidden.bs.modal", () => {
