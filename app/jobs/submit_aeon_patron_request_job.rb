@@ -33,11 +33,12 @@ class SubmitAeonPatronRequestJob < ApplicationJob
 
   def as_aeon_create_ead_request_data(patron_request, volume_params) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     AeonClient::RequestData.with_defaults.with(
+      appointment_id: volume_params['appointment_id'].presence&.to_i,
       call_number: "#{patron_request.ead_doc.identifier} #{volume_params['series']}",
       ead_number: patron_request.ead_doc.identifier,
-      appointment_id: volume_params['appointment_id'].presence&.to_i,
       for_publication: volume_params['for_publication'] == 'yes',
       item_author: patron_request.ead_doc.author,
+      item_date: patron_request.ead_doc&.date,
       item_info1: patron_request.view_url,
       item_info5: volume_params['requested_pages'],
       item_title: patron_request.ead_doc.title,
@@ -46,7 +47,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
       shipping_option: patron_request.request_type == 'scan' ? 'Electronic Delivery' : nil,
       site: patron_request.aeon_site,
       special_request: volume_params['additional_information'],
-      username: patron_request.user.email_address,
+      username: patron_request.user.aeon.username,
       web_request_form: 'multiple'
     )
   end
@@ -60,21 +61,20 @@ class SubmitAeonPatronRequestJob < ApplicationJob
       appointment_id: volume_params['appointment_id'].presence&.to_i,
       call_number: folio_item.callnumber,
       document_type: 'Monograph',
-      format: nil,
+      for_publication: volume_params['for_publication'] == 'yes',
       item_author: patron_request.folio_instance&.author,
       item_date: patron_request.folio_instance&.pub_date,
+      item_info1: patron_request.view_url,
+      item_info5: volume_params['requested_pages'],
+      item_number: folio_item.barcode,
       item_title: patron_request.item_title,
       location: patron_request.origin_location_code,
-      web_request_form: patron_request.selectable_items.many? ? 'multiple' : 'single',
-      username: patron_request.user.aeon.username,
-      item_info1: patron_request.view_url,
-      special_request: volume_params['additional_information'] || patron_request.aeon_reading_special,
-      site: patron_request.aeon_site,
-      shipping_option: patron_request.aeon_digitization? ? 'Electronic Delivery' : nil,
-      item_info5: volume_params['requested_pages'],
-      for_publication: volume_params['for_publication'] == 'yes',
       reference_number: patron_request.to_global_id.to_s,
-      item_number: folio_item.barcode
+      shipping_option: patron_request.aeon_digitization? ? 'Electronic Delivery' : nil,
+      site: patron_request.aeon_site,
+      special_request: volume_params['additional_information'] || patron_request.aeon_reading_special,
+      username: patron_request.user.aeon.username,
+      web_request_form: patron_request.selectable_items.many? ? 'multiple' : 'single'
     )
   end
   # rubocop:enable Metrics/MethodLength
