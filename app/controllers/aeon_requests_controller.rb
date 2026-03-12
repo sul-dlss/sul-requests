@@ -52,7 +52,7 @@ class AeonRequestsController < ApplicationController
       @aeon_request.transaction_number,
       AeonClient::RequestData.with_defaults.with(
         appointment_id: aeon_request_params[:appointment_id]&.to_i,
-        for_publication: aeon_request_params[:for_publication] == 'Yes',
+        for_publication: aeon_request_params[:for_publication] == 'yes',
         item_info5: aeon_request_params[:requested_pages],
         special_request: aeon_request_params[:additional_information]
       )
