@@ -31,28 +31,28 @@ class SubmitAeonPatronRequestJob < ApplicationJob
     end
   end
 
-  def common_aeon_data_from_patron_request(patron_request)
+  def common_aeon_data_from_patron_request(patron_request, volume_params)
     AeonClient::RequestData.with_defaults.with(
+      appointment_id: volume_params['appointment_id'].presence&.to_i,
+      for_publication: volume_params['for_publication'] == 'yes',
       item_author: patron_request.author,
       item_date: patron_request.date,
       item_info1: patron_request.view_url,
+      item_info5: volume_params['requested_pages'],
       item_title: patron_request.item_title,
       reference_number: patron_request.to_global_id.to_s,
       shipping_option: patron_request.request_type == 'scan' ? 'Electronic Delivery' : nil,
       site: patron_request.aeon_site,
+      special_request: volume_params['additional_information'] || patron_request.aeon_reading_special,
       username: patron_request.user.aeon.username
     )
   end
 
   def as_aeon_create_ead_request_data(patron_request, volume_params)
     common_aeon_data_from_patron_request(patron_request).with(
-      appointment_id: volume_params['appointment_id'].presence&.to_i,
       call_number: "#{patron_request.ead_doc.identifier} #{volume_params['series']}",
       ead_number: patron_request.ead_doc.identifier,
-      for_publication: volume_params['for_publication'] == 'yes',
-      item_info5: volume_params['requested_pages'],
       item_volume: volume_params['subseries'],
-      special_request: volume_params['additional_information'],
       web_request_form: 'multiple'
     )
   end
@@ -62,14 +62,10 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   # and reading room id.
   def as_aeon_create_request_data(patron_request, folio_item, volume_params)
     common_aeon_data_from_patron_request(patron_request).with(
-      appointment_id: volume_params['appointment_id'].presence&.to_i,
       call_number: folio_item.callnumber,
       document_type: 'Monograph',
-      for_publication: volume_params['for_publication'] == 'yes',
-      item_info5: volume_params['requested_pages'],
       item_number: folio_item.barcode,
       location: patron_request.origin_location_code,
-      special_request: volume_params['additional_information'] || patron_request.aeon_reading_special,
       web_request_form: patron_request.selectable_items.many? ? 'multiple' : 'single'
     )
   end
