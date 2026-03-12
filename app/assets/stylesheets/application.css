@@ -534,33 +534,6 @@ label.btn-close {
   display: none;
 }
 
-.digitization-accordion .accordion-item:only-child {
-  --bs-accordion-border-width: 0;
-  --bs-accordion-active-bg: transparent;
-  --bs-accordion-btn-bg: transparent;
-
-  .selected-item-remove {
-    display: none;
-  }
-
-  .accordion-button {
-    background-color: transparent;
-    border-width: 0;
-  }
-
-  .status-icon, .disclosure-icon {
-    display: none;
-  }
-
-  .item-title {
-    background-color: var(--stanford-fog-light);
-    padding-bottom: 4px;
-    padding-left: 8px;
-    padding-right: 8px;
-    padding-top: 4px;
-  }
-}
-
 .appointments-item {
   flex-wrap: wrap;
 }
@@ -572,7 +545,7 @@ label.btn-close {
   }
 }
 
-.appointments-container .appointments-item:not(:only-child) {
+.selected-items-container .appointments-item:not(:only-child) {
   /* .border */
   border: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
 
@@ -597,18 +570,25 @@ label.btn-close {
     display: none;
   }
 
-  /* @media (min-width: 768px) {
+  @media (min-width: 768px) {
     flex-wrap: nowrap;
-  } */
+  }
 }
 
-.appointments-container .appointments-item:only-child {
-  .selected-item-status, .selected-item-remove {
-    display: none;
+.selected-items-container .appointments-item:only-child,
+.selected-items-container .accordion-item:only-child
+{
+  --bs-accordion-border-width: 0;
+  --bs-accordion-active-bg: transparent;
+  --bs-accordion-btn-bg: transparent;
+
+  .accordion-button {
+    background-color: transparent;
+    border-width: 0;
   }
 
-  label {
-    width: 100%;
+  .selected-item-status, .selected-item-remove, .disclosure-icon {
+    display: none;
   }
 
   .selected-item-title {
