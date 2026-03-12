@@ -33,6 +33,19 @@ class SubmitAeonPatronRequestJob < ApplicationJob
 
   def common_aeon_data_from_patron_request(patron_request, volume_params) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     AeonClient::RequestData.with_defaults.with(
+      item_author: patron_request.author,
+      item_date: patron_request.date,
+      item_info1: patron_request.view_url,
+      item_title: patron_request.item_title,
+      reference_number: patron_request.to_global_id.to_s,
+      shipping_option: patron_request.request_type == 'scan' ? 'Electronic Delivery' : nil,
+      site: patron_request.aeon_site,
+      username: patron_request.user.aeon.username
+    )
+  end
+
+  def as_aeon_create_ead_request_data(patron_request, volume_params)
+    common_aeon_data_from_patron_request(patron_request).with(
       appointment_id: volume_params['appointment_id'].presence&.to_i,
       for_publication: volume_params['for_publication'] == 'yes',
       item_author: patron_request.author,
