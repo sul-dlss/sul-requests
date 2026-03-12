@@ -50,21 +50,12 @@ module Aeon
     end
 
     def grouped_hours
-      @grouped_hours = {}
-      @open_hours.each do |oh|
-        hour_str = "#{Time.zone.parse(oh.open_time).strftime('%l:%M')} - #{Time.zone.parse(oh.close_time).strftime('%l:%M %p')}"
-        if @grouped_hours.key?(hour_str)
-          @grouped_hours[hour_str].push(oh.day_name)
-        else
-          @grouped_hours[hour_str] = [oh.day_name]
-        end
-      end
-      @grouped_hours
+      @open_hours.group_by { |oh| "#{oh.open_time.strftime('%l:%M')} - #{oh.close_time.strftime('%l:%M %p')}" }
     end
 
     def human_readable_hours
       grouped_hours.map do |hours, days|
-        "#{days.first} - #{days.last}, #{hours}"
+        "#{days.first.day_name} - #{days.last.day_name}, #{hours}"
       end.join(', ')
     end
 
