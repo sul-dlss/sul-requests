@@ -31,7 +31,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
     end
   end
 
-  def common_aeon_data_from_patron_request(patron_request, volume_params)
+  def common_aeon_data_from_patron_request(patron_request, volume_params) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     AeonClient::RequestData.with_defaults.with(
       appointment_id: volume_params['appointment_id'].presence&.to_i,
       for_publication: volume_params['for_publication'] == 'yes',
@@ -49,7 +49,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   end
 
   def as_aeon_create_ead_request_data(patron_request, volume_params)
-    common_aeon_data_from_patron_request(patron_request).with(
+    common_aeon_data_from_patron_request(patron_request, volume_params).with(
       call_number: "#{patron_request.ead_doc.identifier} #{volume_params['series']}",
       ead_number: patron_request.ead_doc.identifier,
       item_volume: volume_params['subseries'],
@@ -61,7 +61,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   # should also contain scheduledDate, appointment id, appointment,
   # and reading room id.
   def as_aeon_create_request_data(patron_request, folio_item, volume_params)
-    common_aeon_data_from_patron_request(patron_request).with(
+    common_aeon_data_from_patron_request(patron_request, volume_params).with(
       call_number: folio_item.callnumber,
       document_type: 'Monograph',
       item_number: folio_item.barcode,
