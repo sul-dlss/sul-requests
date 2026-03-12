@@ -271,7 +271,7 @@ class PatronRequest < ApplicationRecord
   end
 
   def view_url
-    [Settings.searchworks_link, instance_hrid.sub(/^a/, '')].join('/')
+    folio_instance&.item_url || ead_doc&.item_url
   end
 
   # Item stuff

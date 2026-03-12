@@ -38,7 +38,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
       appointment_id: volume_params['appointment_id'].presence&.to_i,
       for_publication: volume_params['for_publication'] == 'yes',
       item_author: patron_request.ead_doc.author,
-      item_info1: patron_request.ead_doc.item_url,
+      item_info1: patron_request.view_url,
       item_info5: volume_params['requested_pages'],
       item_title: patron_request.ead_doc.title,
       item_volume: volume_params['subseries'],
