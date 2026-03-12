@@ -1,8 +1,8 @@
 <div data-controller="selected-item-form" data-action="input->selected-item-form#updateStatus" class="accordion-item mb-3" data-content-id="<%= dom_id %>">
   <div class="accordion-header d-flex flex-nowrap align-items-center position-relative">
     <button class="accordion-button d-inline-flex w-auto align-items-center position-static" type="button" data-bs-toggle="collapse" data-bs-target="#content_<%= dom_id %>" aria-expanded="<%= collapsed? ? 'false' : 'true' %>" aria-controls="content_<%= dom_id %>">
-      <i class="fs-4 bi bi-circle me-2 status-icon" data-selected-item-form-target="status"></i>
-      <span class="text-black fw-semibold item-title  stretched-link"><%= title %></span>
+      <i class="fs-4 bi bi-circle me-2 selected-item-status" data-selected-item-form-target="status"></i>
+      <span class="text-black fw-semibold selected-item-title stretched-link"><%= title %></span>
     </button>
     <button class="btn btn-link p-0 ps-1 z-3 selected-item-remove" data-action="item-selector#remove" data-item-selector-id-param="<%= dom_id %>">
       <i class="bi bi-trash"></i><span class="visually-hidden"> Delete <%= title %></span>
