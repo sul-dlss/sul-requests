@@ -50,9 +50,9 @@ class SubmitAeonPatronRequestJob < ApplicationJob
 
   def as_aeon_create_ead_request_data(patron_request, volume_params)
     common_aeon_data_from_patron_request(patron_request, volume_params).with(
-      call_number: "#{patron_request.ead_doc.identifier} #{volume_params['series']}",
+      call_number: "#{patron_request.ead_doc.identifier} #{volume_params['hierarchy']&.first}",
       ead_number: patron_request.ead_doc.identifier,
-      item_volume: volume_params['subseries'],
+      item_volume: volume_params['title'],
       web_request_form: 'multiple'
     )
   end
