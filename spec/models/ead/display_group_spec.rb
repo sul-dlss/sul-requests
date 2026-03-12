@@ -101,6 +101,9 @@ RSpec.describe Ead::DisplayGroup do
       groups = described_class.build_display_groups([item])
       expect(groups.first).to be_a(Ead::DisplayGroup::Subseries)
       expect(groups.first.title).to eq('Papers')
+
+      expect(groups.first.contents.first).to have_attributes(hierarchy: ['Papers'])
+      expect(groups.first.contents.first.contents.first).to have_attributes(hierarchy: %w[Papers Correspondence])
     end
 
     it 'creates an ItemContainer for items with a physical container' do

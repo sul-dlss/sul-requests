@@ -5,18 +5,21 @@ module Ead
   # Organizes EAD items into display groups for rendering
   # Consolidates items by container and preserves original document order
   class DisplayGroup
-    def self.build_display_groups(contents)
-      new(contents).build
+    def self.build_display_groups(contents, hierarchy = [])
+      new(contents, hierarchy).build
     end
 
-    def initialize(contents)
+    attr_reader :hierarchy
+
+    def initialize(contents, hierarchy = [])
       @contents = contents || []
+      @hierarchy = hierarchy
     end
 
-    ItemContainer = Data.define(:title, :contents)
-    ItemWithoutContainer = Data.define(:title)
-    DigitalItem = Data.define(:title, :href)
-    Subseries = Data.define(:title, :contents)
+    ItemContainer = Data.define(:title, :contents, :hierarchy)
+    ItemWithoutContainer = Data.define(:title, :hierarchy)
+    DigitalItem = Data.define(:title, :href, :hierarchy)
+    Subseries = Data.define(:title, :contents, :hierarchy)
 
     def build
       @contents.group_by(&:coalesce_key).each_value.map do |group|
@@ -36,7 +39,7 @@ module Ead
       c = group.first
 
       if c.top_container
-        ItemContainer.new(title: c.top_container, contents: group)
+        ItemContainer.new(title: c.top_container, contents: group, hierarchy: hierarchy)
       elsif c.contents.any?
         build_hierarchical_group(c)
       else
@@ -46,17 +49,18 @@ module Ead
 
     def build_hierarchical_group(node)
       if all_leaves_containerless?(node.contents)
-        ItemContainer.new(title: node.full_title, contents: node.contents)
+        ItemContainer.new(title: node.full_title, contents: node.contents, hierarchy: hierarchy)
       else
-        Subseries.new(title: node.full_title, contents: Ead::DisplayGroup.build_display_groups(node.contents))
+        Subseries.new(title: node.full_title,
+                      contents: Ead::DisplayGroup.build_display_groups(node.contents, hierarchy + [node.full_title]), hierarchy: hierarchy)
       end
     end
 
     def build_leaf_group(item)
       if item.respond_to?(:digital_only?) && item.digital_only?
-        DigitalItem.new(title: item.full_title, href: item.extref_href)
+        DigitalItem.new(title: item.full_title, href: item.extref_href, hierarchy: hierarchy)
       else
-        ItemWithoutContainer.new(title: item.title)
+        ItemWithoutContainer.new(title: item.title, hierarchy: hierarchy)
       end
     end
 
