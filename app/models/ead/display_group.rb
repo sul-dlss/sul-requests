@@ -13,7 +13,7 @@ module Ead
       @contents = contents || []
     end
 
-    ItemContainer = Data.define(:name, :contents)
+    ItemContainer = Data.define(:title, :contents)
     ItemWithoutContainer = Data.define(:title)
     DigitalItem = Data.define(:title, :href)
     Subseries = Data.define(:title, :contents)
@@ -36,7 +36,7 @@ module Ead
       c = group.first
 
       if c.top_container
-        ItemContainer.new(name: c.top_container, contents: group)
+        ItemContainer.new(title: c.top_container, contents: group)
       elsif c.contents.any?
         build_hierarchical_group(c)
       else
@@ -46,7 +46,7 @@ module Ead
 
     def build_hierarchical_group(node)
       if all_leaves_containerless?(node.contents)
-        ItemContainer.new(name: node.full_title, contents: node.contents)
+        ItemContainer.new(title: node.full_title, contents: node.contents)
       else
         Subseries.new(title: node.full_title, contents: Ead::DisplayGroup.build_display_groups(node.contents))
       end

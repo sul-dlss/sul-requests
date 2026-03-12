@@ -21,7 +21,7 @@ RSpec.describe Ead::DisplayGroup do
 
       groups = described_class.build_display_groups([item])
       expect(groups.first).to be_a(Ead::DisplayGroup::ItemContainer)
-      expect(groups.first.name).to eq('Box 1')
+      expect(groups.first.title).to eq('Box 1')
     end
 
     it 'creates a DigitalItem for a DAO-only item' do
@@ -78,7 +78,7 @@ RSpec.describe Ead::DisplayGroup do
 
       groups = described_class.build_display_groups([item])
       expect(groups.first).to be_a(Ead::DisplayGroup::ItemContainer)
-      expect(groups.first.name).to eq('Kentucky Lincoln facsimiles, 1850-1860')
+      expect(groups.first.title).to eq('Kentucky Lincoln facsimiles, 1850-1860')
       expect(groups.first.contents.size).to eq(2)
     end
 
@@ -116,7 +116,7 @@ RSpec.describe Ead::DisplayGroup do
 
       groups = described_class.build_display_groups([item])
       expect(groups.first).to be_a(Ead::DisplayGroup::ItemContainer)
-      expect(groups.first.name).to eq('Box 1')
+      expect(groups.first.title).to eq('Box 1')
     end
   end
 end
