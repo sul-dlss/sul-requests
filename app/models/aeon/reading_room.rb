@@ -32,7 +32,7 @@ module Aeon
         appointment_increment: dyn['appointmentIncrement'],
         last_modified_time: Time.zone.parse(dyn['lastModifiedTime'].to_s),
         sites: dyn['sites'] || [],
-        open_hours: Array(dyn['openHours']).map { |h| ReadingRoomOpenHours.from_dynamic(h) },
+        open_hours: Array(dyn['openHours']).map { |h| ReadingRoomOpenHours.from_dynamic(h) }.sort_by(&:day_of_week),
         policies: Array(dyn['policies']).map { |p| ReadingRoomPolicy.from_dynamic(p) }
       )
     end
@@ -49,23 +49,34 @@ module Aeon
       Settings.aeon.day_only_appointments.include?(sites.first)
     end
 
-    def grouped_hours
-      @grouped_hours = {}
-      @open_hours.each do |oh|
-        hour_str = "#{Time.zone.parse(oh.open_time).strftime('%l:%M')} - #{Time.zone.parse(oh.close_time).strftime('%l:%M %p')}"
-        if @grouped_hours.key?(hour_str)
-          @grouped_hours[hour_str].push(oh.day_name)
+    OpenHoursDisplay = Data.define(:day_range, :hours)
+
+    # Returns a human-readable set of open hours for the reading room that generally combines sequential days
+    # with the same hours (the typical case for most locations), and groups together multiple hours for the same
+    # day (e.g. ARS).
+    def human_readable_hours # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
+      open_hours_by_range = @open_hours.slice_when { |i, j| format_hours(i) != format_hours(j) }
+
+      display_groups = open_hours_by_range.map do |open_hours_with_same_times|
+        first = open_hours_with_same_times.first
+        last = open_hours_with_same_times.last
+
+        if open_hours_with_same_times.one?
+          OpenHoursDisplay.new(day_range: first.day_name, hours: format_hours(first))
         else
-          @grouped_hours[hour_str] = [oh.day_name]
+          OpenHoursDisplay.new(day_range: "#{first.day_name} - #{last.day_name}", hours: format_hours(first))
         end
       end
-      @grouped_hours
-    end
 
-    def human_readable_hours
-      grouped_hours.map do |hours, days|
-        "#{days.first} - #{days.last}, #{hours}"
-      end.join(', ')
+      day_groups = display_groups.group_by(&:day_range).map do |day_range, hours|
+        if hours.one?
+          "#{day_range}, #{hours.first.hours}"
+        else
+          "#{day_range}, #{hours.map(&:hours).uniq.to_sentence}"
+        end
+      end
+
+      day_groups.join(', ')
     end
 
     def next_appointment
@@ -73,5 +84,11 @@ module Aeon
     end
 
     def persisted? = id.present?
+
+    private
+
+    def format_hours(reading_room_open_hours)
+      "#{reading_room_open_hours.open_time.strftime('%-l:%M')} - #{reading_room_open_hours.close_time.strftime('%-l:%M %P')}"
+    end
   end
 end
