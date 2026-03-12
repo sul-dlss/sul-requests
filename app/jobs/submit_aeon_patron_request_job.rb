@@ -6,50 +6,30 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   queue_as :default
   retry_on Faraday::ConnectionFailed
 
-  def perform(patron_request) # rubocop:disable Metrics/AbcSize
+  def perform(patron_request)
     return unless patron_request.aeon_page?
-    return perform_ead_request(patron_request) if patron_request.ead_url.present?
 
-    patron_request.selected_items.each do |folio_item|
-      request = as_aeon_create_request_data(patron_request, folio_item, patron_request.aeon_item&.dig(folio_item.id) || {})
+    patron_request.aeon_item.each do |id, volume_params|
+      request = request_data(patron_request, volume_params, id)
       response = submit_aeon_request(request)
 
-      patron_request.aeon_api_responses.where(item_id: folio_item.id).delete_all
-      patron_request.aeon_api_responses.create(item_id: folio_item.id, request_data: request.as_json, response_data: response.as_json)
+      patron_request.aeon_api_responses.where(item_id: id).delete_all
+      patron_request.aeon_api_responses.create(item_id: id, request_data: request.as_json, response_data: response.as_json)
     end
   end
 
-  def perform_ead_request(patron_request)
-    patron_request.aeon_item.each_value do |volume_params|
-      request = as_aeon_create_ead_request_data(patron_request, volume_params)
-      response = submit_aeon_request(request)
-
-      item_id = "#{request.call_number} #{request.item_volume}"
-
-      patron_request.aeon_api_responses.where(item_id: item_id).delete_all
-      patron_request.aeon_api_responses.create(item_id: item_id, request_data: request.as_json, response_data: response.as_json)
+  def request_data(patron_request, volume_params, id)
+    if patron_request.ead_url.present?
+      as_aeon_create_ead_request_data(patron_request,
+                                      volume_params)
+    else
+      folio_item = patron_request.selected_items.find { |item| item.id == id }
+      as_aeon_create_request_data(patron_request, folio_item, volume_params)
     end
   end
 
   def common_aeon_data_from_patron_request(patron_request, volume_params) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     AeonClient::RequestData.with_defaults.with(
-      appointment_id: volume_params['appointment_id'].presence&.to_i,
-      for_publication: volume_params['for_publication'] == 'yes',
-      item_author: patron_request.author,
-      item_date: patron_request.date,
-      item_info1: patron_request.view_url,
-      item_info5: volume_params['requested_pages'],
-      item_title: patron_request.item_title,
-      reference_number: patron_request.to_global_id.to_s,
-      shipping_option: patron_request.request_type == 'scan' ? 'Electronic Delivery' : nil,
-      site: patron_request.aeon_site,
-      special_request: volume_params['additional_information'] || patron_request.aeon_reading_special,
-      username: patron_request.user.aeon.username
-    )
-  end
-
-  def as_aeon_create_ead_request_data(patron_request, volume_params)
-    common_aeon_data_from_patron_request(patron_request).with(
       appointment_id: volume_params['appointment_id'].presence&.to_i,
       for_publication: volume_params['for_publication'] == 'yes',
       item_author: patron_request.author,
