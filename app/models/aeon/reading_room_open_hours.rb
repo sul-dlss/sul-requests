@@ -9,8 +9,8 @@ module Aeon
       new(
         day_of_week: dyn['dayOfWeek'],
         day_name: dyn['dayName'],
-        open_time: dyn['openTime'],
-        close_time: dyn['closeTime']
+        open_time: Time.zone.parse(dyn['openTime']),
+        close_time: Time.zone.parse(dyn['closeTime'])
       )
     end
 

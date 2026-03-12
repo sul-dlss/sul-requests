@@ -12,7 +12,7 @@ module Aeon
     end
 
     def appointment_date
-      appointment_group.date.strftime('%b %-d, %Y')
+      l(appointment_group.date, format: :short)
     end
 
     def appointment_reading_room_name

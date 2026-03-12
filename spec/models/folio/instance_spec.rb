@@ -150,6 +150,12 @@ RSpec.describe Folio::Instance do
     it { is_expected.to eq '213487023' }
   end
 
+  describe '#item_url' do
+    subject { data.item_url }
+
+    it { is_expected.to eq 'https://searchworks.stanford.edu/view/6959652' }
+  end
+
   describe '#finding_aid' do
     subject { data.finding_aid }
 

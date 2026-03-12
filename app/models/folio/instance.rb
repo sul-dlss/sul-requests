@@ -88,7 +88,7 @@ module Folio
     end
 
     def item_url
-      "https://searchworks.stanford.edu/view/#{hrid}"
+      [Settings.searchworks_link, hrid].join('/')
     end
 
     def oclcn

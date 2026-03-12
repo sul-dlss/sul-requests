@@ -101,7 +101,7 @@ module Ead
 
       # Extract repository contact information from publicationstmt
       address_node = doc.xpath('//publicationstmt/address').first
-      return nil unless address_node
+      return {} unless address_node
 
       contact_info = {}
       address_lines = []

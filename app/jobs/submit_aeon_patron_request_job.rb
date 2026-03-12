@@ -31,53 +31,44 @@ class SubmitAeonPatronRequestJob < ApplicationJob
     end
   end
 
-  def as_aeon_create_ead_request_data(patron_request, volume_params) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+  def common_aeon_data_from_patron_request(patron_request, volume_params) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     AeonClient::RequestData.with_defaults.with(
-      call_number: "#{patron_request.ead_doc.identifier} #{volume_params['series']}",
-      ead_number: patron_request.ead_doc.identifier,
       appointment_id: volume_params['appointment_id'].presence&.to_i,
       for_publication: volume_params['for_publication'] == 'yes',
-      item_author: patron_request.ead_doc.author,
-      item_info1: patron_request.ead_doc.item_url,
+      item_author: patron_request.author,
+      item_date: patron_request.date,
+      item_info1: patron_request.view_url,
       item_info5: volume_params['requested_pages'],
-      item_title: patron_request.ead_doc.title,
-      item_volume: volume_params['subseries'],
+      item_title: patron_request.item_title,
       reference_number: patron_request.to_global_id.to_s,
       shipping_option: patron_request.request_type == 'scan' ? 'Electronic Delivery' : nil,
       site: patron_request.aeon_site,
-      special_request: volume_params['additional_information'],
-      username: patron_request.user.email_address,
+      special_request: volume_params['additional_information'] || patron_request.aeon_reading_special,
+      username: patron_request.user.aeon.username
+    )
+  end
+
+  def as_aeon_create_ead_request_data(patron_request, volume_params)
+    common_aeon_data_from_patron_request(patron_request, volume_params).with(
+      call_number: "#{patron_request.ead_doc.identifier} #{volume_params['hierarchy']&.first}",
+      ead_number: patron_request.ead_doc.identifier,
+      item_volume: volume_params['title'],
       web_request_form: 'multiple'
     )
   end
 
-  # rubocop:disable Metrics/MethodLength
   # Once reading room logic for appointments is implemented, this mapping
   # should also contain scheduledDate, appointment id, appointment,
   # and reading room id.
-  def as_aeon_create_request_data(patron_request, folio_item, volume_params) # rubocop:disable Metrics/AbcSize
-    AeonClient::RequestData.with_defaults.with(
-      appointment_id: volume_params['appointment_id'].presence&.to_i,
+  def as_aeon_create_request_data(patron_request, folio_item, volume_params)
+    common_aeon_data_from_patron_request(patron_request, volume_params).with(
       call_number: folio_item.callnumber,
       document_type: 'Monograph',
-      format: nil,
-      item_author: patron_request.folio_instance&.author,
-      item_date: patron_request.folio_instance&.pub_date,
-      item_title: patron_request.item_title,
+      item_number: folio_item.barcode,
       location: patron_request.origin_location_code,
-      web_request_form: patron_request.selectable_items.many? ? 'multiple' : 'single',
-      username: patron_request.user.aeon.username,
-      item_info1: patron_request.view_url,
-      special_request: volume_params['additional_information'] || patron_request.aeon_reading_special,
-      site: patron_request.aeon_site,
-      shipping_option: patron_request.aeon_digitization? ? 'Electronic Delivery' : nil,
-      item_info5: volume_params['requested_pages'],
-      for_publication: volume_params['for_publication'] == 'Yes',
-      reference_number: patron_request.to_global_id.to_s,
-      item_number: folio_item.barcode
+      web_request_form: patron_request.selectable_items.many? ? 'multiple' : 'single'
     )
   end
-  # rubocop:enable Metrics/MethodLength
 
   def submit_aeon_request(aeon_payload)
     response = aeon_client.create_request(aeon_payload)

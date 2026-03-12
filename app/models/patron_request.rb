@@ -270,8 +270,16 @@ class PatronRequest < ApplicationRecord
     super || folio_instance&.title || ead_doc&.title
   end
 
+  def author
+    folio_instance&.author || ead_doc&.author
+  end
+
+  def date
+    folio_instance&.pub_date || ead_doc&.date
+  end
+
   def view_url
-    [Settings.searchworks_link, instance_hrid.sub(/^a/, '')].join('/')
+    folio_instance&.item_url || ead_doc&.item_url
   end
 
   # Item stuff
