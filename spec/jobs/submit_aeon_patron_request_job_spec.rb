@@ -111,8 +111,8 @@ RSpec.describe SubmitAeonPatronRequestJob do
       let(:data) do
         {
           barcodes: %w[12345678 87654321], aeon_item: {
-            folio_instance.items.first.id => { requested_pages: '23', for_publication: 'No', additional_information: 'info' },
-            folio_instance.items.last.id => { requested_pages: '32', for_publication: 'Yes', additional_information: 'more info' }
+            folio_instance.items.first.id => { requested_pages: '23', for_publication: 'no', additional_information: 'info' },
+            folio_instance.items.last.id => { requested_pages: '32', for_publication: 'yes', additional_information: 'more info' }
           }
         }
       end
