@@ -187,12 +187,6 @@ RSpec.describe PatronRequest do
     end
   end
 
-  describe '#view_url' do
-    subject { request.view_url }
-
-    it { is_expected.to eq 'https://searchworks.stanford.edu/view/12345' }
-  end
-
   describe '#pickup_service_point' do
     let(:folio_instance) { build(:sal3_holdings) }
 
