@@ -19,6 +19,9 @@ class PatronRequestsController < ApplicationController
 
   before_action :associate_request_with_patron, only: [:new, :create]
   before_action :redirect_aeon_pages, only: [:create]
+  before_action :redirect_finding_aid_pages, if: lambda {
+    Settings.features.requests_redesign && @patron_request.instance_hrid && @patron_request.finding_aid?
+  }, only: [:new]
   helper_method :current_request, :new_params
 
   rescue_from CanCan::AccessDenied do |_exception|
@@ -76,6 +79,13 @@ class PatronRequestsController < ApplicationController
 
     return unless @patron_request.aeon_page? && @patron_request.finding_aid?
 
+    redirect_to @patron_request.finding_aid
+  end
+
+  def redirect_finding_aid_pages
+    return unless @patron_request.finding_aid?
+
+    # TODO: maybe convert the archives HTML url to an EAD url without just sending the url off to find the right thing.
     redirect_to @patron_request.finding_aid
   end
 
