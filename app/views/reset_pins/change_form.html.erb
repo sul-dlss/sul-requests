@@ -2,7 +2,7 @@
 <h2><%= t('change_pin.title') %></h2>
 <%= form_tag change_pin_path, method: :post, class: 'mb-5 col col-md-6 col-lg-4' do %>
   <%= hidden_field_tag :token, params[:token] %>
-  <%= hidden_field_tag :referrer, params[:referrer] %>
+  <%= hidden_field_tag :referrer, cancel_url_param %>
   <div>
     Your new PIN must:
     <ul>
@@ -40,7 +40,7 @@
     </div>
   </div>
   <div class="mt-3 d-flex gap-2 justify-content-end">
-    <%= link_to 'Cancel', params['referrer'], class: 'btn btn-outline-primary text-decoration-none' %>
+    <%= link_to 'Cancel', cancel_url_param, class: 'btn btn-outline-primary text-decoration-none' %>
     <%= submit_tag 'Change PIN', class: 'btn btn-primary' %>
   </div>
 <% end %>

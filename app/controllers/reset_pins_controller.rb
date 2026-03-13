@@ -5,6 +5,8 @@ class ResetPinsController < ApplicationController
   rescue_from ActiveSupport::MessageEncryptor::InvalidMessage, with: :invalid_token
   rescue_from FolioClient::IlsError, with: :request_failed
 
+  helper_method :cancel_url_param
+
   # Renders the first step for resetting the PIN
   #
   # GET /reset_pin
@@ -66,5 +68,15 @@ class ResetPinsController < ApplicationController
   def request_failed
     flash[:error] = t 'reset_pin.request_failed_html'
     redirect_to reset_pin_path
+  end
+
+  def cancel_url_param
+    return unless params[:referrer]
+
+    Rails.application.routes.recognize_path(params[:referrer], method: :get)
+
+    params[:referrer]
+  rescue ActionController::RoutingError
+    nil
   end
 end
