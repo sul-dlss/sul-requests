@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["select", "deleteButton", "deleteModal", "deleteForm"]
+  static targets = ["select", "deleteButton", "deleteModal", "deleteForm", "selectall"]
 
   // In case the page saves selections, we want to update the delete button count
   // as well as the delete form
@@ -70,7 +70,7 @@ export default class extends Controller {
     } else {
       descriptions = this.summaryDescription(selectedDrafts)
     }
-    this.deleteModalTarget.querySelector('.modal-body').innerHTML = "<div>" + descriptions + "</div>"
+    this.deleteModalTarget.querySelector('#request-content').innerHTML = "<div>" + descriptions + "</div>"
   }
 
   requestDescription(selectedDraft, lastElement) {
@@ -86,4 +86,31 @@ export default class extends Controller {
 
     return digitizationDrafts.length + " digitization and " + readingRoomDrafts.length + " reading room use requests"
   }
+  
+  // handle checking or unchecking the select all checkbox
+  toggleSelect(event) {
+    this.selectTargets.forEach(selectTarget => {
+      selectTarget.checked = event.target.checked
+    })
+
+    // We have to call the method handling selection of individual draft checkboxes
+    // in this method and not directly associated with the action, b/c
+    // we first have to check and uncheck the items before we can count checked values
+    // and update the delete button and modal accordingly
+    this.selectForDelete()
+  }
+
+  // when an individual checkbox is checked or unchecked, we will 
+  // update the select all checkbox accordingly
+  updateSelectAll() {
+    // Check how many items are checked
+    const selectedDrafts = this.selectTargets.filter(selectTarget => selectTarget.checked)
+    if(selectedDrafts.length == this.totalPossible) {
+      this.selectallTarget.checked = true
+    } else {
+      this.selectallTarget.checked = false
+    }
+  }
+
+
 }
