@@ -24,8 +24,6 @@ Rails:
 
 Layout/LineLength:
   Max: 140
-  Exclude:
-    - "spec/mailers/approval_status_mailer_spec.rb"
 
 Lint/MissingSuper:
   Exclude:
@@ -33,20 +31,13 @@ Lint/MissingSuper:
 
 Metrics/BlockLength:
   Exclude:
-    - "spec/models/request_spec.rb"
     - "spec/factories/**/*"
 
 Metrics/ClassLength:
   Enabled: false
 
-Metrics/MethodLength:
-  Exclude:
-    - "app/services/symphony_client.rb"
-
 Metrics/ModuleLength:
   Max: 120
-  Exclude:
-    - "app/helpers/requests_helper.rb"
 
 Style/StringLiterals:
   Enabled: true
