@@ -3,7 +3,7 @@
 ###
 #  User class for authenticating via SSO
 ###
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   validates :sunetid, uniqueness: true, allow_blank: true
 
   has_many :patron_requests, dependent: :nullify
