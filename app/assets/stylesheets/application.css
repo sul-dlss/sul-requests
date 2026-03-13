@@ -55,7 +55,7 @@ layer(components);
 }
 
 .bg-dark.bg-cardinal {
-  --bs-dark-rgb: var(--stanford-cardinal-rgb);
+  --bs-dark-rgb: var();
 }
 
 .bg-stanford-10-black {
@@ -635,6 +635,18 @@ label.btn-close {
 }
 
 
-.modal-draft-request:last-child {
-  border-bottom: 0px;
+.modal-bulk-delete {
+  max-height: 548px;
+}
+
+.btn-delete {
+  --bs-btn-color: rgba(var(--stanford-cardinal-rgb), 1);
+  --bs-btn-bg: #fff;
+  --bs-btn-border-color: rgba(var(--stanford-cardinal-rgb), 1);
+  --bs-btn-hover-color: rgba(var(--stanford-cardinal-rgb), 1);
+  --bs-btn-hover-bg: #fff;
+  --bs-btn-hover-border-color: rgba(var(--stanford-cardinal-rgb), 1);
+  --bs-btn-disabled-color: rgba(var(--stanford-cardinal-rgb), 0.5);
+  --bs-btn-disabled-bg: rgba(130, 0, 0, 0.2);
+  --bs-btn-disabled-border-color: rgba(var(--stanford-cardinal-rgb), 0.3);
 }
