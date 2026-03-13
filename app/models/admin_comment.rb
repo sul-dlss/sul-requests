@@ -2,7 +2,7 @@
 
 ##
 # A class to store admin comments on requests
-class AdminComment < ActiveRecord::Base
+class AdminComment < ApplicationRecord
   belongs_to :request, optional: true, polymorphic: true
 
   validates :comment, :commenter, presence: true
