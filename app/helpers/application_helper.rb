@@ -14,8 +14,8 @@ module ApplicationHelper
     markdown_renderer.render(markup).html_safe # rubocop:disable Rails/OutputSafety
   end
 
-  def time_tag(dt, format = :default, attr: {})
-    content_tag :time, l(dt, format:), attr.merge(datetime: dt) if dt
+  def time_tag(datetime, format = :default, attr: {})
+    content_tag :time, l(datetime, format:), attr.merge(datetime: datetime) if datetime
   end
 
   def sort_holdings(holdings_object)

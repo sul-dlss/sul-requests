@@ -11,21 +11,6 @@
 Metrics/MethodLength:
   Max: 11
 
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyleForLeadingUnderscores.
-# SupportedStylesForLeadingUnderscores: disallowed, required, optional
-Naming/MemoizedInstanceVariableName:
-  Exclude:
-    - 'app/models/library_hours_api.rb'
-
-# Offense count: 1
-# Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
-# AllowedNames: as, at, by, cc, db, id, if, in, io, ip, of, on, os, pp, to
-Naming/MethodParameterName:
-  Exclude:
-    - 'app/helpers/application_helper.rb'
-
 # Offense count: 10
 RSpec/AnyInstance:
   Exclude:
