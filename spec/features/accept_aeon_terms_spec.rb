@@ -1,0 +1,48 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+RSpec.describe 'Creating new accounts for patrons', :js do
+  before do
+    allow(Settings.features).to receive(:requests_redesign).and_return(true)
+    allow(EadClient).to receive(:fetch).and_return(Ead::Document.new(eadxml, url: 'whatever'))
+
+    allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
+
+    allow(stub_aeon_client).to receive(:find_user).ordered.and_return(
+      Aeon::NullUser.new,
+      Aeon::User.new(username: user.email_address, auth_type: 'Default')
+    )
+
+    login_as(current_user)
+  end
+
+  let(:user) { create(:sso_user) }
+  let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true, ldap_attributes: {}) }
+
+  let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
+
+  let(:stub_aeon_client) do
+    instance_double(AeonClient, find_user: Aeon::NullUser.new, create_user: nil, reading_rooms: reading_rooms, appointments_for: [],
+                                available_appointments: [])
+  end
+
+  let(:reading_rooms) { JSON.load_file('spec/fixtures/reading_rooms.json').map { |room| Aeon::ReadingRoom.from_dynamic(room) } }
+
+  let(:eadxml) do
+    Nokogiri::XML(File.read('spec/fixtures/sc0097.xml')).tap(&:remove_namespaces!)
+  end
+
+  it 'renders the Aeon terms and conditions' do
+    visit new_archives_request_path(value: 'http://example.com/ead.xml')
+
+    expect(page).to have_content('Terms')
+    check('I agree to these terms')
+
+    click_button 'Continue'
+
+    expect(page).to have_content('New request')
+
+    expect(stub_aeon_client).to have_received(:create_user).with(username: user.email_address)
+  end
+end

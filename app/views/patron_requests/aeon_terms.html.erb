@@ -1,0 +1,21 @@
+<h1>Terms</h1>
+
+<p>Ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur.</p>
+<p>Ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur.</p>
+<p>Ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur.</p>
+<p>Ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur.</p>
+
+<%= form_with url: accept_aeon_terms_path(referer: request.url), method: :post do |f| %>
+
+  <div class="my-3 px-3 py-2 bg-danger-subtle d-flex flex-row justify-content-start align-items-baseline gap-2">
+    <%= f.check_box :aeon_terms, required: true %>
+    <div>
+      <%= f.label "aeon_terms", 'I agree to these terms', class:'fw-bold redesign-required-label d-block' %>
+      By checking this box, you acknowledge and agree to comply with the policies and regulations above.
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-end">
+    <%= f.submit 'Continue' %> 
+  </div>
+<% end %>
