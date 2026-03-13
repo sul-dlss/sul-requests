@@ -30,7 +30,7 @@ class LibraryHours
   private
 
   def fetch_schedule_for_library(library_code, after: nil, min_open_days: 7)
-    library_hours(library_code, from: after.to_date, business_days: min_open_days).open_hours.filter_map do |d|
+    library_hours(library_code, from: after&.to_date, business_days: min_open_days).open_hours.filter_map do |d|
       d&.range
     end
   end
