@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe LibraryHoursApi do
-  subject { LibraryHoursApi::Request.new(library, location, range) }
+  subject(:api) { LibraryHoursApi::Request.new(library, location, range) }
 
   let(:library) { 'green' }
   let(:location) { 'library-circulation' }
@@ -11,11 +11,11 @@ RSpec.describe LibraryHoursApi do
 
   describe 'bad JSON' do
     before do
-      allow(subject).to receive_messages(response: '<html />')
+      stub_request(:get, api.api_url).to_return(body: '<html />')
     end
 
     it 'returns an empty hash' do
-      expect(subject.json).to(eq({}))
+      expect(api.json).to(eq({}))
     end
   end
 
@@ -25,7 +25,7 @@ RSpec.describe LibraryHoursApi do
     end
 
     it 'returns a blank response' do
-      expect(subject.json).to be_blank
+      expect(api.json).to be_blank
     end
   end
 
@@ -33,25 +33,25 @@ RSpec.describe LibraryHoursApi do
     let(:api_url) { subject.hours_request(range).send(:api_url) }
 
     it 'constructs a url containing the library slug' do
-      expect(subject.api_url).to match(%r{/libraries/green/})
+      expect(api.api_url).to match(%r{/libraries/green/})
     end
 
     it 'constructs a url containing the location slug' do
-      expect(subject.api_url).to match(%r{/locations/library-circulation/})
+      expect(api.api_url).to match(%r{/locations/library-circulation/})
     end
 
     context 'with a range' do
       let(:range) { { from: 'a', to: 'b' } }
 
       it 'constructs a url containing a date range of two months from today' do
-        expect(subject.api_url).to include('from=a')
-        expect(subject.api_url).to include('to=b')
+        expect(api.api_url).to include('from=a')
+        expect(api.api_url).to include('to=b')
       end
     end
   end
 
   describe LibraryHoursApi::Response do
-    subject { described_class.new(data) }
+    subject(:response) { described_class.new(data) }
 
     let(:data) { { 'data' => { 'attributes' => { 'hours' => hours_data } } } }
     let(:hours_data) { [] }
@@ -61,13 +61,13 @@ RSpec.describe LibraryHoursApi do
         let(:hours_data) { [{ 'open' => true }] }
 
         it 'is true' do
-          expect(subject).to be_open
+          expect(response).to be_open
         end
       end
 
       context 'without hours' do
         it 'is not open' do
-          expect(subject).not_to be_open
+          expect(response).not_to be_open
         end
       end
     end
@@ -76,7 +76,7 @@ RSpec.describe LibraryHoursApi do
       let(:hours_data) { [{ 'open' => true }, { 'open' => false }, { 'open' => true }] }
 
       it 'selects only the hours that the location is open' do
-        expect(subject.open_hours.length).to eq 2
+        expect(response.open_hours.length).to eq 2
       end
     end
 
@@ -84,8 +84,8 @@ RSpec.describe LibraryHoursApi do
       let(:hours_data) { [{ 'open' => true, 'opens_at' => Time.zone.now.to_s }] }
 
       it 'provides accessors to the library hours' do
-        expect(subject.hours.length).to eq 1
-        hour = subject.hours.first
+        expect(response.hours.length).to eq 1
+        hour = response.hours.first
 
         expect(hour).to be_open
         expect(hour.day).to eq Time.zone.today
@@ -95,7 +95,7 @@ RSpec.describe LibraryHoursApi do
         let(:data) { { 'data' => { 'attributes' => nil } } }
 
         it 'is an empty array (and does not throw error)' do
-          expect(subject.hours).to eq([])
+          expect(response.hours).to eq([])
         end
       end
     end

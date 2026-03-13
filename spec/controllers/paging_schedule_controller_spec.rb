@@ -24,7 +24,7 @@ RSpec.describe PagingScheduleController do
   describe 'show' do
     describe 'when an estimate is present' do
       before do
-        expect(PagingSchedule).to receive_messages(new: estimate)
+        allow(PagingSchedule).to receive_messages(new: estimate)
       end
 
       let(:estimate) { double(earliest_delivery_estimate: { a: 'a', b: 'b' }) }

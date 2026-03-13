@@ -3,8 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe LibraryHours do
+  subject(:library_hours) { described_class.new }
+
   let(:library) { 'GREEN' }
-  let(:subject) { described_class.new }
 
   describe '#business_days_for' do
     before do
@@ -35,7 +36,7 @@ RSpec.describe LibraryHours do
     end
 
     it 'returns upcoming business days for a library' do
-      schedule = subject.business_days_for(library, after: Time.zone.parse('2025-01-28'))
+      schedule = library_hours.business_days_for(library, after: Time.zone.parse('2025-01-28'))
 
       expect(schedule).to eq([
                                Time.zone.parse('2025-01-29'),
@@ -47,15 +48,15 @@ RSpec.describe LibraryHours do
     end
 
     it 'uses previously retrieved schedule data to complete a request to avoid redundant API calls' do
-      subject.business_days_for(library, after: Time.zone.parse('2025-01-28'))
-      subject.business_days_for(library, after: Time.zone.parse('2025-02-04'))
+      library_hours.business_days_for(library, after: Time.zone.parse('2025-01-28'))
+      library_hours.business_days_for(library, after: Time.zone.parse('2025-02-04'))
 
       expect(LibraryHoursApi).to have_received(:get).once
     end
 
     it 'requests updated data if the cached data is insufficient' do
-      subject.business_days_for(library, after: Time.zone.parse('2025-01-28'))
-      subject.business_days_for(library, after: Time.zone.parse('2025-03-04'))
+      library_hours.business_days_for(library, after: Time.zone.parse('2025-01-28'))
+      library_hours.business_days_for(library, after: Time.zone.parse('2025-03-04'))
 
       expect(LibraryHoursApi).to have_received(:get).with('green', 'library-circulation', from: Date.parse('2025-01-28'),
                                                                                           business_days: 7).once

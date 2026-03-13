@@ -58,55 +58,10 @@ RSpec/ContextWording:
 RSpec/ExampleLength:
   Max: 21
 
-# Offense count: 1
-RSpec/ExpectInHook:
-  Exclude:
-    - 'spec/controllers/paging_schedule_controller_spec.rb'
-
-# Offense count: 1
-# Configuration parameters: AssignmentOnly.
-RSpec/InstanceVariable:
-  Exclude:
-    - 'spec/views/messages/edit.html.erb_spec.rb'
-
-# Offense count: 108
-# Configuration parameters: EnforcedStyle, IgnoreSharedExamples.
-# SupportedStyles: always, named_only
-RSpec/NamedSubject:
-  Exclude:
-    - 'spec/helpers/mediation_helper_spec.rb'
-    - 'spec/models/current_user_spec.rb'
-    - 'spec/models/library_hours_api_spec.rb'
-    - 'spec/models/library_hours_spec.rb'
-    - 'spec/models/message_spec.rb'
-    - 'spec/models/user_spec.rb'
-
 # Offense count: 30
 # Configuration parameters: AllowedGroups.
 RSpec/NestedGroups:
   Max: 5
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-RSpec/ScatteredLet:
-  Exclude:
-    - 'spec/mailers/mediation_mailer_spec.rb'
-
-# Offense count: 1
-RSpec/StubbedMock:
-  Exclude:
-    - 'spec/controllers/paging_schedule_controller_spec.rb'
-
-# Offense count: 1
-RSpec/SubjectDeclaration:
-  Exclude:
-    - 'spec/models/library_hours_spec.rb'
-
-# Offense count: 3
-RSpec/SubjectStub:
-  Exclude:
-    - 'spec/models/library_hours_api_spec.rb'
-    - 'spec/models/user_spec.rb'
 
 # Offense count: 8
 # Configuration parameters: IgnoreNameless, IgnoreSymbolicNames.
