@@ -5,7 +5,7 @@ CI.run do
 
   step "Style: Ruby", "bin/rubocop"
   step "Style: Herb", "bundle exec herb analyze app --non-interactive --no-log-file"
-
+  step "Security: Brakeman code analysis", "bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error"
   step "Security: Gem audit", "bin/bundler-audit"
 
   step "Tests: Rails", "bin/rake"
