@@ -167,4 +167,20 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       expect(page).to have_content('Log in with SUNet ID')
     end
   end
+
+  context 'when user does not have an email address' do
+    let(:user) { create(:library_id_user) }
+    let(:eadxml) do
+      Nokogiri::XML(File.read('spec/fixtures/a0112.xml')).tap(&:remove_namespaces!)
+    end
+
+    before do
+      allow(Folio::Patron).to receive(:find_by).with(library_id: user.library_id).and_return(build(:no_email_patron))
+    end
+
+    it 'identifies the library of the item' do
+      visit new_archives_request_path(value: 'http://example.com/ead.xml')
+      expect(page).to have_content 'Your library account does not include an email address, which is required to complete this request.'
+    end
+  end
 end

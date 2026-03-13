@@ -76,6 +76,12 @@ FactoryBot.define do
     active { false }
   end
 
+  factory :no_email_patron, parent: :patron do
+    display_name { 'No email' }
+    id { 'no-email-uuid' }
+    email { '' }
+  end
+
   factory :visitor_patron, class: 'Folio::NullPatron' do
     display_name { 'Visitor' }
     email { 'visitor@example.com' }
