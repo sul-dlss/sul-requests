@@ -101,12 +101,16 @@ class PatronRequestsController < ApplicationController
   end
 
   def patron_request_params
+    aeon_term_params = params.dig(:patron_request, :aeon_item)&.keys&.index_with do
+      [:id, :title, :appointment_id, :for_publication, :requested_pages, :additional_information, { hierarchy: [] }]
+    end
+
     params.expect(patron_request: [:patron_email, :instance_hrid, :origin_location_code, :needed_date, :service_point_code, :proxy,
                                    :for_sponsor_id, :for_sponsor,
                                    :fulfillment_type, :request_type,
                                    :scan_page_range, :scan_authors, :scan_title,
                                    :aeon_reading_special, :aeon_terms, :ead_url,
-                                   { barcodes: [] }, { aeon_item: {} }])
+                                   { barcodes: [] }, { aeon_item: aeon_term_params }])
   end
 
   def handle_ead_client_error
