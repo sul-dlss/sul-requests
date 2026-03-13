@@ -73,6 +73,7 @@ Rails.application.routes.draw do
   end
 
   post 'aeon_user/terms', to: 'aeon_users#accept_terms', as: :accept_aeon_terms
+  resources :aeon_users, only: [:new, :create] if Settings.features.requests_redesign
 
   resources :admin, only: [:index, :show] do
     member do
