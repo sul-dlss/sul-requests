@@ -3,14 +3,16 @@
 require 'rails_helper'
 
 RSpec.describe 'messages/edit' do
+  let(:message) { create(:message) }
+
   before do
-    @message = assign(:message, create(:message))
+    assign(:message, message)
   end
 
   it 'renders the edit message form' do
     render
 
-    assert_select 'form[action=?][method=?]', message_path(@message), 'post' do
+    assert_select 'form[action=?][method=?]', message_path(message), 'post' do
       assert_select 'textarea#message_text[name=?]', 'message[text]'
 
       assert_select 'input#message_library[name=?]', 'message[library]'

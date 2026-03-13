@@ -5,12 +5,12 @@ require 'rails_helper'
 RSpec.describe MediationMailer do
   describe 'mediator_notification' do
     let(:request) { create(:mediated_patron_request) }
+    let(:mail) { described_class.mediator_notification(request) }
     let(:mediator_contact_info) { { request.origin_library_code => { email: 'someone@example.com' } } }
+
     before do
       allow(Rails.application.config).to receive(:mediator_contact_info).and_return(mediator_contact_info)
     end
-
-    let(:mail) { described_class.mediator_notification(request) }
 
     describe 'to' do
       it 'is the origin contact email address' do

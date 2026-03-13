@@ -3,23 +3,23 @@
 require 'rails_helper'
 
 RSpec.describe CurrentUser do
-  subject { described_class.new(user&.stringify_keys).user_object }
+  subject(:user) { described_class.new(user_attr&.stringify_keys).user_object }
 
-  let(:user) { nil }
+  let(:user_attr) { nil }
 
   describe '#current_user' do
     context 'without a user in the environment' do
-      let(:user) { nil }
+      let(:user_attr) { nil }
 
       it 'returns nil user if there is no user in the environment' do
-        expect(subject).to be_a User
-        expect(subject).not_to be_persisted
-        expect(subject.id).to be_nil
+        expect(user).to be_a User
+        expect(user).not_to be_persisted
+        expect(user.id).to be_nil
       end
     end
 
     context 'with a shibboleth user in the environment' do
-      let(:user) do
+      let(:user_attr) do
         {
           username: 'some-user',
           patron_key: 'some-key',
@@ -35,17 +35,17 @@ RSpec.describe CurrentUser do
       let(:ldap_attributes) { {} }
 
       it 'returns a user when there is a user in the environment' do
-        expect(subject).to be_a User
-        expect(subject.sunetid).to eq 'some-user'
+        expect(user).to be_a User
+        expect(user.sunetid).to eq 'some-user'
       end
 
       it 'returns the ldap groups as an array' do
-        expect(subject.ldap_groups).to eq ['ldap:group1', 'ldap:group2']
+        expect(user.ldap_groups).to eq ['ldap:group1', 'ldap:group2']
       end
 
       it 'has the suCardNumber id from LDAP and translates it to the library_id' do
-        expect(subject.library_id).to eq '987654321'
-        expect(subject).not_to be_changed
+        expect(user.library_id).to eq '987654321'
+        expect(user).not_to be_changed
       end
 
       describe 'email' do
@@ -53,7 +53,7 @@ RSpec.describe CurrentUser do
           let(:ldap_attributes) { { 'mail' => 'the-email@fromldap.edu' } }
 
           it 'is the mail from ldap attributes' do
-            expect(subject.email).to eq 'the-email@fromldap.edu'
+            expect(user.email).to eq 'the-email@fromldap.edu'
           end
         end
 
@@ -61,14 +61,14 @@ RSpec.describe CurrentUser do
           let(:ldap_attributes) { { 'suEmailStatus' => 'active' } }
 
           it 'is the "SUNet@stanford.edu" when there is no mail and the suEmailStatus is active' do
-            expect(subject.email).to eq 'some-user@stanford.edu'
+            expect(user.email).to eq 'some-user@stanford.edu'
           end
         end
       end
     end
 
     context 'with a registered visitor user' do
-      let(:user) do
+      let(:user_attr) do
         {
           name: 'some-user',
           email: 'some-user@stanford.edu',
@@ -77,9 +77,9 @@ RSpec.describe CurrentUser do
       end
 
       it 'returns a user with the name and email information' do
-        expect(subject).to be_a User
-        expect(subject.name).to eq 'some-user'
-        expect(subject.email).to eq 'some-user@stanford.edu'
+        expect(user).to be_a User
+        expect(user.name).to eq 'some-user'
+        expect(user.email).to eq 'some-user@stanford.edu'
       end
     end
   end

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe MediationHelper do
   describe '#current_location_for_mediated_item' do
-    subject { current_location_for_mediated_item(item) }
+    subject(:displayed_location) { current_location_for_mediated_item(item) }
 
     let(:item) do
       double(:item, barcode: '123456', permanent_location: build(:location, code: 'SPEC-MSS-20'),
@@ -15,7 +15,7 @@ RSpec.describe MediationHelper do
       let(:current_location) { 'SPEC-MSS-20' }
 
       it 'is an empty string' do
-        expect(subject).to eq ''
+        expect(displayed_location).to eq ''
       end
     end
 
@@ -23,7 +23,7 @@ RSpec.describe MediationHelper do
       let(:current_location) { 'SAL3-STACKS' }
 
       it 'is the current_location' do
-        expect(subject).to eq 'Location name'
+        expect(displayed_location).to eq 'Location name'
       end
     end
   end
