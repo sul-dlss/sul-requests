@@ -83,6 +83,15 @@ class AeonRequestsController < ApplicationController
     end
   end
 
+  def destroy_multiple
+    authorize! :destroy, Aeon::Request
+
+    # Update status of the requests corresponding to these transaction numbers/ids
+    update_multiple_requests(params[:ids])
+    # Render turbo stream removal for each request
+    turbo_removal(params[:ids])
+  end
+
   private
 
   def load_aeon_request
@@ -91,5 +100,18 @@ class AeonRequestsController < ApplicationController
 
   def aeon_request_params
     params.expect(aeon_request: [:appointment_id, :requested_pages, :for_publication, :additional_information])
+  end
+
+  def update_multiple_requests(ids)
+    ids.each do |id|
+      aeon_client.update_request_route(transaction_number: id, status: 'Cancelled by User')
+    end
+  end
+
+  def turbo_removal(ids)
+    @aeon_requests = current_user.aeon.requests.select { |request| ids.map(&:to_i).include?(request.transaction_number) }
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: @aeon_requests.map { |aeon_request| turbo_stream.remove(aeon_request) } }
+    end
   end
 end
