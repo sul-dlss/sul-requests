@@ -62,7 +62,9 @@ class PatronRequestsController < ApplicationController
   #
   # Aeon pages never need authentication, because Aeon will handle that as part of its request flow.
   def authorize_new_request # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
-    return if @patron_request.aeon_page? && (current_user.email_address || !Settings.features.requests_redesign)
+    return if @patron_request.aeon_page? && (current_user.email_address.present? || !Settings.features.requests_redesign)
+
+    return render 'no_email' if @patron_request.aeon_page? && current_user.patron.present? && current_user.email_address.blank? && Settings.features.requests_redesign
 
     return if current_user.patron.present? || (params[:step].present? && current_user.patron.email.present?)
 
