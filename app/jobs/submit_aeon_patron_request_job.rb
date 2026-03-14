@@ -43,7 +43,11 @@ class SubmitAeonPatronRequestJob < ApplicationJob
       reference_number: patron_request.to_global_id.to_s,
       shipping_option: patron_request.request_type == 'scan' ? 'Electronic Delivery' : nil,
       site: patron_request.aeon_site,
-      special_request: volume_params['additional_information'] || patron_request.aeon_reading_special,
+      special_request: if patron_request.request_type == 'scan'
+                         volume_params['additional_information']
+                       else
+                         patron_request.aeon_reading_special
+                       end,
       username: patron_request.user.aeon.username
     )
   end
