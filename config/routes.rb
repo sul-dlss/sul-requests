@@ -72,6 +72,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :aeon_user, only: [:new, :create]
+
   resources :admin, only: [:index, :show] do
     member do
       get :holdings, as: :holdings
