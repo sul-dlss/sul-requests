@@ -20,7 +20,7 @@ class CreateApiResponses < ActiveRecord::Migration[8.1]
               response_data: folio_response['response'] || folio_response['errors'] || folio_response.except('request_data'),
               patron_request_id: patron_request.id
             )
-          end
+          end if patron_request.folio_responses.is_a(Hash)
 
           patron_request.illiad_response_data&.each do |item_id, illiad_response|
             IlliadApiResponse.create!(
