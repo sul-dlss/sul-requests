@@ -19,7 +19,7 @@ module LibraryHoursApi
     end
 
     def get
-      @response ||= Response.new(json)
+      Response.new(json)
     end
 
     def json
