@@ -1,11 +1,10 @@
 <%# 
   Recursively render series contents
-  - ItemContainer: consolidate all items for that container, and render a checkbox for group
-  - ItemWithoutContainer: render individually with checkboxes
+  - Item: consolidate all items (if any) for that container, and render a checkbox for group / item
   - Subseries: render as collapsible header with recursive call. No checkbox for subseries itself, only for items within it.
 %>
 <% contents.each_with_index do |display_group, group_index| %>
-  <% if display_group.is_a?(Ead::DisplayGroup::ItemContainer) %>
+  <% if display_group.is_a?(Ead::DisplayGroup::Item) %>
     <%# Container group (e.g., Box 9) %>
     <% 
       checkbox_id = volume_checkbox_id(*display_group.hierarchy, display_group.title)
@@ -13,11 +12,18 @@
     %>
     <div class="mb-2 d-flex align-items-start gap-2">
       <%# Chevron button to expand/collapse folder list %>
-      <%= link_to "##{content_id}", 
-            class: 'series-header btn btn-sm btn-link text-decoration-none p-0 ms-2',
-            data: { bs_toggle: 'collapse' },
-            aria: { expanded: false, controls: content_id } do %>
-        <i class="bi bi-chevron-right disclosure-icon"></i>
+      <% if display_group.contents.any? %>
+        <%= link_to "##{content_id}",
+              class: 'series-header btn btn-sm btn-link text-decoration-none p-0 ms-2',
+              data: { bs_toggle: 'collapse' },
+              aria: { expanded: false, controls: content_id } do %>
+          <i class="bi bi-chevron-right disclosure-icon"></i>
+        <% end %>
+      <% elsif display_group.hierarchy.any? %>
+        <%# Hidden spacer to align with containers that have a disclosure toggle %>
+        <span class="btn btn-sm p-0 ms-2 invisible" aria-hidden="true">
+          <i class="bi bi-chevron-right disclosure-icon"></i>
+        </span>
       <% end %>
       <%# Checkbox to select entire container %>
       <%- checked = f.object.selected_items.any? { |item| item[:hierarchy]&.first == display_group.hierarchy.first && item[:title] == display_group.title } %>
@@ -37,57 +43,31 @@
       <% end %>
       <div class="flex-grow-1">
         <%= label_tag checkbox_id, display_group.title, class: 'form-check-label' %>
-        <span class="badge bg-dark-subtle text-dark fw-normal rounded-pill"><%= display_group.contents.count %></span>
-        <%# Collapsible list of items in this container %>
-        <div id="<%= content_id %>" class="collapse" data-archives-series-target="content">
-          <ul class="list-unstyled ms-2 my-2">
-            <% display_group.contents.each do |item| %>
-              <li class="mb-1">
-                <% if item.folder %>
-                  <small class="text-muted">Folder <%= item.folder %>:</small>
-                <% end %>
-                <% if item.digital_content? %>
-                  <%= link_to item.extref_href, target: '_blank', rel: 'noopener noreferrer' do %>
-                    <%= item.full_title %>
-                    <%= render Icons::OnlineComponent.new classes: 'ms-1 align-text-bottom text-digital-blue' %>
+
+        <% if display_group.contents.any? %>
+          <span class="badge bg-dark-subtle text-dark fw-normal rounded-pill"><%= display_group.contents.count %></span>
+          <%# Collapsible list of items in this container %>
+          <div id="<%= content_id %>" class="collapse" data-archives-series-target="content">
+            <ul class="list-unstyled ms-2 my-2">
+              <% display_group.contents.each do |item| %>
+                <li class="mb-1">
+                  <% if item.folder %>
+                    <small class="text-muted">Folder <%= item.folder %>:</small>
                   <% end %>
-                <% else %>
-                  <%= item.full_title %>
-                <% end %>
-              </li>
-            <% end %>
-          </ul>
-        </div>
-      </div>
-    </div>
-  <% elsif display_group.is_a?(Ead::DisplayGroup::ItemWithoutContainer) %>
-    <%# Individual item without container - gets its own checkbox %>
-    <% 
-      checkbox_id = volume_checkbox_id(*display_group.hierarchy, display_group.title)
-      checked = f.object.selected_items.any? { |item| item[:hierarchy]&.first == display_group.hierarchy.first && item[:title] == display_group.title }
-    %>
-    <div class="mb-2 d-flex align-items-start gap-2">
-      <% if display_group.hierarchy.any? %>
-        <%# Hidden spacer to align with containers that have a disclosure toggle %>
-        <span class="btn btn-sm p-0 ms-2 invisible" aria-hidden="true">
-          <i class="bi bi-chevron-right disclosure-icon"></i>
-        </span>
-      <% end %>
-      <%= f.check_box :barcodes,
-            { multiple: true, class: "form-check-input mt-1 #{'ms-2' unless display_group.hierarchy.any?}", id: checkbox_id, checked: checked,
-              data: { action: 'item-selector#change', 'item-selector-target': 'item', 'item-selector-title-parts-param': (display_group.hierarchy + [display_group.title]).to_json, 'item-selector-id-param': checkbox_id } },
-              checkbox_id,
-            nil %>
-      <%= tag.div class: 'd-none', data: { 'content-id': checkbox_id, 'toggle-disabled': true } do %>
-        <%= fields_for "patron_request[aeon_item][#{checkbox_id}]" do |f| %>
-          <%= f.hidden_field :id, disabled: !checked, value: checkbox_id, data: { toggle: true } %>
-          <% display_group.hierarchy.each do |title| %>
-            <%= f.hidden_field :hierarchy, multiple: true, disabled: !checked, value: title, data: { toggle: true } %>
-          <% end %>
-          <%= f.hidden_field :title, disabled: !checked, value: display_group.title, data: { toggle: true } %>
+                  <% if item.digital_content? %>
+                    <%= link_to item.extref_href, target: '_blank', rel: 'noopener noreferrer' do %>
+                      <%= item.full_title %>
+                      <%= render Icons::OnlineComponent.new classes: 'ms-1 align-text-bottom text-digital-blue' %>
+                    <% end %>
+                  <% else %>
+                    <%= item.full_title %>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
         <% end %>
-      <% end %>
-      <%= label_tag checkbox_id, display_group.title, class: 'form-check-label' %>
+      </div>
     </div>
   <% elsif display_group.is_a?(Ead::DisplayGroup::DigitalItem) %>
     <%# Digital-only item (DAO without physical container) - show as link, no checkbox %>
