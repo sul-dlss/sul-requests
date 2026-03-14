@@ -38,6 +38,7 @@ module Aeon
         item_author: dyn['itemAuthor'],
         item_date: dyn['itemDate'],
         item_info1: dyn['itemInfo1'],
+        item_info4: dyn['itemInfo4'],
         item_info5: dyn['itemInfo5'],
         item_number: dyn['itemNumber'],
         item_title: dyn['itemTitle'],
@@ -59,6 +60,7 @@ module Aeon
 
     alias_attribute :id, :transaction_number
     alias_attribute :item_url, :item_info1
+    alias_attribute :access_restrictions, :item_info4
     alias_attribute :pages, :item_info5
     alias_attribute :requested_pages, :item_info5
     alias_attribute :author, :item_author

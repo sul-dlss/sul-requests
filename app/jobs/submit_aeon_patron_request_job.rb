@@ -56,6 +56,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
     common_aeon_data_from_patron_request(patron_request, volume_params).with(
       call_number: "#{patron_request.ead_doc.identifier} #{volume_params['hierarchy']&.first}",
       ead_number: patron_request.ead_doc.identifier,
+      item_info4: patron_request.ead_doc.conditions_governing_access,
       item_volume: volume_params['title'],
       web_request_form: 'multiple'
     )
