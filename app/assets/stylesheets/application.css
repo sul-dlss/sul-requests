@@ -55,7 +55,7 @@ layer(components);
 }
 
 .bg-dark.bg-cardinal {
-  --bs-dark-rgb: var();
+  --bs-dark-rgb: var(--stanford-cardinal-rgb);
 }
 
 .bg-stanford-10-black {
@@ -632,11 +632,6 @@ label.btn-close {
       margin-top:0.5rem;
     }
   }
-}
-
-
-.modal-bulk-delete {
-  max-height: 548px;
 }
 
 .btn-delete {

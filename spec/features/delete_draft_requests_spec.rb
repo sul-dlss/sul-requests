@@ -49,7 +49,7 @@ RSpec.describe 'Bulk delete actions and modal', :js do
       expect(page).to have_button('delete-all', disabled: false)
 
       click_button('delete-all')
-      expect(page).to have_css('.modal-title', text: 'Delete 1 draft requests?')
+      expect(page).to have_css('.modal-title', text: 'Delete 1 draft request?')
       expect(page).to have_css('.modal-body #request-content', text: 'Slow poetry in America : a poetry quarterly')
     end
   end

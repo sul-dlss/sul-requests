@@ -84,12 +84,14 @@ class AeonRequestsController < ApplicationController
   end
 
   def destroy_multiple
-    authorize! :destroy, Aeon::Request
-
+    request_ids = params[:ids].map(&:to_i)
+    @aeon_requests = current_user.aeon.requests.select { |request| request_ids.include?(request.transaction_number) }
+    # Authorize each of these individual aeon requests for deletion
+    @aeon_requests.each { |aeon_request| authorize! :destroy, aeon_request }
     # Update status of the requests corresponding to these transaction numbers/ids
     update_multiple_requests(params[:ids])
     # Render turbo stream removal for each request
-    turbo_removal(params[:ids])
+    turbo_removal
   end
 
   private
@@ -108,8 +110,7 @@ class AeonRequestsController < ApplicationController
     end
   end
 
-  def turbo_removal(ids)
-    @aeon_requests = current_user.aeon.requests.select { |request| ids.map(&:to_i).include?(request.transaction_number) }
+  def turbo_removal
     respond_to do |format|
       format.turbo_stream { render turbo_stream: @aeon_requests.map { |aeon_request| turbo_stream.remove(aeon_request) } }
     end

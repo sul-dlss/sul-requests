@@ -40,8 +40,7 @@ export default class extends Controller {
   }
 
   addModalIds(selectedDrafts) {
-    var ids = selectedDrafts.map((selectedDraft) => selectedDraft.dataset.id)
-    console.log(ids)
+    const ids = selectedDrafts.map((selectedDraft) => selectedDraft.dataset.id)
     ids.forEach(id => {
       this.deleteFormTarget.appendChild(this.createIdInput(id))
     })
@@ -56,12 +55,12 @@ export default class extends Controller {
   }
 
   addDescriptions(selectedDrafts) {
-    var totalCount = selectedDrafts.length
-    this.deleteModalTarget.querySelector('.modal-title').innerHTML = 'Delete ' + totalCount + ' draft requests?'
+    const totalCount = selectedDrafts.length
+    this.deleteModalTarget.querySelector('.modal-title').innerHTML = this.modalTitle(totalCount)
     // Iterate through the selected drafts, using the attribute to populate the form
     // If the user has not selected all possible draft requests, display descriptions for each item
 
-    var descriptions = ""
+    let descriptions = ""
     if(this.totalCount < this.totalPossible) {
       descriptions = selectedDrafts.map((selectedDraft, index) => {
         var lastElement = (index == this.totalCount - 1)
@@ -71,6 +70,12 @@ export default class extends Controller {
       descriptions = this.summaryDescription(selectedDrafts)
     }
     this.deleteModalTarget.querySelector('#request-content').innerHTML = "<div>" + descriptions + "</div>"
+  }
+
+  modalTitle(totalCount) {
+    const prefix = 'Delete ' + totalCount + ' draft '
+    const suffix = (totalCount == 1) ? 'request' : 'requests'
+    return prefix + suffix + '?'
   }
 
   requestDescription(selectedDraft, lastElement) {
