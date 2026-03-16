@@ -645,3 +645,7 @@ label.btn-close {
   --bs-btn-disabled-bg: rgba(130, 0, 0, 0.2);
   --bs-btn-disabled-border-color: rgba(var(--stanford-cardinal-rgb), 0.3);
 }
+
+.modal-location .hide-when-1-item {
+  display: none;
+}

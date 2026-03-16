@@ -4,6 +4,7 @@
       <i class="bi bi-geo-alt-fill"></i>
       <%= reading_room.name %>
     </span>
+    <span><%= Settings.aeon.directions[reading_room.sites.first] %></span>
     <span class="mb-2">
       Hours: <%= reading_room.human_readable_hours %>
     </span>
