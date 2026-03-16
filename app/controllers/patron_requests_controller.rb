@@ -14,6 +14,7 @@ class PatronRequestsController < ApplicationController
 
   load_resource
   before_action :assign_new_attributes, only: [:new]
+  before_action :aeon_email_present, only: [:new]
   before_action :authorize_new_request, only: [:new]
   authorize_resource
 
@@ -66,12 +67,18 @@ class PatronRequestsController < ApplicationController
     @patron_request.assign_attributes(**new_params)
   end
 
+  def aeon_email_present
+    return unless @patron_request.aeon_page? && current_user.library_id?
+
+    render 'no_email' if current_user.email_address.blank? && Settings.features.requests_redesign
+  end
+
   # SSO or library-id users don't need to re-login, but name/email users always need to provide their information
   # for each request.
   #
   # Aeon pages never need authentication, because Aeon will handle that as part of its request flow.
   def authorize_new_request # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
-    return if @patron_request.aeon_page? && (current_user.email_address || !Settings.features.requests_redesign)
+    return if @patron_request.aeon_page? && (current_user.email_address.present? || !Settings.features.requests_redesign)
 
     return if current_user.patron.present? || (params[:step].present? && current_user.patron.email.present?)
 
