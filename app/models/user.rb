@@ -104,7 +104,7 @@ class User < ApplicationRecord
     return @aeon if defined?(@aeon)
 
     # only handle SSO users until we have a better way to link other users to their Aeon accounts
-    return Aeon::NullUser.new unless sso_user?
+    return Aeon::NullUser.new unless sso_user? || (library_id_user? && email_from_folio)
 
     @aeon = Aeon::User.find_by(email_address:)
   rescue AeonClient::NotFoundError

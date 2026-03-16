@@ -19,6 +19,8 @@ class PatronRequestsController < ApplicationController
 
   before_action :associate_request_with_patron, only: [:new, :create]
   before_action :redirect_aeon_pages, only: [:create]
+  before_action :require_aeon_terms, only: [:new, :create]
+
   helper_method :current_request, :new_params
 
   rescue_from CanCan::AccessDenied do |_exception|
@@ -45,6 +47,13 @@ class PatronRequestsController < ApplicationController
     else
       render 'new'
     end
+  end
+
+  def require_aeon_terms
+    return unless Settings.features.requests_redesign && @patron_request.aeon_page?
+    return if current_user.aeon.persisted?
+
+    render 'aeon_terms'
   end
 
   protected
