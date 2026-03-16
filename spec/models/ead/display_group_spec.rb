@@ -9,7 +9,7 @@ RSpec.describe Ead::DisplayGroup do
   end
 
   describe '.build_display_groups' do
-    it 'creates an ItemContainer for a series-level node with a container but no children' do
+    it 'creates an Item for a series-level node with a container but no children' do
       item = build_node(<<~XML)
         <c02 level="series">
           <did>
@@ -20,7 +20,7 @@ RSpec.describe Ead::DisplayGroup do
       XML
 
       groups = described_class.build_display_groups([item])
-      expect(groups.first).to be_a(Ead::DisplayGroup::ItemContainer)
+      expect(groups.first).to be_a(Ead::DisplayGroup::Item)
       expect(groups.first.title).to eq('Box 1')
     end
 
@@ -47,7 +47,7 @@ RSpec.describe Ead::DisplayGroup do
       expect(groups.first.href).to eq('https://archives.stanford.edu/findingaid/ark:/22236/s1f02438da-9c3b-4ac4-9206-6a95f69dde75')
     end
 
-    it 'creates an ItemWithoutContainer for items with no container and no DAO' do
+    it 'creates an Item for items with no contents and no DAO' do
       item = build_node(<<~XML)
         <c02 level="file">
           <did>
@@ -57,10 +57,10 @@ RSpec.describe Ead::DisplayGroup do
       XML
 
       groups = described_class.build_display_groups([item])
-      expect(groups.first).to be_a(Ead::DisplayGroup::ItemWithoutContainer)
+      expect(groups.first).to be_a(Ead::DisplayGroup::Item)
     end
 
-    it 'creates an ItemContainer when a hierarchical node has only containerless leaf children' do
+    it 'creates an Item when a hierarchical node has only containerless leaf children' do
       item = build_node(<<~XML)
         <c01 level="series">
           <did>
@@ -77,7 +77,7 @@ RSpec.describe Ead::DisplayGroup do
       XML
 
       groups = described_class.build_display_groups([item])
-      expect(groups.first).to be_a(Ead::DisplayGroup::ItemContainer)
+      expect(groups.first).to be_a(Ead::DisplayGroup::Item)
       expect(groups.first.title).to eq('Kentucky Lincoln facsimiles, 1850-1860')
       expect(groups.first.contents.size).to eq(2)
     end
@@ -106,7 +106,7 @@ RSpec.describe Ead::DisplayGroup do
       expect(groups.first.contents.first.contents.first).to have_attributes(hierarchy: %w[Papers Correspondence])
     end
 
-    it 'creates an ItemContainer for items with a physical container' do
+    it 'creates an Item for items with a physical container' do
       item = build_node(<<~XML)
         <c02 level="file">
           <did>
@@ -118,7 +118,7 @@ RSpec.describe Ead::DisplayGroup do
       XML
 
       groups = described_class.build_display_groups([item])
-      expect(groups.first).to be_a(Ead::DisplayGroup::ItemContainer)
+      expect(groups.first).to be_a(Ead::DisplayGroup::Item)
       expect(groups.first.title).to eq('Box 1')
     end
   end
