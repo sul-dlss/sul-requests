@@ -6,6 +6,8 @@
 class AeonUsersController < ApplicationController
   include AeonController
 
+  def new; end
+
   def accept_terms
     params.require(:aeon_terms)
 
