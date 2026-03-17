@@ -9,6 +9,7 @@ class AeonRequestsController < ApplicationController
   include AeonSortable
 
   before_action :load_aeon_request, only: [:edit, :update, :destroy, :resubmit]
+  before_action :load_multiple_aeon_requests, only: [:destroy_multiple]
 
   def drafts
     authorize! :read, Aeon::Request
@@ -84,14 +85,14 @@ class AeonRequestsController < ApplicationController
   end
 
   def destroy_multiple
-    request_ids = params[:ids].map(&:to_i)
-    @aeon_requests = current_user.aeon.requests.select { |request| request_ids.include?(request.transaction_number) }
-    # Authorize each of these individual aeon requests for deletion
+    # Authorize each of the individual aeon requests for deletion
     @aeon_requests.each { |aeon_request| authorize! :destroy, aeon_request }
-    # Update status of the requests corresponding to these transaction numbers/ids
-    update_multiple_requests(params[:ids])
+    # Change status of the requests corresponding to these transaction numbers/ids to 'canceled'
+    cancel_multiple_requests
     # Render turbo stream removal for each request
-    turbo_removal
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: @aeon_requests.map { |aeon_request| turbo_stream.remove(aeon_request) } }
+    end
   end
 
   private
@@ -100,19 +101,18 @@ class AeonRequestsController < ApplicationController
     @aeon_request = current_user.aeon.requests.find { |request| request.transaction_number == params[:id].to_i }
   end
 
+  def load_multiple_aeon_requests
+    request_ids = params[:ids].map(&:to_i)
+    @aeon_requests = current_user.aeon.requests.select { |request| request_ids.include?(request.transaction_number) }
+  end
+
   def aeon_request_params
     params.expect(aeon_request: [:appointment_id, :requested_pages, :for_publication, :additional_information])
   end
 
-  def update_multiple_requests(ids)
-    ids.each do |id|
-      aeon_client.update_request_route(transaction_number: id, status: 'Cancelled by User')
-    end
-  end
-
-  def turbo_removal
-    respond_to do |format|
-      format.turbo_stream { render turbo_stream: @aeon_requests.map { |aeon_request| turbo_stream.remove(aeon_request) } }
+  def cancel_multiple_requests
+    @aeon_requests.each do |aeon_request|
+      aeon_client.update_request_route(transaction_number: aeon_request.transaction_number, status: 'Cancelled by User')
     end
   end
 end

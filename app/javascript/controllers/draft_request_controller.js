@@ -7,8 +7,13 @@ export default class extends Controller {
   // as well as the delete form
   connect() {
    this.selectForDelete()
+   this.updateSelectAll()
   }
 
+  // Based on the number of selected checkboxes, updates 
+  // the text in the bulk delete button, disables or enables
+  // that button, and updates the information about selected
+  // drafts in the modal
   selectForDelete() {
     const selectedDrafts = this.selectTargets.filter(selectTarget => selectTarget.checked)
     this.totalCount = selectedDrafts.length
@@ -110,12 +115,22 @@ export default class extends Controller {
   updateSelectAll() {
     // Check how many items are checked
     const selectedDrafts = this.selectTargets.filter(selectTarget => selectTarget.checked)
-    if(selectedDrafts.length == this.totalPossible) {
+
+    // if there are no draft requests on the page, leave the checkbox unchecked
+    // otherwise, if the total number of drafts = total selected, have the checkbox be checked
+    if ((this.totalPossible > 0) && (selectedDrafts.length == this.totalPossible)) {
       this.selectallTarget.checked = true
     } else {
       this.selectallTarget.checked = false
     }
   }
 
+  // When any of the draft requests are deleted, whether individually or via bulk delete,
+  // we want the new number of items to be calculated.
+  // Also, this will update the select all checkbox
+  selectTargetDisconnected() {
+    this.selectForDelete()
+    this.updateSelectAll()
+  }
 
 }
