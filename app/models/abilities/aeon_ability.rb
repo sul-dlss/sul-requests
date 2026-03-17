@@ -7,14 +7,13 @@ class AeonAbility
   include CanCan::Ability
 
   # The CanCan DSL requires a complex initialization method
-  def initialize(aeon_user) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+  def initialize(aeon_user) # rubocop:disable Metrics/AbcSize
     # Clearing CanCan's default aliased actions
     # because we _don't_ want to alias new to create
     clear_aliased_actions
     alias_action :index, :show, to: :read
     alias_action :edit, to: :update
 
-    can :create, Aeon::User if Settings.features.requests_redesign
     return unless aeon_user.persisted?
 
     can [:new, :create], Aeon::Request

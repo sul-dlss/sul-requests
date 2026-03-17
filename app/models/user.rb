@@ -127,6 +127,13 @@ class User < ApplicationRecord
     end
   end
 
+  def totp
+    @totp ||= begin
+      update(otp_secret: ROTP::Base32.random_base32) if otp_secret.blank?
+      ROTP::TOTP.new(otp_secret, issuer: 'Stanford Libraries Requests')
+    end
+  end
+
   private
 
   def placeholder_patron

@@ -97,7 +97,13 @@ Warden::Strategies.add(:register_visitor) do
     end
   end
 
-  def otp_authenticated?
-    params['code'] == '000000'
+  def otp_authenticated?(drift: 5.minutes)
+    # allow bypassing OTP authentication in non-production environments for easier testing
+    return true if !Rails.env.production? && params['code'] == '000000'
+
+    user = User.find_by(email: params['patron_email'])
+    return unless user&.persisted?
+
+    user.totp.verify(params['code'], drift_ahead: drift, drift_behind: drift)
   end
 end

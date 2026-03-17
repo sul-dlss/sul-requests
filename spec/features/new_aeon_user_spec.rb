@@ -56,6 +56,7 @@ RSpec.describe 'Creating new accounts for patrons', :js do
     let(:current_user) { nil }
 
     it 'makes the user provide all the information needed to create an Aeon user' do
+      allow(SendOtpJob).to receive(:perform_later)
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
 
       find('summary', text: 'Proceed as visitor').click
@@ -65,6 +66,7 @@ RSpec.describe 'Creating new accounts for patrons', :js do
       click_button 'Continue'
 
       expect(page).to have_content('Verify email address')
+      expect(SendOtpJob).to have_received(:perform_later).with('test@localhost')
       fill_in 'code', with: '000000'
       click_button 'Continue'
 

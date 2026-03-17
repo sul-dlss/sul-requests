@@ -15,6 +15,8 @@ class SiteAbility
     alias_action :index, :show, to: :read
     alias_action :edit, to: :update
 
+    can :create, Aeon::User if user.authenticated?
+
     if user.super_admin?
       can :manage, :site
       can :read, :admin

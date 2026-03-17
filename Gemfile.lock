@@ -402,6 +402,7 @@ GEM
     request_store (1.7.0)
       rack (>= 1.4)
     rexml (3.4.4)
+    rotp (6.3.0)
     rouge (4.7.0)
     rspec-core (3.13.6)
       rspec-support (~> 3.13.0)
@@ -589,6 +590,7 @@ DEPENDENCIES
   recaptcha
   redcarpet
   redis (~> 4.8)
+  rotp
   rspec-rails (~> 8.0)
   rubocop
   rubocop-capybara
