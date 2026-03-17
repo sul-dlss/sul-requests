@@ -26,8 +26,8 @@ class AeonClient
     end
   end
 
-  def create_user(username:, auth_type: 'Default')
-    response = post('Users', { username:, authType: auth_type, cleared: 'No' })
+  def create_user(user_data: {})
+    response = post('Users', user_data.as_json)
 
     handle_response(response, as_class: Aeon::User)
   end
@@ -184,6 +184,36 @@ class AeonClient
         item_subtitle: nil, item_title: nil, item_volume: nil, location: nil, reference_number: nil,
         shipping_option: nil, site: nil, special_request: nil, system_id: nil, web_request_form: 'SUL Requests',
         username: nil, appointment_id: nil
+      )
+    end
+  end
+
+  UserData = Data.define(:address, :address2, :city, :country, :email_address, :first_name, :last_name,
+                         :phone, :sso, :state_or_province, :zip_code) do
+    def omission = '…'
+
+    def as_json # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+      {
+        address: address&.truncate(50, omission:),
+        address2: address2&.truncate(50),
+        authType: sso ? 'Default' : 'Aeon',
+        city: city&.truncate(50, omission:),
+        cleared: 'No',
+        country: country&.truncate(50, omission:),
+        eMailAddress: email_address&.truncate(100, omission:),
+        firstName: first_name&.truncate(50),
+        lastName: last_name&.truncate(50),
+        phone: phone&.truncate(50, omission:),
+        state_or_province: state_or_province&.truncate(50, omission:),
+        username: email_address&.truncate(100, omission:),
+        zip_code: zip_code&.truncate(50, omission:)
+      }.compact
+    end
+
+    def self.with_defaults
+      new(
+        address: nil, address2: nil, city: nil, country: nil, email_address: nil,
+        first_name: nil, last_name: nil, phone: nil, sso: false, state_or_province: nil, zip_code: nil
       )
     end
   end
