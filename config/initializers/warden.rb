@@ -86,12 +86,18 @@ Warden::Strategies.add(:register_visitor) do
   end
 
   def authenticate!
-    if params['name'].present? && params['patron_email'].present?
-      u = { name: params['name'], email: params['patron_email'], shibboleth: false }
+    if Settings.features.authenticate_name_email_users && !otp_authenticated?
+      fail!('Please enter the one-time passcode sent to your email')
+    elsif params['name'].present? && params['patron_email'].present?
+      u = { name: params['name'], email: params['patron_email'], shibboleth: false, otp_authenticated: otp_authenticated? }
       success!(CurrentUser.new(u))
     else
       # TODO: Should there be specific wording to this error message?
       fail!('Please supply both name and email')
     end
+  end
+
+  def otp_authenticated?
+    params['code'] == '000000'
   end
 end

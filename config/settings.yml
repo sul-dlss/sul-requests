@@ -74,6 +74,7 @@ features:
   scan_service: true
   mediator_email: true
   requests_redesign: false
+  authenticate_name_email_users: false
 
 background_jobs:
   enabled: false

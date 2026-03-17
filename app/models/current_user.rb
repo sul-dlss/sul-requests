@@ -32,6 +32,10 @@ class CurrentUser
     data['name'].present? && data['email'].present?
   end
 
+  def otp_authenticated?
+    @otp_authenticated ||= data['otp_authenticated'] || false
+  end
+
   private
 
   def library_id?
@@ -53,9 +57,15 @@ class CurrentUser
     end
   end
 
-  # We haven't authenticated name/email users in any way, so we just create a new user for each session.
   def name_email_user
-    User.create(name: data['name'], email: data['email'])
+    if Settings.features.authenticate_name_email_users && data['otp_authenticated']
+      User.find_or_create_by(email: data['email']) do |user|
+        update_session_attributes(user)
+      end
+    else
+      # We haven't authenticated name/email users in any way, so we just create a new user for each session.
+      User.create(name: data['name'], email: data['email'])
+    end
   end
 
   # rubocop:disable Metrics/AbcSize
@@ -74,6 +84,11 @@ class CurrentUser
 
   def update_folio_attributes(user)
     user.patron_key = data['patron_key']
+  end
+
+  def update_session_attributes(user)
+    user.name = data['name']
+    user.otp_authenticated = data['otp_authenticated']
   end
 
   def ldap_attributes

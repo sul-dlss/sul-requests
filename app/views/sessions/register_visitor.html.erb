@@ -1,0 +1,15 @@
+<h1>Verify email address</h1>
+
+
+<%= form_with url: register_visitor_path, method: :post do |f| %>
+  <%= f.hidden_field :referrer, value: params[:referrer] %>
+  <%= f.hidden_field :patron_email, value: params[:patron_email] %>
+  <%= f.hidden_field :name, value: params[:name] %>
+
+  <%= f.label :code do %>
+    Enter the passcode sent to <%= params[:patron_email] %>.
+  <% end %>
+
+  <div class="my-2"><%= f.text_field :code, class: 'form-control w-auto', minlength: 6, maxlength: 6, size: 6 %></div>
+  <div class="d-flex justify-content-end"><%= f.submit 'Continue', class: 'btn btn-primary' %></div>
+<% end %>

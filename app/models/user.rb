@@ -8,7 +8,7 @@ class User < ApplicationRecord
 
   has_many :patron_requests, dependent: :nullify
 
-  attr_writer :ldap_group_string, :affiliation
+  attr_writer :ldap_group_string, :affiliation, :otp_authenticated
   attr_accessor :ip_address, :patron_key
 
   def proxy?
@@ -92,6 +92,10 @@ class User < ApplicationRecord
     (@affiliation || '').split(/[|;]/)
   end
 
+  def authenticated?
+    sso_user? || (library_id_user? && email_from_folio) || @otp_authenticated
+  end
+
   def student_type
     (super || '').split(/[|;]/)
   end
@@ -103,8 +107,7 @@ class User < ApplicationRecord
   def aeon
     return @aeon if defined?(@aeon)
 
-    # only handle SSO users until we have a better way to link other users to their Aeon accounts
-    return Aeon::NullUser.new unless sso_user? || (library_id_user? && email_from_folio)
+    return Aeon::NullUser.new unless authenticated?
 
     @aeon = Aeon::User.find_by(email_address:)
   rescue AeonClient::NotFoundError
