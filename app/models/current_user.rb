@@ -59,7 +59,7 @@ class CurrentUser
 
   def name_email_user
     if Settings.features.authenticate_name_email_users && data['otp_authenticated']
-      User.find_or_create_by(email: data['email']) do |user|
+      User.find_or_create_by(email: data['email']).tap do |user|
         update_session_attributes(user)
       end
     else
@@ -87,8 +87,10 @@ class CurrentUser
   end
 
   def update_session_attributes(user)
-    user.name = data['name']
+    user.name ||= data['name']
     user.otp_authenticated = data['otp_authenticated']
+
+    user.save if user.changed?
   end
 
   def ldap_attributes

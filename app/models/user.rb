@@ -93,7 +93,7 @@ class User < ApplicationRecord
   end
 
   def authenticated?
-    sso_user? || (library_id_user? && email_from_folio) || @otp_authenticated
+    sso_user? || (library_id_user? && email_from_folio) || @otp_authenticated.present?
   end
 
   def student_type
