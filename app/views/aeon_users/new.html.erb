@@ -1,4 +1,6 @@
 <%= form_with(url: aeon_users_path, method: 'POST', html: { class: 'accordion', id: 'aeon-user' }, data: { controller: 'accordion-form' }) do |f| %>
+  <%= f.hidden_field :referrer, value: params[:referrer] %>
+
   <%= render AccordionStepComponent.new(
       id: 'step-1',
       step_index: 1,

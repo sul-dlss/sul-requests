@@ -6,6 +6,10 @@
 class AeonUsersController < ApplicationController
   include AeonController
 
+  before_action do
+    authorize! :create, Aeon::User
+  end
+
   def new; end
 
   def accept_terms

@@ -33,11 +33,22 @@ class SessionsController < ApplicationController
   #
   # GET /sessions/register_visitor
   def register_visitor
-    if (!Rails.env.production? || verify_recaptcha) && request.env['warden'].authenticate(:register_visitor)
+    verify_recaptcha!
+    if Settings.features.authenticate_name_email_users && params[:code].blank?
+      # TODO: send code.
+
+      render 'sessions/register_visitor'
+    elsif request.env['warden'].authenticate(:register_visitor)
       redirect_after_action
     else
       redirect_to post_action_redirect_url, flash: { error: t('.alert') }
     end
+  end
+
+  def verify_recaptcha!
+    return if !Rails.env.production? || verify_recaptcha
+
+    redirect_to post_action_redirect_url, flash: { error: t('.recaptcha_alert') }
   end
 
   # Handle user logout by destroying their current application session and
