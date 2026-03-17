@@ -3,7 +3,7 @@
   <h2 class="h3 mb-3"><%= title %></h2>
   <ul class="list-unstyled">
     <% requests.each_with_index do |request, index| %>
-      <li class="accordion accordion-flush">
+      <li class="accordion accordion-flush" data-aeon-request>
         <div class="accordion-item">
           <div class="accordion-header bg-white accordion-button px-0 collapsed d-flex align-items-center justify-content-between" type="button" data-bs-toggle="collapse" data-bs-target="#<%= accordion_name(index) %>" aria-expanded="false" aria-controls="<%= accordion_name(index) %>" id="<%= accordion_name(index) %>Heading">
             <div>

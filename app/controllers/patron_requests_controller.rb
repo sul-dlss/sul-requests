@@ -36,6 +36,7 @@ class PatronRequestsController < ApplicationController
       @aeon_requests = Aeon::RequestGrouping.new(current_user.aeon.requests.select do |x|
         x.reference_number == @patron_request.to_global_id.to_s
       end)
+      @expected_aeon_item_count = @patron_request.expected_aeon_item_count
       request.variant = :aeon
     end
   end

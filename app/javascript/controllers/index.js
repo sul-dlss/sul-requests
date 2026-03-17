@@ -54,3 +54,6 @@ application.register("empty-remove", EmptyRemoveController)
 
 import DraftRequestController from "./draft_request_controller"
 application.register("draft-request", DraftRequestController)
+
+import AeonConfirmationPollController from "./aeon_confirmation_poll_controller"
+application.register("aeon-confirmation-poll", AeonConfirmationPollController)
