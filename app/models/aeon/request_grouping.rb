@@ -9,7 +9,7 @@ module Aeon
 
     delegate :each, to: :requests
 
-    delegate :appointment?, :submitted?, :shipping_option, :appointment, :call_number, :date, :digital?,
+    delegate :appointment?, :submitted?, :appointment, :call_number, :date, :digital?,
              :document_type, :ead_number, :title, to: :first
 
     def self.from_requests(requests)
@@ -40,10 +40,6 @@ module Aeon
 
     def reading_room_name
       appointment&.reading_room&.name
-    end
-
-    def digitization?
-      shipping_option == 'Electronic Delivery'
     end
   end
 end

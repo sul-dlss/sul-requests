@@ -20,8 +20,8 @@
           </div>
         <% end %>
         <% if @aeon_requests.first&.multi_item_selector? %>
-          <%= render Aeon::ConfirmationRequestListComponent.new(requests: @aeon_requests.submitted_requests, digitization: @aeon_requests.digitization? ) %>
-          <%= render Aeon::ConfirmationRequestListComponent.new(requests: @aeon_requests.draft_requests, digitization: @aeon_requests.digitization?, drafts: true) %>
+          <%= render Aeon::ConfirmationRequestListComponent.new(requests: @aeon_requests.submitted_requests, digitization: @aeon_requests.digital? ) %>
+          <%= render Aeon::ConfirmationRequestListComponent.new(requests: @aeon_requests.draft_requests, digitization: @aeon_requests.digital?, drafts: true) %>
         <% else %>
           <% request = @aeon_requests.first %>
           <% if request.appointment %>
