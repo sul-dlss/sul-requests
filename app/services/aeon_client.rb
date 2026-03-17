@@ -94,10 +94,10 @@ class AeonClient
 
   def update_appointment(appointment_id, name:, start_time:, stop_time:)
     json_patch = [
-      { op: 'replace', path: '/name', value: name },
+      ({ op: 'replace', path: '/name', value: name } if name),
       { op: 'replace', path: '/startTime', value: start_time.iso8601 },
       { op: 'replace', path: '/stopTime', value: stop_time.iso8601 }
-    ]
+    ].compact
 
     response = patch("Appointments/#{appointment_id}", json_patch)
 
