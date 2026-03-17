@@ -3,7 +3,6 @@
     <h1 class="mb-0">Edit request</h1>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
   </div>
-  <%= render RecordHeaderComponent.new(record: @aeon_request, classes: 'mb-0 bg-light rounded-0 border-bottom') %>
-
+  <%= render RecordHeaderCardComponent.new(record: @aeon_request, classes: 'mb-0 bg-light rounded-0 border-bottom') %>
   <%= render 'form' %>
 <% end %>
