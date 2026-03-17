@@ -221,6 +221,7 @@ en:
       error_html: <span class="fw-bold">Your SUNet ID is not linked to a library account.</span><br/> A library account is created for patrons who are eligible to check out library materials. If you believe you should have an account, contact the Privileges desk at <a href="mailto:sul-privileges@stanford.edu" class="alert-link">sul-privileges@stanford.edu</a> or call (650) 723-1492 for assistance.
     register_visitor:
       alert: Unable to register visitor. Both name and email are required.
+      recaptcha_alert: reCAPTCHA verification failed. Please try again.
     destroy:
       notice: You have been successfully logged out.
   change_pin:
