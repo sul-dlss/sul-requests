@@ -11,11 +11,7 @@
       </span>
       <span>Call number: <%= record.call_number %></span>
       <span>
-        <% if record.item_url %>
-          <%= link_to record.item_url, class: 'su-underline' do %>
-            <%= link_text %> <i class="bi bi-arrow-up-right"></i>
-          <% end %>
-        <% end %>
+        <%= render Aeon::RequestLinkComponent.new(url: record.item_url) %>
       </span>
     </div>
     <% if record.author %>

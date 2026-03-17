@@ -16,10 +16,4 @@ class RecordHeaderComponent < ViewComponent::Base
 
     @patron_request.folio_instance
   end
-
-  def link_text
-    return 'View in Archival Collections at Stanford' if record.item_url.match?('/archives.stanford.edu/')
-
-    'View in Searchworks' if record.item_url.match?('/searchworks.stanford.edu/')
-  end
 end

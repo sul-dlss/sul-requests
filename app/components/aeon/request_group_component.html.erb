@@ -20,7 +20,7 @@
         <% if ead_number %>
           <div>Call number: <%= ead_number %></div>
         <% end %>
-        <%= render Aeon::RequestLinkComponent.new(request: requests.first) %>
+        <%= render Aeon::RequestLinkComponent.new(url: requests.first.item_url) %>
       </div>
       <ul class="list-group list-group-flush">
         <%= render Aeon::RequestGroupItemComponent.with_collection(requests) %>
