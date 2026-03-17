@@ -50,4 +50,21 @@ RSpec.describe 'Creating new accounts for patrons', :js do
       expect(stub_aeon_client).to have_received(:create_user).with(username: user.email_address)
     end
   end
+
+  context 'with a name/email user' do
+    let(:user) { nil }
+    let(:current_user) { nil }
+
+    it 'makes the user provide all the information needed to create an Aeon user' do
+      visit new_archives_request_path(value: 'http://example.com/ead.xml')
+
+      find('summary', text: 'Proceed as visitor').click
+      fill_in 'Name', with: 'Test User'
+      fill_in 'Email', with: 'test@localhost'
+
+      click_button 'Continue'
+
+      expect(page).to have_content('Terms')
+    end
+  end
 end

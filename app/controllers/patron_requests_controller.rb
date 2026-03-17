@@ -57,6 +57,8 @@ class PatronRequestsController < ApplicationController
     return unless Settings.features.requests_redesign && @patron_request.aeon_page?
     return if current_user.aeon.persisted?
 
+    redirect_to new_aeon_user_path and return if current_user.name_email_user?
+
     render 'aeon_terms'
   end
 
