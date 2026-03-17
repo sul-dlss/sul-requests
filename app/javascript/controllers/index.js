@@ -40,6 +40,9 @@ application.register("appointment", AppointmentController)
 import AppointmentSelectController from "./appointment_select_controller"
 application.register("appointment-select", AppointmentSelectController)
 
+import OtpInput from "./otp_input_controller"
+application.register("otp-input", OtpInput)
+
 import ModalController from "./modal_controller"
 application.register("modal", ModalController)
 

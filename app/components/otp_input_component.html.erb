@@ -1,0 +1,13 @@
+<div class="vstack gap-2" data-controller="otp-input" data-action="paste->otp-input#paste">
+  <label class="form-label" id="otpLabel" data-action="click->otp-input#focus">Verification code</label>
+
+  <div class="otp d-flex gap-1" aria-labelledby="otpLabel" aria-describedby="otpHelp">
+    <% length.times do |i| %>
+      <%= text_field_tag :digit, nil, class: 'form-control w-auto', size: 1, minlength: 1, maxlength: 1, inputmode: 'numeric', pattern: "\d*", autocomplete: i == 0 ? 'one-time-code' : 'off', aria: { label: "Digit #{i}" }, data: otp_digit_data %>
+    <% end %>
+
+    <%= form.hidden_field name, data: { 'otp-input-target': 'field' }, value: value %>
+  </div>
+
+  <div id="otpHelp" class="form-text">Enter the <%= length %>-digit code sent to your email.</div>
+</div>
