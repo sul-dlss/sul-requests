@@ -64,13 +64,10 @@ export default class extends Controller {
     this.deleteModalTarget.querySelector('.modal-title').innerHTML = this.modalTitle(totalCount)
     // Iterate through the selected drafts, using the attribute to populate the form
     // If the user has not selected all possible draft requests, display descriptions for each item
-
+    let groupedRequests = this.groupRequests(selectedDrafts)
     let descriptions = ""
     if(this.totalCount < this.totalPossible) {
-      descriptions = selectedDrafts.map((selectedDraft, index) => {
-        var lastElement = (index == this.totalCount - 1)
-        return this.requestDescription(selectedDraft, lastElement) 
-      }).join('')
+      descriptions = this.groupedDescriptions(groupedRequests)
     } else {
       descriptions = this.summaryDescription(selectedDrafts)
     }
@@ -83,11 +80,93 @@ export default class extends Controller {
     return prefix + suffix + '?'
   }
 
-  requestDescription(selectedDraft, lastElement) {
-    const data = selectedDraft.dataset
+  // group draft requests by type and title
+  groupRequests(selectedDrafts) {
+    // Structure = { type: { title: [ request 1, request 2] }  }
+    let groupedRequests = {}
+    selectedDrafts.forEach(selectedDraft => {
+      let data = selectedDraft.dataset
+      let type = data.type
+      let title = data.title
+      if(! (type in groupedRequests)) {
+        groupedRequests[type] = {}
+      }
+
+      if(! (title in groupedRequests[type])) {
+        groupedRequests[type][title] = []
+      }
+
+      groupedRequests[type][title].push(selectedDraft)
+    })
+    return groupedRequests
+  }
+
+  // Group descriptions by type and title
+  groupedDescriptions(groupedRequests) {
+    let descriptions = []
+    let counter = 1
+    Object.keys(groupedRequests).forEach(type => {
+      Object.keys(groupedRequests[type]).forEach(title => {
+        let requests = groupedRequests[type][title]
+        descriptions.push(this.singleGroupDescription(requests, type, title, (counter == this.totalCount)))
+        counter += 1
+      })
+    })
+    return descriptions.join('')
+  }
+
+  // For a single grouped display -> display type, then title, and callnumber
+  singleGroupDescription(groupedSelectedDrafts, type, title, lastElement) {
     const borderClass = (lastElement) ? '' : ' border-bottom'
-    return "<div class='pt-1 pb-3 modal-draft-request" + borderClass + "'><div class='text-digital-red'>" + data.type + "</div><div class='fw-semibold'>" + selectedDraft.dataset.title + "</div>" +
-        "<div>" + data.callnumber + "</div></div>" 
+    return "<div class='pt-1 pb-3 modal-draft-request" + borderClass + "'><div class='text-digital-red'>" + type + "</div><div class='fw-semibold'>" + title + "</div>" +
+        "<div>" + this.groupCallnumber(groupedSelectedDrafts) + "</div>" + this.groupedItems(groupedSelectedDrafts) + "</div>" 
+  }
+
+  groupCallnumber(groupedSelectedDrafts) {
+    const data = groupedSelectedDrafts[0].dataset
+    const prefix = "Call number: "
+    // if EAD present, we will return that number for call number display
+    if(data.ead !== "") {
+      return prefix + data.ead
+    }
+
+    // if there is only one item, we should return that call number
+    if(groupedSelectedDrafts.length == 1) {
+      return prefix + data.callnumber
+    }
+
+    // otherwise keep this string empty
+    return ""
+  }
+
+  groupedItems(groupedSelectedDrafts) {
+    if(groupedSelectedDrafts.length == 1) {
+      return ""
+    } 
+
+    const items = groupedSelectedDrafts.map((selectedDraft) => {
+      return '<span class="p-1 bg-fog-light fw-semibold">' + this.callnumberContent(selectedDraft) + '</span>'
+    }).join('')
+
+    return "<div class='d-flex flex-row gap-3'>" + items + "</div>"
+  }
+
+  // We want to display a callnumber  > volume display if this exists
+  // otherwise we will use the callnumber 
+  callnumberContent(selectedDraft) {
+    const data = selectedDraft.dataset
+    const callnumber = data.callnumber
+    const ead = data.ead
+    let prefix = ""
+    if(data.container != "") {
+      const container = data.container
+      if(ead != "" && callnumber.startsWith(ead)) {
+        // Remove the ead portion from the callnumber and display that with a separator
+        prefix = callnumber.slice(ead.length) + " > "
+      }
+      return prefix + container
+    }
+    return selectedDraft.dataset.callnumber 
   }
 
   summaryDescription(selectedDrafts) {
