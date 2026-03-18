@@ -6,10 +6,11 @@
   <%= f.hidden_field :patron_email, value: params[:patron_email] %>
   <%= f.hidden_field :name, value: params[:name] %>
 
-  <%= f.label :code do %>
-    Enter the passcode sent to <%= params[:patron_email] %>.
-  <% end %>
+  <div class="my-2">
+    <%= render OtpInputComponent.new(name: :code, form: f) do |c| %>
+      <% c.with_label.with_content("Enter the passcode sent to #{params[:patron_email]}.") %>
+    <% end %>
+  </div>
 
-  <div class="my-2"><%= f.text_field :code, class: 'form-control w-auto', minlength: 6, maxlength: 6, size: 6 %></div>
   <div class="d-flex justify-content-end"><%= f.submit 'Continue', class: 'btn btn-primary' %></div>
 <% end %>

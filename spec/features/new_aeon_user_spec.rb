@@ -67,7 +67,9 @@ RSpec.describe 'Creating new accounts for patrons', :js do
 
       expect(page).to have_content('Verify email address')
       expect(SendOtpJob).to have_received(:perform_later).with('test@localhost')
-      fill_in 'code', with: '000000'
+      6.times do |i|
+        fill_in "Digit #{i + 1}", with: '0'
+      end
       click_button 'Continue'
 
       expect(page).to have_content('Account information')
