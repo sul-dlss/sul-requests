@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Creating new accounts for patrons', :js do
   before do
-    allow(Settings.features).to receive(:requests_redesign).and_return(true)
+    allow(Settings.features).to receive_messages(requests_redesign: true, authenticate_name_email_users: true)
     allow(EadClient).to receive(:fetch).and_return(Ead::Document.new(eadxml, url: 'whatever'))
 
     allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
@@ -56,6 +56,7 @@ RSpec.describe 'Creating new accounts for patrons', :js do
     let(:current_user) { nil }
 
     it 'makes the user provide all the information needed to create an Aeon user' do
+      allow(SendOtpJob).to receive(:perform_later)
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
 
       find('summary', text: 'Proceed as visitor').click
@@ -64,7 +65,14 @@ RSpec.describe 'Creating new accounts for patrons', :js do
 
       click_button 'Continue'
 
-      expect(page).to have_content('Terms')
+      expect(page).to have_content('Verify email address')
+      expect(SendOtpJob).to have_received(:perform_later).with('test@localhost')
+      fill_in 'code', with: '000000'
+      click_button 'Continue'
+
+      expect(page).to have_content('Account information')
+      expect(page).to have_field('Name', with: 'Test User')
+      expect(page).to have_field('Email address', with: 'test@localhost')
     end
   end
 end

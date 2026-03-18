@@ -32,10 +32,10 @@ class SessionsController < ApplicationController
   # Handle visitor name and email registration
   #
   # GET /sessions/register_visitor
-  def register_visitor
+  def register_visitor # rubocop:disable Metrics/AbcSize
     verify_recaptcha!
     if Settings.features.authenticate_name_email_users && params[:code].blank?
-      # TODO: send code.
+      SendOtpJob.perform_later(params[:patron_email])
 
       render 'sessions/register_visitor'
     elsif request.env['warden'].authenticate(:register_visitor)

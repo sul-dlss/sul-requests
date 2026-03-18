@@ -93,7 +93,7 @@ class User < ApplicationRecord
   end
 
   def authenticated?
-    sso_user? || (library_id_user? && email_from_folio) || @otp_authenticated
+    sso_user? || (library_id_user? && email_from_folio) || @otp_authenticated.present?
   end
 
   def student_type
@@ -124,6 +124,13 @@ class User < ApplicationRecord
                        Folio::Patron.find_by(library_id:)
                      end
       folio_patron || placeholder_patron
+    end
+  end
+
+  def totp
+    @totp ||= begin
+      update(otp_secret: ROTP::Base32.random_base32) if otp_secret.blank?
+      ROTP::TOTP.new(otp_secret, issuer: 'Stanford Libraries Requests')
     end
   end
 

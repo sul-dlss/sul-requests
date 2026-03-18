@@ -7,10 +7,10 @@
     </button>
     <div class="d-md-block d-none">
       <ul class="navbar-nav">
-        <% if current_user.sso_user? || current_user.library_id_user? %>
+        <% if current_user.authenticated? %>
           <% logout_path = current_user.site_admin? ? root_path : request.url %>
           <li class="nav-item">
-            <%= link_to t('shared.sul_header.logout', sunetid: current_user.sunetid || current_user.library_id), logout_path(referrer: logout_path), class: 'nav-link' %>
+            <%= link_to t('shared.sul_header.logout', sunetid: current_user.sunetid || current_user.library_id || current_user.email), logout_path(referrer: logout_path), class: 'nav-link' %>
           </li>
         <% else %>
           <li class="nav-item">

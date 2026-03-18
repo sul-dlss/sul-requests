@@ -136,5 +136,6 @@ gem 'recaptcha'
 gem 'warden'
 gem 'rack-attack'
 gem 'bot_challenge_page'
+gem 'rotp'
 
 gem "csv", "~> 3.3"

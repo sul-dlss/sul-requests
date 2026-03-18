@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_27_201158) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_17_164328) do
   create_table "admin_comments", force: :cascade do |t|
     t.string "comment"
     t.string "commenter"
@@ -71,6 +71,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_201158) do
     t.string "email"
     t.string "library_id"
     t.string "name"
+    t.string "otp_secret"
     t.string "student_type"
     t.string "sunetid"
     t.string "univ_id"
