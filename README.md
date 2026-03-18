@@ -1,5 +1,7 @@
 [![Build Status](https://github.com/sul-dlss/sul-requests/actions/workflows/ruby.yml/badge.svg)](https://github.com/sul-dlss/purl/actions/workflows/ruby.yml)
 
+Do we have a flappy test?
+
 # Requests
 
 A web application for requesting materials from the Stanford University Library.
