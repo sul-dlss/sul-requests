@@ -33,7 +33,10 @@ RSpec.describe 'Creating new accounts for patrons', :js do
     let(:user) { create(:sso_user) }
     let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true, ldap_attributes: {}) }
 
+    let(:patron) { build(:patron) }
+
     before do
+      allow(Folio::Patron).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
       login_as(current_user)
     end
 
@@ -47,7 +50,13 @@ RSpec.describe 'Creating new accounts for patrons', :js do
 
       expect(page).to have_content('New request')
 
-      expect(stub_aeon_client).to have_received(:create_user).with(username: user.email_address)
+      expect(stub_aeon_client).to have_received(:create_user).with({
+                                                                     user_data: AeonClient::UserData.with_defaults.with(
+                                                                       sso: true,
+                                                                       email_address: user.email_address,
+                                                                       first_name: 'Test', last_name: 'User'
+                                                                     )
+                                                                   })
     end
   end
 
@@ -55,7 +64,7 @@ RSpec.describe 'Creating new accounts for patrons', :js do
     let(:user) { nil }
     let(:current_user) { nil }
 
-    it 'makes the user provide all the information needed to create an Aeon user' do
+    it 'makes the user provide all the information needed to create an Aeon user' do # rubocop:disable RSpec/ExampleLength
       allow(SendOtpJob).to receive(:perform_later)
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
 
@@ -75,6 +84,31 @@ RSpec.describe 'Creating new accounts for patrons', :js do
       expect(page).to have_content('Account information')
       expect(page).to have_field('Name', with: 'Test User')
       expect(page).to have_field('Email address', with: 'test@localhost')
+      fill_in 'Phone', with: '1234552'
+      fill_in 'Address', with: '560 Escondido Mall'
+      fill_in 'City', with: 'Stanford'
+      fill_in 'State or province', with: 'CA'
+      fill_in 'Zip code', with: '94305'
+      fill_in 'Country', with: 'USA'
+
+      click_button 'Continue'
+      check('I agree to these terms')
+
+      click_button 'Submit'
+
+      expect(stub_aeon_client).to have_received(:create_user).with({
+                                                                     user_data: AeonClient::UserData.with_defaults.with(
+                                                                       address: '560 Escondido Mall',
+                                                                       address2: '',
+                                                                       city: 'Stanford',
+                                                                       country: 'USA',
+                                                                       phone: '1234552',
+                                                                       zip_code: '94305',
+                                                                       email_address: 'test@localhost',
+                                                                       first_name: 'Test User',
+                                                                       state_or_province: 'CA'
+                                                                     )
+                                                                   })
     end
   end
 end

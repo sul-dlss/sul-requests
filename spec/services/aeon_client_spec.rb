@@ -34,16 +34,36 @@ RSpec.describe AeonClient do
   end
 
   describe '#create_user' do
-    it 'creates and returns a new user' do
-      stub_request(:post, 'https://aeon.example.com/api/Users')
-        .with(body: { username: 'newuser', authType: 'Default', cleared: 'No' }.to_json)
-        .to_return(status: 201, body: { username: 'newuser',
-                                        authType: 'Default' }.to_json, headers: { 'Content-Type' => 'application/json' })
+    it 'when non-sso user creates and returns a new user' do
+      user_data = AeonClient::UserData.with_defaults.with(
+        email_address: 'newuser@email.com'
+      ).as_json
 
-      user = client.create_user(username: 'newuser')
+      stub_request(:post, 'https://aeon.example.com/api/Users')
+        .with(body: user_data.to_json)
+        .to_return(status: 201, body: user_data.to_json, headers: { 'Content-Type' => 'application/json' })
+
+      user = client.create_user(user_data:)
 
       expect(user).to be_a(Aeon::User)
-      expect(user.username).to eq('newuser')
+      expect(user.username).to eq('newuser@email.com')
+      expect(user.auth_type).to eq('Aeon')
+    end
+
+    it 'when sso user creates and returns a new user' do
+      user_data = AeonClient::UserData.with_defaults.with(
+        email_address: 'newuser@email.com',
+        sso: true
+      ).as_json
+
+      stub_request(:post, 'https://aeon.example.com/api/Users')
+        .with(body: user_data.to_json)
+        .to_return(status: 201, body: user_data.to_json, headers: { 'Content-Type' => 'application/json' })
+
+      user = client.create_user(user_data:)
+
+      expect(user).to be_a(Aeon::User)
+      expect(user.username).to eq('newuser@email.com')
       expect(user.auth_type).to eq('Default')
     end
   end
