@@ -31,6 +31,9 @@ application.register("form", FormController)
 import RememberController from "./remember_controller"
 application.register("remember", RememberController)
 
+import AeonConfirmationPollController from "./aeon_confirmation_poll_controller"
+application.register("aeon-confirmation-poll", AeonConfirmationPollController)
+
 import ArchivesSeriesController from "./archives_series_controller"
 application.register("archives-series", ArchivesSeriesController)
 

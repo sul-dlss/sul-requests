@@ -134,6 +134,14 @@ class PatronRequest < ApplicationRecord
     aeon_page? && scan?
   end
 
+  def expected_aeon_item_count
+    if ead_url.present?
+      aeon_item&.count || 0
+    else
+      selected_items.count
+    end
+  end
+
   def item_mediation_data
     super || {}
   end
