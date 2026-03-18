@@ -8,38 +8,51 @@
       <div class="bg-light p-2 fs-5 mb-4">Please review Reading room policies before arriving for your appointment.</div>
     <% end %>
     <%= render RecordHeaderCardComponent.new(patron_request: @patron_request, classes: 'mt-4 mb-4') %>
-    <div class="confirmation">
-      <% if @aeon_requests.any? %>
-        <% if @aeon_requests.appointment_reading_room.present? %>
-          <div class="mb-4">
-            <h2><%= @aeon_requests.appointment_reading_room.name %></h2>
-            <i class="bi bi-geo-alt-fill me-1"></i><span><%= @aeon_requests.appointment_reading_room.directions %></span>
+    <div data-controller="aeon-confirmation-poll" data-aeon-confirmation-poll-attempts-value="0">
+      <turbo-frame id="aeon-confirmation" data-aeon-confirmation-poll-target="frame">
+        <% if @aeon_requests.count < @patron_request.expected_aeon_item_count %>
+          <div class="d-flex align-items-center my-3" data-aeon-confirmation-poll-target="loading">
+            <div class="spinner-border spinner-border-sm me-2" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <span>Confirming your requests. You can navigate away from this page.</span>
           </div>
-        <% end %>
-        <% if @aeon_requests.first&.multi_item_selector? %>
-          <%= render Aeon::ConfirmationRequestListComponent.new(requests: @aeon_requests.submitted_requests, digitization: @aeon_requests.digital? ) %>
-          <%= render Aeon::ConfirmationRequestListComponent.new(requests: @aeon_requests.draft_requests, digitization: @aeon_requests.digital?, drafts: true) %>
         <% else %>
-          <% request = @aeon_requests.first %>
-          <% if request.appointment %>
-            <div class="mb-3">
-              <h2>Appointment</h2>
-              <i class="bi bi-calendar me-2"></i><%= render AppointmentTimeRangeComponent.new(appointment: request.appointment) %>
-            </div>
-          <% elsif request.requested_pages.present? %>
-            <div class="mb-3">
-              <h2>Pages</h2>
-              <i class="bi bi-file-earmark me-2"></i><%= request.requested_pages %>
-            </div>
+          <div class="confirmation">
+          <% if @aeon_requests.any? %>
+            <% if @aeon_requests.appointment_reading_room.present? %>
+              <div class="mb-4">
+                <h2><%= @aeon_requests.appointment_reading_room.name %></h2>
+                <i class="bi bi-geo-alt-fill me-1"></i><span><%= @aeon_requests.appointment_reading_room.directions %></span>
+              </div>
+            <% end %>
+            <% if @aeon_requests.first&.multi_item_selector? %>
+              <%= render Aeon::ConfirmationRequestListComponent.new(requests: @aeon_requests.submitted_requests, digitization: @aeon_requests.digital? ) %>
+              <%= render Aeon::ConfirmationRequestListComponent.new(requests: @aeon_requests.draft_requests, digitization: @aeon_requests.digital?, drafts: true) %>
+            <% else %>
+              <% request = @aeon_requests.first %>
+              <% if request.appointment %>
+                <div class="mb-3">
+                  <h2>Appointment</h2>
+                  <i class="bi bi-calendar me-2"></i><%= render AppointmentTimeRangeComponent.new(appointment: request.appointment) %>
+                </div>
+              <% elsif request.requested_pages.present? %>
+                <div class="mb-3">
+                  <h2>Pages</h2>
+                  <i class="bi bi-file-earmark me-2"></i><%= request.requested_pages %>
+                </div>
+              <% end %>
+              <% if request.special_request %>
+                <div class="mb-3">
+                  <h2>Additional Information</h2>
+                  <%= request.special_request %>
+                </div>
+              <% end %>
+            <% end %>
           <% end %>
-          <% if request.special_request %>
-            <div class="mb-3">
-              <h2>Additional Information</h2>
-              <%= request.special_request %>
-            </div>
-          <% end %>
+        </div>
         <% end %>
-      <% end %>
+      </turbo-frame>
     </div>
     <% if can? :debug, @patron_request %>
       <hr>
