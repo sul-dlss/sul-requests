@@ -9,8 +9,6 @@ RSpec.describe 'Creating a request', :js do
 
   before do
     stub_folio_instance_json(folio_instance)
-    # this line prevents ArgumentError: SMTP To address may not be blank
-    ActionMailer::Base.perform_deliveries = false
 
     allow(Folio::Patron).to receive(:find_by).with(patron_key: 'generic').and_return(build(:patron))
     allow_any_instance_of(PagingSchedule).to receive(:valid?).with(anything).and_return(true)
