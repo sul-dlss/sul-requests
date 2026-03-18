@@ -5,7 +5,7 @@ module Aeon
   class RequestActionsComponent < ViewComponent::Base
     attr_reader :request
 
-    delegate :appointment, :digital?, :title, :transaction_number, to: :request
+    delegate :appointment, :digital?, :title, :transaction_number, :ead?, :volume,  to: :request
 
     def initialize(request:)
       @request = request
@@ -21,6 +21,10 @@ module Aeon
 
     def include_bulk_actions
       @request.draft? && (helpers.can? :edit, @request)
+    end
+
+    def container
+      volume if ead? && volume.present?
     end
   end
 end
