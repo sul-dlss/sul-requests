@@ -10,7 +10,7 @@ module Aeon
     delegate :each, to: :requests
 
     delegate :appointment?, :submitted?, :appointment, :call_number, :date, :digital?,
-             :document_type, :ead_number, :title, to: :first
+             :document_type, :ead_number, :multi_item_selector?, :title, to: :first
 
     def self.from_requests(requests)
       multi, single = requests.partition(&:multi_item_selector?)

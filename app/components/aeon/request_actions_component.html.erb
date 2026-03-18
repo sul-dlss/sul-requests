@@ -5,9 +5,9 @@
         </form>
       <% else %>
         <% if include_bulk_actions %>
-          <input type="checkbox" class="form-check-input" id="delete-bulk-<%= request.id %>" data-action="change->draft-request#selectForDelete draft-request#updateSelectAll" data-draft-request-target="select" data-id="<%= request.id %>"
-            data-title="<%= title %>" data-type="<%= request_type %>"  data-callnumber="<%= request.call_number %>"
-            data-ead="<%= request.ead_number %>" data-container="<%= container %>" />
+          <input type="checkbox" class="form-check-input" id="delete-bulk-<%= request.id %>"
+            data-action="change->draft-request#updateDeleteButton draft-request#updateSelectAll"
+            data-draft-request-target="select" data-id="<%= request.id %>" />
           <%= label_tag "delete-bulk-#{request.id}", 'Select', class: 'ms-2 me-3 form-check-label' %>
         <% end %>
         <% if helpers.can? :edit, request %>

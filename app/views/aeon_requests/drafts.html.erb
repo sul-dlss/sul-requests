@@ -28,23 +28,29 @@
       </turbo-frame>
     </div>
   </div>
-  <div class="modal fade" id="delete-bulk" tabindex="-1" aria-labelledby="title-delete-bulk"  aria-hidden="true" data-draft-request-target="deleteModal">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+  <div class="modal fade" id="delete-bulk" tabindex="-1" aria-labelledby="title-delete-bulk" aria-hidden="true" data-draft-request-target="deleteModal">
+    <div class="modal-lg modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title" id="title-delete-bulk">Delete draft requests?</h2>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body fw-normal">
-          <div id="request-content" class="p-0 m-0  modal-bulk-delete">
+            <% @aeon_request_groups.each do |group| %>
+              <div hidden data-draft-request-target="modalGroup" data-digital="<%= group.digital? %>"
+                <% unless group.first.multi_item_selector? %>data-request-id="<%= group.first.id %>"<% end %>>
+                <div class="text-digital-red pb-1"><%= group.digital? ? 'Digitization' : 'Reading room use' %></div>
+                <%= render Aeon::RequestGroupBriefComponent.new(request_group: group, heading_level: :h3) %>
+              </div>
+            <% end %>
+            <div hidden data-draft-request-target="modalSummary"></div>
           </div>
           <div class="p-3 m-0 bg-info-subtle fw-semibold">
-          This action cannot be undone.
+            This action cannot be undone.
           </div>
-        </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
-          <%= form_with url: destroy_multiple_aeon_requests_path, id: 'delete-bulk-form', method: 'delete', data: { 'draft-request-target': 'deleteForm' } do %>
+          <%= form_with url: destroy_multiple_aeon_requests_path, method: 'delete', data: { 'draft-request-target': 'deleteForm' } do %>
             <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Yes - Delete</button>
           <% end %>
         </div>

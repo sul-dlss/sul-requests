@@ -6,17 +6,19 @@ RSpec.describe 'Bulk delete actions and modal', :js do
   let(:user) { create(:sso_user) }
   let(:current_user) { CurrentUser.new(username: user.sunetid, shibboleth: true, patron_key: user.patron_key, ldap_attributes: {}) }
   let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
+  let(:reading_rooms) { JSON.load_file('spec/fixtures/reading_rooms.json').map { |room| Aeon::ReadingRoom.from_dynamic(room) } }
   let(:first_request) do
     build(:aeon_request, call_number: 'PR9195.1 .S56 NO.1', title: 'Slow poetry in America : a poetry quarterly',
-                         transaction_number: 100, username: aeon_user.username)
+                         transaction_number: 100, username: aeon_user.username, web_request_form: 'multiple')
   end
   let(:second_request) do
     build(:aeon_request, call_number: 'PR9195.1 .S56 NO.2', title: 'Slow poetry in America : a poetry quarterly',
-                         transaction_number: 101, username: aeon_user.username)
+                         transaction_number: 101, username: aeon_user.username, web_request_form: 'multiple')
   end
   let(:third_request) do
     build(:aeon_request, call_number: 'PR8195.1 .S56 NO.2', title: 'Fast poetry in America : a poetry monthly',
-                         transaction_number: 102, username: aeon_user.username)
+                         transaction_number: 102, username: aeon_user.username,
+                         shipping_option: 'Electronic Delivery')
   end
   let(:draft_queue) do
     Aeon::Queue.new(id: 5, queue_name: 'Awaiting User Review', queue_type: 'Transaction')
@@ -27,7 +29,7 @@ RSpec.describe 'Bulk delete actions and modal', :js do
                     find_queue: draft_queue,
                     appointments_for: [],
                     requests_for: [first_request, second_request, third_request],
-                    reading_rooms: [],
+                    reading_rooms:,
                     available_appointments: [])
   end
 
@@ -54,7 +56,7 @@ RSpec.describe 'Bulk delete actions and modal', :js do
 
       click_button('delete-all')
       expect(page).to have_css('.modal-title', text: 'Delete 1 draft request?')
-      expect(page).to have_css('.modal-body #request-content', text: 'Slow poetry in America : a poetry quarterly')
+      expect(page).to have_css('.modal-body', text: 'Slow poetry in America : a poetry quarterly')
     end
   end
 
@@ -65,9 +67,9 @@ RSpec.describe 'Bulk delete actions and modal', :js do
 
       click_button('delete-all')
       expect(page).to have_css('.modal-title', text: 'Delete 2 draft requests?')
-      expect(page).to have_css('.modal-body #request-content', text: 'Reading room use', count: 1)
-      expect(page).to have_css('.modal-body #request-content', text: 'Slow poetry in America : a poetry quarterly', count: 1)
-      expect(page.find('#request-content .flex-row')).to have_content('PR9195.1 .S56 NO.1').and have_content('PR9195.1 .S56 NO.2')
+      expect(page).to have_css('.modal-body', text: 'Reading room use', count: 1)
+      expect(page).to have_css('.modal-body', text: 'Slow poetry in America : a poetry quarterly', count: 1)
+      expect(page.find('.modal-body')).to have_content('PR9195.1 .S56 NO.1').and have_content('PR9195.1 .S56 NO.2')
     end
   end
 
@@ -79,7 +81,7 @@ RSpec.describe 'Bulk delete actions and modal', :js do
 
       click_button('delete-all')
       expect(page).to have_css('.modal-title', text: 'Delete 3 draft requests?')
-      expect(page).to have_css('.modal-body #request-content', text: '0 digitization and 3 reading room use requests')
+      expect(page).to have_css('.modal-body', text: '1 digitization and 2 reading room use requests')
     end
   end
 end
