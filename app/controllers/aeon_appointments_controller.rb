@@ -46,13 +46,6 @@ class AeonAppointmentsController < ApplicationController
   def create # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     authorize! :create, Aeon::Appointment
 
-    start_time = Time.zone.parse("#{create_params[:date]}T#{create_params[:start_time]}")
-    stop_time = if create_params[:stop_time]
-                  Time.zone.parse("#{create_params[:date]}T#{create_params[:stop_time]}")
-                else
-                  start_time + create_params[:duration].to_i.seconds
-                end
-
     @new_appointment = AeonClient.new.create_appointment(
       start_time: start_time,
       stop_time: stop_time,
@@ -67,14 +60,8 @@ class AeonAppointmentsController < ApplicationController
     end
   end
 
-  def update # rubocop:disable Metrics/AbcSize
+  def update
     authorize! :update, @appointment
-    start_time = Time.zone.parse("#{create_params[:date]}T#{create_params[:start_time]}")
-    stop_time = if create_params[:stop_time]
-                  Time.zone.parse("#{create_params[:date]}T#{create_params[:stop_time]}")
-                else
-                  start_time + create_params[:duration].to_i.seconds
-                end
 
     AeonClient.new.update_appointment(params[:id], name: update_params[:name], start_time: start_time, stop_time: stop_time)
 
@@ -105,6 +92,18 @@ class AeonAppointmentsController < ApplicationController
 
   def load_appointment
     @appointment = @appointments.find { |appt| appt.id == params[:id].to_i }
+  end
+
+  def start_time
+    Time.zone.parse("#{create_params[:date]}T#{create_params[:start_time]}")
+  end
+
+  def stop_time
+    if create_params[:stop_time]
+      Time.zone.parse("#{create_params[:date]}T#{create_params[:stop_time]}")
+    else
+      start_time + create_params[:duration].to_i.seconds
+    end
   end
 
   def create_params
