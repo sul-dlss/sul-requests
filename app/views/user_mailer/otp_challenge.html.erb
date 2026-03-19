@@ -1,1 +1,8 @@
+<p>To continue with your login, you may use the following 6-digit verification code:</p>
+
 <strong><%= @token %></strong>
+
+<p>
+Use this code by <%= l(5.minutes.from_now, format: :time_only) %> PT. For security reasons, do not share this code with anyone.
+If you did not request this code, please ignore this email or <%= mail_to Settings.libraries.default.contact_info.email, 'contact us' %> if you have any concerns.
+</p>
