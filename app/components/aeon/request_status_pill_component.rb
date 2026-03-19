@@ -5,21 +5,20 @@ module Aeon
   class RequestStatusPillComponent < ViewComponent::Base
     attr_reader :request
 
-    delegate :appointment?, :completed?, :digital?, :draft?, :scan_delivered?, :submitted?, to: :request
+    delegate :appointment?, :digital?, :status, to: :request
 
     def initialize(request:)
       @request = request
     end
 
     def status_class
-      if completed? || scan_delivered?
+      case status
+      when :completed
         :ready
-      elsif submitted?
+      when :submitted
         appointment? ? :ready : :pending
-      elsif draft?
-        :draft
       else
-        :cancelled
+        status
       end
     end
 
@@ -37,9 +36,12 @@ module Aeon
     end
 
     def digitization_status
-      if scan_delivered?
+      return unless digital?
+
+      case status
+      when :completed
         'Digitization ready'
-      elsif submitted?
+      when :submitted
         'Digitization pending'
       else
         'Digitization'

@@ -9,6 +9,52 @@ RSpec.describe Aeon::Request do
     allow(AeonClient).to receive(:new).and_return(aeon_client)
   end
 
+  describe '#status' do
+    subject(:request) do
+      build(:aeon_request, transaction_status: queue.id)
+    end
+
+    let(:transaction_status) { nil }
+
+    let(:queue) { Aeon::Queue.new(id: 0, queue_name: transaction_status, queue_type: 'Transaction') }
+
+    before do
+      allow(aeon_client).to receive(:find_queue).with(id: queue.id, type: :transaction).and_return(queue)
+    end
+
+    context 'with a draft' do
+      let(:transaction_status) { 'Awaiting User Review' }
+
+      it 'returns draft' do
+        expect(request.status).to eq :draft
+      end
+    end
+
+    context 'with a submitted request' do
+      let(:transaction_status) { 'Awaiting Request Processing' }
+
+      it 'returns submitted' do
+        expect(request.status).to eq :submitted
+      end
+    end
+
+    context 'with a cancelled request' do
+      let(:transaction_status) { 'Cancelled by User' }
+
+      it 'returns cancelled' do
+        expect(request.status).to eq :cancelled
+      end
+    end
+
+    context 'with a completed request' do
+      let(:transaction_status) { 'Request Finished' }
+
+      it 'returns cancelled' do
+        expect(request.status).to eq :completed
+      end
+    end
+  end
+
   describe '#appointment?' do
     it 'returns true when appointment_id is present' do
       request = build(:aeon_request)
@@ -71,7 +117,7 @@ RSpec.describe Aeon::Request do
       allow(aeon_client).to receive(:find_queue).with(id: 8, type: :transaction).and_return(non_completed)
       allow(aeon_client).to receive(:find_queue).with(id: 23, type: :photoduplication).and_return(completed)
 
-      request = build(:aeon_request, transaction_status: 8, photoduplication_status: 23)
+      request = build(:aeon_request, transaction_status: 8, photoduplication_status: 23, shipping_option: 'Electronic Delivery')
       expect(request).to be_completed
     end
 

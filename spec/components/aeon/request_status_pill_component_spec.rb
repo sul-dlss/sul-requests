@@ -8,7 +8,7 @@ RSpec.describe Aeon::RequestStatusPillComponent, type: :component do
 
     context 'when draft' do
       before do
-        allow(request).to receive_messages(draft?: true)
+        allow(request).to receive_messages(status: :draft)
         render_inline(described_class.new(request:))
       end
 
@@ -21,7 +21,7 @@ RSpec.describe Aeon::RequestStatusPillComponent, type: :component do
 
     context 'when submitted with an appointment' do
       before do
-        allow(request).to receive_messages(completed?: false, draft?: false, submitted?: true)
+        allow(request).to receive_messages(status: :submitted)
         render_inline(described_class.new(request:))
       end
 
@@ -35,7 +35,7 @@ RSpec.describe Aeon::RequestStatusPillComponent, type: :component do
       let(:request) { build(:aeon_request, :without_appointment) }
 
       before do
-        allow(request).to receive_messages(completed?: false, draft?: false, submitted?: true)
+        allow(request).to receive_messages(status: :submitted)
         render_inline(described_class.new(request:))
       end
 
@@ -51,7 +51,7 @@ RSpec.describe Aeon::RequestStatusPillComponent, type: :component do
 
     context 'when draft' do
       before do
-        allow(request).to receive_messages(draft?: true)
+        allow(request).to receive_messages(status: :draft)
         render_inline(described_class.new(request:))
       end
 
@@ -64,7 +64,7 @@ RSpec.describe Aeon::RequestStatusPillComponent, type: :component do
 
     context 'when submitted' do
       before do
-        allow(request).to receive_messages(completed?: false, scan_delivered?: false, draft?: false, submitted?: true)
+        allow(request).to receive_messages(status: :submitted)
         render_inline(described_class.new(request:))
       end
 
@@ -76,7 +76,7 @@ RSpec.describe Aeon::RequestStatusPillComponent, type: :component do
 
     context 'when scan delivered' do
       before do
-        allow(request).to receive_messages(completed?: true, scan_delivered?: true)
+        allow(request).to receive_messages(status: :completed)
         render_inline(described_class.new(request:))
       end
 

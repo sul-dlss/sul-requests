@@ -17,8 +17,8 @@ RSpec.describe Aeon::RequestGroupComponent, type: :component do
     let(:request_group) { Aeon::RequestGrouping.new([first_request, second_request]) }
 
     before do
-      allow(first_request).to receive_messages(draft?: true)
-      allow(second_request).to receive_messages(draft?: true)
+      allow(first_request).to receive_messages(draft?: true, cancelled?: false)
+      allow(second_request).to receive_messages(draft?: true, cancelled?: false)
       render_inline(described_class.new(request_group:))
     end
 
