@@ -84,7 +84,7 @@ module Folio
     end
 
     def document_type
-      single_item&.type
+      format.presence&.first || single_item&.type
     end
 
     def item_url

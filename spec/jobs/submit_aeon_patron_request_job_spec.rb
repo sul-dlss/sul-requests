@@ -36,7 +36,7 @@ RSpec.describe SubmitAeonPatronRequestJob do
 
         expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
                                                                           call_number: 'ABC 123',
-                                                                          document_type: 'Monograph',
+                                                                          document_type: 'Book',
                                                                           for_publication: false,
                                                                           item_author: 'John Q. Public',
                                                                           item_info1: 'https://searchworks.stanford.edu/view/1234',

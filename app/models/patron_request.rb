@@ -265,21 +265,19 @@ class PatronRequest < ApplicationRecord
     end
   end
 
+  def bib_record
+    folio_instance.presence || ead_doc
+  end
+
   # @return [String] the title of the item
   def item_title
-    super || folio_instance&.title || ead_doc&.title
+    super || bib_record&.title
   end
 
-  def author
-    folio_instance&.author || ead_doc&.author
-  end
-
-  def date
-    folio_instance&.pub_date || ead_doc&.date
-  end
+  delegate :author, :date, :document_type, to: :bib_record
 
   def view_url
-    folio_instance&.item_url || ead_doc&.item_url
+    bib_record&.item_url
   end
 
   # Item stuff

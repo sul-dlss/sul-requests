@@ -34,6 +34,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   def common_aeon_data_from_patron_request(patron_request, volume_params) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     AeonClient::RequestData.with_defaults.with(
       appointment_id: volume_params['appointment_id'].presence&.to_i,
+      document_type: patron_request.document_type,
       for_publication: volume_params['for_publication'] == 'yes',
       item_author: patron_request.author,
       item_date: patron_request.date,
@@ -68,7 +69,6 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   def as_aeon_create_request_data(patron_request, folio_item, volume_params)
     common_aeon_data_from_patron_request(patron_request, volume_params).with(
       call_number: folio_item.callnumber,
-      document_type: 'Monograph',
       item_number: folio_item.barcode,
       location: patron_request.origin_location_code,
       web_request_form: patron_request.selectable_items.many? ? 'multiple' : 'single'
