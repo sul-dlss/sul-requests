@@ -13,6 +13,9 @@ module Aeon
 
     def call
       @aeon_request = update_request
+      @aeon_request = update_request_route
+
+      @aeon_request
     end
 
     private
@@ -27,6 +30,26 @@ module Aeon
           special_request: params[:additional_information]
         )
       )
+    end
+
+    def needs_set_to_submitted?
+      aeon_request.draft? && aeon_request.valid?
+    end
+
+    def needs_set_to_draft?
+      aeon_request.submitted? && aeon_request.valid?
+    end
+
+    def update_request_route
+      if needs_set_to_submitted?
+        aeon_client.update_request_route(transaction_number: aeon_request.transaction_number,
+                                         status: 'Awaiting Request Processing')
+      elsif needs_set_to_draft?
+        aeon_client.update_request_route(transaction_number: aeon_request.transaction_number,
+                                         status: Settings.aeon.queue_names.draft.transaction.first)
+      else
+        aeon_request
+      end
     end
   end
 end
