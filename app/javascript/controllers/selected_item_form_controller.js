@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import { Collapse } from "bootstrap"
 
 export default class extends Controller {
-  static targets = ["status", "nextButton", "charCounter"]
+  static targets = ["status", "nextButton"]
   static values = { status: String }
 
   connect() {
@@ -29,14 +29,6 @@ export default class extends Controller {
     }
 
     this.dispatch('status-changed', { detail: { status: this.statusValue } });
-  }
-
-  updateCharCounter(event) {
-    const currentChars = event.currentTarget.value.length;
-    const maxChars = event.currentTarget.maxLength;
-    const charClass = maxChars - currentChars < 10 ? 'text-cardinal' : 'text-green';
-    this.charCounterTarget.innerHTML = `${currentChars}/${maxChars}`;
-    this.charCounterTarget.classList = `fs-14 ${charClass}`;
   }
 
   emptyFields() {

@@ -31,12 +31,12 @@
           </fieldset>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" data-controller="char-counter">
           <%= f.label :additional_information, class: 'form-label fw-semibold' %>
-          <%= f.text_area :additional_information, class: 'form-control', maxlength: 255, data: { action: "input->selected-item-form#updateCharCounter"} %>
+          <%= f.text_area :additional_information, class: 'form-control', maxlength: 255, data: { action: "input->char-counter#updateCharCounter"} %>
           <p class="form-text text-secondary d-flex justify-content-between">
             <span>Limit 255 characters.</span>
-            <span data-selected-item-form-target="charCounter"></span>
+            <span data-char-counter-target="counter"></span>
           </p>
         </div>
 
