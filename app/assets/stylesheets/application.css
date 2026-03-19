@@ -649,3 +649,9 @@ label.btn-close {
 .modal-location .hide-when-1-item {
   display: none;
 }
+
+#draft-requests {
+  .request:has(.ready) {
+    display: none;
+  }
+}
