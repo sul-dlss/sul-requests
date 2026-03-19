@@ -33,12 +33,14 @@ class SessionsController < ApplicationController
   #
   # GET /sessions/register_visitor
   def register_visitor # rubocop:disable Metrics/AbcSize
-    verify_recaptcha!
     if Settings.features.authenticate_name_email_users && params[:code].blank?
+      verify_recaptcha!
       SendOtpJob.perform_later(params[:patron_email])
 
       render 'sessions/register_visitor'
     elsif request.env['warden'].authenticate(:register_visitor)
+      verify_recaptcha! unless Settings.features.authenticate_name_email_users
+
       redirect_after_action
     else
       redirect_to post_action_redirect_url, flash: { error: t('.alert') }
