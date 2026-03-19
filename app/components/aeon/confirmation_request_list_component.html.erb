@@ -15,7 +15,7 @@
             <div>
               <% if request.appointment %>
                 <%= render AppointmentTimeRangeComponent.new(appointment: request.appointment) %>
-              <% elsif request.pages %>
+              <% elsif request.pages.present? %>
                 Pages <%= request.pages %>
               <% end %>
             </div>
