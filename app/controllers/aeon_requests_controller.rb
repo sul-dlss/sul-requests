@@ -49,27 +49,19 @@ class AeonRequestsController < ApplicationController
   def update # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     authorize! :update, @aeon_request
 
-    new_request = aeon_client.update_request(
-      @aeon_request.transaction_number,
-      AeonClient::RequestData.with_defaults.with(
-        appointment_id: aeon_request_params[:appointment_id]&.to_i,
-        for_publication: aeon_request_params[:for_publication] == 'yes',
-        item_info5: aeon_request_params[:requested_pages],
-        special_request: aeon_request_params[:additional_information]
-      )
-    )
+    updated_request = Aeon::UpdateRequestService.new(@aeon_request, aeon_request_params).call
 
     respond_to do |format|
       format.turbo_stream do
-        component = if new_request.draft? && new_request.multi_item_selector?
-                      Aeon::RequestGroupItemComponent.new(request: new_request)
+        component = if updated_request.draft? && updated_request.multi_item_selector?
+                      Aeon::RequestGroupItemComponent.new(request: updated_request)
                     else
-                      Aeon::RequestComponent.new(request: new_request)
+                      Aeon::RequestComponent.new(request: updated_request)
                     end
-        render turbo_stream: turbo_stream.replace(new_request, component)
+        render turbo_stream: turbo_stream.replace(updated_request, component)
       end
       format.html do
-        aeon_requests_path = new_request.draft? ? drafts_aeon_requests_path : submitted_aeon_requests_path
+        aeon_requests_path = updated_request.draft? ? drafts_aeon_requests_path : submitted_aeon_requests_path
         redirect_to aeon_requests_path, notice: 'Request was successfully updated.'
       end
     end

@@ -95,6 +95,14 @@ module Aeon
       transaction_queue.nil? || transaction_queue&.draft?
     end
 
+    def valid?
+      if digital?
+        requested_pages.present?
+      else
+        appointment_id.present?
+      end
+    end
+
     def submitted?
       !draft? && !cancelled? && !completed?
     end

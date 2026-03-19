@@ -16,8 +16,9 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
   let(:reading_rooms) { JSON.load_file('spec/fixtures/reading_rooms.json').map { |room| Aeon::ReadingRoom.from_dynamic(room) } }
   let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
   let(:stub_aeon_client) do
-    instance_double(AeonClient, find_user: aeon_user, create_request: { success: true }, reading_rooms:, available_appointments:)
+    instance_double(AeonClient, find_user: aeon_user, create_request: created_request, reading_rooms:, available_appointments:)
   end
+  let(:created_request) { instance_double(Aeon::Request, id: 123, transaction_number: 'abc123', submitted?: true, draft?: false, valid?: true) }
   let(:available_appointments) do
     [instance_double(Aeon::AvailableAppointment,
                      start_time: DateTime.new(2026, 2, 19),

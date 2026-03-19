@@ -76,23 +76,15 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   end
 
   def submit_aeon_request(aeon_payload)
-    response = aeon_client.create_request(aeon_payload)
+    created_request = aeon_client.create_request(aeon_payload)
 
-    return response if complete?(aeon_payload)
+    return created_request if created_request.valid?
 
-    aeon_client.update_request_route(transaction_number: response.transaction_number,
+    aeon_client.update_request_route(transaction_number: created_request.transaction_number,
                                      status: Settings.aeon.queue_names.draft.transaction.first)
   end
 
   def aeon_client
     @aeon_client ||= AeonClient.new
-  end
-
-  def complete?(payload)
-    if payload.shipping_option == 'Electronic Delivery'
-      payload.item_info5.present?
-    else
-      payload.appointment_id.present?
-    end
   end
 end
