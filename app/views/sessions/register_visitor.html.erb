@@ -1,7 +1,7 @@
 <h1>Verify email address</h1>
 
 
-<%= form_with url: register_visitor_path, method: :post do |f| %>
+<%= form_with url: register_visitor_path, method: :post, data: { turbo: false } do |f| %>
   <%= f.hidden_field :referrer, value: params[:referrer] %>
   <%= f.hidden_field :patron_email, value: params[:patron_email] %>
   <%= f.hidden_field :name, value: params[:name] %>
