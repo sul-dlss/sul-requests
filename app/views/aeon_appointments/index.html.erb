@@ -1,8 +1,23 @@
-<div class="d-flex align-items-center gap-3 mb-3">
-  <h1>Reading room appointments</h1>
-  <%= link_to 'Create new appointment', new_aeon_appointment_path, class: 'btn btn-primary', data: { action: 'modal#open' } %>
-</div>
+<div class="container">
+  <div class="row">
+    <div class="col-8 pe-5">
+      <div class="d-flex align-items-center gap-3 mb-3">
+        <h1>Reading room appointments</h1>
+        <%= link_to 'Create new appointment', new_aeon_appointment_path, class: 'btn btn-primary', data: { action: 'modal#open' } %>
+      </div>
 
-<turbo-frame id="aeon_appointments">
-  <%= render Aeon::AppointmentGroupComponent.with_collection(Aeon::AppointmentGrouping.from_appointments(@appointments), group_classes: %w[shadow mb-4]) %>
-</turbo-frame>
+      <turbo-frame id="aeon_appointments">
+        <%= render Aeon::AppointmentGroupComponent.with_collection(Aeon::AppointmentGrouping.from_appointments(@appointments), group_classes: %w[shadow mb-4]) %>
+      </turbo-frame>
+    </div>
+    <div class="col-4">
+      <turbo-frame src="<%= draft_aeon_requests_path(variant: 'sidebar', filter: 'reading_room', sort: 'title') %>" id="aeon-requests" class="d-block" data-turbo="false">
+        <div class="d-flex align-items-center justify-content-center" style="height: 200px;">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </turbo-frame>
+    </div>
+  </div>
+</div>

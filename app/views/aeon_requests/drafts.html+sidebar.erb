@@ -1,0 +1,8 @@
+<turbo-frame id="aeon-requests">
+  <h2 class="h3 text-center mb-3">Items requested for reading room use without appointments</h2>
+  <p class="text-center text-digital-red"><i class="bi bi-exclamation-triangle-fill me-1"></i> Materials are unavailable until an appointment is scheduled.</p>
+
+  <% @aeon_request_groups.each do |requests_in_group| %>
+    <%= render Aeon::RequestGroupBriefComponent.new(request_group: requests_in_group) %>
+  <% end %>
+</turbo-frame>
