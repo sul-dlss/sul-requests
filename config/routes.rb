@@ -64,6 +64,7 @@ Rails.application.routes.draw do
 
     member do
       patch :resubmit
+      post :redraft
     end
   end
 
