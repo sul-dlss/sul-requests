@@ -23,10 +23,13 @@
     </template>
   </div>
 
-  <div class="mt-3 mb-2">
+  <div class="mt-3 mb-2" data-controller="char-counter">
     <%= f.label :aeon_reading_special, 'Additional information', :class => 'fw-bold py-2' %>
-    <%= f.text_area :aeon_reading_special, :class => 'form-control', :rows => 3 %>
-    <small class="text-cardinal mt-4">Limit 255 characters.</small>
+    <%= f.text_area :aeon_reading_special, :class => 'form-control', rows: 3, maxlength: 255, data: { action: "input->char-counter#updateCharCounter"} %>
+    <p class="form-text text-secondary d-flex justify-content-between">
+      <span>Limit 255 characters.</span>
+      <span data-char-counter-target="counter"></span>
+    </p>
   </div>
 
 </div>

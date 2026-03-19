@@ -57,3 +57,6 @@ application.register("empty-remove", EmptyRemoveController)
 
 import DraftRequestController from "./draft_request_controller"
 application.register("draft-request", DraftRequestController)
+
+import CharCounterController from "./char_counter_controller"
+application.register("char-counter", CharCounterController)
