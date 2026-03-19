@@ -88,6 +88,7 @@ class AeonAppointmentsController < ApplicationController
 
   def load_appointments
     @appointments = current_user&.aeon&.appointments || []
+    @appointments = @appointments.sort_by(&:start_time)
   end
 
   def load_appointment

@@ -5,16 +5,8 @@ module Aeon
   class AppointmentBriefComponent < Aeon::AppointmentComponent
     with_collection_parameter :appointment
 
-    attr_reader :total_item_limit_percentage
-
-    def initialize(appointment:, total_item_limit_percentage: nil, hide_item_count_badge: false)
-      super(appointment:)
-      @total_item_limit_percentage = total_item_limit_percentage
-      @hide_item_count_badge = hide_item_count_badge
-    end
-
-    def hide_item_count_badge?
-      @hide_item_count_badge
+    def total_item_limit_percentage
+      appointment.requests.count / appointment.reading_room.appointment_item_limit
     end
 
     def badge_classes

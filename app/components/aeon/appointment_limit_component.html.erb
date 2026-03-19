@@ -1,5 +1,5 @@
 <div class="daily-item-limit">
-  <span class="me-2">Daily item limit: <%= count %>/<%= limit %></span>
+  <span class="me-2"><%= label %>: <%= count %>/<%= limit %></span>
 
   <small aria-hidden="true">
     <% filled_dots.times do %>
@@ -7,7 +7,7 @@
     <% end %>
 
     <% (total_dots - filled_dots).times do %>
-      <%= tag.i class: 'bi bi-circle-fill text-light' %>
+      <%= tag.i class: 'bi bi-circle-fill text-30-black' %>
     <% end %>
   </small>
 </div>

@@ -2,16 +2,18 @@
 
 module Aeon
   # Render aeon apointment card
-  class DailyItemLimitComponent < ViewComponent::Base
-    attr_reader :count, :limit
+  class AppointmentLimitComponent < ViewComponent::Base
+    attr_reader :count, :limit, :label
 
-    def self.from_appointment_group(appointment_group)
-      new(count: appointment_group.total_requests_count, limit: appointment_group.reading_room_limit)
+    def self.from_appointment(appointment, label: nil)
+      new(count: appointment.requests.count, limit: appointment.reading_room.appointment_item_limit,
+          label: label)
     end
 
-    def initialize(count:, limit:)
+    def initialize(count:, limit:, label: 'Item limit')
       @count = count
       @limit = limit
+      @label = label
     end
 
     def render?
