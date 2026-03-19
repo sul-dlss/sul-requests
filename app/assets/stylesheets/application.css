@@ -548,7 +548,9 @@ label.btn-close {
 .selected-items-container .appointments-item:not(:only-child) {
   /* .border */
   border: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
-
+  /* explicitly setting position:relative on its parent 
+  clips overflow from .possibly-visually-hidden-appointments-label */
+  position: relative;
   /* .bg-light */
   --bs-bg-opacity: 1;
   background: rgba(var(--bs-light-rgb),var(--bs-bg-opacity)) !important;

@@ -1,7 +1,7 @@
 <li data-controller="selected-item-form" data-action="input->selected-item-form#updateStatus" class="appointments-item rounded mb-2 p-2 d-flex column-gap-4 row-gap-2 text-nowrap align-items-center" data-content-id="<%= dom_id %>">
   <div class="d-flex align-items-center">
     <i class="fs-4 bi bi-circle me-2 selected-item-status" data-selected-item-form-target="status"></i>
-    <span class="text-black fw-semibold selected-item-title"><%= title %></span>
+    <span class="text-black fw-semibold selected-item-title text-wrap"><%= title %></span>
     <button class="btn btn-link p-0 ps-1 selected-item-remove" data-action="item-selector#remove" data-item-selector-id-param="<%= dom_id %>">
       <i class="bi bi-trash"></i><span class="visually-hidden"> Delete <%= title %></span>
     </button>
