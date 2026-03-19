@@ -37,7 +37,7 @@ module Aeon
     end
 
     def needs_set_to_draft?
-      aeon_request.submitted? && aeon_request.valid?
+      aeon_request.submitted? && !aeon_request.valid?
     end
 
     def update_request_route
