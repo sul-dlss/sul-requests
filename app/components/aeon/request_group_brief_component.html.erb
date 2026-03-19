@@ -1,4 +1,4 @@
-<div class="request-group request border rounded p-3 mb-3" data-controller="empty-remove">
+<div class="request-group border rounded p-3 mb-3" data-controller="empty-remove">
   <div class="card-body">
     <div class="metadata">
       <div class="mb-2 text-dark-emphasis"><%= requests.first.reading_room&.name %></div>
@@ -10,7 +10,7 @@
       </div>
       <ul class="list-group list-group-flush">
         <% requests.each do |request| %>
-          <li id="<%= dom_id(request) %>" class="list-group-item px-0 <%= "request-status-#{request.status}" %>" data-empty-remove-target="item">
+          <li id="<%= dom_id(request) %>" class="request list-group-item px-0 <%= "request-status-#{request.status}" %>" data-empty-remove-target="item">
             <div class="d-flex flex-row align-items-center justify-content-between">
               <div class="d-flex gap-3">
                 <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
