@@ -19,17 +19,18 @@ RSpec.describe 'aeon_appointments/index.html.erb' do
     let(:appointments) do
       [
         build(:aeon_appointment, start_time: Time.zone.parse('2024-03-11T21:00:00Z')),
-        build(:aeon_appointment, start_time: Time.zone.parse('2024-03-11T21:00:00Z')),
+        build(:aeon_appointment, start_time: Time.zone.parse('2024-03-11T22:00:00Z')),
         build(:aeon_appointment, start_time: Time.zone.parse('2024-03-12T21:00:00Z'), reading_room: build(:aeon_reading_room)),
         build(:aeon_appointment, start_time: Time.zone.parse('2024-03-12T21:00:00Z'),
                                  reading_room: build(:aeon_reading_room, id: 6, name: 'Other Reading Room'))
       ]
     end
 
-    it 'groups them by date and reading room' do
-      expect(rendered).to have_css('h2', text: /Mar 11, 2024.*Field Reading Room/m, count: 1)
-      expect(rendered).to have_css('h2', text: /Mar 12, 2024.*Field Reading Room/m, count: 1)
-      expect(rendered).to have_css('h2', text: /Mar 12, 2024.*Other Reading Room/m, count: 1)
+    it 'displays appointments in a list' do
+      expect(rendered).to have_css('h2', text: /Mar 11, 2024.*2:00 pm - 1:15 pm.*Field Reading Room/m)
+      expect(rendered).to have_css('h2', text: /Mar 11, 2024.*3:00 pm - 1:15 pm.*Field Reading Room/m)
+      expect(rendered).to have_css('h2', text: /Mar 12, 2024.*2:00 pm - 1:15 pm.*Field Reading Room/m)
+      expect(rendered).to have_css('h2', text: /Mar 12, 2024.*2:00 pm - 1:15 pm.*Other Reading Room/m)
     end
   end
 end

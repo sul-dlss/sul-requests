@@ -82,6 +82,10 @@ layer(components);
     color: rgba(var(--stanford-plum-dark-rgb), 1);
 }
 
+.text-30-black {
+  color: var(--stanford-30-black);
+}
+
 @font-face {
   font-family: "Stanford";
   src: url("https://www-media.stanford.edu/assets/fonts/stanford.woff") format("woff"), url("https://www-media.stanford.edu/assets/fonts/stanford.ttf") format("truetype");
@@ -648,4 +652,8 @@ label.btn-close {
 
 .modal-location .hide-when-1-item {
   display: none;
+}
+
+#aeon-appointments .card {
+  --bs-card-border-color: var(--stanford-20-black);
 }

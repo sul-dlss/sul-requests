@@ -37,8 +37,8 @@ module Aeon
       )
     end
 
-    def daily_item_limit
-      Settings.aeon.default_daily_item_limit
+    def appointment_item_limit
+      Settings.aeon.default_appointment_item_limit
     end
 
     def available_appointments(date, **)

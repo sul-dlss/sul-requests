@@ -7,7 +7,7 @@
       </div>
 
       <turbo-frame id="aeon_appointments">
-        <%= render Aeon::AppointmentGroupComponent.with_collection(Aeon::AppointmentGrouping.from_appointments(@appointments), group_classes: %w[shadow mb-4]) %>
+        <%= render Aeon::AppointmentComponent.with_collection(@appointments) %>
       </turbo-frame>
     </div>
     <div class="col-4">
@@ -21,3 +21,4 @@
     </div>
   </div>
 </div>
+
