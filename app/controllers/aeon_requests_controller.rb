@@ -55,12 +55,16 @@ class AeonRequestsController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream do
-        component = if updated_request.draft? && updated_request.multi_item_selector?
-                      Aeon::RequestGroupItemComponent.new(request: updated_request)
-                    else
-                      Aeon::RequestComponent.new(request: updated_request)
-                    end
-        render turbo_stream: turbo_stream.replace(updated_request, component)
+        if @aeon_request.status == updated_request.status
+          component = if updated_request.draft? && updated_request.multi_item_selector?
+                        Aeon::RequestGroupItemComponent.new(request: updated_request)
+                      else
+                        Aeon::RequestComponent.new(request: updated_request)
+                      end
+          render turbo_stream: turbo_stream.replace(updated_request, component)
+        else
+          render turbo_stream: turbo_stream.remove(@aeon_request)
+        end
       end
       format.html do
         aeon_requests_path = updated_request.draft? ? drafts_aeon_requests_path : submitted_aeon_requests_path
