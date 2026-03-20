@@ -3,28 +3,26 @@
 module Aeon
   # Render request link
   class RequestLinkComponent < ViewComponent::Base
-    attr_reader :request
-
-    delegate :item_url, to: :request
-
-    def initialize(request:)
-      @request = request
+    def initialize(url:)
+      @item_url = url
     end
 
     def render?
-      url.present?
+      link_text.present?
     end
 
     def call
-      link_to url, class: 'su-underline' do
-        safe_join(['View in SearchWorks', tag.i(class: 'ms-1 bi bi-arrow-up-right')])
+      link_to @item_url, class: 'su-underline', target: '_blank', rel: 'noopener' do
+        safe_join([link_text, tag.i(class: 'ms-1 bi bi-arrow-up-right')])
       end
     end
 
-    def url
-      return unless item_url&.include?('searchworks')
-
-      item_url
+    def link_text
+      if @item_url&.match?('/archives.stanford.edu/')
+        'View in Archival Collections at Stanford'
+      elsif @item_url&.match?('/searchworks.stanford.edu/')
+        'View in SearchWorks'
+      end
     end
   end
 end

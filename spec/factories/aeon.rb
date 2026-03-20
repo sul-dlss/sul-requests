@@ -4,8 +4,8 @@ FactoryBot.define do
   factory :aeon_reading_room_open_hours, class: 'Aeon::ReadingRoomOpenHours' do
     day_of_week { 1 }
     day_name { 'Monday' }
-    open_time { '09:00:00' }
-    close_time { '16:45:00' }
+    open_time { Time.zone.parse('09:00:00') }
+    close_time { Time.zone.parse('16:45:00') }
 
     initialize_with { new(**attributes) }
   end

@@ -1,31 +1,25 @@
-<div class="card border-0 <%= classes %>">
-  <div class="card-body">
-    <h2 class="fs-4"><%= record.title || 'Not available' %></h2>
-    <div class="d-flex gap-md-3 flex-md-row flex-column">
-      <span>
-        <% if record.document_type == 'Archive/Manuscript' %>
-          <%= render Icons::DocumentBox1Component.new classes: 'me-1 align-text-bottom' %>
-        <% end %>
-        <%= record.document_type.upcase_first %>
-        <% if record.date.present? %> (<%= record.date %>)<% end %>
-      </span>
-      <span>Call number: <%= record.call_number %></span>
-      <span>
-        <% if record.item_url %>
-          <%= link_to record.item_url, class: 'su-underline' do %>
-            <%= link_text %> <i class="bi bi-arrow-up-right"></i>
-          <% end %>
-        <% end %>
-      </span>
-    </div>
-    <% if record.author %>
-      <div class="mt-2">
-        <%= record.author %>
-      </div>
-    <% end %>
-    <% if record.respond_to?(:extent) && record.extent %>
-      <hr class="my-2">
-      <div><b class="fw-semibold">Extent: </b><%= record.extent %></div>
-    <% end %>
-  </div>
+<h2 class="fs-4"><%= record.title || 'Not available' %></h2>
+<div class="d-flex gap-md-3 flex-md-row flex-column">
+  <span>
+    <%= render Icons::DocumentBox1Component.new classes: 'me-1 align-text-bottom' %>
+    <%= document_type %>
+    <% if record.date.present? %> (<%= record.date %>)<% end %>
+  </span>
+  <% if call_number.present? %>
+    <span>Call number: <%= call_number %></span>
+  <% end %>
+  <span>
+    <%= render Aeon::RequestLinkComponent.new(url: record.item_url) %>
+  </span>
 </div>
+<% unless brief? %>
+  <% if record.author %>
+    <div class="mt-2">
+      <%= record.author %>
+    </div>
+  <% end %>
+  <% if record.respond_to?(:extent) && record.extent %>
+    <hr class="my-2">
+    <div><b class="fw-semibold">Extent: </b><%= record.extent %></div>
+  <% end %>
+<% end %>

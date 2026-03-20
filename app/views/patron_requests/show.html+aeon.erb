@@ -2,16 +2,12 @@
   <div class="confirmation col-8">
     <% if @patron_request.request_type == 'scan' %>
       <h1>We received your digitization request!</h1>
-
       <div class="bg-light p-2 fs-5 mb-4">We'll email you when your files are ready.</div>
     <% else %>
       <h1>We received your reading room access request!</h1>
-
       <div class="bg-light p-2 fs-5 mb-4">Please review Reading room policies before arriving for your appointment.</div>
     <% end %>
-
-    <%= render RecordHeaderComponent.new(patron_request: @patron_request, classes: 'mt-4 mb-4') %>
-
+    <%= render RecordHeaderCardComponent.new(patron_request: @patron_request, classes: 'mt-4 mb-4') %>
     <div class="confirmation">
       <% if @aeon_requests.any? %>
         <% if @aeon_requests.reading_room_name %>
@@ -46,7 +42,6 @@
     </div>
     <% if can? :debug, @patron_request %>
       <hr>
-
       <h2>Aeon Response</h2>
       <% @patron_request.aeon_api_responses.each do |r| %>
         <pre class="card p-2"><%= JSON.pretty_generate(r.as_json) %></pre>

@@ -12,16 +12,7 @@
   </div>
   <div class="card-body">
     <div class="metadata">
-      <h2 class="h3"><%= title %></h2>
-      <div class="d-flex gap-sm-3 flex-sm-row flex-wrap flex-column">
-        <div>
-          <%= render Icons::DocumentBox1Component.new %><%= document_type %><% unless date.blank? %> (<%= date %>)<% end %>
-        </div>
-        <% if ead_number %>
-          <div>Call number: <%= ead_number %></div>
-        <% end %>
-        <%= render Aeon::RequestLinkComponent.new(request: requests.first) %>
-      </div>
+      <%= render RecordHeaderComponent.new(record: requests.first, brief: true) %>
       <ul class="list-group list-group-flush">
         <%= render Aeon::RequestGroupItemComponent.with_collection(requests) %>
       </ul>
