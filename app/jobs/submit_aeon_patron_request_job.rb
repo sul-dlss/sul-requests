@@ -35,7 +35,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
     AeonClient::RequestData.with_defaults.with(
       appointment_id: volume_params['appointment_id'].presence&.to_i,
       document_type: patron_request.document_type,
-      for_publication: volume_params['for_publication'] == 'yes',
+      for_publication: ActiveRecord::Type::Boolean.new.cast(volume_params['for_publication']),
       item_author: patron_request.author,
       item_date: patron_request.date,
       item_info1: patron_request.view_url,
