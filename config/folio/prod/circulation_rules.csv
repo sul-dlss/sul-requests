@@ -5,7 +5,7 @@ any,any,2-hour reserve,,,BUSINESS,BUS-CRES,2hour-norenew-15mingrace,No requests 
 any,any,any,,,BUSINESS,BUS-ARCH or BUS-COMPF or BUS-LOCKED or BUS-REF or BUS-TP or BUS-TEMP or BUS-NEWS-STKS or BUS-EXHIBIT,No loan,No requests allowed,Hourly Loan Notices,3.00/21.00 recall overdue fine,$100 lost fee
 visitor,any,Non-circulating,,SUL,,SAL3-SCAN-PAGE-SP,No loan,No requests allowed,Default notice,No fines,$75 lost fee
 any,any,2-hour reserve,,,,LAW-CRES,2hour-norenew-15mingrace,No requests allowed,Course reserves,No fines,$150 lost fee
-visitor,any,curricshortloan7,,,,EDU-CURRICULUM,No loan,Allow paging,Default notice,No fines,$100 lost fee
+visitor,any,curricshortloan7,,,,EDU-CURRICULUM,No loan,No requests allowed,Default notice,No fines,$100 lost fee
 any,any,any,,,RUMSEY-MAP or SPEC-COLL or HILA or CLASSICS,,No loan,No requests allowed,Default notice,No fines,$100 lost fee
 sul-purchased or program-short-term or sul-contractprograms or bus-guest or law-alumni or law-guest or sul-guest or visitor,any,any,,,LANE,,No loan,Allow paging,Default notice,No fines,$250 lost fee
 sul-purchased or program-short-term or sul-contractprograms or bus-guest or sul-guest or visitor,any,any,,,LAW,,No loan,No requests allowed,Default notice,No fines,$250 lost fee
@@ -84,7 +84,7 @@ any,score,,,,,MUS-EXHIBIT or MUS-INPROCESS or MUS-PROCESSING-CIRC,No loan,Hold o
 faculty or graduate or postdoctoral or staff or staff-casual or sul-guest,score,,,,,MUS-R-STACKS or MUS-R-MINIATURE or MUS-R-OVERSIZE,7day-1renew-3daygrace,No requests allowed,Default notice,No fines,$400 lost fee
 visitor,score,,,,,MUS-SCORES or MUS-FLAT or MUS-OVERSIZE or MUS-MINIATURE or MUS-STACKS,No loan,No requests allowed,Default notice,No fines,$65 lost fee
 sul-purchased or courtesy or program-short-term or sul-contractprograms or lane-hospital staff,score,,,,,MUS-SCORES or MUS-FLAT or MUS-OVERSIZE or MUS-MINIATURE or MUS-STACKS,28day-2renew-7daygrace,Hold only,Default notice,No fines,$65 lost fee
-sul-guest,score,,,,,MUS-SCORES or MUS-FLAT or MUS-OVERSIZE or MUS-MINIATURE or MUS-STACKS,1year-norenew-7daygrace,Hold only,Qtrly/Annual notice,No fines,$65 lost fee
+sul-guest,score,,,,,MUS-SCORES or MUS-FLAT or MUS-OVERSIZE or MUS-MINIATURE or MUS-STACKS,1year-norenew-7daygrace,Allow paging/hold,Qtrly/Annual notice,No fines,$65 lost fee
 staff or staff-casual or fellow,score,,,,,MUS-SCORES or MUS-FLAT or MUS-OVERSIZE or MUS-MINIATURE or MUS-STACKS,1yearfixed-2renew-7daygrace,Allow All,Qtrly/Annual notice,3.00/21.00 recall overdue fine,$65 lost fee
 faculty,score,,,,,MUS-SCORES or MUS-FLAT or MUS-OVERSIZE or MUS-MINIATURE or MUS-STACKS,1yearfixed-2renew-7daygrace,Allow All,Qtrly/Annual notice,No fines,$65 lost fee
 visitor,periodical,,,,,SAL3-PAGE-MP,No loan,No requests allowed,Default notice,No fines,$100 lost fee
@@ -435,7 +435,7 @@ any,book,,,,HILA,,No loan,Allow hold/recall,Default notice,3.00/21.00 recall ove
 ,score,,,,,MUS-LOCKED or MUS-REF,No loan,No requests allowed,Default notice,No fines,$500 lost fee
 ,score,,,,,MUS-R-STACKS or MUS-R-MINIATURE or MUS-R-OVERSIZE,No loan,No requests allowed,Default notice,No fines,$400 lost fee
 ,score,,,,,MUS-SCORES or MUS-FLAT or MUS-OVERSIZE or MUS-MINIATURE or MUS-STACKS,1qtr-3renew-7daygrace,Allow All,Qtrly/Annual notice,3.00/21.00 recall overdue fine,$65 lost fee
-,score,,,,,ARS-SAL3-STACKS,No loan,Allow paging,Default notice,No fines,$65 lost fee
+,score,,,,,ARS-SAL3-STACKS,No loan,Allow paging/hold,Default notice,No fines,$65 lost fee
 ,periodical,,,,,SPEC-INPROCESS-585-RWC or SPEC-INPROCESS-RWC,No loan,No requests allowed,Default notice,No fines,$600 lost fee
 ,periodical,,,,,SAL3-PAGE-MP,28day-2renew-7daygrace,Allow All,Default notice,3.00/21.00 recall overdue fine,$500 lost fee
 ,periodical,,,,,SAL3-PAGE-AR or SAL3-PAGE-AS or SAL3-PAGE-EA or SAL3-PAGE-EA-SPEC or SAL3-PAGE-ED or SAL3-PAGE-EN or SAL3-PAGE-ES or SAL3-PAGE-FC or SAL3-PAGE-GR or SAL3-PAGE-MA or SAL3-PAGE-MD or SAL3-PAGE-MU or SAL3-PAGE-RM or SAL3-PAGE-SP,No loan,Allow paging/hold,Default notice,No fines,$75 lost fee
