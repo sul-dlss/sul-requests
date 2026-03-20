@@ -3,11 +3,10 @@
 module Aeon
   # Update an existing Aeon request with new data and update the current request route if needed.
   class UpdateRequestService
-    attr_reader :aeon_request, :params, :aeon_client
+    attr_reader :aeon_request, :aeon_client
 
-    def initialize(aeon_request, params, aeon_client: AeonClient.new)
+    def initialize(aeon_request, aeon_client: AeonClient.new)
       @aeon_request = aeon_request
-      @params = params
       @aeon_client = aeon_client
     end
 
@@ -21,15 +20,31 @@ module Aeon
     private
 
     def update_request
-      aeon_client.update_request(
-        @aeon_request.transaction_number,
-        AeonClient::RequestData.with_defaults.with(
-          appointment_id: params[:appointment_id]&.to_i,
-          for_publication: params[:for_publication] == 'yes',
-          item_info5: params[:requested_pages],
-          special_request: params[:additional_information]
-        )
-      )
+      if @aeon_request.persisted?
+        aeon_client.update_request(@aeon_request.transaction_number, as_patch_json)
+      else
+        aeon_client.create_request(aeon_create_payload)
+      end
+    end
+
+    def aeon_create_payload
+      @aeon_request.attributes.compact.each_with_object({}) do |(k, v), payload|
+        their_name = Aeon::RequestParameterMapper.to_aeon_options(k)
+
+        payload[their_name[:key]] = Aeon::RequestParameterMapper.transform_value(k, v) if v
+      end
+    end
+
+    def as_patch_json
+      @aeon_request.changes.map do |k, (_old, new)|
+        their_name = Aeon::RequestParameterMapper.to_aeon_options(k)
+
+        if new.nil?
+          { op: 'remove', path: "/#{their_name[:key]}" }
+        else
+          { op: 'replace', path: "/#{their_name[:key]}", value: Aeon::RequestParameterMapper.transform_value(k, new) }
+        end
+      end
     end
 
     def needs_set_to_submitted?

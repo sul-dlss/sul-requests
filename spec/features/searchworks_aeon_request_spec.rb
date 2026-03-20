@@ -18,7 +18,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
   let(:stub_aeon_client) do
     instance_double(AeonClient, find_user: aeon_user, create_request: created_request, reading_rooms:, available_appointments:)
   end
-  let(:created_request) { instance_double(Aeon::Request, id: 123, transaction_number: 'abc123', submitted?: true, draft?: false, valid?: true) }
+  let(:created_request) { instance_double(Aeon::Request, attributes: {}, id: 123, transaction_number: 'abc123', submitted?: true, draft?: false, valid?: true) }
   let(:available_appointments) do
     [instance_double(Aeon::AvailableAppointment,
                      start_time: DateTime.new(2026, 2, 19),
@@ -125,12 +125,12 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       expect(page).to have_content 'We received your digitization request!'
 
       perform_enqueued_jobs
-      expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
-                                                                        call_number: 'ABC 123'
+      expect(stub_aeon_client).to have_received(:create_request).with(hash_including(
+                                                                        'callNumber' => 'ABC 123'
                                                                       ))
 
-      expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
-                                                                        call_number: 'ABC 321'
+      expect(stub_aeon_client).to have_received(:create_request).with(hash_including(
+                                                                        'callNumber' => 'ABC 321'
                                                                       ))
     end
   end

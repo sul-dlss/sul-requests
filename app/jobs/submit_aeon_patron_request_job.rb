@@ -32,7 +32,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   end
 
   def common_aeon_data_from_patron_request(patron_request, volume_params) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-    AeonClient::RequestData.with_defaults.with(
+    Aeon::Request.new(
       appointment_id: volume_params['appointment_id'].presence&.to_i,
       document_type: patron_request.document_type,
       for_publication: volume_params['for_publication'] == 'yes',
@@ -54,34 +54,33 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   end
 
   def as_aeon_create_ead_request_data(patron_request, volume_params)
-    common_aeon_data_from_patron_request(patron_request, volume_params).with(
+    r = common_aeon_data_from_patron_request(patron_request, volume_params)
+    r.assign_attributes(
       call_number: "#{patron_request.ead_doc.identifier} #{volume_params['hierarchy']&.first}",
       ead_number: patron_request.ead_doc.identifier,
       item_info4: patron_request.ead_doc.conditions_governing_access,
       item_volume: volume_params['title'],
       web_request_form: 'multiple'
     )
+    r
   end
 
   # Once reading room logic for appointments is implemented, this mapping
   # should also contain scheduledDate, appointment id, appointment,
   # and reading room id.
   def as_aeon_create_request_data(patron_request, folio_item, volume_params)
-    common_aeon_data_from_patron_request(patron_request, volume_params).with(
+    r = common_aeon_data_from_patron_request(patron_request, volume_params)
+    r.assign_attributes(
       call_number: folio_item.callnumber,
       item_number: folio_item.barcode,
       location: patron_request.origin_location_code,
       web_request_form: patron_request.selectable_items.many? ? 'multiple' : 'single'
     )
+    r
   end
 
-  def submit_aeon_request(aeon_payload)
-    created_request = aeon_client.create_request(aeon_payload)
-
-    return created_request if created_request.valid?
-
-    aeon_client.update_request_route(transaction_number: created_request.transaction_number,
-                                     status: Settings.aeon.queue_names.draft.transaction.first)
+  def submit_aeon_request(aeon_request)
+    aeon_request.save
   end
 
   def aeon_client
