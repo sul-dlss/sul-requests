@@ -9,23 +9,33 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   def perform(patron_request)
     return unless patron_request.aeon_page?
 
-    patron_request.aeon_item.each do |id, volume_params|
-      request = request_data(patron_request, volume_params, id)
-      response = submit_aeon_request(request)
-
-      patron_request.aeon_api_responses.where(item_id: id).delete_all
-      patron_request.aeon_api_responses.create(item_id: id, request_data: request.as_json, response_data: response.as_json)
+    if patron_request.ead_url.present?
+      perform_ead_request(patron_request)
+    else
+      perform_folio_request(patron_request)
     end
   end
 
-  def request_data(patron_request, volume_params, id)
-    if patron_request.ead_url.present?
-      as_aeon_create_ead_request_data(patron_request,
-                                      volume_params)
-    else
-      folio_item = patron_request.selected_items.find { |item| item.id == id }
-      as_aeon_create_request_data(patron_request, folio_item, volume_params)
+  def perform_ead_request(patron_request)
+    patron_request.aeon_item.each do |id, volume_params|
+      request = as_aeon_create_ead_request_data(patron_request, volume_params)
+      response = submit_aeon_request(request)
+      record_response(patron_request, id, request, response)
     end
+  end
+
+  def perform_folio_request(patron_request)
+    patron_request.selected_items.each do |folio_item|
+      volume_params = patron_request.aeon_item&.dig(folio_item.id) || {}
+      request = as_aeon_create_request_data(patron_request, folio_item, volume_params)
+      response = submit_aeon_request(request)
+      record_response(patron_request, folio_item.id, request, response)
+    end
+  end
+
+  def record_response(patron_request, item_id, request, response)
+    patron_request.aeon_api_responses.where(item_id:).delete_all
+    patron_request.aeon_api_responses.create(item_id:, request_data: request.as_json, response_data: response.as_json)
   end
 
   def common_aeon_data_from_patron_request(patron_request, volume_params) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize

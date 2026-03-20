@@ -91,7 +91,7 @@ RSpec.describe SubmitAeonPatronRequestJob do
       let(:request_type) { 'pickup' }
       let(:data) do
         {
-          barcodes: ['12345678'], aeon_reading_special: 'Some info', aeon_item: { folio_instance.items.first.id => {} }
+          barcodes: ['12345678'], aeon_reading_special: 'Some info'
         }
       end
 
