@@ -20,25 +20,30 @@ module Aeon
     private
 
     def update_request
-      aeon_client.update_request(@aeon_request.transaction_number, as_patch_json)
+      if @aeon_request.persisted?
+        aeon_client.update_request(@aeon_request.transaction_number, as_patch_json)
+      else
+        aeon_client.create_request(aeon_create_payload)
+      end
+    end
+
+    def aeon_create_payload
+      @aeon_request.attributes.compact.each_with_object({}) do |(k, v), payload|
+        their_name = Aeon::RequestParameterMapper.to_aeon_options(k)
+
+        payload[their_name[:key]] = Aeon::RequestParameterMapper.transform_value(k, v) if v
+      end
     end
 
     def as_patch_json
       @aeon_request.changes.map do |k, (_old, new)|
-        if new.nil?
-          { op: 'remove', path: requests_to_aeon_mapping(k) }
-        else
-          { op: 'replace', path: requests_to_aeon_mapping(k), value: new }
-        end
-      end
-    end
+        their_name = Aeon::RequestParameterMapper.to_aeon_options(k)
 
-    def requests_to_aeon_mapping(attribute_key)
-      case attribute_key
-      when :appointment_id
-        '/appointmentID'
-      else
-        "/#{attribute_key.to_s.camelize(:lower)}"
+        if new.nil?
+          { op: 'remove', path: "/#{their_name[:key]}" }
+        else
+          { op: 'replace', path: "/#{their_name[:key]}", value: Aeon::RequestParameterMapper.transform_value(k, new) }
+        end
       end
     end
 

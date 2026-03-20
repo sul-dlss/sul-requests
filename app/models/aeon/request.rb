@@ -9,8 +9,7 @@ module Aeon
     include ActiveModel::Dirty
 
     # appointment attributes
-    attr_accessor :appointment
-
+    attribute :appointment
     attribute :appointment_id, :integer
 
     # identifiers
@@ -52,37 +51,16 @@ module Aeon
 
     attribute :username
 
-    def self.from_dynamic(dyn) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-      new(
-        appointment: dyn['appointment'] ? Appointment.from_dynamic(dyn['appointment']) : nil,
-        appointment_id: dyn['appointmentID'],
-        call_number: dyn['callNumber'],
-        creation_date: dyn['creationDate'],
-        document_type: dyn['documentType'],
-        ead_number: dyn['eadNumber'],
-        format: dyn['format'].presence,
-        for_publication: dyn['forPublication'],
-        item_author: dyn['itemAuthor'],
-        item_date: dyn['itemDate'],
-        item_info1: dyn['itemInfo1'],
-        item_info4: dyn['itemInfo4'],
-        item_info5: dyn['itemInfo5'],
-        item_number: dyn['itemNumber'],
-        item_title: dyn['itemTitle'],
-        item_volume: dyn['itemVolume'].presence,
-        location: dyn['location'],
-        photoduplication_date: dyn['photoduplicationDate'],
-        photoduplication_status: dyn['photoduplicationStatus'],
-        reference_number: dyn['referenceNumber'],
-        shipping_option: dyn['shippingOption'],
-        site: dyn['site'],
-        special_request: dyn['specialRequest'].presence,
-        transaction_date: dyn['transactionDate'],
-        transaction_number: dyn['transactionNumber'],
-        transaction_status: dyn['transactionStatus'],
-        username: dyn['username'],
-        web_request_form: dyn['webRequestForm']
-      ).tap(&:clear_changes_information)
+    def self.from_dynamic(dyn)
+      data = attribute_names.index_with do |attr|
+        their_parameter_information = Aeon::RequestParameterMapper.to_aeon_options(attr)
+        next unless their_parameter_information
+
+        v = dyn[their_parameter_information[:key]]
+        Aeon::RequestParameterMapper.cast_value(attr, v)
+      end
+
+      new(data).tap(&:clear_changes_information)
     end
 
     alias_attribute :id, :transaction_number
@@ -100,6 +78,8 @@ module Aeon
     def appointment?
       appointment_id.present?
     end
+
+    attr_accessor :status_was
 
     def status
       if completed? || scan_delivered?
@@ -180,9 +160,18 @@ module Aeon
     end
 
     def save
-      raise NotImplementedError, 'Creating new Aeon requests is not currently supported' unless persisted?
+      self.status_was = status
 
-      Aeon::UpdateRequestService.new(self).call.tap { changes_applied }
+      Aeon::UpdateRequestService.new(self).call.tap do |created_request|
+        assign_attributes(created_request.attributes)
+
+        @photoduplication_queue = nil
+        @transaction_queue = nil
+
+        changes_applied
+      end
+
+      self
     end
 
     private
@@ -201,15 +190,11 @@ module Aeon
     end
 
     def photoduplication_queue
-      return @photoduplication_queue if defined?(@photoduplication_queue)
-
-      @photoduplication_queue = Aeon::Queue.find_by(id: photoduplication_status, type: :photoduplication)
+      @photoduplication_queue ||= Aeon::Queue.find_by(id: photoduplication_status, type: :photoduplication) # rubocop:disable Rails/FindByOrAssignmentMemoization
     end
 
     def transaction_queue
-      return @transaction_queue if defined?(@transaction_queue)
-
-      @transaction_queue = Aeon::Queue.find_by(id: transaction_status)
+      @transaction_queue ||= Aeon::Queue.find_by(id: transaction_status) # rubocop:disable Rails/FindByOrAssignmentMemoization
     end
   end
 end

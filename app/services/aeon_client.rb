@@ -42,7 +42,7 @@ class AeonClient
   end
 
   # Submit a new request to Aeon
-  # @param aeon_payload [AeonClient::RequestData]
+  # @param aeon_payload [Hash]
   def create_request(aeon_payload)
     response = post('Requests/create', aeon_payload.as_json)
 
@@ -50,7 +50,7 @@ class AeonClient
   end
 
   # Submit a request patch to Aeon
-  # @param aeon_payload [AeonClient::RequestData]
+  # @param aeon_payload [Hash]
   def update_request(transaction_number, aeon_payload)
     response = patch("Requests/#{transaction_number}", aeon_payload)
 
@@ -130,55 +130,6 @@ class AeonClient
     response = get('Queues')
     handle_response(response) { |body| body.map { |data| Aeon::Queue.from_dynamic(data['queue']) } }.tap do |queues|
       Rails.cache.write('aeon/queues', queues, expires_in: 1.hour) if queues
-    end
-  end
-
-  RequestData = Data.define(:call_number, :document_type, :ead_number, :for_publication, :format,
-                            :item_author, :item_citation, :item_date, :item_info1, :item_info2, :appointment_id,
-                            :item_info3, :item_info4, :item_info5, :item_number, :item_subtitle, :item_title, :item_volume,
-                            :location, :web_request_form,
-                            :reference_number, :shipping_option, :site, :special_request, :system_id, :username) do
-    def omission = '…'
-
-    def as_json # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
-      {
-        appointmentId: appointment_id,
-        callNumber: call_number&.truncate(255, omission:),
-        eadNumber: ead_number&.truncate(255, omission:),
-        forPublication: for_publication,
-        format: format&.truncate(255, omission:),
-        itemAuthor: item_author&.truncate(255, omission:),
-        itemCitation: item_citation&.truncate(255, omission:),
-        itemDate: item_date&.truncate(50, omission:),
-        itemInfo1: item_info1&.truncate(255, omission:),
-        itemInfo2: item_info2&.truncate(255, omission:),
-        itemInfo3: item_info3&.truncate(255, omission:),
-        itemInfo4: item_info4&.truncate(255, omission:),
-        itemInfo5: item_info5&.truncate(255, omission:),
-        itemNumber: item_number&.truncate(50, omission:),
-        itemSubTitle: item_subtitle&.truncate(255, omission:),
-        itemTitle: item_title&.truncate(255, omission:),
-        itemVolume: item_volume&.truncate(255, omission:),
-        location: location&.truncate(255, omission:),
-        referenceNumber: reference_number&.truncate(50, omission:),
-        shippingOption: shipping_option&.truncate(255, omission:),
-        site: site,
-        specialRequest: special_request&.truncate(255, omission:),
-        system_id: system_id,
-        username: username&.truncate(50, omission:),
-        webRequestForm: web_request_form&.truncate(100, omission:) || 'SUL Requests'
-      }.compact
-    end
-
-    def self.with_defaults
-      new(
-        call_number: nil, document_type: nil, ead_number: nil, format: nil, for_publication: nil,
-        item_author: nil, item_citation: nil, item_date: nil,
-        item_info1: nil, item_info2: nil, item_info3: nil, item_info4: nil, item_info5: nil, item_number: nil,
-        item_subtitle: nil, item_title: nil, item_volume: nil, location: nil, reference_number: nil,
-        shipping_option: nil, site: nil, special_request: nil, system_id: nil, web_request_form: 'SUL Requests',
-        username: nil, appointment_id: nil
-      )
     end
   end
 

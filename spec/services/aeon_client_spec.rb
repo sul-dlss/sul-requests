@@ -94,10 +94,9 @@ RSpec.describe AeonClient do
 
   describe '#create_request' do
     it 'submits a request and returns the created request' do
-      payload = AeonClient::RequestData.with_defaults.with(
-        username: 'jdoe',
-        item_title: 'Test Request'
-      )
+      payload = {
+        callNumber: 'QA76.73.R83'
+      }
 
       stub_request(:post, 'https://aeon.example.com/api/Requests/create')
         .with(body: payload.as_json.to_json)
@@ -129,20 +128,6 @@ RSpec.describe AeonClient do
       expect(request).to be_a(Aeon::Request)
       expect(request.transaction_number).to eq('123')
       expect(request.transaction_status).to eq('Cancelled by user')
-    end
-  end
-
-  describe AeonClient::RequestData do
-    it 'truncates long field data to fit Aeon API limits' do
-      expect(described_class.with_defaults.with(
-        call_number: 'A' * 300,
-        ead_number: 'B' * 300,
-        item_author: 'C' * 300
-      ).as_json).to include(
-        callNumber: "#{'A' * 254}…",
-        eadNumber: "#{'B' * 254}…",
-        itemAuthor: "#{'C' * 254}…"
-      )
     end
   end
 end

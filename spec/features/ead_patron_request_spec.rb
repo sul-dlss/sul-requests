@@ -41,7 +41,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
   let(:stub_aeon_client) do
     instance_double(AeonClient, find_user: aeon_user, create_request: created_request, reading_rooms:, available_appointments:)
   end
-  let(:created_request) { instance_double(Aeon::Request, id: 123, transaction_number: 'abc123', submitted?: true, draft?: false, valid?: true) }
+  let(:created_request) { instance_double(Aeon::Request, attributes: {}, id: 123, transaction_number: 'abc123', submitted?: true, draft?: false, valid?: true) }
 
   let(:available_appointments) do
     [instance_double(Aeon::AvailableAppointment,
