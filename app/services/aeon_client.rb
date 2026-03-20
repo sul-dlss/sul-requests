@@ -177,14 +177,7 @@ class AeonClient
     end
 
     def self.with_defaults
-      new(
-        call_number: nil, document_type: nil, ead_number: nil, format: nil, for_publication: nil,
-        item_author: nil, item_citation: nil, item_date: nil,
-        item_info1: nil, item_info2: nil, item_info3: nil, item_info4: nil, item_info5: nil, item_number: nil,
-        item_subtitle: nil, item_title: nil, item_volume: nil, location: nil, reference_number: nil,
-        shipping_option: nil, site: nil, special_request: nil, system_id: nil, web_request_form: 'SUL Requests',
-        username: nil, appointment_id: nil
-      )
+      new(**members.index_with(nil), web_request_form: 'SUL Requests')
     end
   end
 
@@ -211,10 +204,7 @@ class AeonClient
     end
 
     def self.with_defaults
-      new(
-        address: nil, address2: nil, city: nil, country: nil, email_address: nil,
-        first_name: nil, last_name: nil, phone: nil, sso: false, state_or_province: nil, zip_code: nil
-      )
+      new(**members.index_with(nil))
     end
   end
 
