@@ -144,21 +144,5 @@ RSpec.describe AeonClient do
         itemAuthor: "#{'C' * 254}…"
       )
     end
-
-    describe '#as_patch_json' do
-      it 'formats the data for a PATCH request' do
-        data = described_class.with_defaults.with(
-          call_number: 'Call123',
-          ead_number: 'B' * 300,
-          item_author: 'Author Name'
-        )
-
-        expect(data.as_patch_json).to contain_exactly(
-          { op: 'replace', path: '/callNumber', value: 'Call123' },
-          { op: 'replace', path: '/eadNumber', value: "#{'B' * 254}…" },
-          { op: 'replace', path: '/itemAuthor', value: 'Author Name' }
-        )
-      end
-    end
   end
 end

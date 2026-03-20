@@ -174,6 +174,17 @@ module Aeon
       web_request_form != 'single'
     end
 
+    def update(attributes)
+      assign_attributes(attributes)
+      save
+    end
+
+    def save
+      raise NotImplementedError, 'Creating new Aeon requests is not currently supported' unless persisted?
+
+      Aeon::UpdateRequestService.new(self).call.tap { changes_applied }
+    end
+
     private
 
     def within_persist_completed_request_as_submitted_period?

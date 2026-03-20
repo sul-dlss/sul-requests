@@ -3,11 +3,10 @@
 module Aeon
   # Update an existing Aeon request with new data and update the current request route if needed.
   class UpdateRequestService
-    attr_reader :aeon_request, :params, :aeon_client
+    attr_reader :aeon_request, :aeon_client
 
-    def initialize(aeon_request, params, aeon_client: AeonClient.new)
+    def initialize(aeon_request, aeon_client: AeonClient.new)
       @aeon_request = aeon_request
-      @params = params
       @aeon_client = aeon_client
     end
 
@@ -21,15 +20,26 @@ module Aeon
     private
 
     def update_request
-      aeon_client.update_request(
-        @aeon_request.transaction_number,
-        AeonClient::RequestData.with_defaults.with(
-          appointment_id: params[:appointment_id]&.to_i,
-          for_publication: params[:for_publication] == 'yes',
-          item_info5: params[:requested_pages],
-          special_request: params[:additional_information]
-        )
-      )
+      aeon_client.update_request(@aeon_request.transaction_number, as_patch_json)
+    end
+
+    def as_patch_json
+      @aeon_request.changes.map do |k, (_old, new)|
+        if new.nil?
+          { op: 'remove', path: requests_to_aeon_mapping(k) }
+        else
+          { op: 'replace', path: requests_to_aeon_mapping(k), value: new }
+        end
+      end
+    end
+
+    def requests_to_aeon_mapping(attribute_key)
+      case attribute_key
+      when :appointment_id
+        '/appointmentID'
+      else
+        "/#{attribute_key.to_s.camelize(:lower)}"
+      end
     end
 
     def needs_set_to_submitted?

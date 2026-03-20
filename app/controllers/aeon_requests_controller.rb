@@ -51,7 +51,8 @@ class AeonRequestsController < ApplicationController
   def update # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     authorize! :update, @aeon_request
 
-    updated_request = Aeon::UpdateRequestService.new(@aeon_request, aeon_request_params).call
+    @aeon_request.assign_attributes(aeon_request_params)
+    @aeon_request.save
 
     respond_to do |format|
       format.turbo_stream do

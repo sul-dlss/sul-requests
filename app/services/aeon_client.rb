@@ -52,7 +52,7 @@ class AeonClient
   # Submit a request patch to Aeon
   # @param aeon_payload [AeonClient::RequestData]
   def update_request(transaction_number, aeon_payload)
-    response = patch("Requests/#{transaction_number}", aeon_payload.as_patch_json)
+    response = patch("Requests/#{transaction_number}", aeon_payload)
 
     handle_response(response, as_class: Aeon::Request)
   end
@@ -170,12 +170,6 @@ class AeonClient
       }.compact
     end
 
-    def as_patch_json
-      as_json.except(:webRequestForm).compact.map do |k, v|
-        { op: 'replace', path: "/#{k}", value: v }
-      end
-    end
-
     def self.with_defaults
       new(
         call_number: nil, document_type: nil, ead_number: nil, format: nil, for_publication: nil,
@@ -215,15 +209,6 @@ class AeonClient
         address: nil, address2: nil, city: nil, country: nil, email_address: nil,
         first_name: nil, last_name: nil, phone: nil, sso: false, state_or_province: nil, zip_code: nil
       )
-    end
-  end
-
-  # Special payload for removing an appointment from a request
-  class DeleteAppointmentRequestData
-    def as_patch_json
-      [
-        { op: 'remove', path: '/appointmentId' }
-      ]
     end
   end
 
