@@ -1,7 +1,7 @@
-<div class="request-group border rounded p-3 mb-3" data-controller="empty-remove">
+<div class="request-group border rounded" data-controller="empty-remove">
   <div class="card-body">
     <div class="metadata">
-      <div class="mb-2 text-dark-emphasis"><%= requests.first.reading_room&.name %></div>
+      <div class="mb-2 text-dark-emphasis reading-room"><%= requests.first.reading_room&.name %></div>
       <h2 class="h3"><%= title %></h2>
       <div class="d-flex gap-sm-3 flex-sm-row flex-wrap flex-column">
         <% if ead_number %>
