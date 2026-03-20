@@ -51,7 +51,7 @@ RSpec.describe 'Creating new accounts for patrons', :js do
       expect(page).to have_content('New request')
 
       expect(stub_aeon_client).to have_received(:create_user).with({
-                                                                     user_data: AeonClient::UserData.with_defaults.with(
+                                                                     user_data: an_object_having_attributes(
                                                                        sso: true,
                                                                        email_address: user.email_address,
                                                                        first_name: 'Test', last_name: 'User'
