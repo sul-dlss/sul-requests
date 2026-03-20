@@ -5,9 +5,8 @@ module Aeon
   class AppointmentLimitComponent < ViewComponent::Base
     attr_reader :count, :limit, :label
 
-    def self.from_appointment(appointment, label: nil)
-      new(count: appointment.requests.count, limit: appointment.reading_room.appointment_item_limit,
-          label: label)
+    def self.from_appointment(appointment, **)
+      new(count: appointment.requests.count, limit: appointment.reading_room.appointment_item_limit, **)
     end
 
     def initialize(count:, limit:, label: 'Item limit')
