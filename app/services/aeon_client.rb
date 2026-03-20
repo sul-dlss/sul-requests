@@ -133,6 +133,16 @@ class AeonClient
     end
   end
 
+  UNSET = Data.define do
+    def method_missing(*, **, &)
+      self # always return the unset object itself so it chains without error
+    end
+
+    def respond_to_missing?(*)
+      false
+    end
+  end.new
+
   RequestData = Data.define(:call_number, :document_type, :ead_number, :for_publication, :format,
                             :item_author, :item_citation, :item_date, :item_info1, :item_info2, :appointment_id,
                             :item_info3, :item_info4, :item_info5, :item_number, :item_subtitle, :item_title, :item_volume,
@@ -142,7 +152,7 @@ class AeonClient
 
     def as_json # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
       {
-        appointmentId: appointment_id,
+        appointmentId: appointment_id&.to_i,
         callNumber: call_number&.truncate(255, omission:),
         eadNumber: ead_number&.truncate(255, omission:),
         forPublication: for_publication,
@@ -167,17 +177,21 @@ class AeonClient
         system_id: system_id,
         username: username&.truncate(50, omission:),
         webRequestForm: web_request_form&.truncate(100, omission:) || 'SUL Requests'
-      }.compact
+      }.reject { |_k, v| v == UNSET }
     end
 
     def as_patch_json
-      as_json.except(:webRequestForm).compact.map do |k, v|
-        { op: 'replace', path: "/#{k}", value: v }
+      as_json.except(:webRequestForm).map do |k, v|
+        if v.nil?
+          { op: 'remove', path: "/#{k}" }
+        else
+          { op: 'replace', path: "/#{k}", value: v }
+        end
       end
     end
 
     def self.with_defaults
-      new(**members.index_with(nil), web_request_form: 'SUL Requests')
+      new(**members.index_with(UNSET), web_request_form: 'SUL Requests')
     end
   end
 
@@ -189,7 +203,7 @@ class AeonClient
       {
         address: address&.truncate(50, omission:),
         address2: address2&.truncate(50),
-        authType: sso ? 'Default' : 'Aeon',
+        authType: sso != UNSET && sso ? 'Default' : 'Aeon',
         city: city&.truncate(50, omission:),
         cleared: 'No',
         country: country&.truncate(50, omission:),
@@ -200,20 +214,11 @@ class AeonClient
         state_or_province: state_or_province&.truncate(50, omission:),
         username: email_address&.truncate(100, omission:),
         zip_code: zip_code&.truncate(50, omission:)
-      }.compact
+      }.reject { |_k, v| v == UNSET }
     end
 
     def self.with_defaults
-      new(**members.index_with(nil))
-    end
-  end
-
-  # Special payload for removing an appointment from a request
-  class DeleteAppointmentRequestData
-    def as_patch_json
-      [
-        { op: 'remove', path: '/appointmentId' }
-      ]
+      new(**members.index_with(UNSET))
     end
   end
 

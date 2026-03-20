@@ -40,16 +40,19 @@ module Aeon
       aeon_request.submitted? && !aeon_request.valid?
     end
 
-    def update_request_route
-      if needs_set_to_submitted?
-        aeon_client.update_request_route(transaction_number: aeon_request.transaction_number,
-                                         status: 'Awaiting Request Processing')
-      elsif needs_set_to_draft?
-        aeon_client.update_request_route(transaction_number: aeon_request.transaction_number,
-                                         status: Settings.aeon.queue_names.draft.transaction.first)
-      else
-        aeon_request
-      end
+    def update_request_route # rubocop:disable Metrics/AbcSize
+      new_status = if params[:status]
+                     params[:status]
+                   elsif needs_set_to_submitted?
+                     'Awaiting Request Processing'
+                   elsif needs_set_to_draft?
+                     Settings.aeon.queue_names.draft.transaction.first
+                   end
+
+      return aeon_request unless new_status
+
+      aeon_client.update_request_route(transaction_number: aeon_request.transaction_number,
+                                       status: params[:status])
     end
   end
 end
