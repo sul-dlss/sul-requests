@@ -48,8 +48,9 @@
       </div>
     <% end %>
   </div>
-  <div class="card-footer border-light bg-white">
+  <div class="card-footer border-light bg-white d-flex justify-content-between">
     <%= render Aeon::AppointmentLimitComponent.from_appointment(appointment) %>
+    <%= link_to "Add items", add_items_path, class: 'btn btn-outline-primary btn-sm', data: { action: 'modal#open' } unless add_item_disabled? %>
   </div>
   <!-- Delete modal -->
   <div class="modal fade" id="delete-appointment-<%= appointment.id %>" tabindex="-1" aria-labelledby="title-appointment-<%= appointment.id %>" aria-hidden="true">
