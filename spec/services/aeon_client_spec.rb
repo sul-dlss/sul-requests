@@ -159,6 +159,14 @@ RSpec.describe AeonClient do
           { op: 'replace', path: '/itemAuthor', value: 'Author Name' }
         )
       end
+
+      it 'supports deleting fields by setting value to a special value' do
+        data = described_class.with_defaults.with(appointment_id: nil)
+
+        expect(data.as_patch_json).to contain_exactly(
+          { op: 'remove', path: '/appointmentId' }
+        )
+      end
     end
   end
 end

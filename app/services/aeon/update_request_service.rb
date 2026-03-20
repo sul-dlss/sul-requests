@@ -24,8 +24,8 @@ module Aeon
       aeon_client.update_request(
         @aeon_request.transaction_number,
         AeonClient::RequestData.with_defaults.with(
-          appointment_id: params[:appointment_id]&.to_i,
-          for_publication: params[:for_publication] == 'yes',
+          appointment_id: params[:appointment_id],
+          for_publication: (params[:for_publication] == 'yes' if params[:for_publication].present?),
           item_info5: params[:requested_pages],
           special_request: params[:additional_information]
         )

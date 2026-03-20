@@ -15,9 +15,7 @@ class CancelAeonAppointmentJob < ApplicationJob
   # When an appointment is cancelled, Aeon cancels the requests by default. We want to move them to draft
   # and dis-associated the appointment instead.
   def move_request_to_draft(request)
-    aeon_client.update_request(request.transaction_number, AeonClient::DeleteAppointmentRequestData.new)
-    aeon_client.update_request_route(transaction_number: request.transaction_number,
-                                     status: Settings.aeon.queue_names.draft.transaction.first)
+    Aeon::UpdateRequestService.new(request, { appointment_id: nil }, aeon_client:).call
   end
 
   def aeon_client
