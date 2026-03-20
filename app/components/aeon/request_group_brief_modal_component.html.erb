@@ -1,16 +1,18 @@
-<div class="request-group border rounded p-3 mb-3" data-controller="empty-remove">
+<div class="request-group border-bottom" data-controller="empty-remove">
   <div class="card-body">
     <div class="metadata">
-      <div class="mb-2 text-dark-emphasis"><%= requests.first.reading_room&.name %></div>
-      <h2 class="h3"><%= title %></h2>
+      <span class="text-digital-red"><%= request_group.digital? ? 'Digitization' : 'Reading room use' %></span>
+      <h3 class="h4 my-1"><%= title %></h3>
       <div class="d-flex gap-sm-3 flex-sm-row flex-wrap flex-column">
         <% if ead_number %>
           <div>Call number: <%= ead_number %></div>
+        <% elsif call_number.present? %>
+          <div>Call number: <%= call_number %></div>
         <% end %>
       </div>
-      <ul class="list-group list-group-flush">
+      <ul class="list-unstyled d-flex flex-row flex-wrap gap-2 mt-1">
         <% requests.each do |request| %>
-          <li id="<%= dom_id(request) %>" class="request list-group-item px-0 <%= "request-status-#{request.status}" %>" data-empty-remove-target="item">
+          <li id="<%= dom_id(request) %>" class="request px-0 <%= "request-status-#{request.status}" %>" data-empty-remove-target="item" data-request-id="<%= request.id %>">
             <div class="d-flex flex-row align-items-center justify-content-between">
               <div class="d-flex gap-3">
                 <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>

@@ -39,8 +39,7 @@
             <% @aeon_request_groups.each do |group| %>
               <div hidden data-draft-request-target="modalGroup" data-digital="<%= group.digital? %>"
                 <% unless group.first.multi_item_selector? %>data-request-id="<%= group.first.id %>"<% end %>>
-                <div class="text-digital-red pb-1"><%= group.digital? ? 'Digitization' : 'Reading room use' %></div>
-                <%= render Aeon::RequestGroupBriefComponent.new(request_group: group, heading_level: :h3) %>
+                <%= render Aeon::RequestGroupBriefModalComponent.new(request_group: group) %>
               </div>
             <% end %>
             <div hidden data-draft-request-target="modalSummary"></div>
