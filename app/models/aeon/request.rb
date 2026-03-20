@@ -74,6 +74,18 @@ module Aeon
       appointment_id.present?
     end
 
+    def status
+      if completed? || scan_delivered?
+        :completed
+      elsif cancelled?
+        :cancelled
+      elsif submitted?
+        :submitted
+      else
+        :draft
+      end
+    end
+
     def completed?
       return false unless in_completed_queue?
       return false if within_persist_completed_request_as_submitted_period?
@@ -86,9 +98,7 @@ module Aeon
     end
 
     def cancelled?
-      return false if draft?
-
-      photoduplication_queue&.cancelled? || transaction_queue&.cancelled?
+      (digital? && photoduplication_queue&.cancelled?) || transaction_queue&.cancelled?
     end
 
     def draft?
@@ -155,7 +165,7 @@ module Aeon
     def in_completed_queue?
       return false if draft?
 
-      photoduplication_queue&.completed? || transaction_queue&.completed?
+      (digital? && photoduplication_queue&.completed?) || transaction_queue&.completed?
     end
 
     def photoduplication_queue
