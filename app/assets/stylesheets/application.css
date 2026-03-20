@@ -659,3 +659,9 @@ label.btn-close {
 #aeon-appointments .card {
   --bs-card-border-color: var(--stanford-20-black);
 }
+
+#digit {
+  text-align: center;
+  font-weight: 600;
+  caret-color: transparent;
+}
