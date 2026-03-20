@@ -25,7 +25,7 @@ module Aeon
         @aeon_request.transaction_number,
         AeonClient::RequestData.with_defaults.with(
           appointment_id: params[:appointment_id]&.to_i,
-          for_publication: params[:for_publication] == 'yes',
+          for_publication: ActiveRecord::Type::Boolean.new.cast(params[:for_publication]),
           item_info5: params[:requested_pages],
           special_request: params[:additional_information]
         )

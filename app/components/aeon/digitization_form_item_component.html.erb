@@ -22,12 +22,12 @@
           <fieldset>
             <legend class="form-label fs-6 mb-1 fw-semibold">Is this for publication?</legend>
             <span class="me-3">
-              <%= f.radio_button :for_publication, 'yes' %>
-              <%= f.label :for_publication_yes, 'Yes' %>
+              <%= f.radio_button :for_publication, true %>
+              <%= f.label :for_publication_true, 'Yes' %>
             </span>
 
-            <%= f.radio_button :for_publication, 'no' %>
-            <%= f.label :for_publication_no, 'No' %>
+            <%= f.radio_button :for_publication, false %>
+            <%= f.label :for_publication_false, 'No' %>
           </fieldset>
         </div>
 

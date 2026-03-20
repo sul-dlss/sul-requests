@@ -136,7 +136,7 @@ module Aeon
 
     def persisted? = id.present?
 
-    def for_publication = @for_publication ? 'yes' : 'no'
+    def for_publication = @for_publication || false
 
     def for_publication=(value)
       @for_publication = ActiveModel::Type::Boolean.new.cast(value)
