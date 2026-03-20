@@ -1,9 +1,10 @@
 <div class="dropdown">
-  <button class="btn btn-delete" type="button" disabled="true" aria-expanded="false" 
-    data-draft-request-target="deleteButton" data-bs-toggle="modal" data-bs-target="#delete-bulk" id="delete-all">
+  <button class="btn btn-delete" type="button" disabled="true" aria-expanded="false"
+    data-draft-request-target="deleteButton" data-action="draft-request#openDeleteModal" id="delete-all">
     Delete selected (0)
   </button>
   <div class='mt-2 d-flex justify-content-end'>
-  <input type="checkbox" name="select-all-delete" class="me-2" data-draft-request-target="selectall" data-action="change->draft-request#toggleSelect"> Select all
+  <input type="checkbox" name="select-all-delete" id="select-all-delete" class="me-2" data-draft-request-target="selectall" data-action="change->draft-request#toggleSelectAll">
+  <%= label_tag 'select-all-delete', 'Select all', class: 'form-check-label' %>
   </div>
 </div>
