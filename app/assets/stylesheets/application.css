@@ -665,3 +665,24 @@ label.btn-close {
   font-weight: 600;
   caret-color: transparent;
 }
+
+.request-group {
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+
+.modal-body.add-items {
+  .reading-room {
+    display: none;
+  }
+
+  .request-group {
+    --bs-border-width: 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
+  }
+
+  .card-body {
+    border-bottom: 1px solid var(--stanford-10-black);
+  }
+}
