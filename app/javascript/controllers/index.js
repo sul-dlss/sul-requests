@@ -37,6 +37,9 @@ application.register("archives-series", ArchivesSeriesController)
 import AppointmentController from "./appointment_controller"
 application.register("appointment", AppointmentController)
 
+import AppointmentCardController from "./appointment_card_controller"
+application.register("appointment-card", AppointmentCardController)
+
 import AppointmentSelectController from "./appointment_select_controller"
 application.register("appointment-select", AppointmentSelectController)
 
@@ -51,6 +54,9 @@ application.register("selected-item-form", SelectedItemFormController)
 
 import StatusCounterController from "./status_counter_controller"
 application.register("status-counter", StatusCounterController)
+
+import TurboFrameController from "./turbo_frame_controller"
+application.register("turbo-frame", TurboFrameController)
 
 import EmptyRemoveController from "./empty_remove_controller"
 application.register("empty-remove", EmptyRemoveController)
