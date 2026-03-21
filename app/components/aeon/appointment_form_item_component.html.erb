@@ -1,4 +1,4 @@
-<li data-controller="selected-item-form" data-action="input->selected-item-form#updateStatus" class="appointments-item rounded mb-2 p-2 d-flex column-gap-4 row-gap-2 text-nowrap align-items-center" data-content-id="<%= dom_id %>">
+<li data-controller="selected-item-form" data-action="input->selected-item-form#updateStatus" class="appointments-item rounded mb-2 p-2 d-flex row-gap-2 text-nowrap align-items-center" data-content-id="<%= dom_id %>">
   <div class="d-flex align-items-center">
     <i class="fs-4 bi bi-circle me-2 selected-item-status" data-selected-item-form-target="status"></i>
     <span class="text-black fw-semibold selected-item-title text-wrap"><%= title %></span>
@@ -11,7 +11,7 @@
 
     <div class="dropdown custom-select" data-controller="appointment-select" data-action="change->appointment-select#updateSelected appointment-select:change@document->appointment-select#updateItemCounts">
       <%= f.hidden_field :appointment_id, class: 'visually-hidden', data: { 'appointment-select-target': :input, 'required-for-submit': true } %>
-      <button class="py-1 btn border bg-white dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-appointment-select-target="button">
+      <button class="py-1 btn border bg-white dropdown-toggle d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-appointment-select-target="button">
         Select existing appointment
       </button>
       <menu class="dropdown-menu appt-dropdown">
