@@ -6,11 +6,11 @@ RSpec.describe Aeon::RequestGroupCompactComponent, type: :component do
   context 'with multi-item requests' do
     let(:web_request_form) { 'multiple' }
     let(:first_request) do
-      build(:aeon_request, call_number: 'SC0097', title: 'Donald E. Knuth papers',
+      build(:aeon_request, ead_number: 'SC0097', title: 'Donald E. Knuth papers',
                            transaction_number: 100, web_request_form:)
     end
     let(:second_request) do
-      build(:aeon_request, call_number: 'SC0097', title: 'Donald E. Knuth papers',
+      build(:aeon_request, ead_number: 'SC0097', title: 'Donald E. Knuth papers',
                            transaction_number: 101, web_request_form:)
     end
     let(:request_group) { Aeon::RequestGrouping.new([first_request, second_request]) }

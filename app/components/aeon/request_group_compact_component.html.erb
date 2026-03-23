@@ -5,10 +5,8 @@
       <span class="text-digital-red"><%= request_group.digital? ? 'Digitization' : 'Reading room use' %></span>
       <h3 class="h4 my-1"><%= title %></h3>
       <div class="d-flex gap-sm-3 flex-sm-row flex-wrap flex-column">
-        <% if ead_number %>
-          <div>Call number: <%= ead_number %></div>
-        <% elsif call_number.present? %>
-          <div>Call number: <%= call_number %></div>
+        <% if base_callnumber.present? %>
+          <div>Call number: <%= base_callnumber %></div>
         <% end %>
       </div>
       <% if request_group.multi_item_selector? %>

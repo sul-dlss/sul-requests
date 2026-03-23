@@ -86,6 +86,10 @@ module Aeon
       end
     end
 
+    def base_callnumber
+      ead_number || (call_number unless multi_item_selector?)
+    end
+
     def completed?
       return false unless in_completed_queue?
       return false if within_persist_completed_request_as_submitted_period?

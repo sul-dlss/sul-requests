@@ -24,6 +24,7 @@ module Ead
       @identifier ||= doc.xpath('//unitid[not(@type)]').first&.text&.strip
     end
 
+    alias base_callnumber identifier
     alias call_number identifier
 
     def document_type

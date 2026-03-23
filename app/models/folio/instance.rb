@@ -83,6 +83,8 @@ module Folio
       single_item&.base_callnumber
     end
 
+    alias base_callnumber call_number
+
     def document_type
       format.presence&.first || single_item&.type
     end
