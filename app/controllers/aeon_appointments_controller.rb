@@ -8,6 +8,7 @@ class AeonAppointmentsController < ApplicationController
 
   before_action :load_appointments, except: [:available]
   before_action :load_appointment, only: [:edit, :update, :destroy]
+  before_action :create_appointment, only: [:create]
   before_action :load_reading_rooms, only: [:new, :available]
 
   def index
@@ -43,16 +44,8 @@ class AeonAppointmentsController < ApplicationController
     request.variant = :modal if params[:modal]
   end
 
-  def create # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+  def create
     authorize! :create, Aeon::Appointment
-
-    @new_appointment = AeonClient.new.create_appointment(
-      start_time: start_time,
-      stop_time: stop_time,
-      name: create_params[:name],
-      reading_room_id: create_params[:reading_room_id],
-      username: current_user.aeon.username
-    )
 
     respond_to do |format|
       format.html { redirect_to aeon_appointments_path, notice: 'Appointment created successfully' }
@@ -84,6 +77,16 @@ class AeonAppointmentsController < ApplicationController
     return unless params[:reading_room_id]
 
     @reading_room = @reading_rooms.find { |rr| rr.id == params[:reading_room_id].to_i }
+  end
+
+  def create_appointment
+    @appointment = AeonClient.new.create_appointment(
+      start_time: start_time,
+      stop_time: stop_time,
+      name: create_params[:name],
+      reading_room_id: create_params[:reading_room_id],
+      username: current_user.aeon.username
+    )
   end
 
   def load_appointments
