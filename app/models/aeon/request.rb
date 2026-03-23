@@ -61,7 +61,6 @@ module Aeon
     alias_attribute :id, :transaction_number
     alias_attribute :item_url, :item_info1
     alias_attribute :access_restrictions, :item_info4
-    alias_attribute :pages, :item_info5
     alias_attribute :requested_pages, :item_info5
     alias_attribute :author, :item_author
     alias_attribute :date, :item_date

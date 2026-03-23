@@ -25,10 +25,10 @@
               <h2>Appointment</h2>
               <i class="bi bi-calendar me-2"></i><%= render AppointmentTimeRangeComponent.new(appointment: request.appointment) %>
             </div>
-          <% elsif request.pages.present? %>
+          <% elsif request.requested_pages.present? %>
             <div class="mb-3">
               <h2>Pages</h2>
-              <i class="bi bi-file-earmark me-2"></i><%= request.pages %>
+              <i class="bi bi-file-earmark me-2"></i><%= request.requested_pages %>
             </div>
           <% end %>
           <% if request.special_request %>
