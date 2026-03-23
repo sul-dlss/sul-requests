@@ -135,16 +135,21 @@ module Ead
       # Get top-level components (c01)
       c01_nodes = doc.xpath('//dsc/c01')
 
-      @series_and_subseries = c01_nodes.map { |node| Node.from(node) }.select(&:displayable?)
+      @series_and_subseries = c01_nodes.map { |node| Node.from(node, parent_id: node.attributes['id']&.value) }.select(&:displayable?)
+    end
+
+    def ead_id
+      ead_id_value = doc.xpath('//eadheader/eadid').first&.text
+      ead_id_value&.gsub('.xml', '')&.strip
     end
 
     # Node represents a c0* component in the EAD hierarchy. It can be a series, subseries, or file depending on its level and children.
     class Node
-      def self.from(node)
+      def self.from(node, parent_id: nil)
         if hierarchical?(node)
-          new(node)
+          new(node, parent_id:)
         else
-          Item.new(node, default_level: 'file')
+          Item.new(node, default_level: 'file', parent_id:)
         end
       end
 
@@ -157,15 +162,24 @@ module Ead
         node&.xpath("./*[starts-with(name(), 'c0')]") || []
       end
 
-      attr_reader :node, :default_level
+      attr_reader :node, :default_level, :parent_id
 
-      def initialize(node, default_level: 'series')
+      def initialize(node, default_level: 'series', parent_id: nil)
         @node = node
         @default_level = default_level
+        @parent_id = parent_id
       end
 
       def id
         @node.xpath('did/unitid').first&.text&.strip
+      end
+
+      def ead_id
+        @node.xpath('eadheader/unitid').first&.text&.strip
+      end
+
+      def node_id
+        @node.attributes['id']&.value
       end
 
       def title
@@ -189,7 +203,7 @@ module Ead
       end
 
       def contents
-        @contents ||= child_components.map { |x| Node.from(x) }.select(&:displayable?)
+        @contents ||= child_components.map { |x| Node.from(x, parent_id: node_id) }.select(&:displayable?)
       end
 
       def top_container

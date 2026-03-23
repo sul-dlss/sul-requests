@@ -7,7 +7,7 @@
   <% if display_group.is_a?(Ead::DisplayGroup::Item) %>
     <%# Container group (e.g., Box 9) %>
     <% 
-      checkbox_id = volume_checkbox_id(*display_group.hierarchy, display_group.title)
+      checkbox_id = volume_checkbox_id(@patron_request.ead_doc.ead_id, display_group)
       content_id = "container-items-#{checkbox_id}"
     %>
     <div class="mb-2 d-flex align-items-start gap-2">
