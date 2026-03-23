@@ -5,7 +5,7 @@ module Aeon
   class RequestItemDetailComponent < ViewComponent::Base
     attr_reader :request
 
-    delegate :ead?, :pages, :volume, :format, to: :request
+    delegate :ead?, :requested_pages, :volume, :format, to: :request
 
     def initialize(request:, variant: :full)
       @request = request
@@ -17,7 +17,7 @@ module Aeon
     end
 
     def format_info
-      return "Pages: #{pages}" if pages.present?
+      return "Pages: #{requested_pages}" if requested_pages.present?
       return "Item: #{volume}" if volume.present? && !ead?
       return "Format: #{format}" if format.present?
 
