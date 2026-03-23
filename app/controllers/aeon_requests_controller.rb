@@ -48,24 +48,13 @@ class AeonRequestsController < ApplicationController
     request.variant = :modal if params[:modal]
   end
 
-  def update # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+  def update
     authorize! :update, @aeon_request
 
-    updated_request = Aeon::UpdateRequestService.new(@aeon_request, aeon_request_params).call
+    @updated_request = Aeon::UpdateRequestService.new(@aeon_request, aeon_request_params).call
 
     respond_to do |format|
-      format.turbo_stream do
-        if @aeon_request.status == updated_request.status
-          component = if updated_request.draft? && updated_request.multi_item_selector?
-                        Aeon::RequestGroupItemComponent.new(request: updated_request)
-                      else
-                        Aeon::RequestComponent.new(request: updated_request)
-                      end
-          render turbo_stream: turbo_stream.replace(updated_request, component)
-        else
-          render turbo_stream: turbo_stream.remove(@aeon_request)
-        end
-      end
+      format.turbo_stream { render turbo_stream: update_turbo_stream_response }
       format.html do
         aeon_requests_path = updated_request.draft? ? drafts_aeon_requests_path : submitted_aeon_requests_path
         redirect_to aeon_requests_path, notice: 'Request was successfully updated.'
@@ -111,6 +100,22 @@ class AeonRequestsController < ApplicationController
   def cancel_multiple_requests
     @aeon_requests.each do |aeon_request|
       aeon_client.update_request_route(transaction_number: aeon_request.transaction_number, status: 'Cancelled by User')
+    end
+  end
+
+  def update_turbo_stream_response
+    if @aeon_request.status == @updated_request.status
+      turbo_stream.replace(@updated_request, updated_request_component)
+    else
+      turbo_stream.remove(@aeon_request)
+    end
+  end
+
+  def updated_request_component
+    if (@updated_request.draft? || @updated_request.submitted?) && @updated_request.multi_item_selector?
+      Aeon::RequestGroupItemComponent.new(request: @updated_request)
+    else
+      Aeon::RequestComponent.new(request: @updated_request)
     end
   end
 end
