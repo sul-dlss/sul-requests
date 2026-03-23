@@ -1,8 +1,8 @@
 <li class="mx-3 d-flex justify-content-between align-items-center flex-column card p-2 mb-2">
-  <h4 class="card-title mb-0 fw-normal d-flex justify-content-center gap-2 mt-2">
+  <h3 class="h4 card-title mb-0 fw-normal d-flex justify-content-center gap-2 mt-2">
     <span><i class="bi bi-calendar me-1"></i> <%= appointment_date %></span>
     <span><i class="bi bi-clock me-1"></i> <%= appointment_time_range %></span>
-  </h4>
+  </h3>
   <div class="mt-2"><%= appointment.reading_room.name %></div>
   <div class="mt-2"><%= render Aeon::AppointmentLimitComponent.from_appointment(appointment, label: 'Items assigned') %></div>
 </li>
