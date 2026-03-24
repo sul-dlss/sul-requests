@@ -8,7 +8,7 @@
           <input type="checkbox" class="form-check-input" id="delete-bulk-<%= request.id %>"
             data-action="change->draft-request#updateDeleteButton draft-request#updateSelectAll"
             data-draft-request-target="select" data-id="<%= request.id %>" />
-          <%= label_tag "delete-bulk-#{request.id}", 'Select', class: 'ms-2 me-3 form-check-label' %>
+          <%= label_tag "delete-bulk-#{request.id}", 'Select', class: 'ms-2 me-3 form-check-label fw-normal' %>
         <% end %>
         <% if helpers.can? :edit, request %>
           <%= link_to edit_aeon_request_path(request), class: 'btn btn-link su-underline p-0 me-sm-2', data: { action: 'modal#open' } do %>
