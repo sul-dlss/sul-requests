@@ -8,7 +8,7 @@ RSpec.describe 'FeedbackForm', type: :feature do
 
   context 'when not logged in' do
     it 'reCAPTCHA challenge is present' do
-      visit feedback_path
+      visit feedback_form_path
       expect(page).to have_css '.requests-captcha'
     end
   end
@@ -19,7 +19,7 @@ RSpec.describe 'FeedbackForm', type: :feature do
     end
 
     it 'reCAPTCHA challenge is NOT present' do
-      visit feedback_path
+      visit feedback_form_path
 
       expect(page).to have_content 'Submit feedback'
       expect(page).to have_no_css '.requests-captcha'

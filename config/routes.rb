@@ -13,6 +13,9 @@ Rails.application.routes.draw do
   require 'sidekiq_constraint'
   mount Sidekiq::Web => '/sidekiq', constraints: SidekiqConstraint.new
 
+  get 'feedback', to: 'feedback_forms#new', as: :feedback_form
+  resource :feedback_form, path: 'feedback', only: %I[create]
+
   # Authorization routes
   get 'sso/login', to: 'sessions#login_by_sunetid', as: :login_by_sunetid
   get 'sso/logout', to: 'sessions#destroy', as: :logout
@@ -73,7 +76,6 @@ Rails.application.routes.draw do
     end
   end
   resource :feedback_form, path: 'feedback', only: %I[new create]
-  get 'feedback' => 'feedback_forms#new'
 
   # Archives requests route - handles EAD XML from archives.stanford.edu
   get 'archives_requests/new', to: 'patron_requests#new', as: :new_archives_request
