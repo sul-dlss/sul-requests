@@ -43,7 +43,7 @@ layer(components);
 }
 
 .text-green {
-  color: var(--stanford-digital-green);
+  color: rgba(var(--stanford-digital-green-dark-rgb), 1);
 }
 
 .text-jungle-green {
@@ -422,7 +422,7 @@ label.btn-close {
   }
 
   .ready {
-    color: var(--stanford-digital-green);
+    color: rgba(var(--stanford-digital-green-dark-rgb), 1);
     background-color: rgba(var(--stanford-digital-green-rgb), 0.1);
   }
 
