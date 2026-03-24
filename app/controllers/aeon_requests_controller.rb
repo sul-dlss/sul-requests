@@ -56,7 +56,7 @@ class AeonRequestsController < ApplicationController
     respond_to do |format|
       format.turbo_stream do
         if @aeon_request.status == updated_request.status
-          component = if updated_request.draft? && updated_request.multi_item_selector?
+          component = if updated_request.multi_item_selector?
                         Aeon::RequestGroupItemComponent.new(request: updated_request)
                       else
                         Aeon::RequestComponent.new(request: updated_request)
