@@ -90,7 +90,5 @@ Rails.application.routes.draw do
   # Archives requests route - handles EAD XML from archives.stanford.edu
   get 'archives_requests/new', to: 'patron_requests#new', as: :new_archives_request
 
-  Rails.application.routes.draw do
-    mount Lookbook::Engine, at: "/lookbook"
-  end
+  mount Lookbook::Engine, at: "/lookbook"
 end
