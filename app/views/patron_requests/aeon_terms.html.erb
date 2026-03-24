@@ -1,6 +1,6 @@
 <%= render 'aeon_users/terms_text' %>
 
-<%= form_with url: accept_aeon_terms_path(referer: request.url), method: :post do |f| %>
+<%= form_with url: accept_terms_aeon_user_path(referer: request.url), method: :post do |f| %>
 
   <div class="my-3 px-3 py-2 bg-danger-subtle d-flex flex-row justify-content-start align-items-baseline gap-2">
     <%= f.check_box :aeon_terms, required: true %>
