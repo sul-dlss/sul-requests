@@ -21,20 +21,10 @@ class RecordHeaderComponent < ViewComponent::Base
   end
 
   def call_number
-    return aeon_request_callnumber if record.is_a?(Aeon::Request)
-
-    record.call_number.presence
+    record.base_callnumber.presence
   end
 
   def brief?
     @brief
-  end
-
-  private
-
-  def aeon_request_callnumber
-    return record.ead_number if record.ead_number
-
-    record.call_number unless record.multi_item_selector?
   end
 end
