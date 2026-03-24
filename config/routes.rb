@@ -60,8 +60,9 @@ Rails.application.routes.draw do
     end
   end
 
-  post 'aeon_user/terms', to: 'aeon_users#accept_terms', as: :accept_aeon_terms
-  resources :aeon_users, only: [:new, :create]
+  resource :aeon_user, only: [:new, :create] do
+    post :terms, to: 'aeon_users#accept_terms', as: :accept_terms
+  end
 
   resources :admin, only: [:index, :show] do
     member do
