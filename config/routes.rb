@@ -43,10 +43,6 @@ Rails.application.routes.draw do
   end
 
   resources :requests, only: [:new]
-  resources :pages, controller: :requests, only: []
-  resources :scans, controller: :requests,only: []
-  resources :mediated_pages, controller: :requests, only: []
-  resources :hold_recalls, controller: :requests, only: []
 
   resources :aeon_requests, only: [:edit, :destroy, :update] do
     collection do
