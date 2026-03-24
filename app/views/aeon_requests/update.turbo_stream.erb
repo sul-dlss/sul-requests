@@ -1,0 +1,5 @@
+<% if @aeon_request.status == @updated_request.status %>
+  <%= turbo_stream.replace(update_requests_component_for(@updated_request)) %>
+<% else %>
+  <%= turbo_stream.remove(@aeon_request) %>
+<% end %>
