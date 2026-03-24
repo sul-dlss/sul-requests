@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  post "/challenge", to: "bot_challenge_page/bot_challenge_page#verify_challenge", as: :bot_detect_challenge
-  resources :messages
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -8,10 +6,7 @@ Rails.application.routes.draw do
   root 'home#show'
   match "/404", to: 'errors#not_found', via: :all
   match "/500", to: 'errors#internal_server_error', via: :all
-
-  require 'sidekiq/web'
-  require 'sidekiq_constraint'
-  mount Sidekiq::Web => '/sidekiq', constraints: SidekiqConstraint.new
+  post "/challenge", to: "bot_challenge_page/bot_challenge_page#verify_challenge", as: :bot_detect_challenge
 
   get 'feedback', to: 'feedback_forms#new', as: :feedback_form
   resource :feedback_form, path: 'feedback', only: %I[create]
@@ -22,12 +17,6 @@ Rails.application.routes.draw do
 
   post '/sessions/login_by_university_id', to: 'sessions#login_by_university_id', as: :login_by_university_id
   post '/sessions/register_visitor', to: 'sessions#register_visitor', as: :register_visitor
-
-  resources :paging_schedule, only: :index
-  get 'paging_schedule/from/:origin_library(/to/:destination)' => 'paging_schedule#show', as: :paging_schedule
-  get 'paging_schedule/from/:origin_library/to/:destination/:date' => 'paging_schedule#open', as: :open_hours
-
-  match 'reports', to: 'reports#index', via: [:get], as: :reports
 
   get 'circ-check' => 'circ_check#index', as: :circ_check
   post 'circ-check' => 'circ_check#show', as: :circ_check_item
@@ -42,6 +31,14 @@ Rails.application.routes.draw do
     resources :admin_comments
   end
 
+  resources :paging_schedule, only: :index
+  get 'paging_schedule/from/:origin_library(/to/:destination)' => 'paging_schedule#show', as: :paging_schedule
+  get 'paging_schedule/from/:origin_library/to/:destination/:date' => 'paging_schedule#open', as: :open_hours
+
+  # Archives requests route - handles EAD XML from archives.stanford.edu
+  get 'archives_requests/new', to: 'patron_requests#new', as: :new_archives_request
+
+  # Legacy route for redirecting old-style requests to the new patron_requests
   resources :requests, only: [:new]
 
   resources :aeon_requests, only: [:edit, :destroy, :update] do
@@ -75,10 +72,11 @@ Rails.application.routes.draw do
       post :comment, as: :comment
     end
   end
-  resource :feedback_form, path: 'feedback', only: %I[new create]
-
-  # Archives requests route - handles EAD XML from archives.stanford.edu
-  get 'archives_requests/new', to: 'patron_requests#new', as: :new_archives_request
+  resources :messages
+  match 'reports', to: 'reports#index', via: [:get], as: :reports
 
   mount Lookbook::Engine, at: "/lookbook"
+  require 'sidekiq/web'
+  require 'sidekiq_constraint'
+  mount Sidekiq::Web => '/sidekiq', constraints: SidekiqConstraint.new
 end
