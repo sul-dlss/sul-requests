@@ -2,5 +2,9 @@
   <h2 class="text-center mb-3">Reading room appointments</h2>
   <p class="text-center"><i class="bi bi-info-circle me-1"></i> For complete management, visit <%= link_to 'Appointments', aeon_appointments_path, class: 'su-underline' %></p>
 
-  <%= render Aeon::AppointmentBriefComponent.with_collection(@appointments) %>
+  <% if @appointments.any? %>
+  <ul class="list-unstyled">
+    <%= render Aeon::AppointmentBriefComponent.with_collection(@appointments) %>
+  </ul>
+  <% end %>
 </turbo-frame>
