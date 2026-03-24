@@ -34,12 +34,9 @@ Rails.application.routes.draw do
   get 'change_pin', to: 'reset_pins#change_form', as: :change_pin_with_token
   post 'change_pin', to: 'reset_pins#change'
 
-  concern :admin_commentable do
-    resources :admin_comments
-  end
-
-  resources :patron_requests, only: [:new, :show, :create], concerns: [:admin_commentable] do
+  resources :patron_requests, only: [:new, :show, :create] do
     resource :needed_date, only: [:edit, :update, :show]
+    resources :admin_comments
   end
 
   resources :requests, only: [:new]
