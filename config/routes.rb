@@ -34,12 +34,6 @@ Rails.application.routes.draw do
   get 'change_pin', to: 'reset_pins#change_form', as: :change_pin_with_token
   post 'change_pin', to: 'reset_pins#change'
 
-  concern :statusable do
-    member do
-      get :status, as: :status
-    end
-  end
-
   concern :admin_commentable do
     resources :admin_comments
   end
@@ -48,11 +42,11 @@ Rails.application.routes.draw do
     resource :needed_date, only: [:edit, :update, :show]
   end
 
-  resources :requests, only: [:new], concerns: [:statusable]
-  resources :pages, controller: :requests, only: [], concerns: [:statusable]
-  resources :scans, controller: :requests,only: [], concerns: [:statusable]
-  resources :mediated_pages, controller: :requests, only: [], concerns: [:statusable]
-  resources :hold_recalls, controller: :requests, only: [], concerns: [:statusable]
+  resources :requests, only: [:new]
+  resources :pages, controller: :requests, only: []
+  resources :scans, controller: :requests,only: []
+  resources :mediated_pages, controller: :requests, only: []
+  resources :hold_recalls, controller: :requests, only: []
 
   resources :aeon_requests, only: [:edit, :destroy, :update] do
     collection do
