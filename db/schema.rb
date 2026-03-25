@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_17_164328) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_25_145334) do
   create_table "admin_comments", force: :cascade do |t|
     t.string "comment"
     t.string "commenter"
@@ -23,7 +23,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_17_164328) do
 
   create_table "api_responses", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.string "item_id"
+    t.text "item_id"
     t.bigint "patron_request_id", null: false
     t.binary "request_data"
     t.binary "response_data"
