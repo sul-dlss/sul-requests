@@ -148,7 +148,7 @@ module Aeon
     def reading_room
       return @reading_room if defined?(@reading_room)
 
-      @reading_room = Aeon::ReadingRoom.find_by(site: site)
+      @reading_room = appointment&.reading_room || Aeon::ReadingRoom.find_by(site: site)
     end
 
     def multi_item_selector?

@@ -10,9 +10,10 @@
     <%= render RecordHeaderCardComponent.new(patron_request: @patron_request, classes: 'mt-4 mb-4') %>
     <div class="confirmation">
       <% if @aeon_requests.any? %>
-        <% if @aeon_requests.reading_room_name %>
+        <% if @aeon_requests.appointment_reading_room.present? %>
           <div class="mb-4">
-            <h2><i class="bi bi-geo-alt-fill"></i><%= @aeon_requests.reading_room_name %></h2>
+            <h2><%= @aeon_requests.appointment_reading_room.name %></h2>
+            <i class="bi bi-geo-alt-fill me-1"></i><span><%= @aeon_requests.appointment_reading_room.directions %></span>
           </div>
         <% end %>
         <% if @aeon_requests.first&.multi_item_selector? %>

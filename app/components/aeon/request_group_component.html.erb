@@ -1,11 +1,11 @@
 <div class="request-group card mb-4" data-controller="empty-remove">
   <div class="card-header fw-semibold p-3 ps-2 d-flex gap-1 flex-row align-items-md-center justify-content-between">
     <div class="d-flex flex-wrap gap-1 align-items-center">
-      <%= render Aeon::RequestStatusPillComponent.new(request: request_group.status_request) %>
-      <%= render Aeon::RequestStatusMessageComponent.new(request: request_group.status_request) %>
-      <% if submitted? && appointment? %>
+      <%= render Aeon::RequestStatusPillComponent.new(request: status_request) %>
+      <%= render Aeon::RequestStatusMessageComponent.new(request: status_request) %>
+      <% if appointment_reading_room.present? %>
       <span class="appointment-details ms-1">
-        <span class="ms-2 fw-semibold text-nowrap text-green"><%= reading_room_name %></span>
+        <span class="ms-2 fw-semibold text-nowrap text-green"><%= appointment_reading_room.name %></span>
       </span>
       <% end %>
     </div>

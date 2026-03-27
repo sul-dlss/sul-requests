@@ -9,7 +9,7 @@ module Aeon
 
     delegate :each, to: :requests
 
-    delegate :appointment?, :submitted?, :appointment, :base_callnumber, :call_number, :date, :digital?,
+    delegate :submitted?, :base_callnumber, :call_number, :date, :digital?,
              :document_type, :ead_number, :multi_item_selector?, :title, to: :first
 
     def self.from_requests(requests)
@@ -30,16 +30,18 @@ module Aeon
       requests.select(&:submitted?)
     end
 
+    def appointment_reading_room
+      return if digital?
+
+      submitted_requests&.first&.reading_room
+    end
+
     # For status display, prefer a pending request over a ready one
     # so the group shows as pending if any request is still pending.
     def status_request
       return first unless digital? && requests.any?(&:submitted?)
 
       requests.find { |r| !r.scan_delivered? } || first
-    end
-
-    def reading_room_name
-      appointment&.reading_room&.name
     end
   end
 end
