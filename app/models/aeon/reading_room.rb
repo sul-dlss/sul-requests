@@ -49,6 +49,10 @@ module Aeon
       Settings.aeon.day_only_appointments.include?(sites.first)
     end
 
+    def directions
+      Settings.aeon.directions[sites.first]
+    end
+
     OpenHoursDisplay = Data.define(:day_range, :hours)
 
     # Returns a human-readable set of open hours for the reading room that generally combines sequential days
