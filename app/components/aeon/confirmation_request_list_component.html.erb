@@ -1,9 +1,9 @@
 
 <div class="border rounded p-3 mb-2">
-  <h2 class="h3 mb-3"><%= title %></h2>
-  <ul class="list-unstyled">
+  <h2 class="h3"><%= title %></h2>
+  <ul class="list-unstyled mb-0">
     <% requests.each_with_index do |request, index| %>
-      <li class="accordion accordion-flush">
+      <li class="request accordion accordion-flush">
         <div class="accordion-item">
           <div class="accordion-header bg-white accordion-button px-0 collapsed d-flex align-items-center justify-content-between" type="button" data-bs-toggle="collapse" data-bs-target="#<%= accordion_name(index) %>" aria-expanded="false" aria-controls="<%= accordion_name(index) %>" id="<%= accordion_name(index) %>Heading">
             <div>

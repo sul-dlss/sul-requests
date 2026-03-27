@@ -618,8 +618,11 @@ label.btn-close {
     --bs-accordion-border-radius: 0;
   }
   
-  .accordion-item {
-    border-bottom: 1px solid var(--stanford-20-black)!important;
+  .request {
+    border-bottom: 1px solid var(--stanford-20-black);
+    &:last-child {
+      border-bottom: none;
+    }
   }
 }
 
