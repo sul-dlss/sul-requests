@@ -7,9 +7,7 @@
         <div class="accordion-item">
           <div class="accordion-header bg-white accordion-button px-0 collapsed d-flex align-items-center justify-content-between" type="button" data-bs-toggle="collapse" data-bs-target="#<%= accordion_name(index) %>" aria-expanded="false" aria-controls="<%= accordion_name(index) %>" id="<%= accordion_name(index) %>Heading">
             <div>
-              <span class="px-2 bg-fog-light fw-semibold">
-                <%= request.call_number %><i class="bi bi-chevron-right"></i><%= request.volume %>
-              </span>
+              <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
               <span class="ms-2 fs-14">Request #<%= request.transaction_number %></span>
             </div>
             <div>
