@@ -19,7 +19,7 @@
       <% end %>
       <% if @patron_request.ead_doc.repository_contact[:email] %>
         <p>
-          <span class="fw-semibold">Email: </span><%= mail_to @patron_request.ead_doc.repository_contact[:email] %>
+          <span class="fw-semibold">Email: </span><%= mail_to @patron_request.ead_doc.repository_contact[:email], class: 'su-underline' %>
         </p>
       <% end %>
     </div>
@@ -45,7 +45,7 @@
         <% end %>
         <% if library.contact_info&.email %>
           <p>
-            <span class="fw-semibold">Email: </span><%= mail_to library.contact_info.email %>
+            <span class="fw-semibold">Email: </span><%= mail_to library.contact_info.email, class: 'su-underline' %>
           </p>
         <% end %>
     </div>
