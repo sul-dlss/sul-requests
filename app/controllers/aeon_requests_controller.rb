@@ -8,7 +8,7 @@ class AeonRequestsController < ApplicationController
   include AeonFilterable
   include AeonSortable
 
-  before_action :load_aeon_request, only: [:edit, :update, :destroy, :resubmit]
+  before_action :load_aeon_request, only: [:edit, :update, :destroy, :resubmit, :redraft]
   before_action :load_multiple_aeon_requests, only: [:destroy_multiple]
 
   def drafts
@@ -39,6 +39,16 @@ class AeonRequestsController < ApplicationController
     aeon_client.update_request_route(transaction_number: params[:id], status: 'Submitted by User')
     respond_to do |format|
       format.turbo_stream { render turbo_stream: turbo_stream.remove("request-#{params[:id]}") }
+    end
+  end
+
+  def redraft
+    authorize! :update, @aeon_request
+
+    Aeon::UpdateRequestService.new(@aeon_request).reset_to_draft_state!
+
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.remove(@aeon_request) }
     end
   end
 

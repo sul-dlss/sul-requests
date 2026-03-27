@@ -5,17 +5,23 @@ module Aeon
   class UpdateRequestService
     attr_reader :aeon_request, :params, :aeon_client
 
-    def initialize(aeon_request, params, aeon_client: AeonClient.new)
+    def initialize(aeon_request, params = {}, aeon_client: AeonClient.new)
       @aeon_request = aeon_request
       @params = params
       @aeon_client = aeon_client
     end
 
     def call
-      @aeon_request = update_request
+      @aeon_request = update_request if params.any?
       @aeon_request = update_request_route
 
       @aeon_request
+    end
+
+    def reset_to_draft_state!
+      @aeon_request = aeon_client.update_request(@aeon_request.transaction_number, AeonClient::DeleteAppointmentRequestData.new)
+
+      call
     end
 
     private

@@ -1,4 +1,4 @@
-<div class="card border-light mb-4">
+<div class="card border-light mb-4" data-controller="appointment-card">
   <div class="card-header d-flex border-light d-flex justify-content-between align-items-center bg-white">
     <h2 class="card-title mb-0 h4 d-flex gap-2">
       <span><i class="bi bi-calendar me-1"></i><%= appointment_date %></span>
@@ -20,7 +20,7 @@
     <% if appointment.requests.present? %>
       <ul class="list-group list-group-flush">
         <% appointment.requests.each do |request| %>
-          <li class="list-group-item">
+          <li class="list-group-item" id="<%= dom_id(request) %>" data-appointment-card-target="request">
             <h4>
               <%= request.title %>
               <% if request.draft? %>
@@ -34,6 +34,10 @@
               <span class="p-1 px-2 bg-stanford-10-black fw-semibold">
                 <%= request.volume %>
               </span>
+            <% end %>
+
+            <%= form_with(url: redraft_aeon_request_path(request)) do |f| %>
+              <%= f.submit 'x Remove', class: 'btn btn-link' %>
             <% end %>
             </div>
           </li>
