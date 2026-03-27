@@ -5,7 +5,7 @@ module Aeon
   class RequestGroupComponent < ViewComponent::Base
     attr_reader :request_group
 
-    delegate :appointment_reading_room, :base_callnumber, :requests, :status_request, :title, to: :request_group
+    delegate :appointment_reading_room, :base_callnumber, :requests, :title, to: :request_group
 
     def initialize(request_group:)
       @request_group = request_group
@@ -13,6 +13,10 @@ module Aeon
 
     def render?
       requests.present?
+    end
+
+    def request_for_status_display
+      requests.find { |r| r.status != :completed } || requests.first
     end
   end
 end

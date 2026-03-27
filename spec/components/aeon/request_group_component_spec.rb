@@ -61,4 +61,20 @@ RSpec.describe Aeon::RequestGroupComponent, type: :component do
       expect(page).to have_content 'Request #101'
     end
   end
+
+  context 'with a mix of completed and not-completed digital requests' do
+    let(:first_request) { build(:aeon_request, :digitized) }
+    let(:second_request) { build(:aeon_request, :digitized) }
+    let(:request_group) { Aeon::RequestGrouping.new([first_request, second_request]) }
+
+    before do
+      allow(first_request).to receive_messages(cancelled?: false, completed?: true, draft?: false, scan_delivered?: true)
+      allow(second_request).to receive_messages(cancelled?: false, completed?: false, draft?: false, scan_delivered?: false)
+      render_inline(described_class.new(request_group:))
+    end
+
+    it 'displays the status of the group as pending' do
+      expect(page).to have_content 'Digitization pending'
+    end
+  end
 end
