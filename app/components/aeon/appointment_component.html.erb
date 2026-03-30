@@ -6,7 +6,7 @@
       <span><i class="bi bi-geo-alt-fill me-2"></i><%= appointment.reading_room.name %></span>
     </h2>
     <div>
-      <%= link_to edit_aeon_appointment_path(appointment.id), data: { action: 'modal#open' } do %>
+      <%= link_to edit_aeon_appointment_path(appointment.id), class: 'text-decoration-none', data: { action: 'modal#open' } do %>
         <i class="bi bi-pencil-fill me-1"></i><span class="visually-hidden">Edit appointment</span>
       <% end %>
       <% if helpers.can? :destroy, appointment %>
