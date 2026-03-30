@@ -1,9 +1,9 @@
 <div class="card border-light mb-4">
   <div class="card-header d-flex border-light d-flex justify-content-between align-items-center bg-white">
-    <h2 class="card-title mb-0 h4 d-flex gap-2">
-      <span><i class="bi bi-calendar me-1"></i><%= appointment_date %></span>
-      <span><i class="bi bi-clock me-1"></i><%= appointment_time_range %></span>
-      <span><i class="bi bi-geo-alt-fill me-1"></i><%= appointment.reading_room.name %></span>
+    <h2 class="card-title mb-0 h4 d-flex gap-3">
+      <span><i class="bi bi-calendar me-2"></i><%= appointment_date %></span>
+      <span><i class="bi bi-clock me-2"></i><%= appointment_time_range %></span>
+      <span><i class="bi bi-geo-alt-fill me-2"></i><%= appointment.reading_room.name %></span>
     </h2>
     <div>
       <%= link_to edit_aeon_appointment_path(appointment.id), data: { action: 'modal#open' } do %>
