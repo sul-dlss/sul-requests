@@ -86,6 +86,8 @@ module Folio
     alias base_callnumber call_number
 
     def document_type
+      return single_item&.type if format == 'unspecified'
+
       format.presence&.first || single_item&.type
     end
 

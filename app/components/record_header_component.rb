@@ -17,7 +17,7 @@ class RecordHeaderComponent < ViewComponent::Base
 
   def document_type
     # TODO: this will contain logic based on Aeon values
-    record.document_type.upcase_first if record.respond_to?(:document_type) && record.document_type.present?
+    record.document_type.upcase_first if record.document_type.present?
   end
 
   def call_number
