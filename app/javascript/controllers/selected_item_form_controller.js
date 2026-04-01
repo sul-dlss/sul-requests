@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import { Collapse } from "bootstrap"
 
 export default class extends Controller {
-  static targets = ["status", "nextButton"]
+  static targets = ["nextButton"]
   static values = { status: String }
 
   connect() {
@@ -18,16 +18,9 @@ export default class extends Controller {
   }
 
   statusValueChanged() {
-    if (this.statusValue === 'incomplete') {
-      this.statusTarget.classList.remove('bi-check2-circle', 'text-green');
-      this.statusTarget.classList.add('bi-circle');
-      if (this.hasNextButtonTarget) this.nextButtonTarget.disabled = true;
-    } else {
-      this.statusTarget.classList.remove('bi-circle');
-      this.statusTarget.classList.add('bi-check2-circle', 'text-green');
-      if (this.hasNextButtonTarget) this.nextButtonTarget.disabled = false;
+    if (this.hasNextButtonTarget) {
+      this.nextButtonTarget.disabled = this.statusValue === 'incomplete';
     }
-
     this.dispatch('status-changed', { detail: { status: this.statusValue } });
   }
 
