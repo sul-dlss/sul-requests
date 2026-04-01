@@ -2,22 +2,16 @@
 
 # Render page metadata
 class RecordHeaderComponent < ViewComponent::Base
-  def initialize(patron_request: nil, record: nil, brief: false)
-    @patron_request = patron_request
+  def initialize(record: nil, brief: false)
     @record = record
     @brief = brief
   end
 
-  def record
-    return @record if @record
-    return @patron_request.ead_doc if @patron_request&.ead_doc
-
-    @patron_request&.folio_instance
-  end
+  attr_reader :record
 
   def document_type
     # TODO: this will contain logic based on Aeon values
-    record.document_type.upcase_first if record.document_type.present?
+    record.document_type.presence&.upcase_first
   end
 
   def call_number

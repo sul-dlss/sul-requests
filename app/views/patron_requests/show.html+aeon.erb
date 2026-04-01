@@ -7,7 +7,7 @@
       <h1>We received your reading room access request!</h1>
       <div class="bg-light p-2 fs-5 mb-4">Please review Reading room policies before arriving for your appointment.</div>
     <% end %>
-    <%= render RecordHeaderCardComponent.new(patron_request: @patron_request, classes: 'mt-4 mb-4') %>
+    <%= render RecordHeaderCardComponent.new(record: @patron_request.bib_record, classes: 'mt-4 mb-4') %>
     <div class="confirmation">
       <% if @aeon_requests.any? %>
         <% if @aeon_requests.appointment_reading_room.present? %>

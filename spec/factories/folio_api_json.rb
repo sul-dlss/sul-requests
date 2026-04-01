@@ -703,6 +703,20 @@ FactoryBot.define do
     items { [] }
   end
 
+  factory :unspecified_not_on_order, parent: :instance do
+    id { 'a43e597a-d4b4-50ec-ad16-7fd49920831a' }
+
+    title { 'Outline map of the Empire of Brazil and adjacent territories.' }
+
+    format { 'unspecified' }
+
+    items do
+      [
+        build(:item, type: 'Map')
+      ]
+    end
+  end
+
   factory :single_holding_multiple_items, parent: :instance do
     id { '1234' }
     hrid { 'a1234' }

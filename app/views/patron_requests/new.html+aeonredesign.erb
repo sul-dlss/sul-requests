@@ -13,7 +13,7 @@
 <div class="row">
   <div class="col-8">
 
-  <%= render RecordHeaderCardComponent.new(patron_request: @patron_request) %>
+  <%= render RecordHeaderCardComponent.new(record: @patron_request.bib_record) %>
 
 <%= form_for(@patron_request,
             data: {
