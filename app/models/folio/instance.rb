@@ -46,7 +46,7 @@ module Folio
       @pub_date = pub_date
       @pub_place = pub_place
       @publisher = publisher
-      @format = format
+      @format = Array(format)
       @isbn = isbn
       @oclcn = oclcn
       @electronic_access = electronic_access
@@ -86,7 +86,7 @@ module Folio
     alias base_callnumber call_number
 
     def document_type
-      return single_item&.type if format == 'unspecified'
+      return single_item&.type if format == ['unspecified']
 
       format.presence&.first || single_item&.type
     end
