@@ -135,7 +135,7 @@ RSpec.describe Folio::Instance do
   describe '#format' do
     subject { data.format }
 
-    it { is_expected.to eq 'unspecified' }
+    it { is_expected.to eq ['unspecified'] }
   end
 
   describe '#isbn' do

@@ -69,7 +69,7 @@ FactoryBot.define do
     item_title { 'Throwing a sinker ball at 94 mpg with wicked movement' }
     item_author { nil }
     call_number { nil }
-    document_type { nil }
+    document_type { 'Document' }
     format { nil }
     location { nil }
     item_info5 { nil }
