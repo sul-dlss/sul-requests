@@ -148,7 +148,7 @@ export default class extends Controller {
       if (accordionButton) {
         if (value.length === 1) {
           accordionButton.setAttribute('disabled', '');
-        } else {
+        } else if (value.length > 0) {
           accordionButton.removeAttribute('disabled');
         }
       }
