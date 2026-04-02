@@ -46,6 +46,9 @@ application.register("otp-input", OtpInput)
 import ModalController from "./modal_controller"
 application.register("modal", ModalController)
 
+import SaveForLaterController from "./save_for_later_controller"
+application.register("save-for-later", SaveForLaterController)
+
 import SelectedItemFormController from "./selected_item_form_controller"
 application.register("selected-item-form", SelectedItemFormController)
 

@@ -45,6 +45,10 @@ export default class extends Controller {
     const selectedOption = this.element.querySelector(`[data-value="${this.inputTarget.value}"]`);
     if (selectedOption) {
       this.buttonTarget.innerHTML = selectedOption.querySelector('.label-value').innerHTML;
+    } else {
+      this.element.querySelector('.selected')?.classList?.remove('selected');
+      this.buttonTarget.textContent = 'Select existing appointment';
+      this.dispatch('change', { detail: { value: '' } });
     }
   }
 
