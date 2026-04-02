@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ead xmlns="urn:isbn:1-931666-22-9" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:isbn:1-931666-22-9 http://www.loc.gov/ead/ead.xsd">
+  <eadheader countryencoding="iso3166-1" dateencoding="iso8601" langencoding="iso639-2b" repositoryencoding="iso15511">
+    <eadid countrycode="US" url="https://archives.stanford.edu/findingaid/ark:/22236/r5f1cb9bc0-4281-417b-b99e-0a759e1f7d0b">ars0052</eadid>
+    <filedesc>
+      <titlestmt>
+        <titleproper type="filing">Hilton (Ozzie) Collection</titleproper>
+        <titleproper>Guide to the Ozzie Hilton Collection <num>ARS.0052</num></titleproper>
+        <author>Franz Kunst</author>
+      </titlestmt>
+      <publicationstmt>
+        <publisher>Archive of Recorded Sound</publisher>
+        <p>
+          <date>September 2010</date>
+        </p>
+        <address>
+          <addressline>soundarchive@stanford.edu</addressline>
+          <addressline>URL: <extptr xlink:href="https://library.stanford.edu/libraries/archive-recorded-sound" xlink:show="new" xlink:title="https://library.stanford.edu/libraries/archive-recorded-sound" xlink:type="simple"/></addressline>
+        </address>
+        <p>This record is made available under an Universal 1.0 Public Domain Dedication Creative Commons license.</p>
+      </publicationstmt>
+    </filedesc>
+    <profiledesc>
+      <creation>This finding aid was produced using ArchivesSpace on <date>2026-03-10 00:02:32 -0700</date>.</creation>
+      <langusage>English</langusage>
+      <descrules>Describing Archives: A Content Standard</descrules>
+    </profiledesc>
+  </eadheader>
+  <archdesc level="collection">
+    <did>
+      <repository>
+        <corpname>Archive of Recorded Sound</corpname>
+      </repository>
+      <unittitle>Ozzie Hilton Collection</unittitle>
+      <origination label="Creator">
+        <persname role="dnr" source="local">Hilton, Heidi</persname>
+      </origination>
+      <unitid>ARS.0052</unitid>
+      <unitid type="ark">
+        <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/r5f1cb9bc0-4281-417b-b99e-0a759e1f7d0b" xlink:show="new">Archival Resource Key</extref>
+      </unitid>
+      <physdesc altrender="whole">
+        <extent altrender="materialtype spaceoccupied">2 box(es)</extent>
+        <extent altrender="carrier">315 audiocassettes</extent>
+      </physdesc>
+      <unitdate calendar="gregorian" datechar="creation" era="ce">c.1935-1985</unitdate>
+      <physloc id="aspace_71e2a0829f735545846fc56580230dd1">Stanford Archive of Recorded Sound
+Stanford University Libraries
+Stanford, California 94305-3076</physloc>
+      <abstract id="aspace_1c16cbba3552e635e46b52911be90e87" label="Abstract">Recordings of jazz, swing, and popular music of the 1940's on cassette, including many obscure or hard-to-find performances and interviews.</abstract>
+      <langmaterial><language langcode="eng" scriptcode="Latn">English</language>
+.    </langmaterial>
+      <container id="aspace_33b4b09c9dbdf7f9d5af728b0890128f" label="Audio [36105014451368]" type="Box">1</container>
+      <container id="aspace_02398f19e95f7284b666981a0db808ef" label="Audio [36105014451376]" type="Box">2</container>
+    </did>
+    <prefercite id="aspace_8561016662614f88de4b79f39a61456c">
+      <head>Preferred Citation</head>
+      <p>Ozzie Hilton Collection, ARS-0052. Courtesy of the Stanford Archive of Recorded Sound, Stanford University Libraries, Stanford, Calif.</p>
+    </prefercite>
+    <acqinfo id="aspace_182c8a86f708d75ac3208efa52e07f03">
+      <head>Source</head>
+      <p>The Ozzie Hilton Collection was donated to the Stanford Archive of Recorded Sound by Heidi Hilton in 1999.</p>
+    </acqinfo>
+    <userestrict id="aspace_b7e5868a585dda161cea4d38959294a0">
+      <head>Publication Rights</head>
+      <p>Property rights reside with repository. Publication and reproduction rights reside with the creators or their heirs. To obtain permission to publish or reproduce, please contact the Head Librarian of the Archive of Recorded Sound.</p>
+    </userestrict>
+    <accessrestrict id="aspace_70b4e018a56bfa0f7f3da0e6b9cde7c6">
+      <head>Access</head>
+      <p>Open for research; material must be requested at least two business days in advance of intended use. Contact the Archive for assistance.</p>
+    </accessrestrict>
+    <arrangement id="aspace_d34bdc3fa8864ef9b0c139a4e8b801a3">
+      <head>Arrangement</head>
+      <p>Two record storage boxes full of cassettes. Cassettes have not been rearranged or ordered. Tracklists are included with each cassette.</p>
+    </arrangement>
+    <scopecontent id="aspace_8970eb6614035214eca32707d8ebb831">
+      <head>Scope And Contents</head>
+      <p>The Ozzie Hilton collection consists of approximately 315 audiocassettes of big band swing, jazz, and popular music of the 1930's, 40's and 50's. A few of the tapes are compilations of commercially released records, but many are taken from airchecks, transcriptions, and other sources. Perhaps most interesting from a research standpoint are several interviews with musicians. There are also live recordings from the Big Horn Jazz Festival from 1975 to 1977. While familiar names such as Duke Ellington, Artie Shaw, Benny Goodman, Louis Armstrong, Cab Calloway, and Count Basie are included, the artists most fully represented are Russ Morgan (with around 30 tapes devoted to his work), Henry King, and Syd Lawrence. Other bandleaders featured here are Mal Hallett, Boyd Raeburn, Alvino Rey, Tommy Tucker, and Ted Fiorito. There are also a handful of classical and polka recordings.</p>
+    </scopecontent>
+    <processinfo id="aspace_a85476e4c2714af981c1c87ee6500f96">
+      <head>Sponsor</head>
+      <p>This finding aid was produced with generous financial support from the National Historical Publications and Records Commission.</p>
+    </processinfo>
+    <separatedmaterial id="aspace_d10dcaebf94311614744107b675bf5f0">
+      <head>Separated Materials</head>
+      <p>Please note that nine photographs included in the original donation were removed and are available in ARS Miscellany (ARS0099). Featured are Tom Coakley (two images, one autographed to Hilton), Carl Ravazza, Al Bowlly, The Biltmore Trio (Paul Gibbons, Eddie Bush, Bill Seckler), Ray Noble, and Russ Columbo. All are promotional photographs.</p>
+    </separatedmaterial>
+    <controlaccess>
+      <subject source="lcsh">Swing (Music)</subject>
+      <subject source="lcsh">Popular music</subject>
+      <subject source="lcsh">Big band music</subject>
+      <subject source="lcsh">Jazz</subject>
+      <subject source="lcsh">Live sound recordings</subject>
+      <subject source="lcsh">Interviews</subject>
+    </controlaccess>
+    <dsc/>
+  </archdesc>
+</ead>

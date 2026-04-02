@@ -15,7 +15,7 @@ function typecast(value) {
 }
 
 export default class extends Controller {
-  static targets = ['item', 'toast', 'selectedItems']
+  static targets = ['item', 'toast', 'selectedItems', 'manualInputContainer']
   static values = { itemLimit: { type: Number, default: -1 }, requestType: String, selectedItems: Array }
 
   connect() { }
@@ -67,6 +67,52 @@ export default class extends Controller {
     } else {
       this.selectedItemsValue = this.selectedItemsValue.filter((item) => item.id !== event.params.id);
     }
+  }
+
+  input(event) {
+    if (event.currentTarget.value) {
+      const value = event.currentTarget.value;
+      const index = parseInt(event.currentTarget.dataset.index);
+      // This id needs to take the user input because selectedItemsValueChanged won't update the form if the id is the same
+      const id = `${event.currentTarget.dataset.prepend}-${value.trim().replace(/[^a-zA-Z0-9]/g, '').replaceAll(' ', '-').toLowerCase()}`;
+      const prevId = event.currentTarget.dataset.id;
+
+      // We need to mutate the form so that when we submit the form the elements end up in the same hash
+      // so manual-input-1 becomes manual-input-1-box-1
+      document.querySelectorAll(`[data-id="${prevId}"`).forEach(elem => {
+        elem.name = elem.name.replace(prevId, id);
+        elem.dataset.id = id;
+      })
+
+      this.selectedItemsValue = this.selectedItemsValue.filter((item) => item.index !== index);
+      this.selectedItemsValue = this.selectedItemsValue.concat([{titleParts: [value],
+                                                                 id: id,
+                                                                 index: index}]);
+    }
+  }
+
+  addInputField(event) {
+    event.preventDefault();
+    let template = document.querySelector(event.currentTarget.dataset.template);
+    if (template) {
+      const inputElements =  document.querySelectorAll('[data-index]');
+      const index = parseInt(inputElements[inputElements.length - 1].dataset.index);
+      const element = document.importNode(template.content, true);
+      const rootNode = element.querySelector('[data-root-node]');
+      rootNode.innerHTML = rootNode.innerHTML.replaceAll('__INDEX__', index + 1);
+      this.manualInputContainerTarget.appendChild(rootNode);
+    }
+  }
+
+  removeInputField(event) {
+    event.preventDefault()
+    event.currentTarget.parentElement.remove();
+    const index = parseInt(event.currentTarget.dataset.index);
+    this.selectedItemsValue = this.selectedItemsValue.filter((item) => item.index !== index);
+
+    // This has to be done here because after removal of the element the check doesn't run if attatched to the element.
+    const accordionController = this.application.getControllerForElementAndIdentifier(this.element, 'accordion-form');
+    accordionController.reenableNextButtons();
   }
 
   remove(event) {
