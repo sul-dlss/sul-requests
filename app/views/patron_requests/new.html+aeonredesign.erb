@@ -53,21 +53,49 @@
   <%= render AccordionStepComponent.new(id: 'items', step_index: step_enum.next, form_id: f.id) do |component| %>
     <% component.with_title.with_content('Items') %>
     <% component.with_body do %>
-      <div data-controller="archives-series">
-        <div class="mb-2 d-flex gap-2 align-items-center">
-          <div>Use checkboxes to select items.</div>
-          <!--TODO: pull out text into template?-->
-          <button class="btn btn-link p-0 su-underline" data-action="click->archives-series#expandAll"><i class="bi bi-chevron-double-right me-1"></i>Expand all (see full content list)</button>
-          <button class="btn btn-link p-0 su-underline" data-action="click->archives-series#collapseAll"><i class="bi bi-chevron-double-down me-1"></i>Collapse all</button>
+      <% if f.object.ead_doc.series_and_subseries.present? %>
+        <div data-controller="archives-series">
+          <div class="mb-2 d-flex gap-2 align-items-center">
+            <div>Use checkboxes to select items.</div>
+            <!--TODO: pull out text into template?-->
+            <button class="btn btn-link p-0 su-underline" data-action="click->archives-series#expandAll"><i class="bi bi-chevron-double-right me-1"></i>Expand all (see full content list)</button>
+            <button class="btn btn-link p-0 su-underline" data-action="click->archives-series#collapseAll"><i class="bi bi-chevron-double-down me-1"></i>Collapse all</button>
+          </div>
+          <% if f.object.ead_doc.digital_content? %>
+            <div class="mb-2"><%= render Icons::OnlineComponent.new classes: 'me-1 align-text-bottom text-digital-blue' %><span class="fw-semibold">Digital content</span> - Some materials from this collection are available online.</div>
+          <% end %>
+          <%# Loop through each series in the collection %>
+          <div class="series-contents-container">
+            <%= render partial: 'ead_series_contents', locals: { contents: Ead::DisplayGroup.build_display_groups(f.object.ead_doc.series_and_subseries), f: f, series_title: nil, parent_title: nil, nested: false } %>
+          </div>
         </div>
-        <% if f.object.ead_doc.digital_content? %>
-          <div class="mb-2"><%= render Icons::OnlineComponent.new classes: 'me-1 align-text-bottom text-digital-blue' %><span class="fw-semibold">Digital content</span> - Some materials from this collection are available online.</div>
-        <% end %>
-        <%# Loop through each series in the collection %>
-        <div class="series-contents-container">
-          <%= render partial: 'ead_series_contents', locals: { contents: Ead::DisplayGroup.build_display_groups(f.object.ead_doc.series_and_subseries), f: f, series_title: nil, parent_title: nil, nested: false } %>
+      <% else %>
+        <p>Enter the containers you want to request.</p>
+        <div id="manual-input-container" class="d-flex flex-column">
+          <div>
+            <%= fields_for "patron_request[aeon_item][manual-input-1]" do |form_fields| %>
+              <%= form_fields.text_field :title, placeholder: 'e.g., Box 1, Reel 5', required: true, id: 'manual-input-1', data: { prepend: 'manual-input-1', action: 'item-selector#input', index: 1 } %>
+              <%= form_fields.hidden_field :id, id: 'manual-input-1', value: SecureRandom.uuid %>
+            <% end %>
+          </div>
         </div>
-      </div>
+
+        <button class="btn btn-link px-0 text-black mt-1" data-action="item-selector#addInputField accordion-form#enableNextButton" data-template="#inputForm">
+          <i class="bi bi-plus-square-fill text-green me-1"></i>Add container
+        </button>
+
+        <template id="inputForm">
+          <div data-root-node="true" class="mt-2">
+            <%= fields_for "patron_request[aeon_item][manual-input-__INDEX__]" do |form_fields| %>
+              <%= form_fields.text_field :title, placeholder: 'e.g., Box 1, Reel 5', id: 'manual-input-__INDEX__', required: true, data: { prepend: 'manual-input-__INDEX__', action: 'item-selector#input', index: "__INDEX__" } %>
+              <%= form_fields.hidden_field :id, id: 'manual-input-__INDEX__', value: SecureRandom.uuid %>
+            <% end %>
+            <button class="btn btn-link px-0 text-black" data-index="__INDEX__" data-action="item-selector#removeInputField">
+              <i class="bi bi-dash-square-fill text-danger me-1"></i>Delete
+            </button>
+          </div>
+        </template>
+      <% end %>
     <% end %>
   <% end %>
 <% else %>
