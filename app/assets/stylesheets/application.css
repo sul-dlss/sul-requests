@@ -552,6 +552,11 @@ label.btn-close {
 
 .appointments-item {
   flex-wrap: wrap;
+
+  .spinner-grow-sm {
+    --bs-spinner-width: 0.375rem;
+    --bs-spinner-height: 0.375rem;
+  }
 }
 
 #reading:has(.appointments-item:only-child),
@@ -690,6 +695,30 @@ label.btn-close {
     &:last-child {
       border-bottom: none;
     }
+  }
+}
+
+@layer framework {
+  .saved-item:last-child {
+    border-bottom: none !important;
+  }
+}
+
+.save-for-later-container {
+  opacity: 1;
+  transition: opacity 0.3s ease, display 0.3s allow-discrete;
+
+  @starting-style {
+    opacity: 0;
+  }
+}
+
+.saved-item {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+
+  @starting-style {
+    opacity: 0;
   }
 }
 

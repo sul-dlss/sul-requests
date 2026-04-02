@@ -3,12 +3,13 @@
 module Aeon
   # Request item identifier
   class RequestItemIdentifierComponent < ViewComponent::Base
-    attr_reader :request
+    attr_reader :classes, :request
 
     delegate :ead?, :volume, to: :request
 
-    def initialize(request:)
+    def initialize(request:, classes: 'p-1 bg-fog-light fw-semibold')
       @request = request
+      @classes = classes
     end
 
     def call_number

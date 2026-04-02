@@ -34,7 +34,10 @@ export default class extends Controller {
     event.stopPropagation();
 
     const currentItem = event.target.closest('[data-content-id]');
-    const nextItem = currentItem.nextElementSibling;
+    let nextItem = currentItem.nextElementSibling;
+    while (nextItem && !nextItem.offsetParent) {
+      nextItem = nextItem.nextElementSibling;
+    }
 
     const currentCollapse = currentItem.querySelector('.accordion-collapse');
     const nextCollapse = nextItem?.querySelector('.accordion-collapse');

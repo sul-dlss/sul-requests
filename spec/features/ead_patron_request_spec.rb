@@ -39,9 +39,11 @@ RSpec.describe 'Requesting an item from an EAD', :js do
   let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
 
   let(:stub_aeon_client) do
-    instance_double(AeonClient, find_user: aeon_user, create_request: created_request, reading_rooms:, available_appointments:)
+    instance_double(AeonClient, find_user: aeon_user, create_request: created_request, update_request_route: draft_request,
+                                reading_rooms:, available_appointments:)
   end
-  let(:created_request) { instance_double(Aeon::Request, id: 123, transaction_number: 'abc123', submitted?: true, draft?: false, valid?: true) }
+  let(:created_request) { Aeon::Request.new(transaction_number: 123, call_number: 'SC0097', web_request_form: 'multiple', item_info1: '') }
+  let(:draft_request) { Aeon::Request.new(transaction_number: 123, call_number: 'SC0097', web_request_form: 'multiple', item_info1: '', transaction_status: 5) }
 
   let(:available_appointments) do
     [instance_double(Aeon::AvailableAppointment,
@@ -91,6 +93,54 @@ RSpec.describe 'Requesting an item from an EAD', :js do
                                                                         item_volume: 'Box 12',
                                                                         site: 'SPECUA'
                                                                       ))
+    end
+
+    it 'allows the user to save reading room items for later' do # rubocop:disable RSpec/ExampleLength
+      visit new_archives_request_path(value: 'http://example.com/ead.xml')
+
+      choose 'Reading room appointment'
+      click_button 'Continue'
+
+      click_link 'Computers and Typesetting'
+      click_link 'Legal size documents'
+      check 'Box 12'
+      click_link 'Volume A, The TeXbook'
+      check 'Box 13'
+      click_button 'Continue'
+
+      # Submit disabled: no items have appointments
+      expect(page).to have_button('Submit request', disabled: true)
+
+      # Assign appointment to first item
+      within('[data-content-id]', text: 'Box 12', match: :first) do
+        click_button 'Select existing appointment'
+        click_button 'Feb 19'
+      end
+
+      # Submit disabled: second item has no appointment
+      expect(page).to have_button('Submit request', disabled: true)
+
+      # Save second item for later
+      first('[data-content-id]', text: 'Box 13').click_link('Save for later')
+      expect(page).to have_css('.saved-item')
+
+      # Submit enabled: one with appointment, one saved
+      expect(page).to have_button('Submit request', disabled: false)
+
+      # Undo restores the item
+      click_link 'Undo'
+      expect(page).to have_no_css('.saved-item')
+
+      # Submit disabled: restored item has no appointment
+      expect(page).to have_button('Submit request', disabled: true)
+
+      # Save both items for later
+      first('[data-content-id]', text: 'Box 12').click_link('Save for later')
+      first('[data-content-id]', text: 'Box 13').click_link('Save for later')
+      expect(page).to have_css('.saved-item', count: 2)
+
+      # Submit disabled: all items saved, nothing to submit
+      expect(page).to have_button('Submit request', disabled: true)
     end
 
     it 'allows the user to submit a request with details about the portion of the item to be digitized' do # rubocop:disable RSpec/ExampleLength

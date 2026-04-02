@@ -1,0 +1,15 @@
+<div class="save-for-later-container border rounded p-3 mb-3" data-save-for-later-target="container" hidden>
+  <h3 class="h4 text-cardinal"><i class="bi bi-pin-angle-fill me-2 text-digital-red"></i>Saved for later</h3>
+  <ul id="save-for-later-items-<%= request_type %>" class="list-unstyled" data-save-for-later-target="items"></ul>
+</div>
+
+<template id="save-for-later-spinner-template">
+  <li class="appointments-item rounded mb-2 p-2 d-flex row-gap-2 justify-content-between text-nowrap align-items-center">
+    <span class="d-flex gap-1 align-items-center text-digital-red">
+      <i class="bi bi-pin-angle-fill me-1"></i>Saving
+      <span class="spinner-grow spinner-grow-sm ms-1"></span>
+      <span class="spinner-grow spinner-grow-sm"></span>
+      <span class="spinner-grow spinner-grow-sm"></span>
+    </span>
+  </li>
+</template>

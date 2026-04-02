@@ -27,6 +27,9 @@ Rails.application.routes.draw do
   post 'change_pin', to: 'reset_pins#change'
 
   resources :patron_requests, only: [:new, :show, :create] do
+    collection do
+      post :save_for_later
+    end
     resource :needed_date, only: [:edit, :update, :show]
     resources :admin_comments
   end

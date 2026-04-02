@@ -22,6 +22,7 @@ class PatronAbility
     clear_aliased_actions
     alias_action :index, :show, to: :read
     alias_action :edit, to: :update
+    alias_action :save_for_later, to: :create
 
     can :new, PatronRequest do |request|
       can?(:request_pickup, request) || can?(:request_scan, request)
