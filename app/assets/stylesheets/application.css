@@ -693,6 +693,30 @@ label.btn-close {
   }
 }
 
+@layer framework {
+  .saved-item:last-child {
+    border-bottom: none !important;
+  }
+}
+
+.save-for-later-container {
+  opacity: 1;
+  transition: opacity 0.3s ease, display 0.3s allow-discrete;
+
+  @starting-style {
+    opacity: 0;
+  }
+}
+
+.saved-item {
+  opacity: 1;
+  transition: opacity 0.3s ease !important;
+
+  @starting-style {
+    opacity: 0;
+  }
+}
+
 .custom-select {
   .selected {
     background-color: var(--bs-primary-bg-subtle);

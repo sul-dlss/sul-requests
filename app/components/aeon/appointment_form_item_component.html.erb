@@ -1,15 +1,20 @@
-<li data-controller="selected-item-form" data-action="input->selected-item-form#updateStatus" class="appointments-item rounded mb-2 p-2 d-flex row-gap-2 text-nowrap align-items-center" data-content-id="<%= dom_id %>">
+<li data-controller="selected-item-form" data-action="input->selected-item-form#updateStatus" class="appointments-item rounded mb-2 p-2 d-flex row-gap-2 justify-content-between text-nowrap align-items-center" data-content-id="<%= dom_id %>">
   <div class="d-flex align-items-center">
     <i class="bi bi-check2 selected-item-status"></i>
-    <span class="text-black fw-semibold selected-item-title text-wrap"><%= title %></span>
-    <button class="btn btn-link p-0 ps-1 selected-item-remove" data-action="item-selector#remove" data-item-selector-id-param="<%= dom_id %>">
-      <i class="bi bi-trash"></i><span class="visually-hidden"> Delete <%= title %></span>
-    </button>
+    <div class="d-flex flex-column">
+      <span class="text-black fw-semibold selected-item-title text-wrap"><%= title %></span>
+      <div>
+        <a href="#" class="btn btn-link p-0 ps-1 su-underline fs-14" data-action="save-for-later#save" data-save-for-later-id-param="<%= dom_id %>"><i class="bi bi-pin-angle-fill me-1"></i>Save for later</a>
+        <button class="btn btn-link p-0 ps-1 selected-item-remove" data-action="item-selector#remove" data-item-selector-id-param="<%= dom_id %>">
+          <i class="bi bi-trash"></i><span class="visually-hidden"> Delete <%= title %></span>
+        </button>
+      </div>
+    </div>
   </div>
   <%= fields_for base_name, object do |f| %>
     <div class="fs-6 mb-0 w-100 form-label fw-semibold redesign-required-label possibly-visually-hidden-appointments-label">Appointment</div>
 
-    <div class="dropdown custom-select" data-controller="appointment-select" data-action="change->appointment-select#updateSelected appointment-select:change@document->appointment-select#updateItemCounts">
+    <div class="dropdown custom-select" data-controller="appointment-select" data-action="change->appointment-select#updateSelected input->appointment-select#updateSelected appointment-select:change@document->appointment-select#updateItemCounts">
       <%= f.hidden_field :appointment_id, class: 'visually-hidden', data: { 'appointment-select-target': :input, 'required-for-submit': true } %>
       <button class="py-1 btn border bg-white dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-appointment-select-target="button">
         Select existing appointment

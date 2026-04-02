@@ -92,30 +92,28 @@
 
 <!-- aeon reading room request -->
 <!-- removed any 'can do this' part for both -->
-<%= render AccordionStepComponent.new(request: f.object, id: 'reading', classes: ['d-none'], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { controller: 'status-counter', action: 'selected-item-form:status-changed->status-counter#update item-selector:changed@document->status-counter#update', 'patronrequest-forRequestType': 'pickup' }, submit: true) do |c| %>
+<%= render AccordionStepComponent.new(request: f.object, id: 'reading', classes: ['d-none'], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { controller: 'status-counter save-for-later', action: 'selected-item-form:status-changed->status-counter#update item-selector:changed@document->status-counter#update save-for-later:changed->status-counter#update save-for-later:changed->accordion-form#reenableNextButtons', 'patronrequest-forRequestType': 'pickup' }, submit: true) do |c| %>
   <% c.with_title.with_content('Reading room') %>
   <% c.with_body do %>
     <%= render 'reading_options', f: %>
   <% end %>
   <% c.with_footer do %>
     <span class="px-2 py-1" data-status-counter-target="counter">
-      0 complete
-      0 drafts
+      0 items ready to submit
     </span>
   <% end %>
 <% end %>
 
 <!-- aeon digitization request -->
 
-<%= render AccordionStepComponent.new(request: f.object, id: 'digitization', classes: ['d-none'], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { controller: 'status-counter', action: 'selected-item-form:status-changed->status-counter#update item-selector:changed@document->status-counter#update', 'patronrequest-forRequestType': 'scan' }, submit: true) do |c| %>
+<%= render AccordionStepComponent.new(request: f.object, id: 'digitization', classes: ['d-none'], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { controller: 'status-counter save-for-later', action: 'selected-item-form:status-changed->status-counter#update item-selector:changed@document->status-counter#update save-for-later:changed->status-counter#update save-for-later:changed->accordion-form#reenableNextButtons', 'patronrequest-forRequestType': 'scan' }, submit: true) do |c| %>
   <% c.with_title.with_content('Digitization') %>
   <% c.with_body do %>
     <%= render 'digitization_options', f: %>
   <% end %>
   <% c.with_footer do %>
     <span class="px-2 py-1" data-status-counter-target="counter">
-      0 complete
-      0 drafts
+      0 items ready to submit
     </span>
   <% end %>
 <% end %>

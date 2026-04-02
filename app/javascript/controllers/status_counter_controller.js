@@ -8,9 +8,10 @@ export default class extends Controller {
   }
 
   update(event) {
-    const completeCount = this.element.querySelectorAll('[data-selected-item-form-status-value="complete"]').length;
-    const draftCount =this.element.querySelectorAll('[data-selected-item-form-status-value="incomplete"]').length;
+    const active = ':not([data-saved-for-later])';
+    const completeCount = this.element.querySelectorAll(`[data-selected-item-form-status-value="complete"]${active}`).length;
+    const noun = completeCount === 1 ? 'item' : 'items';
 
-    this.counterTarget.innerHTML = `${completeCount} complete · ${draftCount} drafts`;
+    this.counterTarget.innerHTML = `${completeCount} ${noun} ready to submit`;
   }
 }

@@ -33,7 +33,13 @@ export default class extends Controller {
   emptyFields(accordion) {
     const formData = new FormData(accordion.closest('form'));
 
-    return Array.from(accordion.querySelectorAll('[required],input[name="patron_request[barcodes][]"]')).find(x => formData.getAll(x.name).every(x => !x))
+    const requiredEmpty = Array.from(accordion.querySelectorAll('[required],input[name="patron_request[barcodes][]"]')).find(x => formData.getAll(x.name).every(x => !x))
+    if (requiredEmpty) return requiredEmpty;
+
+    // Check data-required-for-submit fields on visible items
+    return Array.from(accordion.querySelectorAll('[data-required-for-submit]'))
+      .filter(x => x.closest('[data-content-id]')?.offsetParent)
+      .find(x => formData.getAll(x.name).every(x => !x))
   }
 
   enableAnyNextButtons(event) {
