@@ -139,6 +139,10 @@ module Ead
       @series_and_subseries = c01_nodes.map { |node| Node.from(node) }.select(&:displayable?)
     end
 
+    def digital_content?
+      doc.xpath('//did/dao').any?
+    end
+
     # Node represents a c0* component in the EAD hierarchy. It can be a series, subseries, or file depending on its level and children.
     class Node
       def self.from(node)
