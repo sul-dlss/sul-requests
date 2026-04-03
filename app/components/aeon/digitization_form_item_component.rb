@@ -3,18 +3,11 @@
 module Aeon
   # Render an accordion item for a digitization form step.
   class DigitizationFormItemComponent < ViewComponent::Base
-    attr_reader :title, :dom_id, :object, :base_name
+    attr_reader :base_name, :object
 
-    def initialize(title:, dom_id:, object: nil, base_name: nil, collapsed: true)
-      @title = title
-      @dom_id = dom_id
-      @object = object
+    def initialize(base_name: nil, object: nil)
       @base_name = base_name || "item[#{dom_id}]"
-      @collapsed = collapsed
-    end
-
-    def collapsed?
-      @collapsed
+      @object = object
     end
   end
 end
