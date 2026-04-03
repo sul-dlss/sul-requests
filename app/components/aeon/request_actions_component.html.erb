@@ -22,25 +22,18 @@
         <% end %>
       <% end %>
       <!-- Delete modal -->
-      <div class="modal fade" id="delete-<%= transaction_number %>" tabindex="-1" aria-labelledby="title-<%= transaction_number %>" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h2 class="modal-title" id="title-<%= transaction_number %>">Delete request?</h2>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body fw-normal">
-              <div><span class="fw-bold">Title:</span> <%= title %></div>
-              <div><span class="fw-bold">Request:</span> <%= request_type %> <%= render Aeon::RequestItemDetailComponent.new(request:, variant: :text) %></div>
-              <div class="mt-2 fw-bold">This action cannot be undone.</div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
-              <%= form_with url: aeon_request_path(transaction_number), method: 'delete' do %>
-                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Yes - Delete</button>
-              <% end %>
-            </div>
-          </div>
-        </div>
-      </div>
+      <%= render ModalComponent.new(id: "delete-#{transaction_number}") do |component| %>
+        <% component.with_title.with_content('Delete request?') %>
+        <% component.with_body do %>
+            <div><span class="fw-bold">Title:</span> <%= title %></div>
+            <div><span class="fw-bold">Request:</span> <%= request_type %> <%= render Aeon::RequestItemDetailComponent.new(request:, variant: :text) %></div>
+            <div class="mt-2 fw-bold">This action cannot be undone.</div>
+        <% end %>
+        <% component.with_footer do %>
+          <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
+          <%= form_with url: aeon_request_path(transaction_number), method: 'delete' do %>
+            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Yes - Delete</button>
+          <% end %>
+        <% end %>
+      <% end %>
     </div>
