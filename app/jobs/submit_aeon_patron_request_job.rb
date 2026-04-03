@@ -6,28 +6,25 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   queue_as :default
   retry_on Faraday::ConnectionFailed
 
-  def perform(patron_request) # rubocop:disable Metrics/AbcSize
+  def perform(patron_request)
     return unless patron_request.aeon_page?
-    return perform_ead_request(patron_request) if patron_request.ead_url.present?
 
-    patron_request.selected_items.each do |folio_item|
-      request = as_aeon_create_request_data(patron_request, folio_item, patron_request.aeon_item&.dig(folio_item.id) || {})
+    patron_request.aeon_item.each do |id, volume_params|
+      request = request_data(patron_request, volume_params, id)
       response = submit_aeon_request(request)
 
-      patron_request.aeon_api_responses.where(item_id: folio_item.id).delete_all
-      patron_request.aeon_api_responses.create(item_id: folio_item.id, request_data: request.as_json, response_data: response.as_json)
+      patron_request.aeon_api_responses.where(item_id: id).delete_all
+      patron_request.aeon_api_responses.create(item_id: id, request_data: request.as_json, response_data: response.as_json)
     end
   end
 
-  def perform_ead_request(patron_request)
-    patron_request.aeon_item.each_value do |volume_params|
-      request = as_aeon_create_ead_request_data(patron_request, volume_params)
-      response = submit_aeon_request(request)
-
-      item_id = "#{request.call_number} #{request.item_volume}"
-
-      patron_request.aeon_api_responses.where(item_id: item_id).delete_all
-      patron_request.aeon_api_responses.create(item_id: item_id, request_data: request.as_json, response_data: response.as_json)
+  def request_data(patron_request, volume_params, id)
+    if patron_request.ead_url.present?
+      as_aeon_create_ead_request_data(patron_request,
+                                      volume_params)
+    else
+      folio_item = patron_request.selected_items.find { |item| item.id == id }
+      as_aeon_create_request_data(patron_request, folio_item, volume_params)
     end
   end
 
