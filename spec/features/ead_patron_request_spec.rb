@@ -54,7 +54,8 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       Nokogiri::XML(File.read('spec/fixtures/sc0097.xml')).tap(&:remove_namespaces!)
     end
 
-    it 'allows the user to submit a request for an EAD item' do
+    # rubocop:disable RSpec/ExampleLength
+    it 'allows the user to submit a reading room request for an EAD item' do
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
 
       expect(page).to have_content('New request')
@@ -71,6 +72,9 @@ RSpec.describe 'Requesting an item from an EAD', :js do
 
       check 'Box 12'
       click_button 'Continue'
+
+      expect(page).to have_no_css('.selected-items-container .accordion-button')
+      expect(page).to have_css('.selected-item-title', text: 'Box 1')
 
       # In the Appointment step
       click_button 'Select existing appointment'
@@ -104,6 +108,25 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       check 'Box 12'
       click_button 'Continue'
 
+      expect(page).to have_css('.accordion-button[disabled][aria-expanded="true"]', text: 'Box 12')
+
+      # Go back to edit item selection
+      within('#items-accordion') do
+        click_button 'Edit'
+      end
+
+      click_link 'TeX milieu'
+
+      # Now there are 2 selected items
+      check 'Box 14'
+      click_button 'Continue'
+
+      within('.selected-items-container') do
+        expect(page).to have_css('.accordion-button[aria-expanded="true"]', text: 'Box 12')
+        expect(page).to have_css('.accordion-button[aria-expanded="false"]', text: 'Box 14')
+        expect(page).to have_no_css('.accordion-button[disabled]')
+      end
+
       expect(page).to have_content('Requested pages')
       fill_in 'Requested pages', with: 'Pages 1-10'
       fill_in 'Additional information', with: 'Testing only'
@@ -123,6 +146,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
                                                                       ))
     end
   end
+  # rubocop:enable RSpec/ExampleLength
 
   context 'with single item ead' do
     let(:eadxml) do
@@ -144,6 +168,9 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       check 'Box 1'
       click_button 'Continue'
 
+      expect(page).to have_no_css('.selected-items-container .accordion-button')
+      expect(page).to have_css('.selected-item-title', text: 'Box 1')
+
       # In the Appointment step
       expect(page).to have_content('Field Reading Room')
       expect(page).to have_content('Hours: Monday - Friday, 9:00 - 4:45 pm')
@@ -152,6 +179,20 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       # In the Appointment step
       click_button 'Select existing appointment'
       click_button 'Feb 19'
+    end
+
+    it 'shows expanded item info for digitization request' do
+      visit new_archives_request_path(value: 'http://example.com/ead.xml')
+      choose 'Digitization'
+      check 'I agree to these terms'
+      click_button 'Continue'
+
+      check 'Box 1'
+      click_button 'Continue'
+
+      within('.selected-items-container') do
+        expect(page).to have_css('.accordion-button[disabled][aria-expanded="true"]', text: 'Box 1')
+      end
     end
   end
 
