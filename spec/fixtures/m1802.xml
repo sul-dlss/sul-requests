@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ead xmlns="urn:isbn:1-931666-22-9" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:isbn:1-931666-22-9 http://www.loc.gov/ead/ead.xsd">
+  <eadheader countryencoding="iso3166-1" dateencoding="iso8601" findaidstatus="export-guide" langencoding="iso639-2b" repositoryencoding="iso15511">
+    <eadid countrycode="US" mainagencycode="US-CSt" url="https://archives.stanford.edu/findingaid/ark:/22236/s1de2cc019-ee6f-4e08-851f-01e92c05103f">m1802.xml</eadid>
+    <filedesc>
+      <titlestmt>
+        <titleproper type="filing">El Andar Magazine records</titleproper>
+        <titleproper>Guide to the El Andar Magazine records <num>M1802</num></titleproper>
+        <author>updated by David Krah</author>
+      </titlestmt>
+      <publicationstmt>
+        <publisher>Department of Special Collections and University Archives</publisher>
+        <p>
+          <date>2023</date>
+        </p>
+        <address>
+          <addressline>Green Library</addressline>
+          <addressline>557 Escondido Mall</addressline>
+          <addressline>Stanford, California 94305-6064</addressline>
+          <addressline>specialcollections@stanford.edu</addressline>
+          <addressline>URL: <extptr xlink:href="https://library.stanford.edu/libraries/special-collections" xlink:show="new" xlink:title="https://library.stanford.edu/libraries/special-collections" xlink:type="simple"/></addressline>
+        </address>
+      </publicationstmt>
+    </filedesc>
+    <profiledesc>
+      <creation>This finding aid was produced using ArchivesSpace on <date>2026-03-11 09:18:26 -0700</date>.</creation>
+      <langusage>English</langusage>
+      <descrules>Describing Archives: A Content Standard</descrules>
+    </profiledesc>
+  </eadheader>
+  <archdesc level="collection">
+    <did>
+      <repository>
+        <corpname>Department of Special Collections and University Archives</corpname>
+      </repository>
+      <unittitle>El Andar Magazine records</unittitle>
+      <origination label="Creator">
+        <corpname role="pbl" rules="dacs">El Andar magazine</corpname>
+      </origination>
+      <origination label="Creator">
+        <persname role="edt" rules="dacs" source="local">Reynolds, Julia</persname>
+      </origination>
+      <origination label="Creator">
+        <persname role="pbl" rules="local" source="local">Chino, Jorge</persname>
+      </origination>
+      <unitid>M1802</unitid>
+      <unitid type="ark">
+        <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1de2cc019-ee6f-4e08-851f-01e92c05103f" xlink:show="new">Archival Resource Key</extref>
+      </unitid>
+      <physdesc altrender="whole">
+        <extent altrender="materialtype spaceoccupied">55 Linear Feet</extent>
+        <extent altrender="carrier">43 boxes; 1 flat box </extent>
+      </physdesc>
+      <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1989/2005" type="inclusive">1989-2005</unitdate>
+      <physloc id="aspace_6ac9bc3673afc6069007707ead53c9d4">Special Collections and University Archives materials are stored offsite and must be paged three business days in advance. For more information on paging collections, see the department's website: https://library.stanford.edu/libraries/special-collections.</physloc>
+      <langmaterial><language langcode="eng">English</language>
+.    </langmaterial>
+    </did>
+    <accessrestrict id="aspace_03cbeb652f1e8e9b04bb7ccf0c42c55b">
+      <head>Access</head>
+      <p>The materials are open for research use. Material must be requested at least 36 hours in advance of intended use. Box level listing only. Audio-visual materials are not available in original format, and must be reformatted to a digital use copy.</p>
+    </accessrestrict>
+    <acqinfo id="aspace_98c48e25f47252939c9770c11e15f05a">
+      <head>Acquisition</head>
+      <p>Purchased, 2010</p>
+    </acqinfo>
+    <bioghist id="aspace_e2bb5e7b3a0002eede9771ce218b7cdf">
+      <head>Historical Note</head>
+      <p>El Andar magazine was a North American publication (based in Santa Cruz, California) started as a print magazine in 1989, that published Latino written and visual journalism. It has visual appeal, humor, photo essays, investigative journalism, poetry and short fiction, and satirical editorial cartoons. It transitioned to online-only publishing in 2000 until shutting down around 2010. The editorial and publishing team included Julia Reynolds, Jorge Chino, and Rachel Barron.</p>
+    </bioghist>
+    <processinfo id="aspace_54070597f2369a5cd74eebfb04b81a08">
+      <head>Processing Information</head>
+      <p>The collection is unprocessed, however is open for research with a box-level survey description.</p>
+    </processinfo>
+    <userestrict id="aspace_b159af64837acb67c956e3057a29f76a">
+      <head>Restrictions</head>
+      <p>While Special Collections is the owner of the physical and digital items, permission to examine collection materials is not an authorization to publish. These materials are made available for use in research, teaching, and private study. Any transmission or reproduction beyond that allowed by fair use requires permission from the owners of rights, heir(s) or assigns.</p>
+    </userestrict>
+    <prefercite id="aspace_8452934bafc7377f15d9f1396bde1789">
+      <head>Preferred Citation</head>
+      <p>[Identification of item], El Andar Magazine Records, M1802, Dept. of Special Collections, Stanford Libraries, Stanford, Calif.</p>
+    </prefercite>
+    <scopecontent id="aspace_afd72c939e6273473093485afdd3ac66">
+      <head>Scope and Contents</head>
+      <p>Includes business and administration files, editorial files, grants and funding proposals, research files, magazine issues, computer files,correspondence, photographs and other graphical files, and awards.</p>
+    </scopecontent>
+    <controlaccess>
+      <subject source="lcsh">Hispanic Americans -- California -- Periodicals</subject>
+    </controlaccess>
+    <dsc>
+      <c01 id="aspace_4abed5b8676d36189286e21d66656296" level="series">
+        <did>
+          <unittitle>Box-level survey</unittitle>
+          <unitid>Series 1</unitid>
+          <unitid type="ark">
+            <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1ab74896e-d174-462e-8104-6971c7cb68be" xlink:show="new">Archival Resource Key</extref>
+          </unitid>
+          <langmaterial><language langcode="eng">English</language>.</langmaterial>
+        </did>
+        <c02 id="aspace_9cf242aae2f16a8ea6214ff69c22cd84" level="file">
+          <did>
+            <unittitle>Admin - Jorge. Correspondence, invoices, subscription info , flyers</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s143426b50-6c75-4b70-b3b5-3e67ba3664a0" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate calendar="gregorian" datechar="creation" era="ce" type="inclusive">circa 1999-2001</unitdate>
+            <langmaterial><language langcode="eng">English</language>.</langmaterial>
+            <container id="aspace_def1e0c93bb96f62402e61a113e2bff1" label="Mixed Materials" type="carton">1</container>
+          </did>
+        </c02>
+        <c02 id="aspace_1f3d79bd984267330884eec41d861044" level="file">
+          <did>
+            <unittitle>Projects and proposals: Travel, conferences, projects, FOIA (Freedom of Information Act), Hank Energy Deal, Santa Cruz New Mexico, investigative journalism. PEW.</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1ece0b131-8ae2-432a-8f6d-d4610e0fc1ec" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate calendar="gregorian" datechar="creation" era="ce" type="inclusive">2002-2001</unitdate>
+            <langmaterial><language langcode="eng">English</language>.</langmaterial>
+            <container id="aspace_f9ee6692b2fea1d8ae5aea50db7857f6" label="Mixed Materials" type="carton">2</container>
+          </did>
+        </c02>
+        <c02 id="aspace_8915dec90c9ad4fd2a0c25128607d023" level="file">
+          <did>
+            <unittitle>El Andar Foundation: Check stubs, requisitions, statements, Eddie Santiago signed photo, correspodence, translation, project info, planned parenthood info, contracts, business expenses</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1599c28df-64d3-4ffa-97ed-e993276d279a" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1994- 2020</unitdate>
+            <container id="aspace_f29689bb0ce0d691d271db30f84fecb0" label="Mixed Materials" type="carton">3</container>
+          </did>
+        </c02>
+        <c02 id="aspace_b457448e58ff638270063a452400523c" level="file">
+          <did>
+            <unittitle>El Andar Foundation: Business files, bookkeeping, check stubs, utililties bills</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s10bdf0dc5-3949-43c6-bdbc-1ccb4f5490b1" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1992-1993</unitdate>
+            <container id="aspace_9f75f2300e0cbcd3524ca8dae235330a" label="Mixed Materials" type="carton">4</container>
+          </did>
+        </c02>
+        <c02 id="aspace_e12a90d6d5539b06edb91f300487357a" level="file">
+          <did>
+            <unittitle>(4) 5.25" Hard disk removable cartridge with El Andar frm 1995 / 3.25 floppy disks in a box 1994-2002, some zip disks/ slides marked Ana Castillo / Slides of staff photos , 2001, disks with photos on them , photos and negatives Lea Tauriello and others, photos &amp; negatives of WAAA,  magazine "Hopscotch", newsletter, Chris Matthews (Poet)</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1f0c1372f-eff0-4edc-b425-34442a6981cb" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1994-2002</unitdate>
+            <container id="aspace_d3f9edc7f9f7b0aafc4c78f48047e770" label="Mixed Materials" type="carton">5</container>
+          </did>
+        </c02>
+        <c02 id="aspace_a48d97604ad75cd6e7872ab7555b05a1" level="file">
+          <did>
+            <unittitle>Fund info, grants recieved 1997, award, funding proposals, grant research, foundation information</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1070c356e-c83d-4603-a045-125600c44383" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1997</unitdate>
+            <container id="aspace_a784cf99e8f389848775f446ff6aa9f1" label="Mixed Materials" type="carton">6</container>
+          </did>
+        </c02>
+        <c02 id="aspace_9a3bf8b977f1283f5fb82dc41d14a38d" level="file">
+          <did>
+            <unittitle>Graphic design samples and works for hire, Coco Gallery New Mexico</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1ea13b6c8-fe1e-448a-8db7-de275f46c63a" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1991-1997</unitdate>
+            <container id="aspace_edd57594f52c2291a3c38f0cb8d7f1ec" label="Mixed Materials" type="carton">7</container>
+          </did>
+        </c02>
+        <c02 id="aspace_7ff01ff3e3dc4a58db28085a3d504004" level="file">
+          <did>
+            <unittitle>Bookkeeping files: Bank account receipts, collection agency correspondence, advertising budget, utilities</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1bdc55d44-8f86-4f44-880b-77b96f220cfa" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">circa 1990s-2000s</unitdate>
+            <container id="aspace_5d027313c6665ab335e6d4671ff2dcf7" label="Mixed Materials" type="carton">8</container>
+          </did>
+        </c02>
+        <c02 id="aspace_2b5f3ed03141096d4e00eda559efccb1" level="file">
+          <did>
+            <unittitle>Zip 100 MAC formatted disks (24), 3m 2mb disks (2), 3 music cds, 8 cds</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1a84170b9-5c1c-442b-bf13-366700e877e3" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1996-1997</unitdate>
+            <container id="aspace_7588d0c95c453a73e981e7dd33077b40" label="Mixed Materials" type="carton">9</container>
+          </did>
+        </c02>
+        <c02 id="aspace_1152fef77be9294bc72c8ec5222fe712" level="file">
+          <did>
+            <unittitle>Photos, slides, Editorial Files Spring 2000 (Almodovar Cover)</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s143499a65-fe5e-4371-86c5-ed5cf567bab5" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">2000</unitdate>
+            <container id="aspace_81489216e36980362de442aff57c3ea0" label="Mixed Materials" type="carton">9</container>
+          </did>
+        </c02>
+        <c02 id="aspace_1628e70946b4762824e83293d37f0819" level="file">
+          <did>
+            <unittitle>Editorial Files Fall 2000, George P. Bush (Hot Republican)</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s11fd229bc-e9d0-405d-9485-5356c90e37f6" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">2000</unitdate>
+            <container id="aspace_3f68df9f097d56da58350e23dc7c06c5" label="Mixed Materials" type="carton">9</container>
+          </did>
+        </c02>
+        <c02 id="aspace_e9f08d65b6240965a3725996f08368fb" level="file">
+          <did>
+            <unittitle>Editorial Files Summer 2000, Gloria Estefan Cover. Photos, email correspondence, one 3.5 floppy disk</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s13e3ae988-c016-4342-9d4f-856767290db6" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">2000</unitdate>
+            <container id="aspace_9d65c34055ea8ee59f472eeb78a0d436" label="Mixed Materials" type="carton">9</container>
+          </did>
+        </c02>
+        <c02 id="aspace_06d8860b12332d88883e6469573b06d1" level="file">
+          <did>
+            <unittitle>Editorial Files Spring 1999. Photos, slide negatives, correspondence, book</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s11544ce2a-5a67-4443-ac0d-84f881e626f7" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1999</unitdate>
+            <container id="aspace_046318367e4bfc9790e547adf7cbb801" label="Mixed Materials" type="carton">10</container>
+          </did>
+        </c02>
+        <c02 id="aspace_12059b2f8c24567491ba8a4585e42563" level="file">
+          <did>
+            <unittitle>El Andar Magazine Editorial Files Winter 1999. Editorial files, photographs</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1346b1f12-8cca-4b4b-96d1-4a918f2db64f" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1999</unitdate>
+            <container id="aspace_6e29c40250e7e4e06a0f5adae2f16a57" label="Mixed Materials" type="carton">10</container>
+          </did>
+        </c02>
+        <c02 id="aspace_60bf81b84d88b0eef2e165459fe5cce2" level="file">
+          <did>
+            <unittitle>Al Andar Advertisement files: Correspondence</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s16f56d9b6-c473-44aa-a66b-d459dbcb8de9" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1990s-2000s</unitdate>
+            <container id="aspace_15c9530572227ca84b7a0ed7684109fc" label="Mixed Materials" type="carton">11</container>
+          </did>
+        </c02>
+        <c02 id="aspace_c4520d13660f7811e2073117e5d52890" level="file">
+          <did>
+            <unittitle>Al Andar Advertisement files: Articles, photographs, some clippings, submissions and mail (2002)</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s148d52d28-0a5b-4908-b135-ba13f387b623" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">2002</unitdate>
+            <container id="aspace_b33776e916302617e026c83fdcbe470e" label="Mixed Materials" type="carton">12</container>
+          </did>
+        </c02>
+        <c02 id="aspace_5fb0ec1e5c26cf8173dd56bf47ec63cb" level="file">
+          <did>
+            <unittitle>Advertising files</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1018cf186-245d-44fe-af1e-6e0126a5b9c8" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1991-1992; 1998</unitdate>
+            <container id="aspace_e5924f1d61abdda291994bc0a03bfe06" label="Mixed Materials" type="carton">13</container>
+          </did>
+        </c02>
+        <c02 id="aspace_a82d9fbdba83d85f40f34d616890d0f5" level="file">
+          <did>
+            <unittitle>Editorial Files Summer/Fall 1999: One 3.5 floppy disk, photographs, slides</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1aecbc11c-a446-4d6f-b5e2-c6f6dd3ea469" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1999</unitdate>
+            <container id="aspace_9ec6f95a5e04499c691a440b0bb17d37" label="Mixed Materials" type="carton">10</container>
+          </did>
+        </c02>
+        <c02 id="aspace_3aeea1cce2dea1cfda43985edb110474" level="file">
+          <did>
+            <unittitle>El Andar Magazine Editorial Files Winter 1998: Articles, photographs, some clippings (box 1 of 2)</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s17c35894d-b926-403c-b17d-3ae6477bb0a0" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1998</unitdate>
+            <container id="aspace_7adc0af0d1c5d8da9f975e326c7ccaee" label="Mixed Materials" type="carton">10</container>
+          </did>
+        </c02>
+        <c02 id="aspace_f37b7e75fb3b56232a1735745476b6f1" level="file">
+          <did>
+            <unittitle>El Andar Magazine Editorial Files Winter 1998: Articles, photographs, some clippings (box 2 of 2)</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s12aa2bbaa-eb3a-4cd9-9c10-19f055f2ea75" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1998</unitdate>
+            <container id="aspace_3ad587680bb53d6d2cca29d8a0f41870" label="Mixed Materials" type="carton">10</container>
+          </did>
+        </c02>
+        <c02 id="aspace_a335c959e601479d4a43ef84adcca02d" level="file">
+          <did>
+            <unittitle>SACNAS: Society for Advancement of Chicano and Native Americans in Science: Current Issue and Past issues 1998 and 1999 editorial files</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s11dbe1c66-914c-44ca-a9b3-4fd31058389d" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1998-1999</unitdate>
+            <container id="aspace_805133d38dd99f73abc2bfbdc8e4fab3" label="Mixed Materials" type="carton">14</container>
+          </did>
+        </c02>
+        <c02 id="aspace_b2b26d6d5e06148ff852b3833c36d52a" level="file">
+          <did>
+            <unittitle>Budget Info. /Awards</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1bbe5dfe3-7d7d-4883-baf4-0b4d0bd153b3" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1999-2000</unitdate>
+            <container id="aspace_33546ce3acc888adbd2f997dc4ab720c" label="Mixed Materials" type="carton">14</container>
+          </did>
+        </c02>
+        <c02 id="aspace_35d8e92984253964aa499db6da401372" level="file">
+          <did>
+            <unittitle>Computer files (floppy disks and CDs)</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s167f4434b-c630-4058-9dd6-94074c92a874" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">circa 1990s-2000s</unitdate>
+            <container id="aspace_ce51b0a4627271ba948bb5c6ca678ee7" label="computer disks" type="carton">15</container>
+          </did>
+        </c02>
+        <c02 id="aspace_e33befe904b34d480ac706f7bf3bc48e" level="file">
+          <did>
+            <unittitle>Alphabetized list of Advertisers</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s13cb60966-4772-4eaa-8618-9fab7d11b786" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1991-1992</unitdate>
+            <container id="aspace_b5aa0336d07e81f70c0a77c49fb1d9be" label="Mixed Materials" type="carton">16</container>
+          </did>
+        </c02>
+        <c02 id="aspace_dbed02cd8cc85f0c77b2dd48e9fa49fc" level="file">
+          <did>
+            <unittitle>Julie's (co-editor) files: Grants, loans, public relations</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s104742283-682f-41a9-aabf-dfe9a7fb6b02" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1999-2000</unitdate>
+            <container id="aspace_8a86d5d6e54175316809ae270d3ebf13" label="Mixed Materials" type="carton">17</container>
+          </did>
+        </c02>
+        <c02 id="aspace_a4dc73097b95fadc3bcb6b22ac67d2e6" level="file">
+          <did>
+            <unittitle>Literary award submissions, work papers. Unopened entries for prizes for Literary Excellence. Negatives, business prospectus, printouts/course materials</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s11e9155ef-e809-45c6-9828-244f81b39758" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1993-2000</unitdate>
+            <container id="aspace_c888994ea6d0f631fe1e45b81bdd29dc" label="Mixed Materials" type="carton">18</container>
+          </did>
+        </c02>
+        <c02 id="aspace_143c569432b197d517148ae95c87e22e" level="file">
+          <did>
+            <unittitle>El Andor Back Issues, Zip discs and CDs</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s124d1a2f6-9947-4c59-8e6e-d6563113f38f" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1996-2000</unitdate>
+            <container id="aspace_73f83d6fa933d3562d882ed4eecd5e37" label="Mixed Materials" type="carton">19</container>
+          </did>
+        </c02>
+        <c02 id="aspace_24cf553a53d07f9c0e3be05b3b71f41f" level="file">
+          <did>
+            <unittitle>Business documents, posters, performing arts docs, VHS, cassette, floppies</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1aaa157df-f997-499f-9c37-03bd28d118f6" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1994-1995</unitdate>
+            <container id="aspace_920dcf217c1b6a9b0b2783882cfe62df" label="Mixed Materials" type="carton">20</container>
+          </did>
+        </c02>
+        <c02 id="aspace_8d367a2078eda0b11add88c1ad56e8a2" level="file">
+          <did>
+            <unittitle>Cancelled checks, tax returns, payroll, financial records</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1ef53531b-e15a-4b53-a7f4-c0ad83a88ca1" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1992-2001</unitdate>
+            <container id="aspace_f3e685086f0b54986d2dbaaeb1fa9adb" label="Mixed Materials" type="carton">21</container>
+          </did>
+        </c02>
+        <c02 id="aspace_d6e541ff8c9337b68a03dc8b7466ace4" level="file">
+          <did>
+            <unittitle>Photos, slides, notes, artwork, website design, business papers &amp; marketing, map with handwritten notes</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s16db7e58a-d625-4c9d-af2f-cb913f9888b7" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1997-1999</unitdate>
+            <container id="aspace_91130725730ead77a65db45c96f5e5ef" label="Mixed Materials" type="carton">22</container>
+          </did>
+        </c02>
+        <c02 id="aspace_0c6ff9d49b639320c4d740c4b5ef225f" level="file">
+          <did>
+            <unittitle>Media Resources, photographs</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1285e0178-5e84-4f8b-88e2-20392d52a711" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1998-2001</unitdate>
+            <container id="aspace_307e2647ffa4bb7d4dca1d7d06324d75" label="Mixed Materials" type="carton">23</container>
+          </did>
+        </c02>
+        <c02 id="aspace_ad6d24f362cfa83441640e657ea8b1eb" level="file">
+          <did>
+            <unittitle>Subject files</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1a5f2116e-4991-4615-883a-de6eb5bb03c7" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1990s</unitdate>
+            <container id="aspace_6fa4966de73ef3aed24a07bcd73e1cb5" label="Mixed Materials" type="carton">24</container>
+          </did>
+        </c02>
+        <c02 id="aspace_d43df5415c556375883c9887518939b6" level="file">
+          <did>
+            <unittitle>Subject files, photographs and negatives, marketing mailers, flyers, pamphlets</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1c75a3e9e-f957-4a4e-8206-5a3a293f4e39" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1994-1995</unitdate>
+            <container id="aspace_5d159f3b97e16e432fd2999eb675e3ad" label="Mixed Materials" type="carton">25</container>
+          </did>
+        </c02>
+        <c02 id="aspace_04838004acd9e97841ae9dfdde502a52" level="file">
+          <did>
+            <unittitle>Subject photo files</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s134fcfcbd-4c5e-49b2-b39a-6671579ebe12" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1990s</unitdate>
+            <container id="aspace_a95eaf71b409d83c5ce6b9a1ad6744b0" label="Mixed Materials" type="carton">26</container>
+          </did>
+        </c02>
+        <c02 id="aspace_4007af8b8be7b9eb7fa1955396c005ba" level="file">
+          <did>
+            <unittitle>Editorial files: Subject files, photographs</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s12b21d0f1-3998-46fa-aa9c-f321960dc28c" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1990s</unitdate>
+            <container id="aspace_d42d265536007b23b59286994cf3b911" label="Mixed Materials" type="carton">27</container>
+          </did>
+        </c02>
+        <c02 id="aspace_d773e05c1cd042b0f3568ac865d6ed13" level="file">
+          <did>
+            <unittitle>Editorial files: Subject files</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1975f1dcd-9b4a-410d-9156-97e4faa838a5" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1990s</unitdate>
+            <container id="aspace_12776cb46a8fc4c8341370f425d0cff2" label="Mixed Materials" type="carton">28</container>
+          </did>
+        </c02>
+        <c02 id="aspace_bcf2fef0f1e9f5c053b54b0529df3340" level="file">
+          <did>
+            <unittitle>"Strategy" files:  Style manual, fundraising, awards, strategic plan, meeting minutes</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s14bbf7b04-ff82-4176-a0c5-688f995b8865" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1996-1998</unitdate>
+            <container id="aspace_2486e2e1c8ea02332cc68f5ee0cf2cf0" label="Mixed Materials" type="carton">29</container>
+          </did>
+        </c02>
+        <c02 id="aspace_41126cc15f37d13a20d62431bc189f6b" level="file">
+          <did>
+            <unittitle>Administration: people, finances</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s18982724e-b4d0-4f70-8615-fbbdb8011d2c" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1995</unitdate>
+            <container id="aspace_0bb598c18d8fb72e65ba60c6bc9b8e53" label="Mixed Materials" type="carton">30</container>
+          </did>
+        </c02>
+        <c02 id="aspace_1d71ab993826faaaf625b96618552e36" level="file">
+          <did>
+            <unittitle>Administration: Subject files, photographs</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1e5125608-c11a-4731-ae89-f1db0c06f2a8" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1990-1992</unitdate>
+            <container id="aspace_4fea86f3a3cf2930d9c0d89693e6c16d" label="Mixed Materials" type="carton">31</container>
+          </did>
+        </c02>
+        <c02 id="aspace_5acdfc88e16d3e0ae341e6c2ff236172" level="file">
+          <did>
+            <unittitle>Administration: Subject files</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1c0c3b2e7-1d7b-49dd-a4e3-a6b32f1c68c6" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1990s</unitdate>
+            <container id="aspace_f8c7f8db55fe5e1dcd7205506897ff82" label="Mixed Materials" type="carton">32</container>
+          </did>
+        </c02>
+        <c02 id="aspace_810948d05a90c23b60d0e23539a70ddc" level="file">
+          <did>
+            <unittitle>National 1996 Files: Business and financial records</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1d8f94a6e-4c0d-47d3-aa8c-cd3903026a58" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1996-1999</unitdate>
+            <container id="aspace_355941ebf4f06afd0ccf64342e4f699a" label="Mixed Materials" type="carton">33</container>
+          </did>
+        </c02>
+        <c02 id="aspace_1ba88e11cdd56558875281acc882c103" level="file">
+          <did>
+            <unittitle>National 1997-1998 Files: Subject files, strategy, Nepantala</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s19ddba2ca-c411-4215-b581-e8d49b6d9652" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">1997-1998</unitdate>
+            <container id="aspace_2feff4312cb65922c4bc624417c0acc8" label="Mixed Materials" type="carton">34</container>
+          </did>
+        </c02>
+        <c02 id="aspace_f73c665b915a0db17d682899d1a68ea4" level="file">
+          <did>
+            <unittitle>Subject files, business and finance</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1056ea429-588d-4a02-8f3b-784c04efc59f" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">2002</unitdate>
+            <container id="aspace_8c1c871452ef5db235ac1841c77d02c1" label="Mixed Materials" type="carton">35</container>
+          </did>
+        </c02>
+        <c02 id="aspace_db1907d55208b705d9a7549e4776a5cf" level="file">
+          <did>
+            <unittitle>Translators' and translation files</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s14c3d8be5-e5bf-41d5-b59a-bbc28ec5a21a" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate datechar="creation" type="inclusive">2001-2002</unitdate>
+            <container id="aspace_5271be4d4ac2bb8561f2d89a6b02a941" label="Mixed Materials" type="carton">36</container>
+          </did>
+        </c02>
+        <c02 id="aspace_a7af3f88461d4f77da2086344b350d79" level="file">
+          <did>
+            <unittitle>Awards honoring Jorge Chino</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s14267fe56-c9e3-4f34-a8ed-7995d05b3ad8" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitdate calendar="gregorian" datechar="creation" era="ce" type="inclusive">2001</unitdate>
+            <langmaterial><language langcode="eng">English</language>.</langmaterial>
+            <container id="aspace_0becbd18a6a8f25fe700f0cbfaa10328" label="Mixed Materials" type="oversize-box">37 (flatbox)</container>
+          </did>
+        </c02>
+      </c01>
+    </dsc>
+  </archdesc>
+</ead>
