@@ -66,6 +66,11 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
       click_button 'Continue'
 
+      # TODO: Re-enable when accordion button disabled state is working
+      # within('.selected-items-container') do
+      # expect(page).to have_css('.accordion-button[disabled][aria-expanded="true"]', text: 'ABC 123')
+      # end
+
       fill_in 'Requested pages', with: 'Pages 1-10'
       choose 'Yes'
       fill_in 'Additional information', with: 'Testing only'
@@ -105,14 +110,33 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
   context 'with multiple holdings' do
     let(:folio_instance) { :special_collections_holdings }
 
+    # rubocop:disable RSpec/ExampleLength
     it 'allows the user to submit a digitization request' do
       choose 'Digitization'
       check 'I agree to these terms'
       click_button 'Continue'
 
+      # Proceed with 1 selected item
       check 'ABC 123'
+      click_button 'Continue'
+      within('.selected-items-container') do
+        expect(page).to have_css('.accordion-button[disabled][aria-expanded="true"]', text: 'ABC 123')
+      end
+
+      # Go back to edit item selection
+      within('#items-accordion') do
+        click_button 'Edit'
+      end
+
+      # Now there are 2 selected items
       check 'ABC 321'
       click_button 'Continue'
+
+      within('.digitization-accordion') do
+        expect(page).to have_css('.accordion-button[aria-expanded="true"]', text: 'ABC 123')
+        expect(page).to have_css('.accordion-button[aria-expanded="false"]', text: 'ABC 321')
+        expect(page).to have_no_css('.accordion-button[disabled]')
+      end
 
       fill_in 'Requested pages', with: 'Pages 1-10'
       choose 'Yes'
@@ -133,5 +157,6 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
                                                                         call_number: 'ABC 321'
                                                                       ))
     end
+    # rubocop:enable RSpec/ExampleLength
   end
 end

@@ -53,6 +53,7 @@ RSpec.describe 'Edit Aeon request', :js do
     it 'Opens the edit modal' do
       expect(page).to have_current_path(draft_aeon_requests_path)
       expect(page).to have_css('.modal-header h1', text: 'Edit request')
+      expect(page).to have_css('.selected-item-title', text: 'PR9195.1 .S56 NO.1')
     end
 
     # This serves to test RecordHeaderCardComponent
