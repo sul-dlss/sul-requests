@@ -69,6 +69,52 @@ export default class extends Controller {
     }
   }
 
+  input(event) {
+    if (event.currentTarget.value) {
+      const value = event.currentTarget.value;
+      const index = parseInt(event.currentTarget.dataset.index);
+      const id = `${event.currentTarget.dataset.prepend}-${value.trim().replace(/[^a-zA-Z0-9]/g, '').replaceAll(' ', '-').toLowerCase()}`;
+      const prevId = event.currentTarget.cloneNode(true).id;
+
+      // We need to rename all the form elements so they match what gets put in the selectedItemsValue
+      // If we don't mutate the user id based on user inputs we are going to have to do weird things in selectedItemsValueChanged
+      // so manual-input-1 becomes manual-input-1-box-1
+      document.querySelectorAll(`#${prevId}`).forEach(elem => {
+        elem.name = elem.name.replace(prevId, id);
+        elem.id = id;
+      })
+
+      this.selectedItemsValue = this.selectedItemsValue.filter((item) => item.index !== index);
+      this.selectedItemsValue = this.selectedItemsValue.concat([{titleParts: [value],
+                                                                 id: id,
+                                                                 index: index}]);
+    }
+  }
+
+  addInputField(event) {
+    event.preventDefault();
+    let template = document.querySelector(event.currentTarget.dataset.template);
+    if (template) {
+      const inputElements =  document.querySelectorAll('[data-index]');
+      const index = parseInt(inputElements[inputElements.length - 1].dataset.index);
+      const element = document.importNode(template.content, true);
+      const rootNode = element.querySelector('[data-root-node]');
+      rootNode.innerHTML = rootNode.innerHTML.replaceAll('__INDEX__', index + 1)
+      document.querySelector('#manual-input-container').appendChild(rootNode);
+    }
+  }
+
+  removeInputField(event) {
+    event.preventDefault()
+    event.currentTarget.parentElement.remove();
+    const index = parseInt(event.currentTarget.dataset.index);
+    this.selectedItemsValue = this.selectedItemsValue.filter((item) => item.index !== index);
+
+    // This has to be done here because after removal of the element the check doesn't run if attatched to the element.
+    const accordionController = this.application.getControllerForElementAndIdentifier(this.element, 'accordion-form');
+    accordionController.reenableNextButtons();
+  }
+
   remove(event) {
     event.preventDefault();
 
