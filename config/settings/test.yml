@@ -20,3 +20,7 @@ background_jobs:
 features:
   hold_recall_service: true
   scan_service: true
+
+folio:
+  okapi_url: 'http://example.com'
+  graphql_url: 'http://example.com'
