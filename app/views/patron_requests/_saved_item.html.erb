@@ -1,0 +1,13 @@
+<li id="save-for-later-spinner-<%= item_id %>" class="d-flex justify-content-between saved-item border-bottom py-1" data-content-id="<%= item_id %>">
+  <%= render Aeon::RequestItemIdentifierComponent.new(request: aeon_request) %>
+  <div>
+    <a href="#" class="su-underline me-1 fs-14"
+       data-action="save-for-later#undo"
+       data-save-for-later-transaction-number-param="<%= transaction_number %>">Undo</a>
+    <a href="#" class="btn btn-link p-0 ps-1"
+       data-action="save-for-later#delete"
+       data-save-for-later-transaction-number-param="<%= transaction_number %>">
+      <i class="bi bi-trash"></i>
+    </a>
+  </div>
+</li>

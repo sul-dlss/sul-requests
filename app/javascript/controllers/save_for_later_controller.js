@@ -11,94 +11,155 @@ export default class extends Controller {
     event.preventDefault()
 
     const { id } = event.params
-    const formItem = this.element.querySelector(`[data-content-id="${id}"]`)
+    const formItem = this.formItemFor(id)
     if (!formItem) return
 
-    this.clearRequiredInputs(formItem)
-    formItem.classList.add('d-none')
-    this.itemsTarget.appendChild(this.makeSavedItem(formItem))
-    this.update();
+    this.postSaveForLater(id)
+    this.disableItemInputs(id)
+    this.replaceWithSpinner(formItem, id)
+    this.containerTarget.hidden = false
     this.dispatch('changed')
   }
 
-  restore(event) {
+  undo(event) {
     event.preventDefault()
 
-    const { id } = event.params
+    const { transactionNumber } = event.params
+    const li = event.target.closest('[data-content-id]')
+    const id = li.dataset.contentId
 
-    this.removeSavedItem(id)
+    li.remove()
     this.restoreFormItem(id)
-    this.update();
+    this.update()
     this.dispatch('changed')
+
+    this.cancelAeonRequest(transactionNumber)
   }
 
-  hideWhenEmpty(event) {
-    requestAnimationFrame(() => {
-      if (this.itemsTarget.children.length === 0) {
-        this.containerTarget.hidden = true
-      }
-    })
+  delete(event) {
+    event.preventDefault()
+
+    const { transactionNumber } = event.params
+    const li = event.target.closest('[data-content-id]')
+    const id = li.dataset.contentId
+
+    li.remove()
+    this.removeFormItem(id)
+    this.update()
+    this.dispatch('changed')
+
+    this.cancelAeonRequest(transactionNumber)
   }
 
-  clearRequiredInputs(el) {
-    el.querySelectorAll('[data-required-for-submit]').forEach(input => {
-      input.value = ''
-      input.dispatchEvent(new Event('input', { bubbles: true }))
-    })
-    el.setAttribute('data-saved-for-later', '')
+  // Private
+
+  formItemFor(id) {
+    return this.element.querySelector(`[data-content-id="${id}"]:not(.saved-item)`)
   }
 
-  removeSavedItem(id) {
-    const savedItem = this.itemsTarget.querySelector(`[data-content-id="${id}"]`)
-    if (savedItem) savedItem.remove()
+  replaceWithSpinner(formItem, id) {
+    const spinner = document.createElement('div')
+    spinner.id = `save-for-later-spinner-${id}`
+    spinner.dataset.contentId = id
+    spinner.innerHTML = '<span class="spinner-border spinner-border-sm"></span>'
+    formItem.insertAdjacentElement('afterend', spinner)
+    formItem.classList.add('d-none')
   }
 
   restoreFormItem(id) {
-    const formItem = this.element.querySelector(`[data-content-id="${id}"][data-saved-for-later]`)
+    const formItem = this.formItemFor(id)
     if (formItem) {
-      formItem.removeAttribute('data-saved-for-later')
       formItem.classList.remove('d-none')
+      this.enableItemInputs(id)
       formItem.querySelectorAll('[data-required-for-submit]').forEach(input => {
         input.dispatchEvent(new Event('input', { bubbles: true }))
       })
     }
   }
 
-  makeSavedItem(formItem) {
-    const id = formItem.dataset.contentId
-    const title = formItem.querySelector('.selected-item-title')
+  removeFormItem(id) {
+    const formItem = this.formItemFor(id)
+    if (formItem) formItem.remove()
+  }
 
-    const li = document.createElement('li')
-    li.classList.add('d-flex', 'justify-content-between', 'saved-item', 'border-bottom', 'py-1')
-    li.dataset.contentId = id
+  disableItemInputs(id) {
+    const form = this.element.closest('form')
 
-    const titleClone = title.cloneNode(true)
-    titleClone.classList.remove('fw-semibold')
+    const checkbox = form.querySelector(`[data-item-selector-id-param="${id}"]`)
+    if (checkbox) checkbox.disabled = true
 
-    li.appendChild(titleClone)
-    li.insertAdjacentHTML('beforeend', `
-    <div>
-      <a href="#" class="su-underline me-1 fs-14"
-         data-action="save-for-later#restore"
-         data-save-for-later-id-param="${id}">Undo</a>
-      <button class="btn btn-link p-0 ps-1"
-              data-action="item-selector#remove save-for-later#hideWhenEmpty"
-              data-item-selector-id-param="${id}">
-        <i class="bi bi-trash"></i>
-      </button>
-    </div>
-  `)
+    form.querySelectorAll(`[name^="patron_request[aeon_item][${id}]"]`).forEach(input => {
+      input.disabled = true
+    })
+  }
 
-    return li
+  enableItemInputs(id) {
+    const form = this.element.closest('form')
+
+    const checkbox = form.querySelector(`[data-item-selector-id-param="${id}"]`)
+    if (checkbox) checkbox.disabled = false
+
+    form.querySelectorAll(`[name^="patron_request[aeon_item][${id}]"]`).forEach(input => {
+      input.disabled = false
+    })
+  }
+
+  postSaveForLater(itemId) {
+    const form = this.element.closest('form')
+    const formData = new FormData(form)
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
+
+    const requiredFieldNames = new Set(
+      [...form.querySelectorAll('[data-required-for-submit]')].map(el => el.name)
+    )
+
+    const body = new URLSearchParams()
+    body.set('patron_request[instance_hrid]', formData.get('patron_request[instance_hrid]'))
+    body.set('patron_request[origin_location_code]', formData.get('patron_request[origin_location_code]'))
+    body.set('patron_request[request_type]', formData.get('patron_request[request_type]'))
+    body.set('patron_request[save_for_later_token]', formData.get('save_for_later_token'))
+    body.set('patron_request[barcodes][]', itemId)
+
+    const eadUrl = formData.get('patron_request[ead_url]')
+    if (eadUrl) body.set('patron_request[ead_url]', eadUrl)
+
+    for (const [key, value] of formData.entries()) {
+      if (key.startsWith(`patron_request[aeon_item][${itemId}]`) && !requiredFieldNames.has(key)) {
+        body.append(key, value)
+      }
+    }
+
+    fetch('/patron_requests/save_for_later', {
+      method: 'POST',
+      headers: { 'X-CSRF-Token': csrfToken },
+      body
+    })
+  }
+
+  cancelAeonRequest(transactionNumber) {
+    if (!transactionNumber) return
+
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
+
+    fetch(`/aeon_requests/${transactionNumber}`, {
+      method: 'DELETE',
+      headers: { 'X-CSRF-Token': csrfToken, 'Accept': 'text/vnd.turbo-stream.html' }
+    })
   }
 
   update() {
-    if (!this.hasItemsTarget) return;
+    if (!this.hasItemsTarget) return
 
-    if (this.itemsTarget.children.length === 0) {
-      this.containerTarget.hidden = true
-    } else {
-      this.containerTarget.hidden = false
+    this.containerTarget.hidden = this.itemsTarget.children.length === 0
+    this.updateCount()
+  }
+
+  updateCount() {
+    const form = this.element.closest('form')
+    const countInput = form?.querySelector('[name="patron_request[saved_for_later_count]"]')
+    if (countInput) {
+      const total = form.querySelectorAll('[data-save-for-later-target="items"] .saved-item').length
+      countInput.value = total
     }
   }
 }

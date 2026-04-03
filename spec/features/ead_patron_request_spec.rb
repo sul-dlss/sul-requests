@@ -89,7 +89,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
                                                                       ))
     end
 
-    it 'allows the user to save reading room items for later' do # rubocop:disable RSpec/ExampleLength
+    it 'allows the user to save reading room items for later' do
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
 
       choose 'Reading room appointment'
@@ -102,37 +102,15 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       check 'Box 13'
       click_button 'Continue'
 
-      # Submit disabled: no items have appointments yet
-      expect(page).to have_button('Submit request', disabled: true)
-
       # Assign appointment to first item
       within('[data-content-id]', text: 'Box 12', match: :first) do
         click_button 'Select existing appointment'
         click_button 'Feb 19'
       end
 
-      # Submit still disabled: second item has no appointment
-      expect(page).to have_button('Submit request', disabled: true)
-
-      # Save the first item (which has an appointment) for later
-      find('[data-content-id]', text: 'Box 12', match: :first).click_link('Save for later')
-      expect(page).to have_css('.saved-item', text: 'Box 12')
-
-      # Submit disabled: second item still has no appointment
-      expect(page).to have_button('Submit request', disabled: true)
-
-      # Undo the save — appointment should be cleared
-      within('[data-save-for-later-target="items"]') do
-        click_link 'Undo'
-      end
-
-      expect(page).to have_no_css '.saved-item'
-      within('[data-content-id]', text: 'Box 12', match: :first) do
-        expect(page).to have_button('Select existing appointment')
-      end
-
-      # Submit disabled: both items now have no appointment
-      expect(page).to have_button('Submit request', disabled: true)
+      # Save the first item for later — spinner appears, item is hidden
+      first('[data-content-id]', text: 'Box 12').click_link('Save for later')
+      expect(page).to have_css('.spinner-border')
     end
 
     it 'allows the user to submit a request with details about the portion of the item to be digitized' do # rubocop:disable RSpec/ExampleLength

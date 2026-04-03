@@ -29,6 +29,9 @@
 <% scan_or_pickup_step = nil %>
 <%= f.hidden_field :instance_hrid %>
 <%= f.hidden_field :origin_location_code %>
+<%= hidden_field_tag :save_for_later_token, @save_for_later_token %>
+<%= f.hidden_field :saved_for_later_count, value: 0 %>
+<%= turbo_stream_from "save_for_later:#{@save_for_later_token}" %>
 <% if f.object.selectable_items.one? || f.object.barcodes&.one? %>
   <% single_item = f.object.selectable_items.first %>
   <% single_barcode = f.object.barcodes&.first || (single_item&.barcode || single_item&.id) %>

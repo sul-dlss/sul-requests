@@ -16,11 +16,13 @@ class SubmitAeonPatronRequestJob < ApplicationJob
 
       patron_request.aeon_api_responses.where(item_id: folio_item.id).delete_all
       patron_request.aeon_api_responses.create(item_id: folio_item.id, request_data: request.as_json, response_data: response.as_json)
+
+      broadcast_save_for_later(patron_request, folio_item.id, response)
     end
   end
 
   def perform_ead_request(patron_request)
-    patron_request.aeon_item.each_value do |volume_params|
+    patron_request.aeon_item.each do |barcode_id, volume_params|
       request = as_aeon_create_ead_request_data(patron_request, volume_params)
       response = submit_aeon_request(request)
 
@@ -28,6 +30,8 @@ class SubmitAeonPatronRequestJob < ApplicationJob
 
       patron_request.aeon_api_responses.where(item_id: item_id).delete_all
       patron_request.aeon_api_responses.create(item_id: item_id, request_data: request.as_json, response_data: response.as_json)
+
+      broadcast_save_for_later(patron_request, barcode_id, response)
     end
   end
 
@@ -78,10 +82,32 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   def submit_aeon_request(aeon_payload)
     created_request = aeon_client.create_request(aeon_payload)
 
-    return created_request if created_request.valid?
+    unless created_request.valid?
+      aeon_client.update_request_route(transaction_number: created_request.transaction_number,
+                                       status: Settings.aeon.queue_names.draft.transaction.first)
+    end
 
-    aeon_client.update_request_route(transaction_number: created_request.transaction_number,
-                                     status: Settings.aeon.queue_names.draft.transaction.first)
+    created_request
+  end
+
+  def broadcast_save_for_later(patron_request, item_id, response)
+    return if patron_request.save_for_later_token.blank?
+
+    stream = "save_for_later:#{patron_request.save_for_later_token}"
+    request_type = patron_request.request_type == 'scan' ? 'scan' : 'pickup'
+
+    Turbo::StreamsChannel.broadcast_action_to(
+      stream,
+      action: :remove,
+      target: "save-for-later-spinner-#{item_id}"
+    )
+
+    Turbo::StreamsChannel.broadcast_append_to(
+      stream,
+      target: "save-for-later-items-#{request_type}",
+      partial: 'patron_requests/saved_item',
+      locals: { aeon_request: response, item_id:, transaction_number: response&.transaction_number }
+    )
   end
 
   def aeon_client

@@ -54,6 +54,47 @@ RSpec.describe SubmitAeonPatronRequestJob do
     end
   end
 
+  describe '#broadcast_save_for_later' do
+    let(:folio_instance) { build(:special_collections_single_holding) }
+    let(:request_type) { 'scan' }
+    let(:data) do
+      { barcodes: ['12345678'], save_for_later_token: 'abc123' }
+    end
+
+    it 'broadcasts a turbo stream when save_for_later_token is present' do
+      allow(Turbo::StreamsChannel).to receive(:broadcast_action_to)
+      allow(Turbo::StreamsChannel).to receive(:broadcast_append_to)
+
+      described_class.perform_now(request)
+
+      expect(Turbo::StreamsChannel).to have_received(:broadcast_action_to).with(
+        'save_for_later:abc123',
+        action: :remove,
+        target: /\Asave-for-later-spinner-/
+      )
+      expect(Turbo::StreamsChannel).to have_received(:broadcast_append_to).with(
+        'save_for_later:abc123',
+        target: 'save-for-later-items-scan',
+        partial: 'patron_requests/saved_item',
+        locals: hash_including(:aeon_request, :item_id, :transaction_number)
+      )
+    end
+
+    context 'without a save_for_later_token' do
+      let(:data) { { barcodes: ['12345678'] } }
+
+      it 'does not broadcast' do
+        allow(Turbo::StreamsChannel).to receive(:broadcast_action_to)
+        allow(Turbo::StreamsChannel).to receive(:broadcast_append_to)
+
+        described_class.perform_now(request)
+
+        expect(Turbo::StreamsChannel).not_to have_received(:broadcast_action_to)
+        expect(Turbo::StreamsChannel).not_to have_received(:broadcast_append_to)
+      end
+    end
+  end
+
   describe '#create_aeon_requests' do
     let(:attr) do
       {

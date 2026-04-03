@@ -18,7 +18,11 @@
         <% end %>
         <% if @aeon_requests.first&.multi_item_selector? %>
           <%= render Aeon::ConfirmationRequestListComponent.new(requests: @aeon_requests.submitted_requests, digitization: @aeon_requests.digital? ) %>
-          <%= render Aeon::ConfirmationRequestListComponent.new(requests: @aeon_requests.draft_requests, digitization: @aeon_requests.digital?, drafts: true) %>
+          <% if @patron_request.saved_for_later_count.to_i > 0 %>
+            <div class="mt-3">
+              <p><%= @patron_request.saved_for_later_count %> <%= 'item'.pluralize(@patron_request.saved_for_later_count.to_i) %> saved for later</p>
+            </div>
+          <% end %>
         <% else %>
           <% request = @aeon_requests.first %>
           <% if request.appointment %>

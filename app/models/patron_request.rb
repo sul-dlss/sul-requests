@@ -13,7 +13,8 @@ class PatronRequest < ApplicationRecord
   store :data, accessors: [
     :barcodes, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title,
     :proxy, :for_sponsor, :for_sponsor_id, :estimated_delivery, :patron_name, :item_title, :requested_barcodes, :item_mediation_data,
-    :aeon_reading_special, :aeon_item, :aeon_terms, :ead_url
+    :aeon_reading_special, :aeon_item, :aeon_terms, :ead_url,
+    :save_for_later_token, :saved_for_later_count
   ], coder: JSON
 
   delegate :instance_id, :finding_aid, :finding_aid?, to: :folio_instance

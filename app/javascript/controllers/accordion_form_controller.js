@@ -37,9 +37,13 @@ export default class extends Controller {
     if (requiredEmpty) return requiredEmpty;
 
     // Check data-required-for-submit fields on visible items
-    return Array.from(accordion.querySelectorAll('[data-required-for-submit]'))
+    const visibleRequired = Array.from(accordion.querySelectorAll('[data-required-for-submit]'))
       .filter(x => x.closest('[data-content-id]')?.offsetParent)
-      .find(x => formData.getAll(x.name).every(x => !x))
+
+    // If items exist with required-for-submit fields but none are visible, nothing to submit
+    if (visibleRequired.length === 0 && accordion.querySelectorAll('[data-required-for-submit]').length > 0) return true
+
+    return visibleRequired.find(x => formData.getAll(x.name).every(x => !x))
   }
 
   enableAnyNextButtons(event) {

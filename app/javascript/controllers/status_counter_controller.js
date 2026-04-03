@@ -8,8 +8,8 @@ export default class extends Controller {
   }
 
   update(event) {
-    const active = ':not([data-saved-for-later])';
-    const completeCount = this.element.querySelectorAll(`[data-selected-item-form-status-value="complete"]${active}`).length;
+    const completeCount = [...this.element.querySelectorAll('[data-selected-item-form-status-value="complete"]')]
+      .filter(el => el.offsetParent).length;
     const noun = completeCount === 1 ? 'item' : 'items';
 
     this.counterTarget.innerHTML = `${completeCount} ${noun} ready to submit`;

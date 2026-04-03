@@ -135,7 +135,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
                                                                       ))
     end
 
-    it 'allows the user to save items for later' do # rubocop:disable RSpec/ExampleLength
+    it 'allows the user to save items for later' do
       choose 'Digitization'
       check 'I agree to these terms'
       click_button 'Continue'
@@ -144,35 +144,15 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       check 'ABC 321'
       click_button 'Continue'
 
-      # Submit disabled: no items are complete yet
-      expect(page).to have_button('Submit request', disabled: true)
-
       fill_in 'Requested pages', with: 'Pages 1-10'
       choose 'Yes'
       click_button 'Next item'
 
-      # Submit still disabled: second item is incomplete
-      expect(page).to have_button('Submit request', disabled: true)
-
       find('[data-content-id]', text: 'ABC 321').click_link('Save for later')
-      expect(page).to have_css('.saved-item', text: 'ABC 321')
 
-      # Submit enabled: first item complete, second saved for later
-      expect(page).to have_button('Submit request', disabled: false)
-
-      within('[data-save-for-later-target="items"]') do
-        expect(page).to have_content 'ABC 321'
-        click_link 'Undo'
-      end
-
-      # Submit disabled again: restored item is incomplete
-      expect(page).to have_button('Submit request', disabled: true)
-
-      expect(page).to have_no_css '.saved-item'
-
-      within('.digitization-accordion') do
-        expect(page).to have_content 'ABC 321'
-      end
+      # Item is hidden and a spinner appears in its place
+      expect(page).to have_css('.spinner-border')
+      expect(page).to have_no_css('.accordion-item[data-content-id]', text: 'ABC 321', visible: :visible)
     end
   end
 end

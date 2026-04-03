@@ -22,6 +22,7 @@
        gtag('config', 'G-8H7ZHEYXVM', args);
      </script>
     <%= csrf_meta_tags %>
+    <%= action_cable_meta_tag %>
     <%= content_for(:head) %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
   </head>
