@@ -43,7 +43,6 @@ class PatronRequestsController < ApplicationController
   def new
     request.variant = :aeon if @patron_request.aeon_page?
     request.variant = :aeonredesign if (@patron_request.ead_url || @patron_request.aeon_page?) && Settings.features.requests_redesign
-    @save_for_later_token = SecureRandom.hex if request.variant&.aeonredesign?
   end
 
   def create
@@ -54,19 +53,19 @@ class PatronRequestsController < ApplicationController
     end
   end
 
-  def save_for_later
+  def save_for_later # rubocop:disable Metrics/AbcSize
     @patron_request = PatronRequest.new(patron_request_params)
     @patron_request.patron = current_user.patron
     @patron_request.user = current_user if current_user.persisted?
     authorize! :create, @patron_request
 
-    if @patron_request.save && @patron_request.submit_later
-      head :accepted
+    if @patron_request.save
+      @results = Aeon::SubmitRequestService.new(@patron_request).call
+      respond_to { |format| format.turbo_stream }
     else
       head :unprocessable_content
     end
   end
-
 
   def require_aeon_terms
     return unless Settings.features.requests_redesign && @patron_request.aeon_page?
@@ -153,7 +152,7 @@ class PatronRequestsController < ApplicationController
                                    :fulfillment_type, :request_type,
                                    :scan_page_range, :scan_authors, :scan_title,
                                    :aeon_reading_special, :aeon_terms, :ead_url,
-                                   :save_for_later_token, :saved_for_later_count,
+                                   :saved_for_later_count,
                                    { barcodes: [] }, { aeon_item: aeon_term_params }])
   end
 

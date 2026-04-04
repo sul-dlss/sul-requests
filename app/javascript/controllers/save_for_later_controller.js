@@ -14,7 +14,7 @@ export default class extends Controller {
     const formItem = this.formItemFor(id)
     if (!formItem) return
 
-    this.postSaveForLater(id)
+    this.submitSaveForLater(id)
     this.disableItemInputs(id)
     this.replaceWithSpinner(formItem, id)
     this.containerTarget.hidden = false
@@ -22,36 +22,24 @@ export default class extends Controller {
   }
 
   undo(event) {
-    event.preventDefault()
-
-    const { transactionNumber } = event.params
-    const li = event.target.closest('[data-content-id]')
-    const id = li.dataset.contentId
-
-    li.remove()
-    this.restoreFormItem(id)
-    this.update()
-    this.dispatch('changed')
-
-    this.cancelAeonRequest(transactionNumber)
+    this.removeSavedItem(event, (id) => this.restoreFormItem(id))
   }
 
   delete(event) {
-    event.preventDefault()
+    this.removeSavedItem(event, (id) => this.removeFormItem(id))
+  }
 
-    const { transactionNumber } = event.params
+  // Private
+
+  removeSavedItem(event, callback) {
     const li = event.target.closest('[data-content-id]')
     const id = li.dataset.contentId
 
     li.remove()
-    this.removeFormItem(id)
+    callback(id)
     this.update()
     this.dispatch('changed')
-
-    this.cancelAeonRequest(transactionNumber)
   }
-
-  // Private
 
   formItemFor(id) {
     return this.element.querySelector(`[data-content-id="${id}"]:not(.saved-item)`)
@@ -104,20 +92,18 @@ export default class extends Controller {
     })
   }
 
-  postSaveForLater(itemId) {
-    const form = this.element.closest('form')
-    const formData = new FormData(form)
-    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
+  async submitSaveForLater(itemId) {
+    const mainForm = this.element.closest('form')
+    const formData = new FormData(mainForm)
 
     const requiredFieldNames = new Set(
-      [...form.querySelectorAll('[data-required-for-submit]')].map(el => el.name)
+      [...mainForm.querySelectorAll('[data-required-for-submit]')].map(el => el.name)
     )
 
     const body = new URLSearchParams()
     body.set('patron_request[instance_hrid]', formData.get('patron_request[instance_hrid]'))
     body.set('patron_request[origin_location_code]', formData.get('patron_request[origin_location_code]'))
     body.set('patron_request[request_type]', formData.get('patron_request[request_type]'))
-    body.set('patron_request[save_for_later_token]', formData.get('save_for_later_token'))
     body.set('patron_request[barcodes][]', itemId)
 
     const eadUrl = formData.get('patron_request[ead_url]')
@@ -129,21 +115,33 @@ export default class extends Controller {
       }
     }
 
-    fetch('/patron_requests/save_for_later', {
+    const response = await fetch('/patron_requests/save_for_later', {
       method: 'POST',
-      headers: { 'X-CSRF-Token': csrfToken },
+      headers: {
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]')?.content,
+        'Accept': 'text/vnd.turbo-stream.html'
+      },
       body
     })
+
+    if (response.ok) {
+      const html = await response.text()
+      this.processTurboStream(html)
+      this.update()
+    }
   }
 
-  cancelAeonRequest(transactionNumber) {
-    if (!transactionNumber) return
+  processTurboStream(html) {
+    const fragment = document.createElement('template')
+    fragment.innerHTML = html
 
-    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
+    fragment.content.querySelectorAll('turbo-stream').forEach(stream => {
+      const action = stream.getAttribute('action')
+      const target = document.getElementById(stream.getAttribute('target'))
+      if (!target) return
 
-    fetch(`/aeon_requests/${transactionNumber}`, {
-      method: 'DELETE',
-      headers: { 'X-CSRF-Token': csrfToken, 'Accept': 'text/vnd.turbo-stream.html' }
+      if (action === 'remove') target.remove()
+      if (action === 'append') target.append(stream.querySelector('template').content.cloneNode(true))
     })
   }
 

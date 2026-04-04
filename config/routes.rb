@@ -3,7 +3,6 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  mount ActionCable.server => '/cable'
   root 'home#show'
   match "/404", to: 'errors#not_found', via: :all
   match "/500", to: 'errors#internal_server_error', via: :all

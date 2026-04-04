@@ -19,7 +19,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
     instance_double(AeonClient, find_user: aeon_user, create_request: created_request, update_request_route: nil,
                                 reading_rooms:, available_appointments:)
   end
-  let(:created_request) { instance_double(Aeon::Request, id: 123, transaction_number: 'abc123', submitted?: true, draft?: false, valid?: true) }
+  let(:created_request) { Aeon::Request.new(transaction_number: 123, call_number: 'ABC 123', web_request_form: 'multiple', item_info1: '') }
   let(:available_appointments) do
     [instance_double(Aeon::AvailableAppointment,
                      start_time: DateTime.new(2026, 2, 19),
@@ -135,7 +135,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
                                                                       ))
     end
 
-    it 'allows the user to save items for later' do
+    it 'allows the user to save items for later' do # rubocop:disable RSpec/ExampleLength
       choose 'Digitization'
       check 'I agree to these terms'
       click_button 'Continue'
@@ -144,15 +144,40 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       check 'ABC 321'
       click_button 'Continue'
 
+      # Submit disabled: no items complete
+      expect(page).to have_button('Submit request', disabled: true)
+
       fill_in 'Requested pages', with: 'Pages 1-10'
       choose 'Yes'
       click_button 'Next item'
 
-      find('[data-content-id]', text: 'ABC 321').click_link('Save for later')
+      # Submit disabled: second item incomplete
+      expect(page).to have_button('Submit request', disabled: true)
 
-      # Item is hidden and a spinner appears in its place
-      expect(page).to have_css('.spinner-border')
-      expect(page).to have_no_css('.accordion-item[data-content-id]', text: 'ABC 321', visible: :visible)
+      # Save second item for later
+      find('[data-content-id]', text: 'ABC 321').click_link('Save for later')
+      expect(page).to have_css('.saved-item')
+
+      # Submit enabled: one complete, one saved
+      expect(page).to have_button('Submit request', disabled: false)
+
+      # Undo restores the form item
+      click_link 'Undo'
+      expect(page).to have_no_css('.saved-item')
+      within('.digitization-accordion') do
+        expect(page).to have_content('ABC 321')
+      end
+
+      # Submit disabled again: restored item is incomplete
+      expect(page).to have_button('Submit request', disabled: true)
+
+      # Save both items for later
+      find('[data-content-id]', text: 'ABC 123').click_link('Save for later')
+      find('[data-content-id]', text: 'ABC 321').click_link('Save for later')
+      expect(page).to have_css('.saved-item', count: 2)
+
+      # Submit disabled: all items saved, nothing to submit
+      expect(page).to have_button('Submit request', disabled: true)
     end
   end
 end

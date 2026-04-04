@@ -1,0 +1,7 @@
+<% request_type = @patron_request.request_type == 'scan' ? 'scan' : 'pickup' %>
+<% @results&.each do |result| %>
+  <%= turbo_stream.remove "save-for-later-spinner-#{result[:item_id]}" %>
+  <%= turbo_stream.append "save-for-later-items-#{request_type}" do %>
+    <%= render 'saved_item', aeon_request: result[:response], item_id: result[:item_id], transaction_number: result[:response]&.transaction_number %>
+  <% end %>
+<% end %>
