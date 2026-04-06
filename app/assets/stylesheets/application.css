@@ -110,6 +110,7 @@ body {
 
 input[type="radio"] {
   --bs-border-color: var(--stanford-50-black);
+  accent-color: var(--stanford-digital-blue);
 }
 
 .form-check-input {

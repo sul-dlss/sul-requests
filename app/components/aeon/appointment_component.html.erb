@@ -53,18 +53,24 @@
   </div>
   <!-- Delete modal -->
   <%= render ModalComponent.new(id: "delete-appointment-#{appointment.id}",
-                                cancel_text: 'No',
-                                submit_text: 'Yes - Delete') do |component| %>
+                                submit_text: 'Yes, cancel appointment') do |component| %>
     <% component.with_title.with_content('Cancel appointment?') %>
     <% component.with_body do %>
-      <%= form_with url: aeon_appointment_path(appointment.id), id: "form-delete-appointment-#{appointment.id}", method: 'delete' do %>
-        <div class="fw-semibold"><i class="bi bi-calendar me-2"></i><%= appointment_date %><i class="bi bi-clock mx-2"></i><%= appointment_time_range %></div>
-        <div class="mt-1 fw-semibold"><i class="bi bi-geo-alt-fill me-1"></i><%= appointment.reading_room.name %></div>
+      <div class="fw-semibold"><i class="bi bi-calendar me-2"></i><%= appointment_date %><i class="bi bi-clock mx-2"></i><%= appointment_time_range %></div>
+      <div class="mt-1 fw-semibold"><i class="bi bi-geo-alt-fill me-1"></i><%= appointment.reading_room.name %></div>
+      <%= form_with url: aeon_appointment_path(appointment.id), id: "form-delete-appointment-#{appointment.id}", method: 'delete' do |f| %>
         <% if appointment.requests.any? %>
-          <p class="mb-0">
-            <%= pluralize(appointment.requests.length, 'requested item') %> are assigned to this appointment. If you cancel or delete the appointment, the items will not be deleted.
-            Instead, they will be moved to <strong>Draft requests</strong>.
-          </p>
+          <div class="mb-0 mt-2 alert alert-info">
+            <strong><%= pluralize(appointment.requests.length, 'item') %></strong> are assigned to this appointment.
+            <div class="d-flex gap-1">
+              <%= f.radio_button :cancel_items, false %>
+              <%= f.label 'save_items', 'Save items and schedule later' %>
+            </div>
+            <div class="d-flex gap-1">
+              <%= f.radio_button :cancel_items, true %>
+              <%= f.label 'save_items', 'Delete requested items' %>
+            </div>
+          </div>
         <% end %>
       <% end %>
     <% end %>

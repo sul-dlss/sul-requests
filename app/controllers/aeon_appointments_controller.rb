@@ -64,7 +64,7 @@ class AeonAppointmentsController < ApplicationController
   def destroy
     authorize! :delete, @appointment
 
-    CancelAeonAppointmentJob.perform_now(@appointment)
+    CancelAeonAppointmentJob.perform_now(@appointment, cancel_requests: params['cancel_items'] == 'true')
 
     redirect_to aeon_appointments_path, notice: 'Appointment cancelled successfully'
   end
