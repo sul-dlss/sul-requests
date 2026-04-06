@@ -65,12 +65,11 @@
       <%= yield %>
       <template id="modal-template" data-modal-target="template">
         <div class="modal" tabindex="-1">
-          <div class="modal-dialog modal-lg">
-            <turbo-frame class="modal-content" target="_top">
-              <div class="modal-header"></div>
-              <div class="modal-body">Loading...</div>
-            </turbo-frame>
-          </div>
+          <turbo-frame>
+            <%= render ModalComponent.new(id: "template") do |component| %>
+              <%= component.with_body.with_content('Loading...') %>
+            <% end %>
+          </turbo-frame>
         </div>
       </template>
     </main>

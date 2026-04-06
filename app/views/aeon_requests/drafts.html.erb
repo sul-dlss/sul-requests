@@ -28,22 +28,18 @@
       </turbo-frame>
     </div>
   </div>
-  <%= render ModalComponent.new(id: "delete-bulk", data: {draft_request_target: "deleteModal"}) do |component| %>
+  <%= render ModalComponent.new(id: "delete-bulk", submit_text: 'Yes - delete', data: {draft_request_target: "deleteModal"}) do |component| %>
     <% component.with_title.with_content('Delete draft requests?') %>
     <% component.with_body do %>
-      <% @aeon_request_groups.each do |group| %>
-        <div hidden data-draft-request-target="modalGroup" data-digital="<%= group.digital? %>"
-          <% unless group.first.multi_item_selector? %>data-request-id="<%= group.first.id %>"<% end %>>
-          <%= render Aeon::RequestGroupCompactComponent.new(request_group: group) %>
-        </div>
-      <% end %>
-      <div hidden data-draft-request-target="modalSummary"></div>
-      <div class="mt-2 fw-bold">This action cannot be undone.</div>
-    <% end %>
-    <% component.with_footer do %>
-      <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
-      <%= form_with url: destroy_multiple_aeon_requests_path, method: 'delete', data: { 'draft-request-target': 'deleteForm' } do %>
-        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Yes - Delete</button>
+      <%= form_with url: destroy_multiple_aeon_requests_path, id: 'form-delete-bulk', method: 'delete', data: { 'draft-request-target': 'deleteForm' } do %>
+        <% @aeon_request_groups.each do |group| %>
+          <div hidden data-draft-request-target="modalGroup" data-digital="<%= group.digital? %>"
+            <% unless group.first.multi_item_selector? %>data-request-id="<%= group.first.id %>"<% end %>>
+            <%= render Aeon::RequestGroupCompactComponent.new(request_group: group) %>
+          </div>
+        <% end %>
+        <div hidden data-draft-request-target="modalSummary"></div>
+        <div class="mt-2 fw-bold">This action cannot be undone.</div>
       <% end %>
     <% end %>
   <% end %>

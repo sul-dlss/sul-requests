@@ -52,22 +52,20 @@
     <%= render Aeon::AppointmentLimitComponent.from_appointment(appointment) %>
   </div>
   <!-- Delete modal -->
-  <%= render ModalComponent.new(id: "delete-appointment-#{appointment.id}") do |component| %>
+  <%= render ModalComponent.new(id: "delete-appointment-#{appointment.id}",
+                                cancel_text: 'No',
+                                submit_text: 'Yes - Delete') do |component| %>
     <% component.with_title.with_content('Cancel appointment?') %>
     <% component.with_body do %>
-      <div class="fw-semibold"><i class="bi bi-calendar me-2"></i><%= appointment_date %><i class="bi bi-clock mx-2"></i><%= appointment_time_range %></div>
-      <div class="mt-1 fw-semibold"><i class="bi bi-geo-alt-fill me-1"></i><%= appointment.reading_room.name %></div>
-      <% if appointment.requests.any? %>
-        <p class="mb-0">
-          <%= pluralize(appointment.requests.length, 'requested item') %> are assigned to this appointment. If you cancel or delete the appointment, the items will not be deleted.
-          Instead, they will be moved to <strong>Draft requests</strong>.
-        </p>
-      <% end %>
-    <% end %>
-    <% component.with_footer do %>
-      <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
-      <%= form_with url: aeon_appointment_path(appointment.id), method: 'delete' do %>
-        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Yes - Delete</button>
+      <%= form_with url: aeon_appointment_path(appointment.id), id: "form-delete-appointment-#{appointment.id}", method: 'delete' do %>
+        <div class="fw-semibold"><i class="bi bi-calendar me-2"></i><%= appointment_date %><i class="bi bi-clock mx-2"></i><%= appointment_time_range %></div>
+        <div class="mt-1 fw-semibold"><i class="bi bi-geo-alt-fill me-1"></i><%= appointment.reading_room.name %></div>
+        <% if appointment.requests.any? %>
+          <p class="mb-0">
+            <%= pluralize(appointment.requests.length, 'requested item') %> are assigned to this appointment. If you cancel or delete the appointment, the items will not be deleted.
+            Instead, they will be moved to <strong>Draft requests</strong>.
+          </p>
+        <% end %>
       <% end %>
     <% end %>
   <% end %>

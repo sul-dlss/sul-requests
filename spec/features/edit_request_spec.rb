@@ -72,7 +72,7 @@ RSpec.describe 'Edit Aeon request', :js do
       click_link('Create new appointment')
       # The appointment creation functionality is tested elsewhere but this shows that the modal opens and closes
       expect(page).to have_css('.modal-header h1', text: 'Create new appointment')
-      click_link('Cancel')
+      click_button('Cancel')
       expect(page).to have_css('.modal-header h1', text: 'Edit request')
     end
   end

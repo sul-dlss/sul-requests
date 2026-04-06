@@ -1,8 +1,13 @@
 <%= turbo_frame_tag params[:modal] do %>
-  <div class="modal-header">
-    <h1 class="mb-0">Edit request</h1>
-    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-  </div>
-  <%= render RecordHeaderCardComponent.new(record: @aeon_request, classes: 'mb-0 bg-light rounded-0 border-bottom') %>
-  <%= render 'form' %>
+  <%= render ModalComponent.new(id: params[:modal],
+                                cancel_text: 'Cancel',
+                                submit_text: 'Submit') do |component| %>
+    <% component.with_title.with_content('Edit request') %>
+    <% component.with_prepend_body do %>
+      <%= render RecordHeaderCardComponent.new(record: @aeon_request, classes: 'mb-0 bg-light rounded-0 border-bottom') %>
+    <% end %>
+    <% component.with_body do %>
+      <%= render 'form' %>
+    <% end %>
+  <% end %>
 <% end %>

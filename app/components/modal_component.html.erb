@@ -1,15 +1,17 @@
-<%= content_tag(:div, class: 'modal fade', id:, tabindex: "-1", aria: {labelledby: title_id, hidden: true}, data:) do %>
+<%= content_tag(:div, class: params[:modal] ? '' : 'modal fade', id:, tabindex: "-1", aria: {labelledby: title_id, hidden: true}, data:) do %>
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h2 class="modal-title" id="<%= title_id %>"><%= title %></h2>
+        <h1 class="modal-title h2" id="<%= title_id %>"><%= title %></h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+      <%= prepend_body %>
       <div class="modal-body fw-normal">
         <%= body %>
       </div>
       <div class="modal-footer">
-        <%= footer %>
+        <%= button_tag(cancel_text, type: 'button', class: 'btn btn-outline-primary', data: {bs_dismiss: 'modal'}) %>
+        <%= button_tag(submit_text, type: 'submit', class: 'btn btn-primary', form: form_id, data: {bs_dismiss: 'modal'}) %>
       </div>
     </div>
   </div>

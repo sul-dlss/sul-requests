@@ -22,18 +22,16 @@
         <% end %>
       <% end %>
       <!-- Delete modal -->
-      <%= render ModalComponent.new(id: "delete-#{transaction_number}") do |component| %>
+      <%= render ModalComponent.new(id: "delete-#{transaction_number}",
+                                    submit_text: 'Yes - Delete',
+                                    cancel_text: 'No') do |component| %>
         <% component.with_title.with_content('Delete request?') %>
         <% component.with_body do %>
-            <div><span class="fw-bold">Title:</span> <%= title %></div>
-            <div><span class="fw-bold">Request:</span> <%= request_type %> <%= render Aeon::RequestItemDetailComponent.new(request:, variant: :text) %></div>
-            <div class="mt-2 fw-bold">This action cannot be undone.</div>
-        <% end %>
-        <% component.with_footer do %>
-          <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
-          <%= form_with url: aeon_request_path(transaction_number), method: 'delete' do %>
-            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Yes - Delete</button>
-          <% end %>
+            <%= form_with url: aeon_request_path(transaction_number), id: "form-delete-#{transaction_number}", method: 'delete' do %>
+              <div><span class="fw-bold">Title:</span> <%= title %></div>
+              <div><span class="fw-bold">Request:</span> <%= request_type %> <%= render Aeon::RequestItemDetailComponent.new(request:, variant: :text) %></div>
+              <div class="mt-2 fw-bold">This action cannot be undone.</div>
+            <% end %>
         <% end %>
       <% end %>
     </div>
