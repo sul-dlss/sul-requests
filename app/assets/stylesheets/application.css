@@ -449,6 +449,20 @@ label.btn-close {
   }
 }
 
+.request-group-per-appointment.request-group.card  {
+  box-shadow: none;
+  border: 0;
+  border-bottom: var(--bs-border-width) solid var(--bs-border-color);
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+}
+
+.request-group-per-appointment.request-group.card:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
 #available_appointments .btn-check[disabled]+.btn {
   display: none;
 }
