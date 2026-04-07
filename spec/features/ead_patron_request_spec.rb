@@ -181,6 +181,9 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       fill_in 'Requested pages', with: 'Pages 1-10'
       fill_in 'Additional information', with: 'Testing only'
 
+      click_button 'Next item'
+      fill_in 'Requested pages', with: 'Pages 6-8'
+
       click_button 'Submit request'
 
       expect(page).to have_css('.confirmation')
@@ -191,6 +194,13 @@ RSpec.describe 'Requesting an item from an EAD', :js do
                                                                         item_info5: 'Pages 1-10',
                                                                         item_volume: 'Box 12',
                                                                         special_request: 'Testing only',
+                                                                        call_number: 'SC0097 Computers and Typesetting',
+                                                                        site: 'SPECUA'
+                                                                      ))
+      expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
+                                                                        username: user.email_address,
+                                                                        item_info5: 'Pages 6-8',
+                                                                        item_volume: 'Box 14',
                                                                         call_number: 'SC0097 Computers and Typesetting',
                                                                         site: 'SPECUA'
                                                                       ))
