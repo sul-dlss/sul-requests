@@ -3,12 +3,14 @@
     <i class="bi bi-check2 selected-item-status"></i>
     <div class="d-flex flex-column">
       <span class="text-black fw-semibold selected-item-title text-wrap"><%= title %></span>
-      <div>
-        <a href="#" class="btn btn-link p-0 ps-1 su-underline fs-14" data-action="save-for-later#save" data-save-for-later-id-param="<%= dom_id %>"><i class="bi bi-pin-angle-fill me-1"></i>Save for later</a>
-        <button class="btn btn-link p-0 ps-1 selected-item-remove" data-action="item-selector#remove" data-item-selector-id-param="<%= dom_id %>">
-          <i class="bi bi-trash"></i><span class="visually-hidden"> Delete <%= title %></span>
-        </button>
-      </div>
+      <% if new_item? %>
+        <div>
+          <a href="#" class="btn btn-link p-0 ps-1 su-underline fs-14" data-action="save-for-later#save" data-save-for-later-id-param="<%= dom_id %>"><i class="bi bi-pin-angle-fill me-1"></i>Save for later</a>
+          <button class="btn btn-link p-0 ps-1 selected-item-remove" data-action="item-selector#remove" data-item-selector-id-param="<%= dom_id %>">
+            <i class="bi bi-trash"></i><span class="visually-hidden"> Delete <%= title %></span>
+          </button>
+        </div>
+      <% end %>
     </div>
   </div>
   <%= fields_for base_name, object do |f| %>
