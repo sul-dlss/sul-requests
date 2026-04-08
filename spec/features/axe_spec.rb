@@ -102,6 +102,59 @@ RSpec.describe 'Accessibility testing', :js do
     end
   end
 
+  context 'for drafts and submitted (grouped) requests pages' do
+    let(:user) { create(:sso_user) }
+    let(:current_user) { CurrentUser.new(username: user.sunetid, shibboleth: true) }
+    let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
+    let(:reading_room) { build(:aeon_reading_room) }
+    let(:appointment) { build(:aeon_appointment, reading_room: reading_room, start_time: 1.week.from_now) }
+    let(:physical_request) { build(:aeon_request, username: aeon_user.username, transaction_number: 100) }
+    let(:digital_request) do
+      build(:aeon_request, :digitized, username: aeon_user.username, transaction_number: 101,
+                                       item_info5: 'Pages 1-10')
+    end
+    let(:multi_item_requests) do
+      [
+        build(:aeon_request, username: aeon_user.username, transaction_number: 102,
+                             web_request_form: 'multiple', item_title: 'Grouped title'),
+        build(:aeon_request, username: aeon_user.username, transaction_number: 103,
+                             web_request_form: 'multiple', item_title: 'Grouped title')
+      ]
+    end
+    let(:all_requests) { [physical_request, digital_request] + multi_item_requests }
+    let(:queue) { Aeon::Queue.new(id: 5, queue_name: queue_name, queue_type: 'Transaction') }
+    let(:stub_aeon_client) do
+      instance_double(AeonClient,
+                      find_user: aeon_user,
+                      find_queue: queue,
+                      appointments_for: [appointment])
+    end
+
+    before do
+      allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
+      allow(aeon_user).to receive_messages(requests: all_requests)
+      login_as(current_user)
+    end
+
+    context 'with draft requests' do
+      let(:queue_name) { 'Awaiting User Review' }
+
+      it 'validates the drafts page' do
+        visit draft_aeon_requests_path
+        expect(page).to be_accessible
+      end
+    end
+
+    context 'with submitted requests' do
+      let(:queue_name) { 'In Processing' }
+
+      it 'validates the submitted page' do
+        visit submitted_aeon_requests_path
+        expect(page).to be_accessible
+      end
+    end
+  end
+
   it 'validates the feedback form page' do
     visit feedback_form_path
     expect(page).to be_accessible
