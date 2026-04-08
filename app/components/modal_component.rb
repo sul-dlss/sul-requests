@@ -8,9 +8,10 @@ class ModalComponent < ViewComponent::Base
   renders_one :body
   renders_one :footer
 
-  def initialize(id:, data: {})
+  def initialize(id:, classes: %w[modal fade], data: {})
     @id = id
     @data = data
+    @classes = classes
   end
 
   def title_id
