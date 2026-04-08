@@ -1,9 +1,15 @@
 <div data-controller="selected-item-form" data-action="input->selected-item-form#updateStatus" class="accordion-item mb-3" data-content-id="<%= dom_id %>">
   <div class="accordion-header d-flex flex-nowrap align-items-center position-relative">
-    <button class="accordion-button d-inline-flex w-auto align-items-center position-static" type="button" data-bs-toggle="collapse" data-bs-target="#content_<%= dom_id %>" aria-expanded="<%= collapsed? ? 'false' : 'true' %>" aria-controls="content_<%= dom_id %>">
+    <%= button_tag(
+        type: "button",
+        class: "accordion-button d-inline-flex w-auto align-items-center position-static",
+        data: { bs_toggle: "collapse", bs_target: "#content_#{dom_id}" },
+        aria: { expanded: !collapsed?, controls: "content_#{dom_id}" },
+        disabled: !new_item?
+        ) do %>
       <i class="bi bi-check2 selected-item-status"></i>
       <span class="text-black fw-semibold selected-item-title stretched-link"><%= title %></span>
-    </button>
+    <% end %>
     <button class="btn btn-link p-0 ps-1 z-3 selected-item-remove" data-action="item-selector#remove" data-item-selector-id-param="<%= dom_id %>">
       <i class="bi bi-trash"></i><span class="visually-hidden"> Delete <%= title %></span>
     </button>
