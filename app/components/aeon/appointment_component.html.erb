@@ -16,19 +16,17 @@
       <% end %>
     </div>
   </div>
-  <div class="card-body">
-    <% if appointment.requests.present? %>
-        <% request_groups = Aeon::RequestGrouping.from_requests(appointment.requests) %>
-        <%= render Aeon::RequestGroupPerAppointmentComponent.with_collection(request_groups) %>
-    <% else %>
-      <div role="alert" class="d-flex align-items-center text-digital-red">
-        <div role="img" aria-label="Danger icon" class="bi bi-exclamation-triangle-fill fs-3 me-3 align-self-center d-flex justify-content-center"></div>
-        <div>
-          No items have been requested for this appointment. It will be cancelled <%= @appointment.edit_policy %> days before your scheduled visit date if no requests are submitted.
-        </div>
+  <% if appointment.requests.present? %>
+      <% request_groups = Aeon::RequestGrouping.from_requests(appointment.requests) %>
+      <%= render Aeon::RequestGroupBriefComponent.with_collection(request_groups, classes: 'appointment-group') %>
+  <% else %>
+    <div role="alert" class="d-flex align-items-center text-digital-red">
+      <div role="img" aria-label="Danger icon" class="bi bi-exclamation-triangle-fill fs-3 me-3 align-self-center d-flex justify-content-center"></div>
+      <div>
+        No items have been requested for this appointment. It will be cancelled <%= @appointment.edit_policy %> days before your scheduled visit date if no requests are submitted.
       </div>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
   <div class="card-footer border-0 border-top border-top-2 border bg-white">
     <%= render Aeon::AppointmentLimitComponent.from_appointment(appointment) %>
   </div>

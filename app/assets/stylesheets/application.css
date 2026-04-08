@@ -746,3 +746,26 @@ label.btn-close {
   caret-color: transparent;
 }
 
+.appointment-group {
+  .reading-room {
+    display: none;
+  }
+
+  .h3 {
+    --sul-header-font-size: 1rem;
+    margin-bottom: 0;
+  }
+
+  .title-callnumber {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+}
+
+.request-group {
+  .list-group-item {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
