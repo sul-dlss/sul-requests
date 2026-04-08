@@ -736,3 +736,9 @@ label.btn-close {
   caret-color: transparent;
 }
 
+.selected-appointment {
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  background-color: var(--stanford-fog-light);
+  color: var(--stanford-digital-blue-dark);
+}

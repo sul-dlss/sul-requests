@@ -20,6 +20,7 @@ export default class extends Controller {
 
       const dateField = this.element.querySelector('[name="aeon_appointment[date]"]');
       dateField.min = ((data.slots || [])[0]?.start_time?.split('T') || [])[0];
+      this.updateSelectedAppointmentDiv();
     } catch (error) {
       console.error("Error fetching availability data:", error);
     }
@@ -66,6 +67,42 @@ export default class extends Controller {
     const checkedDuration = document.querySelector('[name="aeon_appointment[duration]"]:checked');
     if (checkedDuration) checkedDuration.checked = false;
     this.updateFormStatus();
+    this.updateSelectedAppointmentDiv();
+  }
+
+
+  updateSelectedAppointmentDiv(event) {
+    const formData = new FormData(this.element);
+    const form_date = formData.get('aeon_appointment[date]');
+    if (!form_date) { return }
+    const date = new Date(Date.parse(form_date));
+    const appointmentDiv = document.querySelector(this.element.dataset.appointmentDiv);
+    appointmentDiv.classList.remove('d-none');
+    const start_time = formData.get('aeon_appointment[start_time]');
+    const duration = formData.get('aeon_appointment[duration]');
+    const options = { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' };
+    let text = `${date.toLocaleDateString('en-US', options)}`
+    if (start_time && duration) {
+      const end_time = this.getEndTime(start_time, duration)
+      text += `<i class="bi bi-dot"></i>${start_time} - ${end_time}`
+    }
+    appointmentDiv.innerHTML = `<div class="d-flex">${text}</div>`;
+  }
+
+  getEndTime(start_time, duration) {
+    const time_ampm = start_time.split(' ')
+    // convert to time decimal 10:30 to 10.5, 10:00 to 10.0
+    const start_time_dec = parseFloat(time_ampm[0].replace(':30', '.5').replace(':00', '.0'))
+    // get duration in decimal minutes (convert 1800 sec to .5)
+    const duration_dec = parseFloat(duration) / 3600;
+    // add duration to start time, i.e. 30 min appt (.5) + 10.5 (10:30)
+    const end_time = start_time_dec + duration_dec;
+    // If appointment goes am to pm (10:30 / 2 hour appt), the am should be pm
+    const amPm = (end_time >= 12) ? 'pm' : time_ampm[1];
+    // If appointment does from 10am to 1pm, this will be 13 so it needs to be adjusted
+    const adjustedEndTime = (end_time >= 13) ? end_time - 12 : end_time;
+    // convert from decimal to human time
+    return `${adjustedEndTime.toFixed(1).replace('.5', ':30').replace('.0', ':00')} ${amPm}`
   }
 
   updateFormStatus() {
@@ -92,5 +129,6 @@ export default class extends Controller {
         radio.checked = false;
       }
     });
+    this.updateSelectedAppointmentDiv();
   }
 }
