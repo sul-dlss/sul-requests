@@ -21,7 +21,7 @@ export default class extends Controller {
     this.element.querySelectorAll('[data-count]').forEach(option => {
       const baseCount = parseInt(option.dataset.count);
 
-      const formCount = this.element.closest('#reading-accordion').querySelectorAll("input[value='" + option.dataset.appointmentId + "']:not(:disabled)").length;
+      const formCount = document.getElementById('reading-accordion').querySelectorAll("input[value='" + option.dataset.appointmentId + "']:not(:disabled)").length;
 
       const newCount = baseCount + formCount;
 

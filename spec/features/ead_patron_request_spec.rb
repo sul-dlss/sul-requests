@@ -116,6 +116,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
         click_button 'Select existing appointment'
         click_button 'Feb 19'
       end
+      expect(page).to have_css '.badge', text: '2 items'
 
       # Submit disabled: second item has no appointment
       expect(page).to have_button('Submit request', disabled: true)
@@ -134,8 +135,19 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       # Submit disabled: restored item has no appointment
       expect(page).to have_button('Submit request', disabled: true)
 
-      # Save both items for later
+      # Assign appointment to the second item
+      within('[data-content-id]', text: 'Box 13', match: :first) do
+        click_button 'Select existing appointment'
+        click_button 'Feb 19'
+      end
+      expect(page).to have_css '.badge', text: '3 items'
+      expect(page).to have_button('Submit request', disabled: false)
+
       first('[data-content-id]', text: 'Box 12').click_link('Save for later')
+
+      # Appointment item limit should show that the saved item relinquished the appointment
+      expect(page).to have_css '.badge', text: '2 items'
+
       first('[data-content-id]', text: 'Box 13').click_link('Save for later')
       expect(page).to have_css('.saved-item', count: 2)
 
