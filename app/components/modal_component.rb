@@ -9,9 +9,10 @@ class ModalComponent < ViewComponent::Base
   renders_one :body, ->(classes: %w[modal-body fw-normal], &block) { tag.div(class: classes, &block) }
   renders_one :footer, ->(classes: %w[modal-footer], &block) { tag.div(class: classes, &block) }
 
-  def initialize(id:, data: {})
+  def initialize(id:, classes: %w[modal fade], data: {})
     @id = id
     @data = data
+    @classes = classes
   end
 
   def title_id
