@@ -68,7 +68,8 @@ export default class extends Controller {
 
     formItem.classList.remove('d-none')
     this.setItemInputsDisabled(id, false)
-    formItem.querySelectorAll('[data-required-for-submit]').forEach(input => {
+    formItem.querySelectorAll('[data-required]').forEach(input => {
+      input.setAttribute('required', 'required');
       input.dispatchEvent(new Event('input', { bubbles: true }))
     })
   }
@@ -86,6 +87,8 @@ export default class extends Controller {
 
     form.querySelectorAll(`[name^="patron_request[aeon_item][${id}]"]`).forEach(input => {
       input.disabled = disabled
+      input.dataset.required = true
+      input.removeAttribute('required')
     })
   }
 
