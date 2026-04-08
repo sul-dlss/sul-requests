@@ -78,7 +78,7 @@ export default class extends Controller {
     const date = new Date(Date.parse(form_date));
     const appointmentDiv = document.querySelector(this.element.dataset.appointmentDiv);
     appointmentDiv.classList.remove('d-none');
-    const start_time =  this.element.querySelector('[name="aeon_appointment[start_time]"]:checked')?.dataset?.timestamp;
+    const start_time =  event?.currentTarget?.dataset?.timestamp;
     const duration = formData.get('aeon_appointment[duration]');
     const options = { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' };
     let text = `${date.toLocaleDateString('en-US', options)}`
