@@ -1,4 +1,6 @@
-<%= form_with(model: @appointment, class: "appointment-form", data: { controller: 'appointment', appointment_div: '.selected-appointment' }) do |f| %>
+<%= form_with(model: @appointment, class: "appointment-form", data: { controller: 'appointment' }) do |f| %>
+  <div data-appointment-target="banner" class="selected-appointment d-none"></div>
+
   <div class="modal-body">
     <div>
       <% if @appointment.reading_room_id %>
