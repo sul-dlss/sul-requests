@@ -78,31 +78,26 @@ export default class extends Controller {
     const date = new Date(Date.parse(form_date));
     const appointmentDiv = document.querySelector(this.element.dataset.appointmentDiv);
     appointmentDiv.classList.remove('d-none');
-    const start_time = formData.get('aeon_appointment[start_time]');
+    const start_time =  this.element.querySelector('[name="aeon_appointment[start_time]"]:checked')?.dataset?.timestamp;
     const duration = formData.get('aeon_appointment[duration]');
     const options = { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' };
     let text = `${date.toLocaleDateString('en-US', options)}`
     if (start_time && duration) {
-      const end_time = this.getEndTime(start_time, duration)
-      text += `<i class="bi bi-dot"></i>${start_time} - ${end_time}`
+      const formattedTime = this.formatTime(start_time, duration)
+      text += `<i class="bi bi-dot"></i>${formattedTime}`
     }
     appointmentDiv.innerHTML = `<div class="d-flex">${text}</div>`;
   }
 
-  getEndTime(start_time, duration) {
-    const time_ampm = start_time.split(' ')
-    // convert to time decimal 10:30 to 10.5, 10:00 to 10.0
-    const start_time_dec = parseFloat(time_ampm[0].replace(':30', '.5').replace(':00', '.0'))
-    // get duration in decimal minutes (convert 1800 sec to .5)
-    const duration_dec = parseFloat(duration) / 3600;
-    // add duration to start time, i.e. 30 min appt (.5) + 10.5 (10:30)
-    const end_time = start_time_dec + duration_dec;
-    // If appointment goes am to pm (10:30 / 2 hour appt), the am should be pm
-    const amPm = (end_time >= 12) ? 'pm' : time_ampm[1];
-    // If appointment does from 10am to 1pm, this will be 13 so it needs to be adjusted
-    const adjustedEndTime = (end_time >= 13) ? end_time - 12 : end_time;
-    // convert from decimal to human time
-    return `${adjustedEndTime.toFixed(1).replace('.5', ':30').replace('.0', ':00')} ${amPm}`
+  formatTime(start_time, duration) {
+    const startDate = new Date(parseInt(start_time) * 1000);
+    const endDate = new Date(startDate.getTime() + parseInt(duration) * 1000);
+
+
+    return `
+     ${startDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'America/Los_Angeles' })} -
+     ${ endDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'America/Los_Angeles' }) }
+     `;
   }
 
   updateFormStatus() {

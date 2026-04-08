@@ -11,7 +11,7 @@
         <legend class="fs-6 fw-semibold redesign-required-label">Available time slots</legend>
         <div class="flex-wrap gap-3 appointment-slots">
         <% @available_appointments.select { |x| x.start_time.to_date == @date }.each do |appointment| %>
-          <%= f.radio_button :start_time, l(appointment.start_time, format: :time_only), required: true, id: "aeon_appointment_start_time_#{appointment.start_time.to_i}", data: { maximum_appointment_length: appointment.maximum_appointment_length, action: 'click->appointment#updateSelectedAppointmentDiv'  }, class: 'btn-check', checked: @selected_time == l(appointment.start_time, format: :time_only) %>
+          <%= f.radio_button :start_time, l(appointment.start_time, format: :time_only), required: true, id: "aeon_appointment_start_time_#{appointment.start_time.to_i}", data: { timestamp: appointment.start_time.to_i, maximum_appointment_length: appointment.maximum_appointment_length, action: 'click->appointment#updateSelectedAppointmentDiv'  }, class: 'btn-check', checked: @selected_time == l(appointment.start_time, format: :time_only) %>
           <%= f.label "start_time_#{appointment.start_time.to_i}", l(appointment.start_time, format: :time_only), class: 'btn border' %>
         <% end %>
         </div>
