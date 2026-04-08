@@ -148,6 +148,57 @@ RSpec.describe 'Requesting an item from an EAD', :js do
   end
   # rubocop:enable RSpec/ExampleLength
 
+  context 'with ead that has no series' do
+    let(:eadxml) do
+      Nokogiri::XML(File.read('spec/fixtures/ars0052.xml')).tap(&:remove_namespaces!)
+    end
+
+    it 'allows users to input boxes manually' do # rubocop:disable RSpec/ExampleLength
+      visit new_archives_request_path(value: 'http://example.com/ead.xml')
+
+      expect(page).to have_content('New request')
+      expect(page).to have_content('Hilton (Ozzie) Collection')
+
+      choose 'Digitization'
+      check 'I agree to these terms'
+      click_button 'Continue'
+
+      find('input[data-prepend="manual-input-1"]').set('Box 1')
+      click_button 'Add container'
+      find('input[data-prepend="manual-input-2"]').set('Box 24 ')
+      click_button 'Add container'
+      find('input[data-prepend="manual-input-3"]').set('Box 25 ')
+      find('button[data-index="2"]').click
+
+      click_button 'Continue'
+
+      expect(page).to have_content('Requested pages')
+      expect(page).to have_content('Box 1')
+      fill_in 'Requested pages', with: 'Pages 1-10'
+      fill_in 'Additional information', with: 'Testing only'
+      click_button 'Next item'
+
+      expect(page).to have_content('Box 25')
+      fill_in 'Requested pages', with: 'Pages 10-14'
+      fill_in 'Additional information', with: 'Testing only'
+
+      click_button 'Submit request'
+
+      expect(page).to have_css('.confirmation')
+
+      perform_enqueued_jobs
+      expect(PatronRequest.last.aeon_item.keys).to eq ['manual-input-1-box1', 'manual-input-3-box25']
+      expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
+                                                                        username: user.email_address,
+                                                                        item_info5: 'Pages 1-10',
+                                                                        item_volume: 'Box 1',
+                                                                        special_request: 'Testing only',
+                                                                        call_number: 'ARS.0052 ',
+                                                                        site: 'ARS'
+                                                                      ))
+    end
+  end
+
   context 'with single item ead' do
     let(:eadxml) do
       Nokogiri::XML(File.read('spec/fixtures/a0112.xml')).tap(&:remove_namespaces!)
