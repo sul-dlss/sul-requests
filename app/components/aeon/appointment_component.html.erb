@@ -1,5 +1,5 @@
-<div class="card border-light mb-4">
-  <div class="card-header d-flex border-light d-flex justify-content-between align-items-center bg-white">
+<div class="card mb-4">
+  <div class="card-header d-flex justify-content-between align-items-center bg-white">
     <h2 class="card-title mb-0 h4 d-flex gap-3">
       <span><i class="bi bi-calendar me-2"></i><%= appointment_date %></span>
       <span><i class="bi bi-clock me-2"></i><%= appointment_time_range %></span>
@@ -18,27 +18,8 @@
   </div>
   <div class="card-body">
     <% if appointment.requests.present? %>
-      <ul class="list-group list-group-flush">
-        <% appointment.requests.each do |request| %>
-          <li class="list-group-item">
-            <h3 class="h4">
-              <%= request.title %>
-              <% if request.draft? %>
-                <span class="text-warning ms-2"><i class="bi bi-exclamation-triangle me-1"></i>Draft</span>
-              <% end %>
-            </h3>
-            <div class="d-flex flex-row align-items-center">
-              <div class="me-4">Call number: <%= request.call_number %></div>
-
-            <% if request.volume %>
-              <span class="p-1 px-2 bg-stanford-10-black fw-semibold">
-                <%= request.volume %>
-              </span>
-            <% end %>
-            </div>
-          </li>
-        <% end %>
-      </ul>
+        <% request_groups = Aeon::RequestGrouping.from_requests(appointment.requests) %>
+        <%= render Aeon::RequestGroupPerAppointmentComponent.with_collection(request_groups) %>
     <% else %>
       <div role="alert" class="d-flex align-items-center text-digital-red">
         <div role="img" aria-label="Danger icon" class="bi bi-exclamation-triangle-fill fs-3 me-3 align-self-center d-flex justify-content-center"></div>
@@ -48,7 +29,7 @@
       </div>
     <% end %>
   </div>
-  <div class="card-footer border-light bg-white">
+  <div class="card-footer rounded-bottom bg-white">
     <%= render Aeon::AppointmentLimitComponent.from_appointment(appointment) %>
   </div>
   <!-- Delete modal -->
