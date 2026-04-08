@@ -5,6 +5,7 @@ class ModalComponent < ViewComponent::Base
   attr_reader :id, :data
 
   renders_one :title
+  renders_one :banner
   renders_one :body
   renders_one :footer
 
