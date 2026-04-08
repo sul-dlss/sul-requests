@@ -1,5 +1,5 @@
-<div class="card border mb-4">
-  <div class="card-header d-flex border justify-content-between align-items-center bg-white">
+<div class="card mb-4">
+  <div class="card-header d-flex justify-content-between align-items-center bg-white">
     <h2 class="card-title mb-0 h4 d-flex gap-3">
       <span><i class="bi bi-calendar me-2"></i><%= appointment_date %></span>
       <span><i class="bi bi-clock me-2"></i><%= appointment_time_range %></span>
@@ -16,7 +16,7 @@
       <% end %>
     </div>
   </div>
-  <div class="card-body border">
+  <div class="card-body">
     <% if appointment.requests.present? %>
         <% request_groups = Aeon::RequestGrouping.from_requests(appointment.requests) %>
         <%= render Aeon::RequestGroupPerAppointmentComponent.with_collection(request_groups) %>
@@ -29,7 +29,7 @@
       </div>
     <% end %>
   </div>
-  <div class="card-footer border rounded-bottom bg-white">
+  <div class="card-footer rounded-bottom bg-white">
     <%= render Aeon::AppointmentLimitComponent.from_appointment(appointment) %>
   </div>
   <!-- Delete modal -->
