@@ -4,7 +4,7 @@
   - Subseries: render as collapsible header with recursive call. No checkbox for subseries itself, only for items within it.
 %>
 <% contents.each_with_index do |display_group, group_index| %>
-  <% if display_group.is_a?(Ead::DisplayGroup::Item) %>
+  <% if display_group.selectable? %>
     <%# Container group (e.g., Box 9) %>
     <% 
       checkbox_id = volume_checkbox_id(*display_group.hierarchy, display_group.title)

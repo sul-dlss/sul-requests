@@ -16,9 +16,15 @@ module Ead
       @hierarchy = hierarchy
     end
 
-    Item = Data.define(:title, :contents, :hierarchy)
-    DigitalItem = Data.define(:title, :href, :hierarchy)
-    Subseries = Data.define(:title, :contents, :hierarchy)
+    SelectableContainer = Data.define(:title, :contents, :hierarchy) do
+      def selectable? = true
+    end
+    DigitalItem = Data.define(:title, :href, :hierarchy) do
+      def selectable? = false
+    end
+    Subseries = Data.define(:title, :contents, :hierarchy) do
+      def selectable? = false
+    end
 
     def build
       @contents.group_by(&:coalesce_key).each_value.map do |group|
@@ -38,7 +44,7 @@ module Ead
       c = group.first
 
       if c.top_container
-        Item.new(title: c.top_container, contents: group, hierarchy: hierarchy)
+        SelectableContainer.new(title: c.top_container, contents: group, hierarchy: hierarchy)
       elsif c.contents.any?
         build_hierarchical_group(c)
       else
@@ -48,7 +54,7 @@ module Ead
 
     def build_hierarchical_group(node)
       if all_leaves_containerless?(node.contents)
-        Item.new(title: node.full_title, contents: node.contents, hierarchy: hierarchy)
+        SelectableContainer.new(title: node.full_title, contents: node.contents, hierarchy: hierarchy)
       else
         Subseries.new(title: node.full_title,
                       contents: Ead::DisplayGroup.build_display_groups(node.contents, hierarchy + [node.full_title]), hierarchy: hierarchy)
@@ -59,7 +65,7 @@ module Ead
       if item.respond_to?(:digital_only?) && item.digital_only?
         DigitalItem.new(title: item.full_title, href: item.extref_href, hierarchy: hierarchy)
       else
-        Item.new(title: item.title, contents: [], hierarchy: hierarchy)
+        SelectableContainer.new(title: item.title, contents: [], hierarchy: hierarchy)
       end
     end
 
