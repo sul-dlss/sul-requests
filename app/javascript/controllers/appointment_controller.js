@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["availability", "duration", "fieldset"]
+  static targets = ["availability", "duration", "fieldset", "banner"]
 
   async refreshDateMetadata() {
     const formData = new FormData(this.element);
@@ -20,7 +20,7 @@ export default class extends Controller {
 
       const dateField = this.element.querySelector('[name="aeon_appointment[date]"]');
       dateField.min = ((data.slots || [])[0]?.start_time?.split('T') || [])[0];
-      this.updateSelectedAppointmentDiv();
+      this.updateBanner();
     } catch (error) {
       console.error("Error fetching availability data:", error);
     }
@@ -67,17 +67,16 @@ export default class extends Controller {
     const checkedDuration = document.querySelector('[name="aeon_appointment[duration]"]:checked');
     if (checkedDuration) checkedDuration.checked = false;
     this.updateFormStatus();
-    this.updateSelectedAppointmentDiv();
+    this.updateBanner();
   }
 
 
-  updateSelectedAppointmentDiv(event) {
+  updateBanner(event) {
     const formData = new FormData(this.element);
     const form_date = formData.get('aeon_appointment[date]');
     if (!form_date) { return }
     const date = new Date(Date.parse(form_date));
-    const appointmentDiv = document.querySelector(this.element.dataset.appointmentDiv);
-    appointmentDiv.classList.remove('d-none');
+    this.bannerTarget.classList.remove('d-none');
     const start_time =  event?.currentTarget?.dataset?.timestamp;
     const duration = formData.get('aeon_appointment[duration]');
     const options = { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' };
@@ -86,7 +85,7 @@ export default class extends Controller {
       const formattedTime = this.formatTime(start_time, duration)
       text += `<i class="bi bi-dot"></i>${formattedTime}`
     }
-    appointmentDiv.innerHTML = `<div class="d-flex">${text}</div>`;
+    this.bannerTarget.innerHTML = `<div class="d-flex">${text}</div>`;
   }
 
   formatTime(start_time, duration) {
@@ -124,6 +123,6 @@ export default class extends Controller {
         radio.checked = false;
       }
     });
-    this.updateSelectedAppointmentDiv();
+    this.updateBanner();
   }
 }
