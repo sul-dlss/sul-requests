@@ -10,24 +10,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
     login_as(current_user)
 
     allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
-    allow(aeon_user).to receive_messages(appointments: [
-                                           instance_double(Aeon::Appointment,
-                                                           start_time: DateTime.new(2026, 2, 19, 12, 0, 0),
-                                                           stop_time: DateTime.new(2026, 2, 19, 13, 0, 0),
-                                                           id: 1,
-                                                           editable?: true,
-                                                           sort_key: 1,
-                                                           requests: [instance_double(Aeon::Request)],
-                                                           reading_room: reading_rooms.last),
-                                           instance_double(Aeon::Appointment,
-                                                           start_time: DateTime.new(2026, 2, 20, 13, 0, 0),
-                                                           stop_time: DateTime.new(2026, 2, 20, 14, 0, 0),
-                                                           id: 2,
-                                                           editable?: true,
-                                                           sort_key: 2,
-                                                           requests: [instance_double(Aeon::Request)],
-                                                           reading_room: reading_rooms.first)
-                                         ],
+    allow(aeon_user).to receive_messages(appointments:,
                                          requests: [])
   end
 
@@ -47,6 +30,27 @@ RSpec.describe 'Requesting an item from an EAD', :js do
     [instance_double(Aeon::AvailableAppointment,
                      start_time: DateTime.new(2026, 2, 19),
                      maximum_appointment_length: 210.minutes)]
+  end
+
+  let(:appointments) do
+    [
+      instance_double(Aeon::Appointment,
+                      start_time: DateTime.new(2026, 2, 19, 12, 0, 0),
+                      stop_time: DateTime.new(2026, 2, 19, 13, 0, 0),
+                      id: 1,
+                      editable?: true,
+                      sort_key: 1,
+                      requests: [instance_double(Aeon::Request)],
+                      reading_room: reading_rooms.last),
+      instance_double(Aeon::Appointment,
+                      start_time: DateTime.new(2026, 2, 20, 13, 0, 0),
+                      stop_time: DateTime.new(2026, 2, 20, 14, 0, 0),
+                      id: 2,
+                      editable?: true,
+                      sort_key: 2,
+                      requests: [instance_double(Aeon::Request)],
+                      reading_room: reading_rooms.first)
+    ]
   end
 
   context 'with multi item ead' do
@@ -230,6 +234,34 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       # In the Appointment step
       click_button 'Select existing appointment'
       click_button 'Feb 19'
+    end
+
+    context 'when there are no appointments' do
+      let(:appointments) { [] }
+
+      it 'shows appointment alert' do
+        visit new_archives_request_path(value: 'http://example.com/ead.xml')
+
+        expect(page).to have_content('New request')
+        expect(page).to have_content('Pehrson (Elmer Walter) Photograph Album')
+
+        choose 'Reading room appointment'
+
+        expect(page).to have_content('Earliest appointment available: Thursday, Feb 19, 2026')
+
+        click_button 'Continue'
+
+        check 'Box 1'
+        click_button 'Continue'
+
+        expect(page).to have_no_css('.selected-items-container .accordion-button')
+        expect(page).to have_css('.selected-item-title', text: 'Box 1')
+
+        # In the Appointment step
+        expect(page).to have_content('Field Reading Room')
+        expect(page).to have_content('Hours: Monday - Friday, 9:00 - 4:45 pm')
+        expect(page).to have_content('You don’t have any appointments yet. Create one to continue.')
+      end
     end
 
     it 'shows expanded item info for digitization request' do
