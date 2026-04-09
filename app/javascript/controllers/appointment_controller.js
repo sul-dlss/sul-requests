@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["availability", "duration", "fieldset"]
+  static targets = ["availability", "duration", "fieldset", "banner"]
 
   async refreshDateMetadata() {
     const formData = new FormData(this.element);
@@ -20,6 +20,7 @@ export default class extends Controller {
 
       const dateField = this.element.querySelector('[name="aeon_appointment[date]"]');
       dateField.min = ((data.slots || [])[0]?.start_time?.split('T') || [])[0];
+      this.updateBanner();
     } catch (error) {
       console.error("Error fetching availability data:", error);
     }
@@ -66,6 +67,36 @@ export default class extends Controller {
     const checkedDuration = document.querySelector('[name="aeon_appointment[duration]"]:checked');
     if (checkedDuration) checkedDuration.checked = false;
     this.updateFormStatus();
+    this.updateBanner();
+  }
+
+
+  updateBanner(event) {
+    const formData = new FormData(this.element);
+    const form_date = formData.get('aeon_appointment[date]');
+    if (!form_date) { return }
+    const date = new Date(Date.parse(form_date));
+    this.bannerTarget.classList.remove('d-none');
+    const start_time =  event?.currentTarget?.dataset?.timestamp;
+    const duration = formData.get('aeon_appointment[duration]');
+    const options = { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' };
+    let text = `${date.toLocaleDateString('en-US', options)}`
+    if (start_time && duration) {
+      const formattedTime = this.formatTime(start_time, duration)
+      text += `<i class="bi bi-dot"></i>${formattedTime}`
+    }
+    this.bannerTarget.innerHTML = `<div class="d-flex">${text}</div>`;
+  }
+
+  formatTime(start_time, duration) {
+    const startDate = new Date(parseInt(start_time) * 1000);
+    const endDate = new Date(startDate.getTime() + parseInt(duration) * 1000);
+
+
+    return `
+     ${startDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'America/Los_Angeles' })} -
+     ${ endDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'America/Los_Angeles' }) }
+     `;
   }
 
   updateFormStatus() {
@@ -92,5 +123,6 @@ export default class extends Controller {
         radio.checked = false;
       }
     });
+    this.updateBanner();
   }
 }

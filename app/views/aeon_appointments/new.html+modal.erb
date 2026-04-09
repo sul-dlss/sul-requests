@@ -1,7 +1,8 @@
 <%= turbo_frame_tag params[:modal] do %>
   <div class="modal-header">
-    <h1 class="mb-0">Create new appointment</h1>
+    <h1 class="mb-0">Create new appointment<% if @reading_room %><i class="bi bi-dot"></i><%= @reading_room.name %><% end %></h1>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
   </div>
+
   <%= render 'form' %>
 <% end %>
