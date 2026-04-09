@@ -10,7 +10,7 @@ module Aeon
     end
 
     def self.all
-      @all ||= aeon_client.reading_rooms
+      aeon_client.reading_rooms
     end
 
     def self.find_by(site:)
