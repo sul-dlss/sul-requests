@@ -22,7 +22,7 @@ class PatronRequestsController < ApplicationController
   before_action :redirect_aeon_pages, only: [:create]
   before_action :require_aeon_terms, only: [:new, :create]
   before_action :redirect_finding_aid_pages, if: lambda {
-    Settings.features.requests_redesign && @patron_request.instance_hrid && @patron_request.finding_aid? && params[:ead_url].blank?
+    use_requests_redesign? && @patron_request.instance_hrid && @patron_request.finding_aid? && params[:ead_url].blank?
   }, only: [:new]
 
   helper_method :current_request, :new_params
@@ -32,7 +32,7 @@ class PatronRequestsController < ApplicationController
   end
 
   def show
-    if @patron_request.aeon_page? && Settings.features.requests_redesign # rubocop:disable Style/GuardClause
+    if @patron_request.aeon_page? && use_requests_redesign? # rubocop:disable Style/GuardClause
       @aeon_requests = Aeon::RequestGrouping.new(current_user.aeon.requests.select do |x|
         x.reference_number == @patron_request.to_global_id.to_s
       end)
@@ -42,7 +42,7 @@ class PatronRequestsController < ApplicationController
 
   def new
     request.variant = :aeon if @patron_request.aeon_page?
-    request.variant = :aeonredesign if (@patron_request.ead_url || @patron_request.aeon_page?) && Settings.features.requests_redesign
+    request.variant = :aeonredesign if (@patron_request.ead_url || @patron_request.aeon_page?) && use_requests_redesign?
   end
 
   def create
@@ -54,7 +54,7 @@ class PatronRequestsController < ApplicationController
   end
 
   def require_aeon_terms
-    return unless Settings.features.requests_redesign && @patron_request.aeon_page?
+    return unless use_requests_redesign? && @patron_request.aeon_page?
     return if current_user.aeon.persisted?
 
     redirect_to new_aeon_user_path(referrer: request.original_url) and return if current_user.name_email_user?
@@ -75,7 +75,7 @@ class PatronRequestsController < ApplicationController
   def aeon_email_present
     return unless @patron_request.aeon_page? && current_user.library_id?
 
-    render 'no_email' if current_user.email_address.blank? && Settings.features.requests_redesign
+    render 'no_email' if current_user.email_address.blank? && use_requests_redesign?
   end
 
   # SSO or library-id users don't need to re-login, but name/email users always need to provide their information
@@ -83,7 +83,7 @@ class PatronRequestsController < ApplicationController
   #
   # Aeon pages never need authentication, because Aeon will handle that as part of its request flow.
   def authorize_new_request # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
-    return if @patron_request.aeon_page? && (current_user.email_address.present? || !Settings.features.requests_redesign)
+    return if @patron_request.aeon_page? && (current_user.email_address.present? || !use_requests_redesign?)
 
     return if current_user.patron.present? || (params[:step].present? && current_user.patron.email.present?)
 

@@ -5,6 +5,7 @@ require 'rails_helper'
 RSpec.describe 'home/show' do
   before do
     allow(controller).to receive_messages(current_user: create(:anon_user))
+    allow(view).to receive_messages(use_requests_redesign?: false)
   end
 
   it 'has title and links' do

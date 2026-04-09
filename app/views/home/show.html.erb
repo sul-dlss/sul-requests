@@ -1,4 +1,4 @@
-<% if Settings.features.requests_redesign %>
+<% if use_requests_redesign? %>
   <%= render 'show_redesign' %>
 <% else %>
   <%= render 'show_admin' %>
