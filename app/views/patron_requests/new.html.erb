@@ -4,6 +4,8 @@
   <%= render 'user_header' %>
 <% end %>
 
+<%= render '/shared/feature_flag' %>
+
 <%= render 'messages', messages: @patron_request.active_messages %>
 
 <h1 class="fw-semibold mt-4 fs-1"><%= @patron_request.item_title %></h1>

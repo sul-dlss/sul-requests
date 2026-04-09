@@ -28,11 +28,15 @@ class ApplicationController < ActionController::Base
     current_user.sunetid.present?
   end
 
-  def use_requests_redesign?
-    Settings.features.requests_redesign
+  def request_feature_flags
+    @request_feature_flags ||= cookies[:feature_flags].to_s.split(',').map(&:strip)
   end
 
-  helper_method :current_user, :current_user?, :sso_user?, :use_requests_redesign?
+  def use_requests_redesign?
+    Settings.features.requests_redesign || request_feature_flags.include?('requests_redesign')
+  end
+
+  helper_method :current_user, :current_user?, :sso_user?, :request_feature_flags, :use_requests_redesign?
 
   private
 

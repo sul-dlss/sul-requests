@@ -1,3 +1,5 @@
+<%= render '/shared/feature_flag' %>
+
 <% if use_requests_redesign? %>
   <%= render 'show_redesign' %>
 <% else %>
