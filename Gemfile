@@ -28,6 +28,7 @@ gem 'cancancan'
 # Use faraday for making HTTP requests
 gem 'faraday', '~> 2' # for library hours, Illiad, and Folio clients
 gem 'faraday-retry'
+gem 'faraday-follow_redirects'
 gem 'http' # for Reshare and SymphonyClient
 # Use kaminari for pagination
 gem 'kaminari'
