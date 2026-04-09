@@ -451,8 +451,9 @@ class PatronRequest < ApplicationRecord
 
   def aeon_reading_room
     return unless aeon_site
+    return @aeon_reading_room if defined?(@aeon_reading_room)
 
-    @aeon_reading_room ||= AeonClient.new.reading_rooms.find { |rr| rr.sites.include?(aeon_site) }
+    @aeon_reading_room = Aeon::ReadingRoom.find_by(site: aeon_site)
   end
 
   # For the reading room information, we need to check if 'ARS' is in the location details
