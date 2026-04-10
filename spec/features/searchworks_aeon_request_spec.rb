@@ -66,10 +66,9 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
       click_button 'Continue'
 
-      # TODO: Re-enable when accordion button disabled state is working
-      # within('.selected-items-container') do
-      # expect(page).to have_css('.accordion-button[disabled][aria-expanded="true"]', text: 'ABC 123')
-      # end
+      within('.selected-items-container') do
+        expect(page).to have_css('.accordion-button[disabled][aria-expanded="true"]', text: 'ABC 123')
+      end
 
       fill_in 'Requested pages', with: 'Pages 1-10'
       choose 'Yes'
