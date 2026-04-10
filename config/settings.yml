@@ -377,6 +377,7 @@ scan_destinations:
 
 # Aeon external request endpoint (ERE)
 aeon_ere_url: https://stanford.aeon.atlas-sys.com/logon?Action=11&Type=200
+aeon_archives_url: https://stanford.aeon.atlas-sys.com/logon?Action=10&Form=31
 
 # Aeon API settings. `api_key` is also required.
 aeon:
