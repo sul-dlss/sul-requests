@@ -208,6 +208,10 @@ summary .disclosure-icon::before {
   box-shadow: none !important;
 }
 
+.accordion-button[disabled]  ~ .accordion-header-icon {
+  display: none;
+}
+
 .accordion-button[aria-expanded=true] {
   border-bottom-left-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
