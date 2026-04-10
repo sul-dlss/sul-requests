@@ -59,7 +59,10 @@ export default class extends Controller {
 
     if (!date || !readingRoomId) return;
 
-    this.availabilityTarget.src = `/aeon_appointments/available/${readingRoomId}/${date}?selected=${startTime}&duration=${apptDuration}`
+    const appointmentId = this.availabilityTarget.dataset.appointmentId;
+    let src = `/aeon_appointments/available/${readingRoomId}/${date}?selected=${startTime}&duration=${apptDuration}`;
+    if (appointmentId) src += `&appointment_id=${appointmentId}`;
+    this.availabilityTarget.src = src;
   }
 
   resetFields() {

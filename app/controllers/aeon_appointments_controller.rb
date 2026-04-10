@@ -6,7 +6,7 @@
 class AeonAppointmentsController < ApplicationController
   include AeonController
 
-  before_action :load_appointments, except: [:available]
+  before_action :load_appointments
   before_action :load_appointment, only: [:edit, :update, :destroy]
   before_action :create_appointment, only: [:create]
   before_action :load_reading_rooms, only: [:new, :available]
@@ -29,8 +29,7 @@ class AeonAppointmentsController < ApplicationController
     @selected_time = params[:selected]
     @date = Date.parse(params.expect(:date))
 
-    @available_appointments = AeonClient.new.available_appointments(reading_room_id: params.expect(:reading_room_id),
-                                                                    date: @date, include_next_available: true)
+    @available_appointments = filtered_available_appointments
     @appointment_lengths = @available_appointments.map(&:maximum_appointment_length)
     respond_to do |format|
       format.html
@@ -70,6 +69,13 @@ class AeonAppointmentsController < ApplicationController
   end
 
   private
+
+  def filtered_available_appointments
+    slots = AeonClient.new.available_appointments(reading_room_id: params.expect(:reading_room_id),
+                                                  date: @date, include_next_available: true)
+    existing = @appointments.reject { |appt| appt.id == params[:appointment_id]&.to_i }
+    Aeon::AvailableAppointmentFilter.new(available_appointments: slots, existing_appointments: existing).filter
+  end
 
   def load_reading_rooms
     @reading_rooms = Aeon::ReadingRoom.all
