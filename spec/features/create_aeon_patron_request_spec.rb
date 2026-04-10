@@ -174,4 +174,35 @@ RSpec.describe 'Creating an Aeon patron request', :js do
       end
     end
   end
+
+  context 'when in the redesign experience' do
+    before do
+      allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
+      allow(Settings.features).to receive_messages(requests_redesign: true)
+
+      stub_request(:head, 'https://archives.stanford.edu/findingaid/ark:/22236/s1060cff19-35d7-4ca7-83cc-37009f6324b8')
+        .to_return(status: 302, headers: { 'Location' => 'https://archives.stanford.edu/catalog/fake' })
+      stub_request(:head, 'https://archives.stanford.edu/catalog/fake').to_return(status: 200)
+
+      allow(EadClient).to receive(:fetch).and_return(Ead::Document.new(eadxml, url: 'whatever'))
+    end
+
+    let(:folio_instance) { :special_collections_finding_aid_holdings }
+    let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
+
+    let(:reading_rooms) { JSON.load_file('spec/fixtures/reading_rooms.json').map { |room| Aeon::ReadingRoom.from_dynamic(room) } }
+    let(:stub_aeon_client) do
+      instance_double(AeonClient, find_user: aeon_user, reading_rooms:, appointments_for: [], available_appointments: [])
+    end
+    let(:eadxml) do
+      Nokogiri::XML(File.read('spec/fixtures/sc0097.xml')).tap(&:remove_namespaces!)
+    end
+
+    it 'redirects the user to the EAD request form' do
+      visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SPEC-STACKS')
+
+      expect(page).to have_content 'View in Archival Collections at Stanford'
+      expect(page).to have_content 'Knuth (Donald E.) papers'
+    end
+  end
 end

@@ -266,7 +266,7 @@ class PatronRequest < ApplicationRecord
   end
 
   def bib_record
-    folio_instance.presence || ead_doc
+    ead_doc || folio_instance.presence
   end
 
   # @return [String] the title of the item

@@ -22,7 +22,7 @@ class PatronRequestsController < ApplicationController
   before_action :redirect_aeon_pages, only: [:create]
   before_action :require_aeon_terms, only: [:new, :create]
   before_action :redirect_finding_aid_pages, if: lambda {
-    Settings.features.requests_redesign && @patron_request.instance_hrid && @patron_request.finding_aid?
+    Settings.features.requests_redesign && @patron_request.instance_hrid && @patron_request.finding_aid? && params[:ead_url].blank?
   }, only: [:new]
 
   helper_method :current_request, :new_params
@@ -103,8 +103,13 @@ class PatronRequestsController < ApplicationController
   def redirect_finding_aid_pages
     return unless @patron_request.finding_aid?
 
-    # TODO: maybe convert the archives HTML url to an EAD url without just sending the url off to find the right thing.
-    redirect_to @patron_request.finding_aid, allow_other_host: true
+    ead_url = FindingAidLookupService.new(@patron_request.finding_aid).ead_url
+
+    if ead_url.present?
+      redirect_to new_archives_request_path(**new_params, ead_url: ead_url)
+    else
+      redirect_to @patron_request.finding_aid, allow_other_host: true
+    end
   end
 
   def associate_request_with_patron
