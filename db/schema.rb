@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_17_164328) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_10_175606) do
   create_table "admin_comments", force: :cascade do |t|
     t.string "comment"
     t.string "commenter"
@@ -45,7 +45,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_17_164328) do
 
   create_table "patron_requests", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.text "data", limit: 4294967295
+    t.text "data", limit: 1073741823
     t.string "display_type"
     t.string "fulfillment_type"
     t.string "instance_hrid"
