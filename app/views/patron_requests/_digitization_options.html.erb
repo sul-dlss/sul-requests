@@ -3,11 +3,12 @@
 
   <div class="accordion digitization-accordion selected-items-container" data-patron-request-target="digitizationItems" data-item-selector-target="selectedItems" data-template="#digitizationTemplate">
     <% if f.object.selectable_items.one? %>
-      <%= render Aeon::DigitizationFormItemComponent.new(title: f.object.selectable_items.first.callnumber, dom_id: f.object.selectable_items.first.id, base_name: "patron_request[aeon_item][#{f.object.selectable_items.first.id}]", collapsed: false) %>
+      <span class="text-black fw-semibold selected-item-title stretched-link"><%= f.object.selectable_items.first.callnumber %></span>
+      <%= render Aeon::DigitizationFormItemComponent.new(base_name: "patron_request[aeon_item][#{f.object.selectable_items.first.id}]") %>
     <% end %>
   </div>
 
   <template id="digitizationTemplate">
-    <%= render Aeon::DigitizationFormItemComponent.new(title: '__TITLE__', dom_id: '__ID__', base_name: 'patron_request[aeon_item][__ID__]') %>
+    <%= render Aeon::DigitizationFormAccordionComponent.new(title: '__TITLE__', dom_id: '__ID__', base_name: 'patron_request[aeon_item][__ID__]') %>
   </template>
 </div>

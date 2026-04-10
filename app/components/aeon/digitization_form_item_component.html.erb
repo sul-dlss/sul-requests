@@ -1,49 +1,32 @@
-<div data-controller="selected-item-form" data-action="input->selected-item-form#updateStatus" class="accordion-item mb-3" data-content-id="<%= dom_id %>">
-  <div class="accordion-header d-flex flex-nowrap align-items-center position-relative">
-    <button class="accordion-button d-inline-flex w-auto align-items-center position-static" type="button" data-bs-toggle="collapse" data-bs-target="#content_<%= dom_id %>" aria-expanded="<%= collapsed? ? 'false' : 'true' %>" aria-controls="content_<%= dom_id %>">
-      <i class="bi bi-check2 selected-item-status"></i>
-      <span class="text-black fw-semibold selected-item-title stretched-link"><%= title %></span>
-    </button>
-    <button class="btn btn-link p-0 ps-1 z-3 selected-item-remove" data-action="item-selector#remove" data-item-selector-id-param="<%= dom_id %>">
-      <i class="bi bi-trash"></i><span class="visually-hidden"> Delete <%= title %></span>
-    </button>
-
-    <i class="bi bi-chevron-down accordion-header-icon ms-auto px-4"></i>
+<%= fields_for base_name, object do |f| %>
+  <div class="mb-3">
+    <%= f.label :requested_pages, class: 'form-label fw-semibold redesign-required-label' %>
+    <%= f.text_field :requested_pages, placeholder: 'e.g. 100-150, 167, 170-180 or Chapter 5', class: 'form-control', data: { 'required-for-submit': true } %>
   </div>
-  <div id="content_<%= dom_id %>" class="accordion-collapse <%= 'collapse' if collapsed? %>">
-    <%= fields_for base_name, object do |f| %>
-      <div class="accordion-body">
-        <div class="mb-3">
-          <%= f.label :requested_pages, class: 'form-label fw-semibold redesign-required-label' %>
-          <%= f.text_field :requested_pages, placeholder: 'e.g. 100-150, 167, 170-180 or Chapter 5', class: 'form-control', data: { 'required-for-submit': true } %>
-        </div>
 
-        <div class="mb-3">
-          <fieldset>
-            <legend class="form-label fs-6 mb-1 fw-semibold">Is this for publication?</legend>
-            <span class="me-3">
-              <%= f.radio_button :for_publication, true %>
-              <%= f.label :for_publication_true, 'Yes' %>
-            </span>
+  <div class="mb-3">
+    <fieldset>
+      <legend class="form-label fs-6 mb-1 fw-semibold">Is this for publication?</legend>
+      <span class="me-3">
+        <%= f.radio_button :for_publication, true %>
+        <%= f.label :for_publication_true, 'Yes' %>
+      </span>
 
-            <%= f.radio_button :for_publication, false %>
-            <%= f.label :for_publication_false, 'No' %>
-          </fieldset>
-        </div>
-
-        <div class="mb-3" data-controller="char-counter">
-          <%= f.label :additional_information, class: 'form-label fw-semibold' %>
-          <%= f.text_area :additional_information, class: 'form-control', maxlength: 255, data: { action: "input->char-counter#updateCharCounter"} %>
-          <p class="form-text text-secondary d-flex justify-content-between">
-            <span>Limit 255 characters.</span>
-            <span data-char-counter-target="counter"></span>
-          </p>
-        </div>
-
-        <div class="d-flex justify-content-end">
-          <button class="next-item btn btn-sm btn-primary" data-selected-item-form-target="nextButton" data-action="selected-item-form#nextItem">Next item</button>
-        </div>
-      </div>
-    <% end %>
+      <%= f.radio_button :for_publication, false %>
+      <%= f.label :for_publication_false, 'No' %>
+    </fieldset>
   </div>
-</div>
+
+  <div class="mb-3" data-controller="char-counter">
+    <%= f.label :additional_information, class: 'form-label fw-semibold' %>
+    <%= f.text_area :additional_information, class: 'form-control', maxlength: 255, data: { action: "input->char-counter#updateCharCounter"} %>
+    <p class="form-text text-secondary d-flex justify-content-between">
+      <span>Limit 255 characters.</span>
+      <span data-char-counter-target="counter"></span>
+    </p>
+  </div>
+
+  <div class="d-flex justify-content-end">
+    <button class="next-item btn btn-sm btn-primary" data-selected-item-form-target="nextButton" data-action="selected-item-form#nextItem">Next item</button>
+  </div>
+<% end %>
