@@ -187,20 +187,16 @@ export default class extends Controller {
       })
     });
 
-    // Disable digitization accordion button if only one item is selected
-    // In this case accordion area is expanded by default
-    this.selectedItemsTargets.forEach(target => {
-      const accordionButton = target.querySelector('.accordion-button');
-      if (accordionButton) {
-        if (value.length === 1) {
-          accordionButton.setAttribute('disabled', '');
-        } else {
-          accordionButton.removeAttribute('disabled');
-        }
-      }
-    });
-
+    this.updateAccordionButtonState();
     this.dispatch('changed', { detail: { selectedItems: value, previousValue: previousValue } });
+  }
+
+  updateAccordionButtonState() {
+    this.selectedItemsTargets.forEach(target => {
+      const buttons = [...target.querySelectorAll('.accordion-button')];
+      const disable = buttons.length === 1;
+      buttons.forEach(button => button.toggleAttribute('disabled', disable));
+    });
   }
 
   getStimulusParams(element) {
