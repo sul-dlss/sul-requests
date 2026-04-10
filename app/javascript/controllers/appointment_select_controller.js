@@ -21,7 +21,7 @@ export default class extends Controller {
     this.element.querySelectorAll('[data-count]').forEach(option => {
       const baseCount = parseInt(option.dataset.count);
 
-      const formCount = this.element.closest('#reading-accordion').querySelectorAll("input[value='" + option.dataset.appointmentId + "']").length;
+      const formCount = document.getElementById('reading-accordion').querySelectorAll("input[value='" + option.dataset.appointmentId + "']:not(:disabled)").length;
 
       const newCount = baseCount + formCount;
 
@@ -45,6 +45,10 @@ export default class extends Controller {
     const selectedOption = this.element.querySelector(`[data-value="${this.inputTarget.value}"]`);
     if (selectedOption) {
       this.buttonTarget.innerHTML = selectedOption.querySelector('.label-value').innerHTML;
+    } else {
+      this.element.querySelector('.selected')?.classList?.remove('selected');
+      this.buttonTarget.textContent = 'Select existing appointment';
+      this.dispatch('change', { detail: { value: '' } });
     }
   }
 

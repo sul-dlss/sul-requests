@@ -14,6 +14,10 @@ module Aeon
       @reading_room_id = reading_room_id
     end
 
+    def new_item?
+      object.nil?
+    end
+
     def new_appointment_path
       new_aeon_appointment_path(reading_room_id: @reading_room_id)
     end

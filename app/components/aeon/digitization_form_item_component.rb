@@ -16,5 +16,9 @@ module Aeon
     def collapsed?
       @collapsed
     end
+
+    def new_item?
+      object.nil?
+    end
   end
 end

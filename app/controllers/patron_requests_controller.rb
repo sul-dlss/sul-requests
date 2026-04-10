@@ -12,13 +12,13 @@ class PatronRequestsController < ApplicationController
 
   bot_challenge only: [:new]
 
-  load_resource
+  load_resource new: [:new, :save_for_later]
   before_action :assign_new_attributes, only: [:new]
   before_action :aeon_email_present, only: [:new]
-  before_action :authorize_new_request, only: [:new]
+  before_action :authorize_new_request, only: [:new, :save_for_later]
   authorize_resource
 
-  before_action :associate_request_with_patron, only: [:new, :create]
+  before_action :associate_request_with_patron, only: [:new, :create, :save_for_later]
   before_action :redirect_aeon_pages, only: [:create]
   before_action :require_aeon_terms, only: [:new, :create]
   before_action :redirect_finding_aid_pages, if: lambda {
@@ -50,6 +50,19 @@ class PatronRequestsController < ApplicationController
       redirect_to @patron_request
     else
       render 'new'
+    end
+  end
+
+  def save_for_later
+    return unless Settings.features.requests_redesign && @patron_request.aeon_page?
+
+    scope_to_save_for_later_item
+
+    if @patron_request.save
+      create_draft_aeon_request
+      respond_to { |format| format.turbo_stream }
+    else
+      head :unprocessable_content
     end
   end
 
@@ -90,6 +103,20 @@ class PatronRequestsController < ApplicationController
     flash.now[:error] = t('sessions.login_by_sunetid.error_html') if sunetid_without_folio_account? && !@patron_request.aeon_page?
 
     render 'login'
+  end
+
+  def create_draft_aeon_request
+    @aeon_request = SubmitAeonPatronRequestJob.perform_now(@patron_request)&.first
+    @dom_id = @patron_request.aeon_item.keys.first
+    @request_type = @patron_request.request_type == 'scan' ? 'scan' : 'pickup'
+  end
+
+  def scope_to_save_for_later_item
+    item_id = params[:save_for_later_item_id]
+    return unless item_id
+
+    @patron_request.barcodes = [item_id]
+    @patron_request.aeon_item = @patron_request.aeon_item&.slice(item_id) || {}
   end
 
   def redirect_aeon_pages
@@ -143,6 +170,7 @@ class PatronRequestsController < ApplicationController
                                    :fulfillment_type, :request_type,
                                    :scan_page_range, :scan_authors, :scan_title,
                                    :aeon_reading_special, :aeon_terms, :ead_url,
+                                   :saved_for_later_count,
                                    { barcodes: [] }, { aeon_item: aeon_term_params }])
   end
 

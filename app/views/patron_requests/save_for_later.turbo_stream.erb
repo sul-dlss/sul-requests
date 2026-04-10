@@ -1,0 +1,4 @@
+<%= turbo_stream.remove "save-for-later-spinner-#{@dom_id}" %>
+<%= turbo_stream.append "save-for-later-items-#{@request_type}" do %>
+  <%= render 'saved_item', request: @aeon_request %>
+<% end %>
