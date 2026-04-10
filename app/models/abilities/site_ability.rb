@@ -23,13 +23,17 @@ class SiteAbility
       can [:create, :read, :update, :destroy], :all
       can :manage, [LibraryLocation, Message, PagingSchedule, AdminComment]
       can [:admin, :debug], PatronRequest
+      can :toggle, :feature_flags
     end
 
     if user.site_admin?
       can :read, :admin
       can :manage, [LibraryLocation, Message, PagingSchedule, AdminComment]
       can [:admin, :debug, :create, :read, :update, :destroy], PatronRequest
+      can :toggle, :feature_flags
     end
+
+    can :toggle, :feature_flags if Settings.feature_flag_groups.any? { |v| user.ldap_groups.include?(v) }
 
     # Adminstrators for origins or destinations should be able to
     # manage requests originating or arriving to their library.
