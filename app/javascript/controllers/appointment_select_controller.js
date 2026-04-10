@@ -49,6 +49,7 @@ export default class extends Controller {
   }
 
   optionTargetConnected(option) {
+    this.buttonTarget.disabled = false;
     if (this.element.closest('li').matches(':only-child') && (this.element.querySelector(':checked')?.value || "") == "") {
       this.selectItem(option);
     }
