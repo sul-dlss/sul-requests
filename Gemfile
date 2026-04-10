@@ -117,6 +117,7 @@ end
 group :production do
   # Use mysql as the database when running on the server environment
   gem 'mysql2'
+  gem 'postgresql'
 end
 
 # Use Capistrano for deployment
