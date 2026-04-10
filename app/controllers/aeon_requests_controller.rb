@@ -10,14 +10,14 @@ class AeonRequestsController < ApplicationController
 
   before_action :load_aeon_request, only: [:edit, :update, :destroy, :resubmit]
   before_action :load_multiple_aeon_requests, only: [:destroy_multiple]
+  before_action :set_variant, only: [:drafts, :edit]
 
   def drafts
     authorize! :read, Aeon::Request
 
     requests = sort_aeon_requests(filter_aeon_requests(current_user&.aeon&.draft_requests || []))
     @aeon_request_groups = Aeon::RequestGrouping.from_requests(requests)
-
-    request.variant = :sidebar if params[:variant] == 'sidebar'
+    @appointment = current_user.aeon.appointment_by_id(id: params[:appointment_id]) if params[:appointment_id]
   end
 
   def cancelled
@@ -44,8 +44,6 @@ class AeonRequestsController < ApplicationController
 
   def edit
     authorize! :update, @aeon_request
-
-    request.variant = :modal if params[:modal]
   end
 
   def update
@@ -83,6 +81,11 @@ class AeonRequestsController < ApplicationController
   end
 
   private
+
+  def set_variant
+    request.variant = :sidebar if params[:variant] == 'sidebar'
+    request.variant = :modal if params[:modal]
+  end
 
   def load_aeon_request
     @aeon_request = current_user.aeon.requests.find { |request| request.transaction_number == params[:id].to_i }

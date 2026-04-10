@@ -202,6 +202,7 @@ summary .disclosure-icon::before {
   border-top-right-radius: var(--bs-accordion-border-radius) !important;
   border-bottom-left-radius: var(--bs-accordion-border-radius) !important;
   border-bottom-right-radius: var(--bs-accordion-border-radius) !important;
+  --bs-accordion-active-color: var(--stanford-process-black);
 }
 
 .accordion-button:not(.collapsed) {
@@ -759,4 +760,27 @@ label.btn-close {
   padding: 0.5rem 1rem;
   background-color: var(--stanford-fog-light);
   color: var(--stanford-digital-blue-dark);
+}
+
+.request-group {
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+
+.modal-body.add-items {
+  .reading-room {
+    display: none;
+  }
+
+  .request-group {
+    --bs-border-width: 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
+  }
+
+  .request-group {
+    &:not(:last-child) .card-body{
+      border-bottom: 1px solid var(--stanford-10-black);
+    }
+  }
 }

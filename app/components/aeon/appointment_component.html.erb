@@ -29,8 +29,9 @@
       </div>
     <% end %>
   </div>
-  <div class="card-footer rounded-bottom bg-white">
+  <div class="card-footer bg-transparent d-flex justify-content-between align-items-center">
     <%= render Aeon::AppointmentLimitComponent.from_appointment(appointment) %>
+    <%= link_to "Add items", add_items_path, class: 'btn btn-outline-primary btn-sm', data: { action: 'modal#open' } unless add_item_disabled? %>
   </div>
   <!-- Delete modal -->
   <%= render ModalComponent.new(id: "delete-appointment-#{appointment.id}") do |component| %>
