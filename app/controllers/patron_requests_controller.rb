@@ -12,6 +12,10 @@ class PatronRequestsController < ApplicationController
 
   bot_challenge only: [:new]
 
+  before_action :redirect_aeon_finding_aid_requests, only: [:new], if: lambda {
+    !Settings.features.requests_redesign && (params[:Value].present? || params[:value].present?)
+  }
+
   load_resource
   before_action :assign_new_attributes, only: [:new]
   before_action :aeon_email_present, only: [:new]
@@ -90,6 +94,14 @@ class PatronRequestsController < ApplicationController
     flash.now[:error] = t('sessions.login_by_sunetid.error_html') if sunetid_without_folio_account? && !@patron_request.aeon_page?
 
     render 'login'
+  end
+
+  def redirect_aeon_finding_aid_requests
+    ead_url = params[:Value].presence || params[:value].presence || params[:ead_url].presence
+
+    return if ead_url.blank?
+
+    redirect_to Settings.aeon_archives_url + "&Value=#{ead_url}", allow_other_host: true
   end
 
   def redirect_aeon_pages
