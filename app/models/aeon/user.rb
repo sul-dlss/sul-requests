@@ -48,6 +48,10 @@ module Aeon
       end
     end
 
+    def appointment_by_id(id:)
+      appointments.find { |appointment| appointment.id == id.to_i }
+    end
+
     def appointments_for(site:)
       appointments.select { |appt| appt.reading_room.sites.include?(site) }
     end
