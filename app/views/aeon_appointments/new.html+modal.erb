@@ -4,5 +4,9 @@
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
   </div>
 
-  <%= render 'form' %>
+  <% if @appointment.reading_room_id %>
+    <%= render 'form' %>
+  <% else %>
+    <%= render 'choose_reading_room' %>
+  <% end %>
 <% end %>

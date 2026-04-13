@@ -3,29 +3,6 @@ import { Controller } from "@hotwired/stimulus";
 export default class extends Controller {
   static targets = ["availability", "duration", "fieldset", "banner"]
 
-  async refreshDateMetadata() {
-    const formData = new FormData(this.element);
-
-    const readingRoomId = formData.get('aeon_appointment[reading_room_id]');
-    const date = new Date().toISOString().split('T')[0];
-
-    try {
-      const response = await fetch(`/aeon_appointments/available/${readingRoomId}/${date}`,
-        { headers: { Accept: "application/json" } }
-      );
-
-      if (!response.ok) return;
-
-      const data = await response.json();
-
-      const dateField = this.element.querySelector('[name="aeon_appointment[date]"]');
-      dateField.min = ((data.slots || [])[0]?.start_time?.split('T') || [])[0];
-      this.updateBanner();
-    } catch (error) {
-      console.error("Error fetching availability data:", error);
-    }
-  }
-
   filterDurationFields() {
     const data = this.fieldsetTarget.dataset;
     const maxDuration = data.maxSlot;
@@ -49,6 +26,20 @@ export default class extends Controller {
     });
   }
 
+  updateReadingRoom(e) {
+    e.preventDefault();
+    const formData = new FormData(this.element);
+    const reading_room = formData.get('reading_room_id');
+    if (!reading_room) return
+    const turboFrame = this.element.closest('turbo-frame');
+    let newTurboSrc = `/aeon_appointments/new/${reading_room}`
+    if (turboFrame.src){
+      const urlParams = new URLSearchParams(turboFrame.src.split("?").slice(-1)[0]);
+      newTurboSrc += `?modal=${urlParams.get('modal')}`
+    }
+    turboFrame.src = newTurboSrc
+  }
+
   refreshAvailability() {
     const formData = new FormData(this.element);
 
@@ -57,27 +48,18 @@ export default class extends Controller {
     const startTime = formData.get('aeon_appointment[start_time]');
     const apptDuration = formData.get('aeon_appointment[duration]');
 
-    if (!date || !readingRoomId) return;
+    if (!date) return;
 
     this.availabilityTarget.src = `/aeon_appointments/available/${readingRoomId}/${date}?selected=${startTime}&duration=${apptDuration}`
   }
 
-  resetFields() {
-    this.element.querySelector('input[type=date]').value = '';
-    const checkedDuration = document.querySelector('[name="aeon_appointment[duration]"]:checked');
-    if (checkedDuration) checkedDuration.checked = false;
-    this.updateFormStatus();
-    this.updateBanner();
-  }
-
-
-  updateBanner(event) {
+  updateBanner() {
     const formData = new FormData(this.element);
     const form_date = formData.get('aeon_appointment[date]');
     if (!form_date) { return }
     const date = new Date(Date.parse(form_date));
     this.bannerTarget.classList.remove('d-none');
-    const start_time =  event?.currentTarget?.dataset?.timestamp;
+    const start_time =  this.element.querySelector('[name="aeon_appointment[start_time]"]:checked')?.dataset?.timestamp;
     const duration = formData.get('aeon_appointment[duration]');
     const options = { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' };
     let text = `${date.toLocaleDateString('en-US', options)}`
@@ -101,7 +83,7 @@ export default class extends Controller {
 
   updateFormStatus() {
   const formData = new FormData(this.element);
-    if (!formData.get('aeon_appointment[duration]') || !formData.get('aeon_appointment[date]') || !formData.get('aeon_appointment[reading_room_id]')) {
+    if (!formData.get('aeon_appointment[duration]') || !formData.get('aeon_appointment[date]')) {
       this.availabilityTarget.classList.add('form-incomplete');
     } else {
       this.availabilityTarget.classList.remove('form-incomplete');

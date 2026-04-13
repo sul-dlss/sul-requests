@@ -6,8 +6,10 @@ RSpec.describe 'Appointments', :js do
   let(:user) { create(:sso_user) }
   let(:current_user) { CurrentUser.new(username: user.sunetid, shibboleth: true) }
   let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
-  let(:reading_room) { build(:aeon_reading_room) }
-  let(:appointment) { build(:aeon_appointment, reading_room: reading_room, start_time: 1.week.from_now) }
+  let(:reading_rooms) { JSON.load_file('spec/fixtures/reading_rooms.json').map { |rr| Aeon::ReadingRoom.from_dynamic(rr) } }
+
+  let(:field_reading_room) { reading_rooms[-1] }
+  let(:appointment) { build(:aeon_appointment, reading_room: field_reading_room, start_time: 1.week.from_now) }
   let(:queue) do
     Aeon::Queue.new(id: 8, queue_name: 'Awaiting Staff Review', queue_type: 'Transaction')
   end
@@ -20,7 +22,7 @@ RSpec.describe 'Appointments', :js do
                     update_request_route: [],
                     requests_for: [build(:aeon_request, transaction_number: 100)],
                     cancel_appointment: [],
-                    reading_rooms: [reading_room],
+                    reading_rooms:,
                     available_appointments: [])
   end
 
@@ -31,11 +33,34 @@ RSpec.describe 'Appointments', :js do
   end
 
   describe 'create appointment modal' do
-    it 'opens and closes the create new appointment modal' do
+    it 'opens and closes the create new appointment modal for field reading room' do
       click_on 'Create new appointment'
       expect(page).to have_css '.modal'
       within '.modal' do
         expect(page).to have_content 'Create new appointment'
+        select 'Field Reading Room'
+        click_on 'Continue'
+
+        expect(page).to have_content 'Create new appointmentField Reading Room'
+        expect(page).to have_field('aeon_appointment[date]', type: 'date')
+        expect(page).to have_no_content('Duration')
+        click_on 'Cancel'
+      end
+      expect(page).to have_no_css '.modal'
+    end
+
+    it 'opens and closes the create new appointment modal for ARS' do
+      click_on 'Create new appointment'
+      expect(page).to have_css '.modal'
+      within '.modal' do
+        expect(page).to have_content 'Create new appointment'
+        select 'Archive of Recorded Sound'
+        click_on 'Continue'
+
+        expect(page).to have_content 'Create new appointmentArchive of Recorded Sound'
+        expect(page).to have_field('aeon_appointment[date]', type: 'date')
+        expect(page).to have_content('Duration')
+        expect(page).to have_content('Available time slots')
         click_on 'Cancel'
       end
       expect(page).to have_no_css '.modal'

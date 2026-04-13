@@ -3,12 +3,7 @@
 
   <div class="modal-body">
     <div>
-      <% if @appointment.reading_room_id %>
-        <%= f.hidden_field :reading_room_id %>
-      <% else %>
-        <%= f.label :reading_room_id, 'Reading room', class: 'd-block fw-semibold redesign-required-label' %>
-        <%= f.select :reading_room_id, @reading_rooms.map { |rr| [rr.name, rr.id] }, { include_blank: true }, data: { action: 'change->appointment#resetFields change->appointment#refreshAvailability change->appointment#refreshDateMetadata' }, class: 'bg-white border rounded px-2 py-1' %>
-      <% end %>
+      <%= f.hidden_field :reading_room_id %>
     </div>
 
     <div class="mb-3">
