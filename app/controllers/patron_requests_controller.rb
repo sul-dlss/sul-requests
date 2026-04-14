@@ -7,6 +7,7 @@ class PatronRequestsController < ApplicationController
   include FolioController
 
   rescue_from EadClient::Error, with: :handle_ead_client_error
+  rescue_from EadClient::InvalidDocument, with: :handle_invalid_ead_document
 
   check_authorization
 
@@ -160,5 +161,9 @@ class PatronRequestsController < ApplicationController
 
   def handle_ead_client_error
     render 'ead_error'
+  end
+
+  def handle_invalid_ead_document
+    render 'ead_invalid'
   end
 end
