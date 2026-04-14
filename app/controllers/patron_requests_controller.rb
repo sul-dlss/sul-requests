@@ -106,7 +106,7 @@ class PatronRequestsController < ApplicationController
   end
 
   def redirect_aeon_pages
-    return if Settings.features.requests_redesign
+    return if use_requests_redesign?
 
     return unless @patron_request.aeon_page? && @patron_request.finding_aid?
 
