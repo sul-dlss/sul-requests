@@ -13,7 +13,7 @@
 
     <% if @appointment&.reading_room&.day_only_appointments? %>
       <%# if it's a day-only appointment, we still use the turboframe to check if the reading room is open at all, but we don't need any of the other controls. %>
-      <turbo-frame id="available_appointments" <% unless @appointment.id %>class="form-incomplete"<% end %> data-appointment-target="availability" src="<%= available_aeon_appointments_url(@appointment.reading_room_id, @appointment.date || Time.zone.now.iso8601) %>">
+      <turbo-frame id="available_appointments" <% unless @appointment.id %>class="form-incomplete"<% end %> data-appointment-target="availability" src="<%= available_aeon_appointments_url(@appointment.reading_room_id, @appointment.date || Time.zone.now.iso8601, appointment_id: @appointment.id) %>">
         <div class="loading-overlay p-2 mb-2" aria-hidden="true">Loading...</div>
       </turbo-frame>
     <% elsif @appointment.start_time && @appointment.stop_time && (!@appointment.start_time.min.in?([0,15,30,45]) || !(@appointment.stop_time - @appointment.start_time).in?([30.minutes, 1.hour, 1.5.hours, 2.hours, 3.hours, 4.hours])) %>
@@ -26,7 +26,7 @@
         <%= f.time_field :stop_time, required: true %>
       </div>
     <% else %>
-      <turbo-frame id="available_appointments" <% unless @appointment.id %>class="form-incomplete"<% end %> data-action="turbo:frame-load->appointment#applyDurationFilter turbo:frame-load->appointment#filterDurationFields" data-appointment-target="availability" src="<%= available_aeon_appointments_url(@appointment.reading_room_id, @appointment.date || Time.zone.now.iso8601, selected: (l(@appointment.start_time, format: :time_only) if @appointment.start_time)) if @appointment.reading_room_id %>">
+      <turbo-frame id="available_appointments" <% unless @appointment.id %>class="form-incomplete"<% end %> data-action="turbo:frame-load->appointment#applyDurationFilter turbo:frame-load->appointment#filterDurationFields" data-appointment-target="availability" data-appointment-id="<%= @appointment.id %>" src="<%= available_aeon_appointments_url(@appointment.reading_room_id, @appointment.date || Time.zone.now.iso8601, selected: (l(@appointment.start_time, format: :time_only) if @appointment.start_time), appointment_id: @appointment.id) if @appointment.reading_room_id %>">
         <%= render Aeon::AppointmentDurationSelectorComponent.new(form: f, selected: (@appointment.start_time && @appointment.stop_time ? (@appointment.stop_time - @appointment.start_time).to_i : '')) %>
 
         <fieldset class="mb-3">
