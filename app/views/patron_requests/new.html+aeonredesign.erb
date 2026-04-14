@@ -55,7 +55,7 @@
     <% component.with_title.with_content('Items') %>
     <% component.with_body do %>
       <% if f.object.ead_doc.series_and_subseries.present? %>
-        <div data-controller="archives-series">
+        <div data-controller="archives-series ead-search">
           <div class="mb-2 d-flex gap-2 align-items-center">
             <div>Use checkboxes to select items.</div>
             <!--TODO: pull out text into template?-->
@@ -65,8 +65,37 @@
           <% if f.object.ead_doc.digital_content? %>
             <div class="mb-2"><%= render Icons::OnlineComponent.new classes: 'me-1 align-text-bottom text-digital-blue' %><span class="fw-semibold">Digital content</span> - Some materials from this collection are available online.</div>
           <% end %>
+          <div class="my-3">
+            <div class="input-group input-group-sm position-relative ead-search-input-group">
+              <span class="input-group-text bg-white border-end-0" aria-hidden="true"><i class="bi bi-search"></i></span>
+              <input type="search" class="form-control form-control-sm border-start-0 ps-1 rounded-end-1 ead-search-input"
+                     placeholder="Search contents"
+                     aria-controls="series-contents-container"
+                     data-ead-search-target="input"
+                     data-action="input->ead-search#onInput keydown->ead-search#onKeydown">
+              <div class="ead-search-overlay d-none position-absolute top-50 end-0 translate-middle-y d-flex align-items-center gap-2 pe-2"
+                   data-ead-search-target="countPill">
+                <span class="ead-search-pill rounded-pill bg-stanford-10-black d-inline-flex align-items-center px-2 fw-semibold"
+                      role="status" aria-live="polite">
+                  <button type="button" class="btn btn-sm btn-link p-0 text-digital-blue"
+                          aria-label="Previous match"
+                          data-ead-search-target="prevButton"
+                          data-action="click->ead-search#prev"><i class="bi bi-arrow-left-short"></i></button>
+                  <span class="mx-2" data-ead-search-target="countText"></span>
+                  <button type="button" class="btn btn-sm btn-link p-0 text-digital-blue"
+                          aria-label="Next match"
+                          data-ead-search-target="nextButton"
+                          data-action="click->ead-search#next"><i class="bi bi-arrow-right-short"></i></button>
+                </span>
+                <button type="button" class="btn btn-sm btn-link p-0 text-body"
+                        aria-label="Clear search"
+                        data-ead-search-target="clearButton"
+                        data-action="click->ead-search#clear"><i class="bi bi-x-lg"></i></button>
+              </div>
+            </div>
+          </div>
           <%# Loop through each series in the collection %>
-          <div class="series-contents-container">
+          <div class="series-contents-container" data-ead-search-target="tree">
             <%= render partial: 'ead_series_contents', locals: { contents: Ead::DisplayGroup.build_display_groups(f.object.ead_doc.series_and_subseries), f: f, series_title: nil, parent_title: nil, nested: false } %>
           </div>
         </div>
