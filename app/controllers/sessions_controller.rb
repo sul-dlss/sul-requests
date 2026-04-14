@@ -66,6 +66,13 @@ class SessionsController < ApplicationController
     redirect_to redirect_path
   end
 
+  def feature_flags
+    authorize! :toggle, :feature_flags
+    cookies[:feature_flags] = params[:feature_flags]
+
+    redirect_back_or_to(root_path)
+  end
+
   private
 
   def needs_shibboleth_logout?

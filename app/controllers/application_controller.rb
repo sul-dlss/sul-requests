@@ -4,11 +4,16 @@
 class ApplicationController < ActionController::Base
   include BotChallengePage::Controller
 
-  if Settings.features.requests_redesign
-    layout 'application_redesign'
-  else
-    layout 'application'
+  layout :determine_layout
+
+  def determine_layout
+    if use_requests_redesign?
+      'application_redesign'
+    else
+      'application'
+    end
   end
+
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
@@ -23,7 +28,15 @@ class ApplicationController < ActionController::Base
     current_user.sunetid.present?
   end
 
-  helper_method :current_user, :current_user?, :sso_user?
+  def request_feature_flags
+    @request_feature_flags ||= cookies[:feature_flags].to_s.split(',').map(&:strip)
+  end
+
+  def use_requests_redesign?
+    Settings.features.requests_redesign || request_feature_flags.include?('requests_redesign')
+  end
+
+  helper_method :current_user, :current_user?, :sso_user?, :request_feature_flags, :use_requests_redesign?
 
   private
 

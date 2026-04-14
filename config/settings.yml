@@ -1,6 +1,7 @@
 # LDAP Workgroups for site-adminstrators
 super_admin_groups: ['sul:requests-super-admin']
 site_admin_groups: ['sul:requests-site-admin']
+feature_flag_groups: []
 
 # LDAP Workgroups for origin specific mediation
 origin_admin_groups:
