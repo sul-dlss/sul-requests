@@ -18,7 +18,7 @@
         <% end %>
         <% if @aeon_requests.first&.multi_item_selector? %>
           <%= render Aeon::ConfirmationRequestListComponent.new(requests: @aeon_requests.submitted_requests, digitization: @aeon_requests.digital? ) %>
-          <%= render Aeon::ConfirmationRequestListComponent.new(requests: @aeon_requests.draft_requests, digitization: @aeon_requests.digital?, drafts: true) %>
+          <%= render Aeon::ConfirmationSavedForLaterComponent.new(request_group: @aeon_requests) %>
         <% else %>
           <% request = @aeon_requests.first %>
           <% if request.appointment %>
