@@ -308,4 +308,32 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       expect(page).to have_content 'Your library account does not include an email address, which is required to complete this request.'
     end
   end
+
+  context 'with invalid or missing EAD XML' do
+    let(:eadxml) { Nokogiri::XML('<ead/>') } # valid enough for Ead::Document.new, won't actually be used
+
+    before do
+      allow(EadClient).to receive(:fetch).and_raise(EadClient::InvalidDocument)
+    end
+
+    it 'shows an invalid document error' do
+      visit new_archives_request_path(value: 'http://example.com/not-an-ead.xml')
+
+      expect(page).to have_content('Missing or invalid EAD XML')
+      expect(page).to have_content('Please check your finding aid source')
+    end
+
+    context 'when a network error occurs instead' do
+      before do
+        allow(EadClient).to receive(:fetch).and_raise(EadClient::Error)
+      end
+
+      it 'shows a generic error' do
+        visit new_archives_request_path(value: 'http://example.com/ead.xml')
+
+        expect(page).to have_content('Error Loading Collection Information')
+        expect(page).to have_content('Please try again later')
+      end
+    end
+  end
 end
