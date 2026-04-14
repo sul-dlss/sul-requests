@@ -1,3 +1,8 @@
-<h1>Create new appointment<% if @reading_room %><i class="bi bi-dot"></i><%= @reading_room.name %><% end %></h1>
-
-<%= render 'form' %>
+<turbo-frame id="appointment-form">
+  <h1>Create new appointment<% if @reading_room %><i class="bi bi-dot"></i><%= @reading_room.name %><% end %></h1>
+  <% if @appointment.reading_room_id %>
+    <%= render 'form' %>
+  <% else %>
+    <%= render 'choose_reading_room' %>
+  <% end %>
+</turbo-frame>
