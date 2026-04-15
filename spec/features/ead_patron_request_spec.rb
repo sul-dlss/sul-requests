@@ -261,6 +261,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
         expect(page).to have_content('Field Reading Room')
         expect(page).to have_content('Hours: Monday - Friday, 9:00 - 4:45 pm')
         expect(page).to have_content('You don’t have any appointments yet. Create one to continue.')
+        expect(page).to have_button('Select existing appointment', disabled: true)
       end
     end
 
