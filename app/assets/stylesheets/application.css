@@ -713,6 +713,10 @@ label.btn-close {
 }
 
 .custom-select {
+  button {
+    --bs-btn-bg: white;
+  }
+
   .selected {
     background-color: var(--bs-primary-bg-subtle);
     &::before {
