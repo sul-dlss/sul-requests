@@ -46,6 +46,7 @@ Rails.application.routes.draw do
     collection do
       get :submitted, as: :submitted
       get :drafts, as: :draft
+      get :completed, as: :completed
       get :cancelled, as: :cancelled
       delete 'destroy_multiple'
     end
