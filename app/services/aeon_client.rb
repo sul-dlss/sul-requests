@@ -44,7 +44,7 @@ class AeonClient
   # Submit a new request to Aeon
   # @param aeon_payload [AeonClient::RequestData]
   def create_request(aeon_payload)
-    response = post('Requests/create', aeon_payload.as_json)
+    response = post('Requests/create', aeon_payload.as_json.compact)
 
     handle_response(response, as_class: Aeon::Request)
   end
