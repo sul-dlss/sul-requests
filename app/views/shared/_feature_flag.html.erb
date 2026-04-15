@@ -1,4 +1,4 @@
-<% if can?(:toggle, :feature_flags) %>
+<% if can?(:toggle, :feature_flags) && !Settings.features.requests_redesign %>
   <div class="my-2 col-8 text-end">
     <% if use_requests_redesign? %>
       <%= link_to '← Use the production experience', feature_flags_path(feature_flags: ''), class: 'su-underline', data: { turbo_method: 'POST' } %>
