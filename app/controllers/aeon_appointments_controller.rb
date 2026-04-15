@@ -29,8 +29,8 @@ class AeonAppointmentsController < ApplicationController
     @selected_time = params[:selected]
     @date = Date.parse(params.expect(:date))
 
-    @available_appointments = AeonClient.new.available_appointments(reading_room_id: params.expect(:reading_room_id),
-                                                                    date: @date, include_next_available: true)
+    @available_appointments = Current.aeon_client.available_appointments(reading_room_id: params.expect(:reading_room_id),
+                                                                         date: @date, include_next_available: true)
     @appointment_lengths = @available_appointments.map(&:maximum_appointment_length)
     respond_to do |format|
       format.html
@@ -56,7 +56,7 @@ class AeonAppointmentsController < ApplicationController
   def update
     authorize! :update, @appointment
 
-    AeonClient.new.update_appointment(params[:id], name: update_params[:name], start_time: start_time, stop_time: stop_time)
+    Current.aeon_client.update_appointment(params[:id], name: update_params[:name], start_time: start_time, stop_time: stop_time)
 
     redirect_to aeon_appointments_path, notice: 'Appointment created successfully'
   end
@@ -80,7 +80,7 @@ class AeonAppointmentsController < ApplicationController
   end
 
   def create_appointment
-    @appointment = AeonClient.new.create_appointment(
+    @appointment = Current.aeon_client.create_appointment(
       start_time: start_time,
       stop_time: stop_time,
       name: create_params[:name],

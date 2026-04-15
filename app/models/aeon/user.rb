@@ -8,7 +8,7 @@ module Aeon
     end
 
     def self.aeon_client
-      AeonClient.new
+      Current.aeon_client
     end
 
     def self.from_dynamic(data)

@@ -112,9 +112,11 @@ class AeonClient
   end
 
   def reading_rooms
-    response = get('ReadingRooms')
+    @reading_rooms ||= begin
+      response = get('ReadingRooms')
 
-    handle_response(response, as_class: Aeon::ReadingRoom, not_found: [])
+      handle_response(response, as_class: Aeon::ReadingRoom, not_found: [])
+    end
   end
 
   def find_queue(id:, type:)
