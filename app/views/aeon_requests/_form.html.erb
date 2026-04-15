@@ -3,7 +3,7 @@
     <% if f.object.digital? %>
       <%= render 'patron_requests/digitization_notice' %>
       <div class="selected-items-container">
-        <%= render Aeon::DigitizationFormItemComponent.new(title: f.object.volume, dom_id: 'edit_aeon_item_request', object: f.object, base_name: 'aeon_request', collapsed: false) %>
+        <%= render Aeon::DigitizationFormItemComponent.new(title: f.object.volume, dom_id: 'edit_aeon_item_request', object: f.object, base_name: 'aeon_request', accordion: false) %>
       </div>
     <% else %>
       <div class="mt-2 p-2 modal-location">
