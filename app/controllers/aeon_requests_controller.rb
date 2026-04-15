@@ -33,6 +33,13 @@ class AeonRequestsController < ApplicationController
     @aeon_request_groups = Aeon::RequestGrouping.from_requests(requests)
   end
 
+  def completed
+    authorize! :read, Aeon::Request
+
+    requests = sort_aeon_requests(filter_aeon_requests(current_user&.aeon&.completed_requests || []))
+    @aeon_request_groups = Aeon::RequestGrouping.from_requests(requests)
+  end
+
   def resubmit
     authorize! :update, @aeon_request
 
