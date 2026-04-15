@@ -6,7 +6,7 @@ module Aeon
     attr_accessor :id, :queue_name, :display_name, :state_code, :internal_code
 
     def self.aeon_client
-      AeonClient.new
+      Current.aeon_client
     end
 
     def self.find_by(id:, type: :transaction)

@@ -84,7 +84,5 @@ class SubmitAeonPatronRequestJob < ApplicationJob
                                      status: Settings.aeon.queue_names.draft.transaction.first)
   end
 
-  def aeon_client
-    @aeon_client ||= AeonClient.new
-  end
+  delegate :aeon_client, to: :Current
 end

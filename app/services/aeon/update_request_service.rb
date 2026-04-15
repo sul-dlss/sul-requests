@@ -5,10 +5,10 @@ module Aeon
   class UpdateRequestService
     attr_reader :aeon_request, :params, :aeon_client
 
-    def initialize(aeon_request, params, aeon_client: AeonClient.new)
+    def initialize(aeon_request, params, aeon_client: nil)
       @aeon_request = aeon_request
       @params = params
-      @aeon_client = aeon_client
+      @aeon_client = aeon_client || Current.aeon_client
     end
 
     def call

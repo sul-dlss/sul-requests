@@ -6,11 +6,11 @@ module Aeon
     include ActiveModel::Model
 
     def self.aeon_client
-      AeonClient.new
+      Current.aeon_client
     end
 
     def self.all
-      @all ||= aeon_client.reading_rooms
+      aeon_client.reading_rooms
     end
 
     def self.find_by(site:)
@@ -19,6 +19,8 @@ module Aeon
 
     attr_accessor :id, :name, :available_seats, :time_zone_id, :min_appointment_length, :max_appointment_length,
                   :appointment_padding, :appointment_increment, :last_modified_time, :sites, :open_hours, :policies
+
+    delegate :aeon_client, to: :class
 
     def self.from_dynamic(dyn) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       new(
@@ -42,7 +44,7 @@ module Aeon
     end
 
     def available_appointments(date, **)
-      AeonClient.new.available_appointments(reading_room_id: id, date: date, **)
+      aeon_client.available_appointments(reading_room_id: id, date: date, **)
     end
 
     def day_only_appointments?

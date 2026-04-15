@@ -13,6 +13,6 @@ module AeonController
   end
 
   def aeon_client
-    @aeon_client ||= AeonClient.new
+    Current.aeon_client
   end
 end

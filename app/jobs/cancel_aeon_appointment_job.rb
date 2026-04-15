@@ -27,7 +27,5 @@ class CancelAeonAppointmentJob < ApplicationJob
                                      status:)
   end
 
-  def aeon_client
-    @aeon_client ||= AeonClient.new
-  end
+  delegate :aeon_client, to: :Current
 end
