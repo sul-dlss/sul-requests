@@ -387,10 +387,10 @@ aeon:
   days_to_persist_completed_digital_requests_as_submitted: 3
   default_appointment_item_limit: 5
   directions:
-    SPECUA: 'Located on the second floor of Green Library West.'
-    ARS: 'Located in the basement of the Music Library.'
-    EASTASIA: 'Located on the second floor of Lathrop building.'
-    RUMSEY: 'Located on the fourth floor of Green Library West.'
+    SPECUA: 'Located on the second floor of Green Library'
+    ARS: 'Located in the basement of the Music Library'
+    EASTASIA: 'Located on the second floor of Lathrop Library'
+    RUMSEY: 'Located on the fourth floor of Green Library'
   day_only_appointments:
     - 'SPECUA'
   item_limits:
