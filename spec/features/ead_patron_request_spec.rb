@@ -159,14 +159,14 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       expect(page).to have_button('Submit request', disabled: true)
 
       # Save second item for later
-      first('[data-content-id]', text: 'Box 13').click_link('Save for later')
+      first('[data-content-id]', text: 'Box 13').click_button('Save for later')
       expect(page).to have_css('.saved-item')
 
       # Submit enabled: one with appointment, one saved
       expect(page).to have_button('Submit request', disabled: false)
 
       # Undo restores the item
-      click_link 'Undo'
+      click_button 'Undo'
       expect(page).to have_no_css('.saved-item')
 
       # Save-for-later must not unhide the EAD series tree's `data-toggle-disabled` wrappers.
@@ -183,12 +183,12 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       expect(page).to have_css '.badge', text: '3 items'
       expect(page).to have_button('Submit request', disabled: false)
 
-      first('[data-content-id]', text: 'Box 12').click_link('Save for later')
+      first('[data-content-id]', text: 'Box 12').click_button('Save for later')
 
       # Appointment item limit should show that the saved item relinquished the appointment
       expect(page).to have_css '.badge', text: '2 items'
 
-      first('[data-content-id]', text: 'Box 13').click_link('Save for later')
+      first('[data-content-id]', text: 'Box 13').click_button('Save for later')
       expect(page).to have_css('.saved-item', count: 2)
 
       expect(page).to have_button('Submit request', disabled: false)
@@ -213,7 +213,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       end
 
       # Save Box 13 for later in the reading-room flow
-      first('[data-content-id]', text: 'Box 13').click_link('Save for later')
+      first('[data-content-id]', text: 'Box 13').click_button('Save for later')
       expect(page).to have_css('.saved-item', text: 'Box 13')
 
       # Switch request type to digitization
@@ -256,7 +256,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       check 'Box 13'
       click_button 'Continue'
 
-      first('[data-content-id]', text: 'Box 13').click_link('Save for later')
+      first('[data-content-id]', text: 'Box 13').click_button('Save for later')
       expect(page).to have_css('.saved-item', text: 'Box 13')
 
       # The Edit button on request-type must still be clickable. A regression test
@@ -285,7 +285,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
         click_button 'Select existing appointment'
         click_button 'Feb 19'
       end
-      first('[data-content-id]', text: 'Box 13').click_link('Save for later')
+      first('[data-content-id]', text: 'Box 13').click_button('Save for later')
 
       expect(page).to have_button('Submit request', disabled: false)
 

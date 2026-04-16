@@ -176,7 +176,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       # Submit still disabled: second item is incomplete
       expect(page).to have_button('Submit request', disabled: true)
 
-      find('[data-content-id]', text: 'ABC 321').click_link('Save for later')
+      find('[data-content-id]', text: 'ABC 321').click_button('Save for later')
       expect(page).to have_css('.saved-item', text: 'ABC 321')
 
       # Submit enabled: first item complete, second saved for later
@@ -184,7 +184,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
       within('[data-save-for-later-target="list"]') do
         expect(page).to have_content 'ABC 321'
-        click_link 'Undo'
+        click_button 'Undo'
       end
 
       # Submit disabled again: restored item is incomplete
