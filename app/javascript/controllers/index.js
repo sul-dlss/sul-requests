@@ -60,3 +60,6 @@ application.register("draft-request", DraftRequestController)
 
 import CharCounterController from "./char_counter_controller"
 application.register("char-counter", CharCounterController)
+
+import EadSearchController from "./ead_search_controller"
+application.register("ead-search", EadSearchController)

@@ -97,6 +97,41 @@ RSpec.describe 'Requesting an item from an EAD', :js do
                                                                       ))
     end
 
+    it 'can search the EAD contents' do
+      visit new_archives_request_path(value: 'http://example.com/ead.xml')
+
+      choose 'Reading room appointment'
+      click_button 'Continue'
+
+      fill_in 'Search contents', with: 'Japan'
+      expect(page).to have_text '1 of 13 matches'
+      expect(page).to have_content 'Folder 8: Chinese and Japanese'
+
+      find('[data-ead-search-target="nextButton"]').click
+      expect(page).to have_text '2 of 13 matches'
+      expect(page).to have_content 'Folder 13: Japanese'
+
+      find('[data-ead-search-target="clearButton"]').click
+      expect(page).to have_no_css '[data-ead-search-target="countPill"]'
+
+      fill_in 'Search contents', with: 'box 4'
+      expect(page).to have_text '1 of 6 matches'
+      expect(page).to have_content 'Box 4'
+      expect(page).to have_content 'The Art of Computer Programming'
+
+      find('[data-ead-search-target="prevButton"]').click
+      expect(page).to have_text '6 of 6 matches'
+      expect(page).to have_content 'Box 4'
+      expect(page).to have_content 'Addenda, 2022-104'
+
+      find('[data-ead-search-target="input"]').send_keys(:enter)
+      expect(page).to have_text '1 of 6 matches'
+      find('[data-ead-search-target="input"]').send_keys(:shift, :enter)
+      expect(page).to have_text '6 of 6 matches'
+      find('[data-ead-search-target="input"]').send_keys(:escape)
+      expect(page).to have_no_css '[data-ead-search-target="countPill"]'
+    end
+
     it 'allows the user to submit a request with details about the portion of the item to be digitized' do # rubocop:disable RSpec/ExampleLength
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
 
