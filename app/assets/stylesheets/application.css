@@ -433,6 +433,12 @@ label.btn-close {
   z-index: 6;
 }
 
+/* Fix for CSS highlights for Safari with certain Bootstrap classes (e.g., 'btn btn-link') */
+.series-header {
+    user-select: text;
+    -webkit-user-select: text;
+  }
+
 .series-header[aria-expanded="true"] .disclosure-icon::before {
  transform: rotate(90deg);
 }

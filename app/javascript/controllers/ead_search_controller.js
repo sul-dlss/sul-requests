@@ -17,6 +17,12 @@ export default class extends Controller {
     this.buildIndex()
     this.resetMatches()
     this.highlightsSupported = typeof CSS !== 'undefined' && CSS.highlights
+    if (this.highlightsSupported) {
+      this.matchHighlight = new Highlight()
+      this.currentMatchHighlight = new Highlight()
+      CSS.highlights.set(this.matchNameValue, this.matchHighlight)
+      CSS.highlights.set(this.currentMatchNameValue, this.currentMatchHighlight)
+    }
   }
 
   disconnect() {
@@ -29,7 +35,14 @@ export default class extends Controller {
     const walk = (el, ancestors) => {
       if (el.classList?.contains('invisible') || el.classList?.contains('d-none') || el.getAttribute('aria-hidden') === 'true') return
 
-      const nextAncestors = el !== this.treeTarget && el.classList?.contains('collapse') ? ancestors.concat(el) : ancestors
+      let nextAncestors = el !== this.treeTarget && el.classList?.contains('collapse') ? ancestors.concat(el) : ancestors
+
+      // For matches that land on collapsables like series headers, assume the user wants to see the contexts and expand.
+      if (el.getAttribute?.('data-bs-toggle') === 'collapse') {
+        const targetId = (el.getAttribute('href') || el.getAttribute('data-bs-target') || '').replace(/^#/, '')
+        const target = targetId && document.getElementById(targetId)
+        if (target?.classList.contains('collapse')) nextAncestors = nextAncestors.concat(target)
+      }
 
       for (let child = el.firstChild; child; child = child.nextSibling) {
         if (child.nodeType === Node.TEXT_NODE) {
@@ -84,33 +97,24 @@ export default class extends Controller {
   paintHighlights() {
     if (!this.highlightsSupported) return
 
-    CSS.highlights.delete(this.matchNameValue)
-    CSS.highlights.delete(this.currentMatchNameValue)
+    this.clearHighlights()
     if (!this.matches.length) return
-    CSS.highlights.set(this.matchNameValue, new Highlight(...this.matches.map(m => m.range)))
-    if (this.currentIndex >= 0)
-      CSS.highlights.set(this.currentMatchNameValue, new Highlight(this.matches[this.currentIndex].range))
-  }
-
-  updateCurrentHighlight() {
-    if (!this.highlightsSupported) return
-
-    CSS.highlights.delete(this.currentMatchNameValue)
-    if (this.currentIndex >= 0)
-      CSS.highlights.set(this.currentMatchNameValue, new Highlight(this.matches[this.currentIndex].range))
+    for (const { range } of this.matches) this.matchHighlight.add(range)
+    if (this.currentIndex >= 0) this.currentMatchHighlight.add(this.matches[this.currentIndex].range)
   }
 
   clearHighlights() {
     if (!this.highlightsSupported) return
 
-    CSS.highlights.delete(this.matchNameValue)
-    CSS.highlights.delete(this.currentMatchNameValue)
+    this.matchHighlight.clear()
+    this.currentMatchHighlight.clear()
   }
 
   revealCurrent() {
     const match = this.matches[this.currentIndex]
     if (!match) return
     this.expandAncestors(match.ancestors, () => {
+      this.paintHighlights()
       match.range.startContainer.parentElement?.scrollIntoView({ block: 'center', behavior: 'auto' })
     })
   }
@@ -148,7 +152,7 @@ export default class extends Controller {
     event?.preventDefault()
     if (!this.matches.length) return
     this.currentIndex = (this.currentIndex + dir + this.matches.length) % this.matches.length
-    this.updateCurrentHighlight()
+    this.paintHighlights()
     this.renderPill()
     this.revealCurrent()
   }
