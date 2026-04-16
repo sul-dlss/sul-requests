@@ -521,4 +521,14 @@ RSpec.describe PatronRequest do
       end
     end
   end
+
+  context 'with an archives request' do
+    subject(:request) { described_class.new ead_url: 'http://example.com' }
+
+    describe '#folio_location' do
+      it 'is nil' do
+        expect(request.folio_location).to be_nil
+      end
+    end
+  end
 end
