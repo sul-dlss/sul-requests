@@ -14,7 +14,7 @@ RSpec.describe Aeon::ReadingRoomBriefComponent, type: :component do
 
     it 'renders correctly' do
       expect(page).to have_content 'Rumsey Reading Room'
-      expect(page).to have_content 'Located on the fourth floor of Green Library West.'
+      expect(page).to have_content 'Located on the fourth floor of Green Library'
       expect(page).to have_content 'Hours: Monday - Friday, 1:00 - 4:30 pm'
     end
   end
@@ -25,7 +25,7 @@ RSpec.describe Aeon::ReadingRoomBriefComponent, type: :component do
 
     it 'renders correctly' do
       expect(page).to have_content 'Archive of Recorded Sound'
-      expect(page).to have_content 'Located in the basement of the Music Library.'
+      expect(page).to have_content 'Located in the basement of the Music Library'
       expect(page).to have_content hours
     end
   end
@@ -35,7 +35,7 @@ RSpec.describe Aeon::ReadingRoomBriefComponent, type: :component do
 
     it 'renders correctly' do
       expect(page).to have_content 'East Asia Library Special Collections'
-      expect(page).to have_content 'Located on the second floor of Lathrop building.'
+      expect(page).to have_content 'Located on the second floor of Lathrop Library'
       expect(page).to have_content 'Hours: Monday - Friday, 9:00 - 5:00 pm'
     end
   end
@@ -45,7 +45,7 @@ RSpec.describe Aeon::ReadingRoomBriefComponent, type: :component do
 
     it 'renders correctly' do
       expect(page).to have_content 'Field Reading Room'
-      expect(page).to have_content 'Located on the second floor of Green Library West.'
+      expect(page).to have_content 'Located on the second floor of Green Library'
       expect(page).to have_content 'Hours: Monday - Friday, 9:00 - 4:45 pm'
     end
   end
