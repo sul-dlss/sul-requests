@@ -93,6 +93,10 @@ module Aeon
 
     def persisted? = id.present?
 
+    def item_limit
+      Settings.aeon.item_limits[sites.first]
+    end
+
     private
 
     def format_hours(reading_room_open_hours)

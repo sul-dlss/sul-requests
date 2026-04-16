@@ -393,6 +393,10 @@ aeon:
     RUMSEY: 'Located on the fourth floor of Green Library West.'
   day_only_appointments:
     - 'SPECUA'
+  item_limits:
+    ARS: 9
+    RUMSEY: 5
+    SPECUA: 10
   queue_names:
     cancelled:
       photoduplication:

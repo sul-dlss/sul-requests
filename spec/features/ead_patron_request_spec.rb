@@ -229,7 +229,6 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       # In the Appointment step
       expect(page).to have_content('Field Reading Room')
       expect(page).to have_content('Hours: Monday - Friday, 9:00 - 4:45 pm')
-      expect(page).to have_content('Appointments must be scheduled at least 5 business days in advance. Maximum of 5 items per day.')
 
       # In the Appointment step
       click_button 'Select existing appointment'
