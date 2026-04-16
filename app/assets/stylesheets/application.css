@@ -419,7 +419,8 @@ label.btn-close {
   transition: none !important;
 }
 
-.ead-search-input {
+/* Create space for the search results pill that's absolutely positioned on top of the control */
+.ead-search-input-group:has(.ead-search-overlay:not(.d-none)) .ead-search-input {
   padding-right: 11rem;
 }
 
@@ -427,6 +428,7 @@ label.btn-close {
   display: none;
 }
 
+/* Minimum z-index required for the search results pill buttons to overtake the search input */
 .ead-search-overlay {
   z-index: 6;
 }
