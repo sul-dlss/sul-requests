@@ -60,3 +60,6 @@ application.register("draft-request", DraftRequestController)
 
 import CharCounterController from "./char_counter_controller"
 application.register("char-counter", CharCounterController)
+
+import ViewContainerContentsController from "./view_container_contents_controller"
+application.register("view-container-contents", ViewContainerContentsController)

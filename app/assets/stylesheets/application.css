@@ -811,3 +811,18 @@ label.btn-close {
     }
   }
 }
+
+ul.container-content li {
+  list-style: none;
+  border-bottom: 1px solid var(--stanford-10-black);
+}
+
+ul.container-content li:last-child {
+  border-bottom: none;
+}
+
+.banner {
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  background-color: var(--stanford-fog-light);  
+}
