@@ -431,11 +431,6 @@ label.btn-close {
   z-index: 6;
 }
 
-.ead-search-pill {
-  font-size: 0.875rem;
-}
-
-
 .series-header[aria-expanded="true"] .disclosure-icon::before {
  transform: rotate(90deg);
 }
