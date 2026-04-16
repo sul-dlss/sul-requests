@@ -40,7 +40,7 @@ module Aeon
       aeon_request.submitted? && !aeon_request.valid?
     end
 
-    def update_request_route # rubocop:disable Metrics/AbcSize
+    def update_request_route
       new_status = if params[:status]
                      params[:status]
                    elsif needs_set_to_submitted?
@@ -52,7 +52,7 @@ module Aeon
       return aeon_request unless new_status
 
       aeon_client.update_request_route(transaction_number: aeon_request.transaction_number,
-                                       status: params[:status])
+                                       status: new_status)
     end
   end
 end
