@@ -14,7 +14,7 @@ class PatronRequestsController < ApplicationController
   bot_challenge only: [:new]
 
   before_action :redirect_aeon_finding_aid_requests, only: [:new], if: lambda {
-    !Settings.features.requests_redesign && (params[:Value].present? || params[:value].present?)
+    !use_requests_redesign? && (params[:Value].present? || params[:value].present?)
   }
 
   load_resource
