@@ -788,3 +788,26 @@ label.btn-close {
     }
   }
 }
+.offcanvas-sm-start {
+  --bs-offcanvas-height: 75%;
+}
+
+@media screen and (min-width: 576px) and (max-width: 767px) {
+  .offcanvas-sm-start {
+    --bs-offcanvas-height: 100%;
+    top: 0;
+    left: 0;
+    width: var(--bs-offcanvas-width);
+    border-right: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
+    transform: translateX(-100%);
+
+    right: auto;
+    max-height: auto;
+    border-top: none;
+
+    &.showing,
+    &.show:not(.hiding) {
+      transform: none;
+    }
+  }
+}

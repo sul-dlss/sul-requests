@@ -1,5 +1,6 @@
 <turbo-frame id="aeon-appointments">
-  <h2 class="text-center mb-3">Reading room appointments</h2>
+  <button type="button" class="btn-close float-end d-md-none mt-2 mt-md-0" data-bs-dismiss="offcanvas" data-bs-target="#appointments" aria-label="Close"></button>
+  <h2 class="text-center mb-3 mt-3 mt-md-0">Reading room appointments</h2>
   <p class="text-center"><i class="bi bi-info-circle me-1"></i> For complete management, visit <%= link_to 'Appointments', aeon_appointments_path, class: 'su-underline' %></p>
 
   <% if @appointments.any? %>
