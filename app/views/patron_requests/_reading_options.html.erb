@@ -1,4 +1,4 @@
-<div class="row p-3 gap-3 flex-column flex-md-row" data-controller="view-container-contents">
+<div class="row p-3 gap-3 flex-column flex-md-row">
   <% appointments = current_user.aeon.appointments_for(site: f.object.aeon_site) %>
   <div id="new-appt-alert">
     <% if appointments.blank? %>
@@ -35,14 +35,4 @@
       <span data-char-counter-target="counter"></span>
     </p>
   </div>
-
-  <!-- View container contents modal -->
-  <%= render ModalComponent.new(id: "view-container-contents", data: {view_container_contents_target: "viewModal"}) do |component| %>
-    <% component.with_title.with_content('Contents') %>
-    <% component.with_body(classes: []) do %>
-      <div data-view-container-contents-target="banner" class="banner"></div>
-      <div class="modal-body" data-view-container-contents-target="contents">
-        Body goes here
-    <% end %>
-  <% end %>
 </div>
