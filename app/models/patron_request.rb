@@ -144,7 +144,9 @@ class PatronRequest < ApplicationRecord
   # Get the FOLIO location object for the origin location code. We prefer to use the location data stored with this application,
   # but if it's not available, we fall back to what we get from the FOLIO API.
   # @return [Folio::Location]
-  def folio_location
+  def folio_location # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+    return if origin_location_code.blank? && folio_instance&.items.blank?
+
     @folio_location ||= begin
       l = Folio::Types.locations.find_by(code: origin_location_code)
       l || (folio_instance.items.find do |i|
