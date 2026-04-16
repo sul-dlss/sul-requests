@@ -209,7 +209,7 @@ summary .disclosure-icon::before {
   box-shadow: none !important;
 }
 
-.accordion-button[disabled]  ~ .accordion-header-icon {
+.accordion-header:has(.accordion-button[disabled]) .accordion-header-icon {
   display: none;
 }
 
