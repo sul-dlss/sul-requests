@@ -12,7 +12,11 @@
         <span class="text-black fw-semibold selected-item-title stretched-link"><%= title %></span>
       <% end %>
       <div class="d-flex position-relative z-3">
-        <button class="btn btn-link p-0 ps-1 z-3 su-underline fs-14" data-action="save-for-later#save" data-save-for-later-id-param="<%= dom_id %>"><i class="bi bi-pin-angle-fill me-1"></i>Save for later</button>
+        <% if save_for_later? %>
+        <button class="btn btn-link p-0 ps-1 z-3 su-underline fs-14" data-action="save-for-later#save" data-save-for-later-id-param="<%= dom_id %>">
+          <i class="bi bi-pin-angle-fill me-1"></i>Save for later
+        </button>
+        <% end %>
         <button class="btn btn-link p-0 ps-1 selected-item-remove" data-action="item-selector#remove" data-item-selector-id-param="<%= dom_id %>">
           <i class="bi bi-trash"></i><span class="visually-hidden"> Delete <%= title %></span>
         </button>

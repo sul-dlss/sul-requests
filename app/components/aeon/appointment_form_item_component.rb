@@ -21,5 +21,9 @@ module Aeon
     def selectable_appointments
       appointments.select(&:editable?).sort_by(&:sort_key)
     end
+
+    def save_for_later?
+      object.nil?
+    end
   end
 end
