@@ -63,3 +63,6 @@ application.register("char-counter", CharCounterController)
 
 import EadSearchController from "./ead_search_controller"
 application.register("ead-search", EadSearchController)
+
+import AddItems from "./add_items_controller"
+application.register("add-items", AddItems)

@@ -1,0 +1,27 @@
+<div class="request-group border rounded" data-request-parent="<%= title %>">
+  <div class="card-body">
+    <div class="metadata">
+      <h2 class="h3" data-title="<%= title %>"><%= title %></h2>
+      <div class="d-flex gap-sm-3 flex-sm-row flex-wrap flex-column">
+        <% if base_callnumber.present? %>
+          <div>Call number: <%= base_callnumber %></div>
+        <% end %>
+      </div>
+      <ul class="list-group list-group-flush">
+        <% requests.each do |request| %>
+          <li id="<%= dom_id(request) %>" data-list-request-id="<%= request.transaction_number %>" class="request list-group-item px-0 <%= "request-status-#{request.status}" %>" data-empty-remove-target="item">
+            <div class="d-flex flex-row align-items-center justify-content-between">
+              <div class="d-flex gap-3">
+                <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
+                <%= button_tag button_text, type: 'button', class: 'btn btn-link', data: button_data(request) %>
+                <% if @remove %>
+                  <input type="hidden" name="request_ids[]" value="<%= request.transaction_number %>">
+                <% end %>
+              </div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>
