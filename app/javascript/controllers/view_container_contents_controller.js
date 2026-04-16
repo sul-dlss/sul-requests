@@ -10,9 +10,13 @@ export default class extends Controller {
   }
 
   openViewModal(event) {
+    // Without this, clicking the button that triggers the event may lead to a form submission
+    event.preventDefault();
     // get id of item 
     const itemId = event.currentTarget.dataset.itemId
+    // populate the container contents modal using information about this element
     this.populateModal(itemId)
+    // show the modal
     const modal = Modal.getOrCreateInstance(this.viewModalTarget)
     modal.show()
   }

@@ -140,27 +140,16 @@ export default class extends Controller {
   }
 
   formatItemTitle(item) {
-    // Need to return link for label as well?
-    if (!item.titleParts) return this.viewModalLink(item.id, item.label);
+    if (!item.titleParts) return item.label;
 
-    return this.mapTitleParts(item.titleParts, item.id).join('<i class="bi bi-chevron-right mx-1"></i>');
+    return this.mapTitleParts(item.titleParts);
   }
 
-  mapTitleParts(titleParts, id) {
-    const filteredParts = titleParts.filter(e => e?.trim())
-    return filteredParts.map((e, i) => { 
-      // only provide a link for the last title part
-      if(i == filteredParts.length - 1) {
-        return this.viewModalLink(id, DOMPurify.sanitize(e))
-      }  
-      return DOMPurify.sanitize(e) 
-    })
+  mapTitleParts(titleParts) {
+    return titleParts.filter(e => e?.trim())
+      .map(e => DOMPurify.sanitize(e))
+      .join('<i class="bi bi-chevron-right mx-1"></i>')
   }
-
-  viewModalLink(id, label) {
-    return '<a class="btn btn-link su-underline p-0" data-action="view-container-contents#openViewModal" data-item-id="'+ id + '" data-item-title="' + label + '">' + label + '</a>'
-  }
-  
 
   selectedItemsValueChanged(value, previousValue) {
     const removed = (previousValue || []).filter(item => !value.find(v => v.id == item.id));
