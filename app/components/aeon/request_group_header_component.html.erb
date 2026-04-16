@@ -1,0 +1,7 @@
+<div class="mb-2 text-dark-emphasis reading-room"><%= reading_room&.name %></div>
+<h2 class="h3"><%= title %></h2>
+<div class="d-flex gap-sm-3 flex-sm-row flex-wrap flex-column">
+  <% if base_callnumber.present? %>
+    <div>Call number: <%= base_callnumber %></div>
+  <% end %>
+</div>

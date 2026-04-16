@@ -443,7 +443,8 @@ label.btn-close {
  transform: rotate(90deg);
 }
 
-.accordion-button[aria-expanded="true"] ~ .accordion-header-icon::before {
+.accordion-button[aria-expanded="true"] ~ .accordion-header-icon::before,
+.accordion-button[aria-expanded="true"] .accordion-header-icon::before {
  transform: rotate(180deg);
 }
 

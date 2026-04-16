@@ -1,13 +1,7 @@
 <div class="request-group border rounded" data-controller="empty-remove">
   <div class="card-body">
     <div class="metadata">
-      <div class="mb-2 text-dark-emphasis reading-room"><%= requests.first.reading_room&.name %></div>
-      <h2 class="h3"><%= title %></h2>
-      <div class="d-flex gap-sm-3 flex-sm-row flex-wrap flex-column">
-        <% if base_callnumber.present? %>
-          <div>Call number: <%= base_callnumber %></div>
-        <% end %>
-      </div>
+      <%= render Aeon::RequestGroupHeaderComponent.new(title:, base_callnumber:, reading_room: requests.first.reading_room) %>
       <ul class="list-group list-group-flush">
         <% requests.each do |request| %>
           <li id="<%= dom_id(request) %>" class="request list-group-item px-0 <%= "request-status-#{request.status}" %>" data-empty-remove-target="item">

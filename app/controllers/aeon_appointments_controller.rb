@@ -44,6 +44,15 @@ class AeonAppointmentsController < ApplicationController
     request.variant = :modal if params[:modal]
   end
 
+  def add_items
+    authorize! :update, Aeon::Request
+    params[:request_ids].each do | request_id |
+      request = current_user.aeon.requests.find{ |request| request.transaction_number == request_id.to_i }
+      @updated_request = Aeon::UpdateRequestService.new(request, params).call
+    end
+    redirect_to aeon_appointments_path
+  end
+
   def create
     authorize! :create, Aeon::Appointment
 
