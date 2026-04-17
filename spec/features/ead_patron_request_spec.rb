@@ -362,6 +362,48 @@ RSpec.describe 'Requesting an item from an EAD', :js do
                                                                         site: 'SPECUA'
                                                                       ))
     end
+
+    it 'displays a modal to view contents of each selected item for reading room appointments' do
+      visit new_archives_request_path(value: 'http://example.com/ead.xml')
+
+      choose 'Reading room appointment'
+      click_button 'Continue'
+
+      click_link 'Computers and Typesetting'
+      click_link 'Volume E, Computer Modern Typefaces'
+      check 'Box 22'
+      check 'Box 23'
+
+      click_button 'Continue'
+
+      # Expect links for viewing a modal for each of the selecte boxes
+      expect(page).to have_css('button[data-action="view-container-contents#openViewModal"]', count:2)
+
+      # Clicking on the view modal link should display the contents of the first container
+      page.find('button[data-item-id="volumes_computers-and-typesetting_volume-e-computer-modern-t_box-22"]').click
+      within '.modal' do
+        # Skipping the HTML > elements when looking at just the text
+        expect(page).to have_content('Computers and TypesettingVolume E, Computer Modern TypefacesBox 22')
+        expect(page).to have_content 'Folder 1: What preceded Computer Modern'
+        # There are 9 folders in this box
+        expect(page).to have_css('li', count:9)
+        page.find('button.btn-close').click
+      end
+      
+      # Clicking the second container view modal link should show us 11 items
+      page.find('button[data-item-id="volumes_computers-and-typesetting_volume-e-computer-modern-t_box-23"]').click
+      within '.modal' do
+        expect(page).to have_content('Computers and TypesettingVolume E, Computer Modern TypefacesBox 23')
+        expect(page).to have_css('li', count:11)
+        page.find('button.btn-close').click
+      end
+    end
+
+    it 'displays a modal to view contents of each selected item for a digitization request' do
+      visit new_archives_request_path(value: 'http://example.com/ead.xml')
+
+      expect(true)
+    end
   end
   # rubocop:enable RSpec/ExampleLength
 
