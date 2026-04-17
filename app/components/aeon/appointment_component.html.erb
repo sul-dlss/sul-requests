@@ -1,13 +1,13 @@
-<div class="card mb-4">
-  <div class="card-header d-flex justify-content-between align-items-center bg-white">
+<div class="card bg-body-tertiary border-light-subtle shadow-sm mb-4">
+  <div class="card-header d-flex justify-content-between align-items-center bg-body-tertiary">
     <h2 class="card-title mb-0 h4 d-flex gap-3">
       <span><i class="bi bi-calendar me-2"></i><%= appointment_date %></span>
       <span><i class="bi bi-clock me-2"></i><%= appointment_time_range %></span>
       <span><i class="bi bi-geo-alt-fill me-2"></i><%= appointment.reading_room.name %></span>
     </h2>
-    <div>
+    <div class="d-flex gap-2">
       <%= link_to edit_aeon_appointment_path(appointment.id), class: 'text-decoration-none', data: { action: 'modal#open' } do %>
-        <i class="bi bi-pencil-fill me-1"></i><span class="visually-hidden">Edit appointment</span>
+        <i class="bi bi-pencil-fill"></i><span class="visually-hidden">Edit appointment</span>
       <% end %>
       <% if helpers.can? :destroy, appointment %>
         <button class="btn btn-link su-underline p-0" data-bs-toggle="modal" data-bs-target="#delete-appointment-<%= @appointment.id %>">
@@ -21,15 +21,15 @@
         <% request_groups = Aeon::RequestGrouping.from_requests(appointment.requests) %>
         <%= render Aeon::RequestGroupPerAppointmentComponent.with_collection(request_groups) %>
     <% else %>
-      <div role="alert" class="d-flex align-items-center text-digital-red">
-        <div role="img" aria-label="Danger icon" class="bi bi-exclamation-triangle-fill fs-3 me-3 align-self-center d-flex justify-content-center"></div>
-        <div>
+      <div role="alert" class="d-flex align-items-center text-digital-red bg-body py-3 px-4">
+        <div role="img" aria-label="Danger icon" class="bi bi-exclamation-triangle-fill fs-3 me-3 align-self-center d-flex justify-content-center ms-2"></div>
+        <div class="me-2">
           No items have been requested for this appointment. It will be cancelled <%= @appointment.edit_policy %> days before your scheduled visit date if no requests are submitted.
         </div>
       </div>
     <% end %>
   </div>
-  <div class="card-footer bg-transparent d-flex justify-content-between align-items-center">
+  <div class="card-footer bg-body-tertiary d-flex justify-content-between align-items-center">
     <%= render Aeon::AppointmentLimitComponent.from_appointment(appointment) %>
     <%= link_to "Add items", add_items_path, class: 'btn btn-outline-primary btn-sm', data: { action: 'modal#open' } unless add_item_disabled? %>
   </div>
