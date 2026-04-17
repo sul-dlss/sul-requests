@@ -73,6 +73,13 @@ class AeonAppointmentsController < ApplicationController
       request = current_user.aeon.requests.find { |request| request.transaction_number == transaction_number.to_i }
       @updated_request = Aeon::UpdateRequestService.new(request, { appointment_id: params[:appointment_id] }).call
     end
+
+    params[:items_removed]&.each do |transaction_number|
+      request = current_user.aeon.requests.find { |request| request.transaction_number == transaction_number.to_i }
+      next if request.draft?
+      @updated_request = Aeon::UpdateRequestService.new(request, { appointment_id: nil }).call
+    end
+
     redirect_to aeon_appointments_path
   end
 
