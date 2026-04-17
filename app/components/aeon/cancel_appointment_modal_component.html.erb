@@ -3,7 +3,7 @@
   <% component.with_body(classes: []) do %>
     <%= form_with url: aeon_appointment_path(appointment.id), method: 'delete' do |f| %>
       <div class="modal-body">
-          <div class="fw-semibold"><i class="bi bi-calendar me-2"></i><%= appointment_date %><i class="bi bi-clock mx-2"></i><%= appointment_time_range %></div>
+          <div class="fw-semibold"><i class="bi bi-calendar me-2"></i><%= appointment_date %><%= time_range_html(margin: 'ms-3 me-2') %></div>
           <div class="mt-1 fw-semibold"><i class="bi bi-geo-alt-fill me-1"></i><%= appointment.reading_room.name %></div>
           <% if appointment.requests.any? %>
           <div class="mb-0 mt-2 alert alert-info">
