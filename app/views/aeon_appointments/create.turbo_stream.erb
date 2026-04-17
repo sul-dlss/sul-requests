@@ -7,7 +7,7 @@
     <div class="text-body">
       <ul class="mb-0">
         <li class="fw-semibold">
-          <span class="fw-normal">New appointment: </span><%= l(@appointment.start_time, format: :date_only) %><i class="bi bi-dot"></i><%= l(@appointment.start_time, format: :time_only).sub(':00', '') %> - <%= l(@appointment.stop_time, format: :time_only).sub(':00', '') %><i class="bi bi-dot"></i><%= @appointment.reading_room.name %>
+          <span class="fw-normal">New appointment: </span><%= render AppointmentTimeRangeComponent.new(appointment: @appointment) %><i class="bi bi-dot"></i><%= @appointment.reading_room.name %>
         </li>
         <li>Items can be scheduled for this appointment.</li>
         <% if @appointment.reading_room.item_limit %>
