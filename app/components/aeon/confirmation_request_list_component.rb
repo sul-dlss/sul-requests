@@ -3,10 +3,9 @@
 module Aeon
   # Render aeon apointment card
   class ConfirmationRequestListComponent < ViewComponent::Base
-    def initialize(requests:, digitization:, drafts: false)
+    def initialize(requests:, digitization:)
       @requests = requests
       @digitization = digitization
-      @drafts = drafts
     end
 
     def render?
@@ -14,14 +13,13 @@ module Aeon
     end
 
     def title
-      return 'Drafts (Requests not completed)' if @drafts
       return 'Digitization requests' if @digitization
 
       'Appointments'
     end
 
     def accordion_name(index)
-      "accordion#{@drafts ? 'Draft' : 'Request'}#{index}"
+      "accordionRequest#{index}"
     end
 
     attr_reader :requests
