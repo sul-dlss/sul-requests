@@ -4,5 +4,10 @@ module Aeon
   # Render a group of requests that share the same title and request type
   class RequestGroupBriefComponent < Aeon::RequestGroupComponent
     with_collection_parameter :request_group
+
+    def initialize(after_request_item_component: nil, **)
+      @after_request_item_component = after_request_item_component
+      super(**)
+    end
   end
 end
