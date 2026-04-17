@@ -1,0 +1,23 @@
+<%= tag.div class: %w[card bg-body-tertiary border-light-subtle shadow-sm mb-4] + classes, **tag_options do %>
+  <%= pre %>
+  <div class="card-header d-flex justify-content-between align-items-center bg-body-tertiary">
+    <%= title %>
+    <% if actions? %>
+      <div class="d-flex gap-2">
+        <%= actions %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="card-body">
+    <%= body %>
+  </div>
+
+  <% if footer? %>
+    <div class="card-footer bg-body-tertiary d-flex justify-content-between align-items-center">
+      <%= footer %>
+    </div>
+  <% end %>
+
+  <%= post %>
+<% end %>
