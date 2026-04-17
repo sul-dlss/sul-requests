@@ -34,32 +34,5 @@
     <%= link_to "Add items", add_items_path, class: 'btn btn-outline-primary btn-sm', data: { action: 'modal#open' } unless add_item_disabled? %>
   </div>
   <!-- Delete modal -->
-  <%= render ModalComponent.new(id: "delete-appointment-#{appointment.id}") do |component| %>
-    <% component.with_title.with_content('Cancel appointment?') %>
-    <% component.with_body(classes: []) do %>
-      <%= form_with url: aeon_appointment_path(appointment.id), method: 'delete' do |f| %>
-        <div class="modal-body">
-            <div class="fw-semibold"><i class="bi bi-calendar me-2"></i><%= appointment_date %><i class="bi bi-clock mx-2"></i><%= appointment_time_range %></div>
-            <div class="mt-1 fw-semibold"><i class="bi bi-geo-alt-fill me-1"></i><%= appointment.reading_room.name %></div>
-            <% if appointment.requests.any? %>
-            <div class="mb-0 mt-2 alert alert-info">
-              <strong><%= pluralize(appointment.requests.length, 'item') %></strong> assigned to this appointment.
-              <div class="d-flex gap-1">
-                <%= f.radio_button :cancel_items, false %>
-                <%= f.label :cancel_items_false, 'Save items and schedule later' %>
-              </div>
-              <div class="d-flex gap-1">
-                <%= f.radio_button :cancel_items, true %>
-                <%= f.label :cancel_items_true, 'Delete requested items' %>
-              </div>
-            </div>
-          <% end %>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
-          <%= f.submit('Yes, cancel appointment', class: 'btn btn-primary', data: { bs_dismiss: 'modal' }) %>
-        </div>
-      <% end %>
-    <% end %>
-  <% end %>
+  <%= render Aeon::CancelAppointmentModalComponent.new(appointment: appointment, id: "delete-appointment-#{@appointment.id}") %>
 </div>

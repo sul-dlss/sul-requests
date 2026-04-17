@@ -16,6 +16,10 @@ module Aeon
       "#{start} - #{stop}"
     end
 
+    def appointment_date
+      l(appointment.start_time, format: :date_only)
+    end
+
     def add_item_disabled?
       return true unless appointment.editable?
 
@@ -24,10 +28,6 @@ module Aeon
 
     def add_items_path
       draft_aeon_requests_path(filter: 'reading_room', sort: 'title', appointment_id: appointment.id)
-    end
-
-    def appointment_date
-      l(appointment.start_time, format: :date_only)
     end
   end
 end
