@@ -75,3 +75,6 @@ application.register("ead-search", EadSearchController)
 
 import ViewContainerContentsController from "./view_container_contents_controller"
 application.register("view-container-contents", ViewContainerContentsController)
+
+import AddItemsController from "./add_items_controller"
+application.register("add-items", AddItemsController)
