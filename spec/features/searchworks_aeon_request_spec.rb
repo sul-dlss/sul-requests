@@ -16,7 +16,8 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
   let(:reading_rooms) { JSON.load_file('spec/fixtures/reading_rooms.json').map { |room| Aeon::ReadingRoom.from_dynamic(room) } }
   let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
   let(:stub_aeon_client) do
-    instance_double(AeonClient, find_user: aeon_user, create_request: created_request, reading_rooms:, available_appointments:)
+    instance_double(AeonClient, find_user: aeon_user, create_request: created_request, update_request_route: nil,
+                                reading_rooms:, available_appointments:)
   end
   let(:created_request) { instance_double(Aeon::Request, id: 123, transaction_number: 'abc123', submitted?: true, draft?: false, valid?: true) }
   let(:available_appointments) do
@@ -109,8 +110,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
   context 'with multiple holdings' do
     let(:folio_instance) { :special_collections_holdings }
 
-    # rubocop:disable RSpec/ExampleLength
-    it 'allows the user to submit a digitization request' do
+    it 'allows the user to submit a digitization request' do # rubocop:disable RSpec/ExampleLength
       choose 'Digitization'
       check 'I agree to these terms'
       click_button 'Continue'
@@ -156,6 +156,45 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
                                                                         call_number: 'ABC 321'
                                                                       ))
     end
-    # rubocop:enable RSpec/ExampleLength
+
+    it 'allows the user to save items for later' do # rubocop:disable RSpec/ExampleLength
+      choose 'Digitization'
+      check 'I agree to these terms'
+      click_button 'Continue'
+
+      check 'ABC 123'
+      check 'ABC 321'
+      click_button 'Continue'
+
+      # Submit disabled: no items are complete yet
+      expect(page).to have_button('Submit request', disabled: true)
+
+      fill_in 'Requested pages', with: 'Pages 1-10'
+      choose 'Yes'
+      click_button 'Next item'
+
+      # Submit still disabled: second item is incomplete
+      expect(page).to have_button('Submit request', disabled: true)
+
+      find('[data-content-id]', text: 'ABC 321').click_button('Save for later')
+      expect(page).to have_css('.saved-item', text: 'ABC 321')
+
+      # Submit enabled: first item complete, second saved for later
+      expect(page).to have_button('Submit request', disabled: false)
+
+      within('[data-save-for-later-target="list"]') do
+        expect(page).to have_content 'ABC 321'
+        click_button 'Undo'
+      end
+
+      # Submit disabled again: restored item is incomplete
+      expect(page).to have_button('Submit request', disabled: true)
+
+      expect(page).to have_no_css '.saved-item'
+
+      within('.digitization-accordion') do
+        expect(page).to have_content 'ABC 321'
+      end
+    end
   end
 end

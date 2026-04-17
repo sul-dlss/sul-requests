@@ -9,8 +9,13 @@ export default class extends Controller {
 
   update(event) {
     const completeCount = this.element.querySelectorAll('[data-selected-item-form-status-value="complete"]').length;
-    const draftCount =this.element.querySelectorAll('[data-selected-item-form-status-value="incomplete"]').length;
+    const savedCount = this.element.querySelectorAll('[data-saved-for-later]').length;
 
-    this.counterTarget.innerHTML = `${completeCount} complete · ${draftCount} drafts`;
+    let text = `${completeCount} ready to submit`;
+    if (savedCount > 0) {
+      text += ` · ${savedCount} saving for later`;
+    }
+
+    this.counterTarget.innerHTML = text;
   }
 }

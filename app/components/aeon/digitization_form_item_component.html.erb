@@ -1,18 +1,27 @@
 <div data-controller="selected-item-form" data-action="input->selected-item-form#updateStatus" class="accordion-item mb-3" data-content-id="<%= dom_id %>">
   <div class="accordion-header d-flex flex-nowrap align-items-center position-relative">
-    <%= button_tag(
-        type: "button",
-        class: "accordion-button d-inline-flex w-auto align-items-center position-static",
-        data: { bs_toggle: "collapse", bs_target: "#content_#{dom_id}" },
-        aria: { expanded: !accordion?, controls: "content_#{dom_id}" },
-        disabled: !accordion?
-        ) do %>
-      <i class="bi bi-check2 selected-item-status"></i>
-      <span class="text-black fw-semibold selected-item-title stretched-link"><%= title %></span>
-    <% end %>
-    <button class="btn btn-link p-0 ps-1 z-3 selected-item-remove" data-action="item-selector#remove" data-item-selector-id-param="<%= dom_id %>">
-      <i class="bi bi-trash"></i><span class="visually-hidden"> Delete <%= title %></span>
-    </button>
+    <div class="d-flex align-items-center flex-grow-1 justify-content-between">
+      <%= button_tag(
+          type: "button",
+          class: "accordion-button d-inline-flex w-auto align-items-center position-static",
+          data: { bs_toggle: "collapse", bs_target: "#content_#{dom_id}" },
+          aria: { expanded: !accordion?, controls: "content_#{dom_id}" },
+          disabled: !accordion?
+          ) do %>
+        <i class="bi bi-check2 selected-item-status"></i>
+        <span class="text-black fw-semibold selected-item-title stretched-link"><%= title %></span>
+      <% end %>
+      <div class="d-flex position-relative z-3">
+        <% if save_for_later? %>
+        <button class="btn btn-link p-0 ps-1 z-3 su-underline fs-14" data-action="save-for-later#save" data-save-for-later-id-param="<%= dom_id %>">
+          <i class="bi bi-pin-angle-fill me-1"></i>Save for later
+        </button>
+        <% end %>
+        <button class="btn btn-link p-0 ps-1 selected-item-remove" data-action="item-selector#remove" data-item-selector-id-param="<%= dom_id %>">
+          <i class="bi bi-trash"></i><span class="visually-hidden"> Delete <%= title %></span>
+        </button>
+      </div>
+    </div>
 
     <i class="bi bi-chevron-down accordion-header-icon ms-auto px-4"></i>
   </div>

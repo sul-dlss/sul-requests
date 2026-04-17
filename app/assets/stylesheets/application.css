@@ -209,7 +209,7 @@ summary .disclosure-icon::before {
   box-shadow: none !important;
 }
 
-.accordion-button[disabled]  ~ .accordion-header-icon {
+.accordion-header:has(.accordion-button[disabled]) .accordion-header-icon {
   display: none;
 }
 
@@ -744,6 +744,26 @@ label.btn-close {
       border-bottom: none;
     }
   }
+}
+
+@layer framework {
+  .saved-item:last-child {
+    border-bottom: none !important;
+  }
+}
+
+@keyframes save-for-later-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.save-for-later:not(:has(.saved-item)) {
+  display: none;
+}
+
+.save-for-later,
+.saved-item {
+  animation: save-for-later-fade-in 0.3s ease;
 }
 
 .custom-select {
