@@ -91,7 +91,6 @@ RSpec.describe Aeon::RequestComponent, type: :component do
           expect(page).to have_css '.ready'
           expect(page).to have_text 'Reading room use'
           expect(page).to have_text 'Mar 11, 2024'
-          expect(page).to have_text '1 pm - 1:15 pm (PDT)'
           expect(page).to have_text 'Field Reading Room'
           expect(page).to have_text 'Throwing a sinker ball at 94 mpg with wicked movement'
           expect(page).to have_link 'View in SearchWorks', href: 'https://searchworks.stanford.edu/view/12345678'

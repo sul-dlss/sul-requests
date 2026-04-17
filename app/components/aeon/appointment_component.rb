@@ -9,6 +9,12 @@ module Aeon
       @appointment = appointment
     end
 
+    def time_range_html(margin: 'mx-2')
+      return if appointment.reading_room.day_only_appointments?
+
+      tag.i(class: "bi bi-clock #{margin}") + appointment_time_range
+    end
+
     def appointment_time_range
       start = l(appointment.start_time, format: :time_only)
       stop = l(appointment.stop_time, format: :time_only)

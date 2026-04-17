@@ -53,7 +53,6 @@ RSpec.describe Aeon::RequestGroupComponent, type: :component do
       expect(page).to have_css 'h2', text: 'Donald E. Knuth papers', count: 1
       expect(page).to have_content 'The Art of Computer Programming', count: 2
       expect(page).to have_content 'Mar 11, 2024', count: 2
-      expect(page).to have_content '1 pm - 1:15 pm (PDT)', count: 2
       expect(page).to have_content 'SC0097', count: 1
       expect(page).to have_content 'Box 1'
       expect(page).to have_content 'Box 2'
