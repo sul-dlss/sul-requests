@@ -24,6 +24,10 @@ layer(components);
   --bs-danger-text-emphasis: #58151c;
   --bs-danger-bg-subtle: #f8d7da;
   --bs-danger-border-subtle: #f1aeb5;
+
+  --bs-card-border-color: var(--stanford-20-black);
+  --bs-tertiary-bg-rgb: var(--stanford-fog-light-rgb);
+  --bs-light-border-subtle: var(--stanford-10-black);
 }
 
 .accordion {
@@ -60,10 +64,6 @@ layer(components);
 
 .bg-stanford-10-black {
   background-color: var(--stanford-10-black);
-}
-
-.bg-fog-light {
-  background-color: var(--stanford-fog-light);
 }
 
 .text-cardinal {
@@ -491,15 +491,17 @@ label.btn-close {
 .request-group-per-appointment.request-group.card  {
   box-shadow: none;
   border: 0;
-  border-bottom: var(--bs-border-width) solid var(--bs-border-color);
+  border-top: var(--bs-border-width) solid var(--bs-border-color);
   margin-bottom: 1rem;
   padding-bottom: 1rem;
 }
 
+.request-group-per-appointment.request-group.card:first-child {
+  border-top: 0;
+}
+
 .request-group-per-appointment.request-group.card:last-child {
-  border-bottom: none;
   margin-bottom: 0;
-  padding-bottom: 0;
 }
 
 #available_appointments .btn-check[disabled]+.btn {
