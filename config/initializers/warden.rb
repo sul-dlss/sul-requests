@@ -103,6 +103,7 @@ Warden::Strategies.add(:register_visitor) do
 
     user = User.find_by(email: params['patron_email'])
     return unless user&.persisted?
+    return false unless params['code'].present?
 
     user.totp.verify(params['code'], drift_ahead: drift, drift_behind: drift)
   end
