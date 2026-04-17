@@ -1,17 +1,24 @@
 <%= render CardComponent.new classes: 'request-group', data: { controller: 'empty-remove' } do |c| %>
   <% c.with_title do %>
     <div>
-      <div class="d-flex flex-wrap gap-1 align-items-center mb-2">
-        <%= render Aeon::RequestStatusPillComponent.new(request: status_request) %>
-        <%= render Aeon::RequestStatusMessageComponent.new(request: status_request) %>
-        <% if appointment_reading_room.present? %>
-        <span class="appointment-details ms-1">
-          <span class="ms-2 fw-semibold text-nowrap text-green"><%= appointment_reading_room.name %></span>
+      <div class="d-flex flex-wrap gap-1 justify-content-between align-items-center mt-2 mb-3">
+        <span>
+          <%= render Aeon::RequestStatusPillComponent.new(request: status_request) %>
+          <% if appointment_reading_room.present? %>
+          <span class="appointment-details ms-1">
+            <span class="ms-2 fw-semibold text-nowrap text-green"><%= appointment_reading_room.name %></span>
+          </span>
+          <% end %>
         </span>
-        <% end %>
+
+        <span>
+          <%= render Aeon::RequestStatusMessageComponent.new(request: status_request) %>
+        </span>
       </div>
 
-      <%= render RecordHeaderComponent.new(record: requests.first, brief: true) %>
+      <div>
+        <%= render RecordHeaderComponent.new(record: requests.first, brief: true) %>
+      </div>
     </div>
   <% end %>
 

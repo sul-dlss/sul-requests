@@ -18,6 +18,7 @@ layer(components);
 :root {
   --stanford-jungle-green-rgb: 39, 153, 137;
   --stanford-process-black-50-rgb: 151, 150, 148;
+  --stanford-lagunita-dark-rgb: 0, 107, 129;
 
   --bs-danger: #dc3545;
   --bs-danger-rgb: 220, 53, 69;
@@ -52,6 +53,10 @@ layer(components);
 
 .text-jungle-green {
   color: rgba(var(--stanford-jungle-green-rgb), 1);
+}
+
+.bg-lagunita-dark {
+  background-color: rgba(var(--stanford-lagunita-dark-rgb), 1);
 }
 
 .bg-cardinal {
@@ -460,21 +465,6 @@ label.btn-close {
 
   .rounded-pill {
     padding: 4px 12px;
-  }
-
-  .cancelled, .draft {
-    color: var(--stanford-black);
-    background-color: var(--stanford-10-black);
-  }
-
-  .pending {
-    color: rgba(var(--stanford-plum-dark-rgb), 1);
-    background-color: rgba(var(--stanford-plum-rgb), 0.1);
-  }
-
-  .ready {
-    color: rgba(var(--stanford-digital-green-dark-rgb), 1);
-    background-color: rgba(var(--stanford-digital-green-rgb), 0.1);
   }
 
   .appointment-details > * + *::before {
