@@ -749,6 +749,8 @@ label.btn-close {
 .custom-select {
   button {
     --bs-btn-bg: white;
+    --bs-btn-hover-bg: white;
+    --bs-btn-active-bg: white;
   }
 
   .selected {
