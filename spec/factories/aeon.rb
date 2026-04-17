@@ -83,6 +83,12 @@ FactoryBot.define do
 
     initialize_with { new(**attributes) }
 
+    trait :ead do
+      item_title { 'Stanford University postcard collection' }
+      ead_number { 'M1234' }
+      web_request_form { 'multiple' }
+    end
+
     trait :without_appointment do
       appointment_id { nil }
       appointment { nil }
