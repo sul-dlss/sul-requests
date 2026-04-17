@@ -11,6 +11,10 @@ module Aeon
       @request = request
     end
 
+    def render?
+      !request.completed?
+    end
+
     def request_type
       if digital?
         'Digitization'
