@@ -1,0 +1,64 @@
+<%= turbo_frame_tag params[:modal] do %>
+  <%= form_with(url: add_items_aeon_appointments_path) do |f| %>
+    <div class="modal-header">
+      <div class="d-flex flex-column flex-grow-1">
+        <div class="d-flex justify-content-between mb-2">
+          <h1 class="mb-0">Add items</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="d-flex flex-row justify-content-between align-items-center">
+          <div class="d-flex flex-row gap-2">
+            <div><i class="bi bi-calendar me-1"></i> <%= l(@appointment.start_time, format: :date_only) %></div>
+            <div><i class="bi bi-clock me-1"></i> <%= l(@appointment.start_time, format: :time_only) %> - <%=  l(@appointment.stop_time, format: :time_only) %></div>
+            <div><i class="bi bi-geo-alt-fill me-1"></i><%= @appointment.reading_room.name %></div>
+          </div>
+          <div><%= render Aeon::AppointmentLimitComponent.from_appointment(@appointment) %></div>
+          <%= f.hidden_field :appointment_id, value: @appointment.id %>
+        </div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="accordion mb-2" id="appointmentRequestsAccordion">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#appointmentRequests" aria-expanded="true" aria-controls="appointmentRequests">
+              <span class="fw-semibold">Items scheduled to use during this appointment</span>
+              <i class="bi bi-chevron-down accordion-header-icon ms-auto"></i>
+            </button>
+          </h2>
+          <div id="appointmentRequests" class="accordion-collapse collapse show" data-bs-parent="#appointmentRequestsAccordion">
+            <div class="accordion-body p-0">
+              <% grouped_appt_requests = Aeon::RequestGrouping.from_requests(@appointment.requests) %>
+              <% grouped_appt_requests.each do |request_group| %>
+                <%= render Aeon::RequestGroupBriefComponent.new(request_group:) %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion" id="draftRequestsAccordion">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#draftRequests" aria-expanded="true" aria-controls="draftRequests">
+              <span class="d-flex flex-wrap gap-1"><span class="fw-semibold">Eligible items to add</span><span>Materials associated with <%= @appointment.reading_room.name %>.</span></span>
+              <i class="bi bi-chevron-down accordion-header-icon ms-auto"></i>
+            </button>
+          </h2>
+          <div id="draftRequests" class="accordion-collapse collapse show" data-bs-parent="#draftRequestsAccordion">
+            <div class="accordion-body p-0">
+              <% @aeon_request_groups.each do |request_group| %>
+                <% if request_group.requests.first.reading_room.id == @appointment.reading_room.id %>
+                  <%= render Aeon::RequestGroupBriefComponent.new(request_group:, data: { controller: 'add-items empty-remove', appointment_target: '#appointmentRequests', }, after_request_item_component: Aeon::AddRequestComponent) %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
+      <%= f.submit "Save changes", class: 'btn btn-primary', data: { bs_dismiss: 'modal' } %>
+    </div>
+  <% end %>
+<% end %>
