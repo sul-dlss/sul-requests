@@ -2,14 +2,16 @@
   <div class="row">
     <div class="col-md-8 pe-5">
       <div class="d-flex flex-wrap gap-2 justify-content-between mb-3">
-        <h1>Draft requests</h1>
+        <h1><%= params[:kind].capitalize.sub('Drafts', 'Draft') %> requests</h1>
         <div class="d-flex flex-wrap gap-2 align-items-baseline">
-          <button class="btn btn-outline-primary d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#appointments" aria-controls="appointments">
-            Appointments
-          </button>
+          <% if params[:kind] == 'drafts' %>
+            <button class="btn btn-outline-primary d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#appointments" aria-controls="appointments">
+              Appointments
+            </button>
+          <% end %>
           <%= render 'sort_dropdown' %>
           <%= render 'filter_dropdown' %>
-          <%= render 'delete_drafts_button' %>
+          <%= render 'delete_drafts_button' if params[:kind] == 'drafts' %>
         </div>
       </div>
 
@@ -17,16 +19,20 @@
         <%= render Aeon::RequestGroupComponent.new(request_group: requests_in_group) %>
       <% end %>
     </div>
-    <aside class="col-md-4 offcanvas-md offcanvas-bottom offcanvas-sm-start overflow-auto"  tabindex="-1" id="appointments">
-      <turbo-frame src="<%= aeon_appointments_path(variant: 'sidebar') %>" id="aeon-appointments" class="d-block" data-turbo="false">
-        <div class="d-flex align-items-center justify-content-center" style="height: 200px;">
-          <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
+
+    <% if params[:kind] == 'drafts' %>
+      <aside class="col-md-4 offcanvas-md offcanvas-bottom offcanvas-sm-start overflow-auto"  tabindex="-1" id="appointments">
+        <turbo-frame src="<%= aeon_appointments_path(variant: 'sidebar') %>" id="aeon-appointments" class="d-block" data-turbo="false">
+          <div class="d-flex align-items-center justify-content-center" style="height: 200px;">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
           </div>
-        </div>
-      </turbo-frame>
-    </aside>
+        </turbo-frame>
+      </aside>
+    <% end %>
   </div>
+
   <%= render ModalComponent.new(id: "delete-bulk", data: {draft_request_target: "deleteModal"}) do |component| %>
     <% component.with_title.with_content('Delete draft requests?') %>
     <% component.with_body do %>
@@ -45,5 +51,5 @@
         <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Yes - Delete</button>
       <% end %>
     <% end %>
-  <% end %>
+  <% end if params[:kind] == 'drafts' %>
 </div>

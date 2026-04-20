@@ -140,7 +140,7 @@ RSpec.describe 'Accessibility testing', :js do
       let(:queue_name) { 'Awaiting User Review' }
 
       it 'validates the drafts page' do
-        visit draft_aeon_requests_path
+        visit aeon_requests_path(kind: 'drafts')
         expect(page).to be_accessible
       end
     end
@@ -149,7 +149,7 @@ RSpec.describe 'Accessibility testing', :js do
       let(:queue_name) { 'In Processing' }
 
       it 'validates the submitted page' do
-        visit submitted_aeon_requests_path
+        visit aeon_requests_path(kind: 'submitted')
         expect(page).to be_accessible
       end
     end

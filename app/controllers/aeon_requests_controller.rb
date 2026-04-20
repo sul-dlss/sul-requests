@@ -10,35 +10,25 @@ class AeonRequestsController < ApplicationController
 
   before_action :load_aeon_request, only: [:edit, :update, :destroy, :resubmit]
   before_action :load_multiple_aeon_requests, only: [:destroy_multiple]
-  before_action :set_variant, only: [:drafts, :edit]
+  before_action :set_variant, only: [:index, :edit]
 
-  def drafts
+  def index # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
     authorize! :read, Aeon::Request
 
-    requests = sort_aeon_requests(filter_aeon_requests(current_user&.aeon&.draft_requests || []))
+    requests = case params[:kind]
+               when 'drafts'
+                 current_user&.aeon&.draft_requests
+               when 'cancelled'
+                 current_user&.aeon&.cancelled_requests
+               when 'submitted'
+                 current_user&.aeon&.submitted_requests
+               when 'completed'
+                 current_user&.aeon&.completed_requests
+               end
+
+    requests = sort_aeon_requests(filter_aeon_requests(requests || []))
     @aeon_request_groups = Aeon::RequestGrouping.from_requests(requests)
     @appointment = current_user.aeon.appointment_by_id(id: params[:appointment_id]) if params[:appointment_id]
-  end
-
-  def cancelled
-    authorize! :read, Aeon::Request
-
-    requests = sort_aeon_requests(filter_aeon_requests(current_user&.aeon&.cancelled_requests || []))
-    @aeon_request_groups = Aeon::RequestGrouping.from_requests(requests)
-  end
-
-  def submitted
-    authorize! :read, Aeon::Request
-
-    requests = sort_aeon_requests(filter_aeon_requests(current_user&.aeon&.submitted_requests || []))
-    @aeon_request_groups = Aeon::RequestGrouping.from_requests(requests)
-  end
-
-  def completed
-    authorize! :read, Aeon::Request
-
-    requests = sort_aeon_requests(filter_aeon_requests(current_user&.aeon&.completed_requests || []))
-    @aeon_request_groups = Aeon::RequestGrouping.from_requests(requests)
   end
 
   def resubmit
@@ -62,7 +52,7 @@ class AeonRequestsController < ApplicationController
     respond_to do |format|
       format.turbo_stream
       format.html do
-        aeon_requests_path = updated_request.draft? ? drafts_aeon_requests_path : submitted_aeon_requests_path
+        aeon_requests_path = updated_request.draft? ? aeon_requests_path(kind: 'drafts') : aeon_requests_path(kind: 'submitted')
         redirect_to aeon_requests_path, notice: 'Request was successfully updated.'
       end
     end
