@@ -387,7 +387,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
         expect(page).to have_content 'Folder 1: What preceded Computer Modern'
         # There are 9 folders in this box
         expect(page).to have_css('li', count: 9)
-        click_button(class:'btn-close')
+        click_button(class: 'btn-close')
       end
 
       # Clicking the second container view modal link should show us 11 items
@@ -395,7 +395,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       within '.modal' do
         expect(page).to have_content('Computers and TypesettingVolume E, Computer Modern TypefacesBox 23')
         expect(page).to have_css('li', count: 11)
-        click_button(class:'btn-close')
+        click_button(class: 'btn-close')
       end
     end
 
@@ -421,7 +421,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       within '.modal' do
         # There are 6 folders in this box
         expect(page).to have_css('li', count: 6)
-        click_button(class:'btn-close')
+        click_button(class: 'btn-close')
       end
     end
   end
