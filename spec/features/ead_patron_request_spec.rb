@@ -402,7 +402,27 @@ RSpec.describe 'Requesting an item from an EAD', :js do
     it 'displays a modal to view contents of each selected item for a digitization request' do
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
 
-      expect(true)
+      choose 'Digitization'
+      check 'I agree to these terms'
+      click_button 'Continue'
+
+      click_link 'Concrete Mathematics'
+      click_link 'Original Drafts'
+      check 'Box 26'
+      check 'Box 27'
+
+      click_button 'Continue'
+
+      # Expect links for viewing a modal for each of the selected boxes
+      expect(page).to have_css('button[data-action="view-container-contents#openViewModal"]', count:2)
+
+      # Clicking on the view modal link should display the contents of the first container
+      page.find('button[data-item-id="volumes_concrete-mathematics_original-drafts_box-26"]').click
+      within '.modal' do
+        # There are 6 folders in this box
+        expect(page).to have_css('li', count:6)
+        page.find('button.btn-close').click
+      end
     end
   end
   # rubocop:enable RSpec/ExampleLength
