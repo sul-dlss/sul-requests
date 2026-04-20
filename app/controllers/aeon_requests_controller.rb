@@ -10,33 +10,23 @@ class AeonRequestsController < ApplicationController
 
   before_action :load_aeon_request, only: [:edit, :update, :destroy, :resubmit]
   before_action :load_multiple_aeon_requests, only: [:destroy_multiple]
-  before_action :set_variant, only: [:drafts, :edit]
+  before_action :set_variant, only: [:index, :edit]
 
-  def drafts
+  def index # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
     authorize! :read, Aeon::Request
 
-    requests = sort_aeon_requests(filter_aeon_requests(current_user&.aeon&.draft_requests || []))
-    @aeon_request_groups = Aeon::RequestGrouping.from_requests(requests)
-  end
+    requests = case params[:kind]
+               when 'drafts'
+                 current_user&.aeon&.draft_requests
+               when 'cancelled'
+                 current_user&.aeon&.cancelled_requests
+               when 'submitted'
+                 current_user&.aeon&.submitted_requests
+               when 'completed'
+                 current_user&.aeon&.completed_requests
+               end
 
-  def cancelled
-    authorize! :read, Aeon::Request
-
-    requests = sort_aeon_requests(filter_aeon_requests(current_user&.aeon&.cancelled_requests || []))
-    @aeon_request_groups = Aeon::RequestGrouping.from_requests(requests)
-  end
-
-  def submitted
-    authorize! :read, Aeon::Request
-
-    requests = sort_aeon_requests(filter_aeon_requests(current_user&.aeon&.submitted_requests || []))
-    @aeon_request_groups = Aeon::RequestGrouping.from_requests(requests)
-  end
-
-  def completed
-    authorize! :read, Aeon::Request
-
-    requests = sort_aeon_requests(filter_aeon_requests(current_user&.aeon&.completed_requests || []))
+    requests = sort_aeon_requests(filter_aeon_requests(requests || []))
     @aeon_request_groups = Aeon::RequestGrouping.from_requests(requests)
   end
 
