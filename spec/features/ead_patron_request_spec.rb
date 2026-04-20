@@ -377,7 +377,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       click_button 'Continue'
 
       # Expect links for viewing a modal for each of the selecte boxes
-      expect(page).to have_css('button[data-action="view-container-contents#openViewModal"]', count:2)
+      expect(page).to have_css('button[data-action="view-container-contents#openViewModal"]', count: 2)
 
       # Clicking on the view modal link should display the contents of the first container
       page.find('button[data-item-id="volumes_computers-and-typesetting_volume-e-computer-modern-t_box-22"]').click
@@ -386,15 +386,15 @@ RSpec.describe 'Requesting an item from an EAD', :js do
         expect(page).to have_content('Computers and TypesettingVolume E, Computer Modern TypefacesBox 22')
         expect(page).to have_content 'Folder 1: What preceded Computer Modern'
         # There are 9 folders in this box
-        expect(page).to have_css('li', count:9)
+        expect(page).to have_css('li', count: 9)
         page.find('button.btn-close').click
       end
-      
+
       # Clicking the second container view modal link should show us 11 items
       page.find('button[data-item-id="volumes_computers-and-typesetting_volume-e-computer-modern-t_box-23"]').click
       within '.modal' do
         expect(page).to have_content('Computers and TypesettingVolume E, Computer Modern TypefacesBox 23')
-        expect(page).to have_css('li', count:11)
+        expect(page).to have_css('li', count: 11)
         page.find('button.btn-close').click
       end
     end
@@ -414,13 +414,13 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       click_button 'Continue'
 
       # Expect links for viewing a modal for each of the selected boxes
-      expect(page).to have_css('button[data-action="view-container-contents#openViewModal"]', count:2)
+      expect(page).to have_css('button[data-action="view-container-contents#openViewModal"]', count: 2)
 
       # Clicking on the view modal link should display the contents of the first container
       page.find('button[data-item-id="volumes_concrete-mathematics_original-drafts_box-26"]').click
       within '.modal' do
         # There are 6 folders in this box
-        expect(page).to have_css('li', count:6)
+        expect(page).to have_css('li', count: 6)
         page.find('button.btn-close').click
       end
     end
