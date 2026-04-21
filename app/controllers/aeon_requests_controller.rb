@@ -8,9 +8,9 @@ class AeonRequestsController < ApplicationController
   include AeonFilterable
   include AeonSortable
 
+  before_action :load_aeon_requests
   before_action :load_aeon_request, only: [:edit, :update, :destroy, :resubmit]
   before_action :load_aeon_request_groups, only: [:index]
-  before_action :load_multiple_aeon_requests, only: [:destroy_multiple]
   before_action :set_variant, only: [:index, :edit]
 
   def index
@@ -72,30 +72,36 @@ class AeonRequestsController < ApplicationController
   end
 
   def load_aeon_request
-    @aeon_request = current_user.aeon.requests.find { |request| request.transaction_number == params[:id].to_i }
+    @aeon_request = @aeon_requests.find { |request| request.transaction_number == params[:id].to_i }
   end
 
-  def load_aeon_request_groups # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+  def load_aeon_requests # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity
     return [] unless current_user&.aeon
 
-    requests = case params[:kind]
-               when 'drafts'
-                 current_user.aeon.draft_requests
-               when 'cancelled'
-                 current_user.aeon.cancelled_requests
-               when 'submitted'
-                 current_user.aeon.submitted_requests
-               when 'completed'
-                 current_user.aeon.completed_requests
-               end
+    @aeon_requests = case params[:kind]
+                     when 'drafts'
+                       current_user.aeon.draft_requests
+                     when 'cancelled'
+                       current_user.aeon.cancelled_requests
+                     when 'submitted'
+                       current_user.aeon.submitted_requests
+                     when 'completed'
+                       current_user.aeon.completed_requests
+                     else
+                       current_user.aeon.requests
+                     end
 
-    requests = sort_aeon_requests(filter_aeon_requests(requests))
-    @aeon_request_groups = Aeon::RequestGrouping.from_requests(requests)
+    if params[:ids].present?
+      request_ids = params[:ids].map(&:to_i)
+      @aeon_requests = current_user.aeon.requests.select { |request| request_ids.include?(request.transaction_number) }
+    end
+
+    @aeon_requests = sort_aeon_requests(filter_aeon_requests(@aeon_requests))
   end
 
-  def load_multiple_aeon_requests
-    request_ids = params[:ids].map(&:to_i)
-    @aeon_requests = current_user.aeon.requests.select { |request| request_ids.include?(request.transaction_number) }
+  def load_aeon_request_groups
+    requests = sort_aeon_requests(filter_aeon_requests(@aeon_requests))
+    @aeon_request_groups = Aeon::RequestGrouping.from_requests(requests)
   end
 
   def aeon_request_params
