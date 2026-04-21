@@ -5,9 +5,10 @@
 ###
 class AeonAppointmentsController < ApplicationController
   include AeonController
+  include AeonSortable
 
   before_action :load_appointments, except: [:available]
-  before_action :load_appointment, only: [:edit, :update, :destroy]
+  before_action :load_appointment, only: [:edit, :update, :destroy, :items]
   before_action :create_appointment, only: [:create]
   before_action :load_reading_rooms, only: [:new, :available]
 
@@ -69,6 +70,16 @@ class AeonAppointmentsController < ApplicationController
     redirect_to aeon_appointments_path, notice: 'Appointment cancelled successfully'
   end
 
+  def items
+    authorize! :read, @appointment
+
+    requests = current_user.aeon.draft_requests.reject(&:digital?).select do |request|
+      request.reading_room.id == @appointment.reading_room.id
+    end
+    requests = sort_aeon_requests(requests || [])
+    @aeon_request_groups = Aeon::RequestGrouping.from_requests(requests)
+  end
+
   private
 
   def load_reading_rooms
@@ -95,7 +106,7 @@ class AeonAppointmentsController < ApplicationController
   end
 
   def load_appointment
-    @appointment = @appointments.find { |appt| appt.id == params[:id].to_i }
+    @appointment = @appointments.find { |appt| appt.id == (params[:aeon_appointment_id] || params[:id]).to_i }
   end
 
   def start_time
