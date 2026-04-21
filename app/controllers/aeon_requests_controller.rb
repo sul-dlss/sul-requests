@@ -9,25 +9,12 @@ class AeonRequestsController < ApplicationController
   include AeonSortable
 
   before_action :load_aeon_request, only: [:edit, :update, :destroy, :resubmit]
+  before_action :load_aeon_request_groups, only: [:index]
   before_action :load_multiple_aeon_requests, only: [:destroy_multiple]
   before_action :set_variant, only: [:index, :edit]
 
-  def index # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
+  def index
     authorize! :read, Aeon::Request
-
-    requests = case params[:kind]
-               when 'drafts'
-                 current_user&.aeon&.draft_requests
-               when 'cancelled'
-                 current_user&.aeon&.cancelled_requests
-               when 'submitted'
-                 current_user&.aeon&.submitted_requests
-               when 'completed'
-                 current_user&.aeon&.completed_requests
-               end
-
-    requests = sort_aeon_requests(filter_aeon_requests(requests || []))
-    @aeon_request_groups = Aeon::RequestGrouping.from_requests(requests)
   end
 
   def resubmit
@@ -86,6 +73,24 @@ class AeonRequestsController < ApplicationController
 
   def load_aeon_request
     @aeon_request = current_user.aeon.requests.find { |request| request.transaction_number == params[:id].to_i }
+  end
+
+  def load_aeon_request_groups # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    return [] unless current_user&.aeon
+
+    requests = case params[:kind]
+               when 'drafts'
+                 current_user.aeon.draft_requests
+               when 'cancelled'
+                 current_user.aeon.cancelled_requests
+               when 'submitted'
+                 current_user.aeon.submitted_requests
+               when 'completed'
+                 current_user.aeon.completed_requests
+               end
+
+    requests = sort_aeon_requests(filter_aeon_requests(requests))
+    @aeon_request_groups = Aeon::RequestGrouping.from_requests(requests)
   end
 
   def load_multiple_aeon_requests
