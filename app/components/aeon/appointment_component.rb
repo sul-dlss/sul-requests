@@ -27,7 +27,7 @@ module Aeon
     end
 
     def add_items_path
-      draft_aeon_requests_path(filter: 'reading_room', sort: 'title', appointment_id: appointment.id)
+      add_items_aeon_appointment_path(sort: 'title', id: appointment.id)
     end
   end
 end
