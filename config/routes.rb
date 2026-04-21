@@ -61,6 +61,10 @@ Rails.application.routes.draw do
       get "new/:reading_room_id", to: 'aeon_appointments#new', as: :new_appointment
       get "available/:reading_room_id/:date", to: 'aeon_appointments#available', as: :available
     end
+
+    member do
+      get :items
+    end
   end
 
   resource :aeon_user, only: [:new, :create] do
