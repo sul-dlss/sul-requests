@@ -23,7 +23,8 @@ class AeonRequestsController < ApplicationController
   def cancelled
     authorize! :read, Aeon::Request
 
-    @aeon_requests = sort_aeon_requests(filter_aeon_requests(current_user&.aeon&.cancelled_requests || []))
+    requests = sort_aeon_requests(filter_aeon_requests(current_user&.aeon&.cancelled_requests || []))
+    @aeon_request_groups = Aeon::RequestGrouping.from_requests(requests)
   end
 
   def submitted

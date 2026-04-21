@@ -1,22 +1,24 @@
-<div class="card bg-body-tertiary border-light-subtle shadow-sm mb-4">
-  <div class="card-header d-flex justify-content-between align-items-center bg-body-tertiary">
+<%= render CardComponent.new do |c| %>
+  <% c.with_title do %>
     <h2 class="card-title mb-0 h4 d-flex gap-3">
       <span><i class="bi bi-calendar me-2"></i><%= appointment_date %></span>
       <span><i class="bi bi-clock me-2"></i><%= appointment_time_range %></span>
       <span><i class="bi bi-geo-alt-fill me-2"></i><%= appointment.reading_room.name %></span>
     </h2>
-    <div class="d-flex gap-2">
-      <%= link_to edit_aeon_appointment_path(appointment.id), class: 'text-decoration-none', data: { action: 'modal#open' } do %>
-        <i class="bi bi-pencil-fill"></i><span class="visually-hidden">Edit appointment</span>
-      <% end %>
-      <% if helpers.can? :destroy, appointment %>
-        <button class="btn btn-link su-underline p-0" data-bs-toggle="modal" data-bs-target="#delete-appointment-<%= @appointment.id %>">
-          <i class="bi bi-trash align-middle"></i><span class="visually-hidden">Delete appointment</span>
-        </button>
-      <% end %>
-    </div>
-  </div>
-  <div class="card-body">
+  <% end %>
+
+  <% c.with_actions do %>
+    <%= link_to edit_aeon_appointment_path(appointment.id), class: 'text-decoration-none', data: { action: 'modal#open' } do %>
+      <i class="bi bi-pencil-fill"></i><span class="visually-hidden">Edit appointment</span>
+    <% end %>
+    <% if helpers.can? :destroy, appointment %>
+      <button class="btn btn-link su-underline p-0" data-bs-toggle="modal" data-bs-target="#delete-appointment-<%= @appointment.id %>">
+        <i class="bi bi-trash align-middle"></i><span class="visually-hidden">Delete appointment</span>
+      </button>
+    <% end %>
+  <% end %>
+
+  <% c.with_body do %>
     <% if appointment.requests.present? %>
         <% request_groups = Aeon::RequestGrouping.from_requests(appointment.requests) %>
         <%= render Aeon::RequestGroupPerAppointmentComponent.with_collection(request_groups) %>
@@ -28,11 +30,15 @@
         </div>
       </div>
     <% end %>
-  </div>
-  <div class="card-footer bg-body-tertiary d-flex justify-content-between align-items-center">
+  <% end %>
+
+  <% c.with_footer do %>
     <%= render Aeon::AppointmentLimitComponent.from_appointment(appointment) %>
     <%= link_to "Add items", add_items_path, class: 'btn btn-outline-primary btn-sm', data: { action: 'modal#open' } unless add_item_disabled? %>
-  </div>
-  <!-- Delete modal -->
-  <%= render Aeon::CancelAppointmentModalComponent.new(appointment: appointment, id: "delete-appointment-#{@appointment.id}") %>
-</div>
+  <% end %>
+
+  <% c.with_post do %>
+    <!-- Delete modal -->
+    <%= render Aeon::CancelAppointmentModalComponent.new(appointment: appointment, id: "delete-appointment-#{@appointment.id}") %>
+  <% end %>
+<% end %>

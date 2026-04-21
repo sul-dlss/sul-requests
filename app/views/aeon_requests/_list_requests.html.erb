@@ -7,9 +7,5 @@
 </div>
 
 <% @aeon_request_groups.each do |requests_in_group| %>
-  <% if requests_in_group.one? && !requests_in_group.first.multi_item_selector? %>
-    <%= render Aeon::RequestComponent.new(request: requests_in_group.first) %>
-  <% else %>
-    <%= render Aeon::RequestGroupComponent.new(request_group: requests_in_group) %>
-  <% end %>
+  <%= render Aeon::RequestGroupComponent.new(request_group: requests_in_group) %>
 <% end %>
