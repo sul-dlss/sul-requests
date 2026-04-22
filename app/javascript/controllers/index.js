@@ -75,3 +75,6 @@ application.register("view-container-contents", ViewContainerContentsController)
 
 import AddItemsController from "./add_items_controller"
 application.register("add-items", AddItemsController)
+
+import ItemLimitUpdatedController from "./item_limit_updated_controller"
+application.register("item-limit-updated", ItemLimitUpdatedController)
