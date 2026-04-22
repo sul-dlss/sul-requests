@@ -12,6 +12,7 @@ module Aeon
                  data: { action: 'click->add-items#schedule',
                          transaction_number: @request.transaction_number,
                          item_limit_updated_target: 'addButton',
+                         appointment_target: '#appointmentRequests',
                          title: @request.item_title } do
         tag.i(class: 'bi bi-plus') + tag.span('Add to appointment')
       end
