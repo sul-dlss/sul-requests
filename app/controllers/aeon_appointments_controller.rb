@@ -69,9 +69,9 @@ class AeonAppointmentsController < ApplicationController
 
   def add_items
     authorize! :update, Aeon::Request
-    params[:update_requests].each do |transaction_number|
+    params[:update_requests]&.each do |transaction_number|
       request = current_user.aeon.requests.find { |request| request.transaction_number == transaction_number.to_i }
-      @updated_request = Aeon::UpdateRequestService.new(request, params).call
+      @updated_request = Aeon::UpdateRequestService.new(request, { appointment_id: params[:appointment_id] }).call
     end
     redirect_to aeon_appointments_path
   end

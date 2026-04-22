@@ -11,7 +11,8 @@ export default class extends Controller {
     this.update()
   }
 
-  countValueChanged() {
+  countValueChanged(e) {
+    console.log(this.countValue, e)
     this.update()
   }
 
