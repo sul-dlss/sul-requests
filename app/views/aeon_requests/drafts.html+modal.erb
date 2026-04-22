@@ -1,5 +1,5 @@
 <%= turbo_frame_tag params[:modal] do %>
-  <%= form_with(url: add_items_aeon_appointments_path) do |f| %>
+  <%= form_with(url: add_items_aeon_appointments_path, data: { controller: 'item-limit-updated', limit: @appointment.reading_room.appointment_item_limit }) do |f| %>
     <div class="modal-header">
       <div class="d-flex flex-column flex-grow-1">
         <div class="d-flex justify-content-between mb-2">
@@ -12,7 +12,7 @@
             <div><i class="bi bi-clock me-1"></i> <%= l(@appointment.start_time, format: :time_only) %> - <%=  l(@appointment.stop_time, format: :time_only) %></div>
             <div><i class="bi bi-geo-alt-fill me-1"></i><%= @appointment.reading_room.name %></div>
           </div>
-          <div><%= render Aeon::AppointmentLimitComponent.from_appointment(@appointment) %></div>
+          <div><%= render Aeon::AppointmentLimitComponent.from_appointment(@appointment, data: {item_limit_updated_target: 'limitHeader', action: 'item-added@window->item-limit-updated#updateCount'}) %></div>
           <%= f.hidden_field :appointment_id, value: @appointment.id %>
         </div>
       </div>
@@ -26,7 +26,7 @@
               <i class="bi bi-chevron-down accordion-header-icon ms-auto"></i>
             </button>
           </h2>
-          <div id="appointmentRequests" class="accordion-collapse collapse show" data-bs-parent="#appointmentRequestsAccordion">
+          <div id="appointmentRequests" data-item-limit-updated-target="scheduledItems" class="accordion-collapse collapse show" data-bs-parent="#appointmentRequestsAccordion">
             <div class="accordion-body p-0">
               <% grouped_appt_requests = Aeon::RequestGrouping.from_requests(@appointment.requests) %>
               <% grouped_appt_requests.each do |request_group| %>
@@ -48,7 +48,7 @@
             <div class="accordion-body p-0">
               <% @aeon_request_groups.each do |request_group| %>
                 <% if request_group.requests.first.reading_room.id == @appointment.reading_room.id %>
-                  <%= render Aeon::RequestGroupBriefComponent.new(request_group:, data: { controller: 'add-items empty-remove', appointment_target: '#appointmentRequests', }, after_request_item_component: Aeon::AddRequestComponent) %>
+                  <%= render Aeon::RequestGroupBriefComponent.new(request_group:, data: { controller: 'add-items empty-remove', add_items_accordion_target: "draftRequest", appointment_target: '#appointmentRequests' }, after_request_item_component: Aeon::AddRequestComponent) %>
                 <% end %>
               <% end %>
             </div>
