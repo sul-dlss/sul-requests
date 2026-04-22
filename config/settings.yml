@@ -385,7 +385,6 @@ aeon:
   api_url: https://stanford-dev.aeon.atlas-sys.com/aeonapi
   api_key: ~
   days_to_persist_completed_digital_requests_as_submitted: 3
-  default_appointment_item_limit: 5
   directions:
     SPECUA: 'Located on the second floor of Green Library'
     ARS: 'Located in the basement of the Music Library'

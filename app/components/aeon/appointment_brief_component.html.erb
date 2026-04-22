@@ -4,5 +4,5 @@
     <span><i class="bi bi-clock me-1"></i> <%= appointment_time_range %></span>
   </h3>
   <div class="mt-2"><%= appointment.reading_room.name %></div>
-  <div class="mt-2"><%= render Aeon::AppointmentLimitComponent.from_appointment(appointment, label: 'Items assigned') %></div>
+  <div class="mt-2"><%= render Aeon::AppointmentLimitComponent.from_appointment(appointment) %></div>
 </li>
