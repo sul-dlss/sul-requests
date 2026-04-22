@@ -50,7 +50,7 @@ any,any,,,,BUSINESS,BUS-PERMRES,7day-norenew-1daygrace,No requests allowed,Hourl
 any,any,,,,BUSINESS,BUS-CRES,8 hour - overnight - no renew,No requests allowed,Course reserves,1.00/30.00 hourly fine,$230 reserves lost fee
 visitor,any,,,,,EDU-PROCESSING or GRE-PROCESSING or GRE-TECH-PROCESSOR or SUL-PAGEABLE-LOC,No loan,No requests allowed,Default notice,No fines,$250 lost fee
 visitor,any,,,,,SUL-TS-PROCESSING,No loan,No requests allowed,Default notice,No fines,$250 lost fee
-visitor,any,,,,,ARS-INPROCESS or ART-PROCESSING-SERIALS or ART-PROCESSING-LOCKED or ART-VRC or EAR-PROCESSING-AP or EAR-PROCESSING-JC or EAR-PROCESSING-CIRCLS or EAR-PROCESSING-TR or EAL-INPROCESS or ENG-TECH-PROCESSOR or GRE-CPR-BINDERY or GRE-REPAIR-EVALUATION or MEDIA-REPAIR-SHELF or MEDIA-TECH-PROCESSOR or MEDIA-SER-PROCESSING or MUS-INPROCESS or SUL-CATALOGING or SUL-COLLECTIONCARE or SUL-TS-CC-BINDERYPREP or SUL-TS-CC-BOOKJACKET or SUL-TS-CC-KASEMAKE or SUL-TS-CC-REPAIR or SUL-TS-CC-SPECIALPROJECTS or SUL-TS-COLLECTIONCARE or SUL-TS-MAINTENANCE,No loan,No requests allowed,Default notice,No fines,$250 lost fee
+visitor,any,,,,,ARS-INPROCESS or ART-PROCESSING-SERIALS or ART-PROCESSING-LOCKED or ART-VRC or EAR-PROCESSING-AP or EAR-PROCESSING-JC or EAR-PROCESSING-CIRCLS or EAR-PROCESSING-TR or EAR-SPECIALPROJECTS or EAL-INPROCESS or ENG-TECH-PROCESSOR or GRE-CPR-BINDERY or GRE-REPAIR-EVALUATION or MEDIA-REPAIR-SHELF or MEDIA-TECH-PROCESSOR or MEDIA-SER-PROCESSING or MUS-INPROCESS or SUL-CATALOGING or SUL-COLLECTIONCARE or SUL-TS-CC-BINDERYPREP or SUL-TS-CC-BOOKJACKET or SUL-TS-CC-KASEMAKE or SUL-TS-CC-REPAIR or SUL-TS-CC-SPECIALPROJECTS or SUL-TS-COLLECTIONCARE or SUL-TS-MAINTENANCE,No loan,No requests allowed,Default notice,No fines,$250 lost fee
 any,any,,,,,LANE-HUM,28day-2renew-7daygrace,Allow All,Default notice,3.00/21.00 recall overdue fine,$100 lost fee
 any,any,,,,,LANE-DCORE,28day-2renew-7daygrace,Allow All,Default notice,3.00/21.00 recall overdue fine,$100 lost fee
 any,any,,,,,LANE-NEWB,28day-2renew-7daygrace,Allow paging/hold,Default notice,3.00/21.00 recall overdue fine,$250 lost fee
@@ -285,7 +285,7 @@ visitor,book,,,,,EAR-THESES,No loan,No requests allowed,Default notice,No fines,
 sul-guest,book,,,,,EAR-THESES,28day-2renew-7daygrace,Allow paging/hold,Default notice,No fines,$500 lost fee
 sul-purchased or courtesy or program-short-term or sul-contractprograms or lane-hospital staff,book,,,,,EAR-THESES,28day-2renew-7daygrace,Hold only,Default notice,No fines,$500 lost fee
 sul-purchased or visitor,book,,,,,EAR-READY-REF,No loan,No requests allowed,Short Term Notices,No fines,$500 lost fee
-visitor,book,,,,,EAR-SPECIALPROJECTS or EAR-SCANLAB,No loan,No requests allowed,Default notice,No fines,$500 lost fee
+visitor,book,,,,,EAR-SCANLAB,No loan,No requests allowed,Default notice,No fines,$500 lost fee
 visitor,book,,,,,EAR-ATLASES or EAR-MAP-CASES,No loan,No requests allowed,Default notice,No fines,$500 lost fee
 sul-guest,book,,,,,EAR-ATLASES or EAR-MAP-CASES,1year-norenew-7daygrace,Allow paging/hold,Qtrly/Annual notice,3.00/21.00 recall overdue fine,$500 lost fee
 courtesy or program-short-term or sul-contractprograms or sul-purchased or lane-hospital staff,book,,,,,EAR-ATLASES or EAR-MAP-CASES,28day-2renew-7daygrace,Hold only,Default notice,No fines,$500 lost fee
@@ -422,7 +422,7 @@ any,book,,,,HILA,,No loan,Allow hold/recall,Default notice,3.00/21.00 recall ove
 ,periodical,,,,SCIENCE,SCI-REF or SCI-RETIRED-REF,No loan,No requests allowed,Default notice,No fines,$400 lost fee
 ,any,,,,,EDU-PROCESSING or GRE-PROCESSING or GRE-TECH-PROCESSOR or SUL-PAGEABLE-LOC,No loan,Allow paging/hold,Default notice,No fines,$250 lost fee
 ,any,,,,,SUL-TS-PROCESSING,No loan,Allow All,Default notice,No fines,$250 lost fee
-,any,,,,,ARS-INPROCESS or ART-PROCESSING-SERIALS or ART-PROCESSING-LOCKED or ART-VRC or EAR-PROCESSING-AP or EAR-PROCESSING-JC or EAR-PROCESSING-CIRCLS or EAR-PROCESSING-TR or EAL-INPROCESS or ENG-TECH-PROCESSOR or GRE-CPR-BINDERY or GRE-REPAIR-EVALUATION or MEDIA-REPAIR-SHELF or MEDIA-TECH-PROCESSOR or MEDIA-SER-PROCESSING or MUS-INPROCESS or SUL-CATALOGING or SUL-COLLECTIONCARE or SUL-TS-CC-BINDERYPREP or SUL-TS-CC-BOOKJACKET or SUL-TS-CC-KASEMAKE or SUL-TS-CC-REPAIR or SUL-TS-CC-SPECIALPROJECTS or SUL-TS-COLLECTIONCARE or SUL-TS-MAINTENANCE,No loan,Hold only,Default notice,No fines,$250 lost fee
+,any,,,,,ARS-INPROCESS or ART-PROCESSING-SERIALS or ART-PROCESSING-LOCKED or ART-VRC or EAR-PROCESSING-AP or EAR-PROCESSING-JC or EAR-PROCESSING-CIRCLS or EAR-PROCESSING-TR or EAR-SPECIALPROJECTS or EAL-INPROCESS or ENG-TECH-PROCESSOR or GRE-CPR-BINDERY or GRE-REPAIR-EVALUATION or MEDIA-REPAIR-SHELF or MEDIA-TECH-PROCESSOR or MEDIA-SER-PROCESSING or MUS-INPROCESS or SUL-CATALOGING or SUL-COLLECTIONCARE or SUL-TS-CC-BINDERYPREP or SUL-TS-CC-BOOKJACKET or SUL-TS-CC-KASEMAKE or SUL-TS-CC-REPAIR or SUL-TS-CC-SPECIALPROJECTS or SUL-TS-COLLECTIONCARE or SUL-TS-MAINTENANCE,No loan,Hold only,Default notice,No fines,$250 lost fee
 ,book,,,,,LAW-EYLESAISLE or LAW-BOOKCABINET,4hour-norenew-1hourgrace,No requests allowed,Hourly Loan Notices,No fines,$150 lost fee
 ,book,,,,,LAW-VROOMAN2 or LAW-STACKS2 or LAW-REF or LAW-STAFFSHADOW,No loan,No requests allowed,Default notice,No fines,$150 lost fee
 ,book,,,,,LAW-PERMRES or LAW-NEWBOOK or LAW - DISPLAY,7day-2renew-1daygrace,No requests allowed,Short Term Notices,No fines,$150 lost fee
@@ -533,7 +533,7 @@ any,book,,,,HILA,,No loan,Allow hold/recall,Default notice,3.00/21.00 recall ove
 ,book,,,,,EAL-CHINESE or EAL-FOLIO-CHINESE or EAL-FOLIO-JAPANESE or EAL-FOLIO-KOREAN or EAL-JAPANESE or EAL-KOREAN or EAL-SETS,28day-2renew-7daygrace,Allow All,Default notice,3.00/21.00 recall overdue fine,$75 lost fee
 ,book,,,,,EAR-THESES,28day-2renew-7daygrace,Allow All,Default notice,3.00/21.00 recall overdue fine,$500 lost fee
 ,book,,,,,EAR-READY-REF,2hour-1renew-15mingrace,No requests allowed,Short Term Notices,No fines,$500 lost fee
-,book,,,,,EAR-SPECIALPROJECTS or EAR-SCANLAB,No loan,Hold only,Default notice,3.00/21.00 recall overdue fine,$500 lost fee
+,book,,,,,EAR-SCANLAB,No loan,Hold only,Default notice,3.00/21.00 recall overdue fine,$500 lost fee
 ,book,,,,,EAR-ATLASES or EAR-MAP-CASES,28day-2renew-7daygrace,Allow hold/recall,Default notice,3.00/21.00 recall overdue fine,$500 lost fee
 ,book,,,,,EAR-LOCKED-MAPS,No loan,No requests allowed,Short Term Notices,No fines,$5000 lost fee - 1 hr aged to lost
 ,book,,,,,EAR-LOCKED-STACKS or EAR-STOR-LOCKED,No loan,No requests allowed,Short Term Notices,No fines,$500 lost fee
