@@ -1,11 +1,11 @@
-<div class="daily-item-limit d-flex align-items-center flex-wrap">
+<%= tag.div class: 'daily-item-limit d-flex align-items-center flex-wrap', data: do %>
   <% if limit? %>
-    <span class="me-2">Item limit: <%= count %>/<%= limit %></span>
+    <span class="me-2">Item limit: <span data-item-limit-updated-target="currentCount"><%= count %></span>/<%= limit %></span>
 
     <div class="progress d-none d-sm-flex" aria-hidden="true">
-      <div class="progress-bar <%= bar_color %>" style="width: <%= percentage %>%"></div>
+      <div class="progress-bar <%= bar_color %>" data-item-limit-updated-target="progressBar" style="width: <%= percentage %>%"></div>
     </div>
   <% else %>
     No item limit
   <% end %>
-</div>
+<% end %>

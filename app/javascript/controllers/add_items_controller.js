@@ -22,7 +22,9 @@ export default class extends Controller {
       this.updateButtonForm(addTo, transactionNumber);
       inAppointments.querySelector('ul').appendChild(addTo)
     }
+    window.dispatchEvent(new CustomEvent('item-added'))
   }
+
   updateButtonForm(element, transactionNumber) {
     let input = document.createElement("input");
     input.type = 'hidden'

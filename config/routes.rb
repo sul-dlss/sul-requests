@@ -55,13 +55,13 @@ Rails.application.routes.draw do
 
   resources :aeon_reading_rooms, only: [] do
     member do
-      post "add_items", to: 'aeon_appointments#add_items', as: :add_items
       get 'available/:date', to: 'aeon_reading_rooms#available', as: :available
     end
   end
 
   resources :aeon_appointments do
     get :items
+    post "add_items", to: 'aeon_appointments#add_items', as: :add_items
   end
 
   get "/aeon_appointments/new/:reading_room_id", to: 'aeon_appointments#new', as: :new_aeon_appointment_for_reading_room
