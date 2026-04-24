@@ -1,0 +1,69 @@
+<% if params[:kind] == 'drafts' %>
+  <% content_for(:sidebar_responsive_button) do %>
+    <button class="btn btn-outline-primary d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#appointments" aria-controls="appointments">
+      Appointments
+    </button>
+  <% end %>
+
+  <% content_for(:menu) do %>
+    <%= render 'delete_drafts_button' %>
+  <% end %>
+
+  <% content_for(:sidebar) do %>
+    <aside class="col-md-4 offcanvas-md offcanvas-bottom offcanvas-sm-start overflow-auto"  tabindex="-1" id="appointments">
+      <turbo-frame src="<%= aeon_appointments_path(variant: 'sidebar') %>" id="aeon-appointments" class="d-block" data-turbo="false">
+        <div class="d-flex align-items-center justify-content-center" style="height: 200px;">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </turbo-frame>
+    </aside>
+  <% end %>
+
+  <% content_for(:modal) do %>
+    <%= render ModalComponent.new(id: "delete-bulk", data: {draft_request_target: "deleteModal"}) do |component| %>
+      <% component.with_title.with_content('Delete draft requests?') %>
+      <% component.with_body do %>
+        <% @aeon_request_groups.each do |group| %>
+          <div hidden data-draft-request-target="modalGroup" data-digital="<%= group.digital? %>"
+            <% unless group.first.multi_item_selector? %>data-request-id="<%= group.first.id %>"<% end %>>
+            <%= render Aeon::RequestGroupCompactComponent.new(request_group: group) %>
+          </div>
+        <% end %>
+        <div hidden data-draft-request-target="modalSummary"></div>
+        <div class="mt-2 fw-bold">This action cannot be undone.</div>
+      <% end %>
+      <% component.with_footer do %>
+        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
+        <%= form_with url: destroy_multiple_aeon_requests_path, method: 'delete', data: { 'draft-request-target': 'deleteForm' } do %>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Yes - Delete</button>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<div class="container" data-controller="draft-request">
+  <div class="row">
+    <div class="col-md-8 pe-5">
+      <div class="d-flex flex-wrap gap-2 justify-content-between mb-3">
+        <h1><%= t(params[:kind], scope: 'aeon_requests.index.header', default: 'Requests') %></h1>
+        <div class="d-flex flex-wrap gap-2 align-items-baseline">
+          <%= content_for(:sidebar_responsive_button) %>
+          <%= render 'sort_dropdown' %>
+          <%= render 'filter_dropdown' %>
+          <%= content_for(:menu) %>
+        </div>
+      </div>
+
+      <% @aeon_request_groups.each do |requests_in_group| %>
+        <%= render Aeon::RequestGroupComponent.new(request_group: requests_in_group) %>
+      <% end %>
+    </div>
+
+    <%= content_for(:sidebar) %>
+  </div>
+
+  <%= content_for(:modal) %>
+</div>
