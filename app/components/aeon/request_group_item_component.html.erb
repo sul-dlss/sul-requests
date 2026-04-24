@@ -9,7 +9,7 @@
       <%= render Aeon::RequestActionsComponent.new(request:) %>
     </div>
   </div>
-  <div class="pt-2 fs-14 d-flex gap-sm-3 flex-sm-row flex-column">
+  <div class="pt-2 fs-14 text-body-secondary d-flex gap-sm-3 flex-sm-row flex-column">
     <div>Request #<%= transaction_number %></div>
     <div>Date added/modified: <%= l(transaction_date, format: :full) %></div>
   </div>
