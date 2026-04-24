@@ -56,6 +56,10 @@
           <%= content_for(:menu) %>
         </div>
       </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="<% if content_for?(:sidebar) %>col-md-8 pe-5<% else %>col-md-9<% end %>">
       <% @aeon_request_groups.each do |requests_in_group| %>
         <%= render Aeon::RequestGroupComponent.new(request_group: requests_in_group) %>
       <% end %>
