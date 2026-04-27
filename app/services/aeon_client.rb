@@ -32,6 +32,15 @@ class AeonClient
     handle_response(response, as_class: Aeon::User)
   end
 
+  def activities
+    response = get('Activities')
+    handle_response(response, as_class: Aeon::Activity)
+  end
+
+  def activities_for(username:)
+    activities.select { |activity| activity.users.map(&:username).include?(username) }
+  end
+
   # Fetch requests for a user by their Aeon username
   # @param username [String] the user's Aeon username
   # @return [Array<Aeon::Request>]
