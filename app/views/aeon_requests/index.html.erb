@@ -23,7 +23,7 @@
 
   <% content_for(:modal) do %>
     <%= render ModalComponent.new(id: "delete-bulk", data: {draft_request_target: "deleteModal"}) do |component| %>
-      <% component.with_title.with_content('Delete draft requests?') %>
+      <% component.with_title.with_content('Delete saved for later requests?') %>
       <% component.with_body do %>
         <% @aeon_request_groups.each do |group| %>
           <div hidden data-draft-request-target="modalGroup" data-digital="<%= group.digital? %>"

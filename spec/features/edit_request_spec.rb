@@ -35,7 +35,7 @@ RSpec.describe 'Edit Aeon request', :js do
 
   describe 'drafts page' do
     it 'displays the page header' do
-      expect(page).to have_css('h1', text: 'Draft requests')
+      expect(page).to have_css('h1', text: 'Saved for later')
     end
 
     it 'displays the request with proper record header' do
