@@ -476,6 +476,35 @@ RSpec.describe 'Requesting an item from an EAD', :js do
                                                                         site: 'ARS'
                                                                       ))
     end
+
+    it 'does not display view container modal for reading room appointment' do
+      visit new_archives_request_path(value: 'http://example.com/ead.xml')
+      choose 'Reading room appointment'
+      click_button 'Continue'
+
+      find('input[data-prepend="manual-input-1"]').set('Box 1')
+      click_button 'Add container'
+      find('input[data-prepend="manual-input-2"]').set('Box 24 ')
+      click_button 'Continue'
+
+      # Expect no viewing modal links
+      expect(page).to have_no_css('button[data-action="view-container-contents#openViewModal"]')
+    end
+
+    it 'does not display view container modal for digitization' do
+      visit new_archives_request_path(value: 'http://example.com/ead.xml')
+      choose 'Digitization'
+      check 'I agree to these terms'
+      click_button 'Continue'
+
+      find('input[data-prepend="manual-input-1"]').set('Box 1')
+      click_button 'Add container'
+      find('input[data-prepend="manual-input-2"]').set('Box 24 ')
+      click_button 'Continue'
+
+      # Expect no viewing modal links
+      expect(page).to have_no_css('button[data-action="view-container-contents#openViewModal"]')
+    end
   end
 
   context 'with single item ead' do

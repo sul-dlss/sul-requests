@@ -190,8 +190,10 @@
 <!-- View container contents modal -->
 <%= render ModalComponent.new(id: "view-container-contents", data: {view_container_contents_target: "viewModal"}) do |component| %>
   <% component.with_title.with_content('Contents') %>
-  <% component.with_body(classes: []) do %>
+  <% component.with_banner do %>
     <div data-view-container-contents-target="banner" class="banner"></div>
+  <% end %>
+  <% component.with_body(classes: []) do %>
     <div class="modal-body" data-view-container-contents-target="contents">
       Body goes here
     </div>
