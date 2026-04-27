@@ -55,7 +55,7 @@ RSpec.describe 'Bulk delete actions and modal', :js do
       expect(page).to have_button('delete-all', disabled: false)
 
       click_button('delete-all')
-      expect(page).to have_css('.modal-title', text: 'Delete 1 draft request?')
+      expect(page).to have_css('.modal-title', text: 'Delete 1 saved for later request?')
       expect(page).to have_css('.modal-body', text: 'Slow poetry in America : a poetry quarterly')
     end
   end
@@ -66,7 +66,7 @@ RSpec.describe 'Bulk delete actions and modal', :js do
       check('delete-bulk-101')
 
       click_button('delete-all')
-      expect(page).to have_css('.modal-title', text: 'Delete 2 draft requests?')
+      expect(page).to have_css('.modal-title', text: 'Delete 2 saved for later requests?')
       expect(page).to have_css('.modal-body', text: 'Reading room use', count: 1)
       expect(page).to have_css('.modal-body', text: 'Slow poetry in America : a poetry quarterly', count: 1)
       expect(page.find('.modal-body')).to have_content('PR9195.1 .S56 NO.1').and have_content('PR9195.1 .S56 NO.2')
@@ -80,7 +80,7 @@ RSpec.describe 'Bulk delete actions and modal', :js do
       expect(page).to have_button('delete-all')
 
       click_button('delete-all')
-      expect(page).to have_css('.modal-title', text: 'Delete 3 draft requests?')
+      expect(page).to have_css('.modal-title', text: 'Delete 3 saved for later requests?')
       expect(page).to have_css('.modal-body', text: '1 digitization and 2 reading room use requests')
     end
   end

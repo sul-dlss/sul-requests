@@ -46,7 +46,7 @@ export default class extends Controller {
   updateModalTitle(count) {
     const noun = count === 1 ? 'request' : 'requests'
     this.deleteModalTarget.querySelector('.modal-title').textContent =
-      `Delete ${count} draft ${noun}?`
+      `Delete ${count} saved for later ${noun}?`
   }
 
   updateModalContent(selectedIds, allSelected) {
