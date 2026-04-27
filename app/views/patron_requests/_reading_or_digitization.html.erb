@@ -1,15 +1,16 @@
 
 <fieldset class="ps-2">
-  <div>
+  <div class="d-flex">
     <%= f.radio_button :request_type, 'pickup', class: 'form-check-input', required: true, data: { action: 'patron-request#updateType', terms: false } %>
-    <%= f.label :request_type_pickup, class: 'form-check-label ms-1' do %>
-      Reading room appointment
-    <% end %>
-    <span class="text-cardinal ms-2 mt-1">
-      Earliest appointment available:
-      <%= turbo_frame_tag 'earliest_appointment', src: available_aeon_appointments_path(f.object.aeon_reading_room&.id, Date.today) %>
-    </span>
-
+    <div class="ms-1 d-flex flex-wrap column-gap-2">
+      <%= f.label :request_type_pickup, class: 'form-check-label' do %>
+        Reading room appointment
+      <% end %>
+      <span class="text-cardinal">
+        Earliest appointment available:
+        <%= turbo_frame_tag 'earliest_appointment', src: available_aeon_appointments_path(f.object.aeon_reading_room&.id, Date.today) %>
+      </span>
+    </div>
   </div>
   <div class="mt-2">
     <%= f.radio_button :request_type, 'scan', class: 'form-check-input', data: { action: 'patron-request#updateType', terms: true } %>

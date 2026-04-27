@@ -91,6 +91,10 @@ layer(components);
   color: var(--stanford-30-black);
 }
 
+.text-80-black {
+  color: var(--stanford-80-black);
+}
+
 @font-face {
   font-family: "Stanford";
   src: url("https://www-media.stanford.edu/assets/fonts/stanford.woff") format("woff"), url("https://www-media.stanford.edu/assets/fonts/stanford.ttf") format("truetype");
@@ -857,4 +861,18 @@ label.btn-close {
       transform: none;
     }
   }
+}
+
+.progress {
+  border-radius: 99px;
+  min-width: 50px;
+  --bs-progress-bg: var(--stanford-20-black);
+}
+
+.progress-bar.text-bg-success {
+  --bs-success-rgb: var(--stanford-digital-green-rgb);
+}
+
+.progress-bar.text-bg-danger {
+  --bs-danger-rgb: var(--stanford-digital-red-light-rgb);
 }

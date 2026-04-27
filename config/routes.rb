@@ -44,10 +44,7 @@ Rails.application.routes.draw do
 
   resources :aeon_requests, only: [:edit, :destroy, :update] do
     collection do
-      get :submitted, as: :submitted
-      get :drafts, as: :draft
-      get :completed, as: :completed
-      get :cancelled, as: :cancelled
+      get "/:kind", constraints: { kind: /submitted|drafts|completed|cancelled/ }, as: '', to: 'aeon_requests#index'
       delete 'destroy_multiple'
     end
 
