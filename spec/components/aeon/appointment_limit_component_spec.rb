@@ -12,8 +12,7 @@ RSpec.describe Aeon::AppointmentLimitComponent, type: :component do
   end
 
   it 'renders the limit visually' do
-    expect(page).to have_css('.bi-circle-fill', count: 5)
-    expect(page).to have_css('.bi-circle-fill.text-green', count: 3)
+    expect(page).to have_css('.progress-bar[style*="width: 60%"]')
   end
 
   context 'with no limit' do
@@ -32,8 +31,7 @@ RSpec.describe Aeon::AppointmentLimitComponent, type: :component do
     end
 
     it 'scales the filled dots appropriately' do
-      expect(page).to have_css('.bi-circle-fill', count: 5)
-      expect(page).to have_css('.bi-circle-fill.text-green', count: 2)
+      expect(page).to have_css('.progress-bar[style*="width: 40%"]')
     end
   end
 end

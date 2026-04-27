@@ -9,35 +9,26 @@ module Aeon
       new(count: appointment.requests.count, limit: appointment.reading_room.appointment_item_limit, **)
     end
 
-    def initialize(count:, limit:, label: 'Item limit')
+    def initialize(count:, limit:)
       @count = count
       @limit = limit
-      @label = label
     end
 
-    def render?
+    def limit?
       limit.present?
     end
 
-    # We want to show (at most) 5 dots; if the limit is bigger, we'll scale the count + limit appropriately.
-    def total_dots(max: 5)
-      @total_dots ||= limit.clamp(0, max)
+    def percentage
+      (count * 100) / limit
     end
 
-    # .. and if there's at least one item, we should fill at least one dot.
-    def filled_dots
-      return 0 if count.zero?
-
-      @filled_dots ||= (total_dots * (count / limit.to_f)).to_i.clamp(1, total_dots)
-    end
-
-    def dot_used_class
-      if filled_dots == total_dots
-        'text-danger'
-      elsif filled_dots == total_dots - 1
-        'text-warning'
+    def bar_color
+      if percentage >= 100
+        'text-bg-danger'
+      elsif percentage >= 75
+        'text-bg-warning'
       else
-        'text-green'
+        'text-bg-success'
       end
     end
   end

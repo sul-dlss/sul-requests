@@ -30,6 +30,10 @@ module Aeon
       @requests ||= self.class.aeon_client.requests_for(username:)
     end
 
+    def activities
+      @activities ||= self.class.aeon_client.activities_for(username:)
+    end
+
     def draft_requests
       requests.select(&:draft?)
     end

@@ -40,7 +40,7 @@ module Aeon
     end
 
     def appointment_item_limit
-      Settings.aeon.default_appointment_item_limit
+      Settings.aeon.item_limits[sites.first]
     end
 
     def available_appointments(date, **)
@@ -92,10 +92,6 @@ module Aeon
     end
 
     def persisted? = id.present?
-
-    def item_limit
-      Settings.aeon.item_limits[sites.first]
-    end
 
     private
 
