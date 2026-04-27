@@ -6,7 +6,11 @@
         <h1>Reading room appointments</h1>
         <%= link_to 'Create new appointment', new_aeon_appointment_path, class: 'btn btn-primary', data: { action: 'modal#open' } %>
       </div>
+    </div>
+  </div>
 
+  <div class="row">
+    <div class="col-8 pe-5">
       <turbo-frame id="aeon_appointments">
         <%= render Aeon::AppointmentComponent.with_collection(@appointments) %>
       </turbo-frame>
