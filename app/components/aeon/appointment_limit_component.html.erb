@@ -1,13 +1,11 @@
-<div class="daily-item-limit">
-  <span class="me-2"><%= label %>: <%= count %>/<%= limit %></span>
+<div class="daily-item-limit d-flex align-items-center flex-wrap">
+  <% if limit? %>
+    <span class="me-2">Item limit: <%= count %>/<%= limit %></span>
 
-  <small aria-hidden="true">
-    <% filled_dots.times do %>
-      <%= tag.i class: "bi bi-circle-fill #{dot_used_class}" %>
-    <% end %>
-
-    <% (total_dots - filled_dots).times do %>
-      <%= tag.i class: 'bi bi-circle-fill text-30-black' %>
-    <% end %>
-  </small>
+    <div class="progress d-none d-sm-flex" aria-hidden="true">
+      <div class="progress-bar <%= bar_color %>" style="width: <%= percentage %>%"></div>
+    </div>
+  <% else %>
+    No item limit
+  <% end %>
 </div>

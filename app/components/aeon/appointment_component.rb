@@ -22,6 +22,7 @@ module Aeon
 
     def add_item_disabled?
       return true unless appointment.editable?
+      return false unless appointment.reading_room.appointment_item_limit
 
       appointment.requests.count >= appointment.reading_room.appointment_item_limit
     end
