@@ -174,7 +174,8 @@ module Ead
       end
 
       def title
-        @node.xpath('did/unittitle').first&.text&.strip
+        unittitle = @node.xpath('did/unittitle').first&.text&.strip
+        unittitle&.delete_suffix(',')
       end
 
       def date
