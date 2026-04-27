@@ -1,13 +1,17 @@
 <li id="<%= dom_id(request) %>" class="request list-group-item <%= "request-status-#{request.status}" %>" data-empty-remove-target="item">
-  <div class="d-flex flex-row align-items-center justify-content-between">
-    <div class="d-flex gap-3">
-      <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
-      <%= render Aeon::RequestItemDetailComponent.new(request:) %>
+  <div class="d-flex flex-row align-items-start justify-content-between gap-5">
+    <div class="d-flex flex-row align-items-start justify-content-between gap-4 flex-grow-1">
+      <div class="d-flex flex-column">
+        <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
+        <%= render Aeon::RequestItemDetailComponent.new(request:) %>
+      </div>
+
+      <span class="ms-auto">
+        <%= render Aeon::RequestAppointmentTimeComponent.new(request:, with_reading_room: false) %>
+      </span>
     </div>
-    <div class="d-flex align-items-center gap-5 justify-content-between">
-      <%= render Aeon::RequestAppointmentTimeComponent.new(request:, with_reading_room: false) %>
-      <%= render Aeon::RequestActionsComponent.new(request:) %>
-    </div>
+
+    <%= render Aeon::RequestActionsComponent.new(request:) %>
   </div>
   <div class="pt-2 fs-14 text-body-secondary d-flex gap-sm-3 flex-sm-row flex-column">
     <div>Request #<%= transaction_number %></div>

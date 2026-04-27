@@ -47,7 +47,7 @@ RSpec.describe 'Edit Aeon request', :js do
 
   describe 'editing a request' do
     before do
-      click_link('Edit request')
+      click_link('Add appointment')
     end
 
     it 'Opens the edit modal' do

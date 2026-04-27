@@ -13,15 +13,27 @@ module Aeon
     end
 
     def render?
-      format_info.present?
+      value.present?
     end
 
-    def format_info
-      return "Pages: #{requested_pages}" if requested_pages.present?
-      return "Item: #{volume}" if volume.present? && !ead?
-      return "Format: #{format}" if format.present?
+    def label
+      if requested_pages.present?
+        'Instructions'
+      elsif volume.present? && !ead?
+        'Volume'
+      elsif format.present?
+        'Format'
+      end
+    end
 
-      nil
+    def value
+      if requested_pages.present?
+        requested_pages
+      elsif volume.present? && !ead?
+        volume
+      elsif format.present?
+        format
+      end
     end
   end
 end
