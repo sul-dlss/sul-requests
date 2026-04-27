@@ -1,5 +1,8 @@
 <% if @variant == :text %>
-(<%= format_info %>)
+(<%= label %>: <%= value %>)
 <% else %>
-<span class="fw-semibold"><%= format_info %></span>
+<div>
+  <span class="fw-semibold"><%= label %>:</span>
+  <span><%= value %></span>
+</div>
 <% end %>
