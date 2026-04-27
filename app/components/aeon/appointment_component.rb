@@ -13,7 +13,11 @@ module Aeon
       start = l(appointment.start_time, format: :time_only)
       stop = l(appointment.stop_time, format: :time_only)
 
-      "#{start} - #{stop}"
+      if appointment.reading_room.day_only_appointments?
+        "Open hours: #{start} - #{stop}"
+      else
+        "#{start} - #{stop}"
+      end
     end
 
     def appointment_date
