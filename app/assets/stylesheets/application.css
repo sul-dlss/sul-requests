@@ -876,3 +876,7 @@ label.btn-close {
 .progress-bar.text-bg-danger {
   --bs-danger-rgb: var(--stanford-digital-red-light-rgb);
 }
+
+.appointments-container #new-appt-alert:has(.alert) {
+  margin-bottom: 3rem;
+}
