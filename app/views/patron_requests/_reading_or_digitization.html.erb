@@ -2,7 +2,7 @@
 <fieldset class="ps-2">
   <div class="d-flex">
     <%= f.radio_button :request_type, 'pickup', class: 'form-check-input', required: true, data: { action: 'patron-request#updateType', terms: false } %>
-    <div class="ms-1 d-flex flex-wrap column-gap-2">
+    <div class="ms-2 d-flex flex-wrap column-gap-2">
       <%= f.label :request_type_pickup, class: 'form-check-label' do %>
         Reading room appointment
       <% end %>
