@@ -23,9 +23,11 @@
     <header class="bg-dark py-3">
       <div class="container-fluid"><h1 id="page-title" class="fs-4 text-white">SUL Circulation Check</h1></div>
     </header>
+
     <div class="container mt-4" role="main" data-controller="circ-check">
       <turbo-frame id="circForm">
         <%= form_with url: '/circ-check', html: { aria: { labelledby: '#page-title' }, data: { action: 'reset->circ-check#reset submit->circ-check#clear'} } do |form| %>
+          <%= form.hidden_field :version, value: 2 %>
           <div class="row g-3 align-items-start">
             <div class="col-auto">
               <div class="input-group">

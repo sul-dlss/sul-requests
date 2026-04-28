@@ -1,3 +1,7 @@
+<% unless params[:version].to_s >= '2' %>
+  <turbo-stream action="refresh">
+  </turbo-stream>
+<% end %>
 <turbo-stream action="prepend" target="results">
   <template>
     <% id = "error_#{Time.zone.now.to_i}" %>
