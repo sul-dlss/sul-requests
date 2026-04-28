@@ -46,7 +46,7 @@ RSpec.describe 'Viewing all requests' do
 
         click_on 'Save'
 
-        within '.library-page-SAL3' do
+        within '[data-library-code="SAL3"]' do
           expect(page).to have_content 'This is an important message'
           expect(page).to have_content 'Active Jan 1, 2000 through Jan 1, 2100'
         end
@@ -84,7 +84,7 @@ RSpec.describe 'Viewing all requests' do
 
         click_on 'Save'
 
-        within '.library-page-SAL3' do
+        within '[data-library-code="SAL3"]' do
           expect(page).to have_content 'This is an important message'
           expect(page).to have_content 'Active Jan 1, 2000 through Jan 1, 2100'
         end
