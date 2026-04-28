@@ -4,10 +4,21 @@ import DOMPurify from "dompurify";
 
 
 export default class extends Controller {
-  static targets = ["viewModal", "banner", "contents"]
+  static targets = ["viewModal", "banner", "contents", "displayButton"]
   connect() {
   
   }
+
+  displayButtonTargetConnected(targetElement) {
+    // Get the href for the collapsible content tied to this item
+    const contentsHref = '#container-items-' + targetElement.dataset.itemId
+    // Find if this exists, if so, then contents are available in the selected item
+    const anchor = document.querySelector("a[data-bs-toggle='collapse'][href='" + contentsHref + "']")
+    if(anchor) {
+      targetElement.classList.remove("d-none")
+    }
+  }
+  
 
   openViewModal(event) {
     // Without this, clicking the button that triggers the event may lead to a form submission

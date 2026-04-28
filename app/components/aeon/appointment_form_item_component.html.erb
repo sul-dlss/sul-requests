@@ -4,11 +4,10 @@
     <div class="d-flex flex-column">
       <div class="d-flex flex-row">
         <span class="text-black fw-semibold selected-item-title text-wrap"><%= title %></span>
-        <% if container_modal? %>
-        <button class="btn btn-link p-0 ps-3 pe-2" data-action="view-container-contents#openViewModal" data-item-id="<%= dom_id %>">
+        <button class="btn btn-link p-0 ps-3 pe-2 d-none" data-action="view-container-contents#openViewModal" 
+        data-view-container-contents-target="displayButton" data-item-id="<%= dom_id %>">
           <i class="bi bi-list-ul"></i><span class="visually-hidden">View contents</span>
         </button>
-        <% end %>
       </div>
       <div>
         <% if save_for_later? %>  
