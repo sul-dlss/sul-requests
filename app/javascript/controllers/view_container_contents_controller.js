@@ -26,7 +26,7 @@ export default class extends Controller {
 
   // populate the content of the modal
   populateModal(itemId) {
-    const containerElement = document.querySelector("#" + itemId)
+    const containerElement = document.getElementById(itemId)
     // Add title to the banner
     const modalTitle = this.mapModalTitle(containerElement.dataset.itemSelectorTitlePartsParam)
     this.bannerTarget.innerHTML = modalTitle
