@@ -6,7 +6,7 @@
           <%= render Aeon::RequestStatusPillComponent.new(request: status_request) %>
           <% if appointment_reading_room.present? %>
           <span class="appointment-details ms-1">
-            <span class="ms-2 fw-semibold text-nowrap text-green"><%= appointment_reading_room.name %></span>
+            <span class="ms-2 text-nowrap text-lagunita-dark"><%= appointment_reading_room.name %></span>
           </span>
           <% end %>
         </span>
