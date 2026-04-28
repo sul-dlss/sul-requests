@@ -5,21 +5,13 @@ import DOMPurify from "dompurify";
 
 export default class extends Controller {
   static targets = ["viewModal", "banner", "contents", "displayButton"]
-  connect() {
-  
-  }
 
   displayButtonTargetConnected(targetElement) {
-    // Get the href for the collapsible content tied to this item
-    const contentsHref = '#container-items-' + targetElement.dataset.itemId
-    // Find if this exists, if so, then contents are available in the selected item
-    const anchor = document.querySelector("a[data-bs-toggle='collapse'][href='" + contentsHref + "']")
-    if(anchor) {
+    if (this.contentsFor(targetElement.dataset.itemId)) {
       targetElement.classList.remove("d-none")
     }
   }
   
-
   openViewModal(event) {
     // Without this, clicking the button that triggers the event may lead to a form submission
     event.preventDefault();
@@ -51,10 +43,12 @@ export default class extends Controller {
 
   // Based on the item id, get the appropriate item selection element
   addContents(itemId) {
-    const contentsId = 'container-items-' + itemId
-    const contentsElement = document.querySelector("#" + contentsId + " ul")
-    const contents = Array.from(contentsElement.children).map(contentElement => "<li>" + contentElement.innerHTML + "</li>")
-    this.contentsTarget.innerHTML = "<ul class='container-content p-0 m-0'>" + contents.join('') + "</ul>"
+    const clone = this.contentsFor(itemId).cloneNode(true)
+    clone.className = "container-content list-unstyled p-0 m-0"
+    this.contentsTarget.replaceChildren(clone)
+  }
 
+  contentsFor(itemId) {
+    return document.getElementById("container-items-" + itemId)?.querySelector('.container-content')
   }
 }
