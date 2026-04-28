@@ -16,12 +16,12 @@
   <%= render 'table_header' %>
   <tbody class="list">
     <% collection.each do |request| %>
-      <tr id="<%= "req_#{request.id}" %>" data-controller="mediation" data-mediate-request="<%= holdings_admin_path(request) %>" class="<%= cycle('odd', 'even') %>">
+      <tr id="req_<%= request.id %>" data-controller="mediation" data-mediate-request="<%= holdings_admin_path(request) %>" class="<%= cycle('odd', 'even') %>">
         <td>
           <button class="btn mediate-toggle" data-action="mediation#toggleHoldings" aria-label="Toggle">
             <i class="bi bi-plus-circle"></i>
           </button>
-          <span id="<%= "req_#{request.id}_note" %>">
+          <span id="req_<%= request.id %>_note">
             <%= render 'approved_note', request: %>
           </span>
         </td>
