@@ -33,7 +33,7 @@
           <% end %>
         </td>
         <td class="title" ><%= searchworks_link(request.instance_hrid, request.item_title, target: '_blank', rel: 'noopener noreferrer', 'data-behavior' => 'truncate') %></td>
-        <td class="requester"><%= request.patron_name %> <<%= request.patron_email %>></td>
+        <td class="requester"><%= request.patron_name %> &lt;<%= request.patron_email %>&gt;</td>
         <td class="created_at"><%= time_tag(request.created_at, :short) %></td>
         <td class="comment"><div data-behavior="trunk8toggle"><%= request.request_comments %></div></td>
         <td><%= link_to('Status', url_for(request), target: '_blank', rel: 'noopener noreferrer') %></td>
