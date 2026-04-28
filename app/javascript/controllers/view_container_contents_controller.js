@@ -40,10 +40,9 @@ export default class extends Controller {
 
   // Based on the item id, get the appropriate item selection element
   addContents(itemId) {
-    const contentsId = 'container-items-' + itemId
-    const contentsElement = document.querySelector("#" + contentsId + " ul")
-    const contents = Array.from(contentsElement.children).map(contentElement => "<li>" + contentElement.innerHTML + "</li>")
-    this.contentsTarget.innerHTML = "<ul class='container-content p-0 m-0'>" + contents.join('') + "</ul>"
-
+    const contentsElement = document.getElementById("container-items-" + itemId).querySelector(".container-content")
+    const clone = contentsElement.cloneNode(true)
+    clone.className = "container-content p-0 m-0"
+    this.contentsTarget.replaceChildren(clone)
   }
 }
