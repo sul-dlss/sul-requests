@@ -12,7 +12,7 @@
       <% if request_group.multi_item_selector? %>
         <ul class="list-unstyled d-flex flex-row flex-wrap gap-2 mt-1">
           <% requests.each do |request| %>
-            <li id="<%= dom_id(request) %>" class="request px-0 <%= "request-status-#{request.status}" %>" data-empty-remove-target="item" data-request-id="<%= request.id %>">
+            <li id="<%= dom_id(request) %>" class="request px-0" data-empty-remove-target="item" data-request-id="<%= request.id %>">
               <div class="d-flex flex-row align-items-center justify-content-between">
                 <div class="d-flex gap-3">
                   <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>

@@ -1,27 +1,29 @@
 <h1 class="fw-semibold">Requests dashboard</h1>
 
-<div class='admin-requests'>
+<div class="admin-requests">
   <%= render SearchFormComponent.new(form_url: admin_index_path, searchable: true, classes: 'd-inline-flex gap-2 align-items-start flex-wrap') %>
 
   <div class="d-flex justify-content-between">
-    <% if filtered? %>
-      <h2 class="text-cardinal">Filtered Requests</h2>
-    <% else %>
-      <h2 class="text-cardinal">Recent Requests</h2>
-    <% end %>
+    <h2 class="text-cardinal">
+      <% if filtered? %>
+        Filtered Requests
+      <% else %>
+        Recent Requests
+      <% end %>
+    </h2>
     <%= link_to 'Export CSV', admin_index_path(request.query_parameters.merge(format: :csv)), class: 'btn btn-outline-secondary' %>
   </div>
 
   <table class="table table-striped">
     <thead>
       <tr>
-        <th class='col-1'>Type</th>
-        <th class='col-2'>Origin</th>
-        <th class='col-1'>Destination</th>
-        <th class='col-4'>Title</th>
-        <th class='col-2'>Requester</th>
-        <th class='col-1'>Requested on</th>
-        <th class='col-1'>Status</th>
+        <th class="col-1">Type</th>
+        <th class="col-2">Origin</th>
+        <th class="col-1">Destination</th>
+        <th class="col-4">Title</th>
+        <th class="col-2">Requester</th>
+        <th class="col-1">Requested on</th>
+        <th class="col-1">Status</th>
       </tr>
     </thead>
     <tbody>
@@ -31,7 +33,7 @@
           <td><%= request.folio_location&.name || request.origin_location_code %></td>
           <td><%= request.pickup_service_point&.name || request.service_point_code %></td>
           <td><%= searchworks_link(request.instance_hrid, request.item_title, 'data-behavior' => 'truncate') %></td>
-          <td><%= "#{request.patron_name} <#{request.patron_email}>" %></td>
+          <td><%= request.patron_name %> &lt;<%= request.patron_email %>&gt;</td>
           <td><%= time_tag(request.created_at, :short) %></td>
           <td>
             <%= request_status_emoji(request) %>

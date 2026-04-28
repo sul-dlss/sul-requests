@@ -4,7 +4,7 @@
     <% if f.object.selectable_items.length >= 10 %>
       <div>
         <label for="item-selector-search" class="my-2">Search item list</label>
-        <input id="item-selector-search" type="search" incremental data-action="input->item-selector#filter analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Filter" class="form-control w-75">
+        <input id="item-selector-search" type="search" incremental autocomplete="off" data-action="input->item-selector#filter analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Filter" class="form-control w-75">
       </div>
     <% end %>
     <div class="item-table my-4">

@@ -1,7 +1,7 @@
 <% if f.object.pickup_destinations.many? %>
     <div class="form-group mb-3 me-0 border p-3 rounded">
     <%= f.label :service_point_code, class: 'required-label py-2' %>
-    <%=  f.select(
+    <%= f.select(
     :service_point_code, pickup_destinations_array(f.object.pickup_destinations),
     {
         label: label_for_pickup_destinations_dropdown(f.object.pickup_destinations),

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description" content="Stanford University Libraries' application to request materials" />
+    <meta name="description" content="Stanford University Libraries' application to request materials">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
     <title><%= yield(:page_title).blank? ? t('shared.default_page_title') : yield(:page_title) %></title>
@@ -17,7 +17,7 @@
        function gtag(){dataLayer.push(arguments);}
        // To turn off debug mode, exclude the parameter altogether (cannot just set to false)
        // See https://support.google.com/analytics/answer/7201382?hl=en#zippy=%2Cgoogle-tag-websites
-       args = <%= Settings.analytics_debug %> ? {"debug_mode": true} : {};
+       args = <%= Settings.analytics_debug ? { "debug_mode": true }.to_json : {}.to_json %>;
        gtag('js', new Date());
        gtag('config', 'G-8H7ZHEYXVM', args);
      </script>

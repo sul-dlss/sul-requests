@@ -36,7 +36,7 @@
                         </div>
                         <div class="form-group mt-2">
                             <label class="form-label required-label" for="pin">PIN</label>
-                            <input class="form-control" type="password" id="pin" name="pin" required>
+                            <input class="form-control" type="password" id="pin" name="pin" required autocomplete="on">
                             <div class="form-text">
                                 <%= link_to "Forgot your PIN? Don't have one yet?", reset_pin_url(referrer: request.original_url), class: 'su-underline' %>
                             </div>
@@ -78,7 +78,7 @@
                             </div>
                             <div class="form-group mt-2">
                                 <label class="form-label required-label" for="patron_email">Email</label>
-                                <input class="form-control" id="patron_email" name="patron_email" type="email" required>
+                                <input class="form-control" id="patron_email" name="patron_email" type="email" autocomplete="email" required>
                             </div>
                             <div class="form-group mt-2">
                                 <%= recaptcha_tags %>

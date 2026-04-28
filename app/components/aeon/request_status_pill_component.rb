@@ -25,9 +25,9 @@ module Aeon
     def status_icon
       case status_class
       when :pending
-        'clock'
+        'bi bi-clock'
       when :ready
-        'check2-circle'
+        'bi bi-check2-circle'
       end
     end
 
