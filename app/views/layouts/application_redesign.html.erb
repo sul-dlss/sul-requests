@@ -17,7 +17,7 @@
        function gtag(){dataLayer.push(arguments);}
        // To turn off debug mode, exclude the parameter altogether (cannot just set to false)
        // See https://support.google.com/analytics/answer/7201382?hl=en#zippy=%2Cgoogle-tag-websites
-       args = <%= Settings.analytics_debug %> ? {"debug_mode": true} : {};
+       args = <%= Settings.analytics_debug ? { "debug_mode": true }.to_json : {}.to_json %>;
        gtag('js', new Date());
        gtag('config', 'G-8H7ZHEYXVM', args);
      </script>
