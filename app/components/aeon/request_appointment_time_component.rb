@@ -21,7 +21,7 @@ module Aeon
     end
 
     def appointment_time_range
-      return unless appointment?
+      return if !appointment? || appointment.reading_room.day_only_appointments?
 
       start = l(appointment.start_time, format: :time_only).sub(':00', '')
       stop = l(appointment.stop_time, format: :time_only).sub(':00', '')

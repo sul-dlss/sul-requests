@@ -15,6 +15,8 @@ class AppointmentTimeRangeComponent < ViewComponent::Base
   end
 
   def call
+    return tag.span(date) if @appointment.reading_room.day_only_appointments?
+
     tag.span(date) + tag.i(class: 'bi bi-dot') + tag.span(time_range)
   end
 end

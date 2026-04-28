@@ -8,7 +8,9 @@
       <div class="d-flex flex-row justify-content-between align-items-center">
         <div class="d-flex flex-row gap-2">
           <div><i class="bi bi-calendar me-1"></i> <%= l(@appointment.start_time, format: :date_only) %></div>
-          <div><i class="bi bi-clock me-1"></i> <%= l(@appointment.start_time, format: :time_only) %> - <%=  l(@appointment.stop_time, format: :time_only) %></div>
+          <% if @appointment.reading_room.day_only_appointments? %>
+            <div><i class="bi bi-clock me-1"></i> <%= l(@appointment.start_time, format: :time_only) %> - <%=  l(@appointment.stop_time, format: :time_only) %></div>
+          <% end %>
           <div><i class="bi bi-geo-alt-fill me-1"></i><%= @appointment.reading_room.name %></div>
         </div>
         <div><%= render Aeon::AppointmentLimitComponent.from_appointment(@appointment) %></div>

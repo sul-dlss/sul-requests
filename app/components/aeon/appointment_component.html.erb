@@ -2,7 +2,7 @@
   <% c.with_title do %>
     <h2 class="card-title mb-0 h4 d-flex gap-3">
       <span><i class="bi bi-calendar me-2"></i><%= appointment_date %></span>
-      <span><i class="bi bi-clock me-2"></i><%= appointment_time_range %></span>
+      <%= time_range_html %>
       <span><i class="bi bi-geo-alt-fill me-2"></i><%= appointment.reading_room.name %></span>
     </h2>
   <% end %>
