@@ -1,7 +1,7 @@
 <div data-controller="selected-item-form" data-action="input->selected-item-form#updateStatus" class="accordion-item mb-3" data-content-id="<%= dom_id %>">
   <div class="accordion-header d-flex flex-nowrap align-items-center position-relative">
     <div class="d-flex align-items-center flex-grow-1 justify-content-between">
-      <div class="d-flex">
+      <div class="d-inline-flex justify-content-start align-items-center">
         <%= button_tag(
             type: "button",
             class: "accordion-button d-inline-flex w-auto align-items-center position-static",
@@ -12,8 +12,8 @@
           <i class="bi bi-check2 selected-item-status"></i>
           <span class="text-black fw-semibold selected-item-title stretched-link"><%= title %></span>
         <% end %>
-        <button class="btn btn-link p-0 ps-1 pe-2 z-3 d-none" data-action="view-container-contents#openViewModal" 
-        data-view-container-contents-target="displayButton" data-item-id="<%= dom_id %>">
+        <button class="btn btn-link ps-0 z-3 d-none" data-action="view-container-contents#openViewModal" 
+                data-view-container-contents-target="displayButton" data-item-id="<%= dom_id %>">
           <i class="bi bi-list-ul"></i><span class="visually-hidden">View contents</span>
         </button>
       </div>
