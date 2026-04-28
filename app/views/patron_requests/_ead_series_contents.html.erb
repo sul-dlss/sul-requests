@@ -48,7 +48,7 @@
           <span class="badge bg-dark-subtle text-dark fw-normal rounded-pill"><%= display_group.contents.count %></span>
           <%# Collapsible list of items in this container %>
           <div id="<%= content_id %>" class="collapse" data-archives-series-target="content">
-            <ul class="list-unstyled ms-2 my-2">
+            <ul class="container-content list-unstyled ms-2 my-2">
               <% display_group.contents.each do |item| %>
                 <li class="mb-1">
                   <% if item.folder %>

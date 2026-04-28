@@ -885,13 +885,8 @@ label.btn-close {
   margin-bottom: 3rem;
 }
 
-ul.container-content li {
-  list-style: none;
+.modal .container-content li:not(:last-child) {
   border-bottom: 1px solid var(--stanford-10-black);
-}
-
-ul.container-content li:last-child {
-  border-bottom: none;
 }
 
 .banner {
