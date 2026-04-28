@@ -100,7 +100,7 @@ group :development, :test do
   gem 'rubocop-rspec', require: false
   gem 'rubocop-rspec_rails', require: false
 
-  gem 'herb', '~> 0.8.9'
+  gem 'herb', '~> 0.10'
 
   gem 'rails-controller-testing'
 
