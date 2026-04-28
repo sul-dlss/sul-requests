@@ -12,11 +12,9 @@
           <i class="bi bi-check2 selected-item-status"></i>
           <span class="text-black fw-semibold selected-item-title stretched-link"><%= title %></span>
         <% end %>
-        <% if container_modal? %>
-        <button class="btn btn-link p-0 ps-1 pe-2 z-3" data-action="view-container-contents#openViewModal" data-item-id="<%= dom_id %>">
+        <button class="btn btn-link p-0 ps-1 pe-2 z-3 d-none" data-action="view-container-contents#openViewModal" data-view-container-contents-target="viewButton" data-item-id="<%= dom_id %>">
           <i class="bi bi-list-ul"></i><span class="visually-hidden">View contents</span>
         </button>
-        <% end %>
       </div>
       <div class="d-flex position-relative z-3">
         <% if save_for_later? %>

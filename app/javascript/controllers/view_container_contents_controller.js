@@ -4,9 +4,12 @@ import DOMPurify from "dompurify";
 
 
 export default class extends Controller {
-  static targets = ["viewModal", "banner", "contents"]
-  connect() {
-  
+  static targets = ["viewModal", "banner", "contents", "viewButton"]
+
+  viewButtonTargetConnected(button) {
+    if (this.contentsFor(button.dataset.itemId)) {
+      button.classList.remove("d-none")
+    }
   }
 
   openViewModal(event) {
@@ -40,9 +43,12 @@ export default class extends Controller {
 
   // Based on the item id, get the appropriate item selection element
   addContents(itemId) {
-    const contentsElement = document.getElementById("container-items-" + itemId).querySelector(".container-content")
-    const clone = contentsElement.cloneNode(true)
+    const clone = this.contentsFor(itemId).cloneNode(true)
     clone.className = "container-content p-0 m-0"
     this.contentsTarget.replaceChildren(clone)
+  }
+
+  contentsFor(itemId) {
+    return document.getElementById("container-items-" + itemId)?.querySelector(".container-content")
   }
 }

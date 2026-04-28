@@ -5,16 +5,13 @@ module Aeon
   class DigitizationFormItemComponent < ViewComponent::Base
     attr_reader :title, :dom_id, :object, :base_name
 
-    # rubocop:disable Metrics/ParameterLists
-    def initialize(title:, dom_id:, object: nil, base_name: nil, accordion: true, container_modal: false)
+    def initialize(title:, dom_id:, object: nil, base_name: nil, accordion: true)
       @title = title
       @dom_id = dom_id
       @object = object
       @base_name = base_name || "item[#{dom_id}]"
       @accordion = accordion
-      @container_modal = container_modal
     end
-    # rubocop:enable Metrics/ParameterLists
 
     def accordion?
       @accordion
@@ -22,10 +19,6 @@ module Aeon
 
     def save_for_later?
       object.nil?
-    end
-
-    def container_modal?
-      @container_modal
     end
   end
 end
