@@ -9,10 +9,10 @@
   <% if @patron_request.patron.email %>
     Expect a confirmation email shortly at <span class="fw-semibold"><%= @patron_request.patron.email %></span>.
   <% end %>
-<% end%>
+<% end %>
 
 <% if can? :debug, @patron_request %>
-  <hr />
+  <hr>
   <% if @patron_request.folio_api_responses.present? %>
     <h4>ILS Response</h4>
     <pre class="card p-2"><%= JSON.pretty_generate(@patron_request.folio_api_responses.map(&:as_json)) %></pre>

@@ -39,7 +39,7 @@
     <strong>Details:</strong>
     <ul>
       <% @schedule.schedule_for_request.except(:meta).map do |key, time| %>
-        <li><%= key%>: <%= l time, format: :formal %></li>
+        <li><%= key %>: <%= l time, format: :formal %></li>
       <% end %>
     </ul>
   </div>

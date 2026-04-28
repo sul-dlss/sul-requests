@@ -1,7 +1,7 @@
 <%= form_with(url: form_url, method: 'get', class: classes, data: { turbo: false }) do |f| %>
   <div class="form-group mb-3">
     <%= f.label :start_date, 'Time period:', class: 'form-label' %>
-    <%= f.date_field(:start_date, value: params[:start_date] || 1.year.ago, class: 'form-control d-inline-block w-auto') %> - 
+    <%= f.date_field(:start_date, value: params[:start_date] || 1.year.ago, class: 'form-control d-inline-block w-auto') %> -
     <%= f.date_field(:end_date, value: params[:end_date] || Time.zone.today, class: 'form-control d-inline-block w-auto') %>
   </div>
   <div class="form-group mb-3">

@@ -3,7 +3,7 @@
   <% blocked = current_user.patron.blocked? %>
   <div class="d-flex border-radius-4 border shadow-sm">
     <% border_color = blocked ? 'warning' : 'jungle-green' %>
-    <div class="vr vr-lg bg-<%=border_color%>"></div>
+    <div class="vr vr-lg bg-<%= border_color %>"></div>
     <% if blocked %>
       <div class="bi bi-exclamation-triangle-fill d-flex justify-content-center display-6 col-1 ms-3 align-self-center text-<%= border_color %>"></div>
     <% end %>
