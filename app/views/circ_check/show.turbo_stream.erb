@@ -6,11 +6,5 @@
     <% else %>
       <%= render 'toast_failure', item: @item, id: id %>
     <% end %>
-
-    <script type="text/javascript">
-      bootstrap.Toast.getOrCreateInstance(document.getElementById('<%= id %>')).show();
-
-      document.currentScript.remove();
-    </script>
   </template>
 </turbo-stream>

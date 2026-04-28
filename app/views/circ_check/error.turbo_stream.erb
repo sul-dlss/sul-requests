@@ -1,7 +1,7 @@
 <turbo-stream action="prepend" target="results">
   <template>
     <% id = "error_#{Time.zone.now.to_i}" %>
-    <div id="<%= id %>" class="toast toast-failure text-bg-danger" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="600000">
+    <div data-circ-check-target="toast" id="<%= id %>" class="toast toast-failure text-bg-danger" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="600000">
       <div class="toast-header border-0 rounded">
         <strong class="me-auto">⛔ <%= error.message %></strong>
         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
@@ -10,11 +10,5 @@
           Your browser does not support the audio element.
         </audio>
     </div>
-
-    <script type="text/javascript">
-      bootstrap.Toast.getOrCreateInstance(document.getElementById('<%= id %>')).show();
-
-      document.currentScript.remove();
-    </script>
   </template>
 </turbo-stream>

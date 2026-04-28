@@ -6,12 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <meta name="description" content="Stanford University Libraries' application check the circulation status of an item" />
+    <meta name="description" content="Stanford University Libraries' application check the circulation status of an item">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <script type="module">
-      import hotwiredTurbo from 'https://cdn.jsdelivr.net/npm/@hotwired/turbo@7/+esm';
-    </script>
+
+    <%= javascript_include_tag "circ-check", "data-turbo-track": "reload", defer: true %>
     <style>
       .toast {
         --bs-toast-max-width: 700px;
@@ -19,39 +17,20 @@
         --bs-toast-bg: rgba(var(--bs-body-bg-rgb), 0.85);
       }
     </style>
-    <script type="">
-      document.addEventListener('hidden.bs.toast', (e) => {
-        e.target.remove();
-      })
-
-      window.addEventListener('load', function() {
-        document.getElementById('reset').addEventListener('click', (e) => {
-          document.getElementById('results').innerHTML = '';
-          document.getElementById('barcode').focus();
-        })
-
-        document.getElementById('barcode').closest('form').addEventListener('submit', (e) => {
-          setTimeout(() => {
-            document.getElementById('barcode').value = '';
-            document.getElementById('barcode').focus();
-          }, 1);
-        });
-      })
-    </script>
     <link rel="prefetch" as="audio" href="<%= audio_path('denied_sound.mp3') %>">
   </head>
   <body>
     <header class="bg-dark py-3">
       <div class="container-fluid"><h1 id="page-title" class="fs-4 text-white">SUL Circulation Check</h1></div>
     </header>
-    <div class="container mt-4" role="main">
+    <div class="container mt-4" role="main" data-controller="circ-check">
       <turbo-frame id="circForm">
-        <%= form_with url: '/circ-check', html: { aria: { labelledby: '#page-title' } } do |form| %>
+        <%= form_with url: '/circ-check', html: { aria: { labelledby: '#page-title' }, data: { action: 'reset->circ-check#reset submit->circ-check#clear'} } do |form| %>
           <div class="row g-3 align-items-start">
             <div class="col-auto">
               <div class="input-group">
                 <div class="form-floating">
-                  <input type="text" class="form-control" id="barcode" name="barcode" aria-describedby="barcodeHelp" placeholder="36105..." autofocus required>
+                  <input type="text" class="form-control" id="barcode" name="barcode" aria-describedby="barcodeHelp" placeholder="36105..." autocomplete="off" autofocus required>
                   <label for="barcode">Barcode</label>
                 </div>
                 <button type="submit" class="btn btn-primary">Check</button>
@@ -61,7 +40,8 @@
             </div>
           </div>
         <% end %>
-        <div class="toast-container" id="results">
+
+        <div class="toast-container" id="results" data-action="hidden.bs.toast->circ-check#removeToast" aria-live="polite" aria-atomic="true">
         </div>
       </turbo-frame>
     </div>
