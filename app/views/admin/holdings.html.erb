@@ -61,7 +61,7 @@
       <% end %>
     </tbody>
   </table>
-  <turbo-stream action="update" target="<%= "req_#{@request.id}_note" %>">
+  <turbo-stream action="update" target="req_<%= @request.id %>_note">
     <template>
       <%= render 'approved_note', request: @request %>
     </template>
