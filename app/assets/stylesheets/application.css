@@ -471,10 +471,9 @@ label.btn-close {
     padding: 4px 12px;
   }
 
-  .appointment-details > * + *::before {
-    content: "•";
-    margin-left: 0.125rem;
-    margin-right: 0.375rem;
+  .appointment-details .bi-dot {
+    margin-inline-start: -0.25rem;
+    margin-inline-end: -0.25rem;
   }
 
   .card-footer {
