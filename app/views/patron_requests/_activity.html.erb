@@ -1,0 +1,22 @@
+<div class="row p-3">
+  <template id="activityTemplate">
+    <div class="activity-item" data-content-id="__ID__">
+      <span class="text-black fw-semibold selected-item-title">__TITLE__</span>
+    </div>
+  </template>
+  <div class="selected-items-container px-0 gap-3 d-flex flex-row" data-item-selector-target="selectedItems" data-template="#activityTemplate">
+  </div>
+  <div class="dropdown custom-select px-0 pt-3">
+    <%= button_tag 'Select activity', class: 'py-1 btn border dropdown-toggle', type: 'button', data: { bs_toggle: 'dropdown' }, aria: { expanded: false } %>
+    <menu class="dropdown-menu appt-dropdown">
+      <% @activities&.each do |activity| %>
+        <%= tag.li class: 'd-flex align-items-end' do %>
+          <label class="mx-4">
+            <%= check_box_tag 'patron_request[activity_ids][]', class: 'visually-hidden', value: activity.id %>
+            <%= activity.name %>
+          </label>
+        <% end %>
+      <% end %>
+    </menu>
+  </div>
+</div>

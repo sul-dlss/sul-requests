@@ -8,6 +8,9 @@ module Aeon
     # appointment attributes
     attr_accessor :appointment, :appointment_id
 
+    # activity attributes
+    attr_accessor :activity_type, :activity_id
+
     # identifiers
     attr_accessor :call_number, :ead_number, :reference_number, :site
 
@@ -27,6 +30,8 @@ module Aeon
     def self.from_dynamic(dyn) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       photoduplication_date = dyn['photoduplicationDate'].presence
       new(
+        activity_type: dyn.dig('requestFor', 'type'),
+        activity_id: dyn.dig('requestFor', 'reference'),
         appointment: dyn['appointment'] ? Appointment.from_dynamic(dyn['appointment']) : nil,
         appointment_id: dyn['appointmentID'],
         call_number: dyn['callNumber'],
@@ -111,6 +116,8 @@ module Aeon
     def valid?
       if digital?
         requested_pages.present?
+      elsif activity?
+        true
       else
         appointment_id.present?
       end
@@ -122,6 +129,10 @@ module Aeon
 
     def digital?
       shipping_option == 'Electronic Delivery'
+    end
+
+    def activity?
+      activity_id.present?
     end
 
     def ead?

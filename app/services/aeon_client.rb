@@ -38,7 +38,7 @@ class AeonClient
   end
 
   def activities_for(username:)
-    activities.select { |activity| activity.users.map(&:username).include?(username) }
+    activities&.select { |activity| activity.users.map(&:username).include?(username) }
   end
 
   # Fetch requests for a user by their Aeon username
@@ -157,7 +157,7 @@ class AeonClient
   RequestData = Data.define(:call_number, :document_type, :ead_number, :for_publication, :format,
                             :item_author, :item_citation, :item_date, :item_info1, :item_info2, :appointment_id,
                             :item_info3, :item_info4, :item_info5, :item_number, :item_subtitle, :item_title, :item_volume,
-                            :location, :web_request_form,
+                            :location, :web_request_form, :activity_id,
                             :reference_number, :shipping_option, :site, :special_request, :system_id, :username) do
     def omission = '…'
 
@@ -187,8 +187,15 @@ class AeonClient
         specialRequest: special_request&.truncate(255, omission:),
         system_id: system_id,
         username: username&.truncate(50, omission:),
-        webRequestForm: web_request_form&.truncate(100, omission:) || 'SUL Requests'
+        webRequestForm: web_request_form&.truncate(100, omission:) || 'SUL Requests',
+        requestFor: request_for
       }.reject { |_k, v| v == UNSET }
+    end
+
+    def request_for
+      return UNSET if activity_id.blank? || activity_id == UNSET
+
+      { type: 'Activity', reference: activity_id }
     end
 
     def as_patch_json

@@ -22,7 +22,8 @@ RSpec.describe 'Requesting an item from an EAD', :js do
   let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
 
   let(:stub_aeon_client) do
-    instance_double(AeonClient, find_user: aeon_user, create_request: created_request, reading_rooms:, available_appointments:)
+    instance_double(AeonClient, find_user: aeon_user, create_request: created_request, reading_rooms:, available_appointments:,
+                                activities_for:)
   end
   let(:created_request) { instance_double(Aeon::Request, id: 123, transaction_number: 'abc123', submitted?: true, draft?: false, valid?: true) }
 
@@ -30,6 +31,19 @@ RSpec.describe 'Requesting an item from an EAD', :js do
     [instance_double(Aeon::AvailableAppointment,
                      start_time: DateTime.new(2026, 2, 19),
                      maximum_appointment_length: 210.minutes)]
+  end
+
+  let(:activities_for) do
+    [
+      instance_double(Aeon::Activity,
+                      start_time: DateTime.new(2026, 2, 19, 12, 0, 0),
+                      stop_time: DateTime.new(2026, 2, 19, 13, 0, 0),
+                      name: 'Activity1',
+                      completed?: false,
+                      sites: ['SPECUA'],
+                      users: [instance_double(Aeon::User, username: 'user1'), aeon_user],
+                      id: 1)
+    ]
   end
 
   let(:appointments) do
@@ -300,6 +314,34 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       expect(page).to have_button('Submit request', disabled: false)
     end
 
+    it 'allows the user to submit a request with activites selected' do
+      visit new_archives_request_path(value: 'http://example.com/ead.xml')
+
+      expect(page).to have_content('New request')
+      expect(page).to have_content('Knuth (Donald E.) papers')
+
+      choose 'Activity'
+      click_button 'Continue'
+
+      click_link 'Computers and Typesetting'
+      click_link 'Legal size documents'
+      check 'Box 12'
+      click_button 'Continue'
+      click_button 'Select activity'
+      find('label', text: 'Activity1').click
+
+      click_button 'Submit request'
+
+      expect(page).to have_css('.confirmation')
+
+      perform_enqueued_jobs
+      expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
+                                                                        username: user.email_address,
+                                                                        activity_id: '1',
+                                                                        call_number: 'SC0097 Computers and Typesetting'
+                                                                      ))
+    end
+
     it 'allows the user to submit a request with details about the portion of the item to be digitized' do # rubocop:disable RSpec/ExampleLength
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
 
@@ -368,6 +410,10 @@ RSpec.describe 'Requesting an item from an EAD', :js do
   context 'with ead that has no series' do
     let(:eadxml) do
       Nokogiri::XML(File.read('spec/fixtures/ars0052.xml')).tap(&:remove_namespaces!)
+    end
+
+    it 'does not show activity radio button, due to activity being associated with SPECUA' do
+      expect(page).to have_no_checked_field('Activity')
     end
 
     it 'allows users to input boxes manually' do # rubocop:disable RSpec/ExampleLength

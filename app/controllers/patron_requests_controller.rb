@@ -24,6 +24,7 @@ class PatronRequestsController < ApplicationController
   authorize_resource
 
   before_action :associate_request_with_patron, only: [:new, :create]
+  before_action :activities, only: [:new]
   before_action :redirect_aeon_pages, only: [:create]
   before_action :require_aeon_terms, only: [:new, :create]
   before_action :redirect_finding_aid_pages, if: lambda {
@@ -130,6 +131,10 @@ class PatronRequestsController < ApplicationController
     @patron_request.user = current_user if current_user.persisted?
   end
 
+  def activities
+    @activities ||= current_user.aeon.active_reading_room_activities(site: @patron_request.aeon_site)
+  end
+
   def sunetid_without_folio_account?
     current_user.sso_user? && current_user.patron.blank?
   end
@@ -156,7 +161,7 @@ class PatronRequestsController < ApplicationController
                                    :fulfillment_type, :request_type,
                                    :scan_page_range, :scan_authors, :scan_title,
                                    :aeon_reading_special, :aeon_terms, :ead_url,
-                                   { barcodes: [] }, { aeon_item: aeon_term_params }])
+                                   { barcodes: [] }, { activity_ids: [] }, { aeon_item: aeon_term_params }])
   end
 
   def handle_ead_client_error

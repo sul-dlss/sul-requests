@@ -34,6 +34,10 @@ module Aeon
       @activities ||= self.class.aeon_client.activities_for(username:)
     end
 
+    def active_reading_room_activities(site:)
+      activities&.reject(&:completed?)&.select { |activity| activity.sites.include?(site) }
+    end
+
     def draft_requests
       requests.select(&:draft?)
     end

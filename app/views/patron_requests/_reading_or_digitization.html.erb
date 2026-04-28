@@ -18,5 +18,13 @@
       Digitization
     <% end %>
   </div>
+  <% if @activities.present? %>
+    <div class="mt-2">
+      <%= f.radio_button :request_type, 'activity', class: 'form-check-input', data: { action: 'patron-request#updateType' } %>
+      <%= f.label :request_type_activity, class: 'form-check-label ms-1' do %>
+        Activity (e.g., class visit or exhibit)
+      <% end %>
+    </div>
+  <% end %>
   <%= render 'patron_requests/digitization_terms', f: %>
 </fieldset>
