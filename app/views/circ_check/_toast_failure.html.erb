@@ -1,4 +1,4 @@
-<div id="<%= id %>" class="toast toast-failure text-bg-danger" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="600000">
+<div id="<%= id %>" class="toast toast-failure text-bg-danger" data-circ-check-target="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="600000">
   <div class="toast-header">
     <strong class="me-auto">⛔ <%= @item.dig('barcode') %></strong>
     <small class="text-body-secondary">Status: <%= @item.dig('status', 'name') %></small>

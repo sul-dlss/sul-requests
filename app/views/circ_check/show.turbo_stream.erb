@@ -1,3 +1,7 @@
+<% unless params[:version].to_s >= '2' %>
+  <turbo-stream action="refresh">
+  </turbo-stream>
+<% end %>
 <turbo-stream action="prepend" target="results">
   <template>
     <% id = "dom#{@item['barcode']}#{Time.zone.now.to_i}" %>
@@ -6,11 +10,5 @@
     <% else %>
       <%= render 'toast_failure', item: @item, id: id %>
     <% end %>
-
-    <script type="text/javascript">
-      bootstrap.Toast.getOrCreateInstance(document.getElementById('<%= id %>')).show();
-
-      document.currentScript.remove();
-    </script>
   </template>
 </turbo-stream>
