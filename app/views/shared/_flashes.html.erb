@@ -10,17 +10,16 @@
         end
       -%>
       <%- alert_icon = case type
-        when :success then "check-circle-fill"
-        when :notice  then "info-circle-fill"
-        when :alert   then "exclamation-triangle-fill"
-        when :error   then "exclamation-triangle-fill"
-        else "alert-#{type}"
+        when :success then "bi bi-check-circle-fill"
+        when :notice  then "bi bi-info-circle-fill"
+        when :alert   then "bi bi-exclamation-triangle-fill"
+        when :error   then "bi bi-exclamation-triangle-fill"
         end
       -%>
       <% if flash[type] %>
         <% Array(flash[type]).each do |message| %>
           <div class="alert <%= alert_class %> alert-dismissible fade show shadow-sm d-flex gap-3 align-items-center">
-            <i class="bi bi-<%= alert_icon %> fs-3"></i>
+            <i class="<%= alert_icon %> fs-3"></i>
             <div>
               <%= message.html_safe %>
             </div>
