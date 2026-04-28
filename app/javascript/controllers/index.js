@@ -69,3 +69,6 @@ application.register("char-counter", CharCounterController)
 
 import EadSearchController from "./ead_search_controller"
 application.register("ead-search", EadSearchController)
+
+import ViewContainerContentsController from "./view_container_contents_controller"
+application.register("view-container-contents", ViewContainerContentsController)

@@ -18,7 +18,7 @@
 
 <%= form_for(@patron_request,
             data: {
-              controller: 'patron-request accordion-form item-selector save-for-later',
+              controller: 'patron-request accordion-form item-selector save-for-later view-container-contents',
               action: 'item-selector:changed->patron-request#showItemSelector item-selector:changed->accordion-form#typeValueChanged',
               'patron-request-type-value': 'aeon',
             },
@@ -187,6 +187,17 @@
     </div>
   </li>
 </template>
+<!-- View container contents modal -->
+<%= render ModalComponent.new(id: "view-container-contents", data: {view_container_contents_target: "viewModal"}) do |component| %>
+  <% component.with_title.with_content('Contents') %>
+  <% component.with_banner do %>
+    <div data-view-container-contents-target="banner" class="banner"></div>
+  <% end %>
+  <% component.with_body do %>
+    <div data-view-container-contents-target="contents">
+    </div>
+  <% end %>
+<% end %>
 
 <% end %>
 </div>

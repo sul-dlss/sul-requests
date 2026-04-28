@@ -142,10 +142,13 @@ export default class extends Controller {
   formatItemTitle(item) {
     if (!item.titleParts) return item.label;
 
-    return item.titleParts
-      .filter(e => e?.trim())
+    return this.mapTitleParts(item.titleParts);
+  }
+
+  mapTitleParts(titleParts) {
+    return titleParts.filter(e => e?.trim())
       .map(e => DOMPurify.sanitize(e))
-      .join('<i class="bi bi-chevron-right mx-1"></i>');
+      .join('<i class="bi bi-chevron-right mx-1"></i>')
   }
 
   selectedItemsValueChanged(value, previousValue) {
