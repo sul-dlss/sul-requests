@@ -13,7 +13,7 @@ export default class extends Controller {
   updateDeleteButton() {
     const selectedCount = this.selectTargets.filter(t => t.checked).length
 
-    this.deleteButtonTarget.textContent = `Delete selected (${selectedCount})`
+    this.deleteButtonTarget.querySelector('.count').textContent = selectedCount;
     this.deleteButtonTarget.disabled = selectedCount === 0
   }
 

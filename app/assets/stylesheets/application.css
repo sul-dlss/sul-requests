@@ -55,6 +55,11 @@ layer(components);
   color: rgba(var(--stanford-jungle-green-rgb), 1);
 }
 
+.text-lagunita-dark {
+  color: rgba(var(--stanford-lagunita-dark-rgb), 1);
+}
+
+
 .bg-lagunita-dark {
   background-color: rgba(var(--stanford-lagunita-dark-rgb), 1);
 }

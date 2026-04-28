@@ -28,40 +28,7 @@ RSpec.describe Aeon::RequestStatusMessageComponent, type: :component do
     end
   end
 
-  context 'with submitted digitization requests' do
-    let(:request) { build(:aeon_request, :digitized) }
-
-    before do
-      allow(request).to receive_messages(draft?: false, cancelled?: false)
-    end
-
-    context 'when pending' do
-      before do
-        allow(request).to receive_messages(scan_delivered?: false)
-        render_inline(described_class.new(request:))
-      end
-
-      it 'shows pending message' do
-        expect(page).to have_text "We'll email you when your files are ready."
-        expect(page).to have_css '.text-plum-dark'
-      end
-    end
-
-    context 'when delivered' do
-      before do
-        allow(request).to receive_messages(scan_delivered?: true)
-        render_inline(described_class.new(request:))
-      end
-
-      it 'shows delivered message' do
-        expect(page).to have_text 'Delivered by email'
-        expect(page).to have_no_css '.text-plum-dark'
-        expect(page).to have_no_css '.bi-exclamation-triangle-fill'
-      end
-    end
-  end
-
-  context 'with submitted reading room requests' do
+  context 'with submitted requests' do
     let(:request) { build(:aeon_request) }
 
     before do
