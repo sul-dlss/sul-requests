@@ -30,16 +30,24 @@ module Aeon
       @requests ||= self.class.aeon_client.requests_for(username:)
     end
 
+    # Active requests exclude requests sitting in terminal queues (Cancelled by
+    # User/Staff, Request Finished). Fetching all requests is slow for users
+    # with many cancelled or completed requests, so prefer this over `requests`
+    # when terminal requests aren't required.
+    def active_requests
+      @active_requests ||= self.class.aeon_client.requests_for(username:, active_only: true)
+    end
+
     def activities
       @activities ||= self.class.aeon_client.activities_for(username:)
     end
 
     def draft_requests
-      requests.select(&:draft?)
+      active_requests.select(&:draft?)
     end
 
     def submitted_requests
-      requests.select(&:submitted?)
+      active_requests.select(&:submitted?)
     end
 
     def cancelled_requests
@@ -52,7 +60,7 @@ module Aeon
 
     def appointments
       @appointments ||= self.class.aeon_client.appointments_for(username:).sort_by(&:sort_key).reject(&:cancelled?).each do |appointment|
-        appointment.requests = requests.select { |request| !request.cancelled? && request.appointment_id == appointment.id }
+        appointment.requests = active_requests.select { |request| !request.cancelled? && request.appointment_id == appointment.id }
       end
     end
 
