@@ -15,8 +15,6 @@ class AeonRequestsController < ApplicationController
 
   def index
     authorize! :read, Aeon::Request
-
-    @appointment = current_user.aeon.appointment_by_id(id: params[:appointment_id]) if params[:appointment_id]
   end
 
   def resubmit

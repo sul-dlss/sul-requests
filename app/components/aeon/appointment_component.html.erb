@@ -34,7 +34,7 @@
 
   <% c.with_footer do %>
     <%= render Aeon::AppointmentLimitComponent.from_appointment(appointment) %>
-    <%= link_to "Add items", add_items_path, class: 'btn btn-outline-primary btn-sm', data: { action: 'modal#open' } unless add_item_disabled? %>
+    <%= link_to "Add items", items_path, class: 'btn btn-outline-primary btn-sm', data: { action: 'modal#open' } unless add_item_disabled? %>
   <% end %>
 
   <% c.with_post do %>

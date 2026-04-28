@@ -37,8 +37,8 @@ module Aeon
       appointment.requests.count >= appointment.reading_room.appointment_item_limit
     end
 
-    def add_items_path
-      aeon_requests_path(kind: 'drafts', filter: 'reading_room', sort: 'title', appointment_id: appointment.id)
+    def items_path
+      aeon_appointment_items_path(sort: 'title', aeon_appointment_id: appointment.id)
     end
   end
 end
