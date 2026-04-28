@@ -12,7 +12,7 @@ module Aeon
     end
 
     def call
-      link_to @item_url, class: 'su-underline', target: '_blank', rel: 'noopener' do
+      link_to @item_url, class: 'su-underline small', target: '_blank', rel: 'noopener' do
         safe_join([link_text, tag.i(class: 'ms-1 bi bi-arrow-up-right')])
       end
     end
