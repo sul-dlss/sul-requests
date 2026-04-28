@@ -26,7 +26,7 @@ module Aeon
     end
 
     def status_message
-      draft_status_message || submitted_status_message
+      draft_status_message
     end
 
     def draft_status_message
@@ -36,16 +36,6 @@ module Aeon
         'Pages/instructions not specified'
       else
         'Not scheduled'
-      end
-    end
-
-    def submitted_status_message
-      return unless digital? && !cancelled?
-
-      if scan_delivered?
-        'Delivered by email'
-      else
-        "We'll email you when your files are ready."
       end
     end
   end
