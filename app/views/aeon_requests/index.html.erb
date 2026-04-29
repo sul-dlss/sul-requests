@@ -59,11 +59,9 @@
     </div>
   </div>
   <div class="row">
-    <div class="<% if content_for?(:sidebar) %>col-md-8 pe-md-5<% else %>col-md-9<% end %>">
-      <% @aeon_request_groups.each do |requests_in_group| %>
-        <%= render Aeon::RequestGroupComponent.new(request_group: requests_in_group) %>
-      <% end %>
-    </div>
+    <ol id="requests" class="list-unstyled <% if content_for?(:sidebar) %>col-md-8 pe-md-5<% else %>col-md-9<% end %>">
+      <%= render Aeon::RequestGroupComponent.with_collection(@aeon_request_groups, element: 'li') %>
+    </ol>
 
     <%= content_for(:sidebar) %>
   </div>
