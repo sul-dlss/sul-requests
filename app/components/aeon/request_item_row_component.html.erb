@@ -2,7 +2,7 @@
   <div class="d-flex flex-row align-items-center justify-content-between">
     <div class="d-flex gap-3">
       <%= render Aeon::RequestItemIdentifierComponent.new(request: @request) %>
-      <%= render @after_component.new(request: @request) if @after_component %>
+      <%= render @action_component if @action_component %>
     </div>
   </div>
 </li>

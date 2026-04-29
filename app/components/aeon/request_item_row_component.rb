@@ -3,9 +3,9 @@
 module Aeon
   # Render a single request as a row inside a request group list
   class RequestItemRowComponent < ViewComponent::Base
-    def initialize(request:, after_component: nil)
+    def initialize(request:, action_component: nil)
       @request = request
-      @after_component = after_component
+      @action_component = action_component
     end
   end
 end

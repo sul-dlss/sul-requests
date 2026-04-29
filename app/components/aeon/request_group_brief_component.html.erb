@@ -10,7 +10,7 @@
       </div>
       <ul class="list-group list-group-flush">
         <% requests.each do |request| %>
-          <%= render Aeon::RequestItemRowComponent.new(request:, after_component: @after_request_item_component) %>
+          <%= render Aeon::RequestItemRowComponent.new(request:, action_component: action_for(request)) %>
         <% end %>
       </ul>
     </div>
