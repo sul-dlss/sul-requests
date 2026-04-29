@@ -7,10 +7,10 @@ class AeonAppointmentsController < ApplicationController
   include AeonController
   include AeonSortable
 
-  before_action :load_appointments, except: [:available]
+  before_action :load_appointments
   before_action :load_appointment, only: [:edit, :update, :destroy, :items]
   before_action :create_appointment, only: [:create]
-  before_action :load_reading_rooms, only: [:new, :available]
+  before_action :load_reading_rooms, only: [:new]
 
   def index
     authorize! :read, Aeon::Appointment
@@ -24,19 +24,6 @@ class AeonAppointmentsController < ApplicationController
     @appointment = Aeon::Appointment.new reading_room_id: @reading_room&.id, reading_room: @reading_room
 
     request.variant = :modal if params[:modal]
-  end
-
-  def available
-    @selected_time = params[:selected]
-    @date = Date.parse(params.expect(:date))
-
-    @available_appointments = Current.aeon_client.available_appointments(reading_room_id: params.expect(:reading_room_id),
-                                                                         date: @date, include_next_available: true)
-    @appointment_lengths = @available_appointments.map(&:maximum_appointment_length)
-    respond_to do |format|
-      format.html
-      format.json
-    end
   end
 
   def edit
