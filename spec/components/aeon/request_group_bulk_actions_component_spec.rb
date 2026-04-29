@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Aeon::RequestGroupCompactComponent, type: :component do
+RSpec.describe Aeon::RequestGroupBulkActionsComponent, type: :component do
   context 'with multi-item requests' do
     let(:web_request_form) { 'multiple' }
     let(:first_request) do
@@ -18,7 +18,7 @@ RSpec.describe Aeon::RequestGroupCompactComponent, type: :component do
     before do
       allow(first_request).to receive_messages(draft?: true, cancelled?: false)
       allow(second_request).to receive_messages(draft?: true, cancelled?: false)
-      render_inline(described_class.new(request_group:))
+      render_inline(described_class.new(request_group:, hidden: false))
     end
 
     it 'renders the request type' do
@@ -46,7 +46,7 @@ RSpec.describe Aeon::RequestGroupCompactComponent, type: :component do
     let(:request_group) { Aeon::RequestGrouping.new([request]) }
 
     before do
-      render_inline(described_class.new(request_group:))
+      render_inline(described_class.new(request_group:, hidden: false))
     end
 
     it 'renders the request type' do
@@ -73,7 +73,7 @@ RSpec.describe Aeon::RequestGroupCompactComponent, type: :component do
     let(:request_group) { Aeon::RequestGrouping.new([request]) }
 
     before do
-      render_inline(described_class.new(request_group:))
+      render_inline(described_class.new(request_group:, hidden: false))
     end
 
     it 'renders the request type as digitization' do
@@ -89,7 +89,7 @@ RSpec.describe Aeon::RequestGroupCompactComponent, type: :component do
     let(:request_group) { Aeon::RequestGrouping.new([request]) }
 
     before do
-      render_inline(described_class.new(request_group:))
+      render_inline(described_class.new(request_group:, hidden: false))
     end
 
     it 'renders the ead number as the call number' do
