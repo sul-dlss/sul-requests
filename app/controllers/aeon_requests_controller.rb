@@ -100,8 +100,7 @@ class AeonRequestsController < ApplicationController
   end
 
   def load_aeon_request_groups
-    requests = sort_aeon_requests(filter_aeon_requests(@aeon_requests))
-    @aeon_request_groups = Aeon::RequestGrouping.from_requests(requests)
+    @aeon_request_groups = Aeon::RequestGrouping.from_requests(@aeon_requests)
   end
 
   def aeon_request_params
