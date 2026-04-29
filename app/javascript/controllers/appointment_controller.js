@@ -2,6 +2,9 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   static targets = ["availability", "duration", "fieldset", "banner"]
+  static values = {
+    availabilityRoute: String
+  }
 
   filterDurationFields() {
     const data = this.fieldsetTarget.dataset;
@@ -44,13 +47,17 @@ export default class extends Controller {
     const formData = new FormData(this.element);
 
     const date = formData.get('aeon_appointment[date]');
-    const readingRoomId = formData.get('aeon_appointment[reading_room_id]');
     const startTime = formData.get('aeon_appointment[start_time]');
     const apptDuration = formData.get('aeon_appointment[duration]');
 
     if (!date) return;
 
-    this.availabilityTarget.src = `/aeon_reading_rooms/${readingRoomId}/available/${date}?selected=${startTime}&duration=${apptDuration}`
+    const url =new URL(this.availabilityRouteValue);
+    url.searchParams.append('date', date);
+    url.searchParams.append('selected', startTime);
+    url.searchParams.append('duration', apptDuration);
+
+    this.availabilityTarget.src = url.toString();
   }
 
   updateBanner() {
