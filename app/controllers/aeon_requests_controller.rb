@@ -10,7 +10,7 @@ class AeonRequestsController < ApplicationController
 
   before_action :load_aeon_requests
   before_action :load_aeon_request, only: [:edit, :update, :destroy, :resubmit]
-  before_action :load_aeon_request_groups, only: [:index]
+  before_action :load_aeon_request_groups, only: [:index, :update]
   before_action :set_variant, only: [:index, :edit]
 
   def index
@@ -30,10 +30,11 @@ class AeonRequestsController < ApplicationController
     authorize! :update, @aeon_request
   end
 
-  def update
+  def update # rubocop:disable Metrics/AbcSize
     authorize! :update, @aeon_request
 
     @updated_request = Aeon::UpdateRequestService.new(@aeon_request, aeon_request_params).call
+    @aeon_request_group = @aeon_request_groups.find { |request_group| request_group.requests.find { |r| r.id == @aeon_request.id } }
 
     respond_to do |format|
       format.turbo_stream
