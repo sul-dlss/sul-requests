@@ -53,14 +53,17 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :aeon_appointments do
-    collection do
-      get "new/:reading_room_id", to: 'aeon_appointments#new', as: :new_appointment
-      get "available/:reading_room_id/:date", to: 'aeon_appointments#available', as: :available
+  resources :aeon_reading_rooms, only: [] do
+    member do
+      get 'available/:date', to: 'aeon_reading_rooms#available', as: :available
     end
+  end
 
+  resources :aeon_appointments do
     get :items
   end
+
+  get "/aeon_appointments/new/:reading_room_id", to: 'aeon_appointments#new', as: :new_aeon_appointment_for_reading_room
 
   resource :aeon_user, only: [:new, :create] do
     post :terms, to: 'aeon_users#accept_terms', as: :accept_terms
