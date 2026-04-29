@@ -56,11 +56,13 @@
     <% component.with_body do %>
       <% if f.object.ead_doc.series_and_subseries.present? %>
         <div data-controller="archives-series ead-search">
-          <div class="mb-2 d-flex gap-2 align-items-center">
+          <div class="mb-2 d-flex flex-wrap gap-2 align-items-center">
             <div>Use checkboxes to select items.</div>
             <!--TODO: pull out text into template?-->
-            <button class="btn btn-link p-0 su-underline" data-action="click->archives-series#expandAll"><i class="bi bi-chevron-double-right me-1"></i>Expand all (see full content list)</button>
-            <button class="btn btn-link p-0 su-underline" data-action="click->archives-series#collapseAll"><i class="bi bi-chevron-double-down me-1"></i>Collapse all</button>
+            <div class="d-flex flex-wrap gap-2">
+              <button class="btn btn-link p-0 su-underline text-start" data-action="click->archives-series#expandAll"><i class="bi bi-chevron-double-right me-1"></i>Expand all (see full content list)</button>
+              <button class="btn btn-link p-0 su-underline text-start" data-action="click->archives-series#collapseAll"><i class="bi bi-chevron-double-down me-1"></i>Collapse all</button>
+            </div>
           </div>
           <% if f.object.ead_doc.digital_content? %>
             <div class="mb-2"><%= render Icons::OnlineComponent.new classes: 'me-1 align-text-bottom text-digital-blue' %><span class="fw-semibold">Digital content</span> - Some materials from this collection are available online.</div>
