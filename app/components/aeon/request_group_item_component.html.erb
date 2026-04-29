@@ -6,15 +6,19 @@
         <%= render Aeon::RequestItemDetailComponent.new(request:) %>
       </div>
 
-      <span class="ms-auto">
-        <%= render Aeon::RequestAppointmentTimeComponent.new(request:, with_reading_room: false) %>
-      </span>
+      <% if appointment? %>
+        <span class="ms-auto">
+          <%= render Aeon::RequestAppointmentTimeComponent.new(request:, with_reading_room: false) %>
+        </span>
+      <% end %>
     </div>
 
-    <%= render Aeon::RequestActionsComponent.new(request:) %>
+    <%= render Aeon::RequestActionsComponent.new(request:) if actions? %>
   </div>
-  <div class="pt-2 fs-14 text-body-secondary d-flex gap-sm-3 flex-sm-row flex-column">
-    <div>Request #<%= transaction_number %></div>
-    <div>Date added/modified: <%= l(transaction_date, format: :full) %></div>
-  </div>
+  <% if footer? %>
+    <div class="pt-2 fs-14 text-body-secondary d-flex gap-sm-3 flex-sm-row flex-column">
+      <div>Request #<%= transaction_number %></div>
+      <div>Date added/modified: <%= l(transaction_date, format: :full) %></div>
+    </div>
+  <% end %>
 </li>
