@@ -55,7 +55,7 @@ Rails.application.routes.draw do
 
   resources :aeon_reading_rooms, only: [] do
     member do
-      get 'available/:date', to: 'aeon_reading_rooms#available', as: :available
+      get 'available', to: 'aeon_reading_rooms#available', as: :available
     end
   end
 
