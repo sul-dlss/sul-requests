@@ -3,6 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe Aeon::RequestGrouping do
+  let(:aeon_client) { instance_double(AeonClient) }
+  let(:queue) { Aeon::Queue.new(id: 0, queue_name: '', queue_type: 'Transaction') }
+
+  before do
+    allow(AeonClient).to receive(:new).and_return(aeon_client)
+    allow(aeon_client).to receive(:find_queue).and_return(queue)
+  end
+
   describe '.from_requests' do
     context 'with multiple item selector requests' do
       let(:reading_room_a) { build(:aeon_request, title: 'Title A', transaction_number: 1, web_request_form: 'multiple') }
