@@ -242,6 +242,46 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       expect(page).to have_button('Submit request', disabled: false)
     end
 
+    it 'does not retain reading-room appointment data after switching to digitization' do # rubocop:disable RSpec/ExampleLength
+      visit new_archives_request_path(value: 'http://example.com/ead.xml')
+
+      choose 'Reading room appointment'
+      click_button 'Continue'
+
+      click_link 'Computers and Typesetting'
+      click_link 'Legal size documents'
+      check 'Box 12'
+      click_button 'Continue'
+
+      within('[data-content-id]', text: 'Box 12') do
+        click_button 'Select existing appointment'
+        click_button 'Feb 19'
+      end
+      expect(page).to have_button('Submit request', disabled: false)
+
+      # User changes their mind and switches to digitization
+      within('#request-type-accordion') { click_button 'Edit' }
+      choose 'Digitization'
+      check 'I agree to these terms'
+      click_button 'Continue'
+      expect(page).to have_css('#items-accordion .accordion-collapse.show')
+      click_button 'Continue'
+
+      within('[data-content-id]', text: 'Box 12') do
+        fill_in 'Requested pages', with: 'Pages 1-10'
+        choose 'No'
+      end
+
+      perform_enqueued_jobs { click_button 'Submit request' }
+      expect(page).to have_css('.confirmation')
+
+      patron_request = PatronRequest.last
+      expect(patron_request.request_type).to eq 'scan'
+      box_12_data = patron_request.aeon_item.values.find { |v| v['requested_pages'] == 'Pages 1-10' }
+      expect(box_12_data).to be_present
+      expect(box_12_data['appointment_id']).to be_blank
+    end
+
     it 'shows the request-type Edit button when save-for-later is triggered from the digitization flow' do
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
 

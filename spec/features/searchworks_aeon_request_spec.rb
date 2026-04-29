@@ -196,5 +196,45 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
         expect(page).to have_content 'ABC 321'
       end
     end
+
+    it 'does not retain digitization data after switching to a reading-room appointment' do # rubocop:disable RSpec/ExampleLength
+      choose 'Digitization'
+      check 'I agree to these terms'
+      click_button 'Continue'
+
+      check 'ABC 123'
+      click_button 'Continue'
+
+      within('[data-content-id]', text: 'ABC 123') do
+        fill_in 'Requested pages', with: 'Pages 1-10'
+        choose 'No'
+        fill_in 'Additional information', with: 'Testing only'
+      end
+      expect(page).to have_button('Submit request', disabled: false)
+
+      # User changes their mind and switches to a reading-room appointment
+      within('#request-type-accordion') { click_button 'Edit' }
+      choose 'Reading room appointment'
+      click_button 'Continue'
+      expect(page).to have_css('#items-accordion .accordion-collapse.show')
+      click_button 'Continue'
+
+      within('[data-content-id]', text: 'ABC 123') do
+        click_button 'Select existing appointment'
+        click_button 'Feb 19'
+      end
+
+      perform_enqueued_jobs { click_button 'Submit request' }
+      expect(page).to have_css('.confirmation')
+
+      patron_request = PatronRequest.last
+      expect(patron_request.request_type).to eq 'pickup'
+      abc_123_data = patron_request.aeon_item.values.find { |v| v['appointment_id'].present? }
+      expect(abc_123_data).to be_present
+      expect(abc_123_data['appointment_id']).to eq '1'
+      expect(abc_123_data['requested_pages']).to be_blank
+      expect(abc_123_data['for_publication']).to be_blank
+      expect(abc_123_data['additional_information']).to be_blank
+    end
   end
 end

@@ -147,16 +147,39 @@ class PatronRequestsController < ApplicationController
   end
 
   def patron_request_params
-    aeon_term_params = params.dig(:patron_request, :aeon_item)&.keys&.index_with do
+    permitted = params.expect(
+      patron_request: [:patron_email, :instance_hrid, :origin_location_code, :needed_date,
+                       :service_point_code, :proxy, :for_sponsor_id, :for_sponsor,
+                       :fulfillment_type, :request_type,
+                       :scan_page_range, :scan_authors, :scan_title,
+                       :aeon_reading_special, :aeon_terms, :ead_url,
+                       { barcodes: [] },
+                       { aeon_item: aeon_term_params }]
+    )
+
+    with_irrelevant_aeon_fields_removed(permitted)
+  end
+
+  def aeon_term_params
+    submitted_keys = params.dig(:patron_request, :aeon_item)&.keys || []
+    submitted_keys.index_with do
       [:id, :title, :appointment_id, :for_publication, :requested_pages, :additional_information, { hierarchy: [] }]
     end
+  end
 
-    params.expect(patron_request: [:patron_email, :instance_hrid, :origin_location_code, :needed_date, :service_point_code, :proxy,
-                                   :for_sponsor_id, :for_sponsor,
-                                   :fulfillment_type, :request_type,
-                                   :scan_page_range, :scan_authors, :scan_title,
-                                   :aeon_reading_special, :aeon_terms, :ead_url,
-                                   { barcodes: [] }, { aeon_item: aeon_term_params }])
+  # Hidden accordion sections in the form still submit their inputs, so strip
+  # per-item fields that don't belong to the selected request type.
+  def with_irrelevant_aeon_fields_removed(permitted_params)
+    irrelevant = case permitted_params[:request_type]
+                 when 'pickup' then [:requested_pages, :for_publication, :additional_information]
+                 when 'scan'   then [:appointment_id]
+                 else []
+                 end
+    return permitted_params if irrelevant.empty? || permitted_params[:aeon_item].blank?
+
+    permitted_params.merge(
+      aeon_item: permitted_params[:aeon_item].transform_values { |item| item.except(*irrelevant) }
+    )
   end
 
   def handle_ead_client_error
