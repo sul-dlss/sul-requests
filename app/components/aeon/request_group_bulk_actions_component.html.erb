@@ -1,4 +1,4 @@
-<div class="request-group border-bottom" data-controller="empty-remove"
+<div class="request-group border-bottom" <% if hidden %>hidden<% end %> data-draft-request-target="modalGroup" data-digital="<%= request_group.digital? %>"
   <% unless request_group.multi_item_selector? %>id="<%= dom_id(requests.first) %>" data-request-id="<%= requests.first.id %>"<% end %>>
   <div class="card-body">
     <div class="metadata">

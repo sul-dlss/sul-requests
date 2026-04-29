@@ -25,12 +25,8 @@
     <%= render ModalComponent.new(id: "delete-bulk", data: {draft_request_target: "deleteModal"}) do |component| %>
       <% component.with_title.with_content('Delete saved for later requests?') %>
       <% component.with_body do %>
-        <% @aeon_request_groups.each do |group| %>
-          <div hidden data-draft-request-target="modalGroup" data-digital="<%= group.digital? %>"
-            <% unless group.first.multi_item_selector? %>data-request-id="<%= group.first.id %>"<% end %>>
-            <%= render Aeon::RequestGroupCompactComponent.new(request_group: group) %>
-          </div>
-        <% end %>
+        <%= render Aeon::RequestGroupBulkActionsComponent.with_collection(@aeon_request_groups) %>
+
         <div hidden data-draft-request-target="modalSummary"></div>
         <div class="mt-2 fw-bold">This action cannot be undone.</div>
       <% end %>
