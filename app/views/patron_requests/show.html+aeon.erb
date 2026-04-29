@@ -34,7 +34,7 @@
                 <% if request.appointment %>
                   <div class="mb-3">
                     <h2>Appointment</h2>
-                    <i class="bi bi-calendar me-2"></i><%= render AppointmentTimeRangeComponent.new(appointment: request.appointment) %>
+                    <%= render Aeon::AppointmentDateTimeComponent.new(appointment: appointment) %>
                   </div>
                 <% elsif request.requested_pages.present? %>
                   <div class="mb-3">
