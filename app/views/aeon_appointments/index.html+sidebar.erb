@@ -5,7 +5,7 @@
 
   <% if @appointments.any? %>
   <ul class="list-unstyled">
-    <%= render Aeon::AppointmentBriefComponent.with_collection(@appointments) %>
+    <%= render Aeon::AppointmentSidebarComponent.with_collection(@appointments) %>
   </ul>
   <% end %>
 </turbo-frame>
