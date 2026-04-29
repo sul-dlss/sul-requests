@@ -8,7 +8,7 @@
     </h3>
     <span class="ms-2">Call number: <%= request_group.base_callnumber %></span>
     <ul class="list-group list-group-flush mt-2">
-      <%= render Aeon::RequestGroupPerAppointmentItemComponent.with_collection(requests) %>
+      <%= render Aeon::RequestGroupItemComponent.with_collection(requests, actions: false, appointment: false, footer: false) %>
     </ul>
   </div>
 </div>

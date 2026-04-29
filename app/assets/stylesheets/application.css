@@ -894,3 +894,7 @@ label.btn-close {
   padding: 0.5rem 1rem;
   background-color: var(--stanford-fog-light);  
 }
+
+.request-group-per-appointment .request {
+  --bs-list-group-border-width: 0;
+}
