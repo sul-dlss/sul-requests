@@ -50,7 +50,7 @@ export default class extends Controller {
 
     if (!date) return;
 
-    this.availabilityTarget.src = `/aeon_appointments/available/${readingRoomId}/${date}?selected=${startTime}&duration=${apptDuration}`
+    this.availabilityTarget.src = `/aeon_reading_rooms/${readingRoomId}/available/${date}?selected=${startTime}&duration=${apptDuration}`
   }
 
   updateBanner() {
