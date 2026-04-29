@@ -1,4 +1,4 @@
-<%= tag.div class: %w[card bg-body-tertiary border-light-subtle shadow-sm mb-4] + classes, **tag_options do %>
+<%= tag.public_send element, class: %w[card bg-body-tertiary border-light-subtle shadow-sm mb-4] + classes, **tag_options do %>
   <%= pre %>
   <div class="card-header d-flex justify-content-between align-items-center bg-body-tertiary">
     <%= title %>

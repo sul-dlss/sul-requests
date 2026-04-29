@@ -1,4 +1,4 @@
-<%= render CardComponent.new id: request_group.dom_id, classes: 'request-group', data: { controller: 'empty-remove' } do |c| %>
+<%= render CardComponent.new id: request_group.dom_id, element: element, classes: 'request-group', data: { controller: 'empty-remove' } do |c| %>
   <% c.with_title do %>
     <div>
       <div class="d-flex flex-wrap gap-1 justify-content-between align-items-center mt-2 mb-3">

@@ -8,7 +8,7 @@
       <% end %>
       <span class="text-cardinal">
         Earliest appointment available:
-        <%= turbo_frame_tag 'earliest_appointment', src: available_aeon_appointments_path(f.object.aeon_reading_room&.id, Date.today) %>
+        <%= turbo_frame_tag 'earliest_appointment', src: available_aeon_reading_room_url(f.object.aeon_reading_room&.id, Date.today) %>
       </span>
     </div>
   </div>

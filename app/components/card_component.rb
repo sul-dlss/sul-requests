@@ -9,9 +9,10 @@ class CardComponent < ViewComponent::Base
   renders_one :footer
   renders_one :post
 
-  attr_reader :classes, :tag_options
+  attr_reader :element, :classes, :tag_options
 
-  def initialize(classes: [], **tag_options)
+  def initialize(element: 'div', classes: [], **tag_options)
+    @element = element
     @classes = Array(classes)
     @tag_options = tag_options
   end
