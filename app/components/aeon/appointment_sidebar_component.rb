@@ -2,7 +2,7 @@
 
 module Aeon
   # Render aeon apointment card
-  class AppointmentBriefComponent < Aeon::AppointmentComponent
+  class AppointmentSidebarComponent < Aeon::AppointmentComponent
     with_collection_parameter :appointment
   end
 end
