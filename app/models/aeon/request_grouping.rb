@@ -22,6 +22,12 @@ module Aeon
       @requests = requests
     end
 
+    def dom_id
+      return "group_#{requests.first.id}" unless requests.first.multi_item_selector?
+
+      "group_#{requests.first.title.parameterize}_#{requests.first.digital? ? 'digital' : 'reading_room'}"
+    end
+
     def draft_requests
       requests.select(&:draft?)
     end
