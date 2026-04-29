@@ -10,14 +10,7 @@
       </div>
       <ul class="list-group list-group-flush">
         <% requests.each do |request| %>
-          <li id="<%= dom_id(request) %>" data-transaction-number="<%= request.transaction_number %>" class="request list-group-item border-0 px-0" data-empty-remove-target="item">
-            <div class="d-flex flex-row align-items-center justify-content-between">
-              <div class="d-flex gap-3">
-                <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
-                <%= render @after_request_item_component.new(request:) if @after_request_item_component %>
-              </div>
-            </div>
-          </li>
+          <%= render Aeon::RequestItemRowComponent.new(request:, after_component: @after_request_item_component) %>
         <% end %>
       </ul>
     </div>
