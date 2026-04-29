@@ -18,6 +18,14 @@ class PatronRequest < ApplicationRecord
 
   delegate :instance_id, :finding_aid, :finding_aid?, to: :folio_instance
 
+  # Per-item fields that are meaningful for each Aeon request_type. Hidden accordion sections in the
+  # form still submit their inputs, so we drop anything that doesn't belong to the selected type.
+  AEON_ITEM_FIELDS_BY_REQUEST_TYPE = {
+    'scan' => %w[id title hierarchy for_publication requested_pages additional_information],
+    'pickup' => %w[id title hierarchy appointment_id],
+    'activity' => %w[id title hierarchy]
+  }.freeze
+
   validates :request_type, inclusion: { in: %w[scan pickup mediated mediated/approved mediated/done activity] }
   validates :scan_title, presence: true, on: :create, if: :folio_scan?
   validate :pickup_service_point_is_valid, on: :create, if: :folio_pickup?
@@ -47,6 +55,8 @@ class PatronRequest < ApplicationRecord
   has_many :admin_comments, as: :request, dependent: :delete_all
 
   attr_writer :folio_instance
+
+  before_validation :prune_irrelevant_aeon_request_data
 
   before_create do
     self.request_type = 'mediated' if mediateable? && !request_type.start_with?('mediated') && !aeon_page?
@@ -727,5 +737,12 @@ class PatronRequest < ApplicationRecord
     return if instance_hrid.present? || ead_url.present?
 
     errors.add(:instance_id, 'Either a FOLIO instance HRID or an EAD URL must be provided')
+  end
+
+  def prune_irrelevant_aeon_request_data
+    if aeon_item.present? && (fields = AEON_ITEM_FIELDS_BY_REQUEST_TYPE[request_type])
+      self.aeon_item = aeon_item.transform_values { |item| item.slice(*fields) }
+    end
+    self.activity_ids = nil unless request_type == 'activity'
   end
 end

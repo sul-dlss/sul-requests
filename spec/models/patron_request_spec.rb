@@ -48,6 +48,49 @@ RSpec.describe PatronRequest do
     it { is_expected.to be_scan }
   end
 
+  describe 'pruning irrelevant aeon request data on validation' do
+    # Stub items so the unrelated folio_scan?/folio_pickup? validation predicates resolve cleanly.
+    let(:folio_instance) { instance_double(Folio::Instance, title: 'Title', items: []) }
+    let(:full_aeon_item) do
+      { 'box-1' => { 'id' => 'box-1', 'title' => 'Box 1', 'appointment_id' => '7',
+                     'requested_pages' => '1-10', 'for_publication' => 'false', 'additional_information' => 'note' } }
+    end
+
+    context 'with a digitization request' do
+      let(:attr) { { request_type: 'scan', aeon_item: full_aeon_item, activity_ids: %w[3] } }
+
+      it 'drops appointment_id and activity_ids' do
+        request.valid?
+        expect(request.aeon_item['box-1']).not_to have_key('appointment_id')
+        expect(request.aeon_item['box-1']).to include('requested_pages' => '1-10', 'for_publication' => 'false')
+        expect(request.activity_ids).to be_nil
+      end
+    end
+
+    context 'with a reading-room request' do
+      let(:attr) { { request_type: 'pickup', aeon_item: full_aeon_item, activity_ids: %w[3] } }
+
+      it 'drops digitization fields and activity_ids' do
+        request.valid?
+        expect(request.aeon_item['box-1']).to include('appointment_id' => '7')
+        expect(request.aeon_item['box-1'].keys).not_to include('requested_pages', 'for_publication', 'additional_information')
+        expect(request.activity_ids).to be_nil
+      end
+    end
+
+    context 'with an activity request' do
+      let(:attr) { { request_type: 'activity', aeon_item: full_aeon_item, activity_ids: %w[3] } }
+
+      it 'drops both appointment and digitization fields and keeps activity_ids' do
+        request.valid?
+        expect(request.aeon_item['box-1'].keys).not_to include(
+          'appointment_id', 'requested_pages', 'for_publication', 'additional_information'
+        )
+        expect(request.activity_ids).to eq %w[3]
+      end
+    end
+  end
+
   describe '#display_type' do
     context 'request type scan' do
       let(:attr) { { request_type: 'scan' } }
