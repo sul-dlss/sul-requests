@@ -160,6 +160,34 @@ RSpec.describe 'Accessibility testing', :js do
     expect(page).to be_accessible
   end
 
+  context 'for the appointment date picker component' do
+    let(:user) { create(:sso_user) }
+    let(:current_user) { CurrentUser.new(username: user.sunetid, shibboleth: true) }
+    let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
+    let(:reading_room) { build(:aeon_reading_room) }
+    let(:stub_aeon_client) do
+      instance_double(AeonClient,
+                      find_user: aeon_user,
+                      appointments_for: [],
+                      available_appointments: [],
+                      reading_rooms: [reading_room])
+    end
+
+    before do
+      allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
+      login_as(current_user)
+    end
+
+    it 'validates the custom stimulus datepicker' do
+      visit new_aeon_appointment_path(reading_room_id: reading_room.id)
+      expect(page).to be_accessible
+
+      find('[data-date-picker-target="display"]').click
+      expect(page).to have_css('[data-date-picker-target="calendar"]:not([hidden])') # picker is open
+      expect(page).to be_accessible
+    end
+  end
+
   def be_accessible
     be_axe_clean.with_options({ preload: false })
   end

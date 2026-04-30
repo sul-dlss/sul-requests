@@ -64,6 +64,9 @@ application.register("empty-remove", EmptyRemoveController)
 import DraftRequestController from "./draft_request_controller"
 application.register("draft-request", DraftRequestController)
 
+import DatePickerController from "./date_picker_controller"
+application.register("date-picker", DatePickerController)
+
 import CharCounterController from "./char_counter_controller"
 application.register("char-counter", CharCounterController)
 

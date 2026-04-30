@@ -1,0 +1,3 @@
+<%= form_with(model: Aeon::Appointment.new, url: '#') do |f| %>
+  <%= render Aeon::AppointmentDatePickerComponent.new(form: f) %>
+<% end %>
