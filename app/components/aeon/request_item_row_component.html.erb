@@ -1,0 +1,12 @@
+<li id="<%= dom_id(@request) %>" data-transaction-number="<%= @request.transaction_number %>" class="request list-group-item border-0 px-0" data-empty-remove-target="item">
+  <div class="d-flex flex-row align-items-center justify-content-between">
+    <div class="d-flex gap-3">
+      <%= render Aeon::RequestItemIdentifierComponent.new(request: @request) %>
+
+      <% case @action %>
+      <% when :add %>
+        <%= render Aeon::AddRequestComponent.new(request: @request) %>
+      <% end %>
+    </div>
+  </div>
+</li>

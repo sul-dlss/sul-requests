@@ -5,8 +5,8 @@ module Aeon
   class RequestGroupBriefComponent < Aeon::RequestGroupComponent
     with_collection_parameter :request_group
 
-    def initialize(after_request_item_component: nil, data: {}, **)
-      @after_request_item_component = after_request_item_component
+    def initialize(item_action: nil, data: {}, **)
+      @item_action = item_action
       @data = data
       super(**)
     end

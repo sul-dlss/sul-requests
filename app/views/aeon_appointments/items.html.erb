@@ -46,7 +46,7 @@
           <div id="draftRequests" class="accordion-collapse collapse show" data-bs-parent="#draftRequestsAccordion">
             <div class="accordion-body p-0">
               <% @aeon_request_groups.each do |request_group| %>
-                <%= render Aeon::RequestGroupBriefComponent.new(request_group:, data: { controller: 'add-items empty-remove', appointment_target: '#appointmentRequests' }, after_request_item_component: Aeon::AddRequestComponent) %>
+                <%= render Aeon::RequestGroupBriefComponent.new(request_group:, data: { controller: 'add-items empty-remove', appointment_target: '#appointmentRequests' }, item_action: :add) %>
               <% end %>
             </div>
           </div>
