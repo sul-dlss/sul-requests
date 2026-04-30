@@ -72,3 +72,6 @@ application.register("ead-search", EadSearchController)
 
 import ViewContainerContentsController from "./view_container_contents_controller"
 application.register("view-container-contents", ViewContainerContentsController)
+
+import ActivityDropdownController from "./activity_dropdown_controller"
+application.register("activity-dropdown", ActivityDropdownController)

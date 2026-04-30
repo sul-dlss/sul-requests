@@ -4,19 +4,31 @@
       <span class="text-black fw-semibold selected-item-title">__TITLE__</span>
     </div>
   </template>
-  <div class="selected-items-container px-0 gap-3 d-flex flex-row" data-item-selector-target="selectedItems" data-template="#activityTemplate">
+  <div class="selected-items-container px-0 gap-3 d-flex flex-row flex-wrap" data-item-selector-target="selectedItems" data-template="#activityTemplate">
   </div>
-  <div class="dropdown custom-select px-0 pt-3">
-    <%= button_tag 'Select activity', class: 'py-1 btn border dropdown-toggle', type: 'button', data: { bs_toggle: 'dropdown' }, aria: { expanded: false } %>
-    <menu class="dropdown-menu appt-dropdown">
+  <div class="dropdown custom-select px-0 pt-3" data-controller="activity-dropdown">
+    <%= f.label 'activity-dropdown', 'Activities', :class => 'fw-bold py-2 redesign-required-label' %>
+    <%= button_tag 'Select activity', class: 'py-1 btn border dropdown-toggle d-flex justify-content-between align-items-center', style: 'min-width: 75%', type: 'button', data: { bs_toggle: 'dropdown'}, aria: { expanded: false } %>
+    <menu id="activity-dropdown" class="dropdown-menu appt-dropdown">
       <% @activities&.each do |activity| %>
         <%= tag.li class: 'd-flex align-items-end' do %>
           <label class="mx-4">
-            <%= check_box_tag 'patron_request[activity_ids][]', class: 'visually-hidden', value: activity.id %>
+            <%= check_box_tag 'patron_request[activity_ids][]', data: { action: 'activity-dropdown#change', title: activity.name, activity_id: activity.id }, class: 'visually-hidden', value: activity.id %>
             <%= activity.name %>
           </label>
         <% end %>
       <% end %>
     </menu>
+    <div data-activity-dropdown-target="selected" class="d-flex flex-wrap gap-1 my-1">
+    </div>
+  </div>
+
+  <div class="p-0" data-controller="char-counter">
+    <%= f.label :aeon_reading_special, 'Additional information', :class => 'fw-bold py-2' %>
+    <%= f.text_area :aeon_reading_special, :class => 'form-control', rows: 3, maxlength: 255, data: { action: "input->char-counter#updateCharCounter"} %>
+    <p class="form-text text-secondary d-flex justify-content-between">
+      <span>Limit 255 characters.</span>
+      <span data-char-counter-target="counter"></span>
+    </p>
   </div>
 </div>
