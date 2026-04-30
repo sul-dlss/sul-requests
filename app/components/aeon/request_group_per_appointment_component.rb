@@ -5,8 +5,10 @@ module Aeon
   # Differs in layout from RequestGroupAppointment
   # Appears on aeon_appointment/index page
   class RequestGroupPerAppointmentComponent < Aeon::RequestGroupComponent
-    def initialize(request_group_per_appointment:)
-      @request_group = request_group_per_appointment
+    with_collection_parameter :request_group
+
+    def initialize(request_group:)
+      @request_group = request_group
     end
   end
 end
