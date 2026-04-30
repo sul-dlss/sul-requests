@@ -148,7 +148,7 @@
 <% end %>
 
 <%= render AccordionStepComponent.new(id: 'scan-or-pickup-placeholder', classes: [('d-none' if f.object.request_type)], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'none' }) do |c| %>
-  <% c.with_title.with_content('Appointment or Digitization') %>
+  <% c.with_title.with_content('Request details') %>
 <% end %>
 
 <!-- aeon reading room request -->
@@ -162,6 +162,14 @@
     <span class="px-2 py-1" data-status-counter-target="counter">
       0 items ready to submit
     </span>
+  <% end %>
+<% end %>
+
+<!-- aeon activities -->
+<%= render AccordionStepComponent.new(request: f.object, id: 'activity', classes: ['d-none'], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { controller: 'status-counter', action: 'selected-item-form:status-changed->status-counter#update item-selector:changed@document->status-counter#update save-for-later:changed@document->status-counter#update save-for-later:changed@document->accordion-form#reenableNextButtons', 'save-for-later-target': 'section', 'patronrequest-forRequestType': 'activity' }, submit: true) do |c| %>
+  <% c.with_title.with_content('Activity') %>
+  <% c.with_body do %>
+    <%= render 'activity', f: %>
   <% end %>
 <% end %>
 

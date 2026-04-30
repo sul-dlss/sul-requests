@@ -11,14 +11,14 @@ class PatronRequest < ApplicationRecord
   belongs_to :user, optional: true
 
   store :data, accessors: [
-    :barcodes, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title,
+    :barcodes, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title, :activity_ids,
     :proxy, :for_sponsor, :for_sponsor_id, :estimated_delivery, :patron_name, :item_title, :requested_barcodes, :item_mediation_data,
     :aeon_reading_special, :aeon_item, :aeon_terms, :ead_url
   ], coder: JSON
 
   delegate :instance_id, :finding_aid, :finding_aid?, to: :folio_instance
 
-  validates :request_type, inclusion: { in: %w[scan pickup mediated mediated/approved mediated/done] }
+  validates :request_type, inclusion: { in: %w[scan pickup mediated mediated/approved mediated/done activity] }
   validates :scan_title, presence: true, on: :create, if: :folio_scan?
   validate :pickup_service_point_is_valid, on: :create, if: :folio_pickup?
   validate :needed_date_is_valid, on: :create

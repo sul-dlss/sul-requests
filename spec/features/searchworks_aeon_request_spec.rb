@@ -17,7 +17,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
   let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
   let(:stub_aeon_client) do
     instance_double(AeonClient, find_user: aeon_user, create_request: created_request, update_request_route: nil,
-                                reading_rooms:, available_appointments:)
+                                reading_rooms:, available_appointments:, activities_for: [])
   end
   let(:created_request) { instance_double(Aeon::Request, id: 123, transaction_number: 'abc123', submitted?: true, draft?: false, valid?: true) }
   let(:available_appointments) do

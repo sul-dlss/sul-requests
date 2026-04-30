@@ -192,7 +192,8 @@ RSpec.describe 'Creating an Aeon patron request', :js do
 
     let(:reading_rooms) { JSON.load_file('spec/fixtures/reading_rooms.json').map { |room| Aeon::ReadingRoom.from_dynamic(room) } }
     let(:stub_aeon_client) do
-      instance_double(AeonClient, find_user: aeon_user, reading_rooms:, appointments_for: [], available_appointments: [])
+      instance_double(AeonClient, find_user: aeon_user, reading_rooms:, appointments_for: [], available_appointments: [],
+                                  activities_for: [])
     end
     let(:eadxml) do
       Nokogiri::XML(File.read('spec/fixtures/sc0097.xml')).tap(&:remove_namespaces!)

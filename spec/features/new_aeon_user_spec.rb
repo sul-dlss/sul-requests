@@ -20,7 +20,7 @@ RSpec.describe 'Creating new accounts for patrons', :js do
 
   let(:stub_aeon_client) do
     instance_double(AeonClient, find_user: Aeon::NullUser.new, create_user: nil, reading_rooms: reading_rooms, appointments_for: [],
-                                available_appointments: [])
+                                available_appointments: [], activities_for: [])
   end
 
   let(:reading_rooms) { JSON.load_file('spec/fixtures/reading_rooms.json').map { |room| Aeon::ReadingRoom.from_dynamic(room) } }

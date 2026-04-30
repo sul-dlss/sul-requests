@@ -8,6 +8,7 @@ export default class extends Controller {
   }
 
   update(event) {
+    if (!this.hasCounterTarget) return
     const completeCount = this.element.querySelectorAll('[data-selected-item-form-status-value="complete"]').length;
     const savedCount = this.element.querySelectorAll('[data-saved-for-later]').length;
 

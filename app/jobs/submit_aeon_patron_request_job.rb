@@ -6,12 +6,27 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   queue_as :default
   retry_on Faraday::ConnectionFailed
 
-  def perform(patron_request) # rubocop:disable Metrics/AbcSize
+  def perform(patron_request)
     return unless patron_request.aeon_page?
+    return perform_activity_request(patron_request) if patron_request.data['activity_ids'].present?
     return perform_ead_request(patron_request) if patron_request.ead_url.present?
 
+    perform_folio_request(patron_request)
+  end
+
+  def perform_activity_request(patron_request)
+    patron_request.data['activity_ids'].each do |activity_id|
+      if patron_request.ead_url.present?
+        perform_ead_request(patron_request, activity_id:)
+      else
+        perform_folio_request(patron_request, activity_id:)
+      end
+    end
+  end
+
+  def perform_folio_request(patron_request, activity_id: nil)
     patron_request.selected_items.each do |folio_item|
-      request = as_aeon_create_request_data(patron_request, folio_item, patron_request.aeon_item&.dig(folio_item.id) || {})
+      request = as_aeon_create_request_data(patron_request, folio_item, patron_request.aeon_item&.dig(folio_item.id) || {}, activity_id)
       response = submit_aeon_request(request)
 
       patron_request.aeon_api_responses.where(item_id: folio_item.id).delete_all
@@ -19,9 +34,9 @@ class SubmitAeonPatronRequestJob < ApplicationJob
     end
   end
 
-  def perform_ead_request(patron_request)
+  def perform_ead_request(patron_request, activity_id: nil)
     patron_request.aeon_item.each_value do |volume_params|
-      request = as_aeon_create_ead_request_data(patron_request, volume_params)
+      request = as_aeon_create_ead_request_data(patron_request, volume_params, activity_id)
       response = submit_aeon_request(request)
 
       item_id = "#{request.call_number} #{request.item_volume}"
@@ -31,7 +46,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
     end
   end
 
-  def common_aeon_data_from_patron_request(patron_request, volume_params) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+  def common_aeon_data_from_patron_request(patron_request, volume_params, activity_id) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     AeonClient::RequestData.with_defaults.with(
       appointment_id: volume_params['appointment_id'].presence&.to_i,
       document_type: patron_request.document_type,
@@ -49,12 +64,13 @@ class SubmitAeonPatronRequestJob < ApplicationJob
                        else
                          patron_request.aeon_reading_special
                        end,
-      username: patron_request.user.aeon.username
+      username: patron_request.user.aeon.username,
+      activity_id:
     )
   end
 
-  def as_aeon_create_ead_request_data(patron_request, volume_params)
-    common_aeon_data_from_patron_request(patron_request, volume_params).with(
+  def as_aeon_create_ead_request_data(patron_request, volume_params, activity_id)
+    common_aeon_data_from_patron_request(patron_request, volume_params, activity_id).with(
       call_number: "#{patron_request.ead_doc.identifier} #{volume_params['hierarchy']&.first}",
       ead_number: patron_request.ead_doc.identifier,
       item_info4: patron_request.ead_doc.conditions_governing_access,
@@ -66,8 +82,8 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   # Once reading room logic for appointments is implemented, this mapping
   # should also contain scheduledDate, appointment id, appointment,
   # and reading room id.
-  def as_aeon_create_request_data(patron_request, folio_item, volume_params)
-    common_aeon_data_from_patron_request(patron_request, volume_params).with(
+  def as_aeon_create_request_data(patron_request, folio_item, volume_params, activity_id)
+    common_aeon_data_from_patron_request(patron_request, volume_params, activity_id).with(
       call_number: folio_item.callnumber,
       item_number: folio_item.barcode,
       location: patron_request.origin_location_code,

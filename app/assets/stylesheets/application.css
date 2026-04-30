@@ -647,7 +647,8 @@ label.btn-close {
 }
 
 .selected-items-container .appointments-item:only-child,
-.selected-items-container .accordion-item:only-child
+.selected-items-container .accordion-item:only-child,
+.selected-items-container .activity-item
 {
   --bs-accordion-border-width: 0;
   --bs-accordion-active-bg: transparent;
@@ -773,7 +774,8 @@ label.btn-close {
     --bs-btn-active-bg: white;
   }
 
-  .selected {
+
+  .selected, li:has(input:checked)  {
     background-color: var(--bs-primary-bg-subtle);
     &::before {
       content: "\f633"; /* check-lg icon */
