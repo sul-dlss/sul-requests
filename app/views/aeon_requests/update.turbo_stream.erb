@@ -5,3 +5,7 @@
 <% else %>
   <%= turbo_stream.remove(@aeon_request) %>
 <% end %>
+
+<%= turbo_stream.replace('aeon-appointments') do %>
+  <%= render 'aeon_appointments' %>
+<% end %>
