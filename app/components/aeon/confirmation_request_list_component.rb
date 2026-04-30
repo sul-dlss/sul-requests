@@ -3,9 +3,12 @@
 module Aeon
   # Render aeon apointment card
   class ConfirmationRequestListComponent < ViewComponent::Base
-    def initialize(requests:, digitization:)
+    delegate :current_user, to: :helpers
+
+    def initialize(requests:, digitization:, activity_id: nil)
       @requests = requests
       @digitization = digitization
+      @activity_id = activity_id
     end
 
     def render?
@@ -14,8 +17,14 @@ module Aeon
 
     def title
       return 'Digitization requests' if @digitization
+      return activity_title if @activity_id
 
       'Appointments'
+    end
+
+    def activity_title
+      activity = current_user.aeon.activities.find { |appt| appt.id == @activity_id.to_i }
+      activity.name
     end
 
     def accordion_name(index)

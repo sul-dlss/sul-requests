@@ -3,6 +3,8 @@
     <% if @patron_request.request_type == 'scan' %>
       <h1>We received your digitization request!</h1>
       <div class="bg-light p-2 fs-5 mb-4">We'll email you when your files are ready.</div>
+    <% elsif @patron_request.request_type == 'activity' %>
+      <h1>We received your activities request!</h1>
     <% else %>
       <h1>We received your reading room access request!</h1>
       <div class="bg-light p-2 fs-5 mb-4">Please review Reading room policies before arriving for your appointment.</div>
@@ -27,7 +29,9 @@
                 </div>
               <% end %>
               <% if @aeon_requests.first&.multi_item_selector? %>
-                <%= render Aeon::ConfirmationRequestListComponent.new(requests: @aeon_requests.submitted_requests, digitization: @aeon_requests.digital? ) %>
+                <% @aeon_requests.submitted_requests.group_by(&:activity_id).each do |id, requests| %>
+                  <%= render Aeon::ConfirmationRequestListComponent.new(requests:, digitization: @aeon_requests.digital?, activity_id: id ) %>
+                <% end %>
                 <%= render Aeon::ConfirmationSavedForLaterComponent.new(request_group: @aeon_requests) %>
               <% else %>
                 <% request = @aeon_requests.first %>
