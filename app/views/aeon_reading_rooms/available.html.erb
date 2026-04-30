@@ -19,7 +19,7 @@
       <div class="loading-overlay p-2 mb-2" aria-hidden="true">Loading...</div>
       <div class="alert alert-info select">Select a reading room, date, and duration to see available appointments.</div>
     <% end %>
-    <% if next_appt = @available_appointments.find { |x| x.start_time.to_date > @date } %>
+    <% if params[:date] && next_appt = @available_appointments.find { |x| x.start_time.to_date > @date } %>
       <div>
         There are no appointments on <%= l(@date, format: :short) %>. The next available appointment is on <%= l(next_appt.start_time, format: :date_only) %>.
       </div>

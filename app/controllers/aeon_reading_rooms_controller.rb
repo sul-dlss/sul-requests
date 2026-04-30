@@ -10,7 +10,7 @@ class AeonReadingRoomsController < ApplicationController
   before_action :load_reading_room
 
   def available
-    @date = Date.parse(params.expect(:date))
+    @date = (Date.parse(params.expect(:date)) if params[:date]) || Time.zone.now.to_date
     @available_appointments = @reading_room.available_appointments(@date, include_next_available: true)
     @appointment_lengths = @available_appointments.map(&:maximum_appointment_length)
     @selected_time = params[:selected]
