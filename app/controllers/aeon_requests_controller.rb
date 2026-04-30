@@ -22,7 +22,7 @@ class AeonRequestsController < ApplicationController
 
     aeon_client.update_request_route(transaction_number: params[:id], status: 'Submitted by User')
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.remove("request-#{params[:id]}") }
+      format.turbo_stream { render turbo_stream: turbo_stream.remove(@aeon_request) }
     end
   end
 
