@@ -53,11 +53,15 @@ class AeonRequestsController < ApplicationController
     end
   end
 
-  def destroy_multiple
+  def destroy_multiple # rubocop:disable Metrics/AbcSize
+    request_ids = params[:ids].map(&:to_i)
+    salient_requests = @aeon_requests.select { |request| request_ids.include?(request.transaction_number) }
     # Authorize each of the individual aeon requests for deletion
-    @aeon_requests.each { |aeon_request| authorize! :destroy, aeon_request }
+    salient_requests.each { |aeon_request| authorize! :destroy, aeon_request }
     # Change status of the requests corresponding to these transaction numbers/ids to 'canceled'
-    cancel_multiple_requests
+    salient_requests.each do |aeon_request| # rubocop:disable Style/CombinableLoops
+      aeon_client.update_request_route(transaction_number: aeon_request.transaction_number, status: 'Cancelled by User')
+    end
     # Render turbo stream removal for each request
     respond_to do |format|
       format.turbo_stream { render turbo_stream: @aeon_requests.map { |aeon_request| turbo_stream.remove(aeon_request) } }
@@ -76,7 +80,7 @@ class AeonRequestsController < ApplicationController
     @aeon_request_group = @aeon_request_groups.find { |request_group| request_group.requests.find { |r| r.id == @aeon_request.id } }
   end
 
-  def load_aeon_requests # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity
+  def load_aeon_requests # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     return [] unless current_user&.aeon
 
     @aeon_requests = case params[:kind]
@@ -92,11 +96,6 @@ class AeonRequestsController < ApplicationController
                        current_user.aeon.requests
                      end
 
-    if params[:ids].present?
-      request_ids = params[:ids].map(&:to_i)
-      @aeon_requests = current_user.aeon.requests.select { |request| request_ids.include?(request.transaction_number) }
-    end
-
     @aeon_requests = sort_aeon_requests(filter_aeon_requests(@aeon_requests))
   end
 
@@ -106,11 +105,5 @@ class AeonRequestsController < ApplicationController
 
   def aeon_request_params
     params.expect(aeon_request: [:appointment_id, :requested_pages, :for_publication, :additional_information])
-  end
-
-  def cancel_multiple_requests
-    @aeon_requests.each do |aeon_request|
-      aeon_client.update_request_route(transaction_number: aeon_request.transaction_number, status: 'Cancelled by User')
-    end
   end
 end
