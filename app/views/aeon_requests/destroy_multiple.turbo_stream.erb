@@ -1,0 +1,7 @@
+<% @salient_requests.each do |request| %>
+  <%= turbo_stream.remove(request) %>
+<% end %>
+
+<% @aeon_request_groups.select { |request_group| (request_group.requests - @salient_requests).none? }.each do |request_group| %>
+  <%= turbo_stream.remove(request_group.dom_id) %>
+<% end %>
