@@ -9,8 +9,8 @@ class AeonRequestsController < ApplicationController
   include AeonSortable
 
   before_action :load_aeon_requests
-  before_action :load_aeon_request, only: [:edit, :update, :destroy, :resubmit]
-  before_action :load_aeon_request_groups, only: [:index, :update]
+  before_action :load_aeon_request_groups
+  before_action :load_aeon_request, except: [:index, :destroy_multiple]
   before_action :set_variant, only: [:index, :edit]
 
   def index
@@ -30,11 +30,10 @@ class AeonRequestsController < ApplicationController
     authorize! :update, @aeon_request
   end
 
-  def update # rubocop:disable Metrics/AbcSize
+  def update
     authorize! :update, @aeon_request
 
     @updated_request = Aeon::UpdateRequestService.new(@aeon_request, aeon_request_params).call
-    @aeon_request_group = @aeon_request_groups.find { |request_group| request_group.requests.find { |r| r.id == @aeon_request.id } }
 
     respond_to do |format|
       format.turbo_stream
@@ -74,6 +73,7 @@ class AeonRequestsController < ApplicationController
 
   def load_aeon_request
     @aeon_request = @aeon_requests.find { |request| request.transaction_number == params[:id].to_i }
+    @aeon_request_group = @aeon_request_groups.find { |request_group| request_group.requests.find { |r| r.id == @aeon_request.id } }
   end
 
   def load_aeon_requests # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity
