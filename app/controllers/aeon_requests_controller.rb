@@ -20,9 +20,10 @@ class AeonRequestsController < ApplicationController
   def resubmit
     authorize! :update, @aeon_request
 
-    aeon_client.update_request_route(transaction_number: params[:id], status: 'Submitted by User')
+    @updated_request = aeon_client.update_request_route(transaction_number: params[:id], status: 'Submitted by User')
+
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.remove(@aeon_request) }
+      format.turbo_stream { render 'update' }
     end
   end
 
@@ -47,9 +48,10 @@ class AeonRequestsController < ApplicationController
   def destroy
     authorize! :destroy, @aeon_request
 
-    aeon_client.update_request_route(transaction_number: params[:id], status: 'Cancelled by User')
+    @updated_request = aeon_client.update_request_route(transaction_number: params[:id], status: 'Cancelled by User')
+
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.remove(@aeon_request) }
+      format.turbo_stream { render 'update' }
     end
   end
 
