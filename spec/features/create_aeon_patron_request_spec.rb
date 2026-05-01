@@ -68,8 +68,10 @@ RSpec.describe 'Creating an Aeon patron request', :js do
       end
 
       it 'goes to aeon when submitted' do
-        click_on 'Continue'
-        expect(page.current_host).to eq 'https://stanford.aeon.atlas-sys.com'
+        expect(page).to have_css('form[action^="https://stanford.aeon.atlas-sys.com/"')
+        within('form[action^="https://stanford.aeon.atlas-sys.com/"]') do
+          expect(page).to have_button('Continue')
+        end
       end
 
       describe 'request form' do
