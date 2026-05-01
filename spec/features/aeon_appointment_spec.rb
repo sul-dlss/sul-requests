@@ -41,7 +41,7 @@ RSpec.describe 'Appointments', :js do
         select 'Field Reading Room'
         click_on 'Continue'
 
-        expect(page).to have_text 'Create new appointmentField Reading Room'
+        expect(page).to have_text 'Create new appointment Field Reading Room', normalize_ws: true
         expect(page).to have_field('aeon_appointment[date]', type: 'date')
         expect(page).to have_no_text('Duration')
         click_on 'Cancel'
@@ -57,7 +57,7 @@ RSpec.describe 'Appointments', :js do
         select 'Archive of Recorded Sound'
         click_on 'Continue'
 
-        expect(page).to have_text 'Create new appointmentArchive of Recorded Sound'
+        expect(page).to have_text 'Create new appointment Archive of Recorded Sound', normalize_ws: true
         expect(page).to have_field('aeon_appointment[date]', type: 'date')
         expect(page).to have_text('Duration')
         expect(page).to have_text('Available time slots')
