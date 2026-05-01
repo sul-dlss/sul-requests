@@ -27,7 +27,8 @@ export default class extends Controller {
       this.updateButtonForm(addTo, template, eventName);
       inAppointments.querySelector('ul').appendChild(addTo)
     }
-    window.dispatchEvent(new CustomEvent('items-updated', { detail: eventName }))
+    const addAmount = eventName == 'items-removed' ? -1 : 1
+    window.dispatchEvent(new CustomEvent('items-updated', { detail: { addAmount } }))
   }
 
   remove(e) {

@@ -12,7 +12,6 @@ module Aeon
                  data: { action: 'click->add-items#remove',
                          appointment_target: '#draftRequests',
                          transaction_number: @request.transaction_number,
-                         item_limit_updated_target: 'removeButton',
                          title: @request.item_title } do
         tag.i(class: 'bi bi-x') + tag.span('Remove')
       end
