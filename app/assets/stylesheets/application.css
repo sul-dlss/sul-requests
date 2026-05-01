@@ -908,3 +908,10 @@ label.btn-close {
 .zero-items-alert:only-child {
   display: flex;
 }
+
+.activities-list {
+  li:not(:last-child) {
+    border-bottom:1px solid var(--stanford-20-black);
+  }
+  padding-left: 0;
+}

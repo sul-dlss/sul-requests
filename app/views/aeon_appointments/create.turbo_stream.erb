@@ -7,7 +7,7 @@
     <div class="text-body">
       <ul class="mb-0">
         <li class="fw-semibold">
-          <span class="fw-normal">New appointment: </span><%= render AppointmentTimeRangeComponent.new(appointment: @appointment) %><i class="bi bi-dot"></i><%= @appointment.reading_room.name %>
+          <span class="fw-normal">New appointment: </span><%= render AppointmentTimeRangeComponent.new(appointment: @appointment, location: @appointment.reading_room.name) %>
         </li>
         <li>Items can be scheduled for this appointment.</li>
         <% if @appointment.reading_room.appointment_item_limit %>
