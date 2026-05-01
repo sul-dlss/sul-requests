@@ -6,17 +6,19 @@
   </template>
   <div class="selected-items-container px-0 gap-3 d-flex flex-row" data-item-selector-target="selectedItems" data-template="#activityTemplate">
   </div>
-  <div class="dropdown custom-select px-0 pt-3">
-    <%= button_tag 'Select activity', class: 'py-1 btn border dropdown-toggle', type: 'button', data: { bs_toggle: 'dropdown' }, aria: { expanded: false } %>
-    <menu class="dropdown-menu appt-dropdown">
+
+  <fieldset class="mt-4 p-2 pb-0 border rounded overflow-y-scroll overflow-x-hidden" style="max-height: 400px">
+    <legend class="form-label fs-6 mb-1 ms-2 fw-semibold">Activities<span class="ms-2 fw-normal fs-14 redesign-required-label">Select one or more</span></legend>
+    <ul class="activities-list p-2 pb-0">
       <% @activities&.each do |activity| %>
-        <%= tag.li class: 'd-flex align-items-end' do %>
-          <label class="mx-4">
-            <%= check_box_tag 'patron_request[activity_ids][]', class: 'visually-hidden', value: activity.id %>
-            <%= activity.name %>
+        <%= tag.li class: 'd-flex align-items-center p-2' do %>
+          <%= check_box_tag 'patron_request[activity_ids][]', id: "activity-" + activity.id.to_s,  value: activity.id %>
+          <label class="d-flex flex-column ms-3" for="activity-<%= activity.id %>">
+            <div class="fw-semibold"><%= activity.activity_type %><i class="bi bi-dot"></i><%= activity.name %></div>
+            <div><%= render AppointmentTimeRangeComponent.new(appointment: activity, show_hours: true, location: activity.location) if activity.start_time && activity.location %></div>
           </label>
         <% end %>
       <% end %>
-    </menu>
-  </div>
+    </ul>
+  </fieldset>
 </div>
