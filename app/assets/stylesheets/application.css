@@ -900,3 +900,40 @@ label.btn-close {
 .request-group-per-appointment .request {
   --bs-list-group-border-width: 0;
 }
+
+/* ---- Custom date picker ---- */
+.date-picker-popup {
+  position: absolute;
+  z-index: 1000;
+  background: white;
+  border: 1px solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius);
+  box-shadow: var(--bs-box-shadow);
+  padding: 0.75rem;
+  min-width: 280px;
+}
+
+.date-picker-grid {
+  border-collapse: separate;
+  border-spacing: 2px;
+}
+
+.date-picker-day {
+  padding: 0.2rem 0;
+  font-size: 0.85rem;
+  min-width: 2rem;
+}
+
+.date-picker-day:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.date-picker-dot {
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  margin: 1px auto 0;
+}

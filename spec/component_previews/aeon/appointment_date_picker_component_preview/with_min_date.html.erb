@@ -1,0 +1,19 @@
+<%
+  reading_room = Aeon::ReadingRoom.new(id: 5, name: 'Field Reading Room', available_seats: 15,
+                                       time_zone_id: 'Pacific Standard Time', min_appointment_length: 30,
+                                       max_appointment_length: 480, appointment_padding: 0,
+                                       appointment_increment: 15, last_modified_time: Time.zone.now,
+                                       sites: ['SPECUA'], open_hours: [], policies: [])
+  next_appt = Aeon::Appointment.new(id: nil, username: nil, reading_room_id: 5,
+                                    start_time: 2.weeks.from_now, stop_time: 2.weeks.from_now + 1.hour,
+                                    name: nil, available_to_proxies: false, appointment_status: nil,
+                                    reading_room: nil, creation_date: nil)
+  reading_room.instance_variable_set(:@next_appointment, next_appt)
+  appointment = Aeon::Appointment.new(id: nil, username: nil, reading_room_id: 5, start_time: nil,
+                                      stop_time: nil, name: nil, available_to_proxies: false,
+                                      appointment_status: nil, reading_room: reading_room,
+                                      creation_date: nil)
+%>
+<%= form_with(model: appointment, url: '#') do |f| %>
+  <%= render Aeon::AppointmentDatePickerComponent.new(form: f) %>
+<% end %>

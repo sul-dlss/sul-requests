@@ -42,7 +42,7 @@ RSpec.describe 'Appointments', :js do
         click_on 'Continue'
 
         expect(page).to have_content 'Create new appointmentField Reading Room'
-        expect(page).to have_field('aeon_appointment[date]', type: 'date')
+        expect(page).to have_button('Select a date')
         expect(page).to have_no_content('Duration')
         click_on 'Cancel'
       end
@@ -58,7 +58,7 @@ RSpec.describe 'Appointments', :js do
         click_on 'Continue'
 
         expect(page).to have_content 'Create new appointmentArchive of Recorded Sound'
-        expect(page).to have_field('aeon_appointment[date]', type: 'date')
+        expect(page).to have_button('Select a date')
         expect(page).to have_content('Duration')
         expect(page).to have_content('Available time slots')
         click_on 'Cancel'

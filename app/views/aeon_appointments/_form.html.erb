@@ -6,10 +6,7 @@
       <%= f.hidden_field :reading_room_id %>
     </div>
 
-    <div class="mb-3">
-      <%= f.label :date, class: 'd-block fw-semibold redesign-required-label' %>
-      <%= f.date_field :date, required: true, data: { action: 'appointment#refreshAvailability' }, min: (@appointment.reading_room.next_appointment.start_time.to_date.iso8601 if @appointment.reading_room&.next_appointment), class: 'border rounded px-2 py-1' %>
-    </div>
+    <%= render Aeon::AppointmentDatePickerComponent.new(form: f) %>
 
     <% if @appointment&.reading_room&.day_only_appointments? %>
       <%# if it's a day-only appointment, we still use the turboframe to check if the reading room is open at all, but we don't need any of the other controls. %>
