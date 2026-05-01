@@ -11,13 +11,16 @@ export default class extends Controller {
     this.update()
   }
 
-  countValueChanged(e) {
-    console.log(this.countValue, e)
+  countValueChanged() {
     this.update()
   }
 
   limitValueChanged() {
     this.update()
+  }
+
+  updateCount(e) {
+    this.countValue += e.detail.addAmount
   }
 
   get percentage() {

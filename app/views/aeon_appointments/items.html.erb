@@ -11,7 +11,7 @@
             <%= render Aeon::AppointmentDateTimeComponent.new(appointment: @appointment, show_open_hours: false) %>
             <div><i class="bi bi-geo-alt-fill me-1"></i><%= @appointment.reading_room.name %></div>
           </div>
-          <div><%= render Aeon::AppointmentLimitComponent.from_appointment(@appointment, data: { action: 'item-added@window->progress-bar#countValueChanged' }) %></div>
+          <div><%= render Aeon::AppointmentLimitComponent.from_appointment(@appointment, data: { action: 'items-updated@window->progress-bar#updateCount' }) %></div>
           <%= f.hidden_field :appointment_id, value: @appointment.id %>
         </div>
       </div>
