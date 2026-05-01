@@ -19,6 +19,10 @@ export default class extends Controller {
     this.update()
   }
 
+  updateCount(e) {
+    this.countValue += e.detail.addAmount
+  }
+
   get percentage() {
     return this.countValue * 100.0 / this.limitValue;
   }

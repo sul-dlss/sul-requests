@@ -1,4 +1,4 @@
-<div data-controller="progress-bar" data-progress-bar-limit-value="<%= limit %>" data-progress-bar-count-value="<%= count %>" class="daily-item-limit d-flex align-items-center flex-wrap">
+<%= tag.div class: 'daily-item-limit d-flex align-items-center flex-wrap', data: do %>
   <% if limit? %>
     <span class="me-2">Item limit: <span data-progress-bar-target="count"><%= count %></span>/<%= limit %></span>
 
@@ -8,4 +8,4 @@
   <% else %>
     No item limit
   <% end %>
-</div>
+<% end %>
