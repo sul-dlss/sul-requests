@@ -12,7 +12,7 @@ module Aeon
     end
 
     def data
-      { controller: 'empty-remove', title: }.merge(@data)
+      { title: }.merge(@data)
     end
   end
 end

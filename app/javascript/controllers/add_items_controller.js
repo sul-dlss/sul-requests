@@ -27,11 +27,19 @@ export default class extends Controller {
       this.updateButtonForm(addTo, template, eventName);
       inAppointments.querySelector('ul').appendChild(addTo)
     }
-    window.dispatchEvent(new CustomEvent('items-updated', { detail: eventName }))
+    if (this.element.querySelectorAll('li').length < 1) this.element.remove()
+    const addAmount = eventName == 'items-removed' ? -1 : 1
+    window.dispatchEvent(new CustomEvent('items-updated', { detail: { addAmount } }))
   }
 
   remove(e) {
     this.updateElements(e, 'items-removed')
+  }
+
+  enableDisableButton(e) {
+    this.element.querySelectorAll('button').forEach(button=> {
+      button.disabled = e.detail.percentage > 99
+    })
   }
 
   updateButtonForm(element, template, eventName) {

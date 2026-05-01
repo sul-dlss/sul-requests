@@ -60,8 +60,8 @@ class AeonClient
 
   # Submit a request patch to Aeon
   # @param aeon_payload [AeonClient::RequestData]
-  def update_request(transaction_number, aeon_payload)
-    response = patch("Requests/#{transaction_number}", aeon_payload.as_patch_json)
+  def update_request(transaction_number:, aeon_payload:)
+    response = patch("Requests/#{transaction_number}", aeon_payload)
 
     handle_response(response, as_class: Aeon::Request)
   end

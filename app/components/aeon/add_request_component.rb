@@ -9,9 +9,8 @@ module Aeon
 
     def call
       tag.button class: 'btn btn-link p-0 su-underline',
-                 data: { action: 'click->add-items#schedule',
+                 data: { action: 'click->add-items#schedule item-limit-updated@window->add-items#enableDisableButton',
                          transaction_number: @request.transaction_number,
-                         item_limit_updated_target: 'addButton',
                          appointment_target: '#appointmentRequests',
                          title: @request.item_title } do
         tag.i(class: 'bi bi-plus') + tag.span('Add to appointment')
