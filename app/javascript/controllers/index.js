@@ -46,6 +46,9 @@ application.register("appointment-select", AppointmentSelectController)
 import OtpInput from "./otp_input_controller"
 application.register("otp-input", OtpInput)
 
+import ProgressBarController from "./progress_bar_controller"
+application.register("progress-bar", ProgressBarController)
+
 import ModalController from "./modal_controller"
 application.register("modal", ModalController)
 

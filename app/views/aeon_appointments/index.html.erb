@@ -16,13 +16,9 @@
       </turbo-frame>
     </div>
     <div class="col-4">
-      <turbo-frame src="<%= aeon_requests_path(kind: 'drafts', variant: 'sidebar', filter: 'reading_room', sort: 'title') %>" id="aeon-requests" class="d-block" data-turbo="false">
-        <div class="d-flex align-items-center justify-content-center" style="height: 200px;">
-          <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </div>
-      </turbo-frame>
+      <div id="draft_aeon_requests_sidebar">
+        <%= render 'draft_aeon_requests' %>
+      </div>
     </div>
   </div>
 </div>
