@@ -1,6 +1,6 @@
 <%= turbo_frame_tag params[:modal] do %>
   <div class="modal-header">
-    <h1>Edit appointment<% if @appointment %><i class="bi bi-dot"></i><%= @appointment.reading_room.name %><% end %></h1>
+    <%= render Aeon::AppointmentHeadingComponent.new(reading_room: @appointment&.reading_room) do %>Edit appointment<% end %>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
   </div>
 
