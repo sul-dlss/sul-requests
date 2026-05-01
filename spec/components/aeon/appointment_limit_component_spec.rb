@@ -12,7 +12,7 @@ RSpec.describe Aeon::AppointmentLimitComponent, type: :component do
   end
 
   it 'renders the limit visually' do
-    expect(page).to have_css('.progress-bar[style*="width: 60%"]')
+    expect(page).to have_css('[data-controller="progress-bar"][data-progress-bar-limit-value="5"][data-progress-bar-count-value="3"]')
   end
 
   context 'with no limit' do
@@ -31,7 +31,7 @@ RSpec.describe Aeon::AppointmentLimitComponent, type: :component do
     end
 
     it 'scales the filled dots appropriately' do
-      expect(page).to have_css('.progress-bar[style*="width: 40%"]')
+      expect(page).to have_css('[data-controller="progress-bar"][data-progress-bar-limit-value="10"][data-progress-bar-count-value="4"]')
     end
   end
 end
