@@ -1,5 +1,11 @@
 <% if @aeon_request.status == @updated_request.status %>
   <%= turbo_stream.replace(@aeon_request, Aeon::RequestGroupItemComponent.new(request: @updated_request)) %>
+<% elsif @aeon_request_group.requests.one? %>
+  <%= turbo_stream.remove(@aeon_request_group.dom_id) %>
 <% else %>
   <%= turbo_stream.remove(@aeon_request) %>
+<% end %>
+
+<%= turbo_stream.replace('aeon-appointments') do %>
+  <%= render 'aeon_appointments' %>
 <% end %>

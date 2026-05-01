@@ -58,9 +58,6 @@ application.register("selected-item-form", SelectedItemFormController)
 import StatusCounterController from "./status_counter_controller"
 application.register("status-counter", StatusCounterController)
 
-import EmptyRemoveController from "./empty_remove_controller"
-application.register("empty-remove", EmptyRemoveController)
-
 import DraftRequestController from "./draft_request_controller"
 application.register("draft-request", DraftRequestController)
 

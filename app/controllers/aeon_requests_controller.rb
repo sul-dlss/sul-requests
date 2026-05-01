@@ -9,8 +9,8 @@ class AeonRequestsController < ApplicationController
   include AeonSortable
 
   before_action :load_aeon_requests
-  before_action :load_aeon_request, only: [:edit, :update, :destroy, :resubmit]
-  before_action :load_aeon_request_groups, only: [:index]
+  before_action :load_aeon_request_groups
+  before_action :load_aeon_request, except: [:index, :destroy_multiple]
   before_action :set_variant, only: [:index, :edit]
 
   def index
@@ -20,9 +20,10 @@ class AeonRequestsController < ApplicationController
   def resubmit
     authorize! :update, @aeon_request
 
-    aeon_client.update_request_route(transaction_number: params[:id], status: 'Submitted by User')
+    @updated_request = aeon_client.update_request_route(transaction_number: params[:id], status: 'Submitted by User')
+
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.remove("request-#{params[:id]}") }
+      format.turbo_stream { render 'update' }
     end
   end
 
@@ -47,20 +48,26 @@ class AeonRequestsController < ApplicationController
   def destroy
     authorize! :destroy, @aeon_request
 
-    aeon_client.update_request_route(transaction_number: params[:id], status: 'Cancelled by User')
+    @updated_request = aeon_client.update_request_route(transaction_number: params[:id], status: 'Cancelled by User')
+
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.remove(@aeon_request) }
+      format.turbo_stream { render 'update' }
     end
   end
 
   def destroy_multiple
+    @salient_requests = @aeon_requests.select { |request| selected_request_ids.include?(request.transaction_number) }
+
     # Authorize each of the individual aeon requests for deletion
-    @aeon_requests.each { |aeon_request| authorize! :destroy, aeon_request }
+    @salient_requests.each { |aeon_request| authorize! :destroy, aeon_request }
+
     # Change status of the requests corresponding to these transaction numbers/ids to 'canceled'
-    cancel_multiple_requests
-    # Render turbo stream removal for each request
+    @salient_requests.each do |aeon_request| # rubocop:disable Style/CombinableLoops
+      aeon_client.update_request_route(transaction_number: aeon_request.transaction_number, status: 'Cancelled by User')
+    end
+
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: @aeon_requests.map { |aeon_request| turbo_stream.remove(aeon_request) } }
+      format.turbo_stream
     end
   end
 
@@ -73,9 +80,10 @@ class AeonRequestsController < ApplicationController
 
   def load_aeon_request
     @aeon_request = @aeon_requests.find { |request| request.transaction_number == params[:id].to_i }
+    @aeon_request_group = @aeon_request_groups.find { |request_group| request_group.requests.find { |r| r.id == @aeon_request.id } }
   end
 
-  def load_aeon_requests # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity
+  def load_aeon_requests # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     return [] unless current_user&.aeon
 
     @aeon_requests = case params[:kind]
@@ -91,11 +99,6 @@ class AeonRequestsController < ApplicationController
                        current_user.aeon.requests
                      end
 
-    if params[:ids].present?
-      request_ids = params[:ids].map(&:to_i)
-      @aeon_requests = current_user.aeon.requests.select { |request| request_ids.include?(request.transaction_number) }
-    end
-
     @aeon_requests = sort_aeon_requests(filter_aeon_requests(@aeon_requests))
   end
 
@@ -107,9 +110,7 @@ class AeonRequestsController < ApplicationController
     params.expect(aeon_request: [:appointment_id, :requested_pages, :for_publication, :additional_information])
   end
 
-  def cancel_multiple_requests
-    @aeon_requests.each do |aeon_request|
-      aeon_client.update_request_route(transaction_number: aeon_request.transaction_number, status: 'Cancelled by User')
-    end
+  def selected_request_ids
+    params.expect(ids: []).map(&:to_i)
   end
 end
