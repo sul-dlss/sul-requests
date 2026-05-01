@@ -18,17 +18,15 @@
   <% end %>
 
   <% c.with_body do %>
-    <% if appointment.requests.present? %>
-        <% request_groups = Aeon::RequestGrouping.from_requests(appointment.requests) %>
-        <%= render Aeon::RequestGroupPerAppointmentComponent.with_collection(request_groups) %>
-    <% else %>
-      <div role="alert" class="d-flex align-items-center text-digital-red bg-body py-3 px-4">
+      <% request_groups = Aeon::RequestGrouping.from_requests(appointment.requests) %>
+      <%= render Aeon::RequestGroupPerAppointmentComponent.with_collection(request_groups) %>
+
+      <div role="alert" class="zero-items-alert align-items-center text-digital-red bg-body py-3 px-4">
         <div role="img" aria-label="Danger icon" class="bi bi-exclamation-triangle-fill fs-3 me-3 align-self-center d-flex justify-content-center ms-2"></div>
         <div class="me-2">
           No items have been requested for this appointment. It will be cancelled <%= @appointment.edit_policy %> days before your scheduled visit date if no requests are submitted.
         </div>
       </div>
-    <% end %>
   <% end %>
 
   <% c.with_footer do %>

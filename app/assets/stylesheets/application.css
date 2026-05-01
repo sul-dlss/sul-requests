@@ -900,3 +900,11 @@ label.btn-close {
 .request-group-per-appointment .request {
   --bs-list-group-border-width: 0;
 }
+
+.zero-items-alert {
+  display: none;
+}
+
+.zero-items-alert:only-child {
+  display: flex;
+}
