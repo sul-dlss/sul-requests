@@ -1,3 +1,3 @@
-<h1>Edit appointment<% if @appointment %><i class="bi bi-dot"></i><%= @appointment.reading_room.name %><% end %></h1>
+<%= render Aeon::AppointmentHeadingComponent.new(reading_room: @appointment&.reading_room) do %>Edit appointment<% end %>
 
 <%= render 'form' %>

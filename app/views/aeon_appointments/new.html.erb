@@ -1,5 +1,5 @@
 <turbo-frame id="appointment-form">
-  <h1>Create new appointment<% if @reading_room %><i class="bi bi-dot"></i><%= @reading_room.name %><% end %></h1>
+  <%= render Aeon::AppointmentHeadingComponent.new(reading_room: @reading_room) do %>Create new appointment<% end %>
   <% if @appointment.reading_room_id %>
     <%= render 'form' %>
   <% else %>
