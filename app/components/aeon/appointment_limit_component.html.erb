@@ -1,9 +1,9 @@
-<div class="daily-item-limit d-flex align-items-center flex-wrap">
+<div data-controller="progress-bar" data-progress-bar-limit-value="<%= limit %>" data-progress-bar-count-value="<%= count %>" class="daily-item-limit d-flex align-items-center flex-wrap">
   <% if limit? %>
-    <span class="me-2">Item limit: <%= count %>/<%= limit %></span>
+    <span class="me-2">Item limit: <span data-progress-bar-target="count"><%= count %></span>/<%= limit %></span>
 
     <div class="progress d-none d-sm-flex" aria-hidden="true">
-      <div class="progress-bar <%= bar_color %>" style="width: <%= percentage %>%"></div>
+      <div class="progress-bar" data-progress-bar-target="bar"></div>
     </div>
   <% else %>
     No item limit
