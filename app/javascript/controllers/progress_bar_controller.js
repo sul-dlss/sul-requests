@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["count", "bar"]
+  static targets = ["count", "bar", "update"]
   static values = {
     count: { type: Number, default: 0 },
     limit: { type: Number, default: 0 }
@@ -9,6 +9,12 @@ export default class extends Controller {
 
   connect() {
     this.update()
+  }
+
+  updateTargetConnected(element) {
+    this.countValue = parseInt(element.dataset.countValue) || 0;
+
+    element.remove();
   }
 
   countValueChanged() {
