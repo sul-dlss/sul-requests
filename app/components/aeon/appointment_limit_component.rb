@@ -17,19 +17,5 @@ module Aeon
     def limit?
       limit.present?
     end
-
-    def percentage
-      (count * 100) / limit
-    end
-
-    def bar_color
-      if percentage >= 100
-        'text-bg-danger'
-      elsif percentage >= 75
-        'text-bg-warning'
-      else
-        'text-bg-success'
-      end
-    end
   end
 end
