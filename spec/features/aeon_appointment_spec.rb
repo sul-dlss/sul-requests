@@ -38,6 +38,7 @@ RSpec.describe 'Appointments', :js do
       expect(page).to have_css '.modal'
       within '.modal' do
         expect(page).to have_content 'Create new appointment'
+        expect(page).to have_content 'Materials must be used in their associated reading room'
         select 'Field Reading Room'
         click_on 'Continue'
 

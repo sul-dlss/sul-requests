@@ -122,6 +122,11 @@ body {
   --bs-green-rgb: 25, 135, 84;
 }
 
+.alert-info {
+  --bs-alert-color: rgba(var(--stanford-digital-blue-dark-rgb), 1);
+  --bs-alert-border-color: rgba(var(--stanford-digital-blue-dark-rgb), 1);
+}
+
 input[type="radio"] {
   --bs-border-color: var(--stanford-50-black);
 }
