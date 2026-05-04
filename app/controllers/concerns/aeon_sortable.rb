@@ -7,25 +7,25 @@ module AeonSortable
   SORT_OPTIONS = {
     'request_type' => {
       label: 'Sort by request type',
-      sort: ->(requests) { requests.sort_by { |r| [r.digital? ? 0 : 1, r.title.to_s, -r.creation_date.to_i] } },
+      sort: ->(requests) { requests.sort_by { |r| [r.digital? ? 0 : 1, r.title.to_s, -r.creation_date.to_i, r.sort_key] } },
       only_for_filters: %w[all]
     },
     'title' => {
       label: 'Sort by title',
-      sort: ->(requests) { requests.sort_by { |r| [r.title.to_s, -r.creation_date.to_i] } }
+      sort: ->(requests) { requests.sort_by { |r| [r.title.to_s, r.sort_key] } }
     },
     'date_added' => {
       label: 'Sort by date added',
-      sort: ->(requests) { requests.sort_by { |r| [-r.creation_date.to_i, r.title.to_s] } }
+      sort: ->(requests) { requests.sort_by { |r| [-r.creation_date.change(sec: 0).to_i, r.title.to_s, r.sort_key] } }
     },
     'date_modified' => {
       label: 'Sort by date modified',
-      sort: ->(requests) { requests.sort_by { |r| [-r.transaction_date.to_i, r.title.to_s] } }
+      sort: ->(requests) { requests.sort_by { |r| [-r.transaction_date.change(sec: 0).to_i, r.title.to_s, r.sort_key] } }
     },
     'appointment_time' => {
       label: 'Sort by appointment time',
       sort: lambda { |requests|
-        requests.sort_by { |r| [r.appointment&.start_time || Time.zone.local(9999), r.title.to_s] }
+        requests.sort_by { |r| [r.appointment&.start_time || Time.zone.local(9999), r.title.to_s, r.sort_key] }
       },
       only_for_filters: %w[all reading_room]
     }
