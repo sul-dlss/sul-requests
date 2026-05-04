@@ -43,12 +43,12 @@ RSpec.describe 'Creating new accounts for patrons', :js do
     it 'renders the Aeon terms and conditions' do
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
 
-      expect(page).to have_content('Terms')
+      expect(page).to have_text('Terms')
       check('I agree to these terms')
 
       click_button 'Continue'
 
-      expect(page).to have_content('New request')
+      expect(page).to have_text('New request')
 
       expect(stub_aeon_client).to have_received(:create_user).with({
                                                                      user_data: an_object_having_attributes(
@@ -74,14 +74,14 @@ RSpec.describe 'Creating new accounts for patrons', :js do
 
       click_button 'Continue'
 
-      expect(page).to have_content('Verify email address')
+      expect(page).to have_text('Verify email address')
       expect(SendOtpJob).to have_received(:perform_later).with('test@localhost')
       6.times do |i|
         fill_in "Digit #{i + 1}", with: '0'
       end
       click_button 'Continue'
 
-      expect(page).to have_content('Account information')
+      expect(page).to have_text('Account information')
       expect(page).to have_field('Name', with: 'Test User')
       expect(page).to have_field('Email address', with: 'test@localhost')
       fill_in 'Phone', with: '1234552'

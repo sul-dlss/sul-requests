@@ -26,7 +26,7 @@ RSpec.describe 'Creating an Aeon patron request', :js do
     end
 
     it 'identifies the library of the item' do
-      expect(page).to have_content 'Special Collections access'
+      expect(page).to have_text 'Special Collections access'
     end
 
     it 'provides a link to the reading room info for the library of the item' do
@@ -52,7 +52,7 @@ RSpec.describe 'Creating an Aeon patron request', :js do
         check 'patron_request_barcodes_12345678'
         check 'patron_request_barcodes_87654321'
         click_on 'Continue'
-        expect(page).to have_content 'Use in: Special Collections & University Archives Reading Room'
+        expect(page).to have_text 'Use in: Special Collections & University Archives Reading Room'
       end
     end
   end
@@ -64,7 +64,7 @@ RSpec.describe 'Creating an Aeon patron request', :js do
 
     context 'with a single holding' do
       it 'provides instructions for the user to complete the request' do
-        expect(page).to have_content 'Complete the request form'
+        expect(page).to have_text 'Complete the request form'
       end
 
       it 'goes to aeon when submitted' do
@@ -168,7 +168,7 @@ RSpec.describe 'Creating an Aeon patron request', :js do
       let(:folio_instance) { :special_collections_finding_aid_holdings }
 
       it 'provides instructions for the user to complete the request' do
-        expect(page).to have_content 'Review the Collection Guide in external archival repository'
+        expect(page).to have_text 'Review the Collection Guide in external archival repository'
       end
 
       it 'visits the Stanford finding if one exists' do
@@ -204,8 +204,8 @@ RSpec.describe 'Creating an Aeon patron request', :js do
     it 'redirects the user to the EAD request form' do
       visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SPEC-STACKS')
 
-      expect(page).to have_content 'View in Archival Collections at Stanford'
-      expect(page).to have_content 'Knuth (Donald E.) papers'
+      expect(page).to have_text 'View in Archival Collections at Stanford'
+      expect(page).to have_text 'Knuth (Donald E.) papers'
     end
   end
 end

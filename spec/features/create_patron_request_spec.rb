@@ -35,7 +35,7 @@ RSpec.describe 'Creating a request', :js do
         perform_enqueued_jobs do
           click_on 'Submit request'
         end
-        expect(page).to have_content 'We received your pickup request'
+        expect(page).to have_text 'We received your pickup request'
       end.to change(PatronRequest, :count).by(1)
 
       expect(PatronRequest.last).to have_attributes(
@@ -55,7 +55,7 @@ RSpec.describe 'Creating a request', :js do
         perform_enqueued_jobs do
           click_on 'Submit request'
         end
-        expect(page).to have_content 'We received your pickup request'
+        expect(page).to have_text 'We received your pickup request'
       end.to change(PatronRequest, :count).by(1)
 
       expect(PatronRequest.last).to have_attributes(
@@ -76,7 +76,7 @@ RSpec.describe 'Creating a request', :js do
 
       perform_enqueued_jobs do
         click_on 'Submit request'
-        expect(page).to have_content 'We received your pickup request'
+        expect(page).to have_text 'We received your pickup request'
       end
       expect(folio_client).to have_received(:create_circulation_request).with(have_attributes(requester_id: patron.id,
                                                                                               instance_id: folio_instance.id))
@@ -95,8 +95,8 @@ RSpec.describe 'Creating a request', :js do
 
         perform_enqueued_jobs do
           click_on 'Submit request'
-          expect(page).to have_content 'We received your pickup request'
-          expect(page).to have_content 'This item is bound with other items and is shelved under the title Bound with parent (ABC 123)'
+          expect(page).to have_text 'We received your pickup request'
+          expect(page).to have_text 'This item is bound with other items and is shelved under the title Bound with parent (ABC 123)'
         end
         expect(folio_client).to have_received(:create_circulation_request).with(have_attributes(requester_id: patron.id,
                                                                                                 instance_id: '9876'))
@@ -118,7 +118,7 @@ RSpec.describe 'Creating a request', :js do
         click_on 'Continue'
         choose 'ABC 123'
         click_on 'Continue'
-        expect(page).to have_content 'Copyright notice'
+        expect(page).to have_text 'Copyright notice'
         fill_in 'Page range', with: '1-15'
         fill_in 'Title of article or chapter', with: 'Some title'
         fill_in 'Author(s)', with: 'Some author'
@@ -127,7 +127,7 @@ RSpec.describe 'Creating a request', :js do
           perform_enqueued_jobs do
             click_on 'Submit request'
           end
-          expect(page).to have_content 'We received your scan request'
+          expect(page).to have_text 'We received your scan request'
         end.to change(PatronRequest, :count).by(1)
 
         expect(PatronRequest.last).to have_attributes(
@@ -150,7 +150,7 @@ RSpec.describe 'Creating a request', :js do
         expect do
           perform_enqueued_jobs do
             click_on 'Submit request'
-            expect(page).to have_content 'We received your request'
+            expect(page).to have_text 'We received your request'
           end
         end.to change(PatronRequest, :count).by(1)
 
@@ -180,7 +180,7 @@ RSpec.describe 'Creating a request', :js do
         expect do
           perform_enqueued_jobs do
             click_on 'Submit request'
-            expect(page).to have_content 'We received your request'
+            expect(page).to have_text 'We received your request'
           end
         end.to change(PatronRequest, :count).by(1)
 
@@ -203,11 +203,11 @@ RSpec.describe 'Creating a request', :js do
         click_on 'Continue'
         check 'ABC 123'
         click_on 'Continue'
-        expect(page).to have_content 'Pickup request'
+        expect(page).to have_text 'Pickup request'
         perform_enqueued_jobs do
           click_on 'Submit request'
         end
-        expect(page).to have_content 'We received your pickup request'
+        expect(page).to have_text 'We received your pickup request'
       end
 
       it 'allows scanning' do
@@ -217,13 +217,13 @@ RSpec.describe 'Creating a request', :js do
         click_on 'Continue'
         choose 'ABC 123'
         click_on 'Continue'
-        expect(page).to have_content 'Copyright notice'
+        expect(page).to have_text 'Copyright notice'
         fill_in 'Page range', with: '1-15'
         fill_in 'Title of article or chapter', with: 'Some title'
         perform_enqueued_jobs do
           click_on 'Submit request'
         end
-        expect(page).to have_content 'We received your scan request'
+        expect(page).to have_text 'We received your scan request'
       end
     end
 
@@ -256,12 +256,12 @@ RSpec.describe 'Creating a request', :js do
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
 
         within '#earliestAvailableContainer' do
-          expect(page).to have_content('Wednesday, Apr 3, 2024, 10am')
+          expect(page).to have_text('Wednesday, Apr 3, 2024, 10am')
         end
 
         select 'Marine Biology Library', from: 'Preferred pickup location'
         within '#earliestAvailableContainer' do
-          expect(page).to have_content('Wednesday, Apr 3, 2024, 4pm')
+          expect(page).to have_text('Wednesday, Apr 3, 2024, 4pm')
         end
       end
     end
@@ -282,7 +282,7 @@ RSpec.describe 'Creating a request', :js do
 
       it 'shows an error message' do
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
-        expect(page).to have_content('Your SUNet ID is not linked to a library account')
+        expect(page).to have_text('Your SUNet ID is not linked to a library account')
       end
     end
 
@@ -301,7 +301,7 @@ RSpec.describe 'Creating a request', :js do
           perform_enqueued_jobs do
             click_on 'Submit request'
           end
-          expect(page).to have_content 'We received your pickup request'
+          expect(page).to have_text 'We received your pickup request'
           expect(page).to have_text "Not needed after: #{needed_date.strftime('%b %-d, %Y')}"
         end.to change(PatronRequest, :count).by(1)
 
@@ -343,7 +343,7 @@ RSpec.describe 'Creating a request', :js do
         perform_enqueued_jobs do
           click_on 'Submit request'
         end
-        expect(page).to have_content 'We received your pickup request'
+        expect(page).to have_text 'We received your pickup request'
       end.to change(PatronRequest, :count).by(1)
 
       expect(PatronRequest.last).to have_attributes(
@@ -367,7 +367,7 @@ RSpec.describe 'Creating a request', :js do
         fill_in 'PIN', with: '54321'
 
         click_on 'Login'
-        expect(page).to have_content('This item is not available to request for Stanford Libraries cardholders.')
+        expect(page).to have_text('This item is not available to request for Stanford Libraries cardholders.')
       end
     end
 
@@ -391,7 +391,7 @@ RSpec.describe 'Creating a request', :js do
 
       it 'shows the user a warning message' do
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'LAW-STACKS1')
-        expect(page).to have_content('This item is not available to request for visitors')
+        expect(page).to have_text('This item is not available to request for visitors')
       end
     end
 
@@ -420,7 +420,7 @@ RSpec.describe 'Creating a request', :js do
     it 'sends the user over to Aeon' do
       visit new_patron_request_path(instance_hrid: 'a12345', origin_location_code: 'SAL3-PAGE-AS')
 
-      expect(page).to have_content 'On-site and digital access requests are managed by Aeon'
+      expect(page).to have_text 'On-site and digital access requests are managed by Aeon'
       expect(page).to have_button 'Continue to complete request'
     end
   end
@@ -446,7 +446,7 @@ RSpec.describe 'Creating a request', :js do
         perform_enqueued_jobs do
           click_on 'Submit request'
         end
-        expect(page).to have_content 'We received your pickup request'
+        expect(page).to have_text 'We received your pickup request'
       end.to change(PatronRequest, :count).by(1)
 
       expect(PatronRequest.last).to have_attributes(barcodes: ['12345678'])
@@ -463,7 +463,7 @@ RSpec.describe 'Creating a request', :js do
         perform_enqueued_jobs do
           click_on 'Submit request'
         end
-        expect(page).to have_content 'We received your pickup request'
+        expect(page).to have_text 'We received your pickup request'
       end.to change(PatronRequest, :count).by(1)
 
       expect(PatronRequest.last).to have_attributes(barcodes: ['87654321'], fulfillment_type: 'hold')
@@ -481,7 +481,7 @@ RSpec.describe 'Creating a request', :js do
         perform_enqueued_jobs do
           click_on 'Submit request'
         end
-        expect(page).to have_content 'We received your pickup request'
+        expect(page).to have_text 'We received your pickup request'
       end.to change(PatronRequest, :count).by(1)
 
       expect(PatronRequest.last).to have_attributes(barcodes: ['12345678', '87654321'], fulfillment_type: 'hold')
@@ -548,7 +548,7 @@ RSpec.describe 'Creating a request', :js do
       it 'does not have the option to scan and places a request by a pseudopatron' do
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
 
-        expect(page).to have_content 'ABC 123'
+        expect(page).to have_text 'ABC 123'
         expect(page).to have_no_text 'Email digital scan'
         check 'ABC 123'
         click_on 'Continue'
@@ -556,7 +556,7 @@ RSpec.describe 'Creating a request', :js do
           perform_enqueued_jobs do
             click_on 'Submit request'
           end
-          expect(page).to have_content 'We received your pickup request!'
+          expect(page).to have_text 'We received your pickup request!'
         end.to change(PatronRequest, :count).by(1)
 
         expect(PatronRequest.last).to have_attributes requester_patron_id: 'hold-gr-uuid'

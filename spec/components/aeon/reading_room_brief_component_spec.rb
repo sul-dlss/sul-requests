@@ -13,9 +13,9 @@ RSpec.describe Aeon::ReadingRoomBriefComponent, type: :component do
     let(:reading_room) { Aeon::ReadingRoom.from_dynamic(reading_rooms[0]) }
 
     it 'renders correctly' do
-      expect(page).to have_content 'Rumsey Reading Room'
-      expect(page).to have_content 'Located on the fourth floor of Green Library'
-      expect(page).to have_content 'Hours: Monday - Friday, 1:00 - 4:30 pm'
+      expect(page).to have_text 'Rumsey Reading Room'
+      expect(page).to have_text 'Located on the fourth floor of Green Library'
+      expect(page).to have_text 'Hours: Monday - Friday, 1:00 - 4:30 pm'
     end
   end
 
@@ -24,9 +24,9 @@ RSpec.describe Aeon::ReadingRoomBriefComponent, type: :component do
     let(:hours) { 'Hours: Monday - Wednesday, 9:00 - 3:00 pm, Thursday, 9:00 - 11:00 am and 12:00 - 3:00 pm, Friday, 9:00 - 3:00 pm' }
 
     it 'renders correctly' do
-      expect(page).to have_content 'Archive of Recorded Sound'
-      expect(page).to have_content 'Located in the basement of the Music Library'
-      expect(page).to have_content hours
+      expect(page).to have_text 'Archive of Recorded Sound'
+      expect(page).to have_text 'Located in the basement of the Music Library'
+      expect(page).to have_text hours
     end
   end
 
@@ -34,9 +34,9 @@ RSpec.describe Aeon::ReadingRoomBriefComponent, type: :component do
     let(:reading_room) { Aeon::ReadingRoom.from_dynamic(reading_rooms[2]) }
 
     it 'renders correctly' do
-      expect(page).to have_content 'East Asia Library Special Collections'
-      expect(page).to have_content 'Located on the second floor of Lathrop Library'
-      expect(page).to have_content 'Hours: Monday - Friday, 9:00 - 5:00 pm'
+      expect(page).to have_text 'East Asia Library Special Collections'
+      expect(page).to have_text 'Located on the second floor of Lathrop Library'
+      expect(page).to have_text 'Hours: Monday - Friday, 9:00 - 5:00 pm'
     end
   end
 
@@ -44,9 +44,9 @@ RSpec.describe Aeon::ReadingRoomBriefComponent, type: :component do
     let(:reading_room) { Aeon::ReadingRoom.from_dynamic(reading_rooms[3]) }
 
     it 'renders correctly' do
-      expect(page).to have_content 'Field Reading Room'
-      expect(page).to have_content 'Located on the second floor of Green Library'
-      expect(page).to have_content 'Hours: Monday - Friday, 9:00 - 4:45 pm'
+      expect(page).to have_text 'Field Reading Room'
+      expect(page).to have_text 'Located on the second floor of Green Library'
+      expect(page).to have_text 'Hours: Monday - Friday, 9:00 - 4:45 pm'
     end
   end
 end

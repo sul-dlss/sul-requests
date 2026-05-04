@@ -40,7 +40,7 @@ RSpec.describe 'Edit Aeon request', :js do
 
     it 'displays the request with proper record header' do
       expect(page).to have_css('h2', text: 'Slow poetry in America : a poetry quarterly')
-      expect(page).to have_content('Call number: PR9195.1')
+      expect(page).to have_text('Call number: PR9195.1')
       expect(page).to have_link('View in SearchWorks', href: first_request.item_info1)
     end
   end

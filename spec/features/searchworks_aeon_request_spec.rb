@@ -59,8 +59,8 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
   context 'with a single holding' do
     it 'allows the user to submit a digitization request' do
-      expect(page).to have_content 'Request type'
-      expect(page).to have_no_content 'Select item'
+      expect(page).to have_text 'Request type'
+      expect(page).to have_no_text 'Select item'
 
       choose 'Digitization'
       check 'I agree to these terms'
@@ -77,7 +77,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
       click_button 'Submit request'
 
-      expect(page).to have_content 'We received your digitization request!'
+      expect(page).to have_text 'We received your digitization request!'
 
       perform_enqueued_jobs
       expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
@@ -98,7 +98,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
       click_button 'Submit request'
 
-      expect(page).to have_content 'We received your reading room access request!'
+      expect(page).to have_text 'We received your reading room access request!'
 
       perform_enqueued_jobs
       expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
@@ -145,7 +145,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
       click_button 'Submit request'
 
-      expect(page).to have_content 'We received your digitization request!'
+      expect(page).to have_text 'We received your digitization request!'
 
       perform_enqueued_jobs
       expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
@@ -183,7 +183,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       expect(page).to have_button('Submit request', disabled: false)
 
       within('[data-save-for-later-target="list"]') do
-        expect(page).to have_content 'ABC 321'
+        expect(page).to have_text 'ABC 321'
         click_button 'Undo'
       end
 
@@ -193,7 +193,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       expect(page).to have_no_css '.saved-item'
 
       within('.digitization-accordion') do
-        expect(page).to have_content 'ABC 321'
+        expect(page).to have_text 'ABC 321'
       end
     end
   end

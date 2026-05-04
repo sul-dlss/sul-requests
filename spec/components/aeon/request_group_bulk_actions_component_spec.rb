@@ -22,11 +22,11 @@ RSpec.describe Aeon::RequestGroupBulkActionsComponent, type: :component do
     end
 
     it 'renders the request type' do
-      expect(page).to have_content 'Reading room use'
+      expect(page).to have_text 'Reading room use'
     end
 
     it 'renders the call number' do
-      expect(page).to have_content 'Call number: SC0097'
+      expect(page).to have_text 'Call number: SC0097'
     end
 
     it 'renders the data-request-id for each request' do
@@ -50,11 +50,11 @@ RSpec.describe Aeon::RequestGroupBulkActionsComponent, type: :component do
     end
 
     it 'renders the request type' do
-      expect(page).to have_content 'Reading room use'
+      expect(page).to have_text 'Reading room use'
     end
 
     it 'renders the call number' do
-      expect(page).to have_content 'Call number: SF442 .M439 1972'
+      expect(page).to have_text 'Call number: SF442 .M439 1972'
     end
 
     it 'has the request data-request-id' do
@@ -77,7 +77,7 @@ RSpec.describe Aeon::RequestGroupBulkActionsComponent, type: :component do
     end
 
     it 'renders the request type as digitization' do
-      expect(page).to have_content 'Digitization'
+      expect(page).to have_text 'Digitization'
     end
   end
 
@@ -93,7 +93,7 @@ RSpec.describe Aeon::RequestGroupBulkActionsComponent, type: :component do
     end
 
     it 'renders the ead number as the call number' do
-      expect(page).to have_content 'Call number: SC0097'
+      expect(page).to have_text 'Call number: SC0097'
     end
   end
 end

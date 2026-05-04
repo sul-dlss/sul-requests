@@ -47,8 +47,8 @@ RSpec.describe 'Viewing all requests' do
         click_on 'Save'
 
         within '[data-library-code="SAL3"]' do
-          expect(page).to have_content 'This is an important message'
-          expect(page).to have_content 'Active Jan 1, 2000 through Jan 1, 2100'
+          expect(page).to have_text 'This is an important message'
+          expect(page).to have_text 'Active Jan 1, 2000 through Jan 1, 2100'
         end
       end
     end
@@ -85,8 +85,8 @@ RSpec.describe 'Viewing all requests' do
         click_on 'Save'
 
         within '[data-library-code="SAL3"]' do
-          expect(page).to have_content 'This is an important message'
-          expect(page).to have_content 'Active Jan 1, 2000 through Jan 1, 2100'
+          expect(page).to have_text 'This is an important message'
+          expect(page).to have_text 'Active Jan 1, 2000 through Jan 1, 2100'
         end
       end
     end
@@ -132,7 +132,7 @@ RSpec.describe 'Viewing all requests' do
 
     it 'displays the broadcast message' do
       visit new_request_path(item_id: '1234', origin: message.library, origin_location: 'ART-LOCKED-LARGE')
-      expect(page).to have_content message.text
+      expect(page).to have_text message.text
     end
   end
 end

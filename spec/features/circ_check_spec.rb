@@ -29,8 +29,8 @@ RSpec.describe 'Circ Check app', :js do
       fill_in 'barcode', with: '1234567890'
       click_on 'Check'
 
-      expect(page).to have_content('✅ 1234567890')
-      expect(page).to have_content('Due: Jan 1, 2020')
+      expect(page).to have_text('✅ 1234567890')
+      expect(page).to have_text('Due: Jan 1, 2020')
     end
   end
 
@@ -53,8 +53,8 @@ RSpec.describe 'Circ Check app', :js do
       fill_in 'barcode', with: '1234567890'
       click_on 'Check'
 
-      expect(page).to have_content('✅ 1234567890')
-      expect(page).to have_content('Due: Jan 1, 2020')
+      expect(page).to have_text('✅ 1234567890')
+      expect(page).to have_text('Due: Jan 1, 2020')
     end
   end
 
@@ -76,8 +76,8 @@ RSpec.describe 'Circ Check app', :js do
       fill_in 'barcode', with: '1234567890'
       click_on 'Check'
 
-      expect(page).to have_content('⛔ 1234567890')
-      expect(page).to have_content('Status: Withdrawn')
+      expect(page).to have_text('⛔ 1234567890')
+      expect(page).to have_text('Status: Withdrawn')
     end
   end
 
@@ -96,7 +96,7 @@ RSpec.describe 'Circ Check app', :js do
       fill_in 'barcode', with: '1234567890'
       click_on 'Check'
 
-      expect(page).to have_content('Barcode does not exist: 1234567890')
+      expect(page).to have_text('Barcode does not exist: 1234567890')
     end
   end
 end
