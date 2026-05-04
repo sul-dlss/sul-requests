@@ -1,0 +1,11 @@
+<%= turbo_stream.remove(@aeon_request) %>
+
+<%= turbo_stream.append_all("##{dom_id(@aeon_request.appointment)} [data-controller=\"progress-bar\"]") do %>
+  <div class="d-none" data-progress-bar-target="update" data-count-value="<%= @aeon_requests.select { |r| r.status == :submitted && r.appointment_id == @aeon_request.appointment_id && r.id != @aeon_request.id }.count %>"></div>
+<% end %>
+
+<%= turbo_stream.replace('draft_aeon_requests_sidebar') do %>
+  <div id="draft_aeon_requests_sidebar">
+    <%= render 'aeon_appointments/draft_aeon_requests' %>
+  </div>
+<% end %>

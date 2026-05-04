@@ -9,7 +9,7 @@ class AeonRequestsController < ApplicationController
   include AeonSortable
 
   before_action :load_aeon_requests
-  before_action :load_aeon_request, only: [:edit, :update, :destroy, :resubmit]
+  before_action :load_aeon_request, only: [:edit, :update, :destroy, :resubmit, :redraft]
   before_action :load_aeon_request_groups, only: [:index]
   before_action :set_variant, only: [:index, :edit]
 
@@ -23,6 +23,16 @@ class AeonRequestsController < ApplicationController
     aeon_client.update_request_route(transaction_number: params[:id], status: 'Submitted by User')
     respond_to do |format|
       format.turbo_stream { render turbo_stream: turbo_stream.remove("request-#{params[:id]}") }
+    end
+  end
+
+  def redraft
+    authorize! :update, @aeon_request
+
+    @updated_request = Aeon::UpdateRequestService.new(@aeon_request, { appointment_id: nil, status: 'Awaiting User Review' }).call
+
+    respond_to do |format|
+      format.turbo_stream
     end
   end
 
