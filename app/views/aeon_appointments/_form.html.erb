@@ -6,6 +6,13 @@
       <%= f.hidden_field :reading_room_id %>
     </div>
 
+    <%= render AlertComponent.new(type: :info) do %>
+      <ul class="mb-0">
+        <li>An appointment must be scheduled at least 3 business days in advance to access items.</li>
+        <li><%= @appointment.reading_room.name %> is open <%= @appointment.reading_room.human_readable_hours %>.</li>
+      </ul>
+    <% end %>
+
     <div class="mb-3">
       <%= f.label :date, class: 'd-block fw-semibold redesign-required-label' %>
       <%= f.date_field :date, required: true, data: { action: 'appointment#refreshAvailability' }, min: (@appointment.reading_room.next_appointment.start_time.to_date.iso8601 if @appointment.reading_room&.next_appointment), class: 'border rounded px-2 py-1' %>
