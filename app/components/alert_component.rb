@@ -28,6 +28,10 @@ class AlertComponent < ViewComponent::Base
     "alert #{ALERTS.fetch(type)}"
   end
 
+  def alert_class
+    "alert alert-#{type}"
+  end
+
   def aria_label
     "#{type.to_s.capitalize} icon"
   end
