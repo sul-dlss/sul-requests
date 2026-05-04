@@ -18,3 +18,7 @@
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 <% end %>
+
+<%= turbo_stream.update 'aeon_appointments' do %>
+  <%= render Aeon::AppointmentComponent.with_collection((@appointments + [@appointment]).sort_by(&:start_time)) %>
+<% end %>
