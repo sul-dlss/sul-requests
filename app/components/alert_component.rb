@@ -3,9 +3,15 @@
 # Alert with a leading icon. Pass a type (:info, :success, :warning).
 class AlertComponent < ViewComponent::Base
   ICONS = {
-    info: 'info-circle-fill',
-    success: 'check-circle-fill',
-    warning: 'exclamation-triangle-fill'
+    info: 'bi-info-circle-fill',
+    success: 'bi-check-circle-fill',
+    warning: 'bi-exclamation-triangle-fill'
+  }.freeze
+
+  ALERTS = {
+    info: 'alert-info',
+    success: 'alert-success',
+    warning: 'alert-warning'
   }.freeze
 
   def initialize(type:)
@@ -15,7 +21,11 @@ class AlertComponent < ViewComponent::Base
   attr_reader :type
 
   def icon_class
-    "bi bi-#{ICONS.fetch(type)}"
+    "bi #{ICONS.fetch(type)}"
+  end
+
+  def alert_class
+    "alert #{ALERTS.fetch(type)}"
   end
 
   def aria_label
