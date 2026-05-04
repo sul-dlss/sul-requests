@@ -11,13 +11,7 @@
 
   <% content_for(:sidebar) do %>
     <aside class="col-md-4 offcanvas-md offcanvas-bottom offcanvas-sm-start overflow-auto"  tabindex="-1" id="appointments">
-      <turbo-frame src="<%= aeon_appointments_path(variant: 'sidebar') %>" id="aeon-appointments" class="d-block" data-turbo="false">
-        <div class="d-flex align-items-center justify-content-center" style="height: 200px;">
-          <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </div>
-      </turbo-frame>
+      <%= render 'aeon_appointments' %>
     </aside>
   <% end %>
 
