@@ -23,7 +23,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
 
   let(:stub_aeon_client) do
     instance_double(AeonClient, find_user: aeon_user, create_request: created_request, reading_rooms:, available_appointments:,
-                                activities_for:)
+                                activities_for:, requests_for: [])
   end
   let(:created_request) { instance_double(Aeon::Request, id: 123, transaction_number: 'abc123', submitted?: true, draft?: false, valid?: true) }
 
@@ -40,10 +40,12 @@ RSpec.describe 'Requesting an item from an EAD', :js do
                       stop_time: DateTime.new(2026, 2, 19, 13, 0, 0),
                       name: 'Activity1',
                       activity_type: 'Class visit',
-                      completed?: false,
+                      active?: true,
                       location: 'Special Collections',
                       sites: ['SPECUA'],
-                      users: [instance_double(Aeon::User, username: 'user1'), aeon_user],
+                      requests: [],
+                      sort_key: DateTime.new(2026, 2, 19, 12, 0, 0),
+                      users: [aeon_user],
                       id: 1)
     ]
   end

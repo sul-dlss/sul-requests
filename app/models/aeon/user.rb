@@ -27,15 +27,27 @@ module Aeon
     end
 
     def requests
-      @requests ||= self.class.aeon_client.requests_for(username:)
+      @requests ||= self.class.aeon_client.requests_for(username:).reject(&:activity?)
     end
 
     def activities
-      @activities ||= self.class.aeon_client.activities_for(username:)
+      @activities ||= self.class.aeon_client.activities_for(username:).sort_by(&:sort_key)
+    end
+
+    def activities_with_requests # rubocop:disable Metrics/AbcSize
+      return @activities if @activites && @activities.first.requests.present?
+
+      @cached_requests = {}
+      activities.each do |activity|
+        activity.users.each do |user|
+          @cached_requests[user.username] ||= self.class.aeon_client.requests_for(username: user.username)
+          activity.requests.concat(@cached_requests[user.username].select { |request| request.activity_id == activity.id })
+        end
+      end
     end
 
     def active_reading_room_activities(site:)
-      activities&.reject(&:completed?)&.select { |activity| activity.sites.include?(site) }
+      activities&.select(&:active?)&.select { |activity| activity.sites.include?(site) }
     end
 
     def draft_requests

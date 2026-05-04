@@ -71,6 +71,8 @@ Rails.application.routes.draw do
     post :terms, to: 'aeon_users#accept_terms', as: :accept_terms
   end
 
+  resources :aeon_activities, only: [:index]
+
   resources :admin, only: [:index, :show] do
     member do
       get :holdings, as: :holdings

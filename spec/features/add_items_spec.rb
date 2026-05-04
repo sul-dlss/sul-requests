@@ -49,6 +49,7 @@ RSpec.describe 'Add items modal', :js do
                     requests_for: [draft_request_one, draft_request_two, draft_request_three, submitted_request_one, submitted_request_two],
                     reading_rooms:,
                     update_request_route: build(:aeon_request, transaction_number: 100),
+                    activities_for: [],
                     available_appointments:)
   end
 

@@ -30,6 +30,7 @@ RSpec.describe 'Bulk delete actions and modal', :js do
                     appointments_for: [],
                     requests_for: [first_request, second_request, third_request],
                     reading_rooms:,
+                    activities_for: [],
                     available_appointments: [])
   end
 

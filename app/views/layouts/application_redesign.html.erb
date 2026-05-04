@@ -54,6 +54,9 @@
               <li><%= link_to 'Completed requests', aeon_requests_url(kind: 'completed'), class: 'dropdown-item' %></li>
             </ul>
           <% end %>
+          <% component.with_nav_item do %>
+            <%= link_to 'Activities', aeon_activities_url, class: 'nav-link fw-semibold' %>
+          <% end if current_user.aeon.activities.present? %>
 
           <% component.with_nav_item do %>
             <%= link_to 'Appointments', aeon_appointments_url, class: 'nav-link fw-semibold' %>
