@@ -76,12 +76,12 @@ RSpec.describe 'Requesting an item from an EAD', :js do
     it 'allows the user to submit a reading room request for an EAD item' do
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
 
-      expect(page).to have_content('New request')
-      expect(page).to have_content('Knuth (Donald E.) papers')
+      expect(page).to have_text('New request')
+      expect(page).to have_text('Knuth (Donald E.) papers')
 
       choose 'Reading room appointment'
 
-      expect(page).to have_content('Earliest appointment available: Thursday, Feb 19, 2026')
+      expect(page).to have_text('Earliest appointment available: Thursday, Feb 19, 2026')
 
       click_button 'Continue'
 
@@ -119,24 +119,24 @@ RSpec.describe 'Requesting an item from an EAD', :js do
 
       fill_in 'Search contents', with: 'Japan'
       expect(page).to have_text '1 of 13 matches'
-      expect(page).to have_content 'Folder 8: Chinese and Japanese'
+      expect(page).to have_text 'Folder 8: Chinese and Japanese'
 
       find('[data-ead-search-target="nextButton"]').click
       expect(page).to have_text '2 of 13 matches'
-      expect(page).to have_content 'Folder 13: Japanese'
+      expect(page).to have_text 'Folder 13: Japanese'
 
       find('[data-ead-search-target="clearButton"]').click
       expect(page).to have_no_css '[data-ead-search-target="countPill"]'
 
       fill_in 'Search contents', with: 'box 4'
       expect(page).to have_text '1 of 6 matches'
-      expect(page).to have_content 'Box 4'
-      expect(page).to have_content 'The Art of Computer Programming'
+      expect(page).to have_text 'Box 4'
+      expect(page).to have_text 'The Art of Computer Programming'
 
       find('[data-ead-search-target="prevButton"]').click
       expect(page).to have_text '6 of 6 matches'
-      expect(page).to have_content 'Box 4'
-      expect(page).to have_content 'Addenda, 2022-104'
+      expect(page).to have_text 'Box 4'
+      expect(page).to have_text 'Addenda, 2022-104'
 
       find('[data-ead-search-target="input"]').send_keys(:enter)
       expect(page).to have_text '1 of 6 matches'
@@ -317,8 +317,8 @@ RSpec.describe 'Requesting an item from an EAD', :js do
     it 'allows the user to submit a request with activites selected' do
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
 
-      expect(page).to have_content('New request')
-      expect(page).to have_content('Knuth (Donald E.) papers')
+      expect(page).to have_text('New request')
+      expect(page).to have_text('Knuth (Donald E.) papers')
 
       choose 'Activity'
       click_button 'Continue'
@@ -345,8 +345,8 @@ RSpec.describe 'Requesting an item from an EAD', :js do
     it 'allows the user to submit a request with details about the portion of the item to be digitized' do # rubocop:disable RSpec/ExampleLength
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
 
-      expect(page).to have_content('New request')
-      expect(page).to have_content('Knuth (Donald E.) papers')
+      expect(page).to have_text('New request')
+      expect(page).to have_text('Knuth (Donald E.) papers')
 
       choose 'Digitization'
       check 'I agree to these terms'
@@ -376,7 +376,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
         expect(page).to have_no_css('.accordion-button[disabled]')
       end
 
-      expect(page).to have_content('Requested pages')
+      expect(page).to have_text('Requested pages')
       fill_in 'Requested pages', with: 'Pages 1-10'
       fill_in 'Additional information', with: 'Testing only'
 
@@ -425,8 +425,8 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       page.find('button[data-item-id="volumes_computers-and-typesetting_volume-e-computer-modern-t_box-22"]').click
       within '.modal' do
         # Skipping the HTML > elements when looking at just the text
-        expect(page).to have_content('Computers and TypesettingVolume E, Computer Modern TypefacesBox 22')
-        expect(page).to have_content 'Folder 1: What preceded Computer Modern'
+        expect(page).to have_text('Computers and TypesettingVolume E, Computer Modern TypefacesBox 22')
+        expect(page).to have_text 'Folder 1: What preceded Computer Modern'
         # There are 9 folders in this box
         expect(page).to have_css('li', count: 9)
         click_button(class: 'btn-close')
@@ -435,7 +435,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       # Clicking the second container view modal link should show us 11 items
       page.find('button[data-item-id="volumes_computers-and-typesetting_volume-e-computer-modern-t_box-23"]').click
       within '.modal' do
-        expect(page).to have_content('Computers and TypesettingVolume E, Computer Modern TypefacesBox 23')
+        expect(page).to have_text('Computers and TypesettingVolume E, Computer Modern TypefacesBox 23')
         expect(page).to have_css('li', count: 11)
         click_button(class: 'btn-close')
       end
@@ -481,8 +481,8 @@ RSpec.describe 'Requesting an item from an EAD', :js do
     it 'allows users to input boxes manually' do # rubocop:disable RSpec/ExampleLength
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
 
-      expect(page).to have_content('New request')
-      expect(page).to have_content('Hilton (Ozzie) Collection')
+      expect(page).to have_text('New request')
+      expect(page).to have_text('Hilton (Ozzie) Collection')
 
       choose 'Digitization'
       check 'I agree to these terms'
@@ -497,13 +497,13 @@ RSpec.describe 'Requesting an item from an EAD', :js do
 
       click_button 'Continue'
 
-      expect(page).to have_content('Requested pages')
-      expect(page).to have_content('Box 1')
+      expect(page).to have_text('Requested pages')
+      expect(page).to have_text('Box 1')
       fill_in 'Requested pages', with: 'Pages 1-10'
       fill_in 'Additional information', with: 'Testing only'
       click_button 'Next item'
 
-      expect(page).to have_content('Box 25')
+      expect(page).to have_text('Box 25')
       fill_in 'Requested pages', with: 'Pages 10-14'
       fill_in 'Additional information', with: 'Testing only'
 
@@ -561,12 +561,12 @@ RSpec.describe 'Requesting an item from an EAD', :js do
     it 'shows list of users relevant appointments' do
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
 
-      expect(page).to have_content('New request')
-      expect(page).to have_content('Pehrson (Elmer Walter) Photograph Album')
+      expect(page).to have_text('New request')
+      expect(page).to have_text('Pehrson (Elmer Walter) Photograph Album')
 
       choose 'Reading room appointment'
 
-      expect(page).to have_content('Earliest appointment available: Thursday, Feb 19, 2026')
+      expect(page).to have_text('Earliest appointment available: Thursday, Feb 19, 2026')
 
       click_button 'Continue'
 
@@ -577,8 +577,8 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       expect(page).to have_css('.selected-item-title', text: 'Box 1')
 
       # In the Appointment step
-      expect(page).to have_content('Field Reading Room')
-      expect(page).to have_content('Hours: Monday - Friday, 9:00 - 4:45 pm')
+      expect(page).to have_text('Field Reading Room')
+      expect(page).to have_text('Hours: Monday - Friday, 9:00 - 4:45 pm')
 
       # In the Appointment step
       click_button 'Select existing appointment'
@@ -591,12 +591,12 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       it 'shows appointment alert' do
         visit new_archives_request_path(value: 'http://example.com/ead.xml')
 
-        expect(page).to have_content('New request')
-        expect(page).to have_content('Pehrson (Elmer Walter) Photograph Album')
+        expect(page).to have_text('New request')
+        expect(page).to have_text('Pehrson (Elmer Walter) Photograph Album')
 
         choose 'Reading room appointment'
 
-        expect(page).to have_content('Earliest appointment available: Thursday, Feb 19, 2026')
+        expect(page).to have_text('Earliest appointment available: Thursday, Feb 19, 2026')
 
         click_button 'Continue'
 
@@ -607,9 +607,9 @@ RSpec.describe 'Requesting an item from an EAD', :js do
         expect(page).to have_css('.selected-item-title', text: 'Box 1')
 
         # In the Appointment step
-        expect(page).to have_content('Field Reading Room')
-        expect(page).to have_content('Hours: Monday - Friday, 9:00 - 4:45 pm')
-        expect(page).to have_content('You don’t have any appointments yet. Create one to continue.')
+        expect(page).to have_text('Field Reading Room')
+        expect(page).to have_text('Hours: Monday - Friday, 9:00 - 4:45 pm')
+        expect(page).to have_text('You don’t have any appointments yet. Create one to continue.')
         expect(page).to have_button('Select existing appointment', disabled: true)
       end
     end
@@ -638,8 +638,8 @@ RSpec.describe 'Requesting an item from an EAD', :js do
     it 'shows login page' do
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
 
-      expect(page).to have_content('Pehrson (Elmer Walter) Photograph Album')
-      expect(page).to have_content('Log in with SUNet ID')
+      expect(page).to have_text('Pehrson (Elmer Walter) Photograph Album')
+      expect(page).to have_text('Log in with SUNet ID')
     end
   end
 
@@ -655,7 +655,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
 
     it 'identifies the library of the item' do
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
-      expect(page).to have_content 'Your library account does not include an email address, which is required to complete this request.'
+      expect(page).to have_text 'Your library account does not include an email address, which is required to complete this request.'
     end
   end
 
@@ -669,8 +669,8 @@ RSpec.describe 'Requesting an item from an EAD', :js do
     it 'shows an invalid document error' do
       visit new_archives_request_path(value: 'http://example.com/not-an-ead.xml')
 
-      expect(page).to have_content('Missing or invalid EAD XML')
-      expect(page).to have_content('Please check your finding aid source')
+      expect(page).to have_text('Missing or invalid EAD XML')
+      expect(page).to have_text('Please check your finding aid source')
     end
 
     context 'when a network error occurs instead' do
@@ -681,8 +681,8 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       it 'shows a generic error' do
         visit new_archives_request_path(value: 'http://example.com/ead.xml')
 
-        expect(page).to have_content('Error Loading Collection Information')
-        expect(page).to have_content('Please try again later')
+        expect(page).to have_text('Error Loading Collection Information')
+        expect(page).to have_text('Please try again later')
       end
     end
   end

@@ -55,7 +55,7 @@ RSpec.describe 'Viewing all requests' do
         expected_regex = /#{I18n.l(Time.zone.today - 1.day,
                                    format: :quick)}.*#{I18n.l(Time.zone.today - 2.days,
                                                               format: :quick)}.*#{I18n.l(Time.zone.today - 3.days, format: :quick)}/m
-        expect(page).to have_content(expected_regex)
+        expect(page).to have_text(expected_regex)
 
         click_on 'All pending'
 

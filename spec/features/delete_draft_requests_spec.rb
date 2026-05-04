@@ -69,7 +69,7 @@ RSpec.describe 'Bulk delete actions and modal', :js do
       expect(page).to have_css('.modal-title', text: 'Delete 2 saved for later requests?')
       expect(page).to have_css('.modal-body', text: 'Reading room use', count: 1)
       expect(page).to have_css('.modal-body', text: 'Slow poetry in America : a poetry quarterly', count: 1)
-      expect(page.find('.modal-body')).to have_content('PR9195.1 .S56 NO.1').and have_content('PR9195.1 .S56 NO.2')
+      expect(page.find('.modal-body')).to have_text('PR9195.1 .S56 NO.1').and have_text('PR9195.1 .S56 NO.2')
     end
   end
 

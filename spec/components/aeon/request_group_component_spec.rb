@@ -24,11 +24,11 @@ RSpec.describe Aeon::RequestGroupComponent, type: :component do
 
     it 'renders information about each request' do
       expect(page).to have_css 'h2', text: 'Slow poetry in America : a poetry quarterly', count: 1
-      expect(page).to have_content 'PR9195.1 .S56 NO.1'
-      expect(page).to have_content 'PR9195.1 .S56 NO.2'
-      expect(page).to have_content 'Request #100'
-      expect(page).to have_content 'Request #101'
-      expect(page).to have_no_content 'Call number:'
+      expect(page).to have_text 'PR9195.1 .S56 NO.1'
+      expect(page).to have_text 'PR9195.1 .S56 NO.2'
+      expect(page).to have_text 'Request #100'
+      expect(page).to have_text 'Request #101'
+      expect(page).to have_no_text 'Call number:'
     end
   end
 
@@ -51,13 +51,13 @@ RSpec.describe Aeon::RequestGroupComponent, type: :component do
 
     it 'renders information about each request' do
       expect(page).to have_css 'h2', text: 'Donald E. Knuth papers', count: 1
-      expect(page).to have_content 'The Art of Computer Programming', count: 2
-      expect(page).to have_content 'Mar 11, 2024', count: 2
-      expect(page).to have_content 'SC0097', count: 1
-      expect(page).to have_content 'Box 1'
-      expect(page).to have_content 'Box 2'
-      expect(page).to have_content 'Request #100'
-      expect(page).to have_content 'Request #101'
+      expect(page).to have_text 'The Art of Computer Programming', count: 2
+      expect(page).to have_text 'Mar 11, 2024', count: 2
+      expect(page).to have_text 'SC0097', count: 1
+      expect(page).to have_text 'Box 1'
+      expect(page).to have_text 'Box 2'
+      expect(page).to have_text 'Request #100'
+      expect(page).to have_text 'Request #101'
     end
   end
 end

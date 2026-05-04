@@ -123,7 +123,7 @@ RSpec.describe 'Mediation table', :js do
           within(first('tr')) do
             expect(page).to have_css('td .btn', text: 'Approve')
             expect(page).to have_no_css('td', text: 'Added to pick list', visible: :visible)
-            expect(page).to have_no_content('super-admin')
+            expect(page).to have_no_text('super-admin')
             click_on('Approve')
           end
           expect(page).to have_css('tr.approved')
@@ -146,7 +146,7 @@ RSpec.describe 'Mediation table', :js do
           click_on('Approve')
         end
 
-        expect(page).to have_content 'Approved'
+        expect(page).to have_text 'Approved'
 
         within('tbody td table tbody tr:last-child') do
           click_on('Approve')
@@ -159,14 +159,14 @@ RSpec.describe 'Mediation table', :js do
 
       it 'has the expected default sort order for pending requests (needed on ascending, created on descending)' do
         within '.mediation-table tbody' do
-          expect(page).to have_content(/Jim Doe.*Joe Doe.*Test User/m)
+          expect(page).to have_text(/Jim Doe.*Joe Doe.*Test User/m)
         end
       end
 
       it 'has the expected default sort order for completed requests (needed on descending, created on descending)' do
         visit admin_path('ART', done: 'true')
         within '.mediation-table tbody' do
-          expect(page).to have_content(/Bob Doe.*Alice Doe.*Eve Doe.*Mal Doe/m)
+          expect(page).to have_text(/Bob Doe.*Alice Doe.*Eve Doe.*Mal Doe/m)
         end
       end
     end
@@ -382,7 +382,7 @@ RSpec.describe 'Mediation table', :js do
       it 'does not include the edit-in-place element' do
         visit admin_path('PAGE-MP')
 
-        expect(page).to have_content 'Request mediation'
+        expect(page).to have_text 'Request mediation'
         expect(page).to have_no_css('.needed_date a')
       end
     end

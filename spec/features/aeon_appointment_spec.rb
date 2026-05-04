@@ -37,13 +37,13 @@ RSpec.describe 'Appointments', :js do
       click_on 'Create new appointment'
       expect(page).to have_css '.modal'
       within '.modal' do
-        expect(page).to have_content 'Create new appointment'
+        expect(page).to have_text 'Create new appointment'
         select 'Field Reading Room'
         click_on 'Continue'
 
-        expect(page).to have_content 'Create new appointmentField Reading Room'
+        expect(page).to have_text 'Create new appointmentField Reading Room'
         expect(page).to have_field('aeon_appointment[date]', type: 'date')
-        expect(page).to have_no_content('Duration')
+        expect(page).to have_no_text('Duration')
         click_on 'Cancel'
       end
       expect(page).to have_no_css '.modal'
@@ -53,14 +53,14 @@ RSpec.describe 'Appointments', :js do
       click_on 'Create new appointment'
       expect(page).to have_css '.modal'
       within '.modal' do
-        expect(page).to have_content 'Create new appointment'
+        expect(page).to have_text 'Create new appointment'
         select 'Archive of Recorded Sound'
         click_on 'Continue'
 
-        expect(page).to have_content 'Create new appointmentArchive of Recorded Sound'
+        expect(page).to have_text 'Create new appointmentArchive of Recorded Sound'
         expect(page).to have_field('aeon_appointment[date]', type: 'date')
-        expect(page).to have_content('Duration')
-        expect(page).to have_content('Available time slots')
+        expect(page).to have_text('Duration')
+        expect(page).to have_text('Available time slots')
         click_on 'Cancel'
       end
       expect(page).to have_no_css '.modal'
@@ -71,8 +71,8 @@ RSpec.describe 'Appointments', :js do
     it 'opens and closes the edit appointment modal' do
       click_on 'Edit'
       within '.modal' do
-        expect(page).to have_content 'Edit appointment'
-        expect(page).to have_content 'Field Reading Room'
+        expect(page).to have_text 'Edit appointment'
+        expect(page).to have_text 'Field Reading Room'
         click_on 'Cancel'
       end
       expect(page).to have_no_css '.modal'
@@ -84,9 +84,9 @@ RSpec.describe 'Appointments', :js do
       click_on 'Delete appointment'
       expect(page).to have_css '.modal'
       perform_enqueued_jobs do
-        expect(page).to have_content 'Cancel appointment?'
+        expect(page).to have_text 'Cancel appointment?'
         choose('cancel_items_false')
-        expect(page).to have_content '1 item assigned to this appointment.'
+        expect(page).to have_text '1 item assigned to this appointment.'
         click_on 'Yes, cancel appointment'
       end
       expect(page).to have_no_css '.modal'
@@ -100,9 +100,9 @@ RSpec.describe 'Appointments', :js do
       click_on 'Delete appointment'
       expect(page).to have_css '.modal'
       perform_enqueued_jobs do
-        expect(page).to have_content 'Cancel appointment?'
+        expect(page).to have_text 'Cancel appointment?'
         choose('cancel_items_true')
-        expect(page).to have_content '1 item assigned to this appointment.'
+        expect(page).to have_text '1 item assigned to this appointment.'
         click_on 'Yes, cancel appointment'
       end
       expect(page).to have_no_css '.modal'
