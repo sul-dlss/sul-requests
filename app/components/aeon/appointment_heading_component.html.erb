@@ -1,0 +1,3 @@
+<%= content_tag(tag, class: classes.presence) do %>
+  <%= content %><% if reading_room %><i class="bi bi-dot mt-1"></i><span class="h3 my-1"><%= reading_room.name %></span><% end %>
+<% end %>
