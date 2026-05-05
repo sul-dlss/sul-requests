@@ -148,6 +148,14 @@ module Aeon
       reference_number || transaction_number
     end
 
+    def sort_key
+      [call_number || '', pad_digits_for_sorting(item_volume || ''), id || ''].join('___')
+    end
+
+    def pad_digits_for_sorting(str)
+      str.gsub(/\d+/) { |match| "#{match.length}#{match}" }
+    end
+
     def persisted? = id.present?
 
     def for_publication = @for_publication || false
