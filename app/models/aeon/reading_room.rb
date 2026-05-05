@@ -87,6 +87,10 @@ module Aeon
       day_groups.join(', ')
     end
 
+    def appointment_min_lead_days
+      policies.first.appointment_min_lead_days
+    end
+
     def next_appointment
       @next_appointment ||= available_appointments(Time.zone.now.to_date, include_next_available: true)&.first
     end
