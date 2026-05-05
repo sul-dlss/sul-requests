@@ -77,4 +77,27 @@ RSpec.describe Aeon::Appointment do
       expect(appointment).not_to be_available_to_proxies
     end
   end
+
+  describe '#scheduled_time_block' do
+    let(:appointment) { build(:aeon_appointment) }
+
+    it 'pulls location from the reading room' do
+      expect(appointment.scheduled_time_block).to have_attributes(
+        start_time: appointment.start_time,
+        stop_time: appointment.stop_time,
+        location: appointment.reading_room.name
+      )
+    end
+
+    it 'reflects the reading room day_only_appointments? setting' do
+      allow(appointment.reading_room).to receive(:day_only_appointments?).and_return(true)
+      expect(appointment.scheduled_time_block).to be_date_only
+    end
+
+    it 'returns a non-nil block even without a reading room' do
+      appointment = build(:aeon_appointment, reading_room: nil, reading_room_id: nil)
+      block = appointment.scheduled_time_block
+      expect(block).to have_attributes(location: nil, day_only: false)
+    end
+  end
 end

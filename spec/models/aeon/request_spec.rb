@@ -9,6 +9,31 @@ RSpec.describe Aeon::Request do
     allow(AeonClient).to receive(:new).and_return(aeon_client)
   end
 
+  describe '#scheduled_time_block' do
+    let(:queue) { Aeon::Queue.new(id: 0, queue_name: 'Awaiting Request Processing', queue_type: 'Transaction') }
+
+    before do
+      allow(aeon_client).to receive(:find_queue).with(id: queue.id, type: :transaction).and_return(queue)
+    end
+
+    it 'delegates to the appointment when submitted' do
+      request = build(:aeon_request, transaction_status: queue.id)
+      expect(request.scheduled_time_block).to eq(request.appointment.scheduled_time_block)
+    end
+
+    it 'returns nil when there is no appointment' do
+      request = build(:aeon_request, :without_appointment, transaction_status: queue.id)
+      expect(request.scheduled_time_block).to be_nil
+    end
+
+    it 'returns nil when the request is a draft' do
+      draft_queue = Aeon::Queue.new(id: 1, queue_name: 'Awaiting User Review', queue_type: 'Transaction')
+      allow(aeon_client).to receive(:find_queue).with(id: draft_queue.id, type: :transaction).and_return(draft_queue)
+      request = build(:aeon_request, transaction_status: draft_queue.id)
+      expect(request.scheduled_time_block).to be_nil
+    end
+  end
+
   describe '#status' do
     subject(:request) do
       build(:aeon_request, transaction_status: queue.id)

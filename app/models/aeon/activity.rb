@@ -27,6 +27,12 @@ module Aeon
       status == 'Completed'
     end
 
+    def scheduled_time_block
+      return if start_time.blank? || location.blank?
+
+      ScheduledTimeBlock.new(start_time:, stop_time:, location:, day_only: false)
+    end
+
     def self.sites(location)
       location_mapping = { 'ARS' => ['ARS'], 'David Ramsey Map Center' => ['RUMSEY'], 'East Asia Library' => ['EASTASIA'],
                            nil => %w[ARS RUMSEY EASTASIA SPECUA] }

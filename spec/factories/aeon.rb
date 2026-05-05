@@ -1,6 +1,15 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
+  factory :scheduled_time_block, class: 'ScheduledTimeBlock' do
+    start_time { Time.zone.parse('2026-05-12T14:00:00Z') }
+    stop_time  { Time.zone.parse('2026-05-12T16:00:00Z') }
+    location   { 'Special Collections' }
+    day_only   { false }
+
+    initialize_with { new(**attributes) }
+  end
+
   factory :aeon_reading_room_open_hours, class: 'Aeon::ReadingRoomOpenHours' do
     day_of_week { 1 }
     day_name { 'Monday' }

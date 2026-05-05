@@ -1,0 +1,13 @@
+<span class="appointment-time-highlight">
+  <i class="bi bi-calendar text-green me-1"></i>
+  <span class="ms-1">
+    <span class="fw-bold text-green"><%= date %></span>
+    <% if time_range %>
+      <i class="bi bi-dot text-green align-middle fs-4"></i>
+      <span class="fw-normal text-nowrap text-green"><%= time_range %></span>
+    <% end %>
+    <% if with_location? %>
+      <span class="fw-normal text-nowrap text-green"><%= time_block.location %></span>
+    <% end %>
+  </span>
+</span>

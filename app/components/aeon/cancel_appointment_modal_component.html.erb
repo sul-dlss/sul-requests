@@ -4,7 +4,7 @@
     <%= form_with url: aeon_appointment_path(appointment.id), method: 'delete' do |f| %>
       <div class="modal-body">
           <div class="fw-semibold d-inline-flex gap-2">
-            <%= render Aeon::AppointmentDateTimeComponent.new(appointment: appointment, show_open_hours: false) %>
+            <%= render AppointmentTime::HeadingComponent.new(time_block: appointment.scheduled_time_block, show_open_hours: false) %>
           </div>
           <div class="mt-1 fw-semibold"><i class="bi bi-geo-alt-fill me-1"></i><%= appointment.reading_room.name %></div>
           <% if appointment.requests.any? %>

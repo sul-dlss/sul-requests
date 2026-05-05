@@ -78,6 +78,12 @@ module Aeon
       appointment_id.present?
     end
 
+    def scheduled_time_block
+      return unless appointment? && !draft?
+
+      appointment&.scheduled_time_block
+    end
+
     def status
       if completed? || scan_delivered?
         :completed

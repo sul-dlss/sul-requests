@@ -19,7 +19,7 @@
 
       <% if appointment? %>
         <span class="ms-auto">
-          <%= render Aeon::RequestAppointmentTimeComponent.new(request:, with_reading_room: false) %>
+          <%= render AppointmentTime::HighlightComponent.new(time_block: request.scheduled_time_block) %>
         </span>
       <% end %>
     </div>

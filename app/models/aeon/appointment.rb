@@ -57,6 +57,15 @@ module Aeon
       start_time.after?(edit_policy.days.from_now)
     end
 
+    def scheduled_time_block
+      ScheduledTimeBlock.new(
+        start_time:,
+        stop_time:,
+        location: reading_room&.name,
+        day_only: reading_room&.day_only_appointments? || false
+      )
+    end
+
     def persisted? = id.present?
   end
 end

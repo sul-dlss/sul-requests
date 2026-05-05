@@ -481,14 +481,14 @@ label.btn-close {
     padding: 4px 12px;
   }
 
-  .appointment-details .bi-dot {
-    margin-inline-start: -0.25rem;
-    margin-inline-end: -0.25rem;
-  }
-
   .card-footer {
     color: var(--stanford-80-black);
   }
+}
+
+.appointment-time-highlight .bi-dot {
+  margin-inline-start: -0.25rem;
+  margin-inline-end: -0.25rem;
 }
 
 .request-group-per-appointment.request-group.card  {

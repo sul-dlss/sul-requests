@@ -35,22 +35,20 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
     allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
     allow(aeon_user).to receive_messages(appointments: [
-                                           instance_double(Aeon::Appointment,
-                                                           start_time: DateTime.new(2026, 2, 19, 12, 0, 0),
-                                                           stop_time: DateTime.new(2026, 2, 19, 13, 0, 0),
-                                                           id: 1,
-                                                           editable?: true,
-                                                           sort_key: 2,
-                                                           requests: [instance_double(Aeon::Request)],
-                                                           reading_room: reading_rooms.last),
-                                           instance_double(Aeon::Appointment,
-                                                           start_time: DateTime.new(2026, 2, 20, 13, 0, 0),
-                                                           stop_time: DateTime.new(2026, 2, 20, 14, 0, 0),
-                                                           id: 1,
-                                                           editable?: true,
-                                                           sort_key: 2,
-                                                           requests: [instance_double(Aeon::Request)],
-                                                           reading_room: reading_rooms.first)
+                                           aeon_appointment_double(start_time: DateTime.new(2026, 2, 19, 12, 0, 0),
+                                                                   stop_time: DateTime.new(2026, 2, 19, 13, 0, 0),
+                                                                   reading_room: reading_rooms.last,
+                                                                   id: 1,
+                                                                   editable?: true,
+                                                                   sort_key: 2,
+                                                                   requests: [instance_double(Aeon::Request)]),
+                                           aeon_appointment_double(start_time: DateTime.new(2026, 2, 20, 13, 0, 0),
+                                                                   stop_time: DateTime.new(2026, 2, 20, 14, 0, 0),
+                                                                   reading_room: reading_rooms.first,
+                                                                   id: 1,
+                                                                   editable?: true,
+                                                                   sort_key: 2,
+                                                                   requests: [instance_double(Aeon::Request)])
                                          ],
                                          requests: [])
 

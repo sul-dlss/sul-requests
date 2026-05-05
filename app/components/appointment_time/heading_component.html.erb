@@ -1,0 +1,11 @@
+<span><i class="bi bi-calendar <%= icon_class %>"></i><%= date %></span>
+<span>
+  <% if time_block.time_of_day? %>
+    <i class="bi bi-clock <%= icon_class %>"></i><%= time_range %>
+  <% elsif time_block.date_only? && show_open_hours? %>
+    <i class="bi bi-clock <%= icon_class %>"></i>Open hours: <%= time_range %>
+  <% end %>
+</span>
+<% if with_location? %>
+  <span><i class="bi bi-geo-alt-fill <%= icon_class %>"></i><%= time_block.location %></span>
+<% end %>

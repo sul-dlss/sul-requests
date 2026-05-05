@@ -15,7 +15,7 @@
           <%= check_box_tag 'patron_request[activity_ids][]', id: "activity-" + activity.id.to_s,  value: activity.id %>
           <label class="d-flex flex-column ms-3" for="activity-<%= activity.id %>">
             <div class="fw-semibold"><%= activity.activity_type %><i class="bi bi-dot"></i><%= activity.name %></div>
-            <div><%= render AppointmentTimeRangeComponent.new(appointment: activity, show_hours: true, location: activity.location) if activity.start_time && activity.location %></div>
+            <div><%= render AppointmentTime::InlineComponent.new(time_block: activity.scheduled_time_block, with_location: true) %></div>
           </label>
         <% end %>
       <% end %>

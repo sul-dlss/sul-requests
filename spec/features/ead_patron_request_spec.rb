@@ -35,37 +35,34 @@ RSpec.describe 'Requesting an item from an EAD', :js do
 
   let(:activities_for) do
     [
-      instance_double(Aeon::Activity,
-                      start_time: DateTime.new(2026, 2, 19, 12, 0, 0),
-                      stop_time: DateTime.new(2026, 2, 19, 13, 0, 0),
-                      name: 'Activity1',
-                      activity_type: 'Class visit',
-                      completed?: false,
-                      location: 'Special Collections',
-                      sites: ['SPECUA'],
-                      users: [instance_double(Aeon::User, username: 'user1'), aeon_user],
-                      id: 1)
+      aeon_activity_double(start_time: DateTime.new(2026, 2, 19, 12, 0, 0),
+                           stop_time: DateTime.new(2026, 2, 19, 13, 0, 0),
+                           location: 'Special Collections',
+                           name: 'Activity1',
+                           activity_type: 'Class visit',
+                           completed?: false,
+                           sites: ['SPECUA'],
+                           users: [instance_double(Aeon::User, username: 'user1'), aeon_user],
+                           id: 1)
     ]
   end
 
   let(:appointments) do
     [
-      instance_double(Aeon::Appointment,
-                      start_time: DateTime.new(2026, 2, 19, 12, 0, 0),
-                      stop_time: DateTime.new(2026, 2, 19, 13, 0, 0),
-                      id: 1,
-                      editable?: true,
-                      sort_key: 1,
-                      requests: [instance_double(Aeon::Request)],
-                      reading_room: reading_rooms.last),
-      instance_double(Aeon::Appointment,
-                      start_time: DateTime.new(2026, 2, 20, 13, 0, 0),
-                      stop_time: DateTime.new(2026, 2, 20, 14, 0, 0),
-                      id: 2,
-                      editable?: true,
-                      sort_key: 2,
-                      requests: [instance_double(Aeon::Request)],
-                      reading_room: reading_rooms.first)
+      aeon_appointment_double(start_time: DateTime.new(2026, 2, 19, 12, 0, 0),
+                              stop_time: DateTime.new(2026, 2, 19, 13, 0, 0),
+                              reading_room: reading_rooms.last,
+                              id: 1,
+                              editable?: true,
+                              sort_key: 1,
+                              requests: [instance_double(Aeon::Request)]),
+      aeon_appointment_double(start_time: DateTime.new(2026, 2, 20, 13, 0, 0),
+                              stop_time: DateTime.new(2026, 2, 20, 14, 0, 0),
+                              reading_room: reading_rooms.first,
+                              id: 2,
+                              editable?: true,
+                              sort_key: 2,
+                              requests: [instance_double(Aeon::Request)])
     ]
   end
 
