@@ -28,6 +28,10 @@
     <% end %>
   </turbo-frame>
   <turbo-frame id="earliest_appointment">
-    <%= @available_appointments.first.start_time.strftime('%A, %b %e, %Y') if @available_appointments.first %>
+    <% if @available_appointments.first %>
+      <span class="text-cardinal">
+        Earliest appointment available: <%= @available_appointments.first.start_time.strftime('%A, %b %e, %Y') %>
+      </span>
+    <% end %>
   </turbo-frame>
 <% end %>
