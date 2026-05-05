@@ -176,6 +176,314 @@ class FolioGraphqlClient
     data&.dig('data', 'servicePoints')
   end
 
+  def loan_policies
+    data = post_json('/', json: {
+                       query: "query LoanPolicies {
+                                loanPolicies {
+                                  id
+                                  name
+                                  description
+                                  renewable
+                                  renewalsPolicy {
+                                    numberAllowed
+                                    alternateFixedDueDateSchedule {
+                                      schedules {
+                                        due
+                                        from
+                                        to
+                                      }
+                                    }
+                                    period {
+                                      duration
+                                      intervalId
+                                    }
+                                    renewFromId
+                                    unlimited
+                                  }
+                                  loanable
+                                  loansPolicy {
+                                    period {
+                                      duration
+                                      intervalId
+                                    }
+                                    fixedDueDateSchedule {
+                                      schedules {
+                                        due
+                                        from
+                                        to
+                                      }
+                                    }
+                                  }
+                                  requestManagement {
+                                    holds {
+                                      renewItemsWithRequest
+                                    }
+                                  }
+                                }
+                              }"
+                     })
+
+    raise data['errors'].pluck('message').join("\n") if data.key?('errors')
+
+    data.dig('data', 'loanPolicies')
+  end
+
+  def patron_info(patron_uuid)
+    data = post_json('/', json: {
+                       query: "query Query($patronId: UUID!) {
+                                patron(id: $patronId) {
+                                  user {
+                                    username
+                                    barcode
+                                    active
+                                    personal {
+                                      email
+                                      lastName
+                                      firstName
+                                      preferredFirstName
+                                    }
+                                    proxiesFor {
+                                      userId
+                                    }
+                                    proxiesOf {
+                                      proxyUserId
+                                      proxyUser {
+                                        barcode
+                                        personal {
+                                          firstName
+                                          lastName
+                                        }
+                                      }
+                                    }
+                                    expirationDate
+                                    externalSystemId
+                                    patronGroup {
+                                      desc
+                                      group
+                                      limits {
+                                        conditionId
+                                        id
+                                        patronGroupId
+                                        value
+                                        condition {
+                                          blockBorrowing
+                                          blockRenewals
+                                          blockRequests
+                                          message
+                                          name
+                                          valueType
+                                        }
+                                      }
+                                    }
+                                    blocks {
+                                      message
+                                    }
+                                    manualBlocks {
+                                      desc
+                                    }
+                                    patronGroupId
+                                  }
+                                  id
+                                  holds {
+                                    requestDate
+                                    item {
+                                      instanceId
+                                      title
+                                      itemId
+
+                                      item {
+                                        circulationNotes {
+                                          id
+                                          noteType
+                                          note
+                                          source {
+                                            personal {
+                                              lastName
+                                            }
+                                            id
+                                          }
+                                          date
+                                          staffOnly
+                                        }
+                                        effectiveShelvingOrder
+                                        effectiveCallNumberComponents {
+                                          callNumber
+                                        }
+                                        permanentLocation {
+                                          code
+                                        }
+                                        effectiveLocation {
+                                          code
+                                          details {
+                                            pageServicePoints {
+                                              code
+                                              id
+                                              discoveryDisplayName
+                                              pickupLocation
+                                            }
+                                          }
+                                        }
+                                        holdingsRecord {
+                                          effectiveLocation {
+                                            code
+                                          }
+                                        }
+                                      }
+                                      author
+                                      instance {
+                                        hrid
+                                      }
+                                      isbn
+                                    }
+                                    requestId
+                                    status
+                                    expirationDate
+                                    details {
+                                      holdShelfExpirationDate
+                                      proxyUserId
+                                      proxy {
+                                        firstName
+                                        lastName
+                                        barcode
+                                      }
+                                    }
+                                    pickupLocationId
+                                    pickupLocation {
+                                      code
+                                    }
+                                    queueTotalLength
+                                    queuePosition
+                                    cancellationReasonId
+                                    canceledByUserId
+                                    cancellationAdditionalInformation
+                                    canceledDate
+                                    patronComments
+                                  }
+                                  accounts {
+                                    id
+                                    userId
+                                    remaining
+                                    dateCreated
+                                    amount
+                                    loanId
+                                    loan {
+                                      proxyUserId
+                                    }
+                                    status {
+                                      name
+                                    }
+                                    feeFine {
+                                      feeFineType
+                                    }
+                                    actions {
+                                      dateAction
+                                      typeAction
+                                    }
+                                    metadata {
+                                      createdDate
+                                    }
+                                    paymentStatus {
+                                      name
+                                    }
+                                    item {
+                                      id
+                                      barcode
+                                      effectiveShelvingOrder
+                                      effectiveLocation {
+                                        code
+                                      }
+                                      permanentLocation {
+                                        code
+                                      }
+                                      instance {
+                                        title
+                                        hrid
+                                        contributors {
+                                          name
+                                        }
+                                      }
+                                      holdingsRecord {
+                                        callNumber
+                                        effectiveLocation {
+                                          code
+                                        }
+                                      }
+                                    }
+                                  }
+                                  loans {
+                                    id
+                                    item {
+                                      title
+                                      author
+                                      instanceId
+                                      itemId
+                                      isbn
+                                      instance {
+                                        hrid
+                                      }
+                                      item {
+                                        barcode
+                                        id
+                                        status {
+                                          date
+                                          name
+                                        }
+                                        effectiveShelvingOrder
+                                        effectiveCallNumberComponents {
+                                          callNumber
+                                        }
+                                        permanentLoanTypeId
+                                        temporaryLoanTypeId
+                                        materialTypeId
+                                        effectiveLocationId
+                                        effectiveLocation {
+                                          code
+                                        }
+                                        permanentLocation {
+                                          code
+                                        }
+                                        holdingsRecord {
+                                          effectiveLocation {
+                                            code
+                                          }
+                                        }
+                                        queueTotalLength
+                                      }
+                                    }
+                                    loanDate
+                                    dueDate
+                                    overdue
+                                    details {
+                                      renewalCount
+                                      dueDateChangedByRecall
+                                      dueDateChangedByHold
+                                      proxyUserId
+                                      userId
+                                      status {
+                                        name
+                                      }
+                                      feesAndFines {
+                                        amountRemainingToPay
+                                      }
+                                    }
+                                  }
+                                  totalCharges {
+                                    isoCurrencyCode
+                                    amount
+                                  }
+                                  totalChargesCount
+                                  totalLoans
+                                  totalHolds
+                                }
+                              }",
+                       variables: { patronId: patron_uuid }
+                     })
+
+    Honeybadger.notify(data['errors'].pluck('message').join("\n"), context: { patron_uuid: }) if data.key?('errors')
+
+    data.dig('data', 'patron')
+  end
+
   # rubocop:enable Metrics/MethodLength
   def item_fields
     <<-GQL
