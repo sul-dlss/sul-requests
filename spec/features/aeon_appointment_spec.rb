@@ -43,6 +43,8 @@ RSpec.describe 'Appointments', :js do
         click_on 'Continue'
 
         expect(page).to have_text 'Create new appointment Field Reading Room', normalize_ws: true
+        expect(page).to have_text 'An appointment must be scheduled at least 3 business days in advance to access items'
+        expect(page).to have_text 'Field Reading Room is open Monday - Friday, 9:00 - 4:45 pm'
         expect(page).to have_field('aeon_appointment[date]', type: 'date')
         expect(page).to have_no_text('Duration')
         click_on 'Cancel'
@@ -59,6 +61,10 @@ RSpec.describe 'Appointments', :js do
         click_on 'Continue'
 
         expect(page).to have_text 'Create new appointment Archive of Recorded Sound', normalize_ws: true
+        expect(page).to have_text(
+          'Archive of Recorded Sound is open Monday - Wednesday, 9:00 - 3:00 pm, ' \
+          'Thursday, 9:00 - 11:00 am and 12:00 - 3:00 pm, Friday, 9:00 - 3:00 pm'
+        )
         expect(page).to have_field('aeon_appointment[date]', type: 'date')
         expect(page).to have_text('Duration')
         expect(page).to have_text('Available time slots')
