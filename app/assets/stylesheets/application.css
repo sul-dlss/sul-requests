@@ -912,6 +912,8 @@ label.btn-close {
 
 .zero-items-alert:only-child {
   display: flex;
+}
+
 /* ---- Custom date picker ---- */
 .date-picker-popup {
   position: absolute;
