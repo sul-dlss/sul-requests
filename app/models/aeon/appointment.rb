@@ -50,7 +50,7 @@ module Aeon
     end
 
     def edit_policy
-      reading_room.policies.first.appointment_min_lead_days
+      reading_room.appointment_min_lead_days
     end
 
     def editable?

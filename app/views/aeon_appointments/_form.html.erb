@@ -8,7 +8,7 @@
 
     <%= render AlertComponent.new(type: :info) do %>
       <ul class="mb-0">
-        <li>An appointment must be scheduled at least 3 business days in advance to access items.</li>
+        <li>An appointment must be scheduled at least <%= @appointment.reading_room.appointment_min_lead_days %> business days in advance to access items.</li>
         <li><%= @appointment.reading_room.name %> is open <%= @appointment.reading_room.human_readable_hours %>.</li>
       </ul>
     <% end %>
