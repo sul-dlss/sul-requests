@@ -2,6 +2,12 @@
   <%
     banner_display = @appointment.date.present? ? '' : 'd-none'
     selection_classes =  @appointment.date.present? ? 'ms-3 ' : ''
+    requests_message = ''
+    if @appointment.requests.present?
+      requests_number = @appointment.requests.length
+      item_text = requests_number > 1 ? 'items' : 'item'
+      requests_message = "#{requests_number} #{item_text} will move to the new appointment." 
+    end
   %>
   <div data-appointment-target="banner" class="selected-appointment d-flex flex-row <%= banner_display %>">
     <div data-appointment-target-="current" class="w-50 border-end <%= banner_display %>">
@@ -70,6 +76,9 @@
         <div class="loading-overlay p-2 mb-2" aria-hidden="true">Loading...</div>
         <div class="selection-message">Select a reading room, date, and duration to see available appointments.</div>
       </turbo-frame>
+    <% end %>
+    <% if requests_message.present? %>
+      <div class="alert alert-info"><%= requests_message %></div>
     <% end %>
   </div>
 

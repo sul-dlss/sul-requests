@@ -85,8 +85,14 @@ RSpec.describe 'Appointments', :js do
     it 'opens and closes the edit appointment modal' do
       click_on 'Edit'
       within '.modal' do
-        expect(page).to have_text 'Edit appointment'
+        expect(page).to have_text 'Change appointment'
         expect(page).to have_text 'Field Reading Room'
+        expect(page).to have_text 'Current'
+        expect(page).to have_text appointment.date.strftime('%b %e, %Y')
+        expect(page).to have_text appointment.start_time.strftime('%l:%M %p')
+        expect(page).to have_text 'New'
+        expect(page).to have_text 'Select date and time'
+        expect(page).to have_text '1 item will move to the new appointment.'
         click_on 'Cancel'
       end
       expect(page).to have_no_css '.modal'
