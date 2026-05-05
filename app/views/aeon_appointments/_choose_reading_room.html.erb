@@ -1,5 +1,6 @@
 <form data-controller="appointment">
   <div class="modal-body">
+    <%= render AlertComponent.new(type: :info) do %>Materials must be used in their associated reading room.<% end %>
     <label for="reading_room_id" class="d-block fw-semibold redesign-required-label mb-2">For which reading room?</label>
     <%= select_tag 'reading_room_id', options_from_collection_for_select(@reading_rooms, "id", "name"), include_blank: true, class: 'bg-white border rounded px-2 py-1' %>
   </div>
