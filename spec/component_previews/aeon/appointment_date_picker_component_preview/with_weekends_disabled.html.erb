@@ -1,0 +1,8 @@
+<%
+  today = Time.zone.today
+  # Disable all Saturdays (wday 6) and Sundays (wday 0) for the next 3 months
+  weekends = (today .. today + 90).select { |d| d.wday == 0 || d.wday == 6 }.map(&:iso8601)
+%>
+<%= form_with(model: Aeon::Appointment.new, url: '#') do |f| %>
+  <%= render Aeon::AppointmentDatePickerComponent.new(form: f, disabled: weekends) %>
+<% end %>
