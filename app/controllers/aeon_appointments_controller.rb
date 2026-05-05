@@ -67,7 +67,25 @@ class AeonAppointmentsController < ApplicationController
     @aeon_request_groups = Aeon::RequestGrouping.from_requests(requests)
   end
 
+  def add_items
+    authorize! :update, Aeon::Request
+
+    process_items(params[:items_added], :submitted?, params[:appointment_id])
+
+    process_items(params[:items_removed], :draft?, nil)
+    redirect_to aeon_appointments_path
+  end
+
   private
+
+  def process_items(items, skip_method, appointment_id)
+    items&.each do |transaction_number|
+      request = current_user.aeon.requests.find { |request| request.transaction_number == transaction_number.to_i }
+      next if request.send(skip_method)
+
+      Aeon::UpdateRequestService.new(request, { appointment_id: }).call
+    end
+  end
 
   def load_reading_rooms
     @reading_rooms = Aeon::ReadingRoom.all

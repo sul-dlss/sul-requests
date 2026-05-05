@@ -62,6 +62,7 @@ Rails.application.routes.draw do
 
   resources :aeon_appointments do
     get :items
+    post "add_items", to: 'aeon_appointments#add_items', as: :add_items
   end
 
   get "/aeon_appointments/new/:reading_room_id", to: 'aeon_appointments#new', as: :new_aeon_appointment_for_reading_room

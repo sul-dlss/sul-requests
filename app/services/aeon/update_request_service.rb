@@ -22,14 +22,18 @@ module Aeon
 
     def update_request
       aeon_client.update_request(
-        @aeon_request.transaction_number,
-        AeonClient::RequestData.with_defaults.with(
-          appointment_id: params[:appointment_id]&.to_i,
-          for_publication: ActiveRecord::Type::Boolean.new.cast(params[:for_publication]),
-          item_info5: params[:requested_pages],
-          special_request: params[:additional_information]
-        )
+        transaction_number: @aeon_request.transaction_number,
+        aeon_payload:
       )
+    end
+
+    def aeon_payload
+      AeonClient::RequestData.with_defaults.with(
+        appointment_id: params[:appointment_id]&.to_i,
+        for_publication: ActiveRecord::Type::Boolean.new.cast(params[:for_publication]),
+        item_info5: params[:requested_pages],
+        special_request: params[:additional_information]
+      ).as_patch_json
     end
 
     def needs_set_to_submitted?

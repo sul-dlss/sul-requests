@@ -5,15 +5,23 @@ module Aeon
   class AppointmentComponent < ViewComponent::Base
     attr_reader :appointment
 
+    delegate :current_user, to: :helpers
+
     def initialize(appointment:)
       @appointment = appointment
     end
 
     def add_item_disabled?
-      return true unless appointment.editable?
+      return true unless appointment.editable? && drafts?
       return false unless appointment.reading_room.appointment_item_limit
 
       appointment.requests.count >= appointment.reading_room.appointment_item_limit
+    end
+
+    def drafts?
+      @drafts ||= current_user.aeon.draft_requests.reject(&:digital?).any? do |request|
+        request.reading_room.id == @appointment.reading_room.id
+      end
     end
 
     def items_path

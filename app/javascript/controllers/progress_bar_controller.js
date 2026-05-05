@@ -25,6 +25,10 @@ export default class extends Controller {
     this.update()
   }
 
+  updateCount(e) {
+    this.countValue += e.detail.addAmount
+  }
+
   get percentage() {
     return this.countValue * 100.0 / this.limitValue;
   }
@@ -47,5 +51,6 @@ export default class extends Controller {
     this.barTarget.classList.add(this.barColor);
 
     this.countTarget.textContent = this.countValue;
+    window.dispatchEvent(new CustomEvent('item-limit-updated', { detail: { percentage: this.percentage } }))
   }
 }
