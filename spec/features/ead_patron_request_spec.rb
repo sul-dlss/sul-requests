@@ -39,7 +39,9 @@ RSpec.describe 'Requesting an item from an EAD', :js do
                       start_time: DateTime.new(2026, 2, 19, 12, 0, 0),
                       stop_time: DateTime.new(2026, 2, 19, 13, 0, 0),
                       name: 'Activity1',
+                      activity_type: 'Class visit',
                       completed?: false,
+                      location: 'Special Collections',
                       sites: ['SPECUA'],
                       users: [instance_double(Aeon::User, username: 'user1'), aeon_user],
                       id: 1)
@@ -327,8 +329,8 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       click_link 'Legal size documents'
       check 'Box 12'
       click_button 'Continue'
-      click_button 'Select activity'
-      find('label', text: 'Activity1').click
+
+      check 'activity-1'
 
       click_button 'Submit request'
 
