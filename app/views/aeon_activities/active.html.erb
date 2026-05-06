@@ -1,0 +1,7 @@
+<turbo-frame id="active">
+  <% if @activities.present? %>
+    <%= render 'activities_list' %>
+  <% else %>
+    You have no active activities assigned
+  <% end %>
+</turbo-frame>
