@@ -9,7 +9,7 @@ module Folio
 
     def initialize(klass, data_from_cache)
       @klass = klass
-      @data = data_from_cache.map { |p| klass.from_dynamic(p) }.freeze
+      @data = data_from_cache.map { |p| p.is_a?(Hash) ? klass.from_dynamic(p) : p }.freeze
     end
 
     delegate :each, to: :data
