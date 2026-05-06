@@ -529,6 +529,20 @@ label.btn-close {
   display: flex;
 }
 
+/* Maintain a relatively fixed height for appointment slots, to maintain the position of the save button */
+/* 3.125rem is slot size (height + gap), 2rem is for the fieldset legend */
+.modal-dialog.modal-lg .appointment-slots-container {
+  /* modal-lg fits 4 per row at this size */
+  @media (min-width: 576px) {
+    min-height: calc(3.125rem * round(up, var(--appointment-slots), 4) / 4 + 2rem);
+  }
+
+  /* modal-lg fits 6 per row at this size */
+  @media (min-width: 992px) {
+    min-height: calc(3.125rem * round(up, var(--appointment-slots), 6) / 6 + 2rem);
+  }
+}
+
 #available_appointments:not(.form-incomplete)[busy=""] {
   .loading-overlay {
     display: flex;
