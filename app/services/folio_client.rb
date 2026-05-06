@@ -2,8 +2,6 @@
 
 # Calls FOLIO REST endpoints
 class FolioClient
-  class IlsError < StandardError; end
-
   DEFAULT_HEADERS = {
     accept: 'application/json, text/plain',
     content_type: 'application/json'
@@ -13,7 +11,7 @@ class FolioClient
   class Error < StandardError
     attr_reader :errors
 
-    def initialize(msg, errors = {})
+    def initialize(msg = nil, errors = {})
       super(msg)
       @errors = errors
     end
@@ -21,7 +19,7 @@ class FolioClient
 
   attr_reader :base_url
 
-  delegate :service_points, to: :folio_graphql_client
+  delegate :loan_policies, :service_points, :patron_info, to: :folio_graphql_client
 
   def initialize(url: Settings.folio.okapi_url, tenant: Settings.folio.tenant)
     uri = URI.parse(url)
@@ -149,6 +147,14 @@ class FolioClient
     response['proxiesFor']
   end
 
+  def patron_account(patron_key)
+    get_json("/patron/account/#{CGI.escape(patron_key)}", params: {
+               includeLoans: true,
+               includeCharges: true,
+               includeHolds: true
+             })
+  end
+
   def patron_blocks(user_id)
     get_json("/automated-patron-blocks/#{user_id}")
   end
@@ -262,10 +268,6 @@ class FolioClient
                                                                                                                        [])
   end
 
-  def loan_policies
-    get_json('/loan-policy-storage/loan-policies', params: { limit: 2_147_483_647 }).fetch('loanPolicies', [])
-  end
-
   def lost_item_fees_policies
     get_json('/lost-item-fees-policies', params: { limit: 2_147_483_647 }).fetch('lostItemFeePolicies', [])
   end
@@ -312,6 +314,93 @@ class FolioClient
     false
   end
 
+  def renew_items(checkouts)
+    checkouts.each_with_object(success: [], error: []) do |checkout, status|
+      response = renew_item_by_id(checkout.patron_key, checkout.item_id)
+
+      case response.status
+      when 200
+        status[:success] << checkout
+      else
+        status[:error] << checkout
+      end
+    end
+  end
+
+  # Renew a loan for an item
+  # See https://github.com/folio-org/mod-circulation/blob/master/ramls/renew-by-id-request.json
+  # @example client.renew_item_by_id('cc3d8728-a6b9-45c4-ad0c-432873c3ae47', '123d9cba-85a8-42e0-b130-c82e504c64d6')
+  # @param [String] user_id the UUID of the user in FOLIO
+  # @param [String] item_id the UUID of the FOLIO item
+  def renew_item_by_id(user_id, item_id)
+    response = post('/circulation/renew-by-id', json: { itemId: item_id, userId: user_id })
+    begin
+      check_response(response, title: 'Renew', context: { user_id:, item_id: })
+    rescue FolioClient::Error => e
+      Honeybadger.notify(e)
+    end
+
+    response
+  end
+
+  # Cancel a request
+  # @param [String] request_id the UUID of the FOLIO request
+  # @param [String] user_id the UUID of the user in FOLIO
+  def cancel_request(request_id, user_id)
+    # We formerly used the mod-patron API to cancel requests, but it is
+    # unable to cancel title level requests.
+    request_data = get_json("/circulation/requests/#{request_id}")
+
+    # Ensure this is the user's request before trying to cancel it
+    request_data = {} unless request_data['requesterId'] == user_id || request_data['proxyUserId'] == user_id
+
+    request_data.merge!('cancellationAdditionalInformation' => 'Canceled by mylibrary',
+                        'cancelledByUserId' => user_id,
+                        'cancelledDate' => Time.now.utc.iso8601,
+                        'status' => 'Closed - Cancelled')
+    response = put("/circulation/requests/#{request_id}", json: request_data)
+    check_response(response, title: 'Cancel', context: { user_id:, request_id: })
+
+    response
+  end
+
+  # Change request service point
+  # @example client.change_pickup_service_point(request_id: '4a64eccd-3e44-4bb0-a0f7-9b4c487abf61',
+  #                                             pickup_location_id: 'bd5fd8d9-72f3-4532-b68c-4db88063d16b')
+  # @param [String] request_id the UUID of the FOLIO request
+  # @param [String] service_point the UUID of the new service point
+  def change_pickup_service_point(request_id, service_point)
+    update_request(request_id, { 'pickupServicePointId' => service_point })
+  end
+
+  # @example client.change_pickup_expiration(request_id: '4a64eccd-3e44-4bb0-a0f7-9b4c487abf61',
+  #                                          expiration: Date.parse('2023-05-18'))
+  # @param [String] request_id the UUID of the FOLIO request
+  # @param [Date] expiration date of the request
+  def change_pickup_expiration(request_id, expiration)
+    update_request(request_id, { 'requestExpirationDate' => expiration.to_time.utc.iso8601 })
+  end
+
+  # Mark all of a user's fines (accounts) as having been paid
+  # The payment will show as being made from the 'Online' service point
+  # rubocop:disable Metrics/MethodLength
+  def pay_fines(user_id:, amount:)
+    patron = Folio::Patron.find(user_id)
+    payload = {
+      accountIds: patron.fines.map(&:key),
+      paymentMethod: 'Credit card',
+      amount:,
+      userName: 'libsys_admin',
+      transactionInfo: user_id,
+      servicePointId: Settings.folio.online_service_point_id,
+      notifyPatron: true
+    }
+
+    response = post('/accounts-bulk/pay', json: payload)
+    check_response(response, title: 'Pay fines', context: payload)
+  end
+  # rubocop:enable Metrics/MethodLength
+
   private
 
   # Find a user by barcode in FOLIO; raise an error if not found
@@ -350,6 +439,17 @@ class FolioClient
     user
   end
 
+  def update_request(request_id, request_data_updates)
+    request_data = get_json("/circulation/requests/#{request_id}")
+
+    request_data.merge!(request_data_updates)
+    response = put("/circulation/requests/#{request_id}", json: request_data)
+    check_response(response, title: 'Update request',
+                             context: { request_id: }.merge(request_data_updates))
+
+    response
+  end
+
   def check_response(response, title:, context:) # rubocop:disable Metrics/AbcSize
     return if response.success?
 
@@ -359,8 +459,8 @@ class FolioClient
       raise FolioClient::Error.new("#{title} request for #{context_string} was not successful", JSON.parse(response.body))
     end
 
-    raise "#{title} request for #{context_string} was not successful. " \
-          "status: #{response.status}, #{response.body}"
+    raise FolioClient::Error, "#{title} request for #{context_string} was not successful. " \
+                              "status: #{response.status}, #{response.body}"
   end
 
   def get(path, **)

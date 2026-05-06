@@ -82,7 +82,7 @@ RSpec.describe 'Reset PIN workflow' do
 
     context 'when asking the ILS to change the PIN fails' do
       before do
-        allow(mock_client).to receive(:change_pin).and_raise(FolioClient::IlsError)
+        allow(mock_client).to receive(:change_pin).and_raise(FolioClient::Error)
         visit change_pin_with_token_path(token: 'foo')
         fill_in('pin', with: 'newpin')
         click_on 'Change PIN'
