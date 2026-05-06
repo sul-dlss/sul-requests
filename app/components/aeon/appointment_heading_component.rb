@@ -3,7 +3,8 @@
 module Aeon
   # Heading that optionally appends a reading room name after a dot separator.
   class AppointmentHeadingComponent < ViewComponent::Base
-    def initialize(reading_room: nil, tag: :h1, classes: %w[d-flex align-items-center mb-0])
+    def initialize(reading_room: nil, tag: :h1,
+                   classes: %w[d-flex flex-column flex-lg-row align-items-start align-items-lg-center mb-0])
       @reading_room = reading_room
       @tag = tag
       @classes = Array(classes)
