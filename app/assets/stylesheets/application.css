@@ -951,6 +951,15 @@ label.btn-close {
   margin: 1px auto 0;
 }
 
+.date-picker-legend .date-picker-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: #000;
+  margin-right: 3px;
+  vertical-align: middle;
+}
+
 .activities-list {
   li:not(:last-child) {
     border-bottom:1px solid var(--stanford-20-black);
