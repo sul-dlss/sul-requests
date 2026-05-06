@@ -314,6 +314,14 @@ class FolioClient
     false
   end
 
+  def find_effective_loan_policy(item_type_id:, loan_type_id:, patron_type_id:, location_id:)
+    get_json('/circulation/rules/loan-policy',
+             params: { item_type_id:,
+                       loan_type_id:,
+                       patron_type_id:,
+                       location_id: }.as_json)
+  end
+
   def renew_items(checkouts)
     checkouts.each_with_object(success: [], error: []) do |checkout, status|
       response = renew_item_by_id(checkout.patron_key, checkout.item_id)
