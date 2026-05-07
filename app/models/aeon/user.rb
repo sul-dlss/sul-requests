@@ -34,16 +34,15 @@ module Aeon
       @activities ||= self.class.aeon_client.activities_for(username:).sort_by(&:sort_key)
     end
 
-    def activities_with_requests # rubocop:disable Metrics/AbcSize
-      return @activities if @activites && @activities.first.requests.present?
-
-      @cached_requests = {}
+    def activities_with_requests
+      request_cache = {}
       activities.each do |activity|
-        activity.users.each do |user|
-          @cached_requests[user.username] ||= self.class.aeon_client.requests_for(username: user.username)
-          activity.requests.concat(@cached_requests[user.username].select { |request| request.activity_id == activity.id })
+        user_requests = activity.users.flat_map do |user|
+          request_cache[user.username] ||= self.class.aeon_client.requests_for(username: user.username)
         end
+        activity.assign_requests_from(user_requests)
       end
+      activities
     end
 
     def active_reading_room_activities(site:)

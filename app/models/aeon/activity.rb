@@ -37,6 +37,10 @@ module Aeon
       @requests ||= []
     end
 
+    def assign_requests_from(all_requests)
+      self.requests = all_requests.select { |request| request.activity_id == id }
+    end
+
     def reading_room; end
 
     def sort_key
