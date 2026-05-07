@@ -3,11 +3,16 @@
 module Folio
   # Model for working with FOLIO Patron information
   class Patron
-    def self.find_by(sunetid: nil, library_id: nil, patron_key: nil, **_kwargs)
-      return folio_client.find_patron_by_id(patron_key) if patron_key.present?
-      return folio_client.find_patron_by_barcode_or_university_id(library_id) if library_id.present?
-      return folio_client.find_patron_by_sunetid(sunetid) if sunetid.present?
+    def self.find_by(sunetid: nil, library_id: nil, patron_key: nil, **_kwargs) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+      user_info = folio_client.find_user_by_id(patron_key) if patron_key.present?
+      user_info ||= folio_client.find_user_by_barcode(library_id) if library_id.present?
+      user_info ||= folio_client.find_user_by_university_id(library_id) if library_id.present?
+      user_info ||= folio_client.find_user_by_legacy_barcode(library_id) if library_id.present?
+      user_info ||= folio_client.find_user_by_sunetid(sunetid) if sunetid.present?
 
+      Folio::Patron.new(user_info) if user_info
+    rescue ActiveRecord::RecordNotFound
+      Honeybadger.notify("Unable to find patron using sunetid: #{sunetid}, library_id: #{library_id}, patron_key: #{patron_key}")
       nil
     rescue HTTP::Error, FolioClient::Error
       nil
