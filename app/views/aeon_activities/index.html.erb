@@ -16,13 +16,11 @@
 <div class="tab-content">
   <div id="active-tab" class="tab-pane fade show active">
     <turbo-frame src="<%= active_aeon_activities_path %>" <% if params[:past] %>loading="lazy"<% end %> id="active">
-      Loading....
     </turbo-frame>
   </div>
 
   <div id="past-tab" class="tab-pane fade">
     <turbo-frame src="<%= past_aeon_activities_path %>" <% unless params[:past] %>loading="lazy"<% end %> id="past">
-      Loading...
     </turbo-frame>
   </div>
 </div>

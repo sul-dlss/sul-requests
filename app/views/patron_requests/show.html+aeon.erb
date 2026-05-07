@@ -14,9 +14,6 @@
       <turbo-frame id="aeon-confirmation" data-aeon-confirmation-poll-target="frame">
         <% if @aeon_requests.count < @patron_request.expected_aeon_item_count %>
           <div class="d-flex align-items-center my-3" data-aeon-confirmation-poll-target="loading">
-            <div class="spinner-border spinner-border-sm me-2" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
             <span>Confirming your requests. You can navigate away from this page.</span>
           </div>
         <% else %>
