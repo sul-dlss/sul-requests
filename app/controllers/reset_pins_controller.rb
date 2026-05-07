@@ -22,7 +22,7 @@ class ResetPinsController < ApplicationController
   # POST /reset_pin
   def reset
     suppress ActiveRecord::RecordNotFound do
-      patron = ils_client.find_patron_by_barcode_or_university_id(university_id_param)
+      patron = Folio::Patron.find_by(library_id: university_id_param)
       ResetPinsMailer.with(patron:, referrer: post_action_redirect_url).reset_pin.deliver_now if patron
     end
 
@@ -41,15 +41,15 @@ class ResetPinsController < ApplicationController
   #
   # POST /change_pin
   def change
-    ils_client.change_pin(*change_pin_with_token_params)
+    folio_client.change_pin(*change_pin_with_token_params)
     flash[:success] = t 'change_pin.success_html'
     redirect_after_action
   end
 
   private
 
-  def ils_client
-    @ils_client ||= FolioClient.new
+  def folio_client
+    @folio_client ||= FolioClient.new
   end
 
   def university_id_param
