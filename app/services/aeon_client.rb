@@ -193,6 +193,7 @@ class AeonClient
     end
 
     def request_for
+      return nil if activity_id.nil?
       return UNSET if activity_id.blank? || activity_id == UNSET
 
       { type: 'Activity', reference: activity_id }

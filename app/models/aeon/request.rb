@@ -123,6 +123,15 @@ module Aeon
       end
     end
 
+    def request_type
+      return 'activity' if activity?
+      return 'draft' if draft?
+      return 'completed' if completed?
+      return 'cancelled' if cancelled?
+
+      'submitted'
+    end
+
     def submitted?
       !draft? && !cancelled? && !completed?
     end

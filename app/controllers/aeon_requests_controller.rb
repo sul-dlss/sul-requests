@@ -30,7 +30,8 @@ class AeonRequestsController < ApplicationController
   def redraft
     authorize! :update, @aeon_request
 
-    @updated_request = Aeon::UpdateRequestService.new(@aeon_request, { appointment_id: nil, status: 'Awaiting User Review' }).call
+    request_field = @aeon_request.activity? ? 'activity_id' : 'appointment_id'
+    @updated_request = Aeon::UpdateRequestService.new(@aeon_request, { "#{request_field}": nil, status: 'Awaiting User Review' }).call
 
     respond_to do |format|
       format.turbo_stream
@@ -93,7 +94,7 @@ class AeonRequestsController < ApplicationController
     @aeon_request_group = @aeon_request_groups.find { |request_group| request_group.requests.find { |r| r.id == @aeon_request.id } }
   end
 
-  def load_aeon_requests # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+  def load_aeon_requests # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity
     return [] unless current_user&.aeon
 
     @aeon_requests = case params[:kind]
@@ -105,6 +106,8 @@ class AeonRequestsController < ApplicationController
                        current_user.aeon.submitted_requests
                      when 'completed'
                        current_user.aeon.completed_requests
+                     when 'activity'
+                       current_user.aeon.activities_with_requests.map(&:requests).flatten
                      else
                        current_user.aeon.requests
                      end

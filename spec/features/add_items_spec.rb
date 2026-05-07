@@ -120,8 +120,11 @@ RSpec.describe 'Add items modal', :js do
                                                path: '/forPublication' },
                                              { op: 'remove',
                                                path: '/itemInfo5' },
+
                                              { op: 'remove',
-                                               path: '/specialRequest' }] }
+                                               path: '/specialRequest' },
+                                             { op: 'remove',
+                                               path: '/requestFor' }] }
     )
 
     expect(stub_aeon_client).to have_received(:update_request).with(
@@ -132,7 +135,10 @@ RSpec.describe 'Add items modal', :js do
       { op: 'remove',
         path: '/itemInfo5' },
       { op: 'remove',
-        path: '/specialRequest' }] }
+        path: '/specialRequest' },
+
+      { op: 'remove',
+        path: '/requestFor' }] }
     )
   end
 end
