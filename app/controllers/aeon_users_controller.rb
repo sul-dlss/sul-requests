@@ -29,20 +29,20 @@ class AeonUsersController < ApplicationController
   end
 
   def folio_user_data # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-    patron_info = current_user.patron.user_info['personal']
-    address = patron_info['addresses'].present? ? patron_info['addresses'].find { |address| address['primaryAddress'] } : {}
+    personal_data = current_user.patron.personal_data
+    primary_address = current_user.patron.primary_address
     AeonClient::UserData.with_defaults.with(
       email_address: current_user.email_address,
       sso: current_user.sso_user?,
-      first_name: patron_info['firstName'],
-      last_name: patron_info['lastName'],
-      phone: patron_info['phone'],
-      address: address['addressLine1'],
-      address2: address['addressLine2'],
-      city: address['city'],
-      state_or_province: address['region'],
-      country: address['countryId'],
-      zip_code: address['postalCode']
+      first_name: personal_data['firstName'],
+      last_name: personal_data['lastName'],
+      phone: personal_data['phone'],
+      address: primary_address['addressLine1'],
+      address2: primary_address['addressLine2'],
+      city: primary_address['city'],
+      state_or_province: primary_address['region'],
+      country: primary_address['countryId'],
+      zip_code: primary_address['postalCode']
     )
   end
 
