@@ -497,6 +497,7 @@ GEM
     stringio (3.2.0)
     thor (1.5.0)
     thread_safe (0.3.6)
+    timecop (0.9.11)
     timeout (0.6.1)
     tsort (0.2.0)
     turbo-rails (2.0.23)
@@ -607,6 +608,7 @@ DEPENDENCIES
   simplecov
   sqlite3 (>= 2.1)
   stimulus-rails
+  timecop
   turbo-rails
   tzinfo-data
   view_component (~> 4.0)
