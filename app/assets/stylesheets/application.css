@@ -556,7 +556,7 @@ label.btn-close {
 }
 
 
-#available_appointments .alert {
+#available_appointments .selection-message {
   display: none;
 }
 
@@ -565,7 +565,7 @@ label.btn-close {
   fieldset > *:not(legend) {
     display: none;
   }
-  .alert {
+  .selection-message {
     display: block;
   }
 }
