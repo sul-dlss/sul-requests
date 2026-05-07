@@ -31,6 +31,30 @@ module Folio
       user_info['username']
     end
 
+    def personal_data
+      user_info['personal'] || {}
+    end
+
+    def first_name
+      personal_data['preferredFirstName'] || personal_data['firstName']
+    end
+
+    def last_name
+      personal_data['lastName']
+    end
+
+    def display_name
+      [first_name, last_name].join(' ')
+    end
+
+    def email
+      personal_data['email']
+    end
+
+    def primary_address
+      personal_data['addresses']&.find { |address| address['primaryAddress'] } || personal_data['addresses']&.first || {}
+    end
+
     # this returns the full patronGroup object
     def patron_group
       @patron_group ||= Folio::NullPatron.visitor_patron_group if expired?
@@ -61,22 +85,6 @@ module Folio
 
     def make_request_as_patron?
       !expired? && patron_group.present?
-    end
-
-    def first_name
-      user_info.dig('personal', 'preferredFirstName') || user_info.dig('personal', 'firstName')
-    end
-
-    def last_name
-      user_info.dig('personal', 'lastName')
-    end
-
-    def display_name
-      [first_name, last_name].join(' ')
-    end
-
-    def email
-      user_info.dig('personal', 'email')
     end
 
     def patron_description
