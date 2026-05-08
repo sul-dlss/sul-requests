@@ -42,6 +42,10 @@
 
       <!-- Application header -->
       <%= render ApplicationMastheadComponent.new(application_name: 'My Library Account', classes: 'bg-dark bg-cardinal') do |component| %>
+        <% component.with_nav_item do %>
+          <%= link_to 'Borrowed items', checkouts_path, class: 'nav-link fw-semibold' %>
+        <% end %>
+
         <% if sso_user? %>
           <% component.with_nav_item(classes: ['dropdown']) do %>
             <button class="nav-link dropdown-toggle fw-semibold" data-bs-toggle="dropdown" aria-expanded="false">
