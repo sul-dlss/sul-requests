@@ -22,13 +22,13 @@ module Folio
       where(**).first
     end
 
-    def where(**kwargs) # rubocop:disable Metrics/AbcSize
+    def where(**kwargs)
       return to_enum(:where, **kwargs) unless block_given?
 
-      raise ArgumentError("expected a single argument, got #{kwargs.inspect}") unless kwargs.size == 1
+      raise ArgumentError, "expected a single argument, got #{kwargs.inspect}" unless kwargs.size == 1
 
       key = kwargs.keys.first
-      raise ArgumentError("Unknown finder attribute #{key.inspect}") unless finder_attributes.include?(key)
+      raise ArgumentError, "Unknown finder attribute #{key.inspect}" unless finder_attributes.include?(key)
 
       each { |candidate| yield(candidate) if candidate.public_send(key) == kwargs[key] }
     end
