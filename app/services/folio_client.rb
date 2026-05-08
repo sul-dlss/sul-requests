@@ -99,11 +99,7 @@ class FolioClient
     check_response(response, title: 'Assign pin', context: { user_id: })
   end
 
-  def proxies(**args)
-    response = get_json('/proxiesfor', params: { query: CqlQuery.new(**args).to_query })
-
-    response['proxiesFor']
-  end
+  delegate :extended_user_info, to: :folio_graphql_client
 
   def patron_account(patron_key)
     get_json("/patron/account/#{CGI.escape(patron_key)}", params: {
@@ -111,10 +107,6 @@ class FolioClient
                includeCharges: true,
                includeHolds: true
              })
-  end
-
-  def patron_blocks(user_id)
-    get_json("/automated-patron-blocks/#{user_id}")
   end
 
   # Defines the hold request data for Folio

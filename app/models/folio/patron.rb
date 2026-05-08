@@ -24,8 +24,10 @@ module Folio
 
     attr_reader :user_info
 
-    def initialize(fields = {})
-      @user_info = fields
+    delegate :folio_client, to: :class
+
+    def initialize(user_info = {})
+      @user_info = user_info
     end
 
     def id
@@ -75,9 +77,14 @@ module Folio
     end
 
     # this returns the full patronGroup object
-    def patron_group
+    def patron_group # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
       @patron_group ||= Folio::NullPatron.visitor_patron_group if expired?
       @patron_group ||= Folio::Types.patron_groups.find_by(id: patron_group_id) if patron_group_id
+
+      @patron_group ||= if extended_user_info&.dig('patronGroup').present?
+                          Folio::PatronGroup.from_dynamic(extended_user_info&.dig('patronGroup'))
+                        end
+
       @patron_group ||= Folio::NullPatron.visitor_patron_group
     end
 
@@ -124,9 +131,7 @@ module Folio
       @proxies ||= proxies_of_response.filter_map do |info|
         next nil unless valid_proxy_relation?(info)
 
-        # Find the patron corresponding to the Folio user id for the proxy
-        proxy_patron = self.class.find_by(patron_key: info['proxyUserId'])
-        proxy_patron.presence
+        self.class.new(info['proxyUser']) if info['proxyUser'].present?
       end
     end
 
@@ -136,9 +141,7 @@ module Folio
       @sponsors ||= sponsors_for_response.filter_map do |info|
         next nil unless valid_proxy_relation?(info)
 
-        # Find the patron corresponding to the Folio user id for the sponsor
-        sponsor_patron = self.class.find_by(patron_key: info['userId'])
-        sponsor_patron.presence
+        self.class.new(info['user']) if info['user'].present?
       end
     end
 
@@ -178,6 +181,10 @@ module Folio
 
     private
 
+    def extended_user_info
+      @extended_user_info ||= folio_client.extended_user_info(id)
+    end
+
     def valid_proxy_relation?(info)
       return false unless info['requestForSponsor']&.downcase == 'yes'
       return false if info['expirationDate'].present? && Time.zone.parse(info['expirationDate']).past?
@@ -194,13 +201,13 @@ module Folio
     # Get all the sponsors for this patron
     def sponsors_for_response
       @sponsors_for_response ||= user_info.dig('stubs', 'sponsors') # used for stubbing
-      @sponsors_for_response ||= self.class.folio_client.proxies(proxyUserId: id)
+      @sponsors_for_response ||= extended_user_info&.dig('proxiesFor')
     end
 
     # Get all the proxies of this patron
     def proxies_of_response
       @proxies_of_response ||= user_info.dig('stubs', 'proxies') # used for stubbing
-      @proxies_of_response ||= self.class.folio_client.proxies(userId: id)
+      @proxies_of_response ||= extended_user_info&.dig('proxiesOf')
     end
 
     def standing
@@ -213,7 +220,7 @@ module Folio
 
     def patron_blocks
       @patron_blocks ||= user_info.dig('stubs', 'patron_blocks') # used for stubbing
-      @patron_blocks ||= self.class.folio_client.patron_blocks(id).fetch('automatedPatronBlocks', [])
+      @patron_blocks ||= extended_user_info&.dig('blocks')
     end
 
     # Encryptor/decryptor for the token used in the PIN reset process

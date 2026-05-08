@@ -228,6 +228,87 @@ class FolioGraphqlClient
     data.dig('data', 'loanPolicies')
   end
 
+  def extended_user_info(patron_uuid)
+    data = post_json('/', json: {
+                       query: "query Query($patronId: UUID!) {
+                                 user {
+                                    username
+                                    barcode
+                                    active
+                                    personal {
+                                      email
+                                      lastName
+                                      firstName
+                                      preferredFirstName
+                                    }
+                                    proxiesFor {
+                                      userId
+                                      requestForSponsor
+                                      status
+                                      expirationDate
+                                      user {
+                                        id
+                                        barcode
+                                        personal {
+                                          firstName
+                                          preferredFirstName
+                                          lastName
+                                        }
+                                      }
+                                    }
+                                    proxiesOf {
+                                      proxyUserId
+                                      requestForSponsor
+                                      status
+                                      expirationDate
+                                      proxyUser {
+                                        id
+                                        barcode
+                                        personal {
+                                          firstName
+                                          preferredFirstName
+                                          lastName
+                                        }
+                                      }
+                                    }
+                                    expirationDate
+                                    externalSystemId
+                                    patronGroup {
+                                      id
+                                      desc
+                                      group
+                                      limits {
+                                        conditionId
+                                        id
+                                        patronGroupId
+                                        value
+                                        condition {
+                                          blockBorrowing
+                                          blockRenewals
+                                          blockRequests
+                                          message
+                                          name
+                                          valueType
+                                        }
+                                      }
+                                    }
+                                    blocks {
+                                      message
+                                    }
+                                    manualBlocks {
+                                      desc
+                                    }
+                                    patronGroupId
+                                  }
+                              }",
+                       variables: { patronId: patron_uuid }
+                     })
+
+    Honeybadger.notify(data['errors'].pluck('message').join("\n"), context: { patron_uuid: }) if data.key?('errors')
+
+    data.dig('data', 'user')
+  end
+
   def patron_info(patron_uuid)
     data = post_json('/', json: {
                        query: "query Query($patronId: UUID!) {
