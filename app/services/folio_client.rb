@@ -69,48 +69,6 @@ class FolioClient
     nil
   end
 
-  # Find a Folio::Patron by barcode or university ID, trying barcode first
-  # TODO: remove once we're no longer using barcodes for auth
-  def find_patron_by_barcode_or_university_id(barcode_or_id)
-    find_patron_by_barcode(barcode_or_id) || find_patron_by_university_id(barcode_or_id)
-  end
-
-  # Find a Folio::Patron by barcode
-  def find_patron_by_barcode(barcode)
-    user = find_user_by_barcode(barcode) || find_user_by_legacy_barcode(barcode)
-
-    if user.blank?
-      Honeybadger.notify("Unable to find patron via barcode: #{barcode}")
-      return
-    end
-
-    Folio::Patron.new(user)
-  end
-
-  # Find a Folio::Patron by university ID
-  def find_patron_by_university_id(university_id)
-    Folio::Patron.new(find_user_by_university_id(university_id))
-  rescue ActiveRecord::RecordNotFound
-    Honeybadger.notify("Unable to find patron via university id: #{university_id}")
-    nil
-  end
-
-  # Find a Folio::Patron by sunetid
-  def find_patron_by_sunetid(sunetid)
-    Folio::Patron.new(find_user_by_sunetid(sunetid))
-  rescue ActiveRecord::RecordNotFound
-    Honeybadger.notify("Unable to find patron via sunetid: #{sunetid}")
-    nil
-  end
-
-  # Find a Folio::Patron by ID
-  def find_patron_by_id(user_id)
-    Folio::Patron.new(find_user_by_id(user_id))
-  rescue ActiveRecord::RecordNotFound
-    Honeybadger.notify("Unable to find patron via id: #{user_id}")
-    nil
-  end
-
   # Validate a pin for a user
   # https://s3.amazonaws.com/foliodocs/api/mod-users/p/patronpin.html#patron_pin_verify_post
   # @param [String] user_id the UUID of the user in FOLIO
@@ -409,8 +367,6 @@ class FolioClient
   end
   # rubocop:enable Metrics/MethodLength
 
-  private
-
   # Find a user by barcode in FOLIO; raise an error if not found
   def find_user_by_barcode(barcode)
     get_json('/users', params: { query: CqlQuery.new(barcode:).to_query })&.dig('users', 0)
@@ -446,6 +402,8 @@ class FolioClient
 
     user
   end
+
+  private
 
   def update_request(request_id, request_data_updates)
     request_data = get_json("/circulation/requests/#{request_id}")

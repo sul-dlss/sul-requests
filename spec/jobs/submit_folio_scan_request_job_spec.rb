@@ -17,7 +17,7 @@ RSpec.describe SubmitFolioScanRequestJob do
     allow(FolioClient).to receive(:new).and_return(stub_client)
     allow(stub_client).to receive(:create_circulation_request).and_return({})
 
-    allow(stub_client).to receive(:find_patron_by_barcode_or_university_id).with('GRE-SCANDELIVER').and_return(pseudopatron)
+    allow(Folio::Patron).to receive(:find_by).with(library_id: 'GRE-SCANDELIVER').and_return(pseudopatron)
   end
 
   context 'when the request is a scan for material in e.g. Green' do

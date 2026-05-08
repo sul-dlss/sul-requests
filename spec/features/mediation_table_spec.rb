@@ -92,8 +92,8 @@ RSpec.describe 'Mediation table', :js do
 
     context 'when the FOLIO response is successful' do
       before do
-        stub_folio_client = instance_double(FolioClient, find_patron_by_id: build(:patron))
-        allow(FolioClient).to receive(:new).and_return(stub_folio_client)
+        allow(Folio::Patron).to receive(:find_by).and_return(build(:patron))
+        stub_folio_client = instance_double(FolioClient)
         allow(stub_folio_client).to receive(:create_circulation_request).and_return({ 'status' => 'ok' })
       end
 

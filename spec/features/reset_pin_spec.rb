@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Reset PIN workflow' do
-  let(:mock_client) { instance_double(FolioClient, find_patron_by_barcode_or_university_id: patron, ping: true, change_pin: nil) }
+  let(:mock_client) { instance_double(FolioClient, ping: true, change_pin: nil) }
   let(:patron) do
     instance_double(
       Folio::Patron,
@@ -17,6 +17,7 @@ RSpec.describe 'Reset PIN workflow' do
   let(:request_path) { new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS') }
 
   before do
+    allow(Folio::Patron).to receive(:find_by).and_return(patron)
     stub_folio_instance_json(folio_instance)
     allow(FolioClient).to receive(:new).and_return(mock_client)
   end

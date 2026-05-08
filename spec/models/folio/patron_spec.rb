@@ -144,8 +144,8 @@ RSpec.describe Folio::Patron do
     end
 
     it 'retrieves the names of the proxy user ids correctly' do
-      allow(stub_client).to receive(:find_patron_by_id).with('proxy1').and_return(patron_one)
-      allow(stub_client).to receive(:find_patron_by_id).with('proxy2').and_return(patron_two)
+      allow(described_class).to receive(:find_by).with(patron_key: 'proxy1').and_return(patron_one)
+      allow(described_class).to receive(:find_by).with(patron_key: 'proxy2').and_return(patron_two)
 
       expect(patron.proxies.length).to eq 2
     end
@@ -193,8 +193,8 @@ RSpec.describe Folio::Patron do
     end
 
     it 'retrieves the names of the sponsor user ids correctly' do
-      allow(stub_client).to receive(:find_patron_by_id).with('sponsor1').and_return(sponsor_one)
-      allow(stub_client).to receive(:find_patron_by_id).with('sponsor2').and_return(sponsor_two)
+      allow(described_class).to receive(:find_by).with(patron_key: 'sponsor1').and_return(sponsor_one)
+      allow(described_class).to receive(:find_by).with(patron_key: 'sponsor2').and_return(sponsor_two)
       expect(patron.sponsors.length).to eq 2
     end
   end
