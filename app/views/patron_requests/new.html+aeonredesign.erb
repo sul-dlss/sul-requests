@@ -14,17 +14,18 @@
 <div class="row">
   <div class="col-12 col-lg-8">
 
-  <%= render RecordHeaderCardComponent.new(record: @patron_request.bib_record) %>
+    <%= render RecordHeaderCardComponent.new(record: @patron_request.bib_record) %>
+    <%= render 'contact_brief' %>
 
-<%= form_for(@patron_request,
-            data: {
-              controller: 'patron-request accordion-form item-selector save-for-later view-container-contents',
-              action: 'item-selector:changed->patron-request#showItemSelector item-selector:changed->accordion-form#typeValueChanged',
-              'patron-request-type-value': 'aeon',
-            },
-            html: { class: 'accordion' },
-            url: patron_requests_path,
-            method: 'POST') do |f| %>
+    <%= form_for(@patron_request,
+                 data: {
+                   controller: 'patron-request accordion-form item-selector save-for-later view-container-contents',
+                   action: 'item-selector:changed->patron-request#showItemSelector item-selector:changed->accordion-form#typeValueChanged',
+                   'patron-request-type-value': 'aeon',
+                 },
+                 html: { class: 'accordion' },
+                 url: patron_requests_path,
+                 method: 'POST') do |f| %>
 <% step_enum = Enumerator.new { |y| n = 0; loop { y << (n += 1) } } %>
 <% current_step = nil %>
 <% scan_or_pickup_step = nil %>
