@@ -1,0 +1,10 @@
+<% fines = patron_or_group.fines %>
+<% if fines.sum(&:owed).positive? %>
+  <div>
+    <% if patron_or_group.can_pay_fines? %>
+        <div class="alert alert-warning" role="alert">
+            <b>Shared computer users: </b>Due to computer security risks, you should not use a shared computer to make a fine payment.
+        </div>  
+    <% end %>
+  </div>
+<% end %>

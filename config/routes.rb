@@ -41,6 +41,10 @@ Rails.application.routes.draw do
 
 
   resources :checkouts, only: [:index]
+  resources :fines, only: [:index]
+  resources :payments, only: [:index, :create]
+  post '/payments/accept', to: 'payments#accept'
+  post '/payments/cancel', to: 'payments#cancel'
 
   # Legacy route for redirecting old-style requests to the new patron_requests
   resources :requests, only: [:new]

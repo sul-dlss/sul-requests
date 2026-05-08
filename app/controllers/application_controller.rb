@@ -36,6 +36,10 @@ class ApplicationController < ActionController::Base
     Settings.features.requests_redesign || request_feature_flags.include?('requests_redesign')
   end
 
+  def authenticate_user!
+    redirect_to root_url unless current_user?
+  end
+
   helper_method :current_user, :current_user?, :sso_user?, :request_feature_flags, :use_requests_redesign?
 
   private

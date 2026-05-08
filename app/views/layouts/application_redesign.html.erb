@@ -66,6 +66,11 @@
             <%= link_to 'Appointments', aeon_appointments_url, class: 'nav-link fw-semibold' %>
           <% end %>
         <% end %>
+
+        <% component.with_nav_item do %>
+          <%= link_to 'Fees/fines', fines_path, class: 'nav-link fw-semibold' %>
+        <% end %>
+
       <% end %>
     </header>
     <main id="main" class="flex-fill container my-3 pt-3">

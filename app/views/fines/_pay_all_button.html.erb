@@ -1,0 +1,20 @@
+<% amount = patron_or_group.fines.sum(&:owed) %>
+<% if amount.positive? %>
+  <div>
+    <% if patron_or_group.can_pay_fines? %>
+      <%= form_tag payments_path, data: { turbo: false }, method: :post do %>
+        <%= hidden_field_tag :user_id, patron_or_group.key %>
+        <%= hidden_field_tag :amount, format('%.2f', amount) %>
+        <% patron_or_group.fines.each do |fine| %>
+          <%= hidden_field_tag 'fine_ids[]', fine.key %>
+        <% end %>
+        <%= button_tag class: 'btn btn-md btn-info', type: 'submit', data: { 'pay-button' => true } do %>
+          <%= sul_icon :'sharp-payment-24px' %>
+          <span>Pay <%= number_to_currency(amount) %> now</span>
+        <% end %>
+      <% end %>
+    <% else %>
+      <button class="btn btn-info" disabled><%= sul_icon :'sharp-payment-24px' %> Payments blocked</button>
+    <% end %>
+  </div>
+<% end %>

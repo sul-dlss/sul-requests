@@ -1,0 +1,39 @@
+<div id="payments" class="page-section">
+  <% if @payments.any? %>
+    <div class="d-flex justify-content-between">
+      <h1 class="h2">History</h1>
+      <div class="dropdown">
+        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Sort (<span data-sort-label>Date paid</span>)
+        </a>
+
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <li class="dropdown-item" data-sort="nice_status">Reason</li>
+          <li class="dropdown-item active" data-sort="payment_date">Date paid</li>
+          <li class="dropdown-item" data-sort="title">Title</li>
+          <li class="dropdown-item" data-sort="fee">Amount</li>
+        </ul>
+      </div>
+    </div>
+  <% else %>
+    <h1 class="h2">History</h1>
+    <span>There is no history on this account.</span>
+  <% end %>
+
+  <% if @payments.any? %>
+    <div class="d-none d-md-flex row font-weight-bold list-header">
+      <div class="row col-md-12 col-lg-6">
+        <div class="col-md-4" data-sort="nice_status">Reason</div>
+        <div class="col-md-4" data-sort="fee">Amount</div>
+        <div class="col-md-4 active" data-sort="payment_date">Paid on</div>
+      </div>
+      <div class="row col-md-12 col-lg-6">
+        <div class="col-md-7" data-sort="title">Title</div>
+      </div>
+    </div>
+
+    <ul class="payments list list-group">
+      <%= render PaymentComponent.with_collection(@payments, patron: patron_or_group) %>
+    </ul>
+  <% end %>
+</div>

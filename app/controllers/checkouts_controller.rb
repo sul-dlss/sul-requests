@@ -2,9 +2,14 @@
 
 # Controller for the Checkouts page
 class CheckoutsController < ApplicationController
+  include FolioController
+
   before_action :authenticate_user!
 
-  helper_method :patron_or_group
+  before_action :load_checkouts
+  before_action :load_checkout, except: [:index]
+
+  before_action :authorize_renew!, only: [:renew]
 
   # Render a list of checkouts for the patron
   #
@@ -12,15 +17,5 @@ class CheckoutsController < ApplicationController
   # GET /checkouts.json
   def index
     @checkouts = patron_or_group.checkouts.sort_by { |x| x.sort_key(:due_date) }
-  end
-
-  private
-
-  def patron_or_group
-    current_user.patron
-  end
-
-  def authenticate_user!
-    redirect_to root_url unless current_user?
   end
 end
