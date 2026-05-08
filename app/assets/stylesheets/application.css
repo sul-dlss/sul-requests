@@ -239,7 +239,8 @@ summary .disclosure-icon::before {
   display: none;
 }
 
-.accordion-button[aria-expanded=true] {
+.accordion-button[aria-expanded=true],
+.accordion-header:has(.accordion-button[aria-expanded=true]) {
   border-bottom-left-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
 }
