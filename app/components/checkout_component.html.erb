@@ -1,0 +1,81 @@
+<li class="list-group-item <%= list_group_item_status_for_checkout %>">
+  <div class="row d-flex flex-wrap position-relative justify-content-between">
+    <div class="d-flex flex-row flex-grow-1 justify-content-between align-items-baseline w-100 row col-md-4">
+      <div class="w-50 col-md-12 col-lg-6 status" data-sort-status="<%= h checkout.sort_key(:status) %>">
+        <%= render_checkout_status %>
+      </div>
+      <div class="w-50 col-md-12 col-lg-6 text-right align-items-baseline text-md-left due_date" data-sort-date="<%= h checkout.sort_key(:due_date) %>">
+        <% if patron.can_renew? && checkout.renewable? %>
+          <span class="renewable-indicator">
+            <%= sul_icon 'renew' %>
+          </span>
+        <% end %>
+        <span class="d-inline d-md-none mr-2">Due</span>
+        <%= today_with_time_or_date(checkout.due_date, short_term: checkout.short_term_loan?) %>
+      </div>
+    </div>
+    <div class="order-1 order-md-1 d-flex col-10 col-md-5 align-items-baseline">
+      <h3 class="clamp-3 record-title title text-reset" data-sort-title="<%= h checkout.sort_key(:title) %>"><%= checkout.title %></h3>
+    </div>
+    <div class="order-3 order-md-2 d-flex flex-row flex-grow-1 row col-md-3">
+      <div class="w-50 col-md-12 col-lg-6 clamp-1 author" data-sort-author="<%= h checkout.sort_key(:author) %>"><%= checkout.author %></div>
+      <div class="w-50 col-md-12 col-lg-6 call_number" data-sort-call_number="<%= h checkout.sort_key(:call_number) %>"><%= checkout.call_number %></div>
+    </div>
+    <button class="col-2 col-md order-2 order-md-3 btn collapsed stretched-link position-static" type="button" data-toggle="collapse" data-target="#collapseDetails-<%= checkout.key.parameterize %>" aria-expanded="false" aria-controls="collapseDetails-<%= checkout.key.parameterize %>">
+      <span class="expand-icon"><%= sul_icon :'sharp-add-24px' %><span class="sr-only">Expand</span></span>
+      <span class="collapse-icon"><%= sul_icon :'sharp-remove-24px' %><span class="sr-only">Collapse</span></span>
+    </button>
+  </div>
+  <div class="collapse w-100" id="collapseDetails-<%= checkout.key.parameterize %>">
+    <% if patron.can_renew? && checkout.renewable? %>
+      <div class="row">
+        <div class="col-11 offset-1 col-md-10 offset-md-2">
+          <%= form_tag '#', method: :post do %>
+            <%= hidden_field_tag :item_id, checkout.item_id %>
+            <%= hidden_field_tag :title, checkout.title %>
+            <%= hidden_field_tag :group, params[:group] if params[:group] %>
+            <%= button_tag class: 'btn btn-link btn-renewable-submit btn-icon-prefix',
+                           data: { turbo_submits_with: t('mylibrary.renew_item.in_progress_html') },
+                           type: 'submit' do %>
+              <%= sul_icon 'renew' %> Renew this item
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+    <dl class="row mb-0">
+      <% if !patron.can_renew? %>
+          <dt class="col-3 offset-1 col-md-2 offset-md-2">Can I renew?</dt>
+          <dd class="col-8">No. Your status is blocked (or barred).</dd>
+      <% elsif !checkout.renewable? %>
+          <dt class="col-3 offset-1 col-md-2 offset-md-2">Can I renew?</dt>
+          <dd class="col-8"><%= checkout.non_renewable_reason %></dd>
+      <% end %>
+      <% if params[:group] %>
+        <dt class="col-3 offset-1 col-md-2 offset-md-2">Borrower:</dt>
+        <dd class="col-8"><%= patron.proxy_group.member_name(checkout.patron_key) %></dd>
+      <% end %>
+      <dt class="col-3 offset-1 col-md-2 offset-md-2">Borrowed:</dt>
+      <dd class="col-8">
+        <%= today_with_time_or_date(checkout.checkout_date, short_term: checkout.short_term_loan?) %>
+      </dd>
+      <% if checkout.overdue? %>
+        <dt class="col-3 offset-1 col-md-2 offset-md-2">Days overdue:</dt>
+        <dd class="col-8"><%= checkout.days_overdue %></dd>
+        <dt class="col-3 offset-1 col-md-2 offset-md-2">Fines accrued:</dt>
+        <dd class="col-8"><%= number_to_currency(checkout.accrued) %> </dd>
+      <% else %>
+        <dt class="col-3 offset-1 col-md-2 offset-md-2">Remaining:</dt>
+        <dd class="col-8"><%= time_remaining_for_checkout %></dd>
+      <% end %>
+      <dt class="col-3 offset-1 col-md-2 offset-md-2">Source:</dt>
+      <dd class="col-8"><%= checkout.library_name %></dd>
+      <% if checkout.barcode %>
+        <dt class="col-3 offset-1 col-md-2 offset-md-2">Barcode:</dt>
+        <dd class="col-8"><%= checkout.barcode %></dd>
+      <% end %>
+    </dl>
+
+    <%= detail_link_to_searchworks(checkout.catkey) unless checkout.from_ill? %>
+  </div>
+</li>

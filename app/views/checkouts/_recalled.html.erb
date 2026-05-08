@@ -1,0 +1,19 @@
+<div class="page-section">
+  <h2>Recalled: <%= recalled.length %></h2>
+    <% if recalled.any? %>
+      <div class="d-none d-md-flex row font-weight-bold list-header">
+        <div class="row col-md-4">
+          <div class="col-md-12 col-lg-6">Status</div>
+          <div class="col-md-12 col-lg-6">Due date</div>
+        </div>
+        <div class="col-md-5">Title</div>
+        <div class="row col-md-3">
+          <div class="col-md-12 col-lg-6">Author</div>
+          <div class="col-md-12 col-lg-6 call_number">Call number</div>
+        </div>
+      </div>
+      <ul class="recalled-checkouts list-group">
+        <%= render CheckoutComponent.with_collection(recalled, patron: patron_or_group) %>
+      </ul>
+    <% end %>
+</div>

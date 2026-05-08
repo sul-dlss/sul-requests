@@ -1,0 +1,49 @@
+<h1 class="sr-only">Checkouts</h1>
+
+<% if @checkouts.any? %>
+  <% recalled, other_checkouts = @checkouts.partition(&:recalled?) %>
+  <%= render 'checkouts/recalled', recalled: recalled if recalled.any? %>
+
+  <div id="checkouts" class="page-section">
+    <div class="d-flex justify-content-between">
+      <h2>Checked out: <%= other_checkouts.length %><%= " (#{patron_or_group.remaining_checkouts} remaining)" if patron_or_group.remaining_checkouts %></h2>
+      <div class="dropdown">
+        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Sort (<span data-sort-label>Due date</span>)
+        </a>
+
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <li class="dropdown-item" data-sort="status">Status</li>
+          <li class="dropdown-item active" data-sort="due_date">Due date</li>
+          <li class="dropdown-item" data-sort="title">Title</li>
+          <li class="dropdown-item" data-sort="author">Author name</li>
+          <li class="dropdown-item" data-sort="call_number">Call number</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <%= render 'checkouts/renew_all_button' %>
+    </div>
+
+    <div class="d-none d-md-flex row font-weight-bold list-header">
+      <div class="row col-md-4">
+        <div class="col-md-12 col-lg-6" data-sort="status">Status</div>
+        <div class="col-md-12 col-lg-6 active" data-sort="due_date">Due date</div>
+      </div>
+      <div class="col-md-5" data-sort="title">Title</div>
+      <div class="row col-md-3">
+        <div class="col-md-12 col-lg-6" data-sort="author">Author</div>
+        <div class="col-md-12 col-lg-6 call_number" data-sort="call_number">Call number</div>
+      </div>
+    </div>
+    <ul class="list checkouts list-group">
+      <%= render CheckoutComponent.with_collection(other_checkouts, patron: patron_or_group) %>
+    </ul>
+  </div>
+<% else %>
+  <div id="checkouts" class="page-section">
+    <h2>Checked out: <%= @checkouts.length %><%= " (#{patron_or_group.remaining_checkouts} remaining)" if patron_or_group.remaining_checkouts %></h2>
+  </div>
+<% end %>
+<%= render 'checkouts/policies' %>
