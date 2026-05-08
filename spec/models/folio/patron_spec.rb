@@ -5,9 +5,12 @@ require 'rails_helper'
 RSpec.describe Folio::Patron do
   subject(:patron) do
     described_class.new(
-      fields.deep_stringify_keys
+      fields.deep_stringify_keys, extended_user_info: extended_user_info&.deep_stringify_keys
     )
   end
+
+  let(:fields) { {} }
+  let(:extended_user_info) { nil }
 
   context 'when the patron is a fee borrower' do
     let(:patron_group_id) { '985acbb9-f7a7-4f44-9b34-458c02a78fbc' } # fee borrower
@@ -66,9 +69,9 @@ RSpec.describe Folio::Patron do
     end
 
     describe '#make_request_as_patron?' do
-      let(:folio_client) { instance_double(FolioClient, patron_blocks:) }
-      let(:patron_blocks) do
-        { 'automatedPatronBlocks' => [
+      let(:folio_client) { instance_double(FolioClient, extended_user_info:) }
+      let(:extended_user_info) do
+        { 'blocks' => [
           {
             patronBlockConditionId: 'ac13a725-b25f-48fa-84a6-4af021d13afe',
             blockBorrowing: false,
@@ -105,48 +108,46 @@ RSpec.describe Folio::Patron do
     let(:fields) do
       {
         id: 'sponsor',
-        personal: { firstName: 'Sponsor' },
-        stubs: {
-          proxies: [
-            {
-              proxyUserId: 'proxy1',
-              requestForSponsor: 'Yes',
-              status: 'Active'
-            },
-            {
-              proxyUserId: 'proxy2',
-              requestForSponsor: 'Yes',
-              status: 'Active'
-            },
-            {
-              proxyUserId: 'proxy-expired',
-              requestForSponsor: 'Yes',
-              expirationDate: '2023-05-20T00:13:20.324+00:00',
-              status: 'Active'
-            },
-            {
-              proxyUserId: 'proxy-inactive',
-              requestForSponsor: 'Yes',
-              expirationDate: '2051-05-20T00:13:20.324+00:00',
-              status: 'Inactive'
-            }
-          ]
-        }
+        personal: { firstName: 'Sponsor' }
       }
     end
-    let(:patron_one) { instance_double(described_class, id: 'proxy1', display_name: 'Proxy One') }
-    let(:patron_two) { instance_double(described_class, id: 'proxy2', display_name: 'Proxy Two') }
 
-    let(:stub_client) { FolioClient.new }
-
-    before do
-      allow(FolioClient).to receive(:new).and_return(stub_client)
+    let(:extended_user_info) do
+      {
+        proxiesOf: [
+          {
+            proxyUserId: 'proxy1',
+            requestForSponsor: 'Yes',
+            status: 'Active',
+            proxyUser: {
+              id: 'proxy1'
+            }
+          },
+          {
+            proxyUserId: 'proxy2',
+            requestForSponsor: 'Yes',
+            status: 'Active',
+            proxyUser: {
+              id: 'proxy2'
+            }
+          },
+          {
+            proxyUserId: 'proxy-expired',
+            requestForSponsor: 'Yes',
+            expirationDate: '2023-05-20T00:13:20.324+00:00',
+            status: 'Active'
+          },
+          {
+            proxyUserId: 'proxy-inactive',
+            requestForSponsor: 'Yes',
+            expirationDate: '2051-05-20T00:13:20.324+00:00',
+            status: 'Inactive'
+          }
+        ]
+      }
     end
 
     it 'retrieves the names of the proxy user ids correctly' do
-      allow(described_class).to receive(:find_by).with(patron_key: 'proxy1').and_return(patron_one)
-      allow(described_class).to receive(:find_by).with(patron_key: 'proxy2').and_return(patron_two)
-
       expect(patron.proxies.length).to eq 2
     end
   end
@@ -155,46 +156,46 @@ RSpec.describe Folio::Patron do
     let(:fields) do
       {
         id: 'proxy',
-        personal: { firstName: 'Proxy' },
-        stubs: {
-          sponsors: [
-            {
-              userId: 'sponsor1',
-              requestForSponsor: 'Yes',
-              status: 'Active'
-            },
-            {
-              userId: 'sponsor2',
-              requestForSponsor: 'Yes',
-              status: 'Active'
-            },
-            {
-              userId: 'sponsor-expired',
-              requestForSponsor: 'Yes',
-              expirationDate: '2023-05-20T00:13:20.324+00:00',
-              status: 'Active'
-            },
-            {
-              userId: 'sponsor-inactive',
-              requestForSponsor: 'Yes',
-              expirationDate: '2051-05-20T00:13:20.324+00:00',
-              status: 'Inactive'
-            }
-          ]
-        }
+        personal: { firstName: 'Proxy' }
       }
     end
-    let(:sponsor_one) { instance_double(described_class, id: 'sponsor1', display_name: 'Sponsor One') }
-    let(:sponsor_two) { instance_double(described_class, id: 'sponsor2', display_name: 'Sponsor Two') }
-    let(:stub_client) { FolioClient.new }
 
-    before do
-      allow(FolioClient).to receive(:new).and_return(stub_client)
+    let(:extended_user_info) do
+      {
+        proxiesFor: [
+          {
+            userId: 'sponsor1',
+            requestForSponsor: 'Yes',
+            status: 'Active',
+            user: {
+              id: 'sponsor1'
+            }
+          },
+          {
+            userId: 'sponsor2',
+            requestForSponsor: 'Yes',
+            status: 'Active',
+            user: {
+              id: 'sponsor2'
+            }
+          },
+          {
+            userId: 'sponsor-expired',
+            requestForSponsor: 'Yes',
+            expirationDate: '2023-05-20T00:13:20.324+00:00',
+            status: 'Active'
+          },
+          {
+            userId: 'sponsor-inactive',
+            requestForSponsor: 'Yes',
+            expirationDate: '2051-05-20T00:13:20.324+00:00',
+            status: 'Inactive'
+          }
+        ]
+      }
     end
 
     it 'retrieves the names of the sponsor user ids correctly' do
-      allow(described_class).to receive(:find_by).with(patron_key: 'sponsor1').and_return(sponsor_one)
-      allow(described_class).to receive(:find_by).with(patron_key: 'sponsor2').and_return(sponsor_two)
       expect(patron.sponsors.length).to eq 2
     end
   end
