@@ -2,7 +2,7 @@
   <div class="card-body">
     <div class="metadata">
       <div class="mb-2 text-dark-emphasis reading-room"><%= requests.first.reading_room&.name %></div>
-      <h2 class="h3"><%= title %></h2>
+      <h2 class="h4"><%= title %></h2>
       <div class="d-flex gap-sm-3 flex-sm-row flex-wrap flex-column">
         <% if base_callnumber.present? %>
           <div>Call number: <%= base_callnumber %></div>
@@ -12,7 +12,7 @@
         <% requests.each do |request| %>
           <li id="<%= dom_id(request) %>" data-transaction-number="<%= request.transaction_number %>" class="request list-group-item border-0 px-0">
             <div class="d-flex flex-row align-items-center justify-content-between">
-              <div class="d-flex gap-3">
+              <div class="d-flex column-gap-3 text-break flex-wrap">
                 <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
                 <%= render @after_request_item_component.new(request:) if @after_request_item_component %>
               </div>

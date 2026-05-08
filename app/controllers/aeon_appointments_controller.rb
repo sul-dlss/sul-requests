@@ -54,7 +54,10 @@ class AeonAppointmentsController < ApplicationController
 
     CancelAeonAppointmentJob.perform_now(@appointment, cancel_requests: params['cancel_items'] == 'true')
 
-    redirect_to aeon_appointments_path, notice: 'Appointment cancelled successfully'
+    respond_to do |format|
+      format.html { redirect_to aeon_appointments_path, notice: 'Appointment cancelled successfully' }
+      format.turbo_stream
+    end
   end
 
   def items

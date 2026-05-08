@@ -48,7 +48,7 @@ class AeonRequestsController < ApplicationController
     @updated_request = Aeon::UpdateRequestService.new(@aeon_request, aeon_request_params).call
 
     respond_to do |format|
-      format.turbo_stream
+      format.turbo_stream { update_turbo_stream }
       format.html do
         aeon_requests_path = updated_request.draft? ? aeon_requests_path(kind: 'drafts') : aeon_requests_path(kind: 'submitted')
         redirect_to aeon_requests_path, notice: 'Request was successfully updated.'
@@ -83,6 +83,18 @@ class AeonRequestsController < ApplicationController
   end
 
   private
+
+  def update_turbo_stream
+    if params[:sidebar].present?
+      appointment_requests = current_user.aeon.submitted_requests.select do |request|
+        request.appointment_id == @updated_request.appointment_id
+      end.push(@updated_request)
+      @updated_request.appointment.requests = appointment_requests
+      render 'update_from_appt_page'
+    else
+      render 'update'
+    end
+  end
 
   def set_variant
     request.variant = :sidebar if params[:variant] == 'sidebar'
