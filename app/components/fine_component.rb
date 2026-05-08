@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Render a single fine or payment for a patron
 class FineComponent < ViewComponent::Base
   attr_reader :fine, :patron
 

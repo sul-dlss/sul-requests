@@ -9,11 +9,10 @@ module Cybersource
     attr_reader :user_id, :amount, :signature, :signed_date_time
 
     # Set of fields we use to generate the signature and that Cybersource verifies
-    REQUEST_SIGNED_FIELDS = %i[access_key profile_id transaction_uuid signed_date_time
-                               locale transaction_type reference_number amount currency
-                               merchant_defined_data1 merchant_defined_data2 merchant_defined_data3
-                               merchant_defined_data4 merchant_defined_data5
-                               unsigned_field_names signed_field_names].freeze
+    REQUEST_SIGNED_FIELDS = [:access_key, :profile_id, :transaction_uuid, :signed_date_time, :locale, :transaction_type, :reference_number,
+                             :amount, :currency,
+                             :merchant_defined_data1, :merchant_defined_data2, :merchant_defined_data3,
+                             :merchant_defined_data4, :merchant_defined_data5, :unsigned_field_names, :signed_field_names].freeze
 
     def initialize(user_id:, amount:, fine_ids:)
       @user_id = user_id

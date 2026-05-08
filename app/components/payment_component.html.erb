@@ -1,7 +1,7 @@
 <li class="list-group-item">
   <div class="row d-flex flex-wrap position-relative">
     <div class="d-flex flex-row flex-grow-1 justify-content-start w-100 row col-md-12 col-lg-6">
-      <div class="col-4 col-md-4 order-md-first nice_status" data-sort-nice_status="<%= h payment.sort_key(:nice_status) %>" >
+      <div class="col-4 col-md-4 order-md-first nice_status" data-sort-nice-status="<%= h payment.sort_key(:nice_status) %>" >
         <%= payment.nice_status %>
       </div>
 
@@ -9,7 +9,7 @@
         <%= number_to_currency(payment.fee) %>
       </div>
 
-      <div class="col-5 col-md-4 text-right text-md-left payment_date" data-sort-payment_date="<%= h payment.sort_key(:payment_date) %>" >
+      <div class="col-5 col-md-4 text-right text-md-left payment_date" data-sort-payment-date="<%= h payment.sort_key(:payment_date) %>" >
         <%= l(payment.payment_date, format: :short) %>
       </div>
     </div>

@@ -76,7 +76,10 @@ class PaymentsController < ApplicationController
   end
 
   def cybersource_response
-    Cybersource::PaymentResponse.new(params.permit!.to_h).validate!
+    Cybersource::PaymentResponse.new(params.permit(:singled_field_names, :unsigned_field_names, :decision, :signature,
+                                                   :req_reference_number, :req_amount, :req_merchant_defined_data1,
+                                                   :req_merchant_defined_data2, :req_merchant_defined_data3,
+                                                   :req_merchant_defined_data4).to_h).validate!
   end
 
   def payment_failed

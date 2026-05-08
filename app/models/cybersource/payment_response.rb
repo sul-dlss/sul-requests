@@ -54,9 +54,7 @@ module Cybersource
     def fine_id_stubs
       fine_id_stubs = []
       (1..4).each do |n|
-        unless @fields["req_merchant_defined_data#{n}"].nil?
-          fine_id_stubs.concat(@fields["req_merchant_defined_data#{n}"]&.split(':'))
-        end
+        fine_id_stubs.concat(@fields["req_merchant_defined_data#{n}"]&.split(':')) unless @fields["req_merchant_defined_data#{n}"].nil?
       end
       fine_id_stubs
     end
