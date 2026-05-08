@@ -231,7 +231,7 @@ class FolioGraphqlClient
   def extended_user_info(patron_uuid)
     data = post_json('/', json: {
                        query: "query Query($patronId: UUID!) {
-                                 user {
+                                 user(id: $patronId) {
                                     username
                                     barcode
                                     active
