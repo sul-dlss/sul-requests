@@ -5,9 +5,12 @@ require 'rails_helper'
 RSpec.describe Folio::Patron do
   subject(:patron) do
     described_class.new(
-      fields.deep_stringify_keys
+      fields.deep_stringify_keys, extended_user_info: extended_user_info&.deep_stringify_keys
     )
   end
+
+  let(:fields) { {} }
+  let(:extended_user_info) { nil }
 
   context 'when the patron is a fee borrower' do
     let(:patron_group_id) { '985acbb9-f7a7-4f44-9b34-458c02a78fbc' } # fee borrower
@@ -105,39 +108,42 @@ RSpec.describe Folio::Patron do
     let(:fields) do
       {
         id: 'sponsor',
-        personal: { firstName: 'Sponsor' },
-        stubs: {
-          proxies: [
-            {
-              proxyUserId: 'proxy1',
-              requestForSponsor: 'Yes',
-              status: 'Active',
-              proxyUser: {
-                id: 'proxy1'
-              }
-            },
-            {
-              proxyUserId: 'proxy2',
-              requestForSponsor: 'Yes',
-              status: 'Active',
-              proxyUser: {
-                id: 'proxy2'
-              }
-            },
-            {
-              proxyUserId: 'proxy-expired',
-              requestForSponsor: 'Yes',
-              expirationDate: '2023-05-20T00:13:20.324+00:00',
-              status: 'Active'
-            },
-            {
-              proxyUserId: 'proxy-inactive',
-              requestForSponsor: 'Yes',
-              expirationDate: '2051-05-20T00:13:20.324+00:00',
-              status: 'Inactive'
+        personal: { firstName: 'Sponsor' }
+      }
+    end
+
+    let(:extended_user_info) do
+      {
+        proxiesOf: [
+          {
+            proxyUserId: 'proxy1',
+            requestForSponsor: 'Yes',
+            status: 'Active',
+            proxyUser: {
+              id: 'proxy1'
             }
-          ]
-        }
+          },
+          {
+            proxyUserId: 'proxy2',
+            requestForSponsor: 'Yes',
+            status: 'Active',
+            proxyUser: {
+              id: 'proxy2'
+            }
+          },
+          {
+            proxyUserId: 'proxy-expired',
+            requestForSponsor: 'Yes',
+            expirationDate: '2023-05-20T00:13:20.324+00:00',
+            status: 'Active'
+          },
+          {
+            proxyUserId: 'proxy-inactive',
+            requestForSponsor: 'Yes',
+            expirationDate: '2051-05-20T00:13:20.324+00:00',
+            status: 'Inactive'
+          }
+        ]
       }
     end
 
@@ -150,39 +156,42 @@ RSpec.describe Folio::Patron do
     let(:fields) do
       {
         id: 'proxy',
-        personal: { firstName: 'Proxy' },
-        stubs: {
-          sponsors: [
-            {
-              userId: 'sponsor1',
-              requestForSponsor: 'Yes',
-              status: 'Active',
-              user: {
-                id: 'sponsor1'
-              }
-            },
-            {
-              userId: 'sponsor2',
-              requestForSponsor: 'Yes',
-              status: 'Active',
-              user: {
-                id: 'sponsor2'
-              }
-            },
-            {
-              userId: 'sponsor-expired',
-              requestForSponsor: 'Yes',
-              expirationDate: '2023-05-20T00:13:20.324+00:00',
-              status: 'Active'
-            },
-            {
-              userId: 'sponsor-inactive',
-              requestForSponsor: 'Yes',
-              expirationDate: '2051-05-20T00:13:20.324+00:00',
-              status: 'Inactive'
+        personal: { firstName: 'Proxy' }
+      }
+    end
+
+    let(:extended_user_info) do
+      {
+        proxiesFor: [
+          {
+            userId: 'sponsor1',
+            requestForSponsor: 'Yes',
+            status: 'Active',
+            user: {
+              id: 'sponsor1'
             }
-          ]
-        }
+          },
+          {
+            userId: 'sponsor2',
+            requestForSponsor: 'Yes',
+            status: 'Active',
+            user: {
+              id: 'sponsor2'
+            }
+          },
+          {
+            userId: 'sponsor-expired',
+            requestForSponsor: 'Yes',
+            expirationDate: '2023-05-20T00:13:20.324+00:00',
+            status: 'Active'
+          },
+          {
+            userId: 'sponsor-inactive',
+            requestForSponsor: 'Yes',
+            expirationDate: '2051-05-20T00:13:20.324+00:00',
+            status: 'Inactive'
+          }
+        ]
       }
     end
 

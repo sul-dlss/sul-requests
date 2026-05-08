@@ -26,8 +26,9 @@ module Folio
 
     delegate :folio_client, to: :class
 
-    def initialize(user_info = {})
+    def initialize(user_info = {}, extended_user_info: nil)
       @user_info = user_info
+      @extended_user_info = extended_user_info
     end
 
     def id
