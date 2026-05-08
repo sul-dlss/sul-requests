@@ -1,25 +1,5 @@
 <%= form_with(model: @appointment, class: "appointment-form", data: { controller: 'appointment', 'appointment-availability-route-value': available_aeon_reading_room_url(id: @appointment.reading_room_id) }) do |f| %>
-  <%
-    banner_display = @appointment.date.present? ? '' : 'd-none'
-    selection_classes =  @appointment.date.present? ? 'ms-3 ' : ''
-  %>
-  <div data-appointment-target="banner" class="selected-appointment d-flex flex-row <%= banner_display %>">
-    <div data-appointment-target-="current" class="w-50 border-end <%= banner_display %>">
-      <h4>Current</h4>
-      <%= @appointment.date&.strftime('%b %e, %Y') %>
-      <i class="bi bi-dot"></i>
-      <%= @appointment.start_time&.strftime('%l:%M %p') %> - <%= @appointment.stop_time&.strftime('%l:%M %p') %>
-    </div>
-    <div class="<%= selection_classes %>">
-      <h4 class="<%= banner_display %>">
-        New
-      </h4>
-      <div data-appointment-target="selection">
-        Select date and time
-      </div>
-    </div>
-  </div>
-
+  <%= render Aeon::AppointmentSelectionComponent.new(appointment: @appointment) %>
   <div class="modal-body">
     <div>
       <%= f.hidden_field :reading_room_id %>

@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["availability", "duration", "fieldset", "banner", "selection"]
+  static targets = ["availability", "duration", "fieldset", "selection"]
   static values = {
     availabilityRoute: String
   }
@@ -76,8 +76,7 @@ export default class extends Controller {
     }
     // Update the selection portion
     this.selectionTarget.innerHTML = `<div class="d-flex">${text}</div>`;
-    // Display the banner
-    this.bannerTarget.classList.remove('d-none');
+    this.selectionTarget.classList.remove('d-none');
   }
 
   formatTime(start_time, duration) {
