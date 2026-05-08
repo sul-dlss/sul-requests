@@ -60,6 +60,20 @@ module Folio
       personal_data['addresses']&.find { |address| address['primaryAddress'] } || personal_data['addresses']&.first || {}
     end
 
+    def library_id
+      university_id || barcode
+    end
+
+    # TODO: I belive we added this for parity with Symphony::Patron, but I don't think we will need it.
+    # @deprecated
+    def barcode
+      user_info['barcode']
+    end
+
+    def university_id
+      user_info['externalSystemId']
+    end
+
     # this returns the full patronGroup object
     def patron_group
       @patron_group ||= Folio::NullPatron.visitor_patron_group if expired?
@@ -73,16 +87,6 @@ module Folio
 
     # always nil for a real patron, but filled in for a PseudoPatron
     def patron_comments; end
-
-    def library_id
-      university_id || barcode
-    end
-
-    # TODO: I belive we added this for parity with Symphony::Patron, but I don't think we will need it.
-    # @deprecated
-    def barcode
-      user_info['barcode']
-    end
 
     def ilb_eligible?
       username && Settings.folio.ilb_eligible_patron_groups.include?(patron_group_name) && !expired?
@@ -138,10 +142,6 @@ module Folio
       end
     end
 
-    def university_id
-      user_info['externalSystemId']
-    end
-
     # @deprecated
     def proxy_sponsor_user_id
       sponsors.first.id
@@ -149,6 +149,10 @@ module Folio
 
     def blocked?
       patron_blocks.present?
+    end
+
+    def expired?
+      user_info['active'] == false
     end
 
     def block_reasons
@@ -170,10 +174,6 @@ module Folio
     # Generate a PIN reset token for the patron
     def pin_reset_token
       crypt.encrypt_and_sign(id, expires_in: 20.minutes)
-    end
-
-    def expired?
-      user_info['active'] == false
     end
 
     private
