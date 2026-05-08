@@ -5,12 +5,77 @@ require 'rails_helper'
 RSpec.describe Folio::Patron do
   subject(:patron) do
     described_class.new(
-      fields.deep_stringify_keys, extended_user_info: extended_user_info&.deep_stringify_keys
+      fields.deep_stringify_keys,
+      extended_user_info: extended_user_info&.deep_stringify_keys,
+      patron_graphql_response: patron_graphql_response&.deep_stringify_keys
     )
   end
 
   let(:fields) { {} }
   let(:extended_user_info) { nil }
+  let(:patron_graphql_response) { nil }
+
+  describe '#id' do
+    context 'with a Patron from the FOLIO APIs' do
+      let(:fields) { { 'id' => 'xyz' } }
+
+      it 'returns the user id' do
+        expect(patron.id).to eq 'xyz'
+      end
+    end
+  end
+
+  describe '#expired?' do
+    let(:fields) { { 'active' => active? } }
+    let(:extended_user_info) do
+      { 'manualBlocks' => [], 'blocks' => [] }
+    end
+
+    context 'when the patron account is active' do
+      let(:active?) { true }
+
+      it { expect(patron.expired?).to be false }
+    end
+
+    context 'when the patron account is inactive' do
+      let(:active?) { false }
+
+      it { expect(patron.expired?).to be true }
+    end
+  end
+
+  describe '#can_renew?' do
+    let(:fields) { { 'active' => active? } }
+    let(:extended_user_info) do
+      { 'manualBlocks' => manual_blocks, 'blocks' => blocks }
+    end
+
+    let(:active?) { true }
+    let(:manual_blocks) { [] }
+    let(:blocks) { [] }
+
+    context 'when the patron account is in good standing' do
+      it { expect(patron.can_renew?).to be true }
+    end
+
+    context 'when the patron account is expired' do
+      let(:active?) { false }
+
+      it { expect(patron.can_renew?).to be false }
+    end
+
+    context 'when the patron account is barred' do
+      let(:manual_blocks) { [{ type: 'barred' }] }
+
+      it { expect(patron.can_renew?).to be false }
+    end
+
+    context 'when the patron account is blocked' do
+      let(:blocks) { [{ type: 'blocked' }] }
+
+      it { expect(patron.can_renew?).to be false }
+    end
+  end
 
   context 'when the patron is a fee borrower' do
     let(:patron_group_id) { '985acbb9-f7a7-4f44-9b34-458c02a78fbc' } # fee borrower
