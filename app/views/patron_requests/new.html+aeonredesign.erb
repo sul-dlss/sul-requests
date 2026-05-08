@@ -189,10 +189,10 @@
 <% end %>
 
 <template data-save-for-later-target="savedItemTemplate">
-  <li class="d-flex justify-content-between saved-item border-bottom py-1">
+  <li class="d-flex flex-column flex-md-row justify-content-md-between saved-item border-bottom py-1">
     <span data-role="title"></span>
-    <div>
-      <button class="su-underline btn btn-link fs-14" data-action="save-for-later#restore">Undo</button>
+    <div class="text-nowrap">
+      <button class="su-underline btn btn-link fs-14 ps-0" data-action="save-for-later#restore">Undo</button>
       <button class="btn btn-link p-0 ps-1" data-action="item-selector#remove">
         <i class="bi bi-trash"></i>
       </button>
