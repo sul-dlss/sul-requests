@@ -27,15 +27,26 @@ module Aeon
     end
 
     def requests
-      @requests ||= self.class.aeon_client.requests_for(username:)
+      @requests ||= self.class.aeon_client.requests_for(username:).reject(&:activity?)
     end
 
     def activities
-      @activities ||= self.class.aeon_client.activities_for(username:)
+      @activities ||= self.class.aeon_client.activities_for(username:).sort_by(&:sort_key)
+    end
+
+    def activities_with_requests
+      request_cache = {}
+      activities.each do |activity|
+        user_requests = activity.users.flat_map do |user|
+          request_cache[user.username] ||= self.class.aeon_client.requests_for(username: user.username)
+        end
+        activity.assign_requests_from(user_requests)
+      end
+      activities
     end
 
     def active_reading_room_activities(site:)
-      activities&.reject(&:completed?)&.select { |activity| activity.sites.include?(site) }
+      activities&.select(&:active?)&.select { |activity| activity.sites.include?(site) }
     end
 
     def draft_requests

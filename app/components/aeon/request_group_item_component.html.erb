@@ -6,7 +6,7 @@
           <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
 
           <% if remove_from_appointment? %>
-            <%= form_with(url: redraft_aeon_request_path(request)) do |f| %>
+            <%= form_with(url: redraft_aeon_request_path(request, kind: request.request_type)) do |f| %>
               <%= tag.button type: :submit, class: 'btn btn-link su-underline' do %>
                 <i class="bi bi-x align-middle me-1"></i><span>Remove</span>
               <% end %>

@@ -23,6 +23,7 @@ RSpec.describe 'Appointments', :js do
                     requests_for: [build(:aeon_request, transaction_number: 100, username: user.email_address, appointment: appointment)],
                     cancel_appointment: [],
                     reading_rooms:,
+                    activities_for: [],
                     available_appointments: [])
   end
 

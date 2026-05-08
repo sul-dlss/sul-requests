@@ -59,9 +59,16 @@ layer(components);
   color: rgba(var(--stanford-lagunita-dark-rgb), 1);
 }
 
+.text-bay-dark {
+  color: rgba(var(--stanford-bay-dark-rgb));
+}
 
 .bg-lagunita-dark {
   background-color: rgba(var(--stanford-lagunita-dark-rgb), 1);
+}
+
+.bg-bay-dark {
+  background-color: rgb(var(--stanford-bay-dark-rgb));
 }
 
 .bg-cardinal {

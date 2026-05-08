@@ -30,6 +30,7 @@ module Aeon
     def aeon_payload
       AeonClient::RequestData.with_defaults.with(
         appointment_id: params[:appointment_id]&.to_i,
+        activity_id: params[:activity_id],
         for_publication: ActiveRecord::Type::Boolean.new.cast(params[:for_publication]),
         item_info5: params[:requested_pages],
         special_request: params[:additional_information]

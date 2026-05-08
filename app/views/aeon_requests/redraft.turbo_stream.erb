@@ -1,12 +1,17 @@
 <%= turbo_stream.remove(@aeon_request) %>
 
-<% other_appt_requests = @aeon_request_group.select { |r| r.appointment_id == @aeon_request.appointment_id && r.id != @aeon_request.id } %>
+<% if @aeon_request.activity? %>
+  <%= turbo_stream.remove("aeon_request_#{@aeon_request.id}") %>
+  <% other_appt_requests = @aeon_request_group.select { |r| r.activity_id == @aeon_request.activity_id && r.id != @aeon_request.id } %>
+  <%= turbo_stream.remove("#{@aeon_request_group.dom_id}_#{@aeon_request.activity_id}") if other_appt_requests.empty? %>
+<% else %>
+  <% other_appt_requests = @aeon_request_group.select { |r| r.appointment_id == @aeon_request.appointment_id && r.id != @aeon_request.id } %>
 
-<%= turbo_stream.append_all("##{dom_id(@aeon_request.appointment)} [data-controller=\"progress-bar\"]") do %>
-  <div class="d-none" data-progress-bar-target="update" data-count-value="<%= other_appt_requests.count %>"></div>
+  <%= turbo_stream.remove("#{@aeon_request_group.dom_id}_#{@aeon_request.appointment_id}") if other_appt_requests.empty? %>
+  <%= turbo_stream.append_all("##{dom_id(@aeon_request.appointment)} [data-controller=\"progress-bar\"]") do %>
+    <div class="d-none" data-progress-bar-target="update" data-count-value="<%= other_appt_requests.count %>"></div>
+  <% end %>
 <% end %>
-
-<%= turbo_stream.remove("#{@aeon_request_group.dom_id}_appt_#{@aeon_request.appointment_id}") if other_appt_requests.empty? %>
 
 <%= turbo_stream.replace('draft_aeon_requests_sidebar') do %>
   <div id="draft_aeon_requests_sidebar">

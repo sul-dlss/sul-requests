@@ -10,5 +10,11 @@ module Aeon
     def initialize(request_group:)
       @request_group = request_group
     end
+
+    def group_id
+      return request_group.first.activity_id if request_group.activity?
+
+      request_group.first.appointment_id
+    end
   end
 end

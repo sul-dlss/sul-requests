@@ -7,7 +7,7 @@ class AeonAbility
   include CanCan::Ability
 
   # The CanCan DSL requires a complex initialization method
-  def initialize(aeon_user) # rubocop:disable Metrics/AbcSize
+  def initialize(aeon_user) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     # Clearing CanCan's default aliased actions
     # because we _don't_ want to alias new to create
     clear_aliased_actions
@@ -20,7 +20,8 @@ class AeonAbility
 
     can :destroy, Aeon::Request, username: aeon_user.username
     can :update, Aeon::Request do |request|
-      request.username == aeon_user.username && (request.draft? || request.appointment&.editable? || request.cancelled?)
+      request.username == aeon_user.username &&
+        (request.draft? || request.activity_id || request.appointment&.editable? || request.cancelled?)
     end
 
     can :read, Aeon::Request

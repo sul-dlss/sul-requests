@@ -5,10 +5,11 @@ module Aeon
   class AppointmentDateTimeComponent < ViewComponent::Base
     attr_reader :appointment, :icon_class
 
-    def initialize(appointment:, icon_class: 'me-2', show_open_hours: true)
+    def initialize(appointment:, icon_class: 'me-2', show_open_hours: true, location: nil)
       @appointment = appointment
       @icon_class = icon_class
       @show_open_hours = show_open_hours
+      @location = location
     end
 
     def show_open_hours?

@@ -7,15 +7,17 @@ module Aeon
 
     attr_accessor :id, :users, :start_time, :stop_time, :name, :active, :location, :activity_type, :status, :sites
 
+    attr_writer :requests
+
     def self.from_dynamic(dyn) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       users = dyn['users'].map { |user| Aeon::User.from_dynamic(user) }
       new(
-        id: dyn['id'],
+        id: dyn['id'].to_i,
         users:,
         start_time: dyn['beginDate'] && Time.zone.parse(dyn['beginDate']),
         stop_time: dyn['endDate'] && Time.zone.parse(dyn['endDate']),
         name: dyn['name'],
-        active: dyn['active'],
+        active: ActiveModel::Type::Boolean.new.cast(dyn['active']),
         location: dyn['location'],
         sites: sites(dyn['location']),
         activity_type: dyn['activityType'],
@@ -23,8 +25,26 @@ module Aeon
       )
     end
 
+    def active?
+      !completed? && active
+    end
+
     def completed?
       status == 'Completed'
+    end
+
+    def requests
+      @requests ||= []
+    end
+
+    def assign_requests_from(all_requests)
+      self.requests = all_requests.select { |request| request.activity_id == id }
+    end
+
+    def reading_room; end
+
+    def sort_key
+      start_time || 100.years.from_now
     end
 
     def self.sites(location)
