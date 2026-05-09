@@ -276,6 +276,7 @@ summary .disclosure-icon::before {
     padding: 2px 8px;
     font-size: 1rem;
     font-weight: normal;
+    margin-left: .5rem;
     margin-right: .25rem;
     border-radius: 32px;
     color: var(--bs-green);
@@ -293,6 +294,7 @@ summary .disclosure-icon::before {
     background-color: rgba(var(--stanford-digital-blue-rgb), 0.1);
     font-size: 1rem;
     padding: 2px 8px;
+    margin-left: .5rem;
     margin-right: .25rem;
     border-radius: 32px;
     font-weight: normal;
