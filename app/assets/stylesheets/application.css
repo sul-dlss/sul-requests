@@ -829,6 +829,12 @@ label.btn-close {
     --bs-btn-active-bg: white;
   }
 
+  button.dropdown-toggle {
+    min-width: 100%;
+    @media (min-width: 576px) {
+      min-width: 19.8rem; /* Barely fits longer case like "Jun 30,2026 * 11:00 am - 12:45 pm (10 items)" */
+    }
+  }
 
   .selected, li:has(input:checked)  {
     background-color: var(--bs-primary-bg-subtle);

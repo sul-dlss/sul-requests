@@ -91,7 +91,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       click_button 'Continue'
 
       # In the Appointment step
-      click_button 'Select existing appointment'
+      click_button 'Select appointment'
       click_button 'Feb 19'
 
       fill_in 'Additional information', with: 'Testing only'

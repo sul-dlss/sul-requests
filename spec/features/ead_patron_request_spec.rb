@@ -99,7 +99,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       expect(page).to have_css('.selected-item-title', text: 'Box 1')
 
       # In the Appointment step
-      click_button 'Select existing appointment'
+      click_button 'Select appointment'
       click_button 'Feb 19'
 
       click_button 'Submit request'
@@ -168,7 +168,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
 
       # Assign appointment to first item
       within('[data-content-id]', text: 'Box 12') do
-        click_button 'Select existing appointment'
+        click_button 'Select appointment'
         click_button 'Feb 19'
       end
       expect(page).to have_css '.badge', text: '2 items'
@@ -195,7 +195,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
 
       # Assign appointment to the second item
       within('[data-content-id]', text: 'Box 13') do
-        click_button 'Select existing appointment'
+        click_button 'Select appointment'
         click_button 'Feb 19'
       end
       expect(page).to have_css '.badge', text: '3 items'
@@ -226,7 +226,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       click_button 'Continue'
 
       within('[data-content-id]', text: 'Box 12') do
-        click_button 'Select existing appointment'
+        click_button 'Select appointment'
         click_button 'Feb 19'
       end
 
@@ -300,7 +300,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       click_button 'Continue'
 
       within('[data-content-id]', text: 'Box 12') do
-        click_button 'Select existing appointment'
+        click_button 'Select appointment'
         click_button 'Feb 19'
       end
       first('[data-content-id]', text: 'Box 13').click_button('Save for later')
@@ -585,7 +585,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       expect(page).to have_text('Hours: Monday - Friday, 9:00 - 4:45 pm')
 
       # In the Appointment step
-      click_button 'Select existing appointment'
+      click_button 'Select appointment'
       click_button 'Feb 19'
     end
 
@@ -614,7 +614,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
         expect(page).to have_text('Field Reading Room')
         expect(page).to have_text('Hours: Monday - Friday, 9:00 - 4:45 pm')
         expect(page).to have_text('You don’t have any appointments yet. Create one to continue.')
-        expect(page).to have_button('Select existing appointment', disabled: true)
+        expect(page).to have_button('Select appointment', disabled: true)
       end
     end
 
