@@ -24,7 +24,12 @@ RSpec.describe 'Appointments', :js do
                     cancel_appointment: [],
                     reading_rooms:,
                     activities_for: [],
-                    available_appointments: [])
+                    available_appointments:)
+  end
+  let(:available_appointments) do
+    [instance_double(Aeon::AvailableAppointment,
+                     start_time: DateTime.new(2026, 2, 19),
+                     maximum_appointment_length: 210.minutes)]
   end
 
   before do
@@ -46,6 +51,7 @@ RSpec.describe 'Appointments', :js do
         expect(page).to have_text 'Create new appointment Field Reading Room', normalize_ws: true
         expect(page).to have_text 'An appointment must be scheduled at least 5 business days in advance to access items'
         expect(page).to have_text 'Field Reading Room is open Monday - Friday, 9:00 - 4:45 pm'
+        expect(page).to have_text 'Earliest appointment available: Thursday, Feb 19, 2026'
         expect(page).to have_field('aeon_appointment[date]', type: 'date')
         expect(page).to have_no_text('Duration')
         click_on 'Cancel'
