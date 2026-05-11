@@ -653,6 +653,23 @@ label.btn-close {
       "title   select"
       "actions select";
     align-items: center;
+
+    .appt-select {
+      justify-content: flex-end;
+    }
+  }
+}
+
+.appointments-item:only-child {
+  padding-left: 0;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    "title"
+    "actions"
+    "select";
+
+  .appt-select {
+    justify-content: flex-start;
   }
 }
 
