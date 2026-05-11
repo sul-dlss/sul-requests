@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    action_text-trix (2.1.18)
+    action_text-trix (2.1.19)
       railties
     actioncable (8.1.3)
       actionpack (= 8.1.3)
@@ -98,7 +98,7 @@ GEM
     benchmark (0.5.0)
     bigdecimal (4.1.2)
     bindex (0.8.1)
-    bootsnap (1.24.1)
+    bootsnap (1.24.3)
       msgpack (~> 1.2)
     bootstrap5-kaminari-views (0.0.1)
       kaminari (>= 0.13)
@@ -149,7 +149,7 @@ GEM
       bigdecimal
       rexml
     crass (1.0.6)
-    css_parser (2.1.0)
+    css_parser (2.2.0)
       addressable
     csv (3.3.5)
     date (3.5.1)
@@ -173,7 +173,7 @@ GEM
     ed25519 (1.4.0)
     erb (6.0.4)
     erubi (1.13.1)
-    factory_bot (6.5.6)
+    factory_bot (6.6.0)
       activesupport (>= 6.1.0)
     factory_bot_rails (6.5.1)
       factory_bot (~> 6.5)
@@ -200,7 +200,7 @@ GEM
     herb (0.10.1)
     herb (0.10.1-x86_64-darwin)
     herb (0.10.1-x86_64-linux-gnu)
-    honeybadger (6.5.5)
+    honeybadger (6.6.0)
       logger
       ostruct
     htmlbeautifier (1.4.3)
@@ -396,7 +396,7 @@ GEM
     recaptcha (5.21.2)
     redcarpet (3.6.1)
     redis (4.8.1)
-    redis-client (0.28.0)
+    redis-client (0.29.0)
       connection_pool
     regexp_parser (2.12.0)
     reline (0.6.3)
@@ -447,7 +447,7 @@ GEM
       lint_roller (~> 1.1)
       rubocop (>= 1.75.0, < 2.0)
       rubocop-ast (>= 1.47.1, < 2.0)
-    rubocop-rails (2.34.3)
+    rubocop-rails (2.35.0)
       activesupport (>= 4.2.0)
       lint_roller (~> 1.1)
       rack (>= 1.1)
@@ -469,7 +469,7 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 4.0)
       websocket (~> 1.0)
-    sidekiq (8.1.3)
+    sidekiq (8.1.4)
       connection_pool (>= 3.0.0)
       json (>= 2.16.0)
       logger (>= 1.7.0)
@@ -481,10 +481,10 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.13.2)
     simplecov_json_formatter (0.1.4)
-    sqlite3 (2.9.3)
+    sqlite3 (2.9.4)
       mini_portile2 (~> 2.8.0)
-    sqlite3 (2.9.3-x86_64-darwin)
-    sqlite3 (2.9.3-x86_64-linux-gnu)
+    sqlite3 (2.9.4-x86_64-darwin)
+    sqlite3 (2.9.4-x86_64-linux-gnu)
     sshkit (1.25.0)
       base64
       logger
@@ -510,7 +510,7 @@ GEM
     unicode-emoji (4.2.0)
     uri (1.1.1)
     useragent (0.16.11)
-    view_component (4.8.0)
+    view_component (4.9.0)
       actionview (>= 7.1.0)
       activesupport (>= 7.1.0)
       concurrent-ruby (~> 1)

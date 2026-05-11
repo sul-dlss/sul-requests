@@ -54,3 +54,7 @@ FactoryBot/FactoryAssociationWithStrategy:
 
 Rails/I18nLocaleTexts:
   Enabled: false
+
+# Pending https://github.com/rubocop/rubocop-rails/pull/1616
+Rails/StrongParametersExpect:
+  Enabled: false
