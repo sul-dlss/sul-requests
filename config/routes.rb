@@ -40,7 +40,10 @@ Rails.application.routes.draw do
   get 'archives_requests/new', to: 'patron_requests#new', as: :new_archives_request
 
 
-  resources :checkouts, only: [:index]
+  resources :checkouts, only: [:index] do
+    post 'renew', on: :member
+    post 'renew_eligible', on: :collection
+  end
   resources :fines, only: [:index]
   resources :payments, only: [:index, :create]
   post '/payments/accept', to: 'payments#accept'
