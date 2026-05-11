@@ -662,7 +662,7 @@ label.btn-close {
 
 .appointments-item:only-child {
   padding-left: 0;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: 1fr;
   grid-template-areas:
     "title"
     "actions"
