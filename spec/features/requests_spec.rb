@@ -1,0 +1,120 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+RSpec.describe 'Request Page' do
+  let(:mock_client) { instance_double(FolioClient, ping: true) }
+  let(:patron) do
+    build(:sponsor_patron)
+  end
+
+  let(:service_points) do
+    build(:service_points)
+  end
+
+  let(:api_response) { instance_double(Faraday::Response, status: 204) }
+
+  before do
+    allow(FolioClient).to receive(:new).and_return(mock_client)
+    allow(mock_client).to receive_messages(cancel_request: api_response,
+                                           change_pickup_service_point: api_response,
+                                           change_pickup_expiration: api_response)
+    allow(Folio::Types).to receive_messages(service_points: Folio::TypeStore.new(Folio::ServicePoint, service_points))
+
+    login_as(CurrentUser.new(username: 'stub_user', patron_key: 'ec52d62d-9f0e-4ea5-856f-a1accb0121d1', shibboleth: true))
+    allow(Folio::Patron).to receive(:find_by).with(patron_key: 'ec52d62d-9f0e-4ea5-856f-a1accb0121d1').and_return(patron)
+  end
+
+  it 'has ready for pickup request data' do
+    visit requests_path
+
+    expect(page).to have_css('ul.ready-requests', count: 1)
+    expect(page).to have_css('ul.ready-requests li', count: 2)
+
+    within(first('ul.ready-requests li')) do
+      expect(page).to have_css('.library', text: 'Green Library')
+      expect(page).to have_css('.title', text: /Rothko : the color field paintings/)
+      expect(page).to have_css('.call_number', text: 'ND237 .R725 A4 2017 F')
+    end
+  end
+
+  it 'ready for pickup can be cancelled' do
+    visit requests_path
+
+    within(first('ul.ready-requests li')) do
+      first('.btn-request-cancel').click
+    end
+
+    expect(page).to have_css '.flash_messages', text: 'Success!'
+  end
+
+  it 'has requested data' do
+    visit requests_path
+
+    expect(page).to have_css('ul.requested-requests', count: 1)
+    expect(page).to have_css('ul.requested-requests li', count: 2)
+
+    within(first('ul.requested-requests li')) do
+      expect(page).to have_css('.library', text: 'Classics')
+      expect(page).to have_css('.title', text: 'A history of Persia')
+      expect(page).to have_css('.call_number', text: 'DS298 .W3 2023')
+    end
+  end
+
+  it 'hides some data behind a toggle', :js do
+    visit requests_path
+
+    within(first('ul.ready-requests li')) do
+      expect(page).to have_no_css('dl', visible: :visible)
+      expect(page).to have_no_css('dt', text: 'Requested:', visible: :visible)
+      click_on 'Expand'
+      expect(page).to have_css('dl', visible: :visible)
+      expect(page).to have_css('dt', text: 'Requested:', visible: :visible)
+    end
+  end
+
+  it 'is editable' do
+    visit edit_request_path('7fa87cfe-df57-4dc7-953b-a5a44ff37d91')
+    select('Engineering Library (Terman)', from: 'service_point')
+    fill_in('not_needed_after', with: '1999/01/01')
+    click_on 'Change'
+
+    expect(page).to have_css 'div.alert-success', text: 'Success!', count: 2
+  end
+
+  it 'is sortable', :js do
+    skip 'need to rewrite the javascript'
+    visit requests_path
+
+    within '#requests' do
+      expect(page).to have_css('.dropdown-toggle', text: 'Sort (Not needed after)')
+      find('[data-sort="title"]').click
+
+      expect(page).to have_css('.dropdown-toggle', text: 'Sort (Title)')
+      expect(page).to have_css('.active[data-sort="title"]', count: 2, visible: :all)
+
+      within(first('ul.requested-requests li')) do
+        expect(page).to have_css('.title', text: /A history of Persia/)
+      end
+    end
+  end
+
+  context 'with no requests' do
+    let(:patron_info) do
+      {
+        'user' => { 'active' => true, 'manualBlocks' => [], 'blocks' => [] },
+        'loans' => [],
+        'holds' => [],
+        'accounts' => []
+      }
+    end
+    let(:patron) { Folio::Patron.new(patron_graphql_response: patron_info) }
+
+    it 'does not render table headers' do
+      visit requests_path
+
+      expect(page).to have_text('Requested: 0')
+      expect(page).to have_no_css('.list-header')
+    end
+  end
+end

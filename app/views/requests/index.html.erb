@@ -1,0 +1,73 @@
+<h1 class="sr-only">Requests</h1>
+
+<% ready, requested = @requests.partition(&:ready_for_pickup?) %>
+<% if ready.any? %>
+  <div class="page-section">
+    <div class="d-flex justify-content-between">
+      <h2>Ready for pickup: <%= ready.length %></h2>
+    </div>
+
+    <div class="d-none d-md-flex row font-weight-bold list-header">
+      <div class="row col-md-4">
+        <div class="col-md-12 col-lg-6">Pickup library</div>
+        <div class="col-md-12 col-lg-6 active">Pickup by</div>
+      </div>
+      <div class="col-md-5">Title</div>
+      <div class="row col-md-3">
+        <div class="col-md-12 col-lg-6">Author</div>
+        <div class="col-md-12 col-lg-6 call_number">Call number</div>
+      </div>
+    </div>
+    <ul class="list ready-requests list-group">
+      <%= render RequestComponent.with_collection(ready, patron: patron_or_group, group: params[:group]) %>
+    </ul>
+  </div>
+<% end %>
+
+<div  id="requests" class="page-section">
+  <div class="d-flex justify-content-between">
+    <h2>Requested: <%= requested.length %></h2>
+    <% if @requests.any? %>
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Sort (<span data-sort-label>Not needed after</span>)
+      </button>
+
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <li class="dropdown-item" data-sort="library">Deliver to</li>
+        <li class="dropdown-item active" data-sort="date">Not needed after</li>
+        <li class="dropdown-item" data-sort="title">Title</li>
+        <li class="dropdown-item" data-sort="author">Author name</li>
+        <li class="dropdown-item" data-sort="call_number">Call number</li>
+      </ul>
+    </div>
+    <% end %>
+  </div>
+  <% if @requests.any? %>
+    <div class="d-none d-md-flex row font-weight-bold list-header">
+      <div class="row col-md-4">
+        <div class="col-md-12 col-lg-6" data-sort="library">Deliver to</div>
+        <div class="col-md-12 col-lg-6 active" data-sort="date">Not needed after</div>
+      </div>
+      <div class="col-md-5" data-sort="title">Title</div>
+      <div class="row col-md-3">
+        <div class="col-md-12 col-lg-6" data-sort="author">Author</div>
+        <div class="col-md-12 col-lg-6 call_number" data-sort="call_number">Call number</div>
+      </div>
+    </div>
+    <ul class="list requested-requests list-group">
+      <%= render RequestComponent.with_collection(requested, patron: patron_or_group, group: params[:group]) %>
+    </ul>
+  <% end %>
+</div>
+
+<div class="page-section">
+  <h2>If your request isn't listed</h2>
+  <ul>
+    <li>Requests for material from Special Collections &amp; University Archives, the David Rumsey Map Center, the Archive of Recorded Sound and East Asia Library Special Collections are listed in <%= link_to 'https://stanford.aeon.atlas-sys.com/logon/', target: '_blank' do %>
+      <%= sul_icon :'sharp-open_in_new-24px' %> Aeon.
+    <% end %>
+    </li>
+    <li>Requests requiring approval are not listed here until they have been approved &mdash; typically 1-3 days before your scheduled visit.</li>
+  </ul>
+</div>

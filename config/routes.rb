@@ -49,8 +49,8 @@ Rails.application.routes.draw do
   post '/payments/accept', to: 'payments#accept'
   post '/payments/cancel', to: 'payments#cancel'
 
-  # Legacy route for redirecting old-style requests to the new patron_requests
-  resources :requests, only: [:new]
+  # requests#new is a legacy route for redirecting old-style requests to the new patron_requests
+  resources :requests, except: [:create]
 
   resources :aeon_requests, only: [:edit, :destroy, :update] do
     collection do
