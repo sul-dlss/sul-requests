@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["availability", "duration", "fieldset", "banner"]
+  static targets = ["availability", "duration", "fieldset", "selection"]
   static values = {
     availabilityRoute: String
   }
@@ -61,20 +61,22 @@ export default class extends Controller {
   }
 
   updateBanner() {
+    if (!this.hasSelectionTarget) { return }
+    // get the text for the updated appointment text
     const formData = new FormData(this.element);
     const form_date = formData.get('aeon_appointment[date]');
     if (!form_date) { return }
     const date = new Date(Date.parse(form_date));
-    this.bannerTarget.classList.remove('d-none');
     const start_time =  this.element.querySelector('[name="aeon_appointment[start_time]"]:checked')?.dataset?.timestamp;
     const duration = formData.get('aeon_appointment[duration]');
     const options = { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' };
-    let text = `${date.toLocaleDateString('en-US', options)}`
+    let text = `<span>${date.toLocaleDateString('en-US', options)}</span>`
     if (start_time && duration) {
       const formattedTime = this.formatTime(start_time, duration)
-      text += `<i class="bi bi-dot"></i>${formattedTime}`
+      text += `<i class="bi bi-dot"></i><span>${formattedTime}</span>`
     }
-    this.bannerTarget.innerHTML = `<div class="d-flex">${text}</div>`;
+    // Update the selection portion
+    this.selectionTarget.innerHTML = text;
   }
 
   formatTime(start_time, duration) {
@@ -112,6 +114,5 @@ export default class extends Controller {
         radio.checked = false;
       }
     });
-    this.updateBanner();
   }
 }

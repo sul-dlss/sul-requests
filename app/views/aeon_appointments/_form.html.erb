@@ -1,6 +1,5 @@
 <%= form_with(model: @appointment, class: "appointment-form", data: { controller: 'appointment', 'appointment-availability-route-value': available_aeon_reading_room_url(id: @appointment.reading_room_id) }) do |f| %>
-  <div data-appointment-target="banner" class="selected-appointment d-none"></div>
-
+  <%= render Aeon::AppointmentSelectionComponent.new(appointment: @appointment) %>
   <div class="modal-body">
     <div>
       <%= f.hidden_field :reading_room_id %>
@@ -16,7 +15,7 @@
     <div class="mb-3">
       <%= f.label :date, class: 'd-block fw-semibold redesign-required-label' %>
       <div class="d-flex align-items-center gap-2">
-        <%= f.date_field :date, required: true, data: { action: 'appointment#refreshAvailability' }, min: (@appointment.reading_room.next_appointment.start_time.to_date.iso8601 if @appointment.reading_room&.next_appointment), class: 'border rounded px-2 py-1' %>
+        <%= f.date_field :date, value: "", required: true, data: { action: 'appointment#refreshAvailability appointment#updateBanner' }, min: (@appointment.reading_room.next_appointment.start_time.to_date.iso8601 if @appointment.reading_room&.next_appointment), class: 'border rounded px-2 py-1' %>
         <%= turbo_frame_tag 'earliest_appointment', src: available_aeon_reading_room_url(@appointment.reading_room_id, date: Date.today) %>
       </div>
     </div>
@@ -51,6 +50,9 @@
         <div class="loading-overlay p-2 mb-2" aria-hidden="true">Loading...</div>
         <div class="selection-message">Select a reading room, date, and duration to see available appointments.</div>
       </turbo-frame>
+    <% end %>
+    <% if @appointment.requests.any? %>
+      <div class="alert alert-info"><%= pluralize(@appointment.requests.length, 'item') %> will move to the new appointment.</div>
     <% end %>
   </div>
 
