@@ -1,0 +1,31 @@
+<li class="list-group-item" data-library-sort-value="<%= h borrow_direct_request.sort_key(:library) %>" data-title-sort-value="<%= h borrow_direct_request.sort_key(:title) %>" data-author-sort-value="<%= h borrow_direct_request.sort_key(:author) %>" data-date-sort-value="<%= h borrow_direct_request.sort_key(:date) %>" data-call-number-sort-value="<%= h borrow_direct_request.sort_key(:call_number) %>">
+  <div class="row d-flex flex-wrap position-relative justify-content-between">
+    <div class="d-flex flex-row flex-grow-1 justify-content-between w-100 row col-md-4">
+      <div class="w-50 col-md-12 col-lg-6 library" >
+        <span class="d-md-none">Deliver to </span> Stanford
+      </div>
+      <div class="w-50 col-md-12 col-lg-6 text-right text-md-left date">
+        In transit
+      </div>
+    </div>
+    <div class="order-1 order-md-1 col-10 col-md-5 align-items-baseline">
+      <h3 class="clamp-3 record-title title text-reset"><%= borrow_direct_request.title %></h3>
+    </div>
+    <div class="order-3 order-md-2 d-flex flex-row flex-grow-1 row col-md-3">
+      <div class="w-50 col-md-12 col-lg-6 clamp-1 author"></div>
+      <div class="w-50 col-md-12 col-lg-6 call_number"></div>
+    </div>
+    <button class="col-2 col-md order-2 order-md-3 btn collapsed stretched-link position-static" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDetails-<%= borrow_direct_request.key.parameterize %>" aria-expanded="false" aria-controls="collapseDetails-<%= borrow_direct_request.key.parameterize %>">
+      <span class="expand-icon"><%= sul_icon :'sharp-add-24px' %><span class="sr-only">Expand</span></span>
+      <span class="collapse-icon"><%= sul_icon :'sharp-remove-24px' %><span class="sr-only">Collapse</span></span>
+    </button>
+  </div>
+  <div class="collapse w-100" id="collapseDetails-<%= borrow_direct_request.key.parameterize %>">
+    <dl class="row mb-0">
+      <dt class="col-3 offset-1 col-md-2 offset-md-2">Requested:</dt>
+      <dd class="col-8"><%= l(borrow_direct_request.date_submitted, format: :short) if borrow_direct_request.date_submitted %></dd>
+      <dt class="col-3 offset-1 col-md-2 offset-md-2">Source:</dt>
+      <dd class="col-8">BorrowDirect</dd>
+    </dl>
+  </div>
+</li>
