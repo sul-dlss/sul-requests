@@ -1,3 +1,28 @@
 
-<h1>Activities</h1>
-<%= render Aeon::ActivityComponent.with_collection(@activities) %>
+<div class="d-sm-flex mb-2">
+  <h1 class="mb-0 align-self-end me-2">Activities</h1>
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#active-tab">Current</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#past-tab">Past</button>
+    </li>
+  </ul>
+  <div class="tab-underline-extend flex-grow-1 border-bottom d-none d-sm-block">
+  </div>
+</div>
+
+<div class="tab-content">
+  <div id="active-tab" class="tab-pane fade show active">
+    <turbo-frame src="<%= active_aeon_activities_path %>" <% if params[:past] %>loading="lazy"<% end %> id="active">
+      Loading....
+    </turbo-frame>
+  </div>
+
+  <div id="past-tab" class="tab-pane fade">
+    <turbo-frame src="<%= past_aeon_activities_path %>" <% unless params[:past] %>loading="lazy"<% end %> id="past">
+      Loading...
+    </turbo-frame>
+  </div>
+</div>

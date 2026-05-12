@@ -1,0 +1,6 @@
+<div class="d-flex flex-wrap justify-content-end gap-2 my-2">
+  <%= render 'filters' %>
+  <%= render 'sort' %>
+</div>
+
+<%= render Aeon::ActivityComponent.with_collection(@activities) %>
