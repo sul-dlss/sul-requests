@@ -25,8 +25,18 @@ module Folio
           is_default_for_campus: json.dig('details', 'isDefaultForCampus'))
     end
 
+    def self.default_service_points
+      Folio::Types.service_points.where(is_default_pickup: true).to_a
+    end
+
     def unpermitted_pickup_groups
       Array(Settings.libraries[library&.code]&.unpermitted_pickup_groups)
+    end
+
+    def patron_unpermitted_for_pickup?(patron = nil)
+      return false unless patron
+
+      unpermitted_pickup_groups.include?(patron.patron_group_name)
     end
 
     def library

@@ -573,3 +573,9 @@ patron_request_type_mapping:
   hold: Hold
   recall: Recall
   page: Page
+
+cybersource:
+  payment_url: https://secureacceptance.cybersource.com/pay
+  access_key: 'change_me'
+  secret_key: 'change_me'
+  profile_id: 'change_me'

@@ -42,12 +42,17 @@
 
       <!-- Application header -->
       <%= render ApplicationMastheadComponent.new(application_name: 'My Library Account', classes: 'bg-dark bg-cardinal') do |component| %>
+        <% component.with_nav_item do %>
+          <%= link_to 'Borrowed items', checkouts_path, class: 'nav-link fw-semibold' %>
+        <% end %>
+
         <% if sso_user? %>
           <% component.with_nav_item(classes: ['dropdown']) do %>
             <button class="nav-link dropdown-toggle fw-semibold" data-bs-toggle="dropdown" aria-expanded="false">
               Requests
             </button>
             <ul class="dropdown-menu">
+              <li><%= link_to 'FOLIO requests', requests_url, class: 'dropdown-item' %></li>
               <li><%= link_to 'Saved for later', aeon_requests_url(kind: 'drafts'), class: 'dropdown-item' %></li>
               <li><%= link_to 'Submitted requests', aeon_requests_url(kind: 'submitted'), class: 'dropdown-item' %></li>
               <li><%= link_to 'Cancelled requests', aeon_requests_url(kind: 'cancelled'), class: 'dropdown-item' %></li>
@@ -62,6 +67,11 @@
             <%= link_to 'Appointments', aeon_appointments_url, class: 'nav-link fw-semibold' %>
           <% end %>
         <% end %>
+
+        <% component.with_nav_item do %>
+          <%= link_to 'Fees/fines', fines_path, class: 'nav-link fw-semibold' %>
+        <% end %>
+
       <% end %>
     </header>
     <main id="main" class="flex-fill container my-3 pt-3">

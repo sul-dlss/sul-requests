@@ -232,6 +232,7 @@ class FolioGraphqlClient
     data = post_json('/', json: {
                        query: "query Query($patronId: UUID!) {
                                  user(id: $patronId) {
+                                    id
                                     username
                                     barcode
                                     active
@@ -309,61 +310,10 @@ class FolioGraphqlClient
     data.dig('data', 'user')
   end
 
-  def patron_info(patron_uuid)
+  def extended_patron_info(patron_uuid)
     data = post_json('/', json: {
                        query: "query Query($patronId: UUID!) {
                                 patron(id: $patronId) {
-                                  user {
-                                    username
-                                    barcode
-                                    active
-                                    personal {
-                                      email
-                                      lastName
-                                      firstName
-                                      preferredFirstName
-                                    }
-                                    proxiesFor {
-                                      userId
-                                    }
-                                    proxiesOf {
-                                      proxyUserId
-                                      proxyUser {
-                                        barcode
-                                        personal {
-                                          firstName
-                                          lastName
-                                        }
-                                      }
-                                    }
-                                    expirationDate
-                                    externalSystemId
-                                    patronGroup {
-                                      desc
-                                      group
-                                      limits {
-                                        conditionId
-                                        id
-                                        patronGroupId
-                                        value
-                                        condition {
-                                          blockBorrowing
-                                          blockRenewals
-                                          blockRequests
-                                          message
-                                          name
-                                          valueType
-                                        }
-                                      }
-                                    }
-                                    blocks {
-                                      message
-                                    }
-                                    manualBlocks {
-                                      desc
-                                    }
-                                    patronGroupId
-                                  }
                                   id
                                   holds {
                                     requestDate

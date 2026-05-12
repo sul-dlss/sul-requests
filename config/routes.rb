@@ -39,8 +39,18 @@ Rails.application.routes.draw do
   # Archives requests route - handles EAD XML from archives.stanford.edu
   get 'archives_requests/new', to: 'patron_requests#new', as: :new_archives_request
 
-  # Legacy route for redirecting old-style requests to the new patron_requests
-  resources :requests, only: [:new]
+
+  resources :checkouts, only: [:index] do
+    post 'renew', on: :member
+    post 'renew_eligible', on: :collection
+  end
+  resources :fines, only: [:index]
+  resources :payments, only: [:index, :create]
+  post '/payments/accept', to: 'payments#accept'
+  post '/payments/cancel', to: 'payments#cancel'
+
+  # requests#new is a legacy route for redirecting old-style requests to the new patron_requests
+  resources :requests, except: [:create]
 
   resources :aeon_requests, only: [:edit, :destroy, :update] do
     collection do

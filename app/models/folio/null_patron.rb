@@ -72,6 +72,14 @@ module Folio
       true
     end
 
+    def all_checkouts = []
+    def checkouts = []
+    def all_accounts = []
+    def fines = []
+    def payments = []
+    def folio_requests = []
+    def requests = []
+
     # define the remaining methods of Folio::Patron
     (Folio::Patron.instance_methods(false) - instance_methods(false)).each do |method|
       define_method(method) do |*, **|

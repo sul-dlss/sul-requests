@@ -1,0 +1,15 @@
+<html charset="utf-8">
+  <head>
+    <title>Redirecting to Cybersource...</title>
+  </head>
+  <body>
+    <form id="cybersource_form" action="<%= Settings.cybersource.payment_url %>" method="post">
+      <% @params.each do |name, value| %>
+        <%= hidden_field_tag name, value %>
+      <% end %>
+    </form>
+    <script nonce="<%= content_security_policy_nonce %>">
+      document.getElementById("cybersource_form").submit();
+    </script>
+  </body>
+</html>

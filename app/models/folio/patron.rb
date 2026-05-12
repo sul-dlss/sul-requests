@@ -26,14 +26,18 @@ module Folio
 
     delegate :folio_client, to: :class
 
-    def initialize(user_info = {}, extended_user_info: nil)
-      @user_info = user_info
-      @extended_user_info = extended_user_info
+    def initialize(user_info = nil, extended_user_info: nil, patron_graphql_response: nil)
+      @user_info = user_info || extended_user_info || patron_graphql_response&.dig('user') || {}
+      @extended_user_info = extended_user_info || patron_graphql_response&.dig('user')
+      @patron_graphql_response = patron_graphql_response
     end
 
     def id
       user_info.fetch('id')
     end
+
+    # TODO: mylibrary uses key instead of id for some reason.
+    alias key id
 
     def username
       user_info['username']
@@ -91,6 +95,23 @@ module Folio
 
     def patron_group_name
       patron_group&.group
+    end
+
+    def fee_borrower?
+      patron_group_name&.match?(/Fee borrower/i)
+    end
+
+    def borrow_limit
+      borrow_limit = extended_user_info&.dig('patronGroup', 'limits')&.find do |limit|
+        limit.dig('condition', 'name') == 'Maximum number of items charged out'
+      end
+      borrow_limit&.dig('value')
+    end
+
+    def remaining_checkouts
+      return unless borrow_limit
+
+      borrow_limit - checkouts.length
     end
 
     # always nil for a real patron, but filled in for a PseudoPatron
@@ -151,12 +172,36 @@ module Folio
       sponsors.first.id
     end
 
+    def status
+      standing
+    end
+
+    def standing
+      if blocked?
+        'Blocked'
+      elsif barred?
+        'Contact us'
+      elsif expired?
+        'Expired'
+      else
+        'OK'
+      end
+    end
+
+    def barred?
+      extended_user_info['manualBlocks'].any?
+    end
+
     def blocked?
       patron_blocks.present?
     end
 
     def expired?
       user_info['active'] == false
+    end
+
+    def expired_date
+      Time.zone.parse(user_info['expirationDate']) if user_info['expirationDate']
     end
 
     def block_reasons
@@ -180,10 +225,78 @@ module Folio
       crypt.encrypt_and_sign(id, expires_in: 20.minutes)
     end
 
+    ##
+    # FOLIO data accessors
+    def all_accounts
+      @all_accounts ||= patron_graphql_response['accounts'].map { |account| Account.new(account) }
+    end
+
+    def fines
+      all_accounts.reject(&:closed?)
+    end
+
+    def payments
+      all_accounts.select(&:closed?)
+    end
+
+    def all_checkouts
+      @all_checkouts ||= patron_graphql_response['loans']&.map { |checkout| Checkout.new(checkout, patron_group_id) }
+    end
+
+    # Self checkouts
+    def checkouts
+      all_checkouts.reject(&:proxy_checkout?) || []
+    end
+
+    # Checkouts from the proxy group
+    def proxy_group_checkouts
+      all_checkouts.select(&:proxy_checkout?)
+    end
+
+    # this is all requests including self and group/proxy
+    def folio_requests
+      patron_graphql_response['holds'].map { |request| Request.new(request) }
+    end
+
+    # Self requests from FOLIO
+    def requests
+      @requests ||= folio_requests.reject(&:proxy_request?)
+    end
+
+    # Requests from the proxy group
+    def proxy_group_requests
+      folio_requests.select(&:proxy_request?) if sponsor?
+    end
+
+    ##
+    # Business logic about what a patron can do.
+    # TODO: move these checks to folio_abilities?
+    def can_renew?
+      return false if barred? || blocked? || expired?
+
+      true
+    end
+
+    def can_modify_requests?
+      return false if barred? || blocked? || expired?
+
+      true
+    end
+
+    def can_pay_fines?
+      return false if barred?
+
+      true
+    end
+
     private
 
     def extended_user_info
       @extended_user_info ||= folio_client.extended_user_info(id)
+    end
+
+    def patron_graphql_response
+      @patron_graphql_response ||= folio_client.extended_patron_info(id)
     end
 
     def valid_proxy_relation?(info)
@@ -209,10 +322,6 @@ module Folio
     def proxies_of_response
       @proxies_of_response ||= user_info.dig('stubs', 'proxies') # used for stubbing
       @proxies_of_response ||= extended_user_info&.dig('proxiesOf')
-    end
-
-    def standing
-      user_info.dig('standing', 'key')
     end
 
     def policy_service

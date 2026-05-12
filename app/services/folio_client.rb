@@ -99,7 +99,7 @@ class FolioClient
     check_response(response, title: 'Assign pin', context: { user_id: })
   end
 
-  delegate :extended_user_info, to: :folio_graphql_client
+  delegate :extended_user_info, :extended_patron_info, to: :folio_graphql_client
 
   def patron_account(patron_key)
     get_json("/patron/account/#{CGI.escape(patron_key)}", params: {

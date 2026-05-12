@@ -1039,3 +1039,55 @@ label.btn-close {
   }
   padding-left: 0;
 }
+
+.clamp-1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.clamp {
+  -webkit-box-orient: vertical;
+  box-orient: vertical;
+  display: -webkit-box;
+  -webkit-line-clamp: var(--clamp-lines, 3);
+  line-clamp: var(--clamp-lines, 3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.clamp-2 {
+  --clamp-lines: 2;
+}
+
+.clamp-3 {
+  --clamp-lines: 3;
+}
+
+.expand-icon,
+.collapse-icon {
+  .sul-icons {
+    height: 1.5rem;
+    width: 1.5rem;
+
+    svg {
+      fill: $su-digital-blue;
+      height: 1.5rem;
+      width: 1.5rem;
+    }
+  }
+}
+
+.expand-icon {
+  display: none;
+}
+
+.collapsed {
+  .collapse-icon {
+    display: none;
+  }
+
+  .expand-icon {
+    display: inline;
+  }
+}

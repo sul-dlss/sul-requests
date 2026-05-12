@@ -242,3 +242,35 @@ en:
     request_failed_html: <span class="fw-bold">Sorry!</span><br/> Something went wrong, possibly due to a connection failure. Try again or contact us for help.
   reset_pins_mailer:
     subject: Stanford Libraries PIN reset
+  mylibrary:
+    renew_item:
+      in_progress_html: <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Renewing this item
+      success_html: <span class="font-weight-bold">Success!</span> "%{title}" was renewed.
+      error_html: <span class="font-weight-bold">Sorry!</span> Something went wrong and "%{title}" was not renewed.
+      deny_access: An unexpected error has occurred
+    renew_all_items:
+      in_progress_html:
+        one: <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Renewing 1 eligible item
+        other: <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Renewing %{count} eligible items
+      success_html:
+        one: <span class="font-weight-bold">Success!</span> 1 item was renewed.
+        other: <span class="font-weight-bold">Success!</span> %{count} items were renewed.
+      error_html:
+        one: <span class="font-weight-bold">Sorry!</span> 1 item was not renewed, possibly due to a connection failure. Try again or contact us for help. %{items}
+        other: <span class="font-weight-bold">Sorry!</span> %{count} items were not renewed, possibly due to a connection failure. Try again or contact us for help. %{items}
+    request:
+      cancel:
+        success_html: <span class="font-weight-bold">Success!</span> "%{title}" was canceled.
+        error_html: <span class="font-weight-bold">Sorry!</span> Something went wrong and "%{title}" was not canceled.
+      change_pickup_expiration:
+        success_html: <span class="font-weight-bold">Success!</span> "%{title}" not needed after date was updated.
+        error_html: <span class="font-weight-bold">Sorry!</span> Something went wrong and "%{title}" not needed after date was not updated.
+      change_pickup_service_point:
+        success_html: <span class="font-weight-bold">Success!</span> "%{title}" pickup location was updated.
+        error_html: <span class="font-weight-bold">Sorry!</span> Something went wrong and "%{title}" pickup location was not updated.
+      deny_access: An unexpected error has occurred
+    fine_payment:
+      accept_html: <span class="font-weight-bold">Success!</span> $%{amount} paid. A receipt has been sent to the email address associated with your account. Payment may take up to 5 minutes to appear in your payment history.
+      cancel_html: <span class="font-weight-bold">Payment canceled.</span> No payment was made &mdash; your payable balance remains unchanged.
+      request_failed_html: <span class="font-weight-bold">Sorry!</span> Something went wrong, possibly due to a connection failure. Please <a href="mailto:sul-privileges@stanford.edu">contact us</a> for help resolving your fines.
+      payment_failed_html: <span class="font-weight-bold">Sorry!</span> Payment failed. Please <a href="mailto:sul-privileges@stanford.edu">contact us</a> for help resolving your fines.

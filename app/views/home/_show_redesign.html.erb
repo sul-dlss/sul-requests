@@ -3,7 +3,7 @@
     <div class="card bg-light d-flex flex-row">
       <div class="bg-secondary-subtle w-25"></div>
       <div class="card-body p-2">
-        <h2 class="card-title fs-5 mb-1">Borrowed items</h2>
+        <h2 class="card-title fs-5 mb-1"><%= link_to 'Borrowed items', checkouts_path, class: 'fw-semibold' %></h2>
         <p>Journal articles, eBooks, and more from the Library's digital subscriptions</p>
       </div>
     </div>
@@ -24,7 +24,7 @@
     <div class="card bg-light d-flex flex-row">
       <div class="bg-secondary-subtle w-25"></div>
       <div class="card-body p-2">
-        <h2 class="card-title fs-5 mb-1">Fines</h2>
+        <h2 class="card-title fs-5 mb-1"><%= link_to 'Fines', fines_path, class: 'fw-semibold' %></h2>
         <p>Journal articles, eBooks, and more from the Library's digital subscriptions</p>
       </div>
     </div>
