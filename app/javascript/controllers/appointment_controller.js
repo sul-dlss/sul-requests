@@ -70,13 +70,13 @@ export default class extends Controller {
     const start_time =  this.element.querySelector('[name="aeon_appointment[start_time]"]:checked')?.dataset?.timestamp;
     const duration = formData.get('aeon_appointment[duration]');
     const options = { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' };
-    let text = `${date.toLocaleDateString('en-US', options)}`
+    let text = `<span>${date.toLocaleDateString('en-US', options)}</span>`
     if (start_time && duration) {
       const formattedTime = this.formatTime(start_time, duration)
-      text += `<i class="bi bi-dot"></i>${formattedTime}`
+      text += `<i class="bi bi-dot"></i><span>${formattedTime}</span>`
     }
     // Update the selection portion
-    this.selectionTarget.innerHTML = `<div class="d-flex">${text}</div>`;
+    this.selectionTarget.innerHTML = text;
   }
 
   formatTime(start_time, duration) {
