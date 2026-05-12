@@ -14,7 +14,7 @@ import { Controller } from "@hotwired/stimulus"
 //   monthLabel  element where the current month/year label is rendered
 //   grid        element where the day buttons are rendered
 export default class extends Controller {
-  static targets = ["input", "calendar", "display", "monthLabel", "grid", "announce"]
+  static targets = ["input", "calendar", "display", "monthLabel", "grid", "announce", "prevBtn", "nextBtn", "legend"]
   static values = { disabled: Array, marked: Array, min: String }
 
   connect() {
@@ -29,6 +29,7 @@ export default class extends Controller {
     }
     this.viewYear = seed.getFullYear()
     this.viewMonth = seed.getMonth() // 0-indexed
+    this.focusedDate = seed
     this.renderCalendar()
     document.addEventListener("click", this.#handleOutsideClick)
     this.element.addEventListener("keydown", this.#handleKeydown)
@@ -47,11 +48,9 @@ export default class extends Controller {
     this.renderCalendar()
     this.calendarTarget.hidden = false
     this.displayTarget.setAttribute("aria-expanded", "true")
-    // move focus to the selected day, or the first enabled day
+    this.announceTarget.textContent = `Date picker, ${this.monthLabelTarget.textContent}. Use arrow keys to navigate dates, Tab to move between controls, Escape to close.`
     requestAnimationFrame(() => {
-      const focused = this.gridTarget.querySelector("button[aria-pressed='true']:not(:disabled)") ||
-                      this.gridTarget.querySelector("button:not(:disabled)")
-      focused?.focus()
+      this.gridTarget.querySelector("button[tabindex='0']")?.focus()
     })
   }
 
@@ -65,12 +64,14 @@ export default class extends Controller {
     if (this.viewMonth === 0) { this.viewMonth = 11; this.viewYear-- }
     else { this.viewMonth-- }
     this.renderCalendar()
+    this.announceTarget.textContent = this.monthLabelTarget.textContent
   }
 
   nextMonth() {
     if (this.viewMonth === 11) { this.viewMonth = 0; this.viewYear++ }
     else { this.viewMonth++ }
     this.renderCalendar()
+    this.announceTarget.textContent = this.monthLabelTarget.textContent
   }
 
   selectDay(event) {
@@ -80,14 +81,16 @@ export default class extends Controller {
     const formatted = this.#formatDisplay(date)
     this.displayTarget.textContent = formatted
     this.announceTarget.textContent = `Selected ${formatted}`
+    this.focusedDate = new Date(`${date}T00:00:00`)
     this.close()
     this.renderCalendar() // re-render to reflect selection
   }
 
   renderCalendar() {
     const { viewYear: year, viewMonth: month } = this
-    this.monthLabelTarget.textContent = new Date(year, month, 1)
+    const monthLabelText = new Date(year, month, 1)
       .toLocaleDateString("en-US", { month: "long", year: "numeric" })
+    this.monthLabelTarget.textContent = monthLabelText
 
     const firstDayOfWeek = new Date(year, month, 1).getDay() // 0 = Sunday
     const daysInMonth = new Date(year, month + 1, 0).getDate()
@@ -107,6 +110,7 @@ export default class extends Controller {
     const table = document.createElement("table")
     table.className = "date-picker-grid w-100 text-center"
     table.setAttribute("role", "grid")
+    table.setAttribute("aria-label", `${monthLabelText} calendar`)
 
     const thead = table.createTHead()
     const headerRow = thead.insertRow()
@@ -149,6 +153,7 @@ export default class extends Controller {
         btn.dataset.action = "click->date-picker#selectDay"
         btn.disabled = isDisabled
         btn.setAttribute("aria-pressed", String(isSelected))
+        btn.tabIndex = isoDate === this.#toIsoDate(this.focusedDate) ? 0 : -1
         btn.textContent = day
 
         // Build accessible label: "April 22, 2026" + optional ", existing appointment"
@@ -171,6 +176,23 @@ export default class extends Controller {
     })
 
     this.gridTarget.replaceChildren(table)
+
+    // Show legend only when at least one marked day falls in this month
+    if (this.hasLegendTarget) {
+      const prefix = `${year}-${String(month + 1).padStart(2, "0")}-`
+      const anyMarked = this.markedValue.some(d => d.startsWith(prefix))
+      this.legendTarget.style.visibility = anyMarked ? "visible" : "hidden"
+    }
+
+    // Fallback: if focusedDate is outside this month or disabled, use the first enabled day
+    let focusedBtn = this.gridTarget.querySelector("button[tabindex='0']")
+    if (!focusedBtn || focusedBtn.disabled) {
+      focusedBtn = this.gridTarget.querySelector("button:not(:disabled)")
+      if (focusedBtn) {
+        focusedBtn.tabIndex = 0
+        this.focusedDate = new Date(`${focusedBtn.dataset.date}T00:00:00`)
+      }
+    }
   }
 
   // --- private ---
@@ -182,14 +204,73 @@ export default class extends Controller {
     })
   }
 
+  #toIsoDate(date) {
+    return [
+      date.getFullYear(),
+      String(date.getMonth() + 1).padStart(2, "0"),
+      String(date.getDate()).padStart(2, "0")
+    ].join("-")
+  }
+
+  #isDateDisabled(isoDate) {
+    return this.disabledValue.includes(isoDate) ||
+      (this.minValue && isoDate < this.minValue)
+  }
+
   #handleOutsideClick = (event) => {
     if (!this.element.contains(event.target)) this.close()
   }
 
   #handleKeydown = (event) => {
-    if (event.key === "Escape" && !this.calendarTarget.hidden) {
+    if (this.calendarTarget.hidden) return
+
+    if (event.key === "Escape") {
       event.stopPropagation()
       this.close()
+      return
     }
+
+    // Focus trap: Tab cycles through prevBtn → nextBtn → focused day → prevBtn
+    if (event.key === "Tab") {
+      const focusedDay = this.gridTarget.querySelector("button[tabindex='0']")
+      if (!event.shiftKey && document.activeElement === focusedDay) {
+        event.preventDefault()
+        this.prevBtnTarget.focus()
+      } else if (event.shiftKey && document.activeElement === this.prevBtnTarget) {
+        event.preventDefault()
+        focusedDay?.focus()
+      }
+      return
+    }
+
+    // Arrow key navigation within the grid
+    if (!this.gridTarget.contains(document.activeElement)) return
+
+    const delta = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 }[event.key]
+    if (delta === undefined) return
+
+    event.preventDefault()
+
+    const step = delta > 0 ? 1 : -1
+    let candidate = new Date(this.focusedDate.getTime())
+    candidate.setDate(candidate.getDate() + delta)
+
+    // Skip over disabled dates (guard against all dates being disabled)
+    let guard = 0
+    while (this.#isDateDisabled(this.#toIsoDate(candidate)) && guard++ < 60) {
+      candidate.setDate(candidate.getDate() + step)
+    }
+    if (guard >= 60) return
+
+    this.focusedDate = candidate
+
+    // Navigate to a different month if the candidate is outside the current view
+    if (candidate.getFullYear() !== this.viewYear || candidate.getMonth() !== this.viewMonth) {
+      this.viewYear = candidate.getFullYear()
+      this.viewMonth = candidate.getMonth()
+      this.renderCalendar()
+    }
+
+    this.gridTarget.querySelector(`button[data-date="${this.#toIsoDate(candidate)}"]`)?.focus()
   }
 }
