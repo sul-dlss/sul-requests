@@ -110,6 +110,27 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
   context 'with multiple holdings' do
     let(:folio_instance) { :special_collections_holdings }
 
+    it 'has working save for later undo and delete buttons' do
+      choose 'Digitization'
+      check 'I agree to these terms'
+      click_button 'Continue'
+
+      check 'ABC 321'
+      click_button 'Continue'
+
+      click_button 'Save for later'
+      expect(page).to have_css('.saved-item', text: 'ABC 321')
+
+      click_button 'Undo'
+
+      expect(page).to have_css('.selected-item-title', text: 'ABC 321')
+      click_button 'Save for later'
+
+      click_button 'Delete ABC 321'
+
+      expect(page).to have_css('.item-table')
+    end
+
     it 'allows the user to submit a digitization request' do # rubocop:disable RSpec/ExampleLength
       choose 'Digitization'
       check 'I agree to these terms'
