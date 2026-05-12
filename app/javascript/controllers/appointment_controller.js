@@ -61,6 +61,7 @@ export default class extends Controller {
   }
 
   updateBanner() {
+    if (!this.hasSelectionTarget) { return }
     // get the text for the updated appointment text
     const formData = new FormData(this.element);
     const form_date = formData.get('aeon_appointment[date]');
@@ -76,7 +77,6 @@ export default class extends Controller {
     }
     // Update the selection portion
     this.selectionTarget.innerHTML = `<div class="d-flex">${text}</div>`;
-    this.selectionTarget.classList.remove('d-none');
   }
 
   formatTime(start_time, duration) {
@@ -114,6 +114,5 @@ export default class extends Controller {
         radio.checked = false;
       }
     });
-    this.updateBanner();
   }
 }

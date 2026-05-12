@@ -15,7 +15,8 @@
 </div>
 <% else %>
   <% unless @appointment.reading_room&.day_only_appointments? %>
-    <div class="selected-appointment d-flex flex-row d-none" data-appointment-target="selection">
+    <div class="selected-appointment d-flex flex-row" data-appointment-target="selection">
+      Select date and time
     </div>
   <% end %>
 <% end %>
