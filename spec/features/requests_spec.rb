@@ -83,15 +83,18 @@ RSpec.describe 'Request Page' do
   end
 
   it 'is sortable', :js do
-    skip 'need to rewrite the javascript'
     visit requests_path
 
     within '#requests' do
       expect(page).to have_css('.dropdown-toggle', text: 'Sort (Not needed after)')
-      find('[data-sort="title"]').click
+      click_on 'Sort (Not needed after)'
+
+      within '[data-sortable-target="menu"] .dropdown-menu' do
+        click_on 'Title'
+      end
 
       expect(page).to have_css('.dropdown-toggle', text: 'Sort (Title)')
-      expect(page).to have_css('.active[data-sort="title"]', count: 2, visible: :all)
+      expect(page).to have_css('.active[data-sortable-sort-param="title"]', visible: :all)
 
       within(first('ul.requested-requests li')) do
         expect(page).to have_css('.title', text: /A history of Persia/)

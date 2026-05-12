@@ -1,7 +1,7 @@
-<li class="list-group-item">
+<li class="list-group-item" data-library-sort-value="<%= h request.sort_key(:library) %>" data-date-sort-value="<%= h request.sort_key(:date) %>"  data-title-sort-value="<%= h request.sort_key(:title) %>" data-author-sort-value="<%= h request.sort_key(:author) %>" data-call-number-sort-value="<%= h request.sort_key(:call_number) %>">
   <div class="row d-flex flex-wrap position-relative justify-content-between">
     <div class="d-flex flex-row flex-grow-1 justify-content-between w-100 row col-md-4">
-      <div class="w-50 col-md-12 col-lg-6 library" data-sort-library="<%= h request.sort_key(:library) %>">
+      <div class="w-50 col-md-12 col-lg-6 library">
         <% if request.ready_for_pickup? %>
           <span class="text-ready">
             <%= sul_icon 'sharp-check_circle-24px' %>
@@ -12,23 +12,23 @@
         <% end %>
       </div>
       <% if request.expiration_date %>
-        <div class="w-50 col-md-12 col-lg-6 text-right text-md-left date" data-sort-date="<%= h request.sort_key(:date) %>">
+        <div class="w-50 col-md-12 col-lg-6 text-right text-md-left date">
           <span class="d-inline d-md-none mr-2">by</span>
           <%= l(request.expiration_date, format: :short) %>
         </div>
       <% elsif request.fill_by_date %>
-        <div class="w-50 col-md-12 col-lg-6 text-right text-md-left date" data-sort-date="<%= h request.sort_key(:date) %>">
+        <div class="w-50 col-md-12 col-lg-6 text-right text-md-left date">
         <span class="d-inline d-md-none mr-2">Exp.</span>
           <%= l(request.fill_by_date, format: :short) %>
         </div>
       <% end %>
     </div>
     <div class="order-1 order-md-1 col-10 col-md-5 align-items-baseline">
-      <h3 class="clamp-3 record-title title text-reset" data-sort-title="<%= h request.sort_key(:title) %>"><%= request.title %></h3>
+      <h3 class="clamp-3 record-title title text-reset"><%= request.title %></h3>
     </div>
     <div class="order-3 order-md-2 d-flex flex-row flex-grow-1 row col-md-3">
-      <div class="w-50 col-md-12 col-lg-6 clamp-1 author" data-sort-author="<%= h request.sort_key(:author) %>"><%= request.author %></div>
-      <div class="w-50 col-md-12 col-lg-6 call_number" data-sort-call-number="<%= h request.sort_key(:call_number) %>"><%= request.call_number %></div>
+      <div class="w-50 col-md-12 col-lg-6 clamp-1 author"><%= request.author %></div>
+      <div class="w-50 col-md-12 col-lg-6 call_number"><%= request.call_number %></div>
     </div>
     <button class="col-2 col-md order-2 order-md-3 btn collapsed stretched-link position-static" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDetails-<%= request.key.parameterize %>" aria-expanded="false" aria-controls="collapseDetails-<%= request.key.parameterize %>">
       <span class="expand-icon"><%= sul_icon :'sharp-add-24px' %><span class="sr-only">Expand</span></span>

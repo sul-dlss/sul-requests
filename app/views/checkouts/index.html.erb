@@ -4,20 +4,20 @@
   <% recalled, other_checkouts = @checkouts.partition(&:recalled?) %>
   <%= render 'checkouts/recalled', recalled: recalled if recalled.any? %>
 
-  <div id="checkouts" class="page-section">
+  <div id="checkouts" class="page-section" data-controller="sortable" data-sortable-sort-value="dueDate">
     <div class="d-flex justify-content-between">
       <h2>Checked out: <%= other_checkouts.length %><%= " (#{patron_or_group.remaining_checkouts} remaining)" if patron_or_group.remaining_checkouts %></h2>
-      <div class="dropdown">
+      <div class="dropdown" data-sortable-target="menu">
         <button class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Sort (<span data-sort-label>Due date</span>)
+          Sort (Due date)
         </button>
 
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-          <li class="dropdown-item" data-sort="status">Status</li>
-          <li class="dropdown-item active" data-sort="due_date">Due date</li>
-          <li class="dropdown-item" data-sort="title">Title</li>
-          <li class="dropdown-item" data-sort="author">Author name</li>
-          <li class="dropdown-item" data-sort="call_number">Call number</li>
+          <li><button class="dropdown-item active" data-action="click->sortable#sort" data-sortable-sort-param="dueDate" data-sortable-label-param="Sort (Due date)">Due date</button></li>
+          <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="status" data-sortable-label-param="Sort (Status)">Status</button></li>
+          <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="title" data-sortable-label-param="Sort (Title)">Title</button></li>
+          <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="author" data-sortable-label-param="Sort (Author)">Author name</button></li>
+          <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="callNumber" data-sortable-label-param="Sort (Call number)">Call number</button></li>
         </ul>
       </div>
     </div>
@@ -37,7 +37,7 @@
         <div class="col-md-12 col-lg-6 call_number" data-sort="call_number">Call number</div>
       </div>
     </div>
-    <ul class="list checkouts list-group">
+    <ul class="list checkouts list-group" data-sortable-target="list" aria-live="polite">
       <%= render CheckoutComponent.with_collection(other_checkouts, patron: patron_or_group) %>
     </ul>
   </div>

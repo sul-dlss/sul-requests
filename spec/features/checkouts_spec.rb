@@ -115,15 +115,18 @@ RSpec.describe 'Checkout Page' do
   end
 
   it 'is sortable', :js do
-    skip 'need to rewrite the javascript'
     visit checkouts_path
 
     within '#checkouts' do
       expect(page).to have_css('.dropdown-toggle', text: 'Sort (Due date)')
-      find('[data-sort="title"]').click
+      click_on 'Sort (Due date)'
+
+      within '[data-sortable-target="menu"] .dropdown-menu' do
+        click_on 'Title'
+      end
 
       expect(page).to have_css('.dropdown-toggle', text: 'Sort (Title)')
-      expect(page).to have_css('.active[data-sort="title"]', count: 2, visible: :all)
+      expect(page).to have_css('.active[data-sortable-sort-param="title"]', visible: :all)
 
       within(first('ul.checkouts li')) do
         expect(page).to have_css('.title', text: /Blue-collar Broadway/)

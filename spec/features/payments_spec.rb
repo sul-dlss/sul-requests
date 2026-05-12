@@ -49,16 +49,18 @@ RSpec.describe 'Payments History' do
     end
 
     it 'is sortable', :js do
-      skip 'need to rewrite the javascript'
-
       click_on 'Show history'
 
       within '#payments' do
         expect(page).to have_css('.dropdown-toggle', text: 'Sort (Date paid)')
-        find('[data-sort="nice_status"]').click
+        click_on 'Sort (Date paid)'
+
+        within '[data-sortable-target="menu"] .dropdown-menu' do
+          click_on 'Reason'
+        end
 
         expect(page).to have_css('.dropdown-toggle', text: 'Sort (Reason)')
-        expect(page).to have_css('.active[data-sort="nice_status"]', count: 2, visible: :all)
+        expect(page).to have_css('.active[data-sortable-sort-param="status"]', visible: :all)
 
         within(first('ul.payments li')) do
           expect(page).to have_css('.nice_status', text: 'Damaged material')

@@ -1,19 +1,19 @@
-<li class="list-group-item">
+<li class="list-group-item" data-status-sort-value="<%= h payment.sort_key(:nice_status) %>" data-fee-sort-value="<%= h payment.sort_key(:fee) %>" data-date-sort-value="<%= h payment.sort_key(:payment_date) %>" data-title-sort-value="<%= h payment.sort_key(:title) %>">
   <div class="row d-flex flex-wrap position-relative">
     <div class="d-flex flex-row flex-grow-1 justify-content-start w-100 row col-md-12 col-lg-6">
-      <div class="col-4 col-md-4 order-md-first nice_status" data-sort-nice-status="<%= h payment.sort_key(:nice_status) %>" >
+      <div class="col-4 col-md-4 order-md-first nice_status">
         <%= payment.nice_status %>
       </div>
 
-      <div class="col-3 col-md-4 order-first order-sm-first fee" data-sort-fee="<%= h payment.sort_key(:fee) %>">
+      <div class="col-3 col-md-4 order-first order-sm-first fee">
         <%= number_to_currency(payment.fee) %>
       </div>
 
-      <div class="col-5 col-md-4 text-right text-md-left payment_date" data-sort-payment-date="<%= h payment.sort_key(:payment_date) %>" >
+      <div class="col-5 col-md-4 text-right text-md-left payment_date">
         <%= l(payment.payment_date, format: :short) %>
       </div>
     </div>
-    <div class="d-flex flex-grow-1 flex-column flex-md-row w-75 row col-md-12 col-lg-6 title" data-sort-title="<%= h payment.sort_key(:title) %>">
+    <div class="d-flex flex-grow-1 flex-column flex-md-row w-75 row col-md-12 col-lg-6 title">
       <h3 class="col-md-10 clamp-3 record-title list-item-title"><%= payment.title %></h3>
     </div>
     <div>
