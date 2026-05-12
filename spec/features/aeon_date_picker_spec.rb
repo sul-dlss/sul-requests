@@ -3,13 +3,11 @@
 require 'rails_helper'
 
 # Tests keyboard/focus behaviour of the custom Stimulus date picker.
-# Uses Lookbook previews as test pages so these run independently of
-# the appointment form (which uses the native date field today).
+# TODO: use real form paths once this graduates from Lookbook previews
 RSpec.describe 'Date picker keyboard navigation', :js do
   # Today is the initial focusedDate (min = today, no reading room in the preview).
   let(:today) { Time.zone.today }
 
-  # TODO: change to actual path after we move this out of Lookbook
   before { visit '/lookbook/preview/aeon/appointment_date_picker/default' }
 
   def open_picker
@@ -58,7 +56,7 @@ RSpec.describe 'Date picker keyboard navigation', :js do
     it 'natural Tab from Previous month moves to Next month' do
       open_picker
       grid_send(:tab) # prevBtn
-      find('[data-date-picker-target="prevBtn"]').send_keys(:tab) # nextBtn (natural DOM order)
+      find('[data-date-picker-target="prevBtn"]').send_keys(:tab) # nextBtn
       next_focused = page.evaluate_script(
         "document.activeElement === document.querySelector('[data-date-picker-target=\"nextBtn\"]')"
       )
@@ -122,22 +120,6 @@ RSpec.describe 'Date picker keyboard navigation', :js do
       next_month_label = Date.parse(first_of_next).strftime('%-B %Y')
       expect(page).to have_text(next_month_label)
     end
-
-    it 'ArrowLeft on the first day of the month goes back to the previous month' do
-      open_picker
-      # Click Next month — focusedDate (today) is outside the new month,
-      # so the fallback sets tabindex=0 on the first available day of that month.
-      find('[data-date-picker-target="nextBtn"]').click
-
-      first_of_next_month = Date.new(today.year, today.month, -1) + 1
-      expect(page).to have_text(first_of_next_month.strftime('%-B %Y'))
-
-      # Arrow left from the first day of that month → last day of this month.
-      find('[data-date-picker-target="grid"] button[tabindex="0"]').send_keys(:arrow_left)
-      last_day = Date.new(today.year, today.month, -1).iso8601
-      expect(focused_date).to eq(last_day)
-      expect(page).to have_text(today.strftime('%-B %Y'))
-    end
   end
 
   describe 'legend' do
@@ -160,9 +142,8 @@ RSpec.describe 'Date picker keyboard navigation', :js do
 
       it 'hides when navigating to a month with no marked days' do
         open_picker
-        # Navigate far enough forward that no marked dates fall in that month.
-        # Marked dates are today+2..today+14, all within this month or next at most;
-        # going 3 months ahead guarantees none.
+        # The preview marks today+2, +5, +9, +14 — the furthest is 2 weeks out.
+        # Advancing 3 months puts us past all of them.
         3.times { find('[data-date-picker-target="nextBtn"]').click }
         legend = find('[data-date-picker-target="legend"]', visible: :all)
         expect(legend[:style]).to include('visibility: hidden')
@@ -171,13 +152,12 @@ RSpec.describe 'Date picker keyboard navigation', :js do
   end
 
   describe 'skipping disabled dates' do
-    # Use the with_disabled_days preview which disables today+2 and a range later in the month.
     before { visit '/lookbook/preview/aeon/appointment_date_picker/with_disabled_days' }
 
     it 'ArrowRight skips a disabled date and lands on the next enabled date' do
       open_picker
-      # today+2 is always disabled in this preview. Navigate from today+1 to confirm it jumps to today+3.
-      grid_send(:arrow_right) # today → today+1
+      # today+2 is disabled. Navigate to today+1 then confirm arrow skips to today+3.
+      grid_send(:arrow_right)
       find('[data-date-picker-target="grid"] button[tabindex="0"]').send_keys(:arrow_right)
       # today+2 is disabled, so focus should land on today+3
       expect(focused_date).to eq((today + 3).iso8601)

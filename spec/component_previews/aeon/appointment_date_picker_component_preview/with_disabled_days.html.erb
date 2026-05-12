@@ -1,11 +1,10 @@
 <%
   today = Time.zone.today
-  # A couple of individual days
+  # Individual disabled days
   individual = [today + 2, today + 6]
-  # A range: next Monday through Wednesday
-  next_monday = today + ((1 - today.wday) % 7 + 7) % 7
-  range = (next_monday .. next_monday + 2).to_a
-  disabled = (individual + range).map(&:iso8601).uniq
+  # A range well beyond today+3 so it never interferes with the skip-one-day spec
+  range = ((today + 20)..(today + 22)).to_a
+  disabled = (individual + range).map(&:iso8601)
 %>
 <%= form_with(model: Aeon::Appointment.new, url: '#') do |f| %>
   <%= render Aeon::AppointmentDatePickerComponent.new(form: f, disabled: disabled) %>
