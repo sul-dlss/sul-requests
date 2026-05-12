@@ -74,7 +74,8 @@ export default class extends Controller {
 
     li.dataset.contentId = id
     li.querySelector('[data-role="title"]').innerHTML = title.innerHTML
-    li.querySelector('button').dataset.itemSelectorIdParam = id
+    li.innerHTML = li.innerHTML.replaceAll('__ID__', id)
+    li.innerHTML = li.innerHTML.replaceAll('__TITLE__', title.textContent)
 
     return li
   }
