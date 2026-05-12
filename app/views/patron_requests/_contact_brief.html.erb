@@ -1,0 +1,45 @@
+<div class="d-lg-none">
+  <h2 class="fs-5">Contact information</h2>
+  <% if @patron_request.ead_doc %>
+    <% contact = @patron_request.ead_doc.repository_contact %>
+    <div>
+      <% if @patron_request.ead_doc.repository %>
+        <p class="mb-1">
+          <%= link_to contact[:website], class: 'fw-semibold' do %>
+            <%= @patron_request.ead_doc.repository %><i class="bi bi-arrow-up-right ms-1"></i>
+          <% end %>
+        </p>
+      <% end %>
+      <% if contact[:address] %>
+        <p class="mb-1">
+          <span class="fw-semibold"><%= contact[:address].first %></span>
+          <span class="ms-2">Stanford University</span>
+        </p>
+      <% end %>
+      <% if contact[:email] %>
+        <%= mail_to contact[:email], class: 'su-underline' %>
+      <% end %>
+    </div>
+  <% else %>
+    <% library = Settings.libraries[@patron_request.origin_library_code] %>
+    <% if library %>
+      <p class="mb-1">
+        <% if library.reading_room_url %>
+          <%= link_to library.reading_room_url, class: 'fw-semibold' do %>
+            <%= library.label %><i class="bi bi-arrow-up-right ms-1"></i>
+          <% end %>
+        <% else %>
+          <%= library.label %>
+        <% end %>
+      </p>
+      <p class="mb-1">
+        <% if library.contact_info&.phone %>
+          <%= library.contact_info.phone %>
+        <% end %>
+        <% if library.contact_info&.email %>
+          <%= mail_to library.contact_info.email, class: 'ms-2 su-underline' %>
+        <% end %>
+      </p>
+    <% end %>
+  <% end %>
+</div>

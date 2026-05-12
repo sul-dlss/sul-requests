@@ -12,19 +12,20 @@
 
 
 <div class="row">
-  <div class="col-8">
+  <div class="col-12 col-lg-8">
 
-  <%= render RecordHeaderCardComponent.new(record: @patron_request.bib_record) %>
+    <%= render RecordHeaderCardComponent.new(record: @patron_request.bib_record) %>
+    <%= render 'contact_brief' %>
 
-<%= form_for(@patron_request,
-            data: {
-              controller: 'patron-request accordion-form item-selector save-for-later view-container-contents',
-              action: 'item-selector:changed->patron-request#showItemSelector item-selector:changed->accordion-form#typeValueChanged',
-              'patron-request-type-value': 'aeon',
-            },
-            html: { class: 'accordion' },
-            url: patron_requests_path,
-            method: 'POST') do |f| %>
+    <%= form_for(@patron_request,
+                 data: {
+                   controller: 'patron-request accordion-form item-selector save-for-later view-container-contents',
+                   action: 'item-selector:changed->patron-request#showItemSelector item-selector:changed->accordion-form#typeValueChanged',
+                   'patron-request-type-value': 'aeon',
+                 },
+                 html: { class: 'accordion' },
+                 url: patron_requests_path,
+                 method: 'POST') do |f| %>
 <% step_enum = Enumerator.new { |y| n = 0; loop { y << (n += 1) } } %>
 <% current_step = nil %>
 <% scan_or_pickup_step = nil %>
@@ -188,10 +189,10 @@
 <% end %>
 
 <template data-save-for-later-target="savedItemTemplate">
-  <li class="d-flex justify-content-between saved-item border-bottom py-1">
+  <li class="d-flex flex-column flex-md-row justify-content-md-between saved-item border-bottom py-1">
     <span data-role="title"></span>
-    <div>
-      <button class="su-underline btn btn-link fs-14" data-action="save-for-later#restore">Undo</button>
+    <div class="text-nowrap">
+      <button class="su-underline btn btn-link fs-14 ps-0" data-action="save-for-later#restore">Undo</button>
       <button class="btn btn-link p-0 ps-1" data-action="item-selector#remove">
         <i class="bi bi-trash"></i>
       </button>

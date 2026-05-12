@@ -239,7 +239,8 @@ summary .disclosure-icon::before {
   display: none;
 }
 
-.accordion-button[aria-expanded=true] {
+.accordion-button[aria-expanded=true],
+.accordion-header:has(.accordion-button[aria-expanded=true]) {
   border-bottom-left-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
 }
@@ -275,6 +276,7 @@ summary .disclosure-icon::before {
     padding: 2px 8px;
     font-size: 1rem;
     font-weight: normal;
+    margin-left: .5rem;
     margin-right: .25rem;
     border-radius: 32px;
     color: var(--bs-green);
@@ -292,6 +294,7 @@ summary .disclosure-icon::before {
     background-color: rgba(var(--stanford-digital-blue-rgb), 0.1);
     font-size: 1rem;
     padding: 2px 8px;
+    margin-left: .5rem;
     margin-right: .25rem;
     border-radius: 32px;
     font-weight: normal;
@@ -630,8 +633,49 @@ label.btn-close {
 }
 
 .appointments-item {
-  flex-wrap: wrap;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "title"
+    "select"
+    "actions";
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "title  actions"
+      "select select";
+  }
+
+  @media (min-width: 1200px) {
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "title   select"
+      "actions select";
+    align-items: center;
+
+    .appt-select {
+      justify-content: flex-end;
+    }
+  }
 }
+
+.appointments-item:only-child {
+  padding-left: 0;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "title"
+    "actions"
+    "select";
+
+  .appt-select {
+    justify-content: flex-start;
+  }
+}
+
+.appt-title   { grid-area: title; }
+.appt-actions { grid-area: actions; }
+.appt-select  { grid-area: select; }
 
 #reading:has(.appointments-item:only-child),
 #pickup:has(.appointments-item:only-child) {
@@ -666,10 +710,6 @@ label.btn-close {
   .create-appointment-section {
     display: none;
   }
-
-  @media (min-width: 768px) {
-    flex-wrap: nowrap;
-  }
 }
 
 .selected-items-container .appointments-item:only-child,
@@ -701,16 +741,22 @@ label.btn-close {
 
 /* Completed status styling for selected items */
 .selected-items-container {
-  .appointments-item:not(:only-child) > :first-child {
-    margin-inline-start: 0.5rem;
+  .appointments-item[data-selected-item-form-status-value="complete"]:not(:only-child) {
+    padding-inline-start: 2rem;
+    @media (min-width: 576px) {
+      padding-inline-start: 2.5rem;
+    }
+  }
+
+  .accordion-item[data-selected-item-form-status-value="complete"]:not(:only-child) .accordion-header > :first-child {
+    margin-inline-start: 2rem;
+    @media (min-width: 576px) {
+      margin-inline-start: 2.5rem;
+    }
   }
 
   .appointments-item[data-selected-item-form-status-value="complete"]:not(:only-child),
   .accordion-item[data-selected-item-form-status-value="complete"]:not(:only-child) .accordion-header {
-    > :first-child {
-      margin-inline-start: 2rem;
-    }
-
     &::before {
       content: '';
       position: absolute;
@@ -800,6 +846,12 @@ label.btn-close {
     --bs-btn-active-bg: white;
   }
 
+  button.dropdown-toggle {
+    min-width: 100%;
+    @media (min-width: 576px) {
+      min-width: 19.8rem; /* Barely fits longer case like "Jun 30,2026 * 11:00 am - 12:45 pm (10 items)" */
+    }
+  }
 
   .selected, li:has(input:checked)  {
     background-color: var(--bs-primary-bg-subtle);

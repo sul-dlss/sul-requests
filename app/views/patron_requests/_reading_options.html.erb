@@ -1,4 +1,4 @@
-<div class="row p-3 gap-3 flex-column flex-md-row">
+<div class="row p-3 pt-0 gap-3 flex-column flex-md-row">
   <% appointments = current_user.aeon.appointments_for(site: f.object.aeon_site) %>
   <div id="new-appt-alert">
     <% if appointments.blank? %>
