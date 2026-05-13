@@ -11,9 +11,10 @@ class CardComponent < ViewComponent::Base
 
   attr_reader :element, :classes, :tag_options
 
-  def initialize(element: 'div', classes: [], **tag_options)
+  def initialize(element: 'div', classes: [], body_classes: [], **tag_options)
     @element = element
     @classes = Array(classes)
+    @body_classes = Array(body_classes)
     @tag_options = tag_options
   end
 end
