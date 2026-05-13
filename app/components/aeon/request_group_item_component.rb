@@ -9,10 +9,10 @@ module Aeon
 
     delegate :transaction_number, :transaction_date, to: :request
 
-    def initialize(request:, actions: true, appointment: true, remove_from_appointment: false, footer: true)
+    def initialize(request:, actions: true, fulfillment: true, remove_from_appointment: false, footer: true)
       @request = request
       @actions = actions
-      @appointment = appointment
+      @fulfillment = fulfillment
       @remove_from_appointment = remove_from_appointment
       @footer = footer
     end
@@ -21,8 +21,8 @@ module Aeon
       @actions
     end
 
-    def appointment?
-      @appointment
+    def fulfillment?
+      @fulfillment
     end
 
     def footer?
