@@ -3,8 +3,8 @@
     <div class="d-flex flex-wrap align-items-center flex-grow-1 justify-content-between">
       <div class="d-flex align-items-center">
         <i class="bi bi-check2 selected-item-status"></i>
-        <span id="title_<%= dom_id %>" class="text-black fw-semibold selected-item-title text-wrap">
-          <%= title %>
+        <span id="title_<%= dom_id %>" class="text-wrap">
+          <span class="text-black fw-semibold selected-item-title"><%= title %></span>
           <button class="btn btn-link position-relative z-3 d-none" data-action="view-container-contents#openViewModal"
                   data-view-container-contents-target="displayButton" data-item-id="<%= dom_id %>">
             <i class="bi bi-list-ul"></i><span class="visually-hidden">View contents</span>
