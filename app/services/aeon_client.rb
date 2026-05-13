@@ -128,6 +128,14 @@ class AeonClient
     end
   end
 
+  def closures(reading_room_id:)
+    @closures_by_room_id ||= {}
+    @closures_by_room_id[reading_room_id] ||= Rails.cache.fetch("aeon/closures/#{reading_room_id}", expires_in: 1.hour) do
+      response = get("ReadingRooms/#{reading_room_id}/Closures")
+      handle_response(response, as_class: Aeon::ReadingRoomClosures, not_found: [])
+    end
+  end
+
   def find_queue(id:, type:)
     return unless id && type
 

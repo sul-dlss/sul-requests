@@ -97,6 +97,10 @@ module Aeon
 
     def persisted? = id.present?
 
+    def closures
+      aeon_client.closures(reading_room_id: id)
+    end
+
     private
 
     def format_hours(reading_room_open_hours)
