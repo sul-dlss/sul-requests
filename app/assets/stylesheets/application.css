@@ -648,6 +648,11 @@ label.btn-close {
   display: none;
 }
 
+/* Hint to avoid wrapping only the view contents button */
+.text-wrap:has(.selected-item-title) {
+  text-wrap: pretty;
+}
+
 .appointments-item {
   padding: 0.5rem 1rem 0.5rem 1rem;
   grid-template-columns: 1fr;
