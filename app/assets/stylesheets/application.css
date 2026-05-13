@@ -231,7 +231,7 @@ summary .disclosure-icon::before {
   --bs-accordion-active-color: var(--stanford-process-black);
 }
 
-.accordion-button:not(.collapsed) {
+.accordion-button:not(.collapsed):not(:focus-visible) {
   box-shadow: none !important;
 }
 
@@ -243,6 +243,22 @@ summary .disclosure-icon::before {
 .accordion-header:has(.accordion-button[aria-expanded=true]) {
   border-bottom-left-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
+}
+
+.accordion-toggle-overlay,
+.accordion-toggle-overlay:hover,
+.accordion-toggle-overlay:focus {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  z-index: 0;
+}
+
+.accordion-header:has(.accordion-toggle-overlay:focus-visible) {
+  outline: 2px solid var(--bs-focus-ring-color, #0d6efd);
+  outline-offset: 2px;
 }
 
 .step-number {
@@ -632,6 +648,11 @@ label.btn-close {
   display: none;
 }
 
+/* Hint to avoid wrapping only the view contents button */
+.text-wrap:has(.selected-item-title) {
+  text-wrap: pretty;
+}
+
 .appointments-item {
   padding: 0.5rem 1rem 0.5rem 1rem;
   grid-template-columns: 1fr;
@@ -741,6 +762,10 @@ label.btn-close {
 
 /* Completed status styling for selected items */
 .selected-items-container {
+  .accordion-item .accordion-header > div {
+    margin-inline-start: 1rem;
+  }
+
   .appointments-item[data-selected-item-form-status-value="complete"]:not(:only-child) {
     padding-inline-start: 2rem;
     @media (min-width: 576px) {
@@ -748,7 +773,7 @@ label.btn-close {
     }
   }
 
-  .accordion-item[data-selected-item-form-status-value="complete"]:not(:only-child) .accordion-header > :first-child {
+  .accordion-item[data-selected-item-form-status-value="complete"]:not(:only-child) .accordion-header > div {
     margin-inline-start: 2rem;
     @media (min-width: 576px) {
       margin-inline-start: 2.5rem;

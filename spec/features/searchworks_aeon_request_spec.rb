@@ -68,7 +68,9 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       click_button 'Continue'
 
       within('.selected-items-container') do
-        expect(page).to have_css('.accordion-button[disabled][aria-expanded="true"]', text: 'ABC 123')
+        within('.accordion-item', text: 'ABC 123') do
+          expect(page).to have_css('.accordion-button[disabled][aria-expanded="true"]')
+        end
       end
 
       fill_in 'Requested pages', with: 'Pages 1-10'
@@ -139,8 +141,8 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       # Proceed with 1 selected item
       check 'ABC 123'
       click_button 'Continue'
-      within('.selected-items-container') do
-        expect(page).to have_css('.accordion-button[disabled][aria-expanded="true"]', text: 'ABC 123')
+      within('.selected-items-container .accordion-item', text: 'ABC 123') do
+        expect(page).to have_css('.accordion-button[disabled][aria-expanded="true"]')
       end
 
       # Go back to edit item selection
@@ -153,8 +155,12 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       click_button 'Continue'
 
       within('.digitization-accordion') do
-        expect(page).to have_css('.accordion-button[aria-expanded="true"]', text: 'ABC 123')
-        expect(page).to have_css('.accordion-button[aria-expanded="false"]', text: 'ABC 321')
+        within('.accordion-item', text: 'ABC 123') do
+          expect(page).to have_css('.accordion-button[aria-expanded="true"]')
+        end
+        within('.accordion-item', text: 'ABC 321') do
+          expect(page).to have_css('.accordion-button[aria-expanded="false"]')
+        end
         expect(page).to have_no_css('.accordion-button[disabled]')
       end
 
