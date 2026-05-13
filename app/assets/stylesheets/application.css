@@ -99,6 +99,10 @@ layer(components);
     color: rgba(var(--stanford-plum-dark-rgb), 1);
 }
 
+.text-spirited-dark {
+  color: #C74632;
+}
+
 .text-30-black {
   color: var(--stanford-30-black);
 }
