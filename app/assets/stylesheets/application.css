@@ -992,7 +992,7 @@ label.btn-close {
   }
 
   @media (min-width: 992px) {
-    grid-template-columns: 1fr 18rem auto;
+    grid-template-columns: 1fr 18rem 3rem;
     grid-template-areas:
       "id     fulfillment actions"
       "detail detail      detail"
