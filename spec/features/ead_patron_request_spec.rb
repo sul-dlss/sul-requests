@@ -361,10 +361,8 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       check 'Box 12'
       click_button 'Continue'
 
-      within('.selected-items-container') do
-        within('.accordion-item', text: 'Box 12') do
-          expect(page).to have_css('.accordion-button[disabled][aria-expanded="true"]')
-        end
+      within('.selected-items-container .accordion-item', text: 'Box 12') do
+        expect(page).to have_css('.accordion-button[disabled][aria-expanded="true"]')
       end
 
       # Go back to edit item selection
@@ -635,10 +633,8 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       check 'Box 1'
       click_button 'Continue'
 
-      within('.selected-items-container') do
-        within('.accordion-item', text: 'Box 1') do
-          expect(page).to have_css('.accordion-button[disabled][aria-expanded="true"]')
-        end
+      within('.selected-items-container .accordion-item', text: 'Box 1') do
+        expect(page).to have_css('.accordion-button[disabled][aria-expanded="true"]')
       end
     end
   end
