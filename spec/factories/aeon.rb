@@ -101,5 +101,42 @@ FactoryBot.define do
       appointment_id { nil }
       appointment { nil }
     end
+
+    trait :submitted do
+      transaction_status { 8 }
+      after(:build) do |request|
+        request.instance_variable_set(
+          :@transaction_queue,
+          Aeon::Queue.new(id: 8, queue_name: 'Awaiting Request Processing', queue_type: 'Transaction')
+        )
+      end
+    end
+
+    trait :draft do
+      transaction_status { 5 }
+      appointment_id { nil }
+      appointment { nil }
+      after(:build) do |request|
+        request.instance_variable_set(
+          :@transaction_queue,
+          Aeon::Queue.new(id: 5, queue_name: 'Awaiting User Review', queue_type: 'Transaction')
+        )
+      end
+    end
+
+    trait :delivered do
+      transaction_status { 75 }
+      photoduplication_status { 23 }
+      after(:build) do |request|
+        request.instance_variable_set(
+          :@transaction_queue,
+          Aeon::Queue.new(id: 75, queue_name: 'Awaiting Item Reshelving', queue_type: 'Transaction')
+        )
+        request.instance_variable_set(
+          :@photoduplication_queue,
+          Aeon::Queue.new(id: 23, queue_name: 'Item Delivered', queue_type: 'Photoduplication')
+        )
+      end
+    end
   end
 end
