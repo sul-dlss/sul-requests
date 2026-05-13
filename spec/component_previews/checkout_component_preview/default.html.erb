@@ -1,0 +1,6 @@
+<ul class="list checkouts list-group" data-sortable-target="list" aria-live="polite">
+  <%= render CheckoutComponent.new(
+      checkout: FactoryBot.build(:checkout, loan_policy: FactoryBot.build(:grad_mono_loans)),
+      patron: FactoryBot.build(:sponsor_patron)
+    ) %>
+</ul>

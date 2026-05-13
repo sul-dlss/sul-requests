@@ -18,9 +18,10 @@ module Folio
     SHORT_TERM_LOAN_PERIODS = %w[Hours Minutes].freeze
     FOLIO_LOST_STATUSES = ['Aged to lost', 'Declared lost'].freeze
 
-    def initialize(record, patron_type_id)
+    def initialize(record, patron_type_id, loan_policy: nil)
       @record = record
       @patron_type_id = patron_type_id
+      @loan_policy = loan_policy
     end
 
     def key
