@@ -9,15 +9,8 @@
     <% end %>
   </div>
 
-  <%= tag.div class: ['card-body'] + @body_classes do %>
-    <%= body %>
-  <% end %>
-
-  <% if footer? %>
-    <div class="card-footer bg-body-tertiary d-flex justify-content-between align-items-center">
-      <%= footer %>
-    </div>
-  <% end %>
+  <%= body %>
+  <%= footer if footer? %>
 
   <%= post %>
 <% end %>
