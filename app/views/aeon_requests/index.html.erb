@@ -36,7 +36,7 @@
 
 <div class="container" <% if params[:kind] == 'drafts' %>data-controller="draft-request"<% end %>>
   <div class="row">
-    <div class="<% if content_for?(:sidebar) %>col-md-8 pe-md-5<% else %>col-md-9<% end %>">
+    <div class="<% if content_for?(:sidebar) %>col-md-8 pe-md-5<% else %>col-xl-9<% end %>">
       <div class="d-flex flex-wrap gap-2 justify-content-between mb-4">
         <h1><%= t(params[:kind], scope: 'aeon_requests.index.header', default: 'Requests') %></h1>
         <div class="d-flex flex-wrap gap-2 align-items-baseline">
@@ -49,7 +49,7 @@
     </div>
   </div>
   <div class="row">
-    <ol id="requests" class="list-unstyled <% if content_for?(:sidebar) %>col-md-8 pe-md-5<% else %>col-md-9<% end %>">
+    <ol id="requests" class="list-unstyled <% if content_for?(:sidebar) %>col-md-8 pe-md-5<% else %>col-xl-9<% end %>">
       <%= render Aeon::RequestGroupComponent.with_collection(@aeon_request_groups, element: 'li') %>
     </ol>
 
