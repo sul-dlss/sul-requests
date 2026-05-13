@@ -1,56 +1,7 @@
-<li class="list-group-item">
-  <div class="row d-flex flex-wrap position-relative justify-content-between">
-    <div class="d-flex flex-row flex-grow-1 justify-content-between w-100 row col-md-4">
-      <div class="w-50 col-md-12 col-lg-6 status nice_status">
-        <%= fine.nice_status %>
-      </div>
-      <div class="w-50 col-md-12 col-lg-6 text-right text-md-left owed">
-        <%= number_to_currency(fine.owed) %>
-      </div>
+<%= render CardComponent.new(element: 'li') do |c| %>
+  <% c.with_title do %>
+    <div class="d-flex flex-row gap-4">
+      <%= render_fine_status %>
     </div>
-    <div class="order-1 order-md-1 d-flex col-10 col-md-5 align-items-baseline">
-      <h3 class="clamp-3 record-title title text-reset"><%= fine.title if fine.bib? %></h3>
-    </div>
-    <div class="order-3 order-md-2 d-flex flex-row flex-grow-1 row col-md-3">
-      <div class="w-50 col-md-12 col-lg-6 clamp-1 author">
-          <%= fine.author if fine.bib? %>
-      </div>
-      <div class="w-50 col-md-12 col-lg-6 call_number" data-shelfkey="<%= fine.shelf_key if fine.bib? %>"><%= fine.call_number if fine.bib? %></div>
-    </div>
-    <button class="col-2 col-md order-2 order-md-3 btn collapsed stretched-link position-static" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDetails-<%= fine.key.parameterize %>" aria-expanded="false" aria-controls="collapseDetails-<%= fine.key.parameterize %>">
-      <span class="expand-icon"><%= sul_icon :'sharp-add-24px' %><span class="sr-only">Expand</span></span>
-      <span class="collapse-icon"><%= sul_icon :'sharp-remove-24px' %><span class="sr-only">Collapse</span></span>
-    </button>
-  </div>
-  <div class="collapse w-100" id="collapseDetails-<%= fine.key.parameterize %>">
-    <dl class="row mb-0">
-      <%# Specify the borrower's name if patron is a sponsor. It could be either self or proxy in this list %>
-      <% if patron.sponsor? %>
-        <dt class="col-3 offset-1 col-md-2 offset-md-2">Borrower:</dt>
-        <dd class="col-8"><%= patron.proxy_group.member_name(fine.patron_key) || patron.display_name %></dd>
-      <% end %>
-      <% if fine.bill_date %>
-        <dt class="col-3 offset-1 col-md-2 offset-md-2">Billed:</dt>
-        <dd class="col-8"><%= l(fine.bill_date, format: :short) %></dd>
-      <% end %>
-      <dt class="col-3 offset-1 col-md-2 offset-md-2"><%= nice_status_fee_label %>:</dt>
-      <dd class="col-8"><%= number_to_currency(fine.fee) %></dd>
-      <dt class="col-3 offset-1 col-md-2 offset-md-2">Source:</dt>
-      <dd class="col-8"><%= fine.library_name %></dd>
-      <% if fine.barcode %>
-        <dt class="col-3 offset-1 col-md-2 offset-md-2">Barcode:</dt>
-        <dd class="col-8"><%= fine.barcode %></dd>
-      <% end %>
-    </dl>
-    <div class="row">
-      <div class="col-11 offset-1 col-md-10 offset-md-2">
-        <%= link_to contact_path(library: fine.library_code, barcode: fine.barcode, status: fine.nice_status), data: { 'mylibrary-modal' => 'trigger' } do %>
-          <%= sul_icon 'sharp-email-24px' %>
-          Contact library
-        <% end %>
-      </div>
-    </div>
-
-    <%= detail_link_to_searchworks(fine.catkey) if fine.bib? %>
-  </div>
-</li>
+    <% end %>
+  <% end %>

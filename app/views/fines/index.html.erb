@@ -1,47 +1,19 @@
 <h1 class="sr-only">Fines</h1>
-
 <div class="page-section">
   <h2>Payable: <%= number_to_currency(@fines.sum(&:owed)) %></h2>
-
   <% if @fines.any? %>
     <div class="mb-3">
       <%= render 'fines/shared_computer_alert' %>
       <%= render 'fines/pay_all_button' %>
     </div>
-
-    <div class="d-none d-md-flex row font-weight-bold list-header">
-      <div class="row col-md-4">
-        <div class="col-md-12 col-lg-6">Reason</div>
-        <div class="col-md-12 col-lg-6">Amount</div>
-      </div>
-      <div class="col-md-5">Title</div>
-      <div class="row col-md-3">
-        <div class="col-md-12 col-lg-6">Author</div>
-        <div class="col-md-12 col-lg-6 call_number">Call number</div>
-      </div>
-    </div>
-    <ul class="fines list-group">
-      <%= render FineComponent.with_collection(@fines, patron: patron_or_group) %>
+    <ul class="fines" data-sortable-target="list" aria-live="polite">
+      <%= render FineComponent.with_collection(@fines_and_accruing, patron: patron_or_group) %>
     </ul>
   <% end %>
-
   <% if params[:group] && patron.sponsor? %>
     Fines incurred by proxy borrowers appear in the list of fines under their sponsor's Self tab.
   <% end %>
 </div>
-
-<% accruing = @checkouts.select{ |item| item.accrued > 0.0 } %>
-<div class="page-section">
-  <h2>Accruing: <%= number_to_currency(accruing.sum(&:accrued)) %></h2>
-  <% if accruing.any? %>
-  <span class="text-overdue">
-    <%= sul_icon :'sharp-warning-24px' %>
-  </span>
-  Fines are accruing on <%= pluralize(accruing.length, 'overdue item') %>. You must return the
-  <%= pluralize(accruing.length, 'item') %> before you can pay this fine.
-  <% end %>
-</div>
-
 <div class="page-section" data-key="payments" data-type="async">
   <h2>History</h2>
   <%= link_to 'Show history', payments_path, class: 'btn btn-info', remote: true, data: { type: :json } %>

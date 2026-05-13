@@ -37,6 +37,10 @@ module Folio
       Time.zone.parse(record['dueDate'])
     end
 
+    def sort_date = due_date
+    
+    def status_label = 'Item overdue'
+
     def days_overdue
       return 0 unless overdue?
       return 0 if due_date.nil?
