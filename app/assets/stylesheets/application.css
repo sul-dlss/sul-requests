@@ -231,7 +231,7 @@ summary .disclosure-icon::before {
   --bs-accordion-active-color: var(--stanford-process-black);
 }
 
-.accordion-button:not(.collapsed) {
+.accordion-button:not(.collapsed):not(:focus-visible) {
   box-shadow: none !important;
 }
 
