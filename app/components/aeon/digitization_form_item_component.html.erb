@@ -1,5 +1,13 @@
 <div data-controller="selected-item-form" data-action="input->selected-item-form#updateStatus" class="accordion-item mb-3" data-content-id="<%= dom_id %>">
   <div class="accordion-header d-flex flex-nowrap align-items-center position-relative py-2">
+    <%= tag.button(
+        "",
+        type: "button",
+        class: "accordion-button accordion-toggle-overlay",
+        data: { bs_toggle: "collapse", bs_target: "#content_#{dom_id}" },
+        aria: { expanded: !accordion?, controls: "content_#{dom_id}", labelledby: "title_#{dom_id}" },
+        disabled: !accordion?
+    ) %>
     <div class="d-flex flex-column flex-lg-row align-items-lg-center flex-grow-1 justify-content-lg-between">
       <div class="d-flex align-items-center">
         <i class="bi bi-check2 selected-item-status"></i>
@@ -22,14 +30,6 @@
         </button>
       </div>
     </div>
-    <%= tag.button(
-        "",
-        type: "button",
-        class: "accordion-button accordion-toggle-overlay",
-        data: { bs_toggle: "collapse", bs_target: "#content_#{dom_id}" },
-        aria: { expanded: !accordion?, controls: "content_#{dom_id}", labelledby: "title_#{dom_id}" },
-        disabled: !accordion?
-    ) %>
     <i class="bi bi-chevron-down accordion-header-icon ms-auto px-4"></i>
   </div>
   <div id="content_<%= dom_id %>" class="accordion-collapse <%= 'collapse' if accordion? %>">

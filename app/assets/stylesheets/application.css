@@ -757,7 +757,7 @@ label.btn-close {
 
 /* Completed status styling for selected items */
 .selected-items-container {
-  .accordion-item .accordion-header > :first-child {
+  .accordion-item .accordion-header > div {
     margin-inline-start: 1rem;
   }
 
@@ -768,7 +768,7 @@ label.btn-close {
     }
   }
 
-  .accordion-item[data-selected-item-form-status-value="complete"]:not(:only-child) .accordion-header > :first-child {
+  .accordion-item[data-selected-item-form-status-value="complete"]:not(:only-child) .accordion-header > div {
     margin-inline-start: 2rem;
     @media (min-width: 576px) {
       margin-inline-start: 2.5rem;
