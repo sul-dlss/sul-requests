@@ -530,6 +530,7 @@ class PatronRequest < ApplicationRecord
       AcceptAlternateEdition: false,
       Username: patron.username,
       UserInfo1: patron.blocked? ? 'Blocked' : nil,
+      UserInfo5: patron.barcode,
       ISSN: folio_instance.isbn,
       LoanPublisher: folio_instance.publisher,
       LoanPlace: folio_instance.pub_place,

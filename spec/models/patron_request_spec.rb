@@ -493,6 +493,10 @@ RSpec.describe PatronRequest do
     let(:folio_instance) { build(:scannable_holdings) }
     let(:item) { folio_instance.items.first }
 
+    before do
+      allow(patron).to receive(:barcode).and_return('patron-barcode')
+    end
+
     context 'when request type is scan' do
       let(:attr) { { request_type:, scan_authors:, scan_title:, scan_page_range:, origin_location_code: 'SAL3-STACKS' } }
       let(:request_type) { 'scan' }
@@ -503,6 +507,7 @@ RSpec.describe PatronRequest do
       it 'returns the correct ILLiad request params for scan request' do
         expect(request.illiad_request_params(item)).to include(
           RequestType: 'Article',
+          UserInfo5: 'patron-barcode',
           ItemNumber: item.barcode,
           PhotoArticleTitle: scan_title,
           PhotoJournalInclusivePages: scan_page_range,
