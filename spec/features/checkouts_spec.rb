@@ -34,9 +34,8 @@ RSpec.describe 'Checkout Page' do
     expect(page).to have_css('ul.checkouts li', count: 1)
 
     within(first('ul.checkouts li')) do
-      expect(page).to have_css('.status', text: 'OK')
-      expect(page).to have_css('.title', text: /Blue-collar Broadway/)
-      expect(page).to have_css('.call_number', text: 'PN2277 .N7 W48 2015')
+      expect(page).to have_text(/Blue-collar Broadway/)
+      expect(page).to have_text('Call number: PN2277 .N7 W48 2015')
     end
   end
 
@@ -52,9 +51,9 @@ RSpec.describe 'Checkout Page' do
       expect(page).to have_css('ul.recalled-checkouts li', count: 1)
 
       within(first('ul.recalled-checkouts li')) do
-        expect(page).to have_css('.status', text: 'Recalled')
-        expect(page).to have_css('.title', text: /Sci-fi architecture./)
-        expect(page).to have_css('.call_number', text: 'NA1 .A16')
+        expect(page).to have_text 'Recalled'
+        expect(page).to have_text(/Sci-fi architecture./)
+        expect(page).to have_text 'Call number: NA1 .A16'
       end
     end
   end
@@ -66,43 +65,18 @@ RSpec.describe 'Checkout Page' do
             renewal_count: 0)
     end
 
-    it 'has renewable status indicator' do
+    it 'has a renewa button' do
       visit checkouts_path
 
-      expect(page).to have_css '.renewable-indicator .sul-icons'
+      expect(page).to have_button 'Renew'
     end
   end
 
-  context 'when data is hidden behind a toggle' do
-    let(:patron) do
-      build(:patron_with_overdue_items)
-    end
+  it 'shows other data in the footer' do
+    visit checkouts_path
 
-    it 'shows the renew data when the list item is expanded', :js do
-      visit checkouts_path
-
-      within('ul.checkouts li:nth-child(1)') do
-        click_on 'Expand'
-        expect(page).to have_css('dt', text: 'Can I renew?', visible: :visible)
-      end
-    end
-
-    it 'shows other data when the list item is expanded', :js do
-      visit checkouts_path
-
-      within(first('ul.checkouts li')) do
-        expect(page).to have_no_css('dl', visible: :visible)
-        expect(page).to have_no_css('dt', text: 'Borrowed:', visible: :visible)
-        click_on 'Expand'
-        expect(page).to have_css('dl', visible: :visible)
-        expect(page).to have_css('dt', text: 'Borrowed:', visible: :visible)
-        expect(page).to have_css('dt', text: 'Days overdue:', visible: :visible)
-        expect(page).to have_css('dd', text: /^\d+$/, visible: :visible)
-        expect(page).to have_css('dt', text: 'Barcode:', visible: :visible)
-        expect(page).to have_css('dd', text: '36105021987123', visible: :visible)
-        expect(page).to have_css('dt', text: 'Fines accrued:', visible: :visible)
-        expect(page).to have_css('dd', text: '$30.00', visible: :visible)
-      end
+    within(first('ul.checkouts li')) do
+      expect(page).to have_text 'Barcode: 36105212981729'
     end
   end
 
@@ -110,7 +84,7 @@ RSpec.describe 'Checkout Page' do
     visit checkouts_path
 
     within(first('ul.checkouts li')) do
-      expect(page).to have_css('dl dd', text: 'Green Library', visible: :all)
+      expect(page).to have_text 'Library: Green Library'
     end
   end
 
@@ -129,7 +103,7 @@ RSpec.describe 'Checkout Page' do
       expect(page).to have_css('.active[data-sortable-sort-param="title"]', visible: :all)
 
       within(first('ul.checkouts li')) do
-        expect(page).to have_css('.title', text: /Blue-collar Broadway/)
+        expect(page).to have_text(/Blue-collar Broadway/)
       end
     end
   end
