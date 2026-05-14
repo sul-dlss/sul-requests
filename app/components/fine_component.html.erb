@@ -3,5 +3,13 @@
     <div class="d-flex flex-row gap-4">
       <%= render_fine_status %>
     </div>
+  <% end %>
+  <% c.with_body(classes: 'bg-white') do %>
+    <h2><%= body_title %></h2>
+  <% end %>
+  <% if fine.barcode %>
+    <% c.with_footer do %>
+      <span>Barcode: <%= fine.barcode %></span>
     <% end %>
   <% end %>
+<% end %>

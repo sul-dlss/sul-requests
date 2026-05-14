@@ -22,6 +22,15 @@ class FineComponent < ViewComponent::Base
     '#'
   end
 
+  def body_title
+    case fine.nice_status
+    when 'SUL library card'
+      'Lost library card'
+    else
+      fine.title
+    end
+  end
+
   private
 
   def fine_status_html(text:, css_class: nil, icon: nil, accrued: 0)

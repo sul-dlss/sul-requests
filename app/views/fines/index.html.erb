@@ -1,4 +1,5 @@
 <h1 class="sr-only">Fines</h1>
+<%= @fines_and_accruing.map(&:class) %>
 <div class="page-section">
   <h2>Payable: <%= number_to_currency(@fines.sum(&:owed)) %></h2>
   <% if @fines.any? %>
@@ -7,7 +8,10 @@
       <%= render 'fines/pay_all_button' %>
     </div>
     <ul class="fines" data-sortable-target="list" aria-live="polite">
-      <%= render FineComponent.with_collection(@fines_and_accruing, patron: patron_or_group) %>
+      <% @fines_and_accruing.each do |item| %>
+        <%= render item.is_a?(Folio::Checkout) ? AccruingCheckoutComponent.new(checkout: item, patron: patron_or_group)
+                                              : FineComponent.new(fine: item, patron: patron_or_group) %>
+      <% end %>
     </ul>
   <% end %>
   <% if params[:group] && patron.sponsor? %>

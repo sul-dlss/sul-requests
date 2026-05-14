@@ -496,6 +496,12 @@ label.btn-close {
  transform: rotate(180deg);
 }
 
+.fines .card {
+  .rounded-pill {
+    padding: 4px 12px;
+  }
+}
+
 .request.card, .request-group.card {
   --bs-card-cap-bg: white;
   --bs-border-radius: 0.25rem;
