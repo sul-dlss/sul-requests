@@ -591,6 +591,11 @@ label.btn-close {
   fieldset > *:not(legend) {
     display: none;
   }
+
+  .appointment-slots-container {
+    --appointment-slots: 0!important;
+  }
+
   .selection-message {
     display: block;
   }
