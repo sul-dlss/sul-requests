@@ -13,8 +13,8 @@
     <% end %>
 
     <div class="mb-3">
-      <%= f.label :date, class: 'd-block fw-semibold redesign-required-label' %>
-      <div class="d-flex align-items-center gap-2">
+      <%= f.label :date, class: 'd-block fw-semibold mb-2 redesign-required-label' %>
+      <div class="d-flex align-items-center gap-3">
         <%= f.date_field :date, value: "", required: true, data: { action: 'appointment#refreshAvailability appointment#updateBanner' }, min: (@appointment.reading_room.next_appointment.start_time.to_date.iso8601 if @appointment.reading_room&.next_appointment), class: 'border rounded px-2 py-1' %>
         <%= turbo_frame_tag 'earliest_appointment', src: available_aeon_reading_room_url(@appointment.reading_room_id, date: Date.today) %>
       </div>
