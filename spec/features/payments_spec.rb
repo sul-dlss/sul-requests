@@ -11,6 +11,7 @@ RSpec.describe 'Payments History' do
 
   before do
     allow(FolioClient).to receive(:new) { mock_client }
+    allow(patron).to receive(:checkouts).and_return([])
     login_as(CurrentUser.new(username: 'stub_user', patron_key: '513a9054-5897-11ee-8c99-0242ac120002', shibboleth: true))
     allow(Folio::Patron).to receive(:find_by).with(patron_key: '513a9054-5897-11ee-8c99-0242ac120002').and_return(patron)
 

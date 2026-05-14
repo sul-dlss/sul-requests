@@ -233,12 +233,12 @@ module Folio
                                                              patron_type_id:,
                                                              location_id:)
 
-        unless response['overdueFinePolicyId']
+        unless response&.dig('overdueFinePolicyId')
           Honeybadger.notify('Unable to find overdue fines policy for checkout',
                              context: { key:, cache_key:, response: })
         end
 
-        response['overdueFinePolicyId']
+        response&.dig('overdueFinePolicyId')
       end
     end
 

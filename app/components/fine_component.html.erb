@@ -20,6 +20,7 @@
       </div>
       <div><span class="visually-hidden">Library:</span><%= fine.library_name %></div>
     <% end %>
+    <%= link_to 'Contact library', contact_path %>
   <% end %>
   <% if fine.barcode %>
     <% c.with_footer do %>

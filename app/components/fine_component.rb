@@ -13,8 +13,7 @@ class FineComponent < ViewComponent::Base
   end
 
   def render_fine_status
-    fine_status_html(css_class: 'small fw-medium rounded-pill text-white bg-plum-light ready',
-                     icon: 'sharp-error-24px',
+    fine_status_html(css_class: 'status small fw-medium rounded-pill text-white bg-plum-light ready',
                      text: fine.status_label)
   end
 
