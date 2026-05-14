@@ -35,12 +35,8 @@ module MylibraryHelper
   def detail_link_to_searchworks(catkey)
     return if catkey.blank?
 
-    tag.div(class: 'row') do
-      tag.div(class: 'col-11 offset-1 col-md-10 offset-md-2') do
-        link_to "#{Settings.searchworks_link}/#{catkey}", rel: 'noopener', target: '_blank' do
-          sul_icon(:'sharp-open_in_new-24px') + ' View in SearchWorks' # rubocop:disable Style/StringConcatenation
-        end
-      end
+    link_to "#{Settings.searchworks_link}/#{catkey}", rel: 'noopener', target: '_blank', class: 'su-underline' do
+      safe_join(['View in SearchWorks', tag.i(class: 'ms-1 bi bi-arrow-up-right')])
     end
   end
 
