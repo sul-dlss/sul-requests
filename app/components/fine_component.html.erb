@@ -4,8 +4,22 @@
       <%= render_fine_status %>
     </div>
   <% end %>
+  <% c.with_actions do %>
+    <h4><%= number_to_currency(fine.owed) %></h4>
+  <% end %>
   <% c.with_body(classes: 'bg-white') do %>
-    <h2><%= body_title %></h2>
+    <h3 class="mb-1 clamp clamp-3"><%= body_title %></h3>
+    <% if fine.bib? %>
+      <div class="d-flex flex-row gap-3">
+        <div>Call number: <%= fine.call_number %></div>
+        <% unless fine.from_ill? %>
+          <%= link_to "#{Settings.searchworks_link}/#{fine.catkey}", rel: 'noopener', target: '_blank' do %>
+            <%= sul_icon :'sharp-open_in_new-24px' %> View in SearchWorks
+          <% end %>
+        <% end %>
+      </div>
+      <div><span class="visually-hidden">Library:</span><%= fine.library_name %></div>
+    <% end %>
   <% end %>
   <% if fine.barcode %>
     <% c.with_footer do %>

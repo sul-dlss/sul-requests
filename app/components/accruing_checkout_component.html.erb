@@ -16,7 +16,16 @@
     <% end %>
   <% end %>
   <% c.with_body(classes: 'bg-white') do %>
-    <h2><%= checkout.title %></h2>
+    <h3 class="mb-1 clamp clamp-3"><%= checkout.title %></h3>
+    <div class="d-flex flex-row gap-3">
+      <div>Call number: <%= checkout.call_number %></div>
+      <% unless checkout.from_ill? %>
+        <%= link_to "#{Settings.searchworks_link}/#{checkout.catkey}", rel: 'noopener', target: '_blank' do %>
+          <%= sul_icon :'sharp-open_in_new-24px' %> View in SearchWorks
+        <% end %>
+      <% end %>
+    </div>
+    <div><span class="visually-hidden">Library:</span><%= checkout.library_name %></div>
   <% end %>
   <% c.with_footer do %>
     <span>Barcode: <%= checkout.barcode %></span>

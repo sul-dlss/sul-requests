@@ -4,7 +4,7 @@
 class AccruingCheckoutComponent < ViewComponent::Base
   attr_reader :checkout, :patron
 
-  delegate :sul_icon, to: :helpers
+  delegate :sul_icon, :detail_link_to_searchworks, to: :helpers
 
   def initialize(checkout:, patron:)
     @checkout = checkout
