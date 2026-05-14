@@ -2,9 +2,9 @@
 
 # Render page metadata in a card wrapper
 class RecordHeaderCardComponent < RecordHeaderComponent
-  def initialize(classes: 'bg-light rounded-0 mb-4', record: nil, brief: false)
+  def initialize(classes: 'bg-light rounded-0 mb-4', **)
     @classes = classes
-    super(record: record, brief: brief)
+    super(**)
   end
 
   attr_reader :classes

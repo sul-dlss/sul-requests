@@ -2,12 +2,13 @@
 
 # Render page metadata
 class RecordHeaderComponent < ViewComponent::Base
-  def initialize(record: nil, brief: false)
+  attr_reader :record, :title_classes
+
+  def initialize(record: nil, brief: false, title_classes: ['fs-5'])
     @record = record
     @brief = brief
+    @title_classes = Array(title_classes)
   end
-
-  attr_reader :record
 
   def document_type
     # TODO: this will contain logic based on Aeon values
