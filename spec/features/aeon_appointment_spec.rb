@@ -105,7 +105,7 @@ RSpec.describe 'Appointments', :js do
   describe 'redrafting a request' do
     it 'moves the request into draft' do
       within '#aeon_request_100' do
-        click_on 'Remove'
+        click_on 'Save for later'
       end
 
       expect(page).to have_no_css '#aeon_request_100'
