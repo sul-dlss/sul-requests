@@ -95,6 +95,11 @@ layer(components);
   color: var(--stanford-digital-red);
 }
 
+
+.text-digital-red-dark {
+  color: var(--stanford-digital-red-dark);
+}
+
 .text-plum-dark {
     color: rgba(var(--stanford-plum-dark-rgb), 1);
 }
