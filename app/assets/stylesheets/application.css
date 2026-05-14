@@ -1101,7 +1101,7 @@ label.btn-close {
     width: 1.5rem;
 
     svg {
-      fill: $su-digital-blue;
+      fill: var(--stanford-digital-blue);
       height: 1.5rem;
       width: 1.5rem;
     }
