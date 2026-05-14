@@ -1,5 +1,5 @@
 <%= form_with(model: request, data: { turbo: true}) do |f| %>
-  <div class="dropdown custom-select" data-controller="appointment-select-submit">
+  <div class="dropdown sidebar-custom-select" data-controller="appointment-select-submit">
     <%= hidden_field_tag 'sidebar', true %>
     <%= f.hidden_field :appointment_id, data: { appointment_select_submit_target: "input" } %>
     <%= button_tag 'Appointment', class: 'dropdown-toggle btn btn-link su-underline p-0', type: 'button', data: { bs_toggle: 'dropdown', appointment_select_target: 'button' }, aria: { expanded: false }, disabled: selectable_appointments.blank? %>
