@@ -35,7 +35,9 @@ module Aeon
 
     def submitted_rumsey_appointment
       reading_room = FactoryBot.build(:aeon_reading_room, id: 7, name: 'David Rumsey Map Center', sites: ['RUMSEY'])
-      appointment = FactoryBot.build(:aeon_appointment, reading_room_id: 7, reading_room:)
+      appointment = FactoryBot.build(:aeon_appointment, reading_room_id: 7, reading_room:,
+                                                        start_time: Time.zone.parse('2026-03-11T18:30:00Z'),
+                                                        stop_time: Time.zone.parse('2026-03-11T19:30:00Z'))
       request = FactoryBot.build(:aeon_request, :submitted, appointment:,
                                                             item_title: 'Map of the city of San Francisco, 1872',
                                                             call_number: 'G3300 1872 .R3')
