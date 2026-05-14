@@ -15,24 +15,15 @@ class CheckoutComponent < ViewComponent::Base
     super()
   end
 
-  # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
   def non_renewable_reason
-    return 'Item is assumed lost; you must pay the fee or return the item.' if lost?
-    return 'Another user is waiting for this item.' if recalled? || renewal_blocked_by_hold?
-    return 'Claim review is in process.' if claimed_returned?
+    return 'Assumed lost' if lost?
+    return 'Another user is waiting' if recalled? || renewal_blocked_by_hold?
+    return 'Claim review is in process' if claimed_returned?
+    return 'Renew in person' if reserve_item?
+    return 'Too soon to renew' if too_soon_to_renew?
 
-    unless unseen_renewals_remaining.positive?
-      return 'No online renewals left; you may renew this item in person.' if renewal_count.positive?
-
-      return 'No online renewals for this item.'
-    end
-
-    return 'Renew Reserve items in person.' if reserve_item?
-    return 'Another user is waiting for this item.' if item_category_non_renewable?
-
-    'Too soon to renew.' if too_soon_to_renew?
+    'Renew'
   end
-  # rubocop:enable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
 
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   def render_checkout_status
