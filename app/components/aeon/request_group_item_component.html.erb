@@ -1,4 +1,4 @@
-<li id="<%= dom_id(request) %>" class="request list-group-item">
+<li id="<%= dom_id(request) %>" class="request <%= classes.join(' ') %>">
   <div class="rgi-id d-flex align-items-center">
     <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
 
