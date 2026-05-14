@@ -32,14 +32,21 @@
     </div>
   <% end %>
   <% c.with_body(classes: 'bg-white') do %>
-    <h3 class="mb-1 clamp clamp-3"><%= checkout.title %></h3>
-    <div class="d-flex flex-row flex-wrap position-relative justify-content-start gap-4">
-      <div>Call number: <%= checkout.call_number %></div>
-      <%= detail_link_to_searchworks(checkout.catkey) unless checkout.from_ill? %>
-    </div>
-    <div class="clamp-1 mb-1"><span class="visually-hidden">Author:</span><%= checkout.author %></div>
-    <div><span class="visually-hidden">Library:</span>
-      <%= checkout.library_name %> <%= mail_to(contact_email, safe_join([tag.i(class: 'bi bi-envelope me-1'), 'Contact']), class: 'su-underline ms-3') if contact_email %>
+    <div class="d-flex justify-content-between gap-5">
+      <div>
+        <h3 class="mb-1 clamp clamp-3"><%= checkout.title %></h3>
+        <div class="d-flex flex-row flex-wrap position-relative justify-content-start gap-4">
+          <div>Call number: <%= checkout.call_number %></div>
+          <%= detail_link_to_searchworks(checkout.catkey) unless checkout.from_ill? %>
+        </div>
+        <div class="mb-1 clamp clamp-1"><span class="visually-hidden">Author:</span><%= checkout.author %></div>
+        <div><span class="visually-hidden">Library:</span>
+          <%= checkout.library_name %> <%= mail_to(contact_email, safe_join([tag.i(class: 'bi bi-envelope me-1'), 'Contact']), class: 'su-underline ms-3') if contact_email %>
+        </div>
+      </div>
+      <div>
+        <%= cover_image %>
+      </div>
     </div>
   <% end %>
 <% end %>

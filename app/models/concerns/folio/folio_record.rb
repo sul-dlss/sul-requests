@@ -39,6 +39,20 @@ module Folio
       bib['itemId']
     end
 
+    def identifiers
+      salient_identifiers = (bib.dig('instance', 'identifiers') || []).select do |identifier|
+        identifier.dig('identifierTypeObject', 'name').in?(%w[ISBN OCLC LCCN])
+      end
+
+      grouped_identifiers = salient_identifiers.group_by { |identifier| identifier.dig('identifierTypeObject', 'name') }
+
+      grouped_identifiers.transform_values do |identifiers|
+        identifiers.map do |identifier|
+          "#{identifier.dig('identifierTypeObject', 'name')}#{identifier['value'].sub(/^\([^\\(]+\)/, '')}"
+        end
+      end
+    end
+
     private
 
     def record_location

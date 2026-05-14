@@ -451,6 +451,13 @@ class FolioGraphqlClient
                                       isbn
                                       instance {
                                         hrid
+
+                                        identifiers {
+                                          value
+                                          identifierTypeObject {
+                                            name
+                                          }
+                                        }
                                       }
                                       item {
                                         barcode

@@ -46,6 +46,9 @@ application.register("appointment-select", AppointmentSelectController)
 import AppointmentSelectSubmitController from "./appointment_select_submit_controller"
 application.register("appointment-select-submit", AppointmentSelectSubmitController)
 
+import GoogleCoverImageController from "./google_cover_image_controller"
+application.register("google-cover-image", GoogleCoverImageController)
+
 import OtpInput from "./otp_input_controller"
 application.register("otp-input", OtpInput)
 
