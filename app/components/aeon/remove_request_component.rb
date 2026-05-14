@@ -13,7 +13,7 @@ module Aeon
                          appointment_target: '#draftRequests',
                          transaction_number: @request.transaction_number,
                          title: @request.item_title } do
-        tag.i(class: 'bi bi-x') + tag.span('Remove')
+        tag.i(class: 'bi bi-pin-angle-fill me-1') + tag.span('Save for later')
       end
     end
   end
