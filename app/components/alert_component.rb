@@ -14,18 +14,24 @@ class AlertComponent < ViewComponent::Base
     warning: 'alert-warning'
   }.freeze
 
-  def initialize(type:)
+  def initialize(type:, classes: [], with_icon: true)
     @type = type
+    @classes = Array(classes)
+    @with_icon = with_icon
   end
 
-  attr_reader :type
+  attr_reader :type, :with_icon
+
+  def classes
+    alert_classes + @classes
+  end
 
   def icon_class
     "bi #{ICONS.fetch(type)}"
   end
 
-  def alert_class
-    "alert #{ALERTS.fetch(type)}"
+  def alert_classes
+    ['alert', ALERTS.fetch(type).to_s]
   end
 
   def aria_label
