@@ -7,7 +7,6 @@
     </div>
     <%= render 'fines/shared_computer_alert' %>
   <% end %>
-</div>
   <% if @fines_and_accruing.any? %>
     <ul class="fines ps-0" data-sortable-target="list" aria-live="polite">
       <% @fines_and_accruing.each do |item| %>
