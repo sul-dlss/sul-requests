@@ -6,24 +6,23 @@ class CheckoutComponent < ViewComponent::Base
 
   delegate :sul_icon, :today_with_time_or_date, :detail_link_to_searchworks, to: :helpers
 
+  delegate :renewable?, :lost?, :recalled?, :renewal_blocked_by_hold?, :claimed_returned?, :unseen_renewals_remaining, :renewal_count,
+           :reserve_item?, :too_soon_to_renew?, :item_category_non_renewable?, to: :checkout, private: true
+
   def initialize(checkout:, patron:)
     @checkout = checkout
     @patron = patron
     super()
   end
 
-  def list_group_item_status_for_checkout
-    if checkout.recalled?
-      'list-group-item-danger'
-    elsif checkout.overdue?
-      'list-group-item-warning'
-    end
-  end
+  def non_renewable_reason
+    return 'Assumed lost' if lost?
+    return 'Another user is waiting' if recalled? || renewal_blocked_by_hold?
+    return 'Claim review is in process' if claimed_returned?
+    return 'Renew in person' if reserve_item?
+    return 'Too soon to renew' if too_soon_to_renew?
 
-  def time_remaining_for_checkout
-    return pluralize(checkout.days_remaining, 'day') unless checkout.short_term_loan?
-
-    distance_of_time_in_words(Time.zone.now, checkout.due_date) if checkout.due_date
+    'Renew'
   end
 
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize

@@ -99,6 +99,8 @@ en:
       short: "%Y-%m-%d %l.%M%P"
       full: "%B %-d, %Y %l:%M %P"
       formal: "%A, %b %-d %Y at %l:%M%P"
+      time_today: 'Today at %-l:%M%P'
+      time_tomorrow: 'Tomorrow at %-l:%M%P'
       date_only: "%b %-d, %Y"
       time_only: "%-l:%M %P"
   forms:

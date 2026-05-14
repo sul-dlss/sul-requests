@@ -7,11 +7,12 @@ module Folio
 
     attr_reader :record, :patron_type_id
 
-    delegate :loan_policy_interval,
-             :too_soon_to_renew?,
+    delegate :too_soon_to_renew?,
              :renewal_blocked_by_hold?,
              :unseen_renewals_remaining,
-             :seen_renewals_remaining,
+             to: :loan_policy
+
+    delegate :loan_policy_interval,
              to: :loan_policy,
              private: true
 
@@ -59,32 +60,24 @@ module Folio
       record.dig('item', 'item', 'status', 'name') == 'Claimed returned'
     end
 
-    # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
-    def non_renewable_reason
-      return 'Item is assumed lost; you must pay the fee or return the item.' if lost?
-      return 'No. Another user is waiting for this item.' if recalled? || renewal_blocked_by_hold?
-      return 'No. Claim review is in process.' if claimed_returned?
-
-      unless unseen_renewals_remaining.positive?
-        return 'No online renewals left; you may renew this item in person.' if renewal_count.positive?
-
-        return 'No online renewals for this item.'
-      end
-
-      return 'No renewals left for this item.' if seen_renewals_remaining.zero?
-      return 'Renew Reserve items in person.' if reserve_item?
-      return 'No. Another user is waiting for this item.' if item_category_non_renewable?
-
-      'Too soon to renew.' if too_soon_to_renew?
-    end
-    # rubocop:enable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
-
     def item_category_non_renewable?
       !loan_policy.renewable?
     end
 
-    def renewable?
-      non_renewable_reason.blank?
+    def renewable? # rubocop:disable Metrics/CyclomaticComplexity
+      # The item is not renewable
+      return false if reserve_item?
+
+      # The item state doesn't allow renewals
+      return false if lost? || recalled? || claimed_returned? || renewal_blocked_by_hold?
+
+      # The loan policy for the patron + item doesn't allow renewals
+      return false if item_category_non_renewable?
+
+      # Renewing would not extend the due date
+      return false if too_soon_to_renew?
+
+      unseen_renewals_remaining.positive?
     end
 
     def patron_key
@@ -162,6 +155,14 @@ module Folio
       record.dig('item', 'item', 'barcode')
     end
 
+    def reserve_item?
+      /reserves?/i.match?(loan_policy.description)
+    end
+
+    def renewal_count
+      record.dig('details', 'renewalCount') || 0
+    end
+
     private
 
     def loan_policy
@@ -210,14 +211,6 @@ module Folio
 
     def item_type_id
       record.dig('item', 'item', 'materialTypeId')
-    end
-
-    def reserve_item?
-      /reserves?/i.match?(loan_policy.description)
-    end
-
-    def renewal_count
-      record.dig('details', 'renewalCount') || 0
     end
 
     def hold_queue_length

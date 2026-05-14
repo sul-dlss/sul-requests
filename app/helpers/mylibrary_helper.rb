@@ -26,7 +26,7 @@ module MylibraryHelper
     when Time.zone.yesterday
       'Yesterday'
     else
-      l(date, format: :short)
+      l(date, format: :date_only)
     end
   end
 

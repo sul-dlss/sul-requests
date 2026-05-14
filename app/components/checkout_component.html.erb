@@ -5,7 +5,7 @@
 
       <%= render_checkout_status %>
     </div>
-     <% if patron.can_renew? && checkout.renewable? %>
+     <% if patron.can_renew? && renewable? %>
       <%= form_tag renew_checkout_path(checkout.item_id), method: :post do %>
         <%= hidden_field_tag :item_id, checkout.item_id %>
         <%= hidden_field_tag :title, checkout.title %>
@@ -16,8 +16,8 @@
           <%= sul_icon 'renew' %> Renew
         <% end %>
       <% end %>
-    <% elsif !checkout.renewable? %>
-        <button disabled class="btn btn-outline-primary btn-disabled btn-sm"><%= sul_icon 'renew' %> <%= checkout.non_renewable_reason %></button>
+    <% elsif !renewable? %>
+        <button disabled class="btn btn-outline-primary btn-disabled btn-sm"><%= sul_icon 'renew' %> <%= non_renewable_reason %></button>
     <% end %>
   <% end %>
   <% c.with_footer do %>
