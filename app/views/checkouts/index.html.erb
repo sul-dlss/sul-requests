@@ -37,7 +37,7 @@
         <div class="col-md-12 col-lg-6 call_number" data-sort="call_number">Call number</div>
       </div>
     </div>
-    <ul class="list checkouts list-group" data-sortable-target="list" aria-live="polite">
+    <ul class="checkouts" data-sortable-target="list" aria-live="polite">
       <%= render CheckoutComponent.with_collection(other_checkouts, patron: patron_or_group) %>
     </ul>
   </div>
