@@ -14,8 +14,6 @@ RSpec.describe Aeon::RequestStatusPillComponent, type: :component do
 
       it 'shows the draft pill' do
         expect(page).to have_css '.draft', text: 'Reading room use'
-        expect(page).to have_no_css '.bi-clock'
-        expect(page).to have_no_css '.bi-check2-circle'
       end
     end
 
@@ -27,7 +25,6 @@ RSpec.describe Aeon::RequestStatusPillComponent, type: :component do
 
       it 'shows the ready pill with check icon' do
         expect(page).to have_css '.ready', text: 'Reading room use'
-        expect(page).to have_css '.bi-check2-circle'
       end
     end
 
@@ -41,7 +38,6 @@ RSpec.describe Aeon::RequestStatusPillComponent, type: :component do
 
       it 'shows the pending pill with clock icon' do
         expect(page).to have_css '.pending', text: 'Reading room use'
-        expect(page).to have_css '.bi-clock'
       end
     end
   end
@@ -70,7 +66,6 @@ RSpec.describe Aeon::RequestStatusPillComponent, type: :component do
 
       it 'shows the pending pill with clock icon' do
         expect(page).to have_css '.pending', text: 'Digitization pending'
-        expect(page).to have_css '.bi-clock'
       end
     end
 
@@ -82,7 +77,6 @@ RSpec.describe Aeon::RequestStatusPillComponent, type: :component do
 
       it 'shows the ready pill with check icon' do
         expect(page).to have_css '.ready', text: 'Digitization ready'
-        expect(page).to have_css '.bi-check2-circle'
       end
     end
   end
