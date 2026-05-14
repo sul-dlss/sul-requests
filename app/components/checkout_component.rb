@@ -12,20 +12,6 @@ class CheckoutComponent < ViewComponent::Base
     super()
   end
 
-  def list_group_item_status_for_checkout
-    if checkout.recalled?
-      'list-group-item-danger'
-    elsif checkout.overdue?
-      'list-group-item-warning'
-    end
-  end
-
-  def time_remaining_for_checkout
-    return pluralize(checkout.days_remaining, 'day') unless checkout.short_term_loan?
-
-    distance_of_time_in_words(Time.zone.now, checkout.due_date) if checkout.due_date
-  end
-
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   def render_checkout_status
     if checkout.recalled?
