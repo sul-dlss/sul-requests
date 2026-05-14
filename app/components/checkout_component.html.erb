@@ -33,12 +33,11 @@
   <% end %>
   <% c.with_body(classes: 'bg-white') do %>
     <h3 class="mb-1 clamp clamp-3"><%= checkout.title %></h3>
-    <div class="row d-flex flex-wrap position-relative justify-content-between">
-      <div class="item-format"></div>
+    <div class="d-flex flex-row flex-wrap position-relative justify-content-start gap-4">
       <div>Call number: <%= checkout.call_number %></div>
       <%= detail_link_to_searchworks(checkout.catkey) unless checkout.from_ill? %>
     </div>
-    <div class="clamp clamp-3 mb-1"><span class="visually-hidden">Author:</span><%= checkout.author %></div>
+    <div class="clamp-1 mb-1"><span class="visually-hidden">Author:</span><%= checkout.author %></div>
     <div><span class="visually-hidden">Library:</span>
       <%= checkout.library_name %>
     </div>
