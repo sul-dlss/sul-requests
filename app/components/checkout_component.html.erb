@@ -40,7 +40,7 @@
     </div>
     <div class="clamp clamp-3 mb-1"><span class="visually-hidden">Author:</span><%= checkout.author %></div>
     <div><span class="visually-hidden">Library:</span>
-      <%= checkout.library_name %>
+      <%= checkout.library_name %> <%= mail_to(contact_email, safe_join([tag.i(class: 'bi bi-envelope me-1'), 'Contact']), class: 'su-underline ms-3') if contact_email %>
     </div>
   <% end %>
 <% end %>

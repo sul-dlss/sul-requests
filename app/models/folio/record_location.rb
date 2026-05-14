@@ -39,14 +39,14 @@ module Folio
       @permanent_location = Folio::Types.locations.find_by(code: permanent_location_code)
     end
 
+    def effective_location_code
+      @item.dig('effectiveLocation', 'code')
+    end
+
     private
 
     def treat_temporary_location_as_permanent_location?
       effective_location&.details&.dig('searchworksTreatTemporaryLocationAsPermanentLocation')
-    end
-
-    def effective_location_code
-      @item.dig('effectiveLocation', 'code')
     end
 
     # Fall back to the holding record's effective location.

@@ -48,6 +48,13 @@ class CheckoutComponent < ViewComponent::Base
   end
   # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
+  def contact_email
+    contact_info = Settings.locations[checkout.effective_location_code]&.contact_info ||
+                   Settings.libraries[checkout.library_code]&.contact_info
+
+    contact_info&.dig(:email)
+  end
+
   private
 
   def checkout_status_html(text:, css_class: nil, icon: nil, accrued: 0)
