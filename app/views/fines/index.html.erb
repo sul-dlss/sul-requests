@@ -1,13 +1,15 @@
-<h1 class="sr-only">Fines</h1>
-<%= @fines_and_accruing.map(&:class) %>
+<h1 class="sr-only">Fees and fines</h1>
 <div class="page-section">
-  <h2>Payable: <%= number_to_currency(@fines.sum(&:owed)) %></h2>
   <% if @fines.any? %>
-    <div class="mb-3">
-      <%= render 'fines/shared_computer_alert' %>
+    <div class="d-flex flex-row align-items-center gap-3 mb-2">
+      <span>Outstanding balance: <strong><%= number_to_currency(@fines.sum(&:owed)) %></strong></span>
       <%= render 'fines/pay_all_button' %>
     </div>
-    <ul class="fines" data-sortable-target="list" aria-live="polite">
+    <%= render 'fines/shared_computer_alert' %>
+  <% end %>
+</div>
+  <% if @fines_and_accruing.any? %>
+    <ul class="fines ps-0" data-sortable-target="list" aria-live="polite">
       <% @fines_and_accruing.each do |item| %>
         <%= render item.is_a?(Folio::Checkout) ? AccruingCheckoutComponent.new(checkout: item, patron: patron_or_group)
                                               : FineComponent.new(fine: item, patron: patron_or_group) %>
