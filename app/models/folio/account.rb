@@ -51,7 +51,7 @@ module Folio
     end
 
     def sort_date = bill_date
-      
+
     def status_label
       nice_status.ends_with?('fee') ? nice_status : "#{nice_status} fee"
     end

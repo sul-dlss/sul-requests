@@ -33,7 +33,7 @@ class FineComponent < ViewComponent::Base
 
   private
 
-  def fine_status_html(text:, css_class: nil, icon: nil, accrued: 0)
+  def fine_status_html(text:, css_class: nil)
     tag.span(class: css_class) do
       safe_join([text], ' ')
     end

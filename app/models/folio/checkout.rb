@@ -38,7 +38,7 @@ module Folio
     end
 
     def sort_date = due_date
-    
+
     def status_label = 'Item overdue'
 
     def days_overdue
@@ -103,7 +103,7 @@ module Folio
 
     # TODO: verify this logic is correct
     def accruing?
-      overdue? && overdue_fines_rate&.dig('quantity').to_f > 0
+      overdue? && overdue_fines_rate&.dig('quantity').to_f.positive?
     end
 
     def days_remaining
@@ -171,7 +171,7 @@ module Folio
     def renewal_count
       record.dig('details', 'renewalCount') || 0
     end
-    
+
     # returns {"quantity" => 1.0, "intervalId" => "hour"}
     # TODO: verify this logic with Sarah
     # There was talk of the 'overdueRecallFine' being relvant in addition to 'overdueFine'
@@ -218,7 +218,7 @@ module Folio
     end
 
     def overdue_fines_policy
-      @fines_policy ||= Folio::Types.policies[:overdue].fetch(overdue_fines_policy_id) do
+      @overdue_fines_policy ||= Folio::Types.policies[:overdue].fetch(overdue_fines_policy_id) do
         Honeybadger.notify('Unable to find overdue fines policy for checkout',
                            context: { key:, overdue_fines_policy_id: })
         {}
@@ -228,12 +228,11 @@ module Folio
     def overdue_fines_policy_id # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       cache_key = ['overdue_fines_policy_id', item_type_id, loan_type_id, loan_type_id, location_id].join(':')
       Rails.cache.fetch(cache_key, expires_in: 1.day) do
-        
         response = FolioClient.new.find_overdue_fines_policy(item_type_id:,
-                                                              loan_type_id:,
-                                                              patron_type_id:,
-                                                              location_id:)
-        
+                                                             loan_type_id:,
+                                                             patron_type_id:,
+                                                             location_id:)
+
         unless response['overdueFinePolicyId']
           Honeybadger.notify('Unable to find overdue fines policy for checkout',
                              context: { key:, cache_key:, response: })
@@ -242,8 +241,6 @@ module Folio
         response['overdueFinePolicyId']
       end
     end
-
-
 
     def location_id
       record.dig('item', 'item', 'effectiveLocationId')
