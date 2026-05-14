@@ -26,18 +26,7 @@
       <%= render 'checkouts/renew_all_button' %>
     </div>
 
-    <div class="d-none d-md-flex row font-weight-bold list-header">
-      <div class="row col-md-4">
-        <div class="col-md-12 col-lg-6" data-sort="status">Status</div>
-        <div class="col-md-12 col-lg-6 active" data-sort="due_date">Due date</div>
-      </div>
-      <div class="col-md-5" data-sort="title">Title</div>
-      <div class="row col-md-3">
-        <div class="col-md-12 col-lg-6" data-sort="author">Author</div>
-        <div class="col-md-12 col-lg-6 call_number" data-sort="call_number">Call number</div>
-      </div>
-    </div>
-    <ul class="checkouts" data-sortable-target="list" aria-live="polite">
+    <ul class="checkouts p-0" data-sortable-target="list" aria-live="polite">
       <%= render CheckoutComponent.with_collection(other_checkouts, patron: patron_or_group) %>
     </ul>
   </div>
