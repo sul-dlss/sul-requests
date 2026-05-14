@@ -4,7 +4,7 @@
   <% recalled, other_checkouts = @checkouts.partition(&:recalled?) %>
   <%= render 'checkouts/recalled', recalled: recalled if recalled.any? %>
 
-  <div id="checkouts" class="page-section" data-controller="sortable" data-sortable-sort-value="dueDate">
+  <div id="checkouts" class="page-section" data-controller="sortable google-cover-image" data-sortable-sort-value="dueDate">
     <div class="d-flex justify-content-between">
       <h2>Checked out: <%= other_checkouts.length %><%= " (#{patron_or_group.remaining_checkouts} remaining)" if patron_or_group.remaining_checkouts %></h2>
       <div class="dropdown" data-sortable-target="menu">

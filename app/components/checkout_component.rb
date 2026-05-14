@@ -54,6 +54,20 @@ class CheckoutComponent < ViewComponent::Base
     contact_info&.dig(:email)
   end
 
+  def cover_image
+    identifiers = checkout.identifiers
+
+    tag.img class: "cover-image center-block #{identifiers.values.flatten.join(' ')}",
+            hidden: true,
+            alt: '',
+            data: {
+              google_cover_image_target: 'image',
+              isbn: identifiers['ISBN']&.join(','),
+              oclc: identifiers['OCLC']&.join(','),
+              lccn: identifiers['LCCN']&.join(',')
+            }
+  end
+
   private
 
   def checkout_status_html(text:, css_class: nil, icon: nil, accrued: 0)

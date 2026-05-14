@@ -1135,12 +1135,6 @@ label.btn-close {
   padding-left: 0;
 }
 
-.clamp-1 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 .clamp {
   -webkit-box-orient: vertical;
   box-orient: vertical;
@@ -1151,6 +1145,9 @@ label.btn-close {
   text-overflow: ellipsis;
 }
 
+.clamp-1 {
+  --clamp-lines: 1;
+}
 .clamp-2 {
   --clamp-lines: 2;
 }
@@ -1185,4 +1182,10 @@ label.btn-close {
   .expand-icon {
     display: inline;
   }
+}
+
+.cover-image {
+  border: 1px solid var(--stanford-fog-light);
+  max-height: 200px;
+  max-width: 80px;
 }
