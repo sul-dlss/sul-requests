@@ -1,0 +1,12 @@
+<div class="request-fulfillment">
+  <% case mode %>
+  <% when :appointment %>
+    <%= render Aeon::RequestAppointmentTimeComponent.new(request:, with_reading_room: false) %>
+  <% when :delivered %>
+    <i class="bi bi-envelope me-1 text-green"></i>
+    <span class="ms-1 text-green"><span class="fw-semibold">Delivered</span> on <%= l(delivered_date.to_date, format: :short) %></span>
+  <% when :delivery_pending %>
+    <i class="bi bi-clock me-1 text-spirited-dark"></i>
+    <span class="ms-1 text-spirited-dark">Pending delivery</span>
+  <% end %>
+</div>

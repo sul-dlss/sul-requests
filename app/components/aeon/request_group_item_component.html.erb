@@ -1,33 +1,30 @@
 <li id="<%= dom_id(request) %>" class="request list-group-item">
-  <div class="d-flex flex-row align-items-start justify-content-between gap-5">
-    <div class="d-flex flex-row align-items-start justify-content-between gap-4 flex-grow-1">
-      <div class="d-flex flex-column">
-        <div class="d-flex justify-content-start align-items-center">
-          <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
+  <div class="rgi-id d-flex align-items-center">
+    <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
 
-          <% if remove_from_appointment? %>
-            <%= form_with(url: redraft_aeon_request_path(request, kind: request.request_type)) do |f| %>
-              <%= tag.button type: :submit, class: 'btn btn-link su-underline' do %>
-                <i class="bi bi-x align-middle me-1"></i><span>Remove</span>
-              <% end %>
-            <% end %>
-          <% end %>
-        </div>
-
-        <%= render Aeon::RequestItemDetailComponent.new(request:) %>
-      </div>
-
-      <% if appointment? %>
-        <span class="ms-auto">
-          <%= render Aeon::RequestAppointmentTimeComponent.new(request:, with_reading_room: false) %>
-        </span>
+    <% if remove_from_appointment? %>
+      <%= form_with(url: redraft_aeon_request_path(request, kind: request.request_type)) do |f| %>
+        <%= tag.button type: :submit, class: 'btn btn-link su-underline' do %>
+          <i class="bi bi-x align-middle me-1"></i><span>Remove</span>
+        <% end %>
       <% end %>
-    </div>
-
-    <%= render Aeon::RequestActionsComponent.new(request:) if actions? %>
+    <% end %>
   </div>
+
+  <div class="rgi-detail pb-1">
+    <%= render Aeon::RequestItemDetailComponent.new(request:) %>
+  </div>
+
+  <%= render Aeon::RequestFulfillmentComponent.new(request:) if fulfillment? %>
+
+  <% if actions? %>
+    <div class="rgi-actions">
+      <%= render Aeon::RequestActionsComponent.new(request:) %>
+    </div>
+  <% end %>
+
   <% if footer? %>
-    <div class="pt-2 fs-14 text-body-secondary d-flex gap-sm-3 flex-sm-row flex-column">
+    <div class="rgi-footer pt-2 fs-14 text-body-secondary d-flex gap-sm-3 flex-sm-row flex-column">
       <div>Request #<%= transaction_number %></div>
       <div>Date added/modified: <%= l(transaction_date, format: :full) %></div>
     </div>

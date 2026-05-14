@@ -1,6 +1,6 @@
 <%= render CardComponent.new id: request_group.dom_id, element: element, classes: 'request-group' do |c| %>
   <% c.with_title do %>
-    <div>
+    <div class="flex-grow-1">
       <div class="d-flex flex-wrap gap-1 justify-content-between align-items-center mt-2 mb-3">
         <span>
           <%= render Aeon::RequestStatusPillComponent.new(request: status_request) %>
