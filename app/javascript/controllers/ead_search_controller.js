@@ -32,28 +32,45 @@ export default class extends Controller {
 
   buildIndex() {
     if (!this.hasTreeTarget) return
-    const walk = (el, ancestors) => {
-      if (el.classList?.contains('invisible') || el.classList?.contains('d-none') || el.getAttribute('aria-hidden') === 'true') return
+    if (this.isHidden(this.treeTarget)) return
 
-      let nextAncestors = el !== this.treeTarget && el.classList?.contains('collapse') ? ancestors.concat(el) : ancestors
-
-      // For matches that land on collapsables like series headers, assume the user wants to see the contexts and expand.
-      if (el.getAttribute?.('data-bs-toggle') === 'collapse') {
-        const targetId = (el.getAttribute('href') || el.getAttribute('data-bs-target') || '').replace(/^#/, '')
-        const target = targetId && document.getElementById(targetId)
-        if (target?.classList.contains('collapse')) nextAncestors = nextAncestors.concat(target)
-      }
-
-      for (let child = el.firstChild; child; child = child.nextSibling) {
-        if (child.nodeType === Node.TEXT_NODE) {
-          const value = child.nodeValue
-          if (value?.trim()) this.index.push({ node: child, text: value.toLowerCase(), ancestors: nextAncestors })
-        } else if (child.nodeType === Node.ELEMENT_NODE) {
-          walk(child, nextAncestors)
+    const filter = {
+      acceptNode: (node) => {
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          return this.isHidden(node) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_SKIP
         }
+        return node.nodeValue?.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT
       }
     }
-    walk(this.treeTarget, [])
+    const walker = document.createTreeWalker(
+      this.treeTarget,
+      NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT,
+      filter
+    )
+    let node
+    while ((node = walker.nextNode())) {
+      this.index.push({ node, text: node.nodeValue.toLowerCase() })
+    }
+  }
+
+  isHidden(el) {
+    return el.classList?.contains('invisible') || el.classList?.contains('d-none') || el.getAttribute('aria-hidden') === 'true'
+  }
+
+  // Collects collapsibles to expand for a match: every `.collapse` ancestor in the DOM, plus
+  // the collapse target of any `data-bs-toggle="collapse"` ancestor (so matches inside a series
+  // header expand the controlled section too).
+  collectAncestors(node) {
+    const result = []
+    for (let el = node.parentElement; el && el !== this.treeTarget; el = el.parentElement) {
+      if (el.classList.contains('collapse')) result.push(el)
+      if (el.getAttribute('data-bs-toggle') === 'collapse') {
+        const id = (el.getAttribute('href') || el.getAttribute('data-bs-target') || '').replace(/^#/, '')
+        const target = id && document.getElementById(id)
+        if (target?.classList.contains('collapse')) result.push(target)
+      }
+    }
+    return result
   }
 
   onInput() {
@@ -78,13 +95,13 @@ export default class extends Controller {
     if (query.length < this.minQueryLengthValue) return this.resetMatches()
 
     this.matches = []
-    for (const { text, node, ancestors } of this.index) {
+    for (const { text, node } of this.index) {
       let start = 0, idx
       while ((idx = text.indexOf(query, start)) !== -1) {
         const range = document.createRange()
         range.setStart(node, idx)
         range.setEnd(node, idx + query.length)
-        this.matches.push({ range, ancestors })
+        this.matches.push({ range })
         start = idx + query.length
       }
     }
@@ -113,7 +130,8 @@ export default class extends Controller {
   revealCurrent() {
     const match = this.matches[this.currentIndex]
     if (!match) return
-    this.expandAncestors(match.ancestors, () => {
+    const ancestors = this.collectAncestors(match.range.startContainer)
+    this.expandAncestors(ancestors, () => {
       this.paintHighlights()
       match.range.startContainer.parentElement?.scrollIntoView({ block: 'center', behavior: 'auto' })
     })
