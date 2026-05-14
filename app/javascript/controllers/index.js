@@ -43,6 +43,9 @@ application.register("appointment", AppointmentController)
 import AppointmentSelectController from "./appointment_select_controller"
 application.register("appointment-select", AppointmentSelectController)
 
+import AppointmentSelectSubmitController from "./appointment_select_submit_controller"
+application.register("appointment-select-submit", AppointmentSelectSubmitController)
+
 import OtpInput from "./otp_input_controller"
 application.register("otp-input", OtpInput)
 

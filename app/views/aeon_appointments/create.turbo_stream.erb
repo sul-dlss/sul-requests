@@ -1,6 +1,13 @@
 <%= turbo_stream.after_all '.appt-dropdown li:last-child' do %>
   <%= render Aeon::AppointmentOptionComponent.new(appointment: @appointment, data: { 'appointment-select-target': 'option' }) %>
 <% end %>
+
+<%= turbo_stream.replace('draft_aeon_requests_sidebar') do %>
+  <div id="draft_aeon_requests_sidebar">
+    <%= render 'aeon_appointments/draft_aeon_requests' %>
+  </div>
+<% end %>
+
 <%= turbo_stream.update 'new-appt-alert' do %>
   <div class="alert alert-success alert-dismissible shadow-sm d-flex align-items-center m-0">
     <div role="img" aria-label="Success icon" class="bi bi-check-circle-fill text-success fs-3 me-3"></div>
