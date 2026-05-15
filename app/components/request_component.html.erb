@@ -1,4 +1,4 @@
-<%= render CardComponent.new(element: 'li', data: { 'library-sort-value': request.sort_key(:library), 'date-sort-value': request.sort_key(:date), 'title-sort-value': request.sort_key(:title), 'author-sort-value': request.sort_key(:author), 'call-number-sort-value': request.sort_key(:call_number)  }) do |c| %>
+<%= render CardComponent.new(element: 'li', id: "request-#{request.key}", data: { 'library-sort-value': request.sort_key(:library), 'date-sort-value': request.sort_key(:date), 'title-sort-value': request.sort_key(:title), 'author-sort-value': request.sort_key(:author), 'call-number-sort-value': request.sort_key(:call_number)  }) do |c| %>
   <% c.with_title do %>
     <div class="d-flex flex-row gap-3 align-items-center">
       <% if request.ready_for_pickup? %>

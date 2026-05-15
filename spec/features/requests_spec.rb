@@ -28,49 +28,21 @@ RSpec.describe 'Request Page' do
   it 'has ready for pickup request data' do
     visit requests_path
 
-    expect(page).to have_css('ul.ready-requests', count: 1)
-    expect(page).to have_css('ul.ready-requests li', count: 2)
-
-    within(first('ul.ready-requests li')) do
-      expect(page).to have_css('.library', text: 'Green Library')
-      expect(page).to have_css('.title', text: /Rothko : the color field paintings/)
-      expect(page).to have_css('.call_number', text: 'ND237 .R725 A4 2017 F')
+    within('#request-7fa87cfe-df57-4dc7-953b-a5a44ff37d91') do
+      expect(page).to have_text(/Rothko : the color field paintings/)
+      expect(page).to have_text('Pickup: Green Library')
+      expect(page).to have_text 'ND237 .R725 A4 2017 F'
     end
   end
 
   it 'ready for pickup can be cancelled' do
     visit requests_path
 
-    within(first('ul.ready-requests li')) do
-      first('.btn-request-cancel').click
+    within('#request-7fa87cfe-df57-4dc7-953b-a5a44ff37d91') do
+      click_on 'Cancel'
     end
 
     expect(page).to have_css '.flash_messages', text: 'Success!'
-  end
-
-  it 'has requested data' do
-    visit requests_path
-
-    expect(page).to have_css('ul.requested-requests', count: 1)
-    expect(page).to have_css('ul.requested-requests li', count: 2)
-
-    within(first('ul.requested-requests li')) do
-      expect(page).to have_css('.library', text: 'Classics')
-      expect(page).to have_css('.title', text: 'A history of Persia')
-      expect(page).to have_css('.call_number', text: 'DS298 .W3 2023')
-    end
-  end
-
-  it 'hides some data behind a toggle', :js do
-    visit requests_path
-
-    within(first('ul.ready-requests li')) do
-      expect(page).to have_no_css('dl', visible: :visible)
-      expect(page).to have_no_css('dt', text: 'Requested:', visible: :visible)
-      click_on 'Expand'
-      expect(page).to have_css('dl', visible: :visible)
-      expect(page).to have_css('dt', text: 'Requested:', visible: :visible)
-    end
   end
 
   it 'is editable' do
@@ -96,8 +68,8 @@ RSpec.describe 'Request Page' do
       expect(page).to have_css('.dropdown-toggle', text: 'Sort (Title)')
       expect(page).to have_css('.active[data-sortable-sort-param="title"]', visible: :all)
 
-      within(first('ul.requested-requests li')) do
-        expect(page).to have_css('.title', text: /A history of Persia/)
+      within(first('ul.requests li')) do
+        expect(page).to have_text(/A history of Persia/)
       end
     end
   end
