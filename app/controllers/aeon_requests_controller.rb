@@ -21,7 +21,7 @@ class AeonRequestsController < ApplicationController
   def resubmit
     authorize! :update, @aeon_request
 
-    @updated_request = aeon_client.update_request_route(transaction_number: params[:id], status: 'Submitted by User')
+    @updated_aeon_request = aeon_client.update_request_route(transaction_number: params[:id], status: 'Submitted by User')
 
     respond_to do |format|
       format.turbo_stream { update_turbo_stream }
@@ -32,7 +32,7 @@ class AeonRequestsController < ApplicationController
     authorize! :update, @aeon_request
 
     request_field = @aeon_request.activity? ? 'activity_id' : 'appointment_id'
-    @updated_request = Aeon::UpdateRequestService.new(@aeon_request, { "#{request_field}": nil, status: 'Awaiting User Review' }).call
+    @updated_aeon_request = Aeon::UpdateRequestService.new(@aeon_request, { "#{request_field}": nil, status: 'Awaiting User Review' }).call
 
     respond_to do |format|
       format.turbo_stream { update_turbo_stream }
@@ -46,7 +46,7 @@ class AeonRequestsController < ApplicationController
   def update
     authorize! :update, @aeon_request
 
-    @updated_request = Aeon::UpdateRequestService.new(@aeon_request, aeon_request_params).call
+    @updated_aeon_request = Aeon::UpdateRequestService.new(@aeon_request, aeon_request_params).call
 
     respond_to do |format|
       format.turbo_stream { update_turbo_stream }
@@ -60,7 +60,7 @@ class AeonRequestsController < ApplicationController
   def destroy
     authorize! :destroy, @aeon_request
 
-    @updated_request = aeon_client.update_request_route(transaction_number: params[:id], status: 'Cancelled by User')
+    @updated_aeon_request = aeon_client.update_request_route(transaction_number: params[:id], status: 'Cancelled by User')
 
     respond_to do |format|
       format.turbo_stream { update_turbo_stream }
@@ -87,7 +87,7 @@ class AeonRequestsController < ApplicationController
 
   def update_turbo_stream
     @previous_aeon_requests = @aeon_requests
-    @next_aeon_requests = @aeon_requests - [@aeon_request] + [@updated_request]
+    @next_aeon_requests = @aeon_requests - [@aeon_request] + [@updated_aeon_request]
 
     @previous_aeon_request_groups = @aeon_request_groups
     @next_aeon_request_groups = Aeon::RequestGrouping.from_requests(@next_aeon_requests)
