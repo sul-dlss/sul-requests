@@ -135,11 +135,13 @@ class PatronRequest < ApplicationRecord
   end
 
   def expected_aeon_item_count
-    if ead_url.present?
-      aeon_item&.count || 0
-    else
-      selected_items.count
-    end
+    item_count = if ead_url.present?
+                   aeon_item&.count || 0
+                 else
+                   selected_items.count
+                 end
+    activity_multiplier = activity_ids.presence&.count || 1
+    item_count * activity_multiplier
   end
 
   def item_mediation_data
