@@ -43,6 +43,21 @@ FactoryBot.define do
     initialize_with { new(**attributes) }
   end
 
+  factory :aeon_activity, class: 'Aeon::Activity' do
+    id { 1 }
+    name { 'An Aeon Activity' }
+    activity_type { 'Class visit' }
+    start_time { Time.zone.parse('2026-02-19T12:00:00') }
+    stop_time { Time.zone.parse('2026-02-19T13:00:00') }
+    active { true }
+    status { 'Pending' }
+    location { 'Special Collections' }
+    sites { ['SPECUA'] }
+    users { [] }
+
+    initialize_with { new(**attributes) }
+  end
+
   factory :aeon_appointment, class: 'Aeon::Appointment' do
     id { 23 }
     username { 'nerdsquirrel@stanford.edu' }

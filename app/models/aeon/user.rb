@@ -26,8 +26,12 @@ module Aeon
       auth_type == 'Default'
     end
 
+    def all_requests
+      self.class.aeon_client.requests_for(username:)
+    end
+
     def requests
-      @requests ||= self.class.aeon_client.requests_for(username:).reject(&:activity?)
+      @requests ||= all_requests.reject(&:activity?)
     end
 
     def activities

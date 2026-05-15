@@ -17,7 +17,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
   let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
   let(:stub_aeon_client) do
     instance_double(AeonClient, find_user: aeon_user, create_request: created_request, update_request_route: nil,
-                                reading_rooms:, available_appointments:, activities_for: [])
+                                reading_rooms:, available_appointments:, activities_for: [], requests_for: [])
   end
   let(:created_request) { instance_double(Aeon::Request, id: 123, transaction_number: 'abc123', submitted?: true, draft?: false, valid?: true) }
   let(:available_appointments) do
@@ -106,6 +106,43 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
                                                                         call_number: 'ABC 123'
                                                                       ))
+    end
+  end
+
+  context 'with an activity request' do
+    let(:activity) { build(:aeon_activity, id: 42, users: [aeon_user]) }
+    let(:stub_aeon_client) do
+      instance_double(AeonClient, find_user: aeon_user, create_request: created_request, update_request_route: nil,
+                                  reading_rooms:, available_appointments:, activities_for: [activity])
+    end
+
+    before do
+      allow(stub_aeon_client).to receive(:requests_for) do
+        patron_request = PatronRequest.last
+        # Exercise the confirmation screen polling
+        next [] unless patron_request&.submitted_to_aeon_at
+
+        [build(:aeon_request, :submitted,
+               activity_id: 42,
+               web_request_form: 'multiple',
+               reference_number: patron_request.to_global_id.to_s)]
+      end
+    end
+
+    it 'shows the activity-grouped confirmation after submission' do
+      choose 'Activity (e.g., class visit or exhibit)'
+      click_button 'Continue'
+
+      check 'An Aeon Activity'
+
+      click_button 'Submit request'
+
+      expect(page).to have_text 'We received your activities request'
+
+      perform_enqueued_jobs
+
+      expect(page).to have_text 'An Aeon Activity'
+      expect(page).to have_text 'Request #307'
     end
   end
 
