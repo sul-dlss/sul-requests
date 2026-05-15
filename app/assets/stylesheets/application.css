@@ -501,6 +501,10 @@ label.btn-close {
  transform: rotate(180deg);
 }
 
+.accordion-header[aria-expanded="true"] .accordion-header-icon::before {
+  transform: rotate(180deg);
+}
+
 .request.card, .request-group.card {
   --bs-card-cap-bg: white;
   --bs-border-radius: 0.25rem;
