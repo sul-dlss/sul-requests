@@ -363,6 +363,13 @@ class FolioGraphqlClient
                                       author
                                       instance {
                                         hrid
+
+                                        identifiers {
+                                          value
+                                          identifierTypeObject {
+                                            name
+                                          }
+                                        }
                                       }
                                       isbn
                                     }
