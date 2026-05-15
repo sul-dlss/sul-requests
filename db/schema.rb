@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_10_175606) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_15_085854) do
   create_table "admin_comments", force: :cascade do |t|
     t.string "comment"
     t.string "commenter"
@@ -55,6 +55,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_10_175606) do
     t.string "patron_id"
     t.string "request_type"
     t.string "service_point_code"
+    t.datetime "submitted_to_aeon_at"
     t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.index ["display_type"], name: "index_patron_requests_on_display_type"

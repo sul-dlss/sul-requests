@@ -39,7 +39,7 @@ class PatronRequestsController < ApplicationController
 
   def show
     if @patron_request.aeon_page? && use_requests_redesign? # rubocop:disable Style/GuardClause
-      @aeon_requests = Aeon::RequestGrouping.new(current_user.aeon.requests.select do |x|
+      @aeon_requests = Aeon::RequestGrouping.new(current_user.aeon.all_requests.select do |x|
         x.reference_number == @patron_request.to_global_id.to_s
       end)
       request.variant = :aeon

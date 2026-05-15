@@ -8,10 +8,16 @@ class SubmitAeonPatronRequestJob < ApplicationJob
 
   def perform(patron_request)
     return unless patron_request.aeon_page?
-    return perform_activity_request(patron_request) if patron_request.data['activity_ids'].present?
-    return perform_ead_request(patron_request) if patron_request.ead_url.present?
 
-    perform_folio_request(patron_request)
+    if patron_request.data['activity_ids'].present?
+      perform_activity_request(patron_request)
+    elsif patron_request.ead_url.present?
+      perform_ead_request(patron_request)
+    else
+      perform_folio_request(patron_request)
+    end
+
+    patron_request.update(submitted_to_aeon_at: Time.current)
   end
 
   def perform_activity_request(patron_request)
