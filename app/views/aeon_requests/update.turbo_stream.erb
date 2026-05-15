@@ -6,6 +6,16 @@
   <%= turbo_stream.remove(@aeon_request) %>
 <% end %>
 
+<%= turbo_stream.replace(dom_id(@appointment)) do %>
+  <%= render Aeon::AppointmentComponent.new(appointment: @appointment) %>
+<% end if @appointment %>
+
 <%= turbo_stream.replace('aeon-appointments') do %>
   <%= render 'aeon_appointments' %>
+<% end %>
+
+<%= turbo_stream.replace('draft_aeon_requests_sidebar') do %>
+  <div id="draft_aeon_requests_sidebar">
+    <%= render 'aeon_appointments/draft_aeon_requests' %>
+  </div>
 <% end %>

@@ -24,7 +24,7 @@ class AeonRequestsController < ApplicationController
     @updated_request = aeon_client.update_request_route(transaction_number: params[:id], status: 'Submitted by User')
 
     respond_to do |format|
-      format.turbo_stream { render 'update' }
+      format.turbo_stream { update_turbo_stream }
     end
   end
 
@@ -35,7 +35,7 @@ class AeonRequestsController < ApplicationController
     @updated_request = Aeon::UpdateRequestService.new(@aeon_request, { "#{request_field}": nil, status: 'Awaiting User Review' }).call
 
     respond_to do |format|
-      format.turbo_stream
+      format.turbo_stream { update_turbo_stream }
     end
   end
 
@@ -63,7 +63,7 @@ class AeonRequestsController < ApplicationController
     @updated_request = aeon_client.update_request_route(transaction_number: params[:id], status: 'Cancelled by User')
 
     respond_to do |format|
-      format.turbo_stream { render 'update' }
+      format.turbo_stream { update_turbo_stream }
     end
   end
 
@@ -86,15 +86,19 @@ class AeonRequestsController < ApplicationController
   private
 
   def update_turbo_stream
-    if params[:sidebar].present?
-      appointment_requests = current_user.aeon.submitted_requests.select do |request|
-        request.appointment_id == @updated_request.appointment_id
-      end.push(@updated_request)
-      @updated_request.appointment.requests = appointment_requests
-      render 'update_from_appt_page'
-    else
-      render 'update'
+    @previous_aeon_requests = @aeon_requests
+    @next_aeon_requests = @aeon_requests - [@aeon_request] + [@updated_request]
+
+    @previous_aeon_request_groups = @aeon_request_groups
+    @next_aeon_request_groups = Aeon::RequestGrouping.from_requests(@next_aeon_requests)
+
+    @appointment = @updated_aeon_request.appointment&.tap do |appt|
+      appt.requests = @next_aeon_requests.select do |request|
+        request.appointment_id == appt.id
+      end
     end
+
+    render 'update'
   end
 
   def set_variant
