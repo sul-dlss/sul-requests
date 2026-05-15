@@ -105,4 +105,38 @@ FactoryBot.define do
              'feesAndFines' => { 'amountRemainingToPay' => 200 } } }
     end
   end
+
+  factory :request, class: 'Folio::Request' do
+    record do
+      { 'requestDate' => '2023-06-26T17:45:01.000+00:00',
+        'item' =>
+           { 'instanceId' => '818d9d5e-1007-5bc8-8cfd-04fce963fbc6',
+             'title' => 'And the cat says... / Susan L. Helwig.',
+             'itemId' => 'ec3e386b-7a67-5889-b329-b02fec9d822c',
+             'item' =>
+             { 'circulationNotes' => [],
+               'effectiveShelvingOrder' => 'PR 49199.4 H45 A64 42013 11',
+               'effectiveCallNumberComponents' => { 'callNumber' => 'PR9199.4 .H45 A64 2013' },
+               'effectiveLocation' => { 'code' => 'SAL3-STACKS', 'library' => { 'code' => 'SAL3' },
+                                        'details' => { 'pageServicePoints' => [] } } },
+             'author' => 'Helwig, Susan L., 1950-',
+             'instance' => { 'hrid' => 'a10156831' },
+             'isbn' => nil },
+        'requestId' => 'c7691ab1-9660-4291-a5f7-562cceb1c8a2',
+        'status' => 'Open___Not_yet_filled',
+        'expirationDate' => '2023-10-21T06:59:59.000+00:00',
+        'details' => { 'holdShelfExpirationDate' => nil, 'proxyUserId' => nil, 'proxy' => nil },
+        'pickupLocationId' => 'a5dbb3dc-84f8-4eb3-8bfe-c61f74a9e92d',
+        'pickupLocation' => { 'code' => 'GREEN-LOAN' },
+        'queueTotalLength' => 1,
+        'queuePosition' => 1,
+        'cancellationReasonId' => nil,
+        'canceledByUserId' => nil,
+        'cancellationAdditionalInformation' => nil,
+        'canceledDate' => nil,
+        'patronComments' => nil }
+    end
+
+    initialize_with { new(record) }
+  end
 end
