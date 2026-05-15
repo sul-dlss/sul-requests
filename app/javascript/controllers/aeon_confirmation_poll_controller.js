@@ -6,7 +6,7 @@ export default class extends Controller {
   static values = {
     attempts: Number,
     interval: { type: Number, default: 1000 },
-    maxAttempts: { type: Number, default: 20 }
+    maxAttempts: { type: Number, default: 10 }
   }
 
   static targets = ["frame", "loading"]
@@ -26,10 +26,11 @@ export default class extends Controller {
   refresh() {
     this.attemptsValue++
 
-    if (this.attemptsValue >= this.maxAttemptsValue) return
-
     const url = new URL(window.location.href)
     url.searchParams.set("_poll", Date.now())
+    if (this.attemptsValue >= this.maxAttemptsValue) {
+      url.searchParams.set("stop_polling", "1")
+    }
     this.frameTarget.src = url.toString()
   }
 }

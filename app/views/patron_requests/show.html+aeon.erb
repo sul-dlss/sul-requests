@@ -12,7 +12,7 @@
     <%= render RecordHeaderCardComponent.new(record: @patron_request.bib_record, classes: 'mt-4 mb-4', title_classes: ['h3']) %>
     <div data-controller="aeon-confirmation-poll" data-aeon-confirmation-poll-attempts-value="0">
       <turbo-frame id="aeon-confirmation" data-aeon-confirmation-poll-target="frame">
-        <% if @aeon_requests.count < @patron_request.expected_aeon_item_count %>
+        <% if @aeon_requests.count < @patron_request.expected_aeon_item_count && !params[:stop_polling] %>
           <div class="d-flex align-items-center my-3" data-aeon-confirmation-poll-target="loading">
             <div class="spinner-border spinner-border-sm me-2" role="status">
               <span class="visually-hidden">Loading...</span>
