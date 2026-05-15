@@ -924,7 +924,7 @@ label.btn-close {
   display: none;
 }
 
-#aeon-appointments .card {
+#aeon-appointments-frame .card {
   --bs-card-border-color: var(--stanford-20-black);
 }
 
