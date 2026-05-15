@@ -74,6 +74,14 @@ module Aeon
     alias_attribute :publication, :for_publication
     alias_attribute :additional_information, :special_request
 
+    def group_key
+      if multi_item_selector?
+        [status, title, digital?]
+      else
+        [id]
+      end
+    end
+
     def appointment?
       appointment_id.present?
     end
