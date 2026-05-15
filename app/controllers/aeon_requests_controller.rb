@@ -9,6 +9,7 @@ class AeonRequestsController < ApplicationController
   include AeonSortable
 
   before_action :load_aeon_requests
+  before_action :load_filtered_aeon_requests, only: [:index]
   before_action :load_aeon_request_groups
   before_action :load_aeon_request, except: [:index, :destroy_multiple]
   before_action :set_variant, only: [:index, :edit]
@@ -106,8 +107,14 @@ class AeonRequestsController < ApplicationController
     @aeon_request_group = @aeon_request_groups.find { |request_group| request_group.requests.find { |r| r.id == @aeon_request.id } }
   end
 
-  def load_aeon_requests # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity
-    return [] unless current_user&.aeon
+  def load_aeon_requests
+    @aeon_requests = [] and return unless current_user&.aeon
+
+    @aeon_requests = sort_aeon_requests(current_user.aeon.requests)
+  end
+
+  def load_filtered_aeon_requests # rubocop:disable Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/AbcSize
+    @aeon_requests = [] and return unless current_user&.aeon
 
     @aeon_requests = case params[:kind]
                      when 'drafts'
@@ -121,7 +128,7 @@ class AeonRequestsController < ApplicationController
                      when 'activity'
                        current_user.aeon.activities_with_requests.map(&:requests).flatten
                      else
-                       current_user.aeon.requests
+                       []
                      end
 
     @aeon_requests = sort_aeon_requests(filter_aeon_requests(@aeon_requests))
