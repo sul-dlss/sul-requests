@@ -27,7 +27,7 @@ module Aeon
     end
 
     def all_requests
-      @all_requests ||= self.class.aeon_client.requests_for(username:)
+      self.class.aeon_client.requests_for(username:)
     end
 
     def requests

@@ -16,7 +16,7 @@ module Aeon
     end
 
     def all_requests
-      @all_requests ||= []
+      []
     end
 
     def appointments

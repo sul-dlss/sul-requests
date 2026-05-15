@@ -109,6 +109,43 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
     end
   end
 
+  context 'with an activity request' do
+    let(:activity) { build(:aeon_activity, id: 42, users: [aeon_user]) }
+    let(:stub_aeon_client) do
+      instance_double(AeonClient, find_user: aeon_user, create_request: created_request, update_request_route: nil,
+                                  reading_rooms:, available_appointments:, activities_for: [activity])
+    end
+
+    before do
+      allow(stub_aeon_client).to receive(:requests_for) do
+        patron_request = PatronRequest.last
+        # Exercise the confirmation screen polling
+        next [] unless patron_request&.submitted_to_aeon_at
+
+        [build(:aeon_request, :submitted,
+               activity_id: 42,
+               web_request_form: 'multiple',
+               reference_number: patron_request.to_global_id.to_s)]
+      end
+    end
+
+    it 'shows the activity-grouped confirmation after submission' do
+      choose 'Activity (e.g., class visit or exhibit)'
+      click_button 'Continue'
+
+      check 'An Aeon Activity'
+
+      click_button 'Submit request'
+
+      expect(page).to have_text 'We received your activities request'
+
+      perform_enqueued_jobs
+
+      expect(page).to have_text 'An Aeon Activity'
+      expect(page).to have_text 'Request #307'
+    end
+  end
+
   context 'with multiple holdings' do
     let(:folio_instance) { :special_collections_holdings }
 
