@@ -38,7 +38,6 @@ RSpec.describe 'Appointments', :js do
       click_on 'Appointment'
       click_on I18n.l(1.week.from_now, format: :date_only).to_s
     end
-    perform_enqueued_jobs
 
     within '#aeon_appointments' do
       expect(page).to have_text('Throwing a sinker ball at 94 mpg with wicked movement')

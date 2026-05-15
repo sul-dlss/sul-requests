@@ -1,11 +1,5 @@
-<%= form_with(model: request, data: { turbo: true}) do |f| %>
-  <div class="dropdown sidebar-custom-select" data-controller="appointment-select-submit">
-    <%= hidden_field_tag 'sidebar', true %>
-    <%= f.hidden_field :appointment_id, data: { appointment_select_submit_target: "input" } %>
-    <%= button_tag 'Appointment', class: 'dropdown-toggle btn btn-link su-underline p-0', type: 'button', data: { bs_toggle: 'dropdown', appointment_select_target: 'button' }, aria: { expanded: false }, disabled: selectable_appointments.blank? %>
-    <menu class="dropdown-menu sidebar-appt-dropdown">
-      <li></li>
-      <%= render Aeon::AppointmentOptionComponent.with_collection(selectable_appointments, data_action: 'appointment-select-submit#updateInput') %>
-    </menu>
-  </div>
+<%= form_with(model: request, data: { turbo: true, controller: 'appointment-select-submit'}) do |f| %>
+  <%= hidden_field_tag 'sidebar', true %>
+  <%= f.hidden_field :appointment_id, data: { appointment_select_submit_target: "input" } %>
+  <%= render 'aeon_appointments/dropdown', appointments: selectable_appointments, reading_room_id: request.reading_room.id %>
 <% end %>
