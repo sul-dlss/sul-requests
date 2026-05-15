@@ -85,12 +85,23 @@ class AeonRequestsController < ApplicationController
 
   private
 
-  def update_turbo_stream
+  def update_turbo_stream # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
     @previous_aeon_requests = @aeon_requests
-    @next_aeon_requests = @aeon_requests - [@aeon_request] + [@updated_aeon_request]
+    @next_aeon_requests = sort_aeon_requests(@aeon_requests - [@aeon_request] + [@updated_aeon_request]).sort_by do |x|
+      [x.title, x.sort_key]
+    end
 
     @previous_aeon_request_groups = @aeon_request_groups
     @next_aeon_request_groups = Aeon::RequestGrouping.from_requests(@next_aeon_requests)
+    @next_draft_aeon_request_groups = Aeon::RequestGrouping.from_requests(@next_aeon_requests.select(&:draft?).reject(&:digital?))
+
+    if @aeon_request.appointment_id != @updated_aeon_request.appointment_id
+      @previous_appointment = @aeon_request.appointment&.tap do |appt|
+        appt.requests = @next_aeon_requests.select do |request|
+          request.appointment_id == appt.id
+        end
+      end
+    end
 
     @appointment = @updated_aeon_request.appointment&.tap do |appt|
       appt.requests = @next_aeon_requests.select do |request|

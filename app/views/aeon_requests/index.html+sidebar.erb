@@ -1,9 +1,11 @@
-<turbo-frame id="aeon-requests">
+<turbo-frame id="aeon-requests-frame">
   <h2 class="h3 text-center mb-3">
     <i class="bi bi-pin-angle-fill me-1"></i>Saved for later
     <div class="fw-semibold text-center fs-6 mt-1">Items requested for reading room use</div>
   </h2>
   <p class="text-center text-digital-red"><i class="bi bi-exclamation-triangle-fill me-1"></i> Materials are unavailable until an appointment is scheduled.</p>
 
-  <%= render Aeon::RequestGroupBriefComponent.with_collection(@aeon_request_groups, after_request_item_component: SidebarAppointmentDropdownComponent) %>
+  <div id="aeon-requests">
+    <%= render Aeon::RequestGroupBriefComponent.with_collection(@aeon_request_groups, after_request_item_component: SidebarAppointmentDropdownComponent) %>
+  </div>
 </turbo-frame>
