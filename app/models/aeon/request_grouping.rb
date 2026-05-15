@@ -23,17 +23,17 @@ module Aeon
     end
 
     def dom_id
-      return "group_#{requests.first.id}" unless requests.first.multi_item_selector?
+      return "group_#{first.id}" unless multi_item_selector?
 
-      "group_#{requests.first.title.parameterize}_#{requests.first.digital? ? 'digital' : 'reading_room'}"
+      "group_#{title.parameterize}_#{digital? ? 'digital' : 'reading_room'}"
     end
 
     def draft_requests
-      requests.select(&:draft?)
+      select(&:draft?)
     end
 
     def submitted_requests
-      requests.select(&:submitted?)
+      select(&:submitted?)
     end
 
     def appointment_reading_room
@@ -45,9 +45,9 @@ module Aeon
     # For status display, prefer a pending request over a ready one
     # so the group shows as pending if any request is still pending.
     def status_request
-      return first unless digital? && requests.any?(&:submitted?)
+      return first unless digital? && any?(&:submitted?)
 
-      requests.find { |r| !r.scan_delivered? } || first
+      find { |r| !r.scan_delivered? } || first
     end
   end
 end
