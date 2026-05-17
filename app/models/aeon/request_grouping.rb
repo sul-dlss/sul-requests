@@ -13,9 +13,7 @@ module Aeon
              :document_type, :ead_number, :multi_item_selector?, :title, to: :first
 
     def self.from_requests(requests)
-      multi, single = requests.partition(&:multi_item_selector?)
-      groups = multi.group_by { |r| [r.status, r.title, r.digital?] }.values.map { |group| new(group) }
-      groups + single.map { |r| new([r]) }
+      requests.group_by(&:group_key).values.map { |group| new(group) }
     end
 
     def initialize(requests)
