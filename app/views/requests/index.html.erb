@@ -1,32 +1,8 @@
 <h1 class="sr-only">Requests</h1>
 
-<% ready, requested = @requests.partition(&:ready_for_pickup?) %>
-<% if ready.any? %>
-  <div class="page-section">
-    <div class="d-flex justify-content-between">
-      <h2>Ready for pickup: <%= ready.length %></h2>
-    </div>
-
-    <div class="d-none d-md-flex row font-weight-bold list-header">
-      <div class="row col-md-4">
-        <div class="col-md-12 col-lg-6">Pickup library</div>
-        <div class="col-md-12 col-lg-6 active">Pickup by</div>
-      </div>
-      <div class="col-md-5">Title</div>
-      <div class="row col-md-3">
-        <div class="col-md-12 col-lg-6">Author</div>
-        <div class="col-md-12 col-lg-6 call_number">Call number</div>
-      </div>
-    </div>
-    <ul class="list ready-requests list-group">
-      <%= render RequestComponent.with_collection(ready, patron: patron_or_group, group: params[:group]) %>
-    </ul>
-  </div>
-<% end %>
-
-<div id="requests" class="page-section" data-controller="sortable" data-sortable-sort-value="date">
+<div id="requests" class="page-section" data-controller="sortable google-cover-image" data-sortable-sort-value="date">
   <div class="d-flex justify-content-between">
-    <h2>Requested: <%= requested.length %></h2>
+    <h2>Requested: <%= @requests.length %></h2>
     <% if @requests.any? %>
     <div class="dropdown" data-sortable-target="menu">
       <button class="btn btn-secondary dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -44,19 +20,8 @@
     <% end %>
   </div>
   <% if @requests.any? %>
-    <div class="d-none d-md-flex row font-weight-bold list-header">
-      <div class="row col-md-4">
-        <div class="col-md-12 col-lg-6" data-sort="library">Deliver to</div>
-        <div class="col-md-12 col-lg-6 active" data-sort="date">Not needed after</div>
-      </div>
-      <div class="col-md-5" data-sort="title">Title</div>
-      <div class="row col-md-3">
-        <div class="col-md-12 col-lg-6" data-sort="author">Author</div>
-        <div class="col-md-12 col-lg-6 call_number" data-sort="call_number">Call number</div>
-      </div>
-    </div>
-    <ul class="list requested-requests list-group" data-sortable-target="list" aria-live="polite">
-      <%= render RequestComponent.with_collection(requested, patron: patron_or_group, group: params[:group]) %>
+    <ul class="requests p-0" data-sortable-target="list" aria-live="polite">
+      <%= render RequestComponent.with_collection(@requests, patron: patron_or_group, group: params[:group]) %>
     </ul>
   <% end %>
 </div>

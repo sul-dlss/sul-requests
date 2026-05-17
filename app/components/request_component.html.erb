@@ -1,83 +1,67 @@
-<li class="list-group-item" data-library-sort-value="<%= h request.sort_key(:library) %>" data-date-sort-value="<%= h request.sort_key(:date) %>"  data-title-sort-value="<%= h request.sort_key(:title) %>" data-author-sort-value="<%= h request.sort_key(:author) %>" data-call-number-sort-value="<%= h request.sort_key(:call_number) %>">
-  <div class="row d-flex flex-wrap position-relative justify-content-between">
-    <div class="d-flex flex-row flex-grow-1 justify-content-between w-100 row col-md-4">
-      <div class="w-50 col-md-12 col-lg-6 library">
-        <% if request.ready_for_pickup? %>
-          <span class="text-ready">
-            <%= sul_icon 'sharp-check_circle-24px' %>
-            <span class="d-md-none">Pick up at </span><%= request.service_point_name %>
-          </span>
-        <% else %>
-          <span class="d-md-none">Deliver to </span><%= request.service_point_name %>
-        <% end %>
-      </div>
-      <% if request.expiration_date %>
-        <div class="w-50 col-md-12 col-lg-6 text-right text-md-left date">
-          <span class="d-inline d-md-none mr-2">by</span>
-          <%= l(request.expiration_date, format: :short) %>
-        </div>
-      <% elsif request.fill_by_date %>
-        <div class="w-50 col-md-12 col-lg-6 text-right text-md-left date">
-        <span class="d-inline d-md-none mr-2">Exp.</span>
-          <%= l(request.fill_by_date, format: :short) %>
-        </div>
+<%= render CardComponent.new(element: 'li', id: "request-#{request.key}", data: { 'library-sort-value': request.sort_key(:library), 'date-sort-value': request.sort_key(:date), 'title-sort-value': request.sort_key(:title), 'author-sort-value': request.sort_key(:author), 'call-number-sort-value': request.sort_key(:call_number)  }) do |c| %>
+  <% c.with_title do %>
+    <div class="d-flex flex-row gap-3 align-items-center">
+      <% if request.ready_for_pickup? %>
+        <span class="small fw-medium rounded-pill text-white bg-lagunita-dark px-2 py-1">Pickup ready</span>
+
+        <span class="text-lagunita-dark">
+          <%= sul_icon 'sharp-check_circle-24px' %>
+          <span class="d-md-none">Pick up at </span><%= request.service_point_name %>
+
+          <% if request.expiration_date %>
+            <span class="d-inline d-md-none mr-2">by</span>
+            <%= l(request.expiration_date, format: :short) %>
+          <% end %>
+        </span>
+      <% else %>
+        <span class="small fw-medium rounded-pill text-white bg-lagunita-dark px-2 py-1">Pickup pending</span>
+        <span class="text-lagunita-dark">We'll email you when your items are available for pickup.</span>
       <% end %>
     </div>
-    <div class="order-1 order-md-1 col-10 col-md-5 align-items-baseline">
-      <h3 class="clamp-3 record-title title text-reset"><%= request.title %></h3>
-    </div>
-    <div class="order-3 order-md-2 d-flex flex-row flex-grow-1 row col-md-3">
-      <div class="w-50 col-md-12 col-lg-6 clamp-1 author"><%= request.author %></div>
-      <div class="w-50 col-md-12 col-lg-6 call_number"><%= request.call_number %></div>
-    </div>
-    <button class="col-2 col-md order-2 order-md-3 btn collapsed stretched-link position-static" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDetails-<%= request.key.parameterize %>" aria-expanded="false" aria-controls="collapseDetails-<%= request.key.parameterize %>">
-      <span class="expand-icon"><%= sul_icon :'sharp-add-24px' %><span class="sr-only">Expand</span></span>
-      <span class="collapse-icon"><%= sul_icon :'sharp-remove-24px' %><span class="sr-only">Collapse</span></span>
-    </button>
-  </div>
-  <div class="collapse w-100" id="collapseDetails-<%= request.key.parameterize %>">
-    <div class="row mb-0">
-      <div class="col-11 offset-1 col-md-10 offset-md-2">
-        <% if patron.can_modify_requests? %>
-          <% if request.manage_request_link %>
-            <div class="illiad-link">
-              <a href="<%= request.manage_request_link %>">Manage this request in your ILL account</a>
-            </div>
-          <% else %>
-            <% if request.ready_for_pickup? %>
-              <%= form_tag request_path(request.key), method: :delete do %>
-                <%= hidden_field_tag :title, request.title %>
-                <%= hidden_field_tag :group, group? if group? %>
-                <%= button_tag class: 'btn btn-link btn-request-cancel btn-icon-prefix', type: 'submit' do %>
-                  <%= sul_icon 'outline-cancel-24px' %> Cancel this request
-                <% end %>
-              <% end %>
-            <% else %>
-              <%= link_to edit_request_path(request.key, group: group?), data: { 'mylibrary-modal' => 'trigger', 'convert-button' => true } do %>
-                <%= sul_icon 'outline-cancel-24px' %> Change or cancel this request
-              <% end %>
+
+    <% if patron.can_modify_requests? %>
+      <% if request.manage_request_link %>
+        <div class="illiad-link">
+          <a href="<%= request.manage_request_link %>">Manage this request in your ILL account</a>
+        </div>
+      <% else %>
+        <% if request.ready_for_pickup? %>
+          <%= form_tag request_path(request.key), method: :delete do %>
+            <%= hidden_field_tag :title, request.title %>
+            <%= hidden_field_tag :group, group? if group? %>
+            <%= button_tag class: 'btn btn-outline-primary btn-sm', type: 'submit' do %>
+              Cancel
             <% end %>
           <% end %>
+        <% else %>
+          <%= link_to edit_request_path(request.key, group: group?), class: 'btn btn-outline-primary btn-sm' do %>
+            Edit
+          <% end %>
         <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <% c.with_footer do %>
+    Date added/modified: <%= l(request.placed_date, format: :short) %>
+  <% end %>
+
+  <% c.with_body(classes: 'bg-white') do %>
+    <div class="d-flex justify-content-between gap-5">
+      <div>
+        <h3 class="mb-1 clamp clamp-3"><%= request.title %></h3>
+        <div class="d-flex flex-row flex-wrap position-relative justify-content-start gap-4">
+          <div>Call number: <%= request.call_number %></div>
+          <%= detail_link_to_searchworks(request.catkey) %>
+        </div>
+        <div class="mb-1 clamp clamp-1"><span class="visually-hidden">Author:</span><%= request.author %></div>
+        <% if request.library_name.present? %><div><%= request.library_name %></div><% end %>
+        <div><span class="bg-light fw-semibold p-1 rounded">Pickup: <%= request.service_point_name %></span></div>
+        <div>Waitlist position: <%= request.waitlist_position %></div>
+      </div>
+      <div>
+        <%= cover_image %>
       </div>
     </div>
-    <dl class="row mb-0">
-      <% if group? %>
-        <dt class="col-3 offset-1 col-md-2 offset-md-2">Borrower:</dt>
-        <dd class="col-8"><%= patron.proxy_group.member_name(request.patron_key) %></dd>
-      <% end %>
-      <% if request.placed_date %>
-        <dt class="col-3 offset-1 col-md-2 offset-md-2">Requested:</dt>
-        <dd class="col-8"><%= l(request.placed_date, format: :short) %></dd>
-      <% end %>
-      <% if request.waitlist_position %>
-        <dt class="col-3 offset-1 col-md-2 offset-md-2">Waitlist position:</dt>
-        <dd class="col-8"><%= request.waitlist_position %></dd>
-      <% end %>
-      <dt class="col-3 offset-1 col-md-2 offset-md-2">Source:</dt>
-      <dd class="col-8"><%= request.library_name %></dd>
-    </dl>
-
-    <%= detail_link_to_searchworks(request.catkey) unless request.from_ill? %>
-  </div>
-</li>
+  <% end %>
+<% end %>
