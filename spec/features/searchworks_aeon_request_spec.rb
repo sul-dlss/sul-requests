@@ -26,6 +26,23 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
                      maximum_appointment_length: 210.minutes)]
   end
 
+  let(:appointments) do
+    [
+      build(:aeon_appointment,
+            start_time: DateTime.new(2026, 2, 19, 12, 0, 0),
+            stop_time: DateTime.new(2026, 2, 19, 13, 0, 0),
+            id: 1,
+            requests: [instance_double(Aeon::Request, cancelled?: false)],
+            reading_room: reading_rooms.last),
+      build(:aeon_appointment,
+            start_time: DateTime.new(2026, 2, 20, 13, 0, 0),
+            stop_time: DateTime.new(2026, 2, 20, 14, 0, 0),
+            id: 2,
+            requests: [instance_double(Aeon::Request, cancelled?: false)],
+            reading_room: reading_rooms.first)
+    ]
+  end
+
   before do
     allow(Folio::Patron).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
     login_as(current_user)
@@ -34,26 +51,8 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
     login_as(current_user)
 
     allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
-    allow(aeon_user).to receive_messages(appointments: [
-                                           instance_double(Aeon::Appointment,
-                                                           start_time: DateTime.new(2026, 2, 19, 12, 0, 0),
-                                                           stop_time: DateTime.new(2026, 2, 19, 13, 0, 0),
-                                                           id: 1,
-                                                           to_key: 'aeon_appointment_1',
-                                                           editable?: true,
-                                                           sort_key: 2,
-                                                           requests: [instance_double(Aeon::Request)],
-                                                           reading_room: reading_rooms.last),
-                                           instance_double(Aeon::Appointment,
-                                                           start_time: DateTime.new(2026, 2, 20, 13, 0, 0),
-                                                           stop_time: DateTime.new(2026, 2, 20, 14, 0, 0),
-                                                           id: 2,
-                                                           to_key: 'aeon_appointment_2',
-                                                           editable?: true,
-                                                           sort_key: 2,
-                                                           requests: [instance_double(Aeon::Request)],
-                                                           reading_room: reading_rooms.first)
-                                         ],
+    appointments.each { |appt| allow(appt).to receive(:editable?).and_return(true) }
+    allow(aeon_user).to receive_messages(appointments: appointments,
                                          requests: [])
 
     visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SPEC-STACKS')
