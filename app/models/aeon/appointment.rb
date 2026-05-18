@@ -34,7 +34,7 @@ module Aeon
     end
 
     def requests
-      @requests ||= []
+      (@requests ||= []).reject(&:cancelled?)
     end
 
     def date

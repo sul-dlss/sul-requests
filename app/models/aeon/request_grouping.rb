@@ -10,7 +10,7 @@ module Aeon
     delegate :each, to: :requests
 
     delegate :submitted?, :base_callnumber, :call_number, :date, :digital?, :activity?,
-             :document_type, :ead_number, :multi_item_selector?, :title, to: :first
+             :document_type, :ead_number, :multi_item_selector?, :title, :group_key, :status, to: :first
 
     def self.from_requests(requests)
       requests.group_by(&:group_key).values.map { |group| new(group) }
@@ -23,7 +23,7 @@ module Aeon
     def dom_id
       return "group_#{first.id}" unless multi_item_selector?
 
-      "group_#{title.parameterize}_#{digital? ? 'digital' : 'reading_room'}"
+      "group_#{status}_#{title.parameterize}_#{digital? ? 'digital' : 'reading_room'}"
     end
 
     def draft_requests

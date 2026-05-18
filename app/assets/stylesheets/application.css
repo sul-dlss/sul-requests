@@ -924,7 +924,7 @@ label.btn-close {
   display: none;
 }
 
-#aeon-appointments .card {
+#aeon-appointments-frame .card {
   --bs-card-border-color: var(--stanford-20-black);
 }
 
@@ -1072,14 +1072,6 @@ label.btn-close {
 
 .request-group-per-appointment .request {
   --bs-list-group-border-width: 0;
-}
-
-.zero-items-alert {
-  display: none;
-}
-
-.zero-items-alert:only-child {
-  display: flex;
 }
 
 /* ---- Custom date picker ---- */

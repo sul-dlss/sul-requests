@@ -19,7 +19,7 @@ RSpec.describe 'Appointments', :js do
                     appointments_for: [appointment],
                     find_queue: queue,
                     update_request: build(:aeon_request, transaction_number: 100),
-                    update_request_route: build(:aeon_request, transaction_number: 100),
+                    update_request_route: build(:aeon_request, :draft, transaction_number: 100),
                     requests_for: [build(:aeon_request, transaction_number: 100, username: user.email_address, appointment: appointment)],
                     cancel_appointment: [],
                     reading_rooms:,
@@ -104,11 +104,11 @@ RSpec.describe 'Appointments', :js do
 
   describe 'redrafting a request' do
     it 'moves the request into draft' do
-      within '#aeon_request_100' do
+      within '#aeon_appointments #aeon_request_100' do
         click_on 'Save for later'
       end
 
-      expect(page).to have_no_css '#aeon_request_100'
+      expect(page).to have_no_css '#aeon_appointments #aeon_request_100'
 
       expect(stub_aeon_client).to have_received(:update_request_route).with({ status: 'Awaiting User Review',
                                                                               transaction_number: 100 })
