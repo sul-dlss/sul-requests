@@ -1,4 +1,5 @@
-<form data-controller="appointment">
+<%= form_with url: new_aeon_appointment_path, method: :get, data: {'turbo-frame': params[:modal] || 'appointment-form' }  do |f| %>
+  <%= hidden_field_tag :modal, params[:modal] if params[:modal] %>
   <div class="modal-body">
     <%= render AlertComponent.new(type: :info) do %>Materials must be used in their associated reading room.<% end %>
     <label for="reading_room_id" class="d-block fw-semibold redesign-required-label mb-2">For which reading room?</label>
@@ -6,6 +7,6 @@
   </div>
   <div class="modal-footer">
     <%= link_to 'Cancel', aeon_appointments_path, class: 'btn btn-outline-primary', data: { 'bs-dismiss': 'modal' } %>
-    <%= submit_tag 'Continue', class: 'ms-2 btn btn-primary', data: { action: 'click->appointment#updateReadingRoom' } %>
+    <%= submit_tag 'Continue', class: 'ms-2 btn btn-primary' %>
   </div>
-</form>
+<% end %>
