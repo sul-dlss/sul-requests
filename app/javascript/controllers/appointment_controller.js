@@ -29,20 +29,6 @@ export default class extends Controller {
     });
   }
 
-  updateReadingRoom(e) {
-    e.preventDefault();
-    const formData = new FormData(this.element);
-    const reading_room = formData.get('reading_room_id');
-    if (!reading_room) return
-    const turboFrame = this.element.closest('turbo-frame');
-    let newTurboSrc = `/aeon_appointments/new/${reading_room}`
-    if (turboFrame.src){
-      const urlParams = new URLSearchParams(turboFrame.src.split("?").slice(-1)[0]);
-      newTurboSrc += `?modal=${urlParams.get('modal')}`
-    }
-    turboFrame.src = newTurboSrc
-  }
-
   refreshAvailability() {
     const formData = new FormData(this.element);
 
