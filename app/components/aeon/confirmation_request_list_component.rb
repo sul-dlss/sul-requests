@@ -27,10 +27,6 @@ module Aeon
       activity.name
     end
 
-    def accordion_name(request)
-      "accordionRequest#{request.transaction_number}"
-    end
-
     attr_reader :requests
   end
 end
