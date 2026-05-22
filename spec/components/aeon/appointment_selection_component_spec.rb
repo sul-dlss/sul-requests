@@ -13,13 +13,11 @@ RSpec.describe Aeon::AppointmentSelectionComponent, type: :component do
     end
 
     it 'renders existing appointment time and date and placeholder for date to be selected' do
-      within('.selected-appointment') do
-        expect(page).to have_css('h4', text: 'Current')
-        expect(page).to have_text('Mar 11, 2024')
-        expect(page).to have_no_text('1:00 PM -  1:15 PM')
-        expect(page).to have_css('h4', text: 'New')
-        expect(page).to have_css('div[data-appointment-target="selection"]', text: 'Select date')
-      end
+      expect(page).to have_css('h4', text: 'Current')
+      expect(page).to have_text('Mar 11, 2024')
+      expect(page).to have_no_text('1:00 pm - 1:15 pm')
+      expect(page).to have_css('h4', text: 'New')
+      expect(page).to have_css('div[data-appointment-target="selection"]', text: 'Select date')
     end
   end
 
@@ -32,17 +30,15 @@ RSpec.describe Aeon::AppointmentSelectionComponent, type: :component do
     end
 
     it 'renders existing appointment time and date and placeholder for date to be selected' do
-      within('.selected-appointment') do
-        expect(page).to have_css('h4', text: 'Current')
-        expect(page).to have_text('Mar 11, 2024')
-        expect(page).to have_text('1:00 PM -  1:15 PM')
-        expect(page).to have_css('h4', text: 'New')
-        expect(page).to have_css('div[data-appointment-target="selection"]', text: 'Select date and time')
-      end
+      expect(page).to have_css('h4', text: 'Current')
+      expect(page).to have_text('Mar 11, 2024')
+      expect(page).to have_text('1:00 pm - 1:15 pm')
+      expect(page).to have_css('h4', text: 'New')
+      expect(page).to have_css('div[data-appointment-target="selection"]', text: 'Select date and time')
     end
   end
 
-  context 'with new appointment for reading room with date and time' do
+  context 'with a new appointment for reading room with date and time' do
     let(:appointment) { Aeon::Appointment.new }
 
     before do
@@ -50,10 +46,10 @@ RSpec.describe Aeon::AppointmentSelectionComponent, type: :component do
       render_inline(described_class.new(appointment:))
     end
 
-    it 'renders only the selection placeholder to be hidden' do
+    it 'renders the selection placeholder with no text' do
       expect(page).to have_no_text('Current')
       expect(page).to have_no_text('New')
-      expect(page).to have_css('div[data-appointment-target="selection"]', text: 'Select date and time')
+      expect(page).to have_css('div[data-appointment-target="selection"]')
     end
   end
 

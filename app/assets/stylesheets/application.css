@@ -91,6 +91,10 @@ layer(components);
   color: var(--stanford-digital-blue);
 }
 
+.text-digital-blue-dark {
+  color: var(--stanford-digital-blue-dark);
+}
+
 .text-digital-red {
   color: var(--stanford-digital-red);
 }
@@ -938,13 +942,6 @@ label.btn-close {
   caret-color: transparent;
 }
 
-.selected-appointment {
-  font-weight: 600;
-  padding: 0.5rem 1rem;
-  background-color: var(--stanford-fog-light);
-  color: var(--stanford-digital-blue-dark);
-}
-
 .request-group {
   margin-bottom: 1rem;
 }
@@ -1033,6 +1030,11 @@ label.btn-close {
   }
 }
 
+/* Non-specific rule to provide padding for when we use modal content in non-modal situations */
+.modal-body {
+  --bs-modal-padding: 1rem;
+}
+
 .modal-body.add-items {
   .reading-room {
     display: none;
@@ -1097,9 +1099,17 @@ label.btn-close {
 }
 
 .banner {
+  --bs-border-color: var(--stanford-20-black);
+  --bs-border-width: 1px;
   font-weight: 600;
   padding: 0.5rem 1rem;
-  background-color: var(--stanford-fog-light);  
+  background-color: var(--stanford-fog-light);
+
+  &:empty {
+    /* Easier than fighting CSS layers with display: flex !important */
+    height: 0;
+    padding: 0;
+  }
 }
 
 .request-group-per-appointment .request {
