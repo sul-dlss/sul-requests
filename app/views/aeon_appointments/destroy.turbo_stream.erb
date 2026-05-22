@@ -1,7 +1,3 @@
 <%= turbo_stream.remove(@appointment) %>
 
-<%= turbo_stream.replace('draft_aeon_requests_sidebar') do %>
-  <div id="draft_aeon_requests_sidebar">
-    <%= render 'aeon_appointments/draft_aeon_requests' %>
-  </div>
-<% end %>
+<%= turbo_stream.remove_all ".dropdown [data-value='#{@appointment.id}']" %>
