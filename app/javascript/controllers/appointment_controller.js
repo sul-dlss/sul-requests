@@ -12,20 +12,8 @@ export default class extends Controller {
     const minDuration = data.minSlot;
     this.durationTargets.forEach((duration) => {
       const seconds = parseInt(duration.dataset.seconds);
-      if (maxDuration < seconds || minDuration > seconds) {
-        duration.classList.add('d-none');
-        if (duration.querySelector('input').checked){
-          const totalTargets = this.durationTargets.length;
-          const visibleTargets = this.durationTargets.filter(dt => !dt.classList.contains('d-none'));
-          const durationIndex = this.durationTargets.indexOf(duration);
-          let visibleIndex = Math.max(durationIndex-(totalTargets-visibleTargets.length), 0);
-
-          // click the closest index to the hidden element
-          visibleTargets[visibleIndex].querySelector('input').click();
-        }
-      } else {
-        duration.classList.remove('d-none');
-      }
+      if (maxDuration < seconds || minDuration > seconds) { duration.classList.add('d-none') }
+      else { duration.classList.remove('d-none') }
     });
   }
 
