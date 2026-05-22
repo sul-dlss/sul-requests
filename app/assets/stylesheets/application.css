@@ -505,6 +505,10 @@ label.btn-close {
   transform: rotate(180deg);
 }
 
+.rounded-pill {
+  padding: 4px 12px;
+}
+
 .request.card, .request-group.card {
   --bs-card-cap-bg: white;
   --bs-border-radius: 0.25rem;
@@ -514,10 +518,6 @@ label.btn-close {
 
   .card-header {
     --bs-card-border-color: var(--stanford-20-black);
-  }
-
-  .rounded-pill {
-    padding: 4px 12px;
   }
 
   .appointment-details .bi-dot {
