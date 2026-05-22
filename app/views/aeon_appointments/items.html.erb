@@ -29,10 +29,7 @@
               <%= render Aeon::RemoveRequestComponent.new(request: Aeon::Request.new(transaction_number: '__TRANSACTION_NUMBER__', item_title: '__ITEM_TITLE__')) %>
             </template>
             <div class="accordion-body p-0">
-              <% grouped_appt_requests = Aeon::RequestGrouping.from_requests(@appointment.requests) %>
-              <% grouped_appt_requests.each do |request_group| %>
-                <%= render Aeon::RequestGroupBriefComponent.new(request_group:, data: { controller: 'add-items', appointment_target: '#appointmentRequests' }, after_request_item_component: Aeon::RemoveRequestComponent) %>
-              <% end %>
+              <%= render Aeon::RequestGroupBriefComponent.with_collection(@appointment.grouped_requests, data: { controller: 'add-items', appointment_target: '#appointmentRequests' }, after_request_item_component: Aeon::RemoveRequestComponent) %>
             </div>
           </div>
         </div>
@@ -50,9 +47,7 @@
               <%= render Aeon::AddRequestComponent.new(request: Aeon::Request.new(transaction_number: '__TRANSACTION_NUMBER__', item_title: '__ITEM_TITLE__')) %>
             </template>
             <div class="accordion-body p-0">
-              <% @aeon_request_groups.each do |request_group| %>
-                <%= render Aeon::RequestGroupBriefComponent.new(request_group:, data: { controller: 'add-items', appointment_target: '#appointmentRequests' }, after_request_item_component: Aeon::AddRequestComponent) %>
-              <% end %>
+              <%= render Aeon::RequestGroupBriefComponent.with_collection(@aeon_request_groups, data: { controller: 'add-items', appointment_target: '#appointmentRequests' }, after_request_item_component: Aeon::AddRequestComponent) %>
             </div>
           </div>
         </div>

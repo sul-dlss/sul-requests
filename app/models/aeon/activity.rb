@@ -7,8 +7,6 @@ module Aeon
 
     attr_accessor :id, :users, :start_time, :stop_time, :name, :active, :location, :activity_type, :status, :sites
 
-    attr_writer :requests
-
     def self.from_dynamic(dyn) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       users = dyn['users'].map { |user| Aeon::User.from_dynamic(user) }
       new(
@@ -33,8 +31,17 @@ module Aeon
       status == 'Completed'
     end
 
+    def requests=(requests)
+      @requests = requests
+      @grouped_requests = nil
+    end
+
     def requests
       @requests ||= []
+    end
+
+    def grouped_requests
+      @grouped_requests ||= Aeon::RequestGrouping.from_requests(requests)
     end
 
     def assign_requests_from(all_requests)

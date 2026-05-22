@@ -8,8 +8,6 @@ module Aeon
     attr_accessor :id, :username, :reading_room_id, :start_time, :stop_time,
                   :name, :appointment_status, :reading_room, :creation_date, :available_to_proxies
 
-    attr_writer :requests
-
     def self.from_dynamic(dyn) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       new(
         id: dyn['id'],
@@ -33,8 +31,17 @@ module Aeon
       reading_room_id.present?
     end
 
+    def requests=(requests)
+      @requests = requests
+      @grouped_requests = nil
+    end
+
     def requests
       (@requests ||= []).reject(&:cancelled?)
+    end
+
+    def grouped_requests
+      @grouped_requests ||= Aeon::RequestGrouping.from_requests(requests)
     end
 
     def date
