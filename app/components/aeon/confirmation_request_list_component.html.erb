@@ -15,7 +15,7 @@
               <% elsif request.requested_pages.present? %>
                 Pages <%= request.requested_pages %>
               <% end %>
-              <i class="bi bi-chevron-down accordion-header-icon"></i>
+              <i class="bi bi-chevron-down accordion-header-icon ms-3"></i>
             </div>
           </div>
           <div id="<%= dom_id(request, :accordion) %>" class="accordion-collapse collapse" aria-labelledby="<%= dom_id(request, :heading) %>%">
