@@ -4,7 +4,7 @@
 class PillComponent < ViewComponent::Base
   def initialize(tag: 'span', classes: [])
     @tag = tag
-    @classes = classes + %w[small fw-medium rounded-pill px-2 py-1]
+    @classes = classes + %w[small fw-medium rounded-pill]
   end
 
   def call
