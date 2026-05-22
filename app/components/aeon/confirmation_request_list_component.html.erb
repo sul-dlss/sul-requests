@@ -5,18 +5,18 @@
       <li class="request accordion accordion-flush">
         <div class="accordion-item">
           <div class="accordion-header bg-white accordion-button px-0 collapsed d-flex align-items-center justify-content-between" type="button" data-bs-toggle="collapse" data-bs-target="#<%= dom_id(request, :accordion) %>" aria-expanded="false" aria-controls="<%= dom_id(request, :accordion) %>" id="<%= dom_id(request, :heading) %>">
-            <div>
-              <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
-              <span class="ms-2 fs-14">Request #<%= request.transaction_number %></span>
+            <div class="confirmation-request-summary">
+              <div class="crs-id"><%= render Aeon::RequestItemIdentifierComponent.new(request:) %></div>
+              <span class="crs-num small">Request #<%= request.transaction_number %></span>
+              <span class="crs-time text-nowrap">
+                <% if request.appointment %>
+                  <%= render AppointmentTimeRangeComponent.new(appointment: request.appointment) %>
+                <% elsif request.requested_pages.present? %>
+                  Pages <%= request.requested_pages %>
+                <% end %>
+              </span>
             </div>
-            <div>
-              <% if request.appointment %>
-                <%= render AppointmentTimeRangeComponent.new(appointment: request.appointment) %>
-              <% elsif request.requested_pages.present? %>
-                Pages <%= request.requested_pages %>
-              <% end %>
-              <i class="bi bi-chevron-down accordion-header-icon"></i>
-            </div>
+            <i class="ms-3 bi bi-chevron-down accordion-header-icon"></i>
           </div>
           <div id="<%= dom_id(request, :accordion) %>" class="accordion-collapse collapse" aria-labelledby="<%= dom_id(request, :heading) %>%">
             <div class="accordion-body">
