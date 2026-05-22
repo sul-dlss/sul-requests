@@ -2,7 +2,7 @@
   <% c.with_title do %>
     <div class="d-flex flex-row gap-3 align-items-center">
       <% if request.ready_for_pickup? %>
-        <span class="small fw-medium rounded-pill text-white bg-lagunita-dark px-2 py-1">Pickup ready</span>
+        <%= render PillComponent.new(classes: %w[bg-lagunita-dark text-white]).with_content('Pickup ready') %>
 
         <span class="text-lagunita-dark">
           <%= sul_icon 'sharp-check_circle-24px' %>
@@ -14,7 +14,7 @@
           <% end %>
         </span>
       <% else %>
-        <span class="small fw-medium rounded-pill text-white bg-lagunita-dark px-2 py-1">Pickup pending</span>
+        <%= render PillComponent.new(classes: %w[bg-lagunita-dark text-white]).with_content('Pickup pending') %>
         <span class="text-lagunita-dark">We'll email you when your items are available for pickup.</span>
       <% end %>
     </div>

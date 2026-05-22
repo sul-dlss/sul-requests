@@ -1,3 +1,1 @@
-<span class="small fw-medium rounded-pill text-white bg-lagunita-dark <%= status_class %>">
-  <%= status_text %>
-</span>
+<%= render PillComponent.new(classes: %w[bg-lagunita-dark text-white] + [status_class]).with_content(status_text) %>
