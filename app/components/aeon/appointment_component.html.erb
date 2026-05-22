@@ -19,7 +19,7 @@
   <% c.with_body do %>
       <%= render Aeon::RequestGroupPerAppointmentComponent.with_collection(appointment.grouped_requests) %>
 
-      <% if request_groups.none? %>
+      <% if appointment.grouped_requests.none? %>
         <div role="alert" class="zero-items-alert align-items-center text-digital-red bg-body py-3 px-4">
           <div role="img" aria-label="Danger icon" class="bi bi-exclamation-triangle-fill fs-3 me-3 align-self-center d-flex justify-content-center ms-2"></div>
           <div class="me-2">
