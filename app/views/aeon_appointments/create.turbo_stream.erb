@@ -1,5 +1,5 @@
 <%= turbo_stream.after_all '.appt-dropdown li:last-child' do %>
-  <%= render Aeon::AppointmentOptionComponent.new(appointment: @appointment, data: { 'appointment-select-target': 'option' }) %>
+  <%= render Aeon::AppointmentOptionComponent.new(appointment: @appointment, data: { 'appointment-select-target': 'option' }, data_action: 'appointment-select#select') %>
 <% end %>
 
 <%= turbo_stream.replace_all(".sidebar-custom-select[data-reading-room-id='#{@appointment.reading_room.id}']") do %>
