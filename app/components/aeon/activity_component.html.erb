@@ -1,4 +1,4 @@
-<%= render CardComponent.new do |c| %>
+<%= render CardComponent.new(id: dom_id(activity)) do |c| %>
   <% c.with_title do %>
     <div class="d-flex flex-wrap gap-3 align-items-center">
       <%= render PillComponent.new(classes: %w[bg-bay-dark text-white]).with_content(activity.activity_type) %>

@@ -103,6 +103,13 @@ class AeonRequestsController < ApplicationController
       end
     end
 
+    if @updated_aeon_request.activity_id
+      @activity = current_user.aeon.activities_with_requests.find do |activity|
+        activity.id == @updated_aeon_request.activity_id
+      end
+      @activity.requests = @activity.requests.reject { |request| request.id == @aeon_request.id }
+    end
+
     @appointment = @updated_aeon_request.appointment&.tap do |appt|
       appt.requests = @next_aeon_requests.select do |request|
         request.appointment_id == appt.id
@@ -124,6 +131,7 @@ class AeonRequestsController < ApplicationController
 
   def load_aeon_requests
     @aeon_requests = [] and return unless current_user&.aeon
+    return load_filtered_aeon_requests if params[:kind]
 
     @aeon_requests = sort_aeon_requests(current_user.aeon.requests)
   end

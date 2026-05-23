@@ -42,7 +42,7 @@ module Aeon
     end
 
     def requests=(requests)
-      @requests = requests
+      @requests = requests.sort_by { |r| [r.title.to_s, r.sort_key] }
       @grouped_requests = nil
     end
 
@@ -55,7 +55,9 @@ module Aeon
     end
 
     def assign_requests_from(all_requests)
-      self.requests = all_requests.select { |request| request.activity_id == id }
+      self.requests = all_requests.select do |request|
+        request.activity_id == id && request.submitted?
+      end
     end
 
     def reading_room; end
