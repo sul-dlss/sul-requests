@@ -52,7 +52,9 @@
       </turbo-frame>
     <% end %>
     <% if @appointment.requests.any? %>
-      <div class="alert alert-info"><%= pluralize(@appointment.requests.length, 'item') %> will move to the new appointment.</div>
+      <%= render AlertComponent.new(type: :info, classes: ['border-0', 'shadow-none', 'w-fit'], with_icon: false) do %>
+        <span class="fw-semibold"><%= pluralize(@appointment.requests.length, 'item') %></span> will move to the new appointment.
+      <% end %>
     <% end %>
   </div>
 

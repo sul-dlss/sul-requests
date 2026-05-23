@@ -116,6 +116,8 @@ layer(components);
   color: var(--stanford-80-black);
 }
 
+.w-fit { width: fit-content; }
+
 @font-face {
   font-family: "Stanford";
   src: url("https://www-media.stanford.edu/assets/fonts/stanford.woff") format("woff"), url("https://www-media.stanford.edu/assets/fonts/stanford.ttf") format("truetype");
