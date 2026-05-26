@@ -9,7 +9,7 @@ module Aeon
 
     def initialize(request:, classes: ['fw-semibold'])
       @request = request
-      @classes = classes
+      @classes = Array(classes)
     end
 
     def call_number
