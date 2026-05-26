@@ -22,7 +22,9 @@
         <%= render Aeon::RequestGroupBulkActionsComponent.with_collection(@aeon_request_groups) %>
 
         <div hidden data-draft-request-target="modalSummary"></div>
-        <div class="mt-2 fw-bold">This action cannot be undone.</div>
+        <%= render AlertComponent.new(type: :info, classes: ['border-0', 'shadow-none', 'mb-0'], with_icon: false) do %>
+          <span class="fw-semibold text-wrap">This action cannot be undone.</span>
+        <% end %>
       <% end %>
       <% component.with_footer do %>
         <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
