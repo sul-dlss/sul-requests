@@ -504,11 +504,13 @@ label.btn-close {
   }
 
 .series-header[aria-expanded="true"] .disclosure-icon::before {
- transform: rotate(90deg);
+  transform: rotate(90deg);
 }
 
-.accordion-button[aria-expanded="true"] ~ .accordion-header-icon::before {
- transform: rotate(180deg);
+.accordion-button[aria-expanded="true"] .accordion-header-icon::before,
+.accordion-button[aria-expanded="true"] ~ .accordion-header-icon::before,
+.accordion-header[aria-expanded="true"] .accordion-header-icon::before {
+  transform: rotate(180deg);
 }
 
 .rounded-pill {
