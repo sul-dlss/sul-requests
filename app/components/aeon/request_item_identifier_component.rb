@@ -3,13 +3,15 @@
 module Aeon
   # Request item identifier
   class RequestItemIdentifierComponent < ViewComponent::Base
-    attr_reader :classes, :request
+    attr_reader :classes, :request, :wrapper_tag, :wrapper_classes
 
     delegate :ead?, :volume, to: :request
 
-    def initialize(request:, classes: ['fw-semibold'])
+    def initialize(request:, classes: ['fw-semibold'], wrapper_tag: nil, wrapper_classes: [])
       @request = request
       @classes = Array(classes)
+      @wrapper_tag = wrapper_tag
+      @wrapper_classes = Array(wrapper_classes)
     end
 
     def call_number

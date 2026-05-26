@@ -760,6 +760,8 @@ label.btn-close {
   padding-right: 8px;
   padding-top: 4px;
   margin-bottom: 1rem;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 .selected-items-container .appointments-item:only-child,
