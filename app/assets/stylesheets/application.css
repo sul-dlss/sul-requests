@@ -1233,3 +1233,25 @@ label.btn-close {
   max-height: 200px;
   max-width: 80px;
 }
+
+#appointmentRequestsAccordion .request-group,
+#draftRequestsAccordion .request-group {
+  .reading-room {
+    display: none;
+  }
+
+  .list-group {
+    padding-top: 0.5rem;
+  }
+
+  .list-group-item {
+    padding-bottom: 0.25rem;
+    padding-top: 0.25rem;
+  }
+
+  .request-item-identifier {
+    background-color: var(--stanford-fog-light);
+    margin-left: 1rem;
+    padding: 0.25rem 0.5rem;
+  }
+}

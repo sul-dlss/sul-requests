@@ -1,4 +1,4 @@
-<%= tag.div id: request_group.dom_id, class: 'request-group border rounded p-3', data: do %>
+<%= tag.div id: request_group.dom_id, class: classes.join(' '), data: do %>
   <div class="card-body">
     <div class="metadata">
       <div class="mb-2 text-dark-emphasis reading-room"><%= requests.first.reading_room&.name %></div>

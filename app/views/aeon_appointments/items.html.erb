@@ -20,7 +20,7 @@
         <div class="accordion-item">
           <h2 class="accordion-header">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#appointmentRequests" aria-expanded="false" aria-controls="appointmentRequests">
-              <span class="fw-semibold">Items scheduled to use during this appointment</span>
+              <span class="fs-5 fw-semibold">Items scheduled to use during this appointment</span>
               <i class="bi bi-chevron-down accordion-header-icon ms-auto"></i>
             </button>
           </h2>
@@ -29,7 +29,10 @@
               <%= render Aeon::RemoveRequestComponent.new(request: Aeon::Request.new(transaction_number: '__TRANSACTION_NUMBER__', item_title: '__ITEM_TITLE__')) %>
             </template>
             <div class="accordion-body p-0">
-              <%= render Aeon::RequestGroupBriefComponent.with_collection(@appointment.grouped_requests, data: { controller: 'add-items', appointment_target: '#appointmentRequests' }, after_request_item_component: Aeon::RemoveRequestComponent) %>
+              <%= render Aeon::RequestGroupBriefComponent.with_collection(@appointment.grouped_requests,
+                                                                          classes: %w[request-group border-top mb-0 p-3],
+                                                                          data: { controller: 'add-items', appointment_target: '#appointmentRequests' },
+                                                                          after_request_item_component: Aeon::RemoveRequestComponent) %>
             </div>
           </div>
         </div>
@@ -38,7 +41,10 @@
         <div class="accordion-item">
           <h2 class="accordion-header">
             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#draftRequests" aria-expanded="true" aria-controls="draftRequests">
-              <span class="d-flex flex-wrap gap-1"><span class="fw-semibold">Eligible items to add</span><span>Materials associated with <%= @appointment.reading_room.name %>.</span></span>
+              <span class="d-flex flex-wrap gap-1 align-items-center">
+                <span class="fs-5 fw-semibold">Eligible items to add</span>
+                <span class="ms-2">Materials associated with <%= @appointment.reading_room.name %>.</span>
+              </span>
               <i class="bi bi-chevron-down accordion-header-icon ms-auto"></i>
             </button>
           </h2>
@@ -47,7 +53,10 @@
               <%= render Aeon::AddRequestComponent.new(request: Aeon::Request.new(transaction_number: '__TRANSACTION_NUMBER__', item_title: '__ITEM_TITLE__')) %>
             </template>
             <div class="accordion-body p-0">
-              <%= render Aeon::RequestGroupBriefComponent.with_collection(@aeon_request_groups, data: { controller: 'add-items', appointment_target: '#appointmentRequests' }, after_request_item_component: Aeon::AddRequestComponent) %>
+              <%= render Aeon::RequestGroupBriefComponent.with_collection(@aeon_request_groups,
+                                                                          classes: %w[request-group border-top mb-0 p-3],
+                                                                          data: { controller: 'add-items', appointment_target: '#appointmentRequests' },
+                                                                          after_request_item_component: Aeon::AddRequestComponent) %>
             </div>
           </div>
         </div>
