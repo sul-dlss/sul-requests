@@ -6,6 +6,4 @@
   range = ((today + 20)..(today + 22)).to_a
   disabled = (individual + range).map(&:iso8601)
 %>
-<%= form_with(model: Aeon::Appointment.new, url: '#') do |f| %>
-  <%= render Aeon::AppointmentDatePickerComponent.new(form: f, disabled: disabled) %>
-<% end %>
+<%= render Aeon::AppointmentDatePickerComponent.new(appointment: Aeon::Appointment.new, disabled: disabled) %>

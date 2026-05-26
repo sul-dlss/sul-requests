@@ -3,22 +3,21 @@
 require 'rails_helper'
 
 RSpec.describe Aeon::AppointmentDatePickerComponent, type: :component do
-  subject(:component) { described_class.new(form:, disabled:, marked:) }
+  subject(:component) { described_class.new(appointment:, disabled:, marked:) }
 
-  let(:appointment) { build(:aeon_appointment, reading_room: nil) }
+  let(:aeon_client) { instance_double(AeonClient, available_appointments: []) }
+  let(:appointment) { build(:aeon_appointment) }
   let(:disabled) { [] }
   let(:marked) { [] }
-  let(:form) do
-    lookup_context = ActionView::LookupContext.new([])
-    view = ActionView::Base.new(lookup_context, {}, nil)
-    view.extend(Rails.application.routes.url_helpers)
-    ActionView::Helpers::FormBuilder.new(:aeon_appointment, appointment, view, {})
+
+  before do
+    allow(AeonClient).to receive(:new).and_return(aeon_client)
+    allow(appointment.reading_room).to receive(:available_appointments).and_return([])
+    render_inline(component)
   end
 
-  before { render_inline(component) }
-
-  it 'sets data-date-picker-min-value to today when no reading room is present' do
-    expect(page).to have_css("[data-date-picker-min-value='#{Time.zone.today.iso8601}']")
+  it 'sets data-date-picker-min-value to today when no next appointment is present' do
+    expect(page).to have_css("[data-date-picker-min-value='#{5.days.from_now.to_date.iso8601}']")
   end
 
   context 'with disabled dates' do
