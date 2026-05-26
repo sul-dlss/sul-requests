@@ -33,9 +33,17 @@
       <%= render ModalComponent.new(id: "delete-#{transaction_number}") do |component| %>
         <% component.with_title.with_content('Delete request?') %>
         <% component.with_body do %>
-            <div><span class="fw-bold">Title:</span> <%= title %></div>
-            <div><span class="fw-bold">Request:</span> <%= request_type %> <%= render Aeon::RequestItemDetailComponent.new(request:, variant: :text) %></div>
-            <div class="mt-2 fw-bold">This action cannot be undone.</div>
+          <div class="d-flex flex-column gap-1">
+            <div class="text-lagunita-dark"><%= request_type %></div>
+            <div class="text-wrap fw-semibold"><%= title %></div>
+            <% if request.base_callnumber.present? %>
+              <div>Call number: <%= request.base_callnumber %></div>
+            <% end %>
+            <%= render Aeon::RequestItemIdentifierComponent.new(request:, classes: ['fw-semibold', 'selected-item-title', 'text-wrap', 'mb-2']) %>
+            <%= render AlertComponent.new(type: :info, classes: ['border-0', 'shadow-none', 'mb-0'], with_icon: false) do %>
+              <span class="fw-semibold">This action cannot be undone.</span>
+            <% end %>
+          </div>
         <% end %>
         <% component.with_footer do %>
           <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
