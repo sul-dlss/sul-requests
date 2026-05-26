@@ -88,14 +88,14 @@ RSpec.describe 'Appointments', :js do
         expect(page).to have_text 'Change appointment'
         expect(page).to have_text 'Field Reading Room'
         expect(page).to have_text 'Current'
-        expect(page).to have_text appointment.date.strftime('%b %e, %Y')
+        expect(page).to have_text appointment.date.strftime('%b %-d, %Y')
         expect(page).to have_no_text appointment.start_time.strftime('%l:%M %p')
         expect(page).to have_text 'New'
         expect(page).to have_text 'Select date'
         expect(page).to have_text '1 item will move to the new appointment.'
         # Input a date a month from now
         fill_in 'aeon_appointment_date', with: (Time.zone.today >> 1).strftime('%m%d%Y')
-        expect(page).to have_text (Time.zone.today >> 1).strftime('%b %e, %Y')
+        expect(page).to have_text (Time.zone.today >> 1).strftime('%b %-d, %Y')
         click_on 'Cancel'
       end
       expect(page).to have_no_css '.modal'
