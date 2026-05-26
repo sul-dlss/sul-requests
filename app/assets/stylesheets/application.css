@@ -753,6 +753,15 @@ label.btn-close {
   }
 }
 
+.selected-item-title {
+  background-color: var(--stanford-fog-light);
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 4px;
+  margin-bottom: 1rem;
+}
+
 .selected-items-container .appointments-item:only-child,
 .selected-items-container .accordion-item:only-child,
 .selected-items-container .activity-item
@@ -768,15 +777,6 @@ label.btn-close {
 
   .selected-item-status, .selected-item-remove, .disclosure-icon {
     display: none;
-  }
-
-  .selected-item-title {
-    background-color: var(--stanford-fog-light);
-    padding-bottom: 4px;
-    padding-left: 8px;
-    padding-right: 8px;
-    padding-top: 4px;
-    margin-bottom: 1rem;
   }
 }
 
