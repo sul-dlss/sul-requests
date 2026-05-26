@@ -19,12 +19,12 @@
       <div class="accordion mb-2" id="appointmentRequestsAccordion">
         <div class="accordion-item">
           <h2 class="accordion-header">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#appointmentRequests" aria-expanded="true" aria-controls="appointmentRequests">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#appointmentRequests" aria-expanded="false" aria-controls="appointmentRequests">
               <span class="fw-semibold">Items scheduled to use during this appointment</span>
               <i class="bi bi-chevron-down accordion-header-icon ms-auto"></i>
             </button>
           </h2>
-          <div id="appointmentRequests" class="accordion-collapse collapse show" data-bs-parent="#appointmentRequestsAccordion">
+          <div id="appointmentRequests" class="accordion-collapse collapse" data-bs-parent="#appointmentRequestsAccordion">
             <template>
               <%= render Aeon::RemoveRequestComponent.new(request: Aeon::Request.new(transaction_number: '__TRANSACTION_NUMBER__', item_title: '__ITEM_TITLE__')) %>
             </template>
