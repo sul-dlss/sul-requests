@@ -61,7 +61,7 @@ export default class extends Controller {
     return `
      ${startDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'America/Los_Angeles' })} -
      ${ endDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'America/Los_Angeles' }) }
-     `;
+     `.toLowerCase();
   }
 
   updateFormStatus() {
