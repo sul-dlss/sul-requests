@@ -15,7 +15,7 @@
 
   <% c.with_body do %>
     <% request_groups = Aeon::RequestGrouping.from_requests(activity.requests) %>
-    <%= render Aeon::RequestGroupPerAppointmentComponent.with_collection(request_groups, classes: %w[card border-0 rounded-0 px-3 py-2]) %>
+    <%= render Aeon::RequestGroupPerAppointmentComponent.with_collection(request_groups, classes: %w[activity-request-group card border-0 rounded-0 px-3 py-2]) %>
 
       <% if request_groups.none? %>
         <div role="alert" class="zero-items-alert align-items-center text-digital-red bg-body py-3 px-4">

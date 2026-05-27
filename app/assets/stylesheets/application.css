@@ -1173,6 +1173,10 @@ label.btn-close {
   padding-left: 0;
 }
 
+.activity-request-group .request {
+  margin-left: 1rem;
+}
+
 .clamp {
   -webkit-box-orient: vertical;
   box-orient: vertical;
