@@ -85,8 +85,8 @@ RSpec.describe 'Appointments', :js do
 
   it 'displays all appointments' do
     expect(page).to have_css('h1', text: 'Activities')
-    expect(page).to have_text(/Activity1.*Feb 19, 2026.*12:00 pm - 1:00 pm.*Special Collections/m)
-    expect(page).to have_text(/Activity3.*Apr 19, 2026 12:00 pm - 1:00 pm Special Collections/m)
+    expect(page).to have_text 'Activity1 Feb 19, 2026 12:00 pm - 1:00 pm Special Collections', normalize_ws: true
+    expect(page).to have_text 'Activity3 Apr 19, 2026 12:00 pm - 1:00 pm Special Collections', normalize_ws: true
     expect(page).to have_text(/Exhibit/m)
     expect(page).to have_no_text('Activity2')
 
