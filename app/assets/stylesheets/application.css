@@ -950,6 +950,11 @@ label.btn-close {
   margin-bottom: 1rem;
 }
 
+/* Hide the last bottom border on the Aeon bulk delete modal */
+#delete-bulk .request-group:not([hidden]):not(:has(~ .request-group:not([hidden]))) {
+  --bs-border-width: 0;
+}
+
 .request.list-group-item {
   display: grid;
   column-gap: 1rem;
