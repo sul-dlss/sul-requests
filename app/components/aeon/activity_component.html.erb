@@ -1,6 +1,6 @@
 <%= render CardComponent.new do |c| %>
   <% c.with_title do %>
-    <div class="d-flex flex-wrap gap-2 align-items-center">
+    <div class="d-flex flex-wrap gap-3 align-items-center">
       <%= render PillComponent.new(classes: %w[bg-bay-dark text-white]).with_content(activity.activity_type) %>
       <div class="d-flex flex-column">
         <h2 class="h4 text-bay-dark mb-0 card-title mb-0 h4 d-flex gap-3"><%= activity.name %></h2>
