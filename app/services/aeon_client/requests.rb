@@ -10,7 +10,7 @@ class AeonClient
     def create_request(aeon_payload)
       response = post('Requests/create', aeon_payload.as_json.compact)
 
-      handle_response(response, as_class: Aeon::Request)
+      expire_requests_cache(request: handle_response(response, as_class: Aeon::Request))
     end
 
     # Submit a request patch to Aeon
@@ -18,13 +18,13 @@ class AeonClient
     def update_request(transaction_number:, aeon_payload:)
       response = patch("Requests/#{transaction_number}", aeon_payload)
 
-      handle_response(response, as_class: Aeon::Request)
+      expire_requests_cache(request: handle_response(response, as_class: Aeon::Request))
     end
 
     def update_request_route(transaction_number:, status:)
       response = post("Requests/#{transaction_number}/route", { newStatus: status })
 
-      handle_response(response, as_class: Aeon::Request)
+      expire_requests_cache(request: handle_response(response, as_class: Aeon::Request))
     end
 
     def requests_for(username:)
@@ -113,15 +113,29 @@ class AeonClient
     # - We persist digitization requests as "active" for a period of time after delivery
     # - We consider "Awaiting Future Request Processing" as an active state, Aeon does not
     def cached_all_raw_requests_for(username:, force: false)
-      Rails.cache.fetch("aeon/users/#{username}/requests", expires_in: 4.hours, force:) do
+      Rails.cache.fetch(requests_cache_key(username:), expires_in: 4.hours, force:) do
         raw_requests_for(username:, active_only: false)
       end
+    end
+
+    def requests_cache_key(username:)
+      "aeon/users/#{username}/requests"
     end
 
     def merge_request_responses(all:, active:)
       all.index_by { |r| r['transactionNumber'] }
          .merge(active.index_by { |r| r['transactionNumber'] })
          .values
+    end
+
+    def expire_requests_cache(request:)
+      # If the request would be picked up by the `active_only: true` option in requests_for
+      # we don't need to expire the cache.
+      return request unless request.aeon_inactive_status?
+
+      # Any time a request moves from no status(new)/active/inactive to inactive, the cache is stale
+      Rails.cache.delete(requests_cache_key(username: request.username))
+      request
     end
   end
 end

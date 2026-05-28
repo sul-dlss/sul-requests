@@ -192,6 +192,10 @@ module Aeon
       @web_request_form != 'single'
     end
 
+    def aeon_inactive_status?
+      transaction_queue&.inactive? || photoduplication_queue&.inactive?
+    end
+
     private
 
     def within_persist_completed_request_as_submitted_period?
