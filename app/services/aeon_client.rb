@@ -2,6 +2,8 @@
 
 # Client for the Aeon API
 class AeonClient
+  include Requests
+
   class ApiError < StandardError; end
   class NotFoundError < ApiError; end
 
@@ -39,15 +41,6 @@ class AeonClient
 
   def activities_for(username:)
     activities&.select { |activity| activity.users.map(&:username).include?(username) }
-  end
-
-  # Fetch requests for a user by their Aeon username
-  # @param username [String] the user's Aeon username
-  # @return [Array<Aeon::Request>]
-  def requests_for(username:, active_only: false)
-    response = get("Users/#{CGI.escape(username)}/requests", params: { activeOnly: active_only })
-
-    handle_response(response, as_class: Aeon::Request, not_found: [])
   end
 
   # Submit a new request to Aeon
@@ -283,20 +276,25 @@ class AeonClient
     DEFAULT_HEADERS.merge({ 'X-AEON-API-KEY': @api_key })
   end
 
-  def handle_response(faraday_response, as_class: nil, not_found: nil) # rubocop:disable Metrics/MethodLength
+  def handle_response(faraday_response, as_class: nil, not_found: nil)
     if faraday_response.success?
       body = faraday_response.body
-      return yield body unless as_class
+      return yield body if block_given?
+      return body unless as_class
 
-      if body.is_a?(Array)
-        Array.wrap(body).map { |data| as_class.from_dynamic(data) }
-      else
-        as_class.from_dynamic(body)
-      end
+      objects_from_response(body, as_class:)
     elsif faraday_response.status == 404
       not_found
     else
       raise ApiError, "Aeon API error: #{faraday_response.status}"
+    end
+  end
+
+  def objects_from_response(response, as_class:)
+    if response.is_a?(Array)
+      Array.wrap(response).map { |data| as_class.from_dynamic(data) }
+    else
+      as_class.from_dynamic(response)
     end
   end
 end
