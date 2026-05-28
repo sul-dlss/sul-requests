@@ -36,11 +36,11 @@ class AeonClient
 
   def activities
     response = get('Activities')
-    handle_response(response, as_class: Aeon::Activity)
+    handle_response(response, as_class: Aeon::Activity, not_found: [])
   end
 
   def activities_for(username:)
-    activities&.select { |activity| activity.users.map(&:username).include?(username) }
+    activities.select { |activity| activity.users.map(&:username).include?(username) }
   end
 
   # Submit a new request to Aeon
