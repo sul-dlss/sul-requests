@@ -43,28 +43,6 @@ class AeonClient
     activities.select { |activity| activity.users.map(&:username).include?(username) }
   end
 
-  # Submit a new request to Aeon
-  # @param aeon_payload [AeonClient::RequestData]
-  def create_request(aeon_payload)
-    response = post('Requests/create', aeon_payload.as_json.compact)
-
-    handle_response(response, as_class: Aeon::Request)
-  end
-
-  # Submit a request patch to Aeon
-  # @param aeon_payload [AeonClient::RequestData]
-  def update_request(transaction_number:, aeon_payload:)
-    response = patch("Requests/#{transaction_number}", aeon_payload)
-
-    handle_response(response, as_class: Aeon::Request)
-  end
-
-  def update_request_route(transaction_number:, status:)
-    response = post("Requests/#{transaction_number}/route", { newStatus: status })
-
-    handle_response(response, as_class: Aeon::Request)
-  end
-
   def appointments_for(username:, context: 'both', pending_only: true)
     response = get("Users/#{CGI.escape(username)}/appointments", params: { context: context, pendingOnly: pending_only })
 
@@ -154,66 +132,6 @@ class AeonClient
       false
     end
   end.new
-
-  RequestData = Data.define(:call_number, :document_type, :ead_number, :for_publication, :format,
-                            :item_author, :item_citation, :item_date, :item_info1, :item_info2, :appointment_id,
-                            :item_info3, :item_info4, :item_info5, :item_number, :item_subtitle, :item_title, :item_volume,
-                            :location, :web_request_form, :activity_id,
-                            :reference_number, :shipping_option, :site, :special_request, :system_id, :username) do
-    def omission = '…'
-
-    def as_json # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
-      {
-        appointmentId: appointment_id&.to_i,
-        callNumber: call_number&.truncate(255, omission:),
-        eadNumber: ead_number&.truncate(255, omission:),
-        forPublication: for_publication,
-        format: format&.truncate(255, omission:),
-        itemAuthor: item_author&.truncate(255, omission:),
-        itemCitation: item_citation&.truncate(255, omission:),
-        itemDate: item_date&.truncate(50, omission:),
-        itemInfo1: item_info1&.truncate(255, omission:),
-        itemInfo2: item_info2&.truncate(255, omission:),
-        itemInfo3: item_info3&.truncate(255, omission:),
-        itemInfo4: item_info4&.truncate(255, omission:),
-        itemInfo5: item_info5&.truncate(255, omission:),
-        itemNumber: item_number&.truncate(50, omission:),
-        itemSubTitle: item_subtitle&.truncate(255, omission:),
-        itemTitle: item_title&.truncate(255, omission:),
-        itemVolume: item_volume&.truncate(255, omission:),
-        location: location&.truncate(255, omission:),
-        referenceNumber: reference_number&.truncate(50, omission:),
-        shippingOption: shipping_option&.truncate(255, omission:),
-        site: site,
-        specialRequest: special_request&.truncate(255, omission:),
-        system_id: system_id,
-        username: username&.truncate(50, omission:),
-        webRequestForm: web_request_form&.truncate(100, omission:) || 'SUL Requests',
-        requestFor: request_for
-      }.reject { |_k, v| v == UNSET }
-    end
-
-    def request_for
-      return nil if activity_id.nil?
-      return UNSET if activity_id.blank? || activity_id == UNSET
-
-      { type: 'Activity', reference: activity_id }
-    end
-
-    def as_patch_json
-      as_json.except(:webRequestForm).map do |k, v|
-        if v.nil?
-          { op: 'remove', path: "/#{k}" }
-        else
-          { op: 'replace', path: "/#{k}", value: v }
-        end
-      end
-    end
-
-    def self.with_defaults
-      new(**members.index_with(UNSET), web_request_form: 'SUL Requests')
-    end
-  end
 
   UserData = Data.define(:address, :address2, :city, :country, :email_address, :first_name, :last_name,
                          :phone, :sso, :state_or_province, :zip_code) do
