@@ -9,7 +9,7 @@ module Aeon
     attr_accessor :appointment, :appointment_id
 
     # activity attributes
-    attr_accessor :activity_type, :activity_id
+    attr_accessor :activity_id
 
     # identifiers
     attr_accessor :call_number, :ead_number, :reference_number, :site
@@ -30,7 +30,6 @@ module Aeon
     def self.from_dynamic(dyn) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       photoduplication_date = dyn['photoduplicationDate'].presence
       new(
-        activity_type: dyn.dig('requestFor', 'type'),
         activity_id: (dyn.dig('requestFor', 'reference')&.to_i if dyn.dig('requestFor', 'type') == 'Activity'),
         appointment: dyn['appointment'] ? Appointment.from_dynamic(dyn['appointment']) : nil,
         appointment_id: dyn['appointmentID'],
