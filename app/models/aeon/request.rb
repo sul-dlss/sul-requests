@@ -31,7 +31,7 @@ module Aeon
       photoduplication_date = dyn['photoduplicationDate'].presence
       new(
         activity_type: dyn.dig('requestFor', 'type'),
-        activity_id: dyn.dig('requestFor', 'reference')&.to_i,
+        activity_id: (dyn.dig('requestFor', 'reference')&.to_i if dyn.dig('requestFor', 'type') == 'Activity'),
         appointment: dyn['appointment'] ? Appointment.from_dynamic(dyn['appointment']) : nil,
         appointment_id: dyn['appointmentID'],
         call_number: dyn['callNumber'],
