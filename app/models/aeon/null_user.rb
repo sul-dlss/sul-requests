@@ -23,6 +23,8 @@ module Aeon
       @appointments ||= []
     end
 
+    def present? = false
+
     def persisted? = false
   end
 end
