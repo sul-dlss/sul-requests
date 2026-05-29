@@ -24,6 +24,7 @@ class AeonAbility
         (request.draft? || request.activity_id || request.appointment&.editable? || request.cancelled?)
     end
 
+    can :read, Aeon::Activity
     can :read, Aeon::Request
     can :manage, Aeon::Appointment
   end
