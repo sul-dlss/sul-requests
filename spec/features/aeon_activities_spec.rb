@@ -80,6 +80,7 @@ RSpec.describe 'Appointments', :js do
   before do
     allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
     login_as(current_user)
+
     visit aeon_activities_path
   end
 
