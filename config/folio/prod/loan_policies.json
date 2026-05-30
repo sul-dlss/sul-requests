@@ -70,6 +70,22 @@
     "requestManagement": null
   },
   {
+    "id": "1edb93d0-2c3f-40d8-9128-a39aa4df2d0d",
+    "name": "4week-norenew-7daygrace",
+    "description": "Loan policy for ILL materials loaned to Stanford users for 4 weeks",
+    "renewable": false,
+    "renewalsPolicy": null,
+    "loanable": true,
+    "loansPolicy": {
+      "period": {
+        "duration": 4,
+        "intervalId": "Weeks"
+      },
+      "fixedDueDateSchedule": null
+    },
+    "requestManagement": null
+  },
+  {
     "id": "26c44ee7-5a7d-4832-aa84-febe49a8d2f8",
     "name": "14day-norenew-1daygrace",
     "description": "Loan policy for periodicals ",
@@ -426,6 +442,22 @@
     "requestManagement": {
       "holds": null
     }
+  },
+  {
+    "id": "63e87569-5d6b-448a-9b99-358999725437",
+    "name": "26week-norenew-7daygrace",
+    "description": "Loan policy for ILL materials loaned to Stanford users for 26 weeks",
+    "renewable": false,
+    "renewalsPolicy": null,
+    "loanable": true,
+    "loansPolicy": {
+      "period": {
+        "duration": 26,
+        "intervalId": "Weeks"
+      },
+      "fixedDueDateSchedule": null
+    },
+    "requestManagement": null
   },
   {
     "id": "6f7d77e8-1def-4e17-a160-3c4065ac3ef3",
@@ -814,6 +846,22 @@
     }
   },
   {
+    "id": "9bccee2a-d97e-4c14-9151-c307a674c95d",
+    "name": "12week-norenew-7daygrace",
+    "description": "Loan policy for ILL materials loaned to Stanford users for 12 weeks",
+    "renewable": false,
+    "renewalsPolicy": null,
+    "loanable": true,
+    "loansPolicy": {
+      "period": {
+        "duration": 12,
+        "intervalId": "Weeks"
+      },
+      "fixedDueDateSchedule": null
+    },
+    "requestManagement": null
+  },
+  {
     "id": "a369ef4d-cec8-4348-bf36-acb16f72f67f",
     "name": "24hour-norenew-15mingrace",
     "description": "24 hour loan (often for equipment at GSB)",
@@ -918,6 +966,22 @@
         "renewItemsWithRequest": null
       }
     }
+  },
+  {
+    "id": "b6d0cb8b-fd8d-46a7-be95-5f63a34a3278",
+    "name": "8week-norenew-7daygrace",
+    "description": "Loan policy for ILL materials loaned to Stanford users for 8 weeks",
+    "renewable": false,
+    "renewalsPolicy": null,
+    "loanable": true,
+    "loansPolicy": {
+      "period": {
+        "duration": 8,
+        "intervalId": "Weeks"
+      },
+      "fixedDueDateSchedule": null
+    },
+    "requestManagement": null
   },
   {
     "id": "b79e3dbf-b30a-420c-9e97-dcf92e937883",
