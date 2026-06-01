@@ -21,13 +21,13 @@ export default class extends Controller {
   connect() {
     this.openDayInts = this.openDaysValue.map(name => this.dayToInt(name))
     const initial = this.inputTarget.value
-    let seed = initial ? new Date(`${initial}T00:00:00`) : new Date()
-    // If no date is selected but a minValue exists in a future month (e.g. the earliest
+    let seed = initial ? new Date(`${initial}T00:00:00`) : ''
+    // If a minValue exists in a future month (e.g. the earliest
     // available appointment is May 5 but today is April 30), open the calendar to that
     // future month instead of the current one so the user sees selectable dates immediately.
-    if (!initial && this.minValue) {
+    if (this.minValue) {
       const min = new Date(`${this.minValue}T00:00:00`)
-      if (min > seed) seed = min
+      if (!seed || min > seed) seed = min
     }
     this.viewYear = seed.getFullYear()
     this.viewMonth = seed.getMonth() // 0-indexed
