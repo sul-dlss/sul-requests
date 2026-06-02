@@ -14,7 +14,7 @@ class CancelAeonAppointmentJob < ApplicationJob
   end
 
   def request_status(cancel)
-    return Settings.aeon.queue_names.draft.transaction.first unless cancel
+    return Settings.aeon.queue_names.saved_for_later.transaction.first unless cancel
 
     Settings.aeon.queue_names.cancelled.by_user.transaction
   end

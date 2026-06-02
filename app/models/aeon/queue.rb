@@ -85,7 +85,7 @@ module Aeon
     end
 
     def saved_for_later_queue_names
-      Settings.aeon.queue_names.draft[type]
+      Settings.aeon.queue_names.saved_for_later[type]
     end
   end
 end

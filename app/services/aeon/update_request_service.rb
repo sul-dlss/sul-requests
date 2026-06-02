@@ -51,7 +51,7 @@ module Aeon
                    elsif needs_set_to_submitted?
                      'Awaiting Request Processing'
                    elsif needs_set_to_saved_for_later?
-                     Settings.aeon.queue_names.draft.transaction.first
+                     Settings.aeon.queue_names.saved_for_later.transaction.first
                    end
 
       return aeon_request unless new_status
