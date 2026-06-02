@@ -51,7 +51,7 @@ class AeonRequestsController < ApplicationController
     respond_to do |format|
       format.turbo_stream { update_turbo_stream }
       format.html do
-        aeon_requests_path = @updated_aeon_request.draft? ? aeon_requests_path(kind: 'drafts') : aeon_requests_path(kind: 'submitted')
+        aeon_requests_path = @updated_aeon_request.saved_for_later? ? aeon_requests_path(kind: 'drafts') : aeon_requests_path(kind: 'submitted')
         redirect_to aeon_requests_path, notice: 'Request was successfully updated.'
       end
     end
@@ -93,7 +93,7 @@ class AeonRequestsController < ApplicationController
 
     @previous_aeon_request_groups = @aeon_request_groups
     @next_aeon_request_groups = Aeon::RequestGrouping.from_requests(@next_aeon_requests)
-    @next_draft_aeon_request_groups = Aeon::RequestGrouping.from_requests(@next_aeon_requests.select(&:draft?).reject(&:digital?))
+    @next_draft_aeon_request_groups = Aeon::RequestGrouping.from_requests(@next_aeon_requests.select(&:saved_for_later?).reject(&:digital?))
 
     if @aeon_request.appointment_id != @updated_aeon_request.appointment_id
       @previous_appointment = @aeon_request.appointment&.tap do |appt|

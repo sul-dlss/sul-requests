@@ -45,7 +45,7 @@ RSpec.describe Aeon::Queue do
     end
   end
 
-  describe '#draft?' do
+  describe '#saved_for_later?' do
     it 'returns true when queue_name is in the configured draft list' do
       queue = described_class.new(id: 5, queue_name: 'Awaiting User Review', queue_type: 'Transaction')
       expect(queue).to be_draft

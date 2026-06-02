@@ -8,8 +8,8 @@ RSpec.describe Aeon::ConfirmationSavedForLaterComponent, type: :component do
   let(:request_group) { Aeon::RequestGrouping.new([draft_request, submitted_request]) }
 
   before do
-    allow(draft_request).to receive_messages(draft?: true, submitted?: false, digital?: false)
-    allow(submitted_request).to receive_messages(draft?: false, submitted?: true, digital?: false)
+    allow(draft_request).to receive_messages(saved_for_later?: true, submitted?: false, digital?: false)
+    allow(submitted_request).to receive_messages(saved_for_later?: false, submitted?: true, digital?: false)
   end
 
   context 'with draft and submitted requests' do

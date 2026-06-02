@@ -61,7 +61,7 @@ module Aeon
     end
 
     def draft_requests
-      requests.select(&:draft?)
+      requests.select(&:saved_for_later?)
     end
 
     def submitted_requests

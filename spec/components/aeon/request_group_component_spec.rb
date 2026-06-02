@@ -17,8 +17,8 @@ RSpec.describe Aeon::RequestGroupComponent, type: :component do
     let(:request_group) { Aeon::RequestGrouping.new([first_request, second_request]) }
 
     before do
-      allow(first_request).to receive_messages(draft?: true, cancelled?: false)
-      allow(second_request).to receive_messages(draft?: true, cancelled?: false)
+      allow(first_request).to receive_messages(saved_for_later?: true, cancelled?: false)
+      allow(second_request).to receive_messages(saved_for_later?: true, cancelled?: false)
       render_inline(described_class.new(request_group:))
     end
 
@@ -44,8 +44,8 @@ RSpec.describe Aeon::RequestGroupComponent, type: :component do
     let(:request_group) { Aeon::RequestGrouping.new([first_request, second_request]) }
 
     before do
-      allow(first_request).to receive_messages(cancelled?: false, completed?: false, draft?: false, submitted?: true)
-      allow(second_request).to receive_messages(cancelled?: false, completed?: false, draft?: false, submitted?: true)
+      allow(first_request).to receive_messages(cancelled?: false, completed?: false, saved_for_later?: false, submitted?: true)
+      allow(second_request).to receive_messages(cancelled?: false, completed?: false, saved_for_later?: false, submitted?: true)
       render_inline(described_class.new(request_group:))
     end
 

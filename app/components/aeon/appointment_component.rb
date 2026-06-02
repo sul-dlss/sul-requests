@@ -12,13 +12,13 @@ module Aeon
     end
 
     def add_item_disabled?
-      return true unless appointment.editable? && drafts?
+      return true unless appointment.editable? && saved_for_later?
       return false unless appointment.reading_room.appointment_item_limit
 
       appointment.requests.count >= appointment.reading_room.appointment_item_limit
     end
 
-    def drafts?
+    def saved_for_later?
       @drafts ||= current_user.aeon.draft_requests.reject(&:digital?).any? do |request|
         request.reading_room.id == @appointment.reading_room.id
       end

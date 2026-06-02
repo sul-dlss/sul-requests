@@ -14,9 +14,9 @@
         <% end %>
         <% if helpers.can? :edit, request %>
           <%= link_to edit_aeon_request_path(request), class: 'btn btn-link btn-sm su-underline p-0 me-sm-2', data: { action: 'modal#open' } do %>
-            <% if request.draft? && request.digital? %>
+            <% if request.saved_for_later? && request.digital? %>
               <i class="bi bi-file-earmark-plus me-1 align-middle"></i> Add instructions
-            <% elsif request.draft? && !request.digital? %>
+            <% elsif request.saved_for_later? && !request.digital? %>
               <i class="bi bi-calendar-plus me-1 align-middle"></i> Add appointment
             <% else %>
               <i class="bi bi-pencil-fill me-1 align-middle"></i><span class="visually-hidden">Edit request</span>

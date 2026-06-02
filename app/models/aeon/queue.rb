@@ -62,7 +62,7 @@ module Aeon
       cancelled_by_user_queue_name == queue_name
     end
 
-    def draft?
+    def saved_for_later?
       draft_queue_names&.include?(queue_name)
     end
 

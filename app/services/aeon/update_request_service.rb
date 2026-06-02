@@ -38,10 +38,10 @@ module Aeon
     end
 
     def needs_set_to_submitted?
-      aeon_request.draft? && aeon_request.valid?
+      aeon_request.saved_for_later? && aeon_request.valid?
     end
 
-    def needs_set_to_draft?
+    def needs_set_to_saved_for_later?
       aeon_request.submitted? && !aeon_request.valid?
     end
 
@@ -50,7 +50,7 @@ module Aeon
                      params[:status]
                    elsif needs_set_to_submitted?
                      'Awaiting Request Processing'
-                   elsif needs_set_to_draft?
+                   elsif needs_set_to_saved_for_later?
                      Settings.aeon.queue_names.draft.transaction.first
                    end
 

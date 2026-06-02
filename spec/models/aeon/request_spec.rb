@@ -83,7 +83,7 @@ RSpec.describe Aeon::Request do
     end
   end
 
-  describe '#draft?' do
+  describe '#saved_for_later?' do
     it 'returns true when the transaction queue is a draft queue' do
       draft_queue = Aeon::Queue.new(id: 5, queue_name: 'Awaiting User Review', queue_type: 'Transaction')
       allow(aeon_client).to receive(:find_queue).with(id: 5, type: :transaction).and_return(draft_queue)

@@ -5,7 +5,7 @@ module Aeon
   class RequestAppointmentTimeComponent < ViewComponent::Base
     attr_reader :request
 
-    delegate :appointment, :appointment?, :cancelled?, :completed?, :draft?, to: :request
+    delegate :appointment, :appointment?, :cancelled?, :completed?, :saved_for_later?, to: :request
 
     def initialize(request:, with_reading_room: true)
       @request = request
@@ -13,7 +13,7 @@ module Aeon
     end
 
     def render?
-      appointment? && !draft?
+      appointment? && !saved_for_later?
     end
 
     def appointment_date
