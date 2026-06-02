@@ -81,7 +81,7 @@ RSpec.describe 'Add items modal', :js do
       expect(page).to have_text('Slow poetry in America : a poetry quarterly', count: 1)
       expect(page).to have_css('#appointmentRequestsAccordion li', count: 2)
       expect(page).to have_text('Medium poetry in America : a poetry quarterly', count: 1)
-      expect(page).to have_css('#draftRequestsAccordion li', count: 2)
+      expect(page).to have_css('#savedForLaterRequestsAccordion li', count: 2)
 
       # Add slow poetry call number 1 to scheduled appointments
       find("button[data-transaction-number='#{draft_request_one.id}']").click
@@ -90,7 +90,7 @@ RSpec.describe 'Add items modal', :js do
       expect(page).to have_text('Slow poetry in America : a poetry quarterly', count: 2)
       expect(page).to have_css('#appointmentRequestsAccordion li', count: 3)
       expect(page).to have_text('Medium poetry in America : a poetry quarterly', count: 1)
-      expect(page).to have_css('#draftRequestsAccordion li', count: 1)
+      expect(page).to have_css('#savedForLaterRequestsAccordion li', count: 1)
 
       # Add slow poetry call number 2 to scheduled appointments
       find("button[data-transaction-number='#{draft_request_two.id}']").click
@@ -98,7 +98,7 @@ RSpec.describe 'Add items modal', :js do
       expect(page).to have_text('Slow poetry in America : a poetry quarterly', count: 1)
       expect(page).to have_css('#appointmentRequestsAccordion li', count: 4)
       expect(page).to have_text('Medium poetry in America : a poetry quarterly', count: 1)
-      expect(page).to have_css('#draftRequestsAccordion li', count: 0)
+      expect(page).to have_css('#savedForLaterRequestsAccordion li', count: 0)
 
       # Remove scheduled appointment and draft appointment
       find("button[data-transaction-number='#{submitted_request_one.id}']").click
@@ -107,7 +107,7 @@ RSpec.describe 'Add items modal', :js do
       expect(page).to have_text('Slow poetry in America : a poetry quarterly', count: 2)
       expect(page).to have_css('#appointmentRequestsAccordion li', count: 2)
       expect(page).to have_text('Medium poetry in America : a poetry quarterly', count: 2)
-      expect(page).to have_css('#draftRequestsAccordion li', count: 2)
+      expect(page).to have_css('#savedForLaterRequestsAccordion li', count: 2)
 
       click_button 'Save changes'
     end
