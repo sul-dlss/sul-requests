@@ -18,7 +18,7 @@ RSpec.describe Aeon::ConfirmationSavedForLaterComponent, type: :component do
     it 'renders the "also saved" message with count and schedule link' do
       expect(page).to have_text('You also saved 1 item for later.')
       expect(page).to have_text('Schedule them anytime')
-      expect(page).to have_link('Saved for later', href: '/aeon_requests/drafts')
+      expect(page).to have_link('Saved for later', href: '/aeon_requests/saved_for_later')
     end
   end
 

@@ -1,4 +1,4 @@
-<% if params[:kind] == 'drafts' %>
+<% if params[:kind] == 'saved_for_later' %>
   <% content_for(:sidebar_responsive_button) do %>
     <button class="btn btn-sm btn-outline-primary d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#appointments" aria-controls="appointments">
       Appointments
@@ -36,7 +36,7 @@
   <% end %>
 <% end %>
 
-<div class="container" <% if params[:kind] == 'drafts' %>data-controller="draft-request"<% end %>>
+<div class="container" <% if params[:kind] == 'saved_for_later' %>data-controller="draft-request"<% end %>>
   <div class="row">
     <div class="<% if content_for?(:sidebar) %>col-lg-8 pe-lg-5<% else %>col-xl-9<% end %>">
       <div class="d-flex flex-wrap gap-2 justify-content-between mb-4">

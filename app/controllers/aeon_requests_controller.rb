@@ -51,7 +51,7 @@ class AeonRequestsController < ApplicationController
     respond_to do |format|
       format.turbo_stream { update_turbo_stream }
       format.html do
-        aeon_requests_path = @updated_aeon_request.saved_for_later? ? aeon_requests_path(kind: 'drafts') : aeon_requests_path(kind: 'submitted')
+        aeon_requests_path = @updated_aeon_request.saved_for_later? ? aeon_requests_path(kind: 'saved_for_later') : aeon_requests_path(kind: 'submitted')
         redirect_to aeon_requests_path, notice: 'Request was successfully updated.'
       end
     end
@@ -140,7 +140,7 @@ class AeonRequestsController < ApplicationController
     @aeon_requests = [] and return unless current_user&.aeon
 
     @aeon_requests = case params[:kind]
-                     when 'drafts'
+                     when 'saved_for_later'
                        current_user.aeon.saved_for_later_requests
                      when 'cancelled'
                        current_user.aeon.cancelled_requests

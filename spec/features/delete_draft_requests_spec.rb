@@ -38,7 +38,7 @@ RSpec.describe 'Bulk delete actions and modal', :js do
     allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
     allow(aeon_user).to receive_messages(requests: [first_request, second_request, third_request])
     login_as(current_user)
-    visit aeon_requests_path(kind: 'drafts')
+    visit aeon_requests_path(kind: 'saved_for_later')
   end
 
   describe 'on page load' do
