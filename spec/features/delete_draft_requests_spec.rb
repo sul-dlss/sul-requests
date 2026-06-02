@@ -20,13 +20,13 @@ RSpec.describe 'Bulk delete actions and modal', :js do
                          transaction_number: 102, username: aeon_user.username,
                          shipping_option: 'Electronic Delivery')
   end
-  let(:draft_queue) do
+  let(:saved_for_later_queue) do
     Aeon::Queue.new(id: 5, queue_name: 'Awaiting User Review', queue_type: 'Transaction')
   end
   let(:stub_aeon_client) do
     instance_double(AeonClient,
                     find_user: aeon_user,
-                    find_queue: draft_queue,
+                    find_queue: saved_for_later_queue,
                     appointments_for: [],
                     requests_for: [first_request, second_request, third_request],
                     reading_rooms:,

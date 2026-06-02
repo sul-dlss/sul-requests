@@ -35,7 +35,7 @@ RSpec.describe 'Add items modal', :js do
                          transaction_number: 104, username: aeon_user.username, web_request_form: 'multiple')
   end
 
-  let(:draft_queue) do
+  let(:saved_for_later_queue) do
     Aeon::Queue.new(id: 5, queue_name: 'Awaiting User Review', queue_type: 'Transaction')
   end
 
@@ -44,7 +44,7 @@ RSpec.describe 'Add items modal', :js do
   let(:stub_aeon_client) do
     instance_double(AeonClient,
                     find_user: aeon_user,
-                    find_queue: draft_queue,
+                    find_queue: saved_for_later_queue,
                     appointments_for: [appointment],
                     requests_for: [draft_request_one, draft_request_two, draft_request_three, submitted_request_one, submitted_request_two],
                     reading_rooms:,

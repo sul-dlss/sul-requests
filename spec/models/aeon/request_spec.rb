@@ -85,16 +85,16 @@ RSpec.describe Aeon::Request do
 
   describe '#saved_for_later?' do
     it 'returns true when the transaction queue is a draft queue' do
-      draft_queue = Aeon::Queue.new(id: 5, queue_name: 'Awaiting User Review', queue_type: 'Transaction')
-      allow(aeon_client).to receive(:find_queue).with(id: 5, type: :transaction).and_return(draft_queue)
+      saved_for_later_queue = Aeon::Queue.new(id: 5, queue_name: 'Awaiting User Review', queue_type: 'Transaction')
+      allow(aeon_client).to receive(:find_queue).with(id: 5, type: :transaction).and_return(saved_for_later_queue)
 
       request = build(:aeon_request, transaction_status: 5)
       expect(request).to be_draft
     end
 
     it 'returns false when the transaction queue is not a draft queue' do
-      non_draft_queue = Aeon::Queue.new(id: 8, queue_name: 'Awaiting Request Processing', queue_type: 'Transaction')
-      allow(aeon_client).to receive(:find_queue).with(id: 8, type: :transaction).and_return(non_draft_queue)
+      non_saved_for_later_queue = Aeon::Queue.new(id: 8, queue_name: 'Awaiting Request Processing', queue_type: 'Transaction')
+      allow(aeon_client).to receive(:find_queue).with(id: 8, type: :transaction).and_return(non_saved_for_later_queue)
 
       request = build(:aeon_request, transaction_status: 8)
       expect(request).not_to be_draft

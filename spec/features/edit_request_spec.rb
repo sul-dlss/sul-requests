@@ -12,13 +12,13 @@ RSpec.describe 'Edit Aeon request', :js do
     build(:aeon_request, call_number: 'PR9195.1 .S56 NO.1', title: 'Slow poetry in America : a poetry quarterly', item_author: 'Percy Poet',
                          transaction_number: 100, username: aeon_user.username)
   end
-  let(:draft_queue) do
+  let(:saved_for_later_queue) do
     Aeon::Queue.new(id: 5, queue_name: 'Awaiting User Review', queue_type: 'Transaction')
   end
   let(:stub_aeon_client) do
     instance_double(AeonClient,
                     find_user: aeon_user,
-                    find_queue: draft_queue,
+                    find_queue: saved_for_later_queue,
                     appointments_for: [appointment],
                     requests_for: [first_request],
                     reading_rooms: [reading_room],
