@@ -19,7 +19,7 @@ module Aeon
     end
 
     def saved_for_later?
-      @drafts ||= current_user.aeon.draft_requests.reject(&:digital?).any? do |request|
+      @drafts ||= current_user.aeon.saved_for_later_requests.reject(&:digital?).any? do |request|
         request.reading_room.id == @appointment.reading_room.id
       end
     end

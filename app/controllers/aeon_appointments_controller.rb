@@ -67,7 +67,7 @@ class AeonAppointmentsController < ApplicationController
   def items
     authorize! :read, @appointment
 
-    requests = current_user.aeon.draft_requests.reject(&:digital?).select do |request|
+    requests = current_user.aeon.saved_for_later_requests.reject(&:digital?).select do |request|
       request.reading_room.id == @appointment.reading_room.id
     end
     requests = sort_aeon_requests(requests || [])

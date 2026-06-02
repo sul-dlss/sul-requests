@@ -26,7 +26,7 @@ module Aeon
       "group_#{status}_#{title.parameterize}_#{digital? ? 'digital' : 'reading_room'}"
     end
 
-    def draft_requests
+    def saved_for_later_requests
       select(&:saved_for_later?)
     end
 

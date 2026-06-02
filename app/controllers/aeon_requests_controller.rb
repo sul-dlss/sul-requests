@@ -141,7 +141,7 @@ class AeonRequestsController < ApplicationController
 
     @aeon_requests = case params[:kind]
                      when 'drafts'
-                       current_user.aeon.draft_requests
+                       current_user.aeon.saved_for_later_requests
                      when 'cancelled'
                        current_user.aeon.cancelled_requests
                      when 'submitted'

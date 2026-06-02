@@ -60,7 +60,7 @@ module Aeon
       activities&.select(&:active?)&.select { |activity| activity.sites.include?(site) }
     end
 
-    def draft_requests
+    def saved_for_later_requests
       requests.select(&:saved_for_later?)
     end
 
