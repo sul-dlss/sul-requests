@@ -43,8 +43,8 @@ RSpec.describe 'Bulk delete actions and modal', :js do
 
   describe 'on page load' do
     it 'display delete checkboxes next to each request and a delete all input' do
-      expect(page).to have_css('input[data-draft-request-target="select"]', count: 3)
-      expect(page).to have_css('input[data-draft-request-target="selectall"]', count: 1)
+      expect(page).to have_css('input[data-request-bulk-delete-target="select"]', count: 3)
+      expect(page).to have_css('input[data-request-bulk-delete-target="selectall"]', count: 1)
     end
   end
 
@@ -77,7 +77,7 @@ RSpec.describe 'Bulk delete actions and modal', :js do
   describe 'when selecting all requests' do
     it 'shows a summary description in the modal when all items are selected' do
       check('select-all-delete')
-      expect(page).to have_css('input[data-draft-request-target="select"]:checked', count: 3)
+      expect(page).to have_css('input[data-request-bulk-delete-target="select"]:checked', count: 3)
       expect(page).to have_button('delete-all')
 
       click_button('delete-all')

@@ -70,8 +70,8 @@ application.register("sortable", SortableController)
 import StatusCounterController from "./status_counter_controller"
 application.register("status-counter", StatusCounterController)
 
-import DraftRequestController from "./draft_request_controller"
-application.register("draft-request", DraftRequestController)
+import RequestBulkDeleteController from "./request_bulk_delete_controller"
+application.register("request-bulk-delete", RequestBulkDeleteController)
 
 import DatePickerController from "./date_picker_controller"
 application.register("date-picker", DatePickerController)
