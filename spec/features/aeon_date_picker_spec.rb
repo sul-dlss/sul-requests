@@ -163,4 +163,25 @@ RSpec.describe 'Date picker keyboard navigation', :js do
       expect(focused_date).to eq((today + 3).iso8601)
     end
   end
+
+  describe 'disabled weekends' do
+    before { visit '/lookbook/preview/aeon/appointment_date_picker/with_weekends_disabled' }
+
+    it 'weekends are disabled and ArrowRight skips a disabled date and lands on the next enabled date' do
+      open_picker
+      weekends = (today..(today + 30)).select { |d| [0, 6].include?(d.wday) }.map(&:iso8601)
+      weekends.each do |weekend|
+        expect(page).to have_css("[data-date='#{weekend}'][disabled]")
+      end
+
+      # arrow right enough to go over a weekend. So if it is Wed (3). 7-3 = 4, arrow right 4 times.
+      # that would go over Thu, Fri, (Skip Sat, Sun), Mon, Tues.
+      # We are using 7 instead of 6 because if the test runs on Sunday it won't arrow over.
+      (7 - today.wday).times do
+        grid_send(:arrow_right)
+      end
+
+      expect(focused_date).to eq((today + (9 - today.wday)).iso8601)
+    end
+  end
 end
