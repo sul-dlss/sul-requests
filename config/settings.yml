@@ -416,6 +416,19 @@ aeon:
     draft:
       transaction:
         - Awaiting User Review
+    inactive:
+      photoduplication:
+        - Order Finished
+        - Order Cancelled by User
+        - Order Cancelled by Staff
+      transaction:
+        - Awaiting Future Request Processing
+        - Awaiting User Review
+        - Request In Processing
+        - Cancelled by User
+        - Cancelled by Staff
+        - Submitted by User
+        - Request Finished
 
 RECAPTCHA:
   SITE_KEY: 6Lc6BAAAAAAAAChqRbQZcn_yyyyyyyyyyyyyyyyy

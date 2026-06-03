@@ -2,6 +2,8 @@
 
 # Client for the Aeon API
 class AeonClient
+  include Requests
+
   class ApiError < StandardError; end
   class NotFoundError < ApiError; end
 
@@ -34,42 +36,11 @@ class AeonClient
 
   def activities
     response = get('Activities')
-    handle_response(response, as_class: Aeon::Activity)
+    handle_response(response, as_class: Aeon::Activity, not_found: [])
   end
 
   def activities_for(username:)
-    activities&.select { |activity| activity.users.map(&:username).include?(username) }
-  end
-
-  # Fetch requests for a user by their Aeon username
-  # @param username [String] the user's Aeon username
-  # @return [Array<Aeon::Request>]
-  def requests_for(username:, active_only: false)
-    response = get("Users/#{CGI.escape(username)}/requests", params: { activeOnly: active_only })
-
-    handle_response(response, as_class: Aeon::Request, not_found: [])
-  end
-
-  # Submit a new request to Aeon
-  # @param aeon_payload [AeonClient::RequestData]
-  def create_request(aeon_payload)
-    response = post('Requests/create', aeon_payload.as_json.compact)
-
-    handle_response(response, as_class: Aeon::Request)
-  end
-
-  # Submit a request patch to Aeon
-  # @param aeon_payload [AeonClient::RequestData]
-  def update_request(transaction_number:, aeon_payload:)
-    response = patch("Requests/#{transaction_number}", aeon_payload)
-
-    handle_response(response, as_class: Aeon::Request)
-  end
-
-  def update_request_route(transaction_number:, status:)
-    response = post("Requests/#{transaction_number}/route", { newStatus: status })
-
-    handle_response(response, as_class: Aeon::Request)
+    activities.select { |activity| activity.users.map(&:username).include?(username) }
   end
 
   def appointments_for(username:, context: 'both', pending_only: true)
@@ -162,66 +133,6 @@ class AeonClient
     end
   end.new
 
-  RequestData = Data.define(:call_number, :document_type, :ead_number, :for_publication, :format,
-                            :item_author, :item_citation, :item_date, :item_info1, :item_info2, :appointment_id,
-                            :item_info3, :item_info4, :item_info5, :item_number, :item_subtitle, :item_title, :item_volume,
-                            :location, :web_request_form, :activity_id,
-                            :reference_number, :shipping_option, :site, :special_request, :system_id, :username) do
-    def omission = '…'
-
-    def as_json # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
-      {
-        appointmentId: appointment_id&.to_i,
-        callNumber: call_number&.truncate(255, omission:),
-        eadNumber: ead_number&.truncate(255, omission:),
-        forPublication: for_publication,
-        format: format&.truncate(255, omission:),
-        itemAuthor: item_author&.truncate(255, omission:),
-        itemCitation: item_citation&.truncate(255, omission:),
-        itemDate: item_date&.truncate(50, omission:),
-        itemInfo1: item_info1&.truncate(255, omission:),
-        itemInfo2: item_info2&.truncate(255, omission:),
-        itemInfo3: item_info3&.truncate(255, omission:),
-        itemInfo4: item_info4&.truncate(255, omission:),
-        itemInfo5: item_info5&.truncate(255, omission:),
-        itemNumber: item_number&.truncate(50, omission:),
-        itemSubTitle: item_subtitle&.truncate(255, omission:),
-        itemTitle: item_title&.truncate(255, omission:),
-        itemVolume: item_volume&.truncate(255, omission:),
-        location: location&.truncate(255, omission:),
-        referenceNumber: reference_number&.truncate(50, omission:),
-        shippingOption: shipping_option&.truncate(255, omission:),
-        site: site,
-        specialRequest: special_request&.truncate(255, omission:),
-        system_id: system_id,
-        username: username&.truncate(50, omission:),
-        webRequestForm: web_request_form&.truncate(100, omission:) || 'SUL Requests',
-        requestFor: request_for
-      }.reject { |_k, v| v == UNSET }
-    end
-
-    def request_for
-      return nil if activity_id.nil?
-      return UNSET if activity_id.blank? || activity_id == UNSET
-
-      { type: 'Activity', reference: activity_id }
-    end
-
-    def as_patch_json
-      as_json.except(:webRequestForm).map do |k, v|
-        if v.nil?
-          { op: 'remove', path: "/#{k}" }
-        else
-          { op: 'replace', path: "/#{k}", value: v }
-        end
-      end
-    end
-
-    def self.with_defaults
-      new(**members.index_with(UNSET), web_request_form: 'SUL Requests')
-    end
-  end
-
   UserData = Data.define(:address, :address2, :city, :country, :email_address, :first_name, :last_name,
                          :phone, :sso, :state_or_province, :zip_code) do
     def omission = '…'
@@ -283,20 +194,25 @@ class AeonClient
     DEFAULT_HEADERS.merge({ 'X-AEON-API-KEY': @api_key })
   end
 
-  def handle_response(faraday_response, as_class: nil, not_found: nil) # rubocop:disable Metrics/MethodLength
+  def handle_response(faraday_response, as_class: nil, not_found: nil)
     if faraday_response.success?
       body = faraday_response.body
-      return yield body unless as_class
+      return yield body if block_given?
+      return body unless as_class
 
-      if body.is_a?(Array)
-        Array.wrap(body).map { |data| as_class.from_dynamic(data) }
-      else
-        as_class.from_dynamic(body)
-      end
+      objects_from_response(body, as_class:)
     elsif faraday_response.status == 404
       not_found
     else
       raise ApiError, "Aeon API error: #{faraday_response.status}"
+    end
+  end
+
+  def objects_from_response(response, as_class:)
+    if response.is_a?(Array)
+      Array.wrap(response).map { |data| as_class.from_dynamic(data) }
+    else
+      as_class.from_dynamic(response)
     end
   end
 end

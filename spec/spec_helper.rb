@@ -68,6 +68,8 @@ RSpec.configure do |config|
       to_return(status: 404, body: "", headers: {})
     stub_request(:get, %r{#{Settings.aeon.api_url}/Activities}).
       to_return(status: 200, body: [], headers: {})
+    stub_request(:get, %r{#{Settings.aeon.api_url}/Queues}).
+      to_return(status: 200, body: [].to_json, headers: { 'Content-Type' => 'application/json' })
   end
 
   # Enable flags like --only-failures and --next-failure

@@ -69,11 +69,22 @@ RSpec.describe AeonClient do
   end
 
   describe '#requests_for' do
+    let(:json_headers) { { 'Content-Type' => 'application/json' } }
+
+    def request_payload(transaction_number:, **overrides)
+      {
+        transactionNumber: transaction_number,
+        creationDate: '2024-01-01T12:00:00Z',
+        transactionDate: '2024-01-01T12:00:00Z',
+        username: 'jdoe'
+      }.merge(overrides)
+    end
+
     it 'returns an array of requests for the user' do
       stub_request(:get, 'https://aeon.example.com/api/Users/jdoe/requests?activeOnly=false')
-        .to_return(status: 200, body: [{ transactionNumber: '123', creationDate: '2024-01-01T12:00:00Z',
-                                         transactionDate: '2024-01-01T12:00:00Z',
-                                         username: 'jdoe' }].to_json, headers: { 'Content-Type' => 'application/json' })
+        .to_return(status: 200, body: [request_payload(transaction_number: '123')].to_json, headers: json_headers)
+      stub_request(:get, 'https://aeon.example.com/api/Users/jdoe/requests?activeOnly=true')
+        .to_return(status: 200, body: [].to_json, headers: json_headers)
 
       requests = client.requests_for(username: 'jdoe')
 
@@ -84,11 +95,37 @@ RSpec.describe AeonClient do
 
     it 'returns an empty array if the API returns a 404' do
       stub_request(:get, 'https://aeon.example.com/api/Users/jdoe/requests?activeOnly=false')
-        .to_return(status: 404, body: { error: 'No requests found' }.to_json, headers: { 'Content-Type' => 'application/json' })
+        .to_return(status: 404, body: { error: 'No requests found' }.to_json, headers: json_headers)
+      stub_request(:get, 'https://aeon.example.com/api/Users/jdoe/requests?activeOnly=true')
+        .to_return(status: 404, body: { error: 'No requests found' }.to_json, headers: json_headers)
 
       requests = client.requests_for(username: 'jdoe')
 
       expect(requests).to eq([])
+    end
+
+    it 'merges active and all responses, preferring the active version on collision' do
+      stub_request(:get, 'https://aeon.example.com/api/Users/jdoe/requests?activeOnly=false')
+        .to_return(status: 200,
+                   body: [
+                     request_payload(transaction_number: '1', transactionStatus: 'stale'),
+                     request_payload(transaction_number: '2', transactionStatus: 'completed-only-in-all')
+                   ].to_json,
+                   headers: json_headers)
+      stub_request(:get, 'https://aeon.example.com/api/Users/jdoe/requests?activeOnly=true')
+        .to_return(status: 200,
+                   body: [
+                     request_payload(transaction_number: '1', transactionStatus: 'fresh'),
+                     request_payload(transaction_number: '3', transactionStatus: 'only-in-active')
+                   ].to_json,
+                   headers: json_headers)
+
+      by_number = client.requests_for(username: 'jdoe').index_by(&:transaction_number)
+
+      expect(by_number.keys).to contain_exactly('1', '2', '3')
+      expect(by_number['1'].transaction_status).to eq('fresh')
+      expect(by_number['2'].transaction_status).to eq('completed-only-in-all')
+      expect(by_number['3'].transaction_status).to eq('only-in-active')
     end
   end
 

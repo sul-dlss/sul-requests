@@ -62,6 +62,10 @@ module Aeon
       completed_queue_names&.include?(queue_name)
     end
 
+    def inactive?
+      inactive_queue_names&.include?(queue_name)
+    end
+
     private
 
     def cancelled_queue_names
@@ -74,6 +78,10 @@ module Aeon
 
     def draft_queue_names
       Settings.aeon.queue_names.draft[type]
+    end
+
+    def inactive_queue_names
+      Settings.aeon.queue_names.inactive[type]
     end
   end
 end
