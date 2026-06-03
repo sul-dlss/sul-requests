@@ -35,6 +35,10 @@ class AeonAppointmentsController < ApplicationController
   def create
     authorize! :create, Aeon::Appointment
 
+    @other_reading_room_appointments = (@appointments + [@appointment]).select do |appt|
+      appt.reading_room.id == @appointment.reading_room.id
+    end.select(&:editable?).sort_by(&:sort_key)
+
     respond_to do |format|
       format.html { redirect_to aeon_appointments_path, notice: 'Appointment created successfully' }
       format.turbo_stream

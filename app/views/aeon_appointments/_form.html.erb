@@ -6,15 +6,15 @@
     </div>
 
     <%= render AlertComponent.new(type: :info) do %>
-      <ul class="mb-0">
+      <ul class="mb-0 ps-4">
         <li>An appointment must be scheduled at least <%= @appointment.reading_room.appointment_min_lead_days %> business days in advance to access items.</li>
         <li><%= @appointment.reading_room.name %> is open <%= @appointment.reading_room.human_readable_hours %>.</li>
       </ul>
     <% end %>
 
     <div class="mb-3">
-      <%= f.label :date, class: 'd-block fw-semibold redesign-required-label' %>
-      <div class="d-flex align-items-center gap-2">
+      <%= f.label :date, class: 'd-block fw-semibold mb-2 redesign-required-label' %>
+      <div class="d-flex align-items-center gap-3">
         <%= f.date_field :date, value: "", required: true, data: { action: 'appointment#refreshAvailability appointment#updateBanner' }, min: (@appointment.reading_room.next_appointment.start_time.to_date.iso8601 if @appointment.reading_room&.next_appointment), class: 'border rounded px-2 py-1' %>
         <%= turbo_frame_tag 'earliest_appointment', src: available_aeon_reading_room_url(@appointment.reading_room_id, date: Date.today) %>
       </div>
@@ -52,7 +52,9 @@
       </turbo-frame>
     <% end %>
     <% if @appointment.requests.any? %>
-      <div class="alert alert-info"><%= pluralize(@appointment.requests.length, 'item') %> will move to the new appointment.</div>
+      <%= render AlertComponent.new(type: :info, classes: ['border-0', 'shadow-none', 'w-fit'], with_icon: false) do %>
+        <span class="fw-semibold"><%= pluralize(@appointment.requests.length, 'item') %></span> will move to the new appointment.
+      <% end %>
     <% end %>
   </div>
 

@@ -5,6 +5,7 @@ module Folio
   module FolioRecord
     delegate :library_name,
              :library_code,
+             :effective_location_code,
              :from_ill?,
              :effective_location,
              :permanent_location,
@@ -36,6 +37,20 @@ module Folio
 
     def item_id
       bib['itemId']
+    end
+
+    def identifiers
+      salient_identifiers = (bib.dig('instance', 'identifiers') || []).select do |identifier|
+        identifier.dig('identifierTypeObject', 'name').in?(%w[ISBN OCLC LCCN])
+      end
+
+      grouped_identifiers = salient_identifiers.group_by { |identifier| identifier.dig('identifierTypeObject', 'name') }
+
+      grouped_identifiers.transform_values do |identifiers|
+        identifiers.map do |identifier|
+          "#{identifier.dig('identifierTypeObject', 'name')}#{identifier['value'].sub(/^\([^\\(]+\)/, '')}"
+        end
+      end
     end
 
     private

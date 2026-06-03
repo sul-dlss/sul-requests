@@ -8,6 +8,10 @@ class SidebarAppointmentDropdownComponent < ViewComponent::Base
     @request = request
   end
 
+  def render?
+    request.reading_room.present?
+  end
+
   def selectable_appointments
     helpers.current_user.aeon.appointments.select do |appt|
       appt.reading_room.id == request.reading_room.id

@@ -27,10 +27,6 @@ module Aeon
       activity.name
     end
 
-    def accordion_name(index)
-      "accordionRequest#{index}"
-    end
-
     attr_reader :requests
   end
 end

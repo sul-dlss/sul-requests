@@ -12,35 +12,9 @@ export default class extends Controller {
     const minDuration = data.minSlot;
     this.durationTargets.forEach((duration) => {
       const seconds = parseInt(duration.dataset.seconds);
-      if (maxDuration < seconds || minDuration > seconds) {
-        duration.classList.add('d-none');
-        if (duration.querySelector('input').checked){
-          const totalTargets = this.durationTargets.length;
-          const visibleTargets = this.durationTargets.filter(dt => !dt.classList.contains('d-none'));
-          const durationIndex = this.durationTargets.indexOf(duration);
-          let visibleIndex = Math.max(durationIndex-(totalTargets-visibleTargets.length), 0);
-
-          // click the closest index to the hidden element
-          visibleTargets[visibleIndex].querySelector('input').click();
-        }
-      } else {
-        duration.classList.remove('d-none');
-      }
+      if (maxDuration < seconds || minDuration > seconds) { duration.classList.add('d-none') }
+      else { duration.classList.remove('d-none') }
     });
-  }
-
-  updateReadingRoom(e) {
-    e.preventDefault();
-    const formData = new FormData(this.element);
-    const reading_room = formData.get('reading_room_id');
-    if (!reading_room) return
-    const turboFrame = this.element.closest('turbo-frame');
-    let newTurboSrc = `/aeon_appointments/new/${reading_room}`
-    if (turboFrame.src){
-      const urlParams = new URLSearchParams(turboFrame.src.split("?").slice(-1)[0]);
-      newTurboSrc += `?modal=${urlParams.get('modal')}`
-    }
-    turboFrame.src = newTurboSrc
   }
 
   refreshAvailability() {
@@ -87,7 +61,7 @@ export default class extends Controller {
     return `
      ${startDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'America/Los_Angeles' })} -
      ${ endDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'America/Los_Angeles' }) }
-     `;
+     `.toLowerCase();
   }
 
   updateFormStatus() {

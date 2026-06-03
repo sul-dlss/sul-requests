@@ -27,7 +27,7 @@
         <%= button_tag 'Select appointment', class: 'py-1 btn border dropdown-toggle text-start d-flex align-items-center justify-content-between', type: 'button', data: { bs_toggle: 'dropdown', appointment_select_target: 'button' }, aria: { expanded: false }, disabled: selectable_appointments.blank? %>
         <menu class="dropdown-menu appt-dropdown w-100">
           <li></li>
-          <%= render Aeon::AppointmentOptionComponent.with_collection(selectable_appointments) %>
+          <%= render Aeon::AppointmentOptionComponent.with_collection(selectable_appointments, data_action: 'appointment-select#select') %>
         </menu>
       </div>
 

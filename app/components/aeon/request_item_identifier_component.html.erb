@@ -1,5 +1,12 @@
-<span class="fw-semibold">
-  <%= call_number %>
-  <% if separator? %><i class="bi bi-chevron-right"></i><% end %>
-  <%= container %>
-</span>
+<% inner = capture do %>
+  <span class="<%= classes.join(' ') %>">
+    <%= call_number %>
+    <% if separator? %><i class="bi bi-chevron-right"></i><% end %>
+    <%= container %>
+  </span>
+<% end %>
+<% if wrapper_tag %>
+  <%= tag.public_send(wrapper_tag, inner, class: wrapper_classes.join(' ')) %>
+<% else %>
+  <%= inner %>
+<% end %>

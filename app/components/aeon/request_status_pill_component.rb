@@ -22,15 +22,6 @@ module Aeon
       end
     end
 
-    def status_icon
-      case status_class
-      when :pending
-        'bi bi-clock'
-      when :ready
-        'bi bi-check2-circle'
-      end
-    end
-
     def status_text
       reading_room || digitization_status
     end

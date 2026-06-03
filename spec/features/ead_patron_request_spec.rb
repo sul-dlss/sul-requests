@@ -12,6 +12,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
     allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
     allow(aeon_user).to receive_messages(appointments:,
                                          requests: [])
+    appointments.each { |appt| allow(appt).to receive(:editable?).and_return(true) }
   end
 
   let(:reading_rooms) { JSON.load_file('spec/fixtures/reading_rooms.json').map { |room| Aeon::ReadingRoom.from_dynamic(room) } }
@@ -52,22 +53,18 @@ RSpec.describe 'Requesting an item from an EAD', :js do
 
   let(:appointments) do
     [
-      instance_double(Aeon::Appointment,
-                      start_time: DateTime.new(2026, 2, 19, 12, 0, 0),
-                      stop_time: DateTime.new(2026, 2, 19, 13, 0, 0),
-                      id: 1,
-                      editable?: true,
-                      sort_key: 1,
-                      requests: [instance_double(Aeon::Request)],
-                      reading_room: reading_rooms.last),
-      instance_double(Aeon::Appointment,
-                      start_time: DateTime.new(2026, 2, 20, 13, 0, 0),
-                      stop_time: DateTime.new(2026, 2, 20, 14, 0, 0),
-                      id: 2,
-                      editable?: true,
-                      sort_key: 2,
-                      requests: [instance_double(Aeon::Request)],
-                      reading_room: reading_rooms.first)
+      build(:aeon_appointment,
+            start_time: DateTime.new(2026, 2, 19, 12, 0, 0),
+            stop_time: DateTime.new(2026, 2, 19, 13, 0, 0),
+            id: 1,
+            requests: [instance_double(Aeon::Request, cancelled?: false)],
+            reading_room: reading_rooms.last),
+      build(:aeon_appointment,
+            start_time: DateTime.new(2026, 2, 20, 13, 0, 0),
+            stop_time: DateTime.new(2026, 2, 20, 14, 0, 0),
+            id: 2,
+            requests: [instance_double(Aeon::Request, cancelled?: false)],
+            reading_room: reading_rooms.first)
     ]
   end
 

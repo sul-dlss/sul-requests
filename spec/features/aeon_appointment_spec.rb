@@ -19,7 +19,7 @@ RSpec.describe 'Appointments', :js do
                     appointments_for: [appointment],
                     find_queue: queue,
                     update_request: build(:aeon_request, transaction_number: 100),
-                    update_request_route: build(:aeon_request, transaction_number: 100),
+                    update_request_route: build(:aeon_request, :draft, transaction_number: 100),
                     requests_for: [build(:aeon_request, transaction_number: 100, username: user.email_address, appointment: appointment)],
                     cancel_appointment: [],
                     reading_rooms:,
@@ -88,14 +88,14 @@ RSpec.describe 'Appointments', :js do
         expect(page).to have_text 'Change appointment'
         expect(page).to have_text 'Field Reading Room'
         expect(page).to have_text 'Current'
-        expect(page).to have_text appointment.date.strftime('%b %e, %Y')
+        expect(page).to have_text appointment.date.strftime('%b %-d, %Y')
         expect(page).to have_no_text appointment.start_time.strftime('%l:%M %p')
         expect(page).to have_text 'New'
         expect(page).to have_text 'Select date'
         expect(page).to have_text '1 item will move to the new appointment.'
         # Input a date a month from now
         fill_in 'aeon_appointment_date', with: (Time.zone.today >> 1).strftime('%m%d%Y')
-        expect(page).to have_text (Time.zone.today >> 1).strftime('%b %e, %Y')
+        expect(page).to have_text (Time.zone.today >> 1).strftime('%b %-d, %Y')
         click_on 'Cancel'
       end
       expect(page).to have_no_css '.modal'
@@ -104,11 +104,11 @@ RSpec.describe 'Appointments', :js do
 
   describe 'redrafting a request' do
     it 'moves the request into draft' do
-      within '#aeon_request_100' do
-        click_on 'Remove'
+      within '#aeon_appointments #aeon_request_100' do
+        click_on 'Save for later'
       end
 
-      expect(page).to have_no_css '#aeon_request_100'
+      expect(page).to have_no_css '#aeon_appointments #aeon_request_100'
 
       expect(stub_aeon_client).to have_received(:update_request_route).with({ status: 'Awaiting User Review',
                                                                               transaction_number: 100 })
@@ -122,7 +122,7 @@ RSpec.describe 'Appointments', :js do
       perform_enqueued_jobs do
         expect(page).to have_text 'Cancel appointment?'
         choose('cancel_items_false')
-        expect(page).to have_text '1 item assigned to this appointment.'
+        expect(page).to have_text '1 item is assigned to this appointment.'
         click_on 'Yes, cancel appointment'
       end
       expect(page).to have_no_css '.modal'
@@ -138,7 +138,7 @@ RSpec.describe 'Appointments', :js do
       perform_enqueued_jobs do
         expect(page).to have_text 'Cancel appointment?'
         choose('cancel_items_true')
-        expect(page).to have_text '1 item assigned to this appointment.'
+        expect(page).to have_text '1 item is assigned to this appointment.'
         click_on 'Yes, cancel appointment'
       end
       expect(page).to have_no_css '.modal'

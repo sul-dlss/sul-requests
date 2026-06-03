@@ -1,11 +1,44 @@
-<% if @aeon_request.status == @updated_request.status %>
-  <%= turbo_stream.replace(@aeon_request, Aeon::RequestGroupItemComponent.new(request: @updated_request)) %>
-<% elsif @aeon_request_group.requests.one? %>
-  <%= turbo_stream.remove(@aeon_request_group.dom_id) %>
+<% if @aeon_request.status == @updated_aeon_request.status %>
+  <%= turbo_stream.replace(@aeon_request, Aeon::RequestGroupItemComponent.new(request: @updated_aeon_request)) %>
 <% else %>
+  <%# remove the item from the previous group %>
   <%= turbo_stream.remove(@aeon_request) %>
+
+  <%# update the draft list %>
+  <%= turbo_stream.replace('aeon-requests') do %>
+    <div id="aeon-requests">
+      <%= render Aeon::RequestGroupBriefComponent.with_collection(@next_draft_aeon_request_groups, after_request_item_component: SidebarAppointmentDropdownComponent) %>
+    </div>
+  <% end %>
 <% end %>
 
-<%= turbo_stream.replace('aeon-appointments') do %>
-  <%= render 'aeon_appointments' %>
+<%# remove groups that are entirely gone %>
+<% group_keys = @next_aeon_request_groups.map(&:group_key) %>
+<% @aeon_request_groups.reject { |group| group.group_key.in? group_keys }.each do |group| %>
+  <%= turbo_stream.remove(group.dom_id) %>
 <% end %>
+
+<%# update appointment cards + sidebar %>
+<%= turbo_stream.replace(dom_id(@previous_appointment)) do %>
+  <%= render Aeon::AppointmentComponent.new(appointment: @previous_appointment) %>
+<% end if @previous_appointment %>
+
+<%= turbo_stream.replace_all ".#{dom_id(@previous_appointment, :option)}" do %>
+  <%= render Aeon::AppointmentOptionComponent.new(appointment: @previous_appointment, data_action: 'appointment-select-submit#updateInput') %>
+<% end if @previous_appointment %>
+
+<%= turbo_stream.replace(dom_id(@appointment)) do %>
+  <%= render Aeon::AppointmentComponent.new(appointment: @appointment) %>
+<% end if @appointment %>
+
+<%= turbo_stream.replace(dom_id(@previous_appointment, :sidebar)) do %>
+  <%= render Aeon::AppointmentSidebarComponent.new(appointment: @previous_appointment) %>
+<% end if @previous_appointment %>
+
+<%= turbo_stream.replace(dom_id(@appointment, :sidebar)) do %>
+  <%= render Aeon::AppointmentSidebarComponent.new(appointment: @appointment) %>
+<% end if @appointment %>
+
+<%= turbo_stream.replace_all ".#{dom_id(@appointment, :option)}" do %>
+  <%= render Aeon::AppointmentOptionComponent.new(appointment: @appointment, data_action: 'appointment-select-submit#updateInput') %>
+<% end if @appointment %>

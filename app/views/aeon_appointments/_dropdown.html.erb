@@ -1,0 +1,7 @@
+<div class="dropdown sidebar-custom-select" data-reading-room-id="<%= reading_room_id %>">
+  <%= button_tag 'Appointment', class: 'dropdown-toggle btn btn-link su-underline p-0', type: 'button', data: { bs_toggle: 'dropdown' }, aria: { expanded: false }, disabled: appointments.blank? %>
+  <menu class="dropdown-menu sidebar-appt-dropdown">
+    <li></li>
+    <%= render Aeon::AppointmentOptionComponent.with_collection(appointments, name: 'aeon_request[appointment_id]', data_action: nil) %>
+  </menu>
+</div>

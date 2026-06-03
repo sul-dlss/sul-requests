@@ -363,6 +363,13 @@ class FolioGraphqlClient
                                       author
                                       instance {
                                         hrid
+
+                                        identifiers {
+                                          value
+                                          identifierTypeObject {
+                                            name
+                                          }
+                                        }
                                       }
                                       isbn
                                     }
@@ -451,6 +458,13 @@ class FolioGraphqlClient
                                       isbn
                                       instance {
                                         hrid
+
+                                        identifiers {
+                                          value
+                                          identifierTypeObject {
+                                            name
+                                          }
+                                        }
                                       }
                                       item {
                                         barcode

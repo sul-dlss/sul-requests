@@ -95,12 +95,25 @@ layer(components);
   color: var(--stanford-digital-blue);
 }
 
+.text-digital-blue-dark {
+  color: var(--stanford-digital-blue-dark);
+}
+
 .text-digital-red {
   color: var(--stanford-digital-red);
 }
 
+
+.text-digital-red-dark {
+  color: var(--stanford-digital-red-dark);
+}
+
 .text-plum-dark {
     color: rgba(var(--stanford-plum-dark-rgb), 1);
+}
+
+.text-spirited-dark {
+  color: #C74632;
 }
 
 .text-30-black {
@@ -110,6 +123,8 @@ layer(components);
 .text-80-black {
   color: var(--stanford-80-black);
 }
+
+.w-fit { width: fit-content; }
 
 @font-face {
   font-family: "Stanford";
@@ -496,10 +511,8 @@ label.btn-close {
  transform: rotate(180deg);
 }
 
-.fines .card {
-  .rounded-pill {
-    padding: 4px 12px;
-  }
+.rounded-pill {
+  padding: 4px 12px;
 }
 
 .request.card, .request-group.card {
@@ -511,10 +524,6 @@ label.btn-close {
 
   .card-header {
     --bs-card-border-color: var(--stanford-20-black);
-  }
-
-  .rounded-pill {
-    padding: 4px 12px;
   }
 
   .appointment-details .bi-dot {
@@ -748,6 +757,17 @@ label.btn-close {
   }
 }
 
+.selected-item-title {
+  background-color: var(--stanford-fog-light);
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 4px;
+  margin-bottom: 1rem;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
 .selected-items-container .appointments-item:only-child,
 .selected-items-container .accordion-item:only-child,
 .selected-items-container .activity-item
@@ -763,15 +783,6 @@ label.btn-close {
 
   .selected-item-status, .selected-item-remove, .disclosure-icon {
     display: none;
-  }
-
-  .selected-item-title {
-    background-color: var(--stanford-fog-light);
-    padding-bottom: 4px;
-    padding-left: 8px;
-    padding-right: 8px;
-    padding-top: 4px;
-    margin-bottom: 1rem;
   }
 }
 
@@ -925,7 +936,7 @@ label.btn-close {
   display: none;
 }
 
-#aeon-appointments .card {
+#aeon-appointments-frame .card {
   --bs-card-border-color: var(--stanford-20-black);
 }
 
@@ -935,15 +946,97 @@ label.btn-close {
   caret-color: transparent;
 }
 
-.selected-appointment {
-  font-weight: 600;
-  padding: 0.5rem 1rem;
-  background-color: var(--stanford-fog-light);
-  color: var(--stanford-digital-blue-dark);
-}
-
 .request-group {
   margin-bottom: 1rem;
+}
+
+.request.list-group-item {
+  display: grid;
+  column-gap: 1rem;
+}
+
+.request.list-group-item:not(:has(.request-fulfillment)) {
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "id"
+    "detail"
+    "actions"
+    "footer";
+
+  @media (min-width: 768px) and (max-width: 991.98px),
+         (min-width: 1200px) {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "id     actions"
+      "detail detail"
+      "footer footer";
+  }
+}
+
+.request.list-group-item:has(.request-fulfillment) {
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "id"
+    "detail"
+    "fulfillment"
+    "actions"
+    "footer";
+
+  @media (min-width: 576px) {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "id          id"
+      "detail      detail"
+      "fulfillment actions"
+      "footer      footer";
+  }
+
+  @media (min-width: 992px) {
+    grid-template-columns: 1fr 19.5rem 3rem;
+    grid-template-areas:
+      "id     fulfillment actions"
+      "detail detail      detail"
+      "footer footer      footer";
+  }
+}
+
+.request.list-group-item > .rgi-id      { grid-area: id; }
+.request.list-group-item > .rgi-detail  { grid-area: detail; }
+.request.list-group-item > .request-fulfillment { grid-area: fulfillment; }
+.request.list-group-item > .rgi-actions { grid-area: actions; }
+.request.list-group-item > .rgi-footer  { grid-area: footer; }
+
+.confirmation-request-summary {
+  display: grid;
+  flex: 1 1 auto;
+  column-gap: 0.5rem;
+  row-gap: 0.25rem;
+  align-items: center;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "id"
+    "time"
+    "num";
+
+  @media (min-width: 1200px) {
+    grid-template-columns: auto auto 1fr;
+    grid-template-areas: "id num time";
+  }
+}
+
+.confirmation-request-summary > .crs-id   { grid-area: id; }
+.confirmation-request-summary > .crs-num  { grid-area: num; }
+.confirmation-request-summary > .crs-time {
+  grid-area: time;
+
+  @media (min-width: 1200px) {
+    justify-self: end;
+  }
+}
+
+/* Non-specific rule to provide padding for when we use modal content in non-modal situations */
+.modal-body {
+  --bs-modal-padding: 1rem;
 }
 
 .modal-body.add-items {
@@ -1010,21 +1103,21 @@ label.btn-close {
 }
 
 .banner {
+  --bs-border-color: var(--stanford-20-black);
+  --bs-border-width: 1px;
   font-weight: 600;
   padding: 0.5rem 1rem;
-  background-color: var(--stanford-fog-light);  
+  background-color: var(--stanford-fog-light);
+
+  &:empty {
+    /* Easier than fighting CSS layers with display: flex !important */
+    height: 0;
+    padding: 0;
+  }
 }
 
 .request-group-per-appointment .request {
   --bs-list-group-border-width: 0;
-}
-
-.zero-items-alert {
-  display: none;
-}
-
-.zero-items-alert:only-child {
-  display: flex;
 }
 
 /* ---- Custom date picker ---- */
@@ -1080,10 +1173,8 @@ label.btn-close {
   padding-left: 0;
 }
 
-.clamp-1 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.activity-request-group .request {
+  margin-left: 1rem;
 }
 
 .clamp {
@@ -1096,6 +1187,9 @@ label.btn-close {
   text-overflow: ellipsis;
 }
 
+.clamp-1 {
+  --clamp-lines: 1;
+}
 .clamp-2 {
   --clamp-lines: 2;
 }
@@ -1111,7 +1205,7 @@ label.btn-close {
     width: 1.5rem;
 
     svg {
-      fill: $su-digital-blue;
+      fill: var(--stanford-digital-blue);
       height: 1.5rem;
       width: 1.5rem;
     }
@@ -1130,4 +1224,10 @@ label.btn-close {
   .expand-icon {
     display: inline;
   }
+}
+
+.cover-image {
+  border: 1px solid var(--stanford-fog-light);
+  max-height: 200px;
+  max-width: 80px;
 }

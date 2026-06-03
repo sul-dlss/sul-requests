@@ -9,6 +9,7 @@ class AeonRequestsController < ApplicationController
   include AeonSortable
 
   before_action :load_aeon_requests
+  before_action :load_filtered_aeon_requests, only: [:index]
   before_action :load_aeon_request_groups
   before_action :load_aeon_request, except: [:index, :destroy_multiple]
   before_action :set_variant, only: [:index, :edit]
@@ -20,10 +21,10 @@ class AeonRequestsController < ApplicationController
   def resubmit
     authorize! :update, @aeon_request
 
-    @updated_request = aeon_client.update_request_route(transaction_number: params[:id], status: 'Submitted by User')
+    @updated_aeon_request = aeon_client.update_request_route(transaction_number: params[:id], status: 'Submitted by User')
 
     respond_to do |format|
-      format.turbo_stream { render 'update' }
+      format.turbo_stream { update_turbo_stream }
     end
   end
 
@@ -31,10 +32,10 @@ class AeonRequestsController < ApplicationController
     authorize! :update, @aeon_request
 
     request_field = @aeon_request.activity? ? 'activity_id' : 'appointment_id'
-    @updated_request = Aeon::UpdateRequestService.new(@aeon_request, { "#{request_field}": nil, status: 'Awaiting User Review' }).call
+    @updated_aeon_request = Aeon::UpdateRequestService.new(@aeon_request, { "#{request_field}": nil, status: 'Awaiting User Review' }).call
 
     respond_to do |format|
-      format.turbo_stream
+      format.turbo_stream { update_turbo_stream }
     end
   end
 
@@ -45,7 +46,7 @@ class AeonRequestsController < ApplicationController
   def update
     authorize! :update, @aeon_request
 
-    @updated_request = Aeon::UpdateRequestService.new(@aeon_request, aeon_request_params).call
+    @updated_aeon_request = Aeon::UpdateRequestService.new(@aeon_request, aeon_request_params).call
 
     respond_to do |format|
       format.turbo_stream { update_turbo_stream }
@@ -59,10 +60,10 @@ class AeonRequestsController < ApplicationController
   def destroy
     authorize! :destroy, @aeon_request
 
-    @updated_request = aeon_client.update_request_route(transaction_number: params[:id], status: 'Cancelled by User')
+    @updated_aeon_request = aeon_client.update_request_route(transaction_number: params[:id], status: 'Cancelled by User')
 
     respond_to do |format|
-      format.turbo_stream { render 'update' }
+      format.turbo_stream { update_turbo_stream }
     end
   end
 
@@ -84,16 +85,31 @@ class AeonRequestsController < ApplicationController
 
   private
 
-  def update_turbo_stream
-    if params[:sidebar].present?
-      appointment_requests = current_user.aeon.submitted_requests.select do |request|
-        request.appointment_id == @updated_request.appointment_id
-      end.push(@updated_request)
-      @updated_request.appointment.requests = appointment_requests
-      render 'update_from_appt_page'
-    else
-      render 'update'
+  def update_turbo_stream # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
+    @previous_aeon_requests = @aeon_requests
+    @next_aeon_requests = sort_aeon_requests(@aeon_requests - [@aeon_request] + [@updated_aeon_request]).sort_by do |x|
+      [x.title, x.sort_key]
     end
+
+    @previous_aeon_request_groups = @aeon_request_groups
+    @next_aeon_request_groups = Aeon::RequestGrouping.from_requests(@next_aeon_requests)
+    @next_draft_aeon_request_groups = Aeon::RequestGrouping.from_requests(@next_aeon_requests.select(&:draft?).reject(&:digital?))
+
+    if @aeon_request.appointment_id != @updated_aeon_request.appointment_id
+      @previous_appointment = @aeon_request.appointment&.tap do |appt|
+        appt.requests = @next_aeon_requests.select do |request|
+          request.appointment_id == appt.id
+        end
+      end
+    end
+
+    @appointment = @updated_aeon_request.appointment&.tap do |appt|
+      appt.requests = @next_aeon_requests.select do |request|
+        request.appointment_id == appt.id
+      end
+    end
+
+    render 'update'
   end
 
   def set_variant
@@ -106,8 +122,14 @@ class AeonRequestsController < ApplicationController
     @aeon_request_group = @aeon_request_groups.find { |request_group| request_group.requests.find { |r| r.id == @aeon_request.id } }
   end
 
-  def load_aeon_requests # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity
-    return [] unless current_user&.aeon
+  def load_aeon_requests
+    @aeon_requests = [] and return unless current_user&.aeon
+
+    @aeon_requests = sort_aeon_requests(current_user.aeon.requests)
+  end
+
+  def load_filtered_aeon_requests # rubocop:disable Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/AbcSize
+    @aeon_requests = [] and return unless current_user&.aeon
 
     @aeon_requests = case params[:kind]
                      when 'drafts'
@@ -121,7 +143,7 @@ class AeonRequestsController < ApplicationController
                      when 'activity'
                        current_user.aeon.activities_with_requests.map(&:requests).flatten
                      else
-                       current_user.aeon.requests
+                       []
                      end
 
     @aeon_requests = sort_aeon_requests(filter_aeon_requests(@aeon_requests))

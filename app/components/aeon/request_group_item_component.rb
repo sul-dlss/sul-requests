@@ -5,14 +5,15 @@ module Aeon
   class RequestGroupItemComponent < ViewComponent::Base
     with_collection_parameter :request
 
-    attr_reader :request
+    attr_reader :request, :classes
 
     delegate :transaction_number, :transaction_date, to: :request
 
-    def initialize(request:, actions: true, appointment: true, remove_from_appointment: false, footer: true)
+    def initialize(request:, classes: ['list-group-item'], actions: true, fulfillment: true, remove_from_appointment: false, footer: true) # rubocop:disable Metrics/ParameterLists
       @request = request
+      @classes = Array(classes)
       @actions = actions
-      @appointment = appointment
+      @fulfillment = fulfillment
       @remove_from_appointment = remove_from_appointment
       @footer = footer
     end
@@ -21,8 +22,8 @@ module Aeon
       @actions
     end
 
-    def appointment?
-      @appointment
+    def fulfillment?
+      @fulfillment
     end
 
     def footer?

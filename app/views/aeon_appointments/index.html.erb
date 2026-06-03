@@ -1,24 +1,25 @@
 <div class="container appointments-index">
   <div id="new-appt-alert"></div>
   <div class="row">
-    <div class="col-8 pe-5">
-      <div class="d-flex align-items-center gap-3 mb-4">
-        <h1 class="mb-0">Reading room appointments</h1>
-        <%= link_to 'Create new appointment', new_aeon_appointment_path, class: 'btn btn-primary', data: { action: 'modal#open' } %>
+    <div class="col-lg-8 pe-5">
+      <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+        <h1>Reading room appointments</h1>
+        <div class="d-flex flex-wrap gap-2 align-items-baseline">
+          <button class="btn btn-outline-primary d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#draft_aeon_requests_sidebar" aria-controls="draft_aeon_requests_sidebar">
+            Saved for later
+          </button>
+          <%= link_to 'Create new appointment', new_aeon_appointment_path, class: 'btn btn-primary', data: { action: 'modal#open' } %>
+        </div>
       </div>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-8 pe-5">
+    <div class="col-lg-8 pe-5">
       <turbo-frame id="aeon_appointments">
         <%= render Aeon::AppointmentComponent.with_collection(@appointments) %>
       </turbo-frame>
     </div>
-    <div class="col-4">
-      <div id="draft_aeon_requests_sidebar">
-        <%= render 'draft_aeon_requests' %>
-      </div>
-    </div>
+    <%= render 'draft_aeon_requests' %>
   </div>
 </div>

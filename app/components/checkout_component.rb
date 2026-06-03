@@ -26,27 +26,47 @@ class CheckoutComponent < ViewComponent::Base
   end
 
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-  def render_checkout_status
+  def checkout_status_pill
     if checkout.recalled?
-      checkout_status_html(css_class: 'text-recalled',
-                           icon: 'sharp-error-24px',
-                           text: 'Recalled',
-                           accrued: checkout.accrued)
-    elsif checkout.claimed_returned?
-      checkout_status_html(text: 'Processing claim')
-    elsif checkout.lost?
-      checkout_status_html(css_class: 'text-lost',
-                           icon: 'sharp-warning-24px',
-                           text: 'Assumed lost',
-                           accrued: checkout.accrued)
+      tag.span class: 'small fw-bold rounded-pill text-digital-red-dark bg-danger-subtle py-1 px-2' do
+        safe_join([tag.i(class: 'bi bi-exclamation-triangle me-1'), 'Recalled'])
+      end
     elsif checkout.overdue?
-      checkout_status_html(css_class: 'text-overdue',
-                           icon: 'sharp-warning-24px',
-                           text: 'Overdue',
-                           accrued: checkout.accrued)
+      tag.span class: 'small fw-bold rounded-pill text-digital-red-dark bg-danger-subtle py-1 px-2' do
+        safe_join([tag.i(class: 'bi bi-exclamation-triangle me-1'), 'Overdue'])
+      end
+    elsif checkout.lost?
+      tag.span class: 'small fw-bold rounded-pill text-digital-red-dark bg-danger-subtle py-1 px-2' do
+        safe_join([tag.i(class: 'bi bi-exclamation-triangle me-1'), 'Assumed lost'])
+      end
+    elsif checkout.claimed_returned?
+      tag.span class: 'small fw-bold rounded-pill text-warning bg-warning-subtle py-1 px-2' do
+        safe_join([tag.i(class: 'bi'), 'Processing claim'])
+      end
     end
   end
   # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+
+  def contact_email
+    contact_info = Settings.locations[checkout.effective_location_code]&.contact_info ||
+                   Settings.libraries[checkout.library_code]&.contact_info
+
+    contact_info&.dig(:email)
+  end
+
+  def cover_image
+    identifiers = checkout.identifiers
+
+    tag.img class: "cover-image center-block #{identifiers.values.flatten.join(' ')}",
+            hidden: true,
+            alt: '',
+            data: {
+              google_cover_image_target: 'image',
+              isbn: identifiers['ISBN']&.join(','),
+              oclc: identifiers['OCLC']&.join(','),
+              lccn: identifiers['LCCN']&.join(',')
+            }
+  end
 
   private
 

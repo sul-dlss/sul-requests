@@ -1,22 +1,22 @@
 <% if existing_appointment? %>
-<div class="selected-appointment d-flex flex-row">
-  <div class="w-50 border-end">
-    <h4>Current</h4>
-    <%= render AppointmentTimeRangeComponent.new(appointment: @appointment) %>
+<div class="banner d-flex flex-row p-3">
+  <div class="w-50">
+    <h4 class="mb-1">Current</h4>
+    <div class="fw-normal"><%= render AppointmentTimeRangeComponent.new(appointment: @appointment) %></div>
   </div>
-  <div class="ms-3">
-    <h4>
+  <div class="ps-3 border-start">
+    <h4 class="mb-1">
       New
     </h4>
-    <div data-appointment-target="selection">
-      Select date <%= 'and time' unless @appointment.reading_room&.day_only_appointments? %>
+    <div class="text-digital-blue-dark" data-appointment-target="selection">
+      <span class="fw-normal">
+        Select date <%= 'and time' unless @appointment.reading_room&.day_only_appointments? %>
+      </span>
     </div>
   </div>
 </div>
 <% else %>
   <% unless @appointment.reading_room&.day_only_appointments? %>
-    <div class="selected-appointment d-flex flex-row" data-appointment-target="selection">
-      Select date and time
-    </div>
+    <div class="banner d-flex flex-row text-digital-blue-dark" data-appointment-target="selection"></div>
   <% end %>
 <% end %>

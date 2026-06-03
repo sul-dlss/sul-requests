@@ -4,10 +4,11 @@ module Aeon
   # Render an option for an appointment in the custom appointment select-ish dropdown.
   class AppointmentOptionComponent < ViewComponent::Base
     with_collection_parameter :appointment
-    attr_reader :appointment, :data_action
+    attr_reader :appointment, :name, :data_action
 
-    def initialize(appointment:, data: {}, data_action: 'appointment-select#select')
+    def initialize(appointment:, name: nil, data: {}, data_action: nil)
       @appointment = appointment
+      @name = name
       @data = data
       @data_action = data_action
     end

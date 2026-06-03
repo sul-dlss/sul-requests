@@ -26,8 +26,12 @@ module Aeon
       auth_type == 'Default'
     end
 
+    def all_requests
+      self.class.aeon_client.requests_for(username:)
+    end
+
     def requests
-      @requests ||= self.class.aeon_client.requests_for(username:).reject(&:activity?)
+      @requests ||= all_requests.reject(&:activity?)
     end
 
     def activities
@@ -67,7 +71,7 @@ module Aeon
 
     def appointments
       @appointments ||= self.class.aeon_client.appointments_for(username:).sort_by(&:sort_key).reject(&:cancelled?).each do |appointment|
-        appointment.requests = requests.select { |request| !request.cancelled? && request.appointment_id == appointment.id }
+        appointment.requests = requests.select { |request| request.appointment_id == appointment.id }
       end
     end
 
