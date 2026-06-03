@@ -37,7 +37,7 @@ export default class extends Controller {
     if (requiredEmpty) return requiredEmpty;
 
     // Per-item soft requirements: gated here (not via `required`) so save-
-    // for-later can submit with empty fields to trigger Aeon draft routing.
+    // for-later can submit with empty fields to trigger Aeon save-for-later routing.
     return Array.from(accordion.querySelectorAll('[data-required-for-submit]'))
       .filter(x => x.closest('[data-content-id]')?.offsetParent)
       .find(x => formData.getAll(x.name).every(x => !x))
