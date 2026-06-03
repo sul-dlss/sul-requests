@@ -51,7 +51,7 @@ class AeonRequestsController < ApplicationController
     respond_to do |format|
       format.turbo_stream { update_turbo_stream }
       format.html do
-        aeon_requests_path = updated_request.draft? ? aeon_requests_path(kind: 'drafts') : aeon_requests_path(kind: 'submitted')
+        aeon_requests_path = @updated_aeon_request.draft? ? aeon_requests_path(kind: 'drafts') : aeon_requests_path(kind: 'submitted')
         redirect_to aeon_requests_path, notice: 'Request was successfully updated.'
       end
     end
