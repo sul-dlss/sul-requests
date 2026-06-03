@@ -93,7 +93,7 @@ module Aeon
       elsif submitted?
         :submitted
       else
-        :draft
+        :saved_for_later
       end
     end
 
