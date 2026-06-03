@@ -16,7 +16,7 @@
   <% end %>
 
   <% content_for(:modal) do %>
-    <%= render ModalComponent.new(id: "delete-bulk", data: {draft_request_target: "deleteModal"}) do |component| %>
+    <%= render ModalComponent.new(id: "delete-bulk", data: {request_bulk_delete_target: "deleteModal"}) do |component| %>
       <% component.with_title.with_content('Delete requests?') %>
       <% component.with_body do %>
         <%= render Aeon::RequestGroupBulkActionsComponent.with_collection(@aeon_request_groups) %>
