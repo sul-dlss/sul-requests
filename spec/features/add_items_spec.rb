@@ -46,7 +46,8 @@ RSpec.describe 'Add items modal', :js do
                     find_user: aeon_user,
                     find_queue: saved_for_later_queue,
                     appointments_for: [appointment],
-                    requests_for: [saved_for_later_request_one, saved_for_later_request_two, saved_for_later_request_three, submitted_request_one, submitted_request_two],
+                    requests_for: [saved_for_later_request_one, saved_for_later_request_two, saved_for_later_request_three,
+                                   submitted_request_one, submitted_request_two],
                     reading_rooms:,
                     update_request_route: build(:aeon_request, transaction_number: 100),
                     activities_for: [],
@@ -66,8 +67,8 @@ RSpec.describe 'Add items modal', :js do
     allow(submitted_request_one).to receive_messages(transaction_queue: submitted_queue)
     allow(submitted_request_two).to receive_messages(transaction_queue: submitted_queue)
     allow(stub_aeon_client).to receive_messages(update_request: submitted_request_two)
-    allow(aeon_user).to receive_messages(requests: [saved_for_later_request_one, saved_for_later_request_two, saved_for_later_request_three, submitted_request_one,
-                                                    submitted_request_two])
+    allow(aeon_user).to receive_messages(requests: [saved_for_later_request_one, saved_for_later_request_two, saved_for_later_request_three,
+                                                    submitted_request_one, submitted_request_two])
     login_as(current_user)
     visit aeon_appointments_path
   end
