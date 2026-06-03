@@ -22,10 +22,10 @@ RSpec.describe Aeon::Request do
       allow(aeon_client).to receive(:find_queue).with(id: queue.id, type: :transaction).and_return(queue)
     end
 
-    context 'with a draft' do
+    context 'with a saved for later request' do
       let(:transaction_status) { 'Awaiting User Review' }
 
-      it 'returns draft' do
+      it 'returns saved for later' do
         expect(request.status).to eq :saved_for_later
       end
     end
@@ -84,20 +84,20 @@ RSpec.describe Aeon::Request do
   end
 
   describe '#saved_for_later?' do
-    it 'returns true when the transaction queue is a draft queue' do
+    it 'returns true when the transaction queue is a saved for later queue' do
       saved_for_later_queue = Aeon::Queue.new(id: 5, queue_name: 'Awaiting User Review', queue_type: 'Transaction')
       allow(aeon_client).to receive(:find_queue).with(id: 5, type: :transaction).and_return(saved_for_later_queue)
 
       request = build(:aeon_request, transaction_status: 5)
-      expect(request).to be_draft
+      expect(request).to be_saved_for_later
     end
 
-    it 'returns false when the transaction queue is not a draft queue' do
+    it 'returns false when the transaction queue is not a saved for later queue' do
       non_saved_for_later_queue = Aeon::Queue.new(id: 8, queue_name: 'Awaiting Request Processing', queue_type: 'Transaction')
       allow(aeon_client).to receive(:find_queue).with(id: 8, type: :transaction).and_return(non_saved_for_later_queue)
 
       request = build(:aeon_request, transaction_status: 8)
-      expect(request).not_to be_draft
+      expect(request).not_to be_saved_for_later
     end
   end
 
@@ -159,9 +159,9 @@ RSpec.describe Aeon::Request do
   end
 
   describe '#submitted?' do
-    it 'returns true when request is neither a draft or completed' do
-      non_draft = Aeon::Queue.new(id: 8, queue_name: 'Awaiting Request Processing', queue_type: 'Transaction')
-      allow(aeon_client).to receive(:find_queue).with(id: 8, type: :transaction).and_return(non_draft)
+    it 'returns true when request is neither a saved for later or completed' do
+      non_saved_for_later = Aeon::Queue.new(id: 8, queue_name: 'Awaiting Request Processing', queue_type: 'Transaction')
+      allow(aeon_client).to receive(:find_queue).with(id: 8, type: :transaction).and_return(non_saved_for_later)
       allow(aeon_client).to receive(:find_queue).with(id: nil, type: :photoduplication).and_return(nil)
 
       request = build(:aeon_request, transaction_status: 8, photoduplication_status: nil)

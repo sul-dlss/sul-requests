@@ -5,14 +5,14 @@ require 'rails_helper'
 RSpec.describe Aeon::ConfirmationSavedForLaterComponent, type: :component do
   let(:saved_for_later_request) { build(:aeon_request) }
   let(:submitted_request) { build(:aeon_request) }
-  let(:request_group) { Aeon::RequestGrouping.new([draft_request, submitted_request]) }
+  let(:request_group) { Aeon::RequestGrouping.new([saved_for_later_request, submitted_request]) }
 
   before do
-    allow(draft_request).to receive_messages(saved_for_later?: true, submitted?: false, digital?: false)
+    allow(saved_for_later_request).to receive_messages(saved_for_later?: true, submitted?: false, digital?: false)
     allow(submitted_request).to receive_messages(saved_for_later?: false, submitted?: true, digital?: false)
   end
 
-  context 'with draft and submitted requests' do
+  context 'with saved for later and submitted requests' do
     before { render_inline(described_class.new(request_group:)) }
 
     it 'renders the "also saved" message with count and schedule link' do
@@ -22,8 +22,8 @@ RSpec.describe Aeon::ConfirmationSavedForLaterComponent, type: :component do
     end
   end
 
-  context 'with only draft requests' do
-    let(:request_group) { Aeon::RequestGrouping.new([draft_request]) }
+  context 'with only saved for later requests' do
+    let(:request_group) { Aeon::RequestGrouping.new([saved_for_later_request]) }
 
     before { render_inline(described_class.new(request_group:)) }
 
@@ -32,9 +32,9 @@ RSpec.describe Aeon::ConfirmationSavedForLaterComponent, type: :component do
     end
   end
 
-  context 'with digitization draft requests' do
+  context 'with digitization saved for later requests' do
     before do
-      allow(draft_request).to receive(:digital?).and_return(true)
+      allow(saved_for_later_request).to receive(:digital?).and_return(true)
       render_inline(described_class.new(request_group:))
     end
 
@@ -43,7 +43,7 @@ RSpec.describe Aeon::ConfirmationSavedForLaterComponent, type: :component do
     end
   end
 
-  context 'with no draft requests' do
+  context 'with no saved for later requests' do
     let(:request_group) { Aeon::RequestGrouping.new([submitted_request]) }
 
     before { render_inline(described_class.new(request_group:)) }

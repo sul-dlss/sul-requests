@@ -4,10 +4,10 @@
   <%# remove the item from the previous group %>
   <%= turbo_stream.remove(@aeon_request) %>
 
-  <%# update the draft list %>
+  <%# update the saved for later list %>
   <%= turbo_stream.replace('aeon-requests') do %>
     <div id="aeon-requests">
-      <%= render Aeon::RequestGroupBriefComponent.with_collection(@next_draft_aeon_request_groups, after_request_item_component: SidebarAppointmentDropdownComponent) %>
+      <%= render Aeon::RequestGroupBriefComponent.with_collection(@next_saved_for_later_aeon_request_groups, after_request_item_component: SidebarAppointmentDropdownComponent) %>
     </div>
   <% end %>
 <% end %>

@@ -46,14 +46,14 @@ RSpec.describe Aeon::Queue do
   end
 
   describe '#saved_for_later?' do
-    it 'returns true when queue_name is in the configured draft list' do
+    it 'returns true when queue_name is in the configured saved for later list' do
       queue = described_class.new(id: 5, queue_name: 'Awaiting User Review', queue_type: 'Transaction')
-      expect(queue).to be_draft
+      expect(queue).to be_saved_for_later
     end
 
-    it 'returns false for a non-draft queue' do
+    it 'returns false for a non-saved for later queue' do
       queue = described_class.new(id: 8, queue_name: 'Awaiting Request Processing', queue_type: 'Transaction')
-      expect(queue).not_to be_draft
+      expect(queue).not_to be_saved_for_later
     end
   end
 

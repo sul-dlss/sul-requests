@@ -105,8 +105,8 @@ RSpec.describe 'Appointments', :js do
     end
   end
 
-  describe 'redrafting a request' do
-    it 'moves the request into draft' do
+  describe 'saving an active request for later' do
+    it 'moves the request into saved for later' do
       within '#aeon_appointments #aeon_request_100' do
         click_on 'Save for later'
       end
@@ -119,7 +119,7 @@ RSpec.describe 'Appointments', :js do
   end
 
   describe 'delete appointment modal' do
-    it 'moves requests into draft' do
+    it 'moves requests into saved for later' do
       click_on 'Delete appointment'
       expect(page).to have_css '.modal'
       perform_enqueued_jobs do

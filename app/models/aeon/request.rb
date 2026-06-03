@@ -138,7 +138,7 @@ module Aeon
 
     def request_type
       return 'activity' if activity?
-      return 'draft' if saved_for_later?
+      return 'saved_for_later' if saved_for_later?
       return 'completed' if completed?
       return 'cancelled' if cancelled?
 

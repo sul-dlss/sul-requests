@@ -61,7 +61,7 @@ Rails.application.routes.draw do
 
     member do
       patch :resubmit
-      post :redraft
+      post :save_for_later
     end
   end
 

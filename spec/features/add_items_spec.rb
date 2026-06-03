@@ -46,7 +46,7 @@ RSpec.describe 'Add items modal', :js do
                     find_user: aeon_user,
                     find_queue: saved_for_later_queue,
                     appointments_for: [appointment],
-                    requests_for: [draft_request_one, draft_request_two, draft_request_three, submitted_request_one, submitted_request_two],
+                    requests_for: [saved_for_later_request_one, saved_for_later_request_two, saved_for_later_request_three, submitted_request_one, submitted_request_two],
                     reading_rooms:,
                     update_request_route: build(:aeon_request, transaction_number: 100),
                     activities_for: [],
@@ -66,7 +66,7 @@ RSpec.describe 'Add items modal', :js do
     allow(submitted_request_one).to receive_messages(transaction_queue: submitted_queue)
     allow(submitted_request_two).to receive_messages(transaction_queue: submitted_queue)
     allow(stub_aeon_client).to receive_messages(update_request: submitted_request_two)
-    allow(aeon_user).to receive_messages(requests: [draft_request_one, draft_request_two, draft_request_three, submitted_request_one,
+    allow(aeon_user).to receive_messages(requests: [saved_for_later_request_one, saved_for_later_request_two, saved_for_later_request_three, submitted_request_one,
                                                     submitted_request_two])
     login_as(current_user)
     visit aeon_appointments_path
@@ -84,7 +84,7 @@ RSpec.describe 'Add items modal', :js do
       expect(page).to have_css('#savedForLaterRequestsAccordion li', count: 2)
 
       # Add slow poetry call number 1 to scheduled appointments
-      find("button[data-transaction-number='#{draft_request_one.id}']").click
+      find("button[data-transaction-number='#{saved_for_later_request_one.id}']").click
 
       # expect a header to move into modal
       expect(page).to have_text('Slow poetry in America : a poetry quarterly', count: 2)
@@ -93,16 +93,16 @@ RSpec.describe 'Add items modal', :js do
       expect(page).to have_css('#savedForLaterRequestsAccordion li', count: 1)
 
       # Add slow poetry call number 2 to scheduled appointments
-      find("button[data-transaction-number='#{draft_request_two.id}']").click
+      find("button[data-transaction-number='#{saved_for_later_request_two.id}']").click
 
       expect(page).to have_text('Slow poetry in America : a poetry quarterly', count: 1)
       expect(page).to have_css('#appointmentRequestsAccordion li', count: 4)
       expect(page).to have_text('Medium poetry in America : a poetry quarterly', count: 1)
       expect(page).to have_css('#savedForLaterRequestsAccordion li', count: 0)
 
-      # Remove scheduled appointment and draft appointment
+      # Remove scheduled appointment and saved_for_later appointment
       find("button[data-transaction-number='#{submitted_request_one.id}']").click
-      find("button[data-transaction-number='#{draft_request_two.id}']").click
+      find("button[data-transaction-number='#{saved_for_later_request_two.id}']").click
 
       expect(page).to have_text('Slow poetry in America : a poetry quarterly', count: 2)
       expect(page).to have_css('#appointmentRequestsAccordion li', count: 2)

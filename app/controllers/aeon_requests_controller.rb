@@ -28,7 +28,7 @@ class AeonRequestsController < ApplicationController
     end
   end
 
-  def redraft
+  def save_for_later
     authorize! :update, @aeon_request
 
     request_field = @aeon_request.activity? ? 'activity_id' : 'appointment_id'
@@ -93,7 +93,7 @@ class AeonRequestsController < ApplicationController
 
     @previous_aeon_request_groups = @aeon_request_groups
     @next_aeon_request_groups = Aeon::RequestGrouping.from_requests(@next_aeon_requests)
-    @next_draft_aeon_request_groups = Aeon::RequestGrouping.from_requests(@next_aeon_requests.select(&:saved_for_later?).reject(&:digital?))
+    @next_saved_for_later_aeon_request_groups = Aeon::RequestGrouping.from_requests(@next_aeon_requests.select(&:saved_for_later?).reject(&:digital?))
 
     if @aeon_request.appointment_id != @updated_aeon_request.appointment_id
       @previous_appointment = @aeon_request.appointment&.tap do |appt|

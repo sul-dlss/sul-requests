@@ -22,7 +22,7 @@ RSpec.describe AeonAbility do
     it { is_expected.to be_able_to(:read, Aeon::Request) }
     it { is_expected.to be_able_to(:manage, Aeon::Appointment) }
 
-    context 'with a draft request they own' do
+    context 'with a saved for later request they own' do
       before { allow(request).to receive_messages(saved_for_later?: true) }
 
       it { is_expected.to be_able_to(:update, request) }

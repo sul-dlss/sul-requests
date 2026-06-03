@@ -45,15 +45,15 @@ module Aeon
     end
     # @!endgroup
 
-    # @!group Draft
-    def draft_single_appointment_request
+    # @!group Saved For Later
+    def saved_for_later_single_appointment_request
       request_group = Aeon::RequestGrouping.new(
         [FactoryBot.build(:aeon_request, :saved_for_later, call_number: 'XYZ 123')]
       )
       render Aeon::RequestGroupComponent.new(request_group:)
     end
 
-    def draft_multi_box_ead
+    def saved_for_later_multi_box_ead
       request_group = Aeon::RequestGrouping.new(
         [
           FactoryBot.build(:aeon_request, :saved_for_later, :ead, call_number: 'Box 1'),
@@ -64,7 +64,7 @@ module Aeon
       render Aeon::RequestGroupComponent.new(request_group:)
     end
 
-    def draft_digitization
+    def saved_for_later_digitization
       request_group = Aeon::RequestGrouping.new(
         [FactoryBot.build(:aeon_request, :saved_for_later, :digitized)]
       )
