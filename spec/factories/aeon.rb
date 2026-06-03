@@ -127,7 +127,7 @@ FactoryBot.define do
       end
     end
 
-    trait :draft do
+    trait :saved_for_later do
       transaction_status { 5 }
       appointment_id { nil }
       appointment { nil }

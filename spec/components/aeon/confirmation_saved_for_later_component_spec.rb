@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Aeon::ConfirmationSavedForLaterComponent, type: :component do
-  let(:draft_request) { build(:aeon_request) }
+  let(:saved_for_later_request) { build(:aeon_request) }
   let(:submitted_request) { build(:aeon_request) }
   let(:request_group) { Aeon::RequestGrouping.new([draft_request, submitted_request]) }
 

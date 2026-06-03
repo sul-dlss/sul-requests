@@ -8,7 +8,7 @@ RSpec.describe Aeon::RequestStatusPillComponent, type: :component do
 
     context 'when draft' do
       before do
-        allow(request).to receive_messages(status: :draft)
+        allow(request).to receive_messages(status: :saved_for_later)
         render_inline(described_class.new(request:))
       end
 
@@ -47,7 +47,7 @@ RSpec.describe Aeon::RequestStatusPillComponent, type: :component do
 
     context 'when draft' do
       before do
-        allow(request).to receive_messages(status: :draft)
+        allow(request).to receive_messages(status: :saved_for_later)
         render_inline(described_class.new(request:))
       end
 

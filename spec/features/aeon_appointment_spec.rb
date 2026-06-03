@@ -19,7 +19,7 @@ RSpec.describe 'Appointments', :js do
                     appointments_for: [appointment],
                     find_queue: queue,
                     update_request: build(:aeon_request, transaction_number: 100),
-                    update_request_route: build(:aeon_request, :draft, transaction_number: 100),
+                    update_request_route: build(:aeon_request, :saved_for_later, transaction_number: 100),
                     requests_for: [build(:aeon_request, transaction_number: 100, username: user.email_address, appointment: appointment)],
                     cancel_appointment: [],
                     reading_rooms:,

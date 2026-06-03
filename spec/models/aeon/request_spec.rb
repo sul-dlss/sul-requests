@@ -26,7 +26,7 @@ RSpec.describe Aeon::Request do
       let(:transaction_status) { 'Awaiting User Review' }
 
       it 'returns draft' do
-        expect(request.status).to eq :draft
+        expect(request.status).to eq :saved_for_later
       end
     end
 

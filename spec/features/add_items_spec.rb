@@ -7,17 +7,17 @@ RSpec.describe 'Add items modal', :js do
   let(:current_user) { CurrentUser.new(username: user.sunetid, shibboleth: true, patron_key: user.patron_key, ldap_attributes: {}) }
   let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
   let(:reading_rooms) { JSON.load_file('spec/fixtures/reading_rooms.json').map { |room| Aeon::ReadingRoom.from_dynamic(room) } }
-  let(:draft_request_one) do
+  let(:saved_for_later_request_one) do
     build(:aeon_request, call_number: 'PR9195.1 .S56 NO.1', title: 'Slow poetry in America : a poetry quarterly',
                          appointment_id: nil,
                          transaction_number: 100, username: aeon_user.username, web_request_form: 'multiple')
   end
-  let(:draft_request_two) do
+  let(:saved_for_later_request_two) do
     build(:aeon_request, call_number: 'PR9195.1 .S56 NO.2', title: 'Slow poetry in America : a poetry quarterly',
                          appointment_id: nil,
                          transaction_number: 101, username: aeon_user.username, web_request_form: 'multiple')
   end
-  let(:draft_request_three) do
+  let(:saved_for_later_request_three) do
     build(:aeon_request, call_number: 'PR8195.1 .S56 NO.2', title: 'Fast poetry in America : a poetry monthly',
                          transaction_number: 102, username: aeon_user.username, appointment_id: nil,
                          shipping_option: 'Electronic Delivery')
