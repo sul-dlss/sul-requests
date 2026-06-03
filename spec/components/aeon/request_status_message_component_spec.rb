@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Aeon::RequestStatusMessageComponent, type: :component do
-  context 'with draft requests' do
+  context 'with saved for later requests' do
     before do
       allow(request).to receive_messages(saved_for_later?: true)
       render_inline(described_class.new(request:))

@@ -26,10 +26,6 @@ module Aeon
     end
 
     def status_message
-      draft_status_message
-    end
-
-    def draft_status_message
       return unless saved_for_later?
 
       if digital?
