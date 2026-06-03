@@ -8,7 +8,7 @@ RSpec.describe FinesController do
 
   let(:fines) do
     [
-      instance_double(Folio::Account, key: '1', owed: '12', status: 'BADCHECK')
+      instance_double(Folio::Account, key: '1', owed: '12', status: 'BADCHECK', sort_date: Time.zone.now)
     ]
   end
 
@@ -36,7 +36,7 @@ RSpec.describe FinesController do
 
     let(:checkouts) do
       [
-        instance_double(Folio::Checkout, key: '2', sort_key: Time.zone.now)
+        instance_double(Folio::Checkout, key: '2', sort_key: Time.zone.now, accruing?: false, sort_date: Time.zone.now)
       ]
     end
 
@@ -58,7 +58,7 @@ RSpec.describe FinesController do
     it 'assigns a list of checkouts' do
       get(:index)
 
-      expect(assigns(:checkouts)).to eq checkouts
+      expect(assigns(:fines_and_accruing)).to eq fines
     end
   end
 end

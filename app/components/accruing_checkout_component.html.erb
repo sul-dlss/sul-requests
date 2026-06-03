@@ -1,0 +1,33 @@
+<%= render CardComponent.new(element: 'li') do |c| %>
+  <% c.with_title do %>
+    <div class="d-flex flex-row gap-4 align-items-center">
+      <span class="small fw-medium rounded-pill text-white bg-plum-light">
+        <%= checkout.status_label %>
+      </span>
+      <span class="small">Payment cannot be processed until item is returned</span>
+    </div>
+  <% end %>
+  <% if accruing_rate_label %>
+    <% c.with_actions do %>
+      <span class="small fw-medium rounded-pill text-white bg-danger">
+        <%= sul_icon 'sharp-warning-24px' %>
+        <%= accruing_rate_label %>
+      </span>
+    <% end %>
+  <% end %>
+  <% c.with_body(classes: 'bg-white') do %>
+    <h3 class="mb-1 clamp clamp-3"><%= checkout.title %></h3>
+    <div class="d-flex flex-row gap-3">
+      <div>Call number: <%= checkout.call_number %></div>
+      <% unless checkout.from_ill? %>
+        <%= link_to "#{Settings.searchworks_link}/#{checkout.catkey}", rel: 'noopener', target: '_blank' do %>
+          <%= sul_icon :'sharp-open_in_new-24px' %> View in SearchWorks
+        <% end %>
+      <% end %>
+    </div>
+    <div><span class="visually-hidden">Library:</span><%= checkout.library_name %></div>
+  <% end %>
+  <% c.with_footer do %>
+    <span>Barcode: <%= checkout.barcode %></span>
+  <% end %>
+<% end %>

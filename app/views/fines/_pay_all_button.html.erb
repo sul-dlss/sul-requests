@@ -8,9 +8,8 @@
         <% patron_or_group.fines.each do |fine| %>
           <%= hidden_field_tag 'fine_ids[]', fine.key %>
         <% end %>
-        <%= button_tag class: 'btn btn-md btn-info', type: 'submit', data: { 'pay-button' => true } do %>
-          <%= sul_icon :'sharp-payment-24px' %>
-          <span>Pay <%= number_to_currency(amount) %> now</span>
+        <%= button_tag class: 'btn btn-md btn-primary', type: 'submit', data: { 'pay-button' => true } do %>
+          <span>Pay now</span>
         <% end %>
       <% end %>
     <% else %>

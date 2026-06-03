@@ -37,6 +37,10 @@ module Folio
       Time.zone.parse(record['dueDate'])
     end
 
+    def sort_date = due_date
+
+    def status_label = 'Item overdue'
+
     def days_overdue
       return 0 unless overdue?
       return 0 if due_date.nil?
@@ -95,6 +99,11 @@ module Folio
 
     def accrued
       record.dig('details', 'feesAndFines', 'amountRemainingToPay') || 0.0
+    end
+
+    # TODO: verify this logic is correct
+    def accruing?
+      overdue? && overdue_fines_rate&.dig('quantity').to_f.positive?
     end
 
     def days_remaining
@@ -163,6 +172,14 @@ module Folio
       record.dig('details', 'renewalCount') || 0
     end
 
+    # returns {"quantity" => 1.0, "intervalId" => "hour"}
+    # TODO: verify this logic with Sarah
+    # There was talk of the 'overdueRecallFine' being relvant in addition to 'overdueFine'
+    # if relevant, both would need to be checked, but they have the same structure of {"quantity" => 1.0, "intervalId" => "hour"}
+    def overdue_fines_rate
+      overdue_fines_policy['overdueFine']
+    end
+
     private
 
     def loan_policy
@@ -197,6 +214,31 @@ module Folio
         end
 
         response['loanPolicyId']
+      end
+    end
+
+    def overdue_fines_policy
+      @overdue_fines_policy ||= Folio::Types.policies[:overdue].fetch(overdue_fines_policy_id) do
+        Honeybadger.notify('Unable to find overdue fines policy for checkout',
+                           context: { key:, overdue_fines_policy_id: })
+        {}
+      end
+    end
+
+    def overdue_fines_policy_id # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+      cache_key = ['overdue_fines_policy_id', item_type_id, loan_type_id, loan_type_id, location_id].join(':')
+      Rails.cache.fetch(cache_key, expires_in: 1.day) do
+        response = FolioClient.new.find_overdue_fines_policy(item_type_id:,
+                                                             loan_type_id:,
+                                                             patron_type_id:,
+                                                             location_id:)
+
+        unless response&.dig('overdueFinePolicyId')
+          Honeybadger.notify('Unable to find overdue fines policy for checkout',
+                             context: { key:, cache_key:, response: })
+        end
+
+        response&.dig('overdueFinePolicyId')
       end
     end
 

@@ -11,6 +11,9 @@ RSpec.describe 'fines/index' do
                     bib?: true,
                     key: 'abc',
                     bill_date: Date.new,
+                    sort_date: Date.new,
+                    status_label: 'Damaged fee',
+                    from_ill?: false,
                     fee: 5,
                     library_name: 'Best Lib',
                     library_code: 'BLIB',
@@ -52,26 +55,46 @@ RSpec.describe 'fines/index' do
   context 'when the patron is not in a group' do
     before do
       assign(:fines, fines)
+      assign(:fines_and_accruing, fines)
       assign(:checkouts, checkouts)
       without_partial_double_verification do
         allow(view).to receive_messages(patron_or_group: patron, patron:)
       end
     end
 
-    it 'shows the fined item author' do
+    it 'shows the fee and Pay button' do
       render
-      expect(rendered).to have_text('Author 1')
-    end
-
-    it 'shows the Pay button' do
-      render
-      expect(rendered).to have_text('Pay $3.00 now')
+      expect(rendered).to have_text('Outstanding balance: $3.00')
+      expect(rendered).to have_text('Pay no')
     end
 
     context 'when the patron has accruing fines' do
-      it 'shows the accrued amount' do
+      let(:accruing_checkout) do
+        instance_double(Folio::Checkout,
+                        status_label: 'Item overdue',
+                        title: 'Accruing Book Title',
+                        barcode: '99999',
+                        call_number: 'QA 123',
+                        catkey: '99999',
+                        from_ill?: false,
+                        author: 'Some Author',
+                        library_name: 'Green Library',
+                        overdue_fines_rate: { 'quantity' => 1.0, 'intervalId' => 'hour' },
+                        sort_date: Date.new,
+                        is_a?: true)
+      end
+
+      before do
+        assign(:fines_and_accruing, [fine, accruing_checkout])
+        allow(accruing_checkout).to receive(:is_a?).with(anything).and_return(false)
+        allow(accruing_checkout).to receive(:is_a?).with(Folio::Checkout).and_return(true)
+      end
+
+      it 'shows the accruing checkout' do
         render
-        expect(rendered).to have_text('Accruing: $10.00')
+        expect(rendered).to have_text('Payment cannot be processed until item is returned')
+        expect(rendered).to have_text('Accruing Book Title')
+        expect(rendered).to have_text('Accruing $1.00/hour until returned')
       end
     end
   end

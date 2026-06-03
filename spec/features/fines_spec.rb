@@ -10,6 +10,7 @@ RSpec.describe 'Fines Page' do
 
   before do
     allow(FolioClient).to receive(:new) { mock_client }
+    allow(patron).to receive(:checkouts).and_return([])
     login_as(CurrentUser.new(username: 'stub_user', patron_key: '513a9054-5897-11ee-8c99-0242ac120002', shibboleth: true))
     allow(Folio::Patron).to receive(:find_by).with(patron_key: '513a9054-5897-11ee-8c99-0242ac120002').and_return(patron)
   end
@@ -18,14 +19,7 @@ RSpec.describe 'Fines Page' do
     it 'totals all the fines into the header' do
       visit fines_path
 
-      expect(page).to have_css('h2', text: 'Payable: $325.00')
-    end
-
-    it 'totals all the accruing fines' do
-      visit fines_path
-
-      expect(page).to have_css('h2', text: 'Accruing: $25.00')
-      expect(page).to have_text 'Fines are accruing on 1 overdue item'
+      expect(page).to have_text('Outstanding balance: $325.00')
     end
 
     it 'renders a list item for every fine' do
@@ -36,20 +30,6 @@ RSpec.describe 'Fines Page' do
         expect(page).to have_css('li h3', text: 'Memes and the future of pop culture / by Marcel Danesi')
         expect(page).to have_css('li .status', text: 'Damaged material')
         expect(page).to have_css('li a', text: 'Contact library')
-      end
-    end
-
-    it 'has content behind a toggle', :js do
-      visit fines_path
-
-      within('ul.fines') do
-        expect(page).to have_no_css('dl', visible: :visible)
-        expect(page).to have_no_css('dt', text: 'Billed', visible: :visible)
-        click_on 'Expand'
-        expect(page).to have_css('dl', visible: :visible)
-        expect(page).to have_css('dt', text: 'Billed', visible: :visible)
-        expect(page).to have_css('dt', text: 'Barcode', visible: :visible)
-        expect(page).to have_css('dd', text: '36105228879115', visible: :visible)
       end
     end
   end
@@ -65,11 +45,10 @@ RSpec.describe 'Fines Page' do
     end
     let(:patron) { Folio::Patron.new(patron_graphql_response: patron_info) }
 
-    it 'does not render table headers' do
+    it 'does not render headers' do
       visit fines_path
 
-      expect(page).to have_text('Fines')
-      expect(page).to have_no_css('.list-header')
+      expect(page).to have_text('Fees and fines')
     end
   end
 end

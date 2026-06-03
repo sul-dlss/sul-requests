@@ -24,7 +24,7 @@ RSpec.describe 'fines/_pay_all_button' do
   it 'renders a button' do
     render
 
-    expect(output).to have_button 'Pay $5.00 now'
+    expect(output).to have_button 'Pay now'
   end
 
   context 'when the patron is e.g. blocked and unable to renew material' do

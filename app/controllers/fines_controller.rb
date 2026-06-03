@@ -11,17 +11,11 @@ class FinesController < ApplicationController
   # GET /fines
   # GET /fines.json
   def index
-    @fines = fines
-    @checkouts = checkouts
+    @fines = patron_or_group.fines
+    @fines_and_accruing = (@fines + accruing_checkouts).sort_by(&:sort_date)
   end
 
-  private
-
-  def fines
-    patron_or_group.fines
-  end
-
-  def checkouts
-    patron_or_group.checkouts.sort_by { |c| c.sort_key(:due_date) }
+  def accruing_checkouts
+    patron_or_group.checkouts.select(&:accruing?)
   end
 end

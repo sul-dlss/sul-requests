@@ -50,6 +50,12 @@ module Folio
       end
     end
 
+    def sort_date = bill_date
+
+    def status_label
+      nice_status.ends_with?('fee') ? nice_status : "#{nice_status} fee"
+    end
+
     # dateUpdated on the account is often null, so we use the last action date if closed
     def payment_date
       return if record['actions'].none? || !closed?
