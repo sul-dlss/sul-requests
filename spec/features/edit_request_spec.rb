@@ -23,6 +23,7 @@ RSpec.describe 'Edit Aeon request', :js do
                     requests_for: [first_request],
                     reading_rooms: [reading_room],
                     activities_for: [],
+                    closures: [],
                     available_appointments: [])
   end
 
