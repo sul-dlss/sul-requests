@@ -5,12 +5,14 @@ require 'rails_helper'
 RSpec.describe Aeon::AppointmentDatePickerComponent, type: :component do
   subject(:component) do
     described_class.new(:date, form:,
-                               data: { 'date-picker-disabled-value': disabled, 'date-picker-marked-value': marked, 'date-picker-disabled-daynames-value': disabled_daynames })
+                               data: { 'date-picker-disabled-value': disabled,
+                                       'date-picker-marked-value': marked,
+                                       'date-picker-open-days-value': open_days })
   end
 
   let(:appointment) { build(:aeon_appointment, reading_room: nil) }
   let(:disabled) { nil }
-  let(:disabled_daynames) { nil }
+  let(:open_days) { nil }
   let(:marked) { nil }
   let(:form) do
     lookup_context = ActionView::LookupContext.new([])
@@ -34,10 +36,10 @@ RSpec.describe Aeon::AppointmentDatePickerComponent, type: :component do
   end
 
   context 'with disabled daynames' do
-    let(:disabled_daynames) { %w[Monday Tuesday] }
+    let(:open_days) { %w[Monday Tuesday Wednesday] }
 
     it 'encodes disabled dates as JSON on the controller element' do
-      expect(page).to have_css("[data-date-picker-disabled-daynames-value='#{disabled_daynames.to_json}']")
+      expect(page).to have_css("[data-date-picker-open-days-value='#{open_days.to_json}']")
     end
   end
 

@@ -39,10 +39,6 @@ module Aeon
       )
     end
 
-    def closed_days
-      Date::DAYNAMES - open_hours.map(&:day_name)
-    end
-
     def appointment_item_limit
       Settings.aeon.item_limits[sites.first]
     end

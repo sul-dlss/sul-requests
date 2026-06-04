@@ -22,6 +22,10 @@ module Aeon
       (next_start&.to_date || Time.zone.today).iso8601
     end
 
+    def open_days
+      reading_room&.open_hours&.map(&:day_name) || Date::DAYNAMES
+    end
+
     def controller_data
       data.merge(controller: "#{data[:controller]} date-picker").reverse_merge('date-picker-min-value': min)
     end
