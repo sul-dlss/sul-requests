@@ -33,8 +33,10 @@ class AeonClient
   end
 
   def activities
-    response = get('Activities')
-    handle_response(response, as_class: Aeon::Activity)
+    @activities ||= begin
+      response = get('Activities')
+      handle_response(response, as_class: Aeon::Activity)
+    end
   end
 
   def activities_for(username:)

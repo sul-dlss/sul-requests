@@ -22,6 +22,13 @@ module Aeon
       @auth_type = auth_type
     end
 
+    def ==(other)
+      other.is_a?(Aeon::User) && username == other.username
+    end
+    alias eql? ==
+
+    delegate :hash, to: :username
+
     def sso_auth?
       auth_type == 'Default'
     end

@@ -71,5 +71,30 @@ RSpec.describe AeonAbility do
       it { is_expected.not_to be_able_to(:update, request) }
       it { is_expected.not_to be_able_to(:destroy, request) }
     end
+
+    context "with another user's request attached to an activity the current user belongs to" do
+      let(:request) { build(:aeon_request, username: 'otheruser@stanford.edu', activity_id: 42) }
+      let(:activity) { build(:aeon_activity, id: 42, users: [Aeon::User.new(username: 'testuser@stanford.edu')]) }
+
+      before do
+        allow(request).to receive_messages(draft?: false, cancelled?: false, activity: activity)
+        allow(request.appointment).to receive_messages(editable?: true)
+      end
+
+      it { is_expected.to be_able_to(:update, request) }
+      it { is_expected.to be_able_to(:destroy, request) }
+    end
+
+    context "with another user's request attached to an activity the current user does not belong to" do
+      let(:request) { build(:aeon_request, username: 'otheruser@stanford.edu', activity_id: 42) }
+      let(:activity) { build(:aeon_activity, id: 42, users: [Aeon::User.new(username: 'someoneelse@stanford.edu')]) }
+
+      before do
+        allow(request).to receive_messages(draft?: true, activity: activity)
+      end
+
+      it { is_expected.not_to be_able_to(:update, request) }
+      it { is_expected.not_to be_able_to(:destroy, request) }
+    end
   end
 end

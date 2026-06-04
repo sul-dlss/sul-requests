@@ -7,6 +7,16 @@ module Aeon
 
     attr_accessor :id, :users, :start_time, :stop_time, :name, :active, :location, :activity_type, :status, :sites
 
+    def self.aeon_client
+      Current.aeon_client
+    end
+
+    def self.find(id)
+      return nil if id.nil?
+
+      aeon_client.activities&.find { |activity| activity.id == id }
+    end
+
     def self.from_dynamic(dyn) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       users = dyn['users'].map { |user| Aeon::User.from_dynamic(user) }
       new(
