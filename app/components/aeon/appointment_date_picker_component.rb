@@ -4,12 +4,13 @@ module Aeon
   # Renders the custom Stimulus date-picker for the Aeon appointment date field.
   #
   # Usage:
-  #   <%= render Aeon::AppointmentDatePickerComponent.new(form: f) %>
-  #   <%= render Aeon::AppointmentDatePickerComponent.new(form: f, disabled: ['2026-05-01'], marked: ['2026-05-10']) %>
+  #   <%= render Aeon::AppointmentDatePickerComponent.new(:date, form: f) %>
+  #   <%= render Aeon::AppointmentDatePickerComponent.new(:date, form: f, disabled: ['2026-05-01'], marked: ['2026-05-10']) %>
   class AppointmentDatePickerComponent < ViewComponent::Base
-    attr_reader :form, :disabled, :marked, :disabled_daynames
+    attr_reader :key, :form, :disabled, :marked
 
-    def initialize(form:, disabled: [], marked: [], disabled_daynames: [])
+    def initialize(key, form: nil, disabled: [], disabled_daynames: [], marked: [])
+      @key = key
       @form = form
       @disabled = disabled
       @disabled_daynames = disabled_daynames

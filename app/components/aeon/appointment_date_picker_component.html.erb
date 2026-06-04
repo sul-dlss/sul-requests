@@ -1,7 +1,7 @@
 <div class="mb-3">
-  <%= form.label :date, class: 'd-block fw-semibold redesign-required-label' %>
+  <%= form.label key, class: 'd-block fw-semibold redesign-required-label' %>
   <div class="position-relative" <%= tag.attributes(controller_data) %>>
-    <%= form.hidden_field :date, data: { "date-picker-target": "input", action: "change->appointment#refreshAvailability" } %>
+    <%= form.hidden_field key, data: { "date-picker-target": "input", action: "change->appointment#refreshAvailability" } %>
     <div data-date-picker-target="announce"
          aria-live="polite"
          aria-atomic="true"
