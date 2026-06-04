@@ -24,6 +24,7 @@ RSpec.describe 'Appointments', :js do
                     cancel_appointment: [],
                     reading_rooms:,
                     activities_for: [],
+                    closures: [],
                     available_appointments:)
   end
   let(:available_appointments) do
@@ -52,7 +53,7 @@ RSpec.describe 'Appointments', :js do
         expect(page).to have_text 'An appointment must be scheduled at least 5 business days in advance to access items'
         expect(page).to have_text 'Field Reading Room is open Monday - Friday, 9:00 - 4:45 pm'
         expect(page).to have_text 'Earliest appointment available: Thursday, Feb 19, 2026'
-        expect(page).to have_field('aeon_appointment[date]', type: 'date')
+        expect(page).to have_css 'label', text: 'Date'
         expect(page).to have_no_text('Duration')
         click_on 'Cancel'
       end
@@ -72,7 +73,7 @@ RSpec.describe 'Appointments', :js do
           'Archive of Recorded Sound is open Monday - Wednesday, 9:00 - 3:00 pm, ' \
           'Thursday, 9:00 - 11:00 am and 12:00 - 3:00 pm, Friday, 9:00 - 3:00 pm'
         )
-        expect(page).to have_field('aeon_appointment[date]', type: 'date')
+        expect(page).to have_css 'label', text: 'Date'
         expect(page).to have_text('Duration')
         expect(page).to have_text('Available time slots')
         click_on 'Cancel'
@@ -93,9 +94,11 @@ RSpec.describe 'Appointments', :js do
         expect(page).to have_text 'New'
         expect(page).to have_text 'Select date'
         expect(page).to have_text '1 item will move to the new appointment.'
-        # Input a date a month from now
-        fill_in 'aeon_appointment_date', with: (Time.zone.today >> 1).strftime('%m%d%Y')
-        expect(page).to have_text (Time.zone.today >> 1).strftime('%b %-d, %Y')
+
+        click_on 'Select a date'
+        click_on 'Next month'
+
+        first('td[role="gridcell"]:not(:disabled)').click
         click_on 'Cancel'
       end
       expect(page).to have_no_css '.modal'

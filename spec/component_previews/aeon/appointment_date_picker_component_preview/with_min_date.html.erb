@@ -15,5 +15,5 @@
                                       creation_date: nil)
 %>
 <%= form_with(model: appointment, url: '#') do |f| %>
-  <%= render Aeon::AppointmentDatePickerComponent.new(form: f) %>
+  <%= render Aeon::AppointmentDatePickerComponent.new(:date, form: f) %>
 <% end %>

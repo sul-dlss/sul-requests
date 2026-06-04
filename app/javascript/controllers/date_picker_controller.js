@@ -16,10 +16,10 @@ import { Controller } from "@hotwired/stimulus"
 //   grid        element where the day buttons are rendered
 export default class extends Controller {
   static targets = ["input", "calendar", "display", "monthLabel", "grid", "announce", "prevBtn", "nextBtn", "legend"]
-  static values = { disabled: Array, marked: Array, min: String, disabledDaynames: Array}
+  static values = { disabled: Array, marked: Array, min: String, max: String, openDays: Array}
 
   connect() {
-    this.disabledDayInts = this.disabledDaynamesValue.map(name => this.dayToInt(name))
+    this.openDayInts = this.openDaysValue.map(name => this.dayToInt(name))
     const initial = this.inputTarget.value
     let seed = initial ? new Date(`${initial}T00:00:00`) : new Date()
     // If no date is selected but a minValue exists in a future month (e.g. the earliest
@@ -218,7 +218,7 @@ export default class extends Controller {
 
   #isDateDisabled(isoDate, index) {
     return this.disabledValue.includes(isoDate) ||
-      (this.minValue && isoDate < this.minValue) || this.disabledDayInts.includes(index)
+      (this.minValue && isoDate < this.minValue) || (this.maxValue && isoDate > this.maxValue) || !this.openDayInts.includes(index)
   }
 
   #handleOutsideClick = (event) => {

@@ -1,13 +1,13 @@
 <div class="mb-3">
-  <%= form.label :date, class: 'd-block fw-semibold redesign-required-label' %>
-  <div class="position-relative" <%= tag.attributes(controller_data) %>>
-    <%= form.hidden_field :date, data: { "date-picker-target": "input", action: "change->appointment#refreshAvailability" } %>
+  <%= form.label key, class: 'd-block fw-semibold redesign-required-label' %>
+  <%= tag.div class: 'position-relative', data: controller_data do %>
+    <%= form.hidden_field key, data: { "date-picker-target": "input" } %>
     <div data-date-picker-target="announce"
          aria-live="polite"
          aria-atomic="true"
          class="visually-hidden"></div>
     <button type="button"
-            class="btn border-black w-100 text-start"
+            class="btn border-black w-100 text-start text-nowrap"
             data-date-picker-target="display"
             data-action="click->date-picker#toggle"
       aria-haspopup="dialog"
@@ -29,5 +29,5 @@
         <span class="text-muted">Existing appointment</span>
       </div>
     </div>
-  </div>
+  <% end %>
 </div>

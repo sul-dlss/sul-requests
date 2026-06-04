@@ -3,5 +3,5 @@
   marked = [today + 2, today + 5, today + 9, today + 14].map(&:iso8601)
 %>
 <%= form_with(model: Aeon::Appointment.new, url: '#') do |f| %>
-  <%= render Aeon::AppointmentDatePickerComponent.new(form: f, marked: marked) %>
+  <%= render Aeon::AppointmentDatePickerComponent.new(:date, form: f, data: { 'date-picker-marked-value': marked }) %>
 <% end %>
