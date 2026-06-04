@@ -17,8 +17,10 @@ module Aeon
       @data = data
     end
 
-    def min
+    def min # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
       next_start = reading_room&.next_appointment&.start_time
+      next_start ||= reading_room&.appointment_min_lead_days&.days&.from_now # rubocop:disable Style/SafeNavigationChainLength
+
       (next_start&.to_date || Time.zone.today).iso8601
     end
 
