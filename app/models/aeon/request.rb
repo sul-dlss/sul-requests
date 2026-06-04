@@ -151,6 +151,12 @@ module Aeon
       activity_id.present?
     end
 
+    def activity
+      return @activity if defined?(@activity)
+
+      @activity = Aeon::Activity.find(activity_id)
+    end
+
     def ead?
       # Legacy requests don't have ead_number set
       ead_number.present? || ['oac.cdlib.org', 'archives.stanford.edu'].any? { |s| item_url.include?(s) }
