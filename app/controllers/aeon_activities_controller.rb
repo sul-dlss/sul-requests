@@ -7,6 +7,8 @@ class AeonActivitiesController < ApplicationController
   ALLOWED_SORTS = %w[sort_key name activity_type].freeze
   include AeonController
 
+  before_action :authorize_activity
+
   def index; end
 
   def active
@@ -24,6 +26,10 @@ class AeonActivitiesController < ApplicationController
   end
 
   private
+
+  def authorize_activity
+    authorize! :read, Aeon::Activity
+  end
 
   def filter
     return unless params[:filter]
