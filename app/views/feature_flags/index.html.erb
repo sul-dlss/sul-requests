@@ -1,0 +1,12 @@
+<h1>Feature flags</h1>
+
+<%= form_with url: feature_flags_path, method: :post do |f| %>
+  <div class="my-2 col-8">
+    <div class="form-check form-switch">
+      <input class="form-check-input" name="feature_flags[]" value="requests_redesign" type="checkbox" role="switch" id="switchCheckRedesign" <% if request_feature_flags.include?('requests_redesign') %>checked<% end %>>
+      <label class="form-check-label" for="switchCheckRedesign">New Aeon requests experience</label>
+    </div>
+  </div>
+
+  <%= f.submit class: 'btn btn-primary' %>
+<% end %>

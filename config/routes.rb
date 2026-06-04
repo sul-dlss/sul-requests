@@ -4,7 +4,8 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   root 'home#show'
-  post "/feature_flags", to: "sessions#feature_flags", as: :feature_flags
+  get "/feature_flags", to: "feature_flags#index", as: :feature_flags
+  post "/feature_flags", to: "feature_flags#update"
   match "/404", to: 'errors#not_found', via: :all
   match "/500", to: 'errors#internal_server_error', via: :all
   post "/challenge", to: "bot_challenge_page/bot_challenge_page#verify_challenge", as: :bot_detect_challenge
@@ -81,7 +82,7 @@ Rails.application.routes.draw do
     post :terms, to: 'aeon_users#accept_terms', as: :accept_terms
   end
 
-  resources :aeon_activities, only: [:index] do 
+  resources :aeon_activities, only: [:index] do
       collection { get :active; get :past }
   end
 
