@@ -44,7 +44,7 @@ module Aeon
       # make a list of closed dates (where a closure covers the entire day a reading room is actually open)
       closures.flat_map do |closure|
         closure.start_date.to_date.upto(closure.end_date.to_date).to_a.select do |date|
-          hours_on_day = open_hours.find { |oh| oh.day_name == date.strftime('%A') }
+          hours_on_day = open_hours.find { |oh| oh.day_of_week == date.wday }
 
           next if hours_on_day.nil?
 
