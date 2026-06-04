@@ -1,7 +1,13 @@
 <% if can?(:toggle, :feature_flags) && !Settings.features.requests_redesign %>
   <div class="my-2 col-8 text-end">
     <% if use_requests_redesign? %>
-      <%= link_to '← Use the production experience', feature_flags_path(feature_flags: ''), class: 'su-underline', data: { turbo_method: 'POST' } %>
+      <% if controller_name == 'patron_requests' && action_name == 'new' && @patron_request&.ead_url %>
+        <%= link_to Settings.aeon_archives_url + "&Value=#{@patron_request.ead_url}", class: 'su-underline' do %>
+          <i class="bi bi-box-arrow-up-right"></i> Use Aeon web interface
+        <% end %>
+      <% else %>
+        <%= link_to '← Use the production experience', feature_flags_path(feature_flags: ''), class: 'su-underline', data: { turbo_method: 'POST' } %>
+      <% end %>
     <% else %>
       <%= link_to '✨ Try the new experience', feature_flags_path(feature_flags: 'requests_redesign'), class: 'su-underline', data: { turbo_method: 'POST' } %>
     <% end %>
