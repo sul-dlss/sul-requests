@@ -1,13 +1,13 @@
 <span>
-  <i class="bi bi-calendar text-green me-1"></i>
+  <i class="bi bi-calendar <%= text_color_class %> me-1"></i>
   <span class="appointment-details ms-1">
-    <span class="fw-bold text-green"><%= appointment_date %></span>
+    <span class="fw-bold <%= text_color_class %>"><%= appointment_date %></span>
     <% if appointment_time_range.present? %>
-      <i class="bi bi-dot text-green align-middle fs-4"></i>
-      <span class="fw-normal text-nowrap text-green"><%= appointment_time_range %></span>
+      <i class="bi bi-dot <%= text_color_class %> align-middle fs-4"></i>
+      <span class="fw-normal text-nowrap <%= text_color_class %>"><%= appointment_time_range %></span>
     <% end %>
     <% if @with_reading_room %>
-      <span class="fw-normal text-nowrap text-green"><%= appointment_reading_room_name %></span>
+      <span class="fw-normal text-nowrap <%= text_color_class %>"><%= appointment_reading_room_name %></span>
     <% end %>
   </span>
 </span>

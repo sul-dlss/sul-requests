@@ -5,7 +5,7 @@ module Aeon
   class RequestAppointmentTimeComponent < ViewComponent::Base
     attr_reader :request
 
-    delegate :appointment, :appointment?, :draft?, to: :request
+    delegate :appointment, :appointment?, :cancelled?, :completed?, :draft?, to: :request
 
     def initialize(request:, with_reading_room: true)
       @request = request
@@ -31,6 +31,10 @@ module Aeon
 
     def appointment_reading_room_name
       appointment.reading_room&.name if appointment?
+    end
+
+    def text_color_class
+      cancelled? || completed? ? 'text-80-black' : 'text-green'
     end
   end
 end
