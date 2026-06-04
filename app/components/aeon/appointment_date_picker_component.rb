@@ -7,19 +7,19 @@ module Aeon
   #   <%= render Aeon::AppointmentDatePickerComponent.new(:date, form: f) %>
   #   <%= render Aeon::AppointmentDatePickerComponent.new(:date, form: f, disabled: ['2026-05-01'], marked: ['2026-05-10']) %>
   class AppointmentDatePickerComponent < ViewComponent::Base
-    attr_reader :key, :form, :disabled, :marked
+    attr_reader :key, :form, :reading_room, :disabled, :marked
 
-    def initialize(key, form: nil, disabled: [], disabled_daynames: [], marked: [])
+    def initialize(key, form: nil, reading_room: nil, disabled: [], disabled_daynames: [], marked: [])
       @key = key
       @form = form
+      @reading_room = reading_room || form.object.reading_room
       @disabled = disabled
       @disabled_daynames = disabled_daynames
       @marked = marked
     end
 
     def min
-      appointment = form.object
-      next_start = appointment.reading_room&.next_appointment&.start_time
+      next_start = reading_room&.next_appointment&.start_time
       next_start&.to_date&.iso8601 || Time.zone.today.iso8601
     end
 
