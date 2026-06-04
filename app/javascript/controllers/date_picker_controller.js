@@ -4,6 +4,7 @@ import { Controller } from "@hotwired/stimulus"
 //
 // Data attributes on the controller element:
 //   data-date-picker-disabled-value  JSON array of ISO dates to disable, e.g. '["2026-04-24","2026-04-27"]'
+//   data-date-picker-disabled-daynames-value JSON array of daynames to disable, e.g. '["Saturday", "Sunday"]'
 //   data-date-picker-marked-value    JSON array of ISO dates to mark with a dot, e.g. '["2026-04-23"]'
 //   data-date-picker-min-value       ISO date string; any date before this is disabled, e.g. '"2026-04-23"'
 //
@@ -15,9 +16,10 @@ import { Controller } from "@hotwired/stimulus"
 //   grid        element where the day buttons are rendered
 export default class extends Controller {
   static targets = ["input", "calendar", "display", "monthLabel", "grid", "announce", "prevBtn", "nextBtn", "legend"]
-  static values = { disabled: Array, marked: Array, min: String }
+  static values = { disabled: Array, marked: Array, min: String, disabledDaynames: Array}
 
   connect() {
+    this.disabledDayInts = this.disabledDaynamesValue.map(name => this.dayToInt(name))
     const initial = this.inputTarget.value
     let seed = initial ? new Date(`${initial}T00:00:00`) : new Date()
     // If no date is selected but a minValue exists in a future month (e.g. the earliest
@@ -33,6 +35,11 @@ export default class extends Controller {
     this.renderCalendar()
     document.addEventListener("click", this.#handleOutsideClick)
     this.element.addEventListener("keydown", this.#handleKeydown)
+  }
+
+  dayToInt(day) {
+    let dayToIntMapping = { Sunday: 0, Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6}
+    return dayToIntMapping[day]
   }
 
   disconnect() {
@@ -125,18 +132,15 @@ export default class extends Controller {
     const tbody = table.createTBody()
     rows.slice(1).forEach(weekDays => {
       const tr = tbody.insertRow()
-      weekDays.forEach(day => {
+      weekDays.forEach((day, index) => {
         const td = tr.insertCell()
         if (day === null) return
-
         const isoDate = [
           year,
           String(month + 1).padStart(2, "0"),
           String(day).padStart(2, "0")
         ].join("-")
 
-        const isDisabled = this.disabledValue.includes(isoDate) ||
-          (this.minValue && isoDate < this.minValue)
         const isMarked = this.markedValue.includes(isoDate)
         const isSelected = isoDate === selected
 
@@ -151,7 +155,7 @@ export default class extends Controller {
         ].join(" ")
         btn.dataset.date = isoDate
         btn.dataset.action = "click->date-picker#selectDay"
-        btn.disabled = isDisabled
+        btn.disabled = this.#isDateDisabled(isoDate, index)
         btn.setAttribute("aria-pressed", String(isSelected))
         btn.tabIndex = isoDate === this.#toIsoDate(this.focusedDate) ? 0 : -1
         btn.textContent = day
@@ -212,9 +216,9 @@ export default class extends Controller {
     ].join("-")
   }
 
-  #isDateDisabled(isoDate) {
+  #isDateDisabled(isoDate, index) {
     return this.disabledValue.includes(isoDate) ||
-      (this.minValue && isoDate < this.minValue)
+      (this.minValue && isoDate < this.minValue) || this.disabledDayInts.includes(index)
   }
 
   #handleOutsideClick = (event) => {
@@ -257,7 +261,7 @@ export default class extends Controller {
 
     // Skip over disabled dates (guard against all dates being disabled)
     let guard = 0
-    while (this.#isDateDisabled(this.#toIsoDate(candidate)) && guard++ < 60) {
+    while (this.#isDateDisabled(this.#toIsoDate(candidate), candidate.getDay()) && guard++ < 60) {
       candidate.setDate(candidate.getDate() + step)
     }
     if (guard >= 60) return

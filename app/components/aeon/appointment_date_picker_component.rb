@@ -7,11 +7,12 @@ module Aeon
   #   <%= render Aeon::AppointmentDatePickerComponent.new(form: f) %>
   #   <%= render Aeon::AppointmentDatePickerComponent.new(form: f, disabled: ['2026-05-01'], marked: ['2026-05-10']) %>
   class AppointmentDatePickerComponent < ViewComponent::Base
-    attr_reader :form, :disabled, :marked
+    attr_reader :form, :disabled, :marked, :disabled_daynames
 
-    def initialize(form:, disabled: [], marked: [])
+    def initialize(form:, disabled: [], marked: [], disabled_daynames: [])
       @form = form
       @disabled = disabled
+      @disabled_daynames = disabled_daynames
       @marked = marked
     end
 
@@ -22,8 +23,8 @@ module Aeon
     end
 
     def controller_data
-      attrs = { controller: 'date-picker' }
-      attrs[:'date-picker-min-value'] = min if min.present?
+      attrs = { controller: 'date-picker', date_picker_min_value: min }
+      attrs[:'date-picker-disabled-daynames-value'] = disabled_daynames.to_json if disabled_daynames.any?
       attrs[:'date-picker-disabled-value'] = disabled.to_json if disabled.any?
       attrs[:'date-picker-marked-value'] = marked.to_json if marked.any?
       { data: attrs }
