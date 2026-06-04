@@ -1,8 +1,8 @@
-<div class="request-group border-bottom" <% if hidden %>hidden<% end %> data-draft-request-target="modalGroup" data-digital="<%= request_group.digital? %>"
+<div class="request-group border-bottom mb-2" <% if hidden %>hidden<% end %> data-draft-request-target="modalGroup" data-digital="<%= request_group.digital? %>"
   <% unless request_group.multi_item_selector? %>id="<%= dom_id(requests.first) %>" data-request-id="<%= requests.first.id %>"<% end %>>
   <div class="card-body">
     <div class="metadata">
-      <span class="text-digital-red"><%= request_group.digital? ? 'Digitization' : 'Reading room use' %></span>
+      <span class="text-lagunita-dark"><%= request_group.digital? ? 'Digitization' : 'Reading room use' %></span>
       <h3 class="h4 my-1"><%= title %></h3>
       <div class="d-flex gap-sm-3 flex-sm-row flex-wrap flex-column">
         <% if base_callnumber.present? %>
@@ -15,7 +15,7 @@
             <li id="<%= dom_id(request) %>" class="request px-0" data-request-id="<%= request.id %>">
               <div class="d-flex flex-row align-items-center justify-content-between">
                 <div class="d-flex gap-3">
-                  <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
+                  <%= render Aeon::RequestItemIdentifierComponent.new(request:, classes: ['fw-semibold', 'selected-item-title', 'px-1'], wrapper_tag: :div, wrapper_classes: ['text-wrap', 'mb-2']) %>
                 </div>
               </div>
             </li>

@@ -22,9 +22,10 @@ export default class extends Controller {
     if (selectedIds.length === 0) return
 
     const allSelected = selectedIds.length === this.selectTargets.length
+    const requestCountText = allSelected ? 'all' : selectedIds.length
 
     this.setFormIds(selectedIds)
-    this.updateModalTitle(selectedIds.length)
+    this.updateModalTitle(requestCountText)
     this.updateModalSummary()
     this.updateModalContent(selectedIds, allSelected)
 
@@ -46,7 +47,7 @@ export default class extends Controller {
   updateModalTitle(count) {
     const noun = count === 1 ? 'request' : 'requests'
     this.deleteModalTarget.querySelector('.modal-title').textContent =
-      `Delete ${count} saved for later ${noun}?`
+      `Delete ${count} ${noun}?`
   }
 
   updateModalContent(selectedIds, allSelected) {
