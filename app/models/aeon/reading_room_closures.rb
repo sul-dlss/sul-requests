@@ -5,9 +5,15 @@ module Aeon
   ReadingRoomClosures = Data.define(:start_date, :end_date) do
     def self.from_dynamic(dyn)
       new(
-        start_date: dyn['startDate'],
-        end_date: dyn['endDate']
+        start_date: Time.zone.parse(dyn['startDate']),
+        end_date: Time.zone.parse(dyn['endDate'])
       )
+    end
+
+    delegate :cover?, to: :range
+
+    def range
+      start_date..end_date
     end
   end
 end

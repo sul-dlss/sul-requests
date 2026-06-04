@@ -8,6 +8,8 @@ module Aeon
     # Default — today forward, no restrictions
     def default; end
 
+    def with_reading_room_defaults; end
+
     # With a minimum date 2 weeks out
     def with_min_date; end
 

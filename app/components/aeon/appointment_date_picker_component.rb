@@ -32,9 +32,36 @@ module Aeon
       reading_room&.open_hours&.map(&:day_name) || Date::DAYNAMES
     end
 
+    def closures_dates # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+      return [] if reading_room&.closures.blank?
+
+      # get the closures for a reading room:
+      closures = reading_room.closures
+
+      # get the open hours for a reading room
+      open_hours = reading_room.open_hours
+
+      # make a list of closed dates (where a closure covers the entire day a reading room is actually open)
+      closures.flat_map do |closure|
+        closure.start_date.to_date.upto(closure.end_date.to_date).to_a.select do |date|
+          hours_on_day = open_hours.find { |oh| oh.day_name == date.strftime('%A') }
+
+          next if hours_on_day.nil?
+
+          open_hours_range_on_date = date.to_time.change(hour: hours_on_day.open_time.hour,
+                                                         min: hours_on_day.open_time.min)..date.to_time.change(
+                                                           hour: hours_on_day.close_time.hour, min: hours_on_day.close_time.min
+                                                         )
+
+          closure.cover?(open_hours_range_on_date)
+        end
+      end
+    end
+
     def controller_data
       data.merge(controller: "#{data[:controller]} date-picker").reverse_merge('date-picker-min-value': min,
                                                                                'date-picker-max-value': max,
+                                                                               'date-picker-disabled-value': closures_dates.map(&:iso8601),
                                                                                'date-picker-open-days-value': open_days)
     end
   end

@@ -1,0 +1,3 @@
+<%= form_with(model: Aeon::Appointment.new, url: '#') do |f| %>
+  <%= render Aeon::AppointmentDatePickerComponent.new(:date, form: f, reading_room: FactoryBot.build(:aeon_reading_room, closures: [Aeon::ReadingRoomClosures.new(start_date: Time.current.next_week(:monday).beginning_of_day, end_date: Time.current.next_week(:monday).end_of_day)])) %>
+<% end %>

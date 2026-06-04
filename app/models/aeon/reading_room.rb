@@ -20,6 +20,8 @@ module Aeon
     attr_accessor :id, :name, :available_seats, :time_zone_id, :min_appointment_length, :max_appointment_length,
                   :appointment_padding, :appointment_increment, :last_modified_time, :sites, :open_hours, :policies
 
+    attr_writer :closures
+
     delegate :aeon_client, to: :class
 
     def self.from_dynamic(dyn) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
@@ -53,6 +55,10 @@ module Aeon
 
     def directions
       Settings.aeon.directions[sites.first]
+    end
+
+    def closures
+      @closures ||= aeon_client.closures(reading_room_id: id)
     end
 
     OpenHoursDisplay = Data.define(:day_range, :hours)
@@ -96,10 +102,6 @@ module Aeon
     end
 
     def persisted? = id.present?
-
-    def closures
-      aeon_client.closures(reading_room_id: id)
-    end
 
     private
 
