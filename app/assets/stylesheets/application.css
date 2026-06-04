@@ -504,11 +504,13 @@ label.btn-close {
   }
 
 .series-header[aria-expanded="true"] .disclosure-icon::before {
- transform: rotate(90deg);
+  transform: rotate(90deg);
 }
 
-.accordion-button[aria-expanded="true"] ~ .accordion-header-icon::before {
- transform: rotate(180deg);
+.accordion-button[aria-expanded="true"] .accordion-header-icon::before,
+.accordion-button[aria-expanded="true"] ~ .accordion-header-icon::before,
+.accordion-header[aria-expanded="true"] .accordion-header-icon::before {
+  transform: rotate(180deg);
 }
 
 .rounded-pill {
@@ -1235,4 +1237,26 @@ label.btn-close {
   border: 1px solid var(--stanford-fog-light);
   max-height: 200px;
   max-width: 80px;
+}
+
+#appointmentRequestsAccordion .request-group,
+#draftRequestsAccordion .request-group {
+  .reading-room {
+    display: none;
+  }
+
+  .list-group {
+    padding-top: 0.5rem;
+  }
+
+  .list-group-item {
+    padding-bottom: 0.25rem;
+    padding-top: 0.25rem;
+  }
+
+  .request-item-identifier {
+    background-color: var(--stanford-fog-light);
+    margin-left: 1rem;
+    padding: 0.25rem 0.5rem;
+  }
 }

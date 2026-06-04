@@ -76,6 +76,7 @@ RSpec.describe 'Add items modal', :js do
     click_link 'Add items'
     within '.modal' do
       expect(page).to have_no_text('Fast poetry in America : a poetry quarterly')
+      click_on 'Items scheduled to use during this appointment'
 
       expect(page).to have_text('Slow poetry in America : a poetry quarterly', count: 1)
       expect(page).to have_css('#appointmentRequestsAccordion li', count: 2)

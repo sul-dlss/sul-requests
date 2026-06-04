@@ -13,7 +13,7 @@ module Aeon
                          transaction_number: @request.transaction_number,
                          appointment_target: '#appointmentRequests',
                          title: @request.item_title } do
-        tag.i(class: 'bi bi-plus') + tag.span('Add to appointment')
+        tag.i(class: 'bi bi-plus-lg me-1') + tag.span('Add to appointment')
       end
     end
   end
