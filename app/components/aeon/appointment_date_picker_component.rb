@@ -5,30 +5,25 @@ module Aeon
   #
   # Usage:
   #   <%= render Aeon::AppointmentDatePickerComponent.new(:date, form: f) %>
-  #   <%= render Aeon::AppointmentDatePickerComponent.new(:date, form: f, disabled: ['2026-05-01'], marked: ['2026-05-10']) %>
+  #   <%= render Aeon::AppointmentDatePickerComponent.new(:date, form: f,
+  #             data: { 'date-picker-disabled-value': ['2026-05-01'], 'date-picker-marked-value': ['2026-05-10'] }) %>
   class AppointmentDatePickerComponent < ViewComponent::Base
-    attr_reader :key, :form, :reading_room, :disabled, :marked
+    attr_reader :key, :form, :reading_room, :data
 
-    def initialize(key, form: nil, reading_room: nil, disabled: [], disabled_daynames: [], marked: [])
+    def initialize(key, form: nil, reading_room: nil, data: {})
       @key = key
       @form = form
       @reading_room = reading_room || form.object.reading_room
-      @disabled = disabled
-      @disabled_daynames = disabled_daynames
-      @marked = marked
+      @data = data
     end
 
     def min
       next_start = reading_room&.next_appointment&.start_time
-      next_start&.to_date&.iso8601 || Time.zone.today.iso8601
+      (next_start&.to_date || Time.zone.today).iso8601
     end
 
     def controller_data
-      attrs = { controller: 'date-picker', date_picker_min_value: min }
-      attrs[:'date-picker-disabled-daynames-value'] = disabled_daynames.to_json if disabled_daynames.any?
-      attrs[:'date-picker-disabled-value'] = disabled.to_json if disabled.any?
-      attrs[:'date-picker-marked-value'] = marked.to_json if marked.any?
-      { data: attrs }
+      data.merge(controller: "#{data[:controller]} date-picker").reverse_merge('date-picker-min-value': min)
     end
   end
 end
