@@ -22,12 +22,20 @@ module Aeon
       (next_start&.to_date || Time.zone.today).iso8601
     end
 
+    def max
+      (reading_room&.policies || []).filter_map do |policy|
+        policy.appointment_max_lead_days.days.from_now.to_date.iso8601 if policy.appointment_max_lead_days
+      end.max
+    end
+
     def open_days
       reading_room&.open_hours&.map(&:day_name) || Date::DAYNAMES
     end
 
     def controller_data
-      data.merge(controller: "#{data[:controller]} date-picker").reverse_merge('date-picker-min-value': min)
+      data.merge(controller: "#{data[:controller]} date-picker").reverse_merge('date-picker-min-value': min,
+                                                                               'date-picker-max-value': max,
+                                                                               'date-picker-open-days-value': open_days)
     end
   end
 end

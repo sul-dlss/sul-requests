@@ -16,7 +16,7 @@ import { Controller } from "@hotwired/stimulus"
 //   grid        element where the day buttons are rendered
 export default class extends Controller {
   static targets = ["input", "calendar", "display", "monthLabel", "grid", "announce", "prevBtn", "nextBtn", "legend"]
-  static values = { disabled: Array, marked: Array, min: String, openDays: Array}
+  static values = { disabled: Array, marked: Array, min: String, max: String, openDays: Array}
 
   connect() {
     this.openDayInts = this.openDaysValue.map(name => this.dayToInt(name))
@@ -218,7 +218,7 @@ export default class extends Controller {
 
   #isDateDisabled(isoDate, index) {
     return this.disabledValue.includes(isoDate) ||
-      (this.minValue && isoDate < this.minValue) || !this.openDayInts.includes(index)
+      (this.minValue && isoDate < this.minValue) || (this.maxValue && isoDate > this.maxValue) || !this.openDayInts.includes(index)
   }
 
   #handleOutsideClick = (event) => {
