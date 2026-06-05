@@ -899,11 +899,8 @@ label.btn-close {
     --bs-btn-active-bg: white;
   }
 
-  button.dropdown-toggle {
-    min-width: 100%;
-    @media (min-width: 576px) {
-      min-width: 19.8rem; /* Barely fits longer case like "Jun 30,2026 * 11:00 am - 12:45 pm (10 items)" */
-    }
+  .appointment-option .label-value {
+    white-space: normal;
   }
 
   .selected, li:has(input:checked)  {
@@ -919,6 +916,14 @@ label.btn-close {
       left: 0.3rem;
       margin-top:0.5rem;
     }
+  }
+}
+
+.custom-select .dropdown-toggle,
+.appointment-option {
+  min-width: 100%;
+  @media (min-width: 768px) {
+    min-width: 21rem; /* Barely fits longer case like "Jun 30,2026 * 11:00 am - 12:45 pm (10 items)" */
   }
 }
 
