@@ -16,7 +16,7 @@ import { Controller } from "@hotwired/stimulus"
 //   grid        element where the day buttons are rendered
 export default class extends Controller {
   static targets = ["input", "calendar", "display", "monthLabel", "grid", "announce", "prevBtn", "nextBtn", "legend"]
-  static values = { disabled: Array, marked: Array, min: String, max: String, openDays: Array}
+  static values = { disabled: Array, marked: Array, min: String, max: String, openDays: Array, year: Number, month: Number }
 
   connect() {
     this.openDayInts = this.openDaysValue.map(name => this.dayToInt(name))
@@ -29,8 +29,8 @@ export default class extends Controller {
       const min = new Date(`${this.minValue}T00:00:00`)
       if (min > seed) seed = min
     }
-    this.viewYear = seed.getFullYear()
-    this.viewMonth = seed.getMonth() // 0-indexed
+    this.yearValue = seed.getFullYear()
+    this.monthValue = seed.getMonth() // 0-indexed
     this.focusedDate = seed
     this.element.addEventListener("keydown", this.#handleKeydown)
   }
@@ -70,15 +70,15 @@ export default class extends Controller {
   }
 
   prevMonth() {
-    if (this.viewMonth === 0) { this.viewMonth = 11; this.viewYear-- }
-    else { this.viewMonth-- }
+    if (this.monthValue === 0) { this.monthValue = 11; this.yearValue-- }
+    else { this.monthValue-- }
     this.renderCalendar()
     this.announceTarget.textContent = this.monthLabelTarget.textContent
   }
 
   nextMonth() {
-    if (this.viewMonth === 11) { this.viewMonth = 0; this.viewYear++ }
-    else { this.viewMonth++ }
+    if (this.monthValue === 11) { this.monthValue = 0; this.yearValue++ }
+    else { this.monthValue++ }
     this.renderCalendar()
     this.announceTarget.textContent = this.monthLabelTarget.textContent
   }
@@ -96,7 +96,7 @@ export default class extends Controller {
   }
 
   renderCalendar() {
-    const { viewYear: year, viewMonth: month } = this
+    const { yearValue: year, monthValue: month } = this
     const monthLabelText = new Date(year, month, 1)
       .toLocaleDateString("en-US", { month: "long", year: "numeric" })
     this.monthLabelTarget.textContent = monthLabelText
@@ -271,9 +271,9 @@ export default class extends Controller {
     this.focusedDate = candidate
 
     // Navigate to a different month if the candidate is outside the current view
-    if (candidate.getFullYear() !== this.viewYear || candidate.getMonth() !== this.viewMonth) {
-      this.viewYear = candidate.getFullYear()
-      this.viewMonth = candidate.getMonth()
+    if (candidate.getFullYear() !== this.yearValue || candidate.getMonth() !== this.monthValue) {
+      this.yearValue = candidate.getFullYear()
+      this.monthValue = candidate.getMonth()
       this.renderCalendar()
     }
 
