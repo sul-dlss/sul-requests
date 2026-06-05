@@ -16,7 +16,7 @@ import { Controller } from "@hotwired/stimulus"
 //   grid        element where the day buttons are rendered
 export default class extends Controller {
   static targets = ["input", "calendar", "display", "monthLabel", "grid", "announce", "prevBtn", "nextBtn", "legend"]
-  static values = { disabled: Array, marked: Array, min: String, max: String, openDays: Array, year: Number, month: Number }
+  static values = { disabled: Array, marked: Array, min: String, max: String, openDays: Array, year: Number, month: Number, focused: String }
 
   connect() {
     const initial = this.inputTarget.value
@@ -30,7 +30,7 @@ export default class extends Controller {
     }
     this.yearValue = seed.getFullYear()
     this.monthValue = seed.getMonth() // 0-indexed
-    this.focusedDate = seed
+    this.focusedValue = this.#toIsoDate(seed)
     this.element.addEventListener("keydown", this.#handleKeydown)
   }
 
@@ -90,7 +90,7 @@ export default class extends Controller {
     const formatted = this.#formatDisplay(date)
     this.displayTarget.textContent = formatted
     this.announceTarget.textContent = `Selected ${formatted}`
-    this.focusedDate = new Date(`${date}T00:00:00`)
+    this.focusedValue = date
     this.close()
   }
 
@@ -158,7 +158,7 @@ export default class extends Controller {
         btn.dataset.action = "date-picker#selectDay"
         btn.disabled = this.#isDateDisabled(isoDate, index)
         btn.setAttribute("aria-pressed", String(isSelected))
-        btn.tabIndex = isoDate === this.#toIsoDate(this.focusedDate) ? 0 : -1
+        btn.tabIndex = isoDate === this.focusedValue ? 0 : -1
         btn.textContent = day
 
         // Build accessible label: "April 22, 2026" + optional ", existing appointment"
@@ -189,13 +189,13 @@ export default class extends Controller {
       this.legendTarget.style.visibility = anyMarked ? "visible" : "hidden"
     }
 
-    // Fallback: if focusedDate is outside this month or disabled, use the first enabled day
+    // Fallback: if focusedValue is outside this month or disabled, use the first enabled day
     let focusedBtn = this.gridTarget.querySelector("button[tabindex='0']")
     if (!focusedBtn || focusedBtn.disabled) {
       focusedBtn = this.gridTarget.querySelector("button:not(:disabled)")
       if (focusedBtn) {
         focusedBtn.tabIndex = 0
-        this.focusedDate = new Date(`${focusedBtn.dataset.date}T00:00:00`)
+        this.focusedValue = focusedBtn.dataset.date
       }
     }
   }
@@ -257,7 +257,7 @@ export default class extends Controller {
     event.preventDefault()
 
     const step = delta > 0 ? 1 : -1
-    let candidate = new Date(this.focusedDate.getTime())
+    let candidate = new Date(this.focusedValue + "T00:00:00")
     candidate.setDate(candidate.getDate() + delta)
 
     // Skip over disabled dates (guard against all dates being disabled)
@@ -267,7 +267,7 @@ export default class extends Controller {
     }
     if (guard >= 60) return
 
-    this.focusedDate = candidate
+    this.focusedValue = this.#toIsoDate(candidate)
 
     // Navigate to a different month if the candidate is outside the current view
     if (candidate.getFullYear() !== this.yearValue || candidate.getMonth() !== this.monthValue) {
