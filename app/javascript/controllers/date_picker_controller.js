@@ -84,7 +84,7 @@ export default class extends Controller {
   }
 
   selectDay(event) {
-    const date = event.currentTarget.dataset.date
+    const date = event.params.date
     this.inputTarget.value = date
     this.inputTarget.dispatchEvent(new Event('change', { bubbles: true }))
     const formatted = this.#formatDisplay(date)
@@ -154,7 +154,7 @@ export default class extends Controller {
           "btn btn-sm w-100 position-relative",
           isSelected ? "btn-primary" : "btn-light"
         ].join(" ")
-        btn.dataset.date = isoDate
+        btn.dataset.datePickerDateParam = isoDate
         btn.dataset.action = "date-picker#selectDay"
         btn.disabled = this.#isDateDisabled(isoDate, index)
         btn.setAttribute("aria-pressed", String(isSelected))
@@ -195,7 +195,7 @@ export default class extends Controller {
       focusedBtn = this.gridTarget.querySelector("button:not(:disabled)")
       if (focusedBtn) {
         focusedBtn.tabIndex = 0
-        this.focusedValue = focusedBtn.dataset.date
+        this.focusedValue = focusedBtn.dataset.datePickerDateParam
       }
     }
   }
@@ -276,6 +276,6 @@ export default class extends Controller {
       this.renderCalendar()
     }
 
-    this.gridTarget.querySelector(`button[data-date="${this.#toIsoDate(candidate)}"]`)?.focus()
+    this.gridTarget.querySelector(`button[data-date-picker-date-param="${this.focusedValue}"]`)?.focus()
   }
 }
