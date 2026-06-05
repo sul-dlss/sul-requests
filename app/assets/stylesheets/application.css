@@ -1176,6 +1176,14 @@ label.btn-close {
   vertical-align: middle;
 }
 
+.date-picker-button {
+  &::after {
+    font-family: "bootstrap-icons";
+    content: "\F1F6";
+    float: right;
+  }
+}
+
 .activities-list {
   li:not(:last-child) {
     border-bottom:1px solid var(--stanford-20-black);
