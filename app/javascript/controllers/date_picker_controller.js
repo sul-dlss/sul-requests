@@ -275,7 +275,15 @@ export default class extends Controller {
       this.monthValue = candidate.getMonth()
       this.renderCalendar()
     }
+    const previouslyFocusedDayBtn = this.gridTarget.querySelector(`button[tabindex="0"]`);
 
-    this.gridTarget.querySelector(`button[data-date-picker-date-param="${this.focusedValue}"]`)?.focus({ focusVisible: true })
+    if (previouslyFocusedDayBtn) previouslyFocusedDayBtn.tabIndex = -1;
+
+    const newlyFocusedDayButton = this.gridTarget.querySelector(`button[data-date-picker-date-param="${this.focusedValue}"]`);
+
+    if (newlyFocusedDayButton) {
+      newlyFocusedDayButton.tabIndex = 0;
+      newlyFocusedDayButton.focus({ focusVisible: true });
+    }
   }
 }
