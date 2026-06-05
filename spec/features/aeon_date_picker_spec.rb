@@ -21,7 +21,7 @@ RSpec.describe 'Date picker keyboard navigation', :js do
   end
 
   def focused_date
-    page.evaluate_script('document.activeElement.dataset.date')
+    page.evaluate_script('document.activeElement.dataset.datePickerDateParam')
   end
 
   describe 'on open' do
@@ -179,7 +179,7 @@ RSpec.describe 'Date picker keyboard navigation', :js do
       end
 
       weekend_days.each do |day|
-        expect(page).to have_css("[data-date='#{day.iso8601}'][disabled]")
+        expect(page).to have_css("[data-date-picker-date-param='#{day.iso8601}'][disabled]")
       end
     end
 

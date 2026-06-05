@@ -17,10 +17,9 @@ import { Controller } from "@hotwired/stimulus"
 //   grid        element where the day buttons are rendered
 export default class extends Controller {
   static targets = ["input", "calendar", "display", "monthLabel", "grid", "announce", "prevBtn", "nextBtn", "legend"]
-  static values = { disabled: Array, marked: Array, min: String, max: String, openDays: Array}
+  static values = { disabled: Array, marked: Array, min: String, max: String, openDays: Array, year: Number, month: Number, focused: String }
 
   connect() {
-    this.openDayInts = this.openDaysValue.map(name => this.dayToInt(name))
     const initial = this.inputTarget.value
     let seed = initial ? new Date(`${initial}T00:00:00`) : new Date()
     // If no date is selected but a minValue exists in a future month (e.g. the earliest
@@ -30,17 +29,16 @@ export default class extends Controller {
       const min = new Date(`${this.minValue}T00:00:00`)
       if (min > seed) seed = min
     }
-    this.viewYear = seed.getFullYear()
-    this.viewMonth = seed.getMonth() // 0-indexed
-    this.focusedDate = seed
-    this.renderCalendar()
-    document.addEventListener("click", this.#handleOutsideClick)
+    this.yearValue = seed.getFullYear()
+    this.monthValue = seed.getMonth() // 0-indexed
+    this.focusedValue = this.#toIsoDate(seed)
     this.element.addEventListener("keydown", this.#handleKeydown)
   }
 
-  dayToInt(day) {
+  openDaysValueChanged() {
     let dayToIntMapping = { Sunday: 0, Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6}
-    return dayToIntMapping[day]
+
+    this.openDayInts = this.openDaysValue.map(name => dayToIntMapping[name])
   }
 
   disconnect() {
@@ -58,44 +56,47 @@ export default class extends Controller {
     this.displayTarget.setAttribute("aria-expanded", "true")
     this.announceTarget.textContent = `Date picker, ${this.monthLabelTarget.textContent}. Use arrow keys to navigate dates, Tab to move between controls, Escape to close.`
     requestAnimationFrame(() => {
-      this.gridTarget.querySelector("button[tabindex='0']")?.focus()
+      this.gridTarget.querySelector("button[tabindex='0']")?.focus({ focusVisible: true })
     })
+
+    document.addEventListener("click", this.#handleOutsideClick)
   }
 
   close() {
     this.calendarTarget.hidden = true
     this.displayTarget.setAttribute("aria-expanded", "false")
     this.displayTarget.focus()
+
+    document.removeEventListener("click", this.#handleOutsideClick)
   }
 
   prevMonth() {
-    if (this.viewMonth === 0) { this.viewMonth = 11; this.viewYear-- }
-    else { this.viewMonth-- }
+    if (this.monthValue === 0) { this.monthValue = 11; this.yearValue-- }
+    else { this.monthValue-- }
     this.renderCalendar()
     this.announceTarget.textContent = this.monthLabelTarget.textContent
   }
 
   nextMonth() {
-    if (this.viewMonth === 11) { this.viewMonth = 0; this.viewYear++ }
-    else { this.viewMonth++ }
+    if (this.monthValue === 11) { this.monthValue = 0; this.yearValue++ }
+    else { this.monthValue++ }
     this.renderCalendar()
     this.announceTarget.textContent = this.monthLabelTarget.textContent
   }
 
   selectDay(event) {
-    const date = event.currentTarget.dataset.date
+    const date = event.params.date
     this.inputTarget.value = date
     this.inputTarget.dispatchEvent(new Event('change', { bubbles: true }))
     const formatted = this.#formatDisplay(date)
     this.displayTarget.textContent = formatted
     this.announceTarget.textContent = `Selected ${formatted}`
-    this.focusedDate = new Date(`${date}T00:00:00`)
+    this.focusedValue = date
     this.close()
-    this.renderCalendar() // re-render to reflect selection
   }
 
   renderCalendar() {
-    const { viewYear: year, viewMonth: month } = this
+    const { yearValue: year, monthValue: month } = this
     const monthLabelText = new Date(year, month, 1)
       .toLocaleDateString("en-US", { month: "long", year: "numeric" })
     this.monthLabelTarget.textContent = monthLabelText
@@ -154,11 +155,11 @@ export default class extends Controller {
           "btn btn-sm w-100 position-relative",
           isSelected ? "btn-primary" : "btn-light"
         ].join(" ")
-        btn.dataset.date = isoDate
-        btn.dataset.action = "click->date-picker#selectDay"
+        btn.dataset.datePickerDateParam = isoDate
+        btn.dataset.action = "date-picker#selectDay"
         btn.disabled = this.#isDateDisabled(isoDate, index)
         btn.setAttribute("aria-pressed", String(isSelected))
-        btn.tabIndex = isoDate === this.#toIsoDate(this.focusedDate) ? 0 : -1
+        btn.tabIndex = isoDate === this.focusedValue ? 0 : -1
         btn.textContent = day
 
         // Build accessible label: "April 22, 2026" + optional ", existing appointment"
@@ -189,13 +190,13 @@ export default class extends Controller {
       this.legendTarget.style.visibility = anyMarked ? "visible" : "hidden"
     }
 
-    // Fallback: if focusedDate is outside this month or disabled, use the first enabled day
+    // Fallback: if focusedValue is outside this month or disabled, use the first enabled day
     let focusedBtn = this.gridTarget.querySelector("button[tabindex='0']")
     if (!focusedBtn || focusedBtn.disabled) {
       focusedBtn = this.gridTarget.querySelector("button:not(:disabled)")
       if (focusedBtn) {
         focusedBtn.tabIndex = 0
-        this.focusedDate = new Date(`${focusedBtn.dataset.date}T00:00:00`)
+        this.focusedValue = focusedBtn.dataset.datePickerDateParam
       }
     }
   }
@@ -240,10 +241,10 @@ export default class extends Controller {
       const focusedDay = this.gridTarget.querySelector("button[tabindex='0']")
       if (!event.shiftKey && document.activeElement === focusedDay) {
         event.preventDefault()
-        this.prevBtnTarget.focus()
+        this.prevBtnTarget.focus({ focusVisible: true })
       } else if (event.shiftKey && document.activeElement === this.prevBtnTarget) {
         event.preventDefault()
-        focusedDay?.focus()
+        focusedDay?.focus({ focusVisible: true })
       }
       return
     }
@@ -257,7 +258,7 @@ export default class extends Controller {
     event.preventDefault()
 
     const step = delta > 0 ? 1 : -1
-    let candidate = new Date(this.focusedDate.getTime())
+    let candidate = new Date(this.focusedValue + "T00:00:00")
     candidate.setDate(candidate.getDate() + delta)
 
     // Skip over disabled dates (guard against all dates being disabled)
@@ -267,15 +268,23 @@ export default class extends Controller {
     }
     if (guard >= 60) return
 
-    this.focusedDate = candidate
+    this.focusedValue = this.#toIsoDate(candidate)
 
     // Navigate to a different month if the candidate is outside the current view
-    if (candidate.getFullYear() !== this.viewYear || candidate.getMonth() !== this.viewMonth) {
-      this.viewYear = candidate.getFullYear()
-      this.viewMonth = candidate.getMonth()
+    if (candidate.getFullYear() !== this.yearValue || candidate.getMonth() !== this.monthValue) {
+      this.yearValue = candidate.getFullYear()
+      this.monthValue = candidate.getMonth()
       this.renderCalendar()
     }
+    const previouslyFocusedDayBtn = this.gridTarget.querySelector(`button[tabindex="0"]`);
 
-    this.gridTarget.querySelector(`button[data-date="${this.#toIsoDate(candidate)}"]`)?.focus()
+    if (previouslyFocusedDayBtn) previouslyFocusedDayBtn.tabIndex = -1;
+
+    const newlyFocusedDayButton = this.gridTarget.querySelector(`button[data-date-picker-date-param="${this.focusedValue}"]`);
+
+    if (newlyFocusedDayButton) {
+      newlyFocusedDayButton.tabIndex = 0;
+      newlyFocusedDayButton.focus({ focusVisible: true });
+    }
   }
 }
