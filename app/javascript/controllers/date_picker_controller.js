@@ -4,9 +4,10 @@ import { Controller } from "@hotwired/stimulus"
 //
 // Data attributes on the controller element:
 //   data-date-picker-disabled-value  JSON array of ISO dates to disable, e.g. '["2026-04-24","2026-04-27"]'
-//   data-date-picker-disabled-daynames-value JSON array of daynames to disable, e.g. '["Saturday", "Sunday"]'
-//   data-date-picker-marked-value    JSON array of ISO dates to mark with a dot, e.g. '["2026-04-23"]'
+//   data-date-picker-open-days-value JSON array of daynames to enable, e.g. '["Monday", "Tuesday"]'
 //   data-date-picker-min-value       ISO date string; any date before this is disabled, e.g. '"2026-04-23"'
+//   data-date-picker-max-value       ISO date string; any date after this is disabled, e.g. '"2027-03-01"'
+//   data-date-picker-marked-value    JSON array of ISO dates to mark with a dot, e.g. '["2026-04-23"]'
 //
 // Targets:
 //   input       hidden <input> that holds the selected ISO date value
