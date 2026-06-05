@@ -19,7 +19,6 @@ export default class extends Controller {
   static values = { disabled: Array, marked: Array, min: String, max: String, openDays: Array, year: Number, month: Number }
 
   connect() {
-    this.openDayInts = this.openDaysValue.map(name => this.dayToInt(name))
     const initial = this.inputTarget.value
     let seed = initial ? new Date(`${initial}T00:00:00`) : new Date()
     // If no date is selected but a minValue exists in a future month (e.g. the earliest
@@ -35,9 +34,10 @@ export default class extends Controller {
     this.element.addEventListener("keydown", this.#handleKeydown)
   }
 
-  dayToInt(day) {
+  openDaysValueChanged() {
     let dayToIntMapping = { Sunday: 0, Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6}
-    return dayToIntMapping[day]
+
+    this.openDayInts = this.openDaysValue.map(name => dayToIntMapping[name])
   }
 
   disconnect() {
