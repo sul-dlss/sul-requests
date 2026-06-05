@@ -55,7 +55,7 @@ export default class extends Controller {
     this.displayTarget.setAttribute("aria-expanded", "true")
     this.announceTarget.textContent = `Date picker, ${this.monthLabelTarget.textContent}. Use arrow keys to navigate dates, Tab to move between controls, Escape to close.`
     requestAnimationFrame(() => {
-      this.gridTarget.querySelector("button[tabindex='0']")?.focus()
+      this.gridTarget.querySelector("button[tabindex='0']")?.focus({ focusVisible: true })
     })
 
     document.addEventListener("click", this.#handleOutsideClick)
@@ -240,10 +240,10 @@ export default class extends Controller {
       const focusedDay = this.gridTarget.querySelector("button[tabindex='0']")
       if (!event.shiftKey && document.activeElement === focusedDay) {
         event.preventDefault()
-        this.prevBtnTarget.focus()
+        this.prevBtnTarget.focus({ focusVisible: true })
       } else if (event.shiftKey && document.activeElement === this.prevBtnTarget) {
         event.preventDefault()
-        focusedDay?.focus()
+        focusedDay?.focus({ focusVisible: true })
       }
       return
     }
@@ -276,6 +276,6 @@ export default class extends Controller {
       this.renderCalendar()
     }
 
-    this.gridTarget.querySelector(`button[data-date-picker-date-param="${this.focusedValue}"]`)?.focus()
+    this.gridTarget.querySelector(`button[data-date-picker-date-param="${this.focusedValue}"]`)?.focus({ focusVisible: true })
   }
 }
