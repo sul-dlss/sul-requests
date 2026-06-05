@@ -92,7 +92,6 @@ export default class extends Controller {
     this.announceTarget.textContent = `Selected ${formatted}`
     this.focusedDate = new Date(`${date}T00:00:00`)
     this.close()
-    this.renderCalendar() // re-render to reflect selection
   }
 
   renderCalendar() {
