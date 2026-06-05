@@ -156,7 +156,7 @@ export default class extends Controller {
           isSelected ? "btn-primary" : "btn-light"
         ].join(" ")
         btn.dataset.date = isoDate
-        btn.dataset.action = "click->date-picker#selectDay"
+        btn.dataset.action = "date-picker#selectDay"
         btn.disabled = this.#isDateDisabled(isoDate, index)
         btn.setAttribute("aria-pressed", String(isSelected))
         btn.tabIndex = isoDate === this.#toIsoDate(this.focusedDate) ? 0 : -1
