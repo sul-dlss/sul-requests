@@ -32,7 +32,6 @@ export default class extends Controller {
     this.viewYear = seed.getFullYear()
     this.viewMonth = seed.getMonth() // 0-indexed
     this.focusedDate = seed
-    this.renderCalendar()
     document.addEventListener("click", this.#handleOutsideClick)
     this.element.addEventListener("keydown", this.#handleKeydown)
   }
