@@ -31,6 +31,10 @@
   <%= render Aeon::AppointmentComponent.new(appointment: @appointment) %>
 <% end if @appointment %>
 
+<%= turbo_stream.replace(dom_id(@activity)) do %>
+  <%= render Aeon::ActivityComponent.new(activity: @activity) %>
+<% end if @activity %>
+
 <%= turbo_stream.replace(dom_id(@previous_appointment, :sidebar)) do %>
   <%= render Aeon::AppointmentSidebarComponent.new(appointment: @previous_appointment) %>
 <% end if @previous_appointment %>
