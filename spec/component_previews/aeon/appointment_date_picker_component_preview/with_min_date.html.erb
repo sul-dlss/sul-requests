@@ -3,7 +3,9 @@
                                        time_zone_id: 'Pacific Standard Time', min_appointment_length: 30,
                                        max_appointment_length: 480, appointment_padding: 0,
                                        appointment_increment: 15, last_modified_time: Time.zone.now,
-                                       sites: ['SPECUA'], open_hours: [], policies: [])
+                                       sites: ['SPECUA'],
+                                       open_hours: [Aeon::ReadingRoomOpenHours.new(day_of_week: 1, day_name: 'Monday', open_time: Time.zone.parse('09:00'), close_time: Time.zone.parse('17:00'))],
+                                       policies: [])
   next_appt = Aeon::Appointment.new(id: nil, username: nil, reading_room_id: 5,
                                     start_time: 2.weeks.from_now, stop_time: 2.weeks.from_now + 1.hour,
                                     name: nil, available_to_proxies: false, appointment_status: nil,
