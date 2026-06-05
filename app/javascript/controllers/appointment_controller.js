@@ -73,9 +73,19 @@ export default class extends Controller {
     }
   }
 
+  selectDuration(e) {
+    e.preventDefault();
+    this.element.querySelector('.selected-duration')?.classList.remove('selected-duration')
+    e.currentTarget.classList.add('selected-duration')
+    this.element.querySelector("[name='aeon_appointment[duration]']").value = e.currentTarget.dataset.seconds
+    this.applyDurationFilter();
+  }
+
   applyDurationFilter() {
     const formData = new FormData(this.element);
     const apptDuration = formData.get('aeon_appointment[duration]');
+    if (apptDuration < 1) return;
+
     this.updateFormStatus();
 
     this.element.querySelectorAll('[name="aeon_appointment[start_time]"]:not([type="hidden"])').forEach((radio) => {

@@ -572,7 +572,7 @@ label.btn-close {
 }
 
 /* This can't go inline or display: none for when the turbo-frame is loading won't work */
-.appointment-slots, .duration-selectors {
+.appointment-slots {
   display: flex;
 }
 
@@ -597,7 +597,7 @@ label.btn-close {
     margin-top: -1rem;
   }
 
-  fieldset > *:not(legend):not(.duration-selectors) {
+  fieldset > *:not(legend) {
     display: none;
   }
 }
@@ -625,13 +625,13 @@ label.btn-close {
 .appointment-form {
   --bs-border-color: var(--stanford-50-black);
 
-  .btn-check:checked + .btn {
+  .selected-duration {
     --bs-border-color: var(--stanford-digital-blue);
     background-color: var(--stanford-digital-blue);
     color: white;
   }
 
-  .btn-check:checked + .btn::before {
+  .selected-duration::before {
     content: "\f633"; /* check-lg icon */
     display: inline-block;
     font-family: "bootstrap-icons";
