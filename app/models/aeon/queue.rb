@@ -51,7 +51,15 @@ module Aeon
     end
 
     def cancelled?
-      cancelled_queue_names&.include?(queue_name)
+      cancelled_by_user? || cancelled_by_staff?
+    end
+
+    def cancelled_by_staff?
+      cancelled_by_staff_queue_name == queue_name
+    end
+
+    def cancelled_by_user?
+      cancelled_by_user_queue_name == queue_name
     end
 
     def draft?
@@ -64,8 +72,12 @@ module Aeon
 
     private
 
-    def cancelled_queue_names
-      Settings.aeon.queue_names.cancelled[type]
+    def cancelled_by_user_queue_name
+      Settings.aeon.queue_names.cancelled.by_user[type]
+    end
+
+    def cancelled_by_staff_queue_name
+      Settings.aeon.queue_names.cancelled.by_staff[type]
     end
 
     def completed_queue_names

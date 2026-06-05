@@ -6,7 +6,7 @@ module Aeon
   class RequestFulfillmentComponent < ViewComponent::Base
     attr_reader :request
 
-    delegate :appointment?, :digital?, :draft?, :scan_delivered?, :submitted?,
+    delegate :appointment?, :cancelled_by_staff?, :digital?, :draft?, :scan_delivered?, :submitted?,
              :photoduplication_date, :transaction_date, to: :request
 
     def initialize(request:)
@@ -24,6 +24,7 @@ module Aeon
     end
 
     def mode
+      return :cancelled_by_staff if cancelled_by_staff?
       return :appointment if appointment?
       return :delivered if digital? && scan_delivered?
 

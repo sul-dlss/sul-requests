@@ -398,12 +398,12 @@ aeon:
     SPECUA: 10
   queue_names:
     cancelled:
-      photoduplication:
-        - Order Cancelled by User
-        - Order Cancelled by Staff
-      transaction:
-        - Cancelled by User
-        - Cancelled by Staff
+      by_user:
+        photoduplication: Order Cancelled by User
+        transaction: Cancelled by User
+      by_staff:
+        photoduplication: Order Cancelled by Staff
+        transaction: Cancelled by Staff
     completed:
       photoduplication:
         - Item Delivered
