@@ -2,6 +2,8 @@
   <% case mode %>
   <% when :appointment %>
     <%= render Aeon::RequestAppointmentTimeComponent.new(request:, with_reading_room: false) %>
+  <% when :cancelled_by_staff %>
+    <span class="text-digital-red">Cancelled by staff</span>
   <% when :delivered %>
     <i class="bi bi-envelope me-1 text-green"></i>
     <span class="ms-1 text-green"><span class="fw-semibold">Delivered</span> on <%= l(delivered_date.to_date, format: :short) %></span>

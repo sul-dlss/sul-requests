@@ -139,6 +139,16 @@ FactoryBot.define do
       end
     end
 
+    trait :cancelled_by_staff do
+      transaction_status { 30 }
+      after(:build) do |request|
+        request.instance_variable_set(
+          :@transaction_queue,
+          Aeon::Queue.new(id: 30, queue_name: 'Cancelled by Staff', queue_type: 'Transaction')
+        )
+      end
+    end
+
     trait :delivered do
       transaction_status { 75 }
       photoduplication_status { 23 }

@@ -116,6 +116,12 @@ module Aeon
       (digital? && photoduplication_queue&.cancelled?) || transaction_queue&.cancelled?
     end
 
+    def cancelled_by_staff?
+      return false unless cancelled?
+
+      (digital? && photoduplication_queue&.cancelled_by_staff?) || transaction_queue&.cancelled_by_staff?
+    end
+
     def draft?
       transaction_queue.nil? || transaction_queue&.draft?
     end
