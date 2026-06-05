@@ -32,7 +32,6 @@ export default class extends Controller {
     this.viewYear = seed.getFullYear()
     this.viewMonth = seed.getMonth() // 0-indexed
     this.focusedDate = seed
-    document.addEventListener("click", this.#handleOutsideClick)
     this.element.addEventListener("keydown", this.#handleKeydown)
   }
 
@@ -58,12 +57,16 @@ export default class extends Controller {
     requestAnimationFrame(() => {
       this.gridTarget.querySelector("button[tabindex='0']")?.focus()
     })
+
+    document.addEventListener("click", this.#handleOutsideClick)
   }
 
   close() {
     this.calendarTarget.hidden = true
     this.displayTarget.setAttribute("aria-expanded", "false")
     this.displayTarget.focus()
+
+    document.removeEventListener("click", this.#handleOutsideClick)
   }
 
   prevMonth() {
