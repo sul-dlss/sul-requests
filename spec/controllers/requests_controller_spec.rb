@@ -137,7 +137,7 @@ RSpec.describe RequestsController do
       context 'when everything is good' do
         it 'cancels the hold and sets flash messages' do
           delete :destroy, params: { id: '123' }
-          expect(flash[:success]).to match(/Success!/)
+          expect(flash[:success]).to include('Success!')
         end
 
         it 'cancels the hold and redirects to requests_path' do
@@ -151,7 +151,7 @@ RSpec.describe RequestsController do
 
         it 'does not cancel the hold and sets flash messages' do
           delete :destroy, params: { id: '123' }
-          expect(flash[:error]).to match(/Sorry!/)
+          expect(flash[:error]).to include('Sorry!')
         end
 
         it 'does not cancel the hold and redirects to requests_path' do
