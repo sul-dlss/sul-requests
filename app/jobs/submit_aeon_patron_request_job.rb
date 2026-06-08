@@ -3,13 +3,22 @@
 ##
 # Rails Job to submit a request to ILLiad for handling (and possible rerouting)
 class SubmitAeonPatronRequestJob < ApplicationJob
+  # Per-item fields that are meaningful to Aeon for each request_type. Hidden accordion sections
+  # in the form still submit their inputs, so we drop anything that doesn't belong before building
+  # the Aeon payload.
+  AEON_ITEM_FIELDS_BY_REQUEST_TYPE = {
+    'scan' => %w[id title hierarchy for_publication requested_pages additional_information],
+    'pickup' => %w[id title hierarchy appointment_id],
+    'activity' => %w[id title hierarchy]
+  }.freeze
+
   queue_as :default
   retry_on Faraday::ConnectionFailed
 
   def perform(patron_request)
     return unless patron_request.aeon_page?
 
-    if patron_request.data['activity_ids'].present?
+    if patron_request.request_type == 'activity'
       perform_activity_request(patron_request)
     elsif patron_request.ead_url.present?
       perform_ead_request(patron_request)
@@ -21,7 +30,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   end
 
   def perform_activity_request(patron_request)
-    patron_request.data['activity_ids'].each do |activity_id|
+    Array(patron_request.data['activity_ids']).each do |activity_id|
       if patron_request.ead_url.present?
         perform_ead_request(patron_request, activity_id:)
       else
@@ -32,7 +41,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
 
   def perform_folio_request(patron_request, activity_id: nil)
     patron_request.selected_items.each do |folio_item|
-      request = as_aeon_create_request_data(patron_request, folio_item, patron_request.aeon_item&.dig(folio_item.id) || {}, activity_id)
+      request = as_aeon_create_request_data(patron_request, folio_item, aeon_item_for(patron_request, folio_item.id), activity_id)
       response = submit_aeon_request(request)
 
       patron_request.aeon_api_responses.where(item_id: folio_item.id).delete_all
@@ -42,7 +51,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
 
   def perform_ead_request(patron_request, activity_id: nil)
     patron_request.aeon_item.each_value do |volume_params|
-      request = as_aeon_create_ead_request_data(patron_request, volume_params, activity_id)
+      request = as_aeon_create_ead_request_data(patron_request, relevant_aeon_fields(patron_request, volume_params), activity_id)
       response = submit_aeon_request(request)
 
       item_id = "#{request.call_number} #{request.item_volume}"
@@ -107,4 +116,15 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   end
 
   delegate :aeon_client, to: :Current
+
+  private
+
+  def aeon_item_for(patron_request, item_id)
+    relevant_aeon_fields(patron_request, patron_request.aeon_item&.dig(item_id))
+  end
+
+  def relevant_aeon_fields(patron_request, volume_params)
+    fields = AEON_ITEM_FIELDS_BY_REQUEST_TYPE[patron_request.request_type] || []
+    (volume_params || {}).slice(*fields)
+  end
 end
