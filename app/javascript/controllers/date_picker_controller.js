@@ -20,18 +20,10 @@ export default class extends Controller {
   static values = { disabled: Array, marked: Array, min: String, max: String, openDays: Array, year: Number, month: Number, focused: String }
 
   connect() {
-    const initial = this.inputTarget.value
-    let seed = initial ? new Date(`${initial}T00:00:00`) : new Date()
-    // If no date is selected but a minValue exists in a future month (e.g. the earliest
-    // available appointment is May 5 but today is April 30), open the calendar to that
-    // future month instead of the current one so the user sees selectable dates immediately.
-    if (!initial && this.minValue) {
-      const min = new Date(`${this.minValue}T00:00:00`)
-      if (min > seed) seed = min
-    }
-    this.yearValue = seed.getFullYear()
-    this.monthValue = seed.getMonth() // 0-indexed
-    this.focusedValue = this.#toIsoDate(seed)
+    const initial = this.inputTarget.value ? this.inputTarget.value : null
+
+    // set the initially focused value to the selected day, or the first available day
+    this.focusedValue = initial || this.#toIsoDate(this.nextEnabledDateOnOrAfter(new Date(), 1));
     this.element.addEventListener("keydown", this.#handleKeydown)
   }
 
@@ -211,6 +203,8 @@ export default class extends Controller {
   }
 
   #toIsoDate(date) {
+    if (!date) return;
+
     return [
       date.getFullYear(),
       String(date.getMonth() + 1).padStart(2, "0"),
@@ -261,14 +255,35 @@ export default class extends Controller {
     let candidate = new Date(this.focusedValue + "T00:00:00")
     candidate.setDate(candidate.getDate() + delta)
 
+    const nextDate = this.nextEnabledDateOnOrAfter(candidate, step)
+
+    if (nextDate) this.focusedValue = this.#toIsoDate(nextDate);
+  }
+
+  nextEnabledDateOnOrAfter(candidate, step, maximumDatesToExamine = 365) {
     // Skip over disabled dates (guard against all dates being disabled)
     let guard = 0
-    while (this.#isDateDisabled(this.#toIsoDate(candidate), candidate.getDay()) && guard++ < 60) {
+    while (this.#isDateDisabled(this.#toIsoDate(candidate), candidate.getDay())) {
+      if (this.minValue && this.#toIsoDate(candidate) < this.minValue) {
+        return;
+      }
+
+      if (this.maxValue && this.#toIsoDate(candidate) > this.maxValue) {
+        return;
+      }
+
+      if (guard++ >= maximumDatesToExamine) return;
+
       candidate.setDate(candidate.getDate() + step)
     }
-    if (guard >= 60) return
 
-    this.focusedValue = this.#toIsoDate(candidate)
+    return candidate;
+  }
+
+  focusedValueChanged() {
+    if (!this.focusedValue) return;
+
+    const candidate = new Date(this.focusedValue + "T00:00:00");
 
     // Navigate to a different month if the candidate is outside the current view
     if (candidate.getFullYear() !== this.yearValue || candidate.getMonth() !== this.monthValue) {

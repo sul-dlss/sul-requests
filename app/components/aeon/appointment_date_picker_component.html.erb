@@ -1,7 +1,7 @@
 <div class="mb-3">
   <%= form.label key, class: 'd-block fw-semibold redesign-required-label' %>
   <%= tag.div class: 'position-relative', data: controller_data do %>
-    <%= form.hidden_field key, data: { "date-picker-target": "input" } %>
+    <%= form.hidden_field key, data: { "date-picker-target": "input" }, autocomplete: false %>
     <div data-date-picker-target="announce"
          aria-live="polite"
          aria-atomic="true"
