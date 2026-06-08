@@ -77,7 +77,7 @@ RSpec.describe AeonAbility do
       let(:activity) { build(:aeon_activity, id: 42, users: [Aeon::User.new(username: 'testuser@stanford.edu')]) }
 
       before do
-        allow(request).to receive_messages(draft?: false, cancelled?: false, activity: activity)
+        allow(request).to receive_messages(saved_for_later?: false, cancelled?: false, activity: activity)
         allow(request.appointment).to receive_messages(editable?: true)
       end
 
@@ -90,7 +90,7 @@ RSpec.describe AeonAbility do
       let(:activity) { build(:aeon_activity, id: 42, users: [Aeon::User.new(username: 'someoneelse@stanford.edu')]) }
 
       before do
-        allow(request).to receive_messages(draft?: true, activity: activity)
+        allow(request).to receive_messages(saved_for_later?: true, activity: activity)
       end
 
       it { is_expected.not_to be_able_to(:update, request) }
