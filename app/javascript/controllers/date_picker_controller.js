@@ -265,12 +265,18 @@ export default class extends Controller {
     // Skip over disabled dates (guard against all dates being disabled)
     let guard = 0
     while (this.#isDateDisabled(this.#toIsoDate(candidate), candidate.getDay())) {
+      // When outside the min/max bounds, clamp to the boundary if we're stepping
+      // toward the valid range; otherwise no enabled date exists in this direction.
       if (this.minValue && this.#toIsoDate(candidate) < this.minValue) {
-        return;
+        if (step < 0) return;
+        candidate = new Date(this.minValue + "T00:00:00")
+        continue
       }
 
       if (this.maxValue && this.#toIsoDate(candidate) > this.maxValue) {
-        return;
+        if (step > 0) return;
+        candidate = new Date(this.maxValue + "T00:00:00")
+        continue
       }
 
       if (guard++ >= maximumDatesToExamine) return;
