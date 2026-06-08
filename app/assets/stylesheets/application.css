@@ -899,10 +899,14 @@ label.btn-close {
     --bs-btn-active-bg: white;
   }
 
-  button.dropdown-toggle {
+  .appointment-option .label-value {
+    white-space: normal;
+  }
+
+  .dropdown-toggle {
     min-width: 100%;
-    @media (min-width: 576px) {
-      min-width: 19.8rem; /* Barely fits longer case like "Jun 30,2026 * 11:00 am - 12:45 pm (10 items)" */
+    @media (min-width: 768px) {
+      min-width: 21rem; /* Barely fits longer case like "Jun 30,2026 * 11:00 am - 12:45 pm (10 items)" */
     }
   }
 
