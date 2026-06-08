@@ -18,7 +18,7 @@
           </div>
         </fieldset>
         <div class="loading-overlay p-2 mb-2" aria-hidden="true">Loading...</div>
-        <div class="selection-message">Select a reading room, date, and duration to see available appointments.</div>
+        <div class="selection-message">Select a date and duration to see available appointments.</div>
       </div>
     <% end %>
     <% if params[:date] && next_appt = @available_appointments.find { |x| x.start_time.to_date > @date } %>

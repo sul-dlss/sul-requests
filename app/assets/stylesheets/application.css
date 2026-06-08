@@ -571,9 +571,38 @@ label.btn-close {
   }
 }
 
-/* This can't go inline or display: none for when the turbo-frame is loading won't work */
-.appointment-slots, .duration-selectors {
-  display: flex;
+
+#available_appointments[busy] {
+  .loading-overlay {
+    display: flex;
+    animation: skeleton-loading 1s linear infinite alternate;
+    margin-top: -1rem;
+  }
+
+  .selection-message {
+    display: none;
+  }
+}
+
+
+#available_appointments {
+  .selection-message {
+    display: none;
+  }
+}
+
+#available_appointments.form-incomplete {
+  .appointment-slots {
+    display: none;
+  }
+
+  .loading-overlay {
+    display: none;
+  }
+
+  .selection-message {
+    display: block;
+  }
 }
 
 /* Maintain a relatively fixed height for appointment slots, to maintain the position of the save button */
@@ -587,38 +616,6 @@ label.btn-close {
   /* modal-lg fits 6 per row at this size */
   @media (min-width: 992px) {
     min-height: calc(3.125rem * round(up, var(--appointment-slots), 6) / 6 + 2rem);
-  }
-}
-
-#available_appointments:not(.form-incomplete)[busy=""] {
-  .loading-overlay {
-    display: flex;
-    animation: skeleton-loading 1s linear infinite alternate;
-    margin-top: -1rem;
-  }
-
-  fieldset > *:not(legend):not(.duration-selectors) {
-    display: none;
-  }
-}
-
-
-#available_appointments .selection-message {
-  display: none;
-}
-
-/* Show alert when turbo-frame src isn't set because form doesn't have all required fields */
-#available_appointments.form-incomplete {
-  fieldset > *:not(legend) {
-    display: none;
-  }
-
-  .appointment-slots-container {
-    --appointment-slots: 0!important;
-  }
-
-  .selection-message {
-    display: block;
   }
 }
 
