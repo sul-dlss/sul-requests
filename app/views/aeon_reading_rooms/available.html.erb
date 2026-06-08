@@ -7,7 +7,7 @@
       <% end %>
     <% else %>
       <div class="appointment-slots-container" style="--appointment-slots: <%= @available_appointments_on_selected_date.count %>">
-        <fieldset class="mb-3" data-appointment-target="fieldset" data-max-slot="<%= @appointment_lengths.max %>" data-min-slot="<%= @appointment_lengths.min %>">
+        <fieldset class="mb-3 radio-button-group" data-appointment-target="fieldset" data-max-slot="<%= @appointment_lengths.max %>" data-min-slot="<%= @appointment_lengths.min %>">
           <legend class="fs-6 fw-semibold redesign-required-label">Available time slots</legend>
           <div class="d-flex flex-wrap gap-3 appointment-slots">
             <% @available_appointments_on_selected_date.each do |appointment| %>

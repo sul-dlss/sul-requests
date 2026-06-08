@@ -619,9 +619,7 @@ label.btn-close {
   }
 }
 
-.appointment-form {
-  --bs-border-color: var(--stanford-50-black);
-
+.radio-button-group {
   .btn-check:checked + .btn {
     --bs-border-color: var(--stanford-digital-blue);
     background-color: var(--stanford-digital-blue);
@@ -636,6 +634,11 @@ label.btn-close {
     margin-right: 0.25rem;
     text-decoration: none;
     vertical-align: middle;
+  }
+
+  .btn-check:focus-visible + .btn {
+    outline: 2px solid white;
+    box-shadow: 0 0 0 4px var(--stanford-black);
   }
 }
 
