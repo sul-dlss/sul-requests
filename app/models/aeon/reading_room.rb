@@ -61,6 +61,10 @@ module Aeon
       @closures ||= aeon_client.closures(reading_room_id: id)
     end
 
+    def open_hours_on(date)
+      open_hours.find { |h| h.day_of_week == date.wday }
+    end
+
     OpenHoursDisplay = Data.define(:day_range, :hours)
 
     # Returns a human-readable set of open hours for the reading room that generally combines sequential days

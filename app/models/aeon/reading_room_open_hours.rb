@@ -20,5 +20,10 @@ module Aeon
       @open_time = open_time
       @close_time = close_time
     end
+
+    def range_on(date)
+      (date.to_time.change(hour: open_time.hour, min: open_time.min)..
+        date.to_time.change(hour: close_time.hour, min: close_time.min))
+    end
   end
 end
