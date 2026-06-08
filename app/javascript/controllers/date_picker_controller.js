@@ -265,11 +265,11 @@ export default class extends Controller {
     // Skip over disabled dates (guard against all dates being disabled)
     let guard = 0
     while (this.#isDateDisabled(this.#toIsoDate(candidate), candidate.getDay())) {
-      if (this.minValue && this.#toIsoDate(candidate) < this.minValue) {
+      if (this.minValue && this.#toIsoDate(candidate) < this.minValue && step < 0) {
         return;
       }
 
-      if (this.maxValue && this.#toIsoDate(candidate) > this.maxValue) {
+      if (this.maxValue && this.#toIsoDate(candidate) > this.maxValue && step > 0) {
         return;
       }
 
