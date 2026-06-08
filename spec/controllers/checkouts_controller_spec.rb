@@ -61,7 +61,7 @@ RSpec.describe CheckoutsController do
       it 'renews the item and sets flash messages' do
         post :renew, params: { id: '123' }
 
-        expect(flash[:success]).to match(/Success!/)
+        expect(flash[:success]).to include('Success!')
       end
 
       it 'renews the item and redirects to checkouts_path' do
@@ -77,7 +77,7 @@ RSpec.describe CheckoutsController do
       it 'does not renew the item and sets flash messages' do
         post :renew, params: { id: '123' }
 
-        expect(flash[:error]).to match(/Sorry!/)
+        expect(flash[:error]).to include('Sorry!')
       end
 
       it 'does not renew the item and redirects to checkouts_path' do
