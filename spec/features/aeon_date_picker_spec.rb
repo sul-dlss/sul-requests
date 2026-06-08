@@ -11,7 +11,7 @@ RSpec.describe 'Date picker keyboard navigation', :js do
   before { visit '/lookbook/preview/aeon/appointment_date_picker/default' }
 
   def open_picker
-    find('[data-date-picker-target="display"]').click
+    find('[data-date-picker-target="button"]').click
     expect(page).to have_css('[data-date-picker-target="grid"] button[tabindex="0"]', visible: :all)
   end
 
@@ -37,7 +37,7 @@ RSpec.describe 'Date picker keyboard navigation', :js do
       grid_send(:escape)
       expect(page).to have_css('[data-date-picker-target="calendar"][hidden]', visible: :all)
       display_focused = page.evaluate_script(
-        "document.activeElement === document.querySelector('[data-date-picker-target=\"display\"]')"
+        "document.activeElement === document.querySelector('[data-date-picker-target=\"button\"]')"
       )
       expect(display_focused).to be true
     end

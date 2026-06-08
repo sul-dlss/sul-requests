@@ -8,10 +8,12 @@
          class="visually-hidden"></div>
     <button type="button"
             class="btn border-black w-100 text-start text-nowrap"
-            data-date-picker-target="display"
+            data-date-picker-target="button"
             data-action="click->date-picker#toggle"
       aria-haspopup="dialog"
-      aria-expanded="false">Select a date</button>
+      aria-expanded="false">
+      <span data-date-picker-target="selectedValue">Select a date</span>
+    </button>
     <div class="date-picker-popup mt-1"
          data-date-picker-target="calendar"
          role="dialog"

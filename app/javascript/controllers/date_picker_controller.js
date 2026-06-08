@@ -10,13 +10,14 @@ import { Controller } from "@hotwired/stimulus"
 //   data-date-picker-marked-value    JSON array of ISO dates to mark with a dot, e.g. '["2026-04-23"]'
 //
 // Targets:
-//   input       hidden <input> that holds the selected ISO date value
-//   display     clickable element (button/span) that shows the formatted date and opens/closes the calendar
-//   calendar    the popup wrapper div
-//   monthLabel  element where the current month/year label is rendered
-//   grid        element where the day buttons are rendered
+//   input         hidden <input> that holds the selected ISO date value
+//   button        clickable element (button/span) that shows the formatted date and opens/closes the calendar
+//   selectedValue the selected value as displayed in the button
+//   calendar      the popup wrapper div
+//   monthLabel    element where the current month/year label is rendered
+//   grid          element where the day buttons are rendered
 export default class extends Controller {
-  static targets = ["input", "calendar", "display", "monthLabel", "grid", "announce", "prevBtn", "nextBtn", "legend"]
+  static targets = ["input", "calendar", "button", "selectedValue", "monthLabel", "grid", "announce", "prevBtn", "nextBtn", "legend"]
   static values = { disabled: Array, marked: Array, min: String, max: String, openDays: Array, year: Number, month: Number, focused: String }
 
   connect() {
@@ -45,7 +46,7 @@ export default class extends Controller {
   open() {
     this.renderCalendar()
     this.calendarTarget.hidden = false
-    this.displayTarget.setAttribute("aria-expanded", "true")
+    this.buttonTarget.setAttribute("aria-expanded", "true")
     this.announceTarget.textContent = `Date picker, ${this.monthLabelTarget.textContent}. Use arrow keys to navigate dates, Tab to move between controls, Escape to close.`
     requestAnimationFrame(() => {
       this.gridTarget.querySelector("button[tabindex='0']")?.focus({ focusVisible: true })
@@ -56,8 +57,8 @@ export default class extends Controller {
 
   close() {
     this.calendarTarget.hidden = true
-    this.displayTarget.setAttribute("aria-expanded", "false")
-    this.displayTarget.focus()
+    this.buttonTarget.setAttribute("aria-expanded", "false")
+    this.buttonTarget.focus()
 
     document.removeEventListener("click", this.#handleOutsideClick)
   }
@@ -81,7 +82,7 @@ export default class extends Controller {
     this.inputTarget.value = date
     this.inputTarget.dispatchEvent(new Event('change', { bubbles: true }))
     const formatted = this.#formatDisplay(date)
-    this.displayTarget.textContent = formatted
+    this.selectedValueTarget.textContent = formatted
     this.announceTarget.textContent = `Selected ${formatted}`
     this.focusedValue = date
     this.close()
