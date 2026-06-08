@@ -2,11 +2,12 @@
   <legend class="fs-6 fw-semibold redesign-required-label">Duration</legend>
 
   <div class="d-flex flex-wrap gap-3">
+  <%= form.hidden_field :duration, tabindex: 0, class: 'btn-check', value: selected %>
+
   <% [30.minutes, 1.hour, 1.5.hours, 2.hours, 3.hours, 4.hours].each do |duration| %>
-    <span class="duration-selector" data-appointment-target="duration" data-seconds="<%= duration %>">
-      <%= form.radio_button :duration, duration.to_i, class: 'btn-check', checked: selected == duration.to_i, data: { action: 'appointment#applyDurationFilter' } %>
-      <%= form.label "duration_#{duration.to_i}", duration.inspect.sub('minutes', 'min'), class: 'btn border px-1' %>
-    </span>
+    <button data-action='appointment#selectDuration' class="duration-selector btn border px-1" data-appointment-target="duration" data-seconds="<%= duration %>">
+       <%= duration.inspect.sub('minutes', 'min') %>
+    </button>
   <% end %>
   </div>
 </fieldset>
