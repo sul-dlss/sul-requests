@@ -22,8 +22,9 @@ module Aeon
     end
 
     def range_on(date)
-      (date.to_time.change(hour: open_time.hour, min: open_time.min)..
-        date.to_time.change(hour: close_time.hour, min: close_time.min))
+      start_of_day = date.in_time_zone
+      (start_of_day.change(hour: open_time.hour, min: open_time.min)..
+        start_of_day.change(hour: close_time.hour, min: close_time.min))
     end
   end
 end

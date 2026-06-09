@@ -9,7 +9,7 @@ class AeonAppointmentsController < ApplicationController
 
   before_action :load_appointments
   before_action :load_appointment, only: [:edit, :update, :destroy, :items]
-  before_action :create_appointment, only: [:create]
+  before_action :build_appointment, only: [:create]
   before_action :load_reading_rooms, only: [:new]
 
   def index
@@ -32,8 +32,10 @@ class AeonAppointmentsController < ApplicationController
     request.variant = :modal if params[:modal]
   end
 
-  def create
+  def create # rubocop:disable Metrics/AbcSize
     authorize! :create, Aeon::Appointment
+
+    return head :unprocessable_content unless @appointment.save
 
     @other_reading_room_appointments = (@appointments + [@appointment]).select do |appt|
       appt.reading_room.id == @appointment.reading_room.id
@@ -48,7 +50,8 @@ class AeonAppointmentsController < ApplicationController
   def update
     authorize! :update, @appointment
 
-    Current.aeon_client.update_appointment(params[:id], name: update_params[:name], start_time: start_time, stop_time: stop_time)
+    @appointment.assign_attributes(name: update_params[:name], start_time: start_time, stop_time: stop_time)
+    return head :unprocessable_content unless @appointment.save
 
     redirect_to aeon_appointments_path, notice: 'Appointment created successfully'
   end
@@ -102,12 +105,14 @@ class AeonAppointmentsController < ApplicationController
     @reading_room = Aeon::ReadingRoom.find(params[:reading_room_id])
   end
 
-  def create_appointment
-    @appointment = Current.aeon_client.create_appointment(
+  def build_appointment
+    reading_room = Aeon::ReadingRoom.find(create_params[:reading_room_id])
+    @appointment = Aeon::Appointment.new(
       start_time: start_time,
       stop_time: stop_time,
       name: create_params[:name],
-      reading_room_id: create_params[:reading_room_id],
+      reading_room_id: reading_room.id,
+      reading_room: reading_room,
       username: current_user.aeon.username
     )
   end

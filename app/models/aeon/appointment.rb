@@ -8,6 +8,11 @@ module Aeon
     attr_accessor :id, :username, :reading_room_id, :start_time, :stop_time,
                   :name, :appointment_status, :reading_room, :creation_date, :available_to_proxies
 
+    validates :start_time, :stop_time, presence: true
+    validate :stop_after_start,    if: -> { start_time && stop_time }
+    validate :within_open_hours,   if: -> { reading_room && start_time && stop_time }
+    validate :not_during_closure,  if: -> { reading_room && start_time && stop_time }
+
     def self.from_dynamic(dyn) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       new(
         id: dyn['id'],
@@ -69,5 +74,40 @@ module Aeon
     end
 
     def persisted? = id.present?
+
+    def save # rubocop:disable Metrics/AbcSize, Naming/PredicateMethod
+      return false unless valid?
+
+      if persisted?
+        Current.aeon_client.update_appointment(id, name:, start_time:, stop_time:)
+      else
+        saved = Current.aeon_client.create_appointment(username:, start_time:, stop_time:, name:, reading_room_id:)
+        self.id = saved.id
+        self.appointment_status = saved.appointment_status
+        self.creation_date = saved.creation_date
+        self.available_to_proxies = saved.available_to_proxies
+      end
+      true
+    end
+
+    private
+
+    def stop_after_start
+      errors.add(:stop_time, 'must be after start time') if stop_time <= start_time
+    end
+
+    def within_open_hours
+      hours = reading_room.open_hours_on(start_time)
+      return errors.add(:start_time, 'is outside reading room hours') unless hours
+
+      range = hours.range_on(start_time.to_date)
+      errors.add(:start_time, 'is outside reading room hours') if start_time < range.begin || stop_time > range.end
+    end
+
+    def not_during_closure
+      return unless reading_room.closures.any? { |c| c.range.overlap?(start_time..stop_time) }
+
+      errors.add(:start_time, 'is during a reading room closure')
+    end
   end
 end
