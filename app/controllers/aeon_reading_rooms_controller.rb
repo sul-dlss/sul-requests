@@ -45,9 +45,12 @@ class AeonReadingRoomsController < ApplicationController
   def own_appointment_conflicts
     return [] unless current_user&.aeon
 
-    excluded_id = params[:appointment_id]&.to_i
     current_user.aeon.appointments
-                .reject { |a| a.id == excluded_id }
+                .select { |a| a.reading_room_id == @reading_room.id && a.id != excluded_appointment_id }
                 .map { |a| a.start_time...a.stop_time }
+  end
+
+  def excluded_appointment_id
+    params[:appointment_id]&.to_i
   end
 end
