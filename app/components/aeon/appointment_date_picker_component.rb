@@ -48,10 +48,16 @@ module Aeon
       end
     end
 
+    def disabled_days
+      return closures_dates.map(&:iso8601) unless data[:'date-picker-marked-value'] && reading_room&.day_only_appointments?
+
+      closures_dates.map(&:iso8601) + data[:'date-picker-marked-value']
+    end
+
     def controller_data
       data.merge(controller: "#{data[:controller]} date-picker").reverse_merge('date-picker-min-value': min,
                                                                                'date-picker-max-value': max,
-                                                                               'date-picker-disabled-value': closures_dates.map(&:iso8601),
+                                                                               'date-picker-disabled-value': disabled_days,
                                                                                'date-picker-open-days-value': open_days)
     end
   end
