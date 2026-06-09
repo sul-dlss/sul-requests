@@ -54,6 +54,7 @@
               <%= render Aeon::AddRequestComponent.new(request: Aeon::Request.new(transaction_number: '__TRANSACTION_NUMBER__', item_title: '__ITEM_TITLE__')) %>
             </template>
             <div class="accordion-body p-0">
+              <div class="hidden-if-peers p-3">No items eligible for this appointment.</div>
               <%= render Aeon::RequestGroupBriefComponent.with_collection(@aeon_request_groups,
                                                                           classes: %w[request-group border-top mb-0 p-3],
                                                                           data: { controller: 'add-items', appointment_target: '#appointmentRequests' },
