@@ -1,36 +1,34 @@
-<div class="mb-3">
-  <%= form.label key, class: 'd-block form-label mb-0 fw-semibold redesign-required-label' %>
-  <%= tag.div class: 'position-relative', data: controller_data do %>
-    <%= form.hidden_field key, data: { "date-picker-target": "input" }, autocomplete: false %>
-    <div data-date-picker-target="announce"
-         aria-live="polite"
-         aria-atomic="true"
-         class="visually-hidden"></div>
-    <button type="button"
-            class="form-control w-100 text-start text-nowrap d-inline-flex justify-content-between"
-            data-date-picker-target="button"
-            data-action="click->date-picker#toggle"
-      aria-haspopup="dialog"
-      aria-expanded="false">
-      <span data-date-picker-target="selectedValue">Select a date</span>
-      <i class="bi bi-calendar ms-2" aria-hidden="true"></i>
-    </button>
-    <div class="date-picker-popup mt-1"
-         data-date-picker-target="calendar"
-         role="dialog"
-         aria-modal="true"
-         aria-labelledby="date-picker-month-label"
-         hidden>
-      <div class="d-flex justify-content-between align-items-center mb-2">
-        <button type="button" class="btn btn-sm btn-light" data-date-picker-target="prevBtn" data-action="click->date-picker#prevMonth" aria-label="Previous month">&#8249;</button>
-        <strong id="date-picker-month-label" data-date-picker-target="monthLabel"></strong>
-        <button type="button" class="btn btn-sm btn-light" data-date-picker-target="nextBtn" data-action="click->date-picker#nextMonth" aria-label="Next month">&#8250;</button>
-      </div>
-      <div data-date-picker-target="grid"></div>
-      <div class="date-picker-legend d-flex align-items-center mt-2 small" data-date-picker-target="legend">
-        <span class="date-picker-dot flex-shrink-0 me-2" aria-hidden="true"></span>
-        <span class="text-muted">Existing appointment</span>
-      </div>
+<%= tag.div class: 'position-relative', data: controller_data do %>
+  <%= form.hidden_field key, id: nil, data: { "date-picker-target": "input" }, autocomplete: false %>
+  <div data-date-picker-target="announce"
+        aria-live="polite"
+        aria-atomic="true"
+        class="visually-hidden"></div>
+  <button type="button"
+          id="<%= form.object_name %>_<%= key %>"
+          class="form-control w-100 text-start text-nowrap d-inline-flex justify-content-between"
+          data-date-picker-target="button"
+          data-action="click->date-picker#toggle"
+    aria-haspopup="dialog"
+    aria-expanded="false">
+    <span data-date-picker-target="selectedValue">Select a date</span>
+    <i class="bi bi-calendar ms-2" aria-hidden="true"></i>
+  </button>
+  <div class="date-picker-popup mt-1"
+        data-date-picker-target="calendar"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="date-picker-month-label"
+        hidden>
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <button type="button" class="btn btn-sm btn-light" data-date-picker-target="prevBtn" data-action="click->date-picker#prevMonth" aria-label="Previous month">&#8249;</button>
+      <strong id="date-picker-month-label" data-date-picker-target="monthLabel"></strong>
+      <button type="button" class="btn btn-sm btn-light" data-date-picker-target="nextBtn" data-action="click->date-picker#nextMonth" aria-label="Next month">&#8250;</button>
     </div>
-  <% end %>
-</div>
+    <div data-date-picker-target="grid"></div>
+    <div class="date-picker-legend d-flex align-items-center mt-2 small" data-date-picker-target="legend">
+      <span class="date-picker-dot flex-shrink-0 me-2" aria-hidden="true"></span>
+      <span class="text-muted">Existing appointment</span>
+    </div>
+  </div>
+<% end %>
