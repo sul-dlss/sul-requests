@@ -1,10 +1,12 @@
 <span><i class="bi bi-calendar <%= icon_class %>"></i><%= l(appointment.start_time, format: :date_only) %></span>
 <span>
-  <% if appointment.reading_room && appointment.reading_room.day_only_appointments? && show_open_hours? %>
-    <% if appointment.start_time != appointment.stop_time %>
-      <i class="bi bi-clock <%= icon_class %>"></i>Open hours: <%= l(appointment.start_time, format: :time_only) %> - <%= l(appointment.stop_time, format: :time_only) %>
-    <% else %>
-      <i class="bi bi-clock <%= icon_class %>"></i>No public hours
+  <% if appointment.reading_room && appointment.reading_room.day_only_appointments? %>
+    <% if show_open_hours? %>
+      <% if appointment.start_time != appointment.stop_time %>
+        <i class="bi bi-clock <%= icon_class %>"></i>Open hours: <%= l(appointment.start_time, format: :time_only) %> - <%= l(appointment.stop_time, format: :time_only) %>
+      <% else %>
+        <i class="bi bi-clock <%= icon_class %>"></i>No public hours
+      <% end %>
     <% end %>
   <% else %>
     <i class="bi bi-clock <%= icon_class %>"></i><%= l(appointment.start_time, format: :time_only) %> - <%= l(appointment.stop_time, format: :time_only) %>
