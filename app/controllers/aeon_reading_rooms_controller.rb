@@ -26,9 +26,7 @@ class AeonReadingRoomsController < ApplicationController
   end
 
   def load_reading_room
-    reading_room_id = params.expect(:id).to_i
-
-    @reading_room = @reading_rooms.find { |rr| rr.id == reading_room_id }
+    @reading_room = Aeon::ReadingRoom.find(params.expect(:id))
   end
 
   def load_appointments
