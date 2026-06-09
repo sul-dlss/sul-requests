@@ -166,6 +166,34 @@ RSpec.describe Aeon::Appointment do
           expect(appointment).to have_attributes(id: 999, appointment_status: 'Confirmed', available_to_proxies: true)
         end
       end
+
+      context 'when persisted' do
+        let(:appointment) do
+          build(:aeon_appointment, id: 42, reading_room: reading_room, start_time: start_time, stop_time: stop_time)
+        end
+        let(:client) { instance_double(AeonClient) }
+
+        before do
+          allow(Current).to receive(:aeon_client).and_return(client)
+          allow(client).to receive(:update_appointment)
+          allow(client).to receive(:create_appointment)
+        end
+
+        it 'calls update_appointment and not create_appointment' do
+          expect(appointment.save).to be true
+          expect(client).to have_received(:update_appointment).with(42, name: nil, start_time: start_time, stop_time: stop_time)
+          expect(client).not_to have_received(:create_appointment)
+        end
+
+        context 'when invalid' do
+          let(:start_time) { Time.zone.parse('2026-03-16T08:00:00-07:00') } # before opening
+
+          it 'returns false and does not call the Aeon client' do
+            expect(appointment.save).to be false
+            expect(client).not_to have_received(:update_appointment)
+          end
+        end
+      end
     end
 
     context 'with closures' do

@@ -77,13 +77,16 @@ module Aeon
 
     def save # rubocop:disable Metrics/AbcSize, Naming/PredicateMethod
       return false unless valid?
-      raise ArgumentError, 'Unable to re-create an existing appointment' if persisted?
 
-      saved = Current.aeon_client.create_appointment(username:, start_time:, stop_time:, name:, reading_room_id:)
-      self.id = saved.id
-      self.appointment_status = saved.appointment_status
-      self.creation_date = saved.creation_date
-      self.available_to_proxies = saved.available_to_proxies
+      if persisted?
+        Current.aeon_client.update_appointment(id, name:, start_time:, stop_time:)
+      else
+        saved = Current.aeon_client.create_appointment(username:, start_time:, stop_time:, name:, reading_room_id:)
+        self.id = saved.id
+        self.appointment_status = saved.appointment_status
+        self.creation_date = saved.creation_date
+        self.available_to_proxies = saved.available_to_proxies
+      end
       true
     end
 

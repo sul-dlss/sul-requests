@@ -50,7 +50,8 @@ class AeonAppointmentsController < ApplicationController
   def update
     authorize! :update, @appointment
 
-    Current.aeon_client.update_appointment(params[:id], name: update_params[:name], start_time: start_time, stop_time: stop_time)
+    @appointment.assign_attributes(name: update_params[:name], start_time: start_time, stop_time: stop_time)
+    return head :unprocessable_content unless @appointment.save
 
     redirect_to aeon_appointments_path, notice: 'Appointment created successfully'
   end
