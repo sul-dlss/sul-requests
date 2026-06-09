@@ -13,6 +13,10 @@ module Aeon
       aeon_client.reading_rooms
     end
 
+    def self.find(id)
+      all.find { |rr| rr.id == id.to_i }
+    end
+
     def self.find_by(site:)
       all.find { |rr| rr.sites.include?(site) }
     end

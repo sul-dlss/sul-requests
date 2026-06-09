@@ -99,7 +99,7 @@ class AeonAppointmentsController < ApplicationController
 
     return unless params[:reading_room_id]
 
-    @reading_room = @reading_rooms.find { |rr| rr.id == params[:reading_room_id].to_i }
+    @reading_room = Aeon::ReadingRoom.find(params[:reading_room_id])
   end
 
   def create_appointment
